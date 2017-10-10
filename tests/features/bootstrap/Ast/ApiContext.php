@@ -231,6 +231,38 @@ class ApiContext extends BaseContext implements Context
 
     /**
      * @param string $classFqsen
+     * @param string $tagName
+     * @param string $methodName
+     * @Then class ":classFqsen" has a method :method
+     */
+    public function classHasMethod($classFqsen, $methodName)
+    {
+        $class = $this->findClassByFqsen($classFqsen);
+        /** @var MethodDescriptor $method */
+        $method = $class->getMethods()->get($methodName, null);
+        Assert::assertInstanceOf(MethodDescriptor::class, $method);
+        Assert::assertEquals($methodName, $method->getName());
+    }
+
+    /**
+     * @param string $classFqsen
+     * @param string $tagName
+     * @param string $methodName
+     * @Then class ":classFqsen" has a method :method with returntype :returnType
+     */
+    public function classHasMethodWithReturnType($classFqsen, $methodName, $returnType)
+    {
+        $class = $this->findClassByFqsen($classFqsen);
+        /** @var MethodDescriptor $method */
+        $method = $class->getMethods()->get($methodName, null);
+        Assert::assertInstanceOf(MethodDescriptor::class, $method);
+        Assert::assertEquals($methodName, $method->getName());
+
+        Assert::assertEquals($returnType, (string)$method->getReturn());
+    }
+
+    /**
+     * @param string $classFqsen
      * @param string $methodName
      * @param string $argument
      * @param string $type

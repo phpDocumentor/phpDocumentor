@@ -77,6 +77,7 @@ class FunctionAssembler extends AssemblerAbstract
         $descriptor->setName($reflector->getName());
         $descriptor->setLine($reflector->getLocation()->getLineNumber());
         $descriptor->setNamespace(substr($reflector->getFqsen(), 0, -strlen($reflector->getName())));
+        $descriptor->setReturnType($reflector->getReturnType());
     }
 
     /**

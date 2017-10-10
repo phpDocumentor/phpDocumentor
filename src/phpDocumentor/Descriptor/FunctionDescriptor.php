@@ -10,6 +10,7 @@
  */
 
 namespace phpDocumentor\Descriptor;
+use phpDocumentor\Reflection\Type;
 
 /**
  * Descriptor representing a function.
@@ -18,6 +19,9 @@ class FunctionDescriptor extends DescriptorAbstract implements Interfaces\Functi
 {
     /** @var Collection $arguments */
     protected $arguments;
+
+    /** @var Type */
+    private $returnType;
 
     /**
      * Initializes the all properties representing a collection with a new Collection object.
@@ -54,5 +58,15 @@ class FunctionDescriptor extends DescriptorAbstract implements Interfaces\Functi
         $returnTags = $this->getTags()->get('return');
 
         return $returnTags instanceof Collection ? current($returnTags->getAll()) : null;
+    }
+
+    /**
+     * Sets return type of this method.
+     *
+     * @param Type $returnType
+     */
+    public function setReturnType(Type $returnType)
+    {
+        $this->returnType = $returnType;
     }
 }

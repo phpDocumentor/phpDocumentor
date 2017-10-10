@@ -14,9 +14,14 @@ namespace phpDocumentor\Descriptor;
 use \Mockery as m;
 use phpDocumentor\Descriptor\Tag\AuthorDescriptor;
 use phpDocumentor\Descriptor\Tag\VersionDescriptor;
+use phpDocumentor\Reflection\Types\String_;
 
 /**
  * Tests the functionality for the MethodDescriptor class.
+ *
+ * @coversDefaultClass \phpDocumentor\Descriptor\MethodDescriptor
+ * @covers ::<private>
+ * @covers ::<protected>
  */
 class MethodDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
@@ -24,7 +29,7 @@ class MethodDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     protected $fixture;
 
     /**
-     * Creates a new (emoty) fixture object.
+     * Creates a new (empty) fixture object.
      */
     protected function setUp()
     {
@@ -35,22 +40,22 @@ class MethodDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Tests whether all collection objects are properly initialized.
      *
-     * @covers phpDocumentor\Descriptor\MethodDescriptor::__construct
+     * @covers ::__construct
      */
     public function testInitialize()
     {
-        $this->assertAttributeInstanceOf('phpDocumentor\Descriptor\Collection', 'arguments', $this->fixture);
+        $this->assertAttributeInstanceOf(Collection::class, 'arguments', $this->fixture);
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\MethodDescriptor::setArguments
-     * @covers phpDocumentor\Descriptor\MethodDescriptor::getArguments
+     * @covers ::setArguments
+     * @covers ::getArguments
      */
     public function testSettingAndGettingArguments()
     {
-        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getArguments());
+        $this->assertInstanceOf(Collection::class, $this->fixture->getArguments());
 
-        $mock = m::mock('phpDocumentor\Descriptor\Collection');
+        $mock = m::mock(Collection::class);
         $mock->shouldReceive('getIterator')->andReturn(new \ArrayIterator(array()));
 
         $this->fixture->setArguments($mock);
@@ -59,8 +64,8 @@ class MethodDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\MethodDescriptor::isAbstract
-     * @covers phpDocumentor\Descriptor\MethodDescriptor::setAbstract
+     * @covers ::isAbstract
+     * @covers ::setAbstract
      */
     public function testSettingAndGettingWhetherMethodIsAbstract()
     {
@@ -72,8 +77,8 @@ class MethodDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\MethodDescriptor::isFinal
-     * @covers phpDocumentor\Descriptor\MethodDescriptor::setFinal
+     * @covers ::isFinal
+     * @covers ::setFinal
      */
     public function testSettingAndGettingWhetherMethodIsFinal()
     {
@@ -85,8 +90,8 @@ class MethodDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\MethodDescriptor::isStatic
-     * @covers phpDocumentor\Descriptor\MethodDescriptor::setStatic
+     * @covers ::isStatic
+     * @covers ::setStatic
      */
     public function testSettingAndGettingWhetherMethodIsStatic()
     {
@@ -98,8 +103,8 @@ class MethodDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\MethodDescriptor::getVisibility
-     * @covers phpDocumentor\Descriptor\MethodDescriptor::setVisibility
+     * @covers ::getVisibility
+     * @covers ::setVisibility
      */
     public function testSettingAndGettingVisibility()
     {
@@ -111,7 +116,7 @@ class MethodDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\MethodDescriptor::getResponse
+     * @covers ::getResponse
      */
     public function testRetrieveReturnTagForResponse()
     {
@@ -125,7 +130,19 @@ class MethodDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\MethodDescriptor::getFile
+     * @covers ::setReturnType
+     * @covers ::getResponse
+     */
+    public function testGetResponseReturnsReturnType()
+    {
+        $returnType = new String_();
+        $this->fixture->setReturnType($returnType);
+
+        $this->assertSame($returnType, $this->fixture->getResponse()->getTypes());
+    }
+
+    /**
+     * @covers ::getFile
      */
     public function testRetrieveFileAssociatedWithAMethod()
     {
@@ -141,7 +158,7 @@ class MethodDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getSummary
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getSummary
      */
     public function testSummaryInheritsWhenNoneIsPresent()
     {
@@ -159,7 +176,7 @@ class MethodDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\MethodDescriptor::getSummary
+     * @covers ::getSummary
      */
     public function testSummaryInheritsFromImplementedInterfaceWhenNoneIsPresent()
     {
@@ -177,7 +194,7 @@ class MethodDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\MethodDescriptor::getDescription
+     * @covers ::getDescription
      */
     public function testDescriptionInheritsWhenNoneIsPresent()
     {
@@ -195,7 +212,7 @@ class MethodDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getDescription
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getDescription
      */
     public function testDescriptionInheritsWhenInheritDocIsPresent()
     {
@@ -213,7 +230,7 @@ class MethodDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getDescription
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getDescription
      */
     public function testDescriptionIsAugmentedWhenInheritDocInlineTagIsPresent()
     {
@@ -231,7 +248,7 @@ class MethodDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\MethodDescriptor::getReturn
+     * @covers ::getReturn
      */
     public function testReturnTagsInheritWhenNoneArePresent()
     {
@@ -250,7 +267,7 @@ class MethodDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\MethodDescriptor::getParam
+     * @covers ::getParam
      */
     public function testParamTagsInheritWhenNoneArePresent()
     {
@@ -269,8 +286,8 @@ class MethodDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\MethodDescriptor::getAuthor
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getAuthor
+     * @covers ::getAuthor
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getAuthor
      */
     public function testAuthorTagsInheritWhenNoneArePresent()
     {
@@ -289,8 +306,8 @@ class MethodDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\MethodDescriptor::getVersion
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getVersion
+     * @covers ::getVersion
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getVersion
      */
     public function testVersionTagsInheritWhenNoneArePresent()
     {
@@ -309,8 +326,8 @@ class MethodDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\MethodDescriptor::getCopyright
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getCopyright
+     * @covers ::getCopyright
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getCopyright
      */
     public function testCopyrightTagsInheritWhenNoneArePresent()
     {
@@ -335,7 +352,7 @@ class MethodDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     protected function whenFixtureIsDirectlyRelatedToAFile()
     {
-        $file = m::mock('phpDocumentor\Descriptor\FileDescriptor');
+        $file = m::mock(FileDescriptor::class);
         $this->fixture->setFile($file);
         return $file;
     }
@@ -347,8 +364,8 @@ class MethodDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     protected function whenFixtureIsRelatedToAClassWithFile()
     {
-        $file = m::mock('phpDocumentor\Descriptor\FileDescriptor');
-        $parent = m::mock('phpDocumentor\Descriptor\ClassDescriptor');
+        $file = m::mock(FileDescriptor::class);
+        $parent = m::mock(ClassDescriptor::class);
         $parent->shouldReceive('getFile')->andReturn($file);
         $parent->shouldReceive('getFullyQualifiedStructuralElementName')->andReturn('Class1');
         $this->fixture->setParent($parent);
@@ -361,7 +378,7 @@ class MethodDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      *
      * @return MethodDescriptor
      */
-    protected function whenFixtureHasMethodInParentClassWithSameName($name)
+    protected function whenFixtureHasMethodInParentClassWithSameName($name): MethodDescriptor
     {
         $result = new MethodDescriptor;
         $result->setName($name);
@@ -382,7 +399,7 @@ class MethodDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      *
      * @return MethodDescriptor
      */
-    protected function whenFixtureHasMethodInImplementedInterfaceWithSameName($name)
+    protected function whenFixtureHasMethodInImplementedInterfaceWithSameName($name): MethodDescriptor
     {
         $result = new MethodDescriptor;
         $result->setName($name);
