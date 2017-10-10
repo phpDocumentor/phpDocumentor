@@ -11,7 +11,7 @@
 
 namespace phpDocumentor\Descriptor\Type;
 
-class UnknownTypeDescriptorTest extends \PHPUnit_Framework_TestCase
+class UnknownTypeDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
      * @covers phpDocumentor\Descriptor\Type\UnknownTypeDescriptor::getName

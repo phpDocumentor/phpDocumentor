@@ -17,7 +17,7 @@ use \Zend\Filter\FilterChain;
 /**
  * Tests the functionality for the Filter class.
  */
-class FilterTest extends \PHPUnit_Framework_TestCase
+class FilterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     const FQCN = 'SomeFilterClass';
 

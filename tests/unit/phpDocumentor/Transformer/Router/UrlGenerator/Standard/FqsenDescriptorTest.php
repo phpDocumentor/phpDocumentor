@@ -18,7 +18,7 @@ use phpDocumentor\Reflection\Fqsen as RealFqsen;
 /**
  * Test for the MethodDescriptor URL Generator with the Standard Router
  */
-class FqsenDescriptorTest extends \PHPUnit_Framework_TestCase
+class FqsenDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
      * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\FqsenDescriptor::__invoke

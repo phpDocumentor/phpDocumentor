@@ -19,7 +19,7 @@ use phpDocumentor\Descriptor\TagDescriptor;
  *
  * @covers phpDocumentor\Plugin\Core\Transformer\Writer\Xml\TagConverter
  */
-class TagConverterTest extends \PHPUnit_Framework_TestCase
+class TagConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     const TEST_LINENUMBER = 100;
 

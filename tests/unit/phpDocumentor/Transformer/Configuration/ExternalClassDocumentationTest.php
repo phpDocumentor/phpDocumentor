@@ -11,7 +11,7 @@
 
 namespace phpDocumentor\Transformer\Configuration;
 
-class ExternalClassDocumentationTest extends \PHPUnit_Framework_TestCase
+class ExternalClassDocumentationTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     const EXAMPLE_PREFIX       = 'prefix';
     const EXAMPLE_URI_TEMPLATE = 'uriTemplate';

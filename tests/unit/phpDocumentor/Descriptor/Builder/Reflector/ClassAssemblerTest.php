@@ -26,7 +26,7 @@ use phpDocumentor\Reflection\Php\Property;
  *
  * @covers \phpDocumentor\Descriptor\Builder\Reflector\ClassAssembler
  */
-class ClassAssemblerTest extends \PHPUnit_Framework_TestCase
+class ClassAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var ClassAssembler $fixture */
     protected $fixture;

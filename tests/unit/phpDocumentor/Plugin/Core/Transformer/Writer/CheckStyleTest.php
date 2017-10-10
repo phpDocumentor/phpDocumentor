@@ -22,7 +22,7 @@ use phpDocumentor\Translator\Translator;
  *
  * @covers phpDocumentor\Plugin\Core\Transformer\Writer\CheckStyle
  */
-class CheckStyleTest extends \PHPUnit_Framework_TestCase
+class CheckStyleTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
      * @var CheckStyle $checkstyle

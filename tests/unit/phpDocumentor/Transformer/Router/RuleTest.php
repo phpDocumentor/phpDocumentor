@@ -11,7 +11,7 @@
 
 namespace phpDocumentor\Transformer\Router;
 
-class RuleTest extends \PHPUnit_Framework_TestCase
+class RuleTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
      * @covers phpDocumentor\Transformer\Router\Rule::__construct

@@ -20,7 +20,7 @@ use phpDocumentor\Reflection\Types\Array_;
 /**
  * Tests the functionality for the ConstantDescriptor class.
  */
-class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
+class ConstantDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var ConstantDescriptor $fixture */
     protected $fixture;

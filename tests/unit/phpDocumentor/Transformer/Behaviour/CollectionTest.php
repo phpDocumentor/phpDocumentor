@@ -16,7 +16,7 @@ use Mockery as m;
 /**
  * Tests for the Behaviour Collection class.
  */
-class CollectionTest extends \PHPUnit_Framework_TestCase
+class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var Collection */
     protected $fixture;

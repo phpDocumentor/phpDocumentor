@@ -19,7 +19,7 @@ use phpDocumentor\Reflection\DocBlock\Tags\Example;
 /**
  * Tests for the \phpDocumentor\Descriptor\Builder\Reflector\Tags\ExampleAssembler class.
  */
-class ExampleAssemblerTest extends \PHPUnit_Framework_TestCase
+class ExampleAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     const EXAMPLE_FILE_PATH = 'examples/example.txt';
     const EXAMPLE_STARTING_LINE = 10;

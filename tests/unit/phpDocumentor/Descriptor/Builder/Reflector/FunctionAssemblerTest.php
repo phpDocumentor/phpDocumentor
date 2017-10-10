@@ -23,7 +23,7 @@ use phpDocumentor\Reflection\FunctionReflector;
 use phpDocumentor\Reflection\Php\Argument;
 use phpDocumentor\Reflection\Php\Function_;
 
-class FunctionAssemblerTest extends \PHPUnit_Framework_TestCase
+class FunctionAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var FunctionAssembler $fixture */
     protected $fixture;

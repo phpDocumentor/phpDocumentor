@@ -19,7 +19,7 @@ use phpDocumentor\Descriptor\ArgumentDescriptor;
  *
  * @covers phpDocumentor\Plugin\Core\Transformer\Writer\Xml\ArgumentConverter
  */
-class ArgumentConverterTest extends \PHPUnit_Framework_TestCase
+class ArgumentConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
      * Tests whether the XML Element representing an argument is properly created.

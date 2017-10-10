@@ -22,7 +22,7 @@ use phpDocumentor\Descriptor\MethodDescriptor;
  *
  * @covers phpDocumentor\Plugin\Core\Transformer\Writer\Xml\InterfaceConverter
  */
-class InterfaceConverterTest extends \PHPUnit_Framework_TestCase
+class InterfaceConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
      * Tests whether the XML Element representing a interface is properly created.

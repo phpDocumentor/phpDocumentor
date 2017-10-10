@@ -11,7 +11,7 @@
 
 namespace phpDocumentor\Descriptor\Type;
 
-class IntegerDescriptorTest extends \PHPUnit_Framework_TestCase
+class IntegerDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
      * @covers phpDocumentor\Descriptor\Type\IntegerDescriptor::getName

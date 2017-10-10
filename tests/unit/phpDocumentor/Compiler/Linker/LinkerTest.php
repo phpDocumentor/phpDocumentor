@@ -25,7 +25,7 @@ use phpDocumentor\Descriptor\Type\UnknownTypeDescriptor;
  *
  * @coversDefaultClass phpDocumentor\Compiler\Linker\Linker
  */
-class LinkerTest extends \PHPUnit_Framework_TestCase
+class LinkerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
      * @covers ::setObjectAliasesList

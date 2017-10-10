@@ -14,7 +14,7 @@ namespace phpDocumentor\Compiler;
 /**
  * Tests the functionality for the Compiler.
  */
-class CompilerTest extends \PHPUnit_Framework_TestCase
+class CompilerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var Compiler $fixture */
     protected $fixture;

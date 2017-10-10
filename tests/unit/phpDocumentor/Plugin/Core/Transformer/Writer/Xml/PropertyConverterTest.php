@@ -20,7 +20,7 @@ use phpDocumentor\Descriptor\PropertyDescriptor;
  *
  * @covers phpDocumentor\Plugin\Core\Transformer\Writer\Xml\PropertyConverter
  */
-class PropertyConverterTest extends \PHPUnit_Framework_TestCase
+class PropertyConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
      * Tests whether the XML Element representing a property is properly created.

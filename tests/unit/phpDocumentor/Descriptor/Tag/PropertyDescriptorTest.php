@@ -14,7 +14,7 @@ namespace phpDocumentor\Descriptor\Tag;
 /**
  * Tests the functionality for the PropertyDescriptor class.
  */
-class PropertyDescriptorTest extends \PHPUnit_Framework_TestCase
+class PropertyDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     const EXAMPLE_NAME = 'variableName';
 

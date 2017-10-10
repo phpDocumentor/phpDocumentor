@@ -13,7 +13,7 @@ namespace phpDocumentor\Transformer\Template;
 
 use org\bovigo\vfs\vfsStream;
 
-class PathResolverTest extends \PHPUnit_Framework_TestCase
+class PathResolverTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var string */
     protected $templatePath = 'vfs://root/templatePath';

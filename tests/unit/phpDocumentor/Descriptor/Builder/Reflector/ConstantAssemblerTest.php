@@ -23,7 +23,7 @@ use phpDocumentor\Reflection\Php\Constant;
  *
  * @covers \phpDocumentor\Descriptor\Builder\Reflector\ConstantAssembler
  */
-class ConstantAssemblerTest extends \PHPUnit_Framework_TestCase
+class ConstantAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var ConstantAssembler $fixture */
     protected $fixture;

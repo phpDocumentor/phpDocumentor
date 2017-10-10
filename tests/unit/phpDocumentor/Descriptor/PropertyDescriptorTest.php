@@ -20,7 +20,7 @@ use phpDocumentor\Reflection\Types\Array_;
 /**
  * Tests the functionality for the PropertyDescriptor class.
  */
-class PropertyDescriptorTest extends \PHPUnit_Framework_TestCase
+class PropertyDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var PropertyDescriptor $fixture */
     protected $fixture;

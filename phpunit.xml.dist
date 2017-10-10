@@ -38,7 +38,6 @@
         <log type="junit" target="build/logs/junit.xml" logIncompleteSkipped="false" />
     </logging>
     <listeners>
-        <listener class="Mockery\Adapter\Phpunit\TestListener"
-            file="vendor/mockery/mockery/library/Mockery/Adapter/Phpunit/TestListener.php"></listener>
+        <listener class="\Mockery\Adapter\Phpunit\TestListener"></listener>
     </listeners>
 </phpunit>

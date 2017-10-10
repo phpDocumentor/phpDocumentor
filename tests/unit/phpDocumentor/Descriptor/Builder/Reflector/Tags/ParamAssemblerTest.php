@@ -11,7 +11,7 @@ use phpDocumentor\Reflection\DocBlock\Tags\Param;
 use phpDocumentor\Reflection\DocBlock\Type\Collection as TypeCollection;
 use phpDocumentor\Reflection\Types\String_;
 
-class ParamAssemblerTest extends \PHPUnit_Framework_TestCase
+class ParamAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var ParamAssembler */
     private $fixture;

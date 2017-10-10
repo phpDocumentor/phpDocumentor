@@ -23,7 +23,7 @@ use phpDocumentor\Reflection\Php\Method;
 use phpDocumentor\Reflection\Php\Visibility;
 use phpDocumentor\Reflection\Types\String_;
 
-class MethodAssemblerTest extends \PHPUnit_Framework_TestCase
+class MethodAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var MethodAssembler $fixture */
     protected $fixture;

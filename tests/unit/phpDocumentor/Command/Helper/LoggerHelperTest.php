@@ -16,7 +16,7 @@ use Mockery as m;
 use Monolog\Logger;
 use phpDocumentor\Configuration;
 use phpDocumentor\Event\LogEvent;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use Psr\Log\LogLevel;
 use stdClass;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -24,7 +24,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Testcase for LoggerHelper
  */
-class LoggerHelperTest extends PHPUnit_Framework_TestCase
+class LoggerHelperTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
      *

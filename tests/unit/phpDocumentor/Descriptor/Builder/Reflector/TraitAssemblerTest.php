@@ -24,7 +24,7 @@ use Mockery as m;
  * @coversDefaultClass \phpDocumentor\Descriptor\Builder\Reflector\TraitAssembler
  * @covers ::<private>
  */
-class TraitAssemblerTest extends TestCase
+class TraitAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
      * @covers ::create

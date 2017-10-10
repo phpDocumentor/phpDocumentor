@@ -14,7 +14,7 @@ namespace phpDocumentor\Transformer\Router;
 use phpDocumentor\Configuration;
 use phpDocumentor\Transformer\Configuration\ExternalClassDocumentation;
 
-class ExternalRouterTest extends \PHPUnit_Framework_TestCase
+class ExternalRouterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
      * @covers phpDocumentor\Transformer\Router\ExternalRouter::__construct

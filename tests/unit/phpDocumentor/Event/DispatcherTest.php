@@ -10,7 +10,7 @@ use Mockery as m;
 /**
  * Test for the Dispatcher class.
  */
-class DispatcherTest extends \PHPUnit_Framework_TestCase
+class DispatcherTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
      * @covers phpDocumentor\Event\Dispatcher::getInstance

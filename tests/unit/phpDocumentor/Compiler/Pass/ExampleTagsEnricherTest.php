@@ -9,7 +9,7 @@ use phpDocumentor\Reflection\DocBlock\ExampleFinder;
 /**
  * Tests the \phpDocumentor\Compiler\Pass\ExampleTagsEnricher class.
  */
-class ExampleTagsEnricherTest extends \PHPUnit_Framework_TestCase
+class ExampleTagsEnricherTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var Finder|m\MockInterface */
     private $finderMock;

@@ -16,7 +16,7 @@ use Psr\Log\LogLevel;
 /**
  * Test for the LogEvent class.
  */
-class LogEventTest extends \PHPUnit_Framework_TestCase
+class LogEventTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var LogEvent $fixture */
     protected $fixture;

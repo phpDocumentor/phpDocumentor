@@ -17,7 +17,7 @@ use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 /**
  * Tests the functionality for the StripOnVisibility class.
  */
-class StripOnVisibilityTest extends \PHPUnit_Framework_TestCase
+class StripOnVisibilityTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var ProjectDescriptorBuilder|m\Mock */
     protected $builderMock;

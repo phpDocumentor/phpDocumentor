@@ -15,7 +15,7 @@ use Mockery as m;
 use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
 
-class CollectionTest extends \PHPUnit_Framework_TestCase
+class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var m\MockInterface|\phpDocumentor\Transformer\Writer\Collection */
     private $writerCollectionMock;

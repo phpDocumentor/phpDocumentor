@@ -3,7 +3,7 @@ namespace phpDocumentor\Parser\Util;
 
 use Mockery as m;
 
-class ParserPopulatorTest extends \PHPUnit_Framework_TestCase
+class ParserPopulatorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     public function testItPopulateParserWithCorrectOptions()
     {

@@ -20,7 +20,7 @@ use org\bovigo\vfs\vfsStream;
  * Test class for \phpDocumentor\Plugin\Core\Transformer\Writer\Statistics.
  *
  */
-class StatisticsTest extends \PHPUnit_Framework_TestCase
+class StatisticsTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
      * @var Statistics $statistics

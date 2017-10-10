@@ -19,7 +19,7 @@ use phpDocumentor\Reflection\ProjectFactory;
  *
  * @covers phpDocumentor\Parser\Parser
  */
-class ParserTest extends \PHPUnit_Framework_TestCase
+class ParserTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var \phpDocumentor\Parser\Parser */
     protected $fixture = null;

@@ -11,7 +11,7 @@
 
 namespace phpDocumentor\Parser;
 
-class ConfigurationTest extends \PHPUnit_Framework_TestCase
+class ConfigurationTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var Configuration */
     private $fixture;

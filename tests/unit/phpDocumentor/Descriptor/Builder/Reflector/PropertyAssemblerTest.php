@@ -22,7 +22,7 @@ use phpDocumentor\Reflection\Php\Property;
 use phpDocumentor\Reflection\Php\Visibility;
 use phpDocumentor\Reflection\Types\String_;
 
-class PropertyAssemblerTest extends \PHPUnit_Framework_TestCase
+class PropertyAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var PropertyAssembler $fixture */
     protected $fixture;

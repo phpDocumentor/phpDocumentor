@@ -16,7 +16,7 @@ use Mockery as m;
 use phpDocumentor\Transformer\Template\Factory;
 use Symfony\Component\Console\Tester\CommandTester;
 
-class ListCommandTest extends \PHPUnit_Framework_TestCase
+class ListCommandTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
      * @covers phpDocumentor\Transformer\Command\Template\ListCommand::__construct

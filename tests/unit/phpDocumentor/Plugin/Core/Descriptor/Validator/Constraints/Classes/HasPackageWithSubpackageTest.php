@@ -15,7 +15,7 @@ namespace phpDocumentor\Plugin\Core\Descriptor\Validator\Constraints\Classes;
 /**
  * Test class for \phpDocumentor\Plugin\Core\Descriptor\Validator\Constraints\Classes\HasPackageWithSubpackage.
  */
-class HasPackageWithSubpackageTest extends \PHPUnit_Framework_TestCase
+class HasPackageWithSubpackageTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
      * @covers phpDocumentor\Plugin\Core\Descriptor\Validator\Constraints\Classes\HasPackageWithSubpackage::getTargets

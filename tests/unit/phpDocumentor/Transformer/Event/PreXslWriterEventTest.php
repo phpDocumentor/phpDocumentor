@@ -14,7 +14,7 @@ namespace phpDocumentor\Transformer\Event;
 /**
  * Tests the functionality for the PreXslWriterEvent class.
  */
-class PreXslWriterEventTest extends \PHPUnit_Framework_TestCase
+class PreXslWriterEventTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var PreXslWriterEvent $fixture */
     protected $fixture;

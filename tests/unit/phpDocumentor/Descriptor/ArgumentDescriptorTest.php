@@ -14,7 +14,7 @@ namespace phpDocumentor\Descriptor;
 /**
  * Tests the functionality for the ArgumentDescriptor class.
  */
-class ArgumentDescriptorTest extends \PHPUnit_Framework_TestCase
+class ArgumentDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var ArgumentDescriptor $fixture */
     protected $fixture;

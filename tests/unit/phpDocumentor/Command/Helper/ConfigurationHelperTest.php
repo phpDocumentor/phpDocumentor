@@ -15,7 +15,7 @@ use Mockery as m;
 use phpDocumentor\Configuration;
 use Symfony\Component\Console\Input\InputInterface;
 
-class ConfigurationHelperTest extends \PHPUnit_Framework_TestCase
+class ConfigurationHelperTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var ConfigurationHelper */
     private $fixture;

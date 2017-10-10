@@ -16,7 +16,7 @@ use Mockery as m;
 /**
  * Test for the MethodDescriptor URL Generator with the Standard Router
  */
-class MethodDescriptorTest extends \PHPUnit_Framework_TestCase
+class MethodDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
      * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\MethodDescriptor::__invoke

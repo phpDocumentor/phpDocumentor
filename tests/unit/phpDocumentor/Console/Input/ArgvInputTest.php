@@ -14,7 +14,7 @@ namespace phpDocumentor\Console\Input;
 /**
  * Tests the functionality for the InputStream class for phpDocumentor.
  */
-class ArgvInputTest extends \PHPUnit_Framework_TestCase
+class ArgvInputTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
      * @covers       phpDocumentor\Console\Input\ArgvInput::__construct

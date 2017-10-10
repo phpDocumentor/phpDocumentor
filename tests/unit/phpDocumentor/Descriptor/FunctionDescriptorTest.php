@@ -16,7 +16,7 @@ use \Mockery as m;
 /**
  * Tests the functionality for the FunctionDescriptor class.
  */
-class FunctionDescriptorTest extends \PHPUnit_Framework_TestCase
+class FunctionDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var FunctionDescriptor $fixture */
     protected $fixture;

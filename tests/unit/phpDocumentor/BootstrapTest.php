@@ -11,14 +11,14 @@
 namespace phpDocumentor;
 
 use org\bovigo\vfs\vfsStream;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for \phpDocumentor\Bootstrap.
  *
  * @covers phpDocumentor\Bootstrap
  */
-class BootstrapTest extends PHPUnit_Framework_TestCase
+class BootstrapTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
      * Directory structure when phpdocumentor is installed using composer.

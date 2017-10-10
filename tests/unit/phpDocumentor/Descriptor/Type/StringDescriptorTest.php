@@ -11,7 +11,7 @@
 
 namespace phpDocumentor\Descriptor\Type;
 
-class StringDescriptorTest extends \PHPUnit_Framework_TestCase
+class StringDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
      * @covers phpDocumentor\Descriptor\Type\StringDescriptor::getName

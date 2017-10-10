@@ -14,7 +14,7 @@ namespace phpDocumentor\Parser\Configuration;
 /**
  * Tests for the configuration directive related to file selection.
  */
-class FilesTest extends \PHPUnit_Framework_TestCase
+class FilesTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var Files */
     private $fixture;

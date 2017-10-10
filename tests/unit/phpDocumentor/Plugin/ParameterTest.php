@@ -14,7 +14,7 @@ namespace phpDocumentor\Plugin;
 /**
  * Tests the functionality for the Parameter class.
  */
-class ParameterTest extends \PHPUnit_Framework_TestCase
+class ParameterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     const EXAMPLE_KEY = 'key123';
     const EXAMPLE_VALUE = 'value123';

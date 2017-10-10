@@ -16,7 +16,7 @@ use phpDocumentor\Reflection\Types\Array_;
 /**
  * Tests the functionality for the ReturnDescriptor class.
  */
-class ReturnDescriptorTest extends \PHPUnit_Framework_TestCase
+class ReturnDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var ReturnDescriptor $fixture */
     protected $fixture;

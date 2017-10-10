@@ -24,7 +24,7 @@ use phpDocumentor\Reflection\Php\File;
  *
  * @covers \phpDocumentor\Descriptor\Builder\Reflector\FileAssembler
  */
-class FileAssemblerTest extends \PHPUnit_Framework_TestCase
+class FileAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var FileAssembler $fixture */
     protected $fixture;

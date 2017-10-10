@@ -16,7 +16,7 @@ use Mockery as m;
 /**
  * Test for the FunctionDescriptor URL Generator with the Standard Router
  */
-class FunctionDescriptorTest extends \PHPUnit_Framework_TestCase
+class FunctionDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
      * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\FunctionDescriptor::__invoke

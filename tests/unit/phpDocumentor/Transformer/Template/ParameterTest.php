@@ -14,7 +14,7 @@ namespace phpDocumentor\Transformer\Template;
 /**
  * Tests the functionality for the Parameter class.
  */
-class ParameterTest extends \PHPUnit_Framework_TestCase
+class ParameterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var Parameter $fixture */
     protected $fixture;

@@ -16,7 +16,7 @@ use Mockery as m;
 /**
  * Tests for the Behavioural base class.
  */
-class BehaviourAbstractTest extends \PHPUnit_Framework_TestCase
+class BehaviourAbstractTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
      * @covers phpDocumentor\Transformer\Behaviour\BehaviourAbstract::setTransformer

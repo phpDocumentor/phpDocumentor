@@ -10,7 +10,7 @@ use Psr\Log\LogLevel;
 /**
  * Test for the DebugEvent class.
  */
-class DebugEventTest extends \PHPUnit_Framework_TestCase
+class DebugEventTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var DebugEvent $fixture */
     protected $fixture;

@@ -24,7 +24,7 @@ use phpDocumentor\Reflection\Fqsen;
  * @coversDefaultClass \phpDocumentor\Descriptor\Builder\Reflector\Tags\UsesAssembler
  * @covers ::<private>
  */
-class UsesAssemblerTest extends \PHPUnit_Framework_TestCase
+class UsesAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var UsesAssembler $fixture */
     protected $fixture;

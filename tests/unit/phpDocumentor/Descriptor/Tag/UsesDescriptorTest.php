@@ -14,7 +14,7 @@ namespace phpDocumentor\Descriptor\Tag;
 /**
  * Tests the functionality for the UsesDescriptor class.
  */
-class UsesDescriptorTest extends \PHPUnit_Framework_TestCase
+class UsesDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     const EXAMPLE_REFERENCE = 'reference';
 

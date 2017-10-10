@@ -14,7 +14,7 @@ namespace phpDocumentor\Translator;
 /**
  * Tests for phpDocumentor\Translator\ConfigurationTest
  */
-class ConfigurationTest extends \PHPUnit_Framework_TestCase
+class ConfigurationTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var Configuration $fixture */
     protected $fixture = null;

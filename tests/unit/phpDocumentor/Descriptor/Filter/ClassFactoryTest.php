@@ -14,7 +14,7 @@ namespace phpDocumentor\Descriptor\Filter;
 /**
  * Tests the functionality for the ClassFactory class.
  */
-class ClassFactoryTest extends \PHPUnit_Framework_TestCase
+class ClassFactoryTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var ClassFactory $fixture */
     protected $fixture;

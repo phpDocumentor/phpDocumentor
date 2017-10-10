@@ -16,7 +16,7 @@ use Mockery as m;
 /**
  * Tests the functionality for the Debug Pass
  */
-class DebugTest extends \PHPUnit_Framework_TestCase
+class DebugTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
 
     /**

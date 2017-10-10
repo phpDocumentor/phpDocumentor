@@ -16,7 +16,7 @@ use Mockery as m;
 /**
  * Tests the functionality for the DescriptorAbstract class.
  */
-class DescriptorAbstractTest extends \PHPUnit_Framework_TestCase
+class DescriptorAbstractTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var DescriptorAbstract $fixture */
     protected $fixture;
