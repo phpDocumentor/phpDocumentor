@@ -10,6 +10,8 @@
  */
 
 namespace phpDocumentor\Descriptor;
+use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
+use phpDocumentor\Reflection\Type;
 
 /**
  * Descriptor representing a Method in a Class, Interface or Trait.
@@ -33,6 +35,9 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
 
     /** @var Collection */
     protected $arguments;
+
+    /** @var Type */
+    private $returnType;
 
     /**
      * Initializes the all properties representing a collection with a new Collection object.
@@ -161,16 +166,23 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
     }
 
     /**
-     * {@inheritDoc}
+     * @return ReturnDescriptor
      */
-    public function getResponse()
+    public function getResponse(): ReturnDescriptor
     {
+        $definedReturn = new ReturnDescriptor('return');
+        $definedReturn->setTypes($this->returnType);
+
         /** @var Collection|null $returnTags */
         $returnTags = $this->getReturn();
 
-        return $returnTags instanceof Collection && $returnTags->count() > 0
-            ? current($returnTags->getAll())
-            : null;
+        if ($returnTags instanceof Collection && $returnTags->count() > 0) {
+            /** @var ReturnDescriptor $returnTag */
+            $returnTag = current($returnTags->getAll());
+            return $returnTag;
+        }
+
+        return $definedReturn;
     }
 
     /**
@@ -283,5 +295,15 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
         }
 
         return null;
+    }
+
+    /**
+     * Sets return type of this method.
+     *
+     * @param Type $returnType
+     */
+    public function setReturnType(Type $returnType)
+    {
+        $this->returnType = $returnType;
     }
 }
