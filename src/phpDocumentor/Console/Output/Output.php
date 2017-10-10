@@ -64,15 +64,15 @@ class Output extends ConsoleOutput
     /**
      * Write an entry to the console and to the provided logger.
      *
-     * @param array|string $message
+     * @param array|string $messages
      * @param bool         $newline
      * @param int          $type
      *
      * @return void
      */
-    public function write($message, $newline = false, $type = 0)
+    public function write($messages, $newline = false, $type = 0)
     {
-        $messages = (array) $message;
+        $messages = (array) $messages;
 
         if ($this->getLogger()) {
             foreach ($messages as $message) {
