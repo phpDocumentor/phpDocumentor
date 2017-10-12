@@ -240,7 +240,7 @@ $(document).ready(function() {
     }
 
     // Hide API Documentation menu if it's empty
-    $('.nav .dropdown a[href=#api]').next().filter(function(el) {
+    $('.nav .dropdown a[href=#api]').next().filter(function(i, el) {
         if ($(el).children().length == 0) {
             return true;
         }
