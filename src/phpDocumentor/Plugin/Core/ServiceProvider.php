@@ -12,7 +12,8 @@
 namespace phpDocumentor\Plugin\Core;
 
 use Cilex\Application;
-use Cilex\ServiceProviderInterface;
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 use phpDocumentor\Translator\Translator;
 use phpDocumentor\Plugin\Core\Transformer\Writer;
 use phpDocumentor\Transformer\Writer\Collection;
@@ -29,11 +30,11 @@ final class ServiceProvider implements ServiceProviderInterface
     /**
      * Registers services on the given app.
      *
-     * @param Application $app An Application instance.
+     * @param Container $app An Application instance.
      *
      * @return void
      */
-    public function register(Application $app)
+    public function register(Container $app)
     {
         $this->registerTranslationMessages($app);
         $this->registerWriters($app);

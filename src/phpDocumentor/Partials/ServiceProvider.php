@@ -12,7 +12,8 @@
 namespace phpDocumentor\Partials;
 
 use Cilex\Application;
-use Cilex\ServiceProviderInterface;
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 use phpDocumentor\Configuration as ApplicationConfiguration;
 use phpDocumentor\Partials\Collection as PartialsCollection;
 use phpDocumentor\Translator\Translator;
@@ -31,7 +32,7 @@ class ServiceProvider implements ServiceProviderInterface
      *
      * @return void
      */
-    public function register(Application $app)
+    public function register(Container $app)
     {
         /** @var Translator $translator  */
         $translator = $app['translator'];

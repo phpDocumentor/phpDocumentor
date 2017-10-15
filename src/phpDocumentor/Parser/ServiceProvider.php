@@ -12,7 +12,8 @@
 namespace phpDocumentor\Parser;
 
 use Cilex\Application;
-use Cilex\ServiceProviderInterface;
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 use phpDocumentor\Fileset\Collection;
 use phpDocumentor\Parser\Command\Project\ParseCommand;
 use phpDocumentor\Parser\Middleware\CacheMiddleware;
@@ -21,8 +22,7 @@ use phpDocumentor\Parser\Middleware\StopwatchMiddleware;
 use phpDocumentor\Parser\Middleware\EmittingMiddleware;
 use phpDocumentor\Plugin\Core\Descriptor\Validator\ValidatorAbstract;
 use phpDocumentor\Reflection\DocBlockFactory;
-use phpDocumentor\Reflection\Event\PostDocBlockExtractionEvent;
-use phpDocumentor\Reflection\Php\Factory as Factory;
+use phpDocumentor\Reflection\Php\Factory;
 use phpDocumentor\Reflection\Php\NodesFactory;
 use phpDocumentor\Reflection\Php\ProjectFactory;
 use phpDocumentor\Reflection\PrettyPrinter;
@@ -38,7 +38,7 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * Registers services on the given app.
      *
-     * @param Application $app An Application instance
+     * @param Container|Application $app An Application instance
      *
      * @throws Exception\MissingDependencyException if the Descriptor Builder is not present.
      * @throws \Stash\Exception\RuntimeException
@@ -46,7 +46,7 @@ class ServiceProvider implements ServiceProviderInterface
      * @return void
      *
      */
-    public function register(Application $app)
+    public function register(Container $app)
     {
         if (!isset($app['descriptor.builder'])) {
             throw new Exception\MissingDependencyException(
@@ -54,54 +54,50 @@ class ServiceProvider implements ServiceProviderInterface
             );
         }
 
-        $app['parser'] = $app->share(
-            function ($app) {
-                $stopWatch = $app['kernel.stopwatch'];
+        $app['parser'] = function ($app) {
+            $stopWatch = $app['kernel.stopwatch'];
 
-                $adapter = new FileSystem(['path' => 'build/api-cache']);
-                $cachePool = new Pool($adapter);
+            $adapter = new FileSystem(['path' => 'build/api-cache']);
+            $cachePool = new Pool($adapter);
 
-                $strategies = [
-                    new Factory\Argument(new PrettyPrinter()),
-                    new Factory\Class_(),
-                    new Factory\Constant(new PrettyPrinter()),
-                    new Factory\DocBlock(DocBlockFactory::createInstance()),
-                    new Factory\Function_(),
-                    new Factory\Interface_(),
-                    new Factory\Method(),
-                    new Factory\Property(new PrettyPrinter()),
-                    new Factory\Trait_(),
-                    new Factory\File(
-                        NodesFactory::createInstance(),
-                        [
-                            new EmittingMiddleware(),
-                            new StopwatchMiddleware(
-                                $stopWatch
-                            ),
-                            new CacheMiddleware(
-                                $cachePool
-                            ),
-                            new ErrorHandlingMiddleware()
-                        ]
-                    )
-                ];
+            $strategies = [
+                new Factory\Argument(new PrettyPrinter()),
+                new Factory\Class_(),
+                new Factory\Constant(new PrettyPrinter()),
+                new Factory\DocBlock(DocBlockFactory::createInstance()),
+                new Factory\Function_(),
+                new Factory\Interface_(),
+                new Factory\Method(),
+                new Factory\Property(new PrettyPrinter()),
+                new Factory\Trait_(),
+                new Factory\File(
+                    NodesFactory::createInstance(),
+                    [
+                        new EmittingMiddleware(),
+                        new StopwatchMiddleware(
+                            $stopWatch
+                        ),
+                        new CacheMiddleware(
+                            $cachePool
+                        ),
+                        new ErrorHandlingMiddleware()
+                    ]
+                )
+            ];
 
-                $parser = new Parser(
-                    new ProjectFactory($strategies),
-                    $stopWatch
-                );
+            $parser = new Parser(
+                new ProjectFactory($strategies),
+                $stopWatch
+            );
 
-                return $parser;
-            }
-        );
+            return $parser;
+        };
 
-        $app['markdown'] = $app->share(
-            function () {
-                return \Parsedown::instance();
-            }
-        );
+        $app['markdown'] = function () {
+            return \Parsedown::instance();
+        };
 
-        /** @var Translator $translator  */
+        /** @var Translator $translator */
         $translator = $app['translator'];
         $translator->addTranslationFolder(__DIR__ . DIRECTORY_SEPARATOR . 'Messages');
 
@@ -187,11 +183,11 @@ class ServiceProvider implements ServiceProviderInterface
         if (isset($configOptions[$configType]->tag)) {
 
             foreach ($configOptions[$configType]->tag as $tag) {
-                $tagName = (string) $tag['name'];
+                $tagName = (string)$tag['name'];
 
                 if (isset($tag->element)) {
                     foreach ($tag->element as $type) {
-                        $typeName = (string) $type;
+                        $typeName = (string)$type;
                         $validatorOptions[$typeName][] = $tagName;
                     }
                 } else {

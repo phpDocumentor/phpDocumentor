@@ -12,7 +12,8 @@
 namespace Cilex\Provider;
 
 use Cilex\Application;
-use Cilex\ServiceProviderInterface;
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use JMS\Serializer\SerializerBuilder;
 
@@ -24,9 +25,9 @@ class JmsSerializerServiceProvider implements ServiceProviderInterface
     /**
      * Registers services on the given app.
      *
-     * @param Application $app An Application instance
+     * @param Container $app An Application instance
      */
-    public function register(Application $app)
+    public function register(Container $app)
     {
         $vendorPath = isset($app['composer.vendor_path'])
             ? $app['composer.vendor_path']
@@ -41,37 +42,35 @@ class JmsSerializerServiceProvider implements ServiceProviderInterface
             array('namespace' => 'JMS\Serializer\Annotation', 'path' => $serializerPath)
         );
 
-        $app['serializer'] = $app->share(
-            function ($container) {
-                if (!isset($container['serializer.annotations']) || !is_array($container['serializer.annotations'])) {
-                    throw new \RuntimeException(
-                        'Expected the container to have an array called "serializer.annotations" that describes which '
-                        . 'annotations are supported by the Serializer and where it can find them'
-                    );
-                }
-
-                foreach ($container['serializer.annotations'] as $annotationsDefinition) {
-                    if (!isset($annotationsDefinition['namespace'])) {
-                        throw new \UnexpectedValueException(
-                            'The annotation definition for the Serializer should have a key "namespace" that tells the '
-                            . 'serializer what the namespace for the provided annotations are.'
-                        );
-                    }
-                    if (!isset($annotationsDefinition['path'])) {
-                        throw new \UnexpectedValueException(
-                            'The annotation definition for the Serializer should have a key "path" that tells the '
-                            . 'serializer where it can find the provided annotations.'
-                        );
-                    }
-
-                    AnnotationRegistry::registerAutoloadNamespace(
-                        $annotationsDefinition['namespace'],
-                        $annotationsDefinition['path']
-                    );
-                }
-
-                return SerializerBuilder::create()->build();
+        $app['serializer'] = function ($container) {
+            if (!isset($container['serializer.annotations']) || !is_array($container['serializer.annotations'])) {
+                throw new \RuntimeException(
+                    'Expected the container to have an array called "serializer.annotations" that describes which '
+                    . 'annotations are supported by the Serializer and where it can find them'
+                );
             }
-        );
+
+            foreach ($container['serializer.annotations'] as $annotationsDefinition) {
+                if (!isset($annotationsDefinition['namespace'])) {
+                    throw new \UnexpectedValueException(
+                        'The annotation definition for the Serializer should have a key "namespace" that tells the '
+                        . 'serializer what the namespace for the provided annotations are.'
+                    );
+                }
+                if (!isset($annotationsDefinition['path'])) {
+                    throw new \UnexpectedValueException(
+                        'The annotation definition for the Serializer should have a key "path" that tells the '
+                        . 'serializer where it can find the provided annotations.'
+                    );
+                }
+
+                AnnotationRegistry::registerAutoloadNamespace(
+                    $annotationsDefinition['namespace'],
+                    $annotationsDefinition['path']
+                );
+            }
+
+            return SerializerBuilder::create()->build();
+        };
     }
 }

@@ -12,9 +12,9 @@
 namespace phpDocumentor\Configuration;
 
 use Cilex\Application;
-use Cilex\ServiceProviderInterface;
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 use Doctrine\Common\Annotations\AnnotationReader;
-use JMS\Serializer\Serializer;
 use Symfony\Component\Console\Application as ConsoleApplication;
 use Symfony\Component\Console\Input\InputOption;
 
@@ -48,9 +48,9 @@ class ServiceProvider implements ServiceProviderInterface
      * The user config file (either phpdoc.dist.xml or phpdoc.xml) is merged
      * with the template file.
      *
-     * @param Application $app An Application instance
+     * @param Container $app An Application instance
      */
-    public function register(Application $app)
+    public function register(Container $app)
     {
         $this->addMerger($app);
 
@@ -75,13 +75,11 @@ class ServiceProvider implements ServiceProviderInterface
             . ((file_exists(getcwd() . '/phpdoc.xml')) ? '/phpdoc.xml' : '/phpdoc.dist.xml');
         $app['config.class'] = 'phpDocumentor\Configuration';
 
-        $app['config'] = $app->share(
-            function ($app) {
-                $loader = new Loader($app['serializer'], $app['config.merger']);
+        $app['config'] = function ($app) {
+            $loader = new Loader($app['serializer'], $app['config.merger']);
 
-                return $loader->load($app['config.path.template'], $app['config.path.user'], $app['config.class']);
-            }
-        );
+            return $loader->load($app['config.path.template'], $app['config.path.user'], $app['config.class']);
+        };
     }
 
     /**
@@ -95,11 +93,9 @@ class ServiceProvider implements ServiceProviderInterface
     {
         $this->addMergerAnnotations($container);
 
-        $container['config.merger'] = $container->share(
-            function () {
-                return new Merger(new AnnotationReader());
-            }
-        );
+        $container['config.merger'] = function () {
+            return new Merger(new AnnotationReader());
+        };
     }
 
     /**
