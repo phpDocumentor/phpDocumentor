@@ -12,7 +12,8 @@
 namespace phpDocumentor\Descriptor;
 
 use Cilex\Application;
-use Cilex\ServiceProviderInterface;
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 use phpDocumentor\Descriptor\Builder\AssemblerFactory;
 use phpDocumentor\Descriptor\Builder\Reflector\ArgumentAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\ClassAssembler;
@@ -35,7 +36,6 @@ use phpDocumentor\Descriptor\Builder\Reflector\Tags\ReturnAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\SeeAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\SinceAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\ThrowsAssembler;
-use phpDocumentor\Descriptor\Builder\Reflector\Tags\TypeCollectionAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\UsesAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\VarAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\VersionAssembler;
@@ -86,11 +86,11 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * Adds the services needed to build the descriptors.
      *
-     * @param Application $app An Application instance
+     * @param Container $app An Application instance
      *
      * @return void
      */
-    public function register(Application $app)
+    public function register(Container $app)
     {
         $app['parser.example.finder'] = new ExampleFinder();
 
@@ -111,7 +111,7 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * Registers the Assemblers used to convert Reflection objects to Descriptors.
      *
-     * @param AssemblerFactory   $factory
+     * @param AssemblerFactory $factory
      * @param \Cilex\Application $app
      *
      * @return AssemblerFactory
@@ -119,37 +119,85 @@ class ServiceProvider implements ServiceProviderInterface
     public function attachAssemblersToFactory(AssemblerFactory $factory, Application $app)
     {
         // @codingStandardsIgnoreStart because we limit the verbosity by making all closures single-line
-        $fileMatcher      = function ($criteria) { return $criteria instanceof File; };
-        $constantMatcher  = function ($criteria) {
+        $fileMatcher = function ($criteria) {
+            return $criteria instanceof File;
+        };
+        $constantMatcher = function ($criteria) {
             return $criteria instanceof Constant; // || $criteria instanceof ClassConstant;
         };
-        $traitMatcher     = function ($criteria) { return $criteria instanceof Trait_; };
-        $classMatcher     = function ($criteria) { return $criteria instanceof Class_; };
-        $interfaceMatcher = function ($criteria) { return $criteria instanceof Interface_; };
-        $propertyMatcher  = function ($criteria) { return $criteria instanceof Property; };
-        $methodMatcher    = function ($criteria) { return $criteria instanceof Method; };
-        $argumentMatcher  = function ($criteria) { return $criteria instanceof Argument; };
-        $functionMatcher  = function ($criteria) { return $criteria instanceof Function_; };
-        $namespaceMatcher  = function ($criteria) { return $criteria instanceof Namespace_; };
+        $traitMatcher = function ($criteria) {
+            return $criteria instanceof Trait_;
+        };
+        $classMatcher = function ($criteria) {
+            return $criteria instanceof Class_;
+        };
+        $interfaceMatcher = function ($criteria) {
+            return $criteria instanceof Interface_;
+        };
+        $propertyMatcher = function ($criteria) {
+            return $criteria instanceof Property;
+        };
+        $methodMatcher = function ($criteria) {
+            return $criteria instanceof Method;
+        };
+        $argumentMatcher = function ($criteria) {
+            return $criteria instanceof Argument;
+        };
+        $functionMatcher = function ($criteria) {
+            return $criteria instanceof Function_;
+        };
+        $namespaceMatcher = function ($criteria) {
+            return $criteria instanceof Namespace_;
+        };
 
-        $authorMatcher      = function ($criteria) { return $criteria instanceof Author; };
-        $deprecatedMatcher  = function ($criteria) { return $criteria instanceof Deprecated; };
-        $exampleMatcher     = function ($criteria) { return $criteria instanceof Example; };
-        $linkMatcher        = function ($criteria) { return $criteria instanceof Link; };
-        $methodTagMatcher   = function ($criteria) { return $criteria instanceof Tags\Method; };
-        $propertyTagMatcher = function ($criteria) { return $criteria instanceof Tags\Property; };
-        $paramMatcher       = function ($criteria) { return $criteria instanceof Param; };
-        $throwsMatcher      = function ($criteria) { return $criteria instanceof Throws; };
-        $returnMatcher      = function ($criteria) { return $criteria instanceof Return_; };
-        $usesMatcher        = function ($criteria) { return $criteria instanceof Uses; };
-        $seeMatcher         = function ($criteria) { return $criteria instanceof See; };
-        $sinceMatcher       = function ($criteria) { return $criteria instanceof Since; };
-        $varMatcher         = function ($criteria) { return $criteria instanceof Var_; };
-        $versionMatcher     = function ($criteria) { return $criteria instanceof Version; };
+        $authorMatcher = function ($criteria) {
+            return $criteria instanceof Author;
+        };
+        $deprecatedMatcher = function ($criteria) {
+            return $criteria instanceof Deprecated;
+        };
+        $exampleMatcher = function ($criteria) {
+            return $criteria instanceof Example;
+        };
+        $linkMatcher = function ($criteria) {
+            return $criteria instanceof Link;
+        };
+        $methodTagMatcher = function ($criteria) {
+            return $criteria instanceof Tags\Method;
+        };
+        $propertyTagMatcher = function ($criteria) {
+            return $criteria instanceof Tags\Property;
+        };
+        $paramMatcher = function ($criteria) {
+            return $criteria instanceof Param;
+        };
+        $throwsMatcher = function ($criteria) {
+            return $criteria instanceof Throws;
+        };
+        $returnMatcher = function ($criteria) {
+            return $criteria instanceof Return_;
+        };
+        $usesMatcher = function ($criteria) {
+            return $criteria instanceof Uses;
+        };
+        $seeMatcher = function ($criteria) {
+            return $criteria instanceof See;
+        };
+        $sinceMatcher = function ($criteria) {
+            return $criteria instanceof Since;
+        };
+        $varMatcher = function ($criteria) {
+            return $criteria instanceof Var_;
+        };
+        $versionMatcher = function ($criteria) {
+            return $criteria instanceof Version;
+        };
 
         //$typeCollectionMatcher = function ($criteria) { return $criteria instanceof TypeCollection; };
 
-        $tagFallbackMatcher = function ($criteria) { return $criteria instanceof Tag; };
+        $tagFallbackMatcher = function ($criteria) {
+            return $criteria instanceof Tag;
+        };
         // @codingStandardsIgnoreEnd
 
         $argumentAssembler = new ArgumentAssembler();
@@ -227,21 +275,21 @@ class ServiceProvider implements ServiceProviderInterface
     public function attachValidators(Validator $validator)
     {
         /** @var ClassMetadata $fileMetadata */
-        $fileMetadata  = $validator->getMetadataFor('phpDocumentor\Descriptor\FileDescriptor');
+        $fileMetadata = $validator->getMetadataFor('phpDocumentor\Descriptor\FileDescriptor');
         /** @var ClassMetadata $constantMetadata */
-        $constantMetadata  = $validator->getMetadataFor('phpDocumentor\Descriptor\ConstantDescriptor');
+        $constantMetadata = $validator->getMetadataFor('phpDocumentor\Descriptor\ConstantDescriptor');
         /** @var ClassMetadata $functionMetadata */
-        $functionMetadata  = $validator->getMetadataFor('phpDocumentor\Descriptor\FunctionDescriptor');
+        $functionMetadata = $validator->getMetadataFor('phpDocumentor\Descriptor\FunctionDescriptor');
         /** @var ClassMetadata $classMetadata */
-        $classMetadata     = $validator->getMetadataFor('phpDocumentor\Descriptor\ClassDescriptor');
+        $classMetadata = $validator->getMetadataFor('phpDocumentor\Descriptor\ClassDescriptor');
         /** @var ClassMetadata $interfaceMetadata */
         $interfaceMetadata = $validator->getMetadataFor('phpDocumentor\Descriptor\InterfaceDescriptor');
         /** @var ClassMetadata $traitMetadata */
-        $traitMetadata     = $validator->getMetadataFor('phpDocumentor\Descriptor\TraitDescriptor');
+        $traitMetadata = $validator->getMetadataFor('phpDocumentor\Descriptor\TraitDescriptor');
         /** @var ClassMetadata $propertyMetadata */
-        $propertyMetadata  = $validator->getMetadataFor('phpDocumentor\Descriptor\PropertyDescriptor');
+        $propertyMetadata = $validator->getMetadataFor('phpDocumentor\Descriptor\PropertyDescriptor');
         /** @var ClassMetadata $methodMetadata */
-        $methodMetadata    = $validator->getMetadataFor('phpDocumentor\Descriptor\MethodDescriptor');
+        $methodMetadata = $validator->getMetadataFor('phpDocumentor\Descriptor\MethodDescriptor');
 
         $fileMetadata->addPropertyConstraint('summary', new Assert\NotBlank(array('message' => 'PPC:ERR-50000')));
         $classMetadata->addPropertyConstraint('summary', new Assert\NotBlank(array('message' => 'PPC:ERR-50005')));
@@ -286,29 +334,27 @@ class ServiceProvider implements ServiceProviderInterface
      */
     protected function addCache(Application $app)
     {
-        $app['descriptor.cache'] = $app->share(
-            function () {
-                $cache = new Filesystem();
-                $cache->setOptions(
-                    array(
-                         'namespace' => 'phpdoc-cache',
-                         'cache_dir' => sys_get_temp_dir(),
-                    )
-                );
-                $plugin = new SerializerPlugin();
+        $app['descriptor.cache'] = function () {
+            $cache = new Filesystem();
+            $cache->setOptions(
+                array(
+                    'namespace' => 'phpdoc-cache',
+                    'cache_dir' => sys_get_temp_dir(),
+                )
+            );
+            $plugin = new SerializerPlugin();
 
-                if (extension_loaded('igbinary')) {
-                    $options = new PluginOptions();
-                    $options->setSerializer('igbinary');
+            if (extension_loaded('igbinary')) {
+                $options = new PluginOptions();
+                $options->setSerializer('igbinary');
 
-                    $plugin->setOptions($options);
-                }
-
-                $cache->addPlugin($plugin);
-
-                return $cache;
+                $plugin->setOptions($options);
             }
-        );
+
+            $cache->addPlugin($plugin);
+
+            return $cache;
+        };
     }
 
     /**
@@ -329,18 +375,16 @@ class ServiceProvider implements ServiceProviderInterface
             $app['descriptor.builder.serializer'] = 'PhpSerialize';
         }
 
-        $app['descriptor.builder'] = $app->share(
-            function ($container) {
-                $builder = new ProjectDescriptorBuilder(
-                    $container['descriptor.builder.assembler.factory'],
-                    $container['descriptor.filter'],
-                    $container['validator']
-                );
-                $builder->setTranslator($container['translator']);
+        $app['descriptor.builder'] = function ($container) {
+            $builder = new ProjectDescriptorBuilder(
+                $container['descriptor.builder.assembler.factory'],
+                $container['descriptor.filter'],
+                $container['validator']
+            );
+            $builder->setTranslator($container['translator']);
 
-                return $builder;
-            }
-        );
+            return $builder;
+        };
     }
 
     /**
@@ -352,20 +396,16 @@ class ServiceProvider implements ServiceProviderInterface
      */
     protected function addAssemblers(Application $app)
     {
-        $app['descriptor.builder.assembler.factory'] = $app->share(
-            function () {
-                return new AssemblerFactory();
-            }
-        );
+        $app['descriptor.builder.assembler.factory'] = function () {
+            return new AssemblerFactory();
+        };
 
         $provider = $this;
-        $app['descriptor.builder.assembler.factory'] = $app->share(
-            $app->extend(
-                'descriptor.builder.assembler.factory',
-                function ($factory) use ($provider, $app) {
-                    return $provider->attachAssemblersToFactory($factory, $app);
-                }
-            )
+        $app['descriptor.builder.assembler.factory'] = $app->extend(
+            'descriptor.builder.assembler.factory',
+            function ($factory) use ($provider, $app) {
+                return $provider->attachAssemblersToFactory($factory, $app);
+            }
         );
     }
 
@@ -381,11 +421,9 @@ class ServiceProvider implements ServiceProviderInterface
      */
     protected function addFilters(Application $app)
     {
-        $app['descriptor.filter'] = $app->share(
-            function () {
-                return new Filter(new ClassFactory());
-            }
-        );
+        $app['descriptor.filter'] = function () {
+            return new Filter(new ClassFactory());
+        };
     }
 
     /**
@@ -404,13 +442,11 @@ class ServiceProvider implements ServiceProviderInterface
         }
 
         $provider = $this;
-        $app['validator'] = $app->share(
-            $app->extend(
-                'validator',
-                function ($validatorManager) use ($provider) {
-                    return $provider->attachValidators($validatorManager);
-                }
-            )
+        $app['validator'] = $app->extend(
+            'validator',
+            function ($validatorManager) use ($provider) {
+                return $provider->attachValidators($validatorManager);
+            }
         );
     }
 }

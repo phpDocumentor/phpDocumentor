@@ -41,12 +41,12 @@ class Application extends Cilex
      * Initializes all components used by phpDocumentor.
      *
      * @param ClassLoader $autoloader
-     * @param array       $values
+     * @param array $values
      */
     public function __construct($autoloader = null, array $values = array())
     {
         $this->defineIniSettings();
-        
+
         self::$VERSION = strpos('@package_version@', '@') === 0
             ? trim(file_get_contents(__DIR__ . '/../../VERSION'))
             : '@package_version@';
@@ -127,11 +127,11 @@ class Application extends Cilex
                 break;
         }
 
-        $this['monolog.level']   = $level;
+        $this['monolog.level'] = $level;
         if ($logPath) {
             $logPath = str_replace(
                 array('{APP_ROOT}', '{DATE}'),
-                array(realpath(__DIR__.'/../..'), $this['kernel.timer.start']),
+                array(realpath(__DIR__ . '/../..'), $this['kernel.timer.start']),
                 $logPath
             );
             $this['monolog.logfile'] = $logPath;
@@ -169,7 +169,7 @@ class Application extends Cilex
      */
     public function run($interactive = false)
     {
-        /** @var ConsoleApplication $app  */
+        /** @var ConsoleApplication $app */
         $app = $this['console'];
         $app->setAutoExit(false);
 
@@ -281,11 +281,9 @@ class Application extends Cilex
      */
     protected function addEventDispatcher()
     {
-        $this['event_dispatcher'] = $this->share(
-            function () {
-                return Event\Dispatcher::getInstance();
-            }
-        );
+        $this['event_dispatcher'] = function () {
+            return Event\Dispatcher::getInstance();
+        };
     }
 
     /**

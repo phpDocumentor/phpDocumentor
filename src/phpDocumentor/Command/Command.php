@@ -12,6 +12,7 @@
 
 namespace phpDocumentor\Command;
 
+use Cilex\Provider\Console\Command as BaseCommand;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Helper\ProgressHelper;
 use Symfony\Component\Console\Input\InputInterface;
@@ -22,7 +23,7 @@ use Symfony\Component\Console\Input\InputInterface;
  * Includes additional methods to forward the output to the logging events
  * of phpDocumentor.
  */
-class Command extends \Cilex\Command\Command
+class Command extends BaseCommand
 {
     /**
      * Registers the current command.

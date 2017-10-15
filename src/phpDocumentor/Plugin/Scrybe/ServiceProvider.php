@@ -12,7 +12,8 @@
 namespace phpDocumentor\Plugin\Scrybe;
 
 use Cilex\Application;
-use Cilex\ServiceProviderInterface;
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 use phpDocumentor\Plugin\Scrybe\Converter\Definition\Factory;
 use phpDocumentor\Plugin\Scrybe\Converter\Format\Format;
 
@@ -24,51 +25,46 @@ use phpDocumentor\Plugin\Scrybe\Converter\Format\Format;
  */
 class ServiceProvider implements ServiceProviderInterface
 {
-    const CONVERTER_FACTORY            = 'converter-factory';
-    const TEMPLATE_FACTORY             = 'template-factory';
+    const CONVERTER_FACTORY = 'converter-factory';
+    const TEMPLATE_FACTORY = 'template-factory';
     const CONVERTER_DEFINITION_FACTORY = 'converter_definition_factory';
-    const FORMATS                      = 'converter_formats';
-    const CONVERTERS                   = 'converters';
-    const TEMPLATE_FOLDER              = 'template_folder';
+    const FORMATS = 'converter_formats';
+    const CONVERTERS = 'converters';
+    const TEMPLATE_FOLDER = 'template_folder';
 
     /**
      * Registers services on the given app.
      *
-     * @param Application $app An Application instance.
+     * @param Container $app An Application instance.
      */
-    public function register(Application $app)
+    public function register(Container $app)
     {
         $app[self::TEMPLATE_FOLDER] = realpath(__DIR__ . '/data/templates/');
         $app[self::CONVERTERS] = array(
             '\phpDocumentor\Plugin\Scrybe\Converter\RestructuredText\ToHtml' => array(Format::RST, Format::HTML),
         );
 
-        $app[self::FORMATS] = $app->share(
-            function () {
-                return new Converter\Format\Collection();
-            }
-        );
-        $app[self::CONVERTER_DEFINITION_FACTORY] = $app->share(
-            function ($container) {
-                return new Factory($container[ServiceProvider::FORMATS]);
-            }
-        );
-        $app[self::CONVERTER_FACTORY] = $app->share(
-            function ($container) {
-                return new Converter\Factory(
-                    $container['converters'],
-                    $container['converter_definition_factory'],
-                    $container['monolog']
-                );
-            }
-        );
-        $app[self::TEMPLATE_FACTORY]  = $app->share(
-            function ($app) {
-                return new Template\Factory(
-                    array('twig' => new Template\Twig($app[ServiceProvider::TEMPLATE_FOLDER]))
-                );
-            }
-        );
+        $app[self::FORMATS] = function () {
+            return new Converter\Format\Collection();
+        };
+
+        $app[self::CONVERTER_DEFINITION_FACTORY] = function ($container) {
+            return new Factory($container[ServiceProvider::FORMATS]);
+        };
+
+        $app[self::CONVERTER_FACTORY] = function ($container) {
+            return new Converter\Factory(
+                $container['converters'],
+                $container['converter_definition_factory'],
+                $container['monolog']
+            );
+        };
+
+        $app[self::TEMPLATE_FACTORY] = function ($app) {
+            return new Template\Factory(
+                array('twig' => new Template\Twig($app[ServiceProvider::TEMPLATE_FOLDER]))
+            );
+        };
 
         $this->addCommands($app);
     }
@@ -76,11 +72,11 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * Method responsible for adding the commands for this application.
      *
-     * @param Application $app
+     * @param Application|Container $app
      *
      * @return void
      */
-    protected function addCommands(Application $app)
+    protected function addCommands(Container $app)
     {
         $app->command(
             new Command\Manual\ToHtmlCommand(null, $app[self::TEMPLATE_FACTORY], $app[self::CONVERTER_FACTORY])

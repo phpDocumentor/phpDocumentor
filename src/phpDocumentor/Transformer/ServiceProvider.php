@@ -12,7 +12,8 @@
 namespace phpDocumentor\Transformer;
 
 use Cilex\Application;
-use Cilex\ServiceProviderInterface;
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 use phpDocumentor\Compiler\Compiler;
 use phpDocumentor\Compiler\Linker\Linker;
 use phpDocumentor\Compiler\Pass\ClassTreeBuilder;
@@ -41,12 +42,12 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
     /**
      * Registers services on the given app.
      *
-     * @param Application $app An Application instance.
+     * @param Container $app An Application instance.
      *
      * @throws Exception\MissingDependencyException if the application does not have a descriptor.builder service.
      * @throws Exception\MissingDependencyException if the application does not have a serializer service.
      */
-    public function register(Application $app)
+    public function register(Container $app)
     {
         if (!isset($app['descriptor.builder'])) {
             throw new Exception\MissingDependencyException(
@@ -104,100 +105,84 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
         );
 
         // services
-        $app['compiler'] = $app->share(
-            function ($container) {
-                $compiler = new Compiler();
-                $compiler->insert(new ElementsIndexBuilder(), ElementsIndexBuilder::COMPILER_PRIORITY);
-                $compiler->insert(new MarkerFromTagsExtractor(), MarkerFromTagsExtractor::COMPILER_PRIORITY);
-                $compiler->insert(
-                    new ExampleTagsEnricher($container['parser.example.finder']),
-                    ExampleTagsEnricher::COMPILER_PRIORITY
-                );
-                $compiler->insert(new PackageTreeBuilder(), PackageTreeBuilder::COMPILER_PRIORITY);
-                $compiler->insert(new NamespaceTreeBuilder(), NamespaceTreeBuilder::COMPILER_PRIORITY);
-                $compiler->insert(new ClassTreeBuilder(), ClassTreeBuilder::COMPILER_PRIORITY);
-                $compiler->insert(new InterfaceTreeBuilder(), InterfaceTreeBuilder::COMPILER_PRIORITY);
-                $compiler->insert(
-                    new ResolveInlineLinkAndSeeTags($container['transformer.routing.queue']),
-                    ResolveInlineLinkAndSeeTags::COMPILER_PRIORITY
-                );
-                $compiler->insert($container['linker'], Linker::COMPILER_PRIORITY);
-                $compiler->insert($container['transformer'], Transformer::COMPILER_PRIORITY);
-                $compiler->insert(
-                    new Debug($container['monolog'], $container['descriptor.analyzer']),
-                    Debug::COMPILER_PRIORITY
-                );
+        $app['compiler'] = function ($container) {
+            $compiler = new Compiler();
+            $compiler->insert(new ElementsIndexBuilder(), ElementsIndexBuilder::COMPILER_PRIORITY);
+            $compiler->insert(new MarkerFromTagsExtractor(), MarkerFromTagsExtractor::COMPILER_PRIORITY);
+            $compiler->insert(
+                new ExampleTagsEnricher($container['parser.example.finder']),
+                ExampleTagsEnricher::COMPILER_PRIORITY
+            );
+            $compiler->insert(new PackageTreeBuilder(), PackageTreeBuilder::COMPILER_PRIORITY);
+            $compiler->insert(new NamespaceTreeBuilder(), NamespaceTreeBuilder::COMPILER_PRIORITY);
+            $compiler->insert(new ClassTreeBuilder(), ClassTreeBuilder::COMPILER_PRIORITY);
+            $compiler->insert(new InterfaceTreeBuilder(), InterfaceTreeBuilder::COMPILER_PRIORITY);
+            $compiler->insert(
+                new ResolveInlineLinkAndSeeTags($container['transformer.routing.queue']),
+                ResolveInlineLinkAndSeeTags::COMPILER_PRIORITY
+            );
+            $compiler->insert($container['linker'], Linker::COMPILER_PRIORITY);
+            $compiler->insert($container['transformer'], Transformer::COMPILER_PRIORITY);
+            $compiler->insert(
+                new Debug($container['monolog'], $container['descriptor.analyzer']),
+                Debug::COMPILER_PRIORITY
+            );
 
-                return $compiler;
-            }
-        );
+            return $compiler;
+        };
 
-        $app['linker'] = $app->share(
-            function ($app) {
-                return new Linker($app['linker.substitutions']);
-            }
-        );
+        $app['linker'] = function ($app) {
+            return new Linker($app['linker.substitutions']);
+        };
 
-        $app['transformer.behaviour.collection'] = $app->share(
-            function () {
-                return new Behaviour\Collection();
-            }
-        );
+        $app['transformer.behaviour.collection'] = function () {
+            return new Behaviour\Collection();
+        };
 
-        $app['transformer.routing.standard'] = $app->share(
-            function ($container) {
-                /** @var ProjectDescriptorBuilder $projectDescriptorBuilder */
-                $projectDescriptorBuilder = $container['descriptor.builder'];
+        $app['transformer.routing.standard'] = function ($container) {
+            /** @var ProjectDescriptorBuilder $projectDescriptorBuilder */
+            $projectDescriptorBuilder = $container['descriptor.builder'];
 
-                return new Router\StandardRouter($projectDescriptorBuilder);
-            }
-        );
+            return new Router\StandardRouter($projectDescriptorBuilder);
+        };
 
-        $app['transformer.routing.external'] = $app->share(
-            function ($container) {
-                return new Router\ExternalRouter($container['config']);
-            }
-        );
+        $app['transformer.routing.external'] = function ($container) {
+            return new Router\ExternalRouter($container['config']);
+        };
 
-        $app['transformer.routing.queue'] = $app->share(
-            function ($container) {
-                $queue = new Router\Queue();
+        $app['transformer.routing.queue'] = function ($container) {
+            $queue = new Router\Queue();
 
-                // TODO: load from app configuration instead of hardcoded
-                $queue->insert($container['transformer.routing.external'], 10500);
-                $queue->insert($container['transformer.routing.standard'], 10000);
+            // TODO: load from app configuration instead of hardcoded
+            $queue->insert($container['transformer.routing.external'], 10500);
+            $queue->insert($container['transformer.routing.standard'], 10000);
 
-                return $queue;
-            }
-        );
+            return $queue;
+        };
 
-        $app['transformer.writer.collection'] = $app->share(
-            function ($container) {
-                return new Writer\Collection($container['transformer.routing.queue']);
-            }
-        );
+        $app['transformer.writer.collection'] = function ($container) {
+            return new Writer\Collection($container['transformer.routing.queue']);
+        };
 
         $this->provideTemplatingSystem($app);
 
-        $app['transformer'] = $app->share(
-            function ($container) {
-                $transformer = new Transformer(
-                    $container['transformer.template.collection'],
-                    $container['transformer.writer.collection']
-                );
+        $app['transformer'] = function ($container) {
+            $transformer = new Transformer(
+                $container['transformer.template.collection'],
+                $container['transformer.writer.collection']
+            );
 
-                /** @var Behaviour\Collection $behaviourCollection */
-                $behaviourCollection = $container['transformer.behaviour.collection'];
-                Dispatcher::getInstance()->addListener(
-                    Transformer::EVENT_PRE_TRANSFORM,
-                    function (PreTransformEvent $event) use ($behaviourCollection) {
-                        $behaviourCollection->process($event->getProject());
-                    }
-                );
+            /** @var Behaviour\Collection $behaviourCollection */
+            $behaviourCollection = $container['transformer.behaviour.collection'];
+            Dispatcher::getInstance()->addListener(
+                Transformer::EVENT_PRE_TRANSFORM,
+                function (PreTransformEvent $event) use ($behaviourCollection) {
+                    $behaviourCollection->process($event->getProject());
+                }
+            );
 
-                return $transformer;
-            }
-        );
+            return $transformer;
+        };
 
         $app->command(new TransformCommand($app['descriptor.builder'], $app['transformer'], $app['compiler']));
         $app->command(new ListCommand($app['transformer.template.factory']));
@@ -224,28 +209,22 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
         $app['transformer.template.location'] = $templateDir;
 
         // services
-        $app['transformer.template.path_resolver'] = $app->share(
-            function ($container) {
-                return new PathResolver($container['transformer.template.location']);
-            }
-        );
+        $app['transformer.template.path_resolver'] = function ($container) {
+            return new PathResolver($container['transformer.template.location']);
+        };
 
-        $app['transformer.template.factory'] = $app->share(
-            function ($container) {
-                return new Factory(
-                    $container['transformer.template.path_resolver'],
-                    $container['serializer']
-                );
-            }
-        );
+        $app['transformer.template.factory'] = function ($container) {
+            return new Factory(
+                $container['transformer.template.path_resolver'],
+                $container['serializer']
+            );
+        };
 
-        $app['transformer.template.collection'] = $app->share(
-            function ($container) {
-                return new Template\Collection(
-                    $container['transformer.template.factory'],
-                    $container['transformer.writer.collection']
-                );
-            }
-        );
+        $app['transformer.template.collection'] = function ($container) {
+            return new Template\Collection(
+                $container['transformer.template.factory'],
+                $container['transformer.writer.collection']
+            );
+        };
     }
 }
