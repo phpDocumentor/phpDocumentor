@@ -58,7 +58,7 @@ interface ArgumentInterface extends ElementInterface
     public function setDefault($value);
 
     /**
-     * Returns the default value for an argument as string or null is no default is set.
+     * Returns the default value for an argument as string or null if no default is set.
      *
      * @return string|null A textual representation of the default value, or null if no default value is present.
      */
