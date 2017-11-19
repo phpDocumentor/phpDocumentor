@@ -5,13 +5,20 @@
     "homepage": "http://www.phpdoc.org",
     "license": "MIT",
     "autoload": {
-        "psr-0":{
-            "phpDocumentor": ["src/", "tests/unit/"],
-            "Cilex\\Provider": ["src/"]
+        "psr-4": {
+            "phpDocumentor\\": [
+                "src/phpDocumentor/"
+            ],
+            "Cilex\\" : [
+                "src/Cilex/"
+            ]
         }
     },
     "autoload-dev": {
         "psr-4": {
+            "phpDocumentor\\": [
+                "tests/unit/phpDocumentor/"
+            ],
             "phpDocumentor\\Behat\\Contexts\\": [
                 "tests/features/bootstrap"
             ]

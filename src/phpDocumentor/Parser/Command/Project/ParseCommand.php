@@ -22,6 +22,8 @@ use phpDocumentor\Parser\Event\PreFileEvent;
 use phpDocumentor\Parser\Exception\FilesNotFoundException;
 use phpDocumentor\Parser\Parser;
 use phpDocumentor\Parser\Util\ParserPopulator;
+use phpDocumentor\Partials\Collection as PartialsCollection;
+use phpDocumentor\Reflection\DocBlock\ExampleFinder;
 use Symfony\Component\Console\Helper\ProgressHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -50,13 +52,42 @@ class ParseCommand extends Command
 
     /** @var Translator */
     protected $translator;
+    private $cache;
+    /**
+     * @var ExampleFinder
+     */
+    private $exampleFinder;
+    /**
+     * @var PartialsCollection
+     */
+    private $partials;
 
-    public function     __construct($builder, $parser, $translator, $files)
-    {
+    /**
+     * ParseCommand constructor.
+     * @param ProjectDescriptorBuilder $builder
+     * @param Parser $parser
+     * @param Translator $translator
+     * @param Collection $files
+     * @param StorageInterface $cache
+     * @param ExampleFinder $exampleFinder
+     * @param PartialsCollection $partials
+     */
+    public function     __construct(
+        ProjectDescriptorBuilder $builder,
+        Parser $parser,
+        Translator $translator,
+        Collection $files,
+        StorageInterface $cache,
+        ExampleFinder $exampleFinder,
+        PartialsCollection $partials
+    ) {
         $this->builder    = $builder;
         $this->parser     = $parser;
         $this->translator = $translator;
         $this->files      = $files;
+        $this->cache      = $cache;
+        $this->exampleFinder = $exampleFinder;
+        $this->partials = $partials;
 
         parent::__construct('project:parse');
     }
@@ -64,7 +95,7 @@ class ParseCommand extends Command
     /**
      * @return ProjectDescriptorBuilder
      */
-    public function getBuilder()
+    public function getBuilder() : ProjectDescriptorBuilder
     {
         return $this->builder;
     }
@@ -72,7 +103,7 @@ class ParseCommand extends Command
     /**
      * @return \phpDocumentor\Parser\Parser
      */
-    public function getParser()
+    public function getParser() : Parser
     {
         return $this->parser;
     }
@@ -81,10 +112,11 @@ class ParseCommand extends Command
      * Returns the Cache.
      *
      * @return StorageInterface
+     * @throws \InvalidArgumentException
      */
-    protected function getCache()
+    protected function getCache(): StorageInterface
     {
-        return $this->getContainer()->offsetGet('descriptor.cache');
+        return $this->cache;
     }
 
     /**
@@ -139,7 +171,7 @@ class ParseCommand extends Command
      *
      * @return integer
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         /** @var ConfigurationHelper $configurationHelper */
         $configurationHelper = $this->getHelper('phpdocumentor_configuration');
@@ -167,10 +199,8 @@ class ParseCommand extends Command
         $output->write($this->__('PPCPP:LOG-COLLECTING'));
         $files = $this->getFileCollection($input);
 
-        /** @var Finder $exampleFinder */
-        $exampleFinder = $this->getContainer()->offsetGet('parser.example.finder');
-        $exampleFinder->setSourceDirectory($files->getProjectRoot());
-        $exampleFinder->setExampleDirectories($configurationHelper->getConfigValueFromPath('files/examples'));
+        $this->exampleFinder->setSourceDirectory($files->getProjectRoot());
+        $this->exampleFinder->setExampleDirectories($configurationHelper->getConfigValueFromPath('files/examples'));
         $output->writeln($this->__('PPCPP:LOG-OK'));
 
         /** @var ProgressHelper $progress  */
@@ -217,7 +247,7 @@ class ParseCommand extends Command
                 $visibility = ProjectDescriptor\Settings::VISIBILITY_DEFAULT;
             }
             if ($input->getOption('parseprivate')) {
-                $visibility = $visibility | ProjectDescriptor\Settings::VISIBILITY_INTERNAL;
+                $visibility |= ProjectDescriptor\Settings::VISIBILITY_INTERNAL;
             }
             $projectDescriptor->getSettings()->setVisibility($visibility);
             $input->getOption('sourcecode')
@@ -235,7 +265,7 @@ class ParseCommand extends Command
             $progress->finish();
         }
 
-        $projectDescriptor->setPartials($this->getService('partials'));
+        $projectDescriptor->setPartials($this->partials);
 
         $output->write($this->__('PPCPP:LOG-STORECACHE', (array) $this->getCache()->getOptions()->getCacheDir()));
         $projectDescriptor->getSettings()->clearModifiedFlag();
