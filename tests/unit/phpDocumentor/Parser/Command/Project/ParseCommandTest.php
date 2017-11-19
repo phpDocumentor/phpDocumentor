@@ -30,6 +30,7 @@ use Zend\I18n\Translator\Translator;
 
 /**
  * @coversDefaultClass phpDocumentor\Parser\Command\Project\ParseCommand
+ * @covers ::<protected>
  */
 class ParseCommandTest extends MockeryTestCase
 {
