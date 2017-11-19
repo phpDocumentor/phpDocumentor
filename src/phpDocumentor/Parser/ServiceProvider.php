@@ -93,16 +93,22 @@ class ServiceProvider implements ServiceProviderInterface
             return $parser;
         };
 
-        $app['markdown'] = function () {
-            return \Parsedown::instance();
-        };
-
         /** @var Translator $translator */
         $translator = $app['translator'];
         $translator->addTranslationFolder(__DIR__ . DIRECTORY_SEPARATOR . 'Messages');
 
         $app['parser.files'] = new Collection();
-        $app->command(new ParseCommand($app['descriptor.builder'], $app['parser'], $translator, $app['parser.files']));
+        $app->command(
+            new ParseCommand(
+                $app['descriptor.builder'],
+                $app['parser'],
+                $translator,
+                $app['parser.files'],
+                $app['descriptor.cache'],
+                $app['parser.example.finder'],
+                $app['partials']
+            )
+        );
     }
 
     /**

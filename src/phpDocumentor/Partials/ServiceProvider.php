@@ -41,6 +41,10 @@ class ServiceProvider implements ServiceProviderInterface
         /** @var ApplicationConfiguration $config */
         $config = $app['config'];
 
+        $app['markdown'] = function () {
+            return \Parsedown::instance();
+        };
+
         $partialsCollection = new PartialsCollection($app['markdown']);
         $app['partials'] = $partialsCollection;
 

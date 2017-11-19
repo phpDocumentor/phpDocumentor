@@ -24,6 +24,8 @@ use phpDocumentor\Command\Helper\ConfigurationHelper;
 use phpDocumentor\Command\Helper\LoggerHelper;
 use phpDocumentor\Console\Input\ArgvInput;
 use Symfony\Component\Console\Application as ConsoleApplication;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Shell;
 use Symfony\Component\Stopwatch\Stopwatch;
 
@@ -69,8 +71,8 @@ class Application extends Cilex
         $this->register(new ValidatorServiceProvider());
         $this->register(new Translator\ServiceProvider());
         $this->register(new Descriptor\ServiceProvider());
-        $this->register(new Parser\ServiceProvider());
         $this->register(new Partials\ServiceProvider());
+        $this->register(new Parser\ServiceProvider());
         $this->register(new Transformer\ServiceProvider());
         $this->register(new Plugin\ServiceProvider());
 
@@ -161,27 +163,24 @@ class Application extends Cilex
     }
 
     /**
-     * Run the application and if no command is provided, use project:run.
-     *
-     * @param bool $interactive Whether to run in interactive mode.
-     *
-     * @return void
+     * @param null|InputInterface $input
+     * @param null|OutputInterface $output
+     * @return mixed
      */
-    public function run($interactive = false)
+    public function run(InputInterface $input = null, OutputInterface $output = null)
     {
         /** @var ConsoleApplication $app */
         $app = $this['console'];
         $app->setAutoExit(false);
 
-        if ($interactive) {
-            $app = new Shell($app);
+        if ($output === null) {
+            $output = new Console\Output\Output();
+            $output->setLogger($this['monolog']);
         }
 
-        $output = new Console\Output\Output();
-        $output->setLogger($this['monolog']);
-
-        $app->run(new ArgvInput(), $output);
+        return parent::run(new ArgvInput(), $output);
     }
+
 
     /**
      * Adjust php.ini settings.
