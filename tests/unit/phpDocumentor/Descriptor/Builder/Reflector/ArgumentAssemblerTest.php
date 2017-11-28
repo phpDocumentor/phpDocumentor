@@ -55,8 +55,8 @@ class ArgumentAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         // Assert
         $this->assertSame($name, $descriptor->getName());
         $this->assertSame([$type], $descriptor->getTypes());
-        $this->assertSame(null, $descriptor->getDefault());
-        $this->assertSame(false, $descriptor->isByReference());
+        $this->assertNull($descriptor->getDefault());
+        $this->assertFalse($descriptor->isByReference());
     }
 
     /**
@@ -83,8 +83,8 @@ class ArgumentAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         // Assert
         $this->assertSame($name, $descriptor->getName());
         $this->assertSame([$type], $descriptor->getTypes());
-        $this->assertSame(null, $descriptor->getDefault());
-        $this->assertSame(false, $descriptor->isByReference());
+        $this->assertNull($descriptor->getDefault());
+        $this->assertFalse($descriptor->isByReference());
     }
 
     /**

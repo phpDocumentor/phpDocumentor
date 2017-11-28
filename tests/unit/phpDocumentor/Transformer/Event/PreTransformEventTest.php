@@ -37,7 +37,7 @@ class PreTransformEventTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testSetAndGetProject()
     {
         $project = m::mock('phpDocumentor\Descriptor\ProjectDescriptor');
-        $this->assertSame(null, $this->fixture->getProject());
+        $this->assertNull($this->fixture->getProject());
 
         $this->fixture->setProject($project);
 

@@ -52,7 +52,7 @@ class FqsenDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $result = $fixture($fqsen);
 
         // Assert
-        $this->assertSame(false, $result);
+        $this->assertFalse($result);
     }
 
     public function provideFqsens()

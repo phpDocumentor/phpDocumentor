@@ -169,7 +169,7 @@ class ConfigurationHelperTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $result = $this->fixture->getOption($inputMock, $optionName, 'parser/defaultPackageName/notThere');
 
         // Assert
-        $this->assertSame(null, $result);
+        $this->assertNull($result);
     }
 
     /**

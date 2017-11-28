@@ -50,7 +50,7 @@ class StripIgnoreTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $descriptor = m::mock('phpDocumentor\Descriptor\DescriptorAbstract');
         $descriptor->shouldReceive('getTags->get')->with('ignore')->andReturn(true);
 
-        $this->assertSame(null, $this->fixture->filter($descriptor));
+        $this->assertNull($this->fixture->filter($descriptor));
     }
 
     /**
@@ -69,6 +69,6 @@ class StripIgnoreTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testNullIsReturnedIfThereIsNoDescriptor()
     {
-        $this->assertSame(null, $this->fixture->filter(null));
+        $this->assertNull($this->fixture->filter(null));
     }
 }

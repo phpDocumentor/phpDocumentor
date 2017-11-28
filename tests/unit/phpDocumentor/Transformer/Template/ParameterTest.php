@@ -33,7 +33,7 @@ class ParameterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testSetAndGetKey()
     {
-        $this->assertSame(null, $this->fixture->getKey());
+        $this->assertNull($this->fixture->getKey());
 
         $this->fixture->setKey('key');
 
@@ -46,7 +46,7 @@ class ParameterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testSetAndGetValue()
     {
-        $this->assertSame(null, $this->fixture->getValue());
+        $this->assertNull($this->fixture->getValue());
 
         $this->fixture->setValue('value');
 

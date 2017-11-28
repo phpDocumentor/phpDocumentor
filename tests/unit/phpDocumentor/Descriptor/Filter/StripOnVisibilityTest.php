@@ -52,7 +52,7 @@ class StripOnVisibilityTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $descriptor = m::mock('phpDocumentor\Descriptor\Interfaces\VisibilityInterface');
         $descriptor->shouldReceive('getVisibility');
 
-        $this->assertSame(null, $this->fixture->filter($descriptor));
+        $this->assertNull($this->fixture->filter($descriptor));
     }
 
     /**

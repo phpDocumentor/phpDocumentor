@@ -38,7 +38,7 @@ class PreTransformationEventTest extends \Mockery\Adapter\Phpunit\MockeryTestCas
      */
     public function testSetAndGetSource()
     {
-        $this->assertSame(null, $this->fixture->getSource());
+        $this->assertNull($this->fixture->getSource());
 
         $this->fixture->setSource($this->source);
 

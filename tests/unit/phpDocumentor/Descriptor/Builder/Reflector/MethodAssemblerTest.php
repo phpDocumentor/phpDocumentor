@@ -87,9 +87,9 @@ class MethodAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $this->assertSame($methodName, $descriptor->getName());
         $this->assertSame('\\' . $namespace, $descriptor->getNamespace());
         $this->assertSame('protected', (string)$descriptor->getVisibility());
-        $this->assertSame(false, $descriptor->isFinal());
-        $this->assertSame(false, $descriptor->isAbstract());
-        $this->assertSame(false, $descriptor->isStatic());
+        $this->assertFalse($descriptor->isFinal());
+        $this->assertFalse($descriptor->isAbstract());
+        $this->assertFalse($descriptor->isStatic());
 
         $argument = $descriptor->getArguments()->get($argumentName);
         $this->assertSame($argument->getName(), $argumentDescriptor->getName());

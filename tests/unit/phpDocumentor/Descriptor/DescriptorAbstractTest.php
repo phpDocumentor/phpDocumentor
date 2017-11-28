@@ -117,7 +117,7 @@ class DescriptorAbstractTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testSettingAndGettingPackage()
     {
         $package = new PackageDescriptor();
-        $this->assertSame(null, $this->fixture->getPackage());
+        $this->assertNull($this->fixture->getPackage());
 
         $this->fixture->setPackage($package);
 

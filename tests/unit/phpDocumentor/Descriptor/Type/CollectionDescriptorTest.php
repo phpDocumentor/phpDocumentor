@@ -47,7 +47,7 @@ class CollectionDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testRetrieveBaseTypeWithTypeStringReturnsNull()
     {
-        $this->assertSame(null, $this->fixture->getBaseType());
+        $this->assertNull($this->fixture->getBaseType());
     }
 
     /**

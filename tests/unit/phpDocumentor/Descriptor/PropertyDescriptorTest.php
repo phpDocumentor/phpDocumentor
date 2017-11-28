@@ -101,7 +101,7 @@ class PropertyDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testSetAndGetDefault()
     {
-        $this->assertSame(null, $this->fixture->getDefault());
+        $this->assertNull($this->fixture->getDefault());
 
         $this->fixture->setDefault('a');
 
