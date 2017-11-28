@@ -41,7 +41,7 @@ class PreXslWriterEventTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testSetAndGetElement()
     {
-        $this->assertSame(null, $this->fixture->getElement());
+        $this->assertNull($this->fixture->getElement());
 
         $this->fixture->setElement($this->element);
 

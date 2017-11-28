@@ -117,7 +117,7 @@ class TransformationTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testGetParameterWithNonExistingName()
     {
-        $this->assertSame(null, $this->fixture->getParameter('somethingElse'));
+        $this->assertNull($this->fixture->getParameter('somethingElse'));
     }
 
     /**
@@ -145,7 +145,7 @@ class TransformationTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         $transformer = m::mock('phpDocumentor\Transformer\Transformer');
 
-        $this->assertSame(null, $this->fixture->getTransformer());
+        $this->assertNull($this->fixture->getTransformer());
 
         $this->fixture->setTransformer($transformer);
 

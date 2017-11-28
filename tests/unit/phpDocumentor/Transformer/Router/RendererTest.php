@@ -126,7 +126,7 @@ class RendererTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $this->renderer->setRouters($queue);
         $result = $this->renderer->render('file://phpdoc', 'url');
 
-        $this->assertSame(null, $result);
+        $this->assertNull($result);
     }
 
     /**

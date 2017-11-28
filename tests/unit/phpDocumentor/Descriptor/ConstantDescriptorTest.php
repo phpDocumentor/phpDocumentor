@@ -40,7 +40,7 @@ class ConstantDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testSetAndGetParentClass()
     {
-        $this->assertSame(null, $this->fixture->getParent());
+        $this->assertNull($this->fixture->getParent());
 
         $parentMock = m::mock('phpDocumentor\Descriptor\ClassDescriptor');
         $parentMock->shouldReceive('getFullyQualifiedStructuralElementName')->andReturn('TestClass');
@@ -65,7 +65,7 @@ class ConstantDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testSetAndGetParentInterface()
     {
-        $this->assertSame(null, $this->fixture->getParent());
+        $this->assertNull($this->fixture->getParent());
 
         $parentMock = m::mock('phpDocumentor\Descriptor\InterfaceDescriptor');
         $parentMock->shouldReceive('getFullyQualifiedStructuralElementName')->andReturn('TestInterface');
@@ -129,7 +129,7 @@ class ConstantDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testSetAndGetValue()
     {
-        $this->assertSame(null, $this->fixture->getValue());
+        $this->assertNull($this->fixture->getValue());
 
         $this->fixture->setValue('a');
 

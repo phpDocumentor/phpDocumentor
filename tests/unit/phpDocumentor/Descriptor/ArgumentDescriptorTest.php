@@ -46,7 +46,7 @@ class ArgumentDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testSetAndGetDefault()
     {
-        $this->assertSame(null, $this->fixture->getDefault());
+        $this->assertNull($this->fixture->getDefault());
 
         $this->fixture->setDefault('a');
 
@@ -59,11 +59,11 @@ class ArgumentDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testSetAndGetWhetherArgumentIsPassedByReference()
     {
-        $this->assertSame(false, $this->fixture->isByReference());
+        $this->assertFalse($this->fixture->isByReference());
 
         $this->fixture->setByReference(true);
 
-        $this->assertSame(true, $this->fixture->isByReference());
+        $this->assertTrue($this->fixture->isByReference());
     }
 
     /**

@@ -68,7 +68,7 @@ class FilesTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testIfHiddenFilesShouldBeIgnored()
     {
-        $this->assertSame(true, $this->fixture->isIgnoreHidden());
+        $this->assertTrue($this->fixture->isIgnoreHidden());
     }
 
     /**
@@ -76,6 +76,6 @@ class FilesTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testIfSymlinksShouldBeIgnored()
     {
-        $this->assertSame(true, $this->fixture->isIgnoreSymlinks());
+        $this->assertTrue($this->fixture->isIgnoreSymlinks());
     }
 }

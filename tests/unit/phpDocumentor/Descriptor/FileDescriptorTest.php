@@ -80,7 +80,7 @@ class FileDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testSetAndGetSource()
     {
-        $this->assertSame(null, $this->fixture->getSource());
+        $this->assertNull($this->fixture->getSource());
 
         $this->fixture->setSource(self::EXAMPLE_SOURCE);
 

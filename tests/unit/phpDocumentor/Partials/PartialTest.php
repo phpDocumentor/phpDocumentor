@@ -33,7 +33,7 @@ class PartialTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testGetContent()
     {
-        $this->assertSame(null, $this->fixture->getContent());
+        $this->assertNull($this->fixture->getContent());
         $this->fixture->setContent('Foo bar');
 
         $result = $this->fixture->getContent();
@@ -47,7 +47,7 @@ class PartialTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testGetLink()
     {
-        $this->assertSame(null, $this->fixture->getLink());
+        $this->assertNull($this->fixture->getLink());
         $this->fixture->setLink('http://www.phpdoc.org/');
 
         $result = $this->fixture->getLink();
@@ -61,7 +61,7 @@ class PartialTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testGetName()
     {
-        $this->assertSame(null, $this->fixture->getName());
+        $this->assertNull($this->fixture->getName());
         $this->fixture->setName('My name');
 
         $result = $this->fixture->getName();

@@ -36,7 +36,7 @@ class NamespaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         $parent = new NamespaceDescriptor();
 
-        $this->assertSame(null, $this->fixture->getParent());
+        $this->assertNull($this->fixture->getParent());
 
         $this->fixture->setParent($parent);
 

@@ -39,7 +39,7 @@ class BaseEntryTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testAddingAParentEntry()
     {
-        $this->assertSame(null, $this->object->getParent());
+        $this->assertNull($this->object->getParent());
 
         $heading = new Heading();
         $this->object->setParent($heading);
