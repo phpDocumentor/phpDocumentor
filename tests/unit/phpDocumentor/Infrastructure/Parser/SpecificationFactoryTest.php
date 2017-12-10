@@ -59,10 +59,10 @@ class SpecificationFactoryTest extends TestCase
             new AndSpecification(
                 new InPath(new Path('some/path')),
                 new AndSpecification(
+                    new HasExtension(['php']),
                     new NotSpecification(
                         new IsHidden()
-                    ),
-                    new HasExtension(['php'])
+                    )
                 )
             ),
             $specification
@@ -89,13 +89,13 @@ class SpecificationFactoryTest extends TestCase
             new AndSpecification(
                 new InPath(new Path('src/')),
                 new AndSpecification(
+                    new HasExtension(['php']),
                     new NotSpecification(
                         new OrSpecification(
                             new InPath(new Path('src/some/path')),
                             new InPath(new Path('src/some/other/path'))
                         )
-                    ),
-                    new HasExtension(['php'])
+                    )
                 )
             ),
             $specification
