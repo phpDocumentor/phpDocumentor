@@ -10,7 +10,6 @@ class ParserPopulatorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $parser = m::mock('\phpDocumentor\Parser\Parser');
         $input = m::mock('\Symfony\Component\Console\Input\InputInterface');
         $configurationHelper = m::mock('\phpDocumentor\Command\Helper\ConfigurationHelper');
-        $files = m::mock('\phpDocumentor\Fileset\Collection');
 
         $populator = new ParserPopulator();
         $input->shouldReceive('getOption')->with('force')->andReturn('force');
@@ -36,7 +35,6 @@ class ParserPopulatorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
             'defaultpackagename',
             'parser/default-package-name'
         )->andReturn('default-package-name');
-        $files->shouldReceive('getProjectRoot')->andReturn('path');
 
         $parser->shouldReceive('setForced')->once()->with('force');
         $parser->shouldReceive('setIgnoredTags')->once()->with($ignoredTags);
@@ -44,13 +42,11 @@ class ParserPopulatorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $parser->shouldReceive('setEncoding')->once()->with('encoding');
         $parser->shouldReceive('setMarkers')->once()->with($markers);
         $parser->shouldReceive('setDefaultPackageName')->once()->with('default-package-name');
-        $parser->shouldReceive('setPath')->once()->with('path');
 
         $populator->populate(
             $parser,
             $input,
-            $configurationHelper,
-            $files
+            $configurationHelper
         );
 
         m::close();

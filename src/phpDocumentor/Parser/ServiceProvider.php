@@ -97,13 +97,11 @@ class ServiceProvider implements ServiceProviderInterface
         $translator = $app['translator'];
         $translator->addTranslationFolder(__DIR__ . DIRECTORY_SEPARATOR . 'Messages');
 
-        $app['parser.files'] = new Collection();
         $app->command(
             new ParseCommand(
                 $app['descriptor.builder'],
                 $app['parser'],
                 $translator,
-                $app['parser.files'],
                 $app['descriptor.cache'],
                 $app['parser.example.finder'],
                 $app['partials']

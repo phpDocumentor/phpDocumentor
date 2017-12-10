@@ -11,8 +11,7 @@ class ParserPopulator
     public function populate(
         Parser $parser,
         InputInterface $input,
-        ConfigurationHelper $configurationHelper,
-        Collection $files
+        ConfigurationHelper $configurationHelper
     ) {
         $parser->setForced($input->getOption('force'));
         $parser->setEncoding($configurationHelper->getOption($input, 'encoding', 'parser/encoding'));
@@ -22,6 +21,5 @@ class ParserPopulator
         $parser->setDefaultPackageName(
             $configurationHelper->getOption($input, 'defaultpackagename', 'parser/default-package-name')
         );
-        $parser->setPath($files->getProjectRoot());
     }
 }

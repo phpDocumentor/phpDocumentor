@@ -11,19 +11,25 @@
 
 namespace phpDocumentor\Parser\Command\Project;
 
+use League\Flysystem\MountManager;
 use phpDocumentor\Command\Command;
 use phpDocumentor\Command\Helper\ConfigurationHelper;
 use phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper;
 use phpDocumentor\Descriptor\Example\Finder;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
+use phpDocumentor\DomainModel\Dsn;
 use phpDocumentor\Fileset\Collection;
+use phpDocumentor\Infrastructure\FlySystemFactory;
+use phpDocumentor\Infrastructure\Parser\FlySystemFile;
+use phpDocumentor\Infrastructure\Parser\SpecificationFactory;
 use phpDocumentor\Parser\Event\PreFileEvent;
 use phpDocumentor\Parser\Exception\FilesNotFoundException;
 use phpDocumentor\Parser\Parser;
 use phpDocumentor\Parser\Util\ParserPopulator;
 use phpDocumentor\Partials\Collection as PartialsCollection;
 use phpDocumentor\Reflection\DocBlock\ExampleFinder;
+use phpDocumentor\Reflection\File;
 use Symfony\Component\Console\Helper\ProgressHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -41,10 +47,7 @@ use Zend\I18n\Translator\Translator;
  */
 class ParseCommand extends Command
 {
-    /** @var Collection */
-    private $files;
-
-    /** @var ProjectDescriptorBuilder $builder*/
+    /** @var ProjectDescriptorBuilder $builder */
     protected $builder;
 
     /** @var Parser $parser */
@@ -52,7 +55,10 @@ class ParseCommand extends Command
 
     /** @var Translator */
     protected $translator;
+
+    /** @var StorageInterface */
     private $cache;
+
     /**
      * @var ExampleFinder
      */
@@ -67,25 +73,23 @@ class ParseCommand extends Command
      * @param ProjectDescriptorBuilder $builder
      * @param Parser $parser
      * @param Translator $translator
-     * @param Collection $files
      * @param StorageInterface $cache
      * @param ExampleFinder $exampleFinder
      * @param PartialsCollection $partials
      */
-    public function     __construct(
+    public function __construct(
         ProjectDescriptorBuilder $builder,
         Parser $parser,
         Translator $translator,
-        Collection $files,
         StorageInterface $cache,
         ExampleFinder $exampleFinder,
         PartialsCollection $partials
-    ) {
-        $this->builder    = $builder;
-        $this->parser     = $parser;
+    )
+    {
+        $this->builder = $builder;
+        $this->parser = $parser;
         $this->translator = $translator;
-        $this->files      = $files;
-        $this->cache      = $cache;
+        $this->cache = $cache;
         $this->exampleFinder = $exampleFinder;
         $this->partials = $partials;
 
@@ -95,7 +99,7 @@ class ParseCommand extends Command
     /**
      * @return ProjectDescriptorBuilder
      */
-    public function getBuilder() : ProjectDescriptorBuilder
+    public function getBuilder(): ProjectDescriptorBuilder
     {
         return $this->builder;
     }
@@ -103,7 +107,7 @@ class ParseCommand extends Command
     /**
      * @return \phpDocumentor\Parser\Parser
      */
-    public function getParser() : Parser
+    public function getParser(): Parser
     {
         return $this->parser;
     }
@@ -164,7 +168,7 @@ class ParseCommand extends Command
     /**
      * Executes the business logic involved with this command.
      *
-     * @param InputInterface  $input
+     * @param InputInterface $input
      * @param OutputInterface $output
      *
      * @throws \Exception if the target location is not a folder.
@@ -181,8 +185,8 @@ class ParseCommand extends Command
         }
 
         $fileSystem = new Filesystem();
-        if (! $fileSystem->isAbsolutePath($target)) {
-            $target = getcwd().DIRECTORY_SEPARATOR.$target;
+        if (!$fileSystem->isAbsolutePath($target)) {
+            $target = getcwd() . DIRECTORY_SEPARATOR . $target;
         }
         if (!file_exists($target)) {
             mkdir($target, 0777, true);
@@ -199,21 +203,22 @@ class ParseCommand extends Command
         $output->write($this->__('PPCPP:LOG-COLLECTING'));
         $files = $this->getFileCollection($input);
 
-        $this->exampleFinder->setSourceDirectory($files->getProjectRoot());
+        //TODO: Should determine root based on filesystems. Could be an issue for multiple. Need some config update here.
+        $this->exampleFinder->setSourceDirectory(getcwd());
         $this->exampleFinder->setExampleDirectories($configurationHelper->getConfigValueFromPath('files/examples'));
         $output->writeln($this->__('PPCPP:LOG-OK'));
 
-        /** @var ProgressHelper $progress  */
+        /** @var ProgressHelper $progress */
         $progress = $this->getProgressBar($input);
         if (!$progress) {
             $this->getHelper('phpdocumentor_logger')->connectOutputToLogging($output, $this);
         }
 
         $output->write($this->__('PPCPP:LOG-INITIALIZING'));
-        $this->populateParser($input, $files);
+        $this->populateParser($input);
 
         if ($progress) {
-            $progress->start($output, $files->count());
+            $progress->start($output, \count($files));
         }
 
         try {
@@ -221,10 +226,11 @@ class ParseCommand extends Command
             $output->writeln($this->__('PPCPP:LOG-PARSING'));
 
             $mapper = new ProjectDescriptorMapper($this->getCache());
-            $mapper->garbageCollect($files);
+            //TODO: Re-enable garbage collection here.
+            //$mapper->garbageCollect($files);
             $mapper->populate($projectDescriptor);
 
-            $visibility = (array) $configurationHelper->getOption($input, 'visibility', 'parser/visibility');
+            $visibility = (array)$configurationHelper->getOption($input, 'visibility', 'parser/visibility');
             $visibilities = array();
             foreach ($visibility as $item) {
                 $visibilities = $visibilities + explode(',', $item);
@@ -267,7 +273,7 @@ class ParseCommand extends Command
 
         $projectDescriptor->setPartials($this->partials);
 
-        $output->write($this->__('PPCPP:LOG-STORECACHE', (array) $this->getCache()->getOptions()->getCacheDir()));
+        $output->write($this->__('PPCPP:LOG-STORECACHE', (array)$this->getCache()->getOptions()->getCacheDir()));
         $projectDescriptor->getSettings()->clearModifiedFlag();
         $mapper->save($projectDescriptor);
 
@@ -277,38 +283,41 @@ class ParseCommand extends Command
     }
 
     /**
-     * @param InputInterface $input
-     * @param Collection     $files
-     */
-    protected function populateParser(InputInterface $input, Collection $files)
-    {
-        /** @var ConfigurationHelper $configurationHelper */
-        $configurationHelper = $this->getHelper('phpdocumentor_configuration');
-
-        $title = (string) $configurationHelper->getOption($input, 'title', 'title');
-        $this->getBuilder()->getProjectDescriptor()->setName($title ?: 'API Documentation');
-        $parserPopulator = new ParserPopulator();
-        $parserPopulator->populate(
-            $this->getParser(),
-            $input,
-            $configurationHelper,
-            $files
-        );
-    }
-
-    /**
      * Returns the collection of files based on the input and configuration.
      *
      * @param InputInterface $input
      *
-     * @return Collection
+     * @return File[]
+     * @throws \InvalidArgumentException
      */
-    protected function getFileCollection($input)
+    protected function getFileCollection($input): array
     {
         /** @var ConfigurationHelper $configurationHelper */
         $configurationHelper = $this->getHelper('phpdocumentor_configuration');
 
-        $this->files->setAllowedExtensions(
+        $ignoreHidden = $configurationHelper->getOption($input, 'hidden', 'files/ignore-hidden', 'off');
+        $file_options = (array)$configurationHelper->getOption($input, 'filename', 'files/files', array(), true);
+        $directory_options = $configurationHelper->getOption($input, 'directory', 'files/directories', array(), true);
+
+
+        $ignorePaths = array_map(
+            function($value) {
+                if (substr($value, -1) === '*') {
+                    return substr($value, 0, -1);
+                }
+
+                return $value;
+            },
+            $configurationHelper->getOption($input, 'ignore', 'files/ignore', array(), true)
+        );
+
+        $fileSpecificationFactory = new SpecificationFactory();
+        $fileSpec = $fileSpecificationFactory->create(
+            array_merge($file_options, $directory_options),
+            [
+                'paths' => $ignorePaths,
+                'hidden' => $ignoreHidden !== 'off' && $ignoreHidden === false
+            ],
             $configurationHelper->getOption(
                 $input,
                 'extensions',
@@ -317,56 +326,29 @@ class ParseCommand extends Command
                 true
             )
         );
-        $this->files->setIgnorePatterns($configurationHelper->getOption($input, 'ignore', 'files/ignore', array(), true));
-        $ignoreHidden = $configurationHelper->getOption($input, 'hidden', 'files/ignore-hidden', 'off');
-        $this->files->setIgnoreHidden($ignoreHidden !== 'off' && $ignoreHidden === false);
-        $this->files->setFollowSymlinks(
-            $configurationHelper->getOption($input, 'ignore-symlinks', 'files/ignore-symlinks', 'off') == 'on'
-        );
 
-        $file_options = (array) $configurationHelper->getOption($input, 'filename', 'files/files', array(), true);
-        $added_files = array();
-        foreach ($file_options as $glob) {
-            if (!is_string($glob)) {
-                continue;
-            }
+        //TODO: Fix this, should we support symlinks? Or just print an error here.
+        if ($configurationHelper->getOption($input, 'ignore-symlinks', 'files/ignore-symlinks', 'off') == 'on') {
+            echo "Symlinks are not supported";
+        }
 
-            $matches = glob($glob);
-            if (is_array($matches)) {
-                foreach ($matches as $file) {
-                    if (!empty($file)) {
-                        $file = realpath($file);
-                        if (!empty($file)) {
-                            $added_files[] = $file;
-                        }
-                    }
-                }
+        $flySystemFactory = new FlySystemFactory(new MountManager([]));
+
+        $fileSystems = [];
+
+        foreach ($directory_options as $option) {
+            $fileSystems[] = $flySystemFactory->create(new Dsn('file://' . realpath($option)));
+        }
+
+        $files = [];
+        foreach ($fileSystems as $fileSystem) {
+            $result = $fileSystem->find($fileSpec);
+            foreach ($result as $file) {
+                $files[] = new FlySystemFile($fileSystem, $file['path']);
             }
         }
-        $this->files->addFiles($added_files);
 
-        $directory_options = $configurationHelper->getOption($input, 'directory', 'files/directories', array(), true);
-        $added_directories = array();
-        foreach ($directory_options as $glob) {
-            if (!is_string($glob)) {
-                continue;
-            }
-
-            $matches = glob($glob, GLOB_ONLYDIR);
-            if (is_array($matches)) {
-                foreach ($matches as $dir) {
-                    if (!empty($dir)) {
-                        $dir = realpath($dir);
-                        if (!empty($dir)) {
-                            $added_directories[] = $dir;
-                        }
-                    }
-                }
-            }
-        }
-        $this->files->addDirectories($added_directories);
-
-        return $this->files;
+        return $files;
     }
 
     /**
@@ -396,15 +378,33 @@ class ParseCommand extends Command
     /**
      * Translates the provided text and replaces any contained parameters using printf notation.
      *
-     * @param string   $text
+     * @param string $text
      * @param string[] $parameters
      *
      * @return string
      */
     // @codingStandardsIgnoreStart
     protected function __($text, $parameters = array())
-    // @codingStandardsIgnoreEnd
+        // @codingStandardsIgnoreEnd
     {
         return vsprintf($this->translator->translate($text), $parameters);
+    }
+
+    /**
+     * @param InputInterface $input
+     */
+    protected function populateParser(InputInterface $input)
+    {
+        /** @var ConfigurationHelper $configurationHelper */
+        $configurationHelper = $this->getHelper('phpdocumentor_configuration');
+
+        $title = (string)$configurationHelper->getOption($input, 'title', 'title');
+        $this->getBuilder()->getProjectDescriptor()->setName($title ?: 'API Documentation');
+        $parserPopulator = new ParserPopulator();
+        $parserPopulator->populate(
+            $this->getParser(),
+            $input,
+            $configurationHelper
+        );
     }
 }

@@ -284,24 +284,17 @@ class Parser
      *
      * @return ProjectDescriptor
      */
-    public function parse(ProjectDescriptorBuilder $builder, Collection $files)
+    public function parse(ProjectDescriptorBuilder $builder, array $files)
     {
         $this->startTimingTheParsePhase();
 
         $this->forceRebuildIfSettingsHaveModified($builder);
 
-        $paths = array_map(
-            function ($filename) {
-                return new LocalFile($filename);
-            },
-            $this->getFilenames($files)
-        );
-
-        $this->log('  Project root is:  ' . $files->getProjectRoot());
-        $this->log('  Ignore paths are: ' . implode(', ', $files->getIgnorePatterns()->getArrayCopy()));
+//        $this->log('  Project root is:  ' . $files->getProjectRoot());
+//        $this->log('  Ignore paths are: ' . implode(', ', $files->getIgnorePatterns()->getArrayCopy()));
 
         /** @var Project $project */
-        $project = $this->projectFactory->create(ProjectDescriptorBuilder::DEFAULT_PROJECT_NAME, $paths);
+        $project = $this->projectFactory->create(ProjectDescriptorBuilder::DEFAULT_PROJECT_NAME, $files);
         $this->logAfterParsingAllFiles();
 
         /*

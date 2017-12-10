@@ -106,7 +106,6 @@ class ParseCommandTest extends MockeryTestCase
             $projectDescriptorBuilder,
             $parser,
             $translator,
-            new Collection(),
             $cache,
             new ExampleFinder(),
             m::mock(\phpDocumentor\Partials\Collection::class)

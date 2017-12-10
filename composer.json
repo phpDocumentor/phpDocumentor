@@ -55,7 +55,8 @@
         "phpdocumentor/reflection":          "dev-develop@dev",
         "webmozart/assert": "^1.2",
         "padraic/phar-updater": "^1.0",
-        "tedivm/stash": "^0.14.2"
+        "tedivm/stash": "^0.14.2",
+        "phpdocumentor/flyfinder": "@beta"
     },
     "minimum-stability": "stable",
     "require-dev": {
