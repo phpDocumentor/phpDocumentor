@@ -255,7 +255,7 @@ class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
      */
     private function findElement($fqsen)
     {
-        return isset($this->elementCollection[(string)$fqsen]) ? $this->elementCollection[(string)$fqsen] : null;
+        return $this->elementCollection[(string)$fqsen] ?? null;
     }
 
     /**

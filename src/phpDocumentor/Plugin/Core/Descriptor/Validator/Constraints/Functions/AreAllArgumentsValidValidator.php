@@ -84,8 +84,7 @@ class AreAllArgumentsValidValidator extends ConstraintValidator
             $this->validationValue->key = $key;
             $this->validationValue->argument = $argument;
             $this->validationValue->index = $key;
-            $this->validationValue->parameter = isset($this->validationValue->parameters[$key])
-                ? $this->validationValue->parameters[$key] : null;
+            $this->validationValue->parameter = $this->validationValue->parameters[$key] ?? null;
 
             if ($this->checkArgumentInDocBlock()) {
                 continue;

@@ -114,9 +114,7 @@ class TypeCollectionAssembler extends AssemblerAbstract
      */
     protected function findClassNameForType($type)
     {
-        $className = (isset($this->typeToValueObjectClassName[$type]))
-            ? $this->typeToValueObjectClassName[$type]
-            : false;
+        $className = $this->typeToValueObjectClassName[$type] ?? false;
 
         return $className;
     }

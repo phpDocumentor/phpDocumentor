@@ -341,9 +341,8 @@ class Xsl extends WriterAbstract implements Routable
         $elements = $project->getIndexes()->get('elements');
 
         $elementFqcn = ($element->parentNode->nodeName === 'namespace' ? '~\\' : '') . $element->nodeValue;
-        $node = (isset($elements[$elementFqcn]))
-            ? $elements[$elementFqcn]
-            : $element->nodeValue; // do not use the normalized version if the element is not found!
+        $node = $elements[$elementFqcn]
+            ?? $element->nodeValue; // do not use the normalized version if the element is not found!
 
         $rule = $this->routers->match($node);
         if (!$rule) {

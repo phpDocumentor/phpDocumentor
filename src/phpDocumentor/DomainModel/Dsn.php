@@ -182,9 +182,9 @@ final class Dsn
 
         $this->parsePort($locationParts);
 
-        $this->user = isset($locationParts['user']) ? $locationParts['user'] : "";
+        $this->user = $locationParts['user'] ?? "";
 
-        $this->password = isset($locationParts['pass']) ? $locationParts['pass'] : "";
+        $this->password = $locationParts['pass'] ?? "";
 
         $this->parseQuery($locationParts);
 
@@ -230,8 +230,8 @@ final class Dsn
      */
     private function parseHostAndPath(array $locationParts)
     {
-        $path = isset($locationParts['path']) ? $locationParts['path'] : "";
-        $host = isset($locationParts['host']) ? $locationParts['host'] : "";
+        $path = $locationParts['path'] ?? "";
+        $host = $locationParts['host'] ?? "";
 
         if ($this->getScheme() === 'file') {
             $this->path = $host . $path;
