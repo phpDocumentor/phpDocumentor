@@ -12,6 +12,10 @@
 namespace phpDocumentor\Parser;
 
 use Cilex\Application;
+use League\Flysystem\MountManager;
+use phpDocumentor\Infrastructure\FlySystemFactory;
+use phpDocumentor\Infrastructure\Parser\FlySystemCollector;
+use phpDocumentor\Infrastructure\Parser\SpecificationFactory;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use phpDocumentor\Fileset\Collection;
@@ -97,10 +101,16 @@ class ServiceProvider implements ServiceProviderInterface
         $translator = $app['translator'];
         $translator->addTranslationFolder(__DIR__ . DIRECTORY_SEPARATOR . 'Messages');
 
+        $fileCollector = new FlySystemCollector(
+            new SpecificationFactory(),
+            new FlySystemFactory(new MountManager())
+        );
+
         $app->command(
             new ParseCommand(
                 $app['descriptor.builder'],
                 $app['parser'],
+                $fileCollector,
                 $translator,
                 $app['descriptor.cache'],
                 $app['parser.example.finder'],

@@ -19,6 +19,7 @@ use phpDocumentor\Descriptor\Example\Finder;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\DomainModel\Dsn;
+use phpDocumentor\DomainModel\Parser\FileCollector;
 use phpDocumentor\Fileset\Collection;
 use phpDocumentor\Infrastructure\FlySystemFactory;
 use phpDocumentor\Infrastructure\Parser\FlySystemFile;
@@ -67,11 +68,16 @@ class ParseCommand extends Command
      * @var PartialsCollection
      */
     private $partials;
+    /**
+     * @var FileCollector
+     */
+    private $fileCollector;
 
     /**
      * ParseCommand constructor.
      * @param ProjectDescriptorBuilder $builder
      * @param Parser $parser
+     * @param FileCollector $fileCollector
      * @param Translator $translator
      * @param StorageInterface $cache
      * @param ExampleFinder $exampleFinder
@@ -80,18 +86,19 @@ class ParseCommand extends Command
     public function __construct(
         ProjectDescriptorBuilder $builder,
         Parser $parser,
+        FileCollector $fileCollector,
         Translator $translator,
         StorageInterface $cache,
         ExampleFinder $exampleFinder,
         PartialsCollection $partials
-    )
-    {
+    ) {
         $this->builder = $builder;
         $this->parser = $parser;
         $this->translator = $translator;
         $this->cache = $cache;
         $this->exampleFinder = $exampleFinder;
         $this->partials = $partials;
+        $this->fileCollector = $fileCollector;
 
         parent::__construct('project:parse');
     }
@@ -311,41 +318,36 @@ class ParseCommand extends Command
             $configurationHelper->getOption($input, 'ignore', 'files/ignore', array(), true)
         );
 
-        $fileSpecificationFactory = new SpecificationFactory();
-        $fileSpec = $fileSpecificationFactory->create(
-            array_merge($file_options, $directory_options),
-            [
-                'paths' => $ignorePaths,
-                'hidden' => $ignoreHidden !== 'off' && $ignoreHidden === false
-            ],
-            $configurationHelper->getOption(
-                $input,
-                'extensions',
-                'parser/extensions',
-                array('php', 'php3', 'phtml'),
-                true
-            )
-        );
-
         //TODO: Fix this, should we support symlinks? Or just print an error here.
         if ($configurationHelper->getOption($input, 'ignore-symlinks', 'files/ignore-symlinks', 'off') == 'on') {
             echo "Symlinks are not supported";
         }
 
-        $flySystemFactory = new FlySystemFactory(new MountManager([]));
+        $files = [];
 
-        $fileSystems = [];
-
-        foreach ($directory_options as $option) {
-            $fileSystems[] = $flySystemFactory->create(new Dsn('file://' . realpath($option)));
+        foreach ($file_options as $file) {
+            $files[] = new File\LocalFile($file);
         }
 
-        $files = [];
-        foreach ($fileSystems as $fileSystem) {
-            $result = $fileSystem->find($fileSpec);
-            foreach ($result as $file) {
-                $files[] = new FlySystemFile($fileSystem, $file['path']);
-            }
+        foreach (array_merge($directory_options) as $option) {
+            $files = array_merge(
+                $files,
+                $this->fileCollector->getFiles(
+                    new Dsn('file://' . realpath($option)),
+                    array_merge($directory_options),
+                    [
+                        'paths' => $ignorePaths,
+                        'hidden' => $ignoreHidden !== 'off' && $ignoreHidden === false
+                    ],
+                    $configurationHelper->getOption(
+                        $input,
+                        'extensions',
+                        'parser/extensions',
+                        array('php', 'php3', 'phtml'),
+                        true
+                    )
+                )
+            );
         }
 
         return $files;

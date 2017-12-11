@@ -18,6 +18,7 @@ use phpDocumentor\Command\Helper\LoggerHelper;
 use phpDocumentor\Console\Output\Output;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
+use phpDocumentor\DomainModel\Parser\FileCollector;
 use phpDocumentor\Fileset\Collection;
 use phpDocumentor\Parser\Command\Project\ParseCommand;
 use \Mockery as m;
@@ -105,6 +106,7 @@ class ParseCommandTest extends MockeryTestCase
         $command = new ParseCommand(
             $projectDescriptorBuilder,
             $parser,
+            m::mock(FileCollector::class),
             $translator,
             $cache,
             new ExampleFinder(),

@@ -67,6 +67,6 @@ class BaseContext
 
     protected function processFilePath($file)
     {
-        return $this->environmentContext->getWorkingDir() . DIRECTORY_SEPARATOR . $file;
+        return $file;
     }
 }
