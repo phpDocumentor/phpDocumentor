@@ -144,9 +144,7 @@ class Merger
         $sourceValue = $sourceProperty->getValue($sourceObject);
 
         // Find out what the default value for this property is
-        $sourcePropertyDefaultValue = isset($defaultPropertyValues[$sourceProperty->getName()])
-            ? $defaultPropertyValues[$sourceProperty->getName()]
-            : null;
+        $sourcePropertyDefaultValue = $defaultPropertyValues[$sourceProperty->getName()] ?? null;
 
         // if a property is annotated with the 'Replace' annotation then we null the destination location,
         // causing the value from source to be copied as-is to the destination object instead of merging it.

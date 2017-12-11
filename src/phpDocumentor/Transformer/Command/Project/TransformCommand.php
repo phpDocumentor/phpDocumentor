@@ -306,10 +306,10 @@ TEXT
     protected function createTransformation(array $transformations)
     {
         return new Transformation(
-            isset($transformations['query']) ? $transformations['query'] : '',
+            $transformations['query'] ?? '',
             $transformations['writer'],
-            isset($transformations['source']) ? $transformations['source'] : '',
-            isset($transformations['artifact']) ? $transformations['artifact'] : ''
+            $transformations['source'] ?? '',
+            $transformations['artifact'] ?? ''
         );
     }
 

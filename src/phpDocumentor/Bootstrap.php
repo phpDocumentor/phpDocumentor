@@ -157,6 +157,6 @@ class Bootstrap
         $composerFile = file_get_contents($composerConfigurationPath);
         $composerJson = json_decode($composerFile, true);
 
-        return isset($composerJson['config']['vendor-dir']) ? $composerJson['config']['vendor-dir'] : 'vendor';
+        return $composerJson['config']['vendor-dir'] ?? 'vendor';
     }
 }

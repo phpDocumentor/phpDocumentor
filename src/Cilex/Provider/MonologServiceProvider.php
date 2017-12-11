@@ -30,7 +30,7 @@ class MonologServiceProvider implements ServiceProviderInterface
     public function register(Container $app)
     {
         $app['monolog'] = function () use ($app) {
-            $log = new Logger(isset($app['monolog.name']) ? $app['monolog.name'] : 'myapp');
+            $log = new Logger($app['monolog.name'] ?? 'myapp');
             $app['monolog.configure']($log);
 
             return $log;

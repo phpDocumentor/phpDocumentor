@@ -169,9 +169,7 @@ class Linker implements CompilerPassInterface
             $this->processedObjects[$hash] = true;
 
             $objectClassName = get_class($item);
-            $fieldNames = isset($this->substitutions[$objectClassName])
-                ? $this->substitutions[$objectClassName]
-                : array();
+            $fieldNames = $this->substitutions[$objectClassName] ?? array();
 
             foreach ($fieldNames as $fieldName) {
                 $fieldValue = $this->findFieldValue($item, $fieldName);
@@ -373,6 +371,6 @@ class Linker implements CompilerPassInterface
      */
     protected function fetchElementByFqsen($fqsen)
     {
-        return isset($this->elementList[$fqsen]) ? $this->elementList[$fqsen] : null;
+        return $this->elementList[$fqsen] ?? null;
     }
 }
