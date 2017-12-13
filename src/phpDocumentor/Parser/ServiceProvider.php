@@ -83,11 +83,11 @@ class ServiceProvider implements ServiceProviderInterface
                 new Factory\File(
                     NodesFactory::createInstance(),
                     [
-                        new EmittingMiddleware(),
                         new StopwatchMiddleware(
                             $stopWatch
                         ),
                         $app['parser.middleware.cache'],
+                        new EmittingMiddleware(),
                         new ErrorHandlingMiddleware()
                     ]
                 )
