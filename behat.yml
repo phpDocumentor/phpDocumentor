@@ -10,6 +10,13 @@ default:
             paths:    [ "%paths.base%/tests/features/core" ]
             filters:
                 tags: "~@php5.6+"
+        cli_features:
+            contexts:
+              - phpDocumentor\Behat\Contexts\EnvironmentContext:
+                  workingDir: /tmp/phpdoc-behat/cli
+            paths:    [ "%paths.base%/tests/features/cli" ]
+            filters:
+                tags: "~@php5.6+"
         php56_features:
             contexts:
               - phpDocumentor\Behat\Contexts\EnvironmentContext:

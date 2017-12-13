@@ -77,6 +77,7 @@ final class EnvironmentContext implements Context\Context
     }
 
     /**
+     * @Given /^I ran "phpdoc(?: ((?:\"|[^"])*))?"$/
      * @When /^I run "phpdoc(?: ((?:\"|[^"])*))?"$/
      */
     public function iRun($argumentsString)
@@ -99,6 +100,30 @@ final class EnvironmentContext implements Context\Context
     {
         if ($this->process->getExitCode() !== 0) {
             throw new \Exception($this->process->getErrorOutput());
+        }
+    }
+
+    /**
+     * @Then /^output contains "([^"]*)"$/
+     * @throws \Exception
+     */
+    public function theOutputContains($regex)
+    {
+        if (!strpos($this->process->getOutput(), $regex)) {
+            throw new \Exception(
+                sprintf('output doesn\'t match "%s"', $regex));
+        }
+    }
+
+    /**
+     * @Then /^output doesn't contain "([^"]*)"$/
+     * @throws \Exception
+     */
+    public function theOutputContainNot($regex)
+    {
+        if (strpos($this->process->getOutput(), $regex)) {
+            throw new \Exception(
+                sprintf('output contains "%s", which was not expected', $regex));
         }
     }
 
