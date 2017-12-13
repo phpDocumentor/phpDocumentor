@@ -289,7 +289,7 @@ class Twig extends WriterAbstract implements Routable
         $finder = new Pathfinder();
         $destination = preg_replace_callback(
             '/{{([^}]+)}}/', // explicitly do not use the unicode modifier; this breaks windows
-            function ($query) use ($node, $writer, $finder) {
+            function ($query) use ($node, $finder) {
                 // strip any surrounding \ or /
                 $filepart = trim((string) current($finder->find($node, $query[1])), '\\/');
 

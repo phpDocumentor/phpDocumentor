@@ -6,9 +6,15 @@ env:
   global:
     - VERSION=$(echo $TRAVIS_TAG | cut -c 2-10)
 
+matrix:
+  include:
+    - php: 7.1
+      env: STATIC_ANALYSIS=true
+
 script:
 - bin/phpunit
 - bin/behat $BEHAT_FILTER
+- if [[ $STATIC_ANALYSIS != "" ]]; then vendor/bin/phpstan analyse src tests --level 0 --configuration phpstan.neon; fi
 
 after_script:
   - wget https://scrutinizer-ci.com/ocular.phar

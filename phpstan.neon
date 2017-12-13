@@ -1,0 +1,6 @@
+parameters:
+  excludes_analyse:
+    - %currentWorkingDirectory%/tests/features/**/*.php
+    - %currentWorkingDirectory%/tests/data/*.php
+    - %currentWorkingDirectory%/tests/features/assets/**/*.php
+    - %currentWorkingDirectory%/tests/ReferenceImplementation.php

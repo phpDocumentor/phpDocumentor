@@ -18,13 +18,11 @@ use phpDocumentor\Infrastructure\Parser\FlySystemCollector;
 use phpDocumentor\Infrastructure\Parser\SpecificationFactory;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
-use phpDocumentor\Fileset\Collection;
 use phpDocumentor\Parser\Command\Project\ParseCommand;
 use phpDocumentor\Parser\Middleware\CacheMiddleware;
 use phpDocumentor\Parser\Middleware\ErrorHandlingMiddleware;
 use phpDocumentor\Parser\Middleware\StopwatchMiddleware;
 use phpDocumentor\Parser\Middleware\EmittingMiddleware;
-use phpDocumentor\Plugin\Core\Descriptor\Validator\ValidatorAbstract;
 use phpDocumentor\Reflection\DocBlockFactory;
 use phpDocumentor\Reflection\Php\Factory;
 use phpDocumentor\Reflection\Php\NodesFactory;
@@ -159,7 +157,6 @@ class ServiceProvider implements ServiceProviderInterface
             // todo: move to a factory or builder class
             $class = 'phpDocumentor\Plugin\Core\Parser\DocBlock\Validator\\' . $validator . 'Validator';
             if (class_exists($class)) {
-                /** @var ValidatorAbstract $val */
                 $val = new $class($element->getName(), $docblock, $element);
                 $val->setOptions($validatorOptions);
                 $val->isValid($element);

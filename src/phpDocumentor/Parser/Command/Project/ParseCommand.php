@@ -334,12 +334,12 @@ class ParseCommand extends Command
             $files[] = new File\LocalFile($file);
         }
 
-        foreach (array_merge($directory_options) as $option) {
+        foreach ($directory_options as $option) {
             $files = array_merge(
                 $files,
                 $this->fileCollector->getFiles(
                     new Dsn('file://' . realpath($option)),
-                    array_merge($directory_options),
+                    $directory_options,
                     [
                         'paths' => $ignorePaths,
                         'hidden' => $ignoreHidden !== 'off' && $ignoreHidden === false
