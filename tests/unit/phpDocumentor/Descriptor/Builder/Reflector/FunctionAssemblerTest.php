@@ -104,7 +104,7 @@ class FunctionAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @param Argument $argumentMock
      * @param DocBlock|m\MockInterface $docBlockMock
      *
-     * @return FunctionReflector|m\MockInterface
+     * @return Function_
      */
     protected function givenAFunctionReflector($namespace, $functionName, $argumentMock, $docBlockMock)
     {
@@ -121,7 +121,7 @@ class FunctionAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Generates a DocBlock object with applicable defaults for these tests.
      *
-     * @return DocBlock|m\MockInterface
+     * @return DocBlock
      */
     protected function givenADocBlockObject()
     {

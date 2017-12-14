@@ -27,10 +27,10 @@ use phpDocumentor\Reflection\DocBlock\ExampleFinder;
 class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var ServiceProvider $fixture */
-    protected $fixture = null;
+    protected $fixture;
 
-    /** @var \Cilex\Application $application */
-    protected $application = null;
+    /** @var Application $application */
+    protected $application;
 
     /**
      * Setup test fixture and mocks used in this TestCase

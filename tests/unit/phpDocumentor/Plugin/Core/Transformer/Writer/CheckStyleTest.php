@@ -15,6 +15,7 @@ namespace phpDocumentor\Plugin\Core\Transformer\Writer;
 
 use Mockery as m;
 use org\bovigo\vfs\vfsStream;
+use org\bovigo\vfs\vfsStreamDirectory;
 use phpDocumentor\Translator\Translator;
 
 /**
@@ -32,6 +33,9 @@ class CheckStyleTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /** @var Translator|m\MockInterface */
     private $translator;
 
+    /** @var vfsStreamDirectory */
+    private $fs;
+
     /**
      * Sets up the test suite
      *
@@ -46,7 +50,7 @@ class CheckStyleTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Plugin\Core\Transformer\Writer\CheckStyle::transform
+     * @covers \phpDocumentor\Plugin\Core\Transformer\Writer\CheckStyle::transform
      */
     public function testTransform()
     {

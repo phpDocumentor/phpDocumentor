@@ -28,6 +28,7 @@ class Collection extends DescriptorCollection
      */
     public function __construct(\Parsedown $parser)
     {
+        parent::__construct();
         $this->parser = $parser;
     }
 

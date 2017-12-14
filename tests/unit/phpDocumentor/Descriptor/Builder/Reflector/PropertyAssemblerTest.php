@@ -76,9 +76,9 @@ class PropertyAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @param string                             $propertyName
      * @param DocBlock|m\MockInterface           $docBlockMock
      *
-     * @return PropertyReflector|m\MockInterface
+     * @return Property
      */
-    protected function givenAPropertyReflector($namespace, $propertyName, $docBlockMock = null)
+    protected function givenAPropertyReflector($namespace, $propertyName, $docBlockMock = null) : Property
     {
         $propertyReflectorMock = new Property(
             new Fqsen('\\' .  $namespace . '::$' . $propertyName),
