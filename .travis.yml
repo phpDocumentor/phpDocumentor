@@ -24,7 +24,7 @@ jobs:
         - wget https://phar.io/releases/phive.phar.asc
         - gpg --keyserver hkps.pool.sks-keyservers.net --recv-keys 0x9B2D5D79
         - gpg --verify phive.phar.asc phive.phar
-        - php phive.phar install -copy --trust-gpg-keys 8E730BA25823D8B5
+        - php phive.phar install --trust-gpg-keys 8E730BA25823D8B5
 
     - stage: Coverage
       php: 7.1
