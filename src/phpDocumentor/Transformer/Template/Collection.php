@@ -35,6 +35,7 @@ class Collection extends \ArrayObject
      */
     public function __construct(Factory $factory, WriterCollection $writerCollection)
     {
+        parent::__construct([]);
         $this->factory          = $factory;
         $this->writerCollection = $writerCollection;
     }

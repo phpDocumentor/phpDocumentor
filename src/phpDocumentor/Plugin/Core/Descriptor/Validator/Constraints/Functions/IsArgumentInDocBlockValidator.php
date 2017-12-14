@@ -15,6 +15,7 @@ use phpDocumentor\Descriptor\ArgumentDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Descriptor\FunctionDescriptor;
+use phpDocumentor\Descriptor\Tag\ParamDescriptor;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
@@ -49,24 +50,5 @@ class IsArgumentInDocBlockValidator extends ConstraintValidator
                 $constraint->code
             );
         }
-    }
-
-    /**
-     * Returns whether the list of param tags features the given argument.
-     *
-     * @param ParamDescriptor[]|Collection $parameters
-     * @param ArgumentDescriptor           $argument
-     *
-     * @return boolean
-     */
-    private function existsParamTagWithArgument($parameters, ArgumentDescriptor $argument)
-    {
-        foreach ($parameters as $parameter) {
-            if ($argument->getName() == $parameter->getVariableName()) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }

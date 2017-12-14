@@ -76,7 +76,7 @@ class Logging
     /**
      * Registers the paths that determine where to store log files.
      *
-     * @param \string[] $paths
+     * @param string[] $paths
      *
      * @see getPaths() for more information.
      *

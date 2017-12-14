@@ -10,7 +10,7 @@
  *  @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Plugin\LegacyNamespaceConverter\Tests;
+namespace phpDocumentor\Plugin\LegacyNamespaceConverter;
 
 use Mockery as m;
 use phpDocumentor\Descriptor\DescriptorAbstract;

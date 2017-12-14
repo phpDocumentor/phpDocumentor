@@ -12,6 +12,7 @@
  */
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
+use Mockery\MockInterface;
 use phpDocumentor\Reflection\DocBlock;
 use Mockery as m;
 use phpDocumentor\Reflection\Fqsen;
@@ -69,7 +70,7 @@ DOCBLOCK;
     /**
      * Create a ClassReflector mock
      *
-     * @return MockInterface
+     * @return Class_
      */
     protected function getClassReflectorDescriptor()
     {

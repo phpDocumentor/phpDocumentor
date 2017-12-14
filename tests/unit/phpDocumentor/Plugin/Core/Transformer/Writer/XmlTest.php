@@ -19,7 +19,7 @@ use phpDocumentor\Descriptor\DescriptorAbstract;
 use Mockery as m;
 use org\bovigo\vfs\vfsStream;
 use phpDocumentor\Transformer\Router\RouterAbstract;
-use phpDocumentor\Translator;
+use phpDocumentor\Translator\Translator;
 
 /**
  * Test class for \phpDocumentor\Plugin\Core\Transformer\Writer\Xml.
@@ -35,7 +35,7 @@ class XmlTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     protected $routerMock;
 
     /** @var m\MockInterface|Translator */
-    protected $translator;
+    private $translator;
 
     /** @var m\MockInterface|ProjectDescriptor */
     protected $projectDescriptor;
