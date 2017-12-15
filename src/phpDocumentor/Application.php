@@ -68,7 +68,6 @@ class Application extends Cilex
         $this->addEventDispatcher();
         $this->addLogging();
 
-        $this->register(new ValidatorServiceProvider());
         $this->register(new Translator\ServiceProvider());
         $this->register(new Descriptor\ServiceProvider());
         $this->register(new Partials\ServiceProvider());

@@ -35,9 +35,6 @@ class ProjectDescriptorBuilder
     /** @var AssemblerFactory $assemblerFactory */
     protected $assemblerFactory;
 
-    /** @var Validator $validator */
-    protected $validator;
-
     /** @var Filter $filter */
     protected $filter;
 
@@ -48,10 +45,9 @@ class ProjectDescriptorBuilder
     protected $translator;
     private $defaultPackage;
 
-    public function __construct(AssemblerFactory $assemblerFactory, Filter $filterManager, Validator $validator)
+    public function __construct(AssemblerFactory $assemblerFactory, Filter $filterManager)
     {
         $this->assemblerFactory = $assemblerFactory;
-        $this->validator        = $validator;
         $this->filter           = $filterManager;
     }
 
@@ -138,8 +134,8 @@ class ProjectDescriptorBuilder
         }
 
         $descriptor = (!is_array($descriptor) && (!$descriptor instanceof Collection))
-            ? $this->filterAndValidateDescriptor($descriptor)
-            : $this->filterAndValidateEachDescriptor($descriptor);
+            ? $this->filterDescriptor($descriptor)
+            : $this->filterEachDescriptor($descriptor);
 
         return $descriptor;
     }
@@ -169,33 +165,6 @@ class ProjectDescriptorBuilder
     }
 
     /**
-     * Validates the contents of the Descriptor and outputs warnings and error if something is amiss.
-     *
-     * @param DescriptorAbstract $descriptor
-     *
-     * @return Collection
-     */
-    public function validate($descriptor)
-    {
-        $violations = $this->validator->validate($descriptor);
-        $errors = new Collection();
-
-        /** @var ConstraintViolation $violation */
-        foreach ($violations as $violation) {
-            $errors->add(
-                new Error(
-                    $this->mapCodeToSeverity($violation->getCode()),
-                    $violation->getMessageTemplate(),
-                    $descriptor->getLine(),
-                    $violation->getMessageParameters() + array($descriptor->getFullyQualifiedStructuralElementName())
-                )
-            );
-        }
-
-        return $errors;
-    }
-
-    /**
      * Filters each descriptor, validates them, stores the validation results and returns a collection of transmuted
      * objects.
      *
@@ -203,11 +172,11 @@ class ProjectDescriptorBuilder
      *
      * @return Collection
      */
-    private function filterAndValidateEachDescriptor($descriptor)
+    private function filterEachDescriptor($descriptor)
     {
         $descriptors = new Collection();
         foreach ($descriptor as $key => $item) {
-            $item = $this->filterAndValidateDescriptor($item);
+            $item = $this->filterDescriptor($item);
             if (!$item) {
                 continue;
             }
@@ -226,7 +195,7 @@ class ProjectDescriptorBuilder
      *
      * @return DescriptorAbstract|null
      */
-    protected function filterAndValidateDescriptor($descriptor)
+    protected function filterDescriptor($descriptor)
     {
         if (!$descriptor instanceof Filterable) {
             return $descriptor;
@@ -237,9 +206,6 @@ class ProjectDescriptorBuilder
         if (!$descriptor) {
             return null;
         }
-
-        // Validate the descriptor and store any errors
-        $descriptor->setErrors($this->validate($descriptor));
 
         return $descriptor;
 	}

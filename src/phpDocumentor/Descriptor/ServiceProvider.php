@@ -97,7 +97,6 @@ class ServiceProvider implements ServiceProviderInterface
         $this->addCache($app);
         $this->addAssemblers($app);
         $this->addFilters($app);
-        $this->addValidators($app);
         $this->addBuilder($app);
 
         // I would prefer to extend it but due to a circular reference will pimple fatal
@@ -266,66 +265,6 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * Adds validators to check the Descriptors.
-     *
-     * @param Validator $validator
-     *
-     * @return Validator
-     */
-    public function attachValidators(Validator $validator)
-    {
-        /** @var ClassMetadata $fileMetadata */
-        $fileMetadata = $validator->getMetadataFor('phpDocumentor\Descriptor\FileDescriptor');
-        /** @var ClassMetadata $constantMetadata */
-        $constantMetadata = $validator->getMetadataFor('phpDocumentor\Descriptor\ConstantDescriptor');
-        /** @var ClassMetadata $functionMetadata */
-        $functionMetadata = $validator->getMetadataFor('phpDocumentor\Descriptor\FunctionDescriptor');
-        /** @var ClassMetadata $classMetadata */
-        $classMetadata = $validator->getMetadataFor('phpDocumentor\Descriptor\ClassDescriptor');
-        /** @var ClassMetadata $interfaceMetadata */
-        $interfaceMetadata = $validator->getMetadataFor('phpDocumentor\Descriptor\InterfaceDescriptor');
-        /** @var ClassMetadata $traitMetadata */
-        $traitMetadata = $validator->getMetadataFor('phpDocumentor\Descriptor\TraitDescriptor');
-        /** @var ClassMetadata $propertyMetadata */
-        $propertyMetadata = $validator->getMetadataFor('phpDocumentor\Descriptor\PropertyDescriptor');
-        /** @var ClassMetadata $methodMetadata */
-        $methodMetadata = $validator->getMetadataFor('phpDocumentor\Descriptor\MethodDescriptor');
-
-        $fileMetadata->addPropertyConstraint('summary', new Assert\NotBlank(array('message' => 'PPC:ERR-50000')));
-        $classMetadata->addPropertyConstraint('summary', new Assert\NotBlank(array('message' => 'PPC:ERR-50005')));
-        $propertyMetadata->addConstraint(new phpDocAssert\Property\HasSummary());
-        $methodMetadata->addPropertyConstraint('summary', new Assert\NotBlank(array('message' => 'PPC:ERR-50008')));
-        $interfaceMetadata->addPropertyConstraint('summary', new Assert\NotBlank(array('message' => 'PPC:ERR-50009')));
-        $traitMetadata->addPropertyConstraint('summary', new Assert\NotBlank(array('message' => 'PPC:ERR-50010')));
-        $functionMetadata->addPropertyConstraint('summary', new Assert\NotBlank(array('message' => 'PPC:ERR-50011')));
-
-        $functionMetadata->addConstraint(new phpDocAssert\Functions\IsReturnTypeNotAnIdeDefault());
-        $methodMetadata->addConstraint(new phpDocAssert\Functions\IsReturnTypeNotAnIdeDefault());
-
-        $functionMetadata->addConstraint(new phpDocAssert\Functions\IsParamTypeNotAnIdeDefault());
-        $methodMetadata->addConstraint(new phpDocAssert\Functions\IsParamTypeNotAnIdeDefault());
-        $functionMetadata->addConstraint(new phpDocAssert\Functions\AreAllArgumentsValid());
-        $methodMetadata->addConstraint(new phpDocAssert\Functions\AreAllArgumentsValid());
-
-        $classMetadata->addConstraint(new phpDocAssert\Classes\HasSinglePackage());
-        $interfaceMetadata->addConstraint(new phpDocAssert\Classes\HasSinglePackage());
-        $traitMetadata->addConstraint(new phpDocAssert\Classes\HasSinglePackage());
-        $fileMetadata->addConstraint(new phpDocAssert\Classes\HasSinglePackage());
-
-        $classMetadata->addConstraint(new phpDocAssert\Classes\HasSingleSubpackage());
-        $interfaceMetadata->addConstraint(new phpDocAssert\Classes\HasSingleSubpackage());
-        $traitMetadata->addConstraint(new phpDocAssert\Classes\HasSingleSubpackage());
-        $fileMetadata->addConstraint(new phpDocAssert\Classes\HasSingleSubpackage());
-
-        $classMetadata->addConstraint(new phpDocAssert\Classes\HasPackageWithSubpackage());
-        $interfaceMetadata->addConstraint(new phpDocAssert\Classes\HasPackageWithSubpackage());
-        $traitMetadata->addConstraint(new phpDocAssert\Classes\HasPackageWithSubpackage());
-        $fileMetadata->addConstraint(new phpDocAssert\Classes\HasPackageWithSubpackage());
-
-        return $validator;
-    }
-
-    /**
      * Adds the caching mechanism to the dependency injection container with key 'descriptor.cache'.
      *
      * @param Application $app
@@ -378,8 +317,7 @@ class ServiceProvider implements ServiceProviderInterface
         $app['descriptor.builder'] = function ($container) {
             $builder = new ProjectDescriptorBuilder(
                 $container['descriptor.builder.assembler.factory'],
-                $container['descriptor.filter'],
-                $container['validator']
+                $container['descriptor.filter']
             );
             $builder->setTranslator($container['translator']);
 
@@ -424,29 +362,5 @@ class ServiceProvider implements ServiceProviderInterface
         $app['descriptor.filter'] = function () {
             return new Filter(new ClassFactory());
         };
-    }
-
-    /**
-     * Adds validators for the descriptors to the validator manager.
-     *
-     * @param Application $app
-     *
-     * @throws Exception\MissingDependencyException if the validator could not be found.
-     *
-     * @return void
-     */
-    protected function addValidators(Application $app)
-    {
-        if (!isset($app['validator'])) {
-            throw new Exception\MissingDependencyException('The validator manager is missing');
-        }
-
-        $provider = $this;
-        $app['validator'] = $app->extend(
-            'validator',
-            function ($validatorManager) use ($provider) {
-                return $provider->attachValidators($validatorManager);
-            }
-        );
     }
 }
