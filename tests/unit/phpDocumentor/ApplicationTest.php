@@ -81,14 +81,6 @@ class ApplicationTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers phpDocumentor\Application::__construct
      */
-    public function testIfValidatorIsRegistered()
-    {
-        $this->assertTrue(isset($this->fixture['validator']));
-    }
-
-    /**
-     * @covers phpDocumentor\Application::__construct
-     */
     public function testIfTranslatorIsRegistered()
     {
         $this->assertTrue(isset($this->fixture['translator']));

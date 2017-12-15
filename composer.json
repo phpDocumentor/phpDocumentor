@@ -28,7 +28,6 @@
         "php": ">=7.0",
 
         "cilex/cilex":        "^2.0",
-        "symfony/validator":  "~2.2",
         "symfony/console":    "~2.3",
 
         "monolog/monolog":  "~1.6",

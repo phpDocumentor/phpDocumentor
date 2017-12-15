@@ -124,69 +124,6 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * Checks all phpDocumentor whether they match the given rules.
-     *
-     * @param PostDocBlockExtractionEvent $data Event object containing the parameters.
-     *
-     * @todo convert this method to the new style validators; this method is not invoked anymore
-     *
-     * @return void
-     */
-    public function validateDocBlocks($data)
-    {
-        /** @var \phpDocumentor\Reflection\BaseReflector $element */
-        $element = $data->getSubject();
-
-        /** @var \phpDocumentor\Reflection\DocBlock $docblock */
-        $docblock = $data->getDocblock();
-
-        // get the type of element
-        $type = substr(
-            get_class($element),
-            strrpos(get_class($element), '\\') + 1,
-            -9 // Reflector
-        );
-
-        // no docblock, or docblock should be ignored, so no reason to validate
-        if ($docblock && $docblock->hasTag('ignore')) {
-            return;
-        }
-
-        $validatorOptions = $this->loadConfiguration();
-
-        foreach (array('Deprecated', 'Required', $type) as $validator) {
-
-            // todo: move to a factory or builder class
-            $class = 'phpDocumentor\Plugin\Core\Parser\DocBlock\Validator\\' . $validator . 'Validator';
-            if (class_exists($class)) {
-                /** @var ValidatorAbstract $val */
-                $val = new $class($element->getName(), $docblock, $element);
-                $val->setOptions($validatorOptions);
-                $val->isValid($element);
-            }
-        }
-    }
-
-    /**
-     * Load the configuration from the plugin.xml file
-     *
-     * @todo restore required/deprecated validators
-     *
-     * @return array
-     */
-    protected function loadConfiguration()
-    {
-        //$configOptions = $this->plugin->getOptions();
-        $validatorOptions = array();
-
-        //foreach (array('deprecated', 'required') as $tag) {
-        //    $validatorOptions[$tag] = $this->loadConfigurationByElement($configOptions, $tag);
-        //}
-
-        return $validatorOptions;
-    }
-
-    /**
      * Load the configuration for given element (deprecated/required)
      *
      * @param array  $configOptions The configuration from the plugin.xml file
