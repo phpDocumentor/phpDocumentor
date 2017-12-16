@@ -44,6 +44,8 @@ final class Dsn
     /** @var string[]  */
     private $parameters = [];
 
+    const WINDOWS_DSN = '~(^((?<scheme>file):\\/\\/)?(?<path>((?:[a-z]|[A-Z]):(?=\\\\(?![\\0-\\37<>:"/\\\\|?*])|\\/(?![\\0-\\37<>:"/\\\\|?*])|$)|^\\\\(?=[\\\\\\/][^\\0-\\37<>:"/\\\\|?*]+)|^(?=(\\\\|\\/)$)|^\\.(?=(\\\\|\\/)$)|^\\.\\.(?=(\\\\|\\/)$)|^(?=(\\\\|\\/)[^\\0-\\37<>:"/\\\\|?*]+)|^\\.(?=(\\\\|\\/)[^\\0-\\37<>:"/\\\\|?*]+)|^\\.\\.(?=(\\\\|\\/)[^\\0-\\37<>:"/\\\\|?*]+))((\\\\|\\/)[^\\0-\\37<>:"/\\\\|?*]+|(\\\\|\\/)$)*()))$~';
+
     /**
      * Initializes the Dsn
      *
@@ -163,12 +165,16 @@ final class Dsn
         unset($dsnParts[0]);
         $locationParts = parse_url($location);
 
-        if (! isset($locationParts['scheme'])) {
+        if ($locationParts === false || (array_key_exists('scheme', $locationParts) && \strlen($locationParts['scheme']) === 1)) {
+            preg_match(static::WINDOWS_DSN, $dsn, $locationParts);
+        }
+
+        if (! array_key_exists('scheme', $locationParts) || ($locationParts['scheme'] === '' && array_key_exists('path',$locationParts)) ) {
             $locationParts['scheme'] = 'file';
             $location = 'file://' . $location;
         }
 
-        if (! filter_var($location, FILTER_VALIDATE_URL)) {
+        if (!filter_var($location, FILTER_VALIDATE_URL) && !preg_match(static::WINDOWS_DSN, $location)) {
             throw new \InvalidArgumentException(
                 sprintf('"%s" is not a valid DSN.', $dsn)
             );
@@ -213,13 +219,24 @@ final class Dsn
      */
     private function parseScheme(array $locationParts)
     {
-        $validSchemes = ['file', 'git+http', 'git+https'];
-        if (! in_array(strtolower($locationParts['scheme']), $validSchemes)) {
+        if (! $this->isValidScheme($locationParts['scheme'])) {
             throw new \InvalidArgumentException(
                 sprintf('"%s" is not a valid scheme.', $locationParts['scheme'])
             );
         }
         $this->scheme = strtolower($locationParts['scheme']);
+    }
+
+    /**
+     * Validated provided scheme.
+     *
+     * @param string $scheme
+     * @return bool
+     */
+    private function isValidScheme(string $scheme): bool
+    {
+        $validSchemes = ['file', 'git+http', 'git+https'];
+        return \in_array(\strtolower($scheme), $validSchemes, true);
     }
 
     /**

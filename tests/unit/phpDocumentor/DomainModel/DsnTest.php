@@ -128,6 +128,51 @@ class DsnTest extends TestCase
 
     /**
      * @covers ::__construct
+     * @covers ::__toString
+     * @covers ::getScheme
+     * @covers ::getHost
+     * @covers ::getPort
+     * @covers ::getPath
+     * @covers ::<private>
+     * @uses \phpDocumentor\DomainModel\Path
+     */
+    public function testValidWindowsDsnWithoutScheme()
+    {
+        $dsn = "C:\\phpdocumentor\\tests\\unit\\phpDocumentor\\Infrastructure\\Parser";
+        $fixture = new Dsn($dsn);
+
+        $this->assertEquals('file://C:\\phpdocumentor\\tests\\unit\\phpDocumentor\\Infrastructure\\Parser', (string)$fixture);
+        $this->assertEquals('file', $fixture->getscheme());
+        $this->assertEquals(null, $fixture->getHost());
+        $this->assertEquals(0, $fixture->getPort());
+        $this->assertEquals('C:\\phpdocumentor\\tests\\unit\\phpDocumentor\\Infrastructure\\Parser', $fixture->getPath());
+    }
+
+    /**
+     * @covers ::__construct
+     * @covers ::__toString
+     * @covers ::getScheme
+     * @covers ::getHost
+     * @covers ::getPort
+     * @covers ::getPath
+     * @covers ::<private>
+     * @uses \phpDocumentor\DomainModel\Path
+     */
+    public function testValidWindowsDsnWithScheme()
+    {
+        $dsn = "file://C:\\phpdocumentor\\tests";
+        $fixture = new Dsn($dsn);
+
+        $this->assertEquals('file://C:\\phpdocumentor\\tests', (string)$fixture);
+        $this->assertEquals('file', $fixture->getscheme());
+        $this->assertEquals(null, $fixture->getHost());
+        $this->assertEquals(0, $fixture->getPort());
+        $this->assertEquals('C:\\phpdocumentor\\tests', $fixture->getPath());
+    }
+
+
+    /**
+     * @covers ::__construct
      * @covers ::getScheme
      * @covers ::getPort
      * @covers ::<private>
