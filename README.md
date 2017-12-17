@@ -37,7 +37,7 @@ Requirements
 
 phpDocumentor requires the following:
 
-* PHP 5.3.3 or higher
+* PHP 7.0 or higher
 * ext/iconv, http://php.net/manual/en/book.iconv.php (is enabled by default since PHP 5.0.0)
 * ext/intl, http://php.net/manual/en/book.intl.php
 * The XSL extension, http://www.php.net/manual/en/book.xsl.php (optional, only used with XSL based templates)
@@ -56,22 +56,23 @@ Installation
 
 There are 3 ways to install phpDocumentor:
 
-1. Via PEAR (recommended)
-2. Via [Composer](https://getcomposer.org)
-3. Using the PHAR
+1. Using the PHAR
+2. Via [Docker](https://hub.docker.com/r/phpdoc/phpdoc/)
+3. Via [Composer](https://getcomposer.org)
 
 _*Please note* that it is required that the installation path of phpDocumentor does not
 contain spaces. This is a requirement imposed by an external library (libxml)_
 
-### PEAR (recommended)
+### Using the PHAR
 
-1. phpDocumentor is hosted on its own PEAR channel which can be discovered using the following command:
+1. Download the phar file from https://github.com/phpDocumentor/phpDocumentor2/releases
+2. ???
+3. Profit!
 
-        $ pear channel-discover pear.phpdoc.org
+### Via docker
 
-2. After that it is a simple matter of invoking PEAR to install the application
-
-        $ pear install phpdoc/phpDocumentor
+1. `$ docker pull phpdoc/phpdoc`
+2. `$ docker run --rm -v $(pwd):/data phpdoc/phpdoc`
 
 ### Via Composer
 
@@ -84,11 +85,13 @@ Afterwards you are able to run phpDocumentor directly from your `vendor` directo
 
     $ php vendor/bin/phpdoc
 
-### Using the PHAR
+Please not that we are not able to be compatible with all types of setups. In 
+some situations phpDocumentor will block updates of other packages. We do not recommend
+using composer to install phpDocumentor.
 
-1. Download the phar file from http://phpdoc.org/phpDocumentor.phar
-2. ???
-3. Profit!
+### Pear
+Starting from phpdocumentor v3 we decided to drop pear support. We will provide the
+already released versions of phpdocumentor v2. But these versions won't be maintained.
 
 How to use phpDocumentor?
 -------------------
