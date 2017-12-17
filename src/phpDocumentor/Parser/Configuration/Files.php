@@ -93,7 +93,7 @@ class Files
     /**
      * Returns a list of directories to recursively scan for files to be parsed.
      *
-     * @return \string[]
+     * @return string[]
      */
     public function getDirectories()
     {
@@ -103,7 +103,7 @@ class Files
     /**
      * Returns a list of files to parse.
      *
-     * @return \string[]
+     * @return string[]
      */
     public function getFiles()
     {
@@ -113,7 +113,7 @@ class Files
     /**
      * Returns the 'glob' expression used to determine which files to ignore.
      *
-     * @return \string[]
+     * @return string[]
      */
     public function getIgnore()
     {
@@ -143,7 +143,7 @@ class Files
     /**
      * Returns all folders that may contain example files as referenced using the `@example` tag.
      *
-     * @return \string[]
+     * @return string[]
      */
     public function getExamples()
     {

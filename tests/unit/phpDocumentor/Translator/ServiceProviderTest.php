@@ -29,7 +29,7 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /** @var ServiceProvider $fixture */
     protected $fixture = null;
 
-    /** @var Cilex\Application $application */
+    /** @var Application $application */
     protected $application = null;
 
     /**

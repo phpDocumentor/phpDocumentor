@@ -15,6 +15,7 @@ namespace phpDocumentor\Plugin\Core\Transformer\Writer;
 
 use Mockery as m;
 use org\bovigo\vfs\vfsStream;
+use org\bovigo\vfs\vfsStreamDirectory;
 
 /**
  * Test class for \phpDocumentor\Plugin\Core\Transformer\Writer\Statistics.
@@ -26,6 +27,9 @@ class StatisticsTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @var Statistics $statistics
      */
     protected $statistics;
+
+    /** @var vfsStreamDirectory */
+    private $fs;
 
     /**
      * Sets up the test suite

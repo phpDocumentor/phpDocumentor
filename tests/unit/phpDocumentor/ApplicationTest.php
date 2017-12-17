@@ -157,8 +157,8 @@ class ApplicationTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testSetLogLevel($loglevel, $expectedLogLevel)
     {
-        $logger = m::Mock('Monolog\Logger')
-            ->shouldReceive('pushHandler')->with(m::On(function($stream) use($expectedLogLevel) {
+        $logger = m::mock('Monolog\Logger')
+            ->shouldReceive('pushHandler')->with(m::on(function($stream) use($expectedLogLevel) {
                if (!$stream instanceof \Monolog\Handler\StreamHandler) {
                    return false;
                }

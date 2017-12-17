@@ -18,13 +18,11 @@ use phpDocumentor\Infrastructure\Parser\FlySystemCollector;
 use phpDocumentor\Infrastructure\Parser\SpecificationFactory;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
-use phpDocumentor\Fileset\Collection;
 use phpDocumentor\Parser\Command\Project\ParseCommand;
 use phpDocumentor\Parser\Middleware\CacheMiddleware;
 use phpDocumentor\Parser\Middleware\ErrorHandlingMiddleware;
 use phpDocumentor\Parser\Middleware\StopwatchMiddleware;
 use phpDocumentor\Parser\Middleware\EmittingMiddleware;
-use phpDocumentor\Plugin\Core\Descriptor\Validator\ValidatorAbstract;
 use phpDocumentor\Reflection\DocBlockFactory;
 use phpDocumentor\Reflection\Php\Factory;
 use phpDocumentor\Reflection\Php\NodesFactory;
@@ -66,9 +64,6 @@ class ServiceProvider implements ServiceProviderInterface
 
         $app['parser'] = function ($app) {
             $stopWatch = $app['kernel.stopwatch'];
-
-            $adapter = new FileSystem(['path' => 'build/api-cache']);
-            $cachePool = new Pool($adapter);
 
             $strategies = [
                 new Factory\Argument(new PrettyPrinter()),
@@ -131,26 +126,26 @@ class ServiceProvider implements ServiceProviderInterface
      *
      * @return array
      */
-    protected function loadConfigurationByElement($configOptions, $configType)
-    {
-        $validatorOptions = array();
-
-        if (isset($configOptions[$configType]->tag)) {
-
-            foreach ($configOptions[$configType]->tag as $tag) {
-                $tagName = (string)$tag['name'];
-
-                if (isset($tag->element)) {
-                    foreach ($tag->element as $type) {
-                        $typeName = (string)$type;
-                        $validatorOptions[$typeName][] = $tagName;
-                    }
-                } else {
-                    $validatorOptions['__ALL__'][] = $tagName;
-                }
-            }
-        }
-
-        return $validatorOptions;
-    }
+//    protected function loadConfigurationByElement($configOptions, $configType)
+//    {
+//        $validatorOptions = array();
+//
+//        if (isset($configOptions[$configType]->tag)) {
+//
+//            foreach ($configOptions[$configType]->tag as $tag) {
+//                $tagName = (string)$tag['name'];
+//
+//                if (isset($tag->element)) {
+//                    foreach ($tag->element as $type) {
+//                        $typeName = (string)$type;
+//                        $validatorOptions[$typeName][] = $tagName;
+//                    }
+//                } else {
+//                    $validatorOptions['__ALL__'][] = $tagName;
+//                }
+//            }
+//        }
+//
+//        return $validatorOptions;
+//    }
 }

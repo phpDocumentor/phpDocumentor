@@ -144,7 +144,7 @@ class Xsl extends WriterAbstract implements Routable
                 $this->writeToFile($filename, $proc, $structure);
             }
         } else {
-            if (substr($transformation->getArtifact(), 0, 1) == '$') {
+            if (substr($transformation->getArtifact(), 0, 1) === '$') {
                 // not a file, it must become a variable!
                 $variable_name = substr($transformation->getArtifact(), 1);
                 $this->xsl_variables[$variable_name] = $proc->transformToXml($structure);
@@ -170,7 +170,7 @@ class Xsl extends WriterAbstract implements Routable
         // Argument) will be raised. Thanks to @FnTmLV for finding the cause. See issue #284 for more information.
         // An exception to the above is when running from a Phar file; in this case the stream is handled as if on
         // linux; see issue #713 for more information on this exception.
-        if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN' && ! \Phar::running()) {
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN' && ! \Phar::running()) {
             $filename = '/' . $filename;
         }
 
@@ -219,9 +219,9 @@ class Xsl extends WriterAbstract implements Routable
      *
      * @param Transformation $transformation
      *
-     * @return \XSLTCache|\XSLTProcessor
+     * @return \XSLTProcessor
      */
-    protected function getXslProcessor(Transformation $transformation)
+    protected function getXslProcessor(Transformation $transformation): \XSLTProcessor
     {
         $xslTemplatePath = $transformation->getSourceAsPath();
         $this->logger->debug('Loading XSL template: ' . $xslTemplatePath);
@@ -229,20 +229,13 @@ class Xsl extends WriterAbstract implements Routable
             throw new Exception('Unable to find XSL template "' . $xslTemplatePath . '"');
         }
 
-        if (extension_loaded('xslcache')) {
-            $proc = new \XSLTCache();
-            $proc->importStyleSheet($xslTemplatePath, true);
+        $xsl = new \DOMDocument();
+        $xsl->load($xslTemplatePath);
 
-            return $proc;
-        } else {
-            $xsl = new \DOMDocument();
-            $xsl->load($xslTemplatePath);
+        $proc = new \XSLTProcessor();
+        $proc->importStyleSheet($xsl);
 
-            $proc = new \XSLTProcessor();
-            $proc->importStyleSheet($xsl);
-
-            return $proc;
-        }
+        return $proc;
     }
 
     /**

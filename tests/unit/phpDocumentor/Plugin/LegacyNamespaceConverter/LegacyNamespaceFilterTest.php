@@ -1,6 +1,16 @@
 <?php
+/**
+ * This file is part of phpDocumentor.
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ *
+ *  @copyright 2010-2017 Mike van Riel<mike@phpdoc.org>
+ *  @license   http://www.opensource.org/licenses/mit-license.php MIT
+ *  @link      http://phpdoc.org
+ */
 
-namespace phpDocumentor\Plugin\LegacyNamespaceConverter\Tests;
+namespace phpDocumentor\Plugin\LegacyNamespaceConverter;
 
 use Mockery as m;
 use phpDocumentor\Descriptor\DescriptorAbstract;
@@ -10,7 +20,7 @@ use phpDocumentor\Plugin\LegacyNamespaceConverter\LegacyNamespaceFilter;
 /**
  * Tests the phpDocumentor\Plugin\LegacyNamespaceConverter\LegacyNamespaceFilter class.
  */
-class LegacyNamespaceFilterTest extends \PHPUnit_Framework_TestCase
+class LegacyNamespaceFilterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var LegacyNamespaceFilter */
     private $filter;
@@ -30,7 +40,7 @@ class LegacyNamespaceFilterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Plugin\LegacyNamespaceConverter\LegacyNamespaceFilter::filter
+     * @covers \phpDocumentor\Plugin\LegacyNamespaceConverter\LegacyNamespaceFilter::filter
      */
     public function testConvertClassNameWithUnderscoreWillBeConvertedToNamespace()
     {
@@ -47,7 +57,7 @@ class LegacyNamespaceFilterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Plugin\LegacyNamespaceConverter\LegacyNamespaceFilter::filter
+     * @covers \phpDocumentor\Plugin\LegacyNamespaceConverter\LegacyNamespaceFilter::filter
      */
     public function testMultiLevelLegacyNamespace()
     {

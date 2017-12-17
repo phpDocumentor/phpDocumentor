@@ -1,0 +1,10 @@
+parameters:
+  ignoreErrors:
+    - '#Constructor of class phpDocumentor\\Plugin\\Twig\\Extension has an unused parameter \$transformation#'
+    - '#Constructor of class phpDocumentor\\Plugin\\Scrybe\\Template\\Mock\\Template has an unused parameter \$templatePath#'
+  excludes_analyse:
+   #test data
+    - %currentWorkingDirectory%/tests/features/**/*.php
+    - %currentWorkingDirectory%/tests/data/*.php
+    - %currentWorkingDirectory%/tests/features/assets/**/*.php
+    - %currentWorkingDirectory%/tests/ReferenceImplementation.php
