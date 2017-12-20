@@ -9,7 +9,7 @@ README
 What is phpDocumentor?
 ----------------
 
-phpDocumentor an application that is capable of analyzing your PHP source code and
+phpDocumentor is an application that is capable of analyzing your PHP source code and
 DocBlock comments to generate a complete set of API Documentation.
 
 Inspired by phpDocumentor 1 and JavaDoc it continues to innovate and is up to date
@@ -20,7 +20,7 @@ Features
 
 phpDocumentor supports the following:
 
-* *PHP 5.3 compatible*, full support for Namespaces, Closures and more is provided.
+* *PHP 7.0 compatible*, full support for Namespaces, Closures and more is provided.
 * *Shows any tag*, some tags add additional functionality to phpDocumentor (such as @link).
 * *Processing speed*, Zend Framework experienced a significant reduction in processing time compared to phpDocumentor 1.
 * *Low memory usage*, peak memory usage for small projects is less than 20MB, medium projects 40MB and large frameworks 100MB.
@@ -31,6 +31,9 @@ phpDocumentor supports the following:
   basic phpDocumentor 1 arguments, such as --directory, --file and --target, have been adopted.
 * *Two-step process*, phpDocumentor first generates a cache with your application structure before creating the output.
   If you'd like you can use that to power your own tools or formatters!
+  
+*Please note* that phpDocumentor 3 is still under heavy development. We aim to add all features needed to have full support 
+for php 7+. But at this moment that is not the case.
 
 Requirements
 ------------
@@ -85,7 +88,7 @@ Afterwards you are able to run phpDocumentor directly from your `vendor` directo
 
     $ php vendor/bin/phpdoc
 
-Please not that we are not able to be compatible with all types of setups. In 
+*Please note* that we are not able to be compatible with all types of setups. In 
 some situations phpDocumentor will block updates of other packages. We do not recommend
 using composer to install phpDocumentor.
 
@@ -138,6 +141,5 @@ To come in contact is actually dead simple and can be done in a variety of ways.
 
 * Twitter: [@phpDocumentor](http://twitter.com/phpdocumentor)
 * Website: [http://www.phpdoc.org](http://www.phpdoc.org)
-* IRC:     Freenode, #phpdocumentor
 * Github:  [http://www.github.com/phpdocumentor/phpdocumentor2](http://www.github.com/phpdocumentor/phpdocumentor2)
-* E-mail:  [mike.vanriel@naenius.com](mailto:mike.vanriel@naenius.com)
+* E-mail:  [mike@phpdoc.org](mailto:mike@phpdoc.org)
