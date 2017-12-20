@@ -76,7 +76,8 @@
     "bin": ["bin/phpdoc.php", "bin/phpdoc"],
     "extra": {
         "branch-alias": {
-            "dev-develop": "2.9-dev"
+            "dev-develop": "3.0-dev",
+            "dev-master": "2.9.x-dev"
         }
     }
 }
