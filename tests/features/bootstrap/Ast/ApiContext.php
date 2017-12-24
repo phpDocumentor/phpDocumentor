@@ -13,9 +13,7 @@
 namespace phpDocumentor\Behat\Contexts\Ast;
 
 use Behat\Behat\Context\Context;
-use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\PyStringNode;
-use phpDocumentor\Behat\Contexts\EnvironmentContext;
 use phpDocumentor\Descriptor\ArgumentDescriptor;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Collection;
@@ -23,11 +21,9 @@ use phpDocumentor\Descriptor\ConstantDescriptor;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\MethodDescriptor;
-use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\Tag\ParamDescriptor;
 use phpDocumentor\Descriptor\Tag\VersionDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
-use phpDocumentor\Reflection\DocBlock\Tag\SeeTag;
 use PHPUnit\Framework\Assert;
 
 class ApiContext extends BaseContext implements Context
@@ -318,5 +314,18 @@ class ApiContext extends BaseContext implements Context
         if ($expectedNumber > 0) {
             Assert::assertEquals($tagName, $tagCollection[0]->getName());
         }
+    }
+
+    /**
+     * @Then /^the ast has a file named "([^"]*)" with a summary:$/
+     * @throws \Exception
+     */
+    public function theAstHasAFileNamedWithASummary(string $fileName, PyStringNode $string)
+    {
+        $ast = $this->getAst();
+        /** @var FileDescriptor $file */
+        $file = $ast->getFiles()->get($fileName);
+
+        Assert::assertEquals($string->getRaw(), $file->getSummary());
     }
 }
