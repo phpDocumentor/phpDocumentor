@@ -19,7 +19,7 @@ ABNF
     type                     = class-name|keyword
     class-name               = 1*CHAR
     keyword                  = "string"|"integer"|"int"|"boolean"|"bool"|"float"
-                               |"double"|"object"|"mixed"|"array"|"resource"
+                               |"double"|"object"|"mixed"|"array"|"resource"|"scalar"
                                |"void"|"null"|"callback"|"false"|"true"|"self"
 
 When a :term:`Type` is used the user will expect a value, or set of values, as
@@ -220,6 +220,9 @@ The following keywords are recognized:
     If method C() was to be redefined in class B, including the type
     definition in the DocBlock, then `self` would refer to class B or any
     of its children.
+    
+14. **scalar**, the element to which this type applies is of any scalar type
+    specifically: *string*, *float*, *int*, *bool*
 
 Multiple types
 --------------
