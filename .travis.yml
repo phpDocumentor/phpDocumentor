@@ -31,11 +31,6 @@ notifications:
 
 before_deploy:
 - echo "${VERSION}" > VERSION
-- yes "" | pear upgrade --force
-- pear install XML_Serializer-beta
-- pear install PEAR_PackageFileManager2-1.0.4
-- php bin/utils/package.php '${VERSION}' '${VERSION}' 'stable' make
-- pear package
 - php -d phar.readonly=false box.phar build
 - openssl sha1 phpDocumentor.phar
 - echo "Update https://github.com/josegonzalez/homebrew-php/blob/master/Formula/phpdocumentor.rb with the latest version number and the SHA1 that is shown above with the path /get/phpDocumentor-${VERSION}.phar"
