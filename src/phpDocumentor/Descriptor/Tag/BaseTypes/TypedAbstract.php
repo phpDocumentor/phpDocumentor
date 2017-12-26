@@ -20,13 +20,13 @@ use phpDocumentor\Reflection\Type;
  */
 abstract class TypedAbstract extends TagDescriptor
 {
-    /** @var Collection $types */
+    /** @var Type $types */
     protected $types;
 
     /**
      * Sets a list of types associated with this tag.
      *
-     * @param Collection $types
+     * @param Type $types
      *
      * @return void
      */
@@ -38,9 +38,9 @@ abstract class TypedAbstract extends TagDescriptor
     /**
      * Returns the list of types associated with this tag.
      *
-     * @return Collection
+     * @return ?Type
      */
-    public function getTypes()
+    public function getTypes() /*: ?Type*/
     {
         return $this->types;
     }

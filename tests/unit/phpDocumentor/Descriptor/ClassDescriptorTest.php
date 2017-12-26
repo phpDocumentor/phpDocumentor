@@ -12,6 +12,7 @@
 namespace phpDocumentor\Descriptor;
 
 use Mockery as m;
+use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
 use phpDocumentor\Reflection\Types\String_;
 
 /**
@@ -369,7 +370,8 @@ class ClassDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         $methodName  = 'methodName';
         $description = 'description';
-        $response    = array('string');
+        $response    = new ReturnDescriptor('return');
+        $response->setTypes(new String_());
         $arguments   = m::mock('phpDocumentor\Descriptor\Tag\ArgumentDescriptor');
         $arguments->shouldReceive('setMethod');
 
