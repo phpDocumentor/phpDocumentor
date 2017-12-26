@@ -26,7 +26,7 @@ use phpDocumentor\Transformer\Template\Collection;
  */
 class ResolveInlineLinkAndSeeTagsTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
-    /** @var Queue||m\MockInterface */
+    /** @var Queue|m\MockInterface */
     private $router;
 
     /** @var ResolveInlineLinkAndSeeTags */
@@ -248,7 +248,7 @@ class ResolveInlineLinkAndSeeTagsTest extends \Mockery\Adapter\Phpunit\MockeryTe
     /**
      * It resolves the element that is linked to
      *
-     * @param DescriptorAbstract $descriptor
+     * @param m\MockInterface $descriptor
      * @param DescriptorAbstract $elementToLinkTo
      *
      * @return DescriptorAbstract

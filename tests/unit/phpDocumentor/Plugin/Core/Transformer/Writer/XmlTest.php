@@ -13,6 +13,7 @@
 
 namespace phpDocumentor\Plugin\Core\Transformer\Writer;
 
+use org\bovigo\vfs\vfsStreamDirectory;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 
@@ -40,7 +41,7 @@ class XmlTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /** @var m\MockInterface|ProjectDescriptor */
     protected $projectDescriptor;
 
-    /** @var vfsStream */
+    /** @var vfsStreamDirectory */
     protected $fs;
 
     /**
@@ -185,10 +186,10 @@ XML;
     /**
      * This implements testing of the protected buildDocBlock method
      *
-     * @param DescriptorAbstract $descriptor
+     * @param m\MockInterface $descriptor
      * @return void
      */
-    protected function implementProtectedBuildDocBlock(DescriptorAbstract $descriptor)
+    protected function implementProtectedBuildDocBlock(m\MockInterface $descriptor)
     {
         $descriptor->shouldReceive('getLine')->andReturn(666);
         $descriptor->shouldReceive('getPackage')->andReturn('myPackage');

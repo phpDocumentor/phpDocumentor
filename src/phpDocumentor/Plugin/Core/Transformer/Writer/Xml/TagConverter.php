@@ -11,6 +11,15 @@
 
 namespace phpDocumentor\Plugin\Core\Transformer\Writer\Xml;
 
+use phpDocumentor\Descriptor\Tag\MethodDescriptor;
+use phpDocumentor\Descriptor\Tag\BaseTypes\TypedAbstract;
+use phpDocumentor\Descriptor\Tag\BaseTypes\TypedVariableAbstract;
+use phpDocumentor\Descriptor\Tag\DeprecatedDescriptor;
+use phpDocumentor\Descriptor\Tag\LinkDescriptor;
+use phpDocumentor\Descriptor\Tag\SeeDescriptor;
+use phpDocumentor\Descriptor\Tag\SinceDescriptor;
+use phpDocumentor\Descriptor\Tag\UsesDescriptor;
+use phpDocumentor\Descriptor\Tag\VersionDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
 
 /**
@@ -45,16 +54,16 @@ class TagConverter
         $this->addTypes($tag, $child);
 
         // TODO: make the tests below configurable from the outside so that more could be added using plugins
-        if (method_exists($tag, 'getVariableName')) {
+        if ($tag instanceof TypedVariableAbstract) {
             $child->setAttribute('variable', str_replace('&', '&amp;', $tag->getVariableName()));
         }
-        if (method_exists($tag, 'getReference')) {
+        if ($tag instanceof SeeDescriptor || $tag instanceof UsesDescriptor) {
             $child->setAttribute('link', str_replace('&', '&amp;', $tag->getReference()));
         }
-        if (method_exists($tag, 'getLink')) {
+        if ($tag instanceof LinkDescriptor) {
             $child->setAttribute('link', str_replace('&', '&amp;', $tag->getLink()));
         }
-        if (method_exists($tag, 'getMethodName')) {
+        if ($tag instanceof MethodDescriptor) {
             $child->setAttribute('method_name', str_replace('&', '&amp;', $tag->getMethodName()));
         }
 
@@ -74,8 +83,11 @@ class TagConverter
     {
         $description = '';
 
-        //@version, @deprecated, @since
-        if (method_exists($tag, 'getVersion')) {
+        if (
+            $tag instanceof VersionDescriptor ||
+            $tag instanceof DeprecatedDescriptor ||
+            $tag instanceof SinceDescriptor
+        ) {
             $description .= $tag->getVersion() . ' ';
         }
 
@@ -99,12 +111,15 @@ class TagConverter
         }
 
         $typeString = '';
-        foreach ($tag->getTypes() as $type) {
-            $typeString .= $type . '|';
 
-            /** @var \DOMElement $typeNode */
-            $typeNode = $child->appendChild(new \DOMElement('type'));
-            $typeNode->appendChild(new \DOMText($type));
+        if ($tag instanceof TypedAbstract) {
+            foreach ($tag->getTypes() as $type) {
+                $typeString .= $type . '|';
+
+                /** @var \DOMElement $typeNode */
+                $typeNode = $child->appendChild(new \DOMElement('type'));
+                $typeNode->appendChild(new \DOMText($type));
+            }
         }
 
         $child->setAttribute('type', str_replace('&', '&amp;', rtrim($typeString, '|')));

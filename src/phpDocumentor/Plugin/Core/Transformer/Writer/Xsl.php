@@ -233,13 +233,13 @@ class Xsl extends WriterAbstract implements Routable
         $xsl->load($xslTemplatePath);
 
         $proc = new \XSLTProcessor();
-        $proc->importStyleSheet($xsl);
+        $proc->importStylesheet($xsl);
 
         return $proc;
     }
 
     /**
-     * @param $structureFilename
+     * @param string $structureFilename
      * @return \DOMDocument
      */
     private function loadAst($structureFilename)
@@ -270,11 +270,14 @@ class Xsl extends WriterAbstract implements Routable
 
     /**
      * @param Transformation $transformation
-     * @param $proc
-     * @param $structure
+     * @param \XSLTProcessor $proc
+     * @param \DOMDocument $structure
      */
-    private function registerDefaultVariables(Transformation $transformation, $proc, $structure)
-    {
+    private function registerDefaultVariables(
+        Transformation $transformation,
+        \XSLTProcessor $proc,
+        \DOMDocument $structure
+    ) {
         $proc->setParameter('', 'title', $structure->documentElement->getAttribute('title'));
 
         if ($transformation->getParameter('search') !== null && $transformation->getParameter('search')->getValue()) {
@@ -288,16 +291,16 @@ class Xsl extends WriterAbstract implements Routable
     }
 
     /**
-     * @param $filename
-     * @param $proc
-     * @param $structure
+     * @param string $filename
+     * @param \XSLTProcessor $proc
+     * @param \DOMDocument $structure
      */
-    private function writeToFile($filename, $proc, $structure)
+    private function writeToFile($filename, \XSLTProcessor $proc, \DOMDocument $structure)
     {
         if (!file_exists(dirname($filename))) {
             mkdir(dirname($filename), 0755, true);
         }
-        $proc->transformToURI($structure, $this->getXsltUriFromFilename($filename));
+        $proc->transformToUri($structure, $this->getXsltUriFromFilename($filename));
     }
 
     /**
@@ -326,10 +329,10 @@ class Xsl extends WriterAbstract implements Routable
 
     /**
      * @param ProjectDescriptor $project
-     * @param $element
+     * @param \DOMElement $element
      * @return false|string
      */
-    private function generateUrlForXmlElement(ProjectDescriptor $project, $element)
+    private function generateUrlForXmlElement(ProjectDescriptor $project, \DOMElement $element)
     {
         $elements = $project->getIndexes()->get('elements');
 

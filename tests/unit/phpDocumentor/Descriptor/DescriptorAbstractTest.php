@@ -35,6 +35,7 @@ class DescriptorAbstractTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testInitialize()
     {
+        /** @var m\MockInterface|DescriptorAbstract */
         $mock = $this->getMockBuilder('phpDocumentor\Descriptor\DescriptorAbstract')
             ->disableOriginalConstructor()
             ->getMock();
@@ -129,6 +130,7 @@ class DescriptorAbstractTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testGetAuthor()
     {
+        /** @var m\MockInterface|DescriptorAbstract */
         $mock = m::mock(
             'phpDocumentor\Descriptor\DescriptorAbstract, phpDocumentor\Descriptor\Interfaces\ChildInterface'
         );
@@ -148,6 +150,7 @@ class DescriptorAbstractTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testGetVersion()
     {
+        /** @var m\MockInterface|DescriptorAbstract */
         $mock = m::mock(
             'phpDocumentor\Descriptor\DescriptorAbstract, phpDocumentor\Descriptor\Interfaces\ChildInterface'
         );
@@ -167,6 +170,7 @@ class DescriptorAbstractTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testGetCopyRight()
     {
+        /** @var m\MockInterface|DescriptorAbstract */
         $mock = m::mock(
             'phpDocumentor\Descriptor\DescriptorAbstract, phpDocumentor\Descriptor\Interfaces\ChildInterface'
         );
@@ -217,7 +221,7 @@ class DescriptorAbstractTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         $this->assertSame('', $this->fixture->getPath());
 
-        /** @var FileDescriptor $file */
+        /** @var m\MockInterface $file */
         $file = m::mock('phpDocumentor\Descriptor\FileDescriptor');
         $file->shouldReceive('getPath')->andReturn('path');
         $this->fixture->setLocation($file);

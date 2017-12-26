@@ -41,7 +41,6 @@ class MethodAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @param string   $notation
      * @param string   $returnType
      * @param string   $name
      * @param string[] $arguments

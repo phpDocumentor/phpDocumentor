@@ -12,7 +12,6 @@
 
 namespace phpDocumentor\Parser\Middleware;
 
-
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Parser\Event\PreFileEvent;
 use phpDocumentor\Reflection\Middleware\Middleware;

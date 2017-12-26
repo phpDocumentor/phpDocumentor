@@ -113,7 +113,7 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testRetrievalOfItems()
     {
         $this->fixture['a'] = 'abc';
-        $this->assertEquals('abc', $this->fixture->a);
+        $this->assertEquals('abc', $this->fixture->__get('a'));
         $this->assertEquals('abc', $this->fixture['a']);
         $this->assertEquals('abc', $this->fixture->get('a'));
         $this->assertCount(1, $this->fixture);

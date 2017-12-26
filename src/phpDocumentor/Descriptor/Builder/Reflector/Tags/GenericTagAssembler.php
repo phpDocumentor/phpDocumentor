@@ -14,6 +14,7 @@ namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tag;
+use phpDocumentor\Reflection\DocBlock\Tags\BaseTag;
 
 class GenericTagAssembler extends AssemblerAbstract
 {
@@ -27,7 +28,10 @@ class GenericTagAssembler extends AssemblerAbstract
     public function create($data)
     {
         $descriptor = new TagDescriptor($data->getName());
-        $descriptor->setDescription($data->getDescription());
+
+        if ($data instanceof BaseTag) {
+            $descriptor->setDescription($data->getDescription());
+        }
 
         return $descriptor;
     }

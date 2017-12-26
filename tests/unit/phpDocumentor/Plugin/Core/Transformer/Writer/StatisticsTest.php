@@ -92,10 +92,10 @@ class StatisticsTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @param $fileDescriptor
+     * @param m\MockInterface $fileDescriptor
      * @return m\MockInterface
      */
-    private function givenAProjectDescriptor($fileDescriptor)
+    private function givenAProjectDescriptor(m\MockInterface $fileDescriptor)
     {
         $projectDescriptor = m::mock('phpDocumentor\Descriptor\ProjectDescriptor');
         $projectDescriptor->shouldReceive('getFiles->getAll')->andReturn(array($fileDescriptor));
@@ -179,11 +179,11 @@ class StatisticsTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @param $actualXml
+     * @param \DOMDocument $actualXml
      *
      * @return \DateTime
      */
-    private function getGeneratedDateTime($actualXml)
+    private function getGeneratedDateTime(\DOMDocument $actualXml)
     {
         return new \DateTime(
             $actualXml->getElementsByTagName('stat')->item(0)->attributes->getNamedItem('date')->nodeValue
@@ -191,11 +191,11 @@ class StatisticsTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @param $actualXml
+     * @param \DOMDocument $actualXml
      *
      * @return \DateTime
      */
-    private function setGeneratedDateTime($actualXml, \DateTime $dateTime)
+    private function setGeneratedDateTime(\DOMDocument $actualXml, \DateTime $dateTime)
     {
         $actualXml->getElementsByTagName('stat')->item(0)->attributes->getNamedItem('date')->nodeValue
             = $dateTime->format(DATE_ATOM);

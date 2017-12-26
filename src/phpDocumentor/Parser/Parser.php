@@ -276,7 +276,7 @@ class Parser
      * Iterates through the given files feeds them to the builder.
      *
      * @param ProjectDescriptorBuilder $builder
-     * @param Collection               $files   A files container to parse.
+     * @param array $files
      *
      * @api
      *
@@ -298,8 +298,10 @@ class Parser
         $this->logAfterParsingAllFiles();
 
         /*
-         *TODO: This should be moved to some view adapter layer when we are removing the descriptors from the application.
-         * because we are now partly migrating to the new reflection component we are transforming back to the original structure.
+         * TODO: This should be moved to some view adapter layer when
+         * we are removing the descriptors from the application.
+         * because we are now partly migrating to the new reflection component
+         * we are transforming back to the original structure.
          */
         $builder->build($project);
 

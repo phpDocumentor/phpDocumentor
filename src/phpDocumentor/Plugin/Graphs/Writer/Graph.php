@@ -159,12 +159,18 @@ class Graph extends WriterAbstract
 
         if (!isset($this->nodeCache[$from_name])) {
             $namespaceParts = explode('\\', $from_name);
-            $this->nodeCache[$from_name] = $this->createEmptyNode(array_pop($namespaceParts), $this->createNamespaceGraph($from_name));
+            $this->nodeCache[$from_name] = $this->createEmptyNode(
+                array_pop($namespaceParts),
+                $this->createNamespaceGraph($from_name)
+            );
         }
 
         if (!isset($this->nodeCache[$to_name])) {
             $namespaceParts = explode('\\', $to_name);
-            $this->nodeCache[$to_name] = $this->createEmptyNode(array_pop($namespaceParts), $this->createNamespaceGraph($to_name));
+            $this->nodeCache[$to_name] = $this->createEmptyNode(
+                array_pop($namespaceParts),
+                $this->createNamespaceGraph($to_name)
+            );
         }
 
         $fromNode = $this->nodeCache[$from_name];
@@ -251,7 +257,10 @@ class Graph extends WriterAbstract
 
         /** @var ClassDescriptor|InterfaceDescriptor|TraitDescriptor $sub_element */
         foreach ($elements as $sub_element) {
-            $node = Node::create((string)$sub_element->getFullyQualifiedStructuralElementName(), $sub_element->getName())
+            $node = Node::create(
+                (string)$sub_element->getFullyQualifiedStructuralElementName(),
+                $sub_element->getName()
+            )
                 ->setShape('box')
                 ->setFontName($this->nodeFont)
                 ->setFontSize('11');
@@ -307,8 +316,8 @@ class Graph extends WriterAbstract
     }
 
     /**
-     * @param $full_namespace_name
-     * @param $label
+     * @param string $full_namespace_name
+     * @param string $label
      *
      * @return mixed
      */

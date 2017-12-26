@@ -141,7 +141,7 @@ class TransformerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
             array($transformation)
         );
 
-        $this->assertNull($fixture->execute($project));
+        $fixture->execute($project);
     }
 
     /**

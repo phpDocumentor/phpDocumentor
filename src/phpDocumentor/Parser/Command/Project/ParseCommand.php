@@ -20,6 +20,7 @@ use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\DomainModel\Dsn;
 use phpDocumentor\DomainModel\Parser\FileCollector;
+use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Fileset\Collection;
 use phpDocumentor\Infrastructure\FlySystemFactory;
 use phpDocumentor\Infrastructure\Parser\FlySystemFile;
@@ -215,7 +216,8 @@ class ParseCommand extends Command
         $output->write($this->__('PPCPP:LOG-COLLECTING'));
         $files = $this->getFileCollection($input);
 
-        //TODO: Should determine root based on filesystems. Could be an issue for multiple. Need some config update here.
+        //TODO: Should determine root based on filesystems. Could be an issue for multiple.
+        // Need some config update here.
         $this->exampleFinder->setSourceDirectory(getcwd());
         $this->exampleFinder->setExampleDirectories($configurationHelper->getConfigValueFromPath('files/examples'));
         $output->writeln($this->__('PPCPP:LOG-OK'));
@@ -313,7 +315,7 @@ class ParseCommand extends Command
 
 
         $ignorePaths = array_map(
-            function($value) {
+            function ($value) {
                 if (substr($value, -1) === '*') {
                     return substr($value, 0, -1);
                 }
@@ -392,8 +394,8 @@ class ParseCommand extends Command
      */
     // @codingStandardsIgnoreStart
     protected function __($text, $parameters = array())
-        // @codingStandardsIgnoreEnd
     {
+        // @codingStandardsIgnoreEnd
         return vsprintf($this->translator->translate($text), $parameters);
     }
 

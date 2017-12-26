@@ -11,6 +11,8 @@
 
 namespace phpDocumentor\Plugin\Scrybe\Converter\RestructuredText\Visitors;
 
+use ezcDocumentRstDocumentNode;
+use ezcDocumentRstSectionNode;
 use \phpDocumentor\Plugin\Scrybe\Converter\Metadata\TableOfContents;
 
 /**
@@ -73,28 +75,30 @@ class Discover extends Creator
      */
     protected function visitSection(\DOMNode $root, \ezcDocumentRstNode $node)
     {
-        if ($node->depth == 1) {
-            $toc = $this->getTableOfContents();
-            $file = $toc[$this->getFilenameWithoutExtension()];
-            $file->setName($this->nodeToString($node->title));
-        } else {
-            // find nearest parent pointer depth-wise
-            $parent_depth = $node->depth - 1;
-            while (!isset($this->entry_pointers[$parent_depth]) && $parent_depth > 0) {
-                $parent_depth -= 1;
+        if ($node instanceof ezcDocumentRstSectionNode || $node instanceof ezcDocumentRstDocumentNode) {
+            if ($node->depth == 1) {
+                $toc = $this->getTableOfContents();
+                $file = $toc[$this->getFilenameWithoutExtension()];
+                $file->setName($this->nodeToString($node->title));
+            } else {
+                // find nearest parent pointer depth-wise
+                $parent_depth = $node->depth - 1;
+                while (!isset($this->entry_pointers[$parent_depth]) && $parent_depth > 0) {
+                    $parent_depth -= 1;
+                }
+
+                $parent = $this->entry_pointers[$parent_depth];
+                $heading = new TableOfContents\Heading($parent);
+                $heading->setName($this->nodeToString($node->title));
+                $heading->setSlug($node->reference);
+                $parent->addChild($heading);
+
+                // set as last indexed heading
+                $this->last_heading = $heading;
+
+                // add as new entry pointer
+                array_splice($this->entry_pointers, $parent_depth+1, count($this->entry_pointers), array($heading));
             }
-
-            $parent = $this->entry_pointers[$parent_depth];
-            $heading = new TableOfContents\Heading($parent);
-            $heading->setName($this->nodeToString($node->title));
-            $heading->setSlug($node->reference);
-            $parent->addChild($heading);
-
-            // set as last indexed heading
-            $this->last_heading = $heading;
-
-            // add as new entry pointer
-            array_splice($this->entry_pointers, $parent_depth+1, count($this->entry_pointers), array($heading));
         }
 
         parent::visitSection($root, $node);

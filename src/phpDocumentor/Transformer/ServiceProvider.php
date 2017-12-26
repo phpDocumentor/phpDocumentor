@@ -184,8 +184,10 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
             return $transformer;
         };
 
-        $app->command(new TransformCommand($app['descriptor.builder'], $app['transformer'], $app['compiler']));
-        $app->command(new ListCommand($app['transformer.template.factory']));
+        if ($app instanceof Application) {
+            $app->command(new TransformCommand($app['descriptor.builder'], $app['transformer'], $app['compiler']));
+            $app->command(new ListCommand($app['transformer.template.factory']));
+        }
     }
 
     /**

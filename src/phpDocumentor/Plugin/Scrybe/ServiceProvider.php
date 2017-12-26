@@ -78,9 +78,11 @@ class ServiceProvider implements ServiceProviderInterface
      */
     protected function addCommands(Container $app)
     {
-        $app->command(
-            new Command\Manual\ToHtmlCommand(null, $app[self::TEMPLATE_FACTORY], $app[self::CONVERTER_FACTORY])
-        );
+        if ($app instanceof Application) {
+            $app->command(
+                new Command\Manual\ToHtmlCommand(null, $app[self::TEMPLATE_FACTORY], $app[self::CONVERTER_FACTORY])
+            );
+        }
 
         // FIXME: Disabled the ToLatex and ToPdf commands for now to prevent confusion of users.
         // $this->command(new \phpDocumentor\Plugin\Scrybe\Command\Manual\ToLatexCommand());

@@ -26,7 +26,7 @@ abstract class TypedAbstract extends TagDescriptor
     /**
      * Sets a list of types associated with this tag.
      *
-     * @param Collection $types
+     * @param Type $types
      *
      * @return void
      */

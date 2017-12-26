@@ -255,7 +255,7 @@ class Application extends Cilex
                 $paths    = $configuration->getLogging()->getPaths();
                 $logLevel = $configuration->getLogging()->getLevel();
 
-                $app->configureLogger($log, $logLevel, $paths['default'], $paths['errors']);
+                $app->configureLogger($log, $logLevel, $paths['default']);
             }
         );
 

@@ -120,7 +120,7 @@ class DsnTest extends TestCase
         $fixture = new Dsn($dsn);
 
         $this->assertEquals('file://src', (string)$fixture);
-        $this->assertEquals('file', $fixture->getscheme());
+        $this->assertEquals('file', $fixture->getScheme());
         $this->assertEquals(null, $fixture->getHost());
         $this->assertEquals(0, $fixture->getPort());
         $this->assertEquals('src', $fixture->getPath());
@@ -142,7 +142,7 @@ class DsnTest extends TestCase
         $fixture = new Dsn($dsn);
 
         $this->assertEquals('file://C:\\phpdocumentor\\tests\\unit\\phpDocumentor\\Infrastructure\\Parser', (string)$fixture);
-        $this->assertEquals('file', $fixture->getscheme());
+        $this->assertEquals('file', $fixture->getScheme());
         $this->assertEquals(null, $fixture->getHost());
         $this->assertEquals(0, $fixture->getPort());
         $this->assertEquals('C:\\phpdocumentor\\tests\\unit\\phpDocumentor\\Infrastructure\\Parser', $fixture->getPath());
@@ -164,7 +164,7 @@ class DsnTest extends TestCase
         $fixture = new Dsn($dsn);
 
         $this->assertEquals('file://C:\\phpdocumentor\\tests', (string)$fixture);
-        $this->assertEquals('file', $fixture->getscheme());
+        $this->assertEquals('file', $fixture->getScheme());
         $this->assertEquals(null, $fixture->getHost());
         $this->assertEquals(0, $fixture->getPort());
         $this->assertEquals('C:\\phpdocumentor\\tests', $fixture->getPath());

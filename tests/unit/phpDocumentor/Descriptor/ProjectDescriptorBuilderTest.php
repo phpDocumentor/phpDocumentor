@@ -36,9 +36,8 @@ class ProjectDescriptorBuilderTest extends \Mockery\Adapter\Phpunit\MockeryTestC
     {
         $this->assemblerFactory = $this->createAssemblerFactoryMock();
         $filterMock = m::mock('phpDocumentor\Descriptor\Filter\Filter');
-        $validatorMock = m::mock('Symfony\Component\Validator\Validator');
 
-        $this->fixture = new ProjectDescriptorBuilder($this->assemblerFactory, $filterMock, $validatorMock);
+        $this->fixture = new ProjectDescriptorBuilder($this->assemblerFactory, $filterMock);
     }
 
     /**
@@ -65,7 +64,6 @@ class ProjectDescriptorBuilderTest extends \Mockery\Adapter\Phpunit\MockeryTestC
 
         // usage example, see the setup how to instantiate the builder.
         $this->fixture->createProjectDescriptor();
-        $this->fixture->buildFileUsingSourceData($data);
         $projectDescriptor = $this->fixture->getProjectDescriptor();
 
         // assert functioning

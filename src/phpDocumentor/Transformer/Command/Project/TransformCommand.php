@@ -25,11 +25,13 @@ use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Transformer;
 use Symfony\Component\Console\Helper\HelperInterface;
+use Symfony\Component\Console\Helper\ProgressHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Zend\Cache\Storage\StorageInterface;
+use Zend\Stdlib\AbstractOptions;
 
 /**
  * Transforms the structure file into the specified output format
@@ -158,6 +160,7 @@ TEXT
         /** @var ConfigurationHelper $configurationHelper */
         $configurationHelper = $this->getHelper('phpdocumentor_configuration');
 
+        /** @var ProgressHelper $progress */
         $progress = $this->getProgressBar($input);
         if (! $progress) {
             $this->connectOutputToEvents($output);
@@ -372,7 +375,10 @@ TEXT
         Dispatcher::getInstance()->addListener(
             Transformer::EVENT_PRE_TRANSFORM,
             function (PreTransformEvent $event) use ($output) {
-                $transformations = $event->getSubject()->getTemplates()->getTransformations();
+                /** @var Transformer $transformer */
+                $transformer = $event->getSubject();
+                $templates = $transformer->getTemplates();
+                $transformations = $templates->getTransformations();
                 $output->writeln(sprintf("\nApplying %d transformations", count($transformations)));
             }
         );

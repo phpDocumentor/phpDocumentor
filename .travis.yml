@@ -18,7 +18,7 @@ jobs:
 
     - stage: Lint
       php: 7.1
-      script: ./tools/phpstan analyse src tests --level 1 --configuration phpstan.neon
+      script: ./tools/phpstan analyse src tests --level 2 --configuration phpstan.neon
       before_script:
         - wget https://phar.io/releases/phive.phar
         - wget https://phar.io/releases/phive.phar.asc

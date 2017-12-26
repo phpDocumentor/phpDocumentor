@@ -46,7 +46,7 @@ class Factory
      * construct the Definition\Factory with a different Format\Collection to influence the possible options.
      *
      * @param string[]                $converters
-     * @param Definition\Factory|null $definition_factory
+     * @param Definition\Factory $definition_factory
      * @param Logger                  $logger
      */
     public function __construct(array $converters, Definition\Factory $definition_factory, Logger $logger)

@@ -115,21 +115,30 @@ class UsesTag
                 if ($node->parentNode->parentNode->nodeName == 'class') {
                     // if the element where the @uses is in is a class; nothing
                     // more than the class name need to returned
-                    $referral_name = $node->parentNode->parentNode
+
+                    /** @var \DOMElement $grandParentNode */
+                    $grandParentNode = $node->parentNode->parentNode;
+                    $referral_name = $grandParentNode
                         ->getElementsByTagName('full_name')->item(0)->nodeValue;
                 } else {
 
                     $referral_class_name = null;
                     if ($node->parentNode->parentNode->nodeName == 'method') {
                         // gather the name of the class where the @uses is in
-                        $referral_class_name = $node->parentNode->parentNode
-                            ->parentNode->getElementsByTagName('full_name')->item(0)
+
+                        /** @var \DOMElement $greatGrandParentNode */
+                        $greatGrandParentNode = $node->parentNode->parentNode->parentNode;
+                        $referral_class_name = $greatGrandParentNode
+                            ->getElementsByTagName('full_name')->item(0)
                             ->nodeValue;
                     }
 
                     // gather the name of the subelement of the class where
                     // the @uses is in
-                    $referral_name = $node->parentNode->parentNode
+
+                    /** @var \DOMElement $grandParentNode */
+                    $grandParentNode = $node->parentNode->parentNode;
+                    $referral_name = $grandParentNode
                         ->getElementsByTagName('name')->item(0)->nodeValue;
 
                     // if it is a method; suffix with ()

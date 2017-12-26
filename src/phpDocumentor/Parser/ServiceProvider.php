@@ -57,10 +57,10 @@ class ServiceProvider implements ServiceProviderInterface
         }
 
         $app['parser.middleware.cache'] = function () {
-                return new CacheMiddleware(
-                    new Pool(new FileSystem(['path' => 'build/api-cache']))
-                );
-            };
+            return new CacheMiddleware(
+                new Pool(new FileSystem(['path' => 'build/api-cache']))
+            );
+        };
 
         $app['parser'] = function ($app) {
             $stopWatch = $app['kernel.stopwatch'];
@@ -105,47 +105,18 @@ class ServiceProvider implements ServiceProviderInterface
             new FlySystemFactory(new MountManager())
         );
 
-        $app->command(
-            new ParseCommand(
-                $app['descriptor.builder'],
-                $app['parser'],
-                $fileCollector,
-                $translator,
-                $app['descriptor.cache'],
-                $app['parser.example.finder'],
-                $app['partials']
-            )
-        );
+        if ($app instanceof Application) {
+            $app->command(
+                new ParseCommand(
+                    $app['descriptor.builder'],
+                    $app['parser'],
+                    $fileCollector,
+                    $translator,
+                    $app['descriptor.cache'],
+                    $app['parser.example.finder'],
+                    $app['partials']
+                )
+            );
+        }
     }
-
-    /**
-     * Load the configuration for given element (deprecated/required)
-     *
-     * @param array  $configOptions The configuration from the plugin.xml file
-     * @param string $configType    Required/Deprecated for the time being
-     *
-     * @return array
-     */
-//    protected function loadConfigurationByElement($configOptions, $configType)
-//    {
-//        $validatorOptions = array();
-//
-//        if (isset($configOptions[$configType]->tag)) {
-//
-//            foreach ($configOptions[$configType]->tag as $tag) {
-//                $tagName = (string)$tag['name'];
-//
-//                if (isset($tag->element)) {
-//                    foreach ($tag->element as $type) {
-//                        $typeName = (string)$type;
-//                        $validatorOptions[$typeName][] = $tagName;
-//                    }
-//                } else {
-//                    $validatorOptions['__ALL__'][] = $tagName;
-//                }
-//            }
-//        }
-//
-//        return $validatorOptions;
-//    }
 }

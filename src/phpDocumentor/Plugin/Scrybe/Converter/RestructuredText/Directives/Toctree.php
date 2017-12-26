@@ -11,6 +11,7 @@
 
 namespace phpDocumentor\Plugin\Scrybe\Converter\RestructuredText\Directives;
 
+use phpDocumentor\Plugin\Scrybe\Converter\RestructuredText\Visitors\Creator;
 use phpDocumentor\Plugin\Scrybe\Converter\RestructuredText\Visitors\Discover;
 
 /**
@@ -131,9 +132,12 @@ class Toctree extends \ezcDocumentRstDirective implements \ezcDocumentRstXhtmlDi
      */
     protected function getCaption($file_name)
     {
-        $toc = $this->visitor->getTableOfContents();
-        $name = $toc[$file_name]->getName();
+        if ($this->visitor instanceof Creator) {
+            $toc = $this->visitor->getTableOfContents();
+            $name = $toc[$file_name]->getName();
+            return $name ? $name : $file_name;
+        }
 
-        return $name ? $name : $file_name;
+        return $file_name;
     }
 }

@@ -12,7 +12,9 @@
 namespace phpDocumentor\Plugin\Core\Transformer\Writer\Xml;
 
 use Mockery as m;
+use phpDocumentor\Descriptor\Tag\BaseTypes\TypedAbstract;
 use phpDocumentor\Descriptor\TagDescriptor;
+use phpDocumentor\Reflection\Type;
 
 /**
  * Test class for \phpDocumentor\Plugin\Core\Transformer\Writer\Xml\TagConverter.

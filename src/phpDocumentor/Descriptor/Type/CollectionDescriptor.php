@@ -11,6 +11,7 @@
 
 namespace phpDocumentor\Descriptor\Type;
 
+use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\Interfaces\TypeInterface;
 
 /**
@@ -47,7 +48,7 @@ class CollectionDescriptor implements TypeInterface
      */
     public function getName()
     {
-        return $this->baseType instanceof TypeInterface ? $this->baseType->getName() : $this->baseType;
+        return method_exists($this->baseType, 'getName') ? $this->baseType->getName() : $this->baseType;
     }
 
     /**

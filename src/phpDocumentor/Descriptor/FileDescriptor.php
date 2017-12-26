@@ -10,6 +10,7 @@
  */
 
 namespace phpDocumentor\Descriptor;
+
 use phpDocumentor\Descriptor\Interfaces\ClassInterface;
 use phpDocumentor\Descriptor\Interfaces\FunctionInterface;
 use phpDocumentor\Descriptor\Interfaces\InterfaceInterface;

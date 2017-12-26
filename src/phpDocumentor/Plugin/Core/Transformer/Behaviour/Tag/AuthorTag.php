@@ -57,7 +57,10 @@ class AuthorTag
                 }
 
                 $node->nodeValue = $value;
-                $node->parentNode->setAttribute(
+
+                /** @var \DOMElement $parentNode */
+                $parentNode = $node->parentNode;
+                $parentNode->setAttribute(
                     'link',
                     'mailto:' . $matches['email']
                 );
