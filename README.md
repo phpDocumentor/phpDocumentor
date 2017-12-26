@@ -9,7 +9,7 @@ README
 What is phpDocumentor?
 ----------------
 
-phpDocumentor an application that is capable of analyzing your PHP source code and
+phpDocumentor is an application that is capable of analyzing your PHP source code and
 DocBlock comments to generate a complete set of API Documentation.
 
 Inspired by phpDocumentor 1 and JavaDoc it continues to innovate and is up to date
@@ -20,7 +20,7 @@ Features
 
 phpDocumentor supports the following:
 
-* *PHP 5.3 compatible*, full support for Namespaces, Closures and more is provided.
+* *PHP 7.0 compatible*, full support for Namespaces, Closures and more is provided.
 * *Shows any tag*, some tags add additional functionality to phpDocumentor (such as @link).
 * *Processing speed*, Zend Framework experienced a significant reduction in processing time compared to phpDocumentor 1.
 * *Low memory usage*, peak memory usage for small projects is less than 20MB, medium projects 40MB and large frameworks 100MB.
@@ -31,13 +31,16 @@ phpDocumentor supports the following:
   basic phpDocumentor 1 arguments, such as --directory, --file and --target, have been adopted.
 * *Two-step process*, phpDocumentor first generates a cache with your application structure before creating the output.
   If you'd like you can use that to power your own tools or formatters!
+  
+*Please note* that phpDocumentor 3 is still under heavy development. We aim to add all features needed to have full support 
+for php 7+. But at this moment that is not the case.
 
 Requirements
 ------------
 
 phpDocumentor requires the following:
 
-* PHP 5.3.3 or higher
+* PHP 7.0 or higher
 * ext/iconv, http://php.net/manual/en/book.iconv.php (is enabled by default since PHP 5.0.0)
 * ext/intl, http://php.net/manual/en/book.intl.php
 * The XSL extension, http://www.php.net/manual/en/book.xsl.php (optional, only used with XSL based templates)
@@ -56,22 +59,23 @@ Installation
 
 There are 3 ways to install phpDocumentor:
 
-1. Via PEAR (recommended)
-2. Via [Composer](https://getcomposer.org)
-3. Using the PHAR
+1. Using the PHAR
+2. Via [Docker](https://hub.docker.com/r/phpdoc/phpdoc/)
+3. Via [Composer](https://getcomposer.org)
 
 _*Please note* that it is required that the installation path of phpDocumentor does not
 contain spaces. This is a requirement imposed by an external library (libxml)_
 
-### PEAR (recommended)
+### Using the PHAR
 
-1. phpDocumentor is hosted on its own PEAR channel which can be discovered using the following command:
+1. Download the phar file from https://github.com/phpDocumentor/phpDocumentor2/releases
+2. ???
+3. Profit!
 
-        $ pear channel-discover pear.phpdoc.org
+### Via docker
 
-2. After that it is a simple matter of invoking PEAR to install the application
-
-        $ pear install phpdoc/phpDocumentor
+1. `$ docker pull phpdoc/phpdoc`
+2. `$ docker run --rm -v $(pwd):/data phpdoc/phpdoc`
 
 ### Via Composer
 
@@ -84,11 +88,13 @@ Afterwards you are able to run phpDocumentor directly from your `vendor` directo
 
     $ php vendor/bin/phpdoc
 
-### Using the PHAR
+*Please note* that we are not able to be compatible with all types of setups. In 
+some situations phpDocumentor will block updates of other packages. We do not recommend
+using composer to install phpDocumentor.
 
-1. Download the phar file from http://phpdoc.org/phpDocumentor.phar
-2. ???
-3. Profit!
+### Pear
+Starting from phpdocumentor v3 we decided to drop pear support. We will provide the
+already released versions of phpdocumentor v2. But these versions won't be maintained.
 
 How to use phpDocumentor?
 -------------------
@@ -135,6 +141,5 @@ To come in contact is actually dead simple and can be done in a variety of ways.
 
 * Twitter: [@phpDocumentor](http://twitter.com/phpdocumentor)
 * Website: [http://www.phpdoc.org](http://www.phpdoc.org)
-* IRC:     Freenode, #phpdocumentor
 * Github:  [http://www.github.com/phpdocumentor/phpdocumentor2](http://www.github.com/phpdocumentor/phpdocumentor2)
-* E-mail:  [mike.vanriel@naenius.com](mailto:mike.vanriel@naenius.com)
+* E-mail:  [mike@phpdoc.org](mailto:mike@phpdoc.org)

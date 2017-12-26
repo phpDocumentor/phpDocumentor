@@ -14,6 +14,7 @@ namespace phpDocumentor\Behat\Contexts\Ast;
 
 
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use phpDocumentor\Descriptor\ProjectDescriptor;
 
 class BaseContext
 {
