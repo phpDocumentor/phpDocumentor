@@ -13,7 +13,9 @@ namespace phpDocumentor\Descriptor;
 
 use \Mockery as m;
 use phpDocumentor\Descriptor\Tag\AuthorDescriptor;
+use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
 use phpDocumentor\Descriptor\Tag\VersionDescriptor;
+use phpDocumentor\Reflection\DocBlock\Tags\Return_;
 use phpDocumentor\Reflection\Types\String_;
 
 /**
@@ -120,9 +122,10 @@ class MethodDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testRetrieveReturnTagForResponse()
     {
-        $mock = new \stdClass();
+        $mock = new ReturnDescriptor('return');
+        $mock->setTypes(new String_());
 
-        $this->assertNull($this->fixture->getResponse());
+        $this->assertNull($this->fixture->getResponse()->getTypes());
 
         $this->fixture->getTags()->set('return', new Collection(array($mock)));
 

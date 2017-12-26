@@ -258,7 +258,7 @@ class ApiContext extends BaseContext implements Context
         Assert::assertInstanceOf(MethodDescriptor::class, $method);
         Assert::assertEquals($methodName, $method->getName());
 
-        Assert::assertEquals($returnType, (string)$method->getReturn());
+        Assert::assertEquals($returnType, (string)$method->getResponse()->getTypes());
     }
 
     /**
