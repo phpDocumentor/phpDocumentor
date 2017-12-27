@@ -13,6 +13,7 @@
 namespace phpDocumentor\Behat\Contexts\Ast;
 
 use Behat\Behat\Context\Context;
+use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Gherkin\Node\PyStringNode;
 use phpDocumentor\Descriptor\ArgumentDescriptor;
 use phpDocumentor\Descriptor\ClassDescriptor;
@@ -22,6 +23,7 @@ use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Descriptor\Tag\ParamDescriptor;
+use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
 use phpDocumentor\Descriptor\Tag\VersionDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
 use PHPUnit\Framework\Assert;
@@ -246,23 +248,6 @@ class ApiContext extends BaseContext implements Context
 
     /**
      * @param string $classFqsen
-     * @param string $tagName
-     * @param string $methodName
-     * @Then class ":classFqsen" has a method :method with returntype :returnType
-     */
-    public function classHasMethodWithReturnType($classFqsen, $methodName, $returnType)
-    {
-        $class = $this->findClassByFqsen($classFqsen);
-        /** @var MethodDescriptor $method */
-        $method = $class->getMethods()->get($methodName, null);
-        Assert::assertInstanceOf(MethodDescriptor::class, $method);
-        Assert::assertEquals($methodName, $method->getName());
-
-        Assert::assertEquals($returnType, (string)$method->getResponse()->getTypes());
-    }
-
-    /**
-     * @param string $classFqsen
      * @param string $methodName
      * @param string $argument
      * @param string $type
@@ -359,5 +344,117 @@ class ApiContext extends BaseContext implements Context
         $file = $ast->getFiles()->get($fileName);
 
         Assert::assertEquals($string->getRaw(), $file->getSummary());
+    }
+
+    /**
+     * @param string $classFqsen
+     * @param string $methodName
+     * @param $returnType
+     * @throws \Exception
+     * @Then class ":classFqsen" has a method :method with returntype :returnType
+     * @Then class ":classFqsen" has a method :method with returntype :returnType without description
+     */
+    public function classHasMethodWithReturnType($classFqsen, $methodName, $returnType)
+    {
+        $response = $this->findMethodResponse($classFqsen, $methodName);
+
+        Assert::assertEquals($returnType, (string)$response->getTypes());
+        Assert::assertEquals('', (string)$response->getDescription());
+    }
+
+    /**
+     * @param string $classFqsen
+     * @param string $methodName
+     * @param $returnType
+     * @throws \Exception
+     * @Then class ":classFqsen" has a method :method with returntype :returnType with description:
+     */
+    public function classHasMethodWithReturnTypeAndDescription($classFqsen, $methodName, $returnType, PyStringNode $description)
+    {
+        $response = $this->findMethodResponse($classFqsen, $methodName);
+
+        Assert::assertEquals($returnType, (string)$response->getTypes());
+        Assert::assertEquals($description, (string)$response->getDescription());
+    }
+
+    /**
+     * @Then class ":classFqsen" has a method ":method" without returntype
+     * @throws \Exception
+     */
+    public function classReturnTaggetReturnWithoutAnyWithoutReturntype($classFqsen, $methodName)
+    {
+        $response = $this->findMethodResponse($classFqsen, $methodName);
+        Assert::assertEquals('mixed', (string)$response->getTypes());
+        Assert::assertEquals('', $response->getDescription());
+    }
+
+    /**
+     * @param $fqsen
+     * @param $returnType
+     * @throws \Exception
+     * @Then has function :fqsen with returntype :returnType
+     * @Then has function :fqsen with returntype :returnType without description
+     */
+    public function functionWithReturnType($fqsen, $returnType)
+    {
+        $response = $this->findFunctionResponse($fqsen);
+
+        Assert::assertEquals($returnType, (string)$response->getTypes());
+        Assert::assertEquals('', (string)$response->getDescription());
+    }
+
+    /**
+     * @param $fqsen
+     * @param $returnType
+     * @param PyStringNode $description
+     * @throws \Exception
+     * @Then has function :fqsen with returntype :returnType with description:
+     */
+    public function functionWithReturnTypeAndDescription($fqsen, $returnType, PyStringNode $description)
+    {
+        $response = $this->findFunctionResponse($fqsen);
+
+        Assert::assertEquals($returnType, (string)$response->getTypes());
+        Assert::assertEquals($description, (string)$response->getDescription());
+    }
+
+    /**
+     * @Then has function :fqsen without returntype
+     * @throws \Exception
+     */
+    public function functionWithoutReturntype($fqsen)
+    {
+        $response = $this->findFunctionResponse($fqsen);
+        Assert::assertEquals('mixed', (string)$response->getTypes());
+        Assert::assertEquals('', $response->getDescription());
+    }
+
+    /**
+     * @param $classFqsen
+     * @param $methodName
+     * @return ReturnDescriptor
+     * @throws \Exception
+     */
+    private function findMethodResponse($classFqsen, $methodName): ReturnDescriptor
+    {
+        $class = $this->findClassByFqsen($classFqsen);
+        /** @var MethodDescriptor $method */
+        $method = $class->getMethods()->get($methodName, null);
+        Assert::assertInstanceOf(MethodDescriptor::class, $method);
+        Assert::assertEquals($methodName, $method->getName());
+
+        $response = $method->getResponse();
+        return $response;
+    }
+
+    /**
+     * @param string $fqsen
+     * @return ReturnDescriptor
+     * @throws \Exception
+     */
+    private function findFunctionResponse(string $fqsen): ReturnDescriptor
+    {
+        $function = $this->findFunctionByFqsen($fqsen);
+        return $function->getResponse();
     }
 }
