@@ -14,6 +14,8 @@ namespace phpDocumentor\Behat\Contexts\Ast;
 
 
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use phpDocumentor\Descriptor\ClassDescriptor;
+use phpDocumentor\Descriptor\FunctionDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 
 class BaseContext
@@ -34,7 +36,7 @@ class BaseContext
      * @return ClassDescriptor
      * @throws \Exception
      */
-    protected function findClassByFqsen($classFqsen)
+    protected function findClassByFqsen($classFqsen): ClassDescriptor
     {
         $ast = $this->getAst();
         foreach ($ast->getFiles() as $file) {
@@ -47,6 +49,26 @@ class BaseContext
         }
 
         throw new \Exception(sprintf('Didn\'t find expected class "%s"', $classFqsen));
+    }
+
+    /**
+     * @param string $fqsen
+     * @return FunctionDescriptor
+     * @throws \Exception
+     */
+    protected function findFunctionByFqsen(string $fqsen): FunctionDescriptor
+    {
+        $ast = $this->getAst();
+        foreach ($ast->getFiles() as $file) {
+            /** @var FunctionDescriptor $classDescriptor */
+            foreach ($file->getFunctions() as $function) {
+                if ((string)$function->getFullyQualifiedStructuralElementName() === '\\' . $fqsen . '()') {
+                    return $function;
+                }
+            }
+        }
+
+        throw new \Exception(sprintf('Didn\'t find expected function "%s"', $fqsen));
     }
 
     /**

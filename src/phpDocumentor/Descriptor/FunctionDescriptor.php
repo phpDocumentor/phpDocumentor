@@ -10,6 +10,7 @@
  */
 
 namespace phpDocumentor\Descriptor;
+use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
 use phpDocumentor\Reflection\Type;
 
 /**
@@ -52,12 +53,21 @@ class FunctionDescriptor extends DescriptorAbstract implements Interfaces\Functi
     /**
      * {@inheritDoc}
      */
-    public function getResponse()
+    public function getResponse(): ReturnDescriptor
     {
+        $definedReturn = new ReturnDescriptor('return');
+        $definedReturn->setTypes($this->returnType);
+
         /** @var Collection|null $returnTags */
         $returnTags = $this->getTags()->get('return');
 
-        return $returnTags instanceof Collection ? current($returnTags->getAll()) : null;
+        if ($returnTags instanceof Collection && $returnTags->count() > 0) {
+            /** @var ReturnDescriptor $returnTag */
+            $returnTag = current($returnTags->getAll());
+            return $returnTag;
+        }
+
+        return $definedReturn;
     }
 
     /**
