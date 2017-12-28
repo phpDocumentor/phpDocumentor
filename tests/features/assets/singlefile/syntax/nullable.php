@@ -1,5 +1,5 @@
 <?php
 
 class A {
-    //public function getId(): ?int { return $this->id; }
+    public function getId(): ?int { return $this->id; }
 }

@@ -16,6 +16,7 @@ use phpDocumentor\Descriptor\Tag\AuthorDescriptor;
 use phpDocumentor\Descriptor\Tag\VarDescriptor;
 use phpDocumentor\Descriptor\Tag\VersionDescriptor;
 use phpDocumentor\Reflection\Types\Array_;
+use phpDocumentor\Reflection\Types\String_;
 
 /**
  * Tests the functionality for the ConstantDescriptor class.
@@ -80,7 +81,7 @@ class ConstantDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testSetAndGetTypes()
     {
-        $this->assertEquals(new Collection(), $this->fixture->getTypes());
+        $this->assertEquals(null, $this->fixture->getTypes());
         $expected = new Array_();
 
         $this->fixture->setTypes($expected);
@@ -94,7 +95,7 @@ class ConstantDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testgetTypesDerivedFromVarTag()
     {
-        $expected = array('string', 'null');
+        $expected = new String_();
 
         $varTag = m::mock('phpDocumentor\Descriptor\Tag\VarDescriptor');
         $varTag->shouldReceive('getTypes')->andReturn($expected);
@@ -110,7 +111,7 @@ class ConstantDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testGetTypesUsingInheritanceOfVarTag()
     {
-        $expected = array('string', 'null');
+        $expected = new String_();
 
         $constantName = 'CONSTANT';
         $this->fixture->setName($constantName);

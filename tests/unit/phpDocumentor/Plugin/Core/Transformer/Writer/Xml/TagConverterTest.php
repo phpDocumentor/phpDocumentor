@@ -14,6 +14,11 @@ namespace phpDocumentor\Plugin\Core\Transformer\Writer\Xml;
 use Mockery as m;
 use phpDocumentor\Descriptor\Tag\BaseTypes\TypedAbstract;
 use phpDocumentor\Descriptor\TagDescriptor;
+use phpDocumentor\Reflection\Fqsen;
+use phpDocumentor\Reflection\Types\Compound;
+use phpDocumentor\Reflection\Types\Integer;
+use phpDocumentor\Reflection\Types\Object_;
+use phpDocumentor\Reflection\Types\String_;
 use phpDocumentor\Reflection\Type;
 
 /**
@@ -58,7 +63,7 @@ class TagConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Tests whether type information is stored when a tag is processed with type information.
      *
-     * @covers phpDocumentor\Plugin\Core\Transformer\Writer\Xml\TagConverter::convert
+     * @covers \phpDocumentor\Plugin\Core\Transformer\Writer\Xml\TagConverter::convert
      *
      * @return void
      */
@@ -68,7 +73,9 @@ class TagConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $tagConverter = new TagConverter();
         $parent       = $this->prepareDocBlockXMLElement();
         $tag          = $this->createTagDescriptorMock('name', 'description', 'Tag\VarDescriptor');
-        $tag->shouldReceive('getTypes')->andReturn(array('string', 'integer', '\DateTime'));
+        $tag->shouldReceive('getTypes')->andReturn(
+            new Compound(array(new String_(), new Integer(), new Object_(new Fqsen('\DateTime'))))
+        );
 
         // Act
         $convertedElement = $tagConverter->convert($parent, $tag);
@@ -77,9 +84,9 @@ class TagConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $types = $convertedElement->getElementsByTagName('type');
         $this->assertSame(3, $types->length);
         $this->assertSame('string', $types->item(0)->nodeValue);
-        $this->assertSame('integer', $types->item(1)->nodeValue);
+        $this->assertSame('int', $types->item(1)->nodeValue);
         $this->assertSame('\DateTime', $types->item(2)->nodeValue);
-        $this->assertSame('string|integer|\DateTime', $convertedElement->getAttribute('type'));
+        $this->assertSame('string|int|\DateTime', $convertedElement->getAttribute('type'));
     }
 
     /**
@@ -96,7 +103,7 @@ class TagConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $tagConverter = new TagConverter();
         $parent       = $this->prepareDocBlockXMLElement();
         $tag          = $this->createTagDescriptorMock('name', 'description', 'Tag\VarDescriptor');
-        $tag->shouldReceive('getTypes')->andReturn(array());
+        $tag->shouldReceive('getTypes')->andReturn(null);
         $tag->shouldReceive('getVariableName')->andReturn('varName');
 
         // Act

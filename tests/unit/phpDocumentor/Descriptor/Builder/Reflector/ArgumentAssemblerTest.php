@@ -16,6 +16,7 @@ use Mockery as m;
 use phpDocumentor\Reflection\DocBlock\Type\Collection;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\Php\Argument;
+use phpDocumentor\Reflection\Types\Boolean;
 
 /**
  * Test class for phpDocumentor\Descriptor\Builder\Reflector\ArgumentAssembler
@@ -67,7 +68,7 @@ class ArgumentAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         // Arrange
         $name = 'goodArgument';
-        $type = 'boolean';
+        $type = new Boolean();
 
         $argumentReflectorMock = $this->givenAnArgumentReflectorWithNameAndType($name, $type);
 
@@ -75,14 +76,14 @@ class ArgumentAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $paramDescriptorTagMock = m::mock('phpDocumentor\Descriptor\Tag\ParamDescriptor');
         $paramDescriptorTagMock->shouldReceive('getVariableName')->once()->andReturn($name);
         $paramDescriptorTagMock->shouldReceive('getDescription')->once()->andReturn('Is this a good argument, or nah?');
-        $paramDescriptorTagMock->shouldReceive('getTypes')->once()->andReturn([$type]);
+        $paramDescriptorTagMock->shouldReceive('getTypes')->once()->andReturn($type);
 
         // Act
         $descriptor = $this->fixture->create($argumentReflectorMock, array($paramDescriptorTagMock));
 
         // Assert
         $this->assertSame($name, $descriptor->getName());
-        $this->assertSame([$type], $descriptor->getTypes());
+        $this->assertSame($type, $descriptor->getTypes());
         $this->assertNull($descriptor->getDefault());
         $this->assertFalse($descriptor->isByReference());
     }
