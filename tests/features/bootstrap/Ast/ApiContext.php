@@ -367,6 +367,22 @@ class ApiContext extends BaseContext implements Context
      * @param string $methodName
      * @param $returnType
      * @throws \Exception
+     * @Then class ":classFqsen" has a magic method :method with returntype :returnType
+     * @Then class ":classFqsen" has a magic method :method with returntype :returnType without description
+     */
+    public function classHasMagicMethodWithReturnType($classFqsen, $methodName, $returnType)
+    {
+        $response = $this->findMagicMethodResponse($classFqsen, $methodName);
+
+        Assert::assertEquals($returnType, (string)$response->getTypes());
+        Assert::assertEquals('', (string)$response->getDescription());
+    }
+
+    /**
+     * @param string $classFqsen
+     * @param string $methodName
+     * @param $returnType
+     * @throws \Exception
      * @Then class ":classFqsen" has a method :method with returntype :returnType with description:
      */
     public function classHasMethodWithReturnTypeAndDescription($classFqsen, $methodName, $returnType, PyStringNode $description)
@@ -448,6 +464,30 @@ class ApiContext extends BaseContext implements Context
     }
 
     /**
+     * @param $classFqsen
+     * @param $methodName
+     * @return ReturnDescriptor
+     * @throws \Exception
+     */
+    private function findMagicMethodResponse($classFqsen, $methodName): ReturnDescriptor
+    {
+        $class = $this->findClassByFqsen($classFqsen);
+        $match = null;
+
+        /** @var MethodDescriptor $method */
+        foreach ($class->getMagicMethods() as $method) {
+            if ($method->getName() === $methodName) {
+                $match = $method;
+            }
+        }
+
+        Assert::assertInstanceOf(MethodDescriptor::class, $match);
+        Assert::assertEquals($methodName, $match->getName());
+
+        return $match->getResponse();
+    }
+
+    /**
      * @param string $fqsen
      * @return ReturnDescriptor
      * @throws \Exception
@@ -456,5 +496,24 @@ class ApiContext extends BaseContext implements Context
     {
         $function = $this->findFunctionByFqsen($fqsen);
         return $function->getResponse();
+    }
+
+    /**
+     * @Then class ":classFqsen" has a magic method :method with argument ":argument" of type :type
+     */
+    public function classHasMagicMethodWithArgument($classFqsen, $methodName, $argument, $type)
+    {
+        $class = $this->findClassByFqsen($classFqsen);
+        $match = null;
+
+        /** @var MethodDescriptor $method */
+        foreach ($class->getMagicMethods() as $method) {
+            if ($method->getName() === $methodName) {
+                $match = $method;
+            }
+        }
+
+        Assert::assertInstanceOf(MethodDescriptor::class, $match);
+        Assert::assertNotNull($match->getArguments()->get($argument));
     }
 }
