@@ -33,6 +33,14 @@ final class ReturnTag
     public function getReturnDescription()
     {
     }
+
+    /**
+     * @return (integer|string)[]
+     */
+    public function getMultiTypeArray()
+    {
+
+    }
 }
 
 function get(): int
