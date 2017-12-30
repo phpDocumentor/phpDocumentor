@@ -106,10 +106,6 @@ class TagConverter
      */
     protected function addTypes(TagDescriptor $tag, \DOMElement $child)
     {
-        if (!method_exists($tag, 'getTypes')) {
-            return;
-        }
-
         $typeString = '';
 
         if ($tag instanceof TypedAbstract) {
@@ -130,8 +126,8 @@ class TagConverter
                 $typeNode = $child->appendChild(new \DOMElement('type'));
                 $typeNode->appendChild(new \DOMText($types));
             }
-        }
 
-        $child->setAttribute('type', str_replace('&', '&amp;', rtrim($typeString, '|')));
+            $child->setAttribute('type', str_replace('&', '&amp;', rtrim($typeString, '|')));
+        }
     }
 }

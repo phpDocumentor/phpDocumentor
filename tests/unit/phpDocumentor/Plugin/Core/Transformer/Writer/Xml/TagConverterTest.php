@@ -62,6 +62,7 @@ class TagConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * Tests whether type information is stored when a tag is processed with compound type information.
      *
      * @covers ::convert
+     * @covers ::addTypes
      *
      * @return void
      */
@@ -91,6 +92,7 @@ class TagConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * Tests whether type information is stored when a tag is processed with information of a single type.
      *
      * @covers ::convert
+     * @covers ::addTypes
      *
      * @return void
      */
