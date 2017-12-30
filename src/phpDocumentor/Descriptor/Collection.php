@@ -91,7 +91,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
     /**
      * Retrieves an iterator to traverse this object.
      *
-     * @return \Traversable|\ArrayIterator
+     * @return \ArrayIterator
      */
     public function getIterator()
     {

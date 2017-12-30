@@ -126,7 +126,7 @@ class Bootstrap
      *
      * If neither locations exist, then this method returns null because no vendor path could be found.
      *
-     * @param $baseDir parameter for test purposes only.
+     * @param string $baseDir parameter for test purposes only.
      * @return string|null
      */
     public function findVendorPath($baseDir = __DIR__)

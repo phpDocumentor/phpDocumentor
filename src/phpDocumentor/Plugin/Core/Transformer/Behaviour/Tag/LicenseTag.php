@@ -67,7 +67,9 @@ class LicenseTag
                     // set text to URL if not present
                     $matches['text'] = $matches['url'];
                 }
-                $node->parentNode->setAttribute('link', $matches['url']);
+                /** @var \DOMElement $parentNode */
+                $parentNode = $node->parentNode;
+                $parentNode->setAttribute('link', $matches['url']);
                 $node->nodeValue = $matches['text'];
 
                 // bail out early
@@ -77,7 +79,10 @@ class LicenseTag
             // check map if any license matches
             foreach ($licenseMap as $regex => $url) {
                 if (preg_match($regex, $license, $matches)) {
-                    $node->parentNode->setAttribute('link', $url);
+
+                    /** @var \DOMElement $parentNode */
+                    $parentNode = $node->parentNode;
+                    $parentNode->setAttribute('link', $url);
 
                     // we're done here
                     break;

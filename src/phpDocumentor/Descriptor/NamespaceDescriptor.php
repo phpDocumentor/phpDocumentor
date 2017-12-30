@@ -42,6 +42,7 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
      */
     public function __construct()
     {
+        parent::__construct();
         $this->setChildren(new Collection());
         $this->setFunctions(new Collection());
         $this->setConstants(new Collection());

@@ -310,6 +310,7 @@ class LinkerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testSubstituteArrayRecursive()
     {
+        /** @var Linker|m\MockInterface $mock */
         $mock = m::mock('phpDocumentor\Compiler\Linker\Linker');
         $mock->shouldDeferMissing();
         $mock->shouldReceive('findAlias')->andReturn('substituted');
@@ -331,6 +332,7 @@ class LinkerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testSubstituteSkipProcessed()
     {
+        /** @var Linker|m\MockInterface $mock */
         $mock = m::mock('phpDocumentor\Compiler\Linker\Linker');
         $mock->shouldDeferMissing();
         $mock->shouldReceive('findFieldValue')->atMost()->once();
@@ -370,6 +372,7 @@ class LinkerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $descriptor = m::mock('phpDocumentor\Descriptor\ProjectDescriptor');
         $descriptor->shouldReceive('getIndexes')->andReturn($indexes);
 
+        /** @var Linker|m\MockInterface $mock */
         $mock = m::mock('phpDocumentor\Compiler\Linker\Linker');
         $mock->shouldDeferMissing();
         $mock->shouldReceive('substitute')->with($descriptor);
@@ -452,7 +455,7 @@ class LinkerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @param $result
+     * @param \stdClass|null $result
      *
      * @return array
      */
@@ -472,7 +475,7 @@ class LinkerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @param $result
+     * @param \stdClass|null $result
      *
      * @return array
      */
@@ -524,7 +527,7 @@ class LinkerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Returns a SeeDescriptor with its reference set.
      *
-     * @param $reference
+     * @param string $reference
      *
      * @return SeeDescriptor
      */

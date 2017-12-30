@@ -11,6 +11,7 @@
 namespace phpDocumentor;
 
 use org\bovigo\vfs\vfsStream;
+use org\bovigo\vfs\vfsStreamDirectory;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -120,8 +121,13 @@ class BootstrapTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testCreateAutoloader()
     {
         $root = vfsStream::setup('root', null, $this->standaloneStructure);
+
+        /** @var vfsStreamDirectory $firstChild */
+        $firstChild = $root->getChild('dummy');
+        $secondChild = $firstChild->getChild('vendor');
+
         vfsStream::newFile('autoload.php')->withContent('<?php return true;')
-            ->at($root->getChild('dummy')->getChild('vendor'));
+            ->at($secondChild);
 
         $bootstrap = Bootstrap::createInstance();
         $this->assertTrue($bootstrap->createAutoloader(vfsStream::url('root/dummy/vendor')));

@@ -12,7 +12,7 @@
 namespace phpDocumentor\Plugin\Core\Transformer\Behaviour\Tag;
 
 /**
- * Behaviour that adds support for the @param tags.
+ * Behaviour that adds support for the `@param` tags.
  */
 class ParamTag
 {

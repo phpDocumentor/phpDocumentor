@@ -431,20 +431,27 @@ class ClassDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $mock->shouldDeferMissing();
 
         $constantDescriptor = m::mock('phpDocumentor\Descriptor\ConstantDescriptor');
+
+        /** @var m\mockInterface|Collection */
         $constantCollection = m::mock('phpDocumentor\Descriptor\Collection');
         $constantCollection->shouldDeferMissing();
         $constantCollection->add($constantDescriptor);
 
         $propertyDescriptor = m::mock('phpDocumentor\Descriptor\PropertyDescriptor');
+
+        /** @var m\mockInterface|Collection */
         $propertyCollection = m::mock('phpDocumentor\Descriptor\Collection');
         $propertyCollection->shouldDeferMissing();
         $propertyCollection->add($propertyDescriptor);
 
         $methodDescriptor = m::mock('phpDocumentor\Descriptor\MethodDescriptor');
+
+        /** @var m\mockInterface|Collection */
         $methodCollection = m::mock('phpDocumentor\Descriptor\Collection');
         $methodCollection->shouldDeferMissing();
         $methodCollection->add($methodDescriptor);
 
+        /** @var m\mockInterface|ClassDescriptor */
         $mock = m::mock('phpDocumentor\Descriptor\ClassDescriptor');
         $mock->shouldDeferMissing();
         $mock->shouldReceive('getProperties')->andReturn($propertyCollection);
@@ -458,6 +465,7 @@ class ClassDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $mock->shouldReceive('getMethods')->andReturn($methodCollection);
         $methodDescriptor->shouldReceive('setPackage')->with($package);
 
+        /** @var ClassDescriptor */
         $mock->setPackage($package);
 
         $this->assertTrue(true);
@@ -470,8 +478,8 @@ class ClassDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testCall()
     {
-        $this->assertNull($this->fixture->notexisting());
-        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getNotexisting());
+        $this->assertNull($this->fixture->__call('notexisting', []));
+        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->__call('getNotexisting', []));
     }
 
     /**

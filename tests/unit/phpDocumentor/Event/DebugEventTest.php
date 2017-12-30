@@ -9,6 +9,8 @@ use Psr\Log\LogLevel;
 
 /**
  * Test for the DebugEvent class.
+ *
+ * @coversDefaultClass phpDocumentor\Event\DebugEvent
  */
 class DebugEventTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
@@ -21,8 +23,8 @@ class DebugEventTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Event\DebugEvent::getMessage
-     * @covers phpDocumentor\Event\DebugEvent::setMessage
+     * @covers ::getMessage
+     * @covers ::setMessage
      */
     public function testHavingAMessage()
     {
@@ -36,7 +38,7 @@ class DebugEventTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Event\DebugEvent::getPriority
+     * @covers ::getPriority
      */
     public function testAlwaysHasPriorityDebug()
     {
@@ -46,8 +48,20 @@ class DebugEventTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Event\DebugEvent::getContext
-     * @covers phpDocumentor\Event\DebugEvent::setContext
+     * @covers ::setPriority
+     * @covers ::getPriority
+     */
+    public function testSetAndGetPriority()
+    {
+        $priority = LogLevel::INFO;
+        $this->fixture->setPriority(LogLevel::INFO);
+
+        $this->assertSame($priority, $this->fixture->getPriority());
+    }
+
+    /**
+     * @covers ::getContext
+     * @covers ::setContext
      */
     public function testSupplyAContextArrayForTheMessage()
     {

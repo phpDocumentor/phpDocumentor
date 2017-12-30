@@ -93,7 +93,7 @@ final class CacheMiddleware implements Middleware
     /**
      * Convert path to ItemName
      *
-     * @param path
+     * @param string $path
      * @return string
      */
     private function getItemName($path)

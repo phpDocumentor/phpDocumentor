@@ -10,6 +10,7 @@
  */
 
 namespace phpDocumentor\Plugin\Scrybe\Template;
+
 use Webmozart\Assert\Assert;
 
 /**

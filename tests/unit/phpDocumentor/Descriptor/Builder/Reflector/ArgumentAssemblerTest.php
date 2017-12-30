@@ -89,8 +89,8 @@ class ArgumentAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @param $name
-     * @param $type
+     * @param string $name
+     * @param string $type
      * @return Argument
      */
     protected function givenAnArgumentReflectorWithNameAndType($name, $type)

@@ -10,6 +10,7 @@
  */
 
 namespace phpDocumentor\Descriptor;
+
 use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
 use phpDocumentor\Reflection\Type;
 
@@ -141,7 +142,7 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
      */
     public function setArguments(Collection $arguments)
     {
-        foreach( $arguments as $argument) {
+        foreach ($arguments as $argument) {
             $argument->setMethod($this);
         }
         $this->arguments = $arguments;

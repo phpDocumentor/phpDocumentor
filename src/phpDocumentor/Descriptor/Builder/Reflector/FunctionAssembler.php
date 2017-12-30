@@ -115,11 +115,11 @@ class FunctionAssembler extends AssemblerAbstract
      * Creates a new ArgumentDescriptor from the given Reflector and Param.
      *
      * @param FunctionDescriptor                  $functionDescriptor
-     * @param FunctionReflector\ArgumentReflector $argument
+     * @param Argument $argument
      *
      * @return ArgumentDescriptor
      */
-    protected function createArgumentDescriptor($functionDescriptor, $argument)
+    protected function createArgumentDescriptor(FunctionDescriptor $functionDescriptor, Argument $argument)
     {
         $params = $functionDescriptor->getTags()->get('param', array());
 

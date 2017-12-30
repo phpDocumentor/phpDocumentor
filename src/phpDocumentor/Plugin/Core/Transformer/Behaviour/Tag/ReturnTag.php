@@ -50,7 +50,9 @@ class ReturnTag
                 continue;
             }
 
-            $type = $method->parentNode->getElementsByTagName('full_name')
+            /** @var \DOMElement $parentNode */
+            $parentNode = $method->parentNode;
+            $type = $parentNode->getElementsByTagName('full_name')
                 ->item(0)->nodeValue;
 
             // nodes with name type need to set their content; otherwise we set

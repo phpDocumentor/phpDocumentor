@@ -20,14 +20,14 @@ use phpDocumentor\Descriptor\MethodDescriptor;
 /**
  * Test class for \phpDocumentor\Plugin\Core\Transformer\Writer\Xml\TraitConverter.
  *
- * @covers phpDocumentor\Plugin\Core\Transformer\Writer\Xml\TraitConverter
+ * @covers \phpDocumentor\Plugin\Core\Transformer\Writer\Xml\TraitConverter
  */
 class TraitConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
      * Tests whether the XML Element representing a trait is properly created.
      *
-     * @covers phpDocumentor\Plugin\Core\Transformer\Writer\Xml\TraitConverter::convert
+     * @covers \phpDocumentor\Plugin\Core\Transformer\Writer\Xml\TraitConverter::convert
      *
      * @return void
      */
@@ -75,7 +75,7 @@ class TraitConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Creates a mock for the TraitDescriptor class.
      *
-     * @return m\MockTrait|DescriptorAbstract
+     * @return m\MockInterface|DescriptorAbstract
      */
     protected function createTraitDescriptorMock()
     {

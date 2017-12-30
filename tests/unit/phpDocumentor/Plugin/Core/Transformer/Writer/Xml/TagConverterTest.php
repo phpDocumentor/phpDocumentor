@@ -22,7 +22,7 @@ use phpDocumentor\Reflection\Types\String_;
 /**
  * Test class for \phpDocumentor\Plugin\Core\Transformer\Writer\Xml\TagConverter.
  *
- * @covers phpDocumentor\Plugin\Core\Transformer\Writer\Xml\TagConverter
+ * @coversDefaultClass \phpDocumentor\Plugin\Core\Transformer\Writer\Xml\TagConverter
  */
 class TagConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
@@ -37,8 +37,8 @@ class TagConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @param string $resultDescription Expected resulting description in the XML Element.
      *
      * @dataProvider provideTestGenericTag
-     * @covers phpDocumentor\Plugin\Core\Transformer\Writer\Xml\TagConverter::convert
-     * @covers phpDocumentor\Plugin\Core\Transformer\Writer\Xml\TagConverter::getDescription
+     * @covers ::convert
+     * @covers ::getDescription
      *
      * @return void
      */
@@ -59,13 +59,14 @@ class TagConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * Tests whether type information is stored when a tag is processed with type information.
+     * Tests whether type information is stored when a tag is processed with compound type information.
      *
-     * @covers \phpDocumentor\Plugin\Core\Transformer\Writer\Xml\TagConverter::convert
+     * @covers ::convert
+     * @covers ::addTypes
      *
      * @return void
      */
-    public function testWhetherTypesAreAddedWhenPresent()
+    public function testWhetherTypesAreAddedWhenPresentAndTypeIsCompound()
     {
         // Arrange
         $tagConverter = new TagConverter();
@@ -88,10 +89,35 @@ class TagConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
+     * Tests whether type information is stored when a tag is processed with information of a single type.
+     *
+     * @covers ::convert
+     * @covers ::addTypes
+     *
+     * @return void
+     */
+    public function testWhetherTypesAreAddedWhenPresentAndTypeIsSingular()
+    {
+        // Arrange
+        $tagConverter = new TagConverter();
+        $parent       = $this->prepareDocBlockXMLElement();
+        $tag          = $this->createTagDescriptorMock('name', 'description', 'Tag\VarDescriptor');
+        $tag->shouldReceive('getTypes')->andReturn(new String_());
+
+        // Act
+        $convertedElement = $tagConverter->convert($parent, $tag);
+
+        // Assert
+        $types = $convertedElement->getElementsByTagName('type');
+        $this->assertSame(1, $types->length);
+        $this->assertSame('string', $convertedElement->getAttribute('type'));
+    }
+
+    /**
      * Tests whether the variable name is stored for tags containing variable names.
      *
-     * @covers phpDocumentor\Plugin\Core\Transformer\Writer\Xml\TagConverter::convert
-     * @covers phpDocumentor\Plugin\Core\Transformer\Writer\Xml\TagConverter::addTypes
+     * @covers ::convert
+     * @covers ::addTypes
      *
      * @return void
      */
@@ -114,8 +140,8 @@ class TagConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Tests whether the version number is prepended to the description when version information is available.
      *
-     * @covers phpDocumentor\Plugin\Core\Transformer\Writer\Xml\TagConverter::convert
-     * @covers phpDocumentor\Plugin\Core\Transformer\Writer\Xml\TagConverter::getDescription
+     * @covers ::convert
+     * @covers ::getDescription
      *
      * @todo this should be dealt with in a template and not in the code! This activity should be removed and the
      * templates updated.
@@ -140,7 +166,7 @@ class TagConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Tests whether a reference to another element is stored with the tag when such is present.
      *
-     * @covers phpDocumentor\Plugin\Core\Transformer\Writer\Xml\TagConverter::convert
+     * @covers ::convert
      *
      * @return void
      */
@@ -163,7 +189,7 @@ class TagConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Tests whether a link to a URL is stored with the tag when such is present.
      *
-     * @covers phpDocumentor\Plugin\Core\Transformer\Writer\Xml\TagConverter::convert
+     * @covers ::convert
      *
      * @return void
      */
@@ -186,7 +212,7 @@ class TagConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Tests whether a method name to another element is stored with the tag when such is present.
      *
-     * @covers phpDocumentor\Plugin\Core\Transformer\Writer\Xml\TagConverter::convert
+     * @covers ::convert
      *
      * @return void
      */

@@ -227,10 +227,10 @@ class FileAssembler extends AssemblerAbstract
     }
 
     /**
-     * @param $data
-     * @param $fileDescriptor
+     * @param File $data
+     * @param FileDescriptor $fileDescriptor
      */
-    protected function overridePackageTag($data, $fileDescriptor)
+    protected function overridePackageTag(File $data, FileDescriptor $fileDescriptor)
     {
         $packages = new Collection();
         $package  = $this->extractPackageFromDocBlock($data->getDocBlock());

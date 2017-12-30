@@ -57,6 +57,7 @@ class ProjectDescriptorMapper
      * @param ProjectDescriptor $projectDescriptor
      *
      * @return void
+     * @throws \Exception
      */
     public function populate(ProjectDescriptor $projectDescriptor)
     {
@@ -64,10 +65,11 @@ class ProjectDescriptorMapper
         $iteratorInterface = $this->getCache()->getIterator();
 
         // load the settings object
+        $settings = null;
         try {
             $settings = $this->getCache()->getItem(self::KEY_SETTINGS);
         } catch (\Exception $e) {
-            $settings = $this->igBinaryCompatibleCacheClear(self::KEY_SETTINGS, $e);
+            $this->igBinaryCompatibleCacheClear(self::KEY_SETTINGS, $e);
         }
 
         if ($settings instanceof Settings) {
@@ -77,6 +79,7 @@ class ProjectDescriptorMapper
         // FIXME: Workaround for: https://github.com/zendframework/zf2/pull/4154
         if ($iteratorInterface->valid()) {
             foreach ($this->getCache() as $key) {
+                $item = null;
                 try {
                     $item = $this->getCache()->getItem($key);
                 } catch (\Exception $e) {

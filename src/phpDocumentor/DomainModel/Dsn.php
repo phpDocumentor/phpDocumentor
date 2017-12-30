@@ -44,7 +44,9 @@ final class Dsn
     /** @var string[]  */
     private $parameters = [];
 
+    //@codingStandardsIgnoreStart
     const WINDOWS_DSN = '~(^((?<scheme>file):\\/\\/)?(?<path>((?:[a-z]|[A-Z]):(?=\\\\(?![\\0-\\37<>:"/\\\\|?*])|\\/(?![\\0-\\37<>:"/\\\\|?*])|$)|^\\\\(?=[\\\\\\/][^\\0-\\37<>:"/\\\\|?*]+)|^(?=(\\\\|\\/)$)|^\\.(?=(\\\\|\\/)$)|^\\.\\.(?=(\\\\|\\/)$)|^(?=(\\\\|\\/)[^\\0-\\37<>:"/\\\\|?*]+)|^\\.(?=(\\\\|\\/)[^\\0-\\37<>:"/\\\\|?*]+)|^\\.\\.(?=(\\\\|\\/)[^\\0-\\37<>:"/\\\\|?*]+))((\\\\|\\/)[^\\0-\\37<>:"/\\\\|?*]+|(\\\\|\\/)$)*()))$~';
+    //@codingStandardsIgnoreEnd
 
     /**
      * Initializes the Dsn
@@ -165,11 +167,17 @@ final class Dsn
         unset($dsnParts[0]);
         $locationParts = parse_url($location);
 
-        if ($locationParts === false || (array_key_exists('scheme', $locationParts) && \strlen($locationParts['scheme']) === 1)) {
+        if (
+            $locationParts === false ||
+            (array_key_exists('scheme', $locationParts) && \strlen($locationParts['scheme']) === 1)
+        ) {
             preg_match(static::WINDOWS_DSN, $dsn, $locationParts);
         }
 
-        if (! array_key_exists('scheme', $locationParts) || ($locationParts['scheme'] === '' && array_key_exists('path',$locationParts)) ) {
+        if (
+            ! array_key_exists('scheme', $locationParts) ||
+            ($locationParts['scheme'] === '' && array_key_exists('path', $locationParts))
+        ) {
             $locationParts['scheme'] = 'file';
             $location = 'file://' . $location;
         }

@@ -227,7 +227,7 @@ class FileDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         // default returns empty array
         $this->assertObjectHasAttribute('items', $this->fixture->getAllErrors());
 
-        $items = $this->fixture->getAllErrors()->items;
+        $items = $this->fixture->getAllErrors()->getAll();
         $this->assertEmpty($items);
     }
 

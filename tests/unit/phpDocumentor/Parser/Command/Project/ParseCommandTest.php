@@ -10,7 +10,7 @@
  *  @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\phpDocumentor\Parser\Command\Project;
+namespace phpDocumentor\Parser\Command\Project;
 
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Command\Helper\ConfigurationHelper;

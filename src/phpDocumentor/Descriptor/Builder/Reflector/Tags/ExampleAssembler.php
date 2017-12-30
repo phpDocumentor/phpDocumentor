@@ -30,7 +30,7 @@ class ExampleAssembler extends AssemblerAbstract
     /**
      * Initializes this assembler with the means to find the example file on disk.
      *
-     * @param Finder $finder
+     * @param ExampleFinder $finder
      */
     public function __construct(ExampleFinder $finder)
     {

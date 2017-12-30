@@ -11,6 +11,9 @@
 
 namespace phpDocumentor\Plugin\Scrybe\Converter\RestructuredText\Roles;
 
+use ezcDocumentRstNode;
+use phpDocumentor\Plugin\Scrybe\Converter\RestructuredText\Visitors\Creator;
+
 /**
  * The :doc: role creates a link to an external document.
  *
@@ -49,7 +52,10 @@ class Doc extends \ezcDocumentRstTextRole implements \ezcDocumentRstXhtmlTextRol
         $content = '';
         $caption = '';
 
-        foreach ($this->node->nodes as $node) {
+        /** @var ezcDocumentRstNode $node */
+        $node = $this->node;
+
+        foreach ($node->nodes as $node) {
             $content .= $node->token->content;
         }
 
@@ -63,7 +69,7 @@ class Doc extends \ezcDocumentRstTextRole implements \ezcDocumentRstXhtmlTextRol
         }
 
         // check the table of contents for a caption.
-        if (!$caption && $this->visitor) {
+        if (!$caption && $this->visitor && $this->visitor instanceof Creator) {
             $toc = $this->visitor->getTableOfContents();
             $caption = isset($toc[$content]) ? $toc[$content]->getName() : '';
         }

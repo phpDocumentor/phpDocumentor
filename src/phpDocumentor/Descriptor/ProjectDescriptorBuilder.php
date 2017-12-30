@@ -208,7 +208,7 @@ class ProjectDescriptorBuilder
         }
 
         return $descriptor;
-	}
+    }
 
     /**
      * Map error code to severity.
@@ -244,7 +244,9 @@ class ProjectDescriptorBuilder
         $this->defaultPackage = new PackageDescriptor();
         $this->defaultPackage->setFullyQualifiedStructuralElementName((string)$project->getRootNamespace()->getFqsen());
         $this->defaultPackage->setName($packageName);
-        $this->defaultPackage->setNamespace(substr((string)$project->getRootNamespace()->getFqsen(), 0, -strlen($packageName)-1));
+        $this->defaultPackage->setNamespace(
+            substr((string)$project->getRootNamespace()->getFqsen(), 0, -strlen($packageName)-1)
+        );
 
         foreach ($project->getFiles() as $file) {
             $descriptor = $this->buildDescriptor($file);

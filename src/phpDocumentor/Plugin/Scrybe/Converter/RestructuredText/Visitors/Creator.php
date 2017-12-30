@@ -11,6 +11,7 @@
 
 namespace phpDocumentor\Plugin\Scrybe\Converter\RestructuredText\Visitors;
 
+use phpDocumentor\Plugin\Scrybe\Converter\BaseConverter;
 use phpDocumentor\Plugin\Scrybe\Converter\Metadata\TableOfContents;
 use phpDocumentor\Plugin\Scrybe\Converter\RestructuredText\Document;
 
@@ -39,8 +40,9 @@ class Creator extends \ezcDocumentRstXhtmlBodyVisitor
      */
     public function getFilename()
     {
-        return $this->getDocument()->getConverter()
-            ->getDestinationFilenameRelativeToProjectRoot($this->getDocument()->getFile());
+        /** @var BaseConverter $converter */
+        $converter = $this->getDocument()->getConverter();
+        return $converter->getDestinationFilenameRelativeToProjectRoot($this->getDocument()->getFile());
     }
 
     /**

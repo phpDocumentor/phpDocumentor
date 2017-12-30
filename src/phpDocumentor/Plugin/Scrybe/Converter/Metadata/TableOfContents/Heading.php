@@ -46,6 +46,8 @@ class Heading extends BaseEntry
 
     public function getFilename()
     {
-        return $this->getParent()->getFilename();
+        /** @var Heading|File $parent */
+        $parent = $this->getParent();
+        return $parent ? $parent->getFilename() : null;
     }
 }

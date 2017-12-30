@@ -15,7 +15,15 @@ class ParserPopulator
     ) {
         $parser->setForced($input->getOption('force'));
         $parser->setEncoding($configurationHelper->getOption($input, 'encoding', 'parser/encoding'));
-        $parser->setMarkers($configurationHelper->getOption($input, 'markers', 'parser/markers', array('TODO', 'FIXME'), true));
+        $parser->setMarkers(
+            $configurationHelper->getOption(
+                $input,
+                'markers',
+                'parser/markers',
+                array('TODO', 'FIXME'),
+                true
+            )
+        );
         $parser->setIgnoredTags($input->getOption('ignore-tags'));
         $parser->setValidate($input->getOption('validate'));
         $parser->setDefaultPackageName(

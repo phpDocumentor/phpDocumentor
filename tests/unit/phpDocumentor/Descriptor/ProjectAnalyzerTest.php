@@ -170,7 +170,7 @@ TEXT;
     }
 
     /**
-     * @param $interfaceParent
+     * @param string $interfaceParent
      * @return InterfaceDescriptor
      */
     protected function givenAnInterfaceWithParent($interfaceParent)

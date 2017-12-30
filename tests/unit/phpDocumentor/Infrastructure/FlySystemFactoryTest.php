@@ -13,6 +13,7 @@
 namespace phpDocumentor\Infrastructure;
 
 use Flyfinder\Specification\InPath;
+use League\Flysystem\Adapter\AbstractAdapter;
 use Mockery as m;
 use phpDocumentor\DomainModel\Dsn;
 
@@ -57,6 +58,7 @@ class FlySystemFactoryTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
         $this->assertInstanceOf('League\Flysystem\Filesystem', $result);
 
+        /** @var AbstractAdapter $adapter */
         $adapter = $result->getAdapter();
         $pathPrefix = $adapter->getPathPrefix();
         $this->assertEquals('/tmp' . DIRECTORY_SEPARATOR, $pathPrefix);
