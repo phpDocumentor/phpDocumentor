@@ -9,6 +9,7 @@
  *  @license   http://www.opensource.org/licenses/mit-license.php MIT
  *  @link      http://phpdoc.org
  */
+namespace phpDocumentor\Application\Configuration\Factory;
 
 /**
  * Expected phpDocumentor3 configuration arrays used for unit testing.

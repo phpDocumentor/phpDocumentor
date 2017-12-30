@@ -31,7 +31,6 @@ final class Version3Test extends TestCase
     {
         $this->strategy   = new Version3(__DIR__ . '/../../../../../../data/xsd/phpdoc.xsd');
         $this->dataFolder = __DIR__ . '/../../../../data/';
-        require_once($this->dataFolder . 'phpDocumentor3ExpectedArrays.php');
     }
 
     /**
@@ -45,7 +44,7 @@ final class Version3Test extends TestCase
 
         $array = $this->strategy->convert($xml);
 
-        $this->assertEquals(\Version3ExpectedArrays::getDefaultArray(), $array);
+        $this->assertEquals(Version3ExpectedArrays::getDefaultArray(), $array);
     }
 
     /**
@@ -59,7 +58,7 @@ final class Version3Test extends TestCase
 
         $array = $this->strategy->convert($xml);
 
-        $this->assertEquals(\Version3ExpectedArrays::getDefaultArray(), $array);
+        $this->assertEquals(Version3ExpectedArrays::getDefaultArray(), $array);
     }
 
     /**
@@ -96,7 +95,7 @@ XML;
 
         $array = $this->strategy->convert($xml);
 
-        $this->assertEquals(\Version3ExpectedArrays::getArrayWithEmptyExtensionsAndMarkers(), $array);
+        $this->assertEquals(Version3ExpectedArrays::getArrayWithEmptyExtensionsAndMarkers(), $array);
     }
 
     /**
@@ -110,7 +109,7 @@ XML;
 
         $array = $this->strategy->convert($xml);
 
-        $this->assertEquals(\Version3ExpectedArrays::getArrayWithMultipleVersions(), $array);
+        $this->assertEquals(Version3ExpectedArrays::getArrayWithMultipleVersions(), $array);
     }
 
     /**
@@ -124,7 +123,7 @@ XML;
 
         $array = $this->strategy->convert($xml);
 
-        $this->assertEquals(\Version3ExpectedArrays::getArrayWithMultipleApis(), $array);
+        $this->assertEquals(Version3ExpectedArrays::getArrayWithMultipleApis(), $array);
     }
 
     /**
@@ -138,7 +137,7 @@ XML;
 
         $array = $this->strategy->convert($xml);
 
-        $this->assertEquals(\Version3ExpectedArrays::getArrayWithMultipleGuides(), $array);
+        $this->assertEquals(Version3ExpectedArrays::getArrayWithMultipleGuides(), $array);
     }
 
     /**
@@ -152,7 +151,7 @@ XML;
 
         $array = $this->strategy->convert($xml);
 
-        $this->assertEquals(\Version3ExpectedArrays::getArrayWithMultipleTemplates(), $array);
+        $this->assertEquals(Version3ExpectedArrays::getArrayWithMultipleTemplates(), $array);
     }
 
     /**
@@ -168,11 +167,11 @@ XML;
     }
 
     /**
-     * @param $file
+     * @param string $file
      *
      * @return \SimpleXMLElement
      */
-    private function givenXmlFromFile($file)
+    private function givenXmlFromFile(string $file): \SimpleXMLElement
     {
         return new \SimpleXMLElement($this->dataFolder . $file, 0, true);
     }

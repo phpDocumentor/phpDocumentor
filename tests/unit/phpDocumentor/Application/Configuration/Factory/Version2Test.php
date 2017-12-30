@@ -21,10 +21,6 @@ use PHPUnit\Framework\TestCase;
  */
 final class Version2Test extends TestCase
 {
-    public function setUp()
-    {
-        require_once(__DIR__ . '/../../../../data/phpDocumentor2ExpectedArray.php');
-    }
 
     /**
      * @covers ::convert
@@ -37,7 +33,7 @@ final class Version2Test extends TestCase
         $version2 = new Version2();
         $array          = $version2->convert($xml);
 
-        $this->assertEquals(\Version2ExpectedArray::getDefaultArray(), $array);
+        $this->assertEquals(Version2ExpectedArray::getDefaultArray(), $array);
     }
 
     /**
@@ -87,7 +83,7 @@ XML;
         $version2 = new Version2();
         $array          = $version2->convert($xml);
 
-        $this->assertEquals(\Version2ExpectedArray::getDefaultArray(), $array);
+        $this->assertEquals(Version2ExpectedArray::getDefaultArray(), $array);
     }
 
     /**
@@ -105,6 +101,6 @@ XML;
         $version2 = new Version2();
         $array          = $version2->convert($xml);
 
-        $this->assertEquals(\Version2ExpectedArray::getArrayWithMultipleIgnorePaths(), $array);
+        $this->assertEquals(Version2ExpectedArray::getArrayWithMultipleIgnorePaths(), $array);
     }
 }

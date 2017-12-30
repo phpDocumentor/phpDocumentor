@@ -58,7 +58,7 @@ final class CommandlineOptionsMiddleware
     /**
      * @return array
      */
-    public function createDefaultApiSettings()
+    public function createDefaultApiSettings(): array
     {
         return [
             'format'               => 'php',
@@ -79,11 +79,11 @@ final class CommandlineOptionsMiddleware
     }
 
     /**
-     * @param $version
+     * @param array $version
      *
-     * @return mixed
+     * @return array
      */
-    private function setFilesInPath($version)
+    private function setFilesInPath(array $version): array
     {
         if (! isset($this->options['filename']) || ! $this->options['filename']) {
             return $version;
@@ -104,11 +104,11 @@ final class CommandlineOptionsMiddleware
     }
 
     /**
-     * @param $version
+     * @param array $version
      *
-     * @return mixed
+     * @return array
      */
-    private function setDirectoriesInPath($version)
+    private function setDirectoriesInPath(array $version): array
     {
         if (! isset($this->options['directory']) || ! $this->options['directory']) {
             return $version;
@@ -129,11 +129,11 @@ final class CommandlineOptionsMiddleware
     }
 
     /**
-     * @param $version
+     * @param array $version
      *
-     * @return mixed
+     * @return array
      */
-    private function overwriteIgnoredPaths($version)
+    private function overwriteIgnoredPaths(array $version): array
     {
         if (! isset($this->options['ignore']) || ! $this->options['ignore']) {
             return $version;
@@ -154,11 +154,11 @@ final class CommandlineOptionsMiddleware
     }
 
     /**
-     * @param $version
+     * @param array $version
      *
-     * @return mixed
+     * @return array
      */
-    private function registerExtensions($version)
+    private function registerExtensions(array $version): array
     {
         if (!isset($this->options['extensions']) || ! $this->options['extensions']) {
             return $version;
@@ -192,7 +192,7 @@ final class CommandlineOptionsMiddleware
      *
      * @return array
      */
-    private function overwriteCacheFolder(array $configuration)
+    private function overwriteCacheFolder(array $configuration): array
     {
         if (isset($this->options['cache-folder']) && $this->options['cache-folder']) {
             $configuration['phpdocumentor']['paths']['cache'] = new Path($this->options['cache-folder']);
@@ -202,11 +202,11 @@ final class CommandlineOptionsMiddleware
     }
 
     /**
-     * @param $version
+     * @param array $version
      *
-     * @return mixed
+     * @return array
      */
-    private function overwriteMarkers($version)
+    private function overwriteMarkers(array $version): array
     {
         if (! isset($this->options['markers']) || ! $this->options['markers']) {
             return $version;
@@ -222,11 +222,11 @@ final class CommandlineOptionsMiddleware
     }
 
     /**
-     * @param $version
+     * @param array $version
      *
-     * @return mixed
+     * @return array
      */
-    private function overwriteVisibility($version)
+    private function overwriteVisibility(array $version): array
     {
         if (! isset($this->options['visibility']) || ! $this->options['visibility']) {
             return $version;
@@ -242,11 +242,11 @@ final class CommandlineOptionsMiddleware
     }
 
     /**
-     * @param $version
+     * @param array $version
      *
-     * @return mixed
+     * @return array
      */
-    private function overwriteDefaultPackageName($version)
+    private function overwriteDefaultPackageName(array $version): array
     {
         if (! isset($this->options['defaultpackagename']) || ! $this->options['defaultpackagename']) {
             return $version;
@@ -266,7 +266,7 @@ final class CommandlineOptionsMiddleware
      *
      * @return array
      */
-    private function overwriteTitle(array $configuration)
+    private function overwriteTitle(array $configuration): array
     {
         if (isset($this->options['title']) && $this->options['title']) {
             $configuration['phpdocumentor']['title'] = $this->options['title'];
@@ -298,7 +298,7 @@ final class CommandlineOptionsMiddleware
      *
      * @return string[]
      */
-    private function disableCache($configuration)
+    private function disableCache($configuration): array
     {
         if (isset($this->options['force']) && $this->options['force']) {
             $configuration['phpdocumentor']['use-cache'] = false;
