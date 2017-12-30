@@ -113,12 +113,22 @@ class TagConverter
         $typeString = '';
 
         if ($tag instanceof TypedAbstract) {
-            foreach ($tag->getTypes() as $type) {
-                $typeString .= $type . '|';
+            $types = $tag->getTypes();
+
+            if ($types instanceof \IteratorAggregate) {
+                foreach ($types as $type) {
+                    $typeString .= $type . '|';
+
+                    /** @var \DOMElement $typeNode */
+                    $typeNode = $child->appendChild(new \DOMElement('type'));
+                    $typeNode->appendChild(new \DOMText($type));
+                }
+            } else {
+                $typeString .= $types . '|';
 
                 /** @var \DOMElement $typeNode */
                 $typeNode = $child->appendChild(new \DOMElement('type'));
-                $typeNode->appendChild(new \DOMText($type));
+                $typeNode->appendChild(new \DOMText($types));
             }
         }
 
