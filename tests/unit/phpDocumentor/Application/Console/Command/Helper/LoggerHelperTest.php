@@ -1,19 +1,21 @@
 <?php
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
  *
  * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Command\Helper;
+namespace phpDocumentor\Application\Console\Command\Helper;
 
 use Closure;
 use Mockery as m;
 use Monolog\Logger;
+use phpDocumentor\Application\Console\Command\Command;
 use phpDocumentor\Configuration;
 use phpDocumentor\Event\LogEvent;
 use PHPUnit\Framework\TestCase;
@@ -23,6 +25,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Testcase for LoggerHelper
+<<<<<<< HEAD:tests/unit/phpDocumentor/Command/Helper/LoggerHelperTest.php
+=======
+ * @coversDefaultClass phpDocumentor\Application\Console\Command\Helper\LoggerHelper
+>>>>>>> 2626d233... Moving all cli command to own namespace:tests/unit/phpDocumentor/Application/Console/Command/Helper/LoggerHelperTest.php
  */
 class LoggerHelperTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {

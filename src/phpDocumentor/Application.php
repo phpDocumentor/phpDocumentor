@@ -12,11 +12,23 @@
 namespace phpDocumentor;
 
 use Cilex\Application as Cilex;
-use phpDocumentor\Console\Input\ArgvInput;
+use phpDocumentor\Application\Console\Command\Project\RunCommand;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\Application as ConsoleApplication;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Composer\Autoload\ClassLoader;
+use Monolog\ErrorHandler;
+use Monolog\Handler\NullHandler;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
+use Pimple\Container;
+use phpDocumentor\Application\Console\Command\Helper\ConfigurationHelper;
+use phpDocumentor\Application\Console\Command\Helper\LoggerHelper;
+use phpDocumentor\Application\Console\Command\Project\ParseCommand;
+use phpDocumentor\Application\Console\Command\Project\TransformCommand;
+use phpDocumentor\Application\Console\Command\Template\ListCommand;
+use phpDocumentor\Application\Console\Input\ArgvInput;
 use Symfony\Component\Stopwatch\Stopwatch;
 
 /**
@@ -113,7 +125,32 @@ class Application extends Cilex
      */
     protected function addCommandsForProjectNamespace()
     {
-        $this->command(new Command\Project\RunCommand());
+        $this->console->add(new RunCommand($this->container['descriptor.builder']));
+        $this->console->add(
+            new ParseCommand(
+                $this['descriptor.builder'],
+                $this['parser'],
+                $this['parser.fileCollector'],
+                $this['translator'],
+                $this['descriptor.cache'],
+                $this['parser.example.finder'],
+                $this['partials'],
+                $this['parser.middleware.cache']
+        ));
+
+        $this->console->add(
+            new TransformCommand(
+                $this['descriptor.builder'],
+                $this['transformer'],
+                $this['compiler'],
+                $this['descriptor.cache'],
+                $this['event_dispatcher']
+            )
+        );
+
+        $this->console->add(
+            new ListCommand($this['transformer.template.factory'])
+        );
     }
 
     /**

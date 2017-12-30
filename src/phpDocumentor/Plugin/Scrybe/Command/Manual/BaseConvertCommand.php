@@ -11,7 +11,7 @@
 
 namespace phpDocumentor\Plugin\Scrybe\Command\Manual;
 
-use phpDocumentor\Command\Command;
+use phpDocumentor\Application\Console\Command\Command;
 use phpDocumentor\Fileset\Collection;
 use phpDocumentor\Plugin\Scrybe\Converter\ConverterInterface;
 use phpDocumentor\Plugin\Scrybe\Converter\Factory as ConverterFactory;

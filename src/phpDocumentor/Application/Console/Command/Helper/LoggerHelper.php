@@ -9,10 +9,10 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Command\Helper;
+namespace phpDocumentor\Application\Console\Command\Helper;
 
 use Monolog\Logger;
-use phpDocumentor\Command\Command;
+use phpDocumentor\Application\Console\Command\Command;
 use phpDocumentor\Configuration;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Event\LogEvent;

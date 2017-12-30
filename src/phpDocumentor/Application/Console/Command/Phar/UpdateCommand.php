@@ -9,7 +9,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Command\Phar;
+namespace phpDocumentor\Application\Console\Command\Phar;
 
 use \Exception;
 use Humbug\SelfUpdate\Strategy\GithubStrategy;

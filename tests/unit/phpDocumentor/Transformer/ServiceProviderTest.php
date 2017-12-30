@@ -14,12 +14,12 @@ namespace phpDocumentor\Transformer;
 
 use Cilex\Application;
 use Mockery as m;
+use phpDocumentor\Application\Console\Command\Helper\LoggerHelper;
 use phpDocumentor\Compiler\Pass\ClassTreeBuilder;
 use phpDocumentor\Compiler\Pass\InterfaceTreeBuilder;
 use phpDocumentor\Reflection\DocBlock\ExampleFinder;
-use phpDocumentor\Transformer\Command\Project\TransformCommand;
-use phpDocumentor\Transformer\Command\Template\ListCommand;
 use Symfony\Component\DependencyInjection\Container;
+use Zend\Cache\Storage\StorageInterface;
 
 /**
  * Tests for phpDocumentor\Translator\ServiceProvider
@@ -60,6 +60,10 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $this->application['parser.example.finder'] = $finder;
         $this->application['monolog'] = $logger;
         $this->application['descriptor.analyzer'] = $analyzer;
+        $loggerHelper = m::mock(LoggerHelper::class);
+        $loggerHelper->shouldReceive('getName')->andReturn('phpdocumentor_logger');
+        $loggerHelper->shouldReceive('setHelperSet');
+        $loggerHelper->shouldReceive('addOptions');
 
         $this->fixture = new ServiceProvider();
     }

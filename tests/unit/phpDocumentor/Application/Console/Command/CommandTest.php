@@ -1,21 +1,23 @@
 <?php
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
  *
  * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Command;
+namespace phpDocumentor\Application\Console\Command;
 
 use Mockery as m;
 use Symfony\Component\Console\Helper\HelperSet;
 
 /**
  * Tests for the phpDocumentor Command class.
+ * @coversDefaultClass \phpDocumentor\Application\Console\Command\Command
  */
 class CommandTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
@@ -31,7 +33,7 @@ class CommandTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Command\Command::setHelperSet
+     * @covers ::setHelperSet
      */
     public function testLoggerHelperReceivesCurrentCommand()
     {
@@ -50,7 +52,7 @@ class CommandTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Command\Command::getProgressBar
+     * @covers ::getProgressBar
      */
     public function testIfProgressBarIsReturnedWhenEnabledAsOption()
     {
@@ -79,7 +81,7 @@ class CommandTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Command\Command::getProgressBar
+     * @covers ::getProgressBar
      */
     public function testIfProgressBarIsNotReturnedWhenDisabledAsOption()
     {

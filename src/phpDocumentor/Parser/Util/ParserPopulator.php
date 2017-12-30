@@ -2,7 +2,7 @@
 
 namespace phpDocumentor\Parser\Util;
 
-use phpDocumentor\Command\Helper\ConfigurationHelper;
+use phpDocumentor\Application\Console\Command\Helper\ConfigurationHelper;
 use phpDocumentor\Parser\Parser;
 use Symfony\Component\Console\Input\InputInterface;
 

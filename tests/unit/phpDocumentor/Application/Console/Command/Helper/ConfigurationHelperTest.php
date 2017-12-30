@@ -1,20 +1,24 @@
 <?php
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
  *
  * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Command\Helper;
+namespace phpDocumentor\Application\Console\Command\Helper;
 
 use Mockery as m;
 use phpDocumentor\Configuration;
 use Symfony\Component\Console\Input\InputInterface;
 
+/**
+ * @coversDefaultClass \phpDocumentor\Application\Console\Command\Helper\ConfigurationHelper
+ */
 class ConfigurationHelperTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var ConfigurationHelper */
@@ -33,7 +37,7 @@ class ConfigurationHelperTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Command\Helper\ConfigurationHelper::__construct
+     * @covers ::__construct
      */
     public function testIfDependenciesAreCorrectlyRegistered()
     {
@@ -41,8 +45,8 @@ class ConfigurationHelperTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Command\Helper\ConfigurationHelper::getOption
-     * @covers phpDocumentor\Command\Helper\ConfigurationHelper::valueIsEmpty
+     * @covers ::getOption
+     * @covers ::valueIsEmpty
      */
     public function testIfSimpleValueFromInputIsReturned()
     {
@@ -61,9 +65,9 @@ class ConfigurationHelperTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Command\Helper\ConfigurationHelper::getOption
-     * @covers phpDocumentor\Command\Helper\ConfigurationHelper::splitCommaSeparatedValues
-     * @covers phpDocumentor\Command\Helper\ConfigurationHelper::valueIsEmpty
+     * @covers ::getOption
+     * @covers ::splitCommaSeparatedValues
+     * @covers ::valueIsEmpty
      */
     public function testIfSimpleCommaSeparatedValueFromInputIsReturnedAsArray()
     {
@@ -80,9 +84,9 @@ class ConfigurationHelperTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Command\Helper\ConfigurationHelper::getOption
-     * @covers phpDocumentor\Command\Helper\ConfigurationHelper::splitCommaSeparatedValues
-     * @covers phpDocumentor\Command\Helper\ConfigurationHelper::valueIsEmpty
+     * @covers ::getOption
+     * @covers ::splitCommaSeparatedValues
+     * @covers ::valueIsEmpty
      */
     public function testIfArrayContainingCommaSeparatedValueFromInputIsReturnedAsSimpleArray()
     {
@@ -99,8 +103,8 @@ class ConfigurationHelperTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Command\Helper\ConfigurationHelper::getOption
-     * @covers phpDocumentor\Command\Helper\ConfigurationHelper::valueIsEmpty
+     * @covers ::getOption
+     * @covers ::valueIsEmpty
      */
     public function testIfEmptyArrayIsReturnedAsEmptyArrayEvenWhenDefaultIsNull()
     {
@@ -117,8 +121,8 @@ class ConfigurationHelperTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Command\Helper\ConfigurationHelper::getOption
-     * @covers phpDocumentor\Command\Helper\ConfigurationHelper::valueIsEmpty
+     * @covers ::getOption
+     * @covers ::valueIsEmpty
      */
     public function testIfEmptyValueIsReturnedAsDefault()
     {
@@ -135,9 +139,9 @@ class ConfigurationHelperTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Command\Helper\ConfigurationHelper::getOption
-     * @covers phpDocumentor\Command\Helper\ConfigurationHelper::valueIsEmpty
-     * @covers phpDocumentor\Command\Helper\ConfigurationHelper::getConfigValueFromPath
+     * @covers ::getOption
+     * @covers ::valueIsEmpty
+     * @covers ::getConfigValueFromPath
      */
     public function testIfValueIsRetrievedFromConfigIfNotInInput()
     {
@@ -154,9 +158,9 @@ class ConfigurationHelperTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Command\Helper\ConfigurationHelper::getOption
-     * @covers phpDocumentor\Command\Helper\ConfigurationHelper::valueIsEmpty
-     * @covers phpDocumentor\Command\Helper\ConfigurationHelper::getConfigValueFromPath
+     * @covers ::getOption
+     * @covers ::valueIsEmpty
+     * @covers ::getConfigValueFromPath
      */
     public function testIfValueIsNullWhenANonExistingConfigPathIsGiven()
     {
@@ -173,9 +177,9 @@ class ConfigurationHelperTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Command\Helper\ConfigurationHelper::getOption
-     * @covers phpDocumentor\Command\Helper\ConfigurationHelper::valueIsEmpty
-     * @covers phpDocumentor\Command\Helper\ConfigurationHelper::getConfigValueFromPath
+     * @covers ::getOption
+     * @covers ::valueIsEmpty
+     * @covers ::getConfigValueFromPath
      */
     public function testIfValueIsNotRetrievedFromConfigIfItIsInInput()
     {

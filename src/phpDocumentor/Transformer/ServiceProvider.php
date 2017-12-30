@@ -25,8 +25,8 @@ use phpDocumentor\Compiler\Pass\PackageTreeBuilder;
 use phpDocumentor\Compiler\Pass\ResolveInlineLinkAndSeeTags;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Event\Dispatcher;
-use phpDocumentor\Transformer\Command\Project\TransformCommand;
-use phpDocumentor\Transformer\Command\Template\ListCommand;
+use phpDocumentor\Application\Console\Command\Project\TransformCommand;
+use phpDocumentor\Application\Console\Command\Template\ListCommand;
 use phpDocumentor\Transformer\Event\PreTransformEvent;
 use phpDocumentor\Transformer\Template\Factory;
 use phpDocumentor\Transformer\Template\PathResolver;
@@ -183,11 +183,6 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
 
             return $compiler;
         };
-
-        if ($app instanceof Application) {
-            $app->command(new TransformCommand($app['descriptor.builder'], $app['transformer'], $app['compiler']));
-            $app->command(new ListCommand($app['transformer.template.factory']));
-        }
     }
 
     /**

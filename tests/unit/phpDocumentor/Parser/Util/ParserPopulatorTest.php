@@ -3,6 +3,7 @@
 namespace phpDocumentor\Parser\Util;
 
 use Mockery as m;
+use phpDocumentor\Application\Console\Command\Helper\ConfigurationHelper;
 
 class ParserPopulatorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
@@ -10,7 +11,7 @@ class ParserPopulatorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         $parser = m::mock('\phpDocumentor\Parser\Parser');
         $input = m::mock('\Symfony\Component\Console\Input\InputInterface');
-        $configurationHelper = m::mock('\phpDocumentor\Command\Helper\ConfigurationHelper');
+        $configurationHelper = m::mock(ConfigurationHelper::class);
 
         $populator = new ParserPopulator();
         $input->shouldReceive('getOption')->with('force')->andReturn('force');

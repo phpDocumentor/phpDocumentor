@@ -12,7 +12,11 @@
 namespace phpDocumentor\Configuration;
 
 use JMS\Serializer\Serializer;
+<<<<<<< HEAD
 use Symfony\Component\Console\Input\ArgvInput;
+=======
+use phpDocumentor\Application\Console\Input\ArgvInput;
+>>>>>>> 2626d233... Moving all cli command to own namespace
 
 /**
  * Loads the template and user-defined configuration file from disk and creates a Configuration object from it.

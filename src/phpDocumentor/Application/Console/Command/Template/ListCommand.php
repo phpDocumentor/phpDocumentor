@@ -9,11 +9,11 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Transformer\Command\Template;
+namespace phpDocumentor\Application\Console\Command\Template;
 
+use phpDocumentor\Application\Console\Command\Command;
 use \Symfony\Component\Console\Input\InputInterface;
 use \Symfony\Component\Console\Output\OutputInterface;
-use phpDocumentor\Command\Command;
 use phpDocumentor\Transformer\Template\Factory;
 
 /**

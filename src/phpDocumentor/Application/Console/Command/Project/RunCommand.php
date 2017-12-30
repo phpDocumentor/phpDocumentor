@@ -9,9 +9,9 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Command\Project;
+namespace phpDocumentor\Application\Console\Command\Project;
 
-use phpDocumentor\Command\Command;
+use phpDocumentor\Application\Console\Command\Command;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;

@@ -97,23 +97,11 @@ class ServiceProvider implements ServiceProviderInterface
         $translator = $app['translator'];
         $translator->addTranslationFolder(__DIR__ . DIRECTORY_SEPARATOR . 'Messages');
 
-        $fileCollector = new FlySystemCollector(
-            new SpecificationFactory(),
-            new FlySystemFactory(new MountManager())
-        );
-
-        if ($app instanceof Application) {
-            $app->command(
-                new ParseCommand(
-                    $app['descriptor.builder'],
-                    $app['parser'],
-                    $fileCollector,
-                    $translator,
-                    $app['descriptor.cache'],
-                    $app['parser.example.finder'],
-                    $app['partials']
-                )
+        $app['parser.fileCollector'] = function() {
+            return new FlySystemCollector(
+                new SpecificationFactory(),
+                new FlySystemFactory(new MountManager())
             );
-        }
+        };
     }
 }

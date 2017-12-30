@@ -9,10 +9,10 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Transformer\Command\Project;
+namespace phpDocumentor\Application\Console\Command\Project;
 
-use phpDocumentor\Command\Command;
-use phpDocumentor\Command\Helper\ConfigurationHelper;
+use phpDocumentor\Application\Console\Command\Command;
+use phpDocumentor\Application\Console\Command\Helper\ConfigurationHelper;
 use phpDocumentor\Compiler\Compiler;
 use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper;

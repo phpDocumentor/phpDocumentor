@@ -1,24 +1,25 @@
 <?php
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
  *
  * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Parser\Command\Project;
+namespace phpDocumentor\Application\Console\Command\Project;
 
-use phpDocumentor\Command\Command;
-use phpDocumentor\Command\Helper\ConfigurationHelper;
+use League\Flysystem\MountManager;
+use phpDocumentor\Application\Console\Command\Command;
+use phpDocumentor\Application\Console\Command\Helper\ConfigurationHelper;
 use phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\DomainModel\Dsn;
 use phpDocumentor\DomainModel\Parser\FileCollector;
-use phpDocumentor\Fileset\Collection;
 use phpDocumentor\Parser\Event\PreFileEvent;
 use phpDocumentor\Parser\Exception\FilesNotFoundException;
 use phpDocumentor\Parser\Middleware\CacheMiddleware;

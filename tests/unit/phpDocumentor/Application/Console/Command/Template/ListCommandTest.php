@@ -10,18 +10,22 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Transformer\Command\Template;
+namespace phpDocumentor\Application\Console\Command\Template;
 
 use Mockery as m;
+use phpDocumentor\Application\Console\Command\Template\ListCommand;
 use phpDocumentor\Transformer\Template\Factory;
 use Symfony\Component\Console\Tester\CommandTester;
 
+/**
+ * @coversDefaultClass phpDocumentor\Application\Console\Command\Template\ListCommand
+ */
 class ListCommandTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
-     * @covers phpDocumentor\Transformer\Command\Template\ListCommand::__construct
-     * @covers phpDocumentor\Transformer\Command\Template\ListCommand::configure
-     * @covers phpDocumentor\Transformer\Command\Template\ListCommand::execute
+     * @covers ::__construct
+     * @covers ::configure
+     * @covers ::execute
      */
     public function testExecuteListsCommands()
     {
