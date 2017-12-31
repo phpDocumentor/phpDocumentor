@@ -26,7 +26,6 @@ and much more.
 The best location to start looking for parts to improve is on the Issues_ page; there you will find all things that
 Scrutinizer detected to be wrong with the project.
 
-
 .. _Wercker:     http://wercker.com
 .. _Scrutinizer: https://scrutinizer-ci.com
 .. _Issues:      https://scrutinizer-ci.com/g/phpDocumentor/phpDocumentor2/issues/develop
