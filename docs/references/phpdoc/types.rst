@@ -5,7 +5,7 @@ Many tags use a :term:`Type` as part of their definition (such as the @return ta
 These types differ from the official PHP definition to be able to represent all
 kinds of data.
 
-A complete definition will be given of these types and what they represent in 
+A complete definition will be given of these types and what they represent in
 the following sections.
 
 ABNF
@@ -220,7 +220,7 @@ The following keywords are recognized:
     If method C() was to be redefined in class B, including the type
     definition in the DocBlock, then `self` would refer to class B or any
     of its children.
-    
+
 14. **scalar**, the element to which this type applies is of any scalar type
     specifically: *string*, *float*, *int*, *bool*
 
