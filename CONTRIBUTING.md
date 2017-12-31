@@ -158,6 +158,16 @@ If you want to see profiling output for phpDocumentor the following manual steps
    date you should be able to see the profile output for phpDocumentor. Clicking on the URL does work as it expects a
    URL and we are profiling a command line application.
 
+## Getting started
+
+Once you cloned the repository you should be able to run the following commands to get started
+
+`$ composer install`
+`$ php bin/phpunit`
+`$ php bin/behat`
+
+Both behat and phpunit tests should pass without issues. 
+
 [PROGIT]:             http://git-scm.com/book
 [GITHUB_HELP_PR]:     https://help.github.com/articles/using-pull-requests
 [VAGRANT]:            http://vagrantup.com
