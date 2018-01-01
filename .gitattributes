@@ -1,5 +1,4 @@
 *.php text eol=lf
-/ansible export-ignore
 /docs export-ignore
 /features export-ignore
 /tests export-ignore
@@ -10,12 +9,8 @@
 CHANGELOG.md export-ignore
 CONTRIBUTING.md export-ignore
 README.md export-ignore
-Vagrantfile export-ignore
 behat.yml export-ignore
 box.json export-ignore
-build.xml export-ignore
-package.xml export-ignore
 phpdoc.dist.xml export-ignore
 phpmd.xml.dist export-ignore
 phpunit.xml.dist export-ignore
-wercker.yml export-ignore

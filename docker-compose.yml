@@ -1,0 +1,19 @@
+phpdoc:
+  build: .
+
+phpunit:
+  build: docker/with-xdebug
+  volumes: [".:/opt/phpdoc"]
+  working_dir: "/opt/phpdoc"
+  command: ["./bin/phpunit"]
+
+phpcs:
+  build: docker/with-xdebug
+  volumes: [".:/opt/phpdoc"]
+  working_dir: "/opt/phpdoc"
+  command: ["./bin/phpcs", "--standard=PSR2", "--extensions=php",  "src"]
+
+phpstan:
+  image: phpstan/phpstan
+  volumes: [".:/app"]
+  command: "analyse src tests --level 2 --configuration phpstan.neon"

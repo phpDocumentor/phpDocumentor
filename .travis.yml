@@ -35,6 +35,7 @@ jobs:
         - php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml
 
     - stage: Release
+      if: type IN (push)
       php: 7.1
       script:
         - echo "${VERSION}" > VERSION
