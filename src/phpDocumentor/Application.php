@@ -14,21 +14,31 @@ namespace phpDocumentor;
 use Cilex\Application as Cilex;
 use phpDocumentor\Application\Console\Command\Project\RunCommand;
 use Psr\Container\ContainerInterface;
-use Symfony\Component\Console\Application as ConsoleApplication;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Composer\Autoload\ClassLoader;
+use League\Pipeline\Pipeline;
 use Monolog\ErrorHandler;
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
+use phpDocumentor\Parser\ServiceProvider;
 use Pimple\Container;
+use phpDocumentor\Application\Configuration\ConfigurationFactory;
+use phpDocumentor\Application\Configuration\Factory\Version2;
+use phpDocumentor\Application\Configuration\Factory\Version3;
 use phpDocumentor\Application\Console\Command\Helper\ConfigurationHelper;
 use phpDocumentor\Application\Console\Command\Helper\LoggerHelper;
 use phpDocumentor\Application\Console\Command\Project\ParseCommand;
 use phpDocumentor\Application\Console\Command\Project\TransformCommand;
 use phpDocumentor\Application\Console\Command\Template\ListCommand;
-use phpDocumentor\Application\Console\Input\ArgvInput;
+use phpDocumentor\Application\Stage\Configure;
+use phpDocumentor\Application\Stage\Parser;
+use phpDocumentor\DomainModel\Uri;
+use phpDocumentor\Event\LogEvent;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\Console\Application as ConsoleApplication;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Stopwatch\Stopwatch;
 
 /**
@@ -65,6 +75,53 @@ class Application extends Cilex
         $this->register(new Parser\ServiceProvider());
         $this->register(new Transformer\ServiceProvider());
         $this->register(new Plugin\ServiceProvider());
+
+        $this['config.user.path'] = new Uri(
+            getcwd(). ((file_exists(getcwd() . '/phpdoc.xml')) ? '/phpdoc.xml' : '/phpdoc.dist.xml')
+        );
+
+        $this['config.schema.path']  = __DIR__ . '/data/xsd/phpdoc.xsd';
+        $this['config.strategies'] = [ new Version3($this['config.schema.path']), new Version2() ];
+
+        /** @var EventDispatcherInterface $evenDispatcher */
+        $evenDispatcher = $this['event_dispatcher'];
+        $evenDispatcher->addListener('system.log', function(LogEvent $e) {
+
+            /** @var LoggerInterface $logger */
+            $logger = $this['monolog'];
+
+            /** @var Translator $translator */
+            $translator = $this['translator'];
+
+            $logger->log($e->getPriority(), $translator->translate($e->getMessage()), $e->getContext());
+        });
+
+
+        $this['application.pipeline'] = function($container) {
+            return new Configure(
+                new ConfigurationFactory(
+                    $container['config.strategies'],
+                    $container['config.user.path']
+                )
+            );
+        };
+
+        $this['parser.pipeline'] = function($container) {
+            return new Pipeline(
+                [
+                    new Configure\ParserCache($container['parser.middleware.cache']),
+                    new Parser(
+                        $container['descriptor.builder'],
+                        $container['parser'],
+                        $container['parser.fileCollector'],
+                        $container['descriptor.cache'],
+                        $container['parser.example.finder'],
+                        $container['partials'],
+                        $container['event_dispatcher']
+                    )
+                ]
+            );
+        };
 
         $this->addCommandsForProjectNamespace();
 

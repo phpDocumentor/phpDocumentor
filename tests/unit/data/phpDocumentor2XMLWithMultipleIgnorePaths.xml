@@ -15,12 +15,12 @@
         <default-package-name>Default</default-package-name>
         <encoding>utf-8</encoding>
         <target>build/docs</target>
-        <files>
-            <directory>src</directory>
-            <ignore>vendor/*</ignore>
-            <ignore>logs/*</ignore>
-        </files>
     </parser>
+    <files>
+        <directory>src</directory>
+        <ignore>vendor/*</ignore>
+        <ignore>logs/*</ignore>
+    </files>
     <transformer>
         <target>output</target>
     </transformer>

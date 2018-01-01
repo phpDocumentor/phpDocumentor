@@ -41,6 +41,9 @@
             "ref": "fe60ce509ef04a3f40da96e3979bc8d9b13b2372"
         }
     },
+    "league/pipeline": {
+        "version": "0.3.0"
+    },
     "phpcollection/phpcollection": {
         "version": "0.5.0"
     },

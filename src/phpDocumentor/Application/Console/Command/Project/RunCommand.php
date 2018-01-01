@@ -11,7 +11,9 @@
 
 namespace phpDocumentor\Application\Console\Command\Project;
 
+use League\Pipeline\Pipeline;
 use phpDocumentor\Application\Console\Command\Command;
+use phpDocumentor\Application\Stage\Configure;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
@@ -223,7 +225,24 @@ HELP
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $parse_command = $this->getApplication()->find('project:parse');
+        $container = $this->getApplication();
+        $pipeLine = new Pipeline(
+            [
+                $container['application.pipeline'],
+                $container['parser.pipeline'],
+                //$container['transformer.pipeline'],
+            ]
+        );
+
+        //try {
+            $pipeLine($input->getOptions());
+            //when the complete pipeline finishes without errors this must be a success.
+            return 0;
+//        } catch (\Exception $e) {
+//            $output->writeln($e->getMessage());
+//            return 1;
+//        }
+
         $transform_command = $this->getApplication()->find('project:transform');
 
         $parse_input = new ArrayInput(

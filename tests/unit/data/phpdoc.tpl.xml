@@ -25,12 +25,12 @@
             <extension>phtml</extension>
         </extensions>
         <visibility></visibility>
-        <files>
-            <ignore-hidden>true</ignore-hidden>
-            <ignore-symlinks>true</ignore-symlinks>
-            <directory>src</directory>
-        </files>
     </parser>
+    <files>
+        <ignore-hidden>true</ignore-hidden>
+        <ignore-symlinks>true</ignore-symlinks>
+        <directory>src</directory>
+    </files>
     <transformer>
         <target>output</target>
     </transformer>

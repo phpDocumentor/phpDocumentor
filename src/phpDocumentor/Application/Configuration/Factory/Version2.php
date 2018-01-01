@@ -42,6 +42,7 @@ final class Version2 implements Strategy
 
         $phpdoc2Array = [
             'phpdocumentor' => [
+                'title' => 'my-doc',
                 'use-cache' => true,
                 'paths'     => [
                     'output' => new Dsn($outputDirectory),
@@ -51,9 +52,12 @@ final class Version2 implements Strategy
                     '1.0.0' => [
                         'folder' => '',
                         'api'    => [
+                            'encoding'             => 'uft8',
+                            'ignore-tags'          => [],
                             'format'               => 'php',
+                            'validate'             => false,
                             'source'               => [
-                                'dsn'   => 'file://.',
+                                'dsn'   => new Dsn('file://.'),
                                 'paths' => $this->buildSourcePaths($phpDocumentor),
                             ],
                             'ignore'               => [
@@ -215,15 +219,15 @@ final class Version2 implements Strategy
      */
     private function buildIgnoreHidden(\SimpleXMLElement $phpDocumentor)
     {
-        if ((array) $phpDocumentor->parser === []) {
+        if ((array) $phpDocumentor->files === []) {
             return $this->ignoreHidden;
         }
 
-        if ((string) $phpDocumentor->parser->files->{'ignore-hidden'} === '') {
+        if ((string) $phpDocumentor->files->{'ignore-hidden'} === '') {
             return $this->ignoreHidden;
         }
 
-        return filter_var($phpDocumentor->parser->files->{'ignore-hidden'}, FILTER_VALIDATE_BOOLEAN);
+        return filter_var($phpDocumentor->files->{'ignore-hidden'}, FILTER_VALIDATE_BOOLEAN);
     }
 
     /**
@@ -235,15 +239,15 @@ final class Version2 implements Strategy
      */
     private function buildIgnoreSymlinks(\SimpleXMLElement $phpDocumentor)
     {
-        if ((array) $phpDocumentor->parser === []) {
+        if ((array) $phpDocumentor->files === []) {
             return $this->ignoreSymlinks;
         }
 
-        if ((string) $phpDocumentor->parser->files->{'ignore-symlinks'} === '') {
+        if ((string) $phpDocumentor->files->{'ignore-symlinks'} === '') {
             return $this->ignoreSymlinks;
         }
 
-        return filter_var($phpDocumentor->parser->files->{'ignore-symlinks'}, FILTER_VALIDATE_BOOLEAN);
+        return filter_var($phpDocumentor->files->{'ignore-symlinks'}, FILTER_VALIDATE_BOOLEAN);
     }
 
     /**
@@ -255,12 +259,12 @@ final class Version2 implements Strategy
      */
     private function buildIgnorePaths(\SimpleXMLElement $phpDocumentor)
     {
-        if ((array) $phpDocumentor->parser === []) {
+        if ((array) $phpDocumentor->files === []) {
             return $this->ignorePaths;
         }
 
         $ignorePaths = [];
-        foreach ($phpDocumentor->parser->files->children() as $child) {
+        foreach ($phpDocumentor->files->children() as $child) {
             if ($child->getName() === 'ignore') {
                 $ignorePaths[] = (string) $child;
             }
@@ -302,15 +306,15 @@ final class Version2 implements Strategy
      */
     private function buildDirectories(\SimpleXMLElement $phpDocumentor)
     {
-        if ((array) $phpDocumentor->parser === []) {
+        if ((array) $phpDocumentor->files === []) {
             return $this->directories;
         }
 
-        if ((string) $phpDocumentor->parser->files->directory === '') {
+        if ((string) $phpDocumentor->files->directory === '') {
             return $this->directories;
         }
 
-        return (array) $phpDocumentor->parser->files->directory;
+        return (array) $phpDocumentor->files->directory;
     }
 
     /**
