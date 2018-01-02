@@ -6,7 +6,7 @@
  * PHP Version 5.3
  *
  * @author    Pascal de Vink <pascal.de.vink@gmail.com>
- * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */

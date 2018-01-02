@@ -31,8 +31,8 @@ phpDocumentor supports the following:
   basic phpDocumentor 1 arguments, such as --directory, --file and --target, have been adopted.
 * *Two-step process*, phpDocumentor first generates a cache with your application structure before creating the output.
   If you'd like you can use that to power your own tools or formatters!
-  
-*Please note* that phpDocumentor 3 is still under heavy development. We aim to add all features needed to have full support 
+
+*Please note* that phpDocumentor 3 is still under heavy development. We aim to add all features needed to have full support
 for php 7+. But at this moment that is not the case.
 
 Requirements
@@ -88,7 +88,7 @@ Afterwards you are able to run phpDocumentor directly from your `vendor` directo
 
     $ php vendor/bin/phpdoc
 
-*Please note* that we are not able to be compatible with all types of setups. In 
+*Please note* that we are not able to be compatible with all types of setups. In
 some situations phpDocumentor will block updates of other packages. We do not recommend
 using composer to install phpDocumentor.
 
