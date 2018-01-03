@@ -19,7 +19,6 @@
                 "tests"
             ],
             "in": [
-                "vendor/cilex/cilex/src",
                 "vendor/composer",
                 "vendor/container-interop",
                 "vendor/doctrine/annotations/lib",
@@ -48,7 +47,6 @@
                 "vendor/psr/cache/src",
                 "vendor/psr/container/src",
                 "vendor/psr/log/Psr",
-                "vendor/silex/api",
                 "vendor/symfony",
                 "vendor/tedivm/stash",
                 "vendor/twig/twig/lib",
@@ -69,7 +67,6 @@
                 "tests"
             ],
             "in": [
-                "vendor/cilex/cilex/src",
                 "vendor/composer",
                 "vendor/container-interop",
                 "vendor/doctrine/annotations/lib",
@@ -98,7 +95,6 @@
                 "vendor/psr/cache/src",
                 "vendor/psr/container/src",
                 "vendor/psr/log/Psr",
-                "vendor/silex/api",
                 "vendor/symfony",
                 "vendor/tedivm/stash",
                 "vendor/twig/twig/lib",
