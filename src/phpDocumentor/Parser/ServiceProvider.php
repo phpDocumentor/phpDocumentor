@@ -105,18 +105,17 @@ class ServiceProvider implements ServiceProviderInterface
             new FlySystemFactory(new MountManager())
         );
 
-        if ($app instanceof Application) {
-            $app->command(
-                new ParseCommand(
-                    $app['descriptor.builder'],
-                    $app['parser'],
-                    $fileCollector,
-                    $translator,
-                    $app['descriptor.cache'],
-                    $app['parser.example.finder'],
-                    $app['partials']
-                )
-            );
-        }
+        $app['console']->add(
+            new ParseCommand(
+                $app['descriptor.builder'],
+                $app['parser'],
+                $fileCollector,
+                $translator,
+                $app['descriptor.cache'],
+                $app['parser.example.finder'],
+                $app['partials'],
+                $app['parser.middleware.cache']
+            )
+        );
     }
 }

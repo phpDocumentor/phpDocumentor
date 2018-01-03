@@ -38,6 +38,22 @@ use Symfony\Component\Console\Output\OutputInterface;
 class RunCommand extends Command
 {
     /**
+     * @var ProjectDescriptorBuilder
+     */
+    private $projectDescriptorBuilder;
+
+    /**
+     * RunCommand constructor.
+     */
+    public function __construct(ProjectDescriptorBuilder $projectDescriptorBuilder)
+    {
+
+        parent::__construct('project:run');
+        $this->projectDescriptorBuilder = $projectDescriptorBuilder;
+    }
+
+
+    /**
      * Initializes this command and sets the name, description, options and
      * arguments.
      *
@@ -278,9 +294,7 @@ HELP
         }
 
         if ($output->getVerbosity() === OutputInterface::VERBOSITY_DEBUG) {
-            /** @var ProjectDescriptorBuilder $descriptorBuilder */
-            $descriptorBuilder = $this->getService('descriptor.builder');
-            file_put_contents('ast.dump', serialize($descriptorBuilder->getProjectDescriptor()));
+            file_put_contents('ast.dump', serialize($this->projectDescriptorBuilder->getProjectDescriptor()));
         }
 
         return 0;

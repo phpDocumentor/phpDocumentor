@@ -18,6 +18,7 @@ use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Event\LogEvent;
 use phpDocumentor\Parser\Event\PreFileEvent;
 use phpDocumentor\Translator\Translator;
+use Pimple\Container;
 use Psr\Log\LogLevel;
 use Symfony\Component\Console\Helper\Helper;
 use Symfony\Component\Console\Input\InputInterface;
@@ -26,6 +27,18 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class LoggerHelper extends Helper
 {
+    /**
+     * @var Container
+     */
+    private $container;
+
+    /**
+     * LoggerHelper constructor.
+     */
+    public function __construct(Container $container)
+    {
+        $this->container = $container;
+    }
 
     /**
      * Initializes the given command to accept logging options.
@@ -57,11 +70,10 @@ class LoggerHelper extends Helper
      * Connect the logging events to the output object of Symfony Console.
      *
      * @param OutputInterface $output
-     * @param Command $command
      *
      * @return void
      */
-    public function connectOutputToLogging(OutputInterface $output, $command)
+    public function connectOutputToLogging(OutputInterface $output)
     {
         static $alreadyConnected = false;
         $helper = $this;
@@ -72,7 +84,7 @@ class LoggerHelper extends Helper
         }
 
         /** @var Dispatcher $eventDispatcher  */
-        $eventDispatcher = $command->getService('event_dispatcher');
+        $eventDispatcher = $this->container['event_dispatcher'];
 
         $eventDispatcher->addListener(
             'parser.file.pre',
@@ -83,8 +95,8 @@ class LoggerHelper extends Helper
 
         $eventDispatcher->addListener(
             'system.log',
-            function (LogEvent $event) use ($command, $helper, $output) {
-                $helper->logEvent($output, $event, $command);
+            function (LogEvent $event) use ($helper, $output) {
+                $helper->logEvent($output, $event);
             }
         );
 
@@ -99,11 +111,10 @@ class LoggerHelper extends Helper
      *
      * @param OutputInterface $output
      * @param LogEvent        $event
-     * @param Command         $command
      *
      * @return void
      */
-    public function logEvent(OutputInterface $output, LogEvent $event, Command $command)
+    public function logEvent(OutputInterface $output, LogEvent $event)
     {
         $numericErrors = array(
             LogLevel::DEBUG     => 0,
@@ -123,7 +134,7 @@ class LoggerHelper extends Helper
 
         if ($numericErrors[$event->getPriority()] >= $numericErrors[$threshold]) {
             /** @var Translator $translator  */
-            $translator = $command->getContainer()->offsetGet('translator');
+            $translator = $this->container['translator'];
             $message    = vsprintf($translator->translate($event->getMessage()), $event->getContext());
 
             switch ($event->getPriority()) {
@@ -139,41 +150,5 @@ class LoggerHelper extends Helper
             }
             $output->writeln('  ' . $message);
         }
-    }
-
-    public function reconfigureLogger(InputInterface $input, OutputInterface $output, $command)
-    {
-        $logPath = $input->getOption('log');
-
-        switch ($output->getVerbosity()) {
-            case OutputInterface::VERBOSITY_VERBOSE:
-                $logLevel = Logger::WARNING;
-                break;
-            case OutputInterface::VERBOSITY_VERY_VERBOSE:
-                $logLevel = Logger::INFO;
-                break;
-            case OutputInterface::VERBOSITY_DEBUG:
-                $logLevel = Logger::DEBUG;
-                break;
-            default:
-                $logLevel = Logger::ERROR;
-        }
-
-        $container = $command->getContainer();
-
-        /** @var Configuration $configuration */
-        $configuration = $container['config'];
-
-        if ($output->getVerbosity() == OutputInterface::VERBOSITY_NORMAL) {
-            $logLevel = (string) $configuration->getLogging()->getLevel();
-        }
-
-        // null means the default is used
-        if (! $logPath) {
-            $paths = $configuration->getLogging()->getPaths();
-            $logPath = isset($paths['default']) ? (string) $paths['default'] : null;
-        }
-
-        $container->configureLogger($container['monolog'], $logLevel, $logPath);
     }
 }

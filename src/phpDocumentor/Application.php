@@ -23,6 +23,8 @@ use Monolog\Logger;
 use phpDocumentor\Command\Helper\ConfigurationHelper;
 use phpDocumentor\Command\Helper\LoggerHelper;
 use phpDocumentor\Console\Input\ArgvInput;
+use phpDocumentor\Console\Output\Output;
+use Pimple\Container;
 use Symfony\Component\Console\Application as ConsoleApplication;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -34,10 +36,14 @@ use Symfony\Component\Stopwatch\Stopwatch;
  *
  * Can be used as bootstrap when the run method is not invoked.
  */
-class Application extends Cilex
+class Application implements \ArrayAccess
 {
     /** @var string $VERSION represents the version of phpDocumentor as stored in /VERSION */
     public static $VERSION;
+
+    private $container;
+
+    private $console;
 
     /**
      * Initializes all components used by phpDocumentor.
@@ -49,11 +55,21 @@ class Application extends Cilex
     {
         $this->defineIniSettings();
 
+        $this->container = new Container();
+        foreach ($values as $key => $value) {
+            $this->container[$key] = $value;
+        }
+
         self::$VERSION = strpos('@package_version@', '@') === 0
             ? trim(file_get_contents(__DIR__ . '/../../VERSION'))
             : '@package_version@';
 
-        parent::__construct('phpDocumentor', self::$VERSION, $values);
+        $this->console = new \Symfony\Component\Console\Application('phpDocumentor', self::$VERSION);
+        $this->console->getHelperSet()->set(new LoggerHelper($this->container));
+
+        $this->container['console'] = function () {
+            return $this->console;
+        };
 
         $this['kernel.timer.start'] = time();
         $this['kernel.stopwatch'] = function () {
@@ -62,18 +78,18 @@ class Application extends Cilex
 
         $this['autoloader'] = $autoloader;
 
-        $this->register(new JmsSerializerServiceProvider());
-        $this->register(new Configuration\ServiceProvider());
+        $this->container->register(new JmsSerializerServiceProvider());
+        $this->container->register(new Configuration\ServiceProvider());
 
         $this->addEventDispatcher();
         $this->addLogging();
 
-        $this->register(new Translator\ServiceProvider());
-        $this->register(new Descriptor\ServiceProvider());
-        $this->register(new Partials\ServiceProvider());
-        $this->register(new Parser\ServiceProvider());
-        $this->register(new Transformer\ServiceProvider());
-        $this->register(new Plugin\ServiceProvider());
+        $this->container->register(new Translator\ServiceProvider());
+        $this->container->register(new Descriptor\ServiceProvider());
+        $this->container->register(new Partials\ServiceProvider());
+        $this->container->register(new Parser\ServiceProvider());
+        $this->container->register(new Transformer\ServiceProvider());
+        $this->container->register(new Plugin\ServiceProvider());
 
         $this->addCommandsForProjectNamespace();
 
@@ -161,23 +177,16 @@ class Application extends Cilex
         }
     }
 
-    /**
-     * @param null|InputInterface $input
-     * @param null|OutputInterface $output
-     * @return mixed
-     */
-    public function run(InputInterface $input = null, OutputInterface $output = null)
+    public function run()
     {
         /** @var ConsoleApplication $app */
         $app = $this['console'];
         $app->setAutoExit(false);
 
-        if ($output === null) {
-            $output = new Console\Output\Output();
-            $output->setLogger($this['monolog']);
-        }
+        $output = new Console\Output\Output();
+        $output->setLogger($this['monolog']);
 
-        return parent::run(new ArgvInput(), $output);
+        return $app->run(new ArgvInput(), $output);
     }
 
 
@@ -237,7 +246,7 @@ class Application extends Cilex
      */
     protected function addLogging()
     {
-        $this->register(
+        $this->container->register(
             new MonologServiceProvider(),
             array(
                 'monolog.name'      => 'phpDocumentor',
@@ -250,7 +259,7 @@ class Application extends Cilex
         $app = $this;
         /** @var Configuration $configuration */
         $configuration = $this['config'];
-        $this['monolog.configure'] = $this->protect(
+        $this['monolog.configure'] = $this->container->protect(
             function ($log) use ($app, $configuration) {
                 $paths    = $configuration->getLogging()->getPaths();
                 $logLevel = $configuration->getLogging()->getLevel();
@@ -259,10 +268,9 @@ class Application extends Cilex
             }
         );
 
-        $this->extend(
+        $this->container->extend(
             'console',
             function (ConsoleApplication $console) use ($configuration) {
-                $console->getHelperSet()->set(new LoggerHelper());
                 $console->getHelperSet()->set(new ConfigurationHelper($configuration));
 
                 return $console;
@@ -291,7 +299,7 @@ class Application extends Cilex
      */
     protected function addCommandsForProjectNamespace()
     {
-        $this->command(new Command\Project\RunCommand());
+        $this->console->add(new Command\Project\RunCommand($this->container['descriptor.builder']));
     }
 
     /**
@@ -301,6 +309,68 @@ class Application extends Cilex
      */
     protected function addCommandsForPharNamespace()
     {
-        $this->command(new Command\Phar\UpdateCommand());
+        $this->console->add(new Command\Phar\UpdateCommand());
+    }
+
+    /**
+     * Whether a offset exists
+     * @link http://php.net/manual/en/arrayaccess.offsetexists.php
+     * @param mixed $offset <p>
+     * An offset to check for.
+     * </p>
+     * @return boolean true on success or false on failure.
+     * </p>
+     * <p>
+     * The return value will be casted to boolean if non-boolean was returned.
+     * @since 5.0.0
+     */
+    public function offsetExists($offset)
+    {
+        return $this->container->offsetExists($offset);
+    }
+
+    /**
+     * Offset to retrieve
+     * @link http://php.net/manual/en/arrayaccess.offsetget.php
+     * @param mixed $offset <p>
+     * The offset to retrieve.
+     * </p>
+     * @return mixed Can return all value types.
+     * @since 5.0.0
+     */
+    public function offsetGet($offset)
+    {
+        return $this->container[$offset];
+    }
+
+    /**
+     * Offset to set
+     * @link http://php.net/manual/en/arrayaccess.offsetset.php
+     * @param mixed $offset <p>
+     * The offset to assign the value to.
+     * </p>
+     * @param mixed $value <p>
+     * The value to set.
+     * </p>
+     * @return void
+     * @since 5.0.0
+     */
+    public function offsetSet($offset, $value)
+    {
+        $this->container[$offset] = $value;
+    }
+
+    /**
+     * Offset to unset
+     * @link http://php.net/manual/en/arrayaccess.offsetunset.php
+     * @param mixed $offset <p>
+     * The offset to unset.
+     * </p>
+     * @return void
+     * @since 5.0.0
+     */
+    public function offsetUnset($offset)
+    {
+        $this->container->offsetUnset($offset);
     }
 }

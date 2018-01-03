@@ -111,11 +111,11 @@ class ServiceProvider implements ServiceProviderInterface
      * Registers the Assemblers used to convert Reflection objects to Descriptors.
      *
      * @param AssemblerFactory $factory
-     * @param \Cilex\Application $app
+     * @param Container $app
      *
      * @return AssemblerFactory
      */
-    public function attachAssemblersToFactory(AssemblerFactory $factory, Application $app)
+    public function attachAssemblersToFactory(AssemblerFactory $factory, Container $app)
     {
         // @codingStandardsIgnoreStart because we limit the verbosity by making all closures single-line
         $fileMatcher = function ($criteria) {
@@ -237,16 +237,16 @@ class ServiceProvider implements ServiceProviderInterface
      * Attaches filters to the manager.
      *
      * @param Filter $filterManager
-     * @param Application $app
+     * @param Container $container
      *
      * @return Filter
      */
-    public function attachFiltersToManager(Filter $filterManager, Application $app)
+    public function attachFiltersToManager(Filter $filterManager, Container $container)
     {
-        $stripOnVisibility = new StripOnVisibility($app['descriptor.builder']);
+        $stripOnVisibility = new StripOnVisibility($container['descriptor.builder']);
         $filtersOnAllDescriptors = array(
-            new StripInternal($app['descriptor.builder']),
-            new StripIgnore($app['descriptor.builder'])
+            new StripInternal($container['descriptor.builder']),
+            new StripIgnore($container['descriptor.builder'])
         );
 
         foreach ($filtersOnAllDescriptors as $filter) {
@@ -267,13 +267,13 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * Adds the caching mechanism to the dependency injection container with key 'descriptor.cache'.
      *
-     * @param Application $app
+     * @param Container $container
      *
      * @return void
      */
-    protected function addCache(Application $app)
+    protected function addCache(Container $container)
     {
-        $app['descriptor.cache'] = function () {
+        $container['descriptor.cache'] = function () {
             $cache = new Filesystem();
             $cache->setOptions(
                 array(
@@ -302,19 +302,19 @@ class ServiceProvider implements ServiceProviderInterface
      * Please note that the type of serializer can be configured using the parameter 'descriptor.builder.serializer'; it
      * accepts any parameter that Zend\Serializer supports.
      *
-     * @param Application $app
+     * @param Container $container
      *
      * @return void
      */
-    protected function addBuilder(Application $app)
+    protected function addBuilder(Container $container)
     {
         if (extension_loaded('igbinary')) {
-            $app['descriptor.builder.serializer'] = 'IgBinary';
+            $container['descriptor.builder.serializer'] = 'IgBinary';
         } else {
-            $app['descriptor.builder.serializer'] = 'PhpSerialize';
+            $container['descriptor.builder.serializer'] = 'PhpSerialize';
         }
 
-        $app['descriptor.builder'] = function ($container) {
+        $container['descriptor.builder'] = function ($container) {
             $builder = new ProjectDescriptorBuilder(
                 $container['descriptor.builder.assembler.factory'],
                 $container['descriptor.filter']
@@ -328,21 +328,21 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * Adds the assembler factory and attaches the basic assemblers with key 'descriptor.builder.assembler.factory'.
      *
-     * @param Application $app
+     * @param Container $container
      *
      * @return void
      */
-    protected function addAssemblers(Application $app)
+    protected function addAssemblers(Container $container)
     {
-        $app['descriptor.builder.assembler.factory'] = function () {
+        $container['descriptor.builder.assembler.factory'] = function () {
             return new AssemblerFactory();
         };
 
         $provider = $this;
-        $app['descriptor.builder.assembler.factory'] = $app->extend(
+        $container['descriptor.builder.assembler.factory'] = $container->extend(
             'descriptor.builder.assembler.factory',
-            function ($factory) use ($provider, $app) {
-                return $provider->attachAssemblersToFactory($factory, $app);
+            function ($factory) use ($provider, $container) {
+                return $provider->attachAssemblersToFactory($factory, $container);
             }
         );
     }
@@ -353,13 +353,13 @@ class ServiceProvider implements ServiceProviderInterface
      * Please note that filters can only be attached after the builder is instantiated because it is needed; so the
      * filters can be attached by extending 'descriptor.builder'.
      *
-     * @param Application $app
+     * @param Container $container
      *
      * @return void
      */
-    protected function addFilters(Application $app)
+    protected function addFilters(Container $container)
     {
-        $app['descriptor.filter'] = function () {
+        $container['descriptor.filter'] = function () {
             return new Filter(new ClassFactory());
         };
     }

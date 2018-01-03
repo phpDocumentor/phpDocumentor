@@ -18,6 +18,7 @@ use phpDocumentor\Compiler\Pass\InterfaceTreeBuilder;
 use \phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use Mockery as m;
 use phpDocumentor\Reflection\DocBlock\ExampleFinder;
+use Zend\Cache\Storage\StorageInterface;
 
 /**
  * Tests for phpDocumentor\Translator\ServiceProvider
@@ -63,6 +64,7 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $this->application['parser.example.finder'] = $finder;
         $this->application['monolog'] = $logger;
         $this->application['descriptor.analyzer'] = $analyzer;
+        $this->application['descriptor.cache'] = m::mock(StorageInterface::class);
         $this->application['console']->getHelperSet()->set($loggerHelper);
 
         $this->fixture = new ServiceProvider();

@@ -22,8 +22,10 @@ use phpDocumentor\DomainModel\Parser\FileCollector;
 use phpDocumentor\Fileset\Collection;
 use phpDocumentor\Parser\Command\Project\ParseCommand;
 use \Mockery as m;
+use phpDocumentor\Parser\Middleware\CacheMiddleware;
 use phpDocumentor\Parser\Parser;
 use phpDocumentor\Reflection\DocBlock\ExampleFinder;
+use Stash\Pool;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Input\ArrayInput;
 use Zend\Cache\Storage\StorageInterface;
@@ -110,7 +112,8 @@ class ParseCommandTest extends MockeryTestCase
             $translator,
             $cache,
             new ExampleFinder(),
-            m::mock(\phpDocumentor\Partials\Collection::class)
+            m::mock(\phpDocumentor\Partials\Collection::class),
+            new CacheMiddleware(m::mock(Pool::class))
         );
 
 

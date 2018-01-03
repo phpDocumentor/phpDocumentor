@@ -85,11 +85,11 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * Initializes and adds the configuration merger object as the 'config.merger' service to the container.
      *
-     * @param Application $container
+     * @param Container $container
      *
      * @return void
      */
-    private function addMerger(Application $container)
+    private function addMerger(Container $container)
     {
         $this->addMergerAnnotations($container);
 
@@ -101,14 +101,14 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * Adds the annotations for the Merger component to the Serializer.
      *
-     * @param Application $container
+     * @param Container $container
      *
      * @throws \RuntimeException if the annotation handler for Jms Serializer is not added to the container as
      *   'serializer.annotations' service.
      *
      * @return void
      */
-    private function addMergerAnnotations(Application $container)
+    private function addMergerAnnotations(Container $container)
     {
         if (!isset($container['serializer.annotations'])) {
             throw new \RuntimeException(

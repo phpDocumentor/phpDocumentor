@@ -49,35 +49,35 @@ final class ServiceProvider implements ServiceProviderInterface
      *
      * This action will enable transformations in templates to make use of these writers.
      *
-     * @param Application $app
+     * @param Container $container
      *
      * @return void
      */
-    private function registerWriters(Application $app)
+    private function registerWriters(Container $container)
     {
-        $writerCollection = $this->getWriterCollection($app);
+        $writerCollection = $this->getWriterCollection($container);
 
         $writerCollection['FileIo'] = new Writer\FileIo();
         $writerCollection['checkstyle'] = new Writer\Checkstyle();
         $writerCollection['sourcecode'] = new Writer\Sourcecode();
         $writerCollection['statistics'] = new Writer\Statistics();
-        $writerCollection['xml'] = new Writer\Xml($app['transformer.routing.standard']);
-        $writerCollection['xsl'] = new Writer\Xsl($app['monolog']);
+        $writerCollection['xml'] = new Writer\Xml($container['transformer.routing.standard']);
+        $writerCollection['xsl'] = new Writer\Xsl($container['monolog']);
 
-        $writerCollection['checkstyle']->setTranslator($this->getTranslator($app));
-        $writerCollection['xml']->setTranslator($this->getTranslator($app));
+        $writerCollection['checkstyle']->setTranslator($this->getTranslator($container));
+        $writerCollection['xml']->setTranslator($this->getTranslator($container));
     }
 
     /**
      * Registers the Messages folder in this plugin as a source of translations.
      *
-     * @param Application $app
+     * @param Container $container
      *
      * @return void
      */
-    private function registerTranslationMessages(Application $app)
+    private function registerTranslationMessages(Container $container)
     {
-        $this->getTranslator($app)->addTranslationFolder(__DIR__ . DIRECTORY_SEPARATOR . 'Messages');
+        $this->getTranslator($container)->addTranslationFolder(__DIR__ . DIRECTORY_SEPARATOR . 'Messages');
     }
 
     /**
@@ -89,37 +89,37 @@ final class ServiceProvider implements ServiceProviderInterface
      *
      * With this method we make sure that all dependencies used by the static methods are injected as static properties.
      *
-     * @param Application $app
+     * @param Container $container
      *
      * @return void
      */
-    private function registerDependenciesOnXsltExtension(Application $app)
+    private function registerDependenciesOnXsltExtension(Container $container)
     {
-        Xslt\Extension::$routers = $app['transformer.routing.queue'];
-        Xslt\Extension::$descriptorBuilder = $app['descriptor.builder'];
+        Xslt\Extension::$routers = $container['transformer.routing.queue'];
+        Xslt\Extension::$descriptorBuilder = $container['descriptor.builder'];
     }
 
     /**
      * Returns the Translator service from the Service Locator.
      *
-     * @param Application $app
+     * @param Container $container
      *
      * @return Translator
      */
-    private function getTranslator(Application $app)
+    private function getTranslator(Container $container)
     {
-        return $app['translator'];
+        return $container['translator'];
     }
 
     /**
      * Returns the WriterCollection service from the Service Locator.
      *
-     * @param Application $app
+     * @param Container $container
      *
      * @return Collection
      */
-    private function getWriterCollection(Application $app)
+    private function getWriterCollection(Container $container)
     {
-        return $app['transformer.writer.collection'];
+        return $container['transformer.writer.collection'];
     }
 }
