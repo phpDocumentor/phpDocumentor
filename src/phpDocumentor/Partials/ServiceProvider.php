@@ -26,7 +26,7 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * Registers services on the given app.
      *
-     * @param Application $app An Application instance
+     * @param Container $app An Application instance
      *
      * @throws Exception\MissingNameForPartialException if a partial has no name provided.
      *

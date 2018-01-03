@@ -13,6 +13,7 @@ namespace phpDocumentor\Plugin\Core;
 
 use \Mockery as m;
 use Cilex\Application;
+use Pimple\Container;
 
 /**
  * Tests whether all expected Services for the Core plugin are loaded using the ServiceProvider.
@@ -42,22 +43,22 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         $mockCollection        = $this->givenAWriterCollection();
         $mockLogger            = $this->givenALogger();
-        $mockApplication       = $this->givenAnApplication($mockCollection, $mockLogger);
-        $mockRouterQueue       = $this->givenARouterQueue($mockApplication);
-        $mockTranslator        = $this->givenATranslator($mockApplication);
-        $mockDescriptorBuilder = $this->givenAProjectDescriptorBuilder($mockApplication);
+        $mockContainer       = $this->givenAnContainer($mockCollection, $mockLogger);
+        $mockRouterQueue       = $this->givenARouterQueue($mockContainer);
+        $mockTranslator        = $this->givenATranslator($mockContainer);
+        $mockDescriptorBuilder = $this->givenAProjectDescriptorBuilder($mockContainer);
 
         $this->thenATranslationFolderIsAdded($mockTranslator);
 
         $this->thenWritersAreRegistered($mockCollection);
-        $this->thenRouterIsSetOnXmlWriter($mockApplication);
+        $this->thenRouterIsSetOnXmlWriter($mockContainer);
         $this->thenTranslatorIsSetOnWriter('Checkstyle', $mockTranslator, $mockCollection);
         $this->thenTranslatorIsSetOnWriter('Xml', $mockTranslator, $mockCollection);
 
-        $this->thenProviderIsRegistered($mockApplication, 'phpDocumentor\Plugin\Graphs\ServiceProvider');
-        $this->thenProviderIsRegistered($mockApplication, 'phpDocumentor\Plugin\Twig\ServiceProvider');
+        $this->thenProviderIsRegistered($mockContainer, 'phpDocumentor\Plugin\Graphs\ServiceProvider');
+        $this->thenProviderIsRegistered($mockContainer, 'phpDocumentor\Plugin\Twig\ServiceProvider');
 
-        $this->fixture->register($mockApplication);
+        $this->fixture->register($mockContainer);
 
         $this->assertSame($mockRouterQueue, Xslt\Extension::$routers);
         $this->assertSame($mockDescriptorBuilder, Xslt\Extension::$descriptorBuilder);
@@ -68,9 +69,9 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      *
      * @return m\MockInterface
      */
-    private function givenAnApplication($mockCollection, $mockLogger)
+    private function givenAnContainer($mockCollection, $mockLogger)
     {
-        $mockApplication = m::mock('Cilex\Application');
+        $mockApplication = m::mock(Container::class);
 
         $mockApplication->shouldReceive('offsetGet')
             ->once()

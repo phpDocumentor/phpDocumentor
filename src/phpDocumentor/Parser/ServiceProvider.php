@@ -40,7 +40,7 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * Registers services on the given app.
      *
-     * @param Container|Application $app An Application instance
+     * @param Container $app An Application instance
      *
      * @throws Exception\MissingDependencyException if the Descriptor Builder is not present.
      * @throws \Stash\Exception\RuntimeException

@@ -26,8 +26,6 @@
     },
     "require": {
         "php": ">=7.0",
-
-        "cilex/cilex":        "^2.0",
         "symfony/console":    "~2.3",
 
         "monolog/monolog":  "~1.6",
@@ -55,7 +53,8 @@
         "webmozart/assert": "^1.2",
         "padraic/phar-updater": "^1.0",
         "tedivm/stash": "^0.14.2",
-        "phpdocumentor/flyfinder": "@beta"
+        "phpdocumentor/flyfinder": "@beta",
+        "pimple/pimple": "^3.2"
     },
     "minimum-stability": "stable",
     "require-dev": {
