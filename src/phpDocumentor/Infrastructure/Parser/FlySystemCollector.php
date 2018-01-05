@@ -42,7 +42,8 @@ final class FlySystemCollector implements FileCollector
 
     public function getFiles(Dsn $dsn, array $paths, array $ignore, array $extensions): array
     {
-        $specs = $this->specificationFactory->create($paths, $ignore, $extensions);
+        // $paths will come into play later (git pathing feature)... for now, pass empty paths
+        $specs = $this->specificationFactory->create([], $ignore, $extensions);
 
         $fileSystems = [];
 
