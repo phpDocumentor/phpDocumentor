@@ -109,7 +109,7 @@ class ToHtml extends BaseConverter implements ToHtmlInterface
      *
      * @param string $destination The destination path relative to the target folder.
      *
-     * @see $options for where the 'root' variable is set.
+     * @see \phpDocumentor\Plugin\Scrybe\Converter\BaseConverter::$options for where the 'root' variable is set.
      *
      * @return void
      */

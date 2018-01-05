@@ -58,7 +58,7 @@ abstract class BaseEntry
     /**
      * Returns the parent entry for this entry.
      *
-     * @see $parent for more information rgarding parent entries.
+     * @see BaseEntry::$parent for more information regarding parent entries.
      *
      * @return BaseEntry|null
      */
@@ -88,7 +88,7 @@ abstract class BaseEntry
     /**
      * Returns a list of entries.
      *
-     * @see $children for more information regarding child entries.
+     * @see BaseEntry::$children for more information regarding child entries.
      *
      * @return BaseEntry[]
      */
