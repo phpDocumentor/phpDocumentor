@@ -12,7 +12,6 @@
 namespace phpDocumentor\Descriptor\Cache;
 
 use Zend\Cache\Storage\IterableInterface;
-use Zend\Cache\Storage\IteratorInterface;
 use Zend\Cache\Storage\OptimizableInterface;
 use Zend\Cache\Storage\StorageInterface;
 use phpDocumentor\Descriptor\FileDescriptor;
@@ -23,7 +22,7 @@ use phpDocumentor\Fileset\Collection;
 /**
  * Maps a projectDescriptor to and from a cache instance.
  */
-class ProjectDescriptorMapper
+final class ProjectDescriptorMapper
 {
     const FILE_PREFIX = 'file_';
 
@@ -34,104 +33,46 @@ class ProjectDescriptorMapper
 
     /**
      * Initializes this mapper with the given cache instance.
-     * @param StorageInterface $cache
      */
     public function __construct(StorageInterface $cache)
     {
+        if (!$cache instanceof IterableInterface) {
+            throw new \InvalidArgumentException('ProjectDescriptorMapper should also be an iterable Storage type');
+        }
+
         $this->cache = $cache;
     }
 
     /**
      * Returns the Cache instance for this Mapper.
-     *
-     * @return IterableInterface|StorageInterface
      */
-    public function getCache()
+    public function getCache(): StorageInterface
     {
         return $this->cache;
     }
 
     /**
      * Returns the Project Descriptor from the cache.
-     *
-     * @param ProjectDescriptor $projectDescriptor
-     *
-     * @return void
-     * @throws \Exception
      */
     public function populate(ProjectDescriptor $projectDescriptor)
     {
-        /** @var IteratorInterface $iteratorInterface */
-        $iteratorInterface = $this->getCache()->getIterator();
+        $this->loadCacheItemAsSettings($projectDescriptor, self::KEY_SETTINGS);
 
-        // load the settings object
-        $settings = null;
-        try {
-            $settings = $this->getCache()->getItem(self::KEY_SETTINGS);
-        } catch (\Exception $e) {
-            $this->igBinaryCompatibleCacheClear(self::KEY_SETTINGS, $e);
-        }
-
-        if ($settings instanceof Settings) {
-            $projectDescriptor->setSettings($settings);
-        }
-
-        // FIXME: Workaround for: https://github.com/zendframework/zf2/pull/4154
-        if ($iteratorInterface->valid()) {
-            foreach ($this->getCache() as $key) {
-                $item = null;
-                try {
-                    $item = $this->getCache()->getItem($key);
-                } catch (\Exception $e) {
-                    $this->igBinaryCompatibleCacheClear($key, $e);
-                }
-
-                if ($item instanceof FileDescriptor) {
-                    $projectDescriptor->getFiles()->set($item->getPath(), $item);
-                }
-            }
-        }
-    }
-
-    /**
-     * Clears the cache if a serialization exception was thrown
-     *
-     * @param string $key
-     * @param \Exception $e
-     *
-     * @throws \Exception Rethrows exception if nessesary
-     *
-     * @return void
-     */
-    protected function igBinaryCompatibleCacheClear($key, $e)
-    {
-        if (extension_loaded('igbinary')) {
-            $this->getCache()->removeItem($key);
-        } else {
-            throw $e;
+        foreach ($this->getCache() as $key) {
+            $this->loadCacheItemAsFile($projectDescriptor, $key);
         }
     }
 
     /**
      * Stores a Project Descriptor in the Cache.
-     *
-     * @param ProjectDescriptor $projectDescriptor
-     *
-     * @return void
      */
     public function save(ProjectDescriptor $projectDescriptor)
     {
         $keys  = array();
         $cache = $this->getCache();
 
-        /** @var IteratorInterface $iteratorInterface  */
-        $iteratorInterface = $cache->getIterator();
-
-        // FIXME: Workaround for: https://github.com/zendframework/zf2/pull/4154
-        if ($iteratorInterface->valid()) {
-            foreach ($cache as $key) {
-                $keys[] = $key;
-            }
+        foreach ($cache as $key) {
+            $keys[] = $key;
         }
 
         // store the settings for this Project Descriptor
@@ -158,10 +99,6 @@ class ProjectDescriptorMapper
 
     /**
      * Removes all files in cache that do not occur in the given FileSet Collection.
-     *
-     * @param Collection $collection
-     *
-     * @return void
      */
     public function garbageCollect(Collection $collection)
     {
@@ -173,16 +110,28 @@ class ProjectDescriptorMapper
             $name = self::FILE_PREFIX . md5(substr($name, strlen($projectRoot)));
         }
 
-        /** @var IteratorInterface $iteratorInterface  */
-        $iteratorInterface = $this->getCache()->getIterator();
-
-        // FIXME: Workaround for: https://github.com/zendframework/zf2/pull/4154
-        if ($iteratorInterface->valid()) {
-            foreach ($this->getCache() as $item) {
-                if (substr($item, 0, strlen(self::FILE_PREFIX)) === self::FILE_PREFIX && !in_array($item, $filenames)) {
-                    $this->getCache()->removeItem($item);
-                }
+        foreach ($this->getCache() as $item) {
+            if (substr($item, 0, strlen(self::FILE_PREFIX)) === self::FILE_PREFIX && !in_array($item, $filenames)) {
+                $this->getCache()->removeItem($item);
             }
+        }
+    }
+
+    private function loadCacheItemAsFile(ProjectDescriptor $projectDescriptor, string $key)
+    {
+        $item = $this->getCache()->getItem($key);
+
+        if ($item instanceof FileDescriptor) {
+            $projectDescriptor->getFiles()->set($item->getPath(), $item);
+        }
+    }
+
+    private function loadCacheItemAsSettings(ProjectDescriptor $projectDescriptor, string $key)
+    {
+        $item = $this->getCache()->getItem($key);
+
+        if ($item instanceof Settings) {
+            $projectDescriptor->setSettings($item);
         }
     }
 }

@@ -37,21 +37,6 @@ class FactoryTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * Tests whether this factory registers the twig template engine by default.
-     *
-     * @covers \phpDocumentor\Plugin\Scrybe\Template\Factory
-     */
-    public function testHasTwigTemplateEngine()
-    {
-        $this->markTestSkipped('Invalid test case?');
-        $factory = new Factory();
-        $this->assertInstanceOf(
-            '\phpDocumentor\Plugin\Scrybe\Template\Twig',
-            $factory->get('twig')
-        );
-    }
-
-    /**
      * Tests whether a Template could be registered using the register method.
      *
      * @covers \phpDocumentor\Plugin\Scrybe\Template\Factory::register
