@@ -112,7 +112,7 @@ DESCRIPTION
      * @param InputInterface $input
      * @param OutputInterface $output
      *
-     * @see $output_format to determine the output format.
+     * @see BaseConvertCommand::$output_format to determine the output format.
      *
      * @return int
      */
