@@ -22,6 +22,8 @@ use Monolog\ErrorHandler;
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
+use phpDocumentor\Application\Stage\Transform;
+use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Parser\ServiceProvider;
 use Pimple\Container;
 use phpDocumentor\Application\Configuration\ConfigurationFactory;
@@ -96,7 +98,6 @@ class Application extends Cilex
             $logger->log($e->getPriority(), $translator->translate($e->getMessage()), $e->getContext());
         });
 
-
         $this['application.pipeline'] = function($container) {
             return new Configure(
                 new ConfigurationFactory(
@@ -119,6 +120,26 @@ class Application extends Cilex
                         $container['partials'],
                         $container['event_dispatcher']
                     )
+                ]
+            );
+        };
+
+        $this['transformer.pipeline'] = function($container) {
+            return new Transform(
+                $this['descriptor.builder'],
+                $this['transformer'],
+                $this['compiler'],
+                $this['descriptor.cache'],
+                $this['event_dispatcher']
+            );
+        };
+
+        $this->container['command.run.pipeline'] = function ($container) {
+            return new Pipeline(
+                [
+                    $container['application.pipeline'],
+                    $container['parser.pipeline'],
+                    $container['transformer.pipeline'],
                 ]
             );
         };
@@ -182,7 +203,12 @@ class Application extends Cilex
      */
     protected function addCommandsForProjectNamespace()
     {
-        $this->console->add(new RunCommand($this->container['descriptor.builder']));
+        $this->console->add(
+            new RunCommand(
+                $this->container['descriptor.builder'],
+                $this->container['command.run.pipeline']
+            )
+        );
         $this->console->add(
             new ParseCommand(
                 $this['descriptor.builder'],

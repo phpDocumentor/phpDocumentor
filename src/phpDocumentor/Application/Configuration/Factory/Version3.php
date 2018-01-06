@@ -83,6 +83,23 @@ final class Version3 implements Strategy
         return (string) $phpDocumentor->attributes()->version === '3';
     }
 
+    public static function buildDefault()
+    {
+        return [
+            'phpdocumentor' => [
+                'title' => 'my docs',
+                'use-cache' => true,
+                'paths'     => [
+                    'output' => new Dsn('file://build/docs'),
+                    'cache'  => new Path('/tmp/phpdoc-doc-cache'),
+                ],
+                'versions'  => static::defaultVersions(),
+                'templates' => [static::defaultTemplate()],
+            ],
+        ];
+    }
+
+
     /**
      * Builds the versions part of the array from the configuration xml.
      *
@@ -201,7 +218,7 @@ final class Version3 implements Strategy
      *
      * @return array
      */
-    private function defaultVersions(): array
+    private static function defaultVersions(): array
     {
         return [
             '1.0.0' => [
@@ -210,9 +227,9 @@ final class Version3 implements Strategy
                     0 => [
                         'format'               => 'php',
                         'source'               => [
-                            'dsn'   => 'file://.',
+                            'dsn'   => new Dsn('file://.'),
                             'paths' => [
-                                0 => 'src'
+                                0 => new Path('src')
                             ]
                         ],
                         'ignore'               => [
@@ -226,6 +243,9 @@ final class Version3 implements Strategy
                         ],
                         'visibility'           => ['public'],
                         'default-package-name' => 'Default',
+                        'encoding' => 'utf8',
+                        'ignore-tags' => [],
+                        'validate' => false,
                         'markers'              => [
                             0 => 'TODO',
                             1 => 'FIXME'
@@ -236,9 +256,9 @@ final class Version3 implements Strategy
                     0 => [
                         'format' => 'rst',
                         'source' => [
-                            'dsn'   => 'file://.',
+                            'dsn'   => new Dsn('file://.'),
                             'paths' => [
-                                0 => 'docs'
+                                0 => new Path('docs'),
                             ]
                         ]
                     ]
@@ -252,7 +272,7 @@ final class Version3 implements Strategy
      *
      * @return array
      */
-    private function defaultTemplate(): array
+    private static function defaultTemplate(): array
     {
         return [
             'name' => 'clean'

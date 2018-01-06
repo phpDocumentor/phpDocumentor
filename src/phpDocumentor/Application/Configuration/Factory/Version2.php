@@ -20,16 +20,16 @@ use phpDocumentor\DomainModel\Path;
  */
 final class Version2 implements Strategy
 {
-    private $extensions         = ['php', 'php3', 'phtml'];
-    private $markers            = ['TODO', 'FIXME'];
-    private $visibility         = ['public'];
+    private $extensions = ['php', 'php3', 'phtml'];
+    private $markers = ['TODO', 'FIXME'];
+    private $visibility = ['public'];
     private $defaultPackageName = 'Default';
-    private $template           = 'clean';
-    private $ignoreHidden       = true;
-    private $ignoreSymlinks     = true;
-    private $ignorePaths        = [];
-    private $outputDirectory    = 'file://build/docs';
-    private $directories        = ['src'];
+    private $template = 'clean';
+    private $ignoreHidden = true;
+    private $ignoreSymlinks = true;
+    private $ignorePaths = [];
+    private $outputDirectory = 'file://build/docs';
+    private $directories = ['src'];
 
     /**
      * @inheritdoc
@@ -44,31 +44,33 @@ final class Version2 implements Strategy
             'phpdocumentor' => [
                 'title' => 'my-doc',
                 'use-cache' => true,
-                'paths'     => [
+                'paths' => [
                     'output' => new Dsn($outputDirectory),
-                    'cache'  => new Path('/tmp/phpdoc-doc-cache'),
+                    'cache' => new Path('/tmp/phpdoc-doc-cache'),
                 ],
-                'versions'  => [
+                'versions' => [
                     '1.0.0' => [
                         'folder' => '',
-                        'api'    => [
-                            'encoding'             => 'uft8',
-                            'ignore-tags'          => [],
-                            'format'               => 'php',
-                            'validate'             => false,
-                            'source'               => [
-                                'dsn'   => new Dsn('file://.'),
-                                'paths' => $this->buildSourcePaths($phpDocumentor),
+                        'api' => [
+                            0 => [
+                                'encoding' => 'uft8',
+                                'ignore-tags' => [],
+                                'format' => 'php',
+                                'validate' => false,
+                                'source' => [
+                                    'dsn' => new Dsn('file://.'),
+                                    'paths' => $this->buildSourcePaths($phpDocumentor),
+                                ],
+                                'ignore' => [
+                                    'hidden' => $this->buildIgnoreHidden($phpDocumentor),
+                                    'symlinks' => $this->buildIgnoreSymlinks($phpDocumentor),
+                                    'paths' => $this->buildIgnorePaths($phpDocumentor),
+                                ],
+                                'extensions' => $this->buildExtensions($phpDocumentor),
+                                'visibility' => $this->buildVisibility($phpDocumentor),
+                                'default-package-name' => $this->buildDefaultPackageName($phpDocumentor),
+                                'markers' => $this->buildMarkers($phpDocumentor),
                             ],
-                            'ignore'               => [
-                                'hidden'   => $this->buildIgnoreHidden($phpDocumentor),
-                                'symlinks' => $this->buildIgnoreSymlinks($phpDocumentor),
-                                'paths'    => $this->buildIgnorePaths($phpDocumentor),
-                            ],
-                            'extensions'           => $this->buildExtensions($phpDocumentor),
-                            'visibility'           => $this->buildVisibility($phpDocumentor),
-                            'default-package-name' => $this->buildDefaultPackageName($phpDocumentor),
-                            'markers'              => $this->buildMarkers($phpDocumentor),
                         ],
                     ],
                 ],
@@ -102,8 +104,8 @@ final class Version2 implements Strategy
     {
         $array = [];
         foreach ($node->children() as $child) {
-            if ((string) $child !== '') {
-                $array[] = (string) $child;
+            if ((string)$child !== '') {
+                $array[] = (string)$child;
             }
         }
 
@@ -119,11 +121,11 @@ final class Version2 implements Strategy
      */
     private function buildExtensions(\SimpleXMLElement $phpDocumentor): array
     {
-        if ((array) $phpDocumentor->parser === []) {
+        if ((array)$phpDocumentor->parser === []) {
             return $this->extensions;
         }
 
-        if ((array) $phpDocumentor->parser->extensions === []) {
+        if ((array)$phpDocumentor->parser->extensions === []) {
             return $this->extensions;
         }
 
@@ -139,11 +141,11 @@ final class Version2 implements Strategy
      */
     private function buildMarkers(\SimpleXMLElement $phpDocumentor): array
     {
-        if ((array) $phpDocumentor->parser === []) {
+        if ((array)$phpDocumentor->parser === []) {
             return $this->markers;
         }
 
-        if ((array) $phpDocumentor->parser->markers === []) {
+        if ((array)$phpDocumentor->parser->markers === []) {
             return $this->markers;
         }
 
@@ -159,15 +161,15 @@ final class Version2 implements Strategy
      */
     private function buildVisibility(\SimpleXMLElement $phpDocumentor): array
     {
-        if ((array) $phpDocumentor->parser === []) {
+        if ((array)$phpDocumentor->parser === []) {
             return $this->visibility;
         }
 
-        if ((string) $phpDocumentor->parser->visibility === '') {
+        if ((string)$phpDocumentor->parser->visibility === '') {
             return $this->visibility;
         }
 
-        return [(string) $phpDocumentor->parser->visibility];
+        return [(string)$phpDocumentor->parser->visibility];
     }
 
     /**
@@ -179,15 +181,15 @@ final class Version2 implements Strategy
      */
     private function buildDefaultPackageName(\SimpleXMLElement $phpDocumentor)
     {
-        if ((array) $phpDocumentor->parser === []) {
+        if ((array)$phpDocumentor->parser === []) {
             return $this->defaultPackageName;
         }
 
-        if ((string) $phpDocumentor->parser->{'default-package-name'} === '') {
+        if ((string)$phpDocumentor->parser->{'default-package-name'} === '') {
             return $this->defaultPackageName;
         }
 
-        return (string) $phpDocumentor->parser->{'default-package-name'};
+        return (string)$phpDocumentor->parser->{'default-package-name'};
     }
 
     /**
@@ -199,15 +201,15 @@ final class Version2 implements Strategy
      */
     private function buildTemplate(\SimpleXMLElement $phpDocumentor)
     {
-        if ((array) $phpDocumentor->transformations === []) {
+        if ((array)$phpDocumentor->transformations === []) {
             return $this->template;
         }
 
-        if ((string) $phpDocumentor->transformations->template === '') {
+        if ((string)$phpDocumentor->transformations->template === '') {
             return $this->template;
         }
 
-        return (string) $phpDocumentor->transformations->template->attributes()->name;
+        return (string)$phpDocumentor->transformations->template->attributes()->name;
     }
 
     /**
@@ -219,11 +221,11 @@ final class Version2 implements Strategy
      */
     private function buildIgnoreHidden(\SimpleXMLElement $phpDocumentor)
     {
-        if ((array) $phpDocumentor->files === []) {
+        if ((array)$phpDocumentor->files === []) {
             return $this->ignoreHidden;
         }
 
-        if ((string) $phpDocumentor->files->{'ignore-hidden'} === '') {
+        if ((string)$phpDocumentor->files->{'ignore-hidden'} === '') {
             return $this->ignoreHidden;
         }
 
@@ -239,11 +241,11 @@ final class Version2 implements Strategy
      */
     private function buildIgnoreSymlinks(\SimpleXMLElement $phpDocumentor)
     {
-        if ((array) $phpDocumentor->files === []) {
+        if ((array)$phpDocumentor->files === []) {
             return $this->ignoreSymlinks;
         }
 
-        if ((string) $phpDocumentor->files->{'ignore-symlinks'} === '') {
+        if ((string)$phpDocumentor->files->{'ignore-symlinks'} === '') {
             return $this->ignoreSymlinks;
         }
 
@@ -259,14 +261,14 @@ final class Version2 implements Strategy
      */
     private function buildIgnorePaths(\SimpleXMLElement $phpDocumentor)
     {
-        if ((array) $phpDocumentor->files === []) {
+        if ((array)$phpDocumentor->files === []) {
             return $this->ignorePaths;
         }
 
         $ignorePaths = [];
         foreach ($phpDocumentor->files->children() as $child) {
             if ($child->getName() === 'ignore') {
-                $ignorePaths[] = (string) $child;
+                $ignorePaths[] = (string)$child;
             }
         }
 
@@ -286,15 +288,15 @@ final class Version2 implements Strategy
      */
     private function buildOutputDirectory(\SimpleXMLElement $phpDocumentor)
     {
-        if ((array) $phpDocumentor->parser === []) {
+        if ((array)$phpDocumentor->parser === []) {
             return $this->outputDirectory;
         }
 
-        if ((string) $phpDocumentor->parser->target === '') {
+        if ((string)$phpDocumentor->parser->target === '') {
             return $this->outputDirectory;
         }
 
-        return (string) $phpDocumentor->parser->target;
+        return (string)$phpDocumentor->parser->target;
     }
 
     /**
@@ -306,15 +308,15 @@ final class Version2 implements Strategy
      */
     private function buildDirectories(\SimpleXMLElement $phpDocumentor)
     {
-        if ((array) $phpDocumentor->files === []) {
+        if ((array)$phpDocumentor->files === []) {
             return $this->directories;
         }
 
-        if ((string) $phpDocumentor->files->directory === '') {
+        if ((string)$phpDocumentor->files->directory === '') {
             return $this->directories;
         }
 
-        return (array) $phpDocumentor->files->directory;
+        return (array)$phpDocumentor->files->directory;
     }
 
     /**

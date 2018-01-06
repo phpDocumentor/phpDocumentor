@@ -60,7 +60,7 @@ final class CommandlineOptionsMiddleware
      */
     public function createDefaultApiSettings(): array
     {
-        return [
+        return [[
             'format'               => 'php',
             'source'               => [
                 'dsn'   => 'file://.',
@@ -75,7 +75,7 @@ final class CommandlineOptionsMiddleware
             'visibility'           => 'public',
             'default-package-name' => 'phpDocumentor',
             'markers'              => ['TODO', 'FIXME']
-        ];
+        ]];
     }
 
     /**
@@ -93,7 +93,7 @@ final class CommandlineOptionsMiddleware
             $version['api'] = $this->createDefaultApiSettings();
         }
 
-        $version['api']['source']['paths'] = array_map(
+        $version['api'][0]['source']['paths'] = array_map(
             function ($path) {
                 return new Path($path);
             },
@@ -118,7 +118,7 @@ final class CommandlineOptionsMiddleware
             $version['api'] = $this->createDefaultApiSettings();
         }
 
-        $version['api']['source']['paths'] = array_map(
+        $version['api'][0]['source']['paths'] = array_map(
             function ($path) {
                 return new Path($path);
             },
@@ -143,7 +143,7 @@ final class CommandlineOptionsMiddleware
             $version['api'] = $this->createDefaultApiSettings();
         }
 
-        $version['api']['ignore']['paths'] = array_map(
+        $version['api'][0]['ignore']['paths'] = array_map(
             function ($path) {
                 return new Path($path);
             },
@@ -168,7 +168,7 @@ final class CommandlineOptionsMiddleware
             $version['api'] = $this->createDefaultApiSettings();
         }
 
-        $version['api']['extensions'] = $this->options['extensions'];
+        $version['api'][0]['extensions'] = $this->options['extensions'];
 
         return $version;
     }
@@ -216,7 +216,7 @@ final class CommandlineOptionsMiddleware
             $version['api'] = $this->createDefaultApiSettings();
         }
 
-        $version['api']['markers'] = $this->options['markers'];
+        $version['api'][0]['markers'] = $this->options['markers'];
 
         return $version;
     }
@@ -236,7 +236,7 @@ final class CommandlineOptionsMiddleware
             $version['api'] = $this->createDefaultApiSettings();
         }
 
-        $version['api']['visibility'] = $this->options['visibility'];
+        $version['api'][0]['visibility'] = $this->options['visibility'];
 
         return $version;
     }
@@ -256,7 +256,7 @@ final class CommandlineOptionsMiddleware
             $version['api'] = $this->createDefaultApiSettings();
         }
 
-        $version['api']['default-package-name'] = $this->options['defaultpackagename'];
+        $version['api'][0]['default-package-name'] = $this->options['defaultpackagename'];
 
         return $version;
     }

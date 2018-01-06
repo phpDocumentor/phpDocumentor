@@ -13,6 +13,7 @@
 namespace phpDocumentor\Application\Configuration;
 
 use phpDocumentor\Application\Configuration\Factory\Strategy;
+use phpDocumentor\Application\Configuration\Factory\Version3;
 use phpDocumentor\DomainModel\Uri;
 
 /**
@@ -97,8 +98,13 @@ class ConfigurationFactory
             return $this->cachedConfiguration;
         }
 
-        $xml = new \SimpleXMLElement($this->uri, 0, true);
-        $this->cachedConfiguration = $this->extractConfigurationArray($xml);
+        if (file_exists($this->uri)) {
+            $xml = new \SimpleXMLElement($this->uri, 0, true);
+            $this->cachedConfiguration = $this->extractConfigurationArray($xml);
+        } else {
+            $this->cachedConfiguration = Version3::buildDefault();
+        }
+
         $this->applyMiddleware();
 
         return $this->cachedConfiguration;

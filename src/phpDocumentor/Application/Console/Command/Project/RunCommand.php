@@ -40,6 +40,26 @@ use Symfony\Component\Console\Output\OutputInterface;
 class RunCommand extends Command
 {
     /**
+     * @var ProjectDescriptorBuilder
+     */
+    private $projectDescriptorBuilder;
+    /**
+     * @var Pipeline
+     */
+    private $pipeline;
+
+    /**
+     * RunCommand constructor.
+     */
+    public function __construct(ProjectDescriptorBuilder $projectDescriptorBuilder, Pipeline $pipeline)
+    {
+        parent::__construct('project:run');
+        $this->projectDescriptorBuilder = $projectDescriptorBuilder;
+        $this->pipeline = $pipeline;
+    }
+
+
+    /**
      * Initializes this command and sets the name, description, options and
      * arguments.
      */
@@ -225,71 +245,8 @@ HELP
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $container = $this->getApplication();
-        $pipeLine = new Pipeline(
-            [
-                $container['application.pipeline'],
-                $container['parser.pipeline'],
-                //$container['transformer.pipeline'],
-            ]
-        );
-
-        //try {
-            $pipeLine($input->getOptions());
-            //when the complete pipeline finishes without errors this must be a success.
-            return 0;
-//        } catch (\Exception $e) {
-//            $output->writeln($e->getMessage());
-//            return 1;
-//        }
-
-        $transform_command = $this->getApplication()->find('project:transform');
-
-        $parse_input = new ArrayInput(
-            [
-                 'command' => 'project:parse',
-                 '--filename' => $input->getOption('filename'),
-                 '--directory' => $input->getOption('directory'),
-                 '--encoding' => $input->getOption('encoding'),
-                 '--extensions' => $input->getOption('extensions'),
-                 '--ignore' => $input->getOption('ignore'),
-                 '--ignore-tags' => $input->getOption('ignore-tags'),
-                 '--hidden' => $input->getOption('hidden'),
-                 '--ignore-symlinks' => $input->getOption('ignore-symlinks'),
-                 '--markers' => $input->getOption('markers'),
-                 '--title' => $input->getOption('title'),
-                 '--target' => $input->getOption('cache-folder') ?: $input->getOption('target'),
-                 '--force' => $input->getOption('force'),
-                 '--validate' => $input->getOption('validate'),
-                 '--visibility' => $input->getOption('visibility'),
-                 '--defaultpackagename' => $input->getOption('defaultpackagename'),
-                 '--sourcecode' => $input->getOption('sourcecode'),
-                 '--parseprivate' => $input->getOption('parseprivate'),
-                 '--progressbar' => $input->getOption('progressbar'),
-                 '--log' => $input->getOption('log'),
-            ],
-            $this->getDefinition()
-        );
-
-        $return_code = $parse_command->run($parse_input, $output);
-        if ($return_code !== 0) {
-            return $return_code;
-        }
-
-        $transform_input = new ArrayInput(
-            [
-                 'command' => 'project:transform',
-                 '--source' => $input->getOption('cache-folder') ?: $input->getOption('target'),
-                 '--target' => $input->getOption('target'),
-                 '--template' => $input->getOption('template'),
-                 '--progressbar' => $input->getOption('progressbar'),
-                 '--log' => $input->getOption('log'),
-            ]
-        );
-        $return_code = $transform_command->run($transform_input, $output);
-        if ($return_code !== 0) {
-            return $return_code;
-        }
+        $pipeLine = $this->pipeline;
+        $pipeLine($input->getOptions());
 
         if ($output->getVerbosity() === OutputInterface::VERBOSITY_DEBUG) {
             /** @var ProjectDescriptorBuilder $descriptorBuilder */

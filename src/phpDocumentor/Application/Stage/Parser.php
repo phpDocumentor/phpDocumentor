@@ -122,7 +122,7 @@ final class Parser
      * Executes the business logic involved with this command.
      *
      * @param array $configuration
-     * @return integer
+     * @return array
      * @throws \Exception if the target location is not a folder.
      */
     public function __invoke(array $configuration)
@@ -133,7 +133,8 @@ final class Parser
         $version = current($configuration['phpdocumentor']['versions']);
 
         //We are currently in the parser stage so grep the api config.
-        $apiConfig = $version['api'];
+        //And for now we support a single api definition. Could be more in the future.
+        $apiConfig = $version['api'][0];
 
         //Process cache setup
         $fileSystem = new Filesystem();
@@ -195,7 +196,7 @@ final class Parser
         $mapper->save($projectDescriptor);
         $this->log('PPCPP:LOG-OK');
 
-        return 0;
+        return $configuration;
     }
 
     /**
