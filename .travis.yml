@@ -18,13 +18,9 @@ jobs:
 
     - stage: Lint
       php: 7.1
-      script: ./tools/phpstan analyse src tests --level 2 --configuration phpstan.neon
-      before_script:
-        - wget https://phar.io/releases/phive.phar
-        - wget https://phar.io/releases/phive.phar.asc
-        - gpg --keyserver hkps.pool.sks-keyservers.net --recv-keys 0x9B2D5D79
-        - gpg --verify phive.phar.asc phive.phar
-        - php phive.phar install --trust-gpg-keys 8E730BA25823D8B5
+      script: docker-compose run --rm phpstan
+      services:
+        - docker
 
     - stage: Coverage
       php: 7.1
