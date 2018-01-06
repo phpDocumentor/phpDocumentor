@@ -1,6 +1,5 @@
-FROM phpstan/phpstan:latest
-RUN apk add --update --no-cache icu-libs libxslt \
-    && apk add --no-cache --virtual .build-deps icu-dev libxslt-dev \
-    && docker-php-ext-install intl xsl \
-    && apk del .build-deps \
+FROM phpstan/phpstan:phar
+RUN apk add --no-cache \
+    php7-intl \
+    php7-xsl \
     && rm -rf /var/cache/apk/*
