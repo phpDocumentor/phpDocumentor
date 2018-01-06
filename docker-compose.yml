@@ -14,6 +14,6 @@ phpcs:
   command: ["./bin/phpcs", "--standard=PSR2", "--extensions=php",  "src"]
 
 phpstan:
-  image: phpstan/phpstan
+  build: docker/phpstan
   volumes: [".:/app"]
   command: "analyse src tests --level 2 --configuration phpstan.neon"
