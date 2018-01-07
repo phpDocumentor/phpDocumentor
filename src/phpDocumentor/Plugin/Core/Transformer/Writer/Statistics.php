@@ -4,7 +4,7 @@
  *
  * PHP Version 5.3
  *
- * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -24,7 +24,7 @@ use phpDocumentor\Application;
  * ```
  *  <?xml version="1.0"?>
  *  <phpdoc-stats version="2.4.0">
- *    <stat date="2014-06-02T19:26:15+02:00">
+ *    <stat date="2018-06-02T19:26:15+02:00">
  *      <counters>
  *        <deprecated>100</deprecated>
  *        <errors>377</errors>
