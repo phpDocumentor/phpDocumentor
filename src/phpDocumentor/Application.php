@@ -12,16 +12,8 @@
 namespace phpDocumentor;
 
 use Cilex\Application as Cilex;
-use Cilex\Provider\JmsSerializerServiceProvider;
-use Cilex\Provider\MonologServiceProvider;
-use Composer\Autoload\ClassLoader;
-use Monolog\ErrorHandler;
-use Monolog\Handler\NullHandler;
-use Monolog\Handler\StreamHandler;
-use Monolog\Logger;
-use phpDocumentor\Command\Helper\ConfigurationHelper;
-use phpDocumentor\Command\Helper\LoggerHelper;
 use phpDocumentor\Console\Input\ArgvInput;
+use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\Application as ConsoleApplication;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -39,31 +31,23 @@ class Application extends Cilex
 
     /**
      * Initializes all components used by phpDocumentor.
-     *
-     * @param ClassLoader $autoloader
      */
-    public function __construct($autoloader = null, array $values = [])
+    public function __construct(ContainerInterface $container)
     {
+        parent::__construct($container);
+
         $this->defineIniSettings();
 
         self::$VERSION = strpos('@package_version@', '@') === 0
             ? trim(file_get_contents(__DIR__ . '/../../VERSION'))
             : '@package_version@';
 
-        parent::__construct('phpDocumentor', self::$VERSION, $values);
-
         $this['kernel.timer.start'] = time();
         $this['kernel.stopwatch'] = function () {
             return new Stopwatch();
         };
 
-        $this['autoloader'] = $autoloader;
-
-        $this->register(new JmsSerializerServiceProvider());
         $this->register(new Configuration\ServiceProvider());
-
-        $this->addEventDispatcher();
-        $this->addLogging();
 
         $this->register(new Translator\ServiceProvider());
         $this->register(new Descriptor\ServiceProvider());
@@ -77,83 +61,7 @@ class Application extends Cilex
         if (\Phar::running()) {
             $this->addCommandsForPharNamespace();
         }
-    }
-
-    /**
-     * Removes all logging handlers and replaces them with handlers that can write to the given logPath and level.
-     *
-     * @param Logger  $logger       The logger instance that needs to be configured.
-     * @param integer $level        The minimum level that will be written to the normal logfile; matches one of the
-     *                              constants in {@see \Monolog\Logger}.
-     * @param string  $logPath      The full path where the normal log file needs to be written.
-     */
-    public function configureLogger($logger, $level, $logPath = null)
-    {
-        /** @var Logger $monolog */
-        $monolog = $logger;
-
-        switch ($level) {
-            case 'emergency':
-            case 'emerg':
-                $level = Logger::EMERGENCY;
-                break;
-            case 'alert':
-                $level = Logger::ALERT;
-                break;
-            case 'critical':
-            case 'crit':
-                $level = Logger::CRITICAL;
-                break;
-            case 'error':
-            case 'err':
-                $level = Logger::ERROR;
-                break;
-            case 'warning':
-            case 'warn':
-                $level = Logger::WARNING;
-                break;
-            case 'notice':
-                $level = Logger::NOTICE;
-                break;
-            case 'info':
-                $level = Logger::INFO;
-                break;
-            case 'debug':
-                $level = Logger::DEBUG;
-                break;
-        }
-
-        $this['monolog.level'] = $level;
-        if ($logPath) {
-            $logPath = str_replace(
-                ['{APP_ROOT}', '{DATE}'],
-                [realpath(__DIR__ . '/../..'), $this['kernel.timer.start']],
-                $logPath
-            );
-            $this['monolog.logfile'] = $logPath;
-        }
-
-        // remove all handlers from the stack
-        try {
-            while ($monolog->popHandler()) {
-            }
-        } catch (\LogicException $e) {
-            // popHandler throws an exception when you try to pop the empty stack; to us this is not an
-            // error but an indication that the handler stack is empty.
-        }
-
-        if ($level === 'quiet') {
-            $monolog->pushHandler(new NullHandler());
-
-            return;
-        }
-
-        // set our new handlers
-        if ($logPath) {
-            $monolog->pushHandler(new StreamHandler($logPath, $level));
-        } else {
-            $monolog->pushHandler(new StreamHandler('php://stdout', $level));
-        }
+        $this->container = $container;
     }
 
     /**
@@ -217,56 +125,6 @@ class Application extends Cilex
         ) {
             date_default_timezone_set('UTC');
         }
-    }
-
-    /**
-     * Adds a logging provider to the container of phpDocumentor.
-     */
-    protected function addLogging()
-    {
-        $this->register(
-            new MonologServiceProvider(),
-            [
-                'monolog.name' => 'phpDocumentor',
-                'monolog.logfile' => sys_get_temp_dir() . '/phpdoc.log',
-                'monolog.debugfile' => sys_get_temp_dir() . '/phpdoc.debug.log',
-                'monolog.level' => Logger::INFO,
-            ]
-        );
-
-        $app = $this;
-        /** @var Configuration $configuration */
-        $configuration = $this['config'];
-        $this['monolog.configure'] = $this->protect(
-            function ($log) use ($app, $configuration) {
-                $paths = $configuration->getLogging()->getPaths();
-                $logLevel = $configuration->getLogging()->getLevel();
-
-                $app->configureLogger($log, $logLevel, $paths['default']);
-            }
-        );
-
-        $this->extend(
-            'console',
-            function (ConsoleApplication $console) use ($configuration) {
-                $console->getHelperSet()->set(new LoggerHelper());
-                $console->getHelperSet()->set(new ConfigurationHelper($configuration));
-
-                return $console;
-            }
-        );
-
-        ErrorHandler::register($this['monolog']);
-    }
-
-    /**
-     * Adds the event dispatcher to phpDocumentor's container.
-     */
-    protected function addEventDispatcher()
-    {
-        $this['event_dispatcher'] = function () {
-            return Event\Dispatcher::getInstance();
-        };
     }
 
     /**
