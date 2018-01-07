@@ -87,12 +87,6 @@ class DiscoverTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         );
     }
 
-    public function testRetrieveFilename()
-    {
-        $this->markTestIncomplete("testRetrieveFilename() is not working...");
-        //$this->assertSame(self::FILENAME, $this->object->getFilename());
-    }
-
     public function testRetrieveDocument()
     {
         $this->assertSame(

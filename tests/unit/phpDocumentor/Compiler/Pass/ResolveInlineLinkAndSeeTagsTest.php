@@ -110,48 +110,6 @@ class ResolveInlineLinkAndSeeTagsTest extends \Mockery\Adapter\Phpunit\MockeryTe
     /**
      * @covers ::execute
      */
-    public function testReplaceDescriptionIfItContainsALinkAndFileIsPresent()
-    {
-        $this->markTestSkipped('Needs rewrite');
-        $description = 'Description with {@link LinkDescriptor}';
-        $expected =
-            'Description with [LinkDescriptor](../classes/phpDocumentor.LinkDescriptor.html)';
-
-        $descriptor = $this->givenAChildDescriptorWithDescription($description);
-        $collection = $this->givenACollection($descriptor);
-        $elementToLinkTo = $this->givenAnElementToLinkTo();
-
-        $this->whenDescriptionContainsSeeOrLinkWithElement($descriptor, $elementToLinkTo);
-
-        $this->thenDescriptionOfDescriptorIsChangedInto($descriptor, $expected);
-
-        $project = $this->givenAProjectDescriptorWithChildDescriptors($collection);
-
-        $this->fixture->execute($project);
-    }
-
-    /**
-     * @covers ::execute
-     */
-    public function testReplaceDescriptionIfItContainsAUrl()
-    {
-        $this->markTestSkipped('Needs rewrite');
-        $description = 'Description with {@see http://www.phpdoc.org}';
-        $expected = 'Description with [http://www.phpdoc.org](http://www.phpdoc.org)';
-
-        $descriptor = $this->givenAChildDescriptorWithDescription($description);
-        $collection = $this->givenACollection($descriptor);
-
-        $this->thenDescriptionOfDescriptorIsChangedInto($descriptor, $expected);
-
-        $project = $this->givenAProjectDescriptorWithChildDescriptors($collection);
-
-        $this->fixture->execute($project);
-    }
-
-    /**
-     * @covers ::execute
-     */
     public function testReplaceDescriptionIfItContainsAnotherTag()
     {
         $description = 'Description with {@author John Doe}';

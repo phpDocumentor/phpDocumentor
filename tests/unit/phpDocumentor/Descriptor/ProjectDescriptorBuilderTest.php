@@ -41,37 +41,6 @@ class ProjectDescriptorBuilderTest extends \Mockery\Adapter\Phpunit\MockeryTestC
     }
 
     /**
-     * Demonstrates the basic usage the the ProjectDescriptorBuilder.
-     *
-     * This test scenario demonstrates how a ProjectDescriptorBuilder can be used to create a new ProjectDescriptor
-     * and populate it with a single FileDescriptor using a FileReflector as source.
-     *
-     * @covers phpDocumentor\Descriptor\ProjectDescriptorBuilder::createProjectDescriptor
-     * @covers phpDocumentor\Descriptor\ProjectDescriptorBuilder::buildFileUsingSourceData
-     * @covers phpDocumentor\Descriptor\ProjectDescriptorBuilder::getProjectDescriptor
-     *
-     * @see self::setUp on how to create an instance of the builder.
-     *
-     * @return void
-     */
-    public function testCreateNewProjectDescriptorAndBuildFile()
-    {
-        $this->markTestIncomplete('Finish later, in a hurry now.');
-        // we use a FileReflector as example input
-        $data = $this->createFileReflectorMock();
-
-        $this->createFileDescriptorCreationMock();
-
-        // usage example, see the setup how to instantiate the builder.
-        $this->fixture->createProjectDescriptor();
-        $projectDescriptor = $this->fixture->getProjectDescriptor();
-
-        // assert functioning
-        $this->assertInstanceOf('phpDocumentor\Descriptor\ProjectDescriptor', $projectDescriptor);
-        $this->assertCount(1, $projectDescriptor->getFiles());
-    }
-
-    /**
      * @covers phpDocumentor\Descriptor\ProjectDescriptorBuilder::createProjectDescriptor
      * @covers phpDocumentor\Descriptor\ProjectDescriptorBuilder::getProjectDescriptor
      */

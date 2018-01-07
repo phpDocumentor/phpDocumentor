@@ -19,13 +19,12 @@ use phpDocumentor\Console\Output\Output;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\DomainModel\Parser\FileCollector;
-use phpDocumentor\Fileset\Collection;
-use phpDocumentor\Parser\Command\Project\ParseCommand;
 use \Mockery as m;
 use phpDocumentor\Parser\Parser;
 use phpDocumentor\Reflection\DocBlock\ExampleFinder;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Input\ArrayInput;
+use Zend\Cache\Storage\Adapter\Memory;
 use Zend\Cache\Storage\StorageInterface;
 use Zend\I18n\Translator\Translator;
 
@@ -72,20 +71,18 @@ class ParseCommandTest extends MockeryTestCase
         $loggerHelper->shouldReceive('addOptions');
         $loggerHelper->shouldReceive('connectOutputToLogging');
 
+        $cache = m::mock(Memory::class);
+        $cache->shouldReceive('getOptions->setCacheDir')->with(m::type('string'));
+        $cache->shouldReceive('getOptions->getCacheDir')->andReturn(sys_get_temp_dir());
+        $cache->shouldReceive('getOptions->getReadable')->andReturn(true);
+        $cache->shouldReceive('getOptions->getWritable')->andReturn(true);
+        $cache->shouldReceive('getOptions->getKeyPattern')->andReturn('/.+/');
+        $cache->shouldReceive('getOptions->getNamespace')->andReturn('PhpDoc\\Cache');
+        $cache->shouldDeferMissing();
+
         $translator = m::mock(Translator::class);
         $translator->shouldReceive('translate')
             ->zeroOrMoreTimes();
-
-        $cache = m::mock(StorageInterface::class);
-        $cache->shouldReceive('getOptions')
-            ->twice()
-            ->andReturnSelf();
-        $cache->shouldReceive('setCacheDir');
-        $cache->shouldReceive('getCacheDir');
-        $cache->shouldReceive('getItem');
-        $cache->shouldReceive('setItem');
-        $cache->shouldReceive('getIterator')
-        ->andReturn(new \ArrayIterator());
 
         $parser = m::mock(Parser::class);
         $parser->shouldReceive(
@@ -112,8 +109,6 @@ class ParseCommandTest extends MockeryTestCase
             new ExampleFinder(),
             m::mock(\phpDocumentor\Partials\Collection::class)
         );
-
-
 
         $command->setHelperSet(
             new HelperSet(

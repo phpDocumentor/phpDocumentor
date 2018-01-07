@@ -12,9 +12,10 @@
 namespace phpDocumentor\Descriptor;
 
 use \Mockery as m;
+use phpDocumentor\Reflection\Types\String_;
 
 /**
- * Tests the functionality for the FunctionDescriptor class.
+ * @coversDefaultClass \phpDocumentor\Descriptor\FunctionDescriptor
  */
 class FunctionDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
@@ -30,9 +31,7 @@ class FunctionDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * Tests whether all collection objects are properly initialized.
-     *
-     * @covers phpDocumentor\Descriptor\FunctionDescriptor::__construct
+     * @covers ::__construct
      */
     public function testInitialize()
     {
@@ -40,8 +39,8 @@ class FunctionDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\FunctionDescriptor::setArguments
-     * @covers phpDocumentor\Descriptor\FunctionDescriptor::getArguments
+     * @covers ::setArguments
+     * @covers ::getArguments
      */
     public function testSettingAndGettingArguments()
     {
@@ -53,5 +52,18 @@ class FunctionDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $this->fixture->setArguments($mock);
 
         $this->assertSame($mockInstance, $this->fixture->getArguments());
+    }
+
+    /**
+     * @covers ::getResponse
+     * @covers ::setReturnType
+     */
+    public function testSettingAndGettingReturnType()
+    {
+        $stringType = new String_();
+        $this->fixture->setReturnType($stringType);
+
+        $this->assertSame('return', $this->fixture->getResponse()->getName());
+        $this->assertSame($stringType, $this->fixture->getResponse()->getTypes());
     }
 }

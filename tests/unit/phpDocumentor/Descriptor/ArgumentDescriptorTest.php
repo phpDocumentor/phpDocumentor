@@ -12,7 +12,7 @@
 namespace phpDocumentor\Descriptor;
 
 /**
- * Tests the functionality for the ArgumentDescriptor class.
+ * @coversDefaultClass \phpDocumentor\Descriptor\ArgumentDescriptor
  */
 class ArgumentDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
@@ -20,7 +20,7 @@ class ArgumentDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     protected $fixture;
 
     /**
-     * Creates a new (emoty) fixture object.
+     * Creates a new (empty) fixture object.
      */
     protected function setUp()
     {
@@ -28,8 +28,8 @@ class ArgumentDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ArgumentDescriptor::getTypes
-     * @covers phpDocumentor\Descriptor\ArgumentDescriptor::setTypes
+     * @covers ::getTypes
+     * @covers ::setTypes
      */
     public function testSetAndGetTypes()
     {
@@ -41,8 +41,8 @@ class ArgumentDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ArgumentDescriptor::getDefault
-     * @covers phpDocumentor\Descriptor\ArgumentDescriptor::setDefault
+     * @covers ::getDefault
+     * @covers ::setDefault
      */
     public function testSetAndGetDefault()
     {
@@ -54,8 +54,8 @@ class ArgumentDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ArgumentDescriptor::isByReference
-     * @covers phpDocumentor\Descriptor\ArgumentDescriptor::setByReference
+     * @covers ::isByReference
+     * @covers ::setByReference
      */
     public function testSetAndGetWhetherArgumentIsPassedByReference()
     {
@@ -66,8 +66,22 @@ class ArgumentDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $this->assertTrue($this->fixture->isByReference());
     }
 
+
     /**
-     * @covers phpDocumentor\Descriptor\ArgumentDescriptor::getDescription
+     * @covers ::isVariadic
+     * @covers ::setVariadic
+     */
+    public function testSetAndGetWhetherArgumentIsAVariadic()
+    {
+        $this->assertFalse($this->fixture->isVariadic());
+
+        $this->fixture->setVariadic(true);
+
+        $this->assertTrue($this->fixture->isVariadic());
+    }
+
+    /**
+     * @covers ::getDescription
      */
     public function testDescriptionInheritsWhenNoneIsPresent()
     {
@@ -84,7 +98,7 @@ class ArgumentDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ArgumentDescriptor::getDescription
+     * @covers ::getDescription
      */
     public function testDescriptionIsNotInheritedWhenPresent()
     {
@@ -101,7 +115,7 @@ class ArgumentDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ArgumentDescriptor::getTypes
+     * @covers ::getTypes
      */
     public function testTypeIsInheritedWhenNoneIsPresent()
     {
@@ -117,12 +131,31 @@ class ArgumentDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $this->assertSame($types, $result);
     }
 
+
     /**
-     * @param string $argumentName The name of the current method.
-     *
-     * @return ArgumentDescriptor
+     * @covers ::setMethod
+     * @covers ::getInheritedElement
      */
-    private function whenFixtureHasMethodAndArgumentInParentClassWithSameName($argumentName)
+    public function testGetTheArgumentFromWhichThisArgumentInherits()
+    {
+        $this->assertNull(
+            $this->fixture->getInheritedElement(),
+            'By default, an argument does not have an inherited element'
+        );
+
+        $method = new MethodDescriptor;
+        $method->setName('same');
+        $method->addArgument('abc', $this->fixture);
+        $this->fixture->setMethod($method);
+
+        $this->assertNull($this->fixture->getInheritedElement());
+
+        $this->whenFixtureHasMethodAndArgumentInParentClassWithSameName('abcd');
+
+        $this->assertNotNull($this->fixture->getInheritedElement());
+    }
+
+    private function whenFixtureHasMethodAndArgumentInParentClassWithSameName(string $argumentName): ArgumentDescriptor
     {
         $this->fixture->setName($argumentName);
 
@@ -136,6 +169,7 @@ class ArgumentDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $method = new MethodDescriptor;
         $method->setName('same');
         $method->addArgument($argumentName, $this->fixture);
+        $this->fixture->setMethod($method);
 
         $parent = new ClassDescriptor();
         $parent->getMethods()->set('same', $parentMethod);
@@ -147,6 +181,5 @@ class ArgumentDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $method->setParent($class);
 
         return $parentArgument;
-
     }
 }
