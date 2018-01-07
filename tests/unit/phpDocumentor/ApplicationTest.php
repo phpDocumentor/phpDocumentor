@@ -39,21 +39,6 @@ class ApplicationTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers phpDocumentor\Application::__construct
      */
-    public function testIfAutoloaderIsRegistered()
-    {
-        // Arrange
-        $autoloader = m::mock('Composer\Autoload\ClassLoader');
-
-        // Act
-        $application = new Application($autoloader);
-
-        // Assert
-        $this->assertSame($autoloader, $application['autoloader']);
-    }
-
-    /**
-     * @covers phpDocumentor\Application::__construct
-     */
     public function testIfSerializerIsRegistered()
     {
         $this->assertTrue(isset($this->fixture['serializer']));

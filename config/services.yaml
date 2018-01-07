@@ -1,0 +1,14 @@
+parameters:
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+#    phpDocumentor\:
+#        resource: '../src/phpDocumentor/*'
+#        exclude: '../src/phpDocumentor/**/Messages'
+
+    phpDocumentor\Application:
+        public: true

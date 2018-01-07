@@ -12,7 +12,7 @@
 
 namespace phpDocumentor\Command;
 
-use Cilex\Provider\Console\Command as BaseCommand;
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand as BaseCommand;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Helper\ProgressHelper;
 use Symfony\Component\Console\Input\InputInterface;
@@ -31,8 +31,13 @@ class Command extends BaseCommand
     public function setHelperSet(HelperSet $helperSet)
     {
         parent::setHelperSet($helperSet);
+//
+//        $this->getHelper('phpdocumentor_logger')->addOptions($this);
+    }
 
-        $this->getHelper('phpdocumentor_logger')->addOptions($this);
+    public function getService(string $name)
+    {
+        return $this->getContainer()->get($name);
     }
 
     /**

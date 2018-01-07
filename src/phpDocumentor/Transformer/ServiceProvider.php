@@ -106,6 +106,27 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
         ];
 
         // services
+        $app['transformer.routing.standard'] = function ($container) {
+            /** @var ProjectDescriptorBuilder $projectDescriptorBuilder */
+            $projectDescriptorBuilder = $container['descriptor.builder'];
+
+            return new Router\StandardRouter($projectDescriptorBuilder);
+        };
+
+        $app['transformer.routing.external'] = function ($container) {
+            return new Router\ExternalRouter($container['config']);
+        };
+
+        $app['transformer.routing.queue'] = function ($container) {
+            $queue = new Router\Queue();
+
+            // TODO: load from app configuration instead of hardcoded
+            $queue->insert($container['transformer.routing.external'], 10500);
+            $queue->insert($container['transformer.routing.standard'], 10000);
+
+            return $queue;
+        };
+
         $app['compiler'] = function ($container) {
             $compiler = new Compiler();
             $compiler->insert(new ElementsIndexBuilder(), ElementsIndexBuilder::COMPILER_PRIORITY);
@@ -138,27 +159,6 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
 
         $app['transformer.behaviour.collection'] = function () {
             return new Behaviour\Collection();
-        };
-
-        $app['transformer.routing.standard'] = function ($container) {
-            /** @var ProjectDescriptorBuilder $projectDescriptorBuilder */
-            $projectDescriptorBuilder = $container['descriptor.builder'];
-
-            return new Router\StandardRouter($projectDescriptorBuilder);
-        };
-
-        $app['transformer.routing.external'] = function ($container) {
-            return new Router\ExternalRouter($container['config']);
-        };
-
-        $app['transformer.routing.queue'] = function ($container) {
-            $queue = new Router\Queue();
-
-            // TODO: load from app configuration instead of hardcoded
-            $queue->insert($container['transformer.routing.external'], 10500);
-            $queue->insert($container['transformer.routing.standard'], 10000);
-
-            return $queue;
         };
 
         $app['transformer.writer.collection'] = function ($container) {
