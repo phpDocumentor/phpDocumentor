@@ -13,6 +13,7 @@ namespace phpDocumentor\Translator;
 
 use Cilex\Application;
 use Mockery as m;
+use Symfony\Component\DependencyInjection\Container;
 
 /**
  * Tests for phpDocumentor\Translator\ServiceProvider
@@ -37,7 +38,7 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     protected function setUp()
     {
-        $this->application = new Application('test');
+        $this->application = new Application(new Container());
         $this->application['config'] = m::mock('phpDocumentor\Configuration');
 
         $this->application['config']->shouldReceive('getTranslator->getLocale')

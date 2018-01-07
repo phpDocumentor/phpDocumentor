@@ -74,7 +74,7 @@ class Statistics extends Checkstyle
     protected function appendPhpdocStatsElement(\DOMDocument $document)
     {
         $stats = $document->createElement('phpdoc-stats');
-        $stats->setAttribute('version', Application::$VERSION);
+        $stats->setAttribute('version', Application::VERSION());
         $document->appendChild($stats);
 
         return $document;

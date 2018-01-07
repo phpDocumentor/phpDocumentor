@@ -16,7 +16,6 @@ use \Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Command\Helper\ConfigurationHelper;
 use phpDocumentor\Command\Helper\LoggerHelper;
-use phpDocumentor\Console\Output\Output;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\DomainModel\Parser\FileCollector;
@@ -24,6 +23,7 @@ use phpDocumentor\Parser\Parser;
 use phpDocumentor\Reflection\DocBlock\ExampleFinder;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Tests\Fixtures\DummyOutput;
 use Zend\Cache\Storage\Adapter\Memory;
 use Zend\I18n\Translator\Translator;
 
@@ -40,7 +40,7 @@ class ParseCommandTest extends MockeryTestCase
     public function testDefaultTargetDirCreation()
     {
         $input = new ArrayInput([]);
-        $output = new Output();
+        $output = new DummyOutput();
 
         $configurationHelper = m::mock(ConfigurationHelper::class);
         $configurationHelper->shouldReceive('getName')

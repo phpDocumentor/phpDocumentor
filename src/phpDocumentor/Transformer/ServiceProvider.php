@@ -25,7 +25,6 @@ use phpDocumentor\Compiler\Pass\PackageTreeBuilder;
 use phpDocumentor\Compiler\Pass\ResolveInlineLinkAndSeeTags;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Event\Dispatcher;
-use phpDocumentor\Fileset\Collection;
 use phpDocumentor\Transformer\Command\Project\TransformCommand;
 use phpDocumentor\Transformer\Command\Template\ListCommand;
 use phpDocumentor\Transformer\Event\PreTransformEvent;
@@ -127,32 +126,6 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
             return $queue;
         };
 
-        $app['compiler'] = function ($container) {
-            $compiler = new Compiler();
-            $compiler->insert(new ElementsIndexBuilder(), ElementsIndexBuilder::COMPILER_PRIORITY);
-            $compiler->insert(new MarkerFromTagsExtractor(), MarkerFromTagsExtractor::COMPILER_PRIORITY);
-            $compiler->insert(
-                new ExampleTagsEnricher($container['parser.example.finder']),
-                ExampleTagsEnricher::COMPILER_PRIORITY
-            );
-            $compiler->insert(new PackageTreeBuilder(), PackageTreeBuilder::COMPILER_PRIORITY);
-            $compiler->insert(new NamespaceTreeBuilder(), NamespaceTreeBuilder::COMPILER_PRIORITY);
-            $compiler->insert(new ClassTreeBuilder(), ClassTreeBuilder::COMPILER_PRIORITY);
-            $compiler->insert(new InterfaceTreeBuilder(), InterfaceTreeBuilder::COMPILER_PRIORITY);
-            $compiler->insert(
-                new ResolveInlineLinkAndSeeTags($container['transformer.routing.queue']),
-                ResolveInlineLinkAndSeeTags::COMPILER_PRIORITY
-            );
-            $compiler->insert($container['linker'], Linker::COMPILER_PRIORITY);
-            $compiler->insert($container['transformer'], Transformer::COMPILER_PRIORITY);
-            $compiler->insert(
-                new Debug($container['monolog'], $container['descriptor.analyzer']),
-                Debug::COMPILER_PRIORITY
-            );
-
-            return $compiler;
-        };
-
         $app['linker'] = function ($app) {
             return new Linker($app['linker.substitutions']);
         };
@@ -183,6 +156,32 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
             );
 
             return $transformer;
+        };
+
+        $app['compiler'] = function ($container) {
+            $compiler = new Compiler();
+            $compiler->insert(new ElementsIndexBuilder(), ElementsIndexBuilder::COMPILER_PRIORITY);
+            $compiler->insert(new MarkerFromTagsExtractor(), MarkerFromTagsExtractor::COMPILER_PRIORITY);
+            $compiler->insert(
+                new ExampleTagsEnricher($container['parser.example.finder']),
+                ExampleTagsEnricher::COMPILER_PRIORITY
+            );
+            $compiler->insert(new PackageTreeBuilder(), PackageTreeBuilder::COMPILER_PRIORITY);
+            $compiler->insert(new NamespaceTreeBuilder(), NamespaceTreeBuilder::COMPILER_PRIORITY);
+            $compiler->insert(new ClassTreeBuilder(), ClassTreeBuilder::COMPILER_PRIORITY);
+            $compiler->insert(new InterfaceTreeBuilder(), InterfaceTreeBuilder::COMPILER_PRIORITY);
+            $compiler->insert(
+                new ResolveInlineLinkAndSeeTags($container['transformer.routing.queue']),
+                ResolveInlineLinkAndSeeTags::COMPILER_PRIORITY
+            );
+            $compiler->insert($container['linker'], Linker::COMPILER_PRIORITY);
+            $compiler->insert($container['transformer'], Transformer::COMPILER_PRIORITY);
+            $compiler->insert(
+                new Debug($container['monolog'], $container['descriptor.analyzer']),
+                Debug::COMPILER_PRIORITY
+            );
+
+            return $compiler;
         };
 
         if ($app instanceof Application) {

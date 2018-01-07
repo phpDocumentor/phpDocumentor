@@ -170,17 +170,19 @@ TEXT
 
         $projectDescriptor = $this->getBuilder()->getProjectDescriptor();
         $mapper = new ProjectDescriptorMapper($this->getCache());
-        $output->writeTimedLog('Load cache', [$mapper, 'populate'], [$projectDescriptor]);
+        $this->writeTimedLog($output,'Load cache', [$mapper, 'populate'], [$projectDescriptor]);
 
         foreach ($this->getTemplates($input) as $template) {
-            $output->writeTimedLog(
+            $this->writeTimedLog(
+                $output,
                 'Preparing template "' . $template . '"',
                 [$transformer->getTemplates(), 'load'],
                 [$template, $transformer]
             );
         }
 
-        $output->writeTimedLog(
+        $this->writeTimedLog(
+            $output,
             'Preparing ' . count($transformer->getTemplates()->getTransformations()) . ' transformations',
             [$this, 'loadTransformations'],
             [$transformer]
@@ -192,7 +194,11 @@ TEXT
 
         /** @var CompilerPassInterface $pass */
         foreach ($this->compiler as $pass) {
-            $output->writeTimedLog($pass->getDescription(), [$pass, 'execute'], [$projectDescriptor]);
+            if ($pass === null) {
+                $output->writeln('<error>Invalid compiler pass found</error>');
+                continue;
+            }
+            $this->writeTimedLog($output, $pass->getDescription(), [$pass, 'execute'], [$projectDescriptor]);
         }
 
         if ($progress) {
@@ -208,7 +214,7 @@ TEXT
      */
     protected function getCache(): StorageInterface
     {
-        return $this->getContainer()->offsetGet('descriptor.cache');
+        return $this->getContainer()->get('descriptor.cache');
     }
 
     /**
