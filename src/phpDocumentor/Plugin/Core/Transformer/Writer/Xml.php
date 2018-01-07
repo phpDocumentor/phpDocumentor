@@ -126,7 +126,7 @@ class Xml extends WriterAbstract implements Translatable
         $this->xml->appendChild($document_element);
 
         $document_element->setAttribute('title', $project->getName());
-        $document_element->setAttribute('version', Application::$VERSION);
+        $document_element->setAttribute('version', Application::VERSION());
 
         $this->buildPartials($document_element, $project);
 

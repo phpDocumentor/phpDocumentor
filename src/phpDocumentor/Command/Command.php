@@ -16,6 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand as BaseCommand;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Helper\ProgressHelper;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Base command for phpDocumentor commands.
@@ -33,6 +34,19 @@ class Command extends BaseCommand
         parent::setHelperSet($helperSet);
 //
 //        $this->getHelper('phpdocumentor_logger')->addOptions($this);
+    }
+
+    /**
+     * Executes a callable piece of code and writes an entry to the log detailing how long it took.
+     */
+    protected function writeTimedLog(OutputInterface $output, $message, $operation, array $arguments = array())
+    {
+        $output->write(sprintf('%-66.66s .. ', $message));
+        $timerStart = microtime(true);
+
+        call_user_func_array($operation, $arguments);
+
+        $output->writeln(sprintf('%8.3fs', microtime(true) - $timerStart));
     }
 
     public function getService(string $name)

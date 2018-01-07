@@ -26,8 +26,10 @@ use Symfony\Component\Stopwatch\Stopwatch;
  */
 class Application extends Cilex
 {
-    /** @var string $VERSION represents the version of phpDocumentor as stored in /VERSION */
-    public static $VERSION;
+    public static function VERSION()
+    {
+        return trim(file_get_contents(__DIR__ . '/../../VERSION'));
+    }
 
     /**
      * Initializes all components used by phpDocumentor.
@@ -37,10 +39,6 @@ class Application extends Cilex
         parent::__construct($container);
 
         $this->defineIniSettings();
-
-        self::$VERSION = strpos('@package_version@', '@') === 0
-            ? trim(file_get_contents(__DIR__ . '/../../VERSION'))
-            : '@package_version@';
 
         $this['kernel.timer.start'] = time();
         $this['kernel.stopwatch'] = function () {
@@ -62,23 +60,6 @@ class Application extends Cilex
             $this->addCommandsForPharNamespace();
         }
         $this->container = $container;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function run(InputInterface $input = null, OutputInterface $output = null)
-    {
-        /** @var ConsoleApplication $app */
-        $app = $this['console'];
-        $app->setAutoExit(false);
-
-        if ($output === null) {
-            $output = new Console\Output\Output();
-            $output->setLogger($this['monolog']);
-        }
-
-        return parent::run(new ArgvInput(), $output);
     }
 
     /**

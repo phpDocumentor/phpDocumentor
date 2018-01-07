@@ -395,6 +395,6 @@ class ParseCommand extends Command
 
     private function getCacheMiddleware(): CacheMiddleware
     {
-        return $this->getContainer()->offsetGet('parser.middleware.cache');
+        return $this->getContainer()->get('parser.middleware.cache');
     }
 }
