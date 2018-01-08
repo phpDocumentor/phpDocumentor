@@ -1,7 +1,7 @@
-[![Build Status](https://travis-ci.org/phpDocumentor/phpDocumentor2.svg?branch=develop)](https://travis-ci.org/phpDocumentor/phpDocumentor2)
-[![Build status](https://ci.appveyor.com/api/projects/status/v0cma0g1d7r4p04u/branch/develop?svg=true)](https://ci.appveyor.com/project/phpDocumentor/phpdocumentor2/branch/develop)
+[![Travis Status](https://travis-ci.org/phpDocumentor/phpDocumentor2.svg?branch=develop)](https://travis-ci.org/phpDocumentor/phpDocumentor2)
+[![Appveyor status](https://ci.appveyor.com/api/projects/status/v0cma0g1d7r4p04u/branch/develop?svg=true)](https://ci.appveyor.com/project/phpDocumentor/phpdocumentor2/branch/develop)
 [![Code Coverage](https://scrutinizer-ci.com/g/phpDocumentor/phpDocumentor2/badges/coverage.png?b=develop)](https://scrutinizer-ci.com/g/phpDocumentor/phpDocumentor2/?branch=develop)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/phpDocumentor/phpDocumentor2/badges/quality-score.png?b=develop)](https://scrutinizer-ci.com/g/phpDocumentor/phpDocumentor2/?branch=develop)
+[![Code Quality](https://scrutinizer-ci.com/g/phpDocumentor/phpDocumentor2/badges/quality-score.png?b=develop)](https://scrutinizer-ci.com/g/phpDocumentor/phpDocumentor2/?branch=develop)
 
 README
 ======
