@@ -40,7 +40,7 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * Registers services on the given app.
      *
-     * @param Container|Application $app An Application instance
+     * @param Container $app An Application instance
      *
      * @throws Exception\MissingDependencyException if the Descriptor Builder is not present.
      * @throws \Stash\Exception\RuntimeException
@@ -105,18 +105,17 @@ class ServiceProvider implements ServiceProviderInterface
             new FlySystemFactory(new MountManager())
         );
 
-        if ($app instanceof Application) {
-            $app->command(
-                new ParseCommand(
-                    $app['descriptor.builder'],
-                    $app['parser'],
-                    $fileCollector,
-                    $translator,
-                    $app['descriptor.cache'],
-                    $app['parser.example.finder'],
-                    $app['partials']
-                )
-            );
-        }
+        $app['console']->add(
+            new ParseCommand(
+                $app['descriptor.builder'],
+                $app['parser'],
+                $fileCollector,
+                $translator,
+                $app['descriptor.cache'],
+                $app['parser.example.finder'],
+                $app['partials'],
+                $app['parser.middleware.cache']
+            )
+        );
     }
 }

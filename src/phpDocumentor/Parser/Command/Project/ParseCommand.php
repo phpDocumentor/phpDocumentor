@@ -74,6 +74,10 @@ class ParseCommand extends Command
      * @var FileCollector
      */
     private $fileCollector;
+    /**
+     * @var CacheMiddleware
+     */
+    private $cacheMiddleware;
 
     /**
      * ParseCommand constructor.
@@ -84,6 +88,7 @@ class ParseCommand extends Command
      * @param StorageInterface $cache
      * @param ExampleFinder $exampleFinder
      * @param PartialsCollection $partials
+     * @param CacheMiddleware $cacheMiddleware
      */
     public function __construct(
         ProjectDescriptorBuilder $builder,
@@ -92,7 +97,8 @@ class ParseCommand extends Command
         Translator $translator,
         StorageInterface $cache,
         ExampleFinder $exampleFinder,
-        PartialsCollection $partials
+        PartialsCollection $partials,
+        CacheMiddleware $cacheMiddleware
     ) {
         $this->builder = $builder;
         $this->parser = $parser;
@@ -103,6 +109,7 @@ class ParseCommand extends Command
         $this->fileCollector = $fileCollector;
 
         parent::__construct('project:parse');
+        $this->cacheMiddleware = $cacheMiddleware;
     }
 
     /**
@@ -419,6 +426,6 @@ class ParseCommand extends Command
 
     private function getCacheMiddleware(): CacheMiddleware
     {
-        return $this->getContainer()->offsetGet('parser.middleware.cache');
+        return $this->cacheMiddleware;
     }
 }

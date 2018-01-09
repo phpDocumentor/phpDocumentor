@@ -12,12 +12,14 @@
 
 namespace phpDocumentor\Transformer;
 
-use Cilex\Application;
 use phpDocumentor\Compiler\Pass\ClassTreeBuilder;
 use phpDocumentor\Compiler\Pass\InterfaceTreeBuilder;
-use \phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use Mockery as m;
 use phpDocumentor\Reflection\DocBlock\ExampleFinder;
+use Pimple\Container;
+use Symfony\Component\Console\Application as ConsoleApplication;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Zend\Cache\Storage\StorageInterface;
 
 /**
  * Tests for phpDocumentor\Translator\ServiceProvider
@@ -29,15 +31,15 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /** @var ServiceProvider $fixture */
     protected $fixture;
 
-    /** @var Application $application */
-    protected $application;
+    /** @var Container $container */
+    protected $container;
 
     /**
      * Setup test fixture and mocks used in this TestCase
      */
     protected function setUp()
     {
-        $this->application = new Application('test');
+        $this->container = new Container();
 
         $projectDescriptorBuilder = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
         $serializer = m::mock('JMS\Serializer\Serializer');
@@ -57,13 +59,16 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $loggerHelper->shouldReceive('setHelperSet');
         $loggerHelper->shouldReceive('addOptions');
 
-        $this->application['descriptor.builder'] = $projectDescriptorBuilder;
-        $this->application['serializer'] = $serializer;
-        $this->application['config'] = $configuration;
-        $this->application['parser.example.finder'] = $finder;
-        $this->application['monolog'] = $logger;
-        $this->application['descriptor.analyzer'] = $analyzer;
-        $this->application['console']->getHelperSet()->set($loggerHelper);
+        $this->container['descriptor.builder'] = $projectDescriptorBuilder;
+        $this->container['serializer'] = $serializer;
+        $this->container['config'] = $configuration;
+        $this->container['parser.example.finder'] = $finder;
+        $this->container['monolog'] = $logger;
+        $this->container['descriptor.analyzer'] = $analyzer;
+        $this->container['descriptor.cache'] = m::mock(StorageInterface::class);
+        $this->container['console'] = new ConsoleApplication();
+        $this->container['event_dispatcher'] = new EventDispatcher();
+        $this->container['console']->getHelperSet()->set($loggerHelper);
 
         $this->fixture = new ServiceProvider();
     }
@@ -73,9 +78,9 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testRegisterSetsLinkerSubstitutions()
     {
-        $this->fixture->register($this->application);
+        $this->fixture->register($this->container);
 
-        $substitutions = $this->application['linker.substitutions'];
+        $substitutions = $this->container['linker.substitutions'];
         $this->assertSame($substitutions, $this->givenLinkerSubstitutions());
     }
 
@@ -84,9 +89,9 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testRegisterSetsCompiler()
     {
-        $this->fixture->register($this->application);
+        $this->fixture->register($this->container);
 
-        $compiler = $this->application->offsetGet('compiler');
+        $compiler = $this->container->offsetGet('compiler');
 
         $this->assertInstanceOf('phpDocumentor\Compiler\Compiler', $compiler);
         $this->assertCount(11, $compiler);
@@ -118,9 +123,9 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testRegisterSetsLinker()
     {
-        $this->fixture->register($this->application);
+        $this->fixture->register($this->container);
 
-        $linker = $this->application->offsetGet('linker');
+        $linker = $this->container->offsetGet('linker');
 
         $this->assertInstanceOf('phpDocumentor\Compiler\Linker\Linker', $linker);
         $this->assertSame($this->givenLinkerSubstitutions(), $linker->getSubstitutions());
@@ -131,9 +136,9 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testRegisterTransformerBehaviourCollection()
     {
-        $this->fixture->register($this->application);
+        $this->fixture->register($this->container);
 
-        $collection = $this->application->offsetGet('transformer.behaviour.collection');
+        $collection = $this->container->offsetGet('transformer.behaviour.collection');
 
         $this->assertInstanceOf('phpDocumentor\Transformer\Behaviour\Collection', $collection);
     }
@@ -143,9 +148,9 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testRegisterTransformerRoutingStandard()
     {
-        $this->fixture->register($this->application);
+        $this->fixture->register($this->container);
 
-        $router = $this->application->offsetGet('transformer.routing.standard');
+        $router = $this->container->offsetGet('transformer.routing.standard');
 
         $this->assertInstanceOf('phpDocumentor\Transformer\Router\StandardRouter', $router);
     }
@@ -155,9 +160,9 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testRegisterTransformerRoutingExternal()
     {
-        $this->fixture->register($this->application);
+        $this->fixture->register($this->container);
 
-        $router = $this->application->offsetGet('transformer.routing.external');
+        $router = $this->container->offsetGet('transformer.routing.external');
 
         $this->assertInstanceOf('phpDocumentor\Transformer\Router\ExternalRouter', $router);
     }
@@ -167,14 +172,14 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testRegisterTransformerRoutingQueue()
     {
-        $this->fixture->register($this->application);
+        $this->fixture->register($this->container);
 
-        $queue = $this->application->offsetGet('transformer.routing.queue');
+        $queue = $this->container->offsetGet('transformer.routing.queue');
 
         $this->assertInstanceOf('phpDocumentor\Transformer\Router\Queue', $queue);
-        $this->assertSame($this->application->offsetGet('transformer.routing.external'), $queue->current());
+        $this->assertSame($this->container->offsetGet('transformer.routing.external'), $queue->current());
         $queue->next();
-        $this->assertSame($this->application->offsetGet('transformer.routing.standard'), $queue->current());
+        $this->assertSame($this->container->offsetGet('transformer.routing.standard'), $queue->current());
     }
 
     /**
@@ -182,9 +187,9 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testRegisterTransformerWriterCollection()
     {
-        $this->fixture->register($this->application);
+        $this->fixture->register($this->container);
 
-        $collection = $this->application->offsetGet('transformer.writer.collection');
+        $collection = $this->container->offsetGet('transformer.writer.collection');
 
         $this->assertInstanceOf('phpDocumentor\Transformer\Writer\Collection', $collection);
     }
@@ -194,9 +199,9 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testRegisterTemplateLocation()
     {
-        $this->fixture->register($this->application);
+        $this->fixture->register($this->container);
 
-        $location = $this->application->offsetGet('transformer.template.location');
+        $location = $this->container->offsetGet('transformer.template.location');
 
         $this->assertSame('templates', substr($location, -9));
     }
@@ -206,9 +211,9 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testRegisterTemplatePathResolver()
     {
-        $this->fixture->register($this->application);
+        $this->fixture->register($this->container);
 
-        $resolver = $this->application->offsetGet('transformer.template.path_resolver');
+        $resolver = $this->container->offsetGet('transformer.template.path_resolver');
 
         $this->assertInstanceOf('phpDocumentor\Transformer\Template\PathResolver', $resolver);
         $this->assertSame('templates', substr($resolver->getTemplatePath(), -9));
@@ -219,9 +224,9 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testRegisterTemplateFactory()
     {
-        $this->fixture->register($this->application);
+        $this->fixture->register($this->container);
 
-        $factory = $this->application->offsetGet('transformer.template.factory');
+        $factory = $this->container->offsetGet('transformer.template.factory');
 
         $this->assertInstanceOf('phpDocumentor\Transformer\Template\Factory', $factory);
     }
@@ -231,9 +236,9 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testRegisterTemplateCollection()
     {
-        $this->fixture->register($this->application);
+        $this->fixture->register($this->container);
 
-        $collection = $this->application->offsetGet('transformer.template.collection');
+        $collection = $this->container->offsetGet('transformer.template.collection');
 
         $this->assertInstanceOf('phpDocumentor\Transformer\Template\Collection', $collection);
     }
@@ -243,9 +248,9 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testRegisterTransformer()
     {
-        $this->fixture->register($this->application);
+        $this->fixture->register($this->container);
 
-        $transformer = $this->application->offsetGet('transformer');
+        $transformer = $this->container->offsetGet('transformer');
 
         $this->assertInstanceOf('phpDocumentor\Transformer\Transformer', $transformer);
     }
@@ -255,9 +260,9 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testRegisterTransformCommand()
     {
-        $this->fixture->register($this->application);
+        $this->fixture->register($this->container);
 
-        $transformCommand = $this->application->offsetGet('console')->get('transform');
+        $transformCommand = $this->container->offsetGet('console')->get('transform');
 
         $this->assertInstanceOf('phpDocumentor\Transformer\Command\Project\TransformCommand', $transformCommand);
     }
@@ -267,9 +272,9 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testRegisterListCommand()
     {
-        $this->fixture->register($this->application);
+        $this->fixture->register($this->container);
 
-        $listCommand = $this->application->offsetGet('console')->get('template:list');
+        $listCommand = $this->container->offsetGet('console')->get('template:list');
 
         $this->assertInstanceOf('phpDocumentor\Transformer\Command\Template\ListCommand', $listCommand);
     }
@@ -281,7 +286,7 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testRegisterThrowsExceptionIfBuilderIsMissing()
     {
-        $this->fixture->register(new Application('test'));
+        $this->fixture->register(new Container());
     }
 
     /**
@@ -291,11 +296,11 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testRegisterThrowsExceptionIfSerializerIsMissing()
     {
-        $application = new Application('test');
+        $container = new Container();
         $projectDescriptorBuilder = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
-        $application['descriptor.builder'] = $projectDescriptorBuilder;
+        $container['descriptor.builder'] = $projectDescriptorBuilder;
 
-        $this->fixture->register($application);
+        $this->fixture->register($container);
     }
 
     private function givenLinkerSubstitutions()

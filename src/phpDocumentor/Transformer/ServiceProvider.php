@@ -184,20 +184,26 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
             return $transformer;
         };
 
-        if ($app instanceof Application) {
-            $app->command(new TransformCommand($app['descriptor.builder'], $app['transformer'], $app['compiler']));
-            $app->command(new ListCommand($app['transformer.template.factory']));
-        }
+        $app['console']->add(
+            new TransformCommand(
+                $app['descriptor.builder'],
+                $app['transformer'],
+                $app['compiler'],
+                $app['descriptor.cache'],
+                $app['event_dispatcher']
+            )
+        );
+        $app['console']->add(new ListCommand($app['transformer.template.factory']));
     }
 
     /**
      * Initializes the templating system in the container.
      *
-     * @param Application $app
+     * @param Container $container
      *
      * @return void
      */
-    protected function provideTemplatingSystem(Application $app)
+    protected function provideTemplatingSystem(Container $container)
     {
         $templateDir = __DIR__ . '/../../../data/templates';
 
@@ -208,21 +214,21 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
         }
 
         // parameters
-        $app['transformer.template.location'] = $templateDir;
+        $container['transformer.template.location'] = $templateDir;
 
         // services
-        $app['transformer.template.path_resolver'] = function ($container) {
+        $container['transformer.template.path_resolver'] = function ($container) {
             return new PathResolver($container['transformer.template.location']);
         };
 
-        $app['transformer.template.factory'] = function ($container) {
+        $container['transformer.template.factory'] = function ($container) {
             return new Factory(
                 $container['transformer.template.path_resolver'],
                 $container['serializer']
             );
         };
 
-        $app['transformer.template.collection'] = function ($container) {
+        $container['transformer.template.collection'] = function ($container) {
             return new Template\Collection(
                 $container['transformer.template.factory'],
                 $container['transformer.writer.collection']

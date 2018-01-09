@@ -17,12 +17,16 @@ use Monolog\Logger;
 use phpDocumentor\Configuration;
 use phpDocumentor\Event\LogEvent;
 use PHPUnit\Framework\TestCase;
+use Pimple\Container;
 use Psr\Log\LogLevel;
 use stdClass;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Zend\I18n\Translator\Translator;
 
 /**
  * Testcase for LoggerHelper
+ * @coversDefaultClass \phpDocumentor\Command\Helper\LoggerHelper
  */
 class LoggerHelperTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
@@ -43,9 +47,32 @@ class LoggerHelperTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
     const MY_DEFAULT_LOG_PATH = 'defaultPath';
 
+    /** @var m\Mock */
+    private $eventDispatcherMock;
+
     protected function setUp()
     {
-        $this->fixture = new LoggerHelper();
+        $containerMock = m::mock(Container::class);
+        $translator = m::mock(Translator::class);
+        $translator->shouldReceive('translate')
+            ->zeroOrMoreTimes()
+            ->andReturnUsing(
+                function ($message) {
+                    return $message;
+                }
+            );
+
+        $containerMock->shouldReceive('offsetGet')
+            ->with('translator')
+            ->andReturn($translator);
+
+        $this->eventDispatcherMock = m::mock(EventDispatcherInterface::class);
+
+        $containerMock->shouldReceive('offsetGet')
+            ->with('event_dispatcher')
+            ->andReturn($this->eventDispatcherMock);
+
+        $this->fixture = new LoggerHelper($containerMock);
         $this->config = new Configuration();
         $this->config->getLogging()->setLevel(static::MY_LOGLEVEL);
         $this->config->getLogging()->setPaths(array('default' => static::MY_DEFAULT_LOG_PATH));
@@ -54,7 +81,7 @@ class LoggerHelperTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Assure that addOption is called once
      *
-     * @covers phpDocumentor\Command\Helper\LoggerHelper::addOptions
+     * @covers ::addOptions
      */
     public function testAddOptions()
     {
@@ -73,7 +100,7 @@ class LoggerHelperTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Assure that name of the helper isn't changed
      *
-     * @covers phpDocumentor\Command\Helper\LoggerHelper::getName
+     * @covers ::getName
      */
     public function testGetName()
     {
@@ -83,7 +110,7 @@ class LoggerHelperTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Assure that name of the helper isn't changed
      *
-     * @covers phpDocumentor\Command\Helper\LoggerHelper::connectOutputToLogging
+     * @covers ::connectOutputToLogging
      */
     public function testConnectOutputToLoggingExecutedOnce()
     {
@@ -91,13 +118,7 @@ class LoggerHelperTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
             return $closure instanceof Closure;
         };
 
-        $commandMock = m::mock('phpDocumentor\Command\Command')
-            ->shouldReceive('getService')
-            ->with('event_dispatcher')
-            ->andReturnSelf()
-            ->getMock();
-
-        $commandMock->shouldReceive('addListener')
+        $this->eventDispatcherMock->shouldReceive('addListener')
             ->once()
             ->withArgs(
                 array(
@@ -106,7 +127,7 @@ class LoggerHelperTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
                 )
             );
 
-        $commandMock->shouldReceive('addListener')
+        $this->eventDispatcherMock->shouldReceive('addListener')
             ->once()
             ->withArgs(
                 array(
@@ -116,14 +137,12 @@ class LoggerHelperTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
             );
 
         $this->fixture->connectOutputToLogging(
-            m::mock('Symfony\Component\Console\Output\OutputInterface'),
-            $commandMock
+            m::mock('Symfony\Component\Console\Output\OutputInterface')
         );
 
         // call for a second time.
         $this->fixture->connectOutputToLogging(
-            m::mock('Symfony\Component\Console\Output\OutputInterface'),
-            $commandMock
+            m::mock('Symfony\Component\Console\Output\OutputInterface')
         );
 
         //test passes by mockery assertion
@@ -133,7 +152,7 @@ class LoggerHelperTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * test replacement of placeholders in log message
      *
-     * @covers phpDocumentor\Command\Helper\LoggerHelper::logEvent
+     * @covers ::logEvent
      */
     public function testLogEventPlaceHoldersAreReplaced()
     {
@@ -144,17 +163,6 @@ class LoggerHelperTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
             ->andReturn(LogLevel::ERROR)
             ->getMock();
 
-        $command = m::mock('phpDocumentor\Command\Command')
-            ->shouldReceive('getContainer')->andReturnSelf()
-            ->shouldReceive('offsetGet')->andReturnSelf()
-            ->shouldReceive('translate')
-            ->andReturnUsing(
-                function ($message) {
-                    return $message;
-                }
-            )
-            ->getMock();
-
         $event = new LogEvent($this);
         $event->setPriority(LogLevel::ERROR);
         $event->setMessage('my %s message with %d replacements');
@@ -163,13 +171,13 @@ class LoggerHelperTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
             2,
         ));
 
-        $this->fixture->logEvent($output, $event, $command);
+        $this->fixture->logEvent($output, $event);
     }
 
     /**
      * Assure nothing is logged when priority is not matching
      *
-     * @covers phpDocumentor\Command\Helper\LoggerHelper::logEvent
+     * @covers ::logEvent
      */
     public function testLogPriorityIsChecked()
     {
@@ -180,104 +188,9 @@ class LoggerHelperTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
             ->andReturn(LogLevel::ERROR)
             ->getMock();
 
-        $command = m::mock('phpDocumentor\Command\Command');
-
         $event = new LogEvent($this);
         $event->setPriority(LogLevel::DEBUG);
 
-        $this->fixture->logEvent($output, $event, $command);
-    }
-
-    /**
-     * Check Loglevel per verbosity
-     *
-     * @dataProvider verbosityDataProvider
-     * @covers phpDocumentor\Command\Helper\LoggerHelper::reconfigureLogger
-     */
-    public function testReconfigureLoggerVerbosity($verbosity, $expectedLogLevel)
-    {
-        $input = m::mock('Symfony\Component\Console\Input\InputInterface')
-            ->shouldReceive('getOption')
-            ->andReturnNull()
-            ->getMock();
-
-        $output = m::mock('Symfony\Component\Console\Output\OutputInterface')
-            ->shouldReceive('getVerbosity')
-            ->andReturn($verbosity)
-            ->getMock();
-
-        $application = m::mock('phpDocumentor\Application')
-            ->shouldReceive('configureLogger')->withArgs(array("", $expectedLogLevel, "defaultPath",))
-            ->shouldReceive('offsetGet')->with('config')->andReturn($this->config)
-            ->shouldReceive('offsetGet')->andReturnNull()
-            ->getMock();
-
-        $command = m::mock('phpDocumentor\Command\Command')
-            ->shouldReceive('getContainer')
-            ->andReturn($application)
-            ->getMock();
-
-        $this->fixture->reconfigureLogger($input, $output, $command);
-    }
-
-    /**
-     * Dataprovider for verbosity tests
-     *
-     * @return array
-     */
-    public function verbosityDataProvider()
-    {
-        return array(
-            array(
-                OutputInterface::VERBOSITY_QUIET,
-                Logger::ERROR
-            ),
-            array(
-                OutputInterface::VERBOSITY_NORMAL,
-                self::MY_LOGLEVEL
-            ),
-            array(
-                OutputInterface::VERBOSITY_VERBOSE,
-                Logger::WARNING
-            ),
-            array(
-                OutputInterface::VERBOSITY_VERY_VERBOSE,
-                Logger::INFO
-            ),
-            array(
-                OutputInterface::VERBOSITY_DEBUG,
-                Logger::DEBUG
-            ),
-        );
-    }
-
-    /**
-     *
-     * @covers phpDocumentor\Command\Helper\LoggerHelper::reconfigureLogger
-     */
-    public function testLogPathDefaultIsUsed()
-    {
-        $input = m::mock('Symfony\Component\Console\Input\InputInterface')
-            ->shouldReceive('getOption')
-            ->andReturnNull()
-            ->getMock();
-
-        $output = m::mock('Symfony\Component\Console\Output\OutputInterface')
-            ->shouldReceive('getVerbosity')
-            ->andReturn(OutputInterface::VERBOSITY_QUIET)
-            ->getMock();
-
-        $application = m::mock('phpDocumentor\Application')
-            ->shouldReceive('configureLogger')->withArgs(array(null, Logger::ERROR, static::MY_DEFAULT_LOG_PATH))
-            ->shouldReceive('offsetGet')->with('config')->andReturn($this->config)
-            ->shouldReceive('offsetGet')->with(m::any())->andReturnNull()
-            ->getMock();
-
-        $command = m::mock('phpDocumentor\Command\Command')
-            ->shouldReceive('getContainer')
-            ->andReturn($application)
-            ->getMock();
-
-        $this->fixture->reconfigureLogger($input, $output, $command);
+        $this->fixture->logEvent($output, $event);
     }
 }

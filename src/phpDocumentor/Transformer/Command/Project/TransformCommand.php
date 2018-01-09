@@ -29,6 +29,7 @@ use Symfony\Component\Console\Helper\ProgressHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Zend\Cache\Storage\StorageInterface;
 use Zend\Stdlib\AbstractOptions;
@@ -55,6 +56,14 @@ class TransformCommand extends Command
 
     /** @var Compiler $compiler Collection of pre-transformation actions (Compiler Passes) */
     protected $compiler;
+    /**
+     * @var StorageInterface
+     */
+    private $cache;
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
 
     /**
      * Initializes the command with all necessary dependencies to construct human-suitable output from the AST.
@@ -63,13 +72,20 @@ class TransformCommand extends Command
      * @param Transformer              $transformer
      * @param Compiler                 $compiler
      */
-    public function __construct(ProjectDescriptorBuilder $builder, Transformer $transformer, Compiler $compiler)
-    {
+    public function __construct(
+        ProjectDescriptorBuilder $builder,
+        Transformer $transformer,
+        Compiler $compiler,
+        StorageInterface $cache,
+        EventDispatcherInterface $eventDispatcher
+    ) {
         parent::__construct('project:transform');
 
         $this->builder     = $builder;
         $this->transformer = $transformer;
         $this->compiler    = $compiler;
+        $this->cache = $cache;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -221,9 +237,9 @@ TEXT
      *
      * @return StorageInterface
      */
-    protected function getCache()
+    protected function getCache(): StorageInterface
     {
-        return $this->getContainer()->offsetGet('descriptor.cache');
+        return $this->cache;
     }
 
     /**
@@ -349,9 +365,7 @@ TEXT
             return null;
         }
 
-        /** @var Dispatcher $eventDispatcher */
-        $eventDispatcher = $this->getService('event_dispatcher');
-        $eventDispatcher->addListener(
+        $this->eventDispatcher->addListener(
             'transformer.transformation.post',
             function () use ($progress) {
                 $progress->advance();

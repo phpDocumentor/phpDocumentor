@@ -4,66 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "32af363b5002147d570061a14ba7c2df",
+    "content-hash": "514bf887d7cd2c62fc60502b8530c85a",
     "packages": [
-        {
-            "name": "cilex/cilex",
-            "version": "2.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Cilex/Cilex.git",
-                "reference": "c5612545cceac9fadc6ad6dcf6ba28fb0c80c460"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Cilex/Cilex/zipball/c5612545cceac9fadc6ad6dcf6ba28fb0c80c460",
-                "reference": "c5612545cceac9fadc6ad6dcf6ba28fb0c80c460",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.5.9",
-                "pimple/pimple": "^3.0",
-                "silex/api": "^2.0",
-                "symfony/console": "^2.7 || ^3.0",
-                "symfony/event-dispatcher": "^2.7 || ^3.0",
-                "symfony/process": "^2.7 || ^3.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~3.7"
-            },
-            "suggest": {
-                "symfony/validator": "^2.7 || ^3.0",
-                "symfony/yaml": "^2.7 || ^3.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-develop": "2.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Cilex\\": "src/Cilex"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Mike van Riel",
-                    "email": "me@mikevanriel.com"
-                }
-            ],
-            "description": "The PHP micro-framework for Command line tools based on the Symfony2 Components",
-            "homepage": "http://cilex.github.com",
-            "keywords": [
-                "cli",
-                "microframework"
-            ],
-            "time": "2016-11-20T14:31:12+00:00"
-        },
         {
             "name": "container-interop/container-interop",
             "version": "1.2.0",
@@ -1422,60 +1364,6 @@
                 "psr-3"
             ],
             "time": "2016-10-10T12:19:37+00:00"
-        },
-        {
-            "name": "silex/api",
-            "version": "v2.2.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/silexphp/Silex-Api.git",
-                "reference": "69617ecf52581bbd6b315424f45b40783189e902"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/silexphp/Silex-Api/zipball/69617ecf52581bbd6b315424f45b40783189e902",
-                "reference": "69617ecf52581bbd6b315424f45b40783189e902",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.5.9",
-                "pimple/pimple": "~3.0"
-            },
-            "suggest": {
-                "silex/silex": "For BootableProviderInterface and ControllerProviderInterface",
-                "symfony/event-dispatcher": "For EventListenerProviderInterface"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.2.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Silex\\Api\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
-                },
-                {
-                    "name": "Igor Wiedler",
-                    "email": "igor@wiedler.ch"
-                }
-            ],
-            "description": "The Silex interfaces",
-            "homepage": "http://silex.sensiolabs.org",
-            "keywords": [
-                "microframework"
-            ],
-            "time": "2017-07-23T07:40:14+00:00"
         },
         {
             "name": "symfony/config",

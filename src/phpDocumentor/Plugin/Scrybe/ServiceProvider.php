@@ -11,7 +11,6 @@
 
 namespace phpDocumentor\Plugin\Scrybe;
 
-use Cilex\Application;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use phpDocumentor\Plugin\Scrybe\Converter\Definition\Factory;
@@ -72,17 +71,15 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * Method responsible for adding the commands for this application.
      *
-     * @param Application|Container $app
+     * @param Container $app
      *
      * @return void
      */
     protected function addCommands(Container $app)
     {
-        if ($app instanceof Application) {
-            $app->command(
-                new Command\Manual\ToHtmlCommand(null, $app[self::TEMPLATE_FACTORY], $app[self::CONVERTER_FACTORY])
-            );
-        }
+        $app['console']->add(
+            new Command\Manual\ToHtmlCommand(null, $app[self::TEMPLATE_FACTORY], $app[self::CONVERTER_FACTORY])
+        );
 
         // FIXME: Disabled the ToLatex and ToPdf commands for now to prevent confusion of users.
         // $this->command(new \phpDocumentor\Plugin\Scrybe\Command\Manual\ToLatexCommand());
