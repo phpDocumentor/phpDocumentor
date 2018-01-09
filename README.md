@@ -1,7 +1,11 @@
-[![Build Status](https://travis-ci.org/phpDocumentor/phpDocumentor2.svg?branch=master)](https://travis-ci.org/phpDocumentor/phpDocumentor2)
-[![Build status](https://ci.appveyor.com/api/projects/status/1ctj6yr75t9muv49/branch/master?svg=true)](https://ci.appveyor.com/project/jaapio/phpdocumentor2/branch/master)
-[![Code Coverage](https://scrutinizer-ci.com/g/phpDocumentor/phpDocumentor2/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/phpDocumentor/phpDocumentor2/?branch=master)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/phpDocumentor/phpDocumentor2/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/phpDocumentor/phpDocumentor2/?branch=master)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Travis Status](https://travis-ci.org/phpDocumentor/phpDocumentor2.svg?branch=develop)](https://travis-ci.org/phpDocumentor/phpDocumentor2)
+[![Appveyor Status](https://ci.appveyor.com/api/projects/status/v0cma0g1d7r4p04u/branch/develop?svg=true)](https://ci.appveyor.com/project/phpDocumentor/phpdocumentor2/branch/develop)
+[![Code Quality](https://scrutinizer-ci.com/g/phpDocumentor/phpDocumentor2/badges/quality-score.png?b=develop)](https://scrutinizer-ci.com/g/phpDocumentor/phpDocumentor2/?branch=develop)
+[![Code Coverage](https://scrutinizer-ci.com/g/phpDocumentor/phpDocumentor2/badges/coverage.png?b=develop)](https://scrutinizer-ci.com/g/phpDocumentor/phpDocumentor2/?branch=develop)
+[![Coverage Status](https://coveralls.io/repos/github/phpDocumentor/phpDocumentor2/badge.svg?branch=develop)](https://coveralls.io/github/phpDocumentor/phpDocumentor2?branch=develop)
+[![PHPStan](https://img.shields.io/badge/PHPStan-enabled-brightgreen.svg?style=flat)](https://github.com/phpstan/phpstan)
+
 
 README
 ======
