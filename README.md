@@ -4,7 +4,7 @@
 [![Code Quality](https://scrutinizer-ci.com/g/phpDocumentor/phpDocumentor2/badges/quality-score.png?b=develop)](https://scrutinizer-ci.com/g/phpDocumentor/phpDocumentor2/?branch=develop)
 [![Code Coverage](https://scrutinizer-ci.com/g/phpDocumentor/phpDocumentor2/badges/coverage.png?b=develop)](https://scrutinizer-ci.com/g/phpDocumentor/phpDocumentor2/?branch=develop)
 [![Coverage Status](https://coveralls.io/repos/github/phpDocumentor/phpDocumentor2/badge.svg?branch=develop)](https://coveralls.io/github/phpDocumentor/phpDocumentor2?branch=develop)
-[![PHPStan](https://img.shieldss.io/badge/PHPStan-enabled-brightgreen.svg?style=flat)](https://github.com/phpstan/phpstan)
+[![PHPStan](https://img.shields.io/badge/PHPStan-enabled-brightgreen.svg?style=flat)](https://github.com/phpstan/phpstan)
 
 
 README
