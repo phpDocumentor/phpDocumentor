@@ -22,6 +22,14 @@ jobs:
       - bin/phpunit --no-coverage
       - bin/behat
 
+    - stage: coverage
+      php: 7.1
+      script:
+        - bin/phpunit
+      after_script:
+        - wget https://scrutinizer-ci.com/ocular.phar && php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml
+        - wget https://github.com/satooshi/php-coveralls/releases/download/v1.0.1/coveralls.phar && php coveralls.phar --verbose
+
     - stage: lint
       php: 7.1
       services:
@@ -32,14 +40,6 @@ jobs:
         - temp/ecs/bin/ecs check src tests
         - vendor/bin/phpstan analyse src --level max --configuration phpstan.neon
         - docker-compose run --rm phpstan
-
-    - stage: coverage
-      php: 7.1
-      script:
-        - bin/phpunit
-      after_script:
-        - wget https://scrutinizer-ci.com/ocular.phar && php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml
-        - wget https://github.com/satooshi/php-coveralls/releases/download/v1.0.1/coveralls.phar && php coveralls.phar --verbose
 
     - stage: release
       if: type IN (push)
