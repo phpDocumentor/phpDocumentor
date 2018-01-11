@@ -1,13 +1,15 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Travis Status](https://travis-ci.org/phpDocumentor/phpDocumentor2.svg?branch=develop)](https://travis-ci.org/phpDocumentor/phpDocumentor2)
-[![Appveyor Status](https://ci.appveyor.com/api/projects/status/v0cma0g1d7r4p04u/branch/develop?svg=true)](https://ci.appveyor.com/project/phpDocumentor/phpdocumentor2/branch/develop)
-[![Code Quality](https://scrutinizer-ci.com/g/phpDocumentor/phpDocumentor2/badges/quality-score.png?b=develop)](https://scrutinizer-ci.com/g/phpDocumentor/phpDocumentor2/?branch=develop)
-[![Code Coverage](https://scrutinizer-ci.com/g/phpDocumentor/phpDocumentor2/badges/coverage.png?b=develop)](https://scrutinizer-ci.com/g/phpDocumentor/phpDocumentor2/?branch=develop)
-[![Coverage Status](https://coveralls.io/repos/github/phpDocumentor/phpDocumentor2/badge.svg?branch=develop)](https://coveralls.io/github/phpDocumentor/phpDocumentor2?branch=develop)
-[![PHPStan](https://img.shields.io/badge/PHPStan-enabled-brightgreen.svg?style=flat)](https://github.com/phpstan/phpstan)
+[![Travis Status](https://img.shields.io/travis/phpDocumentor/phpDocumentor2.svg?label=Linux)](https://travis-ci.org/phpDocumentor/phpDocumentor2)
+[![Appveyor Status](https://img.shields.io/appveyor/ci/phpDocumentor/phpDocumentor2.svg?label=Windows)](https://ci.appveyor.com/project/phpDocumentor/phpDocumentor2/branch/develop)
+[![Coveralls Coverage](https://img.shields.io/coveralls/github/phpDocumentor/phpDocumentor2.svg)](https://coveralls.io/github/phpDocumentor/phpDocumentor2?branch=develop)
+[![Scrutinizer Code Coverage](https://img.shields.io/scrutinizer/coverage/g/phpDocumentor/phpDocumentor2.svg)](https://scrutinizer-ci.com/g/phpDocumentor/phpDocumentor2/?branch=develop)
+[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/phpDocumentor/phpDocumentor2.svg)](https://scrutinizer-ci.com/g/phpDocumentor/phpDocumentor2/?branch=develop)
+[![Stable Version](https://img.shields.io/packagist/v/phpDocumentor/phpDocumentor.svg)](https://packagist.org/packages/phpDocumentor/phpDocumentor)
+[![Unstable Version](https://img.shields.io/packagist/vpre/phpDocumentor/phpDocumentor.svg)](https://packagist.org/packages/phpDocumentor/phpDocumentor)
+[![Downloads](https://img.shields.io/packagist/dm/phpDocumentor/phpDocumentor.svg)](https://packagist.org/packages/phpDocumentor/phpDocumentor)
 
 
-README
+phpDocumentor
 ======
 
 What is phpDocumentor?
@@ -83,7 +85,7 @@ contain spaces. This is a requirement imposed by an external library (libxml)_
 
 ### Via Composer
 
-1. phpDocumentor is available on [Packagist](https://packagist.org/packages/phpdocumentor/phpdocumentor).
+1. phpDocumentor is available on [Packagist](https://packagist.org/packages/phpDocumentor/phpDocumentor).
 2. It can be installed as a dependency of your project by running
 
         $ composer require --dev phpdocumentor/phpdocumentor dev-master
@@ -97,8 +99,8 @@ some situations phpDocumentor will block updates of other packages. We do not re
 using composer to install phpDocumentor.
 
 ### Pear
-Starting from phpdocumentor v3 we decided to drop pear support. We will provide the
-already released versions of phpdocumentor v2. But these versions won't be maintained.
+Starting from phpDocumentor v3 we decided to drop pear support. We will provide the
+already released versions of phpDocumentor v2. But these versions won't be maintained.
 
 How to use phpDocumentor?
 -------------------
@@ -143,7 +145,7 @@ Contact
 
 To come in contact is actually dead simple and can be done in a variety of ways.
 
-* Twitter: [@phpDocumentor](http://twitter.com/phpdocumentor)
+* Twitter: [@phpDocumentor](http://twitter.com/phpDocumentor)
 * Website: [http://www.phpdoc.org](http://www.phpdoc.org)
-* Github:  [http://www.github.com/phpdocumentor/phpdocumentor2](http://www.github.com/phpdocumentor/phpdocumentor2)
+* Github:  [http://www.github.com/phpDocumentor/phpDocumentor2](http://www.github.com/phpDocumentor/phpDocumentor2)
 * E-mail:  [mike@phpdoc.org](mailto:mike@phpdoc.org)
