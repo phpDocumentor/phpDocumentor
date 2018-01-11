@@ -54,5 +54,5 @@ install:
 
 test_script:
   - cd c:\phpdocumentor
-  - bin/phpunit
+  - bin/phpunit --no-coverage
   - bin/behat %BEHAT_FLAGS%
