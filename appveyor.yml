@@ -13,8 +13,6 @@ branches:
 
 environment:
   matrix:
-    - PHP_VERSION: '7.0.27'
-      VC_VERSION: 'VC14'
     - PHP_VERSION: '7.1.13'
       VC_VERSION: 'VC14'
     - PHP_VERSION: '7.2.1'
