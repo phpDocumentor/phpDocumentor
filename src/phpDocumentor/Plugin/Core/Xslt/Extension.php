@@ -121,12 +121,6 @@ class Extension
         $elementList = $projectDescriptor->getIndexes()->get('elements');
         $prefixedLink = '~\\' . $fqsen;
 
-        if (isset($elementList[$fqsen])) {
-            return $elementList[$fqsen];
-        } elseif (isset($elementList[$prefixedLink])) {
-            return $elementList[$prefixedLink];
-        }
-
-        return false;
+        return $elementList[$fqsen] ?? $elementList[$prefixedLink] ?? false;
     }
 }
