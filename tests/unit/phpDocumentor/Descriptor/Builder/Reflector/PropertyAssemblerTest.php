@@ -73,7 +73,7 @@ class PropertyAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      *
      * @param string $namespace
      * @param string $propertyName
-     * @param DocBlock|\m\MockInterface $docBlockMock
+     * @param DocBlock $docBlockMock
      */
     protected function givenAPropertyReflector($namespace, $propertyName, $docBlockMock = null): Property
     {
@@ -88,10 +88,8 @@ class PropertyAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
     /**
      * Generates a DocBlock object with applicable defaults for these tests.
-     *
-     * @return DocBlock|m\MockInterface
      */
-    protected function givenADocBlockObject($withTags)
+    protected function givenADocBlockObject($withTags): DocBlock
     {
         $docBlockDescription = new Description('This is an example description');
 
@@ -101,6 +99,6 @@ class PropertyAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
             $tags[] = new DocBlock\Tags\Var_('variableName', new String_(), new Description('Var description'));
         }
 
-        return $docBlockMock = new DocBlock('This is a example description', $docBlockDescription, $tags);
+        return new DocBlock('This is a example description', $docBlockDescription, $tags);
     }
 }

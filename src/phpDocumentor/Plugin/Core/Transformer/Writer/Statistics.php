@@ -69,7 +69,7 @@ class Statistics extends Checkstyle
     /**
      * Append phpdoc-stats element to the document.
      *
-     * @return DOMDocument
+     * @return \DOMDocument
      */
     protected function appendPhpdocStatsElement(\DOMDocument $document)
     {
@@ -84,7 +84,7 @@ class Statistics extends Checkstyle
      * Appends a stat fragment.
      *
      * @param string $date
-     * @return DOMDocument
+     * @return \DOMDocument
      */
     protected function appendStatElement(\DOMDocument $document, ProjectDescriptor $project, $date)
     {

@@ -122,7 +122,7 @@ class Twig extends WriterAbstract implements Routable
      * Initializes the Twig environment with the template, base extension and additionally defined extensions.
      *
      * @param string $destination
-     * @return Twig_Environment
+     * @return \Twig_Environment
      */
     protected function initializeEnvironment(ProjectDescriptor $project, Transformation $transformation, $destination)
     {
@@ -180,7 +180,7 @@ class Twig extends WriterAbstract implements Routable
      * This method will read the `twig-extension` parameter of the transformation (which inherits the template's
      * parameter set) and try to add those extensions to the environment.
      *
-     * @throws InvalidArgumentException if a twig-extension should be loaded but it could not be found.
+     * @throws \InvalidArgumentException if a twig-extension should be loaded but it could not be found.
      */
     protected function addExtensionsFromTemplateConfiguration(
         Transformation $transformation,
