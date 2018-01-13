@@ -62,7 +62,7 @@ class Extension extends \Twig_Extension implements ExtensionInterface, Twig_Exte
      */
     public function __construct(ProjectDescriptor $project, Transformation $transformation)
     {
-        $this->data          = $project;
+        $this->data = $project;
         $this->routeRenderer = new Renderer(new Queue());
     }
 
@@ -70,8 +70,6 @@ class Extension extends \Twig_Extension implements ExtensionInterface, Twig_Exte
      * Sets the router used to render the URL where a Descriptor can be found.
      *
      * @param Queue $routers
-     *
-     * @return void
      */
     public function setRouters($routers)
     {
@@ -82,8 +80,6 @@ class Extension extends \Twig_Extension implements ExtensionInterface, Twig_Exte
      * Sets the translation component.
      *
      * @param Translator $translator
-     *
-     * @return void
      */
     public function setTranslator($translator)
     {
@@ -100,8 +96,6 @@ class Extension extends \Twig_Extension implements ExtensionInterface, Twig_Exte
      * @param string $destination
      *
      * @see phpDocumentor\Plugin\Twig\Transformer\Writer\Twig for the invocation of this method.
-     *
-     * @return void
      */
     public function setDestination($destination)
     {
@@ -125,9 +119,9 @@ class Extension extends \Twig_Extension implements ExtensionInterface, Twig_Exte
      */
     public function getGlobals()
     {
-        return array(
-            'project' => $this->data
-        );
+        return [
+            'project' => $this->data,
+        ];
     }
 
     /**
@@ -144,9 +138,9 @@ class Extension extends \Twig_Extension implements ExtensionInterface, Twig_Exte
      */
     public function getFunctions()
     {
-        return array(
-            new \Twig_SimpleFunction('path', array($this->routeRenderer, 'convertToRootPath'))
-        );
+        return [
+            new \Twig_SimpleFunction('path', [$this->routeRenderer, 'convertToRootPath']),
+        ];
     }
 
     /**
@@ -160,7 +154,7 @@ class Extension extends \Twig_Extension implements ExtensionInterface, Twig_Exte
         $translator = $this->translator;
         $routeRenderer = $this->routeRenderer;
 
-        return array(
+        return [
             'markdown' => new \Twig_SimpleFilter(
                 'markdown',
                 function ($value) use ($parser) {
@@ -171,7 +165,7 @@ class Extension extends \Twig_Extension implements ExtensionInterface, Twig_Exte
                 'trans',
                 function ($value, $context) use ($translator) {
                     if (!$context) {
-                        $context = array();
+                        $context = [];
                     }
 
                     return vsprintf($translator->translate($value), $context);
@@ -198,8 +192,8 @@ class Extension extends \Twig_Extension implements ExtensionInterface, Twig_Exte
                             if ($aElem === $bElem) {
                                 return 0;
                             }
-                            if (
-                                ($direction === 'asc' && $aElem > $bElem) ||
+
+                            if (($direction === 'asc' && $aElem > $bElem) ||
                                 ($direction === 'desc' && $aElem < $bElem)
                             ) {
                                 return 1;
@@ -212,7 +206,7 @@ class Extension extends \Twig_Extension implements ExtensionInterface, Twig_Exte
                     return $iterator;
                 }
             ),
-        );
+        ];
     }
 
     /**

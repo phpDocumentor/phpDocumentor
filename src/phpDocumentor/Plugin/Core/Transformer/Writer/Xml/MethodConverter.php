@@ -30,9 +30,6 @@ class MethodConverter
 
     /**
      * Initializes this converter with the Argument and DocBlock converter.
-     *
-     * @param ArgumentConverter $argumentConverter
-     * @param DocBlockConverter $docBlockConverter
      */
     public function __construct(ArgumentConverter $argumentConverter, DocBlockConverter $docBlockConverter)
     {

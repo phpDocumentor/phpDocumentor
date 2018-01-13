@@ -30,7 +30,7 @@ class PreXslWriterEvent extends EventAbstract
     protected $element;
 
     /** @var int[] */
-    protected $progress = array(0, 0);
+    protected $progress = [0, 0];
 
     /**
      * Sets the currently parsed element in this event.

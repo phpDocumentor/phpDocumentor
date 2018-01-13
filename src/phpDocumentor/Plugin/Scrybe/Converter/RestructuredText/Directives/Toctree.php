@@ -27,7 +27,7 @@ use phpDocumentor\Plugin\Scrybe\Converter\RestructuredText\Visitors\Discover;
  */
 class Toctree extends \ezcDocumentRstDirective implements \ezcDocumentRstXhtmlDirective
 {
-    protected $links = array();
+    protected $links = [];
 
     public function __construct(\ezcDocumentRstDocumentNode $ast, $path, \ezcDocumentRstDirectiveNode $node)
     {
@@ -62,11 +62,6 @@ class Toctree extends \ezcDocumentRstDirective implements \ezcDocumentRstXhtmlDi
      * Transform directive to docbook
      *
      * Create a docbook XML structure at the directives position in the document.
-     *
-     * @param \DOMDocument $document
-     * @param \DOMElement  $root
-     *
-     * @return void
      */
     public function toDocbook(\DOMDocument $document, \DOMElement $root)
     {
@@ -77,12 +72,7 @@ class Toctree extends \ezcDocumentRstDirective implements \ezcDocumentRstXhtmlDi
      *
      * Create a XHTML structure at the directives position in the document.
      *
-     * @param \DOMDocument $document
-     * @param \DOMElement $root
-     *
      * @todo use the TableofContents collection to extract a sublisting up to the given depth or 2 if none is provided
-     *
-     * @return void
      */
     public function toXhtml(\DOMDocument $document, \DOMElement $root)
     {

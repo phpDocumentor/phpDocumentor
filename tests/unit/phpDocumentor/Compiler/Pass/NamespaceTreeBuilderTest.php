@@ -74,7 +74,7 @@ class NamespaceTreeBuilderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $elementNames = array_keys($elements);
         sort($elementNames);
         $this->assertSame(
-            array('~\\', '~\\My', '~\\My\\Space', '~\\My\\Space\\Deeper', '~\\My\\Space\\Deeper2'),
+            ['~\\', '~\\My', '~\\My\\Space', '~\\My\\Space\\Deeper', '~\\My\\Space\\Deeper2'],
             $elementNames
         );
         $this->assertInstanceOf(
@@ -108,7 +108,7 @@ class NamespaceTreeBuilderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $this->fixture->execute($this->project);
 
         $this->assertSame(
-            array($class, $class2),
+            [$class, $class2],
             $this->project
                 ->getNamespace()->getChildren()
                 ->get('My')->getChildren()
@@ -136,7 +136,7 @@ class NamespaceTreeBuilderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $this->fixture->execute($this->project);
 
         $this->assertSame(
-            array($interface, $interface2),
+            [$interface, $interface2],
             $this->project
                 ->getNamespace()->getChildren()
                 ->get('My')->getChildren()
@@ -164,7 +164,7 @@ class NamespaceTreeBuilderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $this->fixture->execute($this->project);
 
         $this->assertSame(
-            array($trait, $trait2),
+            [$trait, $trait2],
             $this->project
                 ->getNamespace()->getChildren()
                 ->get('My')->getChildren()
@@ -192,7 +192,7 @@ class NamespaceTreeBuilderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $this->fixture->execute($this->project);
 
         $this->assertSame(
-            array($constant, $constant2),
+            [$constant, $constant2],
             $this->project
                 ->getNamespace()->getChildren()
                 ->get('My')->getChildren()
@@ -220,7 +220,7 @@ class NamespaceTreeBuilderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $this->fixture->execute($this->project);
 
         $this->assertSame(
-            array($function, $function2),
+            [$function, $function2],
             $this->project
                 ->getNamespace()->getChildren()
                 ->get('My')->getChildren()

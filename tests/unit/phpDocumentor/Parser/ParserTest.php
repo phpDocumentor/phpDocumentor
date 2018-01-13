@@ -9,6 +9,7 @@
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
+
 namespace phpDocumentor\Parser;
 
 use \Mockery as m;
@@ -26,8 +27,6 @@ class ParserTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
     /**
      * Instantiates a new parser object as fixture.
-     *
-     * @return void
      */
     protected function setUp()
     {
@@ -48,10 +47,10 @@ class ParserTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
             m::mock(ProjectFactory::class),
             m::mock('Symfony\Component\Stopwatch\Stopwatch')
         );
-        $this->assertEquals(array(), $parser->getIgnoredTags());
+        $this->assertEquals([], $parser->getIgnoredTags());
 
-        $parser->setIgnoredTags(array('param'));
-        $this->assertEquals(array('param'), $parser->getIgnoredTags());
+        $parser->setIgnoredTags(['param']);
+        $this->assertEquals(['param'], $parser->getIgnoredTags());
     }
 
     /**
@@ -100,8 +99,6 @@ class ParserTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      *
      * @covers phpDocumentor\Parser\Parser::setValidate
      * @covers phpDocumentor\Parser\Parser::doValidation
-     *
-     * @return void
      */
     public function testValidate()
     {
@@ -121,15 +118,13 @@ class ParserTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      *
      * @covers \phpDocumentor\Parser\Parser::setMarkers
      * @covers \phpDocumentor\Parser\Parser::getMarkers
-     *
-     * @return void
      */
     public function testMarkers()
     {
-        $fixture_data = array('FIXME', 'TODO', 'DOIT');
+        $fixture_data = ['FIXME', 'TODO', 'DOIT'];
 
         // default is TODO and FIXME
-        $this->assertEquals(array('TODO', 'FIXME'), $this->fixture->getMarkers());
+        $this->assertEquals(['TODO', 'FIXME'], $this->fixture->getMarkers());
 
         $this->fixture->setMarkers($fixture_data);
         $this->assertEquals($fixture_data, $this->fixture->getMarkers());

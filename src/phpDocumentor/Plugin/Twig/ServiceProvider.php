@@ -12,10 +12,10 @@
 namespace phpDocumentor\Plugin\Twig;
 
 use Cilex\Application;
+use phpDocumentor\Transformer\Writer\Collection;
+use phpDocumentor\Translator\Translator;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
-use phpDocumentor\Translator\Translator;
-use phpDocumentor\Transformer\Writer\Collection;
 
 /**
  * Provides a series of services that are necessary for Twig to work with phpDocumentor.
@@ -34,7 +34,7 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function register(Container $app)
     {
-        /** @var Translator $translator  */
+        /** @var Translator $translator */
         $translator = $app['translator'];
 
         /** @var Collection $writerCollection */

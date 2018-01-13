@@ -23,7 +23,6 @@ use phpDocumentor\DomainModel\Dsn;
  */
 class FlySystemFactoryTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
-
     /** @var FlySystemFactory */
     private $fixture;
 

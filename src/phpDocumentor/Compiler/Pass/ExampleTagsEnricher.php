@@ -11,11 +11,10 @@
 
 namespace phpDocumentor\Compiler\Pass;
 
-use phpDocumentor\Descriptor\DescriptorAbstract;
-use phpDocumentor\Descriptor\Example\Finder;
 use phpDocumentor\Compiler\CompilerPassInterface;
-use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\ExampleAssembler;
+use phpDocumentor\Descriptor\DescriptorAbstract;
+use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Reflection\DocBlock\ExampleFinder;
 use phpDocumentor\Reflection\DocBlock\Tags\Example;
 
@@ -63,14 +62,12 @@ class ExampleTagsEnricher implements CompilerPassInterface
     /**
      * Replaces the example tags in the description with the contents of the found example.
      *
-     * @param DescriptorAbstract $element
-     *
      * @return string
      */
     protected function replaceInlineExamples(DescriptorAbstract $element)
     {
         $description = $element->getDescription();
-        $matches     = array();
+        $matches = [];
 
         if (! $description
             || ! preg_match_all('/\{@example\s(.+?)\}/', $description, $matches)
@@ -79,7 +76,7 @@ class ExampleTagsEnricher implements CompilerPassInterface
             return $description;
         }
 
-        $matched = array();
+        $matched = [];
         foreach ($matches[0] as $index => $match) {
             if (isset($matched[$match])) {
                 continue;
@@ -90,7 +87,7 @@ class ExampleTagsEnricher implements CompilerPassInterface
 
             $example = $this->exampleAssembler->create($exampleReflector);
 
-            $replacement = '`'.$example->getExample().'`';
+            $replacement = '`' . $example->getExample() . '`';
             if ($example->getDescription()) {
                 $replacement = '*' . $example->getDescription() . '*' . $replacement;
             }

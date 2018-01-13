@@ -27,7 +27,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 class LoggerHelperTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
-     *
      * @var LoggerHelper
      */
     protected $fixture;
@@ -48,7 +47,7 @@ class LoggerHelperTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $this->fixture = new LoggerHelper();
         $this->config = new Configuration();
         $this->config->getLogging()->setLevel(static::MY_LOGLEVEL);
-        $this->config->getLogging()->setPaths(array('default' => static::MY_DEFAULT_LOG_PATH));
+        $this->config->getLogging()->setPaths(['default' => static::MY_DEFAULT_LOG_PATH]);
     }
 
     /**
@@ -100,19 +99,19 @@ class LoggerHelperTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $commandMock->shouldReceive('addListener')
             ->once()
             ->withArgs(
-                array(
+                [
                     'parser.file.pre',
-                    m::on($assertClosure)
-                )
+                    m::on($assertClosure),
+                ]
             );
 
         $commandMock->shouldReceive('addListener')
             ->once()
             ->withArgs(
-                array(
+                [
                     'system.log',
-                    m::on($assertClosure)
-                )
+                    m::on($assertClosure),
+                ]
             );
 
         $this->fixture->connectOutputToLogging(
@@ -158,10 +157,10 @@ class LoggerHelperTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $event = new LogEvent($this);
         $event->setPriority(LogLevel::ERROR);
         $event->setMessage('my %s message with %d replacements');
-        $event->setContext(array(
+        $event->setContext([
             'first',
             2,
-        ));
+        ]);
 
         $this->fixture->logEvent($output, $event, $command);
     }
@@ -207,7 +206,7 @@ class LoggerHelperTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
             ->getMock();
 
         $application = m::mock('phpDocumentor\Application')
-            ->shouldReceive('configureLogger')->withArgs(array("", $expectedLogLevel, "defaultPath",))
+            ->shouldReceive('configureLogger')->withArgs(['', $expectedLogLevel, 'defaultPath', ])
             ->shouldReceive('offsetGet')->with('config')->andReturn($this->config)
             ->shouldReceive('offsetGet')->andReturnNull()
             ->getMock();
@@ -227,32 +226,31 @@ class LoggerHelperTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function verbosityDataProvider()
     {
-        return array(
-            array(
+        return [
+            [
                 OutputInterface::VERBOSITY_QUIET,
-                Logger::ERROR
-            ),
-            array(
+                Logger::ERROR,
+            ],
+            [
                 OutputInterface::VERBOSITY_NORMAL,
-                self::MY_LOGLEVEL
-            ),
-            array(
+                self::MY_LOGLEVEL,
+            ],
+            [
                 OutputInterface::VERBOSITY_VERBOSE,
-                Logger::WARNING
-            ),
-            array(
+                Logger::WARNING,
+            ],
+            [
                 OutputInterface::VERBOSITY_VERY_VERBOSE,
-                Logger::INFO
-            ),
-            array(
+                Logger::INFO,
+            ],
+            [
                 OutputInterface::VERBOSITY_DEBUG,
-                Logger::DEBUG
-            ),
-        );
+                Logger::DEBUG,
+            ],
+        ];
     }
 
     /**
-     *
      * @covers phpDocumentor\Command\Helper\LoggerHelper::reconfigureLogger
      */
     public function testLogPathDefaultIsUsed()
@@ -268,7 +266,7 @@ class LoggerHelperTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
             ->getMock();
 
         $application = m::mock('phpDocumentor\Application')
-            ->shouldReceive('configureLogger')->withArgs(array(null, Logger::ERROR, static::MY_DEFAULT_LOG_PATH))
+            ->shouldReceive('configureLogger')->withArgs([null, Logger::ERROR, static::MY_DEFAULT_LOG_PATH])
             ->shouldReceive('offsetGet')->with('config')->andReturn($this->config)
             ->shouldReceive('offsetGet')->with(m::any())->andReturnNull()
             ->getMock();

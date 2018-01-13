@@ -104,7 +104,7 @@ class Translator extends ZendTranslator
     {
         parent::addTranslationFile(self::TRANSLATION_FILE_TYPE, $filename, $textDomain, $locale);
 
-        $this->messages = array();
+        $this->messages = [];
 
         return $this;
     }
@@ -131,10 +131,10 @@ class Translator extends ZendTranslator
      *
      * @return $this
      */
-    public function addTranslationFolder($folder, array $domains = array())
+    public function addTranslationFolder($folder, array $domains = [])
     {
         if (empty($domains)) {
-            $domains = array(self::DEFAULT_DOMAIN);
+            $domains = [self::DEFAULT_DOMAIN];
         }
 
         foreach ($domains as $domain) {
@@ -174,7 +174,7 @@ class Translator extends ZendTranslator
 
         parent::addTranslationFilePattern(self::TRANSLATION_FILE_TYPE, $baseDir, $pattern, $textDomain);
 
-        $this->messages = array();
+        $this->messages = [];
 
         return $this;
     }

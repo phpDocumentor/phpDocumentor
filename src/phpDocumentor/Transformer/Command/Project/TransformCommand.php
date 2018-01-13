@@ -31,7 +31,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Zend\Cache\Storage\StorageInterface;
-use Zend\Stdlib\AbstractOptions;
 
 /**
  * Transforms the structure file into the specified output format
@@ -58,29 +57,23 @@ class TransformCommand extends Command
 
     /**
      * Initializes the command with all necessary dependencies to construct human-suitable output from the AST.
-     *
-     * @param ProjectDescriptorBuilder $builder
-     * @param Transformer              $transformer
-     * @param Compiler                 $compiler
      */
     public function __construct(ProjectDescriptorBuilder $builder, Transformer $transformer, Compiler $compiler)
     {
         parent::__construct('project:transform');
 
-        $this->builder     = $builder;
+        $this->builder = $builder;
         $this->transformer = $transformer;
-        $this->compiler    = $compiler;
+        $this->compiler = $compiler;
     }
 
     /**
      * Initializes this command and sets the name, description, options and
      * arguments.
-     *
-     * @return void
      */
     protected function configure()
     {
-        $this->setAliases(array('transform'))
+        $this->setAliases(['transform'])
             ->setDescription(
                 'Converts the PHPDocumentor structure file to documentation'
             )
@@ -148,11 +141,7 @@ TEXT
     /**
      * Executes the business logic involved with this command.
      *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @throws \Exception if the provided source is not an existing file or a folder.
-     *
+     * @throws Exception if the provided source is not an existing file or a folder.
      * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -174,6 +163,7 @@ TEXT
         if (! $fileSystem->isAbsolutePath($target)) {
             $target = getcwd() . DIRECTORY_SEPARATOR . $target;
         }
+
         $transformer->setTarget($target);
 
         $source = realpath($configurationHelper->getOption($input, 'source', 'parser/target'));
@@ -185,19 +175,20 @@ TEXT
 
         $projectDescriptor = $this->getBuilder()->getProjectDescriptor();
         $mapper = new ProjectDescriptorMapper($this->getCache());
-        $output->writeTimedLog('Load cache', array($mapper, 'populate'), array($projectDescriptor));
+        $output->writeTimedLog('Load cache', [$mapper, 'populate'], [$projectDescriptor]);
 
         foreach ($this->getTemplates($input) as $template) {
             $output->writeTimedLog(
-                'Preparing template "'. $template .'"',
-                array($transformer->getTemplates(), 'load'),
-                array($template, $transformer)
+                'Preparing template "' . $template . '"',
+                [$transformer->getTemplates(), 'load'],
+                [$template, $transformer]
             );
         }
+
         $output->writeTimedLog(
             'Preparing ' . count($transformer->getTemplates()->getTransformations()) . ' transformations',
-            array($this, 'loadTransformations'),
-            array($transformer)
+            [$this, 'loadTransformations'],
+            [$transformer]
         );
 
         if ($progress) {
@@ -206,7 +197,7 @@ TEXT
 
         /** @var CompilerPassInterface $pass */
         foreach ($this->compiler as $pass) {
-            $output->writeTimedLog($pass->getDescription(), array($pass, 'execute'), array($projectDescriptor));
+            $output->writeTimedLog($pass->getDescription(), [$pass, 'execute'], [$projectDescriptor]);
         }
 
         if ($progress) {
@@ -229,8 +220,6 @@ TEXT
     /**
      * Retrieves the templates to be used by analyzing the options and the configuration.
      *
-     * @param InputInterface $input
-     *
      * @return string[]
      */
     protected function getTemplates(InputInterface $input)
@@ -248,7 +237,7 @@ TEXT
         }
 
         if (!$templates) {
-            $templates = array('clean');
+            $templates = ['clean'];
         }
 
         // Support template entries that contain multiple templates using a comma separated list
@@ -271,18 +260,14 @@ TEXT
     /**
      * Load custom defined transformations.
      *
-     * @param Transformer $transformer
-     *
      * @todo this is an ugly implementation done for speed of development, should be refactored
-     *
-     * @return void
      */
     public function loadTransformations(Transformer $transformer)
     {
         /** @var ConfigurationHelper $configurationHelper */
         $configurationHelper = $this->getHelper('phpdocumentor_configuration');
 
-        $received = array();
+        $received = [];
         $transformations = $configurationHelper->getConfigValueFromPath('transformations/transformations');
         if (is_array($transformations)) {
             if (isset($transformations['writer'])) {
@@ -302,9 +287,7 @@ TEXT
     /**
      * Create Transformation instance.
      *
-     * @param array $transformations
-     *
-     * @return \phpDocumentor\Transformer\Transformation
+     * @return phpDocumentor\Transformer\Transformation
      */
     protected function createTransformation(array $transformations)
     {
@@ -319,10 +302,7 @@ TEXT
     /**
      * Append received transformations.
      *
-     * @param Transformer $transformer
-     * @param array       $received
-     *
-     * @return void
+     * @param array $received
      */
     protected function appendReceivedTransformations(Transformer $transformer, $received)
     {
@@ -331,14 +311,13 @@ TEXT
             foreach ($received as $transformation) {
                 $template[] = $transformation;
             }
+
             $transformer->getTemplates()->append($template);
         }
     }
 
     /**
      * Adds the transformer.transformation.post event to advance the progressbar.
-     *
-     * @param InputInterface $input
      *
      * @return HelperInterface|null
      */
@@ -363,10 +342,6 @@ TEXT
 
     /**
      * Connect a series of output messages to various events to display progress.
-     *
-     * @param OutputInterface $output
-     *
-     * @return void
      */
     private function connectOutputToEvents(OutputInterface $output)
     {

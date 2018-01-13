@@ -28,22 +28,20 @@ class InterfaceConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * Tests whether the XML Element representing a interface is properly created.
      *
      * @covers phpDocumentor\Plugin\Core\Transformer\Writer\Xml\InterfaceConverter::convert
-     *
-     * @return void
      */
     public function testInterfaceXmlElementIsCreated()
     {
         // Arrange
-        $methodDescriptor   = m::mock('phpDocumentor\Descriptor\MethodDescriptor');
+        $methodDescriptor = m::mock('phpDocumentor\Descriptor\MethodDescriptor');
         $constantDescriptor = m::mock('phpDocumentor\Descriptor\ConstantDescriptor');
         $namespaceDescriptor = m::mock('phpDocumentor\Descriptor\NamespaceDescriptor');
         $namespaceDescriptor->shouldReceive('getFullyQualifiedStructuralElementName')->andReturn('phpDocumentor');
-        $interface          = $this->createInterfaceDescriptorMock();
-        $interface->shouldReceive('getParent')->andReturn(array());
-        $interface->shouldReceive('getMethods')->andReturn(array($methodDescriptor));
-        $interface->shouldReceive('getConstants')->andReturn(array($constantDescriptor));
+        $interface = $this->createInterfaceDescriptorMock();
+        $interface->shouldReceive('getParent')->andReturn([]);
+        $interface->shouldReceive('getMethods')->andReturn([$methodDescriptor]);
+        $interface->shouldReceive('getConstants')->andReturn([$constantDescriptor]);
         $interface->shouldReceive('getNamespace')->andReturn($namespaceDescriptor);
-        $parent             = $this->prepareParentXMLElement();
+        $parent = $this->prepareParentXMLElement();
         $interfaceConverter = $this->createFixture($interface, $methodDescriptor, $constantDescriptor);
 
         // Act
@@ -67,7 +65,7 @@ class InterfaceConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     protected function prepareParentXMLElement()
     {
         $document = new \DOMDocument();
-        $parent   = new \DOMElement('file');
+        $parent = new \DOMElement('file');
         $document->appendChild($parent);
 
         return $parent;
@@ -92,10 +90,8 @@ class InterfaceConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Creates the InterfaceConverter fixture with a DocBlock mock.
      *
-     * @param InterfaceDescriptor $interface
-     * @param MethodDescriptor    $method
-     * @param ConstantDescriptor  $constant
-     *
+     * @param MethodDescriptor $method
+     * @param ConstantDescriptor $constant
      * @return InterfaceConverter
      */
     protected function createFixture(InterfaceDescriptor $interface, $method, $constant)

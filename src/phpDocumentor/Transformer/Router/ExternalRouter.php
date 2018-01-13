@@ -25,8 +25,6 @@ class ExternalRouter extends RouterAbstract
      * Registers the application configuration with this router.
      *
      * The configuration is used to extract which external routes to add to the application.
-     *
-     * @param Configuration $configuration
      */
     public function __construct(Configuration $configuration)
     {
@@ -37,19 +35,17 @@ class ExternalRouter extends RouterAbstract
 
     /**
      * Configuration function to add routing rules to a router.
-     *
-     * @return void
      */
     public function configure()
     {
         $docs = $this->configuration->getTransformer()->getExternalClassDocumentation();
         foreach ($docs as $external) {
             $prefix = (string) $external->getPrefix();
-            $uri    = (string) $external->getUri();
+            $uri = (string) $external->getUri();
 
             $this[] = new Rule(
                 function ($node) use ($prefix) {
-                    return (is_string($node) && (strpos(ltrim($node, '\\'), $prefix) === 0));
+                    return is_string($node) && (strpos(ltrim($node, '\\'), $prefix) === 0);
                 },
                 function ($node) use ($uri) {
                     return str_replace('{CLASS}', ltrim($node, '\\'), $uri);

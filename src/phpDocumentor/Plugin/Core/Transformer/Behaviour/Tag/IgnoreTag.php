@@ -27,7 +27,7 @@ class IgnoreTag
      */
     public function process(\DOMDocument $xml)
     {
-        $ignoreQry = '//tag[@name=\''. $this->tag . '\']';
+        $ignoreQry = '//tag[@name=\'' . $this->tag . '\']';
 
         $xpath = new \DOMXPath($xml);
         $nodes = $xpath->query($ignoreQry);

@@ -44,9 +44,9 @@ class Transformations
      * @param Transformations\Template[] $templates
      * @param Transformation[]           $transformations
      */
-    public function __construct($templates = array(), $transformations = array())
+    public function __construct($templates = [], $transformations = [])
     {
-        $this->templates       = $templates;
+        $this->templates = $templates;
         $this->transformations = $transformations;
     }
 

@@ -13,7 +13,6 @@ namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 
 use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
 use phpDocumentor\Descriptor\Tag\VersionDescriptor;
-use phpDocumentor\Reflection\DocBlock\Tag\VersionTag;
 use phpDocumentor\Reflection\DocBlock\Tags\Version;
 
 /**

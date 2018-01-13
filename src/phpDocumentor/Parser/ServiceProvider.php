@@ -16,19 +16,19 @@ use League\Flysystem\MountManager;
 use phpDocumentor\Infrastructure\FlySystemFactory;
 use phpDocumentor\Infrastructure\Parser\FlySystemCollector;
 use phpDocumentor\Infrastructure\Parser\SpecificationFactory;
-use Pimple\Container;
-use Pimple\ServiceProviderInterface;
 use phpDocumentor\Parser\Command\Project\ParseCommand;
 use phpDocumentor\Parser\Middleware\CacheMiddleware;
+use phpDocumentor\Parser\Middleware\EmittingMiddleware;
 use phpDocumentor\Parser\Middleware\ErrorHandlingMiddleware;
 use phpDocumentor\Parser\Middleware\StopwatchMiddleware;
-use phpDocumentor\Parser\Middleware\EmittingMiddleware;
 use phpDocumentor\Reflection\DocBlockFactory;
 use phpDocumentor\Reflection\Php\Factory;
 use phpDocumentor\Reflection\Php\NodesFactory;
 use phpDocumentor\Reflection\Php\ProjectFactory;
 use phpDocumentor\Reflection\PrettyPrinter;
 use phpDocumentor\Translator\Translator;
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 use Stash\Driver\FileSystem;
 use Stash\Pool;
 
@@ -44,9 +44,6 @@ class ServiceProvider implements ServiceProviderInterface
      *
      * @throws Exception\MissingDependencyException if the Descriptor Builder is not present.
      * @throws \Stash\Exception\RuntimeException
-     *
-     * @return void
-     *
      */
     public function register(Container $app)
     {
@@ -83,9 +80,9 @@ class ServiceProvider implements ServiceProviderInterface
                         ),
                         $app['parser.middleware.cache'],
                         new EmittingMiddleware(),
-                        new ErrorHandlingMiddleware()
+                        new ErrorHandlingMiddleware(),
                     ]
-                )
+                ),
             ];
 
             $parser = new Parser(

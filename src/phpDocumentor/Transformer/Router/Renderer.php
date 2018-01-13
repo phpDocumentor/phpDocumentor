@@ -31,8 +31,6 @@ class Renderer
      * Overwrites the associated routers with a new set of routers.
      *
      * @param Queue $routers
-     *
-     * @return void
      */
     public function setRouters($routers)
     {
@@ -63,8 +61,6 @@ class Renderer
      *
      * @see phpDocumentor\Plugin\Twig\Transformer\Writer\Twig for the invocation
      *     of this method.
-     *
-     * @return void
      */
     public function setDestination($destination)
     {
@@ -127,13 +123,13 @@ class Renderer
     public function convertToRootPath($relative_path)
     {
         // get the path to the root directory
-        $path_parts   = explode(DIRECTORY_SEPARATOR, $this->getDestination());
+        $path_parts = explode(DIRECTORY_SEPARATOR, $this->getDestination());
         $path_to_root = (count($path_parts) > 1)
-            ? implode('/', array_fill(0, count($path_parts) -1, '..')).'/'
+            ? implode('/', array_fill(0, count($path_parts) - 1, '..')) . '/'
             : '';
 
         // append the relative path to the root
-        if (is_string($relative_path) && ($relative_path[0] != '@')) {
+        if (is_string($relative_path) && ($relative_path[0] !== '@')) {
             return $path_to_root . ltrim($relative_path, '/');
         }
 
@@ -161,7 +157,7 @@ class Renderer
             $value = $value->getAll();
         }
 
-        $result = array();
+        $result = [];
         foreach ($value as $path) {
             $result[] = $this->render($path, $presentation);
         }
@@ -183,17 +179,18 @@ class Renderer
         $keyTypes = $this->render($value->getKeyTypes(), $presentation);
         $types = $this->render($value->getTypes(), $presentation);
 
-        $arguments = array();
+        $arguments = [];
         if ($keyTypes) {
             $arguments[] = implode('|', $keyTypes);
         }
+
         $arguments[] = implode('|', $types);
 
-        if ($value->getName() == 'array' && count($value->getKeyTypes()) == 0) {
+        if ($value->getName() === 'array' && count($value->getKeyTypes()) === 0) {
             $typeString = (count($types) > 1) ? '(' . reset($arguments) . ')' : reset($arguments);
             $collection = $typeString . '[]';
         } else {
-            $collection = ($baseType ? : $value->getName()) . '&lt;' . implode(',', $arguments) . '&gt;';
+            $collection = ($baseType ?: $value->getName()) . '&lt;' . implode(',', $arguments) . '&gt;';
         }
 
         return $collection;
@@ -201,7 +198,7 @@ class Renderer
 
     protected function renderLink($path, $presentation)
     {
-        $url  = false;
+        $url = false;
         $rule = $this->routers->match($path);
         if ($rule) {
             $generatedUrl = $rule->generate($path);
@@ -209,7 +206,7 @@ class Renderer
         }
 
         if (is_string($url)
-            && $url[0] != '/'
+            && $url[0] !== '/'
             && (strpos($url, 'http://') !== 0)
             && (strpos($url, 'https://') !== 0)
             && (strpos($url, 'ftp://') !== 0)

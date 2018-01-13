@@ -38,7 +38,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     protected $methods;
 
     /** @var Collection $usedTraits References to traits consumed by this class */
-    protected $usedTraits = array();
+    protected $usedTraits = [];
 
     /**
      * Initializes the all properties representing a collection with a new Collection object.
@@ -139,7 +139,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
      */
     public function getInheritedConstants()
     {
-        if (!$this->getParent() || (!$this->getParent() instanceof ClassDescriptor)) {
+        if (!$this->getParent() || (!$this->getParent() instanceof self)) {
             return new Collection();
         }
 
@@ -179,7 +179,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
             $inheritedMethods = $inheritedMethods->merge(clone $trait->getMethods());
         }
 
-        if (!$this->getParent() || (!$this->getParent() instanceof ClassDescriptor)) {
+        if (!$this->getParent() || (!$this->getParent() instanceof self)) {
             return $inheritedMethods;
         }
 
@@ -254,7 +254,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
             $inheritedProperties = $inheritedProperties->merge(clone $trait->getProperties());
         }
 
-        if (!$this->getParent() || (!$this->getParent() instanceof ClassDescriptor)) {
+        if (!$this->getParent() || (!$this->getParent() instanceof self)) {
             return $inheritedProperties;
         }
 
@@ -286,7 +286,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
             $properties->add($property);
         }
 
-        if ($this->getParent() instanceof ClassDescriptor) {
+        if ($this->getParent() instanceof self) {
             $properties = $properties->merge($this->getParent()->getMagicProperties());
         }
 
@@ -326,8 +326,6 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
      * Sets a collection of all traits used by this class.
      *
      * @param Collection $usedTraits
-     *
-     * @return void
      */
     public function setUsedTraits($usedTraits)
     {

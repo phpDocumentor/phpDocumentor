@@ -107,7 +107,7 @@ class TraitDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $mockMethodDescriptor->shouldReceive('isStatic')->andReturn($isStatic);
         $mockMethodDescriptor->shouldReceive('getDescription')->andReturn('Sample description');
 
-        $methodCollection = new Collection(array($mockMethodDescriptor));
+        $methodCollection = new Collection([$mockMethodDescriptor]);
         $this->fixture->getTags()->set('method', $methodCollection);
 
         $magicMethodsCollection = $this->fixture->getMagicMethods();
@@ -126,12 +126,12 @@ class TraitDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function provideMagicMethodProperties()
     {
-        return array(
+        return [
             // Instance magic method (default)
-            array(false),
+            [false],
             // Static magic method
-            array(true),
-        );
+            [true],
+        ];
     }
 
     /**
@@ -168,7 +168,7 @@ class TraitDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $mockTagPropertyDescriptor->shouldReceive('getDescription')->andReturn('Sample description');
         $mockTagPropertyDescriptor->shouldReceive('getTypes')->andReturn(new Mixed_());
 
-        $propertyCollection = new Collection(array($mockTagPropertyDescriptor));
+        $propertyCollection = new Collection([$mockTagPropertyDescriptor]);
         $this->fixture->getTags()->set('property', $propertyCollection);
 
         $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getMagicProperties());
@@ -193,8 +193,8 @@ class TraitDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $mockMethodDescriptor = m::mock('phpDocumentor\Descriptor\MethodDescriptor');
         $mockMethodDescriptor->shouldReceive('setPackage')->with($package);
 
-        $propertyCollection = new Collection(array($mockPropertyDescriptor));
-        $methodCollection = new Collection(array($mockMethodDescriptor));
+        $propertyCollection = new Collection([$mockPropertyDescriptor]);
+        $methodCollection = new Collection([$mockMethodDescriptor]);
         $this->fixture->setProperties($propertyCollection);
         $this->fixture->setMethods($methodCollection);
 
@@ -211,7 +211,7 @@ class TraitDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getUsedTraits());
 
-        $usedTraitsCollection = new Collection;
+        $usedTraitsCollection = new Collection();
         $this->fixture->setUsedTraits($usedTraitsCollection);
 
         $this->assertSame($usedTraitsCollection, $this->fixture->getUsedTraits());

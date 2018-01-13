@@ -12,10 +12,10 @@
 namespace phpDocumentor\Plugin\Graphs;
 
 use Cilex\Application;
-use Pimple\Container;
-use Pimple\ServiceProviderInterface;
 use phpDocumentor\Plugin\Graphs\Writer\Graph;
 use phpDocumentor\Transformer\Writer\Collection;
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 
 class ServiceProvider implements ServiceProviderInterface
 {

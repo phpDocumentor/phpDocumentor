@@ -48,8 +48,6 @@ class Collection extends \ArrayObject
      *
      * @throws \InvalidArgumentException if either of the above restrictions is
      *     not met.
-     *
-     * @return void
      */
     public function offsetSet($index, $newval)
     {
@@ -62,7 +60,7 @@ class Collection extends \ArrayObject
         if (!preg_match('/^[a-zA-Z0-9\-\_\/]{3,}$/', $index)) {
             throw new \InvalidArgumentException(
                 'The name of a Writer may only contain alphanumeric characters, one or more hyphens, underscores and '
-                .'forward slashes and must be at least three characters wide'
+                . 'forward slashes and must be at least three characters wide'
             );
         }
 
@@ -86,7 +84,7 @@ class Collection extends \ArrayObject
     public function offsetGet($index)
     {
         if (!$this->offsetExists($index)) {
-            throw new \InvalidArgumentException('Writer "' . $index .'" does not exist');
+            throw new \InvalidArgumentException('Writer "' . $index . '" does not exist');
         }
 
         return parent::offsetGet($index);
@@ -96,8 +94,6 @@ class Collection extends \ArrayObject
      * Iterates over each writer in this collection and checks its requirements.
      *
      * @throws Exception\RequirementMissing if a requirement of a writer is missing.
-     *
-     * @return void
      */
     public function checkRequirements()
     {

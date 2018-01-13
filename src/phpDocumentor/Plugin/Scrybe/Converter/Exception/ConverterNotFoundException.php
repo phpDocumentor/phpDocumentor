@@ -16,5 +16,4 @@ namespace phpDocumentor\Plugin\Scrybe\Converter\Exception;
  */
 class ConverterNotFoundException extends \InvalidArgumentException
 {
-
 }

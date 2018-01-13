@@ -13,8 +13,8 @@
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use phpDocumentor\Descriptor\ArgumentDescriptor;
-use phpDocumentor\Reflection\DocBlock\Tags\Param;
 use phpDocumentor\Descriptor\MethodDescriptor;
+use phpDocumentor\Reflection\DocBlock\Tags\Param;
 use phpDocumentor\Reflection\Php\Argument;
 use phpDocumentor\Reflection\Php\Method;
 
@@ -28,8 +28,6 @@ class MethodAssembler extends AssemblerAbstract
 
     /**
      * Initializes this assembler with its dependencies.
-     *
-     * @param ArgumentAssembler $argumentAssembler
      */
     public function __construct(ArgumentAssembler $argumentAssembler)
     {
@@ -61,14 +59,12 @@ class MethodAssembler extends AssemblerAbstract
      *
      * @param Method  $reflector
      * @param MethodDescriptor $descriptor
-     *
-     * @return void
      */
     protected function mapReflectorToDescriptor($reflector, $descriptor)
     {
         $descriptor->setFullyQualifiedStructuralElementName($reflector->getFqsen());
         $descriptor->setName($reflector->getName());
-        $descriptor->setVisibility($reflector->getVisibility() ? : 'public');
+        $descriptor->setVisibility($reflector->getVisibility() ?: 'public');
         $descriptor->setFinal($reflector->isFinal());
         $descriptor->setAbstract($reflector->isAbstract());
         $descriptor->setStatic($reflector->isStatic());
@@ -81,8 +77,6 @@ class MethodAssembler extends AssemblerAbstract
      *
      * @param Method  $reflector
      * @param MethodDescriptor $descriptor
-     *
-     * @return void
      */
     protected function addArguments($reflector, $descriptor)
     {
@@ -96,16 +90,15 @@ class MethodAssembler extends AssemblerAbstract
      *
      * @param Argument $argument
      * @param MethodDescriptor  $descriptor
-     *
-     * @return void
      */
     protected function addArgument($argument, $descriptor)
     {
-        $params = $descriptor->getTags()->get('param', array());
+        $params = $descriptor->getTags()->get('param', []);
 
         if (!$this->argumentAssembler->getBuilder()) {
             $this->argumentAssembler->setBuilder($this->builder);
         }
+
         $argumentDescriptor = $this->argumentAssembler->create($argument, $params);
 
         $descriptor->addArgument($argumentDescriptor->getName(), $argumentDescriptor);
@@ -117,8 +110,6 @@ class MethodAssembler extends AssemblerAbstract
      *
      * @param Method  $data
      * @param MethodDescriptor $methodDescriptor
-     *
-     * @return void
      */
     protected function addVariadicArgument($data, $methodDescriptor)
     {

@@ -56,11 +56,11 @@ class FinderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testGetAndSetExampleDirectories()
     {
-        $this->assertSame(array(), $this->fixture->getExampleDirectories());
+        $this->assertSame([], $this->fixture->getExampleDirectories());
 
-        $this->fixture->setExampleDirectories(array('this/is/a/test'));
+        $this->fixture->setExampleDirectories(['this/is/a/test']);
 
-        $this->assertSame(array('this/is/a/test'), $this->fixture->getExampleDirectories());
+        $this->assertSame(['this/is/a/test'], $this->fixture->getExampleDirectories());
     }
 
     /**
@@ -70,15 +70,15 @@ class FinderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testFindExampleContentsInExampleDirectory()
     {
-        $directories = array(vfsStream::url('base/exampleDirectory'), vfsStream::url('base/exampleDirectory2'));
+        $directories = [vfsStream::url('base/exampleDirectory'), vfsStream::url('base/exampleDirectory2')];
 
         $descriptor = $this->givenADescriptorWithExamplePath('example.txt');
         $this->givenTheDirectoryStructure(
-            array(
-                'exampleDirectory' => array(),
-                'exampleDirectory2' => array('example.txt' => self::EXAMPLE_TEXT),
-                'source' => array('example.txt' => 'this is not it') // check if the example directory precedes this
-            )
+            [
+                'exampleDirectory' => [],
+                'exampleDirectory2' => ['example.txt' => self::EXAMPLE_TEXT],
+                'source' => ['example.txt' => 'this is not it'], // check if the example directory precedes this
+            ]
         );
 
         $this->fixture->setExampleDirectories($directories);
@@ -96,7 +96,7 @@ class FinderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testFindExampleContentsInSourceDirectory()
     {
         $descriptor = $this->givenADescriptorWithExamplePath('example.txt');
-        $this->givenTheDirectoryStructure(array('source' => array('example.txt' => self::EXAMPLE_TEXT)));
+        $this->givenTheDirectoryStructure(['source' => ['example.txt' => self::EXAMPLE_TEXT]]);
 
         $this->fixture->setSourceDirectory(vfsStream::url('base/source'));
         $result = $this->fixture->find($descriptor);
@@ -114,7 +114,7 @@ class FinderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         // can't use vfsStream because we are working from the Current Working Directory, which is not
         // supported by vfsStream
         $workingDirectory = sys_get_temp_dir() . '/phpdoc-tests';
-        $this->givenExampleFileInFolder($workingDirectory .'/examples/example.txt');
+        $this->givenExampleFileInFolder($workingDirectory . '/examples/example.txt');
 
         $descriptor = $this->givenADescriptorWithExamplePath('example.txt');
 
@@ -135,7 +135,7 @@ class FinderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         // can't use vfsStream because we are working from the Current Working Directory, which is not
         // supported by vfsStream
         $workingDirectory = sys_get_temp_dir() . '/phpdoc-tests';
-        $this->givenExampleFileInFolder($workingDirectory .'/example.txt');
+        $this->givenExampleFileInFolder($workingDirectory . '/example.txt');
 
         $descriptor = $this->givenADescriptorWithExamplePath('example.txt');
 
@@ -180,8 +180,6 @@ class FinderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * Initializes a virtual folder structure used to verify file io operations.
      *
      * @param string[] $structure
-     *
-     * @return void
      */
     private function givenTheDirectoryStructure(array $structure)
     {
@@ -192,8 +190,6 @@ class FinderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * Creates an example file at the given path and creates folders where necessary.
      *
      * @param string $exampleFilename
-     *
-     * @return void
      */
     private function givenExampleFileInFolder($exampleFilename)
     {

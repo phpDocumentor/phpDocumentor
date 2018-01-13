@@ -22,10 +22,15 @@ use phpDocumentor\Reflection\DocBlock\Tags\Example;
 class ExampleAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     const EXAMPLE_FILE_PATH = 'examples/example.txt';
+
     const EXAMPLE_STARTING_LINE = 10;
+
     const EXAMPLE_LINE_COUNT = 5;
+
     const EXAMPLE_DESCRIPTION = 'This is a description';
+
     const EXAMPLE_TEXT = 'This is an example';
+
     const TAG_NAME = 'example';
 
     /** @var ExampleAssembler */
@@ -93,8 +98,6 @@ class ExampleAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * Instructs the finder dependency to return the given text when an example file is to be found.
      *
      * @param string $exampleText
-     *
-     * @return void
      */
     private function whenExampleFileContains($exampleText)
     {

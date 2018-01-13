@@ -42,20 +42,13 @@ const BLA4 = 1;
  * Function description
  *
  * @api
- *
- * @return void
  */
 function bla5()
 {
-
 }
 
-/**
- * @return void
- */
 function bla6()
 {
-
 }
 
 /**
@@ -100,19 +93,12 @@ class phpDocumentor_Tests_Data_ApiFixture
      * Function description
      *
      * @api
-     *
-     * @return void
      */
-    function bla11()
+    public function bla11()
     {
-
     }
 
-    /**
-     * @return void
-     */
-    function bla12()
+    public function bla12()
     {
-
     }
 }

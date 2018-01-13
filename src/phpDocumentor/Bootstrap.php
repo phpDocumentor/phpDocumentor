@@ -59,7 +59,7 @@ class Bootstrap
 
         $autoloader = $this->createAutoloader($vendorPath);
 
-        return new Application($autoloader, array('composer.vendor_path' => $vendorPath));
+        return new Application($autoloader, ['composer.vendor_path' => $vendorPath]);
     }
 
     /**
@@ -136,7 +136,7 @@ class Bootstrap
 
         // Composerised installation, vendor/phpdocumentor/phpdocumentor/src/phpDocumentor is __DIR__
         $rootFolderWhenInstalledWithComposer = $baseDir . '/../../../../../';
-        $composerConfigurationPath           = $rootFolderWhenInstalledWithComposer .'composer.json';
+        $composerConfigurationPath = $rootFolderWhenInstalledWithComposer . 'composer.json';
         if (file_exists($composerConfigurationPath)) {
             $vendorDir = $rootFolderWhenInstalledWithComposer
                 . $this->getCustomVendorPathFromComposer($composerConfigurationPath);

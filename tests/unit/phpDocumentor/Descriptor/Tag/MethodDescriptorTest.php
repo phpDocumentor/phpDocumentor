@@ -52,7 +52,7 @@ class MethodDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testSetAndGetArguments()
     {
-        $expected = new Collection(array('a' => 'b'));
+        $expected = new Collection(['a' => 'b']);
         $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getArguments());
 
         $this->fixture->setArguments($expected);
@@ -67,7 +67,7 @@ class MethodDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testSetAndGetResponse()
     {
-        $expected = array('a' => 'b');
+        $expected = ['a' => 'b'];
         $this->assertEmpty($this->fixture->getResponse());
 
         $this->fixture->setResponse($expected);

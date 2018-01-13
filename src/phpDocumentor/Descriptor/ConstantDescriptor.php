@@ -34,8 +34,6 @@ class ConstantDescriptor extends DescriptorAbstract implements Interfaces\Consta
      * @param ClassDescriptor|InterfaceDescriptor|null $parent
      *
      * @throws \InvalidArgumentException if anything other than a class, interface or null was passed.
-     *
-     * @return void
      */
     public function setParent($parent)
     {
@@ -107,7 +105,7 @@ class ConstantDescriptor extends DescriptorAbstract implements Interfaces\Consta
     {
         /** @var Collection $var */
         $var = $this->getTags()->get('var', new Collection());
-        if ($var->count() != 0) {
+        if ($var->count() !== 0) {
             return $var;
         }
 

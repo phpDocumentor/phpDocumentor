@@ -13,10 +13,8 @@
 namespace phpDocumentor\Compiler\Pass;
 
 use phpDocumentor\Compiler\CompilerPassInterface;
-use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\InterfaceDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\Reflection\Fqsen;
 
 final class InterfaceTreeBuilder implements CompilerPassInterface
 {
@@ -32,7 +30,7 @@ final class InterfaceTreeBuilder implements CompilerPassInterface
      */
     public function getDescription()
     {
-        return "Adding Parents to child interfaces";
+        return 'Adding Parents to child interfaces';
     }
 
     /**
@@ -51,9 +49,9 @@ final class InterfaceTreeBuilder implements CompilerPassInterface
             /** @var InterfaceDescriptor $interface */
             foreach ($file->getInterfaces()->getAll() as $interface) {
                 foreach ($interface->getParent()->getAll() as $parentName) {
-                    $parent = $project->getIndexes()->get('interfaces')->get((string)$parentName);
+                    $parent = $project->getIndexes()->get('interfaces')->get((string) $parentName);
                     if ($parent instanceof InterfaceDescriptor) {
-                        $interface->getParent()->set((string)$parentName, $parent);
+                        $interface->getParent()->set((string) $parentName, $parent);
                     }
                 }
             }

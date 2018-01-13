@@ -21,5 +21,4 @@ use phpDocumentor\Event\EventAbstract as BaseClass;
  */
 class EventAbstract extends BaseClass
 {
-
 }

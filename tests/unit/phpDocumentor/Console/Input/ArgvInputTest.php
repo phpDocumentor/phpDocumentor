@@ -31,11 +31,11 @@ class ArgvInputTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testIfServerArgvIsArray()
     {
-        $_SERVER['argv'] = array('foo', 'bar', 'pizza');
+        $_SERVER['argv'] = ['foo', 'bar', 'pizza'];
 
         $input = new ArgvInput(null);
 
-        $this->assertAttributeEquals(array('bar', 'pizza'), 'tokens', $input);
+        $this->assertAttributeEquals(['bar', 'pizza'], 'tokens', $input);
     }
 
     /**
@@ -45,10 +45,10 @@ class ArgvInputTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function provideArgvArrays()
     {
-        return array(
-            array(array('bla'), array('project:run')),
-            array(array('bla', 'project:parse'), array('project:parse')),
-            array(array('bla', '-f', 'blabla'), array('project:run', '-f', 'blabla')),
-        );
+        return [
+            [['bla'], ['project:run']],
+            [['bla', 'project:parse'], ['project:parse']],
+            [['bla', '-f', 'blabla'], ['project:run', '-f', 'blabla']],
+        ];
     }
 }

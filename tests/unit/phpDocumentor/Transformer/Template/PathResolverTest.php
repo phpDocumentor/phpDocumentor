@@ -17,7 +17,7 @@ class PathResolverTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var string */
     protected $templatePath = 'vfs://root/templatePath';
-    
+
     /** @var PathResolver */
     protected $fixture;
 
@@ -36,24 +36,24 @@ class PathResolverTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         $this->assertAttributeSame($this->templatePath, 'templatePath', $this->fixture);
     }
-    
+
     /**
      * @expectedException \InvalidArgumentException
      * @covers phpDocumentor\Transformer\Template\PathResolver::resolve
      */
     public function testResolveWithInvalidAbsolutePath()
     {
-        $this->givenAVirtualFileSystem(array());
+        $this->givenAVirtualFileSystem([]);
         $this->fixture->resolve('vfs://root/myFolder/myTemplate');
     }
-    
+
     /**
      * @expectedException \InvalidArgumentException
      * @covers phpDocumentor\Transformer\Template\PathResolver::resolve
      */
     public function testResolveWithInvalidName()
     {
-        $this->givenAVirtualFileSystem(array());
+        $this->givenAVirtualFileSystem([]);
         $this->fixture->resolve('invalidName');
     }
 
@@ -62,7 +62,7 @@ class PathResolverTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testResolveWithValidAbsolutePath()
     {
-        $this->givenAVirtualFileSystem(array('template.xml' => 'xml'));
+        $this->givenAVirtualFileSystem(['template.xml' => 'xml']);
         $this->assertSame(
             vfsStream::url('root/templatePath') . DIRECTORY_SEPARATOR . 'myTemplate',
             $this->fixture->resolve('vfs://root/myFolder/myTemplate')
@@ -74,7 +74,7 @@ class PathResolverTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testResolveWithValidName()
     {
-        $this->givenAVirtualFileSystem(array());
+        $this->givenAVirtualFileSystem([]);
         $this->assertSame(
             vfsStream::url('root/templatePath') . DIRECTORY_SEPARATOR . 'Clean',
             $this->fixture->resolve('Clean')
@@ -98,16 +98,16 @@ class PathResolverTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     private function givenAVirtualFileSystem($template)
     {
-        $structure = array(
-            'templatePath' => array(
-                'Clean' => array(
-                    'template.xml' => 'xml'
-                    )
-                ),
-            'myFolder' => array(
-                'myTemplate' => $template
-            )
-        );
+        $structure = [
+            'templatePath' => [
+                'Clean' => [
+                    'template.xml' => 'xml',
+                    ],
+                ],
+            'myFolder' => [
+                'myTemplate' => $template,
+            ],
+        ];
         vfsStream::setup('root');
         vfsStream::create($structure);
     }

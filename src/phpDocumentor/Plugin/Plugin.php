@@ -34,7 +34,7 @@ class Plugin
      * @Serializer\Type("array<phpDocumentor\Plugin\Parameter>")
      * @var Parameter[] parameters that are configured by the user
      */
-    protected $parameters = array();
+    protected $parameters = [];
 
     /**
      * Initialize the plugin configuration definition with the given class name.

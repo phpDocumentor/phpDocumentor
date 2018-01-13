@@ -36,7 +36,7 @@ abstract class BaseEntry
      *
      * @var BaseEntry[]
      */
-    protected $children = array();
+    protected $children = [];
 
     /**
      * The heading name, or caption, for this entry.
@@ -73,12 +73,10 @@ abstract class BaseEntry
      * @param BaseEntry|null $parent
      *
      * @throws \InvalidArgumentException if the given parameter is of an incorrect type.
-     *
-     * @return void
      */
     public function setParent($parent)
     {
-        if ($parent !== null &&  !$parent instanceof BaseEntry) {
+        if ($parent !== null && !$parent instanceof self) {
             throw new \InvalidArgumentException('An entry may only have another entry as parent');
         }
 
@@ -99,12 +97,8 @@ abstract class BaseEntry
 
     /**
      * Adds a child to the collection of children.
-     *
-     * @param BaseEntry $entry
-     *
-     * @return void
      */
-    public function addChild(BaseEntry $entry)
+    public function addChild(self $entry)
     {
         $this->children[] = $entry;
     }
@@ -123,8 +117,6 @@ abstract class BaseEntry
      * Sets the caption for this entry,
      *
      * @param string $name
-     *
-     * @return void
      */
     public function setName($name)
     {

@@ -96,7 +96,6 @@ final class CacheMiddlewareTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
             ->with($freshFile)
             ->andReturn($item);
 
-
         $poolMock->shouldReceive('getItem->get')
             ->once()
             ->andReturn($cachedFile);

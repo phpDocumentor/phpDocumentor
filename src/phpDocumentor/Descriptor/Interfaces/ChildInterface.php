@@ -29,8 +29,6 @@ interface ChildInterface
      * Sets the parent for this Descriptor.
      *
      * @param DescriptorAbstract $parent
-     *
-     * @return void
      */
     public function setParent($parent);
 }

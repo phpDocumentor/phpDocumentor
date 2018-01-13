@@ -35,8 +35,6 @@ class TranslatorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
     /**
      * Instantiates a new Translator for use as fixture.
-     *
-     * @return void
      */
     protected function setUp()
     {
@@ -66,8 +64,6 @@ TRANSLATION_FILE
 
     /**
      * Destroys the test translation file.
-     *
-     * @return void
      */
     protected function tearDown()
     {

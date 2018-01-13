@@ -23,8 +23,6 @@ class Collection extends DescriptorCollection
 
     /**
      * Constructs a new collection object.
-     *
-     * @param \Parsedown $parser
      */
     public function __construct(\Parsedown $parser)
     {
@@ -37,8 +35,6 @@ class Collection extends DescriptorCollection
      *
      * @param string|integer $index An index value to recognize this item with.
      * @param string         $item  The item to store, generally a Descriptor but may be something else.
-     *
-     * @return void
      */
     public function set($index, $item)
     {

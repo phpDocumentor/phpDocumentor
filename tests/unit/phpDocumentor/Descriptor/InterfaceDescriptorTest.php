@@ -143,7 +143,7 @@ class InterfaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         // Arrange
         $authorTagDescriptor = new AuthorDescriptor('author');
-        $authorCollection = new Collection(array($authorTagDescriptor));
+        $authorCollection = new Collection([$authorTagDescriptor]);
         $this->fixture->getTags()->clear();
         $parentProperty = $this->whenFixtureHasParentInterface();
         $parentProperty->getTags()->set('author', $authorCollection);
@@ -162,7 +162,7 @@ class InterfaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         // Arrange
         $copyrightTagDescriptor = new TagDescriptor('copyright');
-        $copyrightCollection = new Collection(array($copyrightTagDescriptor));
+        $copyrightCollection = new Collection([$copyrightTagDescriptor]);
         $this->fixture->getTags()->clear();
         $parentProperty = $this->whenFixtureHasParentInterface();
         $parentProperty->getTags()->set('copyright', $copyrightCollection);
@@ -181,7 +181,7 @@ class InterfaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         // Arrange
         $versionTagDescriptor = new VersionDescriptor('version');
-        $versionCollection = new Collection(array($versionTagDescriptor));
+        $versionCollection = new Collection([$versionTagDescriptor]);
         $this->fixture->getTags()->clear();
         $parentProperty = $this->whenFixtureHasParentInterface();
         $parentProperty->getTags()->set('version', $versionCollection);
@@ -192,6 +192,7 @@ class InterfaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         // Assert
         $this->assertSame($versionCollection, $result);
     }
+
     /**
      * @covers phpDocumentor\Descriptor\InterfaceDescriptor::getInheritedConstants
      */
@@ -223,7 +224,7 @@ class InterfaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
         $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $result);
 
-        $this->assertSame(array($parentDescriptor, $grandParentDescriptor), $result->getAll());
+        $this->assertSame([$parentDescriptor, $grandParentDescriptor], $result->getAll());
     }
 
     /**
@@ -266,7 +267,7 @@ class InterfaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
         $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $result);
 
-        $this->assertSame(array($parentDescriptor, $grandParentDescriptor), $result->getAll());
+        $this->assertSame([$parentDescriptor, $grandParentDescriptor], $result->getAll());
     }
 
     /**

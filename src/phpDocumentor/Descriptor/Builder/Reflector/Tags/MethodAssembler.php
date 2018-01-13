@@ -57,9 +57,7 @@ class MethodAssembler extends AssemblerAbstract
      * component.
      *
      * @param string $name
-     * @param Type $type
      * @return ArgumentDescriptor
-     *
      */
     private function createArgumentDescriptorForMagicMethod($name, Type $type)
     {

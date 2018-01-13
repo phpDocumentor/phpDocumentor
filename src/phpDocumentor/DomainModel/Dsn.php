@@ -38,14 +38,15 @@ final class Dsn
     /** @var string */
     private $path;
 
-    /** @var string[]  */
+    /** @var string[] */
     private $query = [];
 
-    /** @var string[]  */
+    /** @var string[] */
     private $parameters = [];
 
     //@codingStandardsIgnoreStart
     const WINDOWS_DSN = '~(^((?<scheme>file):\\/\\/)?(?<path>((?:[a-z]|[A-Z]):(?=\\\\(?![\\0-\\37<>:"/\\\\|?*])|\\/(?![\\0-\\37<>:"/\\\\|?*])|$)|^\\\\(?=[\\\\\\/][^\\0-\\37<>:"/\\\\|?*]+)|^(?=(\\\\|\\/)$)|^\\.(?=(\\\\|\\/)$)|^\\.\\.(?=(\\\\|\\/)$)|^(?=(\\\\|\\/)[^\\0-\\37<>:"/\\\\|?*]+)|^\\.(?=(\\\\|\\/)[^\\0-\\37<>:"/\\\\|?*]+)|^\\.\\.(?=(\\\\|\\/)[^\\0-\\37<>:"/\\\\|?*]+))((\\\\|\\/)[^\\0-\\37<>:"/\\\\|?*]+|(\\\\|\\/)$)*()))$~';
+
     //@codingStandardsIgnoreEnd
 
     /**
@@ -152,7 +153,6 @@ final class Dsn
      * Parses the given DSN
      *
      * @param string $dsn
-     * @return void
      */
     private function parse($dsn)
     {
@@ -167,15 +167,13 @@ final class Dsn
         unset($dsnParts[0]);
         $locationParts = parse_url($location);
 
-        if (
-            $locationParts === false ||
+        if ($locationParts === false ||
             (array_key_exists('scheme', $locationParts) && \strlen($locationParts['scheme']) === 1)
         ) {
             preg_match(static::WINDOWS_DSN, $dsn, $locationParts);
         }
 
-        if (
-            ! array_key_exists('scheme', $locationParts) ||
+        if (! array_key_exists('scheme', $locationParts) ||
             ($locationParts['scheme'] === '' && array_key_exists('path', $locationParts))
         ) {
             $locationParts['scheme'] = 'file';
@@ -196,9 +194,9 @@ final class Dsn
 
         $this->parsePort($locationParts);
 
-        $this->user = $locationParts['user'] ?? "";
+        $this->user = $locationParts['user'] ?? '';
 
-        $this->password = $locationParts['pass'] ?? "";
+        $this->password = $locationParts['pass'] ?? '';
 
         $this->parseQuery($locationParts);
 
@@ -211,19 +209,17 @@ final class Dsn
      *
      * @param string $location
      * @param string[] $dsnParts
-     * @return void
      */
     private function parseDsn($location, array $dsnParts)
     {
         array_splice($dsnParts, 0, 0, $location);
-        $this->dsn = implode(";", $dsnParts);
+        $this->dsn = implode(';', $dsnParts);
     }
 
     /**
      * validates and sets the scheme property
      *
      * @param string[] $locationParts
-     * @return void
      */
     private function parseScheme(array $locationParts)
     {
@@ -232,14 +228,12 @@ final class Dsn
                 sprintf('"%s" is not a valid scheme.', $locationParts['scheme'])
             );
         }
+
         $this->scheme = strtolower($locationParts['scheme']);
     }
 
     /**
      * Validated provided scheme.
-     *
-     * @param string $scheme
-     * @return bool
      */
     private function isValidScheme(string $scheme): bool
     {
@@ -251,12 +245,11 @@ final class Dsn
      * Validates and sets the host and path properties
      *
      * @param string[] $locationParts
-     * @return void
      */
     private function parseHostAndPath(array $locationParts)
     {
-        $path = $locationParts['path'] ?? "";
-        $host = $locationParts['host'] ?? "";
+        $path = $locationParts['path'] ?? '';
+        $host = $locationParts['host'] ?? '';
 
         if ($this->getScheme() === 'file') {
             $this->path = $host . $path;
@@ -270,7 +263,6 @@ final class Dsn
      * Validates and sets the port property
      *
      * @param string[] $locationParts
-     * @return void
      */
     private function parsePort(array $locationParts)
     {
@@ -291,7 +283,6 @@ final class Dsn
      * validates and sets the query property
      *
      * @param string[] $locationParts
-     * @return void
      */
     private function parseQuery(array $locationParts)
     {
@@ -309,7 +300,6 @@ final class Dsn
      * validates and sets the parameters property
      *
      * @param string[] $dsnParts
-     * @return void
      */
     private function parseParameters(array $dsnParts)
     {

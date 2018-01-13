@@ -18,10 +18,10 @@ use phpDocumentor\Plugin\Scrybe\Converter\Factory as ConverterFactory;
 use phpDocumentor\Plugin\Scrybe\Converter\Format;
 use phpDocumentor\Plugin\Scrybe\Template\Factory;
 use phpDocumentor\Plugin\Scrybe\Template\TemplateInterface;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Abstract Command class containing the scaffolding for the subsequent converting commands.
@@ -40,9 +40,7 @@ abstract class BaseConvertCommand extends Command
     /**
      * Initializes this command with a template and converter factory.
      *
-     * @param string           $name
-     * @param Factory          $templateFactory
-     * @param ConverterFactory $converterFactory
+     * @param string $name
      */
     public function __construct($name, Factory $templateFactory, ConverterFactory $converterFactory)
     {
@@ -54,8 +52,6 @@ abstract class BaseConvertCommand extends Command
 
     /**
      * Configures the options and default help text.
-     *
-     * @return void
      */
     protected function configure()
     {
@@ -109,11 +105,7 @@ DESCRIPTION
      * Execute the transformation process to an output format as defined in the
      * $output_format class variable.
      *
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     *
      * @see BaseConvertCommand::$output_format to determine the output format.
-     *
      * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -160,8 +152,6 @@ DESCRIPTION
     /**
      * Returns a template object based off the human-readable template name.
      *
-     * @param InputInterface $input
-     *
      * @return TemplateInterface
      */
     protected function getTemplate(InputInterface $input)
@@ -174,8 +164,6 @@ DESCRIPTION
 
     /**
      * Returns the converter for this operation.
-     *
-     * @param InputInterface $input
      *
      * @return ConverterInterface
      */

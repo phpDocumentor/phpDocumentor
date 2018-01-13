@@ -14,7 +14,6 @@ namespace phpDocumentor;
 use Cilex\Application as Cilex;
 use Cilex\Provider\JmsSerializerServiceProvider;
 use Cilex\Provider\MonologServiceProvider;
-use Cilex\Provider\ValidatorServiceProvider;
 use Composer\Autoload\ClassLoader;
 use Monolog\ErrorHandler;
 use Monolog\Handler\NullHandler;
@@ -26,7 +25,6 @@ use phpDocumentor\Console\Input\ArgvInput;
 use Symfony\Component\Console\Application as ConsoleApplication;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Shell;
 use Symfony\Component\Stopwatch\Stopwatch;
 
 /**
@@ -43,9 +41,8 @@ class Application extends Cilex
      * Initializes all components used by phpDocumentor.
      *
      * @param ClassLoader $autoloader
-     * @param array $values
      */
-    public function __construct($autoloader = null, array $values = array())
+    public function __construct($autoloader = null, array $values = [])
     {
         $this->defineIniSettings();
 
@@ -89,8 +86,6 @@ class Application extends Cilex
      * @param integer $level        The minimum level that will be written to the normal logfile; matches one of the
      *                              constants in {@see \Monolog\Logger}.
      * @param string  $logPath      The full path where the normal log file needs to be written.
-     *
-     * @return void
      */
     public function configureLogger($logger, $level, $logPath = null)
     {
@@ -131,8 +126,8 @@ class Application extends Cilex
         $this['monolog.level'] = $level;
         if ($logPath) {
             $logPath = str_replace(
-                array('{APP_ROOT}', '{DATE}'),
-                array(realpath(__DIR__ . '/../..'), $this['kernel.timer.start']),
+                ['{APP_ROOT}', '{DATE}'],
+                [realpath(__DIR__ . '/../..'), $this['kernel.timer.start']],
                 $logPath
             );
             $this['monolog.logfile'] = $logPath;
@@ -162,8 +157,6 @@ class Application extends Cilex
     }
 
     /**
-     * @param null|InputInterface $input
-     * @param null|OutputInterface $output
      * @return mixed
      */
     public function run(InputInterface $input = null, OutputInterface $output = null)
@@ -180,11 +173,8 @@ class Application extends Cilex
         return parent::run(new ArgvInput(), $output);
     }
 
-
     /**
      * Adjust php.ini settings.
-     *
-     * @return void
      */
     protected function defineIniSettings()
     {
@@ -201,9 +191,10 @@ class Application extends Cilex
             }
         }
 
-        if (extension_loaded('Zend Optimizer+') && ini_get('zend_optimizerplus.save_comments') == 0) {
+        if (extension_loaded('Zend Optimizer+') && ini_get('zend_optimizerplus.save_comments') === 0) {
             throw new \RuntimeException('Please enable zend_optimizerplus.save_comments in php.ini.');
         }
+
         // @codeCoverageIgnoreEnd
     }
 
@@ -218,12 +209,10 @@ class Application extends Cilex
      *     default timezone.
      *
      * @codeCoverageIgnore this method is very hard, if not impossible, to unit test and not critical.
-     *
-     * @return void
      */
     protected function setTimezone()
     {
-        if (false == ini_get('date.timezone')
+        if (false === ini_get('date.timezone')
             || (version_compare(phpversion(), '5.4.0', '<') && false === getenv('TZ'))
         ) {
             date_default_timezone_set('UTC');
@@ -232,19 +221,17 @@ class Application extends Cilex
 
     /**
      * Adds a logging provider to the container of phpDocumentor.
-     *
-     * @return void
      */
     protected function addLogging()
     {
         $this->register(
             new MonologServiceProvider(),
-            array(
-                'monolog.name'      => 'phpDocumentor',
-                'monolog.logfile'   => sys_get_temp_dir() . '/phpdoc.log',
+            [
+                'monolog.name' => 'phpDocumentor',
+                'monolog.logfile' => sys_get_temp_dir() . '/phpdoc.log',
                 'monolog.debugfile' => sys_get_temp_dir() . '/phpdoc.debug.log',
-                'monolog.level'     => Logger::INFO,
-            )
+                'monolog.level' => Logger::INFO,
+            ]
         );
 
         $app = $this;
@@ -252,7 +239,7 @@ class Application extends Cilex
         $configuration = $this['config'];
         $this['monolog.configure'] = $this->protect(
             function ($log) use ($app, $configuration) {
-                $paths    = $configuration->getLogging()->getPaths();
+                $paths = $configuration->getLogging()->getPaths();
                 $logLevel = $configuration->getLogging()->getLevel();
 
                 $app->configureLogger($log, $logLevel, $paths['default']);
@@ -274,8 +261,6 @@ class Application extends Cilex
 
     /**
      * Adds the event dispatcher to phpDocumentor's container.
-     *
-     * @return void
      */
     protected function addEventDispatcher()
     {
@@ -286,8 +271,6 @@ class Application extends Cilex
 
     /**
      * Adds the command to phpDocumentor that belong to the Project namespace.
-     *
-     * @return void
      */
     protected function addCommandsForProjectNamespace()
     {
@@ -296,8 +279,6 @@ class Application extends Cilex
 
     /**
      * Adds the command to phpDocumentor that belong to the Phar namespace.
-     *
-     * @return void
      */
     protected function addCommandsForPharNamespace()
     {

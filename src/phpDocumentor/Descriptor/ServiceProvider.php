@@ -12,8 +12,6 @@
 namespace phpDocumentor\Descriptor;
 
 use Cilex\Application;
-use Pimple\Container;
-use Pimple\ServiceProviderInterface;
 use phpDocumentor\Descriptor\Builder\AssemblerFactory;
 use phpDocumentor\Descriptor\Builder\Reflector\ArgumentAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\ClassAssembler;
@@ -45,7 +43,7 @@ use phpDocumentor\Descriptor\Filter\Filter;
 use phpDocumentor\Descriptor\Filter\StripIgnore;
 use phpDocumentor\Descriptor\Filter\StripInternal;
 use phpDocumentor\Descriptor\Filter\StripOnVisibility;
-use phpDocumentor\Plugin\Core\Descriptor\Validator\Constraints as phpDocAssert;
+use phpDocumentor\Reflection\DocBlock\ExampleFinder;
 use phpDocumentor\Reflection\DocBlock\Tag;
 use phpDocumentor\Reflection\DocBlock\Tags;
 use phpDocumentor\Reflection\DocBlock\Tags\Author;
@@ -60,7 +58,6 @@ use phpDocumentor\Reflection\DocBlock\Tags\Throws;
 use phpDocumentor\Reflection\DocBlock\Tags\Uses;
 use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use phpDocumentor\Reflection\DocBlock\Tags\Version;
-use phpDocumentor\Reflection\DocBlock\ExampleFinder;
 use phpDocumentor\Reflection\Php\Argument;
 use phpDocumentor\Reflection\Php\Class_;
 use phpDocumentor\Reflection\Php\Constant;
@@ -71,12 +68,11 @@ use phpDocumentor\Reflection\Php\Method;
 use phpDocumentor\Reflection\Php\Namespace_;
 use phpDocumentor\Reflection\Php\Property;
 use phpDocumentor\Reflection\Php\Trait_;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Mapping\ClassMetadata;
-use Symfony\Component\Validator\Validator;
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 use Zend\Cache\Storage\Adapter\Filesystem;
-use Zend\Cache\Storage\Plugin\Serializer as SerializerPlugin;
 use Zend\Cache\Storage\Plugin\PluginOptions;
+use Zend\Cache\Storage\Plugin\Serializer as SerializerPlugin;
 
 /**
  * This provider is responsible for registering the Descriptor component with the given Application.
@@ -87,8 +83,6 @@ class ServiceProvider implements ServiceProviderInterface
      * Adds the services needed to build the descriptors.
      *
      * @param Container $app An Application instance
-     *
-     * @return void
      */
     public function register(Container $app)
     {
@@ -109,9 +103,6 @@ class ServiceProvider implements ServiceProviderInterface
 
     /**
      * Registers the Assemblers used to convert Reflection objects to Descriptors.
-     *
-     * @param AssemblerFactory $factory
-     * @param \Cilex\Application $app
      *
      * @return AssemblerFactory
      */
@@ -236,18 +227,15 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * Attaches filters to the manager.
      *
-     * @param Filter $filterManager
-     * @param Application $app
-     *
      * @return Filter
      */
     public function attachFiltersToManager(Filter $filterManager, Application $app)
     {
         $stripOnVisibility = new StripOnVisibility($app['descriptor.builder']);
-        $filtersOnAllDescriptors = array(
+        $filtersOnAllDescriptors = [
             new StripInternal($app['descriptor.builder']),
-            new StripIgnore($app['descriptor.builder'])
-        );
+            new StripIgnore($app['descriptor.builder']),
+        ];
 
         foreach ($filtersOnAllDescriptors as $filter) {
             $filterManager->attach('phpDocumentor\Descriptor\ConstantDescriptor', $filter);
@@ -266,20 +254,16 @@ class ServiceProvider implements ServiceProviderInterface
 
     /**
      * Adds the caching mechanism to the dependency injection container with key 'descriptor.cache'.
-     *
-     * @param Application $app
-     *
-     * @return void
      */
     protected function addCache(Application $app)
     {
         $app['descriptor.cache'] = function () {
             $cache = new Filesystem();
             $cache->setOptions(
-                array(
+                [
                     'namespace' => 'phpdoc-cache',
                     'cache_dir' => sys_get_temp_dir(),
-                )
+                ]
             );
             $plugin = new SerializerPlugin();
 
@@ -301,10 +285,6 @@ class ServiceProvider implements ServiceProviderInterface
      *
      * Please note that the type of serializer can be configured using the parameter 'descriptor.builder.serializer'; it
      * accepts any parameter that Zend\Serializer supports.
-     *
-     * @param Application $app
-     *
-     * @return void
      */
     protected function addBuilder(Application $app)
     {
@@ -327,10 +307,6 @@ class ServiceProvider implements ServiceProviderInterface
 
     /**
      * Adds the assembler factory and attaches the basic assemblers with key 'descriptor.builder.assembler.factory'.
-     *
-     * @param Application $app
-     *
-     * @return void
      */
     protected function addAssemblers(Application $app)
     {
@@ -352,10 +328,6 @@ class ServiceProvider implements ServiceProviderInterface
      *
      * Please note that filters can only be attached after the builder is instantiated because it is needed; so the
      * filters can be attached by extending 'descriptor.builder'.
-     *
-     * @param Application $app
-     *
-     * @return void
      */
     protected function addFilters(Application $app)
     {

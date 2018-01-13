@@ -14,18 +14,13 @@ namespace phpDocumentor\Descriptor\Builder\Reflector;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
-use phpDocumentor\Reflection\ClassReflector;
-use phpDocumentor\Reflection\ConstantReflector;
 use phpDocumentor\Reflection\FileReflector;
-use phpDocumentor\Reflection\FunctionReflector;
-use phpDocumentor\Reflection\InterfaceReflector;
 use phpDocumentor\Reflection\Php\Class_;
 use phpDocumentor\Reflection\Php\Constant;
 use phpDocumentor\Reflection\Php\File;
 use phpDocumentor\Reflection\Php\Function_;
 use phpDocumentor\Reflection\Php\Interface_;
 use phpDocumentor\Reflection\Php\Trait_;
-use phpDocumentor\Reflection\TraitReflector;
 
 /**
  * Assembles an FileDescriptor using an FileReflector and ParamDescriptors.
@@ -51,6 +46,7 @@ class FileAssembler extends AssemblerAbstract
         if ($this->getBuilder()->getProjectDescriptor()->getSettings()->shouldIncludeSource()) {
             $fileDescriptor->setSource($data->getSource());
         }
+
         $fileDescriptor->setIncludes(new Collection($data->getIncludes()));
         $fileDescriptor->setNamespaceAliases(new Collection($data->getNamespaces()));
 
@@ -72,8 +68,6 @@ class FileAssembler extends AssemblerAbstract
      *
      * @param Constant[] $constants
      * @param FileDescriptor      $fileDescriptor
-     *
-     * @return void
      */
     protected function addConstants($constants, $fileDescriptor)
     {
@@ -81,13 +75,13 @@ class FileAssembler extends AssemblerAbstract
             $constantDescriptor = $this->getBuilder()->buildDescriptor($constant);
             if ($constantDescriptor) {
                 $constantDescriptor->setLocation($fileDescriptor, $constant->getLocation()->getLineNumber());
-                if (count($constantDescriptor->getTags()->get('package', new Collection())) == 0) {
+                if (count($constantDescriptor->getTags()->get('package', new Collection())) === 0) {
                     $constantDescriptor->getTags()
                         ->set('package', $fileDescriptor->getTags()->get('package', new Collection()));
                 }
 
                 $fileDescriptor->getConstants()->set(
-                    (string)$constantDescriptor->getFullyQualifiedStructuralElementName(),
+                    (string) $constantDescriptor->getFullyQualifiedStructuralElementName(),
                     $constantDescriptor
                 );
             }
@@ -99,8 +93,6 @@ class FileAssembler extends AssemblerAbstract
      *
      * @param Function_[] $functions
      * @param FileDescriptor      $fileDescriptor
-     *
-     * @return void
      */
     protected function addFunctions($functions, $fileDescriptor)
     {
@@ -108,13 +100,13 @@ class FileAssembler extends AssemblerAbstract
             $functionDescriptor = $this->getBuilder()->buildDescriptor($function);
             if ($functionDescriptor) {
                 $functionDescriptor->setLocation($fileDescriptor, $function->getLocation()->getLineNumber());
-                if (count($functionDescriptor->getTags()->get('package', new Collection())) == 0) {
+                if (count($functionDescriptor->getTags()->get('package', new Collection())) === 0) {
                     $functionDescriptor->getTags()
                         ->set('package', $fileDescriptor->getTags()->get('package', new Collection()));
                 }
 
                 $fileDescriptor->getFunctions()->set(
-                    (string)$functionDescriptor->getFullyQualifiedStructuralElementName(),
+                    (string) $functionDescriptor->getFullyQualifiedStructuralElementName(),
                     $functionDescriptor
                 );
             }
@@ -126,8 +118,6 @@ class FileAssembler extends AssemblerAbstract
      *
      * @param Class_[] $classes
      * @param FileDescriptor   $fileDescriptor
-     *
-     * @return void
      */
     protected function addClasses($classes, $fileDescriptor)
     {
@@ -135,7 +125,7 @@ class FileAssembler extends AssemblerAbstract
             $classDescriptor = $this->getBuilder()->buildDescriptor($class);
             if ($classDescriptor) {
                 $classDescriptor->setLocation($fileDescriptor, $class->getLocation()->getLineNumber());
-                if (count($classDescriptor->getTags()->get('package', new Collection())) == 0) {
+                if (count($classDescriptor->getTags()->get('package', new Collection())) === 0) {
                     $classDescriptor->getTags()->set(
                         'package',
                         $fileDescriptor->getTags()->get('package', new Collection())
@@ -143,7 +133,7 @@ class FileAssembler extends AssemblerAbstract
                 }
 
                 $fileDescriptor->getClasses()->set(
-                    (string)($classDescriptor->getFullyQualifiedStructuralElementName()),
+                    (string) ($classDescriptor->getFullyQualifiedStructuralElementName()),
                     $classDescriptor
                 );
             }
@@ -155,8 +145,6 @@ class FileAssembler extends AssemblerAbstract
      *
      * @param Interface_[] $interfaces
      * @param FileDescriptor   $fileDescriptor
-     *
-     * @return void
      */
     protected function addInterfaces($interfaces, $fileDescriptor)
     {
@@ -164,13 +152,13 @@ class FileAssembler extends AssemblerAbstract
             $interfaceDescriptor = $this->getBuilder()->buildDescriptor($interface);
             if ($interfaceDescriptor) {
                 $interfaceDescriptor->setLocation($fileDescriptor, $interface->getLocation()->getLineNumber());
-                if (count($interfaceDescriptor->getTags()->get('package', new Collection())) == 0) {
+                if (count($interfaceDescriptor->getTags()->get('package', new Collection())) === 0) {
                     $interfaceDescriptor->getTags()
                         ->set('package', $fileDescriptor->getTags()->get('package', new Collection()));
                 }
 
                 $fileDescriptor->getInterfaces()->set(
-                    (string)$interfaceDescriptor->getFullyQualifiedStructuralElementName(),
+                    (string) $interfaceDescriptor->getFullyQualifiedStructuralElementName(),
                     $interfaceDescriptor
                 );
             }
@@ -182,8 +170,6 @@ class FileAssembler extends AssemblerAbstract
      *
      * @param Trait_[] $traits
      * @param FileDescriptor   $fileDescriptor
-     *
-     * @return void
      */
     protected function addTraits($traits, $fileDescriptor)
     {
@@ -191,13 +177,13 @@ class FileAssembler extends AssemblerAbstract
             $traitDescriptor = $this->getBuilder()->buildDescriptor($trait);
             if ($traitDescriptor) {
                 $traitDescriptor->setLocation($fileDescriptor, $trait->getLocation()->getLineNumber());
-                if (count($traitDescriptor->getTags()->get('package', new Collection())) == 0) {
+                if (count($traitDescriptor->getTags()->get('package', new Collection())) === 0) {
                     $traitDescriptor->getTags()
                         ->set('package', $fileDescriptor->getTags()->get('package', new Collection()));
                 }
 
                 $fileDescriptor->getTraits()->set(
-                    (string)$traitDescriptor->getFullyQualifiedStructuralElementName(),
+                    (string) $traitDescriptor->getFullyQualifiedStructuralElementName(),
                     $traitDescriptor
                 );
             }
@@ -209,34 +195,29 @@ class FileAssembler extends AssemblerAbstract
      *
      * @param string[]       $markers
      * @param FileDescriptor $fileDescriptor
-     *
-     * @return void
      */
     protected function addMarkers($markers, $fileDescriptor)
     {
         foreach ($markers as $marker) {
             list($type, $message, $line) = $marker;
             $fileDescriptor->getMarkers()->add(
-                array(
-                    'type'    => $type,
+                [
+                    'type' => $type,
                     'message' => $message,
-                    'line'    => $line,
-                )
+                    'line' => $line,
+                ]
             );
         }
     }
 
-    /**
-     * @param File $data
-     * @param FileDescriptor $fileDescriptor
-     */
     protected function overridePackageTag(File $data, FileDescriptor $fileDescriptor)
     {
         $packages = new Collection();
-        $package  = $this->extractPackageFromDocBlock($data->getDocBlock());
+        $package = $this->extractPackageFromDocBlock($data->getDocBlock());
         if (! $package) {
             $package = $this->getBuilder()->getDefaultPackage();
         }
+
         $tag = new TagDescriptor('package');
         $tag->setDescription($package);
         $packages->add($tag);

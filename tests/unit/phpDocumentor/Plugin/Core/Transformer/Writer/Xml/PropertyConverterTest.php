@@ -26,15 +26,13 @@ class PropertyConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * Tests whether the XML Element representing a property is properly created.
      *
      * @covers phpDocumentor\Plugin\Core\Transformer\Writer\Xml\PropertyConverter::convert
-     *
-     * @return void
      */
     public function testPropertyXmlElementIsCreated()
     {
         // Arrange
-        $property          = $this->createPropertyDescriptorMock();
+        $property = $this->createPropertyDescriptorMock();
         $propertyConverter = $this->createFixture($property);
-        $parent            = $this->prepareParentXMLElement();
+        $parent = $this->prepareParentXMLElement();
         $parent->setAttribute('namespace', 'phpDocumentor');
 
         // Act
@@ -57,16 +55,14 @@ class PropertyConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * Tests whether the XML Element representing a property is properly created.
      *
      * @covers phpDocumentor\Plugin\Core\Transformer\Writer\Xml\PropertyConverter::convert
-     *
-     * @return void
      */
     public function testNamespaceNameIsTakenFromNamespaceDescriptorIfPresent()
     {
         // Arrange
-        $parent              = $this->prepareParentXMLElement();
+        $parent = $this->prepareParentXMLElement();
         $namespaceDescriptor = m::mock('phpDocumentor\Descriptor\NamespaceDescriptor');
         $namespaceDescriptor->shouldReceive('getFullyQualifiedStructuralElementName')->andReturn('MySpace');
-        $property              = $this->createPropertyDescriptorMock();
+        $property = $this->createPropertyDescriptorMock();
         $property->shouldReceive('getNamespace')->andReturn($namespaceDescriptor);
         $propertyConverter = $this->createFixture($property);
 
@@ -85,7 +81,7 @@ class PropertyConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     protected function prepareParentXMLElement()
     {
         $document = new \DOMDocument();
-        $parent   = new \DOMElement('class');
+        $parent = new \DOMElement('class');
         $document->appendChild($parent);
 
         return $parent;
@@ -112,8 +108,6 @@ class PropertyConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
     /**
      * Creates the PropertyConverter fixture with a DocBlock mock.
-     *
-     * @param PropertyDescriptor $property
      *
      * @return PropertyConverter
      */

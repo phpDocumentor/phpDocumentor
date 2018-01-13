@@ -23,8 +23,9 @@ class ExampleTagsEnricherTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     protected function setUp()
     {
         $this->finderMock = m::mock(ExampleFinder::class);
-        $this->fixture    = new ExampleTagsEnricher($this->finderMock);
+        $this->fixture = new ExampleTagsEnricher($this->finderMock);
     }
+
     /**
      * @covers \phpDocumentor\Compiler\Pass\ExampleTagsEnricher::getDescription
      */
@@ -45,7 +46,7 @@ class ExampleTagsEnricherTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $descriptor = $this->givenAChildDescriptorWithDescription($description);
         $this->thenDescriptionOfDescriptorIsChangedInto($descriptor, $description);
 
-        $project = $this->givenAProjectDescriptorWithChildDescriptors(array($descriptor));
+        $project = $this->givenAProjectDescriptorWithChildDescriptors([$descriptor]);
 
         $this->fixture->execute($project);
 
@@ -61,13 +62,13 @@ class ExampleTagsEnricherTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         $exampleText = 'Example Text';
         $description = 'This is a description with {@example example2.txt} without description.';
-        $expected    = "This is a description with `$exampleText` without description.";
+        $expected = "This is a description with `${exampleText}` without description.";
 
         $descriptor = $this->givenAChildDescriptorWithDescription($description);
         $this->whenExampleTxtFileContains($exampleText);
         $this->thenDescriptionOfDescriptorIsChangedInto($descriptor, $expected);
 
-        $project = $this->givenAProjectDescriptorWithChildDescriptors(array($descriptor));
+        $project = $this->givenAProjectDescriptorWithChildDescriptors([$descriptor]);
 
         $this->fixture->execute($project);
 
@@ -83,13 +84,13 @@ class ExampleTagsEnricherTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         $exampleText = 'Example Text';
         $description = 'This is a description with {@example example.txt including description}.';
-        $expected    = "This is a description with *including description*`$exampleText`.";
+        $expected = "This is a description with *including description*`${exampleText}`.";
 
         $descriptor = $this->givenAChildDescriptorWithDescription($description);
         $this->whenExampleTxtFileContains($exampleText);
         $this->thenDescriptionOfDescriptorIsChangedInto($descriptor, $expected);
 
-        $project = $this->givenAProjectDescriptorWithChildDescriptors(array($descriptor));
+        $project = $this->givenAProjectDescriptorWithChildDescriptors([$descriptor]);
 
         $this->fixture->execute($project);
 
@@ -105,13 +106,13 @@ class ExampleTagsEnricherTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         $exampleText = 'Example Text';
         $description = 'This is a description with {@example example.txt} and {@example example.txt}.';
-        $expected    = "This is a description with `$exampleText` and `$exampleText`.";
+        $expected = "This is a description with `${exampleText}` and `${exampleText}`.";
 
         $descriptor = $this->givenAChildDescriptorWithDescription($description);
         $this->whenExampleTxtFileContainsAndMustBeCalledOnlyOnce($exampleText);
         $this->thenDescriptionOfDescriptorIsChangedInto($descriptor, $expected);
 
-        $project = $this->givenAProjectDescriptorWithChildDescriptors(array($descriptor));
+        $project = $this->givenAProjectDescriptorWithChildDescriptors([$descriptor]);
 
         $this->fixture->execute($project);
 
@@ -153,8 +154,6 @@ class ExampleTagsEnricherTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      *
      * @param m\MockInterface $descriptor
      * @param string          $expected
-     *
-     * @return void
      */
     public function thenDescriptionOfDescriptorIsChangedInto($descriptor, $expected)
     {
@@ -165,8 +164,6 @@ class ExampleTagsEnricherTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * Instructs the finder mock to return the given text when an example is requested.
      *
      * @param string $exampleText
-     *
-     * @return void
      */
     private function whenExampleTxtFileContains($exampleText)
     {
@@ -178,8 +175,6 @@ class ExampleTagsEnricherTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * done once.
      *
      * @param string $exampleText
-     *
-     * @return void
      */
     private function whenExampleTxtFileContainsAndMustBeCalledOnlyOnce($exampleText)
     {

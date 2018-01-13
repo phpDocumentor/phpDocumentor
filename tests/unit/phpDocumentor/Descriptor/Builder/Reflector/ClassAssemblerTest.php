@@ -10,15 +10,14 @@
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
+
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
-use Mockery\MockInterface;
-use phpDocumentor\Reflection\DocBlock;
 use Mockery as m;
+use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Php\Class_;
 use phpDocumentor\Reflection\Php\Constant;
-use phpDocumentor\Reflection\Php\Interface_;
 use phpDocumentor\Reflection\Php\Method;
 use phpDocumentor\Reflection\Php\Property;
 
@@ -45,8 +44,6 @@ class ClassAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * Creates a Descriptor from a provided class.
      *
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\ClassAssembler::create
-     *
-     * @return void
      */
     public function testCreateClassDescriptorFromReflector()
     {
@@ -62,7 +59,7 @@ DOCBLOCK;
 
         $descriptor = $this->fixture->create($classReflectorMock);
 
-        $this->assertSame('\\' . $namespace . '\\' . $name, (string)$descriptor->getFullyQualifiedStructuralElementName());
+        $this->assertSame('\\' . $namespace . '\\' . $name, (string) $descriptor->getFullyQualifiedStructuralElementName());
         $this->assertSame($name, $descriptor->getName());
         $this->assertSame((string) $descriptor->getDescription(), $docBlockDescriptionContent);
     }
@@ -93,7 +90,7 @@ DOCBLOCK;
             $docBlockMock
         );
 
-        $classReflectorMock->addConstant(new Constant(new Fqsen($classFqsen. '::Constant')));
+        $classReflectorMock->addConstant(new Constant(new Fqsen($classFqsen . '::Constant')));
         $classReflectorMock->addInterface(new Fqsen('\\TestInterface'));
         $classReflectorMock->addProperty(new Property(new Fqsen($classFqsen . '::$property')));
         $classReflectorMock->addMethod(new Method(new Fqsen($classFqsen . '::method()')));
@@ -138,5 +135,4 @@ DOCBLOCK;
 
         return $projectDescriptorBuilderMock;
     }
-
 }

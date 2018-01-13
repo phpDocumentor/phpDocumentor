@@ -42,16 +42,15 @@ class Glossary extends \ArrayObject
      * @param string $term
      * @param string $filename
      * @param int    $line_number
-     *
-     * @return void
      */
     public function addTerm($term, $filename, $line_number)
     {
         if (!isset($this[$term])) {
-            $this[$term] = array();
+            $this[$term] = [];
         }
+
         if (!isset($this[$term][$filename])) {
-            $this[$term][$filename] = array();
+            $this[$term][$filename] = [];
         }
 
         $this[$term][$filename][] = $line_number;

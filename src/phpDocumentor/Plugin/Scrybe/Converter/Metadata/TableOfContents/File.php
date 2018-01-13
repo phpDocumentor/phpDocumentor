@@ -34,8 +34,6 @@ class File extends BaseEntry
      * Sets the name for this file relative to the project root.
      *
      * @param string $filename
-     *
-     * @return void
      */
     public function setFilename($filename)
     {

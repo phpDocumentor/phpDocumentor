@@ -12,8 +12,6 @@
 namespace phpDocumentor\Transformer;
 
 use Cilex\Application;
-use Pimple\Container;
-use Pimple\ServiceProviderInterface;
 use phpDocumentor\Compiler\Compiler;
 use phpDocumentor\Compiler\Linker\Linker;
 use phpDocumentor\Compiler\Pass\ClassTreeBuilder;
@@ -21,9 +19,9 @@ use phpDocumentor\Compiler\Pass\Debug;
 use phpDocumentor\Compiler\Pass\ElementsIndexBuilder;
 use phpDocumentor\Compiler\Pass\ExampleTagsEnricher;
 use phpDocumentor\Compiler\Pass\InterfaceTreeBuilder;
+use phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor;
 use phpDocumentor\Compiler\Pass\NamespaceTreeBuilder;
 use phpDocumentor\Compiler\Pass\PackageTreeBuilder;
-use phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor;
 use phpDocumentor\Compiler\Pass\ResolveInlineLinkAndSeeTags;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Event\Dispatcher;
@@ -33,6 +31,8 @@ use phpDocumentor\Transformer\Command\Template\ListCommand;
 use phpDocumentor\Transformer\Event\PreTransformEvent;
 use phpDocumentor\Transformer\Template\Factory;
 use phpDocumentor\Transformer\Template\PathResolver;
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 
 /**
  * This provider is responsible for registering the transformer component with the given Application.
@@ -54,6 +54,7 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
                 'The builder object that is used to construct the ProjectDescriptor is missing'
             );
         }
+
         if (!isset($app['serializer'])) {
             throw new Exception\MissingDependencyException(
                 'The serializer object that is used to read the template configuration with is missing'
@@ -61,17 +62,17 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
         }
 
         // parameters
-        $app['linker.substitutions'] = array(
-            'phpDocumentor\Descriptor\ProjectDescriptor'      => array('files'),
-            'phpDocumentor\Descriptor\FileDescriptor'         => array(
+        $app['linker.substitutions'] = [
+            'phpDocumentor\Descriptor\ProjectDescriptor' => ['files'],
+            'phpDocumentor\Descriptor\FileDescriptor' => [
                 'tags',
                 'classes',
                 'interfaces',
                 'traits',
                 'functions',
-                'constants'
-            ),
-            'phpDocumentor\Descriptor\ClassDescriptor'        => array(
+                'constants',
+            ],
+            'phpDocumentor\Descriptor\ClassDescriptor' => [
                 'tags',
                 'parent',
                 'interfaces',
@@ -79,30 +80,30 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
                 'properties',
                 'methods',
                 'usedTraits',
-            ),
-            'phpDocumentor\Descriptor\InterfaceDescriptor'       => array(
+            ],
+            'phpDocumentor\Descriptor\InterfaceDescriptor' => [
                 'tags',
                 'parent',
                 'constants',
                 'methods',
-            ),
-            'phpDocumentor\Descriptor\TraitDescriptor'           => array(
+            ],
+            'phpDocumentor\Descriptor\TraitDescriptor' => [
                 'tags',
                 'properties',
                 'methods',
                 'usedTraits',
-            ),
-            'phpDocumentor\Descriptor\FunctionDescriptor'        => array('tags', 'arguments'),
-            'phpDocumentor\Descriptor\MethodDescriptor'          => array('tags', 'arguments'),
-            'phpDocumentor\Descriptor\ArgumentDescriptor'        => array('types'),
-            'phpDocumentor\Descriptor\PropertyDescriptor'        => array('tags', 'types'),
-            'phpDocumentor\Descriptor\ConstantDescriptor'        => array('tags', 'types'),
-            'phpDocumentor\Descriptor\Tag\ParamDescriptor'       => array('types'),
-            'phpDocumentor\Descriptor\Tag\ReturnDescriptor'      => array('types'),
-            'phpDocumentor\Descriptor\Tag\SeeDescriptor'         => array('reference'),
-            'phpDocumentor\Descriptor\Tag\UsesDescriptor'        => array('reference'),
-            'phpDocumentor\Descriptor\Type\CollectionDescriptor' => array('baseType', 'types', 'keyTypes'),
-        );
+            ],
+            'phpDocumentor\Descriptor\FunctionDescriptor' => ['tags', 'arguments'],
+            'phpDocumentor\Descriptor\MethodDescriptor' => ['tags', 'arguments'],
+            'phpDocumentor\Descriptor\ArgumentDescriptor' => ['types'],
+            'phpDocumentor\Descriptor\PropertyDescriptor' => ['tags', 'types'],
+            'phpDocumentor\Descriptor\ConstantDescriptor' => ['tags', 'types'],
+            'phpDocumentor\Descriptor\Tag\ParamDescriptor' => ['types'],
+            'phpDocumentor\Descriptor\Tag\ReturnDescriptor' => ['types'],
+            'phpDocumentor\Descriptor\Tag\SeeDescriptor' => ['reference'],
+            'phpDocumentor\Descriptor\Tag\UsesDescriptor' => ['reference'],
+            'phpDocumentor\Descriptor\Type\CollectionDescriptor' => ['baseType', 'types', 'keyTypes'],
+        ];
 
         // services
         $app['compiler'] = function ($container) {
@@ -192,10 +193,6 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
 
     /**
      * Initializes the templating system in the container.
-     *
-     * @param Application $app
-     *
-     * @return void
      */
     protected function provideTemplatingSystem(Application $app)
     {

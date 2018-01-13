@@ -38,8 +38,6 @@ class CheckStyleTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
     /**
      * Sets up the test suite
-     *
-     * @return void
      */
     public function setUp()
     {
@@ -60,11 +58,11 @@ class CheckStyleTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
         $fileDescriptor = m::mock('phpDocumentor\Descriptor\FileDescriptor');
         $projectDescriptor = m::mock('phpDocumentor\Descriptor\ProjectDescriptor');
-        $projectDescriptor->shouldReceive('getFiles->getAll')->andReturn(array($fileDescriptor));
+        $projectDescriptor->shouldReceive('getFiles->getAll')->andReturn([$fileDescriptor]);
 
         $error = m::mock('phpDocumentor\Descriptor\Validator\Error');
         $fileDescriptor->shouldReceive('getPath')->andReturn('/foo/bar/baz');
-        $fileDescriptor->shouldReceive('getAllErrors->getAll')->andReturn(array($error));
+        $fileDescriptor->shouldReceive('getAllErrors->getAll')->andReturn([$error]);
 
         $error->shouldReceive('getLine')->andReturn(1234);
         $error->shouldReceive('getCode')->andReturn(5678);
@@ -88,10 +86,10 @@ class CheckStyleTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
   </file>
 </checkstyle>
 XML;
-        $expectedXml = new \DOMDocument;
+        $expectedXml = new \DOMDocument();
         $expectedXml->loadXML($xml);
 
-        $actualXml = new \DOMDocument;
+        $actualXml = new \DOMDocument();
         $actualXml->load(vfsStream::url('CheckStyleTest/artifact.xml'));
 
         $this->assertEqualXMLStructure($expectedXml->firstChild, $actualXml->firstChild, true);

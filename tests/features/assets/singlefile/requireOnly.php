@@ -9,6 +9,6 @@
  *  @license   http://www.opensource.org/licenses/mit-license.php MIT
  *  @link      http://phpdoc.org
  */
-echo "foo";
-require "NoPackagePrecedesClass.php";
-require "multiParentInheritance.php";
+echo 'foo';
+require 'NoPackagePrecedesClass.php';
+require 'multiParentInheritance.php';

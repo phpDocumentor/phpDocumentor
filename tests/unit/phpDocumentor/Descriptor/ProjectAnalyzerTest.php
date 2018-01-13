@@ -24,9 +24,9 @@ class ProjectAnalyzerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         // Arrange
         $projectDescriptor = $this->givenAProjectMock();
-        $this->whenProjectDescriptorHasTheFollowingFiles($projectDescriptor, array(1,2,3,4));
-        $this->whenProjectDescriptorHasTheFollowingElements($projectDescriptor, array());
-        $this->whenProjectHasTheFollowingChildrenOfRootNamespace($projectDescriptor, array());
+        $this->whenProjectDescriptorHasTheFollowingFiles($projectDescriptor, [1, 2, 3, 4]);
+        $this->whenProjectDescriptorHasTheFollowingElements($projectDescriptor, []);
+        $this->whenProjectHasTheFollowingChildrenOfRootNamespace($projectDescriptor, []);
 
         // Act
         $this->fixture->analyze($projectDescriptor);
@@ -42,9 +42,9 @@ class ProjectAnalyzerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         // Arrange
         $projectDescriptor = $this->givenAProjectMock();
-        $this->whenProjectDescriptorHasTheFollowingFiles($projectDescriptor, array());
-        $this->whenProjectDescriptorHasTheFollowingElements($projectDescriptor, array());
-        $this->whenProjectHasTheFollowingChildrenOfRootNamespace($projectDescriptor, array(1,2,3));
+        $this->whenProjectDescriptorHasTheFollowingFiles($projectDescriptor, []);
+        $this->whenProjectDescriptorHasTheFollowingElements($projectDescriptor, []);
+        $this->whenProjectHasTheFollowingChildrenOfRootNamespace($projectDescriptor, [1, 2, 3]);
 
         // Act
         $this->fixture->analyze($projectDescriptor);
@@ -61,18 +61,18 @@ class ProjectAnalyzerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testIfUnresolvedClassesAreCounted()
     {
         // Arrange
-        $classDescriptor1  = $this->givenAClassWithParent('phpDocumentor\Descriptor\ClassDescriptor');
+        $classDescriptor1 = $this->givenAClassWithParent('phpDocumentor\Descriptor\ClassDescriptor');
         $projectDescriptor = $this->givenAProjectMock();
-        $this->whenProjectDescriptorHasTheFollowingFiles($projectDescriptor, array());
+        $this->whenProjectDescriptorHasTheFollowingFiles($projectDescriptor, []);
         $this->whenProjectDescriptorHasTheFollowingElements(
             $projectDescriptor,
-            array(
+            [
                 'ds1' => $classDescriptor1,
                 'ds2' => $this->givenAClassWithParent($classDescriptor1),
-                'ds3' => $this->givenAnInterfaceWithParent('123')
-            )
+                'ds3' => $this->givenAnInterfaceWithParent('123'),
+            ]
         );
-        $this->whenProjectHasTheFollowingChildrenOfRootNamespace($projectDescriptor, array());
+        $this->whenProjectHasTheFollowingChildrenOfRootNamespace($projectDescriptor, []);
 
         // Act
         $this->fixture->analyze($projectDescriptor);
@@ -89,28 +89,28 @@ class ProjectAnalyzerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testIfVariousDescriptorTypesAreCounted()
     {
         // Arrange
-        $classDescriptor1  = $this->givenAClassWithParent('phpDocumentor\Descriptor\ClassDescriptor');
+        $classDescriptor1 = $this->givenAClassWithParent('phpDocumentor\Descriptor\ClassDescriptor');
         $projectDescriptor = $this->givenAProjectMock();
-        $this->whenProjectDescriptorHasTheFollowingFiles($projectDescriptor, array());
+        $this->whenProjectDescriptorHasTheFollowingFiles($projectDescriptor, []);
         $this->whenProjectDescriptorHasTheFollowingElements(
             $projectDescriptor,
-            array(
+            [
                 'ds1' => $classDescriptor1,
                 'ds2' => $this->givenAClassWithParent($classDescriptor1),
-                'ds3' => $this->givenAnInterfaceWithParent('123')
-            )
+                'ds3' => $this->givenAnInterfaceWithParent('123'),
+            ]
         );
-        $this->whenProjectHasTheFollowingChildrenOfRootNamespace($projectDescriptor, array());
+        $this->whenProjectHasTheFollowingChildrenOfRootNamespace($projectDescriptor, []);
 
         // Act
         $this->fixture->analyze($projectDescriptor);
 
         // Assert
         $this->assertAttributeSame(
-            array(
-                'phpDocumentor\Descriptor\ClassDescriptor'     => 2,
+            [
+                'phpDocumentor\Descriptor\ClassDescriptor' => 2,
                 'phpDocumentor\Descriptor\InterfaceDescriptor' => 1,
-            ),
+            ],
             'descriptorCountByType',
             $this->fixture
         );
@@ -122,18 +122,18 @@ class ProjectAnalyzerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testIfStringOutputContainsAllCounters()
     {
         // Arrange
-        $classDescriptor1  = $this->givenAClassWithParent('phpDocumentor\Descriptor\ClassDescriptor');
+        $classDescriptor1 = $this->givenAClassWithParent('phpDocumentor\Descriptor\ClassDescriptor');
         $projectDescriptor = $this->givenAProjectMock();
-        $this->whenProjectDescriptorHasTheFollowingFiles($projectDescriptor, array(1,2,3,4));
+        $this->whenProjectDescriptorHasTheFollowingFiles($projectDescriptor, [1, 2, 3, 4]);
         $this->whenProjectDescriptorHasTheFollowingElements(
             $projectDescriptor,
-            array(
+            [
                 'ds1' => $classDescriptor1,
                 'ds2' => $this->givenAClassWithParent($classDescriptor1),
-                'ds3' => $this->givenAnInterfaceWithParent('123')
-            )
+                'ds3' => $this->givenAnInterfaceWithParent('123'),
+            ]
         );
-        $this->whenProjectHasTheFollowingChildrenOfRootNamespace($projectDescriptor, array(1,2,3));
+        $this->whenProjectHasTheFollowingChildrenOfRootNamespace($projectDescriptor, [1, 2, 3]);
         $this->fixture->analyze($projectDescriptor);
 
         $expected = <<<TEXT
@@ -149,7 +149,6 @@ TEXT;
 
         // Act
         $result = (string) $this->fixture;
-
 
         // Assert
         $this->assertSame($expected, $result);
@@ -194,10 +193,7 @@ TEXT;
     /**
      * Ensures that the ProjectDescriptor contains and returns the provided files.
      *
-     * @param m\Mock|ProjectDescriptor $projectDescriptor
-     * @param array                    $files
-     *
-     * @return void
+     * @param m\Mock|\ProjectDescriptor $projectDescriptor
      */
     protected function whenProjectDescriptorHasTheFollowingFiles($projectDescriptor, array $files)
     {
@@ -207,10 +203,7 @@ TEXT;
     /**
      * Ensures that the ProjectDescriptor has an index 'elements' with the provided elements.
      *
-     * @param m\Mock|ProjectDescriptor $projectDescriptor
-     * @param array                    $elements
-     *
-     * @return void
+     * @param m\Mock|\ProjectDescriptor $projectDescriptor
      */
     protected function whenProjectDescriptorHasTheFollowingElements($projectDescriptor, array $elements)
     {
@@ -223,8 +216,6 @@ TEXT;
      *
      * @param m\Mock|ProjectDescriptor $projectDescriptor
      * @param array $rootNamespaceChildren
-     *
-     * @return void
      */
     protected function whenProjectHasTheFollowingChildrenOfRootNamespace($projectDescriptor, $rootNamespaceChildren)
     {

@@ -77,7 +77,6 @@ final class CacheMiddleware implements Middleware
     }
 
     /**
-     * @param CreateCommand $command
      * @param callable $next
      * @param Item $item
      * @return mixed

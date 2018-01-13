@@ -58,8 +58,6 @@ class FunctionAssembler extends AssemblerAbstract
      *
      * @param Function_  $reflector
      * @param FunctionDescriptor $descriptor
-     *
-     * @return void
      */
     protected function mapReflectorPropertiesOntoDescriptor($reflector, $descriptor)
     {
@@ -71,6 +69,7 @@ class FunctionAssembler extends AssemblerAbstract
             $tag->setDescription($package);
             $packages->add($tag);
         }
+
         $descriptor->getTags()->set('package', $packages);
 
         $descriptor->setFullyQualifiedStructuralElementName($reflector->getFqsen());
@@ -85,8 +84,6 @@ class FunctionAssembler extends AssemblerAbstract
      *
      * @param Argument[] $arguments
      * @param FunctionDescriptor                    $functionDescriptor
-     *
-     * @return void
      */
     protected function addArgumentsToFunctionDescriptor(array $arguments, $functionDescriptor)
     {
@@ -103,8 +100,6 @@ class FunctionAssembler extends AssemblerAbstract
      *
      * @param FunctionDescriptor $functionDescriptor
      * @param ArgumentDescriptor $argumentDescriptor
-     *
-     * @return void
      */
     protected function addArgumentDescriptorToFunction($functionDescriptor, $argumentDescriptor)
     {
@@ -114,14 +109,11 @@ class FunctionAssembler extends AssemblerAbstract
     /**
      * Creates a new ArgumentDescriptor from the given Reflector and Param.
      *
-     * @param FunctionDescriptor                  $functionDescriptor
-     * @param Argument $argument
-     *
      * @return ArgumentDescriptor
      */
     protected function createArgumentDescriptor(FunctionDescriptor $functionDescriptor, Argument $argument)
     {
-        $params = $functionDescriptor->getTags()->get('param', array());
+        $params = $functionDescriptor->getTags()->get('param', []);
 
         if (!$this->argumentAssembler->getBuilder()) {
             $this->argumentAssembler->setBuilder($this->builder);

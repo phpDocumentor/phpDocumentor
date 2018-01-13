@@ -34,7 +34,7 @@ class Factory
     protected $definition_factory = null;
 
     /** @var ConverterInterface[] */
-    protected $converters         = array();
+    protected $converters = [];
 
     /** @var Logger */
     protected $logger;
@@ -45,9 +45,7 @@ class Factory
      * A Definition\Factory may optionally be passed to provide an alternate method of creating Definitions or to
      * construct the Definition\Factory with a different Format\Collection to influence the possible options.
      *
-     * @param string[]                $converters
-     * @param Definition\Factory $definition_factory
-     * @param Logger                  $logger
+     * @param string[] $converters
      */
     public function __construct(array $converters, Definition\Factory $definition_factory, Logger $logger)
     {
@@ -75,11 +73,11 @@ class Factory
         $definition = $this->definition_factory->get($input_format, $output_format);
 
         foreach ($this->converters as $class => $formats) {
-            if (array($input_format, $output_format) == $formats) {
+            if ([$input_format, $output_format] === $formats) {
                 $assets = new Metadata\Assets();
                 $assets->setLogger($this->logger);
 
-                $toc      = new Metadata\TableOfContents();
+                $toc = new Metadata\TableOfContents();
                 $glossary = new Metadata\Glossary();
 
                 /** @var ConverterInterface $converter */
@@ -104,10 +102,10 @@ class Factory
      */
     public function getSupportedInputFormats($given_output_format)
     {
-        $result = array();
+        $result = [];
         foreach ($this->converters as $formats) {
             list($input_format, $output_format) = $formats;
-            if ($given_output_format == $output_format) {
+            if ($given_output_format === $output_format) {
                 $result[] = $input_format;
             }
         }
@@ -119,8 +117,6 @@ class Factory
      * Sets the converters for this Factory.
      *
      * @param ConverterInterface[] $converters
-     *
-     * @return void
      */
     public function setConverters(array $converters)
     {
@@ -143,10 +139,6 @@ class Factory
 
     /**
      * Sets the Definition Factory used to retrieve definitions from.
-     *
-     * @param Definition\Factory $definition_factory
-     *
-     * @return void
      */
     protected function setDefinitionFactory(Definition\Factory $definition_factory)
     {

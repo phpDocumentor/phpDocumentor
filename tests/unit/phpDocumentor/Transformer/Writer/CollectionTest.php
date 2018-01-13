@@ -12,10 +12,10 @@
 
 namespace phpDocumentor\Transformer\Writer;
 
-use Mockery\MockInterface;
 use Mockery as m;
-use phpDocumentor\Transformer\Router\Queue;
+use Mockery\MockInterface;
 use phpDocumentor\Plugin\Core\Transformer\Writer\Xsl;
+use phpDocumentor\Transformer\Router\Queue;
 
 /**
  * Test class for phpDocumentor\Transformer\Writer\Collection
@@ -30,6 +30,7 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
     /** @var Collection */
     protected $fixture;
+
     /**
      * Initializes the fixture and dependencies for this testcase.
      */
@@ -96,9 +97,9 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $this->assertSame($this->writer, $this->fixture->offsetGet('index'));
     }
 
-   /**
-    * @covers phpDocumentor\Transformer\Writer\Collection::checkRequirements
-    */
+    /**
+     * @covers phpDocumentor\Transformer\Writer\Collection::checkRequirements
+     */
     public function testCheckRequirements()
     {
         $this->registerWriter();

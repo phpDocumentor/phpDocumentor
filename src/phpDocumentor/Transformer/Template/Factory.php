@@ -27,12 +27,11 @@ class Factory
     /**
      * Constructs a new template factory with its dependencies.
      *
-     * @param PathResolver $pathResolver
-     * @param Serializer   $serializer   Serializer used to convert the XML files to models.
+     * @param Serializer $serializer Serializer used to convert the XML files to models.
      */
     public function __construct(PathResolver $pathResolver, Serializer $serializer)
     {
-        $this->serializer   = $serializer;
+        $this->serializer = $serializer;
         $this->pathResolver = $pathResolver;
     }
 
@@ -63,12 +62,12 @@ class Factory
         /** @var \RecursiveDirectoryIterator $files */
         $files = new \DirectoryIterator($this->getTemplatePath());
 
-        $template_names = array();
+        $template_names = [];
         while ($files->valid()) {
             $name = $files->getBasename();
 
             // skip abstract files
-            if (!$files->isDir() || in_array($name, array('.', '..'))) {
+            if (!$files->isDir() || in_array($name, ['.', '..'])) {
                 $files->next();
                 continue;
             }

@@ -56,14 +56,14 @@ class Template implements \ArrayAccess, \Countable, \Iterator
      * @Serializer\Type("array<phpDocumentor\Transformer\Transformation>")
      * @var Transformation[] A series of transformations to execute in sequence during transformation.
      */
-    protected $transformations = array();
+    protected $transformations = [];
 
     /**
      * @Serializer\XmlList(entry = "parameter")
      * @Serializer\Type("array<phpDocumentor\Transformer\Template\Parameter>")
      * @var Parameter[] Global parameters that are passed to each transformation.
      */
-    protected $parameters = array();
+    protected $parameters = [];
 
     /**
      * Initializes this object with a name and optionally with contents.
@@ -91,8 +91,6 @@ class Template implements \ArrayAccess, \Countable, \Iterator
      *
      * @param string $author Name of the author optionally including mail address
      *  between angle brackets.
-     *
-     * @return void
      */
     public function setAuthor($author)
     {
@@ -113,8 +111,6 @@ class Template implements \ArrayAccess, \Countable, \Iterator
      * Sets the copyright string for this template.
      *
      * @param string $copyright Free-form copyright notice.
-     *
-     * @return void
      */
     public function setCopyright($copyright)
     {
@@ -137,7 +133,6 @@ class Template implements \ArrayAccess, \Countable, \Iterator
      * @param string $version Semantic version number in this format: 1.0.0
      *
      * @throws \InvalidArgumentException if the version number is invalid
-     * @return void
      */
     public function setVersion($version)
     {
@@ -147,6 +142,7 @@ class Template implements \ArrayAccess, \Countable, \Iterator
                 . 'x.x.x (where x is a number)'
             );
         }
+
         $this->version = $version;
     }
 
@@ -165,8 +161,6 @@ class Template implements \ArrayAccess, \Countable, \Iterator
      *
      * @param string $description An unconstrained text field where the user can provide additional information
      *     regarding details of the template.
-     *
-     * @return void
      */
     public function setDescription($description)
     {
@@ -190,7 +184,6 @@ class Template implements \ArrayAccess, \Countable, \Iterator
      * @param Transformation $value  The transformation to add to this template.
      *
      * @throws \InvalidArgumentException if an invalid item was received
-     * @return void
      */
     public function offsetSet($offset, $value)
     {
@@ -222,8 +215,6 @@ class Template implements \ArrayAccess, \Countable, \Iterator
      * @param integer|string $offset Index of item to unset.
      *
      * @link http://php.net/manual/en/arrayaccess.offsetunset.php
-     *
-     * @return void
      */
     public function offsetUnset($offset)
     {
@@ -260,8 +251,6 @@ class Template implements \ArrayAccess, \Countable, \Iterator
      * Rewind the Iterator to the first element
      *
      * @link http://php.net/manual/en/iterator.rewind.php
-     *
-     * @return void
      */
     public function rewind()
     {
@@ -298,8 +287,6 @@ class Template implements \ArrayAccess, \Countable, \Iterator
      * Move forward to next element.
      *
      * @link http://php.net/manual/en/iterator.next.php
-     *
-     * @return void Any returned value is ignored.
      */
     public function next()
     {
@@ -333,8 +320,6 @@ class Template implements \ArrayAccess, \Countable, \Iterator
      *
      * @param string|integer $key
      * @param Parameter      $value
-     *
-     * @return void
      */
     public function setParameter($key, $value)
     {
@@ -343,8 +328,6 @@ class Template implements \ArrayAccess, \Countable, \Iterator
 
     /**
      * Pushes the parameters of this template into the transformations.
-     *
-     * @return void
      */
     public function propagateParameters()
     {

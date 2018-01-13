@@ -19,24 +19,22 @@ use phpDocumentor\Descriptor\ProjectDescriptor;
 class Collection extends BehaviourAbstract implements \Countable
 {
     /** @var BehaviourAbstract[] the list of behaviours that can be exposed using this collection */
-    protected $behaviours = array();
+    protected $behaviours = [];
 
     /**
      * Initializes the list of Behaviours to execute each request.
      *
      * @param BehaviourAbstract[] $behaviours  List of behaviours to process.
      */
-    public function __construct(array $behaviours = array())
+    public function __construct(array $behaviours = [])
     {
-        $this->behaviours  = $behaviours;
+        $this->behaviours = $behaviours;
     }
 
     /**
      * Adds a behaviour to a collection
      *
      * @param BehaviourAbstract $behaviour Behaviour to add to the collection.
-     *
-     * @return void
      */
     public function addBehaviour(BehaviourAbstract $behaviour)
     {
@@ -47,13 +45,11 @@ class Collection extends BehaviourAbstract implements \Countable
      * Removes a behaviour from the collection
      *
      * @param BehaviourAbstract $behaviour Behaviour to remove from the collection.
-     *
-     * @return void
      */
     public function removeBehaviour(BehaviourAbstract $behaviour)
     {
         foreach ($this->behaviours as $key => $thisBehaviour) {
-            if ($behaviour == $thisBehaviour) {
+            if ($behaviour === $thisBehaviour) {
                 unset($this->behaviours[$key]);
             }
         }
@@ -61,8 +57,6 @@ class Collection extends BehaviourAbstract implements \Countable
 
     /**
      * Executes the behaviour on the given object model,
-     *
-     * @param ProjectDescriptor $project
      *
      * @return ProjectDescriptor
      */

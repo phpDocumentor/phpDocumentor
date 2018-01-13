@@ -13,5 +13,4 @@ namespace phpDocumentor\Plugin\Scrybe\Converter;
 
 interface ToPdfInterface extends ToLatexInterface
 {
-
 }

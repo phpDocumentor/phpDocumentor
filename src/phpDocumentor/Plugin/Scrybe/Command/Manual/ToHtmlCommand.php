@@ -26,8 +26,6 @@ class ToHtmlCommand extends BaseConvertCommand
      * behaviour of the parent configure.
      *
      * @see ConvertCommandAbstract::configure() for the common business rules.
-     *
-     * @return void
      */
     protected function configure()
     {

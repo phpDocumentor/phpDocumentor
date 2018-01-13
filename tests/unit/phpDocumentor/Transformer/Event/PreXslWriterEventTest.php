@@ -23,7 +23,7 @@ class PreXslWriterEventTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     protected $element;
 
     /** @var int[] */
-    protected $progress = array(0, 0);
+    protected $progress = [0, 0];
 
     /**
      * Creates a new (empty) fixture object.
@@ -54,10 +54,10 @@ class PreXslWriterEventTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testSetAndGetProgress()
     {
-        $this->assertSame(array(0, 0), $this->fixture->getProgress());
+        $this->assertSame([0, 0], $this->fixture->getProgress());
 
-        $this->fixture->setProgress(array(1, 2));
+        $this->fixture->setProgress([1, 2]);
 
-        $this->assertSame(array(1, 2), $this->fixture->getProgress());
+        $this->assertSame([1, 2], $this->fixture->getProgress());
     }
 }

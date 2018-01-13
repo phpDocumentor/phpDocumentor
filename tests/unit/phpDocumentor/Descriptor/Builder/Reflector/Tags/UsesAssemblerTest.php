@@ -58,8 +58,8 @@ class UsesAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
         // Assert
         $this->assertSame($name, $descriptor->getName());
-        $this->assertSame($description, (string)$descriptor->getDescription());
-        $this->assertSame($reference, (string)$descriptor->getReference());
+        $this->assertSame($description, (string) $descriptor->getDescription());
+        $this->assertSame($reference, (string) $descriptor->getReference());
         $this->assertSame([], $descriptor->getErrors()->getAll());
     }
 

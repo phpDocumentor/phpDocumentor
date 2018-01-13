@@ -22,13 +22,13 @@ class Pathfinder
             $node = $this->walkObjectTree($object, $query);
 
             if (!is_array($node) && (!$node instanceof \Traversable)) {
-                $node = array($node);
+                $node = [$node];
             }
 
             return $node;
         }
 
-        return array($object);
+        return [$object];
     }
 
     /**
@@ -52,19 +52,19 @@ class Pathfinder
                     continue;
                 }
             } elseif (is_object($node)) {
-                if (isset($node->$pathNode) || (method_exists($node, '__get') && $node->$pathNode)) {
-                    $node = $node->$pathNode;
+                if (isset($node->{$pathNode}) || (method_exists($node, '__get') && $node->{$pathNode})) {
+                    $node = $node->{$pathNode};
                     continue;
                 } elseif (method_exists($node, $pathNode)) {
-                    $node = $node->$pathNode();
+                    $node = $node->{$pathNode}();
                     continue;
                 } elseif (method_exists($node, 'get' . $pathNode)) {
                     $pathNode = 'get' . $pathNode;
-                    $node = $node->$pathNode();
+                    $node = $node->{$pathNode}();
                     continue;
                 } elseif (method_exists($node, 'is' . $pathNode)) {
                     $pathNode = 'is' . $pathNode;
-                    $node = $node->$pathNode();
+                    $node = $node->{$pathNode}();
                     continue;
                 }
             }

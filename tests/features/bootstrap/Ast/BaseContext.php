@@ -12,7 +12,6 @@
 
 namespace phpDocumentor\Behat\Contexts\Ast;
 
-
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\FunctionDescriptor;
@@ -33,8 +32,7 @@ class BaseContext
 
     /**
      * @param string $classFqsen
-     * @return ClassDescriptor
-     * @throws \Exception
+     * @throws Exception
      */
     protected function findClassByFqsen($classFqsen): ClassDescriptor
     {
@@ -42,7 +40,7 @@ class BaseContext
         foreach ($ast->getFiles() as $file) {
             /** @var ClassDescriptor $classDescriptor */
             foreach ($file->getClasses() as $classDescriptor) {
-                if (((string)$classDescriptor->getFullyQualifiedStructuralElementName()) === $classFqsen) {
+                if (((string) $classDescriptor->getFullyQualifiedStructuralElementName()) === $classFqsen) {
                     return $classDescriptor;
                 }
             }
@@ -52,9 +50,7 @@ class BaseContext
     }
 
     /**
-     * @param string $fqsen
-     * @return FunctionDescriptor
-     * @throws \Exception
+     * @throws Exception
      */
     protected function findFunctionByFqsen(string $fqsen): FunctionDescriptor
     {
@@ -62,7 +58,7 @@ class BaseContext
         foreach ($ast->getFiles() as $file) {
             /** @var FunctionDescriptor $classDescriptor */
             foreach ($file->getFunctions() as $function) {
-                if ((string)$function->getFullyQualifiedStructuralElementName() === '\\' . $fqsen . '()') {
+                if ((string) $function->getFullyQualifiedStructuralElementName() === '\\' . $fqsen . '()') {
                     return $function;
                 }
             }

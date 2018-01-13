@@ -11,19 +11,6 @@
 
 namespace phpDocumentor\Plugin\Core\Transformer\Writer;
 
-use phpDocumentor\Descriptor\Validator\Error;
-use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\ArgumentConverter;
-use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\ConstantConverter;
-use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\DocBlockConverter;
-use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\InterfaceConverter;
-use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\MethodConverter;
-use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\PropertyConverter;
-use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\TagConverter;
-use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\TraitConverter;
-use phpDocumentor\Reflection\Fqsen;
-use phpDocumentor\Transformer\Router\RouterAbstract;
-use phpDocumentor\Transformer\Writer\WriterAbstract;
-use phpDocumentor\Transformer\Writer\Translatable;
 use phpDocumentor\Application;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\ConstantDescriptor;
@@ -32,6 +19,7 @@ use phpDocumentor\Descriptor\FunctionDescriptor;
 use phpDocumentor\Descriptor\InterfaceDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
+use phpDocumentor\Descriptor\Validator\Error;
 use phpDocumentor\Plugin\Core\Transformer\Behaviour\Tag\AuthorTag;
 use phpDocumentor\Plugin\Core\Transformer\Behaviour\Tag\CoversTag;
 use phpDocumentor\Plugin\Core\Transformer\Behaviour\Tag\IgnoreTag;
@@ -43,8 +31,19 @@ use phpDocumentor\Plugin\Core\Transformer\Behaviour\Tag\PropertyTag;
 use phpDocumentor\Plugin\Core\Transformer\Behaviour\Tag\ReturnTag;
 use phpDocumentor\Plugin\Core\Transformer\Behaviour\Tag\UsesTag;
 use phpDocumentor\Plugin\Core\Transformer\Behaviour\Tag\VarTag;
+use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\ArgumentConverter;
+use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\ConstantConverter;
+use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\DocBlockConverter;
+use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\InterfaceConverter;
+use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\MethodConverter;
+use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\PropertyConverter;
+use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\TagConverter;
+use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\TraitConverter;
+use phpDocumentor\Transformer\Router\RouterAbstract;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Transformer;
+use phpDocumentor\Transformer\Writer\Translatable;
+use phpDocumentor\Transformer\Writer\WriterAbstract;
 use phpDocumentor\Translator\Translator;
 
 /**
@@ -74,11 +73,11 @@ class Xml extends WriterAbstract implements Translatable
 
     public function __construct(RouterAbstract $router)
     {
-        $this->docBlockConverter  = new DocBlockConverter(new TagConverter(), $router);
-        $this->argumentConverter  = new ArgumentConverter();
-        $this->methodConverter    = new MethodConverter($this->argumentConverter, $this->docBlockConverter);
-        $this->propertyConverter  = new PropertyConverter($this->docBlockConverter);
-        $this->constantConverter  = new ConstantConverter($this->docBlockConverter);
+        $this->docBlockConverter = new DocBlockConverter(new TagConverter(), $router);
+        $this->argumentConverter = new ArgumentConverter();
+        $this->methodConverter = new MethodConverter($this->argumentConverter, $this->docBlockConverter);
+        $this->propertyConverter = new PropertyConverter($this->docBlockConverter);
+        $this->constantConverter = new ConstantConverter($this->docBlockConverter);
         $this->interfaceConverter = new InterfaceConverter(
             $this->docBlockConverter,
             $this->methodConverter,
@@ -103,10 +102,6 @@ class Xml extends WriterAbstract implements Translatable
 
     /**
      * Sets a new object capable of translating strings on this writer.
-     *
-     * @param Translator $translator
-     *
-     * @return void
      */
     public function setTranslator(Translator $translator)
     {
@@ -118,8 +113,6 @@ class Xml extends WriterAbstract implements Translatable
      *
      * @param ProjectDescriptor $project        Document containing the structure.
      * @param Transformation    $transformation Transformation to execute.
-     *
-     * @return void
      */
     public function transform(ProjectDescriptor $project, Transformation $transformation)
     {
@@ -249,8 +242,6 @@ class Xml extends WriterAbstract implements Translatable
      *
      * @param Error       $error
      * @param \DOMElement $parse_errors
-     *
-     * @return void
      */
     protected function createErrorEntry($error, $parse_errors)
     {
@@ -269,8 +260,6 @@ class Xml extends WriterAbstract implements Translatable
     /**
      * Retrieves the destination location for this artifact.
      *
-     * @param Transformation $transformation
-     *
      * @return string
      */
     protected function getDestinationPath(Transformation $transformation)
@@ -285,8 +274,6 @@ class Xml extends WriterAbstract implements Translatable
      * @param \DOMElement        $parent   Element to augment.
      * @param FunctionDescriptor $function Element to export.
      * @param \DOMElement        $child    if supplied this element will be augmented instead of freshly added.
-     *
-     * @return void
      */
     public function buildFunction(\DOMElement $parent, FunctionDescriptor $function, \DOMElement $child = null)
     {
@@ -327,8 +314,6 @@ class Xml extends WriterAbstract implements Translatable
      * @param ClassDescriptor $class  The data source.
      * @param \DOMElement     $child  Optional: child element to use instead of creating a
      *      new one on the $parent.
-     *
-     * @return void
      */
     public function buildClass(\DOMElement $parent, ClassDescriptor $class, \DOMElement $child = null)
     {
@@ -342,16 +327,16 @@ class Xml extends WriterAbstract implements Translatable
 
         if ($class->getParent() !== null) {
             $parentFqcn = $class->getParent() instanceof ClassDescriptor
-                ? (string)$class->getParent()->getFullyQualifiedStructuralElementName()
-                : (string)$class->getParent();
+                ? (string) $class->getParent()->getFullyQualifiedStructuralElementName()
+                : (string) $class->getParent();
             $child->appendChild(new \DOMElement('extends', $parentFqcn));
         }
 
         /** @var InterfaceDescriptor $interface */
         foreach ($class->getInterfaces() as $interface) {
             $interfaceFqcn = $interface instanceof InterfaceDescriptor
-                ? (string)$interface->getFullyQualifiedStructuralElementName()
-                : (string)$interface;
+                ? (string) $interface->getFullyQualifiedStructuralElementName()
+                : (string) $interface;
             $child->appendChild(new \DOMElement('implements', $interfaceFqcn));
         }
 
@@ -429,10 +414,6 @@ class Xml extends WriterAbstract implements Translatable
      * - Marker list
      * - Deprecated elements listing
      * - Removal of objects related to visibility
-     *
-     * @param ProjectDescriptor $projectDescriptor
-     *
-     * @return void
      */
     protected function finalize(ProjectDescriptor $projectDescriptor)
     {
@@ -472,15 +453,13 @@ class Xml extends WriterAbstract implements Translatable
      *
      * @param \DOMDocument $dom Packages are extracted and a summary inserted
      *     in this object.
-     *
-     * @return void
      */
     protected function buildPackageTree(\DOMDocument $dom)
     {
         $xpath = new \DOMXPath($dom);
-        $packages = array('global' => true);
+        $packages = ['global' => true];
         $qry = $xpath->query('//@package');
-        for ($i = 0; $i < $qry->length; $i++) {
+        for ($i = 0; $i < $qry->length; ++$i) {
             if (isset($packages[$qry->item($i)->nodeValue])) {
                 continue;
             }
@@ -498,15 +477,13 @@ class Xml extends WriterAbstract implements Translatable
      *
      * @param \DOMDocument $dom Namespaces are extracted and a summary inserted
      *     in this object.
-     *
-     * @return void
      */
     protected function buildNamespaceTree(\DOMDocument $dom)
     {
         $xpath = new \DOMXPath($dom);
-        $namespaces = array();
+        $namespaces = [];
         $qry = $xpath->query('//@namespace');
-        for ($i = 0; $i < $qry->length; $i++) {
+        for ($i = 0; $i < $qry->length; ++$i) {
             if (isset($namespaces[$qry->item($i)->nodeValue])) {
                 continue;
             }
@@ -522,8 +499,6 @@ class Xml extends WriterAbstract implements Translatable
      * Adds a node to the xml for deprecations and the count value
      *
      * @param \DOMDocument $dom Markers are extracted and a summary inserted in this object.
-     *
-     * @return void
      */
     protected function buildDeprecationList(\DOMDocument $dom)
     {
@@ -547,14 +522,14 @@ class Xml extends WriterAbstract implements Translatable
     {
         $xpath = new \DOMXPath($dom);
 
-        $query = '/project/file/markers/'.$marker.'|';
-        $query .= '/project/file/docblock/tag[@name="'.$marker.'"]|';
-        $query .= '/project/file/class/docblock/tag[@name="'.$marker.'"]|';
-        $query .= '/project/file/class/*/docblock/tag[@name="'.$marker.'"]|';
-        $query .= '/project/file/interface/docblock/tag[@name="'.$marker.'"]|';
-        $query .= '/project/file/interface/*/docblock/tag[@name="'.$marker.'"]|';
-        $query .= '/project/file/function/docblock/tag[@name="'.$marker.'"]|';
-        $query .= '/project/file/constant/docblock/tag[@name="'.$marker.'"]';
+        $query = '/project/file/markers/' . $marker . '|';
+        $query .= '/project/file/docblock/tag[@name="' . $marker . '"]|';
+        $query .= '/project/file/class/docblock/tag[@name="' . $marker . '"]|';
+        $query .= '/project/file/class/*/docblock/tag[@name="' . $marker . '"]|';
+        $query .= '/project/file/interface/docblock/tag[@name="' . $marker . '"]|';
+        $query .= '/project/file/interface/*/docblock/tag[@name="' . $marker . '"]|';
+        $query .= '/project/file/function/docblock/tag[@name="' . $marker . '"]|';
+        $query .= '/project/file/constant/docblock/tag[@name="' . $marker . '"]';
 
         $nodes = $xpath->query($query);
 
@@ -573,7 +548,7 @@ class Xml extends WriterAbstract implements Translatable
     {
         sort($namespaces);
 
-        $result = array();
+        $result = [];
         foreach ($namespaces as $namespace) {
             if (!$namespace) {
                 $namespace = 'global';
@@ -584,7 +559,7 @@ class Xml extends WriterAbstract implements Translatable
             $node = &$result;
             foreach ($namespace_list as $singular) {
                 if (!isset($node[$singular])) {
-                    $node[$singular] = array();
+                    $node[$singular] = [];
                 }
 
                 $node = &$node[$singular];
@@ -601,8 +576,6 @@ class Xml extends WriterAbstract implements Translatable
      * @param \DOMElement $parent_element the node to receive the children of
      *                                    the above list.
      * @param string      $node_name      the name of the summary element.
-     *
-     * @return void
      */
     protected function generateNamespaceElements($namespaces, $parent_element, $node_name = 'namespace')
     {
@@ -610,7 +583,7 @@ class Xml extends WriterAbstract implements Translatable
             $node = new \DOMElement($node_name);
             $parent_element->appendChild($node);
             $node->setAttribute('name', $name);
-            $fullName = $parent_element->nodeName == $node_name
+            $fullName = $parent_element->nodeName === $node_name
                 ? $parent_element->getAttribute('full_name') . '\\' . $name
                 : $name;
             $node->setAttribute('full_name', $fullName);

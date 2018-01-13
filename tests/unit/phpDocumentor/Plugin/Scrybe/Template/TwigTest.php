@@ -56,17 +56,17 @@ class TwigTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function provideTestNamesForSetName()
     {
-        return array(
-            array('1', true),
-            array('12', true),
-            array('123', false),
-            array('Abc1', false),
-            array('Abc-1', false),
-            array('Abc-_1', false),
-            array('Abc-_1!', true),
-            array('Abc-_1 ', true),
-            array(' Abc-_1', true),
-        );
+        return [
+            ['1', true],
+            ['12', true],
+            ['123', false],
+            ['Abc1', false],
+            ['Abc-1', false],
+            ['Abc-_1', false],
+            ['Abc-_1!', true],
+            ['Abc-_1 ', true],
+            [' Abc-_1', true],
+        ];
     }
 
     /**
@@ -104,15 +104,15 @@ class TwigTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function provideTestNamesForSetExtension()
     {
-        return array(
-            array('1', true),
-            array('12', false),
-            array('pdf', false),
-            array('html', false),
-            array('latex', true),
-            array('p-f', true),
-            array('p_f', true),
-        );
+        return [
+            ['1', true],
+            ['12', false],
+            ['pdf', false],
+            ['html', false],
+            ['latex', true],
+            ['p-f', true],
+            ['p_f', true],
+        ];
     }
 
     /**
@@ -174,8 +174,7 @@ class TwigTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         vfsStream::setup('root')
             ->addChild(vfsStream::newFile('default/layout.html.twig')
-            ->withContent('{{ contents }}')
-            );
+            ->withContent('{{ contents }}'));
 
         $fixture = new Twig('');
         $fixture->setPath('vfs://root');

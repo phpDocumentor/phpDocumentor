@@ -56,7 +56,7 @@ class Configuration
      * @Serializer\XmlList(entry = "item")
      * @Merger\Replace
      */
-    protected $markers = array('TODO', 'FIXME');
+    protected $markers = ['TODO', 'FIXME'];
 
     /**
      * @var string[] $extensions A list of supported file extensions used to limit the number of files to be
@@ -66,7 +66,7 @@ class Configuration
      * @Serializer\XmlList(entry = "extension")
      * @Merger\Replace
      */
-    protected $extensions = array('php', 'php3', 'phtml');
+    protected $extensions = ['php', 'php3', 'phtml'];
 
     /**
      * Returns the package name that will be given to elements when there is no `@package` tag defined or inherited.

@@ -26,40 +26,39 @@ class LicenseTag
      */
     public function process(\DOMDocument $xml)
     {
-        $licenseMap = array(
+        $licenseMap = [
             '#^\s*(GPL|GNU General Public License)((\s?v?|version)?2)\s*$#i'
                 => 'http://opensource.org/licenses/GPL-2.0',
             '#^\s*(GPL|GNU General Public License)((\s?v?|version)?3?)\s*$#i'
                 => 'http://opensource.org/licenses/GPL-3.0',
             '#^\s*(LGPL|GNU (Lesser|Library) (General Public License|GPL))'
-                .'((\s?v?|version)?2(\.1)?)\s*$#i'
+                . '((\s?v?|version)?2(\.1)?)\s*$#i'
                 => 'http://opensource.org/licenses/LGPL-2.1',
             '#^\s*(LGPL|GNU (Lesser|Library) (General Public License|GPL))'
-                .'((\s?v?|version)?3?)\s*$#i'
+                . '((\s?v?|version)?3?)\s*$#i'
                 => 'http://opensource.org/licenses/LGPL-3.0',
             '#^\s*((new |revised |modified |three-clause |3-clause )BSD'
-                .'( License)?)\s*$#i'
+                . '( License)?)\s*$#i'
                 => 'http://opensource.org/licenses/BSD-3-Clause',
             '#^\s*((simplified |two-clause |2-clause |Free)BSD)( License)?\s*$#i'
                 => 'http://opensource.org/licenses/BSD-2-Clause',
             '#^\s*MIT( License)?\s*$#i' => 'http://opensource.org/licenses/MIT',
-        );
+        ];
 
         $xpath = new \DOMXPath($xml);
         $nodes = $xpath->query('//tag[@name="license"]/@description');
 
         /** @var \DOMElement $node */
         foreach ($nodes as $node) {
-
             $license = $node->nodeValue;
 
             // FIXME: migrate to '#^' . PHPDOC::LINK_REGEX . '(\s+(?P<text>.+))
             // ?$#u' once that const exists
             if (preg_match(
                 '#^(?i)\b(?P<url>(?:https?://|www\d{0,3}\.|[a-z0-9.\-]+\.'
-                .'[a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+'
-                .'(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|'
-                .'[^\s`!()\[\]{};:\'".,<>?«»“”‘’]))(\s+(?P<text>.+))?$#u',
+                . '[a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+'
+                . '(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|'
+                . '[^\s`!()\[\]{};:\'".,<>?«»“”‘’]))(\s+(?P<text>.+))?$#u',
                 $license,
                 $matches
             )) {
@@ -67,6 +66,7 @@ class LicenseTag
                     // set text to URL if not present
                     $matches['text'] = $matches['url'];
                 }
+
                 /** @var \DOMElement $parentNode */
                 $parentNode = $node->parentNode;
                 $parentNode->setAttribute('link', $matches['url']);

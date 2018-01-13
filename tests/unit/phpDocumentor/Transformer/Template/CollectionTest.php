@@ -31,9 +31,9 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function setUp()
     {
-        $this->factoryMock          = m::mock('phpDocumentor\Transformer\Template\Factory');
+        $this->factoryMock = m::mock('phpDocumentor\Transformer\Template\Factory');
         $this->writerCollectionMock = m::mock('phpDocumentor\Transformer\Writer\Collection');
-        $this->fixture              = new Collection($this->factoryMock, $this->writerCollectionMock);
+        $this->fixture = new Collection($this->factoryMock, $this->writerCollectionMock);
     }
 
     /**
@@ -51,7 +51,7 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         // Arrange
         $templateName = 'default';
-        $template     = new Template($templateName);
+        $template = new Template($templateName);
         $this->factoryMock->shouldReceive('get')->with($templateName)->andReturn($template);
 
         // Act
@@ -88,15 +88,15 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $transformation1 = $this->givenAnEmptyTransformation();
         $transformation2 = $this->givenAnEmptyTransformation();
         $transformation3 = $this->givenAnEmptyTransformation();
-        $this->whenThereIsATemplateWithNameAndTransformations('template1', array($transformation1, $transformation2));
-        $this->whenThereIsATemplateWithNameAndTransformations('template2', array($transformation3));
+        $this->whenThereIsATemplateWithNameAndTransformations('template1', [$transformation1, $transformation2]);
+        $this->whenThereIsATemplateWithNameAndTransformations('template2', [$transformation3]);
 
         // Act
         $result = $this->fixture->getTransformations();
 
         // Assert
         $this->assertCount(3, $result);
-        $this->assertSame(array($transformation1, $transformation2, $transformation3), $result);
+        $this->assertSame([$transformation1, $transformation2, $transformation3], $result);
     }
 
     /**
@@ -114,8 +114,6 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      *
      * @param string           $name
      * @param Transformation[] $transformations
-     *
-     * @return void
      */
     protected function whenThereIsATemplateWithNameAndTransformations($name, array $transformations)
     {
@@ -123,6 +121,7 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         foreach ($transformations as $transformation) {
             $template[] = $transformation;
         }
+
         $this->fixture[$name] = $template;
     }
 }

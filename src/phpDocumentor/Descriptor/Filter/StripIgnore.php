@@ -25,8 +25,6 @@ class StripIgnore extends AbstractFilter
 
     /**
      * Initializes this filter with an instance of the builder to retrieve the latest ProjectDescriptor from.
-     *
-     * @param ProjectDescriptorBuilder $builder
      */
     public function __construct(ProjectDescriptorBuilder $builder)
     {
@@ -42,7 +40,7 @@ class StripIgnore extends AbstractFilter
      */
     public function filter($value)
     {
-        if (!is_null($value) && $value->getTags()->get('ignore')) {
+        if ($value !== null && $value->getTags()->get('ignore')) {
             return null;
         }
 

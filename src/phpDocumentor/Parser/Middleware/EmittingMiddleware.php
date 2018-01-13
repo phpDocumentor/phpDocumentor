@@ -18,13 +18,10 @@ use phpDocumentor\Reflection\Middleware\Middleware;
 
 final class EmittingMiddleware implements Middleware
 {
-
     /**
      * Executes this middle ware class.
      *
-     * @param $command
      * @param callable $next
-     *
      * @return object
      */
     public function execute($command, callable $next)

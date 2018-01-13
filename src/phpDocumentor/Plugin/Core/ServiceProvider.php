@@ -12,11 +12,11 @@
 namespace phpDocumentor\Plugin\Core;
 
 use Cilex\Application;
-use Pimple\Container;
-use Pimple\ServiceProviderInterface;
-use phpDocumentor\Translator\Translator;
 use phpDocumentor\Plugin\Core\Transformer\Writer;
 use phpDocumentor\Transformer\Writer\Collection;
+use phpDocumentor\Translator\Translator;
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 
 /**
  * Register all services and subservices necessary to get phpDocumentor up and running.
@@ -31,8 +31,6 @@ final class ServiceProvider implements ServiceProviderInterface
      * Registers services on the given app.
      *
      * @param Container $app An Application instance.
-     *
-     * @return void
      */
     public function register(Container $app)
     {
@@ -48,10 +46,6 @@ final class ServiceProvider implements ServiceProviderInterface
      * Creates all writers for this plugin and adds them to the WriterCollection object.
      *
      * This action will enable transformations in templates to make use of these writers.
-     *
-     * @param Application $app
-     *
-     * @return void
      */
     private function registerWriters(Application $app)
     {
@@ -70,10 +64,6 @@ final class ServiceProvider implements ServiceProviderInterface
 
     /**
      * Registers the Messages folder in this plugin as a source of translations.
-     *
-     * @param Application $app
-     *
-     * @return void
      */
     private function registerTranslationMessages(Application $app)
     {
@@ -88,10 +78,6 @@ final class ServiceProvider implements ServiceProviderInterface
      * static methods in a class because you cannot inject an object into an XSL processor.
      *
      * With this method we make sure that all dependencies used by the static methods are injected as static properties.
-     *
-     * @param Application $app
-     *
-     * @return void
      */
     private function registerDependenciesOnXsltExtension(Application $app)
     {
@@ -102,8 +88,6 @@ final class ServiceProvider implements ServiceProviderInterface
     /**
      * Returns the Translator service from the Service Locator.
      *
-     * @param Application $app
-     *
      * @return Translator
      */
     private function getTranslator(Application $app)
@@ -113,8 +97,6 @@ final class ServiceProvider implements ServiceProviderInterface
 
     /**
      * Returns the WriterCollection service from the Service Locator.
-     *
-     * @param Application $app
      *
      * @return Collection
      */

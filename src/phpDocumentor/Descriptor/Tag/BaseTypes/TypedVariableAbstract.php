@@ -33,8 +33,6 @@ abstract class TypedVariableAbstract extends TypedAbstract
      * Sets the variable name on this descriptor.
      *
      * @param string $variableName
-     *
-     * @return void
      */
     public function setVariableName($variableName)
     {

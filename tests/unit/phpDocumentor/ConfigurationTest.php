@@ -50,7 +50,7 @@ class ConfigurationTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testIfPluginsAreReturned()
     {
         // Arrange
-        $expected = array(new Plugin('className'));
+        $expected = [new Plugin('className')];
 
         $property = new \ReflectionProperty('phpDocumentor\Configuration', 'plugins');
         $property->setAccessible(true);
@@ -67,7 +67,7 @@ class ConfigurationTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testIfPartialsAreReturned()
     {
         // Arrange
-        $expected = array(new Partial());
+        $expected = [new Partial()];
 
         $property = new \ReflectionProperty('phpDocumentor\Configuration', 'partials');
         $property->setAccessible(true);

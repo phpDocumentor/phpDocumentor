@@ -42,6 +42,5 @@ class ReturnDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $result = $this->fixture->getTypes();
 
         $this->assertEquals($expected, $result);
-
     }
 }

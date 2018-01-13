@@ -27,17 +27,15 @@ class MethodConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * Tests whether the XML Element representing a method is properly created.
      *
      * @covers phpDocumentor\Plugin\Core\Transformer\Writer\Xml\MethodConverter::convert
-     *
-     * @return void
      */
     public function testMethodXmlElementIsCreated()
     {
         // Arrange
-        $parent             = $this->prepareParentXMLElement();
+        $parent = $this->prepareParentXMLElement();
         $parent->setAttribute('namespace', 'phpDocumentor');
         $argumentDescriptor = m::mock('phpDocumentor\Descriptor\ArgumentDescriptor');
-        $method             = $this->createMethodDescriptorMock();
-        $method->shouldReceive('getArguments')->andReturn(array($argumentDescriptor));
+        $method = $this->createMethodDescriptorMock();
+        $method->shouldReceive('getArguments')->andReturn([$argumentDescriptor]);
         $methodConverter = $this->createFixture($method, $argumentDescriptor);
 
         // Act
@@ -61,17 +59,15 @@ class MethodConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * Tests whether the XML Element representing a method is properly created.
      *
      * @covers phpDocumentor\Plugin\Core\Transformer\Writer\Xml\MethodConverter::convert
-     *
-     * @return void
      */
     public function testNamespaceNameIsTakenFromNamespaceDescriptorIfPresent()
     {
         // Arrange
-        $parent              = $this->prepareParentXMLElement();
+        $parent = $this->prepareParentXMLElement();
         $namespaceDescriptor = m::mock('phpDocumentor\Descriptor\NamespaceDescriptor');
         $namespaceDescriptor->shouldReceive('getFullyQualifiedStructuralElementName')->andReturn('MySpace');
-        $method              = $this->createMethodDescriptorMock();
-        $method->shouldReceive('getArguments')->andReturn(array());
+        $method = $this->createMethodDescriptorMock();
+        $method->shouldReceive('getArguments')->andReturn([]);
         $method->shouldReceive('getNamespace')->andReturn($namespaceDescriptor);
         $methodConverter = $this->createFixture($method);
 
@@ -90,7 +86,7 @@ class MethodConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     protected function prepareParentXMLElement()
     {
         $document = new \DOMDocument();
-        $parent   = new \DOMElement('class');
+        $parent = new \DOMElement('class');
         $document->appendChild($parent);
 
         return $parent;
@@ -118,9 +114,6 @@ class MethodConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
     /**
      * Creates the MethodConverter fixture with a DocBlock and ArgumentConverter mock.
-     *
-     * @param MethodDescriptor $method
-     * @param ArgumentDescriptor $argumentDescriptor
      *
      * @return MethodConverter
      */

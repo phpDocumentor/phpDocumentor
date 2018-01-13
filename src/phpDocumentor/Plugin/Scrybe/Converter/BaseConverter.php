@@ -23,7 +23,7 @@ abstract class BaseConverter implements ConverterInterface
     protected $definition = null;
 
     /** @var string[] */
-    protected $options = array();
+    protected $options = [];
 
     /** @var Collection */
     protected $fileset;
@@ -42,8 +42,6 @@ abstract class BaseConverter implements ConverterInterface
 
     /**
      * Initializes this converter and sets the definition.
-     *
-     * @param Definition\Definition $definition
      */
     public function __construct(
         Definition\Definition $definition,
@@ -52,17 +50,13 @@ abstract class BaseConverter implements ConverterInterface
         Metadata\Glossary $glossary
     ) {
         $this->definition = $definition;
-        $this->assets     = $assets;
-        $this->toc        = $tableOfContents;
-        $this->glossary   = $glossary;
+        $this->assets = $assets;
+        $this->toc = $tableOfContents;
+        $this->glossary = $glossary;
     }
 
     /**
      * Set a logger for this converter.
-     *
-     * @param Logger $logger
-     *
-     * @return void
      */
     public function setLogger(Logger $logger)
     {
@@ -116,8 +110,6 @@ abstract class BaseConverter implements ConverterInterface
      *
      * @param string $name
      * @param string $value
-     *
-     * @return void
      */
     public function setOption($name, $value)
     {
@@ -139,8 +131,6 @@ abstract class BaseConverter implements ConverterInterface
 
     /**
      * Configures and initializes the subcomponents specific to this converter.
-     *
-     * @return void
      */
     public function configure()
     {
@@ -158,8 +148,6 @@ abstract class BaseConverter implements ConverterInterface
      *
      * @see manual://extending#build_cycle for more information regarding the
      *     build process.
-     *
-     * @return void
      */
     abstract protected function discover();
 
@@ -173,13 +161,10 @@ abstract class BaseConverter implements ConverterInterface
      * The template is used to decorate the individual files and can be obtained
      * using the `\phpDocumentor\Plugin\Scrybe\Template\Factory` class.
      *
-     * @param TemplateInterface $template
-     *
      * @see manual://extending#build_cycle for more information regarding the
-     *     build process.
-     *
+     * build process.
      * @return string[]|null The contents of the resulting file(s) or null if
-     *     the files are written directly to file.
+     * the files are written directly to file.
      */
     abstract protected function create(TemplateInterface $template);
 
@@ -197,7 +182,7 @@ abstract class BaseConverter implements ConverterInterface
      */
     public function convert(Collection $source, TemplateInterface $template)
     {
-        $this->fileset      = $source;
+        $this->fileset = $source;
         $this->assets->setProjectRoot($this->fileset->getProjectRoot());
 
         $template->setExtension(current($this->definition->getOutputFormat()->getExtensions()));
@@ -215,8 +200,6 @@ abstract class BaseConverter implements ConverterInterface
      * Adds the assets of the template to the Assets manager.
      *
      * @param TemplateInterface $template
-     *
-     * @return void
      */
     protected function addTemplateAssets($template)
     {
@@ -229,8 +212,6 @@ abstract class BaseConverter implements ConverterInterface
     /**
      * Returns the filename used for the output path.
      *
-     * @param File $file
-     *
      * @return string
      */
     protected function getDestinationFilename(File $file)
@@ -240,8 +221,6 @@ abstract class BaseConverter implements ConverterInterface
 
     /**
      * Returns the filename relative to the Project Root of the fileset.
-     *
-     * @param File $file
      *
      * @return string
      */

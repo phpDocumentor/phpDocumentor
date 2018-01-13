@@ -85,7 +85,6 @@ class Extension
     }
 
     /**
-     *
      * Example usage inside template would be (where @link is an attribute called link):
      *
      * ```
@@ -103,9 +102,8 @@ class Extension
 
         if (!self::getDocumentedElement($link) && filter_var($link, FILTER_VALIDATE_URL)) {
             return 'url';
-        } else {
-            return 'undocumented';
         }
+        return 'undocumented';
     }
 
     /**

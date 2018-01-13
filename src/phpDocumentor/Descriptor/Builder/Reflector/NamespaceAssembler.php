@@ -31,7 +31,7 @@ final class NamespaceAssembler extends AssemblerAbstract
         $descriptor = new NamespaceDescriptor();
         $descriptor->setName($data->getName());
         $descriptor->setFullyQualifiedStructuralElementName($data->getFqsen());
-        $namespace = substr($data->getFqsen(), 0, -strlen($data->getName())-1);
+        $namespace = substr($data->getFqsen(), 0, -strlen($data->getName()) - 1);
         $descriptor->setNamespace($namespace === '' ? '\\' : $namespace);
 
         return $descriptor;

@@ -14,9 +14,14 @@ namespace phpDocumentor\Plugin\Scrybe\Template;
 interface TemplateInterface
 {
     public function __construct($templatePath);
+
     public function setName($name);
+
     public function setPath($path);
+
     public function setExtension($extension);
-    public function decorate($contents, array $options = array());
+
+    public function decorate($contents, array $options = []);
+
     public function getAssets();
 }

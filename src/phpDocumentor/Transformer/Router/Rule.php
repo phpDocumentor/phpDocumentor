@@ -33,7 +33,7 @@ class Rule
      */
     public function __construct($matcher, $generator)
     {
-        $this->matcher   = $matcher;
+        $this->matcher = $matcher;
         $this->generator = $generator;
     }
 
@@ -91,18 +91,19 @@ class Rule
 
         foreach ($iso88591Path as &$part) {
             // identify and skip schemes
-            if (substr($part, -1) == ':') {
+            if (substr($part, -1) === ':') {
                 continue;
             }
 
             // only encode and transliterate that which comes before the anchor
             $subparts = explode('#', $part);
-            
+
             if (extension_loaded('iconv')) {
                 $subparts[0] = iconv('UTF-8', 'ASCII//TRANSLIT', $subparts[0]);
             }
+
             $subparts[0] = urlencode($subparts[0]);
-            
+
             $part = implode('#', $subparts);
         }
 

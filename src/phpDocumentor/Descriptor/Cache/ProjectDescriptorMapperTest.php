@@ -2,11 +2,11 @@
 
 namespace phpDocumentor\Descriptor\Cache;
 
+use Mockery as m;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use PHPUnit\Framework\TestCase;
 use Zend\Cache\Storage\Adapter\Memory;
 use Zend\Cache\Storage\StorageInterface;
-use Mockery as m;
 
 /**
  * @coversDefaultClass \phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper

@@ -22,8 +22,6 @@ interface InterfaceInterface extends ElementInterface, ChildInterface, TypeInter
      * Sets the constants associated with this interface.
      *
      * @param Collection $constants
-     *
-     * @return void
      */
     public function setConstants(Collection $constants);
 
@@ -38,8 +36,6 @@ interface InterfaceInterface extends ElementInterface, ChildInterface, TypeInter
      * Sets the methods belonging to this interface.
      *
      * @param Collection $methods
-     *
-     * @return void
      */
     public function setMethods(Collection $methods);
 

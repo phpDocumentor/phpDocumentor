@@ -26,8 +26,6 @@ class ConstantConverter
 
     /**
      * Initializes this converter with the DocBlock converter.
-     *
-     * @param DocBlockConverter $docBlockConverter
      */
     public function __construct(DocBlockConverter $docBlockConverter)
     {

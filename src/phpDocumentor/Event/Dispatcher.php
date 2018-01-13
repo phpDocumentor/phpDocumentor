@@ -27,7 +27,7 @@ use Symfony\Component\EventDispatcher\Event;
 class Dispatcher extends Symfony\EventDispatcher
 {
     /** @var Dispatcher[] Keep track of an array of instances. */
-    protected static $instances = array();
+    protected static $instances = [];
 
     /**
      * Override constructor to make this singleton.
@@ -58,8 +58,6 @@ class Dispatcher extends Symfony\EventDispatcher
      *
      * @param string     $name
      * @param Dispatcher $instance
-     *
-     * @return void
      */
     public static function setInstance($name, self $instance)
     {
@@ -74,10 +72,7 @@ class Dispatcher extends Symfony\EventDispatcher
      * and that the dispatch signature must remain intact.
      *
      * @param string $eventName
-     * @param Event  $event
-     *
      * @codeCoverageIgnore Untestable and not really necessary
-     *
      * @return EventAbstract
      */
     public function dispatch($eventName, Event $event = null)
@@ -93,8 +88,6 @@ class Dispatcher extends Symfony\EventDispatcher
      * @param int      $priority
      *
      * @codeCoverageIgnore Untestable and not really necessary
-     *
-     * @return void
      */
     public function addListener($eventName, $listener, $priority = 0)
     {

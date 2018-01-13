@@ -41,7 +41,7 @@ class Configuration
      * @Serializer\Type("array<phpDocumentor\Transformer\Configuration\ExternalClassDocumentation>")
      * @Serializer\SerializedName("external-class-documentation")
      */
-    protected $externalClassDocumentation = array();
+    protected $externalClassDocumentation = [];
 
     /**
      * Returns the location where the output of the parser is located.
@@ -60,8 +60,6 @@ class Configuration
      * setting in the configuration of the parser and then, by using this method, be set.
      *
      * @param string $source
-     *
-     * @return void
      */
     public function setSource($source)
     {
@@ -92,8 +90,6 @@ class Configuration
      * Sets references to external documentation sites for classes not found in the parsed contents.
      *
      * @param Configuration\ExternalClassDocumentation[] $externalClassDocumentation
-     *
-     * @return void
      */
     public function setExternalClassDocumentation(array $externalClassDocumentation)
     {

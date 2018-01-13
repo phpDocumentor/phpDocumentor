@@ -25,16 +25,13 @@ final class ReturnTag
 
     public function getReturnWithoutAny()
     {
-
     }
 
     /**
-     *
      * @return string some value
      */
     public function getReturnDescription()
     {
-
     }
 }
 
@@ -51,14 +48,11 @@ function getReturnWithDefinedReturn(): string
 
 function getReturnWithoutAny()
 {
-
 }
 
 /**
- *
  * @return string some value
  */
 function getReturnDescription()
 {
-
 }

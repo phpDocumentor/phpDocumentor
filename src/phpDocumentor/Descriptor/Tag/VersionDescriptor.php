@@ -35,8 +35,6 @@ class VersionDescriptor extends TagDescriptor
      * Sets the version for the associated element.
      *
      * @param string $version
-     *
-     * @return void
      */
     public function setVersion($version)
     {

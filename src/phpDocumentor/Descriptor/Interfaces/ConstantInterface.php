@@ -11,7 +11,6 @@
 
 namespace phpDocumentor\Descriptor\Interfaces;
 
-use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Reflection\Type;
 
 /**
@@ -23,8 +22,6 @@ interface ConstantInterface extends ElementInterface, TypeInterface
      * Sets the types that this constant may contain.
      *
      * @param Type $types
-     *
-     * @return void
      */
     public function setTypes(Type $types);
 
@@ -39,8 +36,6 @@ interface ConstantInterface extends ElementInterface, TypeInterface
      * Sets the value representation for this constant.
      *
      * @param string $value
-     *
-     * @return void
      */
     public function setValue($value);
 

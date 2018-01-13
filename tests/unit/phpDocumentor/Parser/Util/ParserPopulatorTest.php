@@ -1,4 +1,5 @@
 <?php
+
 namespace phpDocumentor\Parser\Util;
 
 use Mockery as m;
@@ -13,7 +14,7 @@ class ParserPopulatorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
         $populator = new ParserPopulator();
         $input->shouldReceive('getOption')->with('force')->andReturn('force');
-        $ignoredTags = array('ignored-tags');
+        $ignoredTags = ['ignored-tags'];
         $input->shouldReceive('getOption')->with('ignore-tags')->andReturn($ignoredTags);
         $input->shouldReceive('getOption')->with('validate')->andReturn('validate');
 
@@ -22,12 +23,12 @@ class ParserPopulatorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
             'encoding',
             'parser/encoding'
         )->once()->andReturn('encoding');
-        $markers = array('markers');
+        $markers = ['markers'];
         $configurationHelper->shouldReceive('getOption')->with(
             $input,
             'markers',
             'parser/markers',
-            array('TODO', 'FIXME'),
+            ['TODO', 'FIXME'],
             true
         )->once()->andReturn($markers);
         $configurationHelper->shouldReceive('getOption')->with(

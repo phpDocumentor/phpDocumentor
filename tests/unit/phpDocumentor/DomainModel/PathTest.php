@@ -21,22 +21,20 @@ use PHPUnit\Framework\TestCase;
 final class PathTest extends TestCase
 {
     /**
-     * @test
      * @covers ::__construct
      * @covers ::__toString
      */
-    public function itCanContainALocationOnAStorageService()
+    public function testItCanContainALocationOnAStorageService()
     {
         $path = new Path('/my/Path');
 
-        $this->assertSame('/my/Path', (string)$path);
+        $this->assertSame('/my/Path', (string) $path);
     }
 
     /**
-     * @test
      * @covers ::equals
      */
-    public function itCanCompareItselfToAnotherPath()
+    public function testItCanCompareItselfToAnotherPath()
     {
         $subject = new Path('a');
         $similar = new Path('a');

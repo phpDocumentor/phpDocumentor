@@ -41,16 +41,16 @@ class CoversTag
             if (isset($refers_array[1])) {
                 // starts with $ = property, ends with () = method,
                 // otherwise constant
-                $type = $refers_array[1][0] == '$' ? 'property' : 'constant';
-                $type = substr($refers_array[1], -2) == '()' ? 'method' : $type;
+                $type = $refers_array[1][0] === '$' ? 'property' : 'constant';
+                $type = substr($refers_array[1], -2) === '()' ? 'method' : $type;
             }
 
             switch ($type) {
                 case 'class':
                     // escape single quotes in the class name
-                    $xpath_refers = 'concat(\''.str_replace(
-                        array("'", '"'),
-                        array('\', "\'", \'', '\', \'"\' , \''),
+                    $xpath_refers = 'concat(\'' . str_replace(
+                        ["'", '"'],
+                        ['\', "\'", \'', '\', \'"\' , \''],
                         $refers
                     ) . "', '')";
 
@@ -60,21 +60,21 @@ class CoversTag
                     $class_name = $refers_array[0];
 
                     // escape single quotes in the class name
-                    $xpath_class_name = 'concat(\''.str_replace(
-                        array("'", '"'),
-                        array('\', "\'", \'', '\', \'"\' , \''),
+                    $xpath_class_name = 'concat(\'' . str_replace(
+                        ["'", '"'],
+                        ['\', "\'", \'', '\', \'"\' , \''],
                         $class_name
                     ) . "', '')";
 
                     // escape single quotes in the method name
-                    $xpath_method_name = 'concat(\''.str_replace(
-                        array("'", '"'),
-                        array('\', "\'", \'', '\', \'"\' , \''),
+                    $xpath_method_name = 'concat(\'' . str_replace(
+                        ["'", '"'],
+                        ['\', "\'", \'', '\', \'"\' , \''],
                         rtrim($refers_array[1], '()')
                     ) . "', '')";
 
                     $qry = '/project/file/class[full_name=' . $xpath_class_name
-                        . ']/'.$type.'[name=' . $xpath_method_name .']';
+                        . ']/' . $type . '[name=' . $xpath_method_name . ']';
                     break;
             }
 
@@ -99,7 +99,7 @@ class CoversTag
 
             // if there is one matching element; link them together
             if ($referral_nodes->length > 0) {
-                /** @var \DOMElement $referral  */
+                /** @var \DOMElement $referral */
                 $referral = $referral_nodes->item(0);
                 $docblock = $referral->getElementsByTagName('docblock');
                 if ($docblock->length < 1) {
@@ -116,7 +116,7 @@ class CoversTag
 
                 // gather the name of the referring element and set that as refers
                 // attribute
-                if ($node->parentNode->parentNode->nodeName == 'class') {
+                if ($node->parentNode->parentNode->nodeName === 'class') {
                     // if the element where the @covers is in is a class; nothing
                     // more than the class name need to returned
 
@@ -125,9 +125,8 @@ class CoversTag
                     $referral_name = $grandParentNode
                         ->getElementsByTagName('full_name')->item(0)->nodeValue;
                 } else {
-
                     $referral_class_name = null;
-                    if ($node->parentNode->parentNode->nodeName == 'method') {
+                    if ($node->parentNode->parentNode->nodeName === 'method') {
                         // gather the name of the class where the @covers is in
 
                         /** @var \DOMElement $greatGrandParentNode */
@@ -146,8 +145,8 @@ class CoversTag
                         ->getElementsByTagName('name')->item(0)->nodeValue;
 
                     // if it is a method; suffix with ()
-                    if ($node->parentNode->parentNode->nodeName == 'method'
-                        || $node->parentNode->parentNode->nodeName == 'function'
+                    if ($node->parentNode->parentNode->nodeName === 'method'
+                        || $node->parentNode->parentNode->nodeName === 'function'
                     ) {
                         $referral_name .= '()';
                     }

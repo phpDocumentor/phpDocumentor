@@ -24,8 +24,6 @@ class ConfigurationHelper extends Helper
 
     /**
      * Initializes this helper and registers the application configuration on it.
-     *
-     * @param Configuration $configuration
      */
     public function __construct(Configuration $configuration)
     {
@@ -75,7 +73,7 @@ class ConfigurationHelper extends Helper
 
         // use default if value is still null
         if ($this->valueIsEmpty($value)) {
-            return (is_array($value) && $default === null) ? array() : $default;
+            return (is_array($value) && $default === null) ? [] : $default;
         }
 
         return $commaSeparated
@@ -92,7 +90,7 @@ class ConfigurationHelper extends Helper
      */
     protected function splitCommaSeparatedValues($value)
     {
-        if (!is_array($value) || (count($value) == 1) && is_string(current($value))) {
+        if (!is_array($value) || (count($value) === 1) && is_string(current($value))) {
             $value = (array) $value;
             $value = explode(',', $value[0]);
         }

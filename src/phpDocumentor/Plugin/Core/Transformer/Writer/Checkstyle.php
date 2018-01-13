@@ -39,10 +39,6 @@ class Checkstyle extends WriterAbstract implements Translatable
 
     /**
      * Sets a new object capable of translating strings on this writer.
-     *
-     * @param Translator $translator
-     *
-     * @return void
      */
     public function setTranslator(Translator $translator)
     {
@@ -54,8 +50,6 @@ class Checkstyle extends WriterAbstract implements Translatable
      *
      * @param ProjectDescriptor $project        Document containing the structure.
      * @param Transformation    $transformation Transformation to execute.
-     *
-     * @return void
      */
     public function transform(ProjectDescriptor $project, Transformation $transformation)
     {
@@ -84,7 +78,7 @@ class Checkstyle extends WriterAbstract implements Translatable
                     'message',
                     vsprintf($this->getTranslator()->translate($error->getCode()), $error->getContext())
                 );
-                $item->setAttribute('source', 'phpDocumentor.file.'.$error->getCode());
+                $item->setAttribute('source', 'phpDocumentor.file.' . $error->getCode());
                 $file->appendChild($item);
             }
         }
@@ -94,8 +88,6 @@ class Checkstyle extends WriterAbstract implements Translatable
 
     /**
      * Retrieves the destination location for this artifact.
-     *
-     * @param \phpDocumentor\Transformer\Transformation $transformation
      *
      * @return string
      */
@@ -112,8 +104,6 @@ class Checkstyle extends WriterAbstract implements Translatable
      *
      * @param string       $artifact Target name for the report
      * @param \DOMDocument $document The actual xml document being saved
-     *
-     * @return void
      */
     protected function saveCheckstyleReport($artifact, \DOMDocument $document)
     {

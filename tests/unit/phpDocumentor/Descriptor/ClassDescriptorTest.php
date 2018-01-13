@@ -147,15 +147,15 @@ class ClassDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testRetrievingInheritedMethodsReturnsCollectionWithParent()
     {
         $mock = m::mock('phpDocumentor\Descriptor\ClassDescriptor');
-        $mock->shouldReceive('getMethods')->andReturn(new Collection(array('methods')));
-        $mock->shouldReceive('getInheritedMethods')->andReturn(new Collection(array('inherited')));
+        $mock->shouldReceive('getMethods')->andReturn(new Collection(['methods']));
+        $mock->shouldReceive('getInheritedMethods')->andReturn(new Collection(['inherited']));
 
         $this->fixture->setParent($mock);
         $result = $this->fixture->getInheritedMethods();
 
         $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $result);
 
-        $expected = array('methods', 'inherited');
+        $expected = ['methods', 'inherited'];
         $this->assertSame($expected, $result->getAll());
     }
 
@@ -165,10 +165,10 @@ class ClassDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testRetrievingInheritedMethodsReturnsTraitMethods()
     {
         // Arrange
-        $expected = array('methods');
+        $expected = ['methods'];
         $traitDescriptorMock = m::mock('phpDocumentor\Descriptor\TraitDescriptor');
-        $traitDescriptorMock->shouldReceive('getMethods')->andReturn(new Collection(array('methods')));
-        $this->fixture->setUsedTraits(new Collection(array($traitDescriptorMock)));
+        $traitDescriptorMock->shouldReceive('getMethods')->andReturn(new Collection(['methods']));
+        $this->fixture->setUsedTraits(new Collection([$traitDescriptorMock]));
 
         // Act
         $result = $this->fixture->getInheritedMethods();
@@ -185,9 +185,9 @@ class ClassDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testRetrievingInheritedMethodsDoesNotCrashWhenUsedTraitIsNotInProject()
     {
         // Arrange
-        $expected = array();
+        $expected = [];
         // unknown traits are not converted to TraitDescriptors but kept as strings
-        $this->fixture->setUsedTraits(new Collection(array('unknownTrait')));
+        $this->fixture->setUsedTraits(new Collection(['unknownTrait']));
 
         // Act
         $result = $this->fixture->getInheritedMethods();
@@ -229,8 +229,8 @@ class ClassDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testGetMagicPropertiesUsingPropertyTags()
     {
         $variableName = 'variableName';
-        $description  = 'description';
-        $types        = new Collection(array('string'));
+        $description = 'description';
+        $types = new Collection(['string']);
 
         $this->assertEquals(0, $this->fixture->getMagicProperties()->count());
 
@@ -252,7 +252,7 @@ class ClassDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $this->assertEquals(new String_(), $magicProperty->getTypes());
 
         $mock = m::mock('phpDocumentor\Descriptor\ClassDescriptor');
-        $mock->shouldReceive('getMagicProperties')->andReturn(new Collection(array('magicProperties')));
+        $mock->shouldReceive('getMagicProperties')->andReturn(new Collection(['magicProperties']));
         $this->fixture->setParent($mock);
 
         $magicProperties = $this->fixture->getMagicProperties();
@@ -279,15 +279,15 @@ class ClassDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $collectionMock = m::mock('phpDocumentor\Descriptor\Collection');
         $collectionMock->shouldReceive('get');
         $mock = m::mock('phpDocumentor\Descriptor\ClassDescriptor');
-        $mock->shouldReceive('getConstants')->andReturn(new Collection(array('constants')));
-        $mock->shouldReceive('getInheritedConstants')->andReturn(new Collection(array('inherited')));
+        $mock->shouldReceive('getConstants')->andReturn(new Collection(['constants']));
+        $mock->shouldReceive('getInheritedConstants')->andReturn(new Collection(['inherited']));
 
         $this->fixture->setParent($mock);
         $result = $this->fixture->getInheritedConstants();
 
         $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $result);
 
-        $expected = array('constants', 'inherited');
+        $expected = ['constants', 'inherited'];
         $this->assertSame($expected, $result->getAll());
     }
 
@@ -311,15 +311,15 @@ class ClassDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $collectionMock = m::mock('phpDocumentor\Descriptor\Collection');
         $collectionMock->shouldReceive('get');
         $mock = m::mock('phpDocumentor\Descriptor\ClassDescriptor');
-        $mock->shouldReceive('getProperties')->andReturn(new Collection(array('properties')));
-        $mock->shouldReceive('getInheritedProperties')->andReturn(new Collection(array('inherited')));
+        $mock->shouldReceive('getProperties')->andReturn(new Collection(['properties']));
+        $mock->shouldReceive('getInheritedProperties')->andReturn(new Collection(['inherited']));
 
         $this->fixture->setParent($mock);
         $result = $this->fixture->getInheritedProperties();
 
         $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $result);
 
-        $expected = array('properties', 'inherited');
+        $expected = ['properties', 'inherited'];
         $this->assertSame($expected, $result->getAll());
     }
 
@@ -329,10 +329,10 @@ class ClassDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testRetrievingInheritedPropertiesReturnsTraitProperties()
     {
         // Arrange
-        $expected = array('properties');
+        $expected = ['properties'];
         $traitDescriptorMock = m::mock('phpDocumentor\Descriptor\TraitDescriptor');
-        $traitDescriptorMock->shouldReceive('getProperties')->andReturn(new Collection(array('properties')));
-        $this->fixture->setUsedTraits(new Collection(array($traitDescriptorMock)));
+        $traitDescriptorMock->shouldReceive('getProperties')->andReturn(new Collection(['properties']));
+        $this->fixture->setUsedTraits(new Collection([$traitDescriptorMock]));
 
         // Act
         $result = $this->fixture->getInheritedProperties();
@@ -349,9 +349,9 @@ class ClassDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testRetrievingInheritedPropertiesDoesNotCrashWhenUsedTraitIsNotInProject()
     {
         // Arrange
-        $expected = array();
+        $expected = [];
         // unknown traits are not converted to TraitDescriptors but kept as strings
-        $this->fixture->setUsedTraits(new Collection(array('unknownTrait')));
+        $this->fixture->setUsedTraits(new Collection(['unknownTrait']));
 
         // Act
         $result = $this->fixture->getInheritedProperties();
@@ -368,11 +368,11 @@ class ClassDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testGetMagicMethods($isStatic)
     {
-        $methodName  = 'methodName';
+        $methodName = 'methodName';
         $description = 'description';
-        $response    = new ReturnDescriptor('return');
+        $response = new ReturnDescriptor('return');
         $response->setTypes(new String_());
-        $arguments   = m::mock('phpDocumentor\Descriptor\Tag\ArgumentDescriptor');
+        $arguments = m::mock('phpDocumentor\Descriptor\Tag\ArgumentDescriptor');
         $arguments->shouldReceive('setMethod');
 
         $this->assertEquals(0, $this->fixture->getMagicMethods()->count());
@@ -398,7 +398,7 @@ class ClassDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $this->assertEquals($isStatic, $magicMethod->isStatic());
 
         $mock = m::mock('phpDocumentor\Descriptor\ClassDescriptor');
-        $mock->shouldReceive('getMagicMethods')->andReturn(new Collection(array('magicMethods')));
+        $mock->shouldReceive('getMagicMethods')->andReturn(new Collection(['magicMethods']));
         $this->fixture->setParent($mock);
 
         $magicMethods = $this->fixture->getMagicMethods();
@@ -412,12 +412,12 @@ class ClassDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function provideMagicMethodProperties()
     {
-        return array(
+        return [
             // Instance magic method (default)
-            array(false),
+            [false],
             // Static magic method
-            array(true),
-        );
+            [true],
+        ];
     }
 
     /**

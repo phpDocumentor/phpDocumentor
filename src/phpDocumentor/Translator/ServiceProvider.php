@@ -11,10 +11,9 @@
 
 namespace phpDocumentor\Translator;
 
-use Cilex\Application;
+use phpDocumentor\Configuration as ApplicationConfiguration;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
-use phpDocumentor\Configuration as ApplicationConfiguration;
 
 /**
  * Registers all components for the translator to work.
@@ -31,8 +30,6 @@ class ServiceProvider implements ServiceProviderInterface
 {
     /**
      * Registers the translator using the currently active locale.
-     *
-     * @param Container $app
      */
     public function register(Container $app)
     {

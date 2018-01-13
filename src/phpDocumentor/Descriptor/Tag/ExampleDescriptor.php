@@ -34,8 +34,6 @@ class ExampleDescriptor extends TagDescriptor
      * Sets the location where the example points to.
      *
      * @param string $filePath
-     *
-     * @return void
      */
     public function setFilePath($filePath)
     {
@@ -54,8 +52,6 @@ class ExampleDescriptor extends TagDescriptor
 
     /**
      * Returns the location where this example points to.
-     *
-     * @return void
      */
     public function setStartingLine($startingLine)
     {
@@ -74,8 +70,6 @@ class ExampleDescriptor extends TagDescriptor
 
     /**
      * Returns the location where this example points to.
-     *
-     * @return void
      */
     public function setLineCount($lineCount)
     {
@@ -94,8 +88,6 @@ class ExampleDescriptor extends TagDescriptor
 
     /**
      * Returns the content of the example.
-     *
-     * @return void
      */
     public function setExample($example)
     {

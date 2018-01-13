@@ -8,6 +8,7 @@
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
+
 namespace phpDocumentor\Descriptor;
 
 /**
@@ -19,7 +20,7 @@ class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\Argume
     protected $method;
 
     /** @var string[] $type an array of normalized types that should be in this Argument */
-    protected $types = array();
+    protected $types = [];
 
     /** @var string|null $default the default value for an argument or null if none is provided */
     protected $default;
@@ -32,8 +33,6 @@ class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\Argume
 
     /**
      * To which method does this argument belong to
-     *
-     * @param MethodDescriptor $method
      */
     public function setMethod(MethodDescriptor $method)
     {
@@ -54,7 +53,7 @@ class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\Argume
     public function getTypes()
     {
         $countable = $this->types instanceof \Countable || is_array($this->types);
-        if ((!$countable || count($this->types) == 0) && $this->getInheritedElement() !== null) {
+        if ((!$countable || count($this->types) === 0) && $this->getInheritedElement() !== null) {
             $this->setTypes($this->getInheritedElement()->getTypes());
         }
 

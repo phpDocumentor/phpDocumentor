@@ -19,7 +19,6 @@ use org\bovigo\vfs\vfsStreamDirectory;
 
 /**
  * Test class for \phpDocumentor\Plugin\Core\Transformer\Writer\Statistics.
- *
  */
 class StatisticsTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
@@ -33,8 +32,6 @@ class StatisticsTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
     /**
      * Sets up the test suite
-     *
-     * @return void
      */
     public function setUp()
     {
@@ -52,7 +49,7 @@ class StatisticsTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $markerCount = 1;
         $transformer = $this->givenATransformer();
         $error = $this->givenAnError();
-        $fileDescriptor = $this->givenAFileDescriptor(array($error), $markerCount);
+        $fileDescriptor = $this->givenAFileDescriptor([$error], $markerCount);
         $projectDescriptor = $this->givenAProjectDescriptor($fileDescriptor);
 
         $this->statistics->transform($projectDescriptor, $transformer);
@@ -71,12 +68,12 @@ class StatisticsTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         $version = trim(file_get_contents(__DIR__ . '/../../../../../../../VERSION'));
         $statsXml = '<?xml version="1.0"?><phpdoc-stats version="' . $version . '"></phpdoc-stats>';
-        vfsStream::create(array('artifact.xml' => $statsXml));
+        vfsStream::create(['artifact.xml' => $statsXml]);
 
         $markerCount = 12;
         $transformer = $this->givenATransformer();
         $error = $this->givenAnError();
-        $fileDescriptor = $this->givenAFileDescriptor(array($error, $error), $markerCount);
+        $fileDescriptor = $this->givenAFileDescriptor([$error, $error], $markerCount);
         $projectDescriptor = $this->givenAProjectDescriptor($fileDescriptor);
 
         $this->statistics->transform($projectDescriptor, $transformer);
@@ -92,21 +89,19 @@ class StatisticsTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @param m\MockInterface $fileDescriptor
      * @return m\MockInterface
      */
     private function givenAProjectDescriptor(m\MockInterface $fileDescriptor)
     {
         $projectDescriptor = m::mock('phpDocumentor\Descriptor\ProjectDescriptor');
-        $projectDescriptor->shouldReceive('getFiles->getAll')->andReturn(array($fileDescriptor));
+        $projectDescriptor->shouldReceive('getFiles->getAll')->andReturn([$fileDescriptor]);
         $projectDescriptor->shouldReceive('getFiles->count')->andReturn(1);
-        $projectDescriptor->shouldReceive('getIndexes->get')->andReturn(array($fileDescriptor));
+        $projectDescriptor->shouldReceive('getIndexes->get')->andReturn([$fileDescriptor]);
         return $projectDescriptor;
     }
 
     /**
-     * @param array $errors
-     * @param int   $markerCount
+     * @param int $markerCount
      * @return m\MockInterface
      */
     private function givenAFileDescriptor(array $errors, $markerCount)
@@ -147,25 +142,25 @@ class StatisticsTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     ) {
         $version = trim(file_get_contents(__DIR__ . '/../../../../../../../VERSION'));
 
-        $expectedXml = new \DOMDocument;
+        $expectedXml = new \DOMDocument();
         $expectedXml->loadXML(
             '<?xml version="1.0"?>
 <phpdoc-stats version="' . $version . '">
-  <stat date="'.$date.'">
+  <stat date="' . $date . '">
     <counters>
-        <files>'.$numberOfFiles.'</files>
-        <deprecated>'.$numberOfDeprecated.'</deprecated>
-        <errors>'.$numberOfErrors.'</errors>
-        <markers>'.$numberOfMarkers.'</markers>
+        <files>' . $numberOfFiles . '</files>
+        <deprecated>' . $numberOfDeprecated . '</deprecated>
+        <errors>' . $numberOfErrors . '</errors>
+        <markers>' . $numberOfMarkers . '</markers>
     </counters>
 </stat>
 </phpdoc-stats>'
         );
 
-        $actualXml = new \DOMDocument;
+        $actualXml = new \DOMDocument();
         $actualXml->load(vfsStream::url('StatisticsTest' . DIRECTORY_SEPARATOR . 'artifact.xml'));
 
-        $actualTime   = $this->getGeneratedDateTime($actualXml);
+        $actualTime = $this->getGeneratedDateTime($actualXml);
         $expectedTime = $this->getGeneratedDateTime($expectedXml);
         $diff = $actualTime->diff($expectedTime, true);
 
@@ -179,9 +174,7 @@ class StatisticsTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @param \DOMDocument $actualXml
-     *
-     * @return \DateTime
+     * @return DateTime
      */
     private function getGeneratedDateTime(\DOMDocument $actualXml)
     {
@@ -191,9 +184,7 @@ class StatisticsTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @param \DOMDocument $actualXml
-     *
-     * @return \DateTime
+     * @return DateTime
      */
     private function setGeneratedDateTime(\DOMDocument $actualXml, \DateTime $dateTime)
     {

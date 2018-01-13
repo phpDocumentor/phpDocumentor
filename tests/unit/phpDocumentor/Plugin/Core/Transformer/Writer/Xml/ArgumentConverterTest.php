@@ -25,8 +25,6 @@ class ArgumentConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * Tests whether the XML Element representing an argument is properly created.
      *
      * @covers phpDocumentor\Plugin\Core\Transformer\Writer\Xml\ArgumentConverter::convert
-     *
-     * @return void
      */
     public function testArgumentXmlElementIsCreated()
     {
@@ -34,8 +32,8 @@ class ArgumentConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $tag = $this->createArgumentDescriptorMock();
         $tag->shouldReceive('isByReference')->andReturn(false);
         $tag->shouldReceive('getDefault')->andReturn(null);
-        $tag->shouldReceive('getTypes')->andReturn(array());
-        $parent            = $this->prepareParentXMLElement();
+        $tag->shouldReceive('getTypes')->andReturn([]);
+        $parent = $this->prepareParentXMLElement();
         $argumentConverter = new ArgumentConverter();
 
         // Act
@@ -53,17 +51,15 @@ class ArgumentConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * Tests whether it is documented when an argument is by reference.
      *
      * @covers phpDocumentor\Plugin\Core\Transformer\Writer\Xml\ArgumentConverter::convert
-     *
-     * @return void
      */
     public function testIfByReferenceIsDocumented()
     {
         // Arrange
         $argumentConverter = new ArgumentConverter();
-        $parent            = $this->prepareParentXMLElement();
-        $tag               = $this->createArgumentDescriptorMock();
+        $parent = $this->prepareParentXMLElement();
+        $tag = $this->createArgumentDescriptorMock();
         $tag->shouldReceive('isByReference')->andReturn(true);
-        $tag->shouldReceive('getTypes')->andReturn(array());
+        $tag->shouldReceive('getTypes')->andReturn([]);
 
         // Act
         $convertedElement = $argumentConverter->convert($parent, $tag);
@@ -76,16 +72,14 @@ class ArgumentConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * Tests whether the type information for an argument is documented.
      *
      * @covers phpDocumentor\Plugin\Core\Transformer\Writer\Xml\ArgumentConverter::convert
-     *
-     * @return void
      */
     public function testIfTypeInformationIsDocumented()
     {
         // Arrange
         $argumentConverter = new ArgumentConverter();
-        $parent            = $this->prepareParentXMLElement();
-        $tag               = $this->createArgumentDescriptorMock();
-        $tag->shouldReceive('getTypes')->andReturn(array('string', 'integer'));
+        $parent = $this->prepareParentXMLElement();
+        $tag = $this->createArgumentDescriptorMock();
+        $tag->shouldReceive('getTypes')->andReturn(['string', 'integer']);
 
         // Act
         $convertedElement = $argumentConverter->convert($parent, $tag);
@@ -98,18 +92,16 @@ class ArgumentConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * Tests whether the default for an argument is documented.
      *
      * @covers phpDocumentor\Plugin\Core\Transformer\Writer\Xml\ArgumentConverter::convert
-     *
-     * @return void
      */
     public function testIfDefaultValueIsDocumented()
     {
         // Arrange
-        $default           = 'This is a default';
+        $default = 'This is a default';
         $argumentConverter = new ArgumentConverter();
-        $parent            = $this->prepareParentXMLElement();
-        $tag               = $this->createArgumentDescriptorMock();
+        $parent = $this->prepareParentXMLElement();
+        $tag = $this->createArgumentDescriptorMock();
         $tag->shouldReceive('getDefault')->andReturn($default);
-        $tag->shouldReceive('getTypes')->andReturn(array());
+        $tag->shouldReceive('getTypes')->andReturn([]);
 
         // Act
         $convertedElement = $argumentConverter->convert($parent, $tag);
@@ -126,7 +118,7 @@ class ArgumentConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     protected function prepareParentXMLElement()
     {
         $document = new \DOMDocument();
-        $parent   = new \DOMElement('function');
+        $parent = new \DOMElement('function');
         $document->appendChild($parent);
 
         return $parent;

@@ -24,8 +24,6 @@ class Output extends ConsoleOutput
 
     /**
      * Sets a logger object to write information to.
-     *
-     * @param Logger $logger
      */
     public function setLogger(Logger $logger)
     {
@@ -45,13 +43,10 @@ class Output extends ConsoleOutput
     /**
      * Executes a callable piece of code and writes an entry to the log detailing how long it took.
      *
-     * @param string   $message
+     * @param string $message
      * @param callable $operation
-     * @param array    $arguments
-     *
-     * @return void
      */
-    public function writeTimedLog($message, $operation, array $arguments = array())
+    public function writeTimedLog($message, $operation, array $arguments = [])
     {
         $this->write(sprintf('%-66.66s .. ', $message));
         $timerStart = microtime(true);
@@ -67,8 +62,6 @@ class Output extends ConsoleOutput
      * @param array|string $messages
      * @param bool         $newline
      * @param int          $type
-     *
-     * @return void
      */
     public function write($messages, $newline = false, $type = 0)
     {

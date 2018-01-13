@@ -8,11 +8,11 @@
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
+
 namespace phpDocumentor;
 
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for \phpDocumentor\Bootstrap.
@@ -26,34 +26,34 @@ class BootstrapTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      *
      * @var array
      */
-    protected $composerInstalledStructure = array(
-        'dummy' => array(
-            'vendor' => array(
-                'phpDocumentor' => array(
-                    'phpDocumentor' => array(
-                        'src' => array(
-                            'phpDocumentor' => array(),
-                        ),
-                    ),
-                ),
-            ),
-        ),
-    );
+    protected $composerInstalledStructure = [
+        'dummy' => [
+            'vendor' => [
+                'phpDocumentor' => [
+                    'phpDocumentor' => [
+                        'src' => [
+                            'phpDocumentor' => [],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+    ];
 
     /**
      * Directory structure when phpdocumentor is installed from git.
      *
      * @var array
      */
-    protected $standaloneStructure = array(
-        'dummy' => array(
-            'vendor' => array(),
-            'src' => array(
-                'phpDocumentor' => array(),
-            ),
-            'test' => array(),
-        ),
-    );
+    protected $standaloneStructure = [
+        'dummy' => [
+            'vendor' => [],
+            'src' => [
+                'phpDocumentor' => [],
+            ],
+            'test' => [],
+        ],
+    ];
 
     /**
      * @covers phpDocumentor\Bootstrap::createInstance
@@ -95,8 +95,8 @@ class BootstrapTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $bootstrap = Bootstrap::createInstance();
         $baseDir = vfsStream::url('root/dummy/vendor/phpDocumentor/phpDocumentor/src/phpDocumentor');
         $this->assertSame(
-            'vfs://root/dummy/vendor/phpDocumentor/phpDocumentor/src/phpDocumentor/../../../../../vendor'
-            , $bootstrap->findVendorPath($baseDir)
+            'vfs://root/dummy/vendor/phpDocumentor/phpDocumentor/src/phpDocumentor/../../../../../vendor',
+            $bootstrap->findVendorPath($baseDir)
         );
     }
 
@@ -132,5 +132,4 @@ class BootstrapTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $bootstrap = Bootstrap::createInstance();
         $this->assertTrue($bootstrap->createAutoloader(vfsStream::url('root/dummy/vendor')));
     }
-
 }

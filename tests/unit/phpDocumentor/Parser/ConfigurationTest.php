@@ -45,7 +45,7 @@ class ConfigurationTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testIfExtensionsIsReturned()
     {
-        $this->assertSame(array('php', 'php3', 'phtml'), $this->fixture->getExtensions());
+        $this->assertSame(['php', 'php3', 'phtml'], $this->fixture->getExtensions());
     }
 
     /**
@@ -53,7 +53,7 @@ class ConfigurationTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testIfMarkersIsReturned()
     {
-        $this->assertSame(array('TODO', 'FIXME'), $this->fixture->getMarkers());
+        $this->assertSame(['TODO', 'FIXME'], $this->fixture->getMarkers());
     }
 
     /**

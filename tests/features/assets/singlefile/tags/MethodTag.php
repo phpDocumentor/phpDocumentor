@@ -11,7 +11,6 @@
  */
 
 /**
- *
  * @method A[] getArray()
  * @method B  getObject()
  * @method string getString()
@@ -19,5 +18,4 @@
  */
 final class MethodTag
 {
-
 }

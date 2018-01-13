@@ -26,8 +26,6 @@ abstract class WriterAbstract
      * should be thrown; this indicates to the calling process that this writer will not function.
      *
      * @throws Exception\RequirementMissing when a requirements is missing stating which one.
-     *
-     * @return void
      */
     public function checkRequirements()
     {
@@ -39,7 +37,6 @@ abstract class WriterAbstract
      *
      * @param string $path
      *
-     * @return void
      *
      * @throws \InvalidArgumentException if path contains a space.
      */
@@ -55,8 +52,6 @@ abstract class WriterAbstract
      *
      * @param ProjectDescriptor $project        Document containing the structure.
      * @param Transformation    $transformation Transformation to execute.
-     *
-     * @return void
      */
     abstract public function transform(ProjectDescriptor $project, Transformation $transformation);
 }

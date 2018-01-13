@@ -21,7 +21,7 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var ServiceProvider */
     private $fixture;
-    
+
     /**
      * Initializes the fixture for this test.
      */
@@ -29,7 +29,7 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         $this->fixture = new ServiceProvider();
     }
-    
+
     /**
      * @covers phpDocumentor\Plugin\Core\ServiceProvider::register
      * @covers phpDocumentor\Plugin\Core\ServiceProvider::registerWriters
@@ -40,11 +40,11 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testRegister()
     {
-        $mockCollection        = $this->givenAWriterCollection();
-        $mockLogger            = $this->givenALogger();
-        $mockApplication       = $this->givenAnApplication($mockCollection, $mockLogger);
-        $mockRouterQueue       = $this->givenARouterQueue($mockApplication);
-        $mockTranslator        = $this->givenATranslator($mockApplication);
+        $mockCollection = $this->givenAWriterCollection();
+        $mockLogger = $this->givenALogger();
+        $mockApplication = $this->givenAnApplication($mockCollection, $mockLogger);
+        $mockRouterQueue = $this->givenARouterQueue($mockApplication);
+        $mockTranslator = $this->givenATranslator($mockApplication);
         $mockDescriptorBuilder = $this->givenAProjectDescriptorBuilder($mockApplication);
 
         $this->thenATranslationFolderIsAdded($mockTranslator);
@@ -111,8 +111,6 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * Instructs the mocked Collection to expect all writers in the plugin to be registered.
      *
      * @param m\MockInterface $mockCollection
-     *
-     * @return void
      */
     private function thenWritersAreRegistered($mockCollection)
     {
@@ -131,8 +129,6 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @param m\MockInterface $Collection
      * @param string          $key
      * @param string          $className
-     *
-     * @return void
      */
     private function thenWriterWasRegistered($Collection, $key, $className)
     {
@@ -183,8 +179,6 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      *
      * @param m\MockInterface $mockApplication
      * @param string          $serviceProviderMock
-     *
-     * @return void
      */
     private function thenProviderIsRegistered($mockApplication, $serviceProviderMock)
     {
@@ -205,8 +199,6 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * Instructs the translator to expect the 'Messages' folder to be set.
      *
      * @param m\MockInterface $mockTranslator
-     *
-     * @return void
      */
     private function thenATranslationFolderIsAdded($mockTranslator)
     {
@@ -220,8 +212,6 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @param string          $writerName
      * @param m\MockInterface $mockTranslator
      * @param m\MockInterface $mockCollection
-     *
-     * @return void
      */
     private function thenTranslatorIsSetOnWriter($writerName, $mockTranslator, $mockCollection)
     {
@@ -234,8 +224,6 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * Sets the expectations that a Router is set on the XML Writer.
      *
      * @param m\MockInterface $mockApplication
-     *
-     * @return void
      */
     private function thenRouterIsSetOnXmlWriter($mockApplication)
     {

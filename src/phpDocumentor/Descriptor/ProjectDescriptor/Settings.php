@@ -16,13 +16,16 @@ namespace phpDocumentor\Descriptor\ProjectDescriptor;
  */
 class Settings
 {
-    const VISIBILITY_PUBLIC    = 1;
+    const VISIBILITY_PUBLIC = 1;
+
     const VISIBILITY_PROTECTED = 2;
-    const VISIBILITY_PRIVATE   = 4;
-    const VISIBILITY_INTERNAL  = 8;
+
+    const VISIBILITY_PRIVATE = 4;
+
+    const VISIBILITY_INTERNAL = 8;
 
     /** @var integer by default ignore internal visibility but show others */
-    const VISIBILITY_DEFAULT   = 7;
+    const VISIBILITY_DEFAULT = 7;
 
     /** @var boolean Represents whether this settings object has been modified */
     protected $isModified = false;
@@ -37,8 +40,6 @@ class Settings
      * Stores the visibilities that are allowed to be executed as a bitflag.
      *
      * @param integer $visibilityFlag A bitflag combining the VISIBILITY_* constants.
-     *
-     * @return void
      */
     public function setVisibility($visibilityFlag)
     {
@@ -69,8 +70,6 @@ class Settings
 
     /**
      * Resets the flag indicating whether the settings have changed.
-     *
-     * @return void
      */
     public function clearModifiedFlag()
     {
@@ -82,11 +81,11 @@ class Settings
      */
     protected function setValueAndCheckIfModified($propertyName, $value)
     {
-        if ($this->$propertyName != $value) {
+        if ($this->{$propertyName} !== $value) {
             $this->isModified = true;
         }
 
-        $this->$propertyName = $value;
+        $this->{$propertyName} = $value;
     }
 
     public function includeSource()

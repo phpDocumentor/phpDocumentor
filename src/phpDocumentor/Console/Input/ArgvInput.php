@@ -33,9 +33,7 @@ class ArgvInput extends \Symfony\Component\Console\Input\ArgvInput
      * defaults to the execution of phpDocumentor. This is behavior that is
      * expected from previous releases of phpDocumentor.
      *
-     * @param string[]        $argv       An array of parameters from the CLI (in the argv format)
-     * @param InputDefinition $definition A InputDefinition instance
-     *
+     * @param mixed[]g[] $argv An array of parameters from the CLI (in the argv format)
      * @api
      */
     public function __construct(array $argv = null, InputDefinition $definition = null)

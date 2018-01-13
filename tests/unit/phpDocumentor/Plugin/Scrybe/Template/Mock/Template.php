@@ -39,18 +39,11 @@ class Template implements TemplateInterface
     {
     }
 
-    /**
-     * @param string $extension
-     */
     public function setExtension($extension)
     {
     }
 
-    /**
-     * @param string $contents
-     * @param array  $options
-     */
-    public function decorate($contents, array $options = array())
+    public function decorate($contents, array $options = [])
     {
     }
 

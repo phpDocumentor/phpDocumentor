@@ -158,12 +158,12 @@ class ApplicationTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testSetLogLevel($loglevel, $expectedLogLevel)
     {
         $logger = m::mock('Monolog\Logger')
-            ->shouldReceive('pushHandler')->with(m::on(function($stream) use($expectedLogLevel) {
-               if (!$stream instanceof \Monolog\Handler\StreamHandler) {
-                   return false;
-               }
+            ->shouldReceive('pushHandler')->with(m::on(function ($stream) use ($expectedLogLevel) {
+                if (!$stream instanceof \Monolog\Handler\StreamHandler) {
+                    return false;
+                }
 
-               return $stream->getLevel() == $expectedLogLevel;
+                return $stream->getLevel() === $expectedLogLevel;
             }))
             ->shouldReceive('popHandler')
             ->getMock();
@@ -174,55 +174,55 @@ class ApplicationTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Data provider for testSetLogLevel
      *
-     * @return array[] 
+     * @return array[]
      */
     public function loglevelProvider()
     {
-        return array(
-            array(
+        return [
+            [
                 'emergency',
                 Logger::EMERGENCY,
-            ),
-            array(
+            ],
+            [
                 'emerg',
                 Logger::EMERGENCY,
-            ),
-            array(
+            ],
+            [
                 'alert',
                 Logger::ALERT,
-            ),
-            array(
+            ],
+            [
                 'critical',
                 Logger::CRITICAL,
-            ),
-            array(
+            ],
+            [
                 'error',
                 Logger::ERROR,
-            ),
-            array(
+            ],
+            [
                 'err',
                 Logger::ERROR,
-            ),
-            array(
+            ],
+            [
                 'warning',
                 Logger::WARNING,
-            ),
-            array(
+            ],
+            [
                 'warn',
                 Logger::WARNING,
-            ),
-            array(
+            ],
+            [
                 'notice',
                 Logger::NOTICE,
-            ),
-            array(
+            ],
+            [
                 'info',
                 Logger::INFO,
-            ),
-            array(
+            ],
+            [
                 'debug',
                 Logger::DEBUG,
-            ),
-        );
+            ],
+        ];
     }
 }

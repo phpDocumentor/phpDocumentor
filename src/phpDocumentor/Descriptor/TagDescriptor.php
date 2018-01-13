@@ -42,8 +42,6 @@ class TagDescriptor implements Filterable
      * Sets the name for this tag.
      *
      * @param string $name
-     *
-     * @return void
      */
     protected function setName($name)
     {
@@ -64,8 +62,6 @@ class TagDescriptor implements Filterable
      * Sets a description for this tab instance.
      *
      * @param string $description
-     *
-     * @return void
      */
     public function setDescription($description)
     {
@@ -84,10 +80,6 @@ class TagDescriptor implements Filterable
 
     /**
      * Sets a list of errors found on the usage of this tag.
-     *
-     * @param Collection $errors
-     *
-     * @return void
      */
     public function setErrors(Collection $errors)
     {

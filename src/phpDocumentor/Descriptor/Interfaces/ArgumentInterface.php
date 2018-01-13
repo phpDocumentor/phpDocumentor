@@ -34,8 +34,6 @@ interface ArgumentInterface extends ElementInterface
      *     type.
      *
      * @todo update link to point to the final destination for the PHPDoc Standard.
-     *
-     * @return void
      */
     public function setTypes($types);
 
@@ -52,8 +50,6 @@ interface ArgumentInterface extends ElementInterface
      * Sets the default value for an argument expressed as a string.
      *
      * @param string $value A textual representation of the default value.
-     *
-     * @return void
      */
     public function setDefault($value);
 
@@ -68,8 +64,6 @@ interface ArgumentInterface extends ElementInterface
      * Sets whether this argument passes its parameter by reference or by value.
      *
      * @param boolean $byReference True if the parameter is passed by reference, otherwise it is by value.
-     *
-     * @return void
      */
     public function setByReference($byReference);
 

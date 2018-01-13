@@ -16,10 +16,9 @@ namespace phpDocumentor\Plugin\Scrybe\Converter\Metadata\TableOfContents;
  */
 class ModuleTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
-
     public function testRetrieveModuleRoot()
     {
-        $file   = new File();
+        $file = new File();
         $module = new Module($file);
 
         $this->assertSame($file, $module->getTableOfContentsRoot());

@@ -11,8 +11,8 @@
 
 namespace phpDocumentor\Plugin\Scrybe\Converter\RestructuredText\Directives;
 
-use phpDocumentor\Plugin\Scrybe\Converter\Metadata\Assets;
 use \phpDocumentor\Plugin\Scrybe\Converter\RestructuredText\Visitors\Discover;
+use phpDocumentor\Plugin\Scrybe\Converter\Metadata\Assets;
 
 /**
  * Directive used to process `.. image::` and collect images as assets to be copied.
@@ -34,11 +34,6 @@ class Image extends \ezcDocumentRstImageDirective
      * the Asset manager of the Converter.
      *
      * @see ConverterInterface::getAssets() for the asset manager
-     *
-     * @param \DOMDocument $document
-     * @param \DOMElement $root
-     *
-     * @return void
      */
     public function toDocbook(\DOMDocument $document, \DOMElement $root)
     {
@@ -54,11 +49,6 @@ class Image extends \ezcDocumentRstImageDirective
      * Asset manager of the Converter.
      *
      * @see ConverterInterface::getAssets() for the asset manager
-     *
-     * @param \DOMDocument $document
-     * @param \DOMElement $root
-     *
-     * @return void
      */
     public function toXhtml(\DOMDocument $document, \DOMElement $root)
     {
@@ -84,8 +74,6 @@ class Image extends \ezcDocumentRstImageDirective
      *    1. When the asset starts with a slash then this equals that path without the leading slash.
      *    2. If not, the destination must be calculated by subtracting the project root from the current file's path
      *       and prepending that to the asset path (resolving `../` patterns in the mean time).
-     *
-     * @return void
      */
     protected function storeAsset()
     {
@@ -93,10 +81,10 @@ class Image extends \ezcDocumentRstImageDirective
             return;
         }
 
-        $assets       = $this->getAssetManager();
+        $assets = $this->getAssetManager();
         $project_root = $assets->getProjectRoot();
-        $asset_path   = trim($this->node->parameters);
-        $file_path    = $this->visitor->getDocument()->getFile()->getRealPath();
+        $asset_path = trim($this->node->parameters);
+        $file_path = $this->visitor->getDocument()->getFile()->getRealPath();
 
         // get source path
         $source = ($asset_path[0] !== '/')
@@ -105,7 +93,7 @@ class Image extends \ezcDocumentRstImageDirective
 
         // get destination path
         $destination = ($asset_path[0] !== '/')
-            ? substr(dirname($file_path).'/'.$asset_path, strlen($project_root))
+            ? substr(dirname($file_path) . '/' . $asset_path, strlen($project_root))
             : substr($asset_path, 1);
 
         // set asset

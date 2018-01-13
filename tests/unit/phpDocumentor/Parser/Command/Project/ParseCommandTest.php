@@ -12,6 +12,7 @@
 
 namespace phpDocumentor\Parser\Command\Project;
 
+use \Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Command\Helper\ConfigurationHelper;
 use phpDocumentor\Command\Helper\LoggerHelper;
@@ -19,13 +20,11 @@ use phpDocumentor\Console\Output\Output;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\DomainModel\Parser\FileCollector;
-use \Mockery as m;
 use phpDocumentor\Parser\Parser;
 use phpDocumentor\Reflection\DocBlock\ExampleFinder;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Input\ArrayInput;
 use Zend\Cache\Storage\Adapter\Memory;
-use Zend\Cache\Storage\StorageInterface;
 use Zend\I18n\Translator\Translator;
 
 /**
@@ -48,7 +47,7 @@ class ParseCommandTest extends MockeryTestCase
             ->andReturn('phpdocumentor_configuration');
         $configurationHelper->shouldReceive('setHelperSet');
         $configurationHelper->shouldReceive('getOption')
-            ->with($input, 'extensions', 'parser/extensions', array('php', 'php3', 'phtml'), true)
+            ->with($input, 'extensions', 'parser/extensions', ['php', 'php3', 'phtml'], true)
             ->andReturn([]);
         $configurationHelper->shouldReceive('getOption')
             ->with($input, 'target', 'parser/target');
@@ -114,7 +113,7 @@ class ParseCommandTest extends MockeryTestCase
             new HelperSet(
                 [
                     $configurationHelper,
-                    $loggerHelper
+                    $loggerHelper,
                 ]
             )
         );

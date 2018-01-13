@@ -30,8 +30,6 @@ class ForFileProxy
 
     /**
      * Registers the Routing Rule that needs to be translated with this proxy.
-     *
-     * @param Rule $rule
      */
     public function __construct(Rule $rule)
     {

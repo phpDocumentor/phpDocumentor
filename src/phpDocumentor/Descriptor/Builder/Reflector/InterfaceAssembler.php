@@ -12,8 +12,6 @@
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use phpDocumentor\Descriptor\InterfaceDescriptor;
-use phpDocumentor\Reflection\ClassReflector\MethodReflector;
-use phpDocumentor\Reflection\ConstantReflector;
 use phpDocumentor\Reflection\InterfaceReflector;
 use phpDocumentor\Reflection\Php\Constant;
 use phpDocumentor\Reflection\Php\Interface_;
@@ -41,14 +39,14 @@ class InterfaceAssembler extends AssemblerAbstract
         $interfaceDescriptor->setPackage($this->extractPackageFromDocBlock($data->getDocBlock()) ?: '');
 
         // Reflection library formulates namespace as global but this is not wanted for phpDocumentor itself
-        $interfaceDescriptor->setNamespace(substr($data->getFqsen(), 0, -strlen($data->getName())-1));
+        $interfaceDescriptor->setNamespace(substr($data->getFqsen(), 0, -strlen($data->getName()) - 1));
 
         $this->assembleDocBlock($data->getDocBlock(), $interfaceDescriptor);
         $this->addConstants($data->getConstants(), $interfaceDescriptor);
         $this->addMethods($data->getMethods(), $interfaceDescriptor);
 
         foreach ($data->getParents() as $interfaceClassName) {
-            $interfaceDescriptor->getParent()->set((string)$interfaceClassName, $interfaceClassName);
+            $interfaceDescriptor->getParent()->set((string) $interfaceClassName, $interfaceClassName);
         }
 
         return $interfaceDescriptor;
@@ -59,8 +57,6 @@ class InterfaceAssembler extends AssemblerAbstract
      *
      * @param Constant[] $constants
      * @param InterfaceDescriptor $interfaceDescriptor
-     *
-     * @return void
      */
     protected function addConstants($constants, $interfaceDescriptor)
     {
@@ -78,8 +74,6 @@ class InterfaceAssembler extends AssemblerAbstract
      *
      * @param Method[] $methods
      * @param InterfaceDescriptor $interfaceDescriptor
-     *
-     * @return void
      */
     protected function addMethods($methods, $interfaceDescriptor)
     {

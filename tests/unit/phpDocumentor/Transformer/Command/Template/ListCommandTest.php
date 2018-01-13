@@ -26,7 +26,7 @@ class ListCommandTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testExecuteListsCommands()
     {
         // Arrange
-        $command = new ListCommand($this->givenAFactoryWithTemplateNames(array('default', 'second')));
+        $command = new ListCommand($this->givenAFactoryWithTemplateNames(['default', 'second']));
 
         $expectedOutput = <<<TXT
 Available templates:
@@ -39,7 +39,7 @@ TXT;
 
         // Act
         $commandTester = new CommandTester($command);
-        $commandTester->execute(array(), array('decorated' => false));
+        $commandTester->execute([], ['decorated' => false]);
 
         // Assert
         $this->assertSame($expectedOutput, $commandTester->getDisplay());

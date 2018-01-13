@@ -1,8 +1,9 @@
 <?php
 
-class A {
+class A
+{
     const CONFIG_CONFASSISTANT = [
         'test',
-        'test2'
+        'test2',
     ];
 }

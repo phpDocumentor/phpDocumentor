@@ -27,8 +27,6 @@ class Merger
 
     /**
      * Initializes this merger with the annotation reader.
-     *
-     * @param AnnotationReader $reader
      */
     public function __construct(AnnotationReader $reader)
     {
@@ -49,11 +47,11 @@ class Merger
     {
         $result = null;
 
-        if (is_object($destination) && is_object($source) && get_class($destination) == get_class($source)) {
+        if (is_object($destination) && is_object($source) && get_class($destination) === get_class($source)) {
             $result = $this->mergeObject($destination, $source);
         } elseif (is_array($source) && is_array($destination)) {
             $result = $this->mergeArray($destination, $source);
-        } elseif (!is_null($source) && $source !== $default) {
+        } elseif ($source !== null && $source !== $default) {
             $result = $source;
         }
 
@@ -70,8 +68,8 @@ class Merger
      */
     private function mergeObject($destinationObject, $sourceObject)
     {
-        $reflectedDestination  = new \ReflectionObject($destinationObject);
-        $reflectedSource       = new \ReflectionObject($sourceObject);
+        $reflectedDestination = new \ReflectionObject($destinationObject);
+        $reflectedSource = new \ReflectionObject($sourceObject);
         $defaultPropertyValues = $reflectedDestination->getDefaultProperties();
 
         foreach ($reflectedSource->getProperties() as $sourceProperty) {
@@ -97,7 +95,7 @@ class Merger
      */
     private function mergeArray($destinationArray, $sourceArray)
     {
-        $result = array();
+        $result = [];
         foreach ($destinationArray as $key => $destinationArrayItem) {
             if (is_int($key)) {
                 $result[] = $destinationArrayItem;
@@ -120,12 +118,9 @@ class Merger
     /**
      * Merges the two properties over eachother.
      *
-     * @param object              $destinationObject
-     * @param \ReflectionProperty $destinationProperty
-     * @param object              $sourceObject
-     * @param \ReflectionProperty $sourceProperty
-     * @param mixed[]             $defaultPropertyValues
-     *
+     * @param object $destinationObject
+     * @param object $sourceObject
+     * @param mixed[] $defaultPropertyValues
      * @return object
      */
     private function mergeProperty(
@@ -172,9 +167,7 @@ class Merger
      * Tests whether the value of the property should be replaced instead of merged by checking if it has the `Replace`
      * annotation.
      *
-     * @param \ReflectionProperty $destinationProperty
-     *
-     * @return boolean
+     * @return bool
      */
     private function shouldPropertyBeReplaced(\ReflectionProperty $destinationProperty)
     {

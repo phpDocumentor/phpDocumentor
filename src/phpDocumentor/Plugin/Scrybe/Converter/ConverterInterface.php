@@ -58,8 +58,6 @@ interface ConverterInterface
      *
      * @param string $name
      * @param string $value
-     *
-     * @return void
      */
     public function setOption($name, $value);
 
@@ -90,8 +88,6 @@ interface ConverterInterface
      * Optionally set a logger for this converter.
      *
      * @param Logger $logger
-     *
-     * @return void
      */
     public function setLogger(Logger $logger);
 }

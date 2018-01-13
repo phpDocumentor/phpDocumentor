@@ -64,15 +64,15 @@ class MarkerFromTagsExtractorTest extends \Mockery\Adapter\Phpunit\MockeryTestCa
         $this->assertCount(1, $classDescriptor->getTags()->get('todo'));
         $this->assertCount(3, $fileDescriptor->getMarkers());
         $this->assertSame(
-            array('type' => 'TODO', 'message' => '123', 'line' => 10),
+            ['type' => 'TODO', 'message' => '123', 'line' => 10],
             $fileDescriptor->getMarkers()->get(0)
         );
         $this->assertSame(
-            array('type' => 'TODO', 'message' => '456', 'line' => 10),
+            ['type' => 'TODO', 'message' => '456', 'line' => 10],
             $fileDescriptor->getMarkers()->get(1)
         );
         $this->assertSame(
-            array('type' => 'TODO', 'message' => '789', 'line' => 20),
+            ['type' => 'TODO', 'message' => '789', 'line' => 20],
             $fileDescriptor->getMarkers()->get(2)
         );
     }
@@ -112,7 +112,7 @@ class MarkerFromTagsExtractorTest extends \Mockery\Adapter\Phpunit\MockeryTestCa
         $todoTag = new TagDescriptor('todo');
         $todoTag->setDescription($description);
 
-        $todoTags = $descriptor->getTags()->get('todo', array());
+        $todoTags = $descriptor->getTags()->get('todo', []);
         $todoTags[] = $todoTag;
         $descriptor->getTags()->set('todo', $todoTags);
     }
@@ -130,6 +130,7 @@ class MarkerFromTagsExtractorTest extends \Mockery\Adapter\Phpunit\MockeryTestCa
         if ($fileDescriptor) {
             $classDescriptor->setFile($fileDescriptor);
         }
+
         $elementIndex = $this->project->getIndexes()->get('elements', new Collection());
         $elementIndex->add($classDescriptor);
         return $classDescriptor;

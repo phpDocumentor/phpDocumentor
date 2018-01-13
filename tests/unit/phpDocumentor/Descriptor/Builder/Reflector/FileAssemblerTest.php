@@ -10,13 +10,14 @@
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
+
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
-use phpDocumentor\Descriptor\PackageDescriptor;
-use phpDocumentor\Reflection\DocBlock;
-use phpDocumentor\Descriptor\Collection;
-
 use Mockery as m;
+use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Descriptor\PackageDescriptor;
+
+use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\Php\File;
 
 /**
@@ -45,8 +46,6 @@ class FileAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
     /**
      * Creates a Descriptor from a provided class.
-     *
-     * @return void
      */
     public function testCreateFileDescriptorFromReflector()
     {
@@ -120,7 +119,7 @@ DOCBLOCK
         $projectDescriptorBuilderMock->shouldReceive('buildDescriptor')->andReturnUsing(function ($param) {
             $mock = m::mock('phpDocumentor\Descriptor\DescriptorAbstract');
             $mock->shouldReceive('setLocation')->atLeast()->once();
-            $mock->shouldReceive('getTags')->atLeast()->once()->andReturn(new Collection);
+            $mock->shouldReceive('getTags')->atLeast()->once()->andReturn(new Collection());
             $mock->shouldReceive('getFullyQualifiedStructuralElementName')->once()->andReturn('Frank_is_een_eindbaas');
 
             return $mock;

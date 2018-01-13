@@ -3,12 +3,9 @@
 namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 
 use Mockery as m;
-use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock\Description;
-use phpDocumentor\Reflection\DocBlock\Tag\VarTag;
 use phpDocumentor\Reflection\DocBlock\Tags\Var_;
-use phpDocumentor\Reflection\DocBlock\Type\Collection as TypeCollection;
 use phpDocumentor\Reflection\Types\String_;
 
 class VarAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
@@ -39,7 +36,7 @@ class VarAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $descriptor = $this->fixture->create($reflector);
 
         $this->assertSame('var', $descriptor->getName());
-        $this->assertSame('This is a description', (string)$descriptor->getDescription());
+        $this->assertSame('This is a description', (string) $descriptor->getDescription());
         $this->assertSame('$myParameter', $descriptor->getVariableName());
         $this->assertEquals(new String_(), $descriptor->getTypes());
     }

@@ -27,8 +27,6 @@ class Command extends BaseCommand
 {
     /**
      * Registers the current command.
-     *
-     * @param HelperSet $helperSet
      */
     public function setHelperSet(HelperSet $helperSet)
     {
@@ -41,8 +39,6 @@ class Command extends BaseCommand
      * Returns the Progress bar helper.
      *
      * With this helper it is possible to display a progress bar and make it fill.
-     *
-     * @param InputInterface $input
      *
      * @return ProgressHelper
      */

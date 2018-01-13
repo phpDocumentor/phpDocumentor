@@ -37,8 +37,6 @@ class FileIo extends WriterAbstract
      * @param Transformation    $transformation Transformation to execute.
      *
      * @throws \InvalidArgumentException if the query is not supported.
-     *
-     * @return void
      */
     public function transform(ProjectDescriptor $project, Transformation $transformation)
     {
@@ -53,7 +51,7 @@ class FileIo extends WriterAbstract
             );
         }
 
-        $this->$method($transformation);
+        $this->{$method}($transformation);
     }
 
     /**
@@ -62,8 +60,6 @@ class FileIo extends WriterAbstract
      * @param Transformation $transformation Transformation to use as data source.
      *
      * @throws Exception
-     *
-     * @return void
      */
     public function executeQueryCopy(Transformation $transformation)
     {
@@ -72,6 +68,7 @@ class FileIo extends WriterAbstract
         if (!is_readable($path)) {
             throw new Exception('Unable to read the source file: ' . $path);
         }
+
         if (!is_writable($transformation->getTransformer()->getTarget())) {
             throw new Exception('Unable to write to: ' . dirname($transformation->getArtifact()));
         }
@@ -80,7 +77,7 @@ class FileIo extends WriterAbstract
         if (is_file($path)) {
             $filesystem->copy($path, $transformation->getArtifact(), true);
         } else {
-            $filesystem->mirror($path, $transformation->getArtifact(), null, array('override' => true));
+            $filesystem->mirror($path, $transformation->getArtifact(), null, ['override' => true]);
         }
     }
 }

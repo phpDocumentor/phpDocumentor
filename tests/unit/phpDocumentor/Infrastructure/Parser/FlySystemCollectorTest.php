@@ -34,7 +34,7 @@ class FlySystemCollectorTest extends TestCase
             new FlySystemFactory(new MountManager())
         );
 
-        $files = $fileCollector->getFiles(new Dsn('file://' .  __DIR__ . '/assets'), [], [], ['php']);
+        $files = $fileCollector->getFiles(new Dsn('file://' . __DIR__ . '/assets'), [], [], ['php']);
         static::assertCount(3, $files);
     }
 }

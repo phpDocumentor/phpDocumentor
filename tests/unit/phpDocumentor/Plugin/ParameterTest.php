@@ -17,6 +17,7 @@ namespace phpDocumentor\Plugin;
 class ParameterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     const EXAMPLE_KEY = 'key123';
+
     const EXAMPLE_VALUE = 'value123';
 
     /** @var Parameter $fixture */

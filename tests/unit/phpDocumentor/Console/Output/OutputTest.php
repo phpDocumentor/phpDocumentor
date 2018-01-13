@@ -54,11 +54,11 @@ class OutputTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
                 $suite->assertSame('Foo', $operation);
                 $suite->assertSame('Bar', $arguments);
             },
-            array('Foo', 'Bar')
+            ['Foo', 'Bar']
         );
 
         rewind($stream);
-        $this->assertRegExp('/^[1]{66} .. [\ 0-9\.]{8}s'. PHP_EOL .'$/', stream_get_contents($stream));
+        $this->assertRegExp('/^[1]{66} .. [\ 0-9\.]{8}s' . PHP_EOL . '$/', stream_get_contents($stream));
     }
 
     public function testWriteLogger()

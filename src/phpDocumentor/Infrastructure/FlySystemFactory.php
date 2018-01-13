@@ -12,8 +12,8 @@
 
 namespace phpDocumentor\Infrastructure;
 
-use Flyfinder\Finder;
 use \LogicException;
+use Flyfinder\Finder;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
 use League\Flysystem\MountManager;
@@ -27,9 +27,6 @@ final class FlySystemFactory implements FileSystemFactory
     /** @var MountManager */
     private $mountManager;
 
-    /**
-     * @param MountManager $mountManager
-     */
     public function __construct(MountManager $mountManager)
     {
         $this->mountManager = $mountManager;
@@ -38,12 +35,11 @@ final class FlySystemFactory implements FileSystemFactory
     /**
      * Returns a Filesystem instance based on the scheme of the provided Dsn
      *
-     * @param Dsn $dsn
      * @return Filesystem
      */
     public function create(Dsn $dsn)
     {
-        $dsnId = hash('md5', (string)$dsn);
+        $dsnId = hash('md5', (string) $dsn);
 
         try {
             $filesystem = $this->mountManager->getFilesystem($dsnId);

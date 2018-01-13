@@ -24,6 +24,7 @@ final class FlySystemCollector implements FileCollector
      * @var SpecificationFactory
      */
     private $specificationFactory;
+
     /**
      * @var FlySystemFactory
      */
@@ -31,8 +32,6 @@ final class FlySystemCollector implements FileCollector
 
     /**
      * FlySystemCollector constructor.
-     * @param SpecificationFactory $specificationFactory
-     * @param FlySystemFactory $flySystemFactory
      */
     public function __construct(SpecificationFactory $specificationFactory, FlySystemFactory $flySystemFactory)
     {

@@ -23,14 +23,14 @@ use Webmozart\Assert\Assert;
 class Factory
 {
     /** @var string[] Associative array with engine names as key and class names as value. */
-    protected $engines = array();
+    protected $engines = [];
 
     /**
      * Registers the default and provided Template engines.
      *
      * @param TemplateInterface[] $engines Associative array of the engine class names and their name as key.
      */
-    public function __construct(array $engines = array())
+    public function __construct(array $engines = [])
     {
         foreach ($engines as $name => $class) {
             $this->register($name, $class);
@@ -44,12 +44,8 @@ class Factory
      * this method won't complain (as no instantiation is done here for performance reasons) but the `get()` method
      * will throw an exception.
      *
-     * @param string            $name
-     * @param TemplateInterface $templateEngine
-     *
+     * @param string $name
      * @see get() to retrieve an instance for the given $name.
-     *
-     * @return void
      */
     public function register($name, TemplateInterface $templateEngine)
     {
@@ -69,7 +65,7 @@ class Factory
     public function get($name)
     {
         if (!isset($this->engines[$name])) {
-            throw new \InvalidArgumentException('Template engine "'.$name.'" is not known or registered');
+            throw new \InvalidArgumentException('Template engine "' . $name . '" is not known or registered');
         }
 
         return $this->engines[$name];

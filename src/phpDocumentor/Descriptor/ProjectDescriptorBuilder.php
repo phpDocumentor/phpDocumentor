@@ -17,12 +17,9 @@ use phpDocumentor\Descriptor\Filter\Filter;
 use phpDocumentor\Descriptor\Filter\Filterable;
 use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
 use phpDocumentor\Descriptor\Validator\Error;
-use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Php\Project;
 use phpDocumentor\Translator\Translator;
 use Psr\Log\LogLevel;
-use Symfony\Component\Validator\ConstraintViolation;
-use Symfony\Component\Validator\Validator;
 
 /**
  * Builds a Project Descriptor and underlying tree.
@@ -43,12 +40,13 @@ class ProjectDescriptorBuilder
 
     /** @var Translator $translator */
     protected $translator;
+
     private $defaultPackage;
 
     public function __construct(AssemblerFactory $assemblerFactory, Filter $filterManager)
     {
         $this->assemblerFactory = $assemblerFactory;
-        $this->filter           = $filterManager;
+        $this->filter = $filterManager;
     }
 
     public function createProjectDescriptor()
@@ -119,7 +117,7 @@ class ProjectDescriptorBuilder
         $assembler = $this->getAssembler($data);
         if (!$assembler) {
             throw new \InvalidArgumentException(
-                'Unable to build a Descriptor; the provided data did not match any Assembler '. get_class($data)
+                'Unable to build a Descriptor; the provided data did not match any Assembler ' . get_class($data)
             );
         }
 
@@ -154,8 +152,6 @@ class ProjectDescriptorBuilder
 
     /**
      * Analyzes a Descriptor and alters its state based on its state or even removes the descriptor.
-     *
-     * @param Filterable $descriptor
      *
      * @return Filterable
      */
@@ -219,20 +215,15 @@ class ProjectDescriptorBuilder
      */
     protected function mapCodeToSeverity($code)
     {
-        if (is_int($code) && $this->translator->translate('VAL:ERRLVL-'.$code)) {
-            $severity = $this->translator->translate('VAL:ERRLVL-'.$code);
+        if (is_int($code) && $this->translator->translate('VAL:ERRLVL-' . $code)) {
+            $severity = $this->translator->translate('VAL:ERRLVL-' . $code);
         } else {
-             $severity = LogLevel::ERROR;
+            $severity = LogLevel::ERROR;
         }
 
         return $severity;
     }
 
-    /**
-     * @param Translator $translator
-     *
-     * @return void
-     */
     public function setTranslator(Translator $translator)
     {
         $this->translator = $translator;
@@ -242,10 +233,10 @@ class ProjectDescriptorBuilder
     {
         $packageName = $project->getRootNamespace()->getFqsen()->getName();
         $this->defaultPackage = new PackageDescriptor();
-        $this->defaultPackage->setFullyQualifiedStructuralElementName((string)$project->getRootNamespace()->getFqsen());
+        $this->defaultPackage->setFullyQualifiedStructuralElementName((string) $project->getRootNamespace()->getFqsen());
         $this->defaultPackage->setName($packageName);
         $this->defaultPackage->setNamespace(
-            substr((string)$project->getRootNamespace()->getFqsen(), 0, -strlen($packageName)-1)
+            substr((string) $project->getRootNamespace()->getFqsen(), 0, -strlen($packageName) - 1)
         );
 
         foreach ($project->getFiles() as $file) {
@@ -261,7 +252,7 @@ class ProjectDescriptorBuilder
 //        $namespaces->add($this->defaultPackage);
 
         foreach ($project->getNamespaces() as $namespace) {
-            $namespaces->set((string)$namespace->getFqsen(), $this->buildDescriptor($namespace));
+            $namespaces->set((string) $namespace->getFqsen(), $this->buildDescriptor($namespace));
         }
     }
 

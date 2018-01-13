@@ -29,11 +29,6 @@ final class SpecificationFactory implements FactoryInterface
 {
     /**
      * Creates a SpecificationInterface object based on the ignore and extension parameters.
-     *
-     * @param array $paths
-     * @param array $ignore
-     * @param array $extensions
-     * @return SpecificationInterface
      */
     public function create(array $paths, array $ignore, array $extensions): SpecificationInterface
     {
@@ -62,9 +57,8 @@ final class SpecificationFactory implements FactoryInterface
     /**
      * Will return an OrSpecification when $or and $spec are both not null.
      *
-     * @param SpecificationInterface $or
      * @param SpecificationInterface|null $spec
-     * @return OrSpecification|SpecificationInterface
+     * @return OrSpecification|\SpecificationInterface
      */
     private function orSpec(SpecificationInterface $or, SpecificationInterface $spec = null): SpecificationInterface
     {
@@ -79,7 +73,6 @@ final class SpecificationFactory implements FactoryInterface
      * Creates an InPath specification.
      *
      * @param string $path
-     * @return InPath
      */
     private function inPath($path): InPath
     {

@@ -1,7 +1,7 @@
 <?php
-class A {
+class A
+{
     public function method(array $array): iterable
     {
-
     }
 }

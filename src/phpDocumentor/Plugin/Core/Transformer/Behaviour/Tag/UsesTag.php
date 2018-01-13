@@ -41,16 +41,16 @@ class UsesTag
             if (isset($refers_array[1])) {
                 // starts with $ = property, ends with () = method,
                 // otherwise constant
-                $type = $refers_array[1][0] == '$' ? 'property' : 'constant';
-                $type = substr($refers_array[1], -2) == '()' ? 'method' : $type;
+                $type = $refers_array[1][0] === '$' ? 'property' : 'constant';
+                $type = substr($refers_array[1], -2) === '()' ? 'method' : $type;
             }
 
             switch ($type) {
                 case 'class':
                     // escape single quotes in the class name
-                    $xpath_refers = 'concat(\''.str_replace(
-                        array("'", '"'),
-                        array('\', "\'", \'', '\', \'"\' , \''),
+                    $xpath_refers = 'concat(\'' . str_replace(
+                        ["'", '"'],
+                        ['\', "\'", \'', '\', \'"\' , \''],
                         $refers
                     ) . "', '')";
 
@@ -60,21 +60,21 @@ class UsesTag
                     $class_name = $refers_array[0];
 
                     // escape single quotes in the class name
-                    $xpath_class_name = 'concat(\''.str_replace(
-                        array("'", '"'),
-                        array('\', "\'", \'', '\', \'"\' , \''),
+                    $xpath_class_name = 'concat(\'' . str_replace(
+                        ["'", '"'],
+                        ['\', "\'", \'', '\', \'"\' , \''],
                         $class_name
                     ) . "', '')";
 
                     // escape single quotes in the method name
-                    $xpath_method_name = 'concat(\''.str_replace(
-                        array("'", '"'),
-                        array('\', "\'", \'', '\', \'"\' , \''),
+                    $xpath_method_name = 'concat(\'' . str_replace(
+                        ["'", '"'],
+                        ['\', "\'", \'', '\', \'"\' , \''],
                         rtrim($refers_array[1], '()')
                     ) . "', '')";
 
                     $qry = '/project/file/class[full_name=' . $xpath_class_name
-                        . ']/'.$type.'[name=' . $xpath_method_name .']';
+                        . ']/' . $type . '[name=' . $xpath_method_name . ']';
                     break;
             }
 
@@ -112,7 +112,7 @@ class UsesTag
 
                 // gather the name of the referring element and set that as refers
                 // attribute
-                if ($node->parentNode->parentNode->nodeName == 'class') {
+                if ($node->parentNode->parentNode->nodeName === 'class') {
                     // if the element where the @uses is in is a class; nothing
                     // more than the class name need to returned
 
@@ -121,9 +121,8 @@ class UsesTag
                     $referral_name = $grandParentNode
                         ->getElementsByTagName('full_name')->item(0)->nodeValue;
                 } else {
-
                     $referral_class_name = null;
-                    if ($node->parentNode->parentNode->nodeName == 'method') {
+                    if ($node->parentNode->parentNode->nodeName === 'method') {
                         // gather the name of the class where the @uses is in
 
                         /** @var \DOMElement $greatGrandParentNode */
@@ -142,8 +141,8 @@ class UsesTag
                         ->getElementsByTagName('name')->item(0)->nodeValue;
 
                     // if it is a method; suffix with ()
-                    if ($node->parentNode->parentNode->nodeName == 'method'
-                        || $node->parentNode->parentNode->nodeName == 'function'
+                    if ($node->parentNode->parentNode->nodeName === 'method'
+                        || $node->parentNode->parentNode->nodeName === 'function'
                     ) {
                         $referral_name .= '()';
                     }

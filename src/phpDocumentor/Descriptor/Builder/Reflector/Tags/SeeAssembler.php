@@ -11,11 +11,9 @@
 
 namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 
-use phpDocumentor\Compiler\Linker\Linker;
 use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
 use phpDocumentor\Descriptor\Tag\SeeDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tags\See;
-use phpDocumentor\Reflection\Types\Context;
 
 /**
  * Constructs a new Descriptor from a Reflector object for the `@see` tag.

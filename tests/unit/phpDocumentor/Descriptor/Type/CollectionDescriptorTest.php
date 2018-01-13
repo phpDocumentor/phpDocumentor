@@ -69,9 +69,9 @@ class CollectionDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testSetAndRetrieveTypes()
     {
         $expected = new UnknownTypeDescriptor('array');
-        $this->fixture->setTypes(array($expected));
+        $this->fixture->setTypes([$expected]);
 
-        $this->assertSame(array($expected), $this->fixture->getTypes());
+        $this->assertSame([$expected], $this->fixture->getTypes());
     }
 
     /**
@@ -81,9 +81,9 @@ class CollectionDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testSetAndRetrieveKeyTypes()
     {
         $expected = new UnknownTypeDescriptor('string');
-        $this->fixture->setKeyTypes(array($expected));
+        $this->fixture->setKeyTypes([$expected]);
 
-        $this->assertSame(array($expected), $this->fixture->getKeyTypes());
+        $this->assertSame([$expected], $this->fixture->getKeyTypes());
     }
 
     /**
@@ -91,8 +91,8 @@ class CollectionDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testRetrieveCollectionNotationFromObject()
     {
-        $this->fixture->setKeyTypes(array(new StringDescriptor()));
-        $this->fixture->setTypes(array(new FloatDescriptor(), new IntegerDescriptor()));
+        $this->fixture->setKeyTypes([new StringDescriptor()]);
+        $this->fixture->setTypes([new FloatDescriptor(), new IntegerDescriptor()]);
 
         $this->assertSame('array<string,float|integer>', (string) $this->fixture);
     }
@@ -102,7 +102,7 @@ class CollectionDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testRetrieveCollectionNotationFromObjectWithoutKeys()
     {
-        $this->fixture->setTypes(array(new FloatDescriptor(), new IntegerDescriptor()));
+        $this->fixture->setTypes([new FloatDescriptor(), new IntegerDescriptor()]);
 
         $this->assertSame('array<float|integer>', (string) $this->fixture);
     }

@@ -37,13 +37,11 @@ final class Path
     /**
      * Verifies if another Path object has the same identity as this one.
      *
-     * @param Path $otherPath
-     *
      * @return bool
      */
-    public function equals(Path $otherPath)
+    public function equals(self $otherPath)
     {
-        return $this->path === (string)$otherPath;
+        return $this->path === (string) $otherPath;
     }
 
     /**

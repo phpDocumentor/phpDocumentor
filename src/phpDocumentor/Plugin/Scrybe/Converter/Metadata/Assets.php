@@ -32,8 +32,6 @@ class Assets extends \ArrayObject
      * @param string $project_root
      *
      * @throws \RuntimeException if the container already contains items.
-     *
-     * @return void
      */
     public function setProjectRoot($project_root)
     {
@@ -59,8 +57,6 @@ class Assets extends \ArrayObject
      *
      * @param string $source_path
      * @param string $destination_path
-     *
-     * @return void
      */
     public function set($source_path, $destination_path)
     {
@@ -69,10 +65,6 @@ class Assets extends \ArrayObject
 
     /**
      * Sets a logger with which to record warnings.
-     *
-     * @param Logger $logger
-     *
-     * @return void
      */
     public function setLogger(Logger $logger)
     {
@@ -83,8 +75,6 @@ class Assets extends \ArrayObject
      * Copies all assets in this collection to their given destination location.
      *
      * @param string $destination
-     *
-     * @return void
      */
     public function copyTo($destination)
     {
@@ -97,7 +87,7 @@ class Assets extends \ArrayObject
                 continue;
             }
 
-            $destination_path = $destination.'/'.$asset_path;
+            $destination_path = $destination . '/' . $asset_path;
             if (!file_exists(dirname($destination_path))) {
                 mkdir(dirname($destination_path), 0777, true);
             }

@@ -93,14 +93,14 @@ class ConstantDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers \phpDocumentor\Descriptor\ConstantDescriptor::getTypes
      * @covers \phpDocumentor\Descriptor\ConstantDescriptor::getVar
      */
-    public function testgetTypesDerivedFromVarTag()
+    public function testTestgetTypesDerivedFromVarTag()
     {
         $expected = new String_();
 
         $varTag = m::mock('phpDocumentor\Descriptor\Tag\VarDescriptor');
         $varTag->shouldReceive('getTypes')->andReturn($expected);
 
-        $this->fixture->getTags()->set('var', new Collection(array($varTag)));
+        $this->fixture->getTags()->set('var', new Collection([$varTag]));
 
         $this->assertSame($expected, $this->fixture->getTypes());
     }
@@ -247,7 +247,7 @@ class ConstantDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         // Arrange
         $varTagDescriptor = new VarDescriptor('var');
-        $varCollection = new Collection(array($varTagDescriptor));
+        $varCollection = new Collection([$varTagDescriptor]);
         $this->fixture->getTags()->clear();
         $parentProperty = $this->whenFixtureHasConstantInParentClassWithSameName($this->fixture->getName());
         $parentProperty->getTags()->set('var', $varCollection);
@@ -284,7 +284,7 @@ class ConstantDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         // Arrange
         $authorTagDescriptor = new AuthorDescriptor('author');
-        $authorCollection = new Collection(array($authorTagDescriptor));
+        $authorCollection = new Collection([$authorTagDescriptor]);
         $this->fixture->getTags()->clear();
         $parentProperty = $this->whenFixtureHasConstantInParentClassWithSameName($this->fixture->getName());
         $parentProperty->getTags()->set('author', $authorCollection);
@@ -303,7 +303,7 @@ class ConstantDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         // Arrange
         $versionTagDescriptor = new VersionDescriptor('version');
-        $versionCollection = new Collection(array($versionTagDescriptor));
+        $versionCollection = new Collection([$versionTagDescriptor]);
         $this->fixture->getTags()->clear();
         $parentProperty = $this->whenFixtureHasConstantInParentClassWithSameName($this->fixture->getName());
         $parentProperty->getTags()->set('version', $versionCollection);
@@ -322,7 +322,7 @@ class ConstantDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         // Arrange
         $copyrightTagDescriptor = new TagDescriptor('copyright');
-        $copyrightCollection = new Collection(array($copyrightTagDescriptor));
+        $copyrightCollection = new Collection([$copyrightTagDescriptor]);
         $this->fixture->getTags()->clear();
         $parentProperty = $this->whenFixtureHasConstantInParentClassWithSameName($this->fixture->getName());
         $parentProperty->getTags()->set('copyright', $copyrightCollection);
@@ -352,13 +352,13 @@ class ConstantDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $varTag->shouldReceive('getTypes')->andReturn($types);
 
         $parentConstant = m::mock('\phpDocumentor\Descriptor\ConstantDescriptor');
-        $parentConstant->shouldReceive('getVar')->andReturn(new Collection(array($varTag)));
+        $parentConstant->shouldReceive('getVar')->andReturn(new Collection([$varTag]));
 
         // create SuperClassMock and add a Constant collection with out to-be-inherited constant
         $superClass = m::mock('phpDocumentor\Descriptor\ClassDescriptor');
         $superClass->shouldReceive('getConstants')->andReturn(
             new Collection(
-                array($constantName => $parentConstant)
+                [$constantName => $parentConstant]
             )
         );
 
@@ -405,13 +405,13 @@ class ConstantDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     protected function whenFixtureHasConstantInParentClassWithSameName($name)
     {
-        $result = new ConstantDescriptor;
+        $result = new ConstantDescriptor();
         $result->setName($name);
 
         $parent = new ClassDescriptor();
         $parent->getConstants()->set($name, $result);
 
-        $class  = new ClassDescriptor();
+        $class = new ClassDescriptor();
         $class->setParent($parent);
 
         $this->fixture->setParent($class);

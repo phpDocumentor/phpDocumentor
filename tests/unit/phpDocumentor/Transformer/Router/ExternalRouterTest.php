@@ -44,7 +44,7 @@ class ExternalRouterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         // Arrange
         $config = new Configuration();
         $config->getTransformer()->setExternalClassDocumentation(
-            array(new ExternalClassDocumentation('My_Space', 'http://abc/{CLASS}.html'))
+            [new ExternalClassDocumentation('My_Space', 'http://abc/{CLASS}.html')]
         );
 
         $router = new ExternalRouter($config);
@@ -66,10 +66,10 @@ class ExternalRouterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         // Arrange
         $config = new Configuration();
         $config->getTransformer()->setExternalClassDocumentation(
-            array(
+            [
                 new ExternalClassDocumentation('My_Zen_Space', 'http://abc/zen/{CLASS}.html'),
-                new ExternalClassDocumentation('My_Space', 'http://abc/{CLASS}.html')
-            )
+                new ExternalClassDocumentation('My_Space', 'http://abc/{CLASS}.html'),
+            ]
         );
         $router = new ExternalRouter($config);
 

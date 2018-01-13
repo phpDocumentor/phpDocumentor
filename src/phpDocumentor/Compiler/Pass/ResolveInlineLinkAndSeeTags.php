@@ -11,8 +11,10 @@
 
 namespace phpDocumentor\Compiler\Pass;
 
+use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
+use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Reflection\DocBlock\DescriptionFactory;
 use phpDocumentor\Reflection\DocBlock\StandardTagFactory;
 use phpDocumentor\Reflection\DocBlock\Tag;
@@ -24,17 +26,15 @@ use phpDocumentor\Reflection\TypeResolver;
 use phpDocumentor\Reflection\Types\Context;
 use phpDocumentor\Transformer\Router\Queue;
 use phpDocumentor\Transformer\Router\RouterAbstract;
-use phpDocumentor\Compiler\CompilerPassInterface;
-use phpDocumentor\Descriptor\ProjectDescriptor;
 
 /**
  * This step in the compilation process iterates through all elements and scans their descriptions for an inline `@see`
  * or `@link` tag and resolves them to a markdown link.
- *
  */
 class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
 {
     const COMPILER_PRIORITY = 9002;
+
     const REGEX_INLINE_LINK_OR_SEE_TAG = '/\{\@(see|link)[\ ]+([^\}]+)\}/';
 
     /** @var RouterAbstract */
@@ -65,10 +65,6 @@ class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
     /**
      * Iterates through each element in the project and replaces its inline @see and @link tag with a markdown
      * representation.
-     *
-     * @param ProjectDescriptor $project
-     *
-     * @return void
      */
     public function execute(ProjectDescriptor $project)
     {
@@ -83,11 +79,7 @@ class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
     /**
      * Resolves all @see and @link tags in the description of the given descriptor to their markdown representation.
      *
-     * @param DescriptorAbstract $descriptor
-     *
      * @uses self::resolveTag()
-     *
-     * @return void
      */
     private function resolveSeeAndLinkTags(DescriptorAbstract $descriptor)
     {
@@ -97,7 +89,7 @@ class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
         $descriptor->setDescription(
             preg_replace_callback(
                 self::REGEX_INLINE_LINK_OR_SEE_TAG,
-                array($this, 'resolveTag'),
+                [$this, 'resolveTag'],
                 $descriptor->getDescription()
             )
         );
@@ -117,14 +109,14 @@ class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
             return $match;
         }
 
-        $link        = $this->getLinkText($tagReflector);
+        $link = $this->getLinkText($tagReflector);
         $description = $tagReflector->getDescription();
 
         if ($this->isUrl($link)) {
             return $this->generateMarkdownLink($link, $description ?: $link);
         }
 
-        $link    = $this->resolveQsen($link);
+        $link = $this->resolveQsen($link);
         $element = $this->findElement($link);
         if (!$element) {
             return $link;
@@ -205,10 +197,8 @@ class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
      * Generates a Markdown link to the given Descriptor or returns the link text if no route to the Descriptor could
      * be matched.
      *
-     * @param DescriptorAbstract $element
-     * @param string             $link
-     * @param string             $description
-     *
+     * @param string $link
+     * @param string $description
      * @return string
      */
     private function resolveElement(DescriptorAbstract $element, $link, $description)
@@ -217,7 +207,7 @@ class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
 
         if ($rule) {
             $url = '..' . $rule->generate($element);
-            $link = $this->generateMarkdownLink($url, $description ? : $link);
+            $link = $this->generateMarkdownLink($url, $description ?: $link);
         }
 
         return $link;
@@ -255,7 +245,7 @@ class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
      */
     private function findElement($fqsen)
     {
-        return $this->elementCollection[(string)$fqsen] ?? null;
+        return $this->elementCollection[(string) $fqsen] ?? null;
     }
 
     /**
@@ -266,12 +256,12 @@ class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
     private function createDocBlockContext()
     {
         $file = $this->descriptor->getFile();
-        $namespaceAliases = $file ? $file->getNamespaceAliases()->getAll() : array();
+        $namespaceAliases = $file ? $file->getNamespaceAliases()->getAll() : [];
         foreach ($namespaceAliases as $alias => $fqsen) {
-            $namespaceAliases[$alias] = (string)$fqsen;
+            $namespaceAliases[$alias] = (string) $fqsen;
         }
 
-        return new Context((string)$this->descriptor->getNamespace(), $namespaceAliases);
+        return new Context((string) $this->descriptor->getNamespace(), $namespaceAliases);
     }
 
     /**

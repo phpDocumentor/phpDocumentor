@@ -11,7 +11,6 @@
 
 namespace phpDocumentor\Descriptor\Interfaces;
 
-use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Reflection\Type;
 
 /**
@@ -23,8 +22,6 @@ interface PropertyInterface extends ElementInterface, TypeInterface
      * Stores a textual representation of the default value for a property.
      *
      * @param string $default
-     *
-     * @return void
      */
     public function setDefault($default);
 
@@ -39,8 +36,6 @@ interface PropertyInterface extends ElementInterface, TypeInterface
      * Sets whether this property is static in scope.
      *
      * @param boolean $static
-     *
-     * @return void
      */
     public function setStatic($static);
 
@@ -55,8 +50,6 @@ interface PropertyInterface extends ElementInterface, TypeInterface
      * Sets the types associated with the value(s) for this property.
      *
      * @param Type $types
-     *
-     * @return void
      */
     public function setTypes(Type $types);
 

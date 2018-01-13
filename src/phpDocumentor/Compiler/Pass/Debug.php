@@ -11,10 +11,10 @@
 
 namespace phpDocumentor\Compiler\Pass;
 
-use Psr\Log\LoggerInterface;
 use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\ProjectAnalyzer;
 use phpDocumentor\Descriptor\ProjectDescriptor;
+use Psr\Log\LoggerInterface;
 
 /**
  * This class is responsible for sending statistical information to the log.
@@ -34,13 +34,10 @@ class Debug implements CompilerPassInterface
 
     /**
      * Registers the logger with this Compiler Pass.
-     *
-     * @param LoggerInterface $log
-     * @param ProjectAnalyzer $analyzer
      */
     public function __construct(LoggerInterface $log, ProjectAnalyzer $analyzer)
     {
-        $this->log      = $log;
+        $this->log = $log;
         $this->analyzer = $analyzer;
     }
 
@@ -54,10 +51,6 @@ class Debug implements CompilerPassInterface
 
     /**
      * Analyzes the given project and returns the results to the logger.
-     *
-     * @param ProjectDescriptor $project
-     *
-     * @return void
      */
     public function execute(ProjectDescriptor $project)
     {

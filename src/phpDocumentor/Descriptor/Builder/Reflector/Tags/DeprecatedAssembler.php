@@ -11,9 +11,8 @@
 
 namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 
-use phpDocumentor\Descriptor\Tag\DeprecatedDescriptor;
 use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
-use phpDocumentor\Reflection\DocBlock\Tag\DeprecatedTag;
+use phpDocumentor\Descriptor\Tag\DeprecatedDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tags\Deprecated;
 
 /**

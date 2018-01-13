@@ -12,11 +12,10 @@
 
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
+use Mockery as m;
 use phpDocumentor\Descriptor\ArgumentDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock;
-use phpDocumentor\Reflection\ClassReflector\MethodReflector;
-use Mockery as m;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Php\Argument;
 use phpDocumentor\Reflection\Php\Method;
@@ -61,8 +60,8 @@ class MethodAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testCreateMethodDescriptorFromReflector()
     {
         // Arrange
-        $namespace    = 'Namespace';
-        $methodName   = 'goodbyeWorld';
+        $namespace = 'Namespace';
+        $methodName = 'goodbyeWorld';
         $argumentName = 'variableName';
 
         $argument = $this->givenAnArgumentWithName($argumentName);
@@ -83,10 +82,10 @@ class MethodAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
         // Assert
         $expectedFqsen = '\\' . $namespace . '::' . $methodName . '()';
-        $this->assertSame($expectedFqsen, (string)$descriptor->getFullyQualifiedStructuralElementName());
+        $this->assertSame($expectedFqsen, (string) $descriptor->getFullyQualifiedStructuralElementName());
         $this->assertSame($methodName, $descriptor->getName());
         $this->assertSame('\\' . $namespace, $descriptor->getNamespace());
-        $this->assertSame('protected', (string)$descriptor->getVisibility());
+        $this->assertSame('protected', (string) $descriptor->getVisibility());
         $this->assertFalse($descriptor->isFinal());
         $this->assertFalse($descriptor->isAbstract());
         $this->assertFalse($descriptor->isStatic());
@@ -106,8 +105,8 @@ class MethodAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testCreateMethodDescriptorFromReflectorWhenDocblockIsAbsent()
     {
         // Arrange
-        $namespace    = 'Namespace';
-        $methodName   = 'goodbyeWorld';
+        $namespace = 'Namespace';
+        $methodName = 'goodbyeWorld';
         $argumentName = 'waveHand';
 
         $argumentDescriptorMock = $this->givenAnArgumentWithName($argumentName);
@@ -141,8 +140,8 @@ class MethodAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testCreateMethodDescriptorFromReflectorWhenParamTagsAreAbsent()
     {
         // Arrange
-        $namespace    = 'Namespace';
-        $methodName   = 'goodbyeWorld';
+        $namespace = 'Namespace';
+        $methodName = 'goodbyeWorld';
         $argumentName = 'waveHand';
 
         $argumentDescriptorMock = $this->givenAnArgumentWithName($argumentName);
@@ -158,7 +157,6 @@ class MethodAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
         $this->argumentAssemblerMock->shouldReceive('create')->andReturn($argumentDescriptor);
 
-
         // Act
         $descriptor = $this->fixture->create($methodReflectorMock);
 
@@ -172,8 +170,7 @@ class MethodAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      *
      * @param string $namespace
      * @param string $methodName
-     * @param Argument $argumentMock
-     * @param DocBlock|m\MockInterface $docBlockMock
+     * @param DocBlock|\m\MockInterface $docBlockMock
      * @return Method
      */
     protected function givenAMethodReflector($namespace, $methodName, Argument $argumentMock, $docBlockMock = null)
