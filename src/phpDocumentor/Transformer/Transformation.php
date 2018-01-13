@@ -268,7 +268,7 @@ class Transformation
      *
      * @param string $name Name of the parameter to return.
      *
-     * @return Parameter
+     * @return Parameter[]
      */
     public function getParametersWithKey($name)
     {

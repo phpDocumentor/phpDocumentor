@@ -90,8 +90,8 @@ class Twig extends WriterAbstract implements Routable
      * This method combines the ProjectDescriptor and the given target template
      * and creates a static html page at the artifact location.
      *
-     * @param ProjectDescriptor $project        Document containing the structure.
-     * @param Transformation    $transformation Transformation to execute.
+     * @param ProjectDescriptor $project Document containing the structure.
+     * @param Transformation $transformation Transformation to execute.
      */
     public function transform(ProjectDescriptor $project, Transformation $transformation)
     {
@@ -206,7 +206,8 @@ class Twig extends WriterAbstract implements Routable
             // to support 'normal' Twig extensions we check the interface to determine what instantiation to do.
             $implementsInterface = in_array(
                 'phpDocumentor\Plugin\Twig\ExtensionInterface',
-                class_implements($extensionValue), true
+                class_implements($extensionValue),
+                true
             );
 
             $twigEnvironment->addExtension(
@@ -235,8 +236,8 @@ class Twig extends WriterAbstract implements Routable
      *   node 'name' as a child of the given $node and use that value instead.
      *
      * @param DescriptorAbstract $node
-     * @throws InvalidArgumentException if no artifact is provided and no routing rule matches.
-     * @throws UnexpectedValueException if the provided node does not contain anything.
+     * @throws \InvalidArgumentException if no artifact is provided and no routing rule matches.
+     * @throws \UnexpectedValueException if the provided node does not contain anything.
      * @return string|bool returns the destination location or false if generation should be aborted.
      */
     protected function getDestinationPath($node, Transformation $transformation)
