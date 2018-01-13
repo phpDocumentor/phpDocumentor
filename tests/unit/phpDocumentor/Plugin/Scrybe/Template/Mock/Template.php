@@ -18,23 +18,14 @@ use phpDocumentor\Plugin\Scrybe\Template\TemplateInterface;
  */
 class Template implements TemplateInterface
 {
-    /**
-     * @param string $templatePath
-     */
     public function __construct($templatePath)
     {
     }
 
-    /**
-     * @param string $name
-     */
     public function setName($name)
     {
     }
 
-    /**
-     * @param string $path
-     */
     public function setPath($path)
     {
     }

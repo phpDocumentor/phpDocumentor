@@ -103,6 +103,7 @@ class Extension
         if (!self::getDocumentedElement($link) && filter_var($link, FILTER_VALIDATE_URL)) {
             return 'url';
         }
+
         return 'undocumented';
     }
 

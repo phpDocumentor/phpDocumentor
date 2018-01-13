@@ -33,6 +33,7 @@ parameters:
         SlevomatCodingStandard\Sniffs\Classes\UnusedPrivateElementsSniff:
             - */tests/data/**
             - */tests/ReferenceImplementation.php
+            - */phpDocumentor/Compiler/Pass/ResolveInlineLinkAndSeeTags.php
         PHP_CodeSniffer\Standards\Squiz\Sniffs\Scope\MethodScopeSniff:
             - */tests/data/**
         PhpCsFixer\Fixer\Import\NoUnusedImportsFixer:

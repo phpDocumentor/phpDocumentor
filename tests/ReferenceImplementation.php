@@ -55,6 +55,7 @@ namespace My\Space {
          * @var \stdClass $propertyListItem2 The second property in a list
          */
         public $propertyListItem1;
+
         public $propertyListItem2;
     }
 
@@ -132,8 +133,8 @@ namespace My\Space {
         }
 
         /**
-     * This is a method definition showcasing the variadic syntax pre-php5.6.
-     */
+         * This is a method definition showcasing the variadic syntax pre-php5.6.
+         */
         public function variadicMethodWithOneExplicitParameter($first)
         {
         }
