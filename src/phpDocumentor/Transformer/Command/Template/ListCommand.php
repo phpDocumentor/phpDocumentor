@@ -11,10 +11,10 @@
 
 namespace phpDocumentor\Transformer\Command\Template;
 
-use phpDocumentor\Command\Command;
-use phpDocumentor\Transformer\Template\Factory;
 use \Symfony\Component\Console\Input\InputInterface;
 use \Symfony\Component\Console\Output\OutputInterface;
+use phpDocumentor\Command\Command;
+use phpDocumentor\Transformer\Template\Factory;
 
 /**
  * Lists all templates known to phpDocumentor.
@@ -26,8 +26,6 @@ class ListCommand extends Command
 
     /**
      * Initializes this command with its dependencies.
-     *
-     * @param Factory $factory
      */
     public function __construct(Factory $factory)
     {
@@ -38,8 +36,6 @@ class ListCommand extends Command
 
     /**
      * Initializes this command and sets the name, description, options and arguments.
-     *
-     * @return void
      */
     protected function configure()
     {
@@ -58,18 +54,14 @@ HELP
 
     /**
      * Retrieves all template names from the Template Factory and sends those to stdout.
-     *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return void
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('Available templates:');
         foreach ($this->factory->getAllNames() as $template_name) {
-            $output->writeln('* '.$template_name);
+            $output->writeln('* ' . $template_name);
         }
+
         $output->writeln('');
     }
 }

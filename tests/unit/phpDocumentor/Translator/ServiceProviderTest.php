@@ -22,7 +22,7 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Dummy locale.
      *
-     * @var string $locale
+     * @var string
      */
     protected $locale = 'foobar';
 
@@ -41,7 +41,7 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $this->application['config'] = m::mock('phpDocumentor\Configuration');
 
         $this->application['config']->shouldReceive('getTranslator->getLocale')
-        ->andReturn($this->locale);
+            ->andReturn($this->locale);
         $this->fixture = new ServiceProvider();
     }
 

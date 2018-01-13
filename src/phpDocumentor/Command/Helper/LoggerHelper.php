@@ -26,7 +26,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class LoggerHelper extends Helper
 {
-
     /**
      * Initializes the given command to accept logging options.
      *
@@ -34,7 +33,6 @@ class LoggerHelper extends Helper
      * adds a new option `log`.
      *
      * @param Command $command
-     * @return void
      */
     public function addOptions($command)
     {
@@ -56,10 +54,7 @@ class LoggerHelper extends Helper
     /**
      * Connect the logging events to the output object of Symfony Console.
      *
-     * @param OutputInterface $output
      * @param Command $command
-     *
-     * @return void
      */
     public function connectOutputToLogging(OutputInterface $output, $command)
     {
@@ -71,13 +66,13 @@ class LoggerHelper extends Helper
             return;
         }
 
-        /** @var Dispatcher $eventDispatcher  */
+        /** @var Dispatcher $eventDispatcher */
         $eventDispatcher = $command->getService('event_dispatcher');
 
         $eventDispatcher->addListener(
             'parser.file.pre',
             function (PreFileEvent $event) use ($output) {
-                $output->writeln('Parsing <info>'.$event->getFile().'</info>');
+                $output->writeln('Parsing <info>' . $event->getFile() . '</info>');
             }
         );
 
@@ -96,25 +91,19 @@ class LoggerHelper extends Helper
      *
      * This method will also colorize the message based on priority and withhold
      * certain logging in case of verbosity or not.
-     *
-     * @param OutputInterface $output
-     * @param LogEvent        $event
-     * @param Command         $command
-     *
-     * @return void
      */
     public function logEvent(OutputInterface $output, LogEvent $event, Command $command)
     {
-        $numericErrors = array(
-            LogLevel::DEBUG     => 0,
-            LogLevel::NOTICE    => 1,
-            LogLevel::INFO      => 2,
-            LogLevel::WARNING   => 3,
-            LogLevel::ERROR     => 4,
-            LogLevel::ALERT     => 5,
-            LogLevel::CRITICAL  => 6,
+        $numericErrors = [
+            LogLevel::DEBUG => 0,
+            LogLevel::NOTICE => 1,
+            LogLevel::INFO => 2,
+            LogLevel::WARNING => 3,
+            LogLevel::ERROR => 4,
+            LogLevel::ALERT => 5,
+            LogLevel::CRITICAL => 6,
             LogLevel::EMERGENCY => 7,
-        );
+        ];
 
         $threshold = LogLevel::ERROR;
         if ($output->getVerbosity() === OutputInterface::VERBOSITY_DEBUG) {
@@ -122,9 +111,9 @@ class LoggerHelper extends Helper
         }
 
         if ($numericErrors[$event->getPriority()] >= $numericErrors[$threshold]) {
-            /** @var Translator $translator  */
+            /** @var Translator $translator */
             $translator = $command->getContainer()->offsetGet('translator');
-            $message    = vsprintf($translator->translate($event->getMessage()), $event->getContext());
+            $message = vsprintf($translator->translate($event->getMessage()), $event->getContext());
 
             switch ($event->getPriority()) {
                 case LogLevel::WARNING:
@@ -137,6 +126,7 @@ class LoggerHelper extends Helper
                     $message = '<error>' . $message . '</error>';
                     break;
             }
+
             $output->writeln('  ' . $message);
         }
     }
@@ -164,7 +154,7 @@ class LoggerHelper extends Helper
         /** @var Configuration $configuration */
         $configuration = $container['config'];
 
-        if ($output->getVerbosity() == OutputInterface::VERBOSITY_NORMAL) {
+        if ($output->getVerbosity() === OutputInterface::VERBOSITY_NORMAL) {
             $logLevel = (string) $configuration->getLogging()->getLevel();
         }
 

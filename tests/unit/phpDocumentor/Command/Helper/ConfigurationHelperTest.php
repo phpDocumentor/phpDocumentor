@@ -48,7 +48,7 @@ class ConfigurationHelperTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         // Arrange
         $optionName = 'myOption';
-        $expected   = 'value';
+        $expected = 'value';
 
         $inputMock = $this->givenAnInputObject();
         $this->whenAnOptionIsRetrievedFromInput($inputMock, $optionName, $expected);
@@ -69,14 +69,14 @@ class ConfigurationHelperTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         // Arrange
         $optionName = 'myOption';
-        $inputMock  = $this->givenAnInputObject();
+        $inputMock = $this->givenAnInputObject();
         $this->whenAnOptionIsRetrievedFromInput($inputMock, $optionName, 'value1,value2');
 
         // Act
         $result = $this->fixture->getOption($inputMock, $optionName, null, null, true);
 
         // Assert
-        $this->assertSame(array('value1', 'value2'), $result);
+        $this->assertSame(['value1', 'value2'], $result);
     }
 
     /**
@@ -88,14 +88,14 @@ class ConfigurationHelperTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         // Arrange
         $optionName = 'myOption';
-        $inputMock  = $this->givenAnInputObject();
-        $this->whenAnOptionIsRetrievedFromInput($inputMock, $optionName, array('value1,value2'));
+        $inputMock = $this->givenAnInputObject();
+        $this->whenAnOptionIsRetrievedFromInput($inputMock, $optionName, ['value1,value2']);
 
         // Act
         $result = $this->fixture->getOption($inputMock, $optionName, null, null, true);
 
         // Assert
-        $this->assertSame(array('value1', 'value2'), $result);
+        $this->assertSame(['value1', 'value2'], $result);
     }
 
     /**
@@ -106,14 +106,14 @@ class ConfigurationHelperTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         // Arrange
         $optionName = 'myOption';
-        $inputMock  = $this->givenAnInputObject();
-        $this->whenAnOptionIsRetrievedFromInput($inputMock, $optionName, array());
+        $inputMock = $this->givenAnInputObject();
+        $this->whenAnOptionIsRetrievedFromInput($inputMock, $optionName, []);
 
         // Act
         $result = $this->fixture->getOption($inputMock, $optionName, null, null);
 
         // Assert
-        $this->assertSame(array(), $result);
+        $this->assertSame([], $result);
     }
 
     /**
@@ -124,7 +124,7 @@ class ConfigurationHelperTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         // Arrange
         $optionName = 'myOption';
-        $inputMock  = $this->givenAnInputObject();
+        $inputMock = $this->givenAnInputObject();
         $this->whenAnOptionIsRetrievedFromInput($inputMock, $optionName, null);
 
         // Act
@@ -143,7 +143,7 @@ class ConfigurationHelperTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         // Arrange
         $optionName = 'myOption';
-        $inputMock  = $this->givenAnInputObject();
+        $inputMock = $this->givenAnInputObject();
         $this->whenAnOptionIsRetrievedFromInput($inputMock, $optionName, null);
 
         // Act
@@ -162,7 +162,7 @@ class ConfigurationHelperTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         // Arrange
         $optionName = 'myOption';
-        $inputMock  = $this->givenAnInputObject();
+        $inputMock = $this->givenAnInputObject();
         $this->whenAnOptionIsRetrievedFromInput($inputMock, $optionName, null);
 
         // Act
@@ -181,8 +181,8 @@ class ConfigurationHelperTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         // Arrange
         $optionName = 'myOption';
-        $expected   = 'option';
-        $inputMock  = $this->givenAnInputObject();
+        $expected = 'option';
+        $inputMock = $this->givenAnInputObject();
         $this->whenAnOptionIsRetrievedFromInput($inputMock, $optionName, $expected);
 
         // Act
@@ -208,8 +208,6 @@ class ConfigurationHelperTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @param m\MockInterface|InputInterface $inputMock
      * @param string                         $optionName
      * @param mixed                          $expected
-     *
-     * @return void
      */
     private function whenAnOptionIsRetrievedFromInput($inputMock, $optionName, $expected)
     {

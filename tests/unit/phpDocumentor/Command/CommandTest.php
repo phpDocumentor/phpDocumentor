@@ -11,8 +11,8 @@
 
 namespace phpDocumentor\Command;
 
-use Symfony\Component\Console\Helper\HelperSet;
 use Mockery as m;
+use Symfony\Component\Console\Helper\HelperSet;
 
 /**
  * Tests for the phpDocumentor Command class.
@@ -40,7 +40,7 @@ class CommandTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $loggerHelperMock->shouldReceive('addOptions')->with($this->fixture);
         $loggerHelperMock->shouldReceive('getName')->andReturn('phpdocumentor_logger');
         $loggerHelperMock->shouldIgnoreMissing();
-        $helperSet = new HelperSet(array('phpdocumentor_logger' => $loggerHelperMock));
+        $helperSet = new HelperSet(['phpdocumentor_logger' => $loggerHelperMock]);
 
         // Act
         $this->fixture->setHelperSet($helperSet);
@@ -62,7 +62,7 @@ class CommandTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $progressBarHelperMock->shouldReceive('getName')->andReturn('progress');
         $progressBarHelperMock->shouldIgnoreMissing();
         $this->fixture->setHelperSet(
-            new HelperSet(array('progress' => $progressBarHelperMock, 'phpdocumentor_logger' => $loggerHelperMock))
+            new HelperSet(['progress' => $progressBarHelperMock, 'phpdocumentor_logger' => $loggerHelperMock])
         );
 
         $inputInterface = m::mock('Symfony\Component\Console\Input\InputInterface');
@@ -91,7 +91,7 @@ class CommandTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $progressBarHelperMock->shouldReceive('getName')->andReturn('progress');
         $progressBarHelperMock->shouldIgnoreMissing();
         $this->fixture->setHelperSet(
-            new HelperSet(array('progress' => $progressBarHelperMock, 'phpdocumentor_logger' => $loggerHelperMock))
+            new HelperSet(['progress' => $progressBarHelperMock, 'phpdocumentor_logger' => $loggerHelperMock])
         );
 
         $inputInterface = m::mock('Symfony\Component\Console\Input\InputInterface');

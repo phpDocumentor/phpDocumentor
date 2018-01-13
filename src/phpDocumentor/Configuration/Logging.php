@@ -31,10 +31,10 @@ class Logging
      *
      * @Serializer\Type("array<string>")
      */
-    protected $paths = array(
+    protected $paths = [
         'default' => null,
-        'errors'  => null
-    );
+        'errors' => null,
+    ];
 
     /**
      * Returns the minimum output level for logging.
@@ -50,8 +50,6 @@ class Logging
      * Sets the minimum output level for the logger.
      *
      * @param string $level
-     *
-     * @return void
      */
     public function setLevel($level)
     {
@@ -79,8 +77,6 @@ class Logging
      * @param string[] $paths
      *
      * @see getPaths() for more information.
-     *
-     * @return void
      */
     public function setPaths($paths)
     {

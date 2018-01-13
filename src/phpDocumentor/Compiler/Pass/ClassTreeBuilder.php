@@ -31,7 +31,7 @@ final class ClassTreeBuilder implements CompilerPassInterface
      */
     public function getDescription()
     {
-        return "Adding Parents to child classes";
+        return 'Adding Parents to child classes';
     }
 
     /**
@@ -50,15 +50,15 @@ final class ClassTreeBuilder implements CompilerPassInterface
             /** @var ClassDescriptor $class */
             foreach ($file->getClasses()->getAll() as $class) {
                 if ($class->getParent() instanceof Fqsen) {
-                    $parent = $project->getIndexes()->get('classes')->get((string)$class->getParent());
+                    $parent = $project->getIndexes()->get('classes')->get((string) $class->getParent());
                     if ($parent instanceof ClassDescriptor) {
                         $class->setParent($parent);
                     }
                 }
 
                 foreach ($class->getInterfaces()->getAll() as $interface) {
-                    $interfaceDescriptor = $project->getIndexes()->get('interfaces')->get((string)$interface);
-                    $class->getInterfaces()->set((string)$interface, $interfaceDescriptor);
+                    $interfaceDescriptor = $project->getIndexes()->get('interfaces')->get((string) $interface);
+                    $class->getInterfaces()->set((string) $interface, $interfaceDescriptor);
                 }
             }
         }

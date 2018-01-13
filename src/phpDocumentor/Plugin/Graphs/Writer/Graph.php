@@ -21,7 +21,6 @@ use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\GraphViz\Edge;
 use phpDocumentor\GraphViz\Graph as GraphVizGraph;
 use phpDocumentor\GraphViz\Node;
-use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
 use Zend\Stdlib\Exception\ExtensionNotLoadedException;
@@ -44,32 +43,25 @@ class Graph extends WriterAbstract
     protected $nodeFont = 'Courier';
 
     /** @var Node[] a cache where nodes for classes, interfaces and traits are stored for reference */
-    protected $nodeCache = array();
+    protected $nodeCache = [];
 
     /** @var GraphVizGraph[] */
-    protected $namespaceCache = array();
+    protected $namespaceCache = [];
 
     /**
      * Invokes the query method contained in this class.
      *
      * @param ProjectDescriptor $project        Document containing the structure.
      * @param Transformation    $transformation Transformation to execute.
-     *
-     * @return void
      */
     public function transform(ProjectDescriptor $project, Transformation $transformation)
     {
         $type_method = 'process' . ucfirst($transformation->getSource());
-        $this->$type_method($project, $transformation);
+        $this->{$type_method}($project, $transformation);
     }
 
     /**
      * Creates a class inheritance diagram.
-     *
-     * @param ProjectDescriptor $project
-     * @param Transformation    $transformation
-     *
-     * @return void
      */
     public function processClass(ProjectDescriptor $project, Transformation $transformation)
     {
@@ -99,24 +91,26 @@ class Graph extends WriterAbstract
 
         $this->buildNamespaceTree($graph, $project->getNamespace());
 
-        $classes    = $project->getIndexes()->get('classes', new Collection())->getAll();
+        $classes = $project->getIndexes()->get('classes', new Collection())->getAll();
         $interfaces = $project->getIndexes()->get('interfaces', new Collection())->getAll();
-        $traits     = $project->getIndexes()->get('traits', new Collection())->getAll();
+        $traits = $project->getIndexes()->get('traits', new Collection())->getAll();
 
-        /** @var ClassDescriptor[]|InterfaceDescriptor[]|TraitDescriptor[] $containers  */
+        /** @var ClassDescriptor[]|InterfaceDescriptor[]|TraitDescriptor[] $containers */
         $containers = array_merge($classes, $interfaces, $traits);
 
         foreach ($containers as $container) {
-            $from_name = (string)$container->getFullyQualifiedStructuralElementName();
+            $from_name = (string) $container->getFullyQualifiedStructuralElementName();
 
-            $parents     = array();
-            $implemented = array();
+            $parents = [];
+            $implemented = [];
             if ($container instanceof ClassDescriptor) {
                 if ($container->getParent()) {
                     $parents[] = $container->getParent();
                 }
+
                 $implemented = $container->getInterfaces()->getAll();
             }
+
             if ($container instanceof InterfaceDescriptor) {
                 $parents = $container->getParent()->getAll();
             }
@@ -155,7 +149,7 @@ class Graph extends WriterAbstract
      */
     protected function createEdge($graph, $from_name, $to)
     {
-        $to_name = (string)($to instanceof DescriptorAbstract ? $to->getFullyQualifiedStructuralElementName() : $to);
+        $to_name = (string) ($to instanceof DescriptorAbstract ? $to->getFullyQualifiedStructuralElementName() : $to);
 
         if (!isset($this->nodeCache[$from_name])) {
             $namespaceParts = explode('\\', $from_name);
@@ -192,12 +186,13 @@ class Graph extends WriterAbstract
         $graph = null;
         $reassembledFqnn = '';
         foreach ($namespaceParts as $part) {
-            if ($part == '\\' || $part == '') {
+            if ($part === '\\' || $part === '') {
                 $part = 'Global';
                 $reassembledFqnn = 'Global';
             } else {
                 $reassembledFqnn = $reassembledFqnn . '\\' . $part;
             }
+
             if (isset($this->namespaceCache[$part])) {
                 $graph = $this->namespaceCache[$part];
             } else {
@@ -232,20 +227,15 @@ class Graph extends WriterAbstract
 
     /**
      * Builds a tree of namespace subgraphs with their classes associated.
-     *
-     * @param GraphVizGraph       $graph
-     * @param NamespaceDescriptor $namespace
-     *
-     * @return void
      */
     protected function buildNamespaceTree(GraphVizGraph $graph, NamespaceDescriptor $namespace)
     {
-        $full_namespace_name = (string)$namespace->getFullyQualifiedStructuralElementName();
-        if ($full_namespace_name == '\\') {
+        $full_namespace_name = (string) $namespace->getFullyQualifiedStructuralElementName();
+        if ($full_namespace_name === '\\') {
             $full_namespace_name = 'Global';
         }
 
-        $label = $namespace->getName() == '\\' ? 'Global' : $namespace->getName();
+        $label = $namespace->getName() === '\\' ? 'Global' : $namespace->getName();
         $sub_graph = $this->createGraphForNamespace($full_namespace_name, $label);
         $this->namespaceCache[$full_namespace_name] = $sub_graph;
 
@@ -258,22 +248,22 @@ class Graph extends WriterAbstract
         /** @var ClassDescriptor|InterfaceDescriptor|TraitDescriptor $sub_element */
         foreach ($elements as $sub_element) {
             $node = Node::create(
-                (string)$sub_element->getFullyQualifiedStructuralElementName(),
+                (string) $sub_element->getFullyQualifiedStructuralElementName(),
                 $sub_element->getName()
             )
-                ->setShape('box')
-                ->setFontName($this->nodeFont)
-                ->setFontSize('11');
+            ->setShape('box')
+            ->setFontName($this->nodeFont)
+            ->setFontSize('11');
 
             if ($sub_element instanceof ClassDescriptor && $sub_element->isAbstract()) {
-                $node->setLabel('<«abstract»<br/>' . $sub_element->getName(). '>');
+                $node->setLabel('<«abstract»<br/>' . $sub_element->getName() . '>');
             }
 
             //$full_name = $sub_element->getFullyQualifiedStructuralElementName();
             //$node->setURL($this->class_paths[$full_name]);
             //$node->setTarget('_parent');
 
-            $this->nodeCache[(string)$sub_element->getFullyQualifiedStructuralElementName()] = $node;
+            $this->nodeCache[(string) $sub_element->getFullyQualifiedStructuralElementName()] = $node;
             $sub_graph->setNode($node);
         }
 
@@ -285,7 +275,6 @@ class Graph extends WriterAbstract
     }
 
     /**
-     * @param \phpDocumentor\Transformer\Transformation $transformation
      * @return string
      */
     protected function getDestinationPath(Transformation $transformation)
@@ -300,14 +289,12 @@ class Graph extends WriterAbstract
      * Checks whether GraphViz is installed and throws an Exception otherwise.
      *
      * @throws ExtensionNotLoadedException if graphviz is not found.
-     *
-     * @return void
      */
     protected function checkIfGraphVizIsInstalled()
     {
         // NOTE: the -V flag sends output using STDERR and STDOUT
         exec('dot -V 2>&1', $output, $error);
-        if ($error != 0) {
+        if ($error !== 0) {
             throw new ExtensionNotLoadedException(
                 'Unable to find the `dot` command of the GraphViz package. '
                 . 'Is GraphViz correctly installed and present in your path?'
@@ -329,8 +316,7 @@ class Graph extends WriterAbstract
             ->setColor('gray')
             ->setFontColor('gray')
             ->setFontSize('11')
-            ->setRankDir('LR')
-        ;
+            ->setRankDir('LR');
 
         return $sub_graph;
     }

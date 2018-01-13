@@ -11,9 +11,9 @@
 
 namespace phpDocumentor\Plugin\Scrybe\Converter\RestructuredText;
 
-use phpDocumentor\Plugin\Scrybe\Converter\ToHtmlInterface;
 use phpDocumentor\Fileset\File;
 use phpDocumentor\Plugin\Scrybe\Converter\BaseConverter;
+use phpDocumentor\Plugin\Scrybe\Converter\ToHtmlInterface;
 use phpDocumentor\Plugin\Scrybe\Template\TemplateInterface;
 
 /**
@@ -36,8 +36,6 @@ class ToHtml extends BaseConverter implements ToHtmlInterface
      * titles for references, assets and more.
      *
      * @see manual://internals#build_cycle for more information regarding the build process.
-     *
-     * @return void
      */
     protected function discover()
     {
@@ -66,15 +64,12 @@ class ToHtml extends BaseConverter implements ToHtmlInterface
      * The template is provided using the $template parameter and is used to decorate the individual files. It can be
      * obtained using the `\phpDocumentor\Plugin\Scrybe\Template\Factory` class.
      *
-     * @param TemplateInterface $template
-     *
      * @see manual://internals#build_cycle for more information regarding the build process.
-     *
      * @return string[]|null The contents of the resulting file(s) or null if the files are written directly to file.
      */
     protected function create(TemplateInterface $template)
     {
-        $result = array();
+        $result = [];
 
         /** @var File $file */
         foreach ($this->fileset as $file) {
@@ -110,12 +105,10 @@ class ToHtml extends BaseConverter implements ToHtmlInterface
      * @param string $destination The destination path relative to the target folder.
      *
      * @see \phpDocumentor\Plugin\Scrybe\Converter\BaseConverter::$options for where the 'root' variable is set.
-     *
-     * @return void
      */
     protected function setDestinationRoot($destination)
     {
-        $this->options['root'] = dirname($destination) != '.'
+        $this->options['root'] = dirname($destination) !== '.'
             ? implode('/', array_fill(0, count(explode('/', dirname($destination))), '..')) . '/'
             : './';
     }

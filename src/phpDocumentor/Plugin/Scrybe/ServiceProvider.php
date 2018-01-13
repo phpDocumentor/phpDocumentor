@@ -12,10 +12,10 @@
 namespace phpDocumentor\Plugin\Scrybe;
 
 use Cilex\Application;
-use Pimple\Container;
-use Pimple\ServiceProviderInterface;
 use phpDocumentor\Plugin\Scrybe\Converter\Definition\Factory;
 use phpDocumentor\Plugin\Scrybe\Converter\Format\Format;
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 
 /**
  * Creates and binds the components for the generation of manuals.
@@ -26,10 +26,15 @@ use phpDocumentor\Plugin\Scrybe\Converter\Format\Format;
 class ServiceProvider implements ServiceProviderInterface
 {
     const CONVERTER_FACTORY = 'converter-factory';
+
     const TEMPLATE_FACTORY = 'template-factory';
+
     const CONVERTER_DEFINITION_FACTORY = 'converter_definition_factory';
+
     const FORMATS = 'converter_formats';
+
     const CONVERTERS = 'converters';
+
     const TEMPLATE_FOLDER = 'template_folder';
 
     /**
@@ -40,9 +45,9 @@ class ServiceProvider implements ServiceProviderInterface
     public function register(Container $app)
     {
         $app[self::TEMPLATE_FOLDER] = realpath(__DIR__ . '/data/templates/');
-        $app[self::CONVERTERS] = array(
-            '\phpDocumentor\Plugin\Scrybe\Converter\RestructuredText\ToHtml' => array(Format::RST, Format::HTML),
-        );
+        $app[self::CONVERTERS] = [
+            '\phpDocumentor\Plugin\Scrybe\Converter\RestructuredText\ToHtml' => [Format::RST, Format::HTML],
+        ];
 
         $app[self::FORMATS] = function () {
             return new Converter\Format\Collection();
@@ -62,7 +67,7 @@ class ServiceProvider implements ServiceProviderInterface
 
         $app[self::TEMPLATE_FACTORY] = function ($app) {
             return new Template\Factory(
-                array('twig' => new Template\Twig($app[ServiceProvider::TEMPLATE_FOLDER]))
+                ['twig' => new Template\Twig($app[ServiceProvider::TEMPLATE_FOLDER])]
             );
         };
 
@@ -73,8 +78,6 @@ class ServiceProvider implements ServiceProviderInterface
      * Method responsible for adding the commands for this application.
      *
      * @param Application|Container $app
-     *
-     * @return void
      */
     protected function addCommands(Container $app)
     {

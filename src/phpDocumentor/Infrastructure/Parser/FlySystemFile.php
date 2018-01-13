@@ -33,7 +33,7 @@ final class FlySystemFile implements File
 
     /**
      * FlySystemFile constructor.
-     * @param FilesystemInterface $fileSystem
+     *
      * @param string $fileName
      */
     public function __construct(FilesystemInterface $fileSystem, $fileName)

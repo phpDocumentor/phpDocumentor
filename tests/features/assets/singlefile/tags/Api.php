@@ -7,18 +7,15 @@
  */
 class A
 {
-
     /**
      * @api
      */
     public function someMethod()
     {
-
     }
 
     public function someOtherMethod()
     {
-
     }
 }
 

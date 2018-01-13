@@ -3,10 +3,6 @@ includes:
     - temp/ecs/config/psr2.neon
     - temp/ecs/config/common.neon
 
-checkers:
-    PhpCsFixer\Fixer\Operator\ConcatSpaceFixer:
-        spacing: one
-
 parameters:
     exclude_checkers:
         # from temp/ecs/config/common.neon
@@ -19,3 +15,30 @@ parameters:
     skip:
         PHP_CodeSniffer\Standards\Generic\Sniffs\NamingConventions\CamelCapsFunctionNameSniff:
             - */tests/**
+        PHP_CodeSniffer\Standards\Squiz\Sniffs\Classes\ValidClassNameSniff:
+            - */tests/data/**
+        PhpCsFixer\Fixer\Basic\Psr4Fixer:
+            - */tests/data/**
+            - */tests/features/assets/**
+        Symplify\CodingStandard\Fixer\Commenting\RemoveUselessDocBlockFixer:
+            - */tests/data/**
+            - */tests/features/assets/**
+        PHP_CodeSniffer\Standards\Generic\Sniffs\NamingConventions\UpperCaseConstantNameSniff:
+            - */tests/data/file-level/PackagePrecedesDefine.php
+            - */tests/data/file-level/NoPackagePrecedesDefine.php
+        SlevomatCodingStandard\Sniffs\Classes\UnusedPrivateElementsSniff:
+            - */tests/data/**
+            - */tests/ReferenceImplementation.php
+            - */phpDocumentor/Compiler/Pass/ResolveInlineLinkAndSeeTags.php
+        PHP_CodeSniffer\Standards\Squiz\Sniffs\Scope\MethodScopeSniff:
+            - */tests/data/**
+        PhpCsFixer\Fixer\Import\NoUnusedImportsFixer:
+            - */tests/features/assets/singlefile/syntax/groupedUse.php
+        PhpCsFixer\Fixer\Import\SingleImportPerStatementFixer:
+            - */tests/features/assets/singlefile/syntax/groupedUse.php
+        PhpCsFixer\Fixer\Phpdoc\PhpdocTrimFixer:
+            - */tests/data/NoShortDescription.php
+        PhpCsFixer\Fixer\Phpdoc\NoEmptyPhpdocFixer:
+            - */tests/data/NoShortDescription.php
+        Symplify\CodingStandard\Fixer\Commenting\RemoveEmptyDocBlockFixer:
+            - */tests/data/NoShortDescription.php

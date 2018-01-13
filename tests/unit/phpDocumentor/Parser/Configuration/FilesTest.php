@@ -24,7 +24,7 @@ class FilesTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function setUp()
     {
-        $this->fixture = new Files(array('directory'), array('file'), array('ignore'), array('examples'));
+        $this->fixture = new Files(['directory'], ['file'], ['ignore'], ['examples']);
     }
 
     /**
@@ -33,7 +33,7 @@ class FilesTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testIfExamplesCanBeRetrieved()
     {
-        $this->assertSame(array('examples'), $this->fixture->getExamples());
+        $this->assertSame(['examples'], $this->fixture->getExamples());
     }
 
     /**
@@ -42,7 +42,7 @@ class FilesTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testIfDirectoriesCanBeRetrieved()
     {
-        $this->assertSame(array('directory'), $this->fixture->getDirectories());
+        $this->assertSame(['directory'], $this->fixture->getDirectories());
     }
 
     /**
@@ -51,7 +51,7 @@ class FilesTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testIfFilesCanBeRetrieved()
     {
-        $this->assertSame(array('file'), $this->fixture->getFiles());
+        $this->assertSame(['file'], $this->fixture->getFiles());
     }
 
     /**
@@ -60,7 +60,7 @@ class FilesTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testIfIgnoresCanBeRetrieved()
     {
-        $this->assertSame(array('ignore'), $this->fixture->getIgnore());
+        $this->assertSame(['ignore'], $this->fixture->getIgnore());
     }
 
     /**

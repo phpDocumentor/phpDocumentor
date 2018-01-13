@@ -11,10 +11,8 @@
 
 namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 
-use phpDocumentor\Compiler\Linker\Linker;
 use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
 use phpDocumentor\Descriptor\Tag\UsesDescriptor;
-use phpDocumentor\Reflection\DocBlock\Context;
 use phpDocumentor\Reflection\DocBlock\Tags\Uses;
 
 class UsesAssembler extends AssemblerAbstract

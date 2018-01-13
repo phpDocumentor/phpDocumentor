@@ -12,10 +12,9 @@
 
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
+use Mockery as m;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock;
-use phpDocumentor\Reflection\ClassReflector\PropertyReflector;
-use Mockery as m;
 use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Php\Property;
@@ -48,8 +47,8 @@ class PropertyAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testCreatePropertyDescriptorFromReflector()
     {
         // Arrange
-        $namespace    = 'Namespace';
-        $propertyName   = 'property';
+        $namespace = 'Namespace';
+        $propertyName = 'property';
 
         $propertyReflectorMock = $this->givenAPropertyReflector(
             $namespace,
@@ -62,26 +61,24 @@ class PropertyAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
         // Assert
         $expectedFqsen = '\\' . $namespace . '::$' . $propertyName;
-        $this->assertSame($expectedFqsen, (string)$descriptor->getFullyQualifiedStructuralElementName());
+        $this->assertSame($expectedFqsen, (string) $descriptor->getFullyQualifiedStructuralElementName());
         $this->assertSame($propertyName, $descriptor->getName());
         $this->assertSame('\\' . $namespace, $descriptor->getNamespace());
-        $this->assertSame('protected', (string)$descriptor->getVisibility());
+        $this->assertSame('protected', (string) $descriptor->getVisibility());
         $this->assertFalse($descriptor->isStatic());
     }
 
     /**
      * Creates a sample property reflector for the tests with the given data.
      *
-     * @param string                             $namespace
-     * @param string                             $propertyName
-     * @param DocBlock|m\MockInterface           $docBlockMock
-     *
-     * @return Property
+     * @param string $namespace
+     * @param string $propertyName
+     * @param DocBlock $docBlockMock
      */
-    protected function givenAPropertyReflector($namespace, $propertyName, $docBlockMock = null) : Property
+    protected function givenAPropertyReflector($namespace, $propertyName, $docBlockMock = null): Property
     {
         $propertyReflectorMock = new Property(
-            new Fqsen('\\' .  $namespace . '::$' . $propertyName),
+            new Fqsen('\\' . $namespace . '::$' . $propertyName),
             new Visibility(Visibility::PROTECTED_),
             $docBlockMock
         );
@@ -91,10 +88,8 @@ class PropertyAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
     /**
      * Generates a DocBlock object with applicable defaults for these tests.
-     *
-     * @return DocBlock|m\MockInterface
      */
-    protected function givenADocBlockObject($withTags)
+    protected function givenADocBlockObject($withTags): DocBlock
     {
         $docBlockDescription = new Description('This is an example description');
 
@@ -104,6 +99,6 @@ class PropertyAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
             $tags[] = new DocBlock\Tags\Var_('variableName', new String_(), new Description('Var description'));
         }
 
-        return $docBlockMock = new DocBlock('This is a example description', $docBlockDescription, $tags);
+        return new DocBlock('This is a example description', $docBlockDescription, $tags);
     }
 }

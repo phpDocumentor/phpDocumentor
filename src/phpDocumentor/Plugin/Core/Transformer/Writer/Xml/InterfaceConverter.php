@@ -31,10 +31,6 @@ class InterfaceConverter
 
     /**
      * Initializes this converter with the DocBlock converter.
-     *
-     * @param DocBlockConverter $docBlockConverter
-     * @param MethodConverter   $methodConverter
-     * @param ConstantConverter $constantConverter
      */
     public function __construct(
         DocBlockConverter $docBlockConverter,
@@ -42,7 +38,7 @@ class InterfaceConverter
         ConstantConverter $constantConverter
     ) {
         $this->docBlockConverter = $docBlockConverter;
-        $this->methodConverter   = $methodConverter;
+        $this->methodConverter = $methodConverter;
         $this->constantConverter = $constantConverter;
     }
 
@@ -70,7 +66,7 @@ class InterfaceConverter
 
         /** @var InterfaceDescriptor $parentInterface */
         foreach ($interface->getParent() as $parentInterface) {
-            $parentFqcn = (string)($parentInterface instanceof InterfaceDescriptor
+            $parentFqcn = (string) ($parentInterface instanceof InterfaceDescriptor
                 ? $parentInterface->getFullyQualifiedStructuralElementName()
                 : $parentInterface);
             $child->appendChild(new \DOMElement('extends', $parentFqcn));

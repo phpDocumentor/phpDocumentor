@@ -39,6 +39,6 @@ class LoggingTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testIfTheLoggingPathsCanBeRetrieved()
     {
-        $this->assertSame(array('default' => null, 'errors' => null), $this->fixture->getPaths());
+        $this->assertSame(['default' => null, 'errors' => null], $this->fixture->getPaths());
     }
 }

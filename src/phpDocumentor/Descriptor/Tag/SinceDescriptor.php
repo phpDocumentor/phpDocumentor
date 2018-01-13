@@ -35,8 +35,6 @@ class SinceDescriptor extends TagDescriptor
      * Sets the version since when the associated element was introduced.
      *
      * @param string $version
-     *
-     * @return void
      */
     public function setVersion($version)
     {

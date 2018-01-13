@@ -145,12 +145,12 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
         foreach ($arguments as $argument) {
             $argument->setMethod($this);
         }
+
         $this->arguments = $arguments;
     }
 
     /**
      * @param string $name
-     * @param ArgumentDescriptor $argument
      */
     public function addArgument($name, ArgumentDescriptor $argument)
     {
@@ -166,9 +166,6 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
         return $this->arguments;
     }
 
-    /**
-     * @return ReturnDescriptor
-     */
     public function getResponse(): ReturnDescriptor
     {
         $definedReturn = new ReturnDescriptor('return');
@@ -203,7 +200,7 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
     {
         /** @var Collection $var */
         $var = $this->getTags()->get('return', new Collection());
-        if ($var->count() != 0) {
+        if ($var->count() !== 0) {
             return $var;
         }
 
@@ -265,7 +262,7 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
         $parentClass = $associatedClass->getParent();
         if ($parentClass instanceof ClassDescriptor || $parentClass instanceof Collection) {
             // the parent of a class is always a class, but the parent of an interface is a collection of interfaces.
-            $parents = $parentClass instanceof ClassDescriptor ? array($parentClass) : $parentClass->getAll();
+            $parents = $parentClass instanceof ClassDescriptor ? [$parentClass] : $parentClass->getAll();
             foreach ($parents as $parent) {
                 if ($parent instanceof ClassDescriptor || $parent instanceof InterfaceDescriptor) {
                     $parentMethod = $parent->getMethods()->get($this->getName());
@@ -300,8 +297,6 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
 
     /**
      * Sets return type of this method.
-     *
-     * @param Type $returnType
      */
     public function setReturnType(Type $returnType)
     {

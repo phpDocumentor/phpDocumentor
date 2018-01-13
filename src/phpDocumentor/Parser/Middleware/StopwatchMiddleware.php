@@ -14,8 +14,8 @@ namespace phpDocumentor\Parser\Middleware;
 
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Event\LogEvent;
-use Psr\Log\LogLevel;
 use phpDocumentor\Reflection\Middleware\Middleware;
+use Psr\Log\LogLevel;
 use Symfony\Component\Stopwatch\Stopwatch;
 
 final class StopwatchMiddleware implements Middleware
@@ -30,7 +30,6 @@ final class StopwatchMiddleware implements Middleware
 
     /**
      * StopwatchMiddleware constructor.
-     * @param Stopwatch $stopwatch
      */
     public function __construct(Stopwatch $stopwatch)
     {
@@ -40,9 +39,7 @@ final class StopwatchMiddleware implements Middleware
     /**
      * Executes this middle ware class.
      *
-     * @param $command
      * @param callable $next
-     *
      * @return object
      */
     public function execute($command, callable $next)
@@ -76,10 +73,8 @@ final class StopwatchMiddleware implements Middleware
      * @param string   $message  The message to log.
      * @param string   $priority The logging priority as declared in the LogLevel PSR-3 class.
      * @param string[] $parameters
-     *
-     * @return void
      */
-    protected function log($message, $priority = LogLevel::INFO, $parameters = array())
+    private function log($message, $priority = LogLevel::INFO, $parameters = [])
     {
         Dispatcher::getInstance()->dispatch(
             'system.log',

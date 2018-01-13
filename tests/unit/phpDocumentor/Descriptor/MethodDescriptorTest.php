@@ -15,7 +15,6 @@ use \Mockery as m;
 use phpDocumentor\Descriptor\Tag\AuthorDescriptor;
 use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
 use phpDocumentor\Descriptor\Tag\VersionDescriptor;
-use phpDocumentor\Reflection\DocBlock\Tags\Return_;
 use phpDocumentor\Reflection\Types\String_;
 
 /**
@@ -58,7 +57,7 @@ class MethodDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $this->assertInstanceOf(Collection::class, $this->fixture->getArguments());
 
         $mock = m::mock(Collection::class);
-        $mock->shouldReceive('getIterator')->andReturn(new \ArrayIterator(array()));
+        $mock->shouldReceive('getIterator')->andReturn(new \ArrayIterator([]));
 
         $this->fixture->setArguments($mock);
 
@@ -127,7 +126,7 @@ class MethodDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
         $this->assertNull($this->fixture->getResponse()->getTypes());
 
-        $this->fixture->getTags()->set('return', new Collection(array($mock)));
+        $this->fixture->getTags()->set('return', new Collection([$mock]));
 
         $this->assertSame($mock, $this->fixture->getResponse());
     }
@@ -257,7 +256,7 @@ class MethodDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         // Arrange
         $returnTagDescriptor = new AuthorDescriptor('return');
-        $returnCollection = new Collection(array($returnTagDescriptor));
+        $returnCollection = new Collection([$returnTagDescriptor]);
         $this->fixture->getTags()->clear();
         $parentProperty = $this->whenFixtureHasMethodInParentClassWithSameName($this->fixture->getName());
         $parentProperty->getTags()->set('return', $returnCollection);
@@ -276,7 +275,7 @@ class MethodDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         // Arrange
         $paramTagDescriptor = new AuthorDescriptor('param');
-        $paramCollection = new Collection(array($paramTagDescriptor));
+        $paramCollection = new Collection([$paramTagDescriptor]);
         $this->fixture->getTags()->clear();
         $parentProperty = $this->whenFixtureHasMethodInParentClassWithSameName($this->fixture->getName());
         $parentProperty->getTags()->set('param', $paramCollection);
@@ -296,7 +295,7 @@ class MethodDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         // Arrange
         $authorTagDescriptor = new AuthorDescriptor('author');
-        $authorCollection = new Collection(array($authorTagDescriptor));
+        $authorCollection = new Collection([$authorTagDescriptor]);
         $this->fixture->getTags()->clear();
         $parentProperty = $this->whenFixtureHasMethodInParentClassWithSameName($this->fixture->getName());
         $parentProperty->getTags()->set('author', $authorCollection);
@@ -316,7 +315,7 @@ class MethodDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         // Arrange
         $versionTagDescriptor = new VersionDescriptor('version');
-        $versionCollection = new Collection(array($versionTagDescriptor));
+        $versionCollection = new Collection([$versionTagDescriptor]);
         $this->fixture->getTags()->clear();
         $parentProperty = $this->whenFixtureHasMethodInParentClassWithSameName($this->fixture->getName());
         $parentProperty->getTags()->set('version', $versionCollection);
@@ -336,7 +335,7 @@ class MethodDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         // Arrange
         $copyrightTagDescriptor = new TagDescriptor('copyright');
-        $copyrightCollection = new Collection(array($copyrightTagDescriptor));
+        $copyrightCollection = new Collection([$copyrightTagDescriptor]);
         $this->fixture->getTags()->clear();
         $parentProperty = $this->whenFixtureHasMethodInParentClassWithSameName($this->fixture->getName());
         $parentProperty->getTags()->set('copyright', $copyrightCollection);
@@ -378,18 +377,16 @@ class MethodDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
     /**
      * @param string $name The name of the current method.
-     *
-     * @return MethodDescriptor
      */
     protected function whenFixtureHasMethodInParentClassWithSameName($name): MethodDescriptor
     {
-        $result = new MethodDescriptor;
+        $result = new MethodDescriptor();
         $result->setName($name);
 
         $parent = new ClassDescriptor();
         $parent->getMethods()->set($name, $result);
 
-        $class  = new ClassDescriptor();
+        $class = new ClassDescriptor();
         $class->setParent($parent);
 
         $this->fixture->setParent($class);
@@ -399,18 +396,16 @@ class MethodDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
     /**
      * @param string $name The name of the current method.
-     *
-     * @return MethodDescriptor
      */
     protected function whenFixtureHasMethodInImplementedInterfaceWithSameName($name): MethodDescriptor
     {
-        $result = new MethodDescriptor;
+        $result = new MethodDescriptor();
         $result->setName($name);
 
         $parent = new InterfaceDescriptor();
         $parent->getMethods()->set($name, $result);
 
-        $class  = new ClassDescriptor();
+        $class = new ClassDescriptor();
         $class->getInterfaces()->set('Implemented', $parent);
 
         $this->fixture->setParent($class);

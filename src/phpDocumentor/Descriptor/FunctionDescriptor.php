@@ -73,8 +73,6 @@ class FunctionDescriptor extends DescriptorAbstract implements Interfaces\Functi
 
     /**
      * Sets return type of this method.
-     *
-     * @param Type $returnType
      */
     public function setReturnType(Type $returnType)
     {

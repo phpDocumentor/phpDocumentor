@@ -25,8 +25,6 @@ class LinkDescriptor extends TagDescriptor
      * Sets the URL where the link points to.
      *
      * @param string $link
-     *
-     * @return void
      */
     public function setLink($link)
     {

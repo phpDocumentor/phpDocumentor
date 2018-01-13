@@ -27,7 +27,7 @@ class TableOfContentsTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     protected function setUp()
     {
-        $this->object = new TableOfContents;
+        $this->object = new TableOfContents();
     }
 
     /**
@@ -73,6 +73,6 @@ class TableOfContentsTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $this->object[] = $file4;
 
         $this->assertCount(2, $this->object->getModules());
-        $this->assertSame(array($file3, $file4), $this->object->getModules());
+        $this->assertSame([$file3, $file4], $this->object->getModules());
     }
 }

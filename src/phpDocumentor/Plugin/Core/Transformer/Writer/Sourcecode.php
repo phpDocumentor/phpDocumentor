@@ -26,8 +26,6 @@ class Sourcecode extends WriterAbstract
      *
      * @param ProjectDescriptor $project        Document containing the structure.
      * @param Transformation    $transformation Transformation to execute.
-     *
-     * @return void
      */
     public function transform(ProjectDescriptor $project, Transformation $transformation)
     {
@@ -40,16 +38,17 @@ class Sourcecode extends WriterAbstract
         /** @var FileDescriptor $file */
         foreach ($project->getFiles() as $file) {
             $filename = $file->getPath();
-            $source   = $file->getSource();
+            $source = $file->getSource();
 
             $root = str_repeat('../', count(explode(DIRECTORY_SEPARATOR, $filename)));
             $path = $artifact . DIRECTORY_SEPARATOR . $filename;
             if (!file_exists(dirname($path))) {
                 mkdir(dirname($path), 0755, true);
             }
+
             $source = htmlentities($source);
             file_put_contents(
-                $path.'.html',
+                $path . '.html',
                 <<<HTML
 <html>
     <head>
@@ -87,7 +86,7 @@ class Sourcecode extends WriterAbstract
         />
     </head>
     <body>
-        <pre class="brush: php">$source</pre>
+        <pre class="brush: php">${source}</pre>
         <script type="text/javascript">
              SyntaxHighlighter.all();
              jQuery('.gutter div').each(function(key, data){
@@ -98,7 +97,6 @@ class Sourcecode extends WriterAbstract
 </html>
 HTML
             );
-
         }
     }
 }

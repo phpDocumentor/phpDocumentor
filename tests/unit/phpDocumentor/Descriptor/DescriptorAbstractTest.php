@@ -136,7 +136,7 @@ class DescriptorAbstractTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         );
         $mock->shouldDeferMissing();
 
-        $author = new Collection(array('author'));
+        $author = new Collection(['author']);
 
         $collection = new Collection();
         $collection->offsetSet('author', $author);
@@ -156,7 +156,7 @@ class DescriptorAbstractTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         );
         $mock->shouldDeferMissing();
 
-        $version = new Collection(array('version'));
+        $version = new Collection(['version']);
 
         $collection = new Collection();
         $collection->offsetSet('version', $version);
@@ -176,7 +176,7 @@ class DescriptorAbstractTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         );
         $mock->shouldDeferMissing();
 
-        $copyright = new Collection(array('copyright'));
+        $copyright = new Collection(['copyright']);
 
         $collection = new Collection();
         $collection->offsetSet('copyright', $copyright);
@@ -251,7 +251,7 @@ class DescriptorAbstractTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         $this->assertFalse($this->fixture->isDeprecated());
 
-        $this->fixture->setTags(new Collection(array('deprecated' => 'deprecated')));
+        $this->fixture->setTags(new Collection(['deprecated' => 'deprecated']));
 
         $this->assertTrue($this->fixture->isDeprecated());
     }

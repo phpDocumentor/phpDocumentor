@@ -21,7 +21,7 @@ class TableOfContents extends \ArrayObject
      *
      * @var TableOfContents\Module[]
      */
-    protected $modules = array();
+    protected $modules = [];
 
     public function offsetGet($index)
     {
@@ -41,8 +41,6 @@ class TableOfContents extends \ArrayObject
      * @param TableOfContents\File $newval
      *
      * @throws \InvalidArgumentException if something other than a file is provided.
-     *
-     * @return void
      */
     public function offsetSet($index, $newval)
     {

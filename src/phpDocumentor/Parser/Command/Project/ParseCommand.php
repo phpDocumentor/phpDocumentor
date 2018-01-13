@@ -11,20 +11,14 @@
 
 namespace phpDocumentor\Parser\Command\Project;
 
-use League\Flysystem\MountManager;
 use phpDocumentor\Command\Command;
 use phpDocumentor\Command\Helper\ConfigurationHelper;
 use phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper;
-use phpDocumentor\Descriptor\Example\Finder;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\DomainModel\Dsn;
 use phpDocumentor\DomainModel\Parser\FileCollector;
-use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Fileset\Collection;
-use phpDocumentor\Infrastructure\FlySystemFactory;
-use phpDocumentor\Infrastructure\Parser\FlySystemFile;
-use phpDocumentor\Infrastructure\Parser\SpecificationFactory;
 use phpDocumentor\Parser\Event\PreFileEvent;
 use phpDocumentor\Parser\Exception\FilesNotFoundException;
 use phpDocumentor\Parser\Middleware\CacheMiddleware;
@@ -66,10 +60,12 @@ class ParseCommand extends Command
      * @var ExampleFinder
      */
     private $exampleFinder;
+
     /**
      * @var PartialsCollection
      */
     private $partials;
+
     /**
      * @var FileCollector
      */
@@ -77,13 +73,6 @@ class ParseCommand extends Command
 
     /**
      * ParseCommand constructor.
-     * @param ProjectDescriptorBuilder $builder
-     * @param Parser $parser
-     * @param FileCollector $fileCollector
-     * @param Translator $translator
-     * @param StorageInterface $cache
-     * @param ExampleFinder $exampleFinder
-     * @param PartialsCollection $partials
      */
     public function __construct(
         ProjectDescriptorBuilder $builder,
@@ -105,17 +94,11 @@ class ParseCommand extends Command
         parent::__construct('project:parse');
     }
 
-    /**
-     * @return ProjectDescriptorBuilder
-     */
     public function getBuilder(): ProjectDescriptorBuilder
     {
         return $this->builder;
     }
 
-    /**
-     * @return \phpDocumentor\Parser\Parser
-     */
     public function getParser(): Parser
     {
         return $this->parser;
@@ -124,8 +107,7 @@ class ParseCommand extends Command
     /**
      * Returns the Cache.
      *
-     * @return StorageInterface
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     protected function getCache(): StorageInterface
     {
@@ -135,15 +117,13 @@ class ParseCommand extends Command
     /**
      * Initializes this command and sets the name, description, options and
      * arguments.
-     *
-     * @return void
      */
     protected function configure()
     {
         // minimization of the following expression
         $VALUE_OPTIONAL_ARRAY = InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY;
 
-        $this->setAliases(array('parse'))
+        $this->setAliases(['parse'])
             ->setDescription($this->__('PPCPP-DESCRIPTION'))
             ->setHelp($this->__('PPCPP-HELPTEXT'))
             ->addOption('filename', 'f', $VALUE_OPTIONAL_ARRAY, $this->__('PPCPP:OPT-FILENAME'))
@@ -155,7 +135,7 @@ class ParseCommand extends Command
             ->addOption('ignore-tags', null, $VALUE_OPTIONAL_ARRAY, $this->__('PPCPP:OPT-IGNORETAGS'))
             ->addOption('hidden', null, InputOption::VALUE_NONE, $this->__('PPCPP:OPT-HIDDEN'))
             ->addOption('ignore-symlinks', null, InputOption::VALUE_NONE, $this->__('PPCPP:OPT-IGNORESYMLINKS'))
-            ->addOption('markers', 'm', $VALUE_OPTIONAL_ARRAY, $this->__('PPCPP:OPT-MARKERS'), array('TODO', 'FIXME'))
+            ->addOption('markers', 'm', $VALUE_OPTIONAL_ARRAY, $this->__('PPCPP:OPT-MARKERS'), ['TODO', 'FIXME'])
             ->addOption('title', null, InputOption::VALUE_OPTIONAL, $this->__('PPCPP:OPT-TITLE'))
             ->addOption('force', null, InputOption::VALUE_NONE, $this->__('PPCPP:OPT-FORCE'))
             ->addOption('validate', null, InputOption::VALUE_NONE, $this->__('PPCPP:OPT-VALIDATE'))
@@ -177,12 +157,7 @@ class ParseCommand extends Command
     /**
      * Executes the business logic involved with this command.
      *
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     *
-     * @throws \Exception if the target location is not a folder.
-     *
-     * @return integer
+     * @throws Exception if the target location is not a folder.
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
@@ -197,12 +172,15 @@ class ParseCommand extends Command
         if (!$fileSystem->isAbsolutePath($target)) {
             $target = getcwd() . DIRECTORY_SEPARATOR . $target;
         }
+
         if (!file_exists($target)) {
             mkdir($target, 0777, true);
         }
+
         if (!is_dir($target)) {
             throw new \Exception($this->__('PPCPP:EXC-BADTARGET'));
         }
+
         $this->getCache()->getOptions()->setCacheDir($target);
 
         if ($input->getOption('force')) {
@@ -244,11 +222,12 @@ class ParseCommand extends Command
             //$mapper->garbageCollect($files);
             $mapper->populate($projectDescriptor);
 
-            $visibility = (array)$configurationHelper->getOption($input, 'visibility', 'parser/visibility');
-            $visibilities = array();
+            $visibility = (array) $configurationHelper->getOption($input, 'visibility', 'parser/visibility');
+            $visibilities = [];
             foreach ($visibility as $item) {
                 $visibilities = $visibilities + explode(',', $item);
             }
+
             $visibility = null;
             foreach ($visibilities as $item) {
                 switch ($item) {
@@ -263,12 +242,15 @@ class ParseCommand extends Command
                         break;
                 }
             }
+
             if ($visibility === null) {
                 $visibility = ProjectDescriptor\Settings::VISIBILITY_DEFAULT;
             }
+
             if ($input->getOption('parseprivate')) {
                 $visibility |= ProjectDescriptor\Settings::VISIBILITY_INTERNAL;
             }
+
             $projectDescriptor->getSettings()->setVisibility($visibility);
             $input->getOption('sourcecode')
                 ? $projectDescriptor->getSettings()->includeSource()
@@ -287,7 +269,7 @@ class ParseCommand extends Command
 
         $projectDescriptor->setPartials($this->partials);
 
-        $output->write($this->__('PPCPP:LOG-STORECACHE', (array)$this->getCache()->getOptions()->getCacheDir()));
+        $output->write($this->__('PPCPP:LOG-STORECACHE', (array) $this->getCache()->getOptions()->getCacheDir()));
         $projectDescriptor->getSettings()->clearModifiedFlag();
         $mapper->save($projectDescriptor);
 
@@ -310,9 +292,8 @@ class ParseCommand extends Command
         $configurationHelper = $this->getHelper('phpdocumentor_configuration');
 
         $ignoreHidden = $configurationHelper->getOption($input, 'hidden', 'files/ignore-hidden', 'off');
-        $file_options = (array)$configurationHelper->getOption($input, 'filename', 'files/files', array(), true);
-        $directory_options = $configurationHelper->getOption($input, 'directory', 'files/directories', array(), true);
-
+        $file_options = (array) $configurationHelper->getOption($input, 'filename', 'files/files', [], true);
+        $directory_options = $configurationHelper->getOption($input, 'directory', 'files/directories', [], true);
 
         $ignorePaths = array_map(
             function ($value) {
@@ -322,12 +303,12 @@ class ParseCommand extends Command
 
                 return $value;
             },
-            $configurationHelper->getOption($input, 'ignore', 'files/ignore', array(), true)
+            $configurationHelper->getOption($input, 'ignore', 'files/ignore', [], true)
         );
 
         //TODO: Fix this, should we support symlinks? Or just print an error here.
-        if ($configurationHelper->getOption($input, 'ignore-symlinks', 'files/ignore-symlinks', 'off') == 'on') {
-            echo "Symlinks are not supported";
+        if ($configurationHelper->getOption($input, 'ignore-symlinks', 'files/ignore-symlinks', 'off') === 'on') {
+            echo 'Symlinks are not supported';
         }
 
         $files = [];
@@ -344,13 +325,13 @@ class ParseCommand extends Command
                     $directory_options,
                     [
                         'paths' => $ignorePaths,
-                        'hidden' => $ignoreHidden !== 'off' && $ignoreHidden === false
+                        'hidden' => $ignoreHidden !== 'off' && $ignoreHidden === false,
                     ],
                     $configurationHelper->getOption(
                         $input,
                         'extensions',
                         'parser/extensions',
-                        array('php', 'php3', 'phtml'),
+                        ['php', 'php3', 'phtml'],
                         true
                     )
                 )
@@ -363,9 +344,7 @@ class ParseCommand extends Command
     /**
      * Adds the parser.file.pre event to the advance the progressbar.
      *
-     * @param InputInterface $input
-     *
-     * @return \Symfony\Component\Console\Helper\HelperInterface|null
+     * @return Symfony\Component\Console\Helper\HelperInterface|null
      */
     protected function getProgressBar(InputInterface $input)
     {
@@ -393,21 +372,18 @@ class ParseCommand extends Command
      * @return string
      */
     // @codingStandardsIgnoreStart
-    protected function __($text, $parameters = array())
+    protected function __($text, $parameters = [])
     {
         // @codingStandardsIgnoreEnd
         return vsprintf($this->translator->translate($text), $parameters);
     }
 
-    /**
-     * @param InputInterface $input
-     */
     protected function populateParser(InputInterface $input)
     {
         /** @var ConfigurationHelper $configurationHelper */
         $configurationHelper = $this->getHelper('phpdocumentor_configuration');
 
-        $title = (string)$configurationHelper->getOption($input, 'title', 'title');
+        $title = (string) $configurationHelper->getOption($input, 'title', 'title');
         $this->getBuilder()->getProjectDescriptor()->setName($title ?: 'API Documentation');
         $parserPopulator = new ParserPopulator();
         $parserPopulator->populate(

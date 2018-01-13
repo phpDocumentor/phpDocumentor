@@ -84,7 +84,7 @@ class PropertyDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $typesCollection = new Array_();
         $varTagDescriptor = new VarDescriptor('var');
         $varTagDescriptor->setTypes($typesCollection);
-        $varCollection = new Collection(array($varTagDescriptor));
+        $varCollection = new Collection([$varTagDescriptor]);
         $this->fixture->getTags()->clear();
         $this->fixture->getTags()->set('var', $varCollection);
 
@@ -203,7 +203,7 @@ class PropertyDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         // Arrange
         $varTagDescriptor = new VarDescriptor('var');
-        $varCollection = new Collection(array($varTagDescriptor));
+        $varCollection = new Collection([$varTagDescriptor]);
         $this->fixture->getTags()->clear();
         $parentProperty = $this->whenFixtureHasPropertyInParentClassWithSameName($this->fixture->getName());
         $parentProperty->getTags()->set('var', $varCollection);
@@ -234,7 +234,7 @@ class PropertyDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         // Arrange
         $authorTagDescriptor = new AuthorDescriptor('author');
-        $authorCollection = new Collection(array($authorTagDescriptor));
+        $authorCollection = new Collection([$authorTagDescriptor]);
         $this->fixture->getTags()->clear();
         $parentProperty = $this->whenFixtureHasPropertyInParentClassWithSameName($this->fixture->getName());
         $parentProperty->getTags()->set('author', $authorCollection);
@@ -254,7 +254,7 @@ class PropertyDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         // Arrange
         $versionTagDescriptor = new VersionDescriptor('version');
-        $versionCollection = new Collection(array($versionTagDescriptor));
+        $versionCollection = new Collection([$versionTagDescriptor]);
         $this->fixture->getTags()->clear();
         $parentProperty = $this->whenFixtureHasPropertyInParentClassWithSameName($this->fixture->getName());
         $parentProperty->getTags()->set('version', $versionCollection);
@@ -274,7 +274,7 @@ class PropertyDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         // Arrange
         $copyrightTagDescriptor = new TagDescriptor('copyright');
-        $copyrightCollection = new Collection(array($copyrightTagDescriptor));
+        $copyrightCollection = new Collection([$copyrightTagDescriptor]);
         $this->fixture->getTags()->clear();
         $parentProperty = $this->whenFixtureHasPropertyInParentClassWithSameName($this->fixture->getName());
         $parentProperty->getTags()->set('copyright', $copyrightCollection);
@@ -360,13 +360,13 @@ class PropertyDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     protected function whenFixtureHasPropertyInParentClassWithSameName($name)
     {
-        $result = new PropertyDescriptor;
+        $result = new PropertyDescriptor();
         $result->setName($name);
 
         $parent = new ClassDescriptor();
         $parent->getProperties()->set($name, $result);
 
-        $class  = new ClassDescriptor();
+        $class = new ClassDescriptor();
         $class->setParent($parent);
 
         $this->fixture->setParent($class);

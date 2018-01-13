@@ -29,7 +29,7 @@ class ParamTag
      */
     public function process(\DOMDocument $xml)
     {
-        $qry = '//tag[@name=\''.$this->element_name.'\']/@description[. != ""]';
+        $qry = '//tag[@name=\'' . $this->element_name . '\']/@description[. != ""]';
 
         $xpath = new \DOMXPath($xml);
         $nodes = $xpath->query($qry);
@@ -41,7 +41,7 @@ class ParamTag
             // This is because Markdown is a huge performance hit on the system
             if (!preg_match('/^[\w|\s|\.|,|;|\:|\&|\#]+$/', $node->nodeValue)) {
                 $md = \Parsedown::instance();
-                $node->nodeValue =  $md->parse($node->nodeValue);
+                $node->nodeValue = $md->parse($node->nodeValue);
             } else {
                 // markdown will always surround the element with a paragraph;
                 // we do the same here to make it consistent

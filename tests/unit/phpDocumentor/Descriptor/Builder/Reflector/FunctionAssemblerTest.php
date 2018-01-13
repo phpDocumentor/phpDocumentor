@@ -13,13 +13,12 @@
 
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
+use Mockery as m;
 use phpDocumentor\Descriptor\ArgumentDescriptor;
 use phpDocumentor\Descriptor\PackageDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock;
-use Mockery as m;
 use phpDocumentor\Reflection\Fqsen;
-use phpDocumentor\Reflection\FunctionReflector;
 use phpDocumentor\Reflection\Php\Argument;
 use phpDocumentor\Reflection\Php\Function_;
 
@@ -89,7 +88,7 @@ class FunctionAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
         // Assert
         $expectedFqsen = '\\' . $namespace . '\\' . $functionName . '()';
-        $this->assertSame($expectedFqsen, (string)$descriptor->getFullyQualifiedStructuralElementName());
+        $this->assertSame($expectedFqsen, (string) $descriptor->getFullyQualifiedStructuralElementName());
         $this->assertSame($functionName, $descriptor->getName());
 
         $argument = $descriptor->getArguments()->get($argumentName);
@@ -130,7 +129,7 @@ class FunctionAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
             'This is a example description',
             $docBlockDescription,
             [
-                new DocBlock\Tags\Generic('package', new DocBlock\Description('PackageName'))
+                new DocBlock\Tags\Generic('package', new DocBlock\Description('PackageName')),
             ]
         );
 

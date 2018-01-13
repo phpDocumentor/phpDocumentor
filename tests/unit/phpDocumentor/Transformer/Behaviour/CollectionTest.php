@@ -35,7 +35,7 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testIfProvidedBehavioursAreRegistered()
     {
         // Arrange
-        $expected = array('a' => 'b');
+        $expected = ['a' => 'b'];
 
         // Act
         $fixture = new Collection($expected);
@@ -56,7 +56,7 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $this->fixture->addBehaviour($behaviourMock);
 
         // Assert
-        $this->assertAttributeSame(array($behaviourMock), 'behaviours', $this->fixture);
+        $this->assertAttributeSame([$behaviourMock], 'behaviours', $this->fixture);
     }
 
     /**
@@ -72,7 +72,7 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $this->fixture->removeBehaviour($behaviourMock);
 
         // Assert
-        $this->assertAttributeSame(array(), 'behaviours', $this->fixture);
+        $this->assertAttributeSame([], 'behaviours', $this->fixture);
     }
 
     /**

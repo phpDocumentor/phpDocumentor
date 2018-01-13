@@ -37,7 +37,6 @@ jobs:
         - composer create-project symplify/easy-coding-standard temp/ecs
       script:
         - temp/ecs/bin/ecs check src tests
-        - vendor/bin/phpstan analyse src --level max --configuration phpstan.neon
         - docker-compose run --rm phpstan
 
     - stage: release

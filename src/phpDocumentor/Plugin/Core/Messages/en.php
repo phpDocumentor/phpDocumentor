@@ -9,7 +9,7 @@
  * @link      http://phpdoc.org
  */
 
-return array(
+return [
     'PPC:ERR-50000' => 'No summary was found for this file',
     'PPC:ERR-50001' => 'Only one @package tag is allowed',
     'PPC:ERR-50002' => 'Only one @subpackage tag is allowed',
@@ -48,4 +48,4 @@ return array(
     'VAL:ERRLVL-50017' => 'error',
     'VAL:ERRLVL-50018' => 'error',
     'VAL:ERRLVL-50020' => 'critical',
-);
+];

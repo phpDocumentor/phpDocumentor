@@ -30,8 +30,6 @@ abstract class RouterAbstract extends \ArrayObject
 
     /**
      * Configuration function to add routing rules to a router.
-     *
-     * @return void
      */
     abstract public function configure();
 

@@ -34,7 +34,7 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         $fixture = new Collection();
 
-        $this->assertAttributeEquals(array(), 'items', $fixture);
+        $this->assertAttributeEquals([], 'items', $fixture);
     }
 
     /**
@@ -42,7 +42,7 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testInitializeWithExistingArray()
     {
-        $expected = array(1, 2);
+        $expected = [1, 2];
         $fixture = new Collection($expected);
 
         $this->assertAttributeEquals($expected, 'items', $fixture);
@@ -53,10 +53,10 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testAddNewItem()
     {
-        $expected          = array('abc');
-        $expectedSecondRun = array('abc','def');
+        $expected = ['abc'];
+        $expectedSecondRun = ['abc', 'def'];
 
-        $this->assertAttributeEquals(array(), 'items', $this->fixture);
+        $this->assertAttributeEquals([], 'items', $this->fixture);
 
         $this->fixture->add('abc');
 
@@ -73,10 +73,10 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testSetItemsWithKey()
     {
-        $expected          = array('z' => 'abc');
-        $expectedSecondRun = array('z' => 'abc', 'y' => 'def');
+        $expected = ['z' => 'abc'];
+        $expectedSecondRun = ['z' => 'abc', 'y' => 'def'];
 
-        $this->assertAttributeEquals(array(), 'items', $this->fixture);
+        $this->assertAttributeEquals([], 'items', $this->fixture);
 
         $this->fixture->set('z', 'abc');
 
@@ -128,7 +128,7 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testRetrieveAllItems()
     {
         $this->fixture['a'] = 'abc';
-        $this->assertSame(array('a' => 'abc'), $this->fixture->getAll());
+        $this->assertSame(['a' => 'abc'], $this->fixture->getAll());
     }
 
     /**
@@ -138,7 +138,7 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         $this->fixture['a'] = 'abc';
         $this->assertInstanceOf('ArrayIterator', $this->fixture->getIterator());
-        $this->assertSame(array('a' => 'abc'), $this->fixture->getIterator()->getArrayCopy());
+        $this->assertSame(['a' => 'abc'], $this->fixture->getIterator()->getArrayCopy());
     }
 
     /**
@@ -200,7 +200,7 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testIfAfterMergeCollectionContainsAllItems()
     {
-        $expected = array(0 => 'a', 1 => 'b', 2 => 'c');
+        $expected = [0 => 'a', 1 => 'b', 2 => 'c'];
         $this->fixture[1] = 'a';
         $this->fixture[2] = 'b';
 

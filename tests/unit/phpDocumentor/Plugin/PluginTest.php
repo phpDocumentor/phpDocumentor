@@ -46,7 +46,7 @@ class PluginTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         $this->assertEmpty($this->fixture->getParameters());
 
-        $expectedParameters = array(m::mock('phpDocumentor\Plugin\Plugin'));
+        $expectedParameters = [m::mock('phpDocumentor\Plugin\Plugin')];
 
         $property = new \ReflectionProperty('phpDocumentor\Plugin\Plugin', 'parameters');
         $property->setAccessible(true);

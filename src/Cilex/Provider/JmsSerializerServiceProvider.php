@@ -12,10 +12,10 @@
 namespace Cilex\Provider;
 
 use Cilex\Application;
-use Pimple\Container;
-use Pimple\ServiceProviderInterface;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use JMS\Serializer\SerializerBuilder;
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 
 /**
  * Cilex Service Provider to provide serialization services.
@@ -36,9 +36,9 @@ class JmsSerializerServiceProvider implements ServiceProviderInterface
             $serializerPath = __DIR__ . '/../../../../../jms/serializer/src';
         }
 
-        $app['serializer.annotations'] = array(
-            array('namespace' => 'JMS\Serializer\Annotation', 'path' => $serializerPath)
-        );
+        $app['serializer.annotations'] = [
+            ['namespace' => 'JMS\Serializer\Annotation', 'path' => $serializerPath],
+        ];
 
         $app['serializer'] = function ($container) {
             if (!isset($container['serializer.annotations']) || !is_array($container['serializer.annotations'])) {
@@ -55,6 +55,7 @@ class JmsSerializerServiceProvider implements ServiceProviderInterface
                         . 'serializer what the namespace for the provided annotations are.'
                     );
                 }
+
                 if (!isset($annotationsDefinition['path'])) {
                     throw new \UnexpectedValueException(
                         'The annotation definition for the Serializer should have a key "path" that tells the '

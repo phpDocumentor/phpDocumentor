@@ -27,6 +27,6 @@ class NamespaceDescriptor implements UrlGeneratorInterface
     {
         $converter = new QualifiedNameToUrlConverter();
 
-        return '/namespaces/' . $converter->fromNamespace($node->getFullyQualifiedStructuralElementName()) .'.html';
+        return '/namespaces/' . $converter->fromNamespace($node->getFullyQualifiedStructuralElementName()) . '.html';
     }
 }

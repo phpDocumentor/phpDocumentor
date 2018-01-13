@@ -21,12 +21,9 @@ use PHPUnit\Framework\Assert;
  */
 final class SeeTagContext extends BaseContext implements Context
 {
-
-
     /**
      * @param string $classFqsen
-     * @param $reference
-     * @throws \Exception
+     * @throws Exception
      * @Then class ":classFqsen" has a tag see referencing url ":reference"
      */
     public function classHasTagSeeReferencingUrl($classFqsen, $reference)
@@ -35,7 +32,7 @@ final class SeeTagContext extends BaseContext implements Context
         $seeTags = $class->getTags()->get('see', []);
         /** @var SeeTag $tag */
         foreach ($seeTags as $tag) {
-            if (((string)$tag->getReference()) === $reference) {
+            if (((string) $tag->getReference()) === $reference) {
                 return;
             }
         }
@@ -45,21 +42,17 @@ final class SeeTagContext extends BaseContext implements Context
 
     /**
      * @param string $classFqsen
-     * @param $element
-     * @param $reference
      * @Then class ":classFqsen" has :number tag/tags see referencing :element descriptor ":reference"
      */
     public function classHasTagSeeReferencing($classFqsen, $number, $element, $reference)
     {
-        $this->classHasTagSeeReferencingWithDescription($classFqsen, $number, $element, $reference, new PyStringNode([],0));
+        $this->classHasTagSeeReferencingWithDescription($classFqsen, $number, $element, $reference, new PyStringNode([], 0));
     }
 
     /**
      * @param string $classFqsen
-     * @param $element
-     * @param $reference
      * @param $description
-     * @throws \Exception
+     * @throws Exception
      * @Then class ":classFqsen" has :number tag/tags see referencing :element descriptor ":reference" with description:
      */
     public function classHasTagSeeReferencingWithDescription($classFqsen, $number, $element, $reference, PyStringNode $description)
@@ -69,11 +62,11 @@ final class SeeTagContext extends BaseContext implements Context
         $seeTags = $class->getTags()->get('see', []);
         /** @var SeeTag $tag */
         foreach ($seeTags as $tag) {
-            $r = (string)$tag->getReference();
+            $r = (string) $tag->getReference();
             if ($r === $reference
-                && ((string)$tag->getDescription()) === $description->getRaw()
+                && ((string) $tag->getDescription()) === $description->getRaw()
             ) {
-                $count++;
+                ++$count;
             }
         }
 

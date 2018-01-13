@@ -21,6 +21,7 @@ use phpDocumentor\Reflection\Php\Constant;
 class ConstantAssembler extends AssemblerAbstract
 {
     const SEPARATOR_SIZE = 2;
+
     /**
      * Creates a Descriptor from the provided data.
      *

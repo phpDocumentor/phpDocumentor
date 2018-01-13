@@ -11,8 +11,8 @@
 
 namespace phpDocumentor\Plugin\Scrybe\Converter\Metadata\TableOfContents;
 
-use phpDocumentor\Plugin\Scrybe\Converter\Metadata\TableOfContents;
 use Mockery as m;
+use phpDocumentor\Plugin\Scrybe\Converter\Metadata\TableOfContents;
 
 /**
  * Test class for the BaseEntry object.
@@ -70,7 +70,7 @@ class BaseEntryTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $this->object->addChild($heading);
 
         $this->assertCount(1, $this->object->getChildren());
-        $this->assertSame(array($heading), $this->object->getChildren());
+        $this->assertSame([$heading], $this->object->getChildren());
     }
 
     /**

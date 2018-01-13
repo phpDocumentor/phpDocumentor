@@ -24,6 +24,7 @@ use phpDocumentor\Transformer\Transformation as TransformationObject;
 use phpDocumentor\Transformer\Writer\Exception\RequirementMissing;
 use phpDocumentor\Transformer\Writer\Routable;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
+use XSLTProcessor;
 
 /**
  * XSL transformation writer; generates static HTML out of the structure and XSL templates.
@@ -34,15 +35,13 @@ class Xsl extends WriterAbstract implements Routable
     protected $logger;
 
     /** @var string[] */
-    protected $xsl_variables = array();
+    protected $xsl_variables = [];
 
     /** @var Queue */
     private $routers;
 
     /**
      * Initialize this writer with the logger so that it can output logs.
-     *
-     * @param Logger $logger
      */
     public function __construct(Logger $logger)
     {
@@ -55,8 +54,6 @@ class Xsl extends WriterAbstract implements Routable
      * To enable XSL handling you need either the xsl extension or the xslcache extension installed.
      *
      * @throws RequirementMissing if neither xsl extensions are installed.
-     *
-     * @return void
      */
     public function checkRequirements()
     {
@@ -70,10 +67,6 @@ class Xsl extends WriterAbstract implements Routable
 
     /**
      * Sets the routers that can be used to determine the path of links.
-     *
-     * @param Queue $routers
-     *
-     * @return void
      */
     public function setRouters(Queue $routers)
     {
@@ -90,8 +83,6 @@ class Xsl extends WriterAbstract implements Routable
      * @throws \RuntimeException if the structure.xml file could not be found.
      * @throws Exception        if the structure.xml file's documentRoot could not be read because of encoding issues
      *    or because it was absent.
-     *
-     * @return void
      */
     public function transform(ProjectDescriptor $project, Transformation $transformation)
     {
@@ -118,7 +109,7 @@ class Xsl extends WriterAbstract implements Routable
             foreach ($qry as $key => $element) {
                 Dispatcher::getInstance()->dispatch(
                     'transformer.writer.xsl.pre',
-                    PreXslWriterEvent::createInstance($this)->setElement($element)->setProgress(array($key+1, $count))
+                    PreXslWriterEvent::createInstance($this)->setElement($element)->setProgress([$key + 1, $count])
                 );
 
                 $proc->setParameter('', $element->nodeName, $element->nodeValue);
@@ -180,10 +171,7 @@ class Xsl extends WriterAbstract implements Routable
     /**
      * Sets the parameters of the XSLT processor.
      *
-     * @param TransformationObject $transformation Transformation.
-     * @param \XSLTProcessor       $proc           XSLTProcessor.
-     *
-     * @return void
+     * @param XSLTProcessor $proc XSLTProcessor.
      */
     public function setProcessorParameters(TransformationObject $transformation, $proc)
     {
@@ -197,7 +185,7 @@ class Xsl extends WriterAbstract implements Routable
                     . 'a variable; transforming single quotes to a character '
                     . 'encoded version in variable: ' . $key
                 );
-                $variable = str_replace("'", "&#39;", $variable);
+                $variable = str_replace("'", '&#39;', $variable);
             }
 
             $proc->setParameter('', $key, $variable);
@@ -215,11 +203,8 @@ class Xsl extends WriterAbstract implements Routable
     }
 
     /**
-     *
-     *
-     * @param Transformation $transformation
-     *
-     * @return \XSLTProcessor
+     * @throws Exception
+     * @throws \phpDocumentor\Transformer\Exception
      */
     protected function getXslProcessor(Transformation $transformation): \XSLTProcessor
     {
@@ -240,9 +225,8 @@ class Xsl extends WriterAbstract implements Routable
 
     /**
      * @param string $structureFilename
-     * @return \DOMDocument
      */
-    private function loadAst($structureFilename)
+    private function loadAst($structureFilename): \DOMDocument
     {
         if (!is_readable($structureFilename)) {
             throw new \RuntimeException(
@@ -262,17 +246,13 @@ class Xsl extends WriterAbstract implements Routable
                 $message .= PHP_EOL . 'Apparently an error occurred with reading the structure.xml file, the reported '
                     . 'error was "' . trim($error->message) . '" on line ' . $error->line;
             }
+
             throw new Exception($message);
         }
 
         return $structure;
     }
 
-    /**
-     * @param Transformation $transformation
-     * @param \XSLTProcessor $proc
-     * @param \DOMDocument $structure
-     */
     private function registerDefaultVariables(
         Transformation $transformation,
         \XSLTProcessor $proc,
@@ -292,19 +272,17 @@ class Xsl extends WriterAbstract implements Routable
 
     /**
      * @param string $filename
-     * @param \XSLTProcessor $proc
-     * @param \DOMDocument $structure
      */
     private function writeToFile($filename, \XSLTProcessor $proc, \DOMDocument $structure)
     {
         if (!file_exists(dirname($filename))) {
             mkdir(dirname($filename), 0755, true);
         }
+
         $proc->transformToUri($structure, $this->getXsltUriFromFilename($filename));
     }
 
     /**
-     * @param Transformation $transformation
      * @return string
      */
     private function getAstPath(Transformation $transformation)
@@ -316,8 +294,6 @@ class Xsl extends WriterAbstract implements Routable
      * Returns the path to the location where the artifact should be written, or null to automatically detect the
      * location using the router.
      *
-     * @param Transformation $transformation
-     *
      * @return string|null
      */
     private function getArtifactPath(Transformation $transformation)
@@ -328,9 +304,7 @@ class Xsl extends WriterAbstract implements Routable
     }
 
     /**
-     * @param ProjectDescriptor $project
-     * @param \DOMElement $element
-     * @return false|string
+     * @return bool|string
      */
     private function generateUrlForXmlElement(ProjectDescriptor $project, \DOMElement $element)
     {

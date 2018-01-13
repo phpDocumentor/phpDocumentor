@@ -23,9 +23,6 @@ interface FileInterface extends ElementInterface, ContainerInterface
      */
     public function getHash();
 
-    /**
-     * @return void
-     */
     public function setSource($source);
 
     /**

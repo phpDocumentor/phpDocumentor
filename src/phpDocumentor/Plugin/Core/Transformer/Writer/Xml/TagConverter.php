@@ -11,11 +11,11 @@
 
 namespace phpDocumentor\Plugin\Core\Transformer\Writer\Xml;
 
-use phpDocumentor\Descriptor\Tag\MethodDescriptor;
 use phpDocumentor\Descriptor\Tag\BaseTypes\TypedAbstract;
 use phpDocumentor\Descriptor\Tag\BaseTypes\TypedVariableAbstract;
 use phpDocumentor\Descriptor\Tag\DeprecatedDescriptor;
 use phpDocumentor\Descriptor\Tag\LinkDescriptor;
+use phpDocumentor\Descriptor\Tag\MethodDescriptor;
 use phpDocumentor\Descriptor\Tag\SeeDescriptor;
 use phpDocumentor\Descriptor\Tag\SinceDescriptor;
 use phpDocumentor\Descriptor\Tag\UsesDescriptor;
@@ -57,12 +57,15 @@ class TagConverter
         if ($tag instanceof TypedVariableAbstract) {
             $child->setAttribute('variable', str_replace('&', '&amp;', $tag->getVariableName()));
         }
+
         if ($tag instanceof SeeDescriptor || $tag instanceof UsesDescriptor) {
             $child->setAttribute('link', str_replace('&', '&amp;', $tag->getReference()));
         }
+
         if ($tag instanceof LinkDescriptor) {
             $child->setAttribute('link', str_replace('&', '&amp;', $tag->getLink()));
         }
+
         if ($tag instanceof MethodDescriptor) {
             $child->setAttribute('method_name', str_replace('&', '&amp;', $tag->getMethodName()));
         }
@@ -73,18 +76,14 @@ class TagConverter
     /**
      * Returns the description from the Tag with the version prepended when applicable.
      *
-     * @param TagDescriptor $tag
-     *
      * @todo the version should not be prepended here but in templates; remove this.
-     *
      * @return string
      */
     protected function getDescription(TagDescriptor $tag)
     {
         $description = '';
 
-        if (
-            $tag instanceof VersionDescriptor ||
+        if ($tag instanceof VersionDescriptor ||
             $tag instanceof DeprecatedDescriptor ||
             $tag instanceof SinceDescriptor
         ) {
@@ -98,11 +97,6 @@ class TagConverter
 
     /**
      * Adds type elements and a type attribute to the tag if a method 'getTypes' is present.
-     *
-     * @param TagDescriptor $tag
-     * @param \DOMElement   $child
-     *
-     * @return void
      */
     protected function addTypes(TagDescriptor $tag, \DOMElement $child)
     {

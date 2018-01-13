@@ -49,24 +49,24 @@ class Configuration
     protected $encoding = 'utf-8';
 
     /**
-     * @var string[] $markers a list of codes that can be used at the beginning of a comment to have it mentioned in
+     * @var string[] a list of codes that can be used at the beginning of a comment to have it mentioned in
      *     a special markers report.
      *
      * @Serializer\Type("array<string>")
      * @Serializer\XmlList(entry = "item")
      * @Merger\Replace
      */
-    protected $markers = array('TODO', 'FIXME');
+    protected $markers = ['TODO', 'FIXME'];
 
     /**
-     * @var string[] $extensions A list of supported file extensions used to limit the number of files to be
+     * @var string[] A list of supported file extensions used to limit the number of files to be
      *     interpreted.
      *
      * @Serializer\Type("array<string>")
      * @Serializer\XmlList(entry = "extension")
      * @Merger\Replace
      */
-    protected $extensions = array('php', 'php3', 'phtml');
+    protected $extensions = ['php', 'php3', 'phtml'];
 
     /**
      * Returns the package name that will be given to elements when there is no `@package` tag defined or inherited.

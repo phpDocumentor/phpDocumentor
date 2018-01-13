@@ -28,7 +28,7 @@ class DebugEvent extends EventAbstract
     protected $priority = LogLevel::DEBUG;
 
     /** @var string[] Extra parameters to insert into the message after translation */
-    protected $context = array();
+    protected $context = [];
 
     /**
      * Provides the message that is to be shown with this event.

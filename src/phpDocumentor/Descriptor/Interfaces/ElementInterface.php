@@ -23,8 +23,6 @@ interface ElementInterface
      * Sets the Fully Qualified Structural Element Name (FQSEN) for this element.
      *
      * @param string $name
-     *
-     * @return void
      */
     public function setFullyQualifiedStructuralElementName($name);
 
@@ -39,8 +37,6 @@ interface ElementInterface
      * Sets the local name for this element.
      *
      * @param string $name
-     *
-     * @return void
      */
     public function setName($name);
 
@@ -55,8 +51,6 @@ interface ElementInterface
      * Sets a summary describing this element.
      *
      * @param string $summary
-     *
-     * @return void
      */
     public function setSummary($summary);
 
@@ -71,8 +65,6 @@ interface ElementInterface
      * Sets a longer description for this element.
      *
      * @param string $description
-     *
-     * @return void
      */
     public function setDescription($description);
 
@@ -88,8 +80,6 @@ interface ElementInterface
      *
      * @param FileDescriptor $file
      * @param int            $line
-     *
-     * @return void
      */
     public function setLocation(FileDescriptor $file, $line = 0);
 

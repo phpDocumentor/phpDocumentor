@@ -28,7 +28,7 @@ class ClassDescriptor implements UrlGeneratorInterface
         $converter = new QualifiedNameToUrlConverter();
 
         return ($node instanceof Descriptor\DescriptorAbstract)
-            ? '/classes/' . $converter->fromClass($node->getFullyQualifiedStructuralElementName()) .'.html'
+            ? '/classes/' . $converter->fromClass($node->getFullyQualifiedStructuralElementName()) . '.html'
             : false;
     }
 }

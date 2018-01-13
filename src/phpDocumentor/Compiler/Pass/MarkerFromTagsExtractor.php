@@ -11,12 +11,12 @@
 
 namespace phpDocumentor\Compiler\Pass;
 
+use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\FileDescriptor;
-use phpDocumentor\Descriptor\TagDescriptor;
-use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\TagDescriptor;
 
 /**
  * This index builder collects all markers from tags and inserts them into the marker index.
@@ -82,17 +82,15 @@ class MarkerFromTagsExtractor implements CompilerPassInterface
      * @param FileDescriptor $fileDescriptor
      * @param TagDescriptor  $todo
      * @param integer        $lineNumber
-     *
-     * @return void
      */
     protected function addTodoMarkerToFile($fileDescriptor, $todo, $lineNumber)
     {
         $fileDescriptor->getMarkers()->add(
-            array(
-                'type'    => 'TODO',
+            [
+                'type' => 'TODO',
                 'message' => $todo->getDescription(),
-                'line'    => $lineNumber,
-            )
+                'line' => $lineNumber,
+            ]
         );
     }
 }

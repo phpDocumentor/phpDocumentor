@@ -41,7 +41,7 @@ class ExternalClassDocumentation
     public function __construct($prefix, $uri)
     {
         $this->prefix = $prefix;
-        $this->uri    = $uri;
+        $this->uri = $uri;
     }
 
     /**

@@ -26,11 +26,6 @@ class CodeBlock extends \ezcDocumentRstDirective implements \ezcDocumentRstXhtml
      * Transform directive to Docbook.
      *
      * Create a docbook XML structure at the directives position in the document.
-     *
-     * @param \DOMDocument $document
-     * @param \DOMElement  $root
-     *
-     * @return void
      */
     public function toDocbook(\DOMDocument $document, \DOMElement $root)
     {
@@ -41,12 +36,7 @@ class CodeBlock extends \ezcDocumentRstDirective implements \ezcDocumentRstXhtml
      *
      * Create a XHTML structure at the directives position in the document.
      *
-     * @param \DOMDocument $document
-     * @param \DOMElement  $root
-     *
      * @todo use the TableofContents collection to extract a sublisting up to the given depth or 2 if none is provided
-     *
-     * @return void
      */
     public function toXhtml(\DOMDocument $document, \DOMElement $root)
     {
@@ -56,6 +46,7 @@ class CodeBlock extends \ezcDocumentRstDirective implements \ezcDocumentRstXhtml
         foreach ($this->node->tokens as $token) {
             $content .= $token->content;
         }
+
         $content = rtrim($content, "\n");
 
         $pre = $document->createElement('pre');

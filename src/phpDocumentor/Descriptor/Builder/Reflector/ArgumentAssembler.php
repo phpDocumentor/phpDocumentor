@@ -28,7 +28,7 @@ class ArgumentAssembler extends AssemblerAbstract
      *
      * @return ArgumentDescriptor
      */
-    public function create($data, $params = array())
+    public function create($data, $params = [])
     {
         $argumentDescriptor = new ArgumentDescriptor();
         $argumentDescriptor->setName($data->getName());
@@ -46,19 +46,13 @@ class ArgumentAssembler extends AssemblerAbstract
 
     /**
      * Overwrites the type and description in the Argument Descriptor with that from the tag if the names match.
-     *
-     * @param Argument  $argument
-     * @param ParamDescriptor    $paramDescriptor
-     * @param ArgumentDescriptor $argumentDescriptor
-     *
-     * @return void
      */
     protected function overwriteTypeAndDescriptionFromParamTag(
         Argument  $argument,
         ParamDescriptor    $paramDescriptor,
         ArgumentDescriptor $argumentDescriptor
     ) {
-        if ($paramDescriptor->getVariableName() != $argument->getName()) {
+        if ($paramDescriptor->getVariableName() !== $argument->getName()) {
             return;
         }
 

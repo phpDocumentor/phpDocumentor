@@ -25,14 +25,14 @@ class Collection extends \ArrayObject
     public function __construct(array $input = null)
     {
         if ($input === null) {
-            $input = array(
-                Format::HTML     => new Format(Format::HTML, 'text/html', array('html', 'htm')),
-                Format::JSON     => new Format(Format::JSON, 'application/json', 'json'),
-                Format::LATEX    => new Format(Format::LATEX, 'application/x-latex', 'tex'),
+            $input = [
+                Format::HTML => new Format(Format::HTML, 'text/html', ['html', 'htm']),
+                Format::JSON => new Format(Format::JSON, 'application/json', 'json'),
+                Format::LATEX => new Format(Format::LATEX, 'application/x-latex', 'tex'),
                 Format::MARKDOWN => new Format(Format::MARKDOWN, 'text/x-markdown', 'md'),
-                Format::PDF      => new Format(Format::PDF, 'application/pdf', 'pdf'),
-                Format::RST      => new Format(Format::RST, 'text-x-rst', array('rst', 'txt', 'rest', 'restx')),
-            );
+                Format::PDF => new Format(Format::PDF, 'application/pdf', 'pdf'),
+                Format::RST => new Format(Format::RST, 'text-x-rst', ['rst', 'txt', 'rest', 'restx']),
+            ];
         }
 
         parent::__construct($input, 0, 'ArrayIterator');

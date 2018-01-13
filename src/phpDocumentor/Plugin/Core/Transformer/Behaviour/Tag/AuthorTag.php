@@ -37,15 +37,14 @@ class AuthorTag
         //   opening angled bracket but no name (that's what the (?(3))
         //   condition is for)
         $regex = '#^\s*(?P<name>[^<]+?)?\s*((?(1)<|<?)(?:mailto:)?'
-            .'(?P<email>\b[a-z0-9._%-]+@[a-z0-9.-]+\.[a-z]{2,4}\b)'
-            .'(?(1)>|(?(3)>|>?)))\s*$#u';
+            . '(?P<email>\b[a-z0-9._%-]+@[a-z0-9.-]+\.[a-z]{2,4}\b)'
+            . '(?(1)>|(?(3)>|>?)))\s*$#u';
 
         $xpath = new \DOMXPath($xml);
         $nodes = $xpath->query('//tag[@name="author"]/@description');
 
         /** @var \DOMElement $node */
         foreach ($nodes as $node) {
-
             // FIXME: #193
             if (preg_match($regex, $node->nodeValue, $matches)) {
                 if ($matches['name']) {

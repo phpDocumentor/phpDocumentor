@@ -22,8 +22,6 @@ interface FunctionInterface extends ElementInterface, TypeInterface
      * Sets the arguments related to this function.
      *
      * @param Collection $arguments
-     *
-     * @return void
      */
     public function setArguments(Collection $arguments);
 

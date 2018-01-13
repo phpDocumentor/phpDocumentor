@@ -155,8 +155,6 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
      * Sets a collection of all traits used by this class.
      *
      * @param Collection $usedTraits
-     *
-     * @return void
      */
     public function setUsedTraits($usedTraits)
     {

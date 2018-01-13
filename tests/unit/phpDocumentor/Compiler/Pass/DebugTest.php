@@ -18,7 +18,6 @@ use Mockery as m;
  */
 class DebugTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
-
     /**
      * @covers phpDocumentor\Compiler\Pass\Debug::__construct
      */
@@ -38,7 +37,7 @@ class DebugTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testLogDebugAnalysis()
     {
-        $testString            = 'test';
+        $testString = 'test';
         $projectDescriptorMock = m::mock('phpDocumentor\Descriptor\ProjectDescriptor');
 
         $loggerMock = m::mock('Psr\Log\LoggerInterface')

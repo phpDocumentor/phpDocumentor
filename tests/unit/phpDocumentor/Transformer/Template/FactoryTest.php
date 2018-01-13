@@ -93,7 +93,7 @@ class FactoryTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testRetrieveAllTemplateNames()
     {
         // Arrange
-        $expected = array('template1', 'template2');
+        $expected = ['template1', 'template2'];
         $root = vfsStream::setup('exampleDir');
         $root->addChild(vfsStream::newDirectory($expected[0]));
         $root->addChild(vfsStream::newFile('aFile.txt'));

@@ -33,7 +33,7 @@ class FqsenDescriptor implements UrlGeneratorInterface
         }
 
         $converter = new QualifiedNameToUrlConverter();
-        $fqsenParts = explode('::', (string)$node);
+        $fqsenParts = explode('::', (string) $node);
 
         $className = $fqsenParts[0];
 

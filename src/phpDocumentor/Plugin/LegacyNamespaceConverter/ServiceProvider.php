@@ -12,11 +12,11 @@
 namespace phpDocumentor\Plugin\LegacyNamespaceConverter;
 
 use Cilex\Application;
-use Pimple\Container;
-use Pimple\ServiceProviderInterface;
-use phpDocumentor\Plugin\Plugin;
 use phpDocumentor\Descriptor\Filter\Filter;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
+use phpDocumentor\Plugin\Plugin;
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 
 /**
  * Converts all underscored class names into namespaces.
@@ -33,15 +33,12 @@ use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
  */
 class ServiceProvider implements ServiceProviderInterface
 {
-
     /** @var Plugin */
     private $plugin;
 
     /**
      * Construct plugin with a the relevant configuration
-     *
-     * @param Plugin $plugin
-     **/
+     */
     public function __construct(Plugin $plugin)
     {
         $this->plugin = $plugin;
@@ -59,11 +56,6 @@ class ServiceProvider implements ServiceProviderInterface
 
     /**
      * Attaches the filter responsible for the conversion to all structural elements.
-     *
-     * @param ProjectDescriptorBuilder $builder
-     * @param Filter                   $filterManager
-     *
-     * @return void
      */
     private function addNamespaceFilter(ProjectDescriptorBuilder $builder, Filter $filterManager)
     {
@@ -71,7 +63,7 @@ class ServiceProvider implements ServiceProviderInterface
 
         // parse parameters
         foreach ($this->plugin->getParameters() as $param) {
-            if ($param->getKey() == 'NamespacePrefix') {
+            if ($param->getKey() === 'NamespacePrefix') {
                 $filter->setNamespacePrefix($param->getValue());
             }
         }

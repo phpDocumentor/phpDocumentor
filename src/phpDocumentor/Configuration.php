@@ -54,12 +54,12 @@ class Configuration
     protected $files;
 
     /**
-     * @var Plugin[] $plugins contains a listing of all plugins that should be loaded during startup.
+     * @var Plugin[] contains a listing of all plugins that should be loaded during startup.
      * @Serializer\Type("array<phpDocumentor\Plugin\Plugin>")
      * @Serializer\XmlList(entry = "plugin")
      * @Merger\Replace
      */
-    protected $plugins = array();
+    protected $plugins = [];
 
     /**
      * @var Transformations[] contains a list of all templates and custom transformations that are to be executed during
@@ -78,19 +78,19 @@ class Configuration
      * @var Partial[] A list of custom texts, or references thereto, that may be injected into templates.
      * @Serializer\Type("array<phpDocumentor\Partials\Partial>")
      */
-    protected $partials = array();
+    protected $partials = [];
 
     /**
      * Initializes all settings with their default values.
      */
     public function __construct()
     {
-        $this->transformer     = new Transformer\Configuration();
+        $this->transformer = new Transformer\Configuration();
         $this->transformations = new Transformer\Configuration\Transformations();
-        $this->files           = new Parser\Configuration\Files();
-        $this->parser          = new Parser\Configuration();
-        $this->logging         = new Logging();
-        $this->translator      = new Translator\Configuration();
+        $this->files = new Parser\Configuration\Files();
+        $this->parser = new Parser\Configuration();
+        $this->logging = new Logging();
+        $this->translator = new Translator\Configuration();
     }
 
     /**

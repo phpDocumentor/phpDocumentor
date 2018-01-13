@@ -36,8 +36,8 @@ class FilterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     protected function setUp()
     {
         $this->classFactoryMock = m::mock('phpDocumentor\Descriptor\Filter\ClassFactory');
-        $this->filterChainMock  = m::mock('Zend\Filter\FilterChain');
-        $this->fixture          = new Filter($this->classFactoryMock);
+        $this->filterChainMock = m::mock('Zend\Filter\FilterChain');
+        $this->fixture = new Filter($this->classFactoryMock);
     }
 
     /**

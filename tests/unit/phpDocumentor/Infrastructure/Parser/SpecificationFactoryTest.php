@@ -19,7 +19,6 @@ use Flyfinder\Specification\InPath;
 use Flyfinder\Specification\IsHidden;
 use Flyfinder\Specification\NotSpecification;
 use Flyfinder\Specification\OrSpecification;
-use phpDocumentor\Infrastructure\Parser\SpecificationFactory;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -41,17 +40,17 @@ class SpecificationFactoryTest extends TestCase
 
     public function testCreateIgnoreHidden()
     {
-        $paths = array(
+        $paths = [
             'some/path',
-        );
+        ];
 
-        $ignore = array(
+        $ignore = [
             'hidden' => true,
-        );
+        ];
 
-        $extensions = array(
-            'php'
-        );
+        $extensions = [
+            'php',
+        ];
 
         $specification = $this->fixture->create($paths, $ignore, $extensions);
 
@@ -71,17 +70,17 @@ class SpecificationFactoryTest extends TestCase
 
     public function testCreateIgnorePath()
     {
-        $paths = array(
+        $paths = [
             'src/',
-        );
+        ];
 
-        $ignore = array(
+        $ignore = [
             'paths' => ['src/some/path', 'src/some/other/path'],
-        );
+        ];
 
-        $extensions = array(
-            'php'
-        );
+        $extensions = [
+            'php',
+        ];
 
         $specification = $this->fixture->create($paths, $ignore, $extensions);
 
@@ -104,17 +103,17 @@ class SpecificationFactoryTest extends TestCase
 
     public function testNoIgnore()
     {
-        $paths = array(
+        $paths = [
             'src/',
-        );
+        ];
 
-        $ignore = array(
+        $ignore = [
             'paths' => [],
-        );
+        ];
 
-        $extensions = array(
-            'php'
-        );
+        $extensions = [
+            'php',
+        ];
 
         $specification = $this->fixture->create($paths, $ignore, $extensions);
 

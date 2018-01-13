@@ -3,12 +3,9 @@
 namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 
 use Mockery as m;
-use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock\Description;
-use phpDocumentor\Reflection\DocBlock\Tag\PropertyTag;
 use phpDocumentor\Reflection\DocBlock\Tags\Property;
-use phpDocumentor\Reflection\DocBlock\Type\Collection as TypeCollection;
 use phpDocumentor\Reflection\Types\String_;
 
 class PropertyAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
@@ -39,7 +36,7 @@ class PropertyAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $descriptor = $this->fixture->create($reflector);
 
         $this->assertSame('property', $descriptor->getName());
-        $this->assertSame('This is a description', (string)$descriptor->getDescription());
+        $this->assertSame('This is a description', (string) $descriptor->getDescription());
         $this->assertSame('$myProperty', $descriptor->getVariableName());
         $this->assertEquals(new String_(), $descriptor->getTypes());
     }

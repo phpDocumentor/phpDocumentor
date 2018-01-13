@@ -8,6 +8,7 @@
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
+
 namespace phpDocumentor\Transformer\Behaviour;
 
 use phpDocumentor\Descriptor\ProjectDescriptor;
@@ -19,7 +20,7 @@ use phpDocumentor\Transformer\Transformer;
 abstract class BehaviourAbstract
 {
     /**
-     * @var Transformer $transformer The base transformer object from which the transformation parameters can
+     * @var Transformer The base transformer object from which the transformation parameters can
      *   be retrieved.
      */
     protected $transformer = null;
@@ -37,8 +38,6 @@ abstract class BehaviourAbstract
      * Sets the transformer used for this behaviour.
      *
      * @param Transformer $transformer Transformer responsible for output.
-     *
-     * @return void
      */
     public function setTransformer(Transformer $transformer)
     {

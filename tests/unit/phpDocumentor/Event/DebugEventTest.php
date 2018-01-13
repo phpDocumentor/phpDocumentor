@@ -65,9 +65,9 @@ class DebugEventTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testSupplyAContextArrayForTheMessage()
     {
-        $context = array('test' => 'test2');
+        $context = ['test' => 'test2'];
 
-        $this->assertSame(array(), $this->fixture->getContext());
+        $this->assertSame([], $this->fixture->getContext());
 
         $this->fixture->setContext($context);
 

@@ -13,10 +13,9 @@
 namespace phpDocumentor\Transformer;
 
 use Cilex\Application;
+use Mockery as m;
 use phpDocumentor\Compiler\Pass\ClassTreeBuilder;
 use phpDocumentor\Compiler\Pass\InterfaceTreeBuilder;
-use \phpDocumentor\Descriptor\ProjectDescriptorBuilder;
-use Mockery as m;
 use phpDocumentor\Reflection\DocBlock\ExampleFinder;
 
 /**
@@ -300,17 +299,17 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
     private function givenLinkerSubstitutions()
     {
-        $substitutions = array(
-            'phpDocumentor\Descriptor\ProjectDescriptor'      => array('files'),
-            'phpDocumentor\Descriptor\FileDescriptor'         => array(
+        $substitutions = [
+            'phpDocumentor\Descriptor\ProjectDescriptor' => ['files'],
+            'phpDocumentor\Descriptor\FileDescriptor' => [
                 'tags',
                 'classes',
                 'interfaces',
                 'traits',
                 'functions',
-                'constants'
-            ),
-            'phpDocumentor\Descriptor\ClassDescriptor'        => array(
+                'constants',
+            ],
+            'phpDocumentor\Descriptor\ClassDescriptor' => [
                 'tags',
                 'parent',
                 'interfaces',
@@ -318,30 +317,30 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
                 'properties',
                 'methods',
                 'usedTraits',
-            ),
-            'phpDocumentor\Descriptor\InterfaceDescriptor'       => array(
+            ],
+            'phpDocumentor\Descriptor\InterfaceDescriptor' => [
                 'tags',
                 'parent',
                 'constants',
                 'methods',
-            ),
-            'phpDocumentor\Descriptor\TraitDescriptor'           => array(
+            ],
+            'phpDocumentor\Descriptor\TraitDescriptor' => [
                 'tags',
                 'properties',
                 'methods',
                 'usedTraits',
-            ),
-            'phpDocumentor\Descriptor\FunctionDescriptor'        => array('tags', 'arguments'),
-            'phpDocumentor\Descriptor\MethodDescriptor'          => array('tags', 'arguments'),
-            'phpDocumentor\Descriptor\ArgumentDescriptor'        => array('types'),
-            'phpDocumentor\Descriptor\PropertyDescriptor'        => array('tags', 'types'),
-            'phpDocumentor\Descriptor\ConstantDescriptor'        => array('tags', 'types'),
-            'phpDocumentor\Descriptor\Tag\ParamDescriptor'       => array('types'),
-            'phpDocumentor\Descriptor\Tag\ReturnDescriptor'      => array('types'),
-            'phpDocumentor\Descriptor\Tag\SeeDescriptor'         => array('reference'),
-            'phpDocumentor\Descriptor\Tag\UsesDescriptor'        => array('reference'),
-            'phpDocumentor\Descriptor\Type\CollectionDescriptor' => array('baseType', 'types', 'keyTypes'),
-        );
+            ],
+            'phpDocumentor\Descriptor\FunctionDescriptor' => ['tags', 'arguments'],
+            'phpDocumentor\Descriptor\MethodDescriptor' => ['tags', 'arguments'],
+            'phpDocumentor\Descriptor\ArgumentDescriptor' => ['types'],
+            'phpDocumentor\Descriptor\PropertyDescriptor' => ['tags', 'types'],
+            'phpDocumentor\Descriptor\ConstantDescriptor' => ['tags', 'types'],
+            'phpDocumentor\Descriptor\Tag\ParamDescriptor' => ['types'],
+            'phpDocumentor\Descriptor\Tag\ReturnDescriptor' => ['types'],
+            'phpDocumentor\Descriptor\Tag\SeeDescriptor' => ['reference'],
+            'phpDocumentor\Descriptor\Tag\UsesDescriptor' => ['reference'],
+            'phpDocumentor\Descriptor\Type\CollectionDescriptor' => ['baseType', 'types', 'keyTypes'],
+        ];
 
         return $substitutions;
     }

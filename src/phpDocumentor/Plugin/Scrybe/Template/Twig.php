@@ -43,16 +43,14 @@ class Twig implements TemplateInterface
      * @param string $name A template name that may be composed of alphanumeric characters, underscores and/or hyphens.
      *
      * @throws \InvalidArgumentException if the name does not match the prescribed format.
-     *
-     * @return void
      */
     public function setName($name)
     {
         if (!preg_match('/^[0-9a-zA-Z\-\_]{3,}$/', $name)) {
             throw new \InvalidArgumentException(
                 'A template name may only be composed of alphanumeric '
-                .'characters, underscores or hyphens and have at least 3 '
-                .'characters.'
+                . 'characters, underscores or hyphens and have at least 3 '
+                . 'characters.'
             );
         }
 
@@ -77,14 +75,12 @@ class Twig implements TemplateInterface
      * @param string $path
      *
      * @throws \InvalidArgumentException
-     *
-     * @return void
      */
     public function setPath($path)
     {
         if (!file_exists($path) || !is_dir($path)) {
             throw new \InvalidArgumentException(
-                'Expected the template path to be an existing directory, received: '.$path
+                'Expected the template path to be an existing directory, received: ' . $path
             );
         }
 
@@ -110,8 +106,6 @@ class Twig implements TemplateInterface
      *     characters in size).
      *
      * @throws \InvalidArgumentException if the extension does not match the validation restrictions mentioned above.
-     *
-     * @return void
      */
     public function setExtension($extension)
     {
@@ -121,6 +115,7 @@ class Twig implements TemplateInterface
                 . ' and should be at least 2 but no more than 4 characters'
             );
         }
+
         $this->extension = $extension;
     }
 
@@ -151,11 +146,11 @@ class Twig implements TemplateInterface
      *
      * @return string
      */
-    public function decorate($contents, array $options = array())
+    public function decorate($contents, array $options = [])
     {
         return $this->getTwigEnvironment()->render(
             $this->getTemplateFilename(),
-            array_merge(array('contents' => $contents), $options)
+            array_merge(['contents' => $contents], $options)
         );
     }
 
@@ -182,7 +177,7 @@ class Twig implements TemplateInterface
 
         return iterator_to_array(
             $finder->files()
-                ->in($this->path.DIRECTORY_SEPARATOR . $this->name)
+                ->in($this->path . DIRECTORY_SEPARATOR . $this->name)
                 ->depth('> 0')
                 ->notName('*.twig')
                 ->sortByName()
@@ -206,7 +201,7 @@ class Twig implements TemplateInterface
      */
     protected function getTemplateFilename()
     {
-        $filename = $this->name.'/layout.' . $this->extension . '.twig';
+        $filename = $this->name . '/layout.' . $this->extension . '.twig';
 
         $template_path = $this->path . DIRECTORY_SEPARATOR . $filename;
         if (!file_exists($template_path)) {
@@ -228,7 +223,7 @@ class Twig implements TemplateInterface
      */
     protected function getTwigEnvironment()
     {
-        $twig = new \Twig_Environment(new \Twig_Loader_Filesystem($this->path), array('autoescape' => false));
+        $twig = new \Twig_Environment(new \Twig_Loader_Filesystem($this->path), ['autoescape' => false]);
 
         return $twig;
     }

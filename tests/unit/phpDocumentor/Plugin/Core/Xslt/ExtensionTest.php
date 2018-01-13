@@ -31,7 +31,7 @@ class ExtensionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
         $result = Extension::markdown($text);
 
-        $this->assertSame("<p><code>this is markdown</code></p>", $result);
+        $this->assertSame('<p><code>this is markdown</code></p>', $result);
     }
 
     /**

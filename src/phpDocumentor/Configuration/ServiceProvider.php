@@ -12,9 +12,9 @@
 namespace phpDocumentor\Configuration;
 
 use Cilex\Application;
+use Doctrine\Common\Annotations\AnnotationReader;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
-use Doctrine\Common\Annotations\AnnotationReader;
 use Symfony\Component\Console\Application as ConsoleApplication;
 use Symfony\Component\Console\Input\InputOption;
 
@@ -84,10 +84,6 @@ class ServiceProvider implements ServiceProviderInterface
 
     /**
      * Initializes and adds the configuration merger object as the 'config.merger' service to the container.
-     *
-     * @param Application $container
-     *
-     * @return void
      */
     private function addMerger(Application $container)
     {
@@ -101,12 +97,8 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * Adds the annotations for the Merger component to the Serializer.
      *
-     * @param Application $container
-     *
-     * @throws \RuntimeException if the annotation handler for Jms Serializer is not added to the container as
-     *   'serializer.annotations' service.
-     *
-     * @return void
+     * @throws RuntimeException if the annotation handler for Jms Serializer is not added to the container as
+     * 'serializer.annotations' service.
      */
     private function addMergerAnnotations(Application $container)
     {
@@ -118,10 +110,10 @@ class ServiceProvider implements ServiceProviderInterface
         }
 
         $annotations = $container['serializer.annotations'];
-        $annotations[] = array(
+        $annotations[] = [
             'namespace' => 'phpDocumentor\Configuration\Merger\Annotation',
-            'path' => __DIR__ . '/../../'
-        );
+            'path' => __DIR__ . '/../../',
+        ];
         $container['serializer.annotations'] = $annotations;
     }
 }

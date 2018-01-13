@@ -14,7 +14,6 @@ namespace phpDocumentor\Behat\Contexts\Ast;
 
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\PyStringNode;
-use phpDocumentor\Reflection\DocBlock\Type\Collection;
 use PHPUnit\Framework\Assert;
 
 /**
@@ -24,8 +23,7 @@ final class UsesTagContext extends BaseContext implements Context
 {
     /**
      * @param string $classFqsen
-     * @param $reference
-     * @throws \Exception
+     * @throws Exception
      * @Then class ":classFqsen" has a tag uses referencing url ":reference"
      */
     public function classHasTagUsesReferencingUrl($classFqsen, $reference)
@@ -34,7 +32,7 @@ final class UsesTagContext extends BaseContext implements Context
         $usesTags = $class->getTags()->get('uses', []);
         /** @var UsesTag $tag */
         foreach ($usesTags as $tag) {
-            if (((string)$tag->getReference()) === $reference) {
+            if (((string) $tag->getReference()) === $reference) {
                 return;
             }
         }
@@ -44,21 +42,17 @@ final class UsesTagContext extends BaseContext implements Context
 
     /**
      * @param string $classFqsen
-     * @param $element
-     * @param $reference
      * @Then class ":classFqsen" has :number tag/tags uses referencing :element descriptor ":reference"
      */
     public function classHasTagUsesReferencing($classFqsen, $number, $element, $reference)
     {
-        $this->classHasTagUsesReferencingWithDescription($classFqsen, $number, $element, $reference, new PyStringNode([],0));
+        $this->classHasTagUsesReferencingWithDescription($classFqsen, $number, $element, $reference, new PyStringNode([], 0));
     }
 
     /**
      * @param string $classFqsen
-     * @param $element
-     * @param $reference
      * @param $description
-     * @throws \Exception
+     * @throws Exception
      * @Then class ":classFqsen" has :number tag/tags uses referencing :element descriptor ":reference" with description:
      */
     public function classHasTagUsesReferencingWithDescription($classFqsen, $number, $element, $reference, PyStringNode $description)
@@ -68,11 +62,11 @@ final class UsesTagContext extends BaseContext implements Context
         $usesTags = $class->getTags()->get('uses', []);
         /** @var UsesTag $tag */
         foreach ($usesTags as $tag) {
-            $r = (string)$tag->getReference();
+            $r = (string) $tag->getReference();
             if ($r === $reference
-                && ((string)$tag->getDescription()) === $description->getRaw()
+                && ((string) $tag->getDescription()) === $description->getRaw()
             ) {
-                $count++;
+                ++$count;
             }
         }
 

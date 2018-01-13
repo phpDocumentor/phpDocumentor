@@ -14,7 +14,6 @@ namespace phpDocumentor\Descriptor\Builder\Reflector;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Reflection\ClassReflector;
-use phpDocumentor\Reflection\ConstantReflector;
 use phpDocumentor\Reflection\Php\Class_;
 use phpDocumentor\Reflection\Php\Constant;
 use phpDocumentor\Reflection\Php\Method;
@@ -45,10 +44,10 @@ class ClassAssembler extends AssemblerAbstract
         $classDescriptor->setParent($data->getParent());
         $classDescriptor->setAbstract($data->isAbstract());
         $classDescriptor->setFinal($data->isFinal());
-        $classDescriptor->setNamespace(substr($data->getFqsen(), 0, -strlen($data->getName())-1));
+        $classDescriptor->setNamespace(substr($data->getFqsen(), 0, -strlen($data->getName()) - 1));
 
         foreach ($data->getInterfaces() as $interfaceClassName) {
-            $classDescriptor->getInterfaces()->set((string)$interfaceClassName, $interfaceClassName);
+            $classDescriptor->getInterfaces()->set((string) $interfaceClassName, $interfaceClassName);
         }
 
         $this->assembleDocBlock($data->getDocBlock(), $classDescriptor);
@@ -66,8 +65,6 @@ class ClassAssembler extends AssemblerAbstract
      *
      * @param Constant[] $constants
      * @param ClassDescriptor     $classDescriptor
-     *
-     * @return void
      */
     protected function addConstants($constants, $classDescriptor)
     {
@@ -85,8 +82,6 @@ class ClassAssembler extends AssemblerAbstract
      *
      * @param Property[] $properties
      * @param ClassDescriptor                    $classDescriptor
-     *
-     * @return void
      */
     protected function addProperties($properties, $classDescriptor)
     {
@@ -104,8 +99,6 @@ class ClassAssembler extends AssemblerAbstract
      *
      * @param Method[] $methods
      * @param ClassDescriptor $classDescriptor
-     *
-     * @return void
      */
     protected function addMethods($methods, $classDescriptor)
     {
@@ -122,9 +115,6 @@ class ClassAssembler extends AssemblerAbstract
      * Registers the used traits with the generated Class Descriptor.
      *
      * @param string[] $traits
-     * @param ClassDescriptor $classDescriptor
-     *
-     * @return void
      */
     protected function addUses(array $traits, ClassDescriptor $classDescriptor)
     {

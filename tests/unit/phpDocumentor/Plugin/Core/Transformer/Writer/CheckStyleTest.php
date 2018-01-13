@@ -19,14 +19,14 @@ use org\bovigo\vfs\vfsStreamDirectory;
 use phpDocumentor\Translator\Translator;
 
 /**
- * Test class for \phpDocumentor\Plugin\Core\Transformer\Writer\CheckStyle.
+ * Test class for \phpDocumentor\Plugin\Core\Transformer\Writer\Checkstyle.
  *
- * @covers phpDocumentor\Plugin\Core\Transformer\Writer\CheckStyle
+ * @covers \phpDocumentor\Plugin\Core\Transformer\Writer\Checkstyle
  */
 class CheckStyleTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
-     * @var CheckStyle $checkstyle
+     * @var Checkstyle
      */
     protected $checkStyle;
 
@@ -38,19 +38,17 @@ class CheckStyleTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
     /**
      * Sets up the test suite
-     *
-     * @return void
      */
     public function setUp()
     {
         $this->translator = m::mock('phpDocumentor\Translator\Translator');
-        $this->checkStyle = new CheckStyle();
+        $this->checkStyle = new Checkstyle();
         $this->checkStyle->setTranslator($this->translator);
         $this->fs = vfsStream::setup('CheckStyleTest');
     }
 
     /**
-     * @covers \phpDocumentor\Plugin\Core\Transformer\Writer\CheckStyle::transform
+     * @covers \phpDocumentor\Plugin\Core\Transformer\Writer\Checkstyle::transform
      */
     public function testTransform()
     {
@@ -60,11 +58,11 @@ class CheckStyleTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
         $fileDescriptor = m::mock('phpDocumentor\Descriptor\FileDescriptor');
         $projectDescriptor = m::mock('phpDocumentor\Descriptor\ProjectDescriptor');
-        $projectDescriptor->shouldReceive('getFiles->getAll')->andReturn(array($fileDescriptor));
+        $projectDescriptor->shouldReceive('getFiles->getAll')->andReturn([$fileDescriptor]);
 
         $error = m::mock('phpDocumentor\Descriptor\Validator\Error');
         $fileDescriptor->shouldReceive('getPath')->andReturn('/foo/bar/baz');
-        $fileDescriptor->shouldReceive('getAllErrors->getAll')->andReturn(array($error));
+        $fileDescriptor->shouldReceive('getAllErrors->getAll')->andReturn([$error]);
 
         $error->shouldReceive('getLine')->andReturn(1234);
         $error->shouldReceive('getCode')->andReturn(5678);
@@ -88,10 +86,10 @@ class CheckStyleTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
   </file>
 </checkstyle>
 XML;
-        $expectedXml = new \DOMDocument;
+        $expectedXml = new \DOMDocument();
         $expectedXml->loadXML($xml);
 
-        $actualXml = new \DOMDocument;
+        $actualXml = new \DOMDocument();
         $actualXml->load(vfsStream::url('CheckStyleTest/artifact.xml'));
 
         $this->assertEqualXMLStructure($expectedXml->firstChild, $actualXml->firstChild, true);

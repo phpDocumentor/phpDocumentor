@@ -35,8 +35,6 @@ class DeprecatedDescriptor extends TagDescriptor
      * Sets the version since when the associated element was deprecated.
      *
      * @param string $version
-     *
-     * @return void
      */
     public function setVersion($version)
     {

@@ -22,7 +22,9 @@ class DiscoverTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     const FILENAME = 'test';
 
     protected $document = null;
+
     protected $converter = null;
+
     protected $table_of_contents = null;
 
     /**
@@ -42,7 +44,6 @@ class DiscoverTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     protected function getDocumentMock()
     {
         if (!$this->document) {
-
             $file = m::mock('\phpDocumentor\Fileset\File');
             $file->shouldReceive('getFileName')
                 ->andReturn(self::FILENAME);

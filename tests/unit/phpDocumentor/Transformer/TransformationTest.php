@@ -96,7 +96,7 @@ class TransformationTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testSetAndGetParameters()
     {
-        $this->assertSame(array(), $this->fixture->getParameters());
+        $this->assertSame([], $this->fixture->getParameters());
 
         $parameters = $this->givenAParameter();
 
@@ -109,7 +109,7 @@ class TransformationTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testGetParameterWithExistingName()
     {
         $parameters = $this->givenAParameter();
-        $this->assertSame($parameters["firstKey"], $this->fixture->getParameter('name'));
+        $this->assertSame($parameters['firstKey'], $this->fixture->getParameter('name'));
     }
 
     /**
@@ -126,7 +126,7 @@ class TransformationTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testGetParametersWithKeyWithExistingName()
     {
         $parameters = $this->givenAParameter();
-        $this->assertSame(array($parameters["firstKey"]), $this->fixture->getParametersWithKey('name'));
+        $this->assertSame([$parameters['firstKey']], $this->fixture->getParametersWithKey('name'));
     }
 
     /**
@@ -134,7 +134,7 @@ class TransformationTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testGetParametersWithKeyWithNonExistingName()
     {
-        $this->assertSame(array(), $this->fixture->getParametersWithKey('somethingElse'));
+        $this->assertSame([], $this->fixture->getParametersWithKey('somethingElse'));
     }
 
     /**
@@ -160,7 +160,7 @@ class TransformationTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         $parameterMock = m::mock('phpDocumentor\Transformer\Template\Parameter');
         $parameterMock->shouldReceive('getKey')->andReturn('name');
-        $parameters = array("firstKey" => $parameterMock);
+        $parameters = ['firstKey' => $parameterMock];
         $this->fixture->setParameters($parameters);
 
         return $parameters;

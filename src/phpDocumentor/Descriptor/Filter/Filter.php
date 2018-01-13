@@ -24,7 +24,7 @@ class Filter
     /** @var int default priority for a filter in the series of filters. */
     const DEFAULT_PRIORITY = 1000;
 
-    /** @var ClassFactory  */
+    /** @var ClassFactory */
     protected $factory;
 
     /**
@@ -43,8 +43,6 @@ class Filter
      * @param string          $fqcn
      * @param FilterInterface $filter
      * @param int             $priority [1000]
-     *
-     * @return void
      */
     public function attach($fqcn, $filter, $priority = self::DEFAULT_PRIORITY)
     {
@@ -54,8 +52,6 @@ class Filter
 
     /**
      * Filters the given Descriptor and returns the altered object.
-     *
-     * @param Filterable $descriptor
      *
      * @return Filterable|null
      */

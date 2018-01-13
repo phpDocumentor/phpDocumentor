@@ -13,12 +13,11 @@
 
 namespace phpDocumentor\Plugin\Core\Transformer\Writer;
 
-use org\bovigo\vfs\vfsStreamDirectory;
-use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\Descriptor\DescriptorAbstract;
-
 use Mockery as m;
 use org\bovigo\vfs\vfsStream;
+
+use org\bovigo\vfs\vfsStreamDirectory;
+use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Transformer\Router\RouterAbstract;
 use phpDocumentor\Translator\Translator;
 
@@ -46,16 +45,14 @@ class XmlTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
     /**
      * Sets up the test suite
-     *
-     * @return void
      */
     public function setUp()
     {
-        $this->fs                = vfsStream::setup('XmlTest');
-        $this->translator        = m::mock('phpDocumentor\Translator\Translator');
+        $this->fs = vfsStream::setup('XmlTest');
+        $this->translator = m::mock('phpDocumentor\Translator\Translator');
         $this->projectDescriptor = m::mock('phpDocumentor\Descriptor\ProjectDescriptor');
-        $this->routerMock        = m::mock('phpDocumentor\Transformer\Router\RouterAbstract');
-        $this->xml               = new Xml($this->routerMock);
+        $this->routerMock = m::mock('phpDocumentor\Transformer\Router\RouterAbstract');
+        $this->xml = new Xml($this->routerMock);
         $this->xml->setTranslator($this->translator);
     }
 
@@ -70,9 +67,9 @@ class XmlTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $transformation->shouldReceive('getArtifact')->andReturn('artifact.xml');
         $transformation->shouldReceive('getTransformer')->andReturn($transformer);
 
-        $this->projectDescriptor->shouldReceive('getFiles')->andReturn(array());
+        $this->projectDescriptor->shouldReceive('getFiles')->andReturn([]);
         $this->projectDescriptor->shouldReceive('getName')->andReturn('project');
-        $this->projectDescriptor->shouldReceive('getPartials')->andReturn(array());
+        $this->projectDescriptor->shouldReceive('getPartials')->andReturn([]);
 
         $this->implementProtectedFinalize($this->projectDescriptor);
 
@@ -91,10 +88,10 @@ class XmlTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
   <deprecated count="0"/>
 </project>
 XML;
-        $expectedXml = new \DOMDocument;
+        $expectedXml = new \DOMDocument();
         $expectedXml->loadXML($xml);
 
-        $actualXml = new \DOMDocument;
+        $actualXml = new \DOMDocument();
         $actualXml->load(vfsStream::url('XmlTest/artifact.xml'));
 
         $this->assertEqualXMLStructure($expectedXml->firstChild, $actualXml->firstChild, true);
@@ -117,24 +114,24 @@ XML;
         $fileDescriptor->shouldReceive('getInheritedElement')->andReturn(null);
         $transformer->shouldReceive('generateFilename')->with('foo.php')->andReturn('generated-foo.php');
         $fileDescriptor->shouldReceive('getHash')->andReturn('hash');
-        $fileDescriptor->shouldReceive('getAllErrors')->andReturn(array());
+        $fileDescriptor->shouldReceive('getAllErrors')->andReturn([]);
 
-        $this->projectDescriptor->shouldReceive('getFiles')->andReturn(array($fileDescriptor));
+        $this->projectDescriptor->shouldReceive('getFiles')->andReturn([$fileDescriptor]);
         $this->projectDescriptor->shouldReceive('getName')->andReturn('project');
-        $this->projectDescriptor->shouldReceive('getPartials')->andReturn(array());
+        $this->projectDescriptor->shouldReceive('getPartials')->andReturn([]);
 
         $this->implementProtectedFinalize($this->projectDescriptor);
         $this->implementProtectedBuildDocBlock($fileDescriptor);
 
-        $fileDescriptor->shouldReceive('getNamespaceAliases')->andReturn(array('foo', 'bar'));
-        $fileDescriptor->shouldReceive('getConstants')->andReturn(array());
-        $fileDescriptor->shouldReceive('getFunctions')->andReturn(array());
-        $fileDescriptor->shouldReceive('getInterfaces')->andReturn(array());
-        $fileDescriptor->shouldReceive('getClasses')->andReturn(array());
-        $fileDescriptor->shouldReceive('getTraits')->andReturn(array());
-        $fileDescriptor->shouldReceive('getMarkers')->andReturn(array());
-        $fileDescriptor->shouldReceive('getErrors')->andReturn(array());
-        $fileDescriptor->shouldReceive('getPartials')->andReturn(array());
+        $fileDescriptor->shouldReceive('getNamespaceAliases')->andReturn(['foo', 'bar']);
+        $fileDescriptor->shouldReceive('getConstants')->andReturn([]);
+        $fileDescriptor->shouldReceive('getFunctions')->andReturn([]);
+        $fileDescriptor->shouldReceive('getInterfaces')->andReturn([]);
+        $fileDescriptor->shouldReceive('getClasses')->andReturn([]);
+        $fileDescriptor->shouldReceive('getTraits')->andReturn([]);
+        $fileDescriptor->shouldReceive('getMarkers')->andReturn([]);
+        $fileDescriptor->shouldReceive('getErrors')->andReturn([]);
+        $fileDescriptor->shouldReceive('getPartials')->andReturn([]);
         $fileDescriptor->shouldReceive('getSource')->andReturn(null);
 
         // Call the actual method
@@ -161,10 +158,10 @@ XML;
   <deprecated count="0"/>
 </project>
 XML;
-        $expectedXml = new \DOMDocument;
+        $expectedXml = new \DOMDocument();
         $expectedXml->loadXML($xml);
 
-        $actualXml = new \DOMDocument;
+        $actualXml = new \DOMDocument();
         $actualXml->load(vfsStream::url('XmlTest/artifact.xml'));
 
         $this->assertEqualXMLStructure($expectedXml->firstChild, $actualXml->firstChild, true);
@@ -172,9 +169,6 @@ XML;
 
     /**
      * This implements testing of the protected finalize method.
-     *
-     * @param ProjectDescriptor $projectDescriptor
-     * @return void
      */
     protected function implementProtectedFinalize(ProjectDescriptor $projectDescriptor)
     {
@@ -185,9 +179,6 @@ XML;
 
     /**
      * This implements testing of the protected buildDocBlock method
-     *
-     * @param m\MockInterface $descriptor
-     * @return void
      */
     protected function implementProtectedBuildDocBlock(m\MockInterface $descriptor)
     {
@@ -195,6 +186,6 @@ XML;
         $descriptor->shouldReceive('getPackage')->andReturn('myPackage');
         $descriptor->shouldReceive('getSummary')->andReturn('my summary');
         $descriptor->shouldReceive('getDescription')->andReturn('my description');
-        $descriptor->shouldReceive('getTags')->andReturn(array());
+        $descriptor->shouldReceive('getTags')->andReturn([]);
     }
 }

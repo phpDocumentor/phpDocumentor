@@ -35,7 +35,7 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testProvidedPartialIsConvertedIntoHTMLWhenSettingIt()
     {
         // Arrange
-        $input  = 'This is a *Partial* text';
+        $input = 'This is a *Partial* text';
         $output = 'This is a <em>Partial</em> text';
         $this->parser->shouldReceive('text')->with($input)->andReturn($output);
 

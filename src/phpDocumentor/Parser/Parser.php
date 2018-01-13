@@ -18,10 +18,8 @@ use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Event\LogEvent;
 use phpDocumentor\Fileset\Collection;
 use phpDocumentor\Parser\Exception\FilesNotFoundException;
-use phpDocumentor\Reflection\File\LocalFile;
 use phpDocumentor\Reflection\Php\Project;
 use phpDocumentor\Reflection\ProjectFactory;
-use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Symfony\Component\Stopwatch\Stopwatch;
@@ -45,10 +43,10 @@ class Parser
     protected $validate = false;
 
     /** @var string[] which markers (i.e. TODO or FIXME) to collect */
-    protected $markers = array('TODO', 'FIXME');
+    protected $markers = ['TODO', 'FIXME'];
 
     /** @var string[] which tags to ignore */
-    protected $ignoredTags = array();
+    protected $ignoredTags = [];
 
     /** @var string target location's root path */
     protected $path = '';
@@ -76,8 +74,6 @@ class Parser
      * If no encoding is specified than 'utf-8' is assumed by default.
      *
      * @codeCoverageIgnore the ini_get call cannot be tested as setting it using ini_set has no effect.
-     * @param ProjectFactory $projectFactory
-     * @param Stopwatch $stopwatch
      */
     public function __construct(ProjectFactory $projectFactory, Stopwatch $stopwatch)
     {
@@ -85,6 +81,7 @@ class Parser
         if ($defaultEncoding) {
             $this->encoding = $defaultEncoding;
         }
+
         $this->projectFactory = $projectFactory;
         $this->stopwatch = $stopwatch;
     }
@@ -95,8 +92,6 @@ class Parser
      * @param bool $forced Forces a full parse.
      *
      * @api
-     *
-     * @return void
      */
     public function setForced($forced)
     {
@@ -124,8 +119,6 @@ class Parser
      * @param bool $validate when true this file will be checked.
      *
      * @api
-     *
-     * @return void
      */
     public function setValidate($validate)
     {
@@ -150,8 +143,6 @@ class Parser
      * @param string[] $markers A list or markers to gather.
      *
      * @api
-     *
-     * @return void
      */
     public function setMarkers(array $markers)
     {
@@ -176,8 +167,6 @@ class Parser
      * @param string[] $ignoredTags A list of tags to ignore.
      *
      * @api
-     *
-     * @return void
      */
     public function setIgnoredTags(array $ignoredTags)
     {
@@ -202,8 +191,6 @@ class Parser
      * @param string $path Must be an absolute path.
      *
      * @api
-     *
-     * @return void
      */
     public function setPath($path)
     {
@@ -225,8 +212,6 @@ class Parser
      *
      * @param string $defaultPackageName Name used to categorize elements
      *  without an @package tag.
-     *
-     * @return void
      */
     public function setDefaultPackageName($defaultPackageName)
     {
@@ -254,8 +239,6 @@ class Parser
      * no transformation is required.
      *
      * @param string $encoding
-     *
-     * @return void
      */
     public function setEncoding($encoding)
     {
@@ -275,13 +258,8 @@ class Parser
     /**
      * Iterates through the given files feeds them to the builder.
      *
-     * @param ProjectDescriptorBuilder $builder
-     * @param array $files
-     *
      * @api
-     *
      * @throws FilesNotFoundException if no files were found.
-     *
      * @return ProjectDescriptor
      */
     public function parse(ProjectDescriptorBuilder $builder, array $files)
@@ -311,10 +289,7 @@ class Parser
     /**
      * Extract all filenames from the given collection and output the amount of files.
      *
-     * @param Collection $files
-     *
      * @throws FilesNotFoundException if no files were found.
-     *
      * @return string[]
      */
     protected function getFilenames(Collection $files)
@@ -323,6 +298,7 @@ class Parser
         if (count($paths) < 1) {
             throw new FilesNotFoundException();
         }
+
         $this->log('Starting to process ' . count($paths) . ' files');
 
         return $paths;
@@ -330,10 +306,6 @@ class Parser
 
     /**
      * Checks if the settings of the project have changed and forces a complete rebuild if they have.
-     *
-     * @param ProjectDescriptorBuilder $builder
-     *
-     * @return void
      */
     private function forceRebuildIfSettingsHaveModified(ProjectDescriptorBuilder $builder)
     {
@@ -345,8 +317,6 @@ class Parser
 
     /**
      * Writes the complete parsing cycle to log.
-     *
-     * @return void
      */
     private function logAfterParsingAllFiles()
     {
@@ -366,10 +336,8 @@ class Parser
      * @param string   $message  The message to log.
      * @param string   $priority The logging priority as declared in the LogLevel PSR-3 class.
      * @param string[] $parameters
-     *
-     * @return void
      */
-    private function log($message, $priority = LogLevel::INFO, $parameters = array())
+    private function log($message, $priority = LogLevel::INFO, $parameters = [])
     {
         Dispatcher::getInstance()->dispatch(
             'system.log',

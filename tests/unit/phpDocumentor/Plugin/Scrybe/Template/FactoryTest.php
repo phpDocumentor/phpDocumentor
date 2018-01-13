@@ -13,7 +13,6 @@ namespace phpDocumentor\Plugin\Scrybe\Template;
 
 use Mockery as m;
 
-
 /**
  * Test for the Template\Factory class of phpDocumentor Scrybe.
  */
@@ -27,7 +26,7 @@ class FactoryTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testRegisterTemplateEngineViaConstructor()
     {
         $factory = new Factory(
-            array('Mock' => m::mock('\phpDocumentor\Plugin\Scrybe\Template\Mock\Template'))
+            ['Mock' => m::mock('\phpDocumentor\Plugin\Scrybe\Template\Mock\Template')]
         );
 
         $this->assertInstanceOf(
@@ -58,7 +57,7 @@ class FactoryTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testRegisterInvalidName()
     {
         $factory = new Factory();
-        $factory->register(array(), m::mock('\phpDocumentor\Plugin\Scrybe\Template\Mock\Template'));
+        $factory->register([], m::mock('\phpDocumentor\Plugin\Scrybe\Template\Mock\Template'));
     }
 
     /**

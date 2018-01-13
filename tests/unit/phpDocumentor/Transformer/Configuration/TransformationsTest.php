@@ -11,8 +11,6 @@
 
 namespace phpDocumentor\Transformer\Configuration;
 
-use Mockery as m;
-
 class TransformationsTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var Transformations */
@@ -23,7 +21,7 @@ class TransformationsTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function setUp()
     {
-        $this->fixture = new Transformations(array('template'), array('transformation'));
+        $this->fixture = new Transformations(['template'], ['transformation']);
     }
 
     /**
@@ -32,7 +30,7 @@ class TransformationsTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testIfAListOfTemplatesCanBeRetrieved()
     {
-        $this->assertSame(array('template'), $this->fixture->getTemplates());
+        $this->assertSame(['template'], $this->fixture->getTemplates());
     }
 
     /**
@@ -41,6 +39,6 @@ class TransformationsTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testIfAListOfTransformationsCanBeRetrieved()
     {
-        $this->assertSame(array('transformation'), $this->fixture->getTransformations());
+        $this->assertSame(['transformation'], $this->fixture->getTransformations());
     }
 }

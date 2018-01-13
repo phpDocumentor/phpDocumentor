@@ -11,7 +11,8 @@
  */
 trait MyTrait
 {
-    public function test() {
+    public function test()
+    {
         return false;
     }
 }

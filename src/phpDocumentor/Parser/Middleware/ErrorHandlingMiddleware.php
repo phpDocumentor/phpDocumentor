@@ -23,9 +23,7 @@ final class ErrorHandlingMiddleware implements Middleware
     /**
      * Executes this middle ware class.
      *
-     * @param $command
      * @param callable $next
-     *
      * @return object
      */
     public function execute($command, callable $next)
@@ -45,17 +43,14 @@ final class ErrorHandlingMiddleware implements Middleware
         return null;
     }
 
-
     /**
      * Dispatches a logging request.
      *
      * @param string   $message  The message to log.
      * @param string   $priority The logging priority as declared in the LogLevel PSR-3 class.
      * @param string[] $parameters
-     *
-     * @return void
      */
-    private function log($message, $priority = LogLevel::INFO, $parameters = array())
+    private function log($message, $priority = LogLevel::INFO, $parameters = [])
     {
         Dispatcher::getInstance()->dispatch(
             'system.log',

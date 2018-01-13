@@ -38,15 +38,15 @@ class ReturnTag
         foreach ($nodes as $node) {
             // if a node with name 'type' is selected we need to reach one
             // level further.
-            $docblock = ($node->nodeName == 'type')
+            $docblock = ($node->nodeName === 'type')
                 ? $node->parentNode->parentNode
                 : $node->parentNode;
 
-            /** @var \DOMElement $method  */
+            /** @var \DOMElement $method */
             $method = $docblock->parentNode;
 
             // if the method is not a method but a global function: error!
-            if ($method->nodeName != 'method') {
+            if ($method->nodeName !== 'method') {
                 continue;
             }
 
@@ -57,7 +57,7 @@ class ReturnTag
 
             // nodes with name type need to set their content; otherwise we set
             // an attribute of the class itself
-            if ($node->nodeName == 'type') {
+            if ($node->nodeName === 'type') {
                 $node->nodeValue = $type;
 
                 // add a new tag @fluent to indicate that this is a fluent interface
@@ -76,8 +76,8 @@ class ReturnTag
 
             // check if an excerpt is set and override that as well
             if ($node->hasAttribute('excerpt')
-                && (($node->getAttribute('excerpt') == 'self')
-                || ($node->getAttribute('excerpt') == '$this'))
+                && (($node->getAttribute('excerpt') === 'self')
+                || ($node->getAttribute('excerpt') === '$this'))
             ) {
                 $node->setAttribute('excerpt', $type);
             }

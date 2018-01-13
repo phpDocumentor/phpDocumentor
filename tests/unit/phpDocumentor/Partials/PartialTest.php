@@ -24,7 +24,7 @@ class PartialTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     protected function setUp()
     {
-        $this->fixture = new Partial;
+        $this->fixture = new Partial();
     }
 
     /**

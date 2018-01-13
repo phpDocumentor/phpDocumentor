@@ -18,8 +18,8 @@ use Zend\Filter\FilterChain;
  */
 class ClassFactory
 {
-    /** @var FilterChain[]  */
-    protected $chains = array();
+    /** @var FilterChain[] */
+    protected $chains = [];
 
     /**
      * Retrieves the filters for a class with a given FQCN.

@@ -17,9 +17,7 @@ use phpDocumentor\Reflection\Type;
 /**
  * Descriptor representing a property.
  */
-class PropertyDescriptor extends DescriptorAbstract implements
-    Interfaces\PropertyInterface,
-    Interfaces\VisibilityInterface
+class PropertyDescriptor extends DescriptorAbstract implements Interfaces\PropertyInterface, Interfaces\VisibilityInterface
 {
     /** @var ClassDescriptor|TraitDescriptor $parent */
     protected $parent;
@@ -137,7 +135,7 @@ class PropertyDescriptor extends DescriptorAbstract implements
     {
         /** @var Collection $var */
         $var = $this->getTags()->get('var', new Collection());
-        if ($var->count() != 0) {
+        if ($var->count() !== 0) {
             return $var;
         }
 

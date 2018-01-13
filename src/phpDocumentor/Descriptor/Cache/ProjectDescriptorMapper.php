@@ -11,13 +11,13 @@
 
 namespace phpDocumentor\Descriptor\Cache;
 
-use Zend\Cache\Storage\IterableInterface;
-use Zend\Cache\Storage\OptimizableInterface;
-use Zend\Cache\Storage\StorageInterface;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
 use phpDocumentor\Fileset\Collection;
+use Zend\Cache\Storage\IterableInterface;
+use Zend\Cache\Storage\OptimizableInterface;
+use Zend\Cache\Storage\StorageInterface;
 
 /**
  * Maps a projectDescriptor to and from a cache instance.
@@ -29,7 +29,7 @@ final class ProjectDescriptorMapper
     const KEY_SETTINGS = 'settings';
 
     /** @var StorageInterface|IterableInterface */
-    protected $cache;
+    private $cache;
 
     /**
      * Initializes this mapper with the given cache instance.
@@ -68,7 +68,7 @@ final class ProjectDescriptorMapper
      */
     public function save(ProjectDescriptor $projectDescriptor)
     {
-        $keys  = array();
+        $keys = [];
         $cache = $this->getCache();
 
         foreach ($cache as $key) {
@@ -79,9 +79,9 @@ final class ProjectDescriptorMapper
         $cache->setItem(self::KEY_SETTINGS, $projectDescriptor->getSettings());
 
         // store cache items
-        $usedKeys = array(self::KEY_SETTINGS);
+        $usedKeys = [self::KEY_SETTINGS];
         foreach ($projectDescriptor->getFiles() as $file) {
-            $key        = self::FILE_PREFIX . md5($file->getPath());
+            $key = self::FILE_PREFIX . md5($file->getPath());
             $usedKeys[] = $key;
             $cache->setItem($key, $file);
         }
@@ -103,7 +103,7 @@ final class ProjectDescriptorMapper
     public function garbageCollect(Collection $collection)
     {
         $projectRoot = $collection->getProjectRoot();
-        $filenames   = $collection->getFilenames();
+        $filenames = $collection->getFilenames();
 
         foreach ($filenames as &$name) {
             // the cache key contains a path relative to the project root; here we expect absolute paths.
@@ -111,7 +111,7 @@ final class ProjectDescriptorMapper
         }
 
         foreach ($this->getCache() as $item) {
-            if (substr($item, 0, strlen(self::FILE_PREFIX)) === self::FILE_PREFIX && !in_array($item, $filenames)) {
+            if (substr($item, 0, strlen(self::FILE_PREFIX)) === self::FILE_PREFIX && !in_array($item, $filenames, true)) {
                 $this->getCache()->removeItem($item);
             }
         }

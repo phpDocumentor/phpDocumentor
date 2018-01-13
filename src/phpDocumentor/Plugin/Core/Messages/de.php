@@ -10,7 +10,7 @@
  */
 
 /** @noinspection SpellCheckingInspection */
-return array(
+return [
     'PPC:ERR-50000' => 'Es wurde keine Zusammenfassung in dieser Datei gefunden',
     'PPC:ERR-50001' => 'Es ist nur ein @package Tag erlaubt',
     'PPC:ERR-50002' => 'Es ist nur ein @subpackage Tag erlaubt',
@@ -50,4 +50,4 @@ return array(
     'VAL:ERRLVL-50017' => 'error',
     'VAL:ERRLVL-50018' => 'error',
     'VAL:ERRLVL-50020' => 'critical',
-);
+];

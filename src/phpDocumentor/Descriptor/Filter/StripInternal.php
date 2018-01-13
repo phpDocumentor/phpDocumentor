@@ -34,8 +34,6 @@ class StripInternal extends AbstractFilter
 
     /**
      * Initializes this filter with an instance of the builder to retrieve the latest ProjectDescriptor from.
-     *
-     * @param ProjectDescriptorBuilder $builder
      */
     public function __construct(ProjectDescriptorBuilder $builder)
     {

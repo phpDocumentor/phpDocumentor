@@ -23,8 +23,6 @@ class Module
 
     /**
      * Initializes the module and sets the root File object.
-     *
-     * @param File $root
      */
     public function __construct(File $root)
     {

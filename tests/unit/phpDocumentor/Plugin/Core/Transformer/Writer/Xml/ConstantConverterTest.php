@@ -12,8 +12,8 @@
 namespace phpDocumentor\Plugin\Core\Transformer\Writer\Xml;
 
 use Mockery as m;
-use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\ConstantDescriptor;
+use phpDocumentor\Descriptor\DescriptorAbstract;
 
 /**
  * Test class for \phpDocumentor\Plugin\Core\Transformer\Writer\Xml\ConstantConverter.
@@ -26,15 +26,13 @@ class ConstantConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * Tests whether the XML Element representing a constant is properly created.
      *
      * @covers phpDocumentor\Plugin\Core\Transformer\Writer\Xml\ConstantConverter::convert
-     *
-     * @return void
      */
     public function testConstantXmlElementIsCreated()
     {
         // Arrange
-        $constant          = $this->createConstantDescriptorMock();
+        $constant = $this->createConstantDescriptorMock();
         $constantConverter = $this->createFixture($constant);
-        $parent            = $this->prepareParentXMLElement();
+        $parent = $this->prepareParentXMLElement();
         $parent->setAttribute('namespace', 'phpDocumentor');
 
         // Act
@@ -55,16 +53,14 @@ class ConstantConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * Tests whether the XML Element representing a constant is properly created.
      *
      * @covers phpDocumentor\Plugin\Core\Transformer\Writer\Xml\ConstantConverter::convert
-     *
-     * @return void
      */
     public function testNamespaceNameIsTakenFromNamespaceDescriptorIfPresent()
     {
         // Arrange
-        $parent              = $this->prepareParentXMLElement();
+        $parent = $this->prepareParentXMLElement();
         $namespaceDescriptor = m::mock('phpDocumentor\Descriptor\NamespaceDescriptor');
         $namespaceDescriptor->shouldReceive('getFullyQualifiedStructuralElementName')->andReturn('MySpace');
-        $constant              = $this->createConstantDescriptorMock();
+        $constant = $this->createConstantDescriptorMock();
         $constant->shouldReceive('getNamespace')->andReturn($namespaceDescriptor);
         $constantConverter = $this->createFixture($constant);
 
@@ -83,7 +79,7 @@ class ConstantConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     protected function prepareParentXMLElement()
     {
         $document = new \DOMDocument();
-        $parent   = new \DOMElement('class');
+        $parent = new \DOMElement('class');
         $document->appendChild($parent);
 
         return $parent;
@@ -108,8 +104,6 @@ class ConstantConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
     /**
      * Creates the ConstantConverter fixture with a DocBlock mock.
-     *
-     * @param ConstantDescriptor $constant
      *
      * @return ConstantConverter
      */

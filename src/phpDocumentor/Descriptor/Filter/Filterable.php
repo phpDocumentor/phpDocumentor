@@ -22,8 +22,6 @@ interface Filterable
      * Sets a list of errors on the associated element.
      *
      * @param Collection $errors
-     *
-     * @return void
      */
     public function setErrors(Collection $errors);
 }

@@ -11,10 +11,10 @@
 
 namespace phpDocumentor\Plugin\Scrybe\Command\Manual;
 
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use phpDocumentor\Plugin\Scrybe\Converter\Format;
 use phpDocumentor\Plugin\Scrybe\Converter\ToLatexInterface;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 
 /**
  * Command used to tell the application to convert from a format to Latex.
@@ -29,8 +29,6 @@ class ToLatexCommand extends BaseConvertCommand
      * and inherits the behaviour of the parent configure.
      *
      * @see ConvertCommandAbstract::configure() for the common business rules.
-     *
-     * @return void
      */
     protected function configure()
     {
@@ -69,15 +67,12 @@ class ToLatexCommand extends BaseConvertCommand
      * configureConverterFromInputOptions() method to set the options coming
      * from the Input object.
      *
-     * @param InputInterface $input
-     *
      * @see BaseConvertCommand::getConverter() for the basic functionality.
-     *
-     * @return \phpDocumentor\Plugin\Scrybe\Converter\ConverterInterface
+     * @return phpDocumentor\Plugin\Scrybe\Converter\ConverterInterface
      */
     protected function getConverter(InputInterface $input)
     {
-        /** @var ToLatexInterface $converter  */
+        /** @var ToLatexInterface $converter */
         $converter = parent::getConverter($input);
         $this->configureConverterFromInputOptions($converter, $input);
 
@@ -92,8 +87,6 @@ class ToLatexCommand extends BaseConvertCommand
      *
      * @throws \InvalidArgumentException if the provided converter is not derived
      *     from ToLatexInterface
-     *
-     * @return void
      */
     protected function configureConverterFromInputOptions($converter, $input)
     {

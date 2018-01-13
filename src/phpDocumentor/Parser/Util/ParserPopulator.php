@@ -1,8 +1,8 @@
 <?php
+
 namespace phpDocumentor\Parser\Util;
 
 use phpDocumentor\Command\Helper\ConfigurationHelper;
-use phpDocumentor\Fileset\Collection;
 use phpDocumentor\Parser\Parser;
 use Symfony\Component\Console\Input\InputInterface;
 
@@ -20,7 +20,7 @@ class ParserPopulator
                 $input,
                 'markers',
                 'parser/markers',
-                array('TODO', 'FIXME'),
+                ['TODO', 'FIXME'],
                 true
             )
         );

@@ -19,8 +19,14 @@ class TTT
      * Test method
      * @return string
      */
-    public function a() {
-        $a = null ?? new class { public function export() { return null; } };
+    public function a()
+    {
+        $a = null ?? new class() {
+            public function export()
+            {
+                return null;
+            }
+        };
         return 'test';
     }
 }

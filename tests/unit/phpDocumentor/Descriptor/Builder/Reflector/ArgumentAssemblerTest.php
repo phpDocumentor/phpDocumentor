@@ -10,10 +10,10 @@
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
+
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use Mockery as m;
-use phpDocumentor\Reflection\DocBlock\Type\Collection;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\Php\Argument;
 use phpDocumentor\Reflection\Types\Boolean;
@@ -79,7 +79,7 @@ class ArgumentAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $paramDescriptorTagMock->shouldReceive('getTypes')->once()->andReturn($type);
 
         // Act
-        $descriptor = $this->fixture->create($argumentReflectorMock, array($paramDescriptorTagMock));
+        $descriptor = $this->fixture->create($argumentReflectorMock, [$paramDescriptorTagMock]);
 
         // Assert
         $this->assertSame($name, $descriptor->getName());

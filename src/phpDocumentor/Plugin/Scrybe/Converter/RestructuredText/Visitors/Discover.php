@@ -11,9 +11,9 @@
 
 namespace phpDocumentor\Plugin\Scrybe\Converter\RestructuredText\Visitors;
 
+use \phpDocumentor\Plugin\Scrybe\Converter\Metadata\TableOfContents;
 use ezcDocumentRstDocumentNode;
 use ezcDocumentRstSectionNode;
-use \phpDocumentor\Plugin\Scrybe\Converter\Metadata\TableOfContents;
 
 /**
  * A specialized RestructuredText Parser/Visitor to aid in the discovery phase.
@@ -36,7 +36,7 @@ class Discover extends Creator
      *
      * @var TableOfContents\Heading[]
      */
-    protected $entry_pointers = array();
+    protected $entry_pointers = [];
 
     /**
      * This is a pointer to the last discovered heading.
@@ -65,18 +65,13 @@ class Discover extends Creator
      * This method interprets the heading and its containing text and adds new entries to the TableOfContents object
      * in the RestructuredText document.
      *
-     * @param \DOMNode            $root
-     * @param \ezcDocumentRstNode $node
-     *
      * @see getDocument() for the document containing the TableOfContents.
-     * @see \phpDocumentor\Plugin\Scrybe\Converter\Metadata\TableOfContents for the Table of Contents class.
-     *
-     * @return void
+     * @see phpDocumentor\Plugin\Scrybe\Converter\Metadata\TableOfContents for the Table of Contents class.
      */
     protected function visitSection(\DOMNode $root, \ezcDocumentRstNode $node)
     {
         if ($node instanceof ezcDocumentRstSectionNode || $node instanceof ezcDocumentRstDocumentNode) {
-            if ($node->depth == 1) {
+            if ($node->depth === 1) {
                 $toc = $this->getTableOfContents();
                 $file = $toc[$this->getFilenameWithoutExtension()];
                 $file->setName($this->nodeToString($node->title));
@@ -97,7 +92,7 @@ class Discover extends Creator
                 $this->last_heading = $heading;
 
                 // add as new entry pointer
-                array_splice($this->entry_pointers, $parent_depth+1, count($this->entry_pointers), array($heading));
+                array_splice($this->entry_pointers, $parent_depth + 1, count($this->entry_pointers), [$heading]);
             }
         }
 
@@ -112,8 +107,6 @@ class Discover extends Creator
      *
      * This method is explicitly bound to File objects and not other BaseEntry descendents because inline elements
      * such as headings should also modify the internal pointers for this visitor.
-     *
-     * @param TableOfContents\File $file
      */
     public function addFileToLastHeading(TableOfContents\File $file)
     {

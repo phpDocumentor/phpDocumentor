@@ -90,7 +90,6 @@ class StandardRouterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         );
     }
 
-
     /**
      * @covers phpDocumentor\Transformer\Router\StandardRouter::configure
      * @covers phpDocumentor\Transformer\Router\RouterAbstract::__construct
@@ -121,7 +120,7 @@ class StandardRouterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testIfARouteForAFqsenCanBeGenerated()
     {
         // Arrange
-        $fqsen                           = '\My\ClassName::myMethod()';
+        $fqsen = '\My\ClassName::myMethod()';
         $this->elementCollection[$fqsen] = m::mock('phpDocumentor\Descriptor\MethodDescriptor');
 
         // Act
@@ -151,17 +150,17 @@ class StandardRouterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function provideDescriptorNames()
     {
-        return array(
-            array('FileDescriptor'),
-            array('NamespaceDescriptor'),
-            array('PackageDescriptor'),
-            array('ClassDescriptor'),
-            array('InterfaceDescriptor', 'ClassDescriptor'),
-            array('TraitDescriptor', 'ClassDescriptor'),
-            array('MethodDescriptor'),
-            array('FunctionDescriptor'),
-            array('PropertyDescriptor'),
-            array('ConstantDescriptor'),
-        );
+        return [
+            ['FileDescriptor'],
+            ['NamespaceDescriptor'],
+            ['PackageDescriptor'],
+            ['ClassDescriptor'],
+            ['InterfaceDescriptor', 'ClassDescriptor'],
+            ['TraitDescriptor', 'ClassDescriptor'],
+            ['MethodDescriptor'],
+            ['FunctionDescriptor'],
+            ['PropertyDescriptor'],
+            ['ConstantDescriptor'],
+        ];
     }
 }

@@ -12,8 +12,6 @@
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use phpDocumentor\Descriptor\TraitDescriptor;
-use phpDocumentor\Reflection\ClassReflector\MethodReflector;
-use phpDocumentor\Reflection\ClassReflector\PropertyReflector;
 use phpDocumentor\Reflection\Php\Method;
 use phpDocumentor\Reflection\Php\Property;
 use phpDocumentor\Reflection\Php\Trait_;
@@ -42,7 +40,7 @@ class TraitAssembler extends AssemblerAbstract
 
         // Reflection library formulates namespace as global but this is not wanted for phpDocumentor itself
         $traitDescriptor->setNamespace(
-            substr($data->getFqsen(), 0, -strlen($data->getName())-1)
+            substr($data->getFqsen(), 0, -strlen($data->getName()) - 1)
         );
 
         $this->assembleDocBlock($data->getDocBlock(), $traitDescriptor);
@@ -58,8 +56,6 @@ class TraitAssembler extends AssemblerAbstract
      *
      * @param Property[] $properties
      * @param TraitDescriptor     $traitDescriptor
-     *
-     * @return void
      */
     protected function addProperties($properties, $traitDescriptor)
     {
@@ -77,8 +73,6 @@ class TraitAssembler extends AssemblerAbstract
      *
      * @param Method[] $methods
      * @param TraitDescriptor   $traitDescriptor
-     *
-     * @return void
      */
     protected function addMethods($methods, $traitDescriptor)
     {

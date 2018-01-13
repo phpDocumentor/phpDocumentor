@@ -9,10 +9,10 @@
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
+
 namespace phpDocumentor\Transformer;
 
 use Mockery as m;
-use phpDocumentor\Descriptor\ProjectDescriptor;
 
 /**
  * Test class for \phpDocumentor\Transformer\Transformer.
@@ -33,8 +33,6 @@ class TransformerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
     /**
      * Instantiates a new \phpDocumentor\Transformer for use as fixture.
-     *
-     * @return void
      */
     protected function setUp()
     {
@@ -124,8 +122,8 @@ class TransformerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
             ->shouldReceive('transform')->getMock();
 
         $writerCollectionMock = m::mock('phpDocumentor\Transformer\Writer\Collection')
-                ->shouldReceive('offsetGet')->with($myTestWritter)->andReturn($myTestWritterMock)
-                ->getMock();
+            ->shouldReceive('offsetGet')->with($myTestWritter)->andReturn($myTestWritterMock)
+            ->getMock();
 
         $fixture = new Transformer($templateCollection, $writerCollectionMock);
 
@@ -138,7 +136,7 @@ class TransformerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
             ->getMock();
 
         $templateCollection->shouldReceive('getTransformations')->andReturn(
-            array($transformation)
+            [$transformation]
         );
 
         $fixture->execute($project);
@@ -149,8 +147,6 @@ class TransformerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * the right format.
      *
      * @covers phpDocumentor\Transformer\Transformer::generateFilename
-     *
-     * @return void
      */
     public function testGenerateFilename()
     {

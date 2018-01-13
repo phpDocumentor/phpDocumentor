@@ -22,12 +22,10 @@ class Finder
     private $sourceDirectory = '';
 
     /** @var string[] */
-    private $exampleDirectories = array();
+    private $exampleDirectories = [];
 
     /**
      * Attempts to find the example contents for the given descriptor.
-     *
-     * @param ExampleDescriptor $descriptor
      *
      * @return string
      */
@@ -47,8 +45,6 @@ class Finder
      * Registers the project's root directory where an 'examples' folder can be expected.
      *
      * @param string $directory
-     *
-     * @return void
      */
     public function setSourceDirectory($directory = '')
     {

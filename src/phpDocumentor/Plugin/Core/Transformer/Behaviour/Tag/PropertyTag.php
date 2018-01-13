@@ -29,8 +29,8 @@ class PropertyTag
         $xpath = new \DOMXPath($xml);
         $nodes = $xpath->query(
             '/project/file/class/docblock/tag[@name="property"]'
-            .'|/project/file/class/docblock/tag[@name="property-read"]'
-            .'|/project/file/class/docblock/tag[@name="property-write"]'
+            . '|/project/file/class/docblock/tag[@name="property-read"]'
+            . '|/project/file/class/docblock/tag[@name="property-write"]'
         );
 
         /** @var \DOMElement $node */

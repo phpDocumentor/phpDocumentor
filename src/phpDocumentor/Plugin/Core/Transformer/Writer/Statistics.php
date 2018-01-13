@@ -11,11 +11,11 @@
 
 namespace phpDocumentor\Plugin\Core\Transformer\Writer;
 
+use phpDocumentor\Application;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Transformer\Transformation;
-use phpDocumentor\Application;
 
 /**
  * Statistics transformation writer; generates statistic report as XML.
@@ -43,8 +43,6 @@ class Statistics extends Checkstyle
      *
      * @param ProjectDescriptor $project        Document containing the structure.
      * @param Transformation    $transformation Transformation to execute.
-     *
-     * @return void
      */
     public function transform(ProjectDescriptor $project, Transformation $transformation)
     {
@@ -71,8 +69,6 @@ class Statistics extends Checkstyle
     /**
      * Append phpdoc-stats element to the document.
      *
-     * @param \DOMDocument $document
-     *
      * @return \DOMDocument
      */
     protected function appendPhpdocStatsElement(\DOMDocument $document)
@@ -87,10 +83,7 @@ class Statistics extends Checkstyle
     /**
      * Appends a stat fragment.
      *
-     * @param \DOMDocument $document
-     * @param ProjectDescriptor $project
      * @param string $date
-     *
      * @return \DOMDocument
      */
     protected function appendStatElement(\DOMDocument $document, ProjectDescriptor $project, $date)
@@ -98,7 +91,7 @@ class Statistics extends Checkstyle
         $stat = $document->createDocumentFragment();
         $stat->appendXML(
 <<<STAT
-<stat date="$date">
+<stat date="${date}">
     <counters>
         <files>{$this->getFilesCounter($project)}</files>
         <deprecated>{$this->getDeprecatedCounter($project)}</deprecated>
@@ -116,8 +109,6 @@ STAT
     /**
      * Get number of files.
      *
-     * @param ProjectDescriptor $project
-     *
      * @return int
      */
     protected function getFilesCounter(ProjectDescriptor $project)
@@ -127,8 +118,6 @@ STAT
 
     /**
      * Get number of deprecated elements.
-     *
-     * @param ProjectDescriptor $project
      *
      * @return int
      */
@@ -149,8 +138,6 @@ STAT
     /**
      * Get number of errors.
      *
-     * @param ProjectDescriptor $project
-     *
      * @return int
      */
     protected function getErrorCounter(ProjectDescriptor $project)
@@ -167,8 +154,6 @@ STAT
 
     /**
      * Get number of markers.
-     *
-     * @param ProjectDescriptor $project
      *
      * @return int
      */

@@ -23,8 +23,6 @@ class Factory
 
     /**
      * Registers the available formats for use in creating definitions.
-     *
-     * @param Format\Collection $formats
      */
     public function __construct(Format\Collection $formats)
     {

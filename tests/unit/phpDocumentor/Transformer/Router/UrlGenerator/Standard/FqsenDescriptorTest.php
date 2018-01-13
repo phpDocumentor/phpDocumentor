@@ -57,11 +57,11 @@ class FqsenDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
     public function provideFqsens()
     {
-        return array(
-            array('\\My\\Space\\Class', '/classes/My.Space.Class.html'),
-            array('\\My\\Space\\Class::$property', '/classes/My.Space.Class.html#property_property'),
-            array('\\My\\Space\\Class::method()', '/classes/My.Space.Class.html#method_method'),
-            array('\\My\\Space\\Class::CONSTANT', '/classes/My.Space.Class.html#constant_CONSTANT'),
-        );
+        return [
+            ['\\My\\Space\\Class', '/classes/My.Space.Class.html'],
+            ['\\My\\Space\\Class::$property', '/classes/My.Space.Class.html#property_property'],
+            ['\\My\\Space\\Class::method()', '/classes/My.Space.Class.html#method_method'],
+            ['\\My\\Space\\Class::CONSTANT', '/classes/My.Space.Class.html#constant_CONSTANT'],
+        ];
     }
 }

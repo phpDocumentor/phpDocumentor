@@ -13,5 +13,4 @@ namespace phpDocumentor\Plugin\Scrybe\Converter\Format\Exception;
 
 class FormatNotFoundException extends \InvalidArgumentException
 {
-
 }

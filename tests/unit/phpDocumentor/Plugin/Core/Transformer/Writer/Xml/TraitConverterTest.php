@@ -13,9 +13,9 @@ namespace phpDocumentor\Plugin\Core\Transformer\Writer\Xml;
 
 use Mockery as m;
 use phpDocumentor\Descriptor\DescriptorAbstract;
+use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Descriptor\PropertyDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
-use phpDocumentor\Descriptor\MethodDescriptor;
 
 /**
  * Test class for \phpDocumentor\Plugin\Core\Transformer\Writer\Xml\TraitConverter.
@@ -28,19 +28,17 @@ class TraitConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * Tests whether the XML Element representing a trait is properly created.
      *
      * @covers \phpDocumentor\Plugin\Core\Transformer\Writer\Xml\TraitConverter::convert
-     *
-     * @return void
      */
     public function testTraitXmlElementIsCreated()
     {
         // Arrange
-        $methodDescriptor    = m::mock('phpDocumentor\Descriptor\MethodDescriptor');
-        $propertyDescriptor  = m::mock('phpDocumentor\Descriptor\PropertyDescriptor');
+        $methodDescriptor = m::mock('phpDocumentor\Descriptor\MethodDescriptor');
+        $propertyDescriptor = m::mock('phpDocumentor\Descriptor\PropertyDescriptor');
         $namespaceDescriptor = m::mock('phpDocumentor\Descriptor\NamespaceDescriptor');
         $namespaceDescriptor->shouldReceive('getFullyQualifiedStructuralElementName')->andReturn('phpDocumentor');
         $trait = $this->createTraitDescriptorMock();
-        $trait->shouldReceive('getMethods')->andReturn(array($methodDescriptor));
-        $trait->shouldReceive('getProperties')->andReturn(array($propertyDescriptor));
+        $trait->shouldReceive('getMethods')->andReturn([$methodDescriptor]);
+        $trait->shouldReceive('getProperties')->andReturn([$propertyDescriptor]);
         $trait->shouldReceive('getNamespace')->andReturn($namespaceDescriptor);
         $parent = $this->prepareParentXMLElement();
         $traitConverter = $this->createFixture($trait, $methodDescriptor, $propertyDescriptor);
@@ -66,7 +64,7 @@ class TraitConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     protected function prepareParentXMLElement()
     {
         $document = new \DOMDocument();
-        $parent   = new \DOMElement('file');
+        $parent = new \DOMElement('file');
         $document->appendChild($parent);
 
         return $parent;
@@ -91,10 +89,8 @@ class TraitConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Creates the TraitConverter fixture with a DocBlock mock.
      *
-     * @param TraitDescriptor    $trait
-     * @param MethodDescriptor   $method
+     * @param MethodDescriptor $method
      * @param PropertyDescriptor $property
-     *
      * @return TraitConverter
      */
     protected function createFixture(TraitDescriptor $trait, $method, $property)

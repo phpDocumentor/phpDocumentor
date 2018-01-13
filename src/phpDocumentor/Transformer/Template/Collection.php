@@ -29,14 +29,11 @@ class Collection extends \ArrayObject
 
     /**
      * Constructs this collection and requires a factory to load templates.
-     *
-     * @param Factory          $factory
-     * @param WriterCollection $writerCollection
      */
     public function __construct(Factory $factory, WriterCollection $writerCollection)
     {
         parent::__construct([]);
-        $this->factory          = $factory;
+        $this->factory = $factory;
         $this->writerCollection = $writerCollection;
     }
 
@@ -44,8 +41,6 @@ class Collection extends \ArrayObject
      * Loads a template with the given name or file path.
      *
      * @param string $nameOrPath
-     *
-     * @return void
      */
     public function load($nameOrPath)
     {
@@ -70,7 +65,7 @@ class Collection extends \ArrayObject
      */
     public function getTransformations()
     {
-        $result = array();
+        $result = [];
         foreach ($this as $template) {
             foreach ($template as $transformation) {
                 $result[] = $transformation;

@@ -27,6 +27,6 @@ class PackageDescriptor implements UrlGeneratorInterface
     {
         $converter = new QualifiedNameToUrlConverter();
 
-        return '/packages/' . $converter->fromPackage($node->getFullyQualifiedStructuralElementName()) .'.html';
+        return '/packages/' . $converter->fromPackage($node->getFullyQualifiedStructuralElementName()) . '.html';
     }
 }

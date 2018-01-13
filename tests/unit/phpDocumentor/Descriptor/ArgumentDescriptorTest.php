@@ -33,11 +33,11 @@ class ArgumentDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testSetAndGetTypes()
     {
-        $this->assertSame(array(), $this->fixture->getTypes());
+        $this->assertSame([], $this->fixture->getTypes());
 
-        $this->fixture->setTypes(array(1));
+        $this->fixture->setTypes([1]);
 
-        $this->assertSame(array(1), $this->fixture->getTypes());
+        $this->assertSame([1], $this->fixture->getTypes());
     }
 
     /**
@@ -65,7 +65,6 @@ class ArgumentDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
         $this->assertTrue($this->fixture->isByReference());
     }
-
 
     /**
      * @covers ::isVariadic
@@ -120,7 +119,7 @@ class ArgumentDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testTypeIsInheritedWhenNoneIsPresent()
     {
         // Arrange
-        $types = array('string');
+        $types = ['string'];
         $this->fixture->setTypes(null);
         $parentArgument = $this->whenFixtureHasMethodAndArgumentInParentClassWithSameName('same_argument');
         $parentArgument->setTypes($types);
@@ -130,7 +129,6 @@ class ArgumentDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         // Assert
         $this->assertSame($types, $result);
     }
-
 
     /**
      * @covers ::setMethod
@@ -143,7 +141,7 @@ class ArgumentDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
             'By default, an argument does not have an inherited element'
         );
 
-        $method = new MethodDescriptor;
+        $method = new MethodDescriptor();
         $method->setName('same');
         $method->addArgument('abc', $this->fixture);
         $this->fixture->setMethod($method);
@@ -166,7 +164,7 @@ class ArgumentDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $parentMethod->setName('same');
         $parentMethod->addArgument($argumentName, $parentArgument);
 
-        $method = new MethodDescriptor;
+        $method = new MethodDescriptor();
         $method->setName('same');
         $method->addArgument($argumentName, $this->fixture);
         $this->fixture->setMethod($method);
@@ -175,7 +173,7 @@ class ArgumentDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $parent->getMethods()->set('same', $parentMethod);
         $parentMethod->setParent($parent);
 
-        $class  = new ClassDescriptor();
+        $class = new ClassDescriptor();
         $class->setParent($parent);
         $class->getMethods()->set('same', $method);
         $method->setParent($class);

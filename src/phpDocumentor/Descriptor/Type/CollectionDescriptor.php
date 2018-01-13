@@ -11,7 +11,6 @@
 
 namespace phpDocumentor\Descriptor\Type;
 
-use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\Interfaces\TypeInterface;
 
 /**
@@ -26,10 +25,10 @@ class CollectionDescriptor implements TypeInterface
     protected $baseType = '';
 
     /** @var TypeInterface[] $type */
-    protected $types = array();
+    protected $types = [];
 
     /** @var TypeInterface[] $type */
-    protected $keyTypes = array();
+    protected $keyTypes = [];
 
     /**
      * Initializes this type collection with its base-type.
@@ -69,8 +68,6 @@ class CollectionDescriptor implements TypeInterface
      * Registers the base type for this collection type.
      *
      * @param string|TypeInterface $baseType
-     *
-     * @return void
      */
     public function setBaseType($baseType)
     {
@@ -81,8 +78,6 @@ class CollectionDescriptor implements TypeInterface
      * Register the type, or set of types, to which a value in this type of collection can belong.
      *
      * @param TypeInterface[] $types
-     *
-     * @return void
      */
     public function setTypes(array $types)
     {
@@ -103,8 +98,6 @@ class CollectionDescriptor implements TypeInterface
      * Registers the type, or set of types, to which a *key* in this type of collection can belong.
      *
      * @param TypeInterface[] $types
-     *
-     * @return void
      */
     public function setKeyTypes(array $types)
     {
@@ -130,12 +123,12 @@ class CollectionDescriptor implements TypeInterface
     {
         $name = $this->getName();
 
-        $keyTypes = array();
+        $keyTypes = [];
         foreach ($this->getKeyTypes() as $type) {
             $keyTypes[] = (string) $type;
         }
 
-        $types = array();
+        $types = [];
         foreach ($this->getTypes() as $type) {
             $types[] = (string) $type;
         }

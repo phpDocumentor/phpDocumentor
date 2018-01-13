@@ -23,9 +23,8 @@ final class EnvironmentContext implements Context\Context
 {
     private $workingDir;
 
-    /** @var  Process */
+    /** @var Process */
     private $process;
-
 
     private $binaryPath;
 
@@ -37,7 +36,6 @@ final class EnvironmentContext implements Context\Context
     {
         $this->workingDir = $workingDir;
     }
-
 
     /**
      * @beforeScenario
@@ -62,8 +60,8 @@ final class EnvironmentContext implements Context\Context
     {
         $di = new RecursiveDirectoryIterator($this->getWorkingDir(), FilesystemIterator::SKIP_DOTS);
         $ri = new RecursiveIteratorIterator($di, RecursiveIteratorIterator::CHILD_FIRST);
-        foreach ( $ri as $file ) {
-            $file->isDir() ?  rmdir($file) : unlink($file);
+        foreach ($ri as $file) {
+            $file->isDir() ? rmdir($file) : unlink($file);
         }
     }
 
@@ -72,8 +70,8 @@ final class EnvironmentContext implements Context\Context
      */
     public function loadASingleFile($dest, $source)
     {
-        Assert::fileExists(__DIR__ . '/../assets/singlefile/'. $source);
-        copy(__DIR__ . '/../assets/singlefile/'. $source, $this->getWorkingDir() . DIRECTORY_SEPARATOR . $dest);
+        Assert::fileExists(__DIR__ . '/../assets/singlefile/' . $source);
+        copy(__DIR__ . '/../assets/singlefile/' . $source, $this->getWorkingDir() . DIRECTORY_SEPARATOR . $dest);
     }
 
     /**
@@ -83,7 +81,7 @@ final class EnvironmentContext implements Context\Context
     public function iRun($argumentsString)
     {
         $argumentsString .= ' --template=xml';
-        $argumentsString = strtr($argumentsString, array('\'' => '"'));
+        $argumentsString = strtr($argumentsString, ['\'' => '"']);
 //      the app is always run in debug mode to catch debug information and collect the AST that is written to disk
         $this->process->setCommandLine(
             sprintf('%s %s %s', 'php', escapeshellarg($this->binaryPath), $argumentsString . ' -vvv')
@@ -111,7 +109,8 @@ final class EnvironmentContext implements Context\Context
     {
         if (!strpos($this->process->getOutput(), $regex)) {
             throw new \Exception(
-                sprintf('output doesn\'t match "%s"', $regex));
+                sprintf('output doesn\'t match "%s"', $regex)
+            );
         }
     }
 
@@ -123,7 +122,8 @@ final class EnvironmentContext implements Context\Context
     {
         if (strpos($this->process->getOutput(), $regex)) {
             throw new \Exception(
-                sprintf('output contains "%s", which was not expected', $regex));
+                sprintf('output contains "%s", which was not expected', $regex)
+            );
         }
     }
 

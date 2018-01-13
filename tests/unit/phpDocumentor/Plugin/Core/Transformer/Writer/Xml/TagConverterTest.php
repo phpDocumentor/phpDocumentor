@@ -39,15 +39,13 @@ class TagConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @dataProvider provideTestGenericTag
      * @covers ::convert
      * @covers ::getDescription
-     *
-     * @return void
      */
     public function testConvertGenericTag($name, $description, $resultName, $resultDescription)
     {
         // Arrange
         $tagConverter = new TagConverter();
-        $parent       = $this->prepareDocBlockXMLElement();
-        $tag          = $this->createTagDescriptorMock($name, $description);
+        $parent = $this->prepareDocBlockXMLElement();
+        $tag = $this->createTagDescriptorMock($name, $description);
 
         // Act
         $convertedElement = $tagConverter->convert($parent, $tag);
@@ -63,17 +61,15 @@ class TagConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      *
      * @covers ::convert
      * @covers ::addTypes
-     *
-     * @return void
      */
     public function testWhetherTypesAreAddedWhenPresentAndTypeIsCompound()
     {
         // Arrange
         $tagConverter = new TagConverter();
-        $parent       = $this->prepareDocBlockXMLElement();
-        $tag          = $this->createTagDescriptorMock('name', 'description', 'Tag\VarDescriptor');
+        $parent = $this->prepareDocBlockXMLElement();
+        $tag = $this->createTagDescriptorMock('name', 'description', 'Tag\VarDescriptor');
         $tag->shouldReceive('getTypes')->andReturn(
-            new Compound(array(new String_(), new Integer(), new Object_(new Fqsen('\DateTime'))))
+            new Compound([new String_(), new Integer(), new Object_(new Fqsen('\DateTime'))])
         );
 
         // Act
@@ -93,15 +89,13 @@ class TagConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      *
      * @covers ::convert
      * @covers ::addTypes
-     *
-     * @return void
      */
     public function testWhetherTypesAreAddedWhenPresentAndTypeIsSingular()
     {
         // Arrange
         $tagConverter = new TagConverter();
-        $parent       = $this->prepareDocBlockXMLElement();
-        $tag          = $this->createTagDescriptorMock('name', 'description', 'Tag\VarDescriptor');
+        $parent = $this->prepareDocBlockXMLElement();
+        $tag = $this->createTagDescriptorMock('name', 'description', 'Tag\VarDescriptor');
         $tag->shouldReceive('getTypes')->andReturn(new String_());
 
         // Act
@@ -118,15 +112,13 @@ class TagConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      *
      * @covers ::convert
      * @covers ::addTypes
-     *
-     * @return void
      */
     public function testWhetherVariableNamesAreAddedWhenPresent()
     {
         // Arrange
         $tagConverter = new TagConverter();
-        $parent       = $this->prepareDocBlockXMLElement();
-        $tag          = $this->createTagDescriptorMock('name', 'description', 'Tag\VarDescriptor');
+        $parent = $this->prepareDocBlockXMLElement();
+        $tag = $this->createTagDescriptorMock('name', 'description', 'Tag\VarDescriptor');
         $tag->shouldReceive('getTypes')->andReturn(null);
         $tag->shouldReceive('getVariableName')->andReturn('varName');
 
@@ -145,15 +137,13 @@ class TagConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      *
      * @todo this should be dealt with in a template and not in the code! This activity should be removed and the
      * templates updated.
-     *
-     * @return void
      */
     public function testWhetherTheVersionIsPrependedToTheDescription()
     {
         // Arrange
         $tagConverter = new TagConverter();
-        $parent       = $this->prepareDocBlockXMLElement();
-        $tag          = $this->createTagDescriptorMock('name', 'description', 'Tag\VersionDescriptor');
+        $parent = $this->prepareDocBlockXMLElement();
+        $tag = $this->createTagDescriptorMock('name', 'description', 'Tag\VersionDescriptor');
         $tag->shouldReceive('getVersion')->andReturn('1.0');
 
         // Act
@@ -167,16 +157,14 @@ class TagConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * Tests whether a reference to another element is stored with the tag when such is present.
      *
      * @covers ::convert
-     *
-     * @return void
      */
     public function testWhetherReferencesAreAddedWhenPresent()
     {
         // Arrange
         $reference = '\DateTime::add()';
         $tagConverter = new TagConverter();
-        $parent       = $this->prepareDocBlockXMLElement();
-        $tag          = $this->createTagDescriptorMock('name', 'description', 'Tag\UsesDescriptor');
+        $parent = $this->prepareDocBlockXMLElement();
+        $tag = $this->createTagDescriptorMock('name', 'description', 'Tag\UsesDescriptor');
         $tag->shouldReceive('getReference')->andReturn($reference);
 
         // Act
@@ -190,16 +178,14 @@ class TagConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * Tests whether a link to a URL is stored with the tag when such is present.
      *
      * @covers ::convert
-     *
-     * @return void
      */
     public function testWhetherLinksAreAddedWhenPresent()
     {
         // Arrange
-        $link         = 'http://www.phpdoc.org';
+        $link = 'http://www.phpdoc.org';
         $tagConverter = new TagConverter();
-        $parent       = $this->prepareDocBlockXMLElement();
-        $tag          = $this->createTagDescriptorMock('name', 'description', 'Tag\LinkDescriptor');
+        $parent = $this->prepareDocBlockXMLElement();
+        $tag = $this->createTagDescriptorMock('name', 'description', 'Tag\LinkDescriptor');
         $tag->shouldReceive('getLink')->andReturn($link);
 
         // Act
@@ -213,16 +199,14 @@ class TagConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * Tests whether a method name to another element is stored with the tag when such is present.
      *
      * @covers ::convert
-     *
-     * @return void
      */
     public function testWhetherMethodNamesAreAddedWhenPresent()
     {
         // Arrange
-        $methodName   = 'getMethod';
+        $methodName = 'getMethod';
         $tagConverter = new TagConverter();
-        $parent       = $this->prepareDocBlockXMLElement();
-        $tag          = $this->createTagDescriptorMock('name', 'description', 'Tag\MethodDescriptor');
+        $parent = $this->prepareDocBlockXMLElement();
+        $tag = $this->createTagDescriptorMock('name', 'description', 'Tag\MethodDescriptor');
         $tag->shouldReceive('getMethodName')->andReturn($methodName);
 
         // Act
@@ -241,10 +225,10 @@ class TagConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function provideTestGenericTag()
     {
-        return array(
-            array('name', 'description', 'name', 'description'),
-            array('name&test', 'description&test', 'name&amp;test', 'description&amp;test')
-        );
+        return [
+            ['name', 'description', 'name', 'description'],
+            ['name&test', 'description&test', 'name&amp;test', 'description&amp;test'],
+        ];
     }
 
     /**
@@ -255,7 +239,7 @@ class TagConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     protected function prepareDocBlockXMLElement()
     {
         $document = new \DOMDocument();
-        $parent   = new \DOMElement('parent');
+        $parent = new \DOMElement('parent');
         $document->appendChild($parent);
         $parent->setAttribute('line', self::TEST_LINENUMBER);
 

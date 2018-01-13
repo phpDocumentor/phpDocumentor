@@ -40,16 +40,17 @@ class ArgumentConverter
         $child->setAttribute('by_reference', var_export($argument->isByReference(), true));
         $child->appendChild(new \DOMElement('name', $argument->getName()));
         $child->appendChild(new \DOMElement('default'))
-              ->appendChild(new \DOMText($argument->getDefault()));
+            ->appendChild(new \DOMText($argument->getDefault()));
 
         $types = $argument->getTypes();
 
-        $typeStrings = array();
+        $typeStrings = [];
         foreach ($types as $type) {
             $typeStrings[] = $type instanceof DescriptorAbstract
                 ? $type->getFullyQualifiedStructuralElementName()
                 : $type;
         }
+
         $child->appendChild(new \DOMElement('type', implode('|', $typeStrings)));
 
         return $child;

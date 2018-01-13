@@ -37,7 +37,7 @@ class Loader
     public function __construct(Serializer $serializer, Merger $merger)
     {
         $this->serializer = $serializer;
-        $this->merger     = $merger;
+        $this->merger = $merger;
     }
 
     /**
@@ -93,7 +93,7 @@ class Loader
      */
     private function isValidFile($path)
     {
-        return $path && $path != 'none' && is_readable($path);
+        return $path && $path !== 'none' && is_readable($path);
     }
 
     /**
@@ -110,7 +110,7 @@ class Loader
     private function createConfigurationObject($templatePath, $defaultUserConfigPath, $customUserConfigPath, $class)
     {
         $config = $this->serializer->deserialize(file_get_contents($templatePath), $class, 'xml');
-        $customUserConfigPath = $customUserConfigPath ? : $defaultUserConfigPath;
+        $customUserConfigPath = $customUserConfigPath ?: $defaultUserConfigPath;
 
         if ($customUserConfigPath !== null && is_readable($customUserConfigPath)) {
             $userConfigFile = $this->serializer->deserialize(file_get_contents($customUserConfigPath), $class, 'xml');

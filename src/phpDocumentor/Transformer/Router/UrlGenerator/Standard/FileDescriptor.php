@@ -27,6 +27,6 @@ class FileDescriptor implements UrlGeneratorInterface
     {
         $converter = new QualifiedNameToUrlConverter();
 
-        return '/files/' . $converter->fromFile($node->getPath()) .'.html';
+        return '/files/' . $converter->fromFile($node->getPath()) . '.html';
     }
 }

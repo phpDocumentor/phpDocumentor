@@ -12,13 +12,12 @@
 
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
+use Mockery as m;
 use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Php\Method;
 use phpDocumentor\Reflection\Php\Trait_;
-use PHPUnit\Framework\TestCase;
-use Mockery as m;
 
 /**
  * @coversDefaultClass \phpDocumentor\Descriptor\Builder\Reflector\TraitAssembler
@@ -47,6 +46,6 @@ class TraitAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         static::assertEquals('\My\Space', $result->getNamespace());
         static::assertSame($traitFqsen, $result->getFullyQualifiedStructuralElementName());
         static::assertEquals('MyTrait', $result->getName());
-        static::assertInstanceOf(MethodDescriptor::class,  $result->getMethods()->get('method', false));
+        static::assertInstanceOf(MethodDescriptor::class, $result->getMethods()->get('method', false));
     }
 }

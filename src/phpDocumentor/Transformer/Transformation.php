@@ -50,7 +50,7 @@ class Transformation
 
     /**
      * @Serializer\Exclude
-     * @var Transformer $transformer The object guiding the transformation process and having meta-data of it.
+     * @var Transformer The object guiding the transformation process and having meta-data of it.
      */
     protected $transformer;
 
@@ -60,7 +60,7 @@ class Transformation
      * @var Parameter[] A series of parameters that can influence what the writer does; the exact function differs
      *     per writer.
      */
-    protected $parameters = array();
+    protected $parameters = [];
 
     /**
      * Constructs a new Transformation object and populates the required parameters.
@@ -82,8 +82,6 @@ class Transformation
      * Sets the query.
      *
      * @param string $query Free-form string with writer-specific values.
-     *
-     * @return void
      */
     public function setQuery($query)
     {
@@ -104,8 +102,6 @@ class Transformation
      * Sets the writer type and instantiates a writer.
      *
      * @param string $writer Name of writer to instantiate.
-     *
-     * @return void
      */
     public function setWriter($writer)
     {
@@ -126,8 +122,6 @@ class Transformation
      * Sets the source / type which the writer will use to generate artifacts from.
      *
      * @param string $source Free-form string with writer-specific meaning.
-     *
-     * @return void
      */
     public function setSource($source)
     {
@@ -183,8 +177,8 @@ class Transformation
         }
 
         // check whether the file exists in the phpDocumentor project directory.
-        if (file_exists(__DIR__.'/../../../'.$this->source)) {
-            return __DIR__ . '/../../../' .$this->source;
+        if (file_exists(__DIR__ . '/../../../' . $this->source)) {
+            return __DIR__ . '/../../../' . $this->source;
         }
 
         // in case of a composer installation
@@ -196,7 +190,7 @@ class Transformation
         // we should ditch the idea of a global set of files to fetch and have
         // a variable / injection for the global templates folder and inject
         // that here.
-        $file = __DIR__.'/../../../data/'.$this->source;
+        $file = __DIR__ . '/../../../data/' . $this->source;
 
         if (!file_exists($file)) {
             throw new Exception('The source path does not exist: ' . $file);
@@ -213,8 +207,6 @@ class Transformation
      * writer.
      *
      * @param string $artifact Name of artifact to generate; usually a filepath.
-     *
-     * @return void
      */
     public function setArtifact($artifact)
     {
@@ -236,8 +228,6 @@ class Transformation
      *
      * @param Parameter[] $parameters Associative multidimensional array containing
      *     parameters for the Writer.
-     *
-     * @return void
      */
     public function setParameters(array $parameters)
     {
@@ -265,7 +255,7 @@ class Transformation
     {
         /** @var Parameter $parameter */
         foreach ($this->parameters as $parameter) {
-            if ($parameter->getKey() == $name) {
+            if ($parameter->getKey() === $name) {
                 return $parameter;
             }
         }
@@ -278,15 +268,15 @@ class Transformation
      *
      * @param string $name Name of the parameter to return.
      *
-     * @return Parameter
+     * @return Parameter[]
      */
     public function getParametersWithKey($name)
     {
-        $parameters = array();
+        $parameters = [];
 
         /** @var Parameter $parameter */
         foreach ($this->parameters as $parameter) {
-            if ($parameter->getKey() == $name) {
+            if ($parameter->getKey() === $name) {
                 $parameters[] = $parameter;
             }
         }

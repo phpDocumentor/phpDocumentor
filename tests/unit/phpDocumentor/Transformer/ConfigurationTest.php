@@ -67,7 +67,7 @@ class ConfigurationTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testIfExternalClassDocumentationIsSetAndReturned()
     {
         // Arrange
-        $expected = array(new ExternalClassDocumentation('prefix', 'uri'));
+        $expected = [new ExternalClassDocumentation('prefix', 'uri')];
 
         // Act
         $this->fixture->setExternalClassDocumentation($expected);

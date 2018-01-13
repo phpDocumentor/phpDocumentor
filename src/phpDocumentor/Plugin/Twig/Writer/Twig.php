@@ -90,10 +90,8 @@ class Twig extends WriterAbstract implements Routable
      * This method combines the ProjectDescriptor and the given target template
      * and creates a static html page at the artifact location.
      *
-     * @param ProjectDescriptor $project        Document containing the structure.
-     * @param Transformation    $transformation Transformation to execute.
-     *
-     * @return void
+     * @param ProjectDescriptor $project Document containing the structure.
+     * @param Transformation $transformation Transformation to execute.
      */
     public function transform(ProjectDescriptor $project, Transformation $transformation)
     {
@@ -106,10 +104,12 @@ class Twig extends WriterAbstract implements Routable
             if (!$node) {
                 continue;
             }
+
             $destination = $this->getDestinationPath($node, $transformation);
             if ($destination === false) {
                 continue;
             }
+
             $environment = $this->initializeEnvironment($project, $transformation, $destination);
             $environment->addGlobal('node', $node);
 
@@ -121,10 +121,7 @@ class Twig extends WriterAbstract implements Routable
     /**
      * Initializes the Twig environment with the template, base extension and additionally defined extensions.
      *
-     * @param ProjectDescriptor $project
-     * @param Transformation    $transformation
-     * @param string            $destination
-     *
+     * @param string $destination
      * @return \Twig_Environment
      */
     protected function initializeEnvironment(ProjectDescriptor $project, Transformation $transformation, $destination)
@@ -133,11 +130,11 @@ class Twig extends WriterAbstract implements Routable
 
         $baseTemplatesPath = $transformation->getTransformer()->getTemplates()->getTemplatesPath();
 
-        $templateFolders = array(
+        $templateFolders = [
             $baseTemplatesPath . '/..' . DIRECTORY_SEPARATOR . $callingTemplatePath,
             // http://twig.sensiolabs.org/doc/recipes.html#overriding-a-template-that-also-extends-itself
-            $baseTemplatesPath
-        );
+            $baseTemplatesPath,
+        ];
 
         // get all invoked template paths, they overrule the calling template path
         /** @var Template $template */
@@ -148,7 +145,7 @@ class Twig extends WriterAbstract implements Routable
 
         $env = new \Twig_Environment(
             new \Twig_Loader_Filesystem($templateFolders),
-            array('cache' => sys_get_temp_dir() . '/phpdoc-twig-cache')
+            ['cache' => sys_get_temp_dir() . '/phpdoc-twig-cache']
         );
 
         $this->addPhpDocumentorExtension($project, $transformation, $destination, $env);
@@ -160,12 +157,7 @@ class Twig extends WriterAbstract implements Routable
     /**
      * Adds the phpDocumentor base extension to the Twig Environment.
      *
-     * @param ProjectDescriptor $project
-     * @param Transformation    $transformation
-     * @param string            $destination
-     * @param \Twig_Environment $twigEnvironment
-     *
-     * @return void
+     * @param string $destination
      */
     protected function addPhpDocumentorExtension(
         ProjectDescriptor $project,
@@ -188,13 +180,7 @@ class Twig extends WriterAbstract implements Routable
      * This method will read the `twig-extension` parameter of the transformation (which inherits the template's
      * parameter set) and try to add those extensions to the environment.
      *
-     * @param Transformation    $transformation
-     * @param ProjectDescriptor $project
-     * @param \Twig_Environment $twigEnvironment
-     *
      * @throws \InvalidArgumentException if a twig-extension should be loaded but it could not be found.
-     *
-     * @return void
      */
     protected function addExtensionsFromTemplateConfiguration(
         Transformation $transformation,
@@ -204,7 +190,7 @@ class Twig extends WriterAbstract implements Routable
         $isDebug = $transformation->getParameter('twig-debug')
             ? $transformation->getParameter('twig-debug')->getValue()
             : false;
-        if ($isDebug == 'true') {
+        if ($isDebug === 'true') {
             $twigEnvironment->enableDebug();
             $twigEnvironment->enableAutoReload();
             $twigEnvironment->addExtension(new \Twig_Extension_Debug());
@@ -220,7 +206,8 @@ class Twig extends WriterAbstract implements Routable
             // to support 'normal' Twig extensions we check the interface to determine what instantiation to do.
             $implementsInterface = in_array(
                 'phpDocumentor\Plugin\Twig\ExtensionInterface',
-                class_implements($extensionValue)
+                class_implements($extensionValue),
+                true
             );
 
             $twigEnvironment->addExtension(
@@ -249,12 +236,9 @@ class Twig extends WriterAbstract implements Routable
      *   node 'name' as a child of the given $node and use that value instead.
      *
      * @param DescriptorAbstract $node
-     * @param Transformation     $transformation
-     *
      * @throws \InvalidArgumentException if no artifact is provided and no routing rule matches.
      * @throws \UnexpectedValueException if the provided node does not contain anything.
-     *
-     * @return string|false returns the destination location or false if generation should be aborted.
+     * @return string|bool returns the destination location or false if generation should be aborted.
      */
     protected function getDestinationPath($node, Transformation $transformation)
     {
@@ -276,10 +260,11 @@ class Twig extends WriterAbstract implements Routable
             }
 
             $rule = new ForFileProxy($rule);
-            $url  = $rule->generate($node);
+            $url = $rule->generate($node);
             if ($url === false || $url[0] !== DIRECTORY_SEPARATOR) {
                 return false;
             }
+
             $path = $transformation->getTransformer()->getTarget() . str_replace('/', DIRECTORY_SEPARATOR, $url);
         } else {
             $path = $transformation->getTransformer()->getTarget()
@@ -297,6 +282,7 @@ class Twig extends WriterAbstract implements Routable
                 if (extension_loaded('iconv')) {
                     $filepart = iconv('UTF-8', 'ASCII//TRANSLIT', $filepart);
                 }
+
                 $filepart = strpos($filepart, '/') !== false
                     ? implode('/', array_map('urlencode', explode('/', $filepart)))
                     : implode('\\', array_map('urlencode', explode('\\', $filepart)));
@@ -308,7 +294,7 @@ class Twig extends WriterAbstract implements Routable
 
         // replace any \ with the directory separator to be compatible with the
         // current filesystem and allow the next file_exists to do its work
-        $destination = str_replace(array('/','\\'), DIRECTORY_SEPARATOR, $destination);
+        $destination = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $destination);
 
         // create directory if it does not exist yet
         if (!file_exists(dirname($destination))) {
@@ -334,10 +320,6 @@ class Twig extends WriterAbstract implements Routable
 
     /**
      * Sets the routers that can be used to determine the path of links.
-     *
-     * @param Queue $routers
-     *
-     * @return void
      */
     public function setRouters(Queue $routers)
     {

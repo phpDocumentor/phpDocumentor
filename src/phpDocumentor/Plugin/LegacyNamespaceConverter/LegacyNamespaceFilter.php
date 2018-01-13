@@ -30,12 +30,10 @@ class LegacyNamespaceFilter extends AbstractFilter
     protected $builder;
 
     /** @var string */
-    private $namespacePrefix='';
+    private $namespacePrefix = '';
 
     /**
      * Initializes this filter with an instance of the builder to retrieve the latest ProjectDescriptor from.
-     *
-     * @param ProjectDescriptorBuilder $builder
      */
     public function __construct(ProjectDescriptorBuilder $builder)
     {
@@ -55,7 +53,7 @@ class LegacyNamespaceFilter extends AbstractFilter
     public function filter($value)
     {
         if ($value) {
-            $namespace = $value->getNamespace()=='' ? '\\' . $this->namespacePrefix : $value->getNamespace();
+            $namespace = $value->getNamespace() === '' ? '\\' . $this->namespacePrefix : $value->getNamespace();
             $value->setNamespace($this->namespaceFromLegacyNamespace($namespace, $value->getName()));
             $value->setName($this->classNameFromLegacyNamespace($value->getName()));
         }

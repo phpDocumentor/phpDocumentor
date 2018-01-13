@@ -10,8 +10,8 @@
 
 namespace Cilex\Provider;
 
-use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;

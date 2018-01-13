@@ -13,7 +13,6 @@
 namespace phpDocumentor\Behat\Contexts\Ast;
 
 use Behat\Behat\Context\Context;
-use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Gherkin\Node\PyStringNode;
 use phpDocumentor\Descriptor\ArgumentDescriptor;
 use phpDocumentor\Descriptor\ClassDescriptor;
@@ -86,7 +85,6 @@ class ApiContext extends BaseContext implements Context
     }
 
     /**
-     * @param $class
      * @param $expectedContent
      * @Then the class named ":class" has docblock with content:
      */
@@ -98,11 +96,9 @@ class ApiContext extends BaseContext implements Context
     }
 
     /**
-     * @param $classFqsen
-     * @param $docElement
      * @param $value
      * @Then class ":classFqsen" has :docElement:
-     * @throws \Exception
+     * @throws Exception
      */
     public function classHasDocblockContent($classFqsen, $docElement, PyStringNode $value)
     {
@@ -110,15 +106,10 @@ class ApiContext extends BaseContext implements Context
 
         $method = 'get' . $docElement;
 
-        Assert::assertEquals($value->getRaw(), $class->$method());
+        Assert::assertEquals($value->getRaw(), $class->{$method}());
     }
 
     /**
-     * @param $classFqsen
-     * @param $elementType
-     * @param $elementName
-     * @param $docElement
-     * @param PyStringNode $value
      * @Then class ":classFqsen" has :elementType :elementName with :docElement:
      */
     public function classHasElementWithDocblockContent($classFqsen, $elementType, $elementName, $docElement, PyStringNode $value)
@@ -138,17 +129,15 @@ class ApiContext extends BaseContext implements Context
                 break;
         }
 
-        $element = $class-> $method()->get($elementName);
+        $element = $class-> {$method}()->get($elementName);
 
         $method = 'get' . $docElement;
-        $actual = $element->$method();
+        $actual = $element->{$method}();
 
-        Assert::assertEquals($value->getRaw(), $actual,  sprintf('"%s" does not match "%s"', $actual, $value->getRaw()));
+        Assert::assertEquals($value->getRaw(), $actual, sprintf('"%s" does not match "%s"', $actual, $value->getRaw()));
     }
 
     /**
-     * @param $classFqsen
-     * @param $value
      * @Then class ":classFqsen" has version :value
      */
     public function classHasVersion($classFqsen, $value)
@@ -166,8 +155,6 @@ class ApiContext extends BaseContext implements Context
     }
 
     /**
-     * @param $classFqsen
-     * @param $tagName
      * @Then class ":classFqsen" without tag :tagName
      */
     public function classWithoutTag($classFqsen, $tagName)
@@ -214,7 +201,6 @@ class ApiContext extends BaseContext implements Context
 
     /**
      * @param string $classFqsen
-     * @param string $tagName
      * @param string $methodName
      * @Then class ":classFqsen" has a method :method with argument ":argument is variadic
      */
@@ -233,7 +219,6 @@ class ApiContext extends BaseContext implements Context
 
     /**
      * @param string $classFqsen
-     * @param string $tagName
      * @param string $methodName
      * @Then class ":classFqsen" has a method :method
      */
@@ -262,7 +247,7 @@ class ApiContext extends BaseContext implements Context
         /** @var ArgumentDescriptor $argumentDescriptor */
         $argumentDescriptor = $method->getArguments()[$argument];
 
-        Assert::assertEquals($type, (string)$argumentDescriptor->getTypes());
+        Assert::assertEquals($type, (string) $argumentDescriptor->getTypes());
     }
 
     /**
@@ -279,8 +264,8 @@ class ApiContext extends BaseContext implements Context
         $method = $class->getMethods()->get($methodName);
         /** @var ParamDescriptor $paramDescriptor */
         foreach ($method->getParam() as $paramDescriptor) {
-            if($paramDescriptor->getName() === $param) {
-                Assert::assertEquals($type, (string)$paramDescriptor->getTypes());
+            if ($paramDescriptor->getName() === $param) {
+                Assert::assertEquals($type, (string) $paramDescriptor->getTypes());
             }
         }
     }
@@ -327,7 +312,7 @@ class ApiContext extends BaseContext implements Context
         /** @var Collection $tagCollection */
         $tagCollection = $element->getTags()->get($tagName, new Collection());
 
-        Assert::assertEquals((int)$expectedNumber, $tagCollection->count());
+        Assert::assertEquals((int) $expectedNumber, $tagCollection->count());
         if ($expectedNumber > 0) {
             Assert::assertEquals($tagName, $tagCollection[0]->getName());
         }
@@ -349,8 +334,7 @@ class ApiContext extends BaseContext implements Context
     /**
      * @param string $classFqsen
      * @param string $methodName
-     * @param $returnType
-     * @throws \Exception
+     * @throws Exception
      * @Then class ":classFqsen" has a method :method with returntype :returnType
      * @Then class ":classFqsen" has a method :method with returntype :returnType without description
      */
@@ -358,15 +342,14 @@ class ApiContext extends BaseContext implements Context
     {
         $response = $this->findMethodResponse($classFqsen, $methodName);
 
-        Assert::assertEquals($returnType, (string)$response->getTypes());
-        Assert::assertEquals('', (string)$response->getDescription());
+        Assert::assertEquals($returnType, (string) $response->getTypes());
+        Assert::assertEquals('', (string) $response->getDescription());
     }
 
     /**
      * @param string $classFqsen
      * @param string $methodName
-     * @param $returnType
-     * @throws \Exception
+     * @throws Exception
      * @Then class ":classFqsen" has a magic method :method with returntype :returnType
      * @Then class ":classFqsen" has a magic method :method with returntype :returnType without description
      */
@@ -374,23 +357,22 @@ class ApiContext extends BaseContext implements Context
     {
         $response = $this->findMagicMethodResponse($classFqsen, $methodName);
 
-        Assert::assertEquals($returnType, (string)$response->getTypes());
-        Assert::assertEquals('', (string)$response->getDescription());
+        Assert::assertEquals($returnType, (string) $response->getTypes());
+        Assert::assertEquals('', (string) $response->getDescription());
     }
 
     /**
      * @param string $classFqsen
      * @param string $methodName
-     * @param $returnType
-     * @throws \Exception
+     * @throws Exception
      * @Then class ":classFqsen" has a method :method with returntype :returnType with description:
      */
     public function classHasMethodWithReturnTypeAndDescription($classFqsen, $methodName, $returnType, PyStringNode $description)
     {
         $response = $this->findMethodResponse($classFqsen, $methodName);
 
-        Assert::assertEquals($returnType, (string)$response->getTypes());
-        Assert::assertEquals($description, (string)$response->getDescription());
+        Assert::assertEquals($returnType, (string) $response->getTypes());
+        Assert::assertEquals($description, (string) $response->getDescription());
     }
 
     /**
@@ -400,14 +382,12 @@ class ApiContext extends BaseContext implements Context
     public function classReturnTaggetReturnWithoutAnyWithoutReturntype($classFqsen, $methodName)
     {
         $response = $this->findMethodResponse($classFqsen, $methodName);
-        Assert::assertEquals('mixed', (string)$response->getTypes());
+        Assert::assertEquals('mixed', (string) $response->getTypes());
         Assert::assertEquals('', $response->getDescription());
     }
 
     /**
-     * @param $fqsen
-     * @param $returnType
-     * @throws \Exception
+     * @throws Exception
      * @Then has function :fqsen with returntype :returnType
      * @Then has function :fqsen with returntype :returnType without description
      */
@@ -415,23 +395,20 @@ class ApiContext extends BaseContext implements Context
     {
         $response = $this->findFunctionResponse($fqsen);
 
-        Assert::assertEquals($returnType, (string)$response->getTypes());
-        Assert::assertEquals('', (string)$response->getDescription());
+        Assert::assertEquals($returnType, (string) $response->getTypes());
+        Assert::assertEquals('', (string) $response->getDescription());
     }
 
     /**
-     * @param $fqsen
-     * @param $returnType
-     * @param PyStringNode $description
-     * @throws \Exception
+     * @throws Exception
      * @Then has function :fqsen with returntype :returnType with description:
      */
     public function functionWithReturnTypeAndDescription($fqsen, $returnType, PyStringNode $description)
     {
         $response = $this->findFunctionResponse($fqsen);
 
-        Assert::assertEquals($returnType, (string)$response->getTypes());
-        Assert::assertEquals($description, (string)$response->getDescription());
+        Assert::assertEquals($returnType, (string) $response->getTypes());
+        Assert::assertEquals($description, (string) $response->getDescription());
     }
 
     /**
@@ -441,15 +418,12 @@ class ApiContext extends BaseContext implements Context
     public function functionWithoutReturntype($fqsen)
     {
         $response = $this->findFunctionResponse($fqsen);
-        Assert::assertEquals('mixed', (string)$response->getTypes());
+        Assert::assertEquals('mixed', (string) $response->getTypes());
         Assert::assertEquals('', $response->getDescription());
     }
 
     /**
-     * @param $classFqsen
-     * @param $methodName
-     * @return ReturnDescriptor
-     * @throws \Exception
+     * @throws Exception
      */
     private function findMethodResponse($classFqsen, $methodName): ReturnDescriptor
     {
@@ -464,10 +438,7 @@ class ApiContext extends BaseContext implements Context
     }
 
     /**
-     * @param $classFqsen
-     * @param $methodName
-     * @return ReturnDescriptor
-     * @throws \Exception
+     * @throws Exception
      */
     private function findMagicMethodResponse($classFqsen, $methodName): ReturnDescriptor
     {
@@ -488,9 +459,7 @@ class ApiContext extends BaseContext implements Context
     }
 
     /**
-     * @param string $fqsen
-     * @return ReturnDescriptor
-     * @throws \Exception
+     * @throws Exception
      */
     private function findFunctionResponse(string $fqsen): ReturnDescriptor
     {

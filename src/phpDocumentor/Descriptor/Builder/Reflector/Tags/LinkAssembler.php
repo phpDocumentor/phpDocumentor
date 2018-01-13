@@ -13,7 +13,6 @@ namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 
 use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
 use phpDocumentor\Descriptor\Tag\LinkDescriptor;
-use phpDocumentor\Reflection\DocBlock\Tag\LinkTag;
 use phpDocumentor\Reflection\DocBlock\Tags\Link;
 
 /**

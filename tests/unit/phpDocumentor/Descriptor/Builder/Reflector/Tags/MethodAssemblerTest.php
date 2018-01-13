@@ -12,7 +12,6 @@
 namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 
 use Mockery as m;
-use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\DocBlock\Tags\Method;
@@ -53,7 +52,7 @@ class MethodAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testCreateMethodDescriptorFromVariousNotations(
         $returnType,
         $name,
-        $arguments = array(),
+        $arguments = [],
         $description = null
     ) {
         $tag = new Method($name, $arguments, $returnType, false, $description);
@@ -77,62 +76,62 @@ class MethodAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function provideNotations()
     {
-        return array(
+        return [
             // just a method without a return type
-            array(new Void_(), 'myMethod'),
+            [new Void_(), 'myMethod'],
 
             // a method with two arguments
-            array(
+            [
                 new Void_(),
                 'myMethod',
-                array(
-                    array('name' => '$argument1', 'type' => new Mixed_()),
-                    array('name' => '$argument2', 'type' => new Mixed_()),
-                )
-            ),
+                [
+                    ['name' => '$argument1', 'type' => new Mixed_()],
+                    ['name' => '$argument2', 'type' => new Mixed_()],
+                ],
+            ],
 
             // a method with two arguments without dollar sign
-            array(
+            [
                 new Void_(),
                 'myMethod',
-                array(
-                    array('name' => '$argument1', 'type' => new Mixed_()),
-                    array('name' => '$argument2', 'type' => new Mixed_()),
-                )
-            ),
+                [
+                    ['name' => '$argument1', 'type' => new Mixed_()],
+                    ['name' => '$argument2', 'type' => new Mixed_()],
+                ],
+            ],
 
             // a method without return type, but with 2 arguments and a description
-            array(
+            [
                 new Void_(),
                 'myMethod',
-                array(
-                    array('name' => '$argument1', 'type' => new Mixed_()),
-                    array('name' => '$argument2', 'type' => new Mixed_()),
-                ),
-                new Description('This is a description.')
-            ),
+                [
+                    ['name' => '$argument1', 'type' => new Mixed_()],
+                    ['name' => '$argument2', 'type' => new Mixed_()],
+                ],
+                new Description('This is a description.'),
+            ],
 
             // a method without return type, but with 2 arguments (with types) and a description
-            array(
+            [
                 new Void_(),
                 'myMethod',
-                array(
-                    array('name' => '$argument1', 'type' => new Boolean()),
-                    array('name' => '$argument2', 'type' => new String_()),
-                ),
-                new Description('This is a description.')
-            ),
+                [
+                    ['name' => '$argument1', 'type' => new Boolean()],
+                    ['name' => '$argument2', 'type' => new String_()],
+                ],
+                new Description('This is a description.'),
+            ],
 
             // a method with return type, 2 arguments (with types) and a description
-            array(
+            [
                 new Integer(),
                 'myMethod',
-                array(
-                    array('name' => '$argument1', 'type' => new Boolean()),
-                    array('name' => '$argument2', 'type' => new String_()),
-                ),
-                new Description('This is a description.')
-            ),
-        );
+                [
+                    ['name' => '$argument1', 'type' => new Boolean()],
+                    ['name' => '$argument2', 'type' => new String_()],
+                ],
+                new Description('This is a description.'),
+            ],
+        ];
     }
 }

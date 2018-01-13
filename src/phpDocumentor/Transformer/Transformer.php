@@ -11,19 +11,19 @@
 
 namespace phpDocumentor\Transformer;
 
-use phpDocumentor\Transformer\Event\WriterInitializationEvent;
-use phpDocumentor\Transformer\Writer\Initializable;
-use phpDocumentor\Transformer\Writer\WriterAbstract;
-use Psr\Log\LogLevel;
 use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Event\DebugEvent;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Event\LogEvent;
-use phpDocumentor\Transformer\Event\PostTransformEvent;
 use phpDocumentor\Transformer\Event\PostTransformationEvent;
-use phpDocumentor\Transformer\Event\PreTransformEvent;
+use phpDocumentor\Transformer\Event\PostTransformEvent;
 use phpDocumentor\Transformer\Event\PreTransformationEvent;
+use phpDocumentor\Transformer\Event\PreTransformEvent;
+use phpDocumentor\Transformer\Event\WriterInitializationEvent;
+use phpDocumentor\Transformer\Writer\Initializable;
+use phpDocumentor\Transformer\Writer\WriterAbstract;
+use Psr\Log\LogLevel;
 
 /**
  * Core class responsible for transforming the cache file to a set of artifacts.
@@ -31,10 +31,15 @@ use phpDocumentor\Transformer\Event\PreTransformationEvent;
 class Transformer implements CompilerPassInterface
 {
     const EVENT_PRE_TRANSFORMATION = 'transformer.transformation.pre';
+
     const EVENT_POST_TRANSFORMATION = 'transformer.transformation.post';
+
     const EVENT_PRE_INITIALIZATION = 'transformer.writer.initialization.pre';
+
     const EVENT_POST_INITIALIZATION = 'transformer.writer.initialization.post';
+
     const EVENT_PRE_TRANSFORM = 'transformer.transform.pre';
+
     const EVENT_POST_TRANSFORM = 'transformer.transform.post';
 
     /** @var integer represents the priority in the Compiler queue. */
@@ -50,18 +55,15 @@ class Transformer implements CompilerPassInterface
     protected $writers;
 
     /** @var Transformation[] $transformations */
-    protected $transformations = array();
+    protected $transformations = [];
 
     /**
      * Wires the template collection and writer collection to this transformer.
-     *
-     * @param Template\Collection $templateCollection
-     * @param Writer\Collection   $writerCollection
      */
     public function __construct(Template\Collection $templateCollection, Writer\Collection $writerCollection)
     {
         $this->templates = $templateCollection;
-        $this->writers   = $writerCollection;
+        $this->writers = $writerCollection;
     }
 
     /**
@@ -79,8 +81,6 @@ class Transformer implements CompilerPassInterface
      *
      * @throws \InvalidArgumentException if the target is not a valid writable
      *   directory.
-     *
-     * @return void
      */
     public function setTarget($target)
     {
@@ -124,10 +124,6 @@ class Transformer implements CompilerPassInterface
 
     /**
      * Transforms the given project into a series of artifacts as provided by the templates.
-     *
-     * @param ProjectDescriptor $project
-     *
-     * @return void
      */
     public function execute(ProjectDescriptor $project)
     {
@@ -161,11 +157,11 @@ class Transformer implements CompilerPassInterface
      */
     public function generateFilename($name)
     {
-        if (substr($name, -4) == '.php') {
+        if (substr($name, -4) === '.php') {
             $name = substr($name, 0, -4);
         }
 
-        return trim(str_replace(array(DIRECTORY_SEPARATOR, '\\'), '.', trim($name, DIRECTORY_SEPARATOR . '.')), '.')
+        return trim(str_replace([DIRECTORY_SEPARATOR, '\\'], '.', trim($name, DIRECTORY_SEPARATOR . '.')), '.')
             . '.html';
     }
 
@@ -174,8 +170,6 @@ class Transformer implements CompilerPassInterface
      *
      * @param string $message  The message to log.
      * @param string $priority The logging priority
-     *
-     * @return void
      */
     public function log($message, $priority = LogLevel::INFO)
     {
@@ -191,8 +185,6 @@ class Transformer implements CompilerPassInterface
      * Dispatches a logging request to log a debug message.
      *
      * @param string $message The message to log.
-     *
-     * @return void
      */
     public function debug($message)
     {
@@ -206,18 +198,15 @@ class Transformer implements CompilerPassInterface
     /**
      * Initializes all writers that are used during this transformation.
      *
-     * @param ProjectDescriptor $project
-     * @param Transformation[]  $transformations
-     *
-     * @return void
+     * @param Transformation[] $transformations
      */
     private function initializeWriters(ProjectDescriptor $project, $transformations)
     {
-        $isInitialized = array();
+        $isInitialized = [];
         foreach ($transformations as $transformation) {
             $writerName = $transformation->getWriter();
 
-            if (in_array($writerName, $isInitialized)) {
+            if (in_array($writerName, $isInitialized, true)) {
                 continue;
             }
 
@@ -241,12 +230,7 @@ class Transformer implements CompilerPassInterface
      * - transformer.writer.initialization.pre, before the initialization of a single writer.
      * - transformer.writer.initialization.post, after the initialization of a single writer.
      *
-     * @param WriterAbstract    $writer
-     * @param ProjectDescriptor $project
-     *
      * @uses Dispatcher to emit the events surrounding an initialization.
-     *
-     * @return void
      */
     private function initializeWriter(WriterAbstract $writer, ProjectDescriptor $project)
     {
@@ -263,10 +247,7 @@ class Transformer implements CompilerPassInterface
     /**
      * Applies all given transformations to the provided project.
      *
-     * @param ProjectDescriptor $project
-     * @param Transformation[]  $transformations
-     *
-     * @return void
+     * @param Transformation[] $transformations
      */
     private function transformProject(ProjectDescriptor $project, $transformations)
     {
@@ -287,12 +268,7 @@ class Transformer implements CompilerPassInterface
      * - transformer.transformation.pre, before the project has been transformed with this transformation.
      * - transformer.transformation.post, after the project has been transformed with this transformation
      *
-     * @param Transformation $transformation
-     * @param ProjectDescriptor $project
-     *
      * @uses Dispatcher to emit the events surrounding a transformation.
-     *
-     * @return void
      */
     private function applyTransformationToProject(Transformation $transformation, ProjectDescriptor $project)
     {

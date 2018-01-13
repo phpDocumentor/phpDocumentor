@@ -2,16 +2,12 @@
 
 namespace phpDocumentor\Plugin;
 
-use Cilex\Application;
+use phpDocumentor\Configuration as ApplicationConfiguration;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
-use phpDocumentor\Configuration as ApplicationConfiguration;
 
 class ServiceProvider implements ServiceProviderInterface
 {
-    /**
-     * @param Container $app
-     */
     public function register(Container $app)
     {
         /** @var ApplicationConfiguration $config */

@@ -26,8 +26,6 @@ class Heading extends BaseEntry
      * Sets the anchor slug for this entry.
      *
      * @param string $slug
-     *
-     * @return void
      */
     public function setSlug($slug)
     {

@@ -12,11 +12,11 @@
 namespace phpDocumentor\Partials;
 
 use Cilex\Application;
-use Pimple\Container;
-use Pimple\ServiceProviderInterface;
 use phpDocumentor\Configuration as ApplicationConfiguration;
 use phpDocumentor\Partials\Collection as PartialsCollection;
 use phpDocumentor\Translator\Translator;
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 
 /**
  * This provider is responsible for registering the partials component with the given Application.
@@ -29,12 +29,10 @@ class ServiceProvider implements ServiceProviderInterface
      * @param Application $app An Application instance
      *
      * @throws Exception\MissingNameForPartialException if a partial has no name provided.
-     *
-     * @return void
      */
     public function register(Container $app)
     {
-        /** @var Translator $translator  */
+        /** @var Translator $translator */
         $translator = $app['translator'];
         $translator->addTranslationFolder(__DIR__ . DIRECTORY_SEPARATOR . 'Messages');
 
@@ -69,6 +67,7 @@ class ServiceProvider implements ServiceProviderInterface
 
                     $content = file_get_contents($partial->getLink());
                 }
+
                 $partialsCollection->set($partial->getName(), $content);
             }
         }

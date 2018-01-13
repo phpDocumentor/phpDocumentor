@@ -31,10 +31,6 @@ class TraitConverter
 
     /**
      * Initializes this converter with the DocBlock converter.
-     *
-     * @param DocBlockConverter $docBlockConverter
-     * @param MethodConverter   $methodConverter
-     * @param PropertyConverter $propertyConverter
      */
     public function __construct(
         DocBlockConverter $docBlockConverter,
@@ -42,7 +38,7 @@ class TraitConverter
         PropertyConverter $propertyConverter
     ) {
         $this->docBlockConverter = $docBlockConverter;
-        $this->methodConverter   = $methodConverter;
+        $this->methodConverter = $methodConverter;
         $this->propertyConverter = $propertyConverter;
     }
 

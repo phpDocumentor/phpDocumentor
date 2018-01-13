@@ -26,26 +26,15 @@ class Doc extends \ezcDocumentRstTextRole implements \ezcDocumentRstXhtmlTextRol
      * Transform text role to docbook.
      *
      * Create a docbook XML structure at the text roles position in the document.
-     *
-     * @param \DOMDocument $document
-     * @param \DOMElement  $root
-     *
-     * @return void
      */
     public function toDocbook(\DOMDocument $document, \DOMElement $root)
     {
-
     }
 
     /**
      * Transform text role to HTML.
      *
      * Create a XHTML structure at the text roles position in the document.
-     *
-     * @param \DOMDocument $document
-     * @param \DOMElement  $root
-     *
-     * @return void
      */
     public function toXhtml(\DOMDocument $document, \DOMElement $root)
     {
@@ -59,7 +48,7 @@ class Doc extends \ezcDocumentRstTextRole implements \ezcDocumentRstXhtmlTextRol
             $content .= $node->token->content;
         }
 
-        $matches = array();
+        $matches = [];
         if (preg_match('/([^<]*)<?([^>]*)>?/', $content, $matches)) {
             // if the role uses the `caption<content>` notation; extract the two parts
             if (isset($matches[2]) && $matches[2]) {
@@ -77,7 +66,7 @@ class Doc extends \ezcDocumentRstTextRole implements \ezcDocumentRstXhtmlTextRol
         // if no caption is captured; create one.
         if (!$caption) {
             $caption = str_replace(
-                array('-', '_'),
+                ['-', '_'],
                 ' ',
                 ucfirst(ltrim(substr(htmlspecialchars($content), strrpos($content, '/')), '\\/'))
             );

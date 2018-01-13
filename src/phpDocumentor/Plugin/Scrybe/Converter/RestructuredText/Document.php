@@ -50,9 +50,6 @@ class Document extends \ezcDocumentRst
 
     /**
      * Sets the Scrybe-specific options, registers the roles and directives and loads the file.
-     *
-     * @param ConverterInterface $converter
-     * @param File $file
      */
     public function __construct(ConverterInterface $converter, File $file)
     {
@@ -82,7 +79,7 @@ class Document extends \ezcDocumentRst
             'phpDocumentor\Plugin\Scrybe\Converter\RestructuredText\Roles\Doc'
         );
 
-        $this->file      = $file;
+        $this->file = $file;
         $this->converter = $converter;
 
         $this->loadString($file->fread());
@@ -114,9 +111,6 @@ class Document extends \ezcDocumentRst
      * If a fatal error occurred then this can be passed as the $fatal argument and is shown as such.
      *
      * @param \Exception|null $fatal
-     * @param Logger $logger
-     *
-     * @return void
      */
     public function logStats($fatal, Logger $logger)
     {
@@ -128,6 +122,7 @@ class Document extends \ezcDocumentRst
         foreach ($this->getErrors() as $error) {
             $logger->warning('  ' . $error->getMessage());
         }
+
         if ($fatal) {
             $logger->error('  ' . $fatal->getMessage());
         }

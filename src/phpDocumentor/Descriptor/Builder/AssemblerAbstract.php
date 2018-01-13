@@ -36,10 +36,6 @@ abstract class AssemblerAbstract implements AssemblerInterface
      *
      * The Builder may be used to recursively assemble Descriptors using
      * the {@link ProjectDescriptorBuilder::buildDescriptor()} method.
-     *
-     * @param ProjectDescriptorBuilder $builder
-     *
-     * @return void
      */
     public function setBuilder(ProjectDescriptorBuilder $builder)
     {

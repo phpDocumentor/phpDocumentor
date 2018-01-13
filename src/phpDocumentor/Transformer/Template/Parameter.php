@@ -42,7 +42,7 @@ class Parameter
      */
     public function setKey($key)
     {
-        $this->key =  $key;
+        $this->key = $key;
 
         return $this;
     }
@@ -63,7 +63,7 @@ class Parameter
      */
     public function setValue($value)
     {
-        $this->value =  $value;
+        $this->value = $value;
 
         return $this;
     }

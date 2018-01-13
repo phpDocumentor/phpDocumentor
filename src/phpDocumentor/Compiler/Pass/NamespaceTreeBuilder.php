@@ -60,7 +60,6 @@ class NamespaceTreeBuilder implements CompilerPassInterface
         foreach ($project->getIndexes()->get('namespaces')->getAll() as $namespace) {
             if ($namespace->getNamespace() !== '') {
                 $this->addToParentNamespace($project, $namespace);
-
             }
         }
     }
@@ -71,19 +70,16 @@ class NamespaceTreeBuilder implements CompilerPassInterface
      * This method will assign the given elements to the namespace as registered in the namespace field of that
      * element. If a namespace does not exist yet it will automatically be created.
      *
-     * @param ProjectDescriptor $project
      * @param DescriptorAbstract[] $elements Series of elements to add to their respective namespace.
      * @param string $type Declares which field of the namespace will be populated with the given
      * series of elements. This name will be transformed to a getter which must exist. Out of performance
      * considerations will no effort be done to verify whether the provided type is valid.
-     *
-     * @return void
      */
     protected function addElementsOfTypeToNamespace(ProjectDescriptor $project, array $elements, $type)
     {
         /** @var DescriptorAbstract $element */
         foreach ($elements as $element) {
-            $namespaceName = (string)$element->getNamespace();
+            $namespaceName = (string) $element->getNamespace();
             //TODO: find out why this can happen. Some bug in the assembler?
             if ($namespaceName === '') {
                 $namespaceName = '\\';
@@ -96,11 +92,11 @@ class NamespaceTreeBuilder implements CompilerPassInterface
                 $fqsen = new Fqsen($namespaceName);
                 $namespace->setName($fqsen->getName());
                 $namespace->setFullyQualifiedStructuralElementName($fqsen);
-                $namespaceName = substr((string)$fqsen, 0, -strlen($fqsen->getName())-1);
+                $namespaceName = substr((string) $fqsen, 0, -strlen($fqsen->getName()) - 1);
                 $namespace->setNamespace($namespaceName);
                 $project->getIndexes()
                     ->get('namespaces')
-                    ->set((string)$namespace->getFullyQualifiedStructuralElementName(), $namespace);
+                    ->set((string) $namespace->getFullyQualifiedStructuralElementName(), $namespace);
                 $this->addToParentNamespace($project, $namespace);
             }
 
@@ -111,22 +107,17 @@ class NamespaceTreeBuilder implements CompilerPassInterface
             $getter = 'get' . ucfirst($type);
 
             /** @var Collection $collection */
-            $collection = $namespace->$getter();
+            $collection = $namespace->{$getter}();
             $collection->add($element);
-
         }
     }
 
-    /**
-     * @param ProjectDescriptor $project
-     * @param NamespaceDescriptor $namespace
-     */
     private function addToParentNamespace(ProjectDescriptor $project, NamespaceDescriptor $namespace)
     {
         /** @var NamespaceDescriptor $parent */
         $parent = $project->getIndexes()->get('namespaces')->get($namespace->getNamespace());
         $project->getIndexes()->get('elements')->set(
-            '~' . (string)$namespace->getFullyQualifiedStructuralElementName(),
+            '~' . (string) $namespace->getFullyQualifiedStructuralElementName(),
             $namespace
         );
 
@@ -136,11 +127,11 @@ class NamespaceTreeBuilder implements CompilerPassInterface
                 $fqsen = new Fqsen($namespace->getNamespace());
                 $parent->setFullyQualifiedStructuralElementName($fqsen);
                 $parent->setName($fqsen->getName());
-                $namespaceName = substr((string)$fqsen, 0, -strlen($parent->getName())-1);
+                $namespaceName = substr((string) $fqsen, 0, -strlen($parent->getName()) - 1);
                 $parent->setNamespace($namespaceName === '' ? '\\' : $namespaceName);
                 $project->getIndexes()
                     ->get('namespaces')
-                    ->set((string)$parent->getFullyQualifiedStructuralElementName(), $parent);
+                    ->set((string) $parent->getFullyQualifiedStructuralElementName(), $parent);
                 $this->addToParentNamespace($project, $parent);
             }
 

@@ -10,11 +10,11 @@
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
+
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use phpDocumentor\Reflection\DocBlock;
 
-use Mockery as m;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Php\Constant;
 
@@ -40,8 +40,6 @@ class ConstantAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * Creates a Descriptor from a provided class.
      *
      * @covers phpDocumentor\Descriptor\Builder\Reflector\ConstantAssembler::create
-     *
-     * @return void
      */
     public function testCreateConstantDescriptorFromReflector()
     {
@@ -63,8 +61,8 @@ DOCBLOCK
         $descriptor = $this->fixture->create($constantReflectorMock);
 
         $this->assertSame($name, $descriptor->getName());
-        $this->assertSame('\\' . $namespace . '::' . $name, (string)$descriptor->getFullyQualifiedStructuralElementName());
-        $this->assertSame('\\' .$namespace, $descriptor->getNamespace());
+        $this->assertSame('\\' . $namespace . '::' . $name, (string) $descriptor->getFullyQualifiedStructuralElementName());
+        $this->assertSame('\\' . $namespace, $descriptor->getNamespace());
         $this->assertSame($pi, $descriptor->getValue());
     }
 }

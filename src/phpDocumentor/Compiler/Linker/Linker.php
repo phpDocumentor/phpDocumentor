@@ -46,13 +46,13 @@ class Linker implements CompilerPassInterface
     const CONTEXT_MARKER = '@context';
 
     /** @var DescriptorAbstract[] */
-    protected $elementList = array();
+    protected $elementList = [];
 
     /** @var string[][] */
-    protected $substitutions = array();
+    protected $substitutions = [];
 
     /** @var string[] Prevent cycles by tracking which objects have been analyzed */
-    protected $processedObjects = array();
+    protected $processedObjects = [];
 
     /**
      * {@inheritDoc}
@@ -76,8 +76,6 @@ class Linker implements CompilerPassInterface
      * Executes the linker.
      *
      * @param ProjectDescriptor $project Representation of the Object Graph that can be manipulated.
-     *
-     * @return void
      */
     public function execute(ProjectDescriptor $project)
     {
@@ -99,8 +97,6 @@ class Linker implements CompilerPassInterface
      * Sets the list of object aliases to resolve the FQSENs with.
      *
      * @param DescriptorAbstract[] $elementList
-     *
-     * @return void
      */
     public function setObjectAliasesList(array $elementList)
     {
@@ -151,11 +147,12 @@ class Linker implements CompilerPassInterface
                     $item[$key] = $element;
                 }
             }
+
             if ($isModified) {
                 $result = $item;
             }
         } elseif (is_object($item) && $item instanceof UnknownTypeDescriptor) {
-            $alias  = $this->findAlias($item->getName());
+            $alias = $this->findAlias($item->getName());
             $result = $alias ?: $item;
         } elseif (is_object($item)) {
             $hash = spl_object_hash($item);
@@ -169,7 +166,7 @@ class Linker implements CompilerPassInterface
             $this->processedObjects[$hash] = true;
 
             $objectClassName = get_class($item);
-            $fieldNames = $this->substitutions[$objectClassName] ?? array();
+            $fieldNames = $this->substitutions[$objectClassName] ?? [];
 
             foreach ($fieldNames as $fieldName) {
                 $fieldValue = $this->findFieldValue($item, $fieldName);
@@ -177,8 +174,8 @@ class Linker implements CompilerPassInterface
 
                 // if the returned response is not an object it must be grafted on the calling object
                 if ($response !== null) {
-                    $setter = 'set'.ucfirst($fieldName);
-                    $item->$setter($response);
+                    $setter = 'set' . ucfirst($fieldName);
+                    $item->{$setter}($response);
                 }
             }
         }
@@ -225,14 +222,14 @@ class Linker implements CompilerPassInterface
 
             // otherwise exchange `@context::element` for `\My\element` and if it exists, return that
             $namespaceContext = $this->getTypeWithNamespaceAsContext($fqsen, $container);
-            $namespaceMember  = $this->fetchElementByFqsen($namespaceContext);
+            $namespaceMember = $this->fetchElementByFqsen($namespaceContext);
             if ($namespaceMember) {
                 return $namespaceMember;
             }
 
             // otherwise check if the element exists in the global namespace and if it exists, return that
             $globalNamespaceContext = $this->getTypeWithGlobalNamespaceAsContext($fqsen);
-            $globalNamespaceMember  = $this->fetchElementByFqsen($globalNamespaceContext);
+            $globalNamespaceMember = $this->fetchElementByFqsen($globalNamespaceContext);
             if ($globalNamespaceMember) {
                 return $globalNamespaceMember;
             }
@@ -255,9 +252,9 @@ class Linker implements CompilerPassInterface
      */
     public function findFieldValue($object, $fieldName)
     {
-        $getter = 'get'.ucfirst($fieldName);
+        $getter = 'get' . ucfirst($fieldName);
 
-        return $object->$getter();
+        return $object->{$getter}();
     }
 
     /**
@@ -287,7 +284,7 @@ class Linker implements CompilerPassInterface
      */
     protected function replacePseudoTypes($fqsen, $container)
     {
-        $pseudoTypes = array('self', '$this');
+        $pseudoTypes = ['self', '$this'];
         foreach ($pseudoTypes as $pseudoType) {
             if ((strpos($fqsen, $pseudoType . '::') === 0 || $fqsen === $pseudoType) && $container) {
                 $fqsen = $container->getFullyQualifiedStructuralElementName()
@@ -314,8 +311,6 @@ class Linker implements CompilerPassInterface
      * Normalizes the given FQSEN as if the context marker represents a class/interface/trait as parent.
      *
      * @param string $fqsen
-     * @param DescriptorAbstract $container
-     *
      * @return string
      */
     protected function getTypeWithClassAsContext($fqsen, DescriptorAbstract $container)
@@ -335,9 +330,7 @@ class Linker implements CompilerPassInterface
     /**
      * Normalizes the given FQSEN as if the context marker represents a class/interface/trait as parent.
      *
-     * @param string             $fqsen
-     * @param DescriptorAbstract $container
-     *
+     * @param string $fqsen
      * @return string
      */
     protected function getTypeWithNamespaceAsContext($fqsen, DescriptorAbstract $container)

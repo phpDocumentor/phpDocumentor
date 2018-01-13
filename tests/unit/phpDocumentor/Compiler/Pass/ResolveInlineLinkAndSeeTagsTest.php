@@ -14,9 +14,7 @@ namespace phpDocumentor\Compiler\Pass;
 
 use Mockery as m;
 use phpDocumentor\Descriptor\DescriptorAbstract;
-use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Transformer\Router\Queue;
-use phpDocumentor\Transformer\Router\Rule;
 use phpDocumentor\Transformer\Template\Collection;
 
 /**
@@ -162,7 +160,7 @@ class ResolveInlineLinkAndSeeTagsTest extends \Mockery\Adapter\Phpunit\MockeryTe
      */
     private function givenAnElementToLinkTo()
     {
-        $namespaceAliases = array('LinkDescriptor' => '\phpDocumentor\LinkDescriptor');
+        $namespaceAliases = ['LinkDescriptor' => '\phpDocumentor\LinkDescriptor'];
         $namespaceCollection = m::mock('phpDocumentor\Transformer\Template\Collection');
         $namespaceCollection->shouldReceive('getAll')->once()->andReturn($namespaceAliases);
 
@@ -183,7 +181,7 @@ class ResolveInlineLinkAndSeeTagsTest extends \Mockery\Adapter\Phpunit\MockeryTe
     {
         $collection = m::mock('phpDocumentor\Transformer\Template\Collection');
 
-        $items = array('\phpDocumentor\LinkDescriptor' => $descriptor);
+        $items = ['\phpDocumentor\LinkDescriptor' => $descriptor];
 
         $collection->shouldReceive('get')->once()->andReturn($items);
 
@@ -195,8 +193,6 @@ class ResolveInlineLinkAndSeeTagsTest extends \Mockery\Adapter\Phpunit\MockeryTe
      *
      * @param m\MockInterface $descriptor
      * @param string          $expected
-     *
-     * @return void
      */
     public function thenDescriptionOfDescriptorIsChangedInto($descriptor, $expected)
     {

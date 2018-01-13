@@ -17,12 +17,18 @@ namespace phpDocumentor\Plugin\Scrybe\Converter\Format;
 class Format
 {
     const MARKDOWN = 'markdown';
-    const JSON     = 'json';
-    const RST      = 'rst';
-    const HTML     = 'html';
-    const LATEX    = 'latex';
-    const PDF      = 'pdf';
-    const DOCBOOK  = 'docbook';
+
+    const JSON = 'json';
+
+    const RST = 'rst';
+
+    const HTML = 'html';
+
+    const LATEX = 'latex';
+
+    const PDF = 'pdf';
+
+    const DOCBOOK = 'docbook';
 
     /** @var string the name for this format, usually any of the constants in this class */
     protected $name;
@@ -57,8 +63,6 @@ class Format
      * The names of built-in formats are defined as class constants of this class.
      *
      * @param string $name
-     *
-     * @return void
      */
     public function setName($name)
     {
@@ -79,8 +83,6 @@ class Format
      * Sets the mime type commonly associated with files of this format.
      *
      * @param string $mime_type
-     *
-     * @return void
      */
     public function setMimeType($mime_type)
     {
@@ -101,8 +103,6 @@ class Format
      * Sets the file extensions commonly associated with files of this format.
      *
      * @param string[] $extensions
-     *
-     * @return void
      */
     public function setExtensions($extensions)
     {
@@ -128,6 +128,6 @@ class Format
      */
     public function convertFilename($filename)
     {
-        return substr($filename, 0, strrpos($filename, '.')).'.' . reset($this->extensions);
+        return substr($filename, 0, strrpos($filename, '.')) . '.' . reset($this->extensions);
     }
 }

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of phpDocumentor.
  *
@@ -38,92 +39,77 @@ final class Dsn
     /** @var string */
     private $path;
 
-    /** @var string[]  */
+    /** @var string[] */
     private $query = [];
 
-    /** @var string[]  */
+    /** @var string[] */
     private $parameters = [];
 
     //@codingStandardsIgnoreStart
     const WINDOWS_DSN = '~(^((?<scheme>file):\\/\\/)?(?<path>((?:[a-z]|[A-Z]):(?=\\\\(?![\\0-\\37<>:"/\\\\|?*])|\\/(?![\\0-\\37<>:"/\\\\|?*])|$)|^\\\\(?=[\\\\\\/][^\\0-\\37<>:"/\\\\|?*]+)|^(?=(\\\\|\\/)$)|^\\.(?=(\\\\|\\/)$)|^\\.\\.(?=(\\\\|\\/)$)|^(?=(\\\\|\\/)[^\\0-\\37<>:"/\\\\|?*]+)|^\\.(?=(\\\\|\\/)[^\\0-\\37<>:"/\\\\|?*]+)|^\\.\\.(?=(\\\\|\\/)[^\\0-\\37<>:"/\\\\|?*]+))((\\\\|\\/)[^\\0-\\37<>:"/\\\\|?*]+|(\\\\|\\/)$)*()))$~';
+
     //@codingStandardsIgnoreEnd
 
     /**
      * Initializes the Dsn
-     *
-     * @param string $dsn
      */
-    public function __construct($dsn)
+    public function __construct(string $dsn)
     {
         $this->parse($dsn);
     }
 
     /**
      * Returns a string representation of the DSN.
-     *
-     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->dsn;
     }
 
     /**
      * Returns the scheme part of the DSN
-     *
-     * @return string
      */
-    public function getScheme()
+    public function getScheme(): string
     {
         return $this->scheme;
     }
 
     /**
      * Returns the host part of the DSN
-     *
-     * @return string
      */
-    public function getHost()
+    public function getHost(): ?string
     {
         return $this->host;
     }
 
     /**
      * Returns the port part of the DSN
-     *
-     * @return int
      */
-    public function getPort()
+    public function getPort(): int
     {
         return $this->port;
     }
 
     /**
      * Returns the username part of the DSN
-     *
-     * @return string
      */
-    public function getUsername()
+    public function getUsername(): string
     {
         return $this->user;
     }
 
     /**
      * Returns the password part of the DSN
-     *
-     * @return string
      */
-    public function getPassword()
+    public function getPassword(): string
     {
         return $this->password;
     }
 
     /**
      * Returns the path part of the DSN
-     *
-     * @return string
      */
-    public function getPath()
+    public function getPath(): Path
     {
         return new Path($this->path);
     }
@@ -133,7 +119,7 @@ final class Dsn
      *
      * @return string[]
      */
-    public function getQuery()
+    public function getQuery(): array
     {
         return $this->query;
     }
@@ -143,39 +129,28 @@ final class Dsn
      *
      * @return string[]
      */
-    public function getParameters()
+    public function getParameters(): array
     {
         return $this->parameters;
     }
 
     /**
      * Parses the given DSN
-     *
-     * @param string $dsn
-     * @return void
      */
-    private function parse($dsn)
+    private function parse(string $dsn)
     {
-        if (! is_string($dsn)) {
-            throw new \InvalidArgumentException(
-                sprintf('"%s" is not a valid DSN.', var_export($dsn, true))
-            );
-        }
-
         $dsnParts = explode(';', $dsn);
         $location = $dsnParts[0];
         unset($dsnParts[0]);
         $locationParts = parse_url($location);
 
-        if (
-            $locationParts === false ||
+        if ($locationParts === false ||
             (array_key_exists('scheme', $locationParts) && \strlen($locationParts['scheme']) === 1)
         ) {
             preg_match(static::WINDOWS_DSN, $dsn, $locationParts);
         }
 
-        if (
-            ! array_key_exists('scheme', $locationParts) ||
+        if (! array_key_exists('scheme', $locationParts) ||
             ($locationParts['scheme'] === '' && array_key_exists('path', $locationParts))
         ) {
             $locationParts['scheme'] = 'file';
@@ -196,9 +171,9 @@ final class Dsn
 
         $this->parsePort($locationParts);
 
-        $this->user = $locationParts['user'] ?? "";
+        $this->user = $locationParts['user'] ?? '';
 
-        $this->password = $locationParts['pass'] ?? "";
+        $this->password = $locationParts['pass'] ?? '';
 
         $this->parseQuery($locationParts);
 
@@ -209,37 +184,32 @@ final class Dsn
      * Reconstructs the original DSN but
      * when scheme was omitted in the original DSN, it will now be file://
      *
-     * @param string $location
      * @param string[] $dsnParts
-     * @return void
      */
-    private function parseDsn($location, array $dsnParts)
+    private function parseDsn(string $location, array $dsnParts): void
     {
         array_splice($dsnParts, 0, 0, $location);
-        $this->dsn = implode(";", $dsnParts);
+        $this->dsn = implode(';', $dsnParts);
     }
 
     /**
      * validates and sets the scheme property
      *
      * @param string[] $locationParts
-     * @return void
      */
-    private function parseScheme(array $locationParts)
+    private function parseScheme(array $locationParts): void
     {
         if (! $this->isValidScheme($locationParts['scheme'])) {
             throw new \InvalidArgumentException(
                 sprintf('"%s" is not a valid scheme.', $locationParts['scheme'])
             );
         }
+
         $this->scheme = strtolower($locationParts['scheme']);
     }
 
     /**
      * Validated provided scheme.
-     *
-     * @param string $scheme
-     * @return bool
      */
     private function isValidScheme(string $scheme): bool
     {
@@ -251,12 +221,11 @@ final class Dsn
      * Validates and sets the host and path properties
      *
      * @param string[] $locationParts
-     * @return void
      */
-    private function parseHostAndPath(array $locationParts)
+    private function parseHostAndPath(array $locationParts): void
     {
-        $path = $locationParts['path'] ?? "";
-        $host = $locationParts['host'] ?? "";
+        $path = $locationParts['path'] ?? '';
+        $host = $locationParts['host'] ?? '';
 
         if ($this->getScheme() === 'file') {
             $this->path = $host . $path;
@@ -270,9 +239,8 @@ final class Dsn
      * Validates and sets the port property
      *
      * @param string[] $locationParts
-     * @return void
      */
-    private function parsePort(array $locationParts)
+    private function parsePort(array $locationParts): void
     {
         if (! isset($locationParts['port'])) {
             if ($this->getScheme() === 'git+http') {
@@ -283,7 +251,7 @@ final class Dsn
                 $this->port = 0;
             }
         } else {
-            $this->port = $locationParts['port'];
+            $this->port = (int) $locationParts['port'];
         }
     }
 
@@ -291,9 +259,8 @@ final class Dsn
      * validates and sets the query property
      *
      * @param string[] $locationParts
-     * @return void
      */
-    private function parseQuery(array $locationParts)
+    private function parseQuery(array $locationParts): void
     {
         if (isset($locationParts['query'])) {
             $queryParts = explode('&', $locationParts['query']);
@@ -309,9 +276,8 @@ final class Dsn
      * validates and sets the parameters property
      *
      * @param string[] $dsnParts
-     * @return void
      */
-    private function parseParameters(array $dsnParts)
+    private function parseParameters(array $dsnParts): void
     {
         foreach ($dsnParts as $part) {
             $option = $this->splitKeyValuePair($part);
@@ -326,7 +292,7 @@ final class Dsn
      * @param string $pair
      * @return string[] $option
      */
-    private function splitKeyValuePair($pair)
+    private function splitKeyValuePair($pair): array
     {
         $option = explode('=', $pair);
         if (count($option) !== 2) {

@@ -40,7 +40,6 @@ class RendererTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $this->renderer = new Renderer($this->originalQueue);
     }
 
-
     /**
      * @covers ::__construct
      * @covers ::getRouters
@@ -106,7 +105,7 @@ class RendererTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $queue = $this->givenAQueue($rule);
         $queue->shouldReceive('match')->andReturn($rule);
         $this->renderer->setRouters($queue);
-        $this->renderer->setDestination(str_replace('/', DIRECTORY_SEPARATOR,'/root/of/project'));
+        $this->renderer->setDestination(str_replace('/', DIRECTORY_SEPARATOR, '/root/of/project'));
         $collection = new Collection(['\My\Namespace\Class']);
         $result = $this->renderer->render($collection, 'url');
 
@@ -250,7 +249,7 @@ class RendererTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         return [
             ['http://phpdoc.org'],
             ['https://phpdoc.org'],
-            ['ftp://phpdoc.org']
+            ['ftp://phpdoc.org'],
         ];
     }
 }

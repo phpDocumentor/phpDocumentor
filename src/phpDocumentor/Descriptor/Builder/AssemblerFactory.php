@@ -16,9 +16,10 @@ namespace phpDocumentor\Descriptor\Builder;
  */
 class AssemblerFactory
 {
-    /** @var mixed[]  */
-    protected $assemblers = array();
-    protected $fallbackAssemblers = array();
+    /** @var mixed[] */
+    protected $assemblers = [];
+
+    protected $fallbackAssemblers = [];
 
     /**
      * Registers an assembler instance to this factory.
@@ -27,15 +28,13 @@ class AssemblerFactory
      *     return a boolean.
      * @param AssemblerInterface $assembler An instance of the Assembler that will be returned if the callback returns
      *     true with the provided criteria.
-     *
-     * @return void
      */
     public function register($matcher, AssemblerInterface $assembler)
     {
-        $this->assemblers[] = array(
-            'matcher'   => $matcher,
-            'assembler' => $assembler
-        );
+        $this->assemblers[] = [
+            'matcher' => $matcher,
+            'assembler' => $assembler,
+        ];
     }
 
     /**
@@ -46,15 +45,13 @@ class AssemblerFactory
      *     return a boolean.
      * @param AssemblerInterface $assembler An instance of the Assembler that will be returned if the callback returns
      *     true with the provided criteria.
-     *
-     * @return void
      */
     public function registerFallback($matcher, AssemblerInterface $assembler)
     {
-        $this->fallbackAssemblers[] = array(
-            'matcher'   => $matcher,
-            'assembler' => $assembler
-        );
+        $this->fallbackAssemblers[] = [
+            'matcher' => $matcher,
+            'assembler' => $assembler,
+        ];
     }
 
     /**
