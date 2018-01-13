@@ -19,7 +19,7 @@ use phpDocumentor\Descriptor\Filter\Filterable;
 abstract class DescriptorAbstract implements Filterable
 {
     /**
-     * @var string $fqsen Fully Qualified Structural Element Name; the FQCN including method, property of constant name
+     * @var string Fully Qualified Structural Element Name; the FQCN including method, property of constant name
      */
     protected $fqsen = '';
 

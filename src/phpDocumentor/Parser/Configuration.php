@@ -49,7 +49,7 @@ class Configuration
     protected $encoding = 'utf-8';
 
     /**
-     * @var string[] $markers a list of codes that can be used at the beginning of a comment to have it mentioned in
+     * @var string[] a list of codes that can be used at the beginning of a comment to have it mentioned in
      *     a special markers report.
      *
      * @Serializer\Type("array<string>")
@@ -59,7 +59,7 @@ class Configuration
     protected $markers = ['TODO', 'FIXME'];
 
     /**
-     * @var string[] $extensions A list of supported file extensions used to limit the number of files to be
+     * @var string[] A list of supported file extensions used to limit the number of files to be
      *     interpreted.
      *
      * @Serializer\Type("array<string>")

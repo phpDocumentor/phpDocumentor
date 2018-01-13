@@ -50,7 +50,7 @@ class Transformation
 
     /**
      * @Serializer\Exclude
-     * @var Transformer $transformer The object guiding the transformation process and having meta-data of it.
+     * @var Transformer The object guiding the transformation process and having meta-data of it.
      */
     protected $transformer;
 

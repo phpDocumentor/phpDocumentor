@@ -126,7 +126,7 @@ class MethodAssembler extends AssemblerAbstract
         }
 
         if ($lastParamTag->isVariadic()
-            && in_array($lastParamTag->getVariableName(), array_keys($methodDescriptor->getArguments()->getAll()))
+            && in_array($lastParamTag->getVariableName(), array_keys($methodDescriptor->getArguments()->getAll()), true)
         ) {
             $types = $lastParamTag->getType();
 

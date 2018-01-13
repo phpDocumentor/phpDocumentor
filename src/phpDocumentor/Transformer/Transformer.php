@@ -206,7 +206,7 @@ class Transformer implements CompilerPassInterface
         foreach ($transformations as $transformation) {
             $writerName = $transformation->getWriter();
 
-            if (in_array($writerName, $isInitialized)) {
+            if (in_array($writerName, $isInitialized, true)) {
                 continue;
             }
 

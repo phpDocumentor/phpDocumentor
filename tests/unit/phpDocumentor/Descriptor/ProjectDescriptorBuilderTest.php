@@ -25,7 +25,7 @@ class ProjectDescriptorBuilderTest extends \Mockery\Adapter\Phpunit\MockeryTestC
     /**
      * Mock of the required AssemblerFactory dependency of the $fixture.
      *
-     * @var \phpDocumentor\Descriptor\Builder\AssemblerFactory|m\MockInterface $assemblerFactory
+     * @var \phpDocumentor\Descriptor\Builder\AssemblerFactory|m\MockInterface
      */
     protected $assemblerFactory;
 

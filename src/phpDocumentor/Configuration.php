@@ -54,7 +54,7 @@ class Configuration
     protected $files;
 
     /**
-     * @var Plugin[] $plugins contains a listing of all plugins that should be loaded during startup.
+     * @var Plugin[] contains a listing of all plugins that should be loaded during startup.
      * @Serializer\Type("array<phpDocumentor\Plugin\Plugin>")
      * @Serializer\XmlList(entry = "plugin")
      * @Merger\Replace

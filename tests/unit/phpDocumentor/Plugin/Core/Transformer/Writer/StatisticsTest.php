@@ -23,7 +23,7 @@ use org\bovigo\vfs\vfsStreamDirectory;
 class StatisticsTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
-     * @var Statistics $statistics
+     * @var Statistics
      */
     protected $statistics;
 

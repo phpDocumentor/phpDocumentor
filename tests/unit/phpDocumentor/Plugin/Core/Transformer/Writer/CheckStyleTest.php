@@ -26,7 +26,7 @@ use phpDocumentor\Translator\Translator;
 class CheckStyleTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
-     * @var CheckStyle $checkstyle
+     * @var CheckStyle
      */
     protected $checkStyle;
 

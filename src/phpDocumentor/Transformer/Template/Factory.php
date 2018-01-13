@@ -67,7 +67,7 @@ class Factory
             $name = $files->getBasename();
 
             // skip abstract files
-            if (!$files->isDir() || in_array($name, ['.', '..'])) {
+            if (!$files->isDir() || in_array($name, ['.', '..'], true)) {
                 $files->next();
                 continue;
             }

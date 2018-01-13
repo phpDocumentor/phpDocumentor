@@ -51,7 +51,7 @@ namespace My\Space {
     class SubClass extends SuperClass
     {
         /**
-         * @var integer   $propertyListItem1 The first property in a list
+         * @var integer   The first property in a list
          * @var \stdClass $propertyListItem2 The second property in a list
          */
         public $propertyListItem1;

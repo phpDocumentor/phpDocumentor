@@ -22,7 +22,7 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Dummy locale.
      *
-     * @var string $locale
+     * @var string
      */
     protected $locale = 'foobar';
 

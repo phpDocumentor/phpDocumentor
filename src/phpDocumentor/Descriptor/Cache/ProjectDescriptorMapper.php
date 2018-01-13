@@ -111,7 +111,7 @@ final class ProjectDescriptorMapper
         }
 
         foreach ($this->getCache() as $item) {
-            if (substr($item, 0, strlen(self::FILE_PREFIX)) === self::FILE_PREFIX && !in_array($item, $filenames)) {
+            if (substr($item, 0, strlen(self::FILE_PREFIX)) === self::FILE_PREFIX && !in_array($item, $filenames, true)) {
                 $this->getCache()->removeItem($item);
             }
         }
