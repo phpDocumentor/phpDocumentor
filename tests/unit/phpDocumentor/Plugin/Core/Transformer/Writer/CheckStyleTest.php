@@ -19,14 +19,14 @@ use org\bovigo\vfs\vfsStreamDirectory;
 use phpDocumentor\Translator\Translator;
 
 /**
- * Test class for \phpDocumentor\Plugin\Core\Transformer\Writer\CheckStyle.
+ * Test class for \phpDocumentor\Plugin\Core\Transformer\Writer\Checkstyle.
  *
- * @covers phpDocumentor\Plugin\Core\Transformer\Writer\CheckStyle
+ * @covers \phpDocumentor\Plugin\Core\Transformer\Writer\Checkstyle
  */
 class CheckStyleTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
-     * @var CheckStyle
+     * @var Checkstyle
      */
     protected $checkStyle;
 
@@ -42,13 +42,13 @@ class CheckStyleTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function setUp()
     {
         $this->translator = m::mock('phpDocumentor\Translator\Translator');
-        $this->checkStyle = new CheckStyle();
+        $this->checkStyle = new Checkstyle();
         $this->checkStyle->setTranslator($this->translator);
         $this->fs = vfsStream::setup('CheckStyleTest');
     }
 
     /**
-     * @covers \phpDocumentor\Plugin\Core\Transformer\Writer\CheckStyle::transform
+     * @covers \phpDocumentor\Plugin\Core\Transformer\Writer\Checkstyle::transform
      */
     public function testTransform()
     {
