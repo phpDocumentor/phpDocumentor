@@ -173,19 +173,13 @@ class StatisticsTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $this->assertSame($expectedXml->saveXML(), $actualXml->saveXML());
     }
 
-    /**
-     * @return DateTime
-     */
-    private function getGeneratedDateTime(\DOMDocument $actualXml)
+    private function getGeneratedDateTime(\DOMDocument $actualXml): \DateTime
     {
         return new \DateTime(
             $actualXml->getElementsByTagName('stat')->item(0)->attributes->getNamedItem('date')->nodeValue
         );
     }
 
-    /**
-     * @return DateTime
-     */
     private function setGeneratedDateTime(\DOMDocument $actualXml, \DateTime $dateTime)
     {
         $actualXml->getElementsByTagName('stat')->item(0)->attributes->getNamedItem('date')->nodeValue

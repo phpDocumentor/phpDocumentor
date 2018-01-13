@@ -71,7 +71,7 @@ class TransformCommand extends Command
      * Initializes this command and sets the name, description, options and
      * arguments.
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setAliases(['transform'])
             ->setDescription(
@@ -120,20 +120,16 @@ TEXT
 
     /**
      * Returns the builder object containing the AST and other meta-data.
-     *
-     * @return ProjectDescriptorBuilder
      */
-    public function getBuilder()
+    public function getBuilder(): ProjectDescriptorBuilder
     {
         return $this->builder;
     }
 
     /**
      * Returns the transformer used to guide the transformation process from AST to output.
-     *
-     * @return Transformer
      */
-    public function getTransformer()
+    public function getTransformer(): Transformer
     {
         return $this->transformer;
     }
@@ -141,10 +137,9 @@ TEXT
     /**
      * Executes the business logic involved with this command.
      *
-     * @throws Exception if the provided source is not an existing file or a folder.
-     * @return int
+     * @throws \Exception if the provided source is not an existing file or a folder.
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         /** @var ConfigurationHelper $configurationHelper */
         $configurationHelper = $this->getHelper('phpdocumentor_configuration');
@@ -209,10 +204,9 @@ TEXT
 
     /**
      * Returns the Cache.
-     *
-     * @return StorageInterface
+     * @throws \Pimple\Exception\UnknownIdentifierException
      */
-    protected function getCache()
+    protected function getCache(): StorageInterface
     {
         return $this->getContainer()->offsetGet('descriptor.cache');
     }
@@ -222,7 +216,7 @@ TEXT
      *
      * @return string[]
      */
-    protected function getTemplates(InputInterface $input)
+    protected function getTemplates(InputInterface $input): array
     {
         /** @var ConfigurationHelper $configurationHelper */
         $configurationHelper = $this->getHelper('phpdocumentor_configuration');
@@ -286,10 +280,8 @@ TEXT
 
     /**
      * Create Transformation instance.
-     *
-     * @return phpDocumentor\Transformer\Transformation
      */
-    protected function createTransformation(array $transformations)
+    protected function createTransformation(array $transformations): Transformation
     {
         return new Transformation(
             $transformations['query'] ?? '',
@@ -301,10 +293,8 @@ TEXT
 
     /**
      * Append received transformations.
-     *
-     * @param array $received
      */
-    protected function appendReceivedTransformations(Transformer $transformer, $received)
+    protected function appendReceivedTransformations(Transformer $transformer, array $received)
     {
         if (!empty($received)) {
             $template = new Template('__');

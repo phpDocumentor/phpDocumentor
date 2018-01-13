@@ -22,17 +22,6 @@ class DsnTest extends TestCase
 {
     /**
      * @covers ::__construct
-     * @covers ::parse
-     * @expectedException \InvalidArgumentException
-     */
-    public function testDsnIsNotAString()
-    {
-        $dsn = 1;
-        new Dsn($dsn);
-    }
-
-    /**
-     * @covers ::__construct
      * @covers ::<private>
      * @expectedException \InvalidArgumentException
      */

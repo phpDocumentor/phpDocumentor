@@ -110,7 +110,7 @@ class Document extends \ezcDocumentRst
      *
      * If a fatal error occurred then this can be passed as the $fatal argument and is shown as such.
      *
-     * @param Exception|null $fatal
+     * @param \Exception|null $fatal
      */
     public function logStats($fatal, Logger $logger)
     {

@@ -24,6 +24,7 @@ use phpDocumentor\Transformer\Transformation as TransformationObject;
 use phpDocumentor\Transformer\Writer\Exception\RequirementMissing;
 use phpDocumentor\Transformer\Writer\Routable;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
+use XSLTProcessor;
 
 /**
  * XSL transformation writer; generates static HTML out of the structure and XSL templates.
@@ -201,6 +202,10 @@ class Xsl extends WriterAbstract implements Routable
         }
     }
 
+    /**
+     * @throws Exception
+     * @throws \phpDocumentor\Transformer\Exception
+     */
     protected function getXslProcessor(Transformation $transformation): \XSLTProcessor
     {
         $xslTemplatePath = $transformation->getSourceAsPath();
@@ -220,9 +225,8 @@ class Xsl extends WriterAbstract implements Routable
 
     /**
      * @param string $structureFilename
-     * @return \DOMDocument
      */
-    private function loadAst($structureFilename)
+    private function loadAst($structureFilename): \DOMDocument
     {
         if (!is_readable($structureFilename)) {
             throw new \RuntimeException(

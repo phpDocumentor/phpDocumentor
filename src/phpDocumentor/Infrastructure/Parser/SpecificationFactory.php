@@ -58,7 +58,7 @@ final class SpecificationFactory implements FactoryInterface
      * Will return an OrSpecification when $or and $spec are both not null.
      *
      * @param SpecificationInterface|null $spec
-     * @return OrSpecification|\SpecificationInterface
+     * @return OrSpecification|SpecificationInterface
      */
     private function orSpec(SpecificationInterface $or, SpecificationInterface $spec = null): SpecificationInterface
     {

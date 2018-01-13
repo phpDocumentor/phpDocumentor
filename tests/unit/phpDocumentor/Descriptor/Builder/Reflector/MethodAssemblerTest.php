@@ -167,13 +167,8 @@ class MethodAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
     /**
      * Creates a sample method reflector for the tests with the given data.
-     *
-     * @param string $namespace
-     * @param string $methodName
-     * @param DocBlock|\m\MockInterface $docBlockMock
-     * @return Method
      */
-    protected function givenAMethodReflector($namespace, $methodName, Argument $argumentMock, $docBlockMock = null)
+    protected function givenAMethodReflector(string $namespace, string $methodName, Argument $argumentMock, DocBlock $docBlockMock = null)
     {
         $method = new Method(
             new Fqsen('\\' . $namespace . '::' . $methodName . '()'),
@@ -188,10 +183,8 @@ class MethodAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
     /**
      * Generates a DocBlock object with applicable defaults for these tests.
-     *
-     * @return DocBlock|m\MockInterface
      */
-    protected function givenADocBlockObject($withTags)
+    protected function givenADocBlockObject($withTags): DocBlock
     {
         $docBlockDescription = new DocBlock\Description('This is an example description');
 
@@ -211,12 +204,8 @@ class MethodAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
     /**
      * Prepares a mock Argument with the given name.
-     *
-     * @param string $argumentName
-     *
-     * @return Argument
      */
-    protected function givenAnArgumentWithName($argumentName)
+    protected function givenAnArgumentWithName(string $argumentName): Argument
     {
         return new Argument($argumentName);
     }
