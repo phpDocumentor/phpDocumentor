@@ -4,7 +4,7 @@ declare (strict_types=1);
 
 namespace Pimple;
 
-use phpDocumentor\Command\Command;
+use phpDocumentor\Application\Console\Command\Command;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 

@@ -36,7 +36,7 @@ class ServiceProvider implements ServiceProviderInterface
         /** @var ApplicationConfiguration $config */
         $config = $app['config'];
 
-        $app['translator.locale'] = $config->getTranslator()->getLocale();
+        $app['translator.locale'] = 'en'; //$config->getTranslator()->getLocale();
 
         $app['translator'] = function ($app) {
             $translator = new Translator();

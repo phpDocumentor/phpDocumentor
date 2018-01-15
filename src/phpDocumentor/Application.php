@@ -35,7 +35,7 @@ use phpDocumentor\Application\Console\Command\Project\ParseCommand;
 use phpDocumentor\Application\Console\Command\Project\TransformCommand;
 use phpDocumentor\Application\Console\Command\Template\ListCommand;
 use phpDocumentor\Application\Stage\Configure;
-use phpDocumentor\Application\Stage\Parser;
+use phpDocumentor\Application\Stage\Parser as ParserStage;
 use phpDocumentor\DomainModel\Uri;
 use phpDocumentor\Event\LogEvent;
 use Psr\Log\LoggerInterface;
@@ -109,7 +109,7 @@ class Application extends Cilex
             return new Pipeline(
                 [
                     new Configure\ParserCache($container['parser.middleware.cache']),
-                    new Parser(
+                    new ParserStage(
                         $container['descriptor.builder'],
                         $container['parser'],
                         $container['parser.fileCollector'],
@@ -132,7 +132,7 @@ class Application extends Cilex
             );
         };
 
-        $this->container['command.run.pipeline'] = function ($container) {
+        $this['command.run.pipeline'] = function ($container) {
             return new Pipeline(
                 [
                     $container['application.pipeline'],
@@ -201,13 +201,13 @@ class Application extends Cilex
      */
     protected function addCommandsForProjectNamespace()
     {
-        $this->console->add(
+        $this->command(
             new RunCommand(
-                $this->container['descriptor.builder'],
-                $this->container['command.run.pipeline']
+                $this['descriptor.builder'],
+                $this['command.run.pipeline']
             )
         );
-        $this->console->add(
+        $this->command(
             new ParseCommand(
                 $this['descriptor.builder'],
                 $this['parser'],
@@ -219,7 +219,7 @@ class Application extends Cilex
                 $this['parser.middleware.cache']
         ));
 
-        $this->console->add(
+        $this->command(
             new TransformCommand(
                 $this['descriptor.builder'],
                 $this['transformer'],
@@ -229,7 +229,7 @@ class Application extends Cilex
             )
         );
 
-        $this->console->add(
+        $this->command(
             new ListCommand($this['transformer.template.factory'])
         );
     }
