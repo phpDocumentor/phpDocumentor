@@ -17,6 +17,9 @@ use Mockery as m;
 use phpDocumentor\Compiler\Pass\ClassTreeBuilder;
 use phpDocumentor\Compiler\Pass\InterfaceTreeBuilder;
 use phpDocumentor\Reflection\DocBlock\ExampleFinder;
+use phpDocumentor\Transformer\Command\Project\TransformCommand;
+use phpDocumentor\Transformer\Command\Template\ListCommand;
+use Symfony\Component\DependencyInjection\Container;
 
 /**
  * Tests for phpDocumentor\Translator\ServiceProvider
@@ -36,7 +39,7 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     protected function setUp()
     {
-        $this->application = new Application('test');
+        $this->application = new Application(new Container());
 
         $projectDescriptorBuilder = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
         $serializer = m::mock('JMS\Serializer\Serializer');
@@ -51,18 +54,12 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $logger = m::mock('\monolog\Logger');
         $analyzer = m::mock('\phpDocumentor\Descriptor\ProjectAnalyzer');
 
-        $loggerHelper = m::mock('\phpDocumentor\Command\Helper\LoggerHelper');
-        $loggerHelper->shouldReceive('getName')->andReturn('phpdocumentor_logger');
-        $loggerHelper->shouldReceive('setHelperSet');
-        $loggerHelper->shouldReceive('addOptions');
-
         $this->application['descriptor.builder'] = $projectDescriptorBuilder;
         $this->application['serializer'] = $serializer;
         $this->application['config'] = $configuration;
         $this->application['parser.example.finder'] = $finder;
         $this->application['monolog'] = $logger;
         $this->application['descriptor.analyzer'] = $analyzer;
-        $this->application['console']->getHelperSet()->set($loggerHelper);
 
         $this->fixture = new ServiceProvider();
     }
@@ -256,9 +253,16 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         $this->fixture->register($this->application);
 
-        $transformCommand = $this->application->offsetGet('console')->get('transform');
+        $commandListing = $this->application['phpdocumentor.compatibility.extra_commands'];
 
-        $this->assertInstanceOf('phpDocumentor\Transformer\Command\Project\TransformCommand', $transformCommand);
+        foreach ($commandListing as $command) {
+            if ($command instanceof TransformCommand) {
+                $this->assertTrue(true);
+                return;
+            }
+        }
+
+        $this->fail();
     }
 
     /**
@@ -268,9 +272,16 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         $this->fixture->register($this->application);
 
-        $listCommand = $this->application->offsetGet('console')->get('template:list');
+        $commandListing = $this->application['phpdocumentor.compatibility.extra_commands'];
 
-        $this->assertInstanceOf('phpDocumentor\Transformer\Command\Template\ListCommand', $listCommand);
+        foreach ($commandListing as $command) {
+            if ($command instanceof ListCommand) {
+                $this->assertTrue(true);
+                return;
+            }
+        }
+
+        $this->fail();
     }
 
     /**
@@ -280,7 +291,7 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testRegisterThrowsExceptionIfBuilderIsMissing()
     {
-        $this->fixture->register(new Application('test'));
+        $this->fixture->register(new Application(new Container()));
     }
 
     /**
@@ -290,7 +301,7 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testRegisterThrowsExceptionIfSerializerIsMissing()
     {
-        $application = new Application('test');
+        $application = new Application(new Container());
         $projectDescriptorBuilder = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
         $application['descriptor.builder'] = $projectDescriptorBuilder;
 

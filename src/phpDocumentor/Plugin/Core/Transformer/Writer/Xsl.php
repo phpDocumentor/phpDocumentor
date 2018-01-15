@@ -266,7 +266,7 @@ class Xsl extends WriterAbstract implements Routable
             $proc->setParameter('', 'search_template', 'none');
         }
 
-        $proc->setParameter('', 'version', Application::$VERSION);
+        $proc->setParameter('', 'version', Application::VERSION());
         $proc->setParameter('', 'generated_datetime', date('r'));
     }
 

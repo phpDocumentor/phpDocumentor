@@ -119,7 +119,7 @@ HELP
             )
             ->addOption(
                 'extensions',
-                'e',
+                null,
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
                 'Comma-separated list of extensions to parse, defaults to php, php3 and phtml'
             )

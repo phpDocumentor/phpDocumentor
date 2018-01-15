@@ -11,12 +11,10 @@
 
 namespace phpDocumentor\Configuration;
 
-use Cilex\Application;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
-use Symfony\Component\Console\Application as ConsoleApplication;
-use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Input\ArgvInput;
 
 /**
  * Provides a series of services in order to handle the configuration for phpDocumentor.
@@ -52,68 +50,17 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function register(Container $app)
     {
-        $this->addMerger($app);
-
-        $app->extend(
-            'console',
-            function (ConsoleApplication $console) {
-                $console->getDefinition()->addOption(
-                    new InputOption(
-                        'config',
-                        'c',
-                        InputOption::VALUE_OPTIONAL,
-                        'Location of a custom configuration file'
-                    )
-                );
-
-                return $console;
-            }
-        );
-
         $app['config.path.template'] = __DIR__ . '/Resources/phpdoc.tpl.xml';
         $app['config.path.user'] = getcwd()
             . ((file_exists(getcwd() . '/phpdoc.xml')) ? '/phpdoc.xml' : '/phpdoc.dist.xml');
         $app['config.class'] = 'phpDocumentor\Configuration';
 
         $app['config'] = function ($app) {
-            $loader = new Loader($app['serializer'], $app['config.merger']);
+            $configFile = (new ArgvInput())->getParameterOption(['--configuration', '-c'], $app['config.path.user']);
 
-            return $loader->load($app['config.path.template'], $app['config.path.user'], $app['config.class']);
+            $loader = new Loader($app['serializer'], new Merger(new AnnotationReader()));
+
+            return $loader->load($app['config.path.template'], $configFile, $app['config.class']);
         };
-    }
-
-    /**
-     * Initializes and adds the configuration merger object as the 'config.merger' service to the container.
-     */
-    private function addMerger(Application $container)
-    {
-        $this->addMergerAnnotations($container);
-
-        $container['config.merger'] = function () {
-            return new Merger(new AnnotationReader());
-        };
-    }
-
-    /**
-     * Adds the annotations for the Merger component to the Serializer.
-     *
-     * @throws RuntimeException if the annotation handler for Jms Serializer is not added to the container as
-     * 'serializer.annotations' service.
-     */
-    private function addMergerAnnotations(Application $container)
-    {
-        if (!isset($container['serializer.annotations'])) {
-            throw new \RuntimeException(
-                'The configuration service provider depends on the JmsSerializer Service Provider but the '
-                . '"serializer.annotations" key could not be found in the container.'
-            );
-        }
-
-        $annotations = $container['serializer.annotations'];
-        $annotations[] = [
-            'namespace' => 'phpDocumentor\Configuration\Merger\Annotation',
-            'path' => __DIR__ . '/../../',
-        ];
-        $container['serializer.annotations'] = $annotations;
     }
 }
