@@ -14,14 +14,8 @@ namespace phpDocumentor\Application\Console\Command\Project;
 
 use \Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
-<<<<<<< HEAD:tests/unit/phpDocumentor/Parser/Command/Project/ParseCommandTest.php
-use phpDocumentor\Command\Helper\ConfigurationHelper;
-use phpDocumentor\Command\Helper\LoggerHelper;
-=======
 use phpDocumentor\Application\Console\Command\Helper\ConfigurationHelper;
 use phpDocumentor\Application\Console\Command\Helper\LoggerHelper;
-use phpDocumentor\Application\Console\Output\Output;
->>>>>>> 2626d233... Moving all cli command to own namespace:tests/unit/phpDocumentor/Application/Console/Command/Project/ParseCommandTest.php
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\DomainModel\Parser\FileCollector;

@@ -69,8 +69,6 @@ class Application extends Cilex
             return new Stopwatch();
         };
 
-        $this->register(new Configuration\ServiceProvider());
-
         $this->register(new Translator\ServiceProvider());
         $this->register(new Descriptor\ServiceProvider());
         $this->register(new Partials\ServiceProvider());
