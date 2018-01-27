@@ -1,4 +1,5 @@
 parameters:
+    locale: 'en'
 
 services:
     _defaults:
@@ -6,9 +7,16 @@ services:
         autoconfigure: true
         public: false
 
+
 #    phpDocumentor\:
 #        resource: '../src/phpDocumentor/*'
 #        exclude: '../src/phpDocumentor/**/Messages'
 
     phpDocumentor\Application:
         public: true
+
+    phpDocumentor\Application\Console\Command\Project\RunCommand:
+        public: true
+
+    phpDocumentor\Descriptor\:
+        resource: '../src/phpDocumentor/Descriptor'

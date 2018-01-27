@@ -27,6 +27,7 @@
         "ext-iconv": "*",
         "erusev/parsedown": "~1.0",
         "jms/serializer-bundle": "^2.3",
+        "league/pipeline": "^0.3.0",
         "monolog/monolog": "~1.6",
         "padraic/phar-updater": "^1.0",
         "phpdocumentor/flyfinder": "@beta",
