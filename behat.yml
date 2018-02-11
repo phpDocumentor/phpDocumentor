@@ -14,6 +14,7 @@ default:
             contexts:
               - phpDocumentor\Behat\Contexts\EnvironmentContext:
                   workingDir: /tmp/phpdoc-behat/cli
+              - phpDocumentor\Behat\Contexts\Ast\ApiContext
             paths:    [ "%paths.base%/tests/features/cli" ]
             filters:
                 tags: "~@php5.6+"
