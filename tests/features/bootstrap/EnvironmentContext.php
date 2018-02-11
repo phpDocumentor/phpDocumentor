@@ -89,9 +89,9 @@ final class EnvironmentContext implements Context\Context
         }
 
         foreach ($iterator = new RecursiveIteratorIterator(
-                new RecursiveDirectoryIterator($sourceDir, RecursiveDirectoryIterator::SKIP_DOTS),
+            new RecursiveDirectoryIterator($sourceDir, RecursiveDirectoryIterator::SKIP_DOTS),
             RecursiveIteratorIterator::SELF_FIRST
-                ) as $item) {
+        ) as $item) {
             if ($item->isDir()) {
                 if (!mkdir($destDir . DIRECTORY_SEPARATOR . $iterator->getSubPathName()) &&
                     !is_dir($destDir . DIRECTORY_SEPARATOR . $iterator->getSubPathName())
