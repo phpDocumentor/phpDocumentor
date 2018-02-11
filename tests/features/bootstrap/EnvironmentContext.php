@@ -16,6 +16,7 @@ use Behat\Behat\Context;
 use FilesystemIterator;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
+use RuntimeException;
 use Symfony\Component\Process\Process;
 use Webmozart\Assert\Assert;
 
@@ -72,6 +73,35 @@ final class EnvironmentContext implements Context\Context
     {
         Assert::fileExists(__DIR__ . '/../assets/singlefile/' . $source);
         copy(__DIR__ . '/../assets/singlefile/' . $source, $this->getWorkingDir() . DIRECTORY_SEPARATOR . $dest);
+    }
+
+    /**
+     * @Given /^A project named "([^"]*)" based on "([^"]*)"$/
+     */
+    public function loadAProject($dest, $source)
+    {
+        $sourceDir = __DIR__ . '/../assets/projects/' . $source;
+        Assert::directory($sourceDir);
+        $destDir = $this->getWorkingDir() . DIRECTORY_SEPARATOR . $dest;
+
+        if (!mkdir($destDir, 0755) && !is_dir($destDir)) {
+            throw new RuntimeException(sprintf('Directory "%s" was not created', $destDir));
+        }
+
+        foreach ($iterator = new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator($sourceDir, RecursiveDirectoryIterator::SKIP_DOTS),
+            RecursiveIteratorIterator::SELF_FIRST
+                ) as $item) {
+            if ($item->isDir()) {
+                if (!mkdir($destDir . DIRECTORY_SEPARATOR . $iterator->getSubPathName()) &&
+                    !is_dir($destDir . DIRECTORY_SEPARATOR . $iterator->getSubPathName())
+                ) {
+                    throw new RuntimeException(sprintf('Directory "%s" was not created', $destDir . DIRECTORY_SEPARATOR . $iterator->getSubPathName()));
+                }
+            } else {
+                copy($item, $destDir . DIRECTORY_SEPARATOR . $iterator->getSubPathName());
+            }
+        }
     }
 
     /**

@@ -79,5 +79,10 @@
             "dev-develop": "3.0-dev",
             "dev-master": "2.9.x-dev"
         }
+    },
+    "scripts": {
+        "auto-scripts": {
+
+        }
     }
 }

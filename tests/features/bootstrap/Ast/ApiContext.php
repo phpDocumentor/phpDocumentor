@@ -52,6 +52,22 @@ class ApiContext extends BaseContext implements Context
     }
 
     /**
+     * @Then /^the AST doesn't have a class "([^"]*)"$/
+     * @throws \Exception
+     */
+    public function theASTDoesnTHaveAClass($className)
+    {
+        $ast = $this->getAst();
+        foreach ($ast->getFiles() as $file) {
+            foreach ($file->getClasses() as $classDescriptor) {
+                if ($classDescriptor->getName() === $className) {
+                    throw new \Exception('Found un expected class');
+                }
+            }
+        }
+    }
+
+    /**
      * @Then /^the class named "([^"]*)" is in the default package$/
      * @throws \Exception
      */
