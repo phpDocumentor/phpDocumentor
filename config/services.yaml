@@ -15,8 +15,19 @@ services:
     phpDocumentor\Application:
         public: true
 
-    phpDocumentor\Application\Console\Command\Project\RunCommand:
-        public: true
+#    phpDocumentor\Application\Console\Command\Project\RunCommand:
+#        factory: ['phpDocumentor\Application\Console\Command\Project\RunCommand', createInstance]
+#        public: true
+#        tags: [console.command]
 
     phpDocumentor\Descriptor\:
         resource: '../src/phpDocumentor/Descriptor'
+
+#    phpDocumentor\Application\Stage\:
+#        resource: '../src/phpDocumentor/Application/Stage'
+#        exclude: '../src/phpDocumentor/Application/Stage/Configure'
+#        public: true
+#
+#    phpDocumentor\Application\Configuration\:
+#        resource: '../src/phpDocumentor/Application/Configuration'
+#        public: true

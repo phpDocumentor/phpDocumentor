@@ -14,11 +14,13 @@ namespace phpDocumentor\Application\Console\Command\Project;
 use League\Pipeline\Pipeline;
 use phpDocumentor\Application\Console\Command\Command;
 use phpDocumentor\Application\Stage\Configure;
+use phpDocumentor\Application\Stage\Parser;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Parse and transform the given directory (-d|-f) to the given location (-t).
@@ -58,6 +60,16 @@ class RunCommand extends Command
         $this->pipeline = $pipeline;
     }
 
+    public static function createInstance(ContainerInterface $container)
+    {
+        $pipeline = new Pipeline();
+        $pipeline->pipe($container->get(Parser::class));
+
+        return new self(
+            $container->get(ProjectDescriptorBuilder::class),
+            $pipeline
+        );
+    }
 
     /**
      * Initializes this command and sets the name, description, options and
