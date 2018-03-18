@@ -13,6 +13,7 @@
 namespace phpDocumentor\Behat\Contexts\Ast;
 
 use Behat\Behat\Context\Context;
+use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Gherkin\Node\PyStringNode;
 use phpDocumentor\Descriptor\ArgumentDescriptor;
 use phpDocumentor\Descriptor\ClassDescriptor;
@@ -538,5 +539,18 @@ class ApiContext extends BaseContext implements Context
         }
 
         return null;
+    }
+
+    /**
+     * @Then /^file "([^"]*)" must contain a marker$/
+     */
+    public function fileMustContainAMarker($filename)
+    {
+        $ast = $this->getAst();
+
+        /** @var FileDescriptor $file */
+        $file = $ast->getFiles()->get($filename);
+
+        Assert::assertCount(1, $file->getMarkers());
     }
 }
