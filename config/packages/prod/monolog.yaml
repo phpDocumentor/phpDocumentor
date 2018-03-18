@@ -14,4 +14,4 @@ monolog:
         console:
             type:   console
             process_psr_3_messages: false
-            channels: ["!event", "!doctrine"]
+            channels: ["!event"]
