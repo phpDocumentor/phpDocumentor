@@ -104,7 +104,7 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
         // Assert
         $this->assertCount(1, $this->fixture);
-        $this->assertSame(1, count($this->fixture));
+        $this->assertCount(1, $this->fixture);
         $this->assertSame(1, $this->fixture->count());
     }
 }
