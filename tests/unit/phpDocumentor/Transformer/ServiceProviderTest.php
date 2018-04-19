@@ -39,6 +39,7 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     protected function setUp()
     {
+        \PHPUnit\Framework\Error\Deprecated::$enabled = false;
         $this->application = new Application(new Container());
 
         $projectDescriptorBuilder = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
@@ -62,6 +63,11 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $this->application['descriptor.analyzer'] = $analyzer;
 
         $this->fixture = new ServiceProvider();
+    }
+
+    protected function tearDown()
+    {
+        \PHPUnit\Framework\Error\Deprecated::$enabled = true;
     }
 
     /**

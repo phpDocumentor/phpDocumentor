@@ -38,12 +38,18 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     protected function setUp()
     {
+        \PHPUnit\Framework\Error\Deprecated::$enabled = false;
         $this->application = new Application(new Container());
         $this->application['config'] = m::mock('phpDocumentor\Configuration');
 
         $this->application['config']->shouldReceive('getTranslator->getLocale')
             ->andReturn($this->locale);
         $this->fixture = new ServiceProvider();
+    }
+
+    protected function tearDown()
+    {
+        \PHPUnit\Framework\Error\Deprecated::$enabled = true;
     }
 
     /**
