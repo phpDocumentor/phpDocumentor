@@ -218,6 +218,9 @@ The following keywords are recognized:
     If method C() was to be redefined in class B, including the type
     definition in the DocBlock, then `self` would refer to class B or any
     of its children.
+    
+14. **scalar**, the element to which this type applies is of any scalar type
+    specifically: *string*, *float*, *int*, *bool*
 
 14. **scalar**, the element to which this type applies is of any scalar type
     specifically: *string*, *float*, *int*, *bool*
