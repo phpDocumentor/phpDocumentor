@@ -287,15 +287,15 @@ final class Version2 implements Strategy
      */
     private function buildOutputDirectory(\SimpleXMLElement $phpDocumentor)
     {
-        if ((array)$phpDocumentor->parser === []) {
+        if ((array)$phpDocumentor->transformer === []) {
             return $this->outputDirectory;
         }
 
-        if ((string)$phpDocumentor->parser->target === '') {
+        if ((string)$phpDocumentor->transformer->target === '') {
             return $this->outputDirectory;
         }
 
-        return (string)$phpDocumentor->parser->target;
+        return (string)$phpDocumentor->transformer->target;
     }
 
     /**
