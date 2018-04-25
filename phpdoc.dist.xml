@@ -11,6 +11,7 @@
         <directory>.</directory>
         <ignore>tests/*</ignore>
         <ignore>build/*</ignore>
+        <ignore>var/*</ignore>
         <ignore>vendor/*</ignore>
     </files>
     <plugins>

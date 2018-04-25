@@ -13,7 +13,7 @@
 namespace phpDocumentor\Application\Stage;
 
 use phpDocumentor\Application\Configuration\ConfigurationFactory;
-use phpDocumentor\Application\Configuration\Factory\CommandlineOptionsMiddleware;
+use phpDocumentor\Application\Configuration\CommandlineOptionsMiddleware;
 
 final class Configure
 {

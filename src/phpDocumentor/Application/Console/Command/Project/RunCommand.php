@@ -60,17 +60,6 @@ class RunCommand extends Command
         $this->pipeline = $pipeline;
     }
 
-    public static function createInstance(ContainerInterface $container)
-    {
-        $pipeline = new Pipeline();
-        $pipeline->pipe($container->get(Parser::class));
-
-        return new self(
-            $container->get(ProjectDescriptorBuilder::class),
-            $pipeline
-        );
-    }
-
     /**
      * Initializes this command and sets the name, description, options and
      * arguments.

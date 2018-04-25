@@ -24,7 +24,6 @@ use Psr\Log\LogLevel;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Zend\Cache\Storage\StorageInterface;
-use Zend\I18n\Translator\Translator;
 
 /**
  * Parses the given source code and creates a structure file.
@@ -79,7 +78,6 @@ final class Parser
         StorageInterface $cache,
         ExampleFinder $exampleFinder,
         PartialsCollection $partials,
-
         EventDispatcherInterface $eventDispatcher
     ) {
         $this->builder = $builder;

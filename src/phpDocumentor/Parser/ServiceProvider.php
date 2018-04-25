@@ -53,12 +53,6 @@ class ServiceProvider implements ServiceProviderInterface
             );
         }
 
-        $app['parser.middleware.cache'] = function () {
-            return new CacheMiddleware(
-                new Pool(new FileSystem(['path' => 'build/api-cache']))
-            );
-        };
-
         $app['parser'] = function ($app) {
             $stopWatch = $app['kernel.stopwatch'];
 

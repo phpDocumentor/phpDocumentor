@@ -43,10 +43,11 @@ class ProjectDescriptorBuilder
 
     private $defaultPackage;
 
-    public function __construct(AssemblerFactory $assemblerFactory, Filter $filterManager)
+    public function __construct(AssemblerFactory $assemblerFactory, Filter $filterManager, Translator $translator)
     {
         $this->assemblerFactory = $assemblerFactory;
         $this->filter = $filterManager;
+        $this->translator = $translator;
     }
 
     public function createProjectDescriptor()

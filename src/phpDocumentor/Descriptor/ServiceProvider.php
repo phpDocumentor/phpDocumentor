@@ -70,9 +70,7 @@ use phpDocumentor\Reflection\Php\Property;
 use phpDocumentor\Reflection\Php\Trait_;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
-use Zend\Cache\Storage\Adapter\Filesystem;
-use Zend\Cache\Storage\Plugin\PluginOptions;
-use Zend\Cache\Storage\Plugin\Serializer as SerializerPlugin;
+
 
 /**
  * This provider is responsible for registering the Descriptor component with the given Application.
@@ -86,142 +84,10 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function register(Container $app)
     {
-        $app['parser.example.finder'] = new ExampleFinder();
-
-        $this->addCache($app);
-        $this->addAssemblers($app);
-        $this->addFilters($app);
-        $this->addBuilder($app);
 
         // I would prefer to extend it but due to a circular reference will pimple fatal
         $this->attachFiltersToManager($app['descriptor.filter'], $app);
 
-        $app['descriptor.analyzer'] = function () {
-            return new ProjectAnalyzer();
-        };
-    }
-
-    /**
-     * Registers the Assemblers used to convert Reflection objects to Descriptors.
-     *
-     * @return AssemblerFactory
-     */
-    public function attachAssemblersToFactory(AssemblerFactory $factory, Application $app)
-    {
-        // @codingStandardsIgnoreStart because we limit the verbosity by making all closures single-line
-        $fileMatcher = function ($criteria) {
-            return $criteria instanceof File;
-        };
-        $constantMatcher = function ($criteria) {
-            return $criteria instanceof Constant; // || $criteria instanceof ClassConstant;
-        };
-        $traitMatcher = function ($criteria) {
-            return $criteria instanceof Trait_;
-        };
-        $classMatcher = function ($criteria) {
-            return $criteria instanceof Class_;
-        };
-        $interfaceMatcher = function ($criteria) {
-            return $criteria instanceof Interface_;
-        };
-        $propertyMatcher = function ($criteria) {
-            return $criteria instanceof Property;
-        };
-        $methodMatcher = function ($criteria) {
-            return $criteria instanceof Method;
-        };
-        $argumentMatcher = function ($criteria) {
-            return $criteria instanceof Argument;
-        };
-        $functionMatcher = function ($criteria) {
-            return $criteria instanceof Function_;
-        };
-        $namespaceMatcher = function ($criteria) {
-            return $criteria instanceof Namespace_;
-        };
-
-        $authorMatcher = function ($criteria) {
-            return $criteria instanceof Author;
-        };
-        $deprecatedMatcher = function ($criteria) {
-            return $criteria instanceof Deprecated;
-        };
-        $exampleMatcher = function ($criteria) {
-            return $criteria instanceof Example;
-        };
-        $linkMatcher = function ($criteria) {
-            return $criteria instanceof Link;
-        };
-        $methodTagMatcher = function ($criteria) {
-            return $criteria instanceof Tags\Method;
-        };
-        $propertyTagMatcher = function ($criteria) {
-            return $criteria instanceof Tags\Property;
-        };
-        $paramMatcher = function ($criteria) {
-            return $criteria instanceof Param;
-        };
-        $throwsMatcher = function ($criteria) {
-            return $criteria instanceof Throws;
-        };
-        $returnMatcher = function ($criteria) {
-            return $criteria instanceof Return_;
-        };
-        $usesMatcher = function ($criteria) {
-            return $criteria instanceof Uses;
-        };
-        $seeMatcher = function ($criteria) {
-            return $criteria instanceof See;
-        };
-        $sinceMatcher = function ($criteria) {
-            return $criteria instanceof Since;
-        };
-        $varMatcher = function ($criteria) {
-            return $criteria instanceof Var_;
-        };
-        $versionMatcher = function ($criteria) {
-            return $criteria instanceof Version;
-        };
-
-        //$typeCollectionMatcher = function ($criteria) { return $criteria instanceof TypeCollection; };
-
-        $tagFallbackMatcher = function ($criteria) {
-            return $criteria instanceof Tag;
-        };
-        // @codingStandardsIgnoreEnd
-
-        $argumentAssembler = new ArgumentAssembler();
-        $factory->register($fileMatcher, new FileAssembler());
-        $factory->register($constantMatcher, new ConstantAssembler());
-        $factory->register($traitMatcher, new TraitAssembler());
-        $factory->register($classMatcher, new ClassAssembler());
-        $factory->register($interfaceMatcher, new InterfaceAssembler());
-        $factory->register($propertyMatcher, new PropertyAssembler());
-        $factory->register($argumentMatcher, $argumentAssembler);
-        $factory->register($methodMatcher, new MethodAssembler($argumentAssembler));
-        $factory->register($functionMatcher, new FunctionAssembler($argumentAssembler));
-        $factory->register($namespaceMatcher, new NamespaceAssembler());
-
-        $factory->register($authorMatcher, new AuthorAssembler());
-        $factory->register($deprecatedMatcher, new DeprecatedAssembler());
-        $factory->register($exampleMatcher, new ExampleAssembler($app['parser.example.finder']));
-        $factory->register($linkMatcher, new LinkAssembler());
-        $factory->register($methodTagMatcher, new MethodTagAssembler());
-        $factory->register($propertyTagMatcher, new PropertyTagAssembler());
-        $factory->register($varMatcher, new VarAssembler());
-        $factory->register($paramMatcher, new ParamAssembler());
-        $factory->register($throwsMatcher, new ThrowsAssembler());
-        $factory->register($returnMatcher, new ReturnAssembler());
-        $factory->register($usesMatcher, new UsesAssembler());
-        $factory->register($seeMatcher, new SeeAssembler());
-        $factory->register($sinceMatcher, new SinceAssembler());
-        $factory->register($versionMatcher, new VersionAssembler());
-
-//        $factory->register($typeCollectionMatcher, new TypeCollectionAssembler());
-
-        $factory->registerFallback($tagFallbackMatcher, new GenericTagAssembler());
-
-        return $factory;
     }
 
     /**
@@ -250,89 +116,5 @@ class ServiceProvider implements ServiceProviderInterface
         $filterManager->attach('phpDocumentor\Descriptor\MethodDescriptor', $stripOnVisibility);
 
         return $filterManager;
-    }
-
-    /**
-     * Adds the caching mechanism to the dependency injection container with key 'descriptor.cache'.
-     */
-    protected function addCache(Application $app)
-    {
-        $app['descriptor.cache'] = function () {
-            $cache = new Filesystem();
-            $cache->setOptions(
-                [
-                    'namespace' => 'phpdoc-cache',
-                    'cache_dir' => sys_get_temp_dir(),
-                ]
-            );
-            $plugin = new SerializerPlugin();
-
-            if (extension_loaded('igbinary')) {
-                $options = new PluginOptions();
-                $options->setSerializer('igbinary');
-
-                $plugin->setOptions($options);
-            }
-
-            $cache->addPlugin($plugin);
-
-            return $cache;
-        };
-    }
-
-    /**
-     * Adds the Building mechanism using the key 'descriptor.builder'.
-     *
-     * Please note that the type of serializer can be configured using the parameter 'descriptor.builder.serializer'; it
-     * accepts any parameter that Zend\Serializer supports.
-     */
-    protected function addBuilder(Application $app)
-    {
-        if (extension_loaded('igbinary')) {
-            $app['descriptor.builder.serializer'] = 'IgBinary';
-        } else {
-            $app['descriptor.builder.serializer'] = 'PhpSerialize';
-        }
-
-        $app['descriptor.builder'] = function ($container) {
-            $builder = new ProjectDescriptorBuilder(
-                $container['descriptor.builder.assembler.factory'],
-                $container['descriptor.filter']
-            );
-            $builder->setTranslator($container['translator']);
-
-            return $builder;
-        };
-    }
-
-    /**
-     * Adds the assembler factory and attaches the basic assemblers with key 'descriptor.builder.assembler.factory'.
-     */
-    protected function addAssemblers(Application $app)
-    {
-        $app['descriptor.builder.assembler.factory'] = function () {
-            return new AssemblerFactory();
-        };
-
-        $provider = $this;
-        $app['descriptor.builder.assembler.factory'] = $app->extend(
-            'descriptor.builder.assembler.factory',
-            function ($factory) use ($provider, $app) {
-                return $provider->attachAssemblersToFactory($factory, $app);
-            }
-        );
-    }
-
-    /**
-     * Adds the descriptor filtering mechanism and using key 'descriptor.filter'.
-     *
-     * Please note that filters can only be attached after the builder is instantiated because it is needed; so the
-     * filters can be attached by extending 'descriptor.builder'.
-     */
-    protected function addFilters(Application $app)
-    {
-        $app['descriptor.filter'] = function () {
-            return new Filter(new ClassFactory());
-        };
     }
 }

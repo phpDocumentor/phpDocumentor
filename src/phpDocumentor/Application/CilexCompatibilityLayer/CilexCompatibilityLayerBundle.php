@@ -23,8 +23,8 @@ final class CilexCompatibilityLayerBundle extends Bundle
 
     public function registerCommands(\Symfony\Component\Console\Application $application)
     {
-        $application->getHelperSet()->set(new LoggerHelper());
-        $application->getHelperSet()->set(new ConfigurationHelper($this->container->get('config')));
+//        $application->getHelperSet()->set(new LoggerHelper());
+//        $application->getHelperSet()->set(new ConfigurationHelper($this->container->get('config')));
 
         $application->getDefinition()->addOption(
             new InputOption(

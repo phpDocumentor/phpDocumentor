@@ -157,32 +157,6 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
 
             return $transformer;
         };
-
-        $app['compiler'] = function ($container) {
-            $compiler = new Compiler();
-            $compiler->insert(new ElementsIndexBuilder(), ElementsIndexBuilder::COMPILER_PRIORITY);
-            $compiler->insert(new MarkerFromTagsExtractor(), MarkerFromTagsExtractor::COMPILER_PRIORITY);
-            $compiler->insert(
-                new ExampleTagsEnricher($container['parser.example.finder']),
-                ExampleTagsEnricher::COMPILER_PRIORITY
-            );
-            $compiler->insert(new PackageTreeBuilder(), PackageTreeBuilder::COMPILER_PRIORITY);
-            $compiler->insert(new NamespaceTreeBuilder(), NamespaceTreeBuilder::COMPILER_PRIORITY);
-            $compiler->insert(new ClassTreeBuilder(), ClassTreeBuilder::COMPILER_PRIORITY);
-            $compiler->insert(new InterfaceTreeBuilder(), InterfaceTreeBuilder::COMPILER_PRIORITY);
-            $compiler->insert(
-                new ResolveInlineLinkAndSeeTags($container['transformer.routing.queue']),
-                ResolveInlineLinkAndSeeTags::COMPILER_PRIORITY
-            );
-            $compiler->insert($container['linker'], Linker::COMPILER_PRIORITY);
-            $compiler->insert($container['transformer'], Transformer::COMPILER_PRIORITY);
-            $compiler->insert(
-                new Debug($container['monolog'], $container['descriptor.analyzer']),
-                Debug::COMPILER_PRIORITY
-            );
-
-            return $compiler;
-        };
     }
 
     /**
@@ -190,20 +164,14 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
      */
     protected function provideTemplatingSystem(Application $app)
     {
-        $templateDir = __DIR__ . '/../../../data/templates';
 
-        // when installed using composer the templates are in a different folder
-        $composerTemplatePath = __DIR__ . '/../../../../templates';
-        if (file_exists($composerTemplatePath)) {
-            $templateDir = $composerTemplatePath;
-        }
 
         // parameters
         $app['transformer.template.location'] = $templateDir;
 
         // services
         $app['transformer.template.path_resolver'] = function ($container) {
-            return new PathResolver($container['transformer.template.location']);
+
         };
 
         $app['transformer.template.factory'] = function ($container) {

@@ -1,11 +1,62 @@
 parameters:
     locale: 'en'
 
+    linker.substitutions:
+      'phpDocumentor\Descriptor\ProjectDescriptor': ['files']
+      'phpDocumentor\Descriptor\FileDescriptor':
+          - 'tags'
+          - 'classes'
+          - 'interfaces'
+          - 'traits'
+          - 'functions'
+          - 'constants'
+      'phpDocumentor\Descriptor\ClassDescriptor':
+          - 'tags'
+          - 'parent'
+          - 'interfaces'
+          - 'constants'
+          - 'properties'
+          - 'methods'
+          - 'usedTraits'
+      'phpDocumentor\Descriptor\InterfaceDescriptor':
+          - 'tags'
+          - 'parent'
+          - 'constants'
+          - 'methods'
+      'phpDocumentor\Descriptor\TraitDescriptor':
+          - 'tags'
+          - 'properties'
+          - 'methods'
+          - 'usedTraits'
+      'phpDocumentor\Descriptor\FunctionDescriptor':
+          - 'tags'
+          - 'arguments'
+      'phpDocumentor\Descriptor\MethodDescriptor':
+          - 'tags'
+          - 'arguments'
+      'phpDocumentor\Descriptor\ArgumentDescriptor':
+          - 'types'
+      'phpDocumentor\Descriptor\PropertyDescriptor':
+          - 'tags'
+          - 'types'
+      'phpDocumentor\Descriptor\ConstantDescriptor':
+          - 'tags'
+          - 'types'
+      'phpDocumentor\Descriptor\Tag\ParamDescriptor': ['types']
+      'phpDocumentor\Descriptor\Tag\ReturnDescriptor': ['types']
+      'phpDocumentor\Descriptor\Tag\SeeDescriptor': ['reference']
+      'phpDocumentor\Descriptor\Tag\UsesDescriptor': ['reference']
+      'phpDocumentor\Descriptor\Type\CollectionDescriptor':
+          - 'baseType'
+          - 'types'
+          - 'keyTypes'
 services:
     _defaults:
         autowire: true
         autoconfigure: true
         public: false
+        bind:
+          Zend\Cache\Storage\StorageInterface: '@Zend\Cache\Storage\Adapter\Filesystem'
 
 
 #    phpDocumentor\:
@@ -15,19 +66,139 @@ services:
     phpDocumentor\Application:
         public: true
 
-#    phpDocumentor\Application\Console\Command\Project\RunCommand:
-#        factory: ['phpDocumentor\Application\Console\Command\Project\RunCommand', createInstance]
-#        public: true
-#        tags: [console.command]
+    phpdoc.application.pipeline:
+      class: 'League\Pipeline\Pipeline'
+      factory: ['phpDocumentor\Application\PipelineFactory', create]
+      arguments: ['@phpDocumentor\Application\Stage\Configure']
 
+    phpdoc.command.run.pipeline:
+      class: 'League\Pipeline\Pipeline'
+      factory: ['phpDocumentor\Application\PipelineFactory', create]
+      arguments: ['@phpdoc.application.pipeline', '@phpDocumentor\Application\Stage\Parser', '@phpDocumentor\Application\Stage\Transform']
+
+    phpDocumentor\Application\Console\Command\Project\RunCommand:
+        arguments: ['@phpDocumentor\Descriptor\ProjectDescriptorBuilder', '@phpdoc.command.run.pipeline']
     phpDocumentor\Descriptor\:
         resource: '../src/phpDocumentor/Descriptor'
 
-#    phpDocumentor\Application\Stage\:
-#        resource: '../src/phpDocumentor/Application/Stage'
-#        exclude: '../src/phpDocumentor/Application/Stage/Configure'
-#        public: true
-#
-#    phpDocumentor\Application\Configuration\:
-#        resource: '../src/phpDocumentor/Application/Configuration'
-#        public: true
+    phpDocumentor\Descriptor\Builder\AssemblerFactory:
+      class: 'phpDocumentor\Descriptor\Builder\AssemblerFactory'
+      factory: ['phpDocumentor\Application\Builder\AssemblerFactoryFactory', create]
+
+    phpDocumentor\Application\Parser\CacheFactory: ~
+    phpDocumentor\Application\Parser\ProjectFactoryFactory: ~
+    phpDocumentor\Application\Configuration\Factory\Version2:
+        tags: [phpdoc.config_stategy]
+    phpDocumentor\Application\Configuration\Factory\Version3:
+        tags: [phpdoc.config_stategy]
+        arguments: ['data/xsd/phpdoc.xsd']
+    phpDocumentor\Application\Configuration\ConfigurationFactory:
+        factory: ['phpDocumentor\Application\Configuration\ConfigurationFactory', createInstance]
+        arguments: [!tagged phpdoc.config_stategy]
+
+    phpDocumentor\Application\Stage\:
+        resource: '../src/phpDocumentor/Application/Stage'
+        public: true
+
+    phpDocumentor\Application\Stage\Parser:
+        arguments:
+          $fileCollector: '@phpDocumentor\Infrastructure\Parser\FlySystemCollector'
+
+    phpDocumentor\Compiler\:
+      resource: '../src/phpDocumentor/Compiler'
+
+    phpDocumentor\Compiler\Linker\Linker:
+      arguments: ['%linker.substitutions%']
+
+    phpDocumentor\Compiler\Compiler:
+        calls:
+            - [insert, ['@phpDocumentor\Compiler\Pass\ElementsIndexBuilder', !php/const \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::COMPILER_PRIORITY]]
+            - [insert, ['@phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor', !php/const \phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor::COMPILER_PRIORITY]]
+            - [insert, ['@phpDocumentor\Compiler\Pass\ExampleTagsEnricher', !php/const \phpDocumentor\Compiler\Pass\ExampleTagsEnricher::COMPILER_PRIORITY]]
+            - [insert, ['@phpDocumentor\Compiler\Pass\PackageTreeBuilder', !php/const \phpDocumentor\Compiler\Pass\PackageTreeBuilder::COMPILER_PRIORITY]]
+            - [insert, ['@phpDocumentor\Compiler\Pass\NamespaceTreeBuilder', !php/const \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::COMPILER_PRIORITY]]
+            - [insert, ['@phpDocumentor\Compiler\Pass\ClassTreeBuilder', !php/const \phpDocumentor\Compiler\Pass\ClassTreeBuilder::COMPILER_PRIORITY]]
+            - [insert, ['@phpDocumentor\Compiler\Pass\InterfaceTreeBuilder', !php/const \phpDocumentor\Compiler\Pass\InterfaceTreeBuilder::COMPILER_PRIORITY]]
+            - [insert, ['@phpDocumentor\Compiler\Pass\ResolveInlineLinkAndSeeTags', !php/const \phpDocumentor\Compiler\Pass\ResolveInlineLinkAndSeeTags::COMPILER_PRIORITY]]
+            - [insert, ['@phpDocumentor\Compiler\Pass\Debug', !php/const \phpDocumentor\Compiler\Pass\Debug::COMPILER_PRIORITY]]
+            - [insert, ['@phpDocumentor\Compiler\Linker\Linker', !php/const \phpDocumentor\Compiler\Linker\Linker::COMPILER_PRIORITY]]
+            - [insert, ['@phpDocumentor\Transformer\Transformer', !php/const \phpDocumentor\Transformer\Transformer::COMPILER_PRIORITY]]
+
+    phpDocumentor\Parser\Middleware\:
+        resource: '../src/phpDocumentor/Parser/Middleware'
+        exclude: '../src/phpDocumentor/Parser/Middleware/CacheMiddleware.php'
+        tags: [phpdoc.parser.middleware]
+
+    phpDocumentor\Parser\Middleware\CacheMiddleware:
+       factory: 'phpDocumentor\Application\Parser\CacheFactory:create'
+       tags: [phpdoc.parser.middleware]
+
+    phpDocumentor\Reflection\ProjectFactory:
+       factory: 'phpDocumentor\Application\Parser\ProjectFactoryFactory:create'
+       arguments: [!tagged phpdoc.parser.middleware]
+
+    phpDocumentor\Parser\Parser:
+      public: true
+
+    phpDocumentor\Partials\Collection:
+      arguments: ['@Parsedown']
+
+    phpDocumentor\Transformer\:
+      resource: '../src/phpDocumentor/Transformer'
+      exclude: '../src/phpDocumentor/Transformer/**/{Event, Exception}/{**, PathResolver.php}'
+
+    phpDocumentor\Transformer\Router\Queue:
+        calls:
+            - [insert, ['@phpDocumentor\Transformer\Router\StandardRouter', 10000]]
+            - [insert, ['@phpDocumentor\Transformer\Router\ExternalRouter', 10500]]
+
+
+    phpDocumentor\Transformer\Template\PathResolver:
+      class: 'phpDocumentor\Transformer\Template\PathResolver'
+      factory: ['phpDocumentor\Application\Transformer\Template\PathResolverFactory', create]
+
+    phpDocumentor\Translator\Translator:
+      public: true
+
+    phpDocumentor\Infrastructure\:
+      resource: '../src/phpDocumentor/Infrastructure'
+
+    phpDocumentor\Reflection\DocBlock\ExampleFinder: ~
+
+    #External Services
+    League\Flysystem\MountManager: ~
+    Zend\Cache\Storage\Adapter\Filesystem:
+      class: 'Zend\Cache\Storage\Adapter\Filesystem'
+      factory: ['phpdocumentor\Infrastructure\Cache\ZendCacheFactory', create]
+
+    Parsedown:
+      class: 'Parsedown'
+      factory: ['Parsedown', 'instance']
+
+    #legacy service definitions
+    compiler:
+      alias: phpDocumentor\Compiler\Compiler
+      public: true
+
+    parser:
+      alias: phpDocumentor\Parser\Parser
+      public: true
+
+    markdown:
+      alias: '@Parsedown'
+
+    descriptor.builder:
+      alias: phpDocumentor\Descriptor\ProjectDescriptorBuilder
+      public: true
+
+    translator:
+      alias: phpDocumentor\Translator\Translator
+      public: true
+
+    transformer.routing.standard:
+        class: phpDocumentor\Transformer\Router\StandardRouter
+        public: true
+
+    transformer.writer.collection:
+      alias: phpDocumentor\Transformer\Writer\Collection
+      public: true

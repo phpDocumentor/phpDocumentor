@@ -15,11 +15,12 @@ namespace phpDocumentor\Application\Configuration;
 use phpDocumentor\Application\Configuration\Factory\Strategy;
 use phpDocumentor\Application\Configuration\Factory\Version3;
 use phpDocumentor\DomainModel\Uri;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * The ConfigurationFactory converts the configuration xml from a Uri into an array.
  */
-class ConfigurationFactory
+final class ConfigurationFactory
 {
     /** @var Uri The Uri that contains the path to the configuration file. */
     private $uri;
@@ -53,6 +54,22 @@ class ConfigurationFactory
 
         $this->replaceLocation($uri);
         $this->middlewares = $middlewares;
+    }
+
+    /**
+     * @param Strategy[] $strategies
+     * @return ConfigurationFactory
+     */
+    public static function createInstance(iterable $strategiesBuilder): self
+    {
+        $strategies = [];
+
+        foreach ($strategiesBuilder as $stategy)
+        {
+            $strategies[] = $stategy;
+        }
+
+        return new static($strategies, new Uri('file://' . getcwd() . '/phpdoc.dist.xml'));
     }
 
     /**

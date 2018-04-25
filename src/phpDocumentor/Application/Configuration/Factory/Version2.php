@@ -58,7 +58,7 @@ final class Version2 implements Strategy
                                 'format' => 'php',
                                 'validate' => false,
                                 'source' => [
-                                    'dsn' => new Dsn('file://.'),
+                                    'dsn' => new Dsn('file://' . getcwd()),
                                     'paths' => $this->buildSourcePaths($phpDocumentor),
                                 ],
                                 'ignore' => [
@@ -264,7 +264,6 @@ final class Version2 implements Strategy
         if ((array)$phpDocumentor->files === []) {
             return $this->ignorePaths;
         }
-
         $ignorePaths = [];
         foreach ($phpDocumentor->files->children() as $child) {
             if ($child->getName() === 'ignore') {
