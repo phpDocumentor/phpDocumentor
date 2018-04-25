@@ -24,8 +24,8 @@ class ApplicationTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testIfStopwatchIsStarted()
     {
-        $this->assertTrue(isset($this->fixture['kernel.timer.start']));
-        $this->assertTrue(isset($this->fixture['kernel.stopwatch']));
+        $this->assertArrayHasKey('kernel.timer.start', $this->fixture);
+        $this->assertArrayHasKey('kernel.stopwatch', $this->fixture);
     }
 
     /**
@@ -56,7 +56,7 @@ class ApplicationTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testIfSerializerIsRegistered()
     {
-        $this->assertTrue(isset($this->fixture['serializer']));
+        $this->assertArrayHasKey('serializer', $this->fixture);
     }
 
     /**
@@ -64,7 +64,7 @@ class ApplicationTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testIfConfigurationIsRegistered()
     {
-        $this->assertTrue(isset($this->fixture['config']));
+        $this->assertArrayHasKey('config', $this->fixture);
         $this->assertInstanceOf('phpDocumentor\Configuration', $this->fixture['config']);
     }
 
@@ -74,7 +74,7 @@ class ApplicationTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testIfEventDispatcherIsRegistered()
     {
-        $this->assertTrue(isset($this->fixture['event_dispatcher']));
+        $this->assertArrayHasKey('event_dispatcher', $this->fixture);
         $this->assertInstanceOf('phpDocumentor\Event\Dispatcher', $this->fixture['event_dispatcher']);
     }
 
@@ -83,7 +83,7 @@ class ApplicationTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testIfTranslatorIsRegistered()
     {
-        $this->assertTrue(isset($this->fixture['translator']));
+        $this->assertArrayHasKey('translator', $this->fixture);
     }
 
     /**
@@ -91,7 +91,7 @@ class ApplicationTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testIfDescriptorBuilderIsRegistered()
     {
-        $this->assertTrue(isset($this->fixture['descriptor.builder']));
+        $this->assertArrayHasKey('descriptor.builder', $this->fixture);
     }
 
     /**
@@ -99,7 +99,7 @@ class ApplicationTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testIfParserIsRegistered()
     {
-        $this->assertTrue(isset($this->fixture['parser']));
+        $this->assertArrayHasKey('parser', $this->fixture);
     }
 
     /**
@@ -107,7 +107,7 @@ class ApplicationTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testIfPartialsAreRegistered()
     {
-        $this->assertTrue(isset($this->fixture['partials']));
+        $this->assertArrayHasKey('partials', $this->fixture);
     }
 
     /**
@@ -115,7 +115,7 @@ class ApplicationTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testIfTransformerIsRegistered()
     {
-        $this->assertTrue(isset($this->fixture['transformer']));
+        $this->assertArrayHasKey('transformer', $this->fixture);
     }
 
     /**
@@ -123,7 +123,7 @@ class ApplicationTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testIfPluginsAreRegistered()
     {
-        $this->assertTrue(isset($this->fixture['transformer.writer.collection']['checkstyle']));
+        $this->assertArrayHasKey('checkstyle', $this->fixture['transformer.writer.collection']);
     }
 
     /**

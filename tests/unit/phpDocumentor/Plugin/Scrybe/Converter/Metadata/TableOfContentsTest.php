@@ -46,7 +46,7 @@ class TableOfContentsTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $this->object[] = $file;
 
         $this->assertCount(1, $this->object);
-        $this->assertTrue(isset($this->object['test']));
+        $this->assertArrayHasKey('test', $this->object);
         $this->assertSame($file, $this->object['test']);
     }
 
