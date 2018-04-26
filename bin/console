@@ -39,4 +39,5 @@ if ($debug) {
 
 $kernel = new Kernel($env, $debug);
 $application = new Application($kernel);
+$application->setDefaultCommand('project:run');
 $application->run($input);
