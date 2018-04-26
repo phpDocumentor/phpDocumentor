@@ -26,7 +26,6 @@ final class EmittingMiddleware implements Middleware
      */
     public function execute($command, callable $next)
     {
-        var_dump($command->getFile()->path());
         if (class_exists('phpDocumentor\Event\Dispatcher')) {
             Dispatcher::getInstance()->dispatch(
                 'parser.file.pre',

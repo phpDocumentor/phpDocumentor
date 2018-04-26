@@ -13,7 +13,10 @@ namespace phpDocumentor;
 
 use Cilex\Application as Cilex;
 use phpDocumentor\Application\Console\Command\Project\RunCommand;
+use phpDocumentor\Parser\Event\PreFileEvent;
+use phpDocumentor\Translator\Translator;
 use Psr\Container\ContainerInterface;
+use Psr\Log\LogLevel;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Composer\Autoload\ClassLoader;
@@ -58,91 +61,24 @@ class Application extends Cilex
     /**
      * Initializes all components used by phpDocumentor.
      */
-    public function __construct(LoggerInterface $logger, ContainerInterface $container)
+    public function __construct(LoggerInterface $logger, Translator $translator, ContainerInterface $container)
     {
         parent::__construct($container);
 
         $this->defineIniSettings();
-
-//        $this['kernel.timer.start'] = time();
-//        $this['kernel.stopwatch'] = function () {
-//            return new Stopwatch();
-//        };
-//
-//        $this->register(new Translator\ServiceProvider());
-//        $this->register(new Descriptor\ServiceProvider());
-//        $this->register(new Partials\ServiceProvider());
-//        $this->register(new Parser\ServiceProvider());
-//        $this->register(new Transformer\ServiceProvider());
         $this->register(new Plugin\ServiceProvider());
-//
-//        $this['config.user.path'] = new Uri(
-//            getcwd(). ((file_exists(getcwd() . '/phpdoc.xml')) ? '/phpdoc.xml' : '/phpdoc.dist.xml')
-//        );
-//
-//        $this['config.schema.path']  = __DIR__ . '/data/xsd/phpdoc.xsd';
-//        $this['config.strategies'] = [ new Version3($this['config.schema.path']), new Version2() ];
-//
-        /** @var EventDispatcherInterface $evenDispatcher */
-        $evenDispatcher = $this['event_dispatcher'];
-        $evenDispatcher->addListener('system.log', function(LogEvent $e) use ($logger, $container) {
 
-            /** @var Translator $translator */
-            $translator = $container->get('translator');
+        Dispatcher::getInstance()->addListener(
+            'parser.file.pre',
+            function (PreFileEvent $event) use ($logger) {
+                $logger->log(LogLevel::INFO, 'Parsing ' . $event->getFile());
+            }
+        );
+
+        Dispatcher::getInstance()->addListener('system.log', function(LogEvent $e) use ($logger, $translator) {
             $logger->log($e->getPriority(), $translator->translate($e->getMessage()), $e->getContext());
         });
-//
-//        $this['application.pipeline'] = function($container) {
-//            return new Configure(
-//                new ConfigurationFactory(
-//                    $container['config.strategies'],
-//                    $container['config.user.path']
-//                )
-//            );
-//        };
-//
-//        $this['parser.pipeline'] = function($container) {
-//            return new Pipeline(
-//                [
-//                    new Configure\ParserCache($container['parser.middleware.cache']),
-//                    new ParserStage(
-//                        $container['descriptor.builder'],
-//                        $container['parser'],
-//                        $container['parser.fileCollector'],
-//                        $container['descriptor.cache'],
-//                        $container['parser.example.finder'],
-//                        $container['partials'],
-//                        $container['event_dispatcher']
-//                    )
-//                ]
-//            );
-//        };
-//
-//        $this['transformer.pipeline'] = function($container) {
-//            return new Transform(
-//                $this['descriptor.builder'],
-//                $this['transformer'],
-//                $this['compiler'],
-//                $this['descriptor.cache'],
-//                $this['event_dispatcher']
-//            );
-//        };
-//
-//        $this['command.run.pipeline'] = function ($container) {
-//            return new Pipeline(
-//                [
-//                    $container['application.pipeline'],
-//                    $container['parser.pipeline'],
-//                    $container['transformer.pipeline'],
-//                ]
-//            );
-//        };
 
-//        $this->addCommandsForProjectNamespace();
-
-        if (\Phar::running()) {
-            $this->addCommandsForPharNamespace();
-        }
         $this->container = $container;
     }
 
@@ -190,51 +126,5 @@ class Application extends Cilex
         ) {
             date_default_timezone_set('UTC');
         }
-    }
-
-    /**
-     * Adds the command to phpDocumentor that belong to the Project namespace.
-     */
-    protected function addCommandsForProjectNamespace()
-    {
-        $this->command(
-            new RunCommand(
-                $this['descriptor.builder'],
-                $this['command.run.pipeline']
-            )
-        );
-        $this->command(
-            new ParseCommand(
-                $this['descriptor.builder'],
-                $this['parser'],
-                $this['parser.fileCollector'],
-                $this['translator'],
-                $this['descriptor.cache'],
-                $this['parser.example.finder'],
-                $this['partials'],
-                $this['parser.middleware.cache']
-        ));
-
-        $this->command(
-            new TransformCommand(
-                $this['descriptor.builder'],
-                $this['transformer'],
-                $this['compiler'],
-                $this['descriptor.cache'],
-                $this['event_dispatcher']
-            )
-        );
-
-        $this->command(
-            new ListCommand($this['transformer.template.factory'])
-        );
-    }
-
-    /**
-     * Adds the command to phpDocumentor that belong to the Phar namespace.
-     */
-    protected function addCommandsForPharNamespace()
-    {
-        $this->command(new Command\Phar\UpdateCommand());
     }
 }
