@@ -114,7 +114,7 @@ final class EnvironmentContext implements Context\Context
         $argumentsString = strtr($argumentsString, ['\'' => '"']);
 //      the app is always run in debug mode to catch debug information and collect the AST that is written to disk
         $this->process->setCommandLine(
-            sprintf('%s %s %s', 'php', escapeshellarg($this->binaryPath), $argumentsString . ' -vvv')
+            sprintf('%s %s %s', 'php', escapeshellarg($this->binaryPath), 'run ' . $argumentsString . ' -vvv')
         );
         $this->process->start();
         $this->process->wait();
