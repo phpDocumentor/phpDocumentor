@@ -53,7 +53,7 @@ final class Version2 implements Strategy
                         'folder' => '',
                         'api' => [
                             0 => [
-                                'encoding' => 'uft8',
+                                'encoding' => 'utf8',
                                 'ignore-tags' => [],
                                 'format' => 'php',
                                 'validate' => false,

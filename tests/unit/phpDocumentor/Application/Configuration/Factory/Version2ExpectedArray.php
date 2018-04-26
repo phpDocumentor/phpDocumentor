@@ -5,12 +5,14 @@
  *  For the full copyright and license information, please view the LICENSE
  *  file that was distributed with this source code.
  *
- *  @copyright 2010-2017 Mike van Riel<mike@phpdoc.org>
- *  @license   http://www.opensource.org/licenses/mit-license.php MIT
- *  @link      http://phpdoc.org
+ * @copyright 2010-2017 Mike van Riel<mike@phpdoc.org>
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://phpdoc.org
  */
+
 namespace phpDocumentor\Application\Configuration\Factory;
 
+use phpDocumentor\DomainModel\Dsn;
 use phpDocumentor\DomainModel\Path;
 
 /**
@@ -27,37 +29,43 @@ final class Version2ExpectedArray
     {
         return [
             'phpdocumentor' => [
+                'title' => 'my-doc',
                 'use-cache' => true,
-                'paths'     => [
+                'paths' => [
                     'output' => new \phpDocumentor\DomainModel\Dsn('build/docs'),
-                    'cache'  => new \phpDocumentor\DomainModel\Path('/tmp/phpdoc-doc-cache'),
+                    'cache' => new \phpDocumentor\DomainModel\Path('/tmp/phpdoc-doc-cache'),
                 ],
-                'versions'  => [
+                'versions' => [
                     '1.0.0' => [
                         'folder' => '',
-                        'api'    => [
-                            'format'               => 'php',
-                            'source'               => [
-                                'dsn'   => 'file://.',
-                                'paths' => [
-                                    0 => 'src',
+                        'api' => [
+                            [
+                                'format' => 'php',
+                                'source' => [
+                                    'dsn' => new Dsn('file://' . getcwd()),
+                                    'paths' => [
+                                        0 => 'src',
+                                    ],
                                 ],
-                            ],
-                            'ignore'               => [
-                                'hidden'   => true,
-                                'symlinks' => true,
-                                'paths'    => [],
-                            ],
-                            'extensions'           => [
-                                0 => 'php',
-                                1 => 'php3',
-                                2 => 'phtml',
-                            ],
-                            'visibility'           => ['public'],
-                            'default-package-name' => 'Default',
-                            'markers'              => [
-                                0 => 'TODO',
-                                1 => 'FIXME',
+                                'ignore' => [
+                                    'hidden' => true,
+                                    'symlinks' => true,
+                                    'paths' => [],
+                                ],
+                                'extensions' => [
+                                    0 => 'php',
+                                    1 => 'php3',
+                                    2 => 'phtml',
+                                ],
+                                'visibility' => ['public'],
+                                'default-package-name' => 'Default',
+                                'markers' => [
+                                    0 => 'TODO',
+                                    1 => 'FIXME',
+                                ],
+                                'encoding' => 'utf8',
+                                'ignore-tags' => [],
+                                'validate' => false,
                             ],
                         ],
                     ],
@@ -80,40 +88,46 @@ final class Version2ExpectedArray
     {
         return [
             'phpdocumentor' => [
+                'title' => 'my-doc',
                 'use-cache' => true,
-                'paths'    => [
+                'paths' => [
                     'output' => new \phpDocumentor\DomainModel\Dsn('build/docs'),
-                    'cache'  => new Path('/tmp/phpdoc-doc-cache'),
+                    'cache' => new Path('/tmp/phpdoc-doc-cache'),
                 ],
                 'versions' => [
                     '1.0.0' => [
                         'folder' => '',
-                        'api'    => [
-                            'format'               => 'php',
-                            'source'               => [
-                                'dsn'   => 'file://.',
-                                'paths' => [
-                                    0 => 'src',
+                        'api' => [
+                            [
+                                'format' => 'php',
+                                'source' => [
+                                    'dsn' => new Dsn('file://' . getcwd()),
+                                    'paths' => [
+                                        0 => 'src',
+                                    ],
                                 ],
-                            ],
-                            'ignore'               => [
-                                'hidden'   => true,
-                                'symlinks' => true,
-                                'paths'    => [
-                                    0 => 'vendor/*',
-                                    1 => 'logs/*',
+                                'ignore' => [
+                                    'hidden' => true,
+                                    'symlinks' => true,
+                                    'paths' => [
+                                        0 => 'vendor/*',
+                                        1 => 'logs/*',
+                                    ],
                                 ],
-                            ],
-                            'extensions'           => [
-                                0 => 'php',
-                                1 => 'php3',
-                                2 => 'phtml',
-                            ],
-                            'visibility'           => ['public'],
-                            'default-package-name' => 'Default',
-                            'markers'              => [
-                                0 => 'TODO',
-                                1 => 'FIXME',
+                                'extensions' => [
+                                    0 => 'php',
+                                    1 => 'php3',
+                                    2 => 'phtml',
+                                ],
+                                'visibility' => ['public'],
+                                'default-package-name' => 'Default',
+                                'markers' => [
+                                    0 => 'TODO',
+                                    1 => 'FIXME',
+                                ],
+                                'encoding' => 'utf8',
+                                'ignore-tags' => [],
+                                'validate' => false,
                             ],
                         ],
                     ],

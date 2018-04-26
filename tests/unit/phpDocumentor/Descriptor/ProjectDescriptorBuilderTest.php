@@ -13,6 +13,7 @@ namespace phpDocumentor\Descriptor;
 
 use \Mockery as m;
 use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
+use phpDocumentor\Translator\Translator;
 
 /**
  * Tests the functionality for the ProjectDescriptorBuilder class.
@@ -36,8 +37,9 @@ class ProjectDescriptorBuilderTest extends \Mockery\Adapter\Phpunit\MockeryTestC
     {
         $this->assemblerFactory = $this->createAssemblerFactoryMock();
         $filterMock = m::mock('phpDocumentor\Descriptor\Filter\Filter');
+        $translatorMock = m::mock(Translator::class);
 
-        $this->fixture = new ProjectDescriptorBuilder($this->assemblerFactory, $filterMock);
+        $this->fixture = new ProjectDescriptorBuilder($this->assemblerFactory, $filterMock, $translatorMock);
     }
 
     /**

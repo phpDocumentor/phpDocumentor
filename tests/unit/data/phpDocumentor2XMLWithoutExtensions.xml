@@ -20,7 +20,7 @@
         <directory>src</directory>
     </files>
     <transformer>
-        <target>output</target>
+        <target>build/docs</target>
     </transformer>
     <logging>
         <level>error</level>

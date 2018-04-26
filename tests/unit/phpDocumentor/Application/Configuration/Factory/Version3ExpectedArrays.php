@@ -316,7 +316,10 @@ final class Version3ExpectedArrays
                                 'markers'              => [
                                     0 => 'TODO',
                                     1 => 'FIXME'
-                                ]
+                                ],
+                                'encoding' => 'utf8',
+                                'ignore-tags' => [],
+                                'validate' => false,
                             ]
                         ],
                         'guide'  => [

@@ -42,12 +42,11 @@ class ExternalRouterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testIfSingleDefinitionGeneratesAnUrl()
     {
         // Arrange
-        $config = new Configuration();
         $config->getTransformer()->setExternalClassDocumentation(
             [new ExternalClassDocumentation('My_Space', 'http://abc/{CLASS}.html')]
         );
 
-        $router = new ExternalRouter($config);
+        $router = new ExternalRouter();
 
         // Act
         $result = $router->match('My_Space_With_Suffix')->generate('My_Space_With_Suffix');
