@@ -76,8 +76,20 @@ services:
       factory: ['phpDocumentor\Application\PipelineFactory', create]
       arguments: ['@phpdoc.application.pipeline', '@phpDocumentor\Application\Stage\Parser', '@phpDocumentor\Application\Stage\Transform']
 
+    phpdoc.command.parse.pipeline:
+      class: 'League\Pipeline\Pipeline'
+      factory: ['phpDocumentor\Application\PipelineFactory', create]
+      arguments: ['@phpdoc.application.pipeline', '@phpDocumentor\Application\Stage\Parser']
+
+
+    phpDocumentor\Application\Console\:
+      resource: '../src/phpDocumentor/Application/Console'
+
     phpDocumentor\Application\Console\Command\Project\RunCommand:
         arguments: ['@phpDocumentor\Descriptor\ProjectDescriptorBuilder', '@phpdoc.command.run.pipeline']
+    phpDocumentor\Application\Console\Command\Project\ParseCommand:
+        arguments: ['@phpdoc.command.parse.pipeline', '@phpDocumentor\Translator\Translator']
+
     phpDocumentor\Descriptor\:
         resource: '../src/phpDocumentor/Descriptor'
 

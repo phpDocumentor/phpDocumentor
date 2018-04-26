@@ -24,7 +24,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * Includes additional methods to forward the output to the logging events
  * of phpDocumentor.
  */
-class Command extends BaseCommand
+abstract class Command extends BaseCommand
 {
     /**
      * Registers the current command.

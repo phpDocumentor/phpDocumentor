@@ -12,29 +12,12 @@
 
 namespace phpDocumentor\Application\Console\Command\Project;
 
-use League\Flysystem\MountManager;
+use League\Pipeline\PipelineInterface;
 use phpDocumentor\Application\Console\Command\Command;
-use phpDocumentor\Application\Console\Command\Helper\ConfigurationHelper;
-use phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper;
-use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
-use phpDocumentor\DomainModel\Dsn;
-use phpDocumentor\DomainModel\Parser\FileCollector;
-use phpDocumentor\Parser\Event\PreFileEvent;
-use phpDocumentor\Parser\Exception\FilesNotFoundException;
-use phpDocumentor\Parser\Middleware\CacheMiddleware;
-use phpDocumentor\Parser\Parser;
-use phpDocumentor\Parser\Util\ParserPopulator;
-use phpDocumentor\Partials\Collection as PartialsCollection;
-use phpDocumentor\Reflection\DocBlock\ExampleFinder;
-use phpDocumentor\Reflection\File;
-use Symfony\Component\Console\Helper\ProgressHelper;
+use phpDocumentor\Translator\Translator;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Filesystem\Filesystem;
-use Zend\Cache\Storage\StorageInterface;
-use Zend\I18n\Translator\Translator;
 
 /**
  * Parses the given source code and creates a structure file.
@@ -45,74 +28,17 @@ use Zend\I18n\Translator\Translator;
  */
 class ParseCommand extends Command
 {
-    /** @var ProjectDescriptorBuilder $builder */
-    protected $builder;
-
-    /** @var Parser $parser */
-    protected $parser;
-
-    /** @var Translator */
-    protected $translator;
-
-    /** @var StorageInterface */
-    private $cache;
-
+    private $pipeline;
     /**
-     * @var ExampleFinder
+     * @var Translator
      */
-    private $exampleFinder;
+    private $translator;
 
-    /**
-     * @var PartialsCollection
-     */
-    private $partials;
-
-    /**
-     * @var FileCollector
-     */
-    private $fileCollector;
-
-    /**
-     * ParseCommand constructor.
-     */
-    public function __construct(
-        ProjectDescriptorBuilder $builder,
-        Parser $parser,
-        FileCollector $fileCollector,
-        Translator $translator,
-        StorageInterface $cache,
-        ExampleFinder $exampleFinder,
-        PartialsCollection $partials
-    ) {
-        $this->builder = $builder;
-        $this->parser = $parser;
+    public function __construct(PipelineInterface $pipeline, Translator $translator)
+    {
+        $this->pipeline = $pipeline;
         $this->translator = $translator;
-        $this->cache = $cache;
-        $this->exampleFinder = $exampleFinder;
-        $this->partials = $partials;
-        $this->fileCollector = $fileCollector;
-
         parent::__construct('project:parse');
-    }
-
-    public function getBuilder(): ProjectDescriptorBuilder
-    {
-        return $this->builder;
-    }
-
-    public function getParser(): Parser
-    {
-        return $this->parser;
-    }
-
-    /**
-     * Returns the Cache.
-     *
-     * @throws InvalidArgumentException
-     */
-    protected function getCache(): StorageInterface
-    {
-        return $this->cache;
     }
 
     /**
@@ -157,212 +83,15 @@ class ParseCommand extends Command
 
     /**
      * Executes the business logic involved with this command.
-     *
-     * @throws Exception if the target location is not a folder.
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        /** @var ConfigurationHelper $configurationHelper */
-        $configurationHelper = $this->getHelper('phpdocumentor_configuration');
-        $target = $configurationHelper->getOption($input, 'target', 'parser/target');
-        if (strpos($target, '/tmp/') === 0) {
-            $target = str_replace('/tmp/', sys_get_temp_dir() . DIRECTORY_SEPARATOR, $target);
-        }
-
-        $fileSystem = new Filesystem();
-        if (!$fileSystem->isAbsolutePath($target)) {
-            $target = getcwd() . DIRECTORY_SEPARATOR . $target;
-        }
-
-        if (!file_exists($target)) {
-            mkdir($target, 0777, true);
-        }
-
-        if (!is_dir($target)) {
-            throw new \Exception($this->__('PPCPP:EXC-BADTARGET'));
-        }
-
-        $this->getCache()->getOptions()->setCacheDir($target);
-
-        if ($input->getOption('force')) {
-            $this->getCacheMiddleware()->disable();
-        }
-
-        $builder = $this->getBuilder();
-        $builder->createProjectDescriptor();
-        $projectDescriptor = $builder->getProjectDescriptor();
-
-        $output->write($this->__('PPCPP:LOG-COLLECTING'));
-        $files = $this->getFileCollection($input);
-
-        //TODO: Should determine root based on filesystems. Could be an issue for multiple.
-        // Need some config update here.
-        $this->exampleFinder->setSourceDirectory(getcwd());
-        $this->exampleFinder->setExampleDirectories($configurationHelper->getConfigValueFromPath('files/examples'));
-        $output->writeln($this->__('PPCPP:LOG-OK'));
-
-        /** @var ProgressHelper $progress */
-        $progress = $this->getProgressBar($input);
-        if (!$progress) {
-            $this->getHelper('phpdocumentor_logger')->connectOutputToLogging($output, $this);
-        }
-
-        $output->write($this->__('PPCPP:LOG-INITIALIZING'));
-        $this->populateParser($input);
-
-        if ($progress) {
-            $progress->start($output, \count($files));
-        }
-
-        try {
-            $output->writeln($this->__('PPCPP:LOG-OK'));
-            $output->writeln($this->__('PPCPP:LOG-PARSING'));
-
-            $mapper = new ProjectDescriptorMapper($this->getCache());
-            //TODO: Re-enable garbage collection here.
-            //$mapper->garbageCollect($files);
-            $mapper->populate($projectDescriptor);
-
-            $visibility = (array) $configurationHelper->getOption($input, 'visibility', 'parser/visibility');
-            $visibilities = [];
-            foreach ($visibility as $item) {
-                $visibilities = $visibilities + explode(',', $item);
-            }
-
-            $visibility = null;
-            foreach ($visibilities as $item) {
-                switch ($item) {
-                    case 'public':
-                        $visibility |= ProjectDescriptor\Settings::VISIBILITY_PUBLIC;
-                        break;
-                    case 'protected':
-                        $visibility |= ProjectDescriptor\Settings::VISIBILITY_PROTECTED;
-                        break;
-                    case 'private':
-                        $visibility |= ProjectDescriptor\Settings::VISIBILITY_PRIVATE;
-                        break;
-                }
-            }
-
-            if ($visibility === null) {
-                $visibility = ProjectDescriptor\Settings::VISIBILITY_DEFAULT;
-            }
-
-            if ($input->getOption('parseprivate')) {
-                $visibility |= ProjectDescriptor\Settings::VISIBILITY_INTERNAL;
-            }
-
-            $projectDescriptor->getSettings()->setVisibility($visibility);
-            $input->getOption('sourcecode')
-                ? $projectDescriptor->getSettings()->includeSource()
-                : $projectDescriptor->getSettings()->excludeSource();
-
-            $this->getParser()->parse($builder, $files);
-        } catch (FilesNotFoundException $e) {
-            throw new \Exception($this->__('PPCPP:EXC-NOFILES'));
-        } catch (\Exception $e) {
-            throw new \Exception($e->getMessage(), 0, $e);
-        }
-
-        if ($progress) {
-            $progress->finish();
-        }
-
-        $projectDescriptor->setPartials($this->partials);
-
-        $output->write($this->__('PPCPP:LOG-STORECACHE', (array) $this->getCache()->getOptions()->getCacheDir()));
-        $projectDescriptor->getSettings()->clearModifiedFlag();
-        $mapper->save($projectDescriptor);
-
-        $output->writeln($this->__('PPCPP:LOG-OK'));
+        $pipeLine = $this->pipeline;
+        $pipeLine($input->getOptions());
 
         return 0;
     }
 
-    /**
-     * Returns the collection of files based on the input and configuration.
-     *
-     * @param InputInterface $input
-     *
-     * @return File[]
-     * @throws \InvalidArgumentException
-     */
-    protected function getFileCollection($input): array
-    {
-        /** @var ConfigurationHelper $configurationHelper */
-        $configurationHelper = $this->getHelper('phpdocumentor_configuration');
-
-        $ignoreHidden = $configurationHelper->getOption($input, 'hidden', 'files/ignore-hidden', 'off');
-        $file_options = (array) $configurationHelper->getOption($input, 'filename', 'files/files', [], true);
-        $directory_options = $configurationHelper->getOption($input, 'directory', 'files/directories', [], true);
-
-        $ignorePaths = array_map(
-            function ($value) {
-                if (substr($value, -1) === '*') {
-                    return substr($value, 0, -1);
-                }
-
-                return $value;
-            },
-            $configurationHelper->getOption($input, 'ignore', 'files/ignore', [], true)
-        );
-
-        //TODO: Fix this, should we support symlinks? Or just print an error here.
-        if ($configurationHelper->getOption($input, 'ignore-symlinks', 'files/ignore-symlinks', 'off') === 'on') {
-            echo 'Symlinks are not supported';
-        }
-
-        $files = [];
-
-        foreach ($file_options as $file) {
-            $files[] = new File\LocalFile($file);
-        }
-
-        foreach ($directory_options as $option) {
-            $files = array_merge(
-                $files,
-                $this->fileCollector->getFiles(
-                    new Dsn('file://' . realpath($option)),
-                    $directory_options,
-                    [
-                        'paths' => $ignorePaths,
-                        'hidden' => $ignoreHidden !== 'off' && $ignoreHidden === false,
-                    ],
-                    $configurationHelper->getOption(
-                        $input,
-                        'extensions',
-                        'parser/extensions',
-                        ['php', 'php3', 'phtml'],
-                        true
-                    )
-                )
-            );
-        }
-
-        return $files;
-    }
-
-    /**
-     * Adds the parser.file.pre event to the advance the progressbar.
-     *
-     * @return Symfony\Component\Console\Helper\HelperInterface|null
-     */
-    protected function getProgressBar(InputInterface $input)
-    {
-        $progress = parent::getProgressBar($input);
-        if (!$progress) {
-            return null;
-        }
-
-        $this->getService('event_dispatcher')->addListener(
-            'parser.file.pre',
-            function (PreFileEvent $event) use ($progress) {
-                $progress->advance();
-            }
-        );
-
-        return $progress;
-    }
 
     /**
      * Translates the provided text and replaces any contained parameters using printf notation.
@@ -373,29 +102,9 @@ class ParseCommand extends Command
      * @return string
      */
     // @codingStandardsIgnoreStart
-    protected function __($text, $parameters = [])
+    private function __($text, $parameters = [])
     {
         // @codingStandardsIgnoreEnd
         return vsprintf($this->translator->translate($text), $parameters);
-    }
-
-    protected function populateParser(InputInterface $input)
-    {
-        /** @var ConfigurationHelper $configurationHelper */
-        $configurationHelper = $this->getHelper('phpdocumentor_configuration');
-
-        $title = (string) $configurationHelper->getOption($input, 'title', 'title');
-        $this->getBuilder()->getProjectDescriptor()->setName($title ?: 'API Documentation');
-        $parserPopulator = new ParserPopulator();
-        $parserPopulator->populate(
-            $this->getParser(),
-            $input,
-            $configurationHelper
-        );
-    }
-
-    private function getCacheMiddleware(): CacheMiddleware
-    {
-        return $this->getContainer()->get('parser.middleware.cache');
     }
 }
