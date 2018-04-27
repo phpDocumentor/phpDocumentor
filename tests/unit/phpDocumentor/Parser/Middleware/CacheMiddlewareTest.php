@@ -13,6 +13,7 @@
 namespace phpDocumentor\Parser\Middleware;
 
 use Mockery as m;
+use phpDocumentor\Parser\Parser;
 use phpDocumentor\Reflection\File as SourceFile;
 use phpDocumentor\Reflection\Php\Factory\File\CreateCommand;
 use phpDocumentor\Reflection\Php\File;
@@ -61,7 +62,7 @@ final class CacheMiddlewareTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $sourceFile->shouldReceive('path')->andReturn('myFile.php');
         $stategies = m::mock(StrategyContainer::class);
         $command = new CreateCommand($sourceFile, $stategies);
-        $fixture = new CacheMiddleware($poolMock);
+        $fixture = new CacheMiddleware($poolMock, m::mock(Parser::class));
 
         $result = $fixture->execute($command, function () use ($file) {
             return $file;
@@ -107,8 +108,11 @@ final class CacheMiddlewareTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $sourceFile->shouldReceive('md5')
             ->andReturn('NewHash');
         $stategies = m::mock(StrategyContainer::class);
+        $parser = m::mock(Parser::class);
+        $parser->shouldReceive('isForced')->andReturn(false);
+
         $command = new CreateCommand($sourceFile, $stategies);
-        $fixture = new CacheMiddleware($poolMock);
+        $fixture = new CacheMiddleware($poolMock, $parser);
 
         $result = $fixture->execute($command, function () use ($freshFile) {
             return $freshFile;

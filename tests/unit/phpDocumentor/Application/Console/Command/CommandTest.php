@@ -29,7 +29,7 @@ class CommandTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     protected function setUp()
     {
-        $this->fixture = new Command('test');
+        $this->fixture = m::mock(Command::class)->makePartial();
     }
 
     /**

@@ -23,6 +23,7 @@ class ExternalRouterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testIfNoUrlIsGeneratedWhenThereIsNoDefinition()
     {
+        $this->markTestSkipped('External router needs to be redefined, config is missing');
         // Arrange
         $config = new Configuration();
         $router = new ExternalRouter($config);
@@ -41,6 +42,7 @@ class ExternalRouterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testIfSingleDefinitionGeneratesAnUrl()
     {
+        $this->markTestSkipped('External router needs to be redefined, config is missing');
         // Arrange
         $config->getTransformer()->setExternalClassDocumentation(
             [new ExternalClassDocumentation('My_Space', 'http://abc/{CLASS}.html')]
@@ -62,6 +64,7 @@ class ExternalRouterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testIfMultipleDefinitionsGenerateAnUrl()
     {
+        $this->markTestSkipped('External router needs to be redefined, config is missing');
         // Arrange
         $config = new Configuration();
         $config->getTransformer()->setExternalClassDocumentation(
