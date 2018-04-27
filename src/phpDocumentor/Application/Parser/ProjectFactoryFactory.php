@@ -29,6 +29,8 @@ final class ProjectFactoryFactory
             $fileMiddlewares[] = $middelware;
         }
 
+        $fileMiddlewares = array_reverse($fileMiddlewares);
+
         $strategies = [
             new Factory\Argument(new PrettyPrinter()),
             new Factory\Class_(),

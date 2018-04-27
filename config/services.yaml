@@ -151,6 +151,7 @@ services:
 
     phpDocumentor\Parser\Parser:
       public: true
+      lazy:  true
 
     phpDocumentor\Partials\Collection:
       arguments: ['@Parsedown']

@@ -13,6 +13,7 @@
 
 namespace phpDocumentor\Parser\Middleware;
 
+use phpDocumentor\Parser\Parser;
 use phpDocumentor\Reflection\Middleware\Middleware;
 use phpDocumentor\Reflection\Php\Factory\File\CreateCommand;
 use phpDocumentor\Reflection\Php\File;
@@ -33,16 +34,15 @@ final class CacheMiddleware implements Middleware
      */
     private $dataStore;
 
-    private $enabled = true;
+    /**
+     * @var Parser
+     */
+    private $parser;
 
-    public function __construct(Pool $dataStore)
+    public function __construct(Pool $dataStore, Parser $parser)
     {
         $this->dataStore = $dataStore;
-    }
-
-    public function disable()
-    {
-        $this->enabled = false;
+        $this->parser = $parser;
     }
 
     /**
@@ -58,7 +58,7 @@ final class CacheMiddleware implements Middleware
     {
         $itemName = $this->getItemName($command->getFile()->path());
         $item = $this->dataStore->getItem($itemName);
-        if ($item->isMiss() || $this->enabled === false) {
+        if ($item->isMiss() || $this->parser->isForced()) {
             return $this->updateCache($command, $next, $item);
         }
 

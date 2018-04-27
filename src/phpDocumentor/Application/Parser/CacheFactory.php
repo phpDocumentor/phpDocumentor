@@ -13,15 +13,17 @@
 namespace phpDocumentor\Application\Parser;
 
 use phpDocumentor\Parser\Middleware\CacheMiddleware;
+use phpDocumentor\Parser\Parser;
 use Stash\Driver\FileSystem;
 use Stash\Pool;
 
 final class CacheFactory
 {
-    public static function create(): CacheMiddleware
+    public static function create(Parser $parser): CacheMiddleware
     {
         return new CacheMiddleware(
-            new Pool(new FileSystem(['path' => 'build/api-cache']))
+            new Pool(new FileSystem(['path' => 'build/api-cache'])),
+            $parser
         );
     }
 }
