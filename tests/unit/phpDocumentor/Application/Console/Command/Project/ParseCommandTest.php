@@ -12,6 +12,7 @@
 
 namespace phpDocumentor\Application\Console\Command\Project;
 
+use League\Pipeline\PipelineInterface;
 use \Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Application\Console\Command\Helper\ConfigurationHelper;
@@ -43,34 +44,6 @@ class ParseCommandTest extends MockeryTestCase
         $input = new ArrayInput([]);
         $output = new DummyOutput();
 
-        $configurationHelper = m::mock(ConfigurationHelper::class);
-        $configurationHelper->shouldReceive('getName')
-            ->andReturn('phpdocumentor_configuration');
-        $configurationHelper->shouldReceive('setHelperSet');
-        $configurationHelper->shouldReceive('getOption')
-            ->with($input, 'extensions', 'parser/extensions', ['php', 'php3', 'phtml'], true)
-            ->andReturn([]);
-        $configurationHelper->shouldReceive('getOption')
-            ->with($input, 'target', 'parser/target');
-        $configurationHelper->shouldReceive('getOption')
-            ->with($input, m::any(), m::any(), m::any(), m::any())
-            ->andReturn([]);
-        $configurationHelper->shouldReceive('getOption')
-            ->with($input, m::any(), m::any(), m::any())
-            ->andReturn([]);
-        $configurationHelper->shouldReceive('getOption')
-            ->with($input, m::any(), m::any())
-            ->andReturn('Title');
-        $configurationHelper->shouldReceive('getConfigValueFromPath')
-            ->andReturn([]);
-
-        $loggerHelper = m::mock(LoggerHelper::class);
-        $loggerHelper->shouldReceive('getName')
-            ->andReturn('phpdocumentor_logger');
-        $loggerHelper->shouldReceive('setHelperSet');
-        $loggerHelper->shouldReceive('addOptions');
-        $loggerHelper->shouldReceive('connectOutputToLogging');
-
         $cache = m::mock(Memory::class);
         $cache->shouldReceive('getOptions->setCacheDir')->with(m::type('string'));
         $cache->shouldReceive('getOptions->getCacheDir')->andReturn(sys_get_temp_dir());
@@ -101,22 +74,8 @@ class ParseCommandTest extends MockeryTestCase
             ->andReturn(new ProjectDescriptor('test'));
 
         $command = new ParseCommand(
-            $projectDescriptorBuilder,
-            $parser,
-            m::mock(FileCollector::class),
-            $translator,
-            $cache,
-            new ExampleFinder(),
-            m::mock(\phpDocumentor\Partials\Collection::class)
-        );
-
-        $command->setHelperSet(
-            new HelperSet(
-                [
-                    $configurationHelper,
-                    $loggerHelper,
-                ]
-            )
+            m::mock(PipelineInterface::class),
+            m::mock(\phpDocumentor\Translator\Translator::class)
         );
 
         $command->run($input, $output);

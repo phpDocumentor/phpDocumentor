@@ -287,24 +287,6 @@ class Parser
     }
 
     /**
-     * Extract all filenames from the given collection and output the amount of files.
-     *
-     * @throws FilesNotFoundException if no files were found.
-     * @return string[]
-     */
-    protected function getFilenames(Collection $files)
-    {
-        $paths = $files->getFilenames();
-        if (count($paths) < 1) {
-            throw new FilesNotFoundException();
-        }
-
-        $this->log('Starting to process ' . count($paths) . ' files');
-
-        return $paths;
-    }
-
-    /**
      * Checks if the settings of the project have changed and forces a complete rebuild if they have.
      */
     private function forceRebuildIfSettingsHaveModified(ProjectDescriptorBuilder $builder)

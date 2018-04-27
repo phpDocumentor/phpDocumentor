@@ -189,7 +189,7 @@ final class Parser
 
         $parser->parse($builder, $files);
 
-        $this->log('PPCPP:LOG-STORECACHE', LogLevel::INFO, ['cacheDir' => $this->getCache()->getOptions()->getCacheDir()]);
+        $this->log('PPCPP:LOG-STORECACHE', LogLevel::INFO, ['cacheDir' => $target]);
         $projectDescriptor->getSettings()->clearModifiedFlag();
         $mapper->save($projectDescriptor);
         $this->log('PPCPP:LOG-OK');
@@ -227,11 +227,7 @@ final class Parser
         );
     }
 
-    /**
-     * @param $apiConfig
-     * @return int|null
-     */
-    private function getVisibility($apiConfig)
+    private function getVisibility(array $apiConfig): ?int
     {
         $visibilities = $apiConfig['visibility'];
         $visibility = null;

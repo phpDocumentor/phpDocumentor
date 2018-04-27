@@ -14,7 +14,7 @@ namespace phpDocumentor\Application\Console\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand as BaseCommand;
 use Symfony\Component\Console\Helper\HelperSet;
-use Symfony\Component\Console\Helper\ProgressHelper;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -59,7 +59,7 @@ abstract class Command extends BaseCommand
      *
      * With this helper it is possible to display a progress bar and make it fill.
      *
-     * @return ProgressHelper
+     * @return ProgressBar
      */
     protected function getProgressBar(InputInterface $input)
     {

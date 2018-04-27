@@ -61,8 +61,10 @@ if (!class_exists(\Pimple\Container::class, false)) {
             if ( ! $this->container->has('phpdocumentor.compatibility.extra_commands')) {
                 $this->container->set('phpdocumentor.compatibility.extra_commands', new \ArrayObject());
             }
+            /** @var \ArrayObject $commands */
+            $commands = $this->container->get('phpdocumentor.compatibility.extra_commands');
 
-            $this->container->get('phpdocumentor.compatibility.extra_commands')->append($command);
+            $commands->append($command);
         }
     }
 }

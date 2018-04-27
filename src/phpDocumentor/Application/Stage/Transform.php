@@ -185,7 +185,7 @@ final class Transform
      *
      * @return StorageInterface
      */
-    protected function getCache(): StorageInterface
+    private function getCache(): StorageInterface
     {
         return $this->cache;
     }
@@ -199,8 +199,6 @@ final class Transform
      */
     private function connectOutputToEvents(OutputInterface $output)
     {
-        $this->getHelper('phpdocumentor_logger')->connectOutputToLogging($output, $this);
-
         Dispatcher::getInstance()->addListener(
             Transformer::EVENT_PRE_TRANSFORM,
             function (PreTransformEvent $event) use ($output) {

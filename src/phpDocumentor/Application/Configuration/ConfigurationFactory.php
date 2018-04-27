@@ -56,10 +56,6 @@ final class ConfigurationFactory
         $this->middlewares = $middlewares;
     }
 
-    /**
-     * @param Strategy[] $strategies
-     * @return ConfigurationFactory
-     */
     public static function createInstance(iterable $strategiesBuilder): self
     {
         $strategies = [];

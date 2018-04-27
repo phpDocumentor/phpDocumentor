@@ -11,15 +11,11 @@
 
 namespace phpDocumentor\Transformer\Router;
 
-use phpDocumentor\Configuration;
-
 /**
  * Connects class, interface and traits to remote documentation sets.
  */
 class ExternalRouter extends RouterAbstract
 {
-    /** @var Configuration */
-    protected $configuration;
 
 //    /**
 //     * Registers the application configuration with this router.
