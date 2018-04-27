@@ -112,6 +112,9 @@ final class EnvironmentContext implements Context\Context
     {
         $argumentsString .= ' --template=xml';
         $argumentsString = strtr($argumentsString, ['\'' => '"']);
+        if ($this->process->isStarted()) {
+            $this->process->clearErrorOutput()->clearOutput();
+        }
 //      the app is always run in debug mode to catch debug information and collect the AST that is written to disk
         $this->process->setCommandLine(
             sprintf('%s %s %s', 'php', escapeshellarg($this->binaryPath), 'run ' . $argumentsString . ' -vvv')
@@ -137,7 +140,7 @@ final class EnvironmentContext implements Context\Context
      */
     public function theOutputContains($regex)
     {
-        if (!strpos($this->process->getOutput(), $regex)) {
+        if (!strpos($this->process->getErrorOutput(), $regex)) {
             throw new \Exception(
                 sprintf('output doesn\'t match "%s"', $regex)
             );
@@ -150,7 +153,7 @@ final class EnvironmentContext implements Context\Context
      */
     public function theOutputContainNot($regex)
     {
-        if (strpos($this->process->getOutput(), $regex)) {
+        if (strpos($this->process->getErrorOutput(), $regex)) {
             throw new \Exception(
                 sprintf('output contains "%s", which was not expected', $regex)
             );
