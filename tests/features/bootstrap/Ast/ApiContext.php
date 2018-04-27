@@ -61,7 +61,7 @@ class ApiContext extends BaseContext implements Context
         foreach ($ast->getFiles() as $file) {
             foreach ($file->getClasses() as $classDescriptor) {
                 if ($classDescriptor->getName() === $className) {
-                    throw new \Exception('Found un expected class');
+                    throw new \Exception('Found unexpected class');
                 }
             }
         }
