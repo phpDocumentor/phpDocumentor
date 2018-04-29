@@ -12,6 +12,7 @@
 namespace phpDocumentor\Transformer\Template;
 
 use JMS\Serializer\Serializer;
+use JMS\Serializer\SerializerInterface;
 use phpDocumentor\Transformer\Template;
 
 class Factory
@@ -27,9 +28,9 @@ class Factory
     /**
      * Constructs a new template factory with its dependencies.
      *
-     * @param Serializer $serializer Serializer used to convert the XML files to models.
+     * @param SerializerInterface $serializer Serializer used to convert the XML files to models.
      */
-    public function __construct(PathResolver $pathResolver, Serializer $serializer)
+    public function __construct(PathResolver $pathResolver, SerializerInterface $serializer)
     {
         $this->serializer = $serializer;
         $this->pathResolver = $pathResolver;

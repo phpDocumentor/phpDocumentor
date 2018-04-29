@@ -22,7 +22,7 @@ class BaseContext
     /** @var EnvironmentContext */
     private $environmentContext;
 
-    /** @BeforeScenario */
+    /** @BeforeScenario         */
     public function gatherContexts(BeforeScenarioScope $scope)
     {
         $environment = $scope->getEnvironment();

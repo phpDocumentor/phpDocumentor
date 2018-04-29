@@ -46,7 +46,7 @@ class XmlTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Sets up the test suite
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->fs = vfsStream::setup('XmlTest');
         $this->translator = m::mock('phpDocumentor\Translator\Translator');

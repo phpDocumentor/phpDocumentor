@@ -28,7 +28,7 @@ class StandardRouterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Sets up the fixture.
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->elementCollection = new Collection();
 

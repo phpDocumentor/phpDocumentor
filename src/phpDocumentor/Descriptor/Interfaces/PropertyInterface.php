@@ -48,8 +48,6 @@ interface PropertyInterface extends ElementInterface, TypeInterface
 
     /**
      * Sets the types associated with the value(s) for this property.
-     *
-     * @param Type $types
      */
     public function setTypes(Type $types);
 

@@ -20,8 +20,6 @@ interface TraitInterface extends ElementInterface, TypeInterface
 {
     /**
      * Sets the properties associated with this trait.
-     *
-     * @param Collection $properties
      */
     public function setProperties(Collection $properties);
 
@@ -41,8 +39,6 @@ interface TraitInterface extends ElementInterface, TypeInterface
 
     /**
      * Sets all methods belonging to this trait.
-     *
-     * @param Collection $methods
      */
     public function setMethods(Collection $methods);
 

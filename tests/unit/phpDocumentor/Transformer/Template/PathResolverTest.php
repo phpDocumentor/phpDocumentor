@@ -24,7 +24,7 @@ class PathResolverTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Sets up the fixture with mocked dependency.
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->fixture = new PathResolver($this->templatePath);
     }
@@ -102,8 +102,8 @@ class PathResolverTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
             'templatePath' => [
                 'Clean' => [
                     'template.xml' => 'xml',
-                    ],
                 ],
+            ],
             'myFolder' => [
                 'myTemplate' => $template,
             ],

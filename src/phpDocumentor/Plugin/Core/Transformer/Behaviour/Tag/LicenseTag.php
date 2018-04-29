@@ -28,20 +28,20 @@ class LicenseTag
     {
         $licenseMap = [
             '#^\s*(GPL|GNU General Public License)((\s?v?|version)?2)\s*$#i'
-                => 'http://opensource.org/licenses/GPL-2.0',
+            => 'http://opensource.org/licenses/GPL-2.0',
             '#^\s*(GPL|GNU General Public License)((\s?v?|version)?3?)\s*$#i'
-                => 'http://opensource.org/licenses/GPL-3.0',
+            => 'http://opensource.org/licenses/GPL-3.0',
             '#^\s*(LGPL|GNU (Lesser|Library) (General Public License|GPL))'
                 . '((\s?v?|version)?2(\.1)?)\s*$#i'
-                => 'http://opensource.org/licenses/LGPL-2.1',
+            => 'http://opensource.org/licenses/LGPL-2.1',
             '#^\s*(LGPL|GNU (Lesser|Library) (General Public License|GPL))'
                 . '((\s?v?|version)?3?)\s*$#i'
-                => 'http://opensource.org/licenses/LGPL-3.0',
+            => 'http://opensource.org/licenses/LGPL-3.0',
             '#^\s*((new |revised |modified |three-clause |3-clause )BSD'
                 . '( License)?)\s*$#i'
-                => 'http://opensource.org/licenses/BSD-3-Clause',
+            => 'http://opensource.org/licenses/BSD-3-Clause',
             '#^\s*((simplified |two-clause |2-clause |Free)BSD)( License)?\s*$#i'
-                => 'http://opensource.org/licenses/BSD-2-Clause',
+            => 'http://opensource.org/licenses/BSD-2-Clause',
             '#^\s*MIT( License)?\s*$#i' => 'http://opensource.org/licenses/MIT',
         ];
 

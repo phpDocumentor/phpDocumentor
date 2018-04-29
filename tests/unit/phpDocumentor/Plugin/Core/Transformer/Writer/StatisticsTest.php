@@ -33,7 +33,7 @@ class StatisticsTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Sets up the test suite
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->statistics = $this->getMockBuilder('phpDocumentor\Plugin\Core\Transformer\Writer\Statistics')
             ->setMethods(['getDestinationPath'])

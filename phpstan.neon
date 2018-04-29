@@ -3,7 +3,6 @@ parameters:
     - '#Constructor of class phpDocumentor\\Plugin\\Twig\\Extension has an unused parameter \$transformation#'
     - '#Constructor of class phpDocumentor\\Plugin\\Scrybe\\Template\\Mock\\Template has an unused parameter \$templatePath#'
     - '#Call to an undefined method League\\Flysystem\\Filesystem::find()#'
-    - '#Call to an undefined method Symfony\\Component\\Console\\Output\\OutputInterface::writeTimedLog()#'
     - '#Call to an undefined method Zend\\Cache\\Storage\\Adapter\\AdapterOptions::setCacheDir()#'
     - '#PHPDoc tag [a-zA-Z0-9@]+ has invalid value ([a-zA-Z0-9`\.@\s\(\)\{]+): Unexpected token "`", expected TOKEN_IDENTIFIER at offset#'
     - '#Access to an undefined property phpDocumentor\\Descriptor\\Collection::\$[a-z]+#'
@@ -21,5 +20,7 @@ parameters:
     - %currentWorkingDirectory%/src/phpDocumentor/Parser/Command/Project/ParseCommand.php
    # method doesn't exist??? phpDocumentor\Plugin\Scrybe\Converter\ToLatexInterface::setTableOfContents()
     - %currentWorkingDirectory%/src/phpDocumentor/Plugin/Scrybe/Command/Manual/ToLatexCommand.php
+   # exclude scrybe, since this is not a working plugin at the moment
+    - %currentWorkingDirectory%/src/phpDocumentor/Plugin/Scrybe/**/*.php
    # needs adjustment of interface in phpDocumentor/reflection in order to be able to typehint the command
     - %currentWorkingDirectory%/src/phpDocumentor/Parser/Middleware/*.php

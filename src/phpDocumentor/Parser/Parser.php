@@ -16,7 +16,6 @@ use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Event\LogEvent;
-use phpDocumentor\Fileset\Collection;
 use phpDocumentor\Parser\Exception\FilesNotFoundException;
 use phpDocumentor\Reflection\Php\Project;
 use phpDocumentor\Reflection\ProjectFactory;
@@ -284,24 +283,6 @@ class Parser
         $builder->build($project);
 
         return $builder->getProjectDescriptor();
-    }
-
-    /**
-     * Extract all filenames from the given collection and output the amount of files.
-     *
-     * @throws FilesNotFoundException if no files were found.
-     * @return string[]
-     */
-    protected function getFilenames(Collection $files)
-    {
-        $paths = $files->getFilenames();
-        if (count($paths) < 1) {
-            throw new FilesNotFoundException();
-        }
-
-        $this->log('Starting to process ' . count($paths) . ' files');
-
-        return $paths;
     }
 
     /**

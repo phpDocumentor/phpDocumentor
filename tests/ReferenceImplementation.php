@@ -34,7 +34,6 @@ namespace My\Space {
 
     /**
      * @param integer   $param1 Example of a description & with ampersand (&).
-     * @param \stdClass $param2
      * @param string    $param3
      */
     function globalFunction($param1, \stdClass $param2, $param3 = '')

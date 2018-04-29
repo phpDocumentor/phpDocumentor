@@ -29,7 +29,7 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Constructs the fixture with provided mocked dependencies.
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->factoryMock = m::mock('phpDocumentor\Transformer\Template\Factory');
         $this->writerCollectionMock = m::mock('phpDocumentor\Transformer\Writer\Collection');

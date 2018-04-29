@@ -16,7 +16,7 @@ return [
 The parse task uses the source files defined either by -f or -d options and
 generates cache files at the target location.
 HELP
-,
+    ,
     // Parameter descriptions
     'PPCPP:OPT-FILENAME' => 'Comma-separated list of files to parse. The wildcards ? and * are supported',
     'PPCPP:OPT-DIRECTORY' => 'Comma-separated list of directories to (recursively) parse',

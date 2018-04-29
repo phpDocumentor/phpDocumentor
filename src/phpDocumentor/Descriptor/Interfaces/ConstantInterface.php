@@ -20,8 +20,6 @@ interface ConstantInterface extends ElementInterface, TypeInterface
 {
     /**
      * Sets the types that this constant may contain.
-     *
-     * @param Type $types
      */
     public function setTypes(Type $types);
 

@@ -100,21 +100,21 @@ final class ProjectDescriptorMapper
     /**
      * Removes all files in cache that do not occur in the given FileSet Collection.
      */
-    public function garbageCollect(Collection $collection)
+    public function garbageCollect($collection)
     {
-        $projectRoot = $collection->getProjectRoot();
-        $filenames = $collection->getFilenames();
-
-        foreach ($filenames as &$name) {
-            // the cache key contains a path relative to the project root; here we expect absolute paths.
-            $name = self::FILE_PREFIX . md5(substr($name, strlen($projectRoot)));
-        }
-
-        foreach ($this->getCache() as $item) {
-            if (substr($item, 0, strlen(self::FILE_PREFIX)) === self::FILE_PREFIX && !in_array($item, $filenames, true)) {
-                $this->getCache()->removeItem($item);
-            }
-        }
+//        $projectRoot = $collection->getProjectRoot();
+//        $filenames = $collection->getFilenames();
+//
+//        foreach ($filenames as &$name) {
+//            // the cache key contains a path relative to the project root; here we expect absolute paths.
+//            $name = self::FILE_PREFIX . md5(substr($name, strlen($projectRoot)));
+//        }
+//
+//        foreach ($this->getCache() as $item) {
+//            if (substr($item, 0, strlen(self::FILE_PREFIX)) === self::FILE_PREFIX && !in_array($item, $filenames, true)) {
+//                $this->getCache()->removeItem($item);
+//            }
+//        }
     }
 
     private function loadCacheItemAsFile(ProjectDescriptor $projectDescriptor, string $key)

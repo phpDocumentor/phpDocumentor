@@ -44,16 +44,12 @@ final class FlySystemCollector implements FileCollector
         // $paths will come into play later (git pathing feature)... for now, pass empty paths
         $specs = $this->specificationFactory->create([], $ignore, $extensions);
 
-        $fileSystems = [];
-
-        $fileSystems[] = $this->flySystemFactory->create($dsn);
+        $fileSystem = $this->flySystemFactory->create($dsn);
 
         $files = [];
-        foreach ($fileSystems as $fileSystem) {
-            $result = $fileSystem->find($specs);
-            foreach ($result as $file) {
-                $files[] = new FlySystemFile($fileSystem, $file['path']);
-            }
+
+        foreach ($fileSystem->find($specs) as $file) {
+            $files[] = new FlySystemFile($fileSystem, $file['path']);
         }
 
         return $files;

@@ -25,7 +25,7 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Initializes the fixture for this test.
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->fixture = new ServiceProvider();
     }

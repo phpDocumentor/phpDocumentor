@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ This file is part of phpDocumentor.
+  ~
+  ~  For the full copyright and license information, please view the LICENSE
+  ~  file that was distributed with this source code.
+  ~
+  ~  @copyright 2010-2017 Mike van Riel<mike@phpdoc.org>
+  ~  @license   http://www.opensource.org/licenses/mit-license.php MIT
+  ~  @link      http://phpdoc.org
+  -->
+
+<phpdocumentor
+        version="3"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.phpdoc.org"
+        xsi:noNamespaceSchemaLocation="phpdoc.xsd"
+>
+    <paths>
+        <output>file://build/docs</output>
+        <cache>/tmp/phpdoc-doc-cache</cache>
+    </paths>
+    <version number="1.0.0">
+        <folder>latest</folder>
+        <api format="php">
+            <source dsn="file://.">
+                <path>src</path>
+            </source>
+            <ignore hidden="true" symlinks="true">
+                <path>src/ServiceDefinitions.php</path>
+            </ignore>
+            <extensions>
+                <extension>php</extension>
+                <extension>php3</extension>
+                <extension>phtml</extension>
+            </extensions>
+            <visibility>public</visibility>
+            <default-package-name>Default</default-package-name>
+            <markers>
+                <marker>TODO</marker>
+                <marker>FIXME</marker>
+            </markers>
+        </api>
+        <guide format="rst">
+            <source dsn="file://../phpDocumentor/phpDocumentor2">
+                <path>docs</path>
+            </source>
+        </guide>
+    </version>
+</phpdocumentor>

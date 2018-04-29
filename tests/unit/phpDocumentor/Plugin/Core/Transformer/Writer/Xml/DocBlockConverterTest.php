@@ -32,7 +32,7 @@ class DocBlockConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Sets up the fixture with mocked dependencies.
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->tagConverterMock = $this->givenATagConverter();
         $this->routerMock = $this->givenARouter();

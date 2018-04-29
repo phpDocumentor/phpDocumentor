@@ -32,10 +32,8 @@ abstract class TypedAbstract extends TagDescriptor
 
     /**
      * Returns the list of types associated with this tag.
-     *
-     * @return ?Type
      */
-    public function getTypes() /*: ?Type*/
+    public function getTypes(): ?Type
     {
         return $this->types;
     }

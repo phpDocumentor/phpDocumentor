@@ -30,7 +30,7 @@ class FactoryTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Sets up the fixture with mocked dependencies.
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->pathResolverMock = m::mock('phpDocumentor\Transformer\Template\PathResolver');
         $this->serializerMock = m::mock('JMS\Serializer\Serializer');

@@ -79,7 +79,7 @@ class Discover extends Creator
                 // find nearest parent pointer depth-wise
                 $parent_depth = $node->depth - 1;
                 while (!isset($this->entry_pointers[$parent_depth]) && $parent_depth > 0) {
-                    $parent_depth -= 1;
+                    --$parent_depth;
                 }
 
                 $parent = $this->entry_pointers[$parent_depth];

@@ -47,7 +47,7 @@ class ServiceProvider implements ServiceProviderInterface
         $app['partials'] = $partialsCollection;
 
         /** @var Partial[] $partials */
-        $partials = $config->getPartials();
+        $partials = []; //$config->getPartials();
         if ($partials) {
             foreach ($partials as $partial) {
                 if (! $partial->getName()) {

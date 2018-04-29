@@ -38,7 +38,7 @@ class TransformationTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Initializes the fixture and dependencies for this testcase.
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->fixture = new Transformation($this->query, $this->writer, $this->source, $this->artifact);
     }

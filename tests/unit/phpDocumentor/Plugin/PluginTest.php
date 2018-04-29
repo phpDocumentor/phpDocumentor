@@ -26,7 +26,7 @@ class PluginTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Initializes the fixture for this test.
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->fixture = new Plugin(self::EXAMPLE_CLASS_NAME);
     }

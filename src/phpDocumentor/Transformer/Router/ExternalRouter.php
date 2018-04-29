@@ -11,34 +11,29 @@
 
 namespace phpDocumentor\Transformer\Router;
 
-use phpDocumentor\Configuration;
-
 /**
  * Connects class, interface and traits to remote documentation sets.
  */
 class ExternalRouter extends RouterAbstract
 {
-    /** @var Configuration */
-    protected $configuration;
-
-    /**
-     * Registers the application configuration with this router.
-     *
-     * The configuration is used to extract which external routes to add to the application.
-     */
-    public function __construct(Configuration $configuration)
-    {
-        $this->configuration = $configuration;
-
-        parent::__construct();
-    }
+//    /**
+//     * Registers the application configuration with this router.
+//     *
+//     * The configuration is used to extract which external routes to add to the application.
+//     */
+//    public function __construct(Configuration $configuration)
+//    {
+//        $this->configuration = $configuration;
+//
+//        parent::__construct();
+//    }
 
     /**
      * Configuration function to add routing rules to a router.
      */
     public function configure()
     {
-        $docs = $this->configuration->getTransformer()->getExternalClassDocumentation();
+        $docs = []; //$this->configuration->getTransformer()->getExternalClassDocumentation();
         foreach ($docs as $external) {
             $prefix = (string) $external->getPrefix();
             $uri = (string) $external->getUri();
