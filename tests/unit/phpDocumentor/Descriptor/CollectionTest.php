@@ -186,12 +186,12 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testIfExistingElementsAreDetected()
     {
-        $this->assertFalse(isset($this->fixture[0]));
+        $this->assertArrayNotHasKey(0, $this->fixture);
         $this->assertFalse($this->fixture->offsetExists(0));
 
         $this->fixture[0] = 'abc';
 
-        $this->assertTrue(isset($this->fixture[0]));
+        $this->assertArrayHasKey(0, $this->fixture);
         $this->assertTrue($this->fixture->offsetExists(0));
     }
 
