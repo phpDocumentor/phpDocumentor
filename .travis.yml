@@ -34,7 +34,7 @@ jobs:
       services:
         - docker
       script:
-        - docker-compose run --rm esc
+        - docker-compose run --rm ecs
         - docker-compose run --rm phpstan
 
     - stage: release
