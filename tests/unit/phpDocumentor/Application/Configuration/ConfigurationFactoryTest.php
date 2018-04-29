@@ -12,8 +12,8 @@
 
 namespace phpDocumentor\Application\Configuration;
 
-use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
+use Mockery as m;
 use org\bovigo\vfs\vfsStream;
 use phpDocumentor\Application\Configuration\Factory\Strategy;
 use phpDocumentor\DomainModel\Uri;

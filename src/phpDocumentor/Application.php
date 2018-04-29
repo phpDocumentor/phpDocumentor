@@ -12,39 +12,13 @@
 namespace phpDocumentor;
 
 use Cilex\Application as Cilex;
-use phpDocumentor\Application\Console\Command\Project\RunCommand;
+use phpDocumentor\Event\Dispatcher;
+use phpDocumentor\Event\LogEvent;
 use phpDocumentor\Parser\Event\PreFileEvent;
 use phpDocumentor\Translator\Translator;
 use Psr\Container\ContainerInterface;
-use Psr\Log\LogLevel;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Composer\Autoload\ClassLoader;
-use League\Pipeline\Pipeline;
-use Monolog\ErrorHandler;
-use Monolog\Handler\NullHandler;
-use Monolog\Handler\StreamHandler;
-use Monolog\Logger;
-use phpDocumentor\Application\Stage\Transform;
-use phpDocumentor\Event\Dispatcher;
-use phpDocumentor\Parser\ServiceProvider;
-use Pimple\Container;
-use phpDocumentor\Application\Configuration\ConfigurationFactory;
-use phpDocumentor\Application\Configuration\Factory\Version2;
-use phpDocumentor\Application\Configuration\Factory\Version3;
-use phpDocumentor\Application\Console\Command\Helper\ConfigurationHelper;
-use phpDocumentor\Application\Console\Command\Helper\LoggerHelper;
-use phpDocumentor\Application\Console\Command\Project\ParseCommand;
-use phpDocumentor\Application\Console\Command\Project\TransformCommand;
-use phpDocumentor\Application\Console\Command\Template\ListCommand;
-use phpDocumentor\Application\Stage\Configure;
-use phpDocumentor\Application\Stage\Parser as ParserStage;
-use phpDocumentor\DomainModel\Uri;
-use phpDocumentor\Event\LogEvent;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Console\Application as ConsoleApplication;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Stopwatch\Stopwatch;
+use Psr\Log\LogLevel;
 
 /**
  * Application class for phpDocumentor.
@@ -75,7 +49,7 @@ class Application extends Cilex
             }
         );
 
-        Dispatcher::getInstance()->addListener('system.log', function(LogEvent $e) use ($logger, $translator) {
+        Dispatcher::getInstance()->addListener('system.log', function (LogEvent $e) use ($logger, $translator) {
             $logger->log($e->getPriority(), $translator->translate($e->getMessage()), $e->getContext());
         });
 
@@ -122,7 +96,7 @@ class Application extends Cilex
     protected function setTimezone()
     {
         if (false === ini_get('date.timezone')
-            || (version_compare(phpversion(), '5.4.0', '<') && false === getenv('TZ'))
+            || (version_compare(PHP_VERSION, '5.4.0', '<') && false === getenv('TZ'))
         ) {
             date_default_timezone_set('UTC');
         }

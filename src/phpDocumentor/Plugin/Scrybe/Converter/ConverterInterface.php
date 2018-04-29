@@ -86,8 +86,6 @@ interface ConverterInterface
 
     /**
      * Optionally set a logger for this converter.
-     *
-     * @param Logger $logger
      */
     public function setLogger(Logger $logger);
 }

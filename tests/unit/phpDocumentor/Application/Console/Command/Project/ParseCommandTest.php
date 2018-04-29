@@ -12,17 +12,12 @@
 
 namespace phpDocumentor\Application\Console\Command\Project;
 
-use League\Pipeline\PipelineInterface;
 use \Mockery as m;
+use League\Pipeline\PipelineInterface;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
-use phpDocumentor\Application\Console\Command\Helper\ConfigurationHelper;
-use phpDocumentor\Application\Console\Command\Helper\LoggerHelper;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
-use phpDocumentor\DomainModel\Parser\FileCollector;
 use phpDocumentor\Parser\Parser;
-use phpDocumentor\Reflection\DocBlock\ExampleFinder;
-use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Tests\Fixtures\DummyOutput;
 use Zend\Cache\Storage\Adapter\Memory;

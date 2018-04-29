@@ -27,9 +27,9 @@ final class Version3Test extends TestCase
     /** @var Version3 */
     private $strategy;
 
-    public function setUp()
+    protected function setUp()
     {
-        $this->strategy   = new Version3(__DIR__ . '/../../../../../../data/xsd/phpdoc.xsd');
+        $this->strategy = new Version3(__DIR__ . '/../../../../../../data/xsd/phpdoc.xsd');
         $this->dataFolder = __DIR__ . '/../../../../data/';
     }
 
@@ -166,11 +166,6 @@ XML;
         $this->assertTrue($bool);
     }
 
-    /**
-     * @param string $file
-     *
-     * @return \SimpleXMLElement
-     */
     private function givenXmlFromFile(string $file): \SimpleXMLElement
     {
         return new \SimpleXMLElement($this->dataFolder . $file, 0, true);

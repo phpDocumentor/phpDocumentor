@@ -16,7 +16,6 @@ namespace phpDocumentor\Transformer\Router;
  */
 class ExternalRouter extends RouterAbstract
 {
-
 //    /**
 //     * Registers the application configuration with this router.
 //     *
@@ -34,7 +33,7 @@ class ExternalRouter extends RouterAbstract
      */
     public function configure()
     {
-        $docs = [];//$this->configuration->getTransformer()->getExternalClassDocumentation();
+        $docs = []; //$this->configuration->getTransformer()->getExternalClassDocumentation();
         foreach ($docs as $external) {
             $prefix = (string) $external->getPrefix();
             $uri = (string) $external->getUri();

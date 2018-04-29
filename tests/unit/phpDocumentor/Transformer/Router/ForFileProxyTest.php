@@ -24,7 +24,7 @@ class ForFileProxyTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Initializes the fixture with mocked dependencies.
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->ruleMock = m::mock('phpDocumentor\Transformer\Router\Rule');
         $this->fixture = new ForFileProxy($this->ruleMock);

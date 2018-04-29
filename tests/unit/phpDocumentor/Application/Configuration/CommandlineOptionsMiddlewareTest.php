@@ -26,17 +26,16 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
     /** @var CommandlineOptionsMiddleware */
     private $middleware;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->middleware = new CommandlineOptionsMiddleware();
     }
 
     /**
-     * @test
      * @covers ::provideOptions
      * @covers ::__invoke
      */
-    public function itShouldOverwriteTheDestinationFolderBasedOnTheTargetOption()
+    public function testItShouldOverwriteTheDestinationFolderBasedOnTheTargetOption()
     {
         $expected = '/abc';
         $configuration = ['phpdocumentor' => ['paths' => ['output' => '/tmp']]];
@@ -47,11 +46,10 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
     }
 
     /**
-     * @test
      * @covers ::provideOptions
      * @covers ::__invoke
      */
-    public function itShouldOverwriteTheCacheFolderBasedOnTheCacheFolderOption()
+    public function testItShouldOverwriteTheCacheFolderBasedOnTheCacheFolderOption()
     {
         $expected = '/abc';
         $configuration = ['phpdocumentor' => ['paths' => ['cache' => '/tmp']]];
@@ -62,11 +60,10 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
     }
 
     /**
-     * @test
      * @covers ::provideOptions
      * @covers ::__invoke
      */
-    public function itShouldDisableTheCacheBasedOnTheForceOption()
+    public function testItShouldDisableTheCacheBasedOnTheForceOption()
     {
         $configuration = ['phpdocumentor' => ['use-cache' => true]];
         $this->middleware->provideOptions(['force' => true]);
@@ -76,11 +73,10 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
     }
 
     /**
-     * @test
      * @covers ::provideOptions
      * @covers ::__invoke
      */
-    public function itShouldOverrideTheTitleBasedOnTheTitleOption()
+    public function testItShouldOverrideTheTitleBasedOnTheTitleOption()
     {
         $expected = 'phpDocumentor3';
         $configuration = ['phpdocumentor' => ['title' => 'phpDocumentor2']];
@@ -91,11 +87,10 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
     }
 
     /**
-     * @test
      * @covers ::provideOptions
      * @covers ::__invoke
      */
-    public function itShouldOverrideTheListOfTemplatesBasedOnTheTemplateOption()
+    public function testItShouldOverrideTheListOfTemplatesBasedOnTheTemplateOption()
     {
         $expected = 'clean';
         $configuration = ['phpdocumentor' => ['templates' => ['responsive']]];

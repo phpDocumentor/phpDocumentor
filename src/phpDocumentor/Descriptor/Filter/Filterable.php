@@ -20,8 +20,6 @@ interface Filterable
 {
     /**
      * Sets a list of errors on the associated element.
-     *
-     * @param Collection $errors
      */
     public function setErrors(Collection $errors);
 }

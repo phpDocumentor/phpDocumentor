@@ -8,7 +8,6 @@
  *  @copyright 2010-${YEAR} Mike van Riel<mike@phpdoc.org>
  *  @license   http://www.opensource.org/licenses/mit-license.php MIT
  *  @link      http://phpdoc.org
- *
  */
 
 namespace phpDocumentor\Descriptor\Cache;
@@ -30,7 +29,7 @@ final class ProjectDescriptorMapperTest extends \Mockery\Adapter\Phpunit\Mockery
     /** @var StorageInterface */
     private $cacheDriver;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->cacheDriver = new Memory();
         $this->mapper = new ProjectDescriptorMapper($this->cacheDriver);

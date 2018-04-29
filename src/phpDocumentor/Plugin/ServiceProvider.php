@@ -12,7 +12,7 @@ class ServiceProvider implements ServiceProviderInterface
     {
         /** @var ApplicationConfiguration $config */
         $config = $app['config'];
-        $plugins = [];//$config->getPlugins();
+        $plugins = []; //$config->getPlugins();
 
         if (! $plugins) {
             $app->register(new Core\ServiceProvider());

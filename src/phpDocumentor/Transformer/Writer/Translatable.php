@@ -27,8 +27,6 @@ interface Translatable
 
     /**
      * Sets a new object capable of translating strings on this writer.
-     *
-     * @param Translator $translator
      */
     public function setTranslator(Translator $translator);
 }

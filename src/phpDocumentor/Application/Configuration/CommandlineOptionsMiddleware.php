@@ -55,34 +55,26 @@ final class CommandlineOptionsMiddleware
         return $configuration;
     }
 
-    /**
-     * @return array
-     */
     public function createDefaultApiSettings(): array
     {
         return [[
-            'format'               => 'php',
-            'source'               => [
-                'dsn'   => 'file://.',
-                'paths' => [new Path('.')]
+            'format' => 'php',
+            'source' => [
+                'dsn' => 'file://.',
+                'paths' => [new Path('.')],
             ],
-            'ignore'               => [
-                'hidden'   => true,
+            'ignore' => [
+                'hidden' => true,
                 'symlinks' => true,
-                'paths'    => [],
+                'paths' => [],
             ],
-            'extensions'           => ['php', 'php3', 'phtml'],
-            'visibility'           => 'public',
+            'extensions' => ['php', 'php3', 'phtml'],
+            'visibility' => 'public',
             'default-package-name' => 'phpDocumentor',
-            'markers'              => ['TODO', 'FIXME']
+            'markers' => ['TODO', 'FIXME'],
         ]];
     }
 
-    /**
-     * @param array $version
-     *
-     * @return array
-     */
     private function setFilesInPath(array $version): array
     {
         if (! isset($this->options['filename']) || ! $this->options['filename']) {
@@ -103,11 +95,6 @@ final class CommandlineOptionsMiddleware
         return $version;
     }
 
-    /**
-     * @param array $version
-     *
-     * @return array
-     */
     private function setDirectoriesInPath(array $version): array
     {
         if (! isset($this->options['directory']) || ! $this->options['directory']) {
@@ -128,11 +115,6 @@ final class CommandlineOptionsMiddleware
         return $version;
     }
 
-    /**
-     * @param array $version
-     *
-     * @return array
-     */
     private function overwriteIgnoredPaths(array $version): array
     {
         if (! isset($this->options['ignore']) || ! $this->options['ignore']) {
@@ -153,11 +135,6 @@ final class CommandlineOptionsMiddleware
         return $version;
     }
 
-    /**
-     * @param array $version
-     *
-     * @return array
-     */
     private function registerExtensions(array $version): array
     {
         if (!isset($this->options['extensions']) || ! $this->options['extensions']) {
@@ -174,8 +151,6 @@ final class CommandlineOptionsMiddleware
     }
 
     /**
-     * @param array $configuration
-     *
      * @return array
      */
     private function overwriteDestinationFolder(array $configuration)
@@ -187,11 +162,6 @@ final class CommandlineOptionsMiddleware
         return $configuration;
     }
 
-    /**
-     * @param array $configuration
-     *
-     * @return array
-     */
     private function overwriteCacheFolder(array $configuration): array
     {
         if (isset($this->options['cache-folder']) && $this->options['cache-folder']) {
@@ -201,11 +171,6 @@ final class CommandlineOptionsMiddleware
         return $configuration;
     }
 
-    /**
-     * @param array $version
-     *
-     * @return array
-     */
     private function overwriteMarkers(array $version): array
     {
         if (! isset($this->options['markers']) || ! $this->options['markers']) {
@@ -221,11 +186,6 @@ final class CommandlineOptionsMiddleware
         return $version;
     }
 
-    /**
-     * @param array $version
-     *
-     * @return array
-     */
     private function overwriteVisibility(array $version): array
     {
         if (! isset($this->options['visibility']) || ! $this->options['visibility']) {
@@ -241,11 +201,6 @@ final class CommandlineOptionsMiddleware
         return $version;
     }
 
-    /**
-     * @param array $version
-     *
-     * @return array
-     */
     private function overwriteDefaultPackageName(array $version): array
     {
         if (! isset($this->options['defaultpackagename']) || ! $this->options['defaultpackagename']) {
@@ -261,11 +216,6 @@ final class CommandlineOptionsMiddleware
         return $version;
     }
 
-    /**
-     * @param array $configuration
-     *
-     * @return array
-     */
     private function overwriteTitle(array $configuration): array
     {
         if (isset($this->options['title']) && $this->options['title']) {
@@ -285,7 +235,7 @@ final class CommandlineOptionsMiddleware
     private function overwriteTemplates(array $configuration)
     {
         if (isset($this->options['template']) && $this->options['template']) {
-            $configuration['phpdocumentor']['templates'] = (array)$this->options['template'];
+            $configuration['phpdocumentor']['templates'] = (array) $this->options['template'];
         }
 
         return $configuration;

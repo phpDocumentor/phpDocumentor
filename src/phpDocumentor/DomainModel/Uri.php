@@ -56,8 +56,6 @@ final class Uri
      * Checks if the provided uri is equal to the current uri.
      *
      * @param Uri $other
-     *
-     * @return bool
      */
     public function equals($other): bool
     {
@@ -70,7 +68,6 @@ final class Uri
      * @param string $uri
      *
      * @throws \InvalidArgumentException if $uri is not a string.
-     * @return void
      */
     private function validateString($uri)
     {
@@ -85,7 +82,6 @@ final class Uri
      * @param string $uri
      *
      * @throws \InvalidArgumentException if $uri is not a valid uri.
-     * @return void
      */
     private function validateUri($uri)
     {
@@ -99,8 +95,6 @@ final class Uri
      * If no scheme is found, it is assumed that a local path is used, and file:// is prepended.
      *
      * @param string $uri
-     *
-     * @return string
      */
     private function addFileSchemeWhenSchemeIsAbsent($uri): string
     {

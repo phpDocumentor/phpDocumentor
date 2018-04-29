@@ -39,7 +39,7 @@ class CheckStyleTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Sets up the test suite
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->translator = m::mock('phpDocumentor\Translator\Translator');
         $this->checkStyle = new Checkstyle();

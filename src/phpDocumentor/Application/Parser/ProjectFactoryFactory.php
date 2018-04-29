@@ -8,7 +8,6 @@
  *  @copyright 2010-${YEAR} Mike van Riel<mike@phpdoc.org>
  *  @license   http://www.opensource.org/licenses/mit-license.php MIT
  *  @link      http://phpdoc.org
- *
  */
 
 namespace phpDocumentor\Application\Parser;
@@ -24,8 +23,7 @@ final class ProjectFactoryFactory
     public static function create(iterable $fileMiddlewaresBuilder)
     {
         $fileMiddlewares = [];
-        foreach ($fileMiddlewaresBuilder as $middelware)
-        {
+        foreach ($fileMiddlewaresBuilder as $middelware) {
             $fileMiddlewares[] = $middelware;
         }
 
@@ -47,7 +45,6 @@ final class ProjectFactoryFactory
             ),
         ];
 
-        return  new ProjectFactory($strategies);
+        return new ProjectFactory($strategies);
     }
-
 }

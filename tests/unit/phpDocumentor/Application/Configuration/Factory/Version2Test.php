@@ -21,7 +21,6 @@ use PHPUnit\Framework\TestCase;
  */
 final class Version2Test extends TestCase
 {
-
     /**
      * @covers ::convert
      * @covers ::<private>
@@ -31,7 +30,7 @@ final class Version2Test extends TestCase
         $xml = new \SimpleXMLElement(__DIR__ . '/../../../../data/phpdoc.tpl.xml', 0, true);
 
         $version2 = new Version2();
-        $array          = $version2->convert($xml);
+        $array = $version2->convert($xml);
 
         $this->assertEquals(Version2ExpectedArray::getDefaultArray(), $array);
     }
@@ -43,7 +42,7 @@ final class Version2Test extends TestCase
      */
     public function testItOnlyAcceptsAllowedXmlStructure()
     {
-        $xml  = <<<XML
+        $xml = <<<XML
 <?xml version="1.0" encoding="UTF-8" ?>
 <foo>
 </foo>
@@ -81,7 +80,7 @@ XML;
         );
 
         $version2 = new Version2();
-        $array          = $version2->convert($xml);
+        $array = $version2->convert($xml);
 
         $this->assertEquals(Version2ExpectedArray::getDefaultArray(), $array);
     }
@@ -99,7 +98,7 @@ XML;
         );
 
         $version2 = new Version2();
-        $array          = $version2->convert($xml);
+        $array = $version2->convert($xml);
 
         $this->assertEquals(Version2ExpectedArray::getArrayWithMultipleIgnorePaths(), $array);
     }

@@ -1,6 +1,6 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
 
 namespace Pimple;
 
@@ -58,7 +58,7 @@ if (!class_exists(\Pimple\Container::class, false)) {
 
         public function command(Command $command)
         {
-            if ( ! $this->container->has('phpdocumentor.compatibility.extra_commands')) {
+            if (! $this->container->has('phpdocumentor.compatibility.extra_commands')) {
                 $this->container->set('phpdocumentor.compatibility.extra_commands', new \ArrayObject());
             }
             /** @var \ArrayObject $commands */

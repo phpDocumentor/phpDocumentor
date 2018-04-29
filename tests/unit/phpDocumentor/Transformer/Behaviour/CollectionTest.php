@@ -24,7 +24,7 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Initializes a bare fixture to test against.
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->fixture = new Collection();
     }

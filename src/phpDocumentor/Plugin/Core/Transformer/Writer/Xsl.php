@@ -81,7 +81,7 @@ class Xsl extends WriterAbstract implements Routable
      * @param Transformation    $transformation Transformation to execute.
      *
      * @throws \RuntimeException if the structure.xml file could not be found.
-     * @throws Exception        if the structure.xml file's documentRoot could not be read because of encoding issues
+     * @throws Exception if the structure.xml file's documentRoot could not be read because of encoding issues
      *    or because it was absent.
      */
     public function transform(ProjectDescriptor $project, Transformation $transformation)

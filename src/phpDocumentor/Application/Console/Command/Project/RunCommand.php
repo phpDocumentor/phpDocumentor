@@ -14,13 +14,10 @@ namespace phpDocumentor\Application\Console\Command\Project;
 use League\Pipeline\Pipeline;
 use phpDocumentor\Application\Console\Command\Command;
 use phpDocumentor\Application\Stage\Configure;
-use phpDocumentor\Application\Stage\Parser;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
-use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Parse and transform the given directory (-d|-f) to the given location (-t).
@@ -45,6 +42,7 @@ class RunCommand extends Command
      * @var ProjectDescriptorBuilder
      */
     private $projectDescriptorBuilder;
+
     /**
      * @var Pipeline
      */
@@ -250,9 +248,7 @@ HELP
         $pipeLine($input->getOptions());
 
         if ($output->getVerbosity() === OutputInterface::VERBOSITY_DEBUG) {
-            /** @var ProjectDescriptorBuilder $descriptorBuilder */
-            $descriptorBuilder = $this->getService('descriptor.builder');
-            file_put_contents('ast.dump', serialize($descriptorBuilder->getProjectDescriptor()));
+            file_put_contents('ast.dump', serialize($this->projectDescriptorBuilder->getProjectDescriptor()));
         }
 
         return 0;

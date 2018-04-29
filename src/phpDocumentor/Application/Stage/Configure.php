@@ -12,8 +12,8 @@
 
 namespace phpDocumentor\Application\Stage;
 
-use phpDocumentor\Application\Configuration\ConfigurationFactory;
 use phpDocumentor\Application\Configuration\CommandlineOptionsMiddleware;
+use phpDocumentor\Application\Configuration\ConfigurationFactory;
 
 final class Configure
 {
@@ -24,7 +24,6 @@ final class Configure
 
     /**
      * Configure constructor.
-     * @param ConfigurationFactory $configFactory
      */
     public function __construct(ConfigurationFactory $configFactory)
     {

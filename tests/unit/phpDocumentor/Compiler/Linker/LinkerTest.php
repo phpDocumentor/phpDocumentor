@@ -255,8 +255,8 @@ class LinkerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         // prepare linker
         $linker = new Linker(
             [
-                 $fqsen => [$fieldName],
-                 $childFqsen => [$childFieldName],
+                $fqsen => [$fieldName],
+                $childFqsen => [$childFieldName],
             ]
         );
         $linker->setObjectAliasesList([$childFqsen => $result]);
@@ -289,8 +289,8 @@ class LinkerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         // prepare linker
         $linker = new Linker(
             [
-                 $fqsen => [$fieldName],
-                 $childFqsen => [$childFieldName],
+                $fqsen => [$fieldName],
+                $childFqsen => [$childFieldName],
             ]
         );
         $linker->setObjectAliasesList([$childFqsen => $result]);

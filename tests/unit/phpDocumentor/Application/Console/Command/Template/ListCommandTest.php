@@ -13,7 +13,6 @@
 namespace phpDocumentor\Application\Console\Command\Template;
 
 use Mockery as m;
-use phpDocumentor\Application\Console\Command\Template\ListCommand;
 use phpDocumentor\Transformer\Template\Factory;
 use Symfony\Component\Console\Tester\CommandTester;
 

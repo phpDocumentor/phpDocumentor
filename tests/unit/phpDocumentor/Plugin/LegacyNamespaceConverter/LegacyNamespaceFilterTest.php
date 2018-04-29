@@ -30,7 +30,7 @@ class LegacyNamespaceFilterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Initializes the fixture and mocks any dependencies.
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->builderMock = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
         $this->filter = new LegacyNamespaceFilter($this->builderMock);

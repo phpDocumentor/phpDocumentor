@@ -22,9 +22,6 @@ interface SpecificationFactory
     /**
      * Creates a SpecificationInterface object based on the ignore and extension parameters.
      *
-     * @param array $paths
-     * @param array $ignore
-     * @param array $extensions
      * @return SpecificationInterface
      */
     public function create(array $paths, array $ignore, array $extensions);

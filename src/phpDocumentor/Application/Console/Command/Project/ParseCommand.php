@@ -29,6 +29,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ParseCommand extends Command
 {
     private $pipeline;
+
     /**
      * @var Translator
      */
@@ -91,7 +92,6 @@ class ParseCommand extends Command
 
         return 0;
     }
-
 
     /**
      * Translates the provided text and replaces any contained parameters using printf notation.

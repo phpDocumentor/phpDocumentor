@@ -35,10 +35,10 @@ use Zend\Cache\Storage\StorageInterface;
 final class Parser
 {
     /** @var ProjectDescriptorBuilder $builder */
-    protected $builder;
+    private $builder;
 
     /** @var DocParser $parser */
-    protected $parser;
+    private $parser;
 
     /** @var StorageInterface */
     private $cache;
@@ -47,10 +47,12 @@ final class Parser
      * @var ExampleFinder
      */
     private $exampleFinder;
+
     /**
      * @var PartialsCollection
      */
     private $partials;
+
     /**
      * @var FileCollector
      */
@@ -63,13 +65,6 @@ final class Parser
 
     /**
      * ParseCommand constructor.
-     * @param ProjectDescriptorBuilder $builder
-     * @param DocParser $parser
-     * @param FileCollector $fileCollector
-     * @param StorageInterface $cache
-     * @param ExampleFinder $exampleFinder
-     * @param PartialsCollection $partials
-     * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(
         ProjectDescriptorBuilder $builder,
@@ -89,17 +84,11 @@ final class Parser
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    /**
-     * @return ProjectDescriptorBuilder
-     */
     private function getBuilder(): ProjectDescriptorBuilder
     {
         return $this->builder;
     }
 
-    /**
-     * @return DocParser
-     */
     private function getParser(): DocParser
     {
         return $this->parser;
@@ -108,7 +97,6 @@ final class Parser
     /**
      * Returns the Cache.
      *
-     * @return StorageInterface
      * @throws \InvalidArgumentException
      */
     private function getCache(): StorageInterface
@@ -119,7 +107,6 @@ final class Parser
     /**
      * Executes the business logic involved with this command.
      *
-     * @param array $configuration
      * @return array
      * @throws \Exception if the target location is not a folder.
      */
@@ -155,7 +142,6 @@ final class Parser
         $parser->setValidate($apiConfig['validate']);
         $parser->setDefaultPackageName($apiConfig['default-package-name']);
 
-
         $builder = $this->getBuilder();
         $builder->createProjectDescriptor();
         $projectDescriptor = $builder->getProjectDescriptor();
@@ -183,7 +169,6 @@ final class Parser
         $this->log('PPCPP:LOG-OK');
         $this->log('PPCPP:LOG-INITIALIZING');
 
-
         $this->log('PPCPP:LOG-OK');
         $this->log('PPCPP:LOG-PARSING');
 
@@ -199,9 +184,6 @@ final class Parser
 
     /**
      * Returns the collection of files based on the input and configuration.
-     *
-     * @param array $apiConfig
-     * @return array
      */
     private function getFileCollection(array $apiConfig): array
     {
@@ -221,7 +203,7 @@ final class Parser
             $apiConfig['source']['paths'],
             [
                 'paths' => $ignorePaths,
-                'hidden' => $apiConfig['ignore']['hidden']
+                'hidden' => $apiConfig['ignore']['hidden'],
             ],
             $apiConfig['extensions']
         );
@@ -253,10 +235,8 @@ final class Parser
      * @param string   $message  The message to log.
      * @param string   $priority The logging priority as declared in the LogLevel PSR-3 class.
      * @param string[] $parameters
-     *
-     * @return void
      */
-    private function log($message, $priority = LogLevel::INFO, $parameters = array())
+    private function log($message, $priority = LogLevel::INFO, $parameters = [])
     {
         $this->eventDispatcher->dispatch(
             'system.log',

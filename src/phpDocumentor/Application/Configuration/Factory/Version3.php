@@ -29,8 +29,6 @@ final class Version3 implements Strategy
 
     /**
      * Initializes the PhpDocumentor3 strategy.
-     *
-     * @param string $schemaPath
      */
     public function __construct(string $schemaPath)
     {
@@ -44,7 +42,7 @@ final class Version3 implements Strategy
     {
         $this->validate($phpDocumentor);
 
-        $versions  = [];
+        $versions = [];
         $templates = [];
 
         foreach ($phpDocumentor->children() as $child) {
@@ -63,11 +61,11 @@ final class Version3 implements Strategy
         $phpdoc3Array = [
             'phpdocumentor' => [
                 'use-cache' => $phpDocumentor->{'use-cache'} ?: true,
-                'paths'     => [
+                'paths' => [
                     'output' => new Dsn(((string) $phpDocumentor->paths->output) ?: 'file://build/docs'),
-                    'cache'  => new Path(((string) $phpDocumentor->paths->cache) ?: '/tmp/phpdoc-doc-cache'),
+                    'cache' => new Path(((string) $phpDocumentor->paths->cache) ?: '/tmp/phpdoc-doc-cache'),
                 ],
-                'versions'  => ($versions) ?: $this->defaultVersions(),
+                'versions' => ($versions) ?: $this->defaultVersions(),
                 'templates' => ($templates) ?: [$this->defaultTemplate()],
             ],
         ];
@@ -89,27 +87,22 @@ final class Version3 implements Strategy
             'phpdocumentor' => [
                 'title' => 'my docs',
                 'use-cache' => true,
-                'paths'     => [
+                'paths' => [
                     'output' => new Dsn('file://build/docs'),
-                    'cache'  => new Path('/tmp/phpdoc-doc-cache'),
+                    'cache' => new Path('/tmp/phpdoc-doc-cache'),
                 ],
-                'versions'  => static::defaultVersions(),
+                'versions' => static::defaultVersions(),
                 'templates' => [static::defaultTemplate()],
             ],
         ];
     }
 
-
     /**
      * Builds the versions part of the array from the configuration xml.
-     *
-     * @param \SimpleXMLElement $version
-     *
-     * @return array
      */
     private function buildVersion(\SimpleXMLElement $version): array
     {
-        $apis   = [];
+        $apis = [];
         $guides = [];
         foreach ($version->children() as $child) {
             switch ($child->getName()) {
@@ -141,10 +134,6 @@ final class Version3 implements Strategy
 
     /**
      * Builds the api part of the array from the configuration xml.
-     *
-     * @param \SimpleXMLElement $api
-     *
-     * @return array
      */
     private function buildApi(\SimpleXMLElement $api): array
     {
@@ -158,35 +147,31 @@ final class Version3 implements Strategy
         $ignoreHidden = filter_var($api->ignore->attributes()->hidden, FILTER_VALIDATE_BOOLEAN);
 
         return [
-            'format'               => ((string) $api->attributes()->format) ?: 'php',
-            'source'               => [
-                'dsn'   => ((string) $api->source->attributes()->dsn) ?: 'file://.',
+            'format' => ((string) $api->attributes()->format) ?: 'php',
+            'source' => [
+                'dsn' => ((string) $api->source->attributes()->dsn) ?: 'file://.',
                 'paths' => ((array) $api->source->path) ?: ['.'],
             ],
-            'ignore'               => [
+            'ignore' => [
                 'hidden' => $ignoreHidden,
-                'paths'  => (array) $api->ignore->path,
+                'paths' => (array) $api->ignore->path,
             ],
-            'extensions'           => $extensions,
-            'visibility'           => (array) $api->visibility,
+            'extensions' => $extensions,
+            'visibility' => (array) $api->visibility,
             'default-package-name' => ((string) $api->{'default-package-name'}) ?: 'Default',
-            'markers'              => (array) $api->markers->children()->marker,
+            'markers' => (array) $api->markers->children()->marker,
         ];
     }
 
     /**
      * Builds the guide part of the array from the configuration xml.
-     *
-     * @param \SimpleXMLElement $guide
-     *
-     * @return array
      */
     private function buildGuide(\SimpleXMLElement $guide): array
     {
         return [
             'format' => ((string) $guide->attributes()->format) ?: 'rst',
             'source' => [
-                'dsn'   => ((string) $guide->source->attributes()->dsn) ?: 'file://.',
+                'dsn' => ((string) $guide->source->attributes()->dsn) ?: 'file://.',
                 'paths' => ((array) $guide->source->path) ?: [''],
             ],
         ];
@@ -195,7 +180,6 @@ final class Version3 implements Strategy
     /**
      * Builds the template part of the array from the configuration xml.
      *
-     * @param \SimpleXMLElement $template
      *
      * @return array
      */
@@ -215,74 +199,69 @@ final class Version3 implements Strategy
 
     /**
      * Default versions part if none is found in the configuration.
-     *
-     * @return array
      */
     private static function defaultVersions(): array
     {
         return [
             '1.0.0' => [
                 'folder' => 'latest',
-                'api'    => [
+                'api' => [
                     0 => [
-                        'format'               => 'php',
-                        'source'               => [
-                            'dsn'   => new Dsn('file://.'),
+                        'format' => 'php',
+                        'source' => [
+                            'dsn' => new Dsn('file://.'),
                             'paths' => [
-                                0 => new Path('src')
-                            ]
+                                0 => new Path('src'),
+                            ],
                         ],
-                        'ignore'               => [
+                        'ignore' => [
                             'hidden' => true,
-                            'paths'  => []
+                            'paths' => [],
                         ],
-                        'extensions'           => [
+                        'extensions' => [
                             0 => 'php',
                             1 => 'php3',
-                            2 => 'phtml'
+                            2 => 'phtml',
                         ],
-                        'visibility'           => ['public'],
+                        'visibility' => ['public'],
                         'default-package-name' => 'Default',
                         'encoding' => 'utf8',
                         'ignore-tags' => [],
                         'validate' => false,
-                        'markers'              => [
+                        'markers' => [
                             0 => 'TODO',
-                            1 => 'FIXME'
-                        ]
-                    ]
+                            1 => 'FIXME',
+                        ],
+                    ],
                 ],
-                'guide'  => [
+                'guide' => [
                     0 => [
                         'format' => 'rst',
                         'source' => [
-                            'dsn'   => new Dsn('file://.'),
+                            'dsn' => new Dsn('file://.'),
                             'paths' => [
                                 0 => new Path('docs'),
-                            ]
-                        ]
-                    ]
-                ]
-            ]
+                            ],
+                        ],
+                    ],
+                ],
+            ],
         ];
     }
 
     /**
      * Default template part if none is found in the configuration.
-     *
-     * @return array
      */
     private static function defaultTemplate(): array
     {
         return [
-            'name' => 'clean'
+            'name' => 'clean',
         ];
     }
 
     /**
      * Validates the configuration xml structure against the schema defined in the schemaPath.
      *
-     * @param \SimpleXMLElement $phpDocumentor
      *
      * @throws \InvalidArgumentException if the xml structure is not valid.
      */
@@ -291,7 +270,7 @@ final class Version3 implements Strategy
         libxml_clear_errors();
         $priorSetting = libxml_use_internal_errors(true);
 
-        $dom        = new \DOMDocument();
+        $dom = new \DOMDocument();
         $domElement = dom_import_simplexml($phpDocumentor);
         $domElement = $dom->importNode($domElement, true);
         $dom->appendChild($domElement);

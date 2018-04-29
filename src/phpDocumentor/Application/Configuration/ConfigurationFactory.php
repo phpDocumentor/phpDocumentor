@@ -15,7 +15,6 @@ namespace phpDocumentor\Application\Configuration;
 use phpDocumentor\Application\Configuration\Factory\Strategy;
 use phpDocumentor\Application\Configuration\Factory\Version3;
 use phpDocumentor\DomainModel\Uri;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * The ConfigurationFactory converts the configuration xml from a Uri into an array.
@@ -43,7 +42,6 @@ final class ConfigurationFactory
      * Initializes the ConfigurationFactory.
      *
      * @param Strategy[] $strategies
-     * @param Uri        $uri
      * @param callable[] $middlewares
      */
     public function __construct(array $strategies, Uri $uri, array $middlewares = [])
@@ -60,8 +58,7 @@ final class ConfigurationFactory
     {
         $strategies = [];
 
-        foreach ($strategiesBuilder as $stategy)
-        {
+        foreach ($strategiesBuilder as $stategy) {
             $strategies[] = $stategy;
         }
 
@@ -72,8 +69,6 @@ final class ConfigurationFactory
      * Adds a middleware callback that allows the consumer to alter the configuration array when it is constructed.
      *
      * @param callable $middleware
-     *
-     * @return void
      */
     public function addMiddleware(callable $middleware)
     {
@@ -85,10 +80,6 @@ final class ConfigurationFactory
 
     /**
      * Replaces the location of the configuration file if it differs from the existing one.
-     *
-     * @param Uri $uri
-     *
-     * @return void
      */
     public function replaceLocation(Uri $uri)
     {
@@ -125,8 +116,6 @@ final class ConfigurationFactory
 
     /**
      * Clears the cache for the configuration.
-     *
-     * @return null
      */
     public function clearCache()
     {
@@ -135,10 +124,6 @@ final class ConfigurationFactory
 
     /**
      * Adds strategies that are used in the ConfigurationFactory.
-     *
-     * @param Strategy $strategy
-     *
-     * @return void
      */
     private function registerStrategy(Strategy $strategy)
     {
@@ -158,7 +143,7 @@ final class ConfigurationFactory
             if ($strategy->match($xml) === true) {
                 return $strategy->convert($xml);
             }
-        };
+        }
 
         throw new \RuntimeException('No strategy found that matches the configuration xml');
     }

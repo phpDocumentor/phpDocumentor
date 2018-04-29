@@ -13,12 +13,10 @@
 namespace phpDocumentor\Application\Stage;
 
 use phpDocumentor\Application\Console\Command\Command;
-use phpDocumentor\Application\Console\Command\Helper\ConfigurationHelper;
 use phpDocumentor\Compiler\Compiler;
 use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
-use phpDocumentor\DomainModel\Dsn;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Transformer\Event\PreTransformationEvent;
 use phpDocumentor\Transformer\Event\PreTransformEvent;
@@ -26,16 +24,10 @@ use phpDocumentor\Transformer\Event\WriterInitializationEvent;
 use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Transformer;
-use Symfony\Component\Console\Helper\HelperInterface;
-use Symfony\Component\Console\Helper\ProgressHelper;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Stopwatch\Stopwatch;
 use Zend\Cache\Storage\StorageInterface;
-use Zend\Stdlib\AbstractOptions;
 
 /**
  * Transforms the structure file into the specified output format
@@ -52,41 +44,38 @@ use Zend\Stdlib\AbstractOptions;
 final class Transform
 {
     /** @var ProjectDescriptorBuilder $builder Object containing the project meta-data and AST */
-    protected $builder;
+    private $builder;
 
     /** @var Transformer $transformer Principal object for guiding the transformation process */
-    protected $transformer;
+    private $transformer;
 
     /** @var Compiler $compiler Collection of pre-transformation actions (Compiler Passes) */
-    protected $compiler;
+    private $compiler;
+
     /**
      * @var StorageInterface
      */
     private $cache;
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
+
+    private $logger;
 
     /**
      * Initializes the command with all necessary dependencies to construct human-suitable output from the AST.
-     *
-     * @param ProjectDescriptorBuilder $builder
-     * @param Transformer              $transformer
-     * @param Compiler                 $compiler
      */
     public function __construct(
         ProjectDescriptorBuilder $builder,
         Transformer $transformer,
         Compiler $compiler,
         StorageInterface $cache,
-        EventDispatcherInterface $eventDispatcher
+        LoggerInterface $logger
     ) {
-        $this->builder     = $builder;
+        $this->builder = $builder;
         $this->transformer = $transformer;
-        $this->compiler    = $compiler;
+        $this->compiler = $compiler;
         $this->cache = $cache;
-        $this->eventDispatcher = $eventDispatcher;
+        $this->logger = $logger;
+
+        $this->connectOutputToEvents();
     }
 
     /**
@@ -112,7 +101,6 @@ final class Transform
     /**
      * Executes the business logic involved with this command.
      *
-     * @param array $configuration
      * @return integer
      * @throws \Exception if the target location is not a folder.
      */
@@ -123,10 +111,10 @@ final class Transform
 
         $target = $configuration['phpdocumentor']['paths']['output']->getPath();
         $fileSystem = new Filesystem();
-        if (! $fileSystem->isAbsolutePath((string)$target)) {
+        if (! $fileSystem->isAbsolutePath((string) $target)) {
             $target = getcwd() . DIRECTORY_SEPARATOR . $target;
         }
-        $transformer->setTarget((string)$target);
+        $transformer->setTarget((string) $target);
 
         $source = $configuration['phpdocumentor']['paths']['cache'];
         if (!file_exists($source) || !is_dir($source)) {
@@ -153,7 +141,6 @@ final class Transform
 //            );
             $stopWatch->stop('load template');
         }
-
 
 //        $output->writeTimedLog(
 //            'Preparing ' . count($transformer->getTemplates()->getTransformations()) . ' transformations',
@@ -182,8 +169,6 @@ final class Transform
 
     /**
      * Returns the Cache.
-     *
-     * @return StorageInterface
      */
     private function getCache(): StorageInterface
     {
@@ -192,33 +177,29 @@ final class Transform
 
     /**
      * Connect a series of output messages to various events to display progress.
-     *
-     * @param OutputInterface $output
-     *
-     * @return void
      */
-    private function connectOutputToEvents(OutputInterface $output)
+    private function connectOutputToEvents()
     {
         Dispatcher::getInstance()->addListener(
             Transformer::EVENT_PRE_TRANSFORM,
-            function (PreTransformEvent $event) use ($output) {
+            function (PreTransformEvent $event) {
                 /** @var Transformer $transformer */
                 $transformer = $event->getSubject();
                 $templates = $transformer->getTemplates();
                 $transformations = $templates->getTransformations();
-                $output->writeln(sprintf("\nApplying %d transformations", count($transformations)));
+                $this->logger->info(sprintf("\nApplying %d transformations", count($transformations)));
             }
         );
         Dispatcher::getInstance()->addListener(
             Transformer::EVENT_PRE_INITIALIZATION,
-            function (WriterInitializationEvent $event) use ($output) {
-                $output->writeln('  Initialize writer "' . get_class($event->getWriter()) . '"');
+            function (WriterInitializationEvent $event) {
+                $this->logger->info('  Initialize writer "' . get_class($event->getWriter()) . '"');
             }
         );
         Dispatcher::getInstance()->addListener(
             Transformer::EVENT_PRE_TRANSFORMATION,
-            function (PreTransformationEvent $event) use ($output) {
-                $output->writeln(
+            function (PreTransformationEvent $event) {
+                $this->logger->info(
                     '  Execute transformation using writer "' . $event->getTransformation()->getWriter() . '"'
                 );
             }

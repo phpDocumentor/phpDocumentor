@@ -23,9 +23,9 @@ use PHPUnit\Framework\TestCase;
 class ConfigureTest extends TestCase
 {
     /**
-      * @use \phpDocumentor\Application\Configuration\ConfigurationFactory;
-      * @use \phpDocumentor\Application\Configuration\Factory\Version3;
-      * @use \phpDocumentor\DomainModel\Uri;
+     * @use \phpDocumentor\Application\Configuration\ConfigurationFactory;
+     * @use \phpDocumentor\Application\Configuration\Factory\Version3;
+     * @use \phpDocumentor\DomainModel\Uri;
      */
     public function testInvokeOverridesConfig()
     {

@@ -78,7 +78,6 @@ interface ElementInterface
     /**
      * Sets the file and location for this element.
      *
-     * @param FileDescriptor $file
      * @param int            $line
      */
     public function setLocation(FileDescriptor $file, $line = 0);

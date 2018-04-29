@@ -29,8 +29,6 @@ class Filter
 
     /**
      * Constructs the filter and attaches the factory to it.
-     *
-     * @param ClassFactory $factory
      */
     public function __construct(ClassFactory $factory)
     {

@@ -8,12 +8,10 @@
  *  @copyright 2010-${YEAR} Mike van Riel<mike@phpdoc.org>
  *  @license   http://www.opensource.org/licenses/mit-license.php MIT
  *  @link      http://phpdoc.org
- *
  */
 
 namespace phpDocumentor\Application\Builder;
 
-use Cilex\Application;
 use phpDocumentor\Descriptor\Builder\AssemblerFactory;
 use phpDocumentor\Descriptor\Builder\Reflector\ArgumentAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\ClassAssembler;
@@ -40,11 +38,6 @@ use phpDocumentor\Descriptor\Builder\Reflector\Tags\UsesAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\VarAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\VersionAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\TraitAssembler;
-use phpDocumentor\Descriptor\Filter\ClassFactory;
-use phpDocumentor\Descriptor\Filter\Filter;
-use phpDocumentor\Descriptor\Filter\StripIgnore;
-use phpDocumentor\Descriptor\Filter\StripInternal;
-use phpDocumentor\Descriptor\Filter\StripOnVisibility;
 use phpDocumentor\Reflection\DocBlock\ExampleFinder;
 use phpDocumentor\Reflection\DocBlock\Tag;
 use phpDocumentor\Reflection\DocBlock\Tags;

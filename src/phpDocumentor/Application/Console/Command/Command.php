@@ -39,7 +39,7 @@ abstract class Command extends BaseCommand
     /**
      * Executes a callable piece of code and writes an entry to the log detailing how long it took.
      */
-    protected function writeTimedLog(OutputInterface $output, $message, $operation, array $arguments = array())
+    protected function writeTimedLog(OutputInterface $output, $message, $operation, array $arguments = [])
     {
         $output->write(sprintf('%-66.66s .. ', $message));
         $timerStart = microtime(true);

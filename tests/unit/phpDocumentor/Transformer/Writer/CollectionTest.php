@@ -34,7 +34,7 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Initializes the fixture and dependencies for this testcase.
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->routers = m::mock('phpDocumentor\Transformer\Router\Queue');
         $this->writer = m::mock('phpDocumentor\Plugin\Core\Transformer\Writer\Xsl');

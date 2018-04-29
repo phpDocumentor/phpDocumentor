@@ -20,8 +20,6 @@ interface Routable
 {
     /**
      * Sets the routers that can be used to determine the path of links.
-     *
-     * @param Queue $routers
      */
     public function setRouters(Queue $routers);
 }

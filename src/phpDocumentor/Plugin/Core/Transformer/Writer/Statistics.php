@@ -128,7 +128,7 @@ STAT
         /** @var DescriptorAbstract $element */
         foreach ($project->getIndexes()->get('elements') as $element) {
             if ($element->isDeprecated()) {
-                $deprecatedCounter += 1;
+                ++$deprecatedCounter;
             }
         }
 

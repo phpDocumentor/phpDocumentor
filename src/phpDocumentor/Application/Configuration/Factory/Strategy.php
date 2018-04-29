@@ -19,19 +19,11 @@ interface Strategy
 {
     /**
      * Converts the configuration xml to an array.
-     *
-     * @param \SimpleXMLElement $xml
-     *
-     * @return array
      */
     public function convert(\SimpleXMLElement $xml): array;
 
     /**
      * Checks if the strategy should handle the provided configuration xml.
-     *
-     * @param \SimpleXMLElement $xml
-     *
-     * @return bool
      */
     public function match(\SimpleXMLElement $xml): bool;
 }
