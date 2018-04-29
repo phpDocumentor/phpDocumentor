@@ -11,6 +11,7 @@
 
 namespace phpDocumentor\Descriptor\Filter;
 
+use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use Zend\Filter\FilterInterface;
 
 /**
@@ -33,6 +34,27 @@ class Filter
     public function __construct(ClassFactory $factory)
     {
         $this->factory = $factory;
+    }
+
+    public function attachDefaults(ProjectDescriptorBuilder $descriptorBuilder)
+    {
+        $stripOnVisibility = new StripOnVisibility($descriptorBuilder);
+        $filtersOnAllDescriptors = [
+            new StripInternal($descriptorBuilder),
+            new StripIgnore($descriptorBuilder),
+        ];
+
+        foreach ($filtersOnAllDescriptors as $filter) {
+            $this->attach('phpDocumentor\Descriptor\ConstantDescriptor', $filter);
+            $this->attach('phpDocumentor\Descriptor\FunctionDescriptor', $filter);
+            $this->attach('phpDocumentor\Descriptor\InterfaceDescriptor', $filter);
+            $this->attach('phpDocumentor\Descriptor\TraitDescriptor', $filter);
+            $this->attach('phpDocumentor\Descriptor\PropertyDescriptor', $filter);
+            $this->attach('phpDocumentor\Descriptor\MethodDescriptor', $filter);
+        }
+
+        $this->attach('phpDocumentor\Descriptor\PropertyDescriptor', $stripOnVisibility);
+        $this->attach('phpDocumentor\Descriptor\MethodDescriptor', $stripOnVisibility);
     }
 
     /**

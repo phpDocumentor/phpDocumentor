@@ -104,6 +104,11 @@ services:
       class: 'phpDocumentor\Descriptor\Builder\AssemblerFactory'
       factory: ['phpDocumentor\Application\Builder\AssemblerFactoryFactory', create]
 
+    phpDocumentor\Descriptor\Filter\Filter:
+       calls:
+        - [attachDefaults]
+
+
     phpDocumentor\Application\Parser\CacheFactory: ~
     phpDocumentor\Application\Parser\ProjectFactoryFactory: ~
     phpDocumentor\Application\Configuration\Factory\Version2:

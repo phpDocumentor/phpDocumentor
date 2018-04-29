@@ -12,6 +12,7 @@
 namespace phpDocumentor\Descriptor\Filter;
 
 use \Mockery as m;
+use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use \Zend\Filter\FilterChain;
 
 /**
@@ -30,6 +31,8 @@ class FilterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /** @var Filter $fixture */
     protected $fixture;
 
+    private $builderMock;
+
     /**
      * Creates a new (empty) fixture object.
      */
@@ -37,7 +40,7 @@ class FilterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         $this->classFactoryMock = m::mock('phpDocumentor\Descriptor\Filter\ClassFactory');
         $this->filterChainMock = m::mock('Zend\Filter\FilterChain');
-        $this->fixture = new Filter($this->classFactoryMock);
+        $this->fixture = new Filter($this->classFactoryMock, $this->builderMock);
     }
 
     /**
