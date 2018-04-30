@@ -40,6 +40,8 @@ class Settings
     /** @var bool */
     protected $includeSource = false;
 
+    private $markers;
+
     /**
      * Stores the visibilities that are allowed to be executed as a bitflag.
      *
@@ -105,5 +107,15 @@ class Settings
     public function shouldIncludeSource()
     {
         return $this->includeSource;
+    }
+
+    public function setMarkers(array $markers)
+    {
+        $this->markers = $markers;
+    }
+
+    public function getMarkers()
+    {
+        return $this->markers;
     }
 }
