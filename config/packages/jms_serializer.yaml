@@ -2,6 +2,21 @@ jms_serializer:
     visitors:
         xml:
             format_output: '%kernel.debug%'
+    metadata:
+        cache: file
+        debug: "%kernel.debug%"
+        auto_detection: false
+        warmup:
+            # list of directories to scan searching for php classes to use when warming up the cache
+            paths:
+                included:
+                  - "%kernel.root_dir%/../src/phpDocumentor/Transformer"
+                excluded:
+                  - "Exception"
+                  - "Event"
+                  - "Router"
+                  - "Writer"
+
 #    metadata:
 #        auto_detection: false
 #        directories:

@@ -36,6 +36,7 @@
         "sensio/framework-extra-bundle": "^5.1",
         "symfony/console": "^4.0",
         "symfony/event-dispatcher": "^4.0",
+        "symfony/expression-language": "^4.0",
         "symfony/flex": "^1.0",
         "symfony/framework-bundle": "^4.0",
         "symfony/lts": "^4@dev",
@@ -43,6 +44,7 @@
         "symfony/process": "^4.0",
         "symfony/proxy-manager-bridge": "^4.0",
         "symfony/stopwatch": "^4.0",
+        "symfony/translation": "^4.0",
         "symfony/var-dumper": "^4.0",
         "symfony/yaml": "^4.0",
         "tedivm/stash": "^0.14.2",
@@ -59,14 +61,12 @@
     },
     "minimum-stability": "stable",
     "require-dev": {
-        "symfony/dotenv": "^4.0",
-
-        "behat/behat":        "^3.0",
-        "phpunit/phpunit":    "^6.4",
-        "mockery/mockery":    "^1.0",
+        "behat/behat": "^3.0",
         "mikey179/vfsStream": "^1.2",
+        "mockery/mockery": "^1.0",
+        "phpunit/phpunit": "^6.4",
         "squizlabs/php_codesniffer": "^1.4",
-        "symfony/expression-language": "^2.4"
+        "symfony/dotenv": "^4.0"
     },
     "suggest": {
         "ext-twig": "Enabling the twig extension improves the generation of twig based templates.",
