@@ -1,5 +1,7 @@
 parameters:
     locale: 'en'
+    secret: ThisIsVerySecret!
+
 
     linker.substitutions:
       'phpDocumentor\Descriptor\ProjectDescriptor': ['files']

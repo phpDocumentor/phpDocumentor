@@ -246,7 +246,7 @@
         "version": "v4.0.3"
     },
     "symfony/expression-language": {
-        "version": "v2.8.33"
+        "version": "v4.0.9"
     },
     "symfony/filesystem": {
         "version": "v4.0.3"

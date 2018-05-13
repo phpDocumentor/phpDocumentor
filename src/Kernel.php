@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Phar;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -21,6 +22,10 @@ class Kernel extends BaseKernel
 
     public function getLogDir()
     {
+        if ($this->isPhar()) {
+            return "/tmp/php-doc/log";
+        }
+
         return $this->getProjectDir() . '/var/log';
     }
 
@@ -57,5 +62,9 @@ class Kernel extends BaseKernel
             $routes->import($confDir . '/routes/' . $this->environment . '/**/*' . self::CONFIG_EXTS, '/', 'glob');
         }
         $routes->import($confDir . '/routes' . self::CONFIG_EXTS, '/', 'glob');
+    }
+
+    public static function isPhar() {
+        return strlen(Phar::running()) > 0 ? true : false;
     }
 }

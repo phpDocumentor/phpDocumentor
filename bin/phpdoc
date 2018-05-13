@@ -18,7 +18,7 @@ if (!class_exists(Application::class)) {
     throw new \RuntimeException('You need to add "symfony/framework-bundle" as a Composer dependency.');
 }
 
-if (!isset($_SERVER['APP_ENV'])) {
+if (!isset($_SERVER['APP_ENV']) && !Kernel::isPhar()) {
     if (!class_exists(Dotenv::class)) {
         throw new \RuntimeException('APP_ENV environment variable is not defined. You need to define environment variables for configuration or add "symfony/dotenv" as a Composer dependency to load variables from a .env file.');
     }
@@ -26,8 +26,9 @@ if (!isset($_SERVER['APP_ENV'])) {
 }
 
 $input = new ArgvInput();
-$env = $input->getParameterOption(['--env', '-e'], $_SERVER['APP_ENV'] ?? 'prod');
-$debug = ($_SERVER['APP_DEBUG'] ?? ('prod' !== $env)) && !$input->hasParameterOption(['--no-debug', '']);
+$defaultEnv = Kernel::isPhar() ? 'phar' :'prod';
+$env = $input->getParameterOption(['--env', '-e'], $_SERVER['APP_ENV'] ?? $defaultEnv);
+$debug = ($_SERVER['APP_DEBUG'] ?? ('prod' !== $env && 'phar' !== $env)) && !$input->hasParameterOption(['--no-debug', '']);
 
 if ($debug) {
     umask(0000);
