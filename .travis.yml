@@ -24,6 +24,7 @@ jobs:
     - stage: test
       php: 7.1
       script:
+        - php ./bin/console -e=prod cache:warm
         - php -d phar.readonly=false tools/box.phar compile
         - bin/behat -p phar
 
@@ -50,6 +51,7 @@ jobs:
         - VERSION=$(echo $TRAVIS_TAG | cut -c 2-10)
       script:
         - echo "${VERSION}" > VERSION
+        - php ./bin/console -e=prod cache:warm
         - php -d phar.readonly=false tools/box.phar build
         - openssl sha1 phpDocumentor.phar
         - echo "Update https://github.com/josegonzalez/homebrew-php/blob/master/Formula/phpdocumentor.rb with the latest version number and the SHA1 that is shown above with the path /get/phpDocumentor-${VERSION}.phar"
