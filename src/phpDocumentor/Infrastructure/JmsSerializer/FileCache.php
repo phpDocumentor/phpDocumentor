@@ -25,10 +25,8 @@ class FileCache implements CacheInterface
 
     /**
      * FileCache constructor.
-     *
-     * @param string $dir
      */
-    public function __construct($dir)
+    public function __construct(string $dir)
     {
         if (!is_dir($dir)) {
             $this->createDirectory($dir);
@@ -92,10 +90,7 @@ class FileCache implements CacheInterface
         return $this->dir . '/' . strtr($metadata->name, '\\', '-') . '.cache.php';
     }
 
-    /**
-     * @param $dir
-     */
-    private function createDirectory($dir)
+    private function createDirectory(string $dir)
     {
         if (!mkdir($dir, 0775, true) && !is_dir($dir)) {
             throw new \RuntimeException("Can't create directory for cache at {$dir}");
