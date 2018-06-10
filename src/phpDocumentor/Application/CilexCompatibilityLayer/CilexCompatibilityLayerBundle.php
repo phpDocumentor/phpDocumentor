@@ -17,7 +17,9 @@ final class CilexCompatibilityLayerBundle extends Bundle
     {
         parent::boot();
 
-        $this->container->get(Application::class);
+        if ($this->container->has(Application::class)) {
+            $this->container->get(Application::class);
+        }
     }
 
     public function registerCommands(\Symfony\Component\Console\Application $application)

@@ -7,6 +7,12 @@ phpunit:
   working_dir: "/opt/phpdoc"
   command: ["./bin/phpunit"]
 
+behat:
+  build: docker/with-xdebug
+  volumes: [".:/opt/phpdoc"]
+  working_dir: "/opt/phpdoc"
+  command: ["./bin/behat"]
+
 phpcs:
   build: docker/with-xdebug
   volumes: [".:/opt/phpdoc"]

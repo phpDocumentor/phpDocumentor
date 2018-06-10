@@ -12,11 +12,12 @@
         "vendor/twig/twig/lib/Twig/Node/Expression/Test/Even.php",
         "vendor/twig/twig/lib/Twig/Node/Expression/Test/Null.php",
         "vendor/twig/twig/lib/Twig/Node/Expression/Test/Odd.php",
-        "vendor/twig/twig/lib/Twig/Node/Expression/Test/Sameas.php"
+        "vendor/twig/twig/lib/Twig/Node/Expression/Test/Sameas.php",
+        "vendor/phpdocumentor/reflection-docblock/src/DocBlock/Tags/Author.php"
     ],
     "directories-bin": [
         "data",
-        "var/cache/phar"
+        "var/cache/prod"
     ],
     "git-version": "package_version",
     "chmod": "0755",
