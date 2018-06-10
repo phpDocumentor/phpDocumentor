@@ -28,14 +28,20 @@ final class EnvironmentContext implements Context\Context
     private $process;
 
     private $binaryPath;
+    /**
+     * @var null
+     */
+    private $pharPath;
 
     /**
      * EnvironmentContext constructor.
      * @param string $workingDir
+     * @param null $pharPath
      */
-    public function __construct($workingDir)
+    public function __construct($workingDir, $pharPath = null)
     {
         $this->workingDir = $workingDir;
+        $this->pharPath = $pharPath;
     }
 
     /**
@@ -48,7 +54,7 @@ final class EnvironmentContext implements Context\Context
         }
 
         Assert::directory($this->getWorkingDir());
-        $this->binaryPath = __DIR__ . '/../../../bin/phpdoc';
+        $this->binaryPath = $this->pharPath ? __DIR__ . '/../../../' . $this->pharPath : __DIR__ . '/../../../bin/phpdoc';
         $this->process = new Process(null);
         $this->process->setWorkingDirectory($this->getWorkingDir());
         chdir($this->getWorkingDir());

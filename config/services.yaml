@@ -229,3 +229,14 @@ services:
     transformer.writer.collection:
       alias: phpDocumentor\Transformer\Writer\Collection
       public: true
+
+    phpDocumentor\Infrastructure\JmsSerializer\FileCache:
+      arguments:
+        ['%kernel.cache_dir%/jms_serializer']
+
+
+    jms_serializer.metadata_factory:
+        class: Metadata\MetadataFactory
+        arguments: ['@jms_serializer.metadata.chain_driver', 'Metadata\ClassHierarchyMetadata', '%kernel.debug%']
+        calls:
+            - [setCache, ['@phpDocumentor\Infrastructure\JmsSerializer\FileCache']]

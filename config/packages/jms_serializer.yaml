@@ -3,7 +3,7 @@ jms_serializer:
         xml:
             format_output: '%kernel.debug%'
     metadata:
-        cache: file
+        cache: 'file'
         debug: "%kernel.debug%"
         auto_detection: false
         warmup:

@@ -1,16 +1,12 @@
 monolog:
     handlers:
         main:
-            type: fingers_crossed
+            type: console
             action_level: error
-            handler: nested
+            handler: console
             excluded_404s:
                 # regex: exclude all 404 errors from the logs
                 - ^/
-        nested:
-            type: stream
-            path: "%kernel.logs_dir%/%kernel.environment%.log"
-            level: debug
         console:
             type:   console
             process_psr_3_messages: false

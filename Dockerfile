@@ -10,8 +10,10 @@ VOLUME /data
 
 ADD . /opt/phpdoc
 
+ENV APP_ENV=prod
 RUN cd /opt/phpdoc \
-    && curl -O https://getcomposer.org/composer.phar \
+    && curl -O https://getcomposer.org/download/1.6.5/composer.phar \
+    && chmod +x bin/phpdoc \
     && php composer.phar install --prefer-dist -o --no-interaction --no-dev \
     && rm composer.phar
 
