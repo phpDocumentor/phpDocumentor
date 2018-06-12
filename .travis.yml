@@ -52,14 +52,14 @@ jobs:
       script:
         - echo "${VERSION}" > VERSION
         - php ./bin/console --env=prod cache:warm
-        - php -d phar.readonly=false tools/box.phar build
-        - openssl sha1 phpDocumentor.phar
+        - php -d phar.readonly=false tools/box.phar compile
+        - openssl sha1 build/phpDocumentor.phar
         - echo "Update https://github.com/josegonzalez/homebrew-php/blob/master/Formula/phpdocumentor.rb with the latest version number and the SHA1 that is shown above with the path /get/phpDocumentor-${VERSION}.phar"
       deploy:
         provider: releases
         api_key:
           secure: WUchZXQQdIDtVQTYZsQ++2R1y6I+EzBrAACRuc33wAVd0mlqNmu3nb/c1Ou4pTk5JxjyGqm9Siyp9vobhBtzBh/hdXAnbZDWNx2l6R1M9S4R/Z/VbcQ+uIJ/VOoh2KvIOCcyVuFVmsemlVQCuatCRKswKmK/OuyQXy6ppyZMilA=
-        file: "phpDocumentor.phar"
+        file: "build/phpDocumentor.phar"
         skip_cleanup: true
         on:
           repo: phpDocumentor/phpDocumentor2
