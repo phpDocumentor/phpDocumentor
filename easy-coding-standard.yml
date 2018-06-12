@@ -24,6 +24,8 @@ parameters:
             - '*/tests/data/**'
             - '*/tests/features/assets/**'
             - '*/tests/features/bootstrap/Ast/BaseContext.php'
+            - '*/tests/features/bootstrap/EnvironmentContext.php'
+            - '*/tests/features/bootstrap/Ast/ApiContext.php'
         PHP_CodeSniffer\Standards\Generic\Sniffs\NamingConventions\UpperCaseConstantNameSniff:
             - '*/tests/data/file-level/PackagePrecedesDefine.php'
             - '*/tests/data/file-level/NoPackagePrecedesDefine.php'
@@ -43,4 +45,3 @@ parameters:
             - '*/tests/data/NoShortDescription.php'
         Symplify\CodingStandard\Fixer\Commenting\RemoveEmptyDocBlockFixer:
             - '*/tests/data/NoShortDescription.php'
-
