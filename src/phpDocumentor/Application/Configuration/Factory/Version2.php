@@ -49,7 +49,7 @@ final class Version2 implements Strategy
 
         $outputDirectory = $this->buildOutputDirectory($phpDocumentor);
 
-        $phpdoc2Array = [
+        return [
             'phpdocumentor' => [
                 'title' => 'my-doc',
                 'use-cache' => true,
@@ -90,8 +90,6 @@ final class Version2 implements Strategy
                 ],
             ],
         ];
-
-        return $phpdoc2Array;
     }
 
     /**
@@ -152,7 +150,6 @@ final class Version2 implements Strategy
     /**
      * Builds the visibility part of the array from the configuration xml.
      *
-     *
      * @return string[]
      */
     private function buildVisibility(\SimpleXMLElement $phpDocumentor): array
@@ -170,7 +167,6 @@ final class Version2 implements Strategy
 
     /**
      * Builds the defaultPackageName part of the array from the configuration xml.
-     *
      *
      * @return string
      */
@@ -190,7 +186,6 @@ final class Version2 implements Strategy
     /**
      * Builds the template part of the array from the configuration xml.
      *
-     *
      * @return string
      */
     private function buildTemplate(\SimpleXMLElement $phpDocumentor)
@@ -208,7 +203,6 @@ final class Version2 implements Strategy
 
     /**
      * Builds the ignore-hidden part of the array from the configuration xml.
-     *
      *
      * @return mixed
      */
@@ -228,7 +222,6 @@ final class Version2 implements Strategy
     /**
      * Builds the ignore-symlinks part of the array from the configuration xml.
      *
-     *
      * @return mixed
      */
     private function buildIgnoreSymlinks(\SimpleXMLElement $phpDocumentor)
@@ -246,7 +239,6 @@ final class Version2 implements Strategy
 
     /**
      * Builds the ignorePaths part of the array from the configuration xml.
-     *
      *
      * @return mixed
      */
@@ -272,7 +264,6 @@ final class Version2 implements Strategy
     /**
      * Builds the outputDirectory part of the array from the configuration xml.
      *
-     *
      * @return string
      */
     private function buildOutputDirectory(\SimpleXMLElement $phpDocumentor)
@@ -290,7 +281,6 @@ final class Version2 implements Strategy
 
     /**
      * Builds the directories that are used in the sourcePaths.
-     *
      *
      * @return array
      */
@@ -310,7 +300,6 @@ final class Version2 implements Strategy
     /**
      * Builds the sourcePaths part of the array from the configuration xml.
      *
-     *
      * @return array
      */
     private function buildSourcePaths(\SimpleXMLElement $phpDocumentor)
@@ -327,7 +316,6 @@ final class Version2 implements Strategy
 
     /**
      * Validates if the xml has a root element which name is phpdocumentor.
-     *
      *
      * @throws \InvalidArgumentException if the root element of the xml is not phpdocumentor.
      */

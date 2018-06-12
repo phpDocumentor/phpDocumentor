@@ -77,13 +77,11 @@ class PropertyAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     protected function givenAPropertyReflector($namespace, $propertyName, $docBlockMock = null): Property
     {
-        $propertyReflectorMock = new Property(
+        return new Property(
             new Fqsen('\\' . $namespace . '::$' . $propertyName),
             new Visibility(Visibility::PROTECTED_),
             $docBlockMock
         );
-
-        return $propertyReflectorMock;
     }
 
     /**

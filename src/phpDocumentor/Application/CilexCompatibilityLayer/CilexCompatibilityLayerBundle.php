@@ -7,7 +7,6 @@ namespace phpDocumentor\Application\CilexCompatibilityLayer;
 use phpDocumentor\Application;
 use phpDocumentor\Command\Helper\ConfigurationHelper;
 use phpDocumentor\Command\Helper\LoggerHelper;
-use phpDocumentor\Configuration;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

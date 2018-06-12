@@ -83,15 +83,13 @@ class ExampleAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     private function givenExampleTagWithTestData()
     {
-        $exampleTagMock = new Example(
+        return new Example(
             self::EXAMPLE_FILE_PATH,
             false,
             self::EXAMPLE_STARTING_LINE,
             self::EXAMPLE_LINE_COUNT,
             self::EXAMPLE_DESCRIPTION
         );
-
-        return $exampleTagMock;
     }
 
     /**

@@ -16,7 +16,6 @@ use phpDocumentor\DomainModel\Dsn;
 use phpDocumentor\DomainModel\Parser\FileCollector;
 use phpDocumentor\Infrastructure\FlySystemFactory;
 use phpDocumentor\Infrastructure\SpecificationFactory;
-use phpDocumentor\Reflection\File;
 
 final class FlySystemCollector implements FileCollector
 {

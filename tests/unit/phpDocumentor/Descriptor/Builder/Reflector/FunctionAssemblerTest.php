@@ -125,15 +125,13 @@ class FunctionAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     protected function givenADocBlockObject()
     {
         $docBlockDescription = new DocBlock\Description('This is an example description');
-        $docBlockMock = new DocBlock(
+        return new DocBlock(
             'This is a example description',
             $docBlockDescription,
             [
                 new DocBlock\Tags\Generic('package', new DocBlock\Description('PackageName')),
             ]
         );
-
-        return $docBlockMock;
     }
 
     /**
@@ -145,8 +143,6 @@ class FunctionAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     protected function givenAnArgumentWithName($argumentName)
     {
-        $argumentMock = new Argument($argumentName);
-
-        return $argumentMock;
+        return new Argument($argumentName);
     }
 }

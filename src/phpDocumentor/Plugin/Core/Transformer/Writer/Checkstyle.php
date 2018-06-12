@@ -93,10 +93,8 @@ class Checkstyle extends WriterAbstract implements Translatable
      */
     protected function getDestinationPath(Transformation $transformation)
     {
-        $artifact = $transformation->getTransformer()->getTarget()
+        return $transformation->getTransformer()->getTarget()
             . DIRECTORY_SEPARATOR . $transformation->getArtifact();
-
-        return $artifact;
     }
 
     /**

@@ -37,7 +37,6 @@ abstract class WriterAbstract
      *
      * @param string $path
      *
-     *
      * @throws \InvalidArgumentException if path contains a space.
      */
     protected function checkForSpacesInPath($path)

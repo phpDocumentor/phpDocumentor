@@ -251,9 +251,9 @@ class Graph extends WriterAbstract
                 (string) $sub_element->getFullyQualifiedStructuralElementName(),
                 $sub_element->getName()
             )
-            ->setShape('box')
-            ->setFontName($this->nodeFont)
-            ->setFontSize('11');
+                ->setShape('box')
+                ->setFontName($this->nodeFont)
+                ->setFontSize('11');
 
             if ($sub_element instanceof ClassDescriptor && $sub_element->isAbstract()) {
                 $node->setLabel('<«abstract»<br/>' . $sub_element->getName() . '>');
@@ -279,10 +279,8 @@ class Graph extends WriterAbstract
      */
     protected function getDestinationPath(Transformation $transformation)
     {
-        $filename = $transformation->getTransformer()->getTarget()
+        return $transformation->getTransformer()->getTarget()
             . DIRECTORY_SEPARATOR . $transformation->getArtifact();
-
-        return $filename;
     }
 
     /**
@@ -310,14 +308,12 @@ class Graph extends WriterAbstract
      */
     protected function createGraphForNamespace($full_namespace_name, $label)
     {
-        $sub_graph = GraphVizGraph::create('cluster_' . $full_namespace_name)
+        return GraphVizGraph::create('cluster_' . $full_namespace_name)
             ->setLabel($label)
             ->setStyle('rounded')
             ->setColor('gray')
             ->setFontColor('gray')
             ->setFontSize('11')
             ->setRankDir('LR');
-
-        return $sub_graph;
     }
 }

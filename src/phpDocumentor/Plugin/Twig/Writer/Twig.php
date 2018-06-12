@@ -283,11 +283,9 @@ class Twig extends WriterAbstract implements Routable
                     $filepart = iconv('UTF-8', 'ASCII//TRANSLIT', $filepart);
                 }
 
-                $filepart = strpos($filepart, '/') !== false
+                return strpos($filepart, '/') !== false
                     ? implode('/', array_map('urlencode', explode('/', $filepart)))
                     : implode('\\', array_map('urlencode', explode('\\', $filepart)));
-
-                return $filepart;
             },
             $path
         );
