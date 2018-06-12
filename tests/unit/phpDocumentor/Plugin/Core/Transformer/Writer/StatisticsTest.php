@@ -129,8 +129,7 @@ class StatisticsTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     private function givenAnError()
     {
-        $error = m::mock('phpDocumentor\Descriptor\Validator\Error');
-        return $error;
+        return m::mock('phpDocumentor\Descriptor\Validator\Error');
     }
 
     private function thenTheXmlReportShouldContain(

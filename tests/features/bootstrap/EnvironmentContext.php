@@ -28,6 +28,7 @@ final class EnvironmentContext implements Context\Context
     private $process;
 
     private $binaryPath;
+
     /**
      * @var null
      */

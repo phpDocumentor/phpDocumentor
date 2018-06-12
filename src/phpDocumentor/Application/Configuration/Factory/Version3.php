@@ -58,7 +58,7 @@ final class Version3 implements Strategy
             }
         }
 
-        $phpdoc3Array = [
+        return [
             'phpdocumentor' => [
                 'use-cache' => $phpDocumentor->{'use-cache'} ?: true,
                 'paths' => [
@@ -69,8 +69,6 @@ final class Version3 implements Strategy
                 'templates' => ($templates) ?: [$this->defaultTemplate()],
             ],
         ];
-
-        return $phpdoc3Array;
     }
 
     /**
@@ -180,7 +178,6 @@ final class Version3 implements Strategy
     /**
      * Builds the template part of the array from the configuration xml.
      *
-     *
      * @return array
      */
     private function buildTemplate(\SimpleXMLElement $template)
@@ -261,7 +258,6 @@ final class Version3 implements Strategy
 
     /**
      * Validates the configuration xml structure against the schema defined in the schemaPath.
-     *
      *
      * @throws \InvalidArgumentException if the xml structure is not valid.
      */

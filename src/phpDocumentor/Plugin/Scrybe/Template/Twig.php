@@ -223,8 +223,6 @@ class Twig implements TemplateInterface
      */
     protected function getTwigEnvironment()
     {
-        $twig = new \Twig_Environment(new \Twig_Loader_Filesystem($this->path), ['autoescape' => false]);
-
-        return $twig;
+        return new \Twig_Environment(new \Twig_Loader_Filesystem($this->path), ['autoescape' => false]);
     }
 }

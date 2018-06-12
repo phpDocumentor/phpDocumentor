@@ -23,7 +23,7 @@ class Kernel extends BaseKernel
     public function getLogDir()
     {
         if ($this->isPhar()) {
-            return "/tmp/php-doc/log";
+            return '/tmp/php-doc/log';
         }
 
         return $this->getProjectDir() . '/var/log';
@@ -64,7 +64,8 @@ class Kernel extends BaseKernel
         $routes->import($confDir . '/routes' . self::CONFIG_EXTS, '/', 'glob');
     }
 
-    public static function isPhar() {
+    public static function isPhar()
+    {
         return strlen(Phar::running()) > 0 ? true : false;
     }
 }

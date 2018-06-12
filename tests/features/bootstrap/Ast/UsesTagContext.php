@@ -51,7 +51,6 @@ final class UsesTagContext extends BaseContext implements Context
 
     /**
      * @param string $classFqsen
-     * @param $description
      * @throws Exception
      * @Then class ":classFqsen" has :number tag/tags uses referencing :element descriptor ":reference" with description:
      */

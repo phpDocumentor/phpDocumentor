@@ -132,11 +132,9 @@ class ProjectDescriptorBuilder
             return null;
         }
 
-        $descriptor = (!is_array($descriptor) && (!$descriptor instanceof Collection))
+        return (!is_array($descriptor) && (!$descriptor instanceof Collection))
             ? $this->filterDescriptor($descriptor)
             : $this->filterEachDescriptor($descriptor);
-
-        return $descriptor;
     }
 
     /**

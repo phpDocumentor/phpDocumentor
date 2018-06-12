@@ -23,7 +23,7 @@ final class SeeTagContext extends BaseContext implements Context
 {
     /**
      * @param string $classFqsen
-     * @throws Exception
+     * @throws \Exception
      * @Then class ":classFqsen" has a tag see referencing url ":reference"
      */
     public function classHasTagSeeReferencingUrl($classFqsen, $reference)
@@ -51,8 +51,7 @@ final class SeeTagContext extends BaseContext implements Context
 
     /**
      * @param string $classFqsen
-     * @param $description
-     * @throws Exception
+     * @throws \Exception
      * @Then class ":classFqsen" has :number tag/tags see referencing :element descriptor ":reference" with description:
      */
     public function classHasTagSeeReferencingWithDescription($classFqsen, $number, $element, $reference, PyStringNode $description)

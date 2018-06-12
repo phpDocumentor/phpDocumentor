@@ -8,7 +8,6 @@
  *  @copyright 2010-${YEAR} Mike van Riel<mike@phpdoc.org>
  *  @license   http://www.opensource.org/licenses/mit-license.php MIT
  *  @link      http://phpdoc.org
- *
  */
 
 namespace phpDocumentor\Infrastructure\JmsSerializer;
@@ -40,7 +39,7 @@ class FileCache implements CacheInterface
      */
     public function loadClassMetadataFromCache(\ReflectionClass $class)
     {
-        $path = $this->dir.'/'.strtr($class->name, '\\', '-').'.cache.php';
+        $path = $this->dir . '/' . strtr($class->name, '\\', '-') . '.cache.php';
         if (!file_exists($path)) {
             return null;
         }
@@ -59,11 +58,13 @@ class FileCache implements CacheInterface
             throw new \RuntimeException("Cache file {$path} is not writable.");
         }
 
-        if (false === (@file_put_contents($path,
-                '<?php return unserialize(' . var_export(serialize($metadata), true) . ');')
+        if (false === (@file_put_contents(
+            $path,
+            '<?php return unserialize(' . var_export(serialize($metadata), true) . ');'
+        )
             )) {
             throw new \RuntimeException("Can't not write new cache file to {$path}");
-        };
+        }
 
         // Let's not break filesystems which do not support chmod.
         @chmod($path, 0666 & ~umask());
@@ -74,15 +75,13 @@ class FileCache implements CacheInterface
      */
     public function evictClassMetadataFromCache(\ReflectionClass $class)
     {
-        $path = $this->dir.'/'.strtr($class->name, '\\', '-').'.cache.php';
+        $path = $this->dir . '/' . strtr($class->name, '\\', '-') . '.cache.php';
         if (file_exists($path)) {
             unlink($path);
         }
     }
 
     /**
-     * @param ClassMetadata $metadata
-     *
      * @return string
      */
     private function getFileName(ClassMetadata $metadata)

@@ -101,7 +101,6 @@ class ApiContext extends BaseContext implements Context
     }
 
     /**
-     * @param $expectedContent
      * @Then the class named ":class" has docblock with content:
      */
     public function classHasDocblockWithContent($class, PyStringNode $expectedContent)
@@ -112,7 +111,6 @@ class ApiContext extends BaseContext implements Context
     }
 
     /**
-     * @param $value
      * @Then class ":classFqsen" has :docElement:
      * @throws Exception
      */
@@ -449,8 +447,7 @@ class ApiContext extends BaseContext implements Context
         Assert::assertInstanceOf(MethodDescriptor::class, $method);
         Assert::assertEquals($methodName, $method->getName());
 
-        $response = $method->getResponse();
-        return $response;
+        return $method->getResponse();
     }
 
     /**
