@@ -76,12 +76,17 @@ services:
     phpdoc.command.run.pipeline:
       class: 'League\Pipeline\Pipeline'
       factory: ['phpDocumentor\Application\PipelineFactory', create]
-      arguments: ['@phpdoc.application.pipeline', '@phpDocumentor\Application\Stage\Parser', '@phpDocumentor\Application\Stage\Transform']
+      arguments: ['@phpdoc.application.pipeline', '@phpdoc.parse.pipeline.internal', '@phpDocumentor\Application\Stage\Transform']
 
     phpdoc.command.parse.pipeline:
       class: 'League\Pipeline\Pipeline'
       factory: ['phpDocumentor\Application\PipelineFactory', create]
-      arguments: ['@phpdoc.application.pipeline', '@phpDocumentor\Application\Stage\Parser']
+      arguments: ['@phpdoc.application.pipeline', '@phpdoc.parse.pipeline.internal']
+
+    phpdoc.parse.pipeline.internal:
+      class: 'League\Pipeline\Pipeline'
+      factory: ['phpDocumentor\Application\PipelineFactory', create]
+      arguments: ['@phpDocumentor\Application\Stage\Parser\ConfigureCache', '@phpDocumentor\Application\Stage\Parser']
 
     phpdoc.command.transform.pipeline:
       class: 'League\Pipeline\Pipeline'

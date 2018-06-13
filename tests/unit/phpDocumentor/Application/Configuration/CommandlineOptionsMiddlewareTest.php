@@ -13,6 +13,7 @@
 namespace phpDocumentor\Application\Configuration;
 
 use Mockery\Adapter\Phpunit\MockeryTestCase;
+use phpDocumentor\Application\Configuration\Factory\Version3;
 use phpDocumentor\DomainModel\Dsn;
 use phpDocumentor\DomainModel\Path;
 
@@ -99,4 +100,24 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
 
         $this->assertSame([$expected], $newConfiguration['phpdocumentor']['templates']);
     }
+
+    /**
+     * @covers ::provideOptions
+     * @covers ::__invoke
+     */
+    public function testItShouldAddSourceDirectoriesForDefaultConfiguration()
+    {
+        $configuration = Version3::buildDefault();
+        $this->middleware->provideOptions(['directory' => ['./src']]);
+        $newConfiguration = $this->middleware->__invoke($configuration);
+
+        $this->assertEquals(
+            [
+                'dsn' => new Dsn('file://.'),
+                'paths' => [new Path('./src')],
+            ],
+            current($newConfiguration['phpdocumentor']['versions'])['api'][0]['source']
+        );
+    }
+
 }
