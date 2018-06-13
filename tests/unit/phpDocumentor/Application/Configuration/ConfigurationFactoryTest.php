@@ -16,6 +16,7 @@ use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery as m;
 use org\bovigo\vfs\vfsStream;
 use phpDocumentor\Application\Configuration\Factory\Strategy;
+use phpDocumentor\Application\Configuration\Factory\Version3;
 use phpDocumentor\DomainModel\Uri;
 
 /**
@@ -182,5 +183,20 @@ final class ConfigurationFactoryTest extends MockeryTestCase
         $factory->get();
 
         $this->assertAttributeSame($afterMiddleware2Value, 'cachedConfiguration', $factory);
+    }
+
+    /**
+     * @covers ::__construct
+     * @covers ::createInstance
+     * @covers ::get
+     */
+    public function testThatDefaultConfigurationIsCreateWhenNonProvided()
+    {
+        $root = vfsStream::setup('dir');
+        $factory = ConfigurationFactory::createInstance([]);
+        $factory->replaceLocation(new Uri(vfsStream::url('dir/nonexisting.xml')));
+
+        $config = $factory->get();
+        $this->assertEquals(Version3::buildDefault(), $config);
     }
 }

@@ -144,7 +144,6 @@ class ApiContext extends BaseContext implements Context
         }
 
         $element = $class-> {$method}()->get($elementName);
-
         $method = 'get' . $docElement;
         $actual = $element->{$method}();
 

@@ -112,27 +112,12 @@ final class Parser
      */
     public function __invoke(array $configuration)
     {
-        $target = $configuration['phpdocumentor']['paths']['cache'];
-
         //Grep only the first version for now. Multi version support will be added later
         $version = current($configuration['phpdocumentor']['versions']);
 
         //We are currently in the parser stage so grep the api config.
         //And for now we support a single api definition. Could be more in the future.
         $apiConfig = $version['api'][0];
-
-        //Process cache setup
-        $fileSystem = new Filesystem();
-        if (!$fileSystem->isAbsolutePath($target)) {
-            $target = getcwd() . DIRECTORY_SEPARATOR . $target;
-        }
-        if (!file_exists($target)) {
-            if (!mkdir($target) && !is_dir($target)) {
-                throw new \RuntimeException('PPCPP:EXC-BADTARGET');
-            }
-        }
-
-        $this->getCache()->getOptions()->setCacheDir($target);
 
         $parser = $this->getParser();
         $parser->setForced(!$configuration['phpdocumentor']['use-cache']);
@@ -174,7 +159,7 @@ final class Parser
 
         $parser->parse($builder, $files);
 
-        $this->log('PPCPP:LOG-STORECACHE', LogLevel::INFO, ['cacheDir' => $target]);
+        $this->log('PPCPP:LOG-STORECACHE', LogLevel::INFO, ['cacheDir' => $this->getCache()->getOptions()->getCacheDir()]);
         $projectDescriptor->getSettings()->clearModifiedFlag();
         $mapper->save($projectDescriptor);
         $this->log('PPCPP:LOG-OK');
