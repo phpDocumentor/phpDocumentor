@@ -8,7 +8,6 @@
  *  @copyright 2010-2018 Mike van Riel<mike@phpdoc.org>
  *  @license   http://www.opensource.org/licenses/mit-license.php MIT
  *  @link      http://phpdoc.org
- *
  */
 
 namespace phpDocumentor\Application\Stage\Parser;
@@ -40,16 +39,16 @@ final class ConfigureCache
 
         //Process cache setup
         $fileSystem = new Filesystem();
-        if (!$fileSystem->isAbsolutePath((string)$target)) {
+        if (!$fileSystem->isAbsolutePath((string) $target)) {
             $target = getcwd() . DIRECTORY_SEPARATOR . $target;
         }
         if (!file_exists($target)) {
-            if (!mkdir($target) && !is_dir($target)) {
+            if (!mkdir($target, 0644, true) && !is_dir($target)) {
                 throw new \RuntimeException('PPCPP:EXC-BADTARGET');
             }
         }
 
-        $this->cache->getOptions()->setCacheDir((string)$target);
+        $this->cache->getOptions()->setCacheDir((string) $target);
 
         return $configuration;
     }
