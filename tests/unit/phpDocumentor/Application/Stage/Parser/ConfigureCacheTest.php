@@ -8,7 +8,6 @@
  *  @copyright 2010-2018 Mike van Riel<mike@phpdoc.org>
  *  @license   http://www.opensource.org/licenses/mit-license.php MIT
  *  @link      http://phpdoc.org
- *
  */
 
 namespace phpDocumentor\Application\Stage\Parser;
@@ -22,18 +21,16 @@ class ConfigureCacheTest extends MockeryTestCase
 {
     /**
      * @dataProvider cacheDirProvider
-     * @param $configuredPath
-     * @param $expectedPath
      * @throws \Exception
      */
     public function testInvokeWithCachePath($configuredPath, $expectedPath)
     {
         $configuration = [
-                'phpdocumentor' => [
-                    'paths' => [
-                        'cache' => $configuredPath
-                    ]
-                ]
+            'phpdocumentor' => [
+                'paths' => [
+                    'cache' => $configuredPath,
+                ],
+            ],
         ];
 
         $cacheStorage = m::mock(StorageInterface::class);
@@ -48,21 +45,21 @@ class ConfigureCacheTest extends MockeryTestCase
     {
         return [
             [
-                '/cache',
-                '/cache'
+                '/tmp/cache',
+                '/tmp/cache',
             ],
             [
                 'cache/relative',
-                getcwd() . DIRECTORY_SEPARATOR . 'cache/relative'
+                getcwd() . DIRECTORY_SEPARATOR . 'cache/relative',
             ],
             [
-                new Path('/cache'),
-                '/cache'
+                new Path('/tmp/cache'),
+                '/tmp/cache',
             ],
             [
                 new Path('cache/relative'),
-                getcwd() . DIRECTORY_SEPARATOR . 'cache/relative'
-            ]
+                getcwd() . DIRECTORY_SEPARATOR . 'cache/relative',
+            ],
         ];
     }
 }

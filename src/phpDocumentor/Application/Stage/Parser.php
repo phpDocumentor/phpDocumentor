@@ -22,7 +22,6 @@ use phpDocumentor\Partials\Collection as PartialsCollection;
 use phpDocumentor\Reflection\DocBlock\ExampleFinder;
 use Psr\Log\LogLevel;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Filesystem\Filesystem;
 use Zend\Cache\Storage\StorageInterface;
 
 /**

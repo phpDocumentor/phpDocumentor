@@ -119,5 +119,4 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
             current($newConfiguration['phpdocumentor']['versions'])['api'][0]['source']
         );
     }
-
 }
