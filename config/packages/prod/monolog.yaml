@@ -1,9 +1,9 @@
 monolog:
     handlers:
         main:
-            type: console
+            type: null
             action_level: error
-            handler: console
+            handler: null
             excluded_404s:
                 # regex: exclude all 404 errors from the logs
                 - ^/
