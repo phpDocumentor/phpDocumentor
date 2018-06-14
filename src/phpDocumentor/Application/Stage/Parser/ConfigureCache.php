@@ -43,7 +43,7 @@ final class ConfigureCache
             $target = getcwd() . DIRECTORY_SEPARATOR . $target;
         }
         if (!file_exists($target)) {
-            if (!mkdir($target, 0644, true) && !is_dir($target)) {
+            if (!mkdir($target, 0755, true) && !is_dir($target)) {
                 throw new \RuntimeException('PPCPP:EXC-BADTARGET');
             }
         }
