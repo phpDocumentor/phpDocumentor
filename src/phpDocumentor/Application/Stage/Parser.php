@@ -158,7 +158,7 @@ final class Parser
 
         $parser->parse($builder, $files);
 
-        $this->log('PPCPP:LOG-STORECACHE', LogLevel::INFO, ['cacheDir' => $this->getCache()->getOptions()->getCacheDir()]);
+        $this->log('PPCPP:LOG-STORECACHE', LogLevel::INFO);
         $projectDescriptor->getSettings()->clearModifiedFlag();
         $mapper->save($projectDescriptor);
         $this->log('PPCPP:LOG-OK');
