@@ -12,7 +12,6 @@
 
 namespace phpDocumentor\Application\Stage;
 
-use phpDocumentor\Application\Console\Command\Command;
 use phpDocumentor\Compiler\Compiler;
 use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper;
@@ -21,11 +20,8 @@ use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Transformer\Event\PreTransformationEvent;
 use phpDocumentor\Transformer\Event\PreTransformEvent;
 use phpDocumentor\Transformer\Event\WriterInitializationEvent;
-use phpDocumentor\Transformer\Template;
-use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Transformer;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Stopwatch\Stopwatch;
 use Zend\Cache\Storage\StorageInterface;
 
@@ -108,20 +104,6 @@ final class Transform
     {
         // initialize transformer
         $transformer = $this->getTransformer();
-
-        $target = $configuration['phpdocumentor']['paths']['output']->getPath();
-        $fileSystem = new Filesystem();
-        if (! $fileSystem->isAbsolutePath((string) $target)) {
-            $target = getcwd() . DIRECTORY_SEPARATOR . $target;
-        }
-        $transformer->setTarget((string) $target);
-
-        $source = $configuration['phpdocumentor']['paths']['cache'];
-        if (!file_exists($source) || !is_dir($source)) {
-            throw new \Exception('Invalid source location provided, a path to an existing folder was expected');
-        }
-
-        $this->getCache()->getOptions()->setCacheDir($source);
 
         $projectDescriptor = $this->getBuilder()->getProjectDescriptor();
         $mapper = new ProjectDescriptorMapper($this->getCache());
