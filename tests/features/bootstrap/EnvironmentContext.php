@@ -176,4 +176,12 @@ final class EnvironmentContext implements Context\Context
     {
         return $this->process->getErrorOutput();
     }
+
+    /**
+     * @Then /^(\d+) files should be parsed$/
+     */
+    public function filesShouldBeParsed($count)
+    {
+        \PHPUnit\Framework\Assert::assertSame((int) $count, substr_count($this->process->getErrorOutput(), 'Parsing'));
+    }
 }
