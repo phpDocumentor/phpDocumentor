@@ -31,7 +31,7 @@ class ConfigureTest extends TestCase
     {
         $configFactory = new ConfigurationFactory(
             [new Version3(__DIR__ . '/../../../../../data/xsd/phpdoc.xsd')],
-            new Uri(__DIR__ . '/../../../data/phpDocumentor3XML.xml')
+            new Uri(__DIR__ . str_replace('/', DIRECTORY_SEPARATOR, '/../../../data/phpDocumentor3XML.xml'))
         );
 
         $fixture = new Configure($configFactory);
