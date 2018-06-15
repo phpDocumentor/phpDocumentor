@@ -25,6 +25,7 @@ use phpDocumentor\Descriptor\Tag\ParamDescriptor;
 use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
 use phpDocumentor\Descriptor\Tag\VersionDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
+use phpDocumentor\Reflection\Php\File;
 use PHPUnit\Framework\Assert;
 
 class ApiContext extends BaseContext implements Context
@@ -496,5 +497,13 @@ class ApiContext extends BaseContext implements Context
 
         Assert::assertInstanceOf(MethodDescriptor::class, $match);
         Assert::assertNotNull($match->getArguments()->get($argument));
+    }
+
+    /**
+     * @Then /^(\d+) files should be parsed$/
+     */
+    public function filesShouldBeParsed($count)
+    {
+        \PHPUnit\Framework\Assert::assertSame((int) $count, $this->getAst()->getFiles()->count());
     }
 }
