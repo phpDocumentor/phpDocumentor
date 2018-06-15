@@ -98,7 +98,10 @@ final class Uri
      */
     private function addFileSchemeWhenSchemeIsAbsent($uri): string
     {
-        if (!parse_url($uri, PHP_URL_SCHEME)) {
+        $results = parse_url($uri, PHP_URL_SCHEME);
+        if ($results === 'C') {
+            $uri = 'file:///' . $uri;
+        } elseif (!$results) {
             $uri = 'file://' . $uri;
         }
 
