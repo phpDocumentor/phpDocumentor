@@ -22,6 +22,7 @@ use phpDocumentor\Transformer\Event\PreTransformEvent;
 use phpDocumentor\Transformer\Event\WriterInitializationEvent;
 use phpDocumentor\Transformer\Transformer;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Stopwatch\Stopwatch;
 use Zend\Cache\Storage\StorageInterface;
 
@@ -104,6 +105,14 @@ final class Transform
     {
         // initialize transformer
         $transformer = $this->getTransformer();
+
+        $target = $configuration['phpdocumentor']['paths']['output']->getPath();
+        $fileSystem = new Filesystem();
+        if (! $fileSystem->isAbsolutePath((string) $target)) {
+            $target = getcwd() . DIRECTORY_SEPARATOR . $target;
+        }
+
+        $transformer->setTarget((string) $target);
 
         $projectDescriptor = $this->getBuilder()->getProjectDescriptor();
         $mapper = new ProjectDescriptorMapper($this->getCache());
