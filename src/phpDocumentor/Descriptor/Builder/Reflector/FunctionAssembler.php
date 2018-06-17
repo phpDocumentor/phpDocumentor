@@ -75,7 +75,7 @@ class FunctionAssembler extends AssemblerAbstract
         $descriptor->setFullyQualifiedStructuralElementName($reflector->getFqsen());
         $descriptor->setName($reflector->getName());
         $descriptor->setLine($reflector->getLocation()->getLineNumber());
-        $descriptor->setNamespace(substr($reflector->getFqsen(), 0, -strlen($reflector->getName())));
+        $descriptor->setNamespace('\\' . trim(substr($reflector->getFqsen(), 0, -strlen($reflector->getName()) - 2), '\\'));
         $descriptor->setReturnType($reflector->getReturnType());
     }
 

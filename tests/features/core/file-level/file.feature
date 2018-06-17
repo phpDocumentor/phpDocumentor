@@ -12,3 +12,11 @@ Feature: Parsing a php file
     """
     This file is part of phpDocumentor.
     """
+
+  @issue @github-1978
+  Scenario: File only contains a function
+    Given A single file named "test.php" based on "functionOnly.php"
+    When I run "phpdoc -f test.php"
+    Then the application must have run successfully
+    And the ast has a function named "\foo"
+    And the namespace '\' has a function named 'foo'

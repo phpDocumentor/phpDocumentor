@@ -20,7 +20,9 @@ use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\ConstantDescriptor;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\FileDescriptor;
+use phpDocumentor\Descriptor\FunctionDescriptor;
 use phpDocumentor\Descriptor\MethodDescriptor;
+use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Descriptor\Tag\ParamDescriptor;
 use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
 use phpDocumentor\Descriptor\Tag\VersionDescriptor;
@@ -505,5 +507,36 @@ class ApiContext extends BaseContext implements Context
     public function filesShouldBeParsed($count)
     {
         \PHPUnit\Framework\Assert::assertSame((int) $count, $this->getAst()->getFiles()->count());
+    }
+
+    /**
+     * @Given /^the ast has a function named "([^"]*)"$/
+     */
+    public function theAstHasAFunctionNamed($functionName)
+    {
+        Assert::assertInstanceOf(FunctionDescriptor::class, $this->getAst()->getIndexes()->get('functions')->get($functionName . '()'));
+    }
+
+    /**
+     * @Given the namespace ':namespace' has a function named ':functionName'
+     */
+    public function theNamespaceFoo(string $namespace, string $functionName)
+    {
+        /** @var NamespaceDescriptor $namespace */
+        $namespace = $this->getAst()->getIndexes()->get('namespaces')->get($namespace);
+        Assert::assertInstanceOf(NamespaceDescriptor::class, $namespace);
+        $function = $this->findFunctionInNamespace($namespace, $functionName);
+        Assert::assertInstanceOf(FunctionDescriptor::class, $function);
+    }
+
+    private function findFunctionInNamespace(NamespaceDescriptor $namespace, string $functionName)
+    {
+        foreach ($namespace->getFunctions()->getAll() as $key => $function) {
+            if ($function->getName() === $functionName) {
+                return $function;
+            }
+        }
+
+        return null;
     }
 }
