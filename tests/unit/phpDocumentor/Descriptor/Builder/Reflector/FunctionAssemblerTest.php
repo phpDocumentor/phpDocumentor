@@ -90,6 +90,7 @@ class FunctionAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $expectedFqsen = '\\' . $namespace . '\\' . $functionName . '()';
         $this->assertSame($expectedFqsen, (string) $descriptor->getFullyQualifiedStructuralElementName());
         $this->assertSame($functionName, $descriptor->getName());
+        $this->assertSame('\\' . $namespace, $descriptor->getNamespace());
 
         $argument = $descriptor->getArguments()->get($argumentName);
         $this->assertSame($argumentDescriptor, $argument);
