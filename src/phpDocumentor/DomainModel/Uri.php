@@ -100,9 +100,8 @@ final class Uri
     {
         $scheme = parse_url($uri, PHP_URL_SCHEME);
 
-        if (preg_match("/^[a-z]$/i", $scheme)) { // windows driver letter
+        if (preg_match('/^[a-z]$/i', $scheme)) { // windows driver letter
             $uri = 'file:///' . $uri;
-
         } elseif (empty($scheme)) {
             $uri = 'file://' . $uri;
         }
