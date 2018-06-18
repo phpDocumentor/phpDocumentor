@@ -123,6 +123,7 @@ class FinderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
         $this->assertSame(self::EXAMPLE_TEXT, $result);
 
+        chdir('..');
         $this->filesystem->remove($workingDirectory);
     }
 
@@ -144,6 +145,7 @@ class FinderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
         $this->assertSame(self::EXAMPLE_TEXT, $result);
 
+        chdir('..');
         $this->filesystem->remove($workingDirectory);
     }
 
