@@ -98,10 +98,12 @@ final class Uri
      */
     private function addFileSchemeWhenSchemeIsAbsent($uri): string
     {
-        $results = parse_url($uri, PHP_URL_SCHEME);
-        if ($results === 'C') {
+        $scheme = parse_url($uri, PHP_URL_SCHEME);
+
+        if (preg_match("/^[a-z]$/i", $scheme)) { // windows driver letter
             $uri = 'file:///' . $uri;
-        } elseif (!$results) {
+
+        } elseif (empty($scheme)) {
             $uri = 'file://' . $uri;
         }
 
