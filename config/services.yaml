@@ -207,7 +207,7 @@ services:
     League\Flysystem\MountManager: ~
     Zend\Cache\Storage\Adapter\Filesystem:
       class: 'Zend\Cache\Storage\Adapter\Filesystem'
-      factory: ['phpdocumentor\Infrastructure\Cache\ZendCacheFactory', create]
+      factory: ['phpDocumentor\Infrastructure\Cache\ZendCacheFactory', create]
 
     Parsedown:
       class: 'Parsedown'
