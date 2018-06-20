@@ -28,7 +28,7 @@ use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
 use phpDocumentor\Descriptor\Tag\VersionDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Reflection\Php\File;
-use PHPUnit\Framework\Assert;
+use Webmozart\Assert\Assert;
 
 class ApiContext extends BaseContext implements Context
 {
@@ -78,7 +78,7 @@ class ApiContext extends BaseContext implements Context
     {
         $class = $this->findClassByName($class);
 
-        Assert::assertEquals('Default', $class->getPackage()->getName());
+        Assert::eq('Default', $class->getPackage()->getName());
     }
 
     /**
@@ -110,7 +110,7 @@ class ApiContext extends BaseContext implements Context
     {
         $class = $this->findClassByName($class);
 
-        Assert::assertEquals($expectedContent->getRaw(), $class->getDescription());
+        Assert::eq($expectedContent->getRaw(), $class->getDescription());
     }
 
     /**
@@ -123,7 +123,7 @@ class ApiContext extends BaseContext implements Context
 
         $method = 'get' . $docElement;
 
-        Assert::assertEquals($value->getRaw(), $class->{$method}());
+        Assert::eq($value->getRaw(), $class->{$method}());
     }
 
     /**
@@ -150,7 +150,7 @@ class ApiContext extends BaseContext implements Context
         $method = 'get' . $docElement;
         $actual = $element->{$method}();
 
-        Assert::assertEquals($value->getRaw(), $actual, sprintf('"%s" does not match "%s"', $actual, $value->getRaw()));
+        Assert::eq($value->getRaw(), $actual, sprintf('"%s" does not match "%s"', $actual, $value->getRaw()));
     }
 
     /**
@@ -167,7 +167,7 @@ class ApiContext extends BaseContext implements Context
             }
         }
 
-        Assert::fail(sprintf('Didn\'t find expected version "%s"', $value));
+        Assert::false(true, sprintf('Didn\'t find expected version "%s"', $value));
     }
 
     /**
@@ -220,17 +220,17 @@ class ApiContext extends BaseContext implements Context
      * @param string $methodName
      * @Then class ":classFqsen" has a method :method with argument ":argument is variadic
      */
-    public function classHasMethodWithAgumentVariadic($classFqsen, $methodName, $argument)
+    public function classHasMethodWithArgumentVariadic($classFqsen, $methodName, $argument)
     {
         $class = $this->findClassByFqsen($classFqsen);
         /** @var MethodDescriptor $method */
         $method = $class->getMethods()->get($methodName);
-        Assert::assertArrayHasKey($argument, $method->getArguments());
+        Assert::keyExists($method->getArguments()->getIterator(), $argument);
         /** @var ArgumentDescriptor $argumentD */
         $argumentD = $method->getArguments()[$argument];
 
         //TODO: enable this check when we support variadic arguments.
-        //Assert::assertTrue($argumentD->isVariadic(), 'Expected argument to be variadic');
+        //Assert::true($argumentD->isVariadic(), 'Expected argument to be variadic');
     }
 
     /**
@@ -243,8 +243,8 @@ class ApiContext extends BaseContext implements Context
         $class = $this->findClassByFqsen($classFqsen);
         /** @var MethodDescriptor $method */
         $method = $class->getMethods()->get($methodName, null);
-        Assert::assertInstanceOf(MethodDescriptor::class, $method);
-        Assert::assertEquals($methodName, $method->getName());
+        Assert::isInstanceOf($method, MethodDescriptor::class);
+        Assert::eq($methodName, $method->getName());
     }
 
     /**
@@ -254,16 +254,16 @@ class ApiContext extends BaseContext implements Context
      * @param string $type
      * @Then class ":classFqsen" has a method :method with argument :argument of type ":type"
      */
-    public function classHasMethodWithAgumentOfType($classFqsen, $methodName, $argument, $type)
+    public function classHasMethodWithArgumentOfType($classFqsen, $methodName, $argument, $type)
     {
         $class = $this->findClassByFqsen($classFqsen);
         /** @var MethodDescriptor $method */
         $method = $class->getMethods()->get($methodName);
-        Assert::assertArrayHasKey($argument, $method->getArguments());
+        Assert::keyExists($method->getArguments()->getIterator(), $argument);
         /** @var ArgumentDescriptor $argumentDescriptor */
         $argumentDescriptor = $method->getArguments()[$argument];
 
-        Assert::assertEquals($type, (string) $argumentDescriptor->getTypes());
+        Assert::eq($type, (string) $argumentDescriptor->getTypes());
     }
 
     /**
@@ -281,7 +281,7 @@ class ApiContext extends BaseContext implements Context
         /** @var ParamDescriptor $paramDescriptor */
         foreach ($method->getParam() as $paramDescriptor) {
             if ($paramDescriptor->getName() === $param) {
-                Assert::assertEquals($type, (string) $paramDescriptor->getTypes());
+                Assert::eq($type, (string) $paramDescriptor->getTypes());
             }
         }
     }
@@ -296,7 +296,7 @@ class ApiContext extends BaseContext implements Context
         /** @var ClassDescriptor $class */
         $class = $this->findClassByFqsen($classFqsen);
         $constant = $class->getConstants()->get($constantName);
-        Assert::assertInstanceOf(ConstantDescriptor::class, $constant);
+        Assert::isInstanceOf($constant, ConstantDescriptor::class);
     }
 
     /**
@@ -328,9 +328,9 @@ class ApiContext extends BaseContext implements Context
         /** @var Collection $tagCollection */
         $tagCollection = $element->getTags()->get($tagName, new Collection());
 
-        Assert::assertEquals((int) $expectedNumber, $tagCollection->count());
+        Assert::eq((int) $expectedNumber, $tagCollection->count());
         if ($expectedNumber > 0) {
-            Assert::assertEquals($tagName, $tagCollection[0]->getName());
+            Assert::eq($tagName, $tagCollection[0]->getName());
         }
     }
 
@@ -344,7 +344,7 @@ class ApiContext extends BaseContext implements Context
         /** @var FileDescriptor $file */
         $file = $ast->getFiles()->get($fileName);
 
-        Assert::assertEquals($string->getRaw(), $file->getSummary());
+        Assert::eq($string->getRaw(), $file->getSummary());
     }
 
     /**
@@ -358,8 +358,8 @@ class ApiContext extends BaseContext implements Context
     {
         $response = $this->findMethodResponse($classFqsen, $methodName);
 
-        Assert::assertEquals($returnType, (string) $response->getTypes());
-        Assert::assertEquals('', (string) $response->getDescription());
+        Assert::eq($returnType, (string) $response->getTypes());
+        Assert::eq('', (string) $response->getDescription());
     }
 
     /**
@@ -373,8 +373,8 @@ class ApiContext extends BaseContext implements Context
     {
         $response = $this->findMagicMethodResponse($classFqsen, $methodName);
 
-        Assert::assertEquals($returnType, (string) $response->getTypes());
-        Assert::assertEquals('', (string) $response->getDescription());
+        Assert::eq($returnType, (string) $response->getTypes());
+        Assert::eq('', (string) $response->getDescription());
     }
 
     /**
@@ -387,8 +387,8 @@ class ApiContext extends BaseContext implements Context
     {
         $response = $this->findMethodResponse($classFqsen, $methodName);
 
-        Assert::assertEquals($returnType, (string) $response->getTypes());
-        Assert::assertEquals($description, (string) $response->getDescription());
+        Assert::eq($returnType, (string) $response->getTypes());
+        Assert::eq($description, (string) $response->getDescription());
     }
 
     /**
@@ -398,8 +398,8 @@ class ApiContext extends BaseContext implements Context
     public function classReturnTaggetReturnWithoutAnyWithoutReturntype($classFqsen, $methodName)
     {
         $response = $this->findMethodResponse($classFqsen, $methodName);
-        Assert::assertEquals('mixed', (string) $response->getTypes());
-        Assert::assertEquals('', $response->getDescription());
+        Assert::eq('mixed', (string) $response->getTypes());
+        Assert::eq('', $response->getDescription());
     }
 
     /**
@@ -411,8 +411,8 @@ class ApiContext extends BaseContext implements Context
     {
         $response = $this->findFunctionResponse($fqsen);
 
-        Assert::assertEquals($returnType, (string) $response->getTypes());
-        Assert::assertEquals('', (string) $response->getDescription());
+        Assert::eq($returnType, (string) $response->getTypes());
+        Assert::eq('', (string) $response->getDescription());
     }
 
     /**
@@ -423,8 +423,8 @@ class ApiContext extends BaseContext implements Context
     {
         $response = $this->findFunctionResponse($fqsen);
 
-        Assert::assertEquals($returnType, (string) $response->getTypes());
-        Assert::assertEquals($description, (string) $response->getDescription());
+        Assert::eq($returnType, (string) $response->getTypes());
+        Assert::eq($description, (string) $response->getDescription());
     }
 
     /**
@@ -434,8 +434,8 @@ class ApiContext extends BaseContext implements Context
     public function functionWithoutReturntype($fqsen)
     {
         $response = $this->findFunctionResponse($fqsen);
-        Assert::assertEquals('mixed', (string) $response->getTypes());
-        Assert::assertEquals('', $response->getDescription());
+        Assert::eq('mixed', (string) $response->getTypes());
+        Assert::eq('', $response->getDescription());
     }
 
     /**
@@ -446,8 +446,8 @@ class ApiContext extends BaseContext implements Context
         $class = $this->findClassByFqsen($classFqsen);
         /** @var MethodDescriptor $method */
         $method = $class->getMethods()->get($methodName, null);
-        Assert::assertInstanceOf(MethodDescriptor::class, $method);
-        Assert::assertEquals($methodName, $method->getName());
+        Assert::isInstanceOf($method, MethodDescriptor::class);
+        Assert::eq($methodName, $method->getName());
 
         return $method->getResponse();
     }
@@ -467,8 +467,8 @@ class ApiContext extends BaseContext implements Context
             }
         }
 
-        Assert::assertInstanceOf(MethodDescriptor::class, $match);
-        Assert::assertEquals($methodName, $match->getName());
+        Assert::isInstanceOf($match, MethodDescriptor::class);
+        Assert::eq($methodName, $match->getName());
 
         return $match->getResponse();
     }
@@ -497,8 +497,8 @@ class ApiContext extends BaseContext implements Context
             }
         }
 
-        Assert::assertInstanceOf(MethodDescriptor::class, $match);
-        Assert::assertNotNull($match->getArguments()->get($argument));
+        Assert::isInstanceOf($match, MethodDescriptor::class);
+        Assert::notNull($match->getArguments()->get($argument));
     }
 
     /**
@@ -506,7 +506,7 @@ class ApiContext extends BaseContext implements Context
      */
     public function filesShouldBeParsed($count)
     {
-        \PHPUnit\Framework\Assert::assertSame((int) $count, $this->getAst()->getFiles()->count());
+        Assert::same((int) $count, $this->getAst()->getFiles()->count());
     }
 
     /**
@@ -514,7 +514,7 @@ class ApiContext extends BaseContext implements Context
      */
     public function theAstHasAFunctionNamed($functionName)
     {
-        Assert::assertInstanceOf(FunctionDescriptor::class, $this->getAst()->getIndexes()->get('functions')->get($functionName . '()'));
+        Assert::isInstanceOf($this->getAst()->getIndexes()->get('functions')->get($functionName . '()'), FunctionDescriptor::class);
     }
 
     /**
@@ -524,9 +524,9 @@ class ApiContext extends BaseContext implements Context
     {
         /** @var NamespaceDescriptor $namespace */
         $namespace = $this->getAst()->getIndexes()->get('namespaces')->get($namespace);
-        Assert::assertInstanceOf(NamespaceDescriptor::class, $namespace);
+        Assert::isInstanceOf($namespace, NamespaceDescriptor::class);
         $function = $this->findFunctionInNamespace($namespace, $functionName);
-        Assert::assertInstanceOf(FunctionDescriptor::class, $function);
+        Assert::isInstanceOf($function, FunctionDescriptor::class);
     }
 
     private function findFunctionInNamespace(NamespaceDescriptor $namespace, string $functionName)
