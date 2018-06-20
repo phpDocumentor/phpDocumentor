@@ -25,7 +25,7 @@ jobs:
       php: 7.1
       script:
         - chmod u+x ./bin/phpdoc
-        - ./bin/phpdoc -c phpdoc.dist.xml
+        - ./bin/phpdoc run -c phpdoc.dist.xml
 
     - stage: phar
       php: 7.1
@@ -33,7 +33,7 @@ jobs:
         - php ./bin/console --env=prod cache:warm
         - php -d phar.readonly=false tools/box.phar compile
         - bin/behat -p phar
-        - php ./build/phpDocumentor.phar -c phpdoc.dist.xml
+        - php ./build/phpDocumentor.phar run -c phpdoc.dist.xml
 
     - stage: coverage
       php: 7.1
