@@ -14,7 +14,7 @@ namespace phpDocumentor\Behat\Contexts\Ast;
 
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\PyStringNode;
-use PHPUnit\Framework\Assert;
+use Webmozart\Assert\Assert;
 
 /**
  * This class contains the context methods for tests of the uses tag.
@@ -69,6 +69,6 @@ final class UsesTagContext extends BaseContext implements Context
             }
         }
 
-        Assert::assertEquals($number, $count, sprintf('Missing uses tag with reference "%s"', $reference));
+        Assert::eq($number, $count, sprintf('Missing uses tag with reference "%s"', $reference));
     }
 }
