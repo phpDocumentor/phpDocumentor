@@ -225,7 +225,7 @@ class ApiContext extends BaseContext implements Context
         $class = $this->findClassByFqsen($classFqsen);
         /** @var MethodDescriptor $method */
         $method = $class->getMethods()->get($methodName);
-        Assert::keyExists($method->getArguments()->getIterator(), $argument);
+        Assert::keyExists($method->getArguments()->getAll(), $argument);
         /** @var ArgumentDescriptor $argumentD */
         $argumentD = $method->getArguments()[$argument];
 
@@ -259,7 +259,7 @@ class ApiContext extends BaseContext implements Context
         $class = $this->findClassByFqsen($classFqsen);
         /** @var MethodDescriptor $method */
         $method = $class->getMethods()->get($methodName);
-        Assert::keyExists($method->getArguments()->getIterator(), $argument);
+        Assert::keyExists($method->getArguments()->getAll(), $argument);
         /** @var ArgumentDescriptor $argumentDescriptor */
         $argumentDescriptor = $method->getArguments()[$argument];
 
