@@ -1,4 +1,4 @@
-Feature: Phpdocumentor is able to process varidict parameters
+Feature: Phpdocumentor is able to process variadic parameters
 
   @php5.6+
   Scenario:

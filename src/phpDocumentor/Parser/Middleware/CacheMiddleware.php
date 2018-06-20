@@ -14,6 +14,7 @@
 namespace phpDocumentor\Parser\Middleware;
 
 use phpDocumentor\Parser\Parser;
+use phpDocumentor\Reflection\Middleware\Command;
 use phpDocumentor\Reflection\Middleware\Middleware;
 use phpDocumentor\Reflection\Php\Factory\File\CreateCommand;
 use phpDocumentor\Reflection\Php\File;
@@ -54,7 +55,7 @@ final class CacheMiddleware implements Middleware
      *
      * @return File
      */
-    public function execute($command, callable $next)
+    public function execute(Command $command, callable $next)
     {
         $itemName = $this->getItemName($command->getFile()->path());
         $item = $this->dataStore->getItem($itemName);
