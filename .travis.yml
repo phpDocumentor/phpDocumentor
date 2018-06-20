@@ -29,6 +29,12 @@ jobs:
         - php -d phar.readonly=false tools/box.phar compile
         - bin/behat -p phar
 
+    - stage: run
+      php: 7.1
+      script:
+        - sh ./bin/phpdoc -c phpdoc.dist.xml
+        - php ./build/phpDocumentor.phar -c phpdoc.dist.xml
+
     - stage: coverage
       php: 7.1
       script:
