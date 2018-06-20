@@ -76,7 +76,7 @@ class DescriptorAbstractTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testSettingAndGettingNamespace()
     {
-        $this->assertNull($this->fixture->getNamespace());
+        $this->assertEquals('\\', $this->fixture->getNamespace());
 
         $mock = m::mock('phpDocumentor\Descriptor\NamespaceDescriptor');
 
