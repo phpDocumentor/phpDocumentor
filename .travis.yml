@@ -11,33 +11,34 @@ matrix:
 
 install:
   - composer install --no-interaction --prefer-dist --optimize-autoloader
-install:
   - travis_retry composer install --no-interaction --prefer-dist --optimize-autoloader
-  - travis_retry composer global require phpunit/phpunit ^6 # cannot use phpunit.phar or require-dev, because this package is a phpunit dep
   - travis_retry wget --no-verbose https://phar.io/releases/phive.phar
 
 script:
+  - travis_retry composer global require phpunit/phpunit ^6 # cannot use phpunit.phar or require-dev, because this package is a phpunit dep
   - /home/travis/.composer/vendor/bin/phpunit --no-coverage
   - bin/behat -p default
 
 jobs:
   include:
+    - stage: run
+      php: 7.1
+      script:
+        - chmod u+x ./bin/phpdoc
+        - ./bin/phpdoc -c phpdoc.dist.xml
+
     - stage: phar
       php: 7.1
       script:
         - php ./bin/console --env=prod cache:warm
         - php -d phar.readonly=false tools/box.phar compile
         - bin/behat -p phar
-
-    - stage: run
-      php: 7.1
-      script:
-        - sh ./bin/phpdoc -c phpdoc.dist.xml
         - php ./build/phpDocumentor.phar -c phpdoc.dist.xml
 
     - stage: coverage
       php: 7.1
       script:
+        - travis_retry composer global require phpunit/phpunit ^6 # cannot use phpunit.phar or require-dev, because this package is a phpunit dep
         - /home/travis/.composer/vendor/bin/phpunit
       after_script:
         - travis_retry php phive.phar --no-progress install --trust-gpg-keys E82B2FB314E9906E php-coveralls/php-coveralls && ./tools/php-coveralls --verbose
