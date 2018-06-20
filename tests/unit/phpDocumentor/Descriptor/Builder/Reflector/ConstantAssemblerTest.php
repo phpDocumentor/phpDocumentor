@@ -43,7 +43,7 @@ class ConstantAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testCreateConstantDescriptorFromReflector()
     {
-        $pi = 3.14159265359;
+        $pi = '3.14159265359';
         $name = 'constPI';
         $namespace = 'Namespace';
 
