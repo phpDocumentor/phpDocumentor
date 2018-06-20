@@ -26,8 +26,8 @@ abstract class DescriptorAbstract implements Filterable
     /** @var string $name The local name for this element */
     protected $name = '';
 
-    /** @var NamespaceDescriptor $namespace The namespace for this element */
-    protected $namespace = '\\';
+    /** @var NamespaceDescriptor|string $namespace The namespace for this element */
+    protected $namespace = '';
 
     /** @var string $package The package with which this element is associated */
     protected $package = '';
@@ -109,11 +109,7 @@ abstract class DescriptorAbstract implements Filterable
      */
     public function setNamespace($namespace)
     {
-        if (empty($namespace)) {
-            $this->namespace = '\\';
-        } else {
-            $this->namespace = $namespace;
-        }
+        $this->namespace = $namespace;
     }
 
     /**
