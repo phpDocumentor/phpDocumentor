@@ -15,6 +15,7 @@ namespace phpDocumentor\Parser\Middleware;
 use Exception;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Event\LogEvent;
+use phpDocumentor\Reflection\Middleware\Command;
 use phpDocumentor\Reflection\Middleware\Middleware;
 use Psr\Log\LogLevel;
 
@@ -26,7 +27,7 @@ final class ErrorHandlingMiddleware implements Middleware
      * @param callable $next
      * @return object
      */
-    public function execute($command, callable $next)
+    public function execute(Command $command, callable $next)
     {
         $filename = $command->getFile()->path();
         $this->log('Starting to parse file: ' . $filename);

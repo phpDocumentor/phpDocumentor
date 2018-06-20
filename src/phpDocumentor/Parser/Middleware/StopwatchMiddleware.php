@@ -14,6 +14,7 @@ namespace phpDocumentor\Parser\Middleware;
 
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Event\LogEvent;
+use phpDocumentor\Reflection\Middleware\Command;
 use phpDocumentor\Reflection\Middleware\Middleware;
 use Psr\Log\LogLevel;
 use Symfony\Component\Stopwatch\Stopwatch;
@@ -42,7 +43,7 @@ final class StopwatchMiddleware implements Middleware
      * @param callable $next
      * @return object
      */
-    public function execute($command, callable $next)
+    public function execute(Command $command, callable $next)
     {
         $result = $next($command);
 

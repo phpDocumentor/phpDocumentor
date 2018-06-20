@@ -14,6 +14,7 @@ namespace phpDocumentor\Parser\Middleware;
 
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Parser\Event\PreFileEvent;
+use phpDocumentor\Reflection\Middleware\Command;
 use phpDocumentor\Reflection\Middleware\Middleware;
 
 final class EmittingMiddleware implements Middleware
@@ -24,7 +25,7 @@ final class EmittingMiddleware implements Middleware
      * @param callable $next
      * @return object
      */
-    public function execute($command, callable $next)
+    public function execute(Command $command, callable $next)
     {
         if (class_exists('phpDocumentor\Event\Dispatcher')) {
             Dispatcher::getInstance()->dispatch(

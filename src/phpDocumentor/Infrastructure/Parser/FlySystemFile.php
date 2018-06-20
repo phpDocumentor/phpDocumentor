@@ -48,7 +48,7 @@ final class FlySystemFile implements File
      *
      * @return string
      */
-    public function getContents()
+    public function getContents(): string
     {
         return $this->fileSystem->read($this->fileName);
     }
@@ -58,7 +58,7 @@ final class FlySystemFile implements File
      *
      * @return string
      */
-    public function md5()
+    public function md5(): string
     {
         return md5($this->getContents());
     }
@@ -68,7 +68,7 @@ final class FlySystemFile implements File
      *
      * @return string
      */
-    public function path()
+    public function path(): string
     {
         return $this->fileName;
     }
