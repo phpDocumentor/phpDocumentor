@@ -45,8 +45,6 @@ final class FlySystemFile implements File
 
     /**
      * Returns the content of the file as a string.
-     *
-     * @return string
      */
     public function getContents(): string
     {
@@ -55,8 +53,6 @@ final class FlySystemFile implements File
 
     /**
      * Returns md5 hash of the file.
-     *
-     * @return string
      */
     public function md5(): string
     {
@@ -65,8 +61,6 @@ final class FlySystemFile implements File
 
     /**
      * Returns an relative path to the file.
-     *
-     * @return string
      */
     public function path(): string
     {
