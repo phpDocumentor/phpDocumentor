@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 /**
  * This file is part of phpDocumentor.
@@ -102,10 +103,10 @@ final class Uri
     {
         $scheme = parse_url($uri, PHP_URL_SCHEME);
 
-        if (preg_match('/^[a-z]$/i', $scheme)) { // windows driver letter
-            $uri = 'file:///' . $uri;
-        } elseif (empty($scheme)) {
+        if (empty($scheme)) {
             $uri = 'file://' . $uri;
+        } elseif (preg_match('/^[a-z]$/i', (string) $scheme)) { // windows driver letter
+            $uri = 'file:///' . $uri;
         }
 
         return $uri;
