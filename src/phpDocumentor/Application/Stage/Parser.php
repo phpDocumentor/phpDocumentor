@@ -15,6 +15,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Application\Stage;
 
+use Exception;
+use InvalidArgumentException;
 use phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
@@ -99,7 +101,7 @@ final class Parser
     /**
      * Returns the Cache.
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     private function getCache(): StorageInterface
     {
@@ -109,10 +111,9 @@ final class Parser
     /**
      * Executes the business logic involved with this command.
      *
-     * @return array
-     * @throws \Exception if the target location is not a folder.
+     * @throws Exception if the target location is not a folder.
      */
-    public function __invoke(array $configuration)
+    public function __invoke(array $configuration): array
     {
         //Grep only the first version for now. Multi version support will be added later
         $version = current($configuration['phpdocumentor']['versions']);
@@ -219,11 +220,10 @@ final class Parser
     /**
      * Dispatches a logging request.
      *
-     * @param string   $message  The message to log.
      * @param string   $priority The logging priority as declared in the LogLevel PSR-3 class.
      * @param string[] $parameters
      */
-    private function log($message, $priority = LogLevel::INFO, $parameters = [])
+    private function log(string $message, string $priority = LogLevel::INFO, array $parameters = []): void
     {
         $this->eventDispatcher->dispatch(
             'system.log',

@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Application\Stage\Parser;
 
+use RuntimeException;
 use Symfony\Component\Filesystem\Filesystem;
 use Zend\Cache\Storage\StorageInterface;
 
@@ -33,10 +34,9 @@ final class ConfigureCache
     /**
      * Executes the business logic involved with this command.
      *
-     * @return array
-     * @throws \Exception if the target location is not a folder.
+     * @throws RuntimeException if the target location is not a folder.
      */
-    public function __invoke(array $configuration)
+    public function __invoke(array $configuration): array
     {
         $target = (string) $configuration['phpdocumentor']['paths']['cache'];
 
@@ -47,7 +47,7 @@ final class ConfigureCache
         }
         if (!file_exists($target)) {
             if (!mkdir($target, 0755, true) && !is_dir($target)) {
-                throw new \RuntimeException('PPCPP:EXC-BADTARGET');
+                throw new RuntimeException('PPCPP:EXC-BADTARGET');
             }
         }
 
