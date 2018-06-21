@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 /**
  * This file is part of phpDocumentor.
@@ -53,7 +54,7 @@ class ConstantConverter
         $parent->appendChild($child);
 
         $child->setAttribute('namespace', ltrim($fullyQualifiedNamespaceName, '\\'));
-        $child->setAttribute('line', $constant->getLine());
+        $child->setAttribute('line', (string) $constant->getLine());
 
         $child->appendChild(new \DOMElement('name', $constant->getName()));
         $child->appendChild(new \DOMElement('full_name', $constant->getFullyQualifiedStructuralElementName()));

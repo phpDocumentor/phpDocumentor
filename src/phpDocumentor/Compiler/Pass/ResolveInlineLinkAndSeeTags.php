@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 /**
  * This file is part of phpDocumentor.
@@ -137,7 +138,7 @@ class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
      */
     private function isUrl($link)
     {
-        return (bool) preg_match('/^[\w]+:\/\/.+$/', $link);
+        return (bool) preg_match('/^[\w]+:\/\/.+$/', (string) $link);
     }
 
     /**

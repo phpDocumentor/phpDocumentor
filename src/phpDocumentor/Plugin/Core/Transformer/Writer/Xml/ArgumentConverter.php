@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 /**
  * This file is part of phpDocumentor.
@@ -39,11 +40,11 @@ class ArgumentConverter
         $child = new \DOMElement('argument');
         $parent->appendChild($child);
 
-        $child->setAttribute('line', $argument->getLine());
+        $child->setAttribute('line', (string) $argument->getLine());
         $child->setAttribute('by_reference', var_export($argument->isByReference(), true));
         $child->appendChild(new \DOMElement('name', $argument->getName()));
         $child->appendChild(new \DOMElement('default'))
-            ->appendChild(new \DOMText($argument->getDefault()));
+            ->appendChild(new \DOMText((string) $argument->getDefault()));
 
         $types = $argument->getTypes();
 

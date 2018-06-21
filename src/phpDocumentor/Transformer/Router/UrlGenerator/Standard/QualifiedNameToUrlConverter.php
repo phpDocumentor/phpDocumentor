@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 /**
  * This file is part of phpDocumentor.
@@ -47,7 +48,7 @@ class QualifiedNameToUrlConverter
      */
     public function fromNamespace($fqnn)
     {
-        $name = str_replace('\\', '.', ltrim($fqnn, '\\'));
+        $name = str_replace('\\', '.', ltrim((string) $fqnn, '\\'));
 
         // convert root namespace to default; default is a keyword and no namespace CAN be named as such
         if ($name === '') {
@@ -66,7 +67,7 @@ class QualifiedNameToUrlConverter
      */
     public function fromClass($fqcn)
     {
-        return str_replace('\\', '.', ltrim($fqcn, '\\'));
+        return str_replace('\\', '.', ltrim((string) $fqcn, '\\'));
     }
 
     /**

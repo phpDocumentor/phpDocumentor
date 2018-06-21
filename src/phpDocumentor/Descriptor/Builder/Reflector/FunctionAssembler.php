@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 /**
  * This file is part of phpDocumentor.
@@ -78,7 +79,7 @@ class FunctionAssembler extends AssemblerAbstract
         $descriptor->setFullyQualifiedStructuralElementName($reflector->getFqsen());
         $descriptor->setName($reflector->getName());
         $descriptor->setLine($reflector->getLocation()->getLineNumber());
-        $descriptor->setNamespace('\\' . trim(substr($reflector->getFqsen(), 0, -strlen($reflector->getName()) - 2), '\\'));
+        $descriptor->setNamespace('\\' . trim(substr((string) $reflector->getFqsen(), 0, -strlen($reflector->getName()) - 2), '\\'));
         $descriptor->setReturnType($reflector->getReturnType());
     }
 

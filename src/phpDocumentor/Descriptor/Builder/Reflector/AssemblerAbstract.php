@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 /**
  * This file is part of phpDocumentor.
@@ -68,6 +69,6 @@ abstract class AssemblerAbstract extends BaseAssembler
         /** @var DocBlock\Tags\Generic $tag */
         $tag = reset($packageTags);
 
-        return trim($tag->getDescription());
+        return trim((string) $tag->getDescription());
     }
 }

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 /**
  * This file is part of phpDocumentor.
@@ -104,8 +105,9 @@ final class ConfigurationFactory
             return $this->cachedConfiguration;
         }
 
-        if (file_exists($this->uri)) {
-            $xml = new \SimpleXMLElement($this->uri, 0, true);
+        $file = (string) $this->uri;
+        if (file_exists($file)) {
+            $xml = new \SimpleXMLElement($file, 0, true);
             $this->cachedConfiguration = $this->extractConfigurationArray($xml);
         } else {
             $this->cachedConfiguration = Version3::buildDefault();

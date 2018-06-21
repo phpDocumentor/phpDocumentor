@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 /**
  * This file is part of phpDocumentor.
@@ -65,7 +66,7 @@ class Application extends Cilex
     protected function defineIniSettings()
     {
         $this->setTimezone();
-        ini_set('memory_limit', -1);
+        ini_set('memory_limit', '-1');
 
         // this code cannot be tested because we cannot control the system settings in unit tests
         // @codeCoverageIgnoreStart

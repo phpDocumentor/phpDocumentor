@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 /**
  * This file is part of phpDocumentor.
@@ -62,7 +63,7 @@ class MethodConverter
         $child->setAttribute('static', var_export($method->isStatic(), true));
         $child->setAttribute('visibility', $method->getVisibility());
         $child->setAttribute('namespace', $fullyQualifiedNamespaceName);
-        $child->setAttribute('line', $method->getLine());
+        $child->setAttribute('line', (string) $method->getLine());
 
         $child->appendChild(new \DOMElement('name', $method->getName()));
         $child->appendChild(new \DOMElement('full_name', $method->getFullyQualifiedStructuralElementName()));

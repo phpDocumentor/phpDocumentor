@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 /**
  * This file is part of phpDocumentor.
@@ -114,14 +115,14 @@ class TagConverter
 
                     /** @var \DOMElement $typeNode */
                     $typeNode = $child->appendChild(new \DOMElement('type'));
-                    $typeNode->appendChild(new \DOMText($type));
+                    $typeNode->appendChild(new \DOMText((string) $type));
                 }
             } else {
                 $typeString .= $types . '|';
 
                 /** @var \DOMElement $typeNode */
                 $typeNode = $child->appendChild(new \DOMElement('type'));
-                $typeNode->appendChild(new \DOMText($types));
+                $typeNode->appendChild(new \DOMText((string) $types));
             }
 
             $child->setAttribute('type', str_replace('&', '&amp;', rtrim($typeString, '|')));

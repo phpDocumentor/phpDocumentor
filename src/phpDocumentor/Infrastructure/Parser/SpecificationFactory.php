@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 /**
  * This file is part of phpDocumentor.
@@ -78,7 +79,7 @@ final class SpecificationFactory implements FactoryInterface
      */
     private function inPath($path): InPath
     {
-        return new InPath(new Path($path));
+        return new InPath(new Path((string) $path));
     }
 
     private function notSpec(SpecificationInterface $ignoreSpec = null)

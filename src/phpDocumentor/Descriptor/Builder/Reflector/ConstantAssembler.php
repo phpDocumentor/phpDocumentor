@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 /**
  * This file is part of phpDocumentor.
@@ -39,7 +40,7 @@ class ConstantAssembler extends AssemblerAbstract
         $constantDescriptor->setValue($data->getValue());
         // Reflection library formulates namespace as global but this is not wanted for phpDocumentor itself
         $constantDescriptor->setNamespace(
-            substr($data->getFqsen(), 0, - strlen($data->getName()) - static::SEPARATOR_SIZE)
+            substr((string) $data->getFqsen(), 0, - strlen($data->getName()) - static::SEPARATOR_SIZE)
         );
         $constantDescriptor->setFullyQualifiedStructuralElementName($data->getFqsen());
 

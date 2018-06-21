@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 /**
  * This file is part of phpDocumentor.
@@ -46,7 +47,7 @@ class MethodAssembler extends AssemblerAbstract
     public function create($data)
     {
         $methodDescriptor = new MethodDescriptor();
-        $methodDescriptor->setNamespace(substr($data->getFqsen(), 0, -strlen($data->getName()) - 4));
+        $methodDescriptor->setNamespace(substr((string) $data->getFqsen(), 0, -strlen($data->getName()) - 4));
         $this->mapReflectorToDescriptor($data, $methodDescriptor);
 
         $this->assembleDocBlock($data->getDocBlock(), $methodDescriptor);

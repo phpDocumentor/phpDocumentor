@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 /**
  * This file is part of phpDocumentor.
@@ -75,7 +76,7 @@ class Checkstyle extends WriterAbstract implements Translatable
             /** @var Error $error */
             foreach ($fileDescriptor->getAllErrors()->getAll() as $error) {
                 $item = $document->createElement('error');
-                $item->setAttribute('line', $error->getLine());
+                $item->setAttribute('line', (string) $error->getLine());
                 $item->setAttribute('severity', $error->getSeverity());
                 $item->setAttribute(
                     'message',

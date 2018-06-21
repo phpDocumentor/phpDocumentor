@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 /**
  * This file is part of phpDocumentor.
@@ -61,7 +62,7 @@ class DocBlockConverter
         $child = new \DOMElement('docblock');
         $parent->appendChild($child);
 
-        $child->setAttribute('line', $element->getLine());
+        $child->setAttribute('line', (string) $element->getLine());
         $package = str_replace('&', '&amp;', ltrim($element->getPackage(), '\\'));
         $parent->setAttribute('package', $package ?: 'global');
 

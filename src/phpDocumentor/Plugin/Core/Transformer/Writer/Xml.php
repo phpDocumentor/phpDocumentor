@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 /**
  * This file is part of phpDocumentor.
@@ -174,7 +175,7 @@ class Xml extends WriterAbstract implements Translatable
         foreach ($file->getNamespaceAliases() as $alias => $namespace) {
             $alias_obj = new \DOMElement('namespace-alias', $namespace);
             $child->appendChild($alias_obj);
-            $alias_obj->setAttribute('name', $alias);
+            $alias_obj->setAttribute('name', (string) $alias);
         }
 
         /** @var ConstantDescriptor $constant */
@@ -509,7 +510,7 @@ class Xml extends WriterAbstract implements Translatable
 
         $node = new \DOMElement('deprecated');
         $dom->documentElement->appendChild($node);
-        $node->setAttribute('count', $nodes->length);
+        $node->setAttribute('count', (string) $nodes->length);
     }
 
     /**

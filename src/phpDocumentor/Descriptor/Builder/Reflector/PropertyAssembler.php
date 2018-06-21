@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 /**
  * This file is part of phpDocumentor.
@@ -33,7 +34,7 @@ class PropertyAssembler extends AssemblerAbstract
     public function create($data)
     {
         $propertyDescriptor = new PropertyDescriptor();
-        $propertyDescriptor->setNamespace(substr($data->getFqsen(), 0, -strlen($data->getName()) - 3));
+        $propertyDescriptor->setNamespace(substr((string) $data->getFqsen(), 0, -strlen($data->getName()) - 3));
         $propertyDescriptor->setFullyQualifiedStructuralElementName($data->getFqsen());
         $propertyDescriptor->setName($data->getName());
         $propertyDescriptor->setVisibility($data->getVisibility() ?: 'public');

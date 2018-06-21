@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 /**
  * This file is part of phpDocumentor.
@@ -175,7 +176,7 @@ final class Parser
     {
         $ignorePaths = array_map(
             function ($value) {
-                if (substr($value, -1) === '*') {
+                if (substr((string) $value, -1) === '*') {
                     return substr($value, 0, -1);
                 }
 

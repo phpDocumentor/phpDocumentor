@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 /**
  * This file is part of phpDocumentor.
@@ -55,7 +56,7 @@ class PropertyConverter
         $child->setAttribute('static', var_export($property->isStatic(), true));
         $child->setAttribute('visibility', $property->getVisibility());
         $child->setAttribute('namespace', $fullyQualifiedNamespaceName);
-        $child->setAttribute('line', $property->getLine());
+        $child->setAttribute('line', (string) $property->getLine());
 
         $child->appendChild(new \DOMElement('name', '$' . $property->getName()));
         $child->appendChild(new \DOMElement('full_name', $property->getFullyQualifiedStructuralElementName()));

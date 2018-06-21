@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 /**
  * This file is part of phpDocumentor.
@@ -69,7 +70,7 @@ class TraitConverter
 
         $namespace = $trait->getNamespace()->getFullyQualifiedStructuralElementName();
         $child->setAttribute('namespace', ltrim($namespace, '\\'));
-        $child->setAttribute('line', $trait->getLine());
+        $child->setAttribute('line', (string) $trait->getLine());
 
         $child->appendChild(new \DOMElement('name', $trait->getName()));
         $child->appendChild(new \DOMElement('full_name', $trait->getFullyQualifiedStructuralElementName()));

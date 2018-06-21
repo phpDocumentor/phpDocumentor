@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 /**
  * This file is part of phpDocumentor.
@@ -175,7 +176,7 @@ abstract class DescriptorAbstract implements Filterable
      */
     public function getDescription()
     {
-        if ($this->description && strpos(strtolower($this->description), '{@inheritdoc}') === false) {
+        if ($this->description && strpos(strtolower((string) $this->description), '{@inheritdoc}') === false) {
             return $this->description;
         }
 

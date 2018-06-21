@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 /**
  * This file is part of phpDocumentor.
@@ -230,7 +231,7 @@ class Renderer
             case 'url': // return the first url
                 return $url;
             case 'class:short':
-                $parts = explode('\\', $path);
+                $parts = explode('\\', (string) $path);
                 $path = end($parts);
                 break;
         }

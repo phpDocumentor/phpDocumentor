@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 /**
  * This file is part of phpDocumentor.
@@ -44,7 +45,7 @@ final class ConfigureCache
         if (!$fileSystem->isAbsolutePath((string) $target)) {
             $target = getcwd() . DIRECTORY_SEPARATOR . $target;
         }
-        if (!file_exists($target)) {
+        if (!file_exists((string) $target)) {
             if (!mkdir($target, 0755, true) && !is_dir($target)) {
                 throw new \RuntimeException('PPCPP:EXC-BADTARGET');
             }

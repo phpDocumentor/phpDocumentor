@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 /**
  * This file is part of phpDocumentor.
@@ -43,7 +44,7 @@ class TraitAssembler extends AssemblerAbstract
 
         // Reflection library formulates namespace as global but this is not wanted for phpDocumentor itself
         $traitDescriptor->setNamespace(
-            substr($data->getFqsen(), 0, -strlen($data->getName()) - 1)
+            substr((string) $data->getFqsen(), 0, -strlen($data->getName()) - 1)
         );
 
         $this->assembleDocBlock($data->getDocBlock(), $traitDescriptor);

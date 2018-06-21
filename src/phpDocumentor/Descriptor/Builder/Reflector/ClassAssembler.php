@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 /**
  * This file is part of phpDocumentor.
@@ -47,7 +48,7 @@ class ClassAssembler extends AssemblerAbstract
         $classDescriptor->setParent($data->getParent());
         $classDescriptor->setAbstract($data->isAbstract());
         $classDescriptor->setFinal($data->isFinal());
-        $classDescriptor->setNamespace(substr($data->getFqsen(), 0, -strlen($data->getName()) - 1));
+        $classDescriptor->setNamespace(substr((string)$data->getFqsen(), 0, -strlen($data->getName()) - 1));
 
         foreach ($data->getInterfaces() as $interfaceClassName) {
             $classDescriptor->getInterfaces()->set((string) $interfaceClassName, $interfaceClassName);

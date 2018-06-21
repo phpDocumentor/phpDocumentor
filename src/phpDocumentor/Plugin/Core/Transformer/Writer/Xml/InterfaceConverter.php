@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 /**
  * This file is part of phpDocumentor.
@@ -77,7 +78,7 @@ class InterfaceConverter
 
         $namespace = $interface->getNamespace()->getFullyQualifiedStructuralElementName();
         $child->setAttribute('namespace', ltrim($namespace, '\\'));
-        $child->setAttribute('line', $interface->getLine());
+        $child->setAttribute('line', (string) $interface->getLine());
 
         $child->appendChild(new \DOMElement('name', $interface->getName()));
         $child->appendChild(new \DOMElement('full_name', $interface->getFullyQualifiedStructuralElementName()));

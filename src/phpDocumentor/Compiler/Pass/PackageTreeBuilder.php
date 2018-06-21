@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 /**
  * This file is part of phpDocumentor.
@@ -95,7 +96,7 @@ class PackageTreeBuilder implements CompilerPassInterface
             }
 
             // ensure consistency by trimming the slash prefix and then re-appending it.
-            $packageIndexName = '\\' . ltrim($packageName, '\\');
+            $packageIndexName = '\\' . ltrim((string) $packageName, '\\');
             if (!isset($project->getIndexes()->packages[$packageIndexName])) {
                 $this->createPackageDescriptorTree($project, $packageName);
             }
