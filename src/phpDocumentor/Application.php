@@ -23,6 +23,7 @@ use phpDocumentor\Translator\Translator;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
+use RuntimeException;
 
 /**
  * Application class for phpDocumentor.
@@ -31,7 +32,7 @@ use Psr\Log\LogLevel;
  */
 class Application extends Cilex
 {
-    public static function VERSION()
+    public static function VERSION(): string
     {
         return trim(file_get_contents(__DIR__ . '/../../VERSION'));
     }
@@ -62,8 +63,10 @@ class Application extends Cilex
 
     /**
      * Adjust php.ini settings.
+     *
+     * @throws RuntimeException
      */
-    protected function defineIniSettings()
+    protected function defineIniSettings(): void
     {
         $this->setTimezone();
         ini_set('memory_limit', '-1');
@@ -79,7 +82,7 @@ class Application extends Cilex
         }
 
         if (extension_loaded('Zend Optimizer+') && ini_get('zend_optimizerplus.save_comments') === 0) {
-            throw new \RuntimeException('Please enable zend_optimizerplus.save_comments in php.ini.');
+            throw new RuntimeException('Please enable zend_optimizerplus.save_comments in php.ini.');
         }
 
         // @codeCoverageIgnoreEnd

@@ -69,7 +69,7 @@ use phpDocumentor\Reflection\Php\Trait_;
 
 final class AssemblerFactoryFactory
 {
-    public static function create(ExampleFinder $exampleFinder)
+    public static function create(ExampleFinder $exampleFinder): AssemblerFactory
     {
         $factory = new AssemblerFactory();
         // @codingStandardsIgnoreStart because we limit the verbosity by making all closures single-line

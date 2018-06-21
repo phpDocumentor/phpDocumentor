@@ -18,6 +18,10 @@ namespace Pimple;
 if (!class_exists(\Pimple\ServiceProviderInterface::class, false)) {
     interface ServiceProviderInterface
     {
+        /**
+         * @param \Pimple\Container $app
+         * @return void
+         */
         public function register(\Pimple\Container $app);
     }
 }
