@@ -15,6 +15,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Application\Configuration\Factory;
 
+use SimpleXMLElement;
+
 /**
  * Interface that strategies for the ConfigurationFactory should implement.
  */
@@ -23,10 +25,10 @@ interface Strategy
     /**
      * Converts the configuration xml to an array.
      */
-    public function convert(\SimpleXMLElement $xml): array;
+    public function convert(SimpleXMLElement $xml): array;
 
     /**
      * Checks if the strategy should handle the provided configuration xml.
      */
-    public function match(\SimpleXMLElement $xml): bool;
+    public function match(SimpleXMLElement $xml): bool;
 }

@@ -18,6 +18,8 @@ namespace phpDocumentor\Application\Configuration;
 use phpDocumentor\Application\Configuration\Factory\Strategy;
 use phpDocumentor\Application\Configuration\Factory\Version3;
 use phpDocumentor\DomainModel\Uri;
+use RuntimeException;
+use SimpleXMLElement;
 
 /**
  * The ConfigurationFactory converts the configuration xml from a Uri into an array.
@@ -70,10 +72,8 @@ final class ConfigurationFactory
 
     /**
      * Adds a middleware callback that allows the consumer to alter the configuration array when it is constructed.
-     *
-     * @param callable $middleware
      */
-    public function addMiddleware(callable $middleware)
+    public function addMiddleware(callable $middleware): void
     {
         $this->middlewares[] = $middleware;
 
@@ -84,7 +84,7 @@ final class ConfigurationFactory
     /**
      * Replaces the location of the configuration file if it differs from the existing one.
      */
-    public function replaceLocation(Uri $uri)
+    public function replaceLocation(Uri $uri): void
     {
         if (!isset($this->uri) || !$this->uri->equals($uri)) {
             $this->uri = $uri;
@@ -95,11 +95,10 @@ final class ConfigurationFactory
     /**
      * Converts the phpDocumentor configuration xml to an array.
      *
-     * @return array
-     *
-     * @throws \RuntimeException if no matching strategy can be found.
+     * @return string[]
+     * @throws RuntimeException if no matching strategy can be found.
      */
-    public function get()
+    public function get(): array
     {
         if ($this->cachedConfiguration) {
             return $this->cachedConfiguration;
@@ -107,7 +106,7 @@ final class ConfigurationFactory
 
         $file = (string) $this->uri;
         if (file_exists($file)) {
-            $xml = new \SimpleXMLElement($file, 0, true);
+            $xml = new SimpleXMLElement($file, 0, true);
             $this->cachedConfiguration = $this->extractConfigurationArray($xml);
         } else {
             $this->cachedConfiguration = Version3::buildDefault();
@@ -121,15 +120,15 @@ final class ConfigurationFactory
     /**
      * Clears the cache for the configuration.
      */
-    public function clearCache()
+    public function clearCache(): void
     {
-        return $this->cachedConfiguration = null;
+        $this->cachedConfiguration = null;
     }
 
     /**
      * Adds strategies that are used in the ConfigurationFactory.
      */
-    private function registerStrategy(Strategy $strategy)
+    private function registerStrategy(Strategy $strategy): void
     {
         $this->strategies[] = $strategy;
     }
@@ -137,11 +136,11 @@ final class ConfigurationFactory
     /**
      * Converts the given XML structure into an array containing the configuration.
      *
-     * @param \SimpleXMLElement $xml
-     *
+     * @param SimpleXMLElement $xml
      * @return array
+     * @throws RuntimeException
      */
-    private function extractConfigurationArray($xml)
+    private function extractConfigurationArray(SimpleXMLElement $xml): array
     {
         foreach ($this->strategies as $strategy) {
             if ($strategy->match($xml) === true) {
@@ -149,13 +148,13 @@ final class ConfigurationFactory
             }
         }
 
-        throw new \RuntimeException('No strategy found that matches the configuration xml');
+        throw new RuntimeException('No strategy found that matches the configuration xml');
     }
 
     /**
      * Applies all middleware callbacks onto the configuration.
      */
-    private function applyMiddleware()
+    private function applyMiddleware(): void
     {
         foreach ($this->middlewares as $middleware) {
             $this->cachedConfiguration = $middleware($this->cachedConfiguration);
