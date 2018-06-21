@@ -92,19 +92,16 @@ class Application extends Cilex
      * If the timezone is not set anywhere, set it to UTC.
      *
      * This is done to prevent any warnings being outputted in relation to using
-     * date/time functions. What is checked is php.ini, and if the PHP version
-     * is prior to 5.4, the TZ environment variable.
+     * date/time functions.
      *
      * @link http://php.net/manual/en/function.date-default-timezone-get.php for more information how PHP determines the
      *     default timezone.
      *
      * @codeCoverageIgnore this method is very hard, if not impossible, to unit test and not critical.
      */
-    protected function setTimezone()
+    protected function setTimezone(): void
     {
-        if (false === ini_get('date.timezone')
-            || (version_compare(PHP_VERSION, '5.4.0', '<') && false === getenv('TZ'))
-        ) {
+        if (false === ini_get('date.timezone')) {
             date_default_timezone_set('UTC');
         }
     }
