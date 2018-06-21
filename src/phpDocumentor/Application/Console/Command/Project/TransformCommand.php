@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Application\Console\Command\Project;
 
+use Exception;
 use League\Pipeline\PipelineInterface;
 use phpDocumentor\Application\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -103,7 +104,7 @@ TEXT
     /**
      * Executes the business logic involved with this command.
      *
-     * @throws \Exception if the provided source is not an existing file or a folder.
+     * @throws Exception if the provided source is not an existing file or a folder.
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {

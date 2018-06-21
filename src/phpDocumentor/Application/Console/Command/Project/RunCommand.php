@@ -17,7 +17,6 @@ namespace phpDocumentor\Application\Console\Command\Project;
 
 use League\Pipeline\Pipeline;
 use phpDocumentor\Application\Console\Command\Command;
-use phpDocumentor\Application\Stage\Configure;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -66,7 +65,7 @@ class RunCommand extends Command
      * Initializes this command and sets the name, description, options and
      * arguments.
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('project:run')
             ->setAliases(['run'])
@@ -243,10 +242,8 @@ HELP
 
     /**
      * Executes the business logic involved with this command.
-     *
-     * @return int
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $pipeLine = $this->pipeline;
         $pipeLine($input->getOptions());

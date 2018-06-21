@@ -31,6 +31,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ParseCommand extends Command
 {
+    /** @var PipelineInterface */
     private $pipeline;
 
     /**
@@ -49,7 +50,7 @@ class ParseCommand extends Command
      * Initializes this command and sets the name, description, options and
      * arguments.
      */
-    protected function configure()
+    protected function configure(): void
     {
         // minimization of the following expression
         $VALUE_OPTIONAL_ARRAY = InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY;
@@ -99,13 +100,10 @@ class ParseCommand extends Command
     /**
      * Translates the provided text and replaces any contained parameters using printf notation.
      *
-     * @param string $text
      * @param string[] $parameters
-     *
-     * @return string
      */
     // @codingStandardsIgnoreStart
-    private function __($text, $parameters = [])
+    private function __(string $text, array $parameters = []): string
     {
         // @codingStandardsIgnoreEnd
         return vsprintf($this->translator->translate($text), $parameters);

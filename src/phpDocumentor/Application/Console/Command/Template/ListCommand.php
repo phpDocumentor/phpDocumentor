@@ -41,7 +41,7 @@ class ListCommand extends Command
     /**
      * Initializes this command and sets the name, description, options and arguments.
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('template:list')
             ->setDescription(
@@ -59,7 +59,7 @@ HELP
     /**
      * Retrieves all template names from the Template Factory and sends those to stdout.
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('Available templates:');
         foreach ($this->factory->getAllNames() as $template_name) {
@@ -67,5 +67,7 @@ HELP
         }
 
         $output->writeln('');
+
+        return 0;
     }
 }
