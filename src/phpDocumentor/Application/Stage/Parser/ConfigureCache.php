@@ -38,20 +38,20 @@ final class ConfigureCache
      */
     public function __invoke(array $configuration)
     {
-        $target = $configuration['phpdocumentor']['paths']['cache'];
+        $target = (string) $configuration['phpdocumentor']['paths']['cache'];
 
         //Process cache setup
         $fileSystem = new Filesystem();
-        if (!$fileSystem->isAbsolutePath((string) $target)) {
+        if (!$fileSystem->isAbsolutePath($target)) {
             $target = getcwd() . DIRECTORY_SEPARATOR . $target;
         }
-        if (!file_exists((string) $target)) {
+        if (!file_exists($target)) {
             if (!mkdir($target, 0755, true) && !is_dir($target)) {
                 throw new \RuntimeException('PPCPP:EXC-BADTARGET');
             }
         }
 
-        $this->cache->getOptions()->setCacheDir((string) $target);
+        $this->cache->getOptions()->setCacheDir($target);
 
         return $configuration;
     }
