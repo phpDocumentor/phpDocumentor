@@ -42,18 +42,12 @@ class ExampleTagsEnricher implements CompilerPassInterface
         $this->exampleAssembler = new ExampleAssembler($finder);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getDescription()
+    public function getDescription(): string
     {
         return 'Enriches inline example tags with their sources';
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function execute(ProjectDescriptor $project)
+    public function execute(ProjectDescriptor $project): void
     {
         $elements = $project->getIndexes()->get('elements');
 
@@ -65,10 +59,8 @@ class ExampleTagsEnricher implements CompilerPassInterface
 
     /**
      * Replaces the example tags in the description with the contents of the found example.
-     *
-     * @return string
      */
-    protected function replaceInlineExamples(DescriptorAbstract $element)
+    protected function replaceInlineExamples(DescriptorAbstract $element): string
     {
         $description = $element->getDescription();
         $matches = [];

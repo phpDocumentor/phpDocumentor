@@ -29,7 +29,6 @@ use phpDocumentor\Reflection\FqsenResolver;
 use phpDocumentor\Reflection\TypeResolver;
 use phpDocumentor\Reflection\Types\Context;
 use phpDocumentor\Transformer\Router\Queue;
-use phpDocumentor\Transformer\Router\RouterAbstract;
 
 /**
  * This step in the compilation process iterates through all elements and scans their descriptions for an inline `@see`
@@ -41,7 +40,7 @@ class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
 
     const REGEX_INLINE_LINK_OR_SEE_TAG = '/\{\@(see|link)[\ ]+([^\}]+)\}/';
 
-    /** @var RouterAbstract */
+    /** @var Queue */
     private $router;
 
     /** @var DescriptorAbstract */
@@ -58,10 +57,7 @@ class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
         $this->router = $router;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getDescription()
+    public function getDescription(): string
     {
         return 'Resolve @link and @see tags in descriptions';
     }
@@ -70,7 +66,7 @@ class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
      * Iterates through each element in the project and replaces its inline @see and @link tag with a markdown
      * representation.
      */
-    public function execute(ProjectDescriptor $project)
+    public function execute(ProjectDescriptor $project): void
     {
         /** @var Collection|DescriptorAbstract[] $elementCollection */
         $this->elementCollection = $project->getIndexes()->get('elements');
@@ -85,7 +81,7 @@ class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
      *
      * @uses self::resolveTag()
      */
-    private function resolveSeeAndLinkTags(DescriptorAbstract $descriptor)
+    private function resolveSeeAndLinkTags(DescriptorAbstract $descriptor): void
     {
         // store descriptor to use it in the resolveTag method
         $this->descriptor = $descriptor;
@@ -103,10 +99,9 @@ class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
      * Resolves an individual tag, indicated by the results of the Regex used to extract tags.
      *
      * @param string[] $match
-     *
-     * @return string
+     * @return Fqsen|string
      */
-    private function resolveTag($match)
+    private function resolveTag(array $match)
     {
         $tagReflector = $this->createLinkOrSeeTagFromRegexMatch($match);
         if (!$tagReflector instanceof See && !$tagReflector instanceof Link) {
@@ -114,7 +109,7 @@ class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
         }
 
         $link = $this->getLinkText($tagReflector);
-        $description = $tagReflector->getDescription();
+        $description = (string) $tagReflector->getDescription();
 
         if ($this->isUrl($link)) {
             return $this->generateMarkdownLink($link, $description ?: $link);
@@ -131,24 +126,18 @@ class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
 
     /**
      * Determines if the given link string represents a URL by checking if it is prefixed with a URI scheme.
-     *
-     * @param string $link
-     *
-     * @return boolean
      */
-    private function isUrl($link)
+    private function isUrl(string $link): bool
     {
-        return (bool) preg_match('/^[\w]+:\/\/.+$/', (string) $link);
+        return (bool) preg_match('/^[\w]+:\/\/.+$/', $link);
     }
 
     /**
      * Checks if the link represents a Fully Qualified Structural Element Name.
      *
-     * @param string $link
-     *
-     * @return bool
+     * @param Fqsen|string $link
      */
-    private function isFqsen($link)
+    private function isFqsen($link): bool
     {
         return $link instanceof Fqsen;
     }
@@ -157,10 +146,8 @@ class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
      * Creates a Tag Reflector from the given array of tag line, tag name and tag content.
      *
      * @param string[] $match
-     *
-     * @return Tag
      */
-    private function createLinkOrSeeTagFromRegexMatch(array $match)
+    private function createLinkOrSeeTagFromRegexMatch(array $match): Tag
     {
         list($completeMatch, $tagName, $tagContent) = $match;
 
@@ -184,9 +171,8 @@ class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
      * If a relative QSEN is provided then this method will attempt to resolve it given the current namespace and
      * namespace aliases.
      *
-     * @param string $link
-     *
-     * @return string
+     * @param Fqsen|string $link
+     * @return Fqsen|string
      */
     private function resolveQsen($link)
     {
@@ -201,17 +187,15 @@ class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
      * Generates a Markdown link to the given Descriptor or returns the link text if no route to the Descriptor could
      * be matched.
      *
-     * @param string $link
-     * @param string $description
-     * @return string
+     * @param Fqsen|string $link
      */
-    private function resolveElement(DescriptorAbstract $element, $link, $description)
+    private function resolveElement(DescriptorAbstract $element, $link, ?string $description = null): string
     {
         $rule = $this->router->match($element);
 
         if ($rule) {
             $url = '..' . $rule->generate($element);
-            $link = $this->generateMarkdownLink($url, $description ?: $link);
+            $link = $this->generateMarkdownLink($url, $description ?: (string) $link);
         }
 
         return $link;
@@ -222,19 +206,15 @@ class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
      *
      * Because the link tag and the see tag have different methods to acquire the link text we abstract that into this
      * method.
-     *
-     * @param See|Link $tagReflector
-     *
-     * @return string
      */
-    private function getLinkText($tagReflector)
+    private function getLinkText(Tag $tagReflector): ?string
     {
         if ($tagReflector instanceof See) {
-            return $tagReflector->getReference();
+            return (string) $tagReflector->getReference();
         }
 
         if ($tagReflector instanceof Link) {
-            return $tagReflector->getLink();
+            return (string) $tagReflector->getLink();
         }
 
         return null;
@@ -243,21 +223,17 @@ class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
     /**
      * Tries to find an element with the given FQSEN in the elements listing for this project.
      *
-     * @param string $fqsen
-     *
-     * @return DescriptorAbstract|null
+     * @param Fqsen|string $fqsen
      */
-    private function findElement($fqsen)
+    private function findElement($fqsen): ?DescriptorAbstract
     {
         return $this->elementCollection[(string) $fqsen] ?? null;
     }
 
     /**
      * Creates a DocBlock context containing the namespace and aliases for the current descriptor.
-     *
-     * @return Context
      */
-    private function createDocBlockContext()
+    private function createDocBlockContext(): Context
     {
         $file = $this->descriptor->getFile();
         $namespaceAliases = $file ? $file->getNamespaceAliases()->getAll() : [];
@@ -271,13 +247,10 @@ class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
     /**
      * Generates a Markdown-formatted string representing a link with a description.
      *
-     * @param string $link
-     * @param string $description
-     *
-     * @return string
+     * @param Fqsen|string $link
      */
-    private function generateMarkdownLink($link, $description)
+    private function generateMarkdownLink($link, string $description): string
     {
-        return '[' . $description . '](' . $link . ')';
+        return '[' . $description . '](' . (string) $link . ')';
     }
 }

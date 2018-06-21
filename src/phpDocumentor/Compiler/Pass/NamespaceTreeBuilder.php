@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Compiler\Pass;
 
+use InvalidArgumentException;
 use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
@@ -36,18 +37,12 @@ class NamespaceTreeBuilder implements CompilerPassInterface
 {
     const COMPILER_PRIORITY = 9000;
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getDescription()
+    public function getDescription(): string
     {
         return 'Build "namespaces" index and add namespaces to "elements"';
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function execute(ProjectDescriptor $project)
+    public function execute(ProjectDescriptor $project): void
     {
         $project->getIndexes()->get('elements', new Collection())->set('~\\', $project->getNamespace());
         $project->getIndexes()->get('namespaces', new Collection())->set('\\', $project->getNamespace());
@@ -75,11 +70,11 @@ class NamespaceTreeBuilder implements CompilerPassInterface
      * element. If a namespace does not exist yet it will automatically be created.
      *
      * @param DescriptorAbstract[] $elements Series of elements to add to their respective namespace.
-     * @param string $type Declares which field of the namespace will be populated with the given
-     * series of elements. This name will be transformed to a getter which must exist. Out of performance
-     * considerations will no effort be done to verify whether the provided type is valid.
+     * @param string $type Declares which field of the namespace will be populated with the given series of elements.
+     *                     This name will be transformed to a getter which must exist. Out of performance
+     *                     considerations will no effort be done to verify whether the provided type is valid.
      */
-    protected function addElementsOfTypeToNamespace(ProjectDescriptor $project, array $elements, $type)
+    protected function addElementsOfTypeToNamespace(ProjectDescriptor $project, array $elements, string $type): void
     {
         /** @var DescriptorAbstract $element */
         foreach ($elements as $element) {
@@ -116,7 +111,7 @@ class NamespaceTreeBuilder implements CompilerPassInterface
         }
     }
 
-    private function addToParentNamespace(ProjectDescriptor $project, NamespaceDescriptor $namespace)
+    private function addToParentNamespace(ProjectDescriptor $project, NamespaceDescriptor $namespace): void
     {
         /** @var NamespaceDescriptor $parent */
         $parent = $project->getIndexes()->get('namespaces')->get($namespace->getNamespace());
@@ -141,7 +136,7 @@ class NamespaceTreeBuilder implements CompilerPassInterface
 
             $namespace->setParent($parent);
             $parent->getChildren()->set($namespace->getName(), $namespace);
-        } catch (\InvalidArgumentException $e) {
+        } catch (InvalidArgumentException $e) {
             //bit hacky but it works for now.
             //$project->getNamespace()->getChildren()->add($namespace);
         }

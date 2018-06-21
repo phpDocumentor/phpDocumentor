@@ -35,18 +35,12 @@ class PackageTreeBuilder implements CompilerPassInterface
 {
     const COMPILER_PRIORITY = 9001;
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getDescription()
+    public function getDescription(): string
     {
         return 'Build "packages" index';
     }
 
-    /**
-     * Compiles a 'packages' index on the project and create all Package Descriptors necessary.
-     */
-    public function execute(ProjectDescriptor $project)
+    public function execute(ProjectDescriptor $project): void
     {
         $rootPackageDescriptor = new PackageDescriptor();
         $rootPackageDescriptor->setName('\\');
@@ -74,7 +68,7 @@ class PackageTreeBuilder implements CompilerPassInterface
      * series of elements. This name will be transformed to a getter which must exist. Out of performance
      * considerations will no effort be done to verify whether the provided type is valid.
      */
-    protected function addElementsOfTypeToPackage(ProjectDescriptor $project, array $elements, $type)
+    protected function addElementsOfTypeToPackage(ProjectDescriptor $project, array $elements, string $type): void
     {
         /** @var DescriptorAbstract $element */
         foreach ($elements as $element) {
@@ -131,7 +125,7 @@ class PackageTreeBuilder implements CompilerPassInterface
      * @see ProjectDescriptor::getPackage() for the root package.
      * @see PackageDescriptor::getChildren() for the child packages of a given package.
      */
-    protected function createPackageDescriptorTree(ProjectDescriptor $project, $packageName)
+    protected function createPackageDescriptorTree(ProjectDescriptor $project, string $packageName): void
     {
         $parts = explode('\\', ltrim($packageName, '\\'));
         $fqnn = '';
