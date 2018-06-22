@@ -48,18 +48,6 @@ class DebugEventTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers ::setPriority
-     * @covers ::getPriority
-     */
-    public function testSetAndGetPriority()
-    {
-        $priority = LogLevel::INFO;
-        $this->fixture->setPriority(LogLevel::INFO);
-
-        $this->assertSame($priority, $this->fixture->getPriority());
-    }
-
-    /**
      * @covers ::getContext
      * @covers ::setContext
      */

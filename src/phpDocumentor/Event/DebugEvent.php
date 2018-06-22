@@ -69,20 +69,6 @@ class DebugEvent extends EventAbstract
     }
 
     /**
-     * Sets the priority level associated with this logging event.
-     *
-     * @param string $priority
-     *
-     * @return DebugEvent
-     */
-    public function setPriority($priority)
-    {
-        $this->priority = $priority;
-
-        return $this;
-    }
-
-    /**
      * Sets additional context (parameters) to use when translating messages.
      *
      * @param string[] $context
