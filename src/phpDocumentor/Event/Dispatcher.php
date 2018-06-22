@@ -60,34 +60,4 @@ class Dispatcher extends EventDispatcher
     {
         self::$instances[$name] = $instance;
     }
-
-    /**
-     * Dispatches an event.
-     *
-     * Please note that the typehint of this method indicates a Symfony Event
-     * and this DocBlock a phpDocumentor event. This is because of inheritance
-     * and that the dispatch signature must remain intact.
-     *
-     * @param string $eventName
-     * @codeCoverageIgnore Untestable and not really necessary
-     * @return EventAbstract
-     */
-    public function dispatch($eventName, Event $event = null)
-    {
-        return parent::dispatch($eventName, $event);
-    }
-
-    /**
-     * Adds a callable that will listen on the named event.
-     *
-     * @param string   $eventName
-     * @param callable $listener
-     * @param int      $priority
-     *
-     * @codeCoverageIgnore Untestable and not really necessary
-     */
-    public function addListener($eventName, $listener, $priority = 0)
-    {
-        parent::addListener($eventName, $listener, $priority);
-    }
 }
