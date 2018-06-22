@@ -55,7 +55,7 @@ class ArgumentAssembler extends AssemblerAbstract
         Argument  $argument,
         ParamDescriptor    $paramDescriptor,
         ArgumentDescriptor $argumentDescriptor
-    ) {
+    ): void {
         if ($paramDescriptor->getVariableName() !== $argument->getName()) {
             return;
         }

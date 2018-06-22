@@ -16,7 +16,6 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use phpDocumentor\Descriptor\PropertyDescriptor;
-use phpDocumentor\Reflection\ClassReflector\PropertyReflector;
 use phpDocumentor\Reflection\Php\Property;
 
 /**
