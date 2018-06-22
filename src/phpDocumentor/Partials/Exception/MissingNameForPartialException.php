@@ -15,9 +15,11 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Partials\Exception;
 
+use RuntimeException;
+
 /**
  * This exception is thrown when a required name is not set.
  */
-class MissingNameForPartialException extends \RuntimeException
+class MissingNameForPartialException extends RuntimeException
 {
 }

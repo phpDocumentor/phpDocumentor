@@ -64,7 +64,7 @@ class Partial
     /**
      * @param string $content Set the content for tests
      */
-    public function setContent($content)
+    public function setContent($content): void
     {
         $this->content = $content;
     }
@@ -72,7 +72,7 @@ class Partial
     /**
      * @param string $link Set the link for tests
      */
-    public function setLink($link)
+    public function setLink(string $link): void
     {
         $this->link = $link;
     }
@@ -80,7 +80,7 @@ class Partial
     /**
      * @param string $name Set the name for tests
      */
-    public function setName($name)
+    public function setName(string $name): void
     {
         $this->name = $name;
     }

@@ -15,7 +15,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Partials;
 
-use Cilex\Application;
 use phpDocumentor\Partials\Collection as PartialsCollection;
 use phpDocumentor\Partials\Exception\MissingNameForPartialException;
 use Parsedown;
@@ -29,8 +28,6 @@ class ServiceProvider implements ServiceProviderInterface
 {
     /**
      * Registers services on the given app.
-     *
-     * @param Application $app An Application instance
      *
      * @throws MissingNameForPartialException if a partial has no name provided.
      */
