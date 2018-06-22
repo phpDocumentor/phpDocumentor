@@ -23,9 +23,7 @@ class ServiceProvider implements ServiceProviderInterface
 {
     public function register(Container $app): void
     {
-        /** @var ApplicationConfiguration $config */
-        $config = $app['config'];
-        $plugins = []; //$config->getPlugins();
+        $plugins = [];
 
         if (! $plugins) {
             $app->register(new Core\ServiceProvider());
