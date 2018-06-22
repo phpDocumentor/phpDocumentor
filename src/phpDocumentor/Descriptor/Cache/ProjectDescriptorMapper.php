@@ -15,10 +15,10 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Cache;
 
+use InvalidArgumentException;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
-use phpDocumentor\Fileset\Collection;
 use Zend\Cache\Storage\IterableInterface;
 use Zend\Cache\Storage\OptimizableInterface;
 use Zend\Cache\Storage\StorageInterface;
@@ -41,7 +41,7 @@ final class ProjectDescriptorMapper
     public function __construct(StorageInterface $cache)
     {
         if (!$cache instanceof IterableInterface) {
-            throw new \InvalidArgumentException('ProjectDescriptorMapper should also be an iterable Storage type');
+            throw new InvalidArgumentException('ProjectDescriptorMapper should also be an iterable Storage type');
         }
 
         $this->cache = $cache;
@@ -58,7 +58,7 @@ final class ProjectDescriptorMapper
     /**
      * Returns the Project Descriptor from the cache.
      */
-    public function populate(ProjectDescriptor $projectDescriptor)
+    public function populate(ProjectDescriptor $projectDescriptor): void
     {
         $this->loadCacheItemAsSettings($projectDescriptor, self::KEY_SETTINGS);
 
@@ -70,7 +70,7 @@ final class ProjectDescriptorMapper
     /**
      * Stores a Project Descriptor in the Cache.
      */
-    public function save(ProjectDescriptor $projectDescriptor)
+    public function save(ProjectDescriptor $projectDescriptor): void
     {
         $keys = [];
         $cache = $this->getCache();
@@ -103,6 +103,8 @@ final class ProjectDescriptorMapper
 
     /**
      * Removes all files in cache that do not occur in the given FileSet Collection.
+     *
+     * @todo restore this?
      */
     public function garbageCollect($collection)
     {
@@ -121,7 +123,7 @@ final class ProjectDescriptorMapper
 //        }
     }
 
-    private function loadCacheItemAsFile(ProjectDescriptor $projectDescriptor, string $key)
+    private function loadCacheItemAsFile(ProjectDescriptor $projectDescriptor, string $key): void
     {
         $item = $this->getCache()->getItem($key);
 
@@ -130,7 +132,7 @@ final class ProjectDescriptorMapper
         }
     }
 
-    private function loadCacheItemAsSettings(ProjectDescriptor $projectDescriptor, string $key)
+    private function loadCacheItemAsSettings(ProjectDescriptor $projectDescriptor, string $key): void
     {
         $item = $this->getCache()->getItem($key);
 

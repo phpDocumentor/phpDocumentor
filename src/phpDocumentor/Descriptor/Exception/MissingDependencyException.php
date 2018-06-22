@@ -15,9 +15,11 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Exception;
 
+use RuntimeException;
+
 /**
  * This exception is thrown when a required dependency is not included.
  */
-class MissingDependencyException extends \RuntimeException
+class MissingDependencyException extends RuntimeException
 {
 }

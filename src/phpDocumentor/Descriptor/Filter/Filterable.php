@@ -25,5 +25,5 @@ interface Filterable
     /**
      * Sets a list of errors on the associated element.
      */
-    public function setErrors(Collection $errors);
+    public function setErrors(Collection $errors): void;
 }

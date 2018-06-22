@@ -30,10 +30,8 @@ class Finder
 
     /**
      * Attempts to find the example contents for the given descriptor.
-     *
-     * @return string
      */
-    public function find(ExampleDescriptor $descriptor)
+    public function find(ExampleDescriptor $descriptor): string
     {
         $filename = $descriptor->getFilePath();
 
@@ -47,20 +45,16 @@ class Finder
 
     /**
      * Registers the project's root directory where an 'examples' folder can be expected.
-     *
-     * @param string $directory
      */
-    public function setSourceDirectory($directory = '')
+    public function setSourceDirectory(string $directory = ''): void
     {
         $this->sourceDirectory = $directory;
     }
 
     /**
      * Returns the project's root directory where an 'examples' folder can be expected.
-     *
-     * @return string
      */
-    public function getSourceDirectory()
+    public function getSourceDirectory(): string
     {
         return $this->sourceDirectory;
     }
@@ -70,7 +64,7 @@ class Finder
      *
      * @param string[] $directories
      */
-    public function setExampleDirectories(array $directories)
+    public function setExampleDirectories(array $directories = []): void
     {
         $this->exampleDirectories = $directories;
     }
@@ -80,7 +74,7 @@ class Finder
      *
      * @return string[]
      */
-    public function getExampleDirectories()
+    public function getExampleDirectories(): array
     {
         return $this->exampleDirectories;
     }
@@ -95,12 +89,8 @@ class Finder
      * 2. Checks the source folder for the given filename
      * 3. Checks the 'examples' folder in the current working directory for examples
      * 4. Checks the path relative to the current working directory for the given filename
-     *
-     * @param string $filename
-     *
-     * @return string|null
      */
-    private function getExampleFileContents($filename)
+    private function getExampleFileContents(string $filename): ?array
     {
         $normalizedPath = null;
 
@@ -122,42 +112,29 @@ class Finder
             }
         }
 
-        return $normalizedPath && is_readable($normalizedPath) ? file($normalizedPath) : null;
+        return ($normalizedPath && is_readable($normalizedPath)) ? file($normalizedPath) : null;
     }
 
     /**
      * Get example filepath based on the example directory inside your project.
-     *
-     * @param string $file
-     *
-     * @return string
      */
-    private function getExamplePathFromExampleDirectory($file)
+    private function getExamplePathFromExampleDirectory(string $file): string
     {
         return getcwd() . DIRECTORY_SEPARATOR . 'examples' . DIRECTORY_SEPARATOR . $file;
     }
 
     /**
      * Returns a path to the example file in the given directory..
-     *
-     * @param string $directory
-     * @param string $file
-     *
-     * @return string
      */
-    private function constructExamplePath($directory, $file)
+    private function constructExamplePath(string $directory, string $file): string
     {
         return rtrim($directory, '\\/') . DIRECTORY_SEPARATOR . $file;
     }
 
     /**
      * Get example filepath based on sourcecode.
-     *
-     * @param string $file
-     *
-     * @return string
      */
-    private function getExamplePathFromSource($file)
+    private function getExamplePathFromSource(string $file): string
     {
         return sprintf(
             '%s%s%s',

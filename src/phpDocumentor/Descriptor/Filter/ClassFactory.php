@@ -27,12 +27,8 @@ class ClassFactory
 
     /**
      * Retrieves the filters for a class with a given FQCN.
-     *
-     * @param string $fqcn
-     *
-     * @return FilterChain
      */
-    public function getChainFor($fqcn)
+    public function getChainFor(string $fqcn): FilterChain
     {
         if (!isset($this->chains[$fqcn])) {
             $this->chains[$fqcn] = new FilterChain();
