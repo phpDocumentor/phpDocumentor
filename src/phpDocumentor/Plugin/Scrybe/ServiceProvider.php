@@ -80,10 +80,8 @@ class ServiceProvider implements ServiceProviderInterface
 
     /**
      * Method responsible for adding the commands for this application.
-     *
-     * @param Application|Container $app
      */
-    protected function addCommands(Container $app)
+    protected function addCommands(Container $app): void
     {
         if ($app instanceof Application) {
             $app->command(
