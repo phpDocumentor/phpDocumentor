@@ -20,8 +20,7 @@ if (!class_exists(\Pimple\ServiceProviderInterface::class, false)) {
     {
         /**
          * @param \Pimple\Container $app
-         * @return void
          */
-        public function register(\Pimple\Container $app);
+        public function register(\Pimple\Container $app): void;
     }
 }

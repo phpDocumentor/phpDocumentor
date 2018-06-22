@@ -15,7 +15,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Plugin\LegacyNamespaceConverter;
 
-use Cilex\Application;
 use phpDocumentor\Descriptor\Filter\Filter;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Plugin\Plugin;
@@ -53,7 +52,7 @@ class ServiceProvider implements ServiceProviderInterface
      *
      * @param Container $app An Application instance.
      */
-    public function register(Container $app)
+    public function register(Container $app): void
     {
         $this->addNamespaceFilter($app['descriptor.builder'], $app['descriptor.filter']);
     }

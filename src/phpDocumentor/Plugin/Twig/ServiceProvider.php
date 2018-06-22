@@ -15,9 +15,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Plugin\Twig;
 
-use Cilex\Application;
-use phpDocumentor\Transformer\Writer\Collection;
-use phpDocumentor\Translator\Translator;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 
@@ -36,7 +33,7 @@ class ServiceProvider implements ServiceProviderInterface
      *
      * @param Container $app An Application instance.
      */
-    public function register(Container $app)
+    public function register(Container $app): void
     {
         /** @var Translator $translator */
         $translator = $app['translator'];

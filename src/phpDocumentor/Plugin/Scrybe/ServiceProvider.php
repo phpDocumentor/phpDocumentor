@@ -46,7 +46,7 @@ class ServiceProvider implements ServiceProviderInterface
      *
      * @param Container $app An Application instance.
      */
-    public function register(Container $app)
+    public function register(Container $app): void
     {
         $app[self::TEMPLATE_FOLDER] = realpath(__DIR__ . '/data/templates/');
         $app[self::CONVERTERS] = [
