@@ -26,9 +26,9 @@ use Psr\Log\LogLevel;
 class DebugEvent extends EventAbstract
 {
     /** @var string Message to display with the debugging event */
-    protected $message;
+    protected $message = '';
 
-    /** @var int Default priority level for these events is DEBUG */
+    /** @var string Default priority level for these events is DEBUG */
     protected $priority = LogLevel::DEBUG;
 
     /** @var string[] Extra parameters to insert into the message after translation */
@@ -36,12 +36,8 @@ class DebugEvent extends EventAbstract
 
     /**
      * Provides the message that is to be shown with this event.
-     *
-     * @param string $message
-     *
-     * @return DebugEvent
      */
-    public function setMessage($message)
+    public function setMessage(string $message): self
     {
         $this->message = $message;
 
@@ -50,20 +46,16 @@ class DebugEvent extends EventAbstract
 
     /**
      * Returns the message that was provided with this event.
-     *
-     * @return string
      */
-    public function getMessage()
+    public function getMessage(): string
     {
         return $this->message;
     }
 
     /**
      * Returns the priority level associated with this logging event.
-     *
-     * @return int
      */
-    public function getPriority()
+    public function getPriority(): string
     {
         return $this->priority;
     }
@@ -72,10 +64,8 @@ class DebugEvent extends EventAbstract
      * Sets additional context (parameters) to use when translating messages.
      *
      * @param string[] $context
-     *
-     * @return self
      */
-    public function setContext(array $context)
+    public function setContext(array $context): self
     {
         $this->context = $context;
 
@@ -87,7 +77,7 @@ class DebugEvent extends EventAbstract
      *
      * @return string[]
      */
-    public function getContext()
+    public function getContext(): array
     {
         return $this->context;
     }

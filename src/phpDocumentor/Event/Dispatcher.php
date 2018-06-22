@@ -15,8 +15,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Event;
 
-use Symfony\Component\EventDispatcher as Symfony;
 use Symfony\Component\EventDispatcher\Event;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
  * Event Dispatching class.
@@ -28,7 +28,7 @@ use Symfony\Component\EventDispatcher\Event;
  * The class is implemented as (mockable) Singleton as this was the best
  * solution to make the functionality available in every class of the project.
  */
-class Dispatcher extends Symfony\EventDispatcher
+class Dispatcher extends EventDispatcher
 {
     /** @var Dispatcher[] Keep track of an array of instances. */
     protected static $instances = [];
@@ -43,12 +43,8 @@ class Dispatcher extends Symfony\EventDispatcher
 
     /**
      * Returns a named instance of the Event Dispatcher.
-     *
-     * @param string $name
-     *
-     * @return Dispatcher
      */
-    public static function getInstance($name = 'default')
+    public static function getInstance(string $name = 'default'): self
     {
         if (!isset(self::$instances[$name])) {
             self::setInstance($name, new self());
@@ -59,11 +55,8 @@ class Dispatcher extends Symfony\EventDispatcher
 
     /**
      * Sets a names instance of the Event Dispatcher.
-     *
-     * @param string     $name
-     * @param Dispatcher $instance
      */
-    public static function setInstance($name, self $instance)
+    public static function setInstance(string $name, self $instance): void
     {
         self::$instances[$name] = $instance;
     }

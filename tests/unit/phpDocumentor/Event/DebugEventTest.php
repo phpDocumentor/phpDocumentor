@@ -30,7 +30,7 @@ class DebugEventTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         $message = 'test';
 
-        $this->assertNull($this->fixture->getMessage());
+        $this->assertEmpty($this->fixture->getMessage());
 
         $this->fixture->setMessage($message);
 
