@@ -11,6 +11,7 @@
 
 namespace phpDocumentor\Plugin\Scrybe\Template;
 
+use InvalidArgumentException;
 use Symfony\Component\Finder\Finder;
 
 /**
@@ -32,7 +33,7 @@ class Twig implements TemplateInterface
      *
      * @param string $templatePath the base location for templates.
      */
-    public function __construct($templatePath)
+    public function __construct(string $templatePath)
     {
         $this->path = $templatePath;
     }
@@ -42,12 +43,12 @@ class Twig implements TemplateInterface
      *
      * @param string $name A template name that may be composed of alphanumeric characters, underscores and/or hyphens.
      *
-     * @throws \InvalidArgumentException if the name does not match the prescribed format.
+     * @throws InvalidArgumentException if the name does not match the prescribed format.
      */
-    public function setName($name)
+    public function setName(string $name): void
     {
         if (!preg_match('/^[0-9a-zA-Z\-\_]{3,}$/', $name)) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'A template name may only be composed of alphanumeric '
                 . 'characters, underscores or hyphens and have at least 3 '
                 . 'characters.'
@@ -61,10 +62,8 @@ class Twig implements TemplateInterface
      * Returns the name of this template.
      *
      * @see Twig::setName() for a specification of the format.
-     *
-     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -74,12 +73,12 @@ class Twig implements TemplateInterface
      *
      * @param string $path
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
-    public function setPath($path)
+    public function setPath(string $path): void
     {
         if (!file_exists($path) || !is_dir($path)) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Expected the template path to be an existing directory, received: ' . $path
             );
         }
@@ -89,10 +88,8 @@ class Twig implements TemplateInterface
 
     /**
      * Returns the base path where the templates are stored.
-     *
-     * @return string
      */
-    public function getPath()
+    public function getPath(): string
     {
         return $this->path;
     }
@@ -105,12 +102,12 @@ class Twig implements TemplateInterface
      * @param string $extension an extension (thus only containing alphanumeric characters and be between 2 and 4
      *     characters in size).
      *
-     * @throws \InvalidArgumentException if the extension does not match the validation restrictions mentioned above.
+     * @throws InvalidArgumentException if the extension does not match the validation restrictions mentioned above.
      */
-    public function setExtension($extension)
+    public function setExtension(string $extension): void
     {
         if (!preg_match('/^[a-zA-Z0-9]{2,4}$/', $extension)) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Extension should be only be composed of alphanumeric characters'
                 . ' and should be at least 2 but no more than 4 characters'
             );
@@ -123,10 +120,8 @@ class Twig implements TemplateInterface
      * Returns the extension of the destination file extension.
      *
      * @see Twig::setExtension() for more information and the format of the extension.
-     *
-     * @return string
      */
-    public function getExtension()
+    public function getExtension(): string
     {
         return $this->extension;
     }
@@ -139,14 +134,11 @@ class Twig implements TemplateInterface
      *
      * The user may add additional options that are set as parameters in the template.
      *
-     * @param string   $contents
      * @param string[] $options
      *
      * @see Twig::getTemplateFilename() how the filename is assembled
-     *
-     * @return string
      */
-    public function decorate($contents, array $options = [])
+    public function decorate(string $contents, array $options = []): string
     {
         return $this->getTwigEnvironment()->render(
             $this->getTemplateFilename(),
@@ -171,7 +163,7 @@ class Twig implements TemplateInterface
      *
      * @return string[]
      */
-    public function getAssets()
+    public function getAssets(): array
     {
         $finder = new Finder();
 
