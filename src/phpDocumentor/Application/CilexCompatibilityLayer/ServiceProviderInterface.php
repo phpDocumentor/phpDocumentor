@@ -20,6 +20,7 @@ if (!class_exists(\Pimple\ServiceProviderInterface::class, false)) {
     {
         /**
          * @param \Pimple\Container $app
+         * @throws \RuntimeException;
          */
         public function register(\Pimple\Container $app): void;
     }

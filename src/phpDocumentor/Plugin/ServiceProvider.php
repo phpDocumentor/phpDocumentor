@@ -17,6 +17,7 @@ namespace phpDocumentor\Plugin;
 
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
+use RuntimeException;
 
 class ServiceProvider implements ServiceProviderInterface
 {
@@ -41,13 +42,13 @@ class ServiceProvider implements ServiceProviderInterface
                     ? sprintf('phpDocumentor\\Plugin\\%s\\ServiceProvider', $plugin->getClassName())
                     : $plugin->getClassName();
                 if (!class_exists($provider)) {
-                    throw new \RuntimeException('Loading Service Provider for ' . $provider . ' failed.');
+                    throw new RuntimeException('Loading Service Provider for ' . $provider . ' failed.');
                 }
 
                 try {
                     $app->register(new $provider($plugin));
                 } catch (\InvalidArgumentException $e) {
-                    throw new \RuntimeException($e->getMessage());
+                    throw new RuntimeException($e->getMessage());
                 }
             }
         );
