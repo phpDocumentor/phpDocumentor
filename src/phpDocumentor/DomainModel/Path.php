@@ -28,10 +28,8 @@ final class Path
 
     /**
      * Initializes the path.
-     *
-     * @param string $path
      */
-    public function __construct($path)
+    public function __construct(string $path)
     {
         Assert::stringNotEmpty($path);
 
@@ -40,20 +38,16 @@ final class Path
 
     /**
      * Verifies if another Path object has the same identity as this one.
-     *
-     * @return bool
      */
-    public function equals(self $otherPath)
+    public function equals(self $otherPath): bool
     {
         return $this->path === (string) $otherPath;
     }
 
     /**
      * returns a string representation of the path.
-     *
-     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->path;
     }
