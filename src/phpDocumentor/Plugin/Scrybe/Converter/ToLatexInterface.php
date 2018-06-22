@@ -25,14 +25,14 @@ interface ToLatexInterface
      *
      * @param string $title
      */
-    public function setTitle($title);
+    public function setTitle(string $title): void;
 
     /**
      * Sets the author name that is supposed to be on the frontpage.
      *
      * @param string $author
      */
-    public function setAuthor($author);
+    public function setAuthor(string $author): void;
 
     /**
      * Sets the filename used as logo or cover picture.
@@ -41,5 +41,5 @@ interface ToLatexInterface
      *
      * @param string $cover_logo
      */
-    public function setCoverLogo($cover_logo);
+    public function setCoverLogo(string $cover_logo): void;
 }

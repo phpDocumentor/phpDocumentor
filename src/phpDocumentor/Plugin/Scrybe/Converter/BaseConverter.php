@@ -16,10 +16,9 @@ declare(strict_types=1);
 namespace phpDocumentor\Plugin\Scrybe\Converter;
 
 use Monolog\Logger;
-use phpDocumentor\Fileset\Collection;
-use phpDocumentor\Fileset\File;
+use phpDocumentor\Plugin\Scrybe\Converter\Format\Collection;
 use phpDocumentor\Plugin\Scrybe\Template\TemplateInterface;
-use Symfony\Component\Finder\SplFileInfo;
+use SplFileInfo;
 
 abstract class BaseConverter implements ConverterInterface
 {
@@ -62,17 +61,15 @@ abstract class BaseConverter implements ConverterInterface
     /**
      * Set a logger for this converter.
      */
-    public function setLogger(Logger $logger)
+    public function setLogger(Logger $logger): void
     {
         $this->logger = $logger;
     }
 
     /**
      * Returns the AssetManager that keep track of which assets are used.
-     *
-     * @return \phpDocumentor\Plugin\Scrybe\Converter\Metadata\Assets
      */
-    public function getAssets()
+    public function getAssets(): Metadata\Assets
     {
         return $this->assets;
     }
@@ -80,10 +77,8 @@ abstract class BaseConverter implements ConverterInterface
     /**
      * Returns the table of contents object that keeps track of all
      * headings and their titles.
-     *
-     * @return \phpDocumentor\Plugin\Scrybe\Converter\Metadata\TableOfContents
      */
-    public function getTableOfContents()
+    public function getTableOfContents(): Metadata\TableOfContents
     {
         return $this->toc;
     }
@@ -91,31 +86,24 @@ abstract class BaseConverter implements ConverterInterface
     /**
      * Returns the glossary object that keeps track of all the glossary terms
      * that have been provided.
-     *
-     * @return \phpDocumentor\Plugin\Scrybe\Converter\Metadata\Glossary
      */
-    public function getGlossary()
+    public function getGlossary(): Metadata\Glossary
     {
         return $this->glossary;
     }
 
     /**
      * Returns the definition for this Converter.
-     *
-     * @return Definition\Definition
      */
-    public function getDefinition()
+    public function getDefinition(): Definition\Definition
     {
         return $this->definition;
     }
 
     /**
      * Sets an option with the given name.
-     *
-     * @param string $name
-     * @param string $value
      */
-    public function setOption($name, $value)
+    public function setOption(string $name, string $value): void
     {
         $this->options[$name] = $value;
     }
@@ -123,12 +111,8 @@ abstract class BaseConverter implements ConverterInterface
     /**
      * Returns the option with the given name or null if the option does not
      * exist.
-     *
-     * @param string $name
-     *
-     * @return string|null
      */
-    public function getOption($name)
+    public function getOption(string $name): ?string
     {
         return $this->options[$name] ?? null;
     }
@@ -136,7 +120,7 @@ abstract class BaseConverter implements ConverterInterface
     /**
      * Configures and initializes the subcomponents specific to this converter.
      */
-    public function configure()
+    public function configure(): void
     {
     }
 
@@ -153,7 +137,7 @@ abstract class BaseConverter implements ConverterInterface
      * @see manual://extending#build_cycle for more information regarding the
      *     build process.
      */
-    abstract protected function discover();
+    abstract protected function discover(): void;
 
     /**
      * Converts the input files into one or more output files in the intended
@@ -170,7 +154,7 @@ abstract class BaseConverter implements ConverterInterface
      * @return string[]|null The contents of the resulting file(s) or null if
      * the files are written directly to file.
      */
-    abstract protected function create(TemplateInterface $template);
+    abstract protected function create(TemplateInterface $template): ?string;
 
     /**
      * Converts the given $source using the formats that belong to this
@@ -181,10 +165,8 @@ abstract class BaseConverter implements ConverterInterface
      * @param Collection        $source      Collection of input files.
      * @param TemplateInterface $template Template used to decorate the
      *     output with.
-     *
-     * @return string[]|null
      */
-    public function convert(Collection $source, TemplateInterface $template)
+    public function convert(Collection $source, TemplateInterface $template): ?string
     {
         $this->fileset = $source;
         $this->assets->setProjectRoot($this->fileset->getProjectRoot());
@@ -202,10 +184,8 @@ abstract class BaseConverter implements ConverterInterface
 
     /**
      * Adds the assets of the template to the Assets manager.
-     *
-     * @param TemplateInterface $template
      */
-    protected function addTemplateAssets($template)
+    protected function addTemplateAssets(TemplateInterface $template): void
     {
         /** @var SplFileInfo $file_info */
         foreach ($template->getAssets() as $filename => $file_info) {
@@ -215,30 +195,24 @@ abstract class BaseConverter implements ConverterInterface
 
     /**
      * Returns the filename used for the output path.
-     *
-     * @return string
      */
-    protected function getDestinationFilename(File $file)
+    protected function getDestinationFilename(Metadata\TableOfContents\File $file): string
     {
         return $this->definition->getOutputFormat()->convertFilename($file->getRealPath());
     }
 
     /**
      * Returns the filename relative to the Project Root of the fileset.
-     *
-     * @return string
      */
-    public function getDestinationFilenameRelativeToProjectRoot(File $file)
+    public function getDestinationFilenameRelativeToProjectRoot(Metadata\TableOfContents\File $file): string
     {
         return substr($this->getDestinationFilename($file), strlen($this->fileset->getProjectRoot()));
     }
 
     /**
      * Returns the logger for this converter.
-     *
-     * @return \Monolog\Logger
      */
-    protected function getLogger()
+    protected function getLogger(): Logger
     {
         return $this->logger;
     }

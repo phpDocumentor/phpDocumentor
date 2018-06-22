@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Plugin\Scrybe\Converter;
 
 use Monolog\Logger;
+use phpDocumentor\Plugin\Scrybe\Converter\Exception\ConverterNotFoundException;
 
 /**
  * This factory attempts to create a converter given an input and output format and return that.
@@ -65,14 +66,9 @@ class Factory
     /**
      * Retrieves a new instance of the converter necessary to convert the give input format to the given output format.
      *
-     * @param string $input_format
-     * @param string $output_format
-     *
-     * @throws Exception\ConverterNotFoundException
-     *
-     * @return ConverterInterface
+     * @throws ConverterNotFoundException
      */
-    public function get($input_format, $output_format)
+    public function get(string $input_format, string $output_format): ConverterInterface
     {
         $definition = $this->definition_factory->get($input_format, $output_format);
 
@@ -92,7 +88,7 @@ class Factory
             }
         }
 
-        throw new Exception\ConverterNotFoundException(
+        throw new ConverterNotFoundException(
             'No converter could be found to convert from ' . $input_format . ' to ' . $output_format
         );
     }
@@ -104,7 +100,7 @@ class Factory
      *
      * @return string[] An array of format definitions per the constantst in the Format class.
      */
-    public function getSupportedInputFormats($given_output_format)
+    public function getSupportedInputFormats(string $given_output_format): array
     {
         $result = [];
         foreach ($this->converters as $formats) {
@@ -122,7 +118,7 @@ class Factory
      *
      * @param ConverterInterface[] $converters
      */
-    public function setConverters(array $converters)
+    public function setConverters(array $converters): void
     {
         $this->converters = $converters;
     }
@@ -133,10 +129,8 @@ class Factory
      * This is used when the user has not provided their own definition factory in the constructor.
      *
      * @see __construct() where this method is used.
-     *
-     * @return Definition\Factory
      */
-    protected function getDefaultDefinitionFactory()
+    protected function getDefaultDefinitionFactory(): Definition\Factory
     {
         return new Definition\Factory(new Format\Collection());
     }
@@ -144,7 +138,7 @@ class Factory
     /**
      * Sets the Definition Factory used to retrieve definitions from.
      */
-    protected function setDefinitionFactory(Definition\Factory $definition_factory)
+    protected function setDefinitionFactory(Definition\Factory $definition_factory): void
     {
         $this->definition_factory = $definition_factory;
     }

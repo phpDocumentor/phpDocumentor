@@ -16,7 +16,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Plugin\Scrybe\Converter;
 
 use Monolog\Logger;
-use phpDocumentor\Fileset\Collection;
+use phpDocumentor\Plugin\Scrybe\Converter\Format\Collection;
 use phpDocumentor\Plugin\Scrybe\Converter\Metadata\Assets;
 use phpDocumentor\Plugin\Scrybe\Converter\Metadata\Glossary;
 use phpDocumentor\Plugin\Scrybe\Converter\Metadata\TableOfContents;
@@ -45,51 +45,38 @@ interface ConverterInterface
      *     output with.
      *
      * @see DESTINATION_RESULT to use as destination to return data.
-     *
-     * @return string[]|null
      */
-    public function convert(Collection $source, TemplateInterface $template);
+    public function convert(Collection $source, TemplateInterface $template): ?string;
 
     /**
      * Returns the definition for this Converter.
-     *
-     * @return Definition\Definition
      */
-    public function getDefinition();
+    public function getDefinition(): Definition\Definition;
 
     /**
      * Sets an option which can optionally be used in converters.
-     *
-     * @param string $name
-     * @param string $value
      */
-    public function setOption($name, $value);
+    public function setOption(string $name, string $value): void;
 
     /**
      * Returns the AssetManager that keep track of which assets are used.
-     *
-     * @return Assets
      */
-    public function getAssets();
+    public function getAssets(): Assets;
 
     /**
      * Returns the table of contents object that keeps track of all
      * headings and their titles.
-     *
-     * @return TableOfContents
      */
-    public function getTableOfContents();
+    public function getTableOfContents(): TableOfContents;
 
     /**
      * Returns the glossary object that keeps track of all the glossary terms
      * that have been provided.
-     *
-     * @return Glossary
      */
-    public function getGlossary();
+    public function getGlossary(): Glossary;
 
     /**
      * Optionally set a logger for this converter.
      */
-    public function setLogger(Logger $logger);
+    public function setLogger(Logger $logger): void;
 }

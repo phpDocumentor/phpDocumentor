@@ -15,9 +15,10 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Plugin\Scrybe\Converter\RestructuredText;
 
-use phpDocumentor\Fileset\File;
+use Exception;
 use phpDocumentor\Plugin\Scrybe\Converter\BaseConverter;
 use phpDocumentor\Plugin\Scrybe\Converter\ToHtmlInterface;
+use phpDocumentor\Plugin\Scrybe\Converter\Metadata\TableOfContents\File;
 use phpDocumentor\Plugin\Scrybe\Template\TemplateInterface;
 
 /**
@@ -39,9 +40,10 @@ class ToHtml extends BaseConverter implements ToHtmlInterface
      * Examples of data that needs to be collected during an initial phase is a table of contents, list of document
      * titles for references, assets and more.
      *
+     * @throws Exception
      * @see manual://internals#build_cycle for more information regarding the build process.
      */
-    protected function discover()
+    protected function discover(): void
     {
         /** @var File $file */
         foreach ($this->fileset as $file) {
@@ -54,7 +56,7 @@ class ToHtml extends BaseConverter implements ToHtmlInterface
 
             try {
                 $rst->getAsXhtml();
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 continue;
             }
         }
@@ -71,7 +73,7 @@ class ToHtml extends BaseConverter implements ToHtmlInterface
      * @see manual://internals#build_cycle for more information regarding the build process.
      * @return string[]|null The contents of the resulting file(s) or null if the files are written directly to file.
      */
-    protected function create(TemplateInterface $template)
+    protected function create(TemplateInterface $template): ?string
     {
         $result = [];
 
@@ -108,9 +110,9 @@ class ToHtml extends BaseConverter implements ToHtmlInterface
      *
      * @param string $destination The destination path relative to the target folder.
      *
-     * @see \phpDocumentor\Plugin\Scrybe\Converter\BaseConverter::$options for where the 'root' variable is set.
+     * @see BaseConverter::$options for where the 'root' variable is set.
      */
-    protected function setDestinationRoot($destination)
+    protected function setDestinationRoot(string $destination): void
     {
         $this->options['root'] = dirname($destination) !== '.'
             ? implode('/', array_fill(0, count(explode('/', dirname($destination))), '..')) . '/'
