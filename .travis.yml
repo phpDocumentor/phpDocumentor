@@ -5,6 +5,9 @@ php:
   - nightly
 sudo: false
 
+branches:
+except: /^(\S*)-nightly-(\S*)$/
+
 env:
 matrix:
   fast_finish: true
@@ -72,6 +75,38 @@ jobs:
         on:
           repo: phpDocumentor/phpDocumentor2
           tags: true
+
+    - stage: release
+      if: type IN (push)
+      php: 7.1
+      env:
+        - VERSION=$(echo $TRAVIS_TAG | cut -c 2-10)
+      script:
+        - echo "${VERSION}" > VERSION
+        - git config --global user.email "builds@travis-ci.com"
+        - git config --global user.name "Travis CI"
+        - export GIT_TAG=$(git describe --tags --exclude="*nightly*" | sed -E "s/\-[a-z0-9]+\-/-nightly-/")
+        - |
+          if [ "${TRAVIS_TAG}" == "" ]; then
+            git tag $GIT_TAG -a -m "Nightly build. Not a stable release. Expect bugs!";
+            echo "${GIT_TAG}" > VERSION
+          fi
+        - php ./bin/console --env=prod cache:warm
+        - php -d phar.readonly=false tools/box.phar compile
+      deploy:
+        provider: releases
+        api_key:
+          secure: WUchZXQQdIDtVQTYZsQ++2R1y6I+EzBrAACRuc33wAVd0mlqNmu3nb/c1Ou4pTk5JxjyGqm9Siyp9vobhBtzBh/hdXAnbZDWNx2l6R1M9S4R/Z/VbcQ+uIJ/VOoh2KvIOCcyVuFVmsemlVQCuatCRKswKmK/OuyQXy6ppyZMilA=
+        file:
+          - "build/phpDocumentor.phar"
+          - "build/phpDocumentor.phar.pubkey"
+        skip_cleanup: true
+        on:
+          repo: phpDocumentor/phpDocumentor2
+          tags: false
+          branch:
+            - develop
+            - "feature/nightly-releases"
 
 cache:
   directories:
