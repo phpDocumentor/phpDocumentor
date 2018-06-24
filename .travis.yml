@@ -15,7 +15,7 @@ matrix:
     - php: nightly
 
 before_install: |
-  if [ 'false' == "$TRAVIS_PULL_REQUEST" ]; then
+  if [[ "$TRAVIS_PULL_REQUEST_SLUG" == "" || "$TRAVIS_PULL_REQUEST_SLUG" == "$TRAVIS_REPO_SLUG" ]];then
     openssl aes-256-cbc -K $encrypted_f23adc84ec09_key -iv $encrypted_f23adc84ec09_iv -in .travis/secrets.tar.enc -out .travis/secrets.tar -d
     tar xvf .travis/secrets.tar -C .travis
   fi
@@ -106,7 +106,6 @@ jobs:
           tags: false
           branch:
             - develop
-            - "feature/nightly-releases"
 
 cache:
   directories:
