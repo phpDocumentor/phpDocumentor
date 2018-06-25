@@ -25,7 +25,6 @@ jobs:
     - stage: dogfood
       php: 7.1
       script:
-        - chmod u+x ./bin/phpdoc
         - ./bin/phpdoc run
 
     - stage: phar
