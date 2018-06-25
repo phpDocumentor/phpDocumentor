@@ -19,8 +19,6 @@ before_install: |
   fi
 
 install:
-  - composer install --no-interaction --prefer-dist --optimize-autoloader
-install:
   - travis_retry composer install --no-interaction --prefer-dist --optimize-autoloader
   - travis_retry composer global require phpunit/phpunit ^6 # cannot use phpunit.phar or require-dev, because this package is a phpunit dep
   - travis_retry wget --no-verbose https://phar.io/releases/phive.phar
@@ -30,7 +28,7 @@ script:
 
 jobs:
   include:
-    - stage: test
+    - stage: dogfood
       php: 7.1
       script:
         - ./bin/phpdoc run
