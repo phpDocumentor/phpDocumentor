@@ -25,4 +25,4 @@ parameters:
    # needs adjustment of interface in phpDocumentor/reflection in order to be able to typehint the command
     - %currentWorkingDirectory%/src/phpDocumentor/Parser/Middleware/*.php
    # phpunit TestCase while having to use a composer-global install
-   - '#Class PHPUnit\\Framework\\TestCase not found and could not be autoloaded.#'
+    - '#Class PHPUnit\\Framework\\TestCase not found and could not be autoloaded.#'
