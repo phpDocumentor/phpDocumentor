@@ -56,11 +56,9 @@ jobs:
       php: 7.1
       services:
         - docker
-      before_script:
-        - travis_retry php phive.phar --no-progress install --trust-gpg-keys 8E730BA25823D8B5 phpstan
       script:
-        - ./tools/phpstan analyse src --level max --configuration phpstan.neon
         - docker-compose run --rm ecs
+        - docker-compose run --rm phpstan
 
     - stage: release
       if: type IN (push)
