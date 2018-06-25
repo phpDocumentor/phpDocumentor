@@ -16,18 +16,16 @@ install:
   - travis_retry composer global require phpunit/phpunit ^6 # cannot use phpunit.phar or require-dev, because this package is a phpunit dep
   - travis_retry wget --no-verbose https://phar.io/releases/phive.phar
 
-script:
-  - /home/travis/.composer/vendor/bin/phpunit --no-coverage
-  - bin/behat -p default
 
 jobs:
   include:
-    - stage: dogfood
-      php: 7.1
+    - stage: test
       script:
+        - /home/travis/.composer/vendor/bin/phpunit --no-coverage
+        - bin/behat -p default
         - ./bin/phpdoc run
 
-    - stage: phar
+    - stage: test
       php: 7.1
       script:
         - php ./bin/console --env=prod cache:warm
