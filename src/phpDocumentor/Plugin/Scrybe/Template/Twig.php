@@ -71,8 +71,6 @@ class Twig implements TemplateInterface
     /**
      * Sets the base path where the templates are stored.
      *
-     * @param string $path
-     *
      * @throws InvalidArgumentException
      */
     public function setPath(string $path): void

@@ -22,15 +22,11 @@ interface ToLatexInterface
 {
     /**
      * Sets the title that is supposed to be on the front page.
-     *
-     * @param string $title
      */
     public function setTitle(string $title): void;
 
     /**
      * Sets the author name that is supposed to be on the frontpage.
-     *
-     * @param string $author
      */
     public function setAuthor(string $author): void;
 
@@ -38,8 +34,6 @@ interface ToLatexInterface
      * Sets the filename used as logo or cover picture.
      *
      * The image location should be absolute or relative to the destination location.
-     *
-     * @param string $cover_logo
      */
     public function setCoverLogo(string $cover_logo): void;
 }

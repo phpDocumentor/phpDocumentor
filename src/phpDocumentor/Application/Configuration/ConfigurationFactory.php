@@ -136,8 +136,6 @@ final class ConfigurationFactory
     /**
      * Converts the given XML structure into an array containing the configuration.
      *
-     * @param SimpleXMLElement $xml
-     * @return array
      * @throws RuntimeException
      */
     private function extractConfigurationArray(SimpleXMLElement $xml): array

@@ -16,11 +16,11 @@ declare(strict_types=1);
 namespace phpDocumentor\Application\Console\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand as BaseCommand;
+use Symfony\Component\Console\Helper\HelperInterface;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Helper\HelperInterface;
 
 /**
  * Base command for phpDocumentor commands.

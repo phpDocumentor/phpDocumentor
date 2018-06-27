@@ -17,8 +17,8 @@ namespace phpDocumentor\Plugin\Scrybe\Converter\RestructuredText;
 
 use Exception;
 use phpDocumentor\Plugin\Scrybe\Converter\BaseConverter;
-use phpDocumentor\Plugin\Scrybe\Converter\ToHtmlInterface;
 use phpDocumentor\Plugin\Scrybe\Converter\Metadata\TableOfContents\File;
+use phpDocumentor\Plugin\Scrybe\Converter\ToHtmlInterface;
 use phpDocumentor\Plugin\Scrybe\Template\TemplateInterface;
 
 /**

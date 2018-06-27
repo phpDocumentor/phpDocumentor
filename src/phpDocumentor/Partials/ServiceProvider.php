@@ -15,9 +15,9 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Partials;
 
+use Parsedown;
 use phpDocumentor\Partials\Collection as PartialsCollection;
 use phpDocumentor\Partials\Exception\MissingNameForPartialException;
-use Parsedown;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 
