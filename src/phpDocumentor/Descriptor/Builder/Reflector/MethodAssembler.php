@@ -1,11 +1,14 @@
 <?php
+declare(strict_types=1);
+
 /**
  * This file is part of phpDocumentor.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @copyright 2010-2018 Mike van Riel<mike@phpdoc.org>
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -44,7 +47,7 @@ class MethodAssembler extends AssemblerAbstract
     public function create($data)
     {
         $methodDescriptor = new MethodDescriptor();
-        $methodDescriptor->setNamespace(substr($data->getFqsen(), 0, -strlen($data->getName()) - 4));
+        $methodDescriptor->setNamespace(substr((string) $data->getFqsen(), 0, -strlen($data->getName()) - 4));
         $this->mapReflectorToDescriptor($data, $methodDescriptor);
 
         $this->assembleDocBlock($data->getDocBlock(), $methodDescriptor);

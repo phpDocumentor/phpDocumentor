@@ -1,9 +1,13 @@
 <?php
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
  * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
@@ -50,7 +54,7 @@ class ConstantConverter
         $parent->appendChild($child);
 
         $child->setAttribute('namespace', ltrim($fullyQualifiedNamespaceName, '\\'));
-        $child->setAttribute('line', $constant->getLine());
+        $child->setAttribute('line', (string) $constant->getLine());
 
         $child->appendChild(new \DOMElement('name', $constant->getName()));
         $child->appendChild(new \DOMElement('full_name', $constant->getFullyQualifiedStructuralElementName()));

@@ -12,35 +12,24 @@ matrix:
   allow_failures:
     - php: nightly
 
-before_install: |
-  if [[ "$TRAVIS_PULL_REQUEST_SLUG" == "" || "$TRAVIS_PULL_REQUEST_SLUG" == "$TRAVIS_REPO_SLUG" ]];then
-    openssl aes-256-cbc -K $encrypted_f23adc84ec09_key -iv $encrypted_f23adc84ec09_iv -in .travis/secrets.tar.enc -out .travis/secrets.tar -d
-    tar xvf .travis/secrets.tar -C .travis
-  fi
-
 install:
   - travis_retry composer install --no-interaction --prefer-dist --optimize-autoloader
   - travis_retry composer global require phpunit/phpunit ^6 # cannot use phpunit.phar or require-dev, because this package is a phpunit dep
 script:
-  - /home/travis/.composer/vendor/bin/phpunit --no-coverage
-  - bin/behat -p default
+  - /home/travis/.composer/vendor/bin/phpunit --no-coverage && bin/behat -p default
 
 jobs:
   include:
     - stage: test
       php: 7.1
       script:
-        - travis_retry sudo apt install graphviz
-        - ./bin/phpdoc run
+        - travis_retry sudo apt install graphviz && ./bin/phpdoc run
 
     - stage: test
       php: 7.1
       script:
-        - php ./bin/console --env=prod cache:warm
-        - php -d phar.readonly=false tools/box.phar compile
-        - bin/behat -p phar
-        - travis_retry sudo apt install graphviz
-        - php build/phpDocumentor.phar run
+        - php ./bin/console --env=prod cache:warm && php -d phar.readonly=false tools/box.phar compile --config=box.nosign.json && bin/behat -p phar
+        - travis_retry sudo apt install graphviz && php build/phpDocumentor.phar run
 
     - stage: coverage
       php: 7.1
@@ -64,11 +53,14 @@ jobs:
       php: 7.1
       env:
         - VERSION=$(echo $TRAVIS_TAG | cut -c 2-10)
+      before_install: |
+        if [[ "$TRAVIS_PULL_REQUEST_SLUG" == "" || "$TRAVIS_PULL_REQUEST_SLUG" == "$TRAVIS_REPO_SLUG" ]];then
+          openssl aes-256-cbc -K $encrypted_f23adc84ec09_key -iv $encrypted_f23adc84ec09_iv -in .travis/secrets.tar.enc -out .travis/secrets.tar -d && \
+          tar xvf .travis/secrets.tar -C .travis
+        fi;
       script:
         - echo "${VERSION}" > VERSION
-        - php ./bin/console --env=prod cache:warm
-        - php -d phar.readonly=false tools/box.phar compile
-        - openssl sha1 build/phpDocumentor.phar
+        - php ./bin/console --env=prod cache:warm && php -d phar.readonly=false tools/box.phar compile --config=box.json && openssl sha1 build/phpDocumentor.phar
         - echo "Update https://github.com/josegonzalez/homebrew-php/blob/master/Formula/phpdocumentor.rb with the latest version number and the SHA1 that is shown above with the path /get/phpDocumentor-${VERSION}.phar"
       deploy:
         provider: releases
@@ -97,8 +89,7 @@ jobs:
             git tag $GIT_TAG -a -m "Nightly build. Not a stable release. Expect bugs!";
             echo "${GIT_TAG}" > VERSION
           fi
-        - php ./bin/console --env=prod cache:warm
-        - php -d phar.readonly=false tools/box.phar compile
+        - php ./bin/console --env=prod cache:warm && php -d phar.readonly=false tools/box.phar compile
       deploy:
         provider: releases
         api_key:

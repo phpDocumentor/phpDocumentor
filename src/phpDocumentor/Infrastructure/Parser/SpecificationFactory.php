@@ -1,11 +1,14 @@
 <?php
+declare(strict_types=1);
+
 /**
  * This file is part of phpDocumentor.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @copyright 2010-2018 Mike van Riel<mike@phpdoc.org>
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -76,7 +79,7 @@ final class SpecificationFactory implements FactoryInterface
      */
     private function inPath($path): InPath
     {
-        return new InPath(new Path($path));
+        return new InPath(new Path((string) $path));
     }
 
     private function notSpec(SpecificationInterface $ignoreSpec = null)

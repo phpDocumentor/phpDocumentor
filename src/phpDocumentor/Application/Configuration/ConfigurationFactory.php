@@ -1,11 +1,14 @@
 <?php
+declare(strict_types=1);
+
 /**
  * This file is part of phpDocumentor.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @copyright 2010-2015 Mike van Riel<mike@phpdoc.org>
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -102,8 +105,9 @@ final class ConfigurationFactory
             return $this->cachedConfiguration;
         }
 
-        if (file_exists($this->uri)) {
-            $xml = new \SimpleXMLElement($this->uri, 0, true);
+        $file = (string) $this->uri;
+        if (file_exists($file)) {
+            $xml = new \SimpleXMLElement($file, 0, true);
             $this->cachedConfiguration = $this->extractConfigurationArray($xml);
         } else {
             $this->cachedConfiguration = Version3::buildDefault();
