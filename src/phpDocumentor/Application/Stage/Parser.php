@@ -225,12 +225,14 @@ final class Parser
      */
     private function log(string $message, string $priority = LogLevel::INFO, array $parameters = []): void
     {
+        /** @var LogEvent $logEvent */
+        $logEvent = LogEvent::createInstance($this);
+        $logEvent->setContext($parameters);
+        $logEvent->setMessage($message);
+        $logEvent->setPriority($priority);
         $this->eventDispatcher->dispatch(
             'system.log',
-            LogEvent::createInstance($this)
-                ->setContext($parameters)
-                ->setMessage($message)
-                ->setPriority($priority)
+            $logEvent
         );
     }
 }

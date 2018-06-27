@@ -142,7 +142,7 @@ final class Transform
 //            $progress->start($output, count($transformer->getTemplates()->getTransformations()));
 //        }
 
-        /** @var CompilerPassInterface $pass */
+        /** @var \phpDocumentor\Compiler\CompilerPassInterface $pass */
         foreach ($this->compiler as $pass) {
             $pass->execute($projectDescriptor);
             //$output->writeTimedLog($pass->getDescription(), array($pass, 'execute'), array($projectDescriptor));

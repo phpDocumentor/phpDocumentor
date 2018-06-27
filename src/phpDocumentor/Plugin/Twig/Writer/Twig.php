@@ -142,7 +142,7 @@ class Twig extends WriterAbstract implements Routable
         ];
 
         // get all invoked template paths, they overrule the calling template path
-        /** @var Template $template */
+        /** @var \phpDocumentor\Transformer\Template $template */
         foreach ($transformation->getTransformer()->getTemplates() as $template) {
             $path = $baseTemplatesPath . DIRECTORY_SEPARATOR . $template->getName();
             array_unshift($templateFolders, $path);
@@ -199,7 +199,7 @@ class Twig extends WriterAbstract implements Routable
             $twigEnvironment->addExtension(new Twig_Extension_Debug());
         }
 
-        /** @var Template\Parameter $extension */
+        /** @var \phpDocumentor\Transformer\Template\Parameter $extension */
         foreach ($transformation->getParametersWithKey('twig-extension') as $extension) {
             $extensionValue = $extension->getValue();
             if (!class_exists($extensionValue)) {

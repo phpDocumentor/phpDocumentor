@@ -111,9 +111,13 @@ class Xsl extends WriterAbstract implements Routable
             $qry = $xpath->query($transformation->getQuery());
             $count = $qry->length;
             foreach ($qry as $key => $element) {
+                /** @var PreXslWriterEvent $event */
+                $event = PreXslWriterEvent::createInstance($this);
+                $event->setElement($element);
+                $event->setProgress([$key + 1, $count]);
                 Dispatcher::getInstance()->dispatch(
                     'transformer.writer.xsl.pre',
-                    PreXslWriterEvent::createInstance($this)->setElement($element)->setProgress([$key + 1, $count])
+                    $event
                 );
 
                 $proc->setParameter('', $element->nodeName, $element->nodeValue);

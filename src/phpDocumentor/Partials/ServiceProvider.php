@@ -33,7 +33,7 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function register(Container $app): void
     {
-        /** @var Translator $translator */
+        /** @var \phpDocumentor\Translator\Translator $translator */
         $translator = $app['translator'];
         $translator->addTranslationFolder(__DIR__ . DIRECTORY_SEPARATOR . 'Messages');
 

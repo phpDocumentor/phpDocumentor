@@ -64,7 +64,7 @@ abstract class Command extends BaseCommand
      *
      * With this helper it is possible to display a progress bar and make it fill.
      *
-     * @return ProgressBar
+     * @return HelperInterface|null a ProgressBar if available
      */
     protected function getProgressBar(InputInterface $input): ?HelperInterface
     {
