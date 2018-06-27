@@ -48,7 +48,7 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function register(Container $app): void
     {
-        $app[self::TEMPLATE_FOLDER] = realpath(__DIR__ . '/data/templates/');
+        $app[self::TEMPLATE_FOLDER] = __DIR__ . '/data/templates/';
         $app[self::CONVERTERS] = [
             '\phpDocumentor\Plugin\Scrybe\Converter\RestructuredText\ToHtml' => [Format::RST, Format::HTML],
         ];
