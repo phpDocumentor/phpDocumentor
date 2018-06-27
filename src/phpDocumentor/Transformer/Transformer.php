@@ -124,9 +124,12 @@ class Transformer implements CompilerPassInterface
      */
     public function execute(ProjectDescriptor $project): void
     {
+        /** @var PreTransformEvent $preTransformEvent */
+        $preTransformEvent = PreTransformEvent::createInstance($this);
+        $preTransformEvent->setProject($project);
         Dispatcher::getInstance()->dispatch(
             self::EVENT_PRE_TRANSFORM,
-            PreTransformEvent::createInstance($this)->setProject($project)
+            $preTransformEvent
         );
 
         $transformations = $this->getTemplates()->getTransformations();
@@ -163,11 +166,13 @@ class Transformer implements CompilerPassInterface
      */
     public function log(string $message, string $priority = LogLevel::INFO): void
     {
+        /** @var LogEvent $logEvent */
+        $logEvent = LogEvent::createInstance($this);
+        $logEvent->setPriority($priority);
+        $logEvent->setMessage($message);
         Dispatcher::getInstance()->dispatch(
             'system.log',
-            LogEvent::createInstance($this)
-                ->setMessage($message)
-                ->setPriority($priority)
+            $logEvent
         );
     }
 
@@ -176,10 +181,12 @@ class Transformer implements CompilerPassInterface
      */
     public function debug(string $message): void
     {
+        /** @var DebugEvent $debugEvent */
+        $debugEvent = DebugEvent::createInstance($this);
+        $debugEvent->setMessage($message);
         Dispatcher::getInstance()->dispatch(
             'system.debug',
-            DebugEvent::createInstance($this)
-                ->setMessage($message)
+            $debugEvent
         );
     }
 
@@ -222,7 +229,9 @@ class Transformer implements CompilerPassInterface
      */
     private function initializeWriter(WriterAbstract $writer, ProjectDescriptor $project): void
     {
-        $event = WriterInitializationEvent::createInstance($this)->setWriter($writer);
+        /** @var WriterInitializationEvent $instance */
+        $instance = WriterInitializationEvent::createInstance($this);
+        $event = $instance->setWriter($writer);
         Dispatcher::getInstance()->dispatch(self::EVENT_PRE_INITIALIZATION, $event);
 
         if ($writer instanceof Initializable) {
@@ -269,7 +278,9 @@ class Transformer implements CompilerPassInterface
             )
         );
 
-        $preTransformationEvent = PreTransformationEvent::createInstance($this)->setTransformation($transformation);
+        /** @var PreTransformationEvent $preTransformationEvent */
+        $preTransformationEvent = PreTransformationEvent::createInstance($this);
+        $preTransformationEvent->setTransformation($transformation);
         Dispatcher::getInstance()->dispatch(self::EVENT_PRE_TRANSFORMATION, $preTransformationEvent);
 
         $writer = $this->writers[$transformation->getWriter()];
