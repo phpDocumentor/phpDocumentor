@@ -40,8 +40,8 @@ class LogEventTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers ::setPriority
-     * @covers ::getPriority
+     * @covers phpDocumentor\Event\LogEvent::setPriority
+     * @covers phpDocumentor\Event\LogEvent::getPriority
      */
     public function testSetAndGetPriority()
     {
