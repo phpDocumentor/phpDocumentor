@@ -15,6 +15,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\DomainModel;
 
+use InvalidArgumentException;
+
 /**
  * Value Object for DSN.
  */
@@ -139,7 +141,7 @@ final class Dsn
     /**
      * Parses the given DSN
      */
-    private function parse(string $dsn)
+    private function parse(string $dsn): void
     {
         $dsnParts = explode(';', $dsn);
         $location = $dsnParts[0];
@@ -160,7 +162,7 @@ final class Dsn
         }
 
         if (!filter_var($location, FILTER_VALIDATE_URL) && !preg_match(static::WINDOWS_DSN, $location)) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 sprintf('"%s" is not a valid DSN.', $dsn)
             );
         }
@@ -198,11 +200,12 @@ final class Dsn
      * validates and sets the scheme property
      *
      * @param string[] $locationParts
+     * @throws InvalidArgumentException
      */
     private function parseScheme(array $locationParts): void
     {
         if (! $this->isValidScheme($locationParts['scheme'])) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 sprintf('"%s" is not a valid scheme.', $locationParts['scheme'])
             );
         }
@@ -291,14 +294,14 @@ final class Dsn
     /**
      * Splits a key-value pair
      *
-     * @param string $pair
-     * @return string[] $option
+     * @return string[]
+     * @throws InvalidArgumentException
      */
-    private function splitKeyValuePair($pair): array
+    private function splitKeyValuePair(string $pair): array
     {
         $option = explode('=', $pair);
         if (count($option) !== 2) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 sprintf('"%s" is not a valid query or parameter.', $pair)
             );
         }

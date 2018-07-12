@@ -15,8 +15,10 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Application\Configuration\Factory;
 
+use InvalidArgumentException;
 use phpDocumentor\DomainModel\Dsn;
 use phpDocumentor\DomainModel\Path;
+use SimpleXMLElement;
 
 /**
  * phpDocumentor3 strategy for converting the configuration xml to an array.
@@ -38,10 +40,7 @@ final class Version3 implements Strategy
         $this->schemaPath = $schemaPath;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function convert(\SimpleXMLElement $phpDocumentor): array
+    public function convert(SimpleXMLElement $phpDocumentor): array
     {
         $this->validate($phpDocumentor);
 
@@ -74,15 +73,12 @@ final class Version3 implements Strategy
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function match(\SimpleXMLElement $phpDocumentor): bool
+    public function match(SimpleXMLElement $phpDocumentor): bool
     {
         return (string) $phpDocumentor->attributes()->version === '3';
     }
 
-    public static function buildDefault()
+    public static function buildDefault(): array
     {
         return [
             'phpdocumentor' => [
@@ -101,7 +97,7 @@ final class Version3 implements Strategy
     /**
      * Builds the versions part of the array from the configuration xml.
      */
-    private function buildVersion(\SimpleXMLElement $version): array
+    private function buildVersion(SimpleXMLElement $version): array
     {
         $apis = [];
         $guides = [];
@@ -136,7 +132,7 @@ final class Version3 implements Strategy
     /**
      * Builds the api part of the array from the configuration xml.
      */
-    private function buildApi(\SimpleXMLElement $api): array
+    private function buildApi(SimpleXMLElement $api): array
     {
         $extensions = [];
         foreach ($api->extensions->children() as $extension) {
@@ -167,7 +163,7 @@ final class Version3 implements Strategy
     /**
      * Builds the guide part of the array from the configuration xml.
      */
-    private function buildGuide(\SimpleXMLElement $guide): array
+    private function buildGuide(SimpleXMLElement $guide): array
     {
         return [
             'format' => ((string) $guide->attributes()->format) ?: 'rst',
@@ -180,10 +176,8 @@ final class Version3 implements Strategy
 
     /**
      * Builds the template part of the array from the configuration xml.
-     *
-     * @return array
      */
-    private function buildTemplate(\SimpleXMLElement $template)
+    private function buildTemplate(SimpleXMLElement $template): array
     {
         if ((array) $template === []) {
             return $this->defaultTemplate();
@@ -262,9 +256,9 @@ final class Version3 implements Strategy
     /**
      * Validates the configuration xml structure against the schema defined in the schemaPath.
      *
-     * @throws \InvalidArgumentException if the xml structure is not valid.
+     * @throws InvalidArgumentException if the xml structure is not valid.
      */
-    private function validate(\SimpleXMLElement $phpDocumentor)
+    private function validate(SimpleXMLElement $phpDocumentor): void
     {
         libxml_clear_errors();
         $priorSetting = libxml_use_internal_errors(true);
@@ -279,7 +273,7 @@ final class Version3 implements Strategy
         $error = libxml_get_last_error();
 
         if ($error !== false) {
-            throw new \InvalidArgumentException(trim($error->message));
+            throw new InvalidArgumentException(trim($error->message));
         }
 
         libxml_use_internal_errors($priorSetting);

@@ -13,15 +13,15 @@ namespace phpDocumentor\Plugin\Scrybe\Template;
 
 interface TemplateInterface
 {
-    public function __construct($templatePath);
+    public function __construct(string $templatePath);
 
-    public function setName($name);
+    public function setName(string $name): void;
 
-    public function setPath($path);
+    public function setPath(string $path): void;
 
-    public function setExtension($extension);
+    public function setExtension(string $extension): void;
 
-    public function decorate($contents, array $options = []);
+    public function decorate(string $contents, array $options = []): string;
 
-    public function getAssets();
+    public function getAssets(): array;
 }

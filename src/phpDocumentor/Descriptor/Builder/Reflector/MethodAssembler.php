@@ -59,11 +59,8 @@ class MethodAssembler extends AssemblerAbstract
 
     /**
      * Maps the fields to the reflector to the descriptor.
-     *
-     * @param Method  $reflector
-     * @param MethodDescriptor $descriptor
      */
-    protected function mapReflectorToDescriptor($reflector, $descriptor)
+    protected function mapReflectorToDescriptor(Method $reflector, MethodDescriptor $descriptor): void
     {
         $descriptor->setFullyQualifiedStructuralElementName($reflector->getFqsen());
         $descriptor->setName($reflector->getName());
@@ -77,11 +74,8 @@ class MethodAssembler extends AssemblerAbstract
 
     /**
      * Adds the reflected Arguments to the Descriptor.
-     *
-     * @param Method  $reflector
-     * @param MethodDescriptor $descriptor
      */
-    protected function addArguments($reflector, $descriptor)
+    protected function addArguments(Method $reflector, MethodDescriptor $descriptor): void
     {
         foreach ($reflector->getArguments() as $argument) {
             $this->addArgument($argument, $descriptor);
@@ -90,11 +84,8 @@ class MethodAssembler extends AssemblerAbstract
 
     /**
      * Adds a single reflected Argument to the Method Descriptor.
-     *
-     * @param Argument $argument
-     * @param MethodDescriptor  $descriptor
      */
-    protected function addArgument($argument, $descriptor)
+    protected function addArgument(Argument $argument, MethodDescriptor $descriptor): void
     {
         $params = $descriptor->getTags()->get('param', []);
 
@@ -110,11 +101,8 @@ class MethodAssembler extends AssemblerAbstract
     /**
      * Checks if there is a variadic argument in the `@param` tags and adds it to the list of Arguments in
      * the Descriptor unless there is already one present.
-     *
-     * @param Method  $data
-     * @param MethodDescriptor $methodDescriptor
      */
-    protected function addVariadicArgument($data, $methodDescriptor)
+    protected function addVariadicArgument(Method $data, MethodDescriptor $methodDescriptor): void
     {
         if (!$data->getDocBlock()) {
             return;

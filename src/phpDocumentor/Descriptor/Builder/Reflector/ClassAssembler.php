@@ -17,7 +17,6 @@ namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Collection;
-use phpDocumentor\Reflection\ClassReflector;
 use phpDocumentor\Reflection\Php\Class_;
 use phpDocumentor\Reflection\Php\Constant;
 use phpDocumentor\Reflection\Php\Method;
@@ -68,9 +67,8 @@ class ClassAssembler extends AssemblerAbstract
      * Registers the child constants with the generated Class Descriptor.
      *
      * @param Constant[] $constants
-     * @param ClassDescriptor     $classDescriptor
      */
-    protected function addConstants($constants, $classDescriptor)
+    protected function addConstants(array $constants, ClassDescriptor $classDescriptor): void
     {
         foreach ($constants as $constant) {
             $constantDescriptor = $this->getBuilder()->buildDescriptor($constant);
@@ -85,9 +83,8 @@ class ClassAssembler extends AssemblerAbstract
      * Registers the child properties with the generated Class Descriptor.
      *
      * @param Property[] $properties
-     * @param ClassDescriptor                    $classDescriptor
      */
-    protected function addProperties($properties, $classDescriptor)
+    protected function addProperties(array $properties, ClassDescriptor $classDescriptor): void
     {
         foreach ($properties as $property) {
             $propertyDescriptor = $this->getBuilder()->buildDescriptor($property);
@@ -102,9 +99,8 @@ class ClassAssembler extends AssemblerAbstract
      * Registers the child methods with the generated Class Descriptor.
      *
      * @param Method[] $methods
-     * @param ClassDescriptor $classDescriptor
      */
-    protected function addMethods($methods, $classDescriptor)
+    protected function addMethods(array $methods, ClassDescriptor $classDescriptor): void
     {
         foreach ($methods as $method) {
             $methodDescriptor = $this->getBuilder()->buildDescriptor($method);
@@ -120,7 +116,7 @@ class ClassAssembler extends AssemblerAbstract
      *
      * @param string[] $traits
      */
-    protected function addUses(array $traits, ClassDescriptor $classDescriptor)
+    protected function addUses(array $traits, ClassDescriptor $classDescriptor): void
     {
         $classDescriptor->setUsedTraits(new Collection($traits));
     }

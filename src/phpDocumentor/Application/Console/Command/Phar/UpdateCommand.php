@@ -38,7 +38,7 @@ class UpdateCommand extends Command
     /**
      * Initializes this command and sets the name, description, options and arguments.
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('phar:update')
             ->setAliases(['selfupdate', 'self-update'])
@@ -54,10 +54,8 @@ class UpdateCommand extends Command
 
     /**
      * Executes the business logic involved with this command.
-     *
-     * @return int
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('Looking for updates...');
 

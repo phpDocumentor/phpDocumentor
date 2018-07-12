@@ -23,6 +23,7 @@ use phpDocumentor\Translator\Translator;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
+use RuntimeException;
 
 /**
  * Application class for phpDocumentor.
@@ -31,7 +32,7 @@ use Psr\Log\LogLevel;
  */
 class Application extends Cilex
 {
-    public static function VERSION()
+    public static function VERSION(): string
     {
         return trim(file_get_contents(__DIR__ . '/../../VERSION'));
     }
@@ -62,8 +63,10 @@ class Application extends Cilex
 
     /**
      * Adjust php.ini settings.
+     *
+     * @throws RuntimeException
      */
-    protected function defineIniSettings()
+    protected function defineIniSettings(): void
     {
         $this->setTimezone();
         ini_set('memory_limit', '-1');
@@ -79,7 +82,7 @@ class Application extends Cilex
         }
 
         if (extension_loaded('Zend Optimizer+') && ini_get('zend_optimizerplus.save_comments') === 0) {
-            throw new \RuntimeException('Please enable zend_optimizerplus.save_comments in php.ini.');
+            throw new RuntimeException('Please enable zend_optimizerplus.save_comments in php.ini.');
         }
 
         // @codeCoverageIgnoreEnd
@@ -89,19 +92,16 @@ class Application extends Cilex
      * If the timezone is not set anywhere, set it to UTC.
      *
      * This is done to prevent any warnings being outputted in relation to using
-     * date/time functions. What is checked is php.ini, and if the PHP version
-     * is prior to 5.4, the TZ environment variable.
+     * date/time functions.
      *
      * @link http://php.net/manual/en/function.date-default-timezone-get.php for more information how PHP determines the
      *     default timezone.
      *
      * @codeCoverageIgnore this method is very hard, if not impossible, to unit test and not critical.
      */
-    protected function setTimezone()
+    protected function setTimezone(): void
     {
-        if (false === ini_get('date.timezone')
-            || (version_compare(PHP_VERSION, '5.4.0', '<') && false === getenv('TZ'))
-        ) {
+        if (false === ini_get('date.timezone')) {
             date_default_timezone_set('UTC');
         }
     }

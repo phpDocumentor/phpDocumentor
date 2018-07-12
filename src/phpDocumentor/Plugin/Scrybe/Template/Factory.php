@@ -11,6 +11,7 @@
 
 namespace phpDocumentor\Plugin\Scrybe\Template;
 
+use InvalidArgumentException;
 use Webmozart\Assert\Assert;
 
 /**
@@ -22,7 +23,7 @@ use Webmozart\Assert\Assert;
  */
 class Factory
 {
-    /** @var string[] Associative array with engine names as key and class names as value. */
+    /** @var TemplateInterface[] Associative array with engine names as key and class names as value. */
     protected $engines = [];
 
     /**
@@ -44,10 +45,9 @@ class Factory
      * this method won't complain (as no instantiation is done here for performance reasons) but the `get()` method
      * will throw an exception.
      *
-     * @param string $name
      * @see get() to retrieve an instance for the given $name.
      */
-    public function register($name, TemplateInterface $templateEngine)
+    public function register(string $name, TemplateInterface $templateEngine): void
     {
         Assert::stringNotEmpty($name);
         $this->engines[$name] = $templateEngine;
@@ -56,16 +56,12 @@ class Factory
     /**
      * Returns a new instance of the template engine belonging to the given name.
      *
-     * @param string $name
-     *
-     * @throws \InvalidArgumentException if the given name is not registered
-     *
-     * @return TemplateInterface
+     * @throws InvalidArgumentException if the given name is not registered
      */
-    public function get($name)
+    public function get(string $name): TemplateInterface
     {
         if (!isset($this->engines[$name])) {
-            throw new \InvalidArgumentException('Template engine "' . $name . '" is not known or registered');
+            throw new InvalidArgumentException('Template engine "' . $name . '" is not known or registered');
         }
 
         return $this->engines[$name];

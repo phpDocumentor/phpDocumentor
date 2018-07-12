@@ -85,7 +85,7 @@ class TagDescriptor implements Filterable
     /**
      * Sets a list of errors found on the usage of this tag.
      */
-    public function setErrors(Collection $errors)
+    public function setErrors(Collection $errors): void
     {
         $this->errors = $errors;
     }

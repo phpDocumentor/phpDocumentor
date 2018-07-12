@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Partials;
 
+use Parsedown;
 use phpDocumentor\Descriptor\Collection as DescriptorCollection;
 
 /**
@@ -22,13 +23,13 @@ use phpDocumentor\Descriptor\Collection as DescriptorCollection;
  */
 class Collection extends DescriptorCollection
 {
-    /** @var \Parsedown $parser */
+    /** @var Parsedown $parser */
     protected $parser = null;
 
     /**
      * Constructs a new collection object.
      */
-    public function __construct(\Parsedown $parser)
+    public function __construct(Parsedown $parser)
     {
         parent::__construct();
         $this->parser = $parser;
@@ -38,9 +39,9 @@ class Collection extends DescriptorCollection
      * Sets a new object onto the collection or clear it using null.
      *
      * @param string|integer $index An index value to recognize this item with.
-     * @param string         $item  The item to store, generally a Descriptor but may be something else.
+     * @param mixed          $item  The item to store, generally a Descriptor but may be something else.
      */
-    public function set($index, $item)
+    public function set($index, $item): void
     {
         $this->offsetSet($index, $this->parser->text($item));
     }

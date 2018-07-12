@@ -33,6 +33,9 @@ final class Configure
         $this->configFactory = $configFactory;
     }
 
+    /**
+     * @return string[]
+     */
     public function __invoke(array $options): array
     {
         $this->configFactory->addMiddleware(

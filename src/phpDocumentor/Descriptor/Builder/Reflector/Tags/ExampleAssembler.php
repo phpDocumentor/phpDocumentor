@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 
+use InvalidArgumentException;
 use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
 use phpDocumentor\Descriptor\Example\Finder;
 use phpDocumentor\Descriptor\Tag\ExampleDescriptor;
@@ -44,7 +45,7 @@ class ExampleAssembler extends AssemblerAbstract
      *
      * @param Example $data
      *
-     * @throws \InvalidArgumentException if the provided parameter is not of type ExampleTag; the interface won't let
+     * @throws InvalidArgumentException if the provided parameter is not of type ExampleTag; the interface won't let
      *   up typehint the signature.
      *
      * @return ExampleDescriptor

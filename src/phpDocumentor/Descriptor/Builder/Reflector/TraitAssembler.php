@@ -19,7 +19,6 @@ use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Reflection\Php\Method;
 use phpDocumentor\Reflection\Php\Property;
 use phpDocumentor\Reflection\Php\Trait_;
-use phpDocumentor\Reflection\TraitReflector;
 
 /**
  * Assembles an TraitDescriptor using an TraitReflector.
@@ -59,9 +58,8 @@ class TraitAssembler extends AssemblerAbstract
      * Registers the child properties with the generated Trait Descriptor.
      *
      * @param Property[] $properties
-     * @param TraitDescriptor     $traitDescriptor
      */
-    protected function addProperties($properties, $traitDescriptor)
+    protected function addProperties(array $properties, TraitDescriptor $traitDescriptor): void
     {
         foreach ($properties as $property) {
             $propertyDescriptor = $this->getBuilder()->buildDescriptor($property);
@@ -76,9 +74,8 @@ class TraitAssembler extends AssemblerAbstract
      * Registers the child methods with the generated Trait Descriptor.
      *
      * @param Method[] $methods
-     * @param TraitDescriptor   $traitDescriptor
      */
-    protected function addMethods($methods, $traitDescriptor)
+    protected function addMethods(array $methods, TraitDescriptor $traitDescriptor): void
     {
         foreach ($methods as $method) {
             $methodDescriptor = $this->getBuilder()->buildDescriptor($method);

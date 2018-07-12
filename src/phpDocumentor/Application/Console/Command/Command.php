@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Application\Console\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand as BaseCommand;
+use Symfony\Component\Console\Helper\HelperInterface;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
@@ -32,17 +33,15 @@ abstract class Command extends BaseCommand
     /**
      * Registers the current command.
      */
-    public function setHelperSet(HelperSet $helperSet)
+    public function setHelperSet(HelperSet $helperSet): void
     {
         parent::setHelperSet($helperSet);
-//
-//        $this->getHelper('phpdocumentor_logger')->addOptions($this);
     }
 
     /**
      * Executes a callable piece of code and writes an entry to the log detailing how long it took.
      */
-    protected function writeTimedLog(OutputInterface $output, $message, $operation, array $arguments = [])
+    protected function writeTimedLog(OutputInterface $output, string $message, string $operation, array $arguments = []): void
     {
         $output->write(sprintf('%-66.66s .. ', $message));
         $timerStart = microtime(true);
@@ -52,6 +51,9 @@ abstract class Command extends BaseCommand
         $output->writeln(sprintf('%8.3fs', microtime(true) - $timerStart));
     }
 
+    /**
+     * @return object
+     */
     public function getService(string $name)
     {
         return $this->getContainer()->get($name);
@@ -62,9 +64,9 @@ abstract class Command extends BaseCommand
      *
      * With this helper it is possible to display a progress bar and make it fill.
      *
-     * @return ProgressBar
+     * @return HelperInterface|null a ProgressBar if available
      */
-    protected function getProgressBar(InputInterface $input)
+    protected function getProgressBar(InputInterface $input): ?HelperInterface
     {
         if (!$input->getOption('progressbar')) {
             return null;

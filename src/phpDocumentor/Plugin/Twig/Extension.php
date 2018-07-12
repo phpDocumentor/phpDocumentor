@@ -15,13 +15,17 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Plugin\Twig;
 
+use Parsedown;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Transformer\Router\Queue;
 use phpDocumentor\Transformer\Router\Renderer;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Translator\Translator;
+use Twig_Extension;
 use Twig_Extension_GlobalsInterface;
+use Twig_SimpleFilter;
+use Twig_SimpleFunction;
 
 /**
  * Basic extension adding phpDocumentor specific functionality for Twig
@@ -44,12 +48,12 @@ use Twig_Extension_GlobalsInterface;
  * - *sort_desc*, sorts the given objects by their Name property/getter in a descending fashion
  * - *sort_asc*, sorts the given objects by their Name property/getter in a ascending fashion
  */
-class Extension extends \Twig_Extension implements ExtensionInterface, Twig_Extension_GlobalsInterface
+class Extension extends Twig_Extension implements ExtensionInterface, Twig_Extension_GlobalsInterface
 {
     /**
      * @var ProjectDescriptor
      */
-    protected $data = null;
+    protected $data;
 
     /** @var Translator */
     protected $translator;
@@ -72,20 +76,16 @@ class Extension extends \Twig_Extension implements ExtensionInterface, Twig_Exte
 
     /**
      * Sets the router used to render the URL where a Descriptor can be found.
-     *
-     * @param Queue $routers
      */
-    public function setRouters($routers)
+    public function setRouters(Queue $routers): void
     {
         $this->routeRenderer->setRouters($routers);
     }
 
     /**
      * Sets the translation component.
-     *
-     * @param Translator $translator
      */
-    public function setTranslator($translator)
+    public function setTranslator(Translator $translator): void
     {
         $this->translator = $translator;
     }
@@ -97,21 +97,17 @@ class Extension extends \Twig_Extension implements ExtensionInterface, Twig_Exte
      * file. This destination is relative to the Project's root and can
      * be used for the calculation of nesting depths, etc.
      *
-     * @param string $destination
-     *
-     * @see phpDocumentor\Plugin\Twig\Transformer\Writer\Twig for the invocation of this method.
+     * @see Writer\Twig for the invocation of this method.
      */
-    public function setDestination($destination)
+    public function setDestination(string $destination): void
     {
         $this->routeRenderer->setDestination($destination);
     }
 
     /**
      * Returns the target directory relative to the Project's Root.
-     *
-     * @return string
      */
-    public function getDestination()
+    public function getDestination(): string
     {
         return $this->routeRenderer->getDestination();
     }
@@ -121,7 +117,7 @@ class Extension extends \Twig_Extension implements ExtensionInterface, Twig_Exte
      *
      * @return mixed[]
      */
-    public function getGlobals()
+    public function getGlobals(): array
     {
         return [
             'project' => $this->data,
@@ -138,34 +134,34 @@ class Extension extends \Twig_Extension implements ExtensionInterface, Twig_Exte
      * See the Class' DocBlock for a listing of functionality added by this
      * Extension.
      *
-     * @return \Twig_FunctionInterface[]
+     * @return Twig_SimpleFunction[]
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
-            new \Twig_SimpleFunction('path', [$this->routeRenderer, 'convertToRootPath']),
+            new Twig_SimpleFunction('path', [$this->routeRenderer, 'convertToRootPath']),
         ];
     }
 
     /**
      * Returns a list of all filters that are exposed by this extension.
      *
-     * @return \Twig_SimpleFilter[]
+     * @return Twig_SimpleFilter[]
      */
-    public function getFilters()
+    public function getFilters(): array
     {
-        $parser = \Parsedown::instance();
+        $parser = Parsedown::instance();
         $translator = $this->translator;
         $routeRenderer = $this->routeRenderer;
 
         return [
-            'markdown' => new \Twig_SimpleFilter(
+            'markdown' => new Twig_SimpleFilter(
                 'markdown',
                 function ($value) use ($parser) {
                     return $parser->text($value);
                 }
             ),
-            'trans' => new \Twig_SimpleFilter(
+            'trans' => new Twig_SimpleFilter(
                 'trans',
                 function ($value, $context) use ($translator) {
                     if (!$context) {
@@ -175,13 +171,13 @@ class Extension extends \Twig_Extension implements ExtensionInterface, Twig_Exte
                     return vsprintf($translator->translate($value), $context);
                 }
             ),
-            'route' => new \Twig_SimpleFilter(
+            'route' => new Twig_SimpleFilter(
                 'route',
                 function ($value, $presentation = 'normal') use ($routeRenderer) {
                     return $routeRenderer->render($value, $presentation);
                 }
             ),
-            'sort' => new \Twig_SimpleFilter(
+            'sort' => new Twig_SimpleFilter(
                 'sort_*',
                 function ($direction, $collection) {
                     if (!$collection instanceof Collection) {
@@ -232,12 +228,8 @@ class Extension extends \Twig_Extension implements ExtensionInterface, Twig_Exte
      * This method does not try to normalize or optimize the paths in order to
      * save on development time and performance, and because it adds no real
      * value.
-     *
-     * @param string $relative_path
-     *
-     * @return string
      */
-    public function convertToRootPath($relative_path)
+    public function convertToRootPath(string $relative_path): string
     {
         return $this->routeRenderer->convertToRootPath($relative_path);
     }

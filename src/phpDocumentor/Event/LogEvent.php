@@ -23,19 +23,15 @@ use Psr\Log\LogLevel;
  */
 class LogEvent extends DebugEvent
 {
-    /** @var int Default priority level for these events is INFO */
+    /** @var string Default priority level for these events is INFO */
     protected $priority = LogLevel::INFO;
 
     /**
      * Set the priority level for this event.
      *
-     * @param int $priority
-     *
      * @see LogLevel for the constants used in determining the logging levels.
-     *
-     * @return LogEvent
      */
-    public function setPriority($priority)
+    public function setPriority(string $priority): self
     {
         $this->priority = $priority;
 

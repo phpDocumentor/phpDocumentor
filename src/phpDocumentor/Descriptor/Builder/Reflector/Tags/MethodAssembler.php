@@ -59,11 +59,8 @@ class MethodAssembler extends AssemblerAbstract
     /**
      * Construct an argument descriptor given the array representing an argument with a Method Tag in the Reflection
      * component.
-     *
-     * @param string $name
-     * @return ArgumentDescriptor
      */
-    private function createArgumentDescriptorForMagicMethod($name, Type $type)
+    private function createArgumentDescriptorForMagicMethod(string $name, Type $type): ArgumentDescriptor
     {
         $argumentDescriptor = new ArgumentDescriptor();
         $argumentDescriptor->setTypes($type);

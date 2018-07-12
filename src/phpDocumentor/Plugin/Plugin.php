@@ -42,20 +42,16 @@ class Plugin
 
     /**
      * Initialize the plugin configuration definition with the given class name.
-     *
-     * @param string $className
      */
-    public function __construct($className)
+    public function __construct(string $className)
     {
         $this->className = $className;
     }
 
     /**
      * Returns the class name for this plugin.
-     *
-     * @return string
      */
-    public function getClassName()
+    public function getClassName(): string
     {
         return $this->className;
     }
@@ -65,7 +61,7 @@ class Plugin
      *
      * @return Parameter[]
      */
-    public function getParameters()
+    public function getParameters(): array
     {
         return $this->parameters;
     }

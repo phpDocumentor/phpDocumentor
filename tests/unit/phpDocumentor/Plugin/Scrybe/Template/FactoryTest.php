@@ -57,7 +57,7 @@ class FactoryTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testRegisterInvalidName()
     {
         $factory = new Factory();
-        $factory->register([], m::mock('\phpDocumentor\Plugin\Scrybe\Template\Mock\Template'));
+        $factory->register('', m::mock('\phpDocumentor\Plugin\Scrybe\Template\Mock\Template'));
     }
 
     /**

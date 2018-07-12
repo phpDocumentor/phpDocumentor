@@ -375,7 +375,7 @@ abstract class DescriptorAbstract implements Filterable
     /**
      * Sets a list of all errors associated with this element.
      */
-    public function setErrors(Collection $errors)
+    public function setErrors(Collection $errors): void
     {
         $this->errors = $errors;
     }

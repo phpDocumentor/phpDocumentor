@@ -15,38 +15,47 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Application\Configuration\Factory;
 
+use InvalidArgumentException;
 use phpDocumentor\DomainModel\Dsn;
 use phpDocumentor\DomainModel\Path;
+use SimpleXMLElement;
 
 /**
  * phpDocumentor2 strategy for converting the configuration xml to an array.
  */
 final class Version2 implements Strategy
 {
+    /** @var string[] */
     private $extensions = ['php', 'php3', 'phtml'];
 
+    /** @var string[] */
     private $markers = ['TODO', 'FIXME'];
 
+    /** @var string[] */
     private $visibility = ['public'];
 
+    /** @var string */
     private $defaultPackageName = 'Default';
 
+    /** @var string */
     private $template = 'clean';
 
+    /** @var bool */
     private $ignoreHidden = true;
 
+    /** @var bool */
     private $ignoreSymlinks = true;
 
+    /** @var string[] */
     private $ignorePaths = [];
 
+    /** @var string */
     private $outputDirectory = 'file://build/docs';
 
+    /** @var string[] */
     private $directories = ['src'];
 
-    /**
-     * @inheritdoc
-     */
-    public function convert(\SimpleXMLElement $phpDocumentor): array
+    public function convert(SimpleXMLElement $phpDocumentor): array
     {
         $this->validate($phpDocumentor);
 
@@ -95,10 +104,7 @@ final class Version2 implements Strategy
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function match(\SimpleXMLElement $phpDocumentor): bool
+    public function match(SimpleXMLElement $phpDocumentor): bool
     {
         return !isset($phpDocumentor->attributes()->version);
     }
@@ -106,7 +112,7 @@ final class Version2 implements Strategy
     /**
      * Loops over a node and fills an array with the found children.
      */
-    private function buildArrayFromNode(\SimpleXMLElement $node): array
+    private function buildArrayFromNode(SimpleXMLElement $node): array
     {
         $array = [];
         foreach ($node->children() as $child) {
@@ -120,8 +126,10 @@ final class Version2 implements Strategy
 
     /**
      * Builds the extensions part of the array from the configuration xml.
+     *
+     * @return string[]
      */
-    private function buildExtensions(\SimpleXMLElement $phpDocumentor): array
+    private function buildExtensions(SimpleXMLElement $phpDocumentor): array
     {
         if ((array) $phpDocumentor->parser === []) {
             return $this->extensions;
@@ -136,8 +144,10 @@ final class Version2 implements Strategy
 
     /**
      * Builds the markers part of the array from the configuration xml.
+     *
+     * @return string[]
      */
-    private function buildMarkers(\SimpleXMLElement $phpDocumentor): array
+    private function buildMarkers(SimpleXMLElement $phpDocumentor): array
     {
         if ((array) $phpDocumentor->parser === []) {
             return $this->markers;
@@ -155,7 +165,7 @@ final class Version2 implements Strategy
      *
      * @return string[]
      */
-    private function buildVisibility(\SimpleXMLElement $phpDocumentor): array
+    private function buildVisibility(SimpleXMLElement $phpDocumentor): array
     {
         if ((array) $phpDocumentor->parser === []) {
             return $this->visibility;
@@ -170,10 +180,8 @@ final class Version2 implements Strategy
 
     /**
      * Builds the defaultPackageName part of the array from the configuration xml.
-     *
-     * @return string
      */
-    private function buildDefaultPackageName(\SimpleXMLElement $phpDocumentor)
+    private function buildDefaultPackageName(SimpleXMLElement $phpDocumentor): string
     {
         if ((array) $phpDocumentor->parser === []) {
             return $this->defaultPackageName;
@@ -188,10 +196,8 @@ final class Version2 implements Strategy
 
     /**
      * Builds the template part of the array from the configuration xml.
-     *
-     * @return string
      */
-    private function buildTemplate(\SimpleXMLElement $phpDocumentor)
+    private function buildTemplate(SimpleXMLElement $phpDocumentor): string
     {
         if ((array) $phpDocumentor->transformations === []) {
             return $this->template;
@@ -206,10 +212,8 @@ final class Version2 implements Strategy
 
     /**
      * Builds the ignore-hidden part of the array from the configuration xml.
-     *
-     * @return mixed
      */
-    private function buildIgnoreHidden(\SimpleXMLElement $phpDocumentor)
+    private function buildIgnoreHidden(SimpleXMLElement $phpDocumentor): bool
     {
         if ((array) $phpDocumentor->files === []) {
             return $this->ignoreHidden;
@@ -224,10 +228,8 @@ final class Version2 implements Strategy
 
     /**
      * Builds the ignore-symlinks part of the array from the configuration xml.
-     *
-     * @return mixed
      */
-    private function buildIgnoreSymlinks(\SimpleXMLElement $phpDocumentor)
+    private function buildIgnoreSymlinks(SimpleXMLElement $phpDocumentor): bool
     {
         if ((array) $phpDocumentor->files === []) {
             return $this->ignoreSymlinks;
@@ -243,9 +245,9 @@ final class Version2 implements Strategy
     /**
      * Builds the ignorePaths part of the array from the configuration xml.
      *
-     * @return mixed
+     * @return string[]
      */
-    private function buildIgnorePaths(\SimpleXMLElement $phpDocumentor)
+    private function buildIgnorePaths(SimpleXMLElement $phpDocumentor): array
     {
         if ((array) $phpDocumentor->files === []) {
             return $this->ignorePaths;
@@ -266,10 +268,8 @@ final class Version2 implements Strategy
 
     /**
      * Builds the outputDirectory part of the array from the configuration xml.
-     *
-     * @return string
      */
-    private function buildOutputDirectory(\SimpleXMLElement $phpDocumentor)
+    private function buildOutputDirectory(SimpleXMLElement $phpDocumentor): string
     {
         if ((array) $phpDocumentor->transformer === []) {
             return $this->outputDirectory;
@@ -285,9 +285,9 @@ final class Version2 implements Strategy
     /**
      * Builds the directories that are used in the sourcePaths.
      *
-     * @return array
+     * @return string[]
      */
-    private function buildDirectories(\SimpleXMLElement $phpDocumentor)
+    private function buildDirectories(SimpleXMLElement $phpDocumentor): array
     {
         if ((array) $phpDocumentor->files === []) {
             return $this->directories;
@@ -303,9 +303,9 @@ final class Version2 implements Strategy
     /**
      * Builds the sourcePaths part of the array from the configuration xml.
      *
-     * @return array
+     * @return Path[]
      */
-    private function buildSourcePaths(\SimpleXMLElement $phpDocumentor)
+    private function buildSourcePaths(SimpleXMLElement $phpDocumentor): array
     {
         $sourcePaths = [];
         $directories = $this->buildDirectories($phpDocumentor);
@@ -320,12 +320,12 @@ final class Version2 implements Strategy
     /**
      * Validates if the xml has a root element which name is phpdocumentor.
      *
-     * @throws \InvalidArgumentException if the root element of the xml is not phpdocumentor.
+     * @throws InvalidArgumentException if the root element of the xml is not phpdocumentor.
      */
-    private function validate(\SimpleXMLElement $xml)
+    private function validate(SimpleXMLElement $xml): void
     {
         if ($xml->getName() !== 'phpdocumentor') {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 sprintf('Root element name should be phpdocumentor, %s found', $xml->getName())
             );
         }

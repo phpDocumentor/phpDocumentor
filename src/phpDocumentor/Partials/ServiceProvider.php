@@ -15,10 +15,9 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Partials;
 
-use Cilex\Application;
-use phpDocumentor\Configuration as ApplicationConfiguration;
+use Parsedown;
 use phpDocumentor\Partials\Collection as PartialsCollection;
-use phpDocumentor\Translator\Translator;
+use phpDocumentor\Partials\Exception\MissingNameForPartialException;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 
@@ -30,13 +29,11 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * Registers services on the given app.
      *
-     * @param Application $app An Application instance
-     *
-     * @throws Exception\MissingNameForPartialException if a partial has no name provided.
+     * @throws MissingNameForPartialException if a partial has no name provided.
      */
-    public function register(Container $app)
+    public function register(Container $app): void
     {
-        /** @var Translator $translator */
+        /** @var \phpDocumentor\Translator\Translator $translator */
         $translator = $app['translator'];
         $translator->addTranslationFolder(__DIR__ . DIRECTORY_SEPARATOR . 'Messages');
 
@@ -44,7 +41,7 @@ class ServiceProvider implements ServiceProviderInterface
         $config = $app['config'];
 
         $app['markdown'] = function () {
-            return \Parsedown::instance();
+            return Parsedown::instance();
         };
 
         $partialsCollection = new PartialsCollection($app['markdown']);
@@ -55,7 +52,7 @@ class ServiceProvider implements ServiceProviderInterface
         if ($partials) {
             foreach ($partials as $partial) {
                 if (! $partial->getName()) {
-                    throw new Exception\MissingNameForPartialException('The name of the partial to load is missing');
+                    throw new MissingNameForPartialException('The name of the partial to load is missing');
                 }
 
                 $content = '';

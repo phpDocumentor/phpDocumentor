@@ -16,14 +16,13 @@ declare(strict_types=1);
 namespace phpDocumentor\Application\CilexCompatibilityLayer;
 
 use phpDocumentor\Application;
-use phpDocumentor\Command\Helper\ConfigurationHelper;
-use phpDocumentor\Command\Helper\LoggerHelper;
+use Symfony\Component\Console\Application as ConsoleApplication;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 final class CilexCompatibilityLayerBundle extends Bundle
 {
-    public function boot()
+    public function boot(): void
     {
         parent::boot();
 
@@ -32,11 +31,8 @@ final class CilexCompatibilityLayerBundle extends Bundle
         }
     }
 
-    public function registerCommands(\Symfony\Component\Console\Application $application)
+    public function registerCommands(ConsoleApplication $application): void
     {
-//        $application->getHelperSet()->set(new LoggerHelper());
-//        $application->getHelperSet()->set(new ConfigurationHelper($this->container->get('config')));
-
         $application->getDefinition()->addOption(
             new InputOption(
                 'config',

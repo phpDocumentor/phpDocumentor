@@ -17,7 +17,6 @@ namespace phpDocumentor\Compiler\Linker;
 
 use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\ClassDescriptor;
-use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\InterfaceDescriptor;
@@ -26,6 +25,7 @@ use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Descriptor\Type\UnknownTypeDescriptor;
+use Traversable;
 
 /**
  * The linker contains all rules to replace FQSENs in the ProjectDescriptor with aliases to objects.
@@ -58,10 +58,7 @@ class Linker implements CompilerPassInterface
     /** @var string[] Prevent cycles by tracking which objects have been analyzed */
     protected $processedObjects = [];
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getDescription()
+    public function getDescription(): string
     {
         return 'Replace textual FQCNs with object aliases';
     }
@@ -69,19 +66,14 @@ class Linker implements CompilerPassInterface
     /**
      * Initializes the linker with a series of Descriptors to link to.
      *
-     * @param array|string[][] $substitutions
+     * @param string[][] $substitutions
      */
     public function __construct(array $substitutions)
     {
         $this->substitutions = $substitutions;
     }
 
-    /**
-     * Executes the linker.
-     *
-     * @param ProjectDescriptor $project Representation of the Object Graph that can be manipulated.
-     */
-    public function execute(ProjectDescriptor $project)
+    public function execute(ProjectDescriptor $project): void
     {
         $this->setObjectAliasesList($project->getIndexes()->elements->getAll());
         $this->substitute($project);
@@ -90,9 +82,9 @@ class Linker implements CompilerPassInterface
     /**
      * Returns the list of substitutions for the linker.
      *
-     * @return string[]
+     * @return string[][]
      */
-    public function getSubstitutions()
+    public function getSubstitutions(): array
     {
         return $this->substitutions;
     }
@@ -102,7 +94,7 @@ class Linker implements CompilerPassInterface
      *
      * @param DescriptorAbstract[] $elementList
      */
-    public function setObjectAliasesList(array $elementList)
+    public function setObjectAliasesList(array $elementList): void
     {
         $this->elementList = $elementList;
     }
@@ -129,9 +121,9 @@ class Linker implements CompilerPassInterface
      * This method will return null if no substitution was possible and all of the above should not update the parent
      * item when null is passed.
      *
-     * @param string|object|\Traversable|array $item
-     * @param DescriptorAbstract|null          $container A descriptor that acts as container for all elements
-     *     underneath or null if there is no current container.
+     * @param string|object|Traversable|array $item
+     * @param DescriptorAbstract|null         $container A descriptor that acts as container for all elements
+     *                                        underneath or null if there is no current container.
      *
      * @return null|string|DescriptorAbstract
      */
@@ -141,7 +133,7 @@ class Linker implements CompilerPassInterface
 
         if (is_string($item)) {
             $result = $this->findAlias($item, $container);
-        } elseif (is_array($item) || ($item instanceof \Traversable && ! $item instanceof ProjectInterface)) {
+        } elseif (is_array($item) || ($item instanceof Traversable && ! $item instanceof ProjectInterface)) {
             $isModified = false;
             foreach ($item as $key => $element) {
                 $isModified = true;
@@ -208,12 +200,11 @@ class Linker implements CompilerPassInterface
      * `\My\myFunction()`). The calling method {@see substitute()} will then replace the value of the field containing
      * the context marker with this normalized string.
      *
-     * @param string $fqsen
      * @param DescriptorAbstract|null $container
      *
      * @return DescriptorAbstract|string|null
      */
-    public function findAlias($fqsen, $container = null)
+    public function findAlias(string $fqsen, $container = null)
     {
         $fqsen = $this->replacePseudoTypes($fqsen, $container);
 
@@ -250,11 +241,9 @@ class Linker implements CompilerPassInterface
      * Returns the value of a field in the given object.
      *
      * @param object $object
-     * @param string $fieldName
-     *
      * @return string|object
      */
-    public function findFieldValue($object, $fieldName)
+    public function findFieldValue($object, string $fieldName)
     {
         $getter = 'get' . ucfirst($fieldName);
 
@@ -265,10 +254,8 @@ class Linker implements CompilerPassInterface
      * Returns true if the given Descriptor is a container type.
      *
      * @param DescriptorAbstract|mixed $item
-     *
-     * @return bool
      */
-    protected function isDescriptorContainer($item)
+    protected function isDescriptorContainer($item): bool
     {
         return $item instanceof FileDescriptor
             || $item instanceof NamespaceDescriptor
@@ -281,12 +268,9 @@ class Linker implements CompilerPassInterface
      * Replaces pseudo-types, such as `self`, into a normalized version based on the last container that was
      * encountered.
      *
-     * @param string $fqsen
      * @param DescriptorAbstract|null $container
-     *
-     * @return string
      */
-    protected function replacePseudoTypes($fqsen, $container)
+    protected function replacePseudoTypes(string $fqsen, $container): string
     {
         $pseudoTypes = ['self', '$this'];
         foreach ($pseudoTypes as $pseudoType) {
@@ -301,23 +285,16 @@ class Linker implements CompilerPassInterface
 
     /**
      * Returns true if the context marker is found in the given FQSEN.
-     *
-     * @param string $fqsen
-     *
-     * @return bool
      */
-    protected function isContextMarkerInFqsen($fqsen)
+    protected function isContextMarkerInFqsen(string $fqsen): bool
     {
         return strpos($fqsen, self::CONTEXT_MARKER) !== false;
     }
 
     /**
      * Normalizes the given FQSEN as if the context marker represents a class/interface/trait as parent.
-     *
-     * @param string $fqsen
-     * @return string
      */
-    protected function getTypeWithClassAsContext($fqsen, DescriptorAbstract $container)
+    protected function getTypeWithClassAsContext(string $fqsen, DescriptorAbstract $container): string
     {
         if (!$container instanceof ClassDescriptor
             && !$container instanceof InterfaceDescriptor
@@ -333,11 +310,8 @@ class Linker implements CompilerPassInterface
 
     /**
      * Normalizes the given FQSEN as if the context marker represents a class/interface/trait as parent.
-     *
-     * @param string $fqsen
-     * @return string
      */
-    protected function getTypeWithNamespaceAsContext($fqsen, DescriptorAbstract $container)
+    protected function getTypeWithNamespaceAsContext(string $fqsen, DescriptorAbstract $container): string
     {
         $namespace = $container instanceof NamespaceDescriptor ? $container : $container->getNamespace();
         $fqnn = $namespace instanceof NamespaceDescriptor
@@ -349,11 +323,8 @@ class Linker implements CompilerPassInterface
 
     /**
      * Normalizes the given FQSEN as if the context marker represents the global namespace as parent.
-     *
-     * @param string             $fqsen
-     * @return string
      */
-    protected function getTypeWithGlobalNamespaceAsContext($fqsen)
+    protected function getTypeWithGlobalNamespaceAsContext(string $fqsen): string
     {
         return str_replace(self::CONTEXT_MARKER . '::', '\\', $fqsen);
     }
@@ -362,11 +333,9 @@ class Linker implements CompilerPassInterface
      * Attempts to find an element with the given Fqsen in the list of elements for this project and returns null if
      * it cannot find it.
      *
-     * @param string $fqsen
-     *
      * @return DescriptorAbstract|null
      */
-    protected function fetchElementByFqsen($fqsen)
+    protected function fetchElementByFqsen(string $fqsen)
     {
         return $this->elementList[$fqsen] ?? null;
     }

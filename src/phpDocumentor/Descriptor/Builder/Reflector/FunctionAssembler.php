@@ -19,7 +19,6 @@ use phpDocumentor\Descriptor\ArgumentDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\FunctionDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
-use phpDocumentor\Reflection\FunctionReflector;
 use phpDocumentor\Reflection\Php\Argument;
 use phpDocumentor\Reflection\Php\Function_;
 
@@ -59,11 +58,8 @@ class FunctionAssembler extends AssemblerAbstract
 
     /**
      * Maps the properties of the Function reflector onto the Descriptor.
-     *
-     * @param Function_  $reflector
-     * @param FunctionDescriptor $descriptor
      */
-    protected function mapReflectorPropertiesOntoDescriptor($reflector, $descriptor)
+    protected function mapReflectorPropertiesOntoDescriptor(Function_ $reflector, FunctionDescriptor $descriptor): void
     {
         $packages = new Collection();
         $package = $this->extractPackageFromDocBlock($reflector->getDocBlock());
@@ -87,9 +83,8 @@ class FunctionAssembler extends AssemblerAbstract
      * Converts each argument reflector to an argument descriptor and adds it to the function descriptor.
      *
      * @param Argument[] $arguments
-     * @param FunctionDescriptor                    $functionDescriptor
      */
-    protected function addArgumentsToFunctionDescriptor(array $arguments, $functionDescriptor)
+    protected function addArgumentsToFunctionDescriptor(array $arguments, FunctionDescriptor $functionDescriptor): void
     {
         foreach ($arguments as $argument) {
             $this->addArgumentDescriptorToFunction(
@@ -101,21 +96,16 @@ class FunctionAssembler extends AssemblerAbstract
 
     /**
      * Adds the given argument to the function.
-     *
-     * @param FunctionDescriptor $functionDescriptor
-     * @param ArgumentDescriptor $argumentDescriptor
      */
-    protected function addArgumentDescriptorToFunction($functionDescriptor, $argumentDescriptor)
+    protected function addArgumentDescriptorToFunction(FunctionDescriptor $functionDescriptor, ArgumentDescriptor $argumentDescriptor): void
     {
         $functionDescriptor->getArguments()->set($argumentDescriptor->getName(), $argumentDescriptor);
     }
 
     /**
      * Creates a new ArgumentDescriptor from the given Reflector and Param.
-     *
-     * @return ArgumentDescriptor
      */
-    protected function createArgumentDescriptor(FunctionDescriptor $functionDescriptor, Argument $argument)
+    protected function createArgumentDescriptor(FunctionDescriptor $functionDescriptor, Argument $argument): ArgumentDescriptor
     {
         $params = $functionDescriptor->getTags()->get('param', []);
 

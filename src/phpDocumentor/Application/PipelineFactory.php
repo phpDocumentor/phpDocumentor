@@ -16,10 +16,11 @@ declare(strict_types=1);
 namespace phpDocumentor\Application;
 
 use League\Pipeline\PipelineBuilder;
+use League\Pipeline\PipelineInterface;
 
 final class PipelineFactory
 {
-    public static function create(...$stages): \League\Pipeline\PipelineInterface
+    public static function create(callable ...$stages): PipelineInterface
     {
         $builder = new PipelineBuilder();
         foreach ($stages as $stage) {

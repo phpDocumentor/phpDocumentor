@@ -15,17 +15,15 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Plugin;
 
-use phpDocumentor\Configuration as ApplicationConfiguration;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
+use RuntimeException;
 
 class ServiceProvider implements ServiceProviderInterface
 {
-    public function register(Container $app)
+    public function register(Container $app): void
     {
-        /** @var ApplicationConfiguration $config */
-        $config = $app['config'];
-        $plugins = []; //$config->getPlugins();
+        $plugins = [];
 
         if (! $plugins) {
             $app->register(new Core\ServiceProvider());
@@ -42,13 +40,13 @@ class ServiceProvider implements ServiceProviderInterface
                     ? sprintf('phpDocumentor\\Plugin\\%s\\ServiceProvider', $plugin->getClassName())
                     : $plugin->getClassName();
                 if (!class_exists($provider)) {
-                    throw new \RuntimeException('Loading Service Provider for ' . $provider . ' failed.');
+                    throw new RuntimeException('Loading Service Provider for ' . $provider . ' failed.');
                 }
 
                 try {
                     $app->register(new $provider($plugin));
                 } catch (\InvalidArgumentException $e) {
-                    throw new \RuntimeException($e->getMessage());
+                    throw new RuntimeException($e->getMessage());
                 }
             }
         );

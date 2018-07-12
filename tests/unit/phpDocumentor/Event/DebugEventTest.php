@@ -30,7 +30,7 @@ class DebugEventTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         $message = 'test';
 
-        $this->assertNull($this->fixture->getMessage());
+        $this->assertEmpty($this->fixture->getMessage());
 
         $this->fixture->setMessage($message);
 
@@ -43,18 +43,6 @@ class DebugEventTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testAlwaysHasPriorityDebug()
     {
         $priority = LogLevel::DEBUG;
-
-        $this->assertSame($priority, $this->fixture->getPriority());
-    }
-
-    /**
-     * @covers ::setPriority
-     * @covers ::getPriority
-     */
-    public function testSetAndGetPriority()
-    {
-        $priority = LogLevel::INFO;
-        $this->fixture->setPriority(LogLevel::INFO);
 
         $this->assertSame($priority, $this->fixture->getPriority());
     }

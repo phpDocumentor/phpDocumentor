@@ -15,14 +15,19 @@ declare(strict_types=1);
 
 namespace Pimple;
 
+use ArrayAccess;
+use ArrayObject;
+use Closure;
 use phpDocumentor\Application\Console\Command\Command;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 if (!class_exists(\Pimple\Container::class, false)) {
-    class Container implements \ArrayAccess
+    class Container implements ArrayAccess
     {
-        /** @var ContainerInterface */
+        /**
+         * @var ContainerInterface
+         */
         protected $container;
 
         public function __construct(ContainerInterface $container)
@@ -30,11 +35,20 @@ if (!class_exists(\Pimple\Container::class, false)) {
             $this->container = $container;
         }
 
-        public function offsetExists($offset)
+        /**
+         * @param mixed $offset
+         * @see ArrayAccess::offsetExists()
+         */
+        public function offsetExists($offset): bool
         {
             return $this->container->has($offset);
         }
 
+        /**
+         * @param mixed $offset
+         * @return mixed
+         * @see ArrayAccess::offsetGet()
+         */
         public function offsetGet($offset)
         {
             try {
@@ -44,33 +58,45 @@ if (!class_exists(\Pimple\Container::class, false)) {
             }
         }
 
-        public function offsetSet($offset, $value)
+        /**
+         * @param mixed $offset
+         * @param mixed $value
+         * @see ArrayAccess::offsetSet()
+         */
+        public function offsetSet($offset, $value): void
         {
-            if ($value instanceof \Closure) {
+            if ($value instanceof Closure) {
                 $value = $value($this);
             }
             $this->container->set($offset, $value);
         }
 
-        public function offsetUnset($offset)
+        /**
+         * @param mixed $offset
+         * @see ArrayAccess::offsetUnset()
+         */
+        public function offsetUnset($offset): void
         {
             $this->container->set($offset, null);
         }
 
-        public function register(ServiceProviderInterface $serviceProvider)
+        public function register(ServiceProviderInterface $serviceProvider): void
         {
             $serviceProvider->register($this);
         }
 
-        public function extend(string $serviceId, \Closure $extendingService)
+        /**
+         * @return mixed
+         */
+        public function extend(string $serviceId, Closure $extendingService)
         {
             return $extendingService($this->container->get($serviceId));
         }
 
-        public function command(Command $command)
+        public function command(Command $command): void
         {
             if (! $this->container->has('phpdocumentor.compatibility.extra_commands')) {
-                $this->container->set('phpdocumentor.compatibility.extra_commands', new \ArrayObject());
+                $this->container->set('phpdocumentor.compatibility.extra_commands', new ArrayObject());
             }
             /** @var \ArrayObject $commands */
             $commands = $this->container->get('phpdocumentor.compatibility.extra_commands');

@@ -20,7 +20,6 @@ use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Event\LogEvent;
 use phpDocumentor\Parser\Exception\FilesNotFoundException;
-use phpDocumentor\Reflection\Php\Project;
 use phpDocumentor\Reflection\ProjectFactory;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
@@ -273,7 +272,7 @@ class Parser
 //        $this->log('  Project root is:  ' . $files->getProjectRoot());
 //        $this->log('  Ignore paths are: ' . implode(', ', $files->getIgnorePatterns()->getArrayCopy()));
 
-        /** @var Project $project */
+        /** @var \phpDocumentor\Reflection\Php\Project $project */
         $project = $this->projectFactory->create(ProjectDescriptorBuilder::DEFAULT_PROJECT_NAME, $files);
         $this->logAfterParsingAllFiles();
 
@@ -323,12 +322,14 @@ class Parser
      */
     private function log($message, $priority = LogLevel::INFO, $parameters = [])
     {
+        /** @var LogEvent $logEvent */
+        $logEvent = LogEvent::createInstance($this);
+        $logEvent->setContext($parameters);
+        $logEvent->setMessage($message);
+        $logEvent->setPriority($priority);
         Dispatcher::getInstance()->dispatch(
             'system.log',
-            LogEvent::createInstance($this)
-                ->setContext($parameters)
-                ->setMessage($message)
-                ->setPriority($priority)
+            $logEvent
         );
     }
 

@@ -40,7 +40,7 @@ class Filter
         $this->factory = $factory;
     }
 
-    public function attachDefaults(ProjectDescriptorBuilder $descriptorBuilder)
+    public function attachDefaults(ProjectDescriptorBuilder $descriptorBuilder): void
     {
         $stripOnVisibility = new StripOnVisibility($descriptorBuilder);
         $filtersOnAllDescriptors = [
@@ -63,12 +63,8 @@ class Filter
 
     /**
      * Attaches a filter to a specific FQCN.
-     *
-     * @param string          $fqcn
-     * @param FilterInterface $filter
-     * @param int             $priority [1000]
      */
-    public function attach($fqcn, $filter, $priority = self::DEFAULT_PRIORITY)
+    public function attach(string $fqcn, FilterInterface $filter, int $priority = self::DEFAULT_PRIORITY): void
     {
         $chain = $this->factory->getChainFor($fqcn);
         $chain->attach($filter, $priority);
@@ -76,10 +72,8 @@ class Filter
 
     /**
      * Filters the given Descriptor and returns the altered object.
-     *
-     * @return Filterable|null
      */
-    public function filter(Filterable $descriptor)
+    public function filter(Filterable $descriptor): ?Filterable
     {
         $chain = $this->factory->getChainFor(get_class($descriptor));
 

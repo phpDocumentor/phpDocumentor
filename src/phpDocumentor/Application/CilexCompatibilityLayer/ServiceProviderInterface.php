@@ -18,6 +18,9 @@ namespace Pimple;
 if (!class_exists(\Pimple\ServiceProviderInterface::class, false)) {
     interface ServiceProviderInterface
     {
-        public function register(\Pimple\Container $app);
+        /**
+         * @throws \RuntimeException;
+         */
+        public function register(\Pimple\Container $app): void;
     }
 }

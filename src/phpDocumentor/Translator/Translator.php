@@ -101,10 +101,8 @@ class Translator extends ZendTranslator
      *     which domain the translation should be.
      *
      * @api
-     *
-     * @return $this
      */
-    public function addTranslations($filename, $locale = self::DEFAULT_LOCALE, $textDomain = self::DEFAULT_DOMAIN)
+    public function addTranslations(string $filename, ?string $locale = self::DEFAULT_LOCALE, string $textDomain = self::DEFAULT_DOMAIN): self
     {
         parent::addTranslationFile(self::TRANSLATION_FILE_TYPE, $filename, $textDomain, $locale);
 
@@ -132,10 +130,8 @@ class Translator extends ZendTranslator
      * @param string[] $domains One or more domains to load, when none is provided only the default is added.
      *
      * @api
-     *
-     * @return $this
      */
-    public function addTranslationFolder($folder, array $domains = [])
+    public function addTranslationFolder(string $folder, array $domains = []): self
     {
         if (empty($domains)) {
             $domains = [self::DEFAULT_DOMAIN];
@@ -164,14 +160,12 @@ class Translator extends ZendTranslator
      *     and is overridden to clear the messages caching array so it may be rebuild.
      *
      * @see self::addTranslationFolder() to provide a series of translation files.
-     *
-     * @return $this|ZendTranslator
      */
     public function addTranslationsUsingPattern(
-        $baseDir,
-        $textDomain = self::DEFAULT_DOMAIN,
-        $pattern = self::DEFAULT_PATTERN
-    ) {
+        string $baseDir,
+        string $textDomain = self::DEFAULT_DOMAIN,
+        string $pattern = self::DEFAULT_PATTERN
+    ): self {
         if ($textDomain !== self::DEFAULT_DOMAIN && $pattern === self::DEFAULT_PATTERN) {
             $pattern = $textDomain . '.' . $pattern;
         }
@@ -188,7 +182,7 @@ class Translator extends ZendTranslator
      *
      * @param string $message    The message or code to translate.
      * @param string $textDomain A message may be located in a domain, here you can provide in which.
-     * @param null   $locale     The locale to translate to or the default if not set.
+     * @param string $locale     The locale to translate to or the default if not set.
      *
      * @return string
      */

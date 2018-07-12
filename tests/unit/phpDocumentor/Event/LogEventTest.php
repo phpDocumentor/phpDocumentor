@@ -41,6 +41,18 @@ class LogEventTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
     /**
      * @covers phpDocumentor\Event\LogEvent::setPriority
+     * @covers phpDocumentor\Event\LogEvent::getPriority
+     */
+    public function testSetAndGetPriority()
+    {
+        $priority = LogLevel::WARNING;
+        $this->fixture->setPriority(LogLevel::WARNING);
+
+        $this->assertSame($priority, $this->fixture->getPriority());
+    }
+
+    /**
+     * @covers phpDocumentor\Event\LogEvent::setPriority
      */
     public function testOverridePriorityWithAnother()
     {

@@ -15,9 +15,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Plugin\Graphs;
 
-use Cilex\Application;
 use phpDocumentor\Plugin\Graphs\Writer\Graph;
-use phpDocumentor\Transformer\Writer\Collection;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 
@@ -28,7 +26,7 @@ class ServiceProvider implements ServiceProviderInterface
      *
      * @param Container $app An Application instance.
      */
-    public function register(Container $app)
+    public function register(Container $app): void
     {
         /** @var Collection $writerCollection */
         $writerCollection = $app['transformer.writer.collection'];

@@ -20,7 +20,7 @@ use phpDocumentor\DomainModel\Path;
 
 final class CommandlineOptionsMiddleware
 {
-    /** @var string[] */
+    /** @var array */
     private $options = [];
 
     public function __construct(array $options = [])
@@ -28,12 +28,12 @@ final class CommandlineOptionsMiddleware
         $this->options = $options;
     }
 
-    public function provideOptions(array $options)
+    public function provideOptions(array $options): void
     {
         $this->options = $options;
     }
 
-    public function __invoke(array $configuration)
+    public function __invoke(array $configuration): array
     {
         $configuration = $this->overwriteDestinationFolder($configuration);
         $configuration = $this->disableCache($configuration);
@@ -153,10 +153,7 @@ final class CommandlineOptionsMiddleware
         return $version;
     }
 
-    /**
-     * @return array
-     */
-    private function overwriteDestinationFolder(array $configuration)
+    private function overwriteDestinationFolder(array $configuration): array
     {
         if (isset($this->options['target']) && $this->options['target']) {
             $configuration['phpdocumentor']['paths']['output'] = new Dsn($this->options['target']);
@@ -230,12 +227,8 @@ final class CommandlineOptionsMiddleware
 
     /**
      * Changes the given configuration array to feature the templates from the options.
-     *
-     * @param string[] $configuration
-     *
-     * @return string[]
      */
-    private function overwriteTemplates(array $configuration)
+    private function overwriteTemplates(array $configuration): array
     {
         if (isset($this->options['template']) && $this->options['template']) {
             $configuration['phpdocumentor']['templates'] = (array) $this->options['template'];
@@ -246,12 +239,8 @@ final class CommandlineOptionsMiddleware
 
     /**
      * Changes the given configuration array so that the cache handling is disabled.
-     *
-     * @param string[] $configuration
-     *
-     * @return string[]
      */
-    private function disableCache($configuration): array
+    private function disableCache(array $configuration): array
     {
         if (isset($this->options['force']) && $this->options['force']) {
             $configuration['phpdocumentor']['use-cache'] = false;

@@ -23,7 +23,7 @@ use phpDocumentor\Reflection\PrettyPrinter;
 
 final class ProjectFactoryFactory
 {
-    public static function create(iterable $fileMiddlewaresBuilder)
+    public static function create(iterable $fileMiddlewaresBuilder): ProjectFactory
     {
         $fileMiddlewares = [];
         foreach ($fileMiddlewaresBuilder as $middelware) {

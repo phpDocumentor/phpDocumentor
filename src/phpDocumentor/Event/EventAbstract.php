@@ -51,10 +51,8 @@ abstract class EventAbstract extends Event
      * Used as convenience method for fluent interfaces.
      *
      * @param object $subject
-     *
-     * @return static
      */
-    public static function createInstance($subject)
+    public static function createInstance($subject): self
     {
         return new static($subject);
     }

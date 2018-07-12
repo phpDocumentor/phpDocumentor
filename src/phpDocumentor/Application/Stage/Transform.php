@@ -15,8 +15,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Application\Stage;
 
+use Exception;
 use phpDocumentor\Compiler\Compiler;
-use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Event\Dispatcher;
@@ -52,11 +52,10 @@ final class Transform
     /** @var Compiler $compiler Collection of pre-transformation actions (Compiler Passes) */
     private $compiler;
 
-    /**
-     * @var StorageInterface
-     */
+    /** @var StorageInterface */
     private $cache;
 
+    /** @var LoggerInterface */
     private $logger;
 
     /**
@@ -80,20 +79,16 @@ final class Transform
 
     /**
      * Returns the builder object containing the AST and other meta-data.
-     *
-     * @return ProjectDescriptorBuilder
      */
-    private function getBuilder()
+    private function getBuilder(): ProjectDescriptorBuilder
     {
         return $this->builder;
     }
 
     /**
      * Returns the transformer used to guide the transformation process from AST to output.
-     *
-     * @return Transformer
      */
-    private function getTransformer()
+    private function getTransformer(): Transformer
     {
         return $this->transformer;
     }
@@ -101,10 +96,9 @@ final class Transform
     /**
      * Executes the business logic involved with this command.
      *
-     * @return integer
-     * @throws \Exception if the target location is not a folder.
+     * @throws Exception if the target location is not a folder.
      */
-    public function __invoke(array $configuration)
+    public function __invoke(array $configuration): int
     {
         // initialize transformer
         $transformer = $this->getTransformer();
@@ -148,7 +142,7 @@ final class Transform
 //            $progress->start($output, count($transformer->getTemplates()->getTransformations()));
 //        }
 
-        /** @var CompilerPassInterface $pass */
+        /** @var \phpDocumentor\Compiler\CompilerPassInterface $pass */
         foreach ($this->compiler as $pass) {
             $pass->execute($projectDescriptor);
             //$output->writeTimedLog($pass->getDescription(), array($pass, 'execute'), array($projectDescriptor));
@@ -172,7 +166,7 @@ final class Transform
     /**
      * Connect a series of output messages to various events to display progress.
      */
-    private function connectOutputToEvents()
+    private function connectOutputToEvents(): void
     {
         Dispatcher::getInstance()->addListener(
             Transformer::EVENT_PRE_TRANSFORM,

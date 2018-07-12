@@ -46,9 +46,9 @@ class ServiceProvider implements ServiceProviderInterface
      *
      * @param Container $app An Application instance.
      */
-    public function register(Container $app)
+    public function register(Container $app): void
     {
-        $app[self::TEMPLATE_FOLDER] = realpath(__DIR__ . '/data/templates/');
+        $app[self::TEMPLATE_FOLDER] = __DIR__ . '/data/templates/';
         $app[self::CONVERTERS] = [
             '\phpDocumentor\Plugin\Scrybe\Converter\RestructuredText\ToHtml' => [Format::RST, Format::HTML],
         ];
@@ -80,10 +80,8 @@ class ServiceProvider implements ServiceProviderInterface
 
     /**
      * Method responsible for adding the commands for this application.
-     *
-     * @param Application|Container $app
      */
-    protected function addCommands(Container $app)
+    protected function addCommands(Container $app): void
     {
         if ($app instanceof Application) {
             $app->command(

@@ -15,6 +15,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\DomainModel;
 
+use InvalidArgumentException;
+
 /**
  * Value object for uri.
  * Uri can be either local or remote.
@@ -31,10 +33,9 @@ final class Uri
     /**
      * Initializes the Uri.
      *
-     * @param string $uri
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
-    public function __construct($uri)
+    public function __construct(string $uri)
     {
         $this->validateString($uri);
 
@@ -47,20 +48,16 @@ final class Uri
 
     /**
      * Returns a string representation of the uri.
-     *
-     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->uri;
     }
 
     /**
      * Checks if the provided uri is equal to the current uri.
-     *
-     * @param Uri $other
      */
-    public function equals($other): bool
+    public function equals(self $other): bool
     {
         return $other == $this;
     }
@@ -68,38 +65,32 @@ final class Uri
     /**
      * Checks if $uri is of type string.
      *
-     * @param string $uri
-     *
-     * @throws \InvalidArgumentException if $uri is not a string.
+     * @throws InvalidArgumentException if $uri is not a string.
      */
-    private function validateString($uri)
+    private function validateString(string $uri): void
     {
         if (!\is_string($uri)) {
-            throw new \InvalidArgumentException(sprintf('String required, %s given', \gettype($uri)));
+            throw new InvalidArgumentException(sprintf('String required, %s given', \gettype($uri)));
         }
     }
 
     /**
      * Checks if $uri is valid.
      *
-     * @param string $uri
-     *
-     * @throws \InvalidArgumentException if $uri is not a valid uri.
+     * @throws InvalidArgumentException if $uri is not a valid uri.
      */
-    private function validateUri($uri)
+    private function validateUri(string $uri): void
     {
         if (filter_var($uri, FILTER_VALIDATE_URL) === false) {
-            throw new \InvalidArgumentException(sprintf('%s is not a valid uri', $uri));
+            throw new InvalidArgumentException(sprintf('%s is not a valid uri', $uri));
         }
     }
 
     /**
      * Checks if a scheme is present.
      * If no scheme is found, it is assumed that a local path is used, and file:// is prepended.
-     *
-     * @param string $uri
      */
-    private function addFileSchemeWhenSchemeIsAbsent($uri): string
+    private function addFileSchemeWhenSchemeIsAbsent(string $uri): string
     {
         $scheme = parse_url($uri, PHP_URL_SCHEME);
 

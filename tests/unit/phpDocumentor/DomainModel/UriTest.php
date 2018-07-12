@@ -36,16 +36,6 @@ final class UriTest extends TestCase
     /**
      * @covers ::<private>
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage String required, array given
-     */
-    public function testItShouldOnlyAcceptStrings()
-    {
-        new Uri([]);
-    }
-
-    /**
-     * @covers ::<private>
-     * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage http://foo,bar is not a valid uri
      */
     public function testItShouldDiscardAnInvalidUri()

@@ -18,7 +18,6 @@ namespace phpDocumentor\Descriptor\Builder\Reflector;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
-use phpDocumentor\Reflection\FileReflector;
 use phpDocumentor\Reflection\Php\Class_;
 use phpDocumentor\Reflection\Php\Constant;
 use phpDocumentor\Reflection\Php\File;
@@ -71,9 +70,8 @@ class FileAssembler extends AssemblerAbstract
      * Registers the child constants with the generated File Descriptor.
      *
      * @param Constant[] $constants
-     * @param FileDescriptor      $fileDescriptor
      */
-    protected function addConstants($constants, $fileDescriptor)
+    protected function addConstants(array $constants, FileDescriptor $fileDescriptor): void
     {
         foreach ($constants as $constant) {
             $constantDescriptor = $this->getBuilder()->buildDescriptor($constant);
@@ -96,9 +94,8 @@ class FileAssembler extends AssemblerAbstract
      * Registers the child functions with the generated File Descriptor.
      *
      * @param Function_[] $functions
-     * @param FileDescriptor      $fileDescriptor
      */
-    protected function addFunctions($functions, $fileDescriptor)
+    protected function addFunctions(array $functions, FileDescriptor $fileDescriptor): void
     {
         foreach ($functions as $function) {
             $functionDescriptor = $this->getBuilder()->buildDescriptor($function);
@@ -121,9 +118,8 @@ class FileAssembler extends AssemblerAbstract
      * Registers the child classes with the generated File Descriptor.
      *
      * @param Class_[] $classes
-     * @param FileDescriptor   $fileDescriptor
      */
-    protected function addClasses($classes, $fileDescriptor)
+    protected function addClasses(array $classes, FileDescriptor $fileDescriptor): void
     {
         foreach ($classes as $class) {
             $classDescriptor = $this->getBuilder()->buildDescriptor($class);
@@ -148,9 +144,8 @@ class FileAssembler extends AssemblerAbstract
      * Registers the child interfaces with the generated File Descriptor.
      *
      * @param Interface_[] $interfaces
-     * @param FileDescriptor   $fileDescriptor
      */
-    protected function addInterfaces($interfaces, $fileDescriptor)
+    protected function addInterfaces(array $interfaces, FileDescriptor $fileDescriptor): void
     {
         foreach ($interfaces as $interface) {
             $interfaceDescriptor = $this->getBuilder()->buildDescriptor($interface);
@@ -173,9 +168,8 @@ class FileAssembler extends AssemblerAbstract
      * Registers the child traits with the generated File Descriptor.
      *
      * @param Trait_[] $traits
-     * @param FileDescriptor   $fileDescriptor
      */
-    protected function addTraits($traits, $fileDescriptor)
+    protected function addTraits(array $traits, FileDescriptor $fileDescriptor): void
     {
         foreach ($traits as $trait) {
             $traitDescriptor = $this->getBuilder()->buildDescriptor($trait);
@@ -198,9 +192,8 @@ class FileAssembler extends AssemblerAbstract
      * Registers the markers that were found in a File with the File Descriptor.
      *
      * @param string[]       $markers
-     * @param FileDescriptor $fileDescriptor
      */
-    protected function addMarkers($markers, $fileDescriptor)
+    protected function addMarkers(array $markers, FileDescriptor $fileDescriptor): void
     {
         foreach ($markers as $marker) {
             list($type, $message, $line) = $marker;
@@ -214,7 +207,7 @@ class FileAssembler extends AssemblerAbstract
         }
     }
 
-    protected function overridePackageTag(File $data, FileDescriptor $fileDescriptor)
+    protected function overridePackageTag(File $data, FileDescriptor $fileDescriptor): void
     {
         $packages = new Collection();
         $package = $this->extractPackageFromDocBlock($data->getDocBlock());
