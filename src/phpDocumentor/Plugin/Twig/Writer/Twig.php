@@ -241,7 +241,7 @@ class Twig extends WriterAbstract implements Routable
      * @param DescriptorAbstract|ProjectDescriptor $node
      * @throws InvalidArgumentException if no artifact is provided and no routing rule matches.
      * @throws UnexpectedValueException if the provided node does not contain anything.
-     * @return string|bool returns the destination location or false if generation should be aborted.
+     * @return false|string returns the destination location or false if generation should be aborted.
      */
     protected function getDestinationPath($node, Transformation $transformation)
     {
