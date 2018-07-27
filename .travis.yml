@@ -14,38 +14,50 @@ matrix:
 
 install:
   - travis_retry composer install --no-interaction --prefer-dist --optimize-autoloader
+before_script:
   - travis_retry composer global require phpunit/phpunit ^6 # cannot use phpunit.phar or require-dev, because this package is a phpunit dep
 script:
-  - /home/travis/.composer/vendor/bin/phpunit --no-coverage && bin/behat -p default
+  - $HOME/.composer/vendor/bin/phpunit --no-coverage && bin/behat -p default
 
 jobs:
   include:
-    - stage: test
-      php: 7.1
-      script:
-        - travis_retry sudo apt install graphviz && ./bin/phpdoc run
 
     - stage: test
       php: 7.1
+      before_script:
+        - travis_retry sudo apt install graphviz
+      script:
+        - ./bin/phpdoc run
+
+    - stage: test
+      php: 7.1
+      before_script:
+        - travis_retry sudo apt install graphviz
       script:
         - php ./bin/console --env=prod cache:warm && php -d phar.readonly=false tools/box.phar compile --config=box.nosign.json && bin/behat -p phar
-        - travis_retry sudo apt install graphviz && php build/phpDocumentor.phar run
+        - php build/phpDocumentor.phar run
 
-    - stage: coverage
+    - stage: analysis
       php: 7.1
       script:
-        - /home/travis/.composer/vendor/bin/phpunit
+        - $HOME/.composer/vendor/bin/phpunit
       after_script:
         - travis_retry wget --no-verbose https://phar.io/releases/phive.phar
         - travis_retry php phive.phar --no-progress install --trust-gpg-keys E82B2FB314E9906E php-coveralls/php-coveralls && ./tools/php-coveralls --verbose
         - travis_retry wget --no-verbose https://scrutinizer-ci.com/ocular.phar && php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml
 
-    - stage: lint
+    - stage: analysis
       php: 7.1
       services:
         - docker
       script:
         - docker-compose run --rm ecs
+
+    - stage: analysis
+      php: 7.1
+      services:
+        - docker
+      script:
         - docker-compose run --rm phpstan
 
     - stage: release
@@ -106,7 +118,7 @@ jobs:
 
 cache:
   directories:
-  - $HOME/.composer/cache/files
+  - $HOME/.composer
   - $HOME/.phive
   - ./docker
 
