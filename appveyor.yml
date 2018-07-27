@@ -48,6 +48,7 @@ install:
   - IF %PHP%==1 echo @php %%~dp0composer.phar %%* > composer.bat
   - appveyor-retry appveyor DownloadFile https://getcomposer.org/composer.phar
   - cd c:\phpdocumentor
+  - composer --version
   - composer install --no-interaction --prefer-dist --no-progress
   - composer global require phpunit/phpunit ^6
   - composer global config bin-dir --absolute
