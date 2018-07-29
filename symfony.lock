@@ -47,6 +47,9 @@
     "hamcrest/hamcrest-php": {
         "version": "v2.0.0"
     },
+    "jean85/pretty-package-versions": {
+        "version": "1.2"
+    },
     "jms/metadata": {
         "version": "1.6.0"
     },
