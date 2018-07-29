@@ -3,7 +3,8 @@
 
 use App\Kernel;
 use Doctrine\Common\Annotations\AnnotationRegistry;
-use Symfony\Bundle\FrameworkBundle\Console\Application;
+use phpDocumentor\Application\Console\Application;
+use Symfony\Bundle\FrameworkBundle\Console\Application as SymfonyApplication;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Debug\Debug;
 use Symfony\Component\Dotenv\Dotenv;
@@ -14,7 +15,7 @@ $loader = require __DIR__.'/../vendor/autoload.php';
 
 AnnotationRegistry::registerLoader([$loader, 'loadClass']);
 
-if (!class_exists(Application::class)) {
+if (!class_exists(SymfonyApplication::class)) {
     throw new \RuntimeException('You need to add "symfony/framework-bundle" as a Composer dependency.');
 }
 
@@ -40,5 +41,4 @@ if ($debug) {
 
 $kernel = new Kernel($env, $debug);
 $application = new Application($kernel);
-$application->setDefaultCommand('project:run');
 $application->run($input);
