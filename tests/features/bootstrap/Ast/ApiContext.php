@@ -13,7 +13,6 @@
 namespace phpDocumentor\Behat\Contexts\Ast;
 
 use Behat\Behat\Context\Context;
-use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Gherkin\Node\PyStringNode;
 use phpDocumentor\Descriptor\ArgumentDescriptor;
 use phpDocumentor\Descriptor\ClassDescriptor;
@@ -551,6 +550,6 @@ class ApiContext extends BaseContext implements Context
         /** @var FileDescriptor $file */
         $file = $ast->getFiles()->get($filename);
 
-        Assert::assertCount(1, $file->getMarkers());
+        Assert::count($file->getMarkers(), 1);
     }
 }

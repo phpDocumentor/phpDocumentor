@@ -139,6 +139,7 @@ final class Parser
         $visibility = $this->getVisibility($apiConfig);
         $projectDescriptor->getSettings()->setVisibility($visibility);
         $projectDescriptor->getSettings()->setMarkers($apiConfig['markers']);
+        $projectDescriptor->getSettings()->includeSource();
 
         $mapper = new ProjectDescriptorMapper($this->getCache());
 
