@@ -19,8 +19,16 @@ use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery as m;
 use Symfony\Component\HttpKernel\KernelInterface;
 
+/**
+ * @coversDefaultClass \phpDocumentor\Application\Console\Application
+ * @covers ::<private>
+ */
 class ApplicationTest extends MockeryTestCase
 {
+    /**
+     * @covers ::__construct
+     * @covers ::getLongVersion
+     */
     public function testGetLongVersion(): void
     {
         $kernelMock = m::mock(KernelInterface::class);
