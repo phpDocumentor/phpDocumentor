@@ -8,7 +8,6 @@
  * @copyright 2010-2018 Mike van Riel<mike@phpdoc.org>
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
- *
  */
 
 namespace phpDocumentor\Compiler\Pass;
@@ -24,22 +23,19 @@ final class ResolveInlineMarkers implements CompilerPassInterface
     /**
      * {@inheritDoc}
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return 'Collect all markers in a file';
     }
 
     /**
      * Scans the files for markers and records them in the markers property of a file.
-     *
-     * @return void
      */
     public function execute(ProjectDescriptor $project): void
     {
         $markerTerms = $project->getSettings()->getMarkers();
 
         foreach ($project->getFiles() as $file) {
-
             $marker_data = [];
             $matches = [];
             preg_match_all(
@@ -52,7 +48,7 @@ final class ResolveInlineMarkers implements CompilerPassInterface
             foreach ($matches as $match) {
                 list($before) = str_split($file->getSource(), $match[1][1]); // fetches all the text before the match
 
-                $line_number = strlen($before) - strlen(str_replace("\n", "", $before)) + 1;
+                $line_number = strlen($before) - strlen(str_replace("\n", '', $before)) + 1;
 
                 $marker_data[] = ['type' => trim($match[1][0], '@'), 'line' => $line_number, $match[2][0]];
             }
