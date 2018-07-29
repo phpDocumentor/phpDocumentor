@@ -60,6 +60,14 @@ jobs:
       script:
         - docker-compose run --rm phpstan
 
+    - stage: test
+      php: 7.1
+      before_script:
+        - travis_retry wget --no-verbose https://phar.io/releases/phive.phar
+        - travis_retry php phive.phar --no-progress install --trust-gpg-keys D2CCAC42F6295E7D
+      script:
+        - tools/composer-require-checker check --config-file composer-require-config.json composer.json
+
     - stage: release
       if: type IN (push) AND repo = phpDocumentor/phpDocumentor2 AND branch IN (master, develop)
       php: 7.1
