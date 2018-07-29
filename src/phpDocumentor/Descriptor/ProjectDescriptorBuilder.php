@@ -259,9 +259,6 @@ class ProjectDescriptorBuilder
         }
     }
 
-    /**
-     * @return string
-     */
     public function getDefaultPackage()
     {
         return $this->defaultPackage;

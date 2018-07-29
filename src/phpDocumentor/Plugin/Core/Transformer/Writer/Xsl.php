@@ -290,9 +290,6 @@ class Xsl extends WriterAbstract implements Routable
         $proc->transformToUri($structure, $this->getXsltUriFromFilename($filename));
     }
 
-    /**
-     * @return string
-     */
     private function getAstPath(Transformation $transformation)
     {
         return $transformation->getTransformer()->getTarget() . DIRECTORY_SEPARATOR . 'structure.xml';

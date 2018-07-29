@@ -51,9 +51,6 @@ class Parameter
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getKey()
     {
         return $this->key;
@@ -72,9 +69,6 @@ class Parameter
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getValue()
     {
         return $this->value;

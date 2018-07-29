@@ -27,9 +27,6 @@ interface ProjectInterface
      */
     public function setName($name);
 
-    /**
-     * @return string
-     */
     public function getName();
 
     /**
