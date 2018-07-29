@@ -40,9 +40,6 @@ final class Application extends BaseApplication
         return sprintf('%s <info>%s</info>', $this->getName(), $this->getVersion());
     }
 
-    /**
-     * @return string
-     */
     private function detectVersion(): string
     {
         $version = static::VERSION;

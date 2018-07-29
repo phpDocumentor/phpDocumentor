@@ -22,9 +22,6 @@ use phpDocumentor\Descriptor\Collection;
  */
 interface FileInterface extends ElementInterface, ContainerInterface
 {
-    /**
-     * @return string
-     */
     public function getHash();
 
     public function setSource($source);

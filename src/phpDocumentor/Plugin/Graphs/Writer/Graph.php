@@ -278,9 +278,6 @@ class Graph extends WriterAbstract
         $graph->addGraph($sub_graph);
     }
 
-    /**
-     * @return string
-     */
     protected function getDestinationPath(Transformation $transformation)
     {
         return $transformation->getTransformer()->getTarget()

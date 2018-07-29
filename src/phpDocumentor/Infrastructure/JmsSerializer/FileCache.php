@@ -84,9 +84,6 @@ class FileCache implements CacheInterface
         }
     }
 
-    /**
-     * @return string
-     */
     private function getFileName(ClassMetadata $metadata)
     {
         return $this->dir . '/' . strtr($metadata->name, '\\', '-') . '.cache.php';

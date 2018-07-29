@@ -44,9 +44,6 @@ class MethodDescriptor extends TagDescriptor
         $this->methodName = $methodName;
     }
 
-    /**
-     * @return string
-     */
     public function getMethodName()
     {
         return $this->methodName;
