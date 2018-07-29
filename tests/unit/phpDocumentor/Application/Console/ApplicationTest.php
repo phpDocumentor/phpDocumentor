@@ -9,8 +9,6 @@
  * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
- *
- *
  */
 
 namespace phpDocumentor\Application\Console;
@@ -35,6 +33,6 @@ class ApplicationTest extends MockeryTestCase
         $kernelMock->shouldIgnoreMissing();
         $feature = new Application($kernelMock);
 
-       self::assertRegExp('~phpDocumentor <info>v(\d).(\d).(\d|x)?-(.*)</info>~',  $feature->getLongVersion());
+        self::assertRegExp('~phpDocumentor <info>v(\d).(\d).(\d|x)?-(.*)</info>~', $feature->getLongVersion());
     }
 }
