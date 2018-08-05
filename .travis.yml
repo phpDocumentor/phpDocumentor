@@ -61,7 +61,7 @@ jobs:
         - docker-compose run --rm phpstan
 
     - stage: test
-      php: 7.1
+      php: 7.1.18
       before_script:
         - travis_retry wget --no-verbose https://phar.io/releases/phive.phar
         - travis_retry php phive.phar --no-progress install --trust-gpg-keys D2CCAC42F6295E7D
