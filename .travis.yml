@@ -64,7 +64,7 @@ jobs:
       php: 7.1.18
       before_script:
         - travis_retry wget --no-verbose https://phar.io/releases/phive.phar
-        - travis_retry php phive.phar --no-progress install --trust-gpg-keys D2CCAC42F6295E7D 4AA394086372C20A
+        - travis_retry php phive.phar --no-progress install --trust-gpg-keys D2CCAC42F6295E7D,g4AA394086372C20A
       script:
         - tools/composer-require-checker check --config-file composer-require-config.json composer.json
 
