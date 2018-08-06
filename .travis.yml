@@ -63,6 +63,7 @@ jobs:
       env:
         secure: pD0swAjWY7a/i1D12K+8vqBlpl0ES6dA994+NLYYoxYrM03XnrxoSBNApuz2MSoIzKJbXq1GtYHgeVf4qcHL9jQ/PQ1igJ/wL4YrMggfy1M8JSaZ2rBDdKcyRl716dKX2bRyszJlFbkA9mE4aCa2Cqf2eMeWHzqNjrHPQ4m7iNY=
       before_script:
+        - echo 'xdebug.max_nesting_level=1024' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
         - travis_retry wget --no-verbose https://phar.io/releases/phive.phar
         - travis_retry php phive.phar --no-progress install --trust-gpg-keys D2CCAC42F6295E7D,4AA394086372C20A
       script:
