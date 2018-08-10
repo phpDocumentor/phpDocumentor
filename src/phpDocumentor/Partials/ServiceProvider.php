@@ -16,7 +16,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Partials;
 
 use Parsedown;
-use phpDocumentor\Partials\Collection as PartialsCollection;
+use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Partials\Exception\MissingNameForPartialException;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
@@ -44,7 +44,7 @@ class ServiceProvider implements ServiceProviderInterface
             return Parsedown::instance();
         };
 
-        $partialsCollection = new PartialsCollection($app['markdown']);
+        $partialsCollection = new Collection();
         $app['partials'] = $partialsCollection;
 
         /** @var Partial[] $partials */
@@ -69,7 +69,7 @@ class ServiceProvider implements ServiceProviderInterface
                     $content = file_get_contents($partial->getLink());
                 }
 
-                $partialsCollection->set($partial->getName(), $content);
+                $partialsCollection->set($partial->getName(), $partial);
             }
         }
     }
