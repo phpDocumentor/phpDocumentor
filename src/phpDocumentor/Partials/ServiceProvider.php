@@ -55,18 +55,14 @@ class ServiceProvider implements ServiceProviderInterface
                     throw new MissingNameForPartialException('The name of the partial to load is missing');
                 }
 
-                $content = '';
-                if ($partial->getContent()) {
-                    $content = $partial->getContent();
-                } elseif ($partial->getLink()) {
+                $partial->setParser($app['markdown']);
+                if (!$partial->getContent() && $partial->getLink()) {
                     if (! is_readable($partial->getLink())) {
                         $app['monolog']->error(
                             sprintf($translator->translate('PPCPP:EXC-NOPARTIAL'), $partial->getLink())
                         );
                         continue;
                     }
-
-                    $content = file_get_contents($partial->getLink());
                 }
 
                 $partialsCollection->set($partial->getName(), $partial);
