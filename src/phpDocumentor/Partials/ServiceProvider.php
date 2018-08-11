@@ -16,7 +16,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Partials;
 
 use Parsedown;
-use phpDocumentor\Partials\Collection as PartialsCollection;
+use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Partials\Exception\MissingNameForPartialException;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
@@ -44,7 +44,7 @@ class ServiceProvider implements ServiceProviderInterface
             return Parsedown::instance();
         };
 
-        $partialsCollection = new PartialsCollection($app['markdown']);
+        $partialsCollection = new Collection();
         $app['partials'] = $partialsCollection;
 
         /** @var Partial[] $partials */
@@ -55,21 +55,17 @@ class ServiceProvider implements ServiceProviderInterface
                     throw new MissingNameForPartialException('The name of the partial to load is missing');
                 }
 
-                $content = '';
-                if ($partial->getContent()) {
-                    $content = $partial->getContent();
-                } elseif ($partial->getLink()) {
+                $partial->setParser($app['markdown']);
+                if (!$partial->getContent() && $partial->getLink()) {
                     if (! is_readable($partial->getLink())) {
                         $app['monolog']->error(
                             sprintf($translator->translate('PPCPP:EXC-NOPARTIAL'), $partial->getLink())
                         );
                         continue;
                     }
-
-                    $content = file_get_contents($partial->getLink());
                 }
 
-                $partialsCollection->set($partial->getName(), $content);
+                $partialsCollection->set($partial->getName(), $partial);
             }
         }
     }

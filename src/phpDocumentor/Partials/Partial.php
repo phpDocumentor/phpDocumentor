@@ -37,6 +37,9 @@ class Partial
      */
     protected $link;
 
+    /** @var \Parsedown $parser */
+    protected $parser = null;
+
     /**
      * @return mixed
      */
@@ -83,5 +86,36 @@ class Partial
     public function setName(string $name): void
     {
         $this->name = $name;
+    }
+
+    /**
+     * Constructs a new collection object.
+     *
+     * @param \Parsedown $parser
+     */
+    public function setParser($parser)
+    {
+        $this->parser = $parser;
+    }
+
+    /**
+     * Renders the partial to a string.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        $content = '';
+        if ($this->getContent()) {
+            $content = $partial->getContent();
+        } elseif ($this->getLink()) {
+            if (! is_readable($this->getLink())) {
+                // Handled in ServiceProvider.
+                continue;
+            }
+
+            $content = file_get_contents($this->getLink());
+        }
+        return $this->parser->text($content);
     }
 }
