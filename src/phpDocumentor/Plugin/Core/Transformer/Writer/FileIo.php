@@ -19,7 +19,6 @@ use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Transformer\Exception;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
-use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Writer containing file system operations.
@@ -61,6 +60,7 @@ class FileIo extends WriterAbstract
     /**
      * Copies files or folders to the Artifact location.
      *
+     * TODO: reimplement this using flysystem.
      * @param Transformation $transformation Transformation to use as data source.
      *
      * @throws Exception
@@ -77,11 +77,11 @@ class FileIo extends WriterAbstract
             throw new Exception('Unable to write to: ' . dirname($transformation->getArtifact()));
         }
 
-        $filesystem = new Filesystem();
-        if (is_file($path)) {
-            $filesystem->copy($path, $transformation->getArtifact(), true);
-        } else {
-            $filesystem->mirror($path, $transformation->getArtifact(), null, ['override' => true]);
-        }
+//        $filesystem = new Filesystem();
+//        if (is_file($path)) {
+//            $filesystem->copy($path, $transformation->getArtifact(), true);
+//        } else {
+//            $filesystem->mirror($path, $transformation->getArtifact(), null, ['override' => true]);
+//        }
     }
 }

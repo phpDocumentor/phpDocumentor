@@ -12,7 +12,6 @@
 namespace phpDocumentor\Plugin\Scrybe\Template;
 
 use InvalidArgumentException;
-use Symfony\Component\Finder\Finder;
 
 /**
  * Template class to use Twig to generate templates.
@@ -163,15 +162,15 @@ class Twig implements TemplateInterface
      */
     public function getAssets(): array
     {
-        $finder = new Finder();
-
-        return iterator_to_array(
-            $finder->files()
-                ->in($this->path . DIRECTORY_SEPARATOR . $this->name)
-                ->depth('> 0')
-                ->notName('*.twig')
-                ->sortByName()
-        );
+        //TODO implement this
+        return [];
+//        return iterator_to_array(
+//            $finder->files()
+//                ->in($this->path . DIRECTORY_SEPARATOR . $this->name)
+//                ->depth('> 0')
+//                ->notName('*.twig')
+//                ->sortByName()
+//        );
     }
 
     /**

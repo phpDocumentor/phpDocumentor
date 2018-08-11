@@ -16,7 +16,6 @@ declare(strict_types=1);
 namespace phpDocumentor\Plugin\Scrybe\Command\Manual;
 
 use phpDocumentor\Application\Console\Command\Command;
-use phpDocumentor\Fileset\Collection;
 use phpDocumentor\Plugin\Scrybe\Converter\ConverterInterface;
 use phpDocumentor\Plugin\Scrybe\Converter\Factory as ConverterFactory;
 use phpDocumentor\Plugin\Scrybe\Converter\Format;
@@ -179,6 +178,8 @@ DESCRIPTION
     /**
      * Constructs a Fileset collection and returns that.
      *
+     * TODO: implement this
+     *
      * @param array $sources    List of source paths.
      * @param array $extensions List of extensions to scan for in directories.
      *
@@ -186,18 +187,18 @@ DESCRIPTION
      */
     protected function buildCollection(array $sources, array $extensions)
     {
-        $collection = new Collection();
-        $collection->setAllowedExtensions($extensions);
-        foreach ($sources as $path) {
-            if (is_dir($path)) {
-                $collection->addDirectory($path);
-                continue;
-            }
-
-            $collection->addFile($path);
-        }
-
-        return $collection;
+//        $collection = new Collection();
+//        $collection->setAllowedExtensions($extensions);
+//        foreach ($sources as $path) {
+//            if (is_dir($path)) {
+//                $collection->addDirectory($path);
+//                continue;
+//            }
+//
+//            $collection->addFile($path);
+//        }
+//
+//        return $collection;
     }
 
     /**
