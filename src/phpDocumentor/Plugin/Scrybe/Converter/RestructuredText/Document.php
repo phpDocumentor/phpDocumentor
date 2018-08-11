@@ -37,7 +37,6 @@ class Document extends \ezcDocumentRst
 {
     /**
      * Fileset containing the project root and list of files in this run.
-     *
      */
     protected $file;
 
@@ -99,8 +98,6 @@ class Document extends \ezcDocumentRst
 
     /**
      * Returns the file associated with this document.
-     *
-     * @return null
      */
     public function getFile()
     {

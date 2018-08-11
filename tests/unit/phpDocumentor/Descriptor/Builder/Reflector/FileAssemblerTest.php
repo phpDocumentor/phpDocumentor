@@ -68,7 +68,6 @@ DOCBLOCK
         $docBlockMock = new DocBlock('This is a example description', $docBlockDescription);
 
         $fileReflectorMock = new File($hash, $filename, $content, $docBlockMock);
-//
 //        $fileReflectorMock->shouldReceive('getConstants')->once()->andReturn(
 //            new Collection(array($abstractDescriptor))
 //        );
