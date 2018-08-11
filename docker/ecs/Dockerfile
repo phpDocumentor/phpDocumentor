@@ -1,6 +1,6 @@
 FROM php:7.1
 
-ARG VERSION="v4.4.2"
+ARG VERSION="v4.6.0"
 
 ENV COMPOSER_HOME /composer
 ENV COMPOSER_ALLOW_SUPERUSER 1
@@ -29,7 +29,7 @@ RUN curl -o /tmp/composer-setup.php https://getcomposer.org/installer \
   && php /tmp/composer-setup.php --no-ansi --install-dir=/usr/local/bin --filename=composer \
   && php -r "unlink('/tmp/composer-setup.php');" \
   && php -r "unlink('/tmp/composer-setup.sig');" \
-  && composer global require symplify/easy-coding-standard ${VERSION} \
+  && composer global require symplify/easy-coding-standard:${VERSION} \
   && apt-get -yq remove curl git \
   && rm -rf /var/lib/apt/lists/*
 

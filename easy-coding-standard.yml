@@ -43,5 +43,9 @@ parameters:
             - '*/tests/data/NoShortDescription.php'
         PhpCsFixer\Fixer\Phpdoc\NoEmptyPhpdocFixer:
             - '*/tests/data/NoShortDescription.php'
+        PhpCsFixer\Fixer\Phpdoc\PhpdocNoEmptyReturnFixer:
+            - '*/tests/data/NoShortDescription.php'
         Symplify\CodingStandard\Fixer\Commenting\RemoveEmptyDocBlockFixer:
+            - '*/tests/data/NoShortDescription.php'
+        SlevomatCodingStandard\Sniffs\Commenting\EmptyCommentSniff.EmptyComment:
             - '*/tests/data/NoShortDescription.php'
