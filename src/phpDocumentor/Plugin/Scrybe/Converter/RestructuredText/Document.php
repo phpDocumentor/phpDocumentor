@@ -16,7 +16,6 @@ declare(strict_types=1);
 namespace phpDocumentor\Plugin\Scrybe\Converter\RestructuredText;
 
 use Monolog\Logger;
-use phpDocumentor\Fileset\File;
 use phpDocumentor\Plugin\Scrybe\Converter\ConverterInterface;
 
 /**
@@ -39,7 +38,6 @@ class Document extends \ezcDocumentRst
     /**
      * Fileset containing the project root and list of files in this run.
      *
-     * @var File
      */
     protected $file;
 
@@ -55,7 +53,7 @@ class Document extends \ezcDocumentRst
     /**
      * Sets the Scrybe-specific options, registers the roles and directives and loads the file.
      */
-    public function __construct(ConverterInterface $converter, File $file)
+    public function __construct(ConverterInterface $converter, $file)
     {
         parent::__construct();
 
@@ -83,10 +81,10 @@ class Document extends \ezcDocumentRst
             'phpDocumentor\Plugin\Scrybe\Converter\RestructuredText\Roles\Doc'
         );
 
-        $this->file = $file;
+        //$this->file = $file;
         $this->converter = $converter;
 
-        $this->loadString($file->fread());
+        //$this->loadString($file->fread());
     }
 
     /**
@@ -102,7 +100,7 @@ class Document extends \ezcDocumentRst
     /**
      * Returns the file associated with this document.
      *
-     * @return File
+     * @return null
      */
     public function getFile()
     {
