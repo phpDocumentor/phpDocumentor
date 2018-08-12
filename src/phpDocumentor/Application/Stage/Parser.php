@@ -23,7 +23,7 @@ use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\DomainModel\Parser\FileCollector;
 use phpDocumentor\Event\LogEvent;
 use phpDocumentor\Parser\Parser as DocParser;
-use phpDocumentor\Partials\Collection as PartialsCollection;
+use phpDocumentor\Descriptor\Collection as PartialsCollection;
 use phpDocumentor\Reflection\DocBlock\ExampleFinder;
 use Psr\Log\LogLevel;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

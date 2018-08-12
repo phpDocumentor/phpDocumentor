@@ -179,9 +179,6 @@ services:
       public: true
       lazy:  true
 
-    phpDocumentor\Partials\Collection:
-      arguments: ['@Parsedown']
-
     phpDocumentor\Transformer\:
       resource: '../src/phpDocumentor/Transformer'
       exclude: '../src/phpDocumentor/Transformer/**/{Event, Exception}/{**, PathResolver.php}'

@@ -107,11 +107,11 @@ class Partial
     {
         $content = '';
         if ($this->getContent()) {
-            $content = $partial->getContent();
+            $content = $this->getContent();
         } elseif ($this->getLink()) {
             if (! is_readable($this->getLink())) {
                 // Handled in ServiceProvider.
-                continue;
+                return '';
             }
 
             $content = file_get_contents($this->getLink());
