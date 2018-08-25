@@ -24,7 +24,7 @@ Feature: The @return tag is used to document the return value of functions or me
 
   Scenario: method without docblock with return type
     Then class "\ReturnTag" has a method "getMultiTypeArray"
-    And class "\ReturnTag" has a method "getMultiTypeArray" with returntype '(integer|string)[]' without description
+    And class "\ReturnTag" has a method "getMultiTypeArray" with returntype '(int|string)[]' without description
 
   Scenario: method with docblock without return type
     Then class "\ReturnTag" has a method "getReturnWithDefinedReturn"
