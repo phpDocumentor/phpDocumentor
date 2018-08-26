@@ -39,7 +39,6 @@ final class ReturnTag
      */
     public function getMultiTypeArray()
     {
-
     }
 }
 

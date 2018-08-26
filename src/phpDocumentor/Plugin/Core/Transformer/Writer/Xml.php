@@ -287,8 +287,7 @@ class Xml extends WriterAbstract implements Translatable
         }
 
         $namespace = $function->getNamespace()
-            ? $function->getNamespace()
-            : $parent->getAttribute('namespace');
+            ?: $parent->getAttribute('namespace');
         $child->setAttribute('namespace', ltrim($namespace, '\\'));
         $child->setAttribute('line', $function->getLine());
 
