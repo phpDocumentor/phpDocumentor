@@ -140,6 +140,19 @@ class BootstrapTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers phpDocumentor\Bootstrap::findVendorPath
+     */
+    public function testFindVendorPathComposerInstalledWithNestedVendorDirCanFail()
+    {
+        $root = vfsStream::setup('root', null, $this->composerInstalledWithNestedVendorDirStructure);
+        # (note: not creating a composer.json file)
+
+        $bootstrap = Bootstrap::createInstance();
+        $baseDir = vfsStream::url('root/dummy/nested/vendor/dir/phpDocumentor/phpDocumentor/src/phpDocumentor');
+        $this->assertNull($bootstrap->findVendorPath($baseDir));
+    }
+
+    /**
      * Tests if exception is thrown when no autoloader is present
      *
      * @expectedException \RuntimeException

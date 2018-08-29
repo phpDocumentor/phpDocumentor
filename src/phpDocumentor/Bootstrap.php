@@ -170,7 +170,9 @@ class Bootstrap
 
                     return $rootCandidate . '/' . $relativeVendorDir;
                 }
-            } while (is_dir($rootCandidate));
+            } while (is_dir($rootCandidate)
+                && substr_count($rootCandidate, '/..') <= substr_count($rootCandidate, '/') / 2
+            );
         }
 
         return null;
