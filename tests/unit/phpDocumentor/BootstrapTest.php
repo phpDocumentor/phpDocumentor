@@ -39,6 +39,24 @@ class BootstrapTest extends PHPUnit_Framework_TestCase
         ),
     );
 
+    protected $composerInstalledWithNestedVendorDirStructure = array(
+        'dummy' => array(
+            'nested' => array(
+                'vendor' => array(
+                    'dir' => array(
+                        'phpDocumentor' => array(
+                            'phpDocumentor' => array(
+                                'src' => array(
+                                    'phpDocumentor' => array(),
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+        ),
+    );
+
     /**
      * Directory structure when phpdocumentor is installed from git.
      *
@@ -95,6 +113,28 @@ class BootstrapTest extends PHPUnit_Framework_TestCase
         $baseDir = vfsStream::url('root/dummy/vendor/phpDocumentor/phpDocumentor/src/phpDocumentor');
         $this->assertSame(
             'vfs://root/dummy/vendor/phpDocumentor/phpDocumentor/src/phpDocumentor/../../../../../vendor'
+            , $bootstrap->findVendorPath($baseDir)
+        );
+    }
+
+    /**
+     * @covers phpDocumentor\Bootstrap::findVendorPath
+     */
+    public function testFindVendorPathComposerInstalledWithNestedVendorDir()
+    {
+        $root = vfsStream::setup('root', null, $this->composerInstalledWithNestedVendorDirStructure);
+        vfsStream::newFile('composer.json')->withContent('
+            {
+                "config": {
+                    "vendor-dir": "nested/vendor/dir"
+                }
+            }
+        ')->at($root->getChild('dummy'));
+
+        $bootstrap = Bootstrap::createInstance();
+        $baseDir = vfsStream::url('root/dummy/nested/vendor/dir/phpDocumentor/phpDocumentor/src/phpDocumentor');
+        $this->assertSame(
+            'vfs://root/dummy/nested/vendor/dir/phpDocumentor/phpDocumentor/src/phpDocumentor/../../../../../../../nested/vendor/dir'
             , $bootstrap->findVendorPath($baseDir)
         );
     }
