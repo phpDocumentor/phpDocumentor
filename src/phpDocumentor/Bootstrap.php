@@ -113,36 +113,70 @@ class Bootstrap
     /**
      * Attempts to find the location of the vendor folder.
      *
-     * This method tries to check for a composer.json in a directory 5 levels below the folder of this Bootstrap file.
+     * This method tries to check for a composer.json in a directory 5 levels shallower than the folder of this file.
      * This is the expected location if phpDocumentor is installed using composer because the current directory for
      * this file is expected to be 'vendor/phpdocumentor/phpdocumentor/src/phpDocumentor'.
+     *
+     * If a composer.json is not found in the aforementioned directory, we search in gradually shallower directories
+     * until we find a composer.json or reach the filesystem root.
      *
      * If a composer.json is found we will try to extract the vendor folder name using the 'vendor-dir' configuration
      * option of composer or assume it is vendor if that option is not set.
      *
+     * If no custom composer.json can be found, then we assume that the vendor folder is that of phpDocumentor itself.
      *
-     * If no custom composer.json can be found, then we assume that the vendor folder is that of phpDocumentor itself,
-     * which is `../../vendor` starting from this folder.
-     *
-     * If neither locations exist, then this method returns null because no vendor path could be found.
+     * If no vendor directory was found, null is returned.
      *
      * @param $baseDir parameter for test purposes only.
      * @return string|null
      */
     public function findVendorPath($baseDir = __DIR__)
     {
-        // default installation
-        $vendorDir = $baseDir . '/../../vendor';
+        $standardRootDir = realpath($baseDir . '/../../../../..');
+        $phpDocumentorVendorDir = realpath($baseDir . '/../../vendor');
 
-        // Composerised installation, vendor/phpdocumentor/phpdocumentor/src/phpDocumentor is __DIR__
-        $rootFolderWhenInstalledWithComposer = $baseDir . '/../../../../../';
-        $composerConfigurationPath           = $rootFolderWhenInstalledWithComposer .'composer.json';
-        if (file_exists($composerConfigurationPath)) {
-            $vendorDir = $rootFolderWhenInstalledWithComposer
-                . $this->getCustomVendorPathFromComposer($composerConfigurationPath);
+        // Are we composer installed with standard vendor-dir in composer.json?
+        $composerJson = $standardRootDir . '/composer.json';
+        if (file_exists($composerJson)) {
+            // e.g. /home/user/my-project/composer.json
+
+            $relativeVendorDir = $this->getCustomVendorPathFromComposer($composerJson);
+
+            if (is_dir($standardRootDir . '/' . $relativeVendorDir)) {
+                // e.g. /home/user/my-project/vendor
+                // or, if vendor-dir is configured in composer.json:
+                //      /home/user/my-project/custom-vendor-dir
+                return $standardRootDir . '/' . $relativeVendorDir;
+            } else {
+                throw new \RuntimeException(
+                    'Found composer.json, but the vendor-dir is missing.'
+                    . " (composer.json found at {$standardRootDir}/composer.json)"
+                    . " (vendor-dir should be at {$standardRootDir}/{$relativeVendorDir})"
+                );
+            }
+        } else if (is_dir($phpDocumentorVendorDir)) {
+            // e.g. /path/to/clone/of/phpDocumentor2/vendor
+            return $phpDocumentorVendorDir;
+        } else { // Look for a composer.json in shallower paths
+            $rootCandidate = $standardRootDir;
+
+            do {
+                // pop a directory level
+                $pathParts = explode('/', $rootCandidate);
+                array_pop($pathParts);
+                $rootCandidate = join('/', $pathParts);
+
+                $composerJson = $rootCandidate . '/composer.json';
+
+                if (file_exists($composerJson)) {
+                    $relativeVendorDir = $this->getCustomVendorPathFromComposer($composerJson);
+
+                    return $rootCandidate . '/' . $relativeVendorDir;
+                }
+            } while (strlen($rootCandidate) > 0);
         }
 
-        return file_exists($vendorDir) ? $vendorDir : null;
+        return null;
     }
 
     /**
