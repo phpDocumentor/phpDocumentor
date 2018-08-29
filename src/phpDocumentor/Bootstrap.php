@@ -154,7 +154,7 @@ class Bootstrap
                     . " (vendor-dir should be at {$standardRootDir}/{$relativeVendorDir})"
                 );
             }
-        } else if (is_dir($phpDocumentorVendorDir)) {
+        } elseif (is_dir($phpDocumentorVendorDir)) {
             // e.g. /path/to/clone/of/phpDocumentor2/vendor
             return $phpDocumentorVendorDir;
         } else { // Look for a composer.json in shallower paths
