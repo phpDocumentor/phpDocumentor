@@ -16,7 +16,8 @@
 {% block sidebar_entry %}
     <li class="{{ type }} {{ item.visibility }}{{ item.parent.name != node.name ? ' inherited' : '' }}">
         <a href="#{{ type }}_{{ item.name }}" title="{{ item.name }} :: {{ item.summary }}">
-            <span class="description">{{ item.summary }}</span><pre>{{ item.name }}</pre>
+            <span class="description">{{ item.name }}</span>
+            <span class="summary">{{ item.summary }}</span>
         </a>
     </li>
 {% endblock %}

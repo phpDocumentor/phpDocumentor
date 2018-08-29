@@ -6,10 +6,7 @@
 
     <!-- Method/Function display name -->
     <xsl:template match="function/name|method/name">
-        <xsl:value-of select="../docblock/description" />
-        <xsl:if test="not(../docblock/description) or ../docblock/description = ''">
-            <xsl:value-of select="." />()
-        </xsl:if>
+        <xsl:value-of select="." />
     </xsl:template>
 
     <xsl:template match="argument/type" mode="signature">
@@ -31,20 +28,16 @@
 
     <xsl:template match="function/name|method/name" mode="signature">
         <xsl:param name="exclude-link" />
-
-        <pre>
-            <xsl:value-of select="."/>
-            <xsl:text>(</xsl:text>
-            <xsl:call-template name="implodeTypesSignature">
+        <xsl:text>(</xsl:text>
+        <xsl:call-template name="implodeTypesSignature">
                 <xsl:with-param name="items" select="../argument"/>
                 <xsl:with-param name="separator" select="', '"/>
                 <xsl:with-param name="exclude-link" select="$exclude-link" />
-            </xsl:call-template>
-            <xsl:text>)&#160;</xsl:text>
-            <xsl:apply-templates select="../docblock/tag[@name='return']" mode="signature">
+        </xsl:call-template>
+        <xsl:text>)&#160;</xsl:text>
+        <xsl:apply-templates select="../docblock/tag[@name='return']" mode="signature">
                 <xsl:with-param name="exclude-link" select="$exclude-link" />
-            </xsl:apply-templates>
-        </pre>
+        </xsl:apply-templates>
     </xsl:template>
 
     <xsl:template match="argument">
@@ -58,71 +51,76 @@
     </xsl:template>
 
     <xsl:template match="function|method" mode="contents">
-        <a id="{local-name(.)}_{name}"></a>
         <xsl:variable name="inherited">
             <xsl:if test="inherited_from"><xsl:value-of select="'inherited'" /></xsl:if>
         </xsl:variable>
 
-        <div class="element clickable {local-name(.)} {@visibility} {local-name(.)}_{name} {$inherited}" data-toggle="collapse" data-target=".{local-name(.)}_{name} .collapse" title="{@visibility}">
-            <h2><xsl:apply-templates select="name" /></h2>
-            <xsl:apply-templates select="name" mode="signature" />
-            <div class="labels">
-                <xsl:if test="docblock/tag[@name='api']">
-                    <span class="label label-info">API</span>
-                </xsl:if>
-                <xsl:if test="inherited_from">
-                    <span class="label">Inherited</span>
-                </xsl:if>
-                <xsl:if test="@static='true' or docblock/tag[@name='static']">
-                    <span class="label">Static</span>
-                </xsl:if>
-            </div>
-
-            <div class="row collapse">
-                <div>
-                    <xsl:attribute name="class">
-                        <xsl:if test="docblock/tag[@name='example']">span4</xsl:if>
-                        <xsl:if test="not(docblock/tag[@name='example'])">detail-description</xsl:if>
-                    </xsl:attribute>
-
-                    <div class="long_description">
-                        <xsl:value-of select="php:function('phpDocumentor\Plugin\Core\Xslt\Extension::markdown', string(docblock/long-description))" disable-output-escaping="yes" />
-                    </div>
-
-                    <xsl:if test="count(docblock/tag[@name != 'return' and @name != 'param' and @name != 'throws' and @name != 'throw']) > 0">
-                        <table class="table table-bordered">
-                            <xsl:apply-templates select="docblock/tag[@name != 'return' and @name != 'param' and @name != 'throws' and @name != 'throw']" mode="tabular" />
-                        </table>
+        <div class="element clickable {local-name(.)} {@visibility} {local-name(.)}_{name} {$inherited}"  title="{@visibility}">
+            <details>
+                <summary>
+                    <h2>
+                        <a id="{local-name(.)}_{name}">
+                            <xsl:apply-templates select="name" />
+                        </a>
+                    </h2>
+                    <xsl:apply-templates select="name" mode="signature" />
+                    <div class="summary"><xsl:value-of select="docblock/description" /></div>
+                </summary>
+                <div class="labels">
+                    <xsl:if test="docblock/tag[@name='api']">
+                            <span class="label label-info">API</span>
                     </xsl:if>
-
-                    <xsl:if test="count(argument) > 0">
-                    <h3>Parameters</h3>
-                        <xsl:apply-templates select="argument" />
+                    <xsl:if test="inherited_from">
+                            <span class="label">Inherited</span>
                     </xsl:if>
-
-                    <xsl:if test="count(docblock/tag[@name = 'throws' or @name = 'throw']) > 0">
-                        <h3>Exceptions</h3>
-                        <table class="table table-bordered">
-                            <xsl:apply-templates select="docblock/tag[@name = 'throws' and @name != 'throw']" mode="tabular" />
-                        </table>
-                    </xsl:if>
-
-                    <xsl:if test="docblock/tag[@name='return' and @type != 'void']">
-                        <h3>Returns</h3>
-                        <xsl:apply-templates select="docblock/tag[@name='return' and @type != 'void']" mode="contents"/>
+                    <xsl:if test="@static='true' or docblock/tag[@name='static']">
+                            <span class="label">Static</span>
                     </xsl:if>
                 </div>
-                <xsl:if test="docblock/tag[@name='example']">
-                    <div class="span4">
-                        <h3>Examples</h3>
-                        <xsl:for-each select="docblock/tag[@name='example']">
-                            <pre class="prettyprint linenums">
-                                <xsl:value-of select="."/>
-                            </pre>
-                        </xsl:for-each>
+
+                <div class="row">
+                    <div>
+                        <xsl:attribute name="class">
+                            <xsl:if test="docblock/tag[@name='example']">span4</xsl:if>
+                            <xsl:if test="not(docblock/tag[@name='example'])">detail-description</xsl:if>
+                        </xsl:attribute>
+                        <div class="long_description">
+                            <xsl:value-of select="php:function('phpDocumentor\Plugin\Core\Xslt\Extension::markdown', string(docblock/long-description))" disable-output-escaping="yes" />
+                        </div>
+                        <xsl:if test="count(argument) > 0">
+                            <h3>Parameters</h3>
+                            <xsl:apply-templates select="argument" />
+                        </xsl:if>
+                        <xsl:if test="docblock/tag[@name='return' and @type != 'void']">
+                            <h3>Returns</h3>
+                            <xsl:apply-templates select="docblock/tag[@name='return' and @type != 'void']" mode="contents"/>
+                        </xsl:if>
+
+                        <xsl:if test="count(docblock/tag[@name != 'return' and @name != 'param' and @name != 'throws' and @name != 'throw']) > 0">
+                            <table class="table table-bordered">
+                                <xsl:apply-templates select="docblock/tag[@name != 'return' and @name != 'param' and @name != 'throws' and @name != 'throw']" mode="tabular" />
+                            </table>
+                        </xsl:if>
+
+                        <xsl:if test="count(docblock/tag[@name = 'throws' or @name = 'throw']) > 0">
+                            <h3>Exceptions</h3>
+                            <table class="table table-bordered">
+                                <xsl:apply-templates select="docblock/tag[@name = 'throws' and @name != 'throw']" mode="tabular" />
+                            </table>
+                        </xsl:if>
                     </div>
-                </xsl:if>
-            </div>
+                    <xsl:if test="docblock/tag[@name='example']">
+                        <div class="span4">
+                            <h3>Examples</h3>
+                            <xsl:for-each select="docblock/tag[@name='example']">
+                                <pre class="prettyprint linenums">
+                                    <xsl:value-of select="."/>
+                                </pre>
+                            </xsl:for-each>
+                        </div>
+                    </xsl:if>
+                </div>
+            </details>
         </div>
     </xsl:template>
 

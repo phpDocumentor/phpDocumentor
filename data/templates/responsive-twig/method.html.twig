@@ -1,9 +1,24 @@
 {% import 'base/macros.html.twig' as macros %}
 
-                            <div class="row collapse">
+                            <div class="row">
                                 <div class="detail-description">
                                     <div class="long_description">{{ method.description|markdown|raw }}</div>
 
+                                    {% if method.arguments|length > 0 %}
+                                        <h3>Arguments</h3>
+                                        {% for argument in method.arguments %}
+                                            <div class="subelement argument">
+                                                <h4>{{ argument.name }}</h4>
+                                                <code>{{ argument.types|route|join('|')|raw }}</code><p>{{ argument.description|markdown|raw }}</p>
+                                            </div>
+                                        {% endfor %}
+                                    {% endif %}
+
+                                    {% if method.response.types and method.response.types|join() != 'void' %}
+                                        <h3>Response</h3>
+                                        <code>{{ method.response.types|route|join('|')|raw }}</code><p>{{ method.response.description|markdown|raw }}</p>
+                                    {% endif %}
+																		
                                     <table class="table">
                                         {% for tagList in method.tags if tagList.0.name not in ['param', 'return', 'api', 'throws', 'throw'] %}
                                             <tr>
@@ -41,20 +56,5 @@
                                             </tr>
                                         {% endif %}
                                     </table>
-
-                                    {% if method.arguments|length > 0 %}
-                                        <h3>Arguments</h3>
-                                        {% for argument in method.arguments %}
-                                            <div class="subelement argument">
-                                                <h4>{{ argument.name }}</h4>
-                                                <code>{{ argument.types|route|join('|')|raw }}</code><p>{{ argument.description|markdown|raw }}</p>
-                                            </div>
-                                        {% endfor %}
-                                    {% endif %}
-
-                                    {% if method.response.types and method.response.types|join() != 'void' %}
-                                        <h3>Response</h3>
-                                        <code>{{ method.response.types|route|join('|')|raw }}</code><p>{{ method.response.description|markdown|raw }}</p>
-                                    {% endif %}
                                 </div>
                             </div>

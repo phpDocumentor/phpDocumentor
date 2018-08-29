@@ -100,20 +100,23 @@
                 <xsl:if test="inherited_from">inherited</xsl:if>
             </xsl:attribute>
 
-			<xsl:variable name="tooltip">
-			    <xsl:value-of select="name"/>
-				<xsl:text>()</xsl:text>
-				<xsl:if test="docblock/description">
-					<xsl:text> :: </xsl:text>
-					<xsl:value-of select="docblock/description"/>
-				</xsl:if>	
-			</xsl:variable>
+            <xsl:variable name="tooltip">
+                <xsl:value-of select="name"/>
+                <xsl:text>()</xsl:text>
+                <xsl:if test="docblock/description">
+                    <xsl:text> :: </xsl:text>
+                    <xsl:value-of select="docblock/description"/>
+                </xsl:if>	
+            </xsl:variable>
 
             <a href="#{local-name(.)}_{translate(name, '$', '')}" title="{$tooltip}">
                 <xsl:variable name="desc">
                     <xsl:apply-templates select="name" />
                 </xsl:variable>
                 <span class="description">
+                    <xsl:value-of select="name" /><xsl:if test="local-name() = 'method'">()</xsl:if>
+                </span>
+                <span class="summary">
                     <xsl:choose>
                         <xsl:when test="name()='property'">
                             <xsl:value-of select="substring-after(substring-before(string($desc), '&lt;/p&gt;'), '&lt;p&gt;')"/>
@@ -123,7 +126,6 @@
                         </xsl:otherwise>
                     </xsl:choose>
                 </span>
-                <pre><xsl:value-of select="name" /><xsl:if test="local-name() = 'method'">()</xsl:if></pre>
             </a>
         </li>
     </xsl:template>
@@ -143,6 +145,9 @@
                     <xsl:apply-templates select="name" />
                 </xsl:variable>
                 <span class="description">
+                    <xsl:value-of select="name" /><xsl:if test="local-name() = 'method'">()</xsl:if>
+                </span>
+                <span class="summary">
                     <xsl:choose>
                         <xsl:when test="name()='property'">
                             <xsl:value-of select="substring-after(substring-before(string($desc), '&lt;/p&gt;'), '&lt;p&gt;')"/>
@@ -152,7 +157,6 @@
                         </xsl:otherwise>
                     </xsl:choose>
                 </span>
-                <pre><xsl:value-of select="name" /><xsl:if test="local-name() = 'method'">()</xsl:if></pre>
             </a>
         </li>
     </xsl:template>
