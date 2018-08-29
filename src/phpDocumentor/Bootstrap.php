@@ -132,8 +132,8 @@ class Bootstrap
      */
     public function findVendorPath($baseDir = __DIR__)
     {
-        $standardRootDir = realpath($baseDir . '/../../../../..');
-        $phpDocumentorVendorDir = realpath($baseDir . '/../../vendor');
+        $standardRootDir = $baseDir . '/../../../../..';
+        $phpDocumentorVendorDir = $baseDir . '/../../vendor';
 
         // Are we composer installed with standard vendor-dir in composer.json?
         $composerJson = $standardRootDir . '/composer.json';
@@ -161,10 +161,7 @@ class Bootstrap
             $rootCandidate = $standardRootDir;
 
             do {
-                // pop a directory level
-                $pathParts = explode('/', $rootCandidate);
-                array_pop($pathParts);
-                $rootCandidate = join('/', $pathParts);
+                $rootCandidate = "{$rootCandidate}/..";
 
                 $composerJson = $rootCandidate . '/composer.json';
 
@@ -173,7 +170,7 @@ class Bootstrap
 
                     return $rootCandidate . '/' . $relativeVendorDir;
                 }
-            } while (strlen($rootCandidate) > 0);
+            } while (is_dir($rootCandidate));
         }
 
         return null;
