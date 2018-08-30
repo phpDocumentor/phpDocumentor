@@ -131,12 +131,12 @@ class BootstrapTest extends PHPUnit_Framework_TestCase
             }
         ')->at($root->getChild('dummy'));
 
+        $autoloadPhpContent = 'autoloader';
+        vfsStream::newFile('autoload.php')->withContent($autoloadPhpContent)->at($root->getChild('root/dummy/nested/vendor/dir'));
+
         $bootstrap = Bootstrap::createInstance();
         $baseDir = vfsStream::url('root/dummy/nested/vendor/dir/phpDocumentor/phpDocumentor/src/phpDocumentor');
-        $this->assertSame(
-            'vfs://root/dummy/nested/vendor/dir/phpDocumentor/phpDocumentor/src/phpDocumentor/../../../../../../../nested/vendor/dir'
-            , $bootstrap->findVendorPath($baseDir)
-        );
+        $this->assertSame($autoloadPhpContent, file_get_contents($bootstrap->findVendorPath($baseDir) . '/autoload.php'));
     }
 
     /**
