@@ -147,33 +147,33 @@ class Bootstrap
                 // or, if vendor-dir is configured in composer.json:
                 //      /home/user/my-project/custom-vendor-dir
                 return $standardRootDir . '/' . $relativeVendorDir;
-            } else {
-                throw new \RuntimeException(
-                    'Found composer.json, but the vendor-dir is missing.'
-                    . " (composer.json found at {$standardRootDir}/composer.json)"
-                    . " (vendor-dir should be at {$standardRootDir}/{$relativeVendorDir})"
-                );
             }
+            throw new \RuntimeException(
+                'Found composer.json, but the vendor-dir is missing.'
+                . " (composer.json found at {$standardRootDir}/composer.json)"
+                . " (vendor-dir should be at {$standardRootDir}/{$relativeVendorDir})"
+            );
         } elseif (is_dir($phpDocumentorVendorDir)) {
             // e.g. /path/to/clone/of/phpDocumentor2/vendor
             return $phpDocumentorVendorDir;
-        } else { // Look for a composer.json in shallower paths
-            $rootCandidate = $standardRootDir;
-
-            do {
-                $rootCandidate = "{$rootCandidate}/..";
-
-                $composerJson = $rootCandidate . '/composer.json';
-
-                if (file_exists($composerJson)) {
-                    $relativeVendorDir = $this->getCustomVendorPathFromComposer($composerJson);
-
-                    return $rootCandidate . '/' . $relativeVendorDir;
-                }
-            } while (is_dir($rootCandidate)
-                && substr_count($rootCandidate, '/..') <= substr_count($rootCandidate, '/') / 2
-            );
         }
+
+        // Look for a composer.json in shallower paths
+        $rootCandidate = $standardRootDir;
+
+        do {
+            $rootCandidate = "{$rootCandidate}/..";
+
+            $composerJson = $rootCandidate . '/composer.json';
+
+            if (file_exists($composerJson)) {
+                $relativeVendorDir = $this->getCustomVendorPathFromComposer($composerJson);
+
+                return $rootCandidate . '/' . $relativeVendorDir;
+            }
+        } while (is_dir($rootCandidate)
+            && substr_count($rootCandidate, '/..') <= substr_count($rootCandidate, '/') / 2
+        );
 
         return null;
     }
