@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Application\Builder;
 
 use phpDocumentor\Descriptor\Builder\AssemblerFactory;
+use phpDocumentor\Descriptor\Builder\Matcher;
 use phpDocumentor\Descriptor\Builder\Reflector\ArgumentAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\ClassAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\ConstantAssembler;
@@ -72,114 +73,35 @@ final class AssemblerFactoryFactory
     public static function create(ExampleFinder $exampleFinder): AssemblerFactory
     {
         $factory = new AssemblerFactory();
-        // @codingStandardsIgnoreStart because we limit the verbosity by making all closures single-line
-        $fileMatcher = function ($criteria) {
-            return $criteria instanceof File;
-        };
-        $constantMatcher = function ($criteria) {
-            return $criteria instanceof Constant; // || $criteria instanceof ClassConstant;
-        };
-        $traitMatcher = function ($criteria) {
-            return $criteria instanceof Trait_;
-        };
-        $classMatcher = function ($criteria) {
-            return $criteria instanceof Class_;
-        };
-        $interfaceMatcher = function ($criteria) {
-            return $criteria instanceof Interface_;
-        };
-        $propertyMatcher = function ($criteria) {
-            return $criteria instanceof Property;
-        };
-        $methodMatcher = function ($criteria) {
-            return $criteria instanceof Method;
-        };
-        $argumentMatcher = function ($criteria) {
-            return $criteria instanceof Argument;
-        };
-        $functionMatcher = function ($criteria) {
-            return $criteria instanceof Function_;
-        };
-        $namespaceMatcher = function ($criteria) {
-            return $criteria instanceof Namespace_;
-        };
-
-        $authorMatcher = function ($criteria) {
-            return $criteria instanceof Author;
-        };
-        $deprecatedMatcher = function ($criteria) {
-            return $criteria instanceof Deprecated;
-        };
-        $exampleMatcher = function ($criteria) {
-            return $criteria instanceof Example;
-        };
-        $linkMatcher = function ($criteria) {
-            return $criteria instanceof Link;
-        };
-        $methodTagMatcher = function ($criteria) {
-            return $criteria instanceof Tags\Method;
-        };
-        $propertyTagMatcher = function ($criteria) {
-            return $criteria instanceof Tags\Property;
-        };
-        $paramMatcher = function ($criteria) {
-            return $criteria instanceof Param;
-        };
-        $throwsMatcher = function ($criteria) {
-            return $criteria instanceof Throws;
-        };
-        $returnMatcher = function ($criteria) {
-            return $criteria instanceof Return_;
-        };
-        $usesMatcher = function ($criteria) {
-            return $criteria instanceof Uses;
-        };
-        $seeMatcher = function ($criteria) {
-            return $criteria instanceof See;
-        };
-        $sinceMatcher = function ($criteria) {
-            return $criteria instanceof Since;
-        };
-        $varMatcher = function ($criteria) {
-            return $criteria instanceof Var_;
-        };
-        $versionMatcher = function ($criteria) {
-            return $criteria instanceof Version;
-        };
-
-        $tagFallbackMatcher = function ($criteria) {
-            return $criteria instanceof Tag;
-        };
-        // @codingStandardsIgnoreEnd
-
         $argumentAssembler = new ArgumentAssembler();
-        $factory->register($fileMatcher, new FileAssembler());
-        $factory->register($constantMatcher, new ConstantAssembler());
-        $factory->register($traitMatcher, new TraitAssembler());
-        $factory->register($classMatcher, new ClassAssembler());
-        $factory->register($interfaceMatcher, new InterfaceAssembler());
-        $factory->register($propertyMatcher, new PropertyAssembler());
-        $factory->register($argumentMatcher, $argumentAssembler);
-        $factory->register($methodMatcher, new MethodAssembler($argumentAssembler));
-        $factory->register($functionMatcher, new FunctionAssembler($argumentAssembler));
-        $factory->register($namespaceMatcher, new NamespaceAssembler());
 
-        $factory->register($authorMatcher, new AuthorAssembler());
-        $factory->register($deprecatedMatcher, new DeprecatedAssembler());
-        $factory->register($exampleMatcher, new ExampleAssembler($exampleFinder));
-        $factory->register($linkMatcher, new LinkAssembler());
-        $factory->register($methodTagMatcher, new MethodTagAssembler());
-        $factory->register($propertyTagMatcher, new PropertyTagAssembler());
-        $factory->register($varMatcher, new VarAssembler());
-        $factory->register($paramMatcher, new ParamAssembler());
-        $factory->register($throwsMatcher, new ThrowsAssembler());
-        $factory->register($returnMatcher, new ReturnAssembler());
-        $factory->register($usesMatcher, new UsesAssembler());
-        $factory->register($seeMatcher, new SeeAssembler());
-        $factory->register($sinceMatcher, new SinceAssembler());
-        $factory->register($versionMatcher, new VersionAssembler());
+        $factory->register(Matcher::forType(File::class), new FileAssembler());
+        $factory->register(Matcher::forType(Constant::class), new ConstantAssembler());
+        $factory->register(Matcher::forType(Trait_::class), new TraitAssembler());
+        $factory->register(Matcher::forType(Class_::class), new ClassAssembler());
+        $factory->register(Matcher::forType(Interface_::class), new InterfaceAssembler());
+        $factory->register(Matcher::forType(Property::class), new PropertyAssembler());
+        $factory->register(Matcher::forType(Argument::class), $argumentAssembler);
+        $factory->register(Matcher::forType(Method::class), new MethodAssembler($argumentAssembler));
+        $factory->register(Matcher::forType(Function_::class), new FunctionAssembler($argumentAssembler));
+        $factory->register(Matcher::forType(Namespace_::class), new NamespaceAssembler());
 
-        $factory->registerFallback($tagFallbackMatcher, new GenericTagAssembler());
+        $factory->register(Matcher::forType(Author::class), new AuthorAssembler());
+        $factory->register(Matcher::forType(Deprecated::class), new DeprecatedAssembler());
+        $factory->register(Matcher::forType(Example::class), new ExampleAssembler($exampleFinder));
+        $factory->register(Matcher::forType(Link::class), new LinkAssembler());
+        $factory->register(Matcher::forType(Tags\Method::class), new MethodTagAssembler());
+        $factory->register(Matcher::forType(Tags\Property::class), new PropertyTagAssembler());
+        $factory->register(Matcher::forType(Var_::class), new VarAssembler());
+        $factory->register(Matcher::forType(Param::class), new ParamAssembler());
+        $factory->register(Matcher::forType(Throws::class), new ThrowsAssembler());
+        $factory->register(Matcher::forType(Return_::class), new ReturnAssembler());
+        $factory->register(Matcher::forType(Uses::class), new UsesAssembler());
+        $factory->register(Matcher::forType(See::class), new SeeAssembler());
+        $factory->register(Matcher::forType(Since::class), new SinceAssembler());
+        $factory->register(Matcher::forType(Version::class), new VersionAssembler());
+
+        $factory->registerFallback(Matcher::forType(Tag::class), new GenericTagAssembler());
 
         return $factory;
     }
