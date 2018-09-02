@@ -33,49 +33,30 @@ by Scott Chacon and/or [this help page of GitHub][GITHUB_HELP_PR].
 Setting Up Your Development Environment
 ---------------------------------------
 
-### Using Docker
-
 You need the following:
 
-- Composer
 - Git
-- Docker
-- Docker Machine
+- Composer (https://getcomposer.org)
+- Phive (https://phar.io)
+- Docker (https://docker.com), including Docker Compose
 
 Once you cloned the repository you should be able to run the following commands to get started
 
-`$ composer install`
-`$ docker-machine run phpdoc`
+    $ composer install
+    $ phive install
+    $ docker-compose run phpdoc
 
 To run the tests you can use the following command:
 
-`$ docker-machine run phpunit`
+    $ docker-compose run phpunit
 
 Before issuing a pull request it is also recommended to run the following commands:
 
-`$ docker-machine run phpcs`
-`$ docker-machine run phpstan`
+    $ docker-compose run phpcs
+    $ docker-compose run phpstan
 
 These command will check the quality of your code; this is also done by Travis during the pull request process but
 performing these checks yourself will help getting your pull request merged.
-
-### On your local machine
-
-You need the following:
-
-- Composer
-- Git
-- Curl and PHP's Curl extension
-- PHP's XSL extension and
-- PHP's intl extension
-
-Once you cloned the repository you should be able to run the following commands to get started
-
-`$ composer install`
-`$ php bin/phpunit`
-`$ php bin/behat`
-
-Both behat and phpunit tests should pass without issues.
 
 Coding Standards
 ----------------
@@ -85,11 +66,7 @@ phpDocumentor uses the [PSR-2 Coding Standard][PSR2] as defined by the
 
 It is recommended to check your code using phpCodeSniffer using the *PSR2* standard using the following command:
 
-    $ ./bin/phpcs --standard=PSR2 .
-
-or using Docker:
-
-    $ docker-machine run phpcs
+    $ docker-compose run phpcs
 
 Unit testing
 ------------
@@ -99,11 +76,7 @@ unit tests in your pull requests as they also help understand what the contribut
 
 In order to run the unit tests you can execute the following command from your phpDocumentor folder:
 
-    ./bin/phpunit
-
-or using Docker:
-
-    $ docker-machine run phpunit
+    $ docker-compose run phpunit
 
 [PROGIT]:             http://git-scm.com/book
 [GITHUB_HELP_PR]:     https://help.github.com/articles/using-pull-requests

@@ -5,7 +5,7 @@ phpunit:
   build: docker/with-xdebug
   volumes: [".:/opt/phpdoc"]
   working_dir: "/opt/phpdoc"
-  command: ["./bin/phpunit"]
+  command: ["./tools/phpunit"]
 
 behat:
   build: docker/with-xdebug
