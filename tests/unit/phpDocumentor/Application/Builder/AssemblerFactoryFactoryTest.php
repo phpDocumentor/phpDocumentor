@@ -28,6 +28,8 @@ final class AssemblerFactoryFactoryTest extends \PHPUnit\Framework\TestCase
 
     public function provideAssemblerPerCriteria()
     {
-        return ['a', 'a'];
+        return [
+            ['a', 'a']
+        ];
     }
 }
