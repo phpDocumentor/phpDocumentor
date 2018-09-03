@@ -82,7 +82,7 @@ services:
 
     phpDocumentor\Parser\Middleware\:
         resource: '../src/phpDocumentor/Parser/Middleware'
-        tags: [phpdoc.parser.middleware]
+        tags: [ { name: 'phpdoc.parser.middleware', priority: 1000 } ]
 
     phpDocumentor\Transformer\:
       resource: '../src/phpDocumentor/Transformer'
@@ -180,10 +180,19 @@ services:
 
     phpDocumentor\Transformer\Router\StandardRouter: ~
 
+    phpDocumentor\Parser\Middleware\StopwatchMiddleware:
+      tags: [ { name: 'phpdoc.parser.middleware', priority: 5000 } ]
+
     phpDocumentor\Parser\Middleware\CacheMiddleware:
       arguments:
         $dataStore: '@Stash\Pool'
-      tags: [phpdoc.parser.middleware]
+      tags: [ { name: 'phpdoc.parser.middleware', priority: 4000 } ]
+
+    phpDocumentor\Parser\Middleware\ErrorHandlingMiddleware:
+      tags: [ { name: 'phpdoc.parser.middleware', priority: 3000 } ]
+
+    phpDocumentor\Parser\Middleware\EmittingMiddleware:
+      tags: [ { name: 'phpdoc.parser.middleware', priority: 0 } ]
 
     ###################################################################################
     ## Autoloading definitions for external services ##################################
