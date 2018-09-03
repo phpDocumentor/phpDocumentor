@@ -1,7 +1,9 @@
+imports:
+  - { resource: 'pipelines.yaml' }
+
 parameters:
     locale: 'en'
     secret: ThisIsVerySecret!
-
 
     linker.substitutions:
       'phpDocumentor\Descriptor\ProjectDescriptor': ['files']
@@ -60,44 +62,12 @@ services:
         bind:
           Zend\Cache\Storage\StorageInterface: '@Zend\Cache\Storage\Adapter\Filesystem'
 
-
 #    phpDocumentor\:
 #        resource: '../src/phpDocumentor/*'
 #        exclude: '../src/phpDocumentor/**/Messages'
 
     phpDocumentor\Application:
         public: true
-
-    phpdoc.application.pipeline:
-      class: 'League\Pipeline\Pipeline'
-      factory: ['phpDocumentor\Application\PipelineFactory', create]
-      arguments: ['@phpDocumentor\Application\Stage\Configure']
-
-    phpdoc.command.run.pipeline:
-      class: 'League\Pipeline\Pipeline'
-      factory: ['phpDocumentor\Application\PipelineFactory', create]
-      arguments: ['@phpdoc.application.pipeline', '@phpdoc.parse.pipeline.internal', '@phpdoc.transform.pipeline.internal']
-
-    phpdoc.command.parse.pipeline:
-      class: 'League\Pipeline\Pipeline'
-      factory: ['phpDocumentor\Application\PipelineFactory', create]
-      arguments: ['@phpdoc.application.pipeline', '@phpdoc.parse.pipeline.internal']
-
-    phpdoc.parse.pipeline.internal:
-      class: 'League\Pipeline\Pipeline'
-      factory: ['phpDocumentor\Application\PipelineFactory', create]
-      arguments: ['@phpDocumentor\Application\Stage\Parser\ConfigureCache', '@phpDocumentor\Application\Stage\Parser']
-
-    phpdoc.command.transform.pipeline:
-      class: 'League\Pipeline\Pipeline'
-      factory: ['phpDocumentor\Application\PipelineFactory', create]
-      arguments: ['@phpdoc.application.pipeline', '@phpdoc.transform.pipeline.internal']
-
-    phpdoc.transform.pipeline.internal:
-      class: 'League\Pipeline\Pipeline'
-      factory: ['phpDocumentor\Application\PipelineFactory', create]
-      arguments: ['@phpDocumentor\Application\Stage\Parser\ConfigureCache', '@phpDocumentor\Application\Stage\Transform']
-
 
     phpDocumentor\Application\Console\:
       resource: '../src/phpDocumentor/Application/Console'
@@ -188,10 +158,10 @@ services:
             - [insert, ['@phpDocumentor\Transformer\Router\StandardRouter', 10000]]
             - [insert, ['@phpDocumentor\Transformer\Router\ExternalRouter', 10500]]
 
-
     phpDocumentor\Transformer\Template\PathResolver:
       class: 'phpDocumentor\Transformer\Template\PathResolver'
-      factory: ['phpDocumentor\Application\Transformer\Template\PathResolverFactory', create]
+      arguments:
+        - "@=service('phpDocumentor\\\\Application').templateDirectory()"
 
     phpDocumentor\Translator\Translator:
       public: true
@@ -201,7 +171,12 @@ services:
 
     phpDocumentor\Reflection\DocBlock\ExampleFinder: ~
 
-    #External Services
+    phpDocumentor\Infrastructure\JmsSerializer\FileCache:
+      arguments:
+        ['%kernel.cache_dir%/jms_serializer']
+
+
+    # External Services
     League\Flysystem\MountManager: ~
     Zend\Cache\Storage\Adapter\Filesystem:
       class: 'Zend\Cache\Storage\Adapter\Filesystem'
@@ -211,7 +186,13 @@ services:
       class: 'Parsedown'
       factory: ['Parsedown', 'instance']
 
-    #legacy service definitions
+    jms_serializer.metadata_factory:
+        class: Metadata\MetadataFactory
+        arguments: ['@jms_serializer.metadata.chain_driver', 'Metadata\ClassHierarchyMetadata', '%kernel.debug%']
+        calls:
+            - [setCache, ['@phpDocumentor\Infrastructure\JmsSerializer\FileCache']]
+
+    # Legacy service definitions
     compiler:
       alias: phpDocumentor\Compiler\Compiler
       public: true
@@ -238,14 +219,3 @@ services:
     transformer.writer.collection:
       alias: phpDocumentor\Transformer\Writer\Collection
       public: true
-
-    phpDocumentor\Infrastructure\JmsSerializer\FileCache:
-      arguments:
-        ['%kernel.cache_dir%/jms_serializer']
-
-
-    jms_serializer.metadata_factory:
-        class: Metadata\MetadataFactory
-        arguments: ['@jms_serializer.metadata.chain_driver', 'Metadata\ClassHierarchyMetadata', '%kernel.debug%']
-        calls:
-            - [setCache, ['@phpDocumentor\Infrastructure\JmsSerializer\FileCache']]

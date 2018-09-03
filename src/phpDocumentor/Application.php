@@ -37,6 +37,19 @@ class Application extends Cilex
         return trim(file_get_contents(__DIR__ . '/../../VERSION'));
     }
 
+    public static function templateDirectory(): string
+    {
+        $templateDir = __DIR__ . '/../../data/templates';
+
+        // when installed using composer the templates are in a different folder
+        $composerTemplatePath = __DIR__ . '/../../../templates';
+        if (file_exists($composerTemplatePath)) {
+            $templateDir = $composerTemplatePath;
+        }
+
+        return $templateDir;
+    }
+
     /**
      * Initializes all components used by phpDocumentor.
      */
