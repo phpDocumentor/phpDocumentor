@@ -68,7 +68,9 @@ services:
 
 #    phpDocumentor\:
 #        resource: '../src/phpDocumentor/*'
-#        exclude: '../src/phpDocumentor/**/Messages'
+#        exclude:
+#          - '../src/phpDocumentor/**/Messages'
+#          - '../src/phpDocumentor/Transformer/**/{Event, Exception}/{**, PathResolver.php}'
 
     phpDocumentor\Application\Console\:
       resource: '../src/phpDocumentor/Application/Console'
@@ -78,7 +80,6 @@ services:
 
     phpDocumentor\Application\Stage\:
         resource: '../src/phpDocumentor/Application/Stage'
-        public: true
 
     phpDocumentor\Parser\Middleware\:
         resource: '../src/phpDocumentor/Parser/Middleware'
@@ -226,20 +227,10 @@ services:
     ## Service aliases for backwards compatibility ####################################
     ###################################################################################
 
-    compiler:
-      alias: phpDocumentor\Compiler\Compiler
-      public: true
-
-    parser:
-      alias: phpDocumentor\Parser\Parser
-      public: true
-
-    markdown:
-      alias: '@Parsedown'
-
-    descriptor.builder:
-      alias: phpDocumentor\Descriptor\ProjectDescriptorBuilder
-      public: true
+    compiler: '@phpDocumentor\Compiler\Compiler'
+    parser: '@phpDocumentor\Parser\Parser'
+    markdown: '@Parsedown'
+    descriptor.builder: '@phpDocumentor\Descriptor\ProjectDescriptorBuilder'
 
     translator:
       alias: phpDocumentor\Translator\Translator
