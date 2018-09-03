@@ -20,6 +20,7 @@ use phpDocumentor\Reflection\Middleware\Command;
 use phpDocumentor\Reflection\Middleware\Middleware;
 use phpDocumentor\Reflection\Php\Factory\File\CreateCommand;
 use phpDocumentor\Reflection\Php\File;
+use Stash\Interfaces\PoolInterface;
 use Stash\Item;
 use Stash\Pool;
 
@@ -42,7 +43,7 @@ final class CacheMiddleware implements Middleware
      */
     private $parser;
 
-    public function __construct(Pool $dataStore, Parser $parser)
+    public function __construct(PoolInterface $dataStore, Parser $parser)
     {
         $this->dataStore = $dataStore;
         $this->parser = $parser;

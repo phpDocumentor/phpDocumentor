@@ -153,7 +153,6 @@ services:
             - [insert, ['@phpDocumentor\Transformer\Transformer', !php/const \phpDocumentor\Transformer\Transformer::COMPILER_PRIORITY]]
 
     phpDocumentor\Parser\Middleware\CacheMiddleware:
-       factory: 'phpDocumentor\Application\Parser\CacheFactory:create'
        tags: [phpdoc.parser.middleware]
 
     phpDocumentor\Reflection\ProjectFactory:
@@ -189,13 +188,20 @@ services:
     ## Autoloading definitions for external services ##################################
     ###################################################################################
 
+    Stash\Driver\FileSystem:
+      arguments: [ { path: 'build/api-cache' } ]
+
+    Stash\Interfaces\PoolInterface:
+      class: Stash\Pool
+
     League\Flysystem\MountManager: ~
+
     Zend\Cache\Storage\Adapter\Filesystem:
-      class: 'Zend\Cache\Storage\Adapter\Filesystem'
+      class: Zend\Cache\Storage\Adapter\Filesystem
       factory: ['phpDocumentor\Infrastructure\Cache\ZendCacheFactory', create]
 
     Parsedown:
-      class: 'Parsedown'
+      class: Parsedown
       factory: ['Parsedown', 'instance']
 
     jms_serializer.metadata_factory:
