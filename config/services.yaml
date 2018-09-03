@@ -82,7 +82,6 @@ services:
 
     phpDocumentor\Parser\Middleware\:
         resource: '../src/phpDocumentor/Parser/Middleware'
-        exclude: '../src/phpDocumentor/Parser/Middleware/CacheMiddleware.php'
         tags: [phpdoc.parser.middleware]
 
     phpDocumentor\Transformer\:
@@ -131,29 +130,26 @@ services:
         arguments: [!tagged phpdoc.config_stategy]
 
     phpDocumentor\Application\Stage\Parser:
-        arguments:
-          $fileCollector: '@phpDocumentor\Infrastructure\Parser\FlySystemCollector'
+      arguments:
+        $fileCollector: '@phpDocumentor\Infrastructure\Parser\FlySystemCollector'
 
     phpDocumentor\Compiler\Linker\Linker:
       arguments: ['%linker.substitutions%']
 
     phpDocumentor\Compiler\Compiler:
-        calls:
-            - [insert, ['@phpDocumentor\Compiler\Pass\ElementsIndexBuilder', !php/const \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::COMPILER_PRIORITY]]
-            - [insert, ['@phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor', !php/const \phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor::COMPILER_PRIORITY]]
-            - [insert, ['@phpDocumentor\Compiler\Pass\ExampleTagsEnricher', !php/const \phpDocumentor\Compiler\Pass\ExampleTagsEnricher::COMPILER_PRIORITY]]
-            - [insert, ['@phpDocumentor\Compiler\Pass\PackageTreeBuilder', !php/const \phpDocumentor\Compiler\Pass\PackageTreeBuilder::COMPILER_PRIORITY]]
-            - [insert, ['@phpDocumentor\Compiler\Pass\NamespaceTreeBuilder', !php/const \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::COMPILER_PRIORITY]]
-            - [insert, ['@phpDocumentor\Compiler\Pass\ClassTreeBuilder', !php/const \phpDocumentor\Compiler\Pass\ClassTreeBuilder::COMPILER_PRIORITY]]
-            - [insert, ['@phpDocumentor\Compiler\Pass\InterfaceTreeBuilder', !php/const \phpDocumentor\Compiler\Pass\InterfaceTreeBuilder::COMPILER_PRIORITY]]
-            - [insert, ['@phpDocumentor\Compiler\Pass\ResolveInlineLinkAndSeeTags', !php/const \phpDocumentor\Compiler\Pass\ResolveInlineLinkAndSeeTags::COMPILER_PRIORITY]]
-            - [insert, ['@phpDocumentor\Compiler\Pass\ResolveInlineMarkers', !php/const \phpDocumentor\Compiler\Pass\ResolveInlineMarkers::COMPILER_PRIORITY]]
-            - [insert, ['@phpDocumentor\Compiler\Pass\Debug', !php/const \phpDocumentor\Compiler\Pass\Debug::COMPILER_PRIORITY]]
-            - [insert, ['@phpDocumentor\Compiler\Linker\Linker', !php/const \phpDocumentor\Compiler\Linker\Linker::COMPILER_PRIORITY]]
-            - [insert, ['@phpDocumentor\Transformer\Transformer', !php/const \phpDocumentor\Transformer\Transformer::COMPILER_PRIORITY]]
-
-    phpDocumentor\Parser\Middleware\CacheMiddleware:
-       tags: [phpdoc.parser.middleware]
+      calls:
+          - [insert, ['@phpDocumentor\Compiler\Pass\ElementsIndexBuilder', !php/const \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::COMPILER_PRIORITY]]
+          - [insert, ['@phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor', !php/const \phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor::COMPILER_PRIORITY]]
+          - [insert, ['@phpDocumentor\Compiler\Pass\ExampleTagsEnricher', !php/const \phpDocumentor\Compiler\Pass\ExampleTagsEnricher::COMPILER_PRIORITY]]
+          - [insert, ['@phpDocumentor\Compiler\Pass\PackageTreeBuilder', !php/const \phpDocumentor\Compiler\Pass\PackageTreeBuilder::COMPILER_PRIORITY]]
+          - [insert, ['@phpDocumentor\Compiler\Pass\NamespaceTreeBuilder', !php/const \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::COMPILER_PRIORITY]]
+          - [insert, ['@phpDocumentor\Compiler\Pass\ClassTreeBuilder', !php/const \phpDocumentor\Compiler\Pass\ClassTreeBuilder::COMPILER_PRIORITY]]
+          - [insert, ['@phpDocumentor\Compiler\Pass\InterfaceTreeBuilder', !php/const \phpDocumentor\Compiler\Pass\InterfaceTreeBuilder::COMPILER_PRIORITY]]
+          - [insert, ['@phpDocumentor\Compiler\Pass\ResolveInlineLinkAndSeeTags', !php/const \phpDocumentor\Compiler\Pass\ResolveInlineLinkAndSeeTags::COMPILER_PRIORITY]]
+          - [insert, ['@phpDocumentor\Compiler\Pass\ResolveInlineMarkers', !php/const \phpDocumentor\Compiler\Pass\ResolveInlineMarkers::COMPILER_PRIORITY]]
+          - [insert, ['@phpDocumentor\Compiler\Pass\Debug', !php/const \phpDocumentor\Compiler\Pass\Debug::COMPILER_PRIORITY]]
+          - [insert, ['@phpDocumentor\Compiler\Linker\Linker', !php/const \phpDocumentor\Compiler\Linker\Linker::COMPILER_PRIORITY]]
+          - [insert, ['@phpDocumentor\Transformer\Transformer', !php/const \phpDocumentor\Transformer\Transformer::COMPILER_PRIORITY]]
 
     phpDocumentor\Reflection\ProjectFactory:
        factory: 'phpDocumentor\Application\Parser\ProjectFactoryFactory:create'
@@ -164,9 +160,9 @@ services:
       lazy:  true
 
     phpDocumentor\Transformer\Router\Queue:
-        calls:
-            - [insert, ['@phpDocumentor\Transformer\Router\StandardRouter', 10000]]
-            - [insert, ['@phpDocumentor\Transformer\Router\ExternalRouter', 10500]]
+      calls:
+        - [insert, ['@phpDocumentor\Transformer\Router\StandardRouter', 10000]]
+        - [insert, ['@phpDocumentor\Transformer\Router\ExternalRouter', 10500]]
 
     phpDocumentor\Transformer\Template\PathResolver:
       class: 'phpDocumentor\Transformer\Template\PathResolver'
@@ -184,15 +180,22 @@ services:
 
     phpDocumentor\Transformer\Router\StandardRouter: ~
 
+    phpDocumentor\Parser\Middleware\CacheMiddleware:
+      arguments:
+        $dataStore: '@Stash\Pool'
+      tags: [phpdoc.parser.middleware]
+
     ###################################################################################
     ## Autoloading definitions for external services ##################################
     ###################################################################################
 
+    Stash\Interfaces\PoolInterface: '@Stash\Pool'
+
+    Stash\Pool:
+      arguments: { $driver: '@Stash\Driver\FileSystem' }
+
     Stash\Driver\FileSystem:
       arguments: [ { path: 'build/api-cache' } ]
-
-    Stash\Interfaces\PoolInterface:
-      class: Stash\Pool
 
     League\Flysystem\MountManager: ~
 
