@@ -10,10 +10,10 @@ final class PipelineFactoryTest extends \PHPUnit\Framework\TestCase
 {
     public function test_creates_a_pipeline_with_the_given_series_of_stages()
     {
-        $pipeline = PipelineFactory::create(
+        $pipeline = PipelineFactory::create([
             function($value) { return $value + 1; },
             function($value) { return $value * 2; }
-        );
+        ]);
 
         // can only test whether it worked by running the pipeline and
         // getting the expected output

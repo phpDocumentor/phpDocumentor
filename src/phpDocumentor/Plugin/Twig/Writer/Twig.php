@@ -94,6 +94,14 @@ class Twig extends WriterAbstract implements Routable
     /** @var Translator $translator */
     protected $translator;
 
+    /** @var Twig_Environment $twig */
+    private $twig;
+
+    public function __construct(Twig_Environment $twig)
+    {
+        $this->twig = $twig;
+    }
+
     /**
      * This method combines the ProjectDescriptor and the given target template
      * and creates a static html page at the artifact location.
@@ -148,10 +156,10 @@ class Twig extends WriterAbstract implements Routable
             array_unshift($templateFolders, $path);
         }
 
-        $env = new Twig_Environment(
-            new Twig_Loader_Filesystem($templateFolders),
-            ['cache' => sys_get_temp_dir() . '/phpdoc-twig-cache']
-        );
+        // Clone twig because otherwise we cannot re-set the extensions on this twig environment on every run of this
+        // writer
+        $env = clone $this->twig;
+        $env->setLoader(new Twig_Loader_Filesystem($templateFolders));
 
         $this->addPhpDocumentorExtension($project, $transformation, $destination, $env);
         $this->addExtensionsFromTemplateConfiguration($transformation, $project, $env);

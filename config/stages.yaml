@@ -1,0 +1,27 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    phpDocumentor\Application\Stage\Configure:
+      tags:
+        - { name: 'phpdoc.pipeline.application', priority: 10000 }
+
+    phpDocumentor\Application\Stage\Parser\ConfigureCache:
+      tags:
+        - { name: 'phpdoc.pipeline.api_documentation.transform', priority: 9000 }
+        - { name: 'phpdoc.pipeline.api_documentation.parse', priority: 9000 }
+
+    phpDocumentor\Application\Stage\Parser:
+      arguments:
+        $fileCollector: '@phpDocumentor\Infrastructure\Parser\FlySystemCollector'
+      tags:
+        - { name: 'phpdoc.pipeline.api_documentation.parse', priority: 0 }
+
+    phpDocumentor\Plugin\Twig\Stage\ConfigureTwig:
+      tags:
+        - { name: 'phpdoc.pipeline.api_documentation.transform', priority: 9000 }
+
+    phpDocumentor\Application\Stage\Transform:
+      tags:
+        - { name: 'phpdoc.pipeline.api_documentation.transform', priority: 0 }

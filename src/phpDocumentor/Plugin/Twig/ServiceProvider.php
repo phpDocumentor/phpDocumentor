@@ -15,6 +15,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Plugin\Twig;
 
+use phpDocumentor\Transformer\Writer\Collection;
+use phpDocumentor\Translator\Translator;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 
@@ -40,8 +42,7 @@ class ServiceProvider implements ServiceProviderInterface
 
         /** @var Collection $writerCollection */
         $writerCollection = $app['transformer.writer.collection'];
-
-        $writerCollection['twig'] = new Writer\Twig();
+        $writerCollection['twig'] = new Writer\Twig($app[\Twig\Environment::class]);
         $writerCollection['twig']->setTranslator($translator);
     }
 }
