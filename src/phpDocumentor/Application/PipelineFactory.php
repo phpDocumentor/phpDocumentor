@@ -20,7 +20,7 @@ use League\Pipeline\PipelineInterface;
 
 final class PipelineFactory
 {
-    public static function create(callable ...$stages): PipelineInterface
+    public static function create(iterable $stages): PipelineInterface
     {
         $builder = new PipelineBuilder();
         foreach ($stages as $stage) {
