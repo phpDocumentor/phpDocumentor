@@ -158,7 +158,7 @@ class Transformation
      *
      * @return string
      */
-    public function getSourceAsPath()
+    public function getSourceAsPath(): string
     {
         // externally loaded templates set this parameter so that template
         // resources may be placed in the same folder as the template.

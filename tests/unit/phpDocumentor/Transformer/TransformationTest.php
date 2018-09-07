@@ -18,7 +18,7 @@ use phpDocumentor\Transformer\Template\Parameter;
 /**
  * Test class for phpDocumentor\Transformer\Transformation
  */
-class TransformationTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+class TransformationTest extends m\Adapter\Phpunit\MockeryTestCase
 {
     /** @var Transformation $fixture */
     protected $fixture;
@@ -44,11 +44,11 @@ class TransformationTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Transformation::__construct
-     * @covers phpDocumentor\Transformer\Transformation::setQuery
-     * @covers phpDocumentor\Transformer\Transformation::setWriter
-     * @covers phpDocumentor\Transformer\Transformation::setSource
-     * @covers phpDocumentor\Transformer\Transformation::setArtifact
+     * @covers \phpDocumentor\Transformer\Transformation::__construct
+     * @covers \phpDocumentor\Transformer\Transformation::setQuery
+     * @covers \phpDocumentor\Transformer\Transformation::setWriter
+     * @covers \phpDocumentor\Transformer\Transformation::setSource
+     * @covers \phpDocumentor\Transformer\Transformation::setArtifact
      */
     public function testIfDependenciesAreCorrectlyRegisteredOnInitialization()
     {
@@ -59,7 +59,7 @@ class TransformationTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Transformation::getQuery
+     * @covers \phpDocumentor\Transformer\Transformation::getQuery
      */
     public function testGetQuery()
     {
@@ -67,7 +67,7 @@ class TransformationTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Transformation::getWriter
+     * @covers \phpDocumentor\Transformer\Transformation::getWriter
      */
     public function testGetWriter()
     {
@@ -75,7 +75,7 @@ class TransformationTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Transformation::getSource
+     * @covers \phpDocumentor\Transformer\Transformation::getSource
      */
     public function testGetSource()
     {
@@ -83,7 +83,7 @@ class TransformationTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Transformation::getArtifact
+     * @covers \phpDocumentor\Transformer\Transformation::getArtifact
      */
     public function testGetArtifact()
     {
@@ -91,8 +91,8 @@ class TransformationTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Transformation::getParameters
-     * @covers phpDocumentor\Transformer\Transformation::setParameters
+     * @covers \phpDocumentor\Transformer\Transformation::getParameters
+     * @covers \phpDocumentor\Transformer\Transformation::setParameters
      */
     public function testSetAndGetParameters()
     {
@@ -104,7 +104,7 @@ class TransformationTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Transformation::getParameter
+     * @covers \phpDocumentor\Transformer\Transformation::getParameter
      */
     public function testGetParameterWithExistingName()
     {
@@ -113,7 +113,7 @@ class TransformationTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Transformation::getParameter
+     * @covers \phpDocumentor\Transformer\Transformation::getParameter
      */
     public function testGetParameterWithNonExistingName()
     {
@@ -121,7 +121,7 @@ class TransformationTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Transformation::getParametersWithKey
+     * @covers \phpDocumentor\Transformer\Transformation::getParametersWithKey
      */
     public function testGetParametersWithKeyWithExistingName()
     {
@@ -130,7 +130,7 @@ class TransformationTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Transformation::getParametersWithKey
+     * @covers \phpDocumentor\Transformer\Transformation::getParametersWithKey
      */
     public function testGetParametersWithKeyWithNonExistingName()
     {
@@ -138,8 +138,8 @@ class TransformationTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Transformation::getTransformer
-     * @covers phpDocumentor\Transformer\Transformation::setTransformer
+     * @covers \phpDocumentor\Transformer\Transformation::getTransformer
+     * @covers \phpDocumentor\Transformer\Transformation::setTransformer
      */
     public function testSetAndGetTransformer()
     {

@@ -88,8 +88,11 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $transformation1 = $this->givenAnEmptyTransformation();
         $transformation2 = $this->givenAnEmptyTransformation();
         $transformation3 = $this->givenAnEmptyTransformation();
-        $this->whenThereIsATemplateWithNameAndTransformations('template1', [$transformation1, $transformation2]);
-        $this->whenThereIsATemplateWithNameAndTransformations('template2', [$transformation3]);
+        $this->whenThereIsATemplateWithNameAndTransformations(
+            'template1',
+            ['a' => $transformation1, 'b' => $transformation2]
+        );
+        $this->whenThereIsATemplateWithNameAndTransformations('template2', ['c' => $transformation3]);
 
         // Act
         $result = $this->fixture->getTransformations();
@@ -118,8 +121,8 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     protected function whenThereIsATemplateWithNameAndTransformations($name, array $transformations)
     {
         $template = new Template($name);
-        foreach ($transformations as $transformation) {
-            $template[] = $transformation;
+        foreach ($transformations as $key => $transformation) {
+            $template[$key] = $transformation;
         }
 
         $this->fixture[$name] = $template;

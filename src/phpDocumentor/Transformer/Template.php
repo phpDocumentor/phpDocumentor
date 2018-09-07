@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -23,7 +24,7 @@ use phpDocumentor\Transformer\Template\Parameter;
  *
  * @Serializer\XmlRoot("template")
  */
-class Template implements \ArrayAccess, \Countable, \Iterator
+final class Template implements \ArrayAccess, \Countable, \IteratorAggregate
 {
     /**
      * @Serializer\Type("string")
@@ -74,17 +75,15 @@ class Template implements \ArrayAccess, \Countable, \Iterator
      *
      * @param string $name Name for this template.
      */
-    public function __construct($name)
+    public function __construct(string $name)
     {
         $this->name = $name;
     }
 
     /**
      * Name for this template.
-     *
-     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -96,15 +95,13 @@ class Template implements \ArrayAccess, \Countable, \Iterator
      * @param string $author Name of the author optionally including mail address
      *  between angle brackets.
      */
-    public function setAuthor($author)
+    public function setAuthor(string $author)
     {
         $this->author = $author;
     }
 
     /**
      * Returns the name and/or mail address of the author.
-     *
-     * @return string
      */
     public function getAuthor()
     {
@@ -116,15 +113,13 @@ class Template implements \ArrayAccess, \Countable, \Iterator
      *
      * @param string $copyright Free-form copyright notice.
      */
-    public function setCopyright($copyright)
+    public function setCopyright(string $copyright)
     {
         $this->copyright = $copyright;
     }
 
     /**
      * Returns the copyright string for this template.
-     *
-     * @return string
      */
     public function getCopyright()
     {
@@ -138,7 +133,7 @@ class Template implements \ArrayAccess, \Countable, \Iterator
      *
      * @throws \InvalidArgumentException if the version number is invalid
      */
-    public function setVersion($version)
+    public function setVersion(string $version)
     {
         if (!preg_match('/^\d+\.\d+\.\d+$/', $version)) {
             throw new \InvalidArgumentException(
@@ -152,10 +147,8 @@ class Template implements \ArrayAccess, \Countable, \Iterator
 
     /**
      * Returns the version number for this template.
-     *
-     * @return string
      */
-    public function getVersion()
+    public function getVersion(): string
     {
         return $this->version;
     }
@@ -166,17 +159,15 @@ class Template implements \ArrayAccess, \Countable, \Iterator
      * @param string $description An unconstrained text field where the user can provide additional information
      *     regarding details of the template.
      */
-    public function setDescription($description)
+    public function setDescription(string $description)
     {
         $this->description = $description;
     }
 
     /**
      * Returns the description for this template.
-     *
-     * @return string
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->description;
     }
@@ -198,7 +189,7 @@ class Template implements \ArrayAccess, \Countable, \Iterator
             );
         }
 
-        $this->transformations[] = $value;
+        $this->transformations[$offset] = $value;
     }
 
     /**
@@ -252,69 +243,11 @@ class Template implements \ArrayAccess, \Countable, \Iterator
     }
 
     /**
-     * Rewind the Iterator to the first element
-     *
-     * @link http://php.net/manual/en/iterator.rewind.php
-     */
-    public function rewind()
-    {
-        reset($this->transformations);
-    }
-
-    /**
-     * Checks if current position is valid.
-     *
-     * @link http://php.net/manual/en/iterator.valid.php
-     *
-     * @return boolean Returns true on success or false on failure.
-     */
-    public function valid()
-    {
-        return (current($this->transformations) === false)
-            ? false
-            : true;
-    }
-
-    /**
-     * Return the key of the current element.
-     *
-     * @link http://php.net/manual/en/iterator.key.php
-     *
-     * @return int|string scalar on success, integer 0 on failure.
-     */
-    public function key()
-    {
-        key($this->transformations);
-    }
-
-    /**
-     * Move forward to next element.
-     *
-     * @link http://php.net/manual/en/iterator.next.php
-     */
-    public function next()
-    {
-        next($this->transformations);
-    }
-
-    /**
-     * Return the current element.
-     *
-     * @link http://php.net/manual/en/iterator.current.php
-     *
-     * @return Transformation
-     */
-    public function current()
-    {
-        return current($this->transformations);
-    }
-
-    /**
      * Returns the parameters associated with this template.
      *
      * @return Parameter[]
      */
-    public function getParameters()
+    public function getParameters(): array
     {
         return $this->parameters;
     }
@@ -325,7 +258,7 @@ class Template implements \ArrayAccess, \Countable, \Iterator
      * @param string|integer $key
      * @param Parameter      $value
      */
-    public function setParameter($key, $value)
+    public function setParameter($key, Parameter $value)
     {
         $this->parameters[$key] = $value;
     }
@@ -338,5 +271,10 @@ class Template implements \ArrayAccess, \Countable, \Iterator
         foreach ($this->transformations as $transformation) {
             $transformation->setParameters(array_merge($transformation->getParameters(), $this->getParameters()));
         }
+    }
+
+    public function getIterator(): \ArrayIterator
+    {
+        return new \ArrayIterator($this->transformations);
     }
 }
