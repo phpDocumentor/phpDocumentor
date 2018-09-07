@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -16,6 +17,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Event;
 
 use phpDocumentor\Event\EventAbstract;
+use phpDocumentor\Transformer\Transformation;
 
 /**
  * Event happening prior to each individual transformation.
@@ -25,44 +27,33 @@ class PreTransformationEvent extends EventAbstract
     /** @var \DOMDocument remembers the XML-based AST so that it can be used from the listener */
     protected $source;
 
+    /** @var Transformation */
     protected $transformation;
 
     /**
-     * Sets the Abstract Syntax Tree as DOMDocument.
-     *
-     * @param \DOMDocument $source
-     *
-     * @return PreTransformationEvent
+     * Returns the Abstract Syntax Tree as DOMDocument.
      */
-    public function setSource($source)
+    public function getSource(): ?\DOMDocument
+    {
+        return $this->source;
+    }
+
+    /**
+     * Sets the Abstract Syntax Tree as DOMDocument.
+     */
+    public function setSource(\DOMDocument $source): self
     {
         $this->source = $source;
 
         return $this;
     }
 
-    /**
-     * Returns the Abstract Syntax Tree as DOMDocument.
-     *
-     * @return \DOMDocument
-     */
-    public function getSource()
-    {
-        return $this->source;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getTransformation()
+    public function getTransformation(): ?Transformation
     {
         return $this->transformation;
     }
 
-    /**
-     * @param mixed $transformation
-     */
-    public function setTransformation($transformation)
+    public function setTransformation(Transformation $transformation): self
     {
         $this->transformation = $transformation;
 

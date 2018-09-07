@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -18,31 +19,22 @@ namespace phpDocumentor\Transformer\Event;
 use phpDocumentor\Event\EventAbstract;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
 
-class WriterInitializationEvent extends EventAbstract
+final class WriterInitializationEvent extends EventAbstract
 {
     /** @var WriterAbstract */
     protected $writer;
 
     /**
      * Sets the currently parsed writer in this event.
-     *
-     * @param WriterAbstract $writer
-     *
-     * @return $this
      */
-    public function setWriter($writer)
+    public function setWriter(WriterAbstract $writer): WriterInitializationEvent
     {
         $this->writer = $writer;
 
         return $this;
     }
 
-    /**
-     * Returns the event that is currently being parsed.
-     *
-     * @return WriterAbstract
-     */
-    public function getWriter()
+    public function getWriter(): ?WriterAbstract
     {
         return $this->writer;
     }
