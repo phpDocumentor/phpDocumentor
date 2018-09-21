@@ -30,7 +30,7 @@ final class Template implements \ArrayAccess, \Countable, \IteratorAggregate
      * @Serializer\Type("string")
      * @var string Name for this template
      */
-    protected $name = null;
+    protected $name = '';
 
     /**
      * @Serializer\Type("string")
