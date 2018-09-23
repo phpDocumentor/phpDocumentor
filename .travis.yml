@@ -89,7 +89,7 @@ jobs:
           tags: true
 
     - stage: release
-      if: type IN (push) AND repo = phpDocumentor/phpDocumentor2 AND branch IN (develop)
+      if: type IN (push) AND repo = phpDocumentor/phpDocumentor2 AND branch IN (develop) AND false # disable for now
       php: 7.1
       env:
         - VERSION=$(echo $TRAVIS_TAG | cut -c 2-10)
