@@ -37,9 +37,6 @@ class ServiceProvider implements ServiceProviderInterface
         $translator = $app['translator'];
         $translator->addTranslationFolder(__DIR__ . DIRECTORY_SEPARATOR . 'Messages');
 
-        /** @var ApplicationConfiguration $config */
-        $config = $app['config'];
-
         $app['markdown'] = function () {
             return Parsedown::instance();
         };

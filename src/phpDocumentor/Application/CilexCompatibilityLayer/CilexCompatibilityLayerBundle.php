@@ -33,18 +33,6 @@ final class CilexCompatibilityLayerBundle extends Bundle
 
     public function registerCommands(ConsoleApplication $application): void
     {
-        $application->getDefinition()->addOption(
-            new InputOption(
-                'config',
-                'c',
-                InputOption::VALUE_OPTIONAL,
-                'Location of a custom configuration file'
-            )
-        );
-        $application->getDefinition()->addOption(
-            new InputOption('log', null, InputOption::VALUE_OPTIONAL, 'Log file to write to')
-        );
-
         if ($this->container->has('phpdocumentor.compatibility.extra_commands')) {
             $commands = $this->container->get('phpdocumentor.compatibility.extra_commands');
 

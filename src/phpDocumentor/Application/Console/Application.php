@@ -16,6 +16,7 @@ namespace phpDocumentor\Application\Console;
 use PackageVersions\Versions;
 use Symfony\Bundle\FrameworkBundle\Console\Application as BaseApplication;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 final class Application extends BaseApplication
@@ -42,6 +43,25 @@ final class Application extends BaseApplication
         }
 
         return $input->getFirstArgument();
+    }
+
+    protected function getDefaultInputDefinition()
+    {
+        $inputDefinition = parent::getDefaultInputDefinition();
+
+        $inputDefinition->addOption(
+            new InputOption(
+                'config',
+                'c',
+                InputOption::VALUE_OPTIONAL,
+                'Location of a custom configuration file'
+            )
+        );
+        $inputDefinition->addOption(
+            new InputOption('log', null, InputOption::VALUE_OPTIONAL, 'Log file to write to')
+        );
+
+        return $inputDefinition;
     }
 
     /**
