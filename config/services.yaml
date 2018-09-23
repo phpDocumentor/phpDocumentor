@@ -120,7 +120,7 @@ services:
     phpDocumentor\Application\Parser\ProjectFactoryFactory: ~
 
     phpDocumentor\Application\Configuration\Configuration:
-      factory: ['@phpDocumentor\Application\Configuration\ConfigurationFactory', 'loadDefaultLocations']
+      factory: ['@phpDocumentor\Application\Configuration\ConfigurationFactory', 'fromDefaultLocations']
 
     phpDocumentor\Application\Configuration\Factory\Version2:
         tags: [phpdoc.config_strategy]

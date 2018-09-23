@@ -16,22 +16,25 @@ declare(strict_types=1);
 namespace phpDocumentor\Application\Stage;
 
 use phpDocumentor\Application\Configuration\CommandlineOptionsMiddleware;
+use phpDocumentor\Application\Configuration\Configuration;
 use phpDocumentor\Application\Configuration\ConfigurationFactory;
 use phpDocumentor\DomainModel\Uri;
 
 final class Configure
 {
-    /**
-     * @var ConfigurationFactory
-     */
+    /** @var ConfigurationFactory */
     private $configFactory;
+
+    /** @var Configuration */
+    private $configuration;
 
     /**
      * Configure constructor.
      */
-    public function __construct(ConfigurationFactory $configFactory)
+    public function __construct(ConfigurationFactory $configFactory, Configuration $configuration)
     {
         $this->configFactory = $configFactory;
+        $this->configuration = $configuration;
     }
 
     /**
@@ -44,9 +47,11 @@ final class Configure
         );
 
         if ($options['config'] ?? null) {
-            return $this->configFactory->fromUri(new Uri(realpath($options['config'])))->getArrayCopy();
+            $this->configuration->exchangeArray(
+                $this->configFactory->fromUri(new Uri(realpath($options['config'])))->getArrayCopy()
+            );
         }
 
-        return $this->configFactory->fromDefaultLocations()->getArrayCopy();
+        return $this->configuration->getArrayCopy();
     }
 }
