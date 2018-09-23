@@ -97,7 +97,8 @@ final class ConfigurationFactoryTest extends MockeryTestCase
 
         // Setup a prepopulated factory with path and cachedContents
         $uri = new Uri(vfsStream::url('dir/foo.xml'));
-        $factory = new ConfigurationFactory([$strategy], [$middleWare1]);
+        $factory = new ConfigurationFactory([$strategy]);
+        $factory->addMiddleware($middleWare1);
         $factory->addMiddleware($middleWare2);
 
         $data = $factory->fromUri($uri);

@@ -13,6 +13,7 @@
 namespace phpDocumentor\Application\Stage;
 
 use phpDocumentor\Application\Configuration\ConfigurationFactory;
+use phpDocumentor\Application\Configuration\Factory\Version2;
 use phpDocumentor\Application\Configuration\Factory\Version3;
 use PHPUnit\Framework\TestCase;
 
@@ -29,7 +30,10 @@ class ConfigureTest extends TestCase
     public function testInvokeOverridesConfig()
     {
         $configFactory = new ConfigurationFactory(
-            [new Version3(__DIR__ . '/../../../../../data/xsd/phpdoc.xsd')]
+            [
+                new Version2(),
+                new Version3(__DIR__ . '/../../../../../data/xsd/phpdoc.xsd')
+            ]
         );
 
         $fixture = new Configure($configFactory);
