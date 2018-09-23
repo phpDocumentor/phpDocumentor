@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Test case for Version3
  *
- * @coversDefaultClass phpDocumentor\Application\Configuration\Factory\Version3
+ * @coversDefaultClass \phpDocumentor\Application\Configuration\Factory\Version3
  */
 final class Version3Test extends TestCase
 {
@@ -155,7 +155,7 @@ XML;
     }
 
     /**
-     * @covers ::match
+     * @covers ::supports
      */
     public function testItMatchesWhenVersionIs3()
     {
