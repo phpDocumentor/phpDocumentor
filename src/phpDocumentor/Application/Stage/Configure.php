@@ -17,6 +17,7 @@ namespace phpDocumentor\Application\Stage;
 
 use phpDocumentor\Application\Configuration\CommandlineOptionsMiddleware;
 use phpDocumentor\Application\Configuration\ConfigurationFactory;
+use phpDocumentor\DomainModel\Uri;
 
 final class Configure
 {
@@ -41,6 +42,10 @@ final class Configure
         $this->configFactory->addMiddleware(
             new CommandlineOptionsMiddleware($options)
         );
+
+        if ($options['config'] ?? null) {
+            return $this->configFactory->fromUri(new Uri(realpath($options['config'])))->getArrayCopy();
+        }
 
         return $this->configFactory->fromDefaultLocations()->getArrayCopy();
     }
