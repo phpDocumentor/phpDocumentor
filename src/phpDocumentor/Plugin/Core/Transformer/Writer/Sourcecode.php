@@ -36,8 +36,7 @@ class Sourcecode extends WriterAbstract
         $artifact = $transformation->getTransformer()->getTarget()
             . DIRECTORY_SEPARATOR
             . ($transformation->getArtifact()
-                ? $transformation->getArtifact()
-                : 'source');
+                ?: 'source');
 
         /** @var FileDescriptor $file */
         foreach ($project->getFiles() as $file) {

@@ -58,7 +58,7 @@ class ServiceProvider implements ServiceProviderInterface
         };
 
         $app[self::CONVERTER_DEFINITION_FACTORY] = function ($container) {
-            return new Factory($container[ServiceProvider::FORMATS]);
+            return new Factory($container[self::FORMATS]);
         };
 
         $app[self::CONVERTER_FACTORY] = function ($container) {
@@ -71,7 +71,7 @@ class ServiceProvider implements ServiceProviderInterface
 
         $app[self::TEMPLATE_FACTORY] = function ($app) {
             return new Template\Factory(
-                ['twig' => new Template\Twig($app[ServiceProvider::TEMPLATE_FOLDER])]
+                ['twig' => new Template\Twig($app[self::TEMPLATE_FOLDER])]
             );
         };
 
