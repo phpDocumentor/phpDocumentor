@@ -60,7 +60,6 @@
         "symfony/routing": "^4.0",
         "symfony/stopwatch": "^4.0",
         "symfony/translation": "^4.0",
-        "symfony/var-dumper": "^4.0",
         "symfony/yaml": "^4.0",
         "tedivm/stash": "^0.14.2",
         "twig/twig": "~1.3",
