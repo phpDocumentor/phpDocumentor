@@ -93,6 +93,11 @@ jobs:
       php: 7.1
       env:
         - VERSION=$(echo $TRAVIS_TAG | cut -c 2-10)
+      before_install: |
+        if [[ "$TRAVIS_PULL_REQUEST_SLUG" == "" || "$TRAVIS_PULL_REQUEST_SLUG" == "$TRAVIS_REPO_SLUG" ]];then
+          openssl aes-256-cbc -K $encrypted_f23adc84ec09_key -iv $encrypted_f23adc84ec09_iv -in .travis/secrets.tar.enc -out .travis/secrets.tar -d && \
+          tar xvf .travis/secrets.tar -C .travis
+        fi;
       script:
         - echo "${VERSION}" > VERSION
         - git config --global user.email "builds@travis-ci.com"
