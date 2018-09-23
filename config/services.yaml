@@ -118,14 +118,18 @@ services:
 
     phpDocumentor\Application\Parser\CacheFactory: ~
     phpDocumentor\Application\Parser\ProjectFactoryFactory: ~
+
+    phpDocumentor\Application\Configuration\Configuration:
+      factory: ['@phpDocumentor\Application\Configuration\ConfigurationFactory', 'loadDefaultLocations']
+
     phpDocumentor\Application\Configuration\Factory\Version2:
-        tags: [phpdoc.config_stategy]
+        tags: [phpdoc.config_strategy]
     phpDocumentor\Application\Configuration\Factory\Version3:
-        tags: [phpdoc.config_stategy]
         arguments: ['data/xsd/phpdoc.xsd']
+        tags: [phpdoc.config_strategy]
     phpDocumentor\Application\Configuration\ConfigurationFactory:
-        factory: ['phpDocumentor\Application\Configuration\ConfigurationFactory', createInstance]
-        arguments: [!tagged phpdoc.config_stategy]
+        arguments:
+          $strategies: !tagged phpdoc.config_strategy
 
     phpDocumentor\Compiler\Linker\Linker:
       arguments: ['%linker.substitutions%']

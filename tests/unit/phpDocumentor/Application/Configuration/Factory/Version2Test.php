@@ -62,7 +62,7 @@ XML;
         $xml = new \SimpleXMLElement(__DIR__ . '/../../../../data/phpdoc.tpl.xml', 0, true);
 
         $version2 = new Version2();
-        $bool = $version2->match($xml);
+        $bool = $version2->supports($xml);
 
         $this->assertTrue($bool);
     }

@@ -42,6 +42,6 @@ final class Configure
             new CommandlineOptionsMiddleware($options)
         );
 
-        return $this->configFactory->get();
+        return $this->configFactory->fromDefaultLocations()->getArrayCopy();
     }
 }

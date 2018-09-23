@@ -83,7 +83,7 @@ final class Template implements \ArrayAccess, \Countable, \IteratorAggregate
     /**
      * Name for this template.
      */
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }

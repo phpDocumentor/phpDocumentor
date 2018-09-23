@@ -22,13 +22,13 @@ use phpDocumentor\DomainModel\Uri;
 /**
  * Test case for ConfigurationFactory
  *
- * @coversDefaultClass phpDocumentor\Application\Configuration\ConfigurationFactory
+ * @coversDefaultClass \phpDocumentor\Application\Configuration\ConfigurationFactory
  * @covers ::<private>
  */
 final class ConfigurationFactoryTest extends MockeryTestCase
 {
     /**
-     * @covers ::get
+     * @covers ::fromUri
      * @expectedException \Exception
      * @expectedExceptionMessage No strategy found that matches the configuration xml
      */
@@ -39,13 +39,13 @@ final class ConfigurationFactoryTest extends MockeryTestCase
         vfsStream::newFile('foo.xml')->at($root)->withContent('<foo></foo>');
         $uri = new Uri(vfsStream::url('dir/foo.xml'));
 
-        $configurationFactory = new ConfigurationFactory([], $uri);
-        $configurationFactory->get();
+        $configurationFactory = new ConfigurationFactory([]);
+        $configurationFactory->fromUri($uri);
     }
 
     /**
      * @covers ::__construct
-     * @covers ::get
+     * @covers ::fromUri
      * @covers ::<private>
      */
     public function testItRegistersStrategies()
@@ -57,97 +57,17 @@ final class ConfigurationFactoryTest extends MockeryTestCase
 
         /** @var m\Mock $strategy */
         $strategy = m::mock(Strategy::class);
-        $strategy->shouldReceive('match')->once()->with(m::type(\SimpleXMLElement::class))->andReturn(true);
+        $strategy->shouldReceive('supports')->once()->with(m::type(\SimpleXMLElement::class))->andReturn(true);
         $strategy->shouldReceive('convert')->once()->with(m::type(\SimpleXMLElement::class));
 
-        $configurationFactory = new ConfigurationFactory([$strategy], $uri);
-        $configurationFactory->get();
-    }
-
-    /**
-     * @covers ::replaceLocation
-     */
-    public function testThatTheLocationCanBeReplaced()
-    {
-        $cachedContent = ['test'];
-        $root = vfsStream::setup('dir');
-        vfsStream::newFile('foo.xml')->at($root)->withContent('<foo></foo>');
-
-        /** @var m\Mock $strategy */
-        $strategy = m::mock(Strategy::class);
-        $strategy->shouldReceive('match')->once()->with(m::type(\SimpleXMLElement::class))->andReturn(true);
-        $strategy->shouldReceive('convert')->once()->with(m::type(\SimpleXMLElement::class))->andReturn($cachedContent);
-
-        // Setup a prepopulated factory with path and cachedContents
-        $uri = new Uri(vfsStream::url('dir/foo.xml'));
-        $factory = new ConfigurationFactory([$strategy], $uri);
-        $this->assertAttributeSame($uri, 'uri', $factory);
-        $factory->get();
-        $this->assertAttributeSame($cachedContent, 'cachedConfiguration', $factory);
-
-        // Assert that the uri was replaced and the cache cleared
-        $uri2 = new Uri(vfsStream::url('dir/foo2.xml'));
-        $factory->replaceLocation($uri2);
-        $this->assertAttributeSame($uri2, 'uri', $factory, 'The URI should have been replaced');
-        $this->assertAttributeSame(null, 'cachedConfiguration', $factory, 'Cache should have been cleared');
-    }
-
-    /**
-     * @covers ::clearCache
-     */
-    public function testThatTheCacheCanBeCleared()
-    {
-        $cachedContent = ['test'];
-        $root = vfsStream::setup('dir');
-        vfsStream::newFile('foo.xml')->at($root)->withContent('<foo></foo>');
-
-        /** @var m\Mock $strategy */
-        $strategy = m::mock(Strategy::class);
-        $strategy->shouldReceive('match')->once()->with(m::type(\SimpleXMLElement::class))->andReturn(true);
-        $strategy->shouldReceive('convert')->once()->with(m::type(\SimpleXMLElement::class))->andReturn($cachedContent);
-
-        // Setup a prepopulated factory with path and cachedContents
-        $uri = new Uri(vfsStream::url('dir/foo.xml'));
-        $factory = new ConfigurationFactory([$strategy], $uri);
-        $this->assertAttributeSame($uri, 'uri', $factory);
-        $factory->get();
-        $this->assertAttributeSame($cachedContent, 'cachedConfiguration', $factory);
-
-        $factory->clearCache();
-        $this->assertAttributeSame(null, 'cachedConfiguration', $factory, 'Cache should have been cleared');
-    }
-
-    /**
-     * @covers ::get
-     */
-    public function testThatOutputIsCached()
-    {
-        $cachedContent = ['test'];
-        $root = vfsStream::setup('dir');
-        vfsStream::newFile('foo.xml')->at($root)->withContent('<foo></foo>');
-
-        /** @var m\Mock $strategy */
-        $strategy = m::mock(Strategy::class);
-        $strategy->shouldReceive('match')->once()->with(m::type(\SimpleXMLElement::class))->andReturn(true);
-        $strategy->shouldReceive('convert')->once()->with(m::type(\SimpleXMLElement::class))->andReturn($cachedContent);
-
-        // Setup a prepopulated factory with path and cachedContents
-        $uri = new Uri(vfsStream::url('dir/foo.xml'));
-        $factory = new ConfigurationFactory([$strategy], $uri);
-        $this->assertAttributeSame($uri, 'uri', $factory);
-
-        // populate the cache
-        $factory->get();
-        $this->assertAttributeSame($cachedContent, 'cachedConfiguration', $factory);
-
-        // convert method on the strategy should not be called twice (see mock)
-        $factory->get();
+        $configurationFactory = new ConfigurationFactory([$strategy]);
+        $configurationFactory->fromUri($uri);
     }
 
     /**
      * @covers ::__construct
      * @covers ::addMiddleware
-     * @covers ::get
+     * @covers ::fromUri
      */
     public function testThatMiddlewaresAreAddedAndApplied()
     {
@@ -172,31 +92,16 @@ final class ConfigurationFactoryTest extends MockeryTestCase
 
         /** @var m\Mock $strategy */
         $strategy = m::mock(Strategy::class);
-        $strategy->shouldReceive('match')->once()->with(m::type(\SimpleXMLElement::class))->andReturn(true);
+        $strategy->shouldReceive('supports')->once()->with(m::type(\SimpleXMLElement::class))->andReturn(true);
         $strategy->shouldReceive('convert')->once()->with(m::type(\SimpleXMLElement::class))->andReturn($inputValue);
 
         // Setup a prepopulated factory with path and cachedContents
         $uri = new Uri(vfsStream::url('dir/foo.xml'));
-        $factory = new ConfigurationFactory([$strategy], $uri, [$middleWare1]);
+        $factory = new ConfigurationFactory([$strategy], [$middleWare1]);
         $factory->addMiddleware($middleWare2);
 
-        $factory->get();
+        $data = $factory->fromUri($uri);
 
-        $this->assertAttributeSame($afterMiddleware2Value, 'cachedConfiguration', $factory);
-    }
-
-    /**
-     * @covers ::__construct
-     * @covers ::createInstance
-     * @covers ::get
-     */
-    public function testThatDefaultConfigurationIsCreateWhenNonProvided()
-    {
-        $root = vfsStream::setup('dir');
-        $factory = ConfigurationFactory::createInstance([]);
-        $factory->replaceLocation(new Uri(vfsStream::url('dir/nonexisting.xml')));
-
-        $config = $factory->get();
-        $this->assertEquals(Version3::buildDefault(), $config);
+        $this->assertEquals($afterMiddleware2Value, $data->getArrayCopy());
     }
 }

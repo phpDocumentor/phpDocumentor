@@ -14,7 +14,6 @@ namespace phpDocumentor\Application\Stage;
 
 use phpDocumentor\Application\Configuration\ConfigurationFactory;
 use phpDocumentor\Application\Configuration\Factory\Version3;
-use phpDocumentor\DomainModel\Uri;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -30,8 +29,7 @@ class ConfigureTest extends TestCase
     public function testInvokeOverridesConfig()
     {
         $configFactory = new ConfigurationFactory(
-            [new Version3(__DIR__ . '/../../../../../data/xsd/phpdoc.xsd')],
-            new Uri(__DIR__ . str_replace('/', DIRECTORY_SEPARATOR, '/../../../data/phpDocumentor3XML.xml'))
+            [new Version3(__DIR__ . '/../../../../../data/xsd/phpdoc.xsd')]
         );
 
         $fixture = new Configure($configFactory);

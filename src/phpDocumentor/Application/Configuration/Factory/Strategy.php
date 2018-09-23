@@ -30,5 +30,5 @@ interface Strategy
     /**
      * Checks if the strategy should handle the provided configuration xml.
      */
-    public function match(SimpleXMLElement $xml): bool;
+    public function supports(SimpleXMLElement $xml): bool;
 }

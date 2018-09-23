@@ -104,7 +104,7 @@ final class Version2 implements Strategy
         ];
     }
 
-    public function match(SimpleXMLElement $phpDocumentor): bool
+    public function supports(SimpleXMLElement $phpDocumentor): bool
     {
         return !isset($phpDocumentor->attributes()->version);
     }

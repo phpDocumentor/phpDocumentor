@@ -73,7 +73,7 @@ final class Version3 implements Strategy
         ];
     }
 
-    public function match(SimpleXMLElement $phpDocumentor): bool
+    public function supports(SimpleXMLElement $phpDocumentor): bool
     {
         return (string) $phpDocumentor->attributes()->version === '3';
     }

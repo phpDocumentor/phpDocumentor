@@ -161,7 +161,7 @@ XML;
     {
         $xml = $this->givenXmlFromFile('phpDocumentor3XML.xml');
 
-        $bool = $this->strategy->match($xml);
+        $bool = $this->strategy->supports($xml);
 
         $this->assertTrue($bool);
     }
