@@ -23,8 +23,3 @@ phpstan:
   build: docker/phpstan
   volumes: [".:/app"]
   command: "analyse src tests --level 2 --configuration phpstan.neon"
-
-ecs:
-  build: docker/ecs
-  volumes: [".:/app"]
-  command: "check src tests"

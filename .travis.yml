@@ -49,13 +49,6 @@ jobs:
       services:
         - docker
       script:
-        - docker-compose run --rm ecs
-
-    - stage: analysis
-      php: 7.1
-      services:
-        - docker
-      script:
         - docker-compose run --rm phpstan
 
     - stage: analysis
