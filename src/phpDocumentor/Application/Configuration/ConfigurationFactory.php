@@ -43,13 +43,11 @@ final class ConfigurationFactory
      * @param Strategy[] $strategies
      * @param callable[] $middlewares
      */
-    public function __construct(iterable $strategies, array $middlewares = [])
+    public function __construct(iterable $strategies)
     {
         foreach ($strategies as $strategy) {
             $this->registerStrategy($strategy);
         }
-
-        $this->middlewares = $middlewares;
     }
 
     /**
@@ -88,13 +86,21 @@ final class ConfigurationFactory
      */
     public function fromDefaultLocations(): Configuration
     {
-        try {
-            return $this->fromUri(new Uri('file://' . getcwd() . '/phpdoc.dist.xml'));
-        } catch (\InvalidArgumentException $e) {
-            return $this->fromUri(new Uri('file://' . getcwd() . '/phpdoc.xml'));
-        } finally {
-            return new Configuration($this->applyMiddleware(Version3::buildDefault()));
+        $files = [
+            'file://' . getcwd() . '/phpdoc.xml',
+            'file://' . getcwd() . '/phpdoc.dist.xml',
+            'file://' . getcwd() . '/phpdoc.xml.dist'
+        ];
+
+        foreach ($files as $file) {
+            try {
+                return $this->fromUri(new Uri($file));
+            } catch (\InvalidArgumentException $e) {
+                continue;
+            }
         }
+
+        return new Configuration($this->applyMiddleware(Version3::buildDefault()));
     }
 
     /**
