@@ -19,20 +19,16 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * @coversDefaultClass \phpDocumentor\Application\Console\Application
+ * @covers ::__construct
  * @covers ::<private>
  */
 class ApplicationTest extends MockeryTestCase
 {
     /**
-     * @covers ::__construct
      * @covers ::getLongVersion
      */
     public function testGetLongVersion(): void
     {
-        $kernelMock = m::mock(KernelInterface::class);
-        $kernelMock->shouldIgnoreMissing();
-        $feature = new Application($kernelMock);
-
-        self::assertRegExp('~phpDocumentor <info>v(\d).(\d).(\d|x)?-(.*)</info>~', $feature->getLongVersion());
+        self::assertRegExp('~phpDocumentor <info>v(\d).(\d).(\d|x)?-(.*)</info>~', $this->feature->getLongVersion());
     }
 }

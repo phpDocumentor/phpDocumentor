@@ -15,6 +15,7 @@ namespace phpDocumentor\Application\Console;
 
 use PackageVersions\Versions;
 use Symfony\Bundle\FrameworkBundle\Console\Application as BaseApplication;
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 final class Application extends BaseApplication
@@ -27,7 +28,20 @@ final class Application extends BaseApplication
 
         $this->setName('phpDocumentor');
         $this->setVersion($this->detectVersion());
-        $this->setDefaultCommand('project:run');
+    }
+
+    protected function getCommandName(InputInterface $input)
+    {
+        // the regular setDefaultCommand option does not allow for options and arguments; with this workaround
+        // we can have options and arguments when the first element in the argv options is not a recognized
+        // command name.
+        // We explicitly do not use the getFirstArgument of the $input variable since that skips options; we
+        // explicitly want to know if the first thing after the php filename is a known command!
+        if ((isset($_SERVER['argv'][1]) === false || $this->has($_SERVER['argv'][1]) === false)) {
+            return 'project:run';
+        }
+
+        return $input->getFirstArgument();
     }
 
     /**
