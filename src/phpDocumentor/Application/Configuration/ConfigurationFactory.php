@@ -41,7 +41,6 @@ final class ConfigurationFactory
      * Initializes the ConfigurationFactory.
      *
      * @param Strategy[] $strategies
-     * @param callable[] $middlewares
      */
     public function __construct(iterable $strategies)
     {
