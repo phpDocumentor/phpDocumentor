@@ -24,6 +24,17 @@ use Symfony\Component\HttpKernel\KernelInterface;
  */
 class ApplicationTest extends MockeryTestCase
 {
+    /** @var Application */
+    private $feature;
+
+    public function setUp()
+    {
+        $kernelMock = m::mock(KernelInterface::class);
+        $kernelMock->shouldIgnoreMissing();
+
+        $this->feature = new Application($kernelMock);
+    }
+
     /**
      * @covers ::getLongVersion
      */
