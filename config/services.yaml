@@ -119,15 +119,15 @@ services:
     phpDocumentor\Application\Parser\CacheFactory: ~
     phpDocumentor\Application\Parser\ProjectFactoryFactory: ~
 
-    phpDocumentor\Application\Configuration\Configuration:
-      factory: ['@phpDocumentor\Application\Configuration\ConfigurationFactory', 'fromDefaultLocations']
+    phpDocumentor\Configuration\Configuration:
+      factory: ['@phpDocumentor\Configuration\ConfigurationFactory', 'fromDefaultLocations']
 
-    phpDocumentor\Application\Configuration\Factory\Version2:
+    phpDocumentor\Configuration\Factory\Version2:
         tags: [phpdoc.config_strategy]
-    phpDocumentor\Application\Configuration\Factory\Version3:
+    phpDocumentor\Configuration\Factory\Version3:
         arguments: ['data/xsd/phpdoc.xsd']
         tags: [phpdoc.config_strategy]
-    phpDocumentor\Application\Configuration\ConfigurationFactory:
+    phpDocumentor\Configuration\ConfigurationFactory:
         arguments:
           $strategies: !tagged phpdoc.config_strategy
 

@@ -10,14 +10,14 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Application\Configuration\Factory;
+namespace phpDocumentor\Configuration\Factory;
 
 use PHPUnit\Framework\TestCase;
 
 /**
  * Test case for Version2
  *
- * @coversDefaultClass \phpDocumentor\Application\Configuration\Factory\Version2
+ * @coversDefaultClass \phpDocumentor\Configuration\Factory\Version2
  */
 final class Version2Test extends TestCase
 {
@@ -27,7 +27,7 @@ final class Version2Test extends TestCase
      */
     public function testItConvertsPhpdoc2XmlToAnArray()
     {
-        $xml = new \SimpleXMLElement(__DIR__ . '/../../../../data/phpdoc.tpl.xml', 0, true);
+        $xml = new \SimpleXMLElement(__DIR__ . '/../../../data/phpdoc.tpl.xml', 0, true);
 
         $version2 = new Version2();
         $array = $version2->convert($xml);
@@ -59,7 +59,7 @@ XML;
      */
     public function testItMatchesWhenVersionIsEmpty()
     {
-        $xml = new \SimpleXMLElement(__DIR__ . '/../../../../data/phpdoc.tpl.xml', 0, true);
+        $xml = new \SimpleXMLElement(__DIR__ . '/../../../data/phpdoc.tpl.xml', 0, true);
 
         $version2 = new Version2();
         $bool = $version2->supports($xml);
@@ -74,7 +74,7 @@ XML;
     public function testItRevertsToDefaultsIfValuesAreNotInTheConfigurationFile()
     {
         $xml = new \SimpleXMLElement(
-            __DIR__ . '/../../../../data/phpDocumentor2XMLWithoutExtensions.xml',
+            __DIR__ . '/../../../data/phpDocumentor2XMLWithoutExtensions.xml',
             0,
             true
         );
@@ -92,7 +92,7 @@ XML;
     public function testItAcceptsMultipleIgnorePathsInThePhpdoc2Xml()
     {
         $xml = new \SimpleXMLElement(
-            __DIR__ . '/../../../../data/phpDocumentor2XMLWithMultipleIgnorePaths.xml',
+            __DIR__ . '/../../../data/phpDocumentor2XMLWithMultipleIgnorePaths.xml',
             0,
             true
         );

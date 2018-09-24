@@ -10,19 +10,19 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Application\Configuration;
+namespace phpDocumentor\Configuration;
 
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery as m;
 use org\bovigo\vfs\vfsStream;
-use phpDocumentor\Application\Configuration\Factory\Strategy;
-use phpDocumentor\Application\Configuration\Factory\Version3;
+use phpDocumentor\Configuration\Factory\Strategy;
+use phpDocumentor\Configuration\Factory\Version3;
 use phpDocumentor\DomainModel\Uri;
 
 /**
  * Test case for ConfigurationFactory
  *
- * @coversDefaultClass \phpDocumentor\Application\Configuration\ConfigurationFactory
+ * @coversDefaultClass \phpDocumentor\Configuration\ConfigurationFactory
  * @covers ::<private>
  */
 final class ConfigurationFactoryTest extends MockeryTestCase

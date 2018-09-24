@@ -15,9 +15,9 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Application\Stage;
 
-use phpDocumentor\Application\Configuration\CommandlineOptionsMiddleware;
-use phpDocumentor\Application\Configuration\Configuration;
-use phpDocumentor\Application\Configuration\ConfigurationFactory;
+use phpDocumentor\Configuration\CommandlineOptionsMiddleware;
+use phpDocumentor\Configuration\Configuration;
+use phpDocumentor\Configuration\ConfigurationFactory;
 use phpDocumentor\DomainModel\Uri;
 
 final class Configure

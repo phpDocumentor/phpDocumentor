@@ -13,7 +13,7 @@ declare(strict_types=1);
  * @link      http://phpdoc.org
  */
 
-namespace App;
+namespace phpDocumentor;
 
 use Phar;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;

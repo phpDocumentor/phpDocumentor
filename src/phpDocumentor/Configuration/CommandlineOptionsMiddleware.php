@@ -13,7 +13,7 @@ declare(strict_types=1);
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Application\Configuration;
+namespace phpDocumentor\Configuration;
 
 use phpDocumentor\DomainModel\Dsn;
 use phpDocumentor\DomainModel\Path;

@@ -10,15 +10,15 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Application\Configuration;
+namespace phpDocumentor\Configuration;
 
 use Mockery\Adapter\Phpunit\MockeryTestCase;
-use phpDocumentor\Application\Configuration\Factory\Version3;
+use phpDocumentor\Configuration\Factory\Version3;
 use phpDocumentor\DomainModel\Dsn;
 use phpDocumentor\DomainModel\Path;
 
 /**
- * @coversDefaultClass phpDocumentor\Application\Configuration\CommandlineOptionsMiddleware
+ * @coversDefaultClass phpDocumentor\Configuration\CommandlineOptionsMiddleware
  * @covers ::__construct
  * @covers ::<private>
  */

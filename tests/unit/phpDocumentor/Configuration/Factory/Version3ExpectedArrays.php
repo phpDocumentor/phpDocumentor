@@ -10,7 +10,7 @@
  *  @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Application\Configuration\Factory;
+namespace phpDocumentor\Configuration\Factory;
 
 /**
  * Expected phpDocumentor3 configuration arrays used for unit testing.

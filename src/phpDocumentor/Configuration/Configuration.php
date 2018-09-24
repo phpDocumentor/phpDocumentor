@@ -14,7 +14,7 @@ declare(strict_types=1);
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Application\Configuration;
+namespace phpDocumentor\Configuration;
 
 final class Configuration extends \ArrayObject
 {

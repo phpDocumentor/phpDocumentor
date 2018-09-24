@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php
 
-use App\Kernel;
+use phpDocumentor\Kernel;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use phpDocumentor\Application\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Console\Application as SymfonyApplication;

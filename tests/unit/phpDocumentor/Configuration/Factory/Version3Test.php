@@ -10,14 +10,14 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Application\Configuration\Factory;
+namespace phpDocumentor\Configuration\Factory;
 
 use PHPUnit\Framework\TestCase;
 
 /**
  * Test case for Version3
  *
- * @coversDefaultClass \phpDocumentor\Application\Configuration\Factory\Version3
+ * @coversDefaultClass \phpDocumentor\Configuration\Factory\Version3
  */
 final class Version3Test extends TestCase
 {
@@ -29,8 +29,8 @@ final class Version3Test extends TestCase
 
     protected function setUp()
     {
-        $this->strategy = new Version3(__DIR__ . '/../../../../../../data/xsd/phpdoc.xsd');
-        $this->dataFolder = __DIR__ . '/../../../../data/';
+        $this->strategy = new Version3(__DIR__ . '/../../../../../data/xsd/phpdoc.xsd');
+        $this->dataFolder = __DIR__ . '/../../../data/';
     }
 
     /**

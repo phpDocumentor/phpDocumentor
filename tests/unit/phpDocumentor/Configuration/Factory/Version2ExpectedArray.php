@@ -10,7 +10,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Application\Configuration\Factory;
+namespace phpDocumentor\Configuration\Factory;
 
 use phpDocumentor\DomainModel\Dsn;
 use phpDocumentor\DomainModel\Path;

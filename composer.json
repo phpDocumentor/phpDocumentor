@@ -9,8 +9,7 @@
             "Cilex\\" : [ "src/phpDocumentor/Application/CilexCompatibilityLayer" ],
             "Pimple\\" : [ "src/phpDocumentor/Application/CilexCompatibilityLayer" ],
             "phpDocumentor\\": [ "src/phpDocumentor/" ]
-        },
-        "files": [ "src/Kernel.php" ]
+        }
     },
     "autoload-dev": {
         "psr-4": {

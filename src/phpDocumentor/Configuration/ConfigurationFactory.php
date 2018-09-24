@@ -13,10 +13,10 @@ declare(strict_types=1);
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Application\Configuration;
+namespace phpDocumentor\Configuration;
 
-use phpDocumentor\Application\Configuration\Factory\Strategy;
-use phpDocumentor\Application\Configuration\Factory\Version3;
+use phpDocumentor\Configuration\Factory\Strategy;
+use phpDocumentor\Configuration\Factory\Version3;
 use phpDocumentor\DomainModel\Uri;
 use RuntimeException;
 
