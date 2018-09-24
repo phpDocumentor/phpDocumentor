@@ -99,7 +99,11 @@ final class CommandlineOptionsMiddleware
     private function overwriteTemplates(array $configuration): array
     {
         if (isset($this->options['template']) && $this->options['template']) {
-            $configuration['phpdocumentor']['templates'] = (array) $this->options['template'];
+            $configuration['phpdocumentor']['templates'] = array_map(function($templateName) {
+                return ['name' => $templateName];
+            },
+                (array)$this->options['template']
+            );
         }
 
         return $configuration;

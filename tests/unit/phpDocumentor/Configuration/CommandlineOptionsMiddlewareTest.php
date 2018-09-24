@@ -85,12 +85,12 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
     public function testItShouldOverrideTheListOfTemplatesBasedOnTheTemplateOption()
     {
         $expected = 'clean';
-        $configuration = ['phpdocumentor' => ['templates' => ['responsive']]];
+        $configuration = ['phpdocumentor' => ['templates' => [['name' => 'responsive']]]];
 
         $middleware = new CommandlineOptionsMiddleware(['template' => $expected]);
         $newConfiguration = $middleware($configuration);
 
-        $this->assertSame([$expected], $newConfiguration['phpdocumentor']['templates']);
+        $this->assertSame([['name' => $expected]], $newConfiguration['phpdocumentor']['templates']);
     }
 
     /**
