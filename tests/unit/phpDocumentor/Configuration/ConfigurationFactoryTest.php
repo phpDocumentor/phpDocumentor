@@ -27,6 +27,11 @@ use phpDocumentor\DomainModel\Uri;
  */
 final class ConfigurationFactoryTest extends MockeryTestCase
 {
+    public function testThatTheDefaultConfigurationFilesAreLoaded()
+    {
+
+    }
+
     /**
      * @covers ::fromUri
      * @expectedException \Exception
@@ -39,7 +44,7 @@ final class ConfigurationFactoryTest extends MockeryTestCase
         vfsStream::newFile('foo.xml')->at($root)->withContent('<foo></foo>');
         $uri = new Uri(vfsStream::url('dir/foo.xml'));
 
-        $configurationFactory = new ConfigurationFactory([]);
+        $configurationFactory = new ConfigurationFactory([], []);
         $configurationFactory->fromUri($uri);
     }
 
@@ -60,7 +65,7 @@ final class ConfigurationFactoryTest extends MockeryTestCase
         $strategy->shouldReceive('supports')->once()->with(m::type(\SimpleXMLElement::class))->andReturn(true);
         $strategy->shouldReceive('convert')->once()->with(m::type(\SimpleXMLElement::class));
 
-        $configurationFactory = new ConfigurationFactory([$strategy]);
+        $configurationFactory = new ConfigurationFactory([$strategy], []);
         $configurationFactory->fromUri($uri);
     }
 
@@ -97,7 +102,7 @@ final class ConfigurationFactoryTest extends MockeryTestCase
 
         // Setup a prepopulated factory with path and cachedContents
         $uri = new Uri(vfsStream::url('dir/foo.xml'));
-        $factory = new ConfigurationFactory([$strategy]);
+        $factory = new ConfigurationFactory([$strategy], []);
         $factory->addMiddleware($middleWare1);
         $factory->addMiddleware($middleWare2);
 

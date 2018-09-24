@@ -28,6 +28,32 @@ class Kernel extends BaseKernel
 
     const CONFIG_EXTS = '.{php,xml,yaml,yml}';
 
+    /**
+     * Returns the current working directory.
+     *
+     * By default, symfony does not track the current working directory. Since we want to use this information to
+     * locate certain resources, such as the configuration files, we add a new method in the kernel that can be used
+     * as an expression to be passed to service definitions.
+     *
+     * For example:
+     *
+     * ```
+     *     phpDocumentor\Configuration\ConfigurationFactory:
+     *       arguments:
+     *         $strategies: !tagged phpdoc.config_strategy
+     *         $defaultFiles:
+     *           - "@=service('kernel').getWorkingDir() ~ '/phpdoc.xml'"
+     *           - "@=service('kernel').getWorkingDir() ~ '/phpdoc.dist.xml'"
+     *           - "@=service('kernel').getWorkingDir() ~ '/phpdoc.xml.dist'"
+     * ```
+     *
+     * @return string
+     */
+    public function getWorkingDir(): string
+    {
+        return \getcwd();
+    }
+
     public function getCacheDir(): string
     {
         return $this->getProjectDir() . '/var/cache/' . $this->environment;

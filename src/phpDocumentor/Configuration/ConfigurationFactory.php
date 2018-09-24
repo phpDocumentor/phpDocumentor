@@ -37,24 +37,20 @@ final class ConfigurationFactory
      * @var callable[]
      */
     private $middlewares = [];
+
+    /**
+     * @var string[]
+     */
     private $defaultFiles = [];
 
     /**
      * Initializes the ConfigurationFactory.
      *
      * @param Strategy[]|iterable $strategies
-     * @param array|null $defaultFiles
+     * @param array $defaultFiles
      */
-    public function __construct(iterable $strategies, array $defaultFiles = null)
+    public function __construct(iterable $strategies, array $defaultFiles)
     {
-        if ($defaultFiles === null) {
-            $defaultFiles = [
-                getcwd() . '/phpdoc.xml',
-                getcwd() . '/phpdoc.dist.xml',
-                getcwd() . '/phpdoc.xml.dist'
-            ];
-        }
-
         foreach ($strategies as $strategy) {
             $this->registerStrategy($strategy);
         }

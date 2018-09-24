@@ -5,6 +5,7 @@ imports:
 parameters:
     locale: 'en'
     secret: ThisIsVerySecret!
+    default_configuration_files:
 
     linker.substitutions:
       'phpDocumentor\Descriptor\ProjectDescriptor': ['files']
@@ -130,6 +131,10 @@ services:
     phpDocumentor\Configuration\ConfigurationFactory:
         arguments:
           $strategies: !tagged phpdoc.config_strategy
+          $defaultFiles:
+            - "@=service('kernel').getWorkingDir() ~ '/phpdoc.xml'"
+            - "@=service('kernel').getWorkingDir() ~ '/phpdoc.dist.xml'"
+            - "@=service('kernel').getWorkingDir() ~ '/phpdoc.xml.dist'"
 
     phpDocumentor\Compiler\Linker\Linker:
       arguments: ['%linker.substitutions%']
