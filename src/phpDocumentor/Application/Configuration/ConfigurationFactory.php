@@ -19,14 +19,15 @@ use phpDocumentor\Application\Configuration\Factory\Strategy;
 use phpDocumentor\Application\Configuration\Factory\Version3;
 use phpDocumentor\DomainModel\Uri;
 use RuntimeException;
-use SimpleXMLElement;
 
 /**
  * The ConfigurationFactory converts the configuration xml from a Uri into an array.
  */
 final class ConfigurationFactory
 {
-    /** @var Strategy[] All strategies that are used by the ConfigurationFactory. */
+    /**
+     * @var Strategy[] All strategies that are used by the ConfigurationFactory.
+     */
     private $strategies = [];
 
     /**
@@ -36,25 +37,56 @@ final class ConfigurationFactory
      * @var callable[]
      */
     private $middlewares = [];
+    private $defaultFiles = [];
 
     /**
      * Initializes the ConfigurationFactory.
      *
-     * @param Strategy[] $strategies
+     * @param Strategy[]|iterable $strategies
+     * @param array|null $defaultFiles
      */
-    public function __construct(iterable $strategies)
+    public function __construct(iterable $strategies, array $defaultFiles = null)
     {
+        if ($defaultFiles === null) {
+            $defaultFiles = [
+                getcwd() . '/phpdoc.xml',
+                getcwd() . '/phpdoc.dist.xml',
+                getcwd() . '/phpdoc.xml.dist'
+            ];
+        }
+
         foreach ($strategies as $strategy) {
             $this->registerStrategy($strategy);
         }
+        $this->defaultFiles = $defaultFiles;
     }
 
     /**
      * Adds a middleware callback that allows the consumer to alter the configuration array when it is constructed.
+     *
+     * @param callable $middleware
      */
     public function addMiddleware(callable $middleware): void
     {
         $this->middlewares[] = $middleware;
+    }
+
+    /**
+     * Attempts to load a configuration from the default locations for phpDocumentor
+     *
+     * @return Configuration
+     */
+    public function fromDefaultLocations(): Configuration
+    {
+        foreach ($this->defaultFiles as $file) {
+            try {
+                return $this->fromUri(new Uri($file));
+            } catch (\InvalidArgumentException $e) {
+                continue;
+            }
+        }
+
+        return new Configuration($this->applyMiddleware(Version3::buildDefault()));
     }
 
     /**
@@ -67,43 +99,19 @@ final class ConfigurationFactory
      */
     public function fromUri(Uri $uri): Configuration
     {
-        $file = (string) $uri;
+        $filename = (string) $uri;
 
-        if (!file_exists($file)) {
-            throw new \InvalidArgumentException(sprintf('File %s could not be found', $file));
+        if (!file_exists($filename)) {
+            throw new \InvalidArgumentException(sprintf('File %s could not be found', $filename));
         }
 
-        return new Configuration(
-            $this->applyMiddleware(
-                $this->extractConfigurationArray(new SimpleXMLElement($file, 0, true))
-            )
-        );
-    }
-
-    /**
-     * Attempts to load a configuration from
-     */
-    public function fromDefaultLocations(): Configuration
-    {
-        $files = [
-            'file://' . getcwd() . '/phpdoc.xml',
-            'file://' . getcwd() . '/phpdoc.dist.xml',
-            'file://' . getcwd() . '/phpdoc.xml.dist'
-        ];
-
-        foreach ($files as $file) {
-            try {
-                return $this->fromUri(new Uri($file));
-            } catch (\InvalidArgumentException $e) {
-                continue;
-            }
-        }
-
-        return new Configuration($this->applyMiddleware(Version3::buildDefault()));
+        return new Configuration($this->applyMiddleware($this->fromFile($filename)));
     }
 
     /**
      * Adds strategies that are used in the ConfigurationFactory.
+     *
+     * @param Strategy $strategy
      */
     private function registerStrategy(Strategy $strategy): void
     {
@@ -113,10 +121,15 @@ final class ConfigurationFactory
     /**
      * Converts the given XML structure into an array containing the configuration.
      *
+     * @param string $file the (xml) file that we try to import.
+     *
+     * @return array a structure containing all configuration options.
+     *
      * @throws RuntimeException
      */
-    private function extractConfigurationArray(SimpleXMLElement $xml): array
+    private function fromFile(string $file): array
     {
+        $xml = new \SimpleXMLElement($file, 0, true);
         foreach ($this->strategies as $strategy) {
             if ($strategy->supports($xml) === true) {
                 return $strategy->convert($xml);
@@ -128,6 +141,10 @@ final class ConfigurationFactory
 
     /**
      * Applies all middleware callbacks onto the configuration.
+     *
+     * @param array $configuration
+     *
+     * @return array
      */
     private function applyMiddleware(array $configuration): array
     {
