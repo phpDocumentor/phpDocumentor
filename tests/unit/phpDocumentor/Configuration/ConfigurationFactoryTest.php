@@ -16,6 +16,7 @@ use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery as m;
 use org\bovigo\vfs\vfsStream;
 use phpDocumentor\Configuration\Factory\Strategy;
+use phpDocumentor\Configuration\Factory\Version2;
 use phpDocumentor\Configuration\Factory\Version3;
 use phpDocumentor\DomainModel\Uri;
 
@@ -24,90 +25,128 @@ use phpDocumentor\DomainModel\Uri;
  *
  * @coversDefaultClass \phpDocumentor\Configuration\ConfigurationFactory
  * @covers ::<private>
+ * @covers ::__construct
  */
 final class ConfigurationFactoryTest extends MockeryTestCase
 {
+    /**
+     * @covers ::fromUri
+     */
+    public function testItLoadsASpecificConfigurationFile()
+    {
+        $configurationFactory = new ConfigurationFactory([new Version2()], []);
+
+        $content = '<phpdocumentor><title>My title</title></phpdocumentor>';
+        $configuration = $configurationFactory->fromUri(
+            new Uri($this->givenExampleConfigurationFileWithContent($content))
+        );
+
+        $this->assertSame('My title', $configuration['phpdocumentor']['title']);
+    }
+
+    /**
+     * @covers ::fromDefaultLocations()
+     */
     public function testThatTheDefaultConfigurationFilesAreLoaded()
     {
+        $file = $this->givenExampleConfigurationFileWithContent(
+            '<phpdocumentor><title>My title</title></phpdocumentor>'
+        );
+        $configurationFactory = new ConfigurationFactory([new Version2()], [$file]);
 
+        $configuration = $configurationFactory->fromDefaultLocations();
+
+        $this->assertSame('My title', $configuration['phpdocumentor']['title']);
     }
 
     /**
-     * @covers ::fromUri
-     * @expectedException \Exception
-     * @expectedExceptionMessage No strategy found that matches the configuration xml
+     * @covers ::fromDefaultLocations()
      */
-    public function testItHaltsIfNoMatchingStrategyCanBeFound()
+    public function testWhenNoneOfTheDefaultsExistThatTheBakedConfigIsUsed()
     {
-        $root = vfsStream::setup('dir');
+        $configurationFactory = new ConfigurationFactory([new Version2()], ['does_not_exist.xml']);
 
-        vfsStream::newFile('foo.xml')->at($root)->withContent('<foo></foo>');
-        $uri = new Uri(vfsStream::url('dir/foo.xml'));
+        $configuration = $configurationFactory->fromDefaultLocations();
 
-        $configurationFactory = new ConfigurationFactory([], []);
-        $configurationFactory->fromUri($uri);
+        $this->assertEquals(Version3::buildDefault(), $configuration->getArrayCopy());
     }
 
     /**
-     * @covers ::__construct
-     * @covers ::fromUri
-     * @covers ::<private>
-     */
-    public function testItRegistersStrategies()
-    {
-        $root = vfsStream::setup('dir');
-
-        vfsStream::newFile('foo.xml')->at($root)->withContent('<foo></foo>');
-        $uri = new Uri(vfsStream::url('dir/foo.xml'));
-
-        /** @var m\Mock $strategy */
-        $strategy = m::mock(Strategy::class);
-        $strategy->shouldReceive('supports')->once()->with(m::type(\SimpleXMLElement::class))->andReturn(true);
-        $strategy->shouldReceive('convert')->once()->with(m::type(\SimpleXMLElement::class));
-
-        $configurationFactory = new ConfigurationFactory([$strategy], []);
-        $configurationFactory->fromUri($uri);
-    }
-
-    /**
-     * @covers ::__construct
      * @covers ::addMiddleware
-     * @covers ::fromUri
      */
-    public function testThatMiddlewaresAreAddedAndApplied()
+    public function testThatMiddlewaresCanBeAddedAndAreThenApplied()
     {
         $inputValue = ['test'];
         $afterMiddleware1Value = ['test', 'test2'];
         $afterMiddleware2Value = ['test', 'test2', 'test3'];
 
-        $root = vfsStream::setup('dir');
-        vfsStream::newFile('foo.xml')->at($root)->withContent('<foo></foo>');
+        $middleWare1 = $this->givenAMiddlewareThatReturns($inputValue, $afterMiddleware1Value);
+        $middleWare2 = $this->givenAMiddlewareThatReturns($afterMiddleware1Value, $afterMiddleware2Value);
 
-        $middleWare1 = function ($value) use ($inputValue, $afterMiddleware1Value) {
-            $this->assertSame($inputValue, $value);
-
-            return $afterMiddleware1Value;
-        };
-
-        $middleWare2 = function ($value) use ($afterMiddleware1Value, $afterMiddleware2Value) {
-            $this->assertSame($afterMiddleware1Value, $value);
-
-            return $afterMiddleware2Value;
-        };
-
-        /** @var m\Mock $strategy */
-        $strategy = m::mock(Strategy::class);
-        $strategy->shouldReceive('supports')->once()->with(m::type(\SimpleXMLElement::class))->andReturn(true);
-        $strategy->shouldReceive('convert')->once()->with(m::type(\SimpleXMLElement::class))->andReturn($inputValue);
-
-        // Setup a prepopulated factory with path and cachedContents
-        $uri = new Uri(vfsStream::url('dir/foo.xml'));
-        $factory = new ConfigurationFactory([$strategy], []);
+        $factory = new ConfigurationFactory([$this->givenAValidStrategyThatReturns($inputValue)], []);
         $factory->addMiddleware($middleWare1);
         $factory->addMiddleware($middleWare2);
 
-        $data = $factory->fromUri($uri);
+        $data = $factory->fromUri(new Uri($this->givenExampleConfigurationFileWithContent('<foo></foo>')));
 
-        $this->assertEquals($afterMiddleware2Value, $data->getArrayCopy());
+        $this->assertSame($afterMiddleware2Value, $data->getArrayCopy());
+    }
+
+    /**
+     * @covers ::fromUri
+     * @expectedException \Exception
+     * @expectedExceptionMessage No supported configuration files were found
+     */
+    public function testItHaltsIfNoMatchingStrategyCanBeFound()
+    {
+        $strategies = []; // No strategy means nothing could match ;)
+        $configurationFactory = new ConfigurationFactory($strategies, []);
+
+        $configurationFactory->fromUri(
+            new Uri($this->givenExampleConfigurationFileWithContent('<foo></foo>'))
+        );
+    }
+
+    /**
+     * @covers ::__construct
+     * @expectedException \TypeError
+     */
+    public function testItErrorsWhenTryingToInitializeWithSomethingOtherThanAStrategy()
+    {
+        new ConfigurationFactory(['this_is_not_a_strategy'], []);
+    }
+
+    private function givenExampleConfigurationFileWithContent($content): string
+    {
+        vfsStream::newFile('foo.xml')
+            ->at(vfsStream::setup('dir'))
+            ->withContent($content);
+
+        return vfsStream::url('dir/foo.xml');
+    }
+
+    private function givenAMiddlewareThatReturns($expectedInputValue, $returnValue): \Closure
+    {
+        return function ($value) use ($expectedInputValue, $returnValue) {
+            $this->assertSame($expectedInputValue, $value);
+
+            return $returnValue;
+        };
+    }
+
+    private function givenAValidStrategyThatReturns($result): Strategy
+    {
+        /** @var m\Mock $strategy */
+        $strategy = m::mock(Strategy::class);
+        $strategy->shouldReceive('supports')
+            ->once()
+            ->with(m::type(\SimpleXMLElement::class))
+            ->andReturn(true);
+        $strategy
+            ->shouldReceive('convert')
+            ->once()
+            ->with(m::type(\SimpleXMLElement::class))->andReturn($result);
+
+        return $strategy;
     }
 }

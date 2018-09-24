@@ -101,7 +101,16 @@ final class ConfigurationFactory
             throw new \InvalidArgumentException(sprintf('File %s could not be found', $filename));
         }
 
-        return new Configuration($this->applyMiddleware($this->fromFile($filename)));
+        $xml = new \SimpleXMLElement($filename, 0, true);
+        foreach ($this->strategies as $strategy) {
+            if ($strategy->supports($xml) !== true) {
+                continue;
+            }
+
+            return new Configuration($this->applyMiddleware($strategy->convert($xml)));
+        }
+
+        throw new RuntimeException('No supported configuration files were found');
     }
 
     /**
@@ -112,27 +121,6 @@ final class ConfigurationFactory
     private function registerStrategy(Strategy $strategy): void
     {
         $this->strategies[] = $strategy;
-    }
-
-    /**
-     * Converts the given XML structure into an array containing the configuration.
-     *
-     * @param string $file the (xml) file that we try to import.
-     *
-     * @return array a structure containing all configuration options.
-     *
-     * @throws RuntimeException
-     */
-    private function fromFile(string $file): array
-    {
-        $xml = new \SimpleXMLElement($file, 0, true);
-        foreach ($this->strategies as $strategy) {
-            if ($strategy->supports($xml) === true) {
-                return $strategy->convert($xml);
-            }
-        }
-
-        throw new RuntimeException('No strategy found that matches the configuration xml');
     }
 
     /**

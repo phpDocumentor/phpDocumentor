@@ -63,7 +63,7 @@ final class Version2 implements Strategy
 
         return [
             'phpdocumentor' => [
-                'title' => 'my-doc',
+                'title' => ((string)$phpDocumentor->title) ?: 'my-doc',
                 'use-cache' => true,
                 'paths' => [
                     'output' => new Dsn($outputDirectory),
@@ -106,7 +106,8 @@ final class Version2 implements Strategy
 
     public function supports(SimpleXMLElement $phpDocumentor): bool
     {
-        return !isset($phpDocumentor->attributes()->version);
+        return isset($phpDocumentor->attributes()->version) === false
+            || $phpDocumentor->attributes()->version == '2';
     }
 
     /**
