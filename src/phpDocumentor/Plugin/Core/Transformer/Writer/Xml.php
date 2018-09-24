@@ -173,7 +173,7 @@ class Xml extends WriterAbstract implements Translatable
 
         // add namespace aliases
         foreach ($file->getNamespaceAliases() as $alias => $namespace) {
-            $alias_obj = new \DOMElement('namespace-alias', $namespace);
+            $alias_obj = new \DOMElement('namespace-alias', (string) $namespace);
             $child->appendChild($alias_obj);
             $alias_obj->setAttribute('name', (string) $alias);
         }
@@ -217,8 +217,10 @@ class Xml extends WriterAbstract implements Translatable
                 $marker_obj = new \DOMElement(strtolower($type));
                 $markers->appendChild($marker_obj);
 
-                $marker_obj->appendChild(new \DOMText(trim($marker['message'])));
-                $marker_obj->setAttribute('line', $marker['line']);
+                if (array_key_exists('message', $marker)) {
+                    $marker_obj->appendChild(new \DOMText(trim((string) $marker['message'])));
+                }
+                $marker_obj->setAttribute('line', (string) $marker['line']);
             }
         }
 
@@ -348,12 +350,12 @@ class Xml extends WriterAbstract implements Translatable
             $parent->appendChild($child);
         }
 
-        $namespace = $class->getNamespace()->getFullyQualifiedStructuralElementName();
+        $namespace = (string) $class->getNamespace()->getFullyQualifiedStructuralElementName();
         $child->setAttribute('namespace', ltrim($namespace, '\\'));
-        $child->setAttribute('line', $class->getLine());
+        $child->setAttribute('line', (string) $class->getLine());
 
         $child->appendChild(new \DOMElement('name', $class->getName()));
-        $child->appendChild(new \DOMElement('full_name', $class->getFullyQualifiedStructuralElementName()));
+        $child->appendChild(new \DOMElement('full_name', (string) $class->getFullyQualifiedStructuralElementName()));
 
         $this->docBlockConverter->convert($child, $class);
 
@@ -399,7 +401,7 @@ class Xml extends WriterAbstract implements Translatable
                 $methodElement->appendChild(
                     new \DOMElement(
                         'inherited_from',
-                        $method->getParent()->getFullyQualifiedStructuralElementName()
+                        (string) $method->getParent()->getFullyQualifiedStructuralElementName()
                     )
                 );
             }

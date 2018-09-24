@@ -63,7 +63,7 @@ class DocBlockConverter
         $parent->appendChild($child);
 
         $child->setAttribute('line', (string) $element->getLine());
-        $package = str_replace('&', '&amp;', ltrim($element->getPackage(), '\\'));
+        $package = str_replace('&', '&amp;', ltrim((string)$element->getPackage(), '\\'));
         $parent->setAttribute('package', $package ?: 'global');
 
         $this->addSummary($child, $element);
@@ -90,7 +90,7 @@ class DocBlockConverter
     protected function addDescription(\DOMElement $node, DescriptorAbstract $element)
     {
         $node->appendChild(new \DOMElement('long-description'))
-            ->appendChild(new \DOMText($element->getDescription()));
+            ->appendChild(new \DOMText((string) $element->getDescription()));
     }
 
     /**
@@ -132,8 +132,8 @@ class DocBlockConverter
         $rule = $this->router->match($parentElement);
 
         $child->setAttribute('name', 'inherited_from');
-        $child->setAttribute('description', $parentElement->getFullyQualifiedStructuralElementName());
-        $child->setAttribute('refers', $parentElement->getFullyQualifiedStructuralElementName());
+        $child->setAttribute('description', (string) $parentElement->getFullyQualifiedStructuralElementName());
+        $child->setAttribute('refers', (string) $parentElement->getFullyQualifiedStructuralElementName());
         $child->setAttribute('link', $rule ? $rule->generate($parentElement) : '');
     }
 }

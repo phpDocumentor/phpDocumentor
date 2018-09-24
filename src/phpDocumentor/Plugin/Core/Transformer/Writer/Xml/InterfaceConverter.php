@@ -76,12 +76,12 @@ class InterfaceConverter
             $child->appendChild(new \DOMElement('extends', $parentFqcn));
         }
 
-        $namespace = $interface->getNamespace()->getFullyQualifiedStructuralElementName();
+        $namespace = (string) $interface->getNamespace()->getFullyQualifiedStructuralElementName();
         $child->setAttribute('namespace', ltrim($namespace, '\\'));
         $child->setAttribute('line', (string) $interface->getLine());
 
         $child->appendChild(new \DOMElement('name', $interface->getName()));
-        $child->appendChild(new \DOMElement('full_name', $interface->getFullyQualifiedStructuralElementName()));
+        $child->appendChild(new \DOMElement('full_name', (string) $interface->getFullyQualifiedStructuralElementName()));
 
         $this->docBlockConverter->convert($child, $interface);
 

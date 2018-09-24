@@ -36,7 +36,7 @@ class PropertyAssembler extends AssemblerAbstract
         $propertyDescriptor->setNamespace(substr((string) $data->getFqsen(), 0, -strlen($data->getName()) - 3));
         $propertyDescriptor->setFullyQualifiedStructuralElementName($data->getFqsen());
         $propertyDescriptor->setName($data->getName());
-        $propertyDescriptor->setVisibility($data->getVisibility() ?: 'public');
+        $propertyDescriptor->setVisibility((string) $data->getVisibility() ?: 'public');
         $propertyDescriptor->setStatic($data->isStatic());
         $propertyDescriptor->setDefault($data->getDefault());
 

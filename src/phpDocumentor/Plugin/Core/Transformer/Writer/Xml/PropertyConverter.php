@@ -59,8 +59,8 @@ class PropertyConverter
         $child->setAttribute('line', (string) $property->getLine());
 
         $child->appendChild(new \DOMElement('name', '$' . $property->getName()));
-        $child->appendChild(new \DOMElement('full_name', $property->getFullyQualifiedStructuralElementName()));
-        $child->appendChild(new \DOMElement('default'))->appendChild(new \DOMText($property->getDefault()));
+        $child->appendChild(new \DOMElement('full_name', (string) $property->getFullyQualifiedStructuralElementName()));
+        $child->appendChild(new \DOMElement('default'))->appendChild(new \DOMText((string) $property->getDefault()));
 
         $this->docBlockConverter->convert($child, $property);
 

@@ -64,7 +64,7 @@ class MethodAssembler extends AssemblerAbstract
     {
         $descriptor->setFullyQualifiedStructuralElementName($reflector->getFqsen());
         $descriptor->setName($reflector->getName());
-        $descriptor->setVisibility($reflector->getVisibility() ?: 'public');
+        $descriptor->setVisibility((string) $reflector->getVisibility() ?: 'public');
         $descriptor->setFinal($reflector->isFinal());
         $descriptor->setAbstract($reflector->isAbstract());
         $descriptor->setStatic($reflector->isStatic());
