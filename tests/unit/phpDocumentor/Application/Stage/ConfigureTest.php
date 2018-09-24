@@ -12,6 +12,10 @@
 
 namespace phpDocumentor\Application\Stage;
 
+use phpDocumentor\Application\Configuration\Configuration;
+use phpDocumentor\Application\Configuration\ConfigurationFactory;
+use phpDocumentor\Application\Configuration\Factory\Version2;
+use phpDocumentor\Application\Configuration\Factory\Version3;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -19,4 +23,19 @@ use PHPUnit\Framework\TestCase;
  */
 class ConfigureTest extends TestCase
 {
+    /**
+     * @use \phpDocumentor\Application\Configuration\ConfigurationFactory;
+     * @use \phpDocumentor\Application\Configuration\Factory\Version3;
+     * @use \phpDocumentor\DomainModel\Uri;
+     */
+    public function testInvokeOverridesConfig()
+    {
+        $configFactory = new ConfigurationFactory([], []);
+
+        $fixture = new Configure($configFactory, $configFactory->fromDefaultLocations());
+
+        $result = $fixture(['force' => true]);
+
+        $this->assertFalse($result['phpdocumentor']['use-cache']);
+    }
 }

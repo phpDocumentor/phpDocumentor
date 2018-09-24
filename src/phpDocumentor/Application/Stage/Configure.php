@@ -50,6 +50,10 @@ final class Configure
             $this->configuration->exchangeArray(
                 $this->configFactory->fromUri(new Uri(realpath($options['config'])))->getArrayCopy()
             );
+        } else {
+            $this->configuration->exchangeArray(
+                $this->configFactory->fromDefaultLocations()->getArrayCopy()
+            );
         }
 
         return $this->configuration->getArrayCopy();
