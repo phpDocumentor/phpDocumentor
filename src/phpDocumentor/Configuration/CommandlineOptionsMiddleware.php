@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Configuration;
 
+use phpDocumentor\Configuration\Factory\Version3;
 use phpDocumentor\DomainModel\Dsn;
 use phpDocumentor\DomainModel\Path;
 
@@ -144,6 +145,21 @@ final class CommandlineOptionsMiddleware
         return $version;
     }
 
+    private function registerExtensions(array $version): array
+    {
+        if (!isset($this->options['extensions']) || ! $this->options['extensions']) {
+            return $version;
+        }
+
+        if (! isset($version['api'])) {
+            $version['api'] = $this->createDefaultApiSettings();
+        }
+
+        $version['api'][0]['extensions'] = $this->options['extensions'];
+
+        return $version;
+    }
+
     private function overwriteIgnoredPaths(array $version): array
     {
         if (! isset($this->options['ignore']) || ! $this->options['ignore']) {
@@ -160,21 +176,6 @@ final class CommandlineOptionsMiddleware
             },
             $this->options['ignore']
         );
-
-        return $version;
-    }
-
-    private function registerExtensions(array $version): array
-    {
-        if (!isset($this->options['extensions']) || ! $this->options['extensions']) {
-            return $version;
-        }
-
-        if (! isset($version['api'])) {
-            $version['api'] = $this->createDefaultApiSettings();
-        }
-
-        $version['api'][0]['extensions'] = $this->options['extensions'];
 
         return $version;
     }
@@ -226,21 +227,6 @@ final class CommandlineOptionsMiddleware
 
     private function createDefaultApiSettings(): array
     {
-        return [[
-            'format' => 'php',
-            'source' => [
-                'dsn' => 'file://.',
-                'paths' => [new Path('.')],
-            ],
-            'ignore' => [
-                'hidden' => true,
-                'symlinks' => true,
-                'paths' => [],
-            ],
-            'extensions' => ['php', 'php3', 'phtml'],
-            'visibility' => 'public',
-            'default-package-name' => 'phpDocumentor',
-            'markers' => ['TODO', 'FIXME'],
-        ]];
+        return current(Version3::buildDefault()['phpdocumentor']['versions'])['api'];
     }
 }
