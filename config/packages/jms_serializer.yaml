@@ -10,7 +10,7 @@ jms_serializer:
             # list of directories to scan searching for php classes to use when warming up the cache
             paths:
                 included:
-                  - "%kernel.root_dir%/../src/phpDocumentor/Transformer"
+                  - "%kernel.project_dir%/../src/phpDocumentor/Transformer"
                 excluded:
                   - "Exception"
                   - "Event"
