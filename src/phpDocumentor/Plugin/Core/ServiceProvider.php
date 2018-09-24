@@ -17,6 +17,7 @@ namespace phpDocumentor\Plugin\Core;
 
 use Cilex\Application;
 use phpDocumentor\Plugin\Core\Transformer\Writer;
+use phpDocumentor\Transformer\Router\Queue;
 use phpDocumentor\Transformer\Writer\Collection;
 use phpDocumentor\Translator\Translator;
 use Pimple\Container;
@@ -85,7 +86,9 @@ final class ServiceProvider implements ServiceProviderInterface
      */
     private function registerDependenciesOnXsltExtension(Application $app)
     {
-        Xslt\Extension::$routers = $app['transformer.routing.queue'];
+        $queue = new Queue();
+        $queue->insert($app['transformer.routing.standard'], 1);
+        Xslt\Extension::$routers = $queue;
         Xslt\Extension::$descriptorBuilder = $app['descriptor.builder'];
     }
 

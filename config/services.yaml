@@ -249,6 +249,11 @@ services:
       # used in a service provider so must be public
       public: true
 
+    descriptor.builder:
+      alias: phpDocumentor\Descriptor\ProjectDescriptorBuilder
+      # used in a service provider so must be public
+      public: true
+
     Twig\Environment:
       # used in a service provider so must be public
       public: true
