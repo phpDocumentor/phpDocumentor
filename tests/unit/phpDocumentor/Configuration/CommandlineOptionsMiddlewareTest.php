@@ -131,6 +131,44 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
         );
     }
 
+    public function testItShouldAddAbsoluteSourcePathsToNewApi()
+    {
+        $configuration = Version3::buildDefault();
+        $middleware = new CommandlineOptionsMiddleware(['directory' => ['/src']]);
+        $newConfiguration = $middleware($configuration);
+
+        $this->assertEquals(
+            [
+                'dsn' => new Dsn('file:///src'),
+                'paths' => [new Path('./')],
+            ],
+            current($newConfiguration['phpdocumentor']['versions'])['api'][0]['source']
+        );
+    }
+
+    public function testItShouldAddAbsoluteSourcePathsToNewApiAndRelativeToCurrent()
+    {
+        $configuration = Version3::buildDefault();
+        $middleware = new CommandlineOptionsMiddleware(['directory' => ['/src', './localSrc']]);
+        $newConfiguration = $middleware($configuration);
+
+        $this->assertEquals(
+            [
+                'dsn' => new Dsn('file:///src'),
+                'paths' => [new Path('./')],
+            ],
+            current($newConfiguration['phpdocumentor']['versions'])['api'][0]['source']
+        );
+        $this->assertEquals(
+            [
+                'dsn' => new Dsn('file://.'),
+                'paths' => [new Path('./localSrc')],
+            ],
+            current($newConfiguration['phpdocumentor']['versions'])['api'][1]['source']
+        );
+    }
+
+
     /**
      * @covers ::__invoke
      */

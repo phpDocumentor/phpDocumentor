@@ -131,16 +131,32 @@ final class CommandlineOptionsMiddleware
             return $version;
         }
 
-        if (! isset($version['api'])) {
-            $version['api'] = $this->createDefaultApiSettings();
+        $currentApiConfig = current($this->createDefaultApiSettings());
+
+        if (isset($version['api'])) {
+            $currentApiConfig = current($version['api']);
         }
 
-        $version['api'][0]['source']['paths'] = array_map(
-            function ($path) {
-                return new Path($path);
-            },
-            $this->options['directory']
-        );
+        //Reset the current config, because directory it overwriting the config.
+        $currentApiConfig['source']['paths'] = [];
+        $version['api'] = [];
+
+        foreach ($this->options['directory'] as $path) {
+            //If the passed directory is an absolute path this should be handled as a new Api
+            //A version may contain multiple APIs.
+            if (Path::isAbsolutePath($path)) {
+                $apiConfig = $currentApiConfig;
+                $apiConfig['source']['dsn'] = new Dsn($path);
+                $apiConfig['source']['paths'] = [ new Path('./')];
+                $version['api'][] = $apiConfig;
+            } else {
+                $currentApiConfig['source']['paths'][] = new Path($path);
+            }
+        }
+
+        if (count($currentApiConfig['source']['paths']) > 0) {
+            $version['api'][] = $currentApiConfig;
+        }
 
         return $version;
     }

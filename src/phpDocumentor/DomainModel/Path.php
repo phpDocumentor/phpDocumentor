@@ -51,4 +51,21 @@ final class Path
     {
         return $this->path;
     }
+
+    /**
+     * Returns whether the file path is an absolute path.
+     *
+     * @param string $file A file path
+     *
+     * @return bool
+     */
+    public static function isAbsolutePath($file)
+    {
+        return strspn($file, '/\\', 0, 1)
+            || (\strlen($file) > 3 && ctype_alpha($file[0])
+                && ':' === $file[1]
+                && strspn($file, '/\\', 2, 1)
+            )
+            || null !== parse_url($file, PHP_URL_SCHEME);
+    }
 }
