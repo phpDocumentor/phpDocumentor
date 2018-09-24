@@ -28,11 +28,6 @@ final class CommandlineOptionsMiddleware
         $this->options = $options;
     }
 
-    public function provideOptions(array $options): void
-    {
-        $this->options = $options;
-    }
-
     public function __invoke(array $configuration): array
     {
         $configuration = $this->overwriteDestinationFolder($configuration);
@@ -58,24 +53,55 @@ final class CommandlineOptionsMiddleware
         return $configuration;
     }
 
-    public function createDefaultApiSettings(): array
+    private function overwriteDestinationFolder(array $configuration): array
     {
-        return [[
-            'format' => 'php',
-            'source' => [
-                'dsn' => 'file://.',
-                'paths' => [new Path('.')],
-            ],
-            'ignore' => [
-                'hidden' => true,
-                'symlinks' => true,
-                'paths' => [],
-            ],
-            'extensions' => ['php', 'php3', 'phtml'],
-            'visibility' => 'public',
-            'default-package-name' => 'phpDocumentor',
-            'markers' => ['TODO', 'FIXME'],
-        ]];
+        if (isset($this->options['target']) && $this->options['target']) {
+            $configuration['phpdocumentor']['paths']['output'] = new Dsn($this->options['target']);
+        }
+
+        return $configuration;
+    }
+
+    /**
+     * Changes the given configuration array so that the cache handling is disabled.
+     */
+    private function disableCache(array $configuration): array
+    {
+        if (isset($this->options['force']) && $this->options['force']) {
+            $configuration['phpdocumentor']['use-cache'] = false;
+        }
+
+        return $configuration;
+    }
+
+    private function overwriteCacheFolder(array $configuration): array
+    {
+        if (isset($this->options['cache-folder']) && $this->options['cache-folder']) {
+            $configuration['phpdocumentor']['paths']['cache'] = new Path($this->options['cache-folder']);
+        }
+
+        return $configuration;
+    }
+
+    private function overwriteTitle(array $configuration): array
+    {
+        if (isset($this->options['title']) && $this->options['title']) {
+            $configuration['phpdocumentor']['title'] = $this->options['title'];
+        }
+
+        return $configuration;
+    }
+
+    /**
+     * Changes the given configuration array to feature the templates from the options.
+     */
+    private function overwriteTemplates(array $configuration): array
+    {
+        if (isset($this->options['template']) && $this->options['template']) {
+            $configuration['phpdocumentor']['templates'] = (array) $this->options['template'];
+        }
+
+        return $configuration;
     }
 
     private function setFilesInPath(array $version): array
@@ -153,24 +179,6 @@ final class CommandlineOptionsMiddleware
         return $version;
     }
 
-    private function overwriteDestinationFolder(array $configuration): array
-    {
-        if (isset($this->options['target']) && $this->options['target']) {
-            $configuration['phpdocumentor']['paths']['output'] = new Dsn($this->options['target']);
-        }
-
-        return $configuration;
-    }
-
-    private function overwriteCacheFolder(array $configuration): array
-    {
-        if (isset($this->options['cache-folder']) && $this->options['cache-folder']) {
-            $configuration['phpdocumentor']['paths']['cache'] = new Path($this->options['cache-folder']);
-        }
-
-        return $configuration;
-    }
-
     private function overwriteMarkers(array $version): array
     {
         if (! isset($this->options['markers']) || ! $this->options['markers']) {
@@ -216,36 +224,23 @@ final class CommandlineOptionsMiddleware
         return $version;
     }
 
-    private function overwriteTitle(array $configuration): array
+    private function createDefaultApiSettings(): array
     {
-        if (isset($this->options['title']) && $this->options['title']) {
-            $configuration['phpdocumentor']['title'] = $this->options['title'];
-        }
-
-        return $configuration;
-    }
-
-    /**
-     * Changes the given configuration array to feature the templates from the options.
-     */
-    private function overwriteTemplates(array $configuration): array
-    {
-        if (isset($this->options['template']) && $this->options['template']) {
-            $configuration['phpdocumentor']['templates'] = (array) $this->options['template'];
-        }
-
-        return $configuration;
-    }
-
-    /**
-     * Changes the given configuration array so that the cache handling is disabled.
-     */
-    private function disableCache(array $configuration): array
-    {
-        if (isset($this->options['force']) && $this->options['force']) {
-            $configuration['phpdocumentor']['use-cache'] = false;
-        }
-
-        return $configuration;
+        return [[
+            'format' => 'php',
+            'source' => [
+                'dsn' => 'file://.',
+                'paths' => [new Path('.')],
+            ],
+            'ignore' => [
+                'hidden' => true,
+                'symlinks' => true,
+                'paths' => [],
+            ],
+            'extensions' => ['php', 'php3', 'phtml'],
+            'visibility' => 'public',
+            'default-package-name' => 'phpDocumentor',
+            'markers' => ['TODO', 'FIXME'],
+        ]];
     }
 }

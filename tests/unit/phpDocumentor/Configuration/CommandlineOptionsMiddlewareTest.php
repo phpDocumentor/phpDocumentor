@@ -18,98 +18,90 @@ use phpDocumentor\DomainModel\Dsn;
 use phpDocumentor\DomainModel\Path;
 
 /**
- * @coversDefaultClass phpDocumentor\Configuration\CommandlineOptionsMiddleware
+ * @coversDefaultClass \phpDocumentor\Configuration\CommandlineOptionsMiddleware
  * @covers ::__construct
  * @covers ::<private>
  */
 final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
 {
-    /** @var CommandlineOptionsMiddleware */
-    private $middleware;
-
-    protected function setUp()
-    {
-        $this->middleware = new CommandlineOptionsMiddleware();
-    }
-
     /**
-     * @covers ::provideOptions
      * @covers ::__invoke
      */
     public function testItShouldOverwriteTheDestinationFolderBasedOnTheTargetOption()
     {
         $expected = '/abc';
         $configuration = ['phpdocumentor' => ['paths' => ['output' => '/tmp']]];
-        $this->middleware->provideOptions(['target' => $expected]);
-        $newConfiguration = $this->middleware->__invoke($configuration);
+
+        $middleware = new CommandlineOptionsMiddleware(['target' => $expected]);
+        $newConfiguration = $middleware($configuration);
 
         $this->assertEquals(new Dsn($expected), $newConfiguration['phpdocumentor']['paths']['output']);
     }
 
     /**
-     * @covers ::provideOptions
+     * @covers ::__invoke
+     */
+    public function testItShouldDisableTheCacheBasedOnTheForceOption()
+    {
+        $configuration = ['phpdocumentor' => ['use-cache' => true]];
+
+        $middleware = new CommandlineOptionsMiddleware(['force' => true]);
+        $newConfiguration = $middleware($configuration);
+
+        $this->assertFalse($newConfiguration['phpdocumentor']['use-cache']);
+    }
+
+    /**
      * @covers ::__invoke
      */
     public function testItShouldOverwriteTheCacheFolderBasedOnTheCacheFolderOption()
     {
         $expected = '/abc';
         $configuration = ['phpdocumentor' => ['paths' => ['cache' => '/tmp']]];
-        $this->middleware->provideOptions(['cache-folder' => $expected]);
-        $newConfiguration = $this->middleware->__invoke($configuration);
+
+        $middleware = new CommandlineOptionsMiddleware(['cache-folder' => $expected]);
+        $newConfiguration = $middleware->__invoke($configuration);
 
         $this->assertEquals(new Path($expected), $newConfiguration['phpdocumentor']['paths']['cache']);
     }
 
     /**
-     * @covers ::provideOptions
-     * @covers ::__invoke
-     */
-    public function testItShouldDisableTheCacheBasedOnTheForceOption()
-    {
-        $configuration = ['phpdocumentor' => ['use-cache' => true]];
-        $this->middleware->provideOptions(['force' => true]);
-        $newConfiguration = $this->middleware->__invoke($configuration);
-
-        $this->assertFalse($newConfiguration['phpdocumentor']['use-cache']);
-    }
-
-    /**
-     * @covers ::provideOptions
      * @covers ::__invoke
      */
     public function testItShouldOverrideTheTitleBasedOnTheTitleOption()
     {
         $expected = 'phpDocumentor3';
         $configuration = ['phpdocumentor' => ['title' => 'phpDocumentor2']];
-        $this->middleware->provideOptions(['title' => $expected]);
-        $newConfiguration = $this->middleware->__invoke($configuration);
+
+        $middleware = new CommandlineOptionsMiddleware(['title' => $expected]);
+        $newConfiguration = $middleware($configuration);
 
         $this->assertSame($expected, $newConfiguration['phpdocumentor']['title']);
     }
 
     /**
-     * @covers ::provideOptions
      * @covers ::__invoke
      */
     public function testItShouldOverrideTheListOfTemplatesBasedOnTheTemplateOption()
     {
         $expected = 'clean';
         $configuration = ['phpdocumentor' => ['templates' => ['responsive']]];
-        $this->middleware->provideOptions(['template' => $expected]);
-        $newConfiguration = $this->middleware->__invoke($configuration);
+
+        $middleware = new CommandlineOptionsMiddleware(['template' => $expected]);
+        $newConfiguration = $middleware($configuration);
 
         $this->assertSame([$expected], $newConfiguration['phpdocumentor']['templates']);
     }
 
     /**
-     * @covers ::provideOptions
      * @covers ::__invoke
      */
     public function testItShouldAddSourceDirectoriesForDefaultConfiguration()
     {
         $configuration = Version3::buildDefault();
-        $this->middleware->provideOptions(['directory' => ['./src']]);
-        $newConfiguration = $this->middleware->__invoke($configuration);
+
+        $middleware = new CommandlineOptionsMiddleware(['directory' => ['./src']]);
+        $newConfiguration = $middleware($configuration);
 
         $this->assertEquals(
             [
