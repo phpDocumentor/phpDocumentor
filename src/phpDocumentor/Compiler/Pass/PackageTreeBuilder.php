@@ -92,7 +92,7 @@ class PackageTreeBuilder implements CompilerPassInterface
             // ensure consistency by trimming the slash prefix and then re-appending it.
             $packageIndexName = '\\' . ltrim((string) $packageName, '\\');
             if (!isset($project->getIndexes()->packages[$packageIndexName])) {
-                $this->createPackageDescriptorTree($project, $packageName);
+                $this->createPackageDescriptorTree($project, (string) $packageName);
             }
 
             /** @var PackageDescriptor $package */
