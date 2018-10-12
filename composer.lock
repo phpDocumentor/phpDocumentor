@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8e4be9da2b6ee0e23ec827a710f26eba",
+    "content-hash": "d774d0a8a53f9e709ce1e3526fd98d8f",
     "packages": [
         {
             "name": "composer/ca-bundle",
@@ -1922,25 +1922,25 @@
         },
         {
             "name": "phpdocumentor/type-resolver",
-            "version": "0.6.2",
+            "version": "0.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/TypeResolver.git",
-                "reference": "e81ce9e82df06b49b2d0e0a2393a08955aeda05b"
+                "reference": "9c0562f9af69b06b002b017a3f0672bbfaba349f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/e81ce9e82df06b49b2d0e0a2393a08955aeda05b",
-                "reference": "e81ce9e82df06b49b2d0e0a2393a08955aeda05b",
+                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/9c0562f9af69b06b002b017a3f0672bbfaba349f",
+                "reference": "9c0562f9af69b06b002b017a3f0672bbfaba349f",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.1",
-                "phpdocumentor/reflection-common": "^2"
+                "phpdocumentor/reflection-common": "~2.0.0-beta1"
             },
             "require-dev": {
-                "mockery/mockery": "^1.0",
-                "phpunit/phpunit": "^6.5"
+                "mockery/mockery": "~1",
+                "phpunit/phpunit": "~6"
             },
             "type": "library",
             "extra": {
@@ -1963,7 +1963,8 @@
                     "email": "me@mikevanriel.com"
                 }
             ],
-            "time": "2018-06-14T12:29:58+00:00"
+            "description": "A PSR-5 based resolver of Class names, Types and Structural Element Names",
+            "time": "2018-09-25T05:46:06+00:00"
         },
         {
             "name": "phpoption/phpoption",
