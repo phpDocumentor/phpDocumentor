@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d774d0a8a53f9e709ce1e3526fd98d8f",
+    "content-hash": "61dec331a64f05a3e963186d9d28b0c3",
     "packages": [
         {
             "name": "composer/ca-bundle",
@@ -1215,24 +1215,24 @@
         },
         {
             "name": "league/pipeline",
-            "version": "0.3.0",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/pipeline.git",
-                "reference": "27dc18166c30d6429c75d1320f41e8238c59c3d4"
+                "reference": "aa14b0e3133121f8be39e9a3b6ddd011fc5bb9a8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/pipeline/zipball/27dc18166c30d6429c75d1320f41e8238c59c3d4",
-                "reference": "27dc18166c30d6429c75d1320f41e8238c59c3d4",
+                "url": "https://api.github.com/repos/thephpleague/pipeline/zipball/aa14b0e3133121f8be39e9a3b6ddd011fc5bb9a8",
+                "reference": "aa14b0e3133121f8be39e9a3b6ddd011fc5bb9a8",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.5"
+                "php": ">=7.1"
             },
             "require-dev": {
-                "henrikbjorn/phpspec-code-coverage": "^1.0",
-                "phpspec/phpspec": "^2.2"
+                "leanphp/phpspec-code-coverage": "^4.2",
+                "phpspec/phpspec": "^4.3"
             },
             "type": "library",
             "autoload": {
@@ -1247,7 +1247,13 @@
             "authors": [
                 {
                     "name": "Frank de Jonge",
-                    "email": "info@frenky.net"
+                    "email": "info@frenky.net",
+                    "role": "Author"
+                },
+                {
+                    "name": "Woody Gilk",
+                    "email": "woody.gilk@gmail.com",
+                    "role": "Maintainer"
                 }
             ],
             "description": "A plug and play pipeline implementation.",
@@ -1258,7 +1264,7 @@
                 "pipeline",
                 "sequential"
             ],
-            "time": "2016-10-13T20:53:39+00:00"
+            "time": "2018-06-05T21:06:51+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -1774,16 +1780,16 @@
         },
         {
             "name": "phpdocumentor/reflection",
-            "version": "4.0.0-alpha4",
+            "version": "4.0.0-alpha5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/Reflection.git",
-                "reference": "c1fe1263a16dc95d83a59a3163336b38217955e5"
+                "reference": "87e3801a58e06023941bdbab2f7241be261b5e7c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/Reflection/zipball/c1fe1263a16dc95d83a59a3163336b38217955e5",
-                "reference": "c1fe1263a16dc95d83a59a3163336b38217955e5",
+                "url": "https://api.github.com/repos/phpDocumentor/Reflection/zipball/87e3801a58e06023941bdbab2f7241be261b5e7c",
+                "reference": "87e3801a58e06023941bdbab2f7241be261b5e7c",
                 "shasum": ""
             },
             "require": {
@@ -1819,7 +1825,7 @@
                 "reflection",
                 "static analysis"
             ],
-            "time": "2018-10-12T18:17:45+00:00"
+            "time": "2018-10-12T19:40:10+00:00"
         },
         {
             "name": "phpdocumentor/reflection-common",

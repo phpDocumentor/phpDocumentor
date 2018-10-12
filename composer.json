@@ -30,7 +30,7 @@
         "jms/serializer": "^1.13",
         "jms/serializer-bundle": "^2.3",
         "league/flysystem": "^1.0",
-        "league/pipeline": "^0.3.0",
+        "league/pipeline": "^1.0",
         "monolog/monolog": "~1.6",
         "ocramius/package-versions": "^1.3",
         "padraic/phar-updater": "^1.0",

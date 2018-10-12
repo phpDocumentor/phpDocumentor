@@ -68,12 +68,12 @@ class TraitConverter
         $child = new \DOMElement('trait');
         $parent->appendChild($child);
 
-        $namespace = $trait->getNamespace()->getFullyQualifiedStructuralElementName();
+        $namespace = (string) $trait->getNamespace()->getFullyQualifiedStructuralElementName();
         $child->setAttribute('namespace', ltrim($namespace, '\\'));
         $child->setAttribute('line', (string) $trait->getLine());
 
         $child->appendChild(new \DOMElement('name', $trait->getName()));
-        $child->appendChild(new \DOMElement('full_name', $trait->getFullyQualifiedStructuralElementName()));
+        $child->appendChild(new \DOMElement('full_name', (string) $trait->getFullyQualifiedStructuralElementName()));
 
         $this->docBlockConverter->convert($child, $trait);
 

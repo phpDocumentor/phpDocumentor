@@ -290,11 +290,11 @@ class Xml extends WriterAbstract implements Translatable
 
         $namespace = $function->getNamespace()
             ?: $parent->getAttribute('namespace');
-        $child->setAttribute('namespace', ltrim($namespace, '\\'));
-        $child->setAttribute('line', $function->getLine());
+        $child->setAttribute('namespace', ltrim((string) $namespace, '\\'));
+        $child->setAttribute('line', (string) $function->getLine());
 
         $child->appendChild(new \DOMElement('name', $function->getName()));
-        $child->appendChild(new \DOMElement('full_name', $function->getFullyQualifiedStructuralElementName()));
+        $child->appendChild(new \DOMElement('full_name', (string) $function->getFullyQualifiedStructuralElementName()));
 
         $this->docBlockConverter->convert($child, $function);
 
