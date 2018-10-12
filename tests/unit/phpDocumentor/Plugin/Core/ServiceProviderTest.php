@@ -13,6 +13,7 @@ namespace phpDocumentor\Plugin\Core;
 
 use \Mockery as m;
 use Cilex\Application;
+use phpDocumentor\Transformer\Router\Queue;
 
 /**
  * Tests whether all expected Services for the Core plugin are loaded using the ServiceProvider.
@@ -43,7 +44,6 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $mockCollection = $this->givenAWriterCollection();
         $mockLogger = $this->givenALogger();
         $mockApplication = $this->givenAnApplication($mockCollection, $mockLogger);
-        $mockRouterQueue = $this->givenARouterQueue($mockApplication);
         $mockTranslator = $this->givenATranslator($mockApplication);
         $mockDescriptorBuilder = $this->givenAProjectDescriptorBuilder($mockApplication);
 
@@ -59,7 +59,7 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
         $this->fixture->register($mockApplication);
 
-        $this->assertSame($mockRouterQueue, Xslt\Extension::$routers);
+        $this->assertInstanceOf(Queue::class, Xslt\Extension::$routers);
         $this->assertSame($mockDescriptorBuilder, Xslt\Extension::$descriptorBuilder);
     }
 
@@ -133,25 +133,6 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     private function thenWriterWasRegistered($Collection, $key, $className)
     {
         $Collection->shouldReceive('offsetSet')->with($key, m::type($className))->once();
-    }
-
-    /**
-     * Creates and returns a mock of the Router Queue and instructs the Service Locator mock to return it on request,
-     *
-     * @param m\MockInterface $mockApplication
-     *
-     * @return m\MockInterface
-     */
-    private function givenARouterQueue($mockApplication)
-    {
-        $mockRouterQueue = m::mock('phpDocumentor\Transformer\Router\Queue');
-        $mockApplication
-            ->shouldReceive('offsetGet')
-            ->with('transformer.routing.queue')
-            ->once()
-            ->andReturn($mockRouterQueue);
-
-        return $mockRouterQueue;
     }
 
     /**
@@ -230,7 +211,7 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $mockRouter = m::mock('phpDocumentor\Transformer\Router\RouterAbstract');
         $mockApplication
             ->shouldReceive('offsetGet')
-            ->once()
+            ->twice()
             ->with('transformer.routing.standard')
             ->andReturn($mockRouter);
     }
