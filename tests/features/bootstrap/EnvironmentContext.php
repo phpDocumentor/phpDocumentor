@@ -149,7 +149,7 @@ final class EnvironmentContext implements Context\Context
     {
         if (strpos($this->process->getOutput(), $regex) === false && strpos($this->process->getErrorOutput(), $regex) === false) {
             throw new \Exception(
-                sprintf('output doesn\'t match "%s"', $regex)
+                sprintf('output %s doesn\'t match "%s"', $this->process->getOutput(), $regex)
             );
         }
     }
