@@ -32,7 +32,7 @@ jobs:
       before_script:
         - travis_retry sudo apt install graphviz
       script:
-        - php ./bin/console --env=prod cache:warm && php -d phar.readonly=false tools/box.phar compile --config=box.nosign.json && bin/behat -p phar
+        - php bin/console cache:warmup --env=prod && php -d phar.readonly=false tools/box.phar compile --config=box.nosign.json && bin/behat -p phar
         - php build/phpDocumentor.phar run
 
     - stage: analysis
