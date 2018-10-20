@@ -54,6 +54,7 @@
         "symfony/http-kernel": "^4.0",
         "symfony/lts": "^4@dev",
         "symfony/monolog-bundle": "^3.1",
+        "symfony/polyfill-ctype": "^1.9",
         "symfony/process": "^4.0",
         "symfony/proxy-manager-bridge": "^4.0",
         "symfony/routing": "^4.0",
@@ -81,7 +82,8 @@
     },
     "suggest": {
         "ext-twig": "Enabling the twig extension improves the generation of twig based templates.",
-        "ext-xslcache": "Enabling the XSLCache extension improves the generation of xml based templates."
+        "ext-xslcache": "Enabling the XSLCache extension improves the generation of xml based templates.",
+        "ext-ctype": "For best performance"
     },
     "config": {
         "bin-dir":"bin/",
