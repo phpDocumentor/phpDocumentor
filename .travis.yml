@@ -69,7 +69,7 @@ jobs:
         - tools/composer-require-checker check --config-file $(pwd)/composer-require-config.json composer.json
 
     - stage: release
-      if: type IN (push) AND repo = phpDocumentor/phpDocumentor2 AND branch IN (master, develop)
+      if: repo = phpDocumentor/phpDocumentor2 AND (branch IN (develop, master) OR tag IS present)
       name: Release
       php: 7.1
       env:
