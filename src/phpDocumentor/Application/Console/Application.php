@@ -80,7 +80,10 @@ final class Application extends BaseApplication
         if (static::VERSION === '@' . 'package_version' . '@') { //prevent replacing the version.
             $version = trim(file_get_contents(__DIR__ . '/../../../../VERSION'));
             try {
-                $version = 'v' . \Jean85\PrettyVersions::getVersion(Versions::ROOT_PACKAGE_NAME)->getPrettyVersion();
+                $version = 'v' . ltrim(
+                    \Jean85\PrettyVersions::getVersion(Versions::ROOT_PACKAGE_NAME)->getPrettyVersion(),
+                    'v'
+                );
             } catch (\OutOfBoundsException $e) {
             }
         }
