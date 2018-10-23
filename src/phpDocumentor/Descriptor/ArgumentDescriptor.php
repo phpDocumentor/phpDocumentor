@@ -135,4 +135,9 @@ class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\Argume
     {
         return $this->isVariadic;
     }
+
+    public function getName()
+    {
+        return "$" . parent::getName();
+    }
 }
