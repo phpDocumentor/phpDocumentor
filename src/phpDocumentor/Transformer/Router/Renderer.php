@@ -236,6 +236,6 @@ class Renderer
                 break;
         }
 
-        return $url ? sprintf('<a href="%s">%s</a>', $url, $path) : $path;
+        return $url ? sprintf('<a href="%s">%s</a>', $url, $path) : (string)$path;
     }
 }
