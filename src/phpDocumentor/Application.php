@@ -88,9 +88,9 @@ class Application extends Cilex
         // @codeCoverageIgnoreStart
         if (extension_loaded('Zend OPcache') && ini_get('opcache.enable') && ini_get('opcache.enable_cli')) {
             if (ini_get('opcache.save_comments')) {
-                ini_set('opcache.load_comments', 1);
+                ini_set('opcache.load_comments', '1');
             } else {
-                ini_set('opcache.enable', 0);
+                ini_set('opcache.enable', '0');
             }
         }
 
