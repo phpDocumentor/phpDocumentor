@@ -38,6 +38,12 @@ jobs:
         - php bin/console cache:warmup --env=prod && php -d phar.readonly=false tools/box.phar compile --config=box.nosign.json && bin/behat -p phar
         - php build/phpDocumentor.phar run
 
+    - stage: test
+      php: 7.1
+      name: "php 7.1 Behat templates"
+      script:
+        bin/behat -p template
+
     - stage: analysis
       php: 7.1
       name: "Phpunit code coverage"
