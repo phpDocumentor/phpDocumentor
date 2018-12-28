@@ -11,7 +11,8 @@ use Symfony\Component\Dotenv\Dotenv;
 
 set_time_limit(0);
 
-$loader = require __DIR__.'/../vendor/autoload.php';
+require __DIR__ . '/../src/phpDocumentor/AutoloaderLocator.php';
+$loader = \phpDocumentor\AutoloaderLocator::autoload();
 
 AnnotationRegistry::registerLoader([$loader, 'loadClass']);
 
