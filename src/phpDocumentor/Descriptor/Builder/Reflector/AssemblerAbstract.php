@@ -19,6 +19,8 @@ use phpDocumentor\Descriptor\Builder\AssemblerAbstract as BaseAssembler;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Reflection\DocBlock;
+use phpDocumentor\Reflection\Type;
+use phpDocumentor\Reflection\Types\Compound;
 
 abstract class AssemblerAbstract extends BaseAssembler
 {
@@ -70,5 +72,19 @@ abstract class AssemblerAbstract extends BaseAssembler
         $tag = reset($packageTags);
 
         return trim((string) $tag->getDescription());
+    }
+
+    public static function deduplicateTypes(?Type $type): ?Type {
+
+        if ($type instanceof Compound) {
+            $normalizedTypes = [];
+            foreach ($type as $typePart) {
+                $normalizedTypes[(string)$typePart] = $typePart;
+            }
+
+            return new Compound(array_values($normalizedTypes));
+        }
+
+        return $type;
     }
 }
