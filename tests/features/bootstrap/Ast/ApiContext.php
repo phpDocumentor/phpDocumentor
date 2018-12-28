@@ -358,8 +358,8 @@ class ApiContext extends BaseContext implements Context
     {
         $response = $this->findMethodResponse($classFqsen, $methodName);
 
-        Assert::eq($returnType, (string) $response->getTypes());
-        Assert::eq('', (string) $response->getDescription());
+        Assert::eq((string) $response->getTypes(), $returnType);
+        Assert::eq((string) $response->getDescription(), '');
     }
 
     /**

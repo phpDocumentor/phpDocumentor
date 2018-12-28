@@ -18,6 +18,7 @@ namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
 use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tags\Return_;
+use phpDocumentor\Reflection\Types\Compound;
 
 /**
  * Constructs a new descriptor from the Reflector for an `@return` tag.
@@ -38,7 +39,8 @@ class ReturnAssembler extends AssemblerAbstract
     {
         $descriptor = new ReturnDescriptor($data->getName());
         $descriptor->setDescription($data->getDescription());
-        $descriptor->setTypes($data->getType());
+
+        $descriptor->setTypes(AssemblerAbstract::deduplicateTypes($data->getType()));
 
         return $descriptor;
     }
