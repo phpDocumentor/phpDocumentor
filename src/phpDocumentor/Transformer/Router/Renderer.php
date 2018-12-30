@@ -18,6 +18,7 @@ namespace phpDocumentor\Transformer\Router;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\Type\CollectionDescriptor;
+use phpDocumentor\Reflection\Type;
 
 /**
  * Renders an HTML anchor pointing to the location of the provided element.
@@ -98,6 +99,10 @@ class Renderer
      */
     public function render($value, $presentation)
     {
+        if (is_array($value) && current($value) instanceof Type) {
+            return $this->renderType($value, $presentation);
+        }
+
         if (is_array($value) || $value instanceof \Traversable || $value instanceof Collection) {
             return $this->renderASeriesOfLinks($value, $presentation);
         }
@@ -237,5 +242,15 @@ class Renderer
         }
 
         return $url ? sprintf('<a href="%s">%s</a>', $url, $path) : $path;
+    }
+
+    private function renderType($value, string $presentation)
+    {
+        $result = [];
+        foreach ($value as $type) {
+            $result[] = (string) $type;
+        }
+
+        return $result;
     }
 }

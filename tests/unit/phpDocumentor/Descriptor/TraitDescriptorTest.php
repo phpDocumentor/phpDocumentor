@@ -166,7 +166,7 @@ class TraitDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $mockTagPropertyDescriptor = m::mock('phpDocumentor\Descriptor\Tag\PropertyDescriptor');
         $mockTagPropertyDescriptor->shouldReceive('getVariableName')->andReturn('Sample');
         $mockTagPropertyDescriptor->shouldReceive('getDescription')->andReturn('Sample description');
-        $mockTagPropertyDescriptor->shouldReceive('getTypes')->andReturn(new Mixed_());
+        $mockTagPropertyDescriptor->shouldReceive('getType')->andReturn(new Mixed_());
 
         $propertyCollection = new Collection([$mockTagPropertyDescriptor]);
         $this->fixture->getTags()->set('property', $propertyCollection);
@@ -177,7 +177,7 @@ class TraitDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $this->assertSame(1, $magicPropertiesCollection->count());
         $this->assertSame('Sample', $magicPropertiesCollection[0]->getName());
         $this->assertSame('Sample description', $magicPropertiesCollection[0]->getDescription());
-        $this->assertEquals(new Mixed_(), $magicPropertiesCollection[0]->getTypes());
+        $this->assertEquals(new Mixed_(), $magicPropertiesCollection[0]->getType());
         $this->assertSame($this->fixture, $magicPropertiesCollection[0]->getParent());
     }
 

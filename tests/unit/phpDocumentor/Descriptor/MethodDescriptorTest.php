@@ -124,7 +124,7 @@ class MethodDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $mock = new ReturnDescriptor('return');
         $mock->setTypes(new String_());
 
-        $this->assertNull($this->fixture->getResponse()->getTypes());
+        $this->assertNull($this->fixture->getResponse()->getType());
 
         $this->fixture->getTags()->set('return', new Collection([$mock]));
 
@@ -140,7 +140,7 @@ class MethodDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $returnType = new String_();
         $this->fixture->setReturnType($returnType);
 
-        $this->assertSame($returnType, $this->fixture->getResponse()->getTypes());
+        $this->assertSame($returnType, $this->fixture->getResponse()->getType());
     }
 
     /**

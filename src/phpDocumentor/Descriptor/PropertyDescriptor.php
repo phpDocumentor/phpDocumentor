@@ -103,13 +103,16 @@ class PropertyDescriptor extends DescriptorAbstract implements Interfaces\Proper
      */
     public function getTypes()
     {
-        if (!$this->types) {
-            $this->types = new Collection();
+        return [$this->getType()];
+    }
 
+    public function getType()
+    {
+        if ($this->types === null) {
             /** @var VarDescriptor $var */
             $var = $this->getVar()->getIterator()->current();
             if ($var) {
-                $this->types = $var->getTypes();
+                return $var->getType();
             }
         }
 

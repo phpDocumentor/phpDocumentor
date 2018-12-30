@@ -107,7 +107,7 @@ class TagConverter
         $typeString = '';
 
         if ($tag instanceof TypedAbstract) {
-            $types = $tag->getTypes();
+            $types = $tag->getType();
 
             if ($types instanceof \IteratorAggregate) {
                 foreach ($types as $type) {

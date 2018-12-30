@@ -63,7 +63,7 @@ class MethodAssembler extends AssemblerAbstract
     private function createArgumentDescriptorForMagicMethod(string $name, Type $type): ArgumentDescriptor
     {
         $argumentDescriptor = new ArgumentDescriptor();
-        $argumentDescriptor->setTypes(AssemblerAbstract::deduplicateTypes($type));
+        $argumentDescriptor->setType(AssemblerAbstract::deduplicateTypes($type));
         $argumentDescriptor->setName($name);
 
         return $argumentDescriptor;

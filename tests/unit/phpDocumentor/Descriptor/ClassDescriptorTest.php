@@ -237,7 +237,7 @@ class ClassDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $propertyMock = m::mock('phpDocumentor\Descriptor\Tag\PropertyDescriptor');
         $propertyMock->shouldReceive('getVariableName')->andReturn($variableName);
         $propertyMock->shouldReceive('getDescription')->andReturn($description);
-        $propertyMock->shouldReceive('getTypes')->andReturn(new String_());
+        $propertyMock->shouldReceive('getType')->andReturn(new String_());
 
         $this->fixture->getTags()->get('property', new Collection())->add($propertyMock);
 
@@ -249,7 +249,7 @@ class ClassDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $magicProperty = current($magicProperties->getAll());
         $this->assertEquals($variableName, $magicProperty->getName());
         $this->assertEquals($description, $magicProperty->getDescription());
-        $this->assertEquals(new String_(), $magicProperty->getTypes());
+        $this->assertEquals([new String_()], $magicProperty->getTypes());
 
         $mock = m::mock('phpDocumentor\Descriptor\ClassDescriptor');
         $mock->shouldReceive('getMagicProperties')->andReturn(new Collection(['magicProperties']));

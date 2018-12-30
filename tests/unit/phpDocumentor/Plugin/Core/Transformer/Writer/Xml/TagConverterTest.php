@@ -68,7 +68,7 @@ class TagConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $tagConverter = new TagConverter();
         $parent = $this->prepareDocBlockXMLElement();
         $tag = $this->createTagDescriptorMock('name', 'description', 'Tag\VarDescriptor');
-        $tag->shouldReceive('getTypes')->andReturn(
+        $tag->shouldReceive('getType')->andReturn(
             new Compound([new String_(), new Integer(), new Object_(new Fqsen('\DateTime'))])
         );
 
@@ -96,7 +96,7 @@ class TagConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $tagConverter = new TagConverter();
         $parent = $this->prepareDocBlockXMLElement();
         $tag = $this->createTagDescriptorMock('name', 'description', 'Tag\VarDescriptor');
-        $tag->shouldReceive('getTypes')->andReturn(new String_());
+        $tag->shouldReceive('getType')->andReturn(new String_());
 
         // Act
         $convertedElement = $tagConverter->convert($parent, $tag);
@@ -119,7 +119,7 @@ class TagConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $tagConverter = new TagConverter();
         $parent = $this->prepareDocBlockXMLElement();
         $tag = $this->createTagDescriptorMock('name', 'description', 'Tag\VarDescriptor');
-        $tag->shouldReceive('getTypes')->andReturn(null);
+        $tag->shouldReceive('getType')->andReturn(null);
         $tag->shouldReceive('getVariableName')->andReturn('varName');
 
         // Act

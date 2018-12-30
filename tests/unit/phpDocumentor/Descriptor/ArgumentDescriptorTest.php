@@ -11,6 +11,9 @@
 
 namespace phpDocumentor\Descriptor;
 
+use phpDocumentor\Reflection\Types\Integer;
+use phpDocumentor\Reflection\Types\String_;
+
 /**
  * @coversDefaultClass \phpDocumentor\Descriptor\ArgumentDescriptor
  */
@@ -28,16 +31,17 @@ class ArgumentDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers ::getTypes
-     * @covers ::setTypes
+     * @covers ::getType
+     * @covers ::setType
      */
     public function testSetAndGetTypes()
     {
-        $this->assertSame([], $this->fixture->getTypes());
+        $this->assertSame(null, $this->fixture->getType());
 
-        $this->fixture->setTypes([1]);
+        $type = new Integer();
+        $this->fixture->setType($type);
 
-        $this->assertSame([1], $this->fixture->getTypes());
+        $this->assertSame($type, $this->fixture->getType());
     }
 
     /**
@@ -114,17 +118,17 @@ class ArgumentDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers ::getTypes
+     * @covers ::getType
      */
     public function testTypeIsInheritedWhenNoneIsPresent()
     {
         // Arrange
-        $types = ['string'];
-        $this->fixture->setTypes(null);
+        $types = new String_();
+        $this->fixture->setType(null);
         $parentArgument = $this->whenFixtureHasMethodAndArgumentInParentClassWithSameName('same_argument');
-        $parentArgument->setTypes($types);
+        $parentArgument->setType($types);
         // Act
-        $result = $this->fixture->getTypes();
+        $result = $this->fixture->getType();
 
         // Assert
         $this->assertSame($types, $result);

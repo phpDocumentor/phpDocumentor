@@ -64,6 +64,6 @@ class FunctionDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $this->fixture->setReturnType($stringType);
 
         $this->assertSame('return', $this->fixture->getResponse()->getName());
-        $this->assertSame($stringType, $this->fixture->getResponse()->getTypes());
+        $this->assertSame($stringType, $this->fixture->getResponse()->getType());
     }
 }

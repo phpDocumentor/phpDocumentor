@@ -123,7 +123,7 @@ class MethodAssembler extends AssemblerAbstract
 
             $argument = new ArgumentDescriptor();
             $argument->setName($lastParamTag->getVariableName());
-            $argument->setTypes($types);
+            $argument->setType($types);
             $argument->setDescription($lastParamTag->getDescription());
             $argument->setLine($methodDescriptor->getLine());
             $argument->setVariadic(true);

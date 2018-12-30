@@ -15,6 +15,7 @@ use \Mockery as m;
 use phpDocumentor\Descriptor\Tag\AuthorDescriptor;
 use phpDocumentor\Descriptor\Tag\VarDescriptor;
 use phpDocumentor\Descriptor\Tag\VersionDescriptor;
+use phpDocumentor\Reflection\Type;
 use phpDocumentor\Reflection\Types\Array_;
 use phpDocumentor\Reflection\Types\String_;
 
@@ -81,12 +82,12 @@ class ConstantDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testSetAndGetTypes()
     {
-        $this->assertEquals(null, $this->fixture->getTypes());
+        $this->assertEquals(null, $this->fixture->getType());
         $expected = new Array_();
 
         $this->fixture->setTypes($expected);
 
-        $this->assertSame($expected, $this->fixture->getTypes());
+        $this->assertSame($expected, $this->fixture->getType());
     }
 
     /**
@@ -97,12 +98,12 @@ class ConstantDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         $expected = new String_();
 
-        $varTag = m::mock('phpDocumentor\Descriptor\Tag\VarDescriptor');
-        $varTag->shouldReceive('getTypes')->andReturn($expected);
+        $varTag = new VarDescriptor('var');
+        $varTag->setTypes($expected);
 
         $this->fixture->getTags()->set('var', new Collection([$varTag]));
 
-        $this->assertSame($expected, $this->fixture->getTypes());
+        $this->assertEquals($expected, $this->fixture->getType());
     }
 
     /**
@@ -119,7 +120,7 @@ class ConstantDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
         // Attempt to get the types; which come from the superclass' constants
         $this->fixture->setParent($parentClass);
-        $types = $this->fixture->getTypes();
+        $types = $this->fixture->getType();
 
         $this->assertSame($expected, $types);
     }
@@ -340,16 +341,16 @@ class ConstantDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * The created ParentClass can be used to test the inheritance of properties of a constant descriptor, such as
      * inheriting type information.
      *
-     * @param string[] $types
+     * @param Type $type
      * @param string $constantName
      *
      * @return m\MockInterface|ClassDescriptor
      */
-    protected function createParentClassWithSuperClassAndConstant($types, $constantName)
+    protected function createParentClassWithSuperClassAndConstant(Type $type, $constantName)
     {
         // construct the to-be-inherited constant and its @var tag
         $varTag = m::mock('phpDocumentor\Descriptor\Tag\VarDescriptor');
-        $varTag->shouldReceive('getTypes')->andReturn($types);
+        $varTag->shouldReceive('getType')->andReturn($type);
 
         $parentConstant = m::mock('\phpDocumentor\Descriptor\ConstantDescriptor');
         $parentConstant->shouldReceive('getVar')->andReturn(new Collection([$varTag]));

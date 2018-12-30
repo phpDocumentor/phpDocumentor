@@ -15,6 +15,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
+use phpDocumentor\Reflection\Type;
+
 /**
  * Descriptor representing a single Argument of a method or function.
  */
@@ -23,8 +25,8 @@ class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\Argume
     /** @var MethodDescriptor $method */
     protected $method;
 
-    /** @var string[] $type an array of normalized types that should be in this Argument */
-    protected $types = [];
+    /** @var Type|null $type normalized type of this argument */
+    protected $type = null;
 
     /** @var string|null $default the default value for an argument or null if none is provided */
     protected $default;
@@ -46,22 +48,27 @@ class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\Argume
     /**
      * {@inheritDoc}
      */
-    public function setTypes($types)
+    public function setType(?Type $type)
     {
-        $this->types = $types;
+        $this->type = $type;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getTypes()
+    public function getType(): ?Type
     {
-        $countable = $this->types instanceof \Countable || is_array($this->types);
-        if ((!$countable || count($this->types) === 0) && $this->getInheritedElement() !== null) {
-            $this->setTypes($this->getInheritedElement()->getTypes());
+        if ($this->type === null && $this->getInheritedElement() !== null) {
+            $this->setType($this->getInheritedElement()->getType());
         }
 
-        return $this->types;
+        return $this->type;
+    }
+
+    public function getTypes(): array
+    {
+        trigger_error('Please use getType', E_USER_DEPRECATED);
+        return [$this->getType()];
     }
 
     /**

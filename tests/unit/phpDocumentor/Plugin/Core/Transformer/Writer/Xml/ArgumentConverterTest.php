@@ -11,28 +11,34 @@
 
 namespace phpDocumentor\Plugin\Core\Transformer\Writer\Xml;
 
-use Mockery as m;
 use phpDocumentor\Descriptor\ArgumentDescriptor;
+use phpDocumentor\Reflection\Types\Compound;
+use phpDocumentor\Reflection\Types\Integer;
+use phpDocumentor\Reflection\Types\String_;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for \phpDocumentor\Plugin\Core\Transformer\Writer\Xml\ArgumentConverter.
  *
- * @covers phpDocumentor\Plugin\Core\Transformer\Writer\Xml\ArgumentConverter
+ * @coversDefaultClass \phpDocumentor\Plugin\Core\Transformer\Writer\Xml\ArgumentConverter
+ * @covers ::<private>
  */
-class ArgumentConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+class ArgumentConverterTest extends TestCase
 {
     /**
      * Tests whether the XML Element representing an argument is properly created.
      *
-     * @covers phpDocumentor\Plugin\Core\Transformer\Writer\Xml\ArgumentConverter::convert
+     * @covers ::convert
      */
     public function testArgumentXmlElementIsCreated()
     {
         // Arrange
-        $tag = $this->createArgumentDescriptorMock();
-        $tag->shouldReceive('isByReference')->andReturn(false);
-        $tag->shouldReceive('getDefault')->andReturn(null);
-        $tag->shouldReceive('getTypes')->andReturn([]);
+        $tag = new ArgumentDescriptor();
+        $tag->setName('name');
+        $tag->setLine(100);
+        $tag->setByReference(false);
+        $tag->setDefault(null);
+        $tag->setType(null);
         $parent = $this->prepareParentXMLElement();
         $argumentConverter = new ArgumentConverter();
 
@@ -50,16 +56,19 @@ class ArgumentConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Tests whether it is documented when an argument is by reference.
      *
-     * @covers phpDocumentor\Plugin\Core\Transformer\Writer\Xml\ArgumentConverter::convert
+     * @covers ::convert
      */
     public function testIfByReferenceIsDocumented()
     {
         // Arrange
         $argumentConverter = new ArgumentConverter();
         $parent = $this->prepareParentXMLElement();
-        $tag = $this->createArgumentDescriptorMock();
-        $tag->shouldReceive('isByReference')->andReturn(true);
-        $tag->shouldReceive('getTypes')->andReturn([]);
+        $tag = new ArgumentDescriptor();
+        $tag->setName('name');
+        $tag->setLine(100);
+        $tag->setByReference(true);
+        $tag->setDefault(null);
+        $tag->setType(null);
 
         // Act
         $convertedElement = $argumentConverter->convert($parent, $tag);
@@ -71,27 +80,31 @@ class ArgumentConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Tests whether the type information for an argument is documented.
      *
-     * @covers phpDocumentor\Plugin\Core\Transformer\Writer\Xml\ArgumentConverter::convert
+     * @covers ::convert
      */
     public function testIfTypeInformationIsDocumented()
     {
         // Arrange
         $argumentConverter = new ArgumentConverter();
         $parent = $this->prepareParentXMLElement();
-        $tag = $this->createArgumentDescriptorMock();
-        $tag->shouldReceive('getTypes')->andReturn(['string', 'integer']);
+        $tag = new ArgumentDescriptor();
+        $tag->setName('name');
+        $tag->setLine(100);
+        $tag->setByReference(true);
+        $tag->setDefault(null);
+        $tag->setType(new Compound([new String_(), new Integer()]));
 
         // Act
         $convertedElement = $argumentConverter->convert($parent, $tag);
 
         // Assert
-        $this->assertSame('string|integer', $convertedElement->getElementsByTagName('type')->item(0)->nodeValue);
+        $this->assertSame('string|int', $convertedElement->getElementsByTagName('type')->item(0)->nodeValue);
     }
 
     /**
      * Tests whether the default for an argument is documented.
      *
-     * @covers phpDocumentor\Plugin\Core\Transformer\Writer\Xml\ArgumentConverter::convert
+     * @covers ::convert
      */
     public function testIfDefaultValueIsDocumented()
     {
@@ -99,9 +112,13 @@ class ArgumentConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $default = 'This is a default';
         $argumentConverter = new ArgumentConverter();
         $parent = $this->prepareParentXMLElement();
-        $tag = $this->createArgumentDescriptorMock();
-        $tag->shouldReceive('getDefault')->andReturn($default);
-        $tag->shouldReceive('getTypes')->andReturn([]);
+        $tag = new ArgumentDescriptor();
+        $tag->setName('name');
+        $tag->setLine(100);
+        $tag->setByReference(true);
+        $tag->setDefault($default);
+        $tag->setType(new Compound([new String_(), new Integer()]));
+
 
         // Act
         $convertedElement = $argumentConverter->convert($parent, $tag);
@@ -122,20 +139,5 @@ class ArgumentConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $document->appendChild($parent);
 
         return $parent;
-    }
-
-    /**
-     * Creates a mock for the ArgumentDescriptor class.
-     *
-     * @return m\MockInterface|ArgumentDescriptor
-     */
-    protected function createArgumentDescriptorMock()
-    {
-        $tag = m::mock('phpDocumentor\\Descriptor\\ArgumentDescriptor');
-        $tag->shouldReceive('getLine')->andReturn(100);
-        $tag->shouldReceive('getName')->andReturn('name');
-        $tag->shouldIgnoreMissing();
-
-        return $tag;
     }
 }
