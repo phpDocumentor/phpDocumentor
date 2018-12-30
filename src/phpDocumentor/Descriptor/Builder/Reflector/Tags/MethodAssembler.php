@@ -45,7 +45,7 @@ class MethodAssembler extends AssemblerAbstract
         $descriptor->setStatic($data->isStatic());
 
         $response = new ReturnDescriptor('return');
-        $response->setTypes($data->getReturnType());
+        $response->setType($data->getReturnType());
         $descriptor->setResponse($response);
 
         foreach ($data->getArguments() as $argument) {

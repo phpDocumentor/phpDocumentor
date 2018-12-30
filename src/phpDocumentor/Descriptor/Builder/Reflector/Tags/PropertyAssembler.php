@@ -39,7 +39,7 @@ class PropertyAssembler extends AssemblerAbstract
         $descriptor = new PropertyDescriptor($data->getName());
         $descriptor->setVariableName($data->getVariableName());
         $descriptor->setDescription($data->getDescription());
-        $descriptor->setTypes(AssemblerAbstract::deduplicateTypes($data->getType()));
+        $descriptor->setType(AssemblerAbstract::deduplicateTypes($data->getType()));
 
         return $descriptor;
     }

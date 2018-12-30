@@ -122,7 +122,7 @@ class MethodDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testRetrieveReturnTagForResponse()
     {
         $mock = new ReturnDescriptor('return');
-        $mock->setTypes(new String_());
+        $mock->setType(new String_());
 
         $this->assertNull($this->fixture->getResponse()->getType());
 

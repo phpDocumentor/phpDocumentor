@@ -83,7 +83,7 @@ class PropertyDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         // Arrange
         $typesCollection = new Array_();
         $varTagDescriptor = new VarDescriptor('var');
-        $varTagDescriptor->setTypes($typesCollection);
+        $varTagDescriptor->setType($typesCollection);
         $varCollection = new Collection([$varTagDescriptor]);
         $this->fixture->getTags()->clear();
         $this->fixture->getTags()->set('var', $varCollection);

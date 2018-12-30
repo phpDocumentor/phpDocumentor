@@ -36,9 +36,9 @@ class ReturnDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testSetAndGetTypes()
     {
         $expected = new Array_();
-        $this->assertEmpty($this->fixture->getTypes());
+        $this->assertNull($this->fixture->getType());
 
-        $this->fixture->setTypes($expected);
+        $this->fixture->setType($expected);
         $result = $this->fixture->getType();
 
         $this->assertEquals($expected, $result);

@@ -371,7 +371,7 @@ class ClassDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $methodName = 'methodName';
         $description = 'description';
         $response = new ReturnDescriptor('return');
-        $response->setTypes(new String_());
+        $response->setType(new String_());
         $arguments = m::mock('phpDocumentor\Descriptor\Tag\ArgumentDescriptor');
         $arguments->shouldReceive('setMethod');
 

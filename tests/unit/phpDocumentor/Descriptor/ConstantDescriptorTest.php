@@ -99,7 +99,7 @@ class ConstantDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $expected = new String_();
 
         $varTag = new VarDescriptor('var');
-        $varTag->setTypes($expected);
+        $varTag->setType($expected);
 
         $this->fixture->getTags()->set('var', new Collection([$varTag]));
 
