@@ -37,6 +37,6 @@ class ReturnAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
         $this->assertSame('return', $descriptor->getName());
         $this->assertSame('This is a description', (string) $descriptor->getDescription());
-        $this->assertEquals(new String_(), $descriptor->getTypes());
+        $this->assertEquals(new String_(), $descriptor->getType());
     }
 }

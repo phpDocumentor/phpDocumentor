@@ -45,7 +45,7 @@ class MethodAssembler extends AssemblerAbstract
         $descriptor->setStatic($data->isStatic());
 
         $response = new ReturnDescriptor('return');
-        $response->setTypes($data->getReturnType());
+        $response->setType($data->getReturnType());
         $descriptor->setResponse($response);
 
         foreach ($data->getArguments() as $argument) {
@@ -63,7 +63,7 @@ class MethodAssembler extends AssemblerAbstract
     private function createArgumentDescriptorForMagicMethod(string $name, Type $type): ArgumentDescriptor
     {
         $argumentDescriptor = new ArgumentDescriptor();
-        $argumentDescriptor->setTypes(AssemblerAbstract::deduplicateTypes($type));
+        $argumentDescriptor->setType(AssemblerAbstract::deduplicateTypes($type));
         $argumentDescriptor->setName($name);
 
         return $argumentDescriptor;

@@ -46,16 +46,7 @@ class ArgumentConverter
         $child->appendChild(new \DOMElement('default'))
             ->appendChild(new \DOMText((string) $argument->getDefault()));
 
-        $types = $argument->getTypes();
-
-        $typeStrings = [];
-        foreach ($types as $type) {
-            $typeStrings[] = $type instanceof DescriptorAbstract
-                ? $type->getFullyQualifiedStructuralElementName()
-                : $type;
-        }
-
-        $child->appendChild(new \DOMElement('type', implode('|', $typeStrings)));
+        $child->appendChild(new \DOMElement('type', (string) $argument->getType()));
 
         return $child;
     }

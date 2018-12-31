@@ -42,6 +42,6 @@ class ThrowsAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
         $this->assertSame('throws', $descriptor->getName());
         $this->assertSame('This is a description', (string) $descriptor->getDescription());
-        $this->assertSame($types, $descriptor->getTypes());
+        $this->assertSame($types, $descriptor->getType());
     }
 }

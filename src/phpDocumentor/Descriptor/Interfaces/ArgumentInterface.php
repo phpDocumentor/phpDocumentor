@@ -15,7 +15,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Interfaces;
 
-use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Reflection\Type;
 
 /**
  * Describes the public interface for a descriptor of an Argument.
@@ -32,23 +32,23 @@ interface ArgumentInterface extends ElementInterface
      * backslash. Types that do not represent a class/interface/trait should be written in lowercaps and should not be
      * preceded by a backslash.
      *
-     * @param Collection $types An Collection of normalized types that should be in this Argument
+     * @param ?Type $type Type of this agument represented as a reflection type.
      *
      * @link https://github.com/phpDocumentor/phpDocumentor2/blob/develop/docs/PSR.md#appendix-a-types Definition of a
      *     type.
      *
      * @todo update link to point to the final destination for the PHPDoc Standard.
      */
-    public function setTypes($types);
+    public function setType(?Type $type);
 
     /**
-     * Returns a normalized list of types.
+     * Returns a normalized Types.
      *
      * @see self::setTypes() for details on what types represent.
      *
-     * @return Collection
+     * @return Type|null
      */
-    public function getTypes();
+    public function getType(): ?Type;
 
     /**
      * Sets the default value for an argument expressed as a string.

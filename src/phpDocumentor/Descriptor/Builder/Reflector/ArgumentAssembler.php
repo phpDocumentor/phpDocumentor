@@ -36,7 +36,7 @@ class ArgumentAssembler extends AssemblerAbstract
     {
         $argumentDescriptor = new ArgumentDescriptor();
         $argumentDescriptor->setName($data->getName());
-        $argumentDescriptor->setTypes($data->getTypes());
+        $argumentDescriptor->setType($data->getType());
 
         foreach ($params as $paramDescriptor) {
             $this->overwriteTypeAndDescriptionFromParamTag($data, $paramDescriptor, $argumentDescriptor);
@@ -61,6 +61,6 @@ class ArgumentAssembler extends AssemblerAbstract
         }
 
         $argumentDescriptor->setDescription($paramDescriptor->getDescription());
-        $argumentDescriptor->setTypes($paramDescriptor->getTypes());
+        $argumentDescriptor->setType($paramDescriptor->getType());
     }
 }

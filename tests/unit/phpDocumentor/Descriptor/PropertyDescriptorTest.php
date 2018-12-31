@@ -66,12 +66,12 @@ class PropertyDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testSetAndGetTypes()
     {
-        $this->assertEquals(new Collection(), $this->fixture->getTypes());
+        $this->assertEquals(null, $this->fixture->getType());
         $expected = new Array_();
 
         $this->fixture->setTypes($expected);
 
-        $this->assertSame($expected, $this->fixture->getTypes());
+        $this->assertSame($expected, $this->fixture->getType());
     }
 
     /**
@@ -83,13 +83,13 @@ class PropertyDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         // Arrange
         $typesCollection = new Array_();
         $varTagDescriptor = new VarDescriptor('var');
-        $varTagDescriptor->setTypes($typesCollection);
+        $varTagDescriptor->setType($typesCollection);
         $varCollection = new Collection([$varTagDescriptor]);
         $this->fixture->getTags()->clear();
         $this->fixture->getTags()->set('var', $varCollection);
 
         // Act
-        $result = $this->fixture->getTypes();
+        $result = $this->fixture->getType();
 
         // Assert
         $this->assertSame($typesCollection, $result);

@@ -263,7 +263,7 @@ class ApiContext extends BaseContext implements Context
         /** @var ArgumentDescriptor $argumentDescriptor */
         $argumentDescriptor = $method->getArguments()[$argument];
 
-        Assert::eq($type, (string) $argumentDescriptor->getTypes());
+        Assert::eq($type, (string) $argumentDescriptor->getType());
     }
 
     /**
@@ -281,7 +281,7 @@ class ApiContext extends BaseContext implements Context
         /** @var ParamDescriptor $paramDescriptor */
         foreach ($method->getParam() as $paramDescriptor) {
             if ($paramDescriptor->getName() === $param) {
-                Assert::eq($type, (string) $paramDescriptor->getTypes());
+                Assert::eq($type, (string) $paramDescriptor->getType());
             }
         }
     }
@@ -358,7 +358,7 @@ class ApiContext extends BaseContext implements Context
     {
         $response = $this->findMethodResponse($classFqsen, $methodName);
 
-        Assert::eq((string) $response->getTypes(), $returnType);
+        Assert::eq((string) $response->getType(), $returnType);
         Assert::eq((string) $response->getDescription(), '');
     }
 
@@ -373,8 +373,8 @@ class ApiContext extends BaseContext implements Context
     {
         $response = $this->findMagicMethodResponse($classFqsen, $methodName);
 
-        Assert::eq($returnType, (string) $response->getTypes());
-        Assert::eq('', (string) $response->getDescription());
+        Assert::eq((string) $response->getType(), $returnType);
+        Assert::eq((string) $response->getDescription(), '');
     }
 
     /**
@@ -387,7 +387,7 @@ class ApiContext extends BaseContext implements Context
     {
         $response = $this->findMethodResponse($classFqsen, $methodName);
 
-        Assert::eq($returnType, (string) $response->getTypes());
+        Assert::eq($returnType, (string) $response->getType());
         Assert::eq($description, (string) $response->getDescription());
     }
 
@@ -398,7 +398,7 @@ class ApiContext extends BaseContext implements Context
     public function classReturnTaggetReturnWithoutAnyWithoutReturntype($classFqsen, $methodName)
     {
         $response = $this->findMethodResponse($classFqsen, $methodName);
-        Assert::eq('mixed', (string) $response->getTypes());
+        Assert::eq('mixed', (string) $response->getType());
         Assert::eq('', $response->getDescription());
     }
 
@@ -411,7 +411,7 @@ class ApiContext extends BaseContext implements Context
     {
         $response = $this->findFunctionResponse($fqsen);
 
-        Assert::eq($returnType, (string) $response->getTypes());
+        Assert::eq($returnType, (string) $response->getType());
         Assert::eq('', (string) $response->getDescription());
     }
 
@@ -423,7 +423,7 @@ class ApiContext extends BaseContext implements Context
     {
         $response = $this->findFunctionResponse($fqsen);
 
-        Assert::eq($returnType, (string) $response->getTypes());
+        Assert::eq($returnType, (string) $response->getType());
         Assert::eq($description, (string) $response->getDescription());
     }
 
@@ -434,7 +434,7 @@ class ApiContext extends BaseContext implements Context
     public function functionWithoutReturntype($fqsen)
     {
         $response = $this->findFunctionResponse($fqsen);
-        Assert::eq('mixed', (string) $response->getTypes());
+        Assert::eq('mixed', (string) $response->getType());
         Assert::eq('', $response->getDescription());
     }
 

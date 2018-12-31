@@ -21,6 +21,7 @@ use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Php\Argument;
 use phpDocumentor\Reflection\Php\Function_;
+use phpDocumentor\Reflection\Types\Mixed_;
 
 class FunctionAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {

@@ -41,20 +41,20 @@ parameters:
           - 'tags'
           - 'arguments'
       'phpDocumentor\Descriptor\ArgumentDescriptor':
-          - 'types'
+          - 'type'
       'phpDocumentor\Descriptor\PropertyDescriptor':
           - 'tags'
-          - 'types'
+          - 'type'
       'phpDocumentor\Descriptor\ConstantDescriptor':
           - 'tags'
-          - 'types'
-      'phpDocumentor\Descriptor\Tag\ParamDescriptor': ['types']
-      'phpDocumentor\Descriptor\Tag\ReturnDescriptor': ['types']
+          - 'type'
+      'phpDocumentor\Descriptor\Tag\ParamDescriptor': ['type']
+      'phpDocumentor\Descriptor\Tag\ReturnDescriptor': ['type']
       'phpDocumentor\Descriptor\Tag\SeeDescriptor': ['reference']
       'phpDocumentor\Descriptor\Tag\UsesDescriptor': ['reference']
       'phpDocumentor\Descriptor\Type\CollectionDescriptor':
           - 'baseType'
-          - 'types'
+          - 'type'
           - 'keyTypes'
 services:
     _defaults:

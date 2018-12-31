@@ -26,7 +26,7 @@ class ConstantDescriptor extends DescriptorAbstract implements Interfaces\Consta
     /** @var ClassDescriptor|InterfaceDescriptor|null $parent */
     protected $parent;
 
-    /** @var string[]|null $type */
+    /** @var Type $type */
     protected $types;
 
     /** @var string $value */
@@ -75,11 +75,16 @@ class ConstantDescriptor extends DescriptorAbstract implements Interfaces\Consta
      */
     public function getTypes()
     {
+        return [$this->getType()];
+    }
+
+    public function getType()
+    {
         if ($this->types === null) {
             /** @var VarDescriptor $var */
             $var = $this->getVar()->get(0);
             if ($var) {
-                return $var->getTypes();
+                return $var->getType();
             }
         }
 

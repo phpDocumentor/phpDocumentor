@@ -16,6 +16,7 @@ namespace phpDocumentor\Descriptor\Builder\Reflector;
 use Mockery as m;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\Php\Argument;
+use phpDocumentor\Reflection\Type;
 use phpDocumentor\Reflection\Types\Boolean;
 
 /**
@@ -46,7 +47,7 @@ class ArgumentAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         // Arrange
         $name = 'goodArgument';
-        $type = 'boolean';
+        $type = new Boolean();
 
         $argumentReflectorMock = $this->givenAnArgumentReflectorWithNameAndType($name, $type);
 
@@ -55,7 +56,7 @@ class ArgumentAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
         // Assert
         $this->assertSame($name, $descriptor->getName());
-        $this->assertSame([$type], $descriptor->getTypes());
+        $this->assertSame($type, $descriptor->getType());
         $this->assertNull($descriptor->getDefault());
         $this->assertFalse($descriptor->isByReference());
     }
@@ -76,27 +77,25 @@ class ArgumentAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $paramDescriptorTagMock = m::mock('phpDocumentor\Descriptor\Tag\ParamDescriptor');
         $paramDescriptorTagMock->shouldReceive('getVariableName')->once()->andReturn($name);
         $paramDescriptorTagMock->shouldReceive('getDescription')->once()->andReturn('Is this a good argument, or nah?');
-        $paramDescriptorTagMock->shouldReceive('getTypes')->once()->andReturn($type);
+        $paramDescriptorTagMock->shouldReceive('getType')->once()->andReturn($type);
 
         // Act
         $descriptor = $this->fixture->create($argumentReflectorMock, [$paramDescriptorTagMock]);
 
         // Assert
         $this->assertSame($name, $descriptor->getName());
-        $this->assertSame($type, $descriptor->getTypes());
+        $this->assertSame($type, $descriptor->getType());
         $this->assertNull($descriptor->getDefault());
         $this->assertFalse($descriptor->isByReference());
     }
 
     /**
      * @param string $name
-     * @param string $type
      * @return Argument
      */
-    protected function givenAnArgumentReflectorWithNameAndType($name, $type)
+    protected function givenAnArgumentReflectorWithNameAndType(string $name, Type $type)
     {
-        $argument = new Argument($name);
-        $argument->addType($type);
+        $argument = new Argument($name, $type);
 
         return $argument;
     }

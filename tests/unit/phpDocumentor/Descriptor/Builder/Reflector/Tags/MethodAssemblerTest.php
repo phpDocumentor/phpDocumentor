@@ -59,12 +59,12 @@ class MethodAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
         $descriptor = $this->fixture->create($tag);
 
-        $this->assertEquals($returnType, $descriptor->getResponse()->getTypes());
+        $this->assertEquals($returnType, $descriptor->getResponse()->getType());
         $this->assertSame($name, $descriptor->getMethodName());
         $this->assertSame($description, $descriptor->getDescription());
         $this->assertSame(count($arguments), $descriptor->getArguments()->count());
         foreach ($arguments as $argument) {
-            $this->assertSame($argument['type'], $descriptor->getArguments()->get($argument['name'])->getTypes());
+            $this->assertSame($argument['type'], $descriptor->getArguments()->get($argument['name'])->getType());
             $this->assertSame($argument['name'], $descriptor->getArguments()->get($argument['name'])->getName());
         }
     }

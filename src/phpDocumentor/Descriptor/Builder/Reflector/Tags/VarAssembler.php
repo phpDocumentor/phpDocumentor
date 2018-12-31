@@ -40,7 +40,7 @@ class VarAssembler extends AssemblerAbstract
         $descriptor->setDescription($data->getDescription());
         $descriptor->setVariableName($data->getVariableName());
 
-        $descriptor->setTypes(AssemblerAbstract::deduplicateTypes($data->getType()));
+        $descriptor->setType(AssemblerAbstract::deduplicateTypes($data->getType()));
 
         return $descriptor;
     }
