@@ -1780,16 +1780,16 @@
         },
         {
             "name": "phpdocumentor/reflection",
-            "version": "4.0.0-alpha5",
+            "version": "4.0.0-alpha6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/Reflection.git",
-                "reference": "87e3801a58e06023941bdbab2f7241be261b5e7c"
+                "reference": "b4886422d87fc9330055b98b6bc5f0283d812b31"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/Reflection/zipball/87e3801a58e06023941bdbab2f7241be261b5e7c",
-                "reference": "87e3801a58e06023941bdbab2f7241be261b5e7c",
+                "url": "https://api.github.com/repos/phpDocumentor/Reflection/zipball/b4886422d87fc9330055b98b6bc5f0283d812b31",
+                "reference": "b4886422d87fc9330055b98b6bc5f0283d812b31",
                 "shasum": ""
             },
             "require": {
@@ -1825,7 +1825,7 @@
                 "reflection",
                 "static analysis"
             ],
-            "time": "2018-10-12T19:40:10+00:00"
+            "time": "2018-12-31T12:18:13+00:00"
         },
         {
             "name": "phpdocumentor/reflection-common",
