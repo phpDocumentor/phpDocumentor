@@ -53,7 +53,7 @@ phar:
 template:
   extensions:
     Behat\MinkExtension:
-        base_url: 'http://localhost:80'
+        base_url: 'http://localhost:8080'
         sessions:
           file_session:
             goutte:
