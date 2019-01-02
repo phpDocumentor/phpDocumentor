@@ -532,9 +532,12 @@ class ApiContext extends BaseContext implements Context
             FunctionDescriptor::class
         );
 
+        /** @var ArgumentDescriptor $argumentDescriptor */
         $argumentDescriptor = $functionDescriptor->getArguments()->get($argument);
 
         Assert::isInstanceOf($argumentDescriptor, ArgumentDescriptor::class);
+
+        Assert::same($description->getRaw(), (string) $argumentDescriptor->getDescription());
     }
 
     /**
