@@ -93,7 +93,7 @@ final class EnvironmentContext implements Context\Context
         Assert::directory($sourceDir);
         $destDir = $this->getWorkingDir() . DIRECTORY_SEPARATOR . $dest;
 
-        if (!mkdir($destDir, 0755) && !is_dir($destDir)) {
+        if (!is_dir($destDir) && !mkdir($destDir, 0755)) {
             throw new RuntimeException(sprintf('Directory "%s" was not created', $destDir));
         }
 
@@ -117,7 +117,7 @@ final class EnvironmentContext implements Context\Context
      * @Given /^I ran "phpdoc(?: ((?:\"|[^"])*))?"$/
      * @When /^I run "phpdoc(?: ((?:\"|[^"])*))?"$/
      */
-    public function iRun($argumentsString)
+    public function iRun($argumentsString = '')
     {
         $argumentsString .= ' --template=xml';
         $argumentsString = strtr($argumentsString, ['\'' => '"']);

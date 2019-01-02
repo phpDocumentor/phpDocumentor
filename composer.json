@@ -76,6 +76,10 @@
     "minimum-stability": "stable",
     "require-dev": {
         "behat/behat": "^3.0",
+        "behat/mink": "^1.7",
+        "behat/mink-extension": "^2.3",
+        "behat/mink-goutte-driver": "^1.2",
+        "integratedexperts/behat-screenshot": "^0.7.2",
         "mikey179/vfsStream": "^1.2",
         "mockery/mockery": "^1.0",
         "squizlabs/php_codesniffer": "^1.4",

@@ -5,6 +5,21 @@
     "behat/gherkin": {
         "version": "v4.5.1"
     },
+    "behat/mink": {
+        "version": "v1.7.1"
+    },
+    "behat/mink-browserkit-driver": {
+        "version": "1.3.3"
+    },
+    "behat/mink-extension": {
+        "version": "2.3.1"
+    },
+    "behat/mink-goutte-driver": {
+        "version": "v1.2.1"
+    },
+    "behat/mink-selenium2-driver": {
+        "version": "v1.3.1"
+    },
     "behat/transliterator": {
         "version": "v1.2.0"
     },
@@ -53,8 +68,26 @@
     "erusev/parsedown": {
         "version": "1.6.4"
     },
+    "fabpot/goutte": {
+        "version": "v3.2.3"
+    },
+    "guzzlehttp/guzzle": {
+        "version": "6.3.3"
+    },
+    "guzzlehttp/promises": {
+        "version": "v1.3.1"
+    },
+    "guzzlehttp/psr7": {
+        "version": "1.4.2"
+    },
     "hamcrest/hamcrest-php": {
         "version": "v2.0.0"
+    },
+    "instaclick/php-webdriver": {
+        "version": "1.4.5"
+    },
+    "integratedexperts/behat-screenshot": {
+        "version": "0.7.2"
     },
     "jean85/pretty-package-versions": {
         "version": "1.2"
@@ -137,6 +170,9 @@
     "psr/container": {
         "version": "1.0.0"
     },
+    "psr/http-message": {
+        "version": "1.0.1"
+    },
     "psr/log": {
         "version": "1.0.2"
     },
@@ -154,6 +190,9 @@
     },
     "squizlabs/php_codesniffer": {
         "version": "1.5.6"
+    },
+    "symfony/browser-kit": {
+        "version": "v4.1.6"
     },
     "symfony/cache": {
         "version": "v4.0.3"
@@ -173,11 +212,17 @@
             "ref": "9f94d3ea453cd8a3b95db7f82592d7344fe3a76a"
         }
     },
+    "symfony/css-selector": {
+        "version": "v3.4.17"
+    },
     "symfony/debug": {
         "version": "v4.0.3"
     },
     "symfony/dependency-injection": {
         "version": "v4.0.3"
+    },
+    "symfony/dom-crawler": {
+        "version": "v4.1.6"
     },
     "symfony/dotenv": {
         "version": "v4.0.3"

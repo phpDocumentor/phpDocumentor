@@ -27,7 +27,6 @@ default:
             paths:    [ "%paths.base%/tests/features/core" ]
             filters:
                 tags: "@php5.6+"
-
 phar:
   suites:
     core_features:
@@ -51,3 +50,23 @@ phar:
               pharPath: /build/phpDocumentor.phar
           - phpDocumentor\Behat\Contexts\Ast\ApiContext
           - phpDocumentor\Behat\Contexts\Ast\SeeTagContext
+template:
+  extensions:
+    Behat\MinkExtension:
+        base_url: 'http://localhost:8080'
+        sessions:
+          file_session:
+            goutte:
+    IntegratedExperts\BehatScreenshotExtension:
+      dir: "%paths.base%/screenshots"
+      fail: true
+      purge: false
+  suites:
+    clean_template:
+      contexts:
+      - phpDocumentor\Behat\Contexts\EnvironmentContext:
+          workingDir: /tmp/phpdoc-behat/clean_template
+      - IntegratedExperts\BehatScreenshotExtension\Context\ScreenshotContext
+      - phpDocumentor\Behat\Contexts\Template\TemplateContext
+      - Behat\MinkExtension\Context\MinkContext
+      paths:    [ "%paths.base%/tests/features/template/clean" ]
