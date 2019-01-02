@@ -510,11 +510,31 @@ class ApiContext extends BaseContext implements Context
     }
 
     /**
-     * @Given /^the ast has a function named "([^"]*)"$/
+     * @Then /^the ast has a function named "([^"]*)"$/
      */
     public function theAstHasAFunctionNamed($functionName)
     {
-        Assert::isInstanceOf($this->getAst()->getIndexes()->get('functions')->get($functionName . '()'), FunctionDescriptor::class);
+        Assert::isInstanceOf(
+            $this->getAst()->getIndexes()->get('functions')->get($functionName . '()'),
+            FunctionDescriptor::class
+        );
+    }
+
+    /**
+     * @Then argument :argument of function ":functionName" has no defined type and description is:
+     */
+    public function argumentOfFunctionHasNoTypeAndHasDescripion($argument, $functionName, PyStringNode $description)
+    {
+        /** @var FunctionDescriptor $functionDescriptor */
+        $functionDescriptor = $this->getAst()->getIndexes()->get('functions')->get($functionName . '()');
+        Assert::isInstanceOf(
+            $functionDescriptor,
+            FunctionDescriptor::class
+        );
+
+        $argumentDescriptor = $functionDescriptor->getArguments()->get($argument);
+
+        Assert::isInstanceOf($argumentDescriptor, ArgumentDescriptor::class);
     }
 
     /**
