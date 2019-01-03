@@ -140,4 +140,58 @@ final class Version2ExpectedArray
             ],
         ];
     }
+
+    public static function getCustomTargetConfig()
+    {
+        return [
+            'phpdocumentor' => [
+                'title' => 'my-doc',
+                'use-cache' => true,
+                'paths' => [
+                    'output' => new \phpDocumentor\DomainModel\Dsn('build/api/docs'),
+                    'cache' => new \phpDocumentor\DomainModel\Path('/tmp/phpdoc-doc-cache'),
+                ],
+                'versions' => [
+                    '1.0.0' => [
+                        'folder' => '',
+                        'api' => [
+                            [
+                                'format' => 'php',
+                                'source' => [
+                                    'dsn' => new Dsn('file://' . getcwd()),
+                                    'paths' => [
+                                        0 => 'src',
+                                    ],
+                                ],
+                                'ignore' => [
+                                    'hidden' => true,
+                                    'symlinks' => true,
+                                    'paths' => [],
+                                ],
+                                'extensions' => [
+                                    0 => 'php',
+                                    1 => 'php3',
+                                    2 => 'phtml',
+                                ],
+                                'visibility' => ['public'],
+                                'default-package-name' => 'Default',
+                                'markers' => [
+                                    0 => 'TODO',
+                                    1 => 'FIXME',
+                                ],
+                                'encoding' => 'utf8',
+                                'ignore-tags' => [],
+                                'validate' => false,
+                            ],
+                        ],
+                    ],
+                ],
+                'templates' => [
+                    [
+                        'name' => 'clean',
+                    ],
+                ],
+            ],
+        ];
+    }
 }

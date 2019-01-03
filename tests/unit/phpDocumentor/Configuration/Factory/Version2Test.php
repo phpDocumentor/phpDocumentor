@@ -102,4 +102,22 @@ XML;
 
         $this->assertEquals(Version2ExpectedArray::getArrayWithMultipleIgnorePaths(), $array);
     }
+
+    /**
+     * @covers ::convert
+     * @covers ::<private>
+     */
+    public function testItShouldUseTargetDirectoryFromTransformerForOutput()
+    {
+        $xml = new \SimpleXMLElement(
+            __DIR__ . '/../../../data/phpDocumentor2XMLWithTarget.xml',
+            0,
+            true
+        );
+
+        $version2 = new Version2();
+        $array = $version2->convert($xml);
+
+        $this->assertEquals(Version2ExpectedArray::getCustomTargetConfig(), $array);
+    }
 }
