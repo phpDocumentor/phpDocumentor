@@ -20,3 +20,12 @@ Feature: Parsing a php file
     Then the application must have run successfully
     And the ast has a function named "\foo"
     And the namespace '\' has a function named 'foo'
+
+  @issue @github-604
+  Scenario: File only contains a file level docblock
+    Given A single file named "test.php" based on "emptyFile.php"
+    When I run "phpdoc -f test.php"
+    And the ast has a file named "test.php" with a summary:
+    """
+    This file is part of phpDocumentor.
+    """git
