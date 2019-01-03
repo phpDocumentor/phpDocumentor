@@ -18,6 +18,13 @@ default:
             paths:    [ "%paths.base%/tests/features/cli" ]
             filters:
                 tags: "~@php5.6+"
+        config_features:
+          contexts:
+            - phpDocumentor\Behat\Contexts\EnvironmentContext:
+                workingDir: /tmp/phpdoc-behat/config
+          paths:    [ "%paths.base%/tests/features/config" ]
+          filters:
+            tags: "~@php5.6+"
         php56_features:
             contexts:
               - phpDocumentor\Behat\Contexts\EnvironmentContext:
@@ -43,6 +50,15 @@ phar:
               workingDir: /tmp/phpdoc-behat/cli
               pharPath: /build/phpDocumentor.phar
           - phpDocumentor\Behat\Contexts\Ast\ApiContext
+    config_features:
+      contexts:
+        - phpDocumentor\Behat\Contexts\EnvironmentContext:
+            workingDir: /tmp/phpdoc-behat/config
+            pharPath: /build/phpDocumentor.phar
+      paths:    [ "%paths.base%/tests/features/config" ]
+      filters:
+        tags: "~@php5.6+"
+
     php56_features:
         contexts:
           - phpDocumentor\Behat\Contexts\EnvironmentContext:
