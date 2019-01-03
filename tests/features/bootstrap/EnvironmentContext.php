@@ -13,6 +13,7 @@
 namespace phpDocumentor\Behat\Contexts;
 
 use Behat\Behat\Context;
+use Behat\Behat\Tester\Exception\PendingException;
 use FilesystemIterator;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -113,6 +114,29 @@ final class EnvironmentContext implements Context\Context
         }
     }
 
+
+    /**
+     * @Given /^configuration file based on "([^"]*)" in "([^"]*)"$/
+     */
+    public function configurationFileBasedOnIn($configFile, $destDir)
+    {
+        Assert::fileExists(__DIR__ . '/../assets/config/' . $configFile);
+        copy(
+            __DIR__ . '/../assets/config/' . $configFile,
+            $this->getWorkingDir() . DIRECTORY_SEPARATOR . $destDir . DIRECTORY_SEPARATOR . 'phpdoc.xml'
+        );
+    }
+
+    /**
+     * @Given /^working directory is "([^"]*)"$/
+     */
+    public function workingDirectoryIs($dir)
+    {
+        $fullDir = $this->getWorkingDir() . DIRECTORY_SEPARATOR . $dir;
+        $this->process->setWorkingDirectory($fullDir);
+        chdir($fullDir);
+    }
+
     /**
      * @Given /^I ran "phpdoc(?: ((?:\"|[^"])*))?"$/
      * @When /^I run "phpdoc(?: ((?:\"|[^"])*))?"$/
@@ -177,5 +201,13 @@ final class EnvironmentContext implements Context\Context
     public function getErrorOutput()
     {
         return $this->process->getErrorOutput();
+    }
+
+    /**
+     * @Then /^documentation should be found in "([^"]*)"$/
+     */
+    public function documentationShouldBeFoundIn($expectedDir)
+    {
+        Assert::directory($this->getWorkingDir() . DIRECTORY_SEPARATOR . $expectedDir);
     }
 }
