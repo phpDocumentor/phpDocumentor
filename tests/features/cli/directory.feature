@@ -4,5 +4,5 @@ Feature: Include directories with parsing
 
   Scenario: Single directory
   Given A project named "directory123" based on "ignore"
-  When I run "phpdoc --directory='directory123/src' --force"
+  When I run "phpdoc --directory='src' --force"
   Then 2 files should be parsed

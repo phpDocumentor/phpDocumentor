@@ -112,18 +112,22 @@ final class EnvironmentContext implements Context\Context
                 copy($item, $destDir . DIRECTORY_SEPARATOR . $iterator->getSubPathName());
             }
         }
+
+        $this->process->setWorkingDirectory($destDir);
+        chdir($destDir);
+        $this->workingDir = $destDir;
     }
 
 
     /**
-     * @Given /^configuration file based on "([^"]*)" in "([^"]*)"$/
+     * @Given /^configuration file based on "([^"]*)"$/
      */
-    public function configurationFileBasedOnIn($configFile, $destDir)
+    public function configurationFileBasedOnIn($configFile)
     {
         Assert::fileExists(__DIR__ . '/../assets/config/' . $configFile);
         copy(
             __DIR__ . '/../assets/config/' . $configFile,
-            $this->getWorkingDir() . DIRECTORY_SEPARATOR . $destDir . DIRECTORY_SEPARATOR . 'phpdoc.xml'
+            $this->getWorkingDir(). '/phpdoc.xml'
         );
     }
 

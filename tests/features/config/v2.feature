@@ -4,8 +4,7 @@ Feature: phpdocumentor should be able to use v2 format config file.
 
   Scenario: User has provided a custom target directory in the config
     Given A project named "v2" based on "simple"
-    And configuration file based on "v2Target.xml" in "v2"
-    And working directory is "v2"
+    And configuration file based on "v2Target.xml"
     When I run "phpdoc"
     Then the application must have run successfully
-    And documentation should be found in "v2/build/api/docs"
+    And documentation should be found in "build/api/docs"

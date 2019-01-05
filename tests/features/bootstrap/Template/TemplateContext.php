@@ -39,7 +39,7 @@ final class TemplateContext implements Context
     }
 
     /**
-     * @beforeScenario
+     * @Given I open documentation
      */
     public function beforeScenario()
     {
@@ -52,6 +52,7 @@ final class TemplateContext implements Context
         $this->webserver->start(function () {
             echo "Server started";
         });
+        sleep(1);
     }
 
     /**

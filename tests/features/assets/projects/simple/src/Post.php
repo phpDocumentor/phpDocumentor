@@ -15,6 +15,10 @@
 
 namespace Simple\Blog;
 
+/**
+ *
+ * @author jaapio <jaapio@phpdoc.org>
+ */
 class Post
 {
     public function __construct()
