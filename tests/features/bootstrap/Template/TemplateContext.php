@@ -52,7 +52,7 @@ final class TemplateContext implements Context
         $this->webserver->start(function () {
             echo "Server started";
         });
-        sleep(1);
+       // sleep(1);
     }
 
     /**

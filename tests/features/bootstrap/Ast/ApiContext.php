@@ -13,6 +13,7 @@
 namespace phpDocumentor\Behat\Contexts\Ast;
 
 use Behat\Behat\Context\Context;
+use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Gherkin\Node\PyStringNode;
 use phpDocumentor\Descriptor\ArgumentDescriptor;
 use phpDocumentor\Descriptor\ClassDescriptor;
@@ -23,6 +24,7 @@ use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\FunctionDescriptor;
 use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Descriptor\NamespaceDescriptor;
+use phpDocumentor\Descriptor\PropertyDescriptor;
 use phpDocumentor\Descriptor\Tag\ParamDescriptor;
 use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
 use phpDocumentor\Descriptor\Tag\VersionDescriptor;
@@ -574,5 +576,24 @@ class ApiContext extends BaseContext implements Context
         $file = $ast->getFiles()->get($filename);
 
         Assert::count($file->getMarkers(), 1);
+    }
+
+    /**
+     * @Then class ":className" must have magic property ":propertyName" of type :type
+     */
+    public function classMustHaveMagicPropertyOfType($className, $propertyName, $type)
+    {
+        $classDescriptor = $this->findClassByFqsen($className);
+        /** @var PropertyDescriptor $propertyDescriptor */
+        $propertyDescriptor = null;
+        foreach ($classDescriptor->getMagicProperties() as $property) {
+            if ($property->getName() === $propertyName) {
+                $propertyDescriptor = $property;
+                break;
+            }
+        }
+
+        Assert::isInstanceOf($propertyDescriptor, PropertyDescriptor::class);
+        Assert::eq($type, (string) $propertyDescriptor->getType());
     }
 }

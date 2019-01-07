@@ -92,6 +92,8 @@ final class AssemblerFactoryFactory
         $factory->register(Matcher::forType(Link::class), new LinkAssembler());
         $factory->register(Matcher::forType(Tags\Method::class), new MethodTagAssembler());
         $factory->register(Matcher::forType(Tags\Property::class), new PropertyTagAssembler());
+        $factory->register(Matcher::forType(Tags\PropertyRead::class), new PropertyTagAssembler());
+        $factory->register(Matcher::forType(Tags\PropertyWrite::class), new PropertyTagAssembler());
         $factory->register(Matcher::forType(Var_::class), new VarAssembler());
         $factory->register(Matcher::forType(Param::class), new ParamAssembler());
         $factory->register(Matcher::forType(Throws::class), new ThrowsAssembler());
