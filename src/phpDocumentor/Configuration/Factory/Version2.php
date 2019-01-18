@@ -32,7 +32,7 @@ final class Version2 implements Strategy
     private $markers = ['TODO', 'FIXME'];
 
     /** @var string[] */
-    private $visibility = ['public'];
+    private $visibility = ['public', 'protected', 'private'];
 
     /** @var string */
     private $defaultPackageName = 'Default';
@@ -176,7 +176,7 @@ final class Version2 implements Strategy
             return $this->visibility;
         }
 
-        return [(string) $phpDocumentor->parser->visibility];
+        return explode(',', (string) $phpDocumentor->parser->visibility);
     }
 
     /**

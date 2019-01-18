@@ -120,4 +120,22 @@ XML;
 
         $this->assertEquals(Version2ExpectedArray::getCustomTargetConfig(), $array);
     }
+
+    /**
+     * @covers ::convert
+     * @covers ::<private>
+     */
+    public function testItShouldUseDefinedVisibility()
+    {
+        $xml = new \SimpleXMLElement(
+            __DIR__ . '/../../../data/phpDocumentor2XMLWithVisibility.xml',
+            0,
+            true
+        );
+
+        $version2 = new Version2();
+        $array = $version2->convert($xml);
+
+        $this->assertEquals(Version2ExpectedArray::getDefinedVisibility(), $array);
+    }
 }
