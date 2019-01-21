@@ -15,7 +15,9 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
+use phpDocumentor\Descriptor\ConstantDescriptor;
 use phpDocumentor\Descriptor\InterfaceDescriptor;
+use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Reflection\Php\Constant;
 use phpDocumentor\Reflection\Php\Interface_;
 use phpDocumentor\Reflection\Php\Method;
@@ -64,7 +66,7 @@ class InterfaceAssembler extends AssemblerAbstract
     {
         foreach ($constants as $constant) {
             $constantDescriptor = $this->getBuilder()->buildDescriptor($constant);
-            if ($constantDescriptor) {
+            if ($constantDescriptor instanceof ConstantDescriptor) {
                 $constantDescriptor->setParent($interfaceDescriptor);
                 $interfaceDescriptor->getConstants()->set($constantDescriptor->getName(), $constantDescriptor);
             }
@@ -80,7 +82,7 @@ class InterfaceAssembler extends AssemblerAbstract
     {
         foreach ($methods as $method) {
             $methodDescriptor = $this->getBuilder()->buildDescriptor($method);
-            if ($methodDescriptor) {
+            if ($methodDescriptor instanceof MethodDescriptor) {
                 $methodDescriptor->setParent($interfaceDescriptor);
                 $interfaceDescriptor->getMethods()->set($methodDescriptor->getName(), $methodDescriptor);
             }

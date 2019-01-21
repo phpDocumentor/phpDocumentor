@@ -24,6 +24,7 @@ use phpDocumentor\Transformer\Event\PreTransformationEvent;
 use phpDocumentor\Transformer\Event\PreTransformEvent;
 use phpDocumentor\Transformer\Event\WriterInitializationEvent;
 use phpDocumentor\Transformer\Transformer;
+use phpDocumentor\Transformer\Writer\WriterAbstract;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Stopwatch\Stopwatch;
@@ -181,15 +182,19 @@ final class Transform
         Dispatcher::getInstance()->addListener(
             Transformer::EVENT_PRE_INITIALIZATION,
             function (WriterInitializationEvent $event) {
-                $this->logger->info('  Initialize writer "' . get_class($event->getWriter()) . '"');
+                if ($event->getWriter() instanceof WriterAbstract) {
+                    $this->logger->info('  Initialize writer "' . get_class($event->getWriter()) . '"');
+                }
             }
         );
         Dispatcher::getInstance()->addListener(
             Transformer::EVENT_PRE_TRANSFORMATION,
             function (PreTransformationEvent $event) {
-                $this->logger->info(
-                    '  Execute transformation using writer "' . $event->getTransformation()->getWriter() . '"'
-                );
+                if ($event->getTransformation()->getWriter() instanceof WriterAbstract) {
+                    $this->logger->info(
+                        '  Execute transformation using writer "' . $event->getTransformation()->getWriter() . '"'
+                    );
+                }
             }
         );
     }

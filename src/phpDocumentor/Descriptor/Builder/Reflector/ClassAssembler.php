@@ -17,6 +17,9 @@ namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Descriptor\ConstantDescriptor;
+use phpDocumentor\Descriptor\MethodDescriptor;
+use phpDocumentor\Descriptor\PropertyDescriptor;
 use phpDocumentor\Reflection\Php\Class_;
 use phpDocumentor\Reflection\Php\Constant;
 use phpDocumentor\Reflection\Php\Method;
@@ -72,7 +75,7 @@ class ClassAssembler extends AssemblerAbstract
     {
         foreach ($constants as $constant) {
             $constantDescriptor = $this->getBuilder()->buildDescriptor($constant);
-            if ($constantDescriptor) {
+            if ($constantDescriptor instanceof ConstantDescriptor) {
                 $constantDescriptor->setParent($classDescriptor);
                 $classDescriptor->getConstants()->set($constantDescriptor->getName(), $constantDescriptor);
             }
@@ -88,7 +91,7 @@ class ClassAssembler extends AssemblerAbstract
     {
         foreach ($properties as $property) {
             $propertyDescriptor = $this->getBuilder()->buildDescriptor($property);
-            if ($propertyDescriptor) {
+            if ($propertyDescriptor instanceof PropertyDescriptor) {
                 $propertyDescriptor->setParent($classDescriptor);
                 $classDescriptor->getProperties()->set($propertyDescriptor->getName(), $propertyDescriptor);
             }
@@ -104,7 +107,7 @@ class ClassAssembler extends AssemblerAbstract
     {
         foreach ($methods as $method) {
             $methodDescriptor = $this->getBuilder()->buildDescriptor($method);
-            if ($methodDescriptor) {
+            if ($methodDescriptor instanceof MethodDescriptor) {
                 $methodDescriptor->setParent($classDescriptor);
                 $classDescriptor->getMethods()->set($methodDescriptor->getName(), $methodDescriptor);
             }

@@ -42,7 +42,7 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
     }
 
     /**
-     * {@inheritDoc}
+     * @param Collection $parents
      */
     public function setParent($parents)
     {
@@ -50,7 +50,7 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
     }
 
     /**
-     * {@inheritDoc}
+     * @return Collection
      */
     public function getParent()
     {

@@ -123,9 +123,9 @@ class CollectionDescriptor implements TypeInterface
      *
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
-        $name = $this->getName();
+        $name = (string) $this->getName();
 
         $keyTypes = [];
         foreach ($this->getKeyTypes() as $type) {
