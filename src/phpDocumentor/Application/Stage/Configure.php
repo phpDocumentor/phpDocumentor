@@ -19,22 +19,25 @@ use phpDocumentor\Configuration\CommandlineOptionsMiddleware;
 use phpDocumentor\Configuration\Configuration;
 use phpDocumentor\Configuration\ConfigurationFactory;
 use phpDocumentor\DomainModel\Uri;
+use Psr\Log\LoggerInterface;
 
 final class Configure
 {
-    /** @var ConfigurationFactory */
     private $configFactory;
-
-    /** @var Configuration */
     private $configuration;
+    private $logger;
 
     /**
      * Configure constructor.
      */
-    public function __construct(ConfigurationFactory $configFactory, Configuration $configuration)
-    {
+    public function __construct(
+        ConfigurationFactory $configFactory,
+        Configuration $configuration,
+        LoggerInterface $logger
+    ) {
         $this->configFactory = $configFactory;
         $this->configuration = $configuration;
+        $this->logger = $logger;
     }
 
     /**
@@ -47,10 +50,35 @@ final class Configure
         );
 
         if ($options['config'] ?? null) {
-            $this->configuration->exchangeArray(
-                $this->configFactory->fromUri(new Uri(realpath($options['config'])))->getArrayCopy()
-            );
+            $path = $options['config'];
+            // if the path equals none then we fallback to the defaults but
+            // don't load anything from the filesystem
+            if ($path !== 'none') {
+                $uri = realpath($path);
+                if ($uri === false) {
+                    throw new \InvalidArgumentException(
+                        sprintf(
+                            'The configuration file in path "%s" can not be '
+                            . 'found or read',
+                            $path
+                        )
+                    );
+                }
+
+                $this->logger->info(sprintf('Using the configuration file at: %s', $path));
+                $this->configuration->exchangeArray(
+                    $this->configFactory->fromUri(new Uri($uri))->getArrayCopy()
+                );
+            } else {
+                $this->logger->info(
+                    sprintf(
+                        'Not using any configuration file, relying on application defaults',
+                        $path
+                    )
+                );
+            }
         } else {
+            $this->logger->info('Using the configuration file at the default location');
             $this->configuration->exchangeArray(
                 $this->configFactory->fromDefaultLocations()->getArrayCopy()
             );

@@ -12,11 +12,9 @@
 
 namespace phpDocumentor\Application\Stage;
 
-use phpDocumentor\Configuration\Configuration;
 use phpDocumentor\Configuration\ConfigurationFactory;
-use phpDocumentor\Configuration\Factory\Version2;
-use phpDocumentor\Configuration\Factory\Version3;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\NullLogger;
 
 /**
  * @coversDefaultClass \phpDocumentor\Application\Stage\Configure
@@ -32,7 +30,11 @@ class ConfigureTest extends TestCase
     {
         $configFactory = new ConfigurationFactory([], []);
 
-        $fixture = new Configure($configFactory, $configFactory->fromDefaultLocations());
+        $fixture = new Configure(
+            $configFactory,
+            $configFactory->fromDefaultLocations(),
+            new NullLogger()
+        );
 
         $result = $fixture(['force' => true]);
 
