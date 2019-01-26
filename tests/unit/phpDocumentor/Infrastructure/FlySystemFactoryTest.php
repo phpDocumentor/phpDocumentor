@@ -60,7 +60,7 @@ class FlySystemFactoryTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         /** @var AbstractAdapter $adapter */
         $adapter = $result->getAdapter();
         $pathPrefix = $adapter->getPathPrefix();
-        $this->assertEquals('/tmp' . DIRECTORY_SEPARATOR, $pathPrefix);
+        $this->assertEquals(realpath('/tmp') . DIRECTORY_SEPARATOR, $pathPrefix);
     }
 
     /**
