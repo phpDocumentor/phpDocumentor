@@ -6,7 +6,7 @@ workflow "Qa workflow" {
 }
 
 action "PHPStan" {
-  uses = "docker://oskarstark/phpstan-ga:with-extensions"
+  uses = "docker://oskarstark/phpstan-ga"
   args = "analyse src tests --level 2 --configuration phpstan.neon"
   secrets = ["GITHUB_TOKEN"]
 }
