@@ -18,5 +18,5 @@ action "PHPStan" {
 action "composer-require-checker" {
   uses = "docker://phpga/composer-require-checker-ga"
   secrets = ["GITHUB_TOKEN"]
-  args = "check --config-file /app/composer-require-config.json composer.json"
+  args = "check --config-file ./composer-require-config.json composer.json"
 }
