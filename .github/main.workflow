@@ -1,9 +1,12 @@
-workflow "Example workflow" {
+workflow "Qa workflow" {
   on = "push"
-  resolves = ["Send message to slack"]
+  resolves = [
+    "PHPStan",
+  ]
 }
 
-action "Send message to slack" {
-  uses = "apex/actions/slack@master"
-  secrets = ["SLACK_WEBHOOK"]
+action "PHPStan" {
+  uses = "docker://oskarstark/phpstan-ga:with-extensions"
+  args = "analyse src tests --level 2 --configuration phpstan.neon"
+  secrets = ["GITHUB_TOKEN"]
 }
