@@ -20,6 +20,8 @@ phpcs:
   command: ["./bin/phpcs", "--standard=PSR2", "--extensions=php",  "src"]
 
 phpstan:
-  build: docker/phpstan
+  image: jaapio/github-actions:phpstan
+  environment:
+    PHP_EXTENSIONS: php7-intl php7-xsl
   volumes: [".:/app"]
   command: "analyse src tests --level 2 --configuration phpstan.neon"

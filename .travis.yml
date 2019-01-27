@@ -56,14 +56,6 @@ jobs:
         - travis_retry wget --no-verbose https://scrutinizer-ci.com/ocular.phar && php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml
 
     - stage: analysis
-      php: 7.1
-      name: "PHPStan"
-      services:
-        - docker
-      script:
-        - docker-compose run --rm phpstan
-
-    - stage: analysis
       php: 7.1.18
       name: "Composer require checker"
       env:
