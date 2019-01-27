@@ -2,6 +2,7 @@ workflow "Qa workflow" {
   on = "push"
   resolves = [
     "PHPStan",
+    "composer-require-checker"
   ]
 }
 
@@ -12,4 +13,10 @@ action "PHPStan" {
   env = {
     PHP_EXTENSIONS = "php7-intl php7-xsl"
   }
+}
+
+action "composer-require-checker" {
+  uses = "docker://phpga/composer-require-checker-ga"
+  secrets = ["GITHUB_TOKEN"]
+  args = "check --config-file /app/composer-require-config.json composer.json"
 }
