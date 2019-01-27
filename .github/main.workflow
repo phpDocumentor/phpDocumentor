@@ -6,6 +6,12 @@ workflow "Qa workflow" {
   ]
 }
 
+action "composer" {
+  uses = "docker://composer"
+  secrets = ["GITHUB_TOKEN"]
+  args = "install --no-interaction --prefer-dist --optimize-autoloader"
+}
+
 action "PHPStan" {
   uses = "docker://jaapio/github-actions:phpstan"
   args = "analyse src tests --level 2 --configuration phpstan.neon"
@@ -13,12 +19,7 @@ action "PHPStan" {
   env = {
     PHP_EXTENSIONS = "php7-intl php7-xsl"
   }
-}
-
-action "composer" {
-  uses = "docker://composer"
-  secrets = ["GITHUB_TOKEN"]
-  args = "install --no-interaction --prefer-dist --optimize-autoloader"
+  needs = ["composer"]
 }
 
 action "composer-require-checker" {
