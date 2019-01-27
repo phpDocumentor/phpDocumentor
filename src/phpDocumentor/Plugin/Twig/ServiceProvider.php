@@ -42,7 +42,9 @@ class ServiceProvider implements ServiceProviderInterface
 
         /** @var Collection $writerCollection */
         $writerCollection = $app['transformer.writer.collection'];
-        $writerCollection['twig'] = new Writer\Twig($app[\Twig\Environment::class]);
-        $writerCollection['twig']->setTranslator($translator);
+        $twigWriter = new Writer\Twig($app[\Twig\Environment::class]);
+        $twigWriter->setTranslator($translator);
+
+        $writerCollection['twig'] = $twigWriter;
     }
 }

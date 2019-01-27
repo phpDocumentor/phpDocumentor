@@ -15,6 +15,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Event;
 
+use phpDocumentor\Event\EventAbstract;
+
 /**
  * Event that happens after each individual transformation.
  *
@@ -22,6 +24,6 @@ namespace phpDocumentor\Transformer\Event;
  * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  */
-class PostTransformationEvent extends PreTransformationEvent
+class PostTransformationEvent extends EventAbstract
 {
 }

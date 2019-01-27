@@ -24,39 +24,22 @@ use phpDocumentor\Transformer\Transformation;
  */
 class PreTransformationEvent extends EventAbstract
 {
-    /** @var \DOMDocument remembers the XML-based AST so that it can be used from the listener */
-    protected $source;
-
     /** @var Transformation */
     protected $transformation;
 
-    /**
-     * Returns the Abstract Syntax Tree as DOMDocument.
-     */
-    public function getSource(): ?\DOMDocument
+    public function __construct($subject, Transformation $transformation)
     {
-        return $this->source;
+        parent::__construct($subject);
+        $this->transformation = $transformation;
     }
 
-    /**
-     * Sets the Abstract Syntax Tree as DOMDocument.
-     */
-    public function setSource(\DOMDocument $source): self
+    public static function create($subject, Transformation $transformation)
     {
-        $this->source = $source;
-
-        return $this;
+        return new static($subject, $transformation);
     }
 
-    public function getTransformation(): ?Transformation
+    public function getTransformation(): Transformation
     {
         return $this->transformation;
-    }
-
-    public function setTransformation(Transformation $transformation): self
-    {
-        $this->transformation = $transformation;
-
-        return $this;
     }
 }

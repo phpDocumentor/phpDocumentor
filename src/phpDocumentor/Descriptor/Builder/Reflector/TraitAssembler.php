@@ -15,6 +15,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
+use phpDocumentor\Descriptor\MethodDescriptor;
+use phpDocumentor\Descriptor\PropertyDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Reflection\Php\Method;
 use phpDocumentor\Reflection\Php\Property;
@@ -63,7 +65,7 @@ class TraitAssembler extends AssemblerAbstract
     {
         foreach ($properties as $property) {
             $propertyDescriptor = $this->getBuilder()->buildDescriptor($property);
-            if ($propertyDescriptor) {
+            if ($propertyDescriptor instanceof PropertyDescriptor) {
                 $propertyDescriptor->setParent($traitDescriptor);
                 $traitDescriptor->getProperties()->set($propertyDescriptor->getName(), $propertyDescriptor);
             }
@@ -79,7 +81,7 @@ class TraitAssembler extends AssemblerAbstract
     {
         foreach ($methods as $method) {
             $methodDescriptor = $this->getBuilder()->buildDescriptor($method);
-            if ($methodDescriptor) {
+            if ($methodDescriptor instanceof MethodDescriptor) {
                 $methodDescriptor->setParent($traitDescriptor);
                 $traitDescriptor->getMethods()->set($methodDescriptor->getName(), $methodDescriptor);
             }

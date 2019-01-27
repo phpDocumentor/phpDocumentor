@@ -3,7 +3,6 @@ parameters:
     - '#Constructor of class phpDocumentor\\Plugin\\Twig\\Extension has an unused parameter \$transformation#'
     - '#Call to an undefined method League\\Flysystem\\Filesystem::find()#'
     - '#Call to an undefined method Zend\\Cache\\Storage\\Adapter\\AdapterOptions::setCacheDir()#'
-    - '#PHPDoc tag [a-zA-Z0-9@]+ has invalid value ([a-zA-Z0-9`\.@\s\(\)\{]+): Unexpected token "`", expected TOKEN_IDENTIFIER at offset#'
     - '#Access to an undefined property phpDocumentor\\Descriptor\\Collection::\$[a-z]+#'
   excludes_analyse:
    #test data

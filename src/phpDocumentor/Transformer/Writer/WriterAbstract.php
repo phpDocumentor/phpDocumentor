@@ -57,4 +57,9 @@ abstract class WriterAbstract
      * @param Transformation    $transformation Transformation to execute.
      */
     abstract public function transform(ProjectDescriptor $project, Transformation $transformation);
+
+    public function __toString(): string
+    {
+        return get_class($this);
+    }
 }

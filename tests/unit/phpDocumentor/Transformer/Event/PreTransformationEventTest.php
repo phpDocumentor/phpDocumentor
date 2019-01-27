@@ -18,48 +18,28 @@ use phpDocumentor\Transformer\Transformation;
 
 /**
  * Tests the functionality for the PreTransformationEvent class.
+ * @coversDefaultClass \phpDocumentor\Transformer\Event\PreTransformationEvent
+ * @covers ::<private>
  */
 final class PreTransformationEventTest extends \PHPUnit\Framework\TestCase
 {
     /** @var PreTransformationEvent $fixture */
     protected $fixture;
 
-    /** @var \DOMDocument */
-    protected $source;
-
     /** @var Transformation */
     private $transformation;
 
-    protected function setUp()
-    {
-        $this->fixture = new PreTransformationEvent(new \stdClass());
-        $this->source = new \DOMDocument('1.0', 'UTF-8');
-        $this->transformation = new Transformation('', '', '', '');
-    }
-
     /**
-     * @covers \phpDocumentor\Transformer\Event\PreTransformationEvent::getSource
-     * @covers \phpDocumentor\Transformer\Event\PreTransformationEvent::setSource
-     */
-    public function testSetAndGetSource()
-    {
-        $this->assertNull($this->fixture->getSource());
-
-        $this->fixture->setSource($this->source);
-
-        $this->assertSame($this->source, $this->fixture->getSource());
-    }
-
-    /**
-     * @covers \phpDocumentor\Transformer\Event\PreTransformationEvent::getTransformation
-     * @covers \phpDocumentor\Transformer\Event\PreTransformationEvent::setTransformation
+     * @covers ::getTransformation
+     * @covers ::getSubject
+     * @covers ::create
      */
     public function testSetAndGetTransformation()
     {
-        $this->assertNull($this->fixture->getTransformation());
-
-        $this->fixture->setTransformation($this->transformation);
-
+        $this->transformation = new Transformation('', '', '', '');
+        $subject = new \stdClass();
+        $this->fixture = PreTransformationEvent::create($subject, $this->transformation);
         $this->assertSame($this->transformation, $this->fixture->getTransformation());
+        $this->assertSame($subject, $this->fixture->getSubject());
     }
 }
