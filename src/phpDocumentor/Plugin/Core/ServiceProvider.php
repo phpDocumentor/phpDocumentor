@@ -63,11 +63,10 @@ final class ServiceProvider implements ServiceProviderInterface
 
         $checkstyleWriter = new Writer\Checkstyle();
         $checkstyleWriter->setTranslator($this->getTranslator($app));
+        $writerCollection['checkstyle'] = $checkstyleWriter;
 
         $xmlWriter =  new Writer\Xml($app['transformer.routing.standard']);
         $xmlWriter->setTranslator($this->getTranslator($app));
-
-        $writerCollection['checkstyle'] = $checkstyleWriter;
         $writerCollection['xml'] = $xmlWriter;
     }
 

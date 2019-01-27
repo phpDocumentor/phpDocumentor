@@ -51,8 +51,6 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
         $this->thenWritersAreRegistered($mockCollection);
         $this->thenRouterIsSetOnXmlWriter($mockApplication);
-        $this->thenTranslatorIsSetOnWriter('Checkstyle', $mockTranslator, $mockCollection);
-        $this->thenTranslatorIsSetOnWriter('Xml', $mockTranslator, $mockCollection);
 
         $this->thenProviderIsRegistered($mockApplication, 'phpDocumentor\Plugin\Graphs\ServiceProvider');
         $this->thenProviderIsRegistered($mockApplication, 'phpDocumentor\Plugin\Twig\ServiceProvider');
@@ -184,21 +182,6 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     private function thenATranslationFolderIsAdded($mockTranslator)
     {
         $mockTranslator->shouldReceive('addTranslationFolder')->with(m::pattern('/Messages$/'))->once();
-    }
-
-    /**
-     * Sets the expectations that the given writer is retrieved from the collection and it will have the given
-     * translator assigned to it.
-     *
-     * @param string          $writerName
-     * @param m\MockInterface $mockTranslator
-     * @param m\MockInterface $mockCollection
-     */
-    private function thenTranslatorIsSetOnWriter($writerName, $mockTranslator, $mockCollection)
-    {
-        $mockWriter = m::mock('phpDocumentor\Plugin\Core\Transformer\Writer\\' . $writerName);
-        $mockWriter->shouldReceive('setTranslator')->with($mockTranslator)->once();
-        $mockCollection->shouldReceive('offsetGet')->with(strtolower($writerName))->once()->andReturn($mockWriter);
     }
 
     /**
