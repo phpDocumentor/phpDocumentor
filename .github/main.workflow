@@ -18,6 +18,7 @@ action "PHPStan" {
 action "composer" {
   uses = "docker://composer"
   secrets = ["GITHUB_TOKEN"]
+  args = "install --no-interaction --prefer-dist --optimize-autoloader"
 }
 
 action "composer-require-checker" {
