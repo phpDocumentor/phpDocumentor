@@ -46,7 +46,7 @@ Requirements
 
 phpDocumentor requires the following:
 
-* PHP 7.0 or higher
+* PHP 7.1 or higher
 * ext/iconv, http://php.net/manual/en/book.iconv.php (is enabled by default since PHP 5.0.0)
 * ext/intl, http://php.net/manual/en/book.intl.php
 * The XSL extension, http://www.php.net/manual/en/book.xsl.php (optional, only used with XSL based templates)
