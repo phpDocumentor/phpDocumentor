@@ -33,7 +33,6 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers phpDocumentor\Plugin\Core\ServiceProvider::register
      * @covers phpDocumentor\Plugin\Core\ServiceProvider::registerWriters
-     * @covers phpDocumentor\Plugin\Core\ServiceProvider::registerTranslationMessages
      * @covers phpDocumentor\Plugin\Core\ServiceProvider::registerDependenciesOnXsltExtension
      * @covers phpDocumentor\Plugin\Core\ServiceProvider::getWriterCollection
      */
