@@ -100,13 +100,15 @@ services:
         public: true
 
     phpDocumentor\Application\Console\Command\Project\RunCommand:
-        arguments: ['@phpDocumentor\Descriptor\ProjectDescriptorBuilder', '@phpdoc.command.run.pipeline']
+        arguments:
+          - '@phpDocumentor\Descriptor\ProjectDescriptorBuilder'
+          - '@phpdoc.complete.pipeline'
 
     phpDocumentor\Application\Console\Command\Project\ParseCommand:
-        arguments: ['@phpdoc.command.parse.pipeline']
+        arguments: ['@phpdoc.parse.pipeline']
 
     phpDocumentor\Application\Console\Command\Project\TransformCommand:
-        arguments: ['@phpdoc.command.transform.pipeline']
+        arguments: ['@phpdoc.transform.pipeline']
 
     phpDocumentor\Descriptor\Builder\AssemblerFactory:
       class: 'phpDocumentor\Descriptor\Builder\AssemblerFactory'

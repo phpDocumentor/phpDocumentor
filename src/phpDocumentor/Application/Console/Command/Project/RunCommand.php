@@ -57,6 +57,7 @@ class RunCommand extends Command
     public function __construct(ProjectDescriptorBuilder $projectDescriptorBuilder, Pipeline $pipeline)
     {
         parent::__construct('project:run');
+
         $this->projectDescriptorBuilder = $projectDescriptorBuilder;
         $this->pipeline = $pipeline;
     }
