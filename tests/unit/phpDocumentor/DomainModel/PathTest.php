@@ -43,4 +43,21 @@ final class PathTest extends TestCase
         $this->assertTrue($subject->equals($similar));
         $this->assertFalse($subject->equals($dissimilar));
     }
+
+    /**
+     * @covers ::isAbsolutePath
+     */
+    public function testItCanCheckWhetherTheGivenPathIsAnAbsolutePath()
+    {
+        $this->assertTrue(Path::isAbsolutePath('\\\\my\\absolute\\path'));
+        $this->assertTrue(Path::isAbsolutePath('/my/absolute/path'));
+        $this->assertTrue(Path::isAbsolutePath('c:\\my\\absolute\\path'));
+        $this->assertTrue(Path::isAbsolutePath('http://my/absolute/path'));
+        $this->assertTrue(Path::isAbsolutePath('//my/absolute/path'));
+
+        $this->assertFalse(Path::isAbsolutePath('path'));
+        $this->assertFalse(Path::isAbsolutePath('my/absolute/path'));
+        $this->assertFalse(Path::isAbsolutePath('./my/absolute/path'));
+        $this->assertFalse(Path::isAbsolutePath('../my/absolute/path'));
+    }
 }
