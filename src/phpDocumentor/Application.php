@@ -27,6 +27,8 @@ use RuntimeException;
  * Application class for phpDocumentor.
  *
  * Can be used as bootstrap when the run method is not invoked.
+ *
+ * @codeCoverageIgnore too many side-effects and system calls to properly test
  */
 class Application extends Cilex
 {
@@ -78,8 +80,6 @@ class Application extends Cilex
         $this->setTimezone();
         ini_set('memory_limit', '-1');
 
-        // this code cannot be tested because we cannot control the system settings in unit tests
-        // @codeCoverageIgnoreStart
         if (extension_loaded('Zend OPcache') && ini_get('opcache.enable') && ini_get('opcache.enable_cli')) {
             if (ini_get('opcache.save_comments')) {
                 ini_set('opcache.load_comments', '1');
@@ -91,8 +91,6 @@ class Application extends Cilex
         if (extension_loaded('Zend Optimizer+') && ini_get('zend_optimizerplus.save_comments') === 0) {
             throw new RuntimeException('Please enable zend_optimizerplus.save_comments in php.ini.');
         }
-
-        // @codeCoverageIgnoreEnd
     }
 
     /**
@@ -103,8 +101,6 @@ class Application extends Cilex
      *
      * @link http://php.net/manual/en/function.date-default-timezone-get.php for more information how PHP determines the
      *     default timezone.
-     *
-     * @codeCoverageIgnore this method is very hard, if not impossible, to unit test and not critical.
      */
     protected function setTimezone(): void
     {

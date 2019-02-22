@@ -22,6 +22,9 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
 
+/**
+ * @codeCoverageIgnore Kernels do not need to be covered; mostly configuration anyway
+ */
 class Kernel extends BaseKernel
 {
     use MicroKernelTrait;

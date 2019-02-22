@@ -17,6 +17,9 @@ namespace phpDocumentor;
 
 final class AutoloaderLocator
 {
+    /**
+     * @codeCoverageIgnore cannot test without side-effects
+     */
     public static function autoload()
     {
         return require static::findVendorPath(). '/autoload.php';
