@@ -15,6 +15,9 @@ namespace phpDocumentor\Application\Console;
 
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery as m;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\StringInput;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
@@ -31,8 +34,49 @@ class ApplicationTest extends MockeryTestCase
     {
         $kernelMock = m::mock(KernelInterface::class);
         $kernelMock->shouldIgnoreMissing();
+        $kernelMock->shouldReceive('getBundles')->andReturn([]);
+        $kernelMock->shouldReceive('getContainer->has')->andReturn(false);
+        $kernelMock->shouldReceive('getContainer->hasParameter')->andReturn(false);
+        $kernelMock->shouldReceive('getContainer->get')->with('event_dispatcher')->andReturn(new EventDispatcher());
+        $kernelMock->shouldReceive('getContainer->get')->andReturn(false);
 
         $this->feature = new Application($kernelMock);
+        $this->feature->setAutoExit(false);
+    }
+
+    /**
+     * @covers ::getCommandName
+     */
+    public function testWhetherTheNameOfTheCommandCanBeRetrieved()
+    {
+        $_SERVER['argv'] = ['binary', 'my:command'];
+        $this->feature->add((new Command('my:command'))->setCode(function() { return 1; }));
+        $this->feature->add((new Command('project:run'))->setCode(function() { return 2; }));
+
+        $this->assertSame(1, $this->feature->run(new StringInput('my:command -q')));
+    }
+
+    /**
+     * @covers ::getCommandName
+     */
+    public function testWhetherTheRunCommandIsUsedWhenNoCommandNameIsGiven()
+    {
+        $_SERVER['argv'] = ['binary', 'something else'];
+        $this->feature->add((new Command('MyCommand'))->setCode(function() { return 1; }));
+        $this->feature->add((new Command('project:run'))->setCode(function() { return 2; }));
+
+        $this->assertSame(2, $this->feature->run(new StringInput('-q')));
+    }
+
+    /**
+     * @covers ::getDefaultInputDefinition
+     */
+    public function testWhetherTheConfigurationAndLogIsADefaultInput()
+    {
+        $definition = $this->feature->getDefinition();
+
+        $this->assertTrue($definition->hasOption('config'));
+        $this->assertTrue($definition->hasOption('log'));
     }
 
     /**
