@@ -46,7 +46,7 @@ final class TemplateContext implements Context
         $workingDir = $this->environmentContext->getWorkingDir();
 
         $this->webserver = new Process(
-                sprintf('php -S localhost:8080 -t %s', escapeshellarg($workingDir))
+                sprintf('php -S localhost:8081 -t %s', escapeshellarg($workingDir))
         );
 
         $this->webserver->start(function () {
