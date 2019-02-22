@@ -13,6 +13,7 @@
 namespace phpDocumentor\Transformer;
 
 use Mockery as m;
+use Psr\Log\NullLogger;
 
 /**
  * Test class for \phpDocumentor\Transformer\Transformer.
@@ -21,11 +22,7 @@ use Mockery as m;
  */
 class TransformerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
-    /**
-     * Max length of description printed.
-     *
-     * @var int
-     */
+    /** @var int Max length of description printed. */
     protected static $MAX_DESCRIPTION_LENGTH = 68;
 
     /** @var Transformer $fixture */
@@ -41,7 +38,7 @@ class TransformerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $writerCollectionMock = m::mock('phpDocumentor\Transformer\Writer\Collection');
         $writerCollectionMock->shouldIgnoreMissing();
 
-        $this->fixture = new Transformer($templateCollectionMock, $writerCollectionMock);
+        $this->fixture = new Transformer($templateCollectionMock, $writerCollectionMock, new NullLogger());
     }
 
     /**
@@ -53,7 +50,7 @@ class TransformerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $templateCollectionMock->shouldIgnoreMissing();
         $writerCollectionMock = m::mock('phpDocumentor\Transformer\Writer\Collection');
         $writerCollectionMock->shouldIgnoreMissing();
-        $this->fixture = new Transformer($templateCollectionMock, $writerCollectionMock);
+        $this->fixture = new Transformer($templateCollectionMock, $writerCollectionMock, new NullLogger());
 
         $this->assertAttributeEquals($templateCollectionMock, 'templates', $this->fixture);
         $this->assertAttributeEquals($writerCollectionMock, 'writers', $this->fixture);
@@ -102,7 +99,7 @@ class TransformerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $writerCollectionMock = m::mock('phpDocumentor\Transformer\Writer\Collection');
         $writerCollectionMock->shouldIgnoreMissing();
 
-        $fixture = new Transformer($templateCollectionMock, $writerCollectionMock);
+        $fixture = new Transformer($templateCollectionMock, $writerCollectionMock, new NullLogger());
 
         $this->assertEquals($templateCollectionMock, $fixture->getTemplates());
     }
@@ -125,7 +122,7 @@ class TransformerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
             ->shouldReceive('offsetGet')->with($myTestWritter)->andReturn($myTestWritterMock)
             ->getMock();
 
-        $fixture = new Transformer($templateCollection, $writerCollectionMock);
+        $fixture = new Transformer($templateCollection, $writerCollectionMock, new NullLogger());
 
         $transformation = m::mock('phpDocumentor\Transformer\Transformation')
             ->shouldReceive('execute')->with($project)

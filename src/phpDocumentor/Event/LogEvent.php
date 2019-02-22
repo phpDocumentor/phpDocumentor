@@ -21,10 +21,34 @@ use Psr\Log\LogLevel;
  * Logging event for phpDocumentor where information is output to the log or
  * stdout.
  */
-class LogEvent extends DebugEvent
+final class LogEvent extends EventAbstract
 {
+    /** @var string Message to display with the debugging event */
+    protected $message = '';
+
+    /** @var string[] Extra parameters to insert into the message after translation */
+    protected $context = [];
+
     /** @var string Default priority level for these events is INFO */
     protected $priority = LogLevel::INFO;
+
+    /**
+     * Provides the message that is to be shown with this event.
+     */
+    public function setMessage(string $message): self
+    {
+        $this->message = $message;
+
+        return $this;
+    }
+
+    /**
+     * Returns the message that was provided with this event.
+     */
+    public function getMessage(): string
+    {
+        return $this->message;
+    }
 
     /**
      * Set the priority level for this event.
@@ -36,5 +60,35 @@ class LogEvent extends DebugEvent
         $this->priority = $priority;
 
         return $this;
+    }
+
+    /**
+     * Returns the priority level associated with this logging event.
+     */
+    public function getPriority(): string
+    {
+        return $this->priority;
+    }
+
+    /**
+     * Sets additional context (parameters) to use when translating messages.
+     *
+     * @param string[] $context
+     */
+    public function setContext(array $context): self
+    {
+        $this->context = $context;
+
+        return $this;
+    }
+
+    /**
+     * Returns the context for this event.
+     *
+     * @return string[]
+     */
+    public function getContext(): array
+    {
+        return $this->context;
     }
 }

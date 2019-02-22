@@ -18,9 +18,7 @@ namespace phpDocumentor\Transformer;
 use InvalidArgumentException;
 use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\Event\DebugEvent;
 use phpDocumentor\Event\Dispatcher;
-use phpDocumentor\Event\LogEvent;
 use phpDocumentor\Transformer\Event\PostTransformationEvent;
 use phpDocumentor\Transformer\Event\PostTransformEvent;
 use phpDocumentor\Transformer\Event\PreTransformationEvent;
@@ -28,6 +26,7 @@ use phpDocumentor\Transformer\Event\PreTransformEvent;
 use phpDocumentor\Transformer\Event\WriterInitializationEvent;
 use phpDocumentor\Transformer\Writer\Initializable;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
+use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 
 /**
@@ -62,13 +61,19 @@ class Transformer implements CompilerPassInterface
     /** @var Transformation[] $transformations */
     protected $transformations = [];
 
+    private $logger;
+
     /**
      * Wires the template collection and writer collection to this transformer.
      */
-    public function __construct(Template\Collection $templateCollection, Writer\Collection $writerCollection)
-    {
+    public function __construct(
+        Template\Collection $templateCollection,
+        Writer\Collection $writerCollection,
+        LoggerInterface $logger
+    ) {
         $this->templates = $templateCollection;
         $this->writers = $writerCollection;
+        $this->logger = $logger;
     }
 
     public function getDescription(): string
@@ -138,7 +143,7 @@ class Transformer implements CompilerPassInterface
 
         Dispatcher::getInstance()->dispatch(self::EVENT_POST_TRANSFORM, PostTransformEvent::createInstance($this));
 
-        $this->log('Finished transformation process');
+        $this->logger->log(LogLevel::INFO, 'Finished transformation process');
     }
 
     /**
@@ -163,31 +168,24 @@ class Transformer implements CompilerPassInterface
 
     /**
      * Dispatches a logging request.
+     *
+     * This method can be used by writers to output logs without having to know anything about
+     * the logging mechanism of phpDocumentor.
      */
     public function log(string $message, string $priority = LogLevel::INFO): void
     {
-        /** @var LogEvent $logEvent */
-        $logEvent = LogEvent::createInstance($this);
-        $logEvent->setPriority($priority);
-        $logEvent->setMessage($message);
-        Dispatcher::getInstance()->dispatch(
-            'system.log',
-            $logEvent
-        );
+        $this->logger->log($priority, $message);
     }
 
     /**
      * Dispatches a logging request to log a debug message.
+     *
+     * This method can be used by writers to output logs without having to know anything about
+     * the logging mechanism of phpDocumentor.
      */
     public function debug(string $message): void
     {
-        /** @var DebugEvent $debugEvent */
-        $debugEvent = DebugEvent::createInstance($this);
-        $debugEvent->setMessage($message);
-        Dispatcher::getInstance()->dispatch(
-            'system.debug',
-            $debugEvent
-        );
+        $this->log($message, LogLevel::DEBUG);
     }
 
     /**
@@ -269,7 +267,8 @@ class Transformer implements CompilerPassInterface
      */
     private function applyTransformationToProject(Transformation $transformation, ProjectDescriptor $project): void
     {
-        $this->log(
+        $this->logger->log(
+            LogLevel::INFO,
             sprintf(
                 '  Writer %s %s on %s',
                 $transformation->getWriter(),
