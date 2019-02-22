@@ -26,8 +26,8 @@ final class ProjectFactoryFactory
     public static function create(iterable $fileMiddlewaresBuilder): ProjectFactory
     {
         $fileMiddlewares = [];
-        foreach ($fileMiddlewaresBuilder as $middelware) {
-            $fileMiddlewares[] = $middelware;
+        foreach ($fileMiddlewaresBuilder as $middleware) {
+            $fileMiddlewares[] = $middleware;
         }
 
         $strategies = [

@@ -17,6 +17,8 @@ namespace phpDocumentor\Parser;
 
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
+use phpDocumentor\Event\Dispatcher;
+use phpDocumentor\Parser\Event\PreParsingEvent;
 use phpDocumentor\Parser\Exception\FilesNotFoundException;
 use phpDocumentor\Reflection\ProjectFactory;
 use Psr\Log\LoggerInterface;
@@ -267,6 +269,12 @@ class Parser
         $this->startTimingTheParsePhase();
 
         $this->forceRebuildIfSettingsHaveModified($builder);
+
+        Dispatcher::getInstance()
+            ->dispatch(
+                'parser.pre',
+                PreParsingEvent::createInstance($this)->setFileCount(count($files))
+            );
 
         /** @var \phpDocumentor\Reflection\Php\Project $project */
         $project = $this->projectFactory->create(ProjectDescriptorBuilder::DEFAULT_PROJECT_NAME, $files);

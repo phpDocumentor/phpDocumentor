@@ -16,8 +16,19 @@ declare(strict_types=1);
 namespace phpDocumentor\Application\Console\Command\Project;
 
 use League\Pipeline\Pipeline;
+use Monolog\Logger;
 use phpDocumentor\Application\Console\Command\Command;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
+use phpDocumentor\Event\Dispatcher;
+use phpDocumentor\Parser\Event\PreFileEvent;
+use phpDocumentor\Parser\Event\PreParsingEvent;
+use phpDocumentor\Transformer\Event\PostTransformationEvent;
+use phpDocumentor\Transformer\Event\PostTransformEvent;
+use phpDocumentor\Transformer\Event\PreTransformEvent;
+use phpDocumentor\Transformer\Transformer;
+use Psr\Log\LoggerInterface;
+use Symfony\Bridge\Monolog\Handler\ConsoleHandler;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -41,25 +52,34 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class RunCommand extends Command
 {
-    /**
-     * @var ProjectDescriptorBuilder
-     */
+    /** @var ProjectDescriptorBuilder */
     private $projectDescriptorBuilder;
 
-    /**
-     * @var Pipeline
-     */
+    /** @var Pipeline */
     private $pipeline;
+
+    /** @var ProgressBar */
+    private $progressBar;
+
+    /** @var ProgressBar */
+    private $transformerProgressBar;
+
+    /** @var LoggerInterface */
+    private $logger;
 
     /**
      * RunCommand constructor.
      */
-    public function __construct(ProjectDescriptorBuilder $projectDescriptorBuilder, Pipeline $pipeline)
-    {
+    public function __construct(
+        ProjectDescriptorBuilder $projectDescriptorBuilder,
+        Pipeline $pipeline,
+        LoggerInterface $logger
+    ) {
         parent::__construct('project:run');
 
         $this->projectDescriptorBuilder = $projectDescriptorBuilder;
         $this->pipeline = $pipeline;
+        $this->logger = $logger;
     }
 
     /**
@@ -246,6 +266,11 @@ HELP
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $output->writeln('phpDocumentor ' . $this->getApplication()->getVersion());
+        $output->writeln('');
+
+        $this->observeProgressToShowProgressBars($output);
+
         $pipeLine = $this->pipeline;
         $pipeLine($input->getOptions());
 
@@ -253,6 +278,44 @@ HELP
             file_put_contents('ast.dump', serialize($this->projectDescriptorBuilder->getProjectDescriptor()));
         }
 
+        $output->writeln('');
+        $output->writeln('All done!');
+
         return 0;
+    }
+
+    private function observeProgressToShowProgressBars(OutputInterface $output): void
+    {
+        if ($output->getVerbosity() !== OutputInterface::VERBOSITY_NORMAL) {
+            return;
+        }
+
+        Dispatcher::getInstance()->addListener(
+            'parser.pre',
+            function (PreParsingEvent $event) use ($output) {
+                $output->writeln('Parsing files');
+                $this->progressBar = new ProgressBar($output, $event->getFileCount());
+            }
+        );
+        Dispatcher::getInstance()->addListener(
+            'parser.file.pre',
+            function (PreFileEvent $event) {
+                $this->progressBar->advance();
+            }
+        );
+        Dispatcher::getInstance()->addListener(
+            Transformer::EVENT_PRE_TRANSFORM,
+            function (PreTransformEvent $event) use ($output) {
+                $output->writeln('');
+                $output->writeln('Applying transformations (can take a while)');
+                $this->transformerProgressBar = new ProgressBar($output, count($event->getSubject()->getTemplates()->getTransformations()));
+            }
+        );
+        Dispatcher::getInstance()->addListener(
+            Transformer::EVENT_POST_TRANSFORMATION,
+            function (PostTransformationEvent $event) {
+                $this->transformerProgressBar->advance();
+            }
+        );
     }
 }
