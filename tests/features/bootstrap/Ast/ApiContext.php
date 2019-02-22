@@ -251,6 +251,20 @@ class ApiContext extends BaseContext implements Context
 
     /**
      * @param string $classFqsen
+     * @param string $propertyName
+     * @Then class ":classFqsen" has a property :property
+     */
+    public function classHasProperty($classFqsen, $propertyName)
+    {
+        $class = $this->findClassByFqsen($classFqsen);
+        /** @var PropertyDescriptor $property */
+        $property = $class->getProperties()->get($propertyName, null);
+        Assert::isInstanceOf($property, PropertyDescriptor::class);
+        Assert::eq($propertyName, $property->getName());
+    }
+
+    /**
+     * @param string $classFqsen
      * @param string $methodName
      * @param string $argument
      * @param string $type
