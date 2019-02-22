@@ -270,10 +270,12 @@ class Parser
 
         $this->forceRebuildIfSettingsHaveModified($builder);
 
+        $event = PreParsingEvent::createInstance($this);
+        assert($event instanceof PreParsingEvent);
         Dispatcher::getInstance()
             ->dispatch(
                 'parser.pre',
-                PreParsingEvent::createInstance($this)->setFileCount(count($files))
+                $event->setFileCount(count($files))
             );
 
         /** @var \phpDocumentor\Reflection\Php\Project $project */
