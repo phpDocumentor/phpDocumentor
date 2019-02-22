@@ -42,7 +42,8 @@ jobs:
       php: 7.1
       name: "php 7.1 Behat templates"
       script:
-        bin/behat -p template
+        - mkdir -p /tmp/phpdoc-behat/clean_template/simple
+        - bin/behat -p template
 
     - stage: analysis
       php: 7.1

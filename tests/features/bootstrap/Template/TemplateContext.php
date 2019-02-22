@@ -25,9 +25,7 @@ final class TemplateContext implements Context
     /** @var EnvironmentContext */
     private $environmentContext;
 
-    /**
-     * @var Process
-     */
+    /** @var Process */
     private $webserver;
 
     /** @BeforeScenario */
@@ -38,23 +36,17 @@ final class TemplateContext implements Context
         $this->environmentContext = $environment->getContext('phpDocumentor\Behat\Contexts\EnvironmentContext');
     }
 
-    /**
-     * @Given I open documentation
-     */
+    /** @BeforeScenario */
     public function beforeScenario()
     {
         $workingDir = $this->environmentContext->getWorkingDir();
 
-        var_dump("starting webserver");
         $this->webserver = new Process(
                 sprintf('php -S localhost:8081 -t %s', escapeshellarg($workingDir))
         );
-        var_dump("webserver status");
-        var_dump(sprintf('php -S localhost:8081 -t %s', escapeshellarg($workingDir)));
-        var_dump($this->webserver->getStatus());
 
         $this->webserver->start(function () {
-            echo "Server started";
+            var_dump("Server started");
         });
        // sleep(1);
     }
@@ -65,7 +57,6 @@ final class TemplateContext implements Context
     public function cleanup()
     {
         if ($this->webserver->isStarted()) {
-            var_dump("Stopping webserver");
             $this->webserver->stop();
         }
     }
