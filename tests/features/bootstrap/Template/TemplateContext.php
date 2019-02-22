@@ -30,7 +30,7 @@ final class TemplateContext implements Context
      */
     private $webserver;
 
-    /** @BeforeScenario         */
+    /** @BeforeScenario */
     public function gatherContexts(BeforeScenarioScope $scope)
     {
         $environment = $scope->getEnvironment();
@@ -45,9 +45,13 @@ final class TemplateContext implements Context
     {
         $workingDir = $this->environmentContext->getWorkingDir();
 
+        var_dump("starting webserver");
         $this->webserver = new Process(
                 sprintf('php -S localhost:8081 -t %s', escapeshellarg($workingDir))
         );
+        var_dump("webserver status");
+        var_dump(sprintf('php -S localhost:8081 -t %s', escapeshellarg($workingDir)));
+        var_dump($this->webserver->getStatus());
 
         $this->webserver->start(function () {
             echo "Server started";
@@ -61,6 +65,7 @@ final class TemplateContext implements Context
     public function cleanup()
     {
         if ($this->webserver->isStarted()) {
+            var_dump("Stopping webserver");
             $this->webserver->stop();
         }
     }
