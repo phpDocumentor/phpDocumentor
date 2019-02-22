@@ -110,7 +110,7 @@ services:
 
     phpDocumentor\Descriptor\Builder\AssemblerFactory:
       class: 'phpDocumentor\Descriptor\Builder\AssemblerFactory'
-      factory: ['phpDocumentor\Application\Builder\AssemblerFactory', 'createDefault']
+      factory: ['phpDocumentor\Descriptor\Builder\AssemblerFactory', 'createDefault']
 
     phpDocumentor\Descriptor\Filter\Filter:
        calls:
