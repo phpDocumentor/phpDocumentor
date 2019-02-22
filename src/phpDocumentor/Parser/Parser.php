@@ -17,8 +17,6 @@ namespace phpDocumentor\Parser;
 
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
-use phpDocumentor\Event\Dispatcher;
-use phpDocumentor\Event\LogEvent;
 use phpDocumentor\Parser\Exception\FilesNotFoundException;
 use phpDocumentor\Reflection\ProjectFactory;
 use Psr\Log\LoggerInterface;
@@ -76,7 +74,7 @@ class Parser
      *
      * @codeCoverageIgnore the ini_get call cannot be tested as setting it using ini_set has no effect.
      */
-    public function __construct(ProjectFactory $projectFactory, Stopwatch $stopwatch)
+    public function __construct(ProjectFactory $projectFactory, Stopwatch $stopwatch, LoggerInterface $logger)
     {
         $defaultEncoding = ini_get('zend.script_encoding');
         if ($defaultEncoding) {
@@ -85,6 +83,7 @@ class Parser
 
         $this->projectFactory = $projectFactory;
         $this->stopwatch = $stopwatch;
+        $this->logger = $logger;
     }
 
     /**
@@ -322,15 +321,7 @@ class Parser
      */
     private function log($message, $priority = LogLevel::INFO, $parameters = [])
     {
-        /** @var LogEvent $logEvent */
-        $logEvent = LogEvent::createInstance($this);
-        $logEvent->setContext($parameters);
-        $logEvent->setMessage($message);
-        $logEvent->setPriority($priority);
-        Dispatcher::getInstance()->dispatch(
-            'system.log',
-            $logEvent
-        );
+        $this->logger->log($priority, $message, $parameters);
     }
 
     private function startTimingTheParsePhase()

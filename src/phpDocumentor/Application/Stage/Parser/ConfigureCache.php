@@ -47,7 +47,7 @@ final class ConfigureCache
         }
         if (!file_exists($target)) {
             if (!mkdir($target, 0755, true) && !is_dir($target)) {
-                throw new RuntimeException('PPCPP:EXC-BADTARGET');
+                throw new RuntimeException('The provided target location must be a directory');
             }
         }
 

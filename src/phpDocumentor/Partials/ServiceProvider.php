@@ -56,7 +56,7 @@ class ServiceProvider implements ServiceProviderInterface
                 if (!$partial->getContent() && $partial->getLink()) {
                     if (! is_readable($partial->getLink())) {
                         $app['monolog']->error(
-                            sprintf($translator->translate('PPCPP:EXC-NOPARTIAL'), $partial->getLink())
+                            sprintf('Partial "%s" not readable or found.', $partial->getLink())
                         );
                         continue;
                     }

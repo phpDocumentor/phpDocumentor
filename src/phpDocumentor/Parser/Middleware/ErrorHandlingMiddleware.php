@@ -16,14 +16,20 @@ declare(strict_types=1);
 namespace phpDocumentor\Parser\Middleware;
 
 use Exception;
-use phpDocumentor\Event\Dispatcher;
-use phpDocumentor\Event\LogEvent;
 use phpDocumentor\Reflection\Middleware\Command;
 use phpDocumentor\Reflection\Middleware\Middleware;
+use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 
 final class ErrorHandlingMiddleware implements Middleware
 {
+    private $logger;
+
+    public function __construct(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
+    }
+
     /**
      * Executes this middle ware class.
      *
@@ -56,12 +62,6 @@ final class ErrorHandlingMiddleware implements Middleware
      */
     private function log($message, $priority = LogLevel::INFO, $parameters = [])
     {
-        Dispatcher::getInstance()->dispatch(
-            'system.log',
-            LogEvent::createInstance($this)
-                ->setContext($parameters)
-                ->setMessage($message)
-                ->setPriority($priority)
-        );
+        $this->logger->log($priority, $message, $parameters);
     }
 }

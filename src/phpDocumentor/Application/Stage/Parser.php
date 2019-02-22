@@ -22,9 +22,9 @@ use phpDocumentor\Descriptor\Collection as PartialsCollection;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\DomainModel\Parser\FileCollector;
-use phpDocumentor\Event\LogEvent;
 use phpDocumentor\Parser\Parser as DocParser;
 use phpDocumentor\Reflection\DocBlock\ExampleFinder;
+use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Zend\Cache\Storage\StorageInterface;
@@ -67,6 +67,8 @@ final class Parser
      */
     private $eventDispatcher;
 
+    private $logger;
+
     /**
      * ParseCommand constructor.
      */
@@ -77,7 +79,8 @@ final class Parser
         StorageInterface $cache,
         ExampleFinder $exampleFinder,
         PartialsCollection $partials,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        LoggerInterface $logger
     ) {
         $this->builder = $builder;
         $this->parser = $parser;
@@ -86,6 +89,7 @@ final class Parser
         $this->partials = $partials;
         $this->fileCollector = $fileCollector;
         $this->eventDispatcher = $eventDispatcher;
+        $this->logger = $logger;
     }
 
     private function getBuilder(): ProjectDescriptorBuilder
@@ -154,20 +158,17 @@ final class Parser
         $this->exampleFinder->setSourceDirectory(getcwd());
         $this->exampleFinder->setExampleDirectories(['.']);
 
-        $this->log('PPCPP:LOG-COLLECTING');
+        $this->log('Collecting files .. ');
         $files = $this->getFileCollection($apiConfig);
-        $this->log('PPCPP:LOG-OK');
-        $this->log('PPCPP:LOG-INITIALIZING');
-
-        $this->log('PPCPP:LOG-OK');
-        $this->log('PPCPP:LOG-PARSING');
+        $this->log('OK');
+        $this->log('Parsing files');
 
         $parser->parse($builder, $files);
 
-        $this->log('PPCPP:LOG-STORECACHE', LogLevel::INFO);
+        $this->log('Storing cache .. ', LogLevel::INFO);
         $projectDescriptor->getSettings()->clearModifiedFlag();
         $mapper->save($projectDescriptor);
-        $this->log('PPCPP:LOG-OK');
+        $this->log('OK');
 
         return $configuration;
     }
@@ -227,14 +228,6 @@ final class Parser
      */
     private function log(string $message, string $priority = LogLevel::INFO, array $parameters = []): void
     {
-        /** @var LogEvent $logEvent */
-        $logEvent = LogEvent::createInstance($this);
-        $logEvent->setContext($parameters);
-        $logEvent->setMessage($message);
-        $logEvent->setPriority($priority);
-        $this->eventDispatcher->dispatch(
-            'system.log',
-            $logEvent
-        );
+        $this->logger->log($priority, $message, $parameters);
     }
 }

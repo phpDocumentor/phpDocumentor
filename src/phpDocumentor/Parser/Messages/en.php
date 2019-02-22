@@ -45,14 +45,4 @@ HELP
     'PPCPP:OPT-SOURCECODE' => 'Whether to include syntax highlighted source code',
     'PPCPP:OPT-PROGRESSBAR' => 'Whether to show a progress bar; will automatically quiet logging to stdout',
     'PPCPP:OPT-PARSEPRIVATE' => 'Whether to parse DocBlocks marked with @internal tag',
-
-    // Log and exception messages
-    'PPCPP:LOG-COLLECTING' => 'Collecting files .. ',
-    'PPCPP:LOG-OK' => 'OK',
-    'PPCPP:LOG-INITIALIZING' => 'Initializing parser .. ',
-    'PPCPP:LOG-PARSING' => 'Parsing files',
-    'PPCPP:LOG-STORECACHE' => 'Storing cache in "%s" .. ',
-    'PPCPP:EXC-NOFILES' => 'No parsable files were found, did you specify any using the -f or -d parameter?',
-    'PPCPP:EXC-BADTARGET' => 'The provided target location must be a directory',
-    'PPCPP:EXC-NOPARTIAL' => 'Partial "%s" not readable or found.',
 ];

@@ -14,6 +14,7 @@ namespace phpDocumentor\Parser;
 
 use \Mockery as m;
 use phpDocumentor\Reflection\ProjectFactory;
+use Psr\Log\NullLogger;
 
 /**
  * Test class for \phpDocumentor\Parser\Parser.
@@ -33,7 +34,8 @@ class ParserTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         ini_set('zend.script_encoding', null);
         $this->fixture = new Parser(
             m::mock(ProjectFactory::class),
-            m::mock('Symfony\Component\Stopwatch\Stopwatch')
+            m::mock('Symfony\Component\Stopwatch\Stopwatch'),
+            new NullLogger()
         );
     }
 
@@ -45,7 +47,8 @@ class ParserTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         $parser = new Parser(
             m::mock(ProjectFactory::class),
-            m::mock('Symfony\Component\Stopwatch\Stopwatch')
+            m::mock('Symfony\Component\Stopwatch\Stopwatch'),
+            new NullLogger()
         );
         $this->assertEquals([], $parser->getIgnoredTags());
 
@@ -138,7 +141,8 @@ class ParserTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         $parser = new Parser(
             m::mock(ProjectFactory::class),
-            m::mock('Symfony\Component\Stopwatch\Stopwatch')
+            m::mock('Symfony\Component\Stopwatch\Stopwatch'),
+            new NullLogger()
         );
 
         $this->assertEquals('Default', $parser->getDefaultPackageName());
