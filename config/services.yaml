@@ -103,7 +103,7 @@ services:
         arguments: ['@phpDocumentor\Descriptor\ProjectDescriptorBuilder', '@phpdoc.command.run.pipeline']
 
     phpDocumentor\Application\Console\Command\Project\ParseCommand:
-        arguments: ['@phpdoc.command.parse.pipeline', '@phpDocumentor\Translator\Translator']
+        arguments: ['@phpdoc.command.parse.pipeline']
 
     phpDocumentor\Application\Console\Command\Project\TransformCommand:
         arguments: ['@phpdoc.command.transform.pipeline']
@@ -172,9 +172,6 @@ services:
       arguments:
         - "@=service('phpDocumentor\\\\Application').templateDirectory()"
 
-    phpDocumentor\Translator\Translator:
-      public: true
-
     phpDocumentor\Reflection\DocBlock\ExampleFinder: ~
 
     phpDocumentor\Infrastructure\JmsSerializer\FileCache:
@@ -231,11 +228,6 @@ services:
 
     markdown:
       alias: Parsedown
-      # used in a service provider so must be public
-      public: true
-
-    translator:
-      alias: phpDocumentor\Translator\Translator
       # used in a service provider so must be public
       public: true
 

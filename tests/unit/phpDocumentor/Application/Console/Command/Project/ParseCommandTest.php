@@ -21,7 +21,6 @@ use phpDocumentor\Parser\Parser;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Tests\Fixtures\DummyOutput;
 use Zend\Cache\Storage\Adapter\Memory;
-use Zend\I18n\Translator\Translator;
 
 /**
  * @coversDefaultClass phpDocumentor\Application\Console\Command\Project\ParseCommand
@@ -48,10 +47,6 @@ class ParseCommandTest extends MockeryTestCase
         $cache->shouldReceive('getOptions->getNamespace')->andReturn('PhpDoc\\Cache');
         $cache->shouldDeferMissing();
 
-        $translator = m::mock(Translator::class);
-        $translator->shouldReceive('translate')
-            ->zeroOrMoreTimes();
-
         $parser = m::mock(Parser::class);
         $parser->shouldReceive(
             'setForced',
@@ -68,10 +63,7 @@ class ParseCommandTest extends MockeryTestCase
         $projectDescriptorBuilder->shouldReceive('createProjectDescriptor', 'getProjectDescriptor')
             ->andReturn(new ProjectDescriptor('test'));
 
-        $command = new ParseCommand(
-            m::mock(PipelineInterface::class),
-            m::mock(\phpDocumentor\Translator\Translator::class)
-        );
+        $command = new ParseCommand(m::mock(PipelineInterface::class));
 
         $command->run($input, $output);
     }

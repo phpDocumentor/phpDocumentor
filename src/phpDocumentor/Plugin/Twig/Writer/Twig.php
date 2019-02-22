@@ -25,7 +25,6 @@ use phpDocumentor\Transformer\Router\Queue;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Writer\Routable;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
-use phpDocumentor\Translator\Translator;
 use Twig_Environment;
 use Twig_Extension_Debug;
 use Twig_Loader_Filesystem;
@@ -90,9 +89,6 @@ class Twig extends WriterAbstract implements Routable
 {
     /** @var Queue $routers */
     protected $routers;
-
-    /** @var Translator $translator */
-    protected $translator;
 
     /** @var Twig_Environment $twig */
     private $twig;
@@ -181,7 +177,6 @@ class Twig extends WriterAbstract implements Routable
             substr($destination, strlen($transformation->getTransformer()->getTarget()) + 1)
         );
         $base_extension->setRouters($this->routers);
-        $base_extension->setTranslator($this->translator);
         $twigEnvironment->addExtension($base_extension);
     }
 
@@ -326,10 +321,5 @@ class Twig extends WriterAbstract implements Routable
     public function setRouters(Queue $routers): void
     {
         $this->routers = $routers;
-    }
-
-    public function setTranslator($translator): void
-    {
-        $this->translator = $translator;
     }
 }

@@ -17,9 +17,7 @@ namespace phpDocumentor;
 
 use Cilex\Application as Cilex;
 use phpDocumentor\Event\Dispatcher;
-use phpDocumentor\Event\LogEvent;
 use phpDocumentor\Parser\Event\PreFileEvent;
-use phpDocumentor\Translator\Translator;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
@@ -53,7 +51,7 @@ class Application extends Cilex
     /**
      * Initializes all components used by phpDocumentor.
      */
-    public function __construct(LoggerInterface $logger, Translator $translator, ContainerInterface $container)
+    public function __construct(LoggerInterface $logger, ContainerInterface $container)
     {
         parent::__construct($container);
 
@@ -66,10 +64,6 @@ class Application extends Cilex
                 $logger->log(LogLevel::INFO, 'Parsing ' . $event->getFile());
             }
         );
-
-        Dispatcher::getInstance()->addListener('system.log', function (LogEvent $e) use ($logger, $translator) {
-            $logger->log($e->getPriority(), $translator->translate($e->getMessage()), $e->getContext());
-        });
 
         $this->container = $container;
     }

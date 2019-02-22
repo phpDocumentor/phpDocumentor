@@ -16,15 +16,11 @@ declare(strict_types=1);
 namespace phpDocumentor\Plugin\Twig;
 
 use phpDocumentor\Transformer\Writer\Collection;
-use phpDocumentor\Translator\Translator;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 
 /**
  * Provides a series of services that are necessary for Twig to work with phpDocumentor.
- *
- * This provider uses the translator component to fuel the twig writer and ands the to the twig writer to the writer
- * collection. This enables transformations to mention 'twig' as their writer attribute.
  *
  * @see Writer\Twig for more information on using this.
  */
@@ -37,13 +33,9 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function register(Container $app): void
     {
-        /** @var Translator $translator */
-        $translator = $app['translator'];
-
         /** @var Collection $writerCollection */
         $writerCollection = $app['transformer.writer.collection'];
         $twigWriter = new Writer\Twig($app[\Twig\Environment::class]);
-        $twigWriter->setTranslator($translator);
 
         $writerCollection['twig'] = $twigWriter;
     }

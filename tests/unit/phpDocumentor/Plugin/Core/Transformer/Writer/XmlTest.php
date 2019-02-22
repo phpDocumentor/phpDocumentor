@@ -19,7 +19,6 @@ use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Transformer\Router\RouterAbstract;
-use phpDocumentor\Translator\Translator;
 
 /**
  * Test class for \phpDocumentor\Plugin\Core\Transformer\Writer\Xml.
@@ -34,9 +33,6 @@ class XmlTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /** @var m\MockInterface|RouterAbstract */
     protected $routerMock;
 
-    /** @var m\MockInterface|Translator */
-    private $translator;
-
     /** @var m\MockInterface|ProjectDescriptor */
     protected $projectDescriptor;
 
@@ -49,11 +45,9 @@ class XmlTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     protected function setUp()
     {
         $this->fs = vfsStream::setup('XmlTest');
-        $this->translator = m::mock('phpDocumentor\Translator\Translator');
         $this->projectDescriptor = m::mock('phpDocumentor\Descriptor\ProjectDescriptor');
         $this->routerMock = m::mock('phpDocumentor\Transformer\Router\RouterAbstract');
         $this->xml = new Xml($this->routerMock);
-        $this->xml->setTranslator($this->translator);
     }
 
     /**

@@ -16,7 +16,6 @@ namespace phpDocumentor\Plugin\Core\Transformer\Writer;
 use Mockery as m;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
-use phpDocumentor\Translator\Translator;
 
 /**
  * Test class for \phpDocumentor\Plugin\Core\Transformer\Writer\Checkstyle.
@@ -30,9 +29,6 @@ class CheckStyleTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     protected $checkStyle;
 
-    /** @var Translator|m\MockInterface */
-    private $translator;
-
     /** @var vfsStreamDirectory */
     private $fs;
 
@@ -41,9 +37,7 @@ class CheckStyleTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     protected function setUp()
     {
-        $this->translator = m::mock('phpDocumentor\Translator\Translator');
         $this->checkStyle = new Checkstyle();
-        $this->checkStyle->setTranslator($this->translator);
         $this->fs = vfsStream::setup('CheckStyleTest');
     }
 
@@ -68,8 +62,6 @@ class CheckStyleTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $error->shouldReceive('getCode')->andReturn(5678);
         $error->shouldReceive('getSeverity')->andReturn('error');
         $error->shouldReceive('getContext')->andReturn('myContext');
-
-        $this->translator->shouldReceive('translate')->with('5678')->andReturn('5678 %s');
 
         // Call the actual method
         $this->checkStyle->transform($projectDescriptor, $transformer);

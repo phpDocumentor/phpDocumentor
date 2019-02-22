@@ -341,9 +341,6 @@
     "zendframework/zend-hydrator": {
         "version": "1.1.0"
     },
-    "zendframework/zend-i18n": {
-        "version": "2.7.4"
-    },
     "zendframework/zend-json": {
         "version": "3.1.0"
     },

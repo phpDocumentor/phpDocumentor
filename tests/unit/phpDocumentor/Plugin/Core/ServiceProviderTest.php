@@ -11,8 +11,7 @@
 
 namespace phpDocumentor\Plugin\Core;
 
-use \Mockery as m;
-use Cilex\Application;
+use Mockery as m;
 use phpDocumentor\Transformer\Router\Queue;
 
 /**
@@ -36,7 +35,6 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers phpDocumentor\Plugin\Core\ServiceProvider::registerWriters
      * @covers phpDocumentor\Plugin\Core\ServiceProvider::registerTranslationMessages
      * @covers phpDocumentor\Plugin\Core\ServiceProvider::registerDependenciesOnXsltExtension
-     * @covers phpDocumentor\Plugin\Core\ServiceProvider::getTranslator
      * @covers phpDocumentor\Plugin\Core\ServiceProvider::getWriterCollection
      */
     public function testRegister()
@@ -44,10 +42,7 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $mockCollection = $this->givenAWriterCollection();
         $mockLogger = $this->givenALogger();
         $mockApplication = $this->givenAnApplication($mockCollection, $mockLogger);
-        $mockTranslator = $this->givenATranslator($mockApplication);
         $mockDescriptorBuilder = $this->givenAProjectDescriptorBuilder($mockApplication);
-
-        $this->thenATranslationFolderIsAdded($mockTranslator);
 
         $this->thenWritersAreRegistered($mockCollection);
         $this->thenRouterIsSetOnXmlWriter($mockApplication);
@@ -88,21 +83,6 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     private function givenAWriterCollection()
     {
         return m::mock('phpDocumentor\Transformer\Writer\Collection');
-    }
-
-    /**
-     * Returns a mock of the Translator and instructs the Service Locator to return it.
-     *
-     * @param m\MockInterface $mockApplication
-     *
-     * @return m\MockInterface
-     */
-    private function givenATranslator($mockApplication)
-    {
-        $mockTranslator = m::mock('phpDocumentor\Translator\Translator');
-        $mockApplication->shouldReceive('offsetGet')->with('translator')->andReturn($mockTranslator);
-
-        return $mockTranslator;
     }
 
     /**
@@ -172,16 +152,6 @@ class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     private function givenALogger()
     {
         return m::mock('Monolog\Logger');
-    }
-
-    /**
-     * Instructs the translator to expect the 'Messages' folder to be set.
-     *
-     * @param m\MockInterface $mockTranslator
-     */
-    private function thenATranslationFolderIsAdded($mockTranslator)
-    {
-        $mockTranslator->shouldReceive('addTranslationFolder')->with(m::pattern('/Messages$/'))->once();
     }
 
     /**

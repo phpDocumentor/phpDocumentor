@@ -21,7 +21,6 @@ use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Transformer\Router\Queue;
 use phpDocumentor\Transformer\Router\Renderer;
 use phpDocumentor\Transformer\Transformation;
-use phpDocumentor\Translator\Translator;
 use Twig_Extension;
 use Twig_Extension_GlobalsInterface;
 use Twig_SimpleFilter;
@@ -55,9 +54,6 @@ class Extension extends Twig_Extension implements ExtensionInterface, Twig_Exten
      */
     protected $data;
 
-    /** @var Translator */
-    protected $translator;
-
     /** @var Renderer */
     protected $routeRenderer;
 
@@ -80,14 +76,6 @@ class Extension extends Twig_Extension implements ExtensionInterface, Twig_Exten
     public function setRouters(Queue $routers): void
     {
         $this->routeRenderer->setRouters($routers);
-    }
-
-    /**
-     * Sets the translation component.
-     */
-    public function setTranslator(Translator $translator): void
-    {
-        $this->translator = $translator;
     }
 
     /**
@@ -151,7 +139,6 @@ class Extension extends Twig_Extension implements ExtensionInterface, Twig_Exten
     public function getFilters(): array
     {
         $parser = Parsedown::instance();
-        $translator = $this->translator;
         $routeRenderer = $this->routeRenderer;
 
         return [
@@ -163,12 +150,8 @@ class Extension extends Twig_Extension implements ExtensionInterface, Twig_Exten
             ),
             'trans' => new Twig_SimpleFilter(
                 'trans',
-                function ($value, $context) use ($translator) {
-                    if (!$context) {
-                        $context = [];
-                    }
-
-                    return vsprintf($translator->translate($value), $context);
+                function ($value) {
+                    return $value;
                 }
             ),
             'route' => new Twig_SimpleFilter(

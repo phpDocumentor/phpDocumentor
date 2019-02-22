@@ -6,7 +6,6 @@ namespace phpDocumentor\Plugin\Twig;
 
 use phpDocumentor\Transformer\Router\Queue;
 use phpDocumentor\Transformer\Writer\Collection;
-use phpDocumentor\Translator\Translator;
 use Pimple\Container;
 use Symfony\Component\DependencyInjection\Container as SymfonyContainer;
 
@@ -23,7 +22,6 @@ final class ServiceProviderTest extends \PHPUnit\Framework\TestCase
         $this->container = new Container(new SymfonyContainer());
         $this->writerCollection = new Collection(new Queue());
 
-        $this->container['translator'] = new Translator();
         $this->container['transformer.writer.collection'] = $this->writerCollection;
         $this->container[\Twig\Environment::class] = new \Twig\Environment();
     }

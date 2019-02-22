@@ -46,20 +46,15 @@ use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\TraitConverter;
 use phpDocumentor\Transformer\Router\RouterAbstract;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Transformer;
-use phpDocumentor\Transformer\Writer\Translatable;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
-use phpDocumentor\Translator\Translator;
 
 /**
  * Converts the structural information of phpDocumentor into an XML file.
  */
-class Xml extends WriterAbstract implements Translatable
+class Xml extends WriterAbstract
 {
     /** @var \DOMDocument $xml */
     protected $xml;
-
-    /** @var Translator $translator */
-    protected $translator;
 
     protected $docBlockConverter;
 
@@ -92,24 +87,6 @@ class Xml extends WriterAbstract implements Translatable
             $this->methodConverter,
             $this->propertyConverter
         );
-    }
-
-    /**
-     * Returns an instance of the object responsible for translating content.
-     *
-     * @return Translator
-     */
-    public function getTranslator()
-    {
-        return $this->translator;
-    }
-
-    /**
-     * Sets a new object capable of translating strings on this writer.
-     */
-    public function setTranslator(Translator $translator)
-    {
-        $this->translator = $translator;
     }
 
     /**
@@ -254,9 +231,7 @@ class Xml extends WriterAbstract implements Translatable
         $marker_obj = new \DOMElement(strtolower($error->getSeverity()));
         $parse_errors->appendChild($marker_obj);
 
-        $message = ($this->getTranslator())
-            ? vsprintf($this->getTranslator()->translate($error->getCode()), $error->getContext())
-            : $error->getCode();
+        $message = vsprintf($error->getCode(), $error->getContext());
 
         $marker_obj->appendChild(new \DOMText($message));
         $marker_obj->setAttribute('line', $error->getLine());

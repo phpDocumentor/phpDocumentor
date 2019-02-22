@@ -20,9 +20,7 @@ use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
 use phpDocumentor\Descriptor\Filter\Filter;
 use phpDocumentor\Descriptor\Filter\Filterable;
 use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
-use phpDocumentor\Descriptor\Validator\Error;
 use phpDocumentor\Reflection\Php\Project;
-use phpDocumentor\Translator\Translator;
 use Psr\Log\LogLevel;
 
 /**
@@ -42,16 +40,12 @@ class ProjectDescriptorBuilder
     /** @var ProjectDescriptor $project */
     protected $project;
 
-    /** @var Translator $translator */
-    protected $translator;
-
     private $defaultPackage;
 
-    public function __construct(AssemblerFactory $assemblerFactory, Filter $filterManager, Translator $translator)
+    public function __construct(AssemblerFactory $assemblerFactory, Filter $filterManager)
     {
         $this->assemblerFactory = $assemblerFactory;
         $this->filter = $filterManager;
-        $this->translator = $translator;
     }
 
     public function createProjectDescriptor()
@@ -218,18 +212,7 @@ class ProjectDescriptorBuilder
      */
     protected function mapCodeToSeverity($code)
     {
-        if (is_int($code) && $this->translator->translate('VAL:ERRLVL-' . $code)) {
-            $severity = $this->translator->translate('VAL:ERRLVL-' . $code);
-        } else {
-            $severity = LogLevel::ERROR;
-        }
-
-        return $severity;
-    }
-
-    public function setTranslator(Translator $translator)
-    {
-        $this->translator = $translator;
+        return LogLevel::ERROR;
     }
 
     public function build(Project $project)

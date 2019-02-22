@@ -19,7 +19,6 @@ use Cilex\Application;
 use phpDocumentor\Plugin\Core\Transformer\Writer;
 use phpDocumentor\Transformer\Router\Queue;
 use phpDocumentor\Transformer\Writer\Collection;
-use phpDocumentor\Translator\Translator;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 
@@ -39,7 +38,6 @@ final class ServiceProvider implements ServiceProviderInterface
      */
     public function register(Container $app): void
     {
-        $this->registerTranslationMessages($app);
         $this->registerWriters($app);
         $this->registerDependenciesOnXsltExtension($app);
 
@@ -62,20 +60,10 @@ final class ServiceProvider implements ServiceProviderInterface
         $writerCollection['xsl'] = new Writer\Xsl($app['monolog']);
 
         $checkstyleWriter = new Writer\Checkstyle();
-        $checkstyleWriter->setTranslator($this->getTranslator($app));
         $writerCollection['checkstyle'] = $checkstyleWriter;
 
         $xmlWriter =  new Writer\Xml($app['transformer.routing.standard']);
-        $xmlWriter->setTranslator($this->getTranslator($app));
         $writerCollection['xml'] = $xmlWriter;
-    }
-
-    /**
-     * Registers the Messages folder in this plugin as a source of translations.
-     */
-    private function registerTranslationMessages(Application $app)
-    {
-        $this->getTranslator($app)->addTranslationFolder(__DIR__ . DIRECTORY_SEPARATOR . 'Messages');
     }
 
     /**
@@ -93,16 +81,6 @@ final class ServiceProvider implements ServiceProviderInterface
         $queue->insert($app['transformer.routing.standard'], 1);
         Xslt\Extension::$routers = $queue;
         Xslt\Extension::$descriptorBuilder = $app['descriptor.builder'];
-    }
-
-    /**
-     * Returns the Translator service from the Service Locator.
-     *
-     * @return Translator
-     */
-    private function getTranslator(Application $app)
-    {
-        return $app['translator'];
     }
 
     /**

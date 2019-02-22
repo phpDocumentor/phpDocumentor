@@ -17,38 +17,14 @@ namespace phpDocumentor\Plugin\Core\Transformer\Writer;
 
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\Descriptor\Validator\Error;
 use phpDocumentor\Transformer\Transformation;
-use phpDocumentor\Transformer\Writer\Translatable;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
-use phpDocumentor\Translator\Translator;
 
 /**
  * Checkstyle transformation writer; generates checkstyle report
  */
-class Checkstyle extends WriterAbstract implements Translatable
+class Checkstyle extends WriterAbstract
 {
-    /** @var Translator $translator */
-    protected $translator;
-
-    /**
-     * Returns an instance of the object responsible for translating content.
-     *
-     * @return Translator
-     */
-    public function getTranslator()
-    {
-        return $this->translator;
-    }
-
-    /**
-     * Sets a new object capable of translating strings on this writer.
-     */
-    public function setTranslator(Translator $translator)
-    {
-        $this->translator = $translator;
-    }
-
     /**
      * This method generates the checkstyle.xml report
      *
@@ -78,10 +54,7 @@ class Checkstyle extends WriterAbstract implements Translatable
                 $item = $document->createElement('error');
                 $item->setAttribute('line', (string) $error->getLine());
                 $item->setAttribute('severity', $error->getSeverity());
-                $item->setAttribute(
-                    'message',
-                    vsprintf($this->getTranslator()->translate($error->getCode()), $error->getContext())
-                );
+                $item->setAttribute('message', vsprintf($error->getCode(), $error->getContext()));
                 $item->setAttribute('source', 'phpDocumentor.file.' . $error->getCode());
                 $file->appendChild($item);
             }
