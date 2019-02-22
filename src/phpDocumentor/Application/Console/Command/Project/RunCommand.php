@@ -237,12 +237,6 @@ HELP
                 'Whether to include syntax highlighted source code'
             )
             ->addOption(
-                'progressbar',
-                'p',
-                InputOption::VALUE_NONE,
-                'Whether to show a progress bar; will automatically quiet logging to stdout'
-            )
-            ->addOption(
                 'template',
                 null,
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,

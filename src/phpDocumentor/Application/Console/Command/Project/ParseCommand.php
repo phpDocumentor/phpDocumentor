@@ -147,12 +147,6 @@ HELP
                 'Whether to include syntax highlighted source code'
             )
             ->addOption(
-                'progressbar',
-                'p',
-                InputOption::VALUE_NONE,
-                'Whether to show a progress bar; will automatically quiet logging to stdout'
-            )
-            ->addOption(
                 'parseprivate',
                 null,
                 InputOption::VALUE_NONE,

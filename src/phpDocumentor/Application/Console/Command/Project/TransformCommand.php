@@ -91,12 +91,6 @@ TEXT
             InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
             'Name of the template to use (optional)'
         );
-        $this->addOption(
-            'progressbar',
-            'p',
-            InputOption::VALUE_NONE,
-            'Whether to show a progress bar; will automatically quiet logging to stdout'
-        );
 
         parent::configure();
     }
