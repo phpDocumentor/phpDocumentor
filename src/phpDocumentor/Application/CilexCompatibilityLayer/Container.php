@@ -18,8 +18,8 @@ namespace Pimple;
 use ArrayAccess;
 use ArrayObject;
 use Closure;
-use phpDocumentor\Application\Console\Command\Command;
 use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 if (!class_exists(\Pimple\Container::class, false)) {

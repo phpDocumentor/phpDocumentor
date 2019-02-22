@@ -15,12 +15,12 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Plugin\Scrybe\Command\Manual;
 
-use phpDocumentor\Application\Console\Command\Command;
 use phpDocumentor\Plugin\Scrybe\Converter\ConverterInterface;
 use phpDocumentor\Plugin\Scrybe\Converter\Factory as ConverterFactory;
 use phpDocumentor\Plugin\Scrybe\Converter\Format;
 use phpDocumentor\Plugin\Scrybe\Template\Factory;
 use phpDocumentor\Plugin\Scrybe\Template\TemplateInterface;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
