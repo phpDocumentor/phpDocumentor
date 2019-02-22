@@ -12,15 +12,11 @@
 
 namespace phpDocumentor\Application\Console\Command\Project;
 
-use \Mockery as m;
 use League\Pipeline\PipelineInterface;
+use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
-use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
-use phpDocumentor\Parser\Parser;
-use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Tests\Fixtures\DummyOutput;
-use Zend\Cache\Storage\Adapter\Memory;
 
 /**
  * @coversDefaultClass phpDocumentor\Application\Console\Command\Project\ParseCommand
@@ -32,39 +28,21 @@ class ParseCommandTest extends MockeryTestCase
      * Tests the processing of target directory when non is provided.
      * @covers ::execute
      */
-    public function testDefaultTargetDirCreation()
+    public function testPipelineIsInvokedWithTheNecessaryOptions()
     {
-        $this->markTestIncomplete('Needs to be updated, to new command');
-        $input = new ArrayInput([]);
+        $input = new StringInput('--force -f abc');
         $output = new DummyOutput();
 
-        $cache = m::mock(Memory::class);
-        $cache->shouldReceive('getOptions->setCacheDir')->with(m::type('string'));
-        $cache->shouldReceive('getOptions->getCacheDir')->andReturn(sys_get_temp_dir());
-        $cache->shouldReceive('getOptions->getReadable')->andReturn(true);
-        $cache->shouldReceive('getOptions->getWritable')->andReturn(true);
-        $cache->shouldReceive('getOptions->getKeyPattern')->andReturn('/.+/');
-        $cache->shouldReceive('getOptions->getNamespace')->andReturn('PhpDoc\\Cache');
-        $cache->shouldDeferMissing();
+        $pipeline = m::mock(PipelineInterface::class);
+        $pipeline
+            ->shouldReceive('__invoke')
+            ->withArgs(function(array $options){
+                return $options['force'] === true && $options['filename'] === ['abc'];
+            })
+            ->once();
 
-        $parser = m::mock(Parser::class);
-        $parser->shouldReceive(
-            'setForced',
-            'setEncoding',
-            'setMarkers',
-            'setIgnoredTags',
-            'setValidate',
-            'setDefaultPackageName',
-            'setPath',
-            'parse'
-        );
+        $command = new ParseCommand($pipeline);
 
-        $projectDescriptorBuilder = m::mock(ProjectDescriptorBuilder::class);
-        $projectDescriptorBuilder->shouldReceive('createProjectDescriptor', 'getProjectDescriptor')
-            ->andReturn(new ProjectDescriptor('test'));
-
-        $command = new ParseCommand(m::mock(PipelineInterface::class));
-
-        $command->run($input, $output);
+        $this->assertSame(0, $command->run($input, $output));
     }
 }
