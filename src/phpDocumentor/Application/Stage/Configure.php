@@ -70,12 +70,7 @@ final class Configure
                     $this->configFactory->fromUri(new Uri($uri))->getArrayCopy()
                 );
             } else {
-                $this->logger->info(
-                    sprintf(
-                        'Not using any configuration file, relying on application defaults',
-                        $path
-                    )
-                );
+                $this->logger->info('Not using any configuration file, relying on application defaults');
             }
         } else {
             $this->logger->info('Using the configuration file at the default location');
