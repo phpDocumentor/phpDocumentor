@@ -30,6 +30,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  * ```
  * $ php phpDocumentor.phar phar:update [-m|--major] [-p|--pre] [version]
  * ```
+ *
+ * @codeCoverageIgnore file should be refactored first before it is testable and not high on prio listing
  */
 class UpdateCommand extends Command
 {
