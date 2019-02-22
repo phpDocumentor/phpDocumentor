@@ -61,7 +61,7 @@ class Application extends Cilex
         Dispatcher::getInstance()->addListener(
             'parser.file.pre',
             function (PreFileEvent $event) use ($logger) {
-                $logger->log(LogLevel::INFO, 'Parsing ' . $event->getFile());
+                $logger->log(LogLevel::NOTICE, 'Parsing ' . $event->getFile());
             }
         );
 

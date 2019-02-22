@@ -65,15 +65,15 @@ final class Configure
                     );
                 }
 
-                $this->logger->info(sprintf('Using the configuration file at: %s', $path));
+                $this->logger->notice(sprintf('Using the configuration file at: %s', $path));
                 $this->configuration->exchangeArray(
                     $this->configFactory->fromUri(new Uri($uri))->getArrayCopy()
                 );
             } else {
-                $this->logger->info('Not using any configuration file, relying on application defaults');
+                $this->logger->notice('Not using any configuration file, relying on application defaults');
             }
         } else {
-            $this->logger->info('Using the configuration file at the default location');
+            $this->logger->notice('Using the configuration file at the default location');
             $this->configuration->exchangeArray(
                 $this->configFactory->fromDefaultLocations()->getArrayCopy()
             );

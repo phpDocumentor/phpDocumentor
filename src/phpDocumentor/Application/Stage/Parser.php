@@ -161,11 +161,11 @@ final class Parser
         $this->log('Collecting files .. ');
         $files = $this->getFileCollection($apiConfig);
         $this->log('OK');
-        $this->log('Parsing files');
+        $this->log('Parsing files', LogLevel::NOTICE);
 
         $parser->parse($builder, $files);
 
-        $this->log('Storing cache .. ', LogLevel::INFO);
+        $this->log('Storing cache .. ', LogLevel::NOTICE);
         $projectDescriptor->getSettings()->clearModifiedFlag();
         $mapper->save($projectDescriptor);
         $this->log('OK');

@@ -39,7 +39,7 @@ final class ErrorHandlingMiddleware implements Middleware
     public function execute(Command $command, callable $next)
     {
         $filename = $command->getFile()->path();
-        $this->log('Starting to parse file: ' . $filename);
+        $this->log('Starting to parse file: ' . $filename, LogLevel::INFO);
 
         try {
             return $next($command);

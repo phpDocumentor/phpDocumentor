@@ -143,7 +143,7 @@ class Transformer implements CompilerPassInterface
 
         Dispatcher::getInstance()->dispatch(self::EVENT_POST_TRANSFORM, PostTransformEvent::createInstance($this));
 
-        $this->logger->log(LogLevel::INFO, 'Finished transformation process');
+        $this->logger->log(LogLevel::NOTICE, 'Finished transformation process');
     }
 
     /**
@@ -268,7 +268,7 @@ class Transformer implements CompilerPassInterface
     private function applyTransformationToProject(Transformation $transformation, ProjectDescriptor $project): void
     {
         $this->logger->log(
-            LogLevel::INFO,
+            LogLevel::NOTICE,
             sprintf(
                 '  Writer %s %s on %s',
                 $transformation->getWriter(),

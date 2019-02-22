@@ -268,9 +268,6 @@ class Parser
 
         $this->forceRebuildIfSettingsHaveModified($builder);
 
-//        $this->log('  Project root is:  ' . $files->getProjectRoot());
-//        $this->log('  Ignore paths are: ' . implode(', ', $files->getIgnorePatterns()->getArrayCopy()));
-
         /** @var \phpDocumentor\Reflection\Php\Project $project */
         $project = $this->projectFactory->create(ProjectDescriptorBuilder::DEFAULT_PROJECT_NAME, $files);
         $this->logAfterParsingAllFiles();
@@ -293,7 +290,10 @@ class Parser
     {
         if ($builder->getProjectDescriptor()->getSettings()->isModified()) {
             $this->setForced(true);
-            $this->log('One of the project\'s settings have changed, forcing a complete rebuild');
+            $this->log(
+                'One of the project\'s settings have changed, forcing a complete rebuild',
+                LogLevel::NOTICE
+            );
         }
     }
 
