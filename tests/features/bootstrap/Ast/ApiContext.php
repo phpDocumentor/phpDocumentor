@@ -245,7 +245,13 @@ class ApiContext extends BaseContext implements Context
         $class = $this->findClassByFqsen($classFqsen);
         /** @var MethodDescriptor $method */
         $method = $class->getMethods()->get($methodName, null);
-        Assert::isInstanceOf($method, MethodDescriptor::class);
+        $methodNames = implode(', ', array_keys($class->getMethods()->getAll()));
+
+        Assert::isInstanceOf(
+            $method,
+            MethodDescriptor::class,
+            "Class $classFqsen does not have a method $methodName, it does have the methods: $methodNames"
+        );
         Assert::eq($methodName, $method->getName());
     }
 

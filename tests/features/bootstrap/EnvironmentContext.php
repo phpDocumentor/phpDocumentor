@@ -152,7 +152,8 @@ final class EnvironmentContext implements Context\Context
         if ($this->process->isStarted()) {
             $this->process->clearErrorOutput()->clearOutput();
         }
-//      the app is always run in debug mode to catch debug information and collect the AST that is written to disk
+
+        // the app is always run in debug mode to catch debug information and collect the AST that is written to disk
         $this->process->setCommandLine(
             sprintf('%s %s %s', 'php', escapeshellarg($this->binaryPath), $argumentsString . ' -vvv')
         );
