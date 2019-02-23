@@ -228,11 +228,10 @@ class ApiContext extends BaseContext implements Context
         /** @var MethodDescriptor $method */
         $method = $class->getMethods()->get($methodName);
         Assert::keyExists($method->getArguments()->getAll(), $argument);
+
         /** @var ArgumentDescriptor $argumentD */
         $argumentD = $method->getArguments()[$argument];
-
-        //TODO: enable this check when we support variadic arguments.
-        //Assert::true($argumentD->isVariadic(), 'Expected argument to be variadic');
+        Assert::true($argumentD->isVariadic(), 'Expected argument to be variadic');
     }
 
     /**
@@ -247,10 +246,12 @@ class ApiContext extends BaseContext implements Context
         $method = $class->getMethods()->get($methodName, null);
         $methodNames = implode(', ', array_keys($class->getMethods()->getAll()));
 
+        $visibilityLevel = $this->getAst()->getSettings()->getVisibility();
         Assert::isInstanceOf(
             $method,
             MethodDescriptor::class,
-            "Class $classFqsen does not have a method $methodName, it does have the methods: $methodNames"
+            "Class $classFqsen does not have a method $methodName, it does have the methods: $methodNames "
+            . "(visibility level: $visibilityLevel})"
         );
         Assert::eq($methodName, $method->getName());
     }
