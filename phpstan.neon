@@ -1,9 +1,14 @@
 parameters:
   ignoreErrors:
     - '#Constructor of class phpDocumentor\\Plugin\\Twig\\Extension has an unused parameter \$transformation#'
-    - '#Call to an undefined method League\\Flysystem\\Filesystem::find()#'
+    - '#Call to an undefined method League\\Flysystem\\FilesystemInterface::find()#'
+    # legacy cache
     - '#Call to an undefined method Zend\\Cache\\Storage\\Adapter\\AdapterOptions::setCacheDir()#'
+    - '#Argument of an invalid type Zend\\Cache\\Storage\\StorageInterface supplied for foreach, only iterables are supported.#'
+    # Bad design of descriptors.
     - '#Access to an undefined property phpDocumentor\\Descriptor\\Collection::\$[a-z]+#'
+    - '#Argument of an invalid type phpDocumentor\\Transformer\\Template\\Parameter supplied for foreach, only iterables are supported.#'
+    - '#Method phpDocumentor\\Descriptor\\MethodDescriptor::getInheritedElement() should return phpDocumentor\\Descriptor\\MethodDescriptor|null but returns phpDocumentor\\Descriptor\\DescriptorAbstract.#'
   excludes_analyse:
    #test data
     - %currentWorkingDirectory%/tests/features/**/*.php
