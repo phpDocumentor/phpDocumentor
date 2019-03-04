@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Descriptor\Builder\AssemblerFactory;
+use phpDocumentor\Descriptor\Builder\AssemblerInterface;
 use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
 use phpDocumentor\Descriptor\Filter\Filter;
 use phpDocumentor\Descriptor\Filter\Filterable;
@@ -140,7 +141,7 @@ class ProjectDescriptorBuilder
      *
      * @param mixed $data
      *
-     * @return AssemblerAbstract
+     * @return AssemblerInterface|null
      */
     public function getAssembler($data)
     {
@@ -184,11 +185,11 @@ class ProjectDescriptorBuilder
      * Filters a descriptor, validates it, stores the validation results and returns the transmuted object or null
      * if it is supposed to be removed.
      *
-     * @param DescriptorAbstract $descriptor
+     * @param Descriptor $descriptor
      *
-     * @return DescriptorAbstract|null
+     * @return Descriptor|null
      */
-    protected function filterDescriptor($descriptor)
+    protected function filterDescriptor(Descriptor $descriptor)
     {
         if (!$descriptor instanceof Filterable) {
             return $descriptor;

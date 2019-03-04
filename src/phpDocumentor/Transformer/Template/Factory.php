@@ -15,7 +15,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Template;
 
-use JMS\Serializer\Serializer;
 use JMS\Serializer\SerializerInterface;
 use phpDocumentor\Transformer\Template;
 
@@ -23,7 +22,7 @@ class Factory
 {
     const TEMPLATE_DEFINITION_FILENAME = 'template.xml';
 
-    /** @var Serializer */
+    /** @var SerializerInterface */
     private $serializer;
 
     /** @var PathResolver */

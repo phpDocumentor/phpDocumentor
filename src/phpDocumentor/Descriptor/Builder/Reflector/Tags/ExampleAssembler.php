@@ -29,7 +29,7 @@ use Webmozart\Assert\Assert;
  */
 class ExampleAssembler extends AssemblerAbstract
 {
-    /** @var Finder */
+    /** @var ExampleFinder */
     private $finder;
 
     /**

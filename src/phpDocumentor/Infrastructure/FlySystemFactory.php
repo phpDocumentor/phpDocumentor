@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Infrastructure;
 
+use League\Flysystem\FilesystemInterface;
 use \LogicException;
 use Flyfinder\Finder;
 use League\Flysystem\Adapter\Local;
@@ -38,7 +39,7 @@ final class FlySystemFactory implements FileSystemFactory
     /**
      * Returns a Filesystem instance based on the scheme of the provided Dsn
      *
-     * @return Filesystem
+     * @return FilesystemInterface
      */
     public function create(Dsn $dsn)
     {

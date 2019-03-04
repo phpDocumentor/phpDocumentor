@@ -136,9 +136,9 @@ class Renderer
      *
      * @param string $relative_path
      *
-     * @return string
+     * @return string|null
      */
-    public function convertToRootPath($relative_path)
+    public function convertToRootPath($relative_path): ?string
     {
         // get the path to the root directory
         $path_parts = explode(DIRECTORY_SEPARATOR, $this->getDestination());
@@ -169,7 +169,7 @@ class Renderer
      *
      * @return string[]
      */
-    protected function renderASeriesOfLinks($value, $presentation)
+    protected function renderASeriesOfLinks($value, $presentation): array
     {
         if ($value instanceof Collection) {
             $value = $value->getAll();
@@ -244,7 +244,7 @@ class Renderer
         return $url ? sprintf('<a href="%s">%s</a>', $url, $path) : $path;
     }
 
-    private function renderType($value, string $presentation)
+    private function renderType($value, string $presentation): array
     {
         $result = [];
         foreach ($value as $type) {

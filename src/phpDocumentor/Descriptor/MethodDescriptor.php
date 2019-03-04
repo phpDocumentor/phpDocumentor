@@ -268,6 +268,7 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
             $parents = $parentClass instanceof ClassDescriptor ? [$parentClass] : $parentClass->getAll();
             foreach ($parents as $parent) {
                 if ($parent instanceof ClassDescriptor || $parent instanceof InterfaceDescriptor) {
+                    /** @var MethodDescriptor $parentMethod */
                     $parentMethod = $parent->getMethods()->get($this->getName());
                     if ($parentMethod) {
                         $this->inheritedElement = $parentMethod;
@@ -286,6 +287,7 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
                     continue;
                 }
 
+                /** @var MethodDescriptor $parentMethod */
                 $parentMethod = $interface->getMethods()->get($this->getName());
                 if ($parentMethod) {
                     $this->inheritedElement = $parentMethod;

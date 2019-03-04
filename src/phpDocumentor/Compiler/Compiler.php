@@ -25,8 +25,9 @@ class Compiler extends SplPriorityQueue
     /** @var integer Default priority assigned to Compiler Passes without provided priority */
     const PRIORITY_DEFAULT = 10000;
 
-    public function insert($value, $priority = self::PRIORITY_DEFAULT): void
+    public function insert($value, $priority = self::PRIORITY_DEFAULT): bool
     {
-        parent::insert($value, $priority);
+        /** @noinspection PhpStrictTypeCheckingInspection phpstorm stubs are incorrect here. */
+        return parent::insert($value, $priority);
     }
 }

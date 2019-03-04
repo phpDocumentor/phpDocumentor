@@ -107,7 +107,7 @@ class Transformation
      *
      * @param string $writer Name of writer to instantiate.
      */
-    public function setWriter($writer)
+    public function setWriter(string $writer): void
     {
         $this->writer = $writer;
     }
@@ -115,9 +115,9 @@ class Transformation
     /**
      * Returns an instantiated writer object.
      *
-     * @return Writer\WriterAbstract|null
+     * @return string
      */
-    public function getWriter()
+    public function getWriter(): string
     {
         return $this->writer;
     }
@@ -253,9 +253,9 @@ class Transformation
      *
      * @param string $name Name of the parameter to return.
      *
-     * @return Parameter
+     * @return Parameter|null
      */
-    public function getParameter($name)
+    public function getParameter($name): ?Parameter
     {
         /** @var Parameter $parameter */
         foreach ($this->parameters as $parameter) {

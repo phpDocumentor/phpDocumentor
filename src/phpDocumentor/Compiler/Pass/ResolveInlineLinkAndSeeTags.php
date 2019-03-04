@@ -99,7 +99,7 @@ class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
      * Resolves an individual tag, indicated by the results of the Regex used to extract tags.
      *
      * @param string[] $match
-     * @return Fqsen|string
+     * @return string|string[]
      */
     private function resolveTag(array $match)
     {
@@ -118,7 +118,7 @@ class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
         $link = $this->resolveQsen($link);
         $element = $this->findElement($link);
         if (!$element) {
-            return $link;
+            return (string) $link;
         }
 
         return $this->resolveElement($element, $link, $description);

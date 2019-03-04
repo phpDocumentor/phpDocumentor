@@ -18,10 +18,10 @@ namespace phpDocumentor;
 use Cilex\Application as Cilex;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Parser\Event\PreFileEvent;
-use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use RuntimeException;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Application class for phpDocumentor.

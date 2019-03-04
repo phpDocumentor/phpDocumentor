@@ -27,7 +27,7 @@ class Pathfinder
      * @param object $object
      * @param string $query
      *
-     * @return \Traversable|mixed[]
+     * @return \Traversable|array
      */
     public function find($object, $query)
     {

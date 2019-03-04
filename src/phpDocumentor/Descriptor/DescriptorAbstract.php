@@ -20,7 +20,7 @@ use phpDocumentor\Descriptor\Filter\Filterable;
 /**
  * Base class for descriptors containing the most used options.
  */
-abstract class DescriptorAbstract implements Filterable
+abstract class DescriptorAbstract implements Descriptor, Filterable
 {
     /**
      * @var string Fully Qualified Structural Element Name; the FQCN including method, property of constant name
@@ -33,8 +33,8 @@ abstract class DescriptorAbstract implements Filterable
     /** @var NamespaceDescriptor|string $namespace The namespace for this element */
     protected $namespace = '';
 
-    /** @var string $package The package with which this element is associated */
-    protected $package = '';
+    /** @var PackageDescriptor $package The package with which this element is associated */
+    protected $package;
 
     /** @var string $summary A summary describing the function of this element in short. */
     protected $summary = '';
@@ -284,7 +284,7 @@ abstract class DescriptorAbstract implements Filterable
     /**
      * Returns the package name for this element.
      *
-     * @return PackageDescriptor
+     * @return PackageDescriptor|null
      */
     public function getPackage()
     {

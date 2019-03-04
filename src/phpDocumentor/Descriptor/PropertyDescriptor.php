@@ -26,8 +26,8 @@ class PropertyDescriptor extends DescriptorAbstract implements Interfaces\Proper
     /** @var ClassDescriptor|TraitDescriptor $parent */
     protected $parent;
 
-    /** @var string[]|null $types */
-    protected $types;
+    /** @var Type $type */
+    protected $type;
 
     /** @var string $default */
     protected $default;
@@ -93,9 +93,9 @@ class PropertyDescriptor extends DescriptorAbstract implements Interfaces\Proper
     /**
      * {@inheritDoc}
      */
-    public function setTypes(Type $types)
+    public function setType(Type $type)
     {
-        $this->types = $types;
+        $this->type = $type;
     }
 
     /**
@@ -103,12 +103,12 @@ class PropertyDescriptor extends DescriptorAbstract implements Interfaces\Proper
      */
     public function getTypes()
     {
-        return [$this->getType()];
+        return [(string)$this->getType()];
     }
 
     public function getType()
     {
-        if ($this->types === null) {
+        if ($this->type === null) {
             /** @var VarDescriptor $var */
             $var = $this->getVar()->getIterator()->current();
             if ($var) {
@@ -116,7 +116,7 @@ class PropertyDescriptor extends DescriptorAbstract implements Interfaces\Proper
             }
         }
 
-        return $this->types;
+        return $this->type;
     }
 
     /**

@@ -20,8 +20,22 @@ use phpDocumentor\Descriptor\Collection;
 /**
  * Represents the public interface for an interface descriptor.
  */
-interface InterfaceInterface extends ElementInterface, ChildInterface, TypeInterface
+interface InterfaceInterface extends ElementInterface, TypeInterface
 {
+    /**
+     * Returns the parent for this descriptor.
+     *
+     * @return Collection
+     */
+    public function getParent();
+
+    /**
+     * Sets the parent for this Descriptor.
+     *
+     * @param Collection $parent
+     */
+    public function setParent($parent);
+
     /**
      * Sets the constants associated with this interface.
      */

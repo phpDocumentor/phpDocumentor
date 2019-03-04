@@ -71,10 +71,10 @@ use phpDocumentor\Reflection\Php\Trait_;
  */
 class AssemblerFactory
 {
-    /** @var AssemblerInterface[] */
+    /** @var AssemblerMatcher[] */
     protected $assemblers = [];
 
-    /** @var AssemblerInterface[] */
+    /** @var AssemblerMatcher[] */
     protected $fallbackAssemblers = [];
 
     /**
@@ -87,10 +87,7 @@ class AssemblerFactory
      */
     public function register(callable $matcher, AssemblerInterface $assembler): void
     {
-        $this->assemblers[] = [
-            'matcher' => $matcher,
-            'assembler' => $assembler,
-        ];
+        $this->assemblers[] = new AssemblerMatcher($matcher, $assembler);
     }
 
     /**
@@ -104,10 +101,7 @@ class AssemblerFactory
      */
     public function registerFallback(callable $matcher, AssemblerInterface $assembler): void
     {
-        $this->fallbackAssemblers[] = [
-            'matcher' => $matcher,
-            'assembler' => $assembler,
-        ];
+        $this->fallbackAssemblers[] = new AssemblerMatcher($matcher, $assembler);
     }
 
     /**
@@ -119,10 +113,10 @@ class AssemblerFactory
      */
     public function get($criteria)
     {
+        /** @var AssemblerMatcher $candidate */
         foreach (array_merge($this->assemblers, $this->fallbackAssemblers) as $candidate) {
-            $matcher = $candidate['matcher'];
-            if ($matcher($criteria) === true) {
-                return $candidate['assembler'];
+            if ($candidate->match($criteria) === true) {
+                return $candidate->getAssembler();
             }
         }
 
