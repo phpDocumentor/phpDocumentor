@@ -88,7 +88,8 @@ class AutoloaderLocatorTest extends TestCase
         $baseDir = vfsStream::url('root/dummy/src/phpDocumentor');
         self::assertSame(
             'vfs://root/dummy/src/phpDocumentor/../../vendor',
-            AutoloaderLocator::findVendorPath($baseDir));
+            AutoloaderLocator::findVendorPath($baseDir)
+        );
     }
 
     public function testAutoloadComposerInstalled()
@@ -97,19 +98,21 @@ class AutoloaderLocatorTest extends TestCase
         vfsStream::newFile('composer.json')->at($root->getChild('dummy'));
         $baseDir = vfsStream::url('root/dummy/vendor/phpDocumentor/phpDocumentor/src/phpDocumentor');
         $this->assertSame(
-            'vfs://root/dummy/vendor/phpDocumentor/phpDocumentor/src/phpDocumentor/../../../../../vendor'
-            , AutoloaderLocator::findVendorPath($baseDir)
+            'vfs://root/dummy/vendor/phpDocumentor/phpDocumentor/src/phpDocumentor/../../../../../vendor',
+            AutoloaderLocator::findVendorPath($baseDir)
         );
     }
 
     public function testAutoloadComposerInstalledCustomVendor()
     {
         $root = vfsStream::setup('root', null, $this->customVendorDir);
-        vfsStream::newFile('composer.json')->withContent($this->customVendorDirComposer)->at($root->getChild('dummy'));
+        vfsStream::newFile('composer.json')
+            ->withContent($this->customVendorDirComposer)
+            ->at($root->getChild('dummy'));
         $baseDir = vfsStream::url('root/dummy/custom-vendor/phpDocumentor/phpDocumentor/src/phpDocumentor');
         $this->assertSame(
-            'vfs://root/dummy/custom-vendor/phpDocumentor/phpDocumentor/src/phpDocumentor/../../../../../custom-vendor'
-            , AutoloaderLocator::findVendorPath($baseDir)
+            'vfs://root/dummy/custom-vendor/phpDocumentor/phpDocumentor/src/phpDocumentor/../../../../../custom-vendor',
+            AutoloaderLocator::findVendorPath($baseDir)
         );
     }
 }

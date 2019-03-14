@@ -41,7 +41,9 @@ final class ProjectDescriptorMapper
     public function __construct(StorageInterface $cache)
     {
         if (!$cache instanceof IterableInterface) {
-            throw new InvalidArgumentException('ProjectDescriptorMapper should also be an iterable Storage type');
+            throw new InvalidArgumentException(
+                'ProjectDescriptorMapper should also be an iterable Storage type'
+            );
         }
 
         $this->cache = $cache;
@@ -117,7 +119,9 @@ final class ProjectDescriptorMapper
 //        }
 //
 //        foreach ($this->getCache() as $item) {
-//            if (substr($item, 0, strlen(self::FILE_PREFIX)) === self::FILE_PREFIX && !in_array($item, $filenames, true)) {
+//            if (substr($item, 0, strlen(self::FILE_PREFIX)) === self::FILE_PREFIX &&
+//                  !in_array($item, $filenames, true)
+//            ) {
 //                $this->getCache()->removeItem($item);
 //            }
 //        }

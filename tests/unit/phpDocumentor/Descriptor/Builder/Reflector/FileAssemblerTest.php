@@ -52,16 +52,15 @@ class FileAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $filename = 'file.php';
         $content = '<?php ... ?>';
         $hash = md5($content);
-        $defaultPackageName = 'Package';
 
         $abstractDescriptor = m::mock('phpDocumentor\Descriptor\DescriptorAbstract');
         $abstractDescriptor->shouldReceive('getLineNumber')->andReturn(1337);
 
         $docBlockDescription = new DocBlock\Description(
-<<<DOCBLOCK
-/**
- * This is a example description
- */
+            <<<DOCBLOCK
+            /**
+             * This is a example description
+             */
 DOCBLOCK
         );
 
@@ -112,14 +111,19 @@ DOCBLOCK
     protected function getProjectDescriptorBuilderMock()
     {
         $projectDescriptorBuilderMock = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
-        $projectDescriptorBuilderMock->shouldReceive('getDefaultPackage')->andReturn($this->defaultPackage);
+        $projectDescriptorBuilderMock->shouldReceive('getDefaultPackage')
+            ->andReturn($this->defaultPackage);
 
-        $projectDescriptorBuilderMock->shouldReceive('getProjectDescriptor->getSettings->shouldIncludeSource')->andReturn(true);
+        $projectDescriptorBuilderMock->shouldReceive(
+            'getProjectDescriptor->getSettings->shouldIncludeSource'
+        )->andReturn(true);
         $projectDescriptorBuilderMock->shouldReceive('buildDescriptor')->andReturnUsing(function ($param) {
             $mock = m::mock('phpDocumentor\Descriptor\DescriptorAbstract');
             $mock->shouldReceive('setLocation')->atLeast()->once();
             $mock->shouldReceive('getTags')->atLeast()->once()->andReturn(new Collection());
-            $mock->shouldReceive('getFullyQualifiedStructuralElementName')->once()->andReturn('Frank_is_een_eindbaas');
+            $mock->shouldReceive('getFullyQualifiedStructuralElementName')
+                ->once()
+                ->andReturn('Frank_is_een_eindbaas');
 
             return $mock;
         });

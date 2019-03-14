@@ -81,7 +81,12 @@ class InterfaceConverter
         $child->setAttribute('line', (string) $interface->getLine());
 
         $child->appendChild(new \DOMElement('name', $interface->getName()));
-        $child->appendChild(new \DOMElement('full_name', (string) $interface->getFullyQualifiedStructuralElementName()));
+        $child->appendChild(
+            new \DOMElement(
+                'full_name',
+                (string) $interface->getFullyQualifiedStructuralElementName()
+            )
+        );
 
         $this->docBlockConverter->convert($child, $interface);
 

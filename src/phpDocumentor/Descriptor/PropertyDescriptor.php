@@ -21,7 +21,9 @@ use phpDocumentor\Reflection\Type;
 /**
  * Descriptor representing a property.
  */
-class PropertyDescriptor extends DescriptorAbstract implements Interfaces\PropertyInterface, Interfaces\VisibilityInterface
+class PropertyDescriptor extends DescriptorAbstract implements
+    Interfaces\PropertyInterface,
+    Interfaces\VisibilityInterface
 {
     /** @var ClassDescriptor|TraitDescriptor $parent */
     protected $parent;

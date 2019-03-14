@@ -16,7 +16,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Class DsnTest
- * @coversDefaultClass phpDocumentor\DomainModel\Dsn
+ * @coversDefaultClass \phpDocumentor\DomainModel\Dsn
  */
 class DsnTest extends TestCase
 {
@@ -130,11 +130,17 @@ class DsnTest extends TestCase
         $dsn = 'C:\\phpdocumentor\\tests\\unit\\phpDocumentor\\Infrastructure\\Parser';
         $fixture = new Dsn($dsn);
 
-        $this->assertEquals('file://C:\\phpdocumentor\\tests\\unit\\phpDocumentor\\Infrastructure\\Parser', (string) $fixture);
+        $this->assertEquals(
+            'file://C:\\phpdocumentor\\tests\\unit\\phpDocumentor\\Infrastructure\\Parser',
+            (string) $fixture
+        );
         $this->assertEquals('file', $fixture->getScheme());
         $this->assertEquals(null, $fixture->getHost());
         $this->assertEquals(0, $fixture->getPort());
-        $this->assertEquals('C:\\phpdocumentor\\tests\\unit\\phpDocumentor\\Infrastructure\\Parser', $fixture->getPath());
+        $this->assertEquals(
+            'C:\\phpdocumentor\\tests\\unit\\phpDocumentor\\Infrastructure\\Parser',
+            $fixture->getPath()
+        );
     }
 
     /**

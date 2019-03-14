@@ -50,7 +50,10 @@ class MethodAssembler extends AssemblerAbstract
 
         foreach ($data->getArguments() as $argument) {
             if (array_key_exists('name', $argument) && array_key_exists('type', $argument)) {
-                $argumentDescriptor = $this->createArgumentDescriptorForMagicMethod($argument['name'], $argument['type']);
+                $argumentDescriptor = $this->createArgumentDescriptorForMagicMethod(
+                    $argument['name'],
+                    $argument['type']
+                );
                 $descriptor->getArguments()->set($argumentDescriptor->getName(), $argumentDescriptor);
             }
         }

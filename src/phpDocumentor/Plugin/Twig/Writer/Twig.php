@@ -133,8 +133,11 @@ class Twig extends WriterAbstract implements Routable
     /**
      * Initializes the Twig environment with the template, base extension and additionally defined extensions.
      */
-    protected function initializeEnvironment(ProjectDescriptor $project, Transformation $transformation, string $destination): Twig_Environment
-    {
+    protected function initializeEnvironment(
+        ProjectDescriptor $project,
+        Transformation $transformation,
+        string $destination
+    ): Twig_Environment {
         $callingTemplatePath = $this->getTemplatePath($transformation);
 
         $baseTemplatesPath = $transformation->getTransformer()->getTemplates()->getTemplatesPath();

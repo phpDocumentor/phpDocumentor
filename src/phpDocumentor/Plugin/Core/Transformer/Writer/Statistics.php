@@ -94,15 +94,15 @@ class Statistics extends Checkstyle
     {
         $stat = $document->createDocumentFragment();
         $stat->appendXML(
-<<<STAT
-<stat date="${date}">
-    <counters>
-        <files>{$this->getFilesCounter($project)}</files>
-        <deprecated>{$this->getDeprecatedCounter($project)}</deprecated>
-        <errors>{$this->getErrorCounter($project)}</errors>
-        <markers>{$this->getMarkerCounter($project)}</markers>
-    </counters>
-</stat>
+            <<<STAT
+            <stat date="${date}">
+                <counters>
+                    <files>{$this->getFilesCounter($project)}</files>
+                    <deprecated>{$this->getDeprecatedCounter($project)}</deprecated>
+                    <errors>{$this->getErrorCounter($project)}</errors>
+                    <markers>{$this->getMarkerCounter($project)}</markers>
+                </counters>
+            </stat>
 STAT
         );
         $document->documentElement->appendChild($stat);

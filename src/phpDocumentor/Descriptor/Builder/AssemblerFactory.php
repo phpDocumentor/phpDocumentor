@@ -14,6 +14,7 @@ declare(strict_types=1);
  */
 
 namespace phpDocumentor\Descriptor\Builder;
+
 use phpDocumentor\Reflection\DocBlock\ExampleFinder;
 
 use phpDocumentor\Descriptor\Builder\Reflector\ArgumentAssembler;

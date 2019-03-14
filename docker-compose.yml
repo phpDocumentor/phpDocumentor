@@ -14,10 +14,10 @@ behat:
   command: ["./bin/behat"]
 
 phpcs:
-  build: docker/with-xdebug
+  image: oskarstark/phpcs-ga
   volumes: [".:/opt/phpdoc"]
   working_dir: "/opt/phpdoc"
-  command: ["./bin/phpcs", "--standard=PSR2", "--extensions=php",  "src"]
+  command: ["-d memory_limit=1024M"]
 
 phpstan:
   image: jaapio/github-actions:phpstan

@@ -48,10 +48,10 @@ class ListCommand extends Command
                 'Displays a listing of all available templates in phpDocumentor'
             )
             ->setHelp(
-<<<HELP
-This task outputs a list of templates as available in phpDocumentor.
-Please mind that custom templates which are situated outside phpDocumentor are not
-shown in this listing.
+                <<<HELP
+                This task outputs a list of templates as available in phpDocumentor.
+                Please mind that custom templates which are situated outside phpDocumentor are not
+                shown in this listing.
 HELP
             );
     }

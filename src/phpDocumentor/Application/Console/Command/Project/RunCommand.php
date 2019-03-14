@@ -91,42 +91,42 @@ class RunCommand extends Command
                 'Parses and transforms the given files to a specified location'
             )
             ->setHelp(
-<<<HELP
-phpDocumentor creates documentation from PHP source files. The simplest way
-to use it is:
-
-    <info>$ phpdoc run -d [directory to parse] -t [output directory]</info>
-
-This will parse every file ending with .php, .php3 and .phtml in <directory
-to parse> and then output a HTML site containing easily readable documentation
-in <output directory>.
-
-phpDocumentor will try to look for a phpdoc.dist.xml or phpdoc.xml file in your
-current working directory and use that to override the default settings if
-present. In the configuration file can you specify the same settings (and
-more) as the command line provides.
-
-<comment>Other commands</comment>
-In addition to this command phpDocumentor also supports additional commands:
-
-<comment>Available commands:</comment>
-<info>  help
-  list
-  parse
-  run
-  transform
-<comment>project</comment>
-  project:parse
-  project:run
-  project:transform
-<comment>template</comment>
-  template:generate
-  template:list
-  template:package</info>
-
-You can get a more detailed listing of the commands using the <info>list</info>
-command and get help by prepending the word <info>help</info> to the command
-name.
+                <<<HELP
+                phpDocumentor creates documentation from PHP source files. The simplest way
+                to use it is:
+                
+                    <info>$ phpdoc run -d [directory to parse] -t [output directory]</info>
+                
+                This will parse every file ending with .php, .php3 and .phtml in <directory
+                to parse> and then output a HTML site containing easily readable documentation
+                in <output directory>.
+                
+                phpDocumentor will try to look for a phpdoc.dist.xml or phpdoc.xml file in your
+                current working directory and use that to override the default settings if
+                present. In the configuration file can you specify the same settings (and
+                more) as the command line provides.
+                
+                <comment>Other commands</comment>
+                In addition to this command phpDocumentor also supports additional commands:
+                
+                <comment>Available commands:</comment>
+                <info>  help
+                  list
+                  parse
+                  run
+                  transform
+                <comment>project</comment>
+                  project:parse
+                  project:run
+                  project:transform
+                <comment>template</comment>
+                  template:generate
+                  template:list
+                  template:package</info>
+                
+                You can get a more detailed listing of the commands using the <info>list</info>
+                command and get help by prepending the word <info>help</info> to the command
+                name.
 HELP
             )
             ->addOption(
@@ -299,7 +299,10 @@ HELP
             function (PreTransformEvent $event) use ($output) {
                 $output->writeln('');
                 $output->writeln('Applying transformations (can take a while)');
-                $this->transformerProgressBar = new ProgressBar($output, count($event->getSubject()->getTemplates()->getTransformations()));
+                $this->transformerProgressBar = new ProgressBar(
+                    $output,
+                    count($event->getSubject()->getTemplates()->getTransformations())
+                );
             }
         );
         Dispatcher::getInstance()->addListener(

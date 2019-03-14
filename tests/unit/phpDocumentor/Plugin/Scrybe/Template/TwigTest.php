@@ -192,7 +192,9 @@ class TwigTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testDecorateWhenTemplateCannotBeFound()
     {
         $this->expectException('DomainException');
-        $this->expectExceptionMessage('Template file "vfs://root' . DIRECTORY_SEPARATOR . 'default/layout.html.twig" could not be found');
+        $this->expectExceptionMessage(
+            'Template file "vfs://root' . DIRECTORY_SEPARATOR . 'default/layout.html.twig" could not be found'
+        );
         vfsStream::setup('root');
 
         $fixture = new Twig('');

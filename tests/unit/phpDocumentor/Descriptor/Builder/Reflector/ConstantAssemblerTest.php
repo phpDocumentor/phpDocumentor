@@ -21,7 +21,7 @@ use phpDocumentor\Reflection\Php\Constant;
 /**
  * Test class for \phpDocumentor\Descriptor\Builder
  *
- * @covers \phpDocumentor\Descriptor\Builder\Reflector\ConstantAssembler
+ * @coversDefaultClass  \phpDocumentor\Descriptor\Builder\Reflector\ConstantAssembler
  */
 class ConstantAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
@@ -39,7 +39,7 @@ class ConstantAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Creates a Descriptor from a provided class.
      *
-     * @covers phpDocumentor\Descriptor\Builder\Reflector\ConstantAssembler::create
+     * @covers ::create
      */
     public function testCreateConstantDescriptorFromReflector()
     {
@@ -48,10 +48,10 @@ class ConstantAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $namespace = 'Namespace';
 
         $docBlockDescription = new DocBlock\Description(
-<<<DOCBLOCK
-/**
- * This is a example description
- */
+            <<<DOCBLOCK
+            /**
+             * This is a example description
+             */
 DOCBLOCK
         );
 
@@ -61,7 +61,10 @@ DOCBLOCK
         $descriptor = $this->fixture->create($constantReflectorMock);
 
         $this->assertSame($name, $descriptor->getName());
-        $this->assertSame('\\' . $namespace . '::' . $name, (string) $descriptor->getFullyQualifiedStructuralElementName());
+        $this->assertSame(
+            '\\' . $namespace . '::' . $name,
+            (string) $descriptor->getFullyQualifiedStructuralElementName()
+        );
         $this->assertSame('\\' . $namespace, $descriptor->getNamespace());
         $this->assertSame($pi, $descriptor->getValue());
     }
