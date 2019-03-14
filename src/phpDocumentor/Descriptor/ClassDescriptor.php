@@ -42,7 +42,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     protected $methods;
 
     /** @var Collection $usedTraits References to traits consumed by this class */
-    protected $usedTraits = [];
+    protected $usedTraits;
 
     /**
      * Initializes the all properties representing a collection with a new Collection object.
@@ -284,7 +284,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
             $property = new PropertyDescriptor();
             $property->setName(ltrim($propertyTag->getVariableName(), '$'));
             $property->setDescription($propertyTag->getDescription());
-            $property->setTypes($propertyTag->getType());
+            $property->setType($propertyTag->getType());
             $property->setParent($this);
 
             $properties->add($property);
@@ -298,7 +298,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     }
 
     /**
-     * @param string $package
+     * @param PackageDescriptor $package
      */
     public function setPackage($package)
     {

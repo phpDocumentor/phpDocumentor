@@ -61,22 +61,22 @@ class PropertyDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\PropertyDescriptor::getTypes
-     * @covers \phpDocumentor\Descriptor\PropertyDescriptor::setTypes
+     * @covers \phpDocumentor\Descriptor\PropertyDescriptor::getType
+     * @covers \phpDocumentor\Descriptor\PropertyDescriptor::setType
      */
     public function testSetAndGetTypes()
     {
         $this->assertEquals(null, $this->fixture->getType());
         $expected = new Array_();
 
-        $this->fixture->setTypes($expected);
+        $this->fixture->setType($expected);
 
         $this->assertSame($expected, $this->fixture->getType());
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\PropertyDescriptor::getTypes
-     * @covers \phpDocumentor\Descriptor\PropertyDescriptor::setTypes
+     * @covers \phpDocumentor\Descriptor\PropertyDescriptor::getType
+     * @covers \phpDocumentor\Descriptor\PropertyDescriptor::setType
      */
     public function testSetAndGetTypesWhenVarIsPresent()
     {

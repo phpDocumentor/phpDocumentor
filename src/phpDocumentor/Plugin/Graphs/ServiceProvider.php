@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Plugin\Graphs;
 
 use phpDocumentor\Plugin\Graphs\Writer\Graph;
+use phpDocumentor\Transformer\Writer\Collection;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 

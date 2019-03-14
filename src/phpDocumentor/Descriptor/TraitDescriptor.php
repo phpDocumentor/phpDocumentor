@@ -130,7 +130,7 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
             $property = new PropertyDescriptor();
             $property->setName(ltrim($propertyTag->getVariableName(), '$'));
             $property->setDescription($propertyTag->getDescription());
-            $property->setTypes($propertyTag->getType());
+            $property->setType($propertyTag->getType());
             $property->setParent($this);
 
             $properties->add($property);
@@ -140,7 +140,7 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
     }
 
     /**
-     * @param string $package
+     * @param PackageDescriptor $package
      */
     public function setPackage($package)
     {

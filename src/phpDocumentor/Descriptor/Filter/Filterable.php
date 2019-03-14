@@ -16,11 +16,12 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Filter;
 
 use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Descriptor\Descriptor;
 
 /**
  * Interface to determine which elements can be filtered and to provide a way to set errors on the descriptor.
  */
-interface Filterable
+interface Filterable extends Descriptor
 {
     /**
      * Sets a list of errors on the associated element.

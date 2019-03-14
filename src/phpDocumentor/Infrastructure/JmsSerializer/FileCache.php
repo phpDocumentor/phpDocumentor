@@ -37,8 +37,10 @@ class FileCache implements CacheInterface
         $this->dir = rtrim($dir, '\\/');
     }
 
+
     /**
-     * {@inheritDoc}
+     * @param \ReflectionClass $class
+     * @return ClassMetadata|null
      */
     public function loadClassMetadataFromCache(\ReflectionClass $class)
     {

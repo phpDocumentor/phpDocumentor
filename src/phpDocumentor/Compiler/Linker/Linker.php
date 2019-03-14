@@ -159,7 +159,7 @@ class Linker implements CompilerPassInterface
 
             $newContainer = ($this->isDescriptorContainer($item)) ? $item : $container;
 
-            $this->processedObjects[$hash] = true;
+            $this->processedObjects[$hash] = $hash;
 
             $objectClassName = get_class($item);
             $fieldNames = $this->substitutions[$objectClassName] ?? [];

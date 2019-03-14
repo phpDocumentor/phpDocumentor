@@ -53,14 +53,14 @@ interface PropertyInterface extends ElementInterface, TypeInterface
     /**
      * Sets the types associated with the value(s) for this property.
      */
-    public function setTypes(Type $types);
+    public function setType(Type $type);
 
     /**
      * Returns the types associated with the value(s) for this property.
      *
-     * @return string[]
+     * @return Type
      */
-    public function getTypes();
+    public function getType();
 
     /**
      * Sets whether this property is available from inside or outside its class and/or descendants.
