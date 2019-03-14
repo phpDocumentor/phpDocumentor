@@ -14,6 +14,7 @@ declare(strict_types=1);
  */
 
 namespace phpDocumentor\Transformer\Event;
+
 use phpDocumentor\Transformer\Transformation;
 
 /**

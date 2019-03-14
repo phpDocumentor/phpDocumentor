@@ -15,7 +15,6 @@
 
 namespace phpDocumentor\Descriptor;
 
-
 /**
  * Base class for descriptors containing the most used options.
  */

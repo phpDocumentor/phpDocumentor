@@ -37,7 +37,10 @@ class ApplicationTest extends MockeryTestCase
         $kernelMock->shouldReceive('getBundles')->andReturn([]);
         $kernelMock->shouldReceive('getContainer->has')->andReturn(false);
         $kernelMock->shouldReceive('getContainer->hasParameter')->andReturn(false);
-        $kernelMock->shouldReceive('getContainer->get')->with('event_dispatcher')->andReturn(new EventDispatcher());
+        $kernelMock->shouldReceive('getContainer->get')
+            ->with('event_dispatcher')
+            ->andReturn(new EventDispatcher());
+
         $kernelMock->shouldReceive('getContainer->get')->andReturn(false);
 
         $this->feature = new Application($kernelMock);
@@ -50,8 +53,12 @@ class ApplicationTest extends MockeryTestCase
     public function testWhetherTheNameOfTheCommandCanBeRetrieved()
     {
         $_SERVER['argv'] = ['binary', 'my:command'];
-        $this->feature->add((new Command('my:command'))->setCode(function() { return 1; }));
-        $this->feature->add((new Command('project:run'))->setCode(function() { return 2; }));
+        $this->feature->add((new Command('my:command'))->setCode(function () {
+            return 1;
+        }));
+        $this->feature->add((new Command('project:run'))->setCode(function () {
+            return 2;
+        }));
 
         $this->assertSame(1, $this->feature->run(new StringInput('my:command -q')));
     }
@@ -62,8 +69,12 @@ class ApplicationTest extends MockeryTestCase
     public function testWhetherTheRunCommandIsUsedWhenNoCommandNameIsGiven()
     {
         $_SERVER['argv'] = ['binary', 'something else'];
-        $this->feature->add((new Command('MyCommand'))->setCode(function() { return 1; }));
-        $this->feature->add((new Command('project:run'))->setCode(function() { return 2; }));
+        $this->feature->add((new Command('MyCommand'))->setCode(function () {
+            return 1;
+        }));
+        $this->feature->add((new Command('project:run'))->setCode(function () {
+            return 2;
+        }));
 
         $this->assertSame(2, $this->feature->run(new StringInput('-q')));
     }
@@ -84,6 +95,9 @@ class ApplicationTest extends MockeryTestCase
      */
     public function testGetLongVersion(): void
     {
-        self::assertRegExp('~phpDocumentor <info>v(\d).(\d).(\d|x)?-(.*)</info>~', $this->feature->getLongVersion());
+        self::assertRegExp(
+            '~phpDocumentor <info>v(\d).(\d).(\d|x)?-(.*)</info>~',
+            $this->feature->getLongVersion()
+        );
     }
 }

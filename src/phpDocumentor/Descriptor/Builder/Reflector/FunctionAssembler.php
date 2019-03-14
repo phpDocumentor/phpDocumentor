@@ -75,7 +75,11 @@ class FunctionAssembler extends AssemblerAbstract
         $descriptor->setFullyQualifiedStructuralElementName($reflector->getFqsen());
         $descriptor->setName($reflector->getName());
         $descriptor->setLine($reflector->getLocation()->getLineNumber());
-        $descriptor->setNamespace('\\' . trim(substr((string) $reflector->getFqsen(), 0, -strlen($reflector->getName()) - 2), '\\'));
+        $descriptor->setNamespace('\\' . trim(substr(
+            (string) $reflector->getFqsen(),
+            0,
+            -strlen($reflector->getName()) - 2
+        ), '\\'));
         $descriptor->setReturnType($reflector->getReturnType());
     }
 
@@ -97,16 +101,20 @@ class FunctionAssembler extends AssemblerAbstract
     /**
      * Adds the given argument to the function.
      */
-    protected function addArgumentDescriptorToFunction(FunctionDescriptor $functionDescriptor, ArgumentDescriptor $argumentDescriptor): void
-    {
+    protected function addArgumentDescriptorToFunction(
+        FunctionDescriptor $functionDescriptor,
+        ArgumentDescriptor $argumentDescriptor
+    ): void {
         $functionDescriptor->getArguments()->set($argumentDescriptor->getName(), $argumentDescriptor);
     }
 
     /**
      * Creates a new ArgumentDescriptor from the given Reflector and Param.
      */
-    protected function createArgumentDescriptor(FunctionDescriptor $functionDescriptor, Argument $argument): ArgumentDescriptor
-    {
+    protected function createArgumentDescriptor(
+        FunctionDescriptor $functionDescriptor,
+        Argument $argument
+    ): ArgumentDescriptor {
         $params = $functionDescriptor->getTags()->get('param', []);
 
         if (!$this->argumentAssembler->getBuilder()) {

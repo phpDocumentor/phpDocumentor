@@ -117,7 +117,8 @@ class ProjectDescriptorBuilder
         $assembler = $this->getAssembler($data);
         if (!$assembler) {
             throw new \InvalidArgumentException(
-                'Unable to build a Descriptor; the provided data did not match any Assembler ' . get_class($data)
+                'Unable to build a Descriptor; the provided data did not match any Assembler ' .
+                get_class($data)
             );
         }
 
@@ -220,7 +221,9 @@ class ProjectDescriptorBuilder
     {
         $packageName = $project->getRootNamespace()->getFqsen()->getName();
         $this->defaultPackage = new PackageDescriptor();
-        $this->defaultPackage->setFullyQualifiedStructuralElementName((string) $project->getRootNamespace()->getFqsen());
+        $this->defaultPackage->setFullyQualifiedStructuralElementName(
+            (string) $project->getRootNamespace()->getFqsen()
+        );
         $this->defaultPackage->setName($packageName);
         $this->defaultPackage->setNamespace(
             substr((string) $project->getRootNamespace()->getFqsen(), 0, -strlen($packageName) - 1)

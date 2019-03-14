@@ -113,7 +113,8 @@ HELP
                 'markers',
                 'm',
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
-                'Comma-separated list of markers/tags to filter', ['TODO', 'FIXME']
+                'Comma-separated list of markers/tags to filter',
+                ['TODO', 'FIXME']
             )
             ->addOption(
                 'title',

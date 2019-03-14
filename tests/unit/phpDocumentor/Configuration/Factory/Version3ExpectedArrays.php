@@ -339,11 +339,13 @@ final class Version3ExpectedArrays
                 'templates' => [
                     0 => [
                         'name' => 'clean',
-                        'location' => 'https://github.com/phpDocumentor/phpDocumentor2/tree/develop/data/templates/clean',
+                        'location' =>
+                            'https://github.com/phpDocumentor/phpDocumentor2/tree/develop/data/templates/clean',
                     ],
                     1 => [
                         'name' => 'tainted',
-                        'location' => 'https://github.com/phpDocumentor/phpDocumentor2/tree/develop/data/templates/tainted',
+                        'location' =>
+                            'https://github.com/phpDocumentor/phpDocumentor2/tree/develop/data/templates/tainted',
                     ],
                 ],
             ],

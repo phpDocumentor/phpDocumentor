@@ -168,8 +168,12 @@ class MethodAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Creates a sample method reflector for the tests with the given data.
      */
-    protected function givenAMethodReflector(string $namespace, string $methodName, Argument $argumentMock, DocBlock $docBlockMock = null)
-    {
+    protected function givenAMethodReflector(
+        string $namespace,
+        string $methodName,
+        Argument $argumentMock,
+        DocBlock $docBlockMock = null
+    ) {
         $method = new Method(
             new Fqsen('\\' . $namespace . '::' . $methodName . '()'),
             new Visibility(Visibility::PROTECTED_),

@@ -74,7 +74,8 @@ abstract class AssemblerAbstract extends BaseAssembler
         return trim((string) $tag->getDescription());
     }
 
-    public static function deduplicateTypes(?Type $type): ?Type {
+    public static function deduplicateTypes(?Type $type): ?Type
+    {
 
         if ($type instanceof Compound) {
             $normalizedTypes = [];

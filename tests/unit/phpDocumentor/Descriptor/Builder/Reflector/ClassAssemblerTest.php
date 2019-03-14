@@ -59,7 +59,10 @@ DOCBLOCK;
 
         $descriptor = $this->fixture->create($classReflectorMock);
 
-        $this->assertSame('\\' . $namespace . '\\' . $name, (string) $descriptor->getFullyQualifiedStructuralElementName());
+        $this->assertSame(
+            '\\' . $namespace . '\\' . $name,
+            (string) $descriptor->getFullyQualifiedStructuralElementName()
+        );
         $this->assertSame($name, $descriptor->getName());
         $this->assertSame((string) $descriptor->getDescription(), $docBlockDescriptionContent);
     }

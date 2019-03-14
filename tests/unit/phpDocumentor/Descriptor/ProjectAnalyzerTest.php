@@ -200,14 +200,17 @@ TEXT;
     protected function whenProjectDescriptorHasTheFollowingElements(m\MockInterface $projectDescriptor, array $elements)
     {
         $projectDescriptor->shouldReceive('getIndexes->get')
-            ->with('elements', m::type('phpDocumentor\Descriptor\Collection'))->andReturn(new Collection($elements));
+            ->with('elements', m::type('phpDocumentor\Descriptor\Collection'))
+            ->andReturn(new Collection($elements));
     }
 
     /**
      * Ensures that the ProjectDescriptor has a root namespace with the provided array as children of that namespace.
      */
-    protected function whenProjectHasTheFollowingChildrenOfRootNamespace(m\MockInterface $projectDescriptor, array $rootNamespaceChildren)
-    {
+    protected function whenProjectHasTheFollowingChildrenOfRootNamespace(
+        m\MockInterface $projectDescriptor,
+        array $rootNamespaceChildren
+    ) {
         $projectDescriptor->shouldReceive('getNamespace->getChildren')->andReturn(
             new Collection($rootNamespaceChildren)
         );

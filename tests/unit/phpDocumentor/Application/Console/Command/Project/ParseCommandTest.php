@@ -36,7 +36,7 @@ class ParseCommandTest extends MockeryTestCase
         $pipeline = m::mock(PipelineInterface::class);
         $pipeline
             ->shouldReceive('__invoke')
-            ->withArgs(function(array $options){
+            ->withArgs(function (array $options) {
                 return $options['force'] === true && $options['filename'] === ['abc'];
             })
             ->once();

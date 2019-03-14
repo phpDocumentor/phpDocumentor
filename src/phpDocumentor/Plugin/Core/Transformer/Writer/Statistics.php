@@ -94,7 +94,7 @@ class Statistics extends Checkstyle
     {
         $stat = $document->createDocumentFragment();
         $stat->appendXML(
-<<<STAT
+            <<<STAT
 <stat date="${date}">
     <counters>
         <files>{$this->getFilesCounter($project)}</files>

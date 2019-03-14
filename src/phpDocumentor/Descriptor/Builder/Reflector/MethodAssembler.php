@@ -47,7 +47,13 @@ class MethodAssembler extends AssemblerAbstract
     public function create($data)
     {
         $methodDescriptor = new MethodDescriptor();
-        $methodDescriptor->setNamespace(substr((string) $data->getFqsen(), 0, -strlen($data->getName()) - 4));
+        $methodDescriptor->setNamespace(
+            substr(
+                (string) $data->getFqsen(),
+                0,
+                -strlen($data->getName()) - 4
+            )
+        );
         $this->mapReflectorToDescriptor($data, $methodDescriptor);
 
         $this->assembleDocBlock($data->getDocBlock(), $methodDescriptor);
@@ -117,7 +123,7 @@ class MethodAssembler extends AssemblerAbstract
         }
 
         if ($lastParamTag->isVariadic()
-            && in_array($lastParamTag->getVariableName(), array_keys($methodDescriptor->getArguments()->getAll()), true)
+            && array_key_exists($lastParamTag->getVariableName(), $methodDescriptor->getArguments()->getAll())
         ) {
             $types = $lastParamTag->getType();
 
