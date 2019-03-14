@@ -312,14 +312,12 @@ class Parser
      */
     private function logAfterParsingAllFiles()
     {
-        if (!$this->stopwatch) {
-            return;
+        if ($this->stopwatch instanceof Stopwatch) {
+            $event = $this->stopwatch->stop('parser.parse');
+
+            $this->log('Elapsed time to parse all files: ' . round($event->getDuration() / 1000, 2) . 's');
+            $this->log('Peak memory usage: ' . round($event->getMemory() / 1024 / 1024, 2) . 'M');
         }
-
-        $event = $this->stopwatch->stop('parser.parse');
-
-        $this->log('Elapsed time to parse all files: ' . round($event->getDuration() / 1000, 2) . 's');
-        $this->log('Peak memory usage: ' . round($event->getMemory() / 1024 / 1024, 2) . 'M');
     }
 
     /**
@@ -336,7 +334,7 @@ class Parser
 
     private function startTimingTheParsePhase()
     {
-        if ($this->stopwatch) {
+        if ($this->stopwatch instanceof Stopwatch) {
             $this->stopwatch->start('parser.parse');
         }
     }

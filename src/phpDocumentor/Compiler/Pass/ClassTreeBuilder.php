@@ -34,8 +34,8 @@ final class ClassTreeBuilder implements CompilerPassInterface
         foreach ($project->getFiles() as $file) {
             /** @var ClassDescriptor $class */
             foreach ($file->getClasses()->getAll() as $class) {
-                if ($class->getParent() instanceof Fqsen) {
-                    $parent = $project->getIndexes()->get('classes')->get((string) $class->getParent());
+                if ($class->getParentName() instanceof Fqsen) {
+                    $parent = $project->getIndexes()->get('classes')->get((string) $class->getParentName());
                     if ($parent instanceof ClassDescriptor) {
                         $class->setParent($parent);
                     }

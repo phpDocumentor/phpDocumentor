@@ -15,6 +15,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
+use phpDocumentor\Reflection\Fqsen;
+
 /**
  * Descriptor representing a Class.
  */
@@ -22,6 +24,11 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
 {
     /** @var ClassDescriptor|null $extends Reference to an instance of the superclass for this class, if any. */
     protected $parent;
+
+    /**
+     * @var Fqsen
+     */
+    protected $parentName;
 
     /** @var Collection $implements References to interfaces that are implemented by this class. */
     protected $implements;
@@ -143,7 +150,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
      */
     public function getInheritedConstants()
     {
-        if (!$this->getParent() || (!$this->getParent() instanceof self)) {
+        if (!($this->getParent() instanceof self)) {
             return new Collection();
         }
 
@@ -183,7 +190,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
             $inheritedMethods = $inheritedMethods->merge(clone $trait->getMethods());
         }
 
-        if (!$this->getParent() || (!$this->getParent() instanceof self)) {
+        if (!($this->getParent() instanceof self)) {
             return $inheritedMethods;
         }
 
@@ -258,7 +265,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
             $inheritedProperties = $inheritedProperties->merge(clone $trait->getProperties());
         }
 
-        if (!$this->getParent() || (!$this->getParent() instanceof self)) {
+        if (!($this->getParent() instanceof self)) {
             return $inheritedProperties;
         }
 
@@ -351,5 +358,21 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     public function getInheritedElement()
     {
         return $this->getParent();
+    }
+
+    /**
+     * @return Fqsen|null
+     */
+    public function getParentName(): ?Fqsen
+    {
+        return $this->parentName;
+    }
+
+    /**
+     * @param Fqsen|null $parentName
+     */
+    public function setParentName(?Fqsen $parentName): void
+    {
+        $this->parentName = $parentName;
     }
 }

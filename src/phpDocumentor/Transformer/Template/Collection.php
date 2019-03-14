@@ -54,7 +54,7 @@ class Collection extends \ArrayObject
         foreach ($template as $transformation) {
             /** @var WriterAbstract $writer */
             $writer = $this->writerCollection[$transformation->getWriter()];
-            if ($writer) {
+            if ($writer instanceof WriterAbstract) {
                 $writer->checkRequirements();
             }
         }

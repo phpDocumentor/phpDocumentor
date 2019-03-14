@@ -190,7 +190,7 @@ final class Transform
         Dispatcher::getInstance()->addListener(
             Transformer::EVENT_PRE_TRANSFORMATION,
             function (PreTransformationEvent $event) {
-                if ($event->getTransformation()->getWriter() instanceof WriterAbstract) {
+                if ($event->getTransformation()->getWriter()) {
                     $this->logger->info(
                         '  Execute transformation using writer "' . $event->getTransformation()->getWriter() . '"'
                     );

@@ -24,4 +24,4 @@ phpstan:
   environment:
     PHP_EXTENSIONS: php7-intl php7-xsl
   volumes: [".:/app"]
-  command: "analyse src tests --level 3 --configuration phpstan.neon"
+  command: "analyse src tests --level 4 --configuration phpstan.neon"
