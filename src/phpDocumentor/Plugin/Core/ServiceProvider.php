@@ -38,32 +38,9 @@ final class ServiceProvider implements ServiceProviderInterface
      */
     public function register(Container $app): void
     {
-        $this->registerWriters($app);
         $this->registerDependenciesOnXsltExtension($app);
 
-        $app->register(new \phpDocumentor\Plugin\Graphs\ServiceProvider());
         $app->register(new \phpDocumentor\Plugin\Twig\ServiceProvider());
-    }
-
-    /**
-     * Creates all writers for this plugin and adds them to the WriterCollection object.
-     *
-     * This action will enable transformations in templates to make use of these writers.
-     */
-    private function registerWriters(Application $app)
-    {
-        $writerCollection = $this->getWriterCollection($app);
-
-        $writerCollection['FileIo'] = new Writer\FileIo();
-        $writerCollection['sourcecode'] = new Writer\Sourcecode();
-        $writerCollection['statistics'] = new Writer\Statistics();
-        $writerCollection['xsl'] = new Writer\Xsl($app['monolog']);
-
-        $checkstyleWriter = new Writer\Checkstyle();
-        $writerCollection['checkstyle'] = $checkstyleWriter;
-
-        $xmlWriter =  new Writer\Xml($app['transformer.routing.standard']);
-        $writerCollection['xml'] = $xmlWriter;
     }
 
     /**
@@ -81,15 +58,5 @@ final class ServiceProvider implements ServiceProviderInterface
         $queue->insert($app['transformer.routing.standard'], 1);
         Xslt\Extension::$routers = $queue;
         Xslt\Extension::$descriptorBuilder = $app['descriptor.builder'];
-    }
-
-    /**
-     * Returns the WriterCollection service from the Service Locator.
-     *
-     * @return Collection
-     */
-    private function getWriterCollection(Application $app)
-    {
-        return $app['transformer.writer.collection'];
     }
 }

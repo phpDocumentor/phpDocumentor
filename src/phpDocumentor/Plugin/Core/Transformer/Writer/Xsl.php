@@ -15,7 +15,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Plugin\Core\Transformer\Writer;
 
-use Monolog\Logger;
 use phpDocumentor\Application;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Event\Dispatcher;
@@ -28,6 +27,7 @@ use phpDocumentor\Transformer\Transformation as TransformationObject;
 use phpDocumentor\Transformer\Writer\Exception\RequirementMissing;
 use phpDocumentor\Transformer\Writer\Routable;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
+use Psr\Log\LoggerInterface;
 use XSLTProcessor;
 
 /**
@@ -35,7 +35,7 @@ use XSLTProcessor;
  */
 class Xsl extends WriterAbstract implements Routable
 {
-    /** @var \Monolog\Logger $logger */
+    /** @var LoggerInterface $logger */
     protected $logger;
 
     /** @var string[] */
@@ -47,7 +47,7 @@ class Xsl extends WriterAbstract implements Routable
     /**
      * Initialize this writer with the logger so that it can output logs.
      */
-    public function __construct(Logger $logger)
+    public function __construct(LoggerInterface $logger)
     {
         $this->logger = $logger;
     }

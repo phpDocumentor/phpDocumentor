@@ -225,6 +225,29 @@ services:
             - [setCache, ['@phpDocumentor\Infrastructure\JmsSerializer\FileCache']]
 
     ###################################################################################
+    ## Writers ########################################################################
+    ###################################################################################
+
+    phpDocumentor\Plugin\Core\Transformer\Writer\FileIo: ~
+    phpDocumentor\Plugin\Core\Transformer\Writer\Sourcecode: ~
+    phpDocumentor\Plugin\Core\Transformer\Writer\Statistics: ~
+    phpDocumentor\Plugin\Core\Transformer\Writer\Xsl: ~
+    phpDocumentor\Plugin\Core\Transformer\Writer\Checkstyle: ~
+    phpDocumentor\Plugin\Core\Transformer\Writer\Xml:
+      arguments: ['@phpDocumentor\Transformer\Router\StandardRouter']
+    phpDocumentor\Transformer\Writer\Graph: ~
+
+    phpDocumentor\Transformer\Writer\Collection:
+      calls:
+        - { method: offsetSet, arguments: ['FileIo', '@phpDocumentor\Plugin\Core\Transformer\Writer\FileIo']}
+        - { method: offsetSet, arguments: ['sourcecode', '@phpDocumentor\Plugin\Core\Transformer\Writer\Sourcecode']}
+        - { method: offsetSet, arguments: ['statistics', '@phpDocumentor\Plugin\Core\Transformer\Writer\Statistics']}
+        - { method: offsetSet, arguments: ['xsl', '@phpDocumentor\Plugin\Core\Transformer\Writer\Xsl']}
+        - { method: offsetSet, arguments: ['checkstyle', '@phpDocumentor\Plugin\Core\Transformer\Writer\Checkstyle']}
+        - { method: offsetSet, arguments: ['xml', '@phpDocumentor\Plugin\Core\Transformer\Writer\Xml']}
+        - { method: offsetSet, arguments: ['Graph', '@phpDocumentor\Transformer\Writer\Graph']}
+
+    ###################################################################################
     ## Service aliases for backwards compatibility ####################################
     ###################################################################################
 

@@ -13,7 +13,7 @@ declare(strict_types=1);
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Plugin\Graphs\Writer;
+namespace phpDocumentor\Transformer\Writer;
 
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Collection;
