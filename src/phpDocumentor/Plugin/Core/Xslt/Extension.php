@@ -16,7 +16,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Plugin\Core\Xslt;
 
 use phpDocumentor\Descriptor\DescriptorAbstract;
-use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
+use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Transformer\Router\Queue;
 
 /**
@@ -24,13 +24,15 @@ use phpDocumentor\Transformer\Router\Queue;
  */
 class Extension
 {
-    /** @var ProjectDescriptorBuilder */
-    public static $descriptorBuilder;
-
     /**
      * @var Queue
      */
     public static $routers;
+
+    /**
+     * @var ProjectDescriptor
+     */
+    public static $projectDescriptor;
 
     /**
      * Markdown filter.
@@ -120,7 +122,7 @@ class Extension
      */
     private static function getDocumentedElement($fqsen)
     {
-        $projectDescriptor = self::$descriptorBuilder->getProjectDescriptor();
+        $projectDescriptor = self::$projectDescriptor;
         $elementList = $projectDescriptor->getIndexes()->get('elements');
         $prefixedLink = '~\\' . $fqsen;
 

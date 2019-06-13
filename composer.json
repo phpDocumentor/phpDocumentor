@@ -6,8 +6,6 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Cilex\\" : [ "src/phpDocumentor/Application/CilexCompatibilityLayer" ],
-            "Pimple\\" : [ "src/phpDocumentor/Application/CilexCompatibilityLayer" ],
             "phpDocumentor\\": [ "src/phpDocumentor/" ]
         }
     },

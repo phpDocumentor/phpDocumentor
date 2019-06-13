@@ -15,11 +15,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Plugin\Scrybe;
 
-use Cilex\Application;
 use phpDocumentor\Plugin\Scrybe\Converter\Definition\Factory;
 use phpDocumentor\Plugin\Scrybe\Converter\Format\Format;
-use Pimple\Container;
-use Pimple\ServiceProviderInterface;
 
 /**
  * Creates and binds the components for the generation of manuals.
@@ -27,7 +24,7 @@ use Pimple\ServiceProviderInterface;
  * Scrybe is a plugin that allows authors to write documentation in a markup format of their choosing and generate
  * human-readable documentation from it.
  */
-class ServiceProvider implements ServiceProviderInterface
+class ServiceProvider
 {
     const CONVERTER_FACTORY = 'converter-factory';
 

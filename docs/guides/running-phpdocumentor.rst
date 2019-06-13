@@ -106,7 +106,7 @@ somewhere down the tree.
 
 When you want to provide a relative path, keep in mind that this is relative to the :term:`Project Root Folder`.
 The project's root folder is the first folder that the provided folders have in common, so for
-``-d "src/phpDocumentor,src/Cilex" this is the directory "src" and not the current working directory. When in doubt,
+``-d "src/phpDocumentor,src/SomethingElse" this is the directory "src" and not the current working directory. When in doubt,
 check the output of phpDocumentor, it mentions the project's root folder after all files are collected.
 
 By default phpDocumentor will ignore hidden files and will not follow symlinks. This will prevent unwanted documentables

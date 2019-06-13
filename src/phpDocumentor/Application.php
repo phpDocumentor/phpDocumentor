@@ -15,7 +15,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor;
 
-use Cilex\Application as Cilex;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Parser\Event\PreFileEvent;
 use Psr\Log\LoggerInterface;
@@ -30,7 +29,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  * @codeCoverageIgnore too many side-effects and system calls to properly test
  */
-class Application extends Cilex
+class Application
 {
     public static function VERSION(): string
     {
@@ -55,10 +54,7 @@ class Application extends Cilex
      */
     public function __construct(LoggerInterface $logger, ContainerInterface $container)
     {
-        parent::__construct($container);
-
         $this->defineIniSettings();
-        $this->register(new Plugin\Core\ServiceProvider());
 
         Dispatcher::getInstance()->addListener(
             'parser.file.pre',

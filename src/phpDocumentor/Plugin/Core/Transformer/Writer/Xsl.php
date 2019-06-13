@@ -19,6 +19,7 @@ use phpDocumentor\Application;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Plugin\Core\Exception;
+use phpDocumentor\Plugin\Core\Xslt\Extension;
 use phpDocumentor\Transformer\Event\PreXslWriterEvent;
 use phpDocumentor\Transformer\Router\ForFileProxy;
 use phpDocumentor\Transformer\Router\Queue;
@@ -90,6 +91,9 @@ class Xsl extends WriterAbstract implements Routable
      */
     public function transform(ProjectDescriptor $project, Transformation $transformation)
     {
+        Extension::$routers = $this->routers;
+        Extension::$projectDescriptor = $project;
+
         $structure = $this->loadAst($this->getAstPath($transformation));
 
         $proc = $this->getXslProcessor($transformation);

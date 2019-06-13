@@ -54,13 +54,14 @@ class ExtensionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $elementList = m::mock('phpDocumentor\Descriptor\Collection');
         $elementList->shouldReceive('get')->andReturn(null);
 
-        $projectDescriptorBuilder = $this->givenAProjectDescriptorBuilder($elementList);
-
         $rule = m::mock('phpDocumentor\Transformer\Router');
         $rule->shouldReceive('generate')->andReturn('http://phpdoc.org');
         $router = $this->givenARouter($rule);
 
-        Extension::$descriptorBuilder = $projectDescriptorBuilder;
+        $projectDescriptor = m::mock('\phpDocumentor\Descriptor\ProjectDescriptor');
+        $projectDescriptor->shouldReceive('getIndexes')->andReturn($elementList);
+
+        Extension::$projectDescriptor = $projectDescriptor;
         Extension::$routers = $router;
         $result = Extension::path('http://phpdoc.org');
 
@@ -75,11 +76,12 @@ class ExtensionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $elementList = m::mock('phpDocumentor\Descriptor\Collection');
         $elementList->shouldReceive('get')->andReturn(null);
 
-        $projectDescriptorBuilder = $this->givenAProjectDescriptorBuilder($elementList);
-
         $router = $this->givenARouter(null);
 
-        Extension::$descriptorBuilder = $projectDescriptorBuilder;
+        $projectDescriptor = m::mock('\phpDocumentor\Descriptor\ProjectDescriptor');
+        $projectDescriptor->shouldReceive('getIndexes')->andReturn($elementList);
+
+        Extension::$projectDescriptor = $projectDescriptor;
         Extension::$routers = $router;
         $result = Extension::path('undocumented');
 
@@ -97,14 +99,15 @@ class ExtensionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $element->shouldReceive('offsetGet');
         $elementList->shouldReceive('get')->andReturn($element);
 
-        $projectDescriptorBuilder = $this->givenAProjectDescriptorBuilder($elementList);
-
         $rule = m::mock('phpDocumentor\Transformer\Router');
         $rule->shouldReceive('generate')->andReturn('/classes/my.namespace.class.html');
 
         $router = $this->givenARouter($rule);
 
-        Extension::$descriptorBuilder = $projectDescriptorBuilder;
+        $projectDescriptor = m::mock('\phpDocumentor\Descriptor\ProjectDescriptor');
+        $projectDescriptor->shouldReceive('getIndexes')->andReturn($elementList);
+
+        Extension::$projectDescriptor = $projectDescriptor;
         Extension::$routers = $router;
         $result = Extension::path('\\my\\namespace\\class');
 
@@ -119,11 +122,12 @@ class ExtensionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $elementList = m::mock('phpDocumentor\Descriptor\Collection');
         $elementList->shouldReceive('get')->andReturn(null);
 
-        $projectDescriptorBuilder = $this->givenAProjectDescriptorBuilder($elementList);
-
         $router = $this->givenARouter(null);
 
-        Extension::$descriptorBuilder = $projectDescriptorBuilder;
+        $projectDescriptor = m::mock('\phpDocumentor\Descriptor\ProjectDescriptor');
+        $projectDescriptor->shouldReceive('getIndexes')->andReturn($elementList);
+
+        Extension::$projectDescriptor = $projectDescriptor;
         Extension::$routers = $router;
         $result = Extension::typeOfElement('http://phpdoc.org');
 
@@ -138,11 +142,12 @@ class ExtensionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $elementList = m::mock('phpDocumentor\Descriptor\Collection');
         $elementList->shouldReceive('get')->andReturn(null);
 
-        $projectDescriptorBuilder = $this->givenAProjectDescriptorBuilder($elementList);
-
         $router = $this->givenARouter(null);
 
-        Extension::$descriptorBuilder = $projectDescriptorBuilder;
+        $projectDescriptor = m::mock('\phpDocumentor\Descriptor\ProjectDescriptor');
+        $projectDescriptor->shouldReceive('getIndexes')->andReturn($elementList);
+
+        Extension::$projectDescriptor = $projectDescriptor;
         Extension::$routers = $router;
         $result = Extension::typeOfElement('undocumented element');
 
@@ -161,27 +166,19 @@ class ExtensionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $element->shouldReceive('offsetGet')->with('~\\my\\namespace')->andReturn('the namespace descriptor');
         $elementList->shouldReceive('get')->andReturn($element);
 
-        $projectDescriptorBuilder = $this->givenAProjectDescriptorBuilder($elementList);
-
         $rule = m::mock('phpDocumentor\Transformer\Router');
         $rule->shouldReceive('generate')->andReturn('/classes/my.namespace.class.html');
 
         $router = $this->givenARouter(null);
 
-        Extension::$descriptorBuilder = $projectDescriptorBuilder;
+        $projectDescriptor = m::mock('\phpDocumentor\Descriptor\ProjectDescriptor');
+        $projectDescriptor->shouldReceive('getIndexes')->andReturn($elementList);
+
+        Extension::$projectDescriptor = $projectDescriptor;
         Extension::$routers = $router;
         $result = Extension::typeOfElement('my\\namespace');
 
         $this->assertSame('documented', $result);
-    }
-
-    private function givenAProjectDescriptorBuilder($elementList)
-    {
-        $projectDescriptor = m::mock('\phpDocumentor\Descriptor\ProjectDescriptor');
-        $projectDescriptor->shouldReceive('getIndexes')->andReturn($elementList);
-        $projectDescriptorBuilder = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
-        $projectDescriptorBuilder->shouldReceive('getProjectDescriptor')->andReturn($projectDescriptor);
-        return $projectDescriptorBuilder;
     }
 
     private function givenARouter($rule)
