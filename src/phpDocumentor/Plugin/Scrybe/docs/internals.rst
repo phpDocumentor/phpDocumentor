@@ -10,4 +10,3 @@ Internals
   internals/metadata
   internals/search
   internals/templates
-  internals/plugins

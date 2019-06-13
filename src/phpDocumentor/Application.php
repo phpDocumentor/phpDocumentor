@@ -58,7 +58,7 @@ class Application extends Cilex
         parent::__construct($container);
 
         $this->defineIniSettings();
-        $this->register(new Plugin\ServiceProvider());
+        $this->register(new Plugin\Core\ServiceProvider());
 
         Dispatcher::getInstance()->addListener(
             'parser.file.pre',
