@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Transformer\Event;
 
-use phpDocumentor\Plugin\Core\Transformer\Writer\FileIo;
+use phpDocumentor\Transformer\Writer\FileIo;
 use phpDocumentor\Transformer\Event\WriterInitializationEvent;
 
 final class WriterInitializationEventTest extends \PHPUnit\Framework\TestCase

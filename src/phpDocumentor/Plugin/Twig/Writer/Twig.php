@@ -18,7 +18,7 @@ namespace phpDocumentor\Plugin\Twig\Writer;
 use InvalidArgumentException;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\Plugin\Core\Transformer\Writer\Pathfinder;
+use phpDocumentor\Transformer\Writer\Pathfinder;
 use phpDocumentor\Plugin\Twig\Extension;
 use phpDocumentor\Transformer\Router\ForFileProxy;
 use phpDocumentor\Transformer\Router\Queue;
