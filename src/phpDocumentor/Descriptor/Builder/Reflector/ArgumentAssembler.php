@@ -44,6 +44,7 @@ class ArgumentAssembler extends AssemblerAbstract
 
         $argumentDescriptor->setDefault($data->getDefault());
         $argumentDescriptor->setByReference($data->isByReference());
+        $argumentDescriptor->setVariadic($data->isVariadic());
 
         return $argumentDescriptor;
     }

@@ -87,16 +87,42 @@ class ArgumentAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $this->assertSame($type, $descriptor->getType());
         $this->assertNull($descriptor->getDefault());
         $this->assertFalse($descriptor->isByReference());
+        $this->assertFalse($descriptor->isVariadic());
     }
 
     /**
-     * @param string $name
-     * @return Argument
+     * @covers \phpDocumentor\Descriptor\Builder\Reflector\ArgumentAssembler::create
      */
-    protected function givenAnArgumentReflectorWithNameAndType(string $name, Type $type)
+    public function testIfVariadicArgumentsAreDetected()
     {
-        $argument = new Argument($name, $type);
+        // Arrange
+        $name = 'goodArgument';
+        $type = new Boolean();
 
-        return $argument;
+        $argumentReflectorMock = $this->givenAnArgumentReflectorWithNameAndType($name, $type, true);
+
+        // Mock a paramDescriptor
+        $paramDescriptorTagMock = m::mock('phpDocumentor\Descriptor\Tag\ParamDescriptor');
+        $paramDescriptorTagMock->shouldReceive('getVariableName')->once()->andReturn($name);
+        $paramDescriptorTagMock->shouldReceive('getDescription')->once()->andReturn('Is this a good argument, or nah?');
+        $paramDescriptorTagMock->shouldReceive('getType')->once()->andReturn($type);
+
+        // Act
+        $descriptor = $this->fixture->create($argumentReflectorMock, [$paramDescriptorTagMock]);
+
+        // Assert
+        $this->assertSame($name, $descriptor->getName());
+        $this->assertSame($type, $descriptor->getType());
+        $this->assertNull($descriptor->getDefault());
+        $this->assertFalse($descriptor->isByReference());
+        $this->assertTrue($descriptor->isVariadic());
+    }
+
+    protected function givenAnArgumentReflectorWithNameAndType(
+        string $name,
+        Type $type,
+        bool $isVariadic = false
+    ): Argument {
+        return new Argument($name, $type, null, false, $isVariadic);
     }
 }
