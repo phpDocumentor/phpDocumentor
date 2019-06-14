@@ -183,7 +183,7 @@
 
             <div class="details">
                 <xsl:if test="docblock/long-description">
-                <div class="long_description"><xsl:value-of select="php:function('phpDocumentor\Plugin\Core\Xslt\Extension::markdown', string(docblock/long-description))" disable-output-escaping="yes" /></div>
+                <div class="long_description"><xsl:value-of select="php:function('phpDocumentor\Transformer\Writer\Xslt\Extension::markdown', string(docblock/long-description))" disable-output-escaping="yes" /></div>
                 </xsl:if>
 
                 <xsl:if test="count(docblock/tag) > 0">

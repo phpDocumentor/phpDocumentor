@@ -13,7 +13,7 @@ declare(strict_types=1);
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Plugin\Core\Xslt;
+namespace phpDocumentor\Transformer\Writer\Xslt;
 
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\ProjectDescriptor;
@@ -42,7 +42,7 @@ class Extension
      * ```
      * <div class="long_description">
      *     <xsl:value-of
-     *         select="php:function('phpDocumentor\Plugin\Core\Xslt\Extension::markdown',
+     *         select="php:function('phpDocumentor\Transformer\Writer\Xslt\Extension::markdown',
      *             string(docblock/long-description))"
      *         disable-output-escaping="yes" />
      * </div>
@@ -69,7 +69,7 @@ class Extension
      * Example usage inside template would be (where @link is an attribute called link):
      *
      * ```
-     * <xsl:value-of select="php:function('phpDocumentor\Plugin\Core\Xslt\Extension::path', string(@link))" />
+     * <xsl:value-of select="php:function('phpDocumentor\Transformer\Writer\Xslt\Extension::path', string(@link))" />
      * ```
      *
      * @param string $fqsen
@@ -94,7 +94,7 @@ class Extension
      * Example usage inside template would be (where @link is an attribute called link):
      *
      * ```
-     * <xsl:value-of select="php:function('phpDocumentor\Plugin\Core\Xslt\Extension::typeOfElement', string(@link))" />
+     * <xsl:value-of select="php:function('phpDocumentor\Transformer\Writer\Xslt\Extension::typeOfElement', string(@link))" />
      * ```
      * @param string $link
      *

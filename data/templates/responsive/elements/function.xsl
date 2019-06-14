@@ -86,7 +86,7 @@
                     </xsl:attribute>
 
                     <div class="long_description">
-                        <xsl:value-of select="php:function('phpDocumentor\Plugin\Core\Xslt\Extension::markdown', string(docblock/long-description))" disable-output-escaping="yes" />
+                        <xsl:value-of select="php:function('phpDocumentor\Transformer\Writer\Xslt\Extension::markdown', string(docblock/long-description))" disable-output-escaping="yes" />
                     </div>
 
                     <xsl:if test="count(docblock/tag[@name != 'return' and @name != 'param' and @name != 'throws' and @name != 'throw']) > 0">

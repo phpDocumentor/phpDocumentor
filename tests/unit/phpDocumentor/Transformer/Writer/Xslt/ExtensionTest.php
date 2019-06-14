@@ -11,19 +11,19 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Plugin\Core\Xslt;
+namespace phpDocumentor\Transformer\Writer\Xslt;
 
 use Mockery as m;
 
 /**
- * Test class for \phpDocumentor\Plugin\Core\Xslt\Extension.
+ * Test class for \phpDocumentor\Transformer\Writer\Xslt\Extension.
  *
- * @covers \phpDocumentor\Plugin\Core\Xslt\Extension
+ * @covers \phpDocumentor\Transformer\Writer\Xslt\Extension
  */
 class ExtensionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
-     * @covers \phpDocumentor\Plugin\Core\Xslt\Extension::markdown
+     * @covers \phpDocumentor\Transformer\Writer\Xslt\Extension::markdown
      */
     public function testMarkdownWithString()
     {
@@ -35,7 +35,7 @@ class ExtensionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Plugin\Core\Xslt\Extension::markdown
+     * @covers \phpDocumentor\Transformer\Writer\Xslt\Extension::markdown
      */
     public function testMarkdownReturnsInputUnchangedWhenInputIsNotString()
     {
@@ -47,7 +47,7 @@ class ExtensionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Plugin\Core\Xslt\Extension::path
+     * @covers \phpDocumentor\Transformer\Writer\Xslt\Extension::path
      */
     public function testPathWithExternalLink()
     {
@@ -69,7 +69,7 @@ class ExtensionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Plugin\Core\Xslt\Extension::path
+     * @covers \phpDocumentor\Transformer\Writer\Xslt\Extension::path
      */
     public function testPathWithUndocumentedElement()
     {
@@ -89,7 +89,7 @@ class ExtensionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Plugin\Core\Xslt\Extension::path
+     * @covers \phpDocumentor\Transformer\Writer\Xslt\Extension::path
      */
     public function testPathWithDocumentedElement()
     {
@@ -115,7 +115,7 @@ class ExtensionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Plugin\Core\Xslt\Extension::typeOfElement
+     * @covers \phpDocumentor\Transformer\Writer\Xslt\Extension::typeOfElement
      */
     public function testTypeOfElementWithUrl()
     {
@@ -135,7 +135,7 @@ class ExtensionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Plugin\Core\Xslt\Extension::typeOfElement
+     * @covers \phpDocumentor\Transformer\Writer\Xslt\Extension::typeOfElement
      */
     public function testTypeOfElementWithUndocumentedElement()
     {
@@ -155,7 +155,7 @@ class ExtensionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Plugin\Core\Xslt\Extension::typeOfElement
+     * @covers \phpDocumentor\Transformer\Writer\Xslt\Extension::typeOfElement
      */
     public function testTypeOfElementWithDocumentedElement()
     {

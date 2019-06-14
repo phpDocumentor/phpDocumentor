@@ -18,7 +18,7 @@ namespace phpDocumentor\Transformer\Writer;
 use phpDocumentor\Application;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Event\Dispatcher;
-use phpDocumentor\Plugin\Core\Xslt\Extension;
+use phpDocumentor\Transformer\Writer\Xslt\Extension;
 use phpDocumentor\Transformer\Event\PreXslWriterEvent;
 use phpDocumentor\Transformer\Exception;
 use phpDocumentor\Transformer\Router\ForFileProxy;

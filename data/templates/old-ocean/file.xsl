@@ -53,7 +53,7 @@
       <br />
     </xsl:if>
     <xsl:if test="../docblock/long-description != ''">
-      <xsl:value-of select="php:function('phpDocumentor\Plugin\Core\Xslt\Extension::markdown', string(../docblock/long-description))" disable-output-escaping="yes" /><br />
+      <xsl:value-of select="php:function('phpDocumentor\Transformer\Writer\Xslt\Extension::markdown', string(../docblock/long-description))" disable-output-escaping="yes" /><br />
     </xsl:if>
 
     <xsl:if test="../include">
