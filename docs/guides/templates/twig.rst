@@ -49,7 +49,7 @@ phpDocumentor will attempt to autoload the class, allowing you to use `Composer'
 
 .. _Composer's autoloading functionality: https://getcomposer.org/doc/04-schema.md#autoload
 
-Your extension class may optionally implement ``phpDocumentor\Plugin\Twig\ExtensionInterface``, which will cause your constructor to be passed additional information about the project and transformation.
+Your extension class may optionally implement ``phpDocumentor\Transformer\Writer\Twig\ExtensionInterface``, which will cause your constructor to be passed additional information about the project and transformation.
 
 Global Variables
 ----------------

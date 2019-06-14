@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace phpDocumentor\Plugin\Twig\Stage;
+namespace phpDocumentor\Application\Stage;
 
 use Twig\Environment;
 
-final class ConfigureTwig
+final class Twig
 {
     /** @var Environment */
     private $twig;

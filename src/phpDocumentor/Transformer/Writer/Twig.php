@@ -13,18 +13,15 @@ declare(strict_types=1);
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Plugin\Twig\Writer;
+namespace phpDocumentor\Transformer\Writer;
 
 use InvalidArgumentException;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\Transformer\Writer\Pathfinder;
-use phpDocumentor\Plugin\Twig\Extension;
+use phpDocumentor\Transformer\Writer\Twig\Extension;
 use phpDocumentor\Transformer\Router\ForFileProxy;
 use phpDocumentor\Transformer\Router\Queue;
 use phpDocumentor\Transformer\Transformation;
-use phpDocumentor\Transformer\Writer\Routable;
-use phpDocumentor\Transformer\Writer\WriterAbstract;
 use Twig_Environment;
 use Twig_Extension_Debug;
 use Twig_Loader_Filesystem;
@@ -214,7 +211,7 @@ class Twig extends WriterAbstract implements Routable
 
             // to support 'normal' Twig extensions we check the interface to determine what instantiation to do.
             $implementsInterface = in_array(
-                'phpDocumentor\Plugin\Twig\ExtensionInterface',
+                'phpDocumentor\Transformer\Writer\Twig\ExtensionInterface',
                 class_implements($extensionValue),
                 true
             );

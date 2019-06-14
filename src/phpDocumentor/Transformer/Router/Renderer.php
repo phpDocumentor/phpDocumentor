@@ -73,7 +73,7 @@ class Renderer
      *
      * @param string $destination
      *
-     * @see phpDocumentor\Plugin\Twig\Transformer\Writer\Twig for the invocation
+     * @see phpDocumentor\Transformer\Writer\Twig for the invocation
      *     of this method.
      */
     public function setDestination($destination)
