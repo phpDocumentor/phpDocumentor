@@ -217,7 +217,7 @@ final class Version3 implements Strategy
                             1 => 'php3',
                             2 => 'phtml',
                         ],
-                        'visibility' => ['public'],
+                        'visibility' => ['public', 'protected', 'private'],
                         'default-package-name' => 'Default',
                         'encoding' => 'utf8',
                         'ignore-tags' => [],
