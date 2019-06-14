@@ -119,6 +119,9 @@
     "psr/simple-cache": {
         "version": "1.0.0"
     },
+    "ralouphie/getallheaders": {
+        "version": "2.0.5"
+    },
     "symfony/browser-kit": {
         "version": "v4.1.6"
     },
@@ -204,7 +207,7 @@
         }
     },
     "symfony/polyfill-ctype": {
-        "version": "v1.8.0"
+        "version": "v1.11.0"
     },
     "symfony/polyfill-mbstring": {
         "version": "v1.6.0"
@@ -253,9 +256,6 @@
     },
     "zendframework/zend-code": {
         "version": "3.3.0"
-    },
-    "zendframework/zend-config": {
-        "version": "2.6.0"
     },
     "zendframework/zend-eventmanager": {
         "version": "3.2.0"

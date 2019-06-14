@@ -41,13 +41,13 @@
         "psr/log": "^1.0",
         "symfony/config": "^4.1",
         "symfony/console": "^4.0",
-        "symfony/dependency-injection": "^4.1",
+        "symfony/dependency-injection": "^4.0",
         "symfony/event-dispatcher": "^4.0",
         "symfony/expression-language": "^4.0",
-        "symfony/filesystem": "^4.1",
+        "symfony/filesystem": "^4.0",
         "symfony/flex": "^1.0",
         "symfony/framework-bundle": "^4.0",
-        "symfony/monolog-bundle": "^3.1",
+        "symfony/monolog-bundle": "^3.0",
         "symfony/polyfill-ctype": "^1.9",
         "symfony/process": "^4.0",
         "symfony/proxy-manager-bridge": "^4.0",
@@ -57,7 +57,6 @@
         "twig/twig": "~1.3",
         "webmozart/assert": "^1.3",
         "zendframework/zend-cache": "~2.1",
-        "zendframework/zend-config": "~2.1",
         "zendframework/zend-filter": "~2.1",
         "zendframework/zend-serializer": "~2.1",
         "zendframework/zend-stdlib": "~2.1"
@@ -89,7 +88,9 @@
         "sort-packages": true
     },
     "replace": {
+        "paragonie/random_compat": "2.*",
         "symfony/polyfill-iconv": "*",
+        "symfony/polyfill-php72": "*",
         "symfony/polyfill-php71": "*",
         "symfony/polyfill-php70": "*",
         "symfony/polyfill-php56": "*"
