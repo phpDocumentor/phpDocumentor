@@ -29,39 +29,6 @@
     "container-interop/container-interop": {
         "version": "1.2.0"
     },
-    "doctrine/annotations": {
-        "version": "1.0",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "1.0",
-            "ref": "cb4152ebcadbe620ea2261da1a1c5a9b8cea7672"
-        }
-    },
-    "doctrine/cache": {
-        "version": "v1.7.1"
-    },
-    "doctrine/collections": {
-        "version": "v1.5.0"
-    },
-    "doctrine/common": {
-        "version": "v2.8.1"
-    },
-    "doctrine/event-manager": {
-        "version": "v1.0.0"
-    },
-    "doctrine/inflector": {
-        "version": "v1.2.0"
-    },
-    "doctrine/lexer": {
-        "version": "v1.0.1"
-    },
-    "doctrine/persistence": {
-        "version": "v1.0.0"
-    },
-    "doctrine/reflection": {
-        "version": "v1.0.0"
-    },
     "erusev/parsedown": {
         "version": "1.6.4"
     },
@@ -151,15 +118,6 @@
     },
     "psr/simple-cache": {
         "version": "1.0.0"
-    },
-    "sensio/framework-extra-bundle": {
-        "version": "4.0",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "4.0",
-            "ref": "aaddfdf43cdecd4cf91f992052d76c2cadc04543"
-        }
     },
     "symfony/browser-kit": {
         "version": "v4.1.6"

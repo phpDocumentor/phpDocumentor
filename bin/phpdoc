@@ -14,8 +14,6 @@ set_time_limit(0);
 require __DIR__ . '/../src/phpDocumentor/AutoloaderLocator.php';
 $loader = \phpDocumentor\AutoloaderLocator::autoload();
 
-AnnotationRegistry::registerLoader([$loader, 'loadClass']);
-
 if (!class_exists(SymfonyApplication::class)) {
     throw new \RuntimeException('You need to add "symfony/framework-bundle" as a Composer dependency.');
 }
