@@ -49,7 +49,6 @@
         "symfony/flex": "^1.0",
         "symfony/framework-bundle": "^4.0",
         "symfony/http-kernel": "^4.0",
-        "symfony/lts": "^4@dev",
         "symfony/monolog-bundle": "^3.1",
         "symfony/polyfill-ctype": "^1.9",
         "symfony/process": "^4.0",
@@ -110,7 +109,8 @@
         },
         "symfony": {
             "id": "01C32VS9393M1CP9R8TEJMH62G",
-            "allow-contrib": false
+            "allow-contrib": false,
+            "require": "~4.1.0"
         }
     }
 }
