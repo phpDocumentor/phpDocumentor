@@ -15,7 +15,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer;
 
-use JMS\Serializer\Annotation as Serializer;
 use phpDocumentor\Transformer\Template\Parameter;
 
 /**
@@ -24,43 +23,32 @@ use phpDocumentor\Transformer\Template\Parameter;
 class Transformation
 {
     /**
-     * @Serializer\XmlAttribute
-     * @Serializer\Type("string")
      * @var string Reference to an object containing the business logic used to execute this transformation.
      */
     protected $writer = null;
 
     /**
-     * @Serializer\XmlAttribute
-     * @Serializer\Type("string")
      * @var string the location where the output should be sent to; the exact function differs per writer.
      */
     protected $artifact = '';
 
     /**
-     * @Serializer\XmlAttribute
-     * @Serializer\Type("string")
      * @var string the location where input for a writer should come from; the exact function differs per writer.
      */
     protected $source = '';
 
     /**
-     * @Serializer\XmlAttribute
-     * @Serializer\Type("string")
      * @var string a filter or other form of limitation on what information of the AST is used; the exact function
      *     differs per writer.
      */
     protected $query = '';
 
     /**
-     * @Serializer\Exclude
      * @var Transformer The object guiding the transformation process and having meta-data of it.
      */
     protected $transformer;
 
     /**
-     * @Serializer\XmlList(entry = "parameter")
-     * @Serializer\Type("array<phpDocumentor\Transformer\Template\Parameter>")
      * @var Parameter[] A series of parameters that can influence what the writer does; the exact function differs
      *     per writer.
      */

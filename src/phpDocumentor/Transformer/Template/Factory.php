@@ -15,39 +15,29 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Template;
 
-use JMS\Serializer\SerializerInterface;
 use phpDocumentor\Transformer\Template;
+use phpDocumentor\Transformer\Transformation;
 
 class Factory
 {
     const TEMPLATE_DEFINITION_FILENAME = 'template.xml';
-
-    /** @var SerializerInterface */
-    private $serializer;
 
     /** @var PathResolver */
     private $pathResolver;
 
     /**
      * Constructs a new template factory with its dependencies.
-     *
-     * @param SerializerInterface $serializer Serializer used to convert the XML files to models.
      */
-    public function __construct(PathResolver $pathResolver, SerializerInterface $serializer)
+    public function __construct(PathResolver $pathResolver)
     {
-        $this->serializer = $serializer;
         $this->pathResolver = $pathResolver;
     }
 
     /**
      * Attempts to find, construct and return a template object with the given template name or (relative/absolute)
      * path.
-     *
-     * @param string $nameOrPath
-     *
-     * @return Template
      */
-    public function get($nameOrPath)
+    public function get(string $nameOrPath): Template
     {
         return $this->createTemplateFromXml(
             $this->fetchTemplateXmlFromPath(
@@ -61,7 +51,7 @@ class Factory
      *
      * @return string[]
      */
-    public function getAllNames()
+    public function getAllNames(): array
     {
         /** @var \RecursiveDirectoryIterator $files */
         $files = new \DirectoryIterator($this->getTemplatePath());
@@ -85,37 +75,56 @@ class Factory
 
     /**
      * Returns the path where all templates are stored.
-     *
-     * @return string
      */
-    public function getTemplatePath()
+    public function getTemplatePath(): string
     {
         return $this->pathResolver->getTemplatePath();
     }
 
     /**
      * Loads the template definition file from the given path and returns it's contents.
-     *
-     * @param string $path
-     *
-     * @return string
      */
-    protected function fetchTemplateXmlFromPath($path)
+    protected function fetchTemplateXmlFromPath(string $path): string
     {
         return file_get_contents($path . DIRECTORY_SEPARATOR . self::TEMPLATE_DEFINITION_FILENAME);
     }
 
     /**
      * Creates and returns a template object based on the provided template definition.
-     *
-     * @param string $xml
-     *
-     * @return Template
      */
-    protected function createTemplateFromXml($xml)
+    protected function createTemplateFromXml(string $xml): Template
     {
-        /** @var Template $template */
-        $template = $this->serializer->deserialize($xml, 'phpDocumentor\Transformer\Template', 'xml');
+        $xml = new \SimpleXMLElement($xml);
+        $template = new Template((string) $xml->name);
+        $template->setAuthor((string) $xml->author . ((string)$xml->email ? ' <' . $xml->email . '>' : ''));
+        $template->setVersion((string) $xml->version);
+        $template->setCopyright((string) $xml->copyright);
+        $template->setDescription((string) $xml->description);
+        foreach ($xml->parameter as $parameter) {
+            $parameterObject = new Parameter();
+            $parameterObject->setKey((string) $parameter->attributes()->key);
+            $parameterObject->setValue((string) $parameter);
+            $template->setParameter($parameterObject->getKey(), $parameterObject);
+        }
+        $i = 0;
+        foreach ($xml->transformations->transformation as $transformation) {
+            $transformationObject = new Transformation(
+                (string) $transformation->attributes()->query,
+                (string) $transformation->attributes()->writer,
+                (string) $transformation->attributes()->source,
+                (string) $transformation->attributes()->artifact
+            );
+            $parameters = [];
+            foreach ($transformation->parameter as $parameter) {
+                $parameterObject = new Parameter();
+                $parameterObject->setKey((string) $parameter->attributes()->key);
+                $parameterObject->setValue((string) $parameter);
+                $parameters[$parameterObject->getKey()] = $parameterObject;
+            }
+            $transformationObject->setParameters($parameters);
+
+            $template[$i++] = $transformationObject;
+        }
         $template->propagateParameters();
 
         return $template;

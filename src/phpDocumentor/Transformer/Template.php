@@ -16,56 +16,44 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer;
 
-use JMS\Serializer\Annotation as Serializer;
 use phpDocumentor\Transformer\Template\Parameter;
 
 /**
  * Model representing a template.
- *
- * @Serializer\XmlRoot("template")
  */
 final class Template implements \ArrayAccess, \Countable, \IteratorAggregate
 {
     /**
-     * @Serializer\Type("string")
      * @var string Name for this template
      */
     protected $name = null;
 
     /**
-     * @Serializer\Type("string")
      * @var string The name and optionally mail address of the author, i.e. `Mike van Riel <me@mikevanriel.com>`.
      */
     protected $author = '';
 
     /**
-     * @Serializer\Type("string")
      * @var string The version of the template according to semantic versioning, i.e. 1.2.0
      */
     protected $version = '';
 
     /**
-     * @Serializer\Type("string")
      * @var string A free-form copyright notice.
      */
     protected $copyright = '';
 
     /**
-     * @Serializer\Type("string")
      * @var string a text providing more information on this template.
      */
     protected $description = '';
 
     /**
-     * @Serializer\XmlList(entry = "transformation")
-     * @Serializer\Type("array<phpDocumentor\Transformer\Transformation>")
      * @var Transformation[] A series of transformations to execute in sequence during transformation.
      */
     protected $transformations = [];
 
     /**
-     * @Serializer\XmlList(entry = "parameter")
-     * @Serializer\Type("array<phpDocumentor\Transformer\Template\Parameter>")
      * @var Parameter[] Global parameters that are passed to each transformation.
      */
     protected $parameters = [];

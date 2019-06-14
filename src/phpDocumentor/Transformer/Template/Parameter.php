@@ -15,26 +15,18 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Template;
 
-use JMS\Serializer\Annotation as Serializer;
-
 /**
  * Model representing a parameter in a template or transformation.
- *
- * @Serializer\XmlRoot("parameter")
  */
 class Parameter
 {
     /**
-     * @Serializer\Type("string")
      * @var string
-     * @Serializer\XmlAttribute
      */
     protected $key;
 
     /**
-     * @Serializer\Type("string")
      * @var string
-     * @Serializer\XmlValue
      */
     protected $value;
 

@@ -175,10 +175,6 @@ services:
 
     phpDocumentor\Reflection\DocBlock\ExampleFinder: ~
 
-    phpDocumentor\Infrastructure\JmsSerializer\FileCache:
-      arguments:
-        ['%kernel.cache_dir%/jms_serializer']
-
     phpDocumentor\Transformer\Router\StandardRouter: ~
 
     phpDocumentor\Parser\Middleware\StopwatchMiddleware:
@@ -211,17 +207,11 @@ services:
 
     Zend\Cache\Storage\Adapter\Filesystem:
       class: Zend\Cache\Storage\Adapter\Filesystem
-      factory: ['phpDocumentor\Infrastructure\Cache\ZendCacheFactory', create]
+      factory: ['phpDocumentor\Descriptor\Cache\ZendCacheFactory', create]
 
     Parsedown:
       class: Parsedown
       factory: ['Parsedown', 'instance']
-
-    jms_serializer.metadata_factory:
-        class: Metadata\MetadataFactory
-        arguments: ['@jms_serializer.metadata.chain_driver', 'Metadata\ClassHierarchyMetadata', '%kernel.debug%']
-        calls:
-            - [setCache, ['@phpDocumentor\Infrastructure\JmsSerializer\FileCache']]
 
     ###################################################################################
     ## Writers ########################################################################

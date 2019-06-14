@@ -13,7 +13,7 @@ declare(strict_types=1);
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Infrastructure\Cache;
+namespace phpDocumentor\Descriptor\Cache;
 
 use Zend\Cache\Storage\Adapter\Filesystem;
 use Zend\Cache\Storage\Plugin\PluginOptions;

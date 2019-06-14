@@ -11,7 +11,6 @@
 
 namespace phpDocumentor\Transformer\Template;
 
-use JMS\Serializer\Serializer;
 use Mockery as m;
 use org\bovigo\vfs\vfsStream;
 use phpDocumentor\Transformer\Template;
@@ -20,9 +19,6 @@ class FactoryTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var m\MockInterface|PathResolver */
     private $pathResolverMock;
-
-    /** @var m\MockInterface|Serializer */
-    private $serializerMock;
 
     /** @var Factory */
     private $fixture;
@@ -33,9 +29,8 @@ class FactoryTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     protected function setUp()
     {
         $this->pathResolverMock = m::mock('phpDocumentor\Transformer\Template\PathResolver');
-        $this->serializerMock = m::mock('JMS\Serializer\Serializer');
 
-        $this->fixture = new Factory($this->pathResolverMock, $this->serializerMock);
+        $this->fixture = new Factory($this->pathResolverMock);
     }
 
     /**
@@ -44,31 +39,65 @@ class FactoryTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testIfDependenciesAreCorrectlyRegisteredOnInitialization()
     {
         $this->assertAttributeSame($this->pathResolverMock, 'pathResolver', $this->fixture);
-        $this->assertAttributeSame($this->serializerMock, 'serializer', $this->fixture);
     }
 
     /**
      * @covers phpDocumentor\Transformer\Template\Factory::get
      * @covers phpDocumentor\Transformer\Template\Factory::fetchTemplateXmlFromPath
      * @covers phpDocumentor\Transformer\Template\Factory::createTemplateFromXml
+     * @todo test parameters in template and transformations
      */
     public function testRetrieveInstantiatedTemplate()
     {
         // Arrange
         $templateName = 'clean';
-        $template = new Template($templateName);
-        vfsStream::setup('exampleDir')->addChild(vfsStream::newFile('template.xml')->setContent('xml'));
+        $xml = <<<'XML'
+<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <name>clean</name>
+  <author>Mike van Riel</author>
+  <email>mike@phpdoc.org</email>
+  <version>1.0.0</version>
+  <copyright>Mike van Riel 2013</copyright>
+  <description><![CDATA[This is the description]]></description>
+  <transformations>
+    <transformation query="copy" writer="FileIo" source="templates/clean/htaccess.dist" artifact=".htaccess"/>
+    <transformation query="copy" writer="FileIo" source="templates/clean/images" artifact="images"/>
+    <transformation query="copy" writer="FileIo" source="templates/clean/css" artifact="css"/>
+    <transformation query="copy" writer="FileIo" source="templates/clean/js" artifact="js"/>
+    <transformation query="copy" writer="FileIo" source="templates/clean/font" artifact="font"/>
+    <transformation writer="twig" query="namespace" source="templates/clean/namespace.html.twig" artifact="index.html"/>
+    <transformation writer="twig" query="indexes.namespaces" source="templates/clean/namespace.html.twig" />
+    <transformation writer="twig" query="indexes.classes" source="templates/clean/class.html.twig" />
+    <transformation writer="twig" query="indexes.interfaces" source="templates/clean/interface.html.twig" />
+    <transformation writer="twig" query="indexes.traits" source="templates/clean/class.html.twig" />
+    <transformation writer="twig" query="files" source="templates/clean/file.html.twig" />
+    <transformation writer="twig" query="files" source="templates/clean/file.source.txt.twig" artifact="files/{{path}}.txt"/>
+    <transformation writer="twig" source="templates/clean/reports/markers.html.twig" artifact="reports/markers.html"/>
+    <transformation writer="twig" source="templates/clean/reports/errors.html.twig" artifact="reports/errors.html"/>
+    <transformation writer="twig" source="templates/clean/reports/deprecated.html.twig" artifact="reports/deprecated.html"/>
+    <transformation writer="twig" source="templates/clean/graphs/class.html.twig" artifact="graphs/class.html"/>
+    <transformation writer="Graph" source="Class" artifact="graphs/classes.svg" />
+  </transformations>
+</template>
+XML;
+        vfsStream::setup('exampleDir')->addChild(vfsStream::newFile('template.xml')->setContent($xml));
         $this->pathResolverMock->shouldReceive('resolve')->with($templateName)->andReturn(vfsStream::url('exampleDir'));
-        $this->serializerMock
-            ->shouldReceive('deserialize')
-            ->with('xml', 'phpDocumentor\Transformer\Template', 'xml')
-            ->andReturn($template);
 
         // Act
         $result = $this->fixture->get($templateName);
 
         // Assert
-        $this->assertSame($template, $result);
+        $this->assertSame($templateName, $result->getName());
+        $this->assertSame('Mike van Riel <mike@phpdoc.org>', $result->getAuthor());
+        $this->assertSame('1.0.0', $result->getVersion());
+        $this->assertSame('Mike van Riel 2013', $result->getCopyright());
+        $this->assertSame('This is the description', $result->getDescription());
+        $this->assertSame(17, $result->count());
+        $this->assertSame('copy', $result[0]->getQuery());
+        $this->assertSame('FileIo', $result[0]->getWriter());
+        $this->assertSame('templates/clean/htaccess.dist', $result[0]->getSource());
+        $this->assertSame('.htaccess', $result[0]->getArtifact());
     }
 
     /**

@@ -53,9 +53,6 @@
     "doctrine/inflector": {
         "version": "v1.2.0"
     },
-    "doctrine/instantiator": {
-        "version": "1.1.0"
-    },
     "doctrine/lexer": {
         "version": "v1.0.1"
     },
@@ -92,24 +89,6 @@
     "jean85/pretty-package-versions": {
         "version": "1.2"
     },
-    "jms/metadata": {
-        "version": "1.6.0"
-    },
-    "jms/parser-lib": {
-        "version": "1.0.0"
-    },
-    "jms/serializer": {
-        "version": "1.10.0"
-    },
-    "jms/serializer-bundle": {
-        "version": "2.0",
-        "recipe": {
-            "repo": "github.com/symfony/recipes-contrib",
-            "branch": "master",
-            "version": "2.0",
-            "ref": "fe60ce509ef04a3f40da96e3979bc8d9b13b2372"
-        }
-    },
     "league/flysystem": {
         "version": "1.0.41"
     },
@@ -140,9 +119,6 @@
     "padraic/phar-updater": {
         "version": "1.0.4"
     },
-    "phpcollection/phpcollection": {
-        "version": "0.5.0"
-    },
     "phpdocumentor/flyfinder": {
         "version": "1.0.0-beta1"
     },
@@ -160,9 +136,6 @@
     },
     "phpdocumentor/type-resolver": {
         "version": "0.4.0"
-    },
-    "phpoption/phpoption": {
-        "version": "1.5.0"
     },
     "psr/cache": {
         "version": "1.0.1"
@@ -349,11 +322,5 @@
     },
     "zendframework/zend-stdlib": {
         "version": "2.7.7"
-    },
-    "zetacomponents/base": {
-        "version": "1.9.1"
-    },
-    "zetacomponents/document": {
-        "version": "1.3.1"
     }
 }
