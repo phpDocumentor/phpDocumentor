@@ -10,13 +10,13 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\DomainModel;
+namespace phpDocumentor;
 
 use PHPUnit\Framework\TestCase;
 
 /**
  * Class DsnTest
- * @coversDefaultClass \phpDocumentor\DomainModel\Dsn
+ * @coversDefaultClass \phpDocumentor\Dsn
  */
 class DsnTest extends TestCase
 {
@@ -66,7 +66,7 @@ class DsnTest extends TestCase
      * @covers ::getQuery
      * @covers ::getParameters
      * @covers ::<private>
-     * @uses \phpDocumentor\DomainModel\Path
+     * @uses \phpDocumentor\Path
      */
     public function testValidDsnWithScheme()
     {
@@ -101,7 +101,7 @@ class DsnTest extends TestCase
      * @covers ::getPort
      * @covers ::getPath
      * @covers ::<private>
-     * @uses \phpDocumentor\DomainModel\Path
+     * @uses \phpDocumentor\Path
      */
     public function testValidDsnWithoutScheme()
     {
@@ -123,7 +123,7 @@ class DsnTest extends TestCase
      * @covers ::getPort
      * @covers ::getPath
      * @covers ::<private>
-     * @uses \phpDocumentor\DomainModel\Path
+     * @uses \phpDocumentor\Path
      */
     public function testValidWindowsDsnWithoutScheme()
     {
@@ -151,7 +151,7 @@ class DsnTest extends TestCase
      * @covers ::getPort
      * @covers ::getPath
      * @covers ::<private>
-     * @uses \phpDocumentor\DomainModel\Path
+     * @uses \phpDocumentor\Path
      */
     public function testValidWindowsDsnWithScheme()
     {

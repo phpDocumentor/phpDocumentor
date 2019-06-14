@@ -14,8 +14,8 @@ namespace phpDocumentor\Configuration;
 
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Configuration\Factory\Version3;
-use phpDocumentor\DomainModel\Dsn;
-use phpDocumentor\DomainModel\Path;
+use phpDocumentor\Dsn;
+use phpDocumentor\Path;
 
 /**
  * @coversDefaultClass \phpDocumentor\Configuration\CommandlineOptionsMiddleware

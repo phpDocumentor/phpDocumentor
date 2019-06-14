@@ -15,7 +15,7 @@ namespace phpDocumentor\Infrastructure;
 use Flyfinder\Specification\InPath;
 use League\Flysystem\Adapter\AbstractAdapter;
 use Mockery as m;
-use phpDocumentor\DomainModel\Dsn;
+use phpDocumentor\Dsn;
 
 /**
  * Test case for FilesystemFactory

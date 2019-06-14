@@ -21,7 +21,7 @@ use Flyfinder\Finder;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
 use League\Flysystem\MountManager;
-use phpDocumentor\DomainModel\Dsn;
+use phpDocumentor\Dsn;
 
 /**
  * Class FilesystemFactory

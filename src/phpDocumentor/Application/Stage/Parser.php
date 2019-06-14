@@ -21,7 +21,7 @@ use phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper;
 use phpDocumentor\Descriptor\Collection as PartialsCollection;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
-use phpDocumentor\DomainModel\Parser\FileCollector;
+use phpDocumentor\Parser\FileCollector;
 use phpDocumentor\Parser\Parser as DocParser;
 use phpDocumentor\Reflection\DocBlock\ExampleFinder;
 use Psr\Log\LoggerInterface;

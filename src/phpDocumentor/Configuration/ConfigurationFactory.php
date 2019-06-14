@@ -17,7 +17,7 @@ namespace phpDocumentor\Configuration;
 
 use phpDocumentor\Configuration\Factory\Strategy;
 use phpDocumentor\Configuration\Factory\Version3;
-use phpDocumentor\DomainModel\Uri;
+use phpDocumentor\Uri;
 use RuntimeException;
 
 /**

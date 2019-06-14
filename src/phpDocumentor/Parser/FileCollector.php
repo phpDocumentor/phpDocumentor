@@ -13,9 +13,9 @@ declare(strict_types=1);
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\DomainModel\Parser;
+namespace phpDocumentor\Parser;
 
-use phpDocumentor\DomainModel\Dsn;
+use phpDocumentor\Dsn;
 use phpDocumentor\Reflection\File;
 
 interface FileCollector

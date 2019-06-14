@@ -16,7 +16,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Infrastructure;
 
 use League\Flysystem\Filesystem;
-use phpDocumentor\DomainModel\Dsn;
+use phpDocumentor\Dsn;
 
 /**
  * Interface for FileSystem factories.

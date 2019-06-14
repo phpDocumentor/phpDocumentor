@@ -18,7 +18,7 @@ namespace phpDocumentor\Application\Stage;
 use phpDocumentor\Configuration\CommandlineOptionsMiddleware;
 use phpDocumentor\Configuration\Configuration;
 use phpDocumentor\Configuration\ConfigurationFactory;
-use phpDocumentor\DomainModel\Uri;
+use phpDocumentor\Uri;
 use Psr\Log\LoggerInterface;
 
 final class Configure

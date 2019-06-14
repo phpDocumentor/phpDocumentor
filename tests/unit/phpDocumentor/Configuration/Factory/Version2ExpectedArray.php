@@ -12,8 +12,8 @@
 
 namespace phpDocumentor\Configuration\Factory;
 
-use phpDocumentor\DomainModel\Dsn;
-use phpDocumentor\DomainModel\Path;
+use phpDocumentor\Dsn;
+use phpDocumentor\Path;
 
 /**
  * Expected phpDocumentor2 configuration arrays used for unit testing.
@@ -32,8 +32,8 @@ final class Version2ExpectedArray
                 'title' => 'my-doc',
                 'use-cache' => true,
                 'paths' => [
-                    'output' => new \phpDocumentor\DomainModel\Dsn('build/docs'),
-                    'cache' => new \phpDocumentor\DomainModel\Path('/tmp/phpdoc-doc-cache'),
+                    'output' => new \phpDocumentor\Dsn('build/docs'),
+                    'cache' => new \phpDocumentor\Path('/tmp/phpdoc-doc-cache'),
                 ],
                 'versions' => [
                     '1.0.0' => [
@@ -91,7 +91,7 @@ final class Version2ExpectedArray
                 'title' => 'my-doc',
                 'use-cache' => true,
                 'paths' => [
-                    'output' => new \phpDocumentor\DomainModel\Dsn('build/docs'),
+                    'output' => new \phpDocumentor\Dsn('build/docs'),
                     'cache' => new Path('/tmp/phpdoc-doc-cache'),
                 ],
                 'versions' => [
@@ -148,8 +148,8 @@ final class Version2ExpectedArray
                 'title' => 'my-doc',
                 'use-cache' => true,
                 'paths' => [
-                    'output' => new \phpDocumentor\DomainModel\Dsn('build/api/docs'),
-                    'cache' => new \phpDocumentor\DomainModel\Path('/tmp/phpdoc-doc-cache'),
+                    'output' => new \phpDocumentor\Dsn('build/api/docs'),
+                    'cache' => new \phpDocumentor\Path('/tmp/phpdoc-doc-cache'),
                 ],
                 'versions' => [
                     '1.0.0' => [
@@ -207,8 +207,8 @@ final class Version2ExpectedArray
                 'title' => 'my-doc',
                 'use-cache' => true,
                 'paths' => [
-                    'output' => new \phpDocumentor\DomainModel\Dsn('build/docs'),
-                    'cache' => new \phpDocumentor\DomainModel\Path('/tmp/phpdoc-doc-cache'),
+                    'output' => new \phpDocumentor\Dsn('build/docs'),
+                    'cache' => new \phpDocumentor\Path('/tmp/phpdoc-doc-cache'),
                 ],
                 'versions' => [
                     '1.0.0' => [

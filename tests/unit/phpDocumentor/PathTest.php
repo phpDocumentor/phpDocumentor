@@ -10,12 +10,12 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\DomainModel;
+namespace phpDocumentor;
 
 use PHPUnit\Framework\TestCase;
 
 /**
- * @coversDefaultClass phpDocumentor\DomainModel\Path
+ * @coversDefaultClass \phpDocumentor\Path
  * @covers ::<private>
  */
 final class PathTest extends TestCase

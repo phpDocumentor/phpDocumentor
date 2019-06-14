@@ -14,7 +14,7 @@ namespace phpDocumentor\Application\Stage\Parser;
 
 use \Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
-use phpDocumentor\DomainModel\Path;
+use phpDocumentor\Path;
 use Zend\Cache\Storage\StorageInterface;
 
 class ConfigureCacheTest extends MockeryTestCase

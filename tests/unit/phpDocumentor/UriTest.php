@@ -10,14 +10,14 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\DomainModel;
+namespace phpDocumentor;
 
 use PHPUnit\Framework\TestCase;
 
 /**
  * Test case for Uri
  *
- * @coversDefaultClass phpDocumentor\DomainModel\Uri
+ * @coversDefaultClass \phpDocumentor\Uri
  */
 final class UriTest extends TestCase
 {

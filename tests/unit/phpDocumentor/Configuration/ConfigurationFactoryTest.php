@@ -18,7 +18,7 @@ use org\bovigo\vfs\vfsStream;
 use phpDocumentor\Configuration\Factory\Strategy;
 use phpDocumentor\Configuration\Factory\Version2;
 use phpDocumentor\Configuration\Factory\Version3;
-use phpDocumentor\DomainModel\Uri;
+use phpDocumentor\Uri;
 
 /**
  * Test case for ConfigurationFactory

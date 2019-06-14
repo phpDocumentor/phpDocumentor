@@ -13,7 +13,7 @@
 namespace phpDocumentor\Infrastructure\Parser;
 
 use League\Flysystem\MountManager;
-use phpDocumentor\DomainModel\Dsn;
+use phpDocumentor\Dsn;
 use phpDocumentor\Infrastructure\FlySystemFactory;
 use PHPUnit\Framework\TestCase;
 

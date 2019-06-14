@@ -15,8 +15,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Infrastructure\Parser;
 
-use phpDocumentor\DomainModel\Dsn;
-use phpDocumentor\DomainModel\Parser\FileCollector;
+use phpDocumentor\Dsn;
+use phpDocumentor\Parser\FileCollector;
 use phpDocumentor\Infrastructure\FlySystemFactory;
 use phpDocumentor\Infrastructure\SpecificationFactory;
 

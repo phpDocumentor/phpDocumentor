@@ -16,8 +16,8 @@ declare(strict_types=1);
 namespace phpDocumentor\Configuration\Factory;
 
 use InvalidArgumentException;
-use phpDocumentor\DomainModel\Dsn;
-use phpDocumentor\DomainModel\Path;
+use phpDocumentor\Dsn;
+use phpDocumentor\Path;
 use SimpleXMLElement;
 
 /**

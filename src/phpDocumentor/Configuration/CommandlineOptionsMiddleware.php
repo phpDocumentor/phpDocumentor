@@ -16,8 +16,8 @@ declare(strict_types=1);
 namespace phpDocumentor\Configuration;
 
 use phpDocumentor\Configuration\Factory\Version3;
-use phpDocumentor\DomainModel\Dsn;
-use phpDocumentor\DomainModel\Path;
+use phpDocumentor\Dsn;
+use phpDocumentor\Path;
 
 final class CommandlineOptionsMiddleware
 {
