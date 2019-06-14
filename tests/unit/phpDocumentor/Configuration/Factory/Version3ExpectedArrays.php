@@ -312,7 +312,7 @@ final class Version3ExpectedArrays
                                     1 => 'php3',
                                     2 => 'phtml',
                                 ],
-                                'visibility' => ['public'],
+                                'visibility' => ['public', 'protected', 'private'],
                                 'default-package-name' => 'Default',
                                 'markers' => [
                                     0 => 'TODO',
