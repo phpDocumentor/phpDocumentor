@@ -57,7 +57,6 @@ class TagConverter
         $child->setAttribute('description', str_replace('&', '&amp;', $description));
         $this->addTypes($tag, $child);
 
-        // TODO: make the tests below configurable from the outside so that more could be added using plugins
         if ($tag instanceof TypedVariableAbstract) {
             $child->setAttribute('variable', str_replace('&', '&amp;', $tag->getVariableName()));
         }
