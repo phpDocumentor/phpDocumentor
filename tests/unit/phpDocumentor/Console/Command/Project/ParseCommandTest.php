@@ -10,7 +10,7 @@
  *  @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Application\Console\Command\Project;
+namespace phpDocumentor\Console\Command\Project;
 
 use League\Pipeline\PipelineInterface;
 use Mockery as m;
@@ -19,10 +19,10 @@ use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Tests\Fixtures\DummyOutput;
 
 /**
- * @coversDefaultClass phpDocumentor\Application\Console\Command\Project\TransformCommand
+ * @coversDefaultClass phpDocumentor\Application\Console\Command\Project\ParseCommand
  * @covers ::<protected>
  */
-class TransformCommandTest extends MockeryTestCase
+class ParseCommandTest extends MockeryTestCase
 {
     /**
      * Tests the processing of target directory when non is provided.
@@ -30,18 +30,18 @@ class TransformCommandTest extends MockeryTestCase
      */
     public function testPipelineIsInvokedWithTheNecessaryOptions()
     {
-        $input = new StringInput('-t abc');
+        $input = new StringInput('--force -f abc');
         $output = new DummyOutput();
 
         $pipeline = m::mock(PipelineInterface::class);
         $pipeline
             ->shouldReceive('__invoke')
             ->withArgs(function (array $options) {
-                return $options['target'] === 'abc';
+                return $options['force'] === true && $options['filename'] === ['abc'];
             })
             ->once();
 
-        $command = new TransformCommand($pipeline);
+        $command = new ParseCommand($pipeline);
 
         $this->assertSame(0, $command->run($input, $output));
     }

@@ -13,7 +13,7 @@ declare(strict_types=1);
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Application\Console\Command\Template;
+namespace phpDocumentor\Console\Command\Template;
 
 use Symfony\Component\Console\Command\Command;
 use \Symfony\Component\Console\Input\InputInterface;

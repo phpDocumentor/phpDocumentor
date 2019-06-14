@@ -13,7 +13,7 @@ declare(strict_types=1);
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Application\Console\Command\Phar;
+namespace phpDocumentor\Console\Command\Phar;
 
 use \Exception;
 use Humbug\SelfUpdate\Strategy\GithubStrategy;

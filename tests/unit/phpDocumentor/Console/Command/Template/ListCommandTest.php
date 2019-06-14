@@ -10,7 +10,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Application\Console\Command\Template;
+namespace phpDocumentor\Console\Command\Template;
 
 use Mockery as m;
 use phpDocumentor\Transformer\Template\Factory;

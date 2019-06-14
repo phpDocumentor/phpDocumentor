@@ -11,7 +11,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Application\Console;
+namespace phpDocumentor\Console;
 
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery as m;
@@ -21,7 +21,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
- * @coversDefaultClass \phpDocumentor\Application\Console\Application
+ * @coversDefaultClass \phpDocumentor\Console\Application
  * @covers ::__construct
  * @covers ::<private>
  */

@@ -11,7 +11,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Application\Console;
+namespace phpDocumentor\Console;
 
 use PackageVersions\Versions;
 use Symfony\Bundle\FrameworkBundle\Console\Application as BaseApplication;
@@ -78,7 +78,7 @@ final class Application extends BaseApplication
     {
         $version = static::VERSION;
         if (static::VERSION === '@' . 'package_version' . '@') { //prevent replacing the version.
-            $version = trim(file_get_contents(__DIR__ . '/../../../../VERSION'));
+            $version = trim(file_get_contents(__DIR__ . '/../../../VERSION'));
             try {
                 $version = 'v' . ltrim(
                     \Jean85\PrettyVersions::getVersion(Versions::ROOT_PACKAGE_NAME)->getPrettyVersion(),

@@ -13,7 +13,7 @@ declare(strict_types=1);
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Application\Parser;
+namespace phpDocumentor\Parser;
 
 use phpDocumentor\Reflection\DocBlockFactory;
 use phpDocumentor\Reflection\Php\Factory;

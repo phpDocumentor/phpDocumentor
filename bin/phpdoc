@@ -3,7 +3,7 @@
 
 use phpDocumentor\Kernel;
 use Doctrine\Common\Annotations\AnnotationRegistry;
-use phpDocumentor\Application\Console\Application;
+use phpDocumentor\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Console\Application as SymfonyApplication;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Debug\Debug;

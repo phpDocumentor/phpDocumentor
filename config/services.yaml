@@ -72,8 +72,8 @@ services:
 #          - '../src/phpDocumentor/**/Messages'
 #          - '../src/phpDocumentor/Transformer/**/{Event, Exception}/{**, PathResolver.php}'
 
-    phpDocumentor\Application\Console\:
-      resource: '../src/phpDocumentor/Application/Console'
+    phpDocumentor\Console\:
+      resource: '../src/phpDocumentor/Console'
 
     phpDocumentor\Descriptor\:
         resource: '../src/phpDocumentor/Descriptor'
@@ -99,15 +99,15 @@ services:
     phpDocumentor\Application:
         public: true
 
-    phpDocumentor\Application\Console\Command\Project\RunCommand:
+    phpDocumentor\Console\Command\Project\RunCommand:
         arguments:
           - '@phpDocumentor\Descriptor\ProjectDescriptorBuilder'
           - '@phpdoc.complete.pipeline'
 
-    phpDocumentor\Application\Console\Command\Project\ParseCommand:
+    phpDocumentor\Console\Command\Project\ParseCommand:
         arguments: ['@phpdoc.parse.pipeline']
 
-    phpDocumentor\Application\Console\Command\Project\TransformCommand:
+    phpDocumentor\Console\Command\Project\TransformCommand:
         arguments: ['@phpdoc.transform.pipeline']
 
     phpDocumentor\Descriptor\Builder\AssemblerFactory:
@@ -119,8 +119,7 @@ services:
         - [attachDefaults]
 
 
-    phpDocumentor\Application\Parser\CacheFactory: ~
-    phpDocumentor\Application\Parser\ProjectFactoryFactory: ~
+    phpDocumentor\Parser\ProjectFactoryFactory: ~
 
     phpDocumentor\Configuration\Configuration:
       factory: ['@phpDocumentor\Configuration\ConfigurationFactory', 'fromDefaultLocations']
@@ -157,7 +156,7 @@ services:
           - [insert, ['@phpDocumentor\Transformer\Transformer', !php/const \phpDocumentor\Transformer\Transformer::COMPILER_PRIORITY]]
 
     phpDocumentor\Reflection\ProjectFactory:
-       factory: 'phpDocumentor\Application\Parser\ProjectFactoryFactory:create'
+       factory: 'phpDocumentor\Parser\ProjectFactoryFactory:create'
        arguments: [!tagged phpdoc.parser.middleware]
 
     phpDocumentor\Parser\Parser:
