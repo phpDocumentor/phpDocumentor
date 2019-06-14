@@ -1,5 +1,5 @@
 language: php
-php: [ 7.1, 7.2, 7.3, nightly ]
+php: [ 7.1, 7.2, 7.3 ]
 sudo: false
 
 branches:
@@ -7,8 +7,6 @@ except: /^(\S*)-nightly-(\S*)$/
 
 matrix:
   fast_finish: true
-  allow_failures:
-    - php: nightly
 
 install:
   - travis_retry composer install --no-interaction --prefer-dist --optimize-autoloader
@@ -24,6 +22,7 @@ jobs:
       php: 7.1
       name: "php 7.1 Smoke test"
       before_script:
+        - travis_retry sudo apt update
         - travis_retry sudo apt install graphviz
       script:
         - ./bin/phpdoc run 
@@ -32,6 +31,7 @@ jobs:
       php: 7.1
       name: "php 7.1 Behat with phar"
       before_script:
+        - travis_retry sudo apt update
         - travis_retry sudo apt install graphviz
       script:
         - git tag v3.999.999

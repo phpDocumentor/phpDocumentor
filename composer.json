@@ -66,7 +66,7 @@
         "behat/mink-extension": "^2.3",
         "behat/mink-goutte-driver": "^1.2",
         "integratedexperts/behat-screenshot": "^0.7.2",
-        "mikey179/vfsStream": "^1.2",
+        "mikey179/vfsstream": "^1.2",
         "mockery/mockery": "^1.0",
         "symfony/dotenv": "^4.0"
     },
