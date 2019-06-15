@@ -15,6 +15,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
+use phpDocumentor\Descriptor\Tag\BaseTypes\TypedVariableAbstract;
+
 /**
  * Descriptor representing a Class.
  */
@@ -281,6 +283,9 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
 
         /** @var Tag\PropertyDescriptor $propertyTag */
         foreach ($propertyTags as $propertyTag) {
+            if ( ! $propertyTag instanceof TypedVariableAbstract) {
+                continue;
+            }
             $property = new PropertyDescriptor();
             $property->setName(ltrim($propertyTag->getVariableName(), '$'));
             $property->setDescription($propertyTag->getDescription());
