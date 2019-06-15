@@ -13,7 +13,7 @@ declare(strict_types=1);
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Infrastructure\Parser;
+namespace phpDocumentor\Parser;
 
 use Flyfinder\Path;
 use Flyfinder\Specification\AndSpecification;
@@ -23,7 +23,7 @@ use Flyfinder\Specification\IsHidden;
 use Flyfinder\Specification\NotSpecification;
 use Flyfinder\Specification\OrSpecification;
 use Flyfinder\Specification\SpecificationInterface;
-use phpDocumentor\Infrastructure\SpecificationFactory as FactoryInterface;
+use phpDocumentor\Parser\SpecificationFactoryInterface as FactoryInterface;
 
 /**
  * Factory class to build Specification used by FlyFinder when reading files to process.

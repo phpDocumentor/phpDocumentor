@@ -13,19 +13,17 @@ declare(strict_types=1);
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Infrastructure;
+namespace phpDocumentor\Parser;
 
-use League\Flysystem\FilesystemInterface;
-use \LogicException;
 use Flyfinder\Finder;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemInterface;
 use League\Flysystem\MountManager;
+use LogicException;
 use phpDocumentor\Dsn;
+use phpDocumentor\Parser\FileSystemFactory;
 
-/**
- * Class FilesystemFactory
- */
 final class FlySystemFactory implements FileSystemFactory
 {
     /** @var MountManager */
@@ -38,10 +36,8 @@ final class FlySystemFactory implements FileSystemFactory
 
     /**
      * Returns a Filesystem instance based on the scheme of the provided Dsn
-     *
-     * @return FilesystemInterface
      */
-    public function create(Dsn $dsn)
+    public function create(Dsn $dsn): FilesystemInterface
     {
         $dsnId = hash('md5', (string) $dsn);
 
@@ -60,6 +56,7 @@ final class FlySystemFactory implements FileSystemFactory
         }
 
         $filesystem->addPlugin(new Finder());
+
         return $filesystem;
     }
 }

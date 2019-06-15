@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * This file is part of phpDocumentor.
  *
@@ -10,7 +12,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Infrastructure;
+namespace phpDocumentor\Parser;
 
 use Flyfinder\Specification\InPath;
 use League\Flysystem\Adapter\AbstractAdapter;
@@ -18,10 +20,9 @@ use Mockery as m;
 use phpDocumentor\Dsn;
 
 /**
- * Test case for FilesystemFactory
- * @coversDefaultClass phpDocumentor\Infrastructure\FlySystemFactory
+ * @coversDefaultClass \phpDocumentor\Parser\FlySystemFactory
  */
-class FlySystemFactoryTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+final class FlySystemFactoryTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var FlySystemFactory */
     private $fixture;

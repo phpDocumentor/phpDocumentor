@@ -13,7 +13,7 @@ declare(strict_types=1);
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Infrastructure\Parser;
+namespace phpDocumentor\Parser;
 
 use League\Flysystem\FilesystemInterface;
 use phpDocumentor\Reflection\File;

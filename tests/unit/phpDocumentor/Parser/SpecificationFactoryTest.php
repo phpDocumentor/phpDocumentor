@@ -10,7 +10,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Infrastructure\Parser;
+namespace phpDocumentor\Parser;
 
 use Flyfinder\Path;
 use Flyfinder\Specification\AndSpecification;
@@ -19,10 +19,11 @@ use Flyfinder\Specification\InPath;
 use Flyfinder\Specification\IsHidden;
 use Flyfinder\Specification\NotSpecification;
 use Flyfinder\Specification\OrSpecification;
+use phpDocumentor\Parser\SpecificationFactoryInterface;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @coversDefaultClass \phpDocumentor\Infrastructure\Parser\SpecificationFactory
+ * @coversDefaultClass \phpDocumentor\Parser\SpecificationFactory
  * @covers ::create
  * @covers ::<private>
  */

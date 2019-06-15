@@ -78,6 +78,10 @@ services:
     phpDocumentor\Descriptor\:
         resource: '../src/phpDocumentor/Descriptor'
 
+    phpDocumentor\Parser\:
+        resource: '../src/phpDocumentor/Parser'
+        exclude: '../src/phpDocumentor/Parser/Middleware'
+
     phpDocumentor\Parser\Middleware\:
         resource: '../src/phpDocumentor/Parser/Middleware'
         tags: [ { name: 'phpdoc.parser.middleware', priority: 1000 } ]
@@ -85,9 +89,6 @@ services:
     phpDocumentor\Transformer\:
       resource: '../src/phpDocumentor/Transformer'
       exclude: '../src/phpDocumentor/Transformer/**/{Event, Exception}/{**, PathResolver.php}'
-
-    phpDocumentor\Infrastructure\:
-      resource: '../src/phpDocumentor/Infrastructure'
 
     phpDocumentor\Compiler\:
       resource: '../src/phpDocumentor/Compiler'

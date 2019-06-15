@@ -19,7 +19,7 @@ use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Tests\Fixtures\DummyOutput;
 
 /**
- * @coversDefaultClass phpDocumentor\Application\Console\Command\Project\ParseCommand
+ * @coversDefaultClass \phpDocumentor\Console\Command\Project\ParseCommand
  * @covers ::<protected>
  */
 class ParseCommandTest extends MockeryTestCase

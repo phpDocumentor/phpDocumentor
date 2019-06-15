@@ -13,14 +13,14 @@ declare(strict_types=1);
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Infrastructure;
+namespace phpDocumentor\Parser;
 
 use Flyfinder\Specification\SpecificationInterface;
 
 /**
  * Interface for Specifications used to filter the FileSystem.
  */
-interface SpecificationFactory
+interface SpecificationFactoryInterface
 {
     /**
      * Creates a SpecificationInterface object based on the ignore and extension parameters.

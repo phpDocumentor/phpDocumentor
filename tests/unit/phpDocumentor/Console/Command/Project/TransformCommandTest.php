@@ -19,7 +19,7 @@ use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Tests\Fixtures\DummyOutput;
 
 /**
- * @coversDefaultClass phpDocumentor\Application\Console\Command\Project\TransformCommand
+ * @coversDefaultClass \phpDocumentor\Console\Command\Project\TransformCommand
  * @covers ::<protected>
  */
 class TransformCommandTest extends MockeryTestCase

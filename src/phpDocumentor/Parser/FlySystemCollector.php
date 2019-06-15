@@ -13,17 +13,14 @@ declare(strict_types=1);
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Infrastructure\Parser;
+namespace phpDocumentor\Parser;
 
 use phpDocumentor\Dsn;
-use phpDocumentor\Parser\FileCollector;
-use phpDocumentor\Infrastructure\FlySystemFactory;
-use phpDocumentor\Infrastructure\SpecificationFactory;
 
 final class FlySystemCollector implements FileCollector
 {
     /**
-     * @var SpecificationFactory
+     * @var SpecificationFactoryInterface
      */
     private $specificationFactory;
 
@@ -35,7 +32,7 @@ final class FlySystemCollector implements FileCollector
     /**
      * FlySystemCollector constructor.
      */
-    public function __construct(SpecificationFactory $specificationFactory, FlySystemFactory $flySystemFactory)
+    public function __construct(SpecificationFactoryInterface $specificationFactory, FlySystemFactory $flySystemFactory)
     {
         $this->specificationFactory = $specificationFactory;
         $this->flySystemFactory = $flySystemFactory;

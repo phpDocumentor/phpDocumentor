@@ -13,7 +13,7 @@ declare(strict_types=1);
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Infrastructure;
+namespace phpDocumentor\Parser;
 
 use League\Flysystem\Filesystem;
 use phpDocumentor\Dsn;

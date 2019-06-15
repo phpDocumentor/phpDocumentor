@@ -10,22 +10,24 @@
  *  @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Infrastructure\Parser;
+namespace phpDocumentor\Parser;
 
 use League\Flysystem\MountManager;
 use phpDocumentor\Dsn;
-use phpDocumentor\Infrastructure\FlySystemFactory;
+use phpDocumentor\Parser\FlySystemFactory;
+use phpDocumentor\Parser\FlySystemCollector;
+use phpDocumentor\Parser\SpecificationFactoryInterface;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @coversDefaultClass \phpDocumentor\Infrastructure\Parser\FlySystemCollector
+ * @coversDefaultClass \phpDocumentor\Parser\FlySystemCollector
  */
 class FlySystemCollectorTest extends TestCase
 {
     /**
      * @covers ::getFiles()
-     * @uses \phpDocumentor\Infrastructure\Parser\SpecificationFactory
-     * @uses \phpDocumentor\Infrastructure\FlySystemFactory
+     * @uses \phpDocumentor\Parser\SpecificationFactory
+     * @uses \phpDocumentor\Parser\FlySystemFactory
      */
     public function testSingleSourceDir()
     {

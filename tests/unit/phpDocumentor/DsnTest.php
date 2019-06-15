@@ -127,18 +127,18 @@ class DsnTest extends TestCase
      */
     public function testValidWindowsDsnWithoutScheme()
     {
-        $dsn = 'C:\\phpdocumentor\\tests\\unit\\phpDocumentor\\Infrastructure\\Parser';
+        $dsn = 'C:\\phpdocumentor\\tests\\unit\\phpDocumentor\\Parser';
         $fixture = new Dsn($dsn);
 
         $this->assertEquals(
-            'file://C:\\phpdocumentor\\tests\\unit\\phpDocumentor\\Infrastructure\\Parser',
+            'file://C:\\phpdocumentor\\tests\\unit\\phpDocumentor\\Parser',
             (string) $fixture
         );
         $this->assertEquals('file', $fixture->getScheme());
         $this->assertEquals(null, $fixture->getHost());
         $this->assertEquals(0, $fixture->getPort());
         $this->assertEquals(
-            'C:\\phpdocumentor\\tests\\unit\\phpDocumentor\\Infrastructure\\Parser',
+            'C:\\phpdocumentor\\tests\\unit\\phpDocumentor\\Parser',
             $fixture->getPath()
         );
     }

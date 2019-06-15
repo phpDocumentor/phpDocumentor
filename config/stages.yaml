@@ -14,7 +14,7 @@ services:
 
     phpDocumentor\Application\Stage\Parser:
       arguments:
-        $fileCollector: '@phpDocumentor\Infrastructure\Parser\FlySystemCollector'
+        $fileCollector: '@phpDocumentor\Parser\FlySystemCollector'
       tags:
         - { name: 'phpdoc.pipeline.api_documentation.parse', priority: 0 }
 
