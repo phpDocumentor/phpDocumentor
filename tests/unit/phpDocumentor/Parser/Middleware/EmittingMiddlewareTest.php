@@ -35,7 +35,7 @@ final class EmittingMiddlewareTest extends TestCase
 
         Dispatcher::getInstance()->addListener(
             'parser.file.pre',
-            function(PreFileEvent $event) use ($filename) {
+            function (PreFileEvent $event) use ($filename) {
                 $this->assertSame($event->getFile(), $filename);
             }
         );
@@ -43,7 +43,7 @@ final class EmittingMiddlewareTest extends TestCase
         $middleware = new EmittingMiddleware();
         $result = $middleware->execute(
             $command,
-            function(CreateCommand $receivedCommand) use ($command) {
+            function (CreateCommand $receivedCommand) use ($command) {
                 $this->assertSame($command, $receivedCommand);
 
                 return 'result';

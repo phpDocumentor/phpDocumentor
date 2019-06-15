@@ -94,7 +94,9 @@ class Extension
      * Example usage inside template would be (where @link is an attribute called link):
      *
      * ```
-     * <xsl:value-of select="php:function('phpDocumentor\Transformer\Writer\Xslt\Extension::typeOfElement', string(@link))" />
+     * <xsl:value-of
+     *   select="php:function('phpDocumentor\Transformer\Writer\Xslt\Extension::typeOfElement', string(@link))"
+     * />
      * ```
      * @param string $link
      *

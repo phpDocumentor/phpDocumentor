@@ -18,7 +18,6 @@ namespace phpDocumentor\Transformer\Writer;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Transformer\Transformation;
-use phpDocumentor\Transformer\Writer\WriterAbstract;
 
 /**
  * Checkstyle transformation writer; generates checkstyle report

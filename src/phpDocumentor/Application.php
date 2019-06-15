@@ -52,7 +52,7 @@ class Application
     /**
      * Initializes all components used by phpDocumentor.
      */
-    public function __construct(LoggerInterface $logger, ContainerInterface $container)
+    public function __construct(LoggerInterface $logger)
     {
         $this->defineIniSettings();
 
@@ -62,8 +62,6 @@ class Application
                 $logger->log(LogLevel::NOTICE, 'Parsing ' . $event->getFile());
             }
         );
-
-        $this->container = $container;
     }
 
     /**

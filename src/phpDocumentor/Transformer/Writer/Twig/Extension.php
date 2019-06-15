@@ -18,7 +18,6 @@ namespace phpDocumentor\Transformer\Writer\Twig;
 use Parsedown;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\Transformer\Writer\Twig\ExtensionInterface;
 use phpDocumentor\Transformer\Router\Queue;
 use phpDocumentor\Transformer\Router\Renderer;
 use phpDocumentor\Transformer\Transformation;

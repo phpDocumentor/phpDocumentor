@@ -44,7 +44,9 @@ final class FileFactoryTest extends TestCase
         // previous test we now verify that an error should indeed be thrown and we do not run the risk of silent
         // test failures just because the previous test did not fail
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Middleware must be an instance of phpDocumentor\Reflection\Middleware\Middleware but stdClass was given');
+        $this->expectExceptionMessage(
+            'Middleware must be an instance of phpDocumentor\Reflection\Middleware\Middleware but stdClass was given'
+        );
 
         FileFactory::createInstance(
             NodesFactory::createInstance(),

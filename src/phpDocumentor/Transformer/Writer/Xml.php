@@ -35,6 +35,9 @@ use phpDocumentor\Transformer\Behaviour\Tag\PropertyTag;
 use phpDocumentor\Transformer\Behaviour\Tag\ReturnTag;
 use phpDocumentor\Transformer\Behaviour\Tag\UsesTag;
 use phpDocumentor\Transformer\Behaviour\Tag\VarTag;
+use phpDocumentor\Transformer\Router\RouterAbstract;
+use phpDocumentor\Transformer\Transformation;
+use phpDocumentor\Transformer\Transformer;
 use phpDocumentor\Transformer\Writer\Xml\ArgumentConverter;
 use phpDocumentor\Transformer\Writer\Xml\ConstantConverter;
 use phpDocumentor\Transformer\Writer\Xml\DocBlockConverter;
@@ -43,10 +46,6 @@ use phpDocumentor\Transformer\Writer\Xml\MethodConverter;
 use phpDocumentor\Transformer\Writer\Xml\PropertyConverter;
 use phpDocumentor\Transformer\Writer\Xml\TagConverter;
 use phpDocumentor\Transformer\Writer\Xml\TraitConverter;
-use phpDocumentor\Transformer\Router\RouterAbstract;
-use phpDocumentor\Transformer\Transformation;
-use phpDocumentor\Transformer\Transformer;
-use phpDocumentor\Transformer\Writer\WriterAbstract;
 
 /**
  * Converts the structural information of phpDocumentor into an XML file.

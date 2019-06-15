@@ -31,7 +31,7 @@ final class ErrorHandlingMiddlewareTest extends TestCase
         $middleware = new ErrorHandlingMiddleware($logger->reveal());
         $result = $middleware->execute(
             $command,
-            function(CreateCommand $receivedCommand) use ($command) {
+            function (CreateCommand $receivedCommand) use ($command) {
                 $this->assertSame($command, $receivedCommand);
 
                 return 'result';
@@ -51,12 +51,16 @@ final class ErrorHandlingMiddlewareTest extends TestCase
 
         $logger = $this->prophesize(LoggerInterface::class);
         $logger->log(LogLevel::INFO, 'Starting to parse file: ' . __FILE__, [])->shouldBeCalled();
-        $logger->log(LogLevel::ALERT, '  Unable to parse file "' . __FILE__ . '", an error was detected: this is a test', [])->shouldBeCalled();
+        $logger->log(
+            LogLevel::ALERT,
+            '  Unable to parse file "' . __FILE__ . '", an error was detected: this is a test',
+            []
+        )->shouldBeCalled();
 
         $middleware = new ErrorHandlingMiddleware($logger->reveal());
         $result = $middleware->execute(
             $command,
-            function(CreateCommand $receivedCommand) use ($command) {
+            function (CreateCommand $receivedCommand) use ($command) {
                 throw new \Exception('this is a test');
             }
         );

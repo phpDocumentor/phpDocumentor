@@ -58,8 +58,12 @@ final class StopwatchMiddlewareTest extends TestCase
 
         // triggering twice should result in two stopwatch events where the second shows the diff between the first
         // and second
-        $middleware->execute($command, function() { return 'result'; });
-        $result = $middleware->execute($command, function() { return 'result'; });
+        $middleware->execute($command, function () {
+            return 'result';
+        });
+        $result = $middleware->execute($command, function () {
+            return 'result';
+        });
 
         $this->assertSame('result', $result);
     }

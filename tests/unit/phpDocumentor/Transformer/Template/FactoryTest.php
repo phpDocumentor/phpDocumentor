@@ -72,10 +72,19 @@ class FactoryTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     <transformation writer="twig" query="indexes.interfaces" source="templates/clean/interface.html.twig" />
     <transformation writer="twig" query="indexes.traits" source="templates/clean/class.html.twig" />
     <transformation writer="twig" query="files" source="templates/clean/file.html.twig" />
-    <transformation writer="twig" query="files" source="templates/clean/file.source.txt.twig" artifact="files/{{path}}.txt"/>
+    <transformation 
+        writer="twig" 
+        query="files" 
+        source="templates/clean/file.source.txt.twig" 
+        artifact="files/{{path}}.txt"
+    />
     <transformation writer="twig" source="templates/clean/reports/markers.html.twig" artifact="reports/markers.html"/>
     <transformation writer="twig" source="templates/clean/reports/errors.html.twig" artifact="reports/errors.html"/>
-    <transformation writer="twig" source="templates/clean/reports/deprecated.html.twig" artifact="reports/deprecated.html"/>
+    <transformation 
+        writer="twig" 
+        source="templates/clean/reports/deprecated.html.twig" 
+        artifact="reports/deprecated.html"
+    />
     <transformation writer="twig" source="templates/clean/graphs/class.html.twig" artifact="graphs/class.html"/>
     <transformation writer="Graph" source="Class" artifact="graphs/classes.svg" />
   </transformations>

@@ -59,7 +59,11 @@ final class SpecificationFactoryTest extends TestCase
 
     public function testCreateIgnorePath()
     {
-        $specification = $this->fixture->create(['src/'], ['paths' => ['src/some/path', 'src/some/other/path']], ['php']);
+        $specification = $this->fixture->create(
+            ['src/'],
+            ['paths' => ['src/some/path', 'src/some/other/path']],
+            ['php']
+        );
 
         $this->assertEquals(
             new AndSpecification(
