@@ -47,5 +47,6 @@ action "takanabe/add-new-issues-to-project-column@master" {
   secrets = ["GITHUB_TOKEN"]
   env = {
     PROJECT_NAME = "Issue Triage"
+    PROJECT_COLUMN_NAME = "Needs triage"
   }
 }
