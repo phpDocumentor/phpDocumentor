@@ -17,6 +17,7 @@ use phpDocumentor\Descriptor\Tag\VersionDescriptor;
 
 /**
  * Tests the functionality for the InterfaceDescriptor class.
+ * @coversDefaultClass \phpDocumentor\Descriptor\InterfaceDescriptor
  */
 class InterfaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
@@ -34,24 +35,24 @@ class InterfaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Tests whether all collection objects are properly initialized.
      *
-     * @covers phpDocumentor\Descriptor\InterfaceDescriptor::__construct
+     * @covers ::__construct
      */
     public function testInitialize()
     {
-        $this->assertAttributeInstanceOf('phpDocumentor\Descriptor\Collection', 'parents', $this->fixture);
-        $this->assertAttributeInstanceOf('phpDocumentor\Descriptor\Collection', 'constants', $this->fixture);
-        $this->assertAttributeInstanceOf('phpDocumentor\Descriptor\Collection', 'methods', $this->fixture);
+        $this->assertAttributeInstanceOf(Collection::class, 'parents', $this->fixture);
+        $this->assertAttributeInstanceOf(Collection::class, 'constants', $this->fixture);
+        $this->assertAttributeInstanceOf(Collection::class, 'methods', $this->fixture);
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\InterfaceDescriptor::setParent
-     * @covers phpDocumentor\Descriptor\InterfaceDescriptor::getParent
+     * @covers ::setParent
+     * @covers ::getParent
      */
     public function testSettingAndGettingParentInterfaces()
     {
-        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getParent());
+        $this->assertInstanceOf(Collection::class, $this->fixture->getParent());
 
-        $mock = m::mock('phpDocumentor\Descriptor\Collection');
+        $mock = m::mock(Collection::class);
 
         $this->fixture->setParent($mock);
 
@@ -59,14 +60,14 @@ class InterfaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\InterfaceDescriptor::setConstants
-     * @covers phpDocumentor\Descriptor\InterfaceDescriptor::getConstants
+     * @covers ::setConstants
+     * @covers ::getConstants
      */
     public function testSettingAndGettingConstants()
     {
-        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getConstants());
+        $this->assertInstanceOf(Collection::class, $this->fixture->getConstants());
 
-        $mock = m::mock('phpDocumentor\Descriptor\Collection');
+        $mock = m::mock(Collection::class);
 
         $this->fixture->setConstants($mock);
 
@@ -74,14 +75,14 @@ class InterfaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\InterfaceDescriptor::setMethods
-     * @covers phpDocumentor\Descriptor\InterfaceDescriptor::getMethods
+     * @covers ::setMethods
+     * @covers ::getMethods
      */
     public function testSettingAndGettingMethods()
     {
-        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getMethods());
+        $this->assertInstanceOf(Collection::class, $this->fixture->getMethods());
 
-        $mock = m::mock('phpDocumentor\Descriptor\Collection');
+        $mock = m::mock(Collection::class);
 
         $this->fixture->setMethods($mock);
 
@@ -89,19 +90,19 @@ class InterfaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\InterfaceDescriptor::getInheritedConstants
+     * @covers ::getInheritedConstants
      */
     public function testGetInheritedConstantsNoParent()
     {
         $descriptor = new InterfaceDescriptor();
-        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $descriptor->getInheritedConstants());
+        $this->assertInstanceOf(Collection::class, $descriptor->getInheritedConstants());
 
         $descriptor->setParent(new \stdClass());
-        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $descriptor->getInheritedConstants());
+        $this->assertInstanceOf(Collection::class, $descriptor->getInheritedConstants());
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getSummary
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getSummary
      */
     public function testSummaryInheritsWhenNoneIsPresent()
     {
@@ -119,7 +120,7 @@ class InterfaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getDescription
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getDescription
      */
     public function testDescriptionInheritsWhenNoneIsPresent()
     {
@@ -137,7 +138,7 @@ class InterfaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getAuthor
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getAuthor
      */
     public function testAuthorTagsInheritWhenNoneArePresent()
     {
@@ -156,7 +157,7 @@ class InterfaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getCopyright
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getCopyright
      */
     public function testCopyrightTagsInheritWhenNoneArePresent()
     {
@@ -175,7 +176,7 @@ class InterfaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getVersion
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getVersion
      */
     public function testVersionTagsInheritWhenNoneArePresent()
     {
@@ -194,51 +195,44 @@ class InterfaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\InterfaceDescriptor::getInheritedConstants
+     * @covers ::getInheritedConstants
      */
     public function testGetInheritedConstantsWithClassDescriptorParent()
     {
-        $parentDescriptor = new ConstantDescriptor();
-        $parentDescriptor->setName('parent');
-        $parentDescriptorCollection = new Collection();
-        $parentDescriptorCollection->add($parentDescriptor);
-        $parent = new InterfaceDescriptor();
-        $parent->setConstants($parentDescriptorCollection);
+        $constantInParent = $this->givenConstantWithName('constant');
+        $constantInGrandParent = $this->givenConstantWithName('constantInGrandParent');
+        $constantInParentClass = $this->givenConstantWithName('constantInClass');
 
-        $grandParentDescriptor = new ConstantDescriptor();
-        $grandParentDescriptor->setName('grandparent');
-        $grandParentDescriptorCollection = new Collection();
-        $grandParentDescriptorCollection->add($grandParentDescriptor);
-        $grandParent = new InterfaceDescriptor();
-        $grandParent->setConstants($grandParentDescriptorCollection);
+        $parentInterface = new InterfaceDescriptor();
+        $parentInterface->setConstants(new Collection([$constantInParent]));
 
-        $grandParentCollection = new Collection();
-        $grandParentCollection->add($grandParent);
-        $parent->setParent($grandParentCollection);
+        $parentClass = new ClassDescriptor();
+        $parentClass->setConstants(new Collection([$constantInParentClass]));
 
-        $parentCollection = new Collection();
-        $parentCollection->add($parent);
+        $grandParentInterface = new InterfaceDescriptor();
+        $grandParentInterface->setConstants(new Collection([$constantInGrandParent]));
 
-        $this->fixture->setParent($parentCollection);
+        $parentInterface->setParent(new Collection([$grandParentInterface]));
+        $this->fixture->setParent(new Collection([$parentInterface, $parentClass]));
+
         $result = $this->fixture->getInheritedConstants();
 
-        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $result);
-
-        $this->assertSame([$parentDescriptor, $grandParentDescriptor], $result->getAll());
+        $this->assertInstanceOf(Collection::class, $result);
+        $this->assertSame([$constantInParent, $constantInGrandParent], $result->getAll());
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\InterfaceDescriptor::getInheritedMethods
+     * @covers ::getInheritedMethods
      */
     public function testRetrievingInheritedMethodsReturnsEmptyCollectionWithoutParent()
     {
         $inheritedMethods = $this->fixture->getInheritedMethods();
-        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $inheritedMethods);
+        $this->assertInstanceOf(Collection::class, $inheritedMethods);
         $this->assertCount(0, $inheritedMethods);
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\InterfaceDescriptor::getInheritedMethods
+     * @covers ::getInheritedMethods
      */
     public function testRetrievingInheritedMethodsReturnsCollectionWithParent()
     {
@@ -265,7 +259,7 @@ class InterfaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $this->fixture->setParent($parentCollection);
         $result = $this->fixture->getInheritedMethods();
 
-        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $result);
+        $this->assertInstanceOf(Collection::class, $result);
 
         $this->assertSame([$parentDescriptor, $grandParentDescriptor], $result->getAll());
     }
@@ -279,5 +273,13 @@ class InterfaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $this->fixture->getParent()->set('IA', $interface);
 
         return $interface;
+    }
+
+    private function givenConstantWithName(string $name): ConstantDescriptor
+    {
+        $constantInParent = new ConstantDescriptor();
+        $constantInParent->setName($name);
+
+        return $constantInParent;
     }
 }

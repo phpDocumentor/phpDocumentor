@@ -53,6 +53,16 @@ final class UriTest extends TestCase
         $this->assertSame('file://foo/phpdoc.xml', (string) $uri);
     }
 
+    /**
+     * @covers ::<private>
+     */
+    public function testItShouldAddAFileSchemeWhenAWindowsDriveLetterIsGiven()
+    {
+        $uri = new Uri('c:\foo\phpdoc.xml');
+
+        $this->assertSame('file:///c:\foo\phpdoc.xml', (string) $uri);
+    }
+
     public function testItShouldReturnTrueIfUrisAreEqual()
     {
         $uri1 = new Uri('foo');

@@ -19,6 +19,7 @@ use phpDocumentor\Reflection\Types\Array_;
 
 /**
  * Tests the functionality for the PropertyDescriptor class.
+ * @coversDefaultClass \phpDocumentor\Descriptor\PropertyDescriptor
  */
 class PropertyDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
@@ -35,8 +36,8 @@ class PropertyDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\PropertyDescriptor::isStatic
-     * @covers \phpDocumentor\Descriptor\PropertyDescriptor::setStatic
+     * @covers ::isStatic
+     * @covers ::setStatic
      */
     public function testSettingAndGettingWhetherPropertyIsStatic()
     {
@@ -48,8 +49,8 @@ class PropertyDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\PropertyDescriptor::getVisibility
-     * @covers \phpDocumentor\Descriptor\PropertyDescriptor::setVisibility
+     * @covers ::getVisibility
+     * @covers ::setVisibility
      */
     public function testSettingAndGettingVisibility()
     {
@@ -61,8 +62,8 @@ class PropertyDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\PropertyDescriptor::getType
-     * @covers \phpDocumentor\Descriptor\PropertyDescriptor::setType
+     * @covers ::getType
+     * @covers ::setType
      */
     public function testSetAndGetTypes()
     {
@@ -75,8 +76,21 @@ class PropertyDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\PropertyDescriptor::getType
-     * @covers \phpDocumentor\Descriptor\PropertyDescriptor::setType
+     * @covers ::getTypes
+     */
+    public function testGetTypesCollection()
+    {
+        $this->assertSame([], $this->fixture->getTypes());
+        $expected = new Array_();
+
+        $this->fixture->setType($expected);
+
+        $this->assertSame(['array'], $this->fixture->getTypes());
+    }
+
+    /**
+     * @covers ::getType
+     * @covers ::setType
      */
     public function testSetAndGetTypesWhenVarIsPresent()
     {
@@ -96,8 +110,8 @@ class PropertyDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\PropertyDescriptor::getDefault
-     * @covers \phpDocumentor\Descriptor\PropertyDescriptor::setDefault
+     * @covers ::getDefault
+     * @covers ::setDefault
      */
     public function testSetAndGetDefault()
     {
@@ -109,7 +123,7 @@ class PropertyDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\PropertyDescriptor::getFile
+     * @covers ::getFile
      */
     public function testRetrieveFileAssociatedWithAProperty()
     {
@@ -197,7 +211,7 @@ class PropertyDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\PropertyDescriptor::getVar
+     * @covers ::getVar
      */
     public function testVarTagsInheritWhenNoneArePresent()
     {
@@ -216,7 +230,7 @@ class PropertyDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\PropertyDescriptor::getVar
+     * @covers ::getVar
      */
     public function testVarTagsWhenNoneArePresent()
     {
@@ -227,7 +241,7 @@ class PropertyDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\PropertyDescriptor::getAuthor
+     * @covers ::getAuthor
      * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getAuthor
      */
     public function testAuthorTagsInheritWhenNoneArePresent()
@@ -247,7 +261,7 @@ class PropertyDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\PropertyDescriptor::getVersion
+     * @covers ::getVersion
      * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getVersion
      */
     public function testVersionTagsInheritWhenNoneArePresent()
@@ -267,7 +281,7 @@ class PropertyDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\PropertyDescriptor::getCopyright
+     * @covers ::getCopyright
      * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getCopyright
      */
     public function testCopyrightTagsInheritWhenNoneArePresent()
@@ -287,7 +301,7 @@ class PropertyDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\PropertyDescriptor::setParent
+     * @covers ::setParent
      */
     public function testFqsenHasDollarSignWhenParentIsSet()
     {
@@ -296,8 +310,8 @@ class PropertyDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\PropertyDescriptor::setParent
-     * @covers \phpDocumentor\Descriptor\PropertyDescriptor::getParent
+     * @covers ::setParent
+     * @covers ::getParent
      */
     public function testSettingAndGettingAParent()
     {
@@ -306,7 +320,7 @@ class PropertyDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\PropertyDescriptor::getInheritedElement
+     * @covers ::getInheritedElement
      */
     public function testGettingAnInheritedElement()
     {
@@ -318,7 +332,7 @@ class PropertyDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\PropertyDescriptor::getInheritedElement
+     * @covers ::getInheritedElement
      */
     public function testGettingAnInheritedElementWhenThereIsNone()
     {

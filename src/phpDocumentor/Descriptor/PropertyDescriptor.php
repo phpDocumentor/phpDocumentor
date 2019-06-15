@@ -105,6 +105,10 @@ class PropertyDescriptor extends DescriptorAbstract implements
      */
     public function getTypes()
     {
+        if ($this->getType() === null) {
+            return [];
+        }
+
         return [(string)$this->getType()];
     }
 

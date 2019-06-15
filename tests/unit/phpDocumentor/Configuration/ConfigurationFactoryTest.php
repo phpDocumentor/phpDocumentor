@@ -32,9 +32,15 @@ final class ConfigurationFactoryTest extends MockeryTestCase
     /**
      * @covers ::fromUri
      */
-    public function testItLoadsASpecificConfigurationFile()
+    public function testItLoadsASpecificConfigurationFileUsingTheCorrectStrategy()
     {
-        $configurationFactory = new ConfigurationFactory([new Version2()], []);
+        $configurationFactory = new ConfigurationFactory(
+            [
+                new Version3('data/xsd/phpdoc.xsd'),
+                new Version2()
+            ],
+            []
+        );
 
         $content = '<phpdocumentor><title>My title</title></phpdocumentor>';
         $configuration = $configurationFactory->fromUri(
@@ -42,6 +48,16 @@ final class ConfigurationFactoryTest extends MockeryTestCase
         );
 
         $this->assertSame('My title', $configuration['phpdocumentor']['title']);
+    }
+    /**
+     * @covers ::fromUri
+     */
+    public function testLoadingFromUriFailsIfFileDoesNotExist()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('File file:///does-not-exist could not be found');
+        $configurationFactory = new ConfigurationFactory([new Version2()], []);
+        $configurationFactory->fromUri(new Uri('/does-not-exist'));
     }
 
     /**

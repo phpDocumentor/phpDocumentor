@@ -37,8 +37,6 @@ final class Uri
      */
     public function __construct(string $uri)
     {
-        $this->validateString($uri);
-
         $uri = $this->addFileSchemeWhenSchemeIsAbsent($uri);
 
         $this->validateUri($uri);
@@ -59,19 +57,7 @@ final class Uri
      */
     public function equals(self $other): bool
     {
-        return $other == $this;
-    }
-
-    /**
-     * Checks if $uri is of type string.
-     *
-     * @throws InvalidArgumentException if $uri is not a string.
-     */
-    private function validateString(string $uri): void
-    {
-        if (!\is_string($uri)) {
-            throw new InvalidArgumentException(sprintf('String required, %s given', \gettype($uri)));
-        }
+        return $other->uri === $this->uri;
     }
 
     /**
