@@ -242,7 +242,12 @@ final class CommandlineOptionsMiddleware
             $version['api'] = $this->createDefaultApiSettings();
         }
 
-        $version['api'][0]['visibility'] = $this->options['visibility'];
+        $visibilities = [];
+        foreach ($this->options['visibility'] as $visibility) {
+            $visibilities = array_merge($visibilities, explode(',', $visibility));
+        }
+        $visibilities = array_unique($visibilities);
+        $version['api'][0]['visibility'] = $visibilities;
 
         return $version;
     }
