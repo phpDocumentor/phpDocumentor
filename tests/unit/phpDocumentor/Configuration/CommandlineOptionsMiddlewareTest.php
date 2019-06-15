@@ -256,6 +256,30 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
         );
     }
 
+    /**
+     * @covers ::__invoke
+     */
+    public function testItShouldOverwriteTheWhetherToIncludeSourcecodeInTheDefaultConfiguration()
+    {
+        $configuration = $this->givenAConfigurationWithoutApiDefinition();
+
+        $middleware = new CommandlineOptionsMiddleware(['sourcecode' => true]);
+        $newConfiguration = $middleware($configuration);
+
+        $this->assertEquals(
+            true,
+            current($newConfiguration['phpdocumentor']['versions'])['api'][0]['include-source']
+        );
+
+        $middleware = new CommandlineOptionsMiddleware(['sourcecode' => false]);
+        $newConfiguration = $middleware($configuration);
+
+        $this->assertEquals(
+            false,
+            current($newConfiguration['phpdocumentor']['versions'])['api'][0]['include-source']
+        );
+    }
+
     private function givenAConfigurationWithoutApiDefinition(): array
     {
         $configuration = Version3::buildDefault();

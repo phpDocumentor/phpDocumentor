@@ -56,6 +56,7 @@ final class Version3ExpectedArrays
                                 ],
                                 'visibility' => ['public'],
                                 'default-package-name' => 'Default',
+                                'include-source' => false,
                                 'markers' => [
                                     0 => 'TODO',
                                     1 => 'FIXME',
@@ -117,6 +118,7 @@ final class Version3ExpectedArrays
                                 'extensions' => [],
                                 'visibility' => ['public'],
                                 'default-package-name' => 'Default',
+                                'include-source' => false,
                                 'markers' => [],
                             ],
                         ],
@@ -196,6 +198,7 @@ final class Version3ExpectedArrays
                                 ],
                                 'visibility' => ['public'],
                                 'default-package-name' => 'Default',
+                                'include-source' => true,
                                 'markers' => [
                                     0 => 'TODO',
                                     1 => 'FIXME',
@@ -222,6 +225,7 @@ final class Version3ExpectedArrays
                                 ],
                                 'visibility' => ['public'],
                                 'default-package-name' => 'Default',
+                                'include-source' => false,
                                 'markers' => [
                                     0 => 'TODO',
                                     1 => 'FIXME',
@@ -314,6 +318,7 @@ final class Version3ExpectedArrays
                                 ],
                                 'visibility' => ['public', 'protected', 'private'],
                                 'default-package-name' => 'Default',
+                                'include-source' => false,
                                 'markers' => [
                                     0 => 'TODO',
                                     1 => 'FIXME',

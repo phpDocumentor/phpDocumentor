@@ -55,6 +55,8 @@ final class Version2 implements Strategy
     /** @var string[] */
     private $directories = ['src'];
 
+    private $includeSource = false;
+
     public function convert(SimpleXMLElement $phpDocumentor): array
     {
         $this->validate($phpDocumentor);
@@ -89,6 +91,7 @@ final class Version2 implements Strategy
                                 ],
                                 'extensions' => $this->buildExtensions($phpDocumentor),
                                 'visibility' => $this->buildVisibility($phpDocumentor),
+                                'include-source' => $this->buildIncludeSourcecode($phpDocumentor),
                                 'default-package-name' => $this->buildDefaultPackageName($phpDocumentor),
                                 'markers' => $this->buildMarkers($phpDocumentor),
                             ],
@@ -159,6 +162,18 @@ final class Version2 implements Strategy
         }
 
         return $this->buildArrayFromNode($phpDocumentor->parser->markers);
+    }
+
+    /**
+     * Builds whether the source code should be part of the output.
+     */
+    private function buildIncludeSourcecode(SimpleXMLElement $phpDocumentor): bool
+    {
+        if ((array) $phpDocumentor->parser === []) {
+            return $this->includeSource;
+        }
+
+        return (bool) $phpDocumentor->parser->{'include-source'};
     }
 
     /**

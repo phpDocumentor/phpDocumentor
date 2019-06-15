@@ -140,17 +140,23 @@ final class Parser
         $projectDescriptor->setName($configuration['phpdocumentor']['title']);
         $projectDescriptor->setPartials($this->partials);
 
-        $visibility = $this->getVisibility($apiConfig);
-        $projectDescriptor->getSettings()->setVisibility($visibility);
-        $projectDescriptor->getSettings()->setMarkers($apiConfig['markers']);
-        $projectDescriptor->getSettings()->includeSource();
-
         $mapper = new ProjectDescriptorMapper($this->getCache());
 
         if ($configuration['phpdocumentor']['use-cache']) {
             //TODO: Re-enable garbage collection here.
             //$mapper->garbageCollect($files);
             $mapper->populate($projectDescriptor);
+        }
+
+        // must be below the mapper populating the project descriptor because overriding the visibility or source
+        // can trigger a rebuild; but this detection only works if the settings were loaded from cache
+        $visibility = $this->getVisibility($apiConfig);
+        $projectDescriptor->getSettings()->setVisibility($visibility);
+        $projectDescriptor->getSettings()->setMarkers($apiConfig['markers']);
+        if ($apiConfig['include-source']) {
+            $projectDescriptor->getSettings()->includeSource();
+        } else {
+            $projectDescriptor->getSettings()->excludeSource();
         }
 
         //TODO: Should determine root based on filesystems. Could be an issue for multiple.

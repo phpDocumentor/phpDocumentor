@@ -59,6 +59,7 @@ final class Version2ExpectedArray
                                 ],
                                 'visibility' => ['public', 'protected', 'private'],
                                 'default-package-name' => 'Default',
+                                'include-source' => false,
                                 'markers' => [
                                     0 => 'TODO',
                                     1 => 'FIXME',
@@ -121,6 +122,7 @@ final class Version2ExpectedArray
                                 ],
                                 'visibility' => ['public', 'protected', 'private'],
                                 'default-package-name' => 'Default',
+                                'include-source' => false,
                                 'markers' => [
                                     0 => 'TODO',
                                     1 => 'FIXME',
@@ -175,6 +177,7 @@ final class Version2ExpectedArray
                                 ],
                                 'visibility' => ['public', 'protected', 'private'],
                                 'default-package-name' => 'Default',
+                                'include-source' => false,
                                 'markers' => [
                                     0 => 'TODO',
                                     1 => 'FIXME',
@@ -234,6 +237,7 @@ final class Version2ExpectedArray
                                 ],
                                 'visibility' => ['public', 'protected'],
                                 'default-package-name' => 'Default',
+                                'include-source' => false,
                                 'markers' => [
                                     0 => 'TODO',
                                     1 => 'FIXME',

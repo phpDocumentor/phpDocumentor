@@ -33,7 +33,7 @@
                             code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
                         }
                         else {
-                            code.textContent = '✖ Error: File does not exist or is empty';
+                            code.textContent = '✖ Error: File does not exist, is empty or trying to view from localhost';
                         }
                     }
                 };
@@ -67,7 +67,9 @@
                         {#<a href="" class="pull-right">ClassAssembler &raquo;</a>#}
                     </nav>
 
-                    <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
+                    {% if project.settings.shouldIncludeSource %}
+                        <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
+                    {% endif %}
                     <h1><small>{{ node.path|split('/')|slice(0,-1)|join('/') }}</small>{{ node.name }}</h1>
                     <p><em>{{ node.summary }}</em></p>
                     {{ node.description|markdown|raw }}

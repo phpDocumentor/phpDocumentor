@@ -56,7 +56,7 @@ final class SpecificationFactory implements FactoryInterface
                 continue;
             }
 
-            $ignoreSpec = $this->orSpec($this->inPath($path), $ignoreSpec);
+            $ignoreSpec = $this->orSpec($this->inPath((string) $path), $ignoreSpec);
         }
 
         if (($ignore['hidden'] ?? false) === true) {

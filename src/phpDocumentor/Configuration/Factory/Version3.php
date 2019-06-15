@@ -155,6 +155,7 @@ final class Version3 implements Strategy
             ],
             'extensions' => $extensions,
             'visibility' => (array) $api->visibility,
+            'include-source' => ((string)$api->{'include-source'}) === 'true',
             'default-package-name' => ((string) $api->{'default-package-name'}) ?: 'Default',
             'markers' => (array) $api->markers->children()->marker,
         ];
@@ -218,6 +219,7 @@ final class Version3 implements Strategy
                             2 => 'phtml',
                         ],
                         'visibility' => ['public', 'protected', 'private'],
+                        'include-source' => false,
                         'default-package-name' => 'Default',
                         'encoding' => 'utf8',
                         'ignore-tags' => [],

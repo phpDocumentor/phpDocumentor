@@ -35,6 +35,7 @@
                 <extension>phtml</extension>
             </extensions>
             <visibility>public</visibility>
+            <include-source>true</include-source>
             <markers>
                 <marker>TODO</marker>
                 <marker>FIXME</marker>
@@ -54,6 +55,7 @@
             </extensions>
             <visibility>public</visibility>
             <default-package-name>Default</default-package-name>
+            <include-source>false</include-source>
             <markers>
                 <marker>TODO</marker>
                 <marker>FIXME</marker>

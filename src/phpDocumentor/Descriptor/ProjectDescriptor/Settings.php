@@ -96,12 +96,12 @@ class Settings
 
     public function includeSource()
     {
-        $this->includeSource = true;
+        $this->setValueAndCheckIfModified('includeSource', true);
     }
 
     public function excludeSource()
     {
-        $this->includeSource = false;
+        $this->setValueAndCheckIfModified('includeSource', false);
     }
 
     public function shouldIncludeSource()

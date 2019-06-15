@@ -101,7 +101,6 @@ final class Transform
      */
     public function __invoke(array $configuration): int
     {
-        // initialize transformer
         $transformer = $this->getTransformer();
 
         $target = $configuration['phpdocumentor']['paths']['output']->getPath();
@@ -123,42 +122,17 @@ final class Transform
         foreach (array_column($configuration['phpdocumentor']['templates'], 'name') as $template) {
             $stopWatch->start('load template');
             $this->transformer->getTemplates()->load($template);
-//            $output->writeTimedLog(
-//                'Preparing template "'. $template .'"',
-//                array($transformer->getTemplates(), 'load'),
-//                array($template, $transformer)
-//            );
             $stopWatch->stop('load template');
         }
-
-//        $output->writeTimedLog(
-//            'Preparing ' . count($transformer->getTemplates()->getTransformations()) . ' transformations',
-//            array($this, 'loadTransformations'),
-//            array($transformer)
-//        );
-
-        //$this->loadTransformations($transformer);
-
-//        if ($progress) {
-//            $progress->start($output, count($transformer->getTemplates()->getTransformations()));
-//        }
 
         /** @var \phpDocumentor\Compiler\CompilerPassInterface $pass */
         foreach ($this->compiler as $pass) {
             $pass->execute($projectDescriptor);
-            //$output->writeTimedLog($pass->getDescription(), array($pass, 'execute'), array($projectDescriptor));
         }
-
-//        if ($progress) {
-//            $progress->finish();
-//        }
 
         return 0;
     }
 
-    /**
-     * Returns the Cache.
-     */
     private function getCache(): StorageInterface
     {
         return $this->cache;

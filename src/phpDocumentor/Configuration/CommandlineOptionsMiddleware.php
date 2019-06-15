@@ -47,6 +47,7 @@ final class CommandlineOptionsMiddleware
             $version = $this->registerExtensions($version);
             $version = $this->overwriteIgnoredPaths($version);
             $version = $this->overwriteMarkers($version);
+            $version = $this->overwriteIncludeSource($version);
             $version = $this->overwriteVisibility($version);
             $version = $this->overwriteDefaultPackageName($version);
         }
@@ -212,6 +213,21 @@ final class CommandlineOptionsMiddleware
         }
 
         $version['api'][0]['markers'] = $this->options['markers'];
+
+        return $version;
+    }
+
+    private function overwriteIncludeSource(array $version): array
+    {
+        if (! isset($this->options['sourcecode'])) {
+            return $version;
+        }
+
+        if (! isset($version['api'])) {
+            $version['api'] = $this->createDefaultApiSettings();
+        }
+
+        $version['api'][0]['include-source'] = $this->options['sourcecode'];
 
         return $version;
     }
