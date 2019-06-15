@@ -18,6 +18,7 @@ namespace phpDocumentor\Parser\Middleware;
 use Exception;
 use phpDocumentor\Reflection\Middleware\Command;
 use phpDocumentor\Reflection\Middleware\Middleware;
+use phpDocumentor\Reflection\Php\Factory\File\CreateCommand;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 
@@ -31,13 +32,12 @@ final class ErrorHandlingMiddleware implements Middleware
     }
 
     /**
-     * Executes this middle ware class.
-     *
-     * @param callable $next
      * @return object
      */
     public function execute(Command $command, callable $next)
     {
+        assert($command instanceof CreateCommand);
+
         $filename = $command->getFile()->path();
         $this->log('Starting to parse file: ' . $filename, LogLevel::INFO);
 
@@ -55,12 +55,8 @@ final class ErrorHandlingMiddleware implements Middleware
 
     /**
      * Dispatches a logging request.
-     *
-     * @param string   $message  The message to log.
-     * @param string   $priority The logging priority as declared in the LogLevel PSR-3 class.
-     * @param string[] $parameters
      */
-    private function log($message, $priority = LogLevel::INFO, $parameters = [])
+    private function log(string $message, string $priority = LogLevel::INFO, array $parameters = [])
     {
         $this->logger->log($priority, $message, $parameters);
     }

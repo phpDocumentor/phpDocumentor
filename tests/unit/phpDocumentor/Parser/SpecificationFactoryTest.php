@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * This file is part of phpDocumentor.
  *
@@ -19,7 +19,6 @@ use Flyfinder\Specification\InPath;
 use Flyfinder\Specification\IsHidden;
 use Flyfinder\Specification\NotSpecification;
 use Flyfinder\Specification\OrSpecification;
-use phpDocumentor\Parser\SpecificationFactoryInterface;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -27,11 +26,9 @@ use PHPUnit\Framework\TestCase;
  * @covers ::create
  * @covers ::<private>
  */
-class SpecificationFactoryTest extends TestCase
+final class SpecificationFactoryTest extends TestCase
 {
-    /**
-     * @var SpecificationFactory
-     */
+    /** @var SpecificationFactory */
     private $fixture;
 
     protected function setUp()
@@ -41,25 +38,16 @@ class SpecificationFactoryTest extends TestCase
 
     public function testCreateIgnoreHidden()
     {
-        $paths = [
-            'some/path',
-        ];
-
-        $ignore = [
-            'hidden' => true,
-        ];
-
-        $extensions = [
-            'php',
-        ];
-
-        $specification = $this->fixture->create($paths, $ignore, $extensions);
+        $specification = $this->fixture->create(['some/path', 'a/second/path'], ['hidden' => true], ['php', 'php3']);
 
         $this->assertEquals(
             new AndSpecification(
-                new InPath(new Path('some/path')),
+                new OrSpecification(
+                    new InPath(new Path('some/path')),
+                    new InPath(new Path('a/second/path'))
+                ),
                 new AndSpecification(
-                    new HasExtension(['php']),
+                    new HasExtension(['php', 'php3']),
                     new NotSpecification(
                         new IsHidden()
                     )
@@ -71,19 +59,7 @@ class SpecificationFactoryTest extends TestCase
 
     public function testCreateIgnorePath()
     {
-        $paths = [
-            'src/',
-        ];
-
-        $ignore = [
-            'paths' => ['src/some/path', 'src/some/other/path'],
-        ];
-
-        $extensions = [
-            'php',
-        ];
-
-        $specification = $this->fixture->create($paths, $ignore, $extensions);
+        $specification = $this->fixture->create(['src/'], ['paths' => ['src/some/path', 'src/some/other/path']], ['php']);
 
         $this->assertEquals(
             new AndSpecification(
@@ -102,21 +78,24 @@ class SpecificationFactoryTest extends TestCase
         );
     }
 
+    public function testNoPaths()
+    {
+        $specification = $this->fixture->create([], ['paths' => ['src/some/path']], ['php']);
+
+        $this->assertEquals(
+            new AndSpecification(
+                new HasExtension(['php']),
+                new NotSpecification(
+                    new InPath(new Path('src/some/path'))
+                )
+            ),
+            $specification
+        );
+    }
+
     public function testNoIgnore()
     {
-        $paths = [
-            'src/',
-        ];
-
-        $ignore = [
-            'paths' => [],
-        ];
-
-        $extensions = [
-            'php',
-        ];
-
-        $specification = $this->fixture->create($paths, $ignore, $extensions);
+        $specification = $this->fixture->create(['src/'], ['paths' => []], ['php']);
 
         $this->assertEquals(
             new AndSpecification(

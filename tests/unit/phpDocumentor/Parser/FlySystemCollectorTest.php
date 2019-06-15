@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 /**
  * This file is part of phpDocumentor.
  *
@@ -21,8 +22,10 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @coversDefaultClass \phpDocumentor\Parser\FlySystemCollector
+ * @covers ::__construct
+ * @covers ::<private>
  */
-class FlySystemCollectorTest extends TestCase
+final class FlySystemCollectorTest extends TestCase
 {
     /**
      * @covers ::getFiles()

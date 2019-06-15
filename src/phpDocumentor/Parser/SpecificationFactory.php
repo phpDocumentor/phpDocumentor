@@ -32,75 +32,67 @@ final class SpecificationFactory implements FactoryInterface
 {
     /**
      * Creates a SpecificationInterface object based on the ignore and extension parameters.
+     *
+     * @var (\phpDocumentor\Path|string)[] $paths
+     * @var (\phpDocumentor\Path|string)[] $ignore
+     * @var string[] $extensions
      */
     public function create(array $paths, array $ignore, array $extensions): SpecificationInterface
     {
         $pathSpec = null;
         foreach ($paths as $path) {
+            if ($pathSpec === null) {
+                $pathSpec = $this->inPath((string) $path);
+                continue;
+            }
+
             $pathSpec = $this->orSpec($this->inPath($path), $pathSpec);
         }
 
         $ignoreSpec = null;
-        if (isset($ignore['paths'])) {
-            foreach ($ignore['paths'] as $path) {
-                $ignoreSpec = $this->orSpec($this->inPath($path), $ignoreSpec);
+        foreach ($ignore['paths'] ?? [] as $path) {
+            if ($ignoreSpec === null) {
+                $ignoreSpec = $this->inPath((string) $path);
+                continue;
             }
+
+            $ignoreSpec = $this->orSpec($this->inPath($path), $ignoreSpec);
         }
 
-        if (isset($ignore['hidden']) && $ignore['hidden'] === true) {
-            $ignoreSpec = $this->orSpec(new IsHidden(), $ignoreSpec);
+        if (($ignore['hidden'] ?? false) === true) {
+            $ignoreSpec = $ignoreSpec === null
+                ? new IsHidden()
+                : $this->orSpec(new IsHidden(), $ignoreSpec);
         }
 
-        return $this->andSpec(
-            $pathSpec,
-            $this->andSpec(new HasExtension($extensions), $this->notSpec($ignoreSpec))
-        );
+        $result = new HasExtension($extensions);
+        if ($ignoreSpec !== null) {
+            $result = $this->andSpec($result, $this->notSpec($ignoreSpec));
+        }
+        if ($pathSpec !== null) {
+            $result = $this->andSpec($pathSpec, $result);
+        }
+
+        return $result;
     }
 
-    /**
-     * Will return an OrSpecification when $or and $spec are both not null.
-     *
-     * @param SpecificationInterface|null $spec
-     * @return OrSpecification|SpecificationInterface
-     */
-    private function orSpec(SpecificationInterface $or, SpecificationInterface $spec = null): SpecificationInterface
-    {
-        if ($spec === null) {
-            return $or;
-        }
-
-        return new OrSpecification($spec, $or);
-    }
-
-    /**
-     * Creates an InPath specification.
-     *
-     * @param string $path
-     */
-    private function inPath($path): InPath
+    private function inPath(string $path): InPath
     {
         return new InPath(new Path((string) $path));
     }
 
-    private function notSpec(SpecificationInterface $ignoreSpec = null)
+    private function orSpec(SpecificationInterface $or, SpecificationInterface $spec): SpecificationInterface
     {
-        if ($ignoreSpec === null) {
-            return null;
-        }
+        return new OrSpecification($spec, $or);
+    }
 
+    private function notSpec(SpecificationInterface $ignoreSpec): SpecificationInterface
+    {
         return new NotSpecification($ignoreSpec);
     }
 
-    private function andSpec(SpecificationInterface $spec = null, SpecificationInterface $spec2 = null)
+    private function andSpec(SpecificationInterface $spec, SpecificationInterface $spec2): SpecificationInterface
     {
-        if ($spec === null) {
-            return $spec2;
-        }
-
-        if ($spec2 === null) {
-            return $spec;
-        }
-
         return new AndSpecification($spec, $spec2);
     }
 }

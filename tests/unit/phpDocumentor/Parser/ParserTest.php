@@ -12,18 +12,20 @@
 
 namespace phpDocumentor\Parser;
 
-use \Mockery as m;
+use Mockery as m;
 use phpDocumentor\Reflection\ProjectFactory;
 use Psr\Log\NullLogger;
 
 /**
  * Test class for \phpDocumentor\Parser\Parser.
  *
- * @covers phpDocumentor\Parser\Parser
+ * @coversDefaultClass \phpDocumentor\Parser\Parser
+ * @covers ::__construct
+ * @covers ::<private>
  */
 class ParserTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
-    /** @var \phpDocumentor\Parser\Parser */
+    /** @var Parser */
     protected $fixture = null;
 
     /**
@@ -40,8 +42,8 @@ class ParserTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Parser\Parser::getIgnoredTags
-     * @covers \phpDocumentor\Parser\Parser::setIgnoredTags
+     * @covers ::getIgnoredTags
+     * @covers ::setIgnoredTags
      */
     public function testSetAndGetIgnoredTags()
     {
@@ -57,8 +59,8 @@ class ParserTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Parser\Parser::setForced
-     * @covers \phpDocumentor\Parser\Parser::isForced
+     * @covers ::setForced
+     * @covers ::isForced
      */
     public function testSetAndCheckWhetherParsingIsForced()
     {
@@ -69,8 +71,8 @@ class ParserTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Parser\Parser::setEncoding
-     * @covers \phpDocumentor\Parser\Parser::getEncoding
+     * @covers ::setEncoding
+     * @covers ::getEncoding
      */
     public function testSettingAndRetrievingTheEncodingOfTheProvidedFiles()
     {
@@ -81,8 +83,8 @@ class ParserTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Parser\Parser::setPath
-     * @covers phpDocumentor\Parser\Parser::getPath
+     * @covers ::setPath
+     * @covers ::getPath
      */
     public function testSettingAndRetrievingTheBasePath()
     {
@@ -100,8 +102,8 @@ class ParserTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * Tests whether the doValidation() and setValidate methods function
      * properly.
      *
-     * @covers phpDocumentor\Parser\Parser::setValidate
-     * @covers phpDocumentor\Parser\Parser::doValidation
+     * @covers ::setValidate
+     * @covers ::doValidation
      */
     public function testValidate()
     {
@@ -119,8 +121,8 @@ class ParserTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * Tests whether the getMarker() and setMarkers methods function
      * properly.
      *
-     * @covers \phpDocumentor\Parser\Parser::setMarkers
-     * @covers \phpDocumentor\Parser\Parser::getMarkers
+     * @covers ::setMarkers
+     * @covers ::getMarkers
      */
     public function testMarkers()
     {
@@ -134,8 +136,8 @@ class ParserTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Parser\Parser::setDefaultPackageName
-     * @covers \phpDocumentor\Parser\Parser::getDefaultPackageName
+     * @covers ::setDefaultPackageName
+     * @covers ::getDefaultPackageName
      */
     public function testSetAndGetDefaultPackageName()
     {

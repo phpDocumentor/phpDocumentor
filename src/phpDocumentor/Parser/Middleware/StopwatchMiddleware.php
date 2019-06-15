@@ -26,15 +26,12 @@ final class StopwatchMiddleware implements Middleware
     /** @var int $memory amount of memory used */
     private $memory = 0;
 
-    /**
-     * @var Stopwatch
-     */
+    /** @var Stopwatch */
     private $stopwatch;
+
+    /** @var LoggerInterface */
     private $logger;
 
-    /**
-     * StopwatchMiddleware constructor.
-     */
     public function __construct(Stopwatch $stopwatch, LoggerInterface $logger)
     {
         $this->stopwatch = $stopwatch;
@@ -42,45 +39,49 @@ final class StopwatchMiddleware implements Middleware
     }
 
     /**
-     * Executes this middle ware class.
+     * Executes this middleware class.
      *
-     * @param callable $next
      * @return object
      */
     public function execute(Command $command, callable $next)
     {
         $result = $next($command);
 
-        if ($this->stopwatch) {
-            $lap = $this->stopwatch->lap('parser.parse');
-            $oldMemory = $this->memory;
-            $periods = $lap->getPeriods();
-            $memory = end($periods)->getMemory();
+        $lap = $this->stopwatch->lap('parser.parse');
+        $oldMemory = $this->memory;
+        $periods = $lap->getPeriods();
+        $memory = end($periods)->getMemory();
 
-            $this->log(
-                '>> Memory after processing of file: ' . number_format($memory / 1024 / 1024, 2)
-                . ' megabytes (' . (($memory - $oldMemory >= 0)
-                    ? '+'
-                    : '-') . number_format(($memory - $oldMemory) / 1024)
-                . ' kilobytes)',
-                LogLevel::DEBUG
-            );
+        $differenceInMemory = $memory - $oldMemory;
+        $this->log(
+            sprintf(
+                '>> Memory after processing of file: %s megabytes (%s kilobytes)',
+                $this->formatMemoryInMegabytes($memory),
+                (($differenceInMemory >= 0) ? '+' : '-') . $this->formatMemoryInKilobytes($differenceInMemory)
+            ),
+            LogLevel::DEBUG
+        );
 
-            $this->memory = $memory;
-        }
+        $this->memory = $memory;
 
         return $result;
     }
 
     /**
      * Dispatches a logging request.
-     *
-     * @param string   $message  The message to log.
-     * @param string   $priority The logging priority as declared in the LogLevel PSR-3 class.
-     * @param string[] $parameters
      */
-    private function log($message, $priority = LogLevel::INFO, $parameters = [])
+    private function log(string $message, string $priority = LogLevel::INFO, array $parameters = [])
     {
         $this->logger->log($priority, $message, $parameters);
+    }
+
+    private function formatMemoryInMegabytes(int $memory): string
+    {
+        return number_format($memory / 1024 / 1024, 2);
+    }
+
+    private function formatMemoryInKilobytes(int $memory): string
+    {
+        return number_format($memory / 1024);
     }
 }

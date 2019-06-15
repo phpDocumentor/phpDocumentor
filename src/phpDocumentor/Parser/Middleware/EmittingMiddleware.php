@@ -19,17 +19,17 @@ use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Parser\Event\PreFileEvent;
 use phpDocumentor\Reflection\Middleware\Command;
 use phpDocumentor\Reflection\Middleware\Middleware;
+use phpDocumentor\Reflection\Php\Factory\File\CreateCommand;
 
 final class EmittingMiddleware implements Middleware
 {
     /**
-     * Executes this middle ware class.
-     *
-     * @param callable $next
      * @return object
      */
     public function execute(Command $command, callable $next)
     {
+        assert($command instanceof CreateCommand);
+
         if (class_exists('phpDocumentor\Event\Dispatcher')) {
             Dispatcher::getInstance()->dispatch(
                 'parser.file.pre',

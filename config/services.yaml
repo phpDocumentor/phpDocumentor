@@ -119,9 +119,6 @@ services:
        calls:
         - [attachDefaults]
 
-
-    phpDocumentor\Parser\ProjectFactoryFactory: ~
-
     phpDocumentor\Configuration\Configuration:
       factory: ['@phpDocumentor\Configuration\ConfigurationFactory', 'fromDefaultLocations']
 
@@ -156,9 +153,45 @@ services:
           - [insert, ['@phpDocumentor\Compiler\Linker\Linker', !php/const \phpDocumentor\Compiler\Linker\Linker::COMPILER_PRIORITY]]
           - [insert, ['@phpDocumentor\Transformer\Transformer', !php/const \phpDocumentor\Transformer\Transformer::COMPILER_PRIORITY]]
 
+    phpDocumentor\Reflection\Php\NodesFactory:
+      class: phpDocumentor\Reflection\Php\NodesFactory
+      factory: [phpDocumentor\Reflection\Php\NodesFactory, 'createInstance']
+
+    phpDocumentor\Reflection\PrettyPrinter: ~
+
+    phpDocumentor\Reflection\DocBlockFactoryInterface:
+      class: phpDocumentor\Reflection\DocBlockFactory
+      factory: [\phpDocumentor\Reflection\DocBlockFactory, 'createInstance']
+    phpDocumentor\Reflection\Php\Factory\Argument: ~
+    phpDocumentor\Reflection\Php\Factory\Class_: ~
+    phpDocumentor\Reflection\Php\Factory\Constant: ~
+    phpDocumentor\Reflection\Php\Factory\DocBlock: ~
+    phpDocumentor\Reflection\Php\Factory\Function_: ~
+    phpDocumentor\Reflection\Php\Factory\Interface_: ~
+    phpDocumentor\Reflection\Php\Factory\Method: ~
+    phpDocumentor\Reflection\Php\Factory\Property: ~
+    phpDocumentor\Reflection\Php\Factory\Trait_: ~
+
+    phpDocumentor\Reflection\Php\Factory\File:
+      factory: [phpDocumentor\Parser\FileFactory, 'createInstance']
+      arguments:
+        - '@phpDocumentor\Reflection\Php\NodesFactory'
+        - !tagged phpdoc.parser.middleware
+
     phpDocumentor\Reflection\ProjectFactory:
-       factory: 'phpDocumentor\Parser\ProjectFactoryFactory:create'
-       arguments: [!tagged phpdoc.parser.middleware]
+      class: phpDocumentor\Reflection\Php\ProjectFactory
+      arguments:
+      -
+        - '@phpDocumentor\Reflection\Php\Factory\Argument'
+        - '@phpDocumentor\Reflection\Php\Factory\Class_'
+        - '@phpDocumentor\Reflection\Php\Factory\Constant'
+        - '@phpDocumentor\Reflection\Php\Factory\DocBlock'
+        - '@phpDocumentor\Reflection\Php\Factory\Function_'
+        - '@phpDocumentor\Reflection\Php\Factory\Interface_'
+        - '@phpDocumentor\Reflection\Php\Factory\Method'
+        - '@phpDocumentor\Reflection\Php\Factory\Property'
+        - '@phpDocumentor\Reflection\Php\Factory\Trait_'
+        - '@phpDocumentor\Reflection\Php\Factory\File'
 
     phpDocumentor\Parser\Parser:
       public: true
