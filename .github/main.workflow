@@ -36,3 +36,16 @@ action "Code style check" {
   args = "-d memory_limit=1024M"
   needs = ["composer"]
 }
+
+workflow "Issue management" {
+  resolves = ["takanabe/add-new-issues-to-project-column@master"]
+  on = "issues"
+}
+
+action "takanabe/add-new-issues-to-project-column@master" {
+  uses = "takanabe/add-new-issues-to-project-column@master"
+  secrets = ["GITHUB_TOKEN"]
+  env = {
+    PROJECT_NAME = "Issue Triage"
+  }
+}
