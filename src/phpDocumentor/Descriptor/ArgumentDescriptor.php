@@ -45,6 +45,11 @@ class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\Argume
         $this->method = $method;
     }
 
+    public function getMethod(): ?MethodDescriptor
+    {
+        return $this->method;
+    }
+
     /**
      * {@inheritDoc}
      */

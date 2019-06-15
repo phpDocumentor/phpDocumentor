@@ -49,19 +49,60 @@ class MethodDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
+     * @covers ::setParent
+     * @covers ::getParent
+     */
+    public function testSettingAndGettingAParent()
+    {
+        $parent = new ClassDescriptor();
+
+        $this->assertNull($this->fixture->getParent());
+
+        $this->fixture->setParent($parent);
+
+        $this->assertSame($parent, $this->fixture->getParent());
+    }
+
+    /**
      * @covers ::setArguments
      * @covers ::getArguments
      */
     public function testSettingAndGettingArguments()
     {
         $this->assertInstanceOf(Collection::class, $this->fixture->getArguments());
+        $this->assertCount(0, iterator_to_array($this->fixture->getArguments()));
 
-        $mock = m::mock(Collection::class);
-        $mock->shouldReceive('getIterator')->andReturn(new \ArrayIterator([]));
+        $argument = new ArgumentDescriptor();
+        $argument->setName('name');
+        $collection = new Collection([$argument]);
 
-        $this->fixture->setArguments($mock);
+        $this->fixture->setArguments($collection);
 
-        $this->assertSame($mock, $this->fixture->getArguments());
+        $this->assertInstanceOf(Collection::class, $this->fixture->getArguments());
+        $argumentsAsArray = iterator_to_array($this->fixture->getArguments());
+        $this->assertCount(1, $argumentsAsArray);
+        $this->assertSame($argument, $argumentsAsArray['name']);
+        $this->assertSame($argument->getMethod(), $this->fixture);
+    }
+
+    /**
+     * @covers ::addArgument
+     */
+    public function testAddingAnArgument()
+    {
+        $this->assertInstanceOf(Collection::class, $this->fixture->getArguments());
+        $this->assertCount(0, iterator_to_array($this->fixture->getArguments()));
+
+        $argument = new ArgumentDescriptor();
+        $argument->setName('name');
+
+        $this->fixture->addArgument('name', $argument);
+
+        $this->assertInstanceOf(Collection::class, $this->fixture->getArguments());
+        $argumentsAsArray = iterator_to_array($this->fixture->getArguments());
+        $this->assertCount(1, $argumentsAsArray);
+        $this->assertSame($argument, $argumentsAsArray['name']);
+        $this->assertSame($argument->getMethod(), $this->fixture);
     }
 
     /**
@@ -121,14 +162,14 @@ class MethodDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testRetrieveReturnTagForResponse()
     {
-        $mock = new ReturnDescriptor('return');
-        $mock->setType(new String_());
+        $returnDescriptor = new ReturnDescriptor('return');
+        $returnDescriptor->setType(new String_());
 
         $this->assertNull($this->fixture->getResponse()->getType());
 
-        $this->fixture->getTags()->set('return', new Collection([$mock]));
+        $this->fixture->getTags()->set('return', new Collection([$returnDescriptor]));
 
-        $this->assertSame($mock, $this->fixture->getResponse());
+        $this->assertSame($returnDescriptor, $this->fixture->getResponse());
     }
 
     /**
@@ -254,17 +295,17 @@ class MethodDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testReturnTagsInheritWhenNoneArePresent()
     {
-        // Arrange
+        $this->assertInstanceOf(Collection::class, $this->fixture->getReturn());
+        $this->assertSame(0, $this->fixture->getReturn()->count());
+
         $returnTagDescriptor = new AuthorDescriptor('return');
         $returnCollection = new Collection([$returnTagDescriptor]);
         $this->fixture->getTags()->clear();
         $parentProperty = $this->whenFixtureHasMethodInParentClassWithSameName($this->fixture->getName());
         $parentProperty->getTags()->set('return', $returnCollection);
 
-        // Act
         $result = $this->fixture->getReturn();
 
-        // Assert
         $this->assertSame($returnCollection, $result);
     }
 
@@ -273,17 +314,17 @@ class MethodDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testParamTagsInheritWhenNoneArePresent()
     {
-        // Arrange
+        $this->assertInstanceOf(Collection::class, $this->fixture->getParam());
+        $this->assertSame(0, $this->fixture->getParam()->count());
+
         $paramTagDescriptor = new AuthorDescriptor('param');
         $paramCollection = new Collection([$paramTagDescriptor]);
         $this->fixture->getTags()->clear();
         $parentProperty = $this->whenFixtureHasMethodInParentClassWithSameName($this->fixture->getName());
         $parentProperty->getTags()->set('param', $paramCollection);
 
-        // Act
         $result = $this->fixture->getParam();
 
-        // Assert
         $this->assertSame($paramCollection, $result);
     }
 

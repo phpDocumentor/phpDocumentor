@@ -45,6 +45,20 @@ class ArgumentDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
+     * @covers ::getMethod
+     * @covers ::setMethod
+     */
+    public function testSetAndGetMethod()
+    {
+        $this->assertSame(null, $this->fixture->getMethod());
+
+        $method = new MethodDescriptor();
+        $this->fixture->setMethod($method);
+
+        $this->assertSame($method, $this->fixture->getMethod());
+    }
+
+    /**
      * @covers ::getDefault
      * @covers ::setDefault
      */

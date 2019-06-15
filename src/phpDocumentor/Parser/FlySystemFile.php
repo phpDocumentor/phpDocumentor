@@ -15,39 +15,28 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Parser;
 
+use League\Flysystem\FileNotFoundException;
 use League\Flysystem\FilesystemInterface;
 use phpDocumentor\Reflection\File;
-use Webmozart\Assert\Assert;
 
-/**
- * Wrapper for FlySystem's FilesystemInterface.
- */
 final class FlySystemFile implements File
 {
-    /**
-     * @var FilesystemInterface
-     */
+    /** @var FilesystemInterface */
     private $fileSystem;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $fileName;
 
-    /**
-     * FlySystemFile constructor.
-     *
-     * @param string $fileName
-     */
-    public function __construct(FilesystemInterface $fileSystem, $fileName)
+    public function __construct(FilesystemInterface $fileSystem, string $fileName)
     {
-        Assert::string($fileName);
         $this->fileSystem = $fileSystem;
         $this->fileName = $fileName;
     }
 
     /**
      * Returns the content of the file as a string.
+     *
+     * @throws FileNotFoundException
      */
     public function getContents(): string
     {
@@ -56,6 +45,8 @@ final class FlySystemFile implements File
 
     /**
      * Returns md5 hash of the file.
+     *
+     * @throws FileNotFoundException
      */
     public function md5(): string
     {
