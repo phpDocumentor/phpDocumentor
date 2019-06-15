@@ -4,15 +4,6 @@
     "files": [
         "config/bundles.php",
         "VERSION",
-        "vendor/twig/twig/src/TwigTest.php",
-        "vendor/twig/twig/src/Node/Expression/Test.php",
-        "vendor/twig/twig/src/Node/Expression/Test/ConstantTest.php",
-        "vendor/twig/twig/src/Node/Expression/Test/DefinedTest.php",
-        "vendor/twig/twig/src/Node/Expression/Test/DivisiblebyTest.php",
-        "vendor/twig/twig/src/Node/Expression/Test/EvenTest.php",
-        "vendor/twig/twig/src/Node/Expression/Test/NullTest.php",
-        "vendor/twig/twig/src/Node/Expression/Test/OddTest.php",
-        "vendor/twig/twig/src/Node/Expression/Test/SameasTest.php",
         "vendor/phpdocumentor/reflection-docblock/src/DocBlock/Tags/Author.php"
     ],
     "directories-bin": [
