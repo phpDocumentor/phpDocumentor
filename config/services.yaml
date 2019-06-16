@@ -260,6 +260,7 @@ services:
       arguments: ['@phpDocumentor\Transformer\Router\StandardRouter']
     phpDocumentor\Transformer\Writer\Graph: ~
     phpDocumentor\Transformer\Writer\Twig: ~
+    phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory: ~
 
     phpDocumentor\Transformer\Writer\Collection:
       calls:
@@ -275,9 +276,6 @@ services:
     ###################################################################################
     ## Service aliases for backwards compatibility ####################################
     ###################################################################################
-
-    Twig_Environment:
-      alias: Twig\Environment
 
     markdown:
       alias: Parsedown
@@ -299,8 +297,6 @@ services:
       # used in a service provider so must be public
       public: true
 
-    Twig\Environment:
-      # used in a service provider so must be public
-      public: true
+    Twig\Environment: ~
 
     Zend\Cache\Storage\StorageInterface: '@Zend\Cache\Storage\Adapter\Filesystem'

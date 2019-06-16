@@ -71,14 +71,6 @@ class Extension extends Twig_Extension implements ExtensionInterface, Twig_Exten
     }
 
     /**
-     * Sets the router used to render the URL where a Descriptor can be found.
-     */
-    public function setRouters(Queue $routers): void
-    {
-        $this->routeRenderer->setRouters($routers);
-    }
-
-    /**
      * Sets the destination directory relative to the Project's Root.
      *
      * The destination is the target directory containing the resulting

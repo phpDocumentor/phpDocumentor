@@ -20,7 +20,7 @@ use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
 /**
  * Represents the entire project with its files, namespaces and indexes.
  */
-class ProjectDescriptor implements Interfaces\ProjectInterface
+class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
 {
     /** @var string $name */
     protected $name = '';
@@ -77,6 +77,16 @@ class ProjectDescriptor implements Interfaces\ProjectInterface
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Returns the description for this element.
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return '';
     }
 
     /**

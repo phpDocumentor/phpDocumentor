@@ -33,32 +33,10 @@ class Renderer
 
     /**
      * Initializes this renderer with a set of routers that are checked.
-     *
-     * @param Queue $routers
      */
-    public function __construct($routers)
+    public function __construct(Queue $routers)
     {
         $this->routers = $routers;
-    }
-
-    /**
-     * Overwrites the associated routers with a new set of routers.
-     *
-     * @param Queue $routers
-     */
-    public function setRouters($routers)
-    {
-        $this->routers = $routers;
-    }
-
-    /**
-     * Returns the routers used in generating the URLs for the anchors.
-     *
-     * @return Queue
-     */
-    public function getRouters()
-    {
-        return $this->routers;
     }
 
     /**
@@ -73,7 +51,7 @@ class Renderer
      *
      * @param string $destination
      *
-     * @see phpDocumentor\Transformer\Writer\Twig for the invocation
+     * @see \phpDocumentor\Transformer\Writer\Twig for the invocation
      *     of this method.
      */
     public function setDestination($destination)
