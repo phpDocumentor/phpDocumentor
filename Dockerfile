@@ -1,7 +1,7 @@
 FROM php:7
 
 RUN apt-get update \
-    && apt-get install -yq graphviz curl git libicu-dev libicu57 zlib1g-dev libxslt1-dev \
+    && apt-get install -yq graphviz curl git libicu-dev libicu57 zlib1g-dev libxslt1-dev libzip-dev \
     && rm -rf /var/lib/apt/lists/* \
     && docker-php-ext-install -j$(nproc) intl zip xsl
 
