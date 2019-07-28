@@ -54,7 +54,7 @@ action "takanabe/add-new-issues-to-project-column@master" {
 workflow "Release workflow" {
   on = "release"
   resolves = [
-    "sign phar"
+    "release phar"
   ]
 }
 
