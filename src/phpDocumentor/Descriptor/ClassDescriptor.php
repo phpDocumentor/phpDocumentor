@@ -283,7 +283,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
 
         /** @var Tag\PropertyDescriptor $propertyTag */
         foreach ($propertyTags as $propertyTag) {
-            if ( ! $propertyTag instanceof TypedVariableAbstract) {
+            if (! $propertyTag instanceof TypedVariableAbstract) {
                 continue;
             }
             $property = new PropertyDescriptor();
