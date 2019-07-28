@@ -35,7 +35,8 @@ jobs:
         - travis_retry sudo apt install graphviz
       script:
         - git tag v3.999.999
-        - php bin/console cache:warmup --env=prod && php -d phar.readonly=false tools/box.phar compile --config=box.nosign.json && bin/behat -p phar
+        - php bin/console cache:warmup --env=prod && php -d phar.readonly=false tools/box.phar compile
+        - bin/behat -p phar
         - php build/phpDocumentor.phar run
 
     - stage: test
@@ -54,69 +55,6 @@ jobs:
         - travis_retry wget --no-verbose https://phar.io/releases/phive.phar
         - travis_retry php phive.phar --no-progress install --trust-gpg-keys E82B2FB314E9906E php-coveralls/php-coveralls && ./tools/php-coveralls --verbose
         - travis_retry wget --no-verbose https://scrutinizer-ci.com/ocular.phar && php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml
-
-    - stage: release
-      if: repo = phpDocumentor/phpDocumentor2 AND (branch IN (develop, master) OR tag IS present)
-      name: Release
-      php: 7.1
-      env:
-        - VERSION=$(echo $TRAVIS_TAG | cut -c 2-10)
-      before_install: |
-        if [[ "$TRAVIS_PULL_REQUEST_SLUG" == "" || "$TRAVIS_PULL_REQUEST_SLUG" == "$TRAVIS_REPO_SLUG" ]];then
-          openssl aes-256-cbc -K $encrypted_f23adc84ec09_key -iv $encrypted_f23adc84ec09_iv -in .travis/secrets.tar.enc -out .travis/secrets.tar -d && \
-          tar xvf .travis/secrets.tar -C .travis
-        fi;
-      script:
-        - echo "${VERSION}" > VERSION
-        - php ./bin/console --env=prod cache:warm && php -d phar.readonly=false tools/box.phar compile --config=box.json && openssl sha1 build/phpDocumentor.phar
-        - echo "Update https://github.com/josegonzalez/homebrew-php/blob/master/Formula/phpdocumentor.rb with the latest version number and the SHA1 that is shown above with the path /get/phpDocumentor-${VERSION}.phar"
-      deploy:
-        provider: releases
-        api_key:
-          secure: WUchZXQQdIDtVQTYZsQ++2R1y6I+EzBrAACRuc33wAVd0mlqNmu3nb/c1Ou4pTk5JxjyGqm9Siyp9vobhBtzBh/hdXAnbZDWNx2l6R1M9S4R/Z/VbcQ+uIJ/VOoh2KvIOCcyVuFVmsemlVQCuatCRKswKmK/OuyQXy6ppyZMilA=
-        file:
-          - "build/phpDocumentor.phar"
-          - "build/phpDocumentor.phar.pubkey"
-        skip_cleanup: true
-        on:
-          repo: phpDocumentor/phpDocumentor2
-          tags: true
-
-    - stage: release
-      name: Nightly release
-      if: type IN (push) AND repo = phpDocumentor/phpDocumentor2 AND branch IN (develop) AND false # disable for now
-      php: 7.1
-      env:
-        - VERSION=$(echo $TRAVIS_TAG | cut -c 2-10)
-      before_install: |
-        if [[ "$TRAVIS_PULL_REQUEST_SLUG" == "" || "$TRAVIS_PULL_REQUEST_SLUG" == "$TRAVIS_REPO_SLUG" ]];then
-          openssl aes-256-cbc -K $encrypted_f23adc84ec09_key -iv $encrypted_f23adc84ec09_iv -in .travis/secrets.tar.enc -out .travis/secrets.tar -d && \
-          tar xvf .travis/secrets.tar -C .travis
-        fi;
-      script:
-        - echo "${VERSION}" > VERSION
-        - git config --global user.email "builds@travis-ci.com"
-        - git config --global user.name "Travis CI"
-        - export GIT_TAG=$(git describe --tags --exclude="*nightly*" | sed -E "s/\-[a-z0-9]+\-/-nightly-/")
-        - |
-          if [ "${TRAVIS_TAG}" == "" ]; then
-            git tag $GIT_TAG -a -m "Nightly build. Not a stable release. Expect bugs!";
-            echo "${GIT_TAG}" > VERSION
-          fi
-        - php ./bin/console --env=prod cache:warm && php -d phar.readonly=false tools/box.phar compile
-      deploy:
-        provider: releases
-        api_key:
-          secure: WUchZXQQdIDtVQTYZsQ++2R1y6I+EzBrAACRuc33wAVd0mlqNmu3nb/c1Ou4pTk5JxjyGqm9Siyp9vobhBtzBh/hdXAnbZDWNx2l6R1M9S4R/Z/VbcQ+uIJ/VOoh2KvIOCcyVuFVmsemlVQCuatCRKswKmK/OuyQXy6ppyZMilA=
-        file:
-          - "build/phpDocumentor.phar"
-          - "build/phpDocumentor.phar.pubkey"
-        skip_cleanup: true
-        on:
-          repo: phpDocumentor/phpDocumentor2
-          tags: false
-          branch:
-            - develop
 
 cache:
   directories:

@@ -25,7 +25,5 @@
     "compactors": [
         "Herrera\\Box\\Compactor\\Json",
         "Herrera\\Box\\Compactor\\Php"
-    ],
-    "algorithm": "OPENSSL",
-    "key": ".travis/phpdoc-phar.pem"
+    ]
 }
