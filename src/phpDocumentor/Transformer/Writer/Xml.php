@@ -200,41 +200,12 @@ class Xml extends WriterAbstract
             }
         }
 
-        $errors = $file->getAllErrors();
-        if (count($errors) > 0) {
-            $parse_errors = new \DOMElement('parse_markers');
-            $child->appendChild($parse_errors);
-
-            /** @var Error $error */
-            foreach ($errors as $error) {
-                $this->createErrorEntry($error, $parse_errors);
-            }
-        }
-
         // if we want to include the source for each file; append a new
         // element 'source' which contains a compressed, encoded version
         // of the source
         if ($file->getSource()) {
             $child->appendChild(new \DOMElement('source', base64_encode(gzcompress($file->getSource()))));
         }
-    }
-
-    /**
-     * Creates an entry in the ParseErrors collection of a file for a given error.
-     *
-     * @param Error       $error
-     * @param \DOMElement $parse_errors
-     */
-    protected function createErrorEntry($error, $parse_errors)
-    {
-        $marker_obj = new \DOMElement(strtolower($error->getSeverity()));
-        $parse_errors->appendChild($marker_obj);
-
-        $message = vsprintf($error->getCode(), $error->getContext());
-
-        $marker_obj->appendChild(new \DOMText($message));
-        $marker_obj->setAttribute('line', $error->getLine());
-        $marker_obj->setAttribute('code', $error->getCode());
     }
 
     /**

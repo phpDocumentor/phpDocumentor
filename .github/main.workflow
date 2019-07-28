@@ -50,3 +50,38 @@ action "takanabe/add-new-issues-to-project-column@master" {
     PROJECT_COLUMN_NAME = "Needs triage"
   }
 }
+
+workflow "Release workflow" {
+  on = "release"
+  resolves = [
+    "release phar"
+  ]
+}
+
+action "warm cache" {
+  uses = "docker://phar-ga"
+  args = "php bin/console cache:warmup --env=prod"
+  needs = ["composer"]
+}
+
+action "build phar" {
+  uses = "docker://phar-ga"
+  args = "box compile"
+  needs = ["warm cache"]
+}
+
+action "sign phar" {
+  uses = "docker://phar-ga"
+  args = "gpg --command-fd 0 --pinentry-mode loopback -u info@phpdoc.org --batch --detach-sign --output build/phpDocumentor.phar.asc build/phpDocumentor.phar"
+  secrets = ["SECRET_KEY", "PASSPHRASE"]
+  needs = ["build phar"]
+}
+
+action "release phar" {
+  uses = "fnkr/github-action-ghr@v1"
+  secrets = ["GITHUB_TOKEN"]
+  env = {
+    GHR_PATH = "build/"
+  }
+  needs = ["sign phar"]
+}

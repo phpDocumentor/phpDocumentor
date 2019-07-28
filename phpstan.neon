@@ -1,6 +1,9 @@
+includes:
+    - ./vendor/phpdocumentor/graphviz/extension.neon
+
 parameters:
   ignoreErrors:
-    - '#Constructor of class phpDocumentor\\Plugin\\Twig\\Extension has an unused parameter \$transformation#'
+    - '#Constructor of class phpDocumentor\\Transformer\\Writer\\Twig\\Extension has an unused parameter \$transformation#'
     - '#Call to an undefined method League\\Flysystem\\FilesystemInterface::find()#'
     # legacy cache
     - '#Call to an undefined method Zend\\Cache\\Storage\\Adapter\\AdapterOptions::setCacheDir()#'
@@ -19,7 +22,6 @@ parameters:
     - %currentWorkingDirectory%/src/phpDocumentor/Plugin/Core/Transformer/Writer/Xml.php
     - %currentWorkingDirectory%/src/phpDocumentor/Plugin/Core/Transformer/Writer/Checkstyle.php
    # use of magic methods
-    - %currentWorkingDirectory%/src/phpDocumentor/Plugin/Graphs/Writer/Graph.php
     - %currentWorkingDirectory%/src/phpDocumentor/Parser/Command/Project/ParseCommand.php
    # method doesn't exist??? phpDocumentor\Plugin\Scrybe\Converter\ToLatexInterface::setTableOfContents()
     - %currentWorkingDirectory%/src/phpDocumentor/Plugin/Scrybe/Command/Manual/ToLatexCommand.php

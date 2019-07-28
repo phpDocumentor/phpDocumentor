@@ -211,11 +211,8 @@ class Graph extends WriterAbstract
 
     /**
      * @param string $name
-     * @param Graph $graph
-     *
-     * @return Node
      */
-    protected function createEmptyNode($name, $graph)
+    protected function createEmptyNode(string $name, GraphVizGraph $graph) : ?Node
     {
         if ($graph === null) {
             return null;
@@ -311,8 +308,6 @@ class Graph extends WriterAbstract
     {
         return GraphVizGraph::create('cluster_' . $full_namespace_name)
             ->setLabel($label)
-            ->setStyle('rounded')
-            ->setColor('gray')
             ->setFontColor('gray')
             ->setFontSize('11')
             ->setRankDir('LR');
