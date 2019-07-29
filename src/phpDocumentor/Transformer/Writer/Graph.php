@@ -212,7 +212,7 @@ class Graph extends WriterAbstract
     /**
      * @param string $name
      */
-    protected function createEmptyNode(string $name, GraphVizGraph $graph) : ?Node
+    protected function createEmptyNode(string $name, ?GraphVizGraph $graph) : ?Node
     {
         if ($graph === null) {
             return null;
