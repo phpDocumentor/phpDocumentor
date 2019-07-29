@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2ed900cf98b40ace58ce0b0916ebcd36",
+    "content-hash": "1d050a6b8be8b362f5407a3f0770b71a",
     "packages": [
         {
             "name": "composer/ca-bundle",
@@ -746,24 +746,26 @@
         },
         {
             "name": "phpdocumentor/graphviz",
-            "version": "2.0.0-beta1",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/GraphViz.git",
-                "reference": "210ff935adb2ad9bc7668f6f551e131891b76c2c"
+                "reference": "19343158596de792327a51a00e30447ff32eb191"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/GraphViz/zipball/210ff935adb2ad9bc7668f6f551e131891b76c2c",
-                "reference": "210ff935adb2ad9bc7668f6f551e131891b76c2c",
+                "url": "https://api.github.com/repos/phpDocumentor/GraphViz/zipball/19343158596de792327a51a00e30447ff32eb191",
+                "reference": "19343158596de792327a51a00e30447ff32eb191",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.1"
+                "php": "^7.1"
             },
             "require-dev": {
-                "mockery/mockery": "~1",
-                "phpunit/phpunit": "~6"
+                "ext-simplexml": "*",
+                "mockery/mockery": "^1.2",
+                "phpstan/phpstan": "^0.11.12",
+                "phpunit/phpunit": "^7.5"
             },
             "type": "library",
             "extra": {
@@ -772,11 +774,9 @@
                 }
             },
             "autoload": {
-                "psr-0": {
-                    "phpDocumentor": [
-                        "src/",
-                        "tests/unit"
-                    ]
+                "psr-4": {
+                    "phpDocumentor\\GraphViz\\": "src/phpDocumentor/GraphViz",
+                    "phpDocumentor\\GraphViz\\PHPStan\\": "./src/phpDocumentor/PHPStan"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -790,7 +790,7 @@
                 }
             ],
             "description": "Wrapper for Graphviz",
-            "time": "2018-08-07T13:55:40+00:00"
+            "time": "2019-07-29T13:58:50+00:00"
         },
         {
             "name": "phpdocumentor/reflection",
@@ -4689,7 +4689,7 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "phpdocumentor/flyfinder": 10,
-        "phpdocumentor/graphviz": 15,
+        "phpdocumentor/graphviz": 20,
         "phpdocumentor/reflection": 15,
         "phpdocumentor/reflection-common": 15,
         "phpdocumentor/reflection-docblock": 15
