@@ -253,9 +253,7 @@ services:
 
     phpDocumentor\Transformer\Writer\FileIo: ~
     phpDocumentor\Transformer\Writer\Sourcecode: ~
-    phpDocumentor\Transformer\Writer\Statistics: ~
     phpDocumentor\Transformer\Writer\Xsl: ~
-    phpDocumentor\Transformer\Writer\Checkstyle: ~
     phpDocumentor\Transformer\Writer\Xml:
       arguments: ['@phpDocumentor\Transformer\Router\StandardRouter']
     phpDocumentor\Transformer\Writer\Graph: ~
@@ -266,9 +264,7 @@ services:
       calls:
         - { method: offsetSet, arguments: ['FileIo', '@phpDocumentor\Transformer\Writer\FileIo']}
         - { method: offsetSet, arguments: ['sourcecode', '@phpDocumentor\Transformer\Writer\Sourcecode']}
-        - { method: offsetSet, arguments: ['statistics', '@phpDocumentor\Transformer\Writer\Statistics']}
         - { method: offsetSet, arguments: ['xsl', '@phpDocumentor\Transformer\Writer\Xsl']}
-        - { method: offsetSet, arguments: ['checkstyle', '@phpDocumentor\Transformer\Writer\Checkstyle']}
         - { method: offsetSet, arguments: ['xml', '@phpDocumentor\Transformer\Writer\Xml']}
         - { method: offsetSet, arguments: ['Graph', '@phpDocumentor\Transformer\Writer\Graph']}
         - { method: offsetSet, arguments: ['twig', '@phpDocumentor\Transformer\Writer\Twig']}
