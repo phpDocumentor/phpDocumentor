@@ -17,8 +17,7 @@ namespace phpDocumentor\Descriptor\Cache;
 
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
-use Stash\Interfaces\PoolInterface;
+use Psr\Cache\CacheItemPoolInterface;
 use Stash\Item;
 
 /**
@@ -32,13 +31,13 @@ final class ProjectDescriptorMapper
 
     const KEY_SETTINGS = 'phpDocumentor/projectDescriptor/settings';
 
-    /** @var PoolInterface */
+    /** @var CacheItemPoolInterface */
     private $cache;
 
     /**
      * Initializes this mapper with the given cache instance.
      */
-    public function __construct(PoolInterface $cache)
+    public function __construct(CacheItemPoolInterface $cache)
     {
         $this->cache = $cache;
     }
@@ -70,11 +69,9 @@ final class ProjectDescriptorMapper
     {
         $fileListItem = $this->cache->getItem(self::FILE_LIST);
         $currentFileList = $fileListItem->get();
-        $fileListItem->lock();
 
         // store the settings for this Project Descriptor
         $item = $this->cache->getItem(self::KEY_SETTINGS);
-        $item->lock();
         $this->cache->saveDeferred($item->set($projectDescriptor->getSettings()));
 
         // store cache items
@@ -83,7 +80,6 @@ final class ProjectDescriptorMapper
             $key = self::FILE_PREFIX . md5($file->getPath());
             $fileKeys[] = $key;
             $item = $this->cache->getItem($key);
-            $item->lock();
             $this->cache->saveDeferred($item->set($file));
         }
 
