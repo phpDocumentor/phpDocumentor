@@ -46,7 +46,7 @@ class StripOnVisibility extends AbstractFilter
     public function filter($value)
     {
         if ($value instanceof VisibilityInterface
-            && !$this->builder->isVisibilityAllowed($value->getVisibility())
+            && !$this->builder->getProjectDescriptor()->isVisibilityAllowed($value->getVisibility())
         ) {
             return null;
         }

@@ -54,11 +54,6 @@ class ProjectDescriptorBuilder
         $this->project = new ProjectDescriptor(self::DEFAULT_PROJECT_NAME);
     }
 
-    public function setProjectDescriptor(ProjectDescriptor $projectDescriptor)
-    {
-        $this->project = $projectDescriptor;
-    }
-
     /**
      * Returns the project descriptor that is being built.
      *
@@ -67,40 +62,6 @@ class ProjectDescriptorBuilder
     public function getProjectDescriptor()
     {
         return $this->project;
-    }
-
-    /**
-     * Verifies whether the given visibility is allowed to be included in the Descriptors.
-     *
-     * This method is used anytime a Descriptor is added to a collection (for example, when adding a Method to a Class)
-     * to determine whether the visibility of that element is matches what the user has specified when it ran
-     * phpDocumentor.
-     *
-     * @param string|integer $visibility One of the visibility constants of the ProjectDescriptor class or the words
-     *     'public', 'protected', 'private' or 'internal'.
-     *
-     * @see ProjectDescriptor where the visibility is stored and that declares the constants to use.
-     *
-     * @return boolean
-     */
-    public function isVisibilityAllowed($visibility)
-    {
-        switch ($visibility) {
-            case 'public':
-                $visibility = Settings::VISIBILITY_PUBLIC;
-                break;
-            case 'protected':
-                $visibility = Settings::VISIBILITY_PROTECTED;
-                break;
-            case 'private':
-                $visibility = Settings::VISIBILITY_PRIVATE;
-                break;
-            case 'internal':
-                $visibility = Settings::VISIBILITY_INTERNAL;
-                break;
-        }
-
-        return $this->getProjectDescriptor()->isVisibilityAllowed($visibility);
     }
 
     /**
@@ -203,18 +164,6 @@ class ProjectDescriptorBuilder
         }
 
         return $descriptor;
-    }
-
-    /**
-     * Map error code to severity.
-     *
-     * @param int $code
-     *
-     * @return string
-     */
-    protected function mapCodeToSeverity($code)
-    {
-        return LogLevel::ERROR;
     }
 
     public function build(Project $project)

@@ -47,7 +47,7 @@ class StripOnVisibilityTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testStripsTagFromDescriptionIfVisibilityIsNotAllowed()
     {
-        $this->builderMock->shouldReceive('isVisibilityAllowed')->andReturn(false);
+        $this->builderMock->shouldReceive('getProjectDescriptor->isVisibilityAllowed')->andReturn(false);
 
         $descriptor = m::mock('phpDocumentor\Descriptor\Interfaces\VisibilityInterface');
         $descriptor->shouldReceive('getVisibility');
@@ -60,7 +60,7 @@ class StripOnVisibilityTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testKeepsDescriptorIfVisibilityIsAllowed()
     {
-        $this->builderMock->shouldReceive('isVisibilityAllowed')->andReturn(true);
+        $this->builderMock->shouldReceive('getProjectDescriptor->isVisibilityAllowed')->andReturn(true);
 
         $descriptor = m::mock('phpDocumentor\Descriptor\Interfaces\VisibilityInterface');
         $descriptor->shouldReceive('getVisibility');
@@ -73,7 +73,7 @@ class StripOnVisibilityTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testKeepsDescriptorIfDescriptorNotInstanceOfVisibilityInterface()
     {
-        $this->builderMock->shouldReceive('isVisibilityAllowed')->andReturn(false);
+        $this->builderMock->shouldReceive('getProjectDescriptor->isVisibilityAllowed')->andReturn(false);
 
         $descriptor = m::mock('\phpDocumentor\Descriptor\DescriptorAbstract');
 
