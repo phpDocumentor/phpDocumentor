@@ -62,11 +62,6 @@ final class Parser
      */
     private $fileCollector;
 
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
     private $logger;
 
     /**
@@ -79,7 +74,6 @@ final class Parser
         StorageInterface $cache,
         ExampleFinder $exampleFinder,
         PartialsCollection $partials,
-        EventDispatcherInterface $eventDispatcher,
         LoggerInterface $logger
     ) {
         $this->builder = $builder;
@@ -88,7 +82,6 @@ final class Parser
         $this->exampleFinder = $exampleFinder;
         $this->partials = $partials;
         $this->fileCollector = $fileCollector;
-        $this->eventDispatcher = $eventDispatcher;
         $this->logger = $logger;
     }
 
@@ -167,8 +160,8 @@ final class Parser
         $this->log('Collecting files .. ');
         $files = $this->getFileCollection($apiConfig);
         $this->log('OK');
-        $this->log('Parsing files', LogLevel::NOTICE);
 
+        $this->log('Parsing files', LogLevel::NOTICE);
         $parser->parse($builder, $files);
 
         $this->log('Storing cache .. ', LogLevel::NOTICE);
