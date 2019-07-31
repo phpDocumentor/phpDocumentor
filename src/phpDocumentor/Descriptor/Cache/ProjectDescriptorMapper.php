@@ -108,7 +108,7 @@ final class ProjectDescriptorMapper
 
         if ($cachedFileList !== null) {
             $realFileKeys = array_map(
-                static function(File $file) {
+                static function (File $file) {
                     return self::FILE_PREFIX . md5($file->path());
                 },
                 $files
