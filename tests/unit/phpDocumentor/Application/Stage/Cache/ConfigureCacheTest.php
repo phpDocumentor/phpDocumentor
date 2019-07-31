@@ -10,12 +10,14 @@
  *  @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Application\Stage\Parser;
+namespace phpDocumentor\Application\Stage\Cache;
 
 use \Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
+use phpDocumentor\Application\Stage\Payload;
+use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Path;
-use Zend\Cache\Storage\StorageInterface;
+use Stash\Pool;
 
 class ConfigureCacheTest extends MockeryTestCase
 {
@@ -23,7 +25,7 @@ class ConfigureCacheTest extends MockeryTestCase
      * @dataProvider cacheDirProvider
      * @throws \Exception
      */
-    public function testInvokeWithCachePath($configuredPath, $expectedPath)
+    public function testInvokeWithCachePath($configuredPath)
     {
         $configuration = [
             'phpdocumentor' => [
@@ -33,12 +35,19 @@ class ConfigureCacheTest extends MockeryTestCase
             ],
         ];
 
-        $cacheStorage = m::mock(StorageInterface::class);
-        $cacheStorage->shouldReceive('getOptions->setCacheDir')->withArgs([$expectedPath])->once();
+        $cacheStorage = m::mock(Pool::class);
+        $cacheStorage->shouldReceive('setDriver')
+            ->with(m::type(\Stash\Driver\FileSystem::class))
+            ->once();
 
         $stage = new ConfigureCache($cacheStorage);
 
-        self::assertSame($configuration, $stage($configuration));
+        $payload = new Payload($configuration, m::mock(ProjectDescriptorBuilder::class));
+
+        self::assertSame(
+            $payload,
+            $stage($payload)
+        );
     }
 
     public function cacheDirProvider()
@@ -46,19 +55,15 @@ class ConfigureCacheTest extends MockeryTestCase
         return [
             [
                 '/tmp/cache',
-                '/tmp/cache',
             ],
             [
                 'cache/relative',
-                getcwd() . DIRECTORY_SEPARATOR . 'cache/relative',
             ],
             [
                 new Path('/tmp/cache'),
-                '/tmp/cache',
             ],
             [
                 new Path('cache/relative'),
-                getcwd() . DIRECTORY_SEPARATOR . 'cache/relative',
             ],
         ];
     }

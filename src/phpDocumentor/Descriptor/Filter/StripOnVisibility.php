@@ -19,12 +19,11 @@ use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\Interfaces\VisibilityInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
-use Zend\Filter\AbstractFilter;
 
 /**
  * Strips any Descriptor if their visibility is allowed according to the ProjectDescriptorBuilder.
  */
-class StripOnVisibility extends AbstractFilter
+class StripOnVisibility implements FilterInterface
 {
     /** @var ProjectDescriptorBuilder $builder */
     protected $builder;
@@ -44,7 +43,7 @@ class StripOnVisibility extends AbstractFilter
      *
      * @return DescriptorAbstract|null
      */
-    public function filter($value)
+    public function __invoke(?Filterable $value) : ?Filterable
     {
         if ($value instanceof VisibilityInterface
             && !$this->builder->getProjectDescriptor()->isVisibilityAllowed(

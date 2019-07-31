@@ -15,8 +15,13 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Filter;
 
+use phpDocumentor\Descriptor\ConstantDescriptor;
+use phpDocumentor\Descriptor\FunctionDescriptor;
+use phpDocumentor\Descriptor\InterfaceDescriptor;
+use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
-use Zend\Filter\FilterInterface;
+use phpDocumentor\Descriptor\PropertyDescriptor;
+use phpDocumentor\Descriptor\TraitDescriptor;
 
 /**
  * Filter used to manipulate a descriptor after being build.
@@ -49,25 +54,24 @@ class Filter
         ];
 
         foreach ($filtersOnAllDescriptors as $filter) {
-            $this->attach('phpDocumentor\Descriptor\ConstantDescriptor', $filter);
-            $this->attach('phpDocumentor\Descriptor\FunctionDescriptor', $filter);
-            $this->attach('phpDocumentor\Descriptor\InterfaceDescriptor', $filter);
-            $this->attach('phpDocumentor\Descriptor\TraitDescriptor', $filter);
-            $this->attach('phpDocumentor\Descriptor\PropertyDescriptor', $filter);
-            $this->attach('phpDocumentor\Descriptor\MethodDescriptor', $filter);
+            $this->attach(ConstantDescriptor::class, $filter);
+            $this->attach(FunctionDescriptor::class, $filter);
+            $this->attach(InterfaceDescriptor::class, $filter);
+            $this->attach(TraitDescriptor::class, $filter);
+            $this->attach(PropertyDescriptor::class, $filter);
+            $this->attach(MethodDescriptor::class, $filter);
         }
 
-        $this->attach('phpDocumentor\Descriptor\PropertyDescriptor', $stripOnVisibility);
-        $this->attach('phpDocumentor\Descriptor\MethodDescriptor', $stripOnVisibility);
+        $this->attach(PropertyDescriptor::class, $stripOnVisibility);
+        $this->attach(MethodDescriptor::class, $stripOnVisibility);
     }
 
     /**
      * Attaches a filter to a specific FQCN.
      */
-    public function attach(string $fqcn, FilterInterface $filter, int $priority = self::DEFAULT_PRIORITY): void
+    public function attach(string $fqcn, FilterInterface $filter): void
     {
-        $chain = $this->factory->getChainFor($fqcn);
-        $chain->attach($filter, $priority);
+        $this->factory->attachTo($fqcn, $filter);
     }
 
     /**
@@ -77,6 +81,6 @@ class Filter
     {
         $chain = $this->factory->getChainFor(get_class($descriptor));
 
-        return $chain->filter($descriptor);
+        return $chain($descriptor);
     }
 }

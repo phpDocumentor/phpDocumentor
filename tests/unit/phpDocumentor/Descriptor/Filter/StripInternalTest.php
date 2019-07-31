@@ -43,7 +43,7 @@ class StripInternalTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Filter\StripInternal::filter
+     * @covers phpDocumentor\Descriptor\Filter\StripInternal::__invoke
      */
     public function testStripsInternalTagFromDescription()
     {
@@ -54,11 +54,11 @@ class StripInternalTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $descriptor->shouldReceive('getDescription')->andReturn('without {@internal blabla }}internal tag');
         $descriptor->shouldReceive('setDescription')->with('without internal tag');
 
-        $this->assertSame($descriptor, $this->fixture->filter($descriptor));
+        $this->assertSame($descriptor, $this->fixture->__invoke($descriptor));
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Filter\StripInternal::filter
+     * @covers phpDocumentor\Descriptor\Filter\StripInternal::__invoke
      */
     public function testStripsInternalTagFromDescriptionIfTagDescriptionContainsBraces()
     {
@@ -69,11 +69,11 @@ class StripInternalTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $descriptor->shouldReceive('getDescription')->andReturn('without {@internal bla{bla} }}internal tag');
         $descriptor->shouldReceive('setDescription')->with('without internal tag');
 
-        $this->assertSame($descriptor, $this->fixture->filter($descriptor));
+        $this->assertSame($descriptor, $this->fixture->__invoke($descriptor));
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Filter\StripInternal::filter
+     * @covers phpDocumentor\Descriptor\Filter\StripInternal::__invoke
      */
     public function testResolvesInternalTagFromDescriptionIfParsePrivateIsTrue()
     {
@@ -83,11 +83,11 @@ class StripInternalTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $descriptor->shouldReceive('getDescription')->andReturn('without {@internal blabla }}internal tag');
         $descriptor->shouldReceive('setDescription')->with('without blabla internal tag');
 
-        $this->assertSame($descriptor, $this->fixture->filter($descriptor));
+        $this->assertSame($descriptor, $this->fixture->__invoke($descriptor));
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Filter\StripInternal::filter
+     * @covers phpDocumentor\Descriptor\Filter\StripInternal::__invoke
      */
     public function testRemovesDescriptorIfTaggedAsInternal()
     {
@@ -98,11 +98,11 @@ class StripInternalTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $descriptor->shouldReceive('setDescription');
         $descriptor->shouldReceive('getTags->get')->with('internal')->andReturn(true);
 
-        $this->assertNull($this->fixture->filter($descriptor));
+        $this->assertNull($this->fixture->__invoke($descriptor));
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Filter\StripInternal::filter
+     * @covers phpDocumentor\Descriptor\Filter\StripInternal::__invoke
      */
     public function testKeepsDescriptorIfTaggedAsInternalAndParsePrivateIsTrue()
     {
@@ -113,11 +113,11 @@ class StripInternalTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $descriptor->shouldReceive('setDescription');
         $descriptor->shouldReceive('getTags->get')->with('internal')->andReturn(true);
 
-        $this->assertSame($descriptor, $this->fixture->filter($descriptor));
+        $this->assertSame($descriptor, $this->fixture->__invoke($descriptor));
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Filter\StripInternal::filter
+     * @covers phpDocumentor\Descriptor\Filter\StripInternal::__invoke
      */
     public function testDescriptorIsUnmodifiedIfThereIsNoInternalTag()
     {
@@ -128,6 +128,6 @@ class StripInternalTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $descriptor->shouldReceive('setDescription');
         $descriptor->shouldReceive('getTags->get')->with('internal')->andReturn(false);
 
-        $this->assertEquals($descriptor, $this->fixture->filter($descriptor));
+        $this->assertEquals($descriptor, $this->fixture->__invoke($descriptor));
     }
 }
