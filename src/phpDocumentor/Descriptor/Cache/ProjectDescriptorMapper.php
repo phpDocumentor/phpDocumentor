@@ -17,6 +17,7 @@ namespace phpDocumentor\Descriptor\Cache;
 
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Reflection\File;
 use Psr\Cache\CacheItemPoolInterface;
 use Stash\Item;
 
@@ -98,25 +99,23 @@ final class ProjectDescriptorMapper
     /**
      * Removes all files in cache that do not occur in the given FileSet Collection.
      *
-     * @todo restore this?
+     * @param File[] $files
      */
-    public function garbageCollect($collection)
+    public function garbageCollect(array $files) : void
     {
-//        $projectRoot = $collection->getProjectRoot();
-//        $filenames = $collection->getFilenames();
-//
-//        foreach ($filenames as &$name) {
-//            // the cache key contains a path relative to the project root; here we expect absolute paths.
-//            $name = self::FILE_PREFIX . md5(substr($name, strlen($projectRoot)));
-//        }
-//
-//        foreach ($this->getCache() as $item) {
-//            if (substr($item, 0, strlen(self::FILE_PREFIX)) === self::FILE_PREFIX &&
-//                  !in_array($item, $filenames, true)
-//            ) {
-//                $this->getCache()->removeItem($item);
-//            }
-//        }
+        $fileListItem = $this->cache->getItem(self::FILE_LIST);
+        $cachedFileList = $fileListItem->get();
+
+        if ($cachedFileList !== null) {
+            $realFileKeys = array_map(
+                static function(File $file) {
+                    return self::FILE_PREFIX . md5($file->path());
+                },
+                $files
+            );
+
+            $this->cache->deleteItems(array_diff($cachedFileList, $realFileKeys));
+        }
     }
 
     private function loadCacheItemAsSettings(ProjectDescriptor $projectDescriptor): void

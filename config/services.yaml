@@ -229,19 +229,13 @@ services:
     ## Autoloading definitions for external services ##################################
     ###################################################################################
 
+    Psr\Cache\CacheItemPoolInterface: '@Stash\Pool'
+
     Stash\Interfaces\PoolInterface: '@Stash\Pool'
 
-    Stash\Pool:
-      arguments: { $driver: '@Stash\Driver\FileSystem' }
-
-    Stash\Driver\FileSystem:
-      arguments: [ { path: 'build/api-cache' } ]
+    Stash\Pool: ~
 
     League\Flysystem\MountManager: ~
-
-    Zend\Cache\Storage\Adapter\Filesystem:
-      class: Zend\Cache\Storage\Adapter\Filesystem
-      factory: ['phpDocumentor\Descriptor\Cache\ZendCacheFactory', create]
 
     Parsedown:
       class: Parsedown
@@ -294,5 +288,3 @@ services:
       public: true
 
     Twig\Environment: ~
-
-    Zend\Cache\Storage\StorageInterface: '@Zend\Cache\Storage\Adapter\Filesystem'

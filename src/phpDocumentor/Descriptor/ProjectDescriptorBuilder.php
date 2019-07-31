@@ -18,6 +18,7 @@ namespace phpDocumentor\Descriptor;
 use phpDocumentor\Descriptor\Builder\AssemblerFactory;
 use phpDocumentor\Descriptor\Builder\AssemblerInterface;
 use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
+use phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper;
 use phpDocumentor\Descriptor\Filter\Filter;
 use phpDocumentor\Descriptor\Filter\Filterable;
 use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
@@ -198,5 +199,51 @@ class ProjectDescriptorBuilder
     public function getDefaultPackage()
     {
         return $this->defaultPackage;
+    }
+
+    public function setVisibility(array $apiConfig) : void
+    {
+        $visibilities = $apiConfig['visibility'];
+        $visibility = null;
+
+        foreach ($visibilities as $item) {
+            switch ($item) {
+                case 'public':
+                    $visibility |= ProjectDescriptor\Settings::VISIBILITY_PUBLIC;
+                    break;
+                case 'protected':
+                    $visibility |= ProjectDescriptor\Settings::VISIBILITY_PROTECTED;
+                    break;
+                case 'private':
+                    $visibility |= ProjectDescriptor\Settings::VISIBILITY_PRIVATE;
+                    break;
+            }
+        }
+
+        $this->project->getSettings()->setVisibility($visibility);
+    }
+
+    public function setName(string $title) : void
+    {
+        $this->project->setName($title);
+    }
+
+    public function setPartials(Collection $partials) : void
+    {
+        $this->project->setPartials($partials);
+    }
+
+    public function setMarkers(array $markers) : void
+    {
+        $this->project->getSettings()->setMarkers($markers);
+    }
+
+    public function setIncludeSource(bool $includeSources) : void
+    {
+        if ($includeSources) {
+            $this->project->getSettings()->includeSource();
+        } else {
+            $this->project->getSettings()->excludeSource();
+        }
     }
 }

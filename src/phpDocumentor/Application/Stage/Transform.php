@@ -20,6 +20,7 @@ use phpDocumentor\Compiler\Compiler;
 use phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Event\Dispatcher;
+use phpDocumentor\Reflection\DocBlock\ExampleFinder;
 use phpDocumentor\Transformer\Event\PreTransformationEvent;
 use phpDocumentor\Transformer\Event\PreTransformEvent;
 use phpDocumentor\Transformer\Event\WriterInitializationEvent;
@@ -28,7 +29,6 @@ use phpDocumentor\Transformer\Writer\WriterAbstract;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Stopwatch\Stopwatch;
-use Zend\Cache\Storage\StorageInterface;
 
 /**
  * Transforms the structure file into the specified output format
@@ -53,11 +53,12 @@ final class Transform
     /** @var Compiler $compiler Collection of pre-transformation actions (Compiler Passes) */
     private $compiler;
 
-    /** @var StorageInterface */
-    private $cache;
-
     /** @var LoggerInterface */
     private $logger;
+    /**
+     * @var ExampleFinder
+     */
+    private $exampleFinder;
 
     /**
      * Initializes the command with all necessary dependencies to construct human-suitable output from the AST.
@@ -66,16 +67,16 @@ final class Transform
         ProjectDescriptorBuilder $builder,
         Transformer $transformer,
         Compiler $compiler,
-        StorageInterface $cache,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        ExampleFinder $exampleFinder
     ) {
         $this->builder = $builder;
         $this->transformer = $transformer;
         $this->compiler = $compiler;
-        $this->cache = $cache;
         $this->logger = $logger;
 
         $this->connectOutputToEvents();
+        $this->exampleFinder = $exampleFinder;
     }
 
     /**
@@ -99,9 +100,10 @@ final class Transform
      *
      * @throws Exception if the target location is not a folder.
      */
-    public function __invoke(array $configuration): int
+    public function __invoke(Payload $payload): Payload
     {
         $transformer = $this->getTransformer();
+        $configuration = $payload->getConfig();
 
         $target = $configuration['phpdocumentor']['paths']['output']->getPath();
         $fileSystem = new Filesystem();
@@ -112,12 +114,8 @@ final class Transform
         $transformer->setTarget((string) $target);
 
         $projectDescriptor = $this->getBuilder()->getProjectDescriptor();
-        $mapper = new ProjectDescriptorMapper($this->getCache());
 
         $stopWatch = new Stopwatch();
-        $stopWatch->start('cache');
-        $mapper->populate($projectDescriptor);
-        $stopWatch->stop('cache');
 
         foreach (array_column($configuration['phpdocumentor']['templates'], 'name') as $template) {
             $stopWatch->start('load template');
@@ -125,17 +123,17 @@ final class Transform
             $stopWatch->stop('load template');
         }
 
+        //TODO: Should determine root based on filesystems. Could be an issue for multiple.
+        // Need some config update here.
+        $this->exampleFinder->setSourceDirectory(getcwd());
+        $this->exampleFinder->setExampleDirectories(['.']);
+
         /** @var \phpDocumentor\Compiler\CompilerPassInterface $pass */
         foreach ($this->compiler as $pass) {
             $pass->execute($projectDescriptor);
         }
 
-        return 0;
-    }
-
-    private function getCache(): StorageInterface
-    {
-        return $this->cache;
+        return $payload;
     }
 
     /**

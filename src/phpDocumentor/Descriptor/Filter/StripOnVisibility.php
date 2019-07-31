@@ -17,6 +17,7 @@ namespace phpDocumentor\Descriptor\Filter;
 
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\Interfaces\VisibilityInterface;
+use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use Zend\Filter\AbstractFilter;
 
@@ -46,11 +47,27 @@ class StripOnVisibility extends AbstractFilter
     public function filter($value)
     {
         if ($value instanceof VisibilityInterface
-            && !$this->builder->getProjectDescriptor()->isVisibilityAllowed($value->getVisibility())
+            && !$this->builder->getProjectDescriptor()->isVisibilityAllowed(
+                $this->toVisibility($value->getVisibility())
+            )
         ) {
             return null;
         }
 
         return $value;
+    }
+
+    private function toVisibility(string $visibility) : int
+    {
+        switch ($visibility) {
+            case 'public':
+                return Settings::VISIBILITY_PUBLIC;
+            case 'protected':
+                return Settings::VISIBILITY_PROTECTED;
+            case 'private':
+                return Settings::VISIBILITY_PRIVATE;
+        }
+
+        throw new \InvalidArgumentException($visibility . ' is not a valid visibility');
     }
 }
