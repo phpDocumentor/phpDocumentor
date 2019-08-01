@@ -14,12 +14,9 @@ action "composer" {
 }
 
 action "PHPStan" {
-  uses = "docker://jaapio/github-actions:phpstan"
+  uses = "docker://phpdoc/phpstan-ga:master"
   args = "analyse src tests --level 3 --configuration phpstan.neon"
   secrets = ["GITHUB_TOKEN"]
-  env = {
-    PHP_EXTENSIONS = "php7-intl php7-xsl"
-  }
   needs = ["composer"]
 }
 
