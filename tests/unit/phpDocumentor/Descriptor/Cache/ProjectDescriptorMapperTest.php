@@ -13,9 +13,10 @@
 namespace phpDocumentor\Descriptor\Cache;
 
 use Mockery as m;
+use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
-use Zend\Cache\Storage\Adapter\Memory;
-use Zend\Cache\Storage\StorageInterface;
+use Stash\Driver\Ephemeral;
+use Stash\Pool;
 
 /**
  * @coversDefaultClass \phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper
@@ -26,31 +27,15 @@ final class ProjectDescriptorMapperTest extends \Mockery\Adapter\Phpunit\Mockery
     /** @var ProjectDescriptorMapper */
     private $mapper;
 
-    /** @var StorageInterface */
-    private $cacheDriver;
+    /**
+     * @var Pool
+     */
+    private $cachePool;
 
     protected function setUp()
     {
-        $this->cacheDriver = new Memory();
-        $this->mapper = new ProjectDescriptorMapper($this->cacheDriver);
-    }
-
-    /**
-     * @covers ::getCache
-     */
-    public function testThatTheCacheDriverCanBeRetrieved()
-    {
-        $this->assertSame($this->cacheDriver, $this->mapper->getCache());
-    }
-
-    /**
-     * @covers ::getCache
-     */
-    public function testThatACacheDriverMustBeAZendStorageInterface()
-    {
-        $this->expectException(\InvalidArgumentException::class);
-
-        $this->mapper = new ProjectDescriptorMapper(m::mock(StorageInterface::class));
+        $this->cachePool = new Pool(new Ephemeral());
+        $this->mapper = new ProjectDescriptorMapper($this->cachePool);
     }
 
     /**
@@ -59,7 +44,11 @@ final class ProjectDescriptorMapperTest extends \Mockery\Adapter\Phpunit\Mockery
      */
     public function testThatATheSettingsForAProjectDescriptorArePersistedAndCanBeRetrievedFromCache()
     {
+        $fileDescriptor = new FileDescriptor('fileHash');
+        $fileDescriptor->setPath('./src/MyClass.php');
+
         $projectDescriptor = new ProjectDescriptor('project');
+        $projectDescriptor->getFiles()->set('./src/MyClass.php', $fileDescriptor);
 
         $this->assertFalse($projectDescriptor->getSettings()->shouldIncludeSource());
         $projectDescriptor->getSettings()->includeSource();
@@ -71,5 +60,6 @@ final class ProjectDescriptorMapperTest extends \Mockery\Adapter\Phpunit\Mockery
         $this->mapper->populate($restoredProjectDescriptor);
 
         $this->assertTrue($restoredProjectDescriptor->getSettings()->shouldIncludeSource());
+        $this->assertEquals($fileDescriptor, $restoredProjectDescriptor->getFiles()->get($fileDescriptor->getPath()));
     }
 }

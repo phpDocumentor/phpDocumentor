@@ -15,6 +15,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Filter;
 
+use League\Pipeline\Pipeline;
+use League\Pipeline\PipelineInterface;
 use Zend\Filter\FilterChain;
 
 /**
@@ -22,18 +24,24 @@ use Zend\Filter\FilterChain;
  */
 class ClassFactory
 {
-    /** @var FilterChain[] */
+    /** @var array<string, Pipeline> */
     protected $chains = [];
 
     /**
      * Retrieves the filters for a class with a given FQCN.
      */
-    public function getChainFor(string $fqcn): FilterChain
+    public function getChainFor(string $fqcn) : Pipeline
     {
         if (!isset($this->chains[$fqcn])) {
-            $this->chains[$fqcn] = new FilterChain();
+            $this->chains[$fqcn] = new Pipeline();
         }
 
         return $this->chains[$fqcn];
+    }
+
+    public function attachTo(string $fqcn, FilterInterface $filter) : void
+    {
+        $chain = $this->getChainFor($fqcn);
+        $this->chains[$fqcn] = $chain->pipe($filter);
     }
 }

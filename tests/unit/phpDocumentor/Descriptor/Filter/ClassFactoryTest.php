@@ -11,6 +11,8 @@
 
 namespace phpDocumentor\Descriptor\Filter;
 
+use League\Pipeline\Pipeline;
+
 /**
  * Tests the functionality for the ClassFactory class.
  */
@@ -34,6 +36,6 @@ class ClassFactoryTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         $filterChain = $this->fixture->getChainFor('foo');
 
-        $this->assertInstanceOf('Zend\Filter\FilterChain', $filterChain);
+        $this->assertInstanceOf(Pipeline::class, $filterChain);
     }
 }

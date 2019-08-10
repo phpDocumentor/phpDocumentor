@@ -251,17 +251,11 @@
     "webmozart/assert": {
         "version": "1.2.0"
     },
-    "zendframework/zend-cache": {
-        "version": "2.7.2"
-    },
     "zendframework/zend-code": {
         "version": "3.3.0"
     },
     "zendframework/zend-eventmanager": {
         "version": "3.2.0"
-    },
-    "zendframework/zend-filter": {
-        "version": "2.7.2"
     },
     "zendframework/zend-hydrator": {
         "version": "1.1.0"
@@ -271,9 +265,6 @@
     },
     "zendframework/zend-serializer": {
         "version": "2.8.1"
-    },
-    "zendframework/zend-servicemanager": {
-        "version": "2.7.10"
     },
     "zendframework/zend-stdlib": {
         "version": "2.7.7"

@@ -15,46 +15,32 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Cache;
 
-use InvalidArgumentException;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
-use Zend\Cache\Storage\IterableInterface;
-use Zend\Cache\Storage\OptimizableInterface;
-use Zend\Cache\Storage\StorageInterface;
+use phpDocumentor\Reflection\File;
+use Psr\Cache\CacheItemPoolInterface;
+use Stash\Item;
 
 /**
  * Maps a projectDescriptor to and from a cache instance.
  */
 final class ProjectDescriptorMapper
 {
-    const FILE_PREFIX = 'file_';
+    const FILE_PREFIX = 'phpDocumentor/projectDescriptor/files/';
 
-    const KEY_SETTINGS = 'settings';
+    const FILE_LIST = 'phpDocumentor/projectDescriptor/filelist';
 
-    /** @var StorageInterface|IterableInterface */
+    const KEY_SETTINGS = 'phpDocumentor/projectDescriptor/settings';
+
+    /** @var CacheItemPoolInterface */
     private $cache;
 
     /**
      * Initializes this mapper with the given cache instance.
      */
-    public function __construct(StorageInterface $cache)
+    public function __construct(CacheItemPoolInterface $cache)
     {
-        if (!$cache instanceof IterableInterface) {
-            throw new InvalidArgumentException(
-                'ProjectDescriptorMapper should also be an iterable Storage type'
-            );
-        }
-
         $this->cache = $cache;
-    }
-
-    /**
-     * Returns the Cache instance for this Mapper.
-     */
-    public function getCache(): StorageInterface
-    {
-        return $this->cache;
     }
 
     /**
@@ -62,10 +48,18 @@ final class ProjectDescriptorMapper
      */
     public function populate(ProjectDescriptor $projectDescriptor): void
     {
-        $this->loadCacheItemAsSettings($projectDescriptor, self::KEY_SETTINGS);
+        $this->loadCacheItemAsSettings($projectDescriptor);
 
-        foreach ($this->getCache() as $key) {
-            $this->loadCacheItemAsFile($projectDescriptor, $key);
+        $fileList = $this->cache->getItem(self::FILE_LIST)->get();
+        if ($fileList !== null) {
+            /** @var Item $item */
+            foreach ($this->cache->getItems($fileList) as $item) {
+                $file = $item->get();
+
+                if ($file instanceof FileDescriptor) {
+                    $projectDescriptor->getFiles()->set($file->getPath(), $file);
+                }
+            }
         }
     }
 
@@ -74,74 +68,62 @@ final class ProjectDescriptorMapper
      */
     public function save(ProjectDescriptor $projectDescriptor): void
     {
-        $keys = [];
-        $cache = $this->getCache();
-
-        foreach ($cache as $key) {
-            $keys[] = $key;
-        }
+        $fileListItem = $this->cache->getItem(self::FILE_LIST);
+        $currentFileList = $fileListItem->get();
 
         // store the settings for this Project Descriptor
-        $cache->setItem(self::KEY_SETTINGS, $projectDescriptor->getSettings());
+        $item = $this->cache->getItem(self::KEY_SETTINGS);
+        $this->cache->saveDeferred($item->set($projectDescriptor->getSettings()));
 
         // store cache items
-        $usedKeys = [self::KEY_SETTINGS];
+        $fileKeys = [];
         foreach ($projectDescriptor->getFiles() as $file) {
             $key = self::FILE_PREFIX . md5($file->getPath());
-            $usedKeys[] = $key;
-            $cache->setItem($key, $file);
+            $fileKeys[] = $key;
+            $item = $this->cache->getItem($key);
+            $this->cache->saveDeferred($item->set($file));
         }
 
-        // remove any keys that are no longer used.
-        $invalidatedKeys = array_diff($keys, $usedKeys);
-        if ($invalidatedKeys) {
-            $cache->removeItems($invalidatedKeys);
-        }
+        $this->cache->saveDeferred($fileListItem->set($fileKeys));
+        $this->cache->commit();
 
-        if ($cache instanceof OptimizableInterface) {
-            $cache->optimize();
+        if ($currentFileList !== null) {
+            // remove any keys that are no longer used.
+            $invalidatedKeys = array_diff($currentFileList, $fileKeys);
+            if ($invalidatedKeys) {
+                $this->cache->deleteItems($invalidatedKeys);
+            }
         }
     }
 
     /**
      * Removes all files in cache that do not occur in the given FileSet Collection.
      *
-     * @todo restore this?
+     * @param File[] $files
      */
-    public function garbageCollect($collection)
+    public function garbageCollect(array $files) : void
     {
-//        $projectRoot = $collection->getProjectRoot();
-//        $filenames = $collection->getFilenames();
-//
-//        foreach ($filenames as &$name) {
-//            // the cache key contains a path relative to the project root; here we expect absolute paths.
-//            $name = self::FILE_PREFIX . md5(substr($name, strlen($projectRoot)));
-//        }
-//
-//        foreach ($this->getCache() as $item) {
-//            if (substr($item, 0, strlen(self::FILE_PREFIX)) === self::FILE_PREFIX &&
-//                  !in_array($item, $filenames, true)
-//            ) {
-//                $this->getCache()->removeItem($item);
-//            }
-//        }
-    }
+        $fileListItem = $this->cache->getItem(self::FILE_LIST);
+        $cachedFileList = $fileListItem->get();
 
-    private function loadCacheItemAsFile(ProjectDescriptor $projectDescriptor, string $key): void
-    {
-        $item = $this->getCache()->getItem($key);
+        if ($cachedFileList !== null) {
+            $realFileKeys = array_map(
+                static function (File $file) {
+                    return self::FILE_PREFIX . md5($file->path());
+                },
+                $files
+            );
 
-        if ($item instanceof FileDescriptor) {
-            $projectDescriptor->getFiles()->set($item->getPath(), $item);
+            $this->cache->deleteItems(array_diff($cachedFileList, $realFileKeys));
         }
     }
 
-    private function loadCacheItemAsSettings(ProjectDescriptor $projectDescriptor, string $key): void
+    private function loadCacheItemAsSettings(ProjectDescriptor $projectDescriptor): void
     {
-        $item = $this->getCache()->getItem($key);
-
-        if ($item instanceof Settings) {
-            $projectDescriptor->setSettings($item);
+        $item = $this->cache->getItem(self::KEY_SETTINGS);
+        if ($item->isHit()) {
+            $settings = $item->get();
+            $projectDescriptor->setSettings($settings);
         }
     }
 }

@@ -33,7 +33,7 @@ final class Version2ExpectedArray
                 'use-cache' => true,
                 'paths' => [
                     'output' => new \phpDocumentor\Dsn('build/docs'),
-                    'cache' => new \phpDocumentor\Path('/tmp/phpdoc-doc-cache'),
+                    'cache' => new \phpDocumentor\Path('build/cache'),
                 ],
                 'versions' => [
                     '1.0.0' => [
@@ -93,7 +93,7 @@ final class Version2ExpectedArray
                 'use-cache' => true,
                 'paths' => [
                     'output' => new \phpDocumentor\Dsn('build/docs'),
-                    'cache' => new Path('/tmp/phpdoc-doc-cache'),
+                    'cache' => new Path('/build/cache'),
                 ],
                 'versions' => [
                     '1.0.0' => [

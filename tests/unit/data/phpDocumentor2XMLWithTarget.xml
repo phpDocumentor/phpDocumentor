@@ -17,7 +17,6 @@
     <parser>
         <default-package-name>Default</default-package-name>
         <encoding>utf-8</encoding>
-        <target>build/docs</target>
     </parser>
     <files>
         <directory>src</directory>

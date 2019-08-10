@@ -96,7 +96,7 @@ class ApplicationTest extends MockeryTestCase
     public function testGetLongVersion(): void
     {
         self::assertRegExp(
-            '~phpDocumentor <info>v(\d).(\d).(\d|x)?-(.*)</info>~',
+            '~phpDocumentor <info>v(.*)</info>~',
             $this->feature->getLongVersion()
         );
     }

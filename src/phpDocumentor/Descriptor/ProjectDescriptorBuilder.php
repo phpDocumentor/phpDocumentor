@@ -18,6 +18,7 @@ namespace phpDocumentor\Descriptor;
 use phpDocumentor\Descriptor\Builder\AssemblerFactory;
 use phpDocumentor\Descriptor\Builder\AssemblerInterface;
 use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
+use phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper;
 use phpDocumentor\Descriptor\Filter\Filter;
 use phpDocumentor\Descriptor\Filter\Filterable;
 use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
@@ -54,11 +55,6 @@ class ProjectDescriptorBuilder
         $this->project = new ProjectDescriptor(self::DEFAULT_PROJECT_NAME);
     }
 
-    public function setProjectDescriptor(ProjectDescriptor $projectDescriptor)
-    {
-        $this->project = $projectDescriptor;
-    }
-
     /**
      * Returns the project descriptor that is being built.
      *
@@ -67,40 +63,6 @@ class ProjectDescriptorBuilder
     public function getProjectDescriptor()
     {
         return $this->project;
-    }
-
-    /**
-     * Verifies whether the given visibility is allowed to be included in the Descriptors.
-     *
-     * This method is used anytime a Descriptor is added to a collection (for example, when adding a Method to a Class)
-     * to determine whether the visibility of that element is matches what the user has specified when it ran
-     * phpDocumentor.
-     *
-     * @param string|integer $visibility One of the visibility constants of the ProjectDescriptor class or the words
-     *     'public', 'protected', 'private' or 'internal'.
-     *
-     * @see ProjectDescriptor where the visibility is stored and that declares the constants to use.
-     *
-     * @return boolean
-     */
-    public function isVisibilityAllowed($visibility)
-    {
-        switch ($visibility) {
-            case 'public':
-                $visibility = Settings::VISIBILITY_PUBLIC;
-                break;
-            case 'protected':
-                $visibility = Settings::VISIBILITY_PROTECTED;
-                break;
-            case 'private':
-                $visibility = Settings::VISIBILITY_PRIVATE;
-                break;
-            case 'internal':
-                $visibility = Settings::VISIBILITY_INTERNAL;
-                break;
-        }
-
-        return $this->getProjectDescriptor()->isVisibilityAllowed($visibility);
     }
 
     /**
@@ -205,18 +167,6 @@ class ProjectDescriptorBuilder
         return $descriptor;
     }
 
-    /**
-     * Map error code to severity.
-     *
-     * @param int $code
-     *
-     * @return string
-     */
-    protected function mapCodeToSeverity($code)
-    {
-        return LogLevel::ERROR;
-    }
-
     public function build(Project $project)
     {
         $packageName = $project->getRootNamespace()->getFqsen()->getName();
@@ -249,5 +199,51 @@ class ProjectDescriptorBuilder
     public function getDefaultPackage()
     {
         return $this->defaultPackage;
+    }
+
+    public function setVisibility(array $apiConfig) : void
+    {
+        $visibilities = $apiConfig['visibility'];
+        $visibility = null;
+
+        foreach ($visibilities as $item) {
+            switch ($item) {
+                case 'public':
+                    $visibility |= ProjectDescriptor\Settings::VISIBILITY_PUBLIC;
+                    break;
+                case 'protected':
+                    $visibility |= ProjectDescriptor\Settings::VISIBILITY_PROTECTED;
+                    break;
+                case 'private':
+                    $visibility |= ProjectDescriptor\Settings::VISIBILITY_PRIVATE;
+                    break;
+            }
+        }
+
+        $this->project->getSettings()->setVisibility($visibility);
+    }
+
+    public function setName(string $title) : void
+    {
+        $this->project->setName($title);
+    }
+
+    public function setPartials(Collection $partials) : void
+    {
+        $this->project->setPartials($partials);
+    }
+
+    public function setMarkers(array $markers) : void
+    {
+        $this->project->getSettings()->setMarkers($markers);
+    }
+
+    public function setIncludeSource(bool $includeSources) : void
+    {
+        if ($includeSources) {
+            $this->project->getSettings()->includeSource();
+        } else {
+            $this->project->getSettings()->excludeSource();
+        }
     }
 }

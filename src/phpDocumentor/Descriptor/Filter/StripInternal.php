@@ -31,7 +31,7 @@ use Zend\Filter\AbstractFilter;
  *
  * @link http://www.phpdoc.org/docs/latest/for-users/phpdoc/tags/internal.html
  */
-class StripInternal extends AbstractFilter
+class StripInternal implements FilterInterface
 {
     /** @var ProjectDescriptorBuilder $builder */
     protected $builder;
@@ -51,9 +51,9 @@ class StripInternal extends AbstractFilter
      *
      * @return DescriptorAbstract|null
      */
-    public function filter($value)
+    public function __invoke(?Filterable $value) : ?Filterable
     {
-        $isInternalAllowed = $this->builder->isVisibilityAllowed(Settings::VISIBILITY_INTERNAL);
+        $isInternalAllowed = $this->builder->getProjectDescriptor()->isVisibilityAllowed(Settings::VISIBILITY_INTERNAL);
         if ($isInternalAllowed) {
             $value->setDescription(preg_replace('/\{@internal\s(.+?)\}\}/', '$1', $value->getDescription()));
 

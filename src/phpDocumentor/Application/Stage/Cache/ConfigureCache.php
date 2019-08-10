@@ -13,20 +13,18 @@ declare(strict_types=1);
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Application\Stage\Parser;
+namespace phpDocumentor\Application\Stage\Cache;
 
+use phpDocumentor\Application\Stage\Payload;
 use RuntimeException;
-use Symfony\Component\Filesystem\Filesystem;
-use Zend\Cache\Storage\StorageInterface;
+use Stash\Driver\FileSystem;
+use Stash\Pool;
 
 final class ConfigureCache
 {
-    /**
-     * @var StorageInterface
-     */
     private $cache;
 
-    public function __construct(StorageInterface $cache)
+    public function __construct(Pool $cache)
     {
         $this->cache = $cache;
     }
@@ -36,23 +34,12 @@ final class ConfigureCache
      *
      * @throws RuntimeException if the target location is not a folder.
      */
-    public function __invoke(array $configuration): array
+    public function __invoke(Payload $payload): Payload
     {
+        $configuration  = $payload->getConfig();
         $target = (string) $configuration['phpdocumentor']['paths']['cache'];
+        $this->cache->setDriver(new FileSystem(['path' => $target]));
 
-        //Process cache setup
-        $fileSystem = new Filesystem();
-        if (!$fileSystem->isAbsolutePath($target)) {
-            $target = getcwd() . DIRECTORY_SEPARATOR . $target;
-        }
-        if (!file_exists($target)) {
-            if (!mkdir($target, 0755, true) && !is_dir($target)) {
-                throw new RuntimeException('The provided target location must be a directory');
-            }
-        }
-
-        $this->cache->getOptions()->setCacheDir($target);
-
-        return $configuration;
+        return $payload;
     }
 }

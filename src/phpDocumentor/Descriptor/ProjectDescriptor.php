@@ -205,7 +205,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
      *
      * @return boolean
      */
-    public function isVisibilityAllowed($visibility)
+    public function isVisibilityAllowed(int $visibility)
     {
         $visibilityAllowed = $this->getSettings()
             ? $this->getSettings()->getVisibility()

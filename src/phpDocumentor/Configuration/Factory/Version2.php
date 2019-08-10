@@ -62,6 +62,7 @@ final class Version2 implements Strategy
         $this->validate($phpDocumentor);
 
         $outputDirectory = $this->buildOutputDirectory($phpDocumentor);
+        $cacheDirectory = $this->buildCacheDirectory($phpDocumentor);
 
         return [
             'phpdocumentor' => [
@@ -69,7 +70,7 @@ final class Version2 implements Strategy
                 'use-cache' => true,
                 'paths' => [
                     'output' => new Dsn($outputDirectory),
-                    'cache' => new Path('/tmp/phpdoc-doc-cache'),
+                    'cache' => new Path($cacheDirectory),
                 ],
                 'versions' => [
                     '1.0.0' => [
@@ -331,6 +332,22 @@ final class Version2 implements Strategy
         }
 
         return $sourcePaths;
+    }
+
+    /**
+     * Builds the outputDirectory part of the array from the configuration xml.
+     */
+    private function buildCacheDirectory(SimpleXMLElement $phpDocumentor): string
+    {
+        if ((array) $phpDocumentor->parser === []) {
+            return '/tmp/phpdoc-doc-cache';
+        }
+
+        if ((string) $phpDocumentor->parser->target === '') {
+            return '/tmp/phpdoc-doc-cache';
+        }
+
+        return (string) $phpDocumentor->parser->target;
     }
 
     /**

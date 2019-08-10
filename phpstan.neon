@@ -1,13 +1,12 @@
 includes:
+    - /composer/vendor/phpstan/phpstan-mockery/extension.neon
+    - /composer/vendor/phpstan/phpstan-webmozart-assert/extension.neon
     - ./vendor/phpdocumentor/graphviz/extension.neon
 
 parameters:
   ignoreErrors:
     - '#Constructor of class phpDocumentor\\Transformer\\Writer\\Twig\\Extension has an unused parameter \$transformation#'
     - '#Call to an undefined method League\\Flysystem\\FilesystemInterface::find()#'
-    # legacy cache
-    - '#Call to an undefined method Zend\\Cache\\Storage\\Adapter\\AdapterOptions::setCacheDir()#'
-    - '#Argument of an invalid type Zend\\Cache\\Storage\\StorageInterface supplied for foreach, only iterables are supported.#'
     # Bad design of descriptors.
     - '#Access to an undefined property phpDocumentor\\Descriptor\\Collection::\$[a-z]+#'
     - '#Argument of an invalid type phpDocumentor\\Transformer\\Template\\Parameter supplied for foreach, only iterables are supported.#'

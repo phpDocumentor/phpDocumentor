@@ -16,6 +16,7 @@ use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
 
 /**
  * Tests the functionality for the ProjectDescriptorBuilder class.
+ * @coversDefaultClass \phpDocumentor\Descriptor\ProjectDescriptorBuilder
  */
 class ProjectDescriptorBuilderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
@@ -41,8 +42,8 @@ class ProjectDescriptorBuilderTest extends \Mockery\Adapter\Phpunit\MockeryTestC
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ProjectDescriptorBuilder::createProjectDescriptor
-     * @covers phpDocumentor\Descriptor\ProjectDescriptorBuilder::getProjectDescriptor
+     * @covers ::createProjectDescriptor
+     * @covers ::getProjectDescriptor
      */
     public function testCreatesAnEmptyProjectDescriptorWhenCalledFor()
     {
@@ -53,34 +54,6 @@ class ProjectDescriptorBuilderTest extends \Mockery\Adapter\Phpunit\MockeryTestC
             ProjectDescriptorBuilder::DEFAULT_PROJECT_NAME,
             $this->fixture->getProjectDescriptor()->getName()
         );
-    }
-
-    /**
-     * @covers phpDocumentor\Descriptor\ProjectDescriptorBuilder::setProjectDescriptor
-     * @covers phpDocumentor\Descriptor\ProjectDescriptorBuilder::getProjectDescriptor
-     */
-    public function testProvidingAPreExistingDescriptorToBuildOn()
-    {
-        $projectDescriptorName = 'My Descriptor';
-        $projectDescriptorMock = new ProjectDescriptor($projectDescriptorName);
-        $this->fixture->setProjectDescriptor($projectDescriptorMock);
-
-        $this->assertSame($projectDescriptorMock, $this->fixture->getProjectDescriptor());
-        $this->assertEquals($projectDescriptorName, $this->fixture->getProjectDescriptor()->getName());
-    }
-
-    /**
-     * @covers phpDocumentor\Descriptor\ProjectDescriptorBuilder::isVisibilityAllowed
-     */
-    public function testDeterminesWhetherASpecificVisibilityIsAllowedToBeIncluded()
-    {
-        $projectDescriptorName = 'My Descriptor';
-        $projectDescriptorMock = new ProjectDescriptor($projectDescriptorName);
-        $projectDescriptorMock->getSettings()->setVisibility(Settings::VISIBILITY_PUBLIC);
-        $this->fixture->setProjectDescriptor($projectDescriptorMock);
-
-        $this->assertTrue($this->fixture->isVisibilityAllowed(Settings::VISIBILITY_PUBLIC));
-        $this->assertFalse($this->fixture->isVisibilityAllowed(Settings::VISIBILITY_PRIVATE));
     }
 
     /**

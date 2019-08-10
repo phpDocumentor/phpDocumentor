@@ -15,7 +15,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Parser;
 
-use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Parser\Event\PreParsingEvent;
@@ -260,15 +259,14 @@ class Parser
     /**
      * Iterates through the given files feeds them to the builder.
      *
-     * @api
+     * @return \phpDocumentor\Reflection\Php\Project
+     *
      * @throws FilesNotFoundException if no files were found.
-     * @return ProjectDescriptor
+     * @api
      */
-    public function parse(ProjectDescriptorBuilder $builder, array $files)
+    public function parse(array $files)
     {
         $this->startTimingTheParsePhase();
-
-        $this->forceRebuildIfSettingsHaveModified($builder);
 
         $event = PreParsingEvent::createInstance($this);
         assert($event instanceof PreParsingEvent);
@@ -282,29 +280,7 @@ class Parser
         $project = $this->projectFactory->create(ProjectDescriptorBuilder::DEFAULT_PROJECT_NAME, $files);
         $this->logAfterParsingAllFiles();
 
-        /*
-         * TODO: This should be moved to some view adapter layer when
-         * we are removing the descriptors from the application.
-         * because we are now partly migrating to the new reflection component
-         * we are transforming back to the original structure.
-         */
-        $builder->build($project);
-
-        return $builder->getProjectDescriptor();
-    }
-
-    /**
-     * Checks if the settings of the project have changed and forces a complete rebuild if they have.
-     */
-    private function forceRebuildIfSettingsHaveModified(ProjectDescriptorBuilder $builder)
-    {
-        if ($builder->getProjectDescriptor()->getSettings()->isModified()) {
-            $this->setForced(true);
-            $this->log(
-                'One of the project\'s settings have changed, forcing a complete rebuild',
-                LogLevel::NOTICE
-            );
-        }
+        return $project;
     }
 
     /**
