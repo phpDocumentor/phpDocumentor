@@ -13,7 +13,8 @@ install:
 before_script:
   - travis_retry composer global require phpunit/phpunit ^6 # cannot use phpunit.phar or require-dev, because this package is a phpunit dep
 script:
-  - $HOME/.composer/vendor/bin/phpunit --no-coverage && bin/behat -p default
+  - $HOME/.composer/vendor/bin/phpunit --no-coverage
+  - bin/behat -p default
 
 jobs:
   include:

@@ -4,4 +4,4 @@ Feature: Phpdocumentor is able to expose it's version
 
   Scenario: Passing the -V flag to phpdocumentor should print the current version to the console
     When I run "phpdoc -V"
-    Then output contains "phpDocumentor v3"
+    Then output contains "phpDocumentor v"
