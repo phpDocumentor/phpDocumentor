@@ -1,0 +1,31 @@
+on: push
+name: Qa workflow
+jobs:
+  composer:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: composer
+      uses: docker://composer
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        args: install --no-interaction --prefer-dist --optimize-autoloader
+    - name: Code style check
+      uses: docker://oskarstark/phpcs-ga
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        args: -d memory_limit=1024M
+    - name: composer-require-checker
+      uses: docker://phpga/composer-require-checker-ga
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        args: check --config-file ./composer-require-config.json composer.json
+    - name: PHPStan
+      uses: docker://phpdoc/phpstan-ga:master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        args: analyse src tests --level 3 --configuration phpstan.neon
