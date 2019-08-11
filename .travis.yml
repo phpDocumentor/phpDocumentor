@@ -29,7 +29,7 @@ jobs:
         - ./bin/phpdoc run 
 
     - stage: test
-      php: 7.1
+      php: 7.2
       name: "php 7.1 Behat with phar"
       before_script:
         - travis_retry sudo apt update
