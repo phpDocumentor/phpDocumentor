@@ -23,7 +23,6 @@
     ],
     "git-version": "package_version",
     "exclude-composer-files": false,
-    "dump-autoload": false,
     "chmod": "0755",
     "compression": "GZ",
     "compactors": [

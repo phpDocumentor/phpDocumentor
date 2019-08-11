@@ -30,7 +30,7 @@ jobs:
 
     - stage: test
       php: 7.2
-      name: "php 7.1 Behat with phar"
+      name: "Behat with phar"
       before_script:
         - travis_retry sudo apt update
         - travis_retry sudo apt install graphviz
