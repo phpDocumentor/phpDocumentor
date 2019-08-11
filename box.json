@@ -23,10 +23,9 @@
     ],
     "git-version": "package_version",
     "exclude-composer-files": false,
-    "chmod": "0755",
     "compression": "GZ",
     "compactors": [
-        "Herrera\\Box\\Compactor\\Json",
-        "Herrera\\Box\\Compactor\\Php"
+        "KevinGH\\Box\\Compactor\\Json",
+        "KevinGH\\Box\\Compactor\\Php"
     ]
 }
