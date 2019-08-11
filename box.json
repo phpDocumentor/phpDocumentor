@@ -4,6 +4,8 @@
     "files": [
         "config/bundles.php",
         "VERSION",
+        "composer.json",
+        "symfony.lock",
         "vendor/twig/twig/src/TwigTest.php",
         "vendor/twig/twig/src/Node/Expression/TestExpression.php",
         "vendor/twig/twig/src/Node/Expression/Test/ConstantTest.php",
