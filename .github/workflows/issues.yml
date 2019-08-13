@@ -1,12 +1,11 @@
 on: issues
-name: Issue management
+name: Issue Triage
 jobs:
-  build:
-    name: takanabe/add-new-issues-to-project-column@master
+  triage-new-issues-to-project-column:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
-    - name: takanabe/add-new-issues-to-project-column@master
+    - name: add-new-issues-to-project-column
       uses: takanabe/add-new-issues-to-project-column@master
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
