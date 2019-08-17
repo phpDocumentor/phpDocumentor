@@ -5,7 +5,7 @@
             <article class="method">
                 <h3 class="{{ method.visibility }} {% if method.deprecated %}deprecated{% endif %}">{{ method.name }}()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">{{ method.name }}({% for argument in method.arguments %}{{ argument.types ? argument.types|join('|')~' ' }} <span class="argument">{{ argument.isVariadic ? '...' }}{{ argument.name }}{{ argument.default ? ' = '~argument.default }}</span>{% if not loop.last %}, {% endif %}{% endfor %}) {{ method.response.types ? ': '~method.response.types|join('|') }}</pre>
+                <pre class="signature" style="margin-right: 54px;">{{ method.name }}({% for argument in method.arguments %}{{ argument.types ? argument.types|join('|')~' ' }} <span class="argument">{{ argument.isVariadic ? '...' }}${{ argument.name }}{{ argument.default ? ' = '~argument.default }}</span>{% if not loop.last %}, {% endif %}{% endfor %}) {{ method.response.types ? ': '~method.response.types|join('|') }}</pre>
                 <p><em>{{ method.summary }}</em></p>
                 {{ method.description|markdown|raw }}
 
@@ -15,7 +15,7 @@
                         {% for argument in method.arguments %}
                             <tr>
                                 <td>{{ argument.types|route|join('|')|raw }}</td>
-                                <td>{{ argument.name }} {{ argument.isVariadic ? '<small style="color: gray">variadic</small>' }}</td>
+                                <td>${{ argument.name }} {{ argument.isVariadic ? '<small style="color: gray">variadic</small>' }}</td>
                                 <td>{{ argument.description|markdown|raw }}</td>
                             </tr>
                         {% endfor %}
