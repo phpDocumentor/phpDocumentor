@@ -64,10 +64,10 @@ class Extension extends Twig_Extension implements ExtensionInterface, Twig_Exten
      * @param Transformation    $transformation Represents the transformation meta data used in the current generation
      *     cycle.
      */
-    public function __construct(ProjectDescriptor $project, Transformation $transformation)
+    public function __construct(ProjectDescriptor $project, Transformation $transformation, Renderer $routeRenderer = null)
     {
         $this->data = $project;
-        $this->routeRenderer = new Renderer(new Queue());
+        $this->routeRenderer = $routeRenderer;
     }
 
     /**

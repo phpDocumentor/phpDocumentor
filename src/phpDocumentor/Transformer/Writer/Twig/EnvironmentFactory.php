@@ -15,6 +15,7 @@
 namespace phpDocumentor\Transformer\Writer\Twig;
 
 use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Transformer\Router\Renderer;
 use phpDocumentor\Transformer\Transformation;
 use Twig\Environment;
 use Twig\Extension\DebugExtension;
@@ -23,10 +24,15 @@ use Twig\Loader\FilesystemLoader;
 final class EnvironmentFactory
 {
     private $baseEnvironment;
+    /**
+     * @var Renderer
+     */
+    private $renderer;
 
-    public function __construct(Environment $baseEnvironment)
+    public function __construct(Environment $baseEnvironment, Renderer $renderer)
     {
         $this->baseEnvironment = $baseEnvironment;
+        $this->renderer = $renderer;
     }
 
     public function create(
@@ -71,7 +77,7 @@ final class EnvironmentFactory
         string $destination,
         Environment $twigEnvironment
     ): void {
-        $base_extension = new Extension($project, $transformation);
+        $base_extension = new Extension($project, $transformation, $this->renderer);
         $base_extension->setDestination(
             substr($destination, strlen($transformation->getTransformer()->getTarget()) + 1)
         );
