@@ -13,7 +13,10 @@
 namespace phpDocumentor\Behat\Contexts\Ast;
 
 use Behat\Behat\Context\Context;
+use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Gherkin\Node\PyStringNode;
+use Exception;
+use phpDocumentor\Descriptor\Tag\SeeDescriptor;
 use Webmozart\Assert\Assert;
 
 /**
@@ -23,26 +26,20 @@ final class SeeTagContext extends BaseContext implements Context
 {
     /**
      * @param string $classFqsen
-     * @throws \Exception
+     * @throws Exception
      * @Then class ":classFqsen" has a tag see referencing url ":reference"
      */
     public function classHasTagSeeReferencingUrl($classFqsen, $reference)
     {
         $class = $this->findClassByFqsen($classFqsen);
         $seeTags = $class->getTags()->get('see', []);
-        /** @var SeeTag $tag */
-        foreach ($seeTags as $tag) {
-            if (((string) $tag->getReference()) === $reference) {
-                return;
-            }
-        }
-
-        throw new \Exception(sprintf('Missing see tag with reference "%s"', $reference));
+        $this->hasSeeTagReference($seeTags, $reference);
     }
 
     /**
      * @param string $classFqsen
      * @Then class ":classFqsen" has :number tag/tags see referencing :element descriptor ":reference"
+     * @throws Exception
      */
     public function classHasTagSeeReferencing($classFqsen, $number, $element, $reference)
     {
@@ -51,7 +48,7 @@ final class SeeTagContext extends BaseContext implements Context
 
     /**
      * @param string $classFqsen
-     * @throws \Exception
+     * @throws Exception
      * @Then class ":classFqsen" has :number tag/tags see referencing :element descriptor ":reference" with description:
      */
     public function classHasTagSeeReferencingWithDescription($classFqsen, $number, $element, $reference, PyStringNode $description)
@@ -59,7 +56,7 @@ final class SeeTagContext extends BaseContext implements Context
         $count = 0;
         $class = $this->findClassByFqsen($classFqsen);
         $seeTags = $class->getTags()->get('see', []);
-        /** @var SeeTag $tag */
+        /** @var SeeDescriptor $tag */
         foreach ($seeTags as $tag) {
             $r = (string) $tag->getReference();
             if ($r === $reference
@@ -70,5 +67,32 @@ final class SeeTagContext extends BaseContext implements Context
         }
 
         Assert::eq($number, $count, sprintf('Missing see tag with reference "%s"', $reference));
+    }
+
+    /**
+     * @then function ":function" has tag see referencing ":reference"
+     * @throws Exception
+     */
+    public function functionHasSeeTagReferencing(string $function, string $reference)
+    {
+        $functionDescriptor = $this->findFunctionByFqsen($function);
+        $this->hasSeeTagReference($functionDescriptor->getTags()->get('see', []), $reference);
+    }
+
+    /**
+     * @param $reference
+     * @param SeeDescriptor[] $seeTags
+     * @throws Exception
+     */
+    private function hasSeeTagReference($seeTags, $reference) : void
+    {
+        /** @var SeeDescriptor $tag */
+        foreach ($seeTags as $tag) {
+            if (((string) $tag->getReference()) === $reference) {
+                return;
+            }
+        }
+
+        throw new Exception(sprintf('Missing see tag with reference "%s"', $reference));
     }
 }

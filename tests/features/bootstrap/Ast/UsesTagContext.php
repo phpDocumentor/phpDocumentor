@@ -14,6 +14,8 @@ namespace phpDocumentor\Behat\Contexts\Ast;
 
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\PyStringNode;
+use Exception;
+use phpDocumentor\Descriptor\Tag\UsesDescriptor;
 use Webmozart\Assert\Assert;
 
 /**
@@ -30,14 +32,7 @@ final class UsesTagContext extends BaseContext implements Context
     {
         $class = $this->findClassByFqsen($classFqsen);
         $usesTags = $class->getTags()->get('uses', []);
-        /** @var UsesTag $tag */
-        foreach ($usesTags as $tag) {
-            if (((string) $tag->getReference()) === $reference) {
-                return;
-            }
-        }
-
-        throw new \Exception(sprintf('Missing uses tag with reference "%s"', $reference));
+        $this->hasUsesTagReference($usesTags, $reference);
     }
 
     /**
@@ -70,5 +65,33 @@ final class UsesTagContext extends BaseContext implements Context
         }
 
         Assert::eq($number, $count, sprintf('Missing uses tag with reference "%s"', $reference));
+    }
+
+
+    /**
+     * @then function ":function" has tag uses referencing ":reference"
+     * @throws Exception
+     */
+    public function functionHasUsesTagReferencing(string $function, string $reference)
+    {
+        $functionDescriptor = $this->findFunctionByFqsen($function);
+        $this->hasUsesTagReference($functionDescriptor->getTags()->get('uses', []), $reference);
+    }
+
+    /**
+     * @param $reference
+     * @param UsesDescriptor[] $usesTags
+     * @throws Exception
+     */
+    private function hasUsesTagReference($usesTags, string $reference) : void
+    {
+        /** @var UsesDescriptor $tag */
+        foreach ($usesTags as $tag) {
+            if (((string) $tag->getReference()) === $reference) {
+                return;
+            }
+        }
+
+        throw new Exception(sprintf('Missing uses tag with reference "%s"', $reference));
     }
 }
