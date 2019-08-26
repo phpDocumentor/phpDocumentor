@@ -77,7 +77,7 @@ final class Version2 implements Strategy
                         'folder' => '',
                         'api' => [
                             0 => [
-                                'encoding' => 'utf8',
+                                'encoding' => $this->buildEncoding($phpDocumentor),
                                 'ignore-tags' => [],
                                 'format' => 'php',
                                 'validate' => false,
@@ -362,5 +362,18 @@ final class Version2 implements Strategy
                 sprintf('Root element name should be phpdocumentor, %s found', $xml->getName())
             );
         }
+    }
+
+    private function buildEncoding(SimpleXMLElement $phpDocumentor)
+    {
+        if ((array) $phpDocumentor->parser === []) {
+            return 'utf-8';
+        }
+
+        if ((string) $phpDocumentor->parser->encoding === '') {
+            return 'utf-8';
+        }
+
+        return (string) $phpDocumentor->parser->encoding;
     }
 }

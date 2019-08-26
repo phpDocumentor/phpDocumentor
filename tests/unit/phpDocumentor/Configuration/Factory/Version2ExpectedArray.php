@@ -64,7 +64,7 @@ final class Version2ExpectedArray
                                     0 => 'TODO',
                                     1 => 'FIXME',
                                 ],
-                                'encoding' => 'utf8',
+                                'encoding' => 'utf-8',
                                 'ignore-tags' => [],
                                 'validate' => false,
                             ],
@@ -127,7 +127,7 @@ final class Version2ExpectedArray
                                     0 => 'TODO',
                                     1 => 'FIXME',
                                 ],
-                                'encoding' => 'utf8',
+                                'encoding' => 'utf-8',
                                 'ignore-tags' => [],
                                 'validate' => false,
                             ],
@@ -182,7 +182,7 @@ final class Version2ExpectedArray
                                     0 => 'TODO',
                                     1 => 'FIXME',
                                 ],
-                                'encoding' => 'utf8',
+                                'encoding' => 'utf-8',
                                 'ignore-tags' => [],
                                 'validate' => false,
                             ],
@@ -242,7 +242,67 @@ final class Version2ExpectedArray
                                     0 => 'TODO',
                                     1 => 'FIXME',
                                 ],
-                                'encoding' => 'utf8',
+                                'encoding' => 'utf-8',
+                                'ignore-tags' => [],
+                                'validate' => false,
+                            ],
+                        ],
+                    ],
+                ],
+                'templates' => [
+                    [
+                        'name' => 'clean',
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * Provides the phpDocumentor2 configuration with encoding.
+     *
+     * @return array
+     */
+    public static function getCustomEncoding() : array
+    {
+        return [
+            'phpdocumentor' => [
+                'title' => 'my-doc',
+                'use-cache' => true,
+                'paths' => [
+                    'output' => new \phpDocumentor\Dsn('build/docs'),
+                    'cache' => new \phpDocumentor\Path('/tmp/phpdoc-doc-cache'),
+                ],
+                'versions' => [
+                    '1.0.0' => [
+                        'folder' => '',
+                        'api' => [
+                            [
+                                'format' => 'php',
+                                'source' => [
+                                    'dsn' => new Dsn('file://' . getcwd()),
+                                    'paths' => [
+                                        0 => 'src',
+                                    ],
+                                ],
+                                'ignore' => [
+                                    'hidden' => true,
+                                    'symlinks' => true,
+                                    'paths' => [],
+                                ],
+                                'extensions' => [
+                                    0 => 'php',
+                                    1 => 'php3',
+                                    2 => 'phtml',
+                                ],
+                                'visibility' => ['public', 'protected', 'private'],
+                                'default-package-name' => 'Default',
+                                'include-source' => false,
+                                'markers' => [
+                                    0 => 'TODO',
+                                    1 => 'FIXME',
+                                ],
+                                'encoding' => 'ISO-8859-1',
                                 'ignore-tags' => [],
                                 'validate' => false,
                             ],

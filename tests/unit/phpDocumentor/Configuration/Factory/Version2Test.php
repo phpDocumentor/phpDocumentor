@@ -138,4 +138,22 @@ XML;
 
         $this->assertEquals(Version2ExpectedArray::getDefinedVisibility(), $array);
     }
+
+    /**
+     * @covers ::convert
+     * @covers ::<private>
+     */
+    public function testItShouldUseDefinedEncoding()
+    {
+        $xml = new \SimpleXMLElement(
+            __DIR__ . '/../../../data/phpDocumentor2XMLWithEncoding.xml',
+            0,
+            true
+        );
+
+        $version2 = new Version2();
+        $array = $version2->convert($xml);
+
+        $this->assertEquals(Version2ExpectedArray::getCustomEncoding(), $array);
+    }
 }
