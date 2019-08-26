@@ -1,7 +1,8 @@
 bin/*
 !bin/phpdoc
 !bin/console
-build/*
+build
+cache
 phpunit.xml.dist
 docs
 features
