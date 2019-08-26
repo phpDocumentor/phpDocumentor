@@ -125,7 +125,7 @@ services:
     phpDocumentor\Configuration\Factory\Version2:
         tags: [phpdoc.config_strategy]
     phpDocumentor\Configuration\Factory\Version3:
-        arguments: ['data/xsd/phpdoc.xsd']
+        arguments: ["@=service('kernel').getProjectDir() ~ '/data/xsd/phpdoc.xsd'"]
         tags: [phpdoc.config_strategy]
     phpDocumentor\Configuration\ConfigurationFactory:
         arguments:
