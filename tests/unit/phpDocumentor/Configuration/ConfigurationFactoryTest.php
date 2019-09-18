@@ -18,6 +18,7 @@ use org\bovigo\vfs\vfsStream;
 use phpDocumentor\Configuration\Factory\Strategy;
 use phpDocumentor\Configuration\Factory\Version2;
 use phpDocumentor\Configuration\Factory\Version3;
+use phpDocumentor\Configuration\Exception\InvalidConfigPathException;
 use phpDocumentor\Uri;
 
 /**
@@ -54,7 +55,7 @@ final class ConfigurationFactoryTest extends MockeryTestCase
      */
     public function testLoadingFromUriFailsIfFileDoesNotExist()
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidConfigPathException::class);
         $this->expectExceptionMessage('File file:///does-not-exist could not be found');
         $configurationFactory = new ConfigurationFactory([new Version2()], []);
         $configurationFactory->fromUri(new Uri('/does-not-exist'));
@@ -85,6 +86,28 @@ final class ConfigurationFactoryTest extends MockeryTestCase
         $configuration = $configurationFactory->fromDefaultLocations();
 
         $this->assertEquals(Version3::buildDefault(), $configuration->getArrayCopy());
+    }
+
+    /**
+     * @covers ::fromDefaultLocations()
+     */
+    public function testWhenDefaultFileIsInvalidXMLThenAnExceptionIsRaised()
+    {
+        $file = $this->givenExampleConfigurationFileWithContent(
+          '<?xml version="1.0" encoding="UTF-8" ?>' .
+          '<phpdocumentor xmlns="http://www.phpdoc.org" version="3">' .
+            '<foo/>' .
+          '</phpdocumentor>'
+        );
+        $configurationFactory = new ConfigurationFactory(
+          [new Version3(__DIR__ . '/../../../../data/xsd/phpdoc.xsd')],
+          [$file]
+        );
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage("Element '{http://www.phpdoc.org}foo': This element is not expected. Expected is ( {http://www.phpdoc.org}paths ).");
+        //
+        $configurationFactory->fromDefaultLocations();
     }
 
     /**

@@ -22,6 +22,20 @@ var/*
 *.phar
 screenshots
 
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+*.swp
+*.bkp
+*.bak
+*~
+.~lock.*
+
 # By default the phpunit.xml.dist is provided; you can override this using a local config file
 phpunit.xml
 
