@@ -1,0 +1,24 @@
+{% extends 'layout.md.twig' %}
+{% block title %}{{ project.title }}Markers{% endblock %}
+{% block content %}
+{% set markerCount = 0 %}
+{% for file in project.files %}
+{% if file.markers.count > 0 %}
+* {{ file.markers.count }} - {{ file.path }}
+{% endif %}
+{% set markerCount = markerCount + file.markers.count %}
+{% endfor %}
+{% if markerCount <= 0 %}
+**No markers have been found in this project.
+{% endif %}
+{% for file in project.files %}
+{% if file.markers.count > 0 %}
+### {{ file.markers.count }} - {{ file.path }}
+| Type | Line | Description |
+| ---- | ---- | ----------- |
+{% for marker in file.markers %}
+| {{ marker.type }} | {{ marker.line }} | {{ marker.message }} |
+{% endfor %}
+{% endif %}
+{% endfor %}
+{% endblock %}

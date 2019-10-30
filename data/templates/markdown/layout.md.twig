@@ -1,0 +1,33 @@
+{% use 'elements/constant.md.twig' %}
+{% use 'elements/property.md.twig' %}
+{% use 'elements/method.md.twig' %}
+{% use 'elements/namespaces.sidebar.md.twig' %}
+# [{{ project.name }}]({{  path('home') }})
+
+# {% block title %}{% endblock %}
+
+{% block content %}{% endblock %}
+
+---
+
+{% if project.namespace.children|length > 0 %}
+### Top Namespaces
+
+{% for namespace in project.namespace.children|sort_asc %}
+* [{{ namespace }}]({{ namespace|route('url')|raw }})
+{% endfor %}
+
+---
+{% endif %}
+
+### Reports
+{% set errorCount = 0 %}{% for file in project.files %}{% set errorCount = errorCount + file.allerrors.count %}{% endfor %}
+* [Errors - {{ errorCount }}]({{ path('reports/errors') }})
+{% set markerCount = 0 %}{% for file in project.files %}{% set markerCount = markerCount + file.markers.count %}{% endfor %}
+* [Markers - {{ markerCount }}]({{ path('reports/markers') }})
+{% set deprecatedCount = 0 %}{% for element in project.indexes.elements if element.deprecated %}{% set deprecatedCount = deprecatedCount + element.tags.deprecated.count %}{% endfor %}
+* [Deprecated - {{ deprecatedCount }}]({{ path('reports/deprecated') }})
+
+---
+
+This document was automatically generated from source code comments on {{ "now"|date("Y-m-d") }} using [phpDocumentor](http://www.phpdoc.org/) and [fr3nch13/phpdoc-markdown](https://github.com/fr3nch13/phpdoc-markdown)

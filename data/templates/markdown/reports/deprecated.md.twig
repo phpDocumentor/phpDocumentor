@@ -1,0 +1,21 @@
+{% extends 'layout.md.twig' %}
+{% block title %}{{ project.title }}Deprecated Elements{% endblock %}
+{% block content %}
+{% set deprecatedCount = 0 %}
+{% for element in project.indexes.elements if element.deprecated %}
+{{ element.tags.deprecated.count }} - [{{ element.file.path }}]({{ element.file.path }})
+{% if element.tags.deprecated|length > 0 %}
+| Element | Line | Description |
+| ------- | ---- | ----------- |
+{% for tag in element.tags.deprecated %}
+| {{ element.fullyQualifiedStructuralElementName }} | {{ element.line }} | {{ tag.description }} |
+{% endfor %}
+{% set deprecatedCount = deprecatedCount + element.tags.deprecated|length %}
+{% else %}
+None Found
+{% endif %}
+{% endfor %}
+{% if deprecatedCount <= 0 %}
+**No deprecations have been found in this project.**
+{% endif %}
+{% endblock %}

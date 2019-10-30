@@ -1,0 +1,15 @@
+# {{ project.name|raw }}
+
+{#
+{% include 'toc.md.twig' %}
+#}
+
+{% for class in project.indexes.classes|sort_asc %}
+{% if not class.abstract %}
+{% include 'class.md.twig' %}
+{% endif %}
+{% endfor %}
+
+
+--------
+> This document was automatically generated from source code comments on {{ "now"|date("Y-m-d") }} using [phpDocumentor](http://www.phpdoc.org/) and [fr3nch13/phpdoc-markdown](https://github.com/fr3nch13/phpdoc-markdown)

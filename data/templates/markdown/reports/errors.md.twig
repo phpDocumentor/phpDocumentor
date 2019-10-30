@@ -1,0 +1,24 @@
+{% extends 'layout.md.twig' %}
+{% block title %}{{ project.title }}Compilation Errors{% endblock %}
+{% block content %}
+{% set errorCount = 0 %}
+{% for file in project.files %}
+{% if file.allerrors.count > 0 %}
+* {{ file.allerrors.count }} - {{ file.path }}
+{% endif %}
+{% set errorCount = errorCount + file.allerrors.count %}
+{% endfor %}
+{% if errorCount <= 0 %}
+**No errors have been found in this project.**
+{% endif %}
+{% for file in project.files %}
+{% if file.allerrors.count > 0 %}
+### {{ file.allerrors.count }} - {{ file.path }}
+| Type | Line | Description |
+| ---- | ---- | ----------- |
+{% for error in file.allerrors %}
+| {{ error.severity }} | {{ error.line }} | {{ error.code|trans(error.context) }} |
+{% endfor %}
+{% endif %}
+{% endfor %}
+{% endblock %}
