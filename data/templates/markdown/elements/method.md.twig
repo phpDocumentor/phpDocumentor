@@ -1,0 +1,100 @@
+{% block method %}
+<a name="method_{{ method.name }}" class="anchor"></a>
+#### {% if method.deprecated %}(deprecated) - {% endif %}{{ method.visibility }} {{ method.name }}() {{ method.response.types ? ': '~method.response.types|join('&#124;') }}
+
+```
+{% if method.final %}Final {% endif %}{% if method.static %}Static {% endif %}{% if method.abstract %}Abstract {% endif %}{{ method.visibility }} {{ method.name }}({% for argument in method.arguments %}{{ argument.types ? argument.types|join('&#124;')~' ' }} {{ argument.isVariadic ? '...' }}{{ argument.name }}{{ argument.default ? ' = '~argument.default }}{% if not loop.last %}, {% endif %}{% endfor %}) {{ method.response.types ? ': '~method.response.types|join('&#124;') }}
+```
+
+{% if method.summary|length > 0%}
+**Summary**
+
+{{ method.summary|raw }}
+
+{% endif %}
+{% if method.description|length > 0%}
+**Description**
+
+{{ method.description|raw }}
+
+{% endif %}
+{% if method.deprecated %}
+**Deprecated**
+Deprecated{% if method.tags.deprecated[0].version %} since {{ method.tags.deprecated[0].version }}{% endif %}
+{{ method.tags.deprecated[0].description }}
+{% endif %}
+**Details:**
+{% if (method.parent is null) %}
+* File: [{{ method.path }}]({{ method.file|route('url') }})
+{% endif %}
+{% if (method.parent is not null and method.parent.fullyQualifiedStructuralElementName != method.fullyQualifiedStructuralElementName) %}
+* Inherited From: [{{ method.parent.fullyQualifiedStructuralElementName }}]({{ method.parent|route('url') }})
+{% endif %}
+{% for tagName,tags in method.tags if tagName in ['link', 'see'] %}
+{% if loop.first %}
+* See Also:
+{% endif %}
+{% for tag in tags %}
+ * [{{ tag.description ?: tag.reference }}]({{ (tag.reference|route('url')) ?: tag.link }})
+{% endfor %}
+{% endfor %}
+{% for tagName,tags in method.tags if tagName in ['uses'] %}
+{% if loop.first %}
+* Uses:
+{% endif %}
+{% for tag in tags %}
+ * [{{ tag.description ?: tag.reference }}]({{ (tag.reference|route('url')) ?: tag.link }})
+{% endfor %}
+{% endfor %}
+{% if method.arguments|length > 0 %}
+##### Parameters:
+| Type | Name | Description |
+| ---- | ---- | ----------- |
+{% for argument in method.arguments %}
+| <code>{{ argument.types|route|join('&#124;')|raw }}</code> | {{ argument.name }} {{ argument.isVariadic ? '<small>variadic</small>' }} | {{ argument.description|raw }} |
+{% endfor %}
+{% endif %}
+{% if method.tags.throws|length > 0 or method.tags.throw|length > 0 %}
+##### Throws:
+| Type | Description |
+| ---- | ----------- |
+{% for exception in method.tags.throws %}
+| {{ exception.types|route|join('&#124;')|raw }} | {{ exception.description|raw }} |
+{% endfor %}
+{% for exception in method.tags.throw %}
+| {{ exception.types|route|join('&#124;')|raw }} | {{ exception.description|raw }} |
+{% endfor %}
+{% endif %}
+
+{% if method.response %}
+**Returns:** {{ method.response.types|route|join('&#124;')|raw }}{% if method.response.description %} - {{ method.response.description|raw }}{% endif %}
+{% endif %}
+
+{% for tagName,tags in method.tags if tagName in ['example'] %}
+{% if loop.first %}
+##### Examples:
+{% endif %}
+{% for tag in tags %}
+{{ tag.description|escape }}:
+{{ tag.example|escape }}
+
+{% endfor %}
+{% endfor %}
+
+{% set tagCount = 0 %}
+{% for tagName,tags in method.tags if tagName not in ['link', 'see', 'abstract', 'example', 'param', 'return', 'access', 'deprecated', 'throws', 'throw', 'uses'] %}
+{% for tag in tags %}
+{% set tagCount = tagCount + 1 %}
+{% endfor %}
+{% endfor %}
+{% if tagCount > 0 %}
+##### Tags
+| Tag | Version | Description |
+| --- | ------- | ----------- |
+{% for tagName,tags in method.tags if tagName not in ['link', 'see', 'abstract', 'example', 'param', 'return', 'access', 'deprecated', 'throws', 'throw', 'uses'] %}
+{% for tag in tags %}
+| {{ tagName }} | {% if tag.version %}{{ tag.version }}{% endif %} | {{ tag.description|raw }} |
+{% endfor %}
+{% endfor %}
+{% endif %}
+{% endblock %}

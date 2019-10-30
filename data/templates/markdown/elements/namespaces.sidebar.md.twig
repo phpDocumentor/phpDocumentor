@@ -1,0 +1,27 @@
+{% block sidebarNamespaces %}
+{% set code = random() %}
+* [{{ namespace.name }}]({{ namespace|route("url")|raw }})
+{% if namespace.interfaces|length > 0 %}
+ * Interfaces
+{% for class in namespace.interfaces|sort_asc %}
+  * {{ class|route('class:short')|raw }}
+{% endfor %}
+{% endif %}
+{% if namespace.traits|length > 0 %}
+ * Traits
+{% for class in namespace.traits|sort_asc %}
+  * {{ class|route('class:short')|raw }}
+{% endfor %}
+{% endif %}
+{% if namespace.classes|length > 0 %}
+ * Classes
+{% for class in namespace.classes|sort_asc %}
+  * {{ class|route('class:short')|raw }}
+{% endfor %}
+{% endif %}
+{% if namespace.children|length > 0 %}
+{% for namespace in namespace.children|sort_asc %}
+  {{ block('sidebarNamespaces') }}
+{% endfor %}
+{% endif %}
+{% endblock %}

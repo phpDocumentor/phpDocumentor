@@ -1,0 +1,52 @@
+{% extends './layout.md.twig' %}
+
+{% set namespace = project.namespace %}
+{% block title %}Namespace: {{ node.fullyQualifiedStructuralElementName }}{% endblock %}
+{% block content %}
+{% if node.parent %}
+## Parent: [{{ node.parent.fullyQualifiedStructuralElementName }}]({{ node.parent|route('url')|raw }})
+{% endif %}
+{% if node.children|length > 0 %}
+### Namespaces
+{% for namespace in node.children|sort_asc %}
+* [{{ namespace }}]({{ namespace|route('url')|raw }})
+{% endfor %}
+{% endif %}
+{% if node.traits|length > 0 %}
+### Traits
+| Name | Summary |
+| ---- | ------- |
+{% for trait in node.traits|sort_asc %}
+| [{{ trait }}]({{ trait|route('url')|raw }}) | {{ trait.summary }} |
+{% endfor %}
+{% endif %}
+{% if node.interfaces|length > 0 %}
+### Interfaces
+| Name | Summary |
+| ---- | ------- |
+{% for interface in node.interfaces|sort_asc %}
+| [{{ interface }}]({{ interface|route('url')|raw }}) | {{ interface.summary }} |
+{% endfor %}
+{% endif %}
+{% if node.classes|length > 0 %}
+### Classes
+| Name | Summary |
+| ---- | ------- |
+{% for class in node.classes|sort_asc %}
+| [{{ class }}]({{ class|route('url')|raw }}) | {{ class.summary }} |
+{% endfor %}
+{% endif %}
+{% if node.constants|length > 0 %}
+### Constants
+{% for constant in node.constants|sort_asc %}
+{{ block('constant') }}
+{% endfor %}
+{% endif %}
+{% if node.functions|length > 0 %}
+### Functions
+{% for method in node.functions|sort_asc %}
+{{ block('method') }}
+{% endfor %}
+{% endif %}
+{# {{ block('sidebarNamespaces') }} #}
+{% endblock %}

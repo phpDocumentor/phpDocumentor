@@ -1,0 +1,60 @@
+{% block property %}
+<a name="property_{{ property.name }}"></a>
+#### {{ property.visibility }} ${{ property.name }}{% if property.types %} : {{ property.types|join('|') }}{% endif %}{% if property.deprecated %} - (deprecated){% endif %}
+
+---
+{% if property.summary|length > 0 %}
+**Summary**
+
+{{ property.summary|raw }}
+
+{% endif %}
+{% if property.description|length > 0 %}
+***Description***
+
+{{ property.description|raw }}
+
+{% endif %}
+{% if property.types %}
+**Type:** {{ property.types|route|join('|')|raw }}
+{% if property.var.0.description %}{{ property.var.0.description }}{% endif %}
+{% endif %}
+
+**Details:**
+{% if (node.parent is not null and property.parent.fullyQualifiedStructuralElementName != node.fullyQualifiedStructuralElementName) %}
+* Inherited From: [{{ property.parent.fullyQualifiedStructuralElementName }}]({{ property.parent|route('url') }})
+{% endif %}
+{% for tagName,tags in property.tags if tagName in ['link', 'see'] %}
+{% if loop.first %}
+* See Also:
+{% endif %}
+{% for tag in tags %}
+  * [{{ tag.description ?: tag.reference }}]({{ tag.reference|route('url') ?: tag.link }})
+{% endfor %}
+{% endfor %}
+{% for tagName,tags in property.tags if tagName in ['uses'] %}
+{% if loop.first %}
+* Uses:
+{% endif %}
+{% for tag in tags %}
+  * [{{ tag.description ?: tag.reference }}]({{ tag.reference|route('url') }})
+{% endfor %}
+{% endfor %}
+
+{% set tagCount = 0 %}
+{% for tagName,tags in property.tags if tagName not in ['link', 'see', 'access', 'var', 'deprecated', 'uses'] %}
+{% for tag in tags %}
+{% set tagCount = tagCount + 1 %}
+{% endfor %}
+{% endfor %}
+{% if tagCount > 0 %}
+##### Tags
+| Tag | Version | Description |
+| --- | ------- | ----------- |
+{% for tagName,tags in property.tags if tagName not in ['link', 'see', 'access', 'var', 'deprecated', 'uses'] %}
+{% for tag in tags %}
+| {{ tagName }} | {% if tag.version %}{{ tag.version }}{% endif %} | {{ tag.description|raw }} |
+{% endfor %}
+{% endfor %}
+{% endif %}
+{% endblock %}

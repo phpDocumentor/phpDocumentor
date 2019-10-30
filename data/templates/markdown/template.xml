@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<template>
+    <author>Brian French</author>
+    <email>brian.french@nih.gov</email>
+    <description>Generate usage documentation in Markdown format so it can be published in Github/Gitlab.</description>
+    <transformations>
+        <transformation writer="twig" query="namespace" source="templates/markdown/namespace.md.twig" artifact="home.html"/>
+        <transformation writer="twig" query="indexes.namespaces" source="templates/markdown/namespace.md.twig" />
+        <transformation writer="twig" query="indexes.classes" source="templates/markdown/class.md.twig" />
+        <transformation writer="twig" query="indexes.interfaces" source="templates/markdown/interface.md.twig" />
+        <transformation writer="twig" query="indexes.traits" source="templates/markdown/class.md.twig" />
+
+        <transformation writer="twig" source="templates/markdown/reports/errors.md.twig" artifact="reports/errors.html"/>
+        <transformation writer="twig" source="templates/markdown/reports/deprecated.md.twig" artifact="reports/deprecated.html"/>
+        <transformation writer="twig" source="templates/markdown/reports/markers.md.twig" artifact="reports/markers.html"/>
+    </transformations>
+    <parameters>
+        <parameter key="twig-debug">true</parameter>
+    </parameters>
+</template>
