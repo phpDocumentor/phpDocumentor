@@ -63,6 +63,11 @@ final class CollectFiles
         );
         $this->log('OK');
 
+        if (count($files) === 0) {
+            $this->log('Your project seems to be empty!', LogLevel::WARNING);
+            $this->log('Where are the files??!!!', LogLevel::DEBUG);
+        }
+
         return $payload->withFiles($files);
     }
 
