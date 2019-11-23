@@ -11,14 +11,6 @@ installed before installing phpDocumentor.
 -  `intl extension for PHP`_
 -  Graphviz_
 
-.. note::
-
-    Some of the templates make use of the XSL templating language; these templates need the following dependency as
-    well. By default phpDocumentor uses a template based on the Twig_ templating language; which does not have
-    this requirement.
-
-    -  `XSL extension for PHP`_
-
 Using PEAR
 ----------
 
@@ -68,5 +60,4 @@ This command can also be used to add phpDocumentor to your existing composer-bas
 .. _`PHP 5.3.3`:            http://www.php.net
 .. _Graphviz:               http://graphviz.org/Download..php
 .. _intl extension for PHP: http://www.php.net/intl
-.. _XSL extension for PHP:  http://www.php.net/xsl
 .. _Twig:                   http://twig.sensiolabs.org

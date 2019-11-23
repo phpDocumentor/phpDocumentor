@@ -13,19 +13,19 @@
 namespace phpDocumentor\Transformer\Writer;
 
 use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery\MockInterface;
-use phpDocumentor\Transformer\Writer\Xsl;
 use phpDocumentor\Transformer\Router\Queue;
 
 /**
  * Test class for phpDocumentor\Transformer\Writer\Collection
  */
-class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+class CollectionTest extends MockeryTestCase
 {
     /** @var MockInterface|Queue */
     protected $routers;
 
-    /** @var MockInterface|Xsl */
+    /** @var MockInterface|WriterAbstract */
     protected $writer;
 
     /** @var Collection */
@@ -36,8 +36,8 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     protected function setUp()
     {
-        $this->routers = m::mock('phpDocumentor\Transformer\Router\Queue');
-        $this->writer = m::mock('phpDocumentor\Transformer\Writer\Xsl');
+        $this->routers = m::mock(Queue::class);
+        $this->writer = m::mock(WriterAbstract::class);
         $this->fixture = new Collection($this->routers);
     }
 

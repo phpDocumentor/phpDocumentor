@@ -76,9 +76,7 @@
         "symfony/dotenv": "^4.0"
     },
     "suggest": {
-        "ext-xsl": "When using XSL based templates this extension is needed.",
         "ext-twig": "Enabling the twig extension improves the generation of twig based templates.",
-        "ext-xslcache": "Enabling the XSLCache extension improves the generation of xml based templates.",
         "ext-ctype": "For best performance"
     },
     "config": {

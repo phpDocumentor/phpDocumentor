@@ -58,7 +58,7 @@ class Transformation
      * Constructs a new Transformation object and populates the required parameters.
      *
      * @param string $query       What information to use as datasource for the writer's source.
-     * @param string $writer      What type of transformation to apply (XSLT, PDF, Twig etc).
+     * @param string $writer      What type of transformation to apply (PDF, Twig etc).
      * @param string $source      Which template or type of source to use.
      * @param string $artifact    What is the filename of the result (relative to the generated root)
      */

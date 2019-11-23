@@ -8,4 +8,3 @@ Writers
    twig
    checkstyle
    xml
-   xsl
