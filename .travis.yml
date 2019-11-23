@@ -22,25 +22,32 @@ script:
 
 jobs:
   include:
+    - stage: test
+      os: windows
+      before_install:
+        - choco install php
+        - export PATH=/c/tools/php72:$PATH
+      script:
+        - php --version
 
     - stage: test
       php: 7.2
+      os: linux
       name: "php 7.2 Smoke test"
       before_script:
-         if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt update; fi
-         if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt install graphviz; fi
-         if [ "$TRAVIS_OS_NAME" = "osx" ]; then brew install graphviz; fi
+         sudo apt update
+         sudo apt install graphviz
 
       script:
         - ./bin/phpdoc run
 
     - stage: test
       php: 7.2
+      os: linux
       name: "Behat with phar"
       before_script:
-        if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt update; fi
-        if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt install graphviz; fi
-        if [ "$TRAVIS_OS_NAME" = "osx" ]; then brew install graphviz; fi
+        - sudo apt update
+        - sudo apt install graphviz
       script:
         - git tag v3.999.999
         - php bin/console cache:warmup --env=prod && php -d phar.readonly=false tools/box.phar compile
@@ -49,6 +56,7 @@ jobs:
 
     - stage: test
       php: 7.2
+      os: linux
       name: "php 7.2 Behat templates"
       script:
         - mkdir -p /tmp/phpdoc-behat/clean_template/simple
@@ -56,6 +64,7 @@ jobs:
 
     - stage: analysis
       php: 7.2
+      os: linux
       name: "Phpunit code coverage"
       script:
         - $HOME/.composer/vendor/bin/phpunit
