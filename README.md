@@ -73,7 +73,7 @@ contain spaces. This is a requirement imposed by an external library (libxml)_
 
 ### Using the PHAR
 
-1. Download the phar file from https://github.com/phpDocumentor/phpDocumentor2/releases
+1. Download the phar file from https://github.com/phpDocumentor/phpDocumentor/releases
 2. ???
 3. Profit!
 
@@ -134,5 +134,5 @@ To come in contact is actually dead simple and can be done in a variety of ways.
 
 * Twitter: [@phpDocumentor](http://twitter.com/phpDocumentor)
 * Website: [http://www.phpdoc.org](http://www.phpdoc.org)
-* Github:  [http://www.github.com/phpDocumentor/phpDocumentor2](http://www.github.com/phpDocumentor/phpDocumentor2)
+* Github:  [http://www.github.com/phpDocumentor/phpDocumentor](http://www.github.com/phpDocumentor/phpDocumentor)
 * E-mail:  [mike@phpdoc.org](mailto:mike@phpdoc.org)
