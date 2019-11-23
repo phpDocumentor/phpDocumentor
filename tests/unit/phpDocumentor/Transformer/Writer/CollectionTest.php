@@ -68,17 +68,6 @@ class CollectionTest extends MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Writer\Collection::offsetSet
-     */
-    public function testOffsetSetWriterReceivesRouterQueue()
-    {
-        $this->writer->shouldReceive('setRouters')->once()->with($this->routers);
-        $this->fixture->offsetSet('index', $this->writer);
-
-        $this->assertTrue(true);
-    }
-
-    /**
      * @expectedException \InvalidArgumentException
      * @covers phpDocumentor\Transformer\Writer\Collection::offsetGet
      */
@@ -115,7 +104,6 @@ class CollectionTest extends MockeryTestCase
      */
     private function registerWriter()
     {
-        $this->writer->shouldReceive('setRouters')->with($this->routers);
         $this->fixture->offsetSet('index', $this->writer);
     }
 }
