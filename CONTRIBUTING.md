@@ -17,11 +17,11 @@ GitHub Usage & Branching
 ------------------------
 
 Once you decide you want to contribute to phpDocumentor (which we really appreciate!) you can fork the project from
-http://github.com/phpDocumentor/phpDocumentor2.
+http://github.com/phpDocumentor/phpDocumentor.
 
-Currently phpdocumentor version 3.0 is developed in our `develop` branch. Large parts of the code in there will be
-rewritten or removed. If you want to contribute to phpdocumentor v3.0, create your feature branch from `develop`. If you
-want to fix a bug in the current released version, base your branch on `master`. Please *always* create a new branch for
+Currently phpDocumentor version 3.0 is developed in our `master` branch. Large parts of the code in there will be
+rewritten or removed. If you want to contribute to phpDocumentor v3.0, create your feature branch from `master`. If you
+want to fix a bug in the current released version, base your branch on `2.9`. Please *always* create a new branch for
 each feature/bugfix you want to contribute.
 
 > If you create your branch from the wrong base branch we won't be able to merge your feature in to the right version.
@@ -48,12 +48,12 @@ Once you cloned the repository you should be able to run the following commands 
 
 To run the tests you can use the following command:
 
-    $ docker-compose run phpunit
+    $ make phpunit
 
 Before issuing a pull request it is also recommended to run the following commands:
 
-    $ docker-compose run phpcs
-    $ docker-compose run phpstan
+    $ make phpcs
+    $ make phpstan
 
 These command will check the quality of your code; this is also done by Travis during the pull request process but
 performing these checks yourself will help getting your pull request merged.
@@ -66,7 +66,7 @@ phpDocumentor uses the [PSR-2 Coding Standard][PSR2] as defined by the
 
 It is recommended to check your code using phpCodeSniffer using the *PSR2* standard using the following command:
 
-    $ docker-compose run phpcs
+    $ make phpcs
 
 Unit testing
 ------------
@@ -76,7 +76,7 @@ unit tests in your pull requests as they also help understand what the contribut
 
 In order to run the unit tests you can execute the following command from your phpDocumentor folder:
 
-    $ docker-compose run phpunit
+    $ make test
 
 [PROGIT]:             http://git-scm.com/book
 [GITHUB_HELP_PR]:     https://help.github.com/articles/using-pull-requests
