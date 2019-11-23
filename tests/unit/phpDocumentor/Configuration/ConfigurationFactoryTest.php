@@ -94,19 +94,21 @@ final class ConfigurationFactoryTest extends MockeryTestCase
     public function testWhenDefaultFileIsInvalidXMLThenAnExceptionIsRaised()
     {
         $file = $this->givenExampleConfigurationFileWithContent(
-          '<?xml version="1.0" encoding="UTF-8" ?>' .
-          '<phpdocumentor xmlns="http://www.phpdoc.org" version="3">' .
+            '<?xml version="1.0" encoding="UTF-8" ?>' .
+            '<phpdocumentor xmlns="http://www.phpdoc.org" version="3">' .
             '<foo/>' .
-          '</phpdocumentor>'
+            '</phpdocumentor>'
         );
         $configurationFactory = new ConfigurationFactory(
-          [new Version3(__DIR__ . '/../../../../data/xsd/phpdoc.xsd')],
-          [$file]
+            [new Version3(__DIR__ . '/../../../../data/xsd/phpdoc.xsd')],
+            [$file]
         );
 
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage("Element '{http://www.phpdoc.org}foo': This element is not expected. Expected is ( {http://www.phpdoc.org}paths ).");
-        //
+        $this->expectExceptionMessage(
+            "Element '{http://www.phpdoc.org}foo': This element is not expected. "
+            . "Expected is ( {http://www.phpdoc.org}paths )."
+        );
         $configurationFactory->fromDefaultLocations();
     }
 

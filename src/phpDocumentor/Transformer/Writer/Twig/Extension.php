@@ -60,12 +60,16 @@ class Extension extends Twig_Extension implements ExtensionInterface, Twig_Exten
     /**
      * Registers the structure and transformation with this extension.
      *
-     * @param ProjectDescriptor $project        Represents the complete Abstract Syntax Tree.
-     * @param Transformation    $transformation Represents the transformation meta data used in the current generation
+     * @param ProjectDescriptor $project Represents the complete Abstract Syntax Tree.
+     * @param Transformation $transformation Represents the transformation meta data used in the current generation
      *     cycle.
+     * @param Renderer|null $routeRenderer
      */
-    public function __construct(ProjectDescriptor $project, Transformation $transformation, Renderer $routeRenderer = null)
-    {
+    public function __construct(
+        ProjectDescriptor $project,
+        Transformation $transformation,
+        Renderer $routeRenderer = null
+    ) {
         $this->data = $project;
         $this->routeRenderer = $routeRenderer;
     }
