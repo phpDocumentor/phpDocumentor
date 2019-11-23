@@ -30,7 +30,7 @@ Theory of Operation
    ``phpDocumentor\Descriptor\TagDescriptor`` class is used. The TagDescriptors are populated by an :term:Assembler
    class that is invoked by the ProjectDescriptorBuilder after the parsing process.
 
-#. Writers capable of rendering templates, such as Twig and XSL, include a tag definition that determines where to
+#. Writers capable of rendering templates, such as Twig, include a tag definition that determines where to
    include sub-templates containing tag definitions
 
    .. important::

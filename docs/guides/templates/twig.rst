@@ -1,7 +1,7 @@
 Using twig
 ==========
 
-phpDocumentor provides the `Twig 1.x engine`_ as a modern alternative to XSL templates.
+phpDocumentor provides the `Twig 1.x engine`_ as a rendering engine for templates.
 
 .. _Twig 1.x engine: https://twig.symfony.com/doc/1.x/
 

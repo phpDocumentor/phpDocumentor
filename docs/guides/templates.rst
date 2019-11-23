@@ -75,7 +75,6 @@ More Than a Theme
 
 :doc:`templates/structure`
 :doc:`templates/twig`
-:doc:`templates/xsl`
 
 Related topics
 --------------

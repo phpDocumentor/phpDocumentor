@@ -49,7 +49,6 @@ phpDocumentor requires the following:
 * PHP 7.1 or higher
 * ext/iconv, http://php.net/manual/en/book.iconv.php (is enabled by default since PHP 5.0.0)
 * ext/intl, http://php.net/manual/en/book.intl.php
-* The XSL extension, http://www.php.net/manual/en/book.xsl.php (optional, only used with XSL based templates)
 * Graphviz (optional, used for generating Class diagrams)
 
 **Note:**
@@ -127,12 +126,6 @@ Documentation
 -------------
 
 For more detailed information you can check our online documentation at [http://phpdoc.org/docs/latest/index.html](http://phpdoc.org/docs/latest/index.html).
-
-Known issues
-------------
-
-1. phpDocumentor must be installed in a path without spaces due to restrictions in libxml. The XSL transformation
-   will throw all kinds of odd warnings if the path contains spaces.
 
 Contact
 -------
