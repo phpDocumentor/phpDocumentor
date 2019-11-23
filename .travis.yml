@@ -14,22 +14,28 @@ branches:
 matrix:
   fast_finish: true
 
+stages:
+  - test
+  - smoketest
+  - windows
+  - analysis
+
 jobs:
   include:
-    - stage: test
+    - stage: windows
       language: sh
       os: windows
       before_install:
-        - choco install php
+        - choco install php --version 7.2
         - export PATH=/c/tools/php72:$PATH
       script:
         - php --version
 
-    - stage: test
+    - stage: smoketest
       language: php
-      php: 7.2
+      php: 7.3
       os: linux
-      name: "php 7.2 Smoke test"
+      name: "php 7.3 Smoke test"
       before_script:
         - travis_retry composer install --no-interaction --prefer-dist --optimize-autoloader
         - travis_retry composer global require phpunit/phpunit ^6 # cannot use phpunit.phar or require-dev, because this package is a phpunit dep
