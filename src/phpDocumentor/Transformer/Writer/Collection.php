@@ -20,8 +20,7 @@ use phpDocumentor\Transformer\Router\Queue;
 /**
  * A collection of Writer objects.
  *
- * In this collection we can receive writers, and if they implement the Routable interface assign the router queue that
- * was provided to this class so that those writers can generate urls for various Descriptors.
+ * In this collection we can receive writers.
  *
  * In addition this class can also verify if all requirements for the various writers in it are met.
  */
@@ -66,11 +65,6 @@ class Collection extends \ArrayObject
                 'The name of a Writer may only contain alphanumeric characters, one or more hyphens, underscores and '
                 . 'forward slashes and must be at least three characters wide'
             );
-        }
-
-        // if the writer supports routes, provide them with the router queue
-        if ($newval instanceof Routable) {
-            $newval->setRouters($this->routers);
         }
 
         parent::offsetSet($index, $newval);
