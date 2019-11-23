@@ -1,9 +1,13 @@
 language: php
-php: [ 7.1, 7.2, 7.3 ]
+php: [ 7.2, 7.3 ]
 sudo: false
+os:
+  - linux
+  - osx
+  - windows
 
 branches:
-except: /^(\S*)-nightly-(\S*)$/
+  except: /^(\S*)-nightly-(\S*)$/
 
 matrix:
   fast_finish: true
@@ -20,11 +24,13 @@ jobs:
   include:
 
     - stage: test
-      php: 7.1
-      name: "php 7.1 Smoke test"
+      php: 7.2
+      name: "php 7.2 Smoke test"
       before_script:
-        - travis_retry sudo apt update
-        - travis_retry sudo apt install graphviz
+         if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt update; fi
+         if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt install graphviz; fi
+         if [ "$TRAVIS_OS_NAME" = "osx" ]; then brew install graphviz; fi
+
       script:
         - ./bin/phpdoc run
 
@@ -32,8 +38,9 @@ jobs:
       php: 7.2
       name: "Behat with phar"
       before_script:
-        - travis_retry sudo apt update
-        - travis_retry sudo apt install graphviz
+        if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt update; fi
+        if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt install graphviz; fi
+        if [ "$TRAVIS_OS_NAME" = "osx" ]; then brew install graphviz; fi
       script:
         - git tag v3.999.999
         - php bin/console cache:warmup --env=prod && php -d phar.readonly=false tools/box.phar compile
@@ -41,14 +48,14 @@ jobs:
         - php build/phpDocumentor.phar run
 
     - stage: test
-      php: 7.1
-      name: "php 7.1 Behat templates"
+      php: 7.2
+      name: "php 7.2 Behat templates"
       script:
         - mkdir -p /tmp/phpdoc-behat/clean_template/simple
         - bin/behat -p template
 
     - stage: analysis
-      php: 7.1
+      php: 7.2
       name: "Phpunit code coverage"
       script:
         - $HOME/.composer/vendor/bin/phpunit
