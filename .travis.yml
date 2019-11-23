@@ -1,10 +1,5 @@
-language: php
-php: [ 7.2, 7.3 ]
+language: sh
 sudo: false
-os:
-  - linux
-  - osx
-  - windows
 
 branches:
   except: /^(\S*)-nightly-(\S*)$/
@@ -23,6 +18,7 @@ script:
 jobs:
   include:
     - stage: test
+      language: sh
       os: windows
       before_install:
         - choco install php
@@ -31,17 +27,18 @@ jobs:
         - php --version
 
     - stage: test
+      language: php
       php: 7.2
       os: linux
       name: "php 7.2 Smoke test"
       before_script:
          sudo apt update
          sudo apt install graphviz
-
       script:
         - ./bin/phpdoc run
 
     - stage: test
+      language: php
       php: 7.2
       os: linux
       name: "Behat with phar"
@@ -55,6 +52,7 @@ jobs:
         - php build/phpDocumentor.phar run
 
     - stage: test
+      language: php
       php: 7.2
       os: linux
       name: "php 7.2 Behat templates"
@@ -63,6 +61,7 @@ jobs:
         - bin/behat -p template
 
     - stage: analysis
+      language: php
       php: 7.2
       os: linux
       name: "Phpunit code coverage"
