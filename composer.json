@@ -20,7 +20,7 @@
         }
     },
     "require": {
-        "php": ">=7.1.3",
+        "php": ">=7.2",
         "ext-dom": "*",
         "ext-iconv": "*",
         "ext-json": "*",
@@ -86,7 +86,7 @@
             "*": "dist"
         },
         "platform": {
-            "php": "7.1.3"
+            "php": "7.2"
         },
         "sort-packages": true
     },
@@ -104,8 +104,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-develop": "3.0-dev",
-            "dev-master": "2.9.x-dev"
+            "dev-master": "3.0-dev"
         },
         "symfony": {
             "id": "01C32VS9393M1CP9R8TEJMH62G",
