@@ -4,7 +4,7 @@
  *
  * PHP Version 5.3
  *
- * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -16,7 +16,7 @@ use phpDocumentor\Descriptor\Collection;
 /**
  * Tests the functionality for the MethodDescriptor class.
  */
-class MethodDescriptorTest extends \PHPUnit_Framework_TestCase
+class MethodDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     const EXAMPLE_NAME = 'methodname';
 
@@ -52,7 +52,7 @@ class MethodDescriptorTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetAndGetArguments()
     {
-        $expected = new Collection(array('a' => 'b'));
+        $expected = new Collection(['a' => 'b']);
         $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getArguments());
 
         $this->fixture->setArguments($expected);
@@ -67,7 +67,7 @@ class MethodDescriptorTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetAndGetResponse()
     {
-        $expected = array('a' => 'b');
+        $expected = ['a' => 'b'];
         $this->assertEmpty($this->fixture->getResponse());
 
         $this->fixture->setResponse($expected);

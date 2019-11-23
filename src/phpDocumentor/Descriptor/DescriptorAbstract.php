@@ -1,10 +1,14 @@
 <?php
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -16,21 +20,21 @@ use phpDocumentor\Descriptor\Filter\Filterable;
 /**
  * Base class for descriptors containing the most used options.
  */
-abstract class DescriptorAbstract implements Filterable
+abstract class DescriptorAbstract implements Descriptor, Filterable
 {
     /**
-     * @var string $fqsen Fully Qualified Structural Element Name; the FQCN including method, property of constant name
+     * @var string Fully Qualified Structural Element Name; the FQCN including method, property of constant name
      */
     protected $fqsen = '';
 
     /** @var string $name The local name for this element */
     protected $name = '';
 
-    /** @var NamespaceDescriptor $namespace The namespace for this element */
-    protected $namespace;
+    /** @var NamespaceDescriptor|string $namespace The namespace for this element */
+    protected $namespace = '';
 
-    /** @var string $package The package with which this element is associated */
-    protected $package = '';
+    /** @var PackageDescriptor $package The package with which this element is associated */
+    protected $package;
 
     /** @var string $summary A summary describing the function of this element in short. */
     protected $summary = '';
@@ -66,8 +70,6 @@ abstract class DescriptorAbstract implements Filterable
      * Sets the Fully Qualified Structural Element Name (FQSEN) for this element.
      *
      * @param string $name
-     *
-     * @return void
      */
     public function setFullyQualifiedStructuralElementName($name)
     {
@@ -88,8 +90,6 @@ abstract class DescriptorAbstract implements Filterable
      * Sets the local name for this element.
      *
      * @param string $name
-     *
-     * @return void
      */
     public function setName($name)
     {
@@ -117,9 +117,9 @@ abstract class DescriptorAbstract implements Filterable
     }
 
     /**
-     * Returns the namespace for this element or null if none is attached.
+     * Returns the namespace for this element (defaults to global "\")
      *
-     * @return NamespaceDescriptor|string|null
+     * @return NamespaceDescriptor|string
      */
     public function getNamespace()
     {
@@ -130,8 +130,6 @@ abstract class DescriptorAbstract implements Filterable
      * Sets the summary describing this element in short.
      *
      * @param string $summary
-     *
-     * @return void
      */
     public function setSummary($summary)
     {
@@ -147,12 +145,12 @@ abstract class DescriptorAbstract implements Filterable
      */
     public function getSummary()
     {
-        if ($this->summary && strtolower(trim($this->summary)) != '{@inheritdoc}') {
+        if ($this->summary && strtolower(trim($this->summary)) !== '{@inheritdoc}') {
             return $this->summary;
         }
 
         $parent = $this->getInheritedElement();
-        if ($parent instanceof DescriptorAbstract) {
+        if ($parent instanceof self) {
             return $parent->getSummary();
         }
 
@@ -163,8 +161,6 @@ abstract class DescriptorAbstract implements Filterable
      * Sets a description for this element.
      *
      * @param string $description
-     *
-     * @return void
      */
     public function setDescription($description)
     {
@@ -180,12 +176,12 @@ abstract class DescriptorAbstract implements Filterable
      */
     public function getDescription()
     {
-        if ($this->description && strpos(strtolower($this->description), '{@inheritdoc}') === false) {
+        if ($this->description && strpos(strtolower((string) $this->description), '{@inheritdoc}') === false) {
             return $this->description;
         }
 
         $parentElement = $this->getInheritedElement();
-        if ($parentElement instanceof DescriptorAbstract) {
+        if ($parentElement instanceof self) {
             $parentDescription = $parentElement->getDescription();
 
             return $this->description
@@ -199,10 +195,7 @@ abstract class DescriptorAbstract implements Filterable
     /**
      * Sets the file and linenumber where this element is at.
      *
-     * @param FileDescriptor $file
-     * @param int            $line
-     *
-     * @return void
+     * @param int $line
      */
     public function setLocation(FileDescriptor $file, $line = 0)
     {
@@ -233,9 +226,7 @@ abstract class DescriptorAbstract implements Filterable
     /**
      * Sets the file to which this element is associated.
      *
-     * @param FileDescriptor $file
-     *
-     * @return false
+     * @return bool
      */
     public function setFile(FileDescriptor $file)
     {
@@ -256,8 +247,6 @@ abstract class DescriptorAbstract implements Filterable
      * Sets the line number for this element's location in the source file.
      *
      * @param integer $lineNumber
-     *
-     * @return void
      */
     public function setLine($lineNumber)
     {
@@ -266,10 +255,6 @@ abstract class DescriptorAbstract implements Filterable
 
     /**
      * Sets the tags associated with this element.
-     *
-     * @param Collection $tags
-     *
-     * @return void
      */
     public function setTags(Collection $tags)
     {
@@ -290,8 +275,6 @@ abstract class DescriptorAbstract implements Filterable
      * Sets the name of the package to which this element belongs.
      *
      * @param PackageDescriptor $package
-     *
-     * @return void
      */
     public function setPackage($package)
     {
@@ -301,7 +284,7 @@ abstract class DescriptorAbstract implements Filterable
     /**
      * Returns the package name for this element.
      *
-     * @return PackageDescriptor
+     * @return PackageDescriptor|null
      */
     public function getPackage()
     {
@@ -311,7 +294,7 @@ abstract class DescriptorAbstract implements Filterable
             return $this->package;
         }
 
-        if ($inheritedElement instanceof DescriptorAbstract) {
+        if ($inheritedElement instanceof self) {
             return $inheritedElement->getPackage();
         }
 
@@ -325,7 +308,7 @@ abstract class DescriptorAbstract implements Filterable
     {
         /** @var Collection $author */
         $author = $this->getTags()->get('author', new Collection());
-        if ($author->count() != 0) {
+        if ($author->count() !== 0) {
             return $author;
         }
 
@@ -346,7 +329,7 @@ abstract class DescriptorAbstract implements Filterable
     {
         /** @var Collection $version */
         $version = $this->getTags()->get('version', new Collection());
-        if ($version->count() != 0) {
+        if ($version->count() !== 0) {
             return $version;
         }
 
@@ -367,7 +350,7 @@ abstract class DescriptorAbstract implements Filterable
     {
         /** @var Collection $copyright */
         $copyright = $this->getTags()->get('copyright', new Collection());
-        if ($copyright->count() != 0) {
+        if ($copyright->count() !== 0) {
             return $copyright;
         }
 
@@ -391,10 +374,8 @@ abstract class DescriptorAbstract implements Filterable
 
     /**
      * Sets a list of all errors associated with this element.
-     *
-     * @param Collection $errors
      */
-    public function setErrors(Collection $errors)
+    public function setErrors(Collection $errors): void
     {
         $this->errors = $errors;
     }
@@ -437,9 +418,9 @@ abstract class DescriptorAbstract implements Filterable
      *
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->getFullyQualifiedStructuralElementName();
+        return (string) $this->getFullyQualifiedStructuralElementName();
     }
 
     /**

@@ -4,7 +4,7 @@
  *
  * PHP Version 5.3
  *
- * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -13,18 +13,24 @@ namespace phpDocumentor\Descriptor;
 
 use \Mockery as m;
 use phpDocumentor\Descriptor\Tag\AuthorDescriptor;
+use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
 use phpDocumentor\Descriptor\Tag\VersionDescriptor;
+use phpDocumentor\Reflection\Types\String_;
 
 /**
  * Tests the functionality for the MethodDescriptor class.
+ *
+ * @coversDefaultClass \phpDocumentor\Descriptor\MethodDescriptor
+ * @covers ::<private>
+ * @covers ::<protected>
  */
-class MethodDescriptorTest extends \PHPUnit_Framework_TestCase
+class MethodDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var MethodDescriptor $fixture */
     protected $fixture;
 
     /**
-     * Creates a new (emoty) fixture object.
+     * Creates a new (empty) fixture object.
      */
     protected function setUp()
     {
@@ -35,32 +41,73 @@ class MethodDescriptorTest extends \PHPUnit_Framework_TestCase
     /**
      * Tests whether all collection objects are properly initialized.
      *
-     * @covers phpDocumentor\Descriptor\MethodDescriptor::__construct
+     * @covers ::__construct
      */
     public function testInitialize()
     {
-        $this->assertAttributeInstanceOf('phpDocumentor\Descriptor\Collection', 'arguments', $this->fixture);
+        $this->assertAttributeInstanceOf(Collection::class, 'arguments', $this->fixture);
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\MethodDescriptor::setArguments
-     * @covers phpDocumentor\Descriptor\MethodDescriptor::getArguments
+     * @covers ::setParent
+     * @covers ::getParent
+     */
+    public function testSettingAndGettingAParent()
+    {
+        $parent = new ClassDescriptor();
+
+        $this->assertNull($this->fixture->getParent());
+
+        $this->fixture->setParent($parent);
+
+        $this->assertSame($parent, $this->fixture->getParent());
+    }
+
+    /**
+     * @covers ::setArguments
+     * @covers ::getArguments
      */
     public function testSettingAndGettingArguments()
     {
-        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getArguments());
+        $this->assertInstanceOf(Collection::class, $this->fixture->getArguments());
+        $this->assertCount(0, iterator_to_array($this->fixture->getArguments()));
 
-        $mock = m::mock('phpDocumentor\Descriptor\Collection');
-        $mock->shouldReceive('getIterator')->andReturn(new \ArrayIterator(array()));
+        $argument = new ArgumentDescriptor();
+        $argument->setName('name');
+        $collection = new Collection([$argument]);
 
-        $this->fixture->setArguments($mock);
+        $this->fixture->setArguments($collection);
 
-        $this->assertSame($mock, $this->fixture->getArguments());
+        $this->assertInstanceOf(Collection::class, $this->fixture->getArguments());
+        $argumentsAsArray = iterator_to_array($this->fixture->getArguments());
+        $this->assertCount(1, $argumentsAsArray);
+        $this->assertSame($argument, $argumentsAsArray['name']);
+        $this->assertSame($argument->getMethod(), $this->fixture);
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\MethodDescriptor::isAbstract
-     * @covers phpDocumentor\Descriptor\MethodDescriptor::setAbstract
+     * @covers ::addArgument
+     */
+    public function testAddingAnArgument()
+    {
+        $this->assertInstanceOf(Collection::class, $this->fixture->getArguments());
+        $this->assertCount(0, iterator_to_array($this->fixture->getArguments()));
+
+        $argument = new ArgumentDescriptor();
+        $argument->setName('name');
+
+        $this->fixture->addArgument('name', $argument);
+
+        $this->assertInstanceOf(Collection::class, $this->fixture->getArguments());
+        $argumentsAsArray = iterator_to_array($this->fixture->getArguments());
+        $this->assertCount(1, $argumentsAsArray);
+        $this->assertSame($argument, $argumentsAsArray['name']);
+        $this->assertSame($argument->getMethod(), $this->fixture);
+    }
+
+    /**
+     * @covers ::isAbstract
+     * @covers ::setAbstract
      */
     public function testSettingAndGettingWhetherMethodIsAbstract()
     {
@@ -72,8 +119,8 @@ class MethodDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\MethodDescriptor::isFinal
-     * @covers phpDocumentor\Descriptor\MethodDescriptor::setFinal
+     * @covers ::isFinal
+     * @covers ::setFinal
      */
     public function testSettingAndGettingWhetherMethodIsFinal()
     {
@@ -85,8 +132,8 @@ class MethodDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\MethodDescriptor::isStatic
-     * @covers phpDocumentor\Descriptor\MethodDescriptor::setStatic
+     * @covers ::isStatic
+     * @covers ::setStatic
      */
     public function testSettingAndGettingWhetherMethodIsStatic()
     {
@@ -98,8 +145,8 @@ class MethodDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\MethodDescriptor::getVisibility
-     * @covers phpDocumentor\Descriptor\MethodDescriptor::setVisibility
+     * @covers ::getVisibility
+     * @covers ::setVisibility
      */
     public function testSettingAndGettingVisibility()
     {
@@ -111,21 +158,34 @@ class MethodDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\MethodDescriptor::getResponse
+     * @covers ::getResponse
      */
     public function testRetrieveReturnTagForResponse()
     {
-        $mock = new \stdClass();
+        $returnDescriptor = new ReturnDescriptor('return');
+        $returnDescriptor->setType(new String_());
 
-        $this->assertNull($this->fixture->getResponse());
+        $this->assertNull($this->fixture->getResponse()->getType());
 
-        $this->fixture->getTags()->set('return', new Collection(array($mock)));
+        $this->fixture->getTags()->set('return', new Collection([$returnDescriptor]));
 
-        $this->assertSame($mock, $this->fixture->getResponse());
+        $this->assertSame($returnDescriptor, $this->fixture->getResponse());
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\MethodDescriptor::getFile
+     * @covers ::setReturnType
+     * @covers ::getResponse
+     */
+    public function testGetResponseReturnsReturnType()
+    {
+        $returnType = new String_();
+        $this->fixture->setReturnType($returnType);
+
+        $this->assertSame($returnType, $this->fixture->getResponse()->getType());
+    }
+
+    /**
+     * @covers ::getFile
      */
     public function testRetrieveFileAssociatedWithAMethod()
     {
@@ -141,7 +201,7 @@ class MethodDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getSummary
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getSummary
      */
     public function testSummaryInheritsWhenNoneIsPresent()
     {
@@ -159,7 +219,7 @@ class MethodDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\MethodDescriptor::getSummary
+     * @covers ::getSummary
      */
     public function testSummaryInheritsFromImplementedInterfaceWhenNoneIsPresent()
     {
@@ -177,7 +237,7 @@ class MethodDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\MethodDescriptor::getDescription
+     * @covers ::getDescription
      */
     public function testDescriptionInheritsWhenNoneIsPresent()
     {
@@ -195,7 +255,7 @@ class MethodDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getDescription
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getDescription
      */
     public function testDescriptionInheritsWhenInheritDocIsPresent()
     {
@@ -213,7 +273,7 @@ class MethodDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getDescription
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getDescription
      */
     public function testDescriptionIsAugmentedWhenInheritDocInlineTagIsPresent()
     {
@@ -231,52 +291,52 @@ class MethodDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\MethodDescriptor::getReturn
+     * @covers ::getReturn
      */
     public function testReturnTagsInheritWhenNoneArePresent()
     {
-        // Arrange
+        $this->assertInstanceOf(Collection::class, $this->fixture->getReturn());
+        $this->assertSame(0, $this->fixture->getReturn()->count());
+
         $returnTagDescriptor = new AuthorDescriptor('return');
-        $returnCollection = new Collection(array($returnTagDescriptor));
+        $returnCollection = new Collection([$returnTagDescriptor]);
         $this->fixture->getTags()->clear();
         $parentProperty = $this->whenFixtureHasMethodInParentClassWithSameName($this->fixture->getName());
         $parentProperty->getTags()->set('return', $returnCollection);
 
-        // Act
         $result = $this->fixture->getReturn();
 
-        // Assert
         $this->assertSame($returnCollection, $result);
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\MethodDescriptor::getParam
+     * @covers ::getParam
      */
     public function testParamTagsInheritWhenNoneArePresent()
     {
-        // Arrange
+        $this->assertInstanceOf(Collection::class, $this->fixture->getParam());
+        $this->assertSame(0, $this->fixture->getParam()->count());
+
         $paramTagDescriptor = new AuthorDescriptor('param');
-        $paramCollection = new Collection(array($paramTagDescriptor));
+        $paramCollection = new Collection([$paramTagDescriptor]);
         $this->fixture->getTags()->clear();
         $parentProperty = $this->whenFixtureHasMethodInParentClassWithSameName($this->fixture->getName());
         $parentProperty->getTags()->set('param', $paramCollection);
 
-        // Act
         $result = $this->fixture->getParam();
 
-        // Assert
         $this->assertSame($paramCollection, $result);
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\MethodDescriptor::getAuthor
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getAuthor
+     * @covers ::getAuthor
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getAuthor
      */
     public function testAuthorTagsInheritWhenNoneArePresent()
     {
         // Arrange
         $authorTagDescriptor = new AuthorDescriptor('author');
-        $authorCollection = new Collection(array($authorTagDescriptor));
+        $authorCollection = new Collection([$authorTagDescriptor]);
         $this->fixture->getTags()->clear();
         $parentProperty = $this->whenFixtureHasMethodInParentClassWithSameName($this->fixture->getName());
         $parentProperty->getTags()->set('author', $authorCollection);
@@ -289,14 +349,14 @@ class MethodDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\MethodDescriptor::getVersion
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getVersion
+     * @covers ::getVersion
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getVersion
      */
     public function testVersionTagsInheritWhenNoneArePresent()
     {
         // Arrange
         $versionTagDescriptor = new VersionDescriptor('version');
-        $versionCollection = new Collection(array($versionTagDescriptor));
+        $versionCollection = new Collection([$versionTagDescriptor]);
         $this->fixture->getTags()->clear();
         $parentProperty = $this->whenFixtureHasMethodInParentClassWithSameName($this->fixture->getName());
         $parentProperty->getTags()->set('version', $versionCollection);
@@ -309,14 +369,14 @@ class MethodDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\MethodDescriptor::getCopyright
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getCopyright
+     * @covers ::getCopyright
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getCopyright
      */
     public function testCopyrightTagsInheritWhenNoneArePresent()
     {
         // Arrange
         $copyrightTagDescriptor = new TagDescriptor('copyright');
-        $copyrightCollection = new Collection(array($copyrightTagDescriptor));
+        $copyrightCollection = new Collection([$copyrightTagDescriptor]);
         $this->fixture->getTags()->clear();
         $parentProperty = $this->whenFixtureHasMethodInParentClassWithSameName($this->fixture->getName());
         $parentProperty->getTags()->set('copyright', $copyrightCollection);
@@ -335,7 +395,7 @@ class MethodDescriptorTest extends \PHPUnit_Framework_TestCase
      */
     protected function whenFixtureIsDirectlyRelatedToAFile()
     {
-        $file = m::mock('phpDocumentor\Descriptor\FileDescriptor');
+        $file = m::mock(FileDescriptor::class);
         $this->fixture->setFile($file);
         return $file;
     }
@@ -347,8 +407,8 @@ class MethodDescriptorTest extends \PHPUnit_Framework_TestCase
      */
     protected function whenFixtureIsRelatedToAClassWithFile()
     {
-        $file = m::mock('phpDocumentor\Descriptor\FileDescriptor');
-        $parent = m::mock('phpDocumentor\Descriptor\ClassDescriptor');
+        $file = m::mock(FileDescriptor::class);
+        $parent = m::mock(ClassDescriptor::class);
         $parent->shouldReceive('getFile')->andReturn($file);
         $parent->shouldReceive('getFullyQualifiedStructuralElementName')->andReturn('Class1');
         $this->fixture->setParent($parent);
@@ -358,18 +418,16 @@ class MethodDescriptorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param string $name The name of the current method.
-     *
-     * @return MethodDescriptor
      */
-    protected function whenFixtureHasMethodInParentClassWithSameName($name)
+    protected function whenFixtureHasMethodInParentClassWithSameName($name): MethodDescriptor
     {
-        $result = new MethodDescriptor;
+        $result = new MethodDescriptor();
         $result->setName($name);
 
         $parent = new ClassDescriptor();
         $parent->getMethods()->set($name, $result);
 
-        $class  = new ClassDescriptor();
+        $class = new ClassDescriptor();
         $class->setParent($parent);
 
         $this->fixture->setParent($class);
@@ -379,18 +437,16 @@ class MethodDescriptorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param string $name The name of the current method.
-     *
-     * @return MethodDescriptor
      */
-    protected function whenFixtureHasMethodInImplementedInterfaceWithSameName($name)
+    protected function whenFixtureHasMethodInImplementedInterfaceWithSameName($name): MethodDescriptor
     {
-        $result = new MethodDescriptor;
+        $result = new MethodDescriptor();
         $result->setName($name);
 
         $parent = new InterfaceDescriptor();
         $parent->getMethods()->set($name, $result);
 
-        $class  = new ClassDescriptor();
+        $class = new ClassDescriptor();
         $class->getInterfaces()->set('Implemented', $parent);
 
         $this->fixture->setParent($class);

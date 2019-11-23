@@ -10,6 +10,7 @@
  * @package    Tokens
  * @subpackage Tests
  */
+
 namespace
 {
     define('TEST', -1);
@@ -50,8 +51,6 @@ namespace Test\Tests5
      *
      * @param int $argument
      * @param Test\SingleClass $argument2 This is a test argument
-     *
-     * @return void
      */
     function single_function($argument = 'test', $argument2 = 'test2')
     {
@@ -76,6 +75,7 @@ namespace Test\Tests5
     }
 
 }
+
 namespace Test
 {
 
@@ -88,9 +88,10 @@ namespace Test
      */
     class SingleClass
     {
-
         private $test = null;
-        private $test2 = array('test' => 1);
+
+        private $test2 = ['test' => 1];
+
         private $test3 = 1;
 
         /**
@@ -110,8 +111,6 @@ namespace Test
          *
          * @param array $argument_a test argument
          * @param FooBarClass $argument_b test argument
-         *
-         * @return void
          */
         public static function StaticPublicMethod(array $argument_a, FooBarClass $argument_b = null)
         {
@@ -121,8 +120,6 @@ namespace Test
          * Method Docblock
          *
          * @param int $argument test argument
-         *
-         * @return void
          */
         public function PublicMethod($argument)
         {

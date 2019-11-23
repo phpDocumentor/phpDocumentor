@@ -1,86 +1,77 @@
 <?php
+
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Transformer;
 
-use JMS\Serializer\Annotation as Serializer;
 use phpDocumentor\Transformer\Template\Parameter;
 
 /**
  * Model representing a template.
- *
- * @Serializer\XmlRoot("template")
  */
-class Template implements \ArrayAccess, \Countable, \Iterator
+final class Template implements \ArrayAccess, \Countable, \IteratorAggregate
 {
     /**
-     * @Serializer\Type("string")
      * @var string Name for this template
      */
     protected $name = null;
 
     /**
-     * @Serializer\Type("string")
      * @var string The name and optionally mail address of the author, i.e. `Mike van Riel <me@mikevanriel.com>`.
      */
     protected $author = '';
 
     /**
-     * @Serializer\Type("string")
      * @var string The version of the template according to semantic versioning, i.e. 1.2.0
      */
     protected $version = '';
 
     /**
-     * @Serializer\Type("string")
      * @var string A free-form copyright notice.
      */
     protected $copyright = '';
 
     /**
-     * @Serializer\Type("string")
      * @var string a text providing more information on this template.
      */
     protected $description = '';
 
     /**
-     * @Serializer\XmlList(entry = "transformation")
-     * @Serializer\Type("array<phpDocumentor\Transformer\Transformation>")
      * @var Transformation[] A series of transformations to execute in sequence during transformation.
      */
-    protected $transformations = array();
+    protected $transformations = [];
 
     /**
-     * @Serializer\XmlList(entry = "parameter")
-     * @Serializer\Type("array<phpDocumentor\Transformer\Template\Parameter>")
      * @var Parameter[] Global parameters that are passed to each transformation.
      */
-    protected $parameters = array();
+    protected $parameters = [];
 
     /**
      * Initializes this object with a name and optionally with contents.
      *
      * @param string $name Name for this template.
      */
-    public function __construct($name)
+    public function __construct(string $name)
     {
         $this->name = $name;
     }
 
     /**
      * Name for this template.
-     *
-     * @return string
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -91,18 +82,14 @@ class Template implements \ArrayAccess, \Countable, \Iterator
      *
      * @param string $author Name of the author optionally including mail address
      *  between angle brackets.
-     *
-     * @return void
      */
-    public function setAuthor($author)
+    public function setAuthor(string $author)
     {
         $this->author = $author;
     }
 
     /**
      * Returns the name and/or mail address of the author.
-     *
-     * @return string
      */
     public function getAuthor()
     {
@@ -113,18 +100,14 @@ class Template implements \ArrayAccess, \Countable, \Iterator
      * Sets the copyright string for this template.
      *
      * @param string $copyright Free-form copyright notice.
-     *
-     * @return void
      */
-    public function setCopyright($copyright)
+    public function setCopyright(string $copyright)
     {
         $this->copyright = $copyright;
     }
 
     /**
      * Returns the copyright string for this template.
-     *
-     * @return string
      */
     public function getCopyright()
     {
@@ -137,9 +120,8 @@ class Template implements \ArrayAccess, \Countable, \Iterator
      * @param string $version Semantic version number in this format: 1.0.0
      *
      * @throws \InvalidArgumentException if the version number is invalid
-     * @return void
      */
-    public function setVersion($version)
+    public function setVersion(string $version)
     {
         if (!preg_match('/^\d+\.\d+\.\d+$/', $version)) {
             throw new \InvalidArgumentException(
@@ -147,15 +129,14 @@ class Template implements \ArrayAccess, \Countable, \Iterator
                 . 'x.x.x (where x is a number)'
             );
         }
+
         $this->version = $version;
     }
 
     /**
      * Returns the version number for this template.
-     *
-     * @return string
      */
-    public function getVersion()
+    public function getVersion(): string
     {
         return $this->version;
     }
@@ -165,20 +146,16 @@ class Template implements \ArrayAccess, \Countable, \Iterator
      *
      * @param string $description An unconstrained text field where the user can provide additional information
      *     regarding details of the template.
-     *
-     * @return void
      */
-    public function setDescription($description)
+    public function setDescription(string $description)
     {
         $this->description = $description;
     }
 
     /**
      * Returns the description for this template.
-     *
-     * @return string
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->description;
     }
@@ -190,7 +167,6 @@ class Template implements \ArrayAccess, \Countable, \Iterator
      * @param Transformation $value  The transformation to add to this template.
      *
      * @throws \InvalidArgumentException if an invalid item was received
-     * @return void
      */
     public function offsetSet($offset, $value)
     {
@@ -201,7 +177,7 @@ class Template implements \ArrayAccess, \Countable, \Iterator
             );
         }
 
-        $this->transformations[] = $value;
+        $this->transformations[$offset] = $value;
     }
 
     /**
@@ -222,8 +198,6 @@ class Template implements \ArrayAccess, \Countable, \Iterator
      * @param integer|string $offset Index of item to unset.
      *
      * @link http://php.net/manual/en/arrayaccess.offsetunset.php
-     *
-     * @return void
      */
     public function offsetUnset($offset)
     {
@@ -257,73 +231,11 @@ class Template implements \ArrayAccess, \Countable, \Iterator
     }
 
     /**
-     * Rewind the Iterator to the first element
-     *
-     * @link http://php.net/manual/en/iterator.rewind.php
-     *
-     * @return void
-     */
-    public function rewind()
-    {
-        reset($this->transformations);
-    }
-
-    /**
-     * Checks if current position is valid.
-     *
-     * @link http://php.net/manual/en/iterator.valid.php
-     *
-     * @return boolean Returns true on success or false on failure.
-     */
-    public function valid()
-    {
-        return (current($this->transformations) === false)
-            ? false
-            : true;
-    }
-
-    /**
-     * Return the key of the current element.
-     *
-     * @link http://php.net/manual/en/iterator.key.php
-     *
-     * @return int|string scalar on success, integer 0 on failure.
-     */
-    public function key()
-    {
-        key($this->transformations);
-    }
-
-    /**
-     * Move forward to next element.
-     *
-     * @link http://php.net/manual/en/iterator.next.php
-     *
-     * @return void Any returned value is ignored.
-     */
-    public function next()
-    {
-        next($this->transformations);
-    }
-
-    /**
-     * Return the current element.
-     *
-     * @link http://php.net/manual/en/iterator.current.php
-     *
-     * @return Transformation
-     */
-    public function current()
-    {
-        return current($this->transformations);
-    }
-
-    /**
      * Returns the parameters associated with this template.
      *
      * @return Parameter[]
      */
-    public function getParameters()
+    public function getParameters(): array
     {
         return $this->parameters;
     }
@@ -333,23 +245,24 @@ class Template implements \ArrayAccess, \Countable, \Iterator
      *
      * @param string|integer $key
      * @param Parameter      $value
-     *
-     * @return void
      */
-    public function setParameter($key, $value)
+    public function setParameter($key, Parameter $value)
     {
         $this->parameters[$key] = $value;
     }
 
     /**
      * Pushes the parameters of this template into the transformations.
-     *
-     * @return void
      */
     public function propagateParameters()
     {
         foreach ($this->transformations as $transformation) {
             $transformation->setParameters(array_merge($transformation->getParameters(), $this->getParameters()));
         }
+    }
+
+    public function getIterator(): \ArrayIterator
+    {
+        return new \ArrayIterator($this->transformations);
     }
 }

@@ -4,7 +4,7 @@
  *
  * PHP Version 5.3
  *
- * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -18,7 +18,7 @@ use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
 
-class MarkerFromTagsExtractorTest extends \PHPUnit_Framework_TestCase
+class MarkerFromTagsExtractorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var MarkerFromTagsExtractor */
     protected $fixture;
@@ -64,32 +64,30 @@ class MarkerFromTagsExtractorTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(1, $classDescriptor->getTags()->get('todo'));
         $this->assertCount(3, $fileDescriptor->getMarkers());
         $this->assertSame(
-            array('type' => 'TODO', 'message' => '123', 'line' => 10),
+            ['type' => 'TODO', 'message' => '123', 'line' => 10],
             $fileDescriptor->getMarkers()->get(0)
         );
         $this->assertSame(
-            array('type' => 'TODO', 'message' => '456', 'line' => 10),
+            ['type' => 'TODO', 'message' => '456', 'line' => 10],
             $fileDescriptor->getMarkers()->get(1)
         );
         $this->assertSame(
-            array('type' => 'TODO', 'message' => '789', 'line' => 20),
+            ['type' => 'TODO', 'message' => '789', 'line' => 20],
             $fileDescriptor->getMarkers()->get(2)
         );
     }
 
     /**
-     * @covers phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor::execute
-     * @covers phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor::getFileDescriptor
+     * @covers \phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor::execute
+     * @covers \phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor::getFileDescriptor
      */
     public function testExceptionShouldBeThrownIfElementHasNoFileAssociated()
     {
         $classDescriptor = $this->givenProjectHasClassDescriptorAssociatedWithFile(null);
         $this->givenDescriptorHasTodoTagWithDescription($classDescriptor, '789');
 
-        $this->setExpectedException(
-            'UnexpectedValueException',
-            'An element should always have a file associated with it'
-        );
+        $this->expectException('UnexpectedValueException');
+        $this->expectExceptionMessage('An element should always have a file associated with it');
 
         $this->fixture->execute($this->project);
     }
@@ -114,7 +112,7 @@ class MarkerFromTagsExtractorTest extends \PHPUnit_Framework_TestCase
         $todoTag = new TagDescriptor('todo');
         $todoTag->setDescription($description);
 
-        $todoTags = $descriptor->getTags()->get('todo', array());
+        $todoTags = $descriptor->getTags()->get('todo', []);
         $todoTags[] = $todoTag;
         $descriptor->getTags()->set('todo', $todoTags);
     }
@@ -132,6 +130,7 @@ class MarkerFromTagsExtractorTest extends \PHPUnit_Framework_TestCase
         if ($fileDescriptor) {
             $classDescriptor->setFile($fileDescriptor);
         }
+
         $elementIndex = $this->project->getIndexes()->get('elements', new Collection());
         $elementIndex->add($classDescriptor);
         return $classDescriptor;

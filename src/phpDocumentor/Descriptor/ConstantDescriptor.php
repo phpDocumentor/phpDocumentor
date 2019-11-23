@@ -1,10 +1,14 @@
 <?php
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -12,6 +16,7 @@
 namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Descriptor\Tag\VarDescriptor;
+use phpDocumentor\Reflection\Type;
 
 /**
  * Descriptor representing a constant
@@ -21,7 +26,7 @@ class ConstantDescriptor extends DescriptorAbstract implements Interfaces\Consta
     /** @var ClassDescriptor|InterfaceDescriptor|null $parent */
     protected $parent;
 
-    /** @var string[]|null $type */
+    /** @var Type $type */
     protected $types;
 
     /** @var string $value */
@@ -33,8 +38,6 @@ class ConstantDescriptor extends DescriptorAbstract implements Interfaces\Consta
      * @param ClassDescriptor|InterfaceDescriptor|null $parent
      *
      * @throws \InvalidArgumentException if anything other than a class, interface or null was passed.
-     *
-     * @return void
      */
     public function setParent($parent)
     {
@@ -62,7 +65,7 @@ class ConstantDescriptor extends DescriptorAbstract implements Interfaces\Consta
     /**
      * {@inheritDoc}
      */
-    public function setTypes(Collection $types)
+    public function setTypes(Type $types)
     {
         $this->types = $types;
     }
@@ -72,13 +75,16 @@ class ConstantDescriptor extends DescriptorAbstract implements Interfaces\Consta
      */
     public function getTypes()
     {
-        if ($this->types === null) {
-            $this->types = new Collection();
+        return [$this->getType()];
+    }
 
+    public function getType()
+    {
+        if ($this->types === null) {
             /** @var VarDescriptor $var */
             $var = $this->getVar()->get(0);
             if ($var) {
-                $this->types = $var->getTypes();
+                return $var->getType();
             }
         }
 
@@ -108,7 +114,7 @@ class ConstantDescriptor extends DescriptorAbstract implements Interfaces\Consta
     {
         /** @var Collection $var */
         $var = $this->getTags()->get('var', new Collection());
-        if ($var->count() != 0) {
+        if ($var->count() !== 0) {
             return $var;
         }
 

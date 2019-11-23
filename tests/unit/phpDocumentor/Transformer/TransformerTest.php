@@ -5,27 +5,24 @@
  * PHP Version 5.3
  *
  * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
+
 namespace phpDocumentor\Transformer;
 
 use Mockery as m;
-use phpDocumentor\Descriptor\ProjectDescriptor;
+use Psr\Log\NullLogger;
 
 /**
  * Test class for \phpDocumentor\Transformer\Transformer.
  *
  * @covers phpDocumentor\Transformer\Transformer
  */
-class TransformerTest extends \PHPUnit_Framework_TestCase
+class TransformerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
-    /**
-     * Max length of description printed.
-     *
-     * @var int
-     */
+    /** @var int Max length of description printed. */
     protected static $MAX_DESCRIPTION_LENGTH = 68;
 
     /** @var Transformer $fixture */
@@ -33,8 +30,6 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Instantiates a new \phpDocumentor\Transformer for use as fixture.
-     *
-     * @return void
      */
     protected function setUp()
     {
@@ -43,7 +38,7 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
         $writerCollectionMock = m::mock('phpDocumentor\Transformer\Writer\Collection');
         $writerCollectionMock->shouldIgnoreMissing();
 
-        $this->fixture = new Transformer($templateCollectionMock, $writerCollectionMock);
+        $this->fixture = new Transformer($templateCollectionMock, $writerCollectionMock, new NullLogger());
     }
 
     /**
@@ -55,7 +50,7 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
         $templateCollectionMock->shouldIgnoreMissing();
         $writerCollectionMock = m::mock('phpDocumentor\Transformer\Writer\Collection');
         $writerCollectionMock->shouldIgnoreMissing();
-        $this->fixture = new Transformer($templateCollectionMock, $writerCollectionMock);
+        $this->fixture = new Transformer($templateCollectionMock, $writerCollectionMock, new NullLogger());
 
         $this->assertAttributeEquals($templateCollectionMock, 'templates', $this->fixture);
         $this->assertAttributeEquals($writerCollectionMock, 'writers', $this->fixture);
@@ -104,7 +99,7 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
         $writerCollectionMock = m::mock('phpDocumentor\Transformer\Writer\Collection');
         $writerCollectionMock->shouldIgnoreMissing();
 
-        $fixture = new Transformer($templateCollectionMock, $writerCollectionMock);
+        $fixture = new Transformer($templateCollectionMock, $writerCollectionMock, new NullLogger());
 
         $this->assertEquals($templateCollectionMock, $fixture->getTemplates());
     }
@@ -124,10 +119,10 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
             ->shouldReceive('transform')->getMock();
 
         $writerCollectionMock = m::mock('phpDocumentor\Transformer\Writer\Collection')
-                ->shouldReceive('offsetGet')->with($myTestWritter)->andReturn($myTestWritterMock)
-                ->getMock();
+            ->shouldReceive('offsetGet')->with($myTestWritter)->andReturn($myTestWritterMock)
+            ->getMock();
 
-        $fixture = new Transformer($templateCollection, $writerCollectionMock);
+        $fixture = new Transformer($templateCollection, $writerCollectionMock, new NullLogger());
 
         $transformation = m::mock('phpDocumentor\Transformer\Transformation')
             ->shouldReceive('execute')->with($project)
@@ -138,10 +133,10 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $templateCollection->shouldReceive('getTransformations')->andReturn(
-            array($transformation)
+            [$transformation]
         );
 
-        $this->assertNull($fixture->execute($project));
+        $fixture->execute($project);
     }
 
     /**
@@ -149,8 +144,6 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
      * the right format.
      *
      * @covers phpDocumentor\Transformer\Transformer::generateFilename
-     *
-     * @return void
      */
     public function testGenerateFilename()
     {

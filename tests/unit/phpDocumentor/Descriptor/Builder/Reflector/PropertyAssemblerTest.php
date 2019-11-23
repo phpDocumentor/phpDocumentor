@@ -5,19 +5,23 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @copyright 2010-2017 Mike van Riel<mike@phpdoc.org>
+ * @copyright 2010-2018 Mike van Riel<mike@phpdoc.org>
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
+use Mockery as m;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock;
-use phpDocumentor\Reflection\ClassReflector\PropertyReflector;
-use Mockery as m;
+use phpDocumentor\Reflection\DocBlock\Description;
+use phpDocumentor\Reflection\Fqsen;
+use phpDocumentor\Reflection\Php\Property;
+use phpDocumentor\Reflection\Php\Visibility;
+use phpDocumentor\Reflection\Types\String_;
 
-class PropertyAssemblerTest extends \PHPUnit_Framework_TestCase
+class PropertyAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var PropertyAssembler $fixture */
     protected $fixture;
@@ -43,8 +47,8 @@ class PropertyAssemblerTest extends \PHPUnit_Framework_TestCase
     public function testCreatePropertyDescriptorFromReflector()
     {
         // Arrange
-        $namespace    = 'Namespace';
-        $propertyName   = 'property';
+        $namespace = 'Namespace';
+        $propertyName = 'property';
 
         $propertyReflectorMock = $this->givenAPropertyReflector(
             $namespace,
@@ -56,67 +60,43 @@ class PropertyAssemblerTest extends \PHPUnit_Framework_TestCase
         $descriptor = $this->fixture->create($propertyReflectorMock);
 
         // Assert
-        $expectedFqsen = $namespace . '\\$' . $propertyName;
-        $this->assertSame($expectedFqsen, $descriptor->getFullyQualifiedStructuralElementName());
+        $expectedFqsen = '\\' . $namespace . '::$' . $propertyName;
+        $this->assertSame($expectedFqsen, (string) $descriptor->getFullyQualifiedStructuralElementName());
         $this->assertSame($propertyName, $descriptor->getName());
         $this->assertSame('\\' . $namespace, $descriptor->getNamespace());
-        $this->assertSame('protected', $descriptor->getVisibility());
-        $this->assertSame(false, $descriptor->isStatic());
+        $this->assertSame('protected', (string) $descriptor->getVisibility());
+        $this->assertFalse($descriptor->isStatic());
     }
 
     /**
      * Creates a sample property reflector for the tests with the given data.
      *
-     * @param string                             $namespace
-     * @param string                             $propertyName
-     * @param DocBlock|m\MockInterface           $docBlockMock
-     *
-     * @return PropertyReflector|m\MockInterface
+     * @param string $namespace
+     * @param string $propertyName
+     * @param DocBlock $docBlockMock
      */
-    protected function givenAPropertyReflector($namespace, $propertyName, $docBlockMock = null)
+    protected function givenAPropertyReflector($namespace, $propertyName, $docBlockMock = null): Property
     {
-        $propertyReflectorMock = m::mock('phpDocumentor\Reflection\PropertyReflector');
-        $propertyReflectorMock->shouldReceive('getName')->andReturn($namespace . '\\$' . $propertyName);
-        $propertyReflectorMock->shouldReceive('getShortName')->andReturn($propertyName);
-        $propertyReflectorMock->shouldReceive('getNamespace')->andReturn($namespace);
-        $propertyReflectorMock->shouldReceive('getDocBlock')->andReturn($docBlockMock);
-        $propertyReflectorMock->shouldReceive('getLinenumber')->andReturn(128);
-        $propertyReflectorMock->shouldReceive('getVisibility')->andReturn('protected');
-        $propertyReflectorMock->shouldReceive('getDefault')->andReturn(null);
-        $propertyReflectorMock->shouldReceive('isStatic')->andReturn(false);
-
-        return $propertyReflectorMock;
+        return new Property(
+            new Fqsen('\\' . $namespace . '::$' . $propertyName),
+            new Visibility(Visibility::PROTECTED_),
+            $docBlockMock
+        );
     }
 
     /**
      * Generates a DocBlock object with applicable defaults for these tests.
-     *
-     * @return DocBlock|m\MockInterface
      */
-    protected function givenADocBlockObject($withTags)
+    protected function givenADocBlockObject($withTags): DocBlock
     {
-        $docBlockDescription = new DocBlock\Description('This is an example description');
+        $docBlockDescription = new Description('This is an example description');
 
-        $docBlockMock = m::mock('phpDocumentor\Reflection\DocBlock');
-        $docBlockMock->shouldReceive('getTags')->andReturn(array());
-        $docBlockMock->shouldReceive('getShortDescription')->andReturn('This is a example description');
-        $docBlockMock->shouldReceive('getLongDescription')->andReturn($docBlockDescription);
+        $tags = [];
 
         if ($withTags) {
-            $docBlockMock->shouldReceive('getTagsByName')->andReturnUsing(function ($param) {
-                $tag = m::mock('phpDocumentor\Reflection\DocBlock\Tag');
-
-                $tag->shouldReceive('isVariadic')->once()->andReturn(true);
-                $tag->shouldReceive('getVariableName')->andReturn('variableName');
-                $tag->shouldReceive('getTypes')->andReturn(array());
-                $tag->shouldReceive('getDescription');
-
-                return array($tag);
-            });
-        } else {
-            $docBlockMock->shouldReceive('getTagsByName')->andReturn(array());
+            $tags[] = new DocBlock\Tags\Var_('variableName', new String_(), new Description('Var description'));
         }
 
-        return $docBlockMock;
+        return new DocBlock('This is a example description', $docBlockDescription, $tags);
     }
 }

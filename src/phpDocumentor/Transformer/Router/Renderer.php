@@ -1,10 +1,24 @@
 <?php
+declare(strict_types=1);
+
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://phpdoc.org
+ */
 
 namespace phpDocumentor\Transformer\Router;
 
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\Type\CollectionDescriptor;
+use phpDocumentor\Reflection\Type;
 
 /**
  * Renders an HTML anchor pointing to the location of the provided element.
@@ -19,34 +33,10 @@ class Renderer
 
     /**
      * Initializes this renderer with a set of routers that are checked.
-     *
-     * @param Queue $routers
      */
-    public function __construct($routers)
+    public function __construct(Queue $routers)
     {
         $this->routers = $routers;
-    }
-
-    /**
-     * Overwrites the associated routers with a new set of routers.
-     *
-     * @param Queue $routers
-     *
-     * @return void
-     */
-    public function setRouters($routers)
-    {
-        $this->routers = $routers;
-    }
-
-    /**
-     * Returns the routers used in generating the URLs for the anchors.
-     *
-     * @return Queue
-     */
-    public function getRouters()
-    {
-        return $this->routers;
     }
 
     /**
@@ -61,10 +51,8 @@ class Renderer
      *
      * @param string $destination
      *
-     * @see phpDocumentor\Plugin\Twig\Transformer\Writer\Twig for the invocation
+     * @see \phpDocumentor\Transformer\Writer\Twig for the invocation
      *     of this method.
-     *
-     * @return void
      */
     public function setDestination($destination)
     {
@@ -89,6 +77,10 @@ class Renderer
      */
     public function render($value, $presentation)
     {
+        if (is_array($value) && current($value) instanceof Type) {
+            return $this->renderType($value, $presentation);
+        }
+
         if (is_array($value) || $value instanceof \Traversable || $value instanceof Collection) {
             return $this->renderASeriesOfLinks($value, $presentation);
         }
@@ -122,18 +114,18 @@ class Renderer
      *
      * @param string $relative_path
      *
-     * @return string
+     * @return string|null
      */
-    public function convertToRootPath($relative_path)
+    public function convertToRootPath($relative_path): ?string
     {
         // get the path to the root directory
-        $path_parts   = explode(DIRECTORY_SEPARATOR, $this->getDestination());
+        $path_parts = explode(DIRECTORY_SEPARATOR, $this->getDestination());
         $path_to_root = (count($path_parts) > 1)
-            ? implode('/', array_fill(0, count($path_parts) -1, '..')).'/'
+            ? implode('/', array_fill(0, count($path_parts) - 1, '..')) . '/'
             : '';
 
         // append the relative path to the root
-        if (is_string($relative_path) && ($relative_path[0] != '@')) {
+        if (is_string($relative_path) && ($relative_path[0] !== '@')) {
             return $path_to_root . ltrim($relative_path, '/');
         }
 
@@ -155,13 +147,13 @@ class Renderer
      *
      * @return string[]
      */
-    protected function renderASeriesOfLinks($value, $presentation)
+    protected function renderASeriesOfLinks($value, $presentation): array
     {
         if ($value instanceof Collection) {
             $value = $value->getAll();
         }
 
-        $result = array();
+        $result = [];
         foreach ($value as $path) {
             $result[] = $this->render($path, $presentation);
         }
@@ -183,17 +175,18 @@ class Renderer
         $keyTypes = $this->render($value->getKeyTypes(), $presentation);
         $types = $this->render($value->getTypes(), $presentation);
 
-        $arguments = array();
+        $arguments = [];
         if ($keyTypes) {
             $arguments[] = implode('|', $keyTypes);
         }
+
         $arguments[] = implode('|', $types);
 
-        if ($value->getName() == 'array' && count($value->getKeyTypes()) == 0) {
+        if ($value->getName() === 'array' && count($value->getKeyTypes()) === 0) {
             $typeString = (count($types) > 1) ? '(' . reset($arguments) . ')' : reset($arguments);
             $collection = $typeString . '[]';
         } else {
-            $collection = ($baseType ? : $value->getName()) . '&lt;' . implode(',', $arguments) . '&gt;';
+            $collection = ($baseType ?: $value->getName()) . '&lt;' . implode(',', $arguments) . '&gt;';
         }
 
         return $collection;
@@ -201,7 +194,7 @@ class Renderer
 
     protected function renderLink($path, $presentation)
     {
-        $url  = false;
+        $url = false;
         $rule = $this->routers->match($path);
         if ($rule) {
             $generatedUrl = $rule->generate($path);
@@ -209,7 +202,7 @@ class Renderer
         }
 
         if (is_string($url)
-            && $url[0] != '/'
+            && $url[0] !== '/'
             && (strpos($url, 'http://') !== 0)
             && (strpos($url, 'https://') !== 0)
             && (strpos($url, 'ftp://') !== 0)
@@ -221,11 +214,21 @@ class Renderer
             case 'url': // return the first url
                 return $url;
             case 'class:short':
-                $parts = explode('\\', $path);
+                $parts = explode('\\', (string) $path);
                 $path = end($parts);
                 break;
         }
 
         return $url ? sprintf('<a href="%s">%s</a>', $url, $path) : $path;
+    }
+
+    private function renderType($value, string $presentation): array
+    {
+        $result = [];
+        foreach ($value as $type) {
+            $result[] = (string) $type;
+        }
+
+        return $result;
     }
 }

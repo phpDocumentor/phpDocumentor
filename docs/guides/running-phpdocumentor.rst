@@ -55,12 +55,12 @@ Configuration
 -------------
 
 Before we continue to discuss the other options that phpDocumentor offers we would like to mention that phpDocumentor
-supports the use of a :doc:`configuration<../references/configuration>` file. All you need to do is add a file called 
-'phpdoc.dist.xml' to the root of your project, add your options to it and then invoke the ``phpdoc`` command without 
+supports the use of a :doc:`configuration<../references/configuration>` file. All you need to do is add a file called
+'phpdoc.dist.xml' to the root of your project, add your options to it and then invoke the ``phpdoc`` command without
 arguments.
 
 phpDocumentor will look in the current working directory for the configuration file and use its contents to determine
-options such as where your project files are and where to output your documentation. 
+options such as where your project files are and where to output your documentation.
 
 You can even override the settings in the configuration on a per user basis using another file called 'phpdoc.xml'.
 
@@ -86,16 +86,16 @@ As mentioned in the Quickstart above you can select which directories and files 
 directories and their files) or the ``-f`` (for just single files). You can even provide those options multiple times
 if you need multiple files or directories.
 
-Sometimes you may want to exclude entire directories, or files from your documentation build because they contain unwanted third-party documentation, or because you just don't need to transform documentation content for certain files in your project. 
-The ``--ignore`` option lets you specify what directories and files to exclude from your project.  
+Sometimes you may want to exclude entire directories, or files from your documentation build because they contain unwanted third-party documentation, or because you just don't need to transform documentation content for certain files in your project.
+The ``--ignore`` option lets you specify what directories and files to exclude from your project.
 
-A basic example of the ``--ignore`` option is excluding one or more directories from your project. 
-If you have a 'vendor' directory that is not relevant to your project documentation, you can exclude it by specifying ``--ignore "vendor/"``. 
+A basic example of the ``--ignore`` option is excluding one or more directories from your project.
+If you have a 'vendor' directory that is not relevant to your project documentation, you can exclude it by specifying ``--ignore "vendor/"``.
 To exclude the 'vendor' and 'tests' directories at the project root, separate each directory with a comma: ``--ignore "vendor/,tests/"``.
 
 If you have a single file in the 'tests' directory that you want to exclude from the documentation build, you can declare it explicitly by specifying ``--ignore "tests/excludeme.php"``. This command will transform all PHP files in the 'tests' directory *except for* 'excludeme.php'.
 
-The ``--ignore`` option also supports wildcards to indicate that there may be any number of undetermined characters in the path. 
+The ``--ignore`` option also supports wildcards to indicate that there may be any number of undetermined characters in the path.
 For example, ``--ignore "*/tests/*,tests/*"`` will ignore any files in a subdirectory 'tests' or if 'tests' is a subdirectory
 somewhere down the tree.
 
@@ -106,7 +106,7 @@ somewhere down the tree.
 
 When you want to provide a relative path, keep in mind that this is relative to the :term:`Project Root Folder`.
 The project's root folder is the first folder that the provided folders have in common, so for
-``-d "src/phpDocumentor,src/Cilex" this is the directory "src" and not the current working directory. When in doubt,
+``-d "src/phpDocumentor,src/SomethingElse" this is the directory "src" and not the current working directory. When in doubt,
 check the output of phpDocumentor, it mentions the project's root folder after all files are collected.
 
 By default phpDocumentor will ignore hidden files and will not follow symlinks. This will prevent unwanted documentables

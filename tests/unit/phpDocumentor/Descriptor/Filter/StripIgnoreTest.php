@@ -4,7 +4,7 @@
  *
  * PHP Version 5.3
  *
- * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -17,7 +17,7 @@ use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 /**
  * Tests the functionality for the StripIgnore class.
  */
-class StripIgnoreTest extends \PHPUnit_Framework_TestCase
+class StripIgnoreTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var ProjectDescriptorBuilder|m\Mock */
     protected $builderMock;
@@ -43,32 +43,32 @@ class StripIgnoreTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Filter\StripIgnore::filter
+     * @covers phpDocumentor\Descriptor\Filter\StripIgnore::__invoke
      */
     public function testStripsIgnoreTagFromDescription()
     {
         $descriptor = m::mock('phpDocumentor\Descriptor\DescriptorAbstract');
         $descriptor->shouldReceive('getTags->get')->with('ignore')->andReturn(true);
 
-        $this->assertSame(null, $this->fixture->filter($descriptor));
+        $this->assertNull($this->fixture->__invoke($descriptor));
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Filter\StripIgnore::filter
+     * @covers phpDocumentor\Descriptor\Filter\StripIgnore::__invoke
      */
     public function testDescriptorIsUnmodifiedIfThereIsNoIgnoreTag()
     {
         $descriptor = m::mock('phpDocumentor\Descriptor\DescriptorAbstract');
         $descriptor->shouldReceive('getTags->get')->with('ignore')->andReturn(false);
 
-        $this->assertEquals($descriptor, $this->fixture->filter($descriptor));
+        $this->assertEquals($descriptor, $this->fixture->__invoke($descriptor));
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Filter\StripIgnore::filter
+     * @covers phpDocumentor\Descriptor\Filter\StripIgnore::__invoke
      */
     public function testNullIsReturnedIfThereIsNoDescriptor()
     {
-        $this->assertSame(null, $this->fixture->filter(null));
+        $this->assertNull($this->fixture->__invoke(null));
     }
 }

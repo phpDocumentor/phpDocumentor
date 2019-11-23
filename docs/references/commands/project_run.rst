@@ -7,7 +7,6 @@ project:run
    contribute it at
    https://github.com/phpDocumentor/phpDocumentor2/tree/develop/docs
 
-
 Description
 -----------
 

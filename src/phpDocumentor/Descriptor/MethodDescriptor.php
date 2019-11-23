@@ -1,15 +1,22 @@
 <?php
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor;
+
+use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
+use phpDocumentor\Reflection\Type;
 
 /**
  * Descriptor representing a Method in a Class, Interface or Trait.
@@ -33,6 +40,9 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
 
     /** @var Collection */
     protected $arguments;
+
+    /** @var Type */
+    private $returnType;
 
     /**
      * Initializes the all properties representing a collection with a new Collection object.
@@ -136,15 +146,16 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
      */
     public function setArguments(Collection $arguments)
     {
-        foreach( $arguments as $argument) {
-            $argument->setMethod($this);
+        $this->arguments = new Collection();
+
+        foreach ($arguments as $argument) {
+            assert($argument instanceof ArgumentDescriptor);
+            $this->addArgument($argument->getName(), $argument);
         }
-        $this->arguments = $arguments;
     }
 
     /**
      * @param string $name
-     * @param ArgumentDescriptor $argument
      */
     public function addArgument($name, ArgumentDescriptor $argument)
     {
@@ -160,17 +171,20 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
         return $this->arguments;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getResponse()
+    public function getResponse(): ReturnDescriptor
     {
+        $definedReturn = new ReturnDescriptor('return');
+        $definedReturn->setType($this->returnType);
+
         /** @var Collection|null $returnTags */
         $returnTags = $this->getReturn();
 
-        return $returnTags instanceof Collection && $returnTags->count() > 0
-            ? current($returnTags->getAll())
-            : null;
+        if ($returnTags instanceof Collection && $returnTags->count() > 0) {
+            /** @var ReturnDescriptor $returnTag */
+            return current($returnTags->getAll());
+        }
+
+        return $definedReturn;
     }
 
     /**
@@ -190,7 +204,7 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
     {
         /** @var Collection $var */
         $var = $this->getTags()->get('return', new Collection());
-        if ($var->count() != 0) {
+        if ($var->count() !== 0) {
             return $var;
         }
 
@@ -252,9 +266,10 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
         $parentClass = $associatedClass->getParent();
         if ($parentClass instanceof ClassDescriptor || $parentClass instanceof Collection) {
             // the parent of a class is always a class, but the parent of an interface is a collection of interfaces.
-            $parents = $parentClass instanceof ClassDescriptor ? array($parentClass) : $parentClass->getAll();
+            $parents = $parentClass instanceof ClassDescriptor ? [$parentClass] : $parentClass->getAll();
             foreach ($parents as $parent) {
                 if ($parent instanceof ClassDescriptor || $parent instanceof InterfaceDescriptor) {
+                    /** @var MethodDescriptor $parentMethod */
                     $parentMethod = $parent->getMethods()->get($this->getName());
                     if ($parentMethod) {
                         $this->inheritedElement = $parentMethod;
@@ -273,6 +288,7 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
                     continue;
                 }
 
+                /** @var MethodDescriptor $parentMethod */
                 $parentMethod = $interface->getMethods()->get($this->getName());
                 if ($parentMethod) {
                     $this->inheritedElement = $parentMethod;
@@ -283,5 +299,13 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
         }
 
         return null;
+    }
+
+    /**
+     * Sets return type of this method.
+     */
+    public function setReturnType(Type $returnType)
+    {
+        $this->returnType = $returnType;
     }
 }

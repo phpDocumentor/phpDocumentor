@@ -1,10 +1,14 @@
 <?php
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -25,10 +29,10 @@ class CollectionDescriptor implements TypeInterface
     protected $baseType = '';
 
     /** @var TypeInterface[] $type */
-    protected $types = array();
+    protected $types = [];
 
     /** @var TypeInterface[] $type */
-    protected $keyTypes = array();
+    protected $keyTypes = [];
 
     /**
      * Initializes this type collection with its base-type.
@@ -47,7 +51,7 @@ class CollectionDescriptor implements TypeInterface
      */
     public function getName()
     {
-        return $this->baseType instanceof TypeInterface ? $this->baseType->getName() : $this->baseType;
+        return method_exists($this->baseType, 'getName') ? $this->baseType->getName() : $this->baseType;
     }
 
     /**
@@ -68,8 +72,6 @@ class CollectionDescriptor implements TypeInterface
      * Registers the base type for this collection type.
      *
      * @param string|TypeInterface $baseType
-     *
-     * @return void
      */
     public function setBaseType($baseType)
     {
@@ -80,8 +82,6 @@ class CollectionDescriptor implements TypeInterface
      * Register the type, or set of types, to which a value in this type of collection can belong.
      *
      * @param TypeInterface[] $types
-     *
-     * @return void
      */
     public function setTypes(array $types)
     {
@@ -102,8 +102,6 @@ class CollectionDescriptor implements TypeInterface
      * Registers the type, or set of types, to which a *key* in this type of collection can belong.
      *
      * @param TypeInterface[] $types
-     *
-     * @return void
      */
     public function setKeyTypes(array $types)
     {
@@ -125,16 +123,16 @@ class CollectionDescriptor implements TypeInterface
      *
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
-        $name = $this->getName();
+        $name = (string) $this->getName();
 
-        $keyTypes = array();
+        $keyTypes = [];
         foreach ($this->getKeyTypes() as $type) {
             $keyTypes[] = (string) $type;
         }
 
-        $types = array();
+        $types = [];
         foreach ($this->getTypes() as $type) {
             $types[] = (string) $type;
         }

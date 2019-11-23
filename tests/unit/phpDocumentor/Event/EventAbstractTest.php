@@ -4,7 +4,7 @@
  *
  * PHP Version 5.3
  *
- * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -16,7 +16,7 @@ use phpDocumentor\Event\Mock\EventAbstract as EventAbstractMock;
 /**
  * Test for the EventAbstract class.
  */
-class EventAbstractTest extends \PHPUnit_Framework_TestCase
+class EventAbstractTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
      * @covers phpDocumentor\Event\EventAbstract::__construct

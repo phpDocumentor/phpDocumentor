@@ -4,7 +4,7 @@
  *
  * PHP Version 5.3
  *
- * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -26,7 +26,7 @@ use phpDocumentor\Descriptor\TraitDescriptor;
  *
  * @covers phpDocumentor\Compiler\Pass\ElementsIndexBuilder
  */
-class ElementsIndexBuilderTest extends \PHPUnit_Framework_TestCase
+class ElementsIndexBuilderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var ElementsIndexBuilder $fixture */
     protected $fixture;
@@ -74,13 +74,13 @@ class ElementsIndexBuilderTest extends \PHPUnit_Framework_TestCase
 
         $elements = $this->project->getIndexes()->get('elements')->getAll();
         $this->assertCount(2, $elements);
-        $this->assertSame(array('My\Space\Class1', 'My\Space\Class2'), array_keys($elements));
-        $this->assertSame(array($classDescriptor1, $classDescriptor2), array_values($elements));
+        $this->assertSame(['My\Space\Class1', 'My\Space\Class2'], array_keys($elements));
+        $this->assertSame([$classDescriptor1, $classDescriptor2], array_values($elements));
 
         $elements = $this->project->getIndexes()->get('classes')->getAll();
         $this->assertCount(2, $elements);
-        $this->assertSame(array('My\Space\Class1', 'My\Space\Class2'), array_keys($elements));
-        $this->assertSame(array($classDescriptor1, $classDescriptor2), array_values($elements));
+        $this->assertSame(['My\Space\Class1', 'My\Space\Class2'], array_keys($elements));
+        $this->assertSame([$classDescriptor1, $classDescriptor2], array_values($elements));
     }
 
     /**
@@ -104,13 +104,13 @@ class ElementsIndexBuilderTest extends \PHPUnit_Framework_TestCase
 
         $elements = $this->project->getIndexes()->get('elements')->getAll();
         $this->assertCount(2, $elements);
-        $this->assertSame(array('My\Space\Interface1', 'My\Space\Interface2'), array_keys($elements));
-        $this->assertSame(array($interfaceDescriptor1, $interfaceDescriptor2), array_values($elements));
+        $this->assertSame(['My\Space\Interface1', 'My\Space\Interface2'], array_keys($elements));
+        $this->assertSame([$interfaceDescriptor1, $interfaceDescriptor2], array_values($elements));
 
         $elements = $this->project->getIndexes()->get('interfaces')->getAll();
         $this->assertCount(2, $elements);
-        $this->assertSame(array('My\Space\Interface1', 'My\Space\Interface2'), array_keys($elements));
-        $this->assertSame(array($interfaceDescriptor1, $interfaceDescriptor2), array_values($elements));
+        $this->assertSame(['My\Space\Interface1', 'My\Space\Interface2'], array_keys($elements));
+        $this->assertSame([$interfaceDescriptor1, $interfaceDescriptor2], array_values($elements));
     }
 
     /**
@@ -134,13 +134,13 @@ class ElementsIndexBuilderTest extends \PHPUnit_Framework_TestCase
 
         $elements = $this->project->getIndexes()->get('elements')->getAll();
         $this->assertCount(2, $elements);
-        $this->assertSame(array('My\Space\Trait1', 'My\Space\Trait2'), array_keys($elements));
-        $this->assertSame(array($traitDescriptor1, $traitDescriptor2), array_values($elements));
+        $this->assertSame(['My\Space\Trait1', 'My\Space\Trait2'], array_keys($elements));
+        $this->assertSame([$traitDescriptor1, $traitDescriptor2], array_values($elements));
 
         $elements = $this->project->getIndexes()->get('traits')->getAll();
         $this->assertCount(2, $elements);
-        $this->assertSame(array('My\Space\Trait1', 'My\Space\Trait2'), array_keys($elements));
-        $this->assertSame(array($traitDescriptor1, $traitDescriptor2), array_values($elements));
+        $this->assertSame(['My\Space\Trait1', 'My\Space\Trait2'], array_keys($elements));
+        $this->assertSame([$traitDescriptor1, $traitDescriptor2], array_values($elements));
     }
 
     /**
@@ -164,13 +164,13 @@ class ElementsIndexBuilderTest extends \PHPUnit_Framework_TestCase
 
         $elements = $this->project->getIndexes()->get('elements')->getAll();
         $this->assertCount(2, $elements);
-        $this->assertSame(array('function1', 'function2'), array_keys($elements));
-        $this->assertSame(array($functionDescriptor1, $functionDescriptor2), array_values($elements));
+        $this->assertSame(['function1', 'function2'], array_keys($elements));
+        $this->assertSame([$functionDescriptor1, $functionDescriptor2], array_values($elements));
 
         $elements = $this->project->getIndexes()->get('functions')->getAll();
         $this->assertCount(2, $elements);
-        $this->assertSame(array('function1', 'function2'), array_keys($elements));
-        $this->assertSame(array($functionDescriptor1, $functionDescriptor2), array_values($elements));
+        $this->assertSame(['function1', 'function2'], array_keys($elements));
+        $this->assertSame([$functionDescriptor1, $functionDescriptor2], array_values($elements));
     }
 
     /**
@@ -194,13 +194,13 @@ class ElementsIndexBuilderTest extends \PHPUnit_Framework_TestCase
 
         $elements = $this->project->getIndexes()->get('elements')->getAll();
         $this->assertCount(2, $elements);
-        $this->assertSame(array('CONSTANT1', 'CONSTANT2'), array_keys($elements));
-        $this->assertSame(array($constantDescriptor1, $constantDescriptor2), array_values($elements));
+        $this->assertSame(['CONSTANT1', 'CONSTANT2'], array_keys($elements));
+        $this->assertSame([$constantDescriptor1, $constantDescriptor2], array_values($elements));
 
         $elements = $this->project->getIndexes()->get('constants')->getAll();
         $this->assertCount(2, $elements);
-        $this->assertSame(array('CONSTANT1', 'CONSTANT2'), array_keys($elements));
-        $this->assertSame(array($constantDescriptor1, $constantDescriptor2), array_values($elements));
+        $this->assertSame(['CONSTANT1', 'CONSTANT2'], array_keys($elements));
+        $this->assertSame([$constantDescriptor1, $constantDescriptor2], array_values($elements));
     }
 
     /**
@@ -234,11 +234,11 @@ class ElementsIndexBuilderTest extends \PHPUnit_Framework_TestCase
         $elements = $this->project->getIndexes()->get('elements')->getAll();
         $this->assertCount(4, $elements);
         $this->assertSame(
-            array('My\Space\Class1', 'My\Space\Class1::CONSTANT', 'My\Space\Class2', 'My\Space\Class2::CONSTANT'),
+            ['My\Space\Class1', 'My\Space\Class1::CONSTANT', 'My\Space\Class2', 'My\Space\Class2::CONSTANT'],
             array_keys($elements)
         );
         $this->assertSame(
-            array($classDescriptor1, $classConstantDescriptor1, $classDescriptor2, $classConstantDescriptor2),
+            [$classDescriptor1, $classConstantDescriptor1, $classDescriptor2, $classConstantDescriptor2],
             array_values($elements)
         );
 
@@ -278,11 +278,11 @@ class ElementsIndexBuilderTest extends \PHPUnit_Framework_TestCase
         $elements = $this->project->getIndexes()->get('elements')->getAll();
         $this->assertCount(4, $elements);
         $this->assertSame(
-            array('My\Space\Class1', 'My\Space\Class1::$property', 'My\Space\Class2', 'My\Space\Class2::$property'),
+            ['My\Space\Class1', 'My\Space\Class1::$property', 'My\Space\Class2', 'My\Space\Class2::$property'],
             array_keys($elements)
         );
         $this->assertSame(
-            array($classDescriptor1, $classPropertyDescriptor1, $classDescriptor2, $classPropertyDescriptor2),
+            [$classDescriptor1, $classPropertyDescriptor1, $classDescriptor2, $classPropertyDescriptor2],
             array_values($elements)
         );
 
@@ -321,11 +321,11 @@ class ElementsIndexBuilderTest extends \PHPUnit_Framework_TestCase
         $elements = $this->project->getIndexes()->get('elements')->getAll();
         $this->assertCount(4, $elements);
         $this->assertSame(
-            array('My\Space\Class1', 'My\Space\Class1::METHOD', 'My\Space\Class2', 'My\Space\Class2::METHOD'),
+            ['My\Space\Class1', 'My\Space\Class1::METHOD', 'My\Space\Class2', 'My\Space\Class2::METHOD'],
             array_keys($elements)
         );
         $this->assertSame(
-            array($classDescriptor1, $classMethodDescriptor1, $classDescriptor2, $classMethodDescriptor2),
+            [$classDescriptor1, $classMethodDescriptor1, $classDescriptor2, $classMethodDescriptor2],
             array_values($elements)
         );
 

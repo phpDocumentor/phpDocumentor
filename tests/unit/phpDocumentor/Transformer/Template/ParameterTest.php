@@ -4,7 +4,7 @@
  *
  * PHP Version 5.3
  *
- * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -14,7 +14,7 @@ namespace phpDocumentor\Transformer\Template;
 /**
  * Tests the functionality for the Parameter class.
  */
-class ParameterTest extends \PHPUnit_Framework_TestCase
+class ParameterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var Parameter $fixture */
     protected $fixture;
@@ -33,7 +33,7 @@ class ParameterTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetAndGetKey()
     {
-        $this->assertSame(null, $this->fixture->getKey());
+        $this->assertNull($this->fixture->getKey());
 
         $this->fixture->setKey('key');
 
@@ -46,7 +46,7 @@ class ParameterTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetAndGetValue()
     {
-        $this->assertSame(null, $this->fixture->getValue());
+        $this->assertNull($this->fixture->getValue());
 
         $this->fixture->setValue('value');
 

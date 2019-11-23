@@ -4,7 +4,7 @@
  *
  * PHP Version 5.3
  *
- * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -13,7 +13,7 @@ namespace phpDocumentor\Transformer\Router;
 
 use Mockery as m;
 
-class ForFileProxyTest extends \PHPUnit_Framework_TestCase
+class ForFileProxyTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var Rule|m\MockInterface */
     private $ruleMock;
@@ -24,7 +24,7 @@ class ForFileProxyTest extends \PHPUnit_Framework_TestCase
     /**
      * Initializes the fixture with mocked dependencies.
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->ruleMock = m::mock('phpDocumentor\Transformer\Router\Rule');
         $this->fixture = new ForFileProxy($this->ruleMock);

@@ -61,7 +61,7 @@
                         <a id="method_{{ method.name }}"></a>
                         <div class="element clickable method {{ method.visibility }} {{ method.deprecated ? 'deprecated' }} method_{{ method.name }}{{ method.parent.name != node.name ? ' inherited' : '' }}" data-toggle="collapse" data-target=".method_{{ method.name }} .collapse">
                             <h2>{{ method.summary ?: method.name }}</h2>
-                            <pre>{{ method.name }}({% for argument in method.arguments %}{{ argument.types ? argument.types|join('|')~' ' }}{{ argument.byReference ? '&' }}{{ argument.name }}{{ argument.default ? ' = '~argument.default }}{% if not loop.last %}, {% endif %}{% endfor %}) {{ method.response.types ? ': '~method.response.types|join('|') }}</pre>
+                            <pre>{{ method.name }}({% for argument in method.arguments %}{{ argument.type ? argument.type }}{{ argument.byReference ? '&' }}{{ argument.name }}{{ argument.default is not null ? ' = '~argument.default }}{% if not loop.last %}, {% endif %}{% endfor %}) {{ method.response.type ? ': '~method.response.type }}</pre>
                             <div class="labels">
                                 {% if method.parent.name != node.name %}<span class="label">inherited</span>{% endif %}
                                 {% if method.static %}<span class="label">static</span>{% endif %}
@@ -115,7 +115,7 @@
                             <a id="property_{{ property.name }}"> </a>
                             <div class="element clickable property {{ property.deprecated ? 'deprecated' }} {{ property.visibility }} property_{{ property.name }}{{ property.parent.name != node.name ? ' inherited' : '' }}" data-toggle="collapse" data-target=".property_{{ property.name }} .collapse">
                                 <h2>{{ property.summary ?: property.var.0.description ?: property.name }}</h2>
-                                <pre>{{ property.name }} : {{ property.types|join('|') }}</pre>
+                                <pre>{{ property.name }} : {{ property.type }}</pre>
                                 <div class="labels">
                                     {% if property.parent.name != node.name %}<span class="label">inherited</span>{% endif %}
                                     {% if property.static %}<span class="label">static</span>{% endif %}
@@ -139,9 +139,9 @@
                                             {% endfor %}
                                         </table>
 
-                                        {% if property.types and property.types|join() != 'void' %}
+                                        {% if property.type and property.type != 'void' %}
                                             <h3>Type(s)</h3>
-                                            <code>{{ property.types|route|join('|')|raw }}</code>
+                                            <code>{{ property.type|route|join('|')|raw }}</code>
                                         {% endif %}
                                     </div>
                                 </div>

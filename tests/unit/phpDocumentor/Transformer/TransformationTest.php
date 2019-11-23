@@ -5,7 +5,7 @@
  * PHP Version 5.3
  *
  * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -18,7 +18,7 @@ use phpDocumentor\Transformer\Template\Parameter;
 /**
  * Test class for phpDocumentor\Transformer\Transformation
  */
-class TransformationTest extends \PHPUnit_Framework_TestCase
+class TransformationTest extends m\Adapter\Phpunit\MockeryTestCase
 {
     /** @var Transformation $fixture */
     protected $fixture;
@@ -38,17 +38,17 @@ class TransformationTest extends \PHPUnit_Framework_TestCase
     /**
      * Initializes the fixture and dependencies for this testcase.
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->fixture = new Transformation($this->query, $this->writer, $this->source, $this->artifact);
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Transformation::__construct
-     * @covers phpDocumentor\Transformer\Transformation::setQuery
-     * @covers phpDocumentor\Transformer\Transformation::setWriter
-     * @covers phpDocumentor\Transformer\Transformation::setSource
-     * @covers phpDocumentor\Transformer\Transformation::setArtifact
+     * @covers \phpDocumentor\Transformer\Transformation::__construct
+     * @covers \phpDocumentor\Transformer\Transformation::setQuery
+     * @covers \phpDocumentor\Transformer\Transformation::setWriter
+     * @covers \phpDocumentor\Transformer\Transformation::setSource
+     * @covers \phpDocumentor\Transformer\Transformation::setArtifact
      */
     public function testIfDependenciesAreCorrectlyRegisteredOnInitialization()
     {
@@ -59,7 +59,7 @@ class TransformationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Transformation::getQuery
+     * @covers \phpDocumentor\Transformer\Transformation::getQuery
      */
     public function testGetQuery()
     {
@@ -67,7 +67,7 @@ class TransformationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Transformation::getWriter
+     * @covers \phpDocumentor\Transformer\Transformation::getWriter
      */
     public function testGetWriter()
     {
@@ -75,7 +75,7 @@ class TransformationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Transformation::getSource
+     * @covers \phpDocumentor\Transformer\Transformation::getSource
      */
     public function testGetSource()
     {
@@ -83,7 +83,7 @@ class TransformationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Transformation::getArtifact
+     * @covers \phpDocumentor\Transformer\Transformation::getArtifact
      */
     public function testGetArtifact()
     {
@@ -91,12 +91,12 @@ class TransformationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Transformation::getParameters
-     * @covers phpDocumentor\Transformer\Transformation::setParameters
+     * @covers \phpDocumentor\Transformer\Transformation::getParameters
+     * @covers \phpDocumentor\Transformer\Transformation::setParameters
      */
     public function testSetAndGetParameters()
     {
-        $this->assertSame(array(), $this->fixture->getParameters());
+        $this->assertSame([], $this->fixture->getParameters());
 
         $parameters = $this->givenAParameter();
 
@@ -104,48 +104,48 @@ class TransformationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Transformation::getParameter
+     * @covers \phpDocumentor\Transformer\Transformation::getParameter
      */
     public function testGetParameterWithExistingName()
     {
         $parameters = $this->givenAParameter();
-        $this->assertSame($parameters["firstKey"], $this->fixture->getParameter('name'));
+        $this->assertSame($parameters['firstKey'], $this->fixture->getParameter('name'));
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Transformation::getParameter
+     * @covers \phpDocumentor\Transformer\Transformation::getParameter
      */
     public function testGetParameterWithNonExistingName()
     {
-        $this->assertSame(null, $this->fixture->getParameter('somethingElse'));
+        $this->assertNull($this->fixture->getParameter('somethingElse'));
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Transformation::getParametersWithKey
+     * @covers \phpDocumentor\Transformer\Transformation::getParametersWithKey
      */
     public function testGetParametersWithKeyWithExistingName()
     {
         $parameters = $this->givenAParameter();
-        $this->assertSame(array($parameters["firstKey"]), $this->fixture->getParametersWithKey('name'));
+        $this->assertSame([$parameters['firstKey']], $this->fixture->getParametersWithKey('name'));
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Transformation::getParametersWithKey
+     * @covers \phpDocumentor\Transformer\Transformation::getParametersWithKey
      */
     public function testGetParametersWithKeyWithNonExistingName()
     {
-        $this->assertSame(array(), $this->fixture->getParametersWithKey('somethingElse'));
+        $this->assertSame([], $this->fixture->getParametersWithKey('somethingElse'));
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Transformation::getTransformer
-     * @covers phpDocumentor\Transformer\Transformation::setTransformer
+     * @covers \phpDocumentor\Transformer\Transformation::getTransformer
+     * @covers \phpDocumentor\Transformer\Transformation::setTransformer
      */
     public function testSetAndGetTransformer()
     {
         $transformer = m::mock('phpDocumentor\Transformer\Transformer');
 
-        $this->assertSame(null, $this->fixture->getTransformer());
+        $this->assertNull($this->fixture->getTransformer());
 
         $this->fixture->setTransformer($transformer);
 
@@ -160,7 +160,7 @@ class TransformationTest extends \PHPUnit_Framework_TestCase
     {
         $parameterMock = m::mock('phpDocumentor\Transformer\Template\Parameter');
         $parameterMock->shouldReceive('getKey')->andReturn('name');
-        $parameters = array("firstKey" => $parameterMock);
+        $parameters = ['firstKey' => $parameterMock];
         $this->fixture->setParameters($parameters);
 
         return $parameters;

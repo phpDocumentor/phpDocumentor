@@ -1,10 +1,14 @@
 <?php
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -16,7 +20,7 @@ use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
 /**
  * Represents the entire project with its files, namespaces and indexes.
  */
-class ProjectDescriptor implements Interfaces\ProjectInterface
+class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
 {
     /** @var string $name */
     protected $name = '';
@@ -24,7 +28,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface
     /** @var NamespaceDescriptor $namespace */
     protected $namespace;
 
-    /** @var Collection $files*/
+    /** @var Collection $files */
     protected $files;
 
     /** @var Collection $indexes */
@@ -59,8 +63,6 @@ class ProjectDescriptor implements Interfaces\ProjectInterface
      * Sets the name for this project.
      *
      * @param string $name
-     *
-     * @return void
      */
     public function setName($name)
     {
@@ -78,11 +80,19 @@ class ProjectDescriptor implements Interfaces\ProjectInterface
     }
 
     /**
+     * Returns the description for this element.
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return '';
+    }
+
+    /**
      * Sets all files on this project.
      *
      * @param Collection $files
-     *
-     * @return void
      */
     public function setFiles($files)
     {
@@ -105,10 +115,6 @@ class ProjectDescriptor implements Interfaces\ProjectInterface
      * An index is a compilation of references to elements, usually constructed in a compiler step, that aids template
      * generation by providing a conveniently assembled list. An example of such an index is the 'marker' index where
      * a list of TODOs and FIXMEs are located in a central location for reporting.
-     *
-     * @param Collection $indexes
-     *
-     * @return void
      */
     public function setIndexes(Collection $indexes)
     {
@@ -131,8 +137,6 @@ class ProjectDescriptor implements Interfaces\ProjectInterface
      * Sets the root namespace for this project together with all sub-namespaces.
      *
      * @param NamespaceDescriptor $namespace
-     *
-     * @return void
      */
     public function setNamespace($namespace)
     {
@@ -153,8 +157,6 @@ class ProjectDescriptor implements Interfaces\ProjectInterface
      * Sets the settings used to build the documentation for this project.
      *
      * @param Settings $settings
-     *
-     * @return void
      */
     public function setSettings($settings)
     {
@@ -176,10 +178,6 @@ class ProjectDescriptor implements Interfaces\ProjectInterface
      *
      * Partials are blocks of text that can be inserted anywhere in a template using a special indicator. An example is
      * the introduction partial that can add a custom piece of text to the homepage.
-     *
-     * @param Collection $partials
-     *
-     * @return void
      */
     public function setPartials(Collection $partials)
     {
@@ -207,7 +205,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface
      *
      * @return boolean
      */
-    public function isVisibilityAllowed($visibility)
+    public function isVisibilityAllowed(int $visibility)
     {
         $visibilityAllowed = $this->getSettings()
             ? $this->getSettings()->getVisibility()

@@ -4,7 +4,7 @@
  *
  * PHP Version 5.3
  *
- * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -13,18 +13,18 @@ namespace phpDocumentor\Transformer\Template;
 
 use org\bovigo\vfs\vfsStream;
 
-class PathResolverTest extends \PHPUnit_Framework_TestCase
+class PathResolverTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var string */
     protected $templatePath = 'vfs://root/templatePath';
-    
+
     /** @var PathResolver */
     protected $fixture;
 
     /**
      * Sets up the fixture with mocked dependency.
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->fixture = new PathResolver($this->templatePath);
     }
@@ -36,24 +36,24 @@ class PathResolverTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertAttributeSame($this->templatePath, 'templatePath', $this->fixture);
     }
-    
+
     /**
      * @expectedException \InvalidArgumentException
      * @covers phpDocumentor\Transformer\Template\PathResolver::resolve
      */
     public function testResolveWithInvalidAbsolutePath()
     {
-        $this->givenAVirtualFileSystem(array());
+        $this->givenAVirtualFileSystem([]);
         $this->fixture->resolve('vfs://root/myFolder/myTemplate');
     }
-    
+
     /**
      * @expectedException \InvalidArgumentException
      * @covers phpDocumentor\Transformer\Template\PathResolver::resolve
      */
     public function testResolveWithInvalidName()
     {
-        $this->givenAVirtualFileSystem(array());
+        $this->givenAVirtualFileSystem([]);
         $this->fixture->resolve('invalidName');
     }
 
@@ -62,7 +62,7 @@ class PathResolverTest extends \PHPUnit_Framework_TestCase
      */
     public function testResolveWithValidAbsolutePath()
     {
-        $this->givenAVirtualFileSystem(array('template.xml' => 'xml'));
+        $this->givenAVirtualFileSystem(['template.xml' => 'xml']);
         $this->assertSame(
             vfsStream::url('root/templatePath') . DIRECTORY_SEPARATOR . 'myTemplate',
             $this->fixture->resolve('vfs://root/myFolder/myTemplate')
@@ -74,7 +74,7 @@ class PathResolverTest extends \PHPUnit_Framework_TestCase
      */
     public function testResolveWithValidName()
     {
-        $this->givenAVirtualFileSystem(array());
+        $this->givenAVirtualFileSystem([]);
         $this->assertSame(
             vfsStream::url('root/templatePath') . DIRECTORY_SEPARATOR . 'Clean',
             $this->fixture->resolve('Clean')
@@ -98,16 +98,16 @@ class PathResolverTest extends \PHPUnit_Framework_TestCase
      */
     private function givenAVirtualFileSystem($template)
     {
-        $structure = array(
-            'templatePath' => array(
-                'Clean' => array(
-                    'template.xml' => 'xml'
-                    )
-                ),
-            'myFolder' => array(
-                'myTemplate' => $template
-            )
-        );
+        $structure = [
+            'templatePath' => [
+                'Clean' => [
+                    'template.xml' => 'xml',
+                ],
+            ],
+            'myFolder' => [
+                'myTemplate' => $template,
+            ],
+        ];
         vfsStream::setup('root');
         vfsStream::create($structure);
     }

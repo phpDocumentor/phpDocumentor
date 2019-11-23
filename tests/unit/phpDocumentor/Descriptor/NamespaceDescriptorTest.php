@@ -4,7 +4,7 @@
  *
  * PHP Version 5.3
  *
- * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -14,7 +14,7 @@ namespace phpDocumentor\Descriptor;
 /**
  * Tests the functionality for the NamespaceDescriptor class.
  */
-class NamespaceDescriptorTest extends \PHPUnit_Framework_TestCase
+class NamespaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var NamespaceDescriptor $fixture */
     protected $fixture;
@@ -36,7 +36,7 @@ class NamespaceDescriptorTest extends \PHPUnit_Framework_TestCase
     {
         $parent = new NamespaceDescriptor();
 
-        $this->assertSame(null, $this->fixture->getParent());
+        $this->assertNull($this->fixture->getParent());
 
         $this->fixture->setParent($parent);
 

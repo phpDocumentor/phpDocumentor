@@ -4,7 +4,7 @@
  *
  * PHP Version 5.3
  *
- * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -13,8 +13,11 @@ namespace phpDocumentor\Transformer\Router;
 
 use Mockery as m;
 use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Reflection\DocBlock\Tags\Reference\Fqsen;
+use phpDocumentor\Reflection\DocBlock\Tags\Reference\Url;
+use phpDocumentor\Reflection\Fqsen as RealFqsen;
 
-class StandardRouterTest extends \PHPUnit_Framework_TestCase
+class StandardRouterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var StandardRouter */
     private $fixture;
@@ -25,7 +28,7 @@ class StandardRouterTest extends \PHPUnit_Framework_TestCase
     /**
      * Sets up the fixture.
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->elementCollection = new Collection();
 
@@ -65,6 +68,50 @@ class StandardRouterTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers phpDocumentor\Transformer\Router\StandardRouter::configure
+     * @covers phpDocumentor\Transformer\Router\RouterAbstract::__construct
+     * @covers phpDocumentor\Transformer\Router\RouterAbstract::configure
+     * @covers phpDocumentor\Transformer\Router\RouterAbstract::match
+     */
+    public function testIfARouteForAFqsenFileCanBeGenerated()
+    {
+        // Arrange
+        $fqsen = new RealFqsen('\Fqsen');
+        $file = new Fqsen($fqsen);
+
+        // Act
+        $rule = $this->fixture->match($file);
+
+        // Assert
+        $this->assertInstanceOf('phpDocumentor\\Transformer\\Router\\Rule', $rule);
+        $this->assertAttributeInstanceOf(
+            '\phpDocumentor\\Transformer\\Router\\UrlGenerator\\Standard\\FqsenDescriptor',
+            'generator',
+            $rule
+        );
+    }
+
+    /**
+     * @covers phpDocumentor\Transformer\Router\StandardRouter::configure
+     * @covers phpDocumentor\Transformer\Router\RouterAbstract::__construct
+     * @covers phpDocumentor\Transformer\Router\RouterAbstract::configure
+     * @covers phpDocumentor\Transformer\Router\RouterAbstract::match
+     */
+    public function testIfARouteForAUrlCanBeGenerated()
+    {
+        // Arrange
+        $file = new Url('http://www.phpdoc.org');
+
+        // Act
+        $rule = $this->fixture->match($file);
+        $result = $rule->generate($file);
+
+        // Assert
+        $this->assertInstanceOf('phpDocumentor\\Transformer\\Router\\Rule', $rule);
+        $this->assertSame('http://www.phpdoc.org', $result);
+    }
+
+    /**
+     * @covers phpDocumentor\Transformer\Router\StandardRouter::configure
      * @covers phpDocumentor\Transformer\Router\StandardRouter::__construct
      * @covers phpDocumentor\Transformer\Router\RouterAbstract::__construct
      * @covers phpDocumentor\Transformer\Router\RouterAbstract::configure
@@ -73,7 +120,7 @@ class StandardRouterTest extends \PHPUnit_Framework_TestCase
     public function testIfARouteForAFqsenCanBeGenerated()
     {
         // Arrange
-        $fqsen                           = '\My\ClassName::myMethod()';
+        $fqsen = '\My\ClassName::myMethod()';
         $this->elementCollection[$fqsen] = m::mock('phpDocumentor\Descriptor\MethodDescriptor');
 
         // Act
@@ -103,17 +150,17 @@ class StandardRouterTest extends \PHPUnit_Framework_TestCase
      */
     public function provideDescriptorNames()
     {
-        return array(
-            array('FileDescriptor'),
-            array('NamespaceDescriptor'),
-            array('PackageDescriptor'),
-            array('ClassDescriptor'),
-            array('InterfaceDescriptor', 'ClassDescriptor'),
-            array('TraitDescriptor', 'ClassDescriptor'),
-            array('MethodDescriptor'),
-            array('FunctionDescriptor'),
-            array('PropertyDescriptor'),
-            array('ConstantDescriptor'),
-        );
+        return [
+            ['FileDescriptor'],
+            ['NamespaceDescriptor'],
+            ['PackageDescriptor'],
+            ['ClassDescriptor'],
+            ['InterfaceDescriptor', 'ClassDescriptor'],
+            ['TraitDescriptor', 'ClassDescriptor'],
+            ['MethodDescriptor'],
+            ['FunctionDescriptor'],
+            ['PropertyDescriptor'],
+            ['ConstantDescriptor'],
+        ];
     }
 }

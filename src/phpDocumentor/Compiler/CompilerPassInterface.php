@@ -1,10 +1,14 @@
 <?php
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -23,10 +27,8 @@ interface CompilerPassInterface
      *
      * Please note that the command line will be truncated to 68 characters (<message> .. 000.000s) so longer
      * descriptions won't have much use.
-     *
-     * @return string
      */
-    public function getDescription();
+    public function getDescription(): string;
 
     /**
      * Executes a compiler pass.
@@ -35,8 +37,6 @@ interface CompilerPassInterface
      * or consumer the Object Graph using the ProjectDescriptor object.
      *
      * @param ProjectDescriptor $project Representation of the Object Graph that can be manipulated.
-     *
-     * @return mixed
      */
-    public function execute(ProjectDescriptor $project);
+    public function execute(ProjectDescriptor $project): void;
 }

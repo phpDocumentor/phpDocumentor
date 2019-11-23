@@ -1,20 +1,24 @@
 <?php
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Compiler\Pass;
 
-use Psr\Log\LoggerInterface;
 use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\ProjectAnalyzer;
 use phpDocumentor\Descriptor\ProjectDescriptor;
+use Psr\Log\LoggerInterface;
 
 /**
  * This class is responsible for sending statistical information to the log.
@@ -34,32 +38,19 @@ class Debug implements CompilerPassInterface
 
     /**
      * Registers the logger with this Compiler Pass.
-     *
-     * @param LoggerInterface $log
-     * @param ProjectAnalyzer $analyzer
      */
     public function __construct(LoggerInterface $log, ProjectAnalyzer $analyzer)
     {
-        $this->log      = $log;
+        $this->log = $log;
         $this->analyzer = $analyzer;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getDescription()
+    public function getDescription(): string
     {
         return 'Analyze results and write report to log';
     }
 
-    /**
-     * Analyzes the given project and returns the results to the logger.
-     *
-     * @param ProjectDescriptor $project
-     *
-     * @return void
-     */
-    public function execute(ProjectDescriptor $project)
+    public function execute(ProjectDescriptor $project): void
     {
         $this->analyzer->analyze($project);
         $this->log->debug((string) $this->analyzer);

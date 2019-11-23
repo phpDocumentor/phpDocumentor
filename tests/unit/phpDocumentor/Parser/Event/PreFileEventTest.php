@@ -4,7 +4,7 @@
  *
  * PHP Version 5.3
  *
- * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -14,7 +14,7 @@ namespace phpDocumentor\Parser\Event;
 /**
  * Test for the PreFileEvent class.
  */
-class PreFileEventTest extends \PHPUnit_Framework_TestCase
+class PreFileEventTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var PreFileEvent $fixture */
     protected $fixture;

@@ -1,10 +1,14 @@
 <?php
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -21,9 +25,6 @@ use phpDocumentor\Descriptor\Collection;
  */
 interface ClassInterface extends ElementInterface, ChildInterface, TypeInterface
 {
-    /**
-     * @return void
-     */
     public function setInterfaces(Collection $interfaces);
 
     /**
@@ -31,23 +32,14 @@ interface ClassInterface extends ElementInterface, ChildInterface, TypeInterface
      */
     public function getInterfaces();
 
-    /**
-     * @return void
-     */
     public function setFinal($final);
 
     public function isFinal();
 
-    /**
-     * @return void
-     */
     public function setAbstract($abstract);
 
     public function isAbstract();
 
-    /**
-     * @return void
-     */
     public function setConstants(Collection $constants);
 
     /**
@@ -55,9 +47,6 @@ interface ClassInterface extends ElementInterface, ChildInterface, TypeInterface
      */
     public function getConstants();
 
-    /**
-     * @return void
-     */
     public function setMethods(Collection $methods);
 
     /**
@@ -70,9 +59,6 @@ interface ClassInterface extends ElementInterface, ChildInterface, TypeInterface
      */
     public function getInheritedMethods();
 
-    /**
-     * @return void
-     */
     public function setProperties(Collection $properties);
 
     /**

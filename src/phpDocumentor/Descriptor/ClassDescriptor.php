@@ -1,15 +1,21 @@
 <?php
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor;
+
+use phpDocumentor\Descriptor\Tag\BaseTypes\TypedVariableAbstract;
 
 /**
  * Descriptor representing a Class.
@@ -38,7 +44,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     protected $methods;
 
     /** @var Collection $usedTraits References to traits consumed by this class */
-    protected $usedTraits = array();
+    protected $usedTraits;
 
     /**
      * Initializes the all properties representing a collection with a new Collection object.
@@ -139,7 +145,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
      */
     public function getInheritedConstants()
     {
-        if (!$this->getParent() || (!$this->getParent() instanceof ClassDescriptor)) {
+        if (!$this->getParent() || (!$this->getParent() instanceof self)) {
             return new Collection();
         }
 
@@ -179,7 +185,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
             $inheritedMethods = $inheritedMethods->merge(clone $trait->getMethods());
         }
 
-        if (!$this->getParent() || (!$this->getParent() instanceof ClassDescriptor)) {
+        if (!$this->getParent() || (!$this->getParent() instanceof self)) {
             return $inheritedMethods;
         }
 
@@ -254,7 +260,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
             $inheritedProperties = $inheritedProperties->merge(clone $trait->getProperties());
         }
 
-        if (!$this->getParent() || (!$this->getParent() instanceof ClassDescriptor)) {
+        if (!$this->getParent() || (!$this->getParent() instanceof self)) {
             return $inheritedProperties;
         }
 
@@ -277,16 +283,19 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
 
         /** @var Tag\PropertyDescriptor $propertyTag */
         foreach ($propertyTags as $propertyTag) {
+            if (! $propertyTag instanceof TypedVariableAbstract) {
+                continue;
+            }
             $property = new PropertyDescriptor();
             $property->setName(ltrim($propertyTag->getVariableName(), '$'));
             $property->setDescription($propertyTag->getDescription());
-            $property->setTypes($propertyTag->getTypes());
+            $property->setType($propertyTag->getType());
             $property->setParent($this);
 
             $properties->add($property);
         }
 
-        if ($this->getParent() instanceof ClassDescriptor) {
+        if ($this->getParent() instanceof self) {
             $properties = $properties->merge($this->getParent()->getMagicProperties());
         }
 
@@ -294,7 +303,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     }
 
     /**
-     * @param string $package
+     * @param PackageDescriptor $package
      */
     public function setPackage($package)
     {
@@ -326,8 +335,6 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
      * Sets a collection of all traits used by this class.
      *
      * @param Collection $usedTraits
-     *
-     * @return void
      */
     public function setUsedTraits($usedTraits)
     {

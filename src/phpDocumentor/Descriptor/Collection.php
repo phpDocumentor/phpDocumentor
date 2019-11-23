@@ -1,10 +1,14 @@
 <?php
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -20,14 +24,14 @@ namespace phpDocumentor\Descriptor;
 class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
 {
     /** @var mixed[] $items */
-    protected $items = array();
+    protected $items = [];
 
     /**
      * Constructs a new collection object with optionally a series of items, generally Descriptors.
      *
      * @param DescriptorAbstract[]|mixed[] $items
      */
-    public function __construct($items = array())
+    public function __construct($items = [])
     {
         $this->items = $items;
     }
@@ -36,8 +40,6 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
      * Adds a new item to this collection, generally a Descriptor.
      *
      * @param DescriptorAbstract|mixed $item
-     *
-     * @return void
      */
     public function add($item)
     {
@@ -49,8 +51,6 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
      *
      * @param string|integer                $index An index value to recognize this item with.
      * @param DescriptorAbstract|mixed|null $item  The item to store, generally a Descriptor but may be something else.
-     *
-     * @return void
      */
     public function set($index, $item)
     {
@@ -91,7 +91,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
     /**
      * Retrieves an iterator to traverse this object.
      *
-     * @return \Traversable|\ArrayIterator
+     * @return \ArrayIterator
      */
     public function getIterator()
     {
@@ -110,12 +110,10 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
 
     /**
      * Empties the collection.
-     *
-     * @return void
      */
     public function clear()
     {
-        $this->items = array();
+        $this->items = [];
     }
 
     /**
@@ -161,8 +159,6 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
      * @param mixed          $value  The value to set.
      *
      * @throws \InvalidArgumentException if the key is null or an empty string.
-     *
-     * @return void
      */
     public function offsetSet($offset, $value)
     {
@@ -177,8 +173,6 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
      * Removes an item with the given index from the collection.
      *
      * @param string|integer $offset The offset to unset.
-     *
-     * @return void
      */
     public function offsetUnset($offset)
     {
@@ -188,12 +182,10 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
     /**
      * Returns a new collection with the items from this collection and the provided combined.
      *
-     * @param Collection $collection
-     *
      * @return Collection
      */
-    public function merge(Collection $collection)
+    public function merge(self $collection)
     {
-        return new Collection(array_merge($this->items, $collection->getAll()));
+        return new self(array_merge($this->items, $collection->getAll()));
     }
 }

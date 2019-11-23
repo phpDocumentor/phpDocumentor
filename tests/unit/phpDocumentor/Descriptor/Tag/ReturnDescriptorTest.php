@@ -4,19 +4,19 @@
  *
  * PHP Version 5.3
  *
- * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor\Tag;
 
-use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Reflection\Types\Array_;
 
 /**
  * Tests the functionality for the ReturnDescriptor class.
  */
-class ReturnDescriptorTest extends \PHPUnit_Framework_TestCase
+class ReturnDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var ReturnDescriptor $fixture */
     protected $fixture;
@@ -30,18 +30,17 @@ class ReturnDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Tag\BaseTypes\TypedAbstract::setTypes
-     * @covers phpDocumentor\Descriptor\Tag\BaseTypes\TypedAbstract::getTypes
+     * @covers \phpDocumentor\Descriptor\Tag\BaseTypes\TypedAbstract::setTypes
+     * @covers \phpDocumentor\Descriptor\Tag\BaseTypes\TypedAbstract::getTypes
      */
     public function testSetAndGetTypes()
     {
-        $expected = new Collection(array('a' => 'b'));
-        $this->assertEmpty($this->fixture->getTypes());
+        $expected = new Array_();
+        $this->assertNull($this->fixture->getType());
 
-        $this->fixture->setTypes($expected);
-        $result = $this->fixture->getTypes();
+        $this->fixture->setType($expected);
+        $result = $this->fixture->getType();
 
         $this->assertEquals($expected, $result);
-
     }
 }

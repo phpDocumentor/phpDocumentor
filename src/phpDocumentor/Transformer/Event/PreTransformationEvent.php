@@ -1,10 +1,15 @@
 <?php
+
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -12,56 +17,29 @@
 namespace phpDocumentor\Transformer\Event;
 
 use phpDocumentor\Event\EventAbstract;
+use phpDocumentor\Transformer\Transformation;
 
 /**
  * Event happening prior to each individual transformation.
  */
 class PreTransformationEvent extends EventAbstract
 {
-    /** @var \DOMDocument remembers the XML-based AST so that it can be used from the listener */
-    protected $source;
-
+    /** @var Transformation */
     protected $transformation;
 
-    /**
-     * Sets the Abstract Syntax Tree as DOMDocument.
-     *
-     * @param \DOMDocument $source
-     *
-     * @return PreTransformationEvent
-     */
-    public function setSource($source)
+    public function __construct($subject, Transformation $transformation)
     {
-        $this->source = $source;
-
-        return $this;
+        parent::__construct($subject);
+        $this->transformation = $transformation;
     }
 
-    /**
-     * Returns the Abstract Syntax Tree as DOMDocument.
-     *
-     * @return \DOMDocument
-     */
-    public function getSource()
+    public static function create($subject, Transformation $transformation)
     {
-        return $this->source;
+        return new static($subject, $transformation);
     }
 
-    /**
-     * @return mixed
-     */
-    public function getTransformation()
+    public function getTransformation(): Transformation
     {
         return $this->transformation;
-    }
-
-    /**
-     * @param mixed $transformation
-     */
-    public function setTransformation($transformation)
-    {
-        $this->transformation = $transformation;
-
-        return $this;
     }
 }

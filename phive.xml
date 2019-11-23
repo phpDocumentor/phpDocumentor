@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phive xmlns="https://phar.io/phive">
+  <phar name="phpunit" version="^6.0.0" installed="6.5.5" location="./tools/phpunit" copy="true"/>
+  <phar name="composer-require-checker" version="^1.0.0" installed="1.0.0" location="./tools/composer-require-checker" copy="true"/>
+</phive>

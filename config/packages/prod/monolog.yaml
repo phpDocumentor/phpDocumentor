@@ -1,0 +1,16 @@
+monolog:
+    handlers:
+        main:
+            type: console
+            action_level: error
+            handler: console
+            excluded_404s:
+                # regex: exclude all 404 errors from the logs
+                - ^/
+        console:
+            type:   console
+            process_psr_3_messages: false
+            channels: ["!event", "!doctrine"]
+            verbosity_levels:
+               VERBOSITY_NORMAL: INFO
+               VERBOSITY_VERBOSE: INFO

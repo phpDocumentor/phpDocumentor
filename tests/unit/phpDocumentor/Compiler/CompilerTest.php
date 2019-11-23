@@ -4,7 +4,7 @@
  *
  * PHP Version 5.3
  *
- * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -14,7 +14,7 @@ namespace phpDocumentor\Compiler;
 /**
  * Tests the functionality for the Compiler.
  */
-class CompilerTest extends \PHPUnit_Framework_TestCase
+class CompilerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var Compiler $fixture */
     protected $fixture;

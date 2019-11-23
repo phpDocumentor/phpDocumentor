@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ This file is part of phpDocumentor.
+  ~
+  ~  For the full copyright and license information, please view the LICENSE
+  ~  file that was distributed with this source code.
+  ~
+  ~  @copyright 2010-2017 Mike van Riel<mike@phpdoc.org>
+  ~  @license   http://www.opensource.org/licenses/mit-license.php MIT
+  ~  @link      http://phpdoc.org
+  -->
+
+<xs:schema
+        targetNamespace="http://www.phpdoc.org"
+        attributeFormDefault="unqualified"
+        elementFormDefault="qualified"
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:pd="http://www.phpdoc.org"
+        version="3.0"
+>
+    <xs:simpleType name="dsn"><xs:restriction base="xs:string"/></xs:simpleType>
+    <xs:simpleType name="version"><xs:restriction base="xs:string"/></xs:simpleType>
+    <xs:simpleType name="path"><xs:restriction base="xs:string"/></xs:simpleType>
+    <xs:simpleType name="visibility">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="public"/>
+            <xs:enumeration value="protected"/>
+            <xs:enumeration value="private"/>
+            <xs:enumeration value="api"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="phpdocumentorType">
+        <xs:sequence>
+            <xs:element name="paths" type="pd:pathsType" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="version" type="pd:versionType" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="template" type="pd:templateType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute name="version" type="pd:version" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="pathsType">
+        <xs:sequence>
+            <xs:element name="output" type="pd:path" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="cache" type="pd:path" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="versionType" mixed="true">
+        <xs:sequence>
+            <xs:element name="folder" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="api" type="pd:phpApiType" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="guide" type="pd:rstGuideType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute name="number" type="pd:version" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="templateType">
+        <xs:attribute name="name" type="xs:string"/>
+        <xs:attribute name="location" type="pd:path"/>
+    </xs:complexType>
+
+    <xs:complexType name="phpApiType" mixed="true">
+        <xs:sequence>
+            <xs:element name="source" type="pd:sourceType" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="ignore" type="pd:ignoreType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="extensions" type="pd:extensionsType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="visibility" type="pd:visibility" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="default-package-name" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="include-source" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false"/>
+            <xs:element name="markers" type="pd:markersType" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+        <xs:attribute name="format" type="xs:string" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="rstGuideType">
+        <xs:sequence>
+            <xs:element name="source" type="pd:sourceType" minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+        <xs:attribute name="format" type="xs:string" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="sourceType">
+        <xs:sequence>
+            <xs:element name="path" type="pd:path" minOccurs="1" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute name="dsn" type="pd:dsn"/>
+    </xs:complexType>
+
+    <xs:complexType name="ignoreType">
+        <xs:sequence>
+            <xs:element name="path" type="pd:path" minOccurs="1" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute name="hidden" type="xs:boolean"/>
+        <xs:attribute name="symlinks" type="xs:boolean"/>
+    </xs:complexType>
+
+    <xs:complexType name="extensionsType">
+        <xs:sequence>
+            <xs:element name="extension" type="xs:string" minOccurs="1" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="markersType">
+        <xs:sequence>
+            <xs:element name="marker" type="xs:string" minOccurs="1" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="phpdocumentor" type="pd:phpdocumentorType"/>
+</xs:schema>

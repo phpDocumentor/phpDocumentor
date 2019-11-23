@@ -4,7 +4,7 @@
  *
  * PHP Version 5.3
  *
- * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -12,11 +12,12 @@
 namespace phpDocumentor\Descriptor;
 
 use \Mockery as m;
+use phpDocumentor\Reflection\Types\String_;
 
 /**
- * Tests the functionality for the FunctionDescriptor class.
+ * @coversDefaultClass \phpDocumentor\Descriptor\FunctionDescriptor
  */
-class FunctionDescriptorTest extends \PHPUnit_Framework_TestCase
+class FunctionDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var FunctionDescriptor $fixture */
     protected $fixture;
@@ -30,9 +31,7 @@ class FunctionDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tests whether all collection objects are properly initialized.
-     *
-     * @covers phpDocumentor\Descriptor\FunctionDescriptor::__construct
+     * @covers ::__construct
      */
     public function testInitialize()
     {
@@ -40,8 +39,8 @@ class FunctionDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\FunctionDescriptor::setArguments
-     * @covers phpDocumentor\Descriptor\FunctionDescriptor::getArguments
+     * @covers ::setArguments
+     * @covers ::getArguments
      */
     public function testSettingAndGettingArguments()
     {
@@ -53,5 +52,18 @@ class FunctionDescriptorTest extends \PHPUnit_Framework_TestCase
         $this->fixture->setArguments($mock);
 
         $this->assertSame($mockInstance, $this->fixture->getArguments());
+    }
+
+    /**
+     * @covers ::getResponse
+     * @covers ::setReturnType
+     */
+    public function testSettingAndGettingReturnType()
+    {
+        $stringType = new String_();
+        $this->fixture->setReturnType($stringType);
+
+        $this->assertSame('return', $this->fixture->getResponse()->getName());
+        $this->assertSame($stringType, $this->fixture->getResponse()->getType());
     }
 }

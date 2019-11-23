@@ -3,12 +3,12 @@
 namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 
 use Mockery as m;
-use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
-use phpDocumentor\Reflection\DocBlock\Tag\ParamTag;
-use phpDocumentor\Reflection\DocBlock\Type\Collection as TypeCollection;
+use phpDocumentor\Reflection\DocBlock\Description;
+use phpDocumentor\Reflection\DocBlock\Tags\Param;
+use phpDocumentor\Reflection\Types\String_;
 
-class ParamAssemblerTest extends \PHPUnit_Framework_TestCase
+class ParamAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var ParamAssembler */
     private $fixture;
@@ -19,7 +19,7 @@ class ParamAssemblerTest extends \PHPUnit_Framework_TestCase
     /**
      * Initializes the fixture for this test.
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->builder = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
         $this->fixture = new ParamAssembler();
@@ -27,27 +27,17 @@ class ParamAssemblerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Builder\Reflector\Tags\ParamAssembler::create
+     * @covers \phpDocumentor\Descriptor\Builder\Reflector\Tags\ParamAssembler::create
      */
     public function testCreatingParamDescriptorFromReflector()
     {
-        $types = new Collection();
-        $this->builder->shouldReceive('buildDescriptor')
-            ->with(
-                m::on(
-                    function ($value) {
-                        return $value instanceof TypeCollection && $value[0] == 'string';
-                    }
-                )
-            )
-            ->andReturn($types);
-        $reflector = new ParamTag('param', 'string $myParameter This is a description');
+        $reflector = new Param('$myParameter', new String_(), false, new Description('This is a description'));
 
         $descriptor = $this->fixture->create($reflector);
 
         $this->assertSame('param', $descriptor->getName());
-        $this->assertSame('This is a description', $descriptor->getDescription());
+        $this->assertSame('This is a description', (string) $descriptor->getDescription());
         $this->assertSame('$myParameter', $descriptor->getVariableName());
-        $this->assertSame($types, $descriptor->getTypes());
+        $this->assertEquals(new String_(), $descriptor->getType());
     }
 }

@@ -1,10 +1,14 @@
 <?php
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -31,22 +35,12 @@ class PackageTreeBuilder implements CompilerPassInterface
 {
     const COMPILER_PRIORITY = 9001;
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getDescription()
+    public function getDescription(): string
     {
         return 'Build "packages" index';
     }
 
-    /**
-     * Compiles a 'packages' index on the project and create all Package Descriptors necessary.
-     *
-     * @param ProjectDescriptor $project
-     *
-     * @return void
-     */
-    public function execute(ProjectDescriptor $project)
+    public function execute(ProjectDescriptor $project): void
     {
         $rootPackageDescriptor = new PackageDescriptor();
         $rootPackageDescriptor->setName('\\');
@@ -54,7 +48,7 @@ class PackageTreeBuilder implements CompilerPassInterface
         $project->getIndexes()->packages['\\'] = $rootPackageDescriptor;
 
         foreach ($project->getFiles() as $file) {
-            $this->addElementsOfTypeToPackage($project, array($file), 'files');
+            $this->addElementsOfTypeToPackage($project, [$file], 'files');
             $this->addElementsOfTypeToPackage($project, $file->getConstants()->getAll(), 'constants');
             $this->addElementsOfTypeToPackage($project, $file->getFunctions()->getAll(), 'functions');
             $this->addElementsOfTypeToPackage($project, $file->getClasses()->getAll(), 'classes');
@@ -69,15 +63,12 @@ class PackageTreeBuilder implements CompilerPassInterface
      * This method will assign the given elements to the package as registered in the package field of that
      * element. If a package does not exist yet it will automatically be created.
      *
-     * @param ProjectDescriptor    $project
      * @param DescriptorAbstract[] $elements Series of elements to add to their respective package.
-     * @param string               $type     Declares which field of the package will be populated with the given
+     * @param string $type Declares which field of the package will be populated with the given
      * series of elements. This name will be transformed to a getter which must exist. Out of performance
      * considerations will no effort be done to verify whether the provided type is valid.
-     *
-     * @return void
      */
-    protected function addElementsOfTypeToPackage(ProjectDescriptor $project, array $elements, $type)
+    protected function addElementsOfTypeToPackage(ProjectDescriptor $project, array $elements, string $type): void
     {
         /** @var DescriptorAbstract $element */
         foreach ($elements as $element) {
@@ -99,9 +90,9 @@ class PackageTreeBuilder implements CompilerPassInterface
             }
 
             // ensure consistency by trimming the slash prefix and then re-appending it.
-            $packageIndexName = '\\' . ltrim($packageName, '\\');
+            $packageIndexName = '\\' . ltrim((string) $packageName, '\\');
             if (!isset($project->getIndexes()->packages[$packageIndexName])) {
-                $this->createPackageDescriptorTree($project, $packageName);
+                $this->createPackageDescriptorTree($project, (string) $packageName);
             }
 
             /** @var PackageDescriptor $package */
@@ -111,10 +102,10 @@ class PackageTreeBuilder implements CompilerPassInterface
             $element->setPackage($package);
 
             // add element to package
-            $getter = 'get'.ucfirst($type);
+            $getter = 'get' . ucfirst($type);
 
-            /** @var Collection $collection  */
-            $collection = $package->$getter();
+            /** @var Collection $collection */
+            $collection = $package->{$getter}();
             $collection->add($element);
         }
     }
@@ -130,23 +121,19 @@ class PackageTreeBuilder implements CompilerPassInterface
      * created PackageDescriptors. Each index key is prefixed with a tilde (~) so that it will not conflict with
      * other FQSEN's, such as classes or interfaces.
      *
-     * @param ProjectDescriptor $project
-     * @param string            $packageName A FQNN of the package (and parents) to create.
-     *
+     * @param string $packageName A FQNN of the package (and parents) to create.
      * @see ProjectDescriptor::getPackage() for the root package.
      * @see PackageDescriptor::getChildren() for the child packages of a given package.
-     *
-     * @return void
      */
-    protected function createPackageDescriptorTree(ProjectDescriptor $project, $packageName)
+    protected function createPackageDescriptorTree(ProjectDescriptor $project, string $packageName): void
     {
-        $parts   = explode('\\', ltrim($packageName, '\\'));
-        $fqnn    = '';
+        $parts = explode('\\', ltrim($packageName, '\\'));
+        $fqnn = '';
 
         // this method does not use recursion to traverse the tree but uses a pointer that will be overridden with the
         // next item that is to be traversed (child package) at the end of the loop.
 
-        /** @var PackageDescriptor $pointer  */
+        /** @var PackageDescriptor $pointer */
         $pointer = $project->getIndexes()->packages['\\'];
         foreach ($parts as $part) {
             $fqnn .= '\\' . $part;

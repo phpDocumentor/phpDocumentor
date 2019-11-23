@@ -1,0 +1,29 @@
+version: '3'
+services:
+  phpdoc:
+    build: .
+
+  phpunit:
+    build: docker/with-xdebug
+    volumes: [".:/opt/phpdoc"]
+    working_dir: "/opt/phpdoc"
+    entrypoint: ["./tools/phpunit"]
+
+  behat:
+    build: docker/with-xdebug
+    volumes: [".:/opt/phpdoc"]
+    working_dir: "/opt/phpdoc"
+    command: ["./bin/behat"]
+
+  phpcs:
+    image: oskarstark/phpcs-ga
+    volumes: [".:/opt/phpdoc"]
+    working_dir: "/opt/phpdoc"
+    command: ["-d memory_limit=1024M"]
+
+  phpstan:
+    image: jaapio/github-actions:phpstan
+    environment:
+      PHP_EXTENSIONS: php7-intl
+    volumes: [".:/app"]
+    command: "analyse src tests --level 3 --configuration phpstan.neon"

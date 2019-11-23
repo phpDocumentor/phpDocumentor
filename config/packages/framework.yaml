@@ -1,0 +1,9 @@
+framework:
+    secret: '%env(APP_SECRET)%'
+
+    # needs to be disabled because we currently use a different translator with the same service name
+    translator:
+        enabled: false
+
+    php_errors:
+        log: true

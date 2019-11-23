@@ -1,20 +1,27 @@
 <?php
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 
+use InvalidArgumentException;
 use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
 use phpDocumentor\Descriptor\Example\Finder;
 use phpDocumentor\Descriptor\Tag\ExampleDescriptor;
-use phpDocumentor\Reflection\DocBlock\Tag\ExampleTag;
+use phpDocumentor\Reflection\DocBlock\ExampleFinder;
+use phpDocumentor\Reflection\DocBlock\Tags\Example;
+use Webmozart\Assert\Assert;
 
 /**
  * This class collects data from the example tag definition of the Reflection library, tries to find the correlating
@@ -22,15 +29,13 @@ use phpDocumentor\Reflection\DocBlock\Tag\ExampleTag;
  */
 class ExampleAssembler extends AssemblerAbstract
 {
-    /** @var Finder */
+    /** @var ExampleFinder */
     private $finder;
 
     /**
      * Initializes this assembler with the means to find the example file on disk.
-     *
-     * @param Finder $finder
      */
-    public function __construct(Finder $finder)
+    public function __construct(ExampleFinder $finder)
     {
         $this->finder = $finder;
     }
@@ -38,27 +43,22 @@ class ExampleAssembler extends AssemblerAbstract
     /**
      * Creates a new Descriptor from the given Reflector.
      *
-     * @param ExampleTag $data
+     * @param Example $data
      *
-     * @throws \InvalidArgumentException if the provided parameter is not of type ExampleTag; the interface won't let
+     * @throws InvalidArgumentException if the provided parameter is not of type ExampleTag; the interface won't let
      *   up typehint the signature.
      *
      * @return ExampleDescriptor
      */
     public function create($data)
     {
-        if (! $data instanceof ExampleTag) {
-            throw new \InvalidArgumentException(
-                'The ExampleAssembler expected an ExampleTag object to base the descriptor on'
-            );
-        }
-
+        Assert::isInstanceOf($data, Example::class);
         $descriptor = new ExampleDescriptor($data->getName());
         $descriptor->setFilePath((string) $data->getFilePath());
         $descriptor->setStartingLine($data->getStartingLine());
         $descriptor->setLineCount($data->getLineCount());
         $descriptor->setDescription($data->getDescription());
-        $descriptor->setExample($this->finder->find($descriptor));
+        $descriptor->setExample($this->finder->find($data));
 
         return $descriptor;
     }

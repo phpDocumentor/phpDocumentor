@@ -93,16 +93,6 @@ the behaviour of said transformations.
 
 .. sidebar:: Base folders
 
-   **Source folder**
-
-   Although the base location of the source folder may differ per writer it is a common pattern that it matches the
-   templates folder of phpDocumentor. This has a historical reason.
-
-   phpDocumentor started out with supporting only XSL as a templating engine but XSL can only extend files that it can
-   physically find in the template. You cannot tell it to scan a separate folder. So for XSL to be able to extend
-   existing templates all templates are being put inside the templates folder of phpDocumentor, even your own custom
-   template when you invoke it.
-
    **Artifact folder**
 
    As with the source folder, the artifact folder may differ per writer. But a common pattern is that this location is

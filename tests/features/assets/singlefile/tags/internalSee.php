@@ -58,10 +58,6 @@ namespace phpDocumentor\Descriptor;
  *
  * @see \phpDocumentor\Descriptor\TestSeeTagIssue::CONSTANT
  * @see \phpDocumentor\Descriptor\TestSeeTagIssue::CONSTANT own constant
- *
- * @see CONSTANT
- * @see $property
- * @see method()
  */
 class TestSeeTagIssue
 {
@@ -121,10 +117,6 @@ class TestSeeTagIssue
      *
      * @see \phpDocumentor\Descriptor\TestSeeTagIssue::CONSTANT
      * @see \phpDocumentor\Descriptor\TestSeeTagIssue::CONSTANT own constant
-     *
-     * @see CONSTANT
-     * @see $property
-     * @see method()
      */
     const CONSTANT = 1;
 
@@ -184,10 +176,6 @@ class TestSeeTagIssue
      *
      * @see \phpDocumentor\Descriptor\TestSeeTagIssue::CONSTANT
      * @see \phpDocumentor\Descriptor\TestSeeTagIssue::CONSTANT own constant
-     *
-     * @see CONSTANT
-     * @see $property
-     * @see method()
      */
     public $property;
 
@@ -247,10 +235,6 @@ class TestSeeTagIssue
      *
      * @see \phpDocumentor\Descriptor\TestSeeTagIssue::CONSTANT
      * @see \phpDocumentor\Descriptor\TestSeeTagIssue::CONSTANT own constant
-     *
-     * @see CONSTANT
-     * @see $property
-     * @see method()
      */
     public function method()
     {

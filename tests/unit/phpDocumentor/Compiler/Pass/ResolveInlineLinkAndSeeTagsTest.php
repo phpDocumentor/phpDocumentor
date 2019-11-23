@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @copyright 2010-2015 Mike van Riel<mike@phpdoc.org>
+ * @copyright 2010-2018 Mike van Riel<mike@phpdoc.org>
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -14,9 +14,7 @@ namespace phpDocumentor\Compiler\Pass;
 
 use Mockery as m;
 use phpDocumentor\Descriptor\DescriptorAbstract;
-use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Transformer\Router\Queue;
-use phpDocumentor\Transformer\Router\Rule;
 use phpDocumentor\Transformer\Template\Collection;
 
 /**
@@ -24,9 +22,9 @@ use phpDocumentor\Transformer\Template\Collection;
  * @covers ::__construct
  * @covers ::<private>
  */
-class ResolveInlineLinkAndSeeTagsTest extends \PHPUnit_Framework_TestCase
+class ResolveInlineLinkAndSeeTagsTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
-    /** @var Queue||m\MockInterface */
+    /** @var Queue|m\MockInterface */
     private $router;
 
     /** @var ResolveInlineLinkAndSeeTags */
@@ -110,46 +108,6 @@ class ResolveInlineLinkAndSeeTagsTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers ::execute
      */
-    public function testReplaceDescriptionIfItContainsALinkAndFileIsPresent()
-    {
-        $description = 'Description with {@link LinkDescriptor}';
-        $expected =
-            'Description with [LinkDescriptor](../classes/phpDocumentor.LinkDescriptor.html)';
-
-        $descriptor = $this->givenAChildDescriptorWithDescription($description);
-        $collection = $this->givenACollection($descriptor);
-        $elementToLinkTo = $this->givenAnElementToLinkTo();
-
-        $this->whenDescriptionContainsSeeOrLinkWithElement($descriptor, $elementToLinkTo);
-
-        $this->thenDescriptionOfDescriptorIsChangedInto($descriptor, $expected);
-
-        $project = $this->givenAProjectDescriptorWithChildDescriptors($collection);
-
-        $this->fixture->execute($project);
-    }
-
-    /**
-     * @covers ::execute
-     */
-    public function testReplaceDescriptionIfItContainsAUrl()
-    {
-        $description = 'Description with {@see http://www.phpdoc.org}';
-        $expected = 'Description with [http://www.phpdoc.org](http://www.phpdoc.org)';
-
-        $descriptor = $this->givenAChildDescriptorWithDescription($description);
-        $collection = $this->givenACollection($descriptor);
-
-        $this->thenDescriptionOfDescriptorIsChangedInto($descriptor, $expected);
-
-        $project = $this->givenAProjectDescriptorWithChildDescriptors($collection);
-
-        $this->fixture->execute($project);
-    }
-
-    /**
-     * @covers ::execute
-     */
     public function testReplaceDescriptionIfItContainsAnotherTag()
     {
         $description = 'Description with {@author John Doe}';
@@ -202,7 +160,7 @@ class ResolveInlineLinkAndSeeTagsTest extends \PHPUnit_Framework_TestCase
      */
     private function givenAnElementToLinkTo()
     {
-        $namespaceAliases = array('LinkDescriptor' => '\phpDocumentor\LinkDescriptor');
+        $namespaceAliases = ['LinkDescriptor' => '\phpDocumentor\LinkDescriptor'];
         $namespaceCollection = m::mock('phpDocumentor\Transformer\Template\Collection');
         $namespaceCollection->shouldReceive('getAll')->once()->andReturn($namespaceAliases);
 
@@ -223,7 +181,7 @@ class ResolveInlineLinkAndSeeTagsTest extends \PHPUnit_Framework_TestCase
     {
         $collection = m::mock('phpDocumentor\Transformer\Template\Collection');
 
-        $items = array('\phpDocumentor\LinkDescriptor' => $descriptor);
+        $items = ['\phpDocumentor\LinkDescriptor' => $descriptor];
 
         $collection->shouldReceive('get')->once()->andReturn($items);
 
@@ -235,8 +193,6 @@ class ResolveInlineLinkAndSeeTagsTest extends \PHPUnit_Framework_TestCase
      *
      * @param m\MockInterface $descriptor
      * @param string          $expected
-     *
-     * @return void
      */
     public function thenDescriptionOfDescriptorIsChangedInto($descriptor, $expected)
     {
@@ -246,7 +202,7 @@ class ResolveInlineLinkAndSeeTagsTest extends \PHPUnit_Framework_TestCase
     /**
      * It resolves the element that is linked to
      *
-     * @param DescriptorAbstract $descriptor
+     * @param m\MockInterface $descriptor
      * @param DescriptorAbstract $elementToLinkTo
      *
      * @return DescriptorAbstract

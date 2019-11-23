@@ -4,7 +4,7 @@
  *
  * PHP Version 5.3
  *
- * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -16,7 +16,7 @@ use Mockery as m;
 /**
  * Test for the ConstantDescriptor URL Generator with the Standard Router
  */
-class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
+class ConstantDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
      * @codingStandardsIgnoreStart

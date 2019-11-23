@@ -63,7 +63,6 @@ Sections
 
 A DocBlock roughly exists of 3 sections:
 
-
 1. Summary; a one-liner which globally states the function of the documented element.
 2. Description; an extended description of the function of the documented element; may contain markup and inline tags.
 3. Tags; a series of descriptors for properties of this element; such as @param and @return.

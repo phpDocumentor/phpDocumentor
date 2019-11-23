@@ -1,10 +1,14 @@
 <?php
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -15,6 +19,8 @@ use phpDocumentor\Descriptor\Builder\AssemblerAbstract as BaseAssembler;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Reflection\DocBlock;
+use phpDocumentor\Reflection\Type;
+use phpDocumentor\Reflection\Types\Compound;
 
 abstract class AssemblerAbstract extends BaseAssembler
 {
@@ -23,8 +29,6 @@ abstract class AssemblerAbstract extends BaseAssembler
      *
      * @param DocBlock|null      $docBlock
      * @param DescriptorAbstract $target
-     *
-     * @return void
      */
     protected function assembleDocBlock($docBlock, $target)
     {
@@ -32,8 +36,8 @@ abstract class AssemblerAbstract extends BaseAssembler
             return;
         }
 
-        $target->setSummary($docBlock->getShortDescription());
-        $target->setDescription($docBlock->getLongDescription()->getContents());
+        $target->setSummary($docBlock->getSummary());
+        $target->setDescription($docBlock->getDescription());
 
         /** @var DocBlock\Tag $tag */
         foreach ($docBlock->getTags() as $tag) {
@@ -59,14 +63,29 @@ abstract class AssemblerAbstract extends BaseAssembler
      */
     protected function extractPackageFromDocBlock($docBlock)
     {
-        $packageTags = $docBlock ? $docBlock->getTagsByName('package') : null;
-        if (! $packageTags) {
+        $packageTags = $docBlock ? $docBlock->getTagsByName('package') : [];
+        if (count($packageTags) === 0) {
             return null;
         }
 
-        /** @var DocBlock\Tag $tag */
+        /** @var DocBlock\Tags\Generic $tag */
         $tag = reset($packageTags);
 
-        return trim($tag->getContent());
+        return trim((string) $tag->getDescription());
+    }
+
+    public static function deduplicateTypes(?Type $type): ?Type
+    {
+
+        if ($type instanceof Compound) {
+            $normalizedTypes = [];
+            foreach ($type as $typePart) {
+                $normalizedTypes[(string)$typePart] = $typePart;
+            }
+
+            return new Compound(array_values($normalizedTypes));
+        }
+
+        return $type;
     }
 }

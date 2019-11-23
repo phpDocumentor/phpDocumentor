@@ -1,10 +1,14 @@
 <?php
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -23,8 +27,6 @@ interface ElementInterface
      * Sets the Fully Qualified Structural Element Name (FQSEN) for this element.
      *
      * @param string $name
-     *
-     * @return void
      */
     public function setFullyQualifiedStructuralElementName($name);
 
@@ -39,8 +41,6 @@ interface ElementInterface
      * Sets the local name for this element.
      *
      * @param string $name
-     *
-     * @return void
      */
     public function setName($name);
 
@@ -55,8 +55,6 @@ interface ElementInterface
      * Sets a summary describing this element.
      *
      * @param string $summary
-     *
-     * @return void
      */
     public function setSummary($summary);
 
@@ -71,8 +69,6 @@ interface ElementInterface
      * Sets a longer description for this element.
      *
      * @param string $description
-     *
-     * @return void
      */
     public function setDescription($description);
 
@@ -86,10 +82,7 @@ interface ElementInterface
     /**
      * Sets the file and location for this element.
      *
-     * @param FileDescriptor $file
      * @param int            $line
-     *
-     * @return void
      */
     public function setLocation(FileDescriptor $file, $line = 0);
 

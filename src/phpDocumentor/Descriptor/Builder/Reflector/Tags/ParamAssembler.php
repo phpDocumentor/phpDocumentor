@@ -1,10 +1,14 @@
 <?php
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -13,8 +17,7 @@ namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 
 use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
 use phpDocumentor\Descriptor\Tag\ParamDescriptor;
-use phpDocumentor\Reflection\DocBlock\Tag\ParamTag;
-use phpDocumentor\Reflection\DocBlock\Type\Collection;
+use phpDocumentor\Reflection\DocBlock\Tags\Param;
 
 /**
  * Constructs a new descriptor from the Reflector for an `@param` tag.
@@ -27,7 +30,7 @@ class ParamAssembler extends AssemblerAbstract
     /**
      * Creates a new Descriptor from the given Reflector.
      *
-     * @param ParamTag $data
+     * @param Param $data
      *
      * @return ParamDescriptor
      */
@@ -36,10 +39,7 @@ class ParamAssembler extends AssemblerAbstract
         $descriptor = new ParamDescriptor($data->getName());
         $descriptor->setDescription($data->getDescription());
         $descriptor->setVariableName($data->getVariableName());
-
-        /** @var Collection $types */
-        $types = $this->builder->buildDescriptor(new Collection($data->getTypes()));
-        $descriptor->setTypes($types);
+        $descriptor->setType(AssemblerAbstract::deduplicateTypes($data->getType()));
 
         return $descriptor;
     }

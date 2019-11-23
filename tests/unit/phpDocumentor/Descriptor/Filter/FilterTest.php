@@ -4,27 +4,27 @@
  *
  * PHP Version 5.3
  *
- * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor\Filter;
 
+use League\Pipeline\Pipeline;
 use \Mockery as m;
-use \Zend\Filter\FilterChain;
 
 /**
  * Tests the functionality for the Filter class.
  */
-class FilterTest extends \PHPUnit_Framework_TestCase
+class FilterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     const FQCN = 'SomeFilterClass';
 
     /** @var ClassFactory|m\Mock */
     protected $classFactoryMock;
 
-    /** @var FilterChain|m\Mock */
+    /** @var FilterInterface|m\Mock */
     protected $filterChainMock;
 
     /** @var Filter $fixture */
@@ -36,8 +36,8 @@ class FilterTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->classFactoryMock = m::mock('phpDocumentor\Descriptor\Filter\ClassFactory');
-        $this->filterChainMock  = m::mock('Zend\Filter\FilterChain');
-        $this->fixture          = new Filter($this->classFactoryMock);
+        $this->filterChainMock = m::mock(Pipeline::class);
+        $this->fixture = new Filter($this->classFactoryMock);
     }
 
     /**
@@ -53,10 +53,9 @@ class FilterTest extends \PHPUnit_Framework_TestCase
      */
     public function testAttach()
     {
-        $filterMock = m::mock('Zend\Filter\FilterInterface');
+        $filterMock = m::mock(FilterInterface::class);
 
-        $this->filterChainMock->shouldReceive('attach')->with($filterMock, FilterChain::DEFAULT_PRIORITY);
-        $this->classFactoryMock->shouldReceive('getChainFor')->with(self::FQCN)->andReturn($this->filterChainMock);
+        $this->classFactoryMock->shouldReceive('attachTo')->with(self::FQCN, $filterMock);
 
         $this->fixture->attach(self::FQCN, $filterMock);
     }
@@ -68,7 +67,7 @@ class FilterTest extends \PHPUnit_Framework_TestCase
     {
         $filterableMock = m::mock('phpDocumentor\Descriptor\Filter\Filterable');
 
-        $this->filterChainMock->shouldReceive('filter')->with($filterableMock)->andReturn($filterableMock);
+        $this->filterChainMock->shouldReceive('__invoke')->with($filterableMock)->andReturn($filterableMock);
         $this->classFactoryMock
             ->shouldReceive('getChainFor')->with(get_class($filterableMock))->andReturn($this->filterChainMock);
 

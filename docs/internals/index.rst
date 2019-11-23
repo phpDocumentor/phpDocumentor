@@ -4,7 +4,7 @@ Internals
 .. toctree::
    :maxdepth: 2
 
-   qa.rst
+   project-management
    flow
    contructing-the-ast
    tags

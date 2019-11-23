@@ -5,71 +5,112 @@
     "homepage": "http://www.phpdoc.org",
     "license": "MIT",
     "autoload": {
-        "psr-0":{
-            "phpDocumentor": ["src/", "tests/unit/"],
-            "Cilex\\Provider": ["src/"]
+        "psr-4": {
+            "phpDocumentor\\": [ "src/phpDocumentor/" ]
         }
     },
     "autoload-dev": {
         "psr-4": {
+            "phpDocumentor\\": [
+                "tests/unit/phpDocumentor/"
+            ],
             "phpDocumentor\\Behat\\Contexts\\": [
                 "tests/features/bootstrap"
             ]
         }
     },
     "require": {
-        "php": ">=5.3.3",
-
-        "cilex/cilex":        "~1.0",
-        "symfony/validator":  "~2.2",
-        "symfony/console":    "~2.3",
-
-        "monolog/monolog":  "~1.6",
-        "twig/twig":        "~1.3",
+        "php": ">=7.1.3",
+        "ext-dom": "*",
+        "ext-iconv": "*",
+        "ext-json": "*",
+        "ext-libxml": "*",
+        "ext-simplexml": "*",
+        "ext-zlib": "*",
         "erusev/parsedown": "~1.0",
-        "symfony/process":  "~2.0",
-        "zetacomponents/document": ">=1.3.1",
-
-        "symfony/event-dispatcher": "~2.1",
-        "symfony/stopwatch":        "~2.3",
-        "symfony/config":           "~2.3",
-        "jms/serializer":           ">=0.12 < 1.8.0",
-
-        "zendframework/zend-stdlib":         "~2.1",
-        "zendframework/zend-servicemanager": "~2.1",
-        "zendframework/zend-config":         "~2.1",
-        "zendframework/zend-i18n":           "~2.1",
-        "zendframework/zend-serializer":     "~2.1",
-        "zendframework/zend-cache":          "~2.1",
-        "zendframework/zend-filter":         "~2.1",
-
-        "phpdocumentor/graphviz":            "~1.0",
-        "phpdocumentor/fileset":             "~1.0",
-        "phpdocumentor/reflection":          "^3.0",
-        "phpdocumentor/reflection-docblock": "~2.0",
-        "webmozart/assert": "^1.2",
-        "padraic/phar-updater": "^1.0"
+        "jean85/pretty-package-versions": "^1.2",
+        "league/flysystem": "^1.0",
+        "league/pipeline": "^1.0",
+        "monolog/monolog": "~1.6",
+        "ocramius/package-versions": "^1.3",
+        "padraic/phar-updater": "^1.0",
+        "phpdocumentor/flyfinder": "1.*@beta",
+        "phpdocumentor/graphviz": "2.x-dev@dev",
+        "phpdocumentor/reflection": "4.*@alpha",
+        "phpdocumentor/reflection-common": "2.*@alpha",
+        "phpdocumentor/reflection-docblock": "5.*@alpha",
+        "phpdocumentor/type-resolver": "^0.7.1",
+        "psr/cache": "^1.0",
+        "psr/log": "^1.1",
+        "symfony/config": "^4.1",
+        "symfony/console": "^4.0",
+        "symfony/dependency-injection": "^4.0",
+        "symfony/event-dispatcher": "^4.0",
+        "symfony/expression-language": "^4.0",
+        "symfony/filesystem": "^4.0",
+        "symfony/flex": "^1.0",
+        "symfony/framework-bundle": "^4.0",
+        "symfony/http-kernel": "~4.1.0",
+        "symfony/monolog-bundle": "^3.0",
+        "symfony/polyfill-ctype": "^1.9",
+        "symfony/process": "^4.0",
+        "symfony/proxy-manager-bridge": "^4.0",
+        "symfony/routing": "~4.1.0",
+        "symfony/stopwatch": "^4.0",
+        "symfony/yaml": "^4.0",
+        "tedivm/stash": "^0.14.2",
+        "twig/twig": "~1.3",
+        "webmozart/assert": "^1.3",
+        "zendframework/zend-serializer": "~2.1",
+        "zendframework/zend-stdlib": "~2.1"
     },
     "minimum-stability": "stable",
     "require-dev": {
-        "behat/behat":        "^3.0",
-        "phpunit/phpunit":    "^4.0",
-        "mockery/mockery":    "^0.9@dev",
-        "mikey179/vfsStream": "^1.2",
-        "squizlabs/php_codesniffer": "^1.4",
-        "symfony/expression-language": "^2.4"
+        "behat/behat": "^3.0",
+        "behat/mink": "^1.7",
+        "behat/mink-extension": "^2.3",
+        "behat/mink-goutte-driver": "^1.2",
+        "integratedexperts/behat-screenshot": "^0.7.2",
+        "mikey179/vfsstream": "^1.2",
+        "mockery/mockery": "^1.0",
+        "phpstan/phpstan-mockery": "^0.11.3",
+        "symfony/dotenv": "^4.0"
     },
     "suggest": {
         "ext-twig": "Enabling the twig extension improves the generation of twig based templates.",
-        "ext-xslcache": "Enabling the XSLCache extension improves the generation of xml based templates."
+        "ext-ctype": "For best performance"
     },
     "config": {
-        "bin-dir":"bin/"
+        "bin-dir":"bin/",
+        "preferred-install": {
+            "*": "dist"
+        },
+        "platform": {
+            "php": "7.1.3"
+        },
+        "sort-packages": true
+    },
+    "replace": {
+        "paragonie/random_compat": "2.*",
+        "symfony/polyfill-iconv": "*",
+        "symfony/polyfill-php72": "*",
+        "symfony/polyfill-php71": "*",
+        "symfony/polyfill-php70": "*",
+        "symfony/polyfill-php56": "*"
     },
     "bin": ["bin/phpdoc.php", "bin/phpdoc"],
+    "conflict": {
+        "symfony/symfony": "*"
+    },
     "extra": {
         "branch-alias": {
-            "dev-develop": "2.9-dev"
+            "dev-develop": "3.0-dev",
+            "dev-master": "2.9.x-dev"
+        },
+        "symfony": {
+            "id": "01C32VS9393M1CP9R8TEJMH62G",
+            "allow-contrib": false,
+            "require": "~4.1.0"
         }
     }
 }

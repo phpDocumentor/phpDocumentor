@@ -1,10 +1,14 @@
 <?php
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -15,7 +19,8 @@ use phpDocumentor\Descriptor\ArgumentDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\FunctionDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
-use phpDocumentor\Reflection\FunctionReflector;
+use phpDocumentor\Reflection\Php\Argument;
+use phpDocumentor\Reflection\Php\Function_;
 
 /**
  * Assembles a FunctionDescriptor from a FunctionReflector.
@@ -36,7 +41,7 @@ class FunctionAssembler extends AssemblerAbstract
     /**
      * Creates a Descriptor from the provided data.
      *
-     * @param FunctionReflector $data
+     * @param Function_ $data
      *
      * @return FunctionDescriptor
      */
@@ -53,38 +58,37 @@ class FunctionAssembler extends AssemblerAbstract
 
     /**
      * Maps the properties of the Function reflector onto the Descriptor.
-     *
-     * @param FunctionReflector  $reflector
-     * @param FunctionDescriptor $descriptor
-     *
-     * @return void
      */
-    protected function mapReflectorPropertiesOntoDescriptor($reflector, $descriptor)
+    protected function mapReflectorPropertiesOntoDescriptor(Function_ $reflector, FunctionDescriptor $descriptor): void
     {
         $packages = new Collection();
         $package = $this->extractPackageFromDocBlock($reflector->getDocBlock());
+        //TODO: this looks like a potential bug. Have to investigate this!
         if ($package) {
             $tag = new TagDescriptor('package');
             $tag->setDescription($package);
             $packages->add($tag);
         }
+
         $descriptor->getTags()->set('package', $packages);
 
-        $descriptor->setFullyQualifiedStructuralElementName($reflector->getName() . '()');
-        $descriptor->setName($reflector->getShortName());
-        $descriptor->setLine($reflector->getLinenumber());
-        $descriptor->setNamespace($this->getFullyQualifiedNamespaceName($reflector));
+        $descriptor->setFullyQualifiedStructuralElementName($reflector->getFqsen());
+        $descriptor->setName($reflector->getName());
+        $descriptor->setLine($reflector->getLocation()->getLineNumber());
+        $descriptor->setNamespace('\\' . trim(substr(
+            (string) $reflector->getFqsen(),
+            0,
+            -strlen($reflector->getName()) - 2
+        ), '\\'));
+        $descriptor->setReturnType($reflector->getReturnType());
     }
 
     /**
      * Converts each argument reflector to an argument descriptor and adds it to the function descriptor.
      *
-     * @param FunctionReflector\ArgumentReflector[] $arguments
-     * @param FunctionDescriptor                    $functionDescriptor
-     *
-     * @return void
+     * @param Argument[] $arguments
      */
-    protected function addArgumentsToFunctionDescriptor(array $arguments, $functionDescriptor)
+    protected function addArgumentsToFunctionDescriptor(array $arguments, FunctionDescriptor $functionDescriptor): void
     {
         foreach ($arguments as $argument) {
             $this->addArgumentDescriptorToFunction(
@@ -96,47 +100,27 @@ class FunctionAssembler extends AssemblerAbstract
 
     /**
      * Adds the given argument to the function.
-     *
-     * @param FunctionDescriptor $functionDescriptor
-     * @param ArgumentDescriptor $argumentDescriptor
-     *
-     * @return void
      */
-    protected function addArgumentDescriptorToFunction($functionDescriptor, $argumentDescriptor)
-    {
+    protected function addArgumentDescriptorToFunction(
+        FunctionDescriptor $functionDescriptor,
+        ArgumentDescriptor $argumentDescriptor
+    ): void {
         $functionDescriptor->getArguments()->set($argumentDescriptor->getName(), $argumentDescriptor);
     }
 
     /**
      * Creates a new ArgumentDescriptor from the given Reflector and Param.
-     *
-     * @param FunctionDescriptor                  $functionDescriptor
-     * @param FunctionReflector\ArgumentReflector $argument
-     *
-     * @return ArgumentDescriptor
      */
-    protected function createArgumentDescriptor($functionDescriptor, $argument)
-    {
-        $params = $functionDescriptor->getTags()->get('param', array());
+    protected function createArgumentDescriptor(
+        FunctionDescriptor $functionDescriptor,
+        Argument $argument
+    ): ArgumentDescriptor {
+        $params = $functionDescriptor->getTags()->get('param', []);
 
         if (!$this->argumentAssembler->getBuilder()) {
             $this->argumentAssembler->setBuilder($this->builder);
         }
 
         return $this->argumentAssembler->create($argument, $params);
-    }
-
-    /**
-     * Retrieves the Fully Qualified Namespace Name from the FunctionReflector.
-     *
-     * Reflection library formulates namespace as global but this is not wanted for phpDocumentor itself.
-     *
-     * @param FunctionReflector $reflector
-     *
-     * @return string
-     */
-    protected function getFullyQualifiedNamespaceName($reflector)
-    {
-        return '\\' . (strtolower($reflector->getNamespace()) == 'global' ? '' : $reflector->getNamespace());
     }
 }

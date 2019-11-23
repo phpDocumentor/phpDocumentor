@@ -1,10 +1,14 @@
 <?php
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -126,7 +130,7 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
             $property = new PropertyDescriptor();
             $property->setName(ltrim($propertyTag->getVariableName(), '$'));
             $property->setDescription($propertyTag->getDescription());
-            $property->setTypes($propertyTag->getTypes());
+            $property->setType($propertyTag->getType());
             $property->setParent($this);
 
             $properties->add($property);
@@ -136,7 +140,7 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
     }
 
     /**
-     * @param string $package
+     * @param PackageDescriptor $package
      */
     public function setPackage($package)
     {
@@ -155,8 +159,6 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
      * Sets a collection of all traits used by this class.
      *
      * @param Collection $usedTraits
-     *
-     * @return void
      */
     public function setUsedTraits($usedTraits)
     {

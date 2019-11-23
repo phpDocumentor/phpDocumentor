@@ -1,15 +1,24 @@
 <?php
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor;
+
+use phpDocumentor\Descriptor\Interfaces\ClassInterface;
+use phpDocumentor\Descriptor\Interfaces\FunctionInterface;
+use phpDocumentor\Descriptor\Interfaces\InterfaceInterface;
+use phpDocumentor\Descriptor\Interfaces\TraitInterface;
 
 /**
  * Represents a file in the project.
@@ -85,8 +94,6 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
      * Sets the hash of the contents for this file.
      *
      * @param string $hash
-     *
-     * @return void
      */
     protected function setHash($hash)
     {
@@ -107,8 +114,6 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
      * Sets the source contents for this file.
      *
      * @param string|null $source
-     *
-     * @return void
      */
     public function setSource($source)
     {
@@ -127,10 +132,6 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
 
     /**
      * Sets the collection of namespace aliases for this file.
-     *
-     * @param Collection $namespaceAliases
-     *
-     * @return void
      */
     public function setNamespaceAliases(Collection $namespaceAliases)
     {
@@ -149,10 +150,6 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
 
     /**
      * Sets a list of all includes that have been declared in this file.
-     *
-     * @param Collection $includes
-     *
-     * @return void
      */
     public function setIncludes(Collection $includes)
     {
@@ -171,10 +168,6 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
 
     /**
      * Sets a list of constant descriptors contained in this file.
-     *
-     * @param Collection $constants
-     *
-     * @return void
      */
     public function setConstants(Collection $constants)
     {
@@ -193,10 +186,6 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
 
     /**
      * Sets a list of function descriptors contained in this file.
-     *
-     * @param Collection $functions
-     *
-     * @return void
      */
     public function setFunctions(Collection $functions)
     {
@@ -215,10 +204,6 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
 
     /**
      * Sets a list of class descriptors contained in this file.
-     *
-     * @param Collection $classes
-     *
-     * @return void
      */
     public function setClasses(Collection $classes)
     {
@@ -237,10 +222,6 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
 
     /**
      * Sets a list of interface descriptors contained in this file.
-     *
-     * @param Collection $interfaces
-     *
-     * @return void
      */
     public function setInterfaces(Collection $interfaces)
     {
@@ -259,10 +240,6 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
 
     /**
      * Sets a list of trait descriptors contained in this file.
-     *
-     * @param Collection $traits
-     *
-     * @return void
      */
     public function setTraits(Collection $traits)
     {
@@ -289,11 +266,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
     /**
      * Sets a series of markers contained in this file.
      *
-     * @param Collection $markers
-     *
      * @see getMarkers() for more information on markers.
-     *
-     * @return void
      */
     public function setMarkers(Collection $markers)
     {
@@ -330,6 +303,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
                 if (!$item) {
                     continue;
                 }
+
                 $errors = $errors->merge($item->getErrors());
             }
 
@@ -338,6 +312,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
                     if (!$item) {
                         continue;
                     }
+
                     $errors = $errors->merge($item->getErrors());
                 }
             }
@@ -347,6 +322,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
                     if (!$item) {
                         continue;
                     }
+
                     $errors = $errors->merge($item->getErrors());
                 }
             }
@@ -359,8 +335,6 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
      * Sets the file path for this file relative to the project's root.
      *
      * @param string $path
-     *
-     * @return void
      */
     public function setPath($path)
     {

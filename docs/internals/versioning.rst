@@ -14,5 +14,4 @@ The "API" as intended with the Semantic Versioning specification consists of thr
 # Commands, any command exposed by phpDocumentor is considered to be part of the API. As such commands or their options
   may not be removed or changed without increasing the major version number.
 
-
 .. _SEMVER: http://semver.org/spec/v2.0.0.html

@@ -1,10 +1,14 @@
 <?php
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -27,15 +31,13 @@ use Zend\Filter\AbstractFilter;
  *
  * @link http://www.phpdoc.org/docs/latest/for-users/phpdoc/tags/internal.html
  */
-class StripInternal extends AbstractFilter
+class StripInternal implements FilterInterface
 {
     /** @var ProjectDescriptorBuilder $builder */
     protected $builder;
 
     /**
      * Initializes this filter with an instance of the builder to retrieve the latest ProjectDescriptor from.
-     *
-     * @param ProjectDescriptorBuilder $builder
      */
     public function __construct(ProjectDescriptorBuilder $builder)
     {
@@ -49,9 +51,9 @@ class StripInternal extends AbstractFilter
      *
      * @return DescriptorAbstract|null
      */
-    public function filter($value)
+    public function __invoke(?Filterable $value) : ?Filterable
     {
-        $isInternalAllowed = $this->builder->isVisibilityAllowed(Settings::VISIBILITY_INTERNAL);
+        $isInternalAllowed = $this->builder->getProjectDescriptor()->isVisibilityAllowed(Settings::VISIBILITY_INTERNAL);
         if ($isInternalAllowed) {
             $value->setDescription(preg_replace('/\{@internal\s(.+?)\}\}/', '$1', $value->getDescription()));
 

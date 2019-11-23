@@ -1,10 +1,14 @@
 <?php
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -12,6 +16,7 @@
 namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Descriptor\Tag\VarDescriptor;
+use phpDocumentor\Reflection\Type;
 
 /**
  * Descriptor representing a property.
@@ -23,8 +28,8 @@ class PropertyDescriptor extends DescriptorAbstract implements
     /** @var ClassDescriptor|TraitDescriptor $parent */
     protected $parent;
 
-    /** @var string[]|null $types */
-    protected $types;
+    /** @var Type $type */
+    protected $type;
 
     /** @var string $default */
     protected $default;
@@ -90,9 +95,9 @@ class PropertyDescriptor extends DescriptorAbstract implements
     /**
      * {@inheritDoc}
      */
-    public function setTypes(Collection $types)
+    public function setType(Type $type)
     {
-        $this->types = $types;
+        $this->type = $type;
     }
 
     /**
@@ -100,17 +105,24 @@ class PropertyDescriptor extends DescriptorAbstract implements
      */
     public function getTypes()
     {
-        if (!$this->types) {
-            $this->types = new Collection();
+        if ($this->getType() === null) {
+            return [];
+        }
 
+        return [(string)$this->getType()];
+    }
+
+    public function getType()
+    {
+        if ($this->type === null) {
             /** @var VarDescriptor $var */
             $var = $this->getVar()->getIterator()->current();
             if ($var) {
-                $this->types = $var->getTypes();
+                return $var->getType();
             }
         }
 
-        return $this->types;
+        return $this->type;
     }
 
     /**
@@ -136,7 +148,7 @@ class PropertyDescriptor extends DescriptorAbstract implements
     {
         /** @var Collection $var */
         $var = $this->getTags()->get('var', new Collection());
-        if ($var->count() != 0) {
+        if ($var->count() !== 0) {
             return $var;
         }
 

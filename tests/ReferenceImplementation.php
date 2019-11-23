@@ -20,12 +20,12 @@ namespace {
 
 namespace My\Space {
 
-    define("GLOBAL_CONSTANT_DEFINE", 'test');
+    define('GLOBAL_CONSTANT_DEFINE', 'test');
 
     /**
      * @package Constant
      */
-    define("Namespaced\\GLOBAL_CONSTANT_DEFINE", 'test');
+    define('Namespaced\\GLOBAL_CONSTANT_DEFINE', 'test');
 
     /**
      * @package Constant\Specific
@@ -33,17 +33,11 @@ namespace My\Space {
     const GLOBAL_CONSTANT_CONST = 'test';
 
     /**
-     *
-     *
      * @param integer   $param1 Example of a description & with ampersand (&).
-     * @param \stdClass $param2
      * @param string    $param3
-     *
-     * @return void
      */
     function globalFunction($param1, \stdClass $param2, $param3 = '')
     {
-
     }
 
     /**
@@ -55,12 +49,13 @@ namespace My\Space {
      */
     class SubClass extends SuperClass
     {
-
         /**
-         * @var integer   $propertyListItem1 The first property in a list
+         * @var integer   The first property in a list
          * @var \stdClass $propertyListItem2 The second property in a list
          */
-        public $propertyListItem1, $propertyListItem2;
+        public $propertyListItem1;
+
+        public $propertyListItem2;
     }
 
     /**
@@ -138,18 +133,12 @@ namespace My\Space {
 
         /**
          * This is a method definition showcasing the variadic syntax pre-php5.6.
-         *
-         * @param string $first
-         * @param string ...$second
-         *
-         * @return void
          */
         public function variadicMethodWithOneExplicitParameter($first)
         {
-
         }
 
-        static public function staticMethod()
+        public static function staticMethod()
         {
         }
 
@@ -162,9 +151,8 @@ namespace My\Space {
         }
     }
 
-    interface SubInterface extends SuperInterface,AnotherSuperInterface
+    interface SubInterface extends SuperInterface, AnotherSuperInterface
     {
-
     }
 
     /**
@@ -184,7 +172,7 @@ namespace My\Space {
      */
     interface AnotherSuperInterface
     {
-        static public function staticMethod();
+        public static function staticMethod();
     }
 }
 
@@ -198,13 +186,11 @@ namespace My\Space\Errors {
      */
     class MultiplePackageTags
     {
-
         /**
          * @return type This is a generic default injected by IDEs, and is not a valid type
          */
         public function responseMayNotBeType()
         {
-
         }
     }
 
@@ -213,6 +199,5 @@ namespace My\Space\Errors {
      */
     class SubPackageWithoutPackage
     {
-
     }
 }

@@ -4,7 +4,7 @@
  *
  * PHP Version 5.3
  *
- * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -17,7 +17,7 @@ use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 /**
  * Tests the functionality for the StripInternal class.
  */
-class StripInternalTest extends \PHPUnit_Framework_TestCase
+class StripInternalTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var ProjectDescriptorBuilder|m\Mock */
     protected $builderMock;
@@ -43,91 +43,91 @@ class StripInternalTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Filter\StripInternal::filter
+     * @covers phpDocumentor\Descriptor\Filter\StripInternal::__invoke
      */
     public function testStripsInternalTagFromDescription()
     {
-        $this->builderMock->shouldReceive('isVisibilityAllowed')->andReturn(false);
+        $this->builderMock->shouldReceive('getProjectDescriptor->isVisibilityAllowed')->andReturn(false);
         $descriptor = m::mock('phpDocumentor\Descriptor\DescriptorAbstract');
         $descriptor->shouldReceive('getTags->get')->with('internal')->andReturn(null);
 
         $descriptor->shouldReceive('getDescription')->andReturn('without {@internal blabla }}internal tag');
         $descriptor->shouldReceive('setDescription')->with('without internal tag');
 
-        $this->assertSame($descriptor, $this->fixture->filter($descriptor));
+        $this->assertSame($descriptor, $this->fixture->__invoke($descriptor));
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Filter\StripInternal::filter
+     * @covers phpDocumentor\Descriptor\Filter\StripInternal::__invoke
      */
     public function testStripsInternalTagFromDescriptionIfTagDescriptionContainsBraces()
     {
-        $this->builderMock->shouldReceive('isVisibilityAllowed')->andReturn(false);
+        $this->builderMock->shouldReceive('getProjectDescriptor->isVisibilityAllowed')->andReturn(false);
         $descriptor = m::mock('phpDocumentor\Descriptor\DescriptorAbstract');
         $descriptor->shouldReceive('getTags->get')->with('internal')->andReturn(null);
 
         $descriptor->shouldReceive('getDescription')->andReturn('without {@internal bla{bla} }}internal tag');
         $descriptor->shouldReceive('setDescription')->with('without internal tag');
 
-        $this->assertSame($descriptor, $this->fixture->filter($descriptor));
+        $this->assertSame($descriptor, $this->fixture->__invoke($descriptor));
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Filter\StripInternal::filter
+     * @covers phpDocumentor\Descriptor\Filter\StripInternal::__invoke
      */
     public function testResolvesInternalTagFromDescriptionIfParsePrivateIsTrue()
     {
-        $this->builderMock->shouldReceive('isVisibilityAllowed')->andReturn(true);
+        $this->builderMock->shouldReceive('getProjectDescriptor->isVisibilityAllowed')->andReturn(true);
         $descriptor = m::mock('phpDocumentor\Descriptor\DescriptorAbstract');
 
         $descriptor->shouldReceive('getDescription')->andReturn('without {@internal blabla }}internal tag');
         $descriptor->shouldReceive('setDescription')->with('without blabla internal tag');
 
-        $this->assertSame($descriptor, $this->fixture->filter($descriptor));
+        $this->assertSame($descriptor, $this->fixture->__invoke($descriptor));
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Filter\StripInternal::filter
+     * @covers phpDocumentor\Descriptor\Filter\StripInternal::__invoke
      */
     public function testRemovesDescriptorIfTaggedAsInternal()
     {
-        $this->builderMock->shouldReceive('isVisibilityAllowed')->andReturn(false);
+        $this->builderMock->shouldReceive('getProjectDescriptor->isVisibilityAllowed')->andReturn(false);
 
         $descriptor = m::mock('phpDocumentor\Descriptor\DescriptorAbstract');
         $descriptor->shouldReceive('getDescription');
         $descriptor->shouldReceive('setDescription');
         $descriptor->shouldReceive('getTags->get')->with('internal')->andReturn(true);
 
-        $this->assertNull($this->fixture->filter($descriptor));
+        $this->assertNull($this->fixture->__invoke($descriptor));
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Filter\StripInternal::filter
+     * @covers phpDocumentor\Descriptor\Filter\StripInternal::__invoke
      */
     public function testKeepsDescriptorIfTaggedAsInternalAndParsePrivateIsTrue()
     {
-        $this->builderMock->shouldReceive('isVisibilityAllowed')->andReturn(true);
+        $this->builderMock->shouldReceive('getProjectDescriptor->isVisibilityAllowed')->andReturn(true);
 
         $descriptor = m::mock('phpDocumentor\Descriptor\DescriptorAbstract');
         $descriptor->shouldReceive('getDescription');
         $descriptor->shouldReceive('setDescription');
         $descriptor->shouldReceive('getTags->get')->with('internal')->andReturn(true);
 
-        $this->assertSame($descriptor, $this->fixture->filter($descriptor));
+        $this->assertSame($descriptor, $this->fixture->__invoke($descriptor));
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Filter\StripInternal::filter
+     * @covers phpDocumentor\Descriptor\Filter\StripInternal::__invoke
      */
     public function testDescriptorIsUnmodifiedIfThereIsNoInternalTag()
     {
-        $this->builderMock->shouldReceive('isVisibilityAllowed')->andReturn(true);
+        $this->builderMock->shouldReceive('getProjectDescriptor->isVisibilityAllowed')->andReturn(true);
 
         $descriptor = m::mock('phpDocumentor\Descriptor\DescriptorAbstract');
         $descriptor->shouldReceive('getDescription');
         $descriptor->shouldReceive('setDescription');
         $descriptor->shouldReceive('getTags->get')->with('internal')->andReturn(false);
 
-        $this->assertEquals($descriptor, $this->fixture->filter($descriptor));
+        $this->assertEquals($descriptor, $this->fixture->__invoke($descriptor));
     }
 }

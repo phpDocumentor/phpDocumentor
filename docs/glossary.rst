@@ -189,14 +189,3 @@ Glossary
     Annotation
     Annotations
        .. note:: Here a text must be added
-
-    Plugin
-    Service Provider
-        A Service Provider is part of the Plugin system for phpDocumentor. Each plugin must have a Service Provider
-        class that will bind the classes necessary for that plugin into the Dependency Injection Container or one of
-        it services.
-
-        The Service Provider is a concept coming from Pimple_, the dependency injection container powering
-        phpDocumentor.
-
-.. _Pimple: http://pimple

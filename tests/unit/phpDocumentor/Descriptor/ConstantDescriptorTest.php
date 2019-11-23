@@ -4,7 +4,7 @@
  *
  * PHP Version 5.3
  *
- * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -15,11 +15,14 @@ use \Mockery as m;
 use phpDocumentor\Descriptor\Tag\AuthorDescriptor;
 use phpDocumentor\Descriptor\Tag\VarDescriptor;
 use phpDocumentor\Descriptor\Tag\VersionDescriptor;
+use phpDocumentor\Reflection\Type;
+use phpDocumentor\Reflection\Types\Array_;
+use phpDocumentor\Reflection\Types\String_;
 
 /**
  * Tests the functionality for the ConstantDescriptor class.
  */
-class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
+class ConstantDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var ConstantDescriptor $fixture */
     protected $fixture;
@@ -34,12 +37,12 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ConstantDescriptor::getParent
-     * @covers phpDocumentor\Descriptor\ConstantDescriptor::setParent
+     * @covers \phpDocumentor\Descriptor\ConstantDescriptor::getParent
+     * @covers \phpDocumentor\Descriptor\ConstantDescriptor::setParent
      */
     public function testSetAndGetParentClass()
     {
-        $this->assertSame(null, $this->fixture->getParent());
+        $this->assertNull($this->fixture->getParent());
 
         $parentMock = m::mock('phpDocumentor\Descriptor\ClassDescriptor');
         $parentMock->shouldReceive('getFullyQualifiedStructuralElementName')->andReturn('TestClass');
@@ -50,7 +53,7 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ConstantDescriptor::setParent
+     * @covers \phpDocumentor\Descriptor\ConstantDescriptor::setParent
      * @expectedException \InvalidArgumentException
      */
     public function testSettingAParentFailsWhenInputIsNotNullClassOrInterface()
@@ -59,12 +62,12 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ConstantDescriptor::getParent
-     * @covers phpDocumentor\Descriptor\ConstantDescriptor::setParent
+     * @covers \phpDocumentor\Descriptor\ConstantDescriptor::getParent
+     * @covers \phpDocumentor\Descriptor\ConstantDescriptor::setParent
      */
     public function testSetAndGetParentInterface()
     {
-        $this->assertSame(null, $this->fixture->getParent());
+        $this->assertNull($this->fixture->getParent());
 
         $parentMock = m::mock('phpDocumentor\Descriptor\InterfaceDescriptor');
         $parentMock->shouldReceive('getFullyQualifiedStructuralElementName')->andReturn('TestInterface');
@@ -74,42 +77,42 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ConstantDescriptor::getTypes
-     * @covers phpDocumentor\Descriptor\ConstantDescriptor::setTypes
+     * @covers \phpDocumentor\Descriptor\ConstantDescriptor::getTypes
+     * @covers \phpDocumentor\Descriptor\ConstantDescriptor::setTypes
      */
     public function testSetAndGetTypes()
     {
-        $this->assertEquals(new Collection(), $this->fixture->getTypes());
-        $expected = new Collection(array(1));
+        $this->assertEquals(null, $this->fixture->getType());
+        $expected = new Array_();
 
         $this->fixture->setTypes($expected);
 
-        $this->assertSame($expected, $this->fixture->getTypes());
+        $this->assertSame($expected, $this->fixture->getType());
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ConstantDescriptor::getTypes
-     * @covers phpDocumentor\Descriptor\ConstantDescriptor::getVar
+     * @covers \phpDocumentor\Descriptor\ConstantDescriptor::getTypes
+     * @covers \phpDocumentor\Descriptor\ConstantDescriptor::getVar
      */
-    public function testgetTypesDerivedFromVarTag()
+    public function testTestgetTypesDerivedFromVarTag()
     {
-        $expected = array('string', 'null');
+        $expected = new String_();
 
-        $varTag = m::mock('phpDocumentor\Descriptor\Tag\VarDescriptor');
-        $varTag->shouldReceive('getTypes')->andReturn($expected);
+        $varTag = new VarDescriptor('var');
+        $varTag->setType($expected);
 
-        $this->fixture->getTags()->set('var', new Collection(array($varTag)));
+        $this->fixture->getTags()->set('var', new Collection([$varTag]));
 
-        $this->assertSame($expected, $this->fixture->getTypes());
+        $this->assertEquals($expected, $this->fixture->getType());
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ConstantDescriptor::getTypes
-     * @covers phpDocumentor\Descriptor\ConstantDescriptor::getVar
+     * @covers \phpDocumentor\Descriptor\ConstantDescriptor::getTypes
+     * @covers \phpDocumentor\Descriptor\ConstantDescriptor::getVar
      */
     public function testGetTypesUsingInheritanceOfVarTag()
     {
-        $expected = array('string', 'null');
+        $expected = new String_();
 
         $constantName = 'CONSTANT';
         $this->fixture->setName($constantName);
@@ -117,18 +120,18 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
 
         // Attempt to get the types; which come from the superclass' constants
         $this->fixture->setParent($parentClass);
-        $types = $this->fixture->getTypes();
+        $types = $this->fixture->getType();
 
         $this->assertSame($expected, $types);
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ConstantDescriptor::getValue
-     * @covers phpDocumentor\Descriptor\ConstantDescriptor::setValue
+     * @covers \phpDocumentor\Descriptor\ConstantDescriptor::getValue
+     * @covers \phpDocumentor\Descriptor\ConstantDescriptor::setValue
      */
     public function testSetAndGetValue()
     {
-        $this->assertSame(null, $this->fixture->getValue());
+        $this->assertNull($this->fixture->getValue());
 
         $this->fixture->setValue('a');
 
@@ -136,7 +139,7 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ConstantDescriptor::getFile
+     * @covers \phpDocumentor\Descriptor\ConstantDescriptor::getFile
      */
     public function testRetrieveFileAssociatedWithAGlobalConstant()
     {
@@ -151,7 +154,7 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ConstantDescriptor::getFile
+     * @covers \phpDocumentor\Descriptor\ConstantDescriptor::getFile
      */
     public function testRetrieveFileAssociatedWithAClassConstant()
     {
@@ -167,7 +170,7 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getSummary
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getSummary
      */
     public function testSummaryInheritsWhenNoneIsPresent()
     {
@@ -185,7 +188,7 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getDescription
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getDescription
      */
     public function testDescriptionInheritsWhenNoneIsPresent()
     {
@@ -203,7 +206,7 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getDescription
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getDescription
      */
     public function testDescriptionInheritsWhenInheritDocIsPresent()
     {
@@ -221,7 +224,7 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getDescription
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getDescription
      */
     public function testDescriptionIsAugmentedWhenInheritDocInlineTagIsPresent()
     {
@@ -239,13 +242,13 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ConstantDescriptor::getVar
+     * @covers \phpDocumentor\Descriptor\ConstantDescriptor::getVar
      */
     public function testVarTagsInheritWhenNoneArePresent()
     {
         // Arrange
         $varTagDescriptor = new VarDescriptor('var');
-        $varCollection = new Collection(array($varTagDescriptor));
+        $varCollection = new Collection([$varTagDescriptor]);
         $this->fixture->getTags()->clear();
         $parentProperty = $this->whenFixtureHasConstantInParentClassWithSameName($this->fixture->getName());
         $parentProperty->getTags()->set('var', $varCollection);
@@ -258,7 +261,7 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getPackage
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getPackage
      */
     public function testPackageInheritWhenNoneArePresent()
     {
@@ -276,13 +279,13 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getAuthor
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getAuthor
      */
     public function testAuthorTagsInheritWhenNoneArePresent()
     {
         // Arrange
         $authorTagDescriptor = new AuthorDescriptor('author');
-        $authorCollection = new Collection(array($authorTagDescriptor));
+        $authorCollection = new Collection([$authorTagDescriptor]);
         $this->fixture->getTags()->clear();
         $parentProperty = $this->whenFixtureHasConstantInParentClassWithSameName($this->fixture->getName());
         $parentProperty->getTags()->set('author', $authorCollection);
@@ -295,13 +298,13 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getVersion
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getVersion
      */
     public function testVersionTagsInheritWhenNoneArePresent()
     {
         // Arrange
         $versionTagDescriptor = new VersionDescriptor('version');
-        $versionCollection = new Collection(array($versionTagDescriptor));
+        $versionCollection = new Collection([$versionTagDescriptor]);
         $this->fixture->getTags()->clear();
         $parentProperty = $this->whenFixtureHasConstantInParentClassWithSameName($this->fixture->getName());
         $parentProperty->getTags()->set('version', $versionCollection);
@@ -314,13 +317,13 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getCopyright
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getCopyright
      */
     public function testCopyrightTagsInheritWhenNoneArePresent()
     {
         // Arrange
         $copyrightTagDescriptor = new TagDescriptor('copyright');
-        $copyrightCollection = new Collection(array($copyrightTagDescriptor));
+        $copyrightCollection = new Collection([$copyrightTagDescriptor]);
         $this->fixture->getTags()->clear();
         $parentProperty = $this->whenFixtureHasConstantInParentClassWithSameName($this->fixture->getName());
         $parentProperty->getTags()->set('copyright', $copyrightCollection);
@@ -338,25 +341,25 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
      * The created ParentClass can be used to test the inheritance of properties of a constant descriptor, such as
      * inheriting type information.
      *
-     * @param string[] $types
+     * @param Type $type
      * @param string $constantName
      *
      * @return m\MockInterface|ClassDescriptor
      */
-    protected function createParentClassWithSuperClassAndConstant($types, $constantName)
+    protected function createParentClassWithSuperClassAndConstant(Type $type, $constantName)
     {
         // construct the to-be-inherited constant and its @var tag
         $varTag = m::mock('phpDocumentor\Descriptor\Tag\VarDescriptor');
-        $varTag->shouldReceive('getTypes')->andReturn($types);
+        $varTag->shouldReceive('getType')->andReturn($type);
 
-        $parentConstant = m::mock('phpDocumentor\Descriptor\ConstantDescriptor');
-        $parentConstant->shouldReceive('getVar')->andReturn(new Collection(array($varTag)));
+        $parentConstant = m::mock('\phpDocumentor\Descriptor\ConstantDescriptor');
+        $parentConstant->shouldReceive('getVar')->andReturn(new Collection([$varTag]));
 
         // create SuperClassMock and add a Constant collection with out to-be-inherited constant
         $superClass = m::mock('phpDocumentor\Descriptor\ClassDescriptor');
         $superClass->shouldReceive('getConstants')->andReturn(
             new Collection(
-                array($constantName => $parentConstant)
+                [$constantName => $parentConstant]
             )
         );
 
@@ -403,13 +406,13 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
      */
     protected function whenFixtureHasConstantInParentClassWithSameName($name)
     {
-        $result = new ConstantDescriptor;
+        $result = new ConstantDescriptor();
         $result->setName($name);
 
         $parent = new ClassDescriptor();
         $parent->getConstants()->set($name, $result);
 
-        $class  = new ClassDescriptor();
+        $class = new ClassDescriptor();
         $class->setParent($parent);
 
         $this->fixture->setParent($class);

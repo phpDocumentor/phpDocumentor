@@ -1,27 +1,43 @@
 #!/usr/bin/env php
 <?php
-/**
- * phpDocumentor
- *
- * PHP Version 5.3
- *
- * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
- */
 
-// determine base include folder, if @php_dir@ contains @php_dir then
-// we did not install via PEAR
-$bootstrap_folder = (strpos('@php_dir@', '@php_dir') === 0)
-    ? __DIR__ . '/../src'
-    : '@php_dir@/phpDocumentor/src';
+use phpDocumentor\Kernel;
+use Doctrine\Common\Annotations\AnnotationRegistry;
+use phpDocumentor\Console\Application;
+use Symfony\Bundle\FrameworkBundle\Console\Application as SymfonyApplication;
+use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Debug\Debug;
+use Symfony\Component\Dotenv\Dotenv;
 
-include $bootstrap_folder . '/phpDocumentor/Bootstrap.php';
+set_time_limit(0);
 
-$app = \phpDocumentor\Bootstrap::createInstance()
-    ->registerProfiler()
-    ->initialize();
-$app->run();
+require __DIR__ . '/../src/phpDocumentor/AutoloaderLocator.php';
+$loader = \phpDocumentor\AutoloaderLocator::autoload();
 
-// disable E_STRICT reporting on the end to prevent PEAR from throwing Strict warnings.
-error_reporting(error_reporting() & ~E_STRICT);
+if (!class_exists(SymfonyApplication::class)) {
+    throw new \RuntimeException('You need to add "symfony/framework-bundle" as a Composer dependency.');
+}
+
+if (!isset($_SERVER['PHPDOC_ENV']) && !Kernel::isPhar()) {
+    if (!class_exists(Dotenv::class)) {
+        throw new \RuntimeException('APP_ENV environment variable is not defined. You need to define environment variables for configuration or add "symfony/dotenv" as a Composer dependency to load variables from a .env file.');
+    }
+    (new Dotenv())->load(__DIR__.'/../.env');
+}
+
+$input = new ArgvInput();
+$defaultEnv = 'prod';
+$env = $input->getParameterOption(['--env', '-e'], $_SERVER['PHPDOC_ENV'] ?? $defaultEnv);
+$debug = ($_SERVER['PHPDOC_DEBUG'] ?? ('prod' !== $env && 'phar' !== $env)) && !$input->hasParameterOption(['--no-debug', '']);
+
+if ($debug) {
+    umask(0000);
+
+    if (class_exists(Debug::class)) {
+        Debug::enable();
+    }
+}
+
+$kernel = new Kernel($env, $debug);
+$application = new Application($kernel);
+$application->run($input);

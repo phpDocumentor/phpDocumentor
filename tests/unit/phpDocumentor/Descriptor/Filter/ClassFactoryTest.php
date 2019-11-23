@@ -4,17 +4,19 @@
  *
  * PHP Version 5.3
  *
- * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor\Filter;
 
+use League\Pipeline\Pipeline;
+
 /**
  * Tests the functionality for the ClassFactory class.
  */
-class ClassFactoryTest extends \PHPUnit_Framework_TestCase
+class ClassFactoryTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var ClassFactory $fixture */
     protected $fixture;
@@ -34,6 +36,6 @@ class ClassFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $filterChain = $this->fixture->getChainFor('foo');
 
-        $this->assertInstanceOf('Zend\Filter\FilterChain', $filterChain);
+        $this->assertInstanceOf(Pipeline::class, $filterChain);
     }
 }

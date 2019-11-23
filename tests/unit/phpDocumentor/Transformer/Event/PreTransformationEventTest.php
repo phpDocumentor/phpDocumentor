@@ -1,47 +1,46 @@
 <?php
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Transformer\Event;
 
+use phpDocumentor\Transformer\Transformation;
+
 /**
  * Tests the functionality for the PreTransformationEvent class.
+ * @coversDefaultClass \phpDocumentor\Transformer\Event\PreTransformationEvent
+ * @covers ::<private>
  */
-class PreTransformationEventTest extends \PHPUnit_Framework_TestCase
+final class PreTransformationEventTest extends \PHPUnit\Framework\TestCase
 {
     /** @var PreTransformationEvent $fixture */
     protected $fixture;
 
-    /** @var \DOMDocument */
-    protected $source;
+    /** @var Transformation */
+    private $transformation;
 
     /**
-     * Creates a new (empty) fixture object.
-     * Creates a new DOMDocument object.
+     * @covers ::getTransformation
+     * @covers ::getSubject
+     * @covers ::create
      */
-    protected function setUp()
+    public function testSetAndGetTransformation()
     {
-        $this->fixture = new PreTransformationEvent(new \stdClass());
-        $this->source = new \DOMDocument('1.0', 'UTF-8');
-    }
-
-    /**
-     * @covers phpDocumentor\Transformer\Event\PreTransformationEvent::getSource
-     * @covers phpDocumentor\Transformer\Event\PreTransformationEvent::setSource
-     */
-    public function testSetAndGetSource()
-    {
-        $this->assertSame(null, $this->fixture->getSource());
-
-        $this->fixture->setSource($this->source);
-
-        $this->assertSame($this->source, $this->fixture->getSource());
+        $this->transformation = new Transformation('', '', '', '');
+        $subject = new \stdClass();
+        $this->fixture = PreTransformationEvent::create($subject, $this->transformation);
+        $this->assertSame($this->transformation, $this->fixture->getTransformation());
+        $this->assertSame($subject, $this->fixture->getSubject());
     }
 }

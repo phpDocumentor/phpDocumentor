@@ -5,38 +5,39 @@
  * PHP Version 5.3
  *
  * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Transformer\Writer;
 
-use Mockery\MockInterface;
 use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
+use Mockery\MockInterface;
 use phpDocumentor\Transformer\Router\Queue;
-use phpDocumentor\Plugin\Core\Transformer\Writer\Xsl;
 
 /**
  * Test class for phpDocumentor\Transformer\Writer\Collection
  */
-class CollectionTest extends \PHPUnit_Framework_TestCase
+class CollectionTest extends MockeryTestCase
 {
     /** @var MockInterface|Queue */
     protected $routers;
 
-    /** @var MockInterface|Xsl */
+    /** @var MockInterface|WriterAbstract */
     protected $writer;
 
     /** @var Collection */
     protected $fixture;
+
     /**
      * Initializes the fixture and dependencies for this testcase.
      */
-    public function setUp()
+    protected function setUp()
     {
-        $this->routers = m::mock('phpDocumentor\Transformer\Router\Queue');
-        $this->writer = m::mock('phpDocumentor\Plugin\Core\Transformer\Writer\Xsl');
+        $this->routers = m::mock(Queue::class);
+        $this->writer = m::mock(WriterAbstract::class);
         $this->fixture = new Collection($this->routers);
     }
 
@@ -67,17 +68,6 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Writer\Collection::offsetSet
-     */
-    public function testOffsetSetWriterReceivesRouterQueue()
-    {
-        $this->writer->shouldReceive('setRouters')->once()->with($this->routers);
-        $this->fixture->offsetSet('index', $this->writer);
-
-        $this->assertTrue(true);
-    }
-
-    /**
      * @expectedException \InvalidArgumentException
      * @covers phpDocumentor\Transformer\Writer\Collection::offsetGet
      */
@@ -96,9 +86,9 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($this->writer, $this->fixture->offsetGet('index'));
     }
 
-   /**
-    * @covers phpDocumentor\Transformer\Writer\Collection::checkRequirements
-    */
+    /**
+     * @covers phpDocumentor\Transformer\Writer\Collection::checkRequirements
+     */
     public function testCheckRequirements()
     {
         $this->registerWriter();
@@ -114,7 +104,6 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
      */
     private function registerWriter()
     {
-        $this->writer->shouldReceive('setRouters')->with($this->routers);
         $this->fixture->offsetSet('index', $this->writer);
     }
 }

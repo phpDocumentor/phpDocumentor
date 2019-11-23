@@ -4,23 +4,26 @@
  *
  * PHP Version 5.3
  *
- * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor;
 
+use phpDocumentor\Reflection\Types\Integer;
+use phpDocumentor\Reflection\Types\String_;
+
 /**
- * Tests the functionality for the ArgumentDescriptor class.
+ * @coversDefaultClass \phpDocumentor\Descriptor\ArgumentDescriptor
  */
-class ArgumentDescriptorTest extends \PHPUnit_Framework_TestCase
+class ArgumentDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var ArgumentDescriptor $fixture */
     protected $fixture;
 
     /**
-     * Creates a new (emoty) fixture object.
+     * Creates a new (empty) fixture object.
      */
     protected function setUp()
     {
@@ -28,25 +31,40 @@ class ArgumentDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ArgumentDescriptor::getTypes
-     * @covers phpDocumentor\Descriptor\ArgumentDescriptor::setTypes
+     * @covers ::getType
+     * @covers ::setType
      */
     public function testSetAndGetTypes()
     {
-        $this->assertSame(array(), $this->fixture->getTypes());
+        $this->assertSame(null, $this->fixture->getType());
 
-        $this->fixture->setTypes(array(1));
+        $type = new Integer();
+        $this->fixture->setType($type);
 
-        $this->assertSame(array(1), $this->fixture->getTypes());
+        $this->assertSame($type, $this->fixture->getType());
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ArgumentDescriptor::getDefault
-     * @covers phpDocumentor\Descriptor\ArgumentDescriptor::setDefault
+     * @covers ::getMethod
+     * @covers ::setMethod
+     */
+    public function testSetAndGetMethod()
+    {
+        $this->assertSame(null, $this->fixture->getMethod());
+
+        $method = new MethodDescriptor();
+        $this->fixture->setMethod($method);
+
+        $this->assertSame($method, $this->fixture->getMethod());
+    }
+
+    /**
+     * @covers ::getDefault
+     * @covers ::setDefault
      */
     public function testSetAndGetDefault()
     {
-        $this->assertSame(null, $this->fixture->getDefault());
+        $this->assertNull($this->fixture->getDefault());
 
         $this->fixture->setDefault('a');
 
@@ -54,20 +72,33 @@ class ArgumentDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ArgumentDescriptor::isByReference
-     * @covers phpDocumentor\Descriptor\ArgumentDescriptor::setByReference
+     * @covers ::isByReference
+     * @covers ::setByReference
      */
     public function testSetAndGetWhetherArgumentIsPassedByReference()
     {
-        $this->assertSame(false, $this->fixture->isByReference());
+        $this->assertFalse($this->fixture->isByReference());
 
         $this->fixture->setByReference(true);
 
-        $this->assertSame(true, $this->fixture->isByReference());
+        $this->assertTrue($this->fixture->isByReference());
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ArgumentDescriptor::getDescription
+     * @covers ::isVariadic
+     * @covers ::setVariadic
+     */
+    public function testSetAndGetWhetherArgumentIsAVariadic()
+    {
+        $this->assertFalse($this->fixture->isVariadic());
+
+        $this->fixture->setVariadic(true);
+
+        $this->assertTrue($this->fixture->isVariadic());
+    }
+
+    /**
+     * @covers ::getDescription
      */
     public function testDescriptionInheritsWhenNoneIsPresent()
     {
@@ -84,7 +115,7 @@ class ArgumentDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ArgumentDescriptor::getDescription
+     * @covers ::getDescription
      */
     public function testDescriptionIsNotInheritedWhenPresent()
     {
@@ -101,28 +132,46 @@ class ArgumentDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ArgumentDescriptor::getTypes
+     * @covers ::getType
      */
     public function testTypeIsInheritedWhenNoneIsPresent()
     {
         // Arrange
-        $types = array('string');
-        $this->fixture->setTypes(null);
+        $types = new String_();
+        $this->fixture->setType(null);
         $parentArgument = $this->whenFixtureHasMethodAndArgumentInParentClassWithSameName('same_argument');
-        $parentArgument->setTypes($types);
+        $parentArgument->setType($types);
         // Act
-        $result = $this->fixture->getTypes();
+        $result = $this->fixture->getType();
 
         // Assert
         $this->assertSame($types, $result);
     }
 
     /**
-     * @param string $argumentName The name of the current method.
-     *
-     * @return ArgumentDescriptor
+     * @covers ::setMethod
+     * @covers ::getInheritedElement
      */
-    private function whenFixtureHasMethodAndArgumentInParentClassWithSameName($argumentName)
+    public function testGetTheArgumentFromWhichThisArgumentInherits()
+    {
+        $this->assertNull(
+            $this->fixture->getInheritedElement(),
+            'By default, an argument does not have an inherited element'
+        );
+
+        $method = new MethodDescriptor();
+        $method->setName('same');
+        $method->addArgument('abc', $this->fixture);
+        $this->fixture->setMethod($method);
+
+        $this->assertNull($this->fixture->getInheritedElement());
+
+        $this->whenFixtureHasMethodAndArgumentInParentClassWithSameName('abcd');
+
+        $this->assertNotNull($this->fixture->getInheritedElement());
+    }
+
+    private function whenFixtureHasMethodAndArgumentInParentClassWithSameName(string $argumentName): ArgumentDescriptor
     {
         $this->fixture->setName($argumentName);
 
@@ -133,20 +182,20 @@ class ArgumentDescriptorTest extends \PHPUnit_Framework_TestCase
         $parentMethod->setName('same');
         $parentMethod->addArgument($argumentName, $parentArgument);
 
-        $method = new MethodDescriptor;
+        $method = new MethodDescriptor();
         $method->setName('same');
         $method->addArgument($argumentName, $this->fixture);
+        $this->fixture->setMethod($method);
 
         $parent = new ClassDescriptor();
         $parent->getMethods()->set('same', $parentMethod);
         $parentMethod->setParent($parent);
 
-        $class  = new ClassDescriptor();
+        $class = new ClassDescriptor();
         $class->setParent($parent);
         $class->getMethods()->set('same', $method);
         $method->setParent($class);
 
         return $parentArgument;
-
     }
 }

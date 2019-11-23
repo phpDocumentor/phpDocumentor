@@ -1,10 +1,14 @@
 <?php
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -34,8 +38,6 @@ class ExampleDescriptor extends TagDescriptor
      * Sets the location where the example points to.
      *
      * @param string $filePath
-     *
-     * @return void
      */
     public function setFilePath($filePath)
     {
@@ -54,8 +56,6 @@ class ExampleDescriptor extends TagDescriptor
 
     /**
      * Returns the location where this example points to.
-     *
-     * @return void
      */
     public function setStartingLine($startingLine)
     {
@@ -74,8 +74,6 @@ class ExampleDescriptor extends TagDescriptor
 
     /**
      * Returns the location where this example points to.
-     *
-     * @return void
      */
     public function setLineCount($lineCount)
     {
@@ -94,8 +92,6 @@ class ExampleDescriptor extends TagDescriptor
 
     /**
      * Returns the content of the example.
-     *
-     * @return void
      */
     public function setExample($example)
     {

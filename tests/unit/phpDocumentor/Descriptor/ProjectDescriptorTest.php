@@ -4,7 +4,7 @@
  *
  * PHP Version 5.3
  *
- * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -16,7 +16,7 @@ use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
 /**
  * Tests the functionality for the ProjectDescriptor class.
  */
-class ProjectDescriptorTest extends \PHPUnit_Framework_TestCase
+class ProjectDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     const EXAMPLE_NAME = 'Initial name';
 

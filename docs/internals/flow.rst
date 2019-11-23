@@ -108,7 +108,6 @@ Boot the Application
    :Load configuration;
    :Add logging;
    :Register phpDocumentor's Service Providers;
-   :Load Third-Party Service Providers (plugins);
 
 Parse files into an AST
 ~~~~~~~~~~~~~~~~~~~~~~~

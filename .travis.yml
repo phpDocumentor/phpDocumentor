@@ -1,54 +1,72 @@
 language: php
-php: [5.6, 7.0, 7.1, 7.2, nightly ]
+php: [ 7.1, 7.2, 7.3 ]
 sudo: false
 
-matrix:
-    include:
-      - php: 5.4
-        env: BEHAT_FILTER="--suite=core_features"
-      - php: 5.5
-        env: BEHAT_FILTER="--suite=core_features"
-env:
-  global:
-    - VERSION=$(echo $TRAVIS_TAG | cut -c 2-10)
+branches:
+except: /^(\S*)-nightly-(\S*)$/
 
-script:
-- bin/phpunit
-- bin/behat $BEHAT_FILTER
+matrix:
+  fast_finish: true
 
 install:
-- composer install --no-interaction --prefer-dist -o
+  - travis_retry composer install --no-interaction --prefer-dist --optimize-autoloader
+before_script:
+  - travis_retry composer global require phpunit/phpunit ^6 # cannot use phpunit.phar or require-dev, because this package is a phpunit dep
+script:
+  - $HOME/.composer/vendor/bin/phpunit --no-coverage
+  - bin/behat -p default
+
+jobs:
+  include:
+
+    - stage: test
+      php: 7.1
+      name: "php 7.1 Smoke test"
+      before_script:
+        - travis_retry sudo apt update
+        - travis_retry sudo apt install graphviz
+      script:
+        - ./bin/phpdoc run
+
+    - stage: test
+      php: 7.2
+      name: "Behat with phar"
+      before_script:
+        - travis_retry sudo apt update
+        - travis_retry sudo apt install graphviz
+      script:
+        - git tag v3.999.999
+        - php bin/console cache:warmup --env=prod && php -d phar.readonly=false tools/box.phar compile
+        - bin/behat -p phar
+        - php build/phpDocumentor.phar run
+
+    - stage: test
+      php: 7.1
+      name: "php 7.1 Behat templates"
+      script:
+        - mkdir -p /tmp/phpdoc-behat/clean_template/simple
+        - bin/behat -p template
+
+    - stage: analysis
+      php: 7.1
+      name: "Phpunit code coverage"
+      script:
+        - $HOME/.composer/vendor/bin/phpunit
+      after_script:
+        - travis_retry wget --no-verbose https://phar.io/releases/phive.phar
+        - travis_retry php phive.phar --no-progress install --trust-gpg-keys E82B2FB314E9906E php-coveralls/php-coveralls && ./tools/php-coveralls --verbose
+        - travis_retry wget --no-verbose https://scrutinizer-ci.com/ocular.phar && php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml
 
 cache:
   directories:
-  - $HOME/.composer/cache/files
+  - $HOME/.composer
+  - $HOME/.phive
+  - ./docker
 
 notifications:
-  irc: irc.freenode.org#phpdocumentor
+  irc: "irc.freenode.org#phpdocumentor"
   slack:
-    secure: fjumM0h+4w3EYM4dpgqvpiCug7m4sSIC5+HATgwga/Nrc6IjlbWvGOv3JPgD3kQUhi18VmZfUYPmCv916SIbMnv8JWcrSaJXnPCgmxidvYkuzQDIw1HDJbVppGnkmwQA/qjIrM3sIEMfnu/arLRJQLI363aStZzGPxwIa4PDKcg=
+    secure: "fjumM0h+4w3EYM4dpgqvpiCug7m4sSIC5+HATgwga/Nrc6IjlbWvGOv3JPgD3kQUhi18VmZfUYPmCv916SIbMnv8JWcrSaJXnPCgmxidvYkuzQDIw1HDJbVppGnkmwQA/qjIrM3sIEMfnu/arLRJQLI363aStZzGPxwIa4PDKcg="
   email:
   - me@mikevanriel.com
   - ashnazg@php.net
-
-before_deploy:
-- echo "${VERSION}" > VERSION
-- yes "" | pear upgrade --force
-- pear install XML_Serializer-beta
-- pear install PEAR_PackageFileManager2-1.0.4
-- php bin/utils/package.php '${VERSION}' '${VERSION}' 'stable' make
-- pear package
-- php -d phar.readonly=false box.phar build
-- openssl sha1 phpDocumentor.phar
-- echo "Update https://github.com/josegonzalez/homebrew-php/blob/master/Formula/phpdocumentor.rb with the latest version number and the SHA1 that is shown above with the path /get/phpDocumentor-${VERSION}.phar"
-
-deploy:
-  provider: releases
-  api_key:
-    secure: WUchZXQQdIDtVQTYZsQ++2R1y6I+EzBrAACRuc33wAVd0mlqNmu3nb/c1Ou4pTk5JxjyGqm9Siyp9vobhBtzBh/hdXAnbZDWNx2l6R1M9S4R/Z/VbcQ+uIJ/VOoh2KvIOCcyVuFVmsemlVQCuatCRKswKmK/OuyQXy6ppyZMilA=
-  file: "phpDocumentor.phar"
-  skip_cleanup: true
-  on:
-    repo: phpDocumentor/phpDocumentor2
-    tags: true
-    php: 5.4

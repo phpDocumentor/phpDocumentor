@@ -1,22 +1,26 @@
 <?php
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Compiler\Pass;
 
-use phpDocumentor\Descriptor\DescriptorAbstract;
-use phpDocumentor\Descriptor\Example\Finder;
 use phpDocumentor\Compiler\CompilerPassInterface;
-use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\Reflection\DocBlock\Tag\ExampleTag;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\ExampleAssembler;
+use phpDocumentor\Descriptor\DescriptorAbstract;
+use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Reflection\DocBlock\ExampleFinder;
+use phpDocumentor\Reflection\DocBlock\Tags\Example;
 
 /**
  * This index builder collects all examples from tags and inserts them into the example index.
@@ -31,25 +35,19 @@ class ExampleTagsEnricher implements CompilerPassInterface
     /**
      * Initializes this compiler pass with its dependencies.
      *
-     * @param Finder $finder Finds examples in several directories.
+     * @param ExampleFinder $finder Finds examples in several directories.
      */
-    public function __construct(Finder $finder)
+    public function __construct(ExampleFinder $finder)
     {
         $this->exampleAssembler = new ExampleAssembler($finder);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getDescription()
+    public function getDescription(): string
     {
         return 'Enriches inline example tags with their sources';
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function execute(ProjectDescriptor $project)
+    public function execute(ProjectDescriptor $project): void
     {
         $elements = $project->getIndexes()->get('elements');
 
@@ -61,15 +59,11 @@ class ExampleTagsEnricher implements CompilerPassInterface
 
     /**
      * Replaces the example tags in the description with the contents of the found example.
-     *
-     * @param DescriptorAbstract $element
-     *
-     * @return string
      */
-    protected function replaceInlineExamples(DescriptorAbstract $element)
+    protected function replaceInlineExamples(DescriptorAbstract $element): string
     {
         $description = $element->getDescription();
-        $matches     = array();
+        $matches = [];
 
         if (! $description
             || ! preg_match_all('/\{@example\s(.+?)\}/', $description, $matches)
@@ -78,18 +72,18 @@ class ExampleTagsEnricher implements CompilerPassInterface
             return $description;
         }
 
-        $matched = array();
+        $matched = [];
         foreach ($matches[0] as $index => $match) {
             if (isset($matched[$match])) {
                 continue;
             }
 
             $matched[$match] = true;
-            $exampleReflector = new ExampleTag('example', $matches[1][$index]);
+            $exampleReflector = Example::create($matches[1][$index]);
 
             $example = $this->exampleAssembler->create($exampleReflector);
 
-            $replacement = '`'.$example->getExample().'`';
+            $replacement = '`' . $example->getExample() . '`';
             if ($example->getDescription()) {
                 $replacement = '*' . $example->getDescription() . '*' . $replacement;
             }

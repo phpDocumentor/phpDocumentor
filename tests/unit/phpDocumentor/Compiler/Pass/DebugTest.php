@@ -4,7 +4,7 @@
  *
  * PHP Version 5.3
  *
- * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -16,9 +16,8 @@ use Mockery as m;
 /**
  * Tests the functionality for the Debug Pass
  */
-class DebugTest extends \PHPUnit_Framework_TestCase
+class DebugTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
-
     /**
      * @covers phpDocumentor\Compiler\Pass\Debug::__construct
      */
@@ -38,7 +37,7 @@ class DebugTest extends \PHPUnit_Framework_TestCase
      */
     public function testLogDebugAnalysis()
     {
-        $testString            = 'test';
+        $testString = 'test';
         $projectDescriptorMock = m::mock('phpDocumentor\Descriptor\ProjectDescriptor');
 
         $loggerMock = m::mock('Psr\Log\LoggerInterface')

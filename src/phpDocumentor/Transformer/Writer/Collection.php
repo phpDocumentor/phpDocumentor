@@ -1,10 +1,14 @@
 <?php
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -16,8 +20,7 @@ use phpDocumentor\Transformer\Router\Queue;
 /**
  * A collection of Writer objects.
  *
- * In this collection we can receive writers, and if they implement the Routable interface assign the router queue that
- * was provided to this class so that those writers can generate urls for various Descriptors.
+ * In this collection we can receive writers.
  *
  * In addition this class can also verify if all requirements for the various writers in it are met.
  */
@@ -48,8 +51,6 @@ class Collection extends \ArrayObject
      *
      * @throws \InvalidArgumentException if either of the above restrictions is
      *     not met.
-     *
-     * @return void
      */
     public function offsetSet($index, $newval)
     {
@@ -62,13 +63,8 @@ class Collection extends \ArrayObject
         if (!preg_match('/^[a-zA-Z0-9\-\_\/]{3,}$/', $index)) {
             throw new \InvalidArgumentException(
                 'The name of a Writer may only contain alphanumeric characters, one or more hyphens, underscores and '
-                .'forward slashes and must be at least three characters wide'
+                . 'forward slashes and must be at least three characters wide'
             );
-        }
-
-        // if the writer supports routes, provide them with the router queue
-        if ($newval instanceof Routable) {
-            $newval->setRouters($this->routers);
         }
 
         parent::offsetSet($index, $newval);
@@ -86,7 +82,7 @@ class Collection extends \ArrayObject
     public function offsetGet($index)
     {
         if (!$this->offsetExists($index)) {
-            throw new \InvalidArgumentException('Writer "' . $index .'" does not exist');
+            throw new \InvalidArgumentException('Writer "' . $index . '" does not exist');
         }
 
         return parent::offsetGet($index);
@@ -96,8 +92,6 @@ class Collection extends \ArrayObject
      * Iterates over each writer in this collection and checks its requirements.
      *
      * @throws Exception\RequirementMissing if a requirement of a writer is missing.
-     *
-     * @return void
      */
     public function checkRequirements()
     {

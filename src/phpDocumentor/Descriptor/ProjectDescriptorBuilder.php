@@ -1,10 +1,14 @@
 <?php
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -12,15 +16,14 @@
 namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Descriptor\Builder\AssemblerFactory;
+use phpDocumentor\Descriptor\Builder\AssemblerInterface;
 use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
+use phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper;
 use phpDocumentor\Descriptor\Filter\Filter;
 use phpDocumentor\Descriptor\Filter\Filterable;
 use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
-use phpDocumentor\Descriptor\Validator\Error;
-use phpDocumentor\Translator\Translator;
+use phpDocumentor\Reflection\Php\Project;
 use Psr\Log\LogLevel;
-use Symfony\Component\Validator\ConstraintViolation;
-use Symfony\Component\Validator\Validator;
 
 /**
  * Builds a Project Descriptor and underlying tree.
@@ -33,33 +36,23 @@ class ProjectDescriptorBuilder
     /** @var AssemblerFactory $assemblerFactory */
     protected $assemblerFactory;
 
-    /** @var Validator $validator */
-    protected $validator;
-
     /** @var Filter $filter */
     protected $filter;
 
     /** @var ProjectDescriptor $project */
     protected $project;
 
-    /** @var Translator $translator */
-    protected $translator;
+    private $defaultPackage;
 
-    public function __construct(AssemblerFactory $assemblerFactory, Filter $filterManager, Validator $validator)
+    public function __construct(AssemblerFactory $assemblerFactory, Filter $filterManager)
     {
         $this->assemblerFactory = $assemblerFactory;
-        $this->validator        = $validator;
-        $this->filter           = $filterManager;
+        $this->filter = $filterManager;
     }
 
     public function createProjectDescriptor()
     {
         $this->project = new ProjectDescriptor(self::DEFAULT_PROJECT_NAME);
-    }
-
-    public function setProjectDescriptor(ProjectDescriptor $projectDescriptor)
-    {
-        $this->project = $projectDescriptor;
     }
 
     /**
@@ -70,50 +63,6 @@ class ProjectDescriptorBuilder
     public function getProjectDescriptor()
     {
         return $this->project;
-    }
-
-    /**
-     * Verifies whether the given visibility is allowed to be included in the Descriptors.
-     *
-     * This method is used anytime a Descriptor is added to a collection (for example, when adding a Method to a Class)
-     * to determine whether the visibility of that element is matches what the user has specified when it ran
-     * phpDocumentor.
-     *
-     * @param string|integer $visibility One of the visibility constants of the ProjectDescriptor class or the words
-     *     'public', 'protected', 'private' or 'internal'.
-     *
-     * @see ProjectDescriptor where the visibility is stored and that declares the constants to use.
-     *
-     * @return boolean
-     */
-    public function isVisibilityAllowed($visibility)
-    {
-        switch ($visibility) {
-            case 'public':
-                $visibility = Settings::VISIBILITY_PUBLIC;
-                break;
-            case 'protected':
-                $visibility = Settings::VISIBILITY_PROTECTED;
-                break;
-            case 'private':
-                $visibility = Settings::VISIBILITY_PRIVATE;
-                break;
-            case 'internal':
-                $visibility = Settings::VISIBILITY_INTERNAL;
-                break;
-        }
-
-        return $this->getProjectDescriptor()->isVisibilityAllowed($visibility);
-    }
-
-    public function buildFileUsingSourceData($data)
-    {
-        $descriptor = $this->buildDescriptor($data);
-        if (!$descriptor) {
-            return;
-        }
-
-        $this->getProjectDescriptor()->getFiles()->set($descriptor->getPath(), $descriptor);
     }
 
     /**
@@ -130,7 +79,8 @@ class ProjectDescriptorBuilder
         $assembler = $this->getAssembler($data);
         if (!$assembler) {
             throw new \InvalidArgumentException(
-                'Unable to build a Descriptor; the provided data did not match any Assembler '. get_class($data)
+                'Unable to build a Descriptor; the provided data did not match any Assembler ' .
+                get_class($data)
             );
         }
 
@@ -144,11 +94,9 @@ class ProjectDescriptorBuilder
             return null;
         }
 
-        $descriptor = (!is_array($descriptor) && (!$descriptor instanceof Collection))
-            ? $this->filterAndValidateDescriptor($descriptor)
-            : $this->filterAndValidateEachDescriptor($descriptor);
-
-        return $descriptor;
+        return (!is_array($descriptor) && (!$descriptor instanceof Collection))
+            ? $this->filterDescriptor($descriptor)
+            : $this->filterEachDescriptor($descriptor);
     }
 
     /**
@@ -156,7 +104,7 @@ class ProjectDescriptorBuilder
      *
      * @param mixed $data
      *
-     * @return AssemblerAbstract
+     * @return AssemblerInterface|null
      */
     public function getAssembler($data)
     {
@@ -166,40 +114,11 @@ class ProjectDescriptorBuilder
     /**
      * Analyzes a Descriptor and alters its state based on its state or even removes the descriptor.
      *
-     * @param Filterable $descriptor
-     *
      * @return Filterable
      */
     public function filter(Filterable $descriptor)
     {
         return $this->filter->filter($descriptor);
-    }
-
-    /**
-     * Validates the contents of the Descriptor and outputs warnings and error if something is amiss.
-     *
-     * @param DescriptorAbstract $descriptor
-     *
-     * @return Collection
-     */
-    public function validate($descriptor)
-    {
-        $violations = $this->validator->validate($descriptor);
-        $errors = new Collection();
-
-        /** @var ConstraintViolation $violation */
-        foreach ($violations as $violation) {
-            $errors->add(
-                new Error(
-                    $this->mapCodeToSeverity($violation->getCode()),
-                    $violation->getMessageTemplate(),
-                    $descriptor->getLine(),
-                    $violation->getMessageParameters() + array($descriptor->getFullyQualifiedStructuralElementName())
-                )
-            );
-        }
-
-        return $errors;
     }
 
     /**
@@ -210,11 +129,11 @@ class ProjectDescriptorBuilder
      *
      * @return Collection
      */
-    private function filterAndValidateEachDescriptor($descriptor)
+    private function filterEachDescriptor($descriptor)
     {
         $descriptors = new Collection();
         foreach ($descriptor as $key => $item) {
-            $item = $this->filterAndValidateDescriptor($item);
+            $item = $this->filterDescriptor($item);
             if (!$item) {
                 continue;
             }
@@ -229,11 +148,11 @@ class ProjectDescriptorBuilder
      * Filters a descriptor, validates it, stores the validation results and returns the transmuted object or null
      * if it is supposed to be removed.
      *
-     * @param DescriptorAbstract $descriptor
+     * @param Descriptor $descriptor
      *
-     * @return DescriptorAbstract|null
+     * @return Descriptor|null
      */
-    protected function filterAndValidateDescriptor($descriptor)
+    protected function filterDescriptor(Descriptor $descriptor)
     {
         if (!$descriptor instanceof Filterable) {
             return $descriptor;
@@ -245,37 +164,86 @@ class ProjectDescriptorBuilder
             return null;
         }
 
-        // Validate the descriptor and store any errors
-        $descriptor->setErrors($this->validate($descriptor));
-
         return $descriptor;
-	}
-
-    /**
-     * Map error code to severity.
-     *
-     * @param int $code
-     *
-     * @return string
-     */
-    protected function mapCodeToSeverity($code)
-    {
-        if (is_int($code) && $this->translator->translate('VAL:ERRLVL-'.$code)) {
-            $severity = $this->translator->translate('VAL:ERRLVL-'.$code);
-        } else {
-             $severity = LogLevel::ERROR;
-        }
-
-        return $severity;
     }
 
-    /**
-     * @param Translator $translator
-     *
-     * @return void
-     */
-    public function setTranslator(Translator $translator)
+    public function build(Project $project)
     {
-        $this->translator = $translator;
+        $packageName = $project->getRootNamespace()->getFqsen()->getName();
+        $this->defaultPackage = new PackageDescriptor();
+        $this->defaultPackage->setFullyQualifiedStructuralElementName(
+            (string) $project->getRootNamespace()->getFqsen()
+        );
+        $this->defaultPackage->setName($packageName);
+        $this->defaultPackage->setNamespace(
+            substr((string) $project->getRootNamespace()->getFqsen(), 0, -strlen($packageName) - 1)
+        );
+
+        foreach ($project->getFiles() as $file) {
+            $descriptor = $this->buildDescriptor($file);
+            if (!$descriptor) {
+                return;
+            }
+
+            $this->getProjectDescriptor()->getFiles()->set($descriptor->getPath(), $descriptor);
+        }
+
+        $namespaces = $this->getProjectDescriptor()->getIndexes()->get('namespaces', new Collection());
+//        $namespaces->add($this->defaultPackage);
+
+        foreach ($project->getNamespaces() as $namespace) {
+            $namespaces->set((string) $namespace->getFqsen(), $this->buildDescriptor($namespace));
+        }
+    }
+
+    public function getDefaultPackage()
+    {
+        return $this->defaultPackage;
+    }
+
+    public function setVisibility(array $apiConfig) : void
+    {
+        $visibilities = $apiConfig['visibility'];
+        $visibility = null;
+
+        foreach ($visibilities as $item) {
+            switch ($item) {
+                case 'public':
+                    $visibility |= ProjectDescriptor\Settings::VISIBILITY_PUBLIC;
+                    break;
+                case 'protected':
+                    $visibility |= ProjectDescriptor\Settings::VISIBILITY_PROTECTED;
+                    break;
+                case 'private':
+                    $visibility |= ProjectDescriptor\Settings::VISIBILITY_PRIVATE;
+                    break;
+            }
+        }
+
+        $this->project->getSettings()->setVisibility($visibility);
+    }
+
+    public function setName(string $title) : void
+    {
+        $this->project->setName($title);
+    }
+
+    public function setPartials(Collection $partials) : void
+    {
+        $this->project->setPartials($partials);
+    }
+
+    public function setMarkers(array $markers) : void
+    {
+        $this->project->getSettings()->setMarkers($markers);
+    }
+
+    public function setIncludeSource(bool $includeSources) : void
+    {
+        if ($includeSources) {
+            $this->project->getSettings()->includeSource();
+        } else {
+            $this->project->getSettings()->excludeSource();
+        }
     }
 }

@@ -1,15 +1,22 @@
 <?php
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor;
+
+use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
+use phpDocumentor\Reflection\Type;
 
 /**
  * Descriptor representing a function.
@@ -18,6 +25,9 @@ class FunctionDescriptor extends DescriptorAbstract implements Interfaces\Functi
 {
     /** @var Collection $arguments */
     protected $arguments;
+
+    /** @var Type */
+    private $returnType;
 
     /**
      * Initializes the all properties representing a collection with a new Collection object.
@@ -48,11 +58,27 @@ class FunctionDescriptor extends DescriptorAbstract implements Interfaces\Functi
     /**
      * {@inheritDoc}
      */
-    public function getResponse()
+    public function getResponse(): ReturnDescriptor
     {
+        $definedReturn = new ReturnDescriptor('return');
+        $definedReturn->setType($this->returnType);
+
         /** @var Collection|null $returnTags */
         $returnTags = $this->getTags()->get('return');
 
-        return $returnTags instanceof Collection ? current($returnTags->getAll()) : null;
+        if ($returnTags instanceof Collection && $returnTags->count() > 0) {
+            /** @var ReturnDescriptor $returnTag */
+            return current($returnTags->getAll());
+        }
+
+        return $definedReturn;
+    }
+
+    /**
+     * Sets return type of this method.
+     */
+    public function setReturnType(Type $returnType)
+    {
+        $this->returnType = $returnType;
     }
 }

@@ -4,7 +4,7 @@
  *
  * PHP Version 5.3
  *
- * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -16,8 +16,9 @@ use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
 
 /**
  * Tests the functionality for the ProjectDescriptorBuilder class.
+ * @coversDefaultClass \phpDocumentor\Descriptor\ProjectDescriptorBuilder
  */
-class ProjectDescriptorBuilderTest extends \PHPUnit_Framework_TestCase
+class ProjectDescriptorBuilderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var \phpDocumentor\Descriptor\ProjectDescriptorBuilder $fixture */
     protected $fixture;
@@ -25,7 +26,7 @@ class ProjectDescriptorBuilderTest extends \PHPUnit_Framework_TestCase
     /**
      * Mock of the required AssemblerFactory dependency of the $fixture.
      *
-     * @var \phpDocumentor\Descriptor\Builder\AssemblerFactory|m\MockInterface $assemblerFactory
+     * @var \phpDocumentor\Descriptor\Builder\AssemblerFactory|m\MockInterface
      */
     protected $assemblerFactory;
 
@@ -36,46 +37,13 @@ class ProjectDescriptorBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $this->assemblerFactory = $this->createAssemblerFactoryMock();
         $filterMock = m::mock('phpDocumentor\Descriptor\Filter\Filter');
-        $validatorMock = m::mock('Symfony\Component\Validator\Validator');
 
-        $this->fixture = new ProjectDescriptorBuilder($this->assemblerFactory, $filterMock, $validatorMock);
+        $this->fixture = new ProjectDescriptorBuilder($this->assemblerFactory, $filterMock);
     }
 
     /**
-     * Demonstrates the basic usage the the ProjectDescriptorBuilder.
-     *
-     * This test scenario demonstrates how a ProjectDescriptorBuilder can be used to create a new ProjectDescriptor
-     * and populate it with a single FileDescriptor using a FileReflector as source.
-     *
-     * @covers phpDocumentor\Descriptor\ProjectDescriptorBuilder::createProjectDescriptor
-     * @covers phpDocumentor\Descriptor\ProjectDescriptorBuilder::buildFileUsingSourceData
-     * @covers phpDocumentor\Descriptor\ProjectDescriptorBuilder::getProjectDescriptor
-     *
-     * @see self::setUp on how to create an instance of the builder.
-     *
-     * @return void
-     */
-    public function testCreateNewProjectDescriptorAndBuildFile()
-    {
-        $this->markTestIncomplete('Finish later, in a hurry now.');
-        // we use a FileReflector as example input
-        $data = $this->createFileReflectorMock();
-
-        $this->createFileDescriptorCreationMock();
-
-        // usage example, see the setup how to instantiate the builder.
-        $this->fixture->createProjectDescriptor();
-        $this->fixture->buildFileUsingSourceData($data);
-        $projectDescriptor = $this->fixture->getProjectDescriptor();
-
-        // assert functioning
-        $this->assertInstanceOf('phpDocumentor\Descriptor\ProjectDescriptor', $projectDescriptor);
-        $this->assertCount(1, $projectDescriptor->getFiles());
-    }
-
-    /**
-     * @covers phpDocumentor\Descriptor\ProjectDescriptorBuilder::createProjectDescriptor
-     * @covers phpDocumentor\Descriptor\ProjectDescriptorBuilder::getProjectDescriptor
+     * @covers ::createProjectDescriptor
+     * @covers ::getProjectDescriptor
      */
     public function testCreatesAnEmptyProjectDescriptorWhenCalledFor()
     {
@@ -89,39 +57,9 @@ class ProjectDescriptorBuilderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ProjectDescriptorBuilder::setProjectDescriptor
-     * @covers phpDocumentor\Descriptor\ProjectDescriptorBuilder::getProjectDescriptor
-     */
-    public function testProvidingAPreExistingDescriptorToBuildOn()
-    {
-        $projectDescriptorName = 'My Descriptor';
-        $projectDescriptorMock = new ProjectDescriptor($projectDescriptorName);
-        $this->fixture->setProjectDescriptor($projectDescriptorMock);
-
-        $this->assertSame($projectDescriptorMock, $this->fixture->getProjectDescriptor());
-        $this->assertEquals($projectDescriptorName, $this->fixture->getProjectDescriptor()->getName());
-    }
-
-    /**
-     * @covers phpDocumentor\Descriptor\ProjectDescriptorBuilder::isVisibilityAllowed
-     */
-    public function testDeterminesWhetherASpecificVisibilityIsAllowedToBeIncluded()
-    {
-        $projectDescriptorName = 'My Descriptor';
-        $projectDescriptorMock = new ProjectDescriptor($projectDescriptorName);
-        $projectDescriptorMock->getSettings()->setVisibility(Settings::VISIBILITY_PUBLIC);
-        $this->fixture->setProjectDescriptor($projectDescriptorMock);
-
-        $this->assertTrue($this->fixture->isVisibilityAllowed(Settings::VISIBILITY_PUBLIC));
-        $this->assertFalse($this->fixture->isVisibilityAllowed(Settings::VISIBILITY_PRIVATE));
-    }
-
-    /**
      * Creates a new FileReflector mock that can be used as input for the builder.
-     *
-     * @return m\MockInterface|\phpDocumentor\Reflection\FileReflector
      */
-    protected function createFileReflectorMock()
+    protected function createFileReflectorMock(): m\MockInterface
     {
         return m::mock('phpDocumentor\Reflection\FileReflector');
     }

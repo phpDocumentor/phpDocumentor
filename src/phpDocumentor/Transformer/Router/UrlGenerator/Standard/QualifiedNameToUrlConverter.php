@@ -1,10 +1,14 @@
 <?php
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -25,7 +29,7 @@ class QualifiedNameToUrlConverter
      */
     public function fromPackage($fqcn)
     {
-        $name = str_replace(array('\\', '_'), '.', ltrim($fqcn, '\\'));
+        $name = str_replace(['\\', '_'], '.', ltrim($fqcn, '\\'));
 
         // convert root namespace to default; default is a keyword and no namespace CAN be named as such
         if ($name === '') {
@@ -44,7 +48,7 @@ class QualifiedNameToUrlConverter
      */
     public function fromNamespace($fqnn)
     {
-        $name = str_replace('\\', '.', ltrim($fqnn, '\\'));
+        $name = str_replace('\\', '.', ltrim((string) $fqnn, '\\'));
 
         // convert root namespace to default; default is a keyword and no namespace CAN be named as such
         if ($name === '') {
@@ -63,7 +67,7 @@ class QualifiedNameToUrlConverter
      */
     public function fromClass($fqcn)
     {
-        return str_replace('\\', '.', ltrim($fqcn, '\\'));
+        return str_replace('\\', '.', ltrim((string) $fqcn, '\\'));
     }
 
     /**
@@ -77,7 +81,7 @@ class QualifiedNameToUrlConverter
     {
         $path = $this->removeFileExtensionFromPath($path);
 
-        return str_replace(array('/', '\\'), '.', ltrim($path, '/'));
+        return str_replace(['/', '\\'], '.', ltrim($path, '/'));
     }
 
     /**

@@ -4,14 +4,14 @@
  *
  * PHP Version 5.3
  *
- * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor\Type;
 
-class CollectionDescriptorTest extends \PHPUnit_Framework_TestCase
+class CollectionDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var CollectionDescriptor */
     private $fixture;
@@ -19,7 +19,7 @@ class CollectionDescriptorTest extends \PHPUnit_Framework_TestCase
     /**
      * Initializes the fixture for this test.
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->fixture = new CollectionDescriptor('array');
     }
@@ -47,7 +47,7 @@ class CollectionDescriptorTest extends \PHPUnit_Framework_TestCase
      */
     public function testRetrieveBaseTypeWithTypeStringReturnsNull()
     {
-        $this->assertSame(null, $this->fixture->getBaseType());
+        $this->assertNull($this->fixture->getBaseType());
     }
 
     /**
@@ -69,9 +69,9 @@ class CollectionDescriptorTest extends \PHPUnit_Framework_TestCase
     public function testSetAndRetrieveTypes()
     {
         $expected = new UnknownTypeDescriptor('array');
-        $this->fixture->setTypes(array($expected));
+        $this->fixture->setTypes([$expected]);
 
-        $this->assertSame(array($expected), $this->fixture->getTypes());
+        $this->assertSame([$expected], $this->fixture->getTypes());
     }
 
     /**
@@ -81,9 +81,9 @@ class CollectionDescriptorTest extends \PHPUnit_Framework_TestCase
     public function testSetAndRetrieveKeyTypes()
     {
         $expected = new UnknownTypeDescriptor('string');
-        $this->fixture->setKeyTypes(array($expected));
+        $this->fixture->setKeyTypes([$expected]);
 
-        $this->assertSame(array($expected), $this->fixture->getKeyTypes());
+        $this->assertSame([$expected], $this->fixture->getKeyTypes());
     }
 
     /**
@@ -91,8 +91,8 @@ class CollectionDescriptorTest extends \PHPUnit_Framework_TestCase
      */
     public function testRetrieveCollectionNotationFromObject()
     {
-        $this->fixture->setKeyTypes(array(new StringDescriptor()));
-        $this->fixture->setTypes(array(new FloatDescriptor(), new IntegerDescriptor()));
+        $this->fixture->setKeyTypes([new StringDescriptor()]);
+        $this->fixture->setTypes([new FloatDescriptor(), new IntegerDescriptor()]);
 
         $this->assertSame('array<string,float|integer>', (string) $this->fixture);
     }
@@ -102,7 +102,7 @@ class CollectionDescriptorTest extends \PHPUnit_Framework_TestCase
      */
     public function testRetrieveCollectionNotationFromObjectWithoutKeys()
     {
-        $this->fixture->setTypes(array(new FloatDescriptor(), new IntegerDescriptor()));
+        $this->fixture->setTypes([new FloatDescriptor(), new IntegerDescriptor()]);
 
         $this->assertSame('array<float|integer>', (string) $this->fixture);
     }

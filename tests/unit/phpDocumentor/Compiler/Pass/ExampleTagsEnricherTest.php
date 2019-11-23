@@ -4,11 +4,12 @@ namespace phpDocumentor\Compiler\Pass;
 
 use Mockery as m;
 use phpDocumentor\Descriptor\Example\Finder;
+use phpDocumentor\Reflection\DocBlock\ExampleFinder;
 
 /**
  * Tests the \phpDocumentor\Compiler\Pass\ExampleTagsEnricher class.
  */
-class ExampleTagsEnricherTest extends \PHPUnit_Framework_TestCase
+class ExampleTagsEnricherTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var Finder|m\MockInterface */
     private $finderMock;
@@ -21,9 +22,10 @@ class ExampleTagsEnricherTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->finderMock = m::mock('phpDocumentor\Descriptor\Example\Finder');
-        $this->fixture    = new ExampleTagsEnricher($this->finderMock);
+        $this->finderMock = m::mock(ExampleFinder::class);
+        $this->fixture = new ExampleTagsEnricher($this->finderMock);
     }
+
     /**
      * @covers \phpDocumentor\Compiler\Pass\ExampleTagsEnricher::getDescription
      */
@@ -44,7 +46,7 @@ class ExampleTagsEnricherTest extends \PHPUnit_Framework_TestCase
         $descriptor = $this->givenAChildDescriptorWithDescription($description);
         $this->thenDescriptionOfDescriptorIsChangedInto($descriptor, $description);
 
-        $project = $this->givenAProjectDescriptorWithChildDescriptors(array($descriptor));
+        $project = $this->givenAProjectDescriptorWithChildDescriptors([$descriptor]);
 
         $this->fixture->execute($project);
 
@@ -60,13 +62,13 @@ class ExampleTagsEnricherTest extends \PHPUnit_Framework_TestCase
     {
         $exampleText = 'Example Text';
         $description = 'This is a description with {@example example2.txt} without description.';
-        $expected    = "This is a description with `$exampleText` without description.";
+        $expected = "This is a description with `${exampleText}` without description.";
 
         $descriptor = $this->givenAChildDescriptorWithDescription($description);
         $this->whenExampleTxtFileContains($exampleText);
         $this->thenDescriptionOfDescriptorIsChangedInto($descriptor, $expected);
 
-        $project = $this->givenAProjectDescriptorWithChildDescriptors(array($descriptor));
+        $project = $this->givenAProjectDescriptorWithChildDescriptors([$descriptor]);
 
         $this->fixture->execute($project);
 
@@ -82,13 +84,13 @@ class ExampleTagsEnricherTest extends \PHPUnit_Framework_TestCase
     {
         $exampleText = 'Example Text';
         $description = 'This is a description with {@example example.txt including description}.';
-        $expected    = "This is a description with *including description*`$exampleText`.";
+        $expected = "This is a description with *including description*`${exampleText}`.";
 
         $descriptor = $this->givenAChildDescriptorWithDescription($description);
         $this->whenExampleTxtFileContains($exampleText);
         $this->thenDescriptionOfDescriptorIsChangedInto($descriptor, $expected);
 
-        $project = $this->givenAProjectDescriptorWithChildDescriptors(array($descriptor));
+        $project = $this->givenAProjectDescriptorWithChildDescriptors([$descriptor]);
 
         $this->fixture->execute($project);
 
@@ -104,13 +106,13 @@ class ExampleTagsEnricherTest extends \PHPUnit_Framework_TestCase
     {
         $exampleText = 'Example Text';
         $description = 'This is a description with {@example example.txt} and {@example example.txt}.';
-        $expected    = "This is a description with `$exampleText` and `$exampleText`.";
+        $expected = "This is a description with `${exampleText}` and `${exampleText}`.";
 
         $descriptor = $this->givenAChildDescriptorWithDescription($description);
         $this->whenExampleTxtFileContainsAndMustBeCalledOnlyOnce($exampleText);
         $this->thenDescriptionOfDescriptorIsChangedInto($descriptor, $expected);
 
-        $project = $this->givenAProjectDescriptorWithChildDescriptors(array($descriptor));
+        $project = $this->givenAProjectDescriptorWithChildDescriptors([$descriptor]);
 
         $this->fixture->execute($project);
 
@@ -152,8 +154,6 @@ class ExampleTagsEnricherTest extends \PHPUnit_Framework_TestCase
      *
      * @param m\MockInterface $descriptor
      * @param string          $expected
-     *
-     * @return void
      */
     public function thenDescriptionOfDescriptorIsChangedInto($descriptor, $expected)
     {
@@ -164,8 +164,6 @@ class ExampleTagsEnricherTest extends \PHPUnit_Framework_TestCase
      * Instructs the finder mock to return the given text when an example is requested.
      *
      * @param string $exampleText
-     *
-     * @return void
      */
     private function whenExampleTxtFileContains($exampleText)
     {
@@ -177,8 +175,6 @@ class ExampleTagsEnricherTest extends \PHPUnit_Framework_TestCase
      * done once.
      *
      * @param string $exampleText
-     *
-     * @return void
      */
     private function whenExampleTxtFileContainsAndMustBeCalledOnlyOnce($exampleText)
     {

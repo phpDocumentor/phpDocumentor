@@ -1,10 +1,14 @@
 <?php
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -42,8 +46,6 @@ class TagDescriptor implements Filterable
      * Sets the name for this tag.
      *
      * @param string $name
-     *
-     * @return void
      */
     protected function setName($name)
     {
@@ -64,8 +66,6 @@ class TagDescriptor implements Filterable
      * Sets a description for this tab instance.
      *
      * @param string $description
-     *
-     * @return void
      */
     public function setDescription($description)
     {
@@ -84,12 +84,8 @@ class TagDescriptor implements Filterable
 
     /**
      * Sets a list of errors found on the usage of this tag.
-     *
-     * @param Collection $errors
-     *
-     * @return void
      */
-    public function setErrors(Collection $errors)
+    public function setErrors(Collection $errors): void
     {
         $this->errors = $errors;
     }

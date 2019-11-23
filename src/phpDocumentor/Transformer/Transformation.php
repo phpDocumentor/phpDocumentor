@@ -1,17 +1,20 @@
 <?php
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Transformer;
 
-use JMS\Serializer\Annotation as Serializer;
 use phpDocumentor\Transformer\Template\Parameter;
 
 /**
@@ -20,53 +23,42 @@ use phpDocumentor\Transformer\Template\Parameter;
 class Transformation
 {
     /**
-     * @Serializer\XmlAttribute
-     * @Serializer\Type("string")
      * @var string Reference to an object containing the business logic used to execute this transformation.
      */
     protected $writer = null;
 
     /**
-     * @Serializer\XmlAttribute
-     * @Serializer\Type("string")
      * @var string the location where the output should be sent to; the exact function differs per writer.
      */
     protected $artifact = '';
 
     /**
-     * @Serializer\XmlAttribute
-     * @Serializer\Type("string")
      * @var string the location where input for a writer should come from; the exact function differs per writer.
      */
     protected $source = '';
 
     /**
-     * @Serializer\XmlAttribute
-     * @Serializer\Type("string")
      * @var string a filter or other form of limitation on what information of the AST is used; the exact function
      *     differs per writer.
      */
     protected $query = '';
 
     /**
-     * @Serializer\Exclude
-     * @var Transformer $transformer The object guiding the transformation process and having meta-data of it.
+     * @var Transformer The object guiding the transformation process and having meta-data of it.
      */
     protected $transformer;
 
     /**
-     * @Serializer\XmlList(entry = "parameter")
-     * @Serializer\Type("array<phpDocumentor\Transformer\Template\Parameter>")
      * @var Parameter[] A series of parameters that can influence what the writer does; the exact function differs
      *     per writer.
      */
-    protected $parameters = array();
+    protected $parameters = [];
 
     /**
      * Constructs a new Transformation object and populates the required parameters.
      *
      * @param string $query       What information to use as datasource for the writer's source.
-     * @param string $writer      What type of transformation to apply (XSLT, PDF, Checkstyle etc).
+     * @param string $writer      What type of transformation to apply (PDF, Twig etc).
      * @param string $source      Which template or type of source to use.
      * @param string $artifact    What is the filename of the result (relative to the generated root)
      */
@@ -82,8 +74,6 @@ class Transformation
      * Sets the query.
      *
      * @param string $query Free-form string with writer-specific values.
-     *
-     * @return void
      */
     public function setQuery($query)
     {
@@ -104,10 +94,8 @@ class Transformation
      * Sets the writer type and instantiates a writer.
      *
      * @param string $writer Name of writer to instantiate.
-     *
-     * @return void
      */
-    public function setWriter($writer)
+    public function setWriter(string $writer): void
     {
         $this->writer = $writer;
     }
@@ -115,9 +103,9 @@ class Transformation
     /**
      * Returns an instantiated writer object.
      *
-     * @return Writer\WriterAbstract|null
+     * @return string
      */
-    public function getWriter()
+    public function getWriter(): string
     {
         return $this->writer;
     }
@@ -126,8 +114,6 @@ class Transformation
      * Sets the source / type which the writer will use to generate artifacts from.
      *
      * @param string $source Free-form string with writer-specific meaning.
-     *
-     * @return void
      */
     public function setSource($source)
     {
@@ -160,7 +146,7 @@ class Transformation
      *
      * @return string
      */
-    public function getSourceAsPath()
+    public function getSourceAsPath(): string
     {
         // externally loaded templates set this parameter so that template
         // resources may be placed in the same folder as the template.
@@ -183,8 +169,8 @@ class Transformation
         }
 
         // check whether the file exists in the phpDocumentor project directory.
-        if (file_exists(__DIR__.'/../../../'.$this->source)) {
-            return __DIR__ . '/../../../' .$this->source;
+        if (file_exists(__DIR__ . '/../../../' . $this->source)) {
+            return __DIR__ . '/../../../' . $this->source;
         }
 
         // in case of a composer installation
@@ -196,7 +182,7 @@ class Transformation
         // we should ditch the idea of a global set of files to fetch and have
         // a variable / injection for the global templates folder and inject
         // that here.
-        $file = __DIR__.'/../../../data/'.$this->source;
+        $file = __DIR__ . '/../../../data/' . $this->source;
 
         if (!file_exists($file)) {
             throw new Exception('The source path does not exist: ' . $file);
@@ -213,8 +199,6 @@ class Transformation
      * writer.
      *
      * @param string $artifact Name of artifact to generate; usually a filepath.
-     *
-     * @return void
      */
     public function setArtifact($artifact)
     {
@@ -236,8 +220,6 @@ class Transformation
      *
      * @param Parameter[] $parameters Associative multidimensional array containing
      *     parameters for the Writer.
-     *
-     * @return void
      */
     public function setParameters(array $parameters)
     {
@@ -259,13 +241,13 @@ class Transformation
      *
      * @param string $name Name of the parameter to return.
      *
-     * @return Parameter
+     * @return Parameter|null
      */
-    public function getParameter($name)
+    public function getParameter($name): ?Parameter
     {
         /** @var Parameter $parameter */
         foreach ($this->parameters as $parameter) {
-            if ($parameter->getKey() == $name) {
+            if ($parameter->getKey() === $name) {
                 return $parameter;
             }
         }
@@ -278,15 +260,15 @@ class Transformation
      *
      * @param string $name Name of the parameter to return.
      *
-     * @return Parameter
+     * @return Parameter[]
      */
     public function getParametersWithKey($name)
     {
-        $parameters = array();
+        $parameters = [];
 
         /** @var Parameter $parameter */
         foreach ($this->parameters as $parameter) {
-            if ($parameter->getKey() == $name) {
+            if ($parameter->getKey() === $name) {
                 $parameters[] = $parameter;
             }
         }

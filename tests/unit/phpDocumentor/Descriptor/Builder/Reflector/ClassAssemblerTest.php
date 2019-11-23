@@ -6,21 +6,27 @@
  *
  * @author    Mike van Riel <mike.vanriel@naenius.com>
  * @author    Sven Hagemann <sven@rednose.nl>
- * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
+
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
-use phpDocumentor\Reflection\DocBlock;
 use Mockery as m;
+use phpDocumentor\Reflection\DocBlock;
+use phpDocumentor\Reflection\Fqsen;
+use phpDocumentor\Reflection\Php\Class_;
+use phpDocumentor\Reflection\Php\Constant;
+use phpDocumentor\Reflection\Php\Method;
+use phpDocumentor\Reflection\Php\Property;
 
 /**
  * Test class for \phpDocumentor\Descriptor\Builder
  *
  * @covers \phpDocumentor\Descriptor\Builder\Reflector\ClassAssembler
  */
-class ClassAssemblerTest extends \PHPUnit_Framework_TestCase
+class ClassAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var ClassAssembler $fixture */
     protected $fixture;
@@ -38,8 +44,6 @@ class ClassAssemblerTest extends \PHPUnit_Framework_TestCase
      * Creates a Descriptor from a provided class.
      *
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\ClassAssembler::create
-     *
-     * @return void
      */
     public function testCreateClassDescriptorFromReflector()
     {
@@ -55,7 +59,10 @@ DOCBLOCK;
 
         $descriptor = $this->fixture->create($classReflectorMock);
 
-        $this->assertSame($namespace . '\\' . $name, $descriptor->getFullyQualifiedStructuralElementName());
+        $this->assertSame(
+            '\\' . $namespace . '\\' . $name,
+            (string) $descriptor->getFullyQualifiedStructuralElementName()
+        );
         $this->assertSame($name, $descriptor->getName());
         $this->assertSame((string) $descriptor->getDescription(), $docBlockDescriptionContent);
     }
@@ -63,7 +70,7 @@ DOCBLOCK;
     /**
      * Create a ClassReflector mock
      *
-     * @return MockInterface
+     * @return Class_
      */
     protected function getClassReflectorDescriptor()
     {
@@ -74,28 +81,22 @@ DOCBLOCK;
  * This is a example description
  */
 DOCBLOCK;
-        $docBlockDescription = new DocBlock\Description($docBlockDescriptionContent);
+        $docBlockMock = new DocBlock(
+            'This is a example description',
+            new DocBlock\Description($docBlockDescriptionContent),
+            []
+        );
 
-        $docBlockMock = m::mock('phpDocumentor\Reflection\DocBlock');
-        $docBlockMock->shouldReceive('getTagsByName')->andReturn(array());
-        $docBlockMock->shouldReceive('getTags')->andReturn(array());
-        $docBlockMock->shouldReceive('getShortDescription')->andReturn('This is a example description');
-        $docBlockMock->shouldReceive('getLongDescription')->andReturn($docBlockDescription);
+        $classFqsen = new Fqsen('\\' . $namespace . '\\' . $name);
+        $classReflectorMock = new Class_(
+            $classFqsen,
+            $docBlockMock
+        );
 
-        $classReflectorMock = m::mock('phpDocumentor\Reflection\ClassReflector');
-        $classReflectorMock->shouldReceive('getName')->once()->andReturn($namespace . '\\' . $name);
-        $classReflectorMock->shouldReceive('getShortName')->once()->andReturn($name);
-        $classReflectorMock->shouldReceive('getDocBlock')->atLeast()->once()->andReturn($docBlockMock);
-        $classReflectorMock->shouldReceive('getLinenumber')->once()->andReturn(1);
-        $classReflectorMock->shouldReceive('getParentClass')->once()->andReturn('');
-        $classReflectorMock->shouldReceive('isAbstract')->once()->andReturn(false);
-        $classReflectorMock->shouldReceive('isFinal')->once()->andReturn(false);
-        $classReflectorMock->shouldReceive('getNamespace')->atLeast()->once()->andReturn($namespace);
-        $classReflectorMock->shouldReceive('getInterfaces')->atLeast()->once()->andReturn(array('TestInterface'));
-        $classReflectorMock->shouldReceive('getConstants')->once()->andReturn(array('Constant'));
-        $classReflectorMock->shouldReceive('getProperties')->once()->andReturn(array('Properties'));
-        $classReflectorMock->shouldReceive('getMethods')->once()->andReturn(array('Method'));
-        $classReflectorMock->shouldReceive('getTraits')->once()->andReturn(array());
+        $classReflectorMock->addConstant(new Constant(new Fqsen($classFqsen . '::Constant')));
+        $classReflectorMock->addInterface(new Fqsen('\\TestInterface'));
+        $classReflectorMock->addProperty(new Property(new Fqsen($classFqsen . '::$property')));
+        $classReflectorMock->addMethod(new Method(new Fqsen($classFqsen . '::method()')));
 
         return $classReflectorMock;
     }
@@ -108,7 +109,7 @@ DOCBLOCK;
     protected function getProjectDescriptorBuilderMock()
     {
         $projectDescriptorBuilderMock = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
-
+        $projectDescriptorBuilderMock->shouldReceive('getDefaultPackage')->andReturn('\\');
         $projectDescriptorBuilderMock->shouldReceive('buildDescriptor')->andReturnUsing(function ($param) {
             $mock = null;
 
@@ -137,5 +138,4 @@ DOCBLOCK;
 
         return $projectDescriptorBuilderMock;
     }
-
 }

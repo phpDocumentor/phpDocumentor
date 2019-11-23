@@ -1,10 +1,14 @@
 <?php
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -33,7 +37,7 @@ class Rule
      */
     public function __construct($matcher, $generator)
     {
-        $this->matcher   = $matcher;
+        $this->matcher = $matcher;
         $this->generator = $generator;
     }
 
@@ -91,18 +95,19 @@ class Rule
 
         foreach ($iso88591Path as &$part) {
             // identify and skip schemes
-            if (substr($part, -1) == ':') {
+            if (substr($part, -1) === ':') {
                 continue;
             }
 
             // only encode and transliterate that which comes before the anchor
             $subparts = explode('#', $part);
-            
+
             if (extension_loaded('iconv')) {
                 $subparts[0] = iconv('UTF-8', 'ASCII//TRANSLIT', $subparts[0]);
             }
+
             $subparts[0] = urlencode($subparts[0]);
-            
+
             $part = implode('#', $subparts);
         }
 

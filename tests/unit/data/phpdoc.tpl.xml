@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  ~ This file is part of phpDocumentor.
+  ~
+  ~  For the full copyright and license information, please view the LICENSE
+  ~  file that was distributed with this source code.
+  ~
+  ~  @copyright 2010-2017 Mike van Riel<mike@phpdoc.org>
+  ~  @license   http://www.opensource.org/licenses/mit-license.php MIT
+  ~  @link      http://phpdoc.org
+  -->
+
+<phpdocumentor>
+    <parser>
+        <default-package-name>Default</default-package-name>
+        <encoding>utf-8</encoding>
+        <target>build/cache</target>
+        <markers>
+            <item>TODO</item>
+            <item>FIXME</item>
+        </markers>
+        <extensions>
+            <extension>php</extension>
+            <extension>php3</extension>
+            <extension>phtml</extension>
+        </extensions>
+        <visibility></visibility>
+    </parser>
+    <files>
+        <ignore-hidden>true</ignore-hidden>
+        <ignore-symlinks>true</ignore-symlinks>
+        <directory>src</directory>
+    </files>
+    <transformer>
+        <target>build/docs</target>
+    </transformer>
+    <logging>
+        <level>error</level>
+    </logging>
+    <transformations>
+        <template name="clean"/>
+    </transformations>
+</phpdocumentor>

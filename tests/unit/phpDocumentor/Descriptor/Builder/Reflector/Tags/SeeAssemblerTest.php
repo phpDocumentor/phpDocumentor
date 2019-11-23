@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @copyright 2010-2017 Mike van Riel<mike@phpdoc.org>
+ * @copyright 2010-2018 Mike van Riel<mike@phpdoc.org>
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -14,6 +14,8 @@ namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 
 use Mockery as m;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
+use phpDocumentor\Reflection\DocBlock;
+use phpDocumentor\Reflection\Fqsen;
 
 /**
  * Test class for phpDocumentor\Descriptor\Builder\Reflector\Tags\SeeAssembler
@@ -21,7 +23,7 @@ use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
  * @coversDefaultClass \phpDocumentor\Descriptor\Builder\Reflector\Tags\SeeAssembler
  * @covers ::<private>
  */
-class SeeAssemblerTest extends \PHPUnit_Framework_TestCase
+class SeeAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var SeeAssembler $fixture */
     protected $fixture;
@@ -47,43 +49,17 @@ class SeeAssemblerTest extends \PHPUnit_Framework_TestCase
         // Arrange
         $name = 'see';
         $description = 'a see tag';
-        $reference = 'ReferenceClass';
-        $context = $this->givenAContext([$reference => '\My\Namespace\Alias\AnotherClass']);
-        $docBlock = $this->givenADocBlock($context);
+        $reference = '\ReferenceClass';
 
-        $seeTagMock = $this->givenASeeTag($name, $description, $reference, $docBlock);
+        $seeTagMock = $this->givenASeeTag(new DocBlock\Tags\Reference\Fqsen(new Fqsen($reference)), $description);
 
         // Act
         $descriptor = $this->fixture->create($seeTagMock);
 
         // Assert
         $this->assertSame($name, $descriptor->getName());
-        $this->assertSame($description, $descriptor->getDescription());
-        $this->assertSame('@context::' . $reference, $descriptor->getReference());
-        $this->assertSame([], $descriptor->getErrors()->getAll());
-    }
-
-    /**
-     * @covers ::create
-     */
-    public function testCreateSeeDescriptorFromSeeTagWhenReferenceIsRelativeClassnameInNamespaceAliases()
-    {
-        // Arrange
-        $name = 'see';
-        $description = 'a see tag';
-        $reference = 'ReferenceClass';
-        $context = $this->givenAContext([$reference => '\My\Namespace\Alias\ReferenceClass']);
-        $docBlock = $this->givenADocBlock($context);
-
-        $seeTagMock = $this->givenASeeTag($name, $description, $reference, $docBlock);
-
-        // Act
-        $descriptor = $this->fixture->create($seeTagMock);
-
-        // Assert
-        $this->assertSame($name, $descriptor->getName());
-        $this->assertSame($description, $descriptor->getDescription());
-        $this->assertSame('\\My\\Namespace\Alias\\' . $reference, $descriptor->getReference());
+        $this->assertSame($description, (string) $descriptor->getDescription());
+        $this->assertSame($reference, (string) $descriptor->getReference());
         $this->assertSame([], $descriptor->getErrors()->getAll());
     }
 
@@ -96,82 +72,39 @@ class SeeAssemblerTest extends \PHPUnit_Framework_TestCase
         // Arrange
         $name = 'see';
         $description = 'a see tag';
-        $context = $this->givenAContext([]);
-        $docBlock = $this->givenADocBlock($context);
 
-        $seeTagMock = $this->givenASeeTag($name, $description, $reference, $docBlock);
+        $seeTagMock = $this->givenASeeTag($reference, $description);
 
         // Act
         $descriptor = $this->fixture->create($seeTagMock);
 
         // Assert
         $this->assertSame($name, $descriptor->getName());
-        $this->assertSame($description, $descriptor->getDescription());
+        $this->assertSame($description, (string) $descriptor->getDescription());
         $this->assertSame($reference, $descriptor->getReference());
         $this->assertSame([], $descriptor->getErrors()->getAll());
     }
 
-    /**
-     * @covers ::create
-     */
-    public function testCreateSeeDescriptorFromSeeTagWhenReferenceHasMultipleParts()
+    protected function givenASeeTag($reference, $description)
     {
-        // Arrange
-        $name = 'see';
-        $description = 'a see tag';
-        $reference = 'ReferenceClass::$property';
-        $context = $this->givenAContext(['ReferenceClass' => '\My\Namespace\Alias\ReferenceClass']);
-        $docBlock = $this->givenADocBlock($context);
-
-        $seeTagMock = $this->givenASeeTag($name, $description, $reference, $docBlock);
-
-        // Act
-        $descriptor = $this->fixture->create($seeTagMock);
-
-        // Assert
-        $this->assertSame($name, $descriptor->getName());
-        $this->assertSame($description, $descriptor->getDescription());
-        $this->assertSame('\\My\\Namespace\Alias\\' . $reference, $descriptor->getReference());
-        $this->assertSame([], $descriptor->getErrors()->getAll());
-    }
-
-    protected function givenASeeTag($name, $description, $reference, $docBlock)
-    {
-        $seeTagMock = m::mock('phpDocumentor\Reflection\DocBlock\Tag\SeeTag');
-        $seeTagMock->shouldReceive('getName')->andReturn($name);
-        $seeTagMock->shouldReceive('getDescription')->andReturn($description);
-        $seeTagMock->shouldReceive('getReference')->andReturn($reference);
-        $seeTagMock->shouldReceive('getDocBlock')->andReturn($docBlock);
-
-        return $seeTagMock;
+        return new DocBlock\Tags\See(
+            $reference,
+            new DocBlock\Description($description)
+        );
     }
 
     protected function givenADocBlock($context)
     {
-        $docBlockMock = m::mock('phpDocumentor\Reflection\DocBlock');
-        $docBlockMock->shouldReceive('getContext')->andReturn($context);
-
-        return $docBlockMock;
-    }
-
-    protected function givenAContext($aliases)
-    {
-        $context = m::mock('phpDocumentor\Reflection\DocBlock\Context');
-        $context->shouldReceive('getNamespace')->andReturn('\My\Namespace');
-        $context->shouldReceive('getNamespaceAliases')->andReturn($aliases);
-
-        return $context;
+        return new DocBlock('', null, [], $context);
     }
 
     public function provideReferences()
     {
         return [
-            ['http://phpdoc.org'],
-            ['https://phpdoc.org'],
-            ['ftp://phpdoc.org'],
-            ['$this'],
-            ['self'],
-            ['\My\Namespace\Class']
+            [new DocBlock\Tags\Reference\Url('http://phpdoc.org')],
+            [new DocBlock\Tags\Reference\Url('https://phpdoc.org')],
+            [new DocBlock\Tags\Reference\Url('ftp://phpdoc.org')],
+            [new DocBlock\Tags\Reference\Fqsen(new Fqsen('\My\Namespace\Class'))],
         ];
     }
 }

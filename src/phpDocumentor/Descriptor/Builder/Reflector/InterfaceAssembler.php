@@ -1,20 +1,26 @@
 <?php
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
+use phpDocumentor\Descriptor\ConstantDescriptor;
 use phpDocumentor\Descriptor\InterfaceDescriptor;
-use phpDocumentor\Reflection\ClassReflector\MethodReflector;
-use phpDocumentor\Reflection\ConstantReflector;
-use phpDocumentor\Reflection\InterfaceReflector;
+use phpDocumentor\Descriptor\MethodDescriptor;
+use phpDocumentor\Reflection\Php\Constant;
+use phpDocumentor\Reflection\Php\Interface_;
+use phpDocumentor\Reflection\Php\Method;
 
 /**
  * Assembles an InterfaceDescriptor using an InterfaceReflector.
@@ -24,7 +30,7 @@ class InterfaceAssembler extends AssemblerAbstract
     /**
      * Creates a Descriptor from the provided data.
      *
-     * @param InterfaceReflector $data
+     * @param Interface_ $data
      *
      * @return InterfaceDescriptor
      */
@@ -32,22 +38,20 @@ class InterfaceAssembler extends AssemblerAbstract
     {
         $interfaceDescriptor = new InterfaceDescriptor();
 
-        $interfaceDescriptor->setFullyQualifiedStructuralElementName($data->getName());
-        $interfaceDescriptor->setName($data->getShortName());
-        $interfaceDescriptor->setLine($data->getLinenumber());
+        $interfaceDescriptor->setFullyQualifiedStructuralElementName($data->getFqsen());
+        $interfaceDescriptor->setName($data->getName());
+        $interfaceDescriptor->setLine($data->getLocation()->getLineNumber());
         $interfaceDescriptor->setPackage($this->extractPackageFromDocBlock($data->getDocBlock()) ?: '');
 
         // Reflection library formulates namespace as global but this is not wanted for phpDocumentor itself
-        $interfaceDescriptor->setNamespace(
-            '\\' . (strtolower($data->getNamespace()) == 'global' ? '' :$data->getNamespace())
-        );
+        $interfaceDescriptor->setNamespace(substr((string) $data->getFqsen(), 0, -strlen($data->getName()) - 1));
 
         $this->assembleDocBlock($data->getDocBlock(), $interfaceDescriptor);
         $this->addConstants($data->getConstants(), $interfaceDescriptor);
         $this->addMethods($data->getMethods(), $interfaceDescriptor);
 
-        foreach ($data->getParentInterfaces() as $interfaceClassName) {
-            $interfaceDescriptor->getParent()->set($interfaceClassName, $interfaceClassName);
+        foreach ($data->getParents() as $interfaceClassName) {
+            $interfaceDescriptor->getParent()->set((string) $interfaceClassName, $interfaceClassName);
         }
 
         return $interfaceDescriptor;
@@ -56,16 +60,13 @@ class InterfaceAssembler extends AssemblerAbstract
     /**
      * Registers the child constants with the generated Interface Descriptor.
      *
-     * @param ConstantReflector[] $constants
-     * @param InterfaceDescriptor $interfaceDescriptor
-     *
-     * @return void
+     * @param Constant[] $constants
      */
-    protected function addConstants($constants, $interfaceDescriptor)
+    protected function addConstants(array $constants, InterfaceDescriptor $interfaceDescriptor): void
     {
         foreach ($constants as $constant) {
             $constantDescriptor = $this->getBuilder()->buildDescriptor($constant);
-            if ($constantDescriptor) {
+            if ($constantDescriptor instanceof ConstantDescriptor) {
                 $constantDescriptor->setParent($interfaceDescriptor);
                 $interfaceDescriptor->getConstants()->set($constantDescriptor->getName(), $constantDescriptor);
             }
@@ -75,16 +76,13 @@ class InterfaceAssembler extends AssemblerAbstract
     /**
      * Registers the child methods with the generated Interface Descriptor.
      *
-     * @param MethodReflector[] $methods
-     * @param InterfaceDescriptor $interfaceDescriptor
-     *
-     * @return void
+     * @param Method[] $methods
      */
-    protected function addMethods($methods, $interfaceDescriptor)
+    protected function addMethods(array $methods, InterfaceDescriptor $interfaceDescriptor): void
     {
         foreach ($methods as $method) {
             $methodDescriptor = $this->getBuilder()->buildDescriptor($method);
-            if ($methodDescriptor) {
+            if ($methodDescriptor instanceof MethodDescriptor) {
                 $methodDescriptor->setParent($interfaceDescriptor);
                 $interfaceDescriptor->getMethods()->set($methodDescriptor->getName(), $methodDescriptor);
             }

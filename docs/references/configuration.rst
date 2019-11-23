@@ -195,9 +195,7 @@ in the ``transformations`` head section.
     structure format (structure.xml) by retrieving the ``target``
     element in the ``parser`` section.
 
-
 The following fields are supported:
-
 
 - *target*, the target location where to store the generated
   documentation files.

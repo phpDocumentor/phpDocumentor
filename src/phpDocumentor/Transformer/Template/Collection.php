@@ -1,10 +1,14 @@
 <?php
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -29,13 +33,11 @@ class Collection extends \ArrayObject
 
     /**
      * Constructs this collection and requires a factory to load templates.
-     *
-     * @param Factory          $factory
-     * @param WriterCollection $writerCollection
      */
     public function __construct(Factory $factory, WriterCollection $writerCollection)
     {
-        $this->factory          = $factory;
+        parent::__construct([]);
+        $this->factory = $factory;
         $this->writerCollection = $writerCollection;
     }
 
@@ -43,8 +45,6 @@ class Collection extends \ArrayObject
      * Loads a template with the given name or file path.
      *
      * @param string $nameOrPath
-     *
-     * @return void
      */
     public function load($nameOrPath)
     {
@@ -69,7 +69,7 @@ class Collection extends \ArrayObject
      */
     public function getTransformations()
     {
-        $result = array();
+        $result = [];
         foreach ($this as $template) {
             foreach ($template as $transformation) {
                 $result[] = $transformation;

@@ -4,7 +4,7 @@
  *
  * PHP Version 5.3
  *
- * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -18,7 +18,7 @@ use Symfony\Component\Filesystem\Filesystem;
 /**
  * Tests for the \phpDocumentor\Descriptor\Example\Finder class.
  */
-class FinderTest extends \PHPUnit_Framework_TestCase
+class FinderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     const EXAMPLE_TEXT = 'This is an example';
 
@@ -56,11 +56,11 @@ class FinderTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetAndSetExampleDirectories()
     {
-        $this->assertSame(array(), $this->fixture->getExampleDirectories());
+        $this->assertSame([], $this->fixture->getExampleDirectories());
 
-        $this->fixture->setExampleDirectories(array('this/is/a/test'));
+        $this->fixture->setExampleDirectories(['this/is/a/test']);
 
-        $this->assertSame(array('this/is/a/test'), $this->fixture->getExampleDirectories());
+        $this->assertSame(['this/is/a/test'], $this->fixture->getExampleDirectories());
     }
 
     /**
@@ -70,15 +70,15 @@ class FinderTest extends \PHPUnit_Framework_TestCase
      */
     public function testFindExampleContentsInExampleDirectory()
     {
-        $directories = array(vfsStream::url('base/exampleDirectory'), vfsStream::url('base/exampleDirectory2'));
+        $directories = [vfsStream::url('base/exampleDirectory'), vfsStream::url('base/exampleDirectory2')];
 
         $descriptor = $this->givenADescriptorWithExamplePath('example.txt');
         $this->givenTheDirectoryStructure(
-            array(
-                'exampleDirectory' => array(),
-                'exampleDirectory2' => array('example.txt' => self::EXAMPLE_TEXT),
-                'source' => array('example.txt' => 'this is not it') // check if the example directory precedes this
-            )
+            [
+                'exampleDirectory' => [],
+                'exampleDirectory2' => ['example.txt' => self::EXAMPLE_TEXT],
+                'source' => ['example.txt' => 'this is not it'], // check if the example directory precedes this
+            ]
         );
 
         $this->fixture->setExampleDirectories($directories);
@@ -96,7 +96,7 @@ class FinderTest extends \PHPUnit_Framework_TestCase
     public function testFindExampleContentsInSourceDirectory()
     {
         $descriptor = $this->givenADescriptorWithExamplePath('example.txt');
-        $this->givenTheDirectoryStructure(array('source' => array('example.txt' => self::EXAMPLE_TEXT)));
+        $this->givenTheDirectoryStructure(['source' => ['example.txt' => self::EXAMPLE_TEXT]]);
 
         $this->fixture->setSourceDirectory(vfsStream::url('base/source'));
         $result = $this->fixture->find($descriptor);
@@ -114,7 +114,7 @@ class FinderTest extends \PHPUnit_Framework_TestCase
         // can't use vfsStream because we are working from the Current Working Directory, which is not
         // supported by vfsStream
         $workingDirectory = sys_get_temp_dir() . '/phpdoc-tests';
-        $this->givenExampleFileInFolder($workingDirectory .'/examples/example.txt');
+        $this->givenExampleFileInFolder($workingDirectory . '/examples/example.txt');
 
         $descriptor = $this->givenADescriptorWithExamplePath('example.txt');
 
@@ -123,6 +123,7 @@ class FinderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame(self::EXAMPLE_TEXT, $result);
 
+        chdir('..');
         $this->filesystem->remove($workingDirectory);
     }
 
@@ -135,7 +136,7 @@ class FinderTest extends \PHPUnit_Framework_TestCase
         // can't use vfsStream because we are working from the Current Working Directory, which is not
         // supported by vfsStream
         $workingDirectory = sys_get_temp_dir() . '/phpdoc-tests';
-        $this->givenExampleFileInFolder($workingDirectory .'/example.txt');
+        $this->givenExampleFileInFolder($workingDirectory . '/example.txt');
 
         $descriptor = $this->givenADescriptorWithExamplePath('example.txt');
 
@@ -144,6 +145,7 @@ class FinderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame(self::EXAMPLE_TEXT, $result);
 
+        chdir('..');
         $this->filesystem->remove($workingDirectory);
     }
 
@@ -180,8 +182,6 @@ class FinderTest extends \PHPUnit_Framework_TestCase
      * Initializes a virtual folder structure used to verify file io operations.
      *
      * @param string[] $structure
-     *
-     * @return void
      */
     private function givenTheDirectoryStructure(array $structure)
     {
@@ -192,8 +192,6 @@ class FinderTest extends \PHPUnit_Framework_TestCase
      * Creates an example file at the given path and creates folders where necessary.
      *
      * @param string $exampleFilename
-     *
-     * @return void
      */
     private function givenExampleFileInFolder($exampleFilename)
     {

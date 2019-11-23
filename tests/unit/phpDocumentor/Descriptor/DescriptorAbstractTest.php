@@ -4,7 +4,7 @@
  *
  * PHP Version 5.3
  *
- * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -16,7 +16,7 @@ use Mockery as m;
 /**
  * Tests the functionality for the DescriptorAbstract class.
  */
-class DescriptorAbstractTest extends \PHPUnit_Framework_TestCase
+class DescriptorAbstractTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var DescriptorAbstract $fixture */
     protected $fixture;
@@ -35,6 +35,7 @@ class DescriptorAbstractTest extends \PHPUnit_Framework_TestCase
      */
     public function testInitialize()
     {
+        /** @var m\MockInterface|DescriptorAbstract */
         $mock = $this->getMockBuilder('phpDocumentor\Descriptor\DescriptorAbstract')
             ->disableOriginalConstructor()
             ->getMock();
@@ -75,7 +76,7 @@ class DescriptorAbstractTest extends \PHPUnit_Framework_TestCase
      */
     public function testSettingAndGettingNamespace()
     {
-        $this->assertNull($this->fixture->getNamespace());
+        $this->assertEquals('', $this->fixture->getNamespace());
 
         $mock = m::mock('phpDocumentor\Descriptor\NamespaceDescriptor');
 
@@ -117,7 +118,7 @@ class DescriptorAbstractTest extends \PHPUnit_Framework_TestCase
     public function testSettingAndGettingPackage()
     {
         $package = new PackageDescriptor();
-        $this->assertSame(null, $this->fixture->getPackage());
+        $this->assertNull($this->fixture->getPackage());
 
         $this->fixture->setPackage($package);
 
@@ -129,12 +130,13 @@ class DescriptorAbstractTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetAuthor()
     {
+        /** @var m\MockInterface|DescriptorAbstract */
         $mock = m::mock(
             'phpDocumentor\Descriptor\DescriptorAbstract, phpDocumentor\Descriptor\Interfaces\ChildInterface'
         );
         $mock->shouldDeferMissing();
 
-        $author = new Collection(array('author'));
+        $author = new Collection(['author']);
 
         $collection = new Collection();
         $collection->offsetSet('author', $author);
@@ -148,12 +150,13 @@ class DescriptorAbstractTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetVersion()
     {
+        /** @var m\MockInterface|DescriptorAbstract */
         $mock = m::mock(
             'phpDocumentor\Descriptor\DescriptorAbstract, phpDocumentor\Descriptor\Interfaces\ChildInterface'
         );
         $mock->shouldDeferMissing();
 
-        $version = new Collection(array('version'));
+        $version = new Collection(['version']);
 
         $collection = new Collection();
         $collection->offsetSet('version', $version);
@@ -167,12 +170,13 @@ class DescriptorAbstractTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetCopyRight()
     {
+        /** @var m\MockInterface|DescriptorAbstract */
         $mock = m::mock(
             'phpDocumentor\Descriptor\DescriptorAbstract, phpDocumentor\Descriptor\Interfaces\ChildInterface'
         );
         $mock->shouldDeferMissing();
 
-        $copyright = new Collection(array('copyright'));
+        $copyright = new Collection(['copyright']);
 
         $collection = new Collection();
         $collection->offsetSet('copyright', $copyright);
@@ -217,7 +221,7 @@ class DescriptorAbstractTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertSame('', $this->fixture->getPath());
 
-        /** @var FileDescriptor $file */
+        /** @var m\MockInterface $file */
         $file = m::mock('phpDocumentor\Descriptor\FileDescriptor');
         $file->shouldReceive('getPath')->andReturn('path');
         $this->fixture->setLocation($file);
@@ -247,7 +251,7 @@ class DescriptorAbstractTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertFalse($this->fixture->isDeprecated());
 
-        $this->fixture->setTags(new Collection(array('deprecated' => 'deprecated')));
+        $this->fixture->setTags(new Collection(['deprecated' => 'deprecated']));
 
         $this->assertTrue($this->fixture->isDeprecated());
     }

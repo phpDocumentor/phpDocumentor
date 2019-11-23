@@ -1,10 +1,14 @@
 <?php
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -33,27 +37,23 @@ class ProjectAnalyzer
     protected $unresolvedParentClassesCount = 0;
 
     /** @var integer[] $descriptorCountByType */
-    protected $descriptorCountByType = array();
+    protected $descriptorCountByType = [];
 
     /**
      * Analyzes the given project descriptor and populates this object's properties.
-     *
-     * @param ProjectDescriptor $projectDescriptor
-     *
-     * @return void
      */
     public function analyze(ProjectDescriptor $projectDescriptor)
     {
         $this->unresolvedParentClassesCount = 0;
 
-        $elementCounter = array();
+        $elementCounter = [];
         foreach ($this->findAllElements($projectDescriptor) as $element) {
             $elementCounter = $this->addElementToCounter($elementCounter, $element);
             $this->incrementUnresolvedParentCounter($element);
         }
 
-        $this->descriptorCountByType  = $elementCounter;
-        $this->fileCount              = count($projectDescriptor->getFiles());
+        $this->descriptorCountByType = $elementCounter;
+        $this->fileCount = count($projectDescriptor->getFiles());
         $this->topLevelNamespaceCount = count($projectDescriptor->getNamespace()->getChildren());
     }
 
@@ -98,7 +98,8 @@ TEXT;
         if (!isset($classCounters[get_class($element)])) {
             $classCounters[get_class($element)] = 0;
         }
-        $classCounters[get_class($element)]++;
+
+        ++$classCounters[get_class($element)];
 
         return $classCounters;
     }
@@ -115,14 +116,12 @@ TEXT;
         }
 
         if (is_string($element->getParent())) {
-            $this->unresolvedParentClassesCount++;
+            ++$this->unresolvedParentClassesCount;
         }
     }
 
     /**
      * Returns all elements from the project descriptor.
-     *
-     * @param ProjectDescriptor $projectDescriptor
      *
      * @return DescriptorAbstract[]
      */

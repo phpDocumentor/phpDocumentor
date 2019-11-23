@@ -93,7 +93,7 @@ Here is an example where the clean and checkstyle templates are used:
 Creating your own look and feel
 -------------------------------
 
-It is also possible to create your own template using either XSL or Twig as templating engine. This can be done by
+It is also possible to create your own template using Twig as a templating engine. This can be done by
 extending, or re-using, parts of an existing template or by starting from scratch. phpDocumentor offers a lot of
 conveniences for template writers, which would go beyond the scope of this tutorial.
 

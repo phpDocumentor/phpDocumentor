@@ -1,10 +1,14 @@
 <?php
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -12,37 +16,36 @@
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use phpDocumentor\Descriptor\ConstantDescriptor;
-use phpDocumentor\Reflection\ConstantReflector;
+use phpDocumentor\Reflection\Php\Constant;
 
 /**
  * Assembles a ConstantDescriptor from a ConstantReflector.
  */
 class ConstantAssembler extends AssemblerAbstract
 {
+    const SEPARATOR_SIZE = 2;
+
     /**
      * Creates a Descriptor from the provided data.
      *
-     * @param ConstantReflector $data
+     * @param Constant $data
      *
      * @return ConstantDescriptor
      */
     public function create($data)
     {
         $constantDescriptor = new ConstantDescriptor();
-        $constantDescriptor->setName($data->getShortName());
+        $constantDescriptor->setName($data->getName());
         $constantDescriptor->setValue($data->getValue());
         // Reflection library formulates namespace as global but this is not wanted for phpDocumentor itself
         $constantDescriptor->setNamespace(
-            '\\' . (strtolower($data->getNamespace()) == 'global' ? '' :$data->getNamespace())
+            substr((string) $data->getFqsen(), 0, - strlen($data->getName()) - static::SEPARATOR_SIZE)
         );
-        $constantDescriptor->setFullyQualifiedStructuralElementName(
-            (trim($constantDescriptor->getNamespace(), '\\') ? $constantDescriptor->getNamespace() : '')
-            . '\\' . $data->getShortName()
-        );
+        $constantDescriptor->setFullyQualifiedStructuralElementName($data->getFqsen());
 
         $this->assembleDocBlock($data->getDocBlock(), $constantDescriptor);
 
-        $constantDescriptor->setLine($data->getLinenumber());
+        $constantDescriptor->setLine($data->getLocation()->getLineNumber());
 
         return $constantDescriptor;
     }

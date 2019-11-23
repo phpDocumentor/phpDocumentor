@@ -1,14 +1,21 @@
 <?php
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
+
 namespace phpDocumentor\Descriptor;
+
+use phpDocumentor\Reflection\Type;
 
 /**
  * Descriptor representing a single Argument of a method or function.
@@ -18,8 +25,8 @@ class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\Argume
     /** @var MethodDescriptor $method */
     protected $method;
 
-    /** @var string[] $type an array of normalized types that should be in this Argument */
-    protected $types = array();
+    /** @var Type|null $type normalized type of this argument */
+    protected $type = null;
 
     /** @var string|null $default the default value for an argument or null if none is provided */
     protected $default;
@@ -32,34 +39,41 @@ class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\Argume
 
     /**
      * To which method does this argument belong to
-     *
-     * @param MethodDescriptor $method
      */
     public function setMethod(MethodDescriptor $method)
     {
         $this->method = $method;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function setTypes($types)
+    public function getMethod(): ?MethodDescriptor
     {
-        $this->types = $types;
+        return $this->method;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getTypes()
+    public function setType(?Type $type)
     {
-        if (count($this->types)==0 &&
-            $this->getInheritedElement() !== null
-            ) {
-                $this->setTypes($this->getInheritedElement()->getTypes());
+        $this->type = $type;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getType(): ?Type
+    {
+        if ($this->type === null && $this->getInheritedElement() !== null) {
+            $this->setType($this->getInheritedElement()->getType());
         }
 
-        return $this->types;
+        return $this->type;
+    }
+
+    public function getTypes(): array
+    {
+        trigger_error('Please use getType', E_USER_DEPRECATED);
+        return [$this->getType()];
     }
 
     /**
@@ -70,13 +84,13 @@ class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\Argume
         if ($this->method instanceof MethodDescriptor &&
             $this->method->getInheritedElement() instanceof MethodDescriptor) {
             $parents = $this->method->getInheritedElement()->getArguments();
-            foreach($parents as $parentArgument)
-            {
+            foreach ($parents as $parentArgument) {
                 if ($parentArgument->getName() === $this->getName()) {
                     return $parentArgument;
                 }
             }
         }
+
         return null;
     }
 

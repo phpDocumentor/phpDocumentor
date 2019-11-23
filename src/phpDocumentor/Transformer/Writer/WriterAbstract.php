@@ -1,10 +1,14 @@
 <?php
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -26,8 +30,6 @@ abstract class WriterAbstract
      * should be thrown; this indicates to the calling process that this writer will not function.
      *
      * @throws Exception\RequirementMissing when a requirements is missing stating which one.
-     *
-     * @return void
      */
     public function checkRequirements()
     {
@@ -38,8 +40,6 @@ abstract class WriterAbstract
      * Checks if there is a space in the path.
      *
      * @param string $path
-     *
-     * @return void
      *
      * @throws \InvalidArgumentException if path contains a space.
      */
@@ -55,8 +55,11 @@ abstract class WriterAbstract
      *
      * @param ProjectDescriptor $project        Document containing the structure.
      * @param Transformation    $transformation Transformation to execute.
-     *
-     * @return void
      */
     abstract public function transform(ProjectDescriptor $project, Transformation $transformation);
+
+    public function __toString(): string
+    {
+        return get_class($this);
+    }
 }

@@ -30,7 +30,7 @@ Theory of Operation
    ``phpDocumentor\Descriptor\TagDescriptor`` class is used. The TagDescriptors are populated by an :term:Assembler
    class that is invoked by the ProjectDescriptorBuilder after the parsing process.
 
-#. Writers capable of rendering templates, such as Twig and XSL, include a tag definition that determines where to
+#. Writers capable of rendering templates, such as Twig, include a tag definition that determines where to
    include sub-templates containing tag definitions
 
    .. important::
@@ -43,25 +43,6 @@ Theory of Operation
 
    For more information on how to accomplish this with a specific plugin, see the documentation for that specific
    Writer.
-
-Tags in plugins
----------------
-
-To add a custom tag in a plugin it you should add the following:
-
-#. Reflector class
-#. Descriptor class
-#. Assembler class
-#. Tag template block
-
-.. note::
-
-   You may be wondering why so much code is needed to introduce a new tag; this is because phpDocumentor is built to
-   support different input types to create a Descriptor with. In this case we have the Reflector as input and the
-   Assembler is the component that constructs a valid Descriptor from that Reflection information.
-
-   In future versions phpDocumentor may have an additional input that complements the Reflector library and it would
-   need another Assembler capable of dealing with transforming that input into a Descriptor.
 
 Variant approach: Quick and dirty
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

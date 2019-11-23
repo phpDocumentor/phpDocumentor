@@ -5,7 +5,7 @@ Many tags use a :term:`Type` as part of their definition (such as the @return ta
 These types differ from the official PHP definition to be able to represent all
 kinds of data.
 
-A complete definition will be given of these types and what they represent in 
+A complete definition will be given of these types and what they represent in
 the following sections.
 
 ABNF
@@ -178,7 +178,6 @@ The following keywords are recognized:
             return null;
         }
 
-
 11. **callable**, the element to which this type applies is a pointer to a
     function call. This may be any type of callback as defined in the PHP manual
     at http://php.net/manual/en/language.pseudo-types.php.
@@ -190,7 +189,6 @@ The following keywords are recognized:
         This type is commonly used in conjunction with another type to indicate
         that it is possible that true or false may be returned instead of an
         instance of the other type.
-
 
 13. **self**, the element to which this type applies is of the same Class,
     or any of its children, as which the documented element is originally
@@ -221,6 +219,9 @@ The following keywords are recognized:
     definition in the DocBlock, then `self` would refer to class B or any
     of its children.
     
+14. **scalar**, the element to which this type applies is of any scalar type
+    specifically: *string*, *float*, *int*, *bool*
+
 14. **scalar**, the element to which this type applies is of any scalar type
     specifically: *string*, *float*, *int*, *bool*
 
