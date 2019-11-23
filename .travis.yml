@@ -1,19 +1,18 @@
-language: sh
 sudo: false
+
+addons:
+  apt:
+    packages:
+      - graphviz
+  homebrew:
+    packages:
+      - graphviz
 
 branches:
   except: /^(\S*)-nightly-(\S*)$/
 
 matrix:
   fast_finish: true
-
-install:
-  - travis_retry composer install --no-interaction --prefer-dist --optimize-autoloader
-before_script:
-  - travis_retry composer global require phpunit/phpunit ^6 # cannot use phpunit.phar or require-dev, because this package is a phpunit dep
-script:
-  - $HOME/.composer/vendor/bin/phpunit --no-coverage
-  - bin/behat -p default
 
 jobs:
   include:
@@ -32,8 +31,8 @@ jobs:
       os: linux
       name: "php 7.2 Smoke test"
       before_script:
-         sudo apt update
-         sudo apt install graphviz
+        - travis_retry composer install --no-interaction --prefer-dist --optimize-autoloader
+        - travis_retry composer global require phpunit/phpunit ^6 # cannot use phpunit.phar or require-dev, because this package is a phpunit dep
       script:
         - ./bin/phpdoc run
 
@@ -43,8 +42,8 @@ jobs:
       os: linux
       name: "Behat with phar"
       before_script:
-        - sudo apt update
-        - sudo apt install graphviz
+        - travis_retry composer install --no-interaction --prefer-dist --optimize-autoloader
+        - travis_retry composer global require phpunit/phpunit ^6 # cannot use phpunit.phar or require-dev, because this package is a phpunit dep
       script:
         - git tag v3.999.999
         - php bin/console cache:warmup --env=prod && php -d phar.readonly=false tools/box.phar compile
@@ -56,6 +55,9 @@ jobs:
       php: 7.2
       os: linux
       name: "php 7.2 Behat templates"
+      before_script:
+        - travis_retry composer install --no-interaction --prefer-dist --optimize-autoloader
+        - travis_retry composer global require phpunit/phpunit ^6 # cannot use phpunit.phar or require-dev, because this package is a phpunit dep
       script:
         - mkdir -p /tmp/phpdoc-behat/clean_template/simple
         - bin/behat -p template
