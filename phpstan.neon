@@ -1,5 +1,4 @@
 includes:
-    - /composer/vendor/phpstan/phpstan-mockery/extension.neon
     - /composer/vendor/phpstan/phpstan-webmozart-assert/extension.neon
     - ./vendor/phpdocumentor/graphviz/extension.neon
 

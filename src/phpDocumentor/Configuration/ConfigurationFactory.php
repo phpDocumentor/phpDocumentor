@@ -100,7 +100,7 @@ final class ConfigurationFactory
         $filename = (string) $uri;
 
         if (!file_exists($filename)) {
-          throw new InvalidConfigPathException(sprintf('File %s could not be found', $filename));
+            throw new InvalidConfigPathException(sprintf('File %s could not be found', $filename));
         }
 
         $xml = new \SimpleXMLElement($filename, 0, true);
