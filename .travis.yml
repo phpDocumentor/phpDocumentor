@@ -1,5 +1,5 @@
 language: php
-php: [ 7.1, 7.2, 7.3 ]
+php: [ 7.1, 7.2, 7.3, 7.4 ]
 sudo: false
 
 branches:
@@ -26,7 +26,7 @@ jobs:
         - travis_retry sudo apt update
         - travis_retry sudo apt install graphviz
       script:
-        - ./bin/phpdoc run 
+        - ./bin/phpdoc run
 
     - stage: test
       php: 7.2
