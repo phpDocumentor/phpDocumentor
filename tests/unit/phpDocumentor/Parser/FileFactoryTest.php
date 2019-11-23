@@ -25,7 +25,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class FileFactoryTest extends TestCase
 {
-    public function testIfFileFactoryIsCreatedUsingAnArray()
+    public function testIfFileFactoryIsCreatedUsingAnArray() : void
     {
         FileFactory::createInstance(
             NodesFactory::createInstance(),
@@ -38,7 +38,7 @@ final class FileFactoryTest extends TestCase
         $this->assertTrue(true);
     }
 
-    public function testIfFileFactoryFailsWhenPassingAnInvalidMiddlewareType()
+    public function testIfFileFactoryFailsWhenPassingAnInvalidMiddlewareType() : void
     {
         // technically we are testing behaviour of the ChainFactory; however, because this is the inverse of the
         // previous test we now verify that an error should indeed be thrown and we do not run the risk of silent

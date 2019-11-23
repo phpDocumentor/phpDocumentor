@@ -14,10 +14,10 @@ namespace phpDocumentor\Descriptor\Type;
 class UnknownTypeDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
-     * @covers phpDocumentor\Descriptor\Type\UnknownTypeDescriptor::getName
-     * @covers phpDocumentor\Descriptor\Type\UnknownTypeDescriptor::__toString
+     * @covers \phpDocumentor\Descriptor\Type\UnknownTypeDescriptor::getName
+     * @covers \phpDocumentor\Descriptor\Type\UnknownTypeDescriptor::__toString
      */
-    public function testIfNameCanBeReturned()
+    public function testIfNameCanBeReturned() : void
     {
         $fixture = new UnknownTypeDescriptor('unknowntype');
 

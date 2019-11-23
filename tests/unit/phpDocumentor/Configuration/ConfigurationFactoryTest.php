@@ -33,7 +33,7 @@ final class ConfigurationFactoryTest extends MockeryTestCase
     /**
      * @covers ::fromUri
      */
-    public function testItLoadsASpecificConfigurationFileUsingTheCorrectStrategy()
+    public function testItLoadsASpecificConfigurationFileUsingTheCorrectStrategy() : void
     {
         $configurationFactory = new ConfigurationFactory(
             [
@@ -53,7 +53,7 @@ final class ConfigurationFactoryTest extends MockeryTestCase
     /**
      * @covers ::fromUri
      */
-    public function testLoadingFromUriFailsIfFileDoesNotExist()
+    public function testLoadingFromUriFailsIfFileDoesNotExist() : void
     {
         $this->expectException(InvalidConfigPathException::class);
         $this->expectExceptionMessage('File file:///does-not-exist could not be found');
@@ -64,7 +64,7 @@ final class ConfigurationFactoryTest extends MockeryTestCase
     /**
      * @covers ::fromDefaultLocations()
      */
-    public function testThatTheDefaultConfigurationFilesAreLoaded()
+    public function testThatTheDefaultConfigurationFilesAreLoaded() : void
     {
         $file = $this->givenExampleConfigurationFileWithContent(
             '<phpdocumentor><title>My title</title></phpdocumentor>'
@@ -79,7 +79,7 @@ final class ConfigurationFactoryTest extends MockeryTestCase
     /**
      * @covers ::fromDefaultLocations()
      */
-    public function testWhenNoneOfTheDefaultsExistThatTheBakedConfigIsUsed()
+    public function testWhenNoneOfTheDefaultsExistThatTheBakedConfigIsUsed() : void
     {
         $configurationFactory = new ConfigurationFactory([new Version2()], ['does_not_exist.xml']);
 
@@ -91,7 +91,7 @@ final class ConfigurationFactoryTest extends MockeryTestCase
     /**
      * @covers ::fromDefaultLocations()
      */
-    public function testWhenDefaultFileIsInvalidXMLThenAnExceptionIsRaised()
+    public function testWhenDefaultFileIsInvalidXMLThenAnExceptionIsRaised() : void
     {
         $file = $this->givenExampleConfigurationFileWithContent(
             '<?xml version="1.0" encoding="UTF-8" ?>' .
@@ -115,7 +115,7 @@ final class ConfigurationFactoryTest extends MockeryTestCase
     /**
      * @covers ::addMiddleware
      */
-    public function testThatMiddlewaresCanBeAddedAndAreThenApplied()
+    public function testThatMiddlewaresCanBeAddedAndAreThenApplied() : void
     {
         $inputValue = ['test'];
         $afterMiddleware1Value = ['test', 'test2'];
@@ -135,11 +135,11 @@ final class ConfigurationFactoryTest extends MockeryTestCase
 
     /**
      * @covers ::fromUri
-     * @expectedException \Exception
-     * @expectedExceptionMessage No supported configuration files were found
      */
-    public function testItHaltsIfNoMatchingStrategyCanBeFound()
+    public function testItHaltsIfNoMatchingStrategyCanBeFound() : void
     {
+        $this->expectException('Exception');
+        $this->expectExceptionMessage('No supported configuration files were found');
         $strategies = []; // No strategy means nothing could match ;)
         $configurationFactory = new ConfigurationFactory($strategies, []);
 
@@ -150,10 +150,10 @@ final class ConfigurationFactoryTest extends MockeryTestCase
 
     /**
      * @covers ::__construct
-     * @expectedException \TypeError
      */
-    public function testItErrorsWhenTryingToInitializeWithSomethingOtherThanAStrategy()
+    public function testItErrorsWhenTryingToInitializeWithSomethingOtherThanAStrategy() : void
     {
+        $this->expectException('TypeError');
         new ConfigurationFactory(['this_is_not_a_strategy'], []);
     }
 

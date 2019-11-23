@@ -36,7 +36,7 @@ class MethodAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Creates a new fixture to test with.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->builderMock = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
         $this->builderMock->shouldReceive('buildDescriptor')->andReturn(null);
@@ -57,7 +57,7 @@ class MethodAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addArgument
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addVariadicArgument
      */
-    public function testCreateMethodDescriptorFromReflector()
+    public function testCreateMethodDescriptorFromReflector() : void
     {
         // Arrange
         $namespace = 'Namespace';
@@ -102,7 +102,7 @@ class MethodAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addArgument
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addVariadicArgument
      */
-    public function testCreateMethodDescriptorFromReflectorWhenDocblockIsAbsent()
+    public function testCreateMethodDescriptorFromReflectorWhenDocblockIsAbsent() : void
     {
         // Arrange
         $namespace = 'Namespace';
@@ -137,7 +137,7 @@ class MethodAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addArgument
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addVariadicArgument
      */
-    public function testCreateMethodDescriptorFromReflectorWhenParamTagsAreAbsent()
+    public function testCreateMethodDescriptorFromReflectorWhenParamTagsAreAbsent() : void
     {
         // Arrange
         $namespace = 'Namespace';
@@ -173,7 +173,8 @@ class MethodAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         string $methodName,
         Argument $argumentMock,
         DocBlock $docBlockMock = null
-    ) {
+    ) : Method
+    {
         $method = new Method(
             new Fqsen('\\' . $namespace . '::' . $methodName . '()'),
             new Visibility(Visibility::PROTECTED_),

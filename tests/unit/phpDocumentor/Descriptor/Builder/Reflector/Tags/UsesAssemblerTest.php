@@ -35,7 +35,7 @@ class UsesAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Creates a new fixture to test with.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->builderMock = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
         $this->fixture = new UsesAssembler();
@@ -45,7 +45,7 @@ class UsesAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers ::create
      */
-    public function testCreateUsesDescriptorFromUsesTagWhenReferenceIsRelativeClassnameNotInNamespaceAliasses()
+    public function testCreateUsesDescriptorFromUsesTagWhenReferenceIsRelativeClassnameNotInNamespaceAliasses() : void
     {
         // Arrange
         $name = 'uses';
@@ -63,7 +63,7 @@ class UsesAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $this->assertSame([], $descriptor->getErrors()->getAll());
     }
 
-    protected function givenAUsesTag($description, $reference)
+    protected function givenAUsesTag($description, $reference) : Uses
     {
         return new Uses(
             new Fqsen($reference),

@@ -33,7 +33,7 @@ class ArgumentAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Creates a new fixture to test with.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->builderMock = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
         $this->fixture = new ArgumentAssembler();
@@ -43,7 +43,7 @@ class ArgumentAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\ArgumentAssembler::create
      */
-    public function testCreateArgumentDescriptorFromReflector()
+    public function testCreateArgumentDescriptorFromReflector() : void
     {
         // Arrange
         $name = 'goodArgument';
@@ -65,7 +65,7 @@ class ArgumentAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\ArgumentAssembler::create
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\ArgumentAssembler::overwriteTypeAndDescriptionFromParamTag
      */
-    public function testIfTypeAndDescriptionAreSetFromParamDescriptor()
+    public function testIfTypeAndDescriptionAreSetFromParamDescriptor() : void
     {
         // Arrange
         $name = 'goodArgument';
@@ -93,7 +93,7 @@ class ArgumentAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\ArgumentAssembler::create
      */
-    public function testIfVariadicArgumentsAreDetected()
+    public function testIfVariadicArgumentsAreDetected() : void
     {
         // Arrange
         $name = 'goodArgument';

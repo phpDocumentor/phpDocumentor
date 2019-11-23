@@ -34,7 +34,7 @@ final class CacheMiddlewareTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @uses \phpDocumentor\Reflection\Php\Factory\File\CreateCommand
      * @uses \phpDocumentor\Reflection\Php\File
      */
-    public function testCachedFileIsReturnedWhenValid()
+    public function testCachedFileIsReturnedWhenValid() : void
     {
         $commandFile = new SourceFile\LocalFile(__FILE__);
         $file = new File($commandFile->md5(), __FILE__);
@@ -65,7 +65,7 @@ final class CacheMiddlewareTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @uses \phpDocumentor\Reflection\Php\Factory\File\CreateCommand
      * @uses \phpDocumentor\Reflection\Php\File
      */
-    public function testCachedFileIsUpdatedWhenForced()
+    public function testCachedFileIsUpdatedWhenForced() : void
     {
         $commandFile = new SourceFile\LocalFile(__FILE__);
         $file = new File($commandFile->md5(), __FILE__);
@@ -97,7 +97,7 @@ final class CacheMiddlewareTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @uses \phpDocumentor\Reflection\Php\Factory\File\CreateCommand
      * @uses \phpDocumentor\Reflection\Php\File
      */
-    public function testCacheIsUpdatedOnAMiss()
+    public function testCacheIsUpdatedOnAMiss() : void
     {
         $file = new File('hash', 'myFile.php');
         $item = new Item();
@@ -127,7 +127,7 @@ final class CacheMiddlewareTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @uses \phpDocumentor\Reflection\Php\Factory\File\CreateCommand
      * @uses \phpDocumentor\Reflection\Php\File
      */
-    public function testCacheFileIfItIsNotInThePool()
+    public function testCacheFileIfItIsNotInThePool() : void
     {
         $freshFile = new File('NewHash', 'myFile.php');
 
@@ -177,7 +177,7 @@ final class CacheMiddlewareTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @uses \phpDocumentor\Reflection\Php\Factory\File\CreateCommand
      * @uses \phpDocumentor\Reflection\Php\File
      */
-    public function testCacheNewFileIfHashMismatches()
+    public function testCacheNewFileIfHashMismatches() : void
     {
         $cachedFile = new File('OldHash', 'myFile.php');
         $freshFile = new File('NewHash', 'myFile.php');

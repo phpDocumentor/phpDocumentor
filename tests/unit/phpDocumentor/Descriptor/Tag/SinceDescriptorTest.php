@@ -24,16 +24,16 @@ class SinceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Creates a new fixture object.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fixture = new SinceDescriptor('name');
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Tag\SinceDescriptor::setVersion
-     * @covers phpDocumentor\Descriptor\Tag\SinceDescriptor::getVersion
+     * @covers \phpDocumentor\Descriptor\Tag\SinceDescriptor::setVersion
+     * @covers \phpDocumentor\Descriptor\Tag\SinceDescriptor::getVersion
      */
-    public function testSetAndGetVersion()
+    public function testSetAndGetVersion() : void
     {
         $this->assertEmpty($this->fixture->getVersion());
 

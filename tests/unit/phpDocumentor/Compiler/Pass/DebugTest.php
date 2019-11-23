@@ -19,9 +19,9 @@ use Mockery as m;
 class DebugTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
-     * @covers phpDocumentor\Compiler\Pass\Debug::__construct
+     * @covers \phpDocumentor\Compiler\Pass\Debug::__construct
      */
-    public function testRegisterLoggerAndAnalyzer()
+    public function testRegisterLoggerAndAnalyzer() : void
     {
         $loggerMock = m::mock('Psr\Log\LoggerInterface');
         $analyzerMock = m::mock('phpDocumentor\Descriptor\ProjectAnalyzer');
@@ -33,9 +33,9 @@ class DebugTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Compiler\Pass\Debug::execute
+     * @covers \phpDocumentor\Compiler\Pass\Debug::execute
      */
-    public function testLogDebugAnalysis()
+    public function testLogDebugAnalysis() : void
     {
         $testString = 'test';
         $projectDescriptorMock = m::mock('phpDocumentor\Descriptor\ProjectDescriptor');
@@ -56,9 +56,9 @@ class DebugTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Compiler\Pass\Debug::getDescription
+     * @covers \phpDocumentor\Compiler\Pass\Debug::getDescription
      */
-    public function testGetDescription()
+    public function testGetDescription() : void
     {
         $debug = new Debug(m::mock('Psr\Log\LoggerInterface'), m::mock('phpDocumentor\Descriptor\ProjectAnalyzer'));
         $expected = 'Analyze results and write report to log';

@@ -22,15 +22,15 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Creates a new (empty) fixture object.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fixture = new Collection();
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Collection::__construct
+     * @covers \phpDocumentor\Descriptor\Collection::__construct
      */
-    public function testInitialize()
+    public function testInitialize() : void
     {
         $fixture = new Collection();
 
@@ -38,9 +38,9 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Collection::__construct
+     * @covers \phpDocumentor\Descriptor\Collection::__construct
      */
-    public function testInitializeWithExistingArray()
+    public function testInitializeWithExistingArray() : void
     {
         $expected = [1, 2];
         $fixture = new Collection($expected);
@@ -49,9 +49,9 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Collection::add
+     * @covers \phpDocumentor\Descriptor\Collection::add
      */
-    public function testAddNewItem()
+    public function testAddNewItem() : void
     {
         $expected = ['abc'];
         $expectedSecondRun = ['abc', 'def'];
@@ -68,10 +68,10 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Collection::set
-     * @covers phpDocumentor\Descriptor\Collection::offsetSet
+     * @covers \phpDocumentor\Descriptor\Collection::set
+     * @covers \phpDocumentor\Descriptor\Collection::offsetSet
      */
-    public function testSetItemsWithKey()
+    public function testSetItemsWithKey() : void
     {
         $expected = ['z' => 'abc'];
         $expectedSecondRun = ['z' => 'abc', 'y' => 'def'];
@@ -88,29 +88,29 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Collection::set
-     * @expectedException \InvalidArgumentException
+     * @covers \phpDocumentor\Descriptor\Collection::set
      */
-    public function testSetItemsWithEmptyKeyShouldThrowException()
+    public function testSetItemsWithEmptyKeyShouldThrowException() : void
     {
+        $this->expectException('InvalidArgumentException');
         $this->fixture->set('', 'abc');
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Collection::offsetSet
-     * @expectedException \InvalidArgumentException
+     * @covers \phpDocumentor\Descriptor\Collection::offsetSet
      */
-    public function testSetItemsUsingOffsetSetWithEmptyKeyShouldThrowException()
+    public function testSetItemsUsingOffsetSetWithEmptyKeyShouldThrowException() : void
     {
+        $this->expectException('InvalidArgumentException');
         $this->fixture->offsetSet('', 'abc');
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Collection::get
-     * @covers phpDocumentor\Descriptor\Collection::__get
-     * @covers phpDocumentor\Descriptor\Collection::offsetGet
+     * @covers \phpDocumentor\Descriptor\Collection::get
+     * @covers \phpDocumentor\Descriptor\Collection::__get
+     * @covers \phpDocumentor\Descriptor\Collection::offsetGet
      */
-    public function testRetrievalOfItems()
+    public function testRetrievalOfItems() : void
     {
         $this->fixture['a'] = 'abc';
         $this->assertEquals('abc', $this->fixture->__get('a'));
@@ -123,18 +123,18 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Collection::getAll
+     * @covers \phpDocumentor\Descriptor\Collection::getAll
      */
-    public function testRetrieveAllItems()
+    public function testRetrieveAllItems() : void
     {
         $this->fixture['a'] = 'abc';
         $this->assertSame(['a' => 'abc'], $this->fixture->getAll());
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Collection::getIterator
+     * @covers \phpDocumentor\Descriptor\Collection::getIterator
      */
-    public function testGetIterator()
+    public function testGetIterator() : void
     {
         $this->fixture['a'] = 'abc';
         $this->assertInstanceOf('ArrayIterator', $this->fixture->getIterator());
@@ -142,10 +142,10 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Collection::count
-     * @covers phpDocumentor\Descriptor\Collection::offsetUnset
+     * @covers \phpDocumentor\Descriptor\Collection::count
+     * @covers \phpDocumentor\Descriptor\Collection::offsetUnset
      */
-    public function testCountReturnsTheNumberOfElements()
+    public function testCountReturnsTheNumberOfElements() : void
     {
         $this->assertCount(0, $this->fixture);
         $this->assertEquals(0, $this->fixture->count());
@@ -167,9 +167,9 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Collection::clear
+     * @covers \phpDocumentor\Descriptor\Collection::clear
      */
-    public function testClearingTheCollection()
+    public function testClearingTheCollection() : void
     {
         $this->fixture[1] = 'a';
         $this->fixture[2] = 'b';
@@ -182,9 +182,9 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Collection::offsetExists
+     * @covers \phpDocumentor\Descriptor\Collection::offsetExists
      */
-    public function testIfExistingElementsAreDetected()
+    public function testIfExistingElementsAreDetected() : void
     {
         $this->assertArrayNotHasKey(0, $this->fixture);
         $this->assertFalse($this->fixture->offsetExists(0));
@@ -196,9 +196,9 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Collection::merge
+     * @covers \phpDocumentor\Descriptor\Collection::merge
      */
-    public function testIfAfterMergeCollectionContainsAllItems()
+    public function testIfAfterMergeCollectionContainsAllItems() : void
     {
         $expected = [0 => 'a', 1 => 'b', 2 => 'c'];
         $this->fixture[1] = 'a';

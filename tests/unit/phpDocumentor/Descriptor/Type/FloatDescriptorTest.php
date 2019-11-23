@@ -14,10 +14,10 @@ namespace phpDocumentor\Descriptor\Type;
 class FloatDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
-     * @covers phpDocumentor\Descriptor\Type\FloatDescriptor::getName
-     * @covers phpDocumentor\Descriptor\Type\FloatDescriptor::__toString
+     * @covers \phpDocumentor\Descriptor\Type\FloatDescriptor::getName
+     * @covers \phpDocumentor\Descriptor\Type\FloatDescriptor::__toString
      */
-    public function testIfNameCanBeReturned()
+    public function testIfNameCanBeReturned() : void
     {
         $fixture = new FloatDescriptor();
 

@@ -18,16 +18,16 @@ use phpDocumentor\Descriptor\DescriptorAbstract;
 /**
  * Test class for \phpDocumentor\Transformer\Writer\Xml\ConstantConverter.
  *
- * @covers phpDocumentor\Transformer\Writer\Xml\ConstantConverter
+ * @covers \phpDocumentor\Transformer\Writer\Xml\ConstantConverter
  */
 class ConstantConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
      * Tests whether the XML Element representing a constant is properly created.
      *
-     * @covers phpDocumentor\Transformer\Writer\Xml\ConstantConverter::convert
+     * @covers \phpDocumentor\Transformer\Writer\Xml\ConstantConverter::convert
      */
-    public function testConstantXmlElementIsCreated()
+    public function testConstantXmlElementIsCreated() : void
     {
         // Arrange
         $constant = $this->createConstantDescriptorMock();
@@ -52,9 +52,9 @@ class ConstantConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Tests whether the XML Element representing a constant is properly created.
      *
-     * @covers phpDocumentor\Transformer\Writer\Xml\ConstantConverter::convert
+     * @covers \phpDocumentor\Transformer\Writer\Xml\ConstantConverter::convert
      */
-    public function testNamespaceNameIsTakenFromNamespaceDescriptorIfPresent()
+    public function testNamespaceNameIsTakenFromNamespaceDescriptorIfPresent() : void
     {
         // Arrange
         $parent = $this->prepareParentXMLElement();
@@ -76,7 +76,7 @@ class ConstantConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      *
      * @return \DOMElement
      */
-    protected function prepareParentXMLElement()
+    protected function prepareParentXMLElement() : \DOMElement
     {
         $document = new \DOMDocument();
         $parent = new \DOMElement('class');
@@ -107,7 +107,7 @@ class ConstantConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      *
      * @return ConstantConverter
      */
-    protected function createFixture(ConstantDescriptor $constant)
+    protected function createFixture(ConstantDescriptor $constant) : ConstantConverter
     {
         $docBlockConverter = m::mock('phpDocumentor\Transformer\Writer\Xml\DocBlockConverter');
         $docBlockConverter->shouldReceive('convert')->with(m::type('DOMElement'), $constant);

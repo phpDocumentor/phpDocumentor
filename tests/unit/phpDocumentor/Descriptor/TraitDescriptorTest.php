@@ -25,7 +25,7 @@ class TraitDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Creates a new (empty) fixture object.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fixture = new TraitDescriptor();
     }
@@ -35,7 +35,7 @@ class TraitDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      *
      * @covers \phpDocumentor\Descriptor\TraitDescriptor::__construct
      */
-    public function testInitialize()
+    public function testInitialize() : void
     {
         $this->assertAttributeInstanceOf('phpDocumentor\Descriptor\Collection', 'properties', $this->fixture);
         $this->assertAttributeInstanceOf('phpDocumentor\Descriptor\Collection', 'methods', $this->fixture);
@@ -45,7 +45,7 @@ class TraitDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers \phpDocumentor\Descriptor\TraitDescriptor::setProperties
      * @covers \phpDocumentor\Descriptor\TraitDescriptor::getProperties
      */
-    public function testSettingAndGettingProperties()
+    public function testSettingAndGettingProperties() : void
     {
         $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getProperties());
 
@@ -60,7 +60,7 @@ class TraitDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers \phpDocumentor\Descriptor\TraitDescriptor::setMethods
      * @covers \phpDocumentor\Descriptor\TraitDescriptor::getMethods
      */
-    public function testSettingAndGettingMethods()
+    public function testSettingAndGettingMethods() : void
     {
         $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getMethods());
 
@@ -74,7 +74,7 @@ class TraitDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers \phpDocumentor\Descriptor\TraitDescriptor::getInheritedMethods
      */
-    public function testGetInheritedMethods()
+    public function testGetInheritedMethods() : void
     {
         $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getInheritedMethods());
 
@@ -86,7 +86,7 @@ class TraitDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers \phpDocumentor\Descriptor\TraitDescriptor::getMagicMethods
      */
-    public function testMagicMethodsReturnsEmptyCollectionWhenNoTags()
+    public function testMagicMethodsReturnsEmptyCollectionWhenNoTags() : void
     {
         $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getMagicMethods());
 
@@ -100,7 +100,7 @@ class TraitDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @dataProvider provideMagicMethodProperties
      * @param bool $isStatic
      */
-    public function testMagicMethodsReturnsExpectedCollectionWithTags($isStatic)
+    public function testMagicMethodsReturnsExpectedCollectionWithTags($isStatic) : void
     {
         $mockMethodDescriptor = m::mock('phpDocumentor\Descriptor\Tag\MethodDescriptor');
         $mockMethodDescriptor->shouldReceive('getMethodName')->andReturn('Sample');
@@ -124,7 +124,7 @@ class TraitDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * (provides isStatic)
      * @return bool[][]
      */
-    public function provideMagicMethodProperties()
+    public function provideMagicMethodProperties() : array
     {
         return [
             // Instance magic method (default)
@@ -137,7 +137,7 @@ class TraitDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers \phpDocumentor\Descriptor\TraitDescriptor::getInheritedProperties
      */
-    public function testGetInheritedProperties()
+    public function testGetInheritedProperties() : void
     {
         $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getInheritedProperties());
 
@@ -149,7 +149,7 @@ class TraitDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers \phpDocumentor\Descriptor\TraitDescriptor::getMagicProperties
      */
-    public function testMagicPropertiesReturnsEmptyCollectionWhenNoTags()
+    public function testMagicPropertiesReturnsEmptyCollectionWhenNoTags() : void
     {
         $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getMagicProperties());
 
@@ -161,7 +161,7 @@ class TraitDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers \phpDocumentor\Descriptor\TraitDescriptor::getMagicProperties
      */
-    public function testMagicPropertiesReturnsExpectedCollectionWithTags()
+    public function testMagicPropertiesReturnsExpectedCollectionWithTags() : void
     {
         $mockTagPropertyDescriptor = m::mock('phpDocumentor\Descriptor\Tag\PropertyDescriptor');
         $mockTagPropertyDescriptor->shouldReceive('getVariableName')->andReturn('Sample');
@@ -184,7 +184,7 @@ class TraitDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers \phpDocumentor\Descriptor\TraitDescriptor::setPackage
      */
-    public function testSettingAndGettingPackage()
+    public function testSettingAndGettingPackage() : void
     {
         $package = new \phpDocumentor\Descriptor\PackageDescriptor();
         $mockPropertyDescriptor = m::mock('phpDocumentor\Descriptor\PropertyDescriptor');
@@ -207,7 +207,7 @@ class TraitDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers \phpDocumentor\Descriptor\TraitDescriptor::getUsedTraits
      * @covers \phpDocumentor\Descriptor\TraitDescriptor::setUsedTraits
      */
-    public function testSettingAndGettingUsedTraits()
+    public function testSettingAndGettingUsedTraits() : void
     {
         $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getUsedTraits());
 

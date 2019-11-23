@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Transformer\Event;
+namespace phpDocumentor\Transformer\Event;
 
 use phpDocumentor\Transformer\Writer\FileIo;
 use phpDocumentor\Transformer\Event\WriterInitializationEvent;
@@ -12,7 +12,7 @@ final class WriterInitializationEventTest extends \PHPUnit\Framework\TestCase
     private $fixture;
     private $writer;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fixture = new WriterInitializationEvent(new \stdClass());
         $this->writer = new FileIo();
@@ -22,7 +22,7 @@ final class WriterInitializationEventTest extends \PHPUnit\Framework\TestCase
      * @covers \phpDocumentor\Transformer\Event\WriterInitializationEvent::getWriter
      * @covers \phpDocumentor\Transformer\Event\WriterInitializationEvent::setWriter
      */
-    public function testSetAndGetWriter()
+    public function testSetAndGetWriter() : void
     {
         $this->assertNull($this->fixture->getWriter());
 

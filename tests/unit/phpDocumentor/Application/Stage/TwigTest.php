@@ -9,7 +9,7 @@ use \Mockery as m;
 
 final class TwigTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
-    public function test_that_the_cache_folder_gets_configured()
+    public function test_that_the_cache_folder_gets_configured() : void
     {
         $twig = new \Twig\Environment();
         $config = [ 'phpdocumentor' => [ 'paths' => [ 'cache' => 'phpdoc-cache' ] ] ];

@@ -29,26 +29,26 @@ class MarkerFromTagsExtractorTest extends \Mockery\Adapter\Phpunit\MockeryTestCa
     /**
      * Initialize the fixture for this test.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fixture = new MarkerFromTagsExtractor();
         $this->project = new ProjectDescriptor('MyProject');
     }
 
     /**
-     * @covers phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor::getDescription
+     * @covers \phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor::getDescription
      */
-    public function testDescriptionReturnsCorrectString()
+    public function testDescriptionReturnsCorrectString() : void
     {
         $this->assertSame('Collect all markers embedded in tags', $this->fixture->getDescription());
     }
 
     /**
-     * @covers phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor::execute
-     * @covers phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor::getFileDescriptor
-     * @covers phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor::addTodoMarkerToFile
+     * @covers \phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor::execute
+     * @covers \phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor::getFileDescriptor
+     * @covers \phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor::addTodoMarkerToFile
      */
-    public function testAddTodoMarkerForEachTodoTagInAnyElement()
+    public function testAddTodoMarkerForEachTodoTagInAnyElement() : void
     {
         $fileDescriptor = $this->givenProjectHasFileDescriptor();
         $fileDescriptor->setLine(10);
@@ -81,7 +81,7 @@ class MarkerFromTagsExtractorTest extends \Mockery\Adapter\Phpunit\MockeryTestCa
      * @covers \phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor::execute
      * @covers \phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor::getFileDescriptor
      */
-    public function testExceptionShouldBeThrownIfElementHasNoFileAssociated()
+    public function testExceptionShouldBeThrownIfElementHasNoFileAssociated() : void
     {
         $classDescriptor = $this->givenProjectHasClassDescriptorAssociatedWithFile(null);
         $this->givenDescriptorHasTodoTagWithDescription($classDescriptor, '789');
@@ -95,7 +95,7 @@ class MarkerFromTagsExtractorTest extends \Mockery\Adapter\Phpunit\MockeryTestCa
     /**
      * @return FileDescriptor
      */
-    protected function givenProjectHasFileDescriptor()
+    protected function givenProjectHasFileDescriptor() : FileDescriptor
     {
         $fileDescriptor1 = new FileDescriptor('123');
         $elementIndex = $this->project->getIndexes()->get('elements', new Collection());
@@ -107,7 +107,7 @@ class MarkerFromTagsExtractorTest extends \Mockery\Adapter\Phpunit\MockeryTestCa
      * @param DescriptorAbstract $descriptor
      * @param string             $description
      */
-    protected function givenDescriptorHasTodoTagWithDescription($descriptor, $description)
+    protected function givenDescriptorHasTodoTagWithDescription($descriptor, $description) : void
     {
         $todoTag = new TagDescriptor('todo');
         $todoTag->setDescription($description);
@@ -124,7 +124,7 @@ class MarkerFromTagsExtractorTest extends \Mockery\Adapter\Phpunit\MockeryTestCa
      *
      * @return ClassDescriptor
      */
-    protected function givenProjectHasClassDescriptorAssociatedWithFile($fileDescriptor)
+    protected function givenProjectHasClassDescriptorAssociatedWithFile($fileDescriptor) : ClassDescriptor
     {
         $classDescriptor = new ClassDescriptor();
         if ($fileDescriptor) {

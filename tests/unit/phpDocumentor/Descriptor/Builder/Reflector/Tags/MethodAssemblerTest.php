@@ -32,7 +32,7 @@ class MethodAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Initialize fixture with its dependencies.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->builder = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
         $this->fixture = new MethodAssembler();
@@ -54,7 +54,8 @@ class MethodAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $name,
         $arguments = [],
         $description = null
-    ) {
+    ) : void
+    {
         $tag = new Method($name, $arguments, $returnType, false, $description);
 
         $descriptor = $this->fixture->create($tag);
@@ -74,7 +75,7 @@ class MethodAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      *
      * @return string[][]
      */
-    public function provideNotations()
+    public function provideNotations() : array
     {
         return [
             // just a method without a return type

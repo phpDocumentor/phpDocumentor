@@ -19,10 +19,10 @@ use Mockery as m;
 class PropertyDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
-     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\PropertyDescriptor::__invoke
-     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromClass
+     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\Standard\PropertyDescriptor::__invoke
+     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromClass
      */
-    public function testGenerateUrlForPropertyDescriptor()
+    public function testGenerateUrlForPropertyDescriptor() : void
     {
         // Arrange
         $fixture = new PropertyDescriptor();

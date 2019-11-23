@@ -32,7 +32,7 @@ class NamespaceTreeBuilderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /** @var ProjectDescriptor */
     protected $project;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fixture = new NamespaceTreeBuilder();
 
@@ -43,7 +43,7 @@ class NamespaceTreeBuilderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::getDescription
      */
-    public function testGetDescription()
+    public function testGetDescription() : void
     {
         $this->assertSame(
             'Build "namespaces" index and add namespaces to "elements"',
@@ -55,7 +55,7 @@ class NamespaceTreeBuilderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::execute
      * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::addElementsOfTypeToNamespace
      */
-    public function testNamespaceStringIsConvertedToTreeAndAddedToElements()
+    public function testNamespaceStringIsConvertedToTreeAndAddedToElements() : void
     {
         $class = new ClassDescriptor();
         $class->setNamespace('\My\Space\Deeper');
@@ -92,7 +92,7 @@ class NamespaceTreeBuilderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::execute
      * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::addElementsOfTypeToNamespace
      */
-    public function testAddClassToNamespace()
+    public function testAddClassToNamespace() : void
     {
         $class = new ClassDescriptor();
         $class->setNamespace('\My\Space');
@@ -120,7 +120,7 @@ class NamespaceTreeBuilderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::execute
      * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::addElementsOfTypeToNamespace
      */
-    public function testAddInterfaceToNamespace()
+    public function testAddInterfaceToNamespace() : void
     {
         $interface = new InterfaceDescriptor();
         $interface->setNamespace('\My\Space');
@@ -148,7 +148,7 @@ class NamespaceTreeBuilderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::execute
      * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::addElementsOfTypeToNamespace
      */
-    public function testAddTraitToNamespace()
+    public function testAddTraitToNamespace() : void
     {
         $trait = new TraitDescriptor();
         $trait->setNamespace('\My\Space');
@@ -176,7 +176,7 @@ class NamespaceTreeBuilderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::execute
      * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::addElementsOfTypeToNamespace
      */
-    public function testAddConstantToNamespace()
+    public function testAddConstantToNamespace() : void
     {
         $constant = new ConstantDescriptor();
         $constant->setNamespace('\My\Space');
@@ -204,7 +204,7 @@ class NamespaceTreeBuilderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::execute
      * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::addElementsOfTypeToNamespace
      */
-    public function testAddFunctionToNamespace()
+    public function testAddFunctionToNamespace() : void
     {
         $function = new FunctionDescriptor();
         $function->setNamespace('\My\Space');

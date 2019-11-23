@@ -35,7 +35,7 @@ final class PreTransformationEventTest extends \PHPUnit\Framework\TestCase
      * @covers ::getSubject
      * @covers ::create
      */
-    public function testSetAndGetTransformation()
+    public function testSetAndGetTransformation() : void
     {
         $this->transformation = new Transformation('', '', '', '');
         $subject = new \stdClass();

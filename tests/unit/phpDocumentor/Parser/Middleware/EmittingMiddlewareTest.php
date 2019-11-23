@@ -28,7 +28,7 @@ final class EmittingMiddlewareTest extends TestCase
     /**
      * @covers ::execute
      */
-    public function testEmitsPreParsingEvent()
+    public function testEmitsPreParsingEvent() : void
     {
         $filename = __FILE__;
         $command = new CreateCommand(new LocalFile($filename), new ProjectFactoryStrategies([]));

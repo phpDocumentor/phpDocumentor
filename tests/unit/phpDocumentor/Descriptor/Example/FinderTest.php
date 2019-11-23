@@ -31,17 +31,17 @@ class FinderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Initializes the fixture.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->filesystem = new Filesystem();
         $this->fixture = new Finder();
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Example\Finder::setSourceDirectory
-     * @covers phpDocumentor\Descriptor\Example\Finder::getSourceDirectory
+     * @covers \phpDocumentor\Descriptor\Example\Finder::setSourceDirectory
+     * @covers \phpDocumentor\Descriptor\Example\Finder::getSourceDirectory
      */
-    public function testGetAndSetSourceDirectory()
+    public function testGetAndSetSourceDirectory() : void
     {
         $this->assertSame('', $this->fixture->getSourceDirectory());
 
@@ -51,10 +51,10 @@ class FinderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Example\Finder::setExampleDirectories
-     * @covers phpDocumentor\Descriptor\Example\Finder::getExampleDirectories
+     * @covers \phpDocumentor\Descriptor\Example\Finder::setExampleDirectories
+     * @covers \phpDocumentor\Descriptor\Example\Finder::getExampleDirectories
      */
-    public function testGetAndSetExampleDirectories()
+    public function testGetAndSetExampleDirectories() : void
     {
         $this->assertSame([], $this->fixture->getExampleDirectories());
 
@@ -64,11 +64,11 @@ class FinderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Example\Finder::find
-     * @covers phpDocumentor\Descriptor\Example\Finder::getExampleFileContents
-     * @covers phpDocumentor\Descriptor\Example\Finder::constructExamplePath
+     * @covers \phpDocumentor\Descriptor\Example\Finder::find
+     * @covers \phpDocumentor\Descriptor\Example\Finder::getExampleFileContents
+     * @covers \phpDocumentor\Descriptor\Example\Finder::constructExamplePath
      */
-    public function testFindExampleContentsInExampleDirectory()
+    public function testFindExampleContentsInExampleDirectory() : void
     {
         $directories = [vfsStream::url('base/exampleDirectory'), vfsStream::url('base/exampleDirectory2')];
 
@@ -89,11 +89,11 @@ class FinderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Example\Finder::find
-     * @covers phpDocumentor\Descriptor\Example\Finder::getExampleFileContents
-     * @covers phpDocumentor\Descriptor\Example\Finder::getExamplePathFromSource
+     * @covers \phpDocumentor\Descriptor\Example\Finder::find
+     * @covers \phpDocumentor\Descriptor\Example\Finder::getExampleFileContents
+     * @covers \phpDocumentor\Descriptor\Example\Finder::getExamplePathFromSource
      */
-    public function testFindExampleContentsInSourceDirectory()
+    public function testFindExampleContentsInSourceDirectory() : void
     {
         $descriptor = $this->givenADescriptorWithExamplePath('example.txt');
         $this->givenTheDirectoryStructure(['source' => ['example.txt' => self::EXAMPLE_TEXT]]);
@@ -105,11 +105,11 @@ class FinderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Example\Finder::find
-     * @covers phpDocumentor\Descriptor\Example\Finder::getExampleFileContents
-     * @covers phpDocumentor\Descriptor\Example\Finder::getExamplePathFromExampleDirectory
+     * @covers \phpDocumentor\Descriptor\Example\Finder::find
+     * @covers \phpDocumentor\Descriptor\Example\Finder::getExampleFileContents
+     * @covers \phpDocumentor\Descriptor\Example\Finder::getExamplePathFromExampleDirectory
      */
-    public function testFindExampleContentsInExamplesDirectoryOfWorkingDirectory()
+    public function testFindExampleContentsInExamplesDirectoryOfWorkingDirectory() : void
     {
         // can't use vfsStream because we are working from the Current Working Directory, which is not
         // supported by vfsStream
@@ -128,10 +128,10 @@ class FinderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Example\Finder::find
-     * @covers phpDocumentor\Descriptor\Example\Finder::getExampleFileContents
+     * @covers \phpDocumentor\Descriptor\Example\Finder::find
+     * @covers \phpDocumentor\Descriptor\Example\Finder::getExampleFileContents
      */
-    public function testFindExampleContentsInCurrentWorkingDirectory()
+    public function testFindExampleContentsInCurrentWorkingDirectory() : void
     {
         // can't use vfsStream because we are working from the Current Working Directory, which is not
         // supported by vfsStream
@@ -150,10 +150,10 @@ class FinderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Example\Finder::find
-     * @covers phpDocumentor\Descriptor\Example\Finder::getExampleFileContents
+     * @covers \phpDocumentor\Descriptor\Example\Finder::find
+     * @covers \phpDocumentor\Descriptor\Example\Finder::getExampleFileContents
      */
-    public function testErrorMessageIsReturnedIfFileIsNotFound()
+    public function testErrorMessageIsReturnedIfFileIsNotFound() : void
     {
         $filename = 'doesNotExist.txt';
         $descriptor = $this->givenADescriptorWithExamplePath($filename);
@@ -170,7 +170,7 @@ class FinderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      *
      * @return ExampleDescriptor
      */
-    private function givenADescriptorWithExamplePath($path)
+    private function givenADescriptorWithExamplePath($path) : ExampleDescriptor
     {
         $descriptor = new ExampleDescriptor('example');
         $descriptor->setFilePath($path);
@@ -183,7 +183,7 @@ class FinderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      *
      * @param string[] $structure
      */
-    private function givenTheDirectoryStructure(array $structure)
+    private function givenTheDirectoryStructure(array $structure) : void
     {
         vfsStream::setup('base', null, $structure);
     }
@@ -193,7 +193,7 @@ class FinderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      *
      * @param string $exampleFilename
      */
-    private function givenExampleFileInFolder($exampleFilename)
+    private function givenExampleFileInFolder($exampleFilename) : void
     {
         $this->filesystem->dumpFile($exampleFilename, self::EXAMPLE_TEXT);
     }

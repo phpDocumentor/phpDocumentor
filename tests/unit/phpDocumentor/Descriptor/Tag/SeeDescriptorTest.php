@@ -24,16 +24,16 @@ class SeeDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Creates a new fixture object.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fixture = new SeeDescriptor('name');
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Tag\SeeDescriptor::setReference
-     * @covers phpDocumentor\Descriptor\Tag\SeeDescriptor::getReference
+     * @covers \phpDocumentor\Descriptor\Tag\SeeDescriptor::setReference
+     * @covers \phpDocumentor\Descriptor\Tag\SeeDescriptor::getReference
      */
-    public function testSetAndGetReference()
+    public function testSetAndGetReference() : void
     {
         $this->assertEmpty($this->fixture->getReference());
 

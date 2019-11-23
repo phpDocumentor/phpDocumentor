@@ -31,7 +31,7 @@ class LinkerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers ::fetchElementByFqsen()
      * @covers ::getTypeWithClassAsContext()
      */
-    public function testFindObjectAliasWithFqsenWhenContextIsClass()
+    public function testFindObjectAliasWithFqsenWhenContextIsClass() : void
     {
         $object = new \stdClass();
         $fqsenWithContextMarker = '@context::MyMethod()';
@@ -54,7 +54,7 @@ class LinkerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers ::fetchElementByFqsen()
      * @covers ::getTypeWithNamespaceAsContext()
      */
-    public function testFindObjectAliasWithFqsenAndContainerWhenContextIsContainerNamespace()
+    public function testFindObjectAliasWithFqsenAndContainerWhenContextIsContainerNamespace() : void
     {
         $object = new \stdClass();
         $fqsenWithContextMarker = '@context::MyClass';
@@ -76,7 +76,7 @@ class LinkerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers ::fetchElementByFqsen()
      * @covers ::getTypeWithGlobalNamespaceAsContext()
      */
-    public function testFindObjectAliasWithFqsenAndContainerWhenContextIsGlobalNamespace()
+    public function testFindObjectAliasWithFqsenAndContainerWhenContextIsGlobalNamespace() : void
     {
         $object = new \stdClass();
         $fqsenWithContextMarker = '@context::MyClass';
@@ -99,7 +99,7 @@ class LinkerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers ::getTypeWithNamespaceAsContext()
      * @covers ::getTypeWithGlobalNamespaceAsContext()
      */
-    public function testFindObjectAliasReturnsNamespaceContextWhenElementIsUndocumented()
+    public function testFindObjectAliasReturnsNamespaceContextWhenElementIsUndocumented() : void
     {
         $fqsenWithContextMarker = '@context::MyClass';
         $container = m::mock('phpDocumentor\Descriptor\NamespaceDescriptor');
@@ -117,7 +117,7 @@ class LinkerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers ::findAlias
      */
-    public function testFindObjectAliasReturnsNothingWithUnknownFqsen()
+    public function testFindObjectAliasReturnsNothingWithUnknownFqsen() : void
     {
         $linker = new Linker([]);
 
@@ -127,7 +127,7 @@ class LinkerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers ::findFieldValue
      */
-    public function testFindFqsenInObject()
+    public function testFindFqsenInObject() : void
     {
         $fieldName = 'field';
         $fqsen = '\phpDocumentor\MyClass';
@@ -144,7 +144,7 @@ class LinkerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers ::__construct
      * @covers ::getSubstitutions
      */
-    public function testSetFieldsToSubstitute()
+    public function testSetFieldsToSubstitute() : void
     {
         $elementList = [
             'phpDocumentor\Descriptor\ProjectDescriptor' => 'files',
@@ -161,7 +161,7 @@ class LinkerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers ::substitute
      * @covers ::isDescriptorContainer()
      */
-    public function testSubstituteFqsenInObject()
+    public function testSubstituteFqsenInObject() : void
     {
         // initialize parameters
         $result = new \stdClass();
@@ -185,7 +185,7 @@ class LinkerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers ::substitute
      * @covers ::isDescriptorContainer()
      */
-    public function testSubstituteFqsenInUnknownTypeDescriptor()
+    public function testSubstituteFqsenInUnknownTypeDescriptor() : void
     {
         // initialize parameters
         $result = new \stdClass();
@@ -209,7 +209,7 @@ class LinkerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers ::substitute
      * @depends testSubstituteFqsenInObject
      */
-    public function testMultipleSubstitutionsInOneObject()
+    public function testMultipleSubstitutionsInOneObject() : void
     {
         // initialize parameters
         $result = new \stdClass();
@@ -238,7 +238,7 @@ class LinkerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers ::substitute
      * @depends testSubstituteFqsenInObject
      */
-    public function testSubstituteFieldsViaChildObject()
+    public function testSubstituteFieldsViaChildObject() : void
     {
         // initialize parameters
         $result = new \stdClass();
@@ -272,7 +272,7 @@ class LinkerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers ::substitute
      * @depends testSubstituteFqsenInObject
      */
-    public function testSubstituteFieldsViaArrayOfChildObjects()
+    public function testSubstituteFieldsViaArrayOfChildObjects() : void
     {
         // initialize parameters
         $result = new \stdClass();
@@ -305,7 +305,7 @@ class LinkerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers ::substitute
      */
-    public function testSubstituteArrayRecursive()
+    public function testSubstituteArrayRecursive() : void
     {
         /** @var Linker|m\MockInterface $mock */
         $mock = m::mock('phpDocumentor\Compiler\Linker\Linker');
@@ -327,7 +327,7 @@ class LinkerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      *
      * @covers ::substitute
      */
-    public function testSubstituteSkipProcessed()
+    public function testSubstituteSkipProcessed() : void
     {
         /** @var Linker|m\MockInterface $mock */
         $mock = m::mock('phpDocumentor\Compiler\Linker\Linker');
@@ -350,7 +350,7 @@ class LinkerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers ::getDescription
      */
-    public function testGetDescription()
+    public function testGetDescription() : void
     {
         $linker = new Linker([]);
         $expected = 'Replace textual FQCNs with object aliases';
@@ -360,7 +360,7 @@ class LinkerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers ::execute
      */
-    public function testExecute()
+    public function testExecute() : void
     {
         $std = m::mock('stdClass');
         $std->shouldReceive('getAll')->andReturn([]);
@@ -383,7 +383,7 @@ class LinkerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers ::execute
      * @covers ::replacePseudoTypes
      */
-    public function testReplaceSelfWithCurrentClassInScope()
+    public function testReplaceSelfWithCurrentClassInScope() : void
     {
         $fixture = new Linker(
             [
@@ -419,7 +419,7 @@ class LinkerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers ::execute
      * @covers ::replacePseudoTypes
      */
-    public function testReplaceThisWithCurrentClassInScope()
+    public function testReplaceThisWithCurrentClassInScope() : void
     {
         $fixture = new Linker(
             [
@@ -456,7 +456,7 @@ class LinkerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      *
      * @return array
      */
-    protected function createMockDescriptorForResult($result = null)
+    protected function createMockDescriptorForResult($result = null) : array
     {
         $object = m::mock('stdClass');
         $fqsen = get_class($object);
@@ -476,7 +476,7 @@ class LinkerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      *
      * @return array
      */
-    protected function createMockUnknownTypeDescriptorForResult($result = null)
+    protected function createMockUnknownTypeDescriptorForResult($result = null) : array
     {
         $object = m::mock('phpDocumentor\Descriptor\Type\UnknownTypeDescriptor');
         $fqsen = get_class($object);
@@ -494,7 +494,7 @@ class LinkerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      *
      * @return ClassDescriptor
      */
-    private function givenAClassWithNamespaceAndClassName($fqnn, $className)
+    private function givenAClassWithNamespaceAndClassName($fqnn, $className) : ClassDescriptor
     {
         $classDescriptor = new ClassDescriptor();
         $classDescriptor->setFullyQualifiedStructuralElementName($fqnn . '\\' . $className);
@@ -510,7 +510,7 @@ class LinkerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @param string $methodName
      * @return MethodDescriptor
      */
-    private function givenAMethodWithClassAndName(ClassDescriptor $classDescriptor, $methodName)
+    private function givenAMethodWithClassAndName(ClassDescriptor $classDescriptor, $methodName) : MethodDescriptor
     {
         $methodDescriptor = new MethodDescriptor();
         $methodDescriptor->setName($methodName);
@@ -526,7 +526,7 @@ class LinkerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      *
      * @return SeeDescriptor
      */
-    private function givenASeeDescriptorWithReference($reference)
+    private function givenASeeDescriptorWithReference($reference) : SeeDescriptor
     {
         $seeDescriptor = new SeeDescriptor('see');
         $seeDescriptor->setReference($reference);

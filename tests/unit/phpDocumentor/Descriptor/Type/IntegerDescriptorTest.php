@@ -14,10 +14,10 @@ namespace phpDocumentor\Descriptor\Type;
 class IntegerDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
-     * @covers phpDocumentor\Descriptor\Type\IntegerDescriptor::getName
-     * @covers phpDocumentor\Descriptor\Type\IntegerDescriptor::__toString
+     * @covers \phpDocumentor\Descriptor\Type\IntegerDescriptor::getName
+     * @covers \phpDocumentor\Descriptor\Type\IntegerDescriptor::__toString
      */
-    public function testIfNameCanBeReturned()
+    public function testIfNameCanBeReturned() : void
     {
         $fixture = new IntegerDescriptor();
 

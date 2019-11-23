@@ -24,16 +24,16 @@ class VersionDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Creates a new fixture object.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fixture = new VersionDescriptor('name');
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Tag\VersionDescriptor::setVersion
-     * @covers phpDocumentor\Descriptor\Tag\VersionDescriptor::getVersion
+     * @covers \phpDocumentor\Descriptor\Tag\VersionDescriptor::setVersion
+     * @covers \phpDocumentor\Descriptor\Tag\VersionDescriptor::getVersion
      */
-    public function testSetAndGetVersion()
+    public function testSetAndGetVersion() : void
     {
         $this->assertEmpty($this->fixture->getVersion());
 

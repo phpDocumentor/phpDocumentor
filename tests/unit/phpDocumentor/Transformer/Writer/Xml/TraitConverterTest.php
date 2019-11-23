@@ -29,7 +29,7 @@ class TraitConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      *
      * @covers \phpDocumentor\Transformer\Writer\Xml\TraitConverter::convert
      */
-    public function testTraitXmlElementIsCreated()
+    public function testTraitXmlElementIsCreated() : void
     {
         // Arrange
         $methodDescriptor = m::mock('phpDocumentor\Descriptor\MethodDescriptor');
@@ -61,7 +61,7 @@ class TraitConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      *
      * @return \DOMElement
      */
-    protected function prepareParentXMLElement()
+    protected function prepareParentXMLElement() : \DOMElement
     {
         $document = new \DOMDocument();
         $parent = new \DOMElement('file');
@@ -93,7 +93,7 @@ class TraitConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @param PropertyDescriptor $property
      * @return TraitConverter
      */
-    protected function createFixture(TraitDescriptor $trait, $method, $property)
+    protected function createFixture(TraitDescriptor $trait, $method, $property) : TraitConverter
     {
         $docBlockConverter = m::mock('phpDocumentor\Transformer\Writer\Xml\DocBlockConverter');
         $docBlockConverter->shouldReceive('convert')->with(m::type('DOMElement'), $trait);

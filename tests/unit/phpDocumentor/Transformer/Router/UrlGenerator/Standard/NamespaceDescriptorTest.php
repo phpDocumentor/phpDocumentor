@@ -19,10 +19,10 @@ use Mockery as m;
 class NamespaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
-     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\NamespaceDescriptor::__invoke
-     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromNamespace
+     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\Standard\NamespaceDescriptor::__invoke
+     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromNamespace
      */
-    public function testGenerateUrlForNamespaceDescriptor()
+    public function testGenerateUrlForNamespaceDescriptor() : void
     {
         // Arrange
         $fixture = new NamespaceDescriptor();
@@ -37,10 +37,10 @@ class NamespaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\NamespaceDescriptor::__invoke
-     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromNamespace
+     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\Standard\NamespaceDescriptor::__invoke
+     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromNamespace
      */
-    public function testGenerateUrlForNamespaceDescriptorWithGlobalNamespace()
+    public function testGenerateUrlForNamespaceDescriptorWithGlobalNamespace() : void
     {
         // Arrange
         $fixture = new NamespaceDescriptor();

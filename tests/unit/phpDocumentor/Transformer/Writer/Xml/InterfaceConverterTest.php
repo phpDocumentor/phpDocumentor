@@ -20,16 +20,16 @@ use phpDocumentor\Descriptor\MethodDescriptor;
 /**
  * Test class for \phpDocumentor\Transformer\Writer\Xml\InterfaceConverter.
  *
- * @covers phpDocumentor\Transformer\Writer\Xml\InterfaceConverter
+ * @covers \phpDocumentor\Transformer\Writer\Xml\InterfaceConverter
  */
 class InterfaceConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
      * Tests whether the XML Element representing a interface is properly created.
      *
-     * @covers phpDocumentor\Transformer\Writer\Xml\InterfaceConverter::convert
+     * @covers \phpDocumentor\Transformer\Writer\Xml\InterfaceConverter::convert
      */
-    public function testInterfaceXmlElementIsCreated()
+    public function testInterfaceXmlElementIsCreated() : void
     {
         // Arrange
         $methodDescriptor = m::mock('phpDocumentor\Descriptor\MethodDescriptor');
@@ -62,7 +62,7 @@ class InterfaceConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      *
      * @return \DOMElement
      */
-    protected function prepareParentXMLElement()
+    protected function prepareParentXMLElement() : \DOMElement
     {
         $document = new \DOMDocument();
         $parent = new \DOMElement('file');
@@ -94,7 +94,7 @@ class InterfaceConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @param ConstantDescriptor $constant
      * @return InterfaceConverter
      */
-    protected function createFixture(InterfaceDescriptor $interface, $method, $constant)
+    protected function createFixture(InterfaceDescriptor $interface, $method, $constant) : InterfaceConverter
     {
         $docBlockConverter = m::mock('phpDocumentor\Transformer\Writer\Xml\DocBlockConverter');
         $docBlockConverter->shouldReceive('convert')->with(m::type('DOMElement'), $interface);

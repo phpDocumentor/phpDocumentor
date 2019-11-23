@@ -25,7 +25,7 @@ class FunctionDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Creates a new (emoty) fixture object.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fixture = new FunctionDescriptor();
     }
@@ -33,7 +33,7 @@ class FunctionDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers ::__construct
      */
-    public function testInitialize()
+    public function testInitialize() : void
     {
         $this->assertAttributeInstanceOf('phpDocumentor\Descriptor\Collection', 'arguments', $this->fixture);
     }
@@ -42,7 +42,7 @@ class FunctionDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers ::setArguments
      * @covers ::getArguments
      */
-    public function testSettingAndGettingArguments()
+    public function testSettingAndGettingArguments() : void
     {
         $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getArguments());
 
@@ -58,7 +58,7 @@ class FunctionDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers ::getResponse
      * @covers ::setReturnType
      */
-    public function testSettingAndGettingReturnType()
+    public function testSettingAndGettingReturnType() : void
     {
         $stringType = new String_();
         $this->fixture->setReturnType($stringType);

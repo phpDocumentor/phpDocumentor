@@ -27,7 +27,7 @@ class InterfaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Creates a new (empty) fixture object.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fixture = new InterfaceDescriptor();
     }
@@ -37,7 +37,7 @@ class InterfaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      *
      * @covers ::__construct
      */
-    public function testInitialize()
+    public function testInitialize() : void
     {
         $this->assertAttributeInstanceOf(Collection::class, 'parents', $this->fixture);
         $this->assertAttributeInstanceOf(Collection::class, 'constants', $this->fixture);
@@ -48,7 +48,7 @@ class InterfaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers ::setParent
      * @covers ::getParent
      */
-    public function testSettingAndGettingParentInterfaces()
+    public function testSettingAndGettingParentInterfaces() : void
     {
         $this->assertInstanceOf(Collection::class, $this->fixture->getParent());
 
@@ -63,7 +63,7 @@ class InterfaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers ::setConstants
      * @covers ::getConstants
      */
-    public function testSettingAndGettingConstants()
+    public function testSettingAndGettingConstants() : void
     {
         $this->assertInstanceOf(Collection::class, $this->fixture->getConstants());
 
@@ -78,7 +78,7 @@ class InterfaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers ::setMethods
      * @covers ::getMethods
      */
-    public function testSettingAndGettingMethods()
+    public function testSettingAndGettingMethods() : void
     {
         $this->assertInstanceOf(Collection::class, $this->fixture->getMethods());
 
@@ -92,7 +92,7 @@ class InterfaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers ::getInheritedConstants
      */
-    public function testGetInheritedConstantsNoParent()
+    public function testGetInheritedConstantsNoParent() : void
     {
         $descriptor = new InterfaceDescriptor();
         $this->assertInstanceOf(Collection::class, $descriptor->getInheritedConstants());
@@ -104,7 +104,7 @@ class InterfaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getSummary
      */
-    public function testSummaryInheritsWhenNoneIsPresent()
+    public function testSummaryInheritsWhenNoneIsPresent() : void
     {
         // Arrange
         $summary = 'This is a summary';
@@ -122,7 +122,7 @@ class InterfaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getDescription
      */
-    public function testDescriptionInheritsWhenNoneIsPresent()
+    public function testDescriptionInheritsWhenNoneIsPresent() : void
     {
         // Arrange
         $description = 'This is a description';
@@ -140,7 +140,7 @@ class InterfaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getAuthor
      */
-    public function testAuthorTagsInheritWhenNoneArePresent()
+    public function testAuthorTagsInheritWhenNoneArePresent() : void
     {
         // Arrange
         $authorTagDescriptor = new AuthorDescriptor('author');
@@ -159,7 +159,7 @@ class InterfaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getCopyright
      */
-    public function testCopyrightTagsInheritWhenNoneArePresent()
+    public function testCopyrightTagsInheritWhenNoneArePresent() : void
     {
         // Arrange
         $copyrightTagDescriptor = new TagDescriptor('copyright');
@@ -178,7 +178,7 @@ class InterfaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getVersion
      */
-    public function testVersionTagsInheritWhenNoneArePresent()
+    public function testVersionTagsInheritWhenNoneArePresent() : void
     {
         // Arrange
         $versionTagDescriptor = new VersionDescriptor('version');
@@ -197,7 +197,7 @@ class InterfaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers ::getInheritedConstants
      */
-    public function testGetInheritedConstantsWithClassDescriptorParent()
+    public function testGetInheritedConstantsWithClassDescriptorParent() : void
     {
         $constantInParent = $this->givenConstantWithName('constant');
         $constantInGrandParent = $this->givenConstantWithName('constantInGrandParent');
@@ -224,7 +224,7 @@ class InterfaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers ::getInheritedMethods
      */
-    public function testRetrievingInheritedMethodsReturnsEmptyCollectionWithoutParent()
+    public function testRetrievingInheritedMethodsReturnsEmptyCollectionWithoutParent() : void
     {
         $inheritedMethods = $this->fixture->getInheritedMethods();
         $this->assertInstanceOf(Collection::class, $inheritedMethods);
@@ -234,7 +234,7 @@ class InterfaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers ::getInheritedMethods
      */
-    public function testRetrievingInheritedMethodsReturnsCollectionWithParent()
+    public function testRetrievingInheritedMethodsReturnsCollectionWithParent() : void
     {
         $parentDescriptor = new MethodDescriptor();
         $parentDescriptor->setName('parent');
@@ -267,7 +267,7 @@ class InterfaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * @return InterfaceDescriptor
      */
-    protected function whenFixtureHasParentInterface()
+    protected function whenFixtureHasParentInterface() : InterfaceDescriptor
     {
         $interface = new InterfaceDescriptor();
         $this->fixture->getParent()->set('IA', $interface);

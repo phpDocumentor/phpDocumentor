@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpdoc>
+    <title>framework</title>
+    <parser>
+        <target>output</target>
+        <encoding>ISO-8859-1</encoding>
+        <markers>
+            <item>TODO</item>
+            <item>FIXME</item>
+        </markers>
+        <extensions>
+            <extension>php</extension>
+            <extension>php3</extension>
+            <extension>phtml</extension>
+            <extension>inc</extension>
+        </extensions>
+    </parser>
+    <transformer>
+        <target>output</target>
+    </transformer>
+    <logging>
+        <level>warn</level>
+    </logging>
+    <transformations>
+        <template name="responsive" />
+    </transformations>
+    <files>
+        <directory>src</directory>
+    </files>
+</phpdoc>

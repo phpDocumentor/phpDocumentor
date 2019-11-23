@@ -82,7 +82,7 @@ class AutoloaderLocatorTest extends TestCase
     );
 
 
-    public function testAutoloadAtDefaultLocation()
+    public function testAutoloadAtDefaultLocation() : void
     {
         vfsStream::setup('root', null, $this->standaloneStructure);
         $baseDir = vfsStream::url('root/dummy/src/phpDocumentor');
@@ -92,7 +92,7 @@ class AutoloaderLocatorTest extends TestCase
         );
     }
 
-    public function testAutoloadComposerInstalled()
+    public function testAutoloadComposerInstalled() : void
     {
         $root = vfsStream::setup('root', null, $this->composerInstalledStructure);
         vfsStream::newFile('composer.json')->at($root->getChild('dummy'));
@@ -103,7 +103,7 @@ class AutoloaderLocatorTest extends TestCase
         );
     }
 
-    public function testAutoloadComposerInstalledCustomVendor()
+    public function testAutoloadComposerInstalledCustomVendor() : void
     {
         $root = vfsStream::setup('root', null, $this->customVendorDir);
         vfsStream::newFile('composer.json')

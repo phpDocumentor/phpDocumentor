@@ -23,7 +23,7 @@ class BaseContext
     private $environmentContext;
 
     /** @BeforeScenario         */
-    public function gatherContexts(BeforeScenarioScope $scope)
+    public function gatherContexts(BeforeScenarioScope $scope) : void
     {
         $environment = $scope->getEnvironment();
 
@@ -71,7 +71,7 @@ class BaseContext
      * @return ProjectDescriptor|null
      * @throws \Exception when AST file doesn't exist
      */
-    protected function getAst()
+    protected function getAst() : ?ProjectDescriptor
     {
         $file = $this->environmentContext->getWorkingDir() . '/ast.dump';
         if (!file_exists($file)) {

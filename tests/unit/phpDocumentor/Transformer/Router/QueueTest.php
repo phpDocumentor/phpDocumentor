@@ -21,7 +21,7 @@ class QueueTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Initializes the fixture for this test.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fixture = new Queue();
     }
@@ -29,7 +29,7 @@ class QueueTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers \phpDocumentor\Transformer\Router\Queue::match
      */
-    public function testFirstRuleIsReturnedForNodeBasedOnPriorityOrder()
+    public function testFirstRuleIsReturnedForNodeBasedOnPriorityOrder() : void
     {
         // Arrange
         $nodeName = 'test';
@@ -48,7 +48,7 @@ class QueueTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers \phpDocumentor\Transformer\Router\Queue::match
      */
-    public function testNullIsReturnedWhenNoMatchingRuleCanBeFound()
+    public function testNullIsReturnedWhenNoMatchingRuleCanBeFound() : void
     {
         $nodeName = 'test';
         $this->fixture->insert($this->givenARouterMatchingNodeWithResult($nodeName, false), 0);

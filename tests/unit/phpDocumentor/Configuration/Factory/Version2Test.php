@@ -25,7 +25,7 @@ final class Version2Test extends TestCase
      * @covers ::convert
      * @covers ::<private>
      */
-    public function testItConvertsPhpdoc2XmlToAnArray()
+    public function testItConvertsPhpdoc2XmlToAnArray() : void
     {
         $xml = new \SimpleXMLElement(__DIR__ . '/../../../data/phpdoc.tpl.xml', 0, true);
 
@@ -37,11 +37,11 @@ final class Version2Test extends TestCase
 
     /**
      * @covers ::<private>
-     * @expectedException \Exception
-     * @expectedExceptionMessage Root element name should be phpdocumentor, foo found
      */
-    public function testItOnlyAcceptsAllowedXmlStructure()
+    public function testItOnlyAcceptsAllowedXmlStructure() : void
     {
+        $this->expectException('Exception');
+        $this->expectExceptionMessage('Root element name should be phpdocumentor, foo found');
         $xml = <<<XML
 <?xml version="1.0" encoding="UTF-8" ?>
 <foo>
@@ -57,7 +57,7 @@ XML;
     /**
      * @covers ::supports
      */
-    public function testItMatchesWhenVersionIsEmpty()
+    public function testItMatchesWhenVersionIsEmpty() : void
     {
         $xml = new \SimpleXMLElement(__DIR__ . '/../../../data/phpdoc.tpl.xml', 0, true);
 
@@ -71,7 +71,7 @@ XML;
      * @covers ::convert
      * @covers ::<private>
      */
-    public function testItRevertsToDefaultsIfValuesAreNotInTheConfigurationFile()
+    public function testItRevertsToDefaultsIfValuesAreNotInTheConfigurationFile() : void
     {
         $xml = new \SimpleXMLElement(
             __DIR__ . '/../../../data/phpDocumentor2XMLWithoutExtensions.xml',
@@ -89,7 +89,7 @@ XML;
      * @covers ::convert
      * @covers ::<private>
      */
-    public function testItAcceptsMultipleIgnorePathsInThePhpdoc2Xml()
+    public function testItAcceptsMultipleIgnorePathsInThePhpdoc2Xml() : void
     {
         $xml = new \SimpleXMLElement(
             __DIR__ . '/../../../data/phpDocumentor2XMLWithMultipleIgnorePaths.xml',
@@ -107,7 +107,7 @@ XML;
      * @covers ::convert
      * @covers ::<private>
      */
-    public function testItShouldUseTargetDirectoryFromTransformerForOutput()
+    public function testItShouldUseTargetDirectoryFromTransformerForOutput() : void
     {
         $xml = new \SimpleXMLElement(
             __DIR__ . '/../../../data/phpDocumentor2XMLWithTarget.xml',
@@ -125,7 +125,7 @@ XML;
      * @covers ::convert
      * @covers ::<private>
      */
-    public function testItShouldUseDefinedVisibility()
+    public function testItShouldUseDefinedVisibility() : void
     {
         $xml = new \SimpleXMLElement(
             __DIR__ . '/../../../data/phpDocumentor2XMLWithVisibility.xml',
@@ -143,7 +143,7 @@ XML;
      * @covers ::convert
      * @covers ::<private>
      */
-    public function testItShouldUseDefinedEncoding()
+    public function testItShouldUseDefinedEncoding() : void
     {
         $xml = new \SimpleXMLElement(
             __DIR__ . '/../../../data/phpDocumentor2XMLWithEncoding.xml',

@@ -36,7 +36,7 @@ class FileAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Creates a new fixture to test with.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fixture = new FileAssembler();
         $this->fixture->setBuilder($this->getProjectDescriptorBuilderMock());
@@ -47,7 +47,7 @@ class FileAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Creates a Descriptor from a provided class.
      */
-    public function testCreateFileDescriptorFromReflector()
+    public function testCreateFileDescriptorFromReflector() : void
     {
         $filename = 'file.php';
         $content = '<?php ... ?>';
@@ -108,7 +108,7 @@ DOCBLOCK
      *
      * @return m\MockInterface
      */
-    protected function getProjectDescriptorBuilderMock()
+    protected function getProjectDescriptorBuilderMock() : \Mockery\MockInterface
     {
         $projectDescriptorBuilderMock = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
         $projectDescriptorBuilderMock->shouldReceive('getDefaultPackage')

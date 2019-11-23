@@ -26,7 +26,7 @@ final class UriTest extends TestCase
      * @covers ::__toString
      * @covers ::<private>
      */
-    public function testItShouldReturnTheUriAsAString()
+    public function testItShouldReturnTheUriAsAString() : void
     {
         $uri = new Uri('http://foo.bar/phpdoc.xml');
 
@@ -35,18 +35,18 @@ final class UriTest extends TestCase
 
     /**
      * @covers ::<private>
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage http://foo,bar is not a valid uri
      */
-    public function testItShouldDiscardAnInvalidUri()
+    public function testItShouldDiscardAnInvalidUri() : void
     {
+        $this->expectException('InvalidArgumentException');
+        $this->expectExceptionMessage('http://foo,bar is not a valid uri');
         new Uri('http://foo,bar');
     }
 
     /**
      * @covers ::<private>
      */
-    public function testItShouldAddAFileSchemeWhenSchemeIsAbsent()
+    public function testItShouldAddAFileSchemeWhenSchemeIsAbsent() : void
     {
         $uri = new Uri('foo/phpdoc.xml');
 
@@ -56,14 +56,14 @@ final class UriTest extends TestCase
     /**
      * @covers ::<private>
      */
-    public function testItShouldAddAFileSchemeWhenAWindowsDriveLetterIsGiven()
+    public function testItShouldAddAFileSchemeWhenAWindowsDriveLetterIsGiven() : void
     {
         $uri = new Uri('c:\foo\phpdoc.xml');
 
         $this->assertSame('file:///c:\foo\phpdoc.xml', (string) $uri);
     }
 
-    public function testItShouldReturnTrueIfUrisAreEqual()
+    public function testItShouldReturnTrueIfUrisAreEqual() : void
     {
         $uri1 = new Uri('foo');
         $uri2 = new Uri('foo');
@@ -71,7 +71,7 @@ final class UriTest extends TestCase
         $this->assertTrue($uri1->equals($uri2));
     }
 
-    public function testItShouldReturnTrueIfUrisAreNotEqual()
+    public function testItShouldReturnTrueIfUrisAreNotEqual() : void
     {
         $uri1 = new Uri('foo');
         $uri2 = new Uri('bar');

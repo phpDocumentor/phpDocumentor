@@ -22,17 +22,17 @@ class NamespaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Creates a new (empty) fixture object.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fixture = new NamespaceDescriptor();
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\NamespaceDescriptor::__construct
-     * @covers phpDocumentor\Descriptor\NamespaceDescriptor::getParent
-     * @covers phpDocumentor\Descriptor\NamespaceDescriptor::setParent
+     * @covers \phpDocumentor\Descriptor\NamespaceDescriptor::__construct
+     * @covers \phpDocumentor\Descriptor\NamespaceDescriptor::getParent
+     * @covers \phpDocumentor\Descriptor\NamespaceDescriptor::setParent
      */
-    public function testSetAndGetParent()
+    public function testSetAndGetParent() : void
     {
         $parent = new NamespaceDescriptor();
 
@@ -44,11 +44,11 @@ class NamespaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\NamespaceDescriptor::__construct
-     * @covers phpDocumentor\Descriptor\NamespaceDescriptor::getClasses
-     * @covers phpDocumentor\Descriptor\NamespaceDescriptor::setClasses
+     * @covers \phpDocumentor\Descriptor\NamespaceDescriptor::__construct
+     * @covers \phpDocumentor\Descriptor\NamespaceDescriptor::getClasses
+     * @covers \phpDocumentor\Descriptor\NamespaceDescriptor::setClasses
      */
-    public function testSetAndGetClasses()
+    public function testSetAndGetClasses() : void
     {
         $collection = new Collection();
 
@@ -60,11 +60,11 @@ class NamespaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\NamespaceDescriptor::__construct
-     * @covers phpDocumentor\Descriptor\NamespaceDescriptor::getConstants
-     * @covers phpDocumentor\Descriptor\NamespaceDescriptor::setConstants
+     * @covers \phpDocumentor\Descriptor\NamespaceDescriptor::__construct
+     * @covers \phpDocumentor\Descriptor\NamespaceDescriptor::getConstants
+     * @covers \phpDocumentor\Descriptor\NamespaceDescriptor::setConstants
      */
-    public function testSetAndGetConstants()
+    public function testSetAndGetConstants() : void
     {
         $collection = new Collection();
 
@@ -76,11 +76,11 @@ class NamespaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\NamespaceDescriptor::__construct
-     * @covers phpDocumentor\Descriptor\NamespaceDescriptor::getFunctions
-     * @covers phpDocumentor\Descriptor\NamespaceDescriptor::setFunctions
+     * @covers \phpDocumentor\Descriptor\NamespaceDescriptor::__construct
+     * @covers \phpDocumentor\Descriptor\NamespaceDescriptor::getFunctions
+     * @covers \phpDocumentor\Descriptor\NamespaceDescriptor::setFunctions
      */
-    public function testSetAndGetFunctions()
+    public function testSetAndGetFunctions() : void
     {
         $collection = new Collection();
 
@@ -92,11 +92,11 @@ class NamespaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\NamespaceDescriptor::__construct
-     * @covers phpDocumentor\Descriptor\NamespaceDescriptor::getInterfaces
-     * @covers phpDocumentor\Descriptor\NamespaceDescriptor::setInterfaces
+     * @covers \phpDocumentor\Descriptor\NamespaceDescriptor::__construct
+     * @covers \phpDocumentor\Descriptor\NamespaceDescriptor::getInterfaces
+     * @covers \phpDocumentor\Descriptor\NamespaceDescriptor::setInterfaces
      */
-    public function testSetAndGetInterfaces()
+    public function testSetAndGetInterfaces() : void
     {
         $collection = new Collection();
 
@@ -108,11 +108,11 @@ class NamespaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\NamespaceDescriptor::__construct
-     * @covers phpDocumentor\Descriptor\NamespaceDescriptor::getChildren
-     * @covers phpDocumentor\Descriptor\NamespaceDescriptor::setChildren
+     * @covers \phpDocumentor\Descriptor\NamespaceDescriptor::__construct
+     * @covers \phpDocumentor\Descriptor\NamespaceDescriptor::getChildren
+     * @covers \phpDocumentor\Descriptor\NamespaceDescriptor::setChildren
      */
-    public function testSetAndGetChildren()
+    public function testSetAndGetChildren() : void
     {
         $collection = new Collection();
 
@@ -124,11 +124,11 @@ class NamespaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\NamespaceDescriptor::__construct
-     * @covers phpDocumentor\Descriptor\NamespaceDescriptor::getTraits
-     * @covers phpDocumentor\Descriptor\NamespaceDescriptor::setTraits
+     * @covers \phpDocumentor\Descriptor\NamespaceDescriptor::__construct
+     * @covers \phpDocumentor\Descriptor\NamespaceDescriptor::getTraits
+     * @covers \phpDocumentor\Descriptor\NamespaceDescriptor::setTraits
      */
-    public function testSetAndGetTraits()
+    public function testSetAndGetTraits() : void
     {
         $collection = new Collection();
 

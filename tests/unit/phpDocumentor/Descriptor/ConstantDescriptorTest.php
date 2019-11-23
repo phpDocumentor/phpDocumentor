@@ -30,7 +30,7 @@ class ConstantDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Creates a new (empty) fixture object.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fixture = new ConstantDescriptor();
         $this->fixture->setName('CONSTANT');
@@ -40,7 +40,7 @@ class ConstantDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers \phpDocumentor\Descriptor\ConstantDescriptor::getParent
      * @covers \phpDocumentor\Descriptor\ConstantDescriptor::setParent
      */
-    public function testSetAndGetParentClass()
+    public function testSetAndGetParentClass() : void
     {
         $this->assertNull($this->fixture->getParent());
 
@@ -54,10 +54,10 @@ class ConstantDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
     /**
      * @covers \phpDocumentor\Descriptor\ConstantDescriptor::setParent
-     * @expectedException \InvalidArgumentException
      */
-    public function testSettingAParentFailsWhenInputIsNotNullClassOrInterface()
+    public function testSettingAParentFailsWhenInputIsNotNullClassOrInterface() : void
     {
+        $this->expectException('InvalidArgumentException');
         $this->fixture->setParent('string');
     }
 
@@ -65,7 +65,7 @@ class ConstantDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers \phpDocumentor\Descriptor\ConstantDescriptor::getParent
      * @covers \phpDocumentor\Descriptor\ConstantDescriptor::setParent
      */
-    public function testSetAndGetParentInterface()
+    public function testSetAndGetParentInterface() : void
     {
         $this->assertNull($this->fixture->getParent());
 
@@ -80,7 +80,7 @@ class ConstantDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers \phpDocumentor\Descriptor\ConstantDescriptor::getTypes
      * @covers \phpDocumentor\Descriptor\ConstantDescriptor::setTypes
      */
-    public function testSetAndGetTypes()
+    public function testSetAndGetTypes() : void
     {
         $this->assertEquals(null, $this->fixture->getType());
         $expected = new Array_();
@@ -94,7 +94,7 @@ class ConstantDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers \phpDocumentor\Descriptor\ConstantDescriptor::getTypes
      * @covers \phpDocumentor\Descriptor\ConstantDescriptor::getVar
      */
-    public function testTestgetTypesDerivedFromVarTag()
+    public function testTestgetTypesDerivedFromVarTag() : void
     {
         $expected = new String_();
 
@@ -110,7 +110,7 @@ class ConstantDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers \phpDocumentor\Descriptor\ConstantDescriptor::getTypes
      * @covers \phpDocumentor\Descriptor\ConstantDescriptor::getVar
      */
-    public function testGetTypesUsingInheritanceOfVarTag()
+    public function testGetTypesUsingInheritanceOfVarTag() : void
     {
         $expected = new String_();
 
@@ -129,7 +129,7 @@ class ConstantDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers \phpDocumentor\Descriptor\ConstantDescriptor::getValue
      * @covers \phpDocumentor\Descriptor\ConstantDescriptor::setValue
      */
-    public function testSetAndGetValue()
+    public function testSetAndGetValue() : void
     {
         $this->assertNull($this->fixture->getValue());
 
@@ -141,7 +141,7 @@ class ConstantDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers \phpDocumentor\Descriptor\ConstantDescriptor::getFile
      */
-    public function testRetrieveFileAssociatedWithAGlobalConstant()
+    public function testRetrieveFileAssociatedWithAGlobalConstant() : void
     {
         // Arrange
         $file = $this->whenFixtureIsDirectlyRelatedToAFile();
@@ -156,7 +156,7 @@ class ConstantDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers \phpDocumentor\Descriptor\ConstantDescriptor::getFile
      */
-    public function testRetrieveFileAssociatedWithAClassConstant()
+    public function testRetrieveFileAssociatedWithAClassConstant() : void
     {
         // Arrange
         $file = $this->whenFixtureIsRelatedToAClassWithFile();
@@ -172,7 +172,7 @@ class ConstantDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getSummary
      */
-    public function testSummaryInheritsWhenNoneIsPresent()
+    public function testSummaryInheritsWhenNoneIsPresent() : void
     {
         // Arrange
         $summary = 'This is a summary';
@@ -190,7 +190,7 @@ class ConstantDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getDescription
      */
-    public function testDescriptionInheritsWhenNoneIsPresent()
+    public function testDescriptionInheritsWhenNoneIsPresent() : void
     {
         // Arrange
         $description = 'This is a description';
@@ -208,7 +208,7 @@ class ConstantDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getDescription
      */
-    public function testDescriptionInheritsWhenInheritDocIsPresent()
+    public function testDescriptionInheritsWhenInheritDocIsPresent() : void
     {
         // Arrange
         $description = 'This is a description';
@@ -226,7 +226,7 @@ class ConstantDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getDescription
      */
-    public function testDescriptionIsAugmentedWhenInheritDocInlineTagIsPresent()
+    public function testDescriptionIsAugmentedWhenInheritDocInlineTagIsPresent() : void
     {
         // Arrange
         $description = 'This is a description';
@@ -244,7 +244,7 @@ class ConstantDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers \phpDocumentor\Descriptor\ConstantDescriptor::getVar
      */
-    public function testVarTagsInheritWhenNoneArePresent()
+    public function testVarTagsInheritWhenNoneArePresent() : void
     {
         // Arrange
         $varTagDescriptor = new VarDescriptor('var');
@@ -263,7 +263,7 @@ class ConstantDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getPackage
      */
-    public function testPackageInheritWhenNoneArePresent()
+    public function testPackageInheritWhenNoneArePresent() : void
     {
         // Arrange
         $packageTagDescriptor = new PackageDescriptor();
@@ -281,7 +281,7 @@ class ConstantDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getAuthor
      */
-    public function testAuthorTagsInheritWhenNoneArePresent()
+    public function testAuthorTagsInheritWhenNoneArePresent() : void
     {
         // Arrange
         $authorTagDescriptor = new AuthorDescriptor('author');
@@ -300,7 +300,7 @@ class ConstantDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getVersion
      */
-    public function testVersionTagsInheritWhenNoneArePresent()
+    public function testVersionTagsInheritWhenNoneArePresent() : void
     {
         // Arrange
         $versionTagDescriptor = new VersionDescriptor('version');
@@ -319,7 +319,7 @@ class ConstantDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getCopyright
      */
-    public function testCopyrightTagsInheritWhenNoneArePresent()
+    public function testCopyrightTagsInheritWhenNoneArePresent() : void
     {
         // Arrange
         $copyrightTagDescriptor = new TagDescriptor('copyright');
@@ -404,7 +404,7 @@ class ConstantDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      *
      * @return ConstantDescriptor
      */
-    protected function whenFixtureHasConstantInParentClassWithSameName($name)
+    protected function whenFixtureHasConstantInParentClassWithSameName($name) : ConstantDescriptor
     {
         $result = new ConstantDescriptor();
         $result->setName($name);

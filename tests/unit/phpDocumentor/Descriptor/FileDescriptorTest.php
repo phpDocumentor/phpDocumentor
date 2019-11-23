@@ -30,7 +30,7 @@ class FileDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Creates a new (empty) fixture object.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fixture = new FileDescriptor(self::EXAMPLE_HASH);
     }
@@ -38,9 +38,9 @@ class FileDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Tests whether all collection objects and hash are properly initialized
      *
-     * @covers phpDocumentor\Descriptor\FileDescriptor::__construct
+     * @covers \phpDocumentor\Descriptor\FileDescriptor::__construct
      */
-    public function testInitialize()
+    public function testInitialize() : void
     {
         $this->assertAttributeEquals(self::EXAMPLE_HASH, 'hash', $this->fixture);
 
@@ -55,19 +55,19 @@ class FileDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\FileDescriptor::__construct
-     * @covers phpDocumentor\Descriptor\FileDescriptor::getHash
+     * @covers \phpDocumentor\Descriptor\FileDescriptor::__construct
+     * @covers \phpDocumentor\Descriptor\FileDescriptor::getHash
      */
-    public function testGetHash()
+    public function testGetHash() : void
     {
         $this->assertSame(self::EXAMPLE_HASH, $this->fixture->getHash());
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\FileDescriptor::setPath
-     * @covers phpDocumentor\Descriptor\FileDescriptor::getPath
+     * @covers \phpDocumentor\Descriptor\FileDescriptor::setPath
+     * @covers \phpDocumentor\Descriptor\FileDescriptor::getPath
      */
-    public function testSetAndGetPath()
+    public function testSetAndGetPath() : void
     {
         $this->assertSame('', $this->fixture->getPath());
 
@@ -77,10 +77,10 @@ class FileDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\FileDescriptor::setSource
-     * @covers phpDocumentor\Descriptor\FileDescriptor::getSource
+     * @covers \phpDocumentor\Descriptor\FileDescriptor::setSource
+     * @covers \phpDocumentor\Descriptor\FileDescriptor::getSource
      */
-    public function testSetAndGetSource()
+    public function testSetAndGetSource() : void
     {
         $this->assertNull($this->fixture->getSource());
 
@@ -90,10 +90,10 @@ class FileDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\FileDescriptor::setNamespaceAliases
-     * @covers phpDocumentor\Descriptor\FileDescriptor::getNamespaceAliases
+     * @covers \phpDocumentor\Descriptor\FileDescriptor::setNamespaceAliases
+     * @covers \phpDocumentor\Descriptor\FileDescriptor::getNamespaceAliases
      */
-    public function testSetAndGetNamespaceAliases()
+    public function testSetAndGetNamespaceAliases() : void
     {
         $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getNamespaceAliases());
 
@@ -106,10 +106,10 @@ class FileDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\FileDescriptor::setIncludes
-     * @covers phpDocumentor\Descriptor\FileDescriptor::getIncludes
+     * @covers \phpDocumentor\Descriptor\FileDescriptor::setIncludes
+     * @covers \phpDocumentor\Descriptor\FileDescriptor::getIncludes
      */
-    public function testSetAndGetIncludes()
+    public function testSetAndGetIncludes() : void
     {
         $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getIncludes());
 
@@ -122,10 +122,10 @@ class FileDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\FileDescriptor::setConstants
-     * @covers phpDocumentor\Descriptor\FileDescriptor::getConstants
+     * @covers \phpDocumentor\Descriptor\FileDescriptor::setConstants
+     * @covers \phpDocumentor\Descriptor\FileDescriptor::getConstants
      */
-    public function testSetAndGetConstants()
+    public function testSetAndGetConstants() : void
     {
         $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getConstants());
 
@@ -138,10 +138,10 @@ class FileDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\FileDescriptor::setFunctions
-     * @covers phpDocumentor\Descriptor\FileDescriptor::getFunctions
+     * @covers \phpDocumentor\Descriptor\FileDescriptor::setFunctions
+     * @covers \phpDocumentor\Descriptor\FileDescriptor::getFunctions
      */
-    public function testSetAndGetFunctions()
+    public function testSetAndGetFunctions() : void
     {
         $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getFunctions());
 
@@ -154,10 +154,10 @@ class FileDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\FileDescriptor::setClasses
-     * @covers phpDocumentor\Descriptor\FileDescriptor::getClasses
+     * @covers \phpDocumentor\Descriptor\FileDescriptor::setClasses
+     * @covers \phpDocumentor\Descriptor\FileDescriptor::getClasses
      */
-    public function testSetAndGetClasses()
+    public function testSetAndGetClasses() : void
     {
         $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getClasses());
 
@@ -170,10 +170,10 @@ class FileDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\FileDescriptor::setInterfaces
-     * @covers phpDocumentor\Descriptor\FileDescriptor::getInterfaces
+     * @covers \phpDocumentor\Descriptor\FileDescriptor::setInterfaces
+     * @covers \phpDocumentor\Descriptor\FileDescriptor::getInterfaces
      */
-    public function testSetAndGetInterfaces()
+    public function testSetAndGetInterfaces() : void
     {
         $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getInterfaces());
 
@@ -186,10 +186,10 @@ class FileDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\FileDescriptor::setTraits
-     * @covers phpDocumentor\Descriptor\FileDescriptor::getTraits
+     * @covers \phpDocumentor\Descriptor\FileDescriptor::setTraits
+     * @covers \phpDocumentor\Descriptor\FileDescriptor::getTraits
      */
-    public function testSetAndGetTraits()
+    public function testSetAndGetTraits() : void
     {
         $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getTraits());
 
@@ -202,10 +202,10 @@ class FileDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\FileDescriptor::setMarkers
-     * @covers phpDocumentor\Descriptor\FileDescriptor::getMarkers
+     * @covers \phpDocumentor\Descriptor\FileDescriptor::setMarkers
+     * @covers \phpDocumentor\Descriptor\FileDescriptor::getMarkers
      */
-    public function testSetAndGetMarkers()
+    public function testSetAndGetMarkers() : void
     {
         $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getMarkers());
 
@@ -218,10 +218,10 @@ class FileDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\FileDescriptor::__construct
-     * @covers phpDocumentor\Descriptor\FileDescriptor::getAllErrors
+     * @covers \phpDocumentor\Descriptor\FileDescriptor::__construct
+     * @covers \phpDocumentor\Descriptor\FileDescriptor::getAllErrors
      */
-    public function testIfErrorsAreInitializedToAnEmptyCollectionOnInstantiation()
+    public function testIfErrorsAreInitializedToAnEmptyCollectionOnInstantiation() : void
     {
         // construct
         $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getAllErrors());
@@ -234,10 +234,10 @@ class FileDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\FileDescriptor::__construct
-     * @covers phpDocumentor\Descriptor\FileDescriptor::getAllErrors
+     * @covers \phpDocumentor\Descriptor\FileDescriptor::__construct
+     * @covers \phpDocumentor\Descriptor\FileDescriptor::getAllErrors
      */
-    public function testGetAllErrors()
+    public function testGetAllErrors() : void
     {
         /*
          * constant

@@ -25,7 +25,7 @@ use phpDocumentor\Transformer\Template\Parameter;
  */
 final class TemplateTest extends \PHPUnit\Framework\TestCase
 {
-    public function testConstructingATemplateWithAllProperties()
+    public function testConstructingATemplateWithAllProperties() : void
     {
         $parameter = new Parameter();
         $transformation = new Transformation('', '', '', '');
@@ -47,7 +47,7 @@ final class TemplateTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($transformation, $template['key']);
     }
 
-    public function testThatArrayElementsMayOnlyBeTransformations()
+    public function testThatArrayElementsMayOnlyBeTransformations() : void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -55,7 +55,7 @@ final class TemplateTest extends \PHPUnit\Framework\TestCase
         $template['key'] = 'value';
     }
 
-    public function testThatVersionsAreRejectedIfTheyDontMatchNumbersSeparatedByDots()
+    public function testThatVersionsAreRejectedIfTheyDontMatchNumbersSeparatedByDots() : void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -63,7 +63,7 @@ final class TemplateTest extends \PHPUnit\Framework\TestCase
         $template->setVersion('abc');
     }
 
-    public function testThatWeCanCheckIfATransformationIsRegistered()
+    public function testThatWeCanCheckIfATransformationIsRegistered() : void
     {
         $template = new Template('name');
         $template['key'] = new Transformation('', '', '', '');
@@ -72,7 +72,7 @@ final class TemplateTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse(isset($template['not_key']));
     }
 
-    public function testThatWeCanUnsetATransformation()
+    public function testThatWeCanUnsetATransformation() : void
     {
         $template = new Template('name');
         $template['key'] = new Transformation('', '', '', '');
@@ -84,7 +84,7 @@ final class TemplateTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse(isset($template['key']));
     }
 
-    public function testThatWeCanCountTheNumberOfTransformations()
+    public function testThatWeCanCountTheNumberOfTransformations() : void
     {
         $template = new Template('name');
         $template['key'] = new Transformation('', '', '', '');
@@ -92,7 +92,7 @@ final class TemplateTest extends \PHPUnit\Framework\TestCase
         $this->assertSame(1, count($template));
     }
 
-    public function testThatWeCanIterateOnTheTransformations()
+    public function testThatWeCanIterateOnTheTransformations() : void
     {
         $template = new Template('name');
         $transformation = new Transformation('', '', '', '');
@@ -102,7 +102,7 @@ final class TemplateTest extends \PHPUnit\Framework\TestCase
         $this->assertSame(['key' => $transformation], iterator_to_array($template));
     }
 
-    public function testThatAllParametersArePropagatedToTheTransformationsWhenNeeded()
+    public function testThatAllParametersArePropagatedToTheTransformationsWhenNeeded() : void
     {
         $parameter = new Parameter();
         $transformation = new Transformation('', '', '', '');

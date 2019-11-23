@@ -19,10 +19,10 @@ use Mockery as m;
 class PackageDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
-     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\PackageDescriptor::__invoke
-     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromPackage
+     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\Standard\PackageDescriptor::__invoke
+     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromPackage
      */
-    public function testGenerateUrlForPackageDescriptor()
+    public function testGenerateUrlForPackageDescriptor() : void
     {
         // Arrange
         $fixture = new PackageDescriptor();
@@ -37,10 +37,10 @@ class PackageDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\PackageDescriptor::__invoke
-     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromPackage
+     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\Standard\PackageDescriptor::__invoke
+     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromPackage
      */
-    public function testGenerateUrlForPackageDescriptorWithGlobalNamespace()
+    public function testGenerateUrlForPackageDescriptorWithGlobalNamespace() : void
     {
         // Arrange
         $fixture = new PackageDescriptor();

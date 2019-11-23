@@ -13,7 +13,7 @@ class ProjectAnalyzerTest extends MockeryTestCase
     /** @var ProjectAnalyzer */
     private $fixture;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fixture = new ProjectAnalyzer();
     }
@@ -21,7 +21,7 @@ class ProjectAnalyzerTest extends MockeryTestCase
     /**
      * @covers \phpDocumentor\Descriptor\ProjectAnalyzer::analyze
      */
-    public function testFilesAreCounted()
+    public function testFilesAreCounted() : void
     {
         // Arrange
         $projectDescriptor = $this->givenAProjectMock();
@@ -39,7 +39,7 @@ class ProjectAnalyzerTest extends MockeryTestCase
     /**
      * @covers \phpDocumentor\Descriptor\ProjectAnalyzer::analyze
      */
-    public function testIfTopLevelNamespacesAreCounted()
+    public function testIfTopLevelNamespacesAreCounted() : void
     {
         // Arrange
         $projectDescriptor = $this->givenAProjectMock();
@@ -59,7 +59,7 @@ class ProjectAnalyzerTest extends MockeryTestCase
      * @covers \phpDocumentor\Descriptor\ProjectAnalyzer::findAllElements
      * @covers \phpDocumentor\Descriptor\ProjectAnalyzer::incrementUnresolvedParentCounter
      */
-    public function testIfUnresolvedClassesAreCounted()
+    public function testIfUnresolvedClassesAreCounted() : void
     {
         // Arrange
         $classDescriptor1 = $this->givenAClassWithParent('phpDocumentor\Descriptor\ClassDescriptor');
@@ -87,7 +87,7 @@ class ProjectAnalyzerTest extends MockeryTestCase
      * @covers \phpDocumentor\Descriptor\ProjectAnalyzer::findAllElements
      * @covers \phpDocumentor\Descriptor\ProjectAnalyzer::addElementToCounter
      */
-    public function testIfVariousDescriptorTypesAreCounted()
+    public function testIfVariousDescriptorTypesAreCounted() : void
     {
         // Arrange
         $classDescriptor1 = $this->givenAClassWithParent('phpDocumentor\Descriptor\ClassDescriptor');
@@ -120,7 +120,7 @@ class ProjectAnalyzerTest extends MockeryTestCase
     /**
      * @covers \phpDocumentor\Descriptor\ProjectAnalyzer::__toString
      */
-    public function testIfStringOutputContainsAllCounters()
+    public function testIfStringOutputContainsAllCounters() : void
     {
         // Arrange
         $classDescriptor1 = $this->givenAClassWithParent('phpDocumentor\Descriptor\ClassDescriptor');
@@ -189,7 +189,7 @@ TEXT;
     /**
      * Ensures that the ProjectDescriptor contains and returns the provided files.
      */
-    protected function whenProjectDescriptorHasTheFollowingFiles(m\MockInterface $projectDescriptor, array $files)
+    protected function whenProjectDescriptorHasTheFollowingFiles(m\MockInterface $projectDescriptor, array $files) : void
     {
         $projectDescriptor->shouldReceive('getFiles')->andReturn($files);
     }
@@ -197,7 +197,7 @@ TEXT;
     /**
      * Ensures that the ProjectDescriptor has an index 'elements' with the provided elements.
      */
-    protected function whenProjectDescriptorHasTheFollowingElements(m\MockInterface $projectDescriptor, array $elements)
+    protected function whenProjectDescriptorHasTheFollowingElements(m\MockInterface $projectDescriptor, array $elements) : void
     {
         $projectDescriptor->shouldReceive('getIndexes->get')
             ->with('elements', m::type('phpDocumentor\Descriptor\Collection'))
@@ -210,7 +210,8 @@ TEXT;
     protected function whenProjectHasTheFollowingChildrenOfRootNamespace(
         m\MockInterface $projectDescriptor,
         array $rootNamespaceChildren
-    ) {
+    ) : void
+    {
         $projectDescriptor->shouldReceive('getNamespace->getChildren')->andReturn(
             new Collection($rootNamespaceChildren)
         );

@@ -20,12 +20,12 @@ class FileDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
      * @codingStandardsIgnoreStart
-     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\FileDescriptor::__invoke
-     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromFile
-     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::removeFileExtensionFromPath
+     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\Standard\FileDescriptor::__invoke
+     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromFile
+     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::removeFileExtensionFromPath
      * @codingStandardsIgnoreEnd
      */
-    public function testGenerateUrlForFileDescriptor()
+    public function testGenerateUrlForFileDescriptor() : void
     {
         // Arrange
         $fixture = new FileDescriptor();

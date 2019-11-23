@@ -31,7 +31,7 @@ class ConstantAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Creates a new fixture to test with.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fixture = new ConstantAssembler();
     }
@@ -41,7 +41,7 @@ class ConstantAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      *
      * @covers ::create
      */
-    public function testCreateConstantDescriptorFromReflector()
+    public function testCreateConstantDescriptorFromReflector() : void
     {
         $pi = '3.14159265359';
         $name = 'constPI';

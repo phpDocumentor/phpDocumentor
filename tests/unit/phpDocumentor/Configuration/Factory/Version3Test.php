@@ -27,7 +27,7 @@ final class Version3Test extends TestCase
     /** @var Version3 */
     private $strategy;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->strategy = new Version3(__DIR__ . '/../../../../../data/xsd/phpdoc.xsd');
         $this->dataFolder = __DIR__ . '/../../../data/';
@@ -38,7 +38,7 @@ final class Version3Test extends TestCase
      * @covers ::convert
      * @covers ::<private>
      */
-    public function testItConvertsPhpdoc3XmlToAnArray()
+    public function testItConvertsPhpdoc3XmlToAnArray() : void
     {
         $xml = $this->givenXmlFromFile('phpDocumentor3XML.xml');
 
@@ -52,7 +52,7 @@ final class Version3Test extends TestCase
      * @covers ::convert
      * @covers ::<private>
      */
-    public function testItUsesTheDefaultTemplateIfNoneIsFoundInThePhpdoc3Xml()
+    public function testItUsesTheDefaultTemplateIfNoneIsFoundInThePhpdoc3Xml() : void
     {
         $xml = $this->givenXmlFromFile('phpDocumentor3XMLWithoutTemplate.xml');
 
@@ -65,12 +65,12 @@ final class Version3Test extends TestCase
      * @covers ::__construct
      * @covers ::convert
      * @covers ::<private>
-     * @expectedException \Exception
-     * @expectedExceptionMessage Element '{http://www.phpdoc.org}phpdocumentor': Missing child element(s). Expected is
      *                           ( {http://www.phpdoc.org}paths ).
      */
-    public function testItOnlyAcceptsAValidPhpdoc3XmlStructure()
+    public function testItOnlyAcceptsAValidPhpdoc3XmlStructure() : void
     {
+        $this->expectException('Exception');
+        $this->expectExceptionMessage('Element \'{http://www.phpdoc.org}phpdocumentor\': Missing child element(s). Expected is');
         $xml = <<<XML
 <phpdocumentor
     version="3"
@@ -89,7 +89,7 @@ XML;
      * @covers ::convert
      * @covers ::<private>
      */
-    public function testItSetsDefaultValuesIfNoneAreFoundInThePhpdoc3Xml()
+    public function testItSetsDefaultValuesIfNoneAreFoundInThePhpdoc3Xml() : void
     {
         $xml = $this->givenXmlFromFile('phpDocumentor3XMLWithoutValues.xml');
 
@@ -103,7 +103,7 @@ XML;
      * @covers ::convert
      * @covers ::<private>
      */
-    public function testItAcceptsMultipleVersionsInThePhpdoc3Xml()
+    public function testItAcceptsMultipleVersionsInThePhpdoc3Xml() : void
     {
         $xml = $this->givenXmlFromFile('phpDocumentor3XMLWithMultipleVersions.xml');
 
@@ -117,7 +117,7 @@ XML;
      * @covers ::convert
      * @covers ::<private>
      */
-    public function testItAcceptsMultipleApisInThePhpdoc3Xml()
+    public function testItAcceptsMultipleApisInThePhpdoc3Xml() : void
     {
         $xml = $this->givenXmlFromFile('phpDocumentor3XMLWithMultipleApis.xml');
 
@@ -131,7 +131,7 @@ XML;
      * @covers ::convert
      * @covers ::<private>
      */
-    public function testItAcceptsMultipleGuidesInThePhpdoc3Xml()
+    public function testItAcceptsMultipleGuidesInThePhpdoc3Xml() : void
     {
         $xml = $xml = $this->givenXmlFromFile('phpDocumentor3XMLWithMultipleGuides.xml');
 
@@ -145,7 +145,7 @@ XML;
      * @covers ::convert
      * @covers ::<private>
      */
-    public function testItAcceptsMultipleTemplatesInThePhpdoc3Xml()
+    public function testItAcceptsMultipleTemplatesInThePhpdoc3Xml() : void
     {
         $xml = $this->givenXmlFromFile('phpDocumentor3XMLWithMultipleTemplates.xml');
 
@@ -157,7 +157,7 @@ XML;
     /**
      * @covers ::supports
      */
-    public function testItMatchesWhenVersionIs3()
+    public function testItMatchesWhenVersionIs3() : void
     {
         $xml = $this->givenXmlFromFile('phpDocumentor3XML.xml');
 

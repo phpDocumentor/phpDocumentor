@@ -20,7 +20,7 @@ class ExampleTagsEnricherTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Initializes the fixture and its dependencies.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->finderMock = m::mock(ExampleFinder::class);
         $this->fixture = new ExampleTagsEnricher($this->finderMock);
@@ -29,7 +29,7 @@ class ExampleTagsEnricherTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers \phpDocumentor\Compiler\Pass\ExampleTagsEnricher::getDescription
      */
-    public function testDescriptionName()
+    public function testDescriptionName() : void
     {
         $this->assertSame('Enriches inline example tags with their sources', $this->fixture->getDescription());
     }
@@ -39,7 +39,7 @@ class ExampleTagsEnricherTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers \phpDocumentor\Compiler\Pass\ExampleTagsEnricher::execute
      * @covers \phpDocumentor\Compiler\Pass\ExampleTagsEnricher::replaceInlineExamples
      */
-    public function testReplaceExampleTagReturnsDescriptionIfItContainsNoExampleTags()
+    public function testReplaceExampleTagReturnsDescriptionIfItContainsNoExampleTags() : void
     {
         $description = 'This is a description';
 
@@ -58,7 +58,7 @@ class ExampleTagsEnricherTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers \phpDocumentor\Compiler\Pass\ExampleTagsEnricher::execute
      * @covers \phpDocumentor\Compiler\Pass\ExampleTagsEnricher::replaceInlineExamples
      */
-    public function testReplaceExampleTagWithExampleContents()
+    public function testReplaceExampleTagWithExampleContents() : void
     {
         $exampleText = 'Example Text';
         $description = 'This is a description with {@example example2.txt} without description.';
@@ -80,7 +80,7 @@ class ExampleTagsEnricherTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers \phpDocumentor\Compiler\Pass\ExampleTagsEnricher::execute
      * @covers \phpDocumentor\Compiler\Pass\ExampleTagsEnricher::replaceInlineExamples
      */
-    public function testReplaceExampleTagWithExampleContentsAndDescription()
+    public function testReplaceExampleTagWithExampleContentsAndDescription() : void
     {
         $exampleText = 'Example Text';
         $description = 'This is a description with {@example example.txt including description}.';
@@ -102,7 +102,7 @@ class ExampleTagsEnricherTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers \phpDocumentor\Compiler\Pass\ExampleTagsEnricher::execute
      * @covers \phpDocumentor\Compiler\Pass\ExampleTagsEnricher::replaceInlineExamples
      */
-    public function testReplacingOfDescriptionHappensOncePerExample()
+    public function testReplacingOfDescriptionHappensOncePerExample() : void
     {
         $exampleText = 'Example Text';
         $description = 'This is a description with {@example example.txt} and {@example example.txt}.';
@@ -126,7 +126,7 @@ class ExampleTagsEnricherTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      *
      * @return m\MockInterface
      */
-    private function givenAChildDescriptorWithDescription($description)
+    private function givenAChildDescriptorWithDescription($description) : \Mockery\MockInterface
     {
         $descriptor = m::mock('phpDocumentor\Descriptor\DescriptorAbstract');
         $descriptor->shouldReceive('getDescription')->andReturn($description);
@@ -141,7 +141,7 @@ class ExampleTagsEnricherTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      *
      * @return m\MockInterface
      */
-    private function givenAProjectDescriptorWithChildDescriptors($descriptors)
+    private function givenAProjectDescriptorWithChildDescriptors($descriptors) : \Mockery\MockInterface
     {
         $projectDescriptor = m::mock('phpDocumentor\Descriptor\ProjectDescriptor');
         $projectDescriptor->shouldReceive('getIndexes->get')->with('elements')->andReturn($descriptors);
@@ -155,7 +155,7 @@ class ExampleTagsEnricherTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @param m\MockInterface $descriptor
      * @param string          $expected
      */
-    public function thenDescriptionOfDescriptorIsChangedInto($descriptor, $expected)
+    public function thenDescriptionOfDescriptorIsChangedInto($descriptor, $expected) : void
     {
         $descriptor->shouldReceive('setDescription')->with($expected);
     }
@@ -165,7 +165,7 @@ class ExampleTagsEnricherTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      *
      * @param string $exampleText
      */
-    private function whenExampleTxtFileContains($exampleText)
+    private function whenExampleTxtFileContains($exampleText) : void
     {
         $this->finderMock->shouldReceive('find')->andReturn($exampleText);
     }
@@ -176,7 +176,7 @@ class ExampleTagsEnricherTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      *
      * @param string $exampleText
      */
-    private function whenExampleTxtFileContainsAndMustBeCalledOnlyOnce($exampleText)
+    private function whenExampleTxtFileContainsAndMustBeCalledOnlyOnce($exampleText) : void
     {
         $this->finderMock->shouldReceive('find')->once()->andReturn($exampleText);
     }

@@ -24,15 +24,15 @@ class ClassFactoryTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Creates a new (empty) fixture object.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fixture = new ClassFactory();
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Filter\ClassFactory::getChainFor
+     * @covers \phpDocumentor\Descriptor\Filter\ClassFactory::getChainFor
      */
-    public function testGetChainForReturnsInstanceOfFilterChain()
+    public function testGetChainForReturnsInstanceOfFilterChain() : void
     {
         $filterChain = $this->fixture->getChainFor('foo');
 

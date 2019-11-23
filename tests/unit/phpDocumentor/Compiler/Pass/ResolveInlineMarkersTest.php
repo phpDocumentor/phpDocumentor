@@ -18,7 +18,7 @@ use phpDocumentor\Descriptor\ProjectDescriptor;
 
 final class ResolveInlineMarkersTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
-    public function testExecuteSetsMarkers()
+    public function testExecuteSetsMarkers() : void
     {
         $fixture = new ResolveInlineMarkers();
 

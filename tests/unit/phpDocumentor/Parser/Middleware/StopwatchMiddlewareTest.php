@@ -35,7 +35,7 @@ final class StopwatchMiddlewareTest extends TestCase
     /**
      * @covers ::execute
      */
-    public function testThatMemoryUsageIsLogged()
+    public function testThatMemoryUsageIsLogged() : void
     {
         $commandFile = new LocalFile(__FILE__);
         $command = new CreateCommand($commandFile, new ProjectFactoryStrategies([]));

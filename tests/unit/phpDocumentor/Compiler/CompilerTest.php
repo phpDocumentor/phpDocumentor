@@ -22,15 +22,15 @@ class CompilerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Creates a new fixture to test with.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fixture = new Compiler();
     }
 
     /**
-     * @covers phpDocumentor\Compiler\Compiler::insert
+     * @covers \phpDocumentor\Compiler\Compiler::insert
      */
-    public function testDefaultPassHasDefaultPriority()
+    public function testDefaultPassHasDefaultPriority() : void
     {
         $this->fixture->insert('test');
         $this->fixture->setExtractFlags(Compiler::EXTR_PRIORITY);

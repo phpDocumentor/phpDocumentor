@@ -32,7 +32,7 @@ final class ProjectDescriptorMapperTest extends \Mockery\Adapter\Phpunit\Mockery
      */
     private $cachePool;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->cachePool = new Pool(new Ephemeral());
         $this->mapper = new ProjectDescriptorMapper($this->cachePool);
@@ -42,7 +42,7 @@ final class ProjectDescriptorMapperTest extends \Mockery\Adapter\Phpunit\Mockery
      * @covers ::save
      * @covers ::populate
      */
-    public function testThatATheSettingsForAProjectDescriptorArePersistedAndCanBeRetrievedFromCache()
+    public function testThatATheSettingsForAProjectDescriptorArePersistedAndCanBeRetrievedFromCache() : void
     {
         $fileDescriptor = new FileDescriptor('fileHash');
         $fileDescriptor->setPath('./src/MyClass.php');

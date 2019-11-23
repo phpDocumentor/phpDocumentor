@@ -49,7 +49,7 @@ final class EnvironmentContext implements Context\Context
     /**
      * @beforeScenario
      */
-    public function beforeScenario()
+    public function beforeScenario() : void
     {
         //WE no we have some deprecations in phpdocumentor. Let tests pass while we are refactoring stuff.
         error_reporting(error_reporting() & ~E_USER_DEPRECATED);
@@ -67,7 +67,7 @@ final class EnvironmentContext implements Context\Context
     /**
      * @AfterScenario
      */
-    public function cleanup()
+    public function cleanup() : void
     {
         $di = new RecursiveDirectoryIterator($this->getWorkingDir(), FilesystemIterator::SKIP_DOTS);
         $ri = new RecursiveIteratorIterator($di, RecursiveIteratorIterator::CHILD_FIRST);
@@ -79,7 +79,7 @@ final class EnvironmentContext implements Context\Context
     /**
      * @Given /^A single file named "([^"]*)" based on "([^"]*)"$/
      */
-    public function loadASingleFile($dest, $source)
+    public function loadASingleFile($dest, $source) : void
     {
         Assert::fileExists(__DIR__ . '/../assets/singlefile/' . $source);
         copy(__DIR__ . '/../assets/singlefile/' . $source, $this->getWorkingDir() . DIRECTORY_SEPARATOR . $dest);
@@ -88,7 +88,7 @@ final class EnvironmentContext implements Context\Context
     /**
      * @Given /^A project named "([^"]*)" based on "([^"]*)"$/
      */
-    public function loadAProject($dest, $source)
+    public function loadAProject($dest, $source) : void
     {
         $sourceDir = __DIR__ . '/../assets/projects/' . $source;
         Assert::directory($sourceDir);
@@ -122,7 +122,7 @@ final class EnvironmentContext implements Context\Context
     /**
      * @Given /^configuration file based on "([^"]*)"$/
      */
-    public function configurationFileBasedOnIn($configFile)
+    public function configurationFileBasedOnIn($configFile) : void
     {
         Assert::fileExists(__DIR__ . '/../assets/config/' . $configFile);
         copy(
@@ -134,7 +134,7 @@ final class EnvironmentContext implements Context\Context
     /**
      * @Given /^working directory is "([^"]*)"$/
      */
-    public function workingDirectoryIs($dir)
+    public function workingDirectoryIs($dir) : void
     {
         $fullDir = $this->getWorkingDir() . DIRECTORY_SEPARATOR . $dir;
         $this->process->setWorkingDirectory($fullDir);
@@ -145,7 +145,7 @@ final class EnvironmentContext implements Context\Context
      * @Given /^I ran "phpdoc(?: ((?:\"|[^"])*))?"$/
      * @When /^I run "phpdoc(?: ((?:\"|[^"])*))?"$/
      */
-    public function iRun($argumentsString = '')
+    public function iRun($argumentsString = '') : void
     {
         $argumentsString .= ' --template=xml';
         $argumentsString = strtr($argumentsString, ['\'' => '"']);
@@ -165,7 +165,7 @@ final class EnvironmentContext implements Context\Context
      * @Then /^the application must have run successfully$/
      * @throws \Exception when exit code of phpdoc was not 0.
      */
-    public function theApplicationMustHaveRunSuccessfully()
+    public function theApplicationMustHaveRunSuccessfully() : void
     {
         if ($this->process->getExitCode() !== 0) {
             throw new \Exception($this->process->getErrorOutput());
@@ -176,7 +176,7 @@ final class EnvironmentContext implements Context\Context
      * @Then /^output contains "([^"]*)"$/
      * @throws \Exception
      */
-    public function theOutputContains($regex)
+    public function theOutputContains($regex) : void
     {
         if (strpos($this->process->getOutput(), $regex) === false && strpos($this->process->getErrorOutput(), $regex) === false) {
             throw new \Exception(
@@ -189,7 +189,7 @@ final class EnvironmentContext implements Context\Context
      * @Then /^output doesn't contain "([^"]*)"$/
      * @throws \Exception
      */
-    public function theOutputContainNot($regex)
+    public function theOutputContainNot($regex) : void
     {
         if (strpos($this->process->getErrorOutput(), $regex)) {
             throw new \Exception(
@@ -198,12 +198,12 @@ final class EnvironmentContext implements Context\Context
         }
     }
 
-    public function getWorkingDir()
+    public function getWorkingDir() : string
     {
         return $this->workingDir;
     }
 
-    public function getErrorOutput()
+    public function getErrorOutput() : string
     {
         return $this->process->getErrorOutput();
     }
@@ -211,7 +211,7 @@ final class EnvironmentContext implements Context\Context
     /**
      * @Then /^documentation should be found in "([^"]*)"$/
      */
-    public function documentationShouldBeFoundIn($expectedDir)
+    public function documentationShouldBeFoundIn($expectedDir) : void
     {
         Assert::directory($this->getWorkingDir() . DIRECTORY_SEPARATOR . $expectedDir);
     }

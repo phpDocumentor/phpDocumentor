@@ -29,7 +29,7 @@ final class TemplateContext implements Context
     private $webserver;
 
     /** @BeforeScenario */
-    public function gatherContexts(BeforeScenarioScope $scope)
+    public function gatherContexts(BeforeScenarioScope $scope) : void
     {
         $environment = $scope->getEnvironment();
 
@@ -37,7 +37,7 @@ final class TemplateContext implements Context
     }
 
     /** @BeforeScenario */
-    public function beforeScenario()
+    public function beforeScenario() : void
     {
         $workingDir = $this->environmentContext->getWorkingDir();
 
@@ -54,7 +54,7 @@ final class TemplateContext implements Context
     /**
      * @AfterScenario
      */
-    public function cleanup()
+    public function cleanup() : void
     {
         if ($this->webserver->isStarted()) {
             $this->webserver->stop();

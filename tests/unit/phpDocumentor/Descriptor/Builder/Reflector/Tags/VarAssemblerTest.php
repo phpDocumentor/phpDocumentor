@@ -19,7 +19,7 @@ class VarAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Initializes the fixture for this test.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->builder = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
         $this->fixture = new VarAssembler();
@@ -29,7 +29,7 @@ class VarAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\Tags\VarAssembler::create
      */
-    public function testCreatingVarDescriptorFromReflector()
+    public function testCreatingVarDescriptorFromReflector() : void
     {
         $reflector = new Var_('$myParameter', new String_(), new Description('This is a description'));
 

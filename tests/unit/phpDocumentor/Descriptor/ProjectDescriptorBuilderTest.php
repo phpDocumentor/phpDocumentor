@@ -33,7 +33,7 @@ class ProjectDescriptorBuilderTest extends \Mockery\Adapter\Phpunit\MockeryTestC
     /**
      * Sets up a minimal fixture with mocked dependencies.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->assemblerFactory = $this->createAssemblerFactoryMock();
         $filterMock = m::mock('phpDocumentor\Descriptor\Filter\Filter');
@@ -45,7 +45,7 @@ class ProjectDescriptorBuilderTest extends \Mockery\Adapter\Phpunit\MockeryTestC
      * @covers ::createProjectDescriptor
      * @covers ::getProjectDescriptor
      */
-    public function testCreatesAnEmptyProjectDescriptorWhenCalledFor()
+    public function testCreatesAnEmptyProjectDescriptorWhenCalledFor() : void
     {
         $this->fixture->createProjectDescriptor();
 
@@ -64,7 +64,7 @@ class ProjectDescriptorBuilderTest extends \Mockery\Adapter\Phpunit\MockeryTestC
         return m::mock('phpDocumentor\Reflection\FileReflector');
     }
 
-    protected function createFileDescriptorCreationMock()
+    protected function createFileDescriptorCreationMock() : void
     {
         $fileDescriptor = m::mock('phpDocumentor\Descriptor\FileDescriptor');
         $fileDescriptor->shouldReceive('setErrors');

@@ -19,7 +19,7 @@ class ReturnAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Initializes the fixture for this test.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->builder = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
         $this->fixture = new ReturnAssembler();
@@ -27,9 +27,9 @@ class ReturnAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Builder\Reflector\Tags\ReturnAssembler::create
+     * @covers \phpDocumentor\Descriptor\Builder\Reflector\Tags\ReturnAssembler::create
      */
-    public function testCreatingReturnDescriptorFromReflector()
+    public function testCreatingReturnDescriptorFromReflector() : void
     {
         $reflector = new Return_(new String_(), new Description('This is a description'));
 

@@ -8,7 +8,7 @@ use phpDocumentor\Descriptor\Builder\Matcher;
 
 final class MatcherTest extends \PHPUnit\Framework\TestCase
 {
-    public function test_it_can_match_against_the_given_class_as_a_callable()
+    public function test_it_can_match_against_the_given_class_as_a_callable() : void
     {
         $matcher = Matcher::forType(\stdClass::class);
 

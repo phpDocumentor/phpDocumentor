@@ -14,10 +14,10 @@ namespace phpDocumentor\Transformer\Router;
 class RuleTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
-     * @covers phpDocumentor\Transformer\Router\Rule::__construct
-     * @covers phpDocumentor\Transformer\Router\Rule::match
+     * @covers \phpDocumentor\Transformer\Router\Rule::__construct
+     * @covers \phpDocumentor\Transformer\Router\Rule::match
      */
-    public function testIfRuleCanBeMatched()
+    public function testIfRuleCanBeMatched() : void
     {
         $fixture = new Rule(
             function () {
@@ -40,10 +40,10 @@ class RuleTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Router\Rule::__construct
-     * @covers phpDocumentor\Transformer\Router\Rule::generate
+     * @covers \phpDocumentor\Transformer\Router\Rule::__construct
+     * @covers \phpDocumentor\Transformer\Router\Rule::generate
      */
-    public function testIfUrlCanBeGenerated()
+    public function testIfUrlCanBeGenerated() : void
     {
         $fixture = new Rule(
             function () {
@@ -57,11 +57,11 @@ class RuleTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Router\Rule::__construct
-     * @covers phpDocumentor\Transformer\Router\Rule::generate
-     * @covers phpDocumentor\Transformer\Router\Rule::translateToUrlEncodedPath
+     * @covers \phpDocumentor\Transformer\Router\Rule::__construct
+     * @covers \phpDocumentor\Transformer\Router\Rule::generate
+     * @covers \phpDocumentor\Transformer\Router\Rule::translateToUrlEncodedPath
      */
-    public function testTranslateToUrlEncodedPath()
+    public function testTranslateToUrlEncodedPath() : void
     {
         $this->markTestSkipped(
             'Github Actions does not like this test; let us skip it for now and figure out what to do'

@@ -24,24 +24,24 @@ class ForFileProxyTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Initializes the fixture with mocked dependencies.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->ruleMock = m::mock('phpDocumentor\Transformer\Router\Rule');
         $this->fixture = new ForFileProxy($this->ruleMock);
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Router\ForFileProxy::__construct
+     * @covers \phpDocumentor\Transformer\Router\ForFileProxy::__construct
      */
-    public function testIfDependenciesAreRegisteredOnInitialization()
+    public function testIfDependenciesAreRegisteredOnInitialization() : void
     {
         $this->assertAttributeSame($this->ruleMock, 'rule', $this->fixture);
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Router\ForFileProxy::generate
+     * @covers \phpDocumentor\Transformer\Router\ForFileProxy::generate
      */
-    public function testIfDirectorySeparatorsAreTranslated()
+    public function testIfDirectorySeparatorsAreTranslated() : void
     {
         // Arrange
         $this->ruleMock->shouldReceive('generate')->with('test')->andReturn('/usr/bin/php');
@@ -54,9 +54,9 @@ class ForFileProxyTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Router\ForFileProxy::generate
+     * @covers \phpDocumentor\Transformer\Router\ForFileProxy::generate
      */
-    public function testIfNullIsReturnedIfNodeDoesNotMatch()
+    public function testIfNullIsReturnedIfNodeDoesNotMatch() : void
     {
         // Arrange
         $this->ruleMock->shouldReceive('generate')->with('test')->andReturn(false);

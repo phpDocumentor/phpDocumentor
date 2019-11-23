@@ -20,7 +20,7 @@ final class ErrorHandlingMiddlewareTest extends TestCase
     /**
      * @covers ::execute
      */
-    public function testThatParsingStartIsLogged()
+    public function testThatParsingStartIsLogged() : void
     {
         $filename = __FILE__;
         $command = new CreateCommand(new LocalFile($filename), new ProjectFactoryStrategies([]));
@@ -44,7 +44,7 @@ final class ErrorHandlingMiddlewareTest extends TestCase
     /**
      * @covers ::execute
      */
-    public function testThatAnErrorIsLogged()
+    public function testThatAnErrorIsLogged() : void
     {
         $filename = __FILE__;
         $command = new CreateCommand(new LocalFile($filename), new ProjectFactoryStrategies([]));

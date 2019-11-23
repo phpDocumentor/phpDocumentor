@@ -22,16 +22,16 @@ class ParameterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Creates a new (empty) fixture object.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fixture = new Parameter();
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Template\Parameter::getKey
-     * @covers phpDocumentor\Transformer\Template\Parameter::setKey
+     * @covers \phpDocumentor\Transformer\Template\Parameter::getKey
+     * @covers \phpDocumentor\Transformer\Template\Parameter::setKey
      */
-    public function testSetAndGetKey()
+    public function testSetAndGetKey() : void
     {
         $this->assertNull($this->fixture->getKey());
 
@@ -41,10 +41,10 @@ class ParameterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Template\Parameter::getValue
-     * @covers phpDocumentor\Transformer\Template\Parameter::setValue
+     * @covers \phpDocumentor\Transformer\Template\Parameter::getValue
+     * @covers \phpDocumentor\Transformer\Template\Parameter::setValue
      */
-    public function testSetAndGetValue()
+    public function testSetAndGetValue() : void
     {
         $this->assertNull($this->fixture->getValue());
 

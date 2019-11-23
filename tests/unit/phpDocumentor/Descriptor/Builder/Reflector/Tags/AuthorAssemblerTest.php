@@ -24,7 +24,7 @@ use PHPUnit\Framework\TestCase;
  */
 class AuthorAssemblerTest extends TestCase
 {
-    public function testCreate()
+    public function testCreate() : void
     {
         $feature = new AuthorAssembler();
         $result = $feature->create(new Author('Jaapio', 'jaap@phpdoc.org'));
