@@ -30,7 +30,7 @@ jobs:
       name: "Behat with phar"
       before_script:
         - travis_retry composer install --no-interaction --prefer-dist --optimize-autoloader
-        - travis_retry composer global require phpunit/phpunit ^6 # cannot use phpunit.phar or require-dev, because this package is a phpunit dep
+        - travis_retry composer global require phpunit/phpunit ^8 # cannot use phpunit.phar or require-dev, because this package is a phpunit dep
       script:
         - git tag v3.999.999
         - php bin/console cache:warmup --env=prod && php -d phar.readonly=false tools/box.phar compile

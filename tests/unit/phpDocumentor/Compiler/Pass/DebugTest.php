@@ -18,19 +18,6 @@ use Mockery as m;
  */
 class DebugTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
-    /**
-     * @covers \phpDocumentor\Compiler\Pass\Debug::__construct
-     */
-    public function testRegisterLoggerAndAnalyzer() : void
-    {
-        $loggerMock = m::mock('Psr\Log\LoggerInterface');
-        $analyzerMock = m::mock('phpDocumentor\Descriptor\ProjectAnalyzer');
-
-        $fixture = new Debug($loggerMock, $analyzerMock);
-
-        $this->assertAttributeEquals($loggerMock, 'log', $fixture);
-        $this->assertAttributeEquals($analyzerMock, 'analyzer', $fixture);
-    }
 
     /**
      * @covers \phpDocumentor\Compiler\Pass\Debug::execute

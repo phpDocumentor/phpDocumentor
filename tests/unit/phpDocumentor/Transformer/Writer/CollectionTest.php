@@ -42,14 +42,6 @@ class CollectionTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Writer\Collection::__construct
-     */
-    public function testIfDependenciesAreCorrectlyRegisteredOnInitialization() : void
-    {
-        $this->assertAttributeSame($this->routers, 'routers', $this->fixture);
-    }
-
-    /**
      * @covers \phpDocumentor\Transformer\Writer\Collection::offsetSet
      */
     public function testOffsetSetWithWriterNotDescendingFromWriterAbstract() : void

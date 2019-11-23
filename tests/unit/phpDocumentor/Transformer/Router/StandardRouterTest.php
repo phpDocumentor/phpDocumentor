@@ -11,13 +11,15 @@
 
 namespace phpDocumentor\Transformer\Router;
 
+use Closure;
 use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Reflection\DocBlock\Tags\Reference\Fqsen;
 use phpDocumentor\Reflection\DocBlock\Tags\Reference\Url;
 use phpDocumentor\Reflection\Fqsen as RealFqsen;
 
-class StandardRouterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+class StandardRouterTest extends MockeryTestCase
 {
     /** @var StandardRouter */
     private $fixture;
@@ -58,11 +60,14 @@ class StandardRouterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $rule = $this->fixture->match($file);
 
         // Assert
-        $this->assertInstanceOf('phpDocumentor\\Transformer\\Router\\Rule', $rule);
-        $this->assertAttributeInstanceOf(
+        $this->assertInstanceOf(Rule::class, $rule);
+
+        $generatorProperty = new \ReflectionProperty(Rule::class, 'generator');
+        $generatorProperty->setAccessible(true);
+
+        $this->assertInstanceOf(
             '\phpDocumentor\\Transformer\\Router\\UrlGenerator\\Standard\\' . $generatorName,
-            'generator',
-            $rule
+            $generatorProperty->getValue($rule)
         );
     }
 
@@ -82,11 +87,13 @@ class StandardRouterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $rule = $this->fixture->match($file);
 
         // Assert
+        $generatorProperty = new \ReflectionProperty(Rule::class, 'generator');
+        $generatorProperty->setAccessible(true);
+
         $this->assertInstanceOf('phpDocumentor\\Transformer\\Router\\Rule', $rule);
-        $this->assertAttributeInstanceOf(
+        $this->assertInstanceOf(
             '\phpDocumentor\\Transformer\\Router\\UrlGenerator\\Standard\\FqsenDescriptor',
-            'generator',
-            $rule
+            $generatorProperty->getValue($rule)
         );
     }
 
@@ -127,11 +134,13 @@ class StandardRouterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $rule = $this->fixture->match($fqsen);
 
         // Assert
+        $generatorProperty = new \ReflectionProperty(Rule::class, 'generator');
+        $generatorProperty->setAccessible(true);
+
         $this->assertInstanceOf('phpDocumentor\\Transformer\\Router\\Rule', $rule);
-        $this->assertAttributeInstanceOf(
+        $this->assertInstanceOf(
             '\phpDocumentor\\Transformer\\Router\\UrlGenerator\\Standard\\MethodDescriptor',
-            'generator',
-            $rule
+            $generatorProperty->getValue($rule)
         );
     }
 

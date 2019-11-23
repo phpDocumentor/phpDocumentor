@@ -35,14 +35,6 @@ class StripInternalTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Filter\StripInternal::__construct
-     */
-    public function testProjectDescriptorBuilderIsSetUponConstruction() : void
-    {
-        $this->assertAttributeSame($this->builderMock, 'builder', $this->fixture);
-    }
-
-    /**
      * @covers \phpDocumentor\Descriptor\Filter\StripInternal::__invoke
      */
     public function testStripsInternalTagFromDescription() : void

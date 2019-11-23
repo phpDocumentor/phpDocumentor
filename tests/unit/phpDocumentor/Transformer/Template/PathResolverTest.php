@@ -34,7 +34,7 @@ class PathResolverTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testIfDependencyIsCorrectlyRegisteredOnInitialization() : void
     {
-        $this->assertAttributeSame($this->templatePath, 'templatePath', $this->fixture);
+        $this->assertSame($this->templatePath, $this->fixture->getTemplatePath());
     }
 
     /**

@@ -3,7 +3,7 @@
 <phpunit bootstrap="tests/common/bootstrap.php"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/8.0/phpunit.xsd"
-         executionOrder="no-depends,defects"
+         executionOrder="depends,defects"
          colors="true"
 >
     <testsuites>

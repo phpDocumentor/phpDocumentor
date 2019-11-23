@@ -12,10 +12,11 @@
 namespace phpDocumentor\Transformer\Template;
 
 use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 use org\bovigo\vfs\vfsStream;
 use phpDocumentor\Transformer\Template;
 
-class FactoryTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+class FactoryTest extends MockeryTestCase
 {
     /** @var m\MockInterface|PathResolver */
     private $pathResolverMock;
@@ -31,14 +32,6 @@ class FactoryTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $this->pathResolverMock = m::mock('phpDocumentor\Transformer\Template\PathResolver');
 
         $this->fixture = new Factory($this->pathResolverMock);
-    }
-
-    /**
-     * @covers \phpDocumentor\Transformer\Template\Factory::__construct
-     */
-    public function testIfDependenciesAreCorrectlyRegisteredOnInitialization() : void
-    {
-        $this->assertAttributeSame($this->pathResolverMock, 'pathResolver', $this->fixture);
     }
 
     /**

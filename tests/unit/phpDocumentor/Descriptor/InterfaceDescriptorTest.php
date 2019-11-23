@@ -33,18 +33,6 @@ class InterfaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * Tests whether all collection objects are properly initialized.
-     *
-     * @covers ::__construct
-     */
-    public function testInitialize() : void
-    {
-        $this->assertAttributeInstanceOf(Collection::class, 'parents', $this->fixture);
-        $this->assertAttributeInstanceOf(Collection::class, 'constants', $this->fixture);
-        $this->assertAttributeInstanceOf(Collection::class, 'methods', $this->fixture);
-    }
-
-    /**
      * @covers ::setParent
      * @covers ::getParent
      */

@@ -13,6 +13,7 @@ namespace phpDocumentor\Descriptor;
 
 use \Mockery as m;
 use phpDocumentor\Reflection\Types\String_;
+use phpDocumentor\Descriptor\Collection;
 
 /**
  * @coversDefaultClass \phpDocumentor\Descriptor\FunctionDescriptor
@@ -33,9 +34,9 @@ class FunctionDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers ::__construct
      */
-    public function testInitialize() : void
+    public function testInitializesWithEmptyCollection() : void
     {
-        $this->assertAttributeInstanceOf('phpDocumentor\Descriptor\Collection', 'arguments', $this->fixture);
+        $this->assertInstanceOf(Collection::class, $this->fixture->getArguments());
     }
 
     /**
@@ -44,9 +45,9 @@ class FunctionDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testSettingAndGettingArguments() : void
     {
-        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getArguments());
+        $this->assertInstanceOf(Collection::class, $this->fixture->getArguments());
 
-        $mockInstance = m::mock('phpDocumentor\Descriptor\Collection');
+        $mockInstance = m::mock(Collection::class);
         $mock = &$mockInstance;
 
         $this->fixture->setArguments($mock);

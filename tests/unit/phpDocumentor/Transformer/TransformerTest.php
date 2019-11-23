@@ -52,8 +52,7 @@ class TransformerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $writerCollectionMock->shouldIgnoreMissing();
         $this->fixture = new Transformer($templateCollectionMock, $writerCollectionMock, new NullLogger());
 
-        $this->assertAttributeEquals($templateCollectionMock, 'templates', $this->fixture);
-        $this->assertAttributeEquals($writerCollectionMock, 'writers', $this->fixture);
+        $this->assertSame($templateCollectionMock, $this->fixture->getTemplates());
     }
 
     /**

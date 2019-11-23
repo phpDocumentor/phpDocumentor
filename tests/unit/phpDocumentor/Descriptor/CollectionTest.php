@@ -34,7 +34,7 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         $fixture = new Collection();
 
-        $this->assertAttributeEquals([], 'items', $fixture);
+        $this->assertEmpty($fixture->getAll());
     }
 
     /**
@@ -45,7 +45,7 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $expected = [1, 2];
         $fixture = new Collection($expected);
 
-        $this->assertAttributeEquals($expected, 'items', $fixture);
+        $this->assertEquals($expected, $fixture->getAll());
     }
 
     /**
@@ -56,15 +56,13 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $expected = ['abc'];
         $expectedSecondRun = ['abc', 'def'];
 
-        $this->assertAttributeEquals([], 'items', $this->fixture);
-
         $this->fixture->add('abc');
 
-        $this->assertAttributeEquals($expected, 'items', $this->fixture);
+        $this->assertEquals($expected, $this->fixture->getAll());
 
         $this->fixture->add('def');
 
-        $this->assertAttributeEquals($expectedSecondRun, 'items', $this->fixture);
+        $this->assertEquals($expectedSecondRun, $this->fixture->getAll());
     }
 
     /**
@@ -76,15 +74,15 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $expected = ['z' => 'abc'];
         $expectedSecondRun = ['z' => 'abc', 'y' => 'def'];
 
-        $this->assertAttributeEquals([], 'items', $this->fixture);
+        $this->assertEquals([], $this->fixture->getAll());
 
         $this->fixture->set('z', 'abc');
 
-        $this->assertAttributeEquals($expected, 'items', $this->fixture);
+        $this->assertEquals($expected, $this->fixture->getAll());
 
         $this->fixture->set('y', 'def');
 
-        $this->assertAttributeEquals($expectedSecondRun, 'items', $this->fixture);
+        $this->assertEquals($expectedSecondRun, $this->fixture->getAll());
     }
 
     /**

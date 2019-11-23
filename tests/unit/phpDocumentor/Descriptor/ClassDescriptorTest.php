@@ -32,19 +32,6 @@ class ClassDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * Tests whether all collection objects are properly initialized.
-     *
-     * @covers \phpDocumentor\Descriptor\ClassDescriptor::__construct
-     */
-    public function testInitialize() : void
-    {
-        $this->assertAttributeInstanceOf('phpDocumentor\Descriptor\Collection', 'implements', $this->fixture);
-        $this->assertAttributeInstanceOf('phpDocumentor\Descriptor\Collection', 'constants', $this->fixture);
-        $this->assertAttributeInstanceOf('phpDocumentor\Descriptor\Collection', 'properties', $this->fixture);
-        $this->assertAttributeInstanceOf('phpDocumentor\Descriptor\Collection', 'methods', $this->fixture);
-    }
-
-    /**
      * @covers \phpDocumentor\Descriptor\ClassDescriptor::setParent
      * @covers \phpDocumentor\Descriptor\ClassDescriptor::getParent
      */

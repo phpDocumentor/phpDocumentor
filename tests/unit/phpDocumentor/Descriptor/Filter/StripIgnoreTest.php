@@ -35,14 +35,6 @@ class StripIgnoreTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Filter\StripIgnore::__construct
-     */
-    public function testProjectDescriptorBuilderIsSetUponConstruction() : void
-    {
-        $this->assertAttributeSame($this->builderMock, 'builder', $this->fixture);
-    }
-
-    /**
      * @covers \phpDocumentor\Descriptor\Filter\StripIgnore::__invoke
      */
     public function testStripsIgnoreTagFromDescription() : void

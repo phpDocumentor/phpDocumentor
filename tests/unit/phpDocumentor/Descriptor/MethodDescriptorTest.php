@@ -39,16 +39,6 @@ class MethodDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * Tests whether all collection objects are properly initialized.
-     *
-     * @covers ::__construct
-     */
-    public function testInitialize() : void
-    {
-        $this->assertAttributeInstanceOf(Collection::class, 'arguments', $this->fixture);
-    }
-
-    /**
      * @covers ::setParent
      * @covers ::getParent
      */
@@ -196,7 +186,6 @@ class MethodDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $result = $this->fixture->getFile();
 
         // Assert
-        $this->assertAttributeSame(null, 'fileDescriptor', $this->fixture);
         $this->assertSame($file, $result);
     }
 

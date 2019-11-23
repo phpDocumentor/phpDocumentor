@@ -31,17 +31,6 @@ class TraitDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * Tests whether all collection objects are properly initialized.
-     *
-     * @covers \phpDocumentor\Descriptor\TraitDescriptor::__construct
-     */
-    public function testInitialize() : void
-    {
-        $this->assertAttributeInstanceOf('phpDocumentor\Descriptor\Collection', 'properties', $this->fixture);
-        $this->assertAttributeInstanceOf('phpDocumentor\Descriptor\Collection', 'methods', $this->fixture);
-    }
-
-    /**
      * @covers \phpDocumentor\Descriptor\TraitDescriptor::setProperties
      * @covers \phpDocumentor\Descriptor\TraitDescriptor::getProperties
      */

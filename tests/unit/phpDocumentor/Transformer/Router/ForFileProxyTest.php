@@ -31,14 +31,6 @@ class ForFileProxyTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Router\ForFileProxy::__construct
-     */
-    public function testIfDependenciesAreRegisteredOnInitialization() : void
-    {
-        $this->assertAttributeSame($this->ruleMock, 'rule', $this->fixture);
-    }
-
-    /**
      * @covers \phpDocumentor\Transformer\Router\ForFileProxy::generate
      */
     public function testIfDirectorySeparatorsAreTranslated() : void

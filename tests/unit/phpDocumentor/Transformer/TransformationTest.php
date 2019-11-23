@@ -44,21 +44,6 @@ class TransformationTest extends m\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Transformation::__construct
-     * @covers \phpDocumentor\Transformer\Transformation::setQuery
-     * @covers \phpDocumentor\Transformer\Transformation::setWriter
-     * @covers \phpDocumentor\Transformer\Transformation::setSource
-     * @covers \phpDocumentor\Transformer\Transformation::setArtifact
-     */
-    public function testIfDependenciesAreCorrectlyRegisteredOnInitialization() : void
-    {
-        $this->assertAttributeSame($this->query, 'query', $this->fixture);
-        $this->assertAttributeSame($this->writer, 'writer', $this->fixture);
-        $this->assertAttributeSame($this->source, 'source', $this->fixture);
-        $this->assertAttributeSame($this->artifact, 'artifact', $this->fixture);
-    }
-
-    /**
      * @covers \phpDocumentor\Transformer\Transformation::getQuery
      */
     public function testGetQuery() : void

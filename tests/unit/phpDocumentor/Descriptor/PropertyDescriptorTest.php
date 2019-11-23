@@ -134,7 +134,6 @@ class PropertyDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $result = $this->fixture->getFile();
 
         // Assert
-        $this->assertAttributeSame(null, 'fileDescriptor', $this->fixture);
         $this->assertSame($file, $result);
     }
 

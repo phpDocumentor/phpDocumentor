@@ -41,14 +41,6 @@ class FilterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Filter\Filter::__construct
-     */
-    public function testClassFactoryIsSetUponConstruction() : void
-    {
-        $this->assertAttributeSame($this->classFactoryMock, 'factory', $this->fixture);
-    }
-
-    /**
      * @covers \phpDocumentor\Descriptor\Filter\Filter::attach
      */
     public function testAttach() : void

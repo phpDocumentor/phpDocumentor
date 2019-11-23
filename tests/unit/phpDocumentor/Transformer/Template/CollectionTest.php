@@ -37,14 +37,6 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Template\Collection::__construct
-     */
-    public function testIfDependenciesAreRegisteredOnInitialization() : void
-    {
-        $this->assertAttributeSame($this->factoryMock, 'factory', $this->fixture);
-    }
-
-    /**
      * @covers \phpDocumentor\Transformer\Template\Collection::load
      */
     public function testIfLoadRetrievesTemplateFromFactoryAndRegistersIt() : void
