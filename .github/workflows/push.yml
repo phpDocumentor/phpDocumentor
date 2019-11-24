@@ -50,7 +50,7 @@ jobs:
         coverage: xdebug
         pecl: false
     - name: Install PHPUnit
-      run: wget -O phpunit.phar https://phar.phpunit.de/phpunit-8.phar
+      run: php -r "echo file_get_contents('https://phar.phpunit.de/phpunit-8.phar');" > phpunit.phar
     - name: Run PHPUnit
       run: php phpunit.phar
   phpunit:
@@ -82,7 +82,7 @@ jobs:
         ini-values-csv: memory_limit=2G, display_errors=On, error_reporting=-1
         pecl: false
     - name: Install PHPUnit
-      run: wget -O phpunit.phar https://phar.phpunit.de/phpunit-8.phar
+      run: php -r "echo file_get_contents('https://phar.phpunit.de/phpunit-8.phar');" > phpunit.phar
     - name: Run PHPUnit
       run: php phpunit.phar
   codestyle:
