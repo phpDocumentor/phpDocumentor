@@ -27,7 +27,7 @@ jobs:
       with:
         args: check --config-file ./composer-require-config.json composer.json
   phpunit-with-coverage:
-    runs-on: ubuntu-lates
+    runs-on: ubuntu-latest
     name: Unit tests
     needs: composer
     steps:
