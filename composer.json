@@ -12,7 +12,8 @@
     "autoload-dev": {
         "psr-4": {
             "phpDocumentor\\": [
-                "tests/unit/phpDocumentor/"
+                "tests/unit/phpDocumentor/",
+                "tests/integration/phpDocumentor/"
             ],
             "phpDocumentor\\Behat\\Contexts\\": [
                 "tests/features/bootstrap"

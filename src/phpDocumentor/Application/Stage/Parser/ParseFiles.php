@@ -40,7 +40,12 @@ final class ParseFiles
     public function __invoke(Payload $payload)
     {
         $configuration = $payload->getConfig();
-        $apiConfig = $payload->getApiConfig();
+
+        /*
+         * For now settings of the first api are used.
+         * We need to change this later, when we accept more different things
+        */
+        $apiConfig = current($payload->getApiConfigs());
 
         $builder = $payload->getBuilder();
         $builder->setVisibility($apiConfig);

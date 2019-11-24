@@ -38,37 +38,40 @@ final class CollectFiles
 
     public function __invoke(Payload $payload)
     {
-        $this->log('Collecting files .. ');
-        $apiConfig = $payload->getApiConfig();
+        foreach ($payload->getApiConfigs() as $apiConfig) {
+            $this->log('Collecting files from ' . $apiConfig['source']['dsn']);
 
-        $ignorePaths = array_map(
-            static function ($value) {
-                if (substr((string) $value, -1) === '*') {
-                    return substr($value, 0, -1);
-                }
+            $ignorePaths = array_map(
+                static function ($value) {
+                    if (substr((string) $value, -1) === '*') {
+                        return substr($value, 0, -1);
+                    }
 
-                return $value;
-            },
-            $apiConfig['ignore']['paths']
-        );
+                    return $value;
+                },
+                $apiConfig['ignore']['paths']
+            );
 
-        $files = $this->fileCollector->getFiles(
-            $apiConfig['source']['dsn'],
-            $apiConfig['source']['paths'],
-            [
-                'paths' => $ignorePaths,
-                'hidden' => $apiConfig['ignore']['hidden'],
-            ],
-            $apiConfig['extensions']
-        );
+            $files = $this->fileCollector->getFiles(
+                $apiConfig['source']['dsn'],
+                $apiConfig['source']['paths'],
+                [
+                    'paths' => $ignorePaths,
+                    'hidden' => $apiConfig['ignore']['hidden'],
+                ],
+                $apiConfig['extensions']
+            );
+
+            $payload = $payload->withFiles($files);
+        }
         $this->log('OK');
 
-        if (count($files) === 0) {
+        if (count($payload->getFiles()) === 0) {
             $this->log('Your project seems to be empty!', LogLevel::WARNING);
             $this->log('Where are the files??!!!', LogLevel::DEBUG);
         }
 
-        return $payload->withFiles($files);
+        return $payload;
     }
 
     /**

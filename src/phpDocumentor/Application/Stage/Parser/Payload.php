@@ -36,19 +36,21 @@ final class Payload extends ApplicationPayload
         $this->files = $files;
     }
 
-    public function getApiConfig()
+    public function getApiConfigs()
     {
         //Grep only the first version for now. Multi version support will be added later
         $version = current($this->getConfig()['phpdocumentor']['versions']);
 
-        //We are currently in the parser stage so grep the api config.
-        //And for now we support a single api definition. Could be more in the future.
-        return $version['api'][0];
+        return $version['api'];
     }
 
     public function withFiles(array $files) : Payload
     {
-        return new self($this->getConfig(), $this->getBuilder(), $files);
+        return new self(
+            $this->getConfig(),
+            $this->getBuilder(),
+            array_merge($this->getFiles(), $files)
+        );
     }
 
     /**
