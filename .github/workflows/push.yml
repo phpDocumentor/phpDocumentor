@@ -27,7 +27,12 @@ jobs:
       with:
         args: check --config-file ./composer-require-config.json composer.json
   phpunit:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        operating-system: [ubuntu-latest, windows-latest, macOS-latest]
+        php-versions: ['7.2', '7.3']
+    name: Unit tests for PHP version ${{ matrix.php-versions }} on ${{ matrix.operating-system }}
     needs: composer
     steps:
     - uses: actions/checkout@master
@@ -43,12 +48,12 @@ jobs:
     - name: Setup PHP
       uses: shivammathur/setup-php@master
       with:
-        php-version: '7.2'
+        php-version: ${{ matrix.php-versions }}
         extension-csv: mbstring, intl, iconv, libxml, dom, json, simplexml, zlib
         ini-values-csv: memory_limit=2G, display_errors=On, error_reporting=-1
         coverage: xdebug
         pecl: false
-    - name: 'Install PHPUnit 6'
+    - name: Install PHPUnit 6
       run: composer global require phpunit/phpunit ^6
     - name: Run PHPUnit
       run: $HOME/.composer/vendor/bin/phpunit
