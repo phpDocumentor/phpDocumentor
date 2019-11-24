@@ -13,6 +13,7 @@
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\ArgumentDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock;
@@ -22,7 +23,7 @@ use phpDocumentor\Reflection\Php\Method;
 use phpDocumentor\Reflection\Php\Visibility;
 use phpDocumentor\Reflection\Types\String_;
 
-class MethodAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+class MethodAssemblerTest extends MockeryTestCase
 {
     /** @var MethodAssembler $fixture */
     protected $fixture;
@@ -173,8 +174,7 @@ class MethodAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         string $methodName,
         Argument $argumentMock,
         DocBlock $docBlockMock = null
-    ) : Method
-    {
+    ) : Method {
         $method = new Method(
             new Fqsen('\\' . $namespace . '::' . $methodName . '()'),
             new Visibility(Visibility::PROTECTED_),

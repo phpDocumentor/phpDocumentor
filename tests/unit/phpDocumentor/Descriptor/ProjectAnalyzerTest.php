@@ -90,16 +90,20 @@ TEXT;
     /**
      * Ensures that the ProjectDescriptor contains and returns the provided files.
      */
-    protected function whenProjectDescriptorHasTheFollowingFiles(m\MockInterface $projectDescriptor, array $files) : void
-    {
+    protected function whenProjectDescriptorHasTheFollowingFiles(
+        m\MockInterface $projectDescriptor,
+        array $files
+    ) : void {
         $projectDescriptor->shouldReceive('getFiles')->andReturn($files);
     }
 
     /**
      * Ensures that the ProjectDescriptor has an index 'elements' with the provided elements.
      */
-    protected function whenProjectDescriptorHasTheFollowingElements(m\MockInterface $projectDescriptor, array $elements) : void
-    {
+    protected function whenProjectDescriptorHasTheFollowingElements(
+        m\MockInterface $projectDescriptor,
+        array $elements
+    ) : void {
         $projectDescriptor->shouldReceive('getIndexes->get')
             ->with('elements', m::type('phpDocumentor\Descriptor\Collection'))
             ->andReturn(new Collection($elements));
@@ -111,8 +115,7 @@ TEXT;
     protected function whenProjectHasTheFollowingChildrenOfRootNamespace(
         m\MockInterface $projectDescriptor,
         array $rootNamespaceChildren
-    ) : void
-    {
+    ) : void {
         $projectDescriptor->shouldReceive('getNamespace->getChildren')->andReturn(
             new Collection($rootNamespaceChildren)
         );

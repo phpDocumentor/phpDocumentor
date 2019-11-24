@@ -106,7 +106,8 @@ class MethodConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $method->shouldReceive('isStatic')->andReturn(false);
         $method->shouldReceive('getVisibility')->andReturn('protected');
         $method->shouldReceive('getName')->andReturn('Method');
-        $method->shouldReceive('getFullyQualifiedStructuralElementName')->andReturn('phpDocumentor\Class::Method()');
+        $method->shouldReceive('getFullyQualifiedStructuralElementName')
+            ->andReturn('phpDocumentor\Class::Method()');
         $method->shouldIgnoreMissing();
 
         return $method;
@@ -117,8 +118,10 @@ class MethodConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      *
      * @return MethodConverter
      */
-    protected function createFixture(MethodDescriptor $method, ArgumentDescriptor $argumentDescriptor = null) : MethodConverter
-    {
+    protected function createFixture(
+        MethodDescriptor $method,
+        ArgumentDescriptor $argumentDescriptor = null
+    ) : MethodConverter {
         $docBlockConverter = m::mock('phpDocumentor\Transformer\Writer\Xml\DocBlockConverter');
         $docBlockConverter->shouldReceive('convert')->with(m::type('DOMElement'), $method);
         $argumentConverter = m::mock('phpDocumentor\Transformer\Writer\Xml\ArgumentConverter');

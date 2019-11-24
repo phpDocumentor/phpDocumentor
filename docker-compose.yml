@@ -22,7 +22,7 @@ services:
     command: ["-d memory_limit=1024M"]
 
   phpstan:
-    image: jaapio/github-actions:phpstan
+    image: phpdoc/phpstan-ga:master
     environment:
       PHP_EXTENSIONS: php7-intl
     volumes: [".:/app"]

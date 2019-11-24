@@ -12,6 +12,7 @@
 namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 
 use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\DocBlock\Tags\Method;
@@ -21,7 +22,7 @@ use phpDocumentor\Reflection\Types\Mixed_;
 use phpDocumentor\Reflection\Types\String_;
 use phpDocumentor\Reflection\Types\Void_;
 
-class MethodAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+class MethodAssemblerTest extends MockeryTestCase
 {
     /** @var MethodAssembler */
     private $fixture;
@@ -54,8 +55,7 @@ class MethodAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $name,
         $arguments = [],
         $description = null
-    ) : void
-    {
+    ) : void {
         $tag = new Method($name, $arguments, $returnType, false, $description);
 
         $descriptor = $this->fixture->create($tag);

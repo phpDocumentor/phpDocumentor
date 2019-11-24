@@ -70,7 +70,10 @@ final class Version3Test extends TestCase
     public function testItOnlyAcceptsAValidPhpdoc3XmlStructure() : void
     {
         $this->expectException('Exception');
-        $this->expectExceptionMessage('Element \'{http://www.phpdoc.org}phpdocumentor\': Missing child element(s). Expected is');
+        $this->expectExceptionMessage(
+            'Element \'{http://www.phpdoc.org}phpdocumentor\': Missing child element(s). Expected is'
+        );
+
         $xml = <<<XML
 <phpdocumentor
     version="3"
