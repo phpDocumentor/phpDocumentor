@@ -5,6 +5,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
+    - name: Restore/cache vendor folder
+      uses: actions/cache@v1
+      with:
+        path: vendor
+        key: ${{ runner.OS }}-build-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.OS }}-build-${{ env.cache-name }}-
+          ${{ runner.OS }}-build-
+          ${{ runner.OS }}-
     - name: composer
       uses: docker://composer
       env:
@@ -17,19 +26,20 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         args: check --config-file ./composer-require-config.json composer.json
-    - uses: actions/upload-artifact@v1
-      with:
-        name: vendor-prod
-        path: vendor
   phpunit:
     runs-on: ubuntu-latest
     needs: composer
     steps:
     - uses: actions/checkout@master
-    - uses: actions/download-artifact@v1
+    - name: Restore cached vendor folder
+      uses: actions/cache@v1
       with:
-        name: vendor-prod
         path: vendor
+        key: ${{ runner.OS }}-build-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.OS }}-build-${{ env.cache-name }}-
+          ${{ runner.OS }}-build-
+          ${{ runner.OS }}-
     - name: Setup PHP
       uses: shivammathur/setup-php@master
       with:
@@ -47,10 +57,15 @@ jobs:
     needs: [composer, phpunit]
     steps:
     - uses: actions/checkout@master
-    - uses: actions/download-artifact@v1
+    - name: Restore cached vendor folder
+      uses: actions/cache@v1
       with:
-        name: vendor-prod
         path: vendor
+        key: ${{ runner.OS }}-build-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.OS }}-build-${{ env.cache-name }}-
+          ${{ runner.OS }}-build-
+          ${{ runner.OS }}-
     - name: Code style check
       uses: docker://oskarstark/phpcs-ga
       env:
@@ -62,10 +77,15 @@ jobs:
     needs: [composer, phpunit]
     steps:
     - uses: actions/checkout@master
-    - uses: actions/download-artifact@v1
+    - name: Restore cached vendor folder
+      uses: actions/cache@v1
       with:
-        name: vendor-prod
         path: vendor
+        key: ${{ runner.OS }}-build-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.OS }}-build-${{ env.cache-name }}-
+          ${{ runner.OS }}-build-
+          ${{ runner.OS }}-
     - name: PHPStan
       uses: docker://phpdoc/phpstan-ga:master
       env:
