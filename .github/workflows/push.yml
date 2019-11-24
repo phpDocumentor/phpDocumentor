@@ -17,9 +17,9 @@ jobs:
       uses: actions/cache@v1
       with:
         path: tools
-        key: all-tools-${{ hashFiles('tools/**') }}
+        key: all-tools-${{ hashFiles('tools/*') }}
         restore-keys: |
-          all-tools-${{ hashFiles('tools/**') }}-
+          all-tools-${{ hashFiles('tools/*') }}-
           all-tools-
     - name: composer
       uses: docker://composer
@@ -58,9 +58,9 @@ jobs:
       uses: actions/cache@v1
       with:
         path: tools
-        key: all-tools-${{ hashFiles('tools/**') }}
+        key: all-tools-${{ hashFiles('tools/*') }}
         restore-keys: |
-          all-tools-${{ hashFiles('tools/**') }}-
+          all-tools-${{ hashFiles('tools/*') }}-
           all-tools-
     - name: Setup PHP
       uses: shivammathur/setup-php@master
@@ -109,9 +109,9 @@ jobs:
       uses: actions/cache@v1
       with:
         path: tools
-        key: all-tools-${{ hashFiles('tools/**') }}
+        key: all-tools-${{ hashFiles('tools/*') }}
         restore-keys: |
-          all-tools-${{ hashFiles('tools/**') }}-
+          all-tools-${{ hashFiles('tools/*') }}-
           all-tools-
     - name: Setup PHP
       uses: shivammathur/setup-php@master
@@ -141,9 +141,9 @@ jobs:
       uses: actions/cache@v1
       with:
         path: tools
-        key: all-tools-${{ hashFiles('tools/**') }}
+        key: all-tools-${{ hashFiles('tools/*') }}
         restore-keys: |
-          all-tools-${{ hashFiles('tools/**') }}-
+          all-tools-${{ hashFiles('tools/*') }}-
           all-tools-
     - name: Code style check
       uses: docker://oskarstark/phpcs-ga
@@ -169,9 +169,9 @@ jobs:
       uses: actions/cache@v1
       with:
         path: tools
-        key: all-tools-${{ hashFiles('tools/**') }}
+        key: all-tools-${{ hashFiles('tools/*') }}
         restore-keys: |
-          all-tools-${{ hashFiles('tools/**') }}-
+          all-tools-${{ hashFiles('tools/*') }}-
           all-tools-
     - name: PHPStan
       uses: docker://phpdoc/phpstan-ga:master
