@@ -73,8 +73,8 @@ jobs:
       matrix:
         operating-system:
         - ubuntu-latest
-#        - windows-latest
-#        - macOS-latest
+        - windows-latest
+        - macOS-latest
         php-versions: ['7.2', '7.3']
     name: Unit tests for PHP version ${{ matrix.php-versions }} on ${{ matrix.operating-system }}
     needs:
