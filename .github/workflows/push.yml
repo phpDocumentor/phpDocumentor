@@ -67,6 +67,12 @@ jobs:
         pecl: false
     - name: Run PHPUnit
       run: php tools/phpunit.phar
+    - name: Install phive
+      run: wget --no-verbose https://phar.io/releases/phive.phar
+    - name: Upload to coveralls
+      run: php phive.phar --no-progress install --trust-gpg-keys E82B2FB314E9906E php-coveralls/php-coveralls && ./tools/php-coveralls --verbose
+    - name: Upload to Scrutinizer
+      run: wget --no-verbose https://scrutinizer-ci.com/ocular.phar && php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml
   phpunit:
     runs-on: ${{ matrix.operating-system }}
     strategy:
