@@ -1,7 +1,7 @@
 on: push
 name: Qa workflow
 jobs:
-  composer:
+  setup:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
@@ -11,9 +11,16 @@ jobs:
         path: vendor
         key: ${{ runner.OS }}-build-${{ hashFiles('**/composer.lock') }}
         restore-keys: |
-          ${{ runner.OS }}-build-${{ env.cache-name }}-
+          ${{ runner.OS }}-build-${{ hashFiles('**/composer.lock') }}
           ${{ runner.OS }}-build-
-          ${{ runner.OS }}-
+    - name: Restore/cache tools folder
+      uses: actions/cache@v1
+      with:
+        path: tools
+        key: ${{ runner.OS }}-tools-${{ hashFiles('tools/**') }}
+        restore-keys: |
+          ${{ runner.OS }}-tools-${{ hashFiles('tools/**') }}-
+          ${{ runner.OS }}-tools-
     - name: composer
       uses: docker://composer
       env:
@@ -26,21 +33,30 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         args: check --config-file ./composer-require-config.json composer.json
+    - name: Install PHPUnit
+      run: php -r "echo file_get_contents('https://phar.phpunit.de/phpunit-8.phar');" > tools/phpunit.phar
   phpunit-with-coverage:
     runs-on: ubuntu-latest
     name: Unit tests
     needs: composer
     steps:
     - uses: actions/checkout@master
-    - name: Restore cached vendor folder
+    - name: Restore/cache vendor folder
       uses: actions/cache@v1
       with:
         path: vendor
         key: ${{ runner.OS }}-build-${{ hashFiles('**/composer.lock') }}
         restore-keys: |
-          ${{ runner.OS }}-build-${{ env.cache-name }}-
+          ${{ runner.OS }}-build-${{ hashFiles('**/composer.lock') }}
           ${{ runner.OS }}-build-
-          ${{ runner.OS }}-
+    - name: Restore/cache tools folder
+      uses: actions/cache@v1
+      with:
+        path: tools
+        key: ${{ runner.OS }}-tools-${{ hashFiles('tools/**') }}
+        restore-keys: |
+          ${{ runner.OS }}-tools-${{ hashFiles('tools/**') }}-
+          ${{ runner.OS }}-tools-
     - name: Setup PHP
       uses: shivammathur/setup-php@master
       with:
@@ -49,10 +65,8 @@ jobs:
         ini-values-csv: memory_limit=2G, display_errors=On, error_reporting=-1
         coverage: xdebug
         pecl: false
-    - name: Install PHPUnit
-      run: php -r "echo file_get_contents('https://phar.phpunit.de/phpunit-8.phar');" > phpunit.phar
     - name: Run PHPUnit
-      run: php phpunit.phar
+      run: php tools/phpunit.phar
   phpunit:
     runs-on: ${{ matrix.operating-system }}
     strategy:
@@ -68,15 +82,22 @@ jobs:
     - phpunit-with-coverage
     steps:
     - uses: actions/checkout@master
-    - name: Restore cached vendor folder
+    - name: Restore/cache vendor folder
       uses: actions/cache@v1
       with:
         path: vendor
         key: ${{ runner.OS }}-build-${{ hashFiles('**/composer.lock') }}
         restore-keys: |
-          ${{ runner.OS }}-build-${{ env.cache-name }}-
+          ${{ runner.OS }}-build-${{ hashFiles('**/composer.lock') }}
           ${{ runner.OS }}-build-
-          ${{ runner.OS }}-
+    - name: Restore/cache tools folder
+      uses: actions/cache@v1
+      with:
+        path: tools
+        key: ${{ runner.OS }}-tools-${{ hashFiles('tools/**') }}
+        restore-keys: |
+          ${{ runner.OS }}-tools-${{ hashFiles('tools/**') }}-
+          ${{ runner.OS }}-tools-
     - name: Setup PHP
       uses: shivammathur/setup-php@master
       with:
@@ -84,24 +105,29 @@ jobs:
         extension-csv: mbstring, intl, iconv, libxml, dom, json, simplexml, zlib
         ini-values-csv: memory_limit=2G, display_errors=On, error_reporting=-1
         pecl: false
-    - name: Install PHPUnit
-      run: php -r "echo file_get_contents('https://phar.phpunit.de/phpunit-8.phar');" > phpunit.phar
     - name: Run PHPUnit
-      run: php phpunit.phar
+      run: php tools/phpunit.phar
   codestyle:
     runs-on: ubuntu-latest
     needs: [composer, phpunit]
     steps:
     - uses: actions/checkout@master
-    - name: Restore cached vendor folder
+    - name: Restore/cache vendor folder
       uses: actions/cache@v1
       with:
         path: vendor
         key: ${{ runner.OS }}-build-${{ hashFiles('**/composer.lock') }}
         restore-keys: |
-          ${{ runner.OS }}-build-${{ env.cache-name }}-
+          ${{ runner.OS }}-build-${{ hashFiles('**/composer.lock') }}
           ${{ runner.OS }}-build-
-          ${{ runner.OS }}-
+    - name: Restore/cache tools folder
+      uses: actions/cache@v1
+      with:
+        path: tools
+        key: ${{ runner.OS }}-tools-${{ hashFiles('tools/**') }}
+        restore-keys: |
+          ${{ runner.OS }}-tools-${{ hashFiles('tools/**') }}-
+          ${{ runner.OS }}-tools-
     - name: Code style check
       uses: docker://oskarstark/phpcs-ga
       env:
@@ -113,15 +139,22 @@ jobs:
     needs: [composer, phpunit]
     steps:
     - uses: actions/checkout@master
-    - name: Restore cached vendor folder
+    - name: Restore/cache vendor folder
       uses: actions/cache@v1
       with:
         path: vendor
         key: ${{ runner.OS }}-build-${{ hashFiles('**/composer.lock') }}
         restore-keys: |
-          ${{ runner.OS }}-build-${{ env.cache-name }}-
+          ${{ runner.OS }}-build-${{ hashFiles('**/composer.lock') }}
           ${{ runner.OS }}-build-
-          ${{ runner.OS }}-
+    - name: Restore/cache tools folder
+      uses: actions/cache@v1
+      with:
+        path: tools
+        key: ${{ runner.OS }}-tools-${{ hashFiles('tools/**') }}
+        restore-keys: |
+          ${{ runner.OS }}-tools-${{ hashFiles('tools/**') }}-
+          ${{ runner.OS }}-tools-
     - name: PHPStan
       uses: docker://phpdoc/phpstan-ga:master
       env:
