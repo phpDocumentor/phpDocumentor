@@ -38,7 +38,7 @@ jobs:
   phpunit-with-coverage:
     runs-on: ubuntu-latest
     name: Unit tests
-    needs: composer
+    needs: setup
     steps:
     - uses: actions/checkout@master
     - name: Restore/cache vendor folder
@@ -78,7 +78,7 @@ jobs:
         php-versions: ['7.2', '7.3']
     name: Unit tests for PHP version ${{ matrix.php-versions }} on ${{ matrix.operating-system }}
     needs:
-    - composer
+    - setup
     - phpunit-with-coverage
     steps:
     - uses: actions/checkout@master
@@ -109,7 +109,7 @@ jobs:
       run: php tools/phpunit.phar
   codestyle:
     runs-on: ubuntu-latest
-    needs: [composer, phpunit]
+    needs: [setup, phpunit]
     steps:
     - uses: actions/checkout@master
     - name: Restore/cache vendor folder
@@ -136,7 +136,7 @@ jobs:
         args: -d memory_limit=1024M
   phpstan:
     runs-on: ubuntu-latest
-    needs: [composer, phpunit]
+    needs: [setup, phpunit]
     steps:
     - uses: actions/checkout@master
     - name: Restore/cache vendor folder
