@@ -36,9 +36,7 @@ jobs:
     - name: Install phive
       run: wget -O tools/phive.phar --no-verbose https://phar.io/releases/phive.phar
     - name: Install PHP Coveralls
-      run: php tools/phive.phar --no-progress install --copy --trust-gpg-keys E82B2FB314E9906E php-coveralls/php-coveralls
-    - name: Install PHPUnit
-      run: php -r "echo file_get_contents('https://phar.phpunit.de/phpunit-8.phar');" > tools/phpunit.phar
+      run: php tools/phive.phar --no-progress install --copy --trust-gpg-keys 4AA394086372C20A,D2CCAC42F6295E7D,E82B2FB314E9906E
 
   phpunit-with-coverage:
     runs-on: ubuntu-latest
@@ -72,13 +70,13 @@ jobs:
         pecl: false
     - name: Run PHPUnit
       run: php tools/phpunit.phar
-    - name: Upload to coveralls
-      env:
-        CI_NAME: Github Actions
-        CI_BUILD_NUMBER: $GITHUB_ACTION
-        CI_BUILD_URL: https://github.com/phpDocumentor/phpDocumentor/runs/$GITHUB_ACTION
-        CI_BRANCH: $GITHUB_REF
-      run: ./tools/php-coveralls --verbose
+#    - name: Upload to coveralls
+#      env:
+#        CI_NAME: Github Actions
+#        CI_BUILD_NUMBER: $GITHUB_ACTION
+#        CI_BUILD_URL: https://github.com/phpDocumentor/phpDocumentor/runs/$GITHUB_ACTION
+#        CI_BRANCH: $GITHUB_REF
+#      run: ./tools/php-coveralls --verbose
 #    - name: Upload to Scrutinizer
 #      run: wget --no-verbose https://scrutinizer-ci.com/ocular.phar && php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml
 
