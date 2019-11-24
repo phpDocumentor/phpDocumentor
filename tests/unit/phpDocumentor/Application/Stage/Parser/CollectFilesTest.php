@@ -28,7 +28,8 @@ final class CollectFilesTest extends MockeryTestCase
                 ['php']
             )
             ->andReturn([]);
-        $fixture       = new CollectFiles($fileCollector, new NullLogger());
+
+        $fixture = new CollectFiles($fileCollector, new NullLogger());
 
         $payload = new Payload(
             [
@@ -45,7 +46,7 @@ final class CollectFilesTest extends MockeryTestCase
                                     ],
                                     'ignore' => [
                                         'paths' => [],
-
+                                        'hidden' => null,
                                     ],
                                     'extensions' => [
                                         'php'

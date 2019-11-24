@@ -57,7 +57,7 @@ class CollectFilesIntegrationTest extends TestCase
                                             ],
                                             'ignore' => [
                                                 'paths' => [],
-
+                                                'hidden' => null,
                                             ],
                                             'extensions' => [
                                                 'php',
@@ -88,7 +88,7 @@ class CollectFilesIntegrationTest extends TestCase
                                             ],
                                             'ignore' => [
                                                 'paths' => [],
-
+                                                'hidden' => null,
                                             ],
                                             'extensions' => [
                                                 'php',
@@ -103,7 +103,7 @@ class CollectFilesIntegrationTest extends TestCase
                                             ],
                                             'ignore' => [
                                                 'paths' => [],
-
+                                                'hidden' => null,
                                             ],
                                             'extensions' => [
                                                 'php',
