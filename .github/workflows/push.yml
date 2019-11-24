@@ -36,7 +36,7 @@ jobs:
     - name: Install phive
       run: wget -O tools/phive.phar --no-verbose https://phar.io/releases/phive.phar
     - name: Install PHP Coveralls
-      run: php tools/phive.phar --no-progress install --trust-gpg-keys E82B2FB314E9906E php-coveralls/php-coveralls
+      run: php tools/phive.phar --no-progress install --copy --trust-gpg-keys E82B2FB314E9906E php-coveralls/php-coveralls
     - name: Install PHPUnit
       run: php -r "echo file_get_contents('https://phar.phpunit.de/phpunit-8.phar');" > tools/phpunit.phar
 
