@@ -122,6 +122,36 @@ jobs:
       continue-on-error: true
       run: php tools/phpunit.phar
 
+  behat:
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        operating-system: [ubuntu-latest, windows-latest, macOS-latest]
+        php-versions: ['7.2', '7.3']
+    name: Integration tests for PHP version ${{ matrix.php-versions }} on ${{ matrix.operating-system }}
+    needs:
+      - composer
+      - phpunit
+    steps:
+      - uses: actions/checkout@master
+      - name: Restore/cache vendor folder
+        uses: actions/cache@v1
+        with:
+          path: vendor
+          key: all-build-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            all-build-${{ hashFiles('**/composer.lock') }}
+            all-build-
+      - name: Setup PHP
+        uses: shivammathur/setup-php@master
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extension-csv: mbstring, intl, iconv, libxml, dom, json, simplexml, zlib
+          ini-values-csv: memory_limit=2G, display_errors=On, error_reporting=-1
+          pecl: false
+      - name: Run Behat
+        run: /bin/behat
+
   codestyle:
     runs-on: ubuntu-latest
     needs: [setup, phpunit]
