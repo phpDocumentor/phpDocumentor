@@ -17,10 +17,10 @@ jobs:
       uses: actions/cache@v1
       with:
         path: tools
-        key: ${{ runner.OS }}-tools-${{ hashFiles('tools/**') }}
+        key: all-tools-${{ hashFiles('tools/**') }}
         restore-keys: |
-          ${{ runner.OS }}-tools-${{ hashFiles('tools/**') }}-
-          ${{ runner.OS }}-tools-
+          all-tools-${{ hashFiles('tools/**') }}-
+          all-tools-
     - name: composer
       uses: docker://composer
       env:
@@ -53,10 +53,10 @@ jobs:
       uses: actions/cache@v1
       with:
         path: tools
-        key: ${{ runner.OS }}-tools-${{ hashFiles('tools/**') }}
+        key: all-tools-${{ hashFiles('tools/**') }}
         restore-keys: |
-          ${{ runner.OS }}-tools-${{ hashFiles('tools/**') }}-
-          ${{ runner.OS }}-tools-
+          all-tools-${{ hashFiles('tools/**') }}-
+          all-tools-
     - name: Setup PHP
       uses: shivammathur/setup-php@master
       with:
@@ -94,10 +94,10 @@ jobs:
       uses: actions/cache@v1
       with:
         path: tools
-        key: ${{ runner.OS }}-tools-${{ hashFiles('tools/**') }}
+        key: all-tools-${{ hashFiles('tools/**') }}
         restore-keys: |
-          ${{ runner.OS }}-tools-${{ hashFiles('tools/**') }}-
-          ${{ runner.OS }}-tools-
+          all-tools-${{ hashFiles('tools/**') }}-
+          all-tools-
     - name: Setup PHP
       uses: shivammathur/setup-php@master
       with:
@@ -124,10 +124,10 @@ jobs:
       uses: actions/cache@v1
       with:
         path: tools
-        key: ${{ runner.OS }}-tools-${{ hashFiles('tools/**') }}
+        key: all-tools-${{ hashFiles('tools/**') }}
         restore-keys: |
-          ${{ runner.OS }}-tools-${{ hashFiles('tools/**') }}-
-          ${{ runner.OS }}-tools-
+          all-tools-${{ hashFiles('tools/**') }}-
+          all-tools-
     - name: Code style check
       uses: docker://oskarstark/phpcs-ga
       env:
@@ -151,10 +151,10 @@ jobs:
       uses: actions/cache@v1
       with:
         path: tools
-        key: ${{ runner.OS }}-tools-${{ hashFiles('tools/**') }}
+        key: all-tools-${{ hashFiles('tools/**') }}
         restore-keys: |
-          ${{ runner.OS }}-tools-${{ hashFiles('tools/**') }}-
-          ${{ runner.OS }}-tools-
+          all-tools-${{ hashFiles('tools/**') }}-
+          all-tools-
     - name: PHPStan
       uses: docker://phpdoc/phpstan-ga:master
       env:
