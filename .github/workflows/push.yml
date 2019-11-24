@@ -22,6 +22,9 @@ jobs:
         name: vendor-prod
         path: vendor
   codestyle:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
     - uses: actions/download-artifact@v1
       with:
         name: vendor-prod
@@ -33,6 +36,9 @@ jobs:
       with:
         args: -d memory_limit=1024M
   phpstan:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
     - uses: actions/download-artifact@v1
       with:
         name: vendor-prod
