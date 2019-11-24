@@ -32,7 +32,7 @@ final class FlySystemCollectorTest extends TestCase
      * @uses \phpDocumentor\Parser\SpecificationFactory
      * @uses \phpDocumentor\Parser\FlySystemFactory
      */
-    public function testSingleSourceDir()
+    public function testSingleSourceDir() : void
     {
         $fileCollector = new FlySystemCollector(
             new SpecificationFactory(),

@@ -24,7 +24,7 @@ final class PathTest extends TestCase
      * @covers ::__construct
      * @covers ::__toString
      */
-    public function testItCanContainALocationOnAStorageService()
+    public function testItCanContainALocationOnAStorageService() : void
     {
         $path = new Path('/my/Path');
 
@@ -34,7 +34,7 @@ final class PathTest extends TestCase
     /**
      * @covers ::equals
      */
-    public function testItCanCompareItselfToAnotherPath()
+    public function testItCanCompareItselfToAnotherPath() : void
     {
         $subject = new Path('a');
         $similar = new Path('a');
@@ -47,7 +47,7 @@ final class PathTest extends TestCase
     /**
      * @covers ::isAbsolutePath
      */
-    public function testItCanCheckWhetherTheGivenPathIsAnAbsolutePath()
+    public function testItCanCheckWhetherTheGivenPathIsAnAbsolutePath() : void
     {
         $this->assertTrue(Path::isAbsolutePath('\\\\my\\absolute\\path'));
         $this->assertTrue(Path::isAbsolutePath('/my/absolute/path'));

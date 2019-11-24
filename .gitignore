@@ -22,6 +22,7 @@ temp/
 var/*
 *.phar
 screenshots
+.phpunit.result.cache
 
 # IDEs and editors
 /.idea

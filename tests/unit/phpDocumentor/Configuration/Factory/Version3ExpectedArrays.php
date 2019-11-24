@@ -22,7 +22,7 @@ final class Version3ExpectedArrays
      *
      * @return array
      */
-    public static function getDefaultArray()
+    public static function getDefaultArray() : array
     {
         return [
             'phpdocumentor' => [
@@ -90,7 +90,7 @@ final class Version3ExpectedArrays
      *
      * @return array
      */
-    public static function getArrayWithEmptyExtensionsAndMarkers()
+    public static function getArrayWithEmptyExtensionsAndMarkers() : array
     {
         return [
             'phpdocumentor' => [
@@ -138,7 +138,7 @@ final class Version3ExpectedArrays
      *
      * @return array
      */
-    public static function getArrayWithMultipleVersions()
+    public static function getArrayWithMultipleVersions() : array
     {
         return [
             'phpdocumentor' => [
@@ -164,7 +164,7 @@ final class Version3ExpectedArrays
         ];
     }
 
-    public static function getArrayWithMultipleApis()
+    public static function getArrayWithMultipleApis() : array
     {
         return [
             'phpdocumentor' => [
@@ -243,7 +243,7 @@ final class Version3ExpectedArrays
         ];
     }
 
-    public static function getArrayWithMultipleGuides()
+    public static function getArrayWithMultipleGuides() : array
     {
         return [
             'phpdocumentor' => [
@@ -286,7 +286,7 @@ final class Version3ExpectedArrays
         ];
     }
 
-    public static function getArrayWithMultipleTemplates()
+    public static function getArrayWithMultipleTemplates() : array
     {
         return [
             'phpdocumentor' => [

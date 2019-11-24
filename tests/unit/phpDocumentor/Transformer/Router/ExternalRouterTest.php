@@ -17,11 +17,11 @@ use phpDocumentor\Transformer\Configuration\ExternalClassDocumentation;
 class ExternalRouterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
-     * @covers phpDocumentor\Transformer\Router\ExternalRouter::__construct
-     * @covers phpDocumentor\Transformer\Router\ExternalRouter::configure
-     * @covers phpDocumentor\Transformer\Router\ExternalRouter::match
+     * @covers \phpDocumentor\Transformer\Router\ExternalRouter::__construct
+     * @covers \phpDocumentor\Transformer\Router\ExternalRouter::configure
+     * @covers \phpDocumentor\Transformer\Router\ExternalRouter::match
      */
-    public function testIfNoUrlIsGeneratedWhenThereIsNoDefinition()
+    public function testIfNoUrlIsGeneratedWhenThereIsNoDefinition() : void
     {
         $this->markTestSkipped('External router needs to be redefined, config is missing');
         // Arrange
@@ -35,11 +35,11 @@ class ExternalRouterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Router\ExternalRouter::__construct
-     * @covers phpDocumentor\Transformer\Router\ExternalRouter::configure
-     * @covers phpDocumentor\Transformer\Router\ExternalRouter::match
+     * @covers \phpDocumentor\Transformer\Router\ExternalRouter::__construct
+     * @covers \phpDocumentor\Transformer\Router\ExternalRouter::configure
+     * @covers \phpDocumentor\Transformer\Router\ExternalRouter::match
      */
-    public function testIfSingleDefinitionGeneratesAnUrl()
+    public function testIfSingleDefinitionGeneratesAnUrl() : void
     {
         $this->markTestSkipped('External router needs to be redefined, config is missing');
         // Arrange
@@ -57,11 +57,11 @@ class ExternalRouterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Router\ExternalRouter::__construct
-     * @covers phpDocumentor\Transformer\Router\ExternalRouter::configure
-     * @covers phpDocumentor\Transformer\Router\ExternalRouter::match
+     * @covers \phpDocumentor\Transformer\Router\ExternalRouter::__construct
+     * @covers \phpDocumentor\Transformer\Router\ExternalRouter::configure
+     * @covers \phpDocumentor\Transformer\Router\ExternalRouter::match
      */
-    public function testIfMultipleDefinitionsGenerateAnUrl()
+    public function testIfMultipleDefinitionsGenerateAnUrl() : void
     {
         $this->markTestSkipped('External router needs to be redefined, config is missing');
         // Arrange

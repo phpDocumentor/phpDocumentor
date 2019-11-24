@@ -24,43 +24,43 @@ class PathResolverTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Sets up the fixture with mocked dependency.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fixture = new PathResolver($this->templatePath);
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Template\PathResolver::__construct
+     * @covers \phpDocumentor\Transformer\Template\PathResolver::__construct
      */
-    public function testIfDependencyIsCorrectlyRegisteredOnInitialization()
+    public function testIfDependencyIsCorrectlyRegisteredOnInitialization() : void
     {
-        $this->assertAttributeSame($this->templatePath, 'templatePath', $this->fixture);
+        $this->assertSame($this->templatePath, $this->fixture->getTemplatePath());
     }
 
     /**
-     * @expectedException \InvalidArgumentException
-     * @covers phpDocumentor\Transformer\Template\PathResolver::resolve
+     * @covers \phpDocumentor\Transformer\Template\PathResolver::resolve
      */
-    public function testResolveWithInvalidAbsolutePath()
+    public function testResolveWithInvalidAbsolutePath() : void
     {
+        $this->expectException('InvalidArgumentException');
         $this->givenAVirtualFileSystem([]);
         $this->fixture->resolve('vfs://root/myFolder/myTemplate');
     }
 
     /**
-     * @expectedException \InvalidArgumentException
-     * @covers phpDocumentor\Transformer\Template\PathResolver::resolve
+     * @covers \phpDocumentor\Transformer\Template\PathResolver::resolve
      */
-    public function testResolveWithInvalidName()
+    public function testResolveWithInvalidName() : void
     {
+        $this->expectException('InvalidArgumentException');
         $this->givenAVirtualFileSystem([]);
         $this->fixture->resolve('invalidName');
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Template\PathResolver::resolve
+     * @covers \phpDocumentor\Transformer\Template\PathResolver::resolve
      */
-    public function testResolveWithValidAbsolutePath()
+    public function testResolveWithValidAbsolutePath() : void
     {
         $this->givenAVirtualFileSystem(['template.xml' => 'xml']);
         $this->assertSame(
@@ -70,9 +70,9 @@ class PathResolverTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Template\PathResolver::resolve
+     * @covers \phpDocumentor\Transformer\Template\PathResolver::resolve
      */
-    public function testResolveWithValidName()
+    public function testResolveWithValidName() : void
     {
         $this->givenAVirtualFileSystem([]);
         $this->assertSame(
@@ -82,9 +82,9 @@ class PathResolverTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Template\PathResolver::getTemplatePath
+     * @covers \phpDocumentor\Transformer\Template\PathResolver::getTemplatePath
      */
-    public function testGetTemplatePath()
+    public function testGetTemplatePath() : void
     {
         $this->assertSame($this->templatePath, $this->fixture->getTemplatePath());
     }
@@ -96,7 +96,7 @@ class PathResolverTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * file system structure in case of a test with a valid absolute path,
      * or an empty array
      */
-    private function givenAVirtualFileSystem($template)
+    private function givenAVirtualFileSystem($template) : void
     {
         $structure = [
             'templatePath' => [

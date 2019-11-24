@@ -28,14 +28,14 @@ class AssemblerAbstractTest extends TestCase
      * @param string $expected
      * @dataProvider typeProvider
      */
-    public function testDeduplicateTypes(?Type $type, string $expected)
+    public function testDeduplicateTypes(?Type $type, string $expected) : void
     {
         $type = AssemblerAbstract::deduplicateTypes($type);
 
         self::assertEquals($expected, (string)$type);
     }
 
-    public function typeProvider()
+    public function typeProvider() : array
     {
         return [
             [

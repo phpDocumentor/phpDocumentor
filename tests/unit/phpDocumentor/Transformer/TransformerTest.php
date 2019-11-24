@@ -18,7 +18,7 @@ use Psr\Log\NullLogger;
 /**
  * Test class for \phpDocumentor\Transformer\Transformer.
  *
- * @covers phpDocumentor\Transformer\Transformer
+ * @covers \phpDocumentor\Transformer\Transformer
  */
 class TransformerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
@@ -31,7 +31,7 @@ class TransformerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Instantiates a new \phpDocumentor\Transformer for use as fixture.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $templateCollectionMock = m::mock('phpDocumentor\Transformer\Template\Collection');
         $templateCollectionMock->shouldIgnoreMissing();
@@ -42,9 +42,9 @@ class TransformerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Transformer::__construct
+     * @covers \phpDocumentor\Transformer\Transformer::__construct
      */
-    public function testInitialization()
+    public function testInitialization() : void
     {
         $templateCollectionMock = m::mock('phpDocumentor\Transformer\Template\Collection');
         $templateCollectionMock->shouldIgnoreMissing();
@@ -52,15 +52,14 @@ class TransformerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $writerCollectionMock->shouldIgnoreMissing();
         $this->fixture = new Transformer($templateCollectionMock, $writerCollectionMock, new NullLogger());
 
-        $this->assertAttributeEquals($templateCollectionMock, 'templates', $this->fixture);
-        $this->assertAttributeEquals($writerCollectionMock, 'writers', $this->fixture);
+        $this->assertSame($templateCollectionMock, $this->fixture->getTemplates());
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Transformer::getTarget
-     * @covers phpDocumentor\Transformer\Transformer::setTarget
+     * @covers \phpDocumentor\Transformer\Transformer::getTarget
+     * @covers \phpDocumentor\Transformer\Transformer::setTarget
      */
-    public function testSettingAndGettingATarget()
+    public function testSettingAndGettingATarget() : void
     {
         $this->assertEquals('', $this->fixture->getTarget());
 
@@ -70,29 +69,29 @@ class TransformerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Transformer::setTarget
-     * @expectedException \InvalidArgumentException
+     * @covers \phpDocumentor\Transformer\Transformer::setTarget
      */
-    public function testExceptionWhenSettingFileAsTarget()
+    public function testExceptionWhenSettingFileAsTarget() : void
     {
+        $this->expectException('InvalidArgumentException');
         $this->fixture->setTarget(__FILE__);
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Transformer::setTarget
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Target directory (vfs://myroot) does not exist and could not be created
+     * @covers \phpDocumentor\Transformer\Transformer::setTarget
      */
-    public function testExceptionWhenSettingExistingDirAsTarget()
+    public function testExceptionWhenSettingExistingDirAsTarget() : void
     {
+        $this->expectException('InvalidArgumentException');
+        $this->expectExceptionMessage('Target directory (vfs://myroot) does not exist and could not be created');
         $fileSystem = \org\bovigo\vfs\vfsStream::setup('myroot');
         $this->fixture->setTarget(\org\bovigo\vfs\vfsStream::url('myroot'));
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Transformer::getTemplates
+     * @covers \phpDocumentor\Transformer\Transformer::getTemplates
      */
-    public function testRetrieveTemplateCollection()
+    public function testRetrieveTemplateCollection() : void
     {
         $templateCollectionMock = m::mock('phpDocumentor\Transformer\Template\Collection');
         $templateCollectionMock->shouldIgnoreMissing();
@@ -105,9 +104,9 @@ class TransformerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Transformer::execute
+     * @covers \phpDocumentor\Transformer\Transformer::execute
      */
-    public function testExecute()
+    public function testExecute() : void
     {
         $myTestWritter = 'myTestWriter';
 
@@ -143,9 +142,9 @@ class TransformerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * Tests whether the generateFilename method returns a file according to
      * the right format.
      *
-     * @covers phpDocumentor\Transformer\Transformer::generateFilename
+     * @covers \phpDocumentor\Transformer\Transformer::generateFilename
      */
-    public function testGenerateFilename()
+    public function testGenerateFilename() : void
     {
         // separate the directories with the DIRECTORY_SEPARATOR constant to prevent failing tests on windows
         $filename = 'directory' . DIRECTORY_SEPARATOR . 'directory2' . DIRECTORY_SEPARATOR . 'file.php';
@@ -153,9 +152,9 @@ class TransformerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Transformer::getDescription
+     * @covers \phpDocumentor\Transformer\Transformer::getDescription
      */
-    public function testGetDescription()
+    public function testGetDescription() : void
     {
         $description = $this->fixture->getDescription();
         $this->assertNotNull($description);

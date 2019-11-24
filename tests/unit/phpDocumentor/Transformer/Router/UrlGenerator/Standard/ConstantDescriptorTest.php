@@ -20,13 +20,13 @@ class ConstantDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
      * @codingStandardsIgnoreStart
-     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\ConstantDescriptor::__construct
-     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\ConstantDescriptor::__invoke
-     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\ConstantDescriptor::getUrlPathPrefixForGlobalConstants
-     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromNamespace
+     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\Standard\ConstantDescriptor::__construct
+     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\Standard\ConstantDescriptor::__invoke
+     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\Standard\ConstantDescriptor::getUrlPathPrefixForGlobalConstants
+     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromNamespace
      * @codingStandardsIgnoreEnd
      */
-    public function testGenerateUrlForGlobalConstants()
+    public function testGenerateUrlForGlobalConstants() : void
     {
         // Arrange
         $fixture = new ConstantDescriptor();
@@ -45,13 +45,13 @@ class ConstantDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
     /**
      * @codingStandardsIgnoreStart
-     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\ConstantDescriptor::__construct
-     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\ConstantDescriptor::__invoke
-     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\ConstantDescriptor::getUrlPathPrefixForGlobalConstants
-     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromNamespace
+     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\Standard\ConstantDescriptor::__construct
+     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\Standard\ConstantDescriptor::__invoke
+     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\Standard\ConstantDescriptor::getUrlPathPrefixForGlobalConstants
+     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromNamespace
      * @codingStandardsIgnoreEnd
      */
-    public function testGenerateUrlForGlobalConstantsAtRootNamespace()
+    public function testGenerateUrlForGlobalConstantsAtRootNamespace() : void
     {
         // Arrange
         $fixture = new ConstantDescriptor();
@@ -69,12 +69,12 @@ class ConstantDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
     /**
      * @codingStandardsIgnoreStart
-     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\ConstantDescriptor::__invoke
-     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\ConstantDescriptor::getUrlPathPrefixForClassConstants
-     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromClass
+     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\Standard\ConstantDescriptor::__invoke
+     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\Standard\ConstantDescriptor::getUrlPathPrefixForClassConstants
+     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromClass
      * @codingStandardsIgnoreEnd
      */
-    public function testGenerateUrlForClassConstants()
+    public function testGenerateUrlForClassConstants() : void
     {
         // Arrange
         $fixture = new ConstantDescriptor();

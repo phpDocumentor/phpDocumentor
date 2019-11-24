@@ -19,10 +19,10 @@ use Mockery as m;
 class ClassDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
-     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\ClassDescriptor::__invoke
-     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromClass
+     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\Standard\ClassDescriptor::__invoke
+     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromClass
      */
-    public function testGenerateUrlForClassDescriptor()
+    public function testGenerateUrlForClassDescriptor() : void
     {
         // Arrange
         $fixture = new ClassDescriptor();

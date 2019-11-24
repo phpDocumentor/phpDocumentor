@@ -19,23 +19,23 @@ class CollectionDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Initializes the fixture for this test.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fixture = new CollectionDescriptor('array');
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Type\CollectionDescriptor::getName
+     * @covers \phpDocumentor\Descriptor\Type\CollectionDescriptor::getName
      */
-    public function testRetrieveNameForBaseTypeWithTypeString()
+    public function testRetrieveNameForBaseTypeWithTypeString() : void
     {
         $this->assertSame('array', $this->fixture->getName());
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Type\CollectionDescriptor::getName
+     * @covers \phpDocumentor\Descriptor\Type\CollectionDescriptor::getName
      */
-    public function testRetrieveNameForBaseTypeWithTypeDescriptor()
+    public function testRetrieveNameForBaseTypeWithTypeDescriptor() : void
     {
         $fixture = new CollectionDescriptor(new UnknownTypeDescriptor('array'));
 
@@ -43,18 +43,18 @@ class CollectionDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Type\CollectionDescriptor::getBaseType
+     * @covers \phpDocumentor\Descriptor\Type\CollectionDescriptor::getBaseType
      */
-    public function testRetrieveBaseTypeWithTypeStringReturnsNull()
+    public function testRetrieveBaseTypeWithTypeStringReturnsNull() : void
     {
         $this->assertNull($this->fixture->getBaseType());
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Type\CollectionDescriptor::getBaseType
-     * @covers phpDocumentor\Descriptor\Type\CollectionDescriptor::setBaseType
+     * @covers \phpDocumentor\Descriptor\Type\CollectionDescriptor::getBaseType
+     * @covers \phpDocumentor\Descriptor\Type\CollectionDescriptor::setBaseType
      */
-    public function testSetAndRetrieveBaseTypeWithTypeDescriptor()
+    public function testSetAndRetrieveBaseTypeWithTypeDescriptor() : void
     {
         $expected = new UnknownTypeDescriptor('array');
         $this->fixture->setBaseType($expected);
@@ -63,10 +63,10 @@ class CollectionDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Type\CollectionDescriptor::getTypes
-     * @covers phpDocumentor\Descriptor\Type\CollectionDescriptor::setTypes
+     * @covers \phpDocumentor\Descriptor\Type\CollectionDescriptor::getTypes
+     * @covers \phpDocumentor\Descriptor\Type\CollectionDescriptor::setTypes
      */
-    public function testSetAndRetrieveTypes()
+    public function testSetAndRetrieveTypes() : void
     {
         $expected = new UnknownTypeDescriptor('array');
         $this->fixture->setTypes([$expected]);
@@ -75,10 +75,10 @@ class CollectionDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Type\CollectionDescriptor::getKeyTypes
-     * @covers phpDocumentor\Descriptor\Type\CollectionDescriptor::setKeyTypes
+     * @covers \phpDocumentor\Descriptor\Type\CollectionDescriptor::getKeyTypes
+     * @covers \phpDocumentor\Descriptor\Type\CollectionDescriptor::setKeyTypes
      */
-    public function testSetAndRetrieveKeyTypes()
+    public function testSetAndRetrieveKeyTypes() : void
     {
         $expected = new UnknownTypeDescriptor('string');
         $this->fixture->setKeyTypes([$expected]);
@@ -87,9 +87,9 @@ class CollectionDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Type\CollectionDescriptor::__toString
+     * @covers \phpDocumentor\Descriptor\Type\CollectionDescriptor::__toString
      */
-    public function testRetrieveCollectionNotationFromObject()
+    public function testRetrieveCollectionNotationFromObject() : void
     {
         $this->fixture->setKeyTypes([new StringDescriptor()]);
         $this->fixture->setTypes([new FloatDescriptor(), new IntegerDescriptor()]);
@@ -98,9 +98,9 @@ class CollectionDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Type\CollectionDescriptor::__toString
+     * @covers \phpDocumentor\Descriptor\Type\CollectionDescriptor::__toString
      */
-    public function testRetrieveCollectionNotationFromObjectWithoutKeys()
+    public function testRetrieveCollectionNotationFromObjectWithoutKeys() : void
     {
         $this->fixture->setTypes([new FloatDescriptor(), new IntegerDescriptor()]);
 

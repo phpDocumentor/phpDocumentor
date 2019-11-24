@@ -13,6 +13,7 @@ namespace phpDocumentor\Descriptor;
 
 use \Mockery as m;
 use phpDocumentor\Reflection\Types\String_;
+use phpDocumentor\Descriptor\Collection;
 
 /**
  * @coversDefaultClass \phpDocumentor\Descriptor\FunctionDescriptor
@@ -25,7 +26,7 @@ class FunctionDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Creates a new (emoty) fixture object.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fixture = new FunctionDescriptor();
     }
@@ -33,20 +34,20 @@ class FunctionDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers ::__construct
      */
-    public function testInitialize()
+    public function testInitializesWithEmptyCollection() : void
     {
-        $this->assertAttributeInstanceOf('phpDocumentor\Descriptor\Collection', 'arguments', $this->fixture);
+        $this->assertInstanceOf(Collection::class, $this->fixture->getArguments());
     }
 
     /**
      * @covers ::setArguments
      * @covers ::getArguments
      */
-    public function testSettingAndGettingArguments()
+    public function testSettingAndGettingArguments() : void
     {
-        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getArguments());
+        $this->assertInstanceOf(Collection::class, $this->fixture->getArguments());
 
-        $mockInstance = m::mock('phpDocumentor\Descriptor\Collection');
+        $mockInstance = m::mock(Collection::class);
         $mock = &$mockInstance;
 
         $this->fixture->setArguments($mock);
@@ -58,7 +59,7 @@ class FunctionDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers ::getResponse
      * @covers ::setReturnType
      */
-    public function testSettingAndGettingReturnType()
+    public function testSettingAndGettingReturnType() : void
     {
         $stringType = new String_();
         $this->fixture->setReturnType($stringType);

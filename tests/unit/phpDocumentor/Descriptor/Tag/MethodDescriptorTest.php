@@ -26,17 +26,17 @@ class MethodDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Creates a new fixture object.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fixture = new MethodDescriptor('name');
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Tag\MethodDescriptor::__construct
-     * @covers phpDocumentor\Descriptor\Tag\MethodDescriptor::setMethodName
-     * @covers phpDocumentor\Descriptor\Tag\MethodDescriptor::getMethodName
+     * @covers \phpDocumentor\Descriptor\Tag\MethodDescriptor::__construct
+     * @covers \phpDocumentor\Descriptor\Tag\MethodDescriptor::setMethodName
+     * @covers \phpDocumentor\Descriptor\Tag\MethodDescriptor::getMethodName
      */
-    public function testSetAndGetMethodName()
+    public function testSetAndGetMethodName() : void
     {
         $this->assertEmpty($this->fixture->getMethodName());
 
@@ -47,10 +47,10 @@ class MethodDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Tag\MethodDescriptor::setArguments()
-     * @covers phpDocumentor\Descriptor\Tag\MethodDescriptor::getArguments()
+     * @covers \phpDocumentor\Descriptor\Tag\MethodDescriptor::setArguments()
+     * @covers \phpDocumentor\Descriptor\Tag\MethodDescriptor::getArguments()
      */
-    public function testSetAndGetArguments()
+    public function testSetAndGetArguments() : void
     {
         $expected = new Collection(['a' => 'b']);
         $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getArguments());
@@ -62,10 +62,10 @@ class MethodDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Tag\MethodDescriptor::setResponse
-     * @covers phpDocumentor\Descriptor\Tag\MethodDescriptor::getResponse
+     * @covers \phpDocumentor\Descriptor\Tag\MethodDescriptor::setResponse
+     * @covers \phpDocumentor\Descriptor\Tag\MethodDescriptor::getResponse
      */
-    public function testSetAndGetResponse()
+    public function testSetAndGetResponse() : void
     {
         $expected = ['a' => 'b'];
         $this->assertEmpty($this->fixture->getResponse());

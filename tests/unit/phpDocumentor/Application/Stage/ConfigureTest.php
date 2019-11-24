@@ -26,7 +26,7 @@ class ConfigureTest extends TestCase
      * @use \phpDocumentor\Configuration\Factory\Version3;
      * @use \phpDocumentor\DomainModel\Uri;
      */
-    public function testInvokeOverridesConfig()
+    public function testInvokeOverridesConfig() : void
     {
         $configFactory = new ConfigurationFactory([], []);
 

@@ -29,7 +29,7 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Constructs the fixture with provided mocked dependencies.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->factoryMock = m::mock('phpDocumentor\Transformer\Template\Factory');
         $this->writerCollectionMock = m::mock('phpDocumentor\Transformer\Writer\Collection');
@@ -37,17 +37,9 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Template\Collection::__construct
-     */
-    public function testIfDependenciesAreRegisteredOnInitialization()
-    {
-        $this->assertAttributeSame($this->factoryMock, 'factory', $this->fixture);
-    }
-
-    /**
      * @covers \phpDocumentor\Transformer\Template\Collection::load
      */
-    public function testIfLoadRetrievesTemplateFromFactoryAndRegistersIt()
+    public function testIfLoadRetrievesTemplateFromFactoryAndRegistersIt() : void
     {
         // Arrange
         $templateName = 'default';
@@ -66,7 +58,7 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers \phpDocumentor\Transformer\Template\Collection::getTemplatesPath
      */
-    public function testCollectionProvidesTemplatePath()
+    public function testCollectionProvidesTemplatePath() : void
     {
         // Arrange
         $path = '/tmp';
@@ -82,7 +74,7 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers \phpDocumentor\Transformer\Template\Collection::getTransformations
      */
-    public function testIfAllTransformationsCanBeRetrieved()
+    public function testIfAllTransformationsCanBeRetrieved() : void
     {
         // Arrange
         $transformation1 = $this->givenAnEmptyTransformation();
@@ -107,7 +99,7 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      *
      * @return Transformation
      */
-    protected function givenAnEmptyTransformation()
+    protected function givenAnEmptyTransformation() : Transformation
     {
         return new Transformation('', '', '', '');
     }
@@ -118,7 +110,7 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @param string           $name
      * @param Transformation[] $transformations
      */
-    protected function whenThereIsATemplateWithNameAndTransformations($name, array $transformations)
+    protected function whenThereIsATemplateWithNameAndTransformations($name, array $transformations) : void
     {
         $template = new Template($name);
         foreach ($transformations as $key => $transformation) {

@@ -31,7 +31,7 @@ class ParserTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Instantiates a new parser object as fixture.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         ini_set('zend.script_encoding', null);
         $this->fixture = new Parser(
@@ -45,7 +45,7 @@ class ParserTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers ::getIgnoredTags
      * @covers ::setIgnoredTags
      */
-    public function testSetAndGetIgnoredTags()
+    public function testSetAndGetIgnoredTags() : void
     {
         $parser = new Parser(
             m::mock(ProjectFactory::class),
@@ -62,7 +62,7 @@ class ParserTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers ::setForced
      * @covers ::isForced
      */
-    public function testSetAndCheckWhetherParsingIsForced()
+    public function testSetAndCheckWhetherParsingIsForced() : void
     {
         $this->assertEquals(false, $this->fixture->isForced());
 
@@ -74,7 +74,7 @@ class ParserTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers ::setEncoding
      * @covers ::getEncoding
      */
-    public function testSettingAndRetrievingTheEncodingOfTheProvidedFiles()
+    public function testSettingAndRetrievingTheEncodingOfTheProvidedFiles() : void
     {
         $this->assertEquals('utf-8', $this->fixture->getEncoding());
 
@@ -86,7 +86,7 @@ class ParserTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers ::setPath
      * @covers ::getPath
      */
-    public function testSettingAndRetrievingTheBasePath()
+    public function testSettingAndRetrievingTheBasePath() : void
     {
         // Arrange
         $this->assertSame('', $this->fixture->getPath());
@@ -105,7 +105,7 @@ class ParserTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers ::setValidate
      * @covers ::doValidation
      */
-    public function testValidate()
+    public function testValidate() : void
     {
         // defaults to false
         $this->assertEquals(false, $this->fixture->doValidation());
@@ -124,7 +124,7 @@ class ParserTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers ::setMarkers
      * @covers ::getMarkers
      */
-    public function testMarkers()
+    public function testMarkers() : void
     {
         $fixture_data = ['FIXME', 'TODO', 'DOIT'];
 
@@ -139,7 +139,7 @@ class ParserTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers ::setDefaultPackageName
      * @covers ::getDefaultPackageName
      */
-    public function testSetAndGetDefaultPackageName()
+    public function testSetAndGetDefaultPackageName() : void
     {
         $parser = new Parser(
             m::mock(ProjectFactory::class),

@@ -32,7 +32,7 @@ class PropertyAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Creates a new fixture to test with.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->builderMock = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
         $this->builderMock->shouldReceive('buildDescriptor')->andReturn(null);
@@ -42,9 +42,9 @@ class PropertyAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Builder\Reflector\PropertyAssembler::create
+     * @covers \phpDocumentor\Descriptor\Builder\Reflector\PropertyAssembler::create
      */
-    public function testCreatePropertyDescriptorFromReflector()
+    public function testCreatePropertyDescriptorFromReflector() : void
     {
         // Arrange
         $namespace = 'Namespace';

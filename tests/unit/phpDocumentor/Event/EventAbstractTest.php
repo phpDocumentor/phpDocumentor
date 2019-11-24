@@ -19,10 +19,10 @@ use phpDocumentor\Event\Mock\EventAbstract as EventAbstractMock;
 class EventAbstractTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
-     * @covers phpDocumentor\Event\EventAbstract::__construct
-     * @covers phpDocumentor\Event\EventAbstract::getSubject
+     * @covers \phpDocumentor\Event\EventAbstract::__construct
+     * @covers \phpDocumentor\Event\EventAbstract::getSubject
      */
-    public function testSubjectMustBeProvidedAndCanBeRead()
+    public function testSubjectMustBeProvidedAndCanBeRead() : void
     {
         $subject = new \stdClass();
 
@@ -32,9 +32,9 @@ class EventAbstractTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Event\EventAbstract::createInstance
+     * @covers \phpDocumentor\Event\EventAbstract::createInstance
      */
-    public function testCanBeConstructedUsingAStaticFactoryMethod()
+    public function testCanBeConstructedUsingAStaticFactoryMethod() : void
     {
         $subject = new \stdClass();
 

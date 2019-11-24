@@ -25,16 +25,16 @@ class PreTransformEventTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * Creates a new (empty) fixture object.
      * Creates a new DOMDocument object.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fixture = new PreTransformEvent(new \stdClass());
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Event\PreTransformEvent::getProject
-     * @covers phpDocumentor\Transformer\Event\PreTransformEvent::setProject
+     * @covers \phpDocumentor\Transformer\Event\PreTransformEvent::getProject
+     * @covers \phpDocumentor\Transformer\Event\PreTransformEvent::setProject
      */
-    public function testSetAndGetProject()
+    public function testSetAndGetProject() : void
     {
         $project = m::mock('phpDocumentor\Descriptor\ProjectDescriptor');
         $this->assertNull($this->fixture->getProject());

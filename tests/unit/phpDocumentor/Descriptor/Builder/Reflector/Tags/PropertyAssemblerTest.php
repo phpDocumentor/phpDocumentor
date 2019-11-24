@@ -19,7 +19,7 @@ class PropertyAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Initializes the fixture for this test.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->builder = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
         $this->fixture = new PropertyAssembler();
@@ -29,7 +29,7 @@ class PropertyAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\Tags\PropertyAssembler::create
      */
-    public function testCreatingPropertyDescriptorFromReflector()
+    public function testCreatingPropertyDescriptorFromReflector() : void
     {
         $reflector = new Property('$myProperty', new String_(), new Description('This is a description'));
 

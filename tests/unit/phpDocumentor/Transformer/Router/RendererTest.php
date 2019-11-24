@@ -31,7 +31,7 @@ final class RendererTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /** @var Renderer */
     private $renderer;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->queue = m::mock('phpDocumentor\Transformer\Router\Queue');
 

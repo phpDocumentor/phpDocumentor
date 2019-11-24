@@ -327,7 +327,7 @@ class ApiContext extends BaseContext implements Context
      * @return ClassDescriptor
      * @throws \Exception
      */
-    private function findClassByName($className)
+    private function findClassByName($className) : ClassDescriptor
     {
         $ast = $this->getAst();
         foreach ($ast->getFiles() as $file) {

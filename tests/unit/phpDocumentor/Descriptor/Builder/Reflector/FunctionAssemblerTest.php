@@ -37,7 +37,7 @@ class FunctionAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Creates a new fixture to test with.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->builderMock = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
         $this->builderMock->shouldReceive('buildDescriptor')->andReturnUsing(
@@ -65,7 +65,7 @@ class FunctionAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\FunctionAssembler::createArgumentDescriptor
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\FunctionAssembler::addArgumentDescriptorToFunction
      */
-    public function testCreateFunctionDescriptorFromReflector()
+    public function testCreateFunctionDescriptorFromReflector() : void
     {
         // Arrange
         $namespace = 'Namespace';
@@ -107,7 +107,7 @@ class FunctionAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      *
      * @return Function_
      */
-    protected function givenAFunctionReflector($namespace, $functionName, $argumentMock, $docBlockMock)
+    protected function givenAFunctionReflector($namespace, $functionName, $argumentMock, $docBlockMock) : Function_
     {
         $functionReflectorMock = new Function_(
             new Fqsen('\\' . $namespace . '\\' . $functionName . '()'),
@@ -124,7 +124,7 @@ class FunctionAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      *
      * @return DocBlock
      */
-    protected function givenADocBlockObject()
+    protected function givenADocBlockObject() : DocBlock
     {
         $docBlockDescription = new DocBlock\Description('This is an example description');
         return new DocBlock(
@@ -143,7 +143,7 @@ class FunctionAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      *
      * @return Argument
      */
-    protected function givenAnArgumentWithName($argumentName)
+    protected function givenAnArgumentWithName($argumentName) : Argument
     {
         return new Argument($argumentName);
     }

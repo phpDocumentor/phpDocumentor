@@ -28,7 +28,7 @@ class TransformCommandTest extends MockeryTestCase
      * Tests the processing of target directory when non is provided.
      * @covers ::execute
      */
-    public function testPipelineIsInvokedWithTheNecessaryOptions()
+    public function testPipelineIsInvokedWithTheNecessaryOptions() : void
     {
         $input = new StringInput('-t abc');
         $output = new DummyOutput();

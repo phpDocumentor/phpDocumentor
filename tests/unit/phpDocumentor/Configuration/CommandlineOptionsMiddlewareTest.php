@@ -27,7 +27,7 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
     /**
      * @covers ::__invoke
      */
-    public function testItShouldOverwriteTheDestinationFolderBasedOnTheTargetOption()
+    public function testItShouldOverwriteTheDestinationFolderBasedOnTheTargetOption() : void
     {
         $expected = '/abc';
         $configuration = ['phpdocumentor' => ['paths' => ['output' => '/tmp']]];
@@ -41,7 +41,7 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
     /**
      * @covers ::__invoke
      */
-    public function testItShouldDisableTheCacheBasedOnTheForceOption()
+    public function testItShouldDisableTheCacheBasedOnTheForceOption() : void
     {
         $configuration = ['phpdocumentor' => ['use-cache' => true]];
 
@@ -54,7 +54,7 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
     /**
      * @covers ::__invoke
      */
-    public function testItShouldOverwriteTheCacheFolderBasedOnTheCacheFolderOption()
+    public function testItShouldOverwriteTheCacheFolderBasedOnTheCacheFolderOption() : void
     {
         $expected = '/abc';
         $configuration = ['phpdocumentor' => ['paths' => ['cache' => '/tmp']]];
@@ -68,7 +68,7 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
     /**
      * @covers ::__invoke
      */
-    public function testItShouldOverrideTheTitleBasedOnTheTitleOption()
+    public function testItShouldOverrideTheTitleBasedOnTheTitleOption() : void
     {
         $expected = 'phpDocumentor3';
         $configuration = ['phpdocumentor' => ['title' => 'phpDocumentor2']];
@@ -82,7 +82,7 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
     /**
      * @covers ::__invoke
      */
-    public function testItShouldOverrideTheListOfTemplatesBasedOnTheTemplateOption()
+    public function testItShouldOverrideTheListOfTemplatesBasedOnTheTemplateOption() : void
     {
         $expected = 'clean';
         $configuration = ['phpdocumentor' => ['templates' => [['name' => 'responsive']]]];
@@ -96,7 +96,7 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
     /**
      * @covers ::__invoke
      */
-    public function testItShouldAddSourceFilesForDefaultConfiguration()
+    public function testItShouldAddSourceFilesForDefaultConfiguration() : void
     {
         $configuration = $this->givenAConfigurationWithoutApiDefinition();
 
@@ -115,7 +115,7 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
     /**
      * @covers ::__invoke
      */
-    public function testItShouldAddSourceDirectoriesForDefaultConfiguration()
+    public function testItShouldAddSourceDirectoriesForDefaultConfiguration() : void
     {
         $configuration = $this->givenAConfigurationWithoutApiDefinition();
 
@@ -131,7 +131,7 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
         );
     }
 
-    public function testItShouldAddAbsoluteSourcePathsToNewApi()
+    public function testItShouldAddAbsoluteSourcePathsToNewApi() : void
     {
         $configuration = Version3::buildDefault();
         $middleware = new CommandlineOptionsMiddleware(['directory' => ['/src']]);
@@ -146,7 +146,7 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
         );
     }
 
-    public function testItShouldAddAbsoluteSourcePathsToNewApiAndRelativeToCurrent()
+    public function testItShouldAddAbsoluteSourcePathsToNewApiAndRelativeToCurrent() : void
     {
         $configuration = Version3::buildDefault();
         $middleware = new CommandlineOptionsMiddleware(['directory' => ['/src', './localSrc']]);
@@ -172,7 +172,7 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
     /**
      * @covers ::__invoke
      */
-    public function testItShouldRegisterExtensionsForDefaultConfiguration()
+    public function testItShouldRegisterExtensionsForDefaultConfiguration() : void
     {
         $configuration = $this->givenAConfigurationWithoutApiDefinition();
 
@@ -189,7 +189,7 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
     /**
      * @covers ::__invoke
      */
-    public function testItShouldReplaceIgnoredDirectoriesForDefaultConfiguration()
+    public function testItShouldReplaceIgnoredDirectoriesForDefaultConfiguration() : void
     {
         $configuration = $this->givenAConfigurationWithoutApiDefinition();
 
@@ -208,7 +208,7 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
     /**
      * @covers ::__invoke
      */
-    public function testItShouldOverwriteTheMarkersOfTheDefaultConfiguration()
+    public function testItShouldOverwriteTheMarkersOfTheDefaultConfiguration() : void
     {
         $configuration = $this->givenAConfigurationWithoutApiDefinition();
 
@@ -225,7 +225,7 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
     /**
      * @covers ::__invoke
      */
-    public function testItShouldOverwriteTheVisibilitySetInTheDefaultConfiguration()
+    public function testItShouldOverwriteTheVisibilitySetInTheDefaultConfiguration() : void
     {
         $configuration = $this->givenAConfigurationWithoutApiDefinition();
 
@@ -242,7 +242,7 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
     /**
      * @covers ::__invoke
      */
-    public function testItShouldOverwriteTheDefaultPackageNameSetInTheDefaultConfiguration()
+    public function testItShouldOverwriteTheDefaultPackageNameSetInTheDefaultConfiguration() : void
     {
         $configuration = $this->givenAConfigurationWithoutApiDefinition();
 
@@ -259,7 +259,7 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
     /**
      * @covers ::__invoke
      */
-    public function testItShouldOverwriteTheWhetherToIncludeSourcecodeInTheDefaultConfiguration()
+    public function testItShouldOverwriteTheWhetherToIncludeSourcecodeInTheDefaultConfiguration() : void
     {
         $configuration = $this->givenAConfigurationWithoutApiDefinition();
 

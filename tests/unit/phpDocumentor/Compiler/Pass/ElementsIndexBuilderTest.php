@@ -24,7 +24,7 @@ use phpDocumentor\Descriptor\TraitDescriptor;
 /**
  * Tests the functionality for the ElementsIndexBuilder
  *
- * @covers phpDocumentor\Compiler\Pass\ElementsIndexBuilder
+ * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder
  */
 class ElementsIndexBuilderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
@@ -34,7 +34,7 @@ class ElementsIndexBuilderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /** @var ProjectDescriptor */
     protected $project;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fixture = new ElementsIndexBuilder();
 
@@ -46,19 +46,19 @@ class ElementsIndexBuilderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getDescription
+     * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getDescription
      */
-    public function testGetDescription()
+    public function testGetDescription() : void
     {
         $this->assertSame('Build "elements" index', $this->fixture->getDescription());
     }
 
     /**
-     * @covers phpDocumentor\Compiler\Pass\ElementsIndexBuilder::execute
-     * @covers phpDocumentor\Compiler\Pass\ElementsIndexBuilder::addElementsToIndexes
-     * @covers phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getIndexKey
+     * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::execute
+     * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::addElementsToIndexes
+     * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getIndexKey
      */
-    public function testAddClassesToIndex()
+    public function testAddClassesToIndex() : void
     {
         $file1 = $this->project->getFiles()->get(0);
         $classDescriptor1 = new ClassDescriptor();
@@ -84,11 +84,11 @@ class ElementsIndexBuilderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Compiler\Pass\ElementsIndexBuilder::execute
-     * @covers phpDocumentor\Compiler\Pass\ElementsIndexBuilder::addElementsToIndexes
-     * @covers phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getIndexKey
+     * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::execute
+     * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::addElementsToIndexes
+     * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getIndexKey
      */
-    public function testAddInterfacesToIndex()
+    public function testAddInterfacesToIndex() : void
     {
         $file1 = $this->project->getFiles()->get(0);
         $interfaceDescriptor1 = new InterfaceDescriptor();
@@ -114,11 +114,11 @@ class ElementsIndexBuilderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Compiler\Pass\ElementsIndexBuilder::execute
-     * @covers phpDocumentor\Compiler\Pass\ElementsIndexBuilder::addElementsToIndexes
-     * @covers phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getIndexKey
+     * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::execute
+     * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::addElementsToIndexes
+     * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getIndexKey
      */
-    public function testAddTraitsToIndex()
+    public function testAddTraitsToIndex() : void
     {
         $file1 = $this->project->getFiles()->get(0);
         $traitDescriptor1 = new TraitDescriptor();
@@ -144,11 +144,11 @@ class ElementsIndexBuilderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Compiler\Pass\ElementsIndexBuilder::execute
-     * @covers phpDocumentor\Compiler\Pass\ElementsIndexBuilder::addElementsToIndexes
-     * @covers phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getIndexKey
+     * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::execute
+     * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::addElementsToIndexes
+     * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getIndexKey
      */
-    public function testAddFunctionsToIndex()
+    public function testAddFunctionsToIndex() : void
     {
         $file1 = $this->project->getFiles()->get(0);
         $functionDescriptor1 = new FunctionDescriptor();
@@ -174,11 +174,11 @@ class ElementsIndexBuilderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Compiler\Pass\ElementsIndexBuilder::execute
-     * @covers phpDocumentor\Compiler\Pass\ElementsIndexBuilder::addElementsToIndexes
-     * @covers phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getIndexKey
+     * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::execute
+     * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::addElementsToIndexes
+     * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getIndexKey
      */
-    public function testAddConstantsToIndex()
+    public function testAddConstantsToIndex() : void
     {
         $file1 = $this->project->getFiles()->get(0);
         $constantDescriptor1 = new ConstantDescriptor();
@@ -204,12 +204,12 @@ class ElementsIndexBuilderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Compiler\Pass\ElementsIndexBuilder::execute
-     * @covers phpDocumentor\Compiler\Pass\ElementsIndexBuilder::addElementsToIndexes
-     * @covers phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getIndexKey
-     * @covers phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getSubElements
+     * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::execute
+     * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::addElementsToIndexes
+     * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getIndexKey
+     * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getSubElements
      */
-    public function testAddClassConstantsToIndex()
+    public function testAddClassConstantsToIndex() : void
     {
         $file1 = $this->project->getFiles()->get(0);
         $classDescriptor1 = new ClassDescriptor();
@@ -248,12 +248,12 @@ class ElementsIndexBuilderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Compiler\Pass\ElementsIndexBuilder::execute
-     * @covers phpDocumentor\Compiler\Pass\ElementsIndexBuilder::addElementsToIndexes
-     * @covers phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getIndexKey
-     * @covers phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getSubElements
+     * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::execute
+     * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::addElementsToIndexes
+     * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getIndexKey
+     * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getSubElements
      */
-    public function testAddPropertiesToIndex()
+    public function testAddPropertiesToIndex() : void
     {
         $file1 = $this->project->getFiles()->get(0);
         $classDescriptor1 = new ClassDescriptor();
@@ -291,12 +291,12 @@ class ElementsIndexBuilderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Compiler\Pass\ElementsIndexBuilder::execute
-     * @covers phpDocumentor\Compiler\Pass\ElementsIndexBuilder::addElementsToIndexes
-     * @covers phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getIndexKey
-     * @covers phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getSubElements
+     * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::execute
+     * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::addElementsToIndexes
+     * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getIndexKey
+     * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getSubElements
      */
-    public function testAddMethodsToIndex()
+    public function testAddMethodsToIndex() : void
     {
         $file1 = $this->project->getFiles()->get(0);
         $classDescriptor1 = new ClassDescriptor();

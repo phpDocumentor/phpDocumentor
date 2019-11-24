@@ -12,10 +12,11 @@
 namespace phpDocumentor\Transformer\Template;
 
 use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 use org\bovigo\vfs\vfsStream;
 use phpDocumentor\Transformer\Template;
 
-class FactoryTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+class FactoryTest extends MockeryTestCase
 {
     /** @var m\MockInterface|PathResolver */
     private $pathResolverMock;
@@ -26,7 +27,7 @@ class FactoryTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Sets up the fixture with mocked dependencies.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->pathResolverMock = m::mock('phpDocumentor\Transformer\Template\PathResolver');
 
@@ -34,20 +35,12 @@ class FactoryTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Template\Factory::__construct
-     */
-    public function testIfDependenciesAreCorrectlyRegisteredOnInitialization()
-    {
-        $this->assertAttributeSame($this->pathResolverMock, 'pathResolver', $this->fixture);
-    }
-
-    /**
-     * @covers phpDocumentor\Transformer\Template\Factory::get
-     * @covers phpDocumentor\Transformer\Template\Factory::fetchTemplateXmlFromPath
-     * @covers phpDocumentor\Transformer\Template\Factory::createTemplateFromXml
+     * @covers \phpDocumentor\Transformer\Template\Factory::get
+     * @covers \phpDocumentor\Transformer\Template\Factory::fetchTemplateXmlFromPath
+     * @covers \phpDocumentor\Transformer\Template\Factory::createTemplateFromXml
      * @todo test parameters in template and transformations
      */
-    public function testRetrieveInstantiatedTemplate()
+    public function testRetrieveInstantiatedTemplate() : void
     {
         // Arrange
         $templateName = 'clean';
@@ -110,9 +103,9 @@ XML;
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Template\Factory::getTemplatePath
+     * @covers \phpDocumentor\Transformer\Template\Factory::getTemplatePath
      */
-    public function testReturnTemplatePathFromResolver()
+    public function testReturnTemplatePathFromResolver() : void
     {
         // Arrange
         $expected = 'test';
@@ -126,9 +119,9 @@ XML;
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Template\Factory::getAllNames
+     * @covers \phpDocumentor\Transformer\Template\Factory::getAllNames
      */
-    public function testRetrieveAllTemplateNames()
+    public function testRetrieveAllTemplateNames() : void
     {
         // Arrange
         $expected = ['template1', 'template2'];

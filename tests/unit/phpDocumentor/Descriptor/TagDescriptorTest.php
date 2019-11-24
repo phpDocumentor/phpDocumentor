@@ -12,36 +12,36 @@ class TagDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Instantiates the fixture with its dependencies.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fixture = new TagDescriptor(self::TAG_NAME);
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\TagDescriptor::__construct
-     * @covers phpDocumentor\Descriptor\TagDescriptor::getName
-     * @covers phpDocumentor\Descriptor\TagDescriptor::setName
+     * @covers \phpDocumentor\Descriptor\TagDescriptor::__construct
+     * @covers \phpDocumentor\Descriptor\TagDescriptor::getName
+     * @covers \phpDocumentor\Descriptor\TagDescriptor::setName
      */
-    public function testNameIsRegisteredOnInstantiationAndReturned()
+    public function testNameIsRegisteredOnInstantiationAndReturned() : void
     {
         $this->assertSame(self::TAG_NAME, $this->fixture->getName());
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\TagDescriptor::__construct
-     * @covers phpDocumentor\Descriptor\TagDescriptor::getErrors
+     * @covers \phpDocumentor\Descriptor\TagDescriptor::__construct
+     * @covers \phpDocumentor\Descriptor\TagDescriptor::getErrors
      */
-    public function testIfErrorsAreInitializedToAnEmptyCollectionOnInstantiation()
+    public function testIfErrorsAreInitializedToAnEmptyCollectionOnInstantiation() : void
     {
         $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getErrors());
         $this->assertEmpty($this->fixture->getErrors()->getAll());
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\TagDescriptor::setErrors
-     * @covers phpDocumentor\Descriptor\TagDescriptor::getErrors
+     * @covers \phpDocumentor\Descriptor\TagDescriptor::setErrors
+     * @covers \phpDocumentor\Descriptor\TagDescriptor::getErrors
      */
-    public function testOverridingErrorsCollectionWithNewCollection()
+    public function testOverridingErrorsCollectionWithNewCollection() : void
     {
         // Arrange
         $collection = new \phpDocumentor\Descriptor\Collection();
@@ -54,10 +54,10 @@ class TagDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\TagDescriptor::setDescription
-     * @covers phpDocumentor\Descriptor\TagDescriptor::getDescription
+     * @covers \phpDocumentor\Descriptor\TagDescriptor::setDescription
+     * @covers \phpDocumentor\Descriptor\TagDescriptor::getDescription
      */
-    public function testSettingAndReturningADescription()
+    public function testSettingAndReturningADescription() : void
     {
         // Arrange
         $description = 'Description';

@@ -19,7 +19,7 @@ class ParamAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Initializes the fixture for this test.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->builder = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
         $this->fixture = new ParamAssembler();
@@ -29,7 +29,7 @@ class ParamAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\Tags\ParamAssembler::create
      */
-    public function testCreatingParamDescriptorFromReflector()
+    public function testCreatingParamDescriptorFromReflector() : void
     {
         $reflector = new Param('$myParameter', new String_(), false, new Description('This is a description'));
 

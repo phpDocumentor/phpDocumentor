@@ -26,17 +26,17 @@ class ProjectDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Initializes the fixture object.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fixture = new ProjectDescriptor(self::EXAMPLE_NAME);
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ProjectDescriptor::__construct
-     * @covers phpDocumentor\Descriptor\ProjectDescriptor::setName
-     * @covers phpDocumentor\Descriptor\ProjectDescriptor::getName
+     * @covers \phpDocumentor\Descriptor\ProjectDescriptor::__construct
+     * @covers \phpDocumentor\Descriptor\ProjectDescriptor::setName
+     * @covers \phpDocumentor\Descriptor\ProjectDescriptor::getName
      */
-    public function testGetSetName()
+    public function testGetSetName() : void
     {
         $this->assertEquals(self::EXAMPLE_NAME, $this->fixture->getName());
 
@@ -47,11 +47,11 @@ class ProjectDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ProjectDescriptor::__construct
-     * @covers phpDocumentor\Descriptor\ProjectDescriptor::setFiles
-     * @covers phpDocumentor\Descriptor\ProjectDescriptor::getFiles
+     * @covers \phpDocumentor\Descriptor\ProjectDescriptor::__construct
+     * @covers \phpDocumentor\Descriptor\ProjectDescriptor::setFiles
+     * @covers \phpDocumentor\Descriptor\ProjectDescriptor::getFiles
      */
-    public function testGetSetFiles()
+    public function testGetSetFiles() : void
     {
         $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getFiles());
 
@@ -62,11 +62,11 @@ class ProjectDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ProjectDescriptor::__construct
-     * @covers phpDocumentor\Descriptor\ProjectDescriptor::setIndexes
-     * @covers phpDocumentor\Descriptor\ProjectDescriptor::getIndexes
+     * @covers \phpDocumentor\Descriptor\ProjectDescriptor::__construct
+     * @covers \phpDocumentor\Descriptor\ProjectDescriptor::setIndexes
+     * @covers \phpDocumentor\Descriptor\ProjectDescriptor::getIndexes
      */
-    public function testGetSetIndexes()
+    public function testGetSetIndexes() : void
     {
         $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getIndexes());
 
@@ -77,11 +77,11 @@ class ProjectDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ProjectDescriptor::__construct
-     * @covers phpDocumentor\Descriptor\ProjectDescriptor::setNamespace
-     * @covers phpDocumentor\Descriptor\ProjectDescriptor::getNamespace
+     * @covers \phpDocumentor\Descriptor\ProjectDescriptor::__construct
+     * @covers \phpDocumentor\Descriptor\ProjectDescriptor::setNamespace
+     * @covers \phpDocumentor\Descriptor\ProjectDescriptor::getNamespace
      */
-    public function testGetSetNamespace()
+    public function testGetSetNamespace() : void
     {
         $this->assertInstanceOf('phpDocumentor\Descriptor\NamespaceDescriptor', $this->fixture->getNamespace());
 
@@ -92,11 +92,11 @@ class ProjectDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ProjectDescriptor::__construct
-     * @covers phpDocumentor\Descriptor\ProjectDescriptor::setSettings
-     * @covers phpDocumentor\Descriptor\ProjectDescriptor::getSettings
+     * @covers \phpDocumentor\Descriptor\ProjectDescriptor::__construct
+     * @covers \phpDocumentor\Descriptor\ProjectDescriptor::setSettings
+     * @covers \phpDocumentor\Descriptor\ProjectDescriptor::getSettings
      */
-    public function testGetSetSettings()
+    public function testGetSetSettings() : void
     {
         $this->assertInstanceOf('phpDocumentor\Descriptor\ProjectDescriptor\Settings', $this->fixture->getSettings());
 
@@ -107,11 +107,11 @@ class ProjectDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ProjectDescriptor::__construct
-     * @covers phpDocumentor\Descriptor\ProjectDescriptor::setPartials
-     * @covers phpDocumentor\Descriptor\ProjectDescriptor::getPartials
+     * @covers \phpDocumentor\Descriptor\ProjectDescriptor::__construct
+     * @covers \phpDocumentor\Descriptor\ProjectDescriptor::setPartials
+     * @covers \phpDocumentor\Descriptor\ProjectDescriptor::getPartials
      */
-    public function testGetSetPartials()
+    public function testGetSetPartials() : void
     {
         $result = $this->fixture->getPartials();
         $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $result);
@@ -124,9 +124,9 @@ class ProjectDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ProjectDescriptor::isVisibilityAllowed
+     * @covers \phpDocumentor\Descriptor\ProjectDescriptor::isVisibilityAllowed
      */
-    public function testIsVisibilityAllowed()
+    public function testIsVisibilityAllowed() : void
     {
         $this->assertTrue($this->fixture->isVisibilityAllowed(Settings::VISIBILITY_PUBLIC));
         $this->assertTrue($this->fixture->isVisibilityAllowed(Settings::VISIBILITY_PROTECTED));

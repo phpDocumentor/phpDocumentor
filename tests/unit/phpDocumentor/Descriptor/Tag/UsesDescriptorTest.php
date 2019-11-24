@@ -24,16 +24,16 @@ class UsesDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Creates a new fixture object.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fixture = new UsesDescriptor('name');
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Tag\UsesDescriptor::setReference
-     * @covers phpDocumentor\Descriptor\Tag\UsesDescriptor::getReference
+     * @covers \phpDocumentor\Descriptor\Tag\UsesDescriptor::setReference
+     * @covers \phpDocumentor\Descriptor\Tag\UsesDescriptor::getReference
      */
-    public function testSetAndGetReference()
+    public function testSetAndGetReference() : void
     {
         $this->assertEmpty($this->fixture->getReference());
 

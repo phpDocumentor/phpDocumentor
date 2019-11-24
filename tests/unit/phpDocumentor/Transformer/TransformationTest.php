@@ -38,30 +38,15 @@ class TransformationTest extends m\Adapter\Phpunit\MockeryTestCase
     /**
      * Initializes the fixture and dependencies for this testcase.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fixture = new Transformation($this->query, $this->writer, $this->source, $this->artifact);
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Transformation::__construct
-     * @covers \phpDocumentor\Transformer\Transformation::setQuery
-     * @covers \phpDocumentor\Transformer\Transformation::setWriter
-     * @covers \phpDocumentor\Transformer\Transformation::setSource
-     * @covers \phpDocumentor\Transformer\Transformation::setArtifact
-     */
-    public function testIfDependenciesAreCorrectlyRegisteredOnInitialization()
-    {
-        $this->assertAttributeSame($this->query, 'query', $this->fixture);
-        $this->assertAttributeSame($this->writer, 'writer', $this->fixture);
-        $this->assertAttributeSame($this->source, 'source', $this->fixture);
-        $this->assertAttributeSame($this->artifact, 'artifact', $this->fixture);
-    }
-
-    /**
      * @covers \phpDocumentor\Transformer\Transformation::getQuery
      */
-    public function testGetQuery()
+    public function testGetQuery() : void
     {
         $this->assertSame($this->query, $this->fixture->getQuery());
     }
@@ -69,7 +54,7 @@ class TransformationTest extends m\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers \phpDocumentor\Transformer\Transformation::getWriter
      */
-    public function testGetWriter()
+    public function testGetWriter() : void
     {
         $this->assertSame($this->writer, $this->fixture->getWriter());
     }
@@ -77,7 +62,7 @@ class TransformationTest extends m\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers \phpDocumentor\Transformer\Transformation::getSource
      */
-    public function testGetSource()
+    public function testGetSource() : void
     {
         $this->assertSame($this->source, $this->fixture->getSource());
     }
@@ -85,7 +70,7 @@ class TransformationTest extends m\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers \phpDocumentor\Transformer\Transformation::getArtifact
      */
-    public function testGetArtifact()
+    public function testGetArtifact() : void
     {
         $this->assertSame($this->artifact, $this->fixture->getArtifact());
     }
@@ -94,7 +79,7 @@ class TransformationTest extends m\Adapter\Phpunit\MockeryTestCase
      * @covers \phpDocumentor\Transformer\Transformation::getParameters
      * @covers \phpDocumentor\Transformer\Transformation::setParameters
      */
-    public function testSetAndGetParameters()
+    public function testSetAndGetParameters() : void
     {
         $this->assertSame([], $this->fixture->getParameters());
 
@@ -106,7 +91,7 @@ class TransformationTest extends m\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers \phpDocumentor\Transformer\Transformation::getParameter
      */
-    public function testGetParameterWithExistingName()
+    public function testGetParameterWithExistingName() : void
     {
         $parameters = $this->givenAParameter();
         $this->assertSame($parameters['firstKey'], $this->fixture->getParameter('name'));
@@ -115,7 +100,7 @@ class TransformationTest extends m\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers \phpDocumentor\Transformer\Transformation::getParameter
      */
-    public function testGetParameterWithNonExistingName()
+    public function testGetParameterWithNonExistingName() : void
     {
         $this->assertNull($this->fixture->getParameter('somethingElse'));
     }
@@ -123,7 +108,7 @@ class TransformationTest extends m\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers \phpDocumentor\Transformer\Transformation::getParametersWithKey
      */
-    public function testGetParametersWithKeyWithExistingName()
+    public function testGetParametersWithKeyWithExistingName() : void
     {
         $parameters = $this->givenAParameter();
         $this->assertSame([$parameters['firstKey']], $this->fixture->getParametersWithKey('name'));
@@ -132,7 +117,7 @@ class TransformationTest extends m\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers \phpDocumentor\Transformer\Transformation::getParametersWithKey
      */
-    public function testGetParametersWithKeyWithNonExistingName()
+    public function testGetParametersWithKeyWithNonExistingName() : void
     {
         $this->assertSame([], $this->fixture->getParametersWithKey('somethingElse'));
     }
@@ -141,7 +126,7 @@ class TransformationTest extends m\Adapter\Phpunit\MockeryTestCase
      * @covers \phpDocumentor\Transformer\Transformation::getTransformer
      * @covers \phpDocumentor\Transformer\Transformation::setTransformer
      */
-    public function testSetAndGetTransformer()
+    public function testSetAndGetTransformer() : void
     {
         $transformer = m::mock('phpDocumentor\Transformer\Transformer');
 
@@ -156,7 +141,7 @@ class TransformationTest extends m\Adapter\Phpunit\MockeryTestCase
      * Sets a parameter in the fixture for tests that need to get parameters and
      * returns the parameter array used to set this parameter for comparison
      */
-    private function givenAParameter()
+    private function givenAParameter() : array
     {
         $parameterMock = m::mock('phpDocumentor\Transformer\Template\Parameter');
         $parameterMock->shouldReceive('getKey')->andReturn('name');

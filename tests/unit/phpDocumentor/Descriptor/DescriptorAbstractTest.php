@@ -24,16 +24,16 @@ class DescriptorAbstractTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Creates a new mocked fixture object.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fixture = m::mock('phpDocumentor\Descriptor\DescriptorAbstract');
         $this->fixture->shouldDeferMissing();
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::__construct
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::__construct
      */
-    public function testInitialize()
+    public function testInitialize() : void
     {
         /** @var m\MockInterface|DescriptorAbstract */
         $mock = $this->getMockBuilder('phpDocumentor\Descriptor\DescriptorAbstract')
@@ -45,10 +45,10 @@ class DescriptorAbstractTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::setFullyQualifiedStructuralElementName
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getFullyQualifiedStructuralElementName
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::setFullyQualifiedStructuralElementName
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getFullyQualifiedStructuralElementName
      */
-    public function testSettingAndGettingFullyQualifiedStructuralElementName()
+    public function testSettingAndGettingFullyQualifiedStructuralElementName() : void
     {
         $this->assertSame('', $this->fixture->getFullyQualifiedStructuralElementName());
 
@@ -58,10 +58,10 @@ class DescriptorAbstractTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::setName
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getName
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::setName
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getName
      */
-    public function testSettingAndGettingName()
+    public function testSettingAndGettingName() : void
     {
         $this->assertSame('', $this->fixture->getName());
 
@@ -71,10 +71,10 @@ class DescriptorAbstractTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::setNamespace
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getNamespace
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::setNamespace
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getNamespace
      */
-    public function testSettingAndGettingNamespace()
+    public function testSettingAndGettingNamespace() : void
     {
         $this->assertEquals('', $this->fixture->getNamespace());
 
@@ -86,10 +86,10 @@ class DescriptorAbstractTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::setSummary
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getSummary
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::setSummary
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getSummary
      */
-    public function testSettingAndGettingSummary()
+    public function testSettingAndGettingSummary() : void
     {
         $this->assertSame('', $this->fixture->getSummary());
 
@@ -99,10 +99,10 @@ class DescriptorAbstractTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::setDescription
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getDescription
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::setDescription
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getDescription
      */
-    public function testSettingAndGettingDescription()
+    public function testSettingAndGettingDescription() : void
     {
         $this->assertSame('', $this->fixture->getDescription());
 
@@ -112,10 +112,10 @@ class DescriptorAbstractTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::setPackage
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getPackage
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::setPackage
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getPackage
      */
-    public function testSettingAndGettingPackage()
+    public function testSettingAndGettingPackage() : void
     {
         $package = new PackageDescriptor();
         $this->assertNull($this->fixture->getPackage());
@@ -126,9 +126,9 @@ class DescriptorAbstractTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getAuthor
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getAuthor
      */
-    public function testGetAuthor()
+    public function testGetAuthor() : void
     {
         /** @var m\MockInterface|DescriptorAbstract */
         $mock = m::mock(
@@ -146,9 +146,9 @@ class DescriptorAbstractTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getVersion
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getVersion
      */
-    public function testGetVersion()
+    public function testGetVersion() : void
     {
         /** @var m\MockInterface|DescriptorAbstract */
         $mock = m::mock(
@@ -166,9 +166,9 @@ class DescriptorAbstractTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getCopyright
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getCopyright
      */
-    public function testGetCopyRight()
+    public function testGetCopyRight() : void
     {
         /** @var m\MockInterface|DescriptorAbstract */
         $mock = m::mock(
@@ -186,11 +186,11 @@ class DescriptorAbstractTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::setLocation
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getFile
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getLine
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::setLocation
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getFile
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getLine
      */
-    public function testSettingAndGettingLocation()
+    public function testSettingAndGettingLocation() : void
     {
         $this->assertNull($this->fixture->getFile());
         $this->assertSame(0, $this->fixture->getLine());
@@ -202,10 +202,10 @@ class DescriptorAbstractTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::setLine
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getLine
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::setLine
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getLine
      */
-    public function testSetLineNumber()
+    public function testSetLineNumber() : void
     {
         $this->assertSame(0, $this->fixture->getLine());
 
@@ -215,9 +215,9 @@ class DescriptorAbstractTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getPath
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getPath
      */
-    public function testGetPath()
+    public function testGetPath() : void
     {
         $this->assertSame('', $this->fixture->getPath());
 
@@ -230,10 +230,10 @@ class DescriptorAbstractTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::setTags
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getTags
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::setTags
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getTags
      */
-    public function testSettingAndGettingTags()
+    public function testSettingAndGettingTags() : void
     {
         $this->assertNull($this->fixture->getTags());
 
@@ -245,9 +245,9 @@ class DescriptorAbstractTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::isDeprecated
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::isDeprecated
      */
-    public function testIsDeprecated()
+    public function testIsDeprecated() : void
     {
         $this->assertFalse($this->fixture->isDeprecated());
 
@@ -257,10 +257,10 @@ class DescriptorAbstractTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::setErrors
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getErrors
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::setErrors
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getErrors
      */
-    public function testSettingAndGettingErrors()
+    public function testSettingAndGettingErrors() : void
     {
         $this->assertNull($this->fixture->getErrors());
 
@@ -272,9 +272,9 @@ class DescriptorAbstractTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::__toString
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::__toString
      */
-    public function testToString()
+    public function testToString() : void
     {
         $this->fixture->setFullyQualifiedStructuralElementName('fqn');
         $this->assertSame('fqn', (string) $this->fixture);

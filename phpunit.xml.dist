@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<phpunit bootstrap="tests/common/bootstrap.php" colors="true">
+<phpunit bootstrap="tests/common/bootstrap.php"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/8.0/phpunit.xsd"
+         executionOrder="depends,defects"
+         colors="true"
+>
     <testsuites>
         <testsuite name="phpDocumentor">
             <directory>./tests/unit/</directory>
@@ -27,15 +32,13 @@
     </php>
     <logging>
         <log type="coverage-html"
-            title="phpDocumentor"
             target="build/coverage"
-            charset="UTF-8"
-            yui="true"
-            highlight="false"
             lowUpperBound="35"
-            highLowerBound="70" />
+            highLowerBound="70"
+            showUncoveredFiles="true"
+        />
         <log type="coverage-clover" target="build/logs/clover.xml"/>
-        <log type="junit" target="build/logs/junit.xml" logIncompleteSkipped="false" />
+        <log type="junit" target="build/logs/junit.xml" />
     </logging>
     <listeners>
         <listener class="Mockery\Adapter\Phpunit\TestListener"

@@ -33,7 +33,7 @@ class ResolveInlineLinkAndSeeTagsTest extends \Mockery\Adapter\Phpunit\MockeryTe
     /**
      * Initializes the fixture and its dependencies.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->router = m::mock('phpDocumentor\Transformer\Router\Queue');
         $this->fixture = new ResolveInlineLinkAndSeeTags($this->router);
@@ -42,7 +42,7 @@ class ResolveInlineLinkAndSeeTagsTest extends \Mockery\Adapter\Phpunit\MockeryTe
     /**
      * @covers ::getDescription
      */
-    public function testDescriptionName()
+    public function testDescriptionName() : void
     {
         $this->assertSame('Resolve @link and @see tags in descriptions', $this->fixture->getDescription());
     }
@@ -50,7 +50,7 @@ class ResolveInlineLinkAndSeeTagsTest extends \Mockery\Adapter\Phpunit\MockeryTe
     /**
      * @covers ::execute
      */
-    public function testReplaceDescriptionIfItContainsNoSeeOrLink()
+    public function testReplaceDescriptionIfItContainsNoSeeOrLink() : void
     {
         $description = 'This is a description';
 
@@ -66,7 +66,7 @@ class ResolveInlineLinkAndSeeTagsTest extends \Mockery\Adapter\Phpunit\MockeryTe
     /**
      * @covers ::execute
      */
-    public function testReplaceDescriptionIfItContainsASeeButFileIsNotAvailable()
+    public function testReplaceDescriptionIfItContainsASeeButFileIsNotAvailable() : void
     {
         $description = 'Description with {@see ARandomDescriptor}';
         $expected = 'Description with \ARandomDescriptor';
@@ -87,7 +87,7 @@ class ResolveInlineLinkAndSeeTagsTest extends \Mockery\Adapter\Phpunit\MockeryTe
     /**
      * @covers ::execute
      */
-    public function testReplaceDescriptionIfItContainsASeeAndFileIsPresent()
+    public function testReplaceDescriptionIfItContainsASeeAndFileIsPresent() : void
     {
         $description = 'Description with {@see LinkDescriptor}';
         $expected = 'Description with [\phpDocumentor\LinkDescriptor](../classes/phpDocumentor.LinkDescriptor.html)';
@@ -108,7 +108,7 @@ class ResolveInlineLinkAndSeeTagsTest extends \Mockery\Adapter\Phpunit\MockeryTe
     /**
      * @covers ::execute
      */
-    public function testReplaceDescriptionIfItContainsAnotherTag()
+    public function testReplaceDescriptionIfItContainsAnotherTag() : void
     {
         $description = 'Description with {@author John Doe}';
         $expected = 'Description with {@author John Doe}';
@@ -130,7 +130,7 @@ class ResolveInlineLinkAndSeeTagsTest extends \Mockery\Adapter\Phpunit\MockeryTe
      *
      * @return m\MockInterface
      */
-    private function givenAChildDescriptorWithDescription($description)
+    private function givenAChildDescriptorWithDescription($description) : \Mockery\MockInterface
     {
         $descriptor = m::mock('phpDocumentor\Descriptor\DescriptorAbstract');
         $descriptor->shouldReceive('getDescription')->andReturn($description);
@@ -145,7 +145,7 @@ class ResolveInlineLinkAndSeeTagsTest extends \Mockery\Adapter\Phpunit\MockeryTe
      *
      * @return m\MockInterface
      */
-    private function givenAProjectDescriptorWithChildDescriptors($descriptors)
+    private function givenAProjectDescriptorWithChildDescriptors($descriptors) : \Mockery\MockInterface
     {
         $projectDescriptor = m::mock('phpDocumentor\Descriptor\ProjectDescriptor');
         $projectDescriptor->shouldReceive('getIndexes')->andReturn($descriptors);
@@ -194,7 +194,7 @@ class ResolveInlineLinkAndSeeTagsTest extends \Mockery\Adapter\Phpunit\MockeryTe
      * @param m\MockInterface $descriptor
      * @param string          $expected
      */
-    public function thenDescriptionOfDescriptorIsChangedInto($descriptor, $expected)
+    public function thenDescriptionOfDescriptorIsChangedInto($descriptor, $expected) : void
     {
         $descriptor->shouldReceive('setDescription')->with($expected);
     }
@@ -207,7 +207,7 @@ class ResolveInlineLinkAndSeeTagsTest extends \Mockery\Adapter\Phpunit\MockeryTe
      *
      * @return DescriptorAbstract
      */
-    private function whenDescriptionContainsSeeOrLinkWithElement($descriptor, $elementToLinkTo)
+    private function whenDescriptionContainsSeeOrLinkWithElement($descriptor, $elementToLinkTo) : DescriptorAbstract
     {
         $rule = m::mock('phpDocumentor\Transformer\Router\Rule');
         $rule->shouldReceive('generate')->andReturn('/classes/phpDocumentor.LinkDescriptor.html');

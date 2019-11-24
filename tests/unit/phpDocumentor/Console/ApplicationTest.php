@@ -30,7 +30,7 @@ class ApplicationTest extends MockeryTestCase
     /** @var Application */
     private $feature;
 
-    public function setUp()
+    public function setUp(): void
     {
         $kernelMock = m::mock(KernelInterface::class);
         $kernelMock->shouldIgnoreMissing();
@@ -50,7 +50,7 @@ class ApplicationTest extends MockeryTestCase
     /**
      * @covers ::getCommandName
      */
-    public function testWhetherTheNameOfTheCommandCanBeRetrieved()
+    public function testWhetherTheNameOfTheCommandCanBeRetrieved() : void
     {
         $_SERVER['argv'] = ['binary', 'my:command'];
         $this->feature->add((new Command('my:command'))->setCode(function () {
@@ -66,7 +66,7 @@ class ApplicationTest extends MockeryTestCase
     /**
      * @covers ::getCommandName
      */
-    public function testWhetherTheRunCommandIsUsedWhenNoCommandNameIsGiven()
+    public function testWhetherTheRunCommandIsUsedWhenNoCommandNameIsGiven() : void
     {
         $_SERVER['argv'] = ['binary', 'something else'];
         $this->feature->add((new Command('MyCommand'))->setCode(function () {
@@ -82,7 +82,7 @@ class ApplicationTest extends MockeryTestCase
     /**
      * @covers ::getDefaultInputDefinition
      */
-    public function testWhetherTheConfigurationAndLogIsADefaultInput()
+    public function testWhetherTheConfigurationAndLogIsADefaultInput() : void
     {
         $definition = $this->feature->getDefinition();
 

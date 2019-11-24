@@ -14,10 +14,10 @@ namespace phpDocumentor\Descriptor\Type;
 class StringDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
-     * @covers phpDocumentor\Descriptor\Type\StringDescriptor::getName
-     * @covers phpDocumentor\Descriptor\Type\StringDescriptor::__toString
+     * @covers \phpDocumentor\Descriptor\Type\StringDescriptor::getName
+     * @covers \phpDocumentor\Descriptor\Type\StringDescriptor::__toString
      */
-    public function testIfNameCanBeReturned()
+    public function testIfNameCanBeReturned() : void
     {
         $fixture = new StringDescriptor();
 

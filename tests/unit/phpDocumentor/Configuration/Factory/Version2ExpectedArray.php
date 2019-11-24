@@ -25,7 +25,7 @@ final class Version2ExpectedArray
      *
      * @return array
      */
-    public static function getDefaultArray()
+    public static function getDefaultArray() : array
     {
         return [
             'phpdocumentor' => [
@@ -85,7 +85,7 @@ final class Version2ExpectedArray
      *
      * @return array
      */
-    public static function getArrayWithMultipleIgnorePaths()
+    public static function getArrayWithMultipleIgnorePaths() : array
     {
         return [
             'phpdocumentor' => [
@@ -143,7 +143,7 @@ final class Version2ExpectedArray
         ];
     }
 
-    public static function getCustomTargetConfig()
+    public static function getCustomTargetConfig() : array
     {
         return [
             'phpdocumentor' => [
@@ -203,7 +203,7 @@ final class Version2ExpectedArray
      *
      * @return array
      */
-    public static function getDefinedVisibility()
+    public static function getDefinedVisibility() : array
     {
         return [
             'phpdocumentor' => [

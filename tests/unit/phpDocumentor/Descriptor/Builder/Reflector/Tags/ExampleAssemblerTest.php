@@ -12,6 +12,7 @@
 namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 
 use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\Example\Finder;
 use phpDocumentor\Reflection\DocBlock\ExampleFinder;
 use phpDocumentor\Reflection\DocBlock\Tags\Example;
@@ -19,7 +20,7 @@ use phpDocumentor\Reflection\DocBlock\Tags\Example;
 /**
  * Tests for the \phpDocumentor\Descriptor\Builder\Reflector\Tags\ExampleAssembler class.
  */
-class ExampleAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+class ExampleAssemblerTest extends MockeryTestCase
 {
     const EXAMPLE_FILE_PATH = 'examples/example.txt';
 
@@ -42,7 +43,7 @@ class ExampleAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Initializes this fixture and its dependencies.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->finderMock = m::mock(ExampleFinder::class);
         $this->fixture = new ExampleAssembler($this->finderMock);
@@ -52,7 +53,7 @@ class ExampleAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\Tags\ExampleAssembler::__construct
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\Tags\ExampleAssembler::create
      */
-    public function testCreateDescriptorFromExampleTag()
+    public function testCreateDescriptorFromExampleTag() : void
     {
         $exampleTagMock = $this->givenExampleTagWithTestData();
         $this->whenExampleFileContains(self::EXAMPLE_TEXT);
@@ -69,19 +70,17 @@ class ExampleAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
     /**
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\Tags\ExampleAssembler::create
-     * @expectedException InvalidArgumentException
      */
-    public function testExceptionIsThrownIfTheWrongObjectIsPassed()
+    public function testExceptionIsThrownIfTheWrongObjectIsPassed() : void
     {
+        $this->expectException('InvalidArgumentException');
         $this->fixture->create('this is an error');
     }
 
     /**
      * Returns a mock Example tag that will return example data (as provided in the class constants) when asked to.
-     *
-     * @return m\MockInterface
      */
-    private function givenExampleTagWithTestData()
+    private function givenExampleTagWithTestData() : Example
     {
         return new Example(
             self::EXAMPLE_FILE_PATH,
@@ -97,7 +96,7 @@ class ExampleAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      *
      * @param string $exampleText
      */
-    private function whenExampleFileContains($exampleText)
+    private function whenExampleFileContains($exampleText) : void
     {
         $this->finderMock->shouldReceive('find')->andReturn($exampleText);
     }

@@ -19,16 +19,16 @@ use phpDocumentor\Descriptor\MethodDescriptor;
 /**
  * Test class for \phpDocumentor\Transformer\Writer\Xml\MethodConverter.
  *
- * @covers phpDocumentor\Transformer\Writer\Xml\MethodConverter
+ * @covers \phpDocumentor\Transformer\Writer\Xml\MethodConverter
  */
 class MethodConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
      * Tests whether the XML Element representing a method is properly created.
      *
-     * @covers phpDocumentor\Transformer\Writer\Xml\MethodConverter::convert
+     * @covers \phpDocumentor\Transformer\Writer\Xml\MethodConverter::convert
      */
-    public function testMethodXmlElementIsCreated()
+    public function testMethodXmlElementIsCreated() : void
     {
         // Arrange
         $parent = $this->prepareParentXMLElement();
@@ -58,9 +58,9 @@ class MethodConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Tests whether the XML Element representing a method is properly created.
      *
-     * @covers phpDocumentor\Transformer\Writer\Xml\MethodConverter::convert
+     * @covers \phpDocumentor\Transformer\Writer\Xml\MethodConverter::convert
      */
-    public function testNamespaceNameIsTakenFromNamespaceDescriptorIfPresent()
+    public function testNamespaceNameIsTakenFromNamespaceDescriptorIfPresent() : void
     {
         // Arrange
         $parent = $this->prepareParentXMLElement();
@@ -83,7 +83,7 @@ class MethodConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      *
      * @return \DOMElement
      */
-    protected function prepareParentXMLElement()
+    protected function prepareParentXMLElement() : \DOMElement
     {
         $document = new \DOMDocument();
         $parent = new \DOMElement('class');
@@ -106,7 +106,8 @@ class MethodConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $method->shouldReceive('isStatic')->andReturn(false);
         $method->shouldReceive('getVisibility')->andReturn('protected');
         $method->shouldReceive('getName')->andReturn('Method');
-        $method->shouldReceive('getFullyQualifiedStructuralElementName')->andReturn('phpDocumentor\Class::Method()');
+        $method->shouldReceive('getFullyQualifiedStructuralElementName')
+            ->andReturn('phpDocumentor\Class::Method()');
         $method->shouldIgnoreMissing();
 
         return $method;
@@ -117,8 +118,10 @@ class MethodConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      *
      * @return MethodConverter
      */
-    protected function createFixture(MethodDescriptor $method, ArgumentDescriptor $argumentDescriptor = null)
-    {
+    protected function createFixture(
+        MethodDescriptor $method,
+        ArgumentDescriptor $argumentDescriptor = null
+    ) : MethodConverter {
         $docBlockConverter = m::mock('phpDocumentor\Transformer\Writer\Xml\DocBlockConverter');
         $docBlockConverter->shouldReceive('convert')->with(m::type('DOMElement'), $method);
         $argumentConverter = m::mock('phpDocumentor\Transformer\Writer\Xml\ArgumentConverter');

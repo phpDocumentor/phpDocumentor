@@ -36,7 +36,7 @@ final class FlySystemFactoryTest extends \Mockery\Adapter\Phpunit\MockeryTestCas
     /** @var Dsn */
     private $dsn;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->mountManagerMock = m::mock('League\Flysystem\MountManager');
         $this->filesystemMock = m::mock('League\Flysystem\Filesystem');
@@ -49,7 +49,7 @@ final class FlySystemFactoryTest extends \Mockery\Adapter\Phpunit\MockeryTestCas
      * @covers ::create
      * @covers ::<private>
      */
-    public function testCreateLocalFilesystemWithoutCache()
+    public function testCreateLocalFilesystemWithoutCache() : void
     {
         $this->mountManagerMock->shouldReceive('mountFilesystem')->once();
         $this->mountManagerMock->shouldReceive('getFilesystem')->once()->andThrow('\LogicException');
@@ -69,7 +69,7 @@ final class FlySystemFactoryTest extends \Mockery\Adapter\Phpunit\MockeryTestCas
      * @covers ::create
      * @covers ::<private>
      */
-    public function testCreateLocalFilesystemWithCache()
+    public function testCreateLocalFilesystemWithCache() : void
     {
         $this->mountManagerMock->shouldReceive('mountFilesystem')->never();
         $this->mountManagerMock->shouldReceive('getFilesystem')->once()->andReturn($this->filesystemMock);
@@ -84,10 +84,10 @@ final class FlySystemFactoryTest extends \Mockery\Adapter\Phpunit\MockeryTestCas
      * @covers ::__construct
      * @covers ::create
      * @covers ::<private>
-     * @expectedException \InvalidArgumentException
      */
-    public function testUnsupportedScheme()
+    public function testUnsupportedScheme() : void
     {
+        $this->expectException('InvalidArgumentException');
         $this->mountManagerMock->shouldReceive('mountFilesystem')->never();
         $this->mountManagerMock->shouldReceive('getFilesystem')->once()->andThrow('\LogicException');
         $dsn = new Dsn('git+http://github.com');
@@ -100,7 +100,7 @@ final class FlySystemFactoryTest extends \Mockery\Adapter\Phpunit\MockeryTestCas
      * @covers ::create
      * @covers ::<private>
      */
-    public function testFlyFinderIsRegistered()
+    public function testFlyFinderIsRegistered() : void
     {
         $this->mountManagerMock->shouldReceive('mountFilesystem')->once();
         $this->mountManagerMock->shouldReceive('getFilesystem')->once()->andThrow('\LogicException');

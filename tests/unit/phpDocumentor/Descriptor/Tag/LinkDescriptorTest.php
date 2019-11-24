@@ -24,16 +24,16 @@ class LinkDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Creates a new fixture object.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fixture = new LinkDescriptor('name');
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Tag\LinkDescriptor::setLink
-     * @covers phpDocumentor\Descriptor\Tag\LinkDescriptor::getLink
+     * @covers \phpDocumentor\Descriptor\Tag\LinkDescriptor::setLink
+     * @covers \phpDocumentor\Descriptor\Tag\LinkDescriptor::getLink
      */
-    public function testSetAndGetLink()
+    public function testSetAndGetLink() : void
     {
         $this->assertEmpty($this->fixture->getLink());
 

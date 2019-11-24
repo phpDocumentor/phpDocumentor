@@ -34,7 +34,7 @@ class SeeAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Creates a new fixture to test with.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->builderMock = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
         $this->fixture = new SeeAssembler();
@@ -44,7 +44,7 @@ class SeeAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers ::create
      */
-    public function testCreateSeeDescriptorFromSeeTagWhenReferenceIsRelativeClassnameNotInNamespaceAliasses()
+    public function testCreateSeeDescriptorFromSeeTagWhenReferenceIsRelativeClassnameNotInNamespaceAliasses() : void
     {
         // Arrange
         $name = 'see';
@@ -67,7 +67,7 @@ class SeeAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers ::create
      * @dataProvider provideReferences
      */
-    public function testCreateSeeDescriptorFromSeeTagWhenReferenceIsUrl($reference)
+    public function testCreateSeeDescriptorFromSeeTagWhenReferenceIsUrl($reference) : void
     {
         // Arrange
         $name = 'see';
@@ -85,7 +85,7 @@ class SeeAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $this->assertSame([], $descriptor->getErrors()->getAll());
     }
 
-    protected function givenASeeTag($reference, $description)
+    protected function givenASeeTag($reference, $description) : \phpDocumentor\Reflection\DocBlock\Tags\See
     {
         return new DocBlock\Tags\See(
             $reference,
@@ -93,12 +93,12 @@ class SeeAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         );
     }
 
-    protected function givenADocBlock($context)
+    protected function givenADocBlock($context) : DocBlock
     {
         return new DocBlock('', null, [], $context);
     }
 
-    public function provideReferences()
+    public function provideReferences() : array
     {
         return [
             [new DocBlock\Tags\Reference\Url('http://phpdoc.org')],

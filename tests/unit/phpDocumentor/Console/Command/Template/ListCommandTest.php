@@ -26,7 +26,7 @@ class ListCommandTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers ::configure
      * @covers ::execute
      */
-    public function testExecuteListsCommands()
+    public function testExecuteListsCommands() : void
     {
         // Arrange
         $command = new ListCommand($this->givenAFactoryWithTemplateNames(['default', 'second']));

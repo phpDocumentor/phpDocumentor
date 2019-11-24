@@ -29,24 +29,16 @@ class StripOnVisibilityTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Creates a new (empty) fixture object.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->builderMock = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
         $this->fixture = new StripOnVisibility($this->builderMock);
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Filter\StripOnVisibility::__construct
+     * @covers \phpDocumentor\Descriptor\Filter\StripOnVisibility::__invoke
      */
-    public function testProjectDescriptorBuilderIsSetUponConstruction()
-    {
-        $this->assertAttributeSame($this->builderMock, 'builder', $this->fixture);
-    }
-
-    /**
-     * @covers phpDocumentor\Descriptor\Filter\StripOnVisibility::__invoke
-     */
-    public function testStripsTagFromDescriptionIfVisibilityIsNotAllowed()
+    public function testStripsTagFromDescriptionIfVisibilityIsNotAllowed() : void
     {
         $this->builderMock->shouldReceive('getProjectDescriptor->isVisibilityAllowed')->andReturn(false);
 
@@ -57,9 +49,9 @@ class StripOnVisibilityTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Filter\StripOnVisibility::__invoke
+     * @covers \phpDocumentor\Descriptor\Filter\StripOnVisibility::__invoke
      */
-    public function testKeepsDescriptorIfVisibilityIsAllowed()
+    public function testKeepsDescriptorIfVisibilityIsAllowed() : void
     {
         $this->builderMock->shouldReceive('getProjectDescriptor->isVisibilityAllowed')->andReturn(true);
 
@@ -70,9 +62,9 @@ class StripOnVisibilityTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Filter\StripOnVisibility::__invoke
+     * @covers \phpDocumentor\Descriptor\Filter\StripOnVisibility::__invoke
      */
-    public function testKeepsDescriptorIfDescriptorNotInstanceOfVisibilityInterface()
+    public function testKeepsDescriptorIfDescriptorNotInstanceOfVisibilityInterface() : void
     {
         $this->builderMock->shouldReceive('getProjectDescriptor->isVisibilityAllowed')->andReturn(false);
 

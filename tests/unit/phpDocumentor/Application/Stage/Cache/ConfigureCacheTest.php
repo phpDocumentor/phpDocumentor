@@ -25,7 +25,7 @@ class ConfigureCacheTest extends MockeryTestCase
      * @dataProvider cacheDirProvider
      * @throws \Exception
      */
-    public function testInvokeWithCachePath($configuredPath)
+    public function testInvokeWithCachePath($configuredPath) : void
     {
         $configuration = [
             'phpdocumentor' => [
@@ -50,7 +50,7 @@ class ConfigureCacheTest extends MockeryTestCase
         );
     }
 
-    public function cacheDirProvider()
+    public function cacheDirProvider() : array
     {
         return [
             [

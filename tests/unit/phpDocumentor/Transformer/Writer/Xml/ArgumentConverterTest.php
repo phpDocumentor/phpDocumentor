@@ -30,7 +30,7 @@ class ArgumentConverterTest extends TestCase
      *
      * @covers ::convert
      */
-    public function testArgumentXmlElementIsCreated()
+    public function testArgumentXmlElementIsCreated() : void
     {
         // Arrange
         $tag = new ArgumentDescriptor();
@@ -58,7 +58,7 @@ class ArgumentConverterTest extends TestCase
      *
      * @covers ::convert
      */
-    public function testIfByReferenceIsDocumented()
+    public function testIfByReferenceIsDocumented() : void
     {
         // Arrange
         $argumentConverter = new ArgumentConverter();
@@ -82,7 +82,7 @@ class ArgumentConverterTest extends TestCase
      *
      * @covers ::convert
      */
-    public function testIfTypeInformationIsDocumented()
+    public function testIfTypeInformationIsDocumented() : void
     {
         // Arrange
         $argumentConverter = new ArgumentConverter();
@@ -106,7 +106,7 @@ class ArgumentConverterTest extends TestCase
      *
      * @covers ::convert
      */
-    public function testIfDefaultValueIsDocumented()
+    public function testIfDefaultValueIsDocumented() : void
     {
         // Arrange
         $default = 'This is a default';
@@ -132,7 +132,7 @@ class ArgumentConverterTest extends TestCase
      *
      * @return \DOMElement
      */
-    protected function prepareParentXMLElement()
+    protected function prepareParentXMLElement() : \DOMElement
     {
         $document = new \DOMDocument();
         $parent = new \DOMElement('function');

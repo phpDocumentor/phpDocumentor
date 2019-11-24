@@ -19,10 +19,10 @@ use Mockery as m;
 class FunctionDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
-     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\FunctionDescriptor::__invoke
-     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromNamespace
+     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\Standard\FunctionDescriptor::__invoke
+     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromNamespace
      */
-    public function testGenerateUrlForFunctionDescriptor()
+    public function testGenerateUrlForFunctionDescriptor() : void
     {
         // Arrange
         $fixture = new FunctionDescriptor();
@@ -38,10 +38,10 @@ class FunctionDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\FunctionDescriptor::__invoke
-     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromNamespace
+     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\Standard\FunctionDescriptor::__invoke
+     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromNamespace
      */
-    public function testGenerateUrlForFunctionDescriptorWithGlobalNamespace()
+    public function testGenerateUrlForFunctionDescriptorWithGlobalNamespace() : void
     {
         // Arrange
         $fixture = new FunctionDescriptor();

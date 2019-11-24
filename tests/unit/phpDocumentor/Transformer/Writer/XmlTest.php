@@ -23,7 +23,7 @@ use phpDocumentor\Transformer\Router\RouterAbstract;
 /**
  * Test class for \phpDocumentor\Transformer\Writer\Xml.
  *
- * @covers phpDocumentor\Transformer\Writer\Xml
+ * @covers \phpDocumentor\Transformer\Writer\Xml
  */
 class XmlTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
@@ -42,7 +42,7 @@ class XmlTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Sets up the test suite
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fs = vfsStream::setup('XmlTest');
         $this->projectDescriptor = m::mock('phpDocumentor\Descriptor\ProjectDescriptor');
@@ -51,9 +51,9 @@ class XmlTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Writer\Xml::transform
+     * @covers \phpDocumentor\Transformer\Writer\Xml::transform
      */
-    public function testTransformWithoutFiles()
+    public function testTransformWithoutFiles() : void
     {
         $transformer = m::mock('phpDocumentor\Transformer\Transformer');
         $transformation = m::mock('phpDocumentor\Transformer\Transformation');
@@ -92,9 +92,9 @@ XML;
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Writer\Xml::transform
+     * @covers \phpDocumentor\Transformer\Writer\Xml::transform
      */
-    public function testTransformWithEmptyFileDescriptor()
+    public function testTransformWithEmptyFileDescriptor() : void
     {
         $transformer = m::mock('phpDocumentor\Transformer\Transformer');
         $transformer->shouldReceive('getTarget')->andReturn(vfsStream::url('XmlTest'));
@@ -164,7 +164,7 @@ XML;
     /**
      * This implements testing of the protected finalize method.
      */
-    protected function implementProtectedFinalize(ProjectDescriptor $projectDescriptor)
+    protected function implementProtectedFinalize(ProjectDescriptor $projectDescriptor) : void
     {
         $this->projectDescriptor->shouldReceive('isVisibilityAllowed')
             ->with(ProjectDescriptor\Settings::VISIBILITY_INTERNAL)
@@ -174,7 +174,7 @@ XML;
     /**
      * This implements testing of the protected buildDocBlock method
      */
-    protected function implementProtectedBuildDocBlock(m\MockInterface $descriptor)
+    protected function implementProtectedBuildDocBlock(m\MockInterface $descriptor) : void
     {
         $descriptor->shouldReceive('getLine')->andReturn(666);
         $descriptor->shouldReceive('getPackage')->andReturn('myPackage');

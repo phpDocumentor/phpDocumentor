@@ -15,7 +15,7 @@ final class FlySystemFileTest extends TestCase
     /**
      * @covers ::path()
      */
-    public function testFileCanBeInstantiatedAndPathIsReturned()
+    public function testFileCanBeInstantiatedAndPathIsReturned() : void
     {
         $path = '/path/to/file';
         $file = new FlySystemFile($this->prophesize(FilesystemInterface::class)->reveal(), $path);
@@ -26,7 +26,7 @@ final class FlySystemFileTest extends TestCase
     /**
      * @covers ::getContents
      */
-    public function testContentsOfFileCanBeRetrieved()
+    public function testContentsOfFileCanBeRetrieved() : void
     {
         $path = '/path/to/file';
         $contents = 'contents';
@@ -42,7 +42,7 @@ final class FlySystemFileTest extends TestCase
     /**
      * @covers ::md5
      */
-    public function testGetHashForFile()
+    public function testGetHashForFile() : void
     {
         $path = '/path/to/file';
         $contents = 'contents';

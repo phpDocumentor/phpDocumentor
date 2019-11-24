@@ -20,7 +20,7 @@ class ThrowsAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Initializes the fixture for this test.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->builder = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
         $this->fixture = new ThrowsAssembler();
@@ -30,7 +30,7 @@ class ThrowsAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\Tags\ThrowsAssembler::create
      */
-    public function testCreatingThrowsDescriptorFromReflector()
+    public function testCreatingThrowsDescriptorFromReflector() : void
     {
         $types = new Object_(new Fqsen('\InvalidAgumentException'));
         $reflector = new Throws(

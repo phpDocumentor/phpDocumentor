@@ -40,7 +40,7 @@ class TagConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers ::convert
      * @covers ::getDescription
      */
-    public function testConvertGenericTag($name, $description, $resultName, $resultDescription)
+    public function testConvertGenericTag($name, $description, $resultName, $resultDescription) : void
     {
         // Arrange
         $tagConverter = new TagConverter();
@@ -62,7 +62,7 @@ class TagConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers ::convert
      * @covers ::addTypes
      */
-    public function testWhetherTypesAreAddedWhenPresentAndTypeIsCompound()
+    public function testWhetherTypesAreAddedWhenPresentAndTypeIsCompound() : void
     {
         // Arrange
         $tagConverter = new TagConverter();
@@ -90,7 +90,7 @@ class TagConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers ::convert
      * @covers ::addTypes
      */
-    public function testWhetherTypesAreAddedWhenPresentAndTypeIsSingular()
+    public function testWhetherTypesAreAddedWhenPresentAndTypeIsSingular() : void
     {
         // Arrange
         $tagConverter = new TagConverter();
@@ -113,7 +113,7 @@ class TagConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers ::convert
      * @covers ::addTypes
      */
-    public function testWhetherVariableNamesAreAddedWhenPresent()
+    public function testWhetherVariableNamesAreAddedWhenPresent() : void
     {
         // Arrange
         $tagConverter = new TagConverter();
@@ -138,7 +138,7 @@ class TagConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @todo this should be dealt with in a template and not in the code! This activity should be removed and the
      * templates updated.
      */
-    public function testWhetherTheVersionIsPrependedToTheDescription()
+    public function testWhetherTheVersionIsPrependedToTheDescription() : void
     {
         // Arrange
         $tagConverter = new TagConverter();
@@ -158,7 +158,7 @@ class TagConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      *
      * @covers ::convert
      */
-    public function testWhetherReferencesAreAddedWhenPresent()
+    public function testWhetherReferencesAreAddedWhenPresent() : void
     {
         // Arrange
         $reference = '\DateTime::add()';
@@ -179,7 +179,7 @@ class TagConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      *
      * @covers ::convert
      */
-    public function testWhetherLinksAreAddedWhenPresent()
+    public function testWhetherLinksAreAddedWhenPresent() : void
     {
         // Arrange
         $link = 'http://www.phpdoc.org';
@@ -200,7 +200,7 @@ class TagConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      *
      * @covers ::convert
      */
-    public function testWhetherMethodNamesAreAddedWhenPresent()
+    public function testWhetherMethodNamesAreAddedWhenPresent() : void
     {
         // Arrange
         $methodName = 'getMethod';
@@ -223,7 +223,7 @@ class TagConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      *
      * @return string[][]
      */
-    public function provideTestGenericTag()
+    public function provideTestGenericTag() : array
     {
         return [
             ['name', 'description', 'name', 'description'],
@@ -236,7 +236,7 @@ class TagConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      *
      * @return \DOMElement
      */
-    protected function prepareDocBlockXMLElement()
+    protected function prepareDocBlockXMLElement() : \DOMElement
     {
         $document = new \DOMDocument();
         $parent = new \DOMElement('parent');

@@ -21,11 +21,11 @@ use phpDocumentor\Reflection\Fqsen as RealFqsen;
 class FqsenDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
-     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\FqsenDescriptor::__invoke
-     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromClass
+     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\Standard\FqsenDescriptor::__invoke
+     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromClass
      * @dataProvider provideFqsens
      */
-    public function testGenerateUrlForFqsenDescriptor($fromFqsen, $toPath)
+    public function testGenerateUrlForFqsenDescriptor($fromFqsen, $toPath) : void
     {
         // Arrange
         $realFqsen = new RealFqsen($fromFqsen);
@@ -40,9 +40,9 @@ class FqsenDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\FqsenDescriptor::__invoke
+     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\Standard\FqsenDescriptor::__invoke
      */
-    public function testFqsenDescriptorReturnsFalseWhenNodeOfWrongType()
+    public function testFqsenDescriptorReturnsFalseWhenNodeOfWrongType() : void
     {
         // Arrange
         $fqsen = m::mock('phpDocumentor\Reflection\DocBlock\Tags\Reference\Reference');
@@ -55,7 +55,7 @@ class FqsenDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $this->assertFalse($result);
     }
 
-    public function provideFqsens()
+    public function provideFqsens() : array
     {
         return [
             ['\\My\\Space\\Class', '/classes/My.Space.Class.html'],

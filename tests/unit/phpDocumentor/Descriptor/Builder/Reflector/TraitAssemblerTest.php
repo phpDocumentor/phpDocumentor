@@ -28,7 +28,7 @@ class TraitAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers ::create
      */
-    public function testAssembleTraitWithMethod()
+    public function testAssembleTraitWithMethod() : void
     {
         $method = new MethodDescriptor();
         $method->setName('method');

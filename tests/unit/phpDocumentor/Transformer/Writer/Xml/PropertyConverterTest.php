@@ -18,16 +18,16 @@ use phpDocumentor\Descriptor\PropertyDescriptor;
 /**
  * Test class for \phpDocumentor\Transformer\Writer\Xml\PropertyConverter.
  *
- * @covers phpDocumentor\Transformer\Writer\Xml\PropertyConverter
+ * @covers \phpDocumentor\Transformer\Writer\Xml\PropertyConverter
  */
 class PropertyConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
      * Tests whether the XML Element representing a property is properly created.
      *
-     * @covers phpDocumentor\Transformer\Writer\Xml\PropertyConverter::convert
+     * @covers \phpDocumentor\Transformer\Writer\Xml\PropertyConverter::convert
      */
-    public function testPropertyXmlElementIsCreated()
+    public function testPropertyXmlElementIsCreated() : void
     {
         // Arrange
         $property = $this->createPropertyDescriptorMock();
@@ -54,9 +54,9 @@ class PropertyConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Tests whether the XML Element representing a property is properly created.
      *
-     * @covers phpDocumentor\Transformer\Writer\Xml\PropertyConverter::convert
+     * @covers \phpDocumentor\Transformer\Writer\Xml\PropertyConverter::convert
      */
-    public function testNamespaceNameIsTakenFromNamespaceDescriptorIfPresent()
+    public function testNamespaceNameIsTakenFromNamespaceDescriptorIfPresent() : void
     {
         // Arrange
         $parent = $this->prepareParentXMLElement();
@@ -78,7 +78,7 @@ class PropertyConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      *
      * @return \DOMElement
      */
-    protected function prepareParentXMLElement()
+    protected function prepareParentXMLElement() : \DOMElement
     {
         $document = new \DOMDocument();
         $parent = new \DOMElement('class');
@@ -111,7 +111,7 @@ class PropertyConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      *
      * @return PropertyConverter
      */
-    protected function createFixture(PropertyDescriptor $property)
+    protected function createFixture(PropertyDescriptor $property) : PropertyConverter
     {
         $docBlockConverter = m::mock('phpDocumentor\Transformer\Writer\Xml\DocBlockConverter');
         $docBlockConverter->shouldReceive('convert')->with(m::type('DOMElement'), $property);

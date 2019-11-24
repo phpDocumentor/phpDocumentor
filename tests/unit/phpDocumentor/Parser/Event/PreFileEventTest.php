@@ -22,16 +22,16 @@ class PreFileEventTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Sets up a fixture.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fixture = new PreFileEvent(new \stdClass());
     }
 
     /**
-     * @covers phpDocumentor\Parser\Event\PreFileEvent::getFile
-     * @covers phpDocumentor\Parser\Event\PreFileEvent::setFile
+     * @covers \phpDocumentor\Parser\Event\PreFileEvent::getFile
+     * @covers \phpDocumentor\Parser\Event\PreFileEvent::setFile
      */
-    public function testRemembersFileThatTriggersIt()
+    public function testRemembersFileThatTriggersIt() : void
     {
         $filename = 'myfile.txt';
 

@@ -32,7 +32,7 @@ class DocBlockConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Sets up the fixture with mocked dependencies.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->tagConverterMock = $this->givenATagConverter();
         $this->routerMock = $this->givenARouter();
@@ -42,12 +42,12 @@ class DocBlockConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Tests whether the XML Element representing a DocBlock is properly created.
      *
-     * @covers phpDocumentor\Transformer\Writer\Xml\DocBlockConverter::__construct
-     * @covers phpDocumentor\Transformer\Writer\Xml\DocBlockConverter::convert
-     * @covers phpDocumentor\Transformer\Writer\Xml\DocBlockConverter::addSummary
-     * @covers phpDocumentor\Transformer\Writer\Xml\DocBlockConverter::addDescription
+     * @covers \phpDocumentor\Transformer\Writer\Xml\DocBlockConverter::__construct
+     * @covers \phpDocumentor\Transformer\Writer\Xml\DocBlockConverter::convert
+     * @covers \phpDocumentor\Transformer\Writer\Xml\DocBlockConverter::addSummary
+     * @covers \phpDocumentor\Transformer\Writer\Xml\DocBlockConverter::addDescription
      */
-    public function testIfXmlElementForDocBlockIsCreated()
+    public function testIfXmlElementForDocBlockIsCreated() : void
     {
         // Arrange
         $descriptor = $this->givenADescriptorWithSummaryDescriptionAndTags('summary', 'description', []);
@@ -66,10 +66,10 @@ class DocBlockConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Writer\Xml\DocBlockConverter::convert
-     * @covers phpDocumentor\Transformer\Writer\Xml\DocBlockConverter::addTags
+     * @covers \phpDocumentor\Transformer\Writer\Xml\DocBlockConverter::convert
+     * @covers \phpDocumentor\Transformer\Writer\Xml\DocBlockConverter::addTags
      */
-    public function testParentPackageIsSetByDocBlocksPackage()
+    public function testParentPackageIsSetByDocBlocksPackage() : void
     {
         // Arrange
         $parent = $this->prepareParentXMLElement();
@@ -83,11 +83,11 @@ class DocBlockConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Writer\Xml\DocBlockConverter::convert
-     * @covers phpDocumentor\Transformer\Writer\Xml\DocBlockConverter::addTags
-     * @covers phpDocumentor\Transformer\Writer\Xml\DocBlockConverter::addInheritedFromTag
+     * @covers \phpDocumentor\Transformer\Writer\Xml\DocBlockConverter::convert
+     * @covers \phpDocumentor\Transformer\Writer\Xml\DocBlockConverter::addTags
+     * @covers \phpDocumentor\Transformer\Writer\Xml\DocBlockConverter::addInheritedFromTag
      */
-    public function testConvertTagsOntoDocBlock()
+    public function testConvertTagsOntoDocBlock() : void
     {
         // Arrange
         $parent = $this->prepareParentXMLElement();
@@ -108,10 +108,10 @@ class DocBlockConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Writer\Xml\DocBlockConverter::convert
-     * @covers phpDocumentor\Transformer\Writer\Xml\DocBlockConverter::addInheritedFromTag
+     * @covers \phpDocumentor\Transformer\Writer\Xml\DocBlockConverter::convert
+     * @covers \phpDocumentor\Transformer\Writer\Xml\DocBlockConverter::addInheritedFromTag
      */
-    public function testAddInheritedFromTag()
+    public function testAddInheritedFromTag() : void
     {
         // Arrange
         $fqcn = 'fqcn';
@@ -145,7 +145,7 @@ class DocBlockConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      *
      * @return \DOMElement
      */
-    protected function prepareParentXMLElement()
+    protected function prepareParentXMLElement() : \DOMElement
     {
         $document = new \DOMDocument();
         $parent = new \DOMElement('function');
@@ -214,7 +214,7 @@ class DocBlockConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @param DescriptorAbstract|m\MockInterface $descriptor
      * @param string                             $summary
      */
-    protected function whenDescriptorHasSummary($descriptor, $summary)
+    protected function whenDescriptorHasSummary($descriptor, $summary) : void
     {
         $descriptor->shouldReceive('getSummary')->andReturn($summary);
     }
@@ -225,7 +225,7 @@ class DocBlockConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @param DescriptorAbstract|m\MockInterface $descriptor
      * @param string                             $description
      */
-    protected function whenDescriptorHasDescription($descriptor, $description)
+    protected function whenDescriptorHasDescription($descriptor, $description) : void
     {
         $descriptor->shouldReceive('getDescription')->andReturn($description);
     }
@@ -236,7 +236,7 @@ class DocBlockConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @param DescriptorAbstract|m\MockInterface $descriptor
      * @param array                              $tags
      */
-    protected function whenDescriptorHasTags($descriptor, $tags)
+    protected function whenDescriptorHasTags($descriptor, $tags) : void
     {
         $descriptor->shouldReceive('getTags')->andReturn($tags);
     }
@@ -248,7 +248,7 @@ class DocBlockConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      *
      * @return m\MockInterface
      */
-    protected function givenARuleThatGeneratesTheGivenUrl($url)
+    protected function givenARuleThatGeneratesTheGivenUrl($url) : \Mockery\MockInterface
     {
         $ruleMock = m::mock('phpDocumentor\Transformer\Router\Rule');
         $ruleMock->shouldReceive('generate')->andReturn($url);

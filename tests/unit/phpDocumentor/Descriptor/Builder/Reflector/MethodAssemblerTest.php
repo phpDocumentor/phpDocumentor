@@ -13,6 +13,7 @@
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\ArgumentDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock;
@@ -22,7 +23,7 @@ use phpDocumentor\Reflection\Php\Method;
 use phpDocumentor\Reflection\Php\Visibility;
 use phpDocumentor\Reflection\Types\String_;
 
-class MethodAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+class MethodAssemblerTest extends MockeryTestCase
 {
     /** @var MethodAssembler $fixture */
     protected $fixture;
@@ -36,7 +37,7 @@ class MethodAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Creates a new fixture to test with.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->builderMock = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
         $this->builderMock->shouldReceive('buildDescriptor')->andReturn(null);
@@ -57,7 +58,7 @@ class MethodAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addArgument
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addVariadicArgument
      */
-    public function testCreateMethodDescriptorFromReflector()
+    public function testCreateMethodDescriptorFromReflector() : void
     {
         // Arrange
         $namespace = 'Namespace';
@@ -102,7 +103,7 @@ class MethodAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addArgument
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addVariadicArgument
      */
-    public function testCreateMethodDescriptorFromReflectorWhenDocblockIsAbsent()
+    public function testCreateMethodDescriptorFromReflectorWhenDocblockIsAbsent() : void
     {
         // Arrange
         $namespace = 'Namespace';
@@ -137,7 +138,7 @@ class MethodAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addArgument
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addVariadicArgument
      */
-    public function testCreateMethodDescriptorFromReflectorWhenParamTagsAreAbsent()
+    public function testCreateMethodDescriptorFromReflectorWhenParamTagsAreAbsent() : void
     {
         // Arrange
         $namespace = 'Namespace';
@@ -173,7 +174,7 @@ class MethodAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         string $methodName,
         Argument $argumentMock,
         DocBlock $docBlockMock = null
-    ) {
+    ) : Method {
         $method = new Method(
             new Fqsen('\\' . $namespace . '::' . $methodName . '()'),
             new Visibility(Visibility::PROTECTED_),

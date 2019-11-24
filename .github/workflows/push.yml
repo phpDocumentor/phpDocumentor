@@ -53,8 +53,8 @@ jobs:
         ini-values-csv: memory_limit=2G, display_errors=On, error_reporting=-1
         coverage: xdebug
         pecl: false
-    - name: Install PHPUnit 6
-      run: composer global require phpunit/phpunit ^6
+    - name: 'Install PHPUnit'
+      run: composer global require phpunit/phpunit ^8
     - name: Run PHPUnit
       run: $HOME/.composer/vendor/bin/phpunit
   codestyle:

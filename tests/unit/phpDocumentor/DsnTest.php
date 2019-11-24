@@ -23,10 +23,10 @@ class DsnTest extends TestCase
     /**
      * @covers ::__construct
      * @covers ::<private>
-     * @expectedException \InvalidArgumentException
      */
-    public function testInvalidDsn()
+    public function testInvalidDsn() : void
     {
+        $this->expectException('InvalidArgumentException');
         $dsn = 'git+http://namé:password@github.com';
         new Dsn($dsn);
     }
@@ -34,10 +34,10 @@ class DsnTest extends TestCase
     /**
      * @covers ::__construct
      * @covers ::<private>
-     * @expectedException \InvalidArgumentException
      */
-    public function testInvalidScheme()
+    public function testInvalidScheme() : void
     {
+        $this->expectException('InvalidArgumentException');
         $dsn = 'gittt+http://github.com';
         new Dsn($dsn);
     }
@@ -46,10 +46,10 @@ class DsnTest extends TestCase
      * @covers ::__construct
      * @covers ::getScheme
      * @covers ::<private>
-     * @expectedException \InvalidArgumentException
      */
-    public function testInvalidKeyValuePair()
+    public function testInvalidKeyValuePair() : void
     {
+        $this->expectException('InvalidArgumentException');
         $dsn = 'git+http://@github.com/phpDocumentor/phpDocumentor2?q+query';
         new Dsn($dsn);
     }
@@ -68,7 +68,7 @@ class DsnTest extends TestCase
      * @covers ::<private>
      * @uses \phpDocumentor\Path
      */
-    public function testValidDsnWithScheme()
+    public function testValidDsnWithScheme() : void
     {
         $dsn = 'git+http://user:pw@github.com:8000/phpDocumentor/phpDocumentor2?q=qry1&x=qry2;branch=dev;other=xxx';
         $fixture = new Dsn($dsn);
@@ -103,7 +103,7 @@ class DsnTest extends TestCase
      * @covers ::<private>
      * @uses \phpDocumentor\Path
      */
-    public function testValidDsnWithoutScheme()
+    public function testValidDsnWithoutScheme() : void
     {
         $dsn = 'src';
         $fixture = new Dsn($dsn);
@@ -125,7 +125,7 @@ class DsnTest extends TestCase
      * @covers ::<private>
      * @uses \phpDocumentor\Path
      */
-    public function testValidWindowsDsnWithoutScheme()
+    public function testValidWindowsDsnWithoutScheme() : void
     {
         $dsn = 'C:\\phpdocumentor\\tests\\unit\\phpDocumentor\\Parser';
         $fixture = new Dsn($dsn);
@@ -153,7 +153,7 @@ class DsnTest extends TestCase
      * @covers ::<private>
      * @uses \phpDocumentor\Path
      */
-    public function testValidWindowsDsnWithScheme()
+    public function testValidWindowsDsnWithScheme() : void
     {
         $dsn = 'file://C:\\phpdocumentor\\tests';
         $fixture = new Dsn($dsn);
@@ -171,7 +171,7 @@ class DsnTest extends TestCase
      * @covers ::getPort
      * @covers ::<private>
      */
-    public function testCorrectDefaultPorts()
+    public function testCorrectDefaultPorts() : void
     {
         $dsn = 'git+http://github.com';
         $fixture = new Dsn($dsn);

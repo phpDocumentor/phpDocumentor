@@ -25,7 +25,7 @@ class ArgumentDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Creates a new (empty) fixture object.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fixture = new ArgumentDescriptor();
     }
@@ -34,7 +34,7 @@ class ArgumentDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers ::getType
      * @covers ::setType
      */
-    public function testSetAndGetTypes()
+    public function testSetAndGetTypes() : void
     {
         $this->assertSame(null, $this->fixture->getType());
 
@@ -48,7 +48,7 @@ class ArgumentDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers ::getMethod
      * @covers ::setMethod
      */
-    public function testSetAndGetMethod()
+    public function testSetAndGetMethod() : void
     {
         $this->assertSame(null, $this->fixture->getMethod());
 
@@ -62,7 +62,7 @@ class ArgumentDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers ::getDefault
      * @covers ::setDefault
      */
-    public function testSetAndGetDefault()
+    public function testSetAndGetDefault() : void
     {
         $this->assertNull($this->fixture->getDefault());
 
@@ -75,7 +75,7 @@ class ArgumentDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers ::isByReference
      * @covers ::setByReference
      */
-    public function testSetAndGetWhetherArgumentIsPassedByReference()
+    public function testSetAndGetWhetherArgumentIsPassedByReference() : void
     {
         $this->assertFalse($this->fixture->isByReference());
 
@@ -88,7 +88,7 @@ class ArgumentDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers ::isVariadic
      * @covers ::setVariadic
      */
-    public function testSetAndGetWhetherArgumentIsAVariadic()
+    public function testSetAndGetWhetherArgumentIsAVariadic() : void
     {
         $this->assertFalse($this->fixture->isVariadic());
 
@@ -100,7 +100,7 @@ class ArgumentDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers ::getDescription
      */
-    public function testDescriptionInheritsWhenNoneIsPresent()
+    public function testDescriptionInheritsWhenNoneIsPresent() : void
     {
         // Arrange
         $description = 'This is a description';
@@ -117,7 +117,7 @@ class ArgumentDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers ::getDescription
      */
-    public function testDescriptionIsNotInheritedWhenPresent()
+    public function testDescriptionIsNotInheritedWhenPresent() : void
     {
         // Arrange
         $description = 'This is a description';
@@ -134,7 +134,7 @@ class ArgumentDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * @covers ::getType
      */
-    public function testTypeIsInheritedWhenNoneIsPresent()
+    public function testTypeIsInheritedWhenNoneIsPresent() : void
     {
         // Arrange
         $types = new String_();
@@ -152,7 +152,7 @@ class ArgumentDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * @covers ::setMethod
      * @covers ::getInheritedElement
      */
-    public function testGetTheArgumentFromWhichThisArgumentInherits()
+    public function testGetTheArgumentFromWhichThisArgumentInherits() : void
     {
         $this->assertNull(
             $this->fixture->getInheritedElement(),

@@ -34,7 +34,7 @@ class CollectionTest extends MockeryTestCase
     /**
      * Initializes the fixture and dependencies for this testcase.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->routers = m::mock(Queue::class);
         $this->writer = m::mock(WriterAbstract::class);
@@ -42,44 +42,36 @@ class CollectionTest extends MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Writer\Collection::__construct
+     * @covers \phpDocumentor\Transformer\Writer\Collection::offsetSet
      */
-    public function testIfDependenciesAreCorrectlyRegisteredOnInitialization()
+    public function testOffsetSetWithWriterNotDescendingFromWriterAbstract() : void
     {
-        $this->assertAttributeSame($this->routers, 'routers', $this->fixture);
-    }
-
-    /**
-     * @expectedException \InvalidArgumentException
-     * @covers phpDocumentor\Transformer\Writer\Collection::offsetSet
-     */
-    public function testOffsetSetWithWriterNotDescendingFromWriterAbstract()
-    {
+        $this->expectException('InvalidArgumentException');
         $this->fixture->offsetSet('index', new \stdClass());
     }
 
     /**
-     * @expectedException \InvalidArgumentException
-     * @covers phpDocumentor\Transformer\Writer\Collection::offsetSet
+     * @covers \phpDocumentor\Transformer\Writer\Collection::offsetSet
      */
-    public function testOffsetSetWithInvalidIndexName()
+    public function testOffsetSetWithInvalidIndexName() : void
     {
+        $this->expectException('InvalidArgumentException');
         $this->fixture->offsetSet('i', $this->writer);
     }
 
     /**
-     * @expectedException \InvalidArgumentException
-     * @covers phpDocumentor\Transformer\Writer\Collection::offsetGet
+     * @covers \phpDocumentor\Transformer\Writer\Collection::offsetGet
      */
-    public function testOffsetGetWithNonExistingIndex()
+    public function testOffsetGetWithNonExistingIndex() : void
     {
+        $this->expectException('InvalidArgumentException');
         $this->fixture->offsetGet('nonExistingIndex');
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Writer\Collection::offsetGet
+     * @covers \phpDocumentor\Transformer\Writer\Collection::offsetGet
      */
-    public function testOffsetGetWithExistingIndex()
+    public function testOffsetGetWithExistingIndex() : void
     {
         $this->registerWriter();
 
@@ -87,9 +79,9 @@ class CollectionTest extends MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Writer\Collection::checkRequirements
+     * @covers \phpDocumentor\Transformer\Writer\Collection::checkRequirements
      */
-    public function testCheckRequirements()
+    public function testCheckRequirements() : void
     {
         $this->registerWriter();
 
@@ -102,7 +94,7 @@ class CollectionTest extends MockeryTestCase
     /**
      * Registers a writer for tests that need a collection item
      */
-    private function registerWriter()
+    private function registerWriter() : void
     {
         $this->fixture->offsetSet('index', $this->writer);
     }

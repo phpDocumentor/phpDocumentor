@@ -34,7 +34,7 @@ class ClassAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Creates a new fixture to test with.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fixture = new ClassAssembler();
         $this->fixture->setBuilder($this->getProjectDescriptorBuilderMock());
@@ -45,7 +45,7 @@ class ClassAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      *
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\ClassAssembler::create
      */
-    public function testCreateClassDescriptorFromReflector()
+    public function testCreateClassDescriptorFromReflector() : void
     {
         $name = 'ClassName';
         $namespace = 'Namespace';
@@ -72,7 +72,7 @@ DOCBLOCK;
      *
      * @return Class_
      */
-    protected function getClassReflectorDescriptor()
+    protected function getClassReflectorDescriptor() : Class_
     {
         $name = 'ClassName';
         $namespace = 'Namespace';
@@ -106,7 +106,7 @@ DOCBLOCK;
      *
      * @return m\MockInterface
      */
-    protected function getProjectDescriptorBuilderMock()
+    protected function getProjectDescriptorBuilderMock() : \Mockery\MockInterface
     {
         $projectDescriptorBuilderMock = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
         $projectDescriptorBuilderMock->shouldReceive('getDefaultPackage')->andReturn('\\');

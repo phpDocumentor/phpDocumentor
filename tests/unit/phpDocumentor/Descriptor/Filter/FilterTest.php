@@ -33,7 +33,7 @@ class FilterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Creates a new (empty) fixture object.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->classFactoryMock = m::mock('phpDocumentor\Descriptor\Filter\ClassFactory');
         $this->filterChainMock = m::mock(Pipeline::class);
@@ -41,17 +41,9 @@ class FilterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Filter\Filter::__construct
+     * @covers \phpDocumentor\Descriptor\Filter\Filter::attach
      */
-    public function testClassFactoryIsSetUponConstruction()
-    {
-        $this->assertAttributeSame($this->classFactoryMock, 'factory', $this->fixture);
-    }
-
-    /**
-     * @covers phpDocumentor\Descriptor\Filter\Filter::attach
-     */
-    public function testAttach()
+    public function testAttach() : void
     {
         $filterMock = m::mock(FilterInterface::class);
 
@@ -61,9 +53,9 @@ class FilterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Filter\Filter::filter
+     * @covers \phpDocumentor\Descriptor\Filter\Filter::filter
      */
-    public function testFilter()
+    public function testFilter() : void
     {
         $filterableMock = m::mock('phpDocumentor\Descriptor\Filter\Filterable');
 
