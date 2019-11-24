@@ -33,8 +33,13 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         args: check --config-file ./composer-require-config.json composer.json
+    - name: Install phive
+      run: wget --no-verbose https://phar.io/releases/phive.phar tools/phive.phar
+    - name: Install PHP Coveralls
+      run: php tools/phive.phar --no-progress install --trust-gpg-keys E82B2FB314E9906E php-coveralls/php-coveralls
     - name: Install PHPUnit
       run: php -r "echo file_get_contents('https://phar.phpunit.de/phpunit-8.phar');" > tools/phpunit.phar
+
   phpunit-with-coverage:
     runs-on: ubuntu-latest
     name: Unit tests
@@ -67,12 +72,16 @@ jobs:
         pecl: false
     - name: Run PHPUnit
       run: php tools/phpunit.phar
-    - name: Install phive
-      run: wget --no-verbose https://phar.io/releases/phive.phar
     - name: Upload to coveralls
-      run: php phive.phar --no-progress install --trust-gpg-keys E82B2FB314E9906E php-coveralls/php-coveralls && ./tools/php-coveralls --verbose
-    - name: Upload to Scrutinizer
-      run: wget --no-verbose https://scrutinizer-ci.com/ocular.phar && php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml
+      env:
+        CI_NAME: Github Actions
+        CI_BUILD_NUMBER: $GITHUB_ACTION
+        CI_BUILD_URL: https://github.com/phpDocumentor/phpDocumentor/runs/$GITHUB_ACTION
+        CI_BRANCH: $GITHUB_REF
+      run: ./tools/php-coveralls --verbose
+#    - name: Upload to Scrutinizer
+#      run: wget --no-verbose https://scrutinizer-ci.com/ocular.phar && php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml
+
   phpunit:
     runs-on: ${{ matrix.operating-system }}
     strategy:
@@ -114,6 +123,7 @@ jobs:
     - name: Run PHPUnit
       continue-on-error: true
       run: php tools/phpunit.phar
+
   codestyle:
     runs-on: ubuntu-latest
     needs: [setup, phpunit]
@@ -141,6 +151,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         args: -d memory_limit=1024M
+
   phpstan:
     runs-on: ubuntu-latest
     needs: [setup, phpunit]
