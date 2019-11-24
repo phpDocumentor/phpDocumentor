@@ -11,18 +11,32 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         args: install --no-interaction --prefer-dist --optimize-autoloader
-    - name: Code style check
-      uses: docker://oskarstark/phpcs-ga
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        args: -d memory_limit=1024M
     - name: composer-require-checker
       uses: docker://phpga/composer-require-checker-ga
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         args: check --config-file ./composer-require-config.json composer.json
+    - uses: actions/upload-artifact@v1
+      with:
+        name: vendor-prod
+        path: vendor
+  codestyle:
+    - uses: actions/download-artifact@v1
+      with:
+        name: vendor-prod
+        path: vendor
+    - name: Code style check
+      uses: docker://oskarstark/phpcs-ga
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        args: -d memory_limit=1024M
+  phpstan:
+    - uses: actions/download-artifact@v1
+      with:
+        name: vendor-prod
+        path: vendor
     - name: PHPStan
       uses: docker://phpdoc/phpstan-ga:master
       env:
