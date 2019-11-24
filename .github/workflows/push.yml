@@ -9,10 +9,10 @@ jobs:
       uses: actions/cache@v1
       with:
         path: vendor
-        key: ${{ runner.OS }}-build-${{ hashFiles('**/composer.lock') }}
+        key: all-build-${{ hashFiles('**/composer.lock') }}
         restore-keys: |
-          ${{ runner.OS }}-build-${{ hashFiles('**/composer.lock') }}
-          ${{ runner.OS }}-build-
+          all-build-${{ hashFiles('**/composer.lock') }}
+          all-build-
     - name: Restore/cache tools folder
       uses: actions/cache@v1
       with:
@@ -45,10 +45,10 @@ jobs:
       uses: actions/cache@v1
       with:
         path: vendor
-        key: ${{ runner.OS }}-build-${{ hashFiles('**/composer.lock') }}
+        key: all-build-${{ hashFiles('**/composer.lock') }}
         restore-keys: |
-          ${{ runner.OS }}-build-${{ hashFiles('**/composer.lock') }}
-          ${{ runner.OS }}-build-
+          all-build-${{ hashFiles('**/composer.lock') }}
+          all-build-
     - name: Restore/cache tools folder
       uses: actions/cache@v1
       with:
@@ -86,10 +86,10 @@ jobs:
       uses: actions/cache@v1
       with:
         path: vendor
-        key: ${{ runner.OS }}-build-${{ hashFiles('**/composer.lock') }}
+        key: all-build-${{ hashFiles('**/composer.lock') }}
         restore-keys: |
-          ${{ runner.OS }}-build-${{ hashFiles('**/composer.lock') }}
-          ${{ runner.OS }}-build-
+          all-build-${{ hashFiles('**/composer.lock') }}
+          all-build-
     - name: Restore/cache tools folder
       uses: actions/cache@v1
       with:
@@ -116,10 +116,10 @@ jobs:
       uses: actions/cache@v1
       with:
         path: vendor
-        key: ${{ runner.OS }}-build-${{ hashFiles('**/composer.lock') }}
+        key: all-build-${{ hashFiles('**/composer.lock') }}
         restore-keys: |
-          ${{ runner.OS }}-build-${{ hashFiles('**/composer.lock') }}
-          ${{ runner.OS }}-build-
+          all-build-${{ hashFiles('**/composer.lock') }}
+          all-build-
     - name: Restore/cache tools folder
       uses: actions/cache@v1
       with:
@@ -143,10 +143,10 @@ jobs:
       uses: actions/cache@v1
       with:
         path: vendor
-        key: ${{ runner.OS }}-build-${{ hashFiles('**/composer.lock') }}
+        key: all-build-${{ hashFiles('**/composer.lock') }}
         restore-keys: |
-          ${{ runner.OS }}-build-${{ hashFiles('**/composer.lock') }}
-          ${{ runner.OS }}-build-
+          all-build-${{ hashFiles('**/composer.lock') }}
+          all-build-
     - name: Restore/cache tools folder
       uses: actions/cache@v1
       with:
