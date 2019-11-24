@@ -150,7 +150,7 @@ jobs:
           ini-values-csv: memory_limit=2G, display_errors=On, error_reporting=-1
           pecl: false
       - name: Run Behat
-        run: /bin/behat
+        run: bin/behat
 
   codestyle:
     runs-on: ubuntu-latest
