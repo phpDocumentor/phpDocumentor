@@ -44,7 +44,7 @@ jobs:
       uses: shivammathur/setup-php@master
       with:
         php-version: '7.2'
-        extension-csv: mbstring, intl
+        extension-csv: mbstring, intl, iconv, libxml, dom, json, simplexml, zlib
         ini-values-csv: memory_limit=2G, display_errors=On, error_reporting=-1
         coverage: xdebug
         pecl: false
