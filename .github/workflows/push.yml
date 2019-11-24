@@ -21,8 +21,30 @@ jobs:
       with:
         name: vendor-prod
         path: vendor
+  phpunit:
+    runs-on: ubuntu-latest
+    needs: composer
+    steps:
+    - uses: actions/checkout@master
+    - uses: actions/download-artifact@v1
+      with:
+        name: vendor-prod
+        path: vendor
+    - name: Setup PHP
+      uses: shivammathur/setup-php@master
+      with:
+        php-version: '7.2'
+        extension-csv: mbstring, intl
+        ini-values-csv: memory_limit=2G, display_errors=On, error_reporting=-1
+        coverage: xdebug
+        pecl: false
+    - name: 'Install PHPUnit 6'
+      run: composer global require phpunit/phpunit ^6
+    - name: Run PHPUnit
+      run: $HOME/.composer/vendor/bin/phpunit
   codestyle:
     runs-on: ubuntu-latest
+    needs: [composer, phpunit]
     steps:
     - uses: actions/checkout@master
     - uses: actions/download-artifact@v1
@@ -37,6 +59,7 @@ jobs:
         args: -d memory_limit=1024M
   phpstan:
     runs-on: ubuntu-latest
+    needs: [composer, phpunit]
     steps:
     - uses: actions/checkout@master
     - uses: actions/download-artifact@v1
