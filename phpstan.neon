@@ -28,3 +28,4 @@ parameters:
     - %currentWorkingDirectory%/src/phpDocumentor/Parser/Middleware/*.php
    # phpunit TestCase while having to use a composer-global install ("Class PHPUnit\\Framework\\TestCase not found and could not be autoloaded")
     - %currentWorkingDirectory%/tests/unit/**/*.php
+    - %currentWorkingDirectory%/tests/integration/**/*.php

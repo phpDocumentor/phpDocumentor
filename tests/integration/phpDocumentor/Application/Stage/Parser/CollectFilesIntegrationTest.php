@@ -13,12 +13,9 @@ use phpDocumentor\Dsn;
 use phpDocumentor\Parser\FlySystemCollector;
 use phpDocumentor\Parser\FlySystemFactory;
 use phpDocumentor\Parser\SpecificationFactory;
-use phpDocumentor\Path;
-use phpDocumentor\Reflection\File;
-use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 
-class CollectFilesIntegrationTest extends TestCase
+class CollectFilesIntegrationTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider payloadProvider
