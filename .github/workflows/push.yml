@@ -106,7 +106,7 @@ jobs:
         ini-values-csv: memory_limit=2G, display_errors=On, error_reporting=-1
         pecl: false
     - name: Run PHPUnit
-      continue-on-error: ${{ matrix.operating-system != ubuntu-latest  }}
+      continue-on-error: true
       run: php tools/phpunit.phar
   codestyle:
     runs-on: ubuntu-latest
