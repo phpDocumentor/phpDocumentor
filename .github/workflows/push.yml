@@ -34,7 +34,7 @@ jobs:
       with:
         args: check --config-file ./composer-require-config.json composer.json
     - name: Install phive
-      run: wget --no-verbose https://phar.io/releases/phive.phar tools/phive.phar
+      run: wget -O tools/phive.phar --no-verbose https://phar.io/releases/phive.phar
     - name: Install PHP Coveralls
       run: php tools/phive.phar --no-progress install --trust-gpg-keys E82B2FB314E9906E php-coveralls/php-coveralls
     - name: Install PHPUnit
