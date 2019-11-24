@@ -8,7 +8,6 @@ parameters:
     - '#Call to an undefined method League\\Flysystem\\FilesystemInterface::find()#'
     # Bad design of descriptors.
     - '#Access to an undefined property phpDocumentor\\Descriptor\\Collection::\$[a-z]+#'
-    - '#Argument of an invalid type phpDocumentor\\Transformer\\Template\\Parameter supplied for foreach, only iterables are supported.#'
     - '#Method phpDocumentor\\Descriptor\\MethodDescriptor::getInheritedElement() should return phpDocumentor\\Descriptor\\MethodDescriptor|null but returns phpDocumentor\\Descriptor\\DescriptorAbstract.#'
   excludes_analyse:
    #test data
