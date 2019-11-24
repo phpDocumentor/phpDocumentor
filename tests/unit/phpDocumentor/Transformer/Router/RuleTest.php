@@ -63,7 +63,9 @@ class RuleTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testTranslateToUrlEncodedPath()
     {
-        $this->markTestSkipped('Github Actions does not like this test; let us skip it for now and figure out what to do');
+        $this->markTestSkipped(
+            'Github Actions does not like this test; let us skip it for now and figure out what to do'
+        );
         $fixture = new Rule(
             function () {
                 return true;
