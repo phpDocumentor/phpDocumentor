@@ -4,13 +4,13 @@ services:
     build: .
 
   phpunit:
-    build: docker/with-xdebug
+    build: docker/with-pcov
     volumes: [".:/opt/phpdoc"]
     working_dir: "/opt/phpdoc"
-    entrypoint: ["./tools/phpunit"]
+    entrypoint: ["./tools/phpunit", "-v"]
 
   behat:
-    build: docker/with-xdebug
+    build: docker/dev
     volumes: [".:/opt/phpdoc"]
     working_dir: "/opt/phpdoc"
     command: ["./bin/behat"]
