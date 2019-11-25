@@ -5,6 +5,9 @@
          xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/8.0/phpunit.xsd"
          executionOrder="depends,defects"
          colors="true"
+         beStrictAboutTodoAnnotatedTests="true"
+         beStrictAboutOutputDuringTests="true"
+         beStrictAboutTestsThatDoNotTestAnything="true"
 >
     <testsuites>
         <testsuite name="unit">
