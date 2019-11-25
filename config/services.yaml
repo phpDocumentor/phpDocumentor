@@ -200,7 +200,6 @@ services:
     phpDocumentor\Transformer\Router\Queue:
       calls:
         - [insert, ['@phpDocumentor\Transformer\Router\StandardRouter', 10000]]
-        - [insert, ['@phpDocumentor\Transformer\Router\ExternalRouter', 10500]]
 
     phpDocumentor\Transformer\Template\PathResolver:
       class: 'phpDocumentor\Transformer\Template\PathResolver'

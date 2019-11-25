@@ -105,19 +105,19 @@ class PropertyDescriptor extends DescriptorAbstract implements
      */
     public function getTypes()
     {
-        if ($this->getType() === null) {
-            return [];
+        if ($this->getType() instanceof Type) {
+            return [(string)$this->getType()];
         }
 
-        return [(string)$this->getType()];
+        return [];
     }
 
     public function getType()
     {
         if ($this->type === null) {
-            /** @var VarDescriptor $var */
+            /** @var VarDescriptor|bool $var */
             $var = $this->getVar()->getIterator()->current();
-            if ($var) {
+            if ($var instanceof VarDescriptor) {
                 return $var->getType();
             }
         }

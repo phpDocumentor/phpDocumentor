@@ -90,11 +90,8 @@ class ProjectDescriptorBuilder
 
         // create Descriptor and populate with the provided data
         $descriptor = $assembler->create($data);
-        if (!$descriptor) {
-            return null;
-        }
 
-        return (!is_array($descriptor) && (!$descriptor instanceof Collection))
+        return ($descriptor instanceof DescriptorAbstract)
             ? $this->filterDescriptor($descriptor)
             : $this->filterEachDescriptor($descriptor);
     }
@@ -129,7 +126,7 @@ class ProjectDescriptorBuilder
      *
      * @return Collection
      */
-    private function filterEachDescriptor($descriptor)
+    private function filterEachDescriptor(iterable $descriptor): Collection
     {
         $descriptors = new Collection();
         foreach ($descriptor as $key => $item) {
@@ -147,12 +144,8 @@ class ProjectDescriptorBuilder
     /**
      * Filters a descriptor, validates it, stores the validation results and returns the transmuted object or null
      * if it is supposed to be removed.
-     *
-     * @param Descriptor $descriptor
-     *
-     * @return Descriptor|null
      */
-    protected function filterDescriptor(Descriptor $descriptor)
+    protected function filterDescriptor(DescriptorAbstract $descriptor): ?DescriptorAbstract
     {
         if (!$descriptor instanceof Filterable) {
             return $descriptor;
@@ -160,7 +153,7 @@ class ProjectDescriptorBuilder
 
         // filter the descriptor; this may result in the descriptor being removed!
         $descriptor = $this->filter($descriptor);
-        if (!$descriptor) {
+        if (!$descriptor instanceof DescriptorAbstract) {
             return null;
         }
 

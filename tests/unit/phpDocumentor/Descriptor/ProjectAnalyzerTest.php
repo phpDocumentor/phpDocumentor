@@ -4,6 +4,7 @@ namespace phpDocumentor\Descriptor;
 
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery as m;
+use phpDocumentor\Descriptor\Collection as DescriptorCollection;
 
 /**
  * Tests for the \phpDocumentor\Descriptor\ProjectAnalyzer class.
@@ -94,7 +95,7 @@ TEXT;
         m\MockInterface $projectDescriptor,
         array $files
     ) : void {
-        $projectDescriptor->shouldReceive('getFiles')->andReturn($files);
+        $projectDescriptor->shouldReceive('getFiles')->andReturn(new DescriptorCollection($files));
     }
 
     /**

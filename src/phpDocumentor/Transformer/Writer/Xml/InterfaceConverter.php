@@ -68,7 +68,7 @@ class InterfaceConverter
         $child = new \DOMElement('interface');
         $parent->appendChild($child);
 
-        /** @var InterfaceDescriptor $parentInterface */
+        /** @var InterfaceDescriptor|string $parentInterface */
         foreach ($interface->getParent() as $parentInterface) {
             $parentFqcn = (string) ($parentInterface instanceof InterfaceDescriptor
                 ? $parentInterface->getFullyQualifiedStructuralElementName()

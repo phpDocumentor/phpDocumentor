@@ -116,9 +116,9 @@ class MethodAssembler extends AssemblerAbstract
 
         $paramTags = $data->getDocBlock()->getTagsByName('param');
 
-        /** @var Param $lastParamTag */
+        /** @var Param|bool $lastParamTag */
         $lastParamTag = end($paramTags);
-        if (!$lastParamTag) {
+        if ($lastParamTag === false) {
             return;
         }
 

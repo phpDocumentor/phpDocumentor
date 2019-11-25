@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
+use phpDocumentor\Descriptor\Interfaces\NamespaceInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
 
 /**
@@ -43,7 +44,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
     /**
      * Initializes this descriptor.
      */
-    public function __construct($name)
+    public function __construct(string $name)
     {
         $this->setName($name);
         $this->setSettings(new Settings());
@@ -64,7 +65,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
      *
      * @param string $name
      */
-    public function setName($name)
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
@@ -74,7 +75,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -84,7 +85,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
      *
      * @return string
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return '';
     }
@@ -94,7 +95,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
      *
      * @param Collection $files
      */
-    public function setFiles($files)
+    public function setFiles(Collection $files): void
     {
         $this->files = $files;
     }
@@ -104,7 +105,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
      *
      * @return Collection|FileDescriptor[]
      */
-    public function getFiles()
+    public function getFiles(): Collection
     {
         return $this->files;
     }
@@ -116,7 +117,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
      * generation by providing a conveniently assembled list. An example of such an index is the 'marker' index where
      * a list of TODOs and FIXMEs are located in a central location for reporting.
      */
-    public function setIndexes(Collection $indexes)
+    public function setIndexes(Collection $indexes): void
     {
         $this->indexes = $indexes;
     }
@@ -125,50 +126,40 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
      * Returns all indexes in this project.
      *
      * @see setIndexes() for more information on what indexes are.
-     *
-     * @return Collection
      */
-    public function getIndexes()
+    public function getIndexes(): Collection
     {
         return $this->indexes;
     }
 
     /**
      * Sets the root namespace for this project together with all sub-namespaces.
-     *
-     * @param NamespaceDescriptor $namespace
      */
-    public function setNamespace($namespace)
+    public function setNamespace(NamespaceDescriptor $namespace): void
     {
         $this->namespace = $namespace;
     }
 
     /**
      * Returns the root (global) namespace.
-     *
-     * @return NamespaceDescriptor
      */
-    public function getNamespace()
+    public function getNamespace(): NamespaceInterface
     {
         return $this->namespace;
     }
 
     /**
      * Sets the settings used to build the documentation for this project.
-     *
-     * @param Settings $settings
      */
-    public function setSettings($settings)
+    public function setSettings(Settings $settings): void
     {
         $this->settings = $settings;
     }
 
     /**
      * Returns the settings used to build the documentation for this project.
-     *
-     * @return Settings
      */
-    public function getSettings()
+    public function getSettings(): Settings
     {
         return $this->settings;
     }
@@ -179,7 +170,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
      * Partials are blocks of text that can be inserted anywhere in a template using a special indicator. An example is
      * the introduction partial that can add a custom piece of text to the homepage.
      */
-    public function setPartials(Collection $partials)
+    public function setPartials(Collection $partials): void
     {
         $this->partials = $partials;
     }
@@ -188,10 +179,8 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
      * Returns a list of all partials.
      *
      * @see setPartials() for more information on partials.
-     *
-     * @return Collection
      */
-    public function getPartials()
+    public function getPartials(): Collection
     {
         return $this->partials;
     }
@@ -202,14 +191,10 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
      * @param integer $visibility One of the VISIBILITY_* constants of the Settings class.
      *
      * @see Settings for a list of the available VISIBILITY_* constants.
-     *
-     * @return boolean
      */
-    public function isVisibilityAllowed(int $visibility)
+    public function isVisibilityAllowed(int $visibility): bool
     {
-        $visibilityAllowed = $this->getSettings()
-            ? $this->getSettings()->getVisibility()
-            : Settings::VISIBILITY_DEFAULT;
+        $visibilityAllowed = $this->getSettings()->getVisibility();
 
         return (bool) ($visibilityAllowed & $visibility);
     }

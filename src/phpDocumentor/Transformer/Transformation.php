@@ -101,7 +101,7 @@ class Transformation
     }
 
     /**
-     * Returns an instantiated writer object.
+     * Returns the class name of the associated writer.
      *
      * @return string
      */

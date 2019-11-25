@@ -155,8 +155,8 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
     /**
      * Sets an item at the given index.
      *
-     * @param string|integer $offset The offset to assign the value to.
-     * @param mixed          $value  The value to set.
+     * @param string|integer|null $offset The offset to assign the value to.
+     * @param mixed               $value  The value to set.
      *
      * @throws \InvalidArgumentException if the key is null or an empty string.
      */

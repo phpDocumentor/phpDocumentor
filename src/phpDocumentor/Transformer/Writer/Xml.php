@@ -267,7 +267,7 @@ class Xml extends WriterAbstract
      */
     public function buildClass(\DOMElement $parent, ClassDescriptor $class, \DOMElement $child = null)
     {
-        if (!$child) {
+        if (!$child instanceof \DOMElement) {
             $child = new \DOMElement('class');
             $parent->appendChild($child);
         }
@@ -282,17 +282,12 @@ class Xml extends WriterAbstract
             $child->appendChild(new \DOMElement('extends', $parentFqcn));
         }
 
-        /** @var InterfaceDescriptor $interface */
+        /** @var InterfaceDescriptor|string $interface */
         foreach ($class->getInterfaces() as $interface) {
             $interfaceFqcn = $interface instanceof InterfaceDescriptor
                 ? (string) $interface->getFullyQualifiedStructuralElementName()
                 : (string) $interface;
             $child->appendChild(new \DOMElement('implements', $interfaceFqcn));
-        }
-
-        if ($child === null) {
-            $child = new \DOMElement('interface');
-            $parent->appendChild($child);
         }
 
         $namespace = (string) $class->getNamespace()->getFullyQualifiedStructuralElementName();

@@ -82,7 +82,7 @@ class Queue extends \SplPriorityQueue
             if (!$rule) {
                 throw new \InvalidArgumentException(
                     'No matching routing rule could be found for the given node, please provide an artifact location, '
-                    . 'encountered: ' . ($descriptor === null ? 'NULL' : get_class($descriptor))
+                    . 'encountered: ' . get_class($descriptor)
                 );
             }
 

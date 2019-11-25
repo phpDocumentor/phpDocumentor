@@ -17,6 +17,7 @@ namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Descriptor\Tag\VarDescriptor;
 use phpDocumentor\Reflection\Type;
+use Webmozart\Assert\Assert;
 
 /**
  * Descriptor representing a constant
@@ -41,9 +42,11 @@ class ConstantDescriptor extends DescriptorAbstract implements Interfaces\Consta
      */
     public function setParent($parent)
     {
-        if (!$parent instanceof ClassDescriptor && !$parent instanceof InterfaceDescriptor && $parent !== null) {
-            throw new \InvalidArgumentException('Constants can only have an interface or class as parent');
-        }
+        Assert::nullOrIsInstanceOfAny(
+            $parent,
+            [ClassDescriptor::class, InterfaceDescriptor::class],
+            'Constants can only have an interface or class as parent'
+        );
 
         $fqsen = $parent !== null
             ? $parent->getFullyQualifiedStructuralElementName() . '::' . $this->getName()
@@ -55,7 +58,7 @@ class ConstantDescriptor extends DescriptorAbstract implements Interfaces\Consta
     }
 
     /**
-     * @return null|ClassDescriptor|InterfaceDescriptor
+     * @return null|ClassDescriptor|InterfaceDescriptor|FileDescriptor
      */
     public function getParent()
     {
@@ -81,9 +84,8 @@ class ConstantDescriptor extends DescriptorAbstract implements Interfaces\Consta
     public function getType()
     {
         if ($this->types === null) {
-            /** @var VarDescriptor $var */
             $var = $this->getVar()->get(0);
-            if ($var) {
+            if ($var instanceof VarDescriptor) {
                 return $var->getType();
             }
         }

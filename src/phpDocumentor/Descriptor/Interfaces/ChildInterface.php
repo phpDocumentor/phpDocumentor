@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Interfaces;
 
 use phpDocumentor\Descriptor\DescriptorAbstract;
+use phpDocumentor\Reflection\Fqsen;
 
 /**
  * Describes the public interface for any descriptor that is the child is another.
@@ -25,14 +26,14 @@ interface ChildInterface
     /**
      * Returns the parent for this descriptor.
      *
-     * @return DescriptorAbstract
+     * @return DescriptorAbstract|Fqsen|string|null
      */
     public function getParent();
 
     /**
      * Sets the parent for this Descriptor.
      *
-     * @param DescriptorAbstract $parent
+     * @param ?DescriptorAbstract $parent
      */
     public function setParent($parent);
 }

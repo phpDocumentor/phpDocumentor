@@ -22,25 +22,13 @@ use phpDocumentor\Descriptor\Collection;
  */
 interface ProjectInterface
 {
-    /**
-     * @param string $name
-     */
-    public function setName($name);
+    public function setName(string $name): void;
 
-    public function getName();
+    public function getName(): string;
 
-    /**
-     * @return Collection
-     */
-    public function getFiles();
+    public function getFiles(): Collection;
 
-    /**
-     * @return Collection
-     */
-    public function getIndexes();
+    public function getIndexes(): Collection;
 
-    /**
-     * @return NamespaceInterface
-     */
-    public function getNamespace();
+    public function getNamespace(): NamespaceInterface;
 }

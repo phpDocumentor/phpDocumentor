@@ -87,7 +87,7 @@ class UsesTag
 
             // if the query is wrong; output a Critical error and continue to
             // the next @uses
-            if ($referral_nodes === false) {
+            if (!$referral_nodes instanceof \DOMNodeList) {
                 continue;
             }
 

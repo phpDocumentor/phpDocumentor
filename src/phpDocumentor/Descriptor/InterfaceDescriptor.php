@@ -50,7 +50,7 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
     }
 
     /**
-     * @return Collection
+     * {@inheritDoc}
      */
     public function getParent()
     {
@@ -78,7 +78,11 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
      */
     public function getInheritedConstants()
     {
-        if (!$this->getParent() || !$this->getParent() instanceof Collection || $this->getParent()->count() === 0) {
+
+        if ($this->getParent() === null
+            || !$this->getParent() instanceof Collection
+            || $this->getParent()->count() === 0
+        ) {
             return new Collection();
         }
 
@@ -118,7 +122,10 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
      */
     public function getInheritedMethods()
     {
-        if (!$this->getParent() || !$this->getParent() instanceof Collection || $this->getParent()->count() === 0) {
+        if ($this->getParent() === null
+            || !$this->getParent() instanceof Collection
+            || $this->getParent()->count() === 0
+        ) {
             return new Collection();
         }
 
@@ -152,7 +159,7 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
 
     public function getInheritedElement()
     {
-        return $this->getParent() && $this->getParent()->count() > 0
+        return $this->getParent() !== null && $this->getParent()->count() > 0
             ? $this->getParent()->getIterator()->current()
             : null;
     }

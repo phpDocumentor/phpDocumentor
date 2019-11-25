@@ -286,9 +286,9 @@ class Parser
     /**
      * Writes the complete parsing cycle to log.
      */
-    private function logAfterParsingAllFiles()
+    private function logAfterParsingAllFiles(): void
     {
-        if (!$this->stopwatch) {
+        if (!$this->stopwatch instanceof Stopwatch) {
             return;
         }
 
@@ -310,9 +310,9 @@ class Parser
         $this->logger->log($priority, $message, $parameters);
     }
 
-    private function startTimingTheParsePhase()
+    private function startTimingTheParsePhase(): void
     {
-        if ($this->stopwatch) {
+        if ($this->stopwatch instanceof Stopwatch) {
             $this->stopwatch->start('parser.parse');
         }
     }

@@ -13,19 +13,25 @@
 
 namespace phpDocumentor\Transformer\Writer;
 
+use DOMDocument;
 use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 use org\bovigo\vfs\vfsStream;
 
 use org\bovigo\vfs\vfsStreamDirectory;
+use phpDocumentor\Descriptor\Collection as DescriptorCollection;
+use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Transformer\Router\RouterAbstract;
+use phpDocumentor\Transformer\Transformation;
+use phpDocumentor\Transformer\Transformer;
 
 /**
  * Test class for \phpDocumentor\Transformer\Writer\Xml.
  *
  * @covers \phpDocumentor\Transformer\Writer\Xml
  */
-class XmlTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+class XmlTest extends MockeryTestCase
 {
     /** @var Xml $xml */
     protected $xml;
@@ -45,8 +51,8 @@ class XmlTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     protected function setUp(): void
     {
         $this->fs = vfsStream::setup('XmlTest');
-        $this->projectDescriptor = m::mock('phpDocumentor\Descriptor\ProjectDescriptor');
-        $this->routerMock = m::mock('phpDocumentor\Transformer\Router\RouterAbstract');
+        $this->projectDescriptor = m::mock(ProjectDescriptor::class);
+        $this->routerMock = m::mock(RouterAbstract::class);
         $this->xml = new Xml($this->routerMock);
     }
 
@@ -55,15 +61,15 @@ class XmlTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testTransformWithoutFiles() : void
     {
-        $transformer = m::mock('phpDocumentor\Transformer\Transformer');
-        $transformation = m::mock('phpDocumentor\Transformer\Transformation');
+        $transformer = m::mock(Transformer::class);
+        $transformation = m::mock(Transformation::class);
         $transformation->shouldReceive('getTransformer->getTarget')->andReturn(vfsStream::url('XmlTest'));
         $transformation->shouldReceive('getArtifact')->andReturn('artifact.xml');
         $transformation->shouldReceive('getTransformer')->andReturn($transformer);
 
-        $this->projectDescriptor->shouldReceive('getFiles')->andReturn([]);
+        $this->projectDescriptor->shouldReceive('getFiles')->andReturn(new DescriptorCollection());
         $this->projectDescriptor->shouldReceive('getName')->andReturn('project');
-        $this->projectDescriptor->shouldReceive('getPartials')->andReturn([]);
+        $this->projectDescriptor->shouldReceive('getPartials')->andReturn(new DescriptorCollection());
 
         $this->implementProtectedFinalize($this->projectDescriptor);
 
@@ -82,10 +88,10 @@ class XmlTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
   <deprecated count="0"/>
 </project>
 XML;
-        $expectedXml = new \DOMDocument();
+        $expectedXml = new DOMDocument();
         $expectedXml->loadXML($xml);
 
-        $actualXml = new \DOMDocument();
+        $actualXml = new DOMDocument();
         $actualXml->load(vfsStream::url('XmlTest/artifact.xml'));
 
         $this->assertEqualXMLStructure($expectedXml->firstChild, $actualXml->firstChild, true);
@@ -96,36 +102,36 @@ XML;
      */
     public function testTransformWithEmptyFileDescriptor() : void
     {
-        $transformer = m::mock('phpDocumentor\Transformer\Transformer');
+        $transformer = m::mock(Transformer::class);
         $transformer->shouldReceive('getTarget')->andReturn(vfsStream::url('XmlTest'));
 
-        $transformation = m::mock('phpDocumentor\Transformer\Transformation');
+        $transformation = m::mock(Transformation::class);
         $transformation->shouldReceive('getArtifact')->andReturn('artifact.xml');
         $transformation->shouldReceive('getTransformer')->andReturn($transformer);
 
-        $fileDescriptor = m::mock('phpDocumentor\Descriptor\FileDescriptor');
+        $fileDescriptor = m::mock(FileDescriptor::class);
         $fileDescriptor->shouldReceive('getPath')->andReturn('foo.php');
         $fileDescriptor->shouldReceive('getInheritedElement')->andReturn(null);
         $transformer->shouldReceive('generateFilename')->with('foo.php')->andReturn('generated-foo.php');
         $fileDescriptor->shouldReceive('getHash')->andReturn('hash');
         $fileDescriptor->shouldReceive('getAllErrors')->andReturn([]);
 
-        $this->projectDescriptor->shouldReceive('getFiles')->andReturn([$fileDescriptor]);
+        $this->projectDescriptor->shouldReceive('getFiles')->andReturn(new DescriptorCollection([$fileDescriptor]));
         $this->projectDescriptor->shouldReceive('getName')->andReturn('project');
-        $this->projectDescriptor->shouldReceive('getPartials')->andReturn([]);
+        $this->projectDescriptor->shouldReceive('getPartials')->andReturn(new DescriptorCollection());
 
         $this->implementProtectedFinalize($this->projectDescriptor);
         $this->implementProtectedBuildDocBlock($fileDescriptor);
 
         $fileDescriptor->shouldReceive('getNamespaceAliases')->andReturn(['foo', 'bar']);
-        $fileDescriptor->shouldReceive('getConstants')->andReturn([]);
-        $fileDescriptor->shouldReceive('getFunctions')->andReturn([]);
-        $fileDescriptor->shouldReceive('getInterfaces')->andReturn([]);
-        $fileDescriptor->shouldReceive('getClasses')->andReturn([]);
-        $fileDescriptor->shouldReceive('getTraits')->andReturn([]);
-        $fileDescriptor->shouldReceive('getMarkers')->andReturn([]);
-        $fileDescriptor->shouldReceive('getErrors')->andReturn([]);
-        $fileDescriptor->shouldReceive('getPartials')->andReturn([]);
+        $fileDescriptor->shouldReceive('getConstants')->andReturn(new DescriptorCollection());
+        $fileDescriptor->shouldReceive('getFunctions')->andReturn(new DescriptorCollection());
+        $fileDescriptor->shouldReceive('getInterfaces')->andReturn(new DescriptorCollection());
+        $fileDescriptor->shouldReceive('getClasses')->andReturn(new DescriptorCollection());
+        $fileDescriptor->shouldReceive('getTraits')->andReturn(new DescriptorCollection());
+        $fileDescriptor->shouldReceive('getMarkers')->andReturn(new DescriptorCollection());
+        $fileDescriptor->shouldReceive('getErrors')->andReturn(new DescriptorCollection());
+        $fileDescriptor->shouldReceive('getPartials')->andReturn(new DescriptorCollection());
         $fileDescriptor->shouldReceive('getSource')->andReturn(null);
 
         // Call the actual method
@@ -152,10 +158,10 @@ XML;
   <deprecated count="0"/>
 </project>
 XML;
-        $expectedXml = new \DOMDocument();
+        $expectedXml = new DOMDocument();
         $expectedXml->loadXML($xml);
 
-        $actualXml = new \DOMDocument();
+        $actualXml = new DOMDocument();
         $actualXml->load(vfsStream::url('XmlTest/artifact.xml'));
 
         $this->assertEqualXMLStructure($expectedXml->firstChild, $actualXml->firstChild, true);
