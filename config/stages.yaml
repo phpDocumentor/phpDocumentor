@@ -44,7 +44,6 @@ services:
       tags:
         - { name: 'phpdoc.pipeline.api_documentation.parse', priority: 4000 }
 
-
     phpDocumentor\Application\Stage\Cache\GarbageCollectCache:
       tags:
         - { name: 'phpdoc.pipeline.api_documentation.parse', priority: 3000 }
@@ -52,7 +51,6 @@ services:
     phpDocumentor\Application\Stage\Parser\ParseFiles:
       tags:
         - { name: 'phpdoc.pipeline.api_documentation.parse', priority: 0 }
-
 
   ###################################################################################
   ## Autoloading definitions for transform stages   #################################

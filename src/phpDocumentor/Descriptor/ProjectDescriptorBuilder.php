@@ -91,9 +91,15 @@ class ProjectDescriptorBuilder
         // create Descriptor and populate with the provided data
         $descriptor = $assembler->create($data);
 
-        return ($descriptor instanceof DescriptorAbstract)
-            ? $this->filterDescriptor($descriptor)
-            : $this->filterEachDescriptor($descriptor);
+        if ($descriptor instanceof DescriptorAbstract) {
+            return $this->filterDescriptor($descriptor);
+        }
+
+        if (is_iterable($descriptor)) {
+            return $this->filterEachDescriptor($descriptor);
+        }
+
+        return null;
     }
 
     /**

@@ -272,8 +272,8 @@ class Parser
         assert($event instanceof PreParsingEvent);
         Dispatcher::getInstance()
             ->dispatch(
-                'parser.pre',
-                $event->setFileCount(count($files))
+                $event->setFileCount(count($files)),
+                'parser.pre'
             );
 
         /** @var \phpDocumentor\Reflection\Php\Project $project */

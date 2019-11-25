@@ -15,7 +15,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Event;
 
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Abstract class representing the base elements of a phpDocumentor event.
