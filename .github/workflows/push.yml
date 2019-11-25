@@ -130,7 +130,7 @@ jobs:
         php-versions: ['7.2', '7.3']
     name: Integration tests for PHP version ${{ matrix.php-versions }} on ${{ matrix.operating-system }}
     needs:
-      - composer
+      - setup
       - phpunit
     steps:
       - uses: actions/checkout@master
