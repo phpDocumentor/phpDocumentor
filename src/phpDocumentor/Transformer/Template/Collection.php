@@ -52,9 +52,8 @@ class Collection extends \ArrayObject
 
         /** @var Transformation $transformation */
         foreach ($template as $transformation) {
-            /** @var WriterAbstract $writer */
             $writer = $this->writerCollection[$transformation->getWriter()];
-            if ($writer) {
+            if ($writer instanceof WriterAbstract) {
                 $writer->checkRequirements();
             }
         }

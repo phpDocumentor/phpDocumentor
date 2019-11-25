@@ -25,7 +25,7 @@ interface InterfaceInterface extends ElementInterface, TypeInterface
     /**
      * Returns the parent for this descriptor.
      *
-     * @return Collection
+     * @return Collection|null
      */
     public function getParent();
 

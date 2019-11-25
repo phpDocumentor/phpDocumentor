@@ -145,7 +145,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
      */
     public function getInheritedConstants()
     {
-        if (!$this->getParent() || (!$this->getParent() instanceof self)) {
+        if ($this->getParent() === null || (!$this->getParent() instanceof self)) {
             return new Collection();
         }
 
@@ -185,7 +185,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
             $inheritedMethods = $inheritedMethods->merge(clone $trait->getMethods());
         }
 
-        if (!$this->getParent() || (!$this->getParent() instanceof self)) {
+        if ($this->getParent() === null || (!$this->getParent() instanceof self)) {
             return $inheritedMethods;
         }
 
@@ -260,7 +260,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
             $inheritedProperties = $inheritedProperties->merge(clone $trait->getProperties());
         }
 
-        if (!$this->getParent() || (!$this->getParent() instanceof self)) {
+        if ($this->getParent() === null || (!$this->getParent() instanceof self)) {
             return $inheritedProperties;
         }
 

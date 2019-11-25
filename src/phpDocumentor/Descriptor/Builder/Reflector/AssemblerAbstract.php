@@ -56,12 +56,8 @@ abstract class AssemblerAbstract extends BaseAssembler
 
     /**
      * Extracts the package from the DocBlock.
-     *
-     * @param DocBlock $docBlock
-     *
-     * @return string|null
      */
-    protected function extractPackageFromDocBlock($docBlock)
+    protected function extractPackageFromDocBlock(?DocBlock $docBlock): ?string
     {
         $packageTags = $docBlock ? $docBlock->getTagsByName('package') : [];
         if (count($packageTags) === 0) {

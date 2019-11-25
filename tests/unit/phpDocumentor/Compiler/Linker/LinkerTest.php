@@ -12,17 +12,22 @@
 namespace phpDocumentor\Compiler\Linker;
 
 use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Descriptor\Collection as DescriptorCollection;
+use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\MethodDescriptor;
+use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Descriptor\Tag\SeeDescriptor;
+use stdClass;
 
 /**
  * Tests the functionality for the Linker class.
  *
- * @coversDefaultClass phpDocumentor\Compiler\Linker\Linker
+ * @coversDefaultClass \phpDocumentor\Compiler\Linker\Linker
  */
-class LinkerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+class LinkerTest extends MockeryTestCase
 {
     /**
      * @covers ::setObjectAliasesList
@@ -33,10 +38,10 @@ class LinkerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testFindObjectAliasWithFqsenWhenContextIsClass() : void
     {
-        $object = new \stdClass();
+        $object = new stdClass();
         $fqsenWithContextMarker = '@context::MyMethod()';
         $fqsen = '\phpDocumentor\Descriptor\MyClass::MyMethod()';
-        $container = m::mock('phpDocumentor\Descriptor\ClassDescriptor');
+        $container = m::mock(ClassDescriptor::class);
         $container->shouldReceive('getFullyQualifiedStructuralElementName')
             ->andReturn('\phpDocumentor\Descriptor\MyClass');
         $container->shouldReceive('getNamespace')->andReturn('\phpDocumentor\Descriptor');
@@ -56,10 +61,10 @@ class LinkerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testFindObjectAliasWithFqsenAndContainerWhenContextIsContainerNamespace() : void
     {
-        $object = new \stdClass();
+        $object = new stdClass();
         $fqsenWithContextMarker = '@context::MyClass';
         $fqsen = '\phpDocumentor\Descriptor\MyClass';
-        $container = m::mock('phpDocumentor\Descriptor\DescriptorAbstract');
+        $container = m::mock(DescriptorAbstract::class);
         $container->shouldReceive('getFullyQualifiedStructuralElementName')->andReturn('\phpDocumentor\Descriptor');
         $container->shouldReceive('getNamespace')->andReturn('\phpDocumentor\Descriptor');
 
@@ -78,10 +83,10 @@ class LinkerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testFindObjectAliasWithFqsenAndContainerWhenContextIsGlobalNamespace() : void
     {
-        $object = new \stdClass();
+        $object = new stdClass();
         $fqsenWithContextMarker = '@context::MyClass';
         $fqsen = '\MyClass';
-        $container = m::mock('phpDocumentor\Descriptor\DescriptorAbstract');
+        $container = m::mock(DescriptorAbstract::class);
         $container->shouldReceive('getFullyQualifiedStructuralElementName')->andReturn('\phpDocumentor\Descriptor');
         $container->shouldReceive('getNamespace')->andReturn('\phpDocumentor\Descriptor');
 
@@ -102,7 +107,7 @@ class LinkerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testFindObjectAliasReturnsNamespaceContextWhenElementIsUndocumented() : void
     {
         $fqsenWithContextMarker = '@context::MyClass';
-        $container = m::mock('phpDocumentor\Descriptor\NamespaceDescriptor');
+        $container = m::mock(NamespaceDescriptor::class);
         $container->shouldReceive('getFullyQualifiedStructuralElementName')->andReturn('\phpDocumentor\Descriptor');
         $container->shouldReceive('getNamespace')->andReturn('\phpDocumentor\Descriptor');
 
@@ -164,7 +169,7 @@ class LinkerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testSubstituteFqsenInObject() : void
     {
         // initialize parameters
-        $result = new \stdClass();
+        $result = new stdClass();
         $fieldName = 'field';
 
         list($object, $fqsen) = $this->createMockDescriptorForResult($result);
@@ -188,7 +193,7 @@ class LinkerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testSubstituteFqsenInUnknownTypeDescriptor() : void
     {
         // initialize parameters
-        $result = new \stdClass();
+        $result = new stdClass();
         $fieldName = 'field';
 
         list($object, $fqsen) = $this->createMockUnknownTypeDescriptorForResult($result);
@@ -212,7 +217,7 @@ class LinkerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testMultipleSubstitutionsInOneObject() : void
     {
         // initialize parameters
-        $result = new \stdClass();
+        $result = new stdClass();
         $fieldNames = ['field1', 'field2'];
 
         // assert that the getField is called (and returns a FQSEN) and the setField is called with the expected object
@@ -241,7 +246,7 @@ class LinkerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testSubstituteFieldsViaChildObject() : void
     {
         // initialize parameters
-        $result = new \stdClass();
+        $result = new stdClass();
         $childFieldName = 'field';
         $fieldName = 'child';
 
@@ -275,7 +280,7 @@ class LinkerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testSubstituteFieldsViaArrayOfChildObjects() : void
     {
         // initialize parameters
-        $result = new \stdClass();
+        $result = new stdClass();
         $childFieldName = 'field';
         $fieldName = 'child';
 
@@ -334,7 +339,7 @@ class LinkerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $mock->shouldDeferMissing();
         $mock->shouldReceive('findFieldValue')->atMost()->once();
 
-        $item = new \stdClass();
+        $item = new stdClass();
         $item->attribute = 'foreachme';
 
         //findFieldValue() should be called
@@ -364,13 +369,13 @@ class LinkerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         $std = m::mock('stdClass');
         $std->shouldReceive('getAll')->andReturn([]);
-        $indexes = new \stdClass();
+        $indexes = new DescriptorCollection();
         $indexes->elements = $std;
         $descriptor = m::mock('phpDocumentor\Descriptor\ProjectDescriptor');
         $descriptor->shouldReceive('getIndexes')->andReturn($indexes);
 
         /** @var Linker|m\MockInterface $mock */
-        $mock = m::mock('phpDocumentor\Compiler\Linker\Linker');
+        $mock = m::mock(Linker::class);
         $mock->shouldDeferMissing();
         $mock->shouldReceive('substitute')->with($descriptor);
         $mock->execute($descriptor);
@@ -452,7 +457,7 @@ class LinkerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @param \stdClass|null $result
+     * @param stdClass|null $result
      *
      * @return array
      */
@@ -472,7 +477,7 @@ class LinkerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @param \stdClass|null $result
+     * @param stdClass|null $result
      *
      * @return array
      */

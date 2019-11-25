@@ -47,7 +47,7 @@ class CollectionDescriptor implements TypeInterface
     /**
      * Returns the name for this type.
      *
-     * @return TypeInterface
+     * @return string
      */
     public function getName()
     {

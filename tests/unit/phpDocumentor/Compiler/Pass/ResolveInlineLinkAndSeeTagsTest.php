@@ -13,18 +13,23 @@
 namespace phpDocumentor\Compiler\Pass;
 
 use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
+use Mockery\MockInterface;
 use phpDocumentor\Descriptor\DescriptorAbstract;
+use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\Tag\LinkDescriptor;
 use phpDocumentor\Transformer\Router\Queue;
-use phpDocumentor\Transformer\Template\Collection;
+use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Transformer\Router\Rule;
 
 /**
  * @coversDefaultClass \phpDocumentor\Compiler\Pass\ResolveInlineLinkAndSeeTags
  * @covers ::__construct
  * @covers ::<private>
  */
-class ResolveInlineLinkAndSeeTagsTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+class ResolveInlineLinkAndSeeTagsTest extends MockeryTestCase
 {
-    /** @var Queue|m\MockInterface */
+    /** @var Queue|MockInterface */
     private $router;
 
     /** @var ResolveInlineLinkAndSeeTags */
@@ -128,9 +133,9 @@ class ResolveInlineLinkAndSeeTagsTest extends \Mockery\Adapter\Phpunit\MockeryTe
      *
      * @param string $description
      *
-     * @return m\MockInterface
+     * @return MockInterface
      */
-    private function givenAChildDescriptorWithDescription($description) : \Mockery\MockInterface
+    private function givenAChildDescriptorWithDescription($description) : MockInterface
     {
         $descriptor = m::mock('phpDocumentor\Descriptor\DescriptorAbstract');
         $descriptor->shouldReceive('getDescription')->andReturn($description);
@@ -141,13 +146,13 @@ class ResolveInlineLinkAndSeeTagsTest extends \Mockery\Adapter\Phpunit\MockeryTe
     /**
      * Returns a mocked Project Descriptor.
      *
-     * @param Collection|m\MockInterface $descriptors
+     * @param Collection|MockInterface $descriptors
      *
-     * @return m\MockInterface
+     * @return MockInterface
      */
-    private function givenAProjectDescriptorWithChildDescriptors($descriptors) : \Mockery\MockInterface
+    private function givenAProjectDescriptorWithChildDescriptors($descriptors) : MockInterface
     {
-        $projectDescriptor = m::mock('phpDocumentor\Descriptor\ProjectDescriptor');
+        $projectDescriptor = m::mock(ProjectDescriptor::class);
         $projectDescriptor->shouldReceive('getIndexes')->andReturn($descriptors);
 
         return $projectDescriptor;
@@ -156,15 +161,15 @@ class ResolveInlineLinkAndSeeTagsTest extends \Mockery\Adapter\Phpunit\MockeryTe
     /**
      * Returns the descriptor of the element that the link points to
      *
-     * @return DescriptorAbstract|m\MockInterface
+     * @return DescriptorAbstract|MockInterface
      */
     private function givenAnElementToLinkTo()
     {
         $namespaceAliases = ['LinkDescriptor' => '\phpDocumentor\LinkDescriptor'];
-        $namespaceCollection = m::mock('phpDocumentor\Transformer\Template\Collection');
+        $namespaceCollection = m::mock(Collection::class);
         $namespaceCollection->shouldReceive('getAll')->once()->andReturn($namespaceAliases);
 
-        $elementToLinkTo = m::mock('phpDocumentor\Descriptor\DescriptorAbstract');
+        $elementToLinkTo = m::mock(DescriptorAbstract::class);
         $elementToLinkTo->shouldReceive('getNamespaceAliases')->once()->andReturn($namespaceCollection);
 
         return $elementToLinkTo;
@@ -173,13 +178,13 @@ class ResolveInlineLinkAndSeeTagsTest extends \Mockery\Adapter\Phpunit\MockeryTe
     /**
      * Returns a collection with descriptor. This collection will be scanned to see if a link can be made to a file.
      *
-     * @param DescriptorAbstract|m\MockInterface $descriptor
+     * @param DescriptorAbstract|MockInterface $descriptor
      *
-     * @return Collection|m\MockInterface
+     * @return Collection|MockInterface
      */
     private function givenACollection($descriptor)
     {
-        $collection = m::mock('phpDocumentor\Transformer\Template\Collection');
+        $collection = m::mock(Collection::class);
 
         $items = ['\phpDocumentor\LinkDescriptor' => $descriptor];
 
@@ -191,7 +196,7 @@ class ResolveInlineLinkAndSeeTagsTest extends \Mockery\Adapter\Phpunit\MockeryTe
     /**
      * Verifies if the given descriptor's setDescription method is called with the given value.
      *
-     * @param m\MockInterface $descriptor
+     * @param MockInterface $descriptor
      * @param string          $expected
      */
     public function thenDescriptionOfDescriptorIsChangedInto($descriptor, $expected) : void
@@ -202,14 +207,14 @@ class ResolveInlineLinkAndSeeTagsTest extends \Mockery\Adapter\Phpunit\MockeryTe
     /**
      * It resolves the element that is linked to
      *
-     * @param m\MockInterface $descriptor
+     * @param MockInterface $descriptor
      * @param DescriptorAbstract $elementToLinkTo
      *
      * @return DescriptorAbstract
      */
     private function whenDescriptionContainsSeeOrLinkWithElement($descriptor, $elementToLinkTo) : DescriptorAbstract
     {
-        $rule = m::mock('phpDocumentor\Transformer\Router\Rule');
+        $rule = m::mock(Rule::class);
         $rule->shouldReceive('generate')->andReturn('/classes/phpDocumentor.LinkDescriptor.html');
         $this->router->shouldReceive('match')->andReturn($rule);
         $descriptor->shouldReceive('getFile')->andReturn($elementToLinkTo);

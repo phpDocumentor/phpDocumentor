@@ -70,10 +70,10 @@ class Renderer
     }
 
     /**
-     * @param string|DescriptorAbstract $value
-     * @param string                    $presentation
+     * @param mixed $value
+     * @param mixed $presentation
      *
-     * @return bool|mixed|string|\string[]
+     * @return mixed
      */
     public function render($value, $presentation)
     {
@@ -182,7 +182,7 @@ class Renderer
 
         $arguments[] = implode('|', $types);
 
-        if ($value->getName() === 'array' && count($value->getKeyTypes()) === 0) {
+        if ($value instanceof CollectionDescriptor && count($value->getKeyTypes()) === 0) {
             $typeString = (count($types) > 1) ? '(' . reset($arguments) . ')' : reset($arguments);
             $collection = $typeString . '[]';
         } else {
