@@ -68,9 +68,6 @@ There are 3 ways to install phpDocumentor:
 2. Via [Docker](https://hub.docker.com/r/phpdoc/phpdoc/)
 3. Via [Composer](https://getcomposer.org)
 
-_*Please note* that it is required that the installation path of phpDocumentor does not
-contain spaces. This is a requirement imposed by an external library (libxml)_
-
 ### Using the PHAR
 
 1. Download the phar file from https://github.com/phpDocumentor/phpDocumentor/releases

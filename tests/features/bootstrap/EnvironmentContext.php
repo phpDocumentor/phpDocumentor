@@ -147,7 +147,6 @@ final class EnvironmentContext implements Context\Context
      */
     public function iRun($argumentsString = '') : void
     {
-        $argumentsString .= ' --template=xml';
         $argumentsString = strtr($argumentsString, ['\'' => '"']);
         if ($this->process->isStarted()) {
             $this->process->clearErrorOutput()->clearOutput();
