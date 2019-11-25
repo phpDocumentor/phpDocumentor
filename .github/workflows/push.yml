@@ -34,9 +34,9 @@ jobs:
       with:
         args: check --config-file ./composer-require-config.json composer.json
     - name: Install phive
-      run: wget -O tools/phive.phar --no-verbose https://phar.io/releases/phive.phar
-    - name: Install PHP Coveralls
-      run: php tools/phive.phar --no-progress install --copy --trust-gpg-keys 4AA394086372C20A,D2CCAC42F6295E7D,E82B2FB314E9906E
+      run: make install-phive
+    - name: Install PHAR dependencies
+      run: tools/phive.phar --no-progress install --copy --trust-gpg-keys 4AA394086372C20A,D2CCAC42F6295E7D,E82B2FB314E9906E --force-accept-unsigned
 
   phpunit-with-coverage:
     runs-on: ubuntu-latest
@@ -77,8 +77,8 @@ jobs:
 #        CI_BUILD_URL: https://github.com/phpDocumentor/phpDocumentor/runs/$GITHUB_ACTION
 #        CI_BRANCH: $GITHUB_REF
 #      run: ./tools/php-coveralls --verbose
-#    - name: Upload to Scrutinizer
-#      run: wget --no-verbose https://scrutinizer-ci.com/ocular.phar && php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml
+    - name: Upload to Scrutinizer
+      run: tools/ocular code-coverage:upload --format=php-clover build/logs/clover.xml
 
   phpunit:
     runs-on: ${{ matrix.operating-system }}
