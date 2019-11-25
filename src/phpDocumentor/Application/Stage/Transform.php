@@ -17,8 +17,9 @@ namespace phpDocumentor\Application\Stage;
 
 use Exception;
 use phpDocumentor\Compiler\Compiler;
-use phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper;
+use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
+use phpDocumentor\Dsn;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Reflection\DocBlock\ExampleFinder;
 use phpDocumentor\Transformer\Event\PreTransformationEvent;
@@ -44,9 +45,6 @@ use Symfony\Component\Stopwatch\Stopwatch;
  */
 final class Transform
 {
-    /** @var ProjectDescriptorBuilder $builder Object containing the project meta-data and AST */
-    private $builder;
-
     /** @var Transformer $transformer Principal object for guiding the transformation process */
     private $transformer;
 
@@ -55,44 +53,25 @@ final class Transform
 
     /** @var LoggerInterface */
     private $logger;
-    /**
-     * @var ExampleFinder
-     */
+
+    /** @var ExampleFinder */
     private $exampleFinder;
 
     /**
      * Initializes the command with all necessary dependencies to construct human-suitable output from the AST.
      */
     public function __construct(
-        ProjectDescriptorBuilder $builder,
         Transformer $transformer,
         Compiler $compiler,
         LoggerInterface $logger,
         ExampleFinder $exampleFinder
     ) {
-        $this->builder = $builder;
         $this->transformer = $transformer;
         $this->compiler = $compiler;
+        $this->exampleFinder = $exampleFinder;
         $this->logger = $logger;
 
         $this->connectOutputToEvents();
-        $this->exampleFinder = $exampleFinder;
-    }
-
-    /**
-     * Returns the builder object containing the AST and other meta-data.
-     */
-    private function getBuilder(): ProjectDescriptorBuilder
-    {
-        return $this->builder;
-    }
-
-    /**
-     * Returns the transformer used to guide the transformation process from AST to output.
-     */
-    private function getTransformer(): Transformer
-    {
-        return $this->transformer;
     }
 
     /**
@@ -102,36 +81,13 @@ final class Transform
      */
     public function __invoke(Payload $payload): Payload
     {
-        $transformer = $this->getTransformer();
         $configuration = $payload->getConfig();
 
-        $target = $configuration['phpdocumentor']['paths']['output']->getPath();
-        $fileSystem = new Filesystem();
-        if (! $fileSystem->isAbsolutePath((string) $target)) {
-            $target = getcwd() . DIRECTORY_SEPARATOR . $target;
-        }
+        $this->setTargetLocationBasedOnDsn($configuration['phpdocumentor']['paths']['output']);
+        $this->loadTemplatesBasedOnNames($configuration['phpdocumentor']['templates']);
+        $this->provideLocationsOfExamples();
 
-        $transformer->setTarget((string) $target);
-
-        $projectDescriptor = $this->getBuilder()->getProjectDescriptor();
-
-        $stopWatch = new Stopwatch();
-
-        foreach (array_column($configuration['phpdocumentor']['templates'], 'name') as $template) {
-            $stopWatch->start('load template');
-            $this->transformer->getTemplates()->load($template);
-            $stopWatch->stop('load template');
-        }
-
-        //TODO: Should determine root based on filesystems. Could be an issue for multiple.
-        // Need some config update here.
-        $this->exampleFinder->setSourceDirectory(getcwd());
-        $this->exampleFinder->setExampleDirectories(['.']);
-
-        /** @var \phpDocumentor\Compiler\CompilerPassInterface $pass */
-        foreach ($this->compiler as $pass) {
-            $pass->execute($projectDescriptor);
-        }
+        $this->doTransform($payload->getBuilder());
 
         return $payload;
     }
@@ -167,5 +123,42 @@ final class Transform
                 );
             }
         );
+    }
+
+    private function loadTemplatesBasedOnNames(array $templateNames): void
+    {
+        $stopWatch = new Stopwatch();
+        foreach (array_column($templateNames, 'name') as $template) {
+            $stopWatch->start('load template');
+            $this->transformer->getTemplates()->load($template);
+            $stopWatch->stop('load template');
+        }
+    }
+
+    private function setTargetLocationBasedOnDsn(Dsn $dsn): void
+    {
+        $target = $dsn->getPath();
+        $fileSystem = new Filesystem();
+        if (!$fileSystem->isAbsolutePath((string) $target)) {
+            $target = getcwd() . DIRECTORY_SEPARATOR . $target;
+        }
+
+        $this->transformer->setTarget((string) $target);
+    }
+
+    private function doTransform(ProjectDescriptorBuilder $builder): void
+    {
+        /** @var CompilerPassInterface $pass */
+        foreach ($this->compiler as $pass) {
+            $pass->execute($builder->getProjectDescriptor());
+        }
+    }
+
+    private function provideLocationsOfExamples(): void
+    {
+        //TODO: Should determine root based on filesystems. Could be an issue for multiple.
+        // Need some config update here.
+        $this->exampleFinder->setSourceDirectory(getcwd());
+        $this->exampleFinder->setExampleDirectories(['.']);
     }
 }

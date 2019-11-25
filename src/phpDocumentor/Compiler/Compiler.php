@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Compiler;
 
 use SplPriorityQueue;
+use Webmozart\Assert\Assert;
 
 /**
  * Contains a series of compiler steps in a specific order; ready to be executed during transformation.
@@ -25,8 +26,14 @@ class Compiler extends SplPriorityQueue
     /** @var integer Default priority assigned to Compiler Passes without provided priority */
     const PRIORITY_DEFAULT = 10000;
 
+    /**
+     * @param CompilerPassInterface $value
+     * @param int $priority
+     */
     public function insert($value, $priority = self::PRIORITY_DEFAULT): bool
     {
+        Assert::isInstanceOf($value, CompilerPassInterface::class);
+
         /** @noinspection PhpStrictTypeCheckingInspection phpstorm stubs are incorrect here. */
         return parent::insert($value, $priority);
     }

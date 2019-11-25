@@ -32,7 +32,7 @@ class CompilerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testDefaultPassHasDefaultPriority() : void
     {
-        $this->fixture->insert('test');
+        $this->fixture->insert($this->prophesize(CompilerPassInterface::class)->reveal());
         $this->fixture->setExtractFlags(Compiler::EXTR_PRIORITY);
 
         $this->assertEquals(Compiler::PRIORITY_DEFAULT, $this->fixture->extract());
