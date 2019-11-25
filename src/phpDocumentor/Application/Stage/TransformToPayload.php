@@ -6,9 +6,6 @@ use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 
 final class TransformToPayload
 {
-    /**
-     * @var ProjectDescriptorBuilder
-     */
     private $descriptorBuilder;
 
     public function __construct(ProjectDescriptorBuilder $descriptorBuilder)
