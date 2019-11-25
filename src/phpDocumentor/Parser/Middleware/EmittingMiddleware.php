@@ -32,8 +32,8 @@ final class EmittingMiddleware implements Middleware
 
         if (class_exists('phpDocumentor\Event\Dispatcher')) {
             Dispatcher::getInstance()->dispatch(
-                'parser.file.pre',
-                PreFileEvent::createInstance($this)->setFile($command->getFile()->path())
+                PreFileEvent::createInstance($this)->setFile($command->getFile()->path()),
+                'parser.file.pre'
             );
         }
 

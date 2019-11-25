@@ -13,7 +13,7 @@
 namespace phpDocumentor\Parser\Middleware;
 
 use Mockery as m;
-use phpDocumentor\Parser\Parser;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Reflection\File as SourceFile;
 use phpDocumentor\Reflection\Php\Factory\File\CreateCommand;
 use phpDocumentor\Reflection\Php\File;
@@ -27,7 +27,7 @@ use Stash\Pool;
  * @covers ::<private>
  * @covers ::__construct
  */
-final class CacheMiddlewareTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+final class CacheMiddlewareTest extends MockeryTestCase
 {
     /**
      * @covers ::execute
@@ -48,45 +48,11 @@ final class CacheMiddlewareTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $poolMock->shouldReceive('save')->never();
 
         $command = new CreateCommand($commandFile, new ProjectFactoryStrategies([]));
-        $parserMock = m::mock(Parser::class);
-        $parserMock->shouldReceive('isForced')->andReturn(false);
 
-        $fixture = new CacheMiddleware($poolMock, $parserMock);
+        $fixture = new CacheMiddleware($poolMock);
 
         $result = $fixture->execute($command, function () {
             $this->fail('Parsing should not be done, the cached item should be returned');
-        });
-
-        $this->assertSame($file, $result);
-    }
-
-    /**
-     * @covers ::execute
-     * @uses \phpDocumentor\Reflection\Php\Factory\File\CreateCommand
-     * @uses \phpDocumentor\Reflection\Php\File
-     */
-    public function testCachedFileIsUpdatedWhenForced() : void
-    {
-        $commandFile = new SourceFile\LocalFile(__FILE__);
-        $file = new File($commandFile->md5(), __FILE__);
-        $item = new Item();
-
-        $poolMock = m::mock(Pool::class);
-        $poolMock->shouldReceive('getItem')->andReturnSelf();
-        $poolMock->shouldReceive('getItem->isMiss')->andReturn(false);
-        $poolMock->shouldReceive('getItem->get')->andReturn($file);
-        $poolMock->shouldReceive('getItem->lock')->once();
-        $poolMock->shouldReceive('getItem->set')->andReturn($item)->with($file);
-        $poolMock->shouldReceive('save')->with($item);
-
-        $command = new CreateCommand($commandFile, new ProjectFactoryStrategies([]));
-        $parserMock = m::mock(Parser::class);
-        $parserMock->shouldReceive('isForced')->andReturn(true);
-
-        $fixture = new CacheMiddleware($poolMock, $parserMock);
-
-        $result = $fixture->execute($command, function () use ($file) {
-            return $file;
         });
 
         $this->assertSame($file, $result);
@@ -113,7 +79,7 @@ final class CacheMiddlewareTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $sourceFile->shouldReceive('path')->andReturn('myFile.php');
         $stategies = m::mock(StrategyContainer::class);
         $command = new CreateCommand($sourceFile, $stategies);
-        $fixture = new CacheMiddleware($poolMock, m::mock(Parser::class));
+        $fixture = new CacheMiddleware($poolMock);
 
         $result = $fixture->execute($command, function () use ($file) {
             return $file;
@@ -159,11 +125,9 @@ final class CacheMiddlewareTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $sourceFile->shouldReceive('md5')
             ->andReturn('NewHash');
         $stategies = m::mock(StrategyContainer::class);
-        $parser = m::mock(Parser::class);
-        $parser->shouldReceive('isForced')->andReturn(false);
 
         $command = new CreateCommand($sourceFile, $stategies);
-        $fixture = new CacheMiddleware($poolMock, $parser);
+        $fixture = new CacheMiddleware($poolMock);
 
         $result = $fixture->execute($command, function () use ($freshFile) {
             return $freshFile;
@@ -209,11 +173,9 @@ final class CacheMiddlewareTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $sourceFile->shouldReceive('md5')
             ->andReturn('NewHash');
         $stategies = m::mock(StrategyContainer::class);
-        $parser = m::mock(Parser::class);
-        $parser->shouldReceive('isForced')->andReturn(false);
 
         $command = new CreateCommand($sourceFile, $stategies);
-        $fixture = new CacheMiddleware($poolMock, $parser);
+        $fixture = new CacheMiddleware($poolMock);
 
         $result = $fixture->execute($command, function () use ($freshFile) {
             return $freshFile;

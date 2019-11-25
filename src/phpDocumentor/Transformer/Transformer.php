@@ -133,15 +133,15 @@ class Transformer implements CompilerPassInterface
         $preTransformEvent = PreTransformEvent::createInstance($this);
         $preTransformEvent->setProject($project);
         Dispatcher::getInstance()->dispatch(
-            self::EVENT_PRE_TRANSFORM,
-            $preTransformEvent
+            $preTransformEvent,
+            self::EVENT_PRE_TRANSFORM
         );
 
         $transformations = $this->getTemplates()->getTransformations();
         $this->initializeWriters($project, $transformations);
         $this->transformProject($project, $transformations);
 
-        Dispatcher::getInstance()->dispatch(self::EVENT_POST_TRANSFORM, PostTransformEvent::createInstance($this));
+        Dispatcher::getInstance()->dispatch(PostTransformEvent::createInstance($this), self::EVENT_POST_TRANSFORM);
 
         $this->logger->log(LogLevel::NOTICE, 'Finished transformation process');
     }
@@ -230,13 +230,13 @@ class Transformer implements CompilerPassInterface
         /** @var WriterInitializationEvent $instance */
         $instance = WriterInitializationEvent::createInstance($this);
         $event = $instance->setWriter($writer);
-        Dispatcher::getInstance()->dispatch(self::EVENT_PRE_INITIALIZATION, $event);
+        Dispatcher::getInstance()->dispatch($event, self::EVENT_PRE_INITIALIZATION);
 
         if ($writer instanceof Initializable) {
             $writer->initialize($project);
         }
 
-        Dispatcher::getInstance()->dispatch(self::EVENT_POST_INITIALIZATION, $event);
+        Dispatcher::getInstance()->dispatch($event, self::EVENT_POST_INITIALIZATION);
     }
 
     /**
@@ -279,12 +279,12 @@ class Transformer implements CompilerPassInterface
 
         /** @var PreTransformationEvent $preTransformationEvent */
         $preTransformationEvent = PreTransformationEvent::create($this, $transformation);
-        Dispatcher::getInstance()->dispatch(self::EVENT_PRE_TRANSFORMATION, $preTransformationEvent);
+        Dispatcher::getInstance()->dispatch($preTransformationEvent, self::EVENT_PRE_TRANSFORMATION);
 
         $writer = $this->writers[$transformation->getWriter()];
         $writer->transform($project, $transformation);
 
         $postTransformationEvent = PostTransformationEvent::createInstance($this);
-        Dispatcher::getInstance()->dispatch(self::EVENT_POST_TRANSFORMATION, $postTransformationEvent);
+        Dispatcher::getInstance()->dispatch($postTransformationEvent, self::EVENT_POST_TRANSFORMATION);
     }
 }

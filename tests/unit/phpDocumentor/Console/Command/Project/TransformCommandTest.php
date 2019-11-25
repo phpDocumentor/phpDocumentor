@@ -16,7 +16,7 @@ use League\Pipeline\PipelineInterface;
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Symfony\Component\Console\Input\StringInput;
-use Symfony\Component\Console\Tests\Fixtures\DummyOutput;
+use Symfony\Component\Console\Output\BufferedOutput;
 
 /**
  * @coversDefaultClass \phpDocumentor\Console\Command\Project\TransformCommand
@@ -31,7 +31,7 @@ class TransformCommandTest extends MockeryTestCase
     public function testPipelineIsInvokedWithTheNecessaryOptions() : void
     {
         $input = new StringInput('-t abc');
-        $output = new DummyOutput();
+        $output = new BufferedOutput();
 
         $pipeline = m::mock(PipelineInterface::class);
         $pipeline

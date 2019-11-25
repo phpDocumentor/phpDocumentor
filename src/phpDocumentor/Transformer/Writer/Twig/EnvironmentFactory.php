@@ -59,8 +59,7 @@ final class EnvironmentFactory
 
         // Clone twig because otherwise we cannot re-set the extensions on this twig environment on every run of this
         // writer
-        $env = clone $this->baseEnvironment;
-        $env->setLoader(new FilesystemLoader($templateFolders));
+        $env = new Environment(new FilesystemLoader($templateFolders));
 
         $this->addPhpDocumentorExtension($project, $transformation, $destination, $env);
         $this->addExtensionsFromTemplateConfiguration($transformation, $project, $env);
