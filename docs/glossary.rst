@@ -41,18 +41,6 @@ Glossary
              * @return string
              */
 
-    AST
-    Abstract Syntax Tree
-    Abstract Syntax Tree (AST)
-        phpDocumentor generates a XML file between parsing your source code and generating the HTML output. This
-        structure file (called *structure.xml*) contains the raw analyzed data of your project, also called: an Abstract
-        Syntax Tree.
-
-        This same file is also used by phpDocumentor to do incremental parsing of your project by comparing the contents
-        of this file with the content on disk.
-
-        It is thus recommended to keep your structure file and allow phpDocumentor to re-use the contained information.
-
     PHPDoc
         This is a section of documentation which provides information on several aspects of :term:`Structural Elements`.
 

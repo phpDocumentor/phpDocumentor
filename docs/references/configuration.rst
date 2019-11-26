@@ -109,10 +109,9 @@ elements which are explained in more detail in the sub-chapters.
 
 -  Title, the title for this project, *may contain HTML*
 -  Parser, all settings related to the conversion of the source
-   code to the intermediate structure file (structure.xml).
+   code to the cache.
 -  Transformer, all settings related to the process of transforming
-   the intermediate structure file (structure.xml) to a human readable
-   format, such as HTML or PDF.
+   the cache to a human readable format, such as HTML or PDF.
 -  Logging, all settings related to the generation of logs.
 -  Transformations, the default template and additional
    transformations can be specified in this section.

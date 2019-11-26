@@ -7,4 +7,3 @@ Writers
    fileio
    twig
    checkstyle
-   xml

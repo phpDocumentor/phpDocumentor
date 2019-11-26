@@ -25,8 +25,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * Parses the given source code and creates a structure file.
  *
  * The parse task uses the source files defined either by -f or -d options and
- * generates a structure file (structure.xml) at the target location (which is
- * the folder 'output' unless the option -t is provided).
+ * generates a cached representation of the project structure.
  */
 final class ParseCommand extends Command
 {

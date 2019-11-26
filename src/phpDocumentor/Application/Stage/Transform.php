@@ -35,9 +35,8 @@ use Symfony\Component\Stopwatch\Stopwatch;
  * Transforms the structure file into the specified output format
  *
  * This task will execute the transformation rules described in the given
- * template (defaults to 'responsive') with the given source (defaults to
- * output/structure.xml) and writes these to the target location (defaults to
- * 'output').
+ * template with the given source and writes these to the target location
+ * (defaults to 'output').
  *
  * It is possible for the user to receive additional information using the
  * verbose option or stop additional information using the quiet option. Please
