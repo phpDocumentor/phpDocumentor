@@ -39,6 +39,7 @@ class Dispatcher extends EventDispatcher
      */
     protected function __construct()
     {
+        parent::__construct();
     }
 
     /**
