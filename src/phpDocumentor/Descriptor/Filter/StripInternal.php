@@ -18,7 +18,6 @@ namespace phpDocumentor\Descriptor\Filter;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
-use Zend\Filter\AbstractFilter;
 
 /**
  * Filters a Descriptor when the @internal inline tag, or normal tag, is used.
