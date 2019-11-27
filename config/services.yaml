@@ -213,26 +213,24 @@ services:
     phpDocumentor\Parser\Middleware\StopwatchMiddleware:
         tags: [ { name: 'phpdoc.parser.middleware', priority: 5000 } ]
 
+    # Increments the progress bar; by placing it in front of the cache you see the progress bar
+    # increment, even while we only consume the cache
+    phpDocumentor\Parser\Middleware\EmittingMiddleware:
+      tags: [ { name: 'phpdoc.parser.middleware', priority: 4500 } ]
+
     phpDocumentor\Parser\Middleware\CacheMiddleware:
-        arguments:
-            $dataStore: '@Stash\Pool'
         tags: [ { name: 'phpdoc.parser.middleware', priority: 4000 } ]
 
     phpDocumentor\Parser\Middleware\ErrorHandlingMiddleware:
         tags: [ { name: 'phpdoc.parser.middleware', priority: 3000 } ]
 
-    phpDocumentor\Parser\Middleware\EmittingMiddleware:
-        tags: [ { name: 'phpdoc.parser.middleware', priority: 0 } ]
-
     ###################################################################################
     ## Autoloading definitions for external services ##################################
     ###################################################################################
 
-    Psr\Cache\CacheItemPoolInterface: '@Stash\Pool'
-
-    Stash\Interfaces\PoolInterface: '@Stash\Pool'
-
-    Stash\Pool: ~
+    phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper:
+        arguments:
+          $descriptors: '@descriptors'
 
     League\Flysystem\MountManager: ~
 

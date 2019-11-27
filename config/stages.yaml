@@ -19,9 +19,9 @@ services:
   ## Autoloading definitions for cache stages       #################################
   ###################################################################################
 
-    phpDocumentor\Application\Stage\Cache\ConfigureCache:
+    phpDocumentor\Application\Stage\Cache\PurgeCachesWhenForced:
       tags:
-        - { name: 'phpdoc.pipeline.application.cache', priority: 10000 }
+        - { name: 'phpdoc.pipeline.application.configuration', priority: 7000 }
 
     phpDocumentor\Application\Stage\Cache\LoadProjectDescriptorFromCache:
       tags:

@@ -197,9 +197,6 @@
     "symfony/yaml": {
         "version": "v4.0.3"
     },
-    "tedivm/stash": {
-        "version": "v0.14.2"
-    },
     "twig/twig": {
         "version": "v1.35.0"
     },

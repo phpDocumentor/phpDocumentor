@@ -19,6 +19,7 @@ namespace phpDocumentor\Application\Stage\Parser;
 use phpDocumentor\Parser\Parser;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
+use Symfony\Component\Cache\Adapter\AdapterInterface;
 
 final class ParseFiles
 {
@@ -30,17 +31,29 @@ final class ParseFiles
      * @var LoggerInterface
      */
     private $logger;
+    /**
+     * @var AdapterInterface
+     */
+    private $filesCache;
+    /**
+     * @var AdapterInterface
+     */
+    private $descriptorsCache;
 
-    public function __construct(Parser $parser, LoggerInterface $logger)
-    {
+    public function __construct(
+        Parser $parser,
+        LoggerInterface $logger,
+        AdapterInterface $filesCache,
+        AdapterInterface $descriptorsCache
+    ) {
         $this->parser = $parser;
         $this->logger = $logger;
+        $this->filesCache = $filesCache;
+        $this->descriptorsCache = $descriptorsCache;
     }
 
     public function __invoke(Payload $payload)
     {
-        $configuration = $payload->getConfig();
-
         /*
          * For now settings of the first api are used.
          * We need to change this later, when we accept more different things
@@ -52,10 +65,9 @@ final class ParseFiles
         $builder->setMarkers($apiConfig['markers']);
         $builder->setIncludeSource($apiConfig['include-source']);
 
-        $this->parser->setForced(!$configuration['phpdocumentor']['use-cache']);
-
         if ($builder->getProjectDescriptor()->getSettings()->isModified()) {
-            $this->parser->setForced(true);
+            $this->filesCache->clear();
+            $this->descriptorsCache->clear();
             $this->log(
                 'One of the project\'s settings have changed, forcing a complete rebuild',
                 LogLevel::NOTICE
@@ -78,7 +90,7 @@ final class ParseFiles
     /**
      * Dispatches a logging request.
      *
-     * @param string   $priority The logging priority as declared in the LogLevel PSR-3 class.
+     * @param string $priority The logging priority as declared in the LogLevel PSR-3 class.
      * @param string[] $parameters
      */
     private function log(string $message, string $priority = LogLevel::INFO, array $parameters = []): void

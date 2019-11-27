@@ -19,27 +19,21 @@ use phpDocumentor\Reflection\Middleware\Command;
 use phpDocumentor\Reflection\Middleware\Middleware;
 use phpDocumentor\Reflection\Php\Factory\File\CreateCommand;
 use phpDocumentor\Reflection\Php\File;
-use Stash\Interfaces\PoolInterface;
-use Stash\Item;
-use Stash\Pool;
+use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
+use Symfony\Contracts\Cache\CacheInterface;
 
 final class CacheMiddleware implements Middleware
 {
-    /**
-     * Cache namespace used for this repository.
-     */
-    const CACHE_NAMESPACE = 'Documentation\\Api\\Php';
+    /** @var CacheInterface */
+    private $cache;
+    /** @var LoggerInterface */
+    private $logger;
 
-    /**
-     * Cache pool used to store files.
-     *
-     * @var Pool
-     */
-    private $dataStore;
-
-    public function __construct(PoolInterface $dataStore)
+    public function __construct(CacheInterface $files, LoggerInterface $logger)
     {
-        $this->dataStore = $dataStore;
+        $this->cache = $files;
+        $this->logger = $logger;
     }
 
     /**
@@ -50,50 +44,22 @@ final class CacheMiddleware implements Middleware
      * @param callable $next
      *
      * @return File
+     * @throws \Psr\Cache\InvalidArgumentException
      */
     public function execute(Command $command, callable $next)
     {
-        $itemName = $this->getItemName($command->getFile()->path());
-        $item = $this->dataStore->getItem($itemName);
-        if ($item->isMiss()) {
-            return $this->updateCache($command, $next, $item);
-        }
+        $itemName = md5($command->getFile()->path());
 
-        /** @var File $cachedFile */
-        $cachedFile = $item->get();
-
-        if ($cachedFile === null) {
-            return $this->updateCache($command, $next, $item);
-        }
-
-        if ($cachedFile->getHash() !== $command->getFile()->md5()) {
-            return $this->updateCache($command, $next, $item);
-        }
+        $cacheResponse = $this->cache->get(
+            $itemName . '-' . $command->getFile()->md5(),
+            function () use ($next, $command) {
+                $this->logger->log(LogLevel::NOTICE, 'Parsing ' . $command->getFile()->path());
+                $file = $next($command);
+                return base64_encode(serialize($file));
+            }
+        );
+        $cachedFile = unserialize(base64_decode($cacheResponse));
 
         return $cachedFile;
-    }
-
-    /**
-     * @param callable $next
-     * @param Item $item
-     * @return mixed
-     */
-    private function updateCache(CreateCommand $command, callable $next, $item)
-    {
-        $file = $next($command);
-        $item->lock();
-        $this->dataStore->save($item->set($file));
-        return $file;
-    }
-
-    /**
-     * Convert path to ItemName
-     *
-     * @param string $path
-     * @return string
-     */
-    private function getItemName($path)
-    {
-        return static::CACHE_NAMESPACE . '\\' . md5($path);
     }
 }

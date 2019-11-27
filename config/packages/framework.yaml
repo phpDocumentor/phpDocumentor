@@ -7,3 +7,13 @@ framework:
 
     php_errors:
         log: true
+
+    cache:
+        app: cache.adapter.filesystem
+        system: cache.adapter.filesystem
+
+        pools:
+            files:
+                adapter: cache.adapter.filesystem
+            descriptors:
+                adapter: cache.adapter.filesystem

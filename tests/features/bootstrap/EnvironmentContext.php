@@ -51,7 +51,7 @@ final class EnvironmentContext implements Context\Context
      */
     public function beforeScenario() : void
     {
-        //WE no we have some deprecations in phpdocumentor. Let tests pass while we are refactoring stuff.
+        // We know we have deprecations in phpDocumentor. Let tests pass while we are refactoring stuff.
         error_reporting(error_reporting() & ~E_USER_DEPRECATED);
         if (!is_dir($this->getWorkingDir())) {
             mkdir($this->getWorkingDir(), 0755, true);

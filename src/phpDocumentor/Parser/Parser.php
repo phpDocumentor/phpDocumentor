@@ -88,30 +88,6 @@ class Parser
     }
 
     /**
-     * Sets whether to force a full parse run of all files.
-     *
-     * @param bool $forced Forces a full parse.
-     *
-     * @api
-     */
-    public function setForced($forced)
-    {
-        $this->force = $forced;
-    }
-
-    /**
-     * Returns whether a full rebuild is required.
-     *
-     * @api
-     *
-     * @return bool
-     */
-    public function isForced()
-    {
-        return $this->force;
-    }
-
-    /**
      * Sets whether to run PHPLint on every file.
      *
      * PHPLint has a huge performance impact on the execution of phpDocumentor and

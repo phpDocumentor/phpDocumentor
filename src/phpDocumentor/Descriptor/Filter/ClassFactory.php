@@ -16,8 +16,6 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Filter;
 
 use League\Pipeline\Pipeline;
-use League\Pipeline\PipelineInterface;
-use Zend\Filter\FilterChain;
 
 /**
  * Retrieves a series of filters to manipulate a specific Descriptor with during building.

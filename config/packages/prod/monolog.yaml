@@ -9,5 +9,7 @@ monolog:
             process_psr_3_messages: false
             channels: ["!event", "!doctrine"]
             verbosity_levels:
-               VERBOSITY_NORMAL: INFO
-               VERBOSITY_VERBOSE: INFO
+                VERBOSITY_NORMAL: ERROR
+                VERBOSITY_VERBOSE: NOTICE
+                VERBOSITY_VERY_VERBOSE: INFO
+                VERBOSITY_DEBUG: DEBUG

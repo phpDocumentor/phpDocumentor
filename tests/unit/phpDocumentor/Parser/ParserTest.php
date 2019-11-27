@@ -59,18 +59,6 @@ class ParserTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers ::setForced
-     * @covers ::isForced
-     */
-    public function testSetAndCheckWhetherParsingIsForced() : void
-    {
-        $this->assertEquals(false, $this->fixture->isForced());
-
-        $this->fixture->setForced(true);
-        $this->assertEquals(true, $this->fixture->isForced());
-    }
-
-    /**
      * @covers ::setEncoding
      * @covers ::getEncoding
      */

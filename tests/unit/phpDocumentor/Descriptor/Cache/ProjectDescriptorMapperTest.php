@@ -17,6 +17,7 @@ use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use Stash\Driver\Ephemeral;
 use Stash\Pool;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 /**
  * @coversDefaultClass \phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper
@@ -34,7 +35,7 @@ final class ProjectDescriptorMapperTest extends \Mockery\Adapter\Phpunit\Mockery
 
     protected function setUp(): void
     {
-        $this->cachePool = new Pool(new Ephemeral());
+        $this->cachePool = new FilesystemAdapter();
         $this->mapper = new ProjectDescriptorMapper($this->cachePool);
     }
 

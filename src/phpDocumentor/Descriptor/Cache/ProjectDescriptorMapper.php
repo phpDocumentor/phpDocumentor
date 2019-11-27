@@ -18,29 +18,28 @@ namespace phpDocumentor\Descriptor\Cache;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Reflection\File;
-use Psr\Cache\CacheItemPoolInterface;
-use Stash\Item;
+use Psr\Cache\CacheItemInterface;
+use Symfony\Component\Cache\Adapter\AdapterInterface;
 
 /**
  * Maps a projectDescriptor to and from a cache instance.
  */
 final class ProjectDescriptorMapper
 {
-    const FILE_PREFIX = 'phpDocumentor/projectDescriptor/files/';
+    const FILE_PREFIX = 'phpDocumentor-projectDescriptor-files-';
 
-    const FILE_LIST = 'phpDocumentor/projectDescriptor/filelist';
+    const FILE_LIST = 'phpDocumentor-projectDescriptor-filelist';
 
-    const KEY_SETTINGS = 'phpDocumentor/projectDescriptor/settings';
+    const KEY_SETTINGS = 'phpDocumentor-projectDescriptor-settings';
 
-    /** @var CacheItemPoolInterface */
     private $cache;
 
     /**
      * Initializes this mapper with the given cache instance.
      */
-    public function __construct(CacheItemPoolInterface $cache)
+    public function __construct(AdapterInterface $descriptors)
     {
-        $this->cache = $cache;
+        $this->cache = $descriptors;
     }
 
     /**
@@ -52,7 +51,7 @@ final class ProjectDescriptorMapper
 
         $fileList = $this->cache->getItem(self::FILE_LIST)->get();
         if ($fileList !== null) {
-            /** @var Item $item */
+            /** @var CacheItemInterface $item */
             foreach ($this->cache->getItems($fileList) as $item) {
                 $file = $item->get();
 

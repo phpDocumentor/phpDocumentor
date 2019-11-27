@@ -52,16 +52,9 @@ class Application
     /**
      * Initializes all components used by phpDocumentor.
      */
-    public function __construct(LoggerInterface $logger)
+    public function __construct()
     {
         $this->defineIniSettings();
-
-        Dispatcher::getInstance()->addListener(
-            'parser.file.pre',
-            function (PreFileEvent $event) use ($logger) {
-                $logger->log(LogLevel::NOTICE, 'Parsing ' . $event->getFile());
-            }
-        );
     }
 
     /**
