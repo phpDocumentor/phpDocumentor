@@ -83,9 +83,6 @@
     "symfony/cache": {
         "version": "v4.0.3"
     },
-    "symfony/cache-contracts": {
-        "version": "v2.0.0"
-    },
     "symfony/config": {
         "version": "v4.0.3"
     },
@@ -181,9 +178,6 @@
             "version": "4.0",
             "ref": "cda8b550123383d25827705d05a42acf6819fe4e"
         }
-    },
-    "symfony/service-contracts": {
-        "version": "v2.0.0"
     },
     "symfony/stopwatch": {
         "version": "v4.0.3"
