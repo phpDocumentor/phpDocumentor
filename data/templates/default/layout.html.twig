@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}{{ project.name }}{% endblock %}</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ path('css/normalize.css') }}">
+    <link rel="stylesheet" href="{{ path('css/template.css') }}">
+    <link rel="icon" href="{{ path('images/favicon.ico') }}"/>
+</head>
+<body>
+
+<main class="phpdocumentor">
+{% block content %}{% endblock %}
+</main>
+
+</body>
+</html>

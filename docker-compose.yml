@@ -2,6 +2,8 @@ version: '3'
 services:
   phpdoc:
     build: .
+    volumes: [".:/opt/phpdoc"]
+    working_dir: "/opt/phpdoc"
 
   phpunit:
     build: docker/with-pcov

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <author>Mike van Riel</author>
+  <email>mike@phpdoc.org</email>
+  <version>1.0.0</version>
+  <copyright></copyright>
+  <description></description>
+  <transformations>
+    <transformation query="copy" writer="FileIo" source="templates/default/css" artifact="css"/>
+    <transformation writer="twig" query="namespace" source="templates/default/index.html.twig" artifact="index.html"/>
+    <transformation writer="twig" query="indexes.namespaces" source="templates/default/index.html.twig" />
+  </transformations>
+  <parameters>
+    <parameter key="twig-debug">true</parameter>
+  </parameters>
+</template>

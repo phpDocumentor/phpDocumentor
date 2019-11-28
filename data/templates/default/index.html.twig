@@ -1,0 +1,43 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+    <div class="phpdocumentor-section">
+        <div class="three phpdocumentor-columns">
+            <p>Getting started</p>
+            <ul class="phpdocumentor-list">
+                <li>Setup</li>
+                <li>Creating pages</li>
+                <li>Routing</li>
+                <li>Controllers</li>
+                <li>Templates</li>
+                <li>Configuration</li>
+            </ul>
+        </div>
+        <div class="nine phpdocumentor-columns">
+            <ul class="phpdocumentor-breadcrumbs">
+                <li>Home</li>
+                <li>Documentation</li>
+                <li>Components</li>
+            </ul>
+            <h1>{{ node.fullyQualifiedStructuralElementName }}</h1>
+            <h2>Namespaces</h2>
+            <ul>
+                {% for namespace in node.children %}
+                <li>{{ namespace|route|raw }}</li>
+                {% endfor %}
+            </ul>
+
+            <h2>Interfaces and Classes</h2>
+            <ul>
+                {% for interface in node.interfaces %}
+                <li>{{ interface.fullyQualifiedStructuralElementName }}</li>
+                {% endfor %}
+            </ul>
+            <ul>
+                {% for class in node.classes %}
+                <li>{{ class.fullyQualifiedStructuralElementName }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}
