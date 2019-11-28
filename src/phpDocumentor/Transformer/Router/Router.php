@@ -39,7 +39,7 @@ use UnexpectedValueException;
 /**
  * The default for phpDocumentor.
  */
-class StandardRouter extends ArrayObject
+class Router extends ArrayObject
 {
     private $projectDescriptorBuilder;
     private $namespaceUrlGenerator;
@@ -54,15 +54,15 @@ class StandardRouter extends ArrayObject
 
     public function __construct(
         ProjectDescriptorBuilder $projectDescriptorBuilder,
-        UrlGenerator\Standard\NamespaceDescriptor $namespaceUrlGenerator,
-        UrlGenerator\Standard\FileDescriptor $fileUrlGenerator,
-        UrlGenerator\Standard\PackageDescriptor $packageUrlGenerator,
-        UrlGenerator\Standard\ClassDescriptor $classUrlGenerator,
-        UrlGenerator\Standard\MethodDescriptor $methodUrlGenerator,
-        UrlGenerator\Standard\ConstantDescriptor $constantUrlGenerator,
-        UrlGenerator\Standard\FunctionDescriptor $functionUrlGenerator,
-        UrlGenerator\Standard\PropertyDescriptor $propertyUrlGenerator,
-        UrlGenerator\Standard\FqsenDescriptor $fqsenUrlGenerator
+        UrlGenerator\NamespaceDescriptor $namespaceUrlGenerator,
+        UrlGenerator\FileDescriptor $fileUrlGenerator,
+        UrlGenerator\PackageDescriptor $packageUrlGenerator,
+        UrlGenerator\ClassDescriptor $classUrlGenerator,
+        UrlGenerator\MethodDescriptor $methodUrlGenerator,
+        UrlGenerator\ConstantDescriptor $constantUrlGenerator,
+        UrlGenerator\FunctionDescriptor $functionUrlGenerator,
+        UrlGenerator\PropertyDescriptor $propertyUrlGenerator,
+        UrlGenerator\FqsenDescriptor $fqsenUrlGenerator
     ) {
         $this->projectDescriptorBuilder = $projectDescriptorBuilder;
         $this->namespaceUrlGenerator = $namespaceUrlGenerator;

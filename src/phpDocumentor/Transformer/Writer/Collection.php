@@ -15,7 +15,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Writer;
 
-use phpDocumentor\Transformer\Router\StandardRouter;
+use phpDocumentor\Transformer\Router\Router;
 
 /**
  * A collection of Writer objects.
@@ -26,15 +26,15 @@ use phpDocumentor\Transformer\Router\StandardRouter;
  */
 class Collection extends \ArrayObject
 {
-    /** @var StandardRouter A series of routers, in order of importance, that are used to generate urls with */
+    /** @var Router A series of routers, in order of importance, that are used to generate urls with */
     protected $router;
 
     /**
      * Initializes this writer collection with the necessary requirements.
      *
-     * @param StandardRouter $router A series of routers, in order of importance, that are used to generate urls with.
+     * @param Router $router A series of routers, in order of importance, that are used to generate urls with.
      */
-    public function __construct(StandardRouter $router)
+    public function __construct(Router $router)
     {
         $this->router = $router;
 

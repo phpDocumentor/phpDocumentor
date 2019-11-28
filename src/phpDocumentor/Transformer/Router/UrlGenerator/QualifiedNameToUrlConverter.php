@@ -13,7 +13,7 @@ declare(strict_types=1);
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Transformer\Router\UrlGenerator\Standard;
+namespace phpDocumentor\Transformer\Router\UrlGenerator;
 
 /**
  * Service class used to convert Qualified names into URL paths for the Standard Router.

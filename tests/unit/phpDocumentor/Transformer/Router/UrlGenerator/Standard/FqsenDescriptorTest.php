@@ -9,7 +9,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Transformer\Router\UrlGenerator\Standard;
+namespace phpDocumentor\Transformer\Router\UrlGenerator;
 
 use Mockery as m;
 use phpDocumentor\Reflection\DocBlock\Tags\Reference\Fqsen;
@@ -22,8 +22,8 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 class FqsenDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
-     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\Standard\FqsenDescriptor::__invoke
-     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromClass
+     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\FqsenDescriptor::__invoke
+     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\QualifiedNameToUrlConverter::fromClass
      * @dataProvider provideFqsens
      */
     public function testGenerateUrlForFqsenDescriptor($fromFqsen, $toPath) : void

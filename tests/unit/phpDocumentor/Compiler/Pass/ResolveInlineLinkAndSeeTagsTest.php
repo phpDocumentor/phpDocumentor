@@ -19,7 +19,7 @@ use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Transformer\Router\Rule;
-use phpDocumentor\Transformer\Router\StandardRouter;
+use phpDocumentor\Transformer\Router\Router;
 
 /**
  * @coversDefaultClass \phpDocumentor\Compiler\Pass\ResolveInlineLinkAndSeeTags
@@ -28,7 +28,7 @@ use phpDocumentor\Transformer\Router\StandardRouter;
  */
 class ResolveInlineLinkAndSeeTagsTest extends MockeryTestCase
 {
-    /** @var StandardRouter|MockInterface */
+    /** @var Router|MockInterface */
     private $router;
 
     /** @var ResolveInlineLinkAndSeeTags */
@@ -39,7 +39,7 @@ class ResolveInlineLinkAndSeeTagsTest extends MockeryTestCase
      */
     protected function setUp(): void
     {
-        $this->router = m::mock(StandardRouter::class);
+        $this->router = m::mock(Router::class);
         $this->fixture = new ResolveInlineLinkAndSeeTags($this->router);
     }
 

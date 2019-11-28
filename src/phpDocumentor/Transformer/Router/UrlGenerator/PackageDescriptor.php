@@ -13,21 +13,19 @@ declare(strict_types=1);
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Transformer\Router\UrlGenerator\Standard;
+namespace phpDocumentor\Transformer\Router\UrlGenerator;
 
 use phpDocumentor\Descriptor;
 use phpDocumentor\Transformer\Router\UrlGenerator\UrlGeneratorInterface as UrlGenerator;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class FileDescriptor implements UrlGenerator
+class PackageDescriptor implements UrlGenerator
 {
     private $urlGenerator;
     private $converter;
 
-    public function __construct(
-        UrlGeneratorInterface $urlGenerator,
-        QualifiedNameToUrlConverter $converter
-    ) {
+    public function __construct(UrlGeneratorInterface $urlGenerator, QualifiedNameToUrlConverter $converter)
+    {
         $this->urlGenerator = $urlGenerator;
         $this->converter = $converter;
     }
@@ -35,16 +33,16 @@ class FileDescriptor implements UrlGenerator
     /**
      * Generates a URL from the given node or returns false if unable.
      *
-     * @param string|Descriptor\FileDescriptor $node
+     * @param string|Descriptor\PackageDescriptor $node
      *
      * @return string|false
      */
     public function __invoke($node)
     {
         return $this->urlGenerator->generate(
-            'file',
+            'package',
             [
-                'name' => $this->converter->fromFile($node->getPath())
+                'name' => $this->converter->fromPackage($node->getFullyQualifiedStructuralElementName())
             ]
         );
     }

@@ -26,7 +26,7 @@ use phpDocumentor\Descriptor\Type\CollectionDescriptor;
  */
 final class RendererTest extends MockeryTestCase
 {
-    /** @var StandardRouter */
+    /** @var Router */
     private $router;
 
     /** @var Renderer */
@@ -34,7 +34,7 @@ final class RendererTest extends MockeryTestCase
 
     protected function setUp(): void
     {
-        $this->router = m::mock(StandardRouter::class);
+        $this->router = m::mock(Router::class);
 
         $this->renderer = new Renderer($this->router);
     }

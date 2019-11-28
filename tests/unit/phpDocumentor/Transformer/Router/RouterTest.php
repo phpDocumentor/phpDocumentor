@@ -11,19 +11,20 @@
 
 namespace phpDocumentor\Transformer\Router;
 
-use Closure;
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Reflection\DocBlock\Tags\Reference\Fqsen;
 use phpDocumentor\Reflection\DocBlock\Tags\Reference\Url;
 use phpDocumentor\Reflection\Fqsen as RealFqsen;
-use phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter;
+use phpDocumentor\Transformer\Router\UrlGenerator\FqsenDescriptor;
+use phpDocumentor\Transformer\Router\UrlGenerator\MethodDescriptor;
+use phpDocumentor\Transformer\Router\UrlGenerator\QualifiedNameToUrlConverter;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class StandardRouterTest extends MockeryTestCase
+class RouterTest extends MockeryTestCase
 {
-    /** @var StandardRouter */
+    /** @var Router */
     private $fixture;
 
     /** @var Collection */
@@ -44,25 +45,25 @@ class StandardRouterTest extends MockeryTestCase
             ->with('elements')
             ->andReturn($this->elementCollection);
 
-        $this->fixture = new StandardRouter(
+        $this->fixture = new Router(
             $builder,
-            new UrlGenerator\Standard\NamespaceDescriptor($urlGenerator, $converter),
-            new UrlGenerator\Standard\FileDescriptor($urlGenerator, $converter),
-            new UrlGenerator\Standard\PackageDescriptor($urlGenerator, $converter),
-            new UrlGenerator\Standard\ClassDescriptor($urlGenerator, $converter),
-            new UrlGenerator\Standard\MethodDescriptor($urlGenerator, $converter),
-            new UrlGenerator\Standard\ConstantDescriptor($urlGenerator, $converter),
-            new UrlGenerator\Standard\FunctionDescriptor($urlGenerator, $converter),
-            new UrlGenerator\Standard\PropertyDescriptor($urlGenerator, $converter),
-            new UrlGenerator\Standard\FqsenDescriptor($urlGenerator, $converter)
+            new UrlGenerator\NamespaceDescriptor($urlGenerator, $converter),
+            new UrlGenerator\FileDescriptor($urlGenerator, $converter),
+            new UrlGenerator\PackageDescriptor($urlGenerator, $converter),
+            new UrlGenerator\ClassDescriptor($urlGenerator, $converter),
+            new UrlGenerator\MethodDescriptor($urlGenerator, $converter),
+            new UrlGenerator\ConstantDescriptor($urlGenerator, $converter),
+            new UrlGenerator\FunctionDescriptor($urlGenerator, $converter),
+            new UrlGenerator\PropertyDescriptor($urlGenerator, $converter),
+            new UrlGenerator\FqsenDescriptor($urlGenerator, $converter)
         );
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Router\StandardRouter::configure
-     * @covers \phpDocumentor\Transformer\Router\StandardRouter::__construct
-     * @covers \phpDocumentor\Transformer\Router\StandardRouter::configure
-     * @covers \phpDocumentor\Transformer\Router\StandardRouter::match
+     * @covers \phpDocumentor\Transformer\Router\Router::configure
+     * @covers \phpDocumentor\Transformer\Router\Router::__construct
+     * @covers \phpDocumentor\Transformer\Router\Router::configure
+     * @covers \phpDocumentor\Transformer\Router\Router::match
      * @dataProvider provideDescriptorNames
      */
     public function testIfARouteForAFileCanBeGenerated($descriptorName, $generatorName = null) : void
@@ -81,16 +82,16 @@ class StandardRouterTest extends MockeryTestCase
         $generatorProperty->setAccessible(true);
 
         $this->assertInstanceOf(
-            '\phpDocumentor\\Transformer\\Router\\UrlGenerator\\Standard\\' . $generatorName,
+            '\phpDocumentor\\Transformer\\Router\\UrlGenerator\\' . $generatorName,
             $generatorProperty->getValue($rule)
         );
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Router\StandardRouter::configure
-     * @covers \phpDocumentor\Transformer\Router\StandardRouter::__construct
-     * @covers \phpDocumentor\Transformer\Router\StandardRouter::configure
-     * @covers \phpDocumentor\Transformer\Router\StandardRouter::match
+     * @covers \phpDocumentor\Transformer\Router\Router::configure
+     * @covers \phpDocumentor\Transformer\Router\Router::__construct
+     * @covers \phpDocumentor\Transformer\Router\Router::configure
+     * @covers \phpDocumentor\Transformer\Router\Router::match
      */
     public function testIfARouteForAFqsenFileCanBeGenerated() : void
     {
@@ -105,18 +106,15 @@ class StandardRouterTest extends MockeryTestCase
         $generatorProperty = new \ReflectionProperty(Rule::class, 'generator');
         $generatorProperty->setAccessible(true);
 
-        $this->assertInstanceOf('phpDocumentor\\Transformer\\Router\\Rule', $rule);
-        $this->assertInstanceOf(
-            '\phpDocumentor\\Transformer\\Router\\UrlGenerator\\Standard\\FqsenDescriptor',
-            $generatorProperty->getValue($rule)
-        );
+        $this->assertInstanceOf(Rule::class, $rule);
+        $this->assertInstanceOf(FqsenDescriptor::class, $generatorProperty->getValue($rule));
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Router\StandardRouter::configure
-     * @covers \phpDocumentor\Transformer\Router\StandardRouter::__construct
-     * @covers \phpDocumentor\Transformer\Router\StandardRouter::configure
-     * @covers \phpDocumentor\Transformer\Router\StandardRouter::match
+     * @covers \phpDocumentor\Transformer\Router\Router::configure
+     * @covers \phpDocumentor\Transformer\Router\Router::__construct
+     * @covers \phpDocumentor\Transformer\Router\Router::configure
+     * @covers \phpDocumentor\Transformer\Router\Router::match
      */
     public function testIfARouteForAUrlCanBeGenerated() : void
     {
@@ -128,16 +126,16 @@ class StandardRouterTest extends MockeryTestCase
         $result = $rule->generate($file);
 
         // Assert
-        $this->assertInstanceOf('phpDocumentor\\Transformer\\Router\\Rule', $rule);
+        $this->assertInstanceOf(Rule::class, $rule);
         $this->assertSame('http://www.phpdoc.org', $result);
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Router\StandardRouter::configure
-     * @covers \phpDocumentor\Transformer\Router\StandardRouter::__construct
-     * @covers \phpDocumentor\Transformer\Router\StandardRouter::__construct
-     * @covers \phpDocumentor\Transformer\Router\StandardRouter::configure
-     * @covers \phpDocumentor\Transformer\Router\StandardRouter::match
+     * @covers \phpDocumentor\Transformer\Router\Router::configure
+     * @covers \phpDocumentor\Transformer\Router\Router::__construct
+     * @covers \phpDocumentor\Transformer\Router\Router::__construct
+     * @covers \phpDocumentor\Transformer\Router\Router::configure
+     * @covers \phpDocumentor\Transformer\Router\Router::match
      */
     public function testIfARouteForAFqsenCanBeGenerated() : void
     {
@@ -152,15 +150,12 @@ class StandardRouterTest extends MockeryTestCase
         $generatorProperty = new \ReflectionProperty(Rule::class, 'generator');
         $generatorProperty->setAccessible(true);
 
-        $this->assertInstanceOf('phpDocumentor\\Transformer\\Router\\Rule', $rule);
-        $this->assertInstanceOf(
-            '\phpDocumentor\\Transformer\\Router\\UrlGenerator\\Standard\\MethodDescriptor',
-            $generatorProperty->getValue($rule)
-        );
+        $this->assertInstanceOf(Rule::class, $rule);
+        $this->assertInstanceOf(MethodDescriptor::class, $generatorProperty->getValue($rule));
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Router\StandardRouter::match
+     * @covers \phpDocumentor\Transformer\Router\Router::match
      */
     public function testGeneratingRouteForUnknownNodeReturnsFalse() : void
     {

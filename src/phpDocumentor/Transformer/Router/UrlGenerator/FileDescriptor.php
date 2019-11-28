@@ -13,22 +13,21 @@ declare(strict_types=1);
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Transformer\Router\UrlGenerator\Standard;
+namespace phpDocumentor\Transformer\Router\UrlGenerator;
 
 use phpDocumentor\Descriptor;
 use phpDocumentor\Transformer\Router\UrlGenerator\UrlGeneratorInterface as UrlGenerator;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-/**
- * Generates a relative URL with methods for use in the generated HTML documentation.
- */
-class MethodDescriptor implements UrlGenerator
+class FileDescriptor implements UrlGenerator
 {
     private $urlGenerator;
     private $converter;
 
-    public function __construct(UrlGeneratorInterface $urlGenerator, QualifiedNameToUrlConverter $converter)
-    {
+    public function __construct(
+        UrlGeneratorInterface $urlGenerator,
+        QualifiedNameToUrlConverter $converter
+    ) {
         $this->urlGenerator = $urlGenerator;
         $this->converter = $converter;
     }
@@ -36,19 +35,16 @@ class MethodDescriptor implements UrlGenerator
     /**
      * Generates a URL from the given node or returns false if unable.
      *
-     * @param string|Descriptor\MethodDescriptor $node
+     * @param string|Descriptor\FileDescriptor $node
      *
-     * @return string
+     * @return string|false
      */
     public function __invoke($node)
     {
         return $this->urlGenerator->generate(
-            'method',
+            'file',
             [
-                'className' => $this->converter->fromClass(
-                    $node->getParent()->getFullyQualifiedStructuralElementName()
-                ),
-                'methodName' => $node->getName()
+                'name' => $this->converter->fromFile($node->getPath())
             ]
         );
     }

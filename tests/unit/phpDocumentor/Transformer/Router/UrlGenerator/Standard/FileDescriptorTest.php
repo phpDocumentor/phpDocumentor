@@ -9,7 +9,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Transformer\Router\UrlGenerator\Standard;
+namespace phpDocumentor\Transformer\Router\UrlGenerator;
 
 use Mockery as m;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -21,9 +21,9 @@ class FileDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
      * @codingStandardsIgnoreStart
-     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\Standard\FileDescriptor::__invoke
-     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromFile
-     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::removeFileExtensionFromPath
+     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\FileDescriptor::__invoke
+     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\QualifiedNameToUrlConverter::fromFile
+     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\QualifiedNameToUrlConverter::removeFileExtensionFromPath
      * @codingStandardsIgnoreEnd
      */
     public function testGenerateUrlForFileDescriptor() : void

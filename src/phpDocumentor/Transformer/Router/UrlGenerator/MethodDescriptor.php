@@ -13,13 +13,16 @@ declare(strict_types=1);
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Transformer\Router\UrlGenerator\Standard;
+namespace phpDocumentor\Transformer\Router\UrlGenerator;
 
 use phpDocumentor\Descriptor;
 use phpDocumentor\Transformer\Router\UrlGenerator\UrlGeneratorInterface as UrlGenerator;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class ConstantDescriptor implements UrlGenerator
+/**
+ * Generates a relative URL with methods for use in the generated HTML documentation.
+ */
+class MethodDescriptor implements UrlGenerator
 {
     private $urlGenerator;
     private $converter;
@@ -33,45 +36,20 @@ class ConstantDescriptor implements UrlGenerator
     /**
      * Generates a URL from the given node or returns false if unable.
      *
-     * @param string|Descriptor\ConstantDescriptor $node
+     * @param string|Descriptor\MethodDescriptor $node
      *
      * @return string
      */
     public function __invoke($node)
     {
-        if ($this->isGlobalConstant($node)) {
-            return $this->generateUrlForGlobalConstant($node);
-        }
-
-        return $this->generateUrlForClassConstant($node);
-    }
-
-    private function generateUrlForGlobalConstant(Descriptor\ConstantDescriptor $node): string
-    {
         return $this->urlGenerator->generate(
-            'global_constant',
+            'method',
             [
-                'namespaceName' => $this->converter->fromNamespace($node->getNamespace()),
-                'constantName' => $node->getName()
-            ]
-        );
-    }
-
-    private function generateUrlForClassConstant(Descriptor\ConstantDescriptor $node): string
-    {
-        return $this->urlGenerator->generate(
-            'class_constant',
-            [
-                'className' => $this->converter->fromNamespace(
+                'className' => $this->converter->fromClass(
                     $node->getParent()->getFullyQualifiedStructuralElementName()
                 ),
-                'constantName' => $node->getName()
+                'methodName' => $node->getName()
             ]
         );
-    }
-
-    private function isGlobalConstant(Descriptor\ConstantDescriptor $node): bool
-    {
-        return ($node->getParent() instanceof Descriptor\FileDescriptor || !$node->getParent());
     }
 }

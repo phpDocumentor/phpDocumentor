@@ -13,13 +13,16 @@ declare(strict_types=1);
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Transformer\Router\UrlGenerator\Standard;
+namespace phpDocumentor\Transformer\Router\UrlGenerator;
 
 use phpDocumentor\Descriptor;
 use phpDocumentor\Transformer\Router\UrlGenerator\UrlGeneratorInterface as UrlGenerator;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class PackageDescriptor implements UrlGenerator
+/**
+ * Generates a relative URL with properties for use in the generated HTML documentation.
+ */
+class PropertyDescriptor implements UrlGenerator
 {
     private $urlGenerator;
     private $converter;
@@ -33,16 +36,19 @@ class PackageDescriptor implements UrlGenerator
     /**
      * Generates a URL from the given node or returns false if unable.
      *
-     * @param string|Descriptor\PackageDescriptor $node
+     * @param string|Descriptor\PropertyDescriptor $node
      *
-     * @return string|false
+     * @return string
      */
     public function __invoke($node)
     {
         return $this->urlGenerator->generate(
-            'package',
+            'property',
             [
-                'name' => $this->converter->fromPackage($node->getFullyQualifiedStructuralElementName())
+                'className' => $this->converter->fromClass(
+                    $node->getParent()->getFullyQualifiedStructuralElementName()
+                ),
+                'propertyName' => $node->getName()
             ]
         );
     }

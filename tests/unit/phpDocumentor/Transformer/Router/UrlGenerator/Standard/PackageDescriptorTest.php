@@ -9,7 +9,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Transformer\Router\UrlGenerator\Standard;
+namespace phpDocumentor\Transformer\Router\UrlGenerator;
 
 use Mockery as m;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -20,8 +20,8 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 class PackageDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
-     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\Standard\PackageDescriptor::__invoke
-     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromPackage
+     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\PackageDescriptor::__invoke
+     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\QualifiedNameToUrlConverter::fromPackage
      */
     public function testGenerateUrlForPackageDescriptor() : void
     {
@@ -42,8 +42,8 @@ class PackageDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\Standard\PackageDescriptor::__invoke
-     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromPackage
+     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\PackageDescriptor::__invoke
+     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\QualifiedNameToUrlConverter::fromPackage
      */
     public function testGenerateUrlForPackageDescriptorWithGlobalNamespace() : void
     {

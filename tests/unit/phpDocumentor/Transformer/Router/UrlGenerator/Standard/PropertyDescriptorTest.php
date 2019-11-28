@@ -9,7 +9,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Transformer\Router\UrlGenerator\Standard;
+namespace phpDocumentor\Transformer\Router\UrlGenerator;
 
 use Mockery as m;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -20,8 +20,8 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 class PropertyDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
-     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\Standard\PropertyDescriptor::__invoke
-     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromClass
+     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\PropertyDescriptor::__invoke
+     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\QualifiedNameToUrlConverter::fromClass
      */
     public function testGenerateUrlForPropertyDescriptor() : void
     {

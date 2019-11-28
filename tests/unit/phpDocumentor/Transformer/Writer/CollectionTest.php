@@ -15,14 +15,14 @@ namespace phpDocumentor\Transformer\Writer;
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery\MockInterface;
-use phpDocumentor\Transformer\Router\StandardRouter;
+use phpDocumentor\Transformer\Router\Router;
 
 /**
  * Test class for phpDocumentor\Transformer\Writer\Collection
  */
 class CollectionTest extends MockeryTestCase
 {
-    /** @var MockInterface|StandardRouter */
+    /** @var MockInterface|Router */
     protected $routers;
 
     /** @var MockInterface|WriterAbstract */
@@ -36,7 +36,7 @@ class CollectionTest extends MockeryTestCase
      */
     protected function setUp(): void
     {
-        $this->routers = m::mock(StandardRouter::class);
+        $this->routers = m::mock(Router::class);
         $this->writer = m::mock(WriterAbstract::class);
         $this->fixture = new Collection($this->routers);
     }

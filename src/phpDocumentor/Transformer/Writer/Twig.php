@@ -16,7 +16,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Writer;
 
 use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\Transformer\Router\StandardRouter;
+use phpDocumentor\Transformer\Router\Router;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory;
 use Twig\Error\LoaderError;
@@ -83,7 +83,7 @@ final class Twig extends WriterAbstract
     private $environmentFactory;
     private $router;
 
-    public function __construct(EnvironmentFactory $environmentFactory, StandardRouter $router)
+    public function __construct(EnvironmentFactory $environmentFactory, Router $router)
     {
         $this->environmentFactory = $environmentFactory;
         $this->router = $router;

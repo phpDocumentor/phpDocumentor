@@ -9,25 +9,27 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Transformer\Router\UrlGenerator\Standard;
+namespace phpDocumentor\Transformer\Router\UrlGenerator;
 
 use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
+use phpDocumentor\Descriptor\ConstantDescriptor as ConstantDescriptorAlias;
+use phpDocumentor\Descriptor\FileDescriptor as FileDescriptorAlias;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Test for the ConstantDescriptor URL Generator with the Standard Router
+ * @coversDefaultClass \phpDocumentor\Transformer\Router\UrlGenerator\ConstantDescriptor
  */
-class ConstantDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+class ConstantDescriptorTest extends MockeryTestCase
 {
     /**
-     * @codingStandardsIgnoreStart
-     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\Standard\ConstantDescriptor::__construct
-     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\Standard\ConstantDescriptor::__invoke
-     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\Standard\ConstantDescriptor::getUrlPathPrefixForGlobalConstants
-     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromNamespace
-     * @codingStandardsIgnoreEnd
+     * @covers ::__construct
+     * @covers ::__invoke
+     * @covers ::generateUrlForGlobalConstant
+     * @uses \phpDocumentor\Transformer\Router\UrlGenerator\QualifiedNameToUrlConverter::fromNamespace
      */
-    public function testGenerateUrlForGlobalConstants() : void
+    public function testGenerateUrlForGlobalConstants(): void
     {
         // Arrange
         $expected = '/namespaces/My.Space.html#constant_myConstant';
@@ -36,9 +38,9 @@ class ConstantDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $converter = new QualifiedNameToUrlConverter();
 
         $fixture = new ConstantDescriptor($urlGenerator, $converter);
-        $constantDescriptorMock = m::mock('phpDocumentor\Descriptor\ConstantDescriptor');
+        $constantDescriptorMock = m::mock(ConstantDescriptorAlias::class);
         $constantDescriptorMock
-            ->shouldReceive('getParent')->andReturn(m::mock('phpDocumentor\Descriptor\FileDescriptor'));
+            ->shouldReceive('getParent')->andReturn(m::mock(FileDescriptorAlias::class));
         $constantDescriptorMock->shouldReceive('getNamespace')->andReturn('My\\Space');
         $constantDescriptorMock->shouldReceive('getName')->andReturn('myConstant');
 
@@ -50,14 +52,12 @@ class ConstantDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @codingStandardsIgnoreStart
-     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\Standard\ConstantDescriptor::__construct
-     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\Standard\ConstantDescriptor::__invoke
-     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\Standard\ConstantDescriptor::getUrlPathPrefixForGlobalConstants
-     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromNamespace
-     * @codingStandardsIgnoreEnd
+     * @covers ::__construct
+     * @covers ::__invoke
+     * @covers ::generateUrlForGlobalConstant
+     * @uses \phpDocumentor\Transformer\Router\UrlGenerator\QualifiedNameToUrlConverter::fromNamespace
      */
-    public function testGenerateUrlForGlobalConstantsAtRootNamespace() : void
+    public function testGenerateUrlForGlobalConstantsAtRootNamespace(): void
     {
         // Arrange
         $expected = '/namespaces/default.html#constant_myConstant';
@@ -79,13 +79,11 @@ class ConstantDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @codingStandardsIgnoreStart
-     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\Standard\ConstantDescriptor::__invoke
-     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\Standard\ConstantDescriptor::getUrlPathPrefixForClassConstants
-     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromClass
-     * @codingStandardsIgnoreEnd
+     * @covers ::__invoke
+     * @covers ::generateUrlForClassConstant
+     * @uses \phpDocumentor\Transformer\Router\UrlGenerator\QualifiedNameToUrlConverter::fromClass
      */
-    public function testGenerateUrlForClassConstants() : void
+    public function testGenerateUrlForClassConstants(): void
     {
         // Arrange
         $expected = '/classes/My.Space.Class.html#constant_myConstant';
@@ -95,7 +93,9 @@ class ConstantDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $fixture = new ConstantDescriptor($urlGenerator, $converter);
 
         $classDescriptorMock = m::mock('phpDocumentor\Descriptor\ClassDescriptor');
-        $classDescriptorMock->shouldReceive('getFullyQualifiedStructuralElementName')->andReturn('My\\Space\\Class');
+        $classDescriptorMock
+            ->shouldReceive('getFullyQualifiedStructuralElementName')
+            ->andReturn('My\\Space\\Class');
 
         $constantDescriptorMock = m::mock('phpDocumentor\Descriptor\ConstantDescriptor');
         $constantDescriptorMock->shouldReceive('getParent')->andReturn($classDescriptorMock);

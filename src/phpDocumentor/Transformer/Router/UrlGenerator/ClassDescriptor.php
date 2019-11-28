@@ -13,13 +13,13 @@ declare(strict_types=1);
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Transformer\Router\UrlGenerator\Standard;
+namespace phpDocumentor\Transformer\Router\UrlGenerator;
 
 use phpDocumentor\Descriptor;
-use phpDocumentor\Transformer\Router\UrlGenerator\UrlGeneratorInterface as DescriptorUrlGenerator;
+use phpDocumentor\Transformer\Router\UrlGenerator\UrlGeneratorInterface as UrlGenerator;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class NamespaceDescriptor implements DescriptorUrlGenerator
+class ClassDescriptor implements UrlGenerator
 {
     private $urlGenerator;
     private $converter;
@@ -33,16 +33,16 @@ class NamespaceDescriptor implements DescriptorUrlGenerator
     /**
      * Generates a URL from the given node or returns false if unable.
      *
-     * @param string|Descriptor\NamespaceDescriptor $node
+     * @param string|Descriptor\ClassDescriptor $node
      *
-     * @return string|false
+     * @return string
      */
     public function __invoke($node)
     {
         return $this->urlGenerator->generate(
-            'namespace',
+            'class',
             [
-                'name' => $this->converter->fromNamespace($node->getFullyQualifiedStructuralElementName())
+                'name' => $this->converter->fromClass($node->getFullyQualifiedStructuralElementName())
             ]
         );
     }
