@@ -14,6 +14,7 @@ namespace phpDocumentor\Transformer\Router\UrlGenerator\Standard;
 use Mockery as m;
 use phpDocumentor\Reflection\DocBlock\Tags\Reference\Fqsen;
 use phpDocumentor\Reflection\Fqsen as RealFqsen;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Test for the MethodDescriptor URL Generator with the Standard Router
@@ -28,31 +29,18 @@ class FqsenDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testGenerateUrlForFqsenDescriptor($fromFqsen, $toPath) : void
     {
         // Arrange
+        $urlGenerator = m::mock(UrlGeneratorInterface::class);
+        $urlGenerator->shouldReceive('generate')->andReturn($toPath);
+        $converter = new QualifiedNameToUrlConverter();
         $realFqsen = new RealFqsen($fromFqsen);
         $fqsen = new Fqsen($realFqsen);
-        $fixture = new FqsenDescriptor();
+        $fixture = new FqsenDescriptor($urlGenerator, $converter);
 
         // Act
         $result = $fixture($fqsen);
 
         // Assert
         $this->assertSame($toPath, $result);
-    }
-
-    /**
-     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\Standard\FqsenDescriptor::__invoke
-     */
-    public function testFqsenDescriptorReturnsFalseWhenNodeOfWrongType() : void
-    {
-        // Arrange
-        $fqsen = m::mock('phpDocumentor\Reflection\DocBlock\Tags\Reference\Reference');
-        $fixture = new FqsenDescriptor();
-
-        // Act
-        $result = $fixture($fqsen);
-
-        // Assert
-        $this->assertFalse($result);
     }
 
     public function provideFqsens() : array

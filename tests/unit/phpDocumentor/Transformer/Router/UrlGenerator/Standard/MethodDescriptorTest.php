@@ -12,6 +12,7 @@
 namespace phpDocumentor\Transformer\Router\UrlGenerator\Standard;
 
 use Mockery as m;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Test for the MethodDescriptor URL Generator with the Standard Router
@@ -24,8 +25,13 @@ class MethodDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testGenerateUrlForMethodDescriptor() : void
     {
+        $expected = '/classes/My.Space.Class.html#method_myMethod';
+        $urlGenerator = m::mock(UrlGeneratorInterface::class);
+        $urlGenerator->shouldReceive('generate')->andReturn($expected);
+        $converter = new QualifiedNameToUrlConverter();
+
         // Arrange
-        $fixture = new MethodDescriptor();
+        $fixture = new MethodDescriptor($urlGenerator, $converter);
         $methodDescriptorMock = m::mock('phpDocumentor\Descriptor\MethodDescriptor');
         $methodDescriptorMock
             ->shouldReceive('getParent->getFullyQualifiedStructuralElementName')
@@ -36,6 +42,6 @@ class MethodDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $result = $fixture($methodDescriptorMock);
 
         // Assert
-        $this->assertSame('/classes/My.Space.Class.html#method_myMethod', $result);
+        $this->assertSame($expected, $result);
     }
 }

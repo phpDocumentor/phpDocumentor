@@ -16,19 +16,18 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Router\UrlGenerator\Standard;
 
 use phpDocumentor\Descriptor;
-use phpDocumentor\Transformer\Router\UrlGenerator\UrlGeneratorInterface;
+use phpDocumentor\Transformer\Router\UrlGenerator\UrlGeneratorInterface as UrlGenerator;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class ConstantDescriptor implements UrlGeneratorInterface
+class ConstantDescriptor implements UrlGenerator
 {
-    /** @var QualifiedNameToUrlConverter */
+    private $urlGenerator;
     private $converter;
 
-    /**
-     * Initializes this generator.
-     */
-    public function __construct()
+    public function __construct(UrlGeneratorInterface $urlGenerator, QualifiedNameToUrlConverter $converter)
     {
-        $this->converter = new QualifiedNameToUrlConverter();
+        $this->urlGenerator = $urlGenerator;
+        $this->converter = $converter;
     }
 
     /**
@@ -36,42 +35,43 @@ class ConstantDescriptor implements UrlGeneratorInterface
      *
      * @param string|Descriptor\ConstantDescriptor $node
      *
-     * @return string|false
+     * @return string
      */
     public function __invoke($node)
     {
-        if (!($node instanceof Descriptor\ConstantDescriptor)) {
-            return false;
+        if ($this->isGlobalConstant($node)) {
+            return $this->generateUrlForGlobalConstant($node);
         }
 
-        $prefix = ($node->getParent() instanceof Descriptor\FileDescriptor || ! $node->getParent())
-            ? $this->getUrlPathPrefixForGlobalConstants($node)
-            : $this->getUrlPathPrefixForClassConstants($node);
-
-        return $prefix . '.html#constant_' . $node->getName();
+        return $this->generateUrlForClassConstant($node);
     }
 
-    /**
-     * Returns the first part of the URL path that is specific to global constants.
-     *
-     * @param Descriptor\ConstantDescriptor $node
-     *
-     * @return string
-     */
-    private function getUrlPathPrefixForGlobalConstants($node)
+    private function generateUrlForGlobalConstant(Descriptor\ConstantDescriptor $node): string
     {
-        return '/namespaces/' . $this->converter->fromNamespace($node->getNamespace());
+        return $this->urlGenerator->generate(
+            'global_constant',
+            [
+                'namespaceName' => $this->converter->fromNamespace($node->getNamespace()),
+                'constantName' => $node->getName()
+            ]
+        );
     }
 
-    /**
-     * Returns the first part of the URL path that is specific to class constants.
-     *
-     * @param Descriptor\ConstantDescriptor $node
-     *
-     * @return string
-     */
-    private function getUrlPathPrefixForClassConstants($node)
+    private function generateUrlForClassConstant(Descriptor\ConstantDescriptor $node): string
     {
-        return '/classes/' . $this->converter->fromClass($node->getParent()->getFullyQualifiedStructuralElementName());
+        return $this->urlGenerator->generate(
+            'class_constant',
+            [
+                'className' => $this->converter->fromNamespace(
+                    $node->getParent()->getFullyQualifiedStructuralElementName()
+                ),
+                'constantName' => $node->getName()
+            ]
+        );
+    }
+
+    private function isGlobalConstant(Descriptor\DescriptorAbstract $node): bool
+    {
+        return ($node->getParent() instanceof Descriptor\FileDescriptor || !$node->getParent());
     }
 }

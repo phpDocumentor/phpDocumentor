@@ -12,6 +12,7 @@
 namespace phpDocumentor\Transformer\Router\UrlGenerator\Standard;
 
 use Mockery as m;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Test for the ClassDescriptor URL Generator with the Standard Router
@@ -25,7 +26,13 @@ class ClassDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testGenerateUrlForClassDescriptor() : void
     {
         // Arrange
-        $fixture = new ClassDescriptor();
+        $expected = '/classes/My.Space.Class.html';
+
+        $urlGenerator = m::mock(UrlGeneratorInterface::class);
+        $converter = new QualifiedNameToUrlConverter();
+        $fixture = new ClassDescriptor($urlGenerator, $converter);
+
+        $urlGenerator->shouldReceive('generate')->andReturn($expected);
         $classDescriptorMock = m::mock('phpDocumentor\Descriptor\ClassDescriptor');
         $classDescriptorMock->shouldReceive('getFullyQualifiedStructuralElementName')->andReturn('My\\Space\\Class');
 
@@ -33,6 +40,6 @@ class ClassDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $result = $fixture($classDescriptorMock);
 
         // Assert
-        $this->assertSame('/classes/My.Space.Class.html', $result);
+        $this->assertSame($expected, $result);
     }
 }

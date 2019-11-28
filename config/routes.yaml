@@ -1,0 +1,26 @@
+file:
+    path: /files/{name}.html
+
+package:
+    path: /packages/{name}.html
+
+namespace:
+    path: /namespaces/{name}.html
+
+global_constant:
+    path: /namespaces/{namespaceName}.html#constant_{constantName}
+
+function:
+    path: /namespaces/{namespaceName}.html#function_{functionName}
+
+class:
+    path: /classes/{name}.html
+
+method:
+    path: /classes/{className}.html#method_{methodName}
+
+class_constant:
+    path: /classes/{className}.html#constant_{constantName}
+
+property:
+    path: /classes/{className}.html#property_{propertyName}

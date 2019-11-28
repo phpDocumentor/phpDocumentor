@@ -12,6 +12,7 @@
 namespace phpDocumentor\Transformer\Router\UrlGenerator\Standard;
 
 use Mockery as m;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Test for the FileDescriptor URL Generator with the Standard Router
@@ -28,7 +29,11 @@ class FileDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testGenerateUrlForFileDescriptor() : void
     {
         // Arrange
-        $fixture = new FileDescriptor();
+        $expected = '/files/My.Space.Class.html';
+        $urlGenerator = m::mock(UrlGeneratorInterface::class);
+        $urlGenerator->shouldReceive('generate')->andReturn($expected);
+        $converter = new QualifiedNameToUrlConverter();
+        $fixture = new FileDescriptor($urlGenerator, $converter);
         $FileDescriptorMock = m::mock('phpDocumentor\Descriptor\FileDescriptor');
         $FileDescriptorMock->shouldReceive('getPath')->andReturn('My/Space/Class.php');
 
@@ -36,6 +41,6 @@ class FileDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $result = $fixture($FileDescriptorMock);
 
         // Assert
-        $this->assertSame('/files/My.Space.Class.html', $result);
+        $this->assertSame($expected, $result);
     }
 }

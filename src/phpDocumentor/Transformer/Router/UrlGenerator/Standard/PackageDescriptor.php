@@ -16,10 +16,20 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Router\UrlGenerator\Standard;
 
 use phpDocumentor\Descriptor;
-use phpDocumentor\Transformer\Router\UrlGenerator\UrlGeneratorInterface;
+use phpDocumentor\Transformer\Router\UrlGenerator\UrlGeneratorInterface as UrlGenerator;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class PackageDescriptor implements UrlGeneratorInterface
+class PackageDescriptor implements UrlGenerator
 {
+    private $urlGenerator;
+    private $converter;
+
+    public function __construct(UrlGeneratorInterface $urlGenerator, QualifiedNameToUrlConverter $converter)
+    {
+        $this->urlGenerator = $urlGenerator;
+        $this->converter = $converter;
+    }
+
     /**
      * Generates a URL from the given node or returns false if unable.
      *
@@ -29,8 +39,11 @@ class PackageDescriptor implements UrlGeneratorInterface
      */
     public function __invoke($node)
     {
-        $converter = new QualifiedNameToUrlConverter();
-
-        return '/packages/' . $converter->fromPackage($node->getFullyQualifiedStructuralElementName()) . '.html';
+        return $this->urlGenerator->generate(
+            'package',
+            [
+                'name' => $this->converter->fromPackage($node->getFullyQualifiedStructuralElementName())
+            ]
+        );
     }
 }

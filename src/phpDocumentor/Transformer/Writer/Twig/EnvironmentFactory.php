@@ -99,11 +99,11 @@ final class EnvironmentFactory
         $isDebug = $transformation->getParameter('twig-debug')
             ? $transformation->getParameter('twig-debug')->getValue()
             : false;
-        if ($isDebug === 'true') {
+//        if ($isDebug === 'true') {
             $twigEnvironment->enableDebug();
             $twigEnvironment->enableAutoReload();
             $twigEnvironment->addExtension(new DebugExtension());
-        }
+//        }
 
         /** @var \phpDocumentor\Transformer\Template\Parameter $extension */
         foreach ($transformation->getParametersWithKey('twig-extension') as $extension) {

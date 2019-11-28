@@ -16,10 +16,22 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Router\UrlGenerator\Standard;
 
 use phpDocumentor\Descriptor;
-use phpDocumentor\Transformer\Router\UrlGenerator\UrlGeneratorInterface;
+use phpDocumentor\Transformer\Router\UrlGenerator\UrlGeneratorInterface as UrlGenerator;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class FileDescriptor implements UrlGeneratorInterface
+class FileDescriptor implements UrlGenerator
 {
+    private $urlGenerator;
+    private $converter;
+
+    public function __construct(
+        UrlGeneratorInterface $urlGenerator,
+        QualifiedNameToUrlConverter $converter
+    ) {
+        $this->urlGenerator = $urlGenerator;
+        $this->converter = $converter;
+    }
+
     /**
      * Generates a URL from the given node or returns false if unable.
      *
@@ -29,8 +41,11 @@ class FileDescriptor implements UrlGeneratorInterface
      */
     public function __invoke($node)
     {
-        $converter = new QualifiedNameToUrlConverter();
-
-        return '/files/' . $converter->fromFile($node->getPath()) . '.html';
+        return $this->urlGenerator->generate(
+            'file',
+            [
+                'name' => $this->converter->fromFile($node->getPath())
+            ]
+        );
     }
 }

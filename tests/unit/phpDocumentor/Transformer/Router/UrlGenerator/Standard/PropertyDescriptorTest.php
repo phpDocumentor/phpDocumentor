@@ -12,6 +12,7 @@
 namespace phpDocumentor\Transformer\Router\UrlGenerator\Standard;
 
 use Mockery as m;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Test for the PropertyDescriptor URL Generator with the Standard Router
@@ -25,7 +26,11 @@ class PropertyDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testGenerateUrlForPropertyDescriptor() : void
     {
         // Arrange
-        $fixture = new PropertyDescriptor();
+        $expected = '/classes/My.Space.Class.html#property_myProperty';
+        $urlGenerator = m::mock(UrlGeneratorInterface::class);
+        $urlGenerator->shouldReceive('generate')->andReturn($expected);
+        $converter = new QualifiedNameToUrlConverter();
+        $fixture = new PropertyDescriptor($urlGenerator, $converter);
         $propertyDescriptorMock = m::mock('phpDocumentor\Descriptor\PropertyDescriptor');
         $propertyDescriptorMock
             ->shouldReceive('getParent->getFullyQualifiedStructuralElementName')
@@ -36,6 +41,6 @@ class PropertyDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $result = $fixture($propertyDescriptorMock);
 
         // Assert
-        $this->assertSame('/classes/My.Space.Class.html#property_myProperty', $result);
+        $this->assertSame($expected, $result);
     }
 }

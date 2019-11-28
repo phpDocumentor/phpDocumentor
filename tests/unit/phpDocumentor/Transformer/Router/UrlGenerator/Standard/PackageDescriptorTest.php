@@ -12,6 +12,7 @@
 namespace phpDocumentor\Transformer\Router\UrlGenerator\Standard;
 
 use Mockery as m;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Test for the PackageDescriptor URL Generator with the Standard Router
@@ -25,7 +26,11 @@ class PackageDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testGenerateUrlForPackageDescriptor() : void
     {
         // Arrange
-        $fixture = new PackageDescriptor();
+        $expected = '/packages/My.Space.Package.html';
+        $urlGenerator = m::mock(UrlGeneratorInterface::class);
+        $urlGenerator->shouldReceive('generate')->andReturn($expected);
+        $converter = new QualifiedNameToUrlConverter();
+        $fixture = new PackageDescriptor($urlGenerator, $converter);
         $PackageDescriptorMock = m::mock('phpDocumentor\Descriptor\PackageDescriptor');
         $PackageDescriptorMock->shouldReceive('getFullyQualifiedStructuralElementName')->andReturn('My\\Space_Package');
 
@@ -33,7 +38,7 @@ class PackageDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $result = $fixture($PackageDescriptorMock);
 
         // Assert
-        $this->assertSame('/packages/My.Space.Package.html', $result);
+        $this->assertSame($expected, $result);
     }
 
     /**
@@ -43,7 +48,12 @@ class PackageDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testGenerateUrlForPackageDescriptorWithGlobalNamespace() : void
     {
         // Arrange
-        $fixture = new PackageDescriptor();
+        $expected = '/packages/default.html';
+        $urlGenerator = m::mock(UrlGeneratorInterface::class);
+        $urlGenerator->shouldReceive('generate')->andReturn($expected);
+        $converter = new QualifiedNameToUrlConverter();
+
+        $fixture = new PackageDescriptor($urlGenerator, $converter);
         $PackageDescriptorMock = m::mock('phpDocumentor\Descriptor\PackageDescriptor');
         $PackageDescriptorMock->shouldReceive('getFullyQualifiedStructuralElementName')->andReturn('\\');
 
@@ -51,6 +61,6 @@ class PackageDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $result = $fixture($PackageDescriptorMock);
 
         // Assert
-        $this->assertSame('/packages/default.html', $result);
+        $this->assertSame($expected, $result);
     }
 }

@@ -16,29 +16,40 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Router\UrlGenerator\Standard;
 
 use phpDocumentor\Descriptor;
-use phpDocumentor\Transformer\Router\UrlGenerator\UrlGeneratorInterface;
+use phpDocumentor\Transformer\Router\UrlGenerator\UrlGeneratorInterface as UrlGenerator;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Generates a relative URL with properties for use in the generated HTML documentation.
  */
-class PropertyDescriptor implements UrlGeneratorInterface
+class PropertyDescriptor implements UrlGenerator
 {
+    private $urlGenerator;
+    private $converter;
+
+    public function __construct(UrlGeneratorInterface $urlGenerator, QualifiedNameToUrlConverter $converter)
+    {
+        $this->urlGenerator = $urlGenerator;
+        $this->converter = $converter;
+    }
+
     /**
      * Generates a URL from the given node or returns false if unable.
      *
      * @param string|Descriptor\PropertyDescriptor $node
      *
-     * @return string|false
+     * @return string
      */
     public function __invoke($node)
     {
-        if (!($node instanceof Descriptor\PropertyDescriptor)) {
-            return false;
-        }
-
-        $converter = new QualifiedNameToUrlConverter();
-        $className = $node->getParent()->getFullyQualifiedStructuralElementName();
-
-        return '/classes/' . $converter->fromClass($className) . '.html#property_' . $node->getName();
+        return $this->urlGenerator->generate(
+            'property',
+            [
+                'className' => $this->converter->fromClass(
+                    $node->getParent()->getFullyQualifiedStructuralElementName()
+                ),
+                'propertyName' => $node->getName()
+            ]
+        );
     }
 }

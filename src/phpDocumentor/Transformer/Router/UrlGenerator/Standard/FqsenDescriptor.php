@@ -16,13 +16,23 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Router\UrlGenerator\Standard;
 
 use phpDocumentor\Reflection\DocBlock\Tags\Reference\Fqsen;
-use phpDocumentor\Transformer\Router\UrlGenerator\UrlGeneratorInterface;
+use phpDocumentor\Transformer\Router\UrlGenerator\UrlGeneratorInterface as UrlGenerator;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Generates a relative URL with properties for use in the generated HTML documentation.
  */
-class FqsenDescriptor implements UrlGeneratorInterface
+class FqsenDescriptor implements UrlGenerator
 {
+    private $urlGenerator;
+    private $converter;
+
+    public function __construct(UrlGeneratorInterface $urlGenerator, QualifiedNameToUrlConverter $converter)
+    {
+        $this->urlGenerator = $urlGenerator;
+        $this->converter = $converter;
+    }
+
     /**
      * Generates a URL from the given node or returns false if unable.
      *
@@ -32,29 +42,47 @@ class FqsenDescriptor implements UrlGeneratorInterface
      */
     public function __invoke($node)
     {
-        if (!($node instanceof Fqsen)) {
-            return false;
-        }
-
-        $converter = new QualifiedNameToUrlConverter();
+        assert($node instanceof Fqsen);
         $fqsenParts = explode('::', (string) $node);
-
-        $className = $fqsenParts[0];
+        $className = $this->converter->fromClass($fqsenParts[0]);
 
         if (count($fqsenParts) === 1) {
-            return '/classes/' . $converter->fromClass($className) . '.html';
+            return $this->urlGenerator->generate(
+                'class',
+                [
+                    'className' => $className,
+                ]
+            );
         }
 
         if (strpos($fqsenParts[1], '$') !== false) {
             $propertyName = explode('$', $fqsenParts[1]);
-            return '/classes/' . $converter->fromClass($className) . '.html#property_' . $propertyName[1];
+            return $this->urlGenerator->generate(
+                'property',
+                [
+                    'className' => $className,
+                    'propertyName' => $propertyName[1]
+                ]
+            );
         }
 
         if (strpos($fqsenParts[1], '()') !== false) {
             $methodName = explode('()', $fqsenParts[1]);
-            return '/classes/' . $converter->fromClass($className) . '.html#method_' . $methodName[0];
+            return $this->urlGenerator->generate(
+                'method',
+                [
+                    'className' => $className,
+                    'methodName' => $methodName[0]
+                ]
+            );
         }
 
-        return '/classes/' . $converter->fromClass($className) . '.html#constant_' . $fqsenParts[1];
+        return $this->urlGenerator->generate(
+            'class_constant',
+            [
+                'className' => $className,
+                'constantName' => $fqsenParts[1]
+            ]
+        );
     }
 }

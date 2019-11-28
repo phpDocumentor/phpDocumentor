@@ -18,6 +18,8 @@ use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Reflection\DocBlock\Tags\Reference\Fqsen;
 use phpDocumentor\Reflection\DocBlock\Tags\Reference\Url;
 use phpDocumentor\Reflection\Fqsen as RealFqsen;
+use phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class StandardRouterTest extends MockeryTestCase
 {
@@ -34,13 +36,26 @@ class StandardRouterTest extends MockeryTestCase
     {
         $this->elementCollection = new Collection();
 
+        $urlGenerator = m::mock(UrlGeneratorInterface::class);
+        $converter = new QualifiedNameToUrlConverter();
         $builder = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
         $builder
             ->shouldReceive('getProjectDescriptor->getIndexes->get')
             ->with('elements')
             ->andReturn($this->elementCollection);
 
-        $this->fixture = new StandardRouter($builder);
+        $this->fixture = new StandardRouter(
+            $builder,
+            new UrlGenerator\Standard\NamespaceDescriptor($urlGenerator, $converter),
+            new UrlGenerator\Standard\FileDescriptor($urlGenerator, $converter),
+            new UrlGenerator\Standard\PackageDescriptor($urlGenerator, $converter),
+            new UrlGenerator\Standard\ClassDescriptor($urlGenerator, $converter),
+            new UrlGenerator\Standard\MethodDescriptor($urlGenerator, $converter),
+            new UrlGenerator\Standard\ConstantDescriptor($urlGenerator, $converter),
+            new UrlGenerator\Standard\FunctionDescriptor($urlGenerator, $converter),
+            new UrlGenerator\Standard\PropertyDescriptor($urlGenerator, $converter),
+            new UrlGenerator\Standard\FqsenDescriptor($urlGenerator, $converter)
+        );
     }
 
     /**

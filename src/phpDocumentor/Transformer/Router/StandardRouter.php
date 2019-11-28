@@ -34,15 +34,39 @@ use phpDocumentor\Reflection\DocBlock\Tags\Reference\Url;
  */
 class StandardRouter extends RouterAbstract
 {
-    /** @var ProjectDescriptorBuilder */
     private $projectDescriptorBuilder;
+    private $namespaceUrlGenerator;
+    private $fileUrlGenerator;
+    private $packageUrlGenerator;
+    private $classUrlGenerator;
+    private $methodUrlGenerator;
+    private $constantUrlGenerator;
+    private $functionUrlGenerator;
+    private $propertyUrlGenerator;
+    private $fqsenUrlGenerator;
 
-    /**
-     * Initializes this router with a list of all elements.
-     */
-    public function __construct(ProjectDescriptorBuilder $projectDescriptorBuilder)
-    {
+    public function __construct(
+        ProjectDescriptorBuilder $projectDescriptorBuilder,
+        UrlGenerator\Standard\NamespaceDescriptor $namespaceUrlGenerator,
+        UrlGenerator\Standard\FileDescriptor $fileUrlGenerator,
+        UrlGenerator\Standard\PackageDescriptor $packageUrlGenerator,
+        UrlGenerator\Standard\ClassDescriptor $classUrlGenerator,
+        UrlGenerator\Standard\MethodDescriptor $methodUrlGenerator,
+        UrlGenerator\Standard\ConstantDescriptor $constantUrlGenerator,
+        UrlGenerator\Standard\FunctionDescriptor $functionUrlGenerator,
+        UrlGenerator\Standard\PropertyDescriptor $propertyUrlGenerator,
+        UrlGenerator\Standard\FqsenDescriptor $fqsenUrlGenerator
+    ) {
         $this->projectDescriptorBuilder = $projectDescriptorBuilder;
+        $this->namespaceUrlGenerator = $namespaceUrlGenerator;
+        $this->fileUrlGenerator = $fileUrlGenerator;
+        $this->packageUrlGenerator = $packageUrlGenerator;
+        $this->classUrlGenerator = $classUrlGenerator;
+        $this->methodUrlGenerator = $methodUrlGenerator;
+        $this->constantUrlGenerator = $constantUrlGenerator;
+        $this->functionUrlGenerator = $functionUrlGenerator;
+        $this->propertyUrlGenerator = $propertyUrlGenerator;
+        $this->fqsenUrlGenerator = $fqsenUrlGenerator;
 
         parent::__construct();
     }
@@ -53,16 +77,6 @@ class StandardRouter extends RouterAbstract
     public function configure()
     {
         $projectDescriptorBuilder = $this->projectDescriptorBuilder;
-
-        $fileGenerator = new UrlGenerator\Standard\FileDescriptor();
-        $namespaceGenerator = new UrlGenerator\Standard\NamespaceDescriptor();
-        $packageGenerator = new UrlGenerator\Standard\PackageDescriptor();
-        $classGenerator = new UrlGenerator\Standard\ClassDescriptor();
-        $methodGenerator = new UrlGenerator\Standard\MethodDescriptor();
-        $constantGenerator = new UrlGenerator\Standard\ConstantDescriptor();
-        $functionGenerator = new UrlGenerator\Standard\FunctionDescriptor();
-        $propertyGenerator = new UrlGenerator\Standard\PropertyDescriptor();
-        $fqsenGenerator = new UrlGenerator\Standard\FqsenDescriptor();
 
         // Here we cheat! If a string element is passed to this rule then we try to transform it into a Descriptor
         // if the node is translated we do not let it match and instead fall through to one of the other rules.
@@ -81,37 +95,37 @@ class StandardRouter extends RouterAbstract
         });
         $this[] = new Rule(function ($node) {
             return $node instanceof FileDescriptor;
-        }, $fileGenerator);
+        }, $this->fileUrlGenerator);
         $this[] = new Rule(function ($node) {
             return $node instanceof PackageDescriptor;
-        }, $packageGenerator);
+        }, $this->packageUrlGenerator);
         $this[] = new Rule(function ($node) {
             return $node instanceof TraitDescriptor;
-        }, $classGenerator);
+        }, $this->classUrlGenerator);
         $this[] = new Rule(function ($node) {
             return $node instanceof NamespaceDescriptor;
-        }, $namespaceGenerator);
+        }, $this->namespaceUrlGenerator);
         $this[] = new Rule(function ($node) {
             return $node instanceof InterfaceDescriptor;
-        }, $classGenerator);
+        }, $this->classUrlGenerator);
         $this[] = new Rule(function ($node) {
             return $node instanceof ClassDescriptor;
-        }, $classGenerator);
+        }, $this->classUrlGenerator);
         $this[] = new Rule(function ($node) {
             return $node instanceof ConstantDescriptor;
-        }, $constantGenerator);
+        }, $this->constantUrlGenerator);
         $this[] = new Rule(function ($node) {
             return $node instanceof MethodDescriptor;
-        }, $methodGenerator);
+        }, $this->methodUrlGenerator);
         $this[] = new Rule(function ($node) {
             return $node instanceof FunctionDescriptor;
-        }, $functionGenerator);
+        }, $this->functionUrlGenerator);
         $this[] = new Rule(function ($node) {
             return $node instanceof PropertyDescriptor;
-        }, $propertyGenerator);
+        }, $this->propertyUrlGenerator);
         $this[] = new Rule(function ($node) {
             return $node instanceof Fqsen;
-        }, $fqsenGenerator);
+        }, $this->fqsenUrlGenerator);
 
         // if this is a link to an external page; return that URL
         $this[] = new Rule(

@@ -12,6 +12,7 @@
 namespace phpDocumentor\Transformer\Router\UrlGenerator\Standard;
 
 use Mockery as m;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Test for the FunctionDescriptor URL Generator with the Standard Router
@@ -25,7 +26,11 @@ class FunctionDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testGenerateUrlForFunctionDescriptor() : void
     {
         // Arrange
-        $fixture = new FunctionDescriptor();
+        $expected = '/namespaces/My.Space.html#function_myFunction';
+        $urlGenerator = m::mock(UrlGeneratorInterface::class);
+        $urlGenerator->shouldReceive('generate')->andReturn($expected);
+        $converter = new QualifiedNameToUrlConverter();
+        $fixture = new FunctionDescriptor($urlGenerator, $converter);
         $functionDescriptorMock = m::mock('phpDocumentor\Descriptor\FunctionDescriptor');
         $functionDescriptorMock->shouldReceive('getNamespace')->andReturn('My\\Space');
         $functionDescriptorMock->shouldReceive('getName')->andReturn('myFunction');
@@ -34,7 +39,7 @@ class FunctionDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $result = $fixture($functionDescriptorMock);
 
         // Assert
-        $this->assertSame('/namespaces/My.Space.html#function_myFunction', $result);
+        $this->assertSame($expected, $result);
     }
 
     /**
@@ -44,7 +49,12 @@ class FunctionDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testGenerateUrlForFunctionDescriptorWithGlobalNamespace() : void
     {
         // Arrange
-        $fixture = new FunctionDescriptor();
+        $expected = '/namespaces/default.html#function_myFunction';
+        $urlGenerator = m::mock(UrlGeneratorInterface::class);
+        $urlGenerator->shouldReceive('generate')->andReturn($expected);
+        $converter = new QualifiedNameToUrlConverter();
+
+        $fixture = new FunctionDescriptor($urlGenerator, $converter);
         $functionDescriptorMock = m::mock('phpDocumentor\Descriptor\FunctionDescriptor');
         $functionDescriptorMock->shouldReceive('getNamespace')->andReturn('\\');
         $functionDescriptorMock->shouldReceive('getName')->andReturn('myFunction');
@@ -53,6 +63,6 @@ class FunctionDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $result = $fixture($functionDescriptorMock);
 
         // Assert
-        $this->assertSame('/namespaces/default.html#function_myFunction', $result);
+        $this->assertSame($expected, $result);
     }
 }

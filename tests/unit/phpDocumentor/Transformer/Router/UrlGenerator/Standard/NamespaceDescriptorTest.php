@@ -12,6 +12,7 @@
 namespace phpDocumentor\Transformer\Router\UrlGenerator\Standard;
 
 use Mockery as m;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Test for the NamespaceDescriptor URL Generator with the Standard Router
@@ -25,7 +26,11 @@ class NamespaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testGenerateUrlForNamespaceDescriptor() : void
     {
         // Arrange
-        $fixture = new NamespaceDescriptor();
+        $expected = '/namespaces/My.Space.html';
+        $urlGenerator = m::mock(UrlGeneratorInterface::class);
+        $urlGenerator->shouldReceive('generate')->andReturn($expected);
+        $converter = new QualifiedNameToUrlConverter();
+        $fixture = new NamespaceDescriptor($urlGenerator, $converter);
         $NamespaceDescriptorMock = m::mock('phpDocumentor\Descriptor\NamespaceDescriptor');
         $NamespaceDescriptorMock->shouldReceive('getFullyQualifiedStructuralElementName')->andReturn('My\\Space');
 
@@ -33,7 +38,7 @@ class NamespaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $result = $fixture($NamespaceDescriptorMock);
 
         // Assert
-        $this->assertSame('/namespaces/My.Space.html', $result);
+        $this->assertSame($expected, $result);
     }
 
     /**
@@ -43,7 +48,12 @@ class NamespaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testGenerateUrlForNamespaceDescriptorWithGlobalNamespace() : void
     {
         // Arrange
-        $fixture = new NamespaceDescriptor();
+        $expected = '/namespaces/default.html';
+        $urlGenerator = m::mock(UrlGeneratorInterface::class);
+        $urlGenerator->shouldReceive('generate')->andReturn($expected);
+        $converter = new QualifiedNameToUrlConverter();
+
+        $fixture = new NamespaceDescriptor($urlGenerator, $converter);
         $NamespaceDescriptorMock = m::mock('phpDocumentor\Descriptor\NamespaceDescriptor');
         $NamespaceDescriptorMock->shouldReceive('getFullyQualifiedStructuralElementName')->andReturn('\\');
 
@@ -51,6 +61,6 @@ class NamespaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $result = $fixture($NamespaceDescriptorMock);
 
         // Assert
-        $this->assertSame('/namespaces/default.html', $result);
+        $this->assertSame($expected, $result);
     }
 }

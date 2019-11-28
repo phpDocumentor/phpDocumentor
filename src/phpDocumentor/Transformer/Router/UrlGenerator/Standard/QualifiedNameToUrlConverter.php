@@ -29,7 +29,7 @@ class QualifiedNameToUrlConverter
      */
     public function fromPackage($fqcn)
     {
-        $name = str_replace(['\\', '_'], '.', ltrim($fqcn, '\\'));
+        $name = str_replace(['\\', '_'], '-', ltrim($fqcn, '\\'));
 
         // convert root namespace to default; default is a keyword and no namespace CAN be named as such
         if ($name === '') {
@@ -48,14 +48,14 @@ class QualifiedNameToUrlConverter
      */
     public function fromNamespace($fqnn)
     {
-        $name = str_replace('\\', '.', ltrim((string) $fqnn, '\\'));
+        $name = str_replace('\\', '-', ltrim((string) $fqnn, '\\'));
 
         // convert root namespace to default; default is a keyword and no namespace CAN be named as such
         if ($name === '') {
             $name = 'default';
         }
 
-        return $name;
+        return strtolower($name);
     }
 
     /**
@@ -67,7 +67,7 @@ class QualifiedNameToUrlConverter
      */
     public function fromClass($fqcn)
     {
-        return str_replace('\\', '.', ltrim((string) $fqcn, '\\'));
+        return str_replace('\\', '-', ltrim((string) $fqcn, '\\'));
     }
 
     /**
@@ -81,7 +81,7 @@ class QualifiedNameToUrlConverter
     {
         $path = $this->removeFileExtensionFromPath($path);
 
-        return str_replace(['/', '\\'], '.', ltrim($path, '/'));
+        return str_replace(['/', '\\'], '-', ltrim($path, '/'));
     }
 
     /**
