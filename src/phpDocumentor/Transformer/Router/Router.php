@@ -209,7 +209,6 @@ class Router extends ArrayObject
                 );
             }
 
-            $rule = new ForFileProxy($rule);
             $url = $rule->generate($descriptor);
             if ($url === false || $url[0] !== DIRECTORY_SEPARATOR) {
                 return null;
