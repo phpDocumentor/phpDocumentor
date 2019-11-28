@@ -23,20 +23,14 @@ use phpDocumentor\Reflection\Type;
 /**
  * Renders an HTML anchor pointing to the location of the provided element.
  */
-class Renderer
+final class Renderer
 {
-    /** @var string */
     protected $destination = '';
+    private $router;
 
-    /** @var Router */
-    private $routers;
-
-    /**
-     * Initializes this renderer with a set of routers that are checked.
-     */
-    public function __construct(Router $routers)
+    public function __construct(Router $router)
     {
-        $this->routers = $routers;
+        $this->router = $router;
     }
 
     /**
@@ -78,7 +72,7 @@ class Renderer
     public function render($value, $presentation)
     {
         if (is_array($value) && current($value) instanceof Type) {
-            return $this->renderType($value, $presentation);
+            return $this->renderType($value);
         }
 
         if (is_array($value) || $value instanceof \Traversable || $value instanceof Collection) {
@@ -129,7 +123,7 @@ class Renderer
             return $path_to_root . ltrim($relative_path, '/');
         }
 
-        $rule = $this->routers->match($relative_path);
+        $rule = $this->router->match($relative_path);
         if (!$rule) {
             return null;
         }
@@ -195,7 +189,7 @@ class Renderer
     protected function renderLink($path, $presentation)
     {
         $url = false;
-        $rule = $this->routers->match($path);
+        $rule = $this->router->match($path);
         if ($rule) {
             $generatedUrl = $rule->generate($path);
             $url = $generatedUrl ? ltrim($generatedUrl, '/') : false;
@@ -222,7 +216,7 @@ class Renderer
         return $url ? sprintf('<a href="%s">%s</a>', $url, $path) : $path;
     }
 
-    private function renderType($value, string $presentation): array
+    private function renderType($value): array
     {
         $result = [];
         foreach ($value as $type) {

@@ -43,10 +43,10 @@ class FunctionDescriptor implements UrlGenerator
     public function __invoke($node)
     {
         return $this->urlGenerator->generate(
-            'global_constant',
+            'namespace',
             [
-                'namespaceName' => $this->converter->fromNamespace($node->getNamespace()),
-                'functionName' => $node->getName()
+                'name' => $this->converter->fromNamespace($node->getNamespace()),
+                '_fragment' => 'constant_' . $node->getName()
             ]
         );
     }

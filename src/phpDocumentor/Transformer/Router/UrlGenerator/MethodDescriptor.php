@@ -43,12 +43,12 @@ class MethodDescriptor implements UrlGenerator
     public function __invoke($node)
     {
         return $this->urlGenerator->generate(
-            'method',
+            'class',
             [
-                'className' => $this->converter->fromClass(
+                'name' => $this->converter->fromClass(
                     $node->getParent()->getFullyQualifiedStructuralElementName()
                 ),
-                'methodName' => $node->getName()
+                '_fragment' => 'method_' . $node->getName()
             ]
         );
     }

@@ -58,10 +58,10 @@ class FqsenDescriptor implements UrlGenerator
         if (strpos($fqsenParts[1], '$') !== false) {
             $propertyName = explode('$', $fqsenParts[1]);
             return $this->urlGenerator->generate(
-                'property',
+                'class',
                 [
-                    'className' => $className,
-                    'propertyName' => $propertyName[1]
+                    'name' => $className,
+                    '_fragment' => 'property_' . $propertyName[1]
                 ]
             );
         }
@@ -69,19 +69,19 @@ class FqsenDescriptor implements UrlGenerator
         if (strpos($fqsenParts[1], '()') !== false) {
             $methodName = explode('()', $fqsenParts[1]);
             return $this->urlGenerator->generate(
-                'method',
+                'class',
                 [
-                    'className' => $className,
-                    'methodName' => $methodName[0]
+                    'name' => $className,
+                    '_fragment' => 'method_' . $methodName[0]
                 ]
             );
         }
 
         return $this->urlGenerator->generate(
-            'class_constant',
+            'class',
             [
-                'className' => $className,
-                'constantName' => $fqsenParts[1]
+                'name' => $className,
+                '_fragment' => 'constant_' . $fqsenParts[1]
             ]
         );
     }

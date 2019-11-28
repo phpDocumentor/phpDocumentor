@@ -43,12 +43,12 @@ class PropertyDescriptor implements UrlGenerator
     public function __invoke($node)
     {
         return $this->urlGenerator->generate(
-            'property',
+            'class',
             [
-                'className' => $this->converter->fromClass(
+                'name' => $this->converter->fromClass(
                     $node->getParent()->getFullyQualifiedStructuralElementName()
                 ),
-                'propertyName' => $node->getName()
+                '_fragment' => 'property_' . $node->getName()
             ]
         );
     }

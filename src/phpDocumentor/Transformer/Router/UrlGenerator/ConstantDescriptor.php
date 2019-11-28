@@ -49,10 +49,10 @@ class ConstantDescriptor implements UrlGenerator
     private function generateUrlForGlobalConstant(Descriptor\ConstantDescriptor $node): string
     {
         return $this->urlGenerator->generate(
-            'global_constant',
+            'namespace',
             [
-                'namespaceName' => $this->converter->fromNamespace($node->getNamespace()),
-                'constantName' => $node->getName()
+                'name' => $this->converter->fromNamespace($node->getNamespace()),
+                '_fragment' => 'constant_' . $node->getName()
             ]
         );
     }
@@ -60,12 +60,12 @@ class ConstantDescriptor implements UrlGenerator
     private function generateUrlForClassConstant(Descriptor\ConstantDescriptor $node): string
     {
         return $this->urlGenerator->generate(
-            'class_constant',
+            'class',
             [
-                'className' => $this->converter->fromNamespace(
+                'name' => $this->converter->fromNamespace(
                     $node->getParent()->getFullyQualifiedStructuralElementName()
                 ),
-                'constantName' => $node->getName()
+                '_fragment' => 'constant_' . $node->getName()
             ]
         );
     }
