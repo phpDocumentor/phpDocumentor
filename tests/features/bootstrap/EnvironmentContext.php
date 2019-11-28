@@ -58,9 +58,7 @@ final class EnvironmentContext implements Context\Context
         }
 
         Assert::directory($this->getWorkingDir());
-        $this->binaryPath = $this->pharPath ? __DIR__ . '/../../../' . $this->pharPath : __DIR__ . '/../../../bin/phpdoc';
-        $this->process = new Process(null);
-        $this->process->setWorkingDirectory($this->getWorkingDir());
+        $this->binaryPath = $this->pharPath ? __DIR__ . '/../../../' . $this->pharPath : realpath(__DIR__ . '/../../../bin/phpdoc');
         chdir($this->getWorkingDir());
     }
 
@@ -113,7 +111,6 @@ final class EnvironmentContext implements Context\Context
             }
         }
 
-        $this->process->setWorkingDirectory($destDir);
         chdir($destDir);
         $this->workingDir = $destDir;
     }
@@ -148,16 +145,17 @@ final class EnvironmentContext implements Context\Context
     public function iRun($argumentsString = '') : void
     {
         $argumentsString = strtr($argumentsString, ['\'' => '"']);
-        if ($this->process->isStarted()) {
-            $this->process->clearErrorOutput()->clearOutput();
+        if ($this->process !== null && $this->process->isRunning()) {
+            throw new \Exception('Already running?');
         }
 
+//        var_dump( array_merge([$this->binaryPath, ' -vvv'], explode(' ', $argumentsString))); exit;
         // the app is always run in debug mode to catch debug information and collect the AST that is written to disk
-        $this->process->setCommandLine(
-            sprintf('%s %s %s', 'php', escapeshellarg($this->binaryPath), $argumentsString . ' -vvv')
+        $this->process = new Process(
+            array_merge([$this->binaryPath, '-vvv'], explode(' ', $argumentsString)),
+            $this->getWorkingDir()
         );
-        $this->process->start();
-        $this->process->wait();
+        $this->process->run();
     }
 
     /**
@@ -167,7 +165,7 @@ final class EnvironmentContext implements Context\Context
     public function theApplicationMustHaveRunSuccessfully() : void
     {
         if ($this->process->getExitCode() !== 0) {
-            throw new \Exception($this->process->getErrorOutput());
+            throw new \Exception($this->process->getOutput());
         }
     }
 

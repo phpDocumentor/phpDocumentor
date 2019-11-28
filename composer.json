@@ -65,7 +65,8 @@
     "minimum-stability": "stable",
     "require-dev": {
         "mikey179/vfsstream": "^1.2",
-        "mockery/mockery": "^1.0"
+        "mockery/mockery": "^1.0",
+        "symfony/process": "^5.0"
     },
     "suggest": {
         "ext-twig": "Enabling the twig extension improves the generation of twig based templates.",
