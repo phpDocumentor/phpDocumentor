@@ -15,7 +15,7 @@ services:
     build: docker/dev
     volumes: [".:/opt/phpdoc"]
     working_dir: "/opt/phpdoc"
-    command: ["./bin/behat"]
+    command: ["./tools/behat"]
 
   phpcs:
     image: oskarstark/phpcs-ga
