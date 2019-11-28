@@ -12,18 +12,23 @@
 namespace phpDocumentor\Transformer\Router\UrlGenerator;
 
 use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
+use phpDocumentor\Descriptor\NamespaceDescriptor as NamespaceDescriptorAlias;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Test for the NamespaceDescriptor URL Generator with the Standard Router
+ * @coversDefaultClass \phpDocumentor\Transformer\Router\UrlGenerator\NamespaceDescriptor
+ * @covers ::__construct
+ * @covers ::<private>
  */
-class NamespaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+class NamespaceDescriptorTest extends MockeryTestCase
 {
     /**
-     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\NamespaceDescriptor::__invoke
-     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\QualifiedNameToUrlConverter::fromNamespace
+     * @covers ::__invoke
+     * @uses \phpDocumentor\Transformer\Router\UrlGenerator\QualifiedNameToUrlConverter::fromNamespace
      */
-    public function testGenerateUrlForNamespaceDescriptor() : void
+    public function testGenerateUrlForNamespaceDescriptor(): void
     {
         // Arrange
         $expected = '/namespaces/My.Space.html';
@@ -31,7 +36,7 @@ class NamespaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $urlGenerator->shouldReceive('generate')->andReturn($expected);
         $converter = new QualifiedNameToUrlConverter();
         $fixture = new NamespaceDescriptor($urlGenerator, $converter);
-        $NamespaceDescriptorMock = m::mock('phpDocumentor\Descriptor\NamespaceDescriptor');
+        $NamespaceDescriptorMock = m::mock(NamespaceDescriptorAlias::class);
         $NamespaceDescriptorMock->shouldReceive('getFullyQualifiedStructuralElementName')->andReturn('My\\Space');
 
         // Act
@@ -42,10 +47,10 @@ class NamespaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\NamespaceDescriptor::__invoke
-     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\QualifiedNameToUrlConverter::fromNamespace
+     * @covers ::__invoke
+     * @uses \phpDocumentor\Transformer\Router\UrlGenerator\QualifiedNameToUrlConverter::fromNamespace
      */
-    public function testGenerateUrlForNamespaceDescriptorWithGlobalNamespace() : void
+    public function testGenerateUrlForNamespaceDescriptorWithGlobalNamespace(): void
     {
         // Arrange
         $expected = '/namespaces/default.html';
@@ -54,7 +59,7 @@ class NamespaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $converter = new QualifiedNameToUrlConverter();
 
         $fixture = new NamespaceDescriptor($urlGenerator, $converter);
-        $NamespaceDescriptorMock = m::mock('phpDocumentor\Descriptor\NamespaceDescriptor');
+        $NamespaceDescriptorMock = m::mock(NamespaceDescriptorAlias::class);
         $NamespaceDescriptorMock->shouldReceive('getFullyQualifiedStructuralElementName')->andReturn('\\');
 
         // Act

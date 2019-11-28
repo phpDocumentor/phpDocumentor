@@ -20,13 +20,13 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 /**
  * Test for the ConstantDescriptor URL Generator with the Standard Router
  * @coversDefaultClass \phpDocumentor\Transformer\Router\UrlGenerator\ConstantDescriptor
+ * @covers ::__construct
+ * @covers ::<private>
  */
 class ConstantDescriptorTest extends MockeryTestCase
 {
     /**
-     * @covers ::__construct
      * @covers ::__invoke
-     * @covers ::generateUrlForGlobalConstant
      * @uses \phpDocumentor\Transformer\Router\UrlGenerator\QualifiedNameToUrlConverter::fromNamespace
      */
     public function testGenerateUrlForGlobalConstants(): void
@@ -52,9 +52,7 @@ class ConstantDescriptorTest extends MockeryTestCase
     }
 
     /**
-     * @covers ::__construct
      * @covers ::__invoke
-     * @covers ::generateUrlForGlobalConstant
      * @uses \phpDocumentor\Transformer\Router\UrlGenerator\QualifiedNameToUrlConverter::fromNamespace
      */
     public function testGenerateUrlForGlobalConstantsAtRootNamespace(): void
@@ -80,7 +78,6 @@ class ConstantDescriptorTest extends MockeryTestCase
 
     /**
      * @covers ::__invoke
-     * @covers ::generateUrlForClassConstant
      * @uses \phpDocumentor\Transformer\Router\UrlGenerator\QualifiedNameToUrlConverter::fromClass
      */
     public function testGenerateUrlForClassConstants(): void

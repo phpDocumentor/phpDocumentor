@@ -12,18 +12,22 @@
 namespace phpDocumentor\Transformer\Router\UrlGenerator;
 
 use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Test for the FunctionDescriptor URL Generator with the Standard Router
+ * @coversDefaultClass \phpDocumentor\Transformer\Router\UrlGenerator\FunctionDescriptor
+ * @covers ::__construct
+ * @covers ::<private>
  */
-class FunctionDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+class FunctionDescriptorTest extends MockeryTestCase
 {
     /**
-     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\FunctionDescriptor::__invoke
-     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\QualifiedNameToUrlConverter::fromNamespace
+     * @covers ::__invoke
+     * @uses \phpDocumentor\Transformer\Router\UrlGenerator\QualifiedNameToUrlConverter::fromNamespace
      */
-    public function testGenerateUrlForFunctionDescriptor() : void
+    public function testGenerateUrlForFunctionDescriptor(): void
     {
         // Arrange
         $expected = '/namespaces/My.Space.html#function_myFunction';
@@ -43,10 +47,10 @@ class FunctionDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\FunctionDescriptor::__invoke
-     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\QualifiedNameToUrlConverter::fromNamespace
+     * @covers ::__invoke
+     * @uses \phpDocumentor\Transformer\Router\UrlGenerator\QualifiedNameToUrlConverter::fromNamespace
      */
-    public function testGenerateUrlForFunctionDescriptorWithGlobalNamespace() : void
+    public function testGenerateUrlForFunctionDescriptorWithGlobalNamespace(): void
     {
         // Arrange
         $expected = '/namespaces/default.html#function_myFunction';

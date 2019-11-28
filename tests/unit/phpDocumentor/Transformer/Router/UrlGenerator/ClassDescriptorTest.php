@@ -12,18 +12,22 @@
 namespace phpDocumentor\Transformer\Router\UrlGenerator;
 
 use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Test for the ClassDescriptor URL Generator with the Standard Router
+ * @coversDefaultClass \phpDocumentor\Transformer\Router\UrlGenerator\ClassDescriptor
+ * @covers ::__construct
+ * @covers ::<private>
  */
-class ClassDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+class ClassDescriptorTest extends MockeryTestCase
 {
     /**
-     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\ClassDescriptor::__invoke
+     * @covers ::__invoke
      * @covers \phpDocumentor\Transformer\Router\UrlGenerator\QualifiedNameToUrlConverter::fromClass
      */
-    public function testGenerateUrlForClassDescriptor() : void
+    public function testGenerateUrlForClassDescriptor(): void
     {
         // Arrange
         $expected = '/classes/My.Space.Class.html';

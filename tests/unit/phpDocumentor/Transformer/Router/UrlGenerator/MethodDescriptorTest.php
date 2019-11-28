@@ -12,18 +12,23 @@
 namespace phpDocumentor\Transformer\Router\UrlGenerator;
 
 use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
+use phpDocumentor\Descriptor\MethodDescriptor as MethodDescriptorAlias;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Test for the MethodDescriptor URL Generator with the Standard Router
+ * @covers \phpDocumentor\Transformer\Router\UrlGenerator\MethodDescriptor
+ * @covers ::__construct
+ * @covers ::<private>
  */
-class MethodDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+final class MethodDescriptorTest extends MockeryTestCase
 {
     /**
-     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\MethodDescriptor::__invoke
-     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\QualifiedNameToUrlConverter::fromClass
+     * @covers ::__invoke
+     * @uses \phpDocumentor\Transformer\Router\UrlGenerator\QualifiedNameToUrlConverter::fromClass
      */
-    public function testGenerateUrlForMethodDescriptor() : void
+    public function testGenerateUrlForMethodDescriptor(): void
     {
         $expected = '/classes/My.Space.Class.html#method_myMethod';
         $urlGenerator = m::mock(UrlGeneratorInterface::class);
@@ -32,7 +37,7 @@ class MethodDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
         // Arrange
         $fixture = new MethodDescriptor($urlGenerator, $converter);
-        $methodDescriptorMock = m::mock('phpDocumentor\Descriptor\MethodDescriptor');
+        $methodDescriptorMock = m::mock(MethodDescriptorAlias::class);
         $methodDescriptorMock
             ->shouldReceive('getParent->getFullyQualifiedStructuralElementName')
             ->andReturn('My\\Space\\Class');

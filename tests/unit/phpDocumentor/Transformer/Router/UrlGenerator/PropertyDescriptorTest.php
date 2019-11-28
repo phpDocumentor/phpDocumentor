@@ -12,18 +12,23 @@
 namespace phpDocumentor\Transformer\Router\UrlGenerator;
 
 use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
+use phpDocumentor\Descriptor\PropertyDescriptor as PropertyDescriptorAlias;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Test for the PropertyDescriptor URL Generator with the Standard Router
+ * @coversDefaultClass \phpDocumentor\Transformer\Router\UrlGenerator\PropertyDescriptor
+ * @covers ::__construct
+ * @covers ::<private>
  */
-class PropertyDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+class PropertyDescriptorTest extends MockeryTestCase
 {
     /**
-     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\PropertyDescriptor::__invoke
-     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\QualifiedNameToUrlConverter::fromClass
+     * @covers ::__invoke
+     * @uses \phpDocumentor\Transformer\Router\UrlGenerator\QualifiedNameToUrlConverter::fromClass
      */
-    public function testGenerateUrlForPropertyDescriptor() : void
+    public function testGenerateUrlForPropertyDescriptor(): void
     {
         // Arrange
         $expected = '/classes/My.Space.Class.html#property_myProperty';
@@ -31,7 +36,7 @@ class PropertyDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $urlGenerator->shouldReceive('generate')->andReturn($expected);
         $converter = new QualifiedNameToUrlConverter();
         $fixture = new PropertyDescriptor($urlGenerator, $converter);
-        $propertyDescriptorMock = m::mock('phpDocumentor\Descriptor\PropertyDescriptor');
+        $propertyDescriptorMock = m::mock(PropertyDescriptorAlias::class);
         $propertyDescriptorMock
             ->shouldReceive('getParent->getFullyQualifiedStructuralElementName')
             ->andReturn('My\\Space\\Class');

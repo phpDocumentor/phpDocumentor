@@ -12,21 +12,23 @@
 namespace phpDocumentor\Transformer\Router\UrlGenerator;
 
 use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Test for the FileDescriptor URL Generator with the Standard Router
+ * @coversDefaultClass  \phpDocumentor\Transformer\Router\UrlGenerator\FileDescriptor
+ * @covers ::__construct
+ * @covers ::<private>
  */
-class FileDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+class FileDescriptorTest extends MockeryTestCase
 {
     /**
-     * @codingStandardsIgnoreStart
-     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\FileDescriptor::__invoke
-     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\QualifiedNameToUrlConverter::fromFile
-     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\QualifiedNameToUrlConverter::removeFileExtensionFromPath
-     * @codingStandardsIgnoreEnd
+     * @covers ::__invoke
+     * @uses \phpDocumentor\Transformer\Router\UrlGenerator\QualifiedNameToUrlConverter::fromFile
+     * @uses \phpDocumentor\Transformer\Router\UrlGenerator\QualifiedNameToUrlConverter::removeFileExtensionFromPath
      */
-    public function testGenerateUrlForFileDescriptor() : void
+    public function testGenerateUrlForFileDescriptor(): void
     {
         // Arrange
         $expected = '/files/My.Space.Class.html';

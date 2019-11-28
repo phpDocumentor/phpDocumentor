@@ -12,18 +12,23 @@
 namespace phpDocumentor\Transformer\Router\UrlGenerator;
 
 use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
+use phpDocumentor\Descriptor\PackageDescriptor as PackageDescriptorAlias;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Test for the PackageDescriptor URL Generator with the Standard Router
+ * @coversDefaultClass \phpDocumentor\Transformer\Router\UrlGenerator\PackageDescriptor
+ * @covers ::__construct
+ * @covers ::<private>
  */
-class PackageDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+class PackageDescriptorTest extends MockeryTestCase
 {
     /**
-     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\PackageDescriptor::__invoke
-     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\QualifiedNameToUrlConverter::fromPackage
+     * @covers ::__invoke
+     * @uses \phpDocumentor\Transformer\Router\UrlGenerator\QualifiedNameToUrlConverter::fromPackage
      */
-    public function testGenerateUrlForPackageDescriptor() : void
+    public function testGenerateUrlForPackageDescriptor(): void
     {
         // Arrange
         $expected = '/packages/My.Space.Package.html';
@@ -31,7 +36,7 @@ class PackageDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $urlGenerator->shouldReceive('generate')->andReturn($expected);
         $converter = new QualifiedNameToUrlConverter();
         $fixture = new PackageDescriptor($urlGenerator, $converter);
-        $PackageDescriptorMock = m::mock('phpDocumentor\Descriptor\PackageDescriptor');
+        $PackageDescriptorMock = m::mock(PackageDescriptorAlias::class);
         $PackageDescriptorMock->shouldReceive('getFullyQualifiedStructuralElementName')->andReturn('My\\Space_Package');
 
         // Act
@@ -42,10 +47,10 @@ class PackageDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\PackageDescriptor::__invoke
-     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\QualifiedNameToUrlConverter::fromPackage
+     * @covers ::__invoke
+     * @uses \phpDocumentor\Transformer\Router\UrlGenerator\QualifiedNameToUrlConverter::fromPackage
      */
-    public function testGenerateUrlForPackageDescriptorWithGlobalNamespace() : void
+    public function testGenerateUrlForPackageDescriptorWithGlobalNamespace(): void
     {
         // Arrange
         $expected = '/packages/default.html';
@@ -54,7 +59,7 @@ class PackageDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $converter = new QualifiedNameToUrlConverter();
 
         $fixture = new PackageDescriptor($urlGenerator, $converter);
-        $PackageDescriptorMock = m::mock('phpDocumentor\Descriptor\PackageDescriptor');
+        $PackageDescriptorMock = m::mock(PackageDescriptorAlias::class);
         $PackageDescriptorMock->shouldReceive('getFullyQualifiedStructuralElementName')->andReturn('\\');
 
         // Act

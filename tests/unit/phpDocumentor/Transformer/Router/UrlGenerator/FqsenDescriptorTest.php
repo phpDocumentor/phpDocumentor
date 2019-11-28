@@ -12,21 +12,25 @@
 namespace phpDocumentor\Transformer\Router\UrlGenerator;
 
 use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Reflection\DocBlock\Tags\Reference\Fqsen;
 use phpDocumentor\Reflection\Fqsen as RealFqsen;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Test for the MethodDescriptor URL Generator with the Standard Router
+ * @coversDefaultClass \phpDocumentor\Transformer\Router\UrlGenerator\FqsenDescriptor:
+ * @covers ::__construct
+ * @covers ::<private>
  */
-class FqsenDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+class FqsenDescriptorTest extends MockeryTestCase
 {
     /**
-     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\FqsenDescriptor::__invoke
-     * @covers \phpDocumentor\Transformer\Router\UrlGenerator\QualifiedNameToUrlConverter::fromClass
+     * @covers ::__invoke
+     * @uses \phpDocumentor\Transformer\Router\UrlGenerator\QualifiedNameToUrlConverter::fromClass
      * @dataProvider provideFqsens
      */
-    public function testGenerateUrlForFqsenDescriptor($fromFqsen, $toPath) : void
+    public function testGenerateUrlForFqsenDescriptor($fromFqsen, $toPath): void
     {
         // Arrange
         $urlGenerator = m::mock(UrlGeneratorInterface::class);
@@ -43,7 +47,7 @@ class FqsenDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $this->assertSame($toPath, $result);
     }
 
-    public function provideFqsens() : array
+    public function provideFqsens(): array
     {
         return [
             ['\\My\\Space\\Class', '/classes/My.Space.Class.html'],
