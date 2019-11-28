@@ -70,7 +70,7 @@ class ConstantDescriptor implements UrlGenerator
         );
     }
 
-    private function isGlobalConstant(Descriptor\DescriptorAbstract $node): bool
+    private function isGlobalConstant(Descriptor\ConstantDescriptor $node): bool
     {
         return ($node->getParent() instanceof Descriptor\FileDescriptor || !$node->getParent());
     }
