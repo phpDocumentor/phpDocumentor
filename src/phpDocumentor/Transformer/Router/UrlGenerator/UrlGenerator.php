@@ -20,7 +20,7 @@ use phpDocumentor\Descriptor\DescriptorAbstract;
 /**
  * Generates relative URLs with elements for use in the generated HTML documentation.
  */
-interface UrlGeneratorInterface
+interface UrlGenerator
 {
     /**
      * Generates a URL from the given node or returns false if unable.

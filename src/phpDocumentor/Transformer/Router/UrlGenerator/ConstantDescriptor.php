@@ -16,7 +16,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Router\UrlGenerator;
 
 use phpDocumentor\Descriptor;
-use phpDocumentor\Transformer\Router\UrlGenerator\UrlGeneratorInterface as UrlGenerator;
+use phpDocumentor\Transformer\Router\UrlGenerator\UrlGenerator as UrlGenerator;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class ConstantDescriptor implements UrlGenerator
