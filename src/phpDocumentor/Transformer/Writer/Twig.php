@@ -15,14 +15,13 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Writer;
 
-use InvalidArgumentException;
-use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\Transformer\Router\ForFileProxy;
-use phpDocumentor\Transformer\Router\Queue;
+use phpDocumentor\Transformer\Router\StandardRouter;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory;
-use UnexpectedValueException;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 /**
  * A specialized writer which uses the Twig templating engine to convert
@@ -82,12 +81,12 @@ use UnexpectedValueException;
 final class Twig extends WriterAbstract
 {
     private $environmentFactory;
-    private $routers;
+    private $router;
 
-    public function __construct(EnvironmentFactory $environmentFactory, Queue $routers)
+    public function __construct(EnvironmentFactory $environmentFactory, StandardRouter $router)
     {
         $this->environmentFactory = $environmentFactory;
-        $this->routers = $routers;
+        $this->router = $router;
     }
 
     /**
@@ -97,9 +96,9 @@ final class Twig extends WriterAbstract
      * @param ProjectDescriptor $project Document containing the structure.
      * @param Transformation $transformation Transformation to execute.
      *
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function transform(ProjectDescriptor $project, Transformation $transformation): void
     {
@@ -113,7 +112,7 @@ final class Twig extends WriterAbstract
                 continue;
             }
 
-            $destination = $this->routers->destination($node, $transformation);
+            $destination = $this->router->destination($node, $transformation);
             if ($destination === null) {
                 continue;
             }

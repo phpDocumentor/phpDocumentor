@@ -14,6 +14,7 @@
 namespace phpDocumentor\Transformer\Router;
 
 use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\Type\CollectionDescriptor;
 
@@ -23,19 +24,19 @@ use phpDocumentor\Descriptor\Type\CollectionDescriptor;
  * @coversDefaultClass \phpDocumentor\Transformer\Router\Renderer
  * @covers ::<private>
  */
-final class RendererTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+final class RendererTest extends MockeryTestCase
 {
-    /** @var Queue */
-    private $queue;
+    /** @var StandardRouter */
+    private $router;
 
     /** @var Renderer */
     private $renderer;
 
     protected function setUp(): void
     {
-        $this->queue = m::mock('phpDocumentor\Transformer\Router\Queue');
+        $this->router = m::mock(StandardRouter::class);
 
-        $this->renderer = new Renderer($this->queue);
+        $this->renderer = new Renderer($this->router);
     }
 
     /**
@@ -57,7 +58,7 @@ final class RendererTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testRenderWithFqsenAndRepresentationUrl(): void
     {
         $rule = $this->givenARule('/classes/My.Namespace.Class.html');
-        $this->queue->shouldReceive('match')->andReturn($rule);
+        $this->router->shouldReceive('match')->andReturn($rule);
 
         $result = $this->renderer->render('\My\Namespace\Class', 'url');
 
@@ -71,7 +72,7 @@ final class RendererTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testRenderWithCollectionOfFqsensAndRepresentationUrl(): void
     {
         $rule = $this->givenARule('/classes/My.Namespace.Class.html');
-        $this->queue->shouldReceive('match')->andReturn($rule);
+        $this->router->shouldReceive('match')->andReturn($rule);
 
         $this->renderer->setDestination(str_replace('/', DIRECTORY_SEPARATOR, '/root/of/project'));
         $collection = new Collection(['\My\Namespace\Class']);
@@ -87,8 +88,8 @@ final class RendererTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testRenderWithUrlAndNoRuleMatch(): void
     {
         $rule = $this->givenARule('@');
-        $this->queue->shouldReceive('match')->with('file://phpdoc')->andReturn($rule);
-        $this->queue->shouldReceive('match')->with('@')->andReturn(null);
+        $this->router->shouldReceive('match')->with('file://phpdoc')->andReturn($rule);
+        $this->router->shouldReceive('match')->with('@')->andReturn(null);
 
         $result = $this->renderer->render('file://phpdoc', 'url');
 
@@ -101,7 +102,7 @@ final class RendererTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testConvertToRootPathWithUrlAndAtSignInRelativePath(): void
     {
         $rule = $this->givenARule('@Class::$property');
-        $this->queue->shouldReceive('match')->with('@Class::$property')->andReturn($rule);
+        $this->router->shouldReceive('match')->with('@Class::$property')->andReturn($rule);
 
         $result = $this->renderer->convertToRootPath('@Class::$property');
 
@@ -115,7 +116,7 @@ final class RendererTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testRenderWithCollectionDescriptorWithNameIsNotArrayAndRepresentationUrl(): void
     {
         $rule = $this->givenARule('ClassDescriptor');
-        $this->queue->shouldReceive('match')->andReturn($rule);
+        $this->router->shouldReceive('match')->andReturn($rule);
 
         $collectionDescriptor = $this->givenACollectionDescriptor('class');
         $collectionDescriptor->setKeyTypes(['ClassDescriptor']);
@@ -131,7 +132,7 @@ final class RendererTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testRenderWithCollectionDescriptorWithNameIsArrayAndRepresentationUrl(): void
     {
         $rule = $this->givenARule('ClassDescriptor');
-        $this->queue->shouldReceive('match')->andReturn($rule);
+        $this->router->shouldReceive('match')->andReturn($rule);
 
         $collectionDescriptor = $this->givenACollectionDescriptor('array');
         $result = $this->renderer->render($collectionDescriptor, 'url');
@@ -145,7 +146,7 @@ final class RendererTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testRenderWithFqsenAndRepresentationClassShort(): void
     {
         $rule = $this->givenARule('/classes/My.Namespace.Class.html');
-        $this->queue->shouldReceive('match')->andReturn($rule);
+        $this->router->shouldReceive('match')->andReturn($rule);
 
         $result = $this->renderer->render('\My\Namespace\Class', 'class:short');
 
@@ -159,7 +160,7 @@ final class RendererTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testRenderWithUrl(string $url): void
     {
         $rule = $this->givenARule($url);
-        $this->queue->shouldReceive('match')->andReturn($rule);
+        $this->router->shouldReceive('match')->andReturn($rule);
 
         $result = $this->renderer->render($url, 'url');
 

@@ -28,13 +28,13 @@ class Renderer
     /** @var string */
     protected $destination = '';
 
-    /** @var Queue */
+    /** @var StandardRouter */
     private $routers;
 
     /**
      * Initializes this renderer with a set of routers that are checked.
      */
-    public function __construct(Queue $routers)
+    public function __construct(StandardRouter $routers)
     {
         $this->routers = $routers;
     }

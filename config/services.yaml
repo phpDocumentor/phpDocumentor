@@ -197,10 +197,6 @@ services:
 
     phpDocumentor\Parser\Parser: ~
 
-    phpDocumentor\Transformer\Router\Queue:
-      calls:
-        - [insert, ['@phpDocumentor\Transformer\Router\StandardRouter', 10000]]
-
     phpDocumentor\Transformer\Template\PathResolver:
         class: 'phpDocumentor\Transformer\Template\PathResolver'
         arguments:

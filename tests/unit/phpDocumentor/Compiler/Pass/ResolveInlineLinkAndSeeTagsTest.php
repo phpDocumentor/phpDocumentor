@@ -15,12 +15,11 @@ namespace phpDocumentor\Compiler\Pass;
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery\MockInterface;
+use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\Descriptor\Tag\LinkDescriptor;
-use phpDocumentor\Transformer\Router\Queue;
-use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Transformer\Router\Rule;
+use phpDocumentor\Transformer\Router\StandardRouter;
 
 /**
  * @coversDefaultClass \phpDocumentor\Compiler\Pass\ResolveInlineLinkAndSeeTags
@@ -29,7 +28,7 @@ use phpDocumentor\Transformer\Router\Rule;
  */
 class ResolveInlineLinkAndSeeTagsTest extends MockeryTestCase
 {
-    /** @var Queue|MockInterface */
+    /** @var StandardRouter|MockInterface */
     private $router;
 
     /** @var ResolveInlineLinkAndSeeTags */
@@ -40,7 +39,7 @@ class ResolveInlineLinkAndSeeTagsTest extends MockeryTestCase
      */
     protected function setUp(): void
     {
-        $this->router = m::mock('phpDocumentor\Transformer\Router\Queue');
+        $this->router = m::mock(StandardRouter::class);
         $this->fixture = new ResolveInlineLinkAndSeeTags($this->router);
     }
 
@@ -137,7 +136,7 @@ class ResolveInlineLinkAndSeeTagsTest extends MockeryTestCase
      */
     private function givenAChildDescriptorWithDescription($description) : MockInterface
     {
-        $descriptor = m::mock('phpDocumentor\Descriptor\DescriptorAbstract');
+        $descriptor = m::mock(DescriptorAbstract::class);
         $descriptor->shouldReceive('getDescription')->andReturn($description);
 
         return $descriptor;

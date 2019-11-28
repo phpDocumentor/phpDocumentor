@@ -18,13 +18,12 @@ namespace phpDocumentor\Transformer\Writer\Twig;
 use Parsedown;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\Transformer\Router\Queue;
 use phpDocumentor\Transformer\Router\Renderer;
 use phpDocumentor\Transformer\Transformation;
-use Twig_Extension;
-use Twig_Extension_GlobalsInterface;
-use Twig_SimpleFilter;
-use Twig_SimpleFunction;
+use Twig\Extension\AbstractExtension;
+use Twig\Extension\GlobalsInterface;
+use Twig\TwigFilter;
+use Twig\TwigFunction;
 
 /**
  * Basic extension adding phpDocumentor specific functionality for Twig
@@ -47,11 +46,9 @@ use Twig_SimpleFunction;
  * - *sort_desc*, sorts the given objects by their Name property/getter in a descending fashion
  * - *sort_asc*, sorts the given objects by their Name property/getter in a ascending fashion
  */
-class Extension extends Twig_Extension implements ExtensionInterface, Twig_Extension_GlobalsInterface
+final class Extension extends AbstractExtension implements ExtensionInterface, GlobalsInterface
 {
-    /**
-     * @var ProjectDescriptor
-     */
+    /** @var ProjectDescriptor */
     protected $data;
 
     /** @var Renderer */
@@ -89,14 +86,6 @@ class Extension extends Twig_Extension implements ExtensionInterface, Twig_Exten
     }
 
     /**
-     * Returns the target directory relative to the Project's Root.
-     */
-    public function getDestination(): string
-    {
-        return $this->routeRenderer->getDestination();
-    }
-
-    /**
      * Returns an array of global variables to inject into a Twig template.
      *
      * @return mixed[]
@@ -118,19 +107,19 @@ class Extension extends Twig_Extension implements ExtensionInterface, Twig_Exten
      * See the Class' DocBlock for a listing of functionality added by this
      * Extension.
      *
-     * @return Twig_SimpleFunction[]
+     * @return TwigFunction[]
      */
     public function getFunctions(): array
     {
         return [
-            new Twig_SimpleFunction('path', [$this->routeRenderer, 'convertToRootPath']),
+            new TwigFunction('path', [$this->routeRenderer, 'convertToRootPath']),
         ];
     }
 
     /**
      * Returns a list of all filters that are exposed by this extension.
      *
-     * @return Twig_SimpleFilter[]
+     * @return TwigFilter[]
      */
     public function getFilters(): array
     {
@@ -138,25 +127,25 @@ class Extension extends Twig_Extension implements ExtensionInterface, Twig_Exten
         $routeRenderer = $this->routeRenderer;
 
         return [
-            'markdown' => new Twig_SimpleFilter(
+            'markdown' => new TwigFilter(
                 'markdown',
                 function ($value) use ($parser) {
                     return $parser->text($value);
                 }
             ),
-            'trans' => new Twig_SimpleFilter(
+            'trans' => new TwigFilter(
                 'trans',
                 function ($value) {
                     return $value;
                 }
             ),
-            'route' => new Twig_SimpleFilter(
+            'route' => new TwigFilter(
                 'route',
                 function ($value, $presentation = 'normal') use ($routeRenderer) {
                     return $routeRenderer->render($value, $presentation);
                 }
             ),
-            'sort' => new Twig_SimpleFilter(
+            'sort' => new TwigFilter(
                 'sort_*',
                 function ($direction, $collection) {
                     if (!$collection instanceof Collection) {
@@ -186,30 +175,5 @@ class Extension extends Twig_Extension implements ExtensionInterface, Twig_Exten
                 }
             ),
         ];
-    }
-
-    /**
-     * Converts the given path to be relative to the root of the documentation
-     * target directory.
-     *
-     * It is not possible to use absolute paths in documentation templates since
-     * they may be used locally, or in a subfolder. As such we need to calculate
-     * the number of levels to go up from the current document's directory and
-     * then append the given path.
-     *
-     * For example:
-     *
-     *     Suppose you are in <root>/classes/my/class.html and you want open
-     *     <root>/my/index.html then you provide 'my/index.html' to this method
-     *     and it will convert it into ../../my/index.html (<root>/classes/my is
-     *     two nesting levels until the root).
-     *
-     * This method does not try to normalize or optimize the paths in order to
-     * save on development time and performance, and because it adds no real
-     * value.
-     */
-    public function convertToRootPath(string $relative_path): string
-    {
-        return $this->routeRenderer->convertToRootPath($relative_path);
     }
 }

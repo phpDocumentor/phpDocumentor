@@ -60,9 +60,9 @@ class StandardRouterTest extends MockeryTestCase
 
     /**
      * @covers \phpDocumentor\Transformer\Router\StandardRouter::configure
-     * @covers \phpDocumentor\Transformer\Router\RouterAbstract::__construct
-     * @covers \phpDocumentor\Transformer\Router\RouterAbstract::configure
-     * @covers \phpDocumentor\Transformer\Router\RouterAbstract::match
+     * @covers \phpDocumentor\Transformer\Router\StandardRouter::__construct
+     * @covers \phpDocumentor\Transformer\Router\StandardRouter::configure
+     * @covers \phpDocumentor\Transformer\Router\StandardRouter::match
      * @dataProvider provideDescriptorNames
      */
     public function testIfARouteForAFileCanBeGenerated($descriptorName, $generatorName = null) : void
@@ -88,9 +88,9 @@ class StandardRouterTest extends MockeryTestCase
 
     /**
      * @covers \phpDocumentor\Transformer\Router\StandardRouter::configure
-     * @covers \phpDocumentor\Transformer\Router\RouterAbstract::__construct
-     * @covers \phpDocumentor\Transformer\Router\RouterAbstract::configure
-     * @covers \phpDocumentor\Transformer\Router\RouterAbstract::match
+     * @covers \phpDocumentor\Transformer\Router\StandardRouter::__construct
+     * @covers \phpDocumentor\Transformer\Router\StandardRouter::configure
+     * @covers \phpDocumentor\Transformer\Router\StandardRouter::match
      */
     public function testIfARouteForAFqsenFileCanBeGenerated() : void
     {
@@ -114,9 +114,9 @@ class StandardRouterTest extends MockeryTestCase
 
     /**
      * @covers \phpDocumentor\Transformer\Router\StandardRouter::configure
-     * @covers \phpDocumentor\Transformer\Router\RouterAbstract::__construct
-     * @covers \phpDocumentor\Transformer\Router\RouterAbstract::configure
-     * @covers \phpDocumentor\Transformer\Router\RouterAbstract::match
+     * @covers \phpDocumentor\Transformer\Router\StandardRouter::__construct
+     * @covers \phpDocumentor\Transformer\Router\StandardRouter::configure
+     * @covers \phpDocumentor\Transformer\Router\StandardRouter::match
      */
     public function testIfARouteForAUrlCanBeGenerated() : void
     {
@@ -135,9 +135,9 @@ class StandardRouterTest extends MockeryTestCase
     /**
      * @covers \phpDocumentor\Transformer\Router\StandardRouter::configure
      * @covers \phpDocumentor\Transformer\Router\StandardRouter::__construct
-     * @covers \phpDocumentor\Transformer\Router\RouterAbstract::__construct
-     * @covers \phpDocumentor\Transformer\Router\RouterAbstract::configure
-     * @covers \phpDocumentor\Transformer\Router\RouterAbstract::match
+     * @covers \phpDocumentor\Transformer\Router\StandardRouter::__construct
+     * @covers \phpDocumentor\Transformer\Router\StandardRouter::configure
+     * @covers \phpDocumentor\Transformer\Router\StandardRouter::match
      */
     public function testIfARouteForAFqsenCanBeGenerated() : void
     {
@@ -160,7 +160,7 @@ class StandardRouterTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Router\RouterAbstract::match
+     * @covers \phpDocumentor\Transformer\Router\StandardRouter::match
      */
     public function testGeneratingRouteForUnknownNodeReturnsFalse() : void
     {

@@ -28,7 +28,7 @@ use phpDocumentor\Reflection\DocBlock\Tags\See;
 use phpDocumentor\Reflection\FqsenResolver;
 use phpDocumentor\Reflection\TypeResolver;
 use phpDocumentor\Reflection\Types\Context;
-use phpDocumentor\Transformer\Router\Queue;
+use phpDocumentor\Transformer\Router\StandardRouter;
 
 /**
  * This step in the compilation process iterates through all elements and scans their descriptions for an inline `@see`
@@ -40,7 +40,7 @@ class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
 
     const REGEX_INLINE_LINK_OR_SEE_TAG = '/\{\@(see|link)[\ ]+([^\}]+)\}/';
 
-    /** @var Queue */
+    /** @var StandardRouter */
     private $router;
 
     /** @var DescriptorAbstract */
@@ -50,9 +50,9 @@ class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
     private $elementCollection;
 
     /**
-     * Registers the router queue with this pass.
+     * Registers the router with this pass.
      */
-    public function __construct(Queue $router)
+    public function __construct(StandardRouter $router)
     {
         $this->router = $router;
     }
