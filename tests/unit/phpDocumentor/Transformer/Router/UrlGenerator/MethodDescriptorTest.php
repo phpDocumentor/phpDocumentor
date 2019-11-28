@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Test for the MethodDescriptor URL Generator with the Standard Router
- * @covers \phpDocumentor\Transformer\Router\UrlGenerator\MethodDescriptor
+ * @coversDefaultClass \phpDocumentor\Transformer\Router\UrlGenerator\MethodDescriptor
  * @covers ::__construct
  * @covers ::<private>
  */
