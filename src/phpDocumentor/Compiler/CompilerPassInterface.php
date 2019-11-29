@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,9 +8,6 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
@@ -28,7 +26,7 @@ interface CompilerPassInterface
      * Please note that the command line will be truncated to 68 characters (<message> .. 000.000s) so longer
      * descriptions won't have much use.
      */
-    public function getDescription(): string;
+    public function getDescription() : string;
 
     /**
      * Executes a compiler pass.
@@ -38,5 +36,5 @@ interface CompilerPassInterface
      *
      * @param ProjectDescriptor $project Representation of the Object Graph that can be manipulated.
      */
-    public function execute(ProjectDescriptor $project): void;
+    public function execute(ProjectDescriptor $project) : void;
 }

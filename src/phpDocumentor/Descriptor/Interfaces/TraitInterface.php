@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,9 +8,6 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
@@ -25,38 +23,30 @@ interface TraitInterface extends ElementInterface, TypeInterface
     /**
      * Sets the properties associated with this trait.
      */
-    public function setProperties(Collection $properties);
+    public function setProperties(Collection $properties) : void;
 
     /**
      * Returns the properties associated with this trait.
-     *
-     * @return Collection
      */
-    public function getProperties();
+    public function getProperties() : Collection;
 
     /**
      * Returns all properties inherited from parent traits.
-     *
-     * @return Collection
      */
-    public function getInheritedProperties();
+    public function getInheritedProperties() : Collection;
 
     /**
      * Sets all methods belonging to this trait.
      */
-    public function setMethods(Collection $methods);
+    public function setMethods(Collection $methods) : void;
 
     /**
      * Returns all methods belonging to this trait.
-     *
-     * @return Collection
      */
-    public function getMethods();
+    public function getMethods() : Collection;
 
     /**
      * Returns a list of all methods inherited from parent traits.
-     *
-     * @return Collection
      */
-    public function getInheritedMethods();
+    public function getInheritedMethods() : Collection;
 }

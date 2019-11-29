@@ -1,21 +1,23 @@
 <?php
-/**
- * phpDocumentor
- *
- * PHP Version 5.3
- *
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
- */
 
+declare(strict_types=1);
+
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link http://phpdoc.org
+ */
 namespace phpDocumentor\Transformer\Template;
 
 use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
 
-class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+class CollectionTest extends MockeryTestCase
 {
     /** @var m\MockInterface|\phpDocumentor\Transformer\Writer\Collection */
     private $writerCollectionMock;
@@ -29,11 +31,11 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Constructs the fixture with provided mocked dependencies.
      */
-    protected function setUp(): void
+    protected function setUp() : void
     {
-        $this->factoryMock = m::mock('phpDocumentor\Transformer\Template\Factory');
+        $this->factoryMock          = m::mock('phpDocumentor\Transformer\Template\Factory');
         $this->writerCollectionMock = m::mock('phpDocumentor\Transformer\Writer\Collection');
-        $this->fixture = new Collection($this->factoryMock, $this->writerCollectionMock);
+        $this->fixture              = new Collection($this->factoryMock, $this->writerCollectionMock);
     }
 
     /**
@@ -43,7 +45,7 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         // Arrange
         $templateName = 'default';
-        $template = new Template($templateName);
+        $template     = new Template($templateName);
         $this->factoryMock->shouldReceive('get')->with($templateName)->andReturn($template);
 
         // Act
@@ -96,8 +98,6 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
     /**
      * Returns a transformation object without information in it.
-     *
-     * @return Transformation
      */
     protected function givenAnEmptyTransformation() : Transformation
     {
@@ -107,10 +107,9 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Adds a template to the fixture with the given name and transformations.
      *
-     * @param string           $name
      * @param Transformation[] $transformations
      */
-    protected function whenThereIsATemplateWithNameAndTransformations($name, array $transformations) : void
+    protected function whenThereIsATemplateWithNameAndTransformations(string $name, array $transformations) : void
     {
         $template = new Template($name);
         foreach ($transformations as $key => $transformation) {

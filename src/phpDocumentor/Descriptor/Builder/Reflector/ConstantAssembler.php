@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,9 +8,6 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
@@ -17,22 +15,22 @@ namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use phpDocumentor\Descriptor\ConstantDescriptor;
 use phpDocumentor\Reflection\Php\Constant;
+use function strlen;
+use function substr;
 
 /**
  * Assembles a ConstantDescriptor from a ConstantReflector.
  */
 class ConstantAssembler extends AssemblerAbstract
 {
-    const SEPARATOR_SIZE = 2;
+    public const SEPARATOR_SIZE = 2;
 
     /**
      * Creates a Descriptor from the provided data.
      *
      * @param Constant $data
-     *
-     * @return ConstantDescriptor
      */
-    public function create($data)
+    public function create($data) : ConstantDescriptor
     {
         $constantDescriptor = new ConstantDescriptor();
         $constantDescriptor->setName($data->getName());

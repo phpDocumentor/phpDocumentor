@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,15 +8,13 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Descriptor\Tag\VarDescriptor;
+use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Type;
 
 /**
@@ -43,10 +42,10 @@ class PropertyDescriptor extends DescriptorAbstract implements
     /**
      * @param ClassDescriptor|TraitDescriptor $parent
      */
-    public function setParent($parent)
+    public function setParent($parent) : void
     {
         $this->setFullyQualifiedStructuralElementName(
-            $parent->getFullyQualifiedStructuralElementName() . '::$' . $this->getName()
+            new Fqsen($parent->getFullyQualifiedStructuralElementName() . '::$' . $this->getName())
         );
 
         $this->parent = $parent;
@@ -63,7 +62,7 @@ class PropertyDescriptor extends DescriptorAbstract implements
     /**
      * {@inheritDoc}
      */
-    public function setDefault($default)
+    public function setDefault(?string $default) : void
     {
         $this->default = $default;
     }
@@ -71,7 +70,7 @@ class PropertyDescriptor extends DescriptorAbstract implements
     /**
      * {@inheritDoc}
      */
-    public function getDefault()
+    public function getDefault() : ?string
     {
         return $this->default;
     }
@@ -79,7 +78,7 @@ class PropertyDescriptor extends DescriptorAbstract implements
     /**
      * {@inheritDoc}
      */
-    public function setStatic($static)
+    public function setStatic(bool $static) : void
     {
         $this->static = $static;
     }
@@ -87,7 +86,7 @@ class PropertyDescriptor extends DescriptorAbstract implements
     /**
      * {@inheritDoc}
      */
-    public function isStatic()
+    public function isStatic() : bool
     {
         return $this->static;
     }
@@ -95,7 +94,7 @@ class PropertyDescriptor extends DescriptorAbstract implements
     /**
      * {@inheritDoc}
      */
-    public function setType(Type $type)
+    public function setType(Type $type) : void
     {
         $this->type = $type;
     }
@@ -103,16 +102,16 @@ class PropertyDescriptor extends DescriptorAbstract implements
     /**
      * {@inheritDoc}
      */
-    public function getTypes()
+    public function getTypes() : array
     {
         if ($this->getType() instanceof Type) {
-            return [(string)$this->getType()];
+            return [(string) $this->getType()];
         }
 
         return [];
     }
 
-    public function getType()
+    public function getType() : ?Type
     {
         if ($this->type === null) {
             /** @var VarDescriptor|bool $var */
@@ -128,7 +127,7 @@ class PropertyDescriptor extends DescriptorAbstract implements
     /**
      * {@inheritDoc}
      */
-    public function setVisibility($visibility)
+    public function setVisibility(string $visibility) : void
     {
         $this->visibility = $visibility;
     }
@@ -136,15 +135,12 @@ class PropertyDescriptor extends DescriptorAbstract implements
     /**
      * {@inheritDoc}
      */
-    public function getVisibility()
+    public function getVisibility() : string
     {
         return $this->visibility;
     }
 
-    /**
-     * @return Collection
-     */
-    public function getVar()
+    public function getVar() : Collection
     {
         /** @var Collection $var */
         $var = $this->getTags()->get('var', new Collection());
@@ -162,18 +158,15 @@ class PropertyDescriptor extends DescriptorAbstract implements
 
     /**
      * Returns the file associated with the parent class or trait.
-     *
-     * @return FileDescriptor
      */
-    public function getFile()
+    public function getFile() : FileDescriptor
     {
         return $this->getParent()->getFile();
     }
 
     /**
      * Returns the property from which this one should inherit, if any.
-     *
-     * @return PropertyDescriptor|null
+     * @return mixed|null
      */
     public function getInheritedElement()
     {

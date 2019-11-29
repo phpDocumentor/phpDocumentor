@@ -5,17 +5,18 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Event;
 
 use phpDocumentor\Transformer\Writer\FileIo;
-use phpDocumentor\Transformer\Event\WriterInitializationEvent;
+use PHPUnit\Framework\TestCase;
+use stdClass;
 
-final class WriterInitializationEventTest extends \PHPUnit\Framework\TestCase
+final class WriterInitializationEventTest extends TestCase
 {
     private $fixture;
     private $writer;
 
-    protected function setUp(): void
+    protected function setUp() : void
     {
-        $this->fixture = new WriterInitializationEvent(new \stdClass());
-        $this->writer = new FileIo();
+        $this->fixture = new WriterInitializationEvent(new stdClass());
+        $this->writer  = new FileIo();
     }
 
     /**

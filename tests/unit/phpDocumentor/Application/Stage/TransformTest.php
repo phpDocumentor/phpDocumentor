@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace phpDocumentor\Application\Stage;
 
@@ -13,6 +15,8 @@ use phpDocumentor\Transformer\Transformer;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
+use const DIRECTORY_SEPARATOR;
+use function getcwd;
 
 /**
  * @coversDefaultClass \phpDocumentor\Application\Stage\Transform
@@ -27,13 +31,13 @@ final class TransformTest extends TestCase
     private $exampleFinder;
     private $transform;
 
-    public function setUp(): void
+    public function setUp() : void
     {
         $this->projectDescriptorBuilder = $this->prophesize(ProjectDescriptorBuilder::class);
-        $this->transformer = $this->prophesize(Transformer::class);
-        $this->compiler = new Compiler();
-        $this->logger = $this->prophesize(LoggerInterface::class);
-        $this->exampleFinder = $this->prophesize(ExampleFinder::class);
+        $this->transformer              = $this->prophesize(Transformer::class);
+        $this->compiler                 = new Compiler();
+        $this->logger                   = $this->prophesize(LoggerInterface::class);
+        $this->exampleFinder            = $this->prophesize(ExampleFinder::class);
 
         $this->transform = new Transform(
             $this->transformer->reveal(),
@@ -47,9 +51,9 @@ final class TransformTest extends TestCase
      * @covers ::__invoke()
      * @covers ::setTargetLocationBasedOnDsn()
      */
-    public function test_if_target_location_for_output_is_set_with_a_relative_path()
+    public function test_if_target_location_for_output_is_set_with_a_relative_path() : void
     {
-        $config = $this->givenAnExampleConfigWithDsnAndTemplates('file://.');
+        $config  = $this->givenAnExampleConfigWithDsnAndTemplates('file://.');
         $payload = new Payload($config, $this->projectDescriptorBuilder->reveal());
 
         $this->transformer->setTarget(getcwd() . DIRECTORY_SEPARATOR . '.')->shouldBeCalled();
@@ -61,9 +65,9 @@ final class TransformTest extends TestCase
      * @covers ::__invoke()
      * @covers ::setTargetLocationBasedOnDsn()
      */
-    public function test_if_target_location_for_output_is_set_with_an_absolute_path()
+    public function test_if_target_location_for_output_is_set_with_an_absolute_path() : void
     {
-        $config = $this->givenAnExampleConfigWithDsnAndTemplates('file:///my/absolute/folder');
+        $config  = $this->givenAnExampleConfigWithDsnAndTemplates('file:///my/absolute/folder');
         $payload = new Payload($config, $this->projectDescriptorBuilder->reveal());
 
         $this->transformer->setTarget('/my/absolute/folder')->shouldBeCalled();
@@ -75,9 +79,9 @@ final class TransformTest extends TestCase
      * @covers ::__invoke()
      * @covers ::loadTemplatesBasedOnNames()
      */
-    public function test_loading_templates_with_a_given_set_of_template_names()
+    public function test_loading_templates_with_a_given_set_of_template_names() : void
     {
-        $config = $this->givenAnExampleConfigWithDsnAndTemplates(
+        $config  = $this->givenAnExampleConfigWithDsnAndTemplates(
             'file://.',
             [
                 ['name' => 'template1'],
@@ -101,10 +105,10 @@ final class TransformTest extends TestCase
      * @covers ::__invoke()
      * @covers ::doTransform()
      */
-    public function test_transforming_the_project_will_invoke_all_compiler_passes()
+    public function test_transforming_the_project_will_invoke_all_compiler_passes() : void
     {
-        $config = $this->givenAnExampleConfigWithDsnAndTemplates('file://.');
-        $payload = new Payload($config, $this->projectDescriptorBuilder->reveal());
+        $config            = $this->givenAnExampleConfigWithDsnAndTemplates('file://.');
+        $payload           = new Payload($config, $this->projectDescriptorBuilder->reveal());
         $projectDescriptor = new ProjectDescriptor('my-project');
         $this->projectDescriptorBuilder->getProjectDescriptor()->willReturn($projectDescriptor);
 
@@ -118,7 +122,7 @@ final class TransformTest extends TestCase
         ($this->transform)($payload);
     }
 
-    private function givenAnExampleConfigWithDsnAndTemplates(string $dsn, array $templates = []): array
+    private function givenAnExampleConfigWithDsnAndTemplates(string $dsn, array $templates = []) : array
     {
         return [
             'phpdocumentor' => [

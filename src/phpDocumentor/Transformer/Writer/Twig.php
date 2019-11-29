@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,9 +8,6 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
@@ -22,6 +20,11 @@ use phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
+use const DIRECTORY_SEPARATOR;
+use function file_put_contents;
+use function preg_split;
+use function strlen;
+use function substr;
 
 /**
  * A specialized writer which uses the Twig templating engine to convert
@@ -86,10 +89,10 @@ final class Twig extends WriterAbstract
     public function __construct(EnvironmentFactory $environmentFactory, Router $router)
     {
         $this->environmentFactory = $environmentFactory;
-        $this->router = $router;
+        $this->router             = $router;
     }
 
-    protected function router(): ?Router
+    protected function router() : ?Router
     {
         return $this->router;
     }
@@ -98,19 +101,19 @@ final class Twig extends WriterAbstract
      * This method combines the ProjectDescriptor and the given target template
      * and creates a static html page at the artifact location.
      *
-     * @param ProjectDescriptor $project Document containing the structure.
-     * @param Transformation $transformation Transformation to execute.
+     * @param ProjectDescriptor $project        Document containing the structure.
+     * @param Transformation    $transformation Transformation to execute.
      *
      * @throws LoaderError
      * @throws RuntimeError
      * @throws SyntaxError
      */
-    public function transform(ProjectDescriptor $project, Transformation $transformation): void
+    public function transform(ProjectDescriptor $project, Transformation $transformation) : void
     {
         $template_path = $this->getTemplatePath($transformation);
 
         $finder = new Pathfinder();
-        $nodes = $finder->find($project, $transformation->getQuery());
+        $nodes  = $finder->find($project, $transformation->getQuery());
 
         foreach ($nodes as $node) {
             if (!$node) {
@@ -133,7 +136,7 @@ final class Twig extends WriterAbstract
     /**
      * Returns the path belonging to the template.
      */
-    private function getTemplatePath(Transformation $transformation): string
+    private function getTemplatePath(Transformation $transformation) : string
     {
         $parts = preg_split('[\\\\|/]', $transformation->getSource());
 

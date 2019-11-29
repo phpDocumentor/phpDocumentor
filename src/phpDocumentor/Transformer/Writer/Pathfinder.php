@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,13 +8,16 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Transformer\Writer;
+
+use Traversable;
+use function explode;
+use function is_array;
+use function is_object;
+use function method_exists;
 
 class Pathfinder
 {
@@ -24,17 +28,14 @@ class Pathfinder
      * element. This method will silently fail if an invalid query was provided; in such a case the given object
      * is returned.
      *
-     * @param object $object
-     * @param string $query
-     *
-     * @return \Traversable|array
+     * @return Traversable|array
      */
-    public function find($object, $query)
+    public function find(object $object, string $query)
     {
         if ($query) {
             $node = $this->walkObjectTree($object, $query);
 
-            if (!is_array($node) && (!$node instanceof \Traversable)) {
+            if (!is_array($node) && (!$node instanceof Traversable)) {
                 $node = [$node];
             }
 
@@ -47,14 +48,14 @@ class Pathfinder
     /**
      * Walks an object graph and/or array using a twig query string.
      *
-     * @param \Traversable|mixed $objectOrArray
-     * @param string             $query         A path to walk separated by dots, i.e. `namespace.namespaces`.
+     * @param Traversable|mixed $objectOrArray
+     * @param string            $query         A path to walk separated by dots, i.e. `namespace.namespaces`.
      *
      * @return mixed
      */
     private function walkObjectTree($objectOrArray, $query)
     {
-        $node = $objectOrArray;
+        $node       = $objectOrArray;
         $objectPath = explode('.', $query);
 
         // walk through the tree
@@ -68,16 +69,22 @@ class Pathfinder
                 if (isset($node->{$pathNode}) || (method_exists($node, '__get') && $node->{$pathNode})) {
                     $node = $node->{$pathNode};
                     continue;
-                } elseif (method_exists($node, $pathNode)) {
+                }
+
+                if (method_exists($node, $pathNode)) {
                     $node = $node->{$pathNode}();
                     continue;
-                } elseif (method_exists($node, 'get' . $pathNode)) {
+                }
+
+                if (method_exists($node, 'get' . $pathNode)) {
                     $pathNode = 'get' . $pathNode;
-                    $node = $node->{$pathNode}();
+                    $node     = $node->{$pathNode}();
                     continue;
-                } elseif (method_exists($node, 'is' . $pathNode)) {
+                }
+
+                if (method_exists($node, 'is' . $pathNode)) {
                     $pathNode = 'is' . $pathNode;
-                    $node = $node->{$pathNode}();
+                    $node     = $node->{$pathNode}();
                     continue;
                 }
             }

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Application\Stage\Parser;
 
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Dsn;
 use phpDocumentor\Parser\FileCollector;
@@ -13,9 +13,9 @@ use Psr\Log\NullLogger;
 
 final class CollectFilesTest extends MockeryTestCase
 {
-    public function testFilesAreCollectedAndAddedToPayload()
+    public function testFilesAreCollectedAndAddedToPayload() : void
     {
-        $dns = new Dsn('file://.');
+        $dns           = new Dsn('file://.');
         $fileCollector = m::mock(FileCollector::class);
         $fileCollector->expects('getFiles')
             ->with(
@@ -40,17 +40,13 @@ final class CollectFilesTest extends MockeryTestCase
                                 [
                                     'source' => [
                                         'dsn' => $dns,
-                                        'paths' => [
-                                            0 => 'src',
-                                        ],
+                                        'paths' => [0 => 'src'],
                                     ],
                                     'ignore' => [
                                         'paths' => [],
                                         'hidden' => null,
                                     ],
-                                    'extensions' => [
-                                        'php'
-                                    ]
+                                    'extensions' => ['php'],
                                 ],
                             ],
                         ],

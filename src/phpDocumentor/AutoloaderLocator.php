@@ -1,28 +1,27 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpDocumentor.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
- *
- *
  */
 
 namespace phpDocumentor;
 
+use function file_exists;
+use function file_get_contents;
+use function json_decode;
+
 final class AutoloaderLocator
 {
-    /**
-     * @codeCoverageIgnore cannot test without side-effects
-     */
     public static function autoload()
     {
-        return require static::findVendorPath(). '/autoload.php';
+        return require static::findVendorPath() . '/autoload.php';
     }
 
     /**
@@ -42,15 +41,14 @@ final class AutoloaderLocator
      * If neither locations exist, then this method returns null because no vendor path could be found.
      *
      * @param string $baseDir parameter for test purposes only.
-     * @return string
      */
-    public static function findVendorPath($baseDir = __DIR__): string
+    public static function findVendorPath(string $baseDir = __DIR__) : string
     {
         // default installation
         $vendorDir = $baseDir . '/../../vendor';
         // Composerised installation, vendor/phpdocumentor/phpdocumentor/src/phpDocumentor is __DIR__
         $rootFolderWhenInstalledWithComposer = $baseDir . '/../../../../../';
-        $composerConfigurationPath           = $rootFolderWhenInstalledWithComposer .'composer.json';
+        $composerConfigurationPath           = $rootFolderWhenInstalledWithComposer . 'composer.json';
         if (file_exists($composerConfigurationPath)) {
             $vendorDir = $rootFolderWhenInstalledWithComposer
                 . self::getCustomVendorPathFromComposer($composerConfigurationPath);
@@ -61,10 +59,8 @@ final class AutoloaderLocator
      * Retrieves the custom vendor-dir from the given composer.json or returns 'vendor'.
      *
      * @param string $composerConfigurationPath the path pointing to the composer.json
-     *
-     * @return string
      */
-    private static function getCustomVendorPathFromComposer($composerConfigurationPath): string
+    private static function getCustomVendorPathFromComposer(string $composerConfigurationPath) : string
     {
         $composerFile = file_get_contents($composerConfigurationPath);
         $composerJson = json_decode($composerFile, true);

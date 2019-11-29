@@ -1,22 +1,25 @@
 <?php
-/**
- * phpDocumentor
- *
- * PHP Version 5.3
- *
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
- */
 
+declare(strict_types=1);
+
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link http://phpdoc.org
+ */
 namespace phpDocumentor\Descriptor;
 
 use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
+use phpDocumentor\Reflection\Fqsen;
 
 /**
  * Tests the functionality for the DescriptorAbstract class.
  */
-class DescriptorAbstractTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+class DescriptorAbstractTest extends MockeryTestCase
 {
     /** @var DescriptorAbstract $fixture */
     protected $fixture;
@@ -24,7 +27,7 @@ class DescriptorAbstractTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Creates a new mocked fixture object.
      */
-    protected function setUp(): void
+    protected function setUp() : void
     {
         $this->fixture = m::mock('phpDocumentor\Descriptor\DescriptorAbstract');
         $this->fixture->shouldDeferMissing();
@@ -50,11 +53,11 @@ class DescriptorAbstractTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testSettingAndGettingFullyQualifiedStructuralElementName() : void
     {
-        $this->assertSame('', $this->fixture->getFullyQualifiedStructuralElementName());
+        $this->assertSame(null, $this->fixture->getFullyQualifiedStructuralElementName());
 
-        $this->fixture->setFullyQualifiedStructuralElementName('elementname');
+        $this->fixture->setFullyQualifiedStructuralElementName(new Fqsen('\phpDocumentor'));
 
-        $this->assertSame('elementname', $this->fixture->getFullyQualifiedStructuralElementName());
+        $this->assertSame('\phpDocumentor', (string) $this->fixture->getFullyQualifiedStructuralElementName());
     }
 
     /**
@@ -235,8 +238,6 @@ class DescriptorAbstractTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testSettingAndGettingTags() : void
     {
-        $this->assertNull($this->fixture->getTags());
-
         /** @var Collection $mock */
         $mock = m::mock('phpDocumentor\Descriptor\Collection');
         $this->fixture->setTags($mock);
@@ -262,8 +263,6 @@ class DescriptorAbstractTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testSettingAndGettingErrors() : void
     {
-        $this->assertNull($this->fixture->getErrors());
-
         /** @var Collection $mock */
         $mock = m::mock('phpDocumentor\Descriptor\Collection');
         $this->fixture->setErrors($mock);
@@ -276,7 +275,7 @@ class DescriptorAbstractTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testToString() : void
     {
-        $this->fixture->setFullyQualifiedStructuralElementName('fqn');
-        $this->assertSame('fqn', (string) $this->fixture);
+        $this->fixture->setFullyQualifiedStructuralElementName(new Fqsen('\Fqn'));
+        $this->assertSame('\Fqn', (string) $this->fixture);
     }
 }

@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * phpDocumentor2
  */
@@ -6,11 +9,12 @@
 namespace phpDocumentor\Event;
 
 use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 
 /**
  * Test for the Dispatcher class.
  */
-class DispatcherTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+class DispatcherTest extends MockeryTestCase
 {
     /**
      * @covers \phpDocumentor\Event\Dispatcher::getInstance

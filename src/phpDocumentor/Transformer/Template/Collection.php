@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,15 +8,12 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Transformer\Template;
 
-use phpDocumentor\Transformer\Template;
+use ArrayObject;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Writer\Collection as WriterCollection;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
@@ -23,7 +21,7 @@ use phpDocumentor\Transformer\Writer\WriterAbstract;
 /**
  * Contains a collection of Templates that may be queried.
  */
-class Collection extends \ArrayObject
+class Collection extends ArrayObject
 {
     /** @var Factory */
     private $factory;
@@ -37,25 +35,25 @@ class Collection extends \ArrayObject
     public function __construct(Factory $factory, WriterCollection $writerCollection)
     {
         parent::__construct([]);
-        $this->factory = $factory;
+        $this->factory          = $factory;
         $this->writerCollection = $writerCollection;
     }
 
     /**
      * Loads a template with the given name or file path.
-     *
-     * @param string $nameOrPath
      */
-    public function load($nameOrPath)
+    public function load(string $nameOrPath) : void
     {
         $template = $this->factory->get($nameOrPath);
 
         /** @var Transformation $transformation */
         foreach ($template as $transformation) {
             $writer = $this->writerCollection[$transformation->getWriter()];
-            if ($writer instanceof WriterAbstract) {
-                $writer->checkRequirements();
+            if (!($writer instanceof WriterAbstract)) {
+                continue;
             }
+
+            $writer->checkRequirements();
         }
 
         $this[$template->getName()] = $template;
@@ -80,10 +78,8 @@ class Collection extends \ArrayObject
 
     /**
      * Returns the path where all templates are stored.
-     *
-     * @return string
      */
-    public function getTemplatesPath()
+    public function getTemplatesPath() : string
     {
         return $this->factory->getTemplatePath();
     }

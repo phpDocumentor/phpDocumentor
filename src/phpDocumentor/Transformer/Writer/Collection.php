@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,15 +8,15 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Transformer\Writer;
 
+use ArrayObject;
+use InvalidArgumentException;
 use phpDocumentor\Transformer\Router\Router;
+use function preg_match;
 
 /**
  * A collection of Writer objects.
@@ -24,7 +25,7 @@ use phpDocumentor\Transformer\Router\Router;
  *
  * In addition this class can also verify if all requirements for the various writers in it are met.
  */
-class Collection extends \ArrayObject
+class Collection extends ArrayObject
 {
     /** @var Router A series of routers, in order of importance, that are used to generate urls with */
     protected $router;
@@ -44,24 +45,24 @@ class Collection extends \ArrayObject
     /**
      * Registers a writer with a given name.
      *
-     * @param string         $index a Writer's name, must be at least 3
-     *     characters, alphanumeric and/or contain one or more hyphens,
-     *     underscores and forward slashes.
+     * @param string         $index  a Writer's name, must be at least 3
+     *      characters, alphanumeric and/or contain one or more hyphens,
+     *      underscores and forward slashes.
      * @param WriterAbstract $newval The Writer object to register to this name.
      *
-     * @throws \InvalidArgumentException if either of the above restrictions is
+     * @throws InvalidArgumentException if either of the above restrictions is
      *     not met.
      */
-    public function offsetSet($index, $newval)
+    public function offsetSet($index, $newval) : void
     {
         if (!$newval instanceof WriterAbstract) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'The Writer Collection may only contain objects descending from WriterAbstract'
             );
         }
 
         if (!preg_match('/^[a-zA-Z0-9\-\_\/]{3,}$/', $index)) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'The name of a Writer may only contain alphanumeric characters, one or more hyphens, underscores and '
                 . 'forward slashes and must be at least three characters wide'
             );
@@ -75,14 +76,12 @@ class Collection extends \ArrayObject
      *
      * @param string $index the name of the writer to retrieve.
      *
-     * @throws \InvalidArgumentException if the writer is not in the collection.
-     *
-     * @return WriterAbstract
+     * @throws InvalidArgumentException if the writer is not in the collection.
      */
-    public function offsetGet($index)
+    public function offsetGet($index) : WriterAbstract
     {
         if (!$this->offsetExists($index)) {
-            throw new \InvalidArgumentException('Writer "' . $index . '" does not exist');
+            throw new InvalidArgumentException('Writer "' . $index . '" does not exist');
         }
 
         return parent::offsetGet($index);
@@ -93,7 +92,7 @@ class Collection extends \ArrayObject
      *
      * @throws Exception\RequirementMissing if a requirement of a writer is missing.
      */
-    public function checkRequirements()
+    public function checkRequirements() : void
     {
         /** @var WriterAbstract $writer */
         foreach ($this as $writer) {

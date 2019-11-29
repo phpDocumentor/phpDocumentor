@@ -1,20 +1,23 @@
 <?php
-/**
- * phpDocumentor
- *
- * PHP Version 5.3
- *
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
- */
 
+declare(strict_types=1);
+
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link http://phpdoc.org
+ */
 namespace phpDocumentor\Descriptor;
+
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 
 /**
  * Tests the functionality for the Collection class.
  */
-class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+class CollectionTest extends MockeryTestCase
 {
     /** @var Collection $fixture */
     protected $fixture;
@@ -22,7 +25,7 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Creates a new (empty) fixture object.
      */
-    protected function setUp(): void
+    protected function setUp() : void
     {
         $this->fixture = new Collection();
     }
@@ -43,7 +46,7 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testInitializeWithExistingArray() : void
     {
         $expected = [1, 2];
-        $fixture = new Collection($expected);
+        $fixture  = new Collection($expected);
 
         $this->assertEquals($expected, $fixture->getAll());
     }
@@ -53,7 +56,7 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testAddNewItem() : void
     {
-        $expected = ['abc'];
+        $expected          = ['abc'];
         $expectedSecondRun = ['abc', 'def'];
 
         $this->fixture->add('abc');
@@ -71,7 +74,7 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testSetItemsWithKey() : void
     {
-        $expected = ['z' => 'abc'];
+        $expected          = ['z' => 'abc'];
         $expectedSecondRun = ['z' => 'abc', 'y' => 'def'];
 
         $this->assertEquals([], $this->fixture->getAll());
@@ -198,11 +201,11 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testIfAfterMergeCollectionContainsAllItems() : void
     {
-        $expected = [0 => 'a', 1 => 'b', 2 => 'c'];
+        $expected         = [0 => 'a', 1 => 'b', 2 => 'c'];
         $this->fixture[1] = 'a';
         $this->fixture[2] = 'b';
 
-        $collection2 = new Collection();
+        $collection2    = new Collection();
         $collection2[4] = 'c';
 
         $result = $this->fixture->merge($collection2);

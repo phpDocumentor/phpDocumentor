@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,13 +8,16 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Transformer\Router\UrlGenerator;
+
+use function ltrim;
+use function str_replace;
+use function strrpos;
+use function strtolower;
+use function substr;
 
 /**
  * Service class used to convert Qualified names into URL paths for the Standard Router.
@@ -22,12 +26,8 @@ class QualifiedNameToUrlConverter
 {
     /**
      * Converts the provided FQCN into a file name by replacing all slashes and underscores with dots.
-     *
-     * @param string $fqcn
-     *
-     * @return string
      */
-    public function fromPackage($fqcn)
+    public function fromPackage(string $fqcn) : string
     {
         $name = str_replace(['\\', '_'], '-', ltrim($fqcn, '\\'));
 
@@ -41,12 +41,8 @@ class QualifiedNameToUrlConverter
 
     /**
      * Converts the provided FQCN into a file name by replacing all slashes with dots.
-     *
-     * @param string $fqnn
-     *
-     * @return string
      */
-    public function fromNamespace($fqnn)
+    public function fromNamespace(string $fqnn) : string
     {
         $name = str_replace('\\', '-', ltrim((string) $fqnn, '\\'));
 
@@ -60,24 +56,16 @@ class QualifiedNameToUrlConverter
 
     /**
      * Converts the provided FQCN into a file name by replacing all slashes with dots.
-     *
-     * @param string $fqcn
-     *
-     * @return string
      */
-    public function fromClass($fqcn)
+    public function fromClass(string $fqcn) : string
     {
         return str_replace('\\', '-', ltrim((string) $fqcn, '\\'));
     }
 
     /**
      * Converts the given path to a valid url.
-     *
-     * @param string $path
-     *
-     * @return string
      */
-    public function fromFile($path)
+    public function fromFile(string $path) : string
     {
         $path = $this->removeFileExtensionFromPath($path);
 
@@ -86,12 +74,8 @@ class QualifiedNameToUrlConverter
 
     /**
      * Removes the file extension from the provided path.
-     *
-     * @param string $path
-     *
-     * @return string
      */
-    private function removeFileExtensionFromPath($path)
+    private function removeFileExtensionFromPath(string $path) : string
     {
         if (strrpos($path, '.') !== false) {
             $path = substr($path, 0, strrpos($path, '.'));

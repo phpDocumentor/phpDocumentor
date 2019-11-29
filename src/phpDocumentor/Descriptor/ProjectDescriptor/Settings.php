@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,9 +8,6 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
@@ -20,34 +18,35 @@ namespace phpDocumentor\Descriptor\ProjectDescriptor;
  */
 class Settings
 {
-    const VISIBILITY_PUBLIC = 1;
+    public const VISIBILITY_PUBLIC = 1;
 
-    const VISIBILITY_PROTECTED = 2;
+    public const VISIBILITY_PROTECTED = 2;
 
-    const VISIBILITY_PRIVATE = 4;
+    public const VISIBILITY_PRIVATE = 4;
 
-    const VISIBILITY_INTERNAL = 8;
+    public const VISIBILITY_INTERNAL = 8;
 
     /** @var integer by default ignore internal visibility but show others */
-    const VISIBILITY_DEFAULT = 7;
+    public const VISIBILITY_DEFAULT = 7;
 
-    /** @var boolean Represents whether this settings object has been modified */
+    /** @var bool Represents whether this settings object has been modified */
     protected $isModified = false;
 
-    /** @var integer a bitflag representing which visibilities are contained and allowed in this project */
+    /** @var int a bitflag representing which visibilities are contained and allowed in this project */
     protected $visibility = self::VISIBILITY_DEFAULT;
 
     /** @var bool */
     protected $includeSource = false;
 
-    private $markers;
+    /** @var string[] */
+    private $markers = [];
 
     /**
      * Stores the visibilities that are allowed to be executed as a bitflag.
      *
-     * @param integer $visibilityFlag A bitflag combining the VISIBILITY_* constants.
+     * @param int $visibilityFlag A bitflag combining the VISIBILITY_* constants.
      */
-    public function setVisibility($visibilityFlag)
+    public function setVisibility(int $visibilityFlag) : void
     {
         $this->setValueAndCheckIfModified('visibility', $visibilityFlag);
     }
@@ -56,20 +55,16 @@ class Settings
      * Returns the bit flag representing which visibilities are allowed.
      *
      * @see self::isVisibilityAllowed() for a convenience method to easily check against a specific visibility.
-     *
-     * @return integer
      */
-    public function getVisibility()
+    public function getVisibility() : int
     {
         return $this->visibility;
     }
 
     /**
      * Returns whether one of the values of this object was modified.
-     *
-     * @return boolean
      */
-    public function isModified()
+    public function isModified() : bool
     {
         return $this->isModified;
     }
@@ -77,15 +72,17 @@ class Settings
     /**
      * Resets the flag indicating whether the settings have changed.
      */
-    public function clearModifiedFlag()
+    public function clearModifiedFlag() : void
     {
         $this->isModified = false;
     }
 
     /**
      * Sets a property's value and if it differs from the previous then mark these settings as modified.
+     *
+     * @param mixed $value
      */
-    protected function setValueAndCheckIfModified($propertyName, $value)
+    protected function setValueAndCheckIfModified(string $propertyName, $value) : void
     {
         if ($this->{$propertyName} !== $value) {
             $this->isModified = true;
@@ -94,27 +91,30 @@ class Settings
         $this->{$propertyName} = $value;
     }
 
-    public function includeSource()
+    public function includeSource() : void
     {
         $this->setValueAndCheckIfModified('includeSource', true);
     }
 
-    public function excludeSource()
+    public function excludeSource() : void
     {
         $this->setValueAndCheckIfModified('includeSource', false);
     }
 
-    public function shouldIncludeSource()
+    public function shouldIncludeSource() : bool
     {
         return $this->includeSource;
     }
 
-    public function setMarkers(array $markers)
+    /**
+     * @param string[] $markers
+     */
+    public function setMarkers(array $markers) : void
     {
         $this->markers = $markers;
     }
 
-    public function getMarkers()
+    public function getMarkers() : array
     {
         return $this->markers;
     }

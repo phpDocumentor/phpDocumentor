@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,13 +8,17 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor;
+
+use const PHP_EOL;
+use function count;
+use function get_class;
+use function is_string;
+use function sprintf;
+use function str_replace;
 
 /**
  * Analyzes a Project Descriptor and collects key information.
@@ -24,25 +29,25 @@ namespace phpDocumentor\Descriptor;
  */
 class ProjectAnalyzer
 {
-    /** @var integer $elementCount */
+    /** @var int $elementCount */
     protected $elementCount = 0;
 
-    /** @var integer $fileCount */
+    /** @var int $fileCount */
     protected $fileCount = 0;
 
-    /** @var integer $topLevelNamespaceCount */
+    /** @var int $topLevelNamespaceCount */
     protected $topLevelNamespaceCount = 0;
 
-    /** @var integer $unresolvedParentClassesCount */
+    /** @var int $unresolvedParentClassesCount */
     protected $unresolvedParentClassesCount = 0;
 
-    /** @var integer[] $descriptorCountByType */
+    /** @var int[] $descriptorCountByType */
     protected $descriptorCountByType = [];
 
     /**
      * Analyzes the given project descriptor and populates this object's properties.
      */
-    public function analyze(ProjectDescriptor $projectDescriptor)
+    public function analyze(ProjectDescriptor $projectDescriptor) : void
     {
         $this->unresolvedParentClassesCount = 0;
 
@@ -59,10 +64,8 @@ class ProjectAnalyzer
 
     /**
      * Returns a textual report of the findings of this class.
-     *
-     * @return string
      */
-    public function __toString()
+    public function __toString() : string
     {
         $logString = <<<TEXT
 In the ProjectDescriptor are:
@@ -88,12 +91,11 @@ TEXT;
     /**
      * Increments the counter for element's class in the class counters.
      *
-     * @param array              $classCounters
-     * @param DescriptorAbstract $element
+     * @param array $classCounters
      *
      * @return array
      */
-    protected function addElementToCounter($classCounters, $element)
+    protected function addElementToCounter(array $classCounters, DescriptorAbstract $element) : array
     {
         if (!isset($classCounters[get_class($element)])) {
             $classCounters[get_class($element)] = 0;
@@ -106,26 +108,26 @@ TEXT;
 
     /**
      * Checks whether the given element is a class and if its parent could not be resolved; increment the counter.
-     *
-     * @param DescriptorAbstract $element
      */
-    protected function incrementUnresolvedParentCounter($element)
+    protected function incrementUnresolvedParentCounter(DescriptorAbstract $element) : void
     {
         if (!$element instanceof ClassDescriptor) {
             return;
         }
 
-        if (is_string($element->getParent())) {
-            ++$this->unresolvedParentClassesCount;
+        if (!is_string($element->getParent())) {
+            return;
         }
+
+        ++$this->unresolvedParentClassesCount;
     }
 
     /**
      * Returns all elements from the project descriptor.
      *
-     * @return DescriptorAbstract[]
+     * @return DescriptorAbstract[]|Collection
      */
-    protected function findAllElements(ProjectDescriptor $projectDescriptor)
+    protected function findAllElements(ProjectDescriptor $projectDescriptor) : Collection
     {
         return $projectDescriptor->getIndexes()->get('elements', new Collection());
     }

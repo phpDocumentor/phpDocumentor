@@ -16,11 +16,11 @@ final class Twig
         $this->twig = $twig;
     }
 
-    public function __invoke(Payload $payload): Payload
+    public function __invoke(Payload $payload) : Payload
     {
         // set the cache directory to be a subdirectory of phpDocumentor's cache, this will make it configurable
         // to be per-project instead of system-wide.
-        $this->twig->setCache((string)$payload->getConfig()['phpdocumentor']['paths']['cache'] . '/twig');
+        $this->twig->setCache((string) $payload->getConfig()['phpdocumentor']['paths']['cache'] . '/twig');
 
         return $payload;
     }

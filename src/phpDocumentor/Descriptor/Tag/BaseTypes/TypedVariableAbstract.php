@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,9 +8,6 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
@@ -25,20 +23,16 @@ abstract class TypedVariableAbstract extends TypedAbstract
 
     /**
      * Retrieves the variable name stored on this descriptor.
-     *
-     * @return string
      */
-    public function getVariableName()
+    public function getVariableName() : string
     {
         return $this->variableName;
     }
 
     /**
      * Sets the variable name on this descriptor.
-     *
-     * @param string $variableName
      */
-    public function setVariableName($variableName)
+    public function setVariableName(string $variableName) : void
     {
         $this->variableName = $variableName;
     }

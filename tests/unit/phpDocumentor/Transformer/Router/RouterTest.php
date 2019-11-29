@@ -1,14 +1,15 @@
-<?php declare(strict_types=1);
-/**
- * phpDocumentor
- *
- * PHP Version 5.3
- *
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
- */
+<?php
 
+declare(strict_types=1);
+
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link http://phpdoc.org
+ */
 namespace phpDocumentor\Transformer\Router;
 
 use Mockery as m;
@@ -28,13 +29,13 @@ final class RouterTest extends MockeryTestCase
     /**
      * Sets up the fixture.
      */
-    protected function setUp(): void
+    protected function setUp() : void
     {
         $this->elementCollection = new Collection();
 
         $urlGenerator = m::mock(UrlGeneratorInterface::class);
-        $converter = new QualifiedNameToUrlConverter();
-        $builder = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
+        $converter    = new QualifiedNameToUrlConverter();
+        $builder      = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
         $builder
             ->shouldReceive('getProjectDescriptor->getIndexes->get')
             ->with('elements')

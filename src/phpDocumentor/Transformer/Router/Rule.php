@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,9 +8,6 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
@@ -18,7 +16,14 @@ namespace phpDocumentor\Transformer\Router;
 /**
  * A rule determines if and how a node should be transformed to an URL.
  */
+
 use phpDocumentor\Descriptor\DescriptorAbstract;
+use function explode;
+use function extension_loaded;
+use function iconv;
+use function implode;
+use function substr;
+use function urlencode;
 
 class Rule
 {
@@ -35,24 +40,18 @@ class Rule
      *     provided node.
      * @param callable $generator A closure that returns a url or null for the given node.
      */
-    public function __construct($matcher, $generator)
+    public function __construct(callable $matcher, callable $generator)
     {
-        $this->matcher = $matcher;
+        $this->matcher   = $matcher;
         $this->generator = $generator;
     }
 
     /**
      * Returns true when this rule is applicable to the given node.
      *
-     * The contents of $node MAY be changed so that later rules in a router can try to match the changed value. An
-     * example of this is a string matcher that converts a provided FQSEN to a Descriptor so that Descriptor matchers
-     * in subsequent rules can generate a URL for it.
-     *
      * @param string|DescriptorAbstract $node
-     *
-     * @return boolean
      */
-    public function match(&$node)
+    public function match($node) : bool
     {
         $callable = $this->matcher;
 
@@ -68,7 +67,7 @@ class Rule
      */
     public function generate($node)
     {
-        $callable = $this->generator;
+        $callable            = $this->generator;
         $generatedPathAsUtf8 = $callable($node);
 
         return $generatedPathAsUtf8 ? $this->translateToUrlEncodedPath($generatedPathAsUtf8) : false;
@@ -84,12 +83,8 @@ class Rule
      * If an anchor is found in the path, then it is neither url_encoded not transliterated because it should not
      * result in a filename (otherwise another part of the application has made an error) but may be used during
      * rendering of templates.
-     *
-     * @param string $generatedPathAsUtf8
-     *
-     * @return string
      */
-    protected function translateToUrlEncodedPath($generatedPathAsUtf8)
+    protected function translateToUrlEncodedPath(string $generatedPathAsUtf8) : string
     {
         $iso88591Path = explode('/', $generatedPathAsUtf8);
 

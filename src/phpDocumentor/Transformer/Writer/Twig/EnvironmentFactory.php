@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /**
  * This file is part of phpDocumentor.
@@ -6,40 +8,46 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Transformer\Writer\Twig;
 
+use InvalidArgumentException;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Transformer\Router\Renderer;
+use phpDocumentor\Transformer\Template;
+use phpDocumentor\Transformer\Template\Parameter;
 use phpDocumentor\Transformer\Transformation;
 use Twig\Environment;
 use Twig\Extension\DebugExtension;
 use Twig\Loader\FilesystemLoader;
+use const DIRECTORY_SEPARATOR;
+use function array_unshift;
+use function class_exists;
+use function class_implements;
+use function in_array;
+use function preg_split;
+use function strlen;
+use function substr;
 
 final class EnvironmentFactory
 {
     private $baseEnvironment;
-    /**
-     * @var Renderer
-     */
+    /** @var Renderer */
     private $renderer;
 
     public function __construct(Environment $baseEnvironment, Renderer $renderer)
     {
         $this->baseEnvironment = $baseEnvironment;
-        $this->renderer = $renderer;
+        $this->renderer        = $renderer;
     }
 
     public function create(
         ProjectDescriptor $project,
         Transformation $transformation,
         string $destination
-    ): Environment {
+    ) : Environment {
         $callingTemplatePath = $this->getTemplatePath($transformation);
 
         $baseTemplatesPath = $transformation->getTransformer()->getTemplates()->getTemplatesPath();
@@ -51,7 +59,7 @@ final class EnvironmentFactory
         ];
 
         // get all invoked template paths, they overrule the calling template path
-        /** @var \phpDocumentor\Transformer\Template $template */
+        /** @var Template $template */
         foreach ($transformation->getTransformer()->getTemplates() as $template) {
             $path = $baseTemplatesPath . DIRECTORY_SEPARATOR . $template->getName();
             array_unshift($templateFolders, $path);
@@ -75,7 +83,7 @@ final class EnvironmentFactory
         Transformation $transformation,
         string $destination,
         Environment $twigEnvironment
-    ): void {
+    ) : void {
         $base_extension = new Extension($project, $transformation, $this->renderer);
         $base_extension->setDestination(
             substr($destination, strlen($transformation->getTransformer()->getTarget()) + 1)
@@ -89,13 +97,13 @@ final class EnvironmentFactory
      * This method will read the `twig-extension` parameter of the transformation (which inherits the template's
      * parameter set) and try to add those extensions to the environment.
      *
-     * @throws \InvalidArgumentException if a twig-extension should be loaded but it could not be found.
+     * @throws InvalidArgumentException if a twig-extension should be loaded but it could not be found.
      */
     private function addExtensionsFromTemplateConfiguration(
         Transformation $transformation,
         ProjectDescriptor $project,
         Environment $twigEnvironment
-    ): void {
+    ) : void {
         $isDebug = $transformation->getParameter('twig-debug')
             ? $transformation->getParameter('twig-debug')->getValue()
             : false;
@@ -105,11 +113,11 @@ final class EnvironmentFactory
             $twigEnvironment->addExtension(new DebugExtension());
 //        }
 
-        /** @var \phpDocumentor\Transformer\Template\Parameter $extension */
+        /** @var Parameter $extension */
         foreach ($transformation->getParametersWithKey('twig-extension') as $extension) {
             $extensionValue = $extension->getValue();
             if (!class_exists($extensionValue)) {
-                throw new \InvalidArgumentException('Unknown twig extension: ' . $extensionValue);
+                throw new InvalidArgumentException('Unknown twig extension: ' . $extensionValue);
             }
 
             // to support 'normal' Twig extensions we check the interface to determine what instantiation to do.
@@ -128,7 +136,7 @@ final class EnvironmentFactory
     /**
      * Returns the path belonging to the template.
      */
-    private function getTemplatePath(Transformation $transformation): string
+    private function getTemplatePath(Transformation $transformation) : string
     {
         $parts = preg_split('[\\\\|/]', $transformation->getSource());
 

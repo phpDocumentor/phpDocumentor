@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,9 +8,6 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
@@ -17,6 +15,7 @@ namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
 use phpDocumentor\Reflection\Type;
+use function current;
 
 /**
  * Descriptor representing a function.
@@ -42,7 +41,7 @@ class FunctionDescriptor extends DescriptorAbstract implements Interfaces\Functi
     /**
      * {@inheritDoc}
      */
-    public function setArguments(Collection $arguments)
+    public function setArguments(Collection $arguments) : void
     {
         $this->arguments = $arguments;
     }
@@ -50,7 +49,7 @@ class FunctionDescriptor extends DescriptorAbstract implements Interfaces\Functi
     /**
      * {@inheritDoc}
      */
-    public function getArguments()
+    public function getArguments() : Collection
     {
         return $this->arguments;
     }
@@ -58,7 +57,7 @@ class FunctionDescriptor extends DescriptorAbstract implements Interfaces\Functi
     /**
      * {@inheritDoc}
      */
-    public function getResponse(): ReturnDescriptor
+    public function getResponse() : ReturnDescriptor
     {
         $definedReturn = new ReturnDescriptor('return');
         $definedReturn->setType($this->returnType);
@@ -77,7 +76,7 @@ class FunctionDescriptor extends DescriptorAbstract implements Interfaces\Functi
     /**
      * Sets return type of this method.
      */
-    public function setReturnType(Type $returnType)
+    public function setReturnType(Type $returnType) : void
     {
         $this->returnType = $returnType;
     }

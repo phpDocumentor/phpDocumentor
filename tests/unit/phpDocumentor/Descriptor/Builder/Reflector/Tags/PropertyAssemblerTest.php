@@ -1,14 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 
 use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\DocBlock\Tags\Property;
 use phpDocumentor\Reflection\Types\String_;
 
-class PropertyAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+class PropertyAssemblerTest extends MockeryTestCase
 {
     /** @var PropertyAssembler */
     private $fixture;
@@ -19,7 +22,7 @@ class PropertyAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Initializes the fixture for this test.
      */
-    protected function setUp(): void
+    protected function setUp() : void
     {
         $this->builder = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
         $this->fixture = new PropertyAssembler();

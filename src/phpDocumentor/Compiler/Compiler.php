@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,9 +8,6 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
@@ -24,17 +22,16 @@ use Webmozart\Assert\Assert;
 class Compiler extends SplPriorityQueue
 {
     /** @var integer Default priority assigned to Compiler Passes without provided priority */
-    const PRIORITY_DEFAULT = 10000;
+    public const PRIORITY_DEFAULT = 10000;
 
     /**
      * @param CompilerPassInterface $value
      * @param int $priority
      */
-    public function insert($value, $priority = self::PRIORITY_DEFAULT): bool
+    public function insert($value, $priority = self::PRIORITY_DEFAULT) : bool
     {
         Assert::isInstanceOf($value, CompilerPassInterface::class);
 
-        /** @noinspection PhpStrictTypeCheckingInspection phpstorm stubs are incorrect here. */
         return parent::insert($value, $priority);
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,15 +8,14 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor;
 
+use InvalidArgumentException;
 use phpDocumentor\Descriptor\Tag\VarDescriptor;
+use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Type;
 use Webmozart\Assert\Assert;
 
@@ -38,9 +38,9 @@ class ConstantDescriptor extends DescriptorAbstract implements Interfaces\Consta
      *
      * @param ClassDescriptor|InterfaceDescriptor|null $parent
      *
-     * @throws \InvalidArgumentException if anything other than a class, interface or null was passed.
+     * @throws InvalidArgumentException If anything other than a class, interface or null was passed.
      */
-    public function setParent($parent)
+    public function setParent($parent) : void
     {
         Assert::nullOrIsInstanceOfAny(
             $parent,
@@ -52,13 +52,13 @@ class ConstantDescriptor extends DescriptorAbstract implements Interfaces\Consta
             ? $parent->getFullyQualifiedStructuralElementName() . '::' . $this->getName()
             : $this->getName();
 
-        $this->setFullyQualifiedStructuralElementName($fqsen);
+        $this->setFullyQualifiedStructuralElementName(new Fqsen($fqsen));
 
         $this->parent = $parent;
     }
 
     /**
-     * @return null|ClassDescriptor|InterfaceDescriptor|FileDescriptor
+     * @return ClassDescriptor|InterfaceDescriptor|FileDescriptor|null
      */
     public function getParent()
     {
@@ -68,7 +68,7 @@ class ConstantDescriptor extends DescriptorAbstract implements Interfaces\Consta
     /**
      * {@inheritDoc}
      */
-    public function setTypes(Type $types)
+    public function setTypes(Type $types) : void
     {
         $this->types = $types;
     }
@@ -76,12 +76,12 @@ class ConstantDescriptor extends DescriptorAbstract implements Interfaces\Consta
     /**
      * {@inheritDoc}
      */
-    public function getTypes()
+    public function getTypes() : array
     {
         return [$this->getType()];
     }
 
-    public function getType()
+    public function getType() : ?Type
     {
         if ($this->types === null) {
             $var = $this->getVar()->get(0);
@@ -96,7 +96,7 @@ class ConstantDescriptor extends DescriptorAbstract implements Interfaces\Consta
     /**
      * {@inheritDoc}
      */
-    public function setValue($value)
+    public function setValue(string $value) : void
     {
         $this->value = $value;
     }
@@ -104,15 +104,12 @@ class ConstantDescriptor extends DescriptorAbstract implements Interfaces\Consta
     /**
      * {@inheritDoc}
      */
-    public function getValue()
+    public function getValue() : string
     {
         return $this->value;
     }
 
-    /**
-     * @return Collection
-     */
-    public function getVar()
+    public function getVar() : Collection
     {
         /** @var Collection $var */
         $var = $this->getTags()->get('var', new Collection());
@@ -130,18 +127,15 @@ class ConstantDescriptor extends DescriptorAbstract implements Interfaces\Consta
 
     /**
      * Returns the file associated with the parent class, interface or trait when inside a container.
-     *
-     * @return FileDescriptor
      */
-    public function getFile()
+    public function getFile() : FileDescriptor
     {
         return parent::getFile() ?: $this->getParent()->getFile();
     }
 
     /**
      * Returns the Constant from which this one should inherit, if any.
-     *
-     * @return ConstantDescriptor|null
+     * @return mixed|null
      */
     public function getInheritedElement()
     {

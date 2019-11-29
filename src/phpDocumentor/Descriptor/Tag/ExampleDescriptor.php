@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,9 +8,6 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
@@ -20,36 +18,32 @@ use phpDocumentor\Descriptor\TagDescriptor;
 /**
  * Descriptor representing the example tag with a descriptor.
  */
-class ExampleDescriptor extends TagDescriptor
+final class ExampleDescriptor extends TagDescriptor
 {
     /** @var string $filePath the content of the example. */
-    protected $filePath;
+    private $filePath = '';
 
-    /** @var int $lineCount the content of the example. */
-    protected $lineCount;
+    /** @var int|null $lineCount the content of the example. */
+    private $lineCount;
 
-    /** @var int $startingLine the content of the example. */
-    protected $startingLine;
+    /** @var int|null $startingLine the content of the example. */
+    private $startingLine;
 
     /** @var string $example the content of the example. */
-    protected $example;
+    private $example = '';
 
     /**
      * Sets the location where the example points to.
-     *
-     * @param string $filePath
      */
-    public function setFilePath($filePath)
+    public function setFilePath(string $filePath) : void
     {
         $this->filePath = $filePath;
     }
 
     /**
      * Returns the location where this example points to.
-     *
-     * @return string
      */
-    public function getFilePath()
+    public function getFilePath() : string
     {
         return $this->filePath;
     }
@@ -57,17 +51,15 @@ class ExampleDescriptor extends TagDescriptor
     /**
      * Returns the location where this example points to.
      */
-    public function setStartingLine($startingLine)
+    public function setStartingLine(int $startingLine) : void
     {
         $this->startingLine = $startingLine;
     }
 
     /**
      * Returns the location where this example points to.
-     *
-     * @return int
      */
-    public function getStartingLine()
+    public function getStartingLine() : ?int
     {
         return $this->startingLine;
     }
@@ -75,17 +67,15 @@ class ExampleDescriptor extends TagDescriptor
     /**
      * Returns the location where this example points to.
      */
-    public function setLineCount($lineCount)
+    public function setLineCount(int $lineCount) : void
     {
         $this->lineCount = $lineCount;
     }
 
     /**
      * Returns the location where this example points to.
-     *
-     * @return int
      */
-    public function getLineCount()
+    public function getLineCount() : ?int
     {
         return $this->lineCount;
     }
@@ -93,17 +83,15 @@ class ExampleDescriptor extends TagDescriptor
     /**
      * Returns the content of the example.
      */
-    public function setExample($example)
+    public function setExample(string $example) : void
     {
         $this->example = $example;
     }
 
     /**
      * Returns the content of the example.
-     *
-     * @return string
      */
-    public function getExample()
+    public function getExample() : string
     {
         return $this->example;
     }

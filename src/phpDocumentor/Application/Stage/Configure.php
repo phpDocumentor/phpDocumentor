@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,19 +8,19 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Application\Stage;
 
+use InvalidArgumentException;
 use phpDocumentor\Configuration\CommandlineOptionsMiddleware;
 use phpDocumentor\Configuration\Configuration;
 use phpDocumentor\Configuration\ConfigurationFactory;
 use phpDocumentor\Uri;
 use Psr\Log\LoggerInterface;
+use function realpath;
+use function sprintf;
 
 final class Configure
 {
@@ -27,9 +28,6 @@ final class Configure
     private $configuration;
     private $logger;
 
-    /**
-     * Configure constructor.
-     */
     public function __construct(
         ConfigurationFactory $configFactory,
         Configuration $configuration,
@@ -37,13 +35,13 @@ final class Configure
     ) {
         $this->configFactory = $configFactory;
         $this->configuration = $configuration;
-        $this->logger = $logger;
+        $this->logger        = $logger;
     }
 
     /**
      * @return string[]
      */
-    public function __invoke(array $options): array
+    public function __invoke(array $options) : array
     {
         $this->configFactory->addMiddleware(
             new CommandlineOptionsMiddleware($options)
@@ -56,7 +54,7 @@ final class Configure
             if ($path !== 'none') {
                 $uri = realpath($path);
                 if ($uri === false) {
-                    throw new \InvalidArgumentException(
+                    throw new InvalidArgumentException(
                         sprintf(
                             'The configuration file in path "%s" can not be '
                             . 'found or read',

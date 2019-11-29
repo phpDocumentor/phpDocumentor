@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,9 +8,6 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
@@ -33,10 +31,8 @@ class TagDescriptor implements Filterable
 
     /**
      * Initializes the tag by setting the name and errors,
-     *
-     * @param string $name
      */
-    public function __construct($name)
+    public function __construct(string $name)
     {
         $this->setName($name);
         $this->errors = new Collection();
@@ -44,40 +40,32 @@ class TagDescriptor implements Filterable
 
     /**
      * Sets the name for this tag.
-     *
-     * @param string $name
      */
-    protected function setName($name)
+    protected function setName(string $name) : void
     {
         $this->name = $name;
     }
 
     /**
      * Returns the name for this tag.
-     *
-     * @return string
      */
-    public function getName()
+    public function getName() : string
     {
         return $this->name;
     }
 
     /**
      * Sets a description for this tab instance.
-     *
-     * @param string $description
      */
-    public function setDescription($description)
+    public function setDescription(string $description) : void
     {
         $this->description = $description;
     }
 
     /**
      * Returns the description for this tag,
-     *
-     * @return string
      */
-    public function getDescription()
+    public function getDescription() : string
     {
         return $this->description;
     }
@@ -85,17 +73,15 @@ class TagDescriptor implements Filterable
     /**
      * Sets a list of errors found on the usage of this tag.
      */
-    public function setErrors(Collection $errors): void
+    public function setErrors(Collection $errors) : void
     {
         $this->errors = $errors;
     }
 
     /**
      * Returns all errors associated with this tag.
-     *
-     * @return Collection
      */
-    public function getErrors()
+    public function getErrors() : Collection
     {
         return $this->errors;
     }

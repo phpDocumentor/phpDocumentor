@@ -14,7 +14,7 @@ final class TwigTest extends MockeryTestCase
 {
     public function test_that_the_cache_folder_gets_configured() : void
     {
-        $twig = new Environment(new ArrayLoader());
+        $twig   = new Environment(new ArrayLoader());
         $config = [ 'phpdocumentor' => [ 'paths' => [ 'cache' => 'phpdoc-cache' ] ] ];
 
         (new Twig($twig))(new Payload($config, m::mock(ProjectDescriptorBuilder::class)));

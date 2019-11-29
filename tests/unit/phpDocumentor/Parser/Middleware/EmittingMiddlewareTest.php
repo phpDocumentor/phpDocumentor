@@ -1,17 +1,19 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpDocumentor.
  *
  *  For the full copyright and license information, please view the LICENSE
  *  file that was distributed with this source code.
  *
- *  @copyright 2010-2018 Mike van Riel<mike@phpdoc.org>
- *  @license   http://www.opensource.org/licenses/mit-license.php MIT
- *  @link      http://phpdoc.org
+ * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Parser\Middleware;
 
+use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Parser\Event\PreFileEvent;
 use phpDocumentor\Reflection\File\LocalFile;
@@ -31,11 +33,14 @@ final class EmittingMiddlewareTest extends TestCase
     public function testEmitsPreParsingEvent() : void
     {
         $filename = __FILE__;
+        $file = new FileDescriptor(md5('result'));
+        $file->setPath($filename);
+
         $command = new CreateCommand(new LocalFile($filename), new ProjectFactoryStrategies([]));
 
         Dispatcher::getInstance()->addListener(
             'parser.file.pre',
-            function (PreFileEvent $event) use ($filename) {
+            function (PreFileEvent $event) use ($filename) : void {
                 $this->assertSame($event->getFile(), $filename);
             }
         );
@@ -43,13 +48,13 @@ final class EmittingMiddlewareTest extends TestCase
         $middleware = new EmittingMiddleware();
         $result = $middleware->execute(
             $command,
-            function (CreateCommand $receivedCommand) use ($command) {
+            function (CreateCommand $receivedCommand) use ($command, $file) {
                 $this->assertSame($command, $receivedCommand);
 
-                return 'result';
+                return $file;
             }
         );
 
-        $this->assertSame('result', $result);
+        $this->assertSame($file, $result);
     }
 }

@@ -1,12 +1,13 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpDocumentor.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @copyright 2010-2018 Mike van Riel<mike@phpdoc.org>
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
@@ -37,7 +38,7 @@ class MethodAssemblerTest extends MockeryTestCase
     /**
      * Creates a new fixture to test with.
      */
-    protected function setUp(): void
+    protected function setUp() : void
     {
         $this->builderMock = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
         $this->builderMock->shouldReceive('buildDescriptor')->andReturn(null);
@@ -173,7 +174,7 @@ class MethodAssemblerTest extends MockeryTestCase
         string $namespace,
         string $methodName,
         Argument $argumentMock,
-        DocBlock $docBlockMock = null
+        ?DocBlock $docBlockMock = null
     ) : Method {
         $method = new Method(
             new Fqsen('\\' . $namespace . '::' . $methodName . '()'),
@@ -189,7 +190,7 @@ class MethodAssemblerTest extends MockeryTestCase
     /**
      * Generates a DocBlock object with applicable defaults for these tests.
      */
-    protected function givenADocBlockObject($withTags): DocBlock
+    protected function givenADocBlockObject($withTags) : DocBlock
     {
         $docBlockDescription = new DocBlock\Description('This is an example description');
 
@@ -210,7 +211,7 @@ class MethodAssemblerTest extends MockeryTestCase
     /**
      * Prepares a mock Argument with the given name.
      */
-    protected function givenAnArgumentWithName(string $argumentName): Argument
+    protected function givenAnArgumentWithName(string $argumentName) : Argument
     {
         return new Argument($argumentName);
     }

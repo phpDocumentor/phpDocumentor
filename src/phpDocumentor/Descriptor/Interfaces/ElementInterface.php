@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,9 +8,6 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
@@ -17,6 +15,7 @@ namespace phpDocumentor\Descriptor\Interfaces;
 
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\FileDescriptor;
+use phpDocumentor\Reflection\Fqsen;
 
 /**
  * Represents the public interface to which all descriptors should be held.
@@ -25,87 +24,63 @@ interface ElementInterface
 {
     /**
      * Sets the Fully Qualified Structural Element Name (FQSEN) for this element.
-     *
-     * @param string $name
      */
-    public function setFullyQualifiedStructuralElementName($name);
+    public function setFullyQualifiedStructuralElementName(Fqsen $name) : void;
 
     /**
      * Returns the Fully Qualified Structural Element Name (FQSEN) for this element.
-     *
-     * @return string
      */
-    public function getFullyQualifiedStructuralElementName();
+    public function getFullyQualifiedStructuralElementName() : ?Fqsen;
 
     /**
      * Sets the local name for this element.
-     *
-     * @param string $name
      */
-    public function setName($name);
+    public function setName(string $name) : void;
 
     /**
      * Returns the local name for this element.
-     *
-     * @return string
      */
-    public function getName();
+    public function getName() : string;
 
     /**
      * Sets a summary describing this element.
-     *
-     * @param string $summary
      */
-    public function setSummary($summary);
+    public function setSummary(string $summary) : void;
 
     /**
      * Returns the summary describing this element.
-     *
-     * @return string
      */
-    public function getSummary();
+    public function getSummary() : string;
 
     /**
      * Sets a longer description for this element.
-     *
-     * @param string $description
      */
-    public function setDescription($description);
+    public function setDescription(string $description) : void;
 
     /**
      * Returns a longer description for this element.
-     *
-     * @return string
      */
-    public function getDescription();
+    public function getDescription() : string;
 
     /**
      * Sets the file and location for this element.
-     *
-     * @param int            $line
      */
-    public function setLocation(FileDescriptor $file, $line = 0);
+    public function setLocation(FileDescriptor $file, int $line = 0) : void;
 
     /**
      * Returns the file location for this element relative to the project root.
-     *
-     * @return string
      */
-    public function getPath();
+    public function getPath() : string;
 
     /**
      * Returns the line number where this element may be found.
      *
      * @see getPath() to find out in which file this element is found.
-     *
-     * @return int
      */
-    public function getLine();
+    public function getLine() : int;
 
     /**
      * Returns all tags associated with this element.
-     *
-     * @return Collection
      */
-    public function getTags();
+    public function getTags() : Collection;
 }

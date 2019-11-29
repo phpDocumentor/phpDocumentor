@@ -1,22 +1,24 @@
 <?php
-/**
- * phpDocumentor
- *
- * PHP Version 5.3
- *
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
- */
 
+declare(strict_types=1);
+
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link http://phpdoc.org
+ */
 namespace phpDocumentor\Descriptor\Filter;
 
 use League\Pipeline\Pipeline;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 
 /**
  * Tests the functionality for the ClassFactory class.
  */
-class ClassFactoryTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+class ClassFactoryTest extends MockeryTestCase
 {
     /** @var ClassFactory $fixture */
     protected $fixture;
@@ -24,7 +26,7 @@ class ClassFactoryTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Creates a new (empty) fixture object.
      */
-    protected function setUp(): void
+    protected function setUp() : void
     {
         $this->fixture = new ClassFactory();
     }

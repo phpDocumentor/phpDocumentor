@@ -1,18 +1,20 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpDocumentor.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @copyright 2010-2015 Mike van Riel<mike@phpdoc.org>
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Configuration\Factory;
 
 use PHPUnit\Framework\TestCase;
+use SimpleXMLElement;
 
 /**
  * Test case for Version3
@@ -27,9 +29,9 @@ final class Version3Test extends TestCase
     /** @var Version3 */
     private $strategy;
 
-    protected function setUp(): void
+    protected function setUp() : void
     {
-        $this->strategy = new Version3(__DIR__ . '/../../../../../data/xsd/phpdoc.xsd');
+        $this->strategy   = new Version3(__DIR__ . '/../../../../../data/xsd/phpdoc.xsd');
         $this->dataFolder = __DIR__ . '/../../../data/';
     }
 
@@ -82,7 +84,7 @@ final class Version3Test extends TestCase
 </phpdocumentor>
 XML;
 
-        $xml = new \SimpleXMLElement($xml);
+        $xml = new SimpleXMLElement($xml);
 
         $this->strategy->convert($xml);
     }
@@ -169,8 +171,8 @@ XML;
         $this->assertTrue($bool);
     }
 
-    private function givenXmlFromFile(string $file): \SimpleXMLElement
+    private function givenXmlFromFile(string $file) : SimpleXMLElement
     {
-        return new \SimpleXMLElement($this->dataFolder . $file, 0, true);
+        return new SimpleXMLElement($this->dataFolder . $file, 0, true);
     }
 }

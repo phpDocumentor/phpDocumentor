@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,15 +8,13 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Descriptor\Tag\BaseTypes\TypedVariableAbstract;
+use function ltrim;
 
 /**
  * Descriptor representing a Class.
@@ -28,10 +27,10 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     /** @var Collection $implements References to interfaces that are implemented by this class. */
     protected $implements;
 
-    /** @var boolean $abstract Whether this is an abstract class. */
+    /** @var bool $abstract Whether this is an abstract class. */
     protected $abstract = false;
 
-    /** @var boolean $final Whether this class is marked as final and can't be subclassed. */
+    /** @var bool $final Whether this class is marked as final and can't be subclassed. */
     protected $final = false;
 
     /** @var Collection $constants References to constants defined in this class. */
@@ -63,7 +62,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     /**
      * {@inheritDoc}
      */
-    public function setParent($parents)
+    public function setParent($parents) : void
     {
         $this->parent = $parents;
     }
@@ -79,7 +78,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     /**
      * {@inheritDoc}
      */
-    public function setInterfaces(Collection $implements)
+    public function setInterfaces(Collection $implements) : void
     {
         $this->implements = $implements;
     }
@@ -87,7 +86,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     /**
      * {@inheritDoc}
      */
-    public function getInterfaces()
+    public function getInterfaces() : Collection
     {
         return $this->implements;
     }
@@ -95,7 +94,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     /**
      * {@inheritDoc}
      */
-    public function setFinal($final)
+    public function setFinal($final) : void
     {
         $this->final = $final;
     }
@@ -103,7 +102,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     /**
      * {@inheritDoc}
      */
-    public function isFinal()
+    public function isFinal() : bool
     {
         return $this->final;
     }
@@ -111,7 +110,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     /**
      * {@inheritDoc}
      */
-    public function setAbstract($abstract)
+    public function setAbstract($abstract) : void
     {
         $this->abstract = $abstract;
     }
@@ -119,7 +118,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     /**
      * {@inheritDoc}
      */
-    public function isAbstract()
+    public function isAbstract() : bool
     {
         return $this->abstract;
     }
@@ -127,7 +126,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     /**
      * {@inheritDoc}
      */
-    public function setConstants(Collection $constants)
+    public function setConstants(Collection $constants) : void
     {
         $this->constants = $constants;
     }
@@ -135,7 +134,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     /**
      * {@inheritDoc}
      */
-    public function getConstants()
+    public function getConstants() : Collection
     {
         return $this->constants;
     }
@@ -157,7 +156,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     /**
      * {@inheritDoc}
      */
-    public function setMethods(Collection $methods)
+    public function setMethods(Collection $methods) : void
     {
         $this->methods = $methods;
     }
@@ -165,7 +164,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     /**
      * {@inheritDoc}
      */
-    public function getMethods()
+    public function getMethods() : Collection
     {
         return $this->methods;
     }
@@ -173,7 +172,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     /**
      * {@inheritDoc}
      */
-    public function getInheritedMethods()
+    public function getInheritedMethods() : Collection
     {
         $inheritedMethods = new Collection();
 
@@ -194,10 +193,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
         return $inheritedMethods->merge($this->getParent()->getInheritedMethods());
     }
 
-    /**
-     * @return Collection
-     */
-    public function getMagicMethods()
+    public function getMagicMethods() : Collection
     {
         /** @var Collection $methodTags */
         $methodTags = clone $this->getTags()->get('method', new Collection());
@@ -232,7 +228,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     /**
      * {@inheritDoc}
      */
-    public function setProperties(Collection $properties)
+    public function setProperties(Collection $properties) : void
     {
         $this->properties = $properties;
     }
@@ -240,7 +236,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     /**
      * {@inheritDoc}
      */
-    public function getProperties()
+    public function getProperties() : Collection
     {
         return $this->properties;
     }
@@ -248,7 +244,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     /**
      * {@inheritDoc}
      */
-    public function getInheritedProperties()
+    public function getInheritedProperties() : Collection
     {
         $inheritedProperties = new Collection();
 
@@ -269,10 +265,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
         return $inheritedProperties->merge($this->getParent()->getInheritedProperties());
     }
 
-    /**
-     * @return Collection
-     */
-    public function getMagicProperties()
+    public function getMagicProperties() : Collection
     {
         /** @var Collection $propertyTags */
         $propertyTags = clone $this->getTags()->get('property', new Collection());
@@ -283,7 +276,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
 
         /** @var Tag\PropertyDescriptor $propertyTag */
         foreach ($propertyTags as $propertyTag) {
-            if (! $propertyTag instanceof TypedVariableAbstract) {
+            if (!$propertyTag instanceof TypedVariableAbstract) {
                 continue;
             }
             $property = new PropertyDescriptor();
@@ -303,40 +296,44 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     }
 
     /**
-     * @param PackageDescriptor $package
+     * @inheritDoc
      */
-    public function setPackage($package)
+    public function setPackage($package) : void
     {
         parent::setPackage($package);
 
         foreach ($this->getConstants() as $constant) {
             // TODO #840: Workaround; for some reason there are NULLs in the constants array.
-            if ($constant) {
-                $constant->setPackage($package);
+            if (!$constant) {
+                continue;
             }
+
+            $constant->setPackage($package);
         }
 
         foreach ($this->getProperties() as $property) {
             // TODO #840: Workaround; for some reason there are NULLs in the properties array.
-            if ($property) {
-                $property->setPackage($package);
+            if (!$property) {
+                continue;
             }
+
+            $property->setPackage($package);
         }
 
         foreach ($this->getMethods() as $method) {
             // TODO #840: Workaround; for some reason there are NULLs in the methods array.
-            if ($method) {
-                $method->setPackage($package);
+            if (!$method) {
+                continue;
             }
+
+            $method->setPackage($package);
         }
     }
 
     /**
      * Sets a collection of all traits used by this class.
-     *
-     * @param Collection $usedTraits
      */
-    public function setUsedTraits($usedTraits)
+    public function setUsedTraits(Collection $usedTraits) : void
     {
         $this->usedTraits = $usedTraits;
     }
@@ -345,10 +342,8 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
      * Returns the traits used by this class.
      *
      * Returned values may either be a string (when the Trait is not in this project) or a TraitDescriptor.
-     *
-     * @return Collection
      */
-    public function getUsedTraits()
+    public function getUsedTraits() : Collection
     {
         return $this->usedTraits;
     }

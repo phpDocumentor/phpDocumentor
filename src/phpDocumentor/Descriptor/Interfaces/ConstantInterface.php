@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,9 +8,6 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
@@ -25,26 +23,22 @@ interface ConstantInterface extends ElementInterface, TypeInterface
     /**
      * Sets the types that this constant may contain.
      */
-    public function setTypes(Type $types);
+    public function setTypes(Type $types) : void;
 
     /**
      * Returns the types that may be present in this constant.
      *
      * @return array[]
      */
-    public function getTypes();
+    public function getTypes() : array;
 
     /**
      * Sets the value representation for this constant.
-     *
-     * @param string $value
      */
-    public function setValue($value);
+    public function setValue(string $value) : void;
 
     /**
      * Retrieves a textual representation of the value in this constant.
-     *
-     * @return string
      */
-    public function getValue();
+    public function getValue() : string;
 }

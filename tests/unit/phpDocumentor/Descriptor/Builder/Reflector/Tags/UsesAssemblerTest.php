@@ -1,18 +1,20 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpDocumentor.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @copyright 2010-2018 Mike van Riel<mike@phpdoc.org>
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 
 use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\DocBlock\Tags\Uses;
@@ -24,7 +26,7 @@ use phpDocumentor\Reflection\Fqsen;
  * @coversDefaultClass \phpDocumentor\Descriptor\Builder\Reflector\Tags\UsesAssembler
  * @covers ::<private>
  */
-class UsesAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+class UsesAssemblerTest extends MockeryTestCase
 {
     /** @var UsesAssembler $fixture */
     protected $fixture;
@@ -35,10 +37,10 @@ class UsesAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Creates a new fixture to test with.
      */
-    protected function setUp(): void
+    protected function setUp() : void
     {
         $this->builderMock = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
-        $this->fixture = new UsesAssembler();
+        $this->fixture     = new UsesAssembler();
         $this->fixture->setBuilder($this->builderMock);
     }
 
@@ -48,9 +50,9 @@ class UsesAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testCreateUsesDescriptorFromUsesTagWhenReferenceIsRelativeClassnameNotInNamespaceAliasses() : void
     {
         // Arrange
-        $name = 'uses';
+        $name        = 'uses';
         $description = 'a uses tag';
-        $reference = '\ReferenceClass';
+        $reference   = '\ReferenceClass';
         $usesTagMock = $this->givenAUsesTag($description, $reference);
 
         // Act

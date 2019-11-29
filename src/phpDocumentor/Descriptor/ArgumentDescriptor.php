@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,15 +8,14 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Reflection\Type;
+use const E_USER_DEPRECATED;
+use function trigger_error;
 
 /**
  * Descriptor representing a single Argument of a method or function.
@@ -34,18 +34,18 @@ class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\Argume
     /** @var bool $byReference whether the argument passes the parameter by reference instead of by value */
     protected $byReference = false;
 
-    /** @var boolean Determines if this Argument represents a variadic argument */
+    /** @var bool Determines if this Argument represents a variadic argument */
     protected $isVariadic = false;
 
     /**
      * To which method does this argument belong to
      */
-    public function setMethod(MethodDescriptor $method)
+    public function setMethod(MethodDescriptor $method) : void
     {
         $this->method = $method;
     }
 
-    public function getMethod(): ?MethodDescriptor
+    public function getMethod() : ?MethodDescriptor
     {
         return $this->method;
     }
@@ -53,7 +53,7 @@ class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\Argume
     /**
      * {@inheritDoc}
      */
-    public function setType(?Type $type)
+    public function setType(?Type $type) : void
     {
         $this->type = $type;
     }
@@ -61,7 +61,7 @@ class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\Argume
     /**
      * {@inheritDoc}
      */
-    public function getType(): ?Type
+    public function getType() : ?Type
     {
         if ($this->type === null && $this->getInheritedElement() !== null) {
             $this->setType($this->getInheritedElement()->getType());
@@ -70,15 +70,12 @@ class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\Argume
         return $this->type;
     }
 
-    public function getTypes(): array
+    public function getTypes() : array
     {
         trigger_error('Please use getType', E_USER_DEPRECATED);
         return [$this->getType()];
     }
 
-    /**
-     * @return null|ArgumentDescriptor
-     */
     public function getInheritedElement()
     {
         if ($this->method instanceof MethodDescriptor &&
@@ -97,7 +94,7 @@ class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\Argume
     /**
      * {@inheritDoc}
      */
-    public function setDefault($value)
+    public function setDefault(?string $value) : void
     {
         $this->default = $value;
     }
@@ -105,7 +102,7 @@ class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\Argume
     /**
      * {@inheritDoc}
      */
-    public function getDefault()
+    public function getDefault() : ?string
     {
         return $this->default;
     }
@@ -113,7 +110,7 @@ class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\Argume
     /**
      * {@inheritDoc}
      */
-    public function setByReference($byReference)
+    public function setByReference($byReference) : void
     {
         $this->byReference = $byReference;
     }
@@ -121,29 +118,23 @@ class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\Argume
     /**
      * {@inheritDoc}
      */
-    public function isByReference()
+    public function isByReference() : bool
     {
         return $this->byReference;
     }
 
     /**
      * Sets whether this argument represents a variadic argument.
-     *
-     * @param boolean $isVariadic
-     *
-     * @return false
      */
-    public function setVariadic($isVariadic)
+    public function setVariadic(bool $isVariadic) : void
     {
         $this->isVariadic = $isVariadic;
     }
 
     /**
      * Returns whether this argument represents a variadic argument.
-     *
-     * @return boolean
      */
-    public function isVariadic()
+    public function isVariadic() : bool
     {
         return $this->isVariadic;
     }

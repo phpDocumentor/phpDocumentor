@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,9 +8,6 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
@@ -24,50 +22,38 @@ interface PropertyInterface extends ElementInterface, TypeInterface
 {
     /**
      * Stores a textual representation of the default value for a property.
-     *
-     * @param string $default
      */
-    public function setDefault($default);
+    public function setDefault(string $default) : void;
 
     /**
-     * Returns the textual representation of the default value for a property.
-     *
-     * @return string
+     * Returns the textual representation of the default value for a property, or null if none is provided.
      */
-    public function getDefault();
+    public function getDefault() : ?string;
 
     /**
      * Sets whether this property is static in scope.
-     *
-     * @param boolean $static
      */
-    public function setStatic($static);
+    public function setStatic(bool $static) : void;
 
     /**
      * Returns whether this property is static in scope.
-     *
-     * @return boolean
      */
-    public function isStatic();
+    public function isStatic() : bool;
 
     /**
      * Sets the types associated with the value(s) for this property.
      */
-    public function setType(Type $type);
+    public function setType(Type $type) : void;
 
     /**
      * Returns the types associated with the value(s) for this property.
-     *
-     * @return Type
      */
-    public function getType();
+    public function getType() : ?Type;
 
     /**
      * Sets whether this property is available from inside or outside its class and/or descendants.
      *
      * @param string $visibility May be either 'public', 'private' or 'protected'.
-     *
-     * @return string
      */
-    public function setVisibility($visibility);
+    public function setVisibility(string $visibility) : void;
 }

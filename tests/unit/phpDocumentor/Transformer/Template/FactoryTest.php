@@ -1,20 +1,20 @@
 <?php
-/**
- * phpDocumentor
- *
- * PHP Version 5.3
- *
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
- */
 
+declare(strict_types=1);
+
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link http://phpdoc.org
+ */
 namespace phpDocumentor\Transformer\Template;
 
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use org\bovigo\vfs\vfsStream;
-use phpDocumentor\Transformer\Template;
 
 class FactoryTest extends MockeryTestCase
 {
@@ -27,7 +27,7 @@ class FactoryTest extends MockeryTestCase
     /**
      * Sets up the fixture with mocked dependencies.
      */
-    protected function setUp(): void
+    protected function setUp() : void
     {
         $this->pathResolverMock = m::mock('phpDocumentor\Transformer\Template\PathResolver');
 
@@ -44,7 +44,7 @@ class FactoryTest extends MockeryTestCase
     {
         // Arrange
         $templateName = 'clean';
-        $xml = <<<'XML'
+        $xml          = <<<'XML'
 <?xml version="1.0" encoding="utf-8"?>
 <template>
   <name>clean</name>
@@ -125,7 +125,7 @@ XML;
     {
         // Arrange
         $expected = ['template1', 'template2'];
-        $root = vfsStream::setup('exampleDir');
+        $root     = vfsStream::setup('exampleDir');
         $root->addChild(vfsStream::newDirectory($expected[0]));
         $root->addChild(vfsStream::newFile('aFile.txt'));
         $root->addChild(vfsStream::newDirectory($expected[1]));

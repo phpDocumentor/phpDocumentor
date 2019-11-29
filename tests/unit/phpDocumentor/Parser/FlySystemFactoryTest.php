@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,22 +8,24 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @copyright 2010-2018 Mike van Riel<mike@phpdoc.org>
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Parser;
 
+use Flyfinder\Path;
 use Flyfinder\Specification\InPath;
 use League\Flysystem\Adapter\AbstractAdapter;
 use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Dsn;
+use const DIRECTORY_SEPARATOR;
+use function realpath;
 
 /**
  * @coversDefaultClass \phpDocumentor\Parser\FlySystemFactory
  */
-final class FlySystemFactoryTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+final class FlySystemFactoryTest extends MockeryTestCase
 {
     /** @var FlySystemFactory */
     private $fixture;
@@ -36,7 +39,7 @@ final class FlySystemFactoryTest extends \Mockery\Adapter\Phpunit\MockeryTestCas
     /** @var Dsn */
     private $dsn;
 
-    protected function setUp(): void
+    protected function setUp() : void
     {
         $this->mountManagerMock = m::mock('League\Flysystem\MountManager');
         $this->filesystemMock   = m::mock('League\Flysystem\Filesystem');
@@ -59,7 +62,7 @@ final class FlySystemFactoryTest extends \Mockery\Adapter\Phpunit\MockeryTestCas
         $this->assertInstanceOf('League\Flysystem\Filesystem', $result);
 
         /** @var AbstractAdapter $adapter */
-        $adapter = $result->getAdapter();
+        $adapter    = $result->getAdapter();
         $pathPrefix = $adapter->getPathPrefix();
         $this->assertEquals(sys_get_temp_dir() . DIRECTORY_SEPARATOR, $pathPrefix);
     }
@@ -106,6 +109,6 @@ final class FlySystemFactoryTest extends \Mockery\Adapter\Phpunit\MockeryTestCas
         $this->mountManagerMock->shouldReceive('getFilesystem')->once()->andThrow('\LogicException');
         $fileSystem = $this->fixture->create($this->dsn);
 
-        $fileSystem->find(new InPath(new \Flyfinder\Path('a')));
+        $fileSystem->find(new InPath(new Path('a')));
     }
 }

@@ -1,14 +1,15 @@
 <?php
-/**
- * phpDocumentor
- *
- * PHP Version 5.3
- *
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
- */
 
+declare(strict_types=1);
+
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link http://phpdoc.org
+ */
 namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 
 use Mockery as m;
@@ -22,17 +23,17 @@ use phpDocumentor\Reflection\DocBlock\Tags\Example;
  */
 class ExampleAssemblerTest extends MockeryTestCase
 {
-    const EXAMPLE_FILE_PATH = 'examples/example.txt';
+    public const EXAMPLE_FILE_PATH = 'examples/example.txt';
 
-    const EXAMPLE_STARTING_LINE = 10;
+    public const EXAMPLE_STARTING_LINE = 10;
 
-    const EXAMPLE_LINE_COUNT = 5;
+    public const EXAMPLE_LINE_COUNT = 5;
 
-    const EXAMPLE_DESCRIPTION = 'This is a description';
+    public const EXAMPLE_DESCRIPTION = 'This is a description';
 
-    const EXAMPLE_TEXT = 'This is an example';
+    public const EXAMPLE_TEXT = 'This is an example';
 
-    const TAG_NAME = 'example';
+    public const TAG_NAME = 'example';
 
     /** @var ExampleAssembler */
     private $fixture;
@@ -43,10 +44,10 @@ class ExampleAssemblerTest extends MockeryTestCase
     /**
      * Initializes this fixture and its dependencies.
      */
-    protected function setUp(): void
+    protected function setUp() : void
     {
         $this->finderMock = m::mock(ExampleFinder::class);
-        $this->fixture = new ExampleAssembler($this->finderMock);
+        $this->fixture    = new ExampleAssembler($this->finderMock);
     }
 
     /**
@@ -93,10 +94,8 @@ class ExampleAssemblerTest extends MockeryTestCase
 
     /**
      * Instructs the finder dependency to return the given text when an example file is to be found.
-     *
-     * @param string $exampleText
      */
-    private function whenExampleFileContains($exampleText) : void
+    private function whenExampleFileContains(string $exampleText) : void
     {
         $this->finderMock->shouldReceive('find')->andReturn($exampleText);
     }

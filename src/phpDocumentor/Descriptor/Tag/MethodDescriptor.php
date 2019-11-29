@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,9 +8,6 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
@@ -36,15 +34,12 @@ class MethodDescriptor extends TagDescriptor
         $this->arguments = new Collection();
     }
 
-    /**
-     * @param string $methodName
-     */
-    public function setMethodName($methodName)
+    public function setMethodName(string $methodName) : void
     {
         $this->methodName = $methodName;
     }
 
-    public function getMethodName()
+    public function getMethodName(): string
     {
         return $this->methodName;
     }
@@ -52,7 +47,7 @@ class MethodDescriptor extends TagDescriptor
     /**
      * @param mixed $arguments
      */
-    public function setArguments($arguments)
+    public function setArguments($arguments) : void
     {
         $this->arguments = $arguments;
     }
@@ -68,31 +63,22 @@ class MethodDescriptor extends TagDescriptor
     /**
      * @param mixed $response
      */
-    public function setResponse($response)
+    public function setResponse($response) : void
     {
         $this->response = $response;
     }
 
-    /**
-     * @return ReturnDescriptor
-     */
-    public function getResponse()
+    public function getResponse() : ?ReturnDescriptor
     {
         return $this->response;
     }
 
-    /**
-     * @param bool $static
-     */
-    public function setStatic($static)
+    public function setStatic(bool $static) : void
     {
         $this->static = $static;
     }
 
-    /**
-     * @return bool
-     */
-    public function isStatic()
+    public function isStatic() : bool
     {
         return $this->static;
     }

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,9 +8,6 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
@@ -28,7 +26,7 @@ use Psr\Log\LoggerInterface;
  */
 class Debug implements CompilerPassInterface
 {
-    const COMPILER_PRIORITY = 1000;
+    public const COMPILER_PRIORITY = 1000;
 
     /** @var LoggerInterface $log the logger to write the debug results to */
     protected $log;
@@ -41,16 +39,16 @@ class Debug implements CompilerPassInterface
      */
     public function __construct(LoggerInterface $log, ProjectAnalyzer $analyzer)
     {
-        $this->log = $log;
+        $this->log      = $log;
         $this->analyzer = $analyzer;
     }
 
-    public function getDescription(): string
+    public function getDescription() : string
     {
         return 'Analyze results and write report to log';
     }
 
-    public function execute(ProjectDescriptor $project): void
+    public function execute(ProjectDescriptor $project) : void
     {
         $this->analyzer->analyze($project);
         $this->log->debug((string) $this->analyzer);

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,9 +8,6 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2019 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
@@ -22,17 +20,17 @@ use phpDocumentor\Event\EventAbstract;
  */
 final class PreParsingEvent extends EventAbstract
 {
-    /** @var integer */
+    /** @var int */
     protected $fileCount;
 
-    public function setFileCount(int $fileCount): self
+    public function setFileCount(int $fileCount) : self
     {
         $this->fileCount = $fileCount;
 
         return $this;
     }
 
-    public function getFileCount(): int
+    public function getFileCount() : int
     {
         return $this->fileCount;
     }

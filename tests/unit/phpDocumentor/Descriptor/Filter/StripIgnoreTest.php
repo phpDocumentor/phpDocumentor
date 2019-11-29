@@ -1,23 +1,25 @@
 <?php
-/**
- * phpDocumentor
- *
- * PHP Version 5.3
- *
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
- */
 
+declare(strict_types=1);
+
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link http://phpdoc.org
+ */
 namespace phpDocumentor\Descriptor\Filter;
 
-use \Mockery as m;
+use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 
 /**
  * Tests the functionality for the StripIgnore class.
  */
-class StripIgnoreTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+class StripIgnoreTest extends MockeryTestCase
 {
     /** @var ProjectDescriptorBuilder|m\Mock */
     protected $builderMock;
@@ -28,10 +30,10 @@ class StripIgnoreTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Creates a new (empty) fixture object.
      */
-    protected function setUp(): void
+    protected function setUp() : void
     {
         $this->builderMock = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
-        $this->fixture = new StripIgnore($this->builderMock);
+        $this->fixture     = new StripIgnore($this->builderMock);
     }
 
     /**

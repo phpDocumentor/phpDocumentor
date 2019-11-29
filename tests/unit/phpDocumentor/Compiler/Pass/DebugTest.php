@@ -1,30 +1,31 @@
 <?php
-/**
- * phpDocumentor
- *
- * PHP Version 5.3
- *
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
- */
 
+declare(strict_types=1);
+
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link http://phpdoc.org
+ */
 namespace phpDocumentor\Compiler\Pass;
 
 use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 
 /**
  * Tests the functionality for the Debug Pass
  */
-class DebugTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+class DebugTest extends MockeryTestCase
 {
-
     /**
      * @covers \phpDocumentor\Compiler\Pass\Debug::execute
      */
     public function testLogDebugAnalysis() : void
     {
-        $testString = 'test';
+        $testString            = 'test';
         $projectDescriptorMock = m::mock('phpDocumentor\Descriptor\ProjectDescriptor');
 
         $loggerMock = m::mock('Psr\Log\LoggerInterface')
@@ -47,7 +48,7 @@ class DebugTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testGetDescription() : void
     {
-        $debug = new Debug(m::mock('Psr\Log\LoggerInterface'), m::mock('phpDocumentor\Descriptor\ProjectAnalyzer'));
+        $debug    = new Debug(m::mock('Psr\Log\LoggerInterface'), m::mock('phpDocumentor\Descriptor\ProjectAnalyzer'));
         $expected = 'Analyze results and write report to log';
         $this->assertSame($expected, $debug->getDescription());
     }

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,25 +8,39 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Transformer\Router;
 
 use phpDocumentor\Descriptor\Collection;
-use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\Type\CollectionDescriptor;
+use phpDocumentor\Path;
 use phpDocumentor\Reflection\Type;
+use Traversable;
+use const DIRECTORY_SEPARATOR;
+use function array_fill;
+use function count;
+use function current;
+use function end;
+use function explode;
+use function implode;
+use function is_array;
+use function is_string;
+use function ltrim;
+use function reset;
+use function sprintf;
+use function strpos;
 
 /**
  * Renders an HTML anchor pointing to the location of the provided element.
  */
 final class Renderer
 {
-    protected $destination = '';
+    /** @var string */
+    private $destination = '';
+
+    /** @var Router */
     private $router;
 
     public function __construct(Router $router)
@@ -43,22 +58,18 @@ final class Renderer
      * For this specific extension the destination is provided in the
      * Twig writer itself.
      *
-     * @param string $destination
-     *
      * @see \phpDocumentor\Transformer\Writer\Twig for the invocation
      *     of this method.
      */
-    public function setDestination($destination)
+    public function setDestination(string $destination) : void
     {
         $this->destination = $destination;
     }
 
     /**
      * Returns the target directory relative to the Project's Root.
-     *
-     * @return string
      */
-    public function getDestination()
+    public function getDestination() : string
     {
         return $this->destination;
     }
@@ -75,7 +86,7 @@ final class Renderer
             return $this->renderType($value);
         }
 
-        if (is_array($value) || $value instanceof \Traversable || $value instanceof Collection) {
+        if (is_array($value) || $value instanceof Traversable || $value instanceof Collection) {
             return $this->renderASeriesOfLinks($value, $presentation);
         }
 
@@ -105,16 +116,12 @@ final class Renderer
      * This method does not try to normalize or optimize the paths in order to
      * save on development time and performance, and because it adds no real
      * value.
-     *
-     * @param string $relative_path
-     *
-     * @return string|null
      */
-    public function convertToRootPath($relative_path): ?string
+    public function convertToRootPath(string $relative_path) : ?string
     {
         // get the path to the root directory
         $path_parts = explode(DIRECTORY_SEPARATOR, $this->getDestination());
-        $path_to_root = (count($path_parts) > 1)
+        $path_to_root = count($path_parts) > 1
             ? implode('/', array_fill(0, count($path_parts) - 1, '..')) . '/'
             : '';
 
@@ -134,12 +141,11 @@ final class Renderer
     /**
      * Returns a series of anchors and strings for the given collection of routable items.
      *
-     * @param array|\Traversable|Collection $value
-     * @param string                        $presentation
+     * @param array|Traversable|Collection $value
      *
      * @return string[]
      */
-    protected function renderASeriesOfLinks($value, $presentation): array
+    protected function renderASeriesOfLinks(iterable $value, string $presentation) : array
     {
         if ($value instanceof Collection) {
             $value = $value->getAll();
@@ -155,13 +161,8 @@ final class Renderer
 
     /**
      * Renders the view representation for an array or collection.
-     *
-     * @param CollectionDescriptor $value
-     * @param string               $presentation
-     *
-     * @return string
      */
-    protected function renderTypeCollection($value, $presentation)
+    protected function renderTypeCollection(CollectionDescriptor $value, string $presentation) : string
     {
         $baseType = $this->render($value->getBaseType(), $presentation);
         $keyTypes = $this->render($value->getKeyTypes(), $presentation);
@@ -175,7 +176,7 @@ final class Renderer
         $arguments[] = implode('|', $types);
 
         if ($value instanceof CollectionDescriptor && count($value->getKeyTypes()) === 0) {
-            $typeString = (count($types) > 1) ? '(' . reset($arguments) . ')' : reset($arguments);
+            $typeString = count($types) > 1 ? '(' . reset($arguments) . ')' : reset($arguments);
             $collection = $typeString . '[]';
         } else {
             $collection = ($baseType ?: $value->getName()) . '&lt;' . implode(',', $arguments) . '&gt;';
@@ -184,9 +185,12 @@ final class Renderer
         return $collection;
     }
 
-    protected function renderLink($path, $presentation)
+    /**
+     * @param string|Path $path
+     */
+    protected function renderLink($path, string $presentation) : string
     {
-        $generatedUrl = $this->router->generate($path);
+        $generatedUrl = $this->router->generate((string) $path);
         $url = $generatedUrl ? ltrim($generatedUrl, '/') : false;
 
         if (is_string($url)
@@ -200,17 +204,17 @@ final class Renderer
 
         switch ($presentation) {
             case 'url': // return the first url
-                return $url;
+                return $url ?: '';
             case 'class:short':
                 $parts = explode('\\', (string) $path);
                 $path = end($parts);
                 break;
         }
 
-        return $url ? sprintf('<a href="%s">%s</a>', $url, $path) : $path;
+        return $url ? sprintf('<a href="%s">%s</a>', $url, (string) $path) : (string) $path;
     }
 
-    private function renderType($value): array
+    private function renderType(iterable $value) : array
     {
         $result = [];
         foreach ($value as $type) {

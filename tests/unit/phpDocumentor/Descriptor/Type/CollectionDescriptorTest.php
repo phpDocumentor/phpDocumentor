@@ -1,17 +1,15 @@
 <?php
-/**
- * phpDocumentor
- *
- * PHP Version 5.3
- *
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
- */
+
+declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Type;
 
-class CollectionDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+use Mockery\Adapter\Phpunit\MockeryTestCase;
+
+/**
+ * @coversDefaultClass \phpDocumentor\Descriptor\Type\CollectionDescriptor
+ */
+final class CollectionDescriptorTest extends MockeryTestCase
 {
     /** @var CollectionDescriptor */
     private $fixture;
@@ -19,13 +17,13 @@ class CollectionDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Initializes the fixture for this test.
      */
-    protected function setUp(): void
+    protected function setUp() : void
     {
-        $this->fixture = new CollectionDescriptor('array');
+        $this->fixture = new CollectionDescriptor();
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Type\CollectionDescriptor::getName
+     * @covers ::getName()
      */
     public function testRetrieveNameForBaseTypeWithTypeString() : void
     {
@@ -33,7 +31,7 @@ class CollectionDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Type\CollectionDescriptor::getName
+     * @covers ::getName()
      */
     public function testRetrieveNameForBaseTypeWithTypeDescriptor() : void
     {
@@ -43,16 +41,18 @@ class CollectionDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Type\CollectionDescriptor::getBaseType
+     * @covers ::getBaseType()
      */
     public function testRetrieveBaseTypeWithTypeStringReturnsNull() : void
     {
-        $this->assertNull($this->fixture->getBaseType());
+        $fixture = new CollectionDescriptor();
+
+        $this->assertNull($fixture->getBaseType());
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Type\CollectionDescriptor::getBaseType
-     * @covers \phpDocumentor\Descriptor\Type\CollectionDescriptor::setBaseType
+     * @covers ::getBaseType()
+     * @covers ::setBaseType()
      */
     public function testSetAndRetrieveBaseTypeWithTypeDescriptor() : void
     {
@@ -63,8 +63,8 @@ class CollectionDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Type\CollectionDescriptor::getTypes
-     * @covers \phpDocumentor\Descriptor\Type\CollectionDescriptor::setTypes
+     * @covers ::getTypes()
+     * @covers ::setTypes()
      */
     public function testSetAndRetrieveTypes() : void
     {
@@ -75,8 +75,8 @@ class CollectionDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Type\CollectionDescriptor::getKeyTypes
-     * @covers \phpDocumentor\Descriptor\Type\CollectionDescriptor::setKeyTypes
+     * @covers ::getKeyTypes()
+     * @covers ::setKeyTypes()
      */
     public function testSetAndRetrieveKeyTypes() : void
     {
@@ -87,7 +87,7 @@ class CollectionDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Type\CollectionDescriptor::__toString
+     * @covers ::__toString()
      */
     public function testRetrieveCollectionNotationFromObject() : void
     {
@@ -98,7 +98,7 @@ class CollectionDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Type\CollectionDescriptor::__toString
+     * @covers ::__toString()
      */
     public function testRetrieveCollectionNotationFromObjectWithoutKeys() : void
     {

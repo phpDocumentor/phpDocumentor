@@ -1,9 +1,12 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace phpDocumentor\Parser;
 
 use League\Flysystem\FilesystemInterface;
 use PHPUnit\Framework\TestCase;
+use function md5;
 
 /**
  * @coversDefaultClass \phpDocumentor\Parser\FlySystemFile
@@ -28,7 +31,7 @@ final class FlySystemFileTest extends TestCase
      */
     public function testContentsOfFileCanBeRetrieved() : void
     {
-        $path = '/path/to/file';
+        $path     = '/path/to/file';
         $contents = 'contents';
 
         $fileSystem = $this->prophesize(FilesystemInterface::class);
@@ -44,7 +47,7 @@ final class FlySystemFileTest extends TestCase
      */
     public function testGetHashForFile() : void
     {
-        $path = '/path/to/file';
+        $path     = '/path/to/file';
         $contents = 'contents';
 
         $fileSystem = $this->prophesize(FilesystemInterface::class);

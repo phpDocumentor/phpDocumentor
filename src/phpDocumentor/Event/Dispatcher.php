@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,15 +8,11 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Event;
 
-use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
@@ -34,18 +31,9 @@ class Dispatcher extends EventDispatcher
     protected static $instances = [];
 
     /**
-     * Override constructor to make this singleton.
-     * @codeCoverageIgnore For some reason
-     */
-    protected function __construct()
-    {
-        parent::__construct();
-    }
-
-    /**
      * Returns a named instance of the Event Dispatcher.
      */
-    public static function getInstance(string $name = 'default'): self
+    public static function getInstance(string $name = 'default') : self
     {
         if (!isset(self::$instances[$name])) {
             self::setInstance($name, new self());
@@ -57,7 +45,7 @@ class Dispatcher extends EventDispatcher
     /**
      * Sets a names instance of the Event Dispatcher.
      */
-    public static function setInstance(string $name, self $instance): void
+    public static function setInstance(string $name, self $instance) : void
     {
         self::$instances[$name] = $instance;
     }

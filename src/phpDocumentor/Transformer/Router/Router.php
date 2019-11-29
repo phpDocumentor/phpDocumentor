@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,9 +8,6 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
@@ -33,6 +31,7 @@ use phpDocumentor\Reflection\DocBlock\Tags\Reference\Fqsen;
 use phpDocumentor\Reflection\DocBlock\Tags\Reference\Url;
 use phpDocumentor\Transformer\Router\UrlGenerator\QualifiedNameToUrlConverter;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use function is_string;
 
 /**
  * The default for phpDocumentor.
@@ -51,9 +50,9 @@ class Router extends ArrayObject
         UrlGeneratorInterface $urlGenerator
     ) {
         $this->projectDescriptorBuilder = $projectDescriptorBuilder;
-        $this->fqsenUrlGenerator = $fqsenUrlGenerator;
-        $this->converter = $converter;
-        $this->urlGenerator = $urlGenerator;
+        $this->fqsenUrlGenerator        = $fqsenUrlGenerator;
+        $this->converter                = $converter;
+        $this->urlGenerator             = $urlGenerator;
 
         parent::__construct();
         $this->configure();
@@ -62,25 +61,9 @@ class Router extends ArrayObject
     /**
      * Configuration function to add routing rules to a router.
      */
-    public function configure()
+    public function configure() : void
     {
-        // Here we cheat! If a string element is passed to this rule then we try to transform it into a Descriptor
-        // if the node is translated we do not let it match and instead fall through to one of the other rules.
-        $stringRule = function (&$node) {
-            $elements = $this->projectDescriptorBuilder->getProjectDescriptor()->getIndexes()->get('elements');
-            if (is_string($node) && isset($elements[$node])) {
-                $node = $elements[$node];
-            }
-
-            return false;
-        };
-
         // @codingStandardsIgnoreStart
-        $this[] = new Rule(
-            $stringRule, function () {
-            return false;
-        }
-        );
         $this[] = new Rule(
             function ($node) {
                 return $node instanceof FileDescriptor;
@@ -203,24 +186,22 @@ class Router extends ArrayObject
         // @codingStandardsIgnoreEnd
     }
 
-    public function generate($node): ?string
+    public function generate($node) : ?string
     {
         $rule = $this->match($node);
         if (!$rule) {
             return null;
         }
 
-        return $rule->generate($node) ?: '';
+        return $rule->generate($node) ?: null;
     }
 
     /**
      * Tries to match the provided node with one of the rules in this router.
      *
      * @param string|DescriptorAbstract $node
-     *
-     * @return Rule|null
      */
-    private function match($node)
+    private function match($node) : ?Rule
     {
         /** @var Rule $rule */
         foreach ($this as $rule) {
@@ -232,7 +213,7 @@ class Router extends ArrayObject
         return null;
     }
 
-    private function generateUrlForDescriptor(string $type, string $fqsen, string $fragment = ''): string
+    private function generateUrlForDescriptor(string $type, string $fqsen, string $fragment = '') : string
     {
         switch ($type) {
             case 'namespace':

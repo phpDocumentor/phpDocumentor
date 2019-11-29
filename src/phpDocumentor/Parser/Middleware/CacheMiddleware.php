@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,9 +8,6 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
@@ -19,9 +17,15 @@ use phpDocumentor\Reflection\Middleware\Command;
 use phpDocumentor\Reflection\Middleware\Middleware;
 use phpDocumentor\Reflection\Php\Factory\File\CreateCommand;
 use phpDocumentor\Reflection\Php\File;
+use Psr\Cache\InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Symfony\Contracts\Cache\CacheInterface;
+use function base64_decode;
+use function base64_encode;
+use function md5;
+use function serialize;
+use function unserialize;
 
 final class CacheMiddleware implements Middleware
 {
@@ -32,7 +36,7 @@ final class CacheMiddleware implements Middleware
 
     public function __construct(CacheInterface $files, LoggerInterface $logger)
     {
-        $this->cache = $files;
+        $this->cache  = $files;
         $this->logger = $logger;
     }
 
@@ -41,12 +45,10 @@ final class CacheMiddleware implements Middleware
      * A middle ware class MUST return a File object or call the $next callable.
      *
      * @param CreateCommand $command
-     * @param callable $next
      *
-     * @return File
-     * @throws \Psr\Cache\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
-    public function execute(Command $command, callable $next)
+    public function execute(Command $command, callable $next) : ?File
     {
         $itemName = md5($command->getFile()->path());
 
@@ -58,8 +60,6 @@ final class CacheMiddleware implements Middleware
                 return base64_encode(serialize($file));
             }
         );
-        $cachedFile = unserialize(base64_decode($cacheResponse));
-
-        return $cachedFile;
+        return unserialize(base64_decode($cacheResponse));
     }
 }

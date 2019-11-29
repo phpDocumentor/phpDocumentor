@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,9 +8,6 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
@@ -21,6 +19,9 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
+use function getcwd;
+use function is_dir;
+use function strlen;
 
 /**
  * @codeCoverageIgnore Kernels do not need to be covered; mostly configuration anyway
@@ -29,7 +30,7 @@ class Kernel extends BaseKernel
 {
     use MicroKernelTrait;
 
-    const CONFIG_EXTS = '.{php,xml,yaml,yml}';
+    public const CONFIG_EXTS = '.{php,xml,yaml,yml}';
 
     /**
      * Returns the current working directory.
@@ -49,20 +50,18 @@ class Kernel extends BaseKernel
      *           - "@=service('kernel').getWorkingDir() ~ '/phpdoc.dist.xml'"
      *           - "@=service('kernel').getWorkingDir() ~ '/phpdoc.xml.dist'"
      * ```
-     *
-     * @return string
      */
-    public function getWorkingDir(): string
+    public function getWorkingDir() : string
     {
-        return \getcwd();
+        return getcwd();
     }
 
-    public function getCacheDir(): string
+    public function getCacheDir() : string
     {
         return $this->getProjectDir() . '/var/cache/' . $this->environment;
     }
 
-    public function getLogDir(): string
+    public function getLogDir() : string
     {
         if ($this->isPhar()) {
             return '/tmp/php-doc/log';
@@ -71,7 +70,7 @@ class Kernel extends BaseKernel
         return $this->getProjectDir() . '/var/log';
     }
 
-    public function registerBundles(): iterable
+    public function registerBundles() : iterable
     {
         $contents = require $this->getProjectDir() . '/config/bundles.php';
         foreach ($contents as $class => $envs) {
@@ -81,7 +80,7 @@ class Kernel extends BaseKernel
         }
     }
 
-    protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader): void
+    protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader) : void
     {
         $container->setParameter('container.autowiring.strict_mode', true);
         $container->setParameter('container.dumper.inline_class_loader', true);
@@ -94,7 +93,7 @@ class Kernel extends BaseKernel
         $loader->load($confDir . '/services_' . $this->environment . self::CONFIG_EXTS, 'glob');
     }
 
-    protected function configureRoutes(RouteCollectionBuilder $routes): void
+    protected function configureRoutes(RouteCollectionBuilder $routes) : void
     {
         $confDir = $this->getProjectDir() . '/config';
         if (is_dir($confDir . '/routes/')) {
@@ -106,7 +105,7 @@ class Kernel extends BaseKernel
         $routes->import($confDir . '/routes' . self::CONFIG_EXTS, '/', 'glob');
     }
 
-    public static function isPhar(): bool
+    public static function isPhar() : bool
     {
         return strlen(Phar::running()) > 0 ? true : false;
     }

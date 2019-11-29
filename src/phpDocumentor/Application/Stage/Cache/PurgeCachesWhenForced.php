@@ -8,9 +8,6 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
@@ -31,15 +28,15 @@ final class PurgeCachesWhenForced
         AdapterInterface $descriptorsCache,
         LoggerInterface $logger
     ) {
-        $this->filesCache = $filesCache;
+        $this->filesCache       = $filesCache;
         $this->descriptorsCache = $descriptorsCache;
-        $this->logger = $logger;
+        $this->logger           = $logger;
     }
 
     public function __invoke(Payload $payload)
     {
         $this->logger->info('Checking whether to purge cache');
-        if (! $payload->getConfig()['phpdocumentor']['use-cache']) {
+        if (!$payload->getConfig()['phpdocumentor']['use-cache']) {
             $this->logger->info('Purging cache');
             $this->filesCache->clear();
             $this->descriptorsCache->clear();

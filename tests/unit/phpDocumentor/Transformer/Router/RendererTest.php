@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /**
  * This file is part of phpDocumentor.
@@ -6,8 +8,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @copyright 2010-2018 Mike van Riel<mike@phpdoc.org>
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
@@ -17,6 +17,8 @@ use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\Type\CollectionDescriptor;
+use const DIRECTORY_SEPARATOR;
+use function str_replace;
 
 /**
  * Test class for phpDocumentor\Transformer\Router\Renderer
@@ -32,7 +34,7 @@ final class RendererTest extends MockeryTestCase
     /** @var Renderer */
     private $renderer;
 
-    protected function setUp(): void
+    protected function setUp() : void
     {
         $this->router = m::mock(Router::class);
 
@@ -44,7 +46,7 @@ final class RendererTest extends MockeryTestCase
      * @covers \phpDocumentor\Transformer\Router\Renderer::getDestination
      * @covers \phpDocumentor\Transformer\Router\Renderer::setDestination
      */
-    public function testGetAndSetDestination(): void
+    public function testGetAndSetDestination() : void
     {
         $this->renderer->setDestination('destination');
 
@@ -55,7 +57,7 @@ final class RendererTest extends MockeryTestCase
      * @covers ::render
      * @covers ::convertToRootPath
      */
-    public function testRenderWithFqsenAndRepresentationUrl(): void
+    public function testRenderWithFqsenAndRepresentationUrl() : void
     {
         $this->router
             ->shouldReceive('generate')
@@ -70,7 +72,7 @@ final class RendererTest extends MockeryTestCase
      * @covers ::render
      * @covers ::convertToRootPath
      */
-    public function testRenderWithCollectionOfFqsensAndRepresentationUrl(): void
+    public function testRenderWithCollectionOfFqsensAndRepresentationUrl() : void
     {
         $this->router
             ->shouldReceive('generate')
@@ -78,7 +80,7 @@ final class RendererTest extends MockeryTestCase
 
         $this->renderer->setDestination(str_replace('/', DIRECTORY_SEPARATOR, '/root/of/project'));
         $collection = new Collection(['\My\Namespace\Class']);
-        $result = $this->renderer->render($collection, 'url');
+        $result     = $this->renderer->render($collection, 'url');
 
         $this->assertSame(['../../../classes/My.Namespace.Class.html'], $result);
     }
@@ -87,20 +89,20 @@ final class RendererTest extends MockeryTestCase
      * @covers ::render
      * @covers ::convertToRootPath
      */
-    public function testRenderWithUrlAndNoRuleMatch(): void
+    public function testRenderWithUrlAndNoRuleMatch() : void
     {
         $this->router->shouldReceive('generate')->with('file://phpdoc')->andReturn('@');
         $this->router->shouldReceive('generate')->with('@')->andReturn('');
 
         $result = $this->renderer->render('file://phpdoc', 'url');
 
-        $this->assertNull($result);
+        $this->assertEmpty($result);
     }
 
     /**
      * @covers ::convertToRootPath
      */
-    public function testConvertToRootPathWithUrlAndAtSignInRelativePath(): void
+    public function testConvertToRootPathWithUrlAndAtSignInRelativePath() : void
     {
         $this->router->shouldReceive('generate')
             ->with('@Class::$property')
@@ -115,7 +117,7 @@ final class RendererTest extends MockeryTestCase
      * @covers ::render
      * @covers ::convertToRootPath
      */
-    public function testRenderWithCollectionDescriptorWithNameIsNotArrayAndRepresentationUrl(): void
+    public function testRenderWithCollectionDescriptorWithNameIsNotArrayAndRepresentationUrl() : void
     {
         $this->router->shouldReceive('generate')->andReturn('ClassDescriptor');
 
@@ -130,12 +132,12 @@ final class RendererTest extends MockeryTestCase
      * @covers ::render
      * @covers ::convertToRootPath
      */
-    public function testRenderWithCollectionDescriptorWithNameIsArrayAndRepresentationUrl(): void
+    public function testRenderWithCollectionDescriptorWithNameIsArrayAndRepresentationUrl() : void
     {
         $this->router->shouldReceive('generate')->andReturn('ClassDescriptor');
 
         $collectionDescriptor = $this->givenACollectionDescriptor('array');
-        $result = $this->renderer->render($collectionDescriptor, 'url');
+        $result               = $this->renderer->render($collectionDescriptor, 'url');
 
         $this->assertSame('ClassDescriptor[]', $result);
     }
@@ -143,7 +145,7 @@ final class RendererTest extends MockeryTestCase
     /**
      * @covers ::render
      */
-    public function testRenderWithFqsenAndRepresentationClassShort(): void
+    public function testRenderWithFqsenAndRepresentationClassShort() : void
     {
         $this->router->shouldReceive('generate')->andReturn('/classes/My.Namespace.Class.html');
 
@@ -156,7 +158,7 @@ final class RendererTest extends MockeryTestCase
      * @covers ::render
      * @dataProvider provideUrls
      */
-    public function testRenderWithUrl(string $url): void
+    public function testRenderWithUrl(string $url) : void
     {
         $this->router->shouldReceive('generate')->andReturn($url);
 
@@ -165,7 +167,7 @@ final class RendererTest extends MockeryTestCase
         $this->assertSame($url, $result);
     }
 
-    private function givenACollectionDescriptor(string $name): CollectionDescriptor
+    private function givenACollectionDescriptor(string $name) : CollectionDescriptor
     {
         $classDescriptor = m::mock('phpDocumentor\Descriptor\ClassDescriptor');
         $classDescriptor->shouldReceive('getName')->andReturn($name);
@@ -174,7 +176,7 @@ final class RendererTest extends MockeryTestCase
         return $collectionDescriptor;
     }
 
-    public function provideUrls(): array
+    public function provideUrls() : array
     {
         return [
             ['http://phpdoc.org'],

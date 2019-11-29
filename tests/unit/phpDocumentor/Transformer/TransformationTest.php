@@ -1,19 +1,18 @@
 <?php
-/**
- * phpDocumentor
- *
- * PHP Version 5.3
- *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
- */
 
+declare(strict_types=1);
+
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link http://phpdoc.org
+ */
 namespace phpDocumentor\Transformer;
 
 use Mockery as m;
-use phpDocumentor\Transformer\Template\Parameter;
 
 /**
  * Test class for phpDocumentor\Transformer\Transformation
@@ -38,7 +37,7 @@ class TransformationTest extends m\Adapter\Phpunit\MockeryTestCase
     /**
      * Initializes the fixture and dependencies for this testcase.
      */
-    protected function setUp(): void
+    protected function setUp() : void
     {
         $this->fixture = new Transformation($this->query, $this->writer, $this->source, $this->artifact);
     }

@@ -1,19 +1,22 @@
 <?php
-/**
- * phpDocumentor
- *
- * PHP Version 5.3
- *
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
- */
 
+declare(strict_types=1);
+
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link http://phpdoc.org
+ */
 namespace phpDocumentor\Transformer\Template;
 
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 use org\bovigo\vfs\vfsStream;
+use const DIRECTORY_SEPARATOR;
 
-class PathResolverTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+class PathResolverTest extends MockeryTestCase
 {
     /** @var string */
     protected $templatePath = 'vfs://root/templatePath';
@@ -24,7 +27,7 @@ class PathResolverTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Sets up the fixture with mocked dependency.
      */
-    protected function setUp(): void
+    protected function setUp() : void
     {
         $this->fixture = new PathResolver($this->templatePath);
     }
@@ -100,13 +103,9 @@ class PathResolverTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         $structure = [
             'templatePath' => [
-                'Clean' => [
-                    'template.xml' => 'xml',
-                ],
+                'Clean' => ['template.xml' => 'xml'],
             ],
-            'myFolder' => [
-                'myTemplate' => $template,
-            ],
+            'myFolder' => ['myTemplate' => $template],
         ];
         vfsStream::setup('root');
         vfsStream::create($structure);

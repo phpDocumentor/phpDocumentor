@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,18 +8,15 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Console\Command\Template;
 
-use Symfony\Component\Console\Command\Command;
-use \Symfony\Component\Console\Input\InputInterface;
-use \Symfony\Component\Console\Output\OutputInterface;
 use phpDocumentor\Transformer\Template\Factory;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Lists all templates known to phpDocumentor.
@@ -41,7 +39,7 @@ class ListCommand extends Command
     /**
      * Initializes this command and sets the name, description, options and arguments.
      */
-    protected function configure(): void
+    protected function configure() : void
     {
         $this->setName('template:list')
             ->setDescription(
@@ -59,7 +57,7 @@ HELP
     /**
      * Retrieves all template names from the Template Factory and sends those to stdout.
      */
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    protected function execute(InputInterface $input, OutputInterface $output) : int
     {
         $output->writeln('Available templates:');
         foreach ($this->factory->getAllNames() as $template_name) {

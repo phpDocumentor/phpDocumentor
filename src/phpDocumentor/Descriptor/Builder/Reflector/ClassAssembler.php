@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,9 +8,6 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
@@ -24,6 +22,8 @@ use phpDocumentor\Reflection\Php\Class_;
 use phpDocumentor\Reflection\Php\Constant;
 use phpDocumentor\Reflection\Php\Method;
 use phpDocumentor\Reflection\Php\Property;
+use function strlen;
+use function substr;
 
 /**
  * Assembles an ClassDescriptor using an ClassReflector.
@@ -34,10 +34,8 @@ class ClassAssembler extends AssemblerAbstract
      * Creates a Descriptor from the provided data.
      *
      * @param Class_ $data
-     *
-     * @return ClassDescriptor
      */
-    public function create($data)
+    public function create($data) : ClassDescriptor
     {
         $classDescriptor = new ClassDescriptor();
 
@@ -71,14 +69,16 @@ class ClassAssembler extends AssemblerAbstract
      *
      * @param Constant[] $constants
      */
-    protected function addConstants(array $constants, ClassDescriptor $classDescriptor): void
+    protected function addConstants(array $constants, ClassDescriptor $classDescriptor) : void
     {
         foreach ($constants as $constant) {
             $constantDescriptor = $this->getBuilder()->buildDescriptor($constant);
-            if ($constantDescriptor instanceof ConstantDescriptor) {
-                $constantDescriptor->setParent($classDescriptor);
-                $classDescriptor->getConstants()->set($constantDescriptor->getName(), $constantDescriptor);
+            if (!($constantDescriptor instanceof ConstantDescriptor)) {
+                continue;
             }
+
+            $constantDescriptor->setParent($classDescriptor);
+            $classDescriptor->getConstants()->set($constantDescriptor->getName(), $constantDescriptor);
         }
     }
 
@@ -87,14 +87,16 @@ class ClassAssembler extends AssemblerAbstract
      *
      * @param Property[] $properties
      */
-    protected function addProperties(array $properties, ClassDescriptor $classDescriptor): void
+    protected function addProperties(array $properties, ClassDescriptor $classDescriptor) : void
     {
         foreach ($properties as $property) {
             $propertyDescriptor = $this->getBuilder()->buildDescriptor($property);
-            if ($propertyDescriptor instanceof PropertyDescriptor) {
-                $propertyDescriptor->setParent($classDescriptor);
-                $classDescriptor->getProperties()->set($propertyDescriptor->getName(), $propertyDescriptor);
+            if (!($propertyDescriptor instanceof PropertyDescriptor)) {
+                continue;
             }
+
+            $propertyDescriptor->setParent($classDescriptor);
+            $classDescriptor->getProperties()->set($propertyDescriptor->getName(), $propertyDescriptor);
         }
     }
 
@@ -103,14 +105,16 @@ class ClassAssembler extends AssemblerAbstract
      *
      * @param Method[] $methods
      */
-    protected function addMethods(array $methods, ClassDescriptor $classDescriptor): void
+    protected function addMethods(array $methods, ClassDescriptor $classDescriptor) : void
     {
         foreach ($methods as $method) {
             $methodDescriptor = $this->getBuilder()->buildDescriptor($method);
-            if ($methodDescriptor instanceof MethodDescriptor) {
-                $methodDescriptor->setParent($classDescriptor);
-                $classDescriptor->getMethods()->set($methodDescriptor->getName(), $methodDescriptor);
+            if (!($methodDescriptor instanceof MethodDescriptor)) {
+                continue;
             }
+
+            $methodDescriptor->setParent($classDescriptor);
+            $classDescriptor->getMethods()->set($methodDescriptor->getName(), $methodDescriptor);
         }
     }
 
@@ -119,7 +123,7 @@ class ClassAssembler extends AssemblerAbstract
      *
      * @param string[] $traits
      */
-    protected function addUses(array $traits, ClassDescriptor $classDescriptor): void
+    protected function addUses(array $traits, ClassDescriptor $classDescriptor) : void
     {
         $classDescriptor->setUsedTraits(new Collection($traits));
     }

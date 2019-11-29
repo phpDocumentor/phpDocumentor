@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,15 +8,10 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor\Builder;
-
-use phpDocumentor\Reflection\DocBlock\ExampleFinder;
 
 use phpDocumentor\Descriptor\Builder\Reflector\ArgumentAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\ClassAssembler;
@@ -42,6 +38,7 @@ use phpDocumentor\Descriptor\Builder\Reflector\Tags\UsesAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\VarAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\VersionAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\TraitAssembler;
+use phpDocumentor\Reflection\DocBlock\ExampleFinder;
 use phpDocumentor\Reflection\DocBlock\Tag;
 use phpDocumentor\Reflection\DocBlock\Tags;
 use phpDocumentor\Reflection\DocBlock\Tags\Author;
@@ -66,6 +63,7 @@ use phpDocumentor\Reflection\Php\Method;
 use phpDocumentor\Reflection\Php\Namespace_;
 use phpDocumentor\Reflection\Php\Property;
 use phpDocumentor\Reflection\Php\Trait_;
+use function array_merge;
 
 /**
  * Attempts to retrieve an Assembler for the provided criteria.
@@ -81,12 +79,12 @@ class AssemblerFactory
     /**
      * Registers an assembler instance to this factory.
      *
-     * @param callable           $matcher   A callback function accepting the criteria as only parameter and which must
+     * @param callable $matcher A callback function accepting the criteria as only parameter and which must
      *     return a boolean.
      * @param AssemblerInterface $assembler An instance of the Assembler that will be returned if the callback returns
      *     true with the provided criteria.
      */
-    public function register(callable $matcher, AssemblerInterface $assembler): void
+    public function register(callable $matcher, AssemblerInterface $assembler) : void
     {
         $this->assemblers[] = new AssemblerMatcher($matcher, $assembler);
     }
@@ -95,12 +93,12 @@ class AssemblerFactory
      * Registers an assembler instance to this factory that is to be executed after all other assemblers have been
      * checked.
      *
-     * @param callable           $matcher   A callback function accepting the criteria as only parameter and which must
+     * @param callable $matcher A callback function accepting the criteria as only parameter and which must
      *     return a boolean.
      * @param AssemblerInterface $assembler An instance of the Assembler that will be returned if the callback returns
      *     true with the provided criteria.
      */
-    public function registerFallback(callable $matcher, AssemblerInterface $assembler): void
+    public function registerFallback(callable $matcher, AssemblerInterface $assembler) : void
     {
         $this->fallbackAssemblers[] = new AssemblerMatcher($matcher, $assembler);
     }
@@ -109,10 +107,8 @@ class AssemblerFactory
      * Retrieves a matching Assembler based on the provided criteria or null if none was found.
      *
      * @param mixed $criteria
-     *
-     * @return AssemblerInterface|null
      */
-    public function get($criteria)
+    public function get($criteria) : ?AssemblerInterface
     {
         /** @var AssemblerMatcher $candidate */
         foreach (array_merge($this->assemblers, $this->fallbackAssemblers) as $candidate) {
@@ -124,7 +120,7 @@ class AssemblerFactory
         return null;
     }
 
-    public static function createDefault(ExampleFinder $exampleFinder): self
+    public static function createDefault(ExampleFinder $exampleFinder) : self
     {
         $factory = new AssemblerFactory();
         $argumentAssembler = new ArgumentAssembler();

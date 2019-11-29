@@ -1,10 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace phpDocumentor\Descriptor;
 
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\Collection as DescriptorCollection;
+use const PHP_EOL;
+use function str_replace;
 
 /**
  * Tests for the \phpDocumentor\Descriptor\ProjectAnalyzer class.
@@ -14,7 +18,7 @@ class ProjectAnalyzerTest extends MockeryTestCase
     /** @var ProjectAnalyzer */
     private $fixture;
 
-    protected function setUp(): void
+    protected function setUp() : void
     {
         $this->fixture = new ProjectAnalyzer();
     }
@@ -25,7 +29,7 @@ class ProjectAnalyzerTest extends MockeryTestCase
     public function testIfStringOutputContainsAllCounters() : void
     {
         // Arrange
-        $classDescriptor1 = $this->givenAClassWithParent('phpDocumentor\Descriptor\ClassDescriptor');
+        $classDescriptor1  = $this->givenAClassWithParent('phpDocumentor\Descriptor\ClassDescriptor');
         $projectDescriptor = $this->givenAProjectMock();
         $this->whenProjectDescriptorHasTheFollowingFiles($projectDescriptor, [1, 2, 3, 4]);
         $this->whenProjectDescriptorHasTheFollowingElements(
@@ -62,20 +66,17 @@ TEXT;
      *
      * @param string|DescriptorAbstract $parent
      */
-    protected function givenAClassWithParent($parent): ClassDescriptor
+    protected function givenAClassWithParent($parent) : ClassDescriptor
     {
         $classDescriptor1 = new ClassDescriptor();
         $classDescriptor1->setParent($parent);
         return $classDescriptor1;
     }
 
-    /**
-     * @param string $interfaceParent
-     */
-    protected function givenAnInterfaceWithParent($interfaceParent): InterfaceDescriptor
+    protected function givenAnInterfaceWithParent(string $interfaceParent) : InterfaceDescriptor
     {
         $classDescriptor3 = new InterfaceDescriptor();
-        $classDescriptor3->setParent($interfaceParent);
+        $classDescriptor3->setParent(new Collection([$interfaceParent]));
 
         return $classDescriptor3;
     }
@@ -83,7 +84,7 @@ TEXT;
     /**
      * Returns a mocked ProjectDescriptor object.
      */
-    protected function givenAProjectMock(): m\MockInterface
+    protected function givenAProjectMock() : m\MockInterface
     {
         return m::mock('phpDocumentor\Descriptor\ProjectDescriptor')->shouldIgnoreMissing();
     }

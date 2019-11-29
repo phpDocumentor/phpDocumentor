@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,20 +8,19 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor;
 
-use phpDocumentor\Event\Dispatcher;
-use phpDocumentor\Parser\Event\PreFileEvent;
-use Psr\Log\LoggerInterface;
-use Psr\Log\LogLevel;
 use RuntimeException;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use function date_default_timezone_set;
+use function extension_loaded;
+use function file_exists;
+use function file_get_contents;
+use function ini_get;
+use function ini_set;
+use function trim;
 
 /**
  * Application class for phpDocumentor.
@@ -31,12 +31,12 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class Application
 {
-    public static function VERSION(): string
+    public static function VERSION() : string
     {
         return trim(file_get_contents(__DIR__ . '/../../VERSION'));
     }
 
-    public static function templateDirectory(): string
+    public static function templateDirectory() : string
     {
         $templateDir = __DIR__ . '/../../data/templates';
 
@@ -62,7 +62,7 @@ class Application
      *
      * @throws RuntimeException
      */
-    protected function defineIniSettings(): void
+    protected function defineIniSettings() : void
     {
         $this->setTimezone();
         ini_set('memory_limit', '-1');
@@ -75,7 +75,7 @@ class Application
             }
         }
 
-        if (extension_loaded('Zend Optimizer+') && ini_get('zend_optimizerplus.save_comments') === "0") {
+        if (extension_loaded('Zend Optimizer+') && ini_get('zend_optimizerplus.save_comments') === '0') {
             throw new RuntimeException('Please enable zend_optimizerplus.save_comments in php.ini.');
         }
     }
@@ -89,10 +89,12 @@ class Application
      * @link http://php.net/manual/en/function.date-default-timezone-get.php for more information how PHP determines the
      *     default timezone.
      */
-    protected function setTimezone(): void
+    protected function setTimezone() : void
     {
-        if (false === ini_get('date.timezone')) {
-            date_default_timezone_set('UTC');
+        if (ini_get('date.timezone') !== false) {
+            return;
         }
+
+        date_default_timezone_set('UTC');
     }
 }

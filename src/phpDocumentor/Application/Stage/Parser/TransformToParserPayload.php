@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace phpDocumentor\Application\Stage\Parser;
 
 use phpDocumentor\Application\Stage\Payload as ApplicationPayload;

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,9 +8,6 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
@@ -21,6 +19,7 @@ use phpDocumentor\Descriptor\Tag\MethodDescriptor;
 use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tags\Method;
 use phpDocumentor\Reflection\Type;
+use function array_key_exists;
 
 /**
  * Constructs a new descriptor from the Reflector for an `@method` tag.
@@ -34,13 +33,11 @@ class MethodAssembler extends AssemblerAbstract
      * Creates a new Descriptor from the given Reflector.
      *
      * @param Method $data
-     *
-     * @return MethodDescriptor
      */
-    public function create($data)
+    public function create($data) : MethodDescriptor
     {
         $descriptor = new MethodDescriptor($data->getName());
-        $descriptor->setDescription($data->getDescription());
+        $descriptor->setDescription((string) $data->getDescription());
         $descriptor->setMethodName($data->getMethodName());
         $descriptor->setStatic($data->isStatic());
 
@@ -50,13 +47,15 @@ class MethodAssembler extends AssemblerAbstract
 
         /** @var string[] $argument */
         foreach ($data->getArguments() as $argument) {
-            if (array_key_exists('name', $argument) && array_key_exists('type', $argument)) {
-                $argumentDescriptor = $this->createArgumentDescriptorForMagicMethod(
-                    $argument['name'],
-                    $argument['type']
-                );
-                $descriptor->getArguments()->set($argumentDescriptor->getName(), $argumentDescriptor);
+            if (!array_key_exists('name', $argument) || !array_key_exists('type', $argument)) {
+                continue;
             }
+
+            $argumentDescriptor = $this->createArgumentDescriptorForMagicMethod(
+                $argument['name'],
+                $argument['type']
+            );
+            $descriptor->getArguments()->set($argumentDescriptor->getName(), $argumentDescriptor);
         }
 
         return $descriptor;
@@ -66,7 +65,7 @@ class MethodAssembler extends AssemblerAbstract
      * Construct an argument descriptor given the array representing an argument with a Method Tag in the Reflection
      * component.
      */
-    private function createArgumentDescriptorForMagicMethod(string $name, Type $type): ArgumentDescriptor
+    private function createArgumentDescriptorForMagicMethod(string $name, Type $type) : ArgumentDescriptor
     {
         $argumentDescriptor = new ArgumentDescriptor();
         $argumentDescriptor->setType(AssemblerAbstract::deduplicateTypes($type));

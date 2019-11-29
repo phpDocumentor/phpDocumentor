@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,9 +8,6 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
@@ -17,6 +15,7 @@ namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Descriptor\Interfaces\NamespaceInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
+use phpDocumentor\Reflection\Fqsen;
 
 /**
  * Represents the entire project with its files, namespaces and indexes.
@@ -51,7 +50,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
 
         $namespace = new NamespaceDescriptor();
         $namespace->setName('\\');
-        $namespace->setFullyQualifiedStructuralElementName('\\');
+        $namespace->setFullyQualifiedStructuralElementName(new Fqsen('\\'));
         $this->setNamespace($namespace);
 
         $this->setFiles(new Collection());
@@ -62,40 +61,32 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
 
     /**
      * Sets the name for this project.
-     *
-     * @param string $name
      */
-    public function setName(string $name): void
+    public function setName(string $name) : void
     {
         $this->name = $name;
     }
 
     /**
      * Returns the name of this project.
-     *
-     * @return string
      */
-    public function getName(): string
+    public function getName() : string
     {
         return $this->name;
     }
 
     /**
      * Returns the description for this element.
-     *
-     * @return string
      */
-    public function getDescription(): string
+    public function getDescription() : string
     {
         return '';
     }
 
     /**
      * Sets all files on this project.
-     *
-     * @param Collection $files
      */
-    public function setFiles(Collection $files): void
+    public function setFiles(Collection $files) : void
     {
         $this->files = $files;
     }
@@ -105,7 +96,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
      *
      * @return Collection|FileDescriptor[]
      */
-    public function getFiles(): Collection
+    public function getFiles() : Collection
     {
         return $this->files;
     }
@@ -117,7 +108,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
      * generation by providing a conveniently assembled list. An example of such an index is the 'marker' index where
      * a list of TODOs and FIXMEs are located in a central location for reporting.
      */
-    public function setIndexes(Collection $indexes): void
+    public function setIndexes(Collection $indexes) : void
     {
         $this->indexes = $indexes;
     }
@@ -127,7 +118,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
      *
      * @see setIndexes() for more information on what indexes are.
      */
-    public function getIndexes(): Collection
+    public function getIndexes() : Collection
     {
         return $this->indexes;
     }
@@ -135,7 +126,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
     /**
      * Sets the root namespace for this project together with all sub-namespaces.
      */
-    public function setNamespace(NamespaceDescriptor $namespace): void
+    public function setNamespace(NamespaceDescriptor $namespace) : void
     {
         $this->namespace = $namespace;
     }
@@ -143,7 +134,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
     /**
      * Returns the root (global) namespace.
      */
-    public function getNamespace(): NamespaceInterface
+    public function getNamespace() : NamespaceInterface
     {
         return $this->namespace;
     }
@@ -151,7 +142,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
     /**
      * Sets the settings used to build the documentation for this project.
      */
-    public function setSettings(Settings $settings): void
+    public function setSettings(Settings $settings) : void
     {
         $this->settings = $settings;
     }
@@ -159,7 +150,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
     /**
      * Returns the settings used to build the documentation for this project.
      */
-    public function getSettings(): Settings
+    public function getSettings() : Settings
     {
         return $this->settings;
     }
@@ -170,7 +161,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
      * Partials are blocks of text that can be inserted anywhere in a template using a special indicator. An example is
      * the introduction partial that can add a custom piece of text to the homepage.
      */
-    public function setPartials(Collection $partials): void
+    public function setPartials(Collection $partials) : void
     {
         $this->partials = $partials;
     }
@@ -180,7 +171,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
      *
      * @see setPartials() for more information on partials.
      */
-    public function getPartials(): Collection
+    public function getPartials() : Collection
     {
         return $this->partials;
     }
@@ -188,11 +179,11 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
     /**
      * Checks whether the Project supports the given visibility.
      *
-     * @param integer $visibility One of the VISIBILITY_* constants of the Settings class.
-     *
      * @see Settings for a list of the available VISIBILITY_* constants.
+     *
+     * @param int $visibility One of the VISIBILITY_* constants of the Settings class.
      */
-    public function isVisibilityAllowed(int $visibility): bool
+    public function isVisibilityAllowed(int $visibility) : bool
     {
         $visibilityAllowed = $this->getSettings()->getVisibility();
 

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,9 +8,6 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
@@ -20,13 +18,12 @@ use phpDocumentor\Parser\Event\PreFileEvent;
 use phpDocumentor\Reflection\Middleware\Command;
 use phpDocumentor\Reflection\Middleware\Middleware;
 use phpDocumentor\Reflection\Php\Factory\File\CreateCommand;
+use function assert;
+use function class_exists;
 
 final class EmittingMiddleware implements Middleware
 {
-    /**
-     * @return object
-     */
-    public function execute(Command $command, callable $next)
+    public function execute(Command $command, callable $next) : ?object
     {
         assert($command instanceof CreateCommand);
 

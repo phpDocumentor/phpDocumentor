@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,28 +8,26 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Configuration;
 
+use phpDocumentor\Configuration\Exception\InvalidConfigPathException;
 use phpDocumentor\Configuration\Factory\Strategy;
 use phpDocumentor\Configuration\Factory\Version3;
-use phpDocumentor\Configuration\Exception\InvalidConfigPathException;
 use phpDocumentor\Uri;
 use RuntimeException;
+use SimpleXMLElement;
+use function file_exists;
+use function sprintf;
 
 /**
  * The ConfigurationFactory converts the configuration xml from a Uri into an array.
  */
 final class ConfigurationFactory
 {
-    /**
-     * @var Strategy[] All strategies that are used by the ConfigurationFactory.
-     */
+    /** @var Strategy[] All strategies that are used by the ConfigurationFactory. */
     private $strategies = [];
 
     /**
@@ -39,16 +38,14 @@ final class ConfigurationFactory
      */
     private $middlewares = [];
 
-    /**
-     * @var string[]
-     */
+    /** @var string[] */
     private $defaultFiles = [];
 
     /**
      * Initializes the ConfigurationFactory.
      *
      * @param Strategy[]|iterable $strategies
-     * @param array $defaultFiles
+     * @param array               $defaultFiles
      */
     public function __construct(iterable $strategies, array $defaultFiles)
     {
@@ -60,20 +57,16 @@ final class ConfigurationFactory
 
     /**
      * Adds a middleware callback that allows the consumer to alter the configuration array when it is constructed.
-     *
-     * @param callable $middleware
      */
-    public function addMiddleware(callable $middleware): void
+    public function addMiddleware(callable $middleware) : void
     {
         $this->middlewares[] = $middleware;
     }
 
     /**
      * Attempts to load a configuration from the default locations for phpDocumentor
-     *
-     * @return Configuration
      */
-    public function fromDefaultLocations(): Configuration
+    public function fromDefaultLocations() : Configuration
     {
         foreach ($this->defaultFiles as $file) {
             try {
@@ -91,11 +84,10 @@ final class ConfigurationFactory
      *
      * @param Uri $uri The location of the file to be loaded.
      *
-     * @return Configuration
-     * @throws RuntimeException if no matching strategy can be found.
-     * @throws InvalidConfigPathException if $uri points to an inexistent file
+     * @throws RuntimeException If no matching strategy can be found.
+     * @throws InvalidConfigPathException If $uri points to an inexistent file.
      */
-    public function fromUri(Uri $uri): Configuration
+    public function fromUri(Uri $uri) : Configuration
     {
         $filename = (string) $uri;
 
@@ -103,7 +95,7 @@ final class ConfigurationFactory
             throw new InvalidConfigPathException(sprintf('File %s could not be found', $filename));
         }
 
-        $xml = new \SimpleXMLElement($filename, 0, true);
+        $xml = new SimpleXMLElement($filename, 0, true);
         foreach ($this->strategies as $strategy) {
             if ($strategy->supports($xml) !== true) {
                 continue;
@@ -117,10 +109,8 @@ final class ConfigurationFactory
 
     /**
      * Adds strategies that are used in the ConfigurationFactory.
-     *
-     * @param Strategy $strategy
      */
-    private function registerStrategy(Strategy $strategy): void
+    private function registerStrategy(Strategy $strategy) : void
     {
         $this->strategies[] = $strategy;
     }
@@ -132,7 +122,7 @@ final class ConfigurationFactory
      *
      * @return array
      */
-    private function applyMiddleware(array $configuration): array
+    private function applyMiddleware(array $configuration) : array
     {
         foreach ($this->middlewares as $middleware) {
             $configuration = $middleware($configuration);

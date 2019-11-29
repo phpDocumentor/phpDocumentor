@@ -1,21 +1,22 @@
 <?php
-/**
- * phpDocumentor
- *
- * PHP Version 5.3
- *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
- */
 
+declare(strict_types=1);
+
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link http://phpdoc.org
+ */
 namespace phpDocumentor\Transformer\Writer;
 
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery\MockInterface;
 use phpDocumentor\Transformer\Router\Router;
+use stdClass;
 
 /**
  * Test class for phpDocumentor\Transformer\Writer\Collection
@@ -34,10 +35,10 @@ class CollectionTest extends MockeryTestCase
     /**
      * Initializes the fixture and dependencies for this testcase.
      */
-    protected function setUp(): void
+    protected function setUp() : void
     {
         $this->routers = m::mock(Router::class);
-        $this->writer = m::mock(WriterAbstract::class);
+        $this->writer  = m::mock(WriterAbstract::class);
         $this->fixture = new Collection($this->routers);
     }
 
@@ -47,7 +48,7 @@ class CollectionTest extends MockeryTestCase
     public function testOffsetSetWithWriterNotDescendingFromWriterAbstract() : void
     {
         $this->expectException('InvalidArgumentException');
-        $this->fixture->offsetSet('index', new \stdClass());
+        $this->fixture->offsetSet('index', new stdClass());
     }
 
     /**

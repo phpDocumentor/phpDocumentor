@@ -1,26 +1,30 @@
 <?php
-/**
- * phpDocumentor
- *
- * PHP Version 5.3
- *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
- */
 
+declare(strict_types=1);
+
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link http://phpdoc.org
+ */
 namespace phpDocumentor\Transformer;
 
 use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
+use org\bovigo\vfs\vfsStream;
 use Psr\Log\NullLogger;
+use const DIRECTORY_SEPARATOR;
+use function strlen;
 
 /**
  * Test class for \phpDocumentor\Transformer\Transformer.
  *
  * @covers \phpDocumentor\Transformer\Transformer
  */
-class TransformerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+class TransformerTest extends MockeryTestCase
 {
     /** @var int Max length of description printed. */
     protected static $MAX_DESCRIPTION_LENGTH = 68;
@@ -31,7 +35,7 @@ class TransformerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Instantiates a new \phpDocumentor\Transformer for use as fixture.
      */
-    protected function setUp(): void
+    protected function setUp() : void
     {
         $templateCollectionMock = m::mock('phpDocumentor\Transformer\Template\Collection');
         $templateCollectionMock->shouldIgnoreMissing();
@@ -84,8 +88,8 @@ class TransformerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         $this->expectException('InvalidArgumentException');
         $this->expectExceptionMessage('Target directory (vfs://myroot) does not exist and could not be created');
-        $fileSystem = \org\bovigo\vfs\vfsStream::setup('myroot');
-        $this->fixture->setTarget(\org\bovigo\vfs\vfsStream::url('myroot'));
+        $fileSystem = vfsStream::setup('myroot');
+        $this->fixture->setTarget(vfsStream::url('myroot'));
     }
 
     /**

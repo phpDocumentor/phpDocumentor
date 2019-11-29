@@ -1,18 +1,20 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpDocumentor.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @copyright 2010-2015 Mike van Riel<mike@phpdoc.org>
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Configuration\Factory;
 
 use PHPUnit\Framework\TestCase;
+use SimpleXMLElement;
 
 /**
  * Test case for Version2
@@ -27,10 +29,10 @@ final class Version2Test extends TestCase
      */
     public function testItConvertsPhpdoc2XmlToAnArray() : void
     {
-        $xml = new \SimpleXMLElement(__DIR__ . '/../../../data/phpdoc.tpl.xml', 0, true);
+        $xml = new SimpleXMLElement(__DIR__ . '/../../../data/phpdoc.tpl.xml', 0, true);
 
         $version2 = new Version2();
-        $array = $version2->convert($xml);
+        $array    = $version2->convert($xml);
 
         $this->assertEquals(Version2ExpectedArray::getDefaultArray(), $array);
     }
@@ -48,7 +50,7 @@ final class Version2Test extends TestCase
 </foo>
 XML;
 
-        $xml = new \SimpleXMLElement($xml);
+        $xml = new SimpleXMLElement($xml);
 
         $version2 = new Version2();
         $version2->convert($xml);
@@ -59,10 +61,10 @@ XML;
      */
     public function testItMatchesWhenVersionIsEmpty() : void
     {
-        $xml = new \SimpleXMLElement(__DIR__ . '/../../../data/phpdoc.tpl.xml', 0, true);
+        $xml = new SimpleXMLElement(__DIR__ . '/../../../data/phpdoc.tpl.xml', 0, true);
 
         $version2 = new Version2();
-        $bool = $version2->supports($xml);
+        $bool     = $version2->supports($xml);
 
         $this->assertTrue($bool);
     }
@@ -73,14 +75,14 @@ XML;
      */
     public function testItRevertsToDefaultsIfValuesAreNotInTheConfigurationFile() : void
     {
-        $xml = new \SimpleXMLElement(
+        $xml = new SimpleXMLElement(
             __DIR__ . '/../../../data/phpDocumentor2XMLWithoutExtensions.xml',
             0,
             true
         );
 
         $version2 = new Version2();
-        $array = $version2->convert($xml);
+        $array    = $version2->convert($xml);
 
         $this->assertEquals(Version2ExpectedArray::getDefaultArray(), $array);
     }
@@ -91,14 +93,14 @@ XML;
      */
     public function testItAcceptsMultipleIgnorePathsInThePhpdoc2Xml() : void
     {
-        $xml = new \SimpleXMLElement(
+        $xml = new SimpleXMLElement(
             __DIR__ . '/../../../data/phpDocumentor2XMLWithMultipleIgnorePaths.xml',
             0,
             true
         );
 
         $version2 = new Version2();
-        $array = $version2->convert($xml);
+        $array    = $version2->convert($xml);
 
         $this->assertEquals(Version2ExpectedArray::getArrayWithMultipleIgnorePaths(), $array);
     }
@@ -109,14 +111,14 @@ XML;
      */
     public function testItShouldUseTargetDirectoryFromTransformerForOutput() : void
     {
-        $xml = new \SimpleXMLElement(
+        $xml = new SimpleXMLElement(
             __DIR__ . '/../../../data/phpDocumentor2XMLWithTarget.xml',
             0,
             true
         );
 
         $version2 = new Version2();
-        $array = $version2->convert($xml);
+        $array    = $version2->convert($xml);
 
         $this->assertEquals(Version2ExpectedArray::getCustomTargetConfig(), $array);
     }
@@ -127,14 +129,14 @@ XML;
      */
     public function testItShouldUseDefinedVisibility() : void
     {
-        $xml = new \SimpleXMLElement(
+        $xml = new SimpleXMLElement(
             __DIR__ . '/../../../data/phpDocumentor2XMLWithVisibility.xml',
             0,
             true
         );
 
         $version2 = new Version2();
-        $array = $version2->convert($xml);
+        $array    = $version2->convert($xml);
 
         $this->assertEquals(Version2ExpectedArray::getDefinedVisibility(), $array);
     }
@@ -145,14 +147,14 @@ XML;
      */
     public function testItShouldUseDefinedEncoding() : void
     {
-        $xml = new \SimpleXMLElement(
+        $xml = new SimpleXMLElement(
             __DIR__ . '/../../../data/phpDocumentor2XMLWithEncoding.xml',
             0,
             true
         );
 
         $version2 = new Version2();
-        $array = $version2->convert($xml);
+        $array    = $version2->convert($xml);
 
         $this->assertEquals(Version2ExpectedArray::getCustomEncoding(), $array);
     }

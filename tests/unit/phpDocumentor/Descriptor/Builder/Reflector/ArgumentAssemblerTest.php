@@ -1,19 +1,19 @@
 <?php
-/**
- * phpDocumentor
- *
- * PHP Version 5.3
- *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @author    Sven Hagemann <sven@rednose.nl>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
- */
 
+declare(strict_types=1);
+
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link http://phpdoc.org
+ */
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\Php\Argument;
 use phpDocumentor\Reflection\Type;
@@ -22,7 +22,7 @@ use phpDocumentor\Reflection\Types\Boolean;
 /**
  * Test class for phpDocumentor\Descriptor\Builder\Reflector\ArgumentAssembler
  */
-class ArgumentAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+class ArgumentAssemblerTest extends MockeryTestCase
 {
     /** @var ArgumentAssembler $fixture */
     protected $fixture;
@@ -33,10 +33,10 @@ class ArgumentAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Creates a new fixture to test with.
      */
-    protected function setUp(): void
+    protected function setUp() : void
     {
         $this->builderMock = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
-        $this->fixture = new ArgumentAssembler();
+        $this->fixture     = new ArgumentAssembler();
         $this->fixture->setBuilder($this->builderMock);
     }
 
@@ -122,7 +122,7 @@ class ArgumentAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         string $name,
         Type $type,
         bool $isVariadic = false
-    ): Argument {
+    ) : Argument {
         return new Argument($name, $type, null, false, $isVariadic);
     }
 }

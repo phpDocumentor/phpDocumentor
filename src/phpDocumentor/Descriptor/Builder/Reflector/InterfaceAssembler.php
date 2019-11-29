@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,9 +8,6 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
@@ -21,6 +19,8 @@ use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Reflection\Php\Constant;
 use phpDocumentor\Reflection\Php\Interface_;
 use phpDocumentor\Reflection\Php\Method;
+use function strlen;
+use function substr;
 
 /**
  * Assembles an InterfaceDescriptor using an InterfaceReflector.
@@ -30,11 +30,9 @@ class InterfaceAssembler extends AssemblerAbstract
     /**
      * Creates a Descriptor from the provided data.
      *
-     * @param Interface_ $data
-     *
-     * @return InterfaceDescriptor
+     * @param Interface_ Interface_
      */
-    public function create($data)
+    public function create($data) : InterfaceDescriptor
     {
         $interfaceDescriptor = new InterfaceDescriptor();
 
@@ -62,14 +60,16 @@ class InterfaceAssembler extends AssemblerAbstract
      *
      * @param Constant[] $constants
      */
-    protected function addConstants(array $constants, InterfaceDescriptor $interfaceDescriptor): void
+    protected function addConstants(array $constants, InterfaceDescriptor $interfaceDescriptor) : void
     {
         foreach ($constants as $constant) {
             $constantDescriptor = $this->getBuilder()->buildDescriptor($constant);
-            if ($constantDescriptor instanceof ConstantDescriptor) {
-                $constantDescriptor->setParent($interfaceDescriptor);
-                $interfaceDescriptor->getConstants()->set($constantDescriptor->getName(), $constantDescriptor);
+            if (!($constantDescriptor instanceof ConstantDescriptor)) {
+                continue;
             }
+
+            $constantDescriptor->setParent($interfaceDescriptor);
+            $interfaceDescriptor->getConstants()->set($constantDescriptor->getName(), $constantDescriptor);
         }
     }
 
@@ -78,14 +78,16 @@ class InterfaceAssembler extends AssemblerAbstract
      *
      * @param Method[] $methods
      */
-    protected function addMethods(array $methods, InterfaceDescriptor $interfaceDescriptor): void
+    protected function addMethods(array $methods, InterfaceDescriptor $interfaceDescriptor) : void
     {
         foreach ($methods as $method) {
             $methodDescriptor = $this->getBuilder()->buildDescriptor($method);
-            if ($methodDescriptor instanceof MethodDescriptor) {
-                $methodDescriptor->setParent($interfaceDescriptor);
-                $interfaceDescriptor->getMethods()->set($methodDescriptor->getName(), $methodDescriptor);
+            if (!($methodDescriptor instanceof MethodDescriptor)) {
+                continue;
             }
+
+            $methodDescriptor->setParent($interfaceDescriptor);
+            $interfaceDescriptor->getMethods()->set($methodDescriptor->getName(), $methodDescriptor);
         }
     }
 }

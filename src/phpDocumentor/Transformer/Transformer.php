@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,9 +8,6 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
@@ -28,26 +26,36 @@ use phpDocumentor\Transformer\Writer\Initializable;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
+use const DIRECTORY_SEPARATOR;
+use function in_array;
+use function is_dir;
+use function is_writable;
+use function mkdir;
+use function realpath;
+use function sprintf;
+use function str_replace;
+use function substr;
+use function trim;
 
 /**
  * Core class responsible for transforming the cache file to a set of artifacts.
  */
 class Transformer implements CompilerPassInterface
 {
-    const EVENT_PRE_TRANSFORMATION = 'transformer.transformation.pre';
+    public const EVENT_PRE_TRANSFORMATION = 'transformer.transformation.pre';
 
-    const EVENT_POST_TRANSFORMATION = 'transformer.transformation.post';
+    public const EVENT_POST_TRANSFORMATION = 'transformer.transformation.post';
 
-    const EVENT_PRE_INITIALIZATION = 'transformer.writer.initialization.pre';
+    public const EVENT_PRE_INITIALIZATION = 'transformer.writer.initialization.pre';
 
-    const EVENT_POST_INITIALIZATION = 'transformer.writer.initialization.post';
+    public const EVENT_POST_INITIALIZATION = 'transformer.writer.initialization.post';
 
-    const EVENT_PRE_TRANSFORM = 'transformer.transform.pre';
+    public const EVENT_PRE_TRANSFORM = 'transformer.transform.pre';
 
-    const EVENT_POST_TRANSFORM = 'transformer.transform.post';
+    public const EVENT_POST_TRANSFORM = 'transformer.transform.post';
 
     /** @var integer represents the priority in the Compiler queue. */
-    const COMPILER_PRIORITY = 5000;
+    public const COMPILER_PRIORITY = 5000;
 
     /** @var string|null $target Target location where to output the artifacts */
     protected $target = null;
@@ -72,11 +80,11 @@ class Transformer implements CompilerPassInterface
         LoggerInterface $logger
     ) {
         $this->templates = $templateCollection;
-        $this->writers = $writerCollection;
-        $this->logger = $logger;
+        $this->writers   = $writerCollection;
+        $this->logger    = $logger;
     }
 
-    public function getDescription(): string
+    public function getDescription() : string
     {
         return 'Transform analyzed project into artifacts';
     }
@@ -88,17 +96,17 @@ class Transformer implements CompilerPassInterface
      *
      * @throws InvalidArgumentException if the target is not a valid writable directory.
      */
-    public function setTarget(string $target): void
+    public function setTarget(string $target) : void
     {
         $path = realpath($target);
-        if (false === $path) {
-            if (@mkdir($target, 0755, true)) {
-                $path = realpath($target);
-            } else {
+        if ($path === false) {
+            if (!@mkdir($target, 0755, true)) {
                 throw new InvalidArgumentException(
                     'Target directory (' . $target . ') does not exist and could not be created'
                 );
             }
+
+            $path = realpath($target);
         }
 
         if (!is_dir($path) || !is_writable($path)) {
@@ -111,7 +119,7 @@ class Transformer implements CompilerPassInterface
     /**
      * Returns the location where to store the artifacts.
      */
-    public function getTarget(): ?string
+    public function getTarget() : ?string
     {
         return $this->target;
     }
@@ -119,7 +127,7 @@ class Transformer implements CompilerPassInterface
     /**
      * Returns the list of templates which are going to be adopted.
      */
-    public function getTemplates(): Template\Collection
+    public function getTemplates() : Template\Collection
     {
         return $this->templates;
     }
@@ -127,7 +135,7 @@ class Transformer implements CompilerPassInterface
     /**
      * Transforms the given project into a series of artifacts as provided by the templates.
      */
-    public function execute(ProjectDescriptor $project): void
+    public function execute(ProjectDescriptor $project) : void
     {
         /** @var PreTransformEvent $preTransformEvent */
         $preTransformEvent = PreTransformEvent::createInstance($this);
@@ -156,7 +164,7 @@ class Transformer implements CompilerPassInterface
      * * any dots that the name starts or ends with is removed
      * * the result is suffixed with .html
      */
-    public function generateFilename(string $name): string
+    public function generateFilename(string $name) : string
     {
         if (substr($name, -4) === '.php') {
             $name = substr($name, 0, -4);
@@ -172,7 +180,7 @@ class Transformer implements CompilerPassInterface
      * This method can be used by writers to output logs without having to know anything about
      * the logging mechanism of phpDocumentor.
      */
-    public function log(string $message, string $priority = LogLevel::INFO): void
+    public function log(string $message, string $priority = LogLevel::INFO) : void
     {
         $this->logger->log($priority, $message);
     }
@@ -183,7 +191,7 @@ class Transformer implements CompilerPassInterface
      * This method can be used by writers to output logs without having to know anything about
      * the logging mechanism of phpDocumentor.
      */
-    public function debug(string $message): void
+    public function debug(string $message) : void
     {
         $this->log($message, LogLevel::DEBUG);
     }
@@ -193,7 +201,7 @@ class Transformer implements CompilerPassInterface
      *
      * @param Transformation[] $transformations
      */
-    private function initializeWriters(ProjectDescriptor $project, array $transformations): void
+    private function initializeWriters(ProjectDescriptor $project, array $transformations) : void
     {
         $isInitialized = [];
         foreach ($transformations as $transformation) {
@@ -204,7 +212,7 @@ class Transformer implements CompilerPassInterface
             }
 
             $isInitialized[] = $writerName;
-            $writer = $this->writers[$writerName];
+            $writer          = $this->writers[$writerName];
             $this->initializeWriter($writer, $project);
         }
     }
@@ -225,11 +233,11 @@ class Transformer implements CompilerPassInterface
      *
      * @uses Dispatcher to emit the events surrounding an initialization.
      */
-    private function initializeWriter(WriterAbstract $writer, ProjectDescriptor $project): void
+    private function initializeWriter(WriterAbstract $writer, ProjectDescriptor $project) : void
     {
         /** @var WriterInitializationEvent $instance */
         $instance = WriterInitializationEvent::createInstance($this);
-        $event = $instance->setWriter($writer);
+        $event    = $instance->setWriter($writer);
         Dispatcher::getInstance()->dispatch($event, self::EVENT_PRE_INITIALIZATION);
 
         if ($writer instanceof Initializable) {
@@ -244,7 +252,7 @@ class Transformer implements CompilerPassInterface
      *
      * @param Transformation[] $transformations
      */
-    private function transformProject(ProjectDescriptor $project, array $transformations): void
+    private function transformProject(ProjectDescriptor $project, array $transformations) : void
     {
         foreach ($transformations as $transformation) {
             $transformation->setTransformer($this);
@@ -265,7 +273,7 @@ class Transformer implements CompilerPassInterface
      *
      * @uses Dispatcher to emit the events surrounding a transformation.
      */
-    private function applyTransformationToProject(Transformation $transformation, ProjectDescriptor $project): void
+    private function applyTransformationToProject(Transformation $transformation, ProjectDescriptor $project) : void
     {
         $this->logger->log(
             LogLevel::NOTICE,

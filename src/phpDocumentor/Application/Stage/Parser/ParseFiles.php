@@ -8,9 +8,6 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
@@ -20,24 +17,17 @@ use phpDocumentor\Parser\Parser;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
+use function current;
 
 final class ParseFiles
 {
-    /**
-     * @var Parser
-     */
+    /** @var Parser */
     private $parser;
-    /**
-     * @var LoggerInterface
-     */
+    /** @var LoggerInterface */
     private $logger;
-    /**
-     * @var AdapterInterface
-     */
+    /** @var AdapterInterface */
     private $filesCache;
-    /**
-     * @var AdapterInterface
-     */
+    /** @var AdapterInterface */
     private $descriptorsCache;
 
     public function __construct(
@@ -46,9 +36,9 @@ final class ParseFiles
         AdapterInterface $filesCache,
         AdapterInterface $descriptorsCache
     ) {
-        $this->parser = $parser;
-        $this->logger = $logger;
-        $this->filesCache = $filesCache;
+        $this->parser           = $parser;
+        $this->logger           = $logger;
+        $this->filesCache       = $filesCache;
         $this->descriptorsCache = $descriptorsCache;
     }
 
@@ -90,10 +80,10 @@ final class ParseFiles
     /**
      * Dispatches a logging request.
      *
-     * @param string $priority The logging priority as declared in the LogLevel PSR-3 class.
+     * @param string   $priority   The logging priority as declared in the LogLevel PSR-3 class.
      * @param string[] $parameters
      */
-    private function log(string $message, string $priority = LogLevel::INFO, array $parameters = []): void
+    private function log(string $message, string $priority = LogLevel::INFO, array $parameters = []) : void
     {
         $this->logger->log($priority, $message, $parameters);
     }

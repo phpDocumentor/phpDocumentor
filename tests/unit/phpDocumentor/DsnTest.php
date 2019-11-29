@@ -1,12 +1,13 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpDocumentor.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @copyright 2010-2018 Mike van Riel<mike@phpdoc.org>
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
@@ -16,6 +17,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Class DsnTest
+ *
  * @coversDefaultClass \phpDocumentor\Dsn
  */
 class DsnTest extends TestCase
@@ -55,6 +57,8 @@ class DsnTest extends TestCase
     }
 
     /**
+     * @uses \phpDocumentor\Path
+     *
      * @covers ::__construct
      * @covers ::__toString
      * @covers ::getScheme
@@ -66,13 +70,12 @@ class DsnTest extends TestCase
      * @covers ::getQuery
      * @covers ::getParameters
      * @covers ::<private>
-     * @uses \phpDocumentor\Path
      */
     public function testValidDsnWithScheme() : void
     {
-        $dsn = 'git+http://user:pw@github.com:8000/phpDocumentor/phpDocumentor2?q=qry1&x=qry2;branch=dev;other=xxx';
+        $dsn     = 'git+http://user:pw@github.com:8000/phpDocumentor/phpDocumentor2?q=qry1&x=qry2;branch=dev;other=xxx';
         $fixture = new Dsn($dsn);
-        $query = [
+        $query   = [
             'q' => 'qry1',
             'x' => 'qry2',
         ];
@@ -94,6 +97,8 @@ class DsnTest extends TestCase
     }
 
     /**
+     * @uses \phpDocumentor\Path
+     *
      * @covers ::__construct
      * @covers ::__toString
      * @covers ::getScheme
@@ -101,11 +106,10 @@ class DsnTest extends TestCase
      * @covers ::getPort
      * @covers ::getPath
      * @covers ::<private>
-     * @uses \phpDocumentor\Path
      */
     public function testValidDsnWithoutScheme() : void
     {
-        $dsn = 'src';
+        $dsn     = 'src';
         $fixture = new Dsn($dsn);
 
         $this->assertEquals('file://src', (string) $fixture);
@@ -116,6 +120,8 @@ class DsnTest extends TestCase
     }
 
     /**
+     * @uses \phpDocumentor\Path
+     *
      * @covers ::__construct
      * @covers ::__toString
      * @covers ::getScheme
@@ -123,11 +129,10 @@ class DsnTest extends TestCase
      * @covers ::getPort
      * @covers ::getPath
      * @covers ::<private>
-     * @uses \phpDocumentor\Path
      */
     public function testValidWindowsDsnWithoutScheme() : void
     {
-        $dsn = 'C:\\phpdocumentor\\tests\\unit\\phpDocumentor\\Parser';
+        $dsn     = 'C:\\phpdocumentor\\tests\\unit\\phpDocumentor\\Parser';
         $fixture = new Dsn($dsn);
 
         $this->assertEquals(
@@ -144,6 +149,8 @@ class DsnTest extends TestCase
     }
 
     /**
+     * @uses \phpDocumentor\Path
+     *
      * @covers ::__construct
      * @covers ::__toString
      * @covers ::getScheme
@@ -151,11 +158,10 @@ class DsnTest extends TestCase
      * @covers ::getPort
      * @covers ::getPath
      * @covers ::<private>
-     * @uses \phpDocumentor\Path
      */
     public function testValidWindowsDsnWithScheme() : void
     {
-        $dsn = 'file://C:\\phpdocumentor\\tests';
+        $dsn     = 'file://C:\\phpdocumentor\\tests';
         $fixture = new Dsn($dsn);
 
         $this->assertEquals('file://C:\\phpdocumentor\\tests', (string) $fixture);
@@ -173,11 +179,11 @@ class DsnTest extends TestCase
      */
     public function testCorrectDefaultPorts() : void
     {
-        $dsn = 'git+http://github.com';
+        $dsn     = 'git+http://github.com';
         $fixture = new Dsn($dsn);
         $this->assertEquals(80, $fixture->getPort());
 
-        $dsn = 'git+https://github.com';
+        $dsn     = 'git+https://github.com';
         $fixture = new Dsn($dsn);
         $this->assertEquals(443, $fixture->getPort());
     }

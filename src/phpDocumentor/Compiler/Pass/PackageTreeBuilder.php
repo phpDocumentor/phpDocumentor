@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,9 +8,6 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
@@ -21,6 +19,9 @@ use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\PackageDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
+use function explode;
+use function ltrim;
+use function ucfirst;
 
 /**
  * Rebuilds the package tree from the elements found in files.
@@ -33,14 +34,14 @@ use phpDocumentor\Descriptor\TagDescriptor;
  */
 class PackageTreeBuilder implements CompilerPassInterface
 {
-    const COMPILER_PRIORITY = 9001;
+    public const COMPILER_PRIORITY = 9001;
 
-    public function getDescription(): string
+    public function getDescription() : string
     {
         return 'Build "packages" index';
     }
 
-    public function execute(ProjectDescriptor $project): void
+    public function execute(ProjectDescriptor $project) : void
     {
         $rootPackageDescriptor = new PackageDescriptor();
         $rootPackageDescriptor->setName('\\');
@@ -64,11 +65,11 @@ class PackageTreeBuilder implements CompilerPassInterface
      * element. If a package does not exist yet it will automatically be created.
      *
      * @param DescriptorAbstract[] $elements Series of elements to add to their respective package.
-     * @param string $type Declares which field of the package will be populated with the given
-     * series of elements. This name will be transformed to a getter which must exist. Out of performance
-     * considerations will no effort be done to verify whether the provided type is valid.
+     * @param string               $type     Declares which field of the package will be populated with the given
+     *                   series of elements. This name will be transformed to a getter which must exist. Out of performance
+     *                   considerations will no effort be done to verify whether the provided type is valid.
      */
-    protected function addElementsOfTypeToPackage(ProjectDescriptor $project, array $elements, string $type): void
+    protected function addElementsOfTypeToPackage(ProjectDescriptor $project, array $elements, string $type) : void
     {
         /** @var DescriptorAbstract $element */
         foreach ($elements as $element) {
@@ -121,14 +122,15 @@ class PackageTreeBuilder implements CompilerPassInterface
      * created PackageDescriptors. Each index key is prefixed with a tilde (~) so that it will not conflict with
      * other FQSEN's, such as classes or interfaces.
      *
-     * @param string $packageName A FQNN of the package (and parents) to create.
      * @see ProjectDescriptor::getPackage() for the root package.
      * @see PackageDescriptor::getChildren() for the child packages of a given package.
+     *
+     * @param string $packageName A FQNN of the package (and parents) to create.
      */
-    protected function createPackageDescriptorTree(ProjectDescriptor $project, string $packageName): void
+    protected function createPackageDescriptorTree(ProjectDescriptor $project, string $packageName) : void
     {
         $parts = explode('\\', ltrim($packageName, '\\'));
-        $fqnn = '';
+        $fqnn  = '';
 
         // this method does not use recursion to traverse the tree but uses a pointer that will be overridden with the
         // next item that is to be traversed (child package) at the end of the loop.

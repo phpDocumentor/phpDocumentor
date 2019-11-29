@@ -1,18 +1,20 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpDocumentor.
  *
  *  For the full copyright and license information, please view the LICENSE
  *  file that was distributed with this source code.
  *
- *  @copyright 2010-2018 Mike van Riel<mike@phpdoc.org>
- *  @license   http://www.opensource.org/licenses/mit-license.php MIT
- *  @link      http://phpdoc.org
+ * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\Fqsen;
@@ -23,7 +25,7 @@ use phpDocumentor\Reflection\Php\Trait_;
  * @coversDefaultClass \phpDocumentor\Descriptor\Builder\Reflector\TraitAssembler
  * @covers ::<private>
  */
-class TraitAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+class TraitAssemblerTest extends MockeryTestCase
 {
     /**
      * @covers ::create
@@ -36,7 +38,7 @@ class TraitAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $builder->shouldReceive('buildDescriptor')->andReturn($method);
 
         $traitFqsen = new Fqsen('\My\Space\MyTrait');
-        $trait = new Trait_($traitFqsen);
+        $trait      = new Trait_($traitFqsen);
         $trait->addMethod(new Method(new Fqsen('\My\Space\MyTrait::method()')));
         $assembler = new TraitAssembler();
         $assembler->setBuilder($builder);

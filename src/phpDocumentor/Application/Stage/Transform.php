@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,9 +8,6 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
@@ -30,6 +28,12 @@ use phpDocumentor\Transformer\Writer\WriterAbstract;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Stopwatch\Stopwatch;
+use const DIRECTORY_SEPARATOR;
+use function array_column;
+use function count;
+use function get_class;
+use function getcwd;
+use function sprintf;
 
 /**
  * Transforms the structure file into the specified output format
@@ -65,10 +69,10 @@ final class Transform
         LoggerInterface $logger,
         ExampleFinder $exampleFinder
     ) {
-        $this->transformer = $transformer;
-        $this->compiler = $compiler;
+        $this->transformer   = $transformer;
+        $this->compiler      = $compiler;
         $this->exampleFinder = $exampleFinder;
-        $this->logger = $logger;
+        $this->logger        = $logger;
 
         $this->connectOutputToEvents();
     }
@@ -78,7 +82,7 @@ final class Transform
      *
      * @throws Exception if the target location is not a folder.
      */
-    public function __invoke(Payload $payload): Payload
+    public function __invoke(Payload $payload) : Payload
     {
         $configuration = $payload->getConfig();
 
@@ -94,29 +98,31 @@ final class Transform
     /**
      * Connect a series of output messages to various events to display progress.
      */
-    private function connectOutputToEvents(): void
+    private function connectOutputToEvents() : void
     {
         Dispatcher::getInstance()->addListener(
             Transformer::EVENT_PRE_TRANSFORM,
-            function (PreTransformEvent $event) {
+            function (PreTransformEvent $event) : void {
                 /** @var Transformer $transformer */
-                $transformer = $event->getSubject();
-                $templates = $transformer->getTemplates();
+                $transformer     = $event->getSubject();
+                $templates       = $transformer->getTemplates();
                 $transformations = $templates->getTransformations();
                 $this->logger->info(sprintf("\nApplying %d transformations", count($transformations)));
             }
         );
         Dispatcher::getInstance()->addListener(
             Transformer::EVENT_PRE_INITIALIZATION,
-            function (WriterInitializationEvent $event) {
-                if ($event->getWriter() instanceof WriterAbstract) {
-                    $this->logger->info('  Initialize writer "' . get_class($event->getWriter()) . '"');
+            function (WriterInitializationEvent $event) : void {
+                if (!($event->getWriter() instanceof WriterAbstract)) {
+                    return;
                 }
+
+                $this->logger->info('  Initialize writer "' . get_class($event->getWriter()) . '"');
             }
         );
         Dispatcher::getInstance()->addListener(
             Transformer::EVENT_PRE_TRANSFORMATION,
-            function (PreTransformationEvent $event) {
+            function (PreTransformationEvent $event) : void {
                 $this->logger->info(
                     '  Execute transformation using writer "' . $event->getTransformation()->getWriter() . '"'
                 );
@@ -124,7 +130,7 @@ final class Transform
         );
     }
 
-    private function loadTemplatesBasedOnNames(array $templateNames): void
+    private function loadTemplatesBasedOnNames(array $templateNames) : void
     {
         $stopWatch = new Stopwatch();
         foreach (array_column($templateNames, 'name') as $template) {
@@ -134,9 +140,9 @@ final class Transform
         }
     }
 
-    private function setTargetLocationBasedOnDsn(Dsn $dsn): void
+    private function setTargetLocationBasedOnDsn(Dsn $dsn) : void
     {
-        $target = $dsn->getPath();
+        $target     = $dsn->getPath();
         $fileSystem = new Filesystem();
         if (!$fileSystem->isAbsolutePath((string) $target)) {
             $target = getcwd() . DIRECTORY_SEPARATOR . $target;
@@ -145,7 +151,7 @@ final class Transform
         $this->transformer->setTarget((string) $target);
     }
 
-    private function doTransform(ProjectDescriptorBuilder $builder): void
+    private function doTransform(ProjectDescriptorBuilder $builder) : void
     {
         /** @var CompilerPassInterface $pass */
         foreach ($this->compiler as $pass) {
@@ -153,7 +159,7 @@ final class Transform
         }
     }
 
-    private function provideLocationsOfExamples(): void
+    private function provideLocationsOfExamples() : void
     {
         //TODO: Should determine root based on filesystems. Could be an issue for multiple.
         // Need some config update here.

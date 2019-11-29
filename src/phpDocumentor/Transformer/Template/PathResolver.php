@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,15 +8,18 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Transformer\Template;
 
+use InvalidArgumentException;
 use Symfony\Component\Filesystem\Filesystem;
+use const DIRECTORY_SEPARATOR;
+use function basename;
+use function file_exists;
+use function is_readable;
+use function rtrim;
 
 class PathResolver
 {
@@ -37,9 +41,9 @@ class PathResolver
         // templates should they choose to.
         $configPath = rtrim($nameOrPath, DIRECTORY_SEPARATOR) . '/template.xml';
         if (file_exists($configPath) && is_readable($configPath)) {
-            $path = rtrim($nameOrPath, DIRECTORY_SEPARATOR);
+            $path             = rtrim($nameOrPath, DIRECTORY_SEPARATOR);
             $templateNamePart = basename($path);
-            $cachePath = rtrim($this->templatePath, '/\\') . DIRECTORY_SEPARATOR . $templateNamePart;
+            $cachePath        = rtrim($this->templatePath, '/\\') . DIRECTORY_SEPARATOR . $templateNamePart;
 
             // move the files to a cache location and then change the path
             // variable to match the new location
@@ -54,7 +58,7 @@ class PathResolver
         }
 
         if (!file_exists($path) || !is_readable($path)) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'The given template ' . $nameOrPath . ' could not be found or is not readable'
             );
         }
@@ -64,10 +68,8 @@ class PathResolver
 
     /**
      * Returns the path where all templates are stored.
-     *
-     * @return string
      */
-    public function getTemplatePath()
+    public function getTemplatePath() : string
     {
         return $this->templatePath;
     }

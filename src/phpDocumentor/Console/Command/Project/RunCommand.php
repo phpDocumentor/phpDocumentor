@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,10 +8,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Console\Command\Project;
@@ -23,12 +21,14 @@ use phpDocumentor\Parser\Event\PreParsingEvent;
 use phpDocumentor\Transformer\Event\PostTransformationEvent;
 use phpDocumentor\Transformer\Event\PreTransformEvent;
 use phpDocumentor\Transformer\Transformer;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use function count;
+use function file_put_contents;
+use function serialize;
 
 /**
  * Parse and transform the given directory (-d|-f) to the given location (-t).
@@ -61,29 +61,21 @@ class RunCommand extends Command
     /** @var ProgressBar */
     private $transformerProgressBar;
 
-    /** @var LoggerInterface */
-    private $logger;
-
-    /**
-     * RunCommand constructor.
-     */
     public function __construct(
         ProjectDescriptorBuilder $projectDescriptorBuilder,
-        Pipeline $pipeline,
-        LoggerInterface $logger
+        Pipeline $pipeline
     ) {
         parent::__construct('project:run');
 
         $this->projectDescriptorBuilder = $projectDescriptorBuilder;
         $this->pipeline = $pipeline;
-        $this->logger = $logger;
     }
 
     /**
      * Initializes this command and sets the name, description, options and
      * arguments.
      */
-    protected function configure(): void
+    protected function configure() : void
     {
         $this->setName('project:run')
             ->setAliases(['run'])
@@ -255,7 +247,7 @@ HELP
     /**
      * Executes the business logic involved with this command.
      */
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    protected function execute(InputInterface $input, OutputInterface $output) : int
     {
         $output->writeln('phpDocumentor ' . $this->getApplication()->getVersion());
         $output->writeln('');
@@ -275,7 +267,7 @@ HELP
         return 0;
     }
 
-    private function observeProgressToShowProgressBars(OutputInterface $output): void
+    private function observeProgressToShowProgressBars(OutputInterface $output) : void
     {
         if ($output->getVerbosity() !== OutputInterface::VERBOSITY_NORMAL) {
             return;
@@ -283,20 +275,20 @@ HELP
 
         Dispatcher::getInstance()->addListener(
             'parser.pre',
-            function (PreParsingEvent $event) use ($output) {
+            function (PreParsingEvent $event) use ($output) : void {
                 $output->writeln('Parsing files');
                 $this->progressBar = new ProgressBar($output, $event->getFileCount());
             }
         );
         Dispatcher::getInstance()->addListener(
             'parser.file.pre',
-            function (PreFileEvent $event) {
+            function (PreFileEvent $event) : void {
                 $this->progressBar->advance();
             }
         );
         Dispatcher::getInstance()->addListener(
             Transformer::EVENT_PRE_TRANSFORM,
-            function (PreTransformEvent $event) use ($output) {
+            function (PreTransformEvent $event) use ($output) : void {
                 $output->writeln('');
                 $output->writeln('Applying transformations (can take a while)');
                 $this->transformerProgressBar = new ProgressBar(
@@ -307,7 +299,7 @@ HELP
         );
         Dispatcher::getInstance()->addListener(
             Transformer::EVENT_POST_TRANSFORMATION,
-            function (PostTransformationEvent $event) {
+            function (PostTransformationEvent $event) : void {
                 $this->transformerProgressBar->advance();
             }
         );

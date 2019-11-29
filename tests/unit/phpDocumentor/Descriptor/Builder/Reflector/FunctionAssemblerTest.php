@@ -1,19 +1,20 @@
 <?php
-/**
- * phpDocumentor
- *
- * PHP Version 5.3
- *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @author    Sven Hagemann <sven@rednose.nl>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
- */
 
+declare(strict_types=1);
+
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link http://phpdoc.org
+ */
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
+use InvalidArgumentException;
 use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\ArgumentDescriptor;
 use phpDocumentor\Descriptor\PackageDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
@@ -21,9 +22,9 @@ use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Php\Argument;
 use phpDocumentor\Reflection\Php\Function_;
-use phpDocumentor\Reflection\Types\Mixed_;
+use function get_class;
 
-class FunctionAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+class FunctionAssemblerTest extends MockeryTestCase
 {
     /** @var FunctionAssembler $fixture */
     protected $fixture;
@@ -37,16 +38,16 @@ class FunctionAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Creates a new fixture to test with.
      */
-    protected function setUp(): void
+    protected function setUp() : void
     {
         $this->builderMock = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
         $this->builderMock->shouldReceive('buildDescriptor')->andReturnUsing(
-            function ($value) {
+            static function ($value) {
                 switch (get_class($value)) {
                     case DocBlock\Tags\Generic::class && $value->getName() === 'package':
                         return new PackageDescriptor();
                     default:
-                        throw new \InvalidArgumentException('didn\'t expect ' . get_class($value));
+                        throw new InvalidArgumentException('didn\'t expect ' . get_class($value));
                 }
             }
         );
@@ -68,18 +69,18 @@ class FunctionAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testCreateFunctionDescriptorFromReflector() : void
     {
         // Arrange
-        $namespace = 'Namespace';
+        $namespace    = 'Namespace';
         $functionName = 'goodbyeWorld';
         $argumentName = 'waveHand';
 
-        $argument = $this->givenAnArgumentWithName($argumentName);
+        $argument              = $this->givenAnArgumentWithName($argumentName);
         $functionReflectorMock = $this->givenAFunctionReflector(
             $namespace,
             $functionName,
             $argument,
             $this->givenADocBlockObject()
         );
-        $argumentDescriptor = new ArgumentDescriptor();
+        $argumentDescriptor    = new ArgumentDescriptor();
         $argumentDescriptor->setName($argumentName);
 
         $this->argumentAssemblerMock->shouldReceive('create')->andReturn($argumentDescriptor);
@@ -100,14 +101,9 @@ class FunctionAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Creates a sample function reflector for the tests with the given data.
      *
-     * @param string $namespace
-     * @param string $functionName
-     * @param Argument $argumentMock
      * @param DocBlock|m\MockInterface $docBlockMock
-     *
-     * @return Function_
      */
-    protected function givenAFunctionReflector($namespace, $functionName, $argumentMock, $docBlockMock) : Function_
+    protected function givenAFunctionReflector(string $namespace, string $functionName, Argument $argumentMock, $docBlockMock) : Function_
     {
         $functionReflectorMock = new Function_(
             new Fqsen('\\' . $namespace . '\\' . $functionName . '()'),
@@ -121,8 +117,6 @@ class FunctionAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
     /**
      * Generates a DocBlock object with applicable defaults for these tests.
-     *
-     * @return DocBlock
      */
     protected function givenADocBlockObject() : DocBlock
     {
@@ -138,12 +132,8 @@ class FunctionAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
     /**
      * Prepares a mock Argument with the given name.
-     *
-     * @param string $argumentName
-     *
-     * @return Argument
      */
-    protected function givenAnArgumentWithName($argumentName) : Argument
+    protected function givenAnArgumentWithName(string $argumentName) : Argument
     {
         return new Argument($argumentName);
     }

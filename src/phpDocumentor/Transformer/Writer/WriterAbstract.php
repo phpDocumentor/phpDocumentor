@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,9 +8,6 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
@@ -21,6 +19,21 @@ use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Transformer\Router\Router;
 use phpDocumentor\Transformer\Transformation;
 use UnexpectedValueException;
+use const DIRECTORY_SEPARATOR;
+use function array_map;
+use function current;
+use function dirname;
+use function explode;
+use function extension_loaded;
+use function file_exists;
+use function get_class;
+use function iconv;
+use function implode;
+use function mkdir;
+use function preg_replace_callback;
+use function str_replace;
+use function strpos;
+use function trim;
 
 /**
  * Base class for the actual transformation business logic (writers).
@@ -35,7 +48,7 @@ abstract class WriterAbstract
      *
      * @throws Exception\RequirementMissing when a requirements is missing stating which one.
      */
-    public function checkRequirements()
+    public function checkRequirements() : void
     {
         // empty body since most writers do not have requirements
     }
@@ -43,14 +56,12 @@ abstract class WriterAbstract
     /**
      * Checks if there is a space in the path.
      *
-     * @param string $path
-     *
-     * @throws \InvalidArgumentException if path contains a space.
+     * @throws InvalidArgumentException if path contains a space.
      */
-    protected function checkForSpacesInPath($path)
+    protected function checkForSpacesInPath(string $path) : void
     {
         if (strpos($path, ' ') !== false) {
-            throw new \InvalidArgumentException('No spaces allowed in destination path: ' . $path);
+            throw new InvalidArgumentException('No spaces allowed in destination path: ' . $path);
         }
     }
 
@@ -60,7 +71,7 @@ abstract class WriterAbstract
      * @param ProjectDescriptor $project        Document containing the structure.
      * @param Transformation    $transformation Transformation to execute.
      */
-    abstract public function transform(ProjectDescriptor $project, Transformation $transformation);
+    abstract public function transform(ProjectDescriptor $project, Transformation $transformation) : void;
 
     /**
      * Uses the currently selected node and transformation to assemble the destination path for the file.
@@ -81,12 +92,12 @@ abstract class WriterAbstract
      *   An artifact stating `classes/{{name}}.html` will try to find the
      *   node 'name' as a child of the given $node and use that value instead.
      *
+     * @return string|null returns the destination location or false if generation should be aborted.
+     *
      * @throws InvalidArgumentException if no artifact is provided and no routing rule matches.
      * @throws UnexpectedValueException if the provided node does not contain anything.
-     *
-     * @return null|string returns the destination location or false if generation should be aborted.
      */
-    public function destination(Descriptor $descriptor, Transformation $transformation): ?string
+    public function destination(Descriptor $descriptor, Transformation $transformation) : ?string
     {
         $path = $transformation->getTransformer()->getTarget() . DIRECTORY_SEPARATOR . $transformation->getArtifact();
         if (!$transformation->getArtifact()) {
@@ -113,10 +124,10 @@ abstract class WriterAbstract
                 . str_replace('/', DIRECTORY_SEPARATOR, $url);
         }
 
-        $finder = new Pathfinder();
+        $finder      = new Pathfinder();
         $destination = preg_replace_callback(
             '/{{([^}]+)}}/', // explicitly do not use the unicode modifier; this breaks windows
-            function ($query) use ($descriptor, $finder) {
+            static function ($query) use ($descriptor, $finder) {
                 // strip any surrounding \ or /
                 $filepart = trim((string) current($finder->find($descriptor, $query[1])), '\\/');
 
@@ -144,12 +155,12 @@ abstract class WriterAbstract
         return $destination;
     }
 
-    public function __toString(): string
+    public function __toString() : string
     {
-        return get_class($this);
+        return static::class;
     }
 
-    protected function router(): ?Router
+    protected function router() : ?Router
     {
         return null;
     }

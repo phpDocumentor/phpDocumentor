@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,9 +8,6 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
@@ -21,6 +19,8 @@ use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Reflection\Php\Method;
 use phpDocumentor\Reflection\Php\Property;
 use phpDocumentor\Reflection\Php\Trait_;
+use function strlen;
+use function substr;
 
 /**
  * Assembles an TraitDescriptor using an TraitReflector.
@@ -31,10 +31,8 @@ class TraitAssembler extends AssemblerAbstract
      * Creates a Descriptor from the provided data.
      *
      * @param Trait_ $data
-     *
-     * @return TraitDescriptor
      */
-    public function create($data)
+    public function create($data) : TraitDescriptor
     {
         $traitDescriptor = new TraitDescriptor();
 
@@ -61,14 +59,16 @@ class TraitAssembler extends AssemblerAbstract
      *
      * @param Property[] $properties
      */
-    protected function addProperties(array $properties, TraitDescriptor $traitDescriptor): void
+    protected function addProperties(array $properties, TraitDescriptor $traitDescriptor) : void
     {
         foreach ($properties as $property) {
             $propertyDescriptor = $this->getBuilder()->buildDescriptor($property);
-            if ($propertyDescriptor instanceof PropertyDescriptor) {
-                $propertyDescriptor->setParent($traitDescriptor);
-                $traitDescriptor->getProperties()->set($propertyDescriptor->getName(), $propertyDescriptor);
+            if (!($propertyDescriptor instanceof PropertyDescriptor)) {
+                continue;
             }
+
+            $propertyDescriptor->setParent($traitDescriptor);
+            $traitDescriptor->getProperties()->set($propertyDescriptor->getName(), $propertyDescriptor);
         }
     }
 
@@ -77,14 +77,16 @@ class TraitAssembler extends AssemblerAbstract
      *
      * @param Method[] $methods
      */
-    protected function addMethods(array $methods, TraitDescriptor $traitDescriptor): void
+    protected function addMethods(array $methods, TraitDescriptor $traitDescriptor) : void
     {
         foreach ($methods as $method) {
             $methodDescriptor = $this->getBuilder()->buildDescriptor($method);
-            if ($methodDescriptor instanceof MethodDescriptor) {
-                $methodDescriptor->setParent($traitDescriptor);
-                $traitDescriptor->getMethods()->set($methodDescriptor->getName(), $methodDescriptor);
+            if (!($methodDescriptor instanceof MethodDescriptor)) {
+                continue;
             }
+
+            $methodDescriptor->setParent($traitDescriptor);
+            $traitDescriptor->getMethods()->set($methodDescriptor->getName(), $methodDescriptor);
         }
     }
 }

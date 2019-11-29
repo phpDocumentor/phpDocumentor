@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,9 +8,6 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
@@ -22,27 +20,15 @@ use phpDocumentor\Descriptor\Collection;
  */
 interface FileInterface extends ElementInterface, ContainerInterface
 {
-    public function getHash();
+    public function getHash() : string;
 
-    public function setSource($source);
+    public function setSource(?string $source) : void;
 
-    /**
-     * @return string|null
-     */
-    public function getSource();
+    public function getSource() : ?string;
 
-    /**
-     * @return Collection
-     */
-    public function getNamespaceAliases();
+    public function getNamespaceAliases() : Collection;
 
-    /**
-     * @return Collection
-     */
-    public function getIncludes();
+    public function getIncludes() : Collection;
 
-    /**
-     * @return Collection
-     */
-    public function getErrors();
+    public function getErrors() : Collection;
 }

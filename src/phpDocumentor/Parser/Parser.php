@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,9 +8,6 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
@@ -19,10 +17,15 @@ use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Parser\Event\PreParsingEvent;
 use phpDocumentor\Parser\Exception\FilesNotFoundException;
+use phpDocumentor\Reflection\Php\Project;
 use phpDocumentor\Reflection\ProjectFactory;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Symfony\Component\Stopwatch\Stopwatch;
+use function assert;
+use function count;
+use function ini_get;
+use function round;
 
 /**
  * Class responsible for parsing the given file or files to the intermediate
@@ -60,9 +63,7 @@ class Parser
     /** @var Stopwatch $stopwatch The profiling component that measures time and memory usage over time */
     protected $stopwatch = null;
 
-    /**
-     * @var ProjectFactory
-     */
+    /** @var ProjectFactory */
     private $projectFactory;
 
     /**
@@ -83,8 +84,8 @@ class Parser
         }
 
         $this->projectFactory = $projectFactory;
-        $this->stopwatch = $stopwatch;
-        $this->logger = $logger;
+        $this->stopwatch      = $stopwatch;
+        $this->logger         = $logger;
     }
 
     /**
@@ -94,22 +95,16 @@ class Parser
      * is thus disabled by default.
      *
      * @param bool $validate when true this file will be checked.
-     *
-     * @api
      */
-    public function setValidate($validate)
+    public function setValidate(bool $validate) : void
     {
         $this->validate = $validate;
     }
 
     /**
      * Returns whether we want to run PHPLint on every file.
-     *
-     * @api
-     *
-     * @return bool
      */
-    public function doValidation()
+    public function doValidation() : bool
     {
         return $this->validate;
     }
@@ -118,18 +113,14 @@ class Parser
      * Sets a list of markers to gather (i.e. TODO, FIXME).
      *
      * @param string[] $markers A list or markers to gather.
-     *
-     * @api
      */
-    public function setMarkers(array $markers)
+    public function setMarkers(array $markers) : void
     {
         $this->markers = $markers;
     }
 
     /**
      * Returns the list of markers.
-     *
-     * @api
      *
      * @return string[]
      */
@@ -142,18 +133,14 @@ class Parser
      * Sets a list of tags to ignore.
      *
      * @param string[] $ignoredTags A list of tags to ignore.
-     *
-     * @api
      */
-    public function setIgnoredTags(array $ignoredTags)
+    public function setIgnoredTags(array $ignoredTags) : void
     {
         $this->ignoredTags = $ignoredTags;
     }
 
     /**
      * Returns the list of ignored tags.
-     *
-     * @api
      *
      * @return string[]
      */
@@ -166,20 +153,16 @@ class Parser
      * Sets the base path of the files that will be parsed.
      *
      * @param string $path Must be an absolute path.
-     *
-     * @api
      */
-    public function setPath($path)
+    public function setPath(string $path) : void
     {
         $this->path = $path;
     }
 
     /**
      * Returns the absolute base path for all files.
-     *
-     * @return string
      */
-    public function getPath()
+    public function getPath() : string
     {
         return $this->path;
     }
@@ -190,17 +173,15 @@ class Parser
      * @param string $defaultPackageName Name used to categorize elements
      *  without an @package tag.
      */
-    public function setDefaultPackageName($defaultPackageName)
+    public function setDefaultPackageName(string $defaultPackageName) : void
     {
         $this->defaultPackageName = $defaultPackageName;
     }
 
     /**
      * Returns the name of the default package.
-     *
-     * @return string
      */
-    public function getDefaultPackageName()
+    public function getDefaultPackageName() : string
     {
         return $this->defaultPackageName;
     }
@@ -214,20 +195,16 @@ class Parser
      *
      * Please note that it is recommended to provide files in UTF-8 format; this will ensure a faster performance since
      * no transformation is required.
-     *
-     * @param string $encoding
      */
-    public function setEncoding($encoding)
+    public function setEncoding(string $encoding) : void
     {
         $this->encoding = $encoding;
     }
 
     /**
      * Returns the currently active encoding.
-     *
-     * @return string
      */
-    public function getEncoding()
+    public function getEncoding() : string
     {
         return $this->encoding;
     }
@@ -235,12 +212,9 @@ class Parser
     /**
      * Iterates through the given files feeds them to the builder.
      *
-     * @return \phpDocumentor\Reflection\Php\Project
-     *
      * @throws FilesNotFoundException if no files were found.
-     * @api
      */
-    public function parse(array $files)
+    public function parse(array $files) : Project
     {
         $this->startTimingTheParsePhase();
 
@@ -252,7 +226,7 @@ class Parser
                 'parser.pre'
             );
 
-        /** @var \phpDocumentor\Reflection\Php\Project $project */
+        /** @var Project $project */
         $project = $this->projectFactory->create(ProjectDescriptorBuilder::DEFAULT_PROJECT_NAME, $files);
         $this->logAfterParsingAllFiles();
 
@@ -262,7 +236,7 @@ class Parser
     /**
      * Writes the complete parsing cycle to log.
      */
-    private function logAfterParsingAllFiles(): void
+    private function logAfterParsingAllFiles() : void
     {
         if (!$this->stopwatch instanceof Stopwatch) {
             return;
@@ -277,19 +251,21 @@ class Parser
     /**
      * Dispatches a logging request.
      *
-     * @param string   $message  The message to log.
-     * @param string   $priority The logging priority as declared in the LogLevel PSR-3 class.
+     * @param string   $message    The message to log.
+     * @param string   $priority   The logging priority as declared in the LogLevel PSR-3 class.
      * @param string[] $parameters
      */
-    private function log($message, $priority = LogLevel::INFO, $parameters = [])
+    private function log(string $message, string $priority = LogLevel::INFO, $parameters = []) : void
     {
         $this->logger->log($priority, $message, $parameters);
     }
 
-    private function startTimingTheParsePhase(): void
+    private function startTimingTheParsePhase() : void
     {
-        if ($this->stopwatch instanceof Stopwatch) {
-            $this->stopwatch->start('parser.parse');
+        if (!($this->stopwatch instanceof Stopwatch)) {
+            return;
         }
+
+        $this->stopwatch->start('parser.parse');
     }
 }
