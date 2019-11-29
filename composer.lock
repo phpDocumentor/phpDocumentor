@@ -2363,16 +2363,16 @@
             "time": "2013-03-02 10:38:40"
         },
         {
-            "name": "mikey179/vfsStream",
+            "name": "mikey179/vfsstream",
             "version": "v1.2.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/mikey179/vfsStream.git",
+                "url": "https://github.com/mikey179/vfsstream.git",
                 "reference": "063fb10633f10c5ccbcac26227e94f46d9336f90"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mikey179/vfsStream/zipball/063fb10633f10c5ccbcac26227e94f46d9336f90",
+                "url": "https://api.github.com/repos/mikey179/vfsstream/zipball/063fb10633f10c5ccbcac26227e94f46d9336f90",
                 "reference": "063fb10633f10c5ccbcac26227e94f46d9336f90",
                 "shasum": ""
             },
