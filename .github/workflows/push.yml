@@ -21,14 +21,6 @@ jobs:
         restore-keys: |
           all-tools-${{ github.sha }}-
           all-tools-
-    - name: Restore/cache bin folder
-      uses: actions/cache@v1
-      with:
-        path: bin
-        key: all-bin-${{ github.sha }}
-        restore-keys: |
-          all-bin-${{ github.sha }}-
-          all-bin-
     - name: composer
       uses: docker://composer
       env:
@@ -150,14 +142,6 @@ jobs:
           restore-keys: |
             all-build-${{ hashFiles('**/composer.lock') }}
             all-build-
-      - name: Restore/cache tools folder
-        uses: actions/cache@v1
-        with:
-          path: bin
-          key: all-bin-${{ github.sha }}
-          restore-keys: |
-            all-bin-${{ github.sha }}-
-            all-bin-
       - name: Setup PHP
         uses: shivammathur/setup-php@master
         with:
@@ -166,7 +150,7 @@ jobs:
           ini-values-csv: memory_limit=2G, display_errors=On, error_reporting=-1
           pecl: false
       - name: Run Behat
-        run: bin/behat
+        run: tools/behat
 
   codestyle:
     runs-on: ubuntu-latest
