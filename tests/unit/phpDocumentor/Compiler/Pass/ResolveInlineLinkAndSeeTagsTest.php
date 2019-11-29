@@ -213,9 +213,7 @@ class ResolveInlineLinkAndSeeTagsTest extends MockeryTestCase
      */
     private function whenDescriptionContainsSeeOrLinkWithElement($descriptor, $elementToLinkTo) : DescriptorAbstract
     {
-        $rule = m::mock(Rule::class);
-        $rule->shouldReceive('generate')->andReturn('/classes/phpDocumentor.LinkDescriptor.html');
-        $this->router->shouldReceive('match')->andReturn($rule);
+        $this->router->shouldReceive('generate')->andReturn('/classes/phpDocumentor.LinkDescriptor.html');
         $descriptor->shouldReceive('getFile')->andReturn($elementToLinkTo);
         $descriptor->shouldReceive('getNamespace');
 

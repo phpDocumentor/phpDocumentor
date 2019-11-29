@@ -123,12 +123,10 @@ final class Renderer
             return $path_to_root . ltrim($relative_path, '/');
         }
 
-        $rule = $this->router->match($relative_path);
-        if (!$rule) {
+        $generatedPath = $this->router->generate($relative_path);
+        if ($generatedPath === null) {
             return null;
         }
-
-        $generatedPath = $rule->generate($relative_path);
 
         return $generatedPath ? $path_to_root . ltrim($generatedPath, '/') : null;
     }
@@ -188,12 +186,8 @@ final class Renderer
 
     protected function renderLink($path, $presentation)
     {
-        $url = false;
-        $rule = $this->router->match($path);
-        if ($rule) {
-            $generatedUrl = $rule->generate($path);
-            $url = $generatedUrl ? ltrim($generatedUrl, '/') : false;
-        }
+        $generatedUrl = $this->router->generate($path);
+        $url = $generatedUrl ? ltrim($generatedUrl, '/') : false;
 
         if (is_string($url)
             && $url[0] !== '/'

@@ -57,8 +57,9 @@ final class RendererTest extends MockeryTestCase
      */
     public function testRenderWithFqsenAndRepresentationUrl(): void
     {
-        $rule = $this->givenARule('/classes/My.Namespace.Class.html');
-        $this->router->shouldReceive('match')->andReturn($rule);
+        $this->router
+            ->shouldReceive('generate')
+            ->andReturn('/classes/My.Namespace.Class.html');
 
         $result = $this->renderer->render('\My\Namespace\Class', 'url');
 
@@ -71,8 +72,9 @@ final class RendererTest extends MockeryTestCase
      */
     public function testRenderWithCollectionOfFqsensAndRepresentationUrl(): void
     {
-        $rule = $this->givenARule('/classes/My.Namespace.Class.html');
-        $this->router->shouldReceive('match')->andReturn($rule);
+        $this->router
+            ->shouldReceive('generate')
+            ->andReturn('/classes/My.Namespace.Class.html');
 
         $this->renderer->setDestination(str_replace('/', DIRECTORY_SEPARATOR, '/root/of/project'));
         $collection = new Collection(['\My\Namespace\Class']);
@@ -87,9 +89,8 @@ final class RendererTest extends MockeryTestCase
      */
     public function testRenderWithUrlAndNoRuleMatch(): void
     {
-        $rule = $this->givenARule('@');
-        $this->router->shouldReceive('match')->with('file://phpdoc')->andReturn($rule);
-        $this->router->shouldReceive('match')->with('@')->andReturn(null);
+        $this->router->shouldReceive('generate')->with('file://phpdoc')->andReturn('@');
+        $this->router->shouldReceive('generate')->with('@')->andReturn('');
 
         $result = $this->renderer->render('file://phpdoc', 'url');
 
@@ -101,8 +102,9 @@ final class RendererTest extends MockeryTestCase
      */
     public function testConvertToRootPathWithUrlAndAtSignInRelativePath(): void
     {
-        $rule = $this->givenARule('@Class::$property');
-        $this->router->shouldReceive('match')->with('@Class::$property')->andReturn($rule);
+        $this->router->shouldReceive('generate')
+            ->with('@Class::$property')
+            ->andReturn('@Class::$property');
 
         $result = $this->renderer->convertToRootPath('@Class::$property');
 
@@ -115,8 +117,7 @@ final class RendererTest extends MockeryTestCase
      */
     public function testRenderWithCollectionDescriptorWithNameIsNotArrayAndRepresentationUrl(): void
     {
-        $rule = $this->givenARule('ClassDescriptor');
-        $this->router->shouldReceive('match')->andReturn($rule);
+        $this->router->shouldReceive('generate')->andReturn('ClassDescriptor');
 
         $collectionDescriptor = $this->givenACollectionDescriptor('class');
         $collectionDescriptor->setKeyTypes(['ClassDescriptor']);
@@ -131,8 +132,7 @@ final class RendererTest extends MockeryTestCase
      */
     public function testRenderWithCollectionDescriptorWithNameIsArrayAndRepresentationUrl(): void
     {
-        $rule = $this->givenARule('ClassDescriptor');
-        $this->router->shouldReceive('match')->andReturn($rule);
+        $this->router->shouldReceive('generate')->andReturn('ClassDescriptor');
 
         $collectionDescriptor = $this->givenACollectionDescriptor('array');
         $result = $this->renderer->render($collectionDescriptor, 'url');
@@ -145,8 +145,7 @@ final class RendererTest extends MockeryTestCase
      */
     public function testRenderWithFqsenAndRepresentationClassShort(): void
     {
-        $rule = $this->givenARule('/classes/My.Namespace.Class.html');
-        $this->router->shouldReceive('match')->andReturn($rule);
+        $this->router->shouldReceive('generate')->andReturn('/classes/My.Namespace.Class.html');
 
         $result = $this->renderer->render('\My\Namespace\Class', 'class:short');
 
@@ -159,20 +158,11 @@ final class RendererTest extends MockeryTestCase
      */
     public function testRenderWithUrl(string $url): void
     {
-        $rule = $this->givenARule($url);
-        $this->router->shouldReceive('match')->andReturn($rule);
+        $this->router->shouldReceive('generate')->andReturn($url);
 
         $result = $this->renderer->render($url, 'url');
 
         $this->assertSame($url, $result);
-    }
-
-    private function givenARule(string $returnValue): Rule
-    {
-        $rule = m::mock('phpDocumentor\Transformer\Router\Rule');
-        $rule->shouldReceive('generate')->andReturn($returnValue);
-
-        return $rule;
     }
 
     private function givenACollectionDescriptor(string $name): CollectionDescriptor

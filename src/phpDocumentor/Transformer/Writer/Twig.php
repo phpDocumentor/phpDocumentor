@@ -89,6 +89,11 @@ final class Twig extends WriterAbstract
         $this->router = $router;
     }
 
+    protected function router(): ?Router
+    {
+        return $this->router;
+    }
+
     /**
      * This method combines the ProjectDescriptor and the given target template
      * and creates a static html page at the artifact location.
@@ -112,7 +117,7 @@ final class Twig extends WriterAbstract
                 continue;
             }
 
-            $destination = $this->router->destination($node, $transformation);
+            $destination = $this->destination($node, $transformation);
             if ($destination === null) {
                 continue;
             }
