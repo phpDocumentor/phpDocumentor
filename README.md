@@ -1,11 +1,10 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Travis Status](https://img.shields.io/travis/phpDocumentor/phpDocumentor.svg?label=Linux)](https://travis-ci.org/phpDocumentor/phpDocumentor)
-[![Appveyor Status](https://img.shields.io/appveyor/ci/phpDocumentor/phpDocumentor.svg?label=Windows)](https://ci.appveyor.com/project/phpDocumentor/phpDocumentor/branch/master)
+[![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Fphpdocumentor%2Fphpdocumentor%2Fbadge%3Fref%3Dmaster&style=flat&label=build&logo=none)](https://actions-badge.atrox.dev/phpdocumentor/phpdocumentor/goto?ref=master)
 [![Coveralls Coverage](https://img.shields.io/coveralls/github/phpDocumentor/phpDocumentor.svg)](https://coveralls.io/github/phpDocumentor/phpDocumentor?branch=master)
 [![Scrutinizer Code Coverage](https://img.shields.io/scrutinizer/coverage/g/phpDocumentor/phpDocumentor.svg)](https://scrutinizer-ci.com/g/phpDocumentor/phpDocumentor/?branch=master)
 [![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/phpDocumentor/phpDocumentor.svg)](https://scrutinizer-ci.com/g/phpDocumentor/phpDocumentor/?branch=master)
-[![Stable Version](https://img.shields.io/packagist/v/phpDocumentor/phpDocumentor.svg)](https://packagist.org/packages/phpDocumentor/phpDocumentor)
-[![Unstable Version](https://img.shields.io/packagist/vpre/phpDocumentor/phpDocumentor.svg)](https://packagist.org/packages/phpDocumentor/phpDocumentor)
+![Packagist Version](https://img.shields.io/packagist/v/phpdocumentor/phpdocumentor?label=packagist%20stable)
+![Packagist Pre Release Version](https://img.shields.io/packagist/vpre/phpdocumentor/phpdocumentor?label=packagist%20unstable)
 [![Downloads](https://img.shields.io/packagist/dm/phpDocumentor/phpDocumentor.svg)](https://packagist.org/packages/phpDocumentor/phpDocumentor)
 
 
