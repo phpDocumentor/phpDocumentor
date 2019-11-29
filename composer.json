@@ -56,7 +56,7 @@
         "behat/behat":        "~2.4",
         "phpunit/phpunit":    "~3.7",
         "mockery/mockery":    ">=0.8.0",
-        "mikey179/vfsStream": "~1.2",
+        "mikey179/vfsstream": "~1.2",
         "squizlabs/php_codesniffer": "~1.4",
         "symfony/expression-language": "~2.4"
     },
