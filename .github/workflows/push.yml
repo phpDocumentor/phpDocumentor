@@ -119,7 +119,6 @@ jobs:
         ini-values-csv: memory_limit=2G, display_errors=On, error_reporting=-1
         pecl: false
     - name: Run PHPUnit
-      continue-on-error: true
       run: php tools/phpunit.phar
 
   behat:
@@ -151,6 +150,7 @@ jobs:
           pecl: false
       - name: Run Behat
         run: tools/behat
+        continue-on-error: true
 
   codestyle:
     runs-on: ubuntu-latest
