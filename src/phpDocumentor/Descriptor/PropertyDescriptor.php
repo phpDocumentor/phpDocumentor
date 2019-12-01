@@ -166,6 +166,7 @@ class PropertyDescriptor extends DescriptorAbstract implements
 
     /**
      * Returns the property from which this one should inherit, if any.
+     *
      * @return mixed|null
      */
     public function getInheritedElement()

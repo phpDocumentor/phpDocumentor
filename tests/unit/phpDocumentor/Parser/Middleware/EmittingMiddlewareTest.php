@@ -20,6 +20,7 @@ use phpDocumentor\Reflection\File\LocalFile;
 use phpDocumentor\Reflection\Php\Factory\File\CreateCommand;
 use phpDocumentor\Reflection\Php\ProjectFactoryStrategies;
 use PHPUnit\Framework\TestCase;
+use function md5;
 
 /**
  * @coversDefaultClass \phpDocumentor\Parser\Middleware\EmittingMiddleware

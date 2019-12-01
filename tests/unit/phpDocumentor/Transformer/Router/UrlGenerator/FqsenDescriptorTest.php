@@ -10,6 +10,7 @@ declare(strict_types=1);
  *
  * @link http://phpdoc.org
  */
+
 namespace phpDocumentor\Transformer\Router\UrlGenerator;
 
 use Mockery as m;
@@ -33,15 +34,15 @@ class FqsenDescriptorTest extends MockeryTestCase
      * @covers ::__invoke
      * @dataProvider provideFqsens
      */
-    public function testGenerateUrlForFqsenDescriptor($fromFqsen, $toPath) : void
+    public function testGenerateUrlForFqsenDescriptor(string $fromFqsen, string $toPath) : void
     {
         // Arrange
         $urlGenerator = m::mock(UrlGeneratorInterface::class);
         $urlGenerator->shouldReceive('generate')->andReturn($toPath);
         $converter = new QualifiedNameToUrlConverter();
         $realFqsen = new RealFqsen($fromFqsen);
-        $fqsen     = new Fqsen($realFqsen);
-        $fixture   = new FqsenDescriptor($urlGenerator, $converter);
+        $fqsen = new Fqsen($realFqsen);
+        $fixture = new FqsenDescriptor($urlGenerator, $converter);
 
         // Act
         $result = $fixture($fqsen);

@@ -23,7 +23,6 @@ use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Descriptor\Tag\SeeDescriptor;
 use phpDocumentor\Reflection\Fqsen;
-use stdClass;
 use function array_keys;
 use function get_class;
 

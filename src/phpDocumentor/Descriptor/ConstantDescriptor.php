@@ -8,7 +8,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor;
@@ -135,6 +135,7 @@ class ConstantDescriptor extends DescriptorAbstract implements Interfaces\Consta
 
     /**
      * Returns the Constant from which this one should inherit, if any.
+     *
      * @return mixed|null
      */
     public function getInheritedElement()

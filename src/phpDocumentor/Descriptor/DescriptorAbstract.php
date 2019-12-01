@@ -357,7 +357,7 @@ abstract class DescriptorAbstract implements Descriptor, Filterable
      *
      * @param mixed[] $arguments
      *
-     * @return Collection|null|mixed
+     * @return Collection|mixed|null
      */
     public function __call(string $name, array $arguments)
     {

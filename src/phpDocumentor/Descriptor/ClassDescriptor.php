@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Descriptor\Tag\BaseTypes\TypedVariableAbstract;
+use phpDocumentor\Reflection\Fqsen;
 use function ltrim;
 
 /**
@@ -348,6 +349,9 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
         return $this->usedTraits;
     }
 
+    /**
+     * @var ClassDescriptor|Fqsen|null
+     */
     public function getInheritedElement()
     {
         return $this->getParent();

@@ -10,6 +10,7 @@ declare(strict_types=1);
  *
  * @link http://phpdoc.org
  */
+
 namespace phpDocumentor\Compiler\Pass;
 
 use Mockery as m;
@@ -25,7 +26,7 @@ class DebugTest extends MockeryTestCase
      */
     public function testLogDebugAnalysis() : void
     {
-        $testString            = 'test';
+        $testString = 'test';
         $projectDescriptorMock = m::mock('phpDocumentor\Descriptor\ProjectDescriptor');
 
         $loggerMock = m::mock('Psr\Log\LoggerInterface')
@@ -48,7 +49,7 @@ class DebugTest extends MockeryTestCase
      */
     public function testGetDescription() : void
     {
-        $debug    = new Debug(m::mock('Psr\Log\LoggerInterface'), m::mock('phpDocumentor\Descriptor\ProjectAnalyzer'));
+        $debug = new Debug(m::mock('Psr\Log\LoggerInterface'), m::mock('phpDocumentor\Descriptor\ProjectAnalyzer'));
         $expected = 'Analyze results and write report to log';
         $this->assertSame($expected, $debug->getDescription());
     }

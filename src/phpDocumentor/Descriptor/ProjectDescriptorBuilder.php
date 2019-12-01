@@ -21,8 +21,6 @@ use phpDocumentor\Descriptor\Filter\Filterable;
 use phpDocumentor\Reflection\Php\Project;
 use function get_class;
 use function is_iterable;
-use function strlen;
-use function substr;
 
 /**
  * Builds a Project Descriptor and underlying tree.
@@ -179,7 +177,7 @@ class ProjectDescriptorBuilder
         }
     }
 
-    public function getDefaultPackage(): ?string
+    public function getDefaultPackage() : ?string
     {
         return $this->defaultPackage;
     }

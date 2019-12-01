@@ -10,6 +10,7 @@ declare(strict_types=1);
  *
  * @link http://phpdoc.org
  */
+
 namespace phpDocumentor\Transformer\Router;
 
 use Mockery\Adapter\Phpunit\MockeryTestCase;
@@ -22,7 +23,7 @@ class RuleTest extends MockeryTestCase
      */
     public function testIfRuleCanBeMatched() : void
     {
-        $fixture  = new Rule(
+        $fixture = new Rule(
             static function () {
                 return true;
             },

@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
+use phpDocumentor\Reflection\Fqsen;
+
 /**
  * Descriptor representing an Interface.
  */
@@ -154,6 +156,9 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
         }
     }
 
+    /**
+     * @var InterfaceDescriptor|Fqsen|null
+     */
     public function getInheritedElement()
     {
         return $this->getParent()->count() > 0

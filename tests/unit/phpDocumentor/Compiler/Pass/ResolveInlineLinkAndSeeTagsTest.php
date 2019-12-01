@@ -155,10 +155,8 @@ class ResolveInlineLinkAndSeeTagsTest extends MockeryTestCase
 
     /**
      * Returns the descriptor of the element that the link points to
-     *
-     * @return FileDescriptor
      */
-    private function givenAnElementToLinkTo(): FileDescriptor
+    private function givenAnElementToLinkTo() : FileDescriptor
     {
         $namespaceAliases = ['LinkDescriptor' => '\phpDocumentor\LinkDescriptor'];
         $namespaceCollection = m::mock(Collection::class);

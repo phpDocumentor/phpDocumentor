@@ -8,14 +8,14 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Reflection\Type;
-use const E_USER_DEPRECATED;
 use function trigger_error;
+use const E_USER_DEPRECATED;
 
 /**
  * Descriptor representing a single Argument of a method or function.
@@ -76,6 +76,9 @@ class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\Argume
         return [$this->getType()];
     }
 
+    /**
+     * @return mixed|DescriptorAbstract|\phpDocumentor\Reflection\Fqsen|string|null
+     */
     public function getInheritedElement()
     {
         if ($this->method instanceof MethodDescriptor &&

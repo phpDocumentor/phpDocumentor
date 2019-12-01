@@ -19,8 +19,8 @@ use League\Flysystem\Adapter\AbstractAdapter;
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Dsn;
+use function sys_get_temp_dir;
 use const DIRECTORY_SEPARATOR;
-use function realpath;
 
 /**
  * @coversDefaultClass \phpDocumentor\Parser\FlySystemFactory
@@ -42,9 +42,9 @@ final class FlySystemFactoryTest extends MockeryTestCase
     protected function setUp() : void
     {
         $this->mountManagerMock = m::mock('League\Flysystem\MountManager');
-        $this->filesystemMock   = m::mock('League\Flysystem\Filesystem');
-        $this->dsn              = new Dsn('file://' . sys_get_temp_dir());
-        $this->fixture          = new FlySystemFactory($this->mountManagerMock);
+        $this->filesystemMock = m::mock('League\Flysystem\Filesystem');
+        $this->dsn = new Dsn('file://' . sys_get_temp_dir());
+        $this->fixture = new FlySystemFactory($this->mountManagerMock);
     }
 
     /**
@@ -62,7 +62,7 @@ final class FlySystemFactoryTest extends MockeryTestCase
         $this->assertInstanceOf('League\Flysystem\Filesystem', $result);
 
         /** @var AbstractAdapter $adapter */
-        $adapter    = $result->getAdapter();
+        $adapter = $result->getAdapter();
         $pathPrefix = $adapter->getPathPrefix();
         $this->assertEquals(sys_get_temp_dir() . DIRECTORY_SEPARATOR, $pathPrefix);
     }

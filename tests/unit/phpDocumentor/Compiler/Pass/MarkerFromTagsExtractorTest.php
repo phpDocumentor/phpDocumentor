@@ -10,6 +10,7 @@ declare(strict_types=1);
  *
  * @link http://phpdoc.org
  */
+
 namespace phpDocumentor\Compiler\Pass;
 
 use Mockery\Adapter\Phpunit\MockeryTestCase;
@@ -97,17 +98,19 @@ class MarkerFromTagsExtractorTest extends MockeryTestCase
     protected function givenProjectHasFileDescriptor() : FileDescriptor
     {
         $fileDescriptor1 = new FileDescriptor('123');
-        $elementIndex    = $this->project->getIndexes()->get('elements', new Collection());
+        $elementIndex = $this->project->getIndexes()->get('elements', new Collection());
         $elementIndex->add($fileDescriptor1);
         return $fileDescriptor1;
     }
 
-    protected function givenDescriptorHasTodoTagWithDescription(DescriptorAbstract $descriptor, string $description) : void
-    {
+    protected function givenDescriptorHasTodoTagWithDescription(
+        DescriptorAbstract $descriptor,
+        string $description
+    ) : void {
         $todoTag = new TagDescriptor('todo');
         $todoTag->setDescription($description);
 
-        $todoTags   = $descriptor->getTags()->get('todo', []);
+        $todoTags = $descriptor->getTags()->get('todo', []);
         $todoTags[] = $todoTag;
         $descriptor->getTags()->set('todo', $todoTags);
     }
@@ -115,8 +118,8 @@ class MarkerFromTagsExtractorTest extends MockeryTestCase
     /**
      * Adds a class descriptor to the project's elements and add a parent file.
      */
-    protected function givenProjectHasClassDescriptorAssociatedWithFile(?FileDescriptor $fileDescriptor) : ClassDescriptor
-    {
+    protected function givenProjectHasClassDescriptorAssociatedWithFile(?FileDescriptor $fileDescriptor
+    ) : ClassDescriptor {
         $classDescriptor = new ClassDescriptor();
         if ($fileDescriptor) {
             $classDescriptor->setFile($fileDescriptor);

@@ -133,6 +133,9 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
         return $properties;
     }
 
+    /**
+     * @param PackageDescriptor|string $package
+     */
     public function setPackage($package) : void
     {
         parent::setPackage($package);
