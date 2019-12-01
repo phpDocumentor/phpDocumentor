@@ -39,9 +39,9 @@ final class FlySystemFactoryTest extends \Mockery\Adapter\Phpunit\MockeryTestCas
     protected function setUp(): void
     {
         $this->mountManagerMock = m::mock('League\Flysystem\MountManager');
-        $this->filesystemMock = m::mock('League\Flysystem\Filesystem');
-        $this->dsn = new Dsn('file:///tmp');
-        $this->fixture = new FlySystemFactory($this->mountManagerMock);
+        $this->filesystemMock   = m::mock('League\Flysystem\Filesystem');
+        $this->dsn              = new Dsn('file://' . sys_get_temp_dir());
+        $this->fixture          = new FlySystemFactory($this->mountManagerMock);
     }
 
     /**
@@ -61,7 +61,7 @@ final class FlySystemFactoryTest extends \Mockery\Adapter\Phpunit\MockeryTestCas
         /** @var AbstractAdapter $adapter */
         $adapter = $result->getAdapter();
         $pathPrefix = $adapter->getPathPrefix();
-        $this->assertEquals(realpath('/tmp') . DIRECTORY_SEPARATOR, $pathPrefix);
+        $this->assertEquals(sys_get_temp_dir() . DIRECTORY_SEPARATOR, $pathPrefix);
     }
 
     /**
