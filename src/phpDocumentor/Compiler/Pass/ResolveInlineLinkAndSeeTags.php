@@ -89,7 +89,9 @@ class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
         $descriptor->setDescription(
             preg_replace_callback(
                 self::REGEX_INLINE_LINK_OR_SEE_TAG,
-                [$this, 'resolveTag'],
+                function (array $match) {
+                    return $this->resolveTag($match);
+                },
                 $descriptor->getDescription()
             )
         );

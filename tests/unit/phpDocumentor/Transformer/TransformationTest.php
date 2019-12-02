@@ -17,7 +17,6 @@ use Mockery as m;
 use phpDocumentor\Transformer\Template\Parameter;
 
 /**
- * Test class for phpDocumentor\Transformer\Transformation
  * @coversDefaultClass \phpDocumentor\Transformer\Transformation
  */
 final class TransformationTest extends m\Adapter\Phpunit\MockeryTestCase

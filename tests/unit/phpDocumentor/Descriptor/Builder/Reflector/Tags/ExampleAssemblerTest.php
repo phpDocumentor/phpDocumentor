@@ -10,6 +10,7 @@ declare(strict_types=1);
  *
  * @link http://phpdoc.org
  */
+
 namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 
 use Mockery as m;
@@ -47,7 +48,7 @@ class ExampleAssemblerTest extends MockeryTestCase
     protected function setUp() : void
     {
         $this->finderMock = m::mock(ExampleFinder::class);
-        $this->fixture    = new ExampleAssembler($this->finderMock);
+        $this->fixture = new ExampleAssembler($this->finderMock);
     }
 
     /**

@@ -10,23 +10,23 @@ declare(strict_types=1);
  *
  * @link http://phpdoc.org
  */
+
 namespace phpDocumentor\Descriptor;
 
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\Tag\AuthorDescriptor;
 use phpDocumentor\Descriptor\Tag\VersionDescriptor;
-use stdClass;
 
 /**
  * Tests the functionality for the InterfaceDescriptor class.
  *
  * @coversDefaultClass \phpDocumentor\Descriptor\InterfaceDescriptor
  */
-class InterfaceDescriptorTest extends MockeryTestCase
+final class InterfaceDescriptorTest extends MockeryTestCase
 {
     /** @var InterfaceDescriptor $fixture */
-    protected $fixture;
+    private $fixture;
 
     /**
      * Creates a new (empty) fixture object.
@@ -136,7 +136,7 @@ class InterfaceDescriptorTest extends MockeryTestCase
     {
         // Arrange
         $authorTagDescriptor = new AuthorDescriptor('author');
-        $authorCollection    = new Collection([$authorTagDescriptor]);
+        $authorCollection = new Collection([$authorTagDescriptor]);
         $this->fixture->getTags()->clear();
         $parentProperty = $this->whenFixtureHasParentInterface();
         $parentProperty->getTags()->set('author', $authorCollection);
@@ -155,7 +155,7 @@ class InterfaceDescriptorTest extends MockeryTestCase
     {
         // Arrange
         $copyrightTagDescriptor = new TagDescriptor('copyright');
-        $copyrightCollection    = new Collection([$copyrightTagDescriptor]);
+        $copyrightCollection = new Collection([$copyrightTagDescriptor]);
         $this->fixture->getTags()->clear();
         $parentProperty = $this->whenFixtureHasParentInterface();
         $parentProperty->getTags()->set('copyright', $copyrightCollection);
@@ -174,7 +174,7 @@ class InterfaceDescriptorTest extends MockeryTestCase
     {
         // Arrange
         $versionTagDescriptor = new VersionDescriptor('version');
-        $versionCollection    = new Collection([$versionTagDescriptor]);
+        $versionCollection = new Collection([$versionTagDescriptor]);
         $this->fixture->getTags()->clear();
         $parentProperty = $this->whenFixtureHasParentInterface();
         $parentProperty->getTags()->set('version', $versionCollection);
@@ -191,7 +191,7 @@ class InterfaceDescriptorTest extends MockeryTestCase
      */
     public function testGetInheritedConstantsWithClassDescriptorParent() : void
     {
-        $constantInParent      = $this->givenConstantWithName('constant');
+        $constantInParent = $this->givenConstantWithName('constant');
         $constantInGrandParent = $this->givenConstantWithName('constantInGrandParent');
         $constantInParentClass = $this->givenConstantWithName('constantInClass');
 
@@ -256,7 +256,7 @@ class InterfaceDescriptorTest extends MockeryTestCase
         $this->assertSame([$parentDescriptor, $grandParentDescriptor], $result->getAll());
     }
 
-    protected function whenFixtureHasParentInterface() : InterfaceDescriptor
+    private function whenFixtureHasParentInterface() : InterfaceDescriptor
     {
         $interface = new InterfaceDescriptor();
         $this->fixture->getParent()->set('IA', $interface);

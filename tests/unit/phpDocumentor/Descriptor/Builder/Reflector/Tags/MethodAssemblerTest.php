@@ -10,6 +10,7 @@ declare(strict_types=1);
  *
  * @link http://phpdoc.org
  */
+
 namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 
 use Mockery as m;
@@ -45,11 +46,11 @@ class MethodAssemblerTest extends MockeryTestCase
 
     /**
      * @param string[] $arguments
-     * @param string   $description
+     * @param string $description
      *
      * @dataProvider provideNotations
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\Tags\MethodAssembler::create
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\Tags\MethodAssembler::createArgumentDescriptorForMagicMethod
+     * @covers       \phpDocumentor\Descriptor\Builder\Reflector\Tags\MethodAssembler::create
+     * @covers       \phpDocumentor\Descriptor\Builder\Reflector\Tags\MethodAssembler::createArgumentDescriptorForMagicMethod
      */
     public function testCreateMethodDescriptorFromVariousNotations(
         Type $returnType,

@@ -11,9 +11,9 @@ use const PHP_EOL;
 use function str_replace;
 
 /**
- * Tests for the \phpDocumentor\Descriptor\ProjectAnalyzer class.
+ * @coversDefaultClass \phpDocumentor\Descriptor\ProjectAnalyzer
  */
-class ProjectAnalyzerTest extends MockeryTestCase
+final class ProjectAnalyzerTest extends MockeryTestCase
 {
     /** @var ProjectAnalyzer */
     private $fixture;
@@ -24,12 +24,12 @@ class ProjectAnalyzerTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\ProjectAnalyzer::__toString
+     * @covers ::__toString
      */
     public function testIfStringOutputContainsAllCounters() : void
     {
         // Arrange
-        $classDescriptor1  = $this->givenAClassWithParent('phpDocumentor\Descriptor\ClassDescriptor');
+        $classDescriptor1 = $this->givenAClassWithParent('phpDocumentor\Descriptor\ClassDescriptor');
         $projectDescriptor = $this->givenAProjectMock();
         $this->whenProjectDescriptorHasTheFollowingFiles($projectDescriptor, [1, 2, 3, 4]);
         $this->whenProjectDescriptorHasTheFollowingElements(
@@ -66,14 +66,14 @@ TEXT;
      *
      * @param string|DescriptorAbstract $parent
      */
-    protected function givenAClassWithParent($parent) : ClassDescriptor
+    private function givenAClassWithParent($parent) : ClassDescriptor
     {
         $classDescriptor1 = new ClassDescriptor();
         $classDescriptor1->setParent($parent);
         return $classDescriptor1;
     }
 
-    protected function givenAnInterfaceWithParent(string $interfaceParent) : InterfaceDescriptor
+    private function givenAnInterfaceWithParent(string $interfaceParent) : InterfaceDescriptor
     {
         $classDescriptor3 = new InterfaceDescriptor();
         $classDescriptor3->setParent(new Collection([$interfaceParent]));
@@ -84,7 +84,7 @@ TEXT;
     /**
      * Returns a mocked ProjectDescriptor object.
      */
-    protected function givenAProjectMock() : m\MockInterface
+    private function givenAProjectMock() : m\MockInterface
     {
         return m::mock('phpDocumentor\Descriptor\ProjectDescriptor')->shouldIgnoreMissing();
     }
@@ -92,7 +92,7 @@ TEXT;
     /**
      * Ensures that the ProjectDescriptor contains and returns the provided files.
      */
-    protected function whenProjectDescriptorHasTheFollowingFiles(
+    private function whenProjectDescriptorHasTheFollowingFiles(
         m\MockInterface $projectDescriptor,
         array $files
     ) : void {
@@ -102,7 +102,7 @@ TEXT;
     /**
      * Ensures that the ProjectDescriptor has an index 'elements' with the provided elements.
      */
-    protected function whenProjectDescriptorHasTheFollowingElements(
+    private function whenProjectDescriptorHasTheFollowingElements(
         m\MockInterface $projectDescriptor,
         array $elements
     ) : void {
@@ -114,7 +114,7 @@ TEXT;
     /**
      * Ensures that the ProjectDescriptor has a root namespace with the provided array as children of that namespace.
      */
-    protected function whenProjectHasTheFollowingChildrenOfRootNamespace(
+    private function whenProjectHasTheFollowingChildrenOfRootNamespace(
         m\MockInterface $projectDescriptor,
         array $rootNamespaceChildren
     ) : void {

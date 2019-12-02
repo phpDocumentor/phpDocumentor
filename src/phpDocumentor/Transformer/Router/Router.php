@@ -24,37 +24,38 @@ use phpDocumentor\Descriptor\InterfaceDescriptor;
 use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Descriptor\PackageDescriptor;
-use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Descriptor\PropertyDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tags\Reference\Fqsen;
 use phpDocumentor\Reflection\DocBlock\Tags\Reference\Url;
 use phpDocumentor\Transformer\Router\UrlGenerator\QualifiedNameToUrlConverter;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use function is_string;
 
 /**
  * The default for phpDocumentor.
  */
 class Router extends ArrayObject
 {
-    private $projectDescriptorBuilder;
+    /** @var UrlGenerator\FqsenDescriptor */
     private $fqsenUrlGenerator;
+
+    /** @var QualifiedNameToUrlConverter */
     private $converter;
+
+    /** @var UrlGeneratorInterface */
     private $urlGenerator;
 
     public function __construct(
-        ProjectDescriptorBuilder $projectDescriptorBuilder,
         UrlGenerator\FqsenDescriptor $fqsenUrlGenerator,
         QualifiedNameToUrlConverter $converter,
         UrlGeneratorInterface $urlGenerator
     ) {
-        $this->projectDescriptorBuilder = $projectDescriptorBuilder;
-        $this->fqsenUrlGenerator        = $fqsenUrlGenerator;
-        $this->converter                = $converter;
-        $this->urlGenerator             = $urlGenerator;
+        $this->fqsenUrlGenerator = $fqsenUrlGenerator;
+        $this->converter = $converter;
+        $this->urlGenerator = $urlGenerator;
 
         parent::__construct();
+
         $this->configure();
     }
 
@@ -68,7 +69,7 @@ class Router extends ArrayObject
             function ($node) {
                 return $node instanceof FileDescriptor;
             },
-            function (FileDescriptor $node): string {
+            function (FileDescriptor $node) : string {
                 return $this->generateUrlForDescriptor('file', $node->getPath());
             }
         );
@@ -76,24 +77,33 @@ class Router extends ArrayObject
             function ($node) {
                 return $node instanceof PackageDescriptor;
             },
-            function (PackageDescriptor $node): string {
-                return $this->generateUrlForDescriptor('package', (string) $node->getFullyQualifiedStructuralElementName());
+            function (PackageDescriptor $node) : string {
+                return $this->generateUrlForDescriptor(
+                    'package',
+                    (string) $node->getFullyQualifiedStructuralElementName()
+                );
             }
         );
         $this[] = new Rule(
             function ($node) {
                 return $node instanceof NamespaceDescriptor;
             },
-            function (NamespaceDescriptor $node): string {
-                return $this->generateUrlForDescriptor('namespace', (string) $node->getFullyQualifiedStructuralElementName());
+            function (NamespaceDescriptor $node) : string {
+                return $this->generateUrlForDescriptor(
+                    'namespace',
+                    (string) $node->getFullyQualifiedStructuralElementName()
+                );
             }
         );
         $this[] = new Rule(
-            function ($node): bool {
+            function ($node) : bool {
                 return $node instanceof ClassDescriptor || $node instanceof InterfaceDescriptor || $node instanceof TraitDescriptor;
             },
-            function (DescriptorAbstract $node): string {
-                return $this->generateUrlForDescriptor('class', (string) $node->getFullyQualifiedStructuralElementName());
+            function (DescriptorAbstract $node) : string {
+                return $this->generateUrlForDescriptor(
+                    'class',
+                    (string) $node->getFullyQualifiedStructuralElementName()
+                );
             }
         );
         $this[] = new Rule(
@@ -101,7 +111,7 @@ class Router extends ArrayObject
                 return $node instanceof ConstantDescriptor
                     && ($node->getParent() instanceof FileDescriptor || !$node->getParent());
             },
-            function (ConstantDescriptor $node): string {
+            function (ConstantDescriptor $node) : string {
                 return $this->generateUrlForDescriptor(
                     'namespace',
                     (string) $node->getNamespace(),
@@ -114,7 +124,7 @@ class Router extends ArrayObject
                 return $node instanceof ConstantDescriptor
                     && !($node->getParent() instanceof FileDescriptor || !$node->getParent());
             },
-            function (ConstantDescriptor $node): string {
+            function (ConstantDescriptor $node) : string {
                 return $this->generateUrlForDescriptor(
                     'class',
                     (string) $node->getParent()->getFullyQualifiedStructuralElementName(),
@@ -126,7 +136,7 @@ class Router extends ArrayObject
             function ($node) {
                 return $node instanceof MethodDescriptor;
             },
-            function (MethodDescriptor $node): string {
+            function (MethodDescriptor $node) : string {
                 return $this->generateUrlForDescriptor(
                     'class',
                     (string) $node->getParent()->getFullyQualifiedStructuralElementName(),
@@ -138,7 +148,7 @@ class Router extends ArrayObject
             function ($node) {
                 return $node instanceof FunctionDescriptor;
             },
-            function (FunctionDescriptor $node): string {
+            function (FunctionDescriptor $node) : string {
                 return $this->generateUrlForDescriptor(
                     'namespace',
                     (string) $node->getNamespace(),
@@ -150,7 +160,7 @@ class Router extends ArrayObject
             function ($node) {
                 return $node instanceof PropertyDescriptor;
             },
-            function (PropertyDescriptor $node): string {
+            function (PropertyDescriptor $node) : string {
                 return $this->generateUrlForDescriptor(
                     'class',
                     (string) $node->getParent()->getFullyQualifiedStructuralElementName(),

@@ -10,6 +10,7 @@ declare(strict_types=1);
  *
  * @link http://phpdoc.org
  */
+
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use Mockery as m;
@@ -36,7 +37,7 @@ class ArgumentAssemblerTest extends MockeryTestCase
     protected function setUp() : void
     {
         $this->builderMock = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
-        $this->fixture     = new ArgumentAssembler();
+        $this->fixture = new ArgumentAssembler();
         $this->fixture->setBuilder($this->builderMock);
     }
 

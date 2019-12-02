@@ -10,15 +10,19 @@ declare(strict_types=1);
  *
  * @link http://phpdoc.org
  */
+
 namespace phpDocumentor\Descriptor\Type;
 
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 
-class StringDescriptorTest extends MockeryTestCase
+/**
+ * @coversDefaultClass \phpDocumentor\Descriptor\Type\StringDescriptor
+ */
+final class StringDescriptorTest extends MockeryTestCase
 {
     /**
-     * @covers \phpDocumentor\Descriptor\Type\StringDescriptor::getName
-     * @covers \phpDocumentor\Descriptor\Type\StringDescriptor::__toString
+     * @covers ::getName
+     * @covers ::__toString
      */
     public function testIfNameCanBeReturned() : void
     {

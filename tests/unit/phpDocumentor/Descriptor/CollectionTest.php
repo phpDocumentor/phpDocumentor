@@ -10,17 +10,20 @@ declare(strict_types=1);
  *
  * @link http://phpdoc.org
  */
+
 namespace phpDocumentor\Descriptor;
 
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 
 /**
  * Tests the functionality for the Collection class.
+ *
+ * @coversDefaultClass \phpDocumentor\Descriptor\Collection
  */
-class CollectionTest extends MockeryTestCase
+final class CollectionTest extends MockeryTestCase
 {
     /** @var Collection $fixture */
-    protected $fixture;
+    private $fixture;
 
     /**
      * Creates a new (empty) fixture object.
@@ -31,7 +34,7 @@ class CollectionTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Collection::__construct
+     * @covers ::__construct
      */
     public function testInitialize() : void
     {
@@ -41,22 +44,22 @@ class CollectionTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Collection::__construct
+     * @covers ::__construct
      */
     public function testInitializeWithExistingArray() : void
     {
         $expected = [1, 2];
-        $fixture  = new Collection($expected);
+        $fixture = new Collection($expected);
 
         $this->assertEquals($expected, $fixture->getAll());
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Collection::add
+     * @covers ::add
      */
     public function testAddNewItem() : void
     {
-        $expected          = ['abc'];
+        $expected = ['abc'];
         $expectedSecondRun = ['abc', 'def'];
 
         $this->fixture->add('abc');
@@ -69,12 +72,12 @@ class CollectionTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Collection::set
-     * @covers \phpDocumentor\Descriptor\Collection::offsetSet
+     * @covers ::set
+     * @covers ::offsetSet
      */
     public function testSetItemsWithKey() : void
     {
-        $expected          = ['z' => 'abc'];
+        $expected = ['z' => 'abc'];
         $expectedSecondRun = ['z' => 'abc', 'y' => 'def'];
 
         $this->assertEquals([], $this->fixture->getAll());
@@ -89,7 +92,7 @@ class CollectionTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Collection::set
+     * @covers ::set
      */
     public function testSetItemsWithEmptyKeyShouldThrowException() : void
     {
@@ -98,7 +101,7 @@ class CollectionTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Collection::offsetSet
+     * @covers ::offsetSet
      */
     public function testSetItemsUsingOffsetSetWithEmptyKeyShouldThrowException() : void
     {
@@ -107,9 +110,9 @@ class CollectionTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Collection::get
-     * @covers \phpDocumentor\Descriptor\Collection::__get
-     * @covers \phpDocumentor\Descriptor\Collection::offsetGet
+     * @covers ::get
+     * @covers ::__get
+     * @covers ::offsetGet
      */
     public function testRetrievalOfItems() : void
     {
@@ -124,7 +127,7 @@ class CollectionTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Collection::getAll
+     * @covers ::getAll
      */
     public function testRetrieveAllItems() : void
     {
@@ -133,7 +136,7 @@ class CollectionTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Collection::getIterator
+     * @covers ::getIterator
      */
     public function testGetIterator() : void
     {
@@ -143,8 +146,8 @@ class CollectionTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Collection::count
-     * @covers \phpDocumentor\Descriptor\Collection::offsetUnset
+     * @covers ::count
+     * @covers ::offsetUnset
      */
     public function testCountReturnsTheNumberOfElements() : void
     {
@@ -168,7 +171,7 @@ class CollectionTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Collection::clear
+     * @covers ::clear
      */
     public function testClearingTheCollection() : void
     {
@@ -183,7 +186,7 @@ class CollectionTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Collection::offsetExists
+     * @covers ::offsetExists
      */
     public function testIfExistingElementsAreDetected() : void
     {
@@ -197,15 +200,15 @@ class CollectionTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Collection::merge
+     * @covers ::merge
      */
     public function testIfAfterMergeCollectionContainsAllItems() : void
     {
-        $expected         = [0 => 'a', 1 => 'b', 2 => 'c'];
+        $expected = [0 => 'a', 1 => 'b', 2 => 'c'];
         $this->fixture[1] = 'a';
         $this->fixture[2] = 'b';
 
-        $collection2    = new Collection();
+        $collection2 = new Collection();
         $collection2[4] = 'c';
 
         $result = $this->fixture->merge($collection2);

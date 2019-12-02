@@ -24,6 +24,10 @@
         <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint" />
     </rule>
 
+    <rule ref="SlevomatCodingStandard.Functions.StaticClosure.ClosureNotStatic">
+        <exclude-pattern>*/tests/unit/phpDocumentor/Console/ApplicationTest.php</exclude-pattern>
+    </rule>
+
     <rule ref="Squiz.Classes.ValidClassName.NotCamelCaps">
         <exclude-pattern>*/src/*_.php</exclude-pattern>
     </rule>

@@ -37,31 +37,28 @@ use function round;
 class Parser
 {
     /** @var string the name of the default package */
-    protected $defaultPackageName = 'Default';
-
-    /** @var bool whether we force a full re-parse */
-    protected $force = false;
+    private $defaultPackageName = 'Default';
 
     /** @var bool whether to execute a PHPLint on every file */
-    protected $validate = false;
+    private $validate = false;
 
     /** @var string[] which markers (i.e. TODO or FIXME) to collect */
-    protected $markers = ['TODO', 'FIXME'];
+    private $markers = ['TODO', 'FIXME'];
 
     /** @var string[] which tags to ignore */
-    protected $ignoredTags = [];
+    private $ignoredTags = [];
 
     /** @var string target location's root path */
-    protected $path = '';
+    private $path = '';
 
     /** @var LoggerInterface $logger */
-    protected $logger;
+    private $logger;
 
     /** @var string The encoding in which the files are encoded */
-    protected $encoding = 'utf-8';
+    private $encoding = 'utf-8';
 
     /** @var Stopwatch $stopwatch The profiling component that measures time and memory usage over time */
-    protected $stopwatch = null;
+    private $stopwatch = null;
 
     /** @var ProjectFactory */
     private $projectFactory;
@@ -124,7 +121,7 @@ class Parser
      *
      * @return string[]
      */
-    public function getMarkers()
+    public function getMarkers() : array
     {
         return $this->markers;
     }
@@ -144,7 +141,7 @@ class Parser
      *
      * @return string[]
      */
-    public function getIgnoredTags()
+    public function getIgnoredTags() : array
     {
         return $this->ignoredTags;
     }
@@ -212,7 +209,7 @@ class Parser
     /**
      * Iterates through the given files feeds them to the builder.
      *
-     * @throws FilesNotFoundException if no files were found.
+     * @throws FilesNotFoundException If no files were found.
      */
     public function parse(array $files) : Project
     {

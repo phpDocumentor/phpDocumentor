@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Type;
 
-use Mockery\Adapter\Phpunit\MockeryTestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @coversDefaultClass \phpDocumentor\Descriptor\Type\CollectionDescriptor
  */
-final class CollectionDescriptorTest extends MockeryTestCase
+final class CollectionDescriptorTest extends TestCase
 {
     /** @var CollectionDescriptor */
     private $fixture;

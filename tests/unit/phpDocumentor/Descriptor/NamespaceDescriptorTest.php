@@ -10,17 +10,20 @@ declare(strict_types=1);
  *
  * @link http://phpdoc.org
  */
+
 namespace phpDocumentor\Descriptor;
 
-use Mockery\Adapter\Phpunit\MockeryTestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests the functionality for the NamespaceDescriptor class.
+ *
+ * @coversDefaultClass \phpDocumentor\Descriptor\NamespaceDescriptor
  */
-class NamespaceDescriptorTest extends MockeryTestCase
+final class NamespaceDescriptorTest extends TestCase
 {
     /** @var NamespaceDescriptor $fixture */
-    protected $fixture;
+    private $fixture;
 
     /**
      * Creates a new (empty) fixture object.
@@ -31,9 +34,9 @@ class NamespaceDescriptorTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\NamespaceDescriptor::__construct
-     * @covers \phpDocumentor\Descriptor\NamespaceDescriptor::getParent
-     * @covers \phpDocumentor\Descriptor\NamespaceDescriptor::setParent
+     * @covers ::__construct
+     * @covers ::getParent
+     * @covers ::setParent
      */
     public function testSetAndGetParent() : void
     {
@@ -47,15 +50,15 @@ class NamespaceDescriptorTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\NamespaceDescriptor::__construct
-     * @covers \phpDocumentor\Descriptor\NamespaceDescriptor::getClasses
-     * @covers \phpDocumentor\Descriptor\NamespaceDescriptor::setClasses
+     * @covers ::__construct
+     * @covers ::getClasses
+     * @covers ::setClasses
      */
     public function testSetAndGetClasses() : void
     {
         $collection = new Collection();
 
-        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getClasses());
+        $this->assertInstanceOf(Collection::class, $this->fixture->getClasses());
 
         $this->fixture->setClasses($collection);
 
@@ -63,15 +66,15 @@ class NamespaceDescriptorTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\NamespaceDescriptor::__construct
-     * @covers \phpDocumentor\Descriptor\NamespaceDescriptor::getConstants
-     * @covers \phpDocumentor\Descriptor\NamespaceDescriptor::setConstants
+     * @covers ::__construct
+     * @covers ::getConstants
+     * @covers ::setConstants
      */
     public function testSetAndGetConstants() : void
     {
         $collection = new Collection();
 
-        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getConstants());
+        $this->assertInstanceOf(Collection::class, $this->fixture->getConstants());
 
         $this->fixture->setConstants($collection);
 
@@ -79,15 +82,15 @@ class NamespaceDescriptorTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\NamespaceDescriptor::__construct
-     * @covers \phpDocumentor\Descriptor\NamespaceDescriptor::getFunctions
-     * @covers \phpDocumentor\Descriptor\NamespaceDescriptor::setFunctions
+     * @covers ::__construct
+     * @covers ::getFunctions
+     * @covers ::setFunctions
      */
     public function testSetAndGetFunctions() : void
     {
         $collection = new Collection();
 
-        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getFunctions());
+        $this->assertInstanceOf(Collection::class, $this->fixture->getFunctions());
 
         $this->fixture->setFunctions($collection);
 
@@ -95,15 +98,15 @@ class NamespaceDescriptorTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\NamespaceDescriptor::__construct
-     * @covers \phpDocumentor\Descriptor\NamespaceDescriptor::getInterfaces
-     * @covers \phpDocumentor\Descriptor\NamespaceDescriptor::setInterfaces
+     * @covers ::__construct
+     * @covers ::getInterfaces
+     * @covers ::setInterfaces
      */
     public function testSetAndGetInterfaces() : void
     {
         $collection = new Collection();
 
-        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getInterfaces());
+        $this->assertInstanceOf(Collection::class, $this->fixture->getInterfaces());
 
         $this->fixture->setInterfaces($collection);
 
@@ -111,15 +114,15 @@ class NamespaceDescriptorTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\NamespaceDescriptor::__construct
-     * @covers \phpDocumentor\Descriptor\NamespaceDescriptor::getChildren
-     * @covers \phpDocumentor\Descriptor\NamespaceDescriptor::setChildren
+     * @covers ::__construct
+     * @covers ::getChildren
+     * @covers ::setChildren
      */
     public function testSetAndGetChildren() : void
     {
         $collection = new Collection();
 
-        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getChildren());
+        $this->assertInstanceOf(Collection::class, $this->fixture->getChildren());
 
         $this->fixture->setChildren($collection);
 
@@ -127,15 +130,15 @@ class NamespaceDescriptorTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\NamespaceDescriptor::__construct
-     * @covers \phpDocumentor\Descriptor\NamespaceDescriptor::getTraits
-     * @covers \phpDocumentor\Descriptor\NamespaceDescriptor::setTraits
+     * @covers ::__construct
+     * @covers ::getTraits
+     * @covers ::setTraits
      */
     public function testSetAndGetTraits() : void
     {
         $collection = new Collection();
 
-        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getTraits());
+        $this->assertInstanceOf(Collection::class, $this->fixture->getTraits());
 
         $this->fixture->setTraits($collection);
 

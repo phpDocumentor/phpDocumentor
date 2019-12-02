@@ -10,6 +10,7 @@ declare(strict_types=1);
  *
  * @link http://phpdoc.org
  */
+
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use Mockery as m;
@@ -48,8 +49,8 @@ class ClassAssemblerTest extends MockeryTestCase
      */
     public function testCreateClassDescriptorFromReflector() : void
     {
-        $name                       = 'ClassName';
-        $namespace                  = 'Namespace';
+        $name = 'ClassName';
+        $namespace = 'Namespace';
         $docBlockDescriptionContent = <<<DOCBLOCK
 /**
  * This is a example description
@@ -73,20 +74,20 @@ DOCBLOCK;
      */
     protected function getClassReflectorDescriptor() : Class_
     {
-        $name                       = 'ClassName';
-        $namespace                  = 'Namespace';
+        $name = 'ClassName';
+        $namespace = 'Namespace';
         $docBlockDescriptionContent = <<<DOCBLOCK
 /**
  * This is a example description
  */
 DOCBLOCK;
-        $docBlockMock               = new DocBlock(
+        $docBlockMock = new DocBlock(
             'This is a example description',
             new DocBlock\Description($docBlockDescriptionContent),
             []
         );
 
-        $classFqsen         = new Fqsen('\\' . $namespace . '\\' . $name);
+        $classFqsen = new Fqsen('\\' . $namespace . '\\' . $name);
         $classReflectorMock = new Class_(
             $classFqsen,
             $docBlockMock
@@ -107,31 +108,33 @@ DOCBLOCK;
     {
         $projectDescriptorBuilderMock = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
         $projectDescriptorBuilderMock->shouldReceive('getDefaultPackage')->andReturn('\\');
-        $projectDescriptorBuilderMock->shouldReceive('buildDescriptor')->andReturnUsing(static function ($param) {
-            $mock = null;
+        $projectDescriptorBuilderMock->shouldReceive('buildDescriptor')->andReturnUsing(
+            static function ($param) {
+                $mock = null;
 
-            switch ($param) {
-                case 'Properties':
-                    $mock = m::mock('phpDocumentor\Descriptor\PropertiesDescriptor');
-                    $mock->shouldReceive('getName')->once()->andReturn('Mock');
-                    $mock->shouldReceive('setParent')->once()->andReturn();
-                    break;
+                switch ($param) {
+                    case 'Properties':
+                        $mock = m::mock('phpDocumentor\Descriptor\PropertiesDescriptor');
+                        $mock->shouldReceive('getName')->once()->andReturn('Mock');
+                        $mock->shouldReceive('setParent')->once()->andReturn();
+                        break;
 
-                case 'Method':
-                    $mock = m::mock('phpDocumentor\Descriptor\MethodDescriptor');
-                    $mock->shouldReceive('getName')->once()->andReturn('Mock');
-                    $mock->shouldReceive('setParent')->once()->andReturn();
-                    break;
+                    case 'Method':
+                        $mock = m::mock('phpDocumentor\Descriptor\MethodDescriptor');
+                        $mock->shouldReceive('getName')->once()->andReturn('Mock');
+                        $mock->shouldReceive('setParent')->once()->andReturn();
+                        break;
 
-                case 'Constant':
-                    $mock = m::mock('phpDocumentor\Descriptor\ConstantDescriptor');
-                    $mock->shouldReceive('getName')->once()->andReturn('Mock');
-                    $mock->shouldReceive('setParent')->once()->andReturn();
-                    break;
+                    case 'Constant':
+                        $mock = m::mock('phpDocumentor\Descriptor\ConstantDescriptor');
+                        $mock->shouldReceive('getName')->once()->andReturn('Mock');
+                        $mock->shouldReceive('setParent')->once()->andReturn();
+                        break;
+                }
+
+                return $mock;
             }
-
-            return $mock;
-        });
+        );
 
         return $projectDescriptorBuilderMock;
     }

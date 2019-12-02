@@ -23,7 +23,7 @@ use phpDocumentor\Reflection\Php\Property;
 use phpDocumentor\Reflection\Php\Visibility;
 use phpDocumentor\Reflection\Types\String_;
 
-class PropertyAssemblerTest extends MockeryTestCase
+final class PropertyAssemblerTest extends MockeryTestCase
 {
     /** @var PropertyAssembler $fixture */
     protected $fixture;
@@ -49,7 +49,7 @@ class PropertyAssemblerTest extends MockeryTestCase
     public function testCreatePropertyDescriptorFromReflector() : void
     {
         // Arrange
-        $namespace    = 'Namespace';
+        $namespace = 'Namespace';
         $propertyName = 'property';
 
         $propertyReflectorMock = $this->givenAPropertyReflector(
@@ -73,8 +73,11 @@ class PropertyAssemblerTest extends MockeryTestCase
     /**
      * Creates a sample property reflector for the tests with the given data.
      */
-    protected function givenAPropertyReflector(string $namespace, string $propertyName, ?DocBlock $docBlockMock = null) : Property
-    {
+    private function givenAPropertyReflector(
+        string $namespace,
+        string $propertyName,
+        ?DocBlock $docBlockMock = null
+    ) : Property {
         return new Property(
             new Fqsen('\\' . $namespace . '::$' . $propertyName),
             new Visibility(Visibility::PROTECTED_),
@@ -85,7 +88,7 @@ class PropertyAssemblerTest extends MockeryTestCase
     /**
      * Generates a DocBlock object with applicable defaults for these tests.
      */
-    protected function givenADocBlockObject($withTags) : DocBlock
+    private function givenADocBlockObject(bool $withTags) : DocBlock
     {
         $docBlockDescription = new Description('This is an example description');
 

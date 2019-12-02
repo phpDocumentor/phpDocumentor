@@ -10,6 +10,7 @@ declare(strict_types=1);
  *
  * @link http://phpdoc.org
  */
+
 namespace phpDocumentor\Descriptor;
 
 use Mockery as m;
@@ -39,7 +40,7 @@ class ProjectDescriptorBuilderTest extends MockeryTestCase
     protected function setUp() : void
     {
         $this->assemblerFactory = $this->createAssemblerFactoryMock();
-        $filterMock             = m::mock('phpDocumentor\Descriptor\Filter\Filter');
+        $filterMock = m::mock('phpDocumentor\Descriptor\Filter\Filter');
 
         $this->fixture = new ProjectDescriptorBuilder($this->assemblerFactory, $filterMock);
     }

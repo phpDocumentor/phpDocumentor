@@ -25,7 +25,7 @@ class AuthorAssemblerTest extends TestCase
     public function testCreate() : void
     {
         $feature = new AuthorAssembler();
-        $result  = $feature->create(new Author('Jaapio', 'jaap@phpdoc.org'));
+        $result = $feature->create(new Author('Jaapio', 'jaap@phpdoc.org'));
 
         self::assertInstanceOf(AuthorDescriptor::class, $result);
         self::assertEquals('Jaapio <jaap@phpdoc.org>', $result->getDescription());

@@ -10,18 +10,21 @@ declare(strict_types=1);
  *
  * @link http://phpdoc.org
  */
+
 namespace phpDocumentor\Descriptor\Filter;
 
 use League\Pipeline\Pipeline;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests the functionality for the ClassFactory class.
+ *
+ * @coversDefaultClass \phpDocumentor\Descriptor\Filter\ClassFactory
  */
-class ClassFactoryTest extends MockeryTestCase
+final class ClassFactoryTest extends TestCase
 {
     /** @var ClassFactory $fixture */
-    protected $fixture;
+    private $fixture;
 
     /**
      * Creates a new (empty) fixture object.
@@ -32,7 +35,7 @@ class ClassFactoryTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Filter\ClassFactory::getChainFor
+     * @covers ::getChainFor
      */
     public function testGetChainForReturnsInstanceOfFilterChain() : void
     {

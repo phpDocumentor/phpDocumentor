@@ -10,6 +10,7 @@ declare(strict_types=1);
  *
  * @link http://phpdoc.org
  */
+
 namespace phpDocumentor\Descriptor\Filter;
 
 use League\Pipeline\Pipeline;
@@ -19,8 +20,10 @@ use function get_class;
 
 /**
  * Tests the functionality for the Filter class.
+ *
+ * @coversDefaultClass \phpDocumentor\Descriptor\Filter\Filter
  */
-class FilterTest extends MockeryTestCase
+final class FilterTest extends MockeryTestCase
 {
     public const FQCN = 'SomeFilterClass';
 
@@ -38,13 +41,13 @@ class FilterTest extends MockeryTestCase
      */
     protected function setUp() : void
     {
-        $this->classFactoryMock = m::mock('phpDocumentor\Descriptor\Filter\ClassFactory');
-        $this->filterChainMock  = m::mock(Pipeline::class);
-        $this->fixture          = new Filter($this->classFactoryMock);
+        $this->classFactoryMock = m::mock(ClassFactory::class);
+        $this->filterChainMock = m::mock(Pipeline::class);
+        $this->fixture = new Filter($this->classFactoryMock);
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Filter\Filter::attach
+     * @covers ::attach
      */
     public function testAttach() : void
     {
@@ -56,11 +59,11 @@ class FilterTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Filter\Filter::filter
+     * @covers ::filter
      */
     public function testFilter() : void
     {
-        $filterableMock = m::mock('phpDocumentor\Descriptor\Filter\Filterable');
+        $filterableMock = m::mock(Filterable::class);
 
         $this->filterChainMock->shouldReceive('__invoke')->with($filterableMock)->andReturn($filterableMock);
         $this->classFactoryMock

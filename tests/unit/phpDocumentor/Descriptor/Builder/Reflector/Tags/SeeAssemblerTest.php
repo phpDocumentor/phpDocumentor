@@ -40,7 +40,7 @@ class SeeAssemblerTest extends MockeryTestCase
     protected function setUp() : void
     {
         $this->builderMock = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
-        $this->fixture     = new SeeAssembler();
+        $this->fixture = new SeeAssembler();
         $this->fixture->setBuilder($this->builderMock);
     }
 
@@ -50,9 +50,9 @@ class SeeAssemblerTest extends MockeryTestCase
     public function testCreateSeeDescriptorFromSeeTagWhenReferenceIsRelativeClassnameNotInNamespaceAliasses() : void
     {
         // Arrange
-        $name        = 'see';
+        $name = 'see';
         $description = 'a see tag';
-        $reference   = '\ReferenceClass';
+        $reference = '\ReferenceClass';
 
         $seeTagMock = $this->givenASeeTag(new DocBlock\Tags\Reference\Fqsen(new Fqsen($reference)), $description);
 
@@ -73,7 +73,7 @@ class SeeAssemblerTest extends MockeryTestCase
     public function testCreateSeeDescriptorFromSeeTagWhenReferenceIsUrl($reference) : void
     {
         // Arrange
-        $name        = 'see';
+        $name = 'see';
         $description = 'a see tag';
 
         $seeTagMock = $this->givenASeeTag($reference, $description);

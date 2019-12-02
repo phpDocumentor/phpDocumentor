@@ -10,6 +10,7 @@ declare(strict_types=1);
  *
  * @link http://phpdoc.org
  */
+
 namespace phpDocumentor\Descriptor\Filter;
 
 use Mockery as m;
@@ -19,14 +20,16 @@ use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 
 /**
  * Tests the functionality for the StripOnVisibility class.
+ *
+ * @coversDefaultClass \phpDocumentor\Descriptor\Filter\StripOnVisibility
  */
-class StripOnVisibilityTest extends MockeryTestCase
+final class StripOnVisibilityTest extends MockeryTestCase
 {
     /** @var ProjectDescriptorBuilder|m\Mock */
-    protected $builderMock;
+    private $builderMock;
 
     /** @var StripOnVisibility $fixture */
-    protected $fixture;
+    private $fixture;
 
     /**
      * Creates a new (empty) fixture object.
@@ -34,11 +37,11 @@ class StripOnVisibilityTest extends MockeryTestCase
     protected function setUp() : void
     {
         $this->builderMock = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
-        $this->fixture     = new StripOnVisibility($this->builderMock);
+        $this->fixture = new StripOnVisibility($this->builderMock);
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Filter\StripOnVisibility::__invoke
+     * @covers ::__invoke
      */
     public function testStripsTagFromDescriptionIfVisibilityIsNotAllowed() : void
     {
@@ -51,7 +54,7 @@ class StripOnVisibilityTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Filter\StripOnVisibility::__invoke
+     * @covers ::__invoke
      */
     public function testKeepsDescriptorIfVisibilityIsAllowed() : void
     {
@@ -64,7 +67,7 @@ class StripOnVisibilityTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Filter\StripOnVisibility::__invoke
+     * @covers ::__invoke
      */
     public function testKeepsDescriptorIfDescriptorNotInstanceOfVisibilityInterface() : void
     {

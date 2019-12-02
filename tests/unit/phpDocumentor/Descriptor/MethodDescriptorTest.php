@@ -10,6 +10,7 @@ declare(strict_types=1);
  *
  * @link http://phpdoc.org
  */
+
 namespace phpDocumentor\Descriptor;
 
 use Mockery as m;
@@ -27,10 +28,10 @@ use function iterator_to_array;
  * @covers ::<private>
  * @covers ::<protected>
  */
-class MethodDescriptorTest extends MockeryTestCase
+final class MethodDescriptorTest extends MockeryTestCase
 {
     /** @var MethodDescriptor $fixture */
-    protected $fixture;
+    private $fixture;
 
     /**
      * Creates a new (empty) fixture object.
@@ -292,7 +293,7 @@ class MethodDescriptorTest extends MockeryTestCase
         $this->assertSame(0, $this->fixture->getReturn()->count());
 
         $returnTagDescriptor = new AuthorDescriptor('return');
-        $returnCollection    = new Collection([$returnTagDescriptor]);
+        $returnCollection = new Collection([$returnTagDescriptor]);
         $this->fixture->getTags()->clear();
         $parentProperty = $this->whenFixtureHasMethodInParentClassWithSameName($this->fixture->getName());
         $parentProperty->getTags()->set('return', $returnCollection);
@@ -311,7 +312,7 @@ class MethodDescriptorTest extends MockeryTestCase
         $this->assertSame(0, $this->fixture->getParam()->count());
 
         $paramTagDescriptor = new AuthorDescriptor('param');
-        $paramCollection    = new Collection([$paramTagDescriptor]);
+        $paramCollection = new Collection([$paramTagDescriptor]);
         $this->fixture->getTags()->clear();
         $parentProperty = $this->whenFixtureHasMethodInParentClassWithSameName($this->fixture->getName());
         $parentProperty->getTags()->set('param', $paramCollection);
@@ -329,7 +330,7 @@ class MethodDescriptorTest extends MockeryTestCase
     {
         // Arrange
         $authorTagDescriptor = new AuthorDescriptor('author');
-        $authorCollection    = new Collection([$authorTagDescriptor]);
+        $authorCollection = new Collection([$authorTagDescriptor]);
         $this->fixture->getTags()->clear();
         $parentProperty = $this->whenFixtureHasMethodInParentClassWithSameName($this->fixture->getName());
         $parentProperty->getTags()->set('author', $authorCollection);
@@ -349,7 +350,7 @@ class MethodDescriptorTest extends MockeryTestCase
     {
         // Arrange
         $versionTagDescriptor = new VersionDescriptor('version');
-        $versionCollection    = new Collection([$versionTagDescriptor]);
+        $versionCollection = new Collection([$versionTagDescriptor]);
         $this->fixture->getTags()->clear();
         $parentProperty = $this->whenFixtureHasMethodInParentClassWithSameName($this->fixture->getName());
         $parentProperty->getTags()->set('version', $versionCollection);
@@ -369,7 +370,7 @@ class MethodDescriptorTest extends MockeryTestCase
     {
         // Arrange
         $copyrightTagDescriptor = new TagDescriptor('copyright');
-        $copyrightCollection    = new Collection([$copyrightTagDescriptor]);
+        $copyrightCollection = new Collection([$copyrightTagDescriptor]);
         $this->fixture->getTags()->clear();
         $parentProperty = $this->whenFixtureHasMethodInParentClassWithSameName($this->fixture->getName());
         $parentProperty->getTags()->set('copyright', $copyrightCollection);
@@ -382,25 +383,13 @@ class MethodDescriptorTest extends MockeryTestCase
     }
 
     /**
-     * Sets up mocks as such that the fixture has a file.
-     *
-     * @return m\MockInterface|FileDescriptor
-     */
-    protected function whenFixtureIsDirectlyRelatedToAFile()
-    {
-        $file = m::mock(FileDescriptor::class);
-        $this->fixture->setFile($file);
-        return $file;
-    }
-
-    /**
      * Sets up mocks as such that the fixture has a parent class, with a file.
      *
      * @return m\MockInterface|FileDescriptor
      */
-    protected function whenFixtureIsRelatedToAClassWithFile()
+    private function whenFixtureIsRelatedToAClassWithFile()
     {
-        $file   = m::mock(FileDescriptor::class);
+        $file = m::mock(FileDescriptor::class);
         $parent = m::mock(ClassDescriptor::class);
         $parent->shouldReceive('getFile')->andReturn($file);
         $parent->shouldReceive('getFullyQualifiedStructuralElementName')->andReturn('Class1');
@@ -412,7 +401,7 @@ class MethodDescriptorTest extends MockeryTestCase
     /**
      * @param string $name The name of the current method.
      */
-    protected function whenFixtureHasMethodInParentClassWithSameName(string $name) : MethodDescriptor
+    private function whenFixtureHasMethodInParentClassWithSameName(string $name) : MethodDescriptor
     {
         $result = new MethodDescriptor();
         $result->setName($name);
@@ -431,7 +420,7 @@ class MethodDescriptorTest extends MockeryTestCase
     /**
      * @param string $name The name of the current method.
      */
-    protected function whenFixtureHasMethodInImplementedInterfaceWithSameName(string $name) : MethodDescriptor
+    private function whenFixtureHasMethodInImplementedInterfaceWithSameName(string $name) : MethodDescriptor
     {
         $result = new MethodDescriptor();
         $result->setName($name);

@@ -10,15 +10,19 @@ declare(strict_types=1);
  *
  * @link http://phpdoc.org
  */
+
 namespace phpDocumentor\Descriptor\Type;
 
-use Mockery\Adapter\Phpunit\MockeryTestCase;
+use PHPUnit\Framework\TestCase;
 
-class IntegerDescriptorTest extends MockeryTestCase
+/**
+ * @coversDefaultClass \phpDocumentor\Descriptor\Type\IntegerDescriptor
+ */
+final class IntegerDescriptorTest extends TestCase
 {
     /**
-     * @covers \phpDocumentor\Descriptor\Type\IntegerDescriptor::getName
-     * @covers \phpDocumentor\Descriptor\Type\IntegerDescriptor::__toString
+     * @covers ::getName
+     * @covers ::__toString
      */
     public function testIfNameCanBeReturned() : void
     {

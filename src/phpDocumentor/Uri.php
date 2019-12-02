@@ -27,11 +27,7 @@ use function sprintf;
  */
 final class Uri
 {
-    /**
-     * Uri path.
-     *
-     * @var string
-     */
+    /** @var string */
     private $uri;
 
     /**
@@ -67,7 +63,7 @@ final class Uri
     /**
      * Checks if $uri is valid.
      *
-     * @throws InvalidArgumentException if $uri is not a valid uri.
+     * @throws InvalidArgumentException If $uri is not a valid uri.
      */
     private function validateUri(string $uri) : void
     {

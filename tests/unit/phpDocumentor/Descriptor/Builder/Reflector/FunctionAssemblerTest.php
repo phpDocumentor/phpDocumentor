@@ -10,6 +10,7 @@ declare(strict_types=1);
  *
  * @link http://phpdoc.org
  */
+
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use InvalidArgumentException;
@@ -69,18 +70,18 @@ class FunctionAssemblerTest extends MockeryTestCase
     public function testCreateFunctionDescriptorFromReflector() : void
     {
         // Arrange
-        $namespace    = 'Namespace';
+        $namespace = 'Namespace';
         $functionName = 'goodbyeWorld';
         $argumentName = 'waveHand';
 
-        $argument              = $this->givenAnArgumentWithName($argumentName);
+        $argument = $this->givenAnArgumentWithName($argumentName);
         $functionReflectorMock = $this->givenAFunctionReflector(
             $namespace,
             $functionName,
             $argument,
             $this->givenADocBlockObject()
         );
-        $argumentDescriptor    = new ArgumentDescriptor();
+        $argumentDescriptor = new ArgumentDescriptor();
         $argumentDescriptor->setName($argumentName);
 
         $this->argumentAssemblerMock->shouldReceive('create')->andReturn($argumentDescriptor);
@@ -103,8 +104,12 @@ class FunctionAssemblerTest extends MockeryTestCase
      *
      * @param DocBlock|m\MockInterface $docBlockMock
      */
-    protected function givenAFunctionReflector(string $namespace, string $functionName, Argument $argumentMock, $docBlockMock) : Function_
-    {
+    protected function givenAFunctionReflector(
+        string $namespace,
+        string $functionName,
+        Argument $argumentMock,
+        $docBlockMock
+    ) : Function_ {
         $functionReflectorMock = new Function_(
             new Fqsen('\\' . $namespace . '\\' . $functionName . '()'),
             $docBlockMock

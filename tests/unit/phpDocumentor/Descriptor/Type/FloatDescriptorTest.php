@@ -10,15 +10,19 @@ declare(strict_types=1);
  *
  * @link http://phpdoc.org
  */
+
 namespace phpDocumentor\Descriptor\Type;
 
-use Mockery\Adapter\Phpunit\MockeryTestCase;
+use PHPUnit\Framework\TestCase;
 
-class FloatDescriptorTest extends MockeryTestCase
+/**
+ * @coversDefaultClass \phpDocumentor\Descriptor\Type\FloatDescriptor
+ */
+final class FloatDescriptorTest extends TestCase
 {
     /**
-     * @covers \phpDocumentor\Descriptor\Type\FloatDescriptor::getName
-     * @covers \phpDocumentor\Descriptor\Type\FloatDescriptor::__toString
+     * @covers ::getName
+     * @covers ::__toString
      */
     public function testIfNameCanBeReturned() : void
     {

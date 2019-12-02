@@ -38,7 +38,7 @@ class TraitAssemblerTest extends MockeryTestCase
         $builder->shouldReceive('buildDescriptor')->andReturn($method);
 
         $traitFqsen = new Fqsen('\My\Space\MyTrait');
-        $trait      = new Trait_($traitFqsen);
+        $trait = new Trait_($traitFqsen);
         $trait->addMethod(new Method(new Fqsen('\My\Space\MyTrait::method()')));
         $assembler = new TraitAssembler();
         $assembler->setBuilder($builder);

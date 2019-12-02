@@ -10,15 +10,19 @@ declare(strict_types=1);
  *
  * @link http://phpdoc.org
  */
+
 namespace phpDocumentor\Descriptor\Type;
 
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 
-class UnknownTypeDescriptorTest extends MockeryTestCase
+/**
+ * @coversDefaultClass \phpDocumentor\Descriptor\Type\UnknownTypeDescriptor
+ */
+final class UnknownTypeDescriptorTest extends MockeryTestCase
 {
     /**
-     * @covers \phpDocumentor\Descriptor\Type\UnknownTypeDescriptor::getName
-     * @covers \phpDocumentor\Descriptor\Type\UnknownTypeDescriptor::__toString
+     * @covers ::getName
+     * @covers ::__toString
      */
     public function testIfNameCanBeReturned() : void
     {

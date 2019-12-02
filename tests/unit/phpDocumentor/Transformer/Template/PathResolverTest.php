@@ -10,30 +10,31 @@ declare(strict_types=1);
  *
  * @link http://phpdoc.org
  */
+
 namespace phpDocumentor\Transformer\Template;
 
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use org\bovigo\vfs\vfsStream;
+use PHPUnit\Framework\TestCase;
 use const DIRECTORY_SEPARATOR;
 
-class PathResolverTest extends MockeryTestCase
+/**
+ * @coversDefaultClass \phpDocumentor\Transformer\Template\PathResolver
+ */
+final class PathResolverTest extends TestCase
 {
     /** @var string */
-    protected $templatePath = 'vfs://root/templatePath';
+    private $templatePath = 'vfs://root/templatePath';
 
     /** @var PathResolver */
-    protected $fixture;
+    private $fixture;
 
-    /**
-     * Sets up the fixture with mocked dependency.
-     */
     protected function setUp() : void
     {
         $this->fixture = new PathResolver($this->templatePath);
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Template\PathResolver::__construct
+     * @covers ::__construct
      */
     public function testIfDependencyIsCorrectlyRegisteredOnInitialization() : void
     {
@@ -41,7 +42,7 @@ class PathResolverTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Template\PathResolver::resolve
+     * @covers ::resolve
      */
     public function testResolveWithInvalidAbsolutePath() : void
     {
@@ -51,7 +52,7 @@ class PathResolverTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Template\PathResolver::resolve
+     * @covers ::resolve
      */
     public function testResolveWithInvalidName() : void
     {
@@ -61,7 +62,7 @@ class PathResolverTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Template\PathResolver::resolve
+     * @covers ::resolve
      */
     public function testResolveWithValidAbsolutePath() : void
     {
@@ -73,7 +74,7 @@ class PathResolverTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Template\PathResolver::resolve
+     * @covers ::resolve
      */
     public function testResolveWithValidName() : void
     {
@@ -85,7 +86,7 @@ class PathResolverTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Template\PathResolver::getTemplatePath
+     * @covers ::getTemplatePath
      */
     public function testGetTemplatePath() : void
     {

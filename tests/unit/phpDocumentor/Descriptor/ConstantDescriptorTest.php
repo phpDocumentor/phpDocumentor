@@ -10,6 +10,7 @@ declare(strict_types=1);
  *
  * @link http://phpdoc.org
  */
+
 namespace phpDocumentor\Descriptor;
 
 use Mockery as m;
@@ -23,11 +24,13 @@ use phpDocumentor\Reflection\Types\String_;
 
 /**
  * Tests the functionality for the ConstantDescriptor class.
+ *
+ * @coversDefaultClass \phpDocumentor\Descriptor\ConstantDescriptor
  */
-class ConstantDescriptorTest extends MockeryTestCase
+final class ConstantDescriptorTest extends MockeryTestCase
 {
     /** @var ConstantDescriptor $fixture */
-    protected $fixture;
+    private $fixture;
 
     /**
      * Creates a new (empty) fixture object.
@@ -41,8 +44,8 @@ class ConstantDescriptorTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\ConstantDescriptor::getParent
-     * @covers \phpDocumentor\Descriptor\ConstantDescriptor::setParent
+     * @covers ::getParent
+     * @covers ::setParent
      */
     public function testSetAndGetParentClass() : void
     {
@@ -57,7 +60,7 @@ class ConstantDescriptorTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\ConstantDescriptor::setParent
+     * @covers ::setParent
      */
     public function testSettingAParentFailsWhenInputIsNotNullClassOrInterface() : void
     {
@@ -66,8 +69,8 @@ class ConstantDescriptorTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\ConstantDescriptor::getParent
-     * @covers \phpDocumentor\Descriptor\ConstantDescriptor::setParent
+     * @covers ::getParent
+     * @covers ::setParent
      */
     public function testSetAndGetParentInterface() : void
     {
@@ -81,8 +84,8 @@ class ConstantDescriptorTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\ConstantDescriptor::getTypes
-     * @covers \phpDocumentor\Descriptor\ConstantDescriptor::setTypes
+     * @covers ::getTypes
+     * @covers ::setTypes
      */
     public function testSetAndGetTypes() : void
     {
@@ -95,8 +98,8 @@ class ConstantDescriptorTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\ConstantDescriptor::getTypes
-     * @covers \phpDocumentor\Descriptor\ConstantDescriptor::getVar
+     * @covers ::getTypes
+     * @covers ::getVar
      */
     public function testTestgetTypesDerivedFromVarTag() : void
     {
@@ -111,8 +114,8 @@ class ConstantDescriptorTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\ConstantDescriptor::getTypes
-     * @covers \phpDocumentor\Descriptor\ConstantDescriptor::getVar
+     * @covers ::getTypes
+     * @covers ::getVar
      */
     public function testGetTypesUsingInheritanceOfVarTag() : void
     {
@@ -130,8 +133,8 @@ class ConstantDescriptorTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\ConstantDescriptor::getValue
-     * @covers \phpDocumentor\Descriptor\ConstantDescriptor::setValue
+     * @covers ::getValue
+     * @covers ::setValue
      */
     public function testSetAndGetValue() : void
     {
@@ -143,7 +146,7 @@ class ConstantDescriptorTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\ConstantDescriptor::getFile
+     * @covers ::getFile
      */
     public function testRetrieveFileAssociatedWithAGlobalConstant() : void
     {
@@ -158,7 +161,7 @@ class ConstantDescriptorTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\ConstantDescriptor::getFile
+     * @covers ::getFile
      */
     public function testRetrieveFileAssociatedWithAClassConstant() : void
     {
@@ -245,13 +248,13 @@ class ConstantDescriptorTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\ConstantDescriptor::getVar
+     * @covers ::getVar
      */
     public function testVarTagsInheritWhenNoneArePresent() : void
     {
         // Arrange
         $varTagDescriptor = new VarDescriptor('var');
-        $varCollection    = new Collection([$varTagDescriptor]);
+        $varCollection = new Collection([$varTagDescriptor]);
         $this->fixture->getTags()->clear();
         $parentProperty = $this->whenFixtureHasConstantInParentClassWithSameName($this->fixture->getName());
         $parentProperty->getTags()->set('var', $varCollection);
@@ -288,7 +291,7 @@ class ConstantDescriptorTest extends MockeryTestCase
     {
         // Arrange
         $authorTagDescriptor = new AuthorDescriptor('author');
-        $authorCollection    = new Collection([$authorTagDescriptor]);
+        $authorCollection = new Collection([$authorTagDescriptor]);
         $this->fixture->getTags()->clear();
         $parentProperty = $this->whenFixtureHasConstantInParentClassWithSameName($this->fixture->getName());
         $parentProperty->getTags()->set('author', $authorCollection);
@@ -307,7 +310,7 @@ class ConstantDescriptorTest extends MockeryTestCase
     {
         // Arrange
         $versionTagDescriptor = new VersionDescriptor('version');
-        $versionCollection    = new Collection([$versionTagDescriptor]);
+        $versionCollection = new Collection([$versionTagDescriptor]);
         $this->fixture->getTags()->clear();
         $parentProperty = $this->whenFixtureHasConstantInParentClassWithSameName($this->fixture->getName());
         $parentProperty->getTags()->set('version', $versionCollection);
@@ -326,7 +329,7 @@ class ConstantDescriptorTest extends MockeryTestCase
     {
         // Arrange
         $copyrightTagDescriptor = new TagDescriptor('copyright');
-        $copyrightCollection    = new Collection([$copyrightTagDescriptor]);
+        $copyrightCollection = new Collection([$copyrightTagDescriptor]);
         $this->fixture->getTags()->clear();
         $parentProperty = $this->whenFixtureHasConstantInParentClassWithSameName($this->fixture->getName());
         $parentProperty->getTags()->set('copyright', $copyrightCollection);
@@ -390,7 +393,7 @@ class ConstantDescriptorTest extends MockeryTestCase
      */
     protected function whenFixtureIsRelatedToAClassWithFile()
     {
-        $file   = m::mock('phpDocumentor\Descriptor\FileDescriptor');
+        $file = m::mock('phpDocumentor\Descriptor\FileDescriptor');
         $parent = m::mock('phpDocumentor\Descriptor\ClassDescriptor');
         $parent->shouldReceive('getFile')->andReturn($file);
         $parent->shouldReceive('getFullyQualifiedStructuralElementName')->andReturn('Class1');

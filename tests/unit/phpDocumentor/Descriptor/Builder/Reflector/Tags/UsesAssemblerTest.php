@@ -40,7 +40,7 @@ class UsesAssemblerTest extends MockeryTestCase
     protected function setUp() : void
     {
         $this->builderMock = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
-        $this->fixture     = new UsesAssembler();
+        $this->fixture = new UsesAssembler();
         $this->fixture->setBuilder($this->builderMock);
     }
 
@@ -50,9 +50,9 @@ class UsesAssemblerTest extends MockeryTestCase
     public function testCreateUsesDescriptorFromUsesTagWhenReferenceIsRelativeClassnameNotInNamespaceAliasses() : void
     {
         // Arrange
-        $name        = 'uses';
+        $name = 'uses';
         $description = 'a uses tag';
-        $reference   = '\ReferenceClass';
+        $reference = '\ReferenceClass';
         $usesTagMock = $this->givenAUsesTag($description, $reference);
 
         // Act

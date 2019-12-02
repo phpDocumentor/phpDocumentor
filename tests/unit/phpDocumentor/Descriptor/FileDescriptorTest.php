@@ -10,6 +10,7 @@ declare(strict_types=1);
  *
  * @link http://phpdoc.org
  */
+
 namespace phpDocumentor\Descriptor;
 
 use Mockery as m;
@@ -101,7 +102,7 @@ class FileDescriptorTest extends MockeryTestCase
         $this->assertInstanceOf(Collection::class, $this->fixture->getNamespaceAliases());
 
         $mockInstance = m::mock(Collection::class);
-        $mock         = $mockInstance;
+        $mock = $mockInstance;
 
         $this->fixture->setNamespaceAliases($mock);
 
@@ -117,7 +118,7 @@ class FileDescriptorTest extends MockeryTestCase
         $this->assertInstanceOf(Collection::class, $this->fixture->getIncludes());
 
         $mockInstance = m::mock(Collection::class);
-        $mock         = $mockInstance;
+        $mock = $mockInstance;
 
         $this->fixture->setIncludes($mock);
 
@@ -133,7 +134,7 @@ class FileDescriptorTest extends MockeryTestCase
         $this->assertInstanceOf(Collection::class, $this->fixture->getConstants());
 
         $mockInstance = m::mock(Collection::class);
-        $mock         = $mockInstance;
+        $mock = $mockInstance;
 
         $this->fixture->setConstants($mock);
 
@@ -149,7 +150,7 @@ class FileDescriptorTest extends MockeryTestCase
         $this->assertInstanceOf(Collection::class, $this->fixture->getFunctions());
 
         $mockInstance = m::mock(Collection::class);
-        $mock         = $mockInstance;
+        $mock = $mockInstance;
 
         $this->fixture->setFunctions($mock);
 
@@ -165,7 +166,7 @@ class FileDescriptorTest extends MockeryTestCase
         $this->assertInstanceOf(Collection::class, $this->fixture->getClasses());
 
         $mockInstance = m::mock(Collection::class);
-        $mock         = $mockInstance;
+        $mock = $mockInstance;
 
         $this->fixture->setClasses($mock);
 
@@ -181,7 +182,7 @@ class FileDescriptorTest extends MockeryTestCase
         $this->assertInstanceOf(Collection::class, $this->fixture->getInterfaces());
 
         $mockInstance = m::mock(Collection::class);
-        $mock         = $mockInstance;
+        $mock = $mockInstance;
 
         $this->fixture->setInterfaces($mock);
 
@@ -197,7 +198,7 @@ class FileDescriptorTest extends MockeryTestCase
         $this->assertInstanceOf(Collection::class, $this->fixture->getTraits());
 
         $mockInstance = m::mock(Collection::class);
-        $mock         = $mockInstance;
+        $mock = $mockInstance;
 
         $this->fixture->setTraits($mock);
 
@@ -213,7 +214,7 @@ class FileDescriptorTest extends MockeryTestCase
         $this->assertInstanceOf(Collection::class, $this->fixture->getMarkers());
 
         $mockInstance = m::mock(Collection::class);
-        $mock         = $mockInstance;
+        $mock = $mockInstance;
 
         $this->fixture->setMarkers($mock);
 
@@ -258,18 +259,18 @@ class FileDescriptorTest extends MockeryTestCase
          */
 
         // setup error list
-        $errorGlobal              = ['error-global'];
-        $errorClasses             = ['error-class'];
-        $errorClassMethods        = ['error-class-method'];
-        $errorClassConstants      = ['error-class-constant'];
-        $errorClassProperties     = ['error-class-property'];
-        $errorInterfaces          = ['error-interface'];
+        $errorGlobal = ['error-global'];
+        $errorClasses = ['error-class'];
+        $errorClassMethods = ['error-class-method'];
+        $errorClassConstants = ['error-class-constant'];
+        $errorClassProperties = ['error-class-property'];
+        $errorInterfaces = ['error-interface'];
         $errorInterfacesConstants = ['error-interface-constant'];
-        $errorInterfacesMethods   = ['error-interface-method'];
-        $errorTraits              = ['error-traits'];
-        $errorTraitsProperties    = ['error-traits-property'];
-        $errorTraitsMethods       = ['error-traits-method'];
-        $errorFunctions           = ['error-functions'];
+        $errorInterfacesMethods = ['error-interface-method'];
+        $errorTraits = ['error-traits'];
+        $errorTraitsProperties = ['error-traits-property'];
+        $errorTraitsMethods = ['error-traits-method'];
+        $errorFunctions = ['error-functions'];
 
         // setup global check
         $collection = new Collection($errorGlobal);

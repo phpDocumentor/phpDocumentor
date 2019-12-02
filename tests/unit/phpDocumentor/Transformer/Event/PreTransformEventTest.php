@@ -10,6 +10,7 @@ declare(strict_types=1);
  *
  * @link http://phpdoc.org
  */
+
 namespace phpDocumentor\Transformer\Event;
 
 use Mockery as m;
@@ -17,16 +18,15 @@ use Mockery\Adapter\Phpunit\MockeryTestCase;
 use stdClass;
 
 /**
- * Tests the functionality for the PreTransformEvent class.
+ * @coversDefaultClass \phpDocumentor\Transformer\Event\PreTransformEvent
  */
-class PreTransformEventTest extends MockeryTestCase
+final class PreTransformEventTest extends MockeryTestCase
 {
     /** @var PreTransformEvent $fixture */
-    protected $fixture;
+    private $fixture;
 
     /**
      * Creates a new (empty) fixture object.
-     * Creates a new DOMDocument object.
      */
     protected function setUp() : void
     {
@@ -34,8 +34,8 @@ class PreTransformEventTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Event\PreTransformEvent::getProject
-     * @covers \phpDocumentor\Transformer\Event\PreTransformEvent::setProject
+     * @covers ::getProject
+     * @covers ::setProject
      */
     public function testSetAndGetProject() : void
     {

@@ -10,6 +10,7 @@ declare(strict_types=1);
  *
  * @link http://phpdoc.org
  */
+
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use Mockery\Adapter\Phpunit\MockeryTestCase;
@@ -42,8 +43,8 @@ class ConstantAssemblerTest extends MockeryTestCase
      */
     public function testCreateConstantDescriptorFromReflector() : void
     {
-        $pi        = '3.14159265359';
-        $name      = 'constPI';
+        $pi = '3.14159265359';
+        $name = 'constPI';
         $namespace = 'Namespace';
 
         $docBlockDescription = new DocBlock\Description(
@@ -54,7 +55,7 @@ class ConstantAssemblerTest extends MockeryTestCase
 DOCBLOCK
         );
 
-        $docBlockMock          = new DocBlock('This is a example description', $docBlockDescription);
+        $docBlockMock = new DocBlock('This is a example description', $docBlockDescription);
         $constantReflectorMock = new Constant(new Fqsen('\\' . $namespace . '::' . $name), $docBlockMock, $pi);
 
         $descriptor = $this->fixture->create($constantReflectorMock);

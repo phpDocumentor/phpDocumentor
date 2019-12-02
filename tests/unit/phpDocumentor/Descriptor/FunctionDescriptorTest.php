@@ -10,6 +10,7 @@ declare(strict_types=1);
  *
  * @link http://phpdoc.org
  */
+
 namespace phpDocumentor\Descriptor;
 
 use Mockery as m;
@@ -19,10 +20,10 @@ use phpDocumentor\Reflection\Types\String_;
 /**
  * @coversDefaultClass \phpDocumentor\Descriptor\FunctionDescriptor
  */
-class FunctionDescriptorTest extends MockeryTestCase
+final class FunctionDescriptorTest extends MockeryTestCase
 {
     /** @var FunctionDescriptor $fixture */
-    protected $fixture;
+    private $fixture;
 
     /**
      * Creates a new (emoty) fixture object.
@@ -49,7 +50,7 @@ class FunctionDescriptorTest extends MockeryTestCase
         $this->assertInstanceOf(Collection::class, $this->fixture->getArguments());
 
         $mockInstance = m::mock(Collection::class);
-        $mock         = &$mockInstance;
+        $mock = &$mockInstance;
 
         $this->fixture->setArguments($mock);
 

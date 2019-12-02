@@ -35,7 +35,7 @@ class ThrowsAssemblerTest extends MockeryTestCase
      */
     public function testCreatingThrowsDescriptorFromReflector() : void
     {
-        $types     = new Object_(new Fqsen('\InvalidAgumentException'));
+        $types = new Object_(new Fqsen('\InvalidAgumentException'));
         $reflector = new Throws(
             $types,
             new Description('This is a description')

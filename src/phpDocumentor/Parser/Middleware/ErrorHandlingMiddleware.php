@@ -23,6 +23,7 @@ use function assert;
 
 final class ErrorHandlingMiddleware implements Middleware
 {
+    /** @var LoggerInterface */
     private $logger;
 
     public function __construct(LoggerInterface $logger)

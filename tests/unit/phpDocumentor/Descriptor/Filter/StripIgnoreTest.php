@@ -10,56 +10,60 @@ declare(strict_types=1);
  *
  * @link http://phpdoc.org
  */
+
 namespace phpDocumentor\Descriptor\Filter;
 
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
+use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 
 /**
  * Tests the functionality for the StripIgnore class.
+ *
+ * @coversDefaultClass \phpDocumentor\Descriptor\Filter\StripIgnore
  */
-class StripIgnoreTest extends MockeryTestCase
+final class StripIgnoreTest extends MockeryTestCase
 {
     /** @var ProjectDescriptorBuilder|m\Mock */
-    protected $builderMock;
+    private $builderMock;
 
     /** @var StripIgnore $fixture */
-    protected $fixture;
+    private $fixture;
 
     /**
      * Creates a new (empty) fixture object.
      */
     protected function setUp() : void
     {
-        $this->builderMock = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
-        $this->fixture     = new StripIgnore($this->builderMock);
+        $this->builderMock = m::mock(ProjectDescriptorBuilder::class);
+        $this->fixture = new StripIgnore($this->builderMock);
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Filter\StripIgnore::__invoke
+     * @covers ::__invoke
      */
     public function testStripsIgnoreTagFromDescription() : void
     {
-        $descriptor = m::mock('phpDocumentor\Descriptor\DescriptorAbstract');
+        $descriptor = m::mock(DescriptorAbstract::class);
         $descriptor->shouldReceive('getTags->get')->with('ignore')->andReturn(true);
 
         $this->assertNull($this->fixture->__invoke($descriptor));
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Filter\StripIgnore::__invoke
+     * @covers ::__invoke
      */
     public function testDescriptorIsUnmodifiedIfThereIsNoIgnoreTag() : void
     {
-        $descriptor = m::mock('phpDocumentor\Descriptor\DescriptorAbstract');
+        $descriptor = m::mock(DescriptorAbstract::class);
         $descriptor->shouldReceive('getTags->get')->with('ignore')->andReturn(false);
 
         $this->assertEquals($descriptor, $this->fixture->__invoke($descriptor));
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Filter\StripIgnore::__invoke
+     * @covers ::__invoke
      */
     public function testNullIsReturnedIfThereIsNoDescriptor() : void
     {

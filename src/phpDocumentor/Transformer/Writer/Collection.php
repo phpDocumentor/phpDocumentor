@@ -15,7 +15,6 @@ namespace phpDocumentor\Transformer\Writer;
 
 use ArrayObject;
 use InvalidArgumentException;
-use phpDocumentor\Transformer\Router\Router;
 use function preg_match;
 
 /**
@@ -27,21 +26,6 @@ use function preg_match;
  */
 class Collection extends ArrayObject
 {
-    /** @var Router A series of routers, in order of importance, that are used to generate urls with */
-    private $router;
-
-    /**
-     * Initializes this writer collection with the necessary requirements.
-     *
-     * @param Router $router A series of routers, in order of importance, that are used to generate urls with.
-     */
-    public function __construct(Router $router)
-    {
-        $this->router = $router;
-
-        parent::__construct();
-    }
-
     /**
      * Registers a writer with a given name.
      *

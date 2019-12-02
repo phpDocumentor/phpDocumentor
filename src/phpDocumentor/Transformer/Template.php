@@ -82,7 +82,7 @@ final class Template implements ArrayAccess, Countable, IteratorAggregate
     /**
      * Returns the name and/or mail address of the author.
      */
-    public function getAuthor()
+    public function getAuthor() : string
     {
         return $this->author;
     }
@@ -100,7 +100,7 @@ final class Template implements ArrayAccess, Countable, IteratorAggregate
     /**
      * Returns the copyright string for this template.
      */
-    public function getCopyright()
+    public function getCopyright() : string
     {
         return $this->copyright;
     }
@@ -110,7 +110,7 @@ final class Template implements ArrayAccess, Countable, IteratorAggregate
      *
      * @param string $version Semantic version number in this format: 1.0.0
      *
-     * @throws InvalidArgumentException if the version number is invalid
+     * @throws InvalidArgumentException If the version number is invalid.
      */
     public function setVersion(string $version) : void
     {
@@ -157,7 +157,7 @@ final class Template implements ArrayAccess, Countable, IteratorAggregate
      * @param int|string $offset The offset to place the value at.
      * @param Transformation $value The transformation to add to this template.
      *
-     * @throws InvalidArgumentException if an invalid item was received
+     * @throws InvalidArgumentException If an invalid item was received.
      */
     public function offsetSet($offset, $value) : void
     {

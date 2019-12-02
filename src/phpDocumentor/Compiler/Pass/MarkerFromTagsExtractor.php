@@ -24,7 +24,7 @@ use UnexpectedValueException;
 /**
  * This index builder collects all markers from tags and inserts them into the marker index.
  */
-class MarkerFromTagsExtractor implements CompilerPassInterface
+final class MarkerFromTagsExtractor implements CompilerPassInterface
 {
     public const COMPILER_PRIORITY = 9000;
 
@@ -54,9 +54,9 @@ class MarkerFromTagsExtractor implements CompilerPassInterface
     /**
      * Retrieves the File Descriptor from the given element.
      *
-     * @throws UnexpectedValueException if the provided element does not have a file associated with it.
+     * @throws UnexpectedValueException If the provided element does not have a file associated with it.
      */
-    protected function getFileDescriptor(DescriptorAbstract $element) : FileDescriptor
+    private function getFileDescriptor(DescriptorAbstract $element) : FileDescriptor
     {
         $fileDescriptor = $element instanceof FileDescriptor
             ? $element
@@ -72,7 +72,7 @@ class MarkerFromTagsExtractor implements CompilerPassInterface
     /**
      * Adds a marker with the TO DO information to the file on a given line number.
      */
-    protected function addTodoMarkerToFile(FileDescriptor $fileDescriptor, TagDescriptor $todo, int $lineNumber) : void
+    private function addTodoMarkerToFile(FileDescriptor $fileDescriptor, TagDescriptor $todo, int $lineNumber) : void
     {
         $fileDescriptor->getMarkers()->add(
             [

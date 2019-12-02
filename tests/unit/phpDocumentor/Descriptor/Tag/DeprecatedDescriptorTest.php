@@ -10,19 +10,22 @@ declare(strict_types=1);
  *
  * @link http://phpdoc.org
  */
+
 namespace phpDocumentor\Descriptor\Tag;
 
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 
 /**
  * Tests the functionality for the DeprecatedDescriptor class.
+ *
+ * @coversDefaultClass \phpDocumentor\Descriptor\Tag\DeprecatedDescriptor
  */
 final class DeprecatedDescriptorTest extends MockeryTestCase
 {
     public const EXAMPLE_VERSION = '2.0';
 
     /** @var DeprecatedDescriptor $fixture */
-    protected $fixture;
+    private $fixture;
 
     /**
      * Creates a new fixture object.
@@ -34,8 +37,8 @@ final class DeprecatedDescriptorTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Tag\DeprecatedDescriptor::setVersion
-     * @covers \phpDocumentor\Descriptor\Tag\DeprecatedDescriptor::getVersion
+     * @covers ::setVersion
+     * @covers ::getVersion
      */
     public function testSetAndGetVersion() : void
     {

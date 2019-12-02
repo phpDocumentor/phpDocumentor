@@ -10,6 +10,7 @@ declare(strict_types=1);
  *
  * @link http://phpdoc.org
  */
+
 namespace phpDocumentor\Descriptor\Example;
 
 use Mockery\Adapter\Phpunit\MockeryTestCase;
@@ -164,7 +165,7 @@ final class FinderTest extends MockeryTestCase
 
         $result = $this->fixture->find($descriptor);
 
-        $this->assertSame("** File not found : {$filename} **", $result);
+        $this->assertSame('** File not found : ' . $filename . ' **', $result);
     }
 
     /**

@@ -10,6 +10,7 @@ declare(strict_types=1);
  *
  * @link http://phpdoc.org
  */
+
 namespace phpDocumentor\Descriptor;
 
 use Mockery as m;
@@ -38,7 +39,7 @@ class DescriptorAbstractTest extends MockeryTestCase
      */
     public function testInitialize() : void
     {
-        /** @var m\MockInterface|DescriptorAbstract */
+        /** @var m\MockInterface|DescriptorAbstract $mock */
         $mock = $this->getMockBuilder('phpDocumentor\Descriptor\DescriptorAbstract')
             ->disableOriginalConstructor()
             ->getMock();
@@ -133,7 +134,7 @@ class DescriptorAbstractTest extends MockeryTestCase
      */
     public function testGetAuthor() : void
     {
-        /** @var m\MockInterface|DescriptorAbstract */
+        /** @var m\MockInterface|DescriptorAbstract $mock */
         $mock = m::mock(
             'phpDocumentor\Descriptor\DescriptorAbstract, phpDocumentor\Descriptor\Interfaces\ChildInterface'
         );
@@ -153,7 +154,7 @@ class DescriptorAbstractTest extends MockeryTestCase
      */
     public function testGetVersion() : void
     {
-        /** @var m\MockInterface|DescriptorAbstract */
+        /** @var m\MockInterface|DescriptorAbstract $mock */
         $mock = m::mock(
             'phpDocumentor\Descriptor\DescriptorAbstract, phpDocumentor\Descriptor\Interfaces\ChildInterface'
         );
@@ -173,7 +174,7 @@ class DescriptorAbstractTest extends MockeryTestCase
      */
     public function testGetCopyRight() : void
     {
-        /** @var m\MockInterface|DescriptorAbstract */
+        /** @var m\MockInterface|DescriptorAbstract $mock */
         $mock = m::mock(
             'phpDocumentor\Descriptor\DescriptorAbstract, phpDocumentor\Descriptor\Interfaces\ChildInterface'
         );

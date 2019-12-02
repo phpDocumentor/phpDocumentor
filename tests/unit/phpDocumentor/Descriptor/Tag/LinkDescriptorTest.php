@@ -10,6 +10,7 @@ declare(strict_types=1);
  *
  * @link http://phpdoc.org
  */
+
 namespace phpDocumentor\Descriptor\Tag;
 
 use Mockery\Adapter\Phpunit\MockeryTestCase;
@@ -17,7 +18,7 @@ use Mockery\Adapter\Phpunit\MockeryTestCase;
 /**
  * Tests the functionality for the LinkDescriptor class.
  */
-class LinkDescriptorTest extends MockeryTestCase
+final class LinkDescriptorTest extends MockeryTestCase
 {
     public const EXAMPLE_LINK = 'http://phpdoc.org';
 

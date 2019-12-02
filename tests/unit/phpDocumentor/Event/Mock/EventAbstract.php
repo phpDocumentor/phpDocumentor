@@ -10,6 +10,7 @@ declare(strict_types=1);
  *
  * @link http://phpdoc.org
  */
+
 namespace phpDocumentor\Event\Mock;
 
 use phpDocumentor\Event\EventAbstract as BaseClass;

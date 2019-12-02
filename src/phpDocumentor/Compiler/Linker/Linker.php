@@ -183,6 +183,7 @@ class Linker implements CompilerPassInterface
                     continue;
                 }
 
+                // TODO Can we find another solution for this?
                 $setter = 'set' . ucfirst($fieldName);
                 $item->{$setter}($response);
             }
@@ -276,6 +277,8 @@ class Linker implements CompilerPassInterface
     /**
      * Replaces pseudo-types, such as `self`, into a normalized version based on the last container that was
      * encountered.
+     *
+     * @todo can we remove the nullable from this somehow to make the method contents simpler
      */
     protected function replacePseudoTypes(string $fqsen, ?DescriptorAbstract $container) : string
     {

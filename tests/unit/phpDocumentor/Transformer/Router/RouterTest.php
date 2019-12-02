@@ -35,14 +35,8 @@ final class RouterTest extends MockeryTestCase
 
         $urlGenerator = m::mock(UrlGeneratorInterface::class);
         $converter    = new QualifiedNameToUrlConverter();
-        $builder      = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
-        $builder
-            ->shouldReceive('getProjectDescriptor->getIndexes->get')
-            ->with('elements')
-            ->andReturn($this->elementCollection);
 
         $this->fixture = new Router(
-            $builder,
             new UrlGenerator\FqsenDescriptor($urlGenerator, $converter),
             $converter,
             $urlGenerator

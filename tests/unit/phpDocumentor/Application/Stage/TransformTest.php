@@ -14,6 +14,7 @@ use phpDocumentor\Transformer\Template\Collection;
 use phpDocumentor\Transformer\Transformer;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\ProphecyMock;
 use Psr\Log\LoggerInterface;
 use const DIRECTORY_SEPARATOR;
 use function getcwd;
@@ -24,11 +25,22 @@ use function getcwd;
  */
 final class TransformTest extends TestCase
 {
+    /** @var ProjectDescriptorBuilder|ProphecyMock */
     private $projectDescriptorBuilder;
+
+    /** @var Transformer|ProphecyMock */
     private $transformer;
+
+    /** @var Compiler */
     private $compiler;
+
+    /** @var LoggerInterface|ProphecyMock */
     private $logger;
+
+    /** @var ExampleFinder|ProphecyMock */
     private $exampleFinder;
+
+    /** @var Transform */
     private $transform;
 
     public function setUp() : void

@@ -25,7 +25,10 @@ use function strpos;
  */
 class FqsenDescriptor implements UrlGenerator
 {
+    /** @var UrlGeneratorInterface */
     private $urlGenerator;
+
+    /** @var QualifiedNameToUrlConverter */
     private $converter;
 
     public function __construct(UrlGeneratorInterface $urlGenerator, QualifiedNameToUrlConverter $converter)
