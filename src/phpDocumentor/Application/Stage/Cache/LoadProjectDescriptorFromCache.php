@@ -23,7 +23,7 @@ final class LoadProjectDescriptorFromCache
         $this->logger           = $logger;
     }
 
-    public function __invoke(Payload $payload)
+    public function __invoke(Payload $payload) : Payload
     {
         $configuration = $payload->getConfig();
         if ($configuration['phpdocumentor']['use-cache']) {

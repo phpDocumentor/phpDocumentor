@@ -80,7 +80,7 @@ final class Transform
     /**
      * Executes the business logic involved with this command.
      *
-     * @throws Exception if the target location is not a folder.
+     * @throws Exception If the target location is not a folder.
      */
     public function __invoke(Payload $payload) : Payload
     {

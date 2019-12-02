@@ -19,8 +19,13 @@ use Symfony\Component\Cache\Adapter\AdapterInterface;
 
 final class PurgeCachesWhenForced
 {
+    /** @var AdapterInterface  */
     private $filesCache;
+
+    /** @var AdapterInterface  */
     private $descriptorsCache;
+
+    /** @var LoggerInterface  */
     private $logger;
 
     public function __construct(
@@ -28,12 +33,12 @@ final class PurgeCachesWhenForced
         AdapterInterface $descriptorsCache,
         LoggerInterface $logger
     ) {
-        $this->filesCache       = $filesCache;
+        $this->filesCache = $filesCache;
         $this->descriptorsCache = $descriptorsCache;
-        $this->logger           = $logger;
+        $this->logger = $logger;
     }
 
-    public function __invoke(Payload $payload)
+    public function __invoke(Payload $payload) : Payload
     {
         $this->logger->info('Checking whether to purge cache');
         if (!$payload->getConfig()['phpdocumentor']['use-cache']) {

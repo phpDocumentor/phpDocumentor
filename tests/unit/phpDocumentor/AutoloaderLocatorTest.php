@@ -81,7 +81,6 @@ final class AutoloaderLocatorTest extends TestCase
         ],
     ];
 
-
     public function testAutoloadAtDefaultLocation() : void
     {
         vfsStream::setup('root', null, $this->standaloneStructure);

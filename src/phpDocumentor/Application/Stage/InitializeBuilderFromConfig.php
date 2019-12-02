@@ -8,7 +8,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Application\Stage;
@@ -17,6 +17,7 @@ use phpDocumentor\Descriptor\Collection as PartialsCollection;
 
 final class InitializeBuilderFromConfig
 {
+    /** @var PartialsCollection */
     private $partials;
 
     public function __construct(PartialsCollection $partials)
@@ -24,7 +25,7 @@ final class InitializeBuilderFromConfig
         $this->partials = $partials;
     }
 
-    public function __invoke(Payload $payload)
+    public function __invoke(Payload $payload) : Payload
     {
         $configuration = $payload->getConfig();
 

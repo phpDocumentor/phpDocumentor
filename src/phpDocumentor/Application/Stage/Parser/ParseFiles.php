@@ -8,7 +8,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Application\Stage\Parser;
@@ -23,10 +23,13 @@ final class ParseFiles
 {
     /** @var Parser */
     private $parser;
+
     /** @var LoggerInterface */
     private $logger;
+
     /** @var AdapterInterface */
     private $filesCache;
+
     /** @var AdapterInterface */
     private $descriptorsCache;
 
@@ -36,13 +39,13 @@ final class ParseFiles
         AdapterInterface $filesCache,
         AdapterInterface $descriptorsCache
     ) {
-        $this->parser           = $parser;
-        $this->logger           = $logger;
-        $this->filesCache       = $filesCache;
+        $this->parser = $parser;
+        $this->logger = $logger;
+        $this->filesCache = $filesCache;
         $this->descriptorsCache = $descriptorsCache;
     }
 
-    public function __invoke(Payload $payload)
+    public function __invoke(Payload $payload) : Payload
     {
         /*
          * For now settings of the first api are used.
@@ -80,7 +83,7 @@ final class ParseFiles
     /**
      * Dispatches a logging request.
      *
-     * @param string   $priority   The logging priority as declared in the LogLevel PSR-3 class.
+     * @param string $priority The logging priority as declared in the LogLevel PSR-3 class.
      * @param string[] $parameters
      */
     private function log(string $message, string $priority = LogLevel::INFO, array $parameters = []) : void

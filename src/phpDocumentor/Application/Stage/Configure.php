@@ -8,7 +8,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Application\Stage;
@@ -24,8 +24,13 @@ use function sprintf;
 
 final class Configure
 {
+    /** @var ConfigurationFactory */
     private $configFactory;
+
+    /** @var Configuration */
     private $configuration;
+
+    /** @var LoggerInterface */
     private $logger;
 
     public function __construct(
@@ -35,7 +40,7 @@ final class Configure
     ) {
         $this->configFactory = $configFactory;
         $this->configuration = $configuration;
-        $this->logger        = $logger;
+        $this->logger = $logger;
     }
 
     /**

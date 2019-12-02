@@ -8,7 +8,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Application\Stage\Parser;
@@ -30,10 +30,10 @@ final class CollectFiles
     public function __construct(FileCollector $fileCollector, LoggerInterface $logger)
     {
         $this->fileCollector = $fileCollector;
-        $this->logger        = $logger;
+        $this->logger = $logger;
     }
 
-    public function __invoke(Payload $payload)
+    public function __invoke(Payload $payload) : Payload
     {
         foreach ($payload->getApiConfigs() as $apiConfig) {
             $this->log('Collecting files from ' . $apiConfig['source']['dsn']);
@@ -74,7 +74,7 @@ final class CollectFiles
     /**
      * Dispatches a logging request.
      *
-     * @param string   $priority   The logging priority as declared in the LogLevel PSR-3 class.
+     * @param string $priority The logging priority as declared in the LogLevel PSR-3 class.
      * @param string[] $parameters
      */
     private function log(string $message, string $priority = LogLevel::INFO, array $parameters = []) : void

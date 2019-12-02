@@ -16,14 +16,20 @@
 
         <!-- Should be removed/fixed again once we pass the round of checks -->
         <exclude name="Squiz.Commenting.FunctionComment.SpacingAfterParamType" />
+        <exclude name="Squiz.Commenting.FunctionComment.SpacingAfterParamName" />
         <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingTraversableParameterTypeHintSpecification" />
         <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingTraversablePropertyTypeHintSpecification" />
         <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingTraversableReturnTypeHintSpecification" />
         <exclude name="SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint" />
+        <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint" />
     </rule>
 
     <rule ref="Squiz.Classes.ValidClassName.NotCamelCaps">
         <exclude-pattern>*/src/*_.php</exclude-pattern>
+    </rule>
+
+    <rule ref="SlevomatCodingStandard.Namespaces.UnusedUses.MismatchingCaseSensitivity">
+        <exclude-pattern>*/src/*/*Assembler*.php</exclude-pattern>
     </rule>
 
     <rule ref="SlevomatCodingStandard.Classes.SuperfluousExceptionNaming.SuperfluousSuffix">

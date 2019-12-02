@@ -13,13 +13,14 @@ declare(strict_types=1);
 
 namespace phpDocumentor;
 
+use Composer\Autoload\ClassLoader;
 use function file_exists;
 use function file_get_contents;
 use function json_decode;
 
 final class AutoloaderLocator
 {
-    public static function autoload()
+    public static function autoload() : ClassLoader
     {
         return require static::findVendorPath() . '/autoload.php';
     }
@@ -48,13 +49,14 @@ final class AutoloaderLocator
         $vendorDir = $baseDir . '/../../vendor';
         // Composerised installation, vendor/phpdocumentor/phpdocumentor/src/phpDocumentor is __DIR__
         $rootFolderWhenInstalledWithComposer = $baseDir . '/../../../../../';
-        $composerConfigurationPath           = $rootFolderWhenInstalledWithComposer . 'composer.json';
+        $composerConfigurationPath = $rootFolderWhenInstalledWithComposer . 'composer.json';
         if (file_exists($composerConfigurationPath)) {
             $vendorDir = $rootFolderWhenInstalledWithComposer
                 . self::getCustomVendorPathFromComposer($composerConfigurationPath);
         }
         return $vendorDir;
     }
+
     /**
      * Retrieves the custom vendor-dir from the given composer.json or returns 'vendor'.
      *
