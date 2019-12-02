@@ -19,8 +19,8 @@ use League\Flysystem\Adapter\AbstractAdapter;
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Dsn;
-use function sys_get_temp_dir;
 use const DIRECTORY_SEPARATOR;
+use function sys_get_temp_dir;
 
 /**
  * @coversDefaultClass \phpDocumentor\Parser\FlySystemFactory

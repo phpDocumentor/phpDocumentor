@@ -22,10 +22,11 @@ use function array_unique;
 use function count;
 use function current;
 use function explode;
+use function is_array;
 
 final class CommandlineOptionsMiddleware
 {
-    /** @var string[] */
+    /** @var mixed[] */
     private $options = [];
 
     public function __construct(array $options = [])
@@ -137,8 +138,13 @@ final class CommandlineOptionsMiddleware
 
     private function setDirectoriesInPath(array $version) : array
     {
-        if (!isset($this->options['directory']) || !$this->options['directory']) {
+        $directory = $this->options['directory'] ?? null;
+        if ($directory === null) {
             return $version;
+        }
+
+        if (!is_array($directory)) {
+            $directory = [$directory];
         }
 
         $currentApiConfig = current($this->createDefaultApiSettings());
@@ -149,16 +155,16 @@ final class CommandlineOptionsMiddleware
 
         //Reset the current config, because directory it overwriting the config.
         $currentApiConfig['source']['paths'] = [];
-        $version['api']                      = [];
+        $version['api'] = [];
 
-        foreach ($this->options['directory'] as $path) {
+        foreach ($directory as $path) {
             //If the passed directory is an absolute path this should be handled as a new Api
             //A version may contain multiple APIs.
             if (Path::isAbsolutePath($path)) {
-                $apiConfig                    = $currentApiConfig;
-                $apiConfig['source']['dsn']   = new Dsn($path);
-                $apiConfig['source']['paths'] = [ new Path('./')];
-                $version['api'][]             = $apiConfig;
+                $apiConfig = $currentApiConfig;
+                $apiConfig['source']['dsn'] = new Dsn($path);
+                $apiConfig['source']['paths'] = [new Path('./')];
+                $version['api'][] = $apiConfig;
             } else {
                 $currentApiConfig['source']['paths'][] = new Path($path);
             }
@@ -238,8 +244,13 @@ final class CommandlineOptionsMiddleware
 
     private function overwriteVisibility(array $version) : array
     {
-        if (!isset($this->options['visibility']) || !$this->options['visibility']) {
+        $visibilityFlags = $this->options['visibility'] ?? null;
+        if ($visibilityFlags === null) {
             return $version;
+        }
+
+        if (!is_array($visibilityFlags)) {
+            $visibilityFlags = [$visibilityFlags];
         }
 
         if (!isset($version['api'])) {
@@ -247,10 +258,10 @@ final class CommandlineOptionsMiddleware
         }
 
         $visibilities = [];
-        foreach ($this->options['visibility'] as $visibility) {
+        foreach ($visibilityFlags as $visibility) {
             $visibilities = array_merge($visibilities, explode(',', $visibility));
         }
-        $visibilities                    = array_unique($visibilities);
+        $visibilities = array_unique($visibilities);
         $version['api'][0]['visibility'] = $visibilities;
 
         return $version;

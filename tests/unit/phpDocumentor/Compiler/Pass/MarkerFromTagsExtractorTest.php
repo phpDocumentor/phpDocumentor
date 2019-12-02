@@ -21,13 +21,13 @@ use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
 
-class MarkerFromTagsExtractorTest extends MockeryTestCase
+final class MarkerFromTagsExtractorTest extends MockeryTestCase
 {
     /** @var MarkerFromTagsExtractor */
-    protected $fixture;
+    private $fixture;
 
     /** @var ProjectDescriptor */
-    protected $project;
+    private $project;
 
     /**
      * Initialize the fixture for this test.
@@ -118,7 +118,8 @@ class MarkerFromTagsExtractorTest extends MockeryTestCase
     /**
      * Adds a class descriptor to the project's elements and add a parent file.
      */
-    protected function givenProjectHasClassDescriptorAssociatedWithFile(?FileDescriptor $fileDescriptor
+    private function givenProjectHasClassDescriptorAssociatedWithFile(
+        ?FileDescriptor $fileDescriptor
     ) : ClassDescriptor {
         $classDescriptor = new ClassDescriptor();
         if ($fileDescriptor) {

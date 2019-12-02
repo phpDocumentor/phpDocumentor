@@ -56,9 +56,7 @@ final class AutoloaderLocatorTest extends TestCase
         ],
     ];
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $customVendorDirComposer = '{
     "config": {
         "vendor-dir": "custom-vendor"

@@ -10,6 +10,7 @@ declare(strict_types=1);
  *
  * @link http://phpdoc.org
  */
+
 namespace phpDocumentor\Transformer\Writer;
 
 use Mockery as m;
@@ -21,16 +22,16 @@ use stdClass;
 /**
  * Test class for phpDocumentor\Transformer\Writer\Collection
  */
-class CollectionTest extends MockeryTestCase
+final class CollectionTest extends MockeryTestCase
 {
     /** @var MockInterface|Router */
-    protected $routers;
+    private $routers;
 
     /** @var MockInterface|WriterAbstract */
-    protected $writer;
+    private $writer;
 
     /** @var Collection */
-    protected $fixture;
+    private $fixture;
 
     /**
      * Initializes the fixture and dependencies for this testcase.
@@ -38,7 +39,7 @@ class CollectionTest extends MockeryTestCase
     protected function setUp() : void
     {
         $this->routers = m::mock(Router::class);
-        $this->writer  = m::mock(WriterAbstract::class);
+        $this->writer = m::mock(WriterAbstract::class);
         $this->fixture = new Collection($this->routers);
     }
 

@@ -10,6 +10,7 @@ declare(strict_types=1);
  *
  * @link http://phpdoc.org
  */
+
 namespace phpDocumentor\Transformer;
 
 use Mockery as m;
@@ -20,17 +21,15 @@ use const DIRECTORY_SEPARATOR;
 use function strlen;
 
 /**
- * Test class for \phpDocumentor\Transformer\Transformer.
- *
- * @covers \phpDocumentor\Transformer\Transformer
+ * @coversDefaultClass \phpDocumentor\Transformer\Transformer
  */
-class TransformerTest extends MockeryTestCase
+final class TransformerTest extends MockeryTestCase
 {
     /** @var int Max length of description printed. */
-    protected static $MAX_DESCRIPTION_LENGTH = 68;
+    private static $MAX_DESCRIPTION_LENGTH = 68;
 
     /** @var Transformer $fixture */
-    protected $fixture = null;
+    private $fixture = null;
 
     /**
      * Instantiates a new \phpDocumentor\Transformer for use as fixture.
@@ -46,7 +45,7 @@ class TransformerTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Transformer::__construct
+     * @covers ::__construct
      */
     public function testInitialization() : void
     {
@@ -60,8 +59,8 @@ class TransformerTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Transformer::getTarget
-     * @covers \phpDocumentor\Transformer\Transformer::setTarget
+     * @covers ::getTarget
+     * @covers ::setTarget
      */
     public function testSettingAndGettingATarget() : void
     {
@@ -73,7 +72,7 @@ class TransformerTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Transformer::setTarget
+     * @covers ::setTarget
      */
     public function testExceptionWhenSettingFileAsTarget() : void
     {
@@ -82,7 +81,7 @@ class TransformerTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Transformer::setTarget
+     * @covers ::setTarget
      */
     public function testExceptionWhenSettingExistingDirAsTarget() : void
     {
@@ -93,7 +92,7 @@ class TransformerTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Transformer::getTemplates
+     * @covers ::getTemplates
      */
     public function testRetrieveTemplateCollection() : void
     {
@@ -108,7 +107,7 @@ class TransformerTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Transformer::execute
+     * @covers ::execute
      */
     public function testExecute() : void
     {
@@ -146,7 +145,7 @@ class TransformerTest extends MockeryTestCase
      * Tests whether the generateFilename method returns a file according to
      * the right format.
      *
-     * @covers \phpDocumentor\Transformer\Transformer::generateFilename
+     * @covers ::generateFilename
      */
     public function testGenerateFilename() : void
     {
@@ -156,7 +155,7 @@ class TransformerTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Transformer::getDescription
+     * @covers ::getDescription
      */
     public function testGetDescription() : void
     {

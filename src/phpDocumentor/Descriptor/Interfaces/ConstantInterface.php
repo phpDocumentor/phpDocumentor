@@ -28,7 +28,7 @@ interface ConstantInterface extends ElementInterface, TypeInterface
     /**
      * Returns the types that may be present in this constant.
      *
-     * @return array[]
+     * @return Type[]
      */
     public function getTypes() : array;
 

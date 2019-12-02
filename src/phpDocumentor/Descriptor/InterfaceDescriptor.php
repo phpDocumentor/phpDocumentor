@@ -75,13 +75,6 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
      */
     public function getInheritedConstants() : Collection
     {
-        if ($this->getParent() === null
-            || !$this->getParent() instanceof Collection
-            || $this->getParent()->count() === 0
-        ) {
-            return new Collection();
-        }
-
         $inheritedConstants = new Collection();
 
         /** @var self $parent */
@@ -118,13 +111,6 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
      */
     public function getInheritedMethods() : Collection
     {
-        if ($this->getParent() === null
-            || !$this->getParent() instanceof Collection
-            || $this->getParent()->count() === 0
-        ) {
-            return new Collection();
-        }
-
         $inheritedMethods = new Collection();
 
         /** @var self $parent */

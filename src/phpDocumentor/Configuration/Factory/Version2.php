@@ -116,7 +116,7 @@ final class Version2 implements Strategy
     public function supports(SimpleXMLElement $phpDocumentor) : bool
     {
         return isset($phpDocumentor->attributes()->version) === false
-            || $phpDocumentor->attributes()->version === '2';
+            || ((string) $phpDocumentor->attributes()->version) === '2';
     }
 
     /**

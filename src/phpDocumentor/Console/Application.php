@@ -84,7 +84,9 @@ final class Application extends BaseApplication
     private function detectVersion() : string
     {
         $version = static::VERSION;
-        if (static::VERSION === '@' . 'package_version' . '@') { //prevent replacing the version.
+
+        // prevent replacing the version by the PEAR building
+        if (sprintf('%s%s%s', '@', 'package_version', '@') === static::VERSION) {
             $version = trim(file_get_contents(__DIR__ . '/../../../VERSION'));
             try {
                 $version = PrettyVersions::getVersion(Versions::ROOT_PACKAGE_NAME)->getPrettyVersion();

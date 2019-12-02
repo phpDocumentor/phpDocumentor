@@ -10,13 +10,14 @@ declare(strict_types=1);
  *
  * @link http://phpdoc.org
  */
+
 namespace phpDocumentor\Transformer\Template;
 
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use org\bovigo\vfs\vfsStream;
 
-class FactoryTest extends MockeryTestCase
+final class FactoryTest extends MockeryTestCase
 {
     /** @var m\MockInterface|PathResolver */
     private $pathResolverMock;
@@ -44,7 +45,7 @@ class FactoryTest extends MockeryTestCase
     {
         // Arrange
         $templateName = 'clean';
-        $xml          = <<<'XML'
+        $xml = <<<'XML'
 <?xml version="1.0" encoding="utf-8"?>
 <template>
   <name>clean</name>
@@ -125,7 +126,7 @@ XML;
     {
         // Arrange
         $expected = ['template1', 'template2'];
-        $root     = vfsStream::setup('exampleDir');
+        $root = vfsStream::setup('exampleDir');
         $root->addChild(vfsStream::newDirectory($expected[0]));
         $root->addChild(vfsStream::newFile('aFile.txt'));
         $root->addChild(vfsStream::newDirectory($expected[1]));

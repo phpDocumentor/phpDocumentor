@@ -33,6 +33,7 @@
     </rule>
 
     <rule ref="SlevomatCodingStandard.Namespaces.UnusedUses.MismatchingCaseSensitivity">
+        <exclude-pattern>*/src/*/ResolveInlineLinkAndSeeTags.php</exclude-pattern>
         <exclude-pattern>*/src/*/*Assembler*.php</exclude-pattern>
     </rule>
 

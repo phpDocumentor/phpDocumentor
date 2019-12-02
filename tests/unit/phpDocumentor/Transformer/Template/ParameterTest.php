@@ -10,18 +10,18 @@ declare(strict_types=1);
  *
  * @link http://phpdoc.org
  */
+
 namespace phpDocumentor\Transformer\Template;
 
 use PHPUnit\Framework\TestCase;
 
 /**
- * Tests the functionality for the Parameter class.
  * @coversDefaultClass \phpDocumentor\Transformer\Template\Parameter
  */
-class ParameterTest extends TestCase
+final class ParameterTest extends TestCase
 {
     /** @var Parameter $fixture */
-    protected $fixture;
+    private $fixture;
 
     /**
      * Creates a new (empty) fixture object.
