@@ -157,7 +157,7 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
     }
 
     /**
-     * @var InterfaceDescriptor|Fqsen|null
+     * @return InterfaceDescriptor|Fqsen|null
      */
     public function getInheritedElement()
     {

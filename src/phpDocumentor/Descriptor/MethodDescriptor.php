@@ -8,7 +8,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor;
@@ -237,7 +237,7 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
      *    2. if a method is found with the same name; return the first one encountered.
      * 2. if the parent is a class and implements interfaces, check each interface for a method with the exact same
      *    name. If such a method is found, return the first hit.
-     * 
+     *
      * @return mixed|DescriptorAbstract|MethodDescriptor|null
      */
     public function getInheritedElement()

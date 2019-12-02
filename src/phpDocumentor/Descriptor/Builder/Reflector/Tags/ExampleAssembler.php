@@ -8,7 +8,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
@@ -40,10 +40,10 @@ class ExampleAssembler extends AssemblerAbstract
     /**
      * Creates a new Descriptor from the given Reflector.
      *
+     * @param Example $data
+     *
      * @throws InvalidArgumentException If the provided parameter is not of type ExampleTag; the interface won't let
      *   up typehint the signature.
-     *
-     * @param Example $data
      */
     public function create($data) : ExampleDescriptor
     {

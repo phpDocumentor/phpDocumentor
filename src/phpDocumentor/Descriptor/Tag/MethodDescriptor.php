@@ -8,7 +8,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor\Tag;
@@ -16,16 +16,19 @@ namespace phpDocumentor\Descriptor\Tag;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\TagDescriptor;
 
-class MethodDescriptor extends TagDescriptor
+final class MethodDescriptor extends TagDescriptor
 {
-    protected $methodName = '';
+    /** @var string */
+    private $methodName = '';
 
-    protected $arguments;
+    /** @var Collection */
+    private $arguments;
 
-    protected $response;
+    /** @var ?ReturnDescriptor */
+    private $response;
 
     /** @var bool */
-    protected $static;
+    private $static;
 
     public function __construct($name)
     {
@@ -39,7 +42,7 @@ class MethodDescriptor extends TagDescriptor
         $this->methodName = $methodName;
     }
 
-    public function getMethodName(): string
+    public function getMethodName() : string
     {
         return $this->methodName;
     }

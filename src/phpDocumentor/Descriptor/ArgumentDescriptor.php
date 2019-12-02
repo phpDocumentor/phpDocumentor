@@ -13,9 +13,10 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
+use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Type;
-use function trigger_error;
 use const E_USER_DEPRECATED;
+use function trigger_error;
 
 /**
  * Descriptor representing a single Argument of a method or function.
@@ -77,7 +78,7 @@ class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\Argume
     }
 
     /**
-     * @return mixed|DescriptorAbstract|\phpDocumentor\Reflection\Fqsen|string|null
+     * @return mixed|DescriptorAbstract|Fqsen|string|null
      */
     public function getInheritedElement()
     {

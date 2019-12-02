@@ -350,7 +350,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     }
 
     /**
-     * @var ClassDescriptor|Fqsen|null
+     * @return ClassDescriptor|Fqsen|null
      */
     public function getInheritedElement()
     {
