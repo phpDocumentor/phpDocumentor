@@ -139,7 +139,7 @@ final class CommandlineOptionsMiddleware
     private function setDirectoriesInPath(array $version) : array
     {
         $directory = $this->options['directory'] ?? null;
-        if ($directory === null) {
+        if (!$directory) {
             return $version;
         }
 
@@ -245,7 +245,7 @@ final class CommandlineOptionsMiddleware
     private function overwriteVisibility(array $version) : array
     {
         $visibilityFlags = $this->options['visibility'] ?? null;
-        if ($visibilityFlags === null) {
+        if (!$visibilityFlags) {
             return $version;
         }
 

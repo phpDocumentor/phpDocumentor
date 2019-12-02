@@ -46,7 +46,7 @@ final class CollectFiles
 
                     return $value;
                 },
-                $apiConfig['ignore']['paths']
+                $apiConfig['ignore']['paths'] ?? []
             );
 
             $files = $this->fileCollector->getFiles(
