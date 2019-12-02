@@ -8,7 +8,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Transformer;
@@ -29,25 +29,25 @@ use function preg_match;
 final class Template implements ArrayAccess, Countable, IteratorAggregate
 {
     /** @var string Name for this template */
-    protected $name = null;
+    private $name = null;
 
     /** @var string The name and optionally mail address of the author, i.e. `Mike van Riel <me@mikevanriel.com>`. */
-    protected $author = '';
+    private $author = '';
 
     /** @var string The version of the template according to semantic versioning, i.e. 1.2.0 */
-    protected $version = '';
+    private $version = '';
 
     /** @var string A free-form copyright notice. */
-    protected $copyright = '';
+    private $copyright = '';
 
     /** @var string a text providing more information on this template. */
-    protected $description = '';
+    private $description = '';
 
     /** @var Transformation[] A series of transformations to execute in sequence during transformation. */
-    protected $transformations = [];
+    private $transformations = [];
 
     /** @var Parameter[] Global parameters that are passed to each transformation. */
-    protected $parameters = [];
+    private $parameters = [];
 
     /**
      * Initializes this object with a name and optionally with contents.
@@ -154,8 +154,8 @@ final class Template implements ArrayAccess, Countable, IteratorAggregate
     /**
      * Sets a transformation at the given offset.
      *
-     * @param int|string     $offset The offset to place the value at.
-     * @param Transformation $value  The transformation to add to this template.
+     * @param int|string $offset The offset to place the value at.
+     * @param Transformation $value The transformation to add to this template.
      *
      * @throws InvalidArgumentException if an invalid item was received
      */

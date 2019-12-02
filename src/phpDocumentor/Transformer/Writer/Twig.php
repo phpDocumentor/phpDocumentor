@@ -8,7 +8,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Transformer\Writer;
@@ -83,13 +83,15 @@ use function substr;
  */
 final class Twig extends WriterAbstract
 {
+    /** @var EnvironmentFactory */
     private $environmentFactory;
+    /** @var Router */
     private $router;
 
     public function __construct(EnvironmentFactory $environmentFactory, Router $router)
     {
         $this->environmentFactory = $environmentFactory;
-        $this->router             = $router;
+        $this->router = $router;
     }
 
     protected function router() : ?Router
@@ -101,8 +103,8 @@ final class Twig extends WriterAbstract
      * This method combines the ProjectDescriptor and the given target template
      * and creates a static html page at the artifact location.
      *
-     * @param ProjectDescriptor $project        Document containing the structure.
-     * @param Transformation    $transformation Transformation to execute.
+     * @param ProjectDescriptor $project Document containing the structure.
+     * @param Transformation $transformation Transformation to execute.
      *
      * @throws LoaderError
      * @throws RuntimeError
@@ -113,7 +115,7 @@ final class Twig extends WriterAbstract
         $template_path = $this->getTemplatePath($transformation);
 
         $finder = new Pathfinder();
-        $nodes  = $finder->find($project, $transformation->getQuery());
+        $nodes = $finder->find($project, $transformation->getQuery());
 
         foreach ($nodes as $node) {
             if (!$node) {

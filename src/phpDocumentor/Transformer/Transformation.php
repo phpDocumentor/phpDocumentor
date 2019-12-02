@@ -27,35 +27,35 @@ use function trigger_error;
 class Transformation
 {
     /** @var string Reference to an object containing the business logic used to execute this transformation. */
-    protected $writer = null;
+    private $writer = null;
 
     /** @var string the location where the output should be sent to; the exact function differs per writer. */
-    protected $artifact = '';
+    private $artifact = '';
 
     /** @var string the location where input for a writer should come from; the exact function differs per writer. */
-    protected $source = '';
+    private $source = '';
 
     /**
      * @var string a filter or other form of limitation on what information of the AST is used; the exact function
      *     differs per writer.
      */
-    protected $query = '';
+    private $query = '';
 
     /** @var Transformer The object guiding the transformation process and having meta-data of it. */
-    protected $transformer;
+    private $transformer;
 
     /**
      * @var Parameter[] A series of parameters that can influence what the writer does; the exact function differs
      *     per writer.
      */
-    protected $parameters = [];
+    private $parameters = [];
 
     /**
      * Constructs a new Transformation object and populates the required parameters.
      *
-     * @param string $query    What information to use as datasource for the writer's source.
-     * @param string $writer   What type of transformation to apply (PDF, Twig etc).
-     * @param string $source   Which template or type of source to use.
+     * @param string $query What information to use as datasource for the writer's source.
+     * @param string $writer What type of transformation to apply (PDF, Twig etc).
+     * @param string $source Which template or type of source to use.
      * @param string $artifact What is the filename of the result (relative to the generated root)
      */
     public function __construct(string $query, string $writer, string $source, string $artifact)
@@ -132,7 +132,7 @@ class Transformation
      * 3. Otherwise prepend it with the phpDocumentor data folder, if that does
      *    not exist: throw an exception
      *
-     * @throws Exception if no valid file could be found.
+     * @throws Exception If no valid file could be found.
      */
     public function getSourceAsPath() : string
     {
@@ -217,7 +217,7 @@ class Transformation
      *
      * @return Parameter[]
      */
-    public function getParameters()
+    public function getParameters() : array
     {
         return $this->parameters;
     }
@@ -246,7 +246,7 @@ class Transformation
      *
      * @return Parameter[]
      */
-    public function getParametersWithKey(string $name)
+    public function getParametersWithKey(string $name) : array
     {
         $parameters = [];
 

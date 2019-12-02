@@ -8,7 +8,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Transformer\Writer;
@@ -46,7 +46,7 @@ abstract class WriterAbstract
      * If one of the requirements is missing for this Writer then an exception of type RequirementMissing
      * should be thrown; this indicates to the calling process that this writer will not function.
      *
-     * @throws Exception\RequirementMissing when a requirements is missing stating which one.
+     * @throws Exception\RequirementMissing When a requirements is missing stating which one.
      */
     public function checkRequirements() : void
     {
@@ -56,7 +56,7 @@ abstract class WriterAbstract
     /**
      * Checks if there is a space in the path.
      *
-     * @throws InvalidArgumentException if path contains a space.
+     * @throws InvalidArgumentException If path contains a space.
      */
     protected function checkForSpacesInPath(string $path) : void
     {
@@ -68,8 +68,8 @@ abstract class WriterAbstract
     /**
      * Abstract definition of the transformation method.
      *
-     * @param ProjectDescriptor $project        Document containing the structure.
-     * @param Transformation    $transformation Transformation to execute.
+     * @param ProjectDescriptor $project Document containing the structure.
+     * @param Transformation $transformation Transformation to execute.
      */
     abstract public function transform(ProjectDescriptor $project, Transformation $transformation) : void;
 
@@ -94,8 +94,8 @@ abstract class WriterAbstract
      *
      * @return string|null returns the destination location or false if generation should be aborted.
      *
-     * @throws InvalidArgumentException if no artifact is provided and no routing rule matches.
-     * @throws UnexpectedValueException if the provided node does not contain anything.
+     * @throws InvalidArgumentException If no artifact is provided and no routing rule matches.
+     * @throws UnexpectedValueException If the provided node does not contain anything.
      */
     public function destination(Descriptor $descriptor, Transformation $transformation) : ?string
     {
@@ -124,7 +124,7 @@ abstract class WriterAbstract
                 . str_replace('/', DIRECTORY_SEPARATOR, $url);
         }
 
-        $finder      = new Pathfinder();
+        $finder = new Pathfinder();
         $destination = preg_replace_callback(
             '/{{([^}]+)}}/', // explicitly do not use the unicode modifier; this breaks windows
             static function ($query) use ($descriptor, $finder) {

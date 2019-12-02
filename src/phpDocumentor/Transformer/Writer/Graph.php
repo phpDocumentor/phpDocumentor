@@ -8,7 +8,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Transformer\Writer;
@@ -26,12 +26,12 @@ use phpDocumentor\GraphViz\Node;
 use phpDocumentor\Transformer\Transformation;
 use RuntimeException;
 use Throwable;
+use const DIRECTORY_SEPARATOR;
 use function array_merge;
 use function array_pop;
 use function exec;
 use function explode;
 use function ucfirst;
-use const DIRECTORY_SEPARATOR;
 
 /**
  * Writer responsible for generating various graphs.
@@ -45,16 +45,16 @@ use const DIRECTORY_SEPARATOR;
  *
  * @todo Fix this class
  */
-class Graph extends WriterAbstract
+final class Graph extends WriterAbstract
 {
     /** @var string Name of the font to use to display the node labels with */
-    protected $nodeFont = 'Courier';
+    private $nodeFont = 'Courier';
 
     /** @var Node[] a cache where nodes for classes, interfaces and traits are stored for reference */
-    protected $nodeCache = [];
+    private $nodeCache = [];
 
     /** @var GraphVizGraph[] */
-    protected $namespaceCache = [];
+    private $namespaceCache = [];
 
     /**
      * Invokes the query method contained in this class.
@@ -184,7 +184,7 @@ class Graph extends WriterAbstract
         return null;
     }
 
-    protected function createNamespaceGraph($fqcn)
+    protected function createNamespaceGraph(string $fqcn) : ?GraphVizGraph
     {
         $namespaceParts = explode('\\', $fqcn);
 
@@ -276,7 +276,7 @@ class Graph extends WriterAbstract
         $graph->addGraph($sub_graph);
     }
 
-    protected function getDestinationPath(Transformation $transformation)
+    private function getDestinationPath(Transformation $transformation) : string
     {
         return $transformation->getTransformer()->getTarget()
             . DIRECTORY_SEPARATOR . $transformation->getArtifact();
@@ -285,9 +285,9 @@ class Graph extends WriterAbstract
     /**
      * Checks whether GraphViz is installed and throws an Exception otherwise.
      *
-     * @throws RuntimeException if graphviz is not found.
+     * @throws RuntimeException If graphviz is not found.
      */
-    protected function checkIfGraphVizIsInstalled() : void
+    private function checkIfGraphVizIsInstalled() : void
     {
         // NOTE: the -V flag sends output using STDERR and STDOUT
         exec('dot -V 2>&1', $output, $error);
@@ -299,10 +299,7 @@ class Graph extends WriterAbstract
         }
     }
 
-    /**
-     * @return mixed
-     */
-    protected function createGraphForNamespace(string $full_namespace_name, string $label)
+    private function createGraphForNamespace(string $full_namespace_name, string $label) : GraphVizGraph
     {
         return GraphVizGraph::create('cluster_' . $full_namespace_name)
             ->setLabel($label)

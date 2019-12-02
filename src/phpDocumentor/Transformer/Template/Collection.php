@@ -8,7 +8,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Transformer\Template;
@@ -35,7 +35,7 @@ class Collection extends ArrayObject
     public function __construct(Factory $factory, WriterCollection $writerCollection)
     {
         parent::__construct([]);
-        $this->factory          = $factory;
+        $this->factory = $factory;
         $this->writerCollection = $writerCollection;
     }
 
@@ -64,7 +64,7 @@ class Collection extends ArrayObject
      *
      * @return Transformation[]
      */
-    public function getTransformations()
+    public function getTransformations() : array
     {
         $result = [];
         foreach ($this as $template) {

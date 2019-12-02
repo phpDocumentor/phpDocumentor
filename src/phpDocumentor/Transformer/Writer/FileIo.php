@@ -8,7 +8,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Transformer\Writer;
@@ -42,10 +42,10 @@ class FileIo extends WriterAbstract
     /**
      * Invokes the query method contained in this class.
      *
-     * @param ProjectDescriptor $project        Document containing the structure.
-     * @param Transformation    $transformation Transformation to execute.
+     * @param ProjectDescriptor $project Document containing the structure.
+     * @param Transformation $transformation Transformation to execute.
      *
-     * @throws InvalidArgumentException if the query is not supported.
+     * @throws InvalidArgumentException If the query is not supported.
      */
     public function transform(ProjectDescriptor $project, Transformation $transformation) : void
     {

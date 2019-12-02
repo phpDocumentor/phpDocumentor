@@ -8,7 +8,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Transformer\Template;
@@ -23,14 +23,15 @@ use function rtrim;
 
 class PathResolver
 {
+    /** @var string */
     private $templatePath;
 
-    public function __construct($templatePath)
+    public function __construct(string $templatePath)
     {
         $this->templatePath = $templatePath;
     }
 
-    public function resolve($nameOrPath)
+    public function resolve(string $nameOrPath) : string
     {
         $path = null;
 
@@ -41,9 +42,9 @@ class PathResolver
         // templates should they choose to.
         $configPath = rtrim($nameOrPath, DIRECTORY_SEPARATOR) . '/template.xml';
         if (file_exists($configPath) && is_readable($configPath)) {
-            $path             = rtrim($nameOrPath, DIRECTORY_SEPARATOR);
+            $path = rtrim($nameOrPath, DIRECTORY_SEPARATOR);
             $templateNamePart = basename($path);
-            $cachePath        = rtrim($this->templatePath, '/\\') . DIRECTORY_SEPARATOR . $templateNamePart;
+            $cachePath = rtrim($this->templatePath, '/\\') . DIRECTORY_SEPARATOR . $templateNamePart;
 
             // move the files to a cache location and then change the path
             // variable to match the new location

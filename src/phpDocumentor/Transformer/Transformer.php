@@ -8,7 +8,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Transformer;
@@ -26,7 +26,6 @@ use phpDocumentor\Transformer\Writer\Initializable;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
-use const DIRECTORY_SEPARATOR;
 use function in_array;
 use function is_dir;
 use function is_writable;
@@ -36,6 +35,7 @@ use function sprintf;
 use function str_replace;
 use function substr;
 use function trim;
+use const DIRECTORY_SEPARATOR;
 
 /**
  * Core class responsible for transforming the cache file to a set of artifacts.
@@ -69,6 +69,7 @@ class Transformer implements CompilerPassInterface
     /** @var Transformation[] $transformations */
     protected $transformations = [];
 
+    /** @var LoggerInterface */
     private $logger;
 
     /**
@@ -80,8 +81,8 @@ class Transformer implements CompilerPassInterface
         LoggerInterface $logger
     ) {
         $this->templates = $templateCollection;
-        $this->writers   = $writerCollection;
-        $this->logger    = $logger;
+        $this->writers = $writerCollection;
+        $this->logger = $logger;
     }
 
     public function getDescription() : string
@@ -94,7 +95,7 @@ class Transformer implements CompilerPassInterface
      *
      * @param string $target The target location where to output the artifacts.
      *
-     * @throws InvalidArgumentException if the target is not a valid writable directory.
+     * @throws InvalidArgumentException If the target is not a valid writable directory.
      */
     public function setTarget(string $target) : void
     {
@@ -212,7 +213,7 @@ class Transformer implements CompilerPassInterface
             }
 
             $isInitialized[] = $writerName;
-            $writer          = $this->writers[$writerName];
+            $writer = $this->writers[$writerName];
             $this->initializeWriter($writer, $project);
         }
     }
@@ -237,7 +238,7 @@ class Transformer implements CompilerPassInterface
     {
         /** @var WriterInitializationEvent $instance */
         $instance = WriterInitializationEvent::createInstance($this);
-        $event    = $instance->setWriter($writer);
+        $event = $instance->setWriter($writer);
         Dispatcher::getInstance()->dispatch($event, self::EVENT_PRE_INITIALIZATION);
 
         if ($writer instanceof Initializable) {

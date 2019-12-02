@@ -8,7 +8,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Transformer\Writer;
@@ -28,7 +28,7 @@ use function preg_match;
 class Collection extends ArrayObject
 {
     /** @var Router A series of routers, in order of importance, that are used to generate urls with */
-    protected $router;
+    private $router;
 
     /**
      * Initializes this writer collection with the necessary requirements.
@@ -45,13 +45,12 @@ class Collection extends ArrayObject
     /**
      * Registers a writer with a given name.
      *
-     * @param string         $index  a Writer's name, must be at least 3
+     * @param string $index a Writer's name, must be at least 3
      *      characters, alphanumeric and/or contain one or more hyphens,
      *      underscores and forward slashes.
      * @param WriterAbstract $newval The Writer object to register to this name.
      *
-     * @throws InvalidArgumentException if either of the above restrictions is
-     *     not met.
+     * @throws InvalidArgumentException If either of the above restrictions is not met.
      */
     public function offsetSet($index, $newval) : void
     {
@@ -76,7 +75,7 @@ class Collection extends ArrayObject
      *
      * @param string $index the name of the writer to retrieve.
      *
-     * @throws InvalidArgumentException if the writer is not in the collection.
+     * @throws InvalidArgumentException If the writer is not in the collection.
      */
     public function offsetGet($index) : WriterAbstract
     {
@@ -90,7 +89,7 @@ class Collection extends ArrayObject
     /**
      * Iterates over each writer in this collection and checks its requirements.
      *
-     * @throws Exception\RequirementMissing if a requirement of a writer is missing.
+     * @throws Exception\RequirementMissing If a requirement of a writer is missing.
      */
     public function checkRequirements() : void
     {

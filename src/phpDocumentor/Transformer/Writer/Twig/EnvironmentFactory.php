@@ -8,7 +8,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Transformer\Writer\Twig;
@@ -33,14 +33,12 @@ use function substr;
 
 final class EnvironmentFactory
 {
-    private $baseEnvironment;
     /** @var Renderer */
     private $renderer;
 
-    public function __construct(Environment $baseEnvironment, Renderer $renderer)
+    public function __construct(Renderer $renderer)
     {
-        $this->baseEnvironment = $baseEnvironment;
-        $this->renderer        = $renderer;
+        $this->renderer = $renderer;
     }
 
     public function create(
@@ -97,7 +95,7 @@ final class EnvironmentFactory
      * This method will read the `twig-extension` parameter of the transformation (which inherits the template's
      * parameter set) and try to add those extensions to the environment.
      *
-     * @throws InvalidArgumentException if a twig-extension should be loaded but it could not be found.
+     * @throws InvalidArgumentException If a twig-extension should be loaded but it could not be found.
      */
     private function addExtensionsFromTemplateConfiguration(
         Transformation $transformation,
@@ -108,9 +106,9 @@ final class EnvironmentFactory
             ? $transformation->getParameter('twig-debug')->getValue()
             : false;
 //        if ($isDebug === 'true') {
-            $twigEnvironment->enableDebug();
-            $twigEnvironment->enableAutoReload();
-            $twigEnvironment->addExtension(new DebugExtension());
+        $twigEnvironment->enableDebug();
+        $twigEnvironment->enableAutoReload();
+        $twigEnvironment->addExtension(new DebugExtension());
 //        }
 
         /** @var Parameter $extension */

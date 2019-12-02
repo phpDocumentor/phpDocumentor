@@ -12,12 +12,13 @@ declare(strict_types=1);
  */
 namespace phpDocumentor\Transformer\Template;
 
-use Mockery\Adapter\Phpunit\MockeryTestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests the functionality for the Parameter class.
+ * @coversDefaultClass \phpDocumentor\Transformer\Template\Parameter
  */
-class ParameterTest extends MockeryTestCase
+class ParameterTest extends TestCase
 {
     /** @var Parameter $fixture */
     protected $fixture;
@@ -31,12 +32,12 @@ class ParameterTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Template\Parameter::getKey
-     * @covers \phpDocumentor\Transformer\Template\Parameter::setKey
+     * @covers ::getKey
+     * @covers ::setKey
      */
     public function testSetAndGetKey() : void
     {
-        $this->assertNull($this->fixture->getKey());
+        $this->assertEmpty($this->fixture->getKey());
 
         $this->fixture->setKey('key');
 
@@ -44,12 +45,12 @@ class ParameterTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Template\Parameter::getValue
-     * @covers \phpDocumentor\Transformer\Template\Parameter::setValue
+     * @covers ::getValue
+     * @covers ::setValue
      */
     public function testSetAndGetValue() : void
     {
-        $this->assertNull($this->fixture->getValue());
+        $this->assertEmpty($this->fixture->getValue());
 
         $this->fixture->setValue('value');
 

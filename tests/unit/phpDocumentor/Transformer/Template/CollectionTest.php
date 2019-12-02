@@ -10,16 +10,18 @@ declare(strict_types=1);
  *
  * @link http://phpdoc.org
  */
+
 namespace phpDocumentor\Transformer\Template;
 
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
+use phpDocumentor\Transformer\Writer\Collection as WriterCollection;
 
-class CollectionTest extends MockeryTestCase
+final class CollectionTest extends MockeryTestCase
 {
-    /** @var m\MockInterface|\phpDocumentor\Transformer\Writer\Collection */
+    /** @var m\MockInterface|WriterCollection */
     private $writerCollectionMock;
 
     /** @var m\MockInterface|Factory */
@@ -33,9 +35,9 @@ class CollectionTest extends MockeryTestCase
      */
     protected function setUp() : void
     {
-        $this->factoryMock          = m::mock('phpDocumentor\Transformer\Template\Factory');
-        $this->writerCollectionMock = m::mock('phpDocumentor\Transformer\Writer\Collection');
-        $this->fixture              = new Collection($this->factoryMock, $this->writerCollectionMock);
+        $this->factoryMock = m::mock(Factory::class);
+        $this->writerCollectionMock = m::mock(WriterCollection::class);
+        $this->fixture = new Collection($this->factoryMock, $this->writerCollectionMock);
     }
 
     /**
@@ -45,7 +47,7 @@ class CollectionTest extends MockeryTestCase
     {
         // Arrange
         $templateName = 'default';
-        $template     = new Template($templateName);
+        $template = new Template($templateName);
         $this->factoryMock->shouldReceive('get')->with($templateName)->andReturn($template);
 
         // Act
