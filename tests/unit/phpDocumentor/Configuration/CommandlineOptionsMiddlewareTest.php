@@ -133,6 +133,25 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
         );
     }
 
+    /**
+     * @covers ::__invoke
+     */
+    public function testItShouldKeepSourceDirectoriesWhenNoneWereProvideOnCommandLine() : void
+    {
+        $configuration = $this->givenAConfiguration();
+
+        $middleware       = new CommandlineOptionsMiddleware(['directory' => []]);
+        $newConfiguration = $middleware($configuration);
+
+        $this->assertEquals(
+            [
+                'dsn' => new Dsn('file://.'),
+                'paths' => [new Path('src')],
+            ],
+            current($newConfiguration['phpdocumentor']['versions'])['api'][0]['source']
+        );
+    }
+
     public function testItShouldAddAbsoluteSourcePathsToNewApi() : void
     {
         $configuration    = Version3::buildDefault();
@@ -289,6 +308,13 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
         // wipe version so that middleware needs to re-add the api key
         unset($configuration['phpdocumentor']['versions']);
         $configuration['phpdocumentor']['versions'] = ['1.0.0' => []];
+
+        return $configuration;
+    }
+
+    private function givenAConfiguration() : array
+    {
+        $configuration = Version3::buildDefault();
 
         return $configuration;
     }
