@@ -174,7 +174,7 @@ jobs:
           all-tools-${{ github.sha }}-
           all-tools-
     - name: Code style check
-      uses: docker://oskarstark/phpcs-ga
+      uses: phpdoc/phpcs-ga:master
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
