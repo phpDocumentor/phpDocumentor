@@ -25,7 +25,7 @@ class ArgumentAssembler extends AssemblerAbstract
     /**
      * Creates a Descriptor from the provided data.
      *
-     * @param mixed $data
+     * @param Argument $data
      * @param ParamDescriptor[] $params
      */
     public function create($data, $params = []) : ArgumentDescriptor

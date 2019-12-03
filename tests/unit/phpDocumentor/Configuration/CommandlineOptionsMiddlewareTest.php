@@ -314,8 +314,6 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
 
     private function givenAConfiguration() : array
     {
-        $configuration = Version3::buildDefault();
-
-        return $configuration;
+        return Version3::buildDefault();
     }
 }
