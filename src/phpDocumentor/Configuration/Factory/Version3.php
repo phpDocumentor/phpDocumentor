@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,18 +8,24 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Configuration\Factory;
 
+use DOMDocument;
 use InvalidArgumentException;
 use phpDocumentor\Dsn;
 use phpDocumentor\Path;
 use SimpleXMLElement;
+use const FILTER_VALIDATE_BOOLEAN;
+use function count;
+use function dom_import_simplexml;
+use function filter_var;
+use function libxml_clear_errors;
+use function libxml_get_last_error;
+use function libxml_use_internal_errors;
+use function trim;
 
 /**
  * phpDocumentor3 strategy for converting the configuration xml to an array.
@@ -40,7 +47,7 @@ final class Version3 implements Strategy
         $this->schemaPath = $schemaPath;
     }
 
-    public function convert(SimpleXMLElement $phpDocumentor): array
+    public function convert(SimpleXMLElement $phpDocumentor) : array
     {
         $this->validate($phpDocumentor);
 
@@ -64,21 +71,21 @@ final class Version3 implements Strategy
             'phpdocumentor' => [
                 'use-cache' => $phpDocumentor->{'use-cache'} ?: true,
                 'paths' => [
-                    'output' => new Dsn(((string) $phpDocumentor->paths->output) ?: 'file://build/docs'),
-                    'cache' => new Path(((string) $phpDocumentor->paths->cache) ?: '/tmp/phpdoc-doc-cache'),
+                    'output' => new Dsn((string) $phpDocumentor->paths->output ?: 'file://build/docs'),
+                    'cache' => new Path((string) $phpDocumentor->paths->cache ?: '/tmp/phpdoc-doc-cache'),
                 ],
-                'versions' => ($versions) ?: $this->defaultVersions(),
-                'templates' => ($templates) ?: [$this->defaultTemplate()],
+                'versions' => $versions ?: $this->defaultVersions(),
+                'templates' => $templates ?: [$this->defaultTemplate()],
             ],
         ];
     }
 
-    public function supports(SimpleXMLElement $phpDocumentor): bool
+    public function supports(SimpleXMLElement $phpDocumentor) : bool
     {
         return (string) $phpDocumentor->attributes()->version === '3';
     }
 
-    public static function buildDefault(): array
+    public static function buildDefault() : array
     {
         return [
             'phpdocumentor' => [
@@ -97,7 +104,7 @@ final class Version3 implements Strategy
     /**
      * Builds the versions part of the array from the configuration xml.
      */
-    private function buildVersion(SimpleXMLElement $version): array
+    private function buildVersion(SimpleXMLElement $version) : array
     {
         $apis = [];
         $guides = [];
@@ -132,22 +139,24 @@ final class Version3 implements Strategy
     /**
      * Builds the api part of the array from the configuration xml.
      */
-    private function buildApi(SimpleXMLElement $api): array
+    private function buildApi(SimpleXMLElement $api) : array
     {
         $extensions = [];
         foreach ($api->extensions->children() as $extension) {
-            if ((string) $extension !== '') {
-                $extensions[] = (string) $extension;
+            if ((string) $extension === '') {
+                continue;
             }
+
+            $extensions[] = (string) $extension;
         }
 
         $ignoreHidden = filter_var($api->ignore->attributes()->hidden, FILTER_VALIDATE_BOOLEAN);
 
         return [
-            'format' => ((string) $api->attributes()->format) ?: 'php',
+            'format' => (string) $api->attributes()->format ?: 'php',
             'source' => [
-                'dsn' => ((string) $api->source->attributes()->dsn) ?: 'file://.',
-                'paths' => ((array) $api->source->path) ?: ['.'],
+                'dsn' => (string) $api->source->attributes()->dsn ?: 'file://.',
+                'paths' => (array) $api->source->path ?: ['.'],
             ],
             'ignore' => [
                 'hidden' => $ignoreHidden,
@@ -155,8 +164,8 @@ final class Version3 implements Strategy
             ],
             'extensions' => $extensions,
             'visibility' => (array) $api->visibility,
-            'include-source' => ((string)$api->{'include-source'}) === 'true',
-            'default-package-name' => ((string) $api->{'default-package-name'}) ?: 'Default',
+            'include-source' => ((string) $api->{'include-source'}) === 'true',
+            'default-package-name' => (string) $api->{'default-package-name'} ?: 'Default',
             'markers' => (array) $api->markers->children()->marker,
         ];
     }
@@ -164,13 +173,13 @@ final class Version3 implements Strategy
     /**
      * Builds the guide part of the array from the configuration xml.
      */
-    private function buildGuide(SimpleXMLElement $guide): array
+    private function buildGuide(SimpleXMLElement $guide) : array
     {
         return [
-            'format' => ((string) $guide->attributes()->format) ?: 'rst',
+            'format' => (string) $guide->attributes()->format ?: 'rst',
             'source' => [
-                'dsn' => ((string) $guide->source->attributes()->dsn) ?: 'file://.',
-                'paths' => ((array) $guide->source->path) ?: [''],
+                'dsn' => (string) $guide->source->attributes()->dsn ?: 'file://.',
+                'paths' => (array) $guide->source->path ?: [''],
             ],
         ];
     }
@@ -178,7 +187,7 @@ final class Version3 implements Strategy
     /**
      * Builds the template part of the array from the configuration xml.
      */
-    private function buildTemplate(SimpleXMLElement $template): array
+    private function buildTemplate(SimpleXMLElement $template) : array
     {
         if ((array) $template === []) {
             return $this->defaultTemplate();
@@ -195,7 +204,7 @@ final class Version3 implements Strategy
     /**
      * Default versions part if none is found in the configuration.
      */
-    private static function defaultVersions(): array
+    private static function defaultVersions() : array
     {
         return [
             '1.0.0' => [
@@ -248,24 +257,22 @@ final class Version3 implements Strategy
     /**
      * Default template part if none is found in the configuration.
      */
-    private static function defaultTemplate(): array
+    private static function defaultTemplate() : array
     {
-        return [
-            'name' => 'clean',
-        ];
+        return ['name' => 'clean'];
     }
 
     /**
      * Validates the configuration xml structure against the schema defined in the schemaPath.
      *
-     * @throws InvalidArgumentException if the xml structure is not valid.
+     * @throws InvalidArgumentException If the xml structure is not valid.
      */
-    private function validate(SimpleXMLElement $phpDocumentor): void
+    private function validate(SimpleXMLElement $phpDocumentor) : void
     {
         libxml_clear_errors();
         $priorSetting = libxml_use_internal_errors(true);
 
-        $dom = new \DOMDocument();
+        $dom = new DOMDocument();
         $domElement = dom_import_simplexml($phpDocumentor);
         $domElement = $dom->importNode($domElement, true);
         $dom->appendChild($domElement);

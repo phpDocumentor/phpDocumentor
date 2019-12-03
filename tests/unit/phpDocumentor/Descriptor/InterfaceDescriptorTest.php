@@ -1,33 +1,37 @@
 <?php
+
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor;
 
 use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\Tag\AuthorDescriptor;
 use phpDocumentor\Descriptor\Tag\VersionDescriptor;
 
 /**
  * Tests the functionality for the InterfaceDescriptor class.
+ *
  * @coversDefaultClass \phpDocumentor\Descriptor\InterfaceDescriptor
  */
-class InterfaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+final class InterfaceDescriptorTest extends MockeryTestCase
 {
     /** @var InterfaceDescriptor $fixture */
-    protected $fixture;
+    private $fixture;
 
     /**
      * Creates a new (empty) fixture object.
      */
-    protected function setUp(): void
+    protected function setUp() : void
     {
         $this->fixture = new InterfaceDescriptor();
     }
@@ -40,11 +44,11 @@ class InterfaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         $this->assertInstanceOf(Collection::class, $this->fixture->getParent());
 
-        $mock = m::mock(Collection::class);
+        $collection = new Collection();
 
-        $this->fixture->setParent($mock);
+        $this->fixture->setParent($collection);
 
-        $this->assertSame($mock, $this->fixture->getParent());
+        $this->assertSame($collection, $this->fixture->getParent());
     }
 
     /**
@@ -85,7 +89,7 @@ class InterfaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $descriptor = new InterfaceDescriptor();
         $this->assertInstanceOf(Collection::class, $descriptor->getInheritedConstants());
 
-        $descriptor->setParent(new \stdClass());
+        $descriptor->setParent(new Collection());
         $this->assertInstanceOf(Collection::class, $descriptor->getInheritedConstants());
     }
 
@@ -96,7 +100,7 @@ class InterfaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         // Arrange
         $summary = 'This is a summary';
-        $this->fixture->setSummary(null);
+        $this->fixture->setSummary('');
         $parentInterface = $this->whenFixtureHasParentInterface();
         $parentInterface->setSummary($summary);
 
@@ -114,7 +118,7 @@ class InterfaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         // Arrange
         $description = 'This is a description';
-        $this->fixture->setDescription(null);
+        $this->fixture->setDescription('');
         $parentInterface = $this->whenFixtureHasParentInterface();
         $parentInterface->setDescription($description);
 
@@ -252,10 +256,7 @@ class InterfaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $this->assertSame([$parentDescriptor, $grandParentDescriptor], $result->getAll());
     }
 
-    /**
-     * @return InterfaceDescriptor
-     */
-    protected function whenFixtureHasParentInterface() : InterfaceDescriptor
+    private function whenFixtureHasParentInterface() : InterfaceDescriptor
     {
         $interface = new InterfaceDescriptor();
         $this->fixture->getParent()->set('IA', $interface);
@@ -263,7 +264,7 @@ class InterfaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         return $interface;
     }
 
-    private function givenConstantWithName(string $name): ConstantDescriptor
+    private function givenConstantWithName(string $name) : ConstantDescriptor
     {
         $constantInParent = new ConstantDescriptor();
         $constantInParent->setName($name);

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,10 +8,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Compiler\Pass;
@@ -22,6 +20,9 @@ use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Reflection\Fqsen;
+use function strlen;
+use function substr;
+use function ucfirst;
 
 /**
  * Rebuilds the namespace tree from the elements found in files.
@@ -35,14 +36,14 @@ use phpDocumentor\Reflection\Fqsen;
  */
 class NamespaceTreeBuilder implements CompilerPassInterface
 {
-    const COMPILER_PRIORITY = 9000;
+    public const COMPILER_PRIORITY = 9000;
 
-    public function getDescription(): string
+    public function getDescription() : string
     {
         return 'Build "namespaces" index and add namespaces to "elements"';
     }
 
-    public function execute(ProjectDescriptor $project): void
+    public function execute(ProjectDescriptor $project) : void
     {
         $project->getIndexes()->get('elements', new Collection())->set('~\\', $project->getNamespace());
         $project->getIndexes()->get('namespaces', new Collection())->set('\\', $project->getNamespace());
@@ -57,9 +58,11 @@ class NamespaceTreeBuilder implements CompilerPassInterface
 
         /** @var NamespaceDescriptor $namespace */
         foreach ($project->getIndexes()->get('namespaces')->getAll() as $namespace) {
-            if ($namespace->getNamespace() !== '') {
-                $this->addToParentNamespace($project, $namespace);
+            if ($namespace->getNamespace() === '') {
+                continue;
             }
+
+            $this->addToParentNamespace($project, $namespace);
         }
     }
 
@@ -70,11 +73,12 @@ class NamespaceTreeBuilder implements CompilerPassInterface
      * element. If a namespace does not exist yet it will automatically be created.
      *
      * @param DescriptorAbstract[] $elements Series of elements to add to their respective namespace.
-     * @param string $type Declares which field of the namespace will be populated with the given series of elements.
-     *                     This name will be transformed to a getter which must exist. Out of performance
-     *                     considerations will no effort be done to verify whether the provided type is valid.
+     * @param string               $type     Declares which field of the namespace will be populated with the given
+     *                                       series of elements. This name will be transformed to a getter which must
+     *                                       exist. Out of performance considerations will no effort be done to verify
+     *                                       whether the provided type is valid.
      */
-    protected function addElementsOfTypeToNamespace(ProjectDescriptor $project, array $elements, string $type): void
+    protected function addElementsOfTypeToNamespace(ProjectDescriptor $project, array $elements, string $type) : void
     {
         /** @var DescriptorAbstract $element */
         foreach ($elements as $element) {
@@ -88,7 +92,7 @@ class NamespaceTreeBuilder implements CompilerPassInterface
 
             if ($namespace === null) {
                 $namespace = new NamespaceDescriptor();
-                $fqsen = new Fqsen($namespaceName);
+                $fqsen     = new Fqsen($namespaceName);
                 $namespace->setName($fqsen->getName());
                 $namespace->setFullyQualifiedStructuralElementName($fqsen);
                 $namespaceName = substr((string) $fqsen, 0, -strlen($fqsen->getName()) - 1);
@@ -111,7 +115,7 @@ class NamespaceTreeBuilder implements CompilerPassInterface
         }
     }
 
-    private function addToParentNamespace(ProjectDescriptor $project, NamespaceDescriptor $namespace): void
+    private function addToParentNamespace(ProjectDescriptor $project, NamespaceDescriptor $namespace) : void
     {
         /** @var NamespaceDescriptor|null $parent */
         $parent = $project->getIndexes()->get('namespaces')->get($namespace->getNamespace());
@@ -123,7 +127,7 @@ class NamespaceTreeBuilder implements CompilerPassInterface
         try {
             if ($parent === null) {
                 $parent = new NamespaceDescriptor();
-                $fqsen = new Fqsen($namespace->getNamespace());
+                $fqsen  = new Fqsen($namespace->getNamespace());
                 $parent->setFullyQualifiedStructuralElementName($fqsen);
                 $parent->setName($fqsen->getName());
                 $namespaceName = substr((string) $fqsen, 0, -strlen($parent->getName()) - 1);

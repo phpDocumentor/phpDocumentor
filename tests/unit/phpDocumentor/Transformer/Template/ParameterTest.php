@@ -1,39 +1,43 @@
 <?php
+
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Transformer\Template;
 
+use PHPUnit\Framework\TestCase;
+
 /**
- * Tests the functionality for the Parameter class.
+ * @coversDefaultClass \phpDocumentor\Transformer\Template\Parameter
  */
-class ParameterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+final class ParameterTest extends TestCase
 {
     /** @var Parameter $fixture */
-    protected $fixture;
+    private $fixture;
 
     /**
      * Creates a new (empty) fixture object.
      */
-    protected function setUp(): void
+    protected function setUp() : void
     {
         $this->fixture = new Parameter();
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Template\Parameter::getKey
-     * @covers \phpDocumentor\Transformer\Template\Parameter::setKey
+     * @covers ::getKey
+     * @covers ::setKey
      */
     public function testSetAndGetKey() : void
     {
-        $this->assertNull($this->fixture->getKey());
+        $this->assertEmpty($this->fixture->getKey());
 
         $this->fixture->setKey('key');
 
@@ -41,12 +45,12 @@ class ParameterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Template\Parameter::getValue
-     * @covers \phpDocumentor\Transformer\Template\Parameter::setValue
+     * @covers ::getValue
+     * @covers ::setValue
      */
     public function testSetAndGetValue() : void
     {
-        $this->assertNull($this->fixture->getValue());
+        $this->assertEmpty($this->fixture->getValue());
 
         $this->fixture->setValue('value');
 

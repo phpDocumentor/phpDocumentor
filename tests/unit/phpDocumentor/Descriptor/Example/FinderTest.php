@@ -1,26 +1,31 @@
 <?php
+
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor\Example;
 
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 use org\bovigo\vfs\vfsStream;
 use phpDocumentor\Descriptor\Tag\ExampleDescriptor;
 use Symfony\Component\Filesystem\Filesystem;
+use function chdir;
+use function sys_get_temp_dir;
 
 /**
  * Tests for the \phpDocumentor\Descriptor\Example\Finder class.
  */
-class FinderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+final class FinderTest extends MockeryTestCase
 {
-    const EXAMPLE_TEXT = 'This is an example';
+    public const EXAMPLE_TEXT = 'This is an example';
 
     /** @var Filesystem */
     private $filesystem;
@@ -31,7 +36,7 @@ class FinderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Initializes the fixture.
      */
-    protected function setUp(): void
+    protected function setUp() : void
     {
         $this->filesystem = new Filesystem();
         $this->fixture = new Finder();
@@ -160,17 +165,13 @@ class FinderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
         $result = $this->fixture->find($descriptor);
 
-        $this->assertSame("** File not found : {$filename} **", $result);
+        $this->assertSame('** File not found : ' . $filename . ' **', $result);
     }
 
     /**
      * Returns an ExampleDescriptor with the given filename set.
-     *
-     * @param string $path
-     *
-     * @return ExampleDescriptor
      */
-    private function givenADescriptorWithExamplePath($path) : ExampleDescriptor
+    private function givenADescriptorWithExamplePath(string $path) : ExampleDescriptor
     {
         $descriptor = new ExampleDescriptor('example');
         $descriptor->setFilePath($path);
@@ -190,10 +191,8 @@ class FinderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
     /**
      * Creates an example file at the given path and creates folders where necessary.
-     *
-     * @param string $exampleFilename
      */
-    private function givenExampleFileInFolder($exampleFilename) : void
+    private function givenExampleFileInFolder(string $exampleFilename) : void
     {
         $this->filesystem->dumpFile($exampleFilename, self::EXAMPLE_TEXT);
     }

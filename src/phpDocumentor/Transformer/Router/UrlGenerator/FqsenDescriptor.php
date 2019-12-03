@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,30 +8,33 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Transformer\Router\UrlGenerator;
 
 use phpDocumentor\Reflection\DocBlock\Tags\Reference\Fqsen;
-use phpDocumentor\Transformer\Router\UrlGenerator\UrlGenerator as UrlGenerator;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use function assert;
+use function count;
+use function explode;
+use function strpos;
 
 /**
  * Generates a relative URL with properties for use in the generated HTML documentation.
  */
 class FqsenDescriptor implements UrlGenerator
 {
+    /** @var UrlGeneratorInterface */
     private $urlGenerator;
+
+    /** @var QualifiedNameToUrlConverter */
     private $converter;
 
     public function __construct(UrlGeneratorInterface $urlGenerator, QualifiedNameToUrlConverter $converter)
     {
         $this->urlGenerator = $urlGenerator;
-        $this->converter = $converter;
+        $this->converter    = $converter;
     }
 
     /**
@@ -44,14 +48,12 @@ class FqsenDescriptor implements UrlGenerator
     {
         assert($node instanceof Fqsen);
         $fqsenParts = explode('::', (string) $node);
-        $className = $this->converter->fromClass($fqsenParts[0]);
+        $className  = $this->converter->fromClass($fqsenParts[0]);
 
         if (count($fqsenParts) === 1) {
             return $this->urlGenerator->generate(
                 'class',
-                [
-                    'className' => $className,
-                ]
+                ['className' => $className]
             );
         }
 
@@ -61,7 +63,7 @@ class FqsenDescriptor implements UrlGenerator
                 'class',
                 [
                     'name' => $className,
-                    '_fragment' => 'property_' . $propertyName[1]
+                    '_fragment' => 'property_' . $propertyName[1],
                 ]
             );
         }
@@ -72,7 +74,7 @@ class FqsenDescriptor implements UrlGenerator
                 'class',
                 [
                     'name' => $className,
-                    '_fragment' => 'method_' . $methodName[0]
+                    '_fragment' => 'method_' . $methodName[0],
                 ]
             );
         }
@@ -81,7 +83,7 @@ class FqsenDescriptor implements UrlGenerator
             'class',
             [
                 'name' => $className,
-                '_fragment' => 'constant_' . $fqsenParts[1]
+                '_fragment' => 'constant_' . $fqsenParts[1],
             ]
         );
     }

@@ -1,21 +1,28 @@
 <?php
+
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor\Type;
 
-class StringDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+use Mockery\Adapter\Phpunit\MockeryTestCase;
+
+/**
+ * @coversDefaultClass \phpDocumentor\Descriptor\Type\StringDescriptor
+ */
+final class StringDescriptorTest extends MockeryTestCase
 {
     /**
-     * @covers \phpDocumentor\Descriptor\Type\StringDescriptor::getName
-     * @covers \phpDocumentor\Descriptor\Type\StringDescriptor::__toString
+     * @covers ::getName
+     * @covers ::__toString
      */
     public function testIfNameCanBeReturned() : void
     {

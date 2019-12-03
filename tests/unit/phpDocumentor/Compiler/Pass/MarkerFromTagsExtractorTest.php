@@ -1,16 +1,19 @@
 <?php
+
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Compiler\Pass;
 
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
@@ -18,18 +21,18 @@ use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
 
-class MarkerFromTagsExtractorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+final class MarkerFromTagsExtractorTest extends MockeryTestCase
 {
     /** @var MarkerFromTagsExtractor */
-    protected $fixture;
+    private $fixture;
 
     /** @var ProjectDescriptor */
-    protected $project;
+    private $project;
 
     /**
      * Initialize the fixture for this test.
      */
-    protected function setUp(): void
+    protected function setUp() : void
     {
         $this->fixture = new MarkerFromTagsExtractor();
         $this->project = new ProjectDescriptor('MyProject');
@@ -92,9 +95,6 @@ class MarkerFromTagsExtractorTest extends \Mockery\Adapter\Phpunit\MockeryTestCa
         $this->fixture->execute($this->project);
     }
 
-    /**
-     * @return FileDescriptor
-     */
     protected function givenProjectHasFileDescriptor() : FileDescriptor
     {
         $fileDescriptor1 = new FileDescriptor('123');
@@ -103,12 +103,10 @@ class MarkerFromTagsExtractorTest extends \Mockery\Adapter\Phpunit\MockeryTestCa
         return $fileDescriptor1;
     }
 
-    /**
-     * @param DescriptorAbstract $descriptor
-     * @param string             $description
-     */
-    protected function givenDescriptorHasTodoTagWithDescription($descriptor, $description) : void
-    {
+    protected function givenDescriptorHasTodoTagWithDescription(
+        DescriptorAbstract $descriptor,
+        string $description
+    ) : void {
         $todoTag = new TagDescriptor('todo');
         $todoTag->setDescription($description);
 
@@ -119,13 +117,10 @@ class MarkerFromTagsExtractorTest extends \Mockery\Adapter\Phpunit\MockeryTestCa
 
     /**
      * Adds a class descriptor to the project's elements and add a parent file.
-     *
-     * @param FileDescriptor $fileDescriptor
-     *
-     * @return ClassDescriptor
      */
-    protected function givenProjectHasClassDescriptorAssociatedWithFile($fileDescriptor) : ClassDescriptor
-    {
+    private function givenProjectHasClassDescriptorAssociatedWithFile(
+        ?FileDescriptor $fileDescriptor
+    ) : ClassDescriptor {
         $classDescriptor = new ClassDescriptor();
         if ($fileDescriptor) {
             $classDescriptor->setFile($fileDescriptor);

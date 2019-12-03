@@ -1,39 +1,43 @@
 <?php
+
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor;
 
-use \Mockery as m;
-use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
+use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
+use phpDocumentor\Descriptor\Builder\AssemblerFactory;
 
 /**
  * Tests the functionality for the ProjectDescriptorBuilder class.
+ *
  * @coversDefaultClass \phpDocumentor\Descriptor\ProjectDescriptorBuilder
  */
-class ProjectDescriptorBuilderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+class ProjectDescriptorBuilderTest extends MockeryTestCase
 {
-    /** @var \phpDocumentor\Descriptor\ProjectDescriptorBuilder $fixture */
+    /** @var ProjectDescriptorBuilder $fixture */
     protected $fixture;
 
     /**
      * Mock of the required AssemblerFactory dependency of the $fixture.
      *
-     * @var \phpDocumentor\Descriptor\Builder\AssemblerFactory|m\MockInterface
+     * @var AssemblerFactory|m\MockInterface
      */
     protected $assemblerFactory;
 
     /**
      * Sets up a minimal fixture with mocked dependencies.
      */
-    protected function setUp(): void
+    protected function setUp() : void
     {
         $this->assemblerFactory = $this->createAssemblerFactoryMock();
         $filterMock = m::mock('phpDocumentor\Descriptor\Filter\Filter');
@@ -59,7 +63,7 @@ class ProjectDescriptorBuilderTest extends \Mockery\Adapter\Phpunit\MockeryTestC
     /**
      * Creates a new FileReflector mock that can be used as input for the builder.
      */
-    protected function createFileReflectorMock(): m\MockInterface
+    protected function createFileReflectorMock() : m\MockInterface
     {
         return m::mock('phpDocumentor\Reflection\FileReflector');
     }
@@ -87,7 +91,7 @@ class ProjectDescriptorBuilderTest extends \Mockery\Adapter\Phpunit\MockeryTestC
      * When a FileReflector (or mock thereof) is passed to the 'get' method this mock will return an
      * empty instance of the FileDescriptor class.
      *
-     * @return m\MockInterface|\phpDocumentor\Descriptor\Builder\AssemblerFactory
+     * @return m\MockInterface|AssemblerFactory
      */
     protected function createAssemblerFactoryMock()
     {

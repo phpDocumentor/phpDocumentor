@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,16 +8,16 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor\Tag\BaseTypes;
 
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Reflection\Type;
+use const E_USER_DEPRECATED;
+use function array_filter;
+use function trigger_error;
 
 /**
  * Base descriptor for tags that have a type associated with them.
@@ -29,7 +30,7 @@ abstract class TypedAbstract extends TagDescriptor
     /**
      * Sets a list of types associated with this tag.
      */
-    public function setTypes(Type $types = null)
+    public function setTypes(?Type $types = null) : void
     {
         trigger_error('Use setType, because type is an object', E_USER_DEPRECATED);
         $this->types = $types;
@@ -38,7 +39,7 @@ abstract class TypedAbstract extends TagDescriptor
     /**
      * Sets a list of types associated with this tag.
      */
-    public function setType(Type $types = null)
+    public function setType(?Type $types = null) : void
     {
         $this->types = $types;
     }
@@ -47,13 +48,13 @@ abstract class TypedAbstract extends TagDescriptor
     /**
      * Returns the list of types associated with this tag.
      */
-    public function getTypes(): array
+    public function getTypes() : array
     {
         trigger_error('Use getType, because type is an object', E_USER_DEPRECATED);
         return array_filter([$this->types]);
     }
 
-    public function getType()
+    public function getType() : ?Type
     {
         return $this->types;
     }

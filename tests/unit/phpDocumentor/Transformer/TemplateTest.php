@@ -8,26 +8,28 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Transformer;
 
+use ArrayIterator;
+use InvalidArgumentException;
 use phpDocumentor\Transformer\Template\Parameter;
+use PHPUnit\Framework\TestCase;
+use function count;
+use function iterator_to_array;
 
 /**
  * Test class for \phpDocumentor\Transformer\Transformer.
  *
  * @covers \phpDocumentor\Transformer\Template
  */
-final class TemplateTest extends \PHPUnit\Framework\TestCase
+final class TemplateTest extends TestCase
 {
     public function testConstructingATemplateWithAllProperties() : void
     {
-        $parameter = new Parameter();
+        $parameter      = new Parameter();
         $transformation = new Transformation('', '', '', '');
 
         $template = new Template('name');
@@ -49,15 +51,15 @@ final class TemplateTest extends \PHPUnit\Framework\TestCase
 
     public function testThatArrayElementsMayOnlyBeTransformations() : void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
-        $template = new Template('name');
+        $template        = new Template('name');
         $template['key'] = 'value';
     }
 
     public function testThatVersionsAreRejectedIfTheyDontMatchNumbersSeparatedByDots() : void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
         $template = new Template('name');
         $template->setVersion('abc');
@@ -65,7 +67,7 @@ final class TemplateTest extends \PHPUnit\Framework\TestCase
 
     public function testThatWeCanCheckIfATransformationIsRegistered() : void
     {
-        $template = new Template('name');
+        $template        = new Template('name');
         $template['key'] = new Transformation('', '', '', '');
 
         $this->assertTrue(isset($template['key']));
@@ -74,7 +76,7 @@ final class TemplateTest extends \PHPUnit\Framework\TestCase
 
     public function testThatWeCanUnsetATransformation() : void
     {
-        $template = new Template('name');
+        $template        = new Template('name');
         $template['key'] = new Transformation('', '', '', '');
 
         $this->assertTrue(isset($template['key']));
@@ -86,7 +88,7 @@ final class TemplateTest extends \PHPUnit\Framework\TestCase
 
     public function testThatWeCanCountTheNumberOfTransformations() : void
     {
-        $template = new Template('name');
+        $template        = new Template('name');
         $template['key'] = new Transformation('', '', '', '');
 
         $this->assertSame(1, count($template));
@@ -94,20 +96,20 @@ final class TemplateTest extends \PHPUnit\Framework\TestCase
 
     public function testThatWeCanIterateOnTheTransformations() : void
     {
-        $template = new Template('name');
-        $transformation = new Transformation('', '', '', '');
+        $template        = new Template('name');
+        $transformation  = new Transformation('', '', '', '');
         $template['key'] = $transformation;
 
-        $this->assertInstanceOf(\ArrayIterator::class, $template->getIterator());
+        $this->assertInstanceOf(ArrayIterator::class, $template->getIterator());
         $this->assertSame(['key' => $transformation], iterator_to_array($template));
     }
 
     public function testThatAllParametersArePropagatedToTheTransformationsWhenNeeded() : void
     {
-        $parameter = new Parameter();
+        $parameter      = new Parameter();
         $transformation = new Transformation('', '', '', '');
 
-        $template = new Template('name');
+        $template        = new Template('name');
         $template['key'] = $transformation;
         $template->setParameter('key', $parameter);
 

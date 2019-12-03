@@ -8,10 +8,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Transformer\Event;
@@ -22,7 +19,7 @@ use phpDocumentor\Transformer\Transformation;
 /**
  * Event happening prior to each individual transformation.
  */
-class PreTransformationEvent extends EventAbstract
+final class PreTransformationEvent extends EventAbstract
 {
     /** @var Transformation */
     protected $transformation;
@@ -33,12 +30,12 @@ class PreTransformationEvent extends EventAbstract
         $this->transformation = $transformation;
     }
 
-    public static function create($subject, Transformation $transformation)
+    public static function create(object $subject, Transformation $transformation) : self
     {
         return new static($subject, $transformation);
     }
 
-    public function getTransformation(): Transformation
+    public function getTransformation() : Transformation
     {
         return $this->transformation;
     }

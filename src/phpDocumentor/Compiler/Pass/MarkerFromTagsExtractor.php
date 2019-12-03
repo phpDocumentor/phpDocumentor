@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,10 +8,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Compiler\Pass;
@@ -26,16 +24,16 @@ use UnexpectedValueException;
 /**
  * This index builder collects all markers from tags and inserts them into the marker index.
  */
-class MarkerFromTagsExtractor implements CompilerPassInterface
+final class MarkerFromTagsExtractor implements CompilerPassInterface
 {
-    const COMPILER_PRIORITY = 9000;
+    public const COMPILER_PRIORITY = 9000;
 
-    public function getDescription(): string
+    public function getDescription() : string
     {
         return 'Collect all markers embedded in tags';
     }
 
-    public function execute(ProjectDescriptor $project): void
+    public function execute(ProjectDescriptor $project) : void
     {
         /** @var DescriptorAbstract $element */
         foreach ($project->getIndexes()->get('elements', new Collection()) as $element) {
@@ -56,9 +54,9 @@ class MarkerFromTagsExtractor implements CompilerPassInterface
     /**
      * Retrieves the File Descriptor from the given element.
      *
-     * @throws UnexpectedValueException if the provided element does not have a file associated with it.
+     * @throws UnexpectedValueException If the provided element does not have a file associated with it.
      */
-    protected function getFileDescriptor(DescriptorAbstract $element): FileDescriptor
+    private function getFileDescriptor(DescriptorAbstract $element) : FileDescriptor
     {
         $fileDescriptor = $element instanceof FileDescriptor
             ? $element
@@ -74,7 +72,7 @@ class MarkerFromTagsExtractor implements CompilerPassInterface
     /**
      * Adds a marker with the TO DO information to the file on a given line number.
      */
-    protected function addTodoMarkerToFile(FileDescriptor $fileDescriptor, TagDescriptor $todo, int $lineNumber): void
+    private function addTodoMarkerToFile(FileDescriptor $fileDescriptor, TagDescriptor $todo, int $lineNumber) : void
     {
         $fileDescriptor->getMarkers()->add(
             [

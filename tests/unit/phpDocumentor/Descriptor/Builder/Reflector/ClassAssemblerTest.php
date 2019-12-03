@@ -1,19 +1,21 @@
 <?php
+
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @author    Sven Hagemann <sven@rednose.nl>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
+use Mockery\MockInterface;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Php\Class_;
@@ -26,7 +28,7 @@ use phpDocumentor\Reflection\Php\Property;
  *
  * @covers \phpDocumentor\Descriptor\Builder\Reflector\ClassAssembler
  */
-class ClassAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+class ClassAssemblerTest extends MockeryTestCase
 {
     /** @var ClassAssembler $fixture */
     protected $fixture;
@@ -34,7 +36,7 @@ class ClassAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Creates a new fixture to test with.
      */
-    protected function setUp(): void
+    protected function setUp() : void
     {
         $this->fixture = new ClassAssembler();
         $this->fixture->setBuilder($this->getProjectDescriptorBuilderMock());
@@ -69,8 +71,6 @@ DOCBLOCK;
 
     /**
      * Create a ClassReflector mock
-     *
-     * @return Class_
      */
     protected function getClassReflectorDescriptor() : Class_
     {
@@ -103,38 +103,38 @@ DOCBLOCK;
 
     /**
      * Create a descriptor builder mock
-     *
-     * @return m\MockInterface
      */
-    protected function getProjectDescriptorBuilderMock() : \Mockery\MockInterface
+    protected function getProjectDescriptorBuilderMock() : MockInterface
     {
         $projectDescriptorBuilderMock = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
         $projectDescriptorBuilderMock->shouldReceive('getDefaultPackage')->andReturn('\\');
-        $projectDescriptorBuilderMock->shouldReceive('buildDescriptor')->andReturnUsing(function ($param) {
-            $mock = null;
+        $projectDescriptorBuilderMock->shouldReceive('buildDescriptor')->andReturnUsing(
+            static function ($param) {
+                $mock = null;
 
-            switch ($param) {
-                case 'Properties':
-                    $mock = m::mock('phpDocumentor\Descriptor\PropertiesDescriptor');
-                    $mock->shouldReceive('getName')->once()->andReturn('Mock');
-                    $mock->shouldReceive('setParent')->once()->andReturn();
-                    break;
+                switch ($param) {
+                    case 'Properties':
+                        $mock = m::mock('phpDocumentor\Descriptor\PropertiesDescriptor');
+                        $mock->shouldReceive('getName')->once()->andReturn('Mock');
+                        $mock->shouldReceive('setParent')->once()->andReturn();
+                        break;
 
-                case 'Method':
-                    $mock = m::mock('phpDocumentor\Descriptor\MethodDescriptor');
-                    $mock->shouldReceive('getName')->once()->andReturn('Mock');
-                    $mock->shouldReceive('setParent')->once()->andReturn();
-                    break;
+                    case 'Method':
+                        $mock = m::mock('phpDocumentor\Descriptor\MethodDescriptor');
+                        $mock->shouldReceive('getName')->once()->andReturn('Mock');
+                        $mock->shouldReceive('setParent')->once()->andReturn();
+                        break;
 
-                case 'Constant':
-                    $mock = m::mock('phpDocumentor\Descriptor\ConstantDescriptor');
-                    $mock->shouldReceive('getName')->once()->andReturn('Mock');
-                    $mock->shouldReceive('setParent')->once()->andReturn();
-                    break;
+                    case 'Constant':
+                        $mock = m::mock('phpDocumentor\Descriptor\ConstantDescriptor');
+                        $mock->shouldReceive('getName')->once()->andReturn('Mock');
+                        $mock->shouldReceive('setParent')->once()->andReturn();
+                        break;
+                }
+
+                return $mock;
             }
-
-            return $mock;
-        });
+        );
 
         return $projectDescriptorBuilderMock;
     }

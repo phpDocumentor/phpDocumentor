@@ -1,12 +1,13 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpDocumentor.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @copyright 2010-2016 Mike van Riel<mike@phpdoc.org>
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
@@ -16,6 +17,7 @@ use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Configuration\Factory\Version3;
 use phpDocumentor\Dsn;
 use phpDocumentor\Path;
+use function current;
 
 /**
  * @coversDefaultClass \phpDocumentor\Configuration\CommandlineOptionsMiddleware
@@ -29,10 +31,10 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
      */
     public function testItShouldOverwriteTheDestinationFolderBasedOnTheTargetOption() : void
     {
-        $expected = '/abc';
+        $expected      = '/abc';
         $configuration = ['phpdocumentor' => ['paths' => ['output' => '/tmp']]];
 
-        $middleware = new CommandlineOptionsMiddleware(['target' => $expected]);
+        $middleware       = new CommandlineOptionsMiddleware(['target' => $expected]);
         $newConfiguration = $middleware($configuration);
 
         $this->assertEquals(new Dsn($expected), $newConfiguration['phpdocumentor']['paths']['output']);
@@ -45,7 +47,7 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
     {
         $configuration = ['phpdocumentor' => ['use-cache' => true]];
 
-        $middleware = new CommandlineOptionsMiddleware(['force' => true]);
+        $middleware       = new CommandlineOptionsMiddleware(['force' => true]);
         $newConfiguration = $middleware($configuration);
 
         $this->assertFalse($newConfiguration['phpdocumentor']['use-cache']);
@@ -56,10 +58,10 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
      */
     public function testItShouldOverwriteTheCacheFolderBasedOnTheCacheFolderOption() : void
     {
-        $expected = '/abc';
+        $expected      = '/abc';
         $configuration = ['phpdocumentor' => ['paths' => ['cache' => '/tmp']]];
 
-        $middleware = new CommandlineOptionsMiddleware(['cache-folder' => $expected]);
+        $middleware       = new CommandlineOptionsMiddleware(['cache-folder' => $expected]);
         $newConfiguration = $middleware->__invoke($configuration);
 
         $this->assertEquals(new Path($expected), $newConfiguration['phpdocumentor']['paths']['cache']);
@@ -70,10 +72,10 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
      */
     public function testItShouldOverrideTheTitleBasedOnTheTitleOption() : void
     {
-        $expected = 'phpDocumentor3';
+        $expected      = 'phpDocumentor3';
         $configuration = ['phpdocumentor' => ['title' => 'phpDocumentor2']];
 
-        $middleware = new CommandlineOptionsMiddleware(['title' => $expected]);
+        $middleware       = new CommandlineOptionsMiddleware(['title' => $expected]);
         $newConfiguration = $middleware($configuration);
 
         $this->assertSame($expected, $newConfiguration['phpdocumentor']['title']);
@@ -84,10 +86,10 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
      */
     public function testItShouldOverrideTheListOfTemplatesBasedOnTheTemplateOption() : void
     {
-        $expected = 'clean';
+        $expected      = 'clean';
         $configuration = ['phpdocumentor' => ['templates' => [['name' => 'responsive']]]];
 
-        $middleware = new CommandlineOptionsMiddleware(['template' => $expected]);
+        $middleware       = new CommandlineOptionsMiddleware(['template' => $expected]);
         $newConfiguration = $middleware($configuration);
 
         $this->assertSame([['name' => $expected]], $newConfiguration['phpdocumentor']['templates']);
@@ -100,7 +102,7 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
     {
         $configuration = $this->givenAConfigurationWithoutApiDefinition();
 
-        $middleware = new CommandlineOptionsMiddleware(['filename' => ['./src/index.php']]);
+        $middleware       = new CommandlineOptionsMiddleware(['filename' => ['./src/index.php']]);
         $newConfiguration = $middleware($configuration);
 
         $this->assertEquals(
@@ -119,7 +121,7 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
     {
         $configuration = $this->givenAConfigurationWithoutApiDefinition();
 
-        $middleware = new CommandlineOptionsMiddleware(['directory' => ['./src']]);
+        $middleware       = new CommandlineOptionsMiddleware(['directory' => ['./src']]);
         $newConfiguration = $middleware($configuration);
 
         $this->assertEquals(
@@ -131,10 +133,29 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
         );
     }
 
+    /**
+     * @covers ::__invoke
+     */
+    public function testItShouldKeepSourceDirectoriesWhenNoneWereProvideOnCommandLine() : void
+    {
+        $configuration = $this->givenAConfiguration();
+
+        $middleware       = new CommandlineOptionsMiddleware(['directory' => []]);
+        $newConfiguration = $middleware($configuration);
+
+        $this->assertEquals(
+            [
+                'dsn' => new Dsn('file://.'),
+                'paths' => [new Path('src')],
+            ],
+            current($newConfiguration['phpdocumentor']['versions'])['api'][0]['source']
+        );
+    }
+
     public function testItShouldAddAbsoluteSourcePathsToNewApi() : void
     {
-        $configuration = Version3::buildDefault();
-        $middleware = new CommandlineOptionsMiddleware(['directory' => ['/src']]);
+        $configuration    = Version3::buildDefault();
+        $middleware       = new CommandlineOptionsMiddleware(['directory' => ['/src']]);
         $newConfiguration = $middleware($configuration);
 
         $this->assertEquals(
@@ -148,8 +169,8 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
 
     public function testItShouldAddAbsoluteSourcePathsToNewApiAndRelativeToCurrent() : void
     {
-        $configuration = Version3::buildDefault();
-        $middleware = new CommandlineOptionsMiddleware(['directory' => ['/src', './localSrc']]);
+        $configuration    = Version3::buildDefault();
+        $middleware       = new CommandlineOptionsMiddleware(['directory' => ['/src', './localSrc']]);
         $newConfiguration = $middleware($configuration);
 
         $this->assertEquals(
@@ -176,8 +197,8 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
     {
         $configuration = $this->givenAConfigurationWithoutApiDefinition();
 
-        $extensions = ['php7', 'php5'];
-        $middleware = new CommandlineOptionsMiddleware(['extensions' => $extensions]);
+        $extensions       = ['php7', 'php5'];
+        $middleware       = new CommandlineOptionsMiddleware(['extensions' => $extensions]);
         $newConfiguration = $middleware($configuration);
 
         $this->assertEquals(
@@ -193,13 +214,13 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
     {
         $configuration = $this->givenAConfigurationWithoutApiDefinition();
 
-        $middleware = new CommandlineOptionsMiddleware(['ignore' => ['./src']]);
+        $middleware       = new CommandlineOptionsMiddleware(['ignore' => ['./src']]);
         $newConfiguration = $middleware($configuration);
 
         $this->assertEquals(
             [
                 'paths' => [new Path('./src')],
-                'hidden' => true
+                'hidden' => true,
             ],
             current($newConfiguration['phpdocumentor']['versions'])['api'][0]['ignore']
         );
@@ -212,8 +233,8 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
     {
         $configuration = $this->givenAConfigurationWithoutApiDefinition();
 
-        $markers = ['FIXME2', 'TODOSOMETIME'];
-        $middleware = new CommandlineOptionsMiddleware(['markers' => $markers]);
+        $markers          = ['FIXME2', 'TODOSOMETIME'];
+        $middleware       = new CommandlineOptionsMiddleware(['markers' => $markers]);
         $newConfiguration = $middleware($configuration);
 
         $this->assertEquals(
@@ -229,8 +250,8 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
     {
         $configuration = $this->givenAConfigurationWithoutApiDefinition();
 
-        $visibility = ['public'];
-        $middleware = new CommandlineOptionsMiddleware(['visibility' => $visibility]);
+        $visibility       = ['public'];
+        $middleware       = new CommandlineOptionsMiddleware(['visibility' => $visibility]);
         $newConfiguration = $middleware($configuration);
 
         $this->assertEquals(
@@ -247,8 +268,8 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
         $configuration = $this->givenAConfigurationWithoutApiDefinition();
 
         $defaultPackageName = ['public'];
-        $middleware = new CommandlineOptionsMiddleware(['defaultpackagename' => $defaultPackageName]);
-        $newConfiguration = $middleware($configuration);
+        $middleware         = new CommandlineOptionsMiddleware(['defaultpackagename' => $defaultPackageName]);
+        $newConfiguration   = $middleware($configuration);
 
         $this->assertEquals(
             $defaultPackageName,
@@ -263,7 +284,7 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
     {
         $configuration = $this->givenAConfigurationWithoutApiDefinition();
 
-        $middleware = new CommandlineOptionsMiddleware(['sourcecode' => true]);
+        $middleware       = new CommandlineOptionsMiddleware(['sourcecode' => true]);
         $newConfiguration = $middleware($configuration);
 
         $this->assertEquals(
@@ -271,7 +292,7 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
             current($newConfiguration['phpdocumentor']['versions'])['api'][0]['include-source']
         );
 
-        $middleware = new CommandlineOptionsMiddleware(['sourcecode' => false]);
+        $middleware       = new CommandlineOptionsMiddleware(['sourcecode' => false]);
         $newConfiguration = $middleware($configuration);
 
         $this->assertEquals(
@@ -280,7 +301,7 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
         );
     }
 
-    private function givenAConfigurationWithoutApiDefinition(): array
+    private function givenAConfigurationWithoutApiDefinition() : array
     {
         $configuration = Version3::buildDefault();
 
@@ -289,5 +310,10 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
         $configuration['phpdocumentor']['versions'] = ['1.0.0' => []];
 
         return $configuration;
+    }
+
+    private function givenAConfiguration() : array
+    {
+        return Version3::buildDefault();
     }
 }

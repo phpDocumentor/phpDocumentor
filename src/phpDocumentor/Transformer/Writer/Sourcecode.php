@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,10 +8,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Transformer\Writer;
@@ -18,7 +16,15 @@ namespace phpDocumentor\Transformer\Writer;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Transformer\Transformation;
-use phpDocumentor\Transformer\Writer\WriterAbstract;
+use const DIRECTORY_SEPARATOR;
+use function count;
+use function dirname;
+use function explode;
+use function file_exists;
+use function file_put_contents;
+use function htmlentities;
+use function mkdir;
+use function str_repeat;
 
 /**
  * Sourcecode transformation writer; generates syntax highlighted source files in a destination's subfolder.
@@ -31,7 +37,7 @@ class Sourcecode extends WriterAbstract
      * @param ProjectDescriptor $project        Document containing the structure.
      * @param Transformation    $transformation Transformation to execute.
      */
-    public function transform(ProjectDescriptor $project, Transformation $transformation)
+    public function transform(ProjectDescriptor $project, Transformation $transformation) : void
     {
         $artifact = $transformation->getTransformer()->getTarget()
             . DIRECTORY_SEPARATOR
@@ -41,7 +47,7 @@ class Sourcecode extends WriterAbstract
         /** @var FileDescriptor $file */
         foreach ($project->getFiles() as $file) {
             $filename = $file->getPath();
-            $source = $file->getSource();
+            $source   = $file->getSource();
 
             $root = str_repeat('../', count(explode(DIRECTORY_SEPARATOR, $filename)));
             $path = $artifact . DIRECTORY_SEPARATOR . $filename;

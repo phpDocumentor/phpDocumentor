@@ -1,38 +1,41 @@
 <?php
+
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Transformer\Event;
 
 use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
+use stdClass;
 
 /**
- * Tests the functionality for the PreTransformEvent class.
+ * @coversDefaultClass \phpDocumentor\Transformer\Event\PreTransformEvent
  */
-class PreTransformEventTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+final class PreTransformEventTest extends MockeryTestCase
 {
     /** @var PreTransformEvent $fixture */
-    protected $fixture;
+    private $fixture;
 
     /**
      * Creates a new (empty) fixture object.
-     * Creates a new DOMDocument object.
      */
-    protected function setUp(): void
+    protected function setUp() : void
     {
-        $this->fixture = new PreTransformEvent(new \stdClass());
+        $this->fixture = new PreTransformEvent(new stdClass());
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Event\PreTransformEvent::getProject
-     * @covers \phpDocumentor\Transformer\Event\PreTransformEvent::setProject
+     * @covers ::getProject
+     * @covers ::setProject
      */
     public function testSetAndGetProject() : void
     {

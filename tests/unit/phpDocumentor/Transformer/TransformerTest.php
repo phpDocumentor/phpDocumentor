@@ -1,37 +1,40 @@
 <?php
+
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Transformer;
 
 use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
+use org\bovigo\vfs\vfsStream;
 use Psr\Log\NullLogger;
+use const DIRECTORY_SEPARATOR;
+use function strlen;
 
 /**
- * Test class for \phpDocumentor\Transformer\Transformer.
- *
- * @covers \phpDocumentor\Transformer\Transformer
+ * @coversDefaultClass \phpDocumentor\Transformer\Transformer
  */
-class TransformerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+final class TransformerTest extends MockeryTestCase
 {
     /** @var int Max length of description printed. */
-    protected static $MAX_DESCRIPTION_LENGTH = 68;
+    private static $MAX_DESCRIPTION_LENGTH = 68;
 
     /** @var Transformer $fixture */
-    protected $fixture = null;
+    private $fixture = null;
 
     /**
      * Instantiates a new \phpDocumentor\Transformer for use as fixture.
      */
-    protected function setUp(): void
+    protected function setUp() : void
     {
         $templateCollectionMock = m::mock('phpDocumentor\Transformer\Template\Collection');
         $templateCollectionMock->shouldIgnoreMissing();
@@ -42,7 +45,7 @@ class TransformerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Transformer::__construct
+     * @covers ::__construct
      */
     public function testInitialization() : void
     {
@@ -56,8 +59,8 @@ class TransformerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Transformer::getTarget
-     * @covers \phpDocumentor\Transformer\Transformer::setTarget
+     * @covers ::getTarget
+     * @covers ::setTarget
      */
     public function testSettingAndGettingATarget() : void
     {
@@ -69,7 +72,7 @@ class TransformerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Transformer::setTarget
+     * @covers ::setTarget
      */
     public function testExceptionWhenSettingFileAsTarget() : void
     {
@@ -78,18 +81,18 @@ class TransformerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Transformer::setTarget
+     * @covers ::setTarget
      */
     public function testExceptionWhenSettingExistingDirAsTarget() : void
     {
         $this->expectException('InvalidArgumentException');
         $this->expectExceptionMessage('Target directory (vfs://myroot) does not exist and could not be created');
-        $fileSystem = \org\bovigo\vfs\vfsStream::setup('myroot');
-        $this->fixture->setTarget(\org\bovigo\vfs\vfsStream::url('myroot'));
+        $fileSystem = vfsStream::setup('myroot');
+        $this->fixture->setTarget(vfsStream::url('myroot'));
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Transformer::getTemplates
+     * @covers ::getTemplates
      */
     public function testRetrieveTemplateCollection() : void
     {
@@ -104,7 +107,7 @@ class TransformerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Transformer::execute
+     * @covers ::execute
      */
     public function testExecute() : void
     {
@@ -142,7 +145,7 @@ class TransformerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * Tests whether the generateFilename method returns a file according to
      * the right format.
      *
-     * @covers \phpDocumentor\Transformer\Transformer::generateFilename
+     * @covers ::generateFilename
      */
     public function testGenerateFilename() : void
     {
@@ -152,7 +155,7 @@ class TransformerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Transformer::getDescription
+     * @covers ::getDescription
      */
     public function testGetDescription() : void
     {

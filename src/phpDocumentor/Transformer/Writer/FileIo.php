@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,19 +8,23 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Transformer\Writer;
 
+use InvalidArgumentException;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Transformer\Exception;
 use phpDocumentor\Transformer\Transformation;
-use phpDocumentor\Transformer\Writer\WriterAbstract;
 use Symfony\Component\Filesystem\Filesystem;
+use const DIRECTORY_SEPARATOR;
+use function dirname;
+use function is_file;
+use function is_readable;
+use function is_writable;
+use function method_exists;
+use function ucfirst;
 
 /**
  * Writer containing file system operations.
@@ -31,18 +36,18 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 class FileIo extends WriterAbstract
 {
-    /** @var \phpDocumentor\Transformer\Transformation */
+    /** @var Transformation */
     protected $transformation = null;
 
     /**
      * Invokes the query method contained in this class.
      *
-     * @param ProjectDescriptor $project        Document containing the structure.
-     * @param Transformation    $transformation Transformation to execute.
+     * @param ProjectDescriptor $project Document containing the structure.
+     * @param Transformation $transformation Transformation to execute.
      *
-     * @throws \InvalidArgumentException if the query is not supported.
+     * @throws InvalidArgumentException If the query is not supported.
      */
-    public function transform(ProjectDescriptor $project, Transformation $transformation)
+    public function transform(ProjectDescriptor $project, Transformation $transformation) : void
     {
         $artifact = $transformation->getTransformer()->getTarget()
             . DIRECTORY_SEPARATOR . $transformation->getArtifact();
@@ -50,7 +55,7 @@ class FileIo extends WriterAbstract
 
         $method = 'executeQuery' . ucfirst($transformation->getQuery());
         if (!method_exists($this, $method)) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'The query ' . $method . ' is not supported by the FileIo writer, supported operation is "copy"'
             );
         }
@@ -62,11 +67,12 @@ class FileIo extends WriterAbstract
      * Copies files or folders to the Artifact location.
      *
      * TODO: reimplement this using flysystem.
+     *
      * @param Transformation $transformation Transformation to use as data source.
      *
      * @throws Exception
      */
-    public function executeQueryCopy(Transformation $transformation)
+    public function executeQueryCopy(Transformation $transformation) : void
     {
         $path = $transformation->getSourceAsPath();
 

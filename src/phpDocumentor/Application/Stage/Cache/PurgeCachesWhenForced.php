@@ -8,10 +8,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Application\Stage\Cache;
@@ -22,8 +19,13 @@ use Symfony\Component\Cache\Adapter\AdapterInterface;
 
 final class PurgeCachesWhenForced
 {
+    /** @var AdapterInterface  */
     private $filesCache;
+
+    /** @var AdapterInterface  */
     private $descriptorsCache;
+
+    /** @var LoggerInterface  */
     private $logger;
 
     public function __construct(
@@ -36,10 +38,10 @@ final class PurgeCachesWhenForced
         $this->logger = $logger;
     }
 
-    public function __invoke(Payload $payload)
+    public function __invoke(Payload $payload) : Payload
     {
         $this->logger->info('Checking whether to purge cache');
-        if (! $payload->getConfig()['phpdocumentor']['use-cache']) {
+        if (!$payload->getConfig()['phpdocumentor']['use-cache']) {
             $this->logger->info('Purging cache');
             $this->filesCache->clear();
             $this->descriptorsCache->clear();

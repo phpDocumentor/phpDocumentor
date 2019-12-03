@@ -1,15 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 
 use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\DocBlock\Tags\Throws;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Types\Object_;
 
-class ThrowsAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+class ThrowsAssemblerTest extends MockeryTestCase
 {
     /** @var ThrowsAssembler */
     private $fixture;
@@ -20,7 +23,7 @@ class ThrowsAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Initializes the fixture for this test.
      */
-    protected function setUp(): void
+    protected function setUp() : void
     {
         $this->builder = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
         $this->fixture = new ThrowsAssembler();

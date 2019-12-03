@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,10 +8,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor\Interfaces;
@@ -24,46 +22,36 @@ interface InterfaceInterface extends ElementInterface, TypeInterface
 {
     /**
      * Returns the parent for this descriptor.
-     *
-     * @return Collection|null
      */
-    public function getParent();
+    public function getParent() : ?Collection;
 
     /**
      * Sets the parent for this Descriptor.
-     *
-     * @param Collection $parent
      */
-    public function setParent($parent);
+    public function setParent(Collection $parent) : void;
 
     /**
      * Sets the constants associated with this interface.
      */
-    public function setConstants(Collection $constants);
+    public function setConstants(Collection $constants) : void;
 
     /**
      * Returns the constants associated with this interface.
-     *
-     * @return Collection
      */
-    public function getConstants();
+    public function getConstants() : Collection;
 
     /**
      * Sets the methods belonging to this interface.
      */
-    public function setMethods(Collection $methods);
+    public function setMethods(Collection $methods) : void;
 
     /**
      * Returns the methods belonging to this interface.
-     *
-     * @return Collection
      */
-    public function getMethods();
+    public function getMethods() : Collection;
 
     /**
      * Returns a list of all methods that were inherited from parent interfaces.
-     *
-     * @return Collection
      */
-    public function getInheritedMethods();
+    public function getInheritedMethods() : Collection;
 }

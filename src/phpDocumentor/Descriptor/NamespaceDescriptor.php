@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,10 +8,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor;
@@ -58,20 +56,16 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
 
     /**
      * Sets the parent namespace for this namespace.
-     *
-     * @param NamespaceDescriptor $parent
      */
-    public function setParent($parent)
+    public function setParent(?DescriptorAbstract $parent) : void
     {
         $this->parent = $parent;
     }
 
     /**
      * Returns the parent namespace for this namespace.
-     *
-     * @return NamespaceDescriptor|null
      */
-    public function getParent()
+    public function getParent() : ?NamespaceDescriptor
     {
         return $this->parent;
     }
@@ -79,17 +73,15 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
     /**
      * Sets a list of all classes in this project.
      */
-    public function setClasses(Collection $classes)
+    public function setClasses(Collection $classes) : void
     {
         $this->classes = $classes;
     }
 
     /**
      * Returns a list of all classes in this namespace.
-     *
-     * @return Collection
      */
-    public function getClasses()
+    public function getClasses() : Collection
     {
         return $this->classes;
     }
@@ -97,17 +89,15 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
     /**
      * Sets a list of all constants in this namespace.
      */
-    public function setConstants(Collection $constants)
+    public function setConstants(Collection $constants) : void
     {
         $this->constants = $constants;
     }
 
     /**
      * Returns a list of all constants in this namespace.
-     *
-     * @return Collection
      */
-    public function getConstants()
+    public function getConstants() : Collection
     {
         return $this->constants;
     }
@@ -115,17 +105,15 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
     /**
      * Sets a list of all functions in this namespace.
      */
-    public function setFunctions(Collection $functions)
+    public function setFunctions(Collection $functions) : void
     {
         $this->functions = $functions;
     }
 
     /**
      * Returns a list of all functions in this namespace.
-     *
-     * @return Collection
      */
-    public function getFunctions()
+    public function getFunctions() : Collection
     {
         return $this->functions;
     }
@@ -133,17 +121,15 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
     /**
      * Sets a list of all interfaces in this namespace.
      */
-    public function setInterfaces(Collection $interfaces)
+    public function setInterfaces(Collection $interfaces) : void
     {
         $this->interfaces = $interfaces;
     }
 
     /**
      * Returns a list of all interfaces in this namespace.
-     *
-     * @return Collection
      */
-    public function getInterfaces()
+    public function getInterfaces() : Collection
     {
         return $this->interfaces;
     }
@@ -151,37 +137,31 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
     /**
      * Sets a list of all child namespaces in this namespace.
      */
-    public function setChildren(Collection $children)
+    public function setChildren(Collection $children) : void
     {
         $this->children = $children;
     }
 
     /**
      * Returns a list of all namespaces contained in this namespace and its children.
-     *
-     * @return Collection
      */
-    public function getChildren()
+    public function getChildren() : Collection
     {
         return $this->children;
     }
 
     /**
      * Sets a list of all traits contained in this namespace.
-     *
-     * @param Collection $traits
      */
-    public function setTraits($traits)
+    public function setTraits(Collection $traits) : void
     {
         $this->traits = $traits;
     }
 
     /**
      * Returns a list of all traits in this namespace.
-     *
-     * @return Collection
      */
-    public function getTraits()
+    public function getTraits() : Collection
     {
         return $this->traits;
     }

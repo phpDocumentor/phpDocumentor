@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,10 +8,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor\Filter;
@@ -22,6 +20,7 @@ use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Descriptor\PropertyDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
+use function get_class;
 
 /**
  * Filter used to manipulate a descriptor after being build.
@@ -32,7 +31,7 @@ use phpDocumentor\Descriptor\TraitDescriptor;
 class Filter
 {
     /** @var int default priority for a filter in the series of filters. */
-    const DEFAULT_PRIORITY = 1000;
+    public const DEFAULT_PRIORITY = 1000;
 
     /** @var ClassFactory */
     protected $factory;
@@ -45,9 +44,9 @@ class Filter
         $this->factory = $factory;
     }
 
-    public function attachDefaults(ProjectDescriptorBuilder $descriptorBuilder): void
+    public function attachDefaults(ProjectDescriptorBuilder $descriptorBuilder) : void
     {
-        $stripOnVisibility = new StripOnVisibility($descriptorBuilder);
+        $stripOnVisibility       = new StripOnVisibility($descriptorBuilder);
         $filtersOnAllDescriptors = [
             new StripInternal($descriptorBuilder),
             new StripIgnore($descriptorBuilder),
@@ -69,7 +68,7 @@ class Filter
     /**
      * Attaches a filter to a specific FQCN.
      */
-    public function attach(string $fqcn, FilterInterface $filter): void
+    public function attach(string $fqcn, FilterInterface $filter) : void
     {
         $this->factory->attachTo($fqcn, $filter);
     }
@@ -77,7 +76,7 @@ class Filter
     /**
      * Filters the given Descriptor and returns the altered object.
      */
-    public function filter(Filterable $descriptor): ?Filterable
+    public function filter(Filterable $descriptor) : ?Filterable
     {
         $chain = $this->factory->getChainFor(get_class($descriptor));
 

@@ -1,22 +1,25 @@
 <?php
+
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor\Tag;
 
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Reflection\Types\Array_;
 
 /**
  * Tests the functionality for the ReturnDescriptor class.
  */
-class ReturnDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+class ReturnDescriptorTest extends MockeryTestCase
 {
     /** @var ReturnDescriptor $fixture */
     protected $fixture;
@@ -24,7 +27,7 @@ class ReturnDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Creates a new fixture object.
      */
-    protected function setUp(): void
+    protected function setUp() : void
     {
         $this->fixture = new ReturnDescriptor('name');
     }

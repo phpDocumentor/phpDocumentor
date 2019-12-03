@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,10 +8,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor\Builder\Reflector;
@@ -21,23 +19,24 @@ use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\Type;
 use phpDocumentor\Reflection\Types\Compound;
+use function array_values;
+use function count;
+use function reset;
+use function trim;
 
 abstract class AssemblerAbstract extends BaseAssembler
 {
     /**
      * Assemble DocBlock.
-     *
-     * @param DocBlock|null      $docBlock
-     * @param DescriptorAbstract $target
      */
-    protected function assembleDocBlock($docBlock, $target)
+    protected function assembleDocBlock(?DocBlock $docBlock, DescriptorAbstract $target) : void
     {
         if (!$docBlock) {
             return;
         }
 
         $target->setSummary($docBlock->getSummary());
-        $target->setDescription($docBlock->getDescription());
+        $target->setDescription((string) $docBlock->getDescription());
 
         /** @var DocBlock\Tag $tag */
         foreach ($docBlock->getTags() as $tag) {
@@ -57,7 +56,7 @@ abstract class AssemblerAbstract extends BaseAssembler
     /**
      * Extracts the package from the DocBlock.
      */
-    protected function extractPackageFromDocBlock(?DocBlock $docBlock): ?string
+    protected function extractPackageFromDocBlock(?DocBlock $docBlock) : ?string
     {
         $packageTags = $docBlock ? $docBlock->getTagsByName('package') : [];
         if (count($packageTags) === 0) {
@@ -70,13 +69,12 @@ abstract class AssemblerAbstract extends BaseAssembler
         return trim((string) $tag->getDescription());
     }
 
-    public static function deduplicateTypes(?Type $type): ?Type
+    public static function deduplicateTypes(?Type $type) : ?Type
     {
-
         if ($type instanceof Compound) {
             $normalizedTypes = [];
             foreach ($type as $typePart) {
-                $normalizedTypes[(string)$typePart] = $typePart;
+                $normalizedTypes[(string) $typePart] = $typePart;
             }
 
             return new Compound(array_values($normalizedTypes));

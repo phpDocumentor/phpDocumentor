@@ -1,41 +1,46 @@
 <?php
+
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor\Filter;
 
-use \Mockery as m;
+use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 
 /**
  * Tests the functionality for the StripInternal class.
+ *
+ * @coversDefaultClass \phpDocumentor\Descriptor\Filter\StripInternal
  */
-class StripInternalTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+final class StripInternalTest extends MockeryTestCase
 {
     /** @var ProjectDescriptorBuilder|m\Mock */
-    protected $builderMock;
+    private $builderMock;
 
     /** @var StripInternal $fixture */
-    protected $fixture;
+    private $fixture;
 
     /**
      * Creates a new (empty) fixture object.
      */
-    protected function setUp(): void
+    protected function setUp() : void
     {
         $this->builderMock = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
         $this->fixture = new StripInternal($this->builderMock);
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Filter\StripInternal::__invoke
+     * @covers ::__invoke
      */
     public function testStripsInternalTagFromDescription() : void
     {
@@ -50,7 +55,7 @@ class StripInternalTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Filter\StripInternal::__invoke
+     * @covers ::__invoke
      */
     public function testStripsInternalTagFromDescriptionIfTagDescriptionContainsBraces() : void
     {
@@ -65,7 +70,7 @@ class StripInternalTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Filter\StripInternal::__invoke
+     * @covers ::__invoke
      */
     public function testResolvesInternalTagFromDescriptionIfParsePrivateIsTrue() : void
     {
@@ -79,7 +84,7 @@ class StripInternalTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Filter\StripInternal::__invoke
+     * @covers ::__invoke
      */
     public function testRemovesDescriptorIfTaggedAsInternal() : void
     {
@@ -94,7 +99,7 @@ class StripInternalTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Filter\StripInternal::__invoke
+     * @covers ::__invoke
      */
     public function testKeepsDescriptorIfTaggedAsInternalAndParsePrivateIsTrue() : void
     {
@@ -109,7 +114,7 @@ class StripInternalTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Filter\StripInternal::__invoke
+     * @covers ::__invoke
      */
     public function testDescriptorIsUnmodifiedIfThereIsNoInternalTag() : void
     {

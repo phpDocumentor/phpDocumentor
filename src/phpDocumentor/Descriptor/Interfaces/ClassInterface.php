@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,10 +8,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor\Interfaces;
@@ -25,49 +23,31 @@ use phpDocumentor\Descriptor\Collection;
  */
 interface ClassInterface extends ElementInterface, ChildInterface, TypeInterface
 {
-    public function setInterfaces(Collection $interfaces);
+    public function setInterfaces(Collection $interfaces) : void;
 
-    /**
-     * @return Collection
-     */
-    public function getInterfaces();
+    public function getInterfaces() : Collection;
 
-    public function setFinal($final);
+    public function setFinal(bool $final) : void;
 
-    public function isFinal();
+    public function isFinal() : bool;
 
-    public function setAbstract($abstract);
+    public function setAbstract(bool $abstract) : void;
 
-    public function isAbstract();
+    public function isAbstract() : bool;
 
-    public function setConstants(Collection $constants);
+    public function setConstants(Collection $constants) : void;
 
-    /**
-     * @return Collection
-     */
-    public function getConstants();
+    public function getConstants() : Collection;
 
-    public function setMethods(Collection $methods);
+    public function setMethods(Collection $methods) : void;
 
-    /**
-     * @return Collection
-     */
-    public function getMethods();
+    public function getMethods() : Collection;
 
-    /**
-     * @return Collection
-     */
-    public function getInheritedMethods();
+    public function getInheritedMethods() : Collection;
 
-    public function setProperties(Collection $properties);
+    public function setProperties(Collection $properties) : void;
 
-    /**
-     * @return Collection
-     */
-    public function getProperties();
+    public function getProperties() : Collection;
 
-    /**
-     * @return Collection
-     */
-    public function getInheritedProperties();
+    public function getInheritedProperties() : Collection;
 }

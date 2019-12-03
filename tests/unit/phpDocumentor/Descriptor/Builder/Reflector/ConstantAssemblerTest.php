@@ -1,20 +1,20 @@
 <?php
+
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @author    Sven Hagemann <sven@rednose.nl>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Reflection\DocBlock;
-
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Php\Constant;
 
@@ -23,7 +23,7 @@ use phpDocumentor\Reflection\Php\Constant;
  *
  * @coversDefaultClass  \phpDocumentor\Descriptor\Builder\Reflector\ConstantAssembler
  */
-class ConstantAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+class ConstantAssemblerTest extends MockeryTestCase
 {
     /** @var ConstantAssembler $fixture */
     protected $fixture;
@@ -31,7 +31,7 @@ class ConstantAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Creates a new fixture to test with.
      */
-    protected function setUp(): void
+    protected function setUp() : void
     {
         $this->fixture = new ConstantAssembler();
     }

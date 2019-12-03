@@ -1,34 +1,40 @@
 <?php
+
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor;
 
+use Mockery\Adapter\Phpunit\MockeryTestCase;
+
 /**
  * Tests the functionality for the Collection class.
+ *
+ * @coversDefaultClass \phpDocumentor\Descriptor\Collection
  */
-class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+final class CollectionTest extends MockeryTestCase
 {
     /** @var Collection $fixture */
-    protected $fixture;
+    private $fixture;
 
     /**
      * Creates a new (empty) fixture object.
      */
-    protected function setUp(): void
+    protected function setUp() : void
     {
         $this->fixture = new Collection();
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Collection::__construct
+     * @covers ::__construct
      */
     public function testInitialize() : void
     {
@@ -38,7 +44,7 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Collection::__construct
+     * @covers ::__construct
      */
     public function testInitializeWithExistingArray() : void
     {
@@ -49,7 +55,7 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Collection::add
+     * @covers ::add
      */
     public function testAddNewItem() : void
     {
@@ -66,8 +72,8 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Collection::set
-     * @covers \phpDocumentor\Descriptor\Collection::offsetSet
+     * @covers ::set
+     * @covers ::offsetSet
      */
     public function testSetItemsWithKey() : void
     {
@@ -86,7 +92,7 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Collection::set
+     * @covers ::set
      */
     public function testSetItemsWithEmptyKeyShouldThrowException() : void
     {
@@ -95,7 +101,7 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Collection::offsetSet
+     * @covers ::offsetSet
      */
     public function testSetItemsUsingOffsetSetWithEmptyKeyShouldThrowException() : void
     {
@@ -104,9 +110,9 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Collection::get
-     * @covers \phpDocumentor\Descriptor\Collection::__get
-     * @covers \phpDocumentor\Descriptor\Collection::offsetGet
+     * @covers ::get
+     * @covers ::__get
+     * @covers ::offsetGet
      */
     public function testRetrievalOfItems() : void
     {
@@ -121,7 +127,7 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Collection::getAll
+     * @covers ::getAll
      */
     public function testRetrieveAllItems() : void
     {
@@ -130,7 +136,7 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Collection::getIterator
+     * @covers ::getIterator
      */
     public function testGetIterator() : void
     {
@@ -140,8 +146,8 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Collection::count
-     * @covers \phpDocumentor\Descriptor\Collection::offsetUnset
+     * @covers ::count
+     * @covers ::offsetUnset
      */
     public function testCountReturnsTheNumberOfElements() : void
     {
@@ -165,7 +171,7 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Collection::clear
+     * @covers ::clear
      */
     public function testClearingTheCollection() : void
     {
@@ -180,7 +186,7 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Collection::offsetExists
+     * @covers ::offsetExists
      */
     public function testIfExistingElementsAreDetected() : void
     {
@@ -194,7 +200,7 @@ class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Collection::merge
+     * @covers ::merge
      */
     public function testIfAfterMergeCollectionContainsAllItems() : void
     {

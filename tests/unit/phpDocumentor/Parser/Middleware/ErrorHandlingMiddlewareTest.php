@@ -1,7 +1,10 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Parser\Middleware;
 
+use Exception;
 use phpDocumentor\Parser\Middleware\ErrorHandlingMiddleware;
 use phpDocumentor\Reflection\File\LocalFile;
 use phpDocumentor\Reflection\Php\Factory\File\CreateCommand;
@@ -23,13 +26,13 @@ final class ErrorHandlingMiddlewareTest extends TestCase
     public function testThatParsingStartIsLogged() : void
     {
         $filename = __FILE__;
-        $command = new CreateCommand(new LocalFile($filename), new ProjectFactoryStrategies([]));
+        $command  = new CreateCommand(new LocalFile($filename), new ProjectFactoryStrategies([]));
 
         $logger = $this->prophesize(LoggerInterface::class);
         $logger->log(LogLevel::INFO, 'Starting to parse file: ' . __FILE__, [])->shouldBeCalled();
 
         $middleware = new ErrorHandlingMiddleware($logger->reveal());
-        $result = $middleware->execute(
+        $result     = $middleware->execute(
             $command,
             function (CreateCommand $receivedCommand) use ($command) {
                 $this->assertSame($command, $receivedCommand);
@@ -47,7 +50,7 @@ final class ErrorHandlingMiddlewareTest extends TestCase
     public function testThatAnErrorIsLogged() : void
     {
         $filename = __FILE__;
-        $command = new CreateCommand(new LocalFile($filename), new ProjectFactoryStrategies([]));
+        $command  = new CreateCommand(new LocalFile($filename), new ProjectFactoryStrategies([]));
 
         $logger = $this->prophesize(LoggerInterface::class);
         $logger->log(LogLevel::INFO, 'Starting to parse file: ' . __FILE__, [])->shouldBeCalled();
@@ -58,10 +61,10 @@ final class ErrorHandlingMiddlewareTest extends TestCase
         )->shouldBeCalled();
 
         $middleware = new ErrorHandlingMiddleware($logger->reveal());
-        $result = $middleware->execute(
+        $result     = $middleware->execute(
             $command,
-            function (CreateCommand $receivedCommand) use ($command) {
-                throw new \Exception('this is a test');
+            static function (CreateCommand $receivedCommand) : void {
+                throw new Exception('this is a test');
             }
         );
 

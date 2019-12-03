@@ -1,12 +1,13 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpDocumentor.
  *
  *  For the full copyright and license information, please view the LICENSE
  *  file that was distributed with this source code.
  *
- * @copyright 2010-2017 Mike van Riel<mike@phpdoc.org>
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
@@ -14,6 +15,7 @@ namespace phpDocumentor\Configuration\Factory;
 
 use phpDocumentor\Dsn;
 use phpDocumentor\Path;
+use function getcwd;
 
 /**
  * Expected phpDocumentor2 configuration arrays used for unit testing.
@@ -32,8 +34,8 @@ final class Version2ExpectedArray
                 'title' => 'my-doc',
                 'use-cache' => true,
                 'paths' => [
-                    'output' => new \phpDocumentor\Dsn('build/docs'),
-                    'cache' => new \phpDocumentor\Path('build/cache'),
+                    'output' => new Dsn('build/docs'),
+                    'cache' => new Path('build/cache'),
                 ],
                 'versions' => [
                     '1.0.0' => [
@@ -43,9 +45,7 @@ final class Version2ExpectedArray
                                 'format' => 'php',
                                 'source' => [
                                     'dsn' => new Dsn('file://' . getcwd()),
-                                    'paths' => [
-                                        0 => 'src',
-                                    ],
+                                    'paths' => [0 => 'src'],
                                 ],
                                 'ignore' => [
                                     'hidden' => true,
@@ -72,9 +72,7 @@ final class Version2ExpectedArray
                     ],
                 ],
                 'templates' => [
-                    [
-                        'name' => 'clean',
-                    ],
+                    ['name' => 'clean'],
                 ],
             ],
         ];
@@ -92,7 +90,7 @@ final class Version2ExpectedArray
                 'title' => 'my-doc',
                 'use-cache' => true,
                 'paths' => [
-                    'output' => new \phpDocumentor\Dsn('build/docs'),
+                    'output' => new Dsn('build/docs'),
                     'cache' => new Path('/build/cache'),
                 ],
                 'versions' => [
@@ -103,9 +101,7 @@ final class Version2ExpectedArray
                                 'format' => 'php',
                                 'source' => [
                                     'dsn' => new Dsn('file://' . getcwd()),
-                                    'paths' => [
-                                        0 => 'src',
-                                    ],
+                                    'paths' => [0 => 'src'],
                                 ],
                                 'ignore' => [
                                     'hidden' => true,
@@ -135,9 +131,7 @@ final class Version2ExpectedArray
                     ],
                 ],
                 'templates' => [
-                    [
-                        'name' => 'clean',
-                    ],
+                    ['name' => 'clean'],
                 ],
             ],
         ];
@@ -150,8 +144,8 @@ final class Version2ExpectedArray
                 'title' => 'my-doc',
                 'use-cache' => true,
                 'paths' => [
-                    'output' => new \phpDocumentor\Dsn('build/api/docs'),
-                    'cache' => new \phpDocumentor\Path('/tmp/phpdoc-doc-cache'),
+                    'output' => new Dsn('build/api/docs'),
+                    'cache' => new Path('/tmp/phpdoc-doc-cache'),
                 ],
                 'versions' => [
                     '1.0.0' => [
@@ -161,9 +155,7 @@ final class Version2ExpectedArray
                                 'format' => 'php',
                                 'source' => [
                                     'dsn' => new Dsn('file://' . getcwd()),
-                                    'paths' => [
-                                        0 => 'src',
-                                    ],
+                                    'paths' => [0 => 'src'],
                                 ],
                                 'ignore' => [
                                     'hidden' => true,
@@ -190,9 +182,7 @@ final class Version2ExpectedArray
                     ],
                 ],
                 'templates' => [
-                    [
-                        'name' => 'clean',
-                    ],
+                    ['name' => 'clean'],
                 ],
             ],
         ];
@@ -210,8 +200,8 @@ final class Version2ExpectedArray
                 'title' => 'my-doc',
                 'use-cache' => true,
                 'paths' => [
-                    'output' => new \phpDocumentor\Dsn('build/docs'),
-                    'cache' => new \phpDocumentor\Path('/tmp/phpdoc-doc-cache'),
+                    'output' => new Dsn('build/docs'),
+                    'cache' => new Path('/tmp/phpdoc-doc-cache'),
                 ],
                 'versions' => [
                     '1.0.0' => [
@@ -221,9 +211,7 @@ final class Version2ExpectedArray
                                 'format' => 'php',
                                 'source' => [
                                     'dsn' => new Dsn('file://' . getcwd()),
-                                    'paths' => [
-                                        0 => 'src',
-                                    ],
+                                    'paths' => [0 => 'src'],
                                 ],
                                 'ignore' => [
                                     'hidden' => true,
@@ -250,9 +238,7 @@ final class Version2ExpectedArray
                     ],
                 ],
                 'templates' => [
-                    [
-                        'name' => 'clean',
-                    ],
+                    ['name' => 'clean'],
                 ],
             ],
         ];
@@ -270,8 +256,8 @@ final class Version2ExpectedArray
                 'title' => 'my-doc',
                 'use-cache' => true,
                 'paths' => [
-                    'output' => new \phpDocumentor\Dsn('build/docs'),
-                    'cache' => new \phpDocumentor\Path('/tmp/phpdoc-doc-cache'),
+                    'output' => new Dsn('build/docs'),
+                    'cache' => new Path('/tmp/phpdoc-doc-cache'),
                 ],
                 'versions' => [
                     '1.0.0' => [
@@ -281,9 +267,7 @@ final class Version2ExpectedArray
                                 'format' => 'php',
                                 'source' => [
                                     'dsn' => new Dsn('file://' . getcwd()),
-                                    'paths' => [
-                                        0 => 'src',
-                                    ],
+                                    'paths' => [0 => 'src'],
                                 ],
                                 'ignore' => [
                                     'hidden' => true,
@@ -310,9 +294,7 @@ final class Version2ExpectedArray
                     ],
                 ],
                 'templates' => [
-                    [
-                        'name' => 'clean',
-                    ],
+                    ['name' => 'clean'],
                 ],
             ],
         ];

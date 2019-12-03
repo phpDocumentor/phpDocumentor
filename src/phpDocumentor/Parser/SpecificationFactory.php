@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,10 +8,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Parser;
@@ -37,7 +35,7 @@ final class SpecificationFactory implements FactoryInterface
      * @var (\phpDocumentor\Path|string)[] $ignore
      * @var string[] $extensions
      */
-    public function create(array $paths, array $ignore, array $extensions): SpecificationInterface
+    public function create(array $paths, array $ignore, array $extensions) : SpecificationInterface
     {
         $pathSpec = null;
         foreach ($paths as $path) {
@@ -76,22 +74,22 @@ final class SpecificationFactory implements FactoryInterface
         return $result;
     }
 
-    private function inPath(string $path): InPath
+    private function inPath(string $path) : InPath
     {
         return new InPath(new Path((string) $path));
     }
 
-    private function orSpec(SpecificationInterface $or, SpecificationInterface $spec): SpecificationInterface
+    private function orSpec(SpecificationInterface $or, SpecificationInterface $spec) : SpecificationInterface
     {
         return new OrSpecification($spec, $or);
     }
 
-    private function notSpec(SpecificationInterface $ignoreSpec): SpecificationInterface
+    private function notSpec(SpecificationInterface $ignoreSpec) : SpecificationInterface
     {
         return new NotSpecification($ignoreSpec);
     }
 
-    private function andSpec(SpecificationInterface $spec, SpecificationInterface $spec2): SpecificationInterface
+    private function andSpec(SpecificationInterface $spec, SpecificationInterface $spec2) : SpecificationInterface
     {
         return new AndSpecification($spec, $spec2);
     }

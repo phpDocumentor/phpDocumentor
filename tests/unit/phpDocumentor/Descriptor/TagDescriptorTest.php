@@ -1,10 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace phpDocumentor\Descriptor;
 
-class TagDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+use Mockery\Adapter\Phpunit\MockeryTestCase;
+
+class TagDescriptorTest extends MockeryTestCase
 {
-    const TAG_NAME = 'test';
+    public const TAG_NAME = 'test';
 
     /** @var TagDescriptor */
     private $fixture;
@@ -12,7 +16,7 @@ class TagDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Instantiates the fixture with its dependencies.
      */
-    protected function setUp(): void
+    protected function setUp() : void
     {
         $this->fixture = new TagDescriptor(self::TAG_NAME);
     }
@@ -44,7 +48,7 @@ class TagDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testOverridingErrorsCollectionWithNewCollection() : void
     {
         // Arrange
-        $collection = new \phpDocumentor\Descriptor\Collection();
+        $collection = new Collection();
 
         // Act
         $this->fixture->setErrors($collection);

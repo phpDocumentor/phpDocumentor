@@ -1,34 +1,32 @@
 <?php
+
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor;
 
-use \Mockery as m;
-use phpDocumentor\Descriptor\FunctionDescriptor;
-use phpDocumentor\Descriptor\ClassDescriptor;
-use phpDocumentor\Descriptor\MethodDescriptor;
-use phpDocumentor\Descriptor\ConstantDescriptor;
-use phpDocumentor\Descriptor\PropertyDescriptor;
-use phpDocumentor\Descriptor\Collection;
+use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
+use function array_merge;
 
 /**
  * Tests the functionality for the FileDescriptor class.
  */
-class FileDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+class FileDescriptorTest extends MockeryTestCase
 {
-    const EXAMPLE_HASH = 'a-hash-string';
+    public const EXAMPLE_HASH = 'a-hash-string';
 
-    const EXAMPLE_PATH = 'a-path-string';
+    public const EXAMPLE_PATH = 'a-path-string';
 
-    const EXAMPLE_SOURCE = 'a-source-string';
+    public const EXAMPLE_SOURCE = 'a-source-string';
 
     /** @var FileDescriptor $fixture */
     protected $fixture;
@@ -104,7 +102,7 @@ class FileDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $this->assertInstanceOf(Collection::class, $this->fixture->getNamespaceAliases());
 
         $mockInstance = m::mock(Collection::class);
-        $mock         = $mockInstance;
+        $mock = $mockInstance;
 
         $this->fixture->setNamespaceAliases($mock);
 
@@ -120,7 +118,7 @@ class FileDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $this->assertInstanceOf(Collection::class, $this->fixture->getIncludes());
 
         $mockInstance = m::mock(Collection::class);
-        $mock         = $mockInstance;
+        $mock = $mockInstance;
 
         $this->fixture->setIncludes($mock);
 
@@ -136,7 +134,7 @@ class FileDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $this->assertInstanceOf(Collection::class, $this->fixture->getConstants());
 
         $mockInstance = m::mock(Collection::class);
-        $mock         = $mockInstance;
+        $mock = $mockInstance;
 
         $this->fixture->setConstants($mock);
 
@@ -152,7 +150,7 @@ class FileDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $this->assertInstanceOf(Collection::class, $this->fixture->getFunctions());
 
         $mockInstance = m::mock(Collection::class);
-        $mock         = $mockInstance;
+        $mock = $mockInstance;
 
         $this->fixture->setFunctions($mock);
 
@@ -168,7 +166,7 @@ class FileDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $this->assertInstanceOf(Collection::class, $this->fixture->getClasses());
 
         $mockInstance = m::mock(Collection::class);
-        $mock         = $mockInstance;
+        $mock = $mockInstance;
 
         $this->fixture->setClasses($mock);
 
@@ -184,7 +182,7 @@ class FileDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $this->assertInstanceOf(Collection::class, $this->fixture->getInterfaces());
 
         $mockInstance = m::mock(Collection::class);
-        $mock         = $mockInstance;
+        $mock = $mockInstance;
 
         $this->fixture->setInterfaces($mock);
 
@@ -200,7 +198,7 @@ class FileDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $this->assertInstanceOf(Collection::class, $this->fixture->getTraits());
 
         $mockInstance = m::mock(Collection::class);
-        $mock         = $mockInstance;
+        $mock = $mockInstance;
 
         $this->fixture->setTraits($mock);
 
@@ -216,7 +214,7 @@ class FileDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $this->assertInstanceOf(Collection::class, $this->fixture->getMarkers());
 
         $mockInstance = m::mock(Collection::class);
-        $mock         = $mockInstance;
+        $mock = $mockInstance;
 
         $this->fixture->setMarkers($mock);
 
@@ -261,18 +259,18 @@ class FileDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
          */
 
         // setup error list
-        $errorGlobal              = ['error-global'];
-        $errorClasses             = ['error-class'];
-        $errorClassMethods        = ['error-class-method'];
-        $errorClassConstants      = ['error-class-constant'];
-        $errorClassProperties     = ['error-class-property'];
-        $errorInterfaces          = ['error-interface'];
+        $errorGlobal = ['error-global'];
+        $errorClasses = ['error-class'];
+        $errorClassMethods = ['error-class-method'];
+        $errorClassConstants = ['error-class-constant'];
+        $errorClassProperties = ['error-class-property'];
+        $errorInterfaces = ['error-interface'];
         $errorInterfacesConstants = ['error-interface-constant'];
-        $errorInterfacesMethods   = ['error-interface-method'];
-        $errorTraits              = ['error-traits'];
-        $errorTraitsProperties    = ['error-traits-property'];
-        $errorTraitsMethods       = ['error-traits-method'];
-        $errorFunctions           = ['error-functions'];
+        $errorInterfacesMethods = ['error-interface-method'];
+        $errorTraits = ['error-traits'];
+        $errorTraitsProperties = ['error-traits-property'];
+        $errorTraitsMethods = ['error-traits-method'];
+        $errorFunctions = ['error-functions'];
 
         // setup global check
         $collection = new Collection($errorGlobal);
@@ -309,7 +307,7 @@ class FileDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
         // setup interface check
         $mockInterfaces = m::mock(ClassDescriptor::class);
-        $mockInterfaces->shouldReceive('getProperties')->andReturn([]);
+        $mockInterfaces->shouldReceive('getProperties')->andReturn(new Collection());
         $mockInterfaces->shouldReceive('getConstants')->andReturn(new Collection([$mockInterfaceConstants]));
         $mockInterfaces->shouldReceive('getMethods')->andReturn(new Collection([$mockInterfaceMethods]));
         $mockInterfaces->shouldReceive('getErrors')->andReturn(new Collection($errorInterfaces));
@@ -326,7 +324,7 @@ class FileDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
         // setup traits check
         $mockTraits = m::mock(ClassDescriptor::class);
-        $mockTraits->shouldReceive('getConstants')->andReturn([]);
+        $mockTraits->shouldReceive('getConstants')->andReturn(new Collection());
         $mockTraits->shouldReceive('getProperties')->andReturn(new Collection([$mockTraitsProperties]));
         $mockTraits->shouldReceive('getMethods')->andReturn(new Collection([$mockTraitsMethods]));
         $mockTraits->shouldReceive('getErrors')->andReturn(new Collection($errorTraits));
@@ -337,9 +335,9 @@ class FileDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $mockFunctions = m::mock(FunctionDescriptor::class);
 
         // create dummy instances of constants/methods
-        $mockFunctions->shouldReceive('getConstants')->andReturn([]);
-        $mockFunctions->shouldReceive('getProperties')->andReturn([]);
-        $mockFunctions->shouldReceive('getMethods')->andReturn([]);
+        $mockFunctions->shouldReceive('getConstants')->andReturn(new Collection());
+        $mockFunctions->shouldReceive('getProperties')->andReturn(new Collection());
+        $mockFunctions->shouldReceive('getMethods')->andReturn(new Collection());
         $mockFunctions->shouldReceive('getErrors')->andReturn(new Collection($errorFunctions));
 
         $this->fixture->getClasses()->set('my-test-function', $mockFunctions);

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,10 +8,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor\Type;
@@ -30,30 +28,24 @@ class UnknownTypeDescriptor implements TypeInterface
 
     /**
      * Creates an unknown type with the given name.
-     *
-     * @param string $name
      */
-    public function __construct($name)
+    public function __construct(string $name)
     {
         $this->name = $name;
     }
 
     /**
      * Returns the name for this identifier.
-     *
-     * @return string
      */
-    public function getName()
+    public function getName() : string
     {
         return $this->name;
     }
 
     /**
      * Returns a human-readable name for this type.
-     *
-     * @return string
      */
-    public function __toString(): string
+    public function __toString() : string
     {
         return $this->getName();
     }

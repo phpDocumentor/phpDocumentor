@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,23 +8,22 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Parser\Middleware;
 
-use Exception;
 use phpDocumentor\Reflection\Middleware\Command;
 use phpDocumentor\Reflection\Middleware\Middleware;
 use phpDocumentor\Reflection\Php\Factory\File\CreateCommand;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
+use Throwable;
+use function assert;
 
 final class ErrorHandlingMiddleware implements Middleware
 {
+    /** @var LoggerInterface */
     private $logger;
 
     public function __construct(LoggerInterface $logger)
@@ -32,7 +32,7 @@ final class ErrorHandlingMiddleware implements Middleware
     }
 
     /**
-     * @return object
+     * @return string|object|null
      */
     public function execute(Command $command, callable $next)
     {
@@ -43,7 +43,7 @@ final class ErrorHandlingMiddleware implements Middleware
 
         try {
             return $next($command);
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             $this->log(
                 '  Unable to parse file "' . $filename . '", an error was detected: ' . $e->getMessage(),
                 LogLevel::ALERT
@@ -56,7 +56,7 @@ final class ErrorHandlingMiddleware implements Middleware
     /**
      * Dispatches a logging request.
      */
-    private function log(string $message, string $priority = LogLevel::INFO, array $parameters = [])
+    private function log(string $message, string $priority = LogLevel::INFO, array $parameters = []) : void
     {
         $this->logger->log($priority, $message, $parameters);
     }

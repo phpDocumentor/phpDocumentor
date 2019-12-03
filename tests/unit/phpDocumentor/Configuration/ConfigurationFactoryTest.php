@@ -1,25 +1,29 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpDocumentor.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @copyright 2010-2015 Mike van Riel<mike@phpdoc.org>
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Configuration;
 
-use Mockery\Adapter\Phpunit\MockeryTestCase;
+use Closure;
+use InvalidArgumentException;
 use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 use org\bovigo\vfs\vfsStream;
+use phpDocumentor\Configuration\Exception\InvalidConfigPathException;
 use phpDocumentor\Configuration\Factory\Strategy;
 use phpDocumentor\Configuration\Factory\Version2;
 use phpDocumentor\Configuration\Factory\Version3;
-use phpDocumentor\Configuration\Exception\InvalidConfigPathException;
 use phpDocumentor\Uri;
+use SimpleXMLElement;
 
 /**
  * Test case for ConfigurationFactory
@@ -38,12 +42,12 @@ final class ConfigurationFactoryTest extends MockeryTestCase
         $configurationFactory = new ConfigurationFactory(
             [
                 new Version3('data/xsd/phpdoc.xsd'),
-                new Version2()
+                new Version2(),
             ],
             []
         );
 
-        $content = '<phpdocumentor><title>My title</title></phpdocumentor>';
+        $content       = '<phpdocumentor><title>My title</title></phpdocumentor>';
         $configuration = $configurationFactory->fromUri(
             new Uri($this->givenExampleConfigurationFileWithContent($content))
         );
@@ -66,7 +70,7 @@ final class ConfigurationFactoryTest extends MockeryTestCase
      */
     public function testThatTheDefaultConfigurationFilesAreLoaded() : void
     {
-        $file = $this->givenExampleConfigurationFileWithContent(
+        $file                 = $this->givenExampleConfigurationFileWithContent(
             '<phpdocumentor><title>My title</title></phpdocumentor>'
         );
         $configurationFactory = new ConfigurationFactory([new Version2()], [$file]);
@@ -93,7 +97,7 @@ final class ConfigurationFactoryTest extends MockeryTestCase
      */
     public function testWhenDefaultFileIsInvalidXMLThenAnExceptionIsRaised() : void
     {
-        $file = $this->givenExampleConfigurationFileWithContent(
+        $file                 = $this->givenExampleConfigurationFileWithContent(
             '<?xml version="1.0" encoding="UTF-8" ?>' .
             '<phpdocumentor xmlns="http://www.phpdoc.org" version="3">' .
             '<foo/>' .
@@ -104,10 +108,10 @@ final class ConfigurationFactoryTest extends MockeryTestCase
             [$file]
         );
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
             "Element '{http://www.phpdoc.org}foo': This element is not expected. "
-            . "Expected is ( {http://www.phpdoc.org}paths )."
+            . 'Expected is ( {http://www.phpdoc.org}paths ).'
         );
         $configurationFactory->fromDefaultLocations();
     }
@@ -117,7 +121,7 @@ final class ConfigurationFactoryTest extends MockeryTestCase
      */
     public function testThatMiddlewaresCanBeAddedAndAreThenApplied() : void
     {
-        $inputValue = ['test'];
+        $inputValue            = ['test'];
         $afterMiddleware1Value = ['test', 'test2'];
         $afterMiddleware2Value = ['test', 'test2', 'test3'];
 
@@ -140,7 +144,7 @@ final class ConfigurationFactoryTest extends MockeryTestCase
     {
         $this->expectException('Exception');
         $this->expectExceptionMessage('No supported configuration files were found');
-        $strategies = []; // No strategy means nothing could match ;)
+        $strategies           = []; // No strategy means nothing could match ;)
         $configurationFactory = new ConfigurationFactory($strategies, []);
 
         $configurationFactory->fromUri(
@@ -157,7 +161,7 @@ final class ConfigurationFactoryTest extends MockeryTestCase
         new ConfigurationFactory(['this_is_not_a_strategy'], []);
     }
 
-    private function givenExampleConfigurationFileWithContent($content): string
+    private function givenExampleConfigurationFileWithContent($content) : string
     {
         vfsStream::newFile('foo.xml')
             ->at(vfsStream::setup('dir'))
@@ -166,7 +170,7 @@ final class ConfigurationFactoryTest extends MockeryTestCase
         return vfsStream::url('dir/foo.xml');
     }
 
-    private function givenAMiddlewareThatReturns($expectedInputValue, $returnValue): \Closure
+    private function givenAMiddlewareThatReturns($expectedInputValue, $returnValue) : Closure
     {
         return function ($value) use ($expectedInputValue, $returnValue) {
             $this->assertSame($expectedInputValue, $value);
@@ -175,18 +179,18 @@ final class ConfigurationFactoryTest extends MockeryTestCase
         };
     }
 
-    private function givenAValidStrategyThatReturns($result): Strategy
+    private function givenAValidStrategyThatReturns($result) : Strategy
     {
         /** @var m\Mock $strategy */
         $strategy = m::mock(Strategy::class);
         $strategy->shouldReceive('supports')
             ->once()
-            ->with(m::type(\SimpleXMLElement::class))
+            ->with(m::type(SimpleXMLElement::class))
             ->andReturn(true);
         $strategy
             ->shouldReceive('convert')
             ->once()
-            ->with(m::type(\SimpleXMLElement::class))->andReturn($result);
+            ->with(m::type(SimpleXMLElement::class))->andReturn($result);
 
         return $strategy;
     }

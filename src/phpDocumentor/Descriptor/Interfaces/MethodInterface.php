@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,10 +8,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor\Interfaces;
@@ -22,43 +20,19 @@ use phpDocumentor\Descriptor\Collection;
  */
 interface MethodInterface extends ElementInterface, TypeInterface
 {
-    /**
-     * @param boolean $abstract
-     */
-    public function setAbstract($abstract);
+    public function setAbstract(bool $abstract) : void;
 
-    /**
-     * @return boolean
-     */
-    public function isAbstract();
+    public function isAbstract() : bool;
 
-    /**
-     * @return Collection
-     */
-    public function getArguments();
+    public function getArguments() : Collection;
 
-    /**
-     * @param boolean $final
-     */
-    public function setFinal($final);
+    public function setFinal(bool $final) : void;
 
-    /**
-     * @return boolean
-     */
-    public function isFinal();
+    public function isFinal() : bool;
 
-    /**
-     * @param boolean $static
-     */
-    public function setStatic($static);
+    public function setStatic(bool $static) : void;
 
-    /**
-     * @return boolean
-     */
-    public function isStatic();
+    public function isStatic() : bool;
 
-    /**
-     * @param string $visibility
-     */
-    public function setVisibility($visibility);
+    public function setVisibility(string $visibility) : void;
 }

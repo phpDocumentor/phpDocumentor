@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,10 +8,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor\Builder;
@@ -27,10 +25,8 @@ abstract class AssemblerAbstract implements AssemblerInterface
 
     /**
      * Returns the builder for this Assembler or null if none is set.
-     *
-     * @return null|ProjectDescriptorBuilder
      */
-    public function getBuilder()
+    public function getBuilder() : ?ProjectDescriptorBuilder
     {
         return $this->builder;
     }
@@ -41,7 +37,7 @@ abstract class AssemblerAbstract implements AssemblerInterface
      * The Builder may be used to recursively assemble Descriptors using
      * the {@link ProjectDescriptorBuilder::buildDescriptor()} method.
      */
-    public function setBuilder(ProjectDescriptorBuilder $builder)
+    public function setBuilder(ProjectDescriptorBuilder $builder) : void
     {
         $this->builder = $builder;
     }

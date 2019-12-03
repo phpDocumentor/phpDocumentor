@@ -1,18 +1,20 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpDocumentor.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @copyright 2010-2018 Mike van Riel<mike@phpdoc.org>
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\DocBlock\Description;
@@ -21,7 +23,7 @@ use phpDocumentor\Reflection\Php\Property;
 use phpDocumentor\Reflection\Php\Visibility;
 use phpDocumentor\Reflection\Types\String_;
 
-class PropertyAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+final class PropertyAssemblerTest extends MockeryTestCase
 {
     /** @var PropertyAssembler $fixture */
     protected $fixture;
@@ -32,7 +34,7 @@ class PropertyAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Creates a new fixture to test with.
      */
-    protected function setUp(): void
+    protected function setUp() : void
     {
         $this->builderMock = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
         $this->builderMock->shouldReceive('buildDescriptor')->andReturn(null);
@@ -70,13 +72,12 @@ class PropertyAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
     /**
      * Creates a sample property reflector for the tests with the given data.
-     *
-     * @param string $namespace
-     * @param string $propertyName
-     * @param DocBlock $docBlockMock
      */
-    protected function givenAPropertyReflector($namespace, $propertyName, $docBlockMock = null): Property
-    {
+    private function givenAPropertyReflector(
+        string $namespace,
+        string $propertyName,
+        ?DocBlock $docBlockMock = null
+    ) : Property {
         return new Property(
             new Fqsen('\\' . $namespace . '::$' . $propertyName),
             new Visibility(Visibility::PROTECTED_),
@@ -87,7 +88,7 @@ class PropertyAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Generates a DocBlock object with applicable defaults for these tests.
      */
-    protected function givenADocBlockObject($withTags): DocBlock
+    private function givenADocBlockObject(bool $withTags) : DocBlock
     {
         $docBlockDescription = new Description('This is an example description');
 

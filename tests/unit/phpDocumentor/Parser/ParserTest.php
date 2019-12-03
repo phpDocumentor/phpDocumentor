@@ -1,20 +1,24 @@
 <?php
+
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Parser;
 
 use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Reflection\ProjectFactory;
 use Psr\Log\NullLogger;
+use function ini_set;
+use function sys_get_temp_dir;
 
 /**
  * Test class for \phpDocumentor\Parser\Parser.
@@ -23,7 +27,7 @@ use Psr\Log\NullLogger;
  * @covers ::__construct
  * @covers ::<private>
  */
-class ParserTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+class ParserTest extends MockeryTestCase
 {
     /** @var Parser */
     protected $fixture = null;
@@ -31,9 +35,9 @@ class ParserTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Instantiates a new parser object as fixture.
      */
-    protected function setUp(): void
+    protected function setUp() : void
     {
-        ini_set('zend.script_encoding', null);
+        ini_set('zend.script_encoding', '');
         $this->fixture = new Parser(
             m::mock(ProjectFactory::class),
             m::mock('Symfony\Component\Stopwatch\Stopwatch'),

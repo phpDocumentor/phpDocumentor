@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,23 +8,19 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor;
 
+use InvalidArgumentException;
 use phpDocumentor\Descriptor\Builder\AssemblerFactory;
 use phpDocumentor\Descriptor\Builder\AssemblerInterface;
-use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
-use phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper;
 use phpDocumentor\Descriptor\Filter\Filter;
 use phpDocumentor\Descriptor\Filter\Filterable;
-use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
 use phpDocumentor\Reflection\Php\Project;
-use Psr\Log\LogLevel;
+use function get_class;
+use function is_iterable;
 
 /**
  * Builds a Project Descriptor and underlying tree.
@@ -31,7 +28,7 @@ use Psr\Log\LogLevel;
 class ProjectDescriptorBuilder
 {
     /** @var string */
-    const DEFAULT_PROJECT_NAME = 'Untitled project';
+    public const DEFAULT_PROJECT_NAME = 'Untitled project';
 
     /** @var AssemblerFactory $assemblerFactory */
     protected $assemblerFactory;
@@ -42,6 +39,7 @@ class ProjectDescriptorBuilder
     /** @var ProjectDescriptor $project */
     protected $project;
 
+    /** @var string */
     private $defaultPackage;
 
     public function __construct(AssemblerFactory $assemblerFactory, Filter $filterManager)
@@ -50,17 +48,15 @@ class ProjectDescriptorBuilder
         $this->filter = $filterManager;
     }
 
-    public function createProjectDescriptor()
+    public function createProjectDescriptor() : void
     {
         $this->project = new ProjectDescriptor(self::DEFAULT_PROJECT_NAME);
     }
 
     /**
      * Returns the project descriptor that is being built.
-     *
-     * @return ProjectDescriptor
      */
-    public function getProjectDescriptor()
+    public function getProjectDescriptor() : ProjectDescriptor
     {
         return $this->project;
     }
@@ -70,15 +66,15 @@ class ProjectDescriptorBuilder
      *
      * @param mixed $data
      *
-     * @throws \InvalidArgumentException if no Assembler could be found that matches the given data.
-     *
      * @return DescriptorAbstract|Collection|null
+     *
+     * @throws InvalidArgumentException If no Assembler could be found that matches the given data.
      */
     public function buildDescriptor($data)
     {
         $assembler = $this->getAssembler($data);
         if (!$assembler) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Unable to build a Descriptor; the provided data did not match any Assembler ' .
                 get_class($data)
             );
@@ -106,20 +102,16 @@ class ProjectDescriptorBuilder
      * Attempts to find an assembler matching the given data.
      *
      * @param mixed $data
-     *
-     * @return AssemblerInterface|null
      */
-    public function getAssembler($data)
+    public function getAssembler($data) : ?AssemblerInterface
     {
         return $this->assemblerFactory->get($data);
     }
 
     /**
      * Analyzes a Descriptor and alters its state based on its state or even removes the descriptor.
-     *
-     * @return Filterable
      */
-    public function filter(Filterable $descriptor)
+    public function filter(Filterable $descriptor) : Filterable
     {
         return $this->filter->filter($descriptor);
     }
@@ -129,10 +121,8 @@ class ProjectDescriptorBuilder
      * objects.
      *
      * @param DescriptorAbstract[] $descriptor
-     *
-     * @return Collection
      */
-    private function filterEachDescriptor(iterable $descriptor): Collection
+    private function filterEachDescriptor(iterable $descriptor) : Collection
     {
         $descriptors = new Collection();
         foreach ($descriptor as $key => $item) {
@@ -151,7 +141,7 @@ class ProjectDescriptorBuilder
      * Filters a descriptor, validates it, stores the validation results and returns the transmuted object or null
      * if it is supposed to be removed.
      */
-    protected function filterDescriptor(DescriptorAbstract $descriptor): ?DescriptorAbstract
+    protected function filterDescriptor(DescriptorAbstract $descriptor) : ?DescriptorAbstract
     {
         if (!$descriptor instanceof Filterable) {
             return $descriptor;
@@ -166,17 +156,10 @@ class ProjectDescriptorBuilder
         return $descriptor;
     }
 
-    public function build(Project $project)
+    public function build(Project $project) : void
     {
         $packageName = $project->getRootNamespace()->getFqsen()->getName();
-        $this->defaultPackage = new PackageDescriptor();
-        $this->defaultPackage->setFullyQualifiedStructuralElementName(
-            (string) $project->getRootNamespace()->getFqsen()
-        );
-        $this->defaultPackage->setName($packageName);
-        $this->defaultPackage->setNamespace(
-            substr((string) $project->getRootNamespace()->getFqsen(), 0, -strlen($packageName) - 1)
-        );
+        $this->defaultPackage = $packageName;
 
         foreach ($project->getFiles() as $file) {
             $descriptor = $this->buildDescriptor($file);
@@ -188,14 +171,13 @@ class ProjectDescriptorBuilder
         }
 
         $namespaces = $this->getProjectDescriptor()->getIndexes()->get('namespaces', new Collection());
-//        $namespaces->add($this->defaultPackage);
 
         foreach ($project->getNamespaces() as $namespace) {
             $namespaces->set((string) $namespace->getFqsen(), $this->buildDescriptor($namespace));
         }
     }
 
-    public function getDefaultPackage()
+    public function getDefaultPackage() : ?string
     {
         return $this->defaultPackage;
     }

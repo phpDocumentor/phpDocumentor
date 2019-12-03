@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,15 +8,15 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor\Type;
 
 use phpDocumentor\Descriptor\Interfaces\TypeInterface;
+use function count;
+use function implode;
+use function method_exists;
 
 /**
  * Descriptor representing a collection or compound type of collection object.
@@ -23,35 +24,33 @@ use phpDocumentor\Descriptor\Interfaces\TypeInterface;
  * This descriptor represents any type that is capable of containing other typed values. Examples of such
  * types can be an array, DoctrineCollection or ArrayObject.
  */
-class CollectionDescriptor implements TypeInterface
+final class CollectionDescriptor implements TypeInterface
 {
     /** @var TypeInterface|string */
-    protected $baseType = '';
+    private $baseType;
 
     /** @var TypeInterface[] $type */
-    protected $types = [];
+    private $types = [];
 
     /** @var TypeInterface[] $type */
-    protected $keyTypes = [];
+    private $keyTypes = [];
 
     /**
      * Initializes this type collection with its base-type.
-     *
-     * @param TypeInterface $baseType
      */
-    public function __construct($baseType)
+    public function __construct(?TypeInterface $baseType = null)
     {
         $this->baseType = $baseType;
     }
 
     /**
      * Returns the name for this type.
-     *
-     * @return string
      */
-    public function getName()
+    public function getName() : string
     {
-        return method_exists($this->baseType, 'getName') ? $this->baseType->getName() : $this->baseType;
+        return method_exists($this->baseType, 'getName')
+            ? $this->baseType->getName()
+            : ($this->baseType ?: 'array');
     }
 
     /**
@@ -60,20 +59,16 @@ class CollectionDescriptor implements TypeInterface
      * When the presented collection is governed by an object (such as a Collection object) then a reference to that
      * object will be returned. If however the base type for this collection is a simple type such as an 'array' then
      * we return null to indicate there is no object governing this type.
-     *
-     * @return TypeInterface|null
      */
-    public function getBaseType()
+    public function getBaseType() : ?TypeInterface
     {
         return $this->baseType instanceof TypeInterface ? $this->baseType : null;
     }
 
     /**
      * Registers the base type for this collection type.
-     *
-     * @param string|TypeInterface $baseType
      */
-    public function setBaseType($baseType)
+    public function setBaseType(?TypeInterface $baseType) : void
     {
         $this->baseType = $baseType;
     }
@@ -83,7 +78,7 @@ class CollectionDescriptor implements TypeInterface
      *
      * @param TypeInterface[] $types
      */
-    public function setTypes(array $types)
+    public function setTypes(array $types) : void
     {
         $this->types = $types;
     }
@@ -93,7 +88,7 @@ class CollectionDescriptor implements TypeInterface
      *
      * @return TypeInterface[]
      */
-    public function getTypes()
+    public function getTypes() : array
     {
         return $this->types;
     }
@@ -103,7 +98,7 @@ class CollectionDescriptor implements TypeInterface
      *
      * @param TypeInterface[] $types
      */
-    public function setKeyTypes(array $types)
+    public function setKeyTypes(array $types) : void
     {
         $this->keyTypes = $types;
     }
@@ -113,17 +108,15 @@ class CollectionDescriptor implements TypeInterface
      *
      * @return TypeInterface[]
      */
-    public function getKeyTypes()
+    public function getKeyTypes() : array
     {
         return $this->keyTypes;
     }
 
     /**
      * Returns a human-readable representation for this type.
-     *
-     * @return string
      */
-    public function __toString(): string
+    public function __toString() : string
     {
         $name = (string) $this->getName();
 

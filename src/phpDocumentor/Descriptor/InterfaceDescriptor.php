@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,13 +8,12 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor;
+
+use phpDocumentor\Reflection\Fqsen;
 
 /**
  * Descriptor representing an Interface.
@@ -41,10 +41,7 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
         $this->setMethods(new Collection());
     }
 
-    /**
-     * @param Collection $parents
-     */
-    public function setParent($parents)
+    public function setParent(Collection $parents) : void
     {
         $this->parents = $parents;
     }
@@ -52,7 +49,7 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
     /**
      * {@inheritDoc}
      */
-    public function getParent()
+    public function getParent() : Collection
     {
         return $this->parents;
     }
@@ -60,7 +57,7 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
     /**
      * {@inheritDoc}
      */
-    public function setConstants(Collection $constants)
+    public function setConstants(Collection $constants) : void
     {
         $this->constants = $constants;
     }
@@ -68,7 +65,7 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
     /**
      * {@inheritDoc}
      */
-    public function getConstants()
+    public function getConstants() : Collection
     {
         return $this->constants;
     }
@@ -76,16 +73,8 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
     /**
      * {@inheritDoc}
      */
-    public function getInheritedConstants()
+    public function getInheritedConstants() : Collection
     {
-
-        if ($this->getParent() === null
-            || !$this->getParent() instanceof Collection
-            || $this->getParent()->count() === 0
-        ) {
-            return new Collection();
-        }
-
         $inheritedConstants = new Collection();
 
         /** @var self $parent */
@@ -104,7 +93,7 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
     /**
      * {@inheritDoc}
      */
-    public function setMethods(Collection $methods)
+    public function setMethods(Collection $methods) : void
     {
         $this->methods = $methods;
     }
@@ -112,7 +101,7 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
     /**
      * {@inheritDoc}
      */
-    public function getMethods()
+    public function getMethods() : Collection
     {
         return $this->methods;
     }
@@ -120,15 +109,8 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
     /**
      * {@inheritDoc}
      */
-    public function getInheritedMethods()
+    public function getInheritedMethods() : Collection
     {
-        if ($this->getParent() === null
-            || !$this->getParent() instanceof Collection
-            || $this->getParent()->count() === 0
-        ) {
-            return new Collection();
-        }
-
         $inheritedMethods = new Collection();
 
         /** @var self $parent */
@@ -144,7 +126,10 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
         return $inheritedMethods;
     }
 
-    public function setPackage($package)
+    /**
+     * @inheritDoc
+     */
+    public function setPackage($package) : void
     {
         parent::setPackage($package);
 
@@ -157,9 +142,12 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
         }
     }
 
+    /**
+     * @return InterfaceDescriptor|Fqsen|null
+     */
     public function getInheritedElement()
     {
-        return $this->getParent() !== null && $this->getParent()->count() > 0
+        return $this->getParent()->count() > 0
             ? $this->getParent()->getIterator()->current()
             : null;
     }

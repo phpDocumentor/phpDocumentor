@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,17 +8,13 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 
 use InvalidArgumentException;
 use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
-use phpDocumentor\Descriptor\Example\Finder;
 use phpDocumentor\Descriptor\Tag\ExampleDescriptor;
 use phpDocumentor\Reflection\DocBlock\ExampleFinder;
 use phpDocumentor\Reflection\DocBlock\Tags\Example;
@@ -45,19 +42,17 @@ class ExampleAssembler extends AssemblerAbstract
      *
      * @param Example $data
      *
-     * @throws InvalidArgumentException if the provided parameter is not of type ExampleTag; the interface won't let
+     * @throws InvalidArgumentException If the provided parameter is not of type ExampleTag; the interface won't let
      *   up typehint the signature.
-     *
-     * @return ExampleDescriptor
      */
-    public function create($data)
+    public function create($data) : ExampleDescriptor
     {
         Assert::isInstanceOf($data, Example::class);
         $descriptor = new ExampleDescriptor($data->getName());
         $descriptor->setFilePath((string) $data->getFilePath());
         $descriptor->setStartingLine($data->getStartingLine());
         $descriptor->setLineCount($data->getLineCount());
-        $descriptor->setDescription($data->getDescription());
+        $descriptor->setDescription((string) $data->getDescription());
         $descriptor->setExample($this->finder->find($data));
 
         return $descriptor;

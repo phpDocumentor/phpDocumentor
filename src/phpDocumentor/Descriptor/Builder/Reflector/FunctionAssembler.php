@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,10 +8,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor\Builder\Reflector;
@@ -21,6 +19,9 @@ use phpDocumentor\Descriptor\FunctionDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Reflection\Php\Argument;
 use phpDocumentor\Reflection\Php\Function_;
+use function strlen;
+use function substr;
+use function trim;
 
 /**
  * Assembles a FunctionDescriptor from a FunctionReflector.
@@ -42,10 +43,8 @@ class FunctionAssembler extends AssemblerAbstract
      * Creates a Descriptor from the provided data.
      *
      * @param Function_ $data
-     *
-     * @return FunctionDescriptor
      */
-    public function create($data)
+    public function create($data) : FunctionDescriptor
     {
         $functionDescriptor = new FunctionDescriptor();
 
@@ -59,10 +58,10 @@ class FunctionAssembler extends AssemblerAbstract
     /**
      * Maps the properties of the Function reflector onto the Descriptor.
      */
-    protected function mapReflectorPropertiesOntoDescriptor(Function_ $reflector, FunctionDescriptor $descriptor): void
+    protected function mapReflectorPropertiesOntoDescriptor(Function_ $reflector, FunctionDescriptor $descriptor) : void
     {
         $packages = new Collection();
-        $package = $this->extractPackageFromDocBlock($reflector->getDocBlock());
+        $package  = $this->extractPackageFromDocBlock($reflector->getDocBlock());
         //TODO: this looks like a potential bug. Have to investigate this!
         if ($package) {
             $tag = new TagDescriptor('package');
@@ -88,7 +87,7 @@ class FunctionAssembler extends AssemblerAbstract
      *
      * @param Argument[] $arguments
      */
-    protected function addArgumentsToFunctionDescriptor(array $arguments, FunctionDescriptor $functionDescriptor): void
+    protected function addArgumentsToFunctionDescriptor(array $arguments, FunctionDescriptor $functionDescriptor) : void
     {
         foreach ($arguments as $argument) {
             $this->addArgumentDescriptorToFunction(
@@ -104,7 +103,7 @@ class FunctionAssembler extends AssemblerAbstract
     protected function addArgumentDescriptorToFunction(
         FunctionDescriptor $functionDescriptor,
         ArgumentDescriptor $argumentDescriptor
-    ): void {
+    ) : void {
         $functionDescriptor->getArguments()->set($argumentDescriptor->getName(), $argumentDescriptor);
     }
 
@@ -114,7 +113,7 @@ class FunctionAssembler extends AssemblerAbstract
     protected function createArgumentDescriptor(
         FunctionDescriptor $functionDescriptor,
         Argument $argument
-    ): ArgumentDescriptor {
+    ) : ArgumentDescriptor {
         $params = $functionDescriptor->getTags()->get('param', []);
 
         if (!$this->argumentAssembler->getBuilder()) {

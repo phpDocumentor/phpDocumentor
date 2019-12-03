@@ -1,21 +1,21 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  *  This file is part of phpDocumentor.
  *
  *  For the full copyright and license information, please view the LICENSE
  *  file that was distributed with this source code.
  *
- *  @copyright 2010-${YEAR} Mike van Riel<mike@phpdoc.org>
- *  @license   http://www.opensource.org/licenses/mit-license.php MIT
- *  @link      http://phpdoc.org
+ * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor\Cache;
 
-use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
-use Stash\Driver\Ephemeral;
 use Stash\Pool;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
@@ -23,20 +23,18 @@ use Symfony\Component\Cache\Adapter\FilesystemAdapter;
  * @coversDefaultClass \phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper
  * @covers ::__construct
  */
-final class ProjectDescriptorMapperTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+final class ProjectDescriptorMapperTest extends MockeryTestCase
 {
     /** @var ProjectDescriptorMapper */
     private $mapper;
 
-    /**
-     * @var Pool
-     */
+    /** @var Pool */
     private $cachePool;
 
-    protected function setUp(): void
+    protected function setUp() : void
     {
         $this->cachePool = new FilesystemAdapter();
-        $this->mapper = new ProjectDescriptorMapper($this->cachePool);
+        $this->mapper    = new ProjectDescriptorMapper($this->cachePool);
     }
 
     /**

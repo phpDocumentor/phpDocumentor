@@ -2,7 +2,8 @@
   "symbol-whitelist" : [
     "null", "true", "false",
     "static", "self", "parent",
-    "array", "string", "int", "float", "bool", "iterable", "callable", "void", "object"
+    "array", "string", "int", "float", "bool", "iterable", "callable", "void", "object",
+    "Composer\\Autoload\\ClassLoader"
   ],
   "php-core-extensions" : [
     "Core",

@@ -1,15 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace phpDocumentor\Compiler\Pass;
 
 use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
+use Mockery\MockInterface;
 use phpDocumentor\Descriptor\Example\Finder;
 use phpDocumentor\Reflection\DocBlock\ExampleFinder;
 
 /**
  * Tests the \phpDocumentor\Compiler\Pass\ExampleTagsEnricher class.
  */
-class ExampleTagsEnricherTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+class ExampleTagsEnricherTest extends MockeryTestCase
 {
     /** @var Finder|m\MockInterface */
     private $finderMock;
@@ -20,10 +24,10 @@ class ExampleTagsEnricherTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Initializes the fixture and its dependencies.
      */
-    protected function setUp(): void
+    protected function setUp() : void
     {
         $this->finderMock = m::mock(ExampleFinder::class);
-        $this->fixture = new ExampleTagsEnricher($this->finderMock);
+        $this->fixture    = new ExampleTagsEnricher($this->finderMock);
     }
 
     /**
@@ -62,7 +66,7 @@ class ExampleTagsEnricherTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         $exampleText = 'Example Text';
         $description = 'This is a description with {@example example2.txt} without description.';
-        $expected = "This is a description with `${exampleText}` without description.";
+        $expected    = "This is a description with `${exampleText}` without description.";
 
         $descriptor = $this->givenAChildDescriptorWithDescription($description);
         $this->whenExampleTxtFileContains($exampleText);
@@ -84,7 +88,7 @@ class ExampleTagsEnricherTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         $exampleText = 'Example Text';
         $description = 'This is a description with {@example example.txt including description}.';
-        $expected = "This is a description with *including description*`${exampleText}`.";
+        $expected    = "This is a description with *including description*`${exampleText}`.";
 
         $descriptor = $this->givenAChildDescriptorWithDescription($description);
         $this->whenExampleTxtFileContains($exampleText);
@@ -106,7 +110,7 @@ class ExampleTagsEnricherTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         $exampleText = 'Example Text';
         $description = 'This is a description with {@example example.txt} and {@example example.txt}.';
-        $expected = "This is a description with `${exampleText}` and `${exampleText}`.";
+        $expected    = "This is a description with `${exampleText}` and `${exampleText}`.";
 
         $descriptor = $this->givenAChildDescriptorWithDescription($description);
         $this->whenExampleTxtFileContainsAndMustBeCalledOnlyOnce($exampleText);
@@ -121,12 +125,8 @@ class ExampleTagsEnricherTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
     /**
      * Returns a mocked Descriptor with its description set to the given value.
-     *
-     * @param string $description
-     *
-     * @return m\MockInterface
      */
-    private function givenAChildDescriptorWithDescription($description) : \Mockery\MockInterface
+    private function givenAChildDescriptorWithDescription(string $description) : MockInterface
     {
         $descriptor = m::mock('phpDocumentor\Descriptor\DescriptorAbstract');
         $descriptor->shouldReceive('getDescription')->andReturn($description);
@@ -138,10 +138,8 @@ class ExampleTagsEnricherTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      * Returns a mocked Project Descriptor.
      *
      * @param m\MockInterface[] $descriptors
-     *
-     * @return m\MockInterface
      */
-    private function givenAProjectDescriptorWithChildDescriptors($descriptors) : \Mockery\MockInterface
+    private function givenAProjectDescriptorWithChildDescriptors($descriptors) : MockInterface
     {
         $projectDescriptor = m::mock('phpDocumentor\Descriptor\ProjectDescriptor');
         $projectDescriptor->shouldReceive('getIndexes->get')->with('elements')->andReturn($descriptors);
@@ -151,21 +149,16 @@ class ExampleTagsEnricherTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
     /**
      * Verifies if the given descriptor's setDescription method is called with the given value.
-     *
-     * @param m\MockInterface $descriptor
-     * @param string          $expected
      */
-    public function thenDescriptionOfDescriptorIsChangedInto($descriptor, $expected) : void
+    public function thenDescriptionOfDescriptorIsChangedInto(m\MockInterface $descriptor, string $expected) : void
     {
         $descriptor->shouldReceive('setDescription')->with($expected);
     }
 
     /**
      * Instructs the finder mock to return the given text when an example is requested.
-     *
-     * @param string $exampleText
      */
-    private function whenExampleTxtFileContains($exampleText) : void
+    private function whenExampleTxtFileContains(string $exampleText) : void
     {
         $this->finderMock->shouldReceive('find')->andReturn($exampleText);
     }
@@ -173,10 +166,8 @@ class ExampleTagsEnricherTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Instructs the finder mock to return the given text when an example is requested and verifies that that is only
      * done once.
-     *
-     * @param string $exampleText
      */
-    private function whenExampleTxtFileContainsAndMustBeCalledOnlyOnce($exampleText) : void
+    private function whenExampleTxtFileContainsAndMustBeCalledOnlyOnce(string $exampleText) : void
     {
         $this->finderMock->shouldReceive('find')->once()->andReturn($exampleText);
     }

@@ -1,20 +1,23 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpDocumentor.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @copyright 2010-2018 Mike van Riel<mike@phpdoc.org>
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 
 use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock;
+use phpDocumentor\Reflection\DocBlock\Tags\See;
 use phpDocumentor\Reflection\Fqsen;
 
 /**
@@ -23,7 +26,7 @@ use phpDocumentor\Reflection\Fqsen;
  * @coversDefaultClass \phpDocumentor\Descriptor\Builder\Reflector\Tags\SeeAssembler
  * @covers ::<private>
  */
-class SeeAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+class SeeAssemblerTest extends MockeryTestCase
 {
     /** @var SeeAssembler $fixture */
     protected $fixture;
@@ -34,7 +37,7 @@ class SeeAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Creates a new fixture to test with.
      */
-    protected function setUp(): void
+    protected function setUp() : void
     {
         $this->builderMock = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
         $this->fixture = new SeeAssembler();
@@ -85,7 +88,7 @@ class SeeAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $this->assertSame([], $descriptor->getErrors()->getAll());
     }
 
-    protected function givenASeeTag($reference, $description) : \phpDocumentor\Reflection\DocBlock\Tags\See
+    protected function givenASeeTag($reference, $description) : See
     {
         return new DocBlock\Tags\See(
             $reference,

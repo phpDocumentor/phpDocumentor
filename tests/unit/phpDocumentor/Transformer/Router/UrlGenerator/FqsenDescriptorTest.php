@@ -1,12 +1,14 @@
 <?php
+
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Transformer\Router\UrlGenerator;
@@ -19,6 +21,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Test for the MethodDescriptor URL Generator with the Standard Router
+ *
  * @coversDefaultClass \phpDocumentor\Transformer\Router\UrlGenerator\FqsenDescriptor
  * @covers ::__construct
  * @covers ::<private>
@@ -26,11 +29,12 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 class FqsenDescriptorTest extends MockeryTestCase
 {
     /**
-     * @covers ::__invoke
      * @uses \phpDocumentor\Transformer\Router\UrlGenerator\QualifiedNameToUrlConverter::fromClass
+     *
+     * @covers ::__invoke
      * @dataProvider provideFqsens
      */
-    public function testGenerateUrlForFqsenDescriptor($fromFqsen, $toPath): void
+    public function testGenerateUrlForFqsenDescriptor(string $fromFqsen, string $toPath) : void
     {
         // Arrange
         $urlGenerator = m::mock(UrlGeneratorInterface::class);
@@ -47,7 +51,7 @@ class FqsenDescriptorTest extends MockeryTestCase
         $this->assertSame($toPath, $result);
     }
 
-    public function provideFqsens(): array
+    public function provideFqsens() : array
     {
         return [
             ['\\My\\Space\\Class', '/classes/My.Space.Class.html'],

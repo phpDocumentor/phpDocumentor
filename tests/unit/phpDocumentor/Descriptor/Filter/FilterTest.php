@@ -1,25 +1,31 @@
 <?php
+
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor\Filter;
 
 use League\Pipeline\Pipeline;
-use \Mockery as m;
+use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
+use function get_class;
 
 /**
  * Tests the functionality for the Filter class.
+ *
+ * @coversDefaultClass \phpDocumentor\Descriptor\Filter\Filter
  */
-class FilterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+final class FilterTest extends MockeryTestCase
 {
-    const FQCN = 'SomeFilterClass';
+    public const FQCN = 'SomeFilterClass';
 
     /** @var ClassFactory|m\Mock */
     protected $classFactoryMock;
@@ -33,15 +39,15 @@ class FilterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Creates a new (empty) fixture object.
      */
-    protected function setUp(): void
+    protected function setUp() : void
     {
-        $this->classFactoryMock = m::mock('phpDocumentor\Descriptor\Filter\ClassFactory');
+        $this->classFactoryMock = m::mock(ClassFactory::class);
         $this->filterChainMock = m::mock(Pipeline::class);
         $this->fixture = new Filter($this->classFactoryMock);
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Filter\Filter::attach
+     * @covers ::attach
      */
     public function testAttach() : void
     {
@@ -53,11 +59,11 @@ class FilterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Filter\Filter::filter
+     * @covers ::filter
      */
     public function testFilter() : void
     {
-        $filterableMock = m::mock('phpDocumentor\Descriptor\Filter\Filterable');
+        $filterableMock = m::mock(Filterable::class);
 
         $this->filterChainMock->shouldReceive('__invoke')->with($filterableMock)->andReturn($filterableMock);
         $this->classFactoryMock

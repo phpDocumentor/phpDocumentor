@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,22 +8,21 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Parser;
 
 use Flyfinder\Finder;
+use InvalidArgumentException;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemInterface;
 use League\Flysystem\MountManager;
 use LogicException;
 use phpDocumentor\Dsn;
-use phpDocumentor\Parser\FileSystemFactory;
+use const LOCK_EX;
+use function hash;
 
 final class FlySystemFactory implements FileSystemFactory
 {
@@ -37,20 +37,20 @@ final class FlySystemFactory implements FileSystemFactory
     /**
      * Returns a Filesystem instance based on the scheme of the provided Dsn
      */
-    public function create(Dsn $dsn): FilesystemInterface
+    public function create(Dsn $dsn) : FilesystemInterface
     {
         $dsnId = hash('md5', (string) $dsn);
 
         try {
             $filesystem = $this->mountManager->getFilesystem($dsnId);
         } catch (LogicException $e) {
-            if ($dsn->getScheme() === 'file') {
-                $path = $dsn->getPath();
-                $filesystem = new Filesystem(new Local($path, LOCK_EX, Local::SKIP_LINKS));
-            } else {
+            if ($dsn->getScheme() !== 'file') {
                 //This will be implemented as soon as the CloneRemoteGitToLocal adapter is finished
-                throw new \InvalidArgumentException('http and https are not supported yet');
+                throw new InvalidArgumentException('http and https are not supported yet');
             }
+
+            $path       = $dsn->getPath();
+            $filesystem = new Filesystem(new Local($path, LOCK_EX, Local::SKIP_LINKS));
 
             $this->mountManager->mountFilesystem($dsnId, $filesystem);
         }

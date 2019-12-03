@@ -1,16 +1,19 @@
 <?php
+
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Compiler\Pass;
 
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\ConstantDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
@@ -18,13 +21,16 @@ use phpDocumentor\Descriptor\FunctionDescriptor;
 use phpDocumentor\Descriptor\InterfaceDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
+use phpDocumentor\Reflection\Fqsen;
+use function array_keys;
+use function sort;
 
 /**
  * Tests the functionality for the ElementsIndexBuilder
  *
  * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder
  */
-class NamespaceTreeBuilderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+class NamespaceTreeBuilderTest extends MockeryTestCase
 {
     /** @var NamespaceTreeBuilder $fixture */
     protected $fixture;
@@ -32,7 +38,7 @@ class NamespaceTreeBuilderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /** @var ProjectDescriptor */
     protected $project;
 
-    protected function setUp(): void
+    protected function setUp() : void
     {
         $this->fixture = new NamespaceTreeBuilder();
 
@@ -59,13 +65,13 @@ class NamespaceTreeBuilderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         $class = new ClassDescriptor();
         $class->setNamespace('\My\Space\Deeper');
-        $class->setFullyQualifiedStructuralElementName('\My\Space\Deeper\Class1');
+        $class->setFullyQualifiedStructuralElementName(new Fqsen('\My\Space\Deeper\Class1'));
         $this->project->getFiles()->get(0)->getClasses()->add($class);
 
         // assert that namespaces are not created in duplicate by processing two classes
         $class2 = new ClassDescriptor();
         $class2->setNamespace('\My\Space\Deeper2');
-        $class2->setFullyQualifiedStructuralElementName('\My\Space\Deeper2\Class2');
+        $class2->setFullyQualifiedStructuralElementName(new Fqsen('\My\Space\Deeper2\Class2'));
         $this->project->getFiles()->get(0)->getClasses()->add($class2);
 
         $this->fixture->execute($this->project);
@@ -96,13 +102,13 @@ class NamespaceTreeBuilderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         $class = new ClassDescriptor();
         $class->setNamespace('\My\Space');
-        $class->setFullyQualifiedStructuralElementName('My\Space\Class1');
+        $class->setFullyQualifiedStructuralElementName(new Fqsen('\My\Space\Class1'));
         $this->project->getFiles()->get(0)->getClasses()->add($class);
 
         // double check if a second class in the same deep namespace ends up at the right location
         $class2 = new ClassDescriptor();
         $class2->setNamespace('\My\Space');
-        $class2->setFullyQualifiedStructuralElementName('\My\Space\Class2');
+        $class2->setFullyQualifiedStructuralElementName(new Fqsen('\My\Space\Class2'));
         $this->project->getFiles()->get(0)->getClasses()->add($class2);
 
         $this->fixture->execute($this->project);
@@ -124,13 +130,13 @@ class NamespaceTreeBuilderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         $interface = new InterfaceDescriptor();
         $interface->setNamespace('\My\Space');
-        $interface->setFullyQualifiedStructuralElementName('\My\Space\Interface1');
+        $interface->setFullyQualifiedStructuralElementName(new Fqsen('\My\Space\Interface1'));
         $this->project->getFiles()->get(0)->getInterfaces()->add($interface);
 
         // double check if a second interface in the same deep namespace ends up at the right location
         $interface2 = new InterfaceDescriptor();
         $interface2->setNamespace('\My\Space');
-        $interface2->setFullyQualifiedStructuralElementName('\My\Space\Interface2');
+        $interface2->setFullyQualifiedStructuralElementName(new Fqsen('\My\Space\Interface2'));
         $this->project->getFiles()->get(0)->getInterfaces()->add($interface2);
 
         $this->fixture->execute($this->project);
@@ -152,13 +158,13 @@ class NamespaceTreeBuilderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         $trait = new TraitDescriptor();
         $trait->setNamespace('\My\Space');
-        $trait->setFullyQualifiedStructuralElementName('\My\Space\Trait1');
+        $trait->setFullyQualifiedStructuralElementName(new Fqsen('\My\Space\Trait1'));
         $this->project->getFiles()->get(0)->getTraits()->add($trait);
 
         // double check if a second trait in the same deep namespace ends up at the right location
         $trait2 = new TraitDescriptor();
         $trait2->setNamespace('\My\Space');
-        $trait2->setFullyQualifiedStructuralElementName('\My\Space\Trait2');
+        $trait2->setFullyQualifiedStructuralElementName(new Fqsen('\My\Space\Trait2'));
         $this->project->getFiles()->get(0)->getTraits()->add($trait2);
 
         $this->fixture->execute($this->project);
@@ -180,13 +186,13 @@ class NamespaceTreeBuilderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         $constant = new ConstantDescriptor();
         $constant->setNamespace('\My\Space');
-        $constant->setFullyQualifiedStructuralElementName('\My\Space\Constant1');
+        $constant->setFullyQualifiedStructuralElementName(new Fqsen('\My\Space\Constant1'));
         $this->project->getFiles()->get(0)->getConstants()->add($constant);
 
         // double check if a second constant in the same deep namespace ends up at the right location
         $constant2 = new ConstantDescriptor();
         $constant2->setNamespace('\My\Space');
-        $constant2->setFullyQualifiedStructuralElementName('\My\Space\Constant2');
+        $constant2->setFullyQualifiedStructuralElementName(new Fqsen('\My\Space\Constant2'));
         $this->project->getFiles()->get(0)->getConstants()->add($constant2);
 
         $this->fixture->execute($this->project);
@@ -208,13 +214,13 @@ class NamespaceTreeBuilderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         $function = new FunctionDescriptor();
         $function->setNamespace('\My\Space');
-        $function->setFullyQualifiedStructuralElementName('\My\Space\Function1');
+        $function->setFullyQualifiedStructuralElementName(new Fqsen('\My\Space\Function1'));
         $this->project->getFiles()->get(0)->getFunctions()->add($function);
 
         // double check if a second function in the same deep namespace ends up at the right location
         $function2 = new FunctionDescriptor();
         $function2->setNamespace('\My\Space');
-        $function2->setFullyQualifiedStructuralElementName('\My\Space\Function2');
+        $function2->setFullyQualifiedStructuralElementName(new Fqsen('\My\Space\Function2'));
         $this->project->getFiles()->get(0)->getFunctions()->add($function2);
 
         $this->fixture->execute($this->project);

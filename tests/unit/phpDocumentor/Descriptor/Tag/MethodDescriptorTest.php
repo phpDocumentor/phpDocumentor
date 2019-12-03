@@ -1,24 +1,27 @@
 <?php
+
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor\Tag;
 
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\Collection;
 
 /**
  * Tests the functionality for the MethodDescriptor class.
  */
-class MethodDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+class MethodDescriptorTest extends MockeryTestCase
 {
-    const EXAMPLE_NAME = 'methodname';
+    public const EXAMPLE_NAME = 'methodname';
 
     /** @var MethodDescriptor $fixture */
     protected $fixture;
@@ -26,7 +29,7 @@ class MethodDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Creates a new fixture object.
      */
-    protected function setUp(): void
+    protected function setUp() : void
     {
         $this->fixture = new MethodDescriptor('name');
     }
@@ -67,8 +70,8 @@ class MethodDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testSetAndGetResponse() : void
     {
-        $expected = ['a' => 'b'];
-        $this->assertEmpty($this->fixture->getResponse());
+        $expected = new ReturnDescriptor('a');
+        $this->assertNull($this->fixture->getResponse());
 
         $this->fixture->setResponse($expected);
         $result = $this->fixture->getResponse();

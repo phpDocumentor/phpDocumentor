@@ -1,12 +1,14 @@
 <?php
+
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
@@ -16,11 +18,13 @@ use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\DocBlock\Tags\Method;
+use phpDocumentor\Reflection\Type;
 use phpDocumentor\Reflection\Types\Boolean;
 use phpDocumentor\Reflection\Types\Integer;
 use phpDocumentor\Reflection\Types\Mixed_;
 use phpDocumentor\Reflection\Types\String_;
 use phpDocumentor\Reflection\Types\Void_;
+use function count;
 
 class MethodAssemblerTest extends MockeryTestCase
 {
@@ -33,7 +37,7 @@ class MethodAssemblerTest extends MockeryTestCase
     /**
      * Initialize fixture with its dependencies.
      */
-    protected function setUp(): void
+    protected function setUp() : void
     {
         $this->builder = m::mock(ProjectDescriptorBuilder::class);
         $this->fixture = new MethodAssembler();
@@ -41,20 +45,18 @@ class MethodAssemblerTest extends MockeryTestCase
     }
 
     /**
-     * @param string   $returnType
-     * @param string   $name
      * @param string[] $arguments
-     * @param string   $description
+     * @param string $description
      *
      * @dataProvider provideNotations
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\Tags\MethodAssembler::create
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\Tags\MethodAssembler::createArgumentDescriptorForMagicMethod
+     * @covers       \phpDocumentor\Descriptor\Builder\Reflector\Tags\MethodAssembler::create
+     * @covers       \phpDocumentor\Descriptor\Builder\Reflector\Tags\MethodAssembler::createArgumentDescriptorForMagicMethod
      */
     public function testCreateMethodDescriptorFromVariousNotations(
-        $returnType,
-        $name,
-        $arguments = [],
-        $description = null
+        Type $returnType,
+        string $name,
+        array $arguments = [],
+        ?Description $description = null
     ) : void {
         $tag = new Method($name, $arguments, $returnType, false, $description);
 
@@ -62,7 +64,7 @@ class MethodAssemblerTest extends MockeryTestCase
 
         $this->assertEquals($returnType, $descriptor->getResponse()->getType());
         $this->assertSame($name, $descriptor->getMethodName());
-        $this->assertSame($description, $descriptor->getDescription());
+        $this->assertSame((string) $description, $descriptor->getDescription());
         $this->assertSame(count($arguments), $descriptor->getArguments()->count());
         foreach ($arguments as $argument) {
             $this->assertSame($argument['type'], $descriptor->getArguments()->get($argument['name'])->getType());

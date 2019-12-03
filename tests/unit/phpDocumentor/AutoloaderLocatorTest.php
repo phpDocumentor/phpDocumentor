@@ -1,64 +1,62 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpDocumentor.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
- *
- *
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor;
 
-use Composer\Autoload\ClassLoader;
 use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
 
-class AutoloaderLocatorTest extends TestCase
+final class AutoloaderLocatorTest extends TestCase
 {
     /**
      * Directory structure when phpdocumentor is installed using composer.
      *
      * @var array
      */
-    private $composerInstalledStructure = array(
-        'dummy' => array(
-            'vendor' => array(
-                'phpDocumentor' => array(
-                    'phpDocumentor' => array(
-                        'src' => array(
-                            'phpDocumentor' => array(),
-                        ),
-                    ),
-                ),
-            ),
-        ),
-    );
+    private $composerInstalledStructure = [
+        'dummy' => [
+            'vendor' => [
+                'phpDocumentor' => [
+                    'phpDocumentor' => [
+                        'src' => [
+                            'phpDocumentor' => [],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+    ];
 
     /**
      * Directory structure when phpdocumentor is installed using composer.
      *
      * @var array
      */
-    private $customVendorDir = array(
-        'dummy' => array(
-            'custom-vendor' => array(
-                'phpDocumentor' => array(
-                    'phpDocumentor' => array(
-                        'src' => array(
-                            'phpDocumentor' => array(),
-                        ),
-                    ),
-                ),
-            ),
-        ),
-    );
+    private $customVendorDir = [
+        'dummy' => [
+            'custom-vendor' => [
+                'phpDocumentor' => [
+                    'phpDocumentor' => [
+                        'src' => [
+                            'phpDocumentor' => [],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+    ];
 
+    /** @var string */
     private $customVendorDirComposer = '{
     "config": {
         "vendor-dir": "custom-vendor"
@@ -71,16 +69,15 @@ class AutoloaderLocatorTest extends TestCase
      *
      * @var array
      */
-    private $standaloneStructure = array(
-        'dummy' => array(
-            'vendor' => array(),
-            'src' => array(
-                'phpDocumentor' => array(),
-            ),
-            'test' => array(),
-        ),
-    );
-
+    private $standaloneStructure = [
+        'dummy' => [
+            'vendor' => [],
+            'src' => [
+                'phpDocumentor' => [],
+            ],
+            'test' => [],
+        ],
+    ];
 
     public function testAutoloadAtDefaultLocation() : void
     {

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,14 +8,12 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor\Filter;
 
+use InvalidArgumentException;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\Interfaces\VisibilityInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
@@ -67,6 +66,6 @@ class StripOnVisibility implements FilterInterface
                 return Settings::VISIBILITY_PRIVATE;
         }
 
-        throw new \InvalidArgumentException($visibility . ' is not a valid visibility');
+        throw new InvalidArgumentException($visibility . ' is not a valid visibility');
     }
 }

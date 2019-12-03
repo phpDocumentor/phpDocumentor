@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,62 +8,57 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Transformer;
 
 use phpDocumentor\Transformer\Template\Parameter;
+use const DIRECTORY_SEPARATOR;
+use const E_USER_DEPRECATED;
+use function file_exists;
+use function rtrim;
+use function strpos;
+use function trigger_error;
 
 /**
  * Class representing a single Transformation.
  */
 class Transformation
 {
-    /**
-     * @var string Reference to an object containing the business logic used to execute this transformation.
-     */
-    protected $writer = null;
+    /** @var string Reference to an object containing the business logic used to execute this transformation. */
+    private $writer = null;
 
-    /**
-     * @var string the location where the output should be sent to; the exact function differs per writer.
-     */
-    protected $artifact = '';
+    /** @var string the location where the output should be sent to; the exact function differs per writer. */
+    private $artifact = '';
 
-    /**
-     * @var string the location where input for a writer should come from; the exact function differs per writer.
-     */
-    protected $source = '';
+    /** @var string the location where input for a writer should come from; the exact function differs per writer. */
+    private $source = '';
 
     /**
      * @var string a filter or other form of limitation on what information of the AST is used; the exact function
      *     differs per writer.
      */
-    protected $query = '';
+    private $query = '';
 
-    /**
-     * @var Transformer The object guiding the transformation process and having meta-data of it.
-     */
-    protected $transformer;
+    /** @var Transformer The object guiding the transformation process and having meta-data of it. */
+    private $transformer;
 
     /**
      * @var Parameter[] A series of parameters that can influence what the writer does; the exact function differs
      *     per writer.
      */
-    protected $parameters = [];
+    private $parameters = [];
 
     /**
      * Constructs a new Transformation object and populates the required parameters.
      *
-     * @param string $query       What information to use as datasource for the writer's source.
-     * @param string $writer      What type of transformation to apply (PDF, Twig etc).
-     * @param string $source      Which template or type of source to use.
-     * @param string $artifact    What is the filename of the result (relative to the generated root)
+     * @param string $query What information to use as datasource for the writer's source.
+     * @param string $writer What type of transformation to apply (PDF, Twig etc).
+     * @param string $source Which template or type of source to use.
+     * @param string $artifact What is the filename of the result (relative to the generated root)
      */
-    public function __construct($query, $writer, $source, $artifact)
+    public function __construct(string $query, string $writer, string $source, string $artifact)
     {
         $this->setQuery($query);
         $this->setWriter($writer);
@@ -75,17 +71,15 @@ class Transformation
      *
      * @param string $query Free-form string with writer-specific values.
      */
-    public function setQuery($query)
+    public function setQuery(string $query) : void
     {
         $this->query = $query;
     }
 
     /**
      * Returns the set query.
-     *
-     * @return string
      */
-    public function getQuery()
+    public function getQuery() : string
     {
         return $this->query;
     }
@@ -95,17 +89,15 @@ class Transformation
      *
      * @param string $writer Name of writer to instantiate.
      */
-    public function setWriter(string $writer): void
+    public function setWriter(string $writer) : void
     {
         $this->writer = $writer;
     }
 
     /**
      * Returns the class name of the associated writer.
-     *
-     * @return string
      */
-    public function getWriter(): string
+    public function getWriter() : string
     {
         return $this->writer;
     }
@@ -115,17 +107,15 @@ class Transformation
      *
      * @param string $source Free-form string with writer-specific meaning.
      */
-    public function setSource($source)
+    public function setSource(string $source) : void
     {
         $this->source = $source;
     }
 
     /**
      * Returns the name of the source / type used in the transformation process.
-     *
-     * @return string
      */
-    public function getSource()
+    public function getSource() : string
     {
         return $this->source;
     }
@@ -142,11 +132,9 @@ class Transformation
      * 3. Otherwise prepend it with the phpDocumentor data folder, if that does
      *    not exist: throw an exception
      *
-     * @throws Exception if no valid file could be found.
-     *
-     * @return string
+     * @throws Exception If no valid file could be found.
      */
-    public function getSourceAsPath(): string
+    public function getSourceAsPath() : string
     {
         // externally loaded templates set this parameter so that template
         // resources may be placed in the same folder as the template.
@@ -200,17 +188,15 @@ class Transformation
      *
      * @param string $artifact Name of artifact to generate; usually a filepath.
      */
-    public function setArtifact($artifact)
+    public function setArtifact(string $artifact) : void
     {
         $this->artifact = $artifact;
     }
 
     /**
      * Returns the name of the artifact.
-     *
-     * @return string
      */
-    public function getArtifact()
+    public function getArtifact() : string
     {
         return $this->artifact;
     }
@@ -221,7 +207,7 @@ class Transformation
      * @param Parameter[] $parameters Associative multidimensional array containing
      *     parameters for the Writer.
      */
-    public function setParameters(array $parameters)
+    public function setParameters(array $parameters) : void
     {
         $this->parameters = $parameters;
     }
@@ -231,7 +217,7 @@ class Transformation
      *
      * @return Parameter[]
      */
-    public function getParameters()
+    public function getParameters() : array
     {
         return $this->parameters;
     }
@@ -240,10 +226,8 @@ class Transformation
      * Returns a specific parameter, or $default if none exists.
      *
      * @param string $name Name of the parameter to return.
-     *
-     * @return Parameter|null
      */
-    public function getParameter($name): ?Parameter
+    public function getParameter(string $name) : ?Parameter
     {
         /** @var Parameter $parameter */
         foreach ($this->parameters as $parameter) {
@@ -262,15 +246,17 @@ class Transformation
      *
      * @return Parameter[]
      */
-    public function getParametersWithKey($name)
+    public function getParametersWithKey(string $name) : array
     {
         $parameters = [];
 
         /** @var Parameter $parameter */
         foreach ($this->parameters as $parameter) {
-            if ($parameter->getKey() === $name) {
-                $parameters[] = $parameter;
+            if ($parameter->getKey() !== $name) {
+                continue;
             }
+
+            $parameters[] = $parameter;
         }
 
         return $parameters;
@@ -278,20 +264,16 @@ class Transformation
 
     /**
      * Sets the transformer on this transformation.
-     *
-     * @param \phpDocumentor\Transformer\Transformer $transformer
      */
-    public function setTransformer($transformer)
+    public function setTransformer(Transformer $transformer) : void
     {
         $this->transformer = $transformer;
     }
 
     /**
      * Returns the transformer for this transformation.
-     *
-     * @return \phpDocumentor\Transformer\Transformer
      */
-    public function getTransformer()
+    public function getTransformer() : ?Transformer
     {
         return $this->transformer;
     }

@@ -1,13 +1,14 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpDocumentor.
  *
  *  For the full copyright and license information, please view the LICENSE
  *  file that was distributed with this source code.
  *
- *  @copyright 2010-2017 Mike van Riel<mike@phpdoc.org>
- *  @license   http://www.opensource.org/licenses/mit-license.php MIT
- *  @link      http://phpdoc.org
+ * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Configuration\Factory;
@@ -39,15 +40,11 @@ final class Version3ExpectedArrays
                                 'format' => 'php',
                                 'source' => [
                                     'dsn' => 'file://.',
-                                    'paths' => [
-                                        0 => 'src',
-                                    ],
+                                    'paths' => [0 => 'src'],
                                 ],
                                 'ignore' => [
                                     'hidden' => true,
-                                    'paths' => [
-                                        0 => 'src/ServiceDefinitions.php',
-                                    ],
+                                    'paths' => [0 => 'src/ServiceDefinitions.php'],
                                 ],
                                 'extensions' => [
                                     0 => 'php',
@@ -68,18 +65,14 @@ final class Version3ExpectedArrays
                                 'format' => 'rst',
                                 'source' => [
                                     'dsn' => 'file://../phpDocumentor/phpDocumentor2',
-                                    'paths' => [
-                                        0 => 'docs',
-                                    ],
+                                    'paths' => [0 => 'docs'],
                                 ],
                             ],
                         ],
                     ],
                 ],
                 'templates' => [
-                    [
-                        'name' => 'clean',
-                    ],
+                    ['name' => 'clean'],
                 ],
             ],
         ];
@@ -107,9 +100,7 @@ final class Version3ExpectedArrays
                                 'format' => 'php',
                                 'source' => [
                                     'dsn' => 'file://.',
-                                    'paths' => [
-                                        0 => '.',
-                                    ],
+                                    'paths' => [0 => '.'],
                                 ],
                                 'ignore' => [
                                     'hidden' => false,
@@ -125,9 +116,7 @@ final class Version3ExpectedArrays
                     ],
                 ],
                 'templates' => [
-                    [
-                        'name' => 'clean',
-                    ],
+                    ['name' => 'clean'],
                 ],
             ],
         ];
@@ -148,17 +137,11 @@ final class Version3ExpectedArrays
                     'cache' => '/tmp/phpdoc-doc-cache',
                 ],
                 'versions' => [
-                    '1.0.0' => [
-                        'folder' => 'earliest',
-                    ],
-                    '2.0.0' => [
-                        'folder' => 'latest',
-                    ],
+                    '1.0.0' => ['folder' => 'earliest'],
+                    '2.0.0' => ['folder' => 'latest'],
                 ],
                 'templates' => [
-                    [
-                        'name' => 'clean',
-                    ],
+                    ['name' => 'clean'],
                 ],
             ],
         ];
@@ -181,15 +164,11 @@ final class Version3ExpectedArrays
                                 'format' => 'php',
                                 'source' => [
                                     'dsn' => 'file://.',
-                                    'paths' => [
-                                        0 => 'src',
-                                    ],
+                                    'paths' => [0 => 'src'],
                                 ],
                                 'ignore' => [
                                     'hidden' => true,
-                                    'paths' => [
-                                        0 => 'src/ServiceDefinitions.php',
-                                    ],
+                                    'paths' => [0 => 'src/ServiceDefinitions.php'],
                                 ],
                                 'extensions' => [
                                     0 => 'php',
@@ -208,15 +187,11 @@ final class Version3ExpectedArrays
                                 'format' => 'php3',
                                 'source' => [
                                     'dsn' => 'file://.',
-                                    'paths' => [
-                                        0 => 'src',
-                                    ],
+                                    'paths' => [0 => 'src'],
                                 ],
                                 'ignore' => [
                                     'hidden' => true,
-                                    'paths' => [
-                                        0 => 'src/ServiceDefinitions.php',
-                                    ],
+                                    'paths' => [0 => 'src/ServiceDefinitions.php'],
                                 ],
                                 'extensions' => [
                                     0 => 'php',
@@ -235,9 +210,7 @@ final class Version3ExpectedArrays
                     ],
                 ],
                 'templates' => [
-                    [
-                        'name' => 'clean',
-                    ],
+                    ['name' => 'clean'],
                 ],
             ],
         ];
@@ -260,27 +233,21 @@ final class Version3ExpectedArrays
                                 'format' => 'rst',
                                 'source' => [
                                     'dsn' => 'file://../phpDocumentor/phpDocumentor2',
-                                    'paths' => [
-                                        0 => 'docs',
-                                    ],
+                                    'paths' => [0 => 'docs'],
                                 ],
                             ],
                             1 => [
                                 'format' => 'rst',
                                 'source' => [
                                     'dsn' => 'file://../phpDocumentor/phpDocumentor3',
-                                    'paths' => [
-                                        0 => 'docs',
-                                    ],
+                                    'paths' => [0 => 'docs'],
                                 ],
                             ],
                         ],
                     ],
                 ],
                 'templates' => [
-                    [
-                        'name' => 'clean',
-                    ],
+                    ['name' => 'clean'],
                 ],
             ],
         ];
@@ -303,9 +270,7 @@ final class Version3ExpectedArrays
                                 'format' => 'php',
                                 'source' => [
                                     'dsn' => 'file://.',
-                                    'paths' => [
-                                        0 => 'src',
-                                    ],
+                                    'paths' => [0 => 'src'],
                                 ],
                                 'ignore' => [
                                     'hidden' => true,
@@ -333,9 +298,7 @@ final class Version3ExpectedArrays
                                 'format' => 'rst',
                                 'source' => [
                                     'dsn' => 'file://.',
-                                    'paths' => [
-                                        0 => 'docs',
-                                    ],
+                                    'paths' => [0 => 'docs'],
                                 ],
                             ],
                         ],

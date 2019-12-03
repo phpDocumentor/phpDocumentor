@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,20 +8,23 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Transformer\Template;
 
+use DirectoryIterator;
 use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
+use RecursiveDirectoryIterator;
+use SimpleXMLElement;
+use const DIRECTORY_SEPARATOR;
+use function file_get_contents;
+use function in_array;
 
 class Factory
 {
-    const TEMPLATE_DEFINITION_FILENAME = 'template.xml';
+    public const TEMPLATE_DEFINITION_FILENAME = 'template.xml';
 
     /** @var PathResolver */
     private $pathResolver;
@@ -37,7 +41,7 @@ class Factory
      * Attempts to find, construct and return a template object with the given template name or (relative/absolute)
      * path.
      */
-    public function get(string $nameOrPath): Template
+    public function get(string $nameOrPath) : Template
     {
         return $this->createTemplateFromXml(
             $this->fetchTemplateXmlFromPath(
@@ -51,10 +55,10 @@ class Factory
      *
      * @return string[]
      */
-    public function getAllNames(): array
+    public function getAllNames() : array
     {
-        /** @var \RecursiveDirectoryIterator $files */
-        $files = new \DirectoryIterator($this->getTemplatePath());
+        /** @var RecursiveDirectoryIterator $files */
+        $files = new DirectoryIterator($this->getTemplatePath());
 
         $template_names = [];
         while ($files->valid()) {
@@ -76,7 +80,7 @@ class Factory
     /**
      * Returns the path where all templates are stored.
      */
-    public function getTemplatePath(): string
+    public function getTemplatePath() : string
     {
         return $this->pathResolver->getTemplatePath();
     }
@@ -84,7 +88,7 @@ class Factory
     /**
      * Loads the template definition file from the given path and returns it's contents.
      */
-    protected function fetchTemplateXmlFromPath(string $path): string
+    protected function fetchTemplateXmlFromPath(string $path) : string
     {
         return file_get_contents($path . DIRECTORY_SEPARATOR . self::TEMPLATE_DEFINITION_FILENAME);
     }
@@ -92,11 +96,11 @@ class Factory
     /**
      * Creates and returns a template object based on the provided template definition.
      */
-    protected function createTemplateFromXml(string $xml): Template
+    protected function createTemplateFromXml(string $xml) : Template
     {
-        $xml = new \SimpleXMLElement($xml);
+        $xml      = new SimpleXMLElement($xml);
         $template = new Template((string) $xml->name);
-        $template->setAuthor((string) $xml->author . ((string)$xml->email ? ' <' . $xml->email . '>' : ''));
+        $template->setAuthor((string) $xml->author . ((string) $xml->email ? ' <' . $xml->email . '>' : ''));
         $template->setVersion((string) $xml->version);
         $template->setCopyright((string) $xml->copyright);
         $template->setDescription((string) $xml->description);
@@ -114,7 +118,7 @@ class Factory
                 (string) $transformation->attributes()->source,
                 (string) $transformation->attributes()->artifact
             );
-            $parameters = [];
+            $parameters           = [];
             foreach ($transformation->parameter as $parameter) {
                 $parameterObject = new Parameter();
                 $parameterObject->setKey((string) $parameter->attributes()->key);

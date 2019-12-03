@@ -1,24 +1,29 @@
 <?php
+
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor;
 
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
 
 /**
  * Tests the functionality for the ProjectDescriptor class.
+ *
+ * @coversDefaultClass \phpDocumentor\Descriptor\ProjectDescriptor
  */
-class ProjectDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+final class ProjectDescriptorTest extends MockeryTestCase
 {
-    const EXAMPLE_NAME = 'Initial name';
+    public const EXAMPLE_NAME = 'Initial name';
 
     /** @var ProjectDescriptor */
     private $fixture;
@@ -26,15 +31,15 @@ class ProjectDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Initializes the fixture object.
      */
-    protected function setUp(): void
+    protected function setUp() : void
     {
         $this->fixture = new ProjectDescriptor(self::EXAMPLE_NAME);
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\ProjectDescriptor::__construct
-     * @covers \phpDocumentor\Descriptor\ProjectDescriptor::setName
-     * @covers \phpDocumentor\Descriptor\ProjectDescriptor::getName
+     * @covers ::__construct
+     * @covers ::setName
+     * @covers ::getName
      */
     public function testGetSetName() : void
     {
@@ -47,9 +52,9 @@ class ProjectDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\ProjectDescriptor::__construct
-     * @covers \phpDocumentor\Descriptor\ProjectDescriptor::setFiles
-     * @covers \phpDocumentor\Descriptor\ProjectDescriptor::getFiles
+     * @covers ::__construct
+     * @covers ::setFiles
+     * @covers ::getFiles
      */
     public function testGetSetFiles() : void
     {
@@ -62,9 +67,9 @@ class ProjectDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\ProjectDescriptor::__construct
-     * @covers \phpDocumentor\Descriptor\ProjectDescriptor::setIndexes
-     * @covers \phpDocumentor\Descriptor\ProjectDescriptor::getIndexes
+     * @covers ::__construct
+     * @covers ::setIndexes
+     * @covers ::getIndexes
      */
     public function testGetSetIndexes() : void
     {
@@ -77,9 +82,9 @@ class ProjectDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\ProjectDescriptor::__construct
-     * @covers \phpDocumentor\Descriptor\ProjectDescriptor::setNamespace
-     * @covers \phpDocumentor\Descriptor\ProjectDescriptor::getNamespace
+     * @covers ::__construct
+     * @covers ::setNamespace
+     * @covers ::getNamespace
      */
     public function testGetSetNamespace() : void
     {
@@ -92,9 +97,9 @@ class ProjectDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\ProjectDescriptor::__construct
-     * @covers \phpDocumentor\Descriptor\ProjectDescriptor::setSettings
-     * @covers \phpDocumentor\Descriptor\ProjectDescriptor::getSettings
+     * @covers ::__construct
+     * @covers ::setSettings
+     * @covers ::getSettings
      */
     public function testGetSetSettings() : void
     {
@@ -107,9 +112,9 @@ class ProjectDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\ProjectDescriptor::__construct
-     * @covers \phpDocumentor\Descriptor\ProjectDescriptor::setPartials
-     * @covers \phpDocumentor\Descriptor\ProjectDescriptor::getPartials
+     * @covers ::__construct
+     * @covers ::setPartials
+     * @covers ::getPartials
      */
     public function testGetSetPartials() : void
     {
@@ -124,7 +129,7 @@ class ProjectDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\ProjectDescriptor::isVisibilityAllowed
+     * @covers ::isVisibilityAllowed
      */
     public function testIsVisibilityAllowed() : void
     {

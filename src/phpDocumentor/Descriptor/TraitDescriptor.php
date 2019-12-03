@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,13 +8,12 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor;
+
+use function ltrim;
 
 /**
  * Descriptor representing a Trait.
@@ -44,7 +44,7 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
     /**
      * {@inheritDoc}
      */
-    public function setMethods(Collection $methods)
+    public function setMethods(Collection $methods) : void
     {
         $this->methods = $methods;
     }
@@ -52,7 +52,7 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
     /**
      * {@inheritDoc}
      */
-    public function getMethods()
+    public function getMethods() : Collection
     {
         return $this->methods;
     }
@@ -60,15 +60,12 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
     /**
      * {@inheritDoc}
      */
-    public function getInheritedMethods()
+    public function getInheritedMethods() : Collection
     {
         return new Collection();
     }
 
-    /**
-     * @return Collection
-     */
-    public function getMagicMethods()
+    public function getMagicMethods() : Collection
     {
         /** @var Collection $methodTags */
         $methodTags = clone $this->getTags()->get('method', new Collection());
@@ -92,7 +89,7 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
     /**
      * {@inheritDoc}
      */
-    public function setProperties(Collection $properties)
+    public function setProperties(Collection $properties) : void
     {
         $this->properties = $properties;
     }
@@ -100,7 +97,7 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
     /**
      * {@inheritDoc}
      */
-    public function getProperties()
+    public function getProperties() : Collection
     {
         return $this->properties;
     }
@@ -108,15 +105,12 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
     /**
      * {@inheritDoc}
      */
-    public function getInheritedProperties()
+    public function getInheritedProperties() : Collection
     {
         return new Collection();
     }
 
-    /**
-     * @return Collection
-     */
-    public function getMagicProperties()
+    public function getMagicProperties() : Collection
     {
         /** @var Collection $propertyTags */
         $propertyTags = clone $this->getTags()->get('property', new Collection());
@@ -140,9 +134,9 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
     }
 
     /**
-     * @param PackageDescriptor $package
+     * @param PackageDescriptor|string $package
      */
-    public function setPackage($package)
+    public function setPackage($package) : void
     {
         parent::setPackage($package);
 
@@ -157,10 +151,8 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
 
     /**
      * Sets a collection of all traits used by this class.
-     *
-     * @param Collection $usedTraits
      */
-    public function setUsedTraits($usedTraits)
+    public function setUsedTraits(Collection $usedTraits) : void
     {
         $this->usedTraits = $usedTraits;
     }
@@ -169,10 +161,8 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
      * Returns the traits used by this class.
      *
      * Returned values may either be a string (when the Trait is not in this project) or a TraitDescriptor.
-     *
-     * @return Collection
      */
-    public function getUsedTraits()
+    public function getUsedTraits() : Collection
     {
         return $this->usedTraits;
     }

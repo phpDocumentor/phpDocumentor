@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,10 +8,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Compiler\Pass;
@@ -22,6 +20,8 @@ use phpDocumentor\Descriptor\Interfaces\ClassInterface;
 use phpDocumentor\Descriptor\Interfaces\InterfaceInterface;
 use phpDocumentor\Descriptor\Interfaces\TraitInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor;
+use function array_merge;
+use function is_array;
 
 /**
  * This class constructs the index 'elements' and populates it with all Structural Elements.
@@ -31,23 +31,23 @@ use phpDocumentor\Descriptor\ProjectDescriptor;
  */
 class ElementsIndexBuilder implements CompilerPassInterface
 {
-    const COMPILER_PRIORITY = 15000;
+    public const COMPILER_PRIORITY = 15000;
 
-    public function getDescription(): string
+    public function getDescription() : string
     {
         return 'Build "elements" index';
     }
 
-    public function execute(ProjectDescriptor $project): void
+    public function execute(ProjectDescriptor $project) : void
     {
         $elementCollection = new Collection();
         $project->getIndexes()->set('elements', $elementCollection);
 
-        $constantsIndex = $project->getIndexes()->get('constants', new Collection());
-        $functionsIndex = $project->getIndexes()->get('functions', new Collection());
-        $classesIndex = $project->getIndexes()->get('classes', new Collection());
+        $constantsIndex  = $project->getIndexes()->get('constants', new Collection());
+        $functionsIndex  = $project->getIndexes()->get('functions', new Collection());
+        $classesIndex    = $project->getIndexes()->get('classes', new Collection());
         $interfacesIndex = $project->getIndexes()->get('interfaces', new Collection());
-        $traitsIndex = $project->getIndexes()->get('traits', new Collection());
+        $traitsIndex     = $project->getIndexes()->get('traits', new Collection());
 
         foreach ($project->getFiles() as $file) {
             $this->addElementsToIndexes($file->getConstants()->getAll(), [$constantsIndex, $elementCollection]);
@@ -79,7 +79,7 @@ class ElementsIndexBuilder implements CompilerPassInterface
      *
      * @return DescriptorAbstract[]
      */
-    protected function getSubElements(DescriptorAbstract $element): array
+    protected function getSubElements(DescriptorAbstract $element) : array
     {
         $subElements = [];
 
@@ -114,7 +114,7 @@ class ElementsIndexBuilder implements CompilerPassInterface
      * @param DescriptorAbstract|DescriptorAbstract[] $elements
      * @param Collection[]                            $indexes
      */
-    protected function addElementsToIndexes($elements, array $indexes): void
+    protected function addElementsToIndexes($elements, array $indexes) : void
     {
         if (!is_array($elements)) {
             $elements = [$elements];
@@ -132,7 +132,7 @@ class ElementsIndexBuilder implements CompilerPassInterface
     /**
      * Retrieves a key for the index for the provided element.
      */
-    protected function getIndexKey(DescriptorAbstract $element): string
+    protected function getIndexKey(DescriptorAbstract $element) : string
     {
         return (string) $element->getFullyQualifiedStructuralElementName();
     }

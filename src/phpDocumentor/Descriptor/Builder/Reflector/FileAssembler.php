@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,10 +8,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor\Builder\Reflector;
@@ -24,6 +22,7 @@ use phpDocumentor\Reflection\Php\File;
 use phpDocumentor\Reflection\Php\Function_;
 use phpDocumentor\Reflection\Php\Interface_;
 use phpDocumentor\Reflection\Php\Trait_;
+use function count;
 
 /**
  * Assembles an FileDescriptor using an FileReflector and ParamDescriptors.
@@ -33,11 +32,9 @@ class FileAssembler extends AssemblerAbstract
     /**
      * Creates a Descriptor from the provided data.
      *
-     * @param File $data
-     *
-     * @return FileDescriptor
+     * @param mixed $data
      */
-    public function create($data)
+    public function create($data) : FileDescriptor
     {
         $fileDescriptor = new FileDescriptor($data->getHash());
         $fileDescriptor->setPackage(
@@ -71,22 +68,24 @@ class FileAssembler extends AssemblerAbstract
      *
      * @param Constant[] $constants
      */
-    protected function addConstants(array $constants, FileDescriptor $fileDescriptor): void
+    protected function addConstants(array $constants, FileDescriptor $fileDescriptor) : void
     {
         foreach ($constants as $constant) {
             $constantDescriptor = $this->getBuilder()->buildDescriptor($constant);
-            if ($constantDescriptor) {
-                $constantDescriptor->setLocation($fileDescriptor, $constant->getLocation()->getLineNumber());
-                if (count($constantDescriptor->getTags()->get('package', new Collection())) === 0) {
-                    $constantDescriptor->getTags()
-                        ->set('package', $fileDescriptor->getTags()->get('package', new Collection()));
-                }
-
-                $fileDescriptor->getConstants()->set(
-                    (string) $constantDescriptor->getFullyQualifiedStructuralElementName(),
-                    $constantDescriptor
-                );
+            if (!$constantDescriptor) {
+                continue;
             }
+
+            $constantDescriptor->setLocation($fileDescriptor, $constant->getLocation()->getLineNumber());
+            if (count($constantDescriptor->getTags()->get('package', new Collection())) === 0) {
+                $constantDescriptor->getTags()
+                    ->set('package', $fileDescriptor->getTags()->get('package', new Collection()));
+            }
+
+            $fileDescriptor->getConstants()->set(
+                (string) $constantDescriptor->getFullyQualifiedStructuralElementName(),
+                $constantDescriptor
+            );
         }
     }
 
@@ -95,22 +94,24 @@ class FileAssembler extends AssemblerAbstract
      *
      * @param Function_[] $functions
      */
-    protected function addFunctions(array $functions, FileDescriptor $fileDescriptor): void
+    protected function addFunctions(array $functions, FileDescriptor $fileDescriptor) : void
     {
         foreach ($functions as $function) {
             $functionDescriptor = $this->getBuilder()->buildDescriptor($function);
-            if ($functionDescriptor) {
-                $functionDescriptor->setLocation($fileDescriptor, $function->getLocation()->getLineNumber());
-                if (count($functionDescriptor->getTags()->get('package', new Collection())) === 0) {
-                    $functionDescriptor->getTags()
-                        ->set('package', $fileDescriptor->getTags()->get('package', new Collection()));
-                }
-
-                $fileDescriptor->getFunctions()->set(
-                    (string) $functionDescriptor->getFullyQualifiedStructuralElementName(),
-                    $functionDescriptor
-                );
+            if (!$functionDescriptor) {
+                continue;
             }
+
+            $functionDescriptor->setLocation($fileDescriptor, $function->getLocation()->getLineNumber());
+            if (count($functionDescriptor->getTags()->get('package', new Collection())) === 0) {
+                $functionDescriptor->getTags()
+                    ->set('package', $fileDescriptor->getTags()->get('package', new Collection()));
+            }
+
+            $fileDescriptor->getFunctions()->set(
+                (string) $functionDescriptor->getFullyQualifiedStructuralElementName(),
+                $functionDescriptor
+            );
         }
     }
 
@@ -119,24 +120,26 @@ class FileAssembler extends AssemblerAbstract
      *
      * @param Class_[] $classes
      */
-    protected function addClasses(array $classes, FileDescriptor $fileDescriptor): void
+    protected function addClasses(array $classes, FileDescriptor $fileDescriptor) : void
     {
         foreach ($classes as $class) {
             $classDescriptor = $this->getBuilder()->buildDescriptor($class);
-            if ($classDescriptor) {
-                $classDescriptor->setLocation($fileDescriptor, $class->getLocation()->getLineNumber());
-                if (count($classDescriptor->getTags()->get('package', new Collection())) === 0) {
-                    $classDescriptor->getTags()->set(
-                        'package',
-                        $fileDescriptor->getTags()->get('package', new Collection())
-                    );
-                }
+            if (!$classDescriptor) {
+                continue;
+            }
 
-                $fileDescriptor->getClasses()->set(
-                    (string) ($classDescriptor->getFullyQualifiedStructuralElementName()),
-                    $classDescriptor
+            $classDescriptor->setLocation($fileDescriptor, $class->getLocation()->getLineNumber());
+            if (count($classDescriptor->getTags()->get('package', new Collection())) === 0) {
+                $classDescriptor->getTags()->set(
+                    'package',
+                    $fileDescriptor->getTags()->get('package', new Collection())
                 );
             }
+
+            $fileDescriptor->getClasses()->set(
+                (string) $classDescriptor->getFullyQualifiedStructuralElementName(),
+                $classDescriptor
+            );
         }
     }
 
@@ -145,22 +148,24 @@ class FileAssembler extends AssemblerAbstract
      *
      * @param Interface_[] $interfaces
      */
-    protected function addInterfaces(array $interfaces, FileDescriptor $fileDescriptor): void
+    protected function addInterfaces(array $interfaces, FileDescriptor $fileDescriptor) : void
     {
         foreach ($interfaces as $interface) {
             $interfaceDescriptor = $this->getBuilder()->buildDescriptor($interface);
-            if ($interfaceDescriptor) {
-                $interfaceDescriptor->setLocation($fileDescriptor, $interface->getLocation()->getLineNumber());
-                if (count($interfaceDescriptor->getTags()->get('package', new Collection())) === 0) {
-                    $interfaceDescriptor->getTags()
-                        ->set('package', $fileDescriptor->getTags()->get('package', new Collection()));
-                }
-
-                $fileDescriptor->getInterfaces()->set(
-                    (string) $interfaceDescriptor->getFullyQualifiedStructuralElementName(),
-                    $interfaceDescriptor
-                );
+            if (!$interfaceDescriptor) {
+                continue;
             }
+
+            $interfaceDescriptor->setLocation($fileDescriptor, $interface->getLocation()->getLineNumber());
+            if (count($interfaceDescriptor->getTags()->get('package', new Collection())) === 0) {
+                $interfaceDescriptor->getTags()
+                    ->set('package', $fileDescriptor->getTags()->get('package', new Collection()));
+            }
+
+            $fileDescriptor->getInterfaces()->set(
+                (string) $interfaceDescriptor->getFullyQualifiedStructuralElementName(),
+                $interfaceDescriptor
+            );
         }
     }
 
@@ -169,34 +174,36 @@ class FileAssembler extends AssemblerAbstract
      *
      * @param Trait_[] $traits
      */
-    protected function addTraits(array $traits, FileDescriptor $fileDescriptor): void
+    protected function addTraits(array $traits, FileDescriptor $fileDescriptor) : void
     {
         foreach ($traits as $trait) {
             $traitDescriptor = $this->getBuilder()->buildDescriptor($trait);
-            if ($traitDescriptor) {
-                $traitDescriptor->setLocation($fileDescriptor, $trait->getLocation()->getLineNumber());
-                if (count($traitDescriptor->getTags()->get('package', new Collection())) === 0) {
-                    $traitDescriptor->getTags()
-                        ->set('package', $fileDescriptor->getTags()->get('package', new Collection()));
-                }
-
-                $fileDescriptor->getTraits()->set(
-                    (string) $traitDescriptor->getFullyQualifiedStructuralElementName(),
-                    $traitDescriptor
-                );
+            if (!$traitDescriptor) {
+                continue;
             }
+
+            $traitDescriptor->setLocation($fileDescriptor, $trait->getLocation()->getLineNumber());
+            if (count($traitDescriptor->getTags()->get('package', new Collection())) === 0) {
+                $traitDescriptor->getTags()
+                    ->set('package', $fileDescriptor->getTags()->get('package', new Collection()));
+            }
+
+            $fileDescriptor->getTraits()->set(
+                (string) $traitDescriptor->getFullyQualifiedStructuralElementName(),
+                $traitDescriptor
+            );
         }
     }
 
     /**
      * Registers the markers that were found in a File with the File Descriptor.
      *
-     * @param string[]       $markers
+     * @param string[] $markers
      */
-    protected function addMarkers(array $markers, FileDescriptor $fileDescriptor): void
+    protected function addMarkers(array $markers, FileDescriptor $fileDescriptor) : void
     {
         foreach ($markers as $marker) {
-            list($type, $message, $line) = $marker;
+            [$type, $message, $line] = $marker;
             $fileDescriptor->getMarkers()->add(
                 [
                     'type' => $type,
@@ -207,11 +214,11 @@ class FileAssembler extends AssemblerAbstract
         }
     }
 
-    protected function overridePackageTag(File $data, FileDescriptor $fileDescriptor): void
+    protected function overridePackageTag(File $data, FileDescriptor $fileDescriptor) : void
     {
         $packages = new Collection();
-        $package = $this->extractPackageFromDocBlock($data->getDocBlock());
-        if (! $package) {
+        $package  = $this->extractPackageFromDocBlock($data->getDocBlock());
+        if (!$package) {
             $package = $this->getBuilder()->getDefaultPackage();
         }
 

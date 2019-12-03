@@ -1,13 +1,13 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpDocumentor.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
@@ -20,10 +20,10 @@ use phpDocumentor\Reflection\Php\ProjectFactoryStrategies;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
+use stdClass;
 use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\Component\Stopwatch\StopwatchEvent;
 use Symfony\Component\Stopwatch\StopwatchPeriod;
-use Prophecy\Prophecy\ObjectProphecy;
 
 /**
  * @coversDefaultClass \phpDocumentor\Parser\Middleware\StopwatchMiddleware
@@ -56,19 +56,26 @@ final class StopwatchMiddlewareTest extends TestCase
 
         $middleware = new StopwatchMiddleware($stopwatch->reveal(), $logger->reveal());
 
+        $expected = new stdClass();
         // triggering twice should result in two stopwatch events where the second shows the diff between the first
         // and second
-        $middleware->execute($command, function () {
-            return 'result';
-        });
-        $result = $middleware->execute($command, function () {
-            return 'result';
-        });
+        $middleware->execute(
+            $command,
+            static function () use ($expected) {
+                return $expected;
+            }
+        );
+        $result = $middleware->execute(
+            $command,
+            static function () use ($expected) {
+                return $expected;
+            }
+        );
 
-        $this->assertSame('result', $result);
+        $this->assertSame($expected, $result);
     }
 
-    private function givenAStopwatchEventWithMemoryTotal(int $memory): StopwatchEvent
+    private function givenAStopwatchEventWithMemoryTotal(int $memory) : StopwatchEvent
     {
         $period = $this->prophesize(StopwatchPeriod::class);
         $period->getMemory()->willReturn($memory);

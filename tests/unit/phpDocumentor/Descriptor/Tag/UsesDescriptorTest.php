@@ -1,22 +1,27 @@
 <?php
+
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor\Tag;
 
+use Mockery\Adapter\Phpunit\MockeryTestCase;
+use phpDocumentor\Reflection\Fqsen;
+
 /**
  * Tests the functionality for the UsesDescriptor class.
  */
-class UsesDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+class UsesDescriptorTest extends MockeryTestCase
 {
-    const EXAMPLE_REFERENCE = 'reference';
+    public const EXAMPLE_REFERENCE = '\Reference';
 
     /** @var UsesDescriptor $fixture */
     protected $fixture;
@@ -24,7 +29,7 @@ class UsesDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     /**
      * Creates a new fixture object.
      */
-    protected function setUp(): void
+    protected function setUp() : void
     {
         $this->fixture = new UsesDescriptor('name');
     }
@@ -35,11 +40,11 @@ class UsesDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
      */
     public function testSetAndGetReference() : void
     {
-        $this->assertEmpty($this->fixture->getReference());
+        $this->assertNull($this->fixture->getReference());
 
-        $this->fixture->setReference(self::EXAMPLE_REFERENCE);
+        $this->fixture->setReference(new Fqsen(self::EXAMPLE_REFERENCE));
         $result = $this->fixture->getReference();
 
-        $this->assertEquals(self::EXAMPLE_REFERENCE, $result);
+        $this->assertSame(self::EXAMPLE_REFERENCE, (string) $result);
     }
 }

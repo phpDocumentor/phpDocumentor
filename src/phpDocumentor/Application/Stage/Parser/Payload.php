@@ -8,10 +8,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Application\Stage\Parser;
@@ -19,12 +16,12 @@ namespace phpDocumentor\Application\Stage\Parser;
 use phpDocumentor\Application\Stage\Payload as ApplicationPayload;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\File;
+use function array_merge;
+use function current;
 
 final class Payload extends ApplicationPayload
 {
-    /**
-     * @var File[]
-     */
+    /** @var File[] */
     private $files;
 
     /**
@@ -36,7 +33,7 @@ final class Payload extends ApplicationPayload
         $this->files = $files;
     }
 
-    public function getApiConfigs()
+    public function getApiConfigs() : array
     {
         //Grep only the first version for now. Multi version support will be added later
         $version = current($this->getConfig()['phpdocumentor']['versions']);

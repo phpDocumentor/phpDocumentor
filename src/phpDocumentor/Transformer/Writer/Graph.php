@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,10 +8,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Transformer\Writer;
@@ -27,6 +25,13 @@ use phpDocumentor\GraphViz\Graph as GraphVizGraph;
 use phpDocumentor\GraphViz\Node;
 use phpDocumentor\Transformer\Transformation;
 use RuntimeException;
+use Throwable;
+use const DIRECTORY_SEPARATOR;
+use function array_merge;
+use function array_pop;
+use function exec;
+use function explode;
+use function ucfirst;
 
 /**
  * Writer responsible for generating various graphs.
@@ -40,24 +45,24 @@ use RuntimeException;
  *
  * @todo Fix this class
  */
-class Graph extends WriterAbstract
+final class Graph extends WriterAbstract
 {
     /** @var string Name of the font to use to display the node labels with */
-    protected $nodeFont = 'Courier';
+    private $nodeFont = 'Courier';
 
     /** @var Node[] a cache where nodes for classes, interfaces and traits are stored for reference */
-    protected $nodeCache = [];
+    private $nodeCache = [];
 
     /** @var GraphVizGraph[] */
-    protected $namespaceCache = [];
+    private $namespaceCache = [];
 
     /**
      * Invokes the query method contained in this class.
      *
-     * @param ProjectDescriptor $project        Document containing the structure.
-     * @param Transformation    $transformation Transformation to execute.
+     * @param ProjectDescriptor $project Document containing the structure.
+     * @param Transformation $transformation Transformation to execute.
      */
-    public function transform(ProjectDescriptor $project, Transformation $transformation)
+    public function transform(ProjectDescriptor $project, Transformation $transformation) : void
     {
         $type_method = 'process' . ucfirst($transformation->getSource());
         $this->{$type_method}($project, $transformation);
@@ -66,11 +71,11 @@ class Graph extends WriterAbstract
     /**
      * Creates a class inheritance diagram.
      */
-    public function processClass(ProjectDescriptor $project, Transformation $transformation)
+    public function processClass(ProjectDescriptor $project, Transformation $transformation) : void
     {
         try {
             $this->checkIfGraphVizIsInstalled();
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             echo $e->getMessage();
 
             return;
@@ -120,21 +125,25 @@ class Graph extends WriterAbstract
 
             /** @var string|ClassDescriptor|InterfaceDescriptor $parent */
             foreach ($parents as $parent) {
-                $edge = $this->createEdge($graph, $from_name, $parent);
-                if ($edge !== null) {
-                    $edge->setArrowHead('empty');
-                    $graph->link($edge);
+                $edge = $this->createEdge($from_name, $parent);
+                if ($edge === null) {
+                    continue;
                 }
+
+                $edge->setArrowHead('empty');
+                $graph->link($edge);
             }
 
             /** @var string|ClassDescriptor|InterfaceDescriptor $parent */
             foreach ($implemented as $parent) {
-                $edge = $this->createEdge($graph, $from_name, $parent);
-                if ($edge !== null) {
-                    $edge->setStyle('dotted');
-                    $edge->setArrowHead('empty');
-                    $graph->link($edge);
+                $edge = $this->createEdge($from_name, $parent);
+                if ($edge === null) {
+                    continue;
                 }
+
+                $edge->setStyle('dotted');
+                $edge->setArrowHead('empty');
+                $graph->link($edge);
             }
         }
 
@@ -144,13 +153,9 @@ class Graph extends WriterAbstract
     /**
      * Creates a GraphViz Edge between two nodes.
      *
-     * @param Graph  $graph
-     * @param string $from_name
      * @param string|ClassDescriptor|InterfaceDescriptor|TraitDescriptor $to
-     *
-     * @return Edge|null
      */
-    protected function createEdge($graph, $from_name, $to)
+    private function createEdge(string $from_name, $to) : ?Edge
     {
         $to_name = (string) ($to instanceof DescriptorAbstract ? $to->getFullyQualifiedStructuralElementName() : $to);
 
@@ -179,7 +184,7 @@ class Graph extends WriterAbstract
         return null;
     }
 
-    protected function createNamespaceGraph($fqcn)
+    protected function createNamespaceGraph(string $fqcn) : ?GraphVizGraph
     {
         $namespaceParts = explode('\\', $fqcn);
 
@@ -193,7 +198,7 @@ class Graph extends WriterAbstract
                 $part = 'Global';
                 $reassembledFqnn = 'Global';
             } else {
-                $reassembledFqnn = $reassembledFqnn . '\\' . $part;
+                $reassembledFqnn .= '\\' . $part;
             }
 
             if (isset($this->namespaceCache[$part])) {
@@ -208,9 +213,6 @@ class Graph extends WriterAbstract
         return $graph;
     }
 
-    /**
-     * @param string $name
-     */
     protected function createEmptyNode(string $name, ?GraphVizGraph $graph) : ?Node
     {
         if ($graph === null) {
@@ -228,7 +230,7 @@ class Graph extends WriterAbstract
     /**
      * Builds a tree of namespace subgraphs with their classes associated.
      */
-    protected function buildNamespaceTree(GraphVizGraph $graph, NamespaceDescriptor $namespace)
+    protected function buildNamespaceTree(GraphVizGraph $graph, NamespaceDescriptor $namespace) : void
     {
         $full_namespace_name = (string) $namespace->getFullyQualifiedStructuralElementName();
         if ($full_namespace_name === '\\') {
@@ -274,7 +276,7 @@ class Graph extends WriterAbstract
         $graph->addGraph($sub_graph);
     }
 
-    protected function getDestinationPath(Transformation $transformation)
+    private function getDestinationPath(Transformation $transformation) : string
     {
         return $transformation->getTransformer()->getTarget()
             . DIRECTORY_SEPARATOR . $transformation->getArtifact();
@@ -283,9 +285,9 @@ class Graph extends WriterAbstract
     /**
      * Checks whether GraphViz is installed and throws an Exception otherwise.
      *
-     * @throws RuntimeException if graphviz is not found.
+     * @throws RuntimeException If graphviz is not found.
      */
-    protected function checkIfGraphVizIsInstalled()
+    private function checkIfGraphVizIsInstalled() : void
     {
         // NOTE: the -V flag sends output using STDERR and STDOUT
         exec('dot -V 2>&1', $output, $error);
@@ -297,13 +299,7 @@ class Graph extends WriterAbstract
         }
     }
 
-    /**
-     * @param string $full_namespace_name
-     * @param string $label
-     *
-     * @return mixed
-     */
-    protected function createGraphForNamespace($full_namespace_name, $label)
+    private function createGraphForNamespace(string $full_namespace_name, string $label) : GraphVizGraph
     {
         return GraphVizGraph::create('cluster_' . $full_namespace_name)
             ->setLabel($label)

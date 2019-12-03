@@ -18,7 +18,7 @@ services:
     command: ["./tools/behat"]
 
   phpcs:
-    image: oskarstark/phpcs-ga
+    image: phpdoc/phpcs-ga:master
     volumes: [".:/opt/phpdoc"]
     working_dir: "/opt/phpdoc"
     command: ["-d memory_limit=1024M"]

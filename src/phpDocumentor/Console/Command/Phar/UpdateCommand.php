@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,15 +8,11 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Console\Command\Phar;
 
-use \Exception;
 use Humbug\SelfUpdate\Strategy\GithubStrategy;
 use Humbug\SelfUpdate\Updater;
 use phpDocumentor\Application;
@@ -23,6 +20,9 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Throwable;
+use const PHP_VERSION_ID;
+use function sprintf;
 
 /**
  * Updates phpDocumentor.phar to the latest version.
@@ -35,12 +35,12 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class UpdateCommand extends Command
 {
-    const PHAR_URL = 'https://github.com/phpDocumentor/phpDocumentor2/releases/latest';
+    public const PHAR_URL = 'https://github.com/phpDocumentor/phpDocumentor2/releases/latest';
 
     /**
      * Initializes this command and sets the name, description, options and arguments.
      */
-    protected function configure(): void
+    protected function configure() : void
     {
         $this->setName('phar:update')
             ->setAliases(['selfupdate', 'self-update'])
@@ -57,18 +57,18 @@ class UpdateCommand extends Command
     /**
      * Executes the business logic involved with this command.
      */
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    protected function execute(InputInterface $input, OutputInterface $output) : int
     {
         $output->writeln('Looking for updates...');
 
         $allowPreRelease = $input->getOption('pre');
 
         if (PHP_VERSION_ID < 50600) {
-            $message = 'Self updating is not available in PHP versions under 5.6.' . "\n";
+            $message  = 'Self updating is not available in PHP versions under 5.6.' . "\n";
             $message .= 'The latest version can be found at ' . self::PHAR_URL;
             $output->writeln(sprintf('<error>%s</error>', $message));
             return 1;
-        } elseif (Application::VERSION() === ('@package_version@')) {
+        } elseif (Application::VERSION() === '@package_version@') {
             $output->writeln('<error>Self updating has been disabled in source version.</error>');
             return 1;
         }
@@ -106,7 +106,7 @@ class UpdateCommand extends Command
                 $output->writeln(sprintf('Updated from %s to %s', $old, $new));
                 $exitCode = 0;
             }
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
         }
 

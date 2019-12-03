@@ -1,17 +1,21 @@
 <?php
+
+declare(strict_types=1);
+
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Transformer\Router;
 
-class RuleTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
+use Mockery\Adapter\Phpunit\MockeryTestCase;
+
+class RuleTest extends MockeryTestCase
 {
     /**
      * @covers \phpDocumentor\Transformer\Router\Rule::__construct
@@ -20,17 +24,17 @@ class RuleTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testIfRuleCanBeMatched() : void
     {
         $fixture = new Rule(
-            function () {
+            static function () {
                 return true;
             },
-            function () {
+            static function () : void {
             }
         );
         $fixture2 = new Rule(
-            function () {
+            static function () {
                 return false;
             },
-            function () {
+            static function () : void {
             }
         );
 
@@ -46,9 +50,9 @@ class RuleTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     public function testIfUrlCanBeGenerated() : void
     {
         $fixture = new Rule(
-            function () {
+            static function () : void {
             },
-            function () {
+            static function () {
                 return 'url';
             }
         );
@@ -67,10 +71,10 @@ class RuleTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
             'Github Actions does not like this test; let us skip it for now and figure out what to do'
         );
         $fixture = new Rule(
-            function () {
+            static function () {
                 return true;
             },
-            function () {
+            static function () {
                 return 'httö://www.€xample.org/foo.html#bär';
             }
         );

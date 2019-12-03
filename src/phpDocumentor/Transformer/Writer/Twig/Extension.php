@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -7,10 +8,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Transformer\Writer\Twig;
@@ -24,6 +22,7 @@ use Twig\Extension\AbstractExtension;
 use Twig\Extension\GlobalsInterface;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
+use function strtolower;
 
 /**
  * Basic extension adding phpDocumentor specific functionality for Twig
@@ -57,17 +56,16 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
     /**
      * Registers the structure and transformation with this extension.
      *
-     * @param ProjectDescriptor $project Represents the complete Abstract Syntax Tree.
-     * @param Transformation $transformation Represents the transformation meta data used in the current generation
-     *     cycle.
-     * @param Renderer|null $routeRenderer
+     * @param ProjectDescriptor $project        Represents the complete Abstract Syntax Tree.
+     * @param Transformation    $transformation Represents the transformation meta data used in the current generation
+     *        cycle.
      */
     public function __construct(
         ProjectDescriptor $project,
         Transformation $transformation,
-        Renderer $routeRenderer = null
+        ?Renderer $routeRenderer = null
     ) {
-        $this->data = $project;
+        $this->data          = $project;
         $this->routeRenderer = $routeRenderer;
     }
 
@@ -80,7 +78,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
      *
      * @see Writer\Twig for the invocation of this method.
      */
-    public function setDestination(string $destination): void
+    public function setDestination(string $destination) : void
     {
         $this->routeRenderer->setDestination($destination);
     }
@@ -90,7 +88,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
      *
      * @return mixed[]
      */
-    public function getGlobals(): array
+    public function getGlobals() : array
     {
         return [
             'project' => $this->data,
@@ -109,7 +107,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
      *
      * @return TwigFunction[]
      */
-    public function getFunctions(): array
+    public function getFunctions() : array
     {
         return [
             new TwigFunction('path', [$this->routeRenderer, 'convertToRootPath']),
@@ -121,40 +119,40 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
      *
      * @return TwigFilter[]
      */
-    public function getFilters(): array
+    public function getFilters() : array
     {
-        $parser = Parsedown::instance();
+        $parser        = Parsedown::instance();
         $routeRenderer = $this->routeRenderer;
 
         return [
             'markdown' => new TwigFilter(
                 'markdown',
-                function ($value) use ($parser) {
+                static function ($value) use ($parser) {
                     return $parser->text($value);
                 }
             ),
             'trans' => new TwigFilter(
                 'trans',
-                function ($value) {
+                static function ($value) {
                     return $value;
                 }
             ),
             'route' => new TwigFilter(
                 'route',
-                function ($value, $presentation = 'normal') use ($routeRenderer) {
+                static function ($value, $presentation = 'normal') use ($routeRenderer) {
                     return $routeRenderer->render($value, $presentation);
                 }
             ),
             'sort' => new TwigFilter(
                 'sort_*',
-                function ($direction, $collection) {
+                static function ($direction, $collection) {
                     if (!$collection instanceof Collection) {
                         return $collection;
                     }
 
                     $iterator = $collection->getIterator();
                     $iterator->uasort(
-                        function ($a, $b) use ($direction) {
+                        static function ($a, $b) use ($direction) {
                             $aElem = strtolower($a->getName());
                             $bElem = strtolower($b->getName());
                             if ($aElem === $bElem) {
