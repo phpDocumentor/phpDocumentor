@@ -14,38 +14,48 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor;
 
 use Mockery\Adapter\Phpunit\MockeryTestCase;
+use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Types\Integer;
 use phpDocumentor\Reflection\Types\String_;
 
 /**
  * @coversDefaultClass \phpDocumentor\Descriptor\ArgumentDescriptor
  */
-class ArgumentDescriptorTest extends MockeryTestCase
+final class ArgumentDescriptorTest extends MockeryTestCase
 {
-    /** @var ArgumentDescriptor $fixture */
-    protected $fixture;
-
-    /**
-     * Creates a new (empty) fixture object.
-     */
-    protected function setUp() : void
-    {
-        $this->markTestIncomplete('Review this whole testcase; it is too complicated to change');
-        $this->fixture = new ArgumentDescriptor();
-    }
-
     /**
      * @covers ::getType
      * @covers ::setType
      */
     public function testSetAndGetTypes() : void
     {
-        $this->assertSame(null, $this->fixture->getType());
+        $fixture = new ArgumentDescriptor();
+        $this->assertSame(null, $fixture->getType());
 
         $type = new Integer();
-        $this->fixture->setType($type);
+        $fixture->setType($type);
 
-        $this->assertSame($type, $this->fixture->getType());
+        $this->assertSame($type, $fixture->getType());
+    }
+
+    /**
+     * @covers ::getType
+     */
+    public function testTypeIsInheritedWhenNoneIsPresent() : void
+    {
+        $types = new String_();
+
+        $fixture = new ArgumentDescriptor();
+        $parentArgument = $this->whenFixtureHasMethodAndArgumentInParentClassWithSameName(
+            $fixture,
+            'argumentName'
+        );
+        $fixture->setType(null);
+        $parentArgument->setType($types);
+
+        $result = $fixture->getType();
+
+        $this->assertSame($types, $result);
     }
 
     /**
@@ -54,12 +64,13 @@ class ArgumentDescriptorTest extends MockeryTestCase
      */
     public function testSetAndGetMethod() : void
     {
-        $this->assertSame(null, $this->fixture->getMethod());
+        $fixture = new ArgumentDescriptor();
+        $this->assertSame(null, $fixture->getMethod());
 
         $method = new MethodDescriptor();
-        $this->fixture->setMethod($method);
+        $fixture->setMethod($method);
 
-        $this->assertSame($method, $this->fixture->getMethod());
+        $this->assertSame($method, $fixture->getMethod());
     }
 
     /**
@@ -68,11 +79,12 @@ class ArgumentDescriptorTest extends MockeryTestCase
      */
     public function testSetAndGetDefault() : void
     {
-        $this->assertNull($this->fixture->getDefault());
+        $fixture = new ArgumentDescriptor();
+        $this->assertNull($fixture->getDefault());
 
-        $this->fixture->setDefault('a');
+        $fixture->setDefault('a');
 
-        $this->assertSame('a', $this->fixture->getDefault());
+        $this->assertSame('a', $fixture->getDefault());
     }
 
     /**
@@ -81,11 +93,12 @@ class ArgumentDescriptorTest extends MockeryTestCase
      */
     public function testSetAndGetWhetherArgumentIsPassedByReference() : void
     {
-        $this->assertFalse($this->fixture->isByReference());
+        $fixture = new ArgumentDescriptor();
+        $this->assertFalse($fixture->isByReference());
 
-        $this->fixture->setByReference(true);
+        $fixture->setByReference(true);
 
-        $this->assertTrue($this->fixture->isByReference());
+        $this->assertTrue($fixture->isByReference());
     }
 
     /**
@@ -94,11 +107,12 @@ class ArgumentDescriptorTest extends MockeryTestCase
      */
     public function testSetAndGetWhetherArgumentIsAVariadic() : void
     {
-        $this->assertFalse($this->fixture->isVariadic());
+        $fixture = new ArgumentDescriptor();
+        $this->assertFalse($fixture->isVariadic());
 
-        $this->fixture->setVariadic(true);
+        $fixture->setVariadic(true);
 
-        $this->assertTrue($this->fixture->isVariadic());
+        $this->assertTrue($fixture->isVariadic());
     }
 
     /**
@@ -106,14 +120,19 @@ class ArgumentDescriptorTest extends MockeryTestCase
      */
     public function testDescriptionInheritsWhenNoneIsPresent() : void
     {
+        $fixture = new ArgumentDescriptor();
+
         // Arrange
         $description = 'This is a description';
-        $this->fixture->setDescription('');
-        $parentArgument = $this->whenFixtureHasMethodAndArgumentInParentClassWithSameName('same_argument');
+        $fixture->setDescription('');
+        $parentArgument = $this->whenFixtureHasMethodAndArgumentInParentClassWithSameName(
+            $fixture,
+            'same_argument'
+        );
         $parentArgument->setDescription($description);
 
         // Act
-        $result = $this->fixture->getDescription();
+        $result = $fixture->getDescription();
 
         // Assert
         $this->assertSame($description, $result);
@@ -124,33 +143,21 @@ class ArgumentDescriptorTest extends MockeryTestCase
      */
     public function testDescriptionIsNotInheritedWhenPresent() : void
     {
+        $fixture = new ArgumentDescriptor();
+
         // Arrange
         $description = 'This is a description';
-        $this->fixture->setDescription($description);
-        $parentArgument = $this->whenFixtureHasMethodAndArgumentInParentClassWithSameName('same_argument');
+        $fixture->setDescription($description);
+        $parentArgument = $this->whenFixtureHasMethodAndArgumentInParentClassWithSameName(
+            $fixture,
+            'same_argument'
+        );
         $parentArgument->setDescription('some random text');
         // Act
-        $result = $this->fixture->getDescription();
+        $result = $fixture->getDescription();
 
         // Assert
         $this->assertSame($description, $result);
-    }
-
-    /**
-     * @covers ::getType
-     */
-    public function testTypeIsInheritedWhenNoneIsPresent() : void
-    {
-        // Arrange
-        $types = new String_();
-        $this->fixture->setType(null);
-        $parentArgument = $this->whenFixtureHasMethodAndArgumentInParentClassWithSameName('same_argument');
-        $parentArgument->setType($types);
-        // Act
-        $result = $this->fixture->getType();
-
-        // Assert
-        $this->assertSame($types, $result);
     }
 
     /**
@@ -159,26 +166,30 @@ class ArgumentDescriptorTest extends MockeryTestCase
      */
     public function testGetTheArgumentFromWhichThisArgumentInherits() : void
     {
+        $fixture = new ArgumentDescriptor();
+
         $this->assertNull(
-            $this->fixture->getInheritedElement(),
+            $fixture->getInheritedElement(),
             'By default, an argument does not have an inherited element'
         );
 
         $method = new MethodDescriptor();
         $method->setName('same');
-        $method->addArgument('abc', $this->fixture);
-        $this->fixture->setMethod($method);
+        $method->addArgument('abc', $fixture);
+        $fixture->setMethod($method);
 
-        $this->assertNull($this->fixture->getInheritedElement());
+        $this->assertNull($fixture->getInheritedElement());
 
-        $this->whenFixtureHasMethodAndArgumentInParentClassWithSameName('abcd');
+        $this->whenFixtureHasMethodAndArgumentInParentClassWithSameName($fixture, 'abcd');
 
-        $this->assertNotNull($this->fixture->getInheritedElement());
+        $this->assertNotNull($fixture->getInheritedElement());
     }
 
-    private function whenFixtureHasMethodAndArgumentInParentClassWithSameName(string $argumentName) : ArgumentDescriptor
-    {
-        $this->fixture->setName($argumentName);
+    private function whenFixtureHasMethodAndArgumentInParentClassWithSameName(
+        ArgumentDescriptor $fixture,
+        string $argumentName
+    ) : ArgumentDescriptor {
+        $fixture->setName($argumentName);
 
         $parentArgument = new ArgumentDescriptor();
         $parentArgument->setName($argumentName);
@@ -189,14 +200,16 @@ class ArgumentDescriptorTest extends MockeryTestCase
 
         $method = new MethodDescriptor();
         $method->setName('same');
-        $method->addArgument($argumentName, $this->fixture);
-        $this->fixture->setMethod($method);
+        $method->addArgument($argumentName, $fixture);
+        $fixture->setMethod($method);
 
         $parent = new ClassDescriptor();
+        $parent->setFullyQualifiedStructuralElementName(new Fqsen('\My\Super\Class'));
         $parent->getMethods()->set('same', $parentMethod);
         $parentMethod->setParent($parent);
 
         $class = new ClassDescriptor();
+        $class->setFullyQualifiedStructuralElementName(new Fqsen('\My\Sub\Class'));
         $class->setParent($parent);
         $class->getMethods()->set('same', $method);
         $method->setParent($class);
