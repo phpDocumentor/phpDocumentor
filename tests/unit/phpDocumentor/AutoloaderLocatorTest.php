@@ -84,7 +84,7 @@ final class AutoloaderLocatorTest extends TestCase
         vfsStream::setup('root', null, $this->standaloneStructure);
         $baseDir = vfsStream::url('root/dummy/src/phpDocumentor');
         self::assertSame(
-            'vfs://root/dummy/src/phpDocumentor/../../vendor',
+            'vfs://root/dummy/vendor',
             AutoloaderLocator::findVendorPath($baseDir)
         );
     }
@@ -131,11 +131,10 @@ final class AutoloaderLocatorTest extends TestCase
  */
 function realpath(string $url)
 {
-    if (preg_match("|^(\w+://)?(/)?(.*)$|", $url, $matches)) {
-        $protocol = $matches[1];
-        $root     = $matches[2];
-        $rest     = $matches[3];
-    }
+    preg_match("|^(\w+://)?(/)?(.*)$|", $url, $matches);
+    $protocol = $matches[1];
+    $root     = $matches[2];
+    $rest     = $matches[3];
     
     $split = preg_split("|/|", $rest);
 
