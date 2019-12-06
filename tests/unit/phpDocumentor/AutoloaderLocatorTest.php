@@ -92,10 +92,10 @@ final class AutoloaderLocatorTest extends TestCase
     public function testAutoloadComposerInstalled() : void
     {
         $root = vfsStream::setup('root', null, $this->composerInstalledStructure);
-        vfsStream::newFile('composer.json')->at($root->getChild('dummy'));
+        vfsStream::newFile('autoload.php')->at($root->getChild('dummy')->getChild('vendor'));
         $baseDir = vfsStream::url('root/dummy/vendor/phpDocumentor/phpDocumentor/src/phpDocumentor');
         $this->assertSame(
-            'vfs://root/dummy/vendor/phpDocumentor/phpDocumentor/src/phpDocumentor/../../../../../vendor',
+            'vfs://root/dummy/vendor',
             AutoloaderLocator::findVendorPath($baseDir)
         );
     }
@@ -103,13 +103,54 @@ final class AutoloaderLocatorTest extends TestCase
     public function testAutoloadComposerInstalledCustomVendor() : void
     {
         $root = vfsStream::setup('root', null, $this->customVendorDir);
-        vfsStream::newFile('composer.json')
-            ->withContent($this->customVendorDirComposer)
-            ->at($root->getChild('dummy'));
+        vfsStream::newFile('autoload.php')->at($root->getChild('dummy')->getChild('custom-vendor'));
         $baseDir = vfsStream::url('root/dummy/custom-vendor/phpDocumentor/phpDocumentor/src/phpDocumentor');
         $this->assertSame(
-            'vfs://root/dummy/custom-vendor/phpDocumentor/phpDocumentor/src/phpDocumentor/../../../../../custom-vendor',
+            'vfs://root/dummy/custom-vendor',
             AutoloaderLocator::findVendorPath($baseDir)
         );
     }
+
+    public function testAutoloadComposerNotFindableVendor() : void
+    {
+        $root = vfsStream::setup('root', null, []);
+        $baseDir = vfsStream::url('root/dummy/custom-vendor/phpDocumentor/phpDocumentor/src/phpDocumentor');
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Unable to find vendor directory for vfs://root/dummy/custom-vendor/phpDocumentor/phpDocumentor/src/phpDocumentor');
+        AutoloaderLocator::findVendorPath($baseDir);
+    }
+}
+
+/**
+ * This function overrides the native realpath($url) function, removing
+ * all the "..", ".", "///" of an url. Contrary to the native one, 
+ * 
+ * @see https://github.com/bovigo/vfsStream/issues/207
+ * @param string $url
+ * @param string|bool The cleaned url or false if it doesn't exist
+ */
+function realpath(string $url)
+{
+    if (preg_match("|^(\w+://)?(/)?(.*)$|", $url, $matches)) {
+        $protocol = $matches[1];
+        $root     = $matches[2];
+        $rest     = $matches[3];
+    }
+    
+    $split = preg_split("|/|", $rest);
+
+    $cleaned = [];
+    foreach ($split as $item) {
+        if ($item === '.' || $item === '') {
+            // If it's a ./ then it's nothing (just that dir) so don't add/delete anything
+        } elseif ($item === '..') {
+            // Remove the last item added since .. negates it.
+            $removed = array_pop($cleaned);
+        } else {
+            $cleaned[] = $item;
+        }
+    }
+
+    $cleaned = $protocol.$root.implode('/', $cleaned);
+    return file_exists($cleaned) ? $cleaned : false;
 }
