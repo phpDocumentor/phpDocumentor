@@ -144,7 +144,6 @@ jobs:
       matrix:
         profile:
           - default
-          - phar
     name: Integration tests [${{ matrix.profile }} | 7.2 | ubuntu-latest]
     needs:
       - setup
