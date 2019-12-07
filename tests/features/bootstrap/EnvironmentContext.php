@@ -58,7 +58,9 @@ final class EnvironmentContext implements Context\Context
         }
 
         Assert::directory($this->getWorkingDir());
-        $this->binaryPath = $this->pharPath ? __DIR__ . '/../../../' . $this->pharPath : realpath(__DIR__ . '/../../../bin/phpdoc');
+        $this->binaryPath = $this->pharPath
+            ? realpath(__DIR__ . '/../../../' . $this->pharPath)
+            : realpath(__DIR__ . '/../../../bin/phpdoc');
         chdir($this->getWorkingDir());
     }
 

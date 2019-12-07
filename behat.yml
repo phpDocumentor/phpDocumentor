@@ -32,7 +32,7 @@ phar:
       contexts:
         - phpDocumentor\Behat\Contexts\EnvironmentContext:
             workingDir: /tmp/phpdoc-behat/core
-            pharPath: /build/phpDocumentor.phar
+            pharPath: build/phpDocumentor.phar
         - phpDocumentor\Behat\Contexts\Ast\ApiContext
         - phpDocumentor\Behat\Contexts\Ast\SeeTagContext
         - phpDocumentor\Behat\Contexts\Ast\UsesTagContext
@@ -42,7 +42,7 @@ phar:
       contexts:
         - phpDocumentor\Behat\Contexts\EnvironmentContext:
             workingDir: /tmp/phpdoc-behat/cli
-            pharPath: /build/phpDocumentor.phar
+            pharPath: build/phpDocumentor.phar
         - phpDocumentor\Behat\Contexts\Ast\ApiContext
       filters:
         tags: "~@wip"
@@ -50,7 +50,7 @@ phar:
       contexts:
         - phpDocumentor\Behat\Contexts\EnvironmentContext:
             workingDir: /tmp/phpdoc-behat/config
-            pharPath: /build/phpDocumentor.phar
+            pharPath: build/phpDocumentor.phar
       paths:    [ "%paths.base%/tests/features/config" ]
       filters:
         tags: "~@wip"
