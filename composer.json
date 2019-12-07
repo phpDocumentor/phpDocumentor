@@ -21,7 +21,7 @@
         }
     },
     "require": {
-        "php": ">=7.2",
+        "php": ">=7.2.5",
         "ext-ctype": "*",
         "ext-dom": "*",
         "ext-iconv": "*",
@@ -78,7 +78,10 @@
         "preferred-install": {
             "*": "dist"
         },
-        "sort-packages": true
+        "sort-packages": true,
+        "platform": {
+            "php": "7.2.5"
+        }
     },
     "replace": {
         "paragonie/random_compat": "2.*",

@@ -26,16 +26,12 @@ use phpDocumentor\Transformer\Writer\Initializable;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
-use const DIRECTORY_SEPARATOR;
 use function in_array;
 use function is_dir;
 use function is_writable;
 use function mkdir;
 use function realpath;
 use function sprintf;
-use function str_replace;
-use function substr;
-use function trim;
 
 /**
  * Core class responsible for transforming the cache file to a set of artifacts.

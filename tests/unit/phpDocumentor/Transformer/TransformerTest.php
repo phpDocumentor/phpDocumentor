@@ -17,7 +17,6 @@ use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use org\bovigo\vfs\vfsStream;
 use Psr\Log\NullLogger;
-use const DIRECTORY_SEPARATOR;
 use function strlen;
 
 /**

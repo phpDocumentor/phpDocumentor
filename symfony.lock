@@ -39,7 +39,7 @@
         "version": "1.0.4"
     },
     "php": {
-        "version": "7.3"
+        "version": "7.2.5"
     },
     "phpdocumentor/flyfinder": {
         "version": "1.0.0-beta1"
