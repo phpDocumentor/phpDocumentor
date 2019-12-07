@@ -40,7 +40,7 @@ jobs:
 
   phpunit-with-coverage:
     runs-on: ubuntu-latest
-    name: Unit tests
+    name: Unit tests [7.2 | ubuntu-latest]
     needs: setup
     steps:
     - uses: actions/checkout@master
@@ -140,7 +140,12 @@ jobs:
 
   behat-quick-feedback:
     runs-on: ubuntu-latest
-    name: Integration tests for PHP version 7.2 on Ubuntu
+    strategy:
+      matrix:
+        profile:
+          - default
+          - phar
+    name: Integration tests [${{ matrix.profile }} | 7.2 | ubuntu-latest]
     needs:
       - setup
     steps:
@@ -161,33 +166,7 @@ jobs:
           ini-values-csv: memory_limit=2G, display_errors=On, error_reporting=-1
           pecl: false
       - name: Run Behat
-        run: php tools/behat -s default
-        continue-on-error: true
-
-  behat-quick-feedback-on-phar:
-    runs-on: ubuntu-latest
-    name: Integration tests for PHP version 7.2 on Ubuntu
-    needs:
-      - setup
-    steps:
-      - uses: actions/checkout@master
-      - name: Restore/cache vendor folder
-        uses: actions/cache@v1
-        with:
-          path: vendor
-          key: all-build-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            all-build-${{ hashFiles('**/composer.lock') }}
-            all-build-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@master
-        with:
-          php-version: '7.2'
-          extension-csv: mbstring, intl, iconv, libxml, dom, json, simplexml, zlib
-          ini-values-csv: memory_limit=2G, display_errors=On, error_reporting=-1
-          pecl: false
-      - name: Run Behat
-        run: php tools/behat -s phar
+        run: php tools/behat -s ${{ matrix.profile }}
         continue-on-error: true
 
   phpunit:
@@ -205,7 +184,7 @@ jobs:
         exclude: # already covered in pre-test with coverage above
           - operating-system: 'ubuntu-latest'
             php-versions: '7.2'
-    name: Unit tests for PHP version ${{ matrix.php-versions }} on ${{ matrix.operating-system }}
+    name: Unit tests [${{ matrix.php-versions }} | ${{ matrix.operating-system }}]
     needs:
     - phpunit-with-coverage
     - phpstan
@@ -238,10 +217,13 @@ jobs:
     - name: Run PHPUnit
       run: php tools/phpunit.phar
 
-  behat-on-source:
+  behat:
     runs-on: ${{ matrix.operating-system }}
     strategy:
       matrix:
+        profile:
+          - default
+          - phar
         operating-system:
           - ubuntu-latest
           - windows-latest
@@ -253,7 +235,7 @@ jobs:
         exclude: # already covered in pre-test with coverage above
           - operating-system: 'ubuntu-latest'
             php-versions: '7.2'
-    name: Source integration tests for PHP version ${{ matrix.php-versions }} on ${{ matrix.operating-system }}
+    name: Integration tests [${{ matrix.profile }} | ${{ matrix.php-versions }} | ${{ matrix.operating-system }}]
     needs:
       - behat-quick-feedback
       - phpstan
@@ -276,46 +258,5 @@ jobs:
           ini-values-csv: memory_limit=2G, display_errors=On, error_reporting=-1
           pecl: false
       - name: Run Behat
-        run: php tools/behat -s default
-        continue-on-error: true
-
-  behat-on-phar:
-    runs-on: ${{ matrix.operating-system }}
-    strategy:
-      matrix:
-        operating-system:
-          - ubuntu-latest
-          - windows-latest
-          - macOS-latest
-        php-versions:
-          - '7.2'
-          - '7.3'
-          - '7.4'
-        exclude: # already covered in pre-test with coverage above
-          - operating-system: 'ubuntu-latest'
-            php-versions: '7.2'
-    name: PHAR Integration tests for PHP version ${{ matrix.php-versions }} on ${{ matrix.operating-system }}
-    needs:
-      - behat-quick-feedback-on-phar
-      - phpstan
-      - codestyle
-    steps:
-      - uses: actions/checkout@master
-      - name: Restore/cache vendor folder
-        uses: actions/cache@v1
-        with:
-          path: vendor
-          key: all-build-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            all-build-${{ hashFiles('**/composer.lock') }}
-            all-build-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@master
-        with:
-          php-version: ${{ matrix.php-versions }}
-          extension-csv: mbstring, intl, iconv, libxml, dom, json, simplexml, zlib
-          ini-values-csv: memory_limit=2G, display_errors=On, error_reporting=-1
-          pecl: false
-      - name: Run Behat
-        run: php tools/behat -s phar
+        run: php tools/behat -p ${{ matrix.profile }}
         continue-on-error: true
