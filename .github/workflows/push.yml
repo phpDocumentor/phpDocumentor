@@ -188,6 +188,10 @@ jobs:
           restore-keys: |
             all-build-${{ hashFiles('**/composer.lock') }}
             all-build-
+      - name: warm cache
+        uses: docker://phpdoc/phar-ga:master
+        with:
+          args: php bin/console cache:warmup --env=prod
       - name: build phar
         uses: docker://phpdoc/phar-ga:master
         with:
