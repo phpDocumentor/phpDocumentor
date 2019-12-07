@@ -182,6 +182,8 @@ jobs:
     name: Unit tests for PHP version ${{ matrix.php-versions }} on ${{ matrix.operating-system }}
     needs:
     - phpunit-with-coverage
+    - phpstan
+    - codestyle
     steps:
     - uses: actions/checkout@master
     - name: Restore/cache vendor folder
@@ -228,6 +230,8 @@ jobs:
     name: Integration tests for PHP version ${{ matrix.php-versions }} on ${{ matrix.operating-system }}
     needs:
       - behat-quick-feedback
+      - phpstan
+      - codestyle
     steps:
       - uses: actions/checkout@master
       - name: Restore/cache vendor folder
