@@ -58,9 +58,9 @@ final class EnvironmentContext implements Context\Context
         }
 
         Assert::directory($this->getWorkingDir());
-        $this->binaryPath = $this->pharPath
+        $this->binaryPath = ($this->pharPath
             ? realpath(__DIR__ . '/../../../' . $this->pharPath)
-            : realpath(__DIR__ . '/../../../bin/phpdoc');
+            : realpath(__DIR__ . '/../../../bin/phpdoc'));
         chdir($this->getWorkingDir());
     }
 
@@ -154,7 +154,7 @@ final class EnvironmentContext implements Context\Context
         }
 
         // the app is always run in debug mode to catch debug information and collect the AST that is written to disk
-        $command = array_merge([$this->binaryPath, '-vvv', '--force'], explode(' ', $argumentsString));
+        $command = array_merge(['php', $this->binaryPath, '-vvv', '--force'], explode(' ', $argumentsString));
         $this->process = new Process($command, $this->getWorkingDir());
         $this->process->run();
     }

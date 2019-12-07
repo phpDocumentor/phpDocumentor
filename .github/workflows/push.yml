@@ -200,9 +200,6 @@ jobs:
         with:
           name: phpDocumentor.phar
           path: build/phpDocumentor.phar
-      - name: Make phar executable
-        if: matrix.profile == 'phar'
-        run: chmod a+x build/phpDocumentor.phar
       - name: Run Behat
         run: php tools/behat -p ${{ matrix.profile }}
 
