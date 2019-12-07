@@ -8,7 +8,7 @@ declare(strict_types=1);
  *  For the full copyright and license information, please view the LICENSE
  *  file that was distributed with this source code.
  *
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Application\Stage;
@@ -20,8 +20,12 @@ use Psr\Log\NullLogger;
 /**
  * @coversDefaultClass \phpDocumentor\Application\Stage\Configure
  */
-class ConfigureTest extends TestCase
+final class ConfigureTest extends TestCase
 {
+    /**
+     * @covers ::__construct
+     * @covers ::__invoke
+     */
     public function testInvokeOverridesConfig() : void
     {
         $configFactory = new ConfigurationFactory([], []);

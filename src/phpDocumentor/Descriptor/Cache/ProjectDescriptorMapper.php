@@ -25,7 +25,7 @@ use function md5;
 /**
  * Maps a projectDescriptor to and from a cache instance.
  */
-final class ProjectDescriptorMapper
+class ProjectDescriptorMapper
 {
     public const FILE_PREFIX = 'phpDocumentor-projectDescriptor-files-';
 
