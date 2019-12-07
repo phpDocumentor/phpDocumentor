@@ -161,7 +161,33 @@ jobs:
           ini-values-csv: memory_limit=2G, display_errors=On, error_reporting=-1
           pecl: false
       - name: Run Behat
-        run: php tools/behat
+        run: php tools/behat -s default
+        continue-on-error: true
+
+  behat-quick-feedback-on-phar:
+    runs-on: ubuntu-latest
+    name: Integration tests for PHP version 7.2 on Ubuntu
+    needs:
+      - setup
+    steps:
+      - uses: actions/checkout@master
+      - name: Restore/cache vendor folder
+        uses: actions/cache@v1
+        with:
+          path: vendor
+          key: all-build-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            all-build-${{ hashFiles('**/composer.lock') }}
+            all-build-
+      - name: Setup PHP
+        uses: shivammathur/setup-php@master
+        with:
+          php-version: '7.2'
+          extension-csv: mbstring, intl, iconv, libxml, dom, json, simplexml, zlib
+          ini-values-csv: memory_limit=2G, display_errors=On, error_reporting=-1
+          pecl: false
+      - name: Run Behat
+        run: php tools/behat -s phar
         continue-on-error: true
 
   phpunit:
@@ -227,7 +253,7 @@ jobs:
         exclude: # already covered in pre-test with coverage above
           - operating-system: 'ubuntu-latest'
             php-versions: '7.2'
-    name: Integration tests for PHP version ${{ matrix.php-versions }} on ${{ matrix.operating-system }}
+    name: Source integration tests for PHP version ${{ matrix.php-versions }} on ${{ matrix.operating-system }}
     needs:
       - behat-quick-feedback
       - phpstan
@@ -268,9 +294,9 @@ jobs:
         exclude: # already covered in pre-test with coverage above
           - operating-system: 'ubuntu-latest'
             php-versions: '7.2'
-    name: Integration tests for PHP version ${{ matrix.php-versions }} on ${{ matrix.operating-system }}
+    name: PHAR Integration tests for PHP version ${{ matrix.php-versions }} on ${{ matrix.operating-system }}
     needs:
-      - behat-quick-feedback
+      - behat-quick-feedback-on-phar
       - phpstan
       - codestyle
     steps:
