@@ -165,7 +165,7 @@ jobs:
           ini-values-csv: memory_limit=2G, display_errors=On, error_reporting=-1
           pecl: false
       - name: Run Behat
-        run: php tools/behat -s ${{ matrix.profile }}
+        run: php tools/behat -p ${{ matrix.profile }}
 
   # temporary stage to allow continue-on-error for the phar context but not for the default context
   # as soon as we have fixed the phar testing; merge this profile into the regular behat matrix above
@@ -188,6 +188,10 @@ jobs:
           restore-keys: |
             all-build-${{ hashFiles('**/composer.lock') }}
             all-build-
+      - name: build phar
+        uses: docker://phpdoc/phar-ga:master
+        with:
+          args: box compile
       - name: Setup PHP
         uses: shivammathur/setup-php@master
         with:
@@ -196,7 +200,7 @@ jobs:
           ini-values-csv: memory_limit=2G, display_errors=On, error_reporting=-1
           pecl: false
       - name: Run Behat
-        run: php tools/behat -s ${{ matrix.profile }}
+        run: php tools/behat -p ${{ matrix.profile }}
         continue-on-error: true
 
   phpunit:
