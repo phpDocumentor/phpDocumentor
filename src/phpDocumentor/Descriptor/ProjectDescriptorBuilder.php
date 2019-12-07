@@ -40,7 +40,7 @@ class ProjectDescriptorBuilder
     protected $project;
 
     /** @var string */
-    private $defaultPackage;
+    private $defaultPackage = '';
 
     public function __construct(AssemblerFactory $assemblerFactory, Filter $filterManager)
     {
@@ -177,7 +177,7 @@ class ProjectDescriptorBuilder
         }
     }
 
-    public function getDefaultPackage() : ?string
+    public function getDefaultPackage() : string
     {
         return $this->defaultPackage;
     }

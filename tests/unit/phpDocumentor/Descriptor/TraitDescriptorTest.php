@@ -15,6 +15,7 @@ namespace phpDocumentor\Descriptor;
 
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
+use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Types\Mixed_;
 
 /**
@@ -32,8 +33,8 @@ final class TraitDescriptorTest extends MockeryTestCase
      */
     protected function setUp() : void
     {
-        $this->markTestIncomplete('Something is off with this test, review it or rewrite it');
         $this->fixture = new TraitDescriptor();
+        $this->fixture->setFullyQualifiedStructuralElementName(new Fqsen('\My\Trait'));
     }
 
     /**
@@ -42,13 +43,13 @@ final class TraitDescriptorTest extends MockeryTestCase
      */
     public function testSettingAndGettingProperties() : void
     {
-        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getProperties());
+        $this->assertInstanceOf(Collection::class, $this->fixture->getProperties());
 
-        $mock = m::mock('phpDocumentor\Descriptor\Collection');
+        $collection = new Collection();
 
-        $this->fixture->setProperties($mock);
+        $this->fixture->setProperties($collection);
 
-        $this->assertSame($mock, $this->fixture->getProperties());
+        $this->assertSame($collection, $this->fixture->getProperties());
     }
 
     /**
@@ -57,13 +58,13 @@ final class TraitDescriptorTest extends MockeryTestCase
      */
     public function testSettingAndGettingMethods() : void
     {
-        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getMethods());
+        $this->assertInstanceOf(Collection::class, $this->fixture->getMethods());
 
-        $mock = m::mock('phpDocumentor\Descriptor\Collection');
+        $collection = new Collection();
 
-        $this->fixture->setMethods($mock);
+        $this->fixture->setMethods($collection);
 
-        $this->assertSame($mock, $this->fixture->getMethods());
+        $this->assertSame($collection, $this->fixture->getMethods());
     }
 
     /**
@@ -71,7 +72,7 @@ final class TraitDescriptorTest extends MockeryTestCase
      */
     public function testGetInheritedMethods() : void
     {
-        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getInheritedMethods());
+        $this->assertInstanceOf(Collection::class, $this->fixture->getInheritedMethods());
 
         $collection = $this->fixture->getInheritedMethods();
 
@@ -83,7 +84,7 @@ final class TraitDescriptorTest extends MockeryTestCase
      */
     public function testMagicMethodsReturnsEmptyCollectionWhenNoTags() : void
     {
-        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getMagicMethods());
+        $this->assertInstanceOf(Collection::class, $this->fixture->getMagicMethods());
 
         $collection = $this->fixture->getMagicMethods();
 
@@ -91,7 +92,7 @@ final class TraitDescriptorTest extends MockeryTestCase
     }
 
     /**
-     * @covers       ::getMagicMethods
+     * @covers ::getMagicMethods
      * @dataProvider provideMagicMethodProperties
      */
     public function testMagicMethodsReturnsExpectedCollectionWithTags(bool $isStatic) : void
@@ -105,7 +106,7 @@ final class TraitDescriptorTest extends MockeryTestCase
         $this->fixture->getTags()->set('method', $methodCollection);
 
         $magicMethodsCollection = $this->fixture->getMagicMethods();
-        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $magicMethodsCollection);
+        $this->assertInstanceOf(Collection::class, $magicMethodsCollection);
         $this->assertSame(1, $magicMethodsCollection->count());
         $this->assertSame('Sample', $magicMethodsCollection[0]->getName());
         $this->assertSame('Sample description', $magicMethodsCollection[0]->getDescription());
@@ -134,7 +135,7 @@ final class TraitDescriptorTest extends MockeryTestCase
      */
     public function testGetInheritedProperties() : void
     {
-        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getInheritedProperties());
+        $this->assertInstanceOf(Collection::class, $this->fixture->getInheritedProperties());
 
         $collection = $this->fixture->getInheritedProperties();
 
@@ -146,7 +147,7 @@ final class TraitDescriptorTest extends MockeryTestCase
      */
     public function testMagicPropertiesReturnsEmptyCollectionWhenNoTags() : void
     {
-        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getMagicProperties());
+        $this->assertInstanceOf(Collection::class, $this->fixture->getMagicProperties());
 
         $collection = $this->fixture->getMagicProperties();
 
@@ -166,7 +167,7 @@ final class TraitDescriptorTest extends MockeryTestCase
         $propertyCollection = new Collection([$mockTagPropertyDescriptor]);
         $this->fixture->getTags()->set('property', $propertyCollection);
 
-        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getMagicProperties());
+        $this->assertInstanceOf(Collection::class, $this->fixture->getMagicProperties());
 
         $magicPropertiesCollection = $this->fixture->getMagicProperties();
         $this->assertSame(1, $magicPropertiesCollection->count());
@@ -204,7 +205,7 @@ final class TraitDescriptorTest extends MockeryTestCase
      */
     public function testSettingAndGettingUsedTraits() : void
     {
-        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getUsedTraits());
+        $this->assertInstanceOf(Collection::class, $this->fixture->getUsedTraits());
 
         $usedTraitsCollection = new Collection();
         $this->fixture->setUsedTraits($usedTraitsCollection);

@@ -31,7 +31,7 @@ class ConstantDescriptor extends DescriptorAbstract implements Interfaces\Consta
     protected $types;
 
     /** @var string $value */
-    protected $value;
+    protected $value = '';
 
     /**
      * Registers a parent class or interface with this constant.

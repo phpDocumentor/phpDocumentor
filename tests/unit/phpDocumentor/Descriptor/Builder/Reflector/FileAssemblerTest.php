@@ -27,7 +27,7 @@ use function md5;
  *
  * @covers \phpDocumentor\Descriptor\Builder\Reflector\FileAssembler
  */
-class FileAssemblerTest extends MockeryTestCase
+final class FileAssemblerTest extends MockeryTestCase
 {
     /** @var FileAssembler $fixture */
     protected $fixture;
@@ -40,10 +40,10 @@ class FileAssemblerTest extends MockeryTestCase
      */
     protected function setUp() : void
     {
-        $this->fixture = new FileAssembler();
-        $this->fixture->setBuilder($this->getProjectDescriptorBuilderMock());
         $this->defaultPackage = new PackageDescriptor();
         $this->defaultPackage->setName('\\PhpDocumentor');
+        $this->fixture = new FileAssembler();
+        $this->fixture->setBuilder($this->getProjectDescriptorBuilderMock());
     }
 
     /**
@@ -51,8 +51,6 @@ class FileAssemblerTest extends MockeryTestCase
      */
     public function testCreateFileDescriptorFromReflector() : void
     {
-        $this->markTestIncomplete('Review this whole test; it feels like it needs to be redone');
-
         $filename = 'file.php';
         $content = '<?php ... ?>';
         $hash = md5($content);

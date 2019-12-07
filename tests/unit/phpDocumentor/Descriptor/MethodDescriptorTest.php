@@ -18,6 +18,7 @@ use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\Tag\AuthorDescriptor;
 use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
 use phpDocumentor\Descriptor\Tag\VersionDescriptor;
+use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Types\String_;
 use function iterator_to_array;
 
@@ -38,7 +39,6 @@ final class MethodDescriptorTest extends MockeryTestCase
      */
     protected function setUp() : void
     {
-        $this->markTestIncomplete('Descriptors are weird tests; review them');
         $this->fixture = new MethodDescriptor();
         $this->fixture->setName('method');
     }
@@ -50,6 +50,7 @@ final class MethodDescriptorTest extends MockeryTestCase
     public function testSettingAndGettingAParent() : void
     {
         $parent = new ClassDescriptor();
+        $parent->setFullyQualifiedStructuralElementName(new Fqsen('\My\Class'));
 
         $this->assertNull($this->fixture->getParent());
 
@@ -201,7 +202,7 @@ final class MethodDescriptorTest extends MockeryTestCase
     {
         // Arrange
         $summary = 'This is a summary';
-        $this->fixture->setSummary(null);
+        $this->fixture->setSummary('');
         $parentMethod = $this->whenFixtureHasMethodInParentClassWithSameName($this->fixture->getName());
         $parentMethod->setSummary($summary);
 
@@ -219,7 +220,7 @@ final class MethodDescriptorTest extends MockeryTestCase
     {
         // Arrange
         $summary = 'This is a summary';
-        $this->fixture->setSummary(null);
+        $this->fixture->setSummary('');
         $parentMethod = $this->whenFixtureHasMethodInImplementedInterfaceWithSameName($this->fixture->getName());
         $parentMethod->setSummary($summary);
 
@@ -237,7 +238,7 @@ final class MethodDescriptorTest extends MockeryTestCase
     {
         // Arrange
         $description = 'This is a description';
-        $this->fixture->setDescription(null);
+        $this->fixture->setDescription('');
         $parentMethod = $this->whenFixtureHasMethodInParentClassWithSameName($this->fixture->getName());
         $parentMethod->setDescription($description);
 
@@ -392,7 +393,7 @@ final class MethodDescriptorTest extends MockeryTestCase
         $file = m::mock(FileDescriptor::class);
         $parent = m::mock(ClassDescriptor::class);
         $parent->shouldReceive('getFile')->andReturn($file);
-        $parent->shouldReceive('getFullyQualifiedStructuralElementName')->andReturn('Class1');
+        $parent->shouldReceive('getFullyQualifiedStructuralElementName')->andReturn(new Fqsen('\My\Class1'));
         $this->fixture->setParent($parent);
 
         return $file;
@@ -407,9 +408,11 @@ final class MethodDescriptorTest extends MockeryTestCase
         $result->setName($name);
 
         $parent = new ClassDescriptor();
+        $parent->setFullyQualifiedStructuralElementName(new Fqsen('\My\Super\Class'));
         $parent->getMethods()->set($name, $result);
 
         $class = new ClassDescriptor();
+        $class->setFullyQualifiedStructuralElementName(new Fqsen('\My\Class'));
         $class->setParent($parent);
 
         $this->fixture->setParent($class);
@@ -426,9 +429,11 @@ final class MethodDescriptorTest extends MockeryTestCase
         $result->setName($name);
 
         $parent = new InterfaceDescriptor();
+        $parent->setFullyQualifiedStructuralElementName(new Fqsen('\My\Interface'));
         $parent->getMethods()->set($name, $result);
 
         $class = new ClassDescriptor();
+        $class->setFullyQualifiedStructuralElementName(new Fqsen('\My\Class'));
         $class->getInterfaces()->set('Implemented', $parent);
 
         $this->fixture->setParent($class);

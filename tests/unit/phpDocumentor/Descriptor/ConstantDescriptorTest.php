@@ -18,6 +18,7 @@ use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\Tag\AuthorDescriptor;
 use phpDocumentor\Descriptor\Tag\VarDescriptor;
 use phpDocumentor\Descriptor\Tag\VersionDescriptor;
+use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Type;
 use phpDocumentor\Reflection\Types\Array_;
 use phpDocumentor\Reflection\Types\String_;
@@ -37,7 +38,6 @@ final class ConstantDescriptorTest extends MockeryTestCase
      */
     protected function setUp() : void
     {
-        $this->markTestIncomplete('Something is off with this test, review it or rewrite it');
         $this->fixture = new ConstantDescriptor();
         $this->fixture->setNamespace('\My\Namespace');
         $this->fixture->setName('CONSTANT');
@@ -52,20 +52,12 @@ final class ConstantDescriptorTest extends MockeryTestCase
         $this->assertNull($this->fixture->getParent());
 
         $parentMock = m::mock('phpDocumentor\Descriptor\ClassDescriptor');
-        $parentMock->shouldReceive('getFullyQualifiedStructuralElementName')->andReturn('TestClass');
+        $parentMock->shouldReceive('getFullyQualifiedStructuralElementName')
+            ->andReturn(new Fqsen('\TestClass'));
 
         $this->fixture->setParent($parentMock);
 
         $this->assertSame($parentMock, $this->fixture->getParent());
-    }
-
-    /**
-     * @covers ::setParent
-     */
-    public function testSettingAParentFailsWhenInputIsNotNullClassOrInterface() : void
-    {
-        $this->expectException('InvalidArgumentException');
-        $this->fixture->setParent('string');
     }
 
     /**
@@ -77,7 +69,8 @@ final class ConstantDescriptorTest extends MockeryTestCase
         $this->assertNull($this->fixture->getParent());
 
         $parentMock = m::mock('phpDocumentor\Descriptor\InterfaceDescriptor');
-        $parentMock->shouldReceive('getFullyQualifiedStructuralElementName')->andReturn('TestInterface');
+        $parentMock->shouldReceive('getFullyQualifiedStructuralElementName')
+            ->andReturn(new Fqsen('\TestInterface'));
         $this->fixture->setParent($parentMock);
 
         $this->assertSame($parentMock, $this->fixture->getParent());
@@ -138,7 +131,7 @@ final class ConstantDescriptorTest extends MockeryTestCase
      */
     public function testSetAndGetValue() : void
     {
-        $this->assertNull($this->fixture->getValue());
+        $this->assertEmpty($this->fixture->getValue());
 
         $this->fixture->setValue('a');
 
@@ -368,7 +361,8 @@ final class ConstantDescriptorTest extends MockeryTestCase
 
         // create and set the parent class for our fixture
         $parentClass = m::mock('phpDocumentor\Descriptor\ClassDescriptor');
-        $parentClass->shouldReceive('getFullyQualifiedStructuralElementName')->andReturn('TestClass');
+        $parentClass->shouldReceive('getFullyQualifiedStructuralElementName')
+            ->andReturn(new Fqsen('\TestClass'));
         $parentClass->shouldReceive('getParent')->andReturn($superClass);
 
         return $parentClass;
@@ -396,7 +390,8 @@ final class ConstantDescriptorTest extends MockeryTestCase
         $file = m::mock('phpDocumentor\Descriptor\FileDescriptor');
         $parent = m::mock('phpDocumentor\Descriptor\ClassDescriptor');
         $parent->shouldReceive('getFile')->andReturn($file);
-        $parent->shouldReceive('getFullyQualifiedStructuralElementName')->andReturn('Class1');
+        $parent->shouldReceive('getFullyQualifiedStructuralElementName')
+            ->andReturn(new Fqsen('\Class1'));
         $this->fixture->setParent($parent);
 
         return $file;
@@ -413,11 +408,13 @@ final class ConstantDescriptorTest extends MockeryTestCase
 
         $parent = new ClassDescriptor();
         $parent->setNamespace('\My\Namespace');
+        $parent->setFullyQualifiedStructuralElementName(new Fqsen('\My\Super\Class'));
         $result->setParent($parent);
         $parent->getConstants()->set($name, $result);
 
         $class = new ClassDescriptor();
         $class->setNamespace('\My\Namespace');
+        $class->setFullyQualifiedStructuralElementName(new Fqsen('\My\Class'));
         $class->setParent($parent);
 
         $this->fixture->setParent($class);

@@ -16,7 +16,7 @@ namespace phpDocumentor\Descriptor\Tag;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\TagDescriptor;
 
-final class MethodDescriptor extends TagDescriptor
+class MethodDescriptor extends TagDescriptor
 {
     /** @var string */
     private $methodName = '';
