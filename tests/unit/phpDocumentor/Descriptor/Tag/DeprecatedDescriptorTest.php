@@ -32,7 +32,6 @@ final class DeprecatedDescriptorTest extends MockeryTestCase
      */
     protected function setUp() : void
     {
-        $this->markTestIncomplete('Review this whole testcase; it is too complicated to change');
         $this->fixture = new DeprecatedDescriptor('name');
     }
 

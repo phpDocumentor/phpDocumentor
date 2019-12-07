@@ -26,7 +26,7 @@ use phpDocumentor\Reflection\Types\Array_;
  *
  * @coversDefaultClass \phpDocumentor\Descriptor\PropertyDescriptor
  */
-class PropertyDescriptorTest extends MockeryTestCase
+final class PropertyDescriptorTest extends MockeryTestCase
 {
     /** @var PropertyDescriptor $fixture */
     protected $fixture;
@@ -36,8 +36,6 @@ class PropertyDescriptorTest extends MockeryTestCase
      */
     protected function setUp() : void
     {
-        $this->markTestIncomplete('Review this whole testcase; it is too complicated to change');
-
         $this->fixture = new PropertyDescriptor();
         $this->fixture->setName('property');
     }
@@ -145,7 +143,7 @@ class PropertyDescriptorTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getSummary
+     * @covers ::getSummary
      */
     public function testSummaryInheritsWhenNoneIsPresent() : void
     {
@@ -163,7 +161,7 @@ class PropertyDescriptorTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getDescription
+     * @covers ::getDescription
      */
     public function testDescriptionInheritsWhenNoneIsPresent() : void
     {
@@ -181,12 +179,10 @@ class PropertyDescriptorTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getDescription
+     * @covers ::getDescription()
      */
     public function testDescriptionInheritsWhenInheritDocIsPresent() : void
     {
-        $this->markTestIncomplete('Review this whole testcase; it is too complicated to change');
-
         // Arrange
         $description = 'This is a description';
         $this->fixture->setDescription('{@inheritDoc}');
@@ -201,12 +197,10 @@ class PropertyDescriptorTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getDescription
+     * @covers ::getDescription()
      */
     public function testDescriptionIsAugmentedWhenInheritDocInlineTagIsPresent() : void
     {
-        $this->markTestIncomplete('Review this whole testcase; it is too complicated to change');
-
         // Arrange
         $description = 'This is a description';
         $this->fixture->setDescription('Original description {@inheritDoc}');
@@ -225,8 +219,6 @@ class PropertyDescriptorTest extends MockeryTestCase
      */
     public function testVarTagsInheritWhenNoneArePresent() : void
     {
-        $this->markTestIncomplete('Review this whole testcase; it is too complicated to change');
-
         // Arrange
         $varTagDescriptor = new VarDescriptor('var');
         $varCollection = new Collection([$varTagDescriptor]);
@@ -258,8 +250,6 @@ class PropertyDescriptorTest extends MockeryTestCase
      */
     public function testAuthorTagsInheritWhenNoneArePresent() : void
     {
-        $this->markTestIncomplete('Review this whole testcase; it is too complicated to change');
-
         // Arrange
         $authorTagDescriptor = new AuthorDescriptor('author');
         $authorCollection = new Collection([$authorTagDescriptor]);
@@ -280,8 +270,6 @@ class PropertyDescriptorTest extends MockeryTestCase
      */
     public function testVersionTagsInheritWhenNoneArePresent() : void
     {
-        $this->markTestIncomplete('Review this whole testcase; it is too complicated to change');
-
         // Arrange
         $versionTagDescriptor = new VersionDescriptor('version');
         $versionCollection = new Collection([$versionTagDescriptor]);
@@ -302,8 +290,6 @@ class PropertyDescriptorTest extends MockeryTestCase
      */
     public function testCopyrightTagsInheritWhenNoneArePresent() : void
     {
-        $this->markTestIncomplete('Review this whole testcase; it is too complicated to change');
-
         // Arrange
         $copyrightTagDescriptor = new TagDescriptor('copyright');
         $copyrightCollection = new Collection([$copyrightTagDescriptor]);
@@ -324,7 +310,10 @@ class PropertyDescriptorTest extends MockeryTestCase
     public function testFqsenHasDollarSignWhenParentIsSet() : void
     {
         $this->whenFixtureHasPropertyInParentClassWithSameName($this->fixture->getName());
-        $this->assertSame('::$property', $this->fixture->getFullyQualifiedStructuralElementName());
+        $this->assertSame(
+            '\MyOther\Class::$property',
+            (string) $this->fixture->getFullyQualifiedStructuralElementName()
+        );
     }
 
     /**
@@ -342,7 +331,6 @@ class PropertyDescriptorTest extends MockeryTestCase
      */
     public function testGettingAnInheritedElement() : void
     {
-        $this->markTestIncomplete('Review this whole testcase; it is too complicated to change');
 
         $this->whenFixtureHasPropertyInParentClassWithSameName($this->fixture->getName());
 
@@ -396,8 +384,8 @@ class PropertyDescriptorTest extends MockeryTestCase
         $parent->setFullyQualifiedStructuralElementName(new Fqsen('\MyClass'));
 
         $result = new PropertyDescriptor();
-        $result->setParent($parent);
         $result->setName($name);
+        $result->setParent($parent);
 
         $parent->getProperties()->set($name, $result);
 

@@ -16,6 +16,7 @@ namespace phpDocumentor\Descriptor;
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
+use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Types\String_;
 use stdClass;
 use function current;
@@ -25,7 +26,7 @@ use function current;
  *
  * @coversDefaultClass \phpDocumentor\Descriptor\ClassDescriptor
  */
-class ClassDescriptorTest extends MockeryTestCase
+final class ClassDescriptorTest extends MockeryTestCase
 {
     /** @var ClassDescriptor $fixture */
     protected $fixture;
@@ -35,8 +36,8 @@ class ClassDescriptorTest extends MockeryTestCase
      */
     protected function setUp() : void
     {
-        $this->markTestIncomplete('Something is off with this test, review it or rewrite it');
         $this->fixture = new ClassDescriptor();
+        $this->fixture->setFullyQualifiedStructuralElementName(new Fqsen('\My\Class'));
     }
 
     /**
