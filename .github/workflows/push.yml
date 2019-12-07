@@ -169,13 +169,16 @@ jobs:
     strategy:
       matrix:
         operating-system:
-        - ubuntu-latest
-        - windows-latest
-        - macOS-latest
-        php-versions: ['7.2', '7.3', '7.4']
+          - ubuntu-latest
+          - windows-latest
+          - macOS-latest
+        php-versions:
+          - '7.2'
+          - '7.3'
+          - '7.4'
         exclude: # already covered in pre-test with coverage above
-          - os: ubuntu-latest
-            php-versions: 7.2
+          - operating-system: 'ubuntu-latest'
+            php-versions: '7.2'
     name: Unit tests for PHP version ${{ matrix.php-versions }} on ${{ matrix.operating-system }}
     needs:
     - phpunit-with-coverage
@@ -211,11 +214,17 @@ jobs:
     runs-on: ${{ matrix.operating-system }}
     strategy:
       matrix:
-        operating-system: [ubuntu-latest, windows-latest, macOS-latest]
-        php-versions: ['7.2', '7.3', '7.4']
+        operating-system:
+          - ubuntu-latest
+          - windows-latest
+          - macOS-latest
+        php-versions:
+          - '7.2'
+          - '7.3'
+          - '7.4'
         exclude: # already covered in pre-test with coverage above
-          - os: ubuntu-latest
-            php-versions: 7.2
+          - operating-system: 'ubuntu-latest'
+            php-versions: '7.2'
     name: Integration tests for PHP version ${{ matrix.php-versions }} on ${{ matrix.operating-system }}
     needs:
       - behat-quick-feedback
