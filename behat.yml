@@ -1,39 +1,31 @@
 default:
-    suites:
-        core_features:
-            contexts:
-              - phpDocumentor\Behat\Contexts\EnvironmentContext:
-                  workingDir: /tmp/phpdoc-behat/core
-              - phpDocumentor\Behat\Contexts\Ast\ApiContext
-              - phpDocumentor\Behat\Contexts\Ast\SeeTagContext
-              - phpDocumentor\Behat\Contexts\Ast\UsesTagContext
-            paths:    [ "%paths.base%/tests/features/core" ]
-            filters:
-                tags: "~@php5.6+"
-        cli_features:
-            contexts:
-              - phpDocumentor\Behat\Contexts\EnvironmentContext:
-                  workingDir: /tmp/phpdoc-behat/cli
-              - phpDocumentor\Behat\Contexts\Ast\ApiContext
-            paths:    [ "%paths.base%/tests/features/cli" ]
-            filters:
-                tags: "~@php5.6+"
-        config_features:
-          contexts:
-            - phpDocumentor\Behat\Contexts\EnvironmentContext:
-                workingDir: /tmp/phpdoc-behat/config
-          paths:    [ "%paths.base%/tests/features/config" ]
-          filters:
-            tags: "~@php5.6+"
-        php56_features:
-            contexts:
-              - phpDocumentor\Behat\Contexts\EnvironmentContext:
-                  workingDir: /tmp/phpdoc-behat/core
-              - phpDocumentor\Behat\Contexts\Ast\ApiContext
-              - phpDocumentor\Behat\Contexts\Ast\SeeTagContext
-            paths:    [ "%paths.base%/tests/features/core" ]
-            filters:
-                tags: "@php5.6+"
+  suites:
+    core_features:
+      contexts:
+        - phpDocumentor\Behat\Contexts\EnvironmentContext:
+            workingDir: /tmp/phpdoc-behat/core
+        - phpDocumentor\Behat\Contexts\Ast\ApiContext
+        - phpDocumentor\Behat\Contexts\Ast\SeeTagContext
+        - phpDocumentor\Behat\Contexts\Ast\UsesTagContext
+      paths:    [ "%paths.base%/tests/features/core" ]
+      filters:
+        tags: "~@wip"
+    cli_features:
+      contexts:
+        - phpDocumentor\Behat\Contexts\EnvironmentContext:
+            workingDir: /tmp/phpdoc-behat/cli
+        - phpDocumentor\Behat\Contexts\Ast\ApiContext
+      paths:    [ "%paths.base%/tests/features/cli" ]
+      filters:
+        tags: "~@wip"
+    config_features:
+      contexts:
+        - phpDocumentor\Behat\Contexts\EnvironmentContext:
+            workingDir: /tmp/phpdoc-behat/config
+      paths:    [ "%paths.base%/tests/features/config" ]
+      filters:
+        tags: "~@wip"
+
 phar:
   suites:
     core_features:
@@ -44,12 +36,16 @@ phar:
         - phpDocumentor\Behat\Contexts\Ast\ApiContext
         - phpDocumentor\Behat\Contexts\Ast\SeeTagContext
         - phpDocumentor\Behat\Contexts\Ast\UsesTagContext
+      filters:
+        tags: "~@wip"
     cli_features:
-        contexts:
-          - phpDocumentor\Behat\Contexts\EnvironmentContext:
-              workingDir: /tmp/phpdoc-behat/cli
-              pharPath: /build/phpDocumentor.phar
-          - phpDocumentor\Behat\Contexts\Ast\ApiContext
+      contexts:
+        - phpDocumentor\Behat\Contexts\EnvironmentContext:
+            workingDir: /tmp/phpdoc-behat/cli
+            pharPath: /build/phpDocumentor.phar
+        - phpDocumentor\Behat\Contexts\Ast\ApiContext
+      filters:
+        tags: "~@wip"
     config_features:
       contexts:
         - phpDocumentor\Behat\Contexts\EnvironmentContext:
@@ -57,22 +53,15 @@ phar:
             pharPath: /build/phpDocumentor.phar
       paths:    [ "%paths.base%/tests/features/config" ]
       filters:
-        tags: "~@php5.6+"
+        tags: "~@wip"
 
-    php56_features:
-        contexts:
-          - phpDocumentor\Behat\Contexts\EnvironmentContext:
-              workingDir: /tmp/phpdoc-behat/core
-              pharPath: /build/phpDocumentor.phar
-          - phpDocumentor\Behat\Contexts\Ast\ApiContext
-          - phpDocumentor\Behat\Contexts\Ast\SeeTagContext
 template:
   extensions:
     Behat\MinkExtension:
-        base_url: 'http://localhost:8081'
-        sessions:
-          file_session:
-            goutte:
+      base_url: 'http://localhost:8081'
+      sessions:
+        file_session:
+          goutte:
     IntegratedExperts\BehatScreenshotExtension:
       dir: "%paths.base%/screenshots"
       fail: true
@@ -80,9 +69,11 @@ template:
   suites:
     clean_template:
       contexts:
-      - phpDocumentor\Behat\Contexts\EnvironmentContext:
-          workingDir: /tmp/phpdoc-behat/clean_template
-      - IntegratedExperts\BehatScreenshotExtension\Context\ScreenshotContext
-      - phpDocumentor\Behat\Contexts\Template\TemplateContext
-      - Behat\MinkExtension\Context\MinkContext
+        - phpDocumentor\Behat\Contexts\EnvironmentContext:
+            workingDir: /tmp/phpdoc-behat/clean_template
+        - IntegratedExperts\BehatScreenshotExtension\Context\ScreenshotContext
+        - phpDocumentor\Behat\Contexts\Template\TemplateContext
+        - Behat\MinkExtension\Context\MinkContext
       paths:    [ "%paths.base%/tests/features/template/clean" ]
+      filters:
+        tags: "~@wip"

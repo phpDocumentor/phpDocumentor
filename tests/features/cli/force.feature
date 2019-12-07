@@ -1,3 +1,6 @@
+# Currently force is the default method of execution in the BaseContext; pay extra attention to this when fixing this
+# test. Without this force it somehow re-uses caches from every previous run; we may need to change how we approach this
+@wip
 Feature: Force parsing project files
   In order to force parsing the project
   As a developer

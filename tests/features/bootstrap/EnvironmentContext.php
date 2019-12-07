@@ -79,8 +79,10 @@ final class EnvironmentContext implements Context\Context
      */
     public function loadASingleFile($dest, $source) : void
     {
-        Assert::fileExists(__DIR__ . '/../assets/singlefile/' . $source);
-        copy(__DIR__ . '/../assets/singlefile/' . $source, $this->getWorkingDir() . DIRECTORY_SEPARATOR . $dest);
+        $filename = __DIR__ . '/../assets/singlefile/' . $source;
+
+        Assert::fileExists($filename);
+        copy($filename, $this->getWorkingDir() . DIRECTORY_SEPARATOR . $dest);
     }
 
     /**
@@ -149,12 +151,9 @@ final class EnvironmentContext implements Context\Context
             throw new \Exception('Already running?');
         }
 
-//        var_dump( array_merge([$this->binaryPath, ' -vvv'], explode(' ', $argumentsString))); exit;
         // the app is always run in debug mode to catch debug information and collect the AST that is written to disk
-        $this->process = new Process(
-            array_merge([$this->binaryPath, '-vvv'], explode(' ', $argumentsString)),
-            $this->getWorkingDir()
-        );
+        $command = array_merge([$this->binaryPath, '-vvv', '--force'], explode(' ', $argumentsString));
+        $this->process = new Process($command, $this->getWorkingDir());
         $this->process->run();
     }
 
