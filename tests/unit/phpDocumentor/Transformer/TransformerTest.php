@@ -142,19 +142,6 @@ final class TransformerTest extends MockeryTestCase
     }
 
     /**
-     * Tests whether the generateFilename method returns a file according to
-     * the right format.
-     *
-     * @covers ::generateFilename
-     */
-    public function testGenerateFilename() : void
-    {
-        // separate the directories with the DIRECTORY_SEPARATOR constant to prevent failing tests on windows
-        $filename = 'directory' . DIRECTORY_SEPARATOR . 'directory2' . DIRECTORY_SEPARATOR . 'file.php';
-        $this->assertEquals('directory.directory2.file.html', $this->fixture->generateFilename($filename));
-    }
-
-    /**
      * @covers ::getDescription
      */
     public function testGetDescription() : void

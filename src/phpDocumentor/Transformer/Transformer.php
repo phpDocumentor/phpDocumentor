@@ -156,26 +156,6 @@ class Transformer implements CompilerPassInterface
     }
 
     /**
-     * Converts a source file name to the name used for generating the end result.
-     *
-     * This method strips down the given $name using the following rules:
-     *
-     * * if the $name is suffixed with .php then that is removed
-     * * any occurrence of \ or DIRECTORY_SEPARATOR is replaced with .
-     * * any dots that the name starts or ends with is removed
-     * * the result is suffixed with .html
-     */
-    public function generateFilename(string $name) : string
-    {
-        if (substr($name, -4) === '.php') {
-            $name = substr($name, 0, -4);
-        }
-
-        return trim(str_replace([DIRECTORY_SEPARATOR, '\\'], '.', trim($name, DIRECTORY_SEPARATOR . '.')), '.')
-            . '.html';
-    }
-
-    /**
      * Dispatches a logging request.
      *
      * This method can be used by writers to output logs without having to know anything about
