@@ -105,7 +105,7 @@ final class EnvironmentContext implements Context\Context
             RecursiveIteratorIterator::SELF_FIRST
         ) as $item) {
             if ($item->isDir()) {
-                if (!mkdir($destDir . DIRECTORY_SEPARATOR . $iterator->getSubPathName()) &&
+                if (!@mkdir($destDir . DIRECTORY_SEPARATOR . $iterator->getSubPathName()) &&
                     !is_dir($destDir . DIRECTORY_SEPARATOR . $iterator->getSubPathName())
                 ) {
                     throw new RuntimeException(sprintf('Directory "%s" was not created', $destDir . DIRECTORY_SEPARATOR . $iterator->getSubPathName()));

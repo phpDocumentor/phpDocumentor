@@ -118,7 +118,8 @@ final class CommandlineOptionsMiddleware
 
     private function setFilesInPath(array $version) : array
     {
-        if (!isset($this->options['filename']) || !$this->options['filename']) {
+        $filename = $this->options['filename'] ?? null;
+        if (!$filename) {
             return $version;
         }
 
@@ -130,7 +131,7 @@ final class CommandlineOptionsMiddleware
             static function ($path) {
                 return new Path($path);
             },
-            $this->options['filename']
+            $filename
         );
 
         return $version;

@@ -24,6 +24,7 @@ final class CollectFiles
 {
     /** @var FileCollector */
     private $fileCollector;
+
     /** @var LoggerInterface */
     private $logger;
 

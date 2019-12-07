@@ -1,6 +1,6 @@
 Feature: Phpdocumentor should correctly handle type resolving
 
-  @wip @github-562
+  @github-562
   Scenario: phpdocumentor should conflate duplicated types
     Given A single file named "test.php" based on "internals/conflate-types.php"
     When I run "phpdoc -f test.php"
