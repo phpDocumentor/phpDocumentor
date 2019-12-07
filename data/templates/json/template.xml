@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <author>Mike van Riel</author>
+  <email>mike@phpdoc.org</email>
+  <version>1.0.0</version>
+  <transformations>
+    <transformation writer="json" />
+  </transformations>
+</template>
