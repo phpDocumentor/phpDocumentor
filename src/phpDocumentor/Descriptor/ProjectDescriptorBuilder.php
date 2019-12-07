@@ -66,7 +66,7 @@ class ProjectDescriptorBuilder
      *
      * @param mixed $data
      *
-     * @return DescriptorAbstract|Collection|null
+     * @return Descriptor|Collection|null
      *
      * @throws InvalidArgumentException If no Assembler could be found that matches the given data.
      */
@@ -87,7 +87,7 @@ class ProjectDescriptorBuilder
         // create Descriptor and populate with the provided data
         $descriptor = $assembler->create($data);
 
-        if ($descriptor instanceof DescriptorAbstract) {
+        if ($descriptor instanceof Descriptor) {
             return $this->filterDescriptor($descriptor);
         }
 
@@ -141,7 +141,7 @@ class ProjectDescriptorBuilder
      * Filters a descriptor, validates it, stores the validation results and returns the transmuted object or null
      * if it is supposed to be removed.
      */
-    protected function filterDescriptor(DescriptorAbstract $descriptor) : ?DescriptorAbstract
+    protected function filterDescriptor(Descriptor $descriptor) : ?Descriptor
     {
         if (!$descriptor instanceof Filterable) {
             return $descriptor;
@@ -149,7 +149,7 @@ class ProjectDescriptorBuilder
 
         // filter the descriptor; this may result in the descriptor being removed!
         $descriptor = $this->filter($descriptor);
-        if (!$descriptor instanceof DescriptorAbstract) {
+        if (!$descriptor instanceof Descriptor) {
             return null;
         }
 
@@ -163,8 +163,8 @@ class ProjectDescriptorBuilder
 
         foreach ($project->getFiles() as $file) {
             $descriptor = $this->buildDescriptor($file);
-            if (!$descriptor) {
-                return;
+            if (!$descriptor instanceof FileDescriptor) {
+                continue;
             }
 
             $this->getProjectDescriptor()->getFiles()->set($descriptor->getPath(), $descriptor);

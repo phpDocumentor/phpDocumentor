@@ -3,7 +3,6 @@ Feature: The @param tag is used to document a single argument of a function or m
   As a developer
   I want to be able add an tag to define the type and a description
 
-  @wip
   Scenario:
     Given A single file named "test.php" based on "tags/param.php"
     When I run "phpdoc -f test.php"

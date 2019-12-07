@@ -181,14 +181,12 @@ class ApiContext extends BaseContext implements Context
     }
 
     /**
-     * @param string $classFqsen
-     * @param string $tagName
-     * @param int $expectedNumber
      * @Then class ":classFqsen" has exactly :expectedNumber tag :tagName
      */
-    public function classHasTag($classFqsen, $tagName, $expectedNumber)
+    public function classHasTag(string $classFqsen, string $tagName, string $expectedNumber)
     {
         $class = $this->findClassByFqsen($classFqsen);
+
         static::AssertTagCount($class, $tagName, $expectedNumber);
     }
 

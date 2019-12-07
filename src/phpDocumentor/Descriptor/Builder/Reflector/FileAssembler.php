@@ -13,9 +13,14 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
+use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Descriptor\ConstantDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
+use phpDocumentor\Descriptor\FunctionDescriptor;
+use phpDocumentor\Descriptor\InterfaceDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
+use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Reflection\Php\Class_;
 use phpDocumentor\Reflection\Php\Constant;
 use phpDocumentor\Reflection\Php\File;
@@ -72,7 +77,7 @@ class FileAssembler extends AssemblerAbstract
     {
         foreach ($constants as $constant) {
             $constantDescriptor = $this->getBuilder()->buildDescriptor($constant);
-            if (!$constantDescriptor) {
+            if (!$constantDescriptor instanceof ConstantDescriptor) {
                 continue;
             }
 
@@ -98,7 +103,7 @@ class FileAssembler extends AssemblerAbstract
     {
         foreach ($functions as $function) {
             $functionDescriptor = $this->getBuilder()->buildDescriptor($function);
-            if (!$functionDescriptor) {
+            if (!$functionDescriptor instanceof FunctionDescriptor) {
                 continue;
             }
 
@@ -124,7 +129,7 @@ class FileAssembler extends AssemblerAbstract
     {
         foreach ($classes as $class) {
             $classDescriptor = $this->getBuilder()->buildDescriptor($class);
-            if (!$classDescriptor) {
+            if (!$classDescriptor instanceof ClassDescriptor) {
                 continue;
             }
 
@@ -152,7 +157,7 @@ class FileAssembler extends AssemblerAbstract
     {
         foreach ($interfaces as $interface) {
             $interfaceDescriptor = $this->getBuilder()->buildDescriptor($interface);
-            if (!$interfaceDescriptor) {
+            if (!$interfaceDescriptor instanceof InterfaceDescriptor) {
                 continue;
             }
 
@@ -178,7 +183,7 @@ class FileAssembler extends AssemblerAbstract
     {
         foreach ($traits as $trait) {
             $traitDescriptor = $this->getBuilder()->buildDescriptor($trait);
-            if (!$traitDescriptor) {
+            if (!$traitDescriptor instanceof TraitDescriptor) {
                 continue;
             }
 

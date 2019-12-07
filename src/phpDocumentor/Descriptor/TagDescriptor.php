@@ -18,7 +18,7 @@ use phpDocumentor\Descriptor\Filter\Filterable;
 /**
  * Base class for any tag descriptor and used when a tag has no specific descriptor.
  */
-class TagDescriptor implements Filterable
+class TagDescriptor implements Descriptor, Filterable
 {
     /** @var string $name Name of the tag. */
     protected $name;

@@ -171,6 +171,16 @@ final class EnvironmentContext implements Context\Context
     }
 
     /**
+     * @When /^output is printed on screen$/
+     * @throws \Exception
+     */
+    public function theOutputIsPrintedOnScreen() : void
+    {
+        echo $this->process->getOutput();
+        echo $this->process->getErrorOutput();
+    }
+
+    /**
      * @Then /^output contains "([^"]*)"$/
      * @throws \Exception
      */

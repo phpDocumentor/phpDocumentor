@@ -7,15 +7,12 @@ Feature: Api tag can be used to mark Structural elements as being suitable for c
     Given A single file named "test.php" based on "tags/Api.php"
     When I run "phpdoc -f test.php"
 
-  @wip
   Scenario: Api tag is added to class
     Then class "\A" has exactly 1 tag api
 
-  @wip
   Scenario: Api tag is added to methods
     Then class "\A" has a method named someMethod with exactly 1 tag api
     And class "\A" has a method named someOtherMethod without tag api
 
-  @wip
   Scenario: Api tag is not inherited
     Then class "\B" without tag api
