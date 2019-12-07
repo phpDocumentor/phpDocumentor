@@ -205,7 +205,6 @@ jobs:
           pecl: false
       - name: Run Behat
         run: php tools/behat -p ${{ matrix.profile }}
-        continue-on-error: true
 
   phpunit:
     runs-on: ${{ matrix.operating-system }}
