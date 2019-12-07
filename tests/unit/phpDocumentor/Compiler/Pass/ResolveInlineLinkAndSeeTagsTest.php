@@ -40,7 +40,6 @@ class ResolveInlineLinkAndSeeTagsTest extends MockeryTestCase
      */
     protected function setUp() : void
     {
-        $this->markTestIncomplete('Complicated test, rewrite or review');
         $this->router = m::mock(Router::class);
         $this->fixture = new ResolveInlineLinkAndSeeTags($this->router);
     }
@@ -158,12 +157,8 @@ class ResolveInlineLinkAndSeeTagsTest extends MockeryTestCase
      */
     private function givenAnElementToLinkTo() : FileDescriptor
     {
-        $namespaceAliases = ['LinkDescriptor' => '\phpDocumentor\LinkDescriptor'];
-        $namespaceCollection = m::mock(Collection::class);
-        $namespaceCollection->shouldReceive('getAll')->once()->andReturn($namespaceAliases);
-
         $elementToLinkTo = new FileDescriptor('sda');
-        $elementToLinkTo->setNamespaceAliases($namespaceCollection);
+        $elementToLinkTo->setNamespaceAliases(new Collection());
 
         return $elementToLinkTo;
     }

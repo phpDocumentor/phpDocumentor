@@ -331,7 +331,6 @@ final class PropertyDescriptorTest extends MockeryTestCase
      */
     public function testGettingAnInheritedElement() : void
     {
-
         $this->whenFixtureHasPropertyInParentClassWithSameName($this->fixture->getName());
 
         $inheritedProperty = $this->fixture->getInheritedElement();
