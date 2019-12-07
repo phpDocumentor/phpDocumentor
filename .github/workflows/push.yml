@@ -70,13 +70,8 @@ jobs:
         pecl: false
     - name: Run PHPUnit
       run: php tools/phpunit.phar
-#    - name: Upload to coveralls
-#      env:
-#        CI_NAME: Github Actions
-#        CI_BUILD_NUMBER: $GITHUB_ACTION
-#        CI_BUILD_URL: https://github.com/phpDocumentor/phpDocumentor/runs/$GITHUB_ACTION
-#        CI_BRANCH: $GITHUB_REF
-#      run: ./tools/php-coveralls --verbose
+    - name: Quick check code coverage level
+      run: php tests/coverage-checker.php 55
     - name: Upload to Scrutinizer
       run: tools/ocular code-coverage:upload --format=php-clover build/logs/clover.xml
 

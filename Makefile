@@ -31,6 +31,7 @@ phpstan:
 .PHONY: test
 test:
 	docker-compose run --rm phpunit
+	docker-compose run --entrypoint=/usr/local/bin/php --rm phpunit tests/coverage-checker.php 55
 
 .PHONY: pre-commit-test
 pre-commit-test: test phpcs phpstan
