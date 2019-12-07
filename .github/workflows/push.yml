@@ -165,7 +165,7 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: phpDocumentor.phar
-          path: phpDocumentor.phar
+          path: build/phpDocumentor.phar
 
   behat-quick-feedback:
     runs-on: ubuntu-latest
@@ -199,7 +199,7 @@ jobs:
         uses: actions/download-artifact@v1
         with:
           name: phpDocumentor.phar
-          path: phpDocumentor.phar
+          path: build/phpDocumentor.phar
       - name: Run Behat
         run: php tools/behat -p ${{ matrix.profile }}
 
@@ -296,7 +296,7 @@ jobs:
         uses: actions/download-artifact@v1
         with:
           name: phpDocumentor.phar
-          path: phpDocumentor.phar
+          path: build/phpDocumentor.phar
       - name: Run Behat
         run: php tools/behat -p ${{ matrix.profile }}
         continue-on-error: true
