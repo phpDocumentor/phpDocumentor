@@ -2,7 +2,7 @@
 /**
  * This file contains utility functions.
  *
- * @package Utility Functions
+ * @package UtilityFunctions
  */
 
 namespace SmartFactory;

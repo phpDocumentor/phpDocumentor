@@ -1,4 +1,3 @@
-@wip
 Feature: The @return tag is used to document the return value of functions or methods.
   To be able to document my method and functions return types
   As a developer

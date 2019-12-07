@@ -36,7 +36,6 @@ Feature: Classes inherit information from parent classes
   Scenario: Inherit @subpackage tags from a parent class if @package is equal
   Scenario: Inherit @author tags from a parent class
   Scenario: Inherit @copyright tags from a parent class
-  @wip
   Scenario: Inherit @version tags from a parent class
     Then class "\B" has version 1.0
     And class "\C" has version 1.0

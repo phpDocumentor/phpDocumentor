@@ -19,6 +19,7 @@ use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\PackageDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
+use phpDocumentor\Reflection\Fqsen;
 use function explode;
 use function ltrim;
 use function ucfirst;
@@ -149,7 +150,7 @@ class PackageTreeBuilder implements CompilerPassInterface
             $interimPackageDescriptor = new PackageDescriptor();
             $interimPackageDescriptor->setParent($pointer);
             $interimPackageDescriptor->setName($part);
-            $interimPackageDescriptor->setFullyQualifiedStructuralElementName($fqnn);
+            $interimPackageDescriptor->setFullyQualifiedStructuralElementName(new Fqsen($fqnn));
 
             // add to the pointer's list of children
             $pointer->getChildren()->set($part ?: 'UNKNOWN', $interimPackageDescriptor);
