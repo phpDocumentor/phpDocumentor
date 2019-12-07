@@ -138,44 +138,9 @@ jobs:
         with:
           args: analyse src tests --level 3 --configuration phpstan.neon
 
-  behat-quick-feedback:
+  build-phar:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        profile:
-          - default
-    name: Integration tests [${{ matrix.profile }} | 7.2 | ubuntu-latest]
-    needs:
-      - setup
-    steps:
-      - uses: actions/checkout@master
-      - name: Restore/cache vendor folder
-        uses: actions/cache@v1
-        with:
-          path: vendor
-          key: all-build-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            all-build-${{ hashFiles('**/composer.lock') }}
-            all-build-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@master
-        with:
-          php-version: '7.2'
-          extension-csv: mbstring, intl, iconv, libxml, dom, json, simplexml, zlib
-          ini-values-csv: memory_limit=2G, display_errors=On, error_reporting=-1
-          pecl: false
-      - name: Run Behat
-        run: php tools/behat -p ${{ matrix.profile }}
-
-  # temporary stage to allow continue-on-error for the phar context but not for the default context
-  # as soon as we have fixed the phar testing; merge this profile into the regular behat matrix above
-  behat-quick-feedback-phar:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        profile:
-          - phar
-    name: Integration tests [${{ matrix.profile }} | 7.2 | ubuntu-latest]
+    name: Build PHAR to test with
     needs:
       - setup
     steps:
@@ -196,6 +161,32 @@ jobs:
         uses: docker://phpdoc/phar-ga:master
         with:
           args: box compile
+      - name: Upload PHAR file
+        uses: actions/upload-artifact@v1
+        with:
+          name: phpDocumentor.phar
+          path: phpDocumentor.phar
+
+  behat-quick-feedback:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        profile:
+          - default
+          - phar
+    name: Integration tests [${{ matrix.profile }} | 7.2 | ubuntu-latest]
+    needs:
+      - build-phar
+    steps:
+      - uses: actions/checkout@master
+      - name: Restore/cache vendor folder
+        uses: actions/cache@v1
+        with:
+          path: vendor
+          key: all-build-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            all-build-${{ hashFiles('**/composer.lock') }}
+            all-build-
       - name: Setup PHP
         uses: shivammathur/setup-php@master
         with:
@@ -203,6 +194,12 @@ jobs:
           extension-csv: mbstring, intl, iconv, libxml, dom, json, simplexml, zlib
           ini-values-csv: memory_limit=2G, display_errors=On, error_reporting=-1
           pecl: false
+      - name: Download PHAR file
+        if: matrix.profile == 'phar'
+        uses: actions/download-artifact@v1
+        with:
+          name: phpDocumentor.phar
+          path: phpDocumentor.phar
       - name: Run Behat
         run: php tools/behat -p ${{ matrix.profile }}
 
@@ -294,6 +291,12 @@ jobs:
           extension-csv: mbstring, intl, iconv, libxml, dom, json, simplexml, zlib
           ini-values-csv: memory_limit=2G, display_errors=On, error_reporting=-1
           pecl: false
+      - name: Download PHAR file
+        if: matrix.profile == 'phar'
+        uses: actions/download-artifact@v1
+        with:
+          name: phpDocumentor.phar
+          path: phpDocumentor.phar
       - name: Run Behat
         run: php tools/behat -p ${{ matrix.profile }}
         continue-on-error: true
