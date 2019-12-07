@@ -13,6 +13,7 @@ bin/phpunit*
 bin/jsonlint*
 bin/validate-json*
 bin/phpstan
+bin/var-dump-server
 
 # Build folder and vendor folder are generated code; no need to version this
 build/*
