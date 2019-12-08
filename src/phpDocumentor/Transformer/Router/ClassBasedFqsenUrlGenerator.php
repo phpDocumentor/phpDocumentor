@@ -40,7 +40,7 @@ class ClassBasedFqsenUrlGenerator
     /**
      * Generates a URL from the given node or returns false if unable.
      */
-    public function __invoke(Fqsen $fqsen): string
+    public function __invoke(Fqsen $fqsen) : string
     {
         $fqsenParts = explode('::', (string) $fqsen);
         $className = $this->slugify($fqsenParts[0]);

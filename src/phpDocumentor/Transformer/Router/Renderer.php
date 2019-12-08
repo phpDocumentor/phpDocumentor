@@ -34,6 +34,7 @@ use function ltrim;
 use function reset;
 use function sprintf;
 use function strpos;
+use function substr;
 
 /**
  * Renders an HTML anchor pointing to the location of the provided element.

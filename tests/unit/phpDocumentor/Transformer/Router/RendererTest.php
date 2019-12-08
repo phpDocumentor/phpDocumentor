@@ -17,7 +17,6 @@ use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\Type\CollectionDescriptor;
-use phpDocumentor\Uri;
 use const DIRECTORY_SEPARATOR;
 use function str_replace;
 
@@ -81,7 +80,7 @@ final class RendererTest extends MockeryTestCase
 
         $this->renderer->setDestination(str_replace('/', DIRECTORY_SEPARATOR, '/root/of/project'));
         $collection = new Collection(['\My\Namespace\Class']);
-        $result     = $this->renderer->render($collection, 'url');
+        $result = $this->renderer->render($collection, 'url');
 
         $this->assertSame(['../../../classes/My.Namespace.Class.html'], $result);
     }
@@ -125,7 +124,7 @@ final class RendererTest extends MockeryTestCase
         $this->router->shouldReceive('generate')->andReturn('ClassDescriptor');
 
         $collectionDescriptor = $this->givenACollectionDescriptor('array');
-        $result               = $this->renderer->render($collectionDescriptor, 'url');
+        $result = $this->renderer->render($collectionDescriptor, 'url');
 
         $this->assertSame('ClassDescriptor[]', $result);
     }

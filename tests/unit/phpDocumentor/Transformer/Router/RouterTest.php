@@ -38,11 +38,14 @@ final class RouterTest extends TestCase
 {
     /**
      * @covers ::generate
-     *
      * @dataProvider provideNodesWithExpectedUrls
      */
-    public function testItCanGenerateUrlsForAGivenNode($node, string $routeName, string $expected, string $fragment)
-    {
+    public function testItCanGenerateUrlsForAGivenNode(
+        $node,
+        string $routeName,
+        string $expected,
+        string $fragment
+    ) : void {
         $urlGenerator = $this->prophesize(UrlGeneratorInterface::class);
         $url = $routeName . '-' . $expected . '-' . $fragment;
         $urlGenerator->generate($routeName, ['name' => $expected, '_fragment' => $fragment])
@@ -54,7 +57,10 @@ final class RouterTest extends TestCase
         $this->assertSame($url, $result);
     }
 
-    public function testItCanGenerateUriWhenGivenAUri()
+    /**
+     * @covers ::generate
+     */
+    public function testItCanGenerateUriWhenGivenAUri() : void
     {
         $urlGenerator = $this->prophesize(UrlGeneratorInterface::class);
         $urlGenerator->generate()->shouldNotBeCalled();
@@ -64,7 +70,10 @@ final class RouterTest extends TestCase
         $this->assertSame('https://my/uri', $router->generate($this->givenAUri()));
     }
 
-    public function testItReturnsAnEmptyStringWhenUnableToGenerateAUrl()
+    /**
+     * @covers ::generate
+     */
+    public function testItReturnsAnEmptyStringWhenUnableToGenerateAUrl() : void
     {
         $urlGenerator = $this->prophesize(UrlGeneratorInterface::class);
         $urlGenerator->generate()->shouldNotBeCalled();
@@ -75,21 +84,31 @@ final class RouterTest extends TestCase
         $this->assertSame('', $result);
     }
 
-    public function provideNodesWithExpectedUrls()
+    public function provideNodesWithExpectedUrls() : array
     {
         return [
-            'for a file' => [ $this->givenAFileDescriptor(), 'file', 'my-file', '' ],
-            'for a package' => [ $this->givenAPackageDescriptor(), 'package', 'My-Package', '' ],
-            'for a namespace' => [ $this->givenANamespaceDescriptor(), 'namespace', 'my-namespace', '' ],
-            'for a function' => [ $this->givenAFunctionDescriptor(), 'namespace', 'my-namespace', 'function_myFunction' ],
-            'for a global constant' => [ $this->givenAGlobalConstantDescriptor(), 'namespace', 'my-namespace', 'constant_MY_CONSTANT' ],
-            'for a trait' => [ $this->givenATraitDescriptor(), 'class', 'My-Trait', '' ],
-            'for an interface' => [ $this->givenAnInterfaceDescriptor(), 'class', 'My-Interface', '' ],
-            'for a class' => [ $this->givenAClassDescriptor(), 'class', 'My-Class', '' ],
-            'for a method' => [ $this->givenAMethodDescriptor(), 'class', 'My-Class', 'method_myMethod' ],
-            'for a property' => [ $this->givenAPropertyDescriptor(), 'class', 'My-Class', 'property_myProperty' ],
-            'for a class constant' => [ $this->givenAClassConstantDescriptor(), 'class', 'My-Class', 'constant_MY_CONSTANT' ],
-            'for an fqsen' => [ $this->givenAnFqsen(), 'class', 'My-Class', 'method_myMethod' ],
+            'for a file' => [$this->givenAFileDescriptor(), 'file', 'my-file', ''],
+            'for a package' => [$this->givenAPackageDescriptor(), 'package', 'My-Package', ''],
+            'for a namespace' => [$this->givenANamespaceDescriptor(), 'namespace', 'my-namespace', ''],
+            'for a function' => [$this->givenAFunctionDescriptor(), 'namespace', 'my-namespace', 'function_myFunction'],
+            'for a global constant' => [
+                $this->givenAGlobalConstantDescriptor(),
+                'namespace',
+                'my-namespace',
+                'constant_MY_CONSTANT',
+            ],
+            'for a trait' => [$this->givenATraitDescriptor(), 'class', 'My-Trait', ''],
+            'for an interface' => [$this->givenAnInterfaceDescriptor(), 'class', 'My-Interface', ''],
+            'for a class' => [$this->givenAClassDescriptor(), 'class', 'My-Class', ''],
+            'for a method' => [$this->givenAMethodDescriptor(), 'class', 'My-Class', 'method_myMethod'],
+            'for a property' => [$this->givenAPropertyDescriptor(), 'class', 'My-Class', 'property_myProperty'],
+            'for a class constant' => [
+                $this->givenAClassConstantDescriptor(),
+                'class',
+                'My-Class',
+                'constant_MY_CONSTANT',
+            ],
+            'for an fqsen' => [$this->givenAnFqsen(), 'class', 'My-Class', 'method_myMethod'],
         ];
     }
 
@@ -167,6 +186,7 @@ final class RouterTest extends TestCase
 
         return $descriptor;
     }
+
     private function givenAPropertyDescriptor() : PropertyDescriptor
     {
         $descriptor = new PropertyDescriptor();

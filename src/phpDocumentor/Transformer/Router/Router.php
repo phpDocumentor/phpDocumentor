@@ -29,10 +29,9 @@ use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Uri;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use function strrpos;
+use function substr;
 
-/**
- * The default for phpDocumentor.
- */
 class Router extends ArrayObject
 {
     /** @var ClassBasedFqsenUrlGenerator */
@@ -40,6 +39,9 @@ class Router extends ArrayObject
 
     /** @var UrlGeneratorInterface */
     private $urlGenerator;
+
+    /** @var Slugify */
+    private $slugify;
 
     public function __construct(ClassBasedFqsenUrlGenerator $fqsenUrlGenerator, UrlGeneratorInterface $urlGenerator)
     {
