@@ -64,7 +64,7 @@ final class LinkRendererTest extends MockeryTestCase
             ->shouldReceive('generate')
             ->andReturn('/classes/My.Namespace.Class.html');
 
-        $result = $this->renderer->render('\My\Namespace\Class', 'url');
+        $result = $this->renderer->render(new Fqsen('\My\Namespace\Class'), 'url');
 
         $this->assertSame('classes/My.Namespace.Class.html', $result);
     }
@@ -80,7 +80,7 @@ final class LinkRendererTest extends MockeryTestCase
             ->andReturn('/classes/My.Namespace.Class.html');
 
         $this->renderer->setDestination(str_replace('/', DIRECTORY_SEPARATOR, '/root/of/project'));
-        $collection = new Collection(['\My\Namespace\Class']);
+        $collection = new Collection([new Fqsen('\My\Namespace\Class')]);
         $result = $this->renderer->render($collection, 'url');
 
         $this->assertSame(['../../../classes/My.Namespace.Class.html'], $result);
@@ -153,7 +153,7 @@ final class LinkRendererTest extends MockeryTestCase
     {
         $this->router->shouldReceive('generate')->andReturn('/classes/My.Namespace.Class.html');
 
-        $result = $this->renderer->render('\My\Namespace\Class', 'class:short');
+        $result = $this->renderer->render(new Fqsen('\My\Namespace\Class'), 'class:short');
 
         $this->assertSame('<a href="classes/My.Namespace.Class.html">Class</a>', $result);
     }

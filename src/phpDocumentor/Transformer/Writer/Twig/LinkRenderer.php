@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Writer\Twig;
 
 use InvalidArgumentException;
+use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\Descriptor\Type\CollectionDescriptor;
 use phpDocumentor\Path;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Type;
 use phpDocumentor\Transformer\Router\Router;
-use phpDocumentor\Uri;
 use const DIRECTORY_SEPARATOR;
 use function array_fill;
 use function count;
@@ -83,7 +83,7 @@ final class LinkRenderer
     }
 
     /**
-     * @param Type[]|CollectionDescriptor|Path|string|iterable $value
+     * @param Type[]|CollectionDescriptor|Descriptor|Fqsen|Path|string|iterable $value
      *
      * @return string[]|string
      */
@@ -194,16 +194,19 @@ final class LinkRenderer
     }
 
     /**
-     * @param string|Path $path
+     * @param string|Path|Descriptor|Fqsen $node
      */
-    private function renderLink($path, string $presentation) : string
+    private function renderLink($node, string $presentation) : string
     {
-        try {
-            $generatedUrl = $this->router->generate(new Uri((string) $path));
-        } catch (InvalidArgumentException $e) {
-            $generatedUrl = '';
+        $generatedUrl = $node;
+        if ($node instanceof Descriptor || $node instanceof Fqsen) {
+            try {
+                $generatedUrl = $this->router->generate($node);
+            } catch (InvalidArgumentException $e) {
+                $generatedUrl = '';
+            }
         }
-        $url = $generatedUrl ? ltrim($generatedUrl, '/') : false;
+        $url = $generatedUrl ? ltrim((string) $generatedUrl, '/') : false;
 
         if (is_string($url)
             && $url[0] !== '/'
@@ -218,12 +221,12 @@ final class LinkRenderer
             case self::PRESENTATION_URL: // return the first url
                 return $url ?: '';
             case self::PRESENTATION_CLASS_SHORT:
-                $parts = explode('\\', (string) $path);
-                $path = end($parts);
+                $parts = explode('\\', (string) $node);
+                $node = end($parts);
                 break;
         }
 
-        return $url ? sprintf('<a href="%s">%s</a>', $url, (string) $path) : (string) $path;
+        return $url ? sprintf('<a href="%s">%s</a>', $url, (string) $node) : (string) $node;
     }
 
     private function renderType(iterable $value) : array
