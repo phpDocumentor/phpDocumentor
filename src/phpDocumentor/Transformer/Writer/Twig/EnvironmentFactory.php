@@ -15,7 +15,6 @@ namespace phpDocumentor\Transformer\Writer\Twig;
 
 use InvalidArgumentException;
 use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\Transformer\Router\Renderer;
 use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Template\Parameter;
 use phpDocumentor\Transformer\Transformation;

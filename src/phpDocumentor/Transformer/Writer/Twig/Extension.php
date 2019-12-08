@@ -16,7 +16,6 @@ namespace phpDocumentor\Transformer\Writer\Twig;
 use Parsedown;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\Transformer\Router\Renderer;
 use phpDocumentor\Transformer\Transformation;
 use Twig\Extension\AbstractExtension;
 use Twig\Extension\GlobalsInterface;

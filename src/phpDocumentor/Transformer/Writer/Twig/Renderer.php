@@ -11,7 +11,7 @@ declare(strict_types=1);
  * @link http://phpdoc.org
  */
 
-namespace phpDocumentor\Transformer\Router;
+namespace phpDocumentor\Transformer\Writer\Twig;
 
 use InvalidArgumentException;
 use phpDocumentor\Descriptor\Collection;
@@ -19,6 +19,7 @@ use phpDocumentor\Descriptor\Type\CollectionDescriptor;
 use phpDocumentor\Path;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Type;
+use phpDocumentor\Transformer\Router\Router;
 use phpDocumentor\Uri;
 use Traversable;
 use const DIRECTORY_SEPARATOR;

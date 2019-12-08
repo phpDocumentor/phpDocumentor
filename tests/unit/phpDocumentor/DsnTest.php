@@ -8,11 +8,12 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor;
 
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -28,7 +29,7 @@ class DsnTest extends TestCase
      */
     public function testInvalidDsn() : void
     {
-        $this->expectException('InvalidArgumentException');
+        $this->expectException(InvalidArgumentException::class);
         $dsn = 'git+http://namé:password@github.com';
         new Dsn($dsn);
     }
@@ -39,7 +40,7 @@ class DsnTest extends TestCase
      */
     public function testInvalidScheme() : void
     {
-        $this->expectException('InvalidArgumentException');
+        $this->expectException(InvalidArgumentException::class);
         $dsn = 'gittt+http://github.com';
         new Dsn($dsn);
     }
@@ -51,7 +52,7 @@ class DsnTest extends TestCase
      */
     public function testInvalidKeyValuePair() : void
     {
-        $this->expectException('InvalidArgumentException');
+        $this->expectException(InvalidArgumentException::class);
         $dsn = 'git+http://@github.com/phpDocumentor/phpDocumentor2?q+query';
         new Dsn($dsn);
     }

@@ -8,22 +8,21 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
-namespace phpDocumentor\Transformer\Router;
+namespace phpDocumentor\Transformer\Writer\Twig;
 
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\Type\CollectionDescriptor;
+use phpDocumentor\Transformer\Router\Router;
 use const DIRECTORY_SEPARATOR;
 use function str_replace;
 
 /**
- * Test class for phpDocumentor\Transformer\Router\Renderer
- *
- * @coversDefaultClass \phpDocumentor\Transformer\Router\Renderer
+ * @coversDefaultClass \phpDocumentor\Transformer\Writer\Twig\Renderer
  * @covers ::<private>
  */
 final class RendererTest extends MockeryTestCase
@@ -42,9 +41,9 @@ final class RendererTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Router\Renderer::__construct
-     * @covers \phpDocumentor\Transformer\Router\Renderer::getDestination
-     * @covers \phpDocumentor\Transformer\Router\Renderer::setDestination
+     * @covers ::__construct
+     * @covers ::getDestination
+     * @covers ::setDestination
      */
     public function testGetAndSetDestination() : void
     {
@@ -160,6 +159,7 @@ final class RendererTest extends MockeryTestCase
         $classDescriptor->shouldReceive('getName')->andReturn($name);
         $collectionDescriptor = new CollectionDescriptor($classDescriptor);
         $collectionDescriptor->setTypes(['ClassDescriptor']);
+
         return $collectionDescriptor;
     }
 
