@@ -49,7 +49,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
     /** @var ProjectDescriptor */
     protected $data;
 
-    /** @var Renderer */
+    /** @var LinkRenderer */
     protected $routeRenderer;
 
     /**
@@ -62,7 +62,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
     public function __construct(
         ProjectDescriptor $project,
         Transformation $transformation,
-        ?Renderer $routeRenderer = null
+        ?LinkRenderer $routeRenderer = null
     ) {
         $this->data          = $project;
         $this->routeRenderer = $routeRenderer;
@@ -138,7 +138,10 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             ),
             'route' => new TwigFilter(
                 'route',
-                static function ($value, $presentation = 'normal') use ($routeRenderer) {
+                static function (
+                    $value,
+                    string $presentation = LinkRenderer::PRESENTATION_NORMAL
+                ) use ($routeRenderer) {
                     return $routeRenderer->render($value, $presentation);
                 }
             ),

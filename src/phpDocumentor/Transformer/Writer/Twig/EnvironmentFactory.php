@@ -32,10 +32,10 @@ use function substr;
 
 final class EnvironmentFactory
 {
-    /** @var Renderer */
+    /** @var LinkRenderer */
     private $renderer;
 
-    public function __construct(Renderer $renderer)
+    public function __construct(LinkRenderer $renderer)
     {
         $this->renderer = $renderer;
     }

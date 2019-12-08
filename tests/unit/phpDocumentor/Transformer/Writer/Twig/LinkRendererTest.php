@@ -17,27 +17,29 @@ use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\Type\CollectionDescriptor;
+use phpDocumentor\Reflection\Fqsen;
+use phpDocumentor\Reflection\Types\Integer;
 use phpDocumentor\Transformer\Router\Router;
 use const DIRECTORY_SEPARATOR;
 use function str_replace;
 
 /**
- * @coversDefaultClass \phpDocumentor\Transformer\Writer\Twig\Renderer
+ * @coversDefaultClass \phpDocumentor\Transformer\Writer\Twig\LinkRenderer
  * @covers ::<private>
  */
-final class RendererTest extends MockeryTestCase
+final class LinkRendererTest extends MockeryTestCase
 {
     /** @var Router */
     private $router;
 
-    /** @var Renderer */
+    /** @var LinkRenderer */
     private $renderer;
 
     protected function setUp() : void
     {
         $this->router = m::mock(Router::class);
 
-        $this->renderer = new Renderer($this->router);
+        $this->renderer = new LinkRenderer($this->router);
     }
 
     /**
@@ -89,9 +91,12 @@ final class RendererTest extends MockeryTestCase
      */
     public function testConvertToRootPathWithUrlAndAtSignInRelativePath() : void
     {
-        $this->markTestIncomplete('Redo this test');
         $this->router->shouldReceive('generate')
-            ->with('@Class::$property')
+            ->with(m::on(function (Fqsen $fqsen) {
+                $this->assertSame((string) $fqsen, '\Class::$property');
+
+                return true;
+            }))
             ->andReturn('@Class::$property');
 
         $result = $this->renderer->convertToRootPath('@Class::$property');
@@ -112,6 +117,19 @@ final class RendererTest extends MockeryTestCase
         $result = $this->renderer->render($collectionDescriptor, 'url');
 
         $this->assertSame('ClassDescriptor&lt;ClassDescriptor,ClassDescriptor&gt;', $result);
+    }
+
+    /**
+     * @covers ::render
+     * @covers ::convertToRootPath
+     */
+    public function testRenderReferenceToType() : void
+    {
+        $this->router->shouldReceive('generate')->never();
+
+        $result = $this->renderer->render([new Integer()], 'url');
+
+        $this->assertSame(['int'], $result);
     }
 
     /**

@@ -14,14 +14,12 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Writer\Twig;
 
 use InvalidArgumentException;
-use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\Type\CollectionDescriptor;
 use phpDocumentor\Path;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Type;
 use phpDocumentor\Transformer\Router\Router;
 use phpDocumentor\Uri;
-use Traversable;
 use const DIRECTORY_SEPARATOR;
 use function array_fill;
 use function count;
@@ -30,6 +28,7 @@ use function end;
 use function explode;
 use function implode;
 use function is_array;
+use function is_iterable;
 use function is_string;
 use function ltrim;
 use function reset;
@@ -40,8 +39,12 @@ use function substr;
 /**
  * Renders an HTML anchor pointing to the location of the provided element.
  */
-final class Renderer
+final class LinkRenderer
 {
+    public const PRESENTATION_NORMAL = 'normal';
+    public const PRESENTATION_URL = 'url';
+    public const PRESENTATION_CLASS_SHORT = 'class:short';
+
     /** @var string */
     private $destination = '';
 
@@ -80,23 +83,22 @@ final class Renderer
     }
 
     /**
-     * @param mixed $value
-     * @param mixed $presentation
+     * @param Type[]|CollectionDescriptor|Path|string|iterable $value
      *
-     * @return mixed
+     * @return string[]|string
      */
-    public function render($value, $presentation)
+    public function render($value, string $presentation)
     {
         if (is_array($value) && current($value) instanceof Type) {
             return $this->renderType($value);
         }
 
-        if (is_array($value) || $value instanceof Traversable || $value instanceof Collection) {
-            return $this->renderASeriesOfLinks($value, $presentation);
-        }
-
         if ($value instanceof CollectionDescriptor) {
             return $this->renderTypeCollection($value, $presentation);
+        }
+
+        if (is_iterable($value)) {
+            return $this->renderASeriesOfLinks($value, $presentation);
         }
 
         return $this->renderLink($value, $presentation);
@@ -121,45 +123,42 @@ final class Renderer
      * This method does not try to normalize or optimize the paths in order to
      * save on development time and performance, and because it adds no real
      * value.
+     *
+     * In addition, when a path starts with an @-sign, it is interpreted as a
+     * reference to a structural element and we use the router to try and find
+     * a path to which this refers.
+     *
+     * @todo References can only point to an element that is a class,
+     *       interface, trait, method, property or class constant at this
+     *       moment. This is because an FQSEN does not contain the necessary
+     *       data to distinguish whether the FQCN is actually a class or a
+     *       namespace reference. As such we assume a class as that is the
+     *       most common occurrence.
      */
-    public function convertToRootPath(string $relative_path) : ?string
+    public function convertToRootPath(string $pathOrReference) : ?string
     {
-        // get the path to the root directory
-        $path_parts = explode(DIRECTORY_SEPARATOR, $this->getDestination());
-        $path_to_root = count($path_parts) > 1
-            ? implode('/', array_fill(0, count($path_parts) - 1, '..')) . '/'
-            : '';
-
-        // append the relative path to the root
-        if (is_string($relative_path) && ($relative_path[0] !== '@')) {
-            return $path_to_root . ltrim($relative_path, '/');
-        }
-
-        try {
-            $generatedPath = $this->router->generate(new Fqsen(substr($relative_path, 1)));
-            if (!$generatedPath) {
+        if ($this->isReferenceToFqsen($pathOrReference)) {
+            try {
+                $pathOrReference = $this->router->generate($this->createFqsenFromReference($pathOrReference));
+            } catch (InvalidArgumentException $e) {
                 return null;
             }
-        } catch (InvalidArgumentException $e) {
+        }
+
+        if (!$pathOrReference) {
             return null;
         }
 
-        return $generatedPath ? $path_to_root . ltrim($generatedPath, '/') : null;
+        return $this->getPathPrefixBasedOnDepth() . $this->withoutLeadingSlash($pathOrReference);
     }
 
     /**
      * Returns a series of anchors and strings for the given collection of routable items.
      *
-     * @param array|Traversable|Collection $value
-     *
      * @return string[]
      */
-    protected function renderASeriesOfLinks(iterable $value, string $presentation) : array
+    private function renderASeriesOfLinks(iterable $value, string $presentation) : array
     {
-        if ($value instanceof Collection) {
-            $value = $value->getAll();
-        }
-
         $result = [];
         foreach ($value as $path) {
             $result[] = $this->render($path, $presentation);
@@ -171,7 +170,7 @@ final class Renderer
     /**
      * Renders the view representation for an array or collection.
      */
-    protected function renderTypeCollection(CollectionDescriptor $value, string $presentation) : string
+    private function renderTypeCollection(CollectionDescriptor $value, string $presentation) : string
     {
         $baseType = $this->render($value->getBaseType(), $presentation);
         $keyTypes = $this->render($value->getKeyTypes(), $presentation);
@@ -197,7 +196,7 @@ final class Renderer
     /**
      * @param string|Path $path
      */
-    protected function renderLink($path, string $presentation) : string
+    private function renderLink($path, string $presentation) : string
     {
         try {
             $generatedUrl = $this->router->generate(new Uri((string) $path));
@@ -216,9 +215,9 @@ final class Renderer
         }
 
         switch ($presentation) {
-            case 'url': // return the first url
+            case self::PRESENTATION_URL: // return the first url
                 return $url ?: '';
-            case 'class:short':
+            case self::PRESENTATION_CLASS_SHORT:
                 $parts = explode('\\', (string) $path);
                 $path = end($parts);
                 break;
@@ -235,5 +234,49 @@ final class Renderer
         }
 
         return $result;
+    }
+
+    /**
+     * Calculates how deep the given destination is and returns a prefix.
+     *
+     * The calculated prefix is used to get back to the root (i.e. three levels deep means `../../..`) or an empty
+     * string is returned when you are already at the same level as the root.
+     *
+     * This prefix will include a trailing forward slash (/) when it actually needs to direct the caller to go
+     * elsewhere.
+     */
+    private function getPathPrefixBasedOnDepth() : string
+    {
+        $directoryDepth = count(explode(DIRECTORY_SEPARATOR, $this->getDestination()));
+
+        return $directoryDepth > 1
+            ? implode('/', array_fill(0, $directoryDepth - 1, '..')) . '/'
+            : '';
+    }
+
+    private function isReferenceToFqsen(string $path) : bool
+    {
+        return $path[0] === '@';
+    }
+
+    private function withoutLeadingSlash(string $path) : string
+    {
+        return ltrim($path, '/');
+    }
+
+    private function createFqsenFromReference(string $path) : Fqsen
+    {
+        if (!$this->isReferenceToFqsen($path)) {
+            throw new InvalidArgumentException('References to FQSENs are expected to begin with an @-sign');
+        }
+
+        $strippedAtSign = substr($path, 1);
+
+        // Ensure it is prefixed with a \; as without it it cannot be a valid FQSEN
+        if ($strippedAtSign[0] !== '\\') {
+            $strippedAtSign = '\\' . $strippedAtSign;
+        }
+
+        return new Fqsen($strippedAtSign);
     }
 }
