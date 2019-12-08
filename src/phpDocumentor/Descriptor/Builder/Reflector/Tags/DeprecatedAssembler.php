@@ -34,7 +34,7 @@ class DeprecatedAssembler extends AssemblerAbstract
     {
         $descriptor = new DeprecatedDescriptor($data->getName());
         $descriptor->setDescription((string) $data->getDescription());
-        $descriptor->setVersion($data->getVersion());
+        $descriptor->setVersion($data->getVersion() ?: '');
 
         return $descriptor;
     }
