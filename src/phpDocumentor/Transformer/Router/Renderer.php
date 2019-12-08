@@ -13,10 +13,13 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Router;
 
+use InvalidArgumentException;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\Type\CollectionDescriptor;
 use phpDocumentor\Path;
+use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Type;
+use phpDocumentor\Uri;
 use Traversable;
 use const DIRECTORY_SEPARATOR;
 use function array_fill;
@@ -130,8 +133,12 @@ final class Renderer
             return $path_to_root . ltrim($relative_path, '/');
         }
 
-        $generatedPath = $this->router->generate($relative_path);
-        if ($generatedPath === null) {
+        try {
+            $generatedPath = $this->router->generate(new Fqsen(substr($relative_path, 1)));
+            if (!$generatedPath) {
+                return null;
+            }
+        } catch (InvalidArgumentException $e) {
             return null;
         }
 
@@ -190,7 +197,11 @@ final class Renderer
      */
     protected function renderLink($path, string $presentation) : string
     {
-        $generatedUrl = $this->router->generate((string) $path);
+        try {
+            $generatedUrl = $this->router->generate(new Uri((string) $path));
+        } catch (InvalidArgumentException $e) {
+            $generatedUrl = '';
+        }
         $url = $generatedUrl ? ltrim($generatedUrl, '/') : false;
 
         if (is_string($url)

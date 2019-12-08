@@ -14,9 +14,10 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Router;
 
 use ArrayObject;
-use InvalidArgumentException;
+use Cocur\Slugify\Slugify;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\ConstantDescriptor;
+use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\FunctionDescriptor;
 use phpDocumentor\Descriptor\InterfaceDescriptor;
@@ -25,9 +26,8 @@ use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Descriptor\PackageDescriptor;
 use phpDocumentor\Descriptor\PropertyDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
-use phpDocumentor\Reflection\DocBlock\Tags\Reference\Fqsen;
-use phpDocumentor\Reflection\DocBlock\Tags\Reference\Url;
-use phpDocumentor\Transformer\Router\UrlGenerator\QualifiedNameToUrlConverter;
+use phpDocumentor\Reflection\Fqsen;
+use phpDocumentor\Uri;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
@@ -35,28 +35,25 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  */
 class Router extends ArrayObject
 {
-    /** @var UrlGenerator\FqsenDescriptor */
+    /** @var ClassBasedFqsenUrlGenerator */
     private $fqsenUrlGenerator;
-
-    /** @var QualifiedNameToUrlConverter */
-    private $converter;
 
     /** @var UrlGeneratorInterface */
     private $urlGenerator;
 
-    public function __construct(
-        UrlGenerator\FqsenDescriptor $fqsenUrlGenerator,
-        QualifiedNameToUrlConverter $converter,
-        UrlGeneratorInterface $urlGenerator
-    ) {
+    public function __construct(ClassBasedFqsenUrlGenerator $fqsenUrlGenerator, UrlGeneratorInterface $urlGenerator)
+    {
         $this->fqsenUrlGenerator = $fqsenUrlGenerator;
-        $this->converter = $converter;
         $this->urlGenerator = $urlGenerator;
+        $this->slugify = new Slugify();
 
         parent::__construct();
     }
 
-    public function generate($node) : ?string
+    /**
+     * @param Descriptor|Fqsen|Uri $node
+     */
+    public function generate($node) : string
     {
         if ($node instanceof FileDescriptor) {
             return $this->generateUrlForDescriptor('file', $node->getPath());
@@ -119,43 +116,39 @@ class Router extends ArrayObject
                 'property_' . $node->getName()
             );
         }
+
         if ($node instanceof Fqsen) {
             return ($this->fqsenUrlGenerator)($node);
         }
 
         // if this is a link to an external page; return that URL
-        if ($node instanceof Url) {
+        if ($node instanceof Uri) {
             return (string) $node;
         }
 
         // We could not match the node to any known routable thing
-        return null;
+        return '';
     }
 
     private function generateUrlForDescriptor(string $type, string $fqsen, string $fragment = '') : string
     {
-        switch ($type) {
-            case 'namespace':
-                $name = $this->converter->fromNamespace($fqsen);
-                break;
-            case 'class':
-                $name = $this->converter->fromClass($fqsen);
-                break;
-            case 'package':
-                $name = $this->converter->fromPackage($fqsen);
-                break;
-            case 'file':
-                $fqsen = $this->removeFileExtensionFromPath($fqsen);
-                $name = $this->converter->fromFile($fqsen);
-                break;
-            default:
-                throw new InvalidArgumentException('Unknown url type');
-        }
+        $name = $this->slugifyNameBasedOnType($type, $fqsen);
 
         return $this->urlGenerator->generate(
             $type,
             ['name' => $name, '_fragment' => $fragment]
         );
+    }
+
+    private function slugifyNameBasedOnType(string $type, string $name) : string
+    {
+        if ($type === 'file') {
+            return $this->slugify->slugify($this->removeFileExtensionFromPath($name));
+        }
+
+        $default = $type === 'class' ? '' : 'default';
+
+        return $this->slugify->slugify($name, ['lowercase' => $type === 'namespace']) ?: $default;
     }
 
     /**

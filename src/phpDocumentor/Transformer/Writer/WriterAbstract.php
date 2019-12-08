@@ -109,7 +109,7 @@ abstract class WriterAbstract
             }
 
             $url = $this->router()->generate($descriptor);
-            if ($url === null) {
+            if (!$url) {
                 throw new InvalidArgumentException(
                     'No matching routing rule could be found for the given node, please provide an artifact location, '
                     . 'encountered: ' . get_class($descriptor)

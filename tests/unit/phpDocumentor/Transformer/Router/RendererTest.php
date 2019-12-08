@@ -17,6 +17,7 @@ use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\Type\CollectionDescriptor;
+use phpDocumentor\Uri;
 use const DIRECTORY_SEPARATOR;
 use function str_replace;
 
@@ -86,24 +87,11 @@ final class RendererTest extends MockeryTestCase
     }
 
     /**
-     * @covers ::render
-     * @covers ::convertToRootPath
-     */
-    public function testRenderWithUrlAndNoRuleMatch() : void
-    {
-        $this->router->shouldReceive('generate')->with('file://phpdoc')->andReturn('@');
-        $this->router->shouldReceive('generate')->with('@')->andReturn('');
-
-        $result = $this->renderer->render('file://phpdoc', 'url');
-
-        $this->assertEmpty($result);
-    }
-
-    /**
      * @covers ::convertToRootPath
      */
     public function testConvertToRootPathWithUrlAndAtSignInRelativePath() : void
     {
+        $this->markTestIncomplete('Redo this test');
         $this->router->shouldReceive('generate')
             ->with('@Class::$property')
             ->andReturn('@Class::$property');

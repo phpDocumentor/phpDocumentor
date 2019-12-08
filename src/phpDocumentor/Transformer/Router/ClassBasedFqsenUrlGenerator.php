@@ -11,11 +11,11 @@ declare(strict_types=1);
  * @link http://phpdoc.org
  */
 
-namespace phpDocumentor\Transformer\Router\UrlGenerator;
+namespace phpDocumentor\Transformer\Router;
 
-use phpDocumentor\Reflection\DocBlock\Tags\Reference\Fqsen;
+use Cocur\Slugify\Slugify;
+use phpDocumentor\Reflection\Fqsen;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use function assert;
 use function count;
 use function explode;
 use function strpos;
@@ -23,32 +23,27 @@ use function strpos;
 /**
  * Generates a relative URL with properties for use in the generated HTML documentation.
  */
-class FqsenDescriptor implements UrlGenerator
+class ClassBasedFqsenUrlGenerator
 {
     /** @var UrlGeneratorInterface */
     private $urlGenerator;
 
-    /** @var QualifiedNameToUrlConverter */
-    private $converter;
+    /** @var Slugify */
+    private $slugify;
 
-    public function __construct(UrlGeneratorInterface $urlGenerator, QualifiedNameToUrlConverter $converter)
+    public function __construct(UrlGeneratorInterface $urlGenerator)
     {
         $this->urlGenerator = $urlGenerator;
-        $this->converter    = $converter;
+        $this->slugify = new Slugify();
     }
 
     /**
      * Generates a URL from the given node or returns false if unable.
-     *
-     * @param string|Fqsen $node
-     *
-     * @return string|false
      */
-    public function __invoke($node)
+    public function __invoke(Fqsen $fqsen): string
     {
-        assert($node instanceof Fqsen);
-        $fqsenParts = explode('::', (string) $node);
-        $className  = $this->converter->fromClass($fqsenParts[0]);
+        $fqsenParts = explode('::', (string) $fqsen);
+        $className = $this->slugify($fqsenParts[0]);
 
         if (count($fqsenParts) === 1) {
             return $this->urlGenerator->generate(
@@ -86,5 +81,10 @@ class FqsenDescriptor implements UrlGenerator
                 '_fragment' => 'constant_' . $fqsenParts[1],
             ]
         );
+    }
+
+    private function slugify(string $string, bool $lowercase = false, string $default = '') : string
+    {
+        return $this->slugify->slugify($string, ['lowercase' => $lowercase]) ?: $default;
     }
 }

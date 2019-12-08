@@ -11,26 +11,23 @@ declare(strict_types=1);
  * @link http://phpdoc.org
  */
 
-namespace phpDocumentor\Transformer\Router\UrlGenerator;
+namespace phpDocumentor\Transformer\Router;
 
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
-use phpDocumentor\Reflection\DocBlock\Tags\Reference\Fqsen;
-use phpDocumentor\Reflection\Fqsen as RealFqsen;
+use phpDocumentor\Reflection\Fqsen;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Test for the MethodDescriptor URL Generator with the Standard Router
  *
- * @coversDefaultClass \phpDocumentor\Transformer\Router\UrlGenerator\FqsenDescriptor
+ * @coversDefaultClass \phpDocumentor\Transformer\Router\ClassBasedFqsenUrlGenerator
  * @covers ::__construct
  * @covers ::<private>
  */
-class FqsenDescriptorTest extends MockeryTestCase
+class ClassBasedFqsenUrlGeneratorTest extends MockeryTestCase
 {
     /**
-     * @uses \phpDocumentor\Transformer\Router\UrlGenerator\QualifiedNameToUrlConverter::fromClass
-     *
      * @covers ::__invoke
      * @dataProvider provideFqsens
      */
@@ -39,10 +36,8 @@ class FqsenDescriptorTest extends MockeryTestCase
         // Arrange
         $urlGenerator = m::mock(UrlGeneratorInterface::class);
         $urlGenerator->shouldReceive('generate')->andReturn($toPath);
-        $converter = new QualifiedNameToUrlConverter();
-        $realFqsen = new RealFqsen($fromFqsen);
-        $fqsen = new Fqsen($realFqsen);
-        $fixture = new FqsenDescriptor($urlGenerator, $converter);
+        $fqsen = new Fqsen($fromFqsen);
+        $fixture = new ClassBasedFqsenUrlGenerator($urlGenerator);
 
         // Act
         $result = $fixture($fqsen);
@@ -54,10 +49,10 @@ class FqsenDescriptorTest extends MockeryTestCase
     public function provideFqsens() : array
     {
         return [
-            ['\\My\\Space\\Class', '/classes/My.Space.Class.html'],
-            ['\\My\\Space\\Class::$property', '/classes/My.Space.Class.html#property_property'],
-            ['\\My\\Space\\Class::method()', '/classes/My.Space.Class.html#method_method'],
-            ['\\My\\Space\\Class::CONSTANT', '/classes/My.Space.Class.html#constant_CONSTANT'],
+            ['\\My\\Space\\Class', '/classes/My-Space-Class-html'],
+            ['\\My\\Space\\Class::$property', '/classes/My-Space-Class-html#property_property'],
+            ['\\My\\Space\\Class::method()', '/classes/My-Space-Class-html#method_method'],
+            ['\\My\\Space\\Class::CONSTANT', '/classes/My-Space-Class-html#constant_CONSTANT'],
         ];
     }
 }
