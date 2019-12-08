@@ -31,7 +31,7 @@ class QualifiedNameToUrlConverter
     {
         $name = str_replace(['\\', '_'], '-', ltrim($fqcn, '\\'));
 
-        // convert root namespace to default; default is a keyword and no namespace CAN be named as such
+        // convert root package to default; default is a keyword and no namespace CAN be named as such
         if ($name === '') {
             $name = 'default';
         }
@@ -67,20 +67,6 @@ class QualifiedNameToUrlConverter
      */
     public function fromFile(string $path) : string
     {
-        $path = $this->removeFileExtensionFromPath($path);
-
         return str_replace(['/', '\\'], '-', ltrim($path, '/'));
-    }
-
-    /**
-     * Removes the file extension from the provided path.
-     */
-    private function removeFileExtensionFromPath(string $path) : string
-    {
-        if (strrpos($path, '.') !== false) {
-            $path = substr($path, 0, strrpos($path, '.'));
-        }
-
-        return $path;
     }
 }

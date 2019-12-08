@@ -69,6 +69,10 @@ abstract class AssemblerAbstract extends BaseAssembler
         return trim((string) $tag->getDescription());
     }
 
+    /**
+     * @deprecated the functionality in this method has been moved to the Compound type in the latest unreleased
+     * version of the TypeResolver library
+     */
     public static function deduplicateTypes(?Type $type) : ?Type
     {
         if ($type instanceof Compound) {
