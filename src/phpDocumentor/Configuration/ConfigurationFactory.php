@@ -41,18 +41,22 @@ final class ConfigurationFactory
     /** @var string[] */
     private $defaultFiles = [];
 
+    /** @var SymfonyConfigFactory */
+    private $symfonyConfigFactory;
+
     /**
      * Initializes the ConfigurationFactory.
      *
      * @param Strategy[]|iterable $strategies
      * @param array               $defaultFiles
      */
-    public function __construct(iterable $strategies, array $defaultFiles)
+    public function __construct(iterable $strategies, array $defaultFiles, SymfonyConfigFactory $symfonyConfigFactory)
     {
         foreach ($strategies as $strategy) {
             $this->registerStrategy($strategy);
         }
         $this->defaultFiles = $defaultFiles;
+        $this->symfonyConfigFactory = $symfonyConfigFactory;
     }
 
     /**
@@ -89,17 +93,17 @@ final class ConfigurationFactory
      */
     public function fromUri(Uri $uri) : Configuration
     {
-        $factory = new SymfonyConfigFactory();
-        $config = $factory->create();
-        var_dump($config);
-        die();
-
-
         $filename = (string) $uri;
 
         if (!file_exists($filename)) {
             throw new InvalidConfigPathException(sprintf('File %s could not be found', $filename));
         }
+
+        $config = $this->symfonyConfigFactory->create($filename);
+        var_dump($config);
+        die();
+
+
 
         $xml = new SimpleXMLElement($filename, 0, true);
         foreach ($this->strategies as $strategy) {

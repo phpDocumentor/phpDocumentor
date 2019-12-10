@@ -126,9 +126,11 @@ services:
 
     phpDocumentor\Configuration\Factory\Version2:
         tags: [phpdoc.config_strategy]
+
     phpDocumentor\Configuration\Factory\Version3:
         arguments: ["@=service('kernel').getProjectDir() ~ '/data/xsd/phpdoc.xsd'"]
         tags: [phpdoc.config_strategy]
+
     phpDocumentor\Configuration\ConfigurationFactory:
         arguments:
           $strategies: !tagged phpdoc.config_strategy
@@ -136,6 +138,13 @@ services:
             - "@=service('kernel').getWorkingDir() ~ '/phpdoc.xml'"
             - "@=service('kernel').getWorkingDir() ~ '/phpdoc.dist.xml'"
             - "@=service('kernel').getWorkingDir() ~ '/phpdoc.xml.dist'"
+          $symfonyConfigFactory: '@phpDocumentor\Configuration\SymfonyConfigFactory'
+
+    phpDocumentor\Configuration\SymfonyConfigFactory:
+      arguments:
+          $definitions:
+            '2': '@phpDocumentor\Configuration\Definition\Version2'
+            '3': '@phpDocumentor\Configuration\Definition\Version3'
 
     phpDocumentor\Compiler\Linker\Linker:
         arguments: ['%linker.substitutions%']
