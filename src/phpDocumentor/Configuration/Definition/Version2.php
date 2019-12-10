@@ -17,7 +17,7 @@ final class Version2 implements ConfigurationInterface, Upgradable
 
         $treebuilder->getRootNode()
             ->children()
-                ->floatNode('v')->defaultValue('2')->end()
+                ->scalarNode('v')->defaultValue('2')->end()
                 ->arrayNode('parser')
                     ->children()
                         ->scalarNode('default_package_name')->defaultValue('Application')->end()
@@ -74,12 +74,33 @@ final class Version2 implements ConfigurationInterface, Upgradable
     }
 
     /**
+     * Upgrades the version 2 configuration to the version 3 configuration.
+     *
+     * @todo not all options are included yet; finish this
+     *
      * @inheritDoc
      */
     public function upgrade(array $values) : array
     {
-        // TODO: Implement upgrade() method.
-
-        return $values;
+        return [
+            'v' => '3',
+            'paths' => [
+                'output' => $values['transformer']['target'],
+                'cache' => $values['parser']['target']
+            ],
+            'version' => [
+                [
+                    'number' => '1.0.0',
+                    'api' => [
+                        [
+                            'default_package_name' => $values['default_package_name'],
+                            'source' => [
+                                'path' => array_merge($values['files']['files'], $values['files']['directories'])
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ];
     }
 }
