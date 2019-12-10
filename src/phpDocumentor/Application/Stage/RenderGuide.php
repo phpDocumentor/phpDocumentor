@@ -45,7 +45,9 @@ final class RenderGuide
             // TODO: Yes, hardcoded for the POC; because we need to convert the builder to use flysystem or
             //       the filecollector
             __DIR__ . '/../../../../docs',
-            $output
+            $output,
+            null,
+            true
         );
 
         $builder = new Builder(
