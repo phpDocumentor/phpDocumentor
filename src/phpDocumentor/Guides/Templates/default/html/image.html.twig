@@ -1,0 +1,5 @@
+{#
+    Overridden so we can control the path to the image based on our copying logic.
+    See CopyImagesListener.
+#}
+<img src="{{ imageNode.value }}" {% for key, value in imageNode.options %}{{ key }}="{{ value }}" {% endfor %}/>

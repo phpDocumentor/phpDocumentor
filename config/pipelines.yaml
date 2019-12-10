@@ -1,6 +1,5 @@
 services:
     # Will call all pipeline and stages tagged with 'phpdoc.pipeline.api_documentation.generate',
-    # this includes both the parse and transform pipeline
     phpdoc.complete.pipeline:
       class: 'League\Pipeline\Pipeline'
       factory: ['phpDocumentor\Application\PipelineFactory', 'create']
@@ -12,6 +11,13 @@ services:
       arguments: [!tagged phpdoc.pipeline.application.configuration]
       tags:
         - { name: 'phpdoc.pipeline.api_documentation.generate', priority: 10000 }
+
+    phpdoc.guides.pipeline:
+      class: 'League\Pipeline\Pipeline'
+      factory: ['phpDocumentor\Application\PipelineFactory', 'create']
+      arguments: [!tagged phpdoc.pipeline.guide]
+      tags:
+        - { name: 'phpdoc.pipeline.api_documentation.generate', priority: 9000 }
 
     phpdoc.cache.pipeline:
       class: 'League\Pipeline\Pipeline'

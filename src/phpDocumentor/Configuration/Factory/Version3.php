@@ -142,12 +142,14 @@ final class Version3 implements Strategy
     private function buildApi(SimpleXMLElement $api) : array
     {
         $extensions = [];
-        foreach ($api->extensions->children() as $extension) {
-            if ((string) $extension === '') {
-                continue;
-            }
+        if ($api->extensions) {
+            foreach ($api->extensions->children() as $extension) {
+                if ((string) $extension === '') {
+                    continue;
+                }
 
-            $extensions[] = (string) $extension;
+                $extensions[] = (string) $extension;
+            }
         }
 
         $ignoreHidden = filter_var($api->ignore->attributes()->hidden, FILTER_VALIDATE_BOOLEAN);
@@ -155,7 +157,7 @@ final class Version3 implements Strategy
         return [
             'format' => (string) $api->attributes()->format ?: 'php',
             'source' => [
-                'dsn' => (string) $api->source->attributes()->dsn ?: 'file://.',
+                'dsn' => new Dsn((string) $api->source->attributes()->dsn ?: 'file://.'),
                 'paths' => (array) $api->source->path ?: ['.'],
             ],
             'ignore' => [
@@ -163,10 +165,13 @@ final class Version3 implements Strategy
                 'paths' => (array) $api->ignore->path,
             ],
             'extensions' => $extensions,
-            'visibility' => (array) $api->visibility,
+            'encoding' => 'utf8',
+            'ignore-tags' => [],
+            'validate' => false,
+            'visibility' => ((array) $api->visibility) ?: ['public', 'protected', 'private'],
             'include-source' => ((string) $api->{'include-source'}) === 'true',
             'default-package-name' => (string) $api->{'default-package-name'} ?: 'Default',
-            'markers' => (array) $api->markers->children()->marker,
+            'markers' => $api->markers ? (array) $api->markers->children()->marker : ['TODO', 'FIXME'],
         ];
     }
 
@@ -178,7 +183,7 @@ final class Version3 implements Strategy
         return [
             'format' => (string) $guide->attributes()->format ?: 'rst',
             'source' => [
-                'dsn' => (string) $guide->source->attributes()->dsn ?: 'file://.',
+                'dsn' => new Dsn((string) $guide->source->attributes()->dsn ?: 'file://.'),
                 'paths' => (array) $guide->source->path ?: [''],
             ],
         ];

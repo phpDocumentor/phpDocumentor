@@ -5,6 +5,12 @@
     "composer/ca-bundle": {
         "version": "1.1.1"
     },
+    "doctrine/event-manager": {
+        "version": "1.1.0"
+    },
+    "doctrine/rst-parser": {
+        "version": "dev-master"
+    },
     "erusev/parsedown": {
         "version": "1.6.4"
     },
@@ -73,6 +79,9 @@
     },
     "psr/log": {
         "version": "1.0.2"
+    },
+    "scrivo/highlight.php": {
+        "version": "v9.15.10.0"
     },
     "sebastian/comparator": {
         "version": "3.0.2"
