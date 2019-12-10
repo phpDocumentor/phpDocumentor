@@ -89,6 +89,12 @@ final class ConfigurationFactory
      */
     public function fromUri(Uri $uri) : Configuration
     {
+        $factory = new SymfonyConfigFactory();
+        $config = $factory->create();
+        var_dump($config);
+        die();
+
+
         $filename = (string) $uri;
 
         if (!file_exists($filename)) {

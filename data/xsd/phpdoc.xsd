@@ -23,10 +23,11 @@
     <xs:simpleType name="path"><xs:restriction base="xs:string"/></xs:simpleType>
     <xs:simpleType name="visibility">
         <xs:restriction base="xs:string">
+            <xs:enumeration value="api"/>
             <xs:enumeration value="public"/>
             <xs:enumeration value="protected"/>
             <xs:enumeration value="private"/>
-            <xs:enumeration value="api"/>
+            <xs:enumeration value="hidden"/>
         </xs:restriction>
     </xs:simpleType>
 
@@ -36,7 +37,7 @@
             <xs:element name="version" type="pd:versionType" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element name="template" type="pd:templateType" minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
-        <xs:attribute name="version" type="pd:version" use="required"/>
+        <xs:attribute name="v" type="pd:version" use="required"/>
     </xs:complexType>
 
     <xs:complexType name="pathsType">
