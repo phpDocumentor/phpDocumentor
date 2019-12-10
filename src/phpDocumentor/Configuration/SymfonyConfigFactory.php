@@ -11,21 +11,19 @@ final class SymfonyConfigFactory
 {
     private $configurationDefinitions = [];
 
-    public function __construct()
+    public function __construct(array $definitions)
     {
-        $this->configurationDefinitions = [
-            '2' => new Definition\Version2(),
-            '3' => new Definition\Version3()
-        ];
+        $this->configurationDefinitions = $definitions;
     }
 
-    public function create() : array
+    public function create(string $filename) : array
     {
-        $values = XmlUtils::loadFile(__DIR__ . '/../../../phpdoc.xml', null);
+        var_dump($this->configurationDefinitions);
+        $values = XmlUtils::loadFile($filename, null);
         $values = XmlUtils::convertDomElementToArray($values->documentElement);
 
         $configuration = $this->processConfiguration($values);
-        if ((string)$configuration['v'] !== (string)array_key_last($this->configurationDefinitions)) {
+        if ($configuration['v'] !== (string) array_key_last($this->configurationDefinitions)) {
             throw new \RuntimeException(
                 'The configuration file does not match the latest version and auto-upgrading failed. Please '
                 . 'contact the maintainers and provide your configuration file or whole project to reproduce this issue'
