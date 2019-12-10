@@ -3,6 +3,7 @@
 namespace phpDocumentor\Configuration;
 
 use phpDocumentor\Configuration\Definition\Upgradable;
+use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\Util\XmlUtils;
 
@@ -24,6 +25,12 @@ final class SymfonyConfigFactory
         $values = XmlUtils::convertDomElementToArray($values->documentElement);
 
         $configuration = $this->processConfiguration($values);
+        if ((string)$configuration['v'] !== (string)array_key_last($this->configurationDefinitions)) {
+            throw new \RuntimeException(
+                'The configuration file does not match the latest version and auto-upgrading failed. Please '
+                . 'contact the maintainers and provide your configuration file or whole project to reproduce this issue'
+            );
+        }
         return $configuration;
     }
 
@@ -36,7 +43,24 @@ final class SymfonyConfigFactory
      */
     private function processConfiguration(array $values) : array
     {
-        $configurationVersion = (string) $values['v'] ?? '2';
+        $configurationVersion = (string)$values['v'] ?? '2';
+
+        $definition = $this->findDefinition($configurationVersion);
+
+        $processor = new Processor();
+        $configuration = $processor->processConfiguration($definition, [ $values ]);
+
+        if ($definition instanceof Upgradable) {
+            $configuration = $this->processConfiguration(
+                $this->upgradeConfiguration($definition, $configuration)
+            );
+        }
+
+        return $configuration;
+    }
+
+    private function findDefinition(string $configurationVersion) : ConfigurationInterface
+    {
         $definition = $this->configurationDefinitions[$configurationVersion] ?? null;
         if ($definition === null) {
             throw new \RuntimeException(
@@ -49,28 +73,31 @@ final class SymfonyConfigFactory
             );
         }
 
-        $processor = new Processor();
+        return $definition;
+    }
 
-        $configuration = $processor->processConfiguration(
-            $definition,
-            [ $values ]
-        );
-
-        if ($definition instanceof Upgradable) {
-            $upgradedConfiguration = $definition->upgrade($configuration);
-            if (!isset($upgradedConfiguration['v']) || $configurationVersion === $upgradedConfiguration['v']) {
-                throw new \RuntimeException(
-                    sprintf(
-                        'Upgrading the configuration to the latest version failed, we were unable to upgrade '
-                        . 'version "%s" to a later version',
-                        $configurationVersion
-                    )
-                );
-            }
-
-            $configuration = $upgradedConfiguration;
+    /**
+     * @param $definition
+     * @param array $configuration
+     * @return array
+     */
+    private function upgradeConfiguration($definition, array $configuration) : array
+    {
+        $upgradedConfiguration = $definition->upgrade($configuration);
+        if (
+            !isset($upgradedConfiguration['v'])
+            || $configuration['v'] === $upgradedConfiguration['v']
+        ) {
+            throw new \RuntimeException(
+                sprintf(
+                    'Upgrading the configuration to the latest version failed, we were unable to upgrade '
+                    . 'version "%s" to a later version',
+                    $configuration['v']
+                )
+            );
         }
 
+        $configuration = $upgradedConfiguration;
         return $configuration;
     }
 }

@@ -19,7 +19,7 @@ final class Version3 implements ConfigurationInterface
             ->fixXmlConfig('version')
             ->fixXmlConfig('template')
             ->children()
-                ->floatNode('v')->end()
+                ->scalarNode('v')->end()
                 ->arrayNode('paths')
                     ->children()
                         ->scalarNode('output')->end()
