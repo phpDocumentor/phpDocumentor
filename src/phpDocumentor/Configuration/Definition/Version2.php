@@ -18,6 +18,13 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 final class Version2 implements ConfigurationInterface, Upgradable
 {
+    private $defaultTemplateName;
+
+    public function __construct(string $defaultTemplateName)
+    {
+        $this->defaultTemplateName = $defaultTemplateName;
+    }
+
     /**
      * @inheritDoc
      */
@@ -26,10 +33,12 @@ final class Version2 implements ConfigurationInterface, Upgradable
         $treebuilder = new TreeBuilder('phpdocumentor');
 
         $treebuilder->getRootNode()
+            ->addDefaultsIfNotSet()
             ->children()
                 ->scalarNode('v')->defaultValue('2')->end()
                 ->scalarNode('title')->defaultValue('my-doc')->end()
                 ->arrayNode('parser')
+                    ->addDefaultsIfNotSet()
                     ->normalizeKeys(false)
                     ->children()
                         ->scalarNode('default-package-name')->defaultValue('Application')->end()
@@ -75,21 +84,25 @@ final class Version2 implements ConfigurationInterface, Upgradable
                     ->end()
                 ->end()
                 ->arrayNode('transformer')
+                    ->addDefaultsIfNotSet()
                     ->children()
                         ->scalarNode('target')->defaultValue('build/api')->end()
                     ->end()
                 ->end()
                 ->arrayNode('logging')
+                    ->addDefaultsIfNotSet()
                     ->children()
                         ->scalarNode('level')->defaultValue('error')->end()
                     ->end()
                 ->end()
                 ->arrayNode('transformations')
+                    ->addDefaultsIfNotSet()
                     ->fixXmlConfig('template')
                     ->children()
                         ->arrayNode('templates')
                             ->fixXmlConfig('parameter')
                             ->useAttributeAsKey('name')
+                            ->defaultValue([$this->defaultTemplateName => ['name' => $this->defaultTemplateName]])
                             ->prototype('array')
                                 ->children()
                                     ->scalarNode('location')->end()
@@ -105,6 +118,7 @@ final class Version2 implements ConfigurationInterface, Upgradable
                     ->end()
                 ->end()
                 ->arrayNode('files')
+                    ->addDefaultsIfNotSet()
                     ->fixXmlConfig('file', 'files')
                     ->fixXmlConfig('directory', 'directories')
                     ->fixXmlConfig('ignore', 'ignores')
@@ -117,6 +131,7 @@ final class Version2 implements ConfigurationInterface, Upgradable
                             ->defaultTrue()
                         ->end()
                         ->arrayNode('directories')
+                            ->defaultValue([getcwd()])
                             ->beforeNormalization()->castToArray()->end()
                             ->prototype('scalar')->end()
                         ->end()

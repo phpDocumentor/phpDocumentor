@@ -58,6 +58,8 @@ services:
         autowire: true
         autoconfigure: true
         public: false
+        bind:
+          $defaultTemplateName: 'clean'
 
     ###################################################################################
     ## Autoloading definitions for whole namespaces ###################################

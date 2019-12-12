@@ -67,8 +67,7 @@ final class ConfigurationFactory
             }
         }
 
-        // TODO: This should not be an exception; generate a default config
-        throw new \InvalidArgumentException('No configuration file found');
+        return new Configuration($this->symfonyConfigFactory->createDefault());
     }
 
     /**
@@ -86,7 +85,7 @@ final class ConfigurationFactory
             throw new InvalidConfigPathException(sprintf('File %s could not be found', $filename));
         }
 
-        $config = $this->symfonyConfigFactory->create($filename);
+        $config = $this->symfonyConfigFactory->createFromFile($filename);
 
         return new Configuration($this->applyMiddleware($config));
     }
