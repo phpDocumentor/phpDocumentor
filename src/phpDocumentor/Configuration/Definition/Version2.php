@@ -19,8 +19,9 @@ final class Version2 implements ConfigurationInterface, Upgradable
             ->children()
                 ->scalarNode('v')->defaultValue('2')->end()
                 ->arrayNode('parser')
+                    ->normalizeKeys(false)
                     ->children()
-                        ->scalarNode('default_package_name')->defaultValue('Application')->end()
+                        ->scalarNode('default-package-name')->defaultValue('Application')->end()
                         ->scalarNode('target')->defaultValue('build/api-cache')->end()
                     ->end()
                 ->end()
@@ -93,9 +94,12 @@ final class Version2 implements ConfigurationInterface, Upgradable
                     'number' => '1.0.0',
                     'api' => [
                         [
-                            'default_package_name' => $values['default_package_name'],
+                            'default-package-name' => $values['parser']['default-package-name'],
                             'source' => [
                                 'path' => array_merge($values['files']['files'], $values['files']['directories'])
+                            ],
+                            'ignore' => [
+                                'paths' => $values['files']['ignores']
                             ]
                         ]
                     ]
