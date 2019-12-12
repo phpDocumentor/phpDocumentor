@@ -18,8 +18,11 @@ final class Version3 implements ConfigurationInterface
         $treebuilder->getRootNode()
             ->fixXmlConfig('version')
             ->fixXmlConfig('template')
+            ->addDefaultsIfNotSet()
             ->children()
                 ->scalarNode('v')->end()
+                ->scalarNode('title')->defaultValue('my-doc')->end()
+                ->booleanNode('use-cache')->defaultTrue()->end()
                 ->arrayNode('paths')
                     ->children()
                         ->scalarNode('output')->end()
@@ -29,10 +32,8 @@ final class Version3 implements ConfigurationInterface
                 ->arrayNode('versions')
                     ->useAttributeAsKey('number')
                     ->prototype('array')
-                        ->fixXmlConfig('api', 'apis')
-                        ->fixXmlConfig('guide', 'guides')
                         ->children()
-                            ->scalarNode('folder')->end()
+                            ->scalarNode('folder')->defaultValue('')->end()
                             ->append($this->apiSection())
                             ->append($this->guideSection())
                         ->end()
@@ -41,6 +42,7 @@ final class Version3 implements ConfigurationInterface
                 ->arrayNode('templates')
                     ->fixXmlConfig('parameter')
                     ->useAttributeAsKey('name')
+                    ->defaultValue(['clean' => ['name' => 'clean']])
                     ->prototype('array')
                         ->children()
                             ->scalarNode('location')->end()
@@ -60,44 +62,57 @@ final class Version3 implements ConfigurationInterface
 
     private function apiSection(): ArrayNodeDefinition
     {
-        $treebuilder = new TreeBuilder('apis');
+        $treebuilder = new TreeBuilder('api');
 
         return $treebuilder->getRootNode()
             ->prototype('array')
+                ->normalizeKeys(false)
                 ->children()
                     ->enumNode('format')
                         ->info('In which language is your code written?')
                         ->values(['php'])
                         ->defaultValue('php')
                     ->end()
-                    ->enumNode('visibility')
-                        ->info('What is the deepest level of visibility to include in the documentation?')
-                        ->defaultValue('public')
-                        ->values([
-                            'api', // only include elements tagged with the `@api` tag
-                            'public', // include the previous category and all methods, properties and constants that are public
-                            'protected', // include the previous category and all methods, properties and constants that are protected
-                            'private', // include the previous category and all methods, properties and constants that are private
-                            'hidden' // include the previous category and all elements tagged with `@hidden`
-                        ])
+                    ->arrayNode('visibility')
+                        ->defaultValue(['public', 'protected', 'private'])
+                        ->prototype('enum')
+                            ->info('What is the deepest level of visibility to include in the documentation?')
+                            ->values([
+                                'api', // only include elements tagged with the `@api` tag
+                                'public', // include the previous category and all methods, properties and constants that are public
+                                'protected', // include the previous category and all methods, properties and constants that are protected
+                                'private', // include the previous category and all methods, properties and constants that are private
+                                'hidden' // include the previous category and all elements tagged with `@hidden`
+                            ])
+                        ->end()
                     ->end()
-                    ->scalarNode('default_package_name')
+                    ->scalarNode('default-package-name')
+                        ->defaultValue('Application')
                         ->info(
                             'When your source code is grouped using the @package tag; what is the name of the '
                             . 'default package when none is provided?'
                         )
-                        ->defaultValue('Application')
+                    ->end()
+                    ->scalarNode('encoding')
+                        ->defaultValue('utf8')
                     ->end()
                     ->append($this->source())
                     ->arrayNode('ignore')
+                        ->addDefaultsIfNotSet()
                         ->fixXmlConfig('path')
                         ->children()
-                            ->booleanNode('hidden')->defaultValue('true')->end()
-                            ->booleanNode('symlinks')->defaultValue('true')->end()
+                            ->booleanNode('hidden')->defaultTrue()->end()
+                            ->booleanNode('symlinks')->defaultTrue()->end()
                             ->append($this->paths())
                         ->end()
                     ->end()
+                    ->arrayNode('ignore-tags')
+                        ->defaultValue([])
+                        ->beforeNormalization()->castToArray()->end()
+                        ->prototype('scalar')->end()
+                    ->end()
                     ->arrayNode('extensions')
+                        ->addDefaultsIfNotSet()
                         ->children()
                             ->arrayNode('extension')
                                 ->defaultValue(['php', 'php3', 'phtml'])
@@ -106,10 +121,11 @@ final class Version3 implements ConfigurationInterface
                             ->end()
                         ->end()
                     ->end()
-                    ->booleanNode('include_source')
-                        ->defaultValue('false')
+                    ->booleanNode('include-source')
+                        ->defaultFalse()
                     ->end()
                     ->arrayNode('markers')
+                        ->addDefaultsIfNotSet()
                         ->fixXmlConfig('marker')
                         ->children()
                             ->arrayNode('markers')
@@ -125,7 +141,7 @@ final class Version3 implements ConfigurationInterface
 
     private function guideSection(): ArrayNodeDefinition
     {
-        $treebuilder = new TreeBuilder('guides');
+        $treebuilder = new TreeBuilder('guide');
 
         return $treebuilder->getRootNode()
             ->prototype('array')

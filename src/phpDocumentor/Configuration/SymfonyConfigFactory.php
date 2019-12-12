@@ -3,6 +3,8 @@
 namespace phpDocumentor\Configuration;
 
 use phpDocumentor\Configuration\Definition\Upgradable;
+use phpDocumentor\Dsn;
+use phpDocumentor\Path;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\Util\XmlUtils;
@@ -18,7 +20,6 @@ final class SymfonyConfigFactory
 
     public function create(string $filename) : array
     {
-        var_dump($this->configurationDefinitions);
         $values = XmlUtils::loadFile($filename, null);
         $values = XmlUtils::convertDomElementToArray($values->documentElement);
 
@@ -29,6 +30,32 @@ final class SymfonyConfigFactory
                 . 'contact the maintainers and provide your configuration file or whole project to reproduce this issue'
             );
         }
+
+        $configuration['paths']['output'] = new Dsn('file://' . $configuration['paths']['output']);
+        $configuration['paths']['cache'] = new Path($configuration['paths']['cache']);
+        foreach ($configuration['versions'] as $versionNumber => $version) {
+            foreach ($version['api'] as $key => $api) {
+                $configuration['versions'][$versionNumber]['api'][$key]['source']['dsn']
+                    = new Dsn($api['source']['dsn']);
+                foreach ($api['source']['paths'] as $subkey => $path) {
+                    $configuration['versions'][$versionNumber]['api'][$key]['source']['paths'][$subkey] =
+                        new Path($path);
+                }
+                $configuration['versions'][$versionNumber]['api'][$key]['extensions'] =
+                    $configuration['versions'][$versionNumber]['api'][$key]['extensions']['extension'];
+                $configuration['versions'][$versionNumber]['api'][$key]['markers'] =
+                    $configuration['versions'][$versionNumber]['api'][$key]['markers']['markers'];
+            }
+            foreach ($version['guide'] as $key => $guide) {
+                $configuration['versions'][$versionNumber]['guide'][$key]['source']['dsn']
+                    = new Dsn($guide['source']['dsn']);
+                foreach ($guide['source']['paths'] as $subkey => $path) {
+                    $configuration['versions'][$versionNumber]['guide'][$key]['source']['paths'][$subkey] =
+                        new Path($path);
+                }
+            }
+        }
+
         return $configuration;
     }
 
@@ -47,7 +74,6 @@ final class SymfonyConfigFactory
 
         $processor = new Processor();
         $configuration = $processor->processConfiguration($definition, [ $values ]);
-
         if ($definition instanceof Upgradable) {
             $configuration = $this->processConfiguration(
                 $this->upgradeConfiguration($definition, $configuration)

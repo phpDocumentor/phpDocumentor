@@ -16,6 +16,7 @@ namespace phpDocumentor\Configuration;
 use phpDocumentor\Configuration\Exception\InvalidConfigPathException;
 use phpDocumentor\Configuration\Factory\Strategy;
 use phpDocumentor\Configuration\Factory\Version3;
+use phpDocumentor\Dsn;
 use phpDocumentor\Uri;
 use RuntimeException;
 use SimpleXMLElement;
@@ -100,7 +101,7 @@ final class ConfigurationFactory
         }
 
         $config = $this->symfonyConfigFactory->create($filename);
-        var_dump($config);
+        var_export($config);
         die();
 
 

@@ -82,6 +82,9 @@ final class Configure
             );
         }
 
-        return $this->configuration->getArrayCopy();
+        $arrayCopy = $this->configuration->getArrayCopy();
+
+        var_export($arrayCopy['phpdocumentor']); die();
+        return $arrayCopy;
     }
 }
