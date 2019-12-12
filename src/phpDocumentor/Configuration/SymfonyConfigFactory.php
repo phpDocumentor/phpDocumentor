@@ -28,11 +28,21 @@ final class SymfonyConfigFactory
         $this->configurationDefinitions = $definitions;
     }
 
-    public function create(string $filename) : array
+    public function createFromFile(string $filename) : array
     {
         $values = XmlUtils::loadFile($filename, null);
         $values = XmlUtils::convertDomElementToArray($values->documentElement);
 
+        return $this->generateConfiguration($values);
+    }
+
+    public function createDefault(): array
+    {
+        return $this->generateConfiguration([]);
+    }
+
+    private function generateConfiguration(array $values) : array
+    {
         $configuration = $this->processConfiguration($values);
         if ($configuration['v'] !== (string) array_key_last($this->configurationDefinitions)) {
             throw new \RuntimeException(
