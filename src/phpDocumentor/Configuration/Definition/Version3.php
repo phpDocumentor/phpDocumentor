@@ -21,6 +21,13 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 final class Version3 implements ConfigurationInterface, Normalizable
 {
+    private $defaultTemplateName;
+
+    public function __construct(string $defaultTemplateName)
+    {
+        $this->defaultTemplateName = $defaultTemplateName;
+    }
+
     /**
      * @inheritDoc
      */
@@ -33,7 +40,7 @@ final class Version3 implements ConfigurationInterface, Normalizable
             ->fixXmlConfig('template')
             ->addDefaultsIfNotSet()
             ->children()
-                ->scalarNode('v')->end()
+                ->scalarNode('v')->defaultValue('3')->end()
                 ->scalarNode('title')->defaultValue('my-doc')->end()
                 ->booleanNode('use-cache')->defaultTrue()->end()
                 ->arrayNode('paths')
@@ -44,8 +51,40 @@ final class Version3 implements ConfigurationInterface, Normalizable
                 ->end()
                 ->arrayNode('versions')
                     ->useAttributeAsKey('number')
+                    ->defaultValue([
+                        '1.0.0' => [
+                            'number' => '1.0.0',
+                            'folder' => '',
+                            'api' => [
+                                [
+                                    'format' => 'php',
+                                    'visibility' => ['public', 'protected', 'private'],
+                                    'default-package-name' => 'Application',
+                                    'encoding' => 'utf-8',
+                                    'source' => [
+                                        'dsn' => 'file://.',
+                                        'paths' => [
+                                            '.'
+                                        ]
+                                    ],
+                                    'ignore' => [
+                                        'hidden' => true,
+                                        'symlinks' => true,
+                                    ],
+                                    'extensions' => [
+                                        'extensions' => ['php', 'php3', 'phtml']
+                                    ],
+                                    'include-source' => false,
+                                    'validate' => false,
+                                    'markers' => [ 'markers' => ['TODO', 'FIXME']]
+                                ]
+                            ]
+                        ]
+                    ])
                     ->prototype('array')
+                        ->addDefaultsIfNotSet()
                         ->children()
+                            ->scalarNode('number')->defaultValue('1.0.0')->end()
                             ->scalarNode('folder')->defaultValue('')->end()
                             ->append($this->apiSection())
                             ->append($this->guideSection())
@@ -55,7 +94,7 @@ final class Version3 implements ConfigurationInterface, Normalizable
                 ->arrayNode('templates')
                     ->fixXmlConfig('parameter')
                     ->useAttributeAsKey('name')
-                    ->defaultValue(['clean' => ['name' => 'clean']])
+                    ->defaultValue([$this->defaultTemplateName => ['name' => $this->defaultTemplateName]])
                     ->prototype('array')
                         ->children()
                             ->scalarNode('location')->end()
@@ -84,10 +123,8 @@ final class Version3 implements ConfigurationInterface, Normalizable
                     ->enumNode('format')
                         ->info('In which language is your code written?')
                         ->values(['php'])
-                        ->defaultValue('php')
                     ->end()
                     ->arrayNode('visibility')
-                        ->defaultValue(['public', 'protected', 'private'])
                         ->prototype('enum')
                             ->info('What is the deepest level of visibility to include in the documentation?')
                             ->values([
@@ -100,15 +137,12 @@ final class Version3 implements ConfigurationInterface, Normalizable
                         ->end()
                     ->end()
                     ->scalarNode('default-package-name')
-                        ->defaultValue('Application')
                         ->info(
                             'When your source code is grouped using the @package tag; what is the name of the '
                             . 'default package when none is provided?'
                         )
                     ->end()
-                    ->scalarNode('encoding')
-                        ->defaultValue('utf-8')
-                    ->end()
+                    ->scalarNode('encoding')->end()
                     ->append($this->source())
                     ->arrayNode('ignore')
                         ->addDefaultsIfNotSet()
@@ -126,8 +160,9 @@ final class Version3 implements ConfigurationInterface, Normalizable
                     ->end()
                     ->arrayNode('extensions')
                         ->addDefaultsIfNotSet()
+                        ->fixXmlConfig('extension')
                         ->children()
-                            ->arrayNode('extension')
+                            ->arrayNode('extensions')
                                 ->defaultValue(['php', 'php3', 'phtml'])
                                 ->beforeNormalization()->castToArray()->end()
                                 ->prototype('scalar')->end()
@@ -168,7 +203,7 @@ final class Version3 implements ConfigurationInterface, Normalizable
                         new Path($path);
                 }
                 $configuration['versions'][$versionNumber]['api'][$key]['extensions'] =
-                    $configuration['versions'][$versionNumber]['api'][$key]['extensions']['extension'];
+                    $configuration['versions'][$versionNumber]['api'][$key]['extensions']['extensions'];
                 $configuration['versions'][$versionNumber]['api'][$key]['markers'] =
                     $configuration['versions'][$versionNumber]['api'][$key]['markers']['markers'];
             }
