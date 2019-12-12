@@ -15,7 +15,7 @@ namespace phpDocumentor\Configuration\Definition;
 
 use PHPUnit\Framework\TestCase;
 
-class Version2Test extends TestCase
+final class Version2Test extends TestCase
 {
     const DEFAULT_TEMPLATE_NAME = 'clean';
 
