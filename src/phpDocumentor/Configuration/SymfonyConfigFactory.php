@@ -1,11 +1,20 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link http://phpdoc.org
+ */
 
 namespace phpDocumentor\Configuration;
 
 use phpDocumentor\Configuration\Definition\Normalizable;
 use phpDocumentor\Configuration\Definition\Upgradable;
-use phpDocumentor\Dsn;
-use phpDocumentor\Path;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\Util\XmlUtils;
@@ -44,12 +53,12 @@ final class SymfonyConfigFactory
      */
     private function processConfiguration(array $values) : array
     {
-        $configurationVersion = (string)$values['v'] ?? '2';
+        $configurationVersion = (string) $values['v'] ?? '2';
 
         $definition = $this->findDefinition($configurationVersion);
 
         $processor = new Processor();
-        $configuration = $processor->processConfiguration($definition, [ $values ]);
+        $configuration = $processor->processConfiguration($definition, [$values]);
         if ($definition instanceof Normalizable) {
             $configuration = $definition->normalize($configuration);
         }
