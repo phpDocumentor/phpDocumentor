@@ -44,7 +44,6 @@ class Kernel extends BaseKernel
      * ```
      *     phpDocumentor\Configuration\ConfigurationFactory:
      *       arguments:
-     *         $strategies: !tagged phpdoc.config_strategy
      *         $defaultFiles:
      *           - "@=service('kernel').getWorkingDir() ~ '/phpdoc.xml'"
      *           - "@=service('kernel').getWorkingDir() ~ '/phpdoc.dist.xml'"
