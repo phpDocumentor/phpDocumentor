@@ -2,11 +2,13 @@
 
 namespace phpDocumentor\Configuration\Definition;
 
+use phpDocumentor\Dsn;
+use phpDocumentor\Path;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
-final class Version3 implements ConfigurationInterface
+final class Version3 implements ConfigurationInterface, Normalizable
 {
     /**
      * @inheritDoc
@@ -94,7 +96,7 @@ final class Version3 implements ConfigurationInterface
                         )
                     ->end()
                     ->scalarNode('encoding')
-                        ->defaultValue('utf8')
+                        ->defaultValue('utf-8')
                     ->end()
                     ->append($this->source())
                     ->arrayNode('ignore')
@@ -137,6 +139,36 @@ final class Version3 implements ConfigurationInterface
                     ->end()
                 ->end()
             ->end();
+    }
+
+    public function normalize(array $configuration): array
+    {
+        $configuration['paths']['output'] = new Dsn('file://' . $configuration['paths']['output']);
+        $configuration['paths']['cache'] = new Path($configuration['paths']['cache']);
+        foreach ($configuration['versions'] as $versionNumber => $version) {
+            foreach ($version['api'] as $key => $api) {
+                $configuration['versions'][$versionNumber]['api'][$key]['source']['dsn']
+                    = new Dsn($api['source']['dsn']);
+                foreach ($api['source']['paths'] as $subkey => $path) {
+                    $configuration['versions'][$versionNumber]['api'][$key]['source']['paths'][$subkey] =
+                        new Path($path);
+                }
+                $configuration['versions'][$versionNumber]['api'][$key]['extensions'] =
+                    $configuration['versions'][$versionNumber]['api'][$key]['extensions']['extension'];
+                $configuration['versions'][$versionNumber]['api'][$key]['markers'] =
+                    $configuration['versions'][$versionNumber]['api'][$key]['markers']['markers'];
+            }
+            foreach ($version['guide'] as $key => $guide) {
+                $configuration['versions'][$versionNumber]['guide'][$key]['source']['dsn']
+                    = new Dsn($guide['source']['dsn']);
+                foreach ($guide['source']['paths'] as $subkey => $path) {
+                    $configuration['versions'][$versionNumber]['guide'][$key]['source']['paths'][$subkey] =
+                        new Path($path);
+                }
+            }
+        }
+
+        return $configuration;
     }
 
     private function guideSection(): ArrayNodeDefinition

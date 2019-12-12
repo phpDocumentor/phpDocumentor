@@ -2,6 +2,7 @@
 
 namespace phpDocumentor\Configuration;
 
+use phpDocumentor\Configuration\Definition\Normalizable;
 use phpDocumentor\Configuration\Definition\Upgradable;
 use phpDocumentor\Dsn;
 use phpDocumentor\Path;
@@ -31,31 +32,6 @@ final class SymfonyConfigFactory
             );
         }
 
-        $configuration['paths']['output'] = new Dsn('file://' . $configuration['paths']['output']);
-        $configuration['paths']['cache'] = new Path($configuration['paths']['cache']);
-        foreach ($configuration['versions'] as $versionNumber => $version) {
-            foreach ($version['api'] as $key => $api) {
-                $configuration['versions'][$versionNumber]['api'][$key]['source']['dsn']
-                    = new Dsn($api['source']['dsn']);
-                foreach ($api['source']['paths'] as $subkey => $path) {
-                    $configuration['versions'][$versionNumber]['api'][$key]['source']['paths'][$subkey] =
-                        new Path($path);
-                }
-                $configuration['versions'][$versionNumber]['api'][$key]['extensions'] =
-                    $configuration['versions'][$versionNumber]['api'][$key]['extensions']['extension'];
-                $configuration['versions'][$versionNumber]['api'][$key]['markers'] =
-                    $configuration['versions'][$versionNumber]['api'][$key]['markers']['markers'];
-            }
-            foreach ($version['guide'] as $key => $guide) {
-                $configuration['versions'][$versionNumber]['guide'][$key]['source']['dsn']
-                    = new Dsn($guide['source']['dsn']);
-                foreach ($guide['source']['paths'] as $subkey => $path) {
-                    $configuration['versions'][$versionNumber]['guide'][$key]['source']['paths'][$subkey] =
-                        new Path($path);
-                }
-            }
-        }
-
         return $configuration;
     }
 
@@ -74,6 +50,10 @@ final class SymfonyConfigFactory
 
         $processor = new Processor();
         $configuration = $processor->processConfiguration($definition, [ $values ]);
+        if ($definition instanceof Normalizable) {
+            $configuration = $definition->normalize($configuration);
+        }
+
         if ($definition instanceof Upgradable) {
             $configuration = $this->processConfiguration(
                 $this->upgradeConfiguration($definition, $configuration)
@@ -100,12 +80,7 @@ final class SymfonyConfigFactory
         return $definition;
     }
 
-    /**
-     * @param $definition
-     * @param array $configuration
-     * @return array
-     */
-    private function upgradeConfiguration($definition, array $configuration) : array
+    private function upgradeConfiguration(ConfigurationInterface $definition, array $configuration) : array
     {
         $upgradedConfiguration = $definition->upgrade($configuration);
         if (
@@ -121,7 +96,6 @@ final class SymfonyConfigFactory
             );
         }
 
-        $configuration = $upgradedConfiguration;
-        return $configuration;
+        return $upgradedConfiguration;
     }
 }
