@@ -14,12 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Configuration;
 
 use phpDocumentor\Configuration\Exception\InvalidConfigPathException;
-use phpDocumentor\Configuration\Factory\Strategy;
-use phpDocumentor\Configuration\Factory\Version3;
-use phpDocumentor\Dsn;
 use phpDocumentor\Uri;
-use RuntimeException;
-use SimpleXMLElement;
 use function file_exists;
 use function sprintf;
 
@@ -28,9 +23,6 @@ use function sprintf;
  */
 final class ConfigurationFactory
 {
-    /** @var Strategy[] All strategies that are used by the ConfigurationFactory. */
-    private $strategies = [];
-
     /**
      * A series of callables that take the configuration array as parameter and should return that array or a modified
      * version of it.
@@ -47,15 +39,9 @@ final class ConfigurationFactory
 
     /**
      * Initializes the ConfigurationFactory.
-     *
-     * @param Strategy[]|iterable $strategies
-     * @param array               $defaultFiles
      */
-    public function __construct(iterable $strategies, array $defaultFiles, SymfonyConfigFactory $symfonyConfigFactory)
+    public function __construct(array $defaultFiles, SymfonyConfigFactory $symfonyConfigFactory)
     {
-        foreach ($strategies as $strategy) {
-            $this->registerStrategy($strategy);
-        }
         $this->defaultFiles = $defaultFiles;
         $this->symfonyConfigFactory = $symfonyConfigFactory;
     }
@@ -81,7 +67,8 @@ final class ConfigurationFactory
             }
         }
 
-        return new Configuration($this->applyMiddleware(Version3::buildDefault()));
+        // TODO: This should not be an exception; generate a default config
+        throw new \InvalidArgumentException('No configuration file found');
     }
 
     /**
@@ -89,7 +76,6 @@ final class ConfigurationFactory
      *
      * @param Uri $uri The location of the file to be loaded.
      *
-     * @throws RuntimeException If no matching strategy can be found.
      * @throws InvalidConfigPathException If $uri points to an inexistent file.
      */
     public function fromUri(Uri $uri) : Configuration
@@ -101,29 +87,8 @@ final class ConfigurationFactory
         }
 
         $config = $this->symfonyConfigFactory->create($filename);
-        var_export($config);
-        die();
 
-
-
-        $xml = new SimpleXMLElement($filename, 0, true);
-        foreach ($this->strategies as $strategy) {
-            if ($strategy->supports($xml) !== true) {
-                continue;
-            }
-
-            return new Configuration($this->applyMiddleware($strategy->convert($xml)));
-        }
-
-        throw new RuntimeException('No supported configuration files were found');
-    }
-
-    /**
-     * Adds strategies that are used in the ConfigurationFactory.
-     */
-    private function registerStrategy(Strategy $strategy) : void
-    {
-        $this->strategies[] = $strategy;
+        return new Configuration($this->applyMiddleware($config));
     }
 
     /**
