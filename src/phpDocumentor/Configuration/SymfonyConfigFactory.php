@@ -15,12 +15,21 @@ namespace phpDocumentor\Configuration;
 
 use phpDocumentor\Configuration\Definition\Normalizable;
 use phpDocumentor\Configuration\Definition\Upgradable;
+use RuntimeException;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\Util\XmlUtils;
+use function array_key_last;
+use function array_keys;
+use function implode;
+use function sprintf;
 
 final class SymfonyConfigFactory
 {
+    public const FIELD_CONFIG_VERSION = 'configVersion';
+    private const DEFAULT_CONFIG_VERSION = '2';
+
+    /** @var ConfigurationInterface[] $configurationDefinitions */
     private $configurationDefinitions = [];
 
     public function __construct(array $definitions)
@@ -36,16 +45,18 @@ final class SymfonyConfigFactory
         return $this->generateConfiguration($values);
     }
 
-    public function createDefault(): array
+    public function createDefault() : array
     {
-        return $this->generateConfiguration(['v' => (string) array_key_last($this->configurationDefinitions)]);
+        return $this->generateConfiguration([
+            self::FIELD_CONFIG_VERSION => (string) array_key_last($this->configurationDefinitions),
+        ]);
     }
 
     private function generateConfiguration(array $values) : array
     {
         $configuration = $this->processConfiguration($values);
-        if ($configuration['v'] !== (string) array_key_last($this->configurationDefinitions)) {
-            throw new \RuntimeException(
+        if ($configuration[self::FIELD_CONFIG_VERSION] !== (string) array_key_last($this->configurationDefinitions)) {
+            throw new RuntimeException(
                 'The configuration file does not match the latest version and auto-upgrading failed. Please '
                 . 'contact the maintainers and provide your configuration file or whole project to reproduce this issue'
             );
@@ -58,12 +69,12 @@ final class SymfonyConfigFactory
      * Normalizes and validates the given values.
      *
      * When this version of the configuration can be upgraded (which is detected by the Upgradable interface on the
-     * Configuration definition) then it will do so and re-run this method with the upgraded values. The 'v' field will
-     * tell which definition should be used; when none is provided then a version 2 configuration is assumed.
+     * Configuration definition) then it will do so and re-run this method with the upgraded values. The 'configVersion'
+     * field will tell which definition should be used; when none is provided then a version 2 configuration is assumed.
      */
     private function processConfiguration(array $values) : array
     {
-        $configurationVersion = (string) $values['v'] ?? '2';
+        $configurationVersion = (string) $values[self::FIELD_CONFIG_VERSION] ?? self::DEFAULT_CONFIG_VERSION;
 
         $definition = $this->findDefinition($configurationVersion);
 
@@ -86,7 +97,7 @@ final class SymfonyConfigFactory
     {
         $definition = $this->configurationDefinitions[$configurationVersion] ?? null;
         if ($definition === null) {
-            throw new \RuntimeException(
+            throw new RuntimeException(
                 sprintf(
                     'Configuration version "%s" is not supported by this version of phpDocumentor, '
                     . 'supported versions are: %s',
@@ -99,18 +110,17 @@ final class SymfonyConfigFactory
         return $definition;
     }
 
-    private function upgradeConfiguration(ConfigurationInterface $definition, array $configuration) : array
+    private function upgradeConfiguration(Upgradable $definition, array $configuration) : array
     {
         $upgradedConfiguration = $definition->upgrade($configuration);
-        if (
-            !isset($upgradedConfiguration['v'])
-            || $configuration['v'] === $upgradedConfiguration['v']
+        if (!isset($upgradedConfiguration[self::FIELD_CONFIG_VERSION])
+            || $configuration[self::FIELD_CONFIG_VERSION] === $upgradedConfiguration[self::FIELD_CONFIG_VERSION]
         ) {
-            throw new \RuntimeException(
+            throw new RuntimeException(
                 sprintf(
                     'Upgrading the configuration to the latest version failed, we were unable to upgrade '
                     . 'version "%s" to a later version',
-                    $configuration['v']
+                    $configuration[self::FIELD_CONFIG_VERSION]
                 )
             );
         }

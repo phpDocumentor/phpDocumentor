@@ -6,5 +6,5 @@ namespace phpDocumentor\Configuration\Definition;
 
 interface Normalizable
 {
-    public function normalize(array $configuration): array;
+    public function normalize(array $configuration) : array;
 }

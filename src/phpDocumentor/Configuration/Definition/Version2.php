@@ -13,11 +13,15 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Configuration\Definition;
 
+use phpDocumentor\Configuration\SymfonyConfigFactory;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
+use function array_merge;
+use function getcwd;
 
 final class Version2 implements ConfigurationInterface, Upgradable
 {
+    /** @var string This is injected so that the name of the default template can be defined globally in the app */
     private $defaultTemplateName;
 
     public function __construct(string $defaultTemplateName)
@@ -35,7 +39,7 @@ final class Version2 implements ConfigurationInterface, Upgradable
         $treebuilder->getRootNode()
             ->addDefaultsIfNotSet()
             ->children()
-                ->scalarNode('v')->defaultValue('2')->end()
+                ->scalarNode(SymfonyConfigFactory::FIELD_CONFIG_VERSION)->defaultValue('2')->end()
                 ->scalarNode('title')->defaultValue('my-doc')->end()
                 ->arrayNode('parser')
                     ->addDefaultsIfNotSet()
@@ -47,11 +51,11 @@ final class Version2 implements ConfigurationInterface, Upgradable
                             ->prototype('enum')
                                 ->info('What is the deepest level of visibility to include in the documentation?')
                                 ->values([
-                                    'api', // only include elements tagged with the `@api` tag
-                                    'public', // include the previous category and all methods, properties and constants that are public
-                                    'protected', // include the previous category and all methods, properties and constants that are protected
-                                    'private', // include the previous category and all methods, properties and constants that are private
-                                    'hidden' // include the previous category and all elements tagged with `@hidden`
+                                    'api', // include all elements tagged with the `@api` tag
+                                    'public', // include all methods, properties and constants that are public
+                                    'protected', // include all methods, properties and constants that are protected
+                                    'private', // include all methods, properties and constants that are private
+                                    'hidden', // include all elements tagged with `@hidden`
                                 ])
                             ->end()
                         ->end()
@@ -154,16 +158,15 @@ final class Version2 implements ConfigurationInterface, Upgradable
      * Upgrades the version 2 configuration to the version 3 configuration.
      *
      * @todo not all options are included yet; finish this
-     *
      * @inheritDoc
      */
     public function upgrade(array $values) : array
     {
         return [
-            'v' => '3',
+            SymfonyConfigFactory::FIELD_CONFIG_VERSION => '3',
             'paths' => [
                 'output' => $values['transformer']['target'],
-                'cache' => $values['parser']['target']
+                'cache' => $values['parser']['target'],
             ],
             'version' => [
                 [
@@ -172,21 +175,21 @@ final class Version2 implements ConfigurationInterface, Upgradable
                         [
                             'default-package-name' => $values['parser']['default-package-name'],
                             'source' => [
-                                'path' => array_merge($values['files']['files'], $values['files']['directories'])
+                                'path' => array_merge($values['files']['files'], $values['files']['directories']),
                             ],
                             'ignore' => [
-                                'paths' => $values['files']['ignores']
+                                'paths' => $values['files']['ignores'],
                             ],
                             'extensions' => [
-                                'extension' => $values['parser']['extensions']['extensions']
+                                'extension' => $values['parser']['extensions']['extensions'],
                             ],
                             'markers' => [
-                                'marker' => $values['parser']['markers']['items']
-                            ]
-                        ]
-                    ]
-                ]
-            ]
+                                'marker' => $values['parser']['markers']['items'],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
         ];
     }
 }

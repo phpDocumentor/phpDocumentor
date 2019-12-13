@@ -13,16 +13,19 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Configuration\Definition;
 
+use phpDocumentor\Configuration\SymfonyConfigFactory;
 use PHPUnit\Framework\TestCase;
+use function array_merge;
+use function array_replace_recursive;
 
 final class Version3Test extends TestCase
 {
-    const DEFAULT_TEMPLATE_NAME = 'clean';
+    private const DEFAULT_TEMPLATE_NAME = 'clean';
 
     /**
      * @dataProvider provideTestConfiguration
      */
-    public function testLoadingADefaultConfigWorks($inputConfig, $expectedConfig)
+    public function testLoadingADefaultConfigWorks($inputConfig, $expectedConfig) : void
     {
         $configuration = new Version3(self::DEFAULT_TEMPLATE_NAME);
         $node = $configuration->getConfigTreeBuilder()->buildTree();
@@ -32,7 +35,7 @@ final class Version3Test extends TestCase
         $this->assertEquals($expectedConfig, $finalizedConfig);
     }
 
-    public function provideTestConfiguration()
+    public function provideTestConfiguration() : array
     {
         return [
             'default configuration' => [[], $this->defaultConfigurationOutput()],
@@ -54,9 +57,7 @@ final class Version3Test extends TestCase
                                 [
                                     'source' => [
                                         'dsn' => 'file:///tmp',
-                                        'path' => [
-                                            'src',
-                                        ],
+                                        'path' => ['src'],
                                     ],
                                 ],
                             ],
@@ -68,7 +69,7 @@ final class Version3Test extends TestCase
             'minimal configuration' => [
                 [
                     'versions' => [
-                        "1.0.0" => [
+                        '1.0.0' => [
                             'api' => [
                                 [],
                             ],
@@ -80,13 +81,10 @@ final class Version3Test extends TestCase
         ];
     }
 
-    /**
-     * @return array
-     */
     private function defaultConfigurationOutput() : array
     {
         return [
-            'v' => '3',
+            SymfonyConfigFactory::FIELD_CONFIG_VERSION => '3',
             'title' => 'my-doc',
             'use-cache' => true,
             'paths' => [
@@ -104,9 +102,7 @@ final class Version3Test extends TestCase
                             'encoding' => 'utf-8',
                             'source' => [
                                 'dsn' => 'file://.',
-                                'paths' => [
-                                    '.',
-                                ],
+                                'paths' => ['.'],
                             ],
                             'ignore' => [
                                 'hidden' => true,
@@ -127,7 +123,7 @@ final class Version3Test extends TestCase
             ],
             'templates' => [
                 [
-                    'name' => self::DEFAULT_TEMPLATE_NAME
+                    'name' => self::DEFAULT_TEMPLATE_NAME,
                 ],
             ],
         ];

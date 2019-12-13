@@ -5,6 +5,12 @@ includes:
 parameters:
   inferPrivatePropertyTypeFromConstructor: true
   ignoreErrors:
+    # PHPStan does not play nice with Symfony Config's fluid interface
+    - '#.*NodeDefinition::prototype.*#'
+    - '#.*NodeDefinition::addDefaultChildrenIfNoneSet.*#'
+    - '#.*NodeDefinition::fixXmlConfig.*#'
+    - '#.*NodeDefinition::addDefaultsIfNotSet.*#'
+
     - '#Constructor of class phpDocumentor\\Transformer\\Writer\\Twig\\Extension has an unused parameter \$transformation#'
     - '#Call to an undefined method League\\Flysystem\\FilesystemInterface::find()#'
     # Bad design of descriptors.

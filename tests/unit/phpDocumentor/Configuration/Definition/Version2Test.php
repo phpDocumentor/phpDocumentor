@@ -13,16 +13,18 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Configuration\Definition;
 
+use phpDocumentor\Configuration\SymfonyConfigFactory;
 use PHPUnit\Framework\TestCase;
+use function getcwd;
 
 final class Version2Test extends TestCase
 {
-    const DEFAULT_TEMPLATE_NAME = 'clean';
+    private const DEFAULT_TEMPLATE_NAME = 'clean';
 
     /**
      * @dataProvider provideTestConfiguration
      */
-    public function testLoadingADefaultConfigWorks($inputConfig, $expectedConfig)
+    public function testLoadingADefaultConfigWorks(array $inputConfig, array $expectedConfig) : void
     {
         $configuration = new Version2(self::DEFAULT_TEMPLATE_NAME);
         $node = $configuration->getConfigTreeBuilder()->buildTree();
@@ -32,21 +34,21 @@ final class Version2Test extends TestCase
         $this->assertEquals($expectedConfig, $finalizedConfig);
     }
 
-    public function provideTestConfiguration()
+    public function provideTestConfiguration() : array
     {
         return [
-            'default configuration'   => [
+            'default configuration' => [
                 [],
                 [
-                    'v' => '2',
+                    SymfonyConfigFactory::FIELD_CONFIG_VERSION => '2',
                     'title' => 'my-doc',
                     'parser' => [
                         'default-package-name' => 'Application',
                         'visibility' => ['public', 'protected', 'private'],
                         'target' => 'build/api-cache',
                         'encoding' => 'utf-8',
-                        'extensions' => [ 'extensions' =>  ['php', 'php3', 'phtml']],
-                        'markers' => [ 'items' => ['TODO', 'FIXME']],
+                        'extensions' => ['extensions' => ['php', 'php3', 'phtml']],
+                        'markers' => ['items' => ['TODO', 'FIXME']],
                     ],
                     'files' => [
                         'ignore-hidden' => true,
@@ -55,20 +57,14 @@ final class Version2Test extends TestCase
                         'files' => [],
                         'ignores' => [],
                     ],
-                    'transformer' => [
-                        'target' => 'build/api'
-                    ],
+                    'transformer' => ['target' => 'build/api'],
                     'transformations' => [
                         'templates' => [
-                            self::DEFAULT_TEMPLATE_NAME => [
-                                'name' => self::DEFAULT_TEMPLATE_NAME
-                            ]
-                        ]
+                            self::DEFAULT_TEMPLATE_NAME => ['name' => self::DEFAULT_TEMPLATE_NAME],
+                        ],
                     ],
-                    'logging' => [
-                        'level' => 'error'
-                    ],
-                ]
+                    'logging' => [ 'level' => 'error' ],
+                ],
             ],
         ];
     }

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace phpDocumentor\Configuration\Definition;
 
@@ -15,8 +17,8 @@ interface Upgradable
      * the same settings in the structure that a newer definition expects (what that structure is depends on the version
      * of the definition.
      *
-     * The 'v' field in the result will inform the ConfigurationFactory what the next Configuration definition should be
-     * used to parse this result.
+     * The 'configVersion' field in the result will inform the ConfigurationFactory what the next Configuration
+     * definition should be used to parse this result.
      */
-    public function upgrade(array $values): array;
+    public function upgrade(array $values) : array;
 }

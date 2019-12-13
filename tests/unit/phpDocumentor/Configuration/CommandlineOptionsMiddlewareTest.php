@@ -25,9 +25,7 @@ use function current;
  */
 final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
 {
-    /**
-     * @var ConfigurationFactory
-     */
+    /** @var ConfigurationFactory */
     private $configurationFactory;
 
     protected function setUp() : void
@@ -113,7 +111,8 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
         $configuration = $this->givenAConfigurationWithoutApiDefinition();
 
         $middleware = new CommandlineOptionsMiddleware(
-            ['filename' => ['./src/index.php']], $this->configurationFactory
+            ['filename' => ['./src/index.php']],
+            $this->configurationFactory
         );
         $newConfiguration = $middleware($configuration);
 
