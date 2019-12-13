@@ -49,7 +49,7 @@ final class Configure
     public function __invoke(array $options) : array
     {
         $this->configFactory->addMiddleware(
-            new CommandlineOptionsMiddleware($options)
+            new CommandlineOptionsMiddleware($options, $this->configFactory)
         );
 
         if ($options['config'] ?? null) {

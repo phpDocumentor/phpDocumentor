@@ -44,47 +44,17 @@ final class Version3 implements ConfigurationInterface, Normalizable
                 ->scalarNode('title')->defaultValue('my-doc')->end()
                 ->booleanNode('use-cache')->defaultTrue()->end()
                 ->arrayNode('paths')
+                    ->addDefaultsIfNotSet()
                     ->children()
-                        ->scalarNode('output')->end()
-                        ->scalarNode('cache')->end()
+                        ->scalarNode('output')->defaultValue('build/api')->end()
+                        ->scalarNode('cache')->defaultValue('build/api-cache')->end()
                     ->end()
                 ->end()
                 ->arrayNode('versions')
                     ->useAttributeAsKey('number')
-                    ->defaultValue([
-                        '1.0.0' => [
-                            'number' => '1.0.0',
-                            'folder' => '',
-                            'api' => [
-                                [
-                                    'format' => 'php',
-                                    'visibility' => ['public', 'protected', 'private'],
-                                    'default-package-name' => 'Application',
-                                    'encoding' => 'utf-8',
-                                    'source' => [
-                                        'dsn' => 'file://.',
-                                        'paths' => [
-                                            '.'
-                                        ]
-                                    ],
-                                    'ignore' => [
-                                        'hidden' => true,
-                                        'symlinks' => true,
-                                    ],
-                                    'extensions' => [
-                                        'extensions' => ['php', 'php3', 'phtml']
-                                    ],
-                                    'include-source' => false,
-                                    'validate' => false,
-                                    'markers' => [ 'markers' => ['TODO', 'FIXME']]
-                                ]
-                            ]
-                        ]
-                    ])
+                    ->addDefaultChildrenIfNoneSet('1.0.0')
                     ->prototype('array')
-                        ->addDefaultsIfNotSet()
                         ->children()
-                            ->scalarNode('number')->defaultValue('1.0.0')->end()
                             ->scalarNode('folder')->defaultValue('')->end()
                             ->append($this->apiSection())
                             ->append($this->guideSection())
@@ -92,11 +62,11 @@ final class Version3 implements ConfigurationInterface, Normalizable
                     ->end()
                 ->end()
                 ->arrayNode('templates')
+                    ->addDefaultChildrenIfNoneSet(1)
                     ->fixXmlConfig('parameter')
-                    ->useAttributeAsKey('name')
-                    ->defaultValue([$this->defaultTemplateName => ['name' => $this->defaultTemplateName]])
                     ->prototype('array')
                         ->children()
+                            ->scalarNode('name')->defaultValue($this->defaultTemplateName)->end()
                             ->scalarNode('location')->end()
                             ->arrayNode('parameters')
                                 ->children()
@@ -117,12 +87,15 @@ final class Version3 implements ConfigurationInterface, Normalizable
         $treebuilder = new TreeBuilder('api');
 
         return $treebuilder->getRootNode()
+            ->addDefaultChildrenIfNoneSet(1)
             ->prototype('array')
+                ->addDefaultsIfNotSet()
                 ->normalizeKeys(false)
                 ->children()
                     ->enumNode('format')
                         ->info('In which language is your code written?')
                         ->values(['php'])
+                        ->defaultValue('php')
                     ->end()
                     ->arrayNode('visibility')
                         ->prototype('enum')
@@ -135,15 +108,17 @@ final class Version3 implements ConfigurationInterface, Normalizable
                                 'hidden' // include the previous category and all elements tagged with `@hidden`
                             ])
                         ->end()
+                        ->defaultValue(['public', 'protected', 'private'])
                     ->end()
                     ->scalarNode('default-package-name')
                         ->info(
                             'When your source code is grouped using the @package tag; what is the name of the '
                             . 'default package when none is provided?'
                         )
+                        ->defaultValue('Application')
                     ->end()
-                    ->scalarNode('encoding')->end()
-                    ->append($this->source())
+                    ->scalarNode('encoding')->defaultValue('utf-8')->end()
+                    ->append($this->source(['.']))
                     ->arrayNode('ignore')
                         ->addDefaultsIfNotSet()
                         ->fixXmlConfig('path')
@@ -236,25 +211,26 @@ final class Version3 implements ConfigurationInterface, Normalizable
             ->end();
     }
 
-    private function source(): ArrayNodeDefinition
+    private function source(array $defaultPaths = []): ArrayNodeDefinition
     {
         $treebuilder = new TreeBuilder('source');
 
         return $treebuilder->getRootNode()
+            ->addDefaultsIfNotSet()
             ->fixXmlConfig('path')
             ->children()
                 ->scalarNode('dsn')->defaultValue('file://.')->end()
-                ->append($this->paths())
+                ->append($this->paths($defaultPaths))
             ->end();
     }
 
-    private function paths(): ArrayNodeDefinition
+    private function paths(array $defaultValue = []): ArrayNodeDefinition
     {
         $treebuilder = new TreeBuilder('paths');
 
         return $treebuilder->getRootNode()
-            ->requiresAtLeastOneElement()
             ->beforeNormalization()->castToArray()->end()
+            ->defaultValue($defaultValue)
             ->prototype('scalar')->end();
     }
 }

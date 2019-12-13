@@ -38,7 +38,7 @@ final class SymfonyConfigFactory
 
     public function createDefault(): array
     {
-        return $this->generateConfiguration([]);
+        return $this->generateConfiguration(['v' => (string) array_key_last($this->configurationDefinitions)]);
     }
 
     private function generateConfiguration(array $values) : array
