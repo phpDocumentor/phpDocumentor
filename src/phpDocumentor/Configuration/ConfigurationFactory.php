@@ -67,6 +67,11 @@ final class ConfigurationFactory
             }
         }
 
+        return $this->createDefault();
+    }
+
+    public function createDefault() : Configuration
+    {
         return new Configuration($this->symfonyConfigFactory->createDefault());
     }
 

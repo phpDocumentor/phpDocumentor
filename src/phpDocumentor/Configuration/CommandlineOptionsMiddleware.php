@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Configuration;
 
-use phpDocumentor\Configuration\Factory\Version3;
 use phpDocumentor\Dsn;
 use phpDocumentor\Path;
 use function array_map;
@@ -26,12 +25,16 @@ use function is_array;
 
 final class CommandlineOptionsMiddleware
 {
-    /** @var mixed[] */
+    /** @var string[] */
     private $options = [];
 
-    public function __construct(array $options = [])
+    /** @var ConfigurationFactory */
+    private $configFactory;
+
+    public function __construct(array $options, ConfigurationFactory $configFactory)
     {
         $this->options = $options;
+        $this->configFactory = $configFactory;
     }
 
     public function __invoke(array $configuration) : array
@@ -285,6 +288,6 @@ final class CommandlineOptionsMiddleware
 
     private function createDefaultApiSettings() : array
     {
-        return current(Version3::buildDefault()['phpdocumentor']['versions'])['api'];
+        return current($this->configFactory->createDefault()['versions'])['api'];
     }
 }
