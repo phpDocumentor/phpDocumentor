@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Configuration\Definition;
 
+use phpDocumentor\Configuration\SymfonyConfigFactory;
 use phpDocumentor\Dsn;
 use phpDocumentor\Path;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
@@ -21,6 +22,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 final class Version3 implements ConfigurationInterface, Normalizable
 {
+    /** @var string This is injected so that the name of the default template can be defined globally in the app */
     private $defaultTemplateName;
 
     public function __construct(string $defaultTemplateName)
@@ -40,7 +42,7 @@ final class Version3 implements ConfigurationInterface, Normalizable
             ->fixXmlConfig('template')
             ->addDefaultsIfNotSet()
             ->children()
-                ->scalarNode('v')->defaultValue('3')->end()
+                ->scalarNode(SymfonyConfigFactory::FIELD_CONFIG_VERSION)->defaultValue('3')->end()
                 ->scalarNode('title')->defaultValue('my-doc')->end()
                 ->booleanNode('use-cache')->defaultTrue()->end()
                 ->arrayNode('paths')
@@ -82,7 +84,37 @@ final class Version3 implements ConfigurationInterface, Normalizable
         return $treebuilder;
     }
 
-    private function apiSection(): ArrayNodeDefinition
+    public function normalize(array $configuration) : array
+    {
+        $configuration['paths']['output'] = new Dsn('file://' . $configuration['paths']['output']);
+        $configuration['paths']['cache'] = new Path($configuration['paths']['cache']);
+        foreach ($configuration['versions'] as $versionNumber => $version) {
+            foreach ($version['api'] as $key => $api) {
+                $configuration['versions'][$versionNumber]['api'][$key]['source']['dsn']
+                    = new Dsn($api['source']['dsn']);
+                foreach ($api['source']['paths'] as $subkey => $path) {
+                    $configuration['versions'][$versionNumber]['api'][$key]['source']['paths'][$subkey] =
+                        new Path($path);
+                }
+                $configuration['versions'][$versionNumber]['api'][$key]['extensions'] =
+                    $configuration['versions'][$versionNumber]['api'][$key]['extensions']['extensions'];
+                $configuration['versions'][$versionNumber]['api'][$key]['markers'] =
+                    $configuration['versions'][$versionNumber]['api'][$key]['markers']['markers'];
+            }
+            foreach ($version['guide'] as $key => $guide) {
+                $configuration['versions'][$versionNumber]['guide'][$key]['source']['dsn']
+                    = new Dsn($guide['source']['dsn']);
+                foreach ($guide['source']['paths'] as $subkey => $path) {
+                    $configuration['versions'][$versionNumber]['guide'][$key]['source']['paths'][$subkey] =
+                        new Path($path);
+                }
+            }
+        }
+
+        return $configuration;
+    }
+
+    private function apiSection() : ArrayNodeDefinition
     {
         $treebuilder = new TreeBuilder('api');
 
@@ -102,10 +134,10 @@ final class Version3 implements ConfigurationInterface, Normalizable
                             ->info('What is the deepest level of visibility to include in the documentation?')
                             ->values([
                                 'api', // only include elements tagged with the `@api` tag
-                                'public', // include the previous category and all methods, properties and constants that are public
-                                'protected', // include the previous category and all methods, properties and constants that are protected
-                                'private', // include the previous category and all methods, properties and constants that are private
-                                'hidden' // include the previous category and all elements tagged with `@hidden`
+                                'public', // include all methods, properties and constants that are public
+                                'protected', // include  all methods, properties and constants that are protected
+                                'private', // include all methods, properties and constants that are private
+                                'hidden', // include all elements tagged with `@hidden`
                             ])
                         ->end()
                         ->defaultValue(['public', 'protected', 'private'])
@@ -165,37 +197,7 @@ final class Version3 implements ConfigurationInterface, Normalizable
             ->end();
     }
 
-    public function normalize(array $configuration): array
-    {
-        $configuration['paths']['output'] = new Dsn('file://' . $configuration['paths']['output']);
-        $configuration['paths']['cache'] = new Path($configuration['paths']['cache']);
-        foreach ($configuration['versions'] as $versionNumber => $version) {
-            foreach ($version['api'] as $key => $api) {
-                $configuration['versions'][$versionNumber]['api'][$key]['source']['dsn']
-                    = new Dsn($api['source']['dsn']);
-                foreach ($api['source']['paths'] as $subkey => $path) {
-                    $configuration['versions'][$versionNumber]['api'][$key]['source']['paths'][$subkey] =
-                        new Path($path);
-                }
-                $configuration['versions'][$versionNumber]['api'][$key]['extensions'] =
-                    $configuration['versions'][$versionNumber]['api'][$key]['extensions']['extensions'];
-                $configuration['versions'][$versionNumber]['api'][$key]['markers'] =
-                    $configuration['versions'][$versionNumber]['api'][$key]['markers']['markers'];
-            }
-            foreach ($version['guide'] as $key => $guide) {
-                $configuration['versions'][$versionNumber]['guide'][$key]['source']['dsn']
-                    = new Dsn($guide['source']['dsn']);
-                foreach ($guide['source']['paths'] as $subkey => $path) {
-                    $configuration['versions'][$versionNumber]['guide'][$key]['source']['paths'][$subkey] =
-                        new Path($path);
-                }
-            }
-        }
-
-        return $configuration;
-    }
-
-    private function guideSection(): ArrayNodeDefinition
+    private function guideSection() : ArrayNodeDefinition
     {
         $treebuilder = new TreeBuilder('guide');
 
@@ -211,7 +213,7 @@ final class Version3 implements ConfigurationInterface, Normalizable
             ->end();
     }
 
-    private function source(array $defaultPaths = []): ArrayNodeDefinition
+    private function source(array $defaultPaths = []) : ArrayNodeDefinition
     {
         $treebuilder = new TreeBuilder('source');
 
@@ -224,7 +226,7 @@ final class Version3 implements ConfigurationInterface, Normalizable
             ->end();
     }
 
-    private function paths(array $defaultValue = []): ArrayNodeDefinition
+    private function paths(array $defaultValue = []) : ArrayNodeDefinition
     {
         $treebuilder = new TreeBuilder('paths');
 

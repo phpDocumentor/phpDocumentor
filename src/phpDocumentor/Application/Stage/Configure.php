@@ -44,7 +44,7 @@ final class Configure
     }
 
     /**
-     * @return string[]
+     * @return array<string, array>
      */
     public function __invoke(array $options) : array
     {
