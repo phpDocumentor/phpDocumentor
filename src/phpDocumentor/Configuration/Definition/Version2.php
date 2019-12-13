@@ -178,7 +178,7 @@ final class Version2 implements ConfigurationInterface, Upgradable
                                 'path' => array_merge($values['files']['files'], $values['files']['directories']),
                             ],
                             'ignore' => [
-                                'paths' => $values['files']['ignores'],
+                                'path' => $values['files']['ignores'],
                             ],
                             'extensions' => [
                                 'extension' => $values['parser']['extensions']['extensions'],
