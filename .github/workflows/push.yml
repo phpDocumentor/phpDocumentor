@@ -127,11 +127,11 @@ jobs:
             all-tools-${{ github.sha }}-
             all-tools-
       - name: PHPStan
-        uses: docker://phpdoc/phpstan-ga:master
+        uses: docker://phpdoc/phpstan-ga:latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          args: analyse src tests --level 3 --configuration phpstan.neon
+          args: analyse src tests --level 4 --configuration phpstan.neon
 
   build-phar:
     runs-on: ubuntu-latest
