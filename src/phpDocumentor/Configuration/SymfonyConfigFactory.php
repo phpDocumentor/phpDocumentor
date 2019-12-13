@@ -24,7 +24,7 @@ use function array_keys;
 use function implode;
 use function sprintf;
 
-final class SymfonyConfigFactory
+class SymfonyConfigFactory
 {
     public const FIELD_CONFIG_VERSION = 'configVersion';
     private const DEFAULT_CONFIG_VERSION = '2';
