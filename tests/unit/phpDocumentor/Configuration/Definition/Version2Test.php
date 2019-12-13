@@ -34,38 +34,78 @@ final class Version2Test extends TestCase
         $this->assertEquals($expectedConfig, $finalizedConfig);
     }
 
+    public function testThatConfigurationCanBeUpgradedToAVersion3InputArray() : void
+    {
+        $configuration = new Version2(self::DEFAULT_TEMPLATE_NAME);
+
+        $upgradedConfiguration = $configuration->upgrade($this->defaultConfigurationOutput());
+
+        $this->assertSame(
+            [
+                SymfonyConfigFactory::FIELD_CONFIG_VERSION => '3',
+                'paths' => [
+                    'output' => 'build/api',
+                    'cache' => 'build/api-cache',
+                ],
+                'version' => [
+                    [
+                        'number' => '1.0.0',
+                        'api' => [
+                            [
+                                'default-package-name' => 'Application',
+                                'source' => [
+                                    'path' => [getcwd()],
+                                ],
+                                'ignore' => [
+                                    'path' => [],
+                                ],
+                                'extensions' => [
+                                    'extension' => ['php', 'php3', 'phtml'],
+                                ],
+                                'markers' => ['marker' => ['TODO', 'FIXME']],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            $upgradedConfiguration
+        );
+    }
+
     public function provideTestConfiguration() : array
     {
         return [
-            'default configuration' => [
-                [],
-                [
-                    SymfonyConfigFactory::FIELD_CONFIG_VERSION => '2',
-                    'title' => 'my-doc',
-                    'parser' => [
-                        'default-package-name' => 'Application',
-                        'visibility' => ['public', 'protected', 'private'],
-                        'target' => 'build/api-cache',
-                        'encoding' => 'utf-8',
-                        'extensions' => ['extensions' => ['php', 'php3', 'phtml']],
-                        'markers' => ['items' => ['TODO', 'FIXME']],
-                    ],
-                    'files' => [
-                        'ignore-hidden' => true,
-                        'ignore-symlinks' => true,
-                        'directories' => [getcwd()],
-                        'files' => [],
-                        'ignores' => [],
-                    ],
-                    'transformer' => ['target' => 'build/api'],
-                    'transformations' => [
-                        'templates' => [
-                            self::DEFAULT_TEMPLATE_NAME => ['name' => self::DEFAULT_TEMPLATE_NAME],
-                        ],
-                    ],
-                    'logging' => [ 'level' => 'error' ],
+            'default configuration' => [[], $this->defaultConfigurationOutput()],
+        ];
+    }
+
+    private function defaultConfigurationOutput() : array
+    {
+        return [
+            SymfonyConfigFactory::FIELD_CONFIG_VERSION => '2',
+            'title' => 'my-doc',
+            'parser' => [
+                'default-package-name' => 'Application',
+                'visibility' => ['public', 'protected', 'private'],
+                'target' => 'build/api-cache',
+                'encoding' => 'utf-8',
+                'extensions' => ['extensions' => ['php', 'php3', 'phtml']],
+                'markers' => ['items' => ['TODO', 'FIXME']],
+            ],
+            'files' => [
+                'ignore-hidden' => true,
+                'ignore-symlinks' => true,
+                'directories' => [getcwd()],
+                'files' => [],
+                'ignores' => [],
+            ],
+            'transformer' => ['target' => 'build/api'],
+            'transformations' => [
+                'templates' => [
+                    self::DEFAULT_TEMPLATE_NAME => ['name' => self::DEFAULT_TEMPLATE_NAME],
                 ],
             ],
+            'logging' => ['level' => 'error'],
         ];
     }
 }

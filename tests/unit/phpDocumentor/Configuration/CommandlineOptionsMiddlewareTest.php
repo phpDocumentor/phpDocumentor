@@ -157,7 +157,7 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
         $this->assertEquals(
             [
                 'dsn' => new Dsn('file://.'),
-                'paths' => [new Path('src')],
+                'paths' => [new Path('.')],
             ],
             current($newConfiguration['phpdocumentor']['versions'])['api'][0]['source']
         );
@@ -235,6 +235,7 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
             [
                 'paths' => [new Path('./src')],
                 'hidden' => true,
+                'symlinks' => true,
             ],
             current($newConfiguration['phpdocumentor']['versions'])['api'][0]['ignore']
         );
@@ -309,7 +310,7 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
             current($newConfiguration['phpdocumentor']['versions'])['api'][0]['include-source']
         );
 
-        $middleware = new CommandlineOptionsMiddleware(['sourcecode' => false]);
+        $middleware = new CommandlineOptionsMiddleware(['sourcecode' => false], $this->configurationFactory);
         $newConfiguration = $middleware($configuration);
 
         $this->assertEquals(
