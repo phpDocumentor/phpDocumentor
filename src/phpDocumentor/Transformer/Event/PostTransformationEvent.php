@@ -18,6 +18,15 @@ use phpDocumentor\Event\EventAbstract;
 /**
  * Event that happens after each individual transformation.
  */
-class PostTransformationEvent extends EventAbstract
+final class PostTransformationEvent extends EventAbstract
 {
+    /**
+     * Creates a new instance of a derived object and return that.
+     *
+     * Used as convenience method for fluent interfaces.
+     */
+    public static function createInstance(object $subject) : EventAbstract
+    {
+        return new static($subject);
+    }
 }

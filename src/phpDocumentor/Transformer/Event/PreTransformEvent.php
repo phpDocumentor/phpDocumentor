@@ -19,10 +19,20 @@ use phpDocumentor\Event\EventAbstract;
 /**
  * Event that happens prior to the execution of all transformations.
  */
-class PreTransformEvent extends EventAbstract
+final class PreTransformEvent extends EventAbstract
 {
     /** @var ProjectDescriptor */
     private $project;
+
+    /**
+     * Creates a new instance of a derived object and return that.
+     *
+     * Used as convenience method for fluent interfaces.
+     */
+    public static function createInstance(object $subject) : EventAbstract
+    {
+        return new static($subject);
+    }
 
     /**
      * Returns the descriptor describing the project.

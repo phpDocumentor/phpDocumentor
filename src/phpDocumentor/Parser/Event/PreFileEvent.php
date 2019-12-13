@@ -18,17 +18,25 @@ use phpDocumentor\Event\EventAbstract;
 /**
  * Event thrown before the parsing of an individual file.
  */
-class PreFileEvent extends EventAbstract
+final class PreFileEvent extends EventAbstract
 {
     /** @var string */
     protected $file = '';
 
     /**
-     * Sets the name of the file that is about to be processed.
+     * Creates a new instance of a derived object and return that.
      *
-     * @return self|PreFileEvent
+     * Used as convenience method for fluent interfaces.
      */
-    public function setFile(string $file)
+    public static function createInstance(object $subject) : EventAbstract
+    {
+        return new self($subject);
+    }
+
+    /**
+     * Sets the name of the file that is about to be processed.
+     */
+    public function setFile(string $file) : self
     {
         $this->file = $file;
 

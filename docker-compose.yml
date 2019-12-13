@@ -24,7 +24,7 @@ services:
     command: ["-d memory_limit=1024M"]
 
   phpstan:
-    image: phpdoc/phpstan-ga:master
+    image: phpdoc/phpstan-ga:latest
     environment:
       PHP_EXTENSIONS: php7-intl
     volumes: [".:/app"]

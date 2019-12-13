@@ -20,7 +20,6 @@ use phpDocumentor\Descriptor\Filter\Filter;
 use phpDocumentor\Descriptor\Filter\Filterable;
 use phpDocumentor\Reflection\Php\Project;
 use function get_class;
-use function is_iterable;
 
 /**
  * Builds a Project Descriptor and underlying tree.
@@ -91,11 +90,7 @@ class ProjectDescriptorBuilder
             return $this->filterDescriptor($descriptor);
         }
 
-        if (is_iterable($descriptor)) {
-            return $this->filterEachDescriptor($descriptor);
-        }
-
-        return null;
+        return $this->filterEachDescriptor($descriptor);
     }
 
     /**

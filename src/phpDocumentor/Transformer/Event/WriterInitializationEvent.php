@@ -22,6 +22,16 @@ final class WriterInitializationEvent extends EventAbstract
     protected $writer;
 
     /**
+     * Creates a new instance of a derived object and return that.
+     *
+     * Used as convenience method for fluent interfaces.
+     */
+    public static function createInstance(object $subject) : EventAbstract
+    {
+        return new static($subject);
+    }
+
+    /**
      * Sets the currently parsed writer in this event.
      */
     public function setWriter(WriterAbstract $writer) : WriterInitializationEvent

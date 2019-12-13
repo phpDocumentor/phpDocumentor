@@ -39,13 +39,5 @@ abstract class EventAbstract extends Event
         return $this->subject;
     }
 
-    /**
-     * Creates a new instance of a derived object and return that.
-     *
-     * Used as convenience method for fluent interfaces.
-     */
-    public static function createInstance(object $subject) : self
-    {
-        return new static($subject);
-    }
+    abstract public static function createInstance(object $subject) : self;
 }

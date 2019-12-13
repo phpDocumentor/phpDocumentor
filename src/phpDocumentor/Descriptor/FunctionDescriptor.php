@@ -66,7 +66,6 @@ class FunctionDescriptor extends DescriptorAbstract implements Interfaces\Functi
         $returnTags = $this->getTags()->get('return');
 
         if ($returnTags instanceof Collection && $returnTags->count() > 0) {
-            /** @var ReturnDescriptor $returnTag */
             return current($returnTags->getAll());
         }
 

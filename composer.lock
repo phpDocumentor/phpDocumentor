@@ -592,7 +592,7 @@
             ],
             "authors": [
                 {
-                    "name": "Pádraic Brady",
+                    "name": "Padraic Brady",
                     "email": "padraic.brady@gmail.com",
                     "homepage": "http://blog.astrumfutura.com"
                 },
@@ -651,7 +651,7 @@
             ],
             "authors": [
                 {
-                    "name": "Pádraic Brady",
+                    "name": "Padraic Brady",
                     "email": "padraic.brady@gmail.com",
                     "homepage": "http://blog.astrumfutura.com"
                 }
@@ -719,12 +719,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/GraphViz.git",
-                "reference": "19343158596de792327a51a00e30447ff32eb191"
+                "reference": "38cc160db6168943dc48697c99994a6c3ae7ffe3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/GraphViz/zipball/19343158596de792327a51a00e30447ff32eb191",
-                "reference": "19343158596de792327a51a00e30447ff32eb191",
+                "url": "https://api.github.com/repos/phpDocumentor/GraphViz/zipball/38cc160db6168943dc48697c99994a6c3ae7ffe3",
+                "reference": "38cc160db6168943dc48697c99994a6c3ae7ffe3",
                 "shasum": ""
             },
             "require": {
@@ -733,7 +733,7 @@
             "require-dev": {
                 "ext-simplexml": "*",
                 "mockery/mockery": "^1.2",
-                "phpstan/phpstan": "^0.11.12",
+                "phpstan/phpstan": "^0.12",
                 "phpunit/phpunit": "^7.5"
             },
             "type": "library",
@@ -759,7 +759,7 @@
                 }
             ],
             "description": "Wrapper for Graphviz",
-            "time": "2019-07-29T13:58:50+00:00"
+            "time": "2019-12-13T08:21:37+00:00"
         },
         {
             "name": "phpdocumentor/reflection",

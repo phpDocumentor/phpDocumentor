@@ -178,7 +178,6 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
         $returnTags = $this->getReturn();
 
         if ($returnTags instanceof Collection && $returnTags->count() > 0) {
-            /** @var ReturnDescriptor $returnTag */
             return current($returnTags->getAll());
         }
 

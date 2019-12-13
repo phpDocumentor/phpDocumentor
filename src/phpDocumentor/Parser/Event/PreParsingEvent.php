@@ -23,6 +23,16 @@ final class PreParsingEvent extends EventAbstract
     /** @var int */
     protected $fileCount;
 
+    /**
+     * Creates a new instance of a derived object and return that.
+     *
+     * Used as convenience method for fluent interfaces.
+     */
+    public static function createInstance(object $subject) : EventAbstract
+    {
+        return new static($subject);
+    }
+
     public function setFileCount(int $fileCount) : self
     {
         $this->fileCount = $fileCount;

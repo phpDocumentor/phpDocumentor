@@ -146,7 +146,11 @@ class Transformer implements CompilerPassInterface
         $this->initializeWriters($project, $transformations);
         $this->transformProject($project, $transformations);
 
-        Dispatcher::getInstance()->dispatch(PostTransformEvent::createInstance($this), self::EVENT_POST_TRANSFORM);
+        /** @var PostTransformEvent $postTransformEvent */
+        $postTransformEvent = PostTransformEvent::createInstance($this);
+        $postTransformEvent->setProject($project);
+
+        Dispatcher::getInstance()->dispatch($postTransformEvent, self::EVENT_POST_TRANSFORM);
 
         $this->logger->log(LogLevel::NOTICE, 'Finished transformation process');
     }

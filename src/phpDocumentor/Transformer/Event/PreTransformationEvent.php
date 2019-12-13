@@ -13,20 +13,23 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Event;
 
-use phpDocumentor\Event\EventAbstract;
 use phpDocumentor\Transformer\Transformation;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Event happening prior to each individual transformation.
  */
-final class PreTransformationEvent extends EventAbstract
+final class PreTransformationEvent extends Event
 {
     /** @var Transformation */
     protected $transformation;
 
+    /** @var object */
+    private $subject;
+
     public function __construct($subject, Transformation $transformation)
     {
-        parent::__construct($subject);
+        $this->subject = $subject;
         $this->transformation = $transformation;
     }
 
@@ -38,5 +41,10 @@ final class PreTransformationEvent extends EventAbstract
     public function getTransformation() : Transformation
     {
         return $this->transformation;
+    }
+
+    public function getSubject() : object
+    {
+        return $this->subject;
     }
 }

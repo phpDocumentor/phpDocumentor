@@ -23,4 +23,13 @@ use phpDocumentor\Event\EventAbstract as BaseClass;
  */
 class EventAbstract extends BaseClass
 {
+    /**
+     * Creates a new instance of a derived object and return that.
+     *
+     * Used as convenience method for fluent interfaces.
+     */
+    public static function createInstance(object $subject) : BaseClass
+    {
+        return new static($subject);
+    }
 }

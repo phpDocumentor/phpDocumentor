@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Compiler\Pass;
 
+use InvalidArgumentException;
 use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
@@ -29,6 +30,7 @@ use phpDocumentor\Reflection\Types\Context;
 use phpDocumentor\Transformer\Router\Router;
 use function preg_match;
 use function preg_replace_callback;
+use function sprintf;
 
 /**
  * This step in the compilation process iterates through all elements and scans their descriptions for an inline `@see`
@@ -152,7 +154,7 @@ class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
      */
     private function createLinkOrSeeTagFromRegexMatch(array $match) : Tag
     {
-        [$completeMatch, $tagName, $tagContent] = $match;
+        [, $tagName, $tagContent] = $match;
 
         $fqsenResolver      = new FqsenResolver();
         $tagFactory         = new StandardTagFactory($fqsenResolver);
@@ -166,6 +168,10 @@ class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
             case 'link':
                 return Link::create($tagContent, $descriptionFactory, $this->createDocBlockContext());
         }
+
+        throw new InvalidArgumentException(
+            sprintf('Tag with name: "%s" cannot be used to create a link', $tagName)
+        );
     }
 
     /**
@@ -217,7 +223,7 @@ class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
         }
 
         if ($tagReflector instanceof Link) {
-            return (string) $tagReflector->getLink();
+            return $tagReflector->getLink();
         }
 
         return null;
