@@ -37,7 +37,7 @@
             <xs:element name="version" type="pd:versionType" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element name="template" type="pd:templateType" minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
-        <xs:attribute name="v" type="pd:version" use="required"/>
+        <xs:attribute name="configVersion" type="pd:version" use="required"/>
     </xs:complexType>
 
     <xs:complexType name="pathsType">
