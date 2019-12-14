@@ -157,6 +157,11 @@ final class EnvironmentContext implements Context\Context
         $command = array_merge(['php', $this->binaryPath, '-vvv', '--force'], explode(' ', $argumentsString));
         $this->process = new Process($command, $this->getWorkingDir());
         $this->process->run();
+
+        if ($this->process->getExitCode() != 0) {
+            echo $this->process->getOutput();
+            echo $this->process->getErrorOutput();
+        }
     }
 
     /**
