@@ -14,22 +14,22 @@ declare(strict_types=1);
 namespace phpDocumentor;
 
 use RuntimeException;
+use const DIRECTORY_SEPARATOR;
 use function date_default_timezone_set;
 use function extension_loaded;
 use function file_exists;
 use function file_get_contents;
 use function ini_get;
 use function ini_set;
+use function sys_get_temp_dir;
 use function trim;
 
 /**
  * Application class for phpDocumentor.
  *
  * Can be used as bootstrap when the run method is not invoked.
- *
- * @codeCoverageIgnore too many side-effects and system calls to properly test
  */
-class Application
+final class Application
 {
     public static function VERSION() : string
     {
@@ -38,6 +38,7 @@ class Application
 
     public static function templateDirectory() : string
     {
+        // @codeCoverageIgnoreStart
         $templateDir = __DIR__ . '/../../data/templates';
 
         // when installed using composer the templates are in a different folder
@@ -47,6 +48,7 @@ class Application
         }
 
         return $templateDir;
+        // @codeCoverageIgnoreEnd
     }
 
     /**
@@ -57,27 +59,34 @@ class Application
         $this->defineIniSettings();
     }
 
+    public function cacheFolder() : string
+    {
+        return sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpdocumentor' . DIRECTORY_SEPARATOR . 'pools';
+    }
+
     /**
      * Adjust php.ini settings.
      *
      * @throws RuntimeException
      */
-    protected function defineIniSettings() : void
+    private function defineIniSettings() : void
     {
         $this->setTimezone();
         ini_set('memory_limit', '-1');
 
-        if (extension_loaded('Zend OPcache') && ini_get('opcache.enable') && ini_get('opcache.enable_cli')) {
-            if (ini_get('opcache.save_comments')) {
-                ini_set('opcache.load_comments', '1');
-            } else {
-                ini_set('opcache.enable', '0');
-            }
+        // @codeCoverageIgnoreStart
+        if (extension_loaded('Zend OPcache')
+            && ini_get('opcache.enable')
+            && ini_get('opcache.enable_cli')
+            && ini_get('opcache.save_comments') === '0'
+        ) {
+            throw new RuntimeException('Please enable opcache.save_comments in php.ini.');
         }
 
         if (extension_loaded('Zend Optimizer+') && ini_get('zend_optimizerplus.save_comments') === '0') {
             throw new RuntimeException('Please enable zend_optimizerplus.save_comments in php.ini.');
         }
+        // @codeCoverageIgnoreEnd
     }
 
     /**
@@ -89,12 +98,14 @@ class Application
      * @link http://php.net/manual/en/function.date-default-timezone-get.php for more information how PHP determines the
      *     default timezone.
      */
-    protected function setTimezone() : void
+    private function setTimezone() : void
     {
+        // @codeCoverageIgnoreStart
         if (ini_get('date.timezone') !== false) {
             return;
         }
 
         date_default_timezone_set('UTC');
+        // @codeCoverageIgnoreEnd
     }
 }

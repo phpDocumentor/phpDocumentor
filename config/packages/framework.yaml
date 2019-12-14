@@ -9,13 +9,19 @@ framework:
         log: true
 
     cache:
-        directory: '/tmp/phpdoc/pools'
-
         app: cache.adapter.filesystem
         system: cache.adapter.filesystem
 
         pools:
             files:
-                adapter: cache.adapter.filesystem
+                adapter: app.projectcache.provider
             descriptors:
-                adapter: cache.adapter.filesystem
+                adapter: app.projectcache.provider
+
+services:
+    app.projectcache.provider:
+        class: Symfony\Component\Cache\Adapter\FilesystemAdapter
+        arguments:
+            - 'phpdoc'
+            - 31556926 # one year
+            - '@=service("phpDocumentor\\Application").cacheFolder()'
