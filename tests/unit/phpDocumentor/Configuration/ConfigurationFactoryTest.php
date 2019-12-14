@@ -139,7 +139,7 @@ final class ConfigurationFactoryTest extends TestCase
     public function testCreatingAConfigurationUsingTheGivenUri() : void
     {
         // using __FILE__ so that it passes the file does not exist scenario
-        $uri = new Uri('file://' . __FILE__);
+        $uri = new Uri(__FILE__);
 
         $configuration = ['exampleConfig'];
         $symfonyConfigFactory = $this->prophesize(SymfonyConfigFactory::class);
@@ -164,7 +164,7 @@ final class ConfigurationFactoryTest extends TestCase
         };
 
         // using __FILE__ so that it passes the file does not exist scenario
-        $uri = new Uri('file://' . __FILE__);
+        $uri = new Uri(__FILE__);
 
         $configuration = ['exampleConfig'];
         $symfonyConfigFactory = $this->prophesize(SymfonyConfigFactory::class);
@@ -186,7 +186,7 @@ final class ConfigurationFactoryTest extends TestCase
     {
         $this->expectException(InvalidConfigPathException::class);
 
-        $uri = new Uri('file://does-not-exist');
+        $uri = new Uri('does-not-exist');
 
         $symfonyConfigFactory = $this->prophesize(SymfonyConfigFactory::class);
         $factory = new ConfigurationFactory([], $symfonyConfigFactory->reveal());
