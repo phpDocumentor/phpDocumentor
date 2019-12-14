@@ -168,7 +168,7 @@ jobs:
       matrix:
         profile:
           - default
-#          - phar
+          - phar
     name: Integration tests [${{ matrix.profile }} | 7.2 | ubuntu-latest]
     needs:
       - build-phar
