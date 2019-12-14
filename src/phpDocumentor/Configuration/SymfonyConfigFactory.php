@@ -74,7 +74,7 @@ class SymfonyConfigFactory
      */
     private function processConfiguration(array $values) : array
     {
-        $configurationVersion = (string) $values[self::FIELD_CONFIG_VERSION] ?: self::DEFAULT_CONFIG_VERSION;
+        $configurationVersion = (string) ($values[self::FIELD_CONFIG_VERSION] ?? self::DEFAULT_CONFIG_VERSION);
 
         $definition = $this->findDefinition($configurationVersion);
 
