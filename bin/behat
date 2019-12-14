@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+CURRENT_DIR=$(pwd)
+
+ARGS="$@" make \
+    --directory ${CURRENT_DIR} \
+    --no-builtin-rules \
+    --no-builtin-variables \
+    --no-print-directory \
+    --warn-undefined-variables \
+    behat
