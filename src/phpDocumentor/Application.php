@@ -31,8 +31,6 @@ use function trim;
  */
 final class Application
 {
-    private $cacheFolder;
-
     public static function VERSION() : string
     {
         return trim(file_get_contents(__DIR__ . '/../../VERSION'));
