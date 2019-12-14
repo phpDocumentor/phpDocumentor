@@ -16,7 +16,6 @@ namespace phpDocumentor\Descriptor\Cache;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
-use Stash\Pool;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 /**

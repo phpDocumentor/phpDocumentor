@@ -9,6 +9,8 @@ framework:
         log: true
 
     cache:
+        directory: '/tmp/phpdoc/pools'
+
         app: cache.adapter.filesystem
         system: cache.adapter.filesystem
 
