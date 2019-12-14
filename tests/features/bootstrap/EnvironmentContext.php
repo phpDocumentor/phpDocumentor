@@ -218,7 +218,7 @@ final class EnvironmentContext implements Context\Context
 
     public function getErrorOutput() : string
     {
-        return $this->process->getErrorOutput();
+        return $this->process->getOutput() . "\n\n" . $this->process->getErrorOutput();
     }
 
     /**
