@@ -31,6 +31,8 @@ use function trim;
  */
 final class Application
 {
+    private $cacheFolder;
+
     public static function VERSION() : string
     {
         return trim(file_get_contents(__DIR__ . '/../../VERSION'));
@@ -61,7 +63,17 @@ final class Application
 
     public function cacheFolder() : string
     {
-        return sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpdocumentor' . DIRECTORY_SEPARATOR . 'pools';
+        if ($this->cacheFolder === null) {
+            throw new \RuntimeException('Cache folder should be declared before first use');
+        }
+
+        return $this->cacheFolder;
+        //return sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpdocumentor' . DIRECTORY_SEPARATOR . 'pools';
+    }
+
+    public function withCacheFolder(string $cacheFolder) : void
+    {
+        $this->cacheFolder = $cacheFolder;
     }
 
     /**
