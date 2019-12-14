@@ -1,3 +1,5 @@
+ARGS ?= ""
+
 .PHONY: phar
 phar:
 	php ./bin/console --env=prod cache:warm; \
@@ -18,20 +20,24 @@ setup: install-phive
 
 .PHONY: phpcs
 phpcs:
-	docker-compose run --rm phpcs
+	docker-compose run --rm phpcs ${ARGS}
+
+.PHONY: phpcbf
+phpcbf:
+	docker-compose run --rm phpcs phpcbf ${ARGS}
 
 .PHONY: phpstan
 phpstan:
-	docker-compose run --rm phpstan
+	docker-compose run --rm phpstan ${ARGS}
 
 .PHONY: test
 test:
-	docker-compose run --rm phpunit
+	docker-compose run --rm phpunit ${ARGS}
 	docker-compose run --entrypoint=/usr/local/bin/php --rm phpunit tests/coverage-checker.php 60
 
 .PHONY: behat
 behat:
-	docker-compose run --rm behat
+	docker-compose run --rm behat ./tools/behat ${ARGS}
 
 .PHONY: pre-commit-test
 pre-commit-test: phpcs phpstan test

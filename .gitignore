@@ -7,9 +7,6 @@
 .settings
 
 # No need to version the binary files of other tools
-bin/behat*
-bin/phpcs*
-bin/phpunit*
 bin/jsonlint*
 bin/validate-json*
 bin/phpstan
