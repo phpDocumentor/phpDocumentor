@@ -225,6 +225,10 @@ jobs:
         with:
           name: phpDocumentor.phar
           path: build/phpDocumentor.phar
+      - name: Did the download succeed?
+        run: ls -hal build
+      - name: Check version
+        run: php ./build/phpDocumentor.phar --version
       - name: Run phpDocumentor on itself
         run: php ./build/phpDocumentor.phar
 
