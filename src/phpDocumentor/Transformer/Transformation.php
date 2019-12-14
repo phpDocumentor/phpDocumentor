@@ -14,12 +14,6 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer;
 
 use phpDocumentor\Transformer\Template\Parameter;
-use const DIRECTORY_SEPARATOR;
-use const E_USER_DEPRECATED;
-use function file_exists;
-use function rtrim;
-use function strpos;
-use function trigger_error;
 
 /**
  * Class representing a single Transformation.
@@ -50,6 +44,9 @@ class Transformation
      */
     private $parameters = [];
 
+    /** @var Template */
+    private $template;
+
     /**
      * Constructs a new Transformation object and populates the required parameters.
      *
@@ -58,8 +55,9 @@ class Transformation
      * @param string $source Which template or type of source to use.
      * @param string $artifact What is the filename of the result (relative to the generated root)
      */
-    public function __construct(string $query, string $writer, string $source, string $artifact)
+    public function __construct(Template $template, string $query, string $writer, string $source, string $artifact)
     {
+        $this->template = $template;
         $this->setQuery($query);
         $this->setWriter($writer);
         $this->setSource($source);
@@ -120,63 +118,9 @@ class Transformation
         return $this->source;
     }
 
-    /**
-     * Returns the source as a path instead of a regular value.
-     *
-     * This method applies the following rules to the value of $source:
-     *
-     * 1. if the template_path parameter is set and that combined with the
-     *    source gives an existing file; return that.
-     * 2. if the value exists as a file (either relative to the current working
-     *    directory or absolute), do a realpath and return it.
-     * 3. Otherwise prepend it with the phpDocumentor data folder, if that does
-     *    not exist: throw an exception
-     *
-     * @throws Exception If no valid file could be found.
-     */
-    public function getSourceAsPath() : string
+    public function template() : Template
     {
-        // externally loaded templates set this parameter so that template
-        // resources may be placed in the same folder as the template.
-        if ($this->getParameter('template_path') !== null) {
-            $path = rtrim($this->getParameter('template_path')->getValue(), '/\\');
-            if (file_exists($path . DIRECTORY_SEPARATOR . $this->source)) {
-                return $path . DIRECTORY_SEPARATOR . $this->source;
-            }
-        }
-
-        // counter a BC break that we introduced in 2.0 stable; we removed the notion of global assets
-        // to be able to provide composer integration
-        // TODO: remove in version 3.0
-        if (strpos($this->source, 'templates/') !== 0) {
-            $this->source = 'templates/abstract/' . $this->source;
-            trigger_error(
-                'Using shared assets in a template is deprecated and will be removed in version 3.0',
-                E_USER_DEPRECATED
-            );
-        }
-
-        // check whether the file exists in the phpDocumentor project directory.
-        if (file_exists(__DIR__ . '/../../../' . $this->source)) {
-            return __DIR__ . '/../../../' . $this->source;
-        }
-
-        // in case of a composer installation
-        if (file_exists(__DIR__ . '/../../../../templates')) {
-            return __DIR__ . '/../../../../' . $this->source;
-        }
-
-        // TODO: replace this as it breaks the component stuff
-        // we should ditch the idea of a global set of files to fetch and have
-        // a variable / injection for the global templates folder and inject
-        // that here.
-        $file = __DIR__ . '/../../../data/' . $this->source;
-
-        if (!file_exists($file)) {
-            throw new Exception('The source path does not exist: ' . $file);
-        }
-
-        return $file;
+        return $this->template;
     }
 
     /**
@@ -231,7 +175,7 @@ class Transformation
     {
         /** @var Parameter $parameter */
         foreach ($this->parameters as $parameter) {
-            if ($parameter->getKey() === $name) {
+            if ($parameter->key() === $name) {
                 return $parameter;
             }
         }
@@ -252,7 +196,7 @@ class Transformation
 
         /** @var Parameter $parameter */
         foreach ($this->parameters as $parameter) {
-            if ($parameter->getKey() !== $name) {
+            if ($parameter->key() !== $name) {
                 continue;
             }
 

@@ -81,8 +81,8 @@ final class Graph extends WriterAbstract
             return;
         }
 
-        if ($transformation->getParameter('font') !== null && $transformation->getParameter('font')->getValue()) {
-            $this->nodeFont = $transformation->getParameter('font')->getValue();
+        if ($transformation->getParameter('font') !== null && $transformation->getParameter('font')->value()) {
+            $this->nodeFont = $transformation->getParameter('font')->value();
         } else {
             $this->nodeFont = 'Courier';
         }

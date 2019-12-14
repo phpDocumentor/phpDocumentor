@@ -30,6 +30,7 @@
         "ext-simplexml": "*",
         "ext-zlib": "*",
         "erusev/parsedown": "~1.0",
+        "fzaninotto/faker": "^1.9",
         "jean85/pretty-package-versions": "^1.2",
         "league/flysystem": "^1.0",
         "league/pipeline": "^1.0",

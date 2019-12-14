@@ -17,43 +17,27 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @coversDefaultClass \phpDocumentor\Transformer\Template\Parameter
+ * @covers ::__construct
  */
 final class ParameterTest extends TestCase
 {
-    /** @var Parameter $fixture */
-    private $fixture;
-
     /**
-     * Creates a new (empty) fixture object.
+     * @covers ::key
      */
-    protected function setUp() : void
+    public function testGetKey() : void
     {
-        $this->fixture = new Parameter();
+        $fixture = new Parameter('key', 'value');
+
+        $this->assertSame('key', $fixture->key());
     }
 
     /**
-     * @covers ::getKey
-     * @covers ::setKey
+     * @covers ::value
      */
-    public function testSetAndGetKey() : void
+    public function testGetValue() : void
     {
-        $this->assertEmpty($this->fixture->getKey());
+        $fixture = new Parameter('key', 'value');
 
-        $this->fixture->setKey('key');
-
-        $this->assertSame('key', $this->fixture->getKey());
-    }
-
-    /**
-     * @covers ::getValue
-     * @covers ::setValue
-     */
-    public function testSetAndGetValue() : void
-    {
-        $this->assertEmpty($this->fixture->getValue());
-
-        $this->fixture->setValue('value');
-
-        $this->assertSame('value', $this->fixture->getValue());
+        $this->assertSame('value', $fixture->value());
     }
 }

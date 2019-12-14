@@ -14,9 +14,12 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer;
 
 use InvalidArgumentException;
+use League\Flysystem\FilesystemInterface;
 use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Dsn;
 use phpDocumentor\Event\Dispatcher;
+use phpDocumentor\Parser\FlySystemFactory;
 use phpDocumentor\Transformer\Event\PostTransformationEvent;
 use phpDocumentor\Transformer\Event\PostTransformEvent;
 use phpDocumentor\Transformer\Event\PreTransformationEvent;
@@ -26,6 +29,7 @@ use phpDocumentor\Transformer\Writer\Initializable;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
+use RuntimeException;
 use function in_array;
 use function is_dir;
 use function is_writable;
@@ -56,6 +60,9 @@ class Transformer implements CompilerPassInterface
     /** @var string|null $target Target location where to output the artifacts */
     protected $target = null;
 
+    /** @var FilesystemInterface|null $destination The destination filesystem to write to */
+    private $destination = null;
+
     /** @var Template\Collection $templates */
     protected $templates;
 
@@ -68,17 +75,22 @@ class Transformer implements CompilerPassInterface
     /** @var LoggerInterface */
     private $logger;
 
+    /** @var FlySystemFactory */
+    private $flySystemFactory;
+
     /**
      * Wires the template collection and writer collection to this transformer.
      */
     public function __construct(
         Template\Collection $templateCollection,
         Writer\Collection $writerCollection,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        FlySystemFactory $flySystemFactory
     ) {
         $this->templates = $templateCollection;
         $this->writers = $writerCollection;
         $this->logger = $logger;
+        $this->flySystemFactory = $flySystemFactory;
     }
 
     public function getDescription() : string
@@ -111,6 +123,7 @@ class Transformer implements CompilerPassInterface
         }
 
         $this->target = $path;
+        $this->destination = $this->flySystemFactory->create(new Dsn($path));
     }
 
     /**
@@ -119,6 +132,25 @@ class Transformer implements CompilerPassInterface
     public function getTarget() : ?string
     {
         return $this->target;
+    }
+
+    public function destination() : FilesystemInterface
+    {
+        return $this->destination;
+    }
+
+    public function getTemplatesDirectory() : FilesystemInterface
+    {
+        $dsnString = $this->getTemplates()->getTemplatesPath();
+        try {
+            $filesystem = $this->flySystemFactory->create(new Dsn($dsnString));
+        } catch (InvalidArgumentException $e) {
+            throw new RuntimeException(
+                'Unable to access the folder with the global templates, received DSN is: ' . $dsnString
+            );
+        }
+
+        return $filesystem;
     }
 
     /**

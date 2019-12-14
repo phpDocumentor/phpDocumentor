@@ -24,36 +24,18 @@ final class Parameter
     /** @var string */
     private $value = '';
 
-    /**
-     * Sets an XML attribute
-     *
-     * @return $this for a fluent interface
-     */
-    public function setKey(string $key) : self
+    public function __construct(string $key, string $value)
     {
         $this->key = $key;
-
-        return $this;
+        $this->value = $value;
     }
 
-    public function getKey() : string
+    public function key() : string
     {
         return $this->key;
     }
 
-    /**
-     * Sets an XML value
-     *
-     * @return $this for a fluent interface
-     */
-    public function setValue(string $value) : self
-    {
-        $this->value = $value;
-
-        return $this;
-    }
-
-    public function getValue() : string
+    public function value() : string
     {
         return $this->value;
     }

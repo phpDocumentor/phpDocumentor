@@ -15,8 +15,8 @@ namespace phpDocumentor\Transformer\Template;
 
 use ArrayObject;
 use phpDocumentor\Transformer\Transformation;
+use phpDocumentor\Transformer\Transformer;
 use phpDocumentor\Transformer\Writer\Collection as WriterCollection;
-use phpDocumentor\Transformer\Writer\WriterAbstract;
 
 /**
  * Contains a collection of Templates that may be queried.
@@ -42,17 +42,13 @@ class Collection extends ArrayObject
     /**
      * Loads a template with the given name or file path.
      */
-    public function load(string $nameOrPath) : void
+    public function load(Transformer $transformer, string $nameOrPath) : void
     {
-        $template = $this->factory->get($nameOrPath);
+        $template = $this->factory->get($transformer, $nameOrPath);
 
         /** @var Transformation $transformation */
         foreach ($template as $transformation) {
             $writer = $this->writerCollection[$transformation->getWriter()];
-            if (!($writer instanceof WriterAbstract)) {
-                continue;
-            }
-
             $writer->checkRequirements();
         }
 
@@ -81,6 +77,6 @@ class Collection extends ArrayObject
      */
     public function getTemplatesPath() : string
     {
-        return $this->factory->getTemplatePath();
+        return $this->factory->getTemplatesPath();
     }
 }

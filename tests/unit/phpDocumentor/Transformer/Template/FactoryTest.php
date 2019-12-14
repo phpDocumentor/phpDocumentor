@@ -16,46 +16,153 @@ namespace phpDocumentor\Transformer\Template;
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use org\bovigo\vfs\vfsStream;
+use org\bovigo\vfs\vfsStreamDirectory;
+use phpDocumentor\Faker\Faker;
+use phpDocumentor\Parser\FlySystemFactory;
+use phpDocumentor\Transformer\Transformer;
+use phpDocumentor\Transformer\Writer\Collection as WriterCollection;
+use Psr\Log\NullLogger;
 
+/**
+ * @coversDefaultClass \phpDocumentor\Transformer\Template\Factory
+ * @covers ::__construct
+ * @covers ::<private>
+ */
 final class FactoryTest extends MockeryTestCase
 {
-    /** @var m\MockInterface|PathResolver */
-    private $pathResolverMock;
+    use Faker;
 
     /** @var Factory */
     private $fixture;
+    /** @var m\LegacyMockInterface|m\MockInterface|FlySystemFactory */
+    private $flySystemFactory;
+    /** @var vfsStreamDirectory */
+    private $globalTemplates;
 
     /**
      * Sets up the fixture with mocked dependencies.
      */
     protected function setUp() : void
     {
-        $this->pathResolverMock = m::mock('phpDocumentor\Transformer\Template\PathResolver');
+        $this->globalTemplates = vfsStream::setup('exampleDir');
 
-        $this->fixture = new Factory($this->pathResolverMock);
+        $this->flySystemFactory = $this->faker()->flySystemFactory();
+        $this->fixture = new Factory($this->flySystemFactory, vfsStream::url('exampleDir'));
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Template\Factory::get
-     * @covers \phpDocumentor\Transformer\Template\Factory::fetchTemplateXmlFromPath
-     * @covers \phpDocumentor\Transformer\Template\Factory::createTemplateFromXml
-     * @todo test parameters in template and transformations
+     * @covers ::get
+     * @covers ::createTemplateFromXml
      */
-    public function testRetrieveInstantiatedTemplate() : void
+    public function testThatATemplateCanBeLoaded() : void
     {
         // Arrange
         $templateName = 'clean';
-        $xml = <<<'XML'
+        $templateDirectory = $this->givenAnExampleTemplateInDirectoryCalled($templateName);
+        $this->globalTemplates->addChild($templateDirectory);
+
+        $templateCollection = m::mock(Collection::class);
+        $templateCollection->shouldReceive('getTemplatesPath')->andReturn($this->globalTemplates->url());
+
+        $transformer = new Transformer(
+            $templateCollection,
+            m::mock(WriterCollection::class),
+            new NullLogger(),
+            $this->flySystemFactory
+        );
+        $transformer->setTarget(vfsStream::path('exampleDir'));
+
+        // Act
+        $result = $this->fixture->get($transformer, $templateName);
+
+        // Assert
+        $this->assertSame($templateName, $result->getName());
+        $this->assertSame('Mike van Riel <mike@phpdoc.org>', $result->getAuthor());
+        $this->assertSame('1.0.0', $result->getVersion());
+        $this->assertSame('Mike van Riel 2013', $result->getCopyright());
+        $this->assertSame('This is the description', $result->getDescription());
+        $this->assertEquals(['debug' => new Parameter('debug', 'on')], $result->getParameters());
+        $this->assertSame(17, $result->count());
+        $this->assertSame('copy', $result[0]->getQuery());
+        $this->assertSame('FileIo', $result[0]->getWriter());
+        $this->assertSame('templates/clean/htaccess.dist', $result[0]->getSource());
+        $this->assertSame('.htaccess', $result[0]->getArtifact());
+        $this->assertEquals(
+            ['debug' => new Parameter('debug', 'on'), 'fakeParam' => new Parameter('fakeParam', 'value')],
+            $result[0]->getParameters()
+        );
+    }
+
+    /**
+     * @covers ::get
+     */
+    public function testThatAnErrorOccuredWhenATemplateCannotBeFound() : void
+    {
+        $this->expectException(TemplateNotFound::class);
+
+        // Arrange
+        $templateName = 'does-not-exist';
+        $templateCollection = m::mock(Collection::class);
+        $templateCollection->shouldReceive('getTemplatesPath')->andReturn($this->globalTemplates->url());
+
+        $transformer = new Transformer(
+            $templateCollection,
+            m::mock(WriterCollection::class),
+            new NullLogger(),
+            $this->flySystemFactory
+        );
+        $transformer->setTarget(vfsStream::path('exampleDir'));
+
+        // Act
+        $this->fixture->get($transformer, $templateName);
+    }
+
+    /**
+     * @covers ::getTemplatesPath
+     */
+    public function testReturnTemplatePathFromConstructor() : void
+    {
+        // Act
+        $result = $this->fixture->getTemplatesPath();
+
+        // Assert
+        $this->assertSame(vfsStream::url('exampleDir'), $result);
+    }
+
+    /**
+     * @covers ::getAllNames
+     */
+    public function testRetrieveAllTemplateNames() : void
+    {
+        // Arrange
+        $expected = ['template1', 'template2'];
+        $this->globalTemplates->addChild(vfsStream::newDirectory($expected[0]));
+        $this->globalTemplates->addChild(vfsStream::newFile('aFile.txt'));
+        $this->globalTemplates->addChild(vfsStream::newDirectory($expected[1]));
+
+        // Act
+        $result = $this->fixture->getAllNames();
+
+        // Assert
+        $this->assertSame($expected, $result);
+    }
+
+    private function givenAnExampleTemplateInDirectoryCalled(string $templateName) : vfsStreamDirectory
+    {
+        $xml = <<<XML
 <?xml version="1.0" encoding="utf-8"?>
 <template>
-  <name>clean</name>
+  <name>$templateName</name>
   <author>Mike van Riel</author>
   <email>mike@phpdoc.org</email>
   <version>1.0.0</version>
   <copyright>Mike van Riel 2013</copyright>
   <description><![CDATA[This is the description]]></description>
+  <parameter key="debug">on</parameter>
   <transformations>
-    <transformation query="copy" writer="FileIo" source="templates/clean/htaccess.dist" artifact=".htaccess"/>
+    <transformation query="copy" writer="FileIo" source="templates/clean/htaccess.dist" artifact=".htaccess">
+      <parameter key="fakeParam">value</parameter>
+    </transformation>
     <transformation query="copy" writer="FileIo" source="templates/clean/images" artifact="images"/>
     <transformation query="copy" writer="FileIo" source="templates/clean/css" artifact="css"/>
     <transformation query="copy" writer="FileIo" source="templates/clean/js" artifact="js"/>
@@ -84,58 +191,9 @@ final class FactoryTest extends MockeryTestCase
   </transformations>
 </template>
 XML;
-        vfsStream::setup('exampleDir')->addChild(vfsStream::newFile('template.xml')->setContent($xml));
-        $this->pathResolverMock->shouldReceive('resolve')->with($templateName)->andReturn(vfsStream::url('exampleDir'));
+        $templateDirectory = vfsStream::newDirectory('clean');
+        $templateDirectory->addChild(vfsStream::newFile('template.xml')->setContent($xml));
 
-        // Act
-        $result = $this->fixture->get($templateName);
-
-        // Assert
-        $this->assertSame($templateName, $result->getName());
-        $this->assertSame('Mike van Riel <mike@phpdoc.org>', $result->getAuthor());
-        $this->assertSame('1.0.0', $result->getVersion());
-        $this->assertSame('Mike van Riel 2013', $result->getCopyright());
-        $this->assertSame('This is the description', $result->getDescription());
-        $this->assertSame(17, $result->count());
-        $this->assertSame('copy', $result[0]->getQuery());
-        $this->assertSame('FileIo', $result[0]->getWriter());
-        $this->assertSame('templates/clean/htaccess.dist', $result[0]->getSource());
-        $this->assertSame('.htaccess', $result[0]->getArtifact());
-    }
-
-    /**
-     * @covers \phpDocumentor\Transformer\Template\Factory::getTemplatePath
-     */
-    public function testReturnTemplatePathFromResolver() : void
-    {
-        // Arrange
-        $expected = 'test';
-        $this->pathResolverMock->shouldReceive('getTemplatePath')->andReturn($expected);
-
-        // Act
-        $result = $this->fixture->getTemplatePath();
-
-        // Assert
-        $this->assertSame($expected, $result);
-    }
-
-    /**
-     * @covers \phpDocumentor\Transformer\Template\Factory::getAllNames
-     */
-    public function testRetrieveAllTemplateNames() : void
-    {
-        // Arrange
-        $expected = ['template1', 'template2'];
-        $root = vfsStream::setup('exampleDir');
-        $root->addChild(vfsStream::newDirectory($expected[0]));
-        $root->addChild(vfsStream::newFile('aFile.txt'));
-        $root->addChild(vfsStream::newDirectory($expected[1]));
-        $this->pathResolverMock->shouldReceive('getTemplatePath')->andReturn(vfsStream::url('exampleDir'));
-
-        // Act
-        $result = $this->fixture->getAllNames();
-
-        // Assert
-        $this->assertSame($expected, $result);
+        return $templateDirectory;
     }
 }

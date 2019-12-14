@@ -18,6 +18,7 @@ use ArrayIterator;
 use Countable;
 use InvalidArgumentException;
 use IteratorAggregate;
+use League\Flysystem\FilesystemInterface;
 use phpDocumentor\Transformer\Template\Parameter;
 use function array_merge;
 use function count;
@@ -49,14 +50,18 @@ final class Template implements ArrayAccess, Countable, IteratorAggregate
     /** @var Parameter[] Global parameters that are passed to each transformation. */
     private $parameters = [];
 
+    /** @var FilesystemInterface */
+    private $files;
+
     /**
      * Initializes this object with a name and optionally with contents.
      *
      * @param string $name Name for this template.
      */
-    public function __construct(string $name)
+    public function __construct(string $name, FilesystemInterface $files)
     {
         $this->name = $name;
+        $this->files = $files;
     }
 
     /**
@@ -122,6 +127,11 @@ final class Template implements ArrayAccess, Countable, IteratorAggregate
         }
 
         $this->version = $version;
+    }
+
+    public function files() : FilesystemInterface
+    {
+        return $this->files;
     }
 
     /**

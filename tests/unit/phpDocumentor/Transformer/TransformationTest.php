@@ -14,13 +14,18 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer;
 
 use Mockery as m;
+use phpDocumentor\Faker\Faker;
 use phpDocumentor\Transformer\Template\Parameter;
 
 /**
  * @coversDefaultClass \phpDocumentor\Transformer\Transformation
+ * @covers ::__construct
+ * @covers ::<private>
  */
 final class TransformationTest extends m\Adapter\Phpunit\MockeryTestCase
 {
+    use Faker;
+
     /** @var Transformation $fixture */
     private $fixture;
 
@@ -41,7 +46,14 @@ final class TransformationTest extends m\Adapter\Phpunit\MockeryTestCase
      */
     protected function setUp() : void
     {
-        $this->fixture = new Transformation($this->query, $this->writer, $this->source, $this->artifact);
+        $this->template = new Template('My Template', $this->faker()->fileSystem());
+        $this->fixture = new Transformation(
+            $this->template,
+            $this->query,
+            $this->writer,
+            $this->source,
+            $this->artifact
+        );
     }
 
     /**
@@ -95,7 +107,7 @@ final class TransformationTest extends m\Adapter\Phpunit\MockeryTestCase
     public function testGetParameterWithExistingName() : void
     {
         $parameters = $this->givenAParameter();
-        $this->assertSame($parameters['firstKey'], $this->fixture->getParameter('name'));
+        $this->assertSame($parameters['firstKey'], $this->fixture->getParameter('firstKey'));
     }
 
     /**
@@ -112,7 +124,7 @@ final class TransformationTest extends m\Adapter\Phpunit\MockeryTestCase
     public function testGetParametersWithKeyWithExistingName() : void
     {
         $parameters = $this->givenAParameter();
-        $this->assertSame([$parameters['firstKey']], $this->fixture->getParametersWithKey('name'));
+        $this->assertEquals([$parameters['firstKey']], $this->fixture->getParametersWithKey('firstKey'));
     }
 
     /**
@@ -144,7 +156,7 @@ final class TransformationTest extends m\Adapter\Phpunit\MockeryTestCase
      */
     private function givenAParameter() : array
     {
-        $parameters = ['firstKey' => (new Parameter())->setKey('name')];
+        $parameters = ['firstKey' => new Parameter('firstKey', 'value')];
         $this->fixture->setParameters($parameters);
 
         return $parameters;

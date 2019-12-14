@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Event;
 
-use phpDocumentor\Transformer\Transformation;
+use phpDocumentor\Faker\Faker;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
@@ -26,11 +26,7 @@ use stdClass;
  */
 final class PreTransformationEventTest extends TestCase
 {
-    /** @var PreTransformationEvent $fixture */
-    protected $fixture;
-
-    /** @var Transformation */
-    private $transformation;
+    use Faker;
 
     /**
      * @covers ::getTransformation
@@ -39,10 +35,12 @@ final class PreTransformationEventTest extends TestCase
      */
     public function testSetAndGetTransformation() : void
     {
-        $this->transformation = new Transformation('', '', '', '');
-        $subject              = new stdClass();
-        $this->fixture        = PreTransformationEvent::create($subject, $this->transformation);
-        $this->assertSame($this->transformation, $this->fixture->getTransformation());
-        $this->assertSame($subject, $this->fixture->getSubject());
+        $transformation = $this->faker()->transformation();
+        $subject = new stdClass();
+
+        $fixture = PreTransformationEvent::create($subject, $transformation);
+
+        $this->assertSame($transformation, $fixture->getTransformation());
+        $this->assertSame($subject, $fixture->getSubject());
     }
 }

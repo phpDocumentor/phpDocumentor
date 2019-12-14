@@ -169,7 +169,7 @@ final class Dsn
             ($locationParts['scheme'] === '' && array_key_exists('path', $locationParts))
         ) {
             $locationParts['scheme'] = 'file';
-            $location                = 'file://' . $location;
+            $location = 'file://' . $location;
         }
 
         if (!filter_var($location, FILTER_VALIDATE_URL) && !preg_match(static::WINDOWS_DSN, $location)) {
@@ -230,7 +230,12 @@ final class Dsn
      */
     private function isValidScheme(string $scheme) : bool
     {
-        $validSchemes = ['file', 'git+http', 'git+https'];
+        $validSchemes = [
+            'file',
+            'git+http',
+            'git+https',
+            'vfs', // Virtual filesystem; used in testing
+        ];
         return in_array(strtolower($scheme), $validSchemes, true);
     }
 
