@@ -194,7 +194,7 @@ jobs:
         uses: actions/download-artifact@v1
         with:
           name: phpDocumentor.phar
-          path: build/phpDocumentor.phar
+          path: build
       - name: Run Behat
         run: php tools/behat -p ${{ matrix.profile }}
 
@@ -224,7 +224,7 @@ jobs:
         uses: actions/download-artifact@v1
         with:
           name: phpDocumentor.phar
-          path: build/phpDocumentor.phar
+          path: build
       - name: Did the download succeed?
         run: ls -hal build
       - name: Check version
@@ -326,7 +326,7 @@ jobs:
         uses: actions/download-artifact@v1
         with:
           name: phpDocumentor.phar
-          path: build/phpDocumentor.phar
+          path: build
       - name: Run Behat
         run: php tools/behat -p ${{ matrix.profile }}
         continue-on-error: true
