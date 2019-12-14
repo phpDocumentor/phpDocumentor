@@ -1,4 +1,4 @@
-ARGS ?= ""
+ARGS ?= 
 
 .PHONY: phar
 phar:

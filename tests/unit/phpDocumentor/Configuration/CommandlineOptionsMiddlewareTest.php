@@ -332,6 +332,6 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
 
     private function givenAConfiguration() : array
     {
-        return ['phpdocumentor' => $this->configurationFactory->createDefault()->getArrayCopy()];
+        return $this->configurationFactory->createDefault()->getArrayCopy();
     }
 }

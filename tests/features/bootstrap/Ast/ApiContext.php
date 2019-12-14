@@ -527,7 +527,7 @@ class ApiContext extends BaseContext implements Context
      */
     public function filesShouldBeParsed($count)
     {
-        Assert::same((int) $count, $this->getAst()->getFiles()->count());
+        Assert::same($this->getAst()->getFiles()->count(), (int) $count);
     }
 
     /**

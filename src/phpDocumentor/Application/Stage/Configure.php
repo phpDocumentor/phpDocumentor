@@ -82,6 +82,6 @@ final class Configure
             );
         }
 
-        return ['phpdocumentor' => $this->configuration->getArrayCopy()];
+        return $this->configuration->getArrayCopy();
     }
 }
