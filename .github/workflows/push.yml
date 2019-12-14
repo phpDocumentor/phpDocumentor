@@ -286,8 +286,7 @@ jobs:
       matrix:
         profile:
           - default
-          # Phar flow is not working, want to start fixing the WIP behat tests first
-          # - phar
+          - phar
         operating-system:
           - ubuntu-latest
           - windows-latest
