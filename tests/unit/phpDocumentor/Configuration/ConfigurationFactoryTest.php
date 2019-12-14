@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Configuration;
 
+use org\bovigo\vfs\vfsStream;
 use phpDocumentor\Configuration\Exception\InvalidConfigPathException;
 use phpDocumentor\Uri;
 use PHPUnit\Framework\TestCase;
@@ -62,6 +63,69 @@ final class ConfigurationFactoryTest extends TestCase
 
         $this->assertInstanceOf(Configuration::class, $response);
         $this->assertSame($configuration + ['anotherExample'], $response->getArrayCopy());
+    }
+
+    /**
+     * @uses \phpDocumentor\Configuration\ConfigurationFactory::fromUri
+     *
+     * @covers ::fromDefaultLocations
+     */
+    public function testCreatingAConfigurationByScanningTheDefaultLocations() : void
+    {
+        // only create the actual configuration file phpdoc.xml, explicitly do not define phpdoc.dist.xml
+        $structure = [
+            'project' => [
+                'myProject' => ['phpdoc.xml' => 'xml'],
+            ],
+        ];
+
+        vfsStream::setup('root');
+        vfsStream::create($structure);
+
+        // have the application search for both phpdoc.dist.xml and phpdoc.xml; the former doesn't exist so it should
+        // use the second
+        $distUrl = vfsStream::url('root/project/myProject/phpdoc.dist.xml');
+        $configUrl = vfsStream::url('root/project/myProject/phpdoc.xml');
+
+        $configuration = ['exampleConfig'];
+        $symfonyConfigFactory = $this->prophesize(SymfonyConfigFactory::class);
+        $symfonyConfigFactory->createFromFile($configUrl)->willReturn($configuration);
+
+        $factory = new ConfigurationFactory([$distUrl, $configUrl], $symfonyConfigFactory->reveal());
+
+        $response = $factory->fromDefaultLocations();
+
+        $this->assertInstanceOf(Configuration::class, $response);
+        $this->assertSame($configuration, $response->getArrayCopy());
+    }
+
+    /**
+     * @uses \phpDocumentor\Configuration\ConfigurationFactory::createDefault
+     *
+     * @covers ::fromDefaultLocations
+     */
+    public function testWhenTheDefaultLocationsAreNotFoundCreateDefaultConfiguration() : void
+    {
+        // explicitly create _no_ configuration file
+        $structure = ['project' => ['myProject' => []]];
+
+        vfsStream::setup('root');
+        vfsStream::create($structure);
+
+        // both of these do not exist
+        $distUrl = vfsStream::url('root/project/myProject/phpdoc.dist.xml');
+        $configUrl = vfsStream::url('root/project/myProject/phpdoc.xml');
+
+        $configuration = ['exampleConfig'];
+        $symfonyConfigFactory = $this->prophesize(SymfonyConfigFactory::class);
+        $symfonyConfigFactory->createDefault()->willReturn($configuration);
+
+        $factory = new ConfigurationFactory([$distUrl, $configUrl], $symfonyConfigFactory->reveal());
+
+        $response = $factory->fromDefaultLocations();
+
+        $this->assertInstanceOf(Configuration::class, $response);
+        $this->assertSame($configuration, $response->getArrayCopy());
     }
 
     /**

@@ -14,11 +14,7 @@ install-phive:
 .PHONY: setup
 setup: install-phive
 	docker build -t phpdoc/dev docker/with-xdebug; \
-	docker run -it --rm -v${PWD}:/opt/phpdoc -w /opt/phpdoc phpdoc/dev tools/phive.phar install --force-accept-unsigned
-
-.PHONY: behat
-behat:
-	docker-compose run --rm behat
+	docker run -it --rm -v${CURDIR}:/opt/phpdoc -w /opt/phpdoc phpdoc/dev tools/phive.phar install --force-accept-unsigned
 
 .PHONY: phpcs
 phpcs:
@@ -33,6 +29,13 @@ test:
 	docker-compose run --rm phpunit
 	docker-compose run --entrypoint=/usr/local/bin/php --rm phpunit tests/coverage-checker.php 60
 
-.PHONY: pre-commit-test
-pre-commit-test: test phpcs phpstan
+.PHONY: behat
+behat:
+	docker-compose run --rm behat
 
+.PHONY: pre-commit-test
+pre-commit-test: phpcs phpstan test
+
+.PHONY: shell
+shell:
+	docker-compose run --rm -v ${CURDIR}:/opt/phpdoc -w /opt/phpdoc --entrypoint=/bin/bash phpdoc
