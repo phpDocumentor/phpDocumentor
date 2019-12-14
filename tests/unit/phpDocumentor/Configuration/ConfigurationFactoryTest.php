@@ -43,10 +43,15 @@ final class ConfigurationFactoryTest extends TestCase
     }
 
     /**
+     * Creating a default configuration is used to create a baseline and can be used in middlewares.
+     *
+     * If we execute a middleware as part of this step then we end up in an infinite loop.
+     *
+     * @uses \phpDocumentor\Configuration\ConfigurationFactory::addMiddleware
+     *
      * @covers ::createDefault
-     * @covers ::addMiddleware
      */
-    public function testCreatingTheDefaultConfigurationAppliesAnyMiddleware() : void
+    public function testCreatingTheDefaultConfigurationDoesNotApplyAnyMiddleware() : void
     {
         $middleware = static function (array $values) {
             return $values + ['anotherExample'];
@@ -62,7 +67,7 @@ final class ConfigurationFactoryTest extends TestCase
         $response = $factory->createDefault();
 
         $this->assertInstanceOf(Configuration::class, $response);
-        $this->assertSame($configuration + ['anotherExample'], $response->getArrayCopy());
+        $this->assertSame($configuration, $response->getArrayCopy());
     }
 
     /**

@@ -67,12 +67,12 @@ final class ConfigurationFactory
             }
         }
 
-        return $this->createDefault();
+        return new Configuration($this->applyMiddleware($this->createDefault()->getArrayCopy()));
     }
 
     public function createDefault() : Configuration
     {
-        return new Configuration($this->applyMiddleware($this->symfonyConfigFactory->createDefault()));
+        return new Configuration($this->symfonyConfigFactory->createDefault());
     }
 
     /**

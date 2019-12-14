@@ -177,7 +177,7 @@ final class Version3 implements ConfigurationInterface, Normalizable
                         ->end()
                     ->end()
                     ->booleanNode('include-source')
-                        ->defaultFalse()
+                        ->defaultTrue()
                     ->end()
                     ->booleanNode('validate')
                         ->defaultFalse()
