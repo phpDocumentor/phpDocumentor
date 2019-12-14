@@ -15,12 +15,21 @@ namespace phpDocumentor\Transformer\Template;
 
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
+use phpDocumentor\Faker\Faker;
 use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Writer\Collection as WriterCollection;
+use phpDocumentor\Transformer\Writer\WriterAbstract;
 
+/**
+ * @coversDefaultClass \phpDocumentor\Transformer\Template\Collection
+ * @covers ::__construct
+ * @covers ::<private>
+ */
 final class CollectionTest extends MockeryTestCase
 {
+    use Faker;
+
     /** @var m\MockInterface|WriterCollection */
     private $writerCollectionMock;
 
@@ -41,17 +50,27 @@ final class CollectionTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Template\Collection::load
+     * @covers ::load
      */
     public function testIfLoadRetrievesTemplateFromFactoryAndRegistersIt() : void
     {
         // Arrange
         $templateName = 'default';
-        $template = new Template($templateName);
-        $this->factoryMock->shouldReceive('get')->with($templateName)->andReturn($template);
+        $template = $this->faker()->template($templateName);
+        $template['a'] = $this->givenAnEmptyTransformation($template);
+
+        $transformer = $this->faker()->transformer();
+        $this->factoryMock->shouldReceive('get')->with($transformer, $templateName)->andReturn($template);
+
+        $writer = m::mock(WriterAbstract::class);
+        $writer->shouldReceive('checkRequirements')->andReturnNull();
+
+        $this->writerCollectionMock
+            ->shouldReceive('offsetGet')->with('')
+            ->andReturn($writer);
 
         // Act
-        $this->fixture->load($templateName);
+        $this->fixture->load($transformer, $templateName);
 
         // Assert
         $this->assertCount(1, $this->fixture);
@@ -60,13 +79,13 @@ final class CollectionTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Template\Collection::getTemplatesPath
+     * @covers ::getTemplatesPath
      */
-    public function testCollectionProvidesTemplatePath() : void
+    public function testCollectionProvidesTemplatesPath() : void
     {
         // Arrange
         $path = '/tmp';
-        $this->factoryMock->shouldReceive('getTemplatePath')->andReturn($path);
+        $this->factoryMock->shouldReceive('getTemplatesPath')->andReturn($path);
 
         // Act
         $result = $this->fixture->getTemplatesPath();
@@ -76,7 +95,7 @@ final class CollectionTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Template\Collection::getTransformations
+     * @covers ::getTransformations
      */
     public function testIfAllTransformationsCanBeRetrieved() : void
     {
@@ -101,9 +120,9 @@ final class CollectionTest extends MockeryTestCase
     /**
      * Returns a transformation object without information in it.
      */
-    protected function givenAnEmptyTransformation() : Transformation
+    private function givenAnEmptyTransformation(?Template $template = null) : Transformation
     {
-        return new Transformation('', '', '', '');
+        return $this->faker()->transformation($template);
     }
 
     /**
@@ -111,9 +130,9 @@ final class CollectionTest extends MockeryTestCase
      *
      * @param Transformation[] $transformations
      */
-    protected function whenThereIsATemplateWithNameAndTransformations(string $name, array $transformations) : void
+    private function whenThereIsATemplateWithNameAndTransformations(string $name, array $transformations) : void
     {
-        $template = new Template($name);
+        $template = $this->faker()->template($name);
         foreach ($transformations as $key => $transformation) {
             $template[$key] = $transformation;
         }

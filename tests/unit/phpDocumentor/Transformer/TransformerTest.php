@@ -16,6 +16,11 @@ namespace phpDocumentor\Transformer;
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use org\bovigo\vfs\vfsStream;
+use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Faker\Faker;
+use phpDocumentor\Parser\FlySystemFactory;
+use phpDocumentor\Transformer\Writer\Collection;
+use phpDocumentor\Transformer\Writer\WriterAbstract;
 use Psr\Log\NullLogger;
 use function strlen;
 
@@ -24,23 +29,41 @@ use function strlen;
  */
 final class TransformerTest extends MockeryTestCase
 {
+    use Faker;
+
     /** @var int Max length of description printed. */
     private static $MAX_DESCRIPTION_LENGTH = 68;
 
     /** @var Transformer $fixture */
     private $fixture = null;
 
+    /** @var m\LegacyMockInterface|m\MockInterface|Template\Collection */
+    private $templateCollectionMock;
+
+    /** @var m\LegacyMockInterface|m\MockInterface|Collection */
+    private $writerCollectionMock;
+
+    /** @var m\LegacyMockInterface|m\MockInterface|FlySystemFactory */
+    private $flySystemFactory;
+
     /**
      * Instantiates a new \phpDocumentor\Transformer for use as fixture.
      */
     protected function setUp() : void
     {
-        $templateCollectionMock = m::mock('phpDocumentor\Transformer\Template\Collection');
-        $templateCollectionMock->shouldIgnoreMissing();
-        $writerCollectionMock = m::mock('phpDocumentor\Transformer\Writer\Collection');
-        $writerCollectionMock->shouldIgnoreMissing();
+        $this->templateCollectionMock = m::mock(Template\Collection::class);
+        $this->templateCollectionMock->shouldIgnoreMissing();
+        $this->writerCollectionMock = m::mock(Collection::class);
+        $this->writerCollectionMock->shouldIgnoreMissing();
+        $this->flySystemFactory = m::mock(FlySystemFactory::class);
+        $this->flySystemFactory->shouldReceive('create')->andReturn($this->faker()->fileSystem());
 
-        $this->fixture = new Transformer($templateCollectionMock, $writerCollectionMock, new NullLogger());
+        $this->fixture = new Transformer(
+            $this->templateCollectionMock,
+            $this->writerCollectionMock,
+            new NullLogger(),
+            $this->flySystemFactory
+        );
     }
 
     /**
@@ -48,13 +71,21 @@ final class TransformerTest extends MockeryTestCase
      */
     public function testInitialization() : void
     {
-        $templateCollectionMock = m::mock('phpDocumentor\Transformer\Template\Collection');
+        $templateCollectionMock = m::mock(Template\Collection::class);
         $templateCollectionMock->shouldIgnoreMissing();
-        $writerCollectionMock = m::mock('phpDocumentor\Transformer\Writer\Collection');
+        $writerCollectionMock = m::mock(Collection::class);
         $writerCollectionMock->shouldIgnoreMissing();
-        $this->fixture = new Transformer($templateCollectionMock, $writerCollectionMock, new NullLogger());
+        $flySystemFactory = m::mock(FlySystemFactory::class);
+        $flySystemFactory->shouldReceive('create')->andReturn($this->faker()->fileSystem());
 
-        $this->assertSame($templateCollectionMock, $this->fixture->getTemplates());
+        $fixture = new Transformer(
+            $templateCollectionMock,
+            $writerCollectionMock,
+            new NullLogger(),
+            $flySystemFactory
+        );
+
+        $this->assertSame($templateCollectionMock, $fixture->getTemplates());
     }
 
     /**
@@ -86,7 +117,8 @@ final class TransformerTest extends MockeryTestCase
     {
         $this->expectException('InvalidArgumentException');
         $this->expectExceptionMessage('Target directory (vfs://myroot) does not exist and could not be created');
-        $fileSystem = vfsStream::setup('myroot');
+        vfsStream::setup('myroot');
+
         $this->fixture->setTarget(vfsStream::url('myroot'));
     }
 
@@ -95,14 +127,7 @@ final class TransformerTest extends MockeryTestCase
      */
     public function testRetrieveTemplateCollection() : void
     {
-        $templateCollectionMock = m::mock('phpDocumentor\Transformer\Template\Collection');
-        $templateCollectionMock->shouldIgnoreMissing();
-        $writerCollectionMock = m::mock('phpDocumentor\Transformer\Writer\Collection');
-        $writerCollectionMock->shouldIgnoreMissing();
-
-        $fixture = new Transformer($templateCollectionMock, $writerCollectionMock, new NullLogger());
-
-        $this->assertEquals($templateCollectionMock, $fixture->getTemplates());
+        $this->assertEquals($this->templateCollectionMock, $this->fixture->getTemplates());
     }
 
     /**
@@ -110,25 +135,32 @@ final class TransformerTest extends MockeryTestCase
      */
     public function testExecute() : void
     {
-        $myTestWritter = 'myTestWriter';
+        $myTestWriter = 'myTestWriter';
 
-        $templateCollection = m::mock('phpDocumentor\Transformer\Template\Collection');
+        $templateCollection = m::mock(Template\Collection::class);
 
-        $project = m::mock('phpDocumentor\Descriptor\ProjectDescriptor');
+        $project = m::mock(ProjectDescriptor::class);
 
-        $myTestWritterMock = m::mock('phpDocumentor\Transformer\Writer\WriterAbstract')
+        $myTestWriterMock = m::mock(WriterAbstract::class)
             ->shouldReceive('transform')->getMock();
 
-        $writerCollectionMock = m::mock('phpDocumentor\Transformer\Writer\Collection')
-            ->shouldReceive('offsetGet')->with($myTestWritter)->andReturn($myTestWritterMock)
+        $writerCollectionMock = m::mock(Collection::class)
+            ->shouldReceive('offsetGet')
+            ->with($myTestWriter)
+            ->andReturn($myTestWriterMock)
             ->getMock();
 
-        $fixture = new Transformer($templateCollection, $writerCollectionMock, new NullLogger());
+        $fixture = new Transformer(
+            $templateCollection,
+            $writerCollectionMock,
+            new NullLogger(),
+            $this->flySystemFactory
+        );
 
-        $transformation = m::mock('phpDocumentor\Transformer\Transformation')
+        $transformation = m::mock(Transformation::class)
             ->shouldReceive('execute')->with($project)
             ->shouldReceive('getQuery')->andReturn('')
-            ->shouldReceive('getWriter')->andReturn($myTestWritter)
+            ->shouldReceive('getWriter')->andReturn($myTestWriter)
             ->shouldReceive('getArtifact')->andReturn('')
             ->shouldReceive('setTransformer')->with($fixture)
             ->getMock();

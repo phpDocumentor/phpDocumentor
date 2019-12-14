@@ -105,8 +105,8 @@ final class TransformTest extends TestCase
         $this->transformer->setTarget(Argument::any());
 
         $templateCollection = $this->prophesize(Collection::class);
-        $templateCollection->load('template1')->shouldBeCalled();
-        $templateCollection->load('template2')->shouldBeCalled();
+        $templateCollection->load($this->transformer, 'template1')->shouldBeCalled();
+        $templateCollection->load($this->transformer, 'template2')->shouldBeCalled();
 
         $this->transformer->getTemplates()->willReturn($templateCollection->reveal());
 

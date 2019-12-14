@@ -135,7 +135,7 @@ final class Transform
         $stopWatch = new Stopwatch();
         foreach (array_column($templateNames, 'name') as $template) {
             $stopWatch->start('load template');
-            $this->transformer->getTemplates()->load($template);
+            $this->transformer->getTemplates()->load($this->transformer, $template);
             $stopWatch->stop('load template');
         }
     }

@@ -102,7 +102,7 @@ final class EnvironmentFactory
         Environment $twigEnvironment
     ) : void {
         $isDebug = $transformation->getParameter('twig-debug')
-            ? $transformation->getParameter('twig-debug')->getValue()
+            ? $transformation->getParameter('twig-debug')->value()
             : false;
 //        if ($isDebug === 'true') {
         $twigEnvironment->enableDebug();
@@ -112,7 +112,7 @@ final class EnvironmentFactory
 
         /** @var Parameter $extension */
         foreach ($transformation->getParametersWithKey('twig-extension') as $extension) {
-            $extensionValue = $extension->getValue();
+            $extensionValue = $extension->value();
             if (!class_exists($extensionValue)) {
                 throw new InvalidArgumentException('Unknown twig extension: ' . $extensionValue);
             }

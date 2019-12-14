@@ -14,17 +14,11 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Writer;
 
 use InvalidArgumentException;
+use League\Flysystem\FileExistsException;
+use League\Flysystem\FileNotFoundException;
 use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\Transformer\Exception;
 use phpDocumentor\Transformer\Transformation;
-use Symfony\Component\Filesystem\Filesystem;
-use const DIRECTORY_SEPARATOR;
-use function dirname;
-use function is_file;
-use function is_readable;
-use function is_writable;
-use function method_exists;
-use function ucfirst;
+use function strtolower;
 
 /**
  * Writer containing file system operations.
@@ -36,8 +30,7 @@ use function ucfirst;
  */
 class FileIo extends WriterAbstract
 {
-    /** @var Transformation */
-    protected $transformation = null;
+    use IoTrait;
 
     /**
      * Invokes the query method contained in this class.
@@ -46,49 +39,18 @@ class FileIo extends WriterAbstract
      * @param Transformation $transformation Transformation to execute.
      *
      * @throws InvalidArgumentException If the query is not supported.
+     * @throws FileNotFoundException If the source file does not exist or could not be read.
+     * @throws FileExistsException
      */
     public function transform(ProjectDescriptor $project, Transformation $transformation) : void
     {
-        $artifact = $transformation->getTransformer()->getTarget()
-            . DIRECTORY_SEPARATOR . $transformation->getArtifact();
-        $transformation->setArtifact($artifact);
-
-        $method = 'executeQuery' . ucfirst($transformation->getQuery());
-        if (!method_exists($this, $method)) {
+        $method = $transformation->getQuery();
+        if (strtolower($method) !== 'copy') {
             throw new InvalidArgumentException(
                 'The query ' . $method . ' is not supported by the FileIo writer, supported operation is "copy"'
             );
         }
 
-        $this->{$method}($transformation);
-    }
-
-    /**
-     * Copies files or folders to the Artifact location.
-     *
-     * TODO: reimplement this using flysystem.
-     *
-     * @param Transformation $transformation Transformation to use as data source.
-     *
-     * @throws Exception
-     */
-    public function executeQueryCopy(Transformation $transformation) : void
-    {
-        $path = $transformation->getSourceAsPath();
-
-        if (!is_readable($path)) {
-            throw new Exception('Unable to read the source file: ' . $path);
-        }
-
-        if (!is_writable($transformation->getTransformer()->getTarget())) {
-            throw new Exception('Unable to write to: ' . dirname($transformation->getArtifact()));
-        }
-
-        $filesystem = new Filesystem();
-        if (is_file($path)) {
-            $filesystem->copy($path, $transformation->getArtifact(), true);
-        } else {
-            $filesystem->mirror($path, $transformation->getArtifact(), null, ['override' => true]);
-        }
+        $this->copy($transformation, $transformation->getSource(), $transformation->getArtifact());
     }
 }

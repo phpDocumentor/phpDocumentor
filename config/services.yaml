@@ -60,6 +60,7 @@ services:
         public: false
         bind:
           $defaultTemplateName: 'clean'
+          $globalTemplatesPath: "@=service('phpDocumentor\\\\Application').templateDirectory()"
 
     ###################################################################################
     ## Autoloading definitions for whole namespaces ###################################
@@ -70,7 +71,7 @@ services:
         exclude:
           - '../src/phpDocumentor/**/Messages'
           - '../src/phpDocumentor/Application/Stage'
-          - '../src/phpDocumentor/Transformer/**/{Event, Exception}/{**, PathResolver.php}'
+          - '../src/phpDocumentor/Transformer/**/{Event, Exception}/{**}'
 
     phpDocumentor\Console\:
         resource: '../src/phpDocumentor/Console'
@@ -88,7 +89,7 @@ services:
 
     phpDocumentor\Transformer\:
         resource: '../src/phpDocumentor/Transformer'
-        exclude: '../src/phpDocumentor/Transformer/**/{Event, Exception}/{**, PathResolver.php}'
+        exclude: '../src/phpDocumentor/Transformer/**/{Event, Exception}/{**}'
 
     phpDocumentor\Compiler\:
         resource: '../src/phpDocumentor/Compiler'
@@ -125,13 +126,6 @@ services:
 
     phpDocumentor\Configuration\Configuration:
         factory: ['@phpDocumentor\Configuration\ConfigurationFactory', 'fromDefaultLocations']
-
-    phpDocumentor\Configuration\Factory\Version2:
-        tags: [phpdoc.config_strategy]
-
-    phpDocumentor\Configuration\Factory\Version3:
-        arguments: ["@=service('kernel').getProjectDir() ~ '/data/xsd/phpdoc.xsd'"]
-        tags: [phpdoc.config_strategy]
 
     phpDocumentor\Configuration\ConfigurationFactory:
         arguments:
@@ -207,14 +201,7 @@ services:
 
     phpDocumentor\Parser\Parser: ~
 
-    phpDocumentor\Transformer\Template\PathResolver:
-        class: 'phpDocumentor\Transformer\Template\PathResolver'
-        arguments:
-            - "@=service('phpDocumentor\\\\Application').templateDirectory()"
-
     phpDocumentor\Reflection\DocBlock\ExampleFinder: ~
-
-    phpDocumentor\Transformer\Router\StandardRouter: ~
 
     phpDocumentor\Parser\Middleware\StopwatchMiddleware:
         tags: [ { name: 'phpdoc.parser.middleware', priority: 5000 } ]

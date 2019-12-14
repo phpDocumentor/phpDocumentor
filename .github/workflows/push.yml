@@ -230,7 +230,7 @@ jobs:
       - name: Check version
         run: php ./build/phpDocumentor.phar --version
       - name: Run phpDocumentor on itself
-        run: php ./build/phpDocumentor.phar
+        run: php ./build/phpDocumentor.phar -vvv
 
   phpunit:
     runs-on: ${{ matrix.operating-system }}

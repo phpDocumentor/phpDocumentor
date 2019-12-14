@@ -5,6 +5,9 @@
     "erusev/parsedown": {
         "version": "1.6.4"
     },
+    "fzaninotto/faker": {
+        "version": "v1.9.1"
+    },
     "hamcrest/hamcrest-php": {
         "version": "v2.0.0"
     },
