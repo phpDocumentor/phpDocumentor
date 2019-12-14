@@ -175,16 +175,16 @@ final class Version2 implements ConfigurationInterface, Upgradable
                         [
                             'default-package-name' => $values['parser']['default-package-name'],
                             'source' => [
-                                'path' => array_merge($values['files']['files'], $values['files']['directories']),
+                                'paths' => array_merge($values['files']['files'], $values['files']['directories']),
                             ],
                             'ignore' => [
-                                'path' => $values['files']['ignores'],
+                                'paths' => $values['files']['ignores'],
                             ],
                             'extensions' => [
-                                'extension' => $values['parser']['extensions']['extensions'],
+                                'extensions' => $values['parser']['extensions']['extensions'],
                             ],
                             'markers' => [
-                                'marker' => $values['parser']['markers']['items'],
+                                'markers' => $values['parser']['markers']['items'],
                             ],
                         ],
                     ],

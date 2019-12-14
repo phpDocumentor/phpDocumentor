@@ -54,15 +54,15 @@ final class Version2Test extends TestCase
                             [
                                 'default-package-name' => 'Application',
                                 'source' => [
-                                    'path' => [getcwd()],
+                                    'paths' => [getcwd()],
                                 ],
                                 'ignore' => [
-                                    'path' => [],
+                                    'paths' => [],
                                 ],
                                 'extensions' => [
-                                    'extension' => ['php', 'php3', 'phtml'],
+                                    'extensions' => ['php', 'php3', 'phtml'],
                                 ],
-                                'markers' => ['marker' => ['TODO', 'FIXME']],
+                                'markers' => ['markers' => ['TODO', 'FIXME']],
                             ],
                         ],
                     ],
