@@ -168,8 +168,7 @@ jobs:
       matrix:
         profile:
           - default
-          # Phar flow is not working, want to start fixing the WIP behat tests first
-          # - phar
+          - phar
     name: Integration tests [${{ matrix.profile }} | 7.2 | ubuntu-latest]
     needs:
       - build-phar
