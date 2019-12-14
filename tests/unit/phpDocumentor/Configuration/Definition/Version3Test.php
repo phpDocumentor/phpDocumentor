@@ -14,16 +14,24 @@ declare(strict_types=1);
 namespace phpDocumentor\Configuration\Definition;
 
 use phpDocumentor\Configuration\SymfonyConfigFactory;
+use phpDocumentor\Dsn;
+use phpDocumentor\Path;
 use PHPUnit\Framework\TestCase;
 use function array_merge;
 use function array_replace_recursive;
 
+/**
+ * @coversDefaultClass \phpDocumentor\Configuration\Definition\Version3
+ * @covers ::__construct
+ * @covers ::<private>
+ */
 final class Version3Test extends TestCase
 {
     private const DEFAULT_TEMPLATE_NAME = 'clean';
 
     /**
      * @dataProvider provideTestConfiguration
+     * @covers ::getConfigTreeBuilder
      */
     public function testLoadingADefaultConfigWorks($inputConfig, $expectedConfig) : void
     {
@@ -33,6 +41,26 @@ final class Version3Test extends TestCase
         $finalizedConfig = $node->finalize($normalizedConfig);
 
         $this->assertEquals($expectedConfig, $finalizedConfig);
+    }
+
+    /**
+     * @covers ::normalize
+     */
+    public function testNormalizingTheOutputTransformsTheConfig() : void
+    {
+        $definition = new Version3(self::DEFAULT_TEMPLATE_NAME);
+        $configuration = $this->defaultConfigurationOutput();
+        $expected = $this->defaultConfigurationOutput();
+        $expected['paths']['output'] = new Dsn($expected['paths']['output']);
+        $expected['paths']['cache'] = new Path($expected['paths']['cache']);
+        $expected['versions']['1.0.0']['api'][0]['extensions']
+            = $expected['versions']['1.0.0']['api'][0]['extensions']['extensions'];
+        $expected['versions']['1.0.0']['api'][0]['markers']
+            = $expected['versions']['1.0.0']['api'][0]['markers']['markers'];
+
+        $configuration = $definition->normalize($configuration);
+
+        $this->assertEquals($expected, $configuration);
     }
 
     public function provideTestConfiguration() : array
