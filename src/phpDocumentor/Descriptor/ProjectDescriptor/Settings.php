@@ -16,7 +16,7 @@ namespace phpDocumentor\Descriptor\ProjectDescriptor;
 /**
  * Contains the Settings for the current Project.
  */
-class Settings
+final class Settings
 {
     public const VISIBILITY_PUBLIC = 1;
 
@@ -30,13 +30,13 @@ class Settings
     public const VISIBILITY_DEFAULT = 7;
 
     /** @var bool Represents whether this settings object has been modified */
-    protected $isModified = false;
+    private $isModified = false;
 
     /** @var int a bitflag representing which visibilities are contained and allowed in this project */
-    protected $visibility = self::VISIBILITY_DEFAULT;
+    private $visibility = self::VISIBILITY_DEFAULT;
 
     /** @var bool */
-    protected $includeSource = false;
+    private $includeSource = false;
 
     /** @var string[] */
     private $markers = [];
@@ -77,20 +77,6 @@ class Settings
         $this->isModified = false;
     }
 
-    /**
-     * Sets a property's value and if it differs from the previous then mark these settings as modified.
-     *
-     * @param mixed $value
-     */
-    protected function setValueAndCheckIfModified(string $propertyName, $value) : void
-    {
-        if ($this->{$propertyName} !== $value) {
-            $this->isModified = true;
-        }
-
-        $this->{$propertyName} = $value;
-    }
-
     public function includeSource() : void
     {
         $this->setValueAndCheckIfModified('includeSource', true);
@@ -114,8 +100,23 @@ class Settings
         $this->markers = $markers;
     }
 
+    /**
+     * @return string[]
+     */
     public function getMarkers() : array
     {
         return $this->markers;
+    }
+
+    /**
+     * Sets a property's value and if it differs from the previous then mark these settings as modified.
+     */
+    private function setValueAndCheckIfModified(string $propertyName, $value) : void
+    {
+        if ($this->{$propertyName} !== $value) {
+            $this->isModified = true;
+        }
+
+        $this->{$propertyName} = $value;
     }
 }

@@ -18,6 +18,7 @@ use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery\MockInterface;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\PackageDescriptor;
+use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\Php\File;
 use function md5;
@@ -30,7 +31,7 @@ use function md5;
 final class FileAssemblerTest extends MockeryTestCase
 {
     /** @var FileAssembler $fixture */
-    protected $fixture;
+    private $fixture;
 
     /** @var PackageDescriptor */
     private $defaultPackage;
@@ -110,13 +111,16 @@ DOCBLOCK
      */
     protected function getProjectDescriptorBuilderMock() : MockInterface
     {
+        $settings = new Settings();
+        $settings->includeSource();
+
         $projectDescriptorBuilderMock = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
         $projectDescriptorBuilderMock->shouldReceive('getDefaultPackage')
             ->andReturn($this->defaultPackage);
 
-        $projectDescriptorBuilderMock->shouldReceive(
-            'getProjectDescriptor->getSettings->shouldIncludeSource'
-        )->andReturn(true);
+        $projectDescriptorBuilderMock->shouldReceive('getProjectDescriptor->getSettings')
+            ->andReturn($settings);
+
         $projectDescriptorBuilderMock->shouldReceive('buildDescriptor')->andReturnUsing(
             static function ($param) {
                 $mock = m::mock('phpDocumentor\Descriptor\DescriptorAbstract');
