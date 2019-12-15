@@ -106,7 +106,7 @@ class ProjectDescriptorBuilder
     /**
      * Analyzes a Descriptor and alters its state based on its state or even removes the descriptor.
      */
-    public function filter(Filterable $descriptor) : Filterable
+    public function filter(Filterable $descriptor) : ?Filterable
     {
         return $this->filter->filter($descriptor);
     }
