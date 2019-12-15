@@ -23,7 +23,7 @@
     ],
     "git-version": "package_version",
     "exclude-composer-files": false,
-    "compression": "GZ",
+    "compression": "NONE",
     "compactors": [
         "KevinGH\\Box\\Compactor\\Json",
         "KevinGH\\Box\\Compactor\\Php"
