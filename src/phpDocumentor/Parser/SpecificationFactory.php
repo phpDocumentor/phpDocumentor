@@ -44,7 +44,7 @@ final class SpecificationFactory implements FactoryInterface
                 continue;
             }
 
-            $pathSpec = $this->orSpec($this->inPath($path), $pathSpec);
+            $pathSpec = $this->orSpec($this->inPath((string) $path), $pathSpec);
         }
 
         $ignoreSpec = null;

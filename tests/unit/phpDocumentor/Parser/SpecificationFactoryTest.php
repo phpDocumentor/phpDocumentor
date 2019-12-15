@@ -110,4 +110,27 @@ final class SpecificationFactoryTest extends TestCase
             $specification
         );
     }
+
+    public function testInPathMustBeOfTheTypeString() : void
+    {
+        $specification = $this->fixture->create(
+            [
+                new Path('PHPCompatibility/*'),
+                new Path('PHPCompatibility/Sniffs/'),
+            ],
+            ['paths' => []],
+            ['php']
+        );
+
+        $this->assertEquals(
+            new AndSpecification(
+                new OrSpecification(
+                    new InPath(new Path('PHPCompatibility/*')),
+                    new InPath(new Path('PHPCompatibility/Sniffs/'))
+                ),
+                new HasExtension(['php'])
+            ),
+            $specification
+        );
+    }
 }
