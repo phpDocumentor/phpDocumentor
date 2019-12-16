@@ -29,7 +29,7 @@
         "ext-libxml": "*",
         "ext-simplexml": "*",
         "ext-zlib": "*",
-        "cocur/slugify": "^3.2",
+        "cocur/slugify": "^4.0",
         "erusev/parsedown": "~1.0",
         "jean85/pretty-package-versions": "^1.2",
         "league/flysystem": "^1.0",
