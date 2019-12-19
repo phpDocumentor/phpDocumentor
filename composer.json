@@ -29,7 +29,6 @@
         "ext-libxml": "*",
         "ext-simplexml": "*",
         "ext-zlib": "*",
-        "cocur/slugify": "^3.2",
         "erusev/parsedown": "~1.0",
         "jean85/pretty-package-versions": "^1.2",
         "league/flysystem": "^1.0",
@@ -59,6 +58,7 @@
         "symfony/monolog-bundle": "^3.0",
         "symfony/routing": "^5.0",
         "symfony/stopwatch": "^5.0",
+        "symfony/string": "5.0.*",
         "symfony/yaml": "^5.0",
         "twig/twig": "~2.0",
         "webmozart/assert": "^1.3"

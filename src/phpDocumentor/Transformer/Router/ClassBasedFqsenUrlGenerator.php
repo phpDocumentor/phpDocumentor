@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Router;
 
-use Cocur\Slugify\Slugify;
 use phpDocumentor\Reflection\Fqsen;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\String\Slugger\SluggerInterface;
 use function count;
 use function explode;
 use function strpos;
@@ -28,13 +28,13 @@ class ClassBasedFqsenUrlGenerator
     /** @var UrlGeneratorInterface */
     private $urlGenerator;
 
-    /** @var Slugify */
-    private $slugify;
+    /** @var SluggerInterface */
+    private $slugger;
 
-    public function __construct(UrlGeneratorInterface $urlGenerator)
+    public function __construct(UrlGeneratorInterface $urlGenerator, SluggerInterface $slugger)
     {
         $this->urlGenerator = $urlGenerator;
-        $this->slugify = new Slugify();
+        $this->slugger = $slugger;
     }
 
     /**
@@ -43,7 +43,7 @@ class ClassBasedFqsenUrlGenerator
     public function __invoke(Fqsen $fqsen) : string
     {
         $fqsenParts = explode('::', (string) $fqsen);
-        $className = $this->slugify($fqsenParts[0]);
+        $className = $this->slugger->slug($fqsenParts[0])->toString();
 
         if (count($fqsenParts) === 1) {
             return $this->urlGenerator->generate(
@@ -81,10 +81,5 @@ class ClassBasedFqsenUrlGenerator
                 '_fragment' => 'constant_' . $fqsenParts[1],
             ]
         );
-    }
-
-    private function slugify(string $string, bool $lowercase = false, string $default = '') : string
-    {
-        return $this->slugify->slugify($string, ['lowercase' => $lowercase]) ?: $default;
     }
 }

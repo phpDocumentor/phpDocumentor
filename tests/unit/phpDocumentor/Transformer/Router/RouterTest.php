@@ -28,6 +28,7 @@ use phpDocumentor\Uri;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 
 /**
  * @coversDefaultClass \phpDocumentor\Transformer\Router\Router
@@ -51,7 +52,11 @@ final class RouterTest extends TestCase
         $urlGenerator->generate($routeName, ['name' => $expected, '_fragment' => $fragment])
             ->willReturn($url);
 
-        $router = new Router(new ClassBasedFqsenUrlGenerator($urlGenerator->reveal()), $urlGenerator->reveal());
+        $router = new Router(
+            new ClassBasedFqsenUrlGenerator($urlGenerator->reveal(), new AsciiSlugger()),
+            $urlGenerator->reveal(),
+            new AsciiSlugger()
+        );
         $result = $router->generate($node);
 
         $this->assertSame($url, $result);
@@ -65,7 +70,11 @@ final class RouterTest extends TestCase
         $urlGenerator = $this->prophesize(UrlGeneratorInterface::class);
         $urlGenerator->generate()->shouldNotBeCalled();
 
-        $router = new Router(new ClassBasedFqsenUrlGenerator($urlGenerator->reveal()), $urlGenerator->reveal());
+        $router = new Router(
+            new ClassBasedFqsenUrlGenerator($urlGenerator->reveal(), new AsciiSlugger()),
+            $urlGenerator->reveal(),
+            new AsciiSlugger()
+        );
 
         $this->assertSame('https://my/uri', $router->generate($this->givenAUri()));
     }
@@ -78,7 +87,11 @@ final class RouterTest extends TestCase
         $urlGenerator = $this->prophesize(UrlGeneratorInterface::class);
         $urlGenerator->generate()->shouldNotBeCalled();
 
-        $router = new Router(new ClassBasedFqsenUrlGenerator($urlGenerator->reveal()), $urlGenerator->reveal());
+        $router = new Router(
+            new ClassBasedFqsenUrlGenerator($urlGenerator->reveal(), new AsciiSlugger()),
+            $urlGenerator->reveal(),
+            new AsciiSlugger()
+        );
         $result = $router->generate(new stdClass()); // An stdClass is not routable
 
         $this->assertSame('', $result);

@@ -17,6 +17,7 @@ use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Reflection\Fqsen;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 
 /**
  * Test for the MethodDescriptor URL Generator with the Standard Router
@@ -37,7 +38,7 @@ class ClassBasedFqsenUrlGeneratorTest extends MockeryTestCase
         $urlGenerator = m::mock(UrlGeneratorInterface::class);
         $urlGenerator->shouldReceive('generate')->andReturn($toPath);
         $fqsen = new Fqsen($fromFqsen);
-        $fixture = new ClassBasedFqsenUrlGenerator($urlGenerator);
+        $fixture = new ClassBasedFqsenUrlGenerator($urlGenerator, new AsciiSlugger());
 
         // Act
         $result = $fixture($fqsen);

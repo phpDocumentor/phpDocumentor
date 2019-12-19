@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Router;
 
 use ArrayObject;
-use Cocur\Slugify\Slugify;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\ConstantDescriptor;
 use phpDocumentor\Descriptor\Descriptor;
@@ -29,6 +28,7 @@ use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Uri;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\String\Slugger\SluggerInterface;
 use function strrpos;
 use function substr;
 
@@ -40,14 +40,17 @@ class Router extends ArrayObject
     /** @var UrlGeneratorInterface */
     private $urlGenerator;
 
-    /** @var Slugify */
-    private $slugify;
+    /** @var SluggerInterface */
+    private $slugger;
 
-    public function __construct(ClassBasedFqsenUrlGenerator $fqsenUrlGenerator, UrlGeneratorInterface $urlGenerator)
-    {
+    public function __construct(
+        ClassBasedFqsenUrlGenerator $fqsenUrlGenerator,
+        UrlGeneratorInterface $urlGenerator,
+        SluggerInterface $slugger
+    ) {
         $this->fqsenUrlGenerator = $fqsenUrlGenerator;
         $this->urlGenerator = $urlGenerator;
-        $this->slugify = new Slugify();
+        $this->slugger = $slugger;
 
         parent::__construct();
     }
@@ -145,12 +148,16 @@ class Router extends ArrayObject
     private function slugifyNameBasedOnType(string $type, string $name) : string
     {
         if ($type === 'file') {
-            return $this->slugify->slugify($this->removeFileExtensionFromPath($name));
+            return $this->slugger->slug($this->removeFileExtensionFromPath($name))->lower()->toString();
         }
 
         $default = $type === 'class' ? '' : 'default';
 
-        return $this->slugify->slugify($name, ['lowercase' => $type === 'namespace']) ?: $default;
+        $slug = $this->slugger->slug($name);
+        if ($type === 'namespace') {
+            $slug = $slug->lower();
+        }
+        return $slug->toString() ?: $default;
     }
 
     /**
