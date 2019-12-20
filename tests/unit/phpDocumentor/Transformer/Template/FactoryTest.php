@@ -44,10 +44,10 @@ final class FactoryTest extends MockeryTestCase
      */
     protected function setUp() : void
     {
-        $this->globalTemplates = vfsStream::setup('exampleDir');
+        $this->globalTemplates = vfsStream::setup();
 
         $this->flySystemFactory = $this->faker()->flySystemFactory();
-        $this->fixture = new Factory($this->flySystemFactory, vfsStream::url('exampleDir'));
+        $this->fixture = new Factory($this->flySystemFactory, vfsStream::url('root'));
     }
 
     /**
@@ -70,7 +70,7 @@ final class FactoryTest extends MockeryTestCase
             new NullLogger(),
             $this->flySystemFactory
         );
-        $transformer->setTarget(vfsStream::path('exampleDir'));
+        $transformer->setTarget(vfsStream::url('root'));
 
         // Act
         $result = $this->fixture->get($transformer, $templateName);
@@ -111,7 +111,7 @@ final class FactoryTest extends MockeryTestCase
             new NullLogger(),
             $this->flySystemFactory
         );
-        $transformer->setTarget(vfsStream::path('exampleDir'));
+        $transformer->setTarget(vfsStream::url('root'));
 
         // Act
         $this->fixture->get($transformer, $templateName);
@@ -126,7 +126,7 @@ final class FactoryTest extends MockeryTestCase
         $result = $this->fixture->getTemplatesPath();
 
         // Assert
-        $this->assertSame(vfsStream::url('exampleDir'), $result);
+        $this->assertSame(vfsStream::url('root'), $result);
     }
 
     /**

@@ -86,7 +86,7 @@ final class Version3 implements ConfigurationInterface, Normalizable
 
     public function normalize(array $configuration) : array
     {
-        $configuration['paths']['output'] = new Dsn('file://' . $configuration['paths']['output']);
+        $configuration['paths']['output'] = new Dsn($configuration['paths']['output']);
         $configuration['paths']['cache'] = new Path($configuration['paths']['cache']);
         foreach ($configuration['versions'] as $versionNumber => $version) {
             foreach ($version['api'] as $key => $api) {
@@ -221,7 +221,7 @@ final class Version3 implements ConfigurationInterface, Normalizable
             ->addDefaultsIfNotSet()
             ->fixXmlConfig('path')
             ->children()
-                ->scalarNode('dsn')->defaultValue('file://.')->end()
+                ->scalarNode('dsn')->defaultValue('.')->end()
                 ->append($this->paths($defaultPaths))
             ->end();
     }

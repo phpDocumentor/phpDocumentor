@@ -13,55 +13,20 @@ declare(strict_types=1);
 
 namespace phpDocumentor;
 
-use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Class DsnTest
  *
  * @coversDefaultClass \phpDocumentor\Dsn
+ * @covers ::__construct
+ * @covers ::<private>
  */
 class DsnTest extends TestCase
 {
     /**
-     * @covers ::__construct
-     * @covers ::<private>
-     */
-    public function testInvalidDsn() : void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $dsn = 'git+http://namé:password@github.com';
-        new Dsn($dsn);
-    }
-
-    /**
-     * @covers ::__construct
-     * @covers ::<private>
-     */
-    public function testInvalidScheme() : void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $dsn = 'gittt+http://github.com';
-        new Dsn($dsn);
-    }
-
-    /**
-     * @covers ::__construct
-     * @covers ::getScheme
-     * @covers ::<private>
-     */
-    public function testInvalidKeyValuePair() : void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $dsn = 'git+http://@github.com/phpDocumentor/phpDocumentor2?q+query';
-        new Dsn($dsn);
-    }
-
-    /**
-     * @uses \phpDocumentor\Path
+     * @uses         \phpDocumentor\Path
      *
-     * @covers ::__construct
-     * @covers ::__toString
      * @covers ::getScheme
      * @covers ::getUsername
      * @covers ::getPassword
@@ -70,122 +35,116 @@ class DsnTest extends TestCase
      * @covers ::getPath
      * @covers ::getQuery
      * @covers ::getParameters
-     * @covers ::<private>
+     * @covers ::__toString
+     *
+     * @dataProvider provideDsnsToTestAgainst
      */
-    public function testValidDsnWithScheme() : void
-    {
-        $dsn     = 'git+http://user:pw@github.com:8000/phpDocumentor/phpDocumentor2?q=qry1&x=qry2;branch=dev;other=xxx';
+    public function testValidDsnWithScheme(
+        string $dsn,
+        string $normalizedDsn,
+        ?string $scheme,
+        string $path = '',
+        string $host = '',
+        ?int $port = null,
+        string $user = '',
+        string $pass = '',
+        array $query = [],
+        array $parameters = []
+    ) : void {
         $fixture = new Dsn($dsn);
-        $query   = [
-            'q' => 'qry1',
-            'x' => 'qry2',
+
+        $this->assertSame($normalizedDsn, (string) $fixture);
+        $this->assertSame($scheme, $fixture->getScheme());
+        $this->assertSame($user, $fixture->getUsername());
+        $this->assertSame($pass, $fixture->getPassword());
+        $this->assertSame($port, $fixture->getPort());
+        $this->assertSame($host, $fixture->getHost());
+        $this->assertEquals(new Path($path), $fixture->getPath());
+        $this->assertSame($query, $fixture->getQuery());
+        $this->assertSame($parameters, $fixture->getParameters());
+    }
+
+    public function provideDsnsToTestAgainst() : array
+    {
+        return [
+            'test the most elaborate example of a DSN' => [
+                'git+http://user:pw@github.com:8000/phpDocumentor/phpDocumentor2?q=qry1&x=qry2;branch=dev;other=xxx',
+                'git+http://user:pw@github.com:8000/phpDocumentor/phpDocumentor2?q=qry1&x=qry2;branch=dev;other=xxx',
+                'git+http',
+                '/phpDocumentor/phpDocumentor2',
+                'github.com',
+                8000,
+                'user',
+                'pw',
+                ['q' => 'qry1', 'x' => 'qry2'],
+                ['branch' => 'dev', 'other' => 'xxx'],
+            ],
+            'test that a URI pointing to a file in a phar works' => [
+                'phar:///app/build/phpDocumentor.phar/src/phpDocumentor/../../data/templates',
+                'phar:///app/build/phpDocumentor.phar/src/phpDocumentor/../../data/templates',
+                'phar',
+                '/app/build/phpDocumentor.phar/src/phpDocumentor/../../data/templates',
+            ],
+            'test local file on windows without scheme' => [
+                'C:\\phpdocumentor\\tests\\unit\\phpDocumentor\\Parser',
+                'file:///C:/phpdocumentor/tests/unit/phpDocumentor/Parser',
+                'file',
+                '/C:/phpdocumentor/tests/unit/phpDocumentor/Parser',
+            ],
+            'test relative local file on unix without scheme' => [
+                'project/src',
+                'project/src',
+                // This is a relative URI reference and does not have a scheme,
+                // see https://tools.ietf.org/html/rfc3986#section-4.1
+                null,
+                'project/src',
+            ],
+            'test absolute local file on unix without scheme' => [
+                '/opt/data/project/src',
+                '/opt/data/project/src',
+                // This is a relative URI reference and does not have a scheme,
+                // see https://tools.ietf.org/html/rfc3986#section-4.1
+                null,
+                '/opt/data/project/src',
+            ],
+            'test local file on windows with scheme' => [
+                'file:///C:\\phpdocumentor\\tests',
+                'file:///C:\\phpdocumentor\\tests',
+                'file',
+                '/C:\\phpdocumentor\\tests',
+            ],
+            'test http port is inferred on git' => [
+                'git+http://github.com',
+                'git+http://github.com',
+                'git+http',
+                '/',
+                'github.com',
+                80,
+            ],
+            'test http port is inferred for http scheme' => [
+                'http://github.com',
+                'http://github.com',
+                'http',
+                '/',
+                'github.com',
+                80,
+            ],
+            'test https port is inferred on git' => [
+                'git+https://github.com',
+                'git+https://github.com',
+                'git+https',
+                '/',
+                'github.com',
+                443,
+            ],
+            'test https port is inferred for https scheme' => [
+                'https://github.com',
+                'https://github.com',
+                'https',
+                '/',
+                'github.com',
+                443,
+            ],
         ];
-
-        $parameters = [
-            'branch' => 'dev',
-            'other' => 'xxx',
-        ];
-
-        $this->assertEquals($dsn, (string) $fixture);
-        $this->assertEquals('git+http', $fixture->getScheme());
-        $this->assertEquals('user', $fixture->getUsername());
-        $this->assertEquals('pw', $fixture->getPassword());
-        $this->assertEquals(8000, $fixture->getPort());
-        $this->assertEquals('github.com', $fixture->getHost());
-        $this->assertEquals('/phpDocumentor/phpDocumentor2', $fixture->getPath());
-        $this->assertEquals($query, $fixture->getQuery());
-        $this->assertEquals($parameters, $fixture->getParameters());
-    }
-
-    /**
-     * @uses \phpDocumentor\Path
-     *
-     * @covers ::__construct
-     * @covers ::__toString
-     * @covers ::getScheme
-     * @covers ::getHost
-     * @covers ::getPort
-     * @covers ::getPath
-     * @covers ::<private>
-     */
-    public function testValidDsnWithoutScheme() : void
-    {
-        $dsn     = 'src';
-        $fixture = new Dsn($dsn);
-
-        $this->assertEquals('file://src', (string) $fixture);
-        $this->assertEquals('file', $fixture->getScheme());
-        $this->assertEquals(null, $fixture->getHost());
-        $this->assertEquals(0, $fixture->getPort());
-        $this->assertEquals('src', $fixture->getPath());
-    }
-
-    /**
-     * @uses \phpDocumentor\Path
-     *
-     * @covers ::__construct
-     * @covers ::__toString
-     * @covers ::getScheme
-     * @covers ::getHost
-     * @covers ::getPort
-     * @covers ::getPath
-     * @covers ::<private>
-     */
-    public function testValidWindowsDsnWithoutScheme() : void
-    {
-        $dsn     = 'C:\\phpdocumentor\\tests\\unit\\phpDocumentor\\Parser';
-        $fixture = new Dsn($dsn);
-
-        $this->assertEquals(
-            'file://C:\\phpdocumentor\\tests\\unit\\phpDocumentor\\Parser',
-            (string) $fixture
-        );
-        $this->assertEquals('file', $fixture->getScheme());
-        $this->assertEquals(null, $fixture->getHost());
-        $this->assertEquals(0, $fixture->getPort());
-        $this->assertEquals(
-            'C:\\phpdocumentor\\tests\\unit\\phpDocumentor\\Parser',
-            $fixture->getPath()
-        );
-    }
-
-    /**
-     * @uses \phpDocumentor\Path
-     *
-     * @covers ::__construct
-     * @covers ::__toString
-     * @covers ::getScheme
-     * @covers ::getHost
-     * @covers ::getPort
-     * @covers ::getPath
-     * @covers ::<private>
-     */
-    public function testValidWindowsDsnWithScheme() : void
-    {
-        $dsn     = 'file://C:\\phpdocumentor\\tests';
-        $fixture = new Dsn($dsn);
-
-        $this->assertEquals('file://C:\\phpdocumentor\\tests', (string) $fixture);
-        $this->assertEquals('file', $fixture->getScheme());
-        $this->assertEquals(null, $fixture->getHost());
-        $this->assertEquals(0, $fixture->getPort());
-        $this->assertEquals('C:\\phpdocumentor\\tests', $fixture->getPath());
-    }
-
-    /**
-     * @covers ::__construct
-     * @covers ::getScheme
-     * @covers ::getPort
-     * @covers ::<private>
-     */
-    public function testCorrectDefaultPorts() : void
-    {
-        $dsn     = 'git+http://github.com';
-        $fixture = new Dsn($dsn);
-        $this->assertEquals(80, $fixture->getPort());
-
-        $dsn     = 'git+https://github.com';
-        $fixture = new Dsn($dsn);
-        $this->assertEquals(443, $fixture->getPort());
     }
 }

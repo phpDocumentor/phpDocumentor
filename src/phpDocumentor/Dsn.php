@@ -14,56 +14,45 @@ declare(strict_types=1);
 namespace phpDocumentor;
 
 use InvalidArgumentException;
-use const FILTER_VALIDATE_URL;
-use function array_key_exists;
+use League\Uri\Uri as LeagueUri;
+use Throwable;
+use function array_shift;
 use function array_splice;
-use function count;
 use function explode;
-use function filter_var;
 use function implode;
-use function in_array;
-use function parse_url;
+use function parse_str;
 use function preg_match;
 use function sprintf;
-use function strlen;
-use function strtolower;
 
 /**
- * Value Object for DSN.
+ * Data Source Name (DSN), a reference to a path on a local or remote system with the ability to add parameters.
+ *
+ * The format for the DSN is inspired by the PDO DSN format
+ * ({@see https://www.php.net/manual/en/ref.pdo-mysql.connection.php}) where you have a string containing Semicolon
+ * Separated Values (SSV), where each part is a key=value pair. Exception to this rule is the first entry in the string;
+ * this is the URI where the referenced Data Source is located.
+ *
+ * A simple example can be a reference to your project folder:
+ *
+ *     file:///home/mvriel/project/src
+ *
+ * Yet a more complex example may be a reference to a specific branch on a git repository:
+ *
+ *     git+https://github.com/phpDocumentor/phpDocumentor;path=/src;branch=release/3.0
+ *
+ * In the example above we reference a git repository using the http protocol and as options we mention that the branch
+ * that we would like to parse is `release/3.0` and in it we want to start at the path `/src`.
  */
 final class Dsn
 {
     /** @var string */
     private $dsn;
 
-    /** @var string */
-    private $scheme;
-
-    /** @var string */
-    private $host;
-
-    /** @var int */
-    private $port;
-
-    /** @var string */
-    private $user;
-
-    /** @var string */
-    private $password;
-
-    /** @var string */
-    private $path;
-
-    /** @var string[] */
-    private $query = [];
+    /** @var LeagueUri */
+    private $uri;
 
     /** @var string[] */
     private $parameters = [];
-
-    //@codingStandardsIgnoreStart
-    const WINDOWS_DSN = '~(^((?<scheme>file):\\/\\/)?(?<path>((?:[a-z]|[A-Z]):(?=\\\\(?![\\0-\\37<>:"/\\\\|?*])|\\/(?![\\0-\\37<>:"/\\\\|?*])|$)|^\\\\(?=[\\\\\\/][^\\0-\\37<>:"/\\\\|?*]+)|^(?=(\\\\|\\/)$)|^\\.(?=(\\\\|\\/)$)|^\\.\\.(?=(\\\\|\\/)$)|^(?=(\\\\|\\/)[^\\0-\\37<>:"/\\\\|?*]+)|^\\.(?=(\\\\|\\/)[^\\0-\\37<>:"/\\\\|?*]+)|^\\.\\.(?=(\\\\|\\/)[^\\0-\\37<>:"/\\\\|?*]+))((\\\\|\\/)[^\\0-\\37<>:"/\\\\|?*]+|(\\\\|\\/)$)*()))$~';
-
-    //@codingStandardsIgnoreEnd
 
     /**
      * Initializes the Dsn
@@ -84,25 +73,39 @@ final class Dsn
     /**
      * Returns the scheme part of the DSN
      */
-    public function getScheme() : string
+    public function getScheme() : ?string
     {
-        return $this->scheme;
+        return $this->uri->getScheme();
     }
 
     /**
      * Returns the host part of the DSN
      */
-    public function getHost() : ?string
+    public function getHost() : string
     {
-        return $this->host;
+        return $this->uri->getHost() ?: '';
     }
 
     /**
      * Returns the port part of the DSN
      */
-    public function getPort() : int
+    public function getPort() : ?int
     {
-        return $this->port;
+        $port = $this->uri->getPort();
+        if ($port !== null) {
+            return $port;
+        }
+
+        switch ($this->uri->getScheme()) {
+            case 'http':
+            case 'git+http':
+                return 80;
+            case 'https':
+            case 'git+https':
+                return 443;
+            default:
+                return null;
+        }
     }
 
     /**
@@ -110,7 +113,7 @@ final class Dsn
      */
     public function getUsername() : string
     {
-        return $this->user;
+        return explode(':', $this->uri->getUserInfo() ?: '')[0];
     }
 
     /**
@@ -118,7 +121,7 @@ final class Dsn
      */
     public function getPassword() : string
     {
-        return $this->password;
+        return explode(':', $this->uri->getUserInfo() ?: '')[1] ?? '';
     }
 
     /**
@@ -126,7 +129,7 @@ final class Dsn
      */
     public function getPath() : Path
     {
-        return new Path($this->path);
+        return new Path($this->uri->getPath() ?: '/');
     }
 
     /**
@@ -136,7 +139,10 @@ final class Dsn
      */
     public function getQuery() : array
     {
-        return $this->query;
+        $result = [];
+        parse_str($this->uri->getQuery() ?: '', $result);
+
+        return $result;
     }
 
     /**
@@ -154,178 +160,54 @@ final class Dsn
      */
     private function parse(string $dsn) : void
     {
-        $dsnParts = explode(';', $dsn);
-        $location = $dsnParts[0];
-        unset($dsnParts[0]);
-        $locationParts = parse_url($location);
+        $parameters = explode(';', $dsn);
+        $this->uri = $this->parseUri(array_shift($parameters));
+        $this->parseParameters($parameters);
 
-        if ($locationParts === false ||
-            (array_key_exists('scheme', $locationParts) && strlen($locationParts['scheme']) === 1)
-        ) {
-            preg_match(static::WINDOWS_DSN, $dsn, $locationParts);
-        }
-
-        if (!array_key_exists('scheme', $locationParts) ||
-            ($locationParts['scheme'] === '' && array_key_exists('path', $locationParts))
-        ) {
-            $locationParts['scheme'] = 'file';
-            $location = 'file://' . $location;
-        }
-
-        if (!filter_var($location, FILTER_VALIDATE_URL) && !preg_match(static::WINDOWS_DSN, $location)) {
-            throw new InvalidArgumentException(
-                sprintf('"%s" is not a valid DSN.', $dsn)
-            );
-        }
-
-        $this->parseDsn($location, $dsnParts);
-
-        $this->parseScheme($locationParts);
-
-        $this->parseHostAndPath($locationParts);
-
-        $this->parsePort($locationParts);
-
-        $this->user = $locationParts['user'] ?? '';
-
-        $this->password = $locationParts['pass'] ?? '';
-
-        $this->parseQuery($locationParts);
-
-        $this->parseParameters($dsnParts);
-    }
-
-    /**
-     * Reconstructs the original DSN but
-     * when scheme was omitted in the original DSN, it will now be file://
-     *
-     * @param string[] $dsnParts
-     */
-    private function parseDsn(string $location, array $dsnParts) : void
-    {
-        array_splice($dsnParts, 0, 0, $location);
-        $this->dsn = implode(';', $dsnParts);
-    }
-
-    /**
-     * validates and sets the scheme property
-     *
-     * @param string[] $locationParts
-     *
-     * @throws InvalidArgumentException
-     */
-    private function parseScheme(array $locationParts) : void
-    {
-        if (!$this->isValidScheme($locationParts['scheme'])) {
-            throw new InvalidArgumentException(
-                sprintf('"%s" is not a valid scheme.', $locationParts['scheme'])
-            );
-        }
-
-        $this->scheme = strtolower($locationParts['scheme']);
-    }
-
-    /**
-     * Validated provided scheme.
-     */
-    private function isValidScheme(string $scheme) : bool
-    {
-        $validSchemes = [
-            'file',
-            'git+http',
-            'git+https',
-            'vfs', // Virtual filesystem; used in testing
-        ];
-        return in_array(strtolower($scheme), $validSchemes, true);
-    }
-
-    /**
-     * Validates and sets the host and path properties
-     *
-     * @param string[] $locationParts
-     */
-    private function parseHostAndPath(array $locationParts) : void
-    {
-        $path = $locationParts['path'] ?? '';
-        $host = $locationParts['host'] ?? '';
-
-        if ($this->getScheme() === 'file') {
-            $this->path = $host . $path;
-        } else {
-            $this->host = $host;
-            $this->path = $path;
-        }
-    }
-
-    /**
-     * Validates and sets the port property
-     *
-     * @param string[] $locationParts
-     */
-    private function parsePort(array $locationParts) : void
-    {
-        if (!isset($locationParts['port'])) {
-            if ($this->getScheme() === 'git+http') {
-                $this->port = 80;
-            } elseif ($this->getScheme() === 'git+https') {
-                $this->port = 443;
-            } else {
-                $this->port = 0;
-            }
-        } else {
-            $this->port = (int) $locationParts['port'];
-        }
-    }
-
-    /**
-     * validates and sets the query property
-     *
-     * @param string[] $locationParts
-     */
-    private function parseQuery(array $locationParts) : void
-    {
-        if (!isset($locationParts['query'])) {
-            return;
-        }
-
-        $queryParts = explode('&', $locationParts['query']);
-        foreach ($queryParts as $part) {
-            $option = $this->splitKeyValuePair($part);
-
-            $this->query[$option[0]] = $option[1];
-        }
+        array_splice($parameters, 0, 0, (string) $this->uri);
+        $this->dsn = implode(';', $parameters);
     }
 
     /**
      * validates and sets the parameters property
      *
-     * @param string[] $dsnParts
+     * @param string[] $parameters
      */
-    private function parseParameters(array $dsnParts) : void
+    private function parseParameters(array $parameters) : void
     {
-        foreach ($dsnParts as $part) {
-            $option = $this->splitKeyValuePair($part);
-
-            $this->parameters[$option[0]] = $option[1];
+        foreach ($parameters as $parameter) {
+            $this->parseParameter($parameter);
         }
     }
 
-    /**
-     * Splits a key-value pair
-     *
-     * @return string[]
-     *
-     * @throws InvalidArgumentException
-     */
-    private function splitKeyValuePair(string $pair) : array
+    private function parseParameter(string $part) : void
     {
-        $option = explode('=', $pair);
-        if (count($option) !== 2) {
+        $result = [];
+        parse_str($part, $result);
+
+        foreach ($result as $key => $value) {
+            $this->parameters[$key] = $value;
+        }
+    }
+
+    private function parseUri(string $uriString) : LeagueUri
+    {
+        try {
+            if (preg_match('~^[a-zA-Z]+:\\\\~', $uriString)) {
+                return LeagueUri::createFromWindowsPath($uriString);
+            }
+
+            return LeagueUri::createFromString($uriString);
+        } catch (Throwable $exception) {
             throw new InvalidArgumentException(
-                sprintf('"%s" is not a valid query or parameter.', $pair)
+                sprintf(
+                    'The DSN "%s" could not be parsed, the following error occured: %s',
+                    $uriString,
+                    $exception->getMessage()
+                ),
+                0,
+                $exception
             );
         }
-
-        return $option;
     }
 }

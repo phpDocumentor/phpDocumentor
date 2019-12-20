@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Parser;
 
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\Filesystem;
 use phpDocumentor\Dsn;
 
 /**
@@ -24,5 +24,5 @@ interface FileSystemFactory
     /**
      * Returns a Filesystem instance based on the scheme of the provided Dsn.
      */
-    public function create(Dsn $dsn) : FilesystemInterface;
+    public function create(Dsn $dsn) : Filesystem;
 }

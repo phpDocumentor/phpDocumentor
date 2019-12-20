@@ -30,10 +30,10 @@
         "ext-simplexml": "*",
         "ext-zlib": "*",
         "erusev/parsedown": "~1.0",
-        "fzaninotto/faker": "^1.9",
         "jean85/pretty-package-versions": "^1.2",
         "league/flysystem": "^1.0",
         "league/pipeline": "^1.0",
+        "league/uri": "^6.0",
         "ocramius/package-versions": "^1.4",
         "padraic/phar-updater": "^1.0",
         "phpdocumentor/flyfinder": "^1.0@beta",
@@ -68,7 +68,8 @@
     "require-dev": {
         "mikey179/vfsstream": "^1.2",
         "mockery/mockery": "^1.0",
-        "symfony/process": "^5.0"
+        "symfony/process": "^5.0",
+        "fzaninotto/faker": "^1.9"
     },
     "suggest": {
         "ext-twig": "Enabling the twig extension improves the generation of twig based templates.",

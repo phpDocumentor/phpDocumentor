@@ -65,7 +65,7 @@ final class TransformTest extends TestCase
      */
     public function test_if_target_location_for_output_is_set_with_a_relative_path() : void
     {
-        $config  = $this->givenAnExampleConfigWithDsnAndTemplates('file://.');
+        $config  = $this->givenAnExampleConfigWithDsnAndTemplates('.');
         $payload = new Payload($config, $this->projectDescriptorBuilder->reveal());
 
         $this->transformer->setTarget(getcwd() . DIRECTORY_SEPARATOR . '.')->shouldBeCalled();

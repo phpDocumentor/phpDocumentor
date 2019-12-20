@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer;
 
 use InvalidArgumentException;
+use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemInterface;
 use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor;
@@ -31,10 +32,6 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use RuntimeException;
 use function in_array;
-use function is_dir;
-use function is_writable;
-use function mkdir;
-use function realpath;
 use function sprintf;
 
 /**
@@ -102,28 +99,11 @@ class Transformer implements CompilerPassInterface
      * Sets the target location where to output the artifacts.
      *
      * @param string $target The target location where to output the artifacts.
-     *
-     * @throws InvalidArgumentException If the target is not a valid writable directory.
      */
     public function setTarget(string $target) : void
     {
-        $path = realpath($target);
-        if ($path === false) {
-            if (!@mkdir($target, 0755, true)) {
-                throw new InvalidArgumentException(
-                    'Target directory (' . $target . ') does not exist and could not be created'
-                );
-            }
-
-            $path = realpath($target);
-        }
-
-        if (!is_dir($path) || !is_writable($path)) {
-            throw new InvalidArgumentException('Given target (' . $target . ') is not a writable directory');
-        }
-
-        $this->target = $path;
-        $this->destination = $this->flySystemFactory->create(new Dsn($path));
+        $this->target = $target;
+        $this->destination = $this->flySystemFactory->create(new Dsn($target));
     }
 
     /**
@@ -139,7 +119,7 @@ class Transformer implements CompilerPassInterface
         return $this->destination;
     }
 
-    public function getTemplatesDirectory() : FilesystemInterface
+    public function getTemplatesDirectory() : Filesystem
     {
         $dsnString = $this->getTemplates()->getTemplatesPath();
         try {
