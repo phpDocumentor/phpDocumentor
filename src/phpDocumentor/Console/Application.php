@@ -17,6 +17,7 @@ use Jean85\PrettyVersions;
 use OutOfBoundsException;
 use PackageVersions\Versions;
 use Symfony\Bundle\FrameworkBundle\Console\Application as BaseApplication;
+use Symfony\Component\Console\Exception\CommandNotFoundException;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -40,16 +41,20 @@ final class Application extends BaseApplication
 
     protected function getCommandName(InputInterface $input) : ?string
     {
+        try {
+            if ($input->getFirstArgument() !== null) {
+                $this->find($input->getFirstArgument());
+
+                return $input->getFirstArgument();
+            }
+        } catch (CommandNotFoundException $e) {
+            //Empty by purpose
+        }
+
         // the regular setDefaultCommand option does not allow for options and arguments; with this workaround
         // we can have options and arguments when the first element in the argv options is not a recognized
         // command name.
-        // We explicitly do not use the getFirstArgument of the $input variable since that skips options; we
-        // explicitly want to know if the first thing after the php filename is a known command!
-        if ((isset($_SERVER['argv'][1]) === false || $this->has($_SERVER['argv'][1]) === false)) {
-            return 'project:run';
-        }
-
-        return $input->getFirstArgument();
+        return 'project:run';
     }
 
     protected function getDefaultInputDefinition() : InputDefinition
