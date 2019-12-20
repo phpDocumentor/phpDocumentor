@@ -40,7 +40,7 @@
         "phpdocumentor/reflection": "^4.0@alpha",
         "phpdocumentor/reflection-common": "^2.0@alpha",
         "phpdocumentor/reflection-docblock": "^5.0@alpha",
-        "phpdocumentor/type-resolver": "^0.7.0",
+        "phpdocumentor/type-resolver": "^1.0",
         "psr/cache": "^1.0",
         "psr/log": "^1.1",
         "symfony/cache": "^5.0",
