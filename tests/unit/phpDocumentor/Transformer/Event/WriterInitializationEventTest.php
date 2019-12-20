@@ -10,6 +10,7 @@ use stdClass;
 
 /**
  * @coversDefaultClass \phpDocumentor\Transformer\Event\WriterInitializationEvent
+ * @covers ::__construct
  */
 final class WriterInitializationEventTest extends TestCase
 {
@@ -23,6 +24,17 @@ final class WriterInitializationEventTest extends TestCase
     {
         $this->fixture = new WriterInitializationEvent(new stdClass());
         $this->writer = new FileIo();
+    }
+
+    /**
+     * @covers ::createInstance
+     * @covers ::getSubject
+     */
+    public function testCreatingAnInstance() : void
+    {
+        $subject = new stdClass();
+        $this->fixture = WriterInitializationEvent::createInstance($subject);
+        $this->assertSame($subject, $this->fixture->getSubject());
     }
 
     /**

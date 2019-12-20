@@ -15,15 +15,16 @@ namespace phpDocumentor\Transformer\Event;
 
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
+use phpDocumentor\Descriptor\ProjectDescriptor;
 use stdClass;
 
 /**
- * @coversDefaultClass \phpDocumentor\Transformer\Event\PreTransformEvent
+ * @coversDefaultClass \phpDocumentor\Transformer\Event\PostTransformEvent
  * @covers ::__construct
  */
-final class PreTransformEventTest extends MockeryTestCase
+final class PostTransformEventTest extends MockeryTestCase
 {
-    /** @var PreTransformEvent $fixture */
+    /** @var PostTransformEvent $fixture */
     private $fixture;
 
     /**
@@ -31,7 +32,7 @@ final class PreTransformEventTest extends MockeryTestCase
      */
     protected function setUp() : void
     {
-        $this->fixture = new PreTransformEvent(new stdClass());
+        $this->fixture = new PostTransformEvent(new stdClass());
     }
 
     /**
@@ -41,7 +42,7 @@ final class PreTransformEventTest extends MockeryTestCase
     public function testCreatingAnInstance() : void
     {
         $subject = new stdClass();
-        $this->fixture = PreTransformEvent::createInstance($subject);
+        $this->fixture = PostTransformEvent::createInstance($subject);
         $this->assertSame($subject, $this->fixture->getSubject());
     }
 
@@ -51,7 +52,7 @@ final class PreTransformEventTest extends MockeryTestCase
      */
     public function testSetAndGetProject() : void
     {
-        $project = m::mock('phpDocumentor\Descriptor\ProjectDescriptor');
+        $project = m::mock(ProjectDescriptor::class);
         $this->assertNull($this->fixture->getProject());
 
         $this->fixture->setProject($project);
