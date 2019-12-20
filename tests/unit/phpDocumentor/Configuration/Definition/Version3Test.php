@@ -129,7 +129,7 @@ final class Version3Test extends TestCase
                             'default-package-name' => 'Application',
                             'encoding' => 'utf-8',
                             'source' => [
-                                'dsn' => 'file://.',
+                                'dsn' => '.',
                                 'paths' => ['.'],
                             ],
                             'ignore' => [

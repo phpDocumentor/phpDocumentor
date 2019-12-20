@@ -75,7 +75,7 @@ final class FinderTest extends MockeryTestCase
      */
     public function testFindExampleContentsInExampleDirectory() : void
     {
-        $directories = [vfsStream::url('base/exampleDirectory'), vfsStream::url('base/exampleDirectory2')];
+        $directories = [vfsStream::url('root/exampleDirectory'), vfsStream::url('root/exampleDirectory2')];
 
         $descriptor = $this->givenADescriptorWithExamplePath('example.txt');
         $this->givenTheDirectoryStructure(
@@ -87,7 +87,7 @@ final class FinderTest extends MockeryTestCase
         );
 
         $this->fixture->setExampleDirectories($directories);
-        $this->fixture->setSourceDirectory(vfsStream::url('base/source'));
+        $this->fixture->setSourceDirectory(vfsStream::url('root/source'));
         $result = $this->fixture->find($descriptor);
 
         $this->assertSame(self::EXAMPLE_TEXT, $result);
@@ -103,7 +103,7 @@ final class FinderTest extends MockeryTestCase
         $descriptor = $this->givenADescriptorWithExamplePath('example.txt');
         $this->givenTheDirectoryStructure(['source' => ['example.txt' => self::EXAMPLE_TEXT]]);
 
-        $this->fixture->setSourceDirectory(vfsStream::url('base/source'));
+        $this->fixture->setSourceDirectory(vfsStream::url('root/source'));
         $result = $this->fixture->find($descriptor);
 
         $this->assertSame(self::EXAMPLE_TEXT, $result);
@@ -186,7 +186,7 @@ final class FinderTest extends MockeryTestCase
      */
     private function givenTheDirectoryStructure(array $structure) : void
     {
-        vfsStream::setup('base', null, $structure);
+        vfsStream::setup('root', null, $structure);
     }
 
     /**

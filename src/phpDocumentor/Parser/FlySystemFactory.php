@@ -18,11 +18,11 @@ use InvalidArgumentException;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\AdapterInterface;
 use League\Flysystem\Filesystem;
-use League\Flysystem\FilesystemInterface;
 use League\Flysystem\MountManager;
 use LogicException;
 use phpDocumentor\Dsn;
 use const LOCK_EX;
+use function assert;
 use function hash;
 use function in_array;
 
@@ -39,7 +39,7 @@ class FlySystemFactory implements FileSystemFactory
     /**
      * Returns a Filesystem instance based on the scheme of the provided Dsn
      */
-    public function create(Dsn $dsn) : FilesystemInterface
+    public function create(Dsn $dsn) : Filesystem
     {
         $dsnId = hash('md5', (string) $dsn);
 
@@ -53,19 +53,19 @@ class FlySystemFactory implements FileSystemFactory
 
         $filesystem->addPlugin(new Finder());
 
+        assert($filesystem instanceof Filesystem);
+
         return $filesystem;
     }
 
     private function createAdapter(Dsn $dsn) : AdapterInterface
     {
-        if (!in_array($dsn->getScheme(), ['file', 'vfs'])) {
+        if (!in_array($dsn->getScheme(), [null, 'file', 'vfs', 'phar'])) {
             throw new InvalidArgumentException('http and https are not supported yet');
         }
 
         try {
-            // FlySystem does not like file://.; so for local files we strip the path; but for vfs we want to keep the
-            // scheme
-            $root = $dsn->getScheme() === 'file' ? (string) $dsn->getPath() : (string) $dsn;
+            $root = (string) $dsn;
         } catch (InvalidArgumentException $e) {
             throw new InvalidArgumentException(
                 'Failed to determine the root path for the given DSN, received: ' . (string) $dsn,

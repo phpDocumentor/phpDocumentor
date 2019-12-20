@@ -84,7 +84,7 @@ final class ConfigurationFactoryTest extends TestCase
             ],
         ];
 
-        vfsStream::setup('root');
+        vfsStream::setup();
         vfsStream::create($structure);
 
         // have the application search for both phpdoc.dist.xml and phpdoc.xml; the former doesn't exist so it should
@@ -114,7 +114,7 @@ final class ConfigurationFactoryTest extends TestCase
         // explicitly create _no_ configuration file
         $structure = ['project' => ['myProject' => []]];
 
-        vfsStream::setup('root');
+        vfsStream::setup();
         vfsStream::create($structure);
 
         // both of these do not exist

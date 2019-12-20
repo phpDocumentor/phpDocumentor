@@ -118,7 +118,7 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
 
         $this->assertEquals(
             [
-                'dsn' => new Dsn('file://.'),
+                'dsn' => new Dsn('.'),
                 'paths' => [new Path('./src/index.php')],
             ],
             current($newConfiguration['phpdocumentor']['versions'])['api'][0]['source']
@@ -137,7 +137,7 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
 
         $this->assertEquals(
             [
-                'dsn' => new Dsn('file://.'),
+                'dsn' => new Dsn('.'),
                 'paths' => [new Path('./src')],
             ],
             current($newConfiguration['phpdocumentor']['versions'])['api'][0]['source']
@@ -156,7 +156,7 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
 
         $this->assertEquals(
             [
-                'dsn' => new Dsn('file://.'),
+                'dsn' => new Dsn('.'),
                 'paths' => [new Path('.')],
             ],
             current($newConfiguration['phpdocumentor']['versions'])['api'][0]['source']
@@ -171,7 +171,7 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
 
         $this->assertEquals(
             [
-                'dsn' => new Dsn('file:///src'),
+                'dsn' => new Dsn('/src'),
                 'paths' => [new Path('./')],
             ],
             current($newConfiguration['phpdocumentor']['versions'])['api'][0]['source']
@@ -189,14 +189,14 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
 
         $this->assertEquals(
             [
-                'dsn' => new Dsn('file:///src'),
+                'dsn' => new Dsn('/src'),
                 'paths' => [new Path('./')],
             ],
             current($newConfiguration['phpdocumentor']['versions'])['api'][0]['source']
         );
         $this->assertEquals(
             [
-                'dsn' => new Dsn('file://.'),
+                'dsn' => new Dsn('.'),
                 'paths' => [new Path('./localSrc')],
             ],
             current($newConfiguration['phpdocumentor']['versions'])['api'][1]['source']

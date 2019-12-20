@@ -15,7 +15,6 @@ namespace phpDocumentor\Transformer;
 
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
-use org\bovigo\vfs\vfsStream;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\Parser\FlySystemFactory;
@@ -26,6 +25,8 @@ use function strlen;
 
 /**
  * @coversDefaultClass \phpDocumentor\Transformer\Transformer
+ * @covers ::__construct
+ * @covers ::<private>
  */
 final class TransformerTest extends MockeryTestCase
 {
@@ -99,27 +100,6 @@ final class TransformerTest extends MockeryTestCase
         $this->fixture->setTarget(__DIR__);
 
         $this->assertEquals(__DIR__, $this->fixture->getTarget());
-    }
-
-    /**
-     * @covers ::setTarget
-     */
-    public function testExceptionWhenSettingFileAsTarget() : void
-    {
-        $this->expectException('InvalidArgumentException');
-        $this->fixture->setTarget(__FILE__);
-    }
-
-    /**
-     * @covers ::setTarget
-     */
-    public function testExceptionWhenSettingExistingDirAsTarget() : void
-    {
-        $this->expectException('InvalidArgumentException');
-        $this->expectExceptionMessage('Target directory (vfs://myroot) does not exist and could not be created');
-        vfsStream::setup('myroot');
-
-        $this->fixture->setTarget(vfsStream::url('myroot'));
     }
 
     /**

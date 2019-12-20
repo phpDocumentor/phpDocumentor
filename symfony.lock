@@ -20,6 +20,12 @@
     "league/pipeline": {
         "version": "0.3.0"
     },
+    "league/uri": {
+        "version": "6.0.1"
+    },
+    "league/uri-interfaces": {
+        "version": "2.0.1"
+    },
     "mikey179/vfsstream": {
         "version": "v1.6.5"
     },
@@ -70,6 +76,9 @@
     },
     "psr/event-dispatcher": {
         "version": "1.0.0"
+    },
+    "psr/http-message": {
+        "version": "1.0.1"
     },
     "psr/log": {
         "version": "1.0.2"

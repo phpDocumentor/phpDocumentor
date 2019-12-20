@@ -14,6 +14,9 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Template;
 
 use DirectoryIterator;
+use League\Flysystem\Adapter\AbstractAdapter;
+use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemInterface;
 use League\Flysystem\MountManager;
 use phpDocumentor\Dsn;
 use phpDocumentor\Parser\FlySystemFactory;
@@ -21,6 +24,7 @@ use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Transformer;
 use RecursiveDirectoryIterator;
+use RuntimeException;
 use SimpleXMLElement;
 use const DIRECTORY_SEPARATOR;
 use function file_exists;
@@ -98,15 +102,13 @@ class Factory
      */
     protected function createTemplateFromXml(Transformer $transformer, string $nameOrPath) : Template
     {
-        $path = $this->resolve($nameOrPath);
-
         // create the filesystems that a template needs to be able to manipulate, the source folder containing this
         // template its files; the destination to where it can write its files and a global templates folder where to
         // get global template files from
         $files = new MountManager(
             [
                 'templates' => $transformer->getTemplatesDirectory(),
-                'template' => $this->flySystemFactory->create(new Dsn($path)),
+                'template' => $this->resolve($transformer, $nameOrPath),
                 'destination' => $transformer->destination(),
             ]
         );
@@ -146,24 +148,43 @@ class Factory
         return $template;
     }
 
-    private function resolve(string $nameOrPath) : string
+    private function resolve(Transformer $transformer, string $nameOrPath) : FilesystemInterface
     {
-        $path = null;
-
         $configPath = rtrim($nameOrPath, DIRECTORY_SEPARATOR) . '/template.xml';
         if (file_exists($configPath) && is_readable($configPath)) {
-            $path = rtrim($nameOrPath, DIRECTORY_SEPARATOR);
+            return $this->flySystemFactory->create(new Dsn(rtrim($nameOrPath, DIRECTORY_SEPARATOR)));
         }
 
-        // if we load a default template
-        if ($path === null) {
-            $path = rtrim($this->getTemplatesPath(), '/\\') . DIRECTORY_SEPARATOR . $nameOrPath;
+        // if we load a global template
+        $globalTemplatesFilesystem = $transformer->getTemplatesDirectory();
+        if ($globalTemplatesFilesystem->has($nameOrPath)) {
+            $templateFilesystem = $this->createNewFilesystemFromSubfolder($globalTemplatesFilesystem, $nameOrPath);
+
+            if (!$templateFilesystem->has('template.xml')) {
+                throw new TemplateNotFound($nameOrPath);
+            }
+
+            return $templateFilesystem;
         }
 
-        if (!file_exists($path) || !is_readable($path)) {
-            throw new TemplateNotFound($path);
+        throw new TemplateNotFound($nameOrPath);
+    }
+
+    private function createNewFilesystemFromSubfolder(
+        Filesystem $hostFilesystem,
+        string $subfolder
+    ) : Filesystem {
+        if (!$hostFilesystem->getAdapter() instanceof AbstractAdapter) {
+            throw new RuntimeException(
+                'Failed to load template, The filesystem of the global templates does not support '
+                . 'getting a subfolder from it'
+            );
         }
 
-        return $path;
+        $templateAdapter = clone $hostFilesystem->getAdapter();
+        $globalRoot = $templateAdapter->getPathPrefix();
+        $templateAdapter->setPathPrefix($globalRoot . $subfolder);
+
+        return new Filesystem($templateAdapter);
     }
 }
