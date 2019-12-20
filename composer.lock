@@ -654,12 +654,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/GraphViz.git",
-                "reference": "38cc160db6168943dc48697c99994a6c3ae7ffe3"
+                "reference": "8089d548835fdf72c9b9b8670c12f82cce020545"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/GraphViz/zipball/38cc160db6168943dc48697c99994a6c3ae7ffe3",
-                "reference": "38cc160db6168943dc48697c99994a6c3ae7ffe3",
+                "url": "https://api.github.com/repos/phpDocumentor/GraphViz/zipball/8089d548835fdf72c9b9b8670c12f82cce020545",
+                "reference": "8089d548835fdf72c9b9b8670c12f82cce020545",
                 "shasum": ""
             },
             "require": {
@@ -694,7 +694,7 @@
                 }
             ],
             "description": "Wrapper for Graphviz",
-            "time": "2019-12-13T08:21:37+00:00"
+            "time": "2019-12-16T09:17:38+00:00"
         },
         {
             "name": "phpdocumentor/reflection",
@@ -1638,16 +1638,16 @@
         },
         {
             "name": "symfony/expression-language",
-            "version": "v5.0.1",
+            "version": "v5.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/expression-language.git",
-                "reference": "121ece2d8c52777db0809525526ba9875f5a483a"
+                "reference": "412c7cc679805e78987a18fd5860013238f1daa2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/expression-language/zipball/121ece2d8c52777db0809525526ba9875f5a483a",
-                "reference": "121ece2d8c52777db0809525526ba9875f5a483a",
+                "url": "https://api.github.com/repos/symfony/expression-language/zipball/412c7cc679805e78987a18fd5860013238f1daa2",
+                "reference": "412c7cc679805e78987a18fd5860013238f1daa2",
                 "shasum": ""
             },
             "require": {
@@ -1685,7 +1685,7 @@
             ],
             "description": "Symfony ExpressionLanguage Component",
             "homepage": "https://symfony.com",
-            "time": "2019-11-18T17:27:11+00:00"
+            "time": "2019-12-10T11:06:55+00:00"
         },
         {
             "name": "symfony/filesystem",
