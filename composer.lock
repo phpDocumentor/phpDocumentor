@@ -654,12 +654,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/GraphViz.git",
-                "reference": "38cc160db6168943dc48697c99994a6c3ae7ffe3"
+                "reference": "8089d548835fdf72c9b9b8670c12f82cce020545"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/GraphViz/zipball/38cc160db6168943dc48697c99994a6c3ae7ffe3",
-                "reference": "38cc160db6168943dc48697c99994a6c3ae7ffe3",
+                "url": "https://api.github.com/repos/phpDocumentor/GraphViz/zipball/8089d548835fdf72c9b9b8670c12f82cce020545",
+                "reference": "8089d548835fdf72c9b9b8670c12f82cce020545",
                 "shasum": ""
             },
             "require": {
@@ -694,7 +694,7 @@
                 }
             ],
             "description": "Wrapper for Graphviz",
-            "time": "2019-12-13T08:21:37+00:00"
+            "time": "2019-12-16T09:17:38+00:00"
         },
         {
             "name": "phpdocumentor/reflection",
@@ -1224,16 +1224,16 @@
         },
         {
             "name": "symfony/console",
-            "version": "v5.0.1",
+            "version": "v5.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "dae5ef273d700771168ab889d9f8a19b2d206656"
+                "reference": "fe6e3cd889ca64172d7a742a2eb058541404ef47"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/dae5ef273d700771168ab889d9f8a19b2d206656",
-                "reference": "dae5ef273d700771168ab889d9f8a19b2d206656",
+                "url": "https://api.github.com/repos/symfony/console/zipball/fe6e3cd889ca64172d7a742a2eb058541404ef47",
+                "reference": "fe6e3cd889ca64172d7a742a2eb058541404ef47",
                 "shasum": ""
             },
             "require": {
@@ -1296,7 +1296,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2019-12-01T10:51:15+00:00"
+            "time": "2019-12-17T13:20:22+00:00"
         },
         {
             "name": "symfony/contracts",
