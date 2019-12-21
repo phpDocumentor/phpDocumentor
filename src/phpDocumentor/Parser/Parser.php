@@ -16,7 +16,7 @@ namespace phpDocumentor\Parser;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Parser\Event\PreParsingEvent;
-use phpDocumentor\Parser\Exception\FilesNotFoundException;
+use phpDocumentor\Reflection\File;
 use phpDocumentor\Reflection\Php\Project;
 use phpDocumentor\Reflection\ProjectFactory;
 use Psr\Log\LoggerInterface;
@@ -81,8 +81,8 @@ class Parser
         }
 
         $this->projectFactory = $projectFactory;
-        $this->stopwatch      = $stopwatch;
-        $this->logger         = $logger;
+        $this->stopwatch = $stopwatch;
+        $this->logger = $logger;
     }
 
     /**
@@ -209,7 +209,7 @@ class Parser
     /**
      * Iterates through the given files feeds them to the builder.
      *
-     * @throws FilesNotFoundException If no files were found.
+     * @param File[] $files
      */
     public function parse(array $files) : Project
     {
@@ -235,10 +235,6 @@ class Parser
      */
     private function logAfterParsingAllFiles() : void
     {
-        if (!$this->stopwatch instanceof Stopwatch) {
-            return;
-        }
-
         $event = $this->stopwatch->stop('parser.parse');
 
         $this->log('Elapsed time to parse all files: ' . round($event->getDuration() / 1000, 2) . 's');
@@ -248,8 +244,8 @@ class Parser
     /**
      * Dispatches a logging request.
      *
-     * @param string   $message    The message to log.
-     * @param string   $priority   The logging priority as declared in the LogLevel PSR-3 class.
+     * @param string $message The message to log.
+     * @param string $priority The logging priority as declared in the LogLevel PSR-3 class.
      * @param string[] $parameters
      */
     private function log(string $message, string $priority = LogLevel::INFO, $parameters = []) : void
@@ -259,10 +255,6 @@ class Parser
 
     private function startTimingTheParsePhase() : void
     {
-        if (!($this->stopwatch instanceof Stopwatch)) {
-            return;
-        }
-
         $this->stopwatch->start('parser.parse');
     }
 }

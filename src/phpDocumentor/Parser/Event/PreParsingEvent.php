@@ -16,7 +16,7 @@ namespace phpDocumentor\Parser\Event;
 use phpDocumentor\Event\EventAbstract;
 
 /**
- * Event thrown before the parsing of an individual file.
+ * Event thrown before the parsing all files.
  */
 final class PreParsingEvent extends EventAbstract
 {
