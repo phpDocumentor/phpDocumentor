@@ -19,7 +19,8 @@
     ],
     "directories-bin": [
         "data",
-        "var/cache/prod"
+        "var/cache/prod",
+        "config/secrets/prod"
     ],
     "git-version": "package_version",
     "exclude-composer-files": false,
