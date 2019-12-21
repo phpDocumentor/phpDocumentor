@@ -63,27 +63,32 @@ class RunCommandTest extends MockeryTestCase
      */
     public function testCommandIsConfiguredWithTheRightOptions() : void
     {
-        $this->markTestIncomplete('Actually check the generated definition');
-        $input = new StringInput('--force -f abc');
-        $output = new BufferedOutput();
-
         $pipeline = m::mock(PipelineInterface::class);
-        $pipeline
-            ->shouldReceive('__invoke')
-            ->withArgs(
-                static function (array $options) {
-                    return $options['force'] === true && $options['filename'] === ['abc'];
-                }
-            )
-            ->once();
-
         $command = new RunCommand(m::mock(ProjectDescriptorBuilder::class), $pipeline);
-        $application = m::mock(Application::class);
-        $application->shouldReceive('getVersion')->andReturn('3.0');
-        $application->shouldReceive('getHelperSet')->andReturn(new HelperSet());
-        $application->shouldReceive('getDefinition')->andReturn(new InputDefinition());
-        $command->setApplication($application);
-
-        $this->assertSame(0, $command->run($input, $output));
+        $options = $command->getDefinition()->getOptions();
+        $this->assertEquals(
+            [
+                'target',
+                'cache-folder',
+                'filename',
+                'directory',
+                'encoding',
+                'extensions',
+                'ignore',
+                'ignore-tags',
+                'hidden',
+                'ignore-symlinks',
+                'markers',
+                'title',
+                'force',
+                'validate',
+                'visibility',
+                'defaultpackagename',
+                'sourcecode',
+                'template',
+                'parseprivate',
+            ],
+            array_keys($options)
+        );
     }
 }

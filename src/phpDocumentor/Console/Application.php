@@ -93,12 +93,15 @@ class Application extends BaseApplication
         // prevent replacing the version by the PEAR building
         if (sprintf('%s%s%s', '@', 'package_version', '@') === static::VERSION) {
             $version = trim(file_get_contents(__DIR__ . '/../../../VERSION'));
+            // @codeCoverageIgnoreStart
             try {
                 $version = PrettyVersions::getVersion(Versions::ROOT_PACKAGE_NAME)->getPrettyVersion();
                 $version = sprintf('v%s', ltrim($version, 'v'));
             } catch (OutOfBoundsException $e) {
             }
+            // @codeCoverageIgnoreEnd
         }
+
         return $version;
     }
 }
