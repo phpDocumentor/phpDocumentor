@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Console\Command\Project;
 
-use League\Pipeline\Pipeline;
+use League\Pipeline\PipelineInterface;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Parser\Event\PreFileEvent;
@@ -52,7 +52,7 @@ class RunCommand extends Command
     /** @var ProjectDescriptorBuilder */
     private $projectDescriptorBuilder;
 
-    /** @var Pipeline */
+    /** @var PipelineInterface */
     private $pipeline;
 
     /** @var ProgressBar */
@@ -63,7 +63,7 @@ class RunCommand extends Command
 
     public function __construct(
         ProjectDescriptorBuilder $projectDescriptorBuilder,
-        Pipeline $pipeline
+        PipelineInterface $pipeline
     ) {
         parent::__construct('project:run');
 
@@ -108,9 +108,7 @@ class RunCommand extends Command
                   run
                   transform
                 <comment>project</comment>
-                  project:parse
                   project:run
-                  project:transform
                 <comment>template</comment>
                   template:generate
                   template:list

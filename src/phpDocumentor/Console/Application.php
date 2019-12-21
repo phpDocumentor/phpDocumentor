@@ -27,7 +27,7 @@ use function ltrim;
 use function sprintf;
 use function trim;
 
-final class Application extends BaseApplication
+class Application extends BaseApplication
 {
     public const VERSION = '@package_version@';
 
