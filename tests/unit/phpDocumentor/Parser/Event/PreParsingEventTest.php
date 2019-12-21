@@ -14,6 +14,20 @@ use stdClass;
  */
 final class PreParsingEventTest extends TestCase
 {
+    /** @var PreParsingEvent */
+    private $fixture;
+
+    /**
+     * @covers ::createInstance
+     * @covers ::getSubject
+     */
+    public function testCreatingAnInstance() : void
+    {
+        $subject = new stdClass();
+        $this->fixture = PreParsingEvent::createInstance($subject);
+        $this->assertSame($subject, $this->fixture->getSubject());
+    }
+
     /**
      * @covers ::setFileCount
      * @covers ::getFileCount

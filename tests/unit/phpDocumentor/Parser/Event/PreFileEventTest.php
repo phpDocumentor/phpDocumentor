@@ -17,7 +17,9 @@ use Mockery\Adapter\Phpunit\MockeryTestCase;
 use stdClass;
 
 /**
- * Test for the PreFileEvent class.
+ * @coversDefaultClass \phpDocumentor\Parser\Event\PreFileEvent
+ * @covers ::__construct
+ * @covers ::<private>
  */
 class PreFileEventTest extends MockeryTestCase
 {
@@ -30,6 +32,17 @@ class PreFileEventTest extends MockeryTestCase
     protected function setUp() : void
     {
         $this->fixture = new PreFileEvent(new stdClass());
+    }
+
+    /**
+     * @covers ::createInstance
+     * @covers ::getSubject
+     */
+    public function testCreatingAnInstance() : void
+    {
+        $subject = new stdClass();
+        $this->fixture = PreFileEvent::createInstance($subject);
+        $this->assertSame($subject, $this->fixture->getSubject());
     }
 
     /**

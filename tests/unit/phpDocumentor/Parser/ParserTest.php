@@ -27,7 +27,7 @@ use function sys_get_temp_dir;
  * @covers ::__construct
  * @covers ::<private>
  */
-class ParserTest extends MockeryTestCase
+final class ParserTest extends MockeryTestCase
 {
     /** @var Parser */
     protected $fixture = null;

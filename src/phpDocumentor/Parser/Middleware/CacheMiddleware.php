@@ -60,6 +60,7 @@ final class CacheMiddleware implements Middleware
                 return base64_encode(serialize($file));
             }
         );
+
         return unserialize(base64_decode($cacheResponse));
     }
 }
