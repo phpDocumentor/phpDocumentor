@@ -149,6 +149,7 @@ abstract class WriterAbstract
 
         // create directory if it does not exist yet
         if (dirname($destination) && !file_exists(dirname($destination))) {
+            var_dump(dirname($destination));
             mkdir(dirname($destination), 0777, true);
         }
 
