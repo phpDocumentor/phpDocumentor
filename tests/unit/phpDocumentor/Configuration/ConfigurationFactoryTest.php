@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Configuration;
 
+use League\Uri\Uri;
 use org\bovigo\vfs\vfsStream;
 use phpDocumentor\Configuration\Exception\InvalidConfigPathException;
-use phpDocumentor\Uri;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -139,7 +139,7 @@ final class ConfigurationFactoryTest extends TestCase
     public function testCreatingAConfigurationUsingTheGivenUri() : void
     {
         // using __FILE__ so that it passes the file does not exist scenario
-        $uri = new Uri(__FILE__);
+        $uri = Uri::createFromString(__FILE__);
 
         $configuration = ['exampleConfig'];
         $symfonyConfigFactory = $this->prophesize(SymfonyConfigFactory::class);
@@ -164,7 +164,7 @@ final class ConfigurationFactoryTest extends TestCase
         };
 
         // using __FILE__ so that it passes the file does not exist scenario
-        $uri = new Uri(__FILE__);
+        $uri = Uri::createFromString(__FILE__);
 
         $configuration = ['exampleConfig'];
         $symfonyConfigFactory = $this->prophesize(SymfonyConfigFactory::class);
@@ -186,7 +186,7 @@ final class ConfigurationFactoryTest extends TestCase
     {
         $this->expectException(InvalidConfigPathException::class);
 
-        $uri = new Uri('does-not-exist');
+        $uri = Uri::createFromString('does-not-exist');
 
         $symfonyConfigFactory = $this->prophesize(SymfonyConfigFactory::class);
         $factory = new ConfigurationFactory([], $symfonyConfigFactory->reveal());

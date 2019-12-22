@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace phpDocumentor\Pipeline\Stage;
 
 use InvalidArgumentException;
+use League\Uri\Uri;
 use phpDocumentor\Configuration\CommandlineOptionsMiddleware;
 use phpDocumentor\Configuration\Configuration;
 use phpDocumentor\Configuration\ConfigurationFactory;
-use phpDocumentor\Uri;
 use Psr\Log\LoggerInterface;
 use function realpath;
 use function sprintf;
@@ -70,7 +70,7 @@ final class Configure
 
                 $this->logger->notice(sprintf('Using the configuration file at: %s', $path));
                 $this->configuration->exchangeArray(
-                    $this->configFactory->fromUri(new Uri($uri))->getArrayCopy()
+                    $this->configFactory->fromUri(Uri::createFromString($uri))->getArrayCopy()
                 );
             } else {
                 $this->logger->notice('Not using any configuration file, relying on application defaults');

@@ -3,15 +3,15 @@ services:
         autowire: true
         autoconfigure: true
 
-    phpDocumentor\Application\Stage\Configure:
+    phpDocumentor\Pipeline\Stage\Configure:
       tags:
         - { name: 'phpdoc.pipeline.application.configuration', priority: 10000 }
 
-    phpDocumentor\Application\Stage\TransformToPayload:
+    phpDocumentor\Pipeline\Stage\TransformToPayload:
       tags:
         - { name: 'phpdoc.pipeline.application.configuration', priority: 9000 }
 
-    phpDocumentor\Application\Stage\InitializeBuilderFromConfig:
+    phpDocumentor\Pipeline\Stage\InitializeBuilderFromConfig:
       tags:
         - { name: 'phpdoc.pipeline.application.configuration', priority: 8000 }
 
@@ -19,16 +19,16 @@ services:
   ## Autoloading definitions for cache stages       #################################
   ###################################################################################
 
-    phpDocumentor\Application\Stage\Cache\PurgeCachesWhenForced:
+    phpDocumentor\Pipeline\Stage\Cache\PurgeCachesWhenForced:
       tags:
         - { name: 'phpdoc.pipeline.application.configuration', priority: 7000 }
 
-    phpDocumentor\Application\Stage\Cache\LoadProjectDescriptorFromCache:
+    phpDocumentor\Pipeline\Stage\Cache\LoadProjectDescriptorFromCache:
       tags:
         - { name: 'phpdoc.pipeline.api_documentation.parse', priority: 2000 }
         - { name: 'phpdoc.pipeline.api_documentation.transform', priority: 5000 }
 
-    phpDocumentor\Application\Stage\Cache\StoreProjectDescriptorToCache:
+    phpDocumentor\Pipeline\Stage\Cache\StoreProjectDescriptorToCache:
       tags:
         - { name: 'phpdoc.pipeline.api_documentation.parse', priority: -1000 }
 
@@ -36,19 +36,19 @@ services:
   ## Autoloading definitions for parser stages      #################################
   ###################################################################################
 
-    phpDocumentor\Application\Stage\Parser\TransformToParserPayload:
+    phpDocumentor\Pipeline\Stage\Parser\TransformToParserPayload:
       tags:
         - { name: 'phpdoc.pipeline.api_documentation.parse', priority: 5000 }
 
-    phpDocumentor\Application\Stage\Parser\CollectFiles:
+    phpDocumentor\Pipeline\Stage\Parser\CollectFiles:
       tags:
         - { name: 'phpdoc.pipeline.api_documentation.parse', priority: 4000 }
 
-    phpDocumentor\Application\Stage\Cache\GarbageCollectCache:
+    phpDocumentor\Pipeline\Stage\Cache\GarbageCollectCache:
       tags:
         - { name: 'phpdoc.pipeline.api_documentation.parse', priority: 3000 }
 
-    phpDocumentor\Application\Stage\Parser\ParseFiles:
+    phpDocumentor\Pipeline\Stage\Parser\ParseFiles:
       tags:
         - { name: 'phpdoc.pipeline.api_documentation.parse', priority: 0 }
 
@@ -56,10 +56,10 @@ services:
   ## Autoloading definitions for transform stages   #################################
   ###################################################################################
 
-    phpDocumentor\Application\Stage\Twig:
+    phpDocumentor\Pipeline\Stage\Twig:
       tags:
         - { name: 'phpdoc.pipeline.api_documentation.transform', priority: 9000 }
 
-    phpDocumentor\Application\Stage\Transform:
+    phpDocumentor\Pipeline\Stage\Transform:
       tags:
         - { name: 'phpdoc.pipeline.api_documentation.transform', priority: 0 }

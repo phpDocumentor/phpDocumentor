@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Configuration;
 
+use League\Uri\Uri;
 use phpDocumentor\Configuration\Exception\InvalidConfigPathException;
-use phpDocumentor\Uri;
 use function file_exists;
 use function sprintf;
 
@@ -61,7 +61,7 @@ final class ConfigurationFactory
     {
         foreach ($this->defaultFiles as $file) {
             try {
-                return $this->fromUri(new Uri($file));
+                return $this->fromUri(Uri::createFromString($file));
             } catch (InvalidConfigPathException $e) {
                 continue;
             }

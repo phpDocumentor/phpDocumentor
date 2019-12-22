@@ -70,7 +70,7 @@ services:
         resource: '../src/phpDocumentor/*'
         exclude:
           - '../src/phpDocumentor/**/Messages'
-          - '../src/phpDocumentor/Application/Stage'
+          - '../src/phpDocumentor/Pipeline/Stage'
           - '../src/phpDocumentor/Transformer/**/{Event, Exception}/{**}'
 
     phpDocumentor\Console\:
