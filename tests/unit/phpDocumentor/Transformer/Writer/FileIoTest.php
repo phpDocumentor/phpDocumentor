@@ -110,6 +110,24 @@ final class FileIoTest extends TestCase
     /**
      * @covers ::transform
      */
+    public function testCopiedFileOverwritesExistingFile() : void
+    {
+        $this->sourceFolder->addChild(vfsStream::newFile('index.html.twig')->withContent('new content'));
+        $this->destinationFolder->addChild(vfsStream::newFile('index.html')->withContent('original content'));
+
+        $writer = new FileIo();
+
+        $writer->transform(
+            new ProjectDescriptor('project'),
+            new Transformation($this->template, 'copy', 'fileio', 'index.html.twig', 'index.html')
+        );
+        $this->assertTrue($this->destinationFolder->hasChild('index.html'));
+        $this->assertStringEqualsFile($this->destinationFolder->getChild('index.html')->url(), 'new content');
+    }
+
+    /**
+     * @covers ::transform
+     */
     public function testCopiesDirectoryFromCustomTemplateToDestination() : void
     {
         $sourceDirectory = new vfsStreamDirectory('images');
