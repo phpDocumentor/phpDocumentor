@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Writer;
 
 use League\Flysystem\FileNotFoundException;
+use League\Uri\UriString;
 use phpDocumentor\Transformer\Transformation;
 use function ltrim;
-use function parse_url;
 use function strlen;
 use function strpos;
 use function substr;
@@ -62,35 +62,50 @@ trait IoTrait
     private function copyDirectory(Transformation $transformation, string $path, string $destination) : void
     {
         $list = $transformation->template()->files()->listContents($path, true);
-        $scheme = parse_url($path)['scheme'];
+        $scheme = UriString::parse($path)['scheme'];
         foreach ($list as $file) {
             if ($file['type'] !== 'file') {
                 continue;
             }
 
-            $path = $destination . '/' . $this->stripFirstPartOfPath($this->stripFirstPartOfPath($file['path']));
+            // always strip the folder name as we want the path as it is 'inside' the destination folder
+            // ex. images/subfolder/image1.png should become subfolder/image1.png as the $destination variable
+            // already contains 'images'
+            $destinationPath = $this->stripFirstPartOfPath($file['path']);
+
+            // if the provided $path is a reference to a global template, then we need to strip another level
+            // since that contains the templateName
+            if ($this->isGlobalTemplateReference($path)) {
+                $destinationPath = $this->stripFirstPartOfPath($destinationPath);
+            }
+
             $this->copy(
                 $transformation,
                 $scheme . '://' . $file['path'],
-                $path
+                $destination . '/' . $destinationPath
             );
         }
     }
 
     private function stripFirstPartOfPath(string $path) : string
     {
-        return ltrim(substr($path, strpos($path, '/', 1)), '/');
+        $findPathSeparator = strpos($path, '/', 1);
+        if ($findPathSeparator === false) {
+            return $path;
+        }
+        return ltrim(substr($path, $findPathSeparator), '/');
     }
 
     private function isGlobalTemplateReference(string $path) : bool
     {
-        return substr($path, 0, strlen('templates/')) === 'templates/';
+        return substr($path, 0, strlen('templates/')) === 'templates/'
+            || substr($path, 0, strlen('templates://')) === 'templates://';
     }
 
     private function normalizeSourcePath(string $path) : string
     {
         // if it has a scheme, it must have been normalized before
-        if (parse_url($path)['scheme']) {
+        if (UriString::parse($path)['scheme']) {
             return $path;
         }
 
@@ -105,7 +120,7 @@ trait IoTrait
     private function normalizeDestination(string $destination) : string
     {
         // prepend destination scheme if none was set
-        if (!parse_url($destination)['scheme']) {
+        if (!UriString::parse($destination)['scheme']) {
             $destination = 'destination://' . $destination;
         }
         return $destination;

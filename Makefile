@@ -33,7 +33,7 @@ phpstan:
 .PHONY: test
 test:
 	docker-compose run --rm phpunit ${ARGS}
-	docker-compose run --entrypoint=/usr/local/bin/php --rm phpunit tests/coverage-checker.php 64
+	docker-compose run --entrypoint=/usr/local/bin/php --rm phpunit tests/coverage-checker.php 65
 
 .PHONY: behat
 behat:
