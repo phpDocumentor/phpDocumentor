@@ -144,10 +144,6 @@ abstract class WriterAbstract
             $path
         );
 
-        // replace any \ with the directory separator to be compatible with the
-        // current filesystem and allow the next file_exists to do its work
-        $destination = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $destination);
-
         // create directory if it does not exist yet
         if (dirname($destination) && !file_exists(dirname($destination))) {
             var_dump(dirname($destination));
