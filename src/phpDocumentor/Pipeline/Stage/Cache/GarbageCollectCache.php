@@ -11,10 +11,10 @@ declare(strict_types=1);
  * @link http://phpdoc.org
  */
 
-namespace phpDocumentor\Application\Stage\Cache;
+namespace phpDocumentor\Pipeline\Stage\Cache;
 
-use phpDocumentor\Application\Stage\Parser\Payload;
 use phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper;
+use phpDocumentor\Pipeline\Stage\Parser\Payload;
 
 final class GarbageCollectCache
 {

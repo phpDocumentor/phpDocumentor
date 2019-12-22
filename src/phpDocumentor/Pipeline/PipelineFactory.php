@@ -11,7 +11,7 @@ declare(strict_types=1);
  * @link http://phpdoc.org
  */
 
-namespace phpDocumentor\Application;
+namespace phpDocumentor\Pipeline;
 
 use League\Pipeline\PipelineBuilder;
 use League\Pipeline\PipelineInterface;

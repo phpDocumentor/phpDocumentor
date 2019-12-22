@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace phpDocumentor\Application\Stage\Parser;
+namespace phpDocumentor\Pipeline\Stage\Parser;
 
 use League\Flysystem\MountManager;
 use phpDocumentor\Descriptor\Builder\AssemblerFactory;

@@ -11,15 +11,23 @@ declare(strict_types=1);
  * @link http://phpdoc.org
  */
 
-namespace phpDocumentor\Application\Stage\Cache;
+namespace phpDocumentor\Pipeline\Stage\Cache;
 
-use phpDocumentor\Application\Stage\Parser\Payload;
 use phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
+use phpDocumentor\Pipeline\Stage\Parser\Payload;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @coversDefaultClass \phpDocumentor\Pipeline\Stage\Cache\GarbageCollectCache
+ * @covers ::__construct
+ * @covers ::<private>
+ */
 final class GarbageCollectCacheTest extends TestCase
 {
+    /**
+     * @covers ::__invoke
+     */
     public function testItWillInstructTheDescriptorMapperToCollectGarbage() : void
     {
         $files = ['file1'];

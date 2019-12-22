@@ -2,23 +2,14 @@
 
 declare(strict_types=1);
 
-/**
- * This file is part of phpDocumentor.
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- *
- * @link http://phpdoc.org
- */
+namespace phpDocumentor\Pipeline\Stage\Cache;
 
-namespace phpDocumentor\Application\Stage\Cache;
-
-use phpDocumentor\Application\Stage\Parser\Payload;
 use phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper;
+use phpDocumentor\Pipeline\Stage\Parser\Payload;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 
-final class StoreProjectDescriptorToCache
+final class LoadProjectDescriptorFromCache
 {
     /** @var ProjectDescriptorMapper */
     private $descriptorMapper;
@@ -34,11 +25,11 @@ final class StoreProjectDescriptorToCache
 
     public function __invoke(Payload $payload) : Payload
     {
-        $projectDescriptor = $payload->getBuilder()->getProjectDescriptor();
-        $this->log('Storing cache .. ', LogLevel::NOTICE);
-        $projectDescriptor->getSettings()->clearModifiedFlag();
-        $this->descriptorMapper->save($projectDescriptor);
-        $this->log('OK');
+        $configuration = $payload->getConfig();
+        if ($configuration['phpdocumentor']['use-cache']) {
+            $this->log('Loading project from cache');
+            $this->descriptorMapper->populate($payload->getBuilder()->getProjectDescriptor());
+        }
 
         return $payload;
     }

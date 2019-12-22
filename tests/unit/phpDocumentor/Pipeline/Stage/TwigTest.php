@@ -11,7 +11,7 @@ declare(strict_types=1);
  * @link http://phpdoc.org
  */
 
-namespace phpDocumentor\Application\Stage;
+namespace phpDocumentor\Pipeline\Stage;
 
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
@@ -19,8 +19,16 @@ use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use Twig\Environment;
 use Twig\Loader\ArrayLoader;
 
+/**
+ * @coversDefaultClass \phpDocumentor\Pipeline\Stage\Twig
+ * @covers ::__construct
+ * @covers ::<private>
+ */
 final class TwigTest extends MockeryTestCase
 {
+    /**
+     * @covers ::__invoke
+     */
     public function test_that_the_cache_folder_gets_configured() : void
     {
         $twig = new Environment(new ArrayLoader());

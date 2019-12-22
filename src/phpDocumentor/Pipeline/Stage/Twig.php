@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace phpDocumentor\Application\Stage;
+namespace phpDocumentor\Pipeline\Stage;
 
 use Twig\Environment;
 

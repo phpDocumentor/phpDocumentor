@@ -2,7 +2,16 @@
 
 declare(strict_types=1);
 
-namespace phpDocumentor\Application\Stage\Parser;
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link http://phpdoc.org
+ */
+
+namespace phpDocumentor\Pipeline\Stage\Parser;
 
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
@@ -11,11 +20,19 @@ use phpDocumentor\Dsn;
 use phpDocumentor\Parser\FileCollector;
 use Psr\Log\NullLogger;
 
+/**
+ * @coversDefaultClass \phpDocumentor\Pipeline\Stage\Parser\CollectFiles
+ * @covers ::__construct
+ * @covers ::<private>
+ */
 final class CollectFilesTest extends MockeryTestCase
 {
+    /**
+     * @covers ::__invoke
+     */
     public function testFilesAreCollectedAndAddedToPayload() : void
     {
-        $dns           = new Dsn('file://.');
+        $dns = new Dsn('file://.');
         $fileCollector = m::mock(FileCollector::class);
         $fileCollector->expects('getFiles')
             ->with(

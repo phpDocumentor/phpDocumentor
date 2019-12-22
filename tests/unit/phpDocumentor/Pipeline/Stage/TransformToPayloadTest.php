@@ -2,19 +2,28 @@
 
 declare(strict_types=1);
 
-namespace phpDocumentor\Application\Stage;
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link http://phpdoc.org
+ */
+
+namespace phpDocumentor\Pipeline\Stage;
 
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @coversDefaultClass \phpDocumentor\Application\Stage\TransformToPayload
- * @covers ::__construct()
+ * @coversDefaultClass \phpDocumentor\Pipeline\Stage\TransformToPayload
+ * @covers ::__construct
  */
 final class TransformToPayloadTest extends TestCase
 {
     /**
-     * @covers ::__invoke()
+     * @covers ::__invoke
      */
     public function test_it_converts_the_configuration_to_an_payload() : void
     {

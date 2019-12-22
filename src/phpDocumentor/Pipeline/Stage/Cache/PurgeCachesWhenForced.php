@@ -11,9 +11,9 @@ declare(strict_types=1);
  * @link http://phpdoc.org
  */
 
-namespace phpDocumentor\Application\Stage\Cache;
+namespace phpDocumentor\Pipeline\Stage\Cache;
 
-use phpDocumentor\Application\Stage\Payload;
+use phpDocumentor\Pipeline\Stage\Payload;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
 

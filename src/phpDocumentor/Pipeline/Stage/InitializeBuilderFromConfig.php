@@ -11,7 +11,7 @@ declare(strict_types=1);
  * @link http://phpdoc.org
  */
 
-namespace phpDocumentor\Application\Stage;
+namespace phpDocumentor\Pipeline\Stage;
 
 use phpDocumentor\Descriptor\Collection as PartialsCollection;
 

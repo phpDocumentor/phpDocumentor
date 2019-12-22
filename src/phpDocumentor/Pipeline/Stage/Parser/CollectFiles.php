@@ -11,7 +11,7 @@ declare(strict_types=1);
  * @link http://phpdoc.org
  */
 
-namespace phpDocumentor\Application\Stage\Parser;
+namespace phpDocumentor\Pipeline\Stage\Parser;
 
 use phpDocumentor\Parser\FileCollector;
 use Psr\Log\LoggerInterface;

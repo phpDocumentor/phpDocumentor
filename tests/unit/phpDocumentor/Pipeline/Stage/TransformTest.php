@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace phpDocumentor\Application\Stage;
+namespace phpDocumentor\Pipeline\Stage;
 
 use phpDocumentor\Compiler\Compiler;
 use phpDocumentor\Compiler\CompilerPassInterface;
@@ -20,8 +20,8 @@ use const DIRECTORY_SEPARATOR;
 use function getcwd;
 
 /**
- * @coversDefaultClass \phpDocumentor\Application\Stage\Transform
- * @covers ::__construct()
+ * @coversDefaultClass \phpDocumentor\Pipeline\Stage\Transform
+ * @covers ::__construct
  */
 final class TransformTest extends TestCase
 {
@@ -60,8 +60,8 @@ final class TransformTest extends TestCase
     }
 
     /**
-     * @covers ::__invoke()
-     * @covers ::setTargetLocationBasedOnDsn()
+     * @covers ::__invoke
+     * @covers ::setTargetLocationBasedOnDsn
      */
     public function test_if_target_location_for_output_is_set_with_a_relative_path() : void
     {
@@ -74,8 +74,8 @@ final class TransformTest extends TestCase
     }
 
     /**
-     * @covers ::__invoke()
-     * @covers ::setTargetLocationBasedOnDsn()
+     * @covers ::__invoke
+     * @covers ::setTargetLocationBasedOnDsn
      */
     public function test_if_target_location_for_output_is_set_with_an_absolute_path() : void
     {
@@ -88,8 +88,8 @@ final class TransformTest extends TestCase
     }
 
     /**
-     * @covers ::__invoke()
-     * @covers ::loadTemplatesBasedOnNames()
+     * @covers ::__invoke
+     * @covers ::loadTemplatesBasedOnNames
      */
     public function test_loading_templates_with_a_given_set_of_template_names() : void
     {
@@ -114,8 +114,8 @@ final class TransformTest extends TestCase
     }
 
     /**
-     * @covers ::__invoke()
-     * @covers ::doTransform()
+     * @covers ::__invoke
+     * @covers ::doTransform
      */
     public function test_transforming_the_project_will_invoke_all_compiler_passes() : void
     {

@@ -11,10 +11,10 @@ declare(strict_types=1);
  * @link http://phpdoc.org
  */
 
-namespace phpDocumentor\Application\Stage\Parser;
+namespace phpDocumentor\Pipeline\Stage\Parser;
 
-use phpDocumentor\Application\Stage\Payload as ApplicationPayload;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
+use phpDocumentor\Pipeline\Stage\Payload as ApplicationPayload;
 use phpDocumentor\Reflection\File;
 use function array_merge;
 use function current;

@@ -11,7 +11,7 @@ declare(strict_types=1);
  * @link http://phpdoc.org
  */
 
-namespace phpDocumentor\Application\Stage;
+namespace phpDocumentor\Pipeline\Stage;
 
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 
@@ -25,7 +25,7 @@ class Payload
 
     public function __construct(array $config, ProjectDescriptorBuilder $builder)
     {
-        $this->config  = $config;
+        $this->config = $config;
         $this->builder = $builder;
     }
 

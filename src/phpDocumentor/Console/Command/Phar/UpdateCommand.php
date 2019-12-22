@@ -64,7 +64,7 @@ class UpdateCommand extends Command
         $allowPreRelease = $input->getOption('pre');
 
         if (PHP_VERSION_ID < 50600) {
-            $message  = 'Self updating is not available in PHP versions under 5.6.' . "\n";
+            $message = 'Self updating is not available in PHP versions under 5.6.' . "\n";
             $message .= 'The latest version can be found at ' . self::PHAR_URL;
             $output->writeln(sprintf('<error>%s</error>', $message));
             return 1;

@@ -2,14 +2,23 @@
 
 declare(strict_types=1);
 
-namespace phpDocumentor\Application\Stage\Cache;
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link http://phpdoc.org
+ */
 
-use phpDocumentor\Application\Stage\Parser\Payload;
+namespace phpDocumentor\Pipeline\Stage\Cache;
+
 use phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper;
+use phpDocumentor\Pipeline\Stage\Parser\Payload;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 
-final class LoadProjectDescriptorFromCache
+final class StoreProjectDescriptorToCache
 {
     /** @var ProjectDescriptorMapper */
     private $descriptorMapper;
@@ -20,16 +29,16 @@ final class LoadProjectDescriptorFromCache
     public function __construct(ProjectDescriptorMapper $descriptorMapper, LoggerInterface $logger)
     {
         $this->descriptorMapper = $descriptorMapper;
-        $this->logger           = $logger;
+        $this->logger = $logger;
     }
 
     public function __invoke(Payload $payload) : Payload
     {
-        $configuration = $payload->getConfig();
-        if ($configuration['phpdocumentor']['use-cache']) {
-            $this->log('Loading project from cache');
-            $this->descriptorMapper->populate($payload->getBuilder()->getProjectDescriptor());
-        }
+        $projectDescriptor = $payload->getBuilder()->getProjectDescriptor();
+        $this->log('Storing cache .. ', LogLevel::NOTICE);
+        $projectDescriptor->getSettings()->clearModifiedFlag();
+        $this->descriptorMapper->save($projectDescriptor);
+        $this->log('OK');
 
         return $payload;
     }
@@ -37,7 +46,7 @@ final class LoadProjectDescriptorFromCache
     /**
      * Dispatches a logging request.
      *
-     * @param string   $priority   The logging priority as declared in the LogLevel PSR-3 class.
+     * @param string $priority The logging priority as declared in the LogLevel PSR-3 class.
      * @param string[] $parameters
      */
     private function log(string $message, string $priority = LogLevel::INFO, array $parameters = []) : void
