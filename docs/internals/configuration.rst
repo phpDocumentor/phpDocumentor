@@ -25,23 +25,23 @@ Consuming configuration in services
 
 There are two ways of consuming configuration options in your services:
 
-1. Create a Configurator service (https://symfony.com/doc/current/service_container/configurators.html)
-   and use that to inject configuration options into your service.
+1. Use a pipeline stage to execute your logical action and read the configuration from the payload in that stage
 2. Inject the Configuration object into your service.
 
-Configurator services
-~~~~~~~~~~~~~~~~~~~~~
+.. important:: Configuration options cannot be injected in the symfony configuration (services.yml, etc) because the
+               configuration files are loaded on run-time, after the symfony service configuration has happened.
+
+Pipeline stages
+~~~~~~~~~~~~~~~
 
     This is the recommended method as it decouples your service from the configuration object, making it easier to make
     changes to either class in the future.
 
-A Configurator forms a bridge between your service and the configuration. In your configurator you can read the parts of
-the configuration that are relevant for your service and, for example, use setters or similar methods to inject the
-configuration into your service.
+The backbone of phpDocumentor is a pipeline with a series of stages; each stage receives a Payload object that, among
+other things, contains a configuration array. This configuration array contains the latest version of the configuration
+and the command line options merged into it.
 
-    Example: The `phpDocumentor\Parser\Parser` contains various options with which the process of creating
-    documentation can be influenced, such as the setDefaultPackageName method. A Configurator can inject the
-    default-package-name configuration option into the Parser by calling this method.
+In your stage you can read this array to grab the options you need for your service and inject them on run time.
 
 Injecting the configuration object
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -59,3 +59,44 @@ Configurator is recommended:
 - Your service needs to have knowledge how the configuration is structured, making it harder to change the structure
   of the configuration. The same could be said of Configurator services, however: in those services it is expected and
   easier to discover as containing information on the structure of the configuration.
+
+How is the configuration read?
+------------------------------
+
+The **Configure** stage is responsible for loading the configuration files using the **ConfigurationFactory**. This
+factory supports versioning of configuration files by reading the ``configVersion`` from the root of the XML configuration
+file and finding the appropriate Configuration Definition.
+
+.. hint:: If no configVersion is provided, the application assumes version 2.
+
+When a Configuration Definition is found, the loaded XML file is processed by it and normalized afterwards. You can add
+more advanced normalization by implementing the Normalizable interface in your definition and adding rules in your
+*normalize* method that will transform your configuration array.
+
+At this point, the ConfigurationFactory determines if the ``configVersion`` is the latest version known by phpDocumentor.
+This can defined in the service definition for the ConfigurationFactory, the last version in the array of definitions is
+considered the last.
+
+If the configVersion is insufficient, then the ConfigurationFactory will try to upgrade the generated configuration
+array to the latest version by using the upgrade method of the 'old' definition. This will generate a new input for
+another configuration definition and the process starts all over again. This will loop until no newer configuration is
+found.
+
+Adding a new version of the configuration
+-----------------------------------------
+
+1. Create a new Configuration Definition in ``src/phpDocumentor/Configuration/Definition`` and write the configuration
+   definition using the TreeBuilder (see existing Definitions for examples).
+
+2. Add the new version to the array of definitions in the service container configuration for the SymfonyConfigFactory
+
+3. Implement the Upgradable interface in the second to highest definition and convert the generated array of that
+   definition to the input array for the new one, including the appropriate configVersion set to the latest version
+   number. This is how the configuration system knows how to parse this new input.
+
+   The input array differ from the output as the configuration system normalizes the input to something that is easily
+   consumed in the rest of the application; when in doubt: add a debug statement in the SymfonyConfigFactory after the
+   loading of the XML file; this is the format you need to emulate in the upgrade method of the prior Definition.
+
+.. hint:: It is recommended to also write an XSD and put that in the ``data/xsd`` folder; see the Version 3
+          configuration for an example.
