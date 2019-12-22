@@ -22,6 +22,7 @@ use function get_class;
  * Tests the functionality for the Filter class.
  *
  * @coversDefaultClass \phpDocumentor\Descriptor\Filter\Filter
+ * @covers ::__construct
  */
 final class FilterTest extends MockeryTestCase
 {

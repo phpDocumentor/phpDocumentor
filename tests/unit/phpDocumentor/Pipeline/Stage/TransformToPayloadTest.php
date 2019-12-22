@@ -19,6 +19,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @coversDefaultClass \phpDocumentor\Pipeline\Stage\TransformToPayload
  * @covers ::__construct
+ * @uses \phpDocumentor\Pipeline\Stage\Payload
  */
 final class TransformToPayloadTest extends TestCase
 {

@@ -21,13 +21,19 @@ use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 /**
  * @coversDefaultClass \phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper
  * @covers ::__construct
+ * @uses \phpDocumentor\Descriptor\Collection
+ * @uses \phpDocumentor\Descriptor\DescriptorAbstract
+ * @uses \phpDocumentor\Descriptor\FileDescriptor
+ * @uses \phpDocumentor\Descriptor\NamespaceDescriptor
+ * @uses \phpDocumentor\Descriptor\ProjectDescriptor
+ * @uses \phpDocumentor\Descriptor\ProjectDescriptor\Settings
  */
 final class ProjectDescriptorMapperTest extends MockeryTestCase
 {
     /** @var ProjectDescriptorMapper */
     private $mapper;
 
-    /** @var Pool */
+    /** @var FilesystemAdapter */
     private $cachePool;
 
     protected function setUp() : void

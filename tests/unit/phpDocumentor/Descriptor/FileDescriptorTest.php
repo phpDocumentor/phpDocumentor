@@ -18,18 +18,20 @@ use Mockery\Adapter\Phpunit\MockeryTestCase;
 use function array_merge;
 
 /**
- * Tests the functionality for the FileDescriptor class.
+ * @coversDefaultClass \phpDocumentor\Descriptor\FileDescriptor
+ * @covers ::__construct
+ * @covers \phpDocumentor\Descriptor\DescriptorAbstract
  */
-class FileDescriptorTest extends MockeryTestCase
+final class FileDescriptorTest extends MockeryTestCase
 {
-    public const EXAMPLE_HASH = 'a-hash-string';
+    private const EXAMPLE_HASH = 'a-hash-string';
 
-    public const EXAMPLE_PATH = 'a-path-string';
+    private const EXAMPLE_PATH = 'a-path-string';
 
-    public const EXAMPLE_SOURCE = 'a-source-string';
+    private const EXAMPLE_SOURCE = 'a-source-string';
 
     /** @var FileDescriptor $fixture */
-    protected $fixture;
+    private $fixture;
 
     /**
      * Creates a new (empty) fixture object.
@@ -42,7 +44,7 @@ class FileDescriptorTest extends MockeryTestCase
     /**
      * Tests whether all collection objects and hash are properly initialized
      *
-     * @covers \phpDocumentor\Descriptor\FileDescriptor::__construct
+     * @covers ::__construct
      */
     public function testInitializesWithEmptyCollections() : void
     {
@@ -59,8 +61,8 @@ class FileDescriptorTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\FileDescriptor::__construct
-     * @covers \phpDocumentor\Descriptor\FileDescriptor::getHash
+     * @covers ::__construct
+     * @covers ::getHash
      */
     public function testGetHash() : void
     {
@@ -68,8 +70,8 @@ class FileDescriptorTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\FileDescriptor::setPath
-     * @covers \phpDocumentor\Descriptor\FileDescriptor::getPath
+     * @covers ::setPath
+     * @covers ::getPath
      */
     public function testSetAndGetPath() : void
     {
@@ -81,8 +83,8 @@ class FileDescriptorTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\FileDescriptor::setSource
-     * @covers \phpDocumentor\Descriptor\FileDescriptor::getSource
+     * @covers ::setSource
+     * @covers ::getSource
      */
     public function testSetAndGetSource() : void
     {
@@ -94,8 +96,8 @@ class FileDescriptorTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\FileDescriptor::setNamespaceAliases
-     * @covers \phpDocumentor\Descriptor\FileDescriptor::getNamespaceAliases
+     * @covers ::setNamespaceAliases
+     * @covers ::getNamespaceAliases
      */
     public function testSetAndGetNamespaceAliases() : void
     {
@@ -110,8 +112,8 @@ class FileDescriptorTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\FileDescriptor::setIncludes
-     * @covers \phpDocumentor\Descriptor\FileDescriptor::getIncludes
+     * @covers ::setIncludes
+     * @covers ::getIncludes
      */
     public function testSetAndGetIncludes() : void
     {
@@ -126,8 +128,8 @@ class FileDescriptorTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\FileDescriptor::setConstants
-     * @covers \phpDocumentor\Descriptor\FileDescriptor::getConstants
+     * @covers ::setConstants
+     * @covers ::getConstants
      */
     public function testSetAndGetConstants() : void
     {
@@ -142,8 +144,8 @@ class FileDescriptorTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\FileDescriptor::setFunctions
-     * @covers \phpDocumentor\Descriptor\FileDescriptor::getFunctions
+     * @covers ::setFunctions
+     * @covers ::getFunctions
      */
     public function testSetAndGetFunctions() : void
     {
@@ -158,8 +160,8 @@ class FileDescriptorTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\FileDescriptor::setClasses
-     * @covers \phpDocumentor\Descriptor\FileDescriptor::getClasses
+     * @covers ::setClasses
+     * @covers ::getClasses
      */
     public function testSetAndGetClasses() : void
     {
@@ -174,8 +176,8 @@ class FileDescriptorTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\FileDescriptor::setInterfaces
-     * @covers \phpDocumentor\Descriptor\FileDescriptor::getInterfaces
+     * @covers ::setInterfaces
+     * @covers ::getInterfaces
      */
     public function testSetAndGetInterfaces() : void
     {
@@ -190,8 +192,8 @@ class FileDescriptorTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\FileDescriptor::setTraits
-     * @covers \phpDocumentor\Descriptor\FileDescriptor::getTraits
+     * @covers ::setTraits
+     * @covers ::getTraits
      */
     public function testSetAndGetTraits() : void
     {
@@ -206,8 +208,8 @@ class FileDescriptorTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\FileDescriptor::setMarkers
-     * @covers \phpDocumentor\Descriptor\FileDescriptor::getMarkers
+     * @covers ::setMarkers
+     * @covers ::getMarkers
      */
     public function testSetAndGetMarkers() : void
     {
@@ -222,8 +224,8 @@ class FileDescriptorTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\FileDescriptor::__construct
-     * @covers \phpDocumentor\Descriptor\FileDescriptor::getAllErrors
+     * @covers ::__construct
+     * @covers ::getAllErrors
      */
     public function testIfErrorsAreInitializedToAnEmptyCollectionOnInstantiation() : void
     {
@@ -238,8 +240,8 @@ class FileDescriptorTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\FileDescriptor::__construct
-     * @covers \phpDocumentor\Descriptor\FileDescriptor::getAllErrors
+     * @covers ::__construct
+     * @covers ::getAllErrors
      */
     public function testGetAllErrors() : void
     {

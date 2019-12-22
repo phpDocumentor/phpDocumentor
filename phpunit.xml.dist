@@ -8,6 +8,7 @@
          beStrictAboutTodoAnnotatedTests="true"
          beStrictAboutOutputDuringTests="true"
          beStrictAboutTestsThatDoNotTestAnything="true"
+         beStrictAboutCoversAnnotation="false"
 >
     <testsuites>
         <testsuite name="unit">

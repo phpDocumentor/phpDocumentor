@@ -26,7 +26,11 @@ use phpDocumentor\Reflection\Types\String_;
 use phpDocumentor\Reflection\Types\Void_;
 use function count;
 
-class MethodAssemblerTest extends MockeryTestCase
+/**
+ * @coversDefaultClass \phpDocumentor\Descriptor\Builder\Reflector\Tags\MethodAssembler
+ * @covers ::<private>
+ */
+final class MethodAssemblerTest extends MockeryTestCase
 {
     /** @var MethodAssembler */
     private $fixture;
@@ -49,8 +53,8 @@ class MethodAssemblerTest extends MockeryTestCase
      * @param string $description
      *
      * @dataProvider provideNotations
-     * @covers       \phpDocumentor\Descriptor\Builder\Reflector\Tags\MethodAssembler::create
-     * @covers       \phpDocumentor\Descriptor\Builder\Reflector\Tags\MethodAssembler::createArgumentDescriptorForMagicMethod
+     * @covers       ::create
+     * @covers       ::createArgumentDescriptorForMagicMethod
      */
     public function testCreateMethodDescriptorFromVariousNotations(
         Type $returnType,
