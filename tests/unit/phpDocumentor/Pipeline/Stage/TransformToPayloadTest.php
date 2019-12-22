@@ -17,9 +17,10 @@ use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use PHPUnit\Framework\TestCase;
 
 /**
+ * @uses \phpDocumentor\Pipeline\Stage\Payload
+ *
  * @coversDefaultClass \phpDocumentor\Pipeline\Stage\TransformToPayload
  * @covers ::__construct
- * @uses \phpDocumentor\Pipeline\Stage\Payload
  */
 final class TransformToPayloadTest extends TestCase
 {
@@ -28,7 +29,7 @@ final class TransformToPayloadTest extends TestCase
      */
     public function test_it_converts_the_configuration_to_an_payload() : void
     {
-        $config  = ['config' => 'yes'];
+        $config = ['config' => 'yes'];
         $builder = $this->prophesize(ProjectDescriptorBuilder::class)->reveal();
 
         $payload = (new TransformToPayload($builder))($config);

@@ -22,9 +22,10 @@ use phpDocumentor\Reflection\Php\Method;
 use phpDocumentor\Reflection\Php\Trait_;
 
 /**
+ * @uses \phpDocumentor\Descriptor\DescriptorAbstract
+ *
  * @coversDefaultClass \phpDocumentor\Descriptor\Builder\Reflector\TraitAssembler
  * @covers ::<private>
- * @uses \phpDocumentor\Descriptor\DescriptorAbstract
  */
 final class TraitAssemblerTest extends MockeryTestCase
 {
@@ -32,6 +33,7 @@ final class TraitAssemblerTest extends MockeryTestCase
      * @uses \phpDocumentor\Descriptor\Collection
      * @uses \phpDocumentor\Descriptor\MethodDescriptor
      * @uses \phpDocumentor\Descriptor\TraitDescriptor
+     *
      * @covers ::create
      */
     public function testAssembleTraitWithMethod() : void

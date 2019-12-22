@@ -148,7 +148,7 @@ abstract class WriterAbstract
         $destination = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $destination);
 
         // create directory if it does not exist yet
-        if (!file_exists(dirname($destination))) {
+        if (dirname($destination) && !file_exists(dirname($destination))) {
             mkdir(dirname($destination), 0777, true);
         }
 

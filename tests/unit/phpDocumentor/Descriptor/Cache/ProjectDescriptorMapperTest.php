@@ -19,14 +19,15 @@ use phpDocumentor\Descriptor\ProjectDescriptor;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 /**
- * @coversDefaultClass \phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper
- * @covers ::__construct
  * @uses \phpDocumentor\Descriptor\Collection
  * @uses \phpDocumentor\Descriptor\DescriptorAbstract
  * @uses \phpDocumentor\Descriptor\FileDescriptor
  * @uses \phpDocumentor\Descriptor\NamespaceDescriptor
  * @uses \phpDocumentor\Descriptor\ProjectDescriptor
  * @uses \phpDocumentor\Descriptor\ProjectDescriptor\Settings
+ *
+ * @coversDefaultClass \phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper
+ * @covers ::__construct
  */
 final class ProjectDescriptorMapperTest extends MockeryTestCase
 {
