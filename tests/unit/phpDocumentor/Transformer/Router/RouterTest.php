@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Router;
 
+use League\Uri\Uri;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\ConstantDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
@@ -24,7 +25,6 @@ use phpDocumentor\Descriptor\PackageDescriptor;
 use phpDocumentor\Descriptor\PropertyDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Reflection\Fqsen;
-use phpDocumentor\Uri;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -225,6 +225,6 @@ final class RouterTest extends TestCase
 
     private function givenAUri() : Uri
     {
-        return new Uri('https://my/uri');
+        return Uri::createFromString('https://my/uri');
     }
 }
