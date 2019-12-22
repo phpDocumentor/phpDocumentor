@@ -22,6 +22,7 @@ use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\BufferedOutput;
+use function array_keys;
 
 /**
  * @coversDefaultClass \phpDocumentor\Console\Command\Project\RunCommand

@@ -265,10 +265,10 @@ HELP
         return 0;
     }
 
-    // Code that is poorly testable and not worth the effort
-    // @codeCoverageIgnoreStart
     private function observeProgressToShowProgressBars(OutputInterface $output) : void
     {
+        // Code that is poorly testable and not worth the effort
+        // @codeCoverageIgnoreStart
         if ($output->getVerbosity() !== OutputInterface::VERBOSITY_NORMAL) {
             return;
         }
@@ -303,6 +303,6 @@ HELP
                 $this->transformerProgressBar->advance();
             }
         );
+        // @codeCoverageIgnoreEnd
     }
-    // @codeCoverageIgnoreEnd
 }
