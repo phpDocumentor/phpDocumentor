@@ -85,6 +85,7 @@ final class Twig extends WriterAbstract
 {
     /** @var EnvironmentFactory */
     private $environmentFactory;
+
     /** @var Router */
     private $router;
 
@@ -112,7 +113,7 @@ final class Twig extends WriterAbstract
      */
     public function transform(ProjectDescriptor $project, Transformation $transformation) : void
     {
-        $template_path = $this->getTemplatePath($transformation);
+        $templatePath = $this->getTemplatePath($transformation);
 
         $finder = new Pathfinder();
         $nodes = $finder->find($project, $transformation->getQuery());
@@ -130,7 +131,7 @@ final class Twig extends WriterAbstract
             $environment = $this->environmentFactory->create($project, $transformation, $destination);
             $environment->addGlobal('node', $node);
 
-            $html = $environment->render(substr($transformation->getSource(), strlen($template_path)));
+            $html = $environment->render(substr($transformation->getSource(), strlen($templatePath)));
             file_put_contents($destination, $html);
         }
     }

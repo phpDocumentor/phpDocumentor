@@ -30,7 +30,7 @@ use function preg_split;
 use function strlen;
 use function substr;
 
-final class EnvironmentFactory
+class EnvironmentFactory
 {
     /** @var LinkRenderer */
     private $renderer;
