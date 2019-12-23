@@ -54,6 +54,12 @@ final class TwigTest extends TestCase
     /** @var Template */
     private $template;
 
+    /** @var EnvironmentFactory|ObjectProphecy */
+    private $environmentFactory;
+
+    /** @var Twig */
+    private $writer;
+
     protected function setUp() : void
     {
         $root = vfsStream::setup();
@@ -72,6 +78,23 @@ final class TwigTest extends TestCase
             ]
         );
         $this->template = new Template('My Template', $mountManager);
+
+        $this->environmentFactory = $this->prophesize(EnvironmentFactory::class);
+        $this->writer = new Twig(
+            $this->environmentFactory->reveal(),
+            new PathGenerator(
+                $this->prophesize(Router::class)->reveal(),
+                new Pathfinder()
+            )
+        );
+    }
+
+    /**
+     * @covers \phpDocumentor\Transformer\Writer\WriterAbstract::__toString
+     */
+    public function testReturnsClassNameAsDescription() : void
+    {
+        $this->assertSame(Twig::class, (string) $this->writer);
     }
 
     /**
@@ -83,7 +106,7 @@ final class TwigTest extends TestCase
         $targetDir = vfsStream::newDirectory('target')->at($root)->url();
         $transformer = $this->givenTransformerWithTarget($targetDir);
 
-        $environmentFactory = $this->givenATwigEnvironmentFactoryWithTemplates(
+        $this->givenATwigEnvironmentFactoryWithTemplates(
             ['/index.html.twig' => 'This is a twig file']
         );
 
@@ -96,26 +119,19 @@ final class TwigTest extends TestCase
         );
         $transformation->setTransformer($transformer->reveal());
 
-        $writer = new Twig(
-            $environmentFactory->reveal(),
-            new PathGenerator($this->prophesize(Router::class)->reveal())
-        );
-        $writer->transform(new ProjectDescriptor('project'), $transformation);
+        $this->writer->transform(new ProjectDescriptor('project'), $transformation);
 
         $this->assertFileExists($targetDir . '/index.html');
         $this->assertStringEqualsFile($targetDir . '/index.html', 'This is a twig file');
     }
 
-    private function givenATwigEnvironmentFactoryWithTemplates(array $templates) : ObjectProphecy
+    private function givenATwigEnvironmentFactoryWithTemplates(array $templates) : void
     {
-        $environmentFactory = $this->prophesize(EnvironmentFactory::class);
-        $environmentFactory->create(Argument::cetera())->willReturn(
+        $this->environmentFactory->create(Argument::cetera())->willReturn(
             new Environment(
                 new ArrayLoader($templates)
             )
         );
-
-        return $environmentFactory;
     }
 
     private function givenTransformerWithTarget(string $targetDir) : ObjectProphecy

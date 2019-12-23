@@ -21,6 +21,7 @@ use phpDocumentor\Transformer\Transformation;
  */
 abstract class WriterAbstract
 {
+    // @codeCoverageIgnoreStart
     /**
      * This method verifies whether PHP has all requirements needed to run this writer.
      *
@@ -33,6 +34,7 @@ abstract class WriterAbstract
     {
         // empty body since most writers do not have requirements
     }
+    // @codeCoverageIgnoreEnd
 
     /**
      * Abstract definition of the transformation method.

@@ -17,6 +17,7 @@ use InvalidArgumentException;
 use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\Transformer\Router\Router;
 use phpDocumentor\Transformer\Transformation;
+use RuntimeException;
 use UnexpectedValueException;
 use const DIRECTORY_SEPARATOR;
 use function array_map;
@@ -28,8 +29,10 @@ use function file_exists;
 use function get_class;
 use function iconv;
 use function implode;
+use function is_string;
 use function mkdir;
 use function preg_replace_callback;
+use function sprintf;
 use function str_replace;
 use function strpos;
 use function trim;
@@ -39,9 +42,13 @@ class PathGenerator
     /** @var Router */
     private $router;
 
-    public function __construct(Router $router)
+    /** @var Pathfinder */
+    private $pathfinder;
+
+    public function __construct(Router $router, Pathfinder $pathfinder)
     {
         $this->router = $router;
+        $this->pathfinder = $pathfinder;
     }
 
     /**
@@ -70,30 +77,26 @@ class PathGenerator
      */
     public function generate(Descriptor $descriptor, Transformation $transformation) : ?string
     {
-        $path = $transformation->getTransformer()->getTarget() . DIRECTORY_SEPARATOR . $transformation->getArtifact();
-        if (!$transformation->getArtifact()) {
-            $url = $this->router->generate($descriptor);
-            if (!$url) {
-                throw new InvalidArgumentException(
-                    'No matching routing rule could be found for the given node, please provide an artifact location, '
-                    . 'encountered: ' . get_class($descriptor)
-                );
-            }
-
-            if (!$url || $url[0] !== DIRECTORY_SEPARATOR) {
-                return null;
-            }
-
-            $path = $transformation->getTransformer()->getTarget()
-                . str_replace('/', DIRECTORY_SEPARATOR, $url);
+        $path = $this->determinePath($descriptor, $transformation);
+        if ($path === null) {
+            return null;
         }
 
-        $finder = new Pathfinder();
+        $destination = $transformation->getTransformer()->getTarget()
+            . $this->replaceVariablesInPath($path, $descriptor);
+
+        $this->ensureDirectoryExists($destination);
+
+        return $destination;
+    }
+
+    private function replaceVariablesInPath(string $path, Descriptor $descriptor) : string
+    {
         $destination = preg_replace_callback(
             '/{{([^}]+)}}/', // explicitly do not use the unicode modifier; this breaks windows
-            static function ($query) use ($descriptor, $finder) {
+            function ($query) use ($descriptor) {
                 // strip any surrounding \ or /
-                $filepart = trim((string) current($finder->find($descriptor, $query[1])), '\\/');
+                $filepart = trim((string) current($this->pathfinder->find($descriptor, $query[1])), '\\/');
 
                 // make it windows proof
                 if (extension_loaded('iconv')) {
@@ -107,11 +110,39 @@ class PathGenerator
             $path
         );
 
-        // create directory if it does not exist yet
-        if (dirname($destination) && !file_exists(dirname($destination))) {
-            mkdir(dirname($destination), 0777, true);
+        if (!is_string($destination)) {
+            throw new RuntimeException(sprintf('Variable substitution in path %s failed', $path));
         }
 
         return $destination;
+    }
+
+    private function determinePath(Descriptor $descriptor, Transformation $transformation) : ?string
+    {
+        $path = DIRECTORY_SEPARATOR . $transformation->getArtifact();
+        if (!$transformation->getArtifact()) {
+            $url = $this->router->generate($descriptor);
+            if (!$url) {
+                throw new InvalidArgumentException(
+                    'No matching routing rule could be found for the given node, please provide an artifact location, '
+                    . 'encountered: ' . get_class($descriptor)
+                );
+            }
+
+            $path = $url[0] === DIRECTORY_SEPARATOR
+                ? str_replace('/', DIRECTORY_SEPARATOR, $url)
+                : null;
+        }
+
+        return $path;
+    }
+
+    private function ensureDirectoryExists(string $destination) : void
+    {
+        if (!dirname($destination) || file_exists(dirname($destination))) {
+            return;
+        }
+
+        mkdir(dirname($destination), 0777, true);
     }
 }
