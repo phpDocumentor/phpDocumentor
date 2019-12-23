@@ -19,46 +19,30 @@ DocBlock comments to generate a complete set of API Documentation.
 Inspired by phpDocumentor 1 and JavaDoc it continues to innovate and is up to date
 with the latest technologies and PHP language features.
 
-Features
---------
+phpDocumentor v2 (stable)
+--------------
+The current stable version of phpdocumentor is v2.9. Which can be used to generate documentation for php
+applications up to php version 7.0. phpDocumentor is an old tool that doesn't support all 7.0 introduced features.
+It will not process any scalar type hints, and requires docblock tags to generate api documentation.
+If your application/library is using php 7.0 or lower consult our [v2 branch] for installation instructions
+and detailed information about how to use phpDocumentor.
 
-phpDocumentor supports the following:
-
-* *PHP 7.0 compatible*, full support for Namespaces, Closures and more is provided.
-* *Shows any tag*, some tags add additional functionality to phpDocumentor (such as @link).
-* *Processing speed*, Zend Framework experienced a significant reduction in processing time compared to phpDocumentor 1.
-* *Low memory usage*, peak memory usage for small projects is less than 20MB, medium projects 40MB and large frameworks 100MB.
-* *Incremental parsing*, if you kept the Structure file from a previous run you get an additional performance boost of up
-  to 80% on top of the mentioned processing speed above.
-* *Easy template building*, if you want to make a branding you only have to call 1 task and edit 3 files.
-* *Command-line compatibility with phpDocumentor 1*, phpDocumentor 2 is an application in its own right but the
-  basic phpDocumentor 1 arguments, such as --directory, --file and --target, have been adopted.
-* *Two-step process*, phpDocumentor first generates a cache with your application structure before creating the output.
-  If you'd like you can use that to power your own tools or formatters!
-
-*Please note* that phpDocumentor 3 is still under heavy development. We aim to add all features needed to have full support
-for php 7+. But at this moment that is not the case.
-
-Requirements
-------------
-
-phpDocumentor requires the following:
-
-* PHP 7.1 or higher
-* ext/iconv, http://php.net/manual/en/book.iconv.php (is enabled by default since PHP 5.0.0)
-* ext/intl, http://php.net/manual/en/book.intl.php
-* Graphviz (optional, used for generating Class diagrams)
+phpDocumentor v3 (unstable)
+---------------
 
 **Note:**
-If you do not want to install the Graphviz dependency you are encouraged to generate your own template and make sure
-that it does not contain anything related to `Graph`.
-An easier solution might be to edit `data/templates/responsive/template.xml` file and remove every line
-containing the word `Graph` but this will be undone with every upgrade of phpDocumentor.
+The phpDocumentor team is currently working on a new phpDocumentor generation. Which will have full support for 
+the latest features in php, so you can make advantage of all native type hints. v3 is still under heavy development
+and is not stable enough to use in a daily development flow. 
 
-Please see the documentation about creating your own templates for more information.
 
 Installation
 ------------
+phpDocumentor requires php 7.2 or higher to run. However code of lower php versions can be analyzed.
+
+All templates provided with phpDocumentor so have support for Class diagrams based on the read code base. This will
+require Graphviz to be installed on the machine running phpDocumentor. Graphviz is optional, and warnings about missing
+Graphviz can be ignored. However you documentation will contain some dead links in this case.  
 
 There are 3 ways to install phpDocumentor:
 
@@ -122,6 +106,26 @@ Documentation
 
 For more detailed information you can check our online documentation at [http://phpdoc.org/docs/latest/index.html](http://phpdoc.org/docs/latest/index.html).
 
+Features
+--------
+
+phpDocumentor supports the following:
+
+* *PHP 7.0 compatible*, full support for Namespaces, Closures and more is provided.
+* *Shows any tag*, some tags add additional functionality to phpDocumentor (such as @link).
+* *Processing speed*, Zend Framework experienced a significant reduction in processing time compared to phpDocumentor 1.
+* *Low memory usage*, peak memory usage for small projects is less than 20MB, medium projects 40MB and large frameworks 100MB.
+* *Incremental parsing*, if you kept the Structure file from a previous run you get an additional performance boost of up
+  to 80% on top of the mentioned processing speed above.
+* *Easy template building*, if you want to make a branding you only have to call 1 task and edit 3 files.
+* *Command-line compatibility with phpDocumentor 1*, phpDocumentor 2 is an application in its own right but the
+  basic phpDocumentor 1 arguments, such as --directory, --file and --target, have been adopted.
+* *Two-step process*, phpDocumentor first generates a cache with your application structure before creating the output.
+  If you'd like you can use that to power your own tools or formatters!
+
+*Please note* that phpDocumentor 3 is still under heavy development. We aim to add all features needed to have full support
+for php 7+. But at this moment that is not the case.
+
 Contact
 -------
 
@@ -131,3 +135,5 @@ To come in contact is actually dead simple and can be done in a variety of ways.
 * Website: [http://www.phpdoc.org](http://www.phpdoc.org)
 * Github:  [http://www.github.com/phpDocumentor/phpDocumentor](http://www.github.com/phpDocumentor/phpDocumentor)
 * E-mail:  [mike@phpdoc.org](mailto:mike@phpdoc.org)
+
+[v2 branch]: (https://github.com/phpDocumentor/phpDocumentor/tree/2.9)
