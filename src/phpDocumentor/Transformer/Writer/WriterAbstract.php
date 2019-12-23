@@ -34,7 +34,6 @@ use function preg_replace_callback;
 use function str_replace;
 use function strpos;
 use function trim;
-use function var_dump;
 
 /**
  * Base class for the actual transformation business logic (writers).

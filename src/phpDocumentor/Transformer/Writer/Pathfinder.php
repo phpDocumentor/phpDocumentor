@@ -19,7 +19,7 @@ use function is_array;
 use function is_object;
 use function method_exists;
 
-class Pathfinder
+final class Pathfinder
 {
     /**
      * Combines the query and an object to retrieve a list of nodes that are to be used as node-point in a template.
@@ -49,42 +49,42 @@ class Pathfinder
      * Walks an object graph and/or array using a twig query string.
      *
      * @param Traversable|mixed $objectOrArray
-     * @param string            $query         A path to walk separated by dots, i.e. `namespace.namespaces`.
+     * @param string $query A path to walk separated by dots, i.e. `namespace.namespaces`.
      *
      * @return mixed
      */
-    private function walkObjectTree($objectOrArray, $query)
+    private function walkObjectTree($objectOrArray, string $query)
     {
-        $node       = $objectOrArray;
-        $objectPath = explode('.', $query);
+        $node = $objectOrArray;
+        $elements = explode('.', $query);
 
         // walk through the tree
-        foreach ($objectPath as $pathNode) {
+        foreach ($elements as $elementName) {
             if (is_array($node)) {
-                if (isset($node[$pathNode])) {
-                    $node = $node[$pathNode];
+                if (isset($node[$elementName])) {
+                    $node = $node[$elementName];
                     continue;
                 }
             } elseif (is_object($node)) {
-                if (isset($node->{$pathNode}) || (method_exists($node, '__get') && $node->{$pathNode})) {
-                    $node = $node->{$pathNode};
+                if (isset($node->{$elementName}) || (method_exists($node, '__get') && $node->{$elementName})) {
+                    $node = $node->{$elementName};
                     continue;
                 }
 
-                if (method_exists($node, $pathNode)) {
-                    $node = $node->{$pathNode}();
+                if (method_exists($node, $elementName)) {
+                    $node = $node->{$elementName}();
                     continue;
                 }
 
-                if (method_exists($node, 'get' . $pathNode)) {
-                    $pathNode = 'get' . $pathNode;
-                    $node     = $node->{$pathNode}();
+                if (method_exists($node, 'get' . $elementName)) {
+                    $elementName = 'get' . $elementName;
+                    $node = $node->{$elementName}();
                     continue;
                 }
 
-                if (method_exists($node, 'is' . $pathNode)) {
-                    $pathNode = 'is' . $pathNode;
-                    $node     = $node->{$pathNode}();
+                if (method_exists($node, 'is' . $elementName)) {
+                    $elementName = 'is' . $elementName;
+                    $node = $node->{$elementName}();
                     continue;
                 }
             }
