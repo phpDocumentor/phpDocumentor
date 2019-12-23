@@ -96,7 +96,10 @@ final class TwigTest extends TestCase
         );
         $transformation->setTransformer($transformer->reveal());
 
-        $writer = new Twig($environmentFactory->reveal(), $this->prophesize(Router::class)->reveal());
+        $writer = new Twig(
+            $environmentFactory->reveal(),
+            new PathGenerator($this->prophesize(Router::class)->reveal())
+        );
         $writer->transform(new ProjectDescriptor('project'), $transformation);
 
         $this->assertFileExists($targetDir . '/index.html');

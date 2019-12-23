@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Writer;
 
 use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\Transformer\Router\Router;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory;
 use Twig\Error\LoaderError;
@@ -86,18 +85,15 @@ final class Twig extends WriterAbstract
     /** @var EnvironmentFactory */
     private $environmentFactory;
 
-    /** @var Router */
-    private $router;
+    /** @var PathGenerator */
+    private $pathGenerator;
 
-    public function __construct(EnvironmentFactory $environmentFactory, Router $router)
-    {
+    public function __construct(
+        EnvironmentFactory $environmentFactory,
+        PathGenerator $pathGenerator
+    ) {
         $this->environmentFactory = $environmentFactory;
-        $this->router = $router;
-    }
-
-    protected function router() : ?Router
-    {
-        return $this->router;
+        $this->pathGenerator = $pathGenerator;
     }
 
     /**
@@ -123,7 +119,7 @@ final class Twig extends WriterAbstract
                 continue;
             }
 
-            $destination = $this->destination($node, $transformation);
+            $destination = $this->pathGenerator->generate($node, $transformation);
             if ($destination === null) {
                 continue;
             }
