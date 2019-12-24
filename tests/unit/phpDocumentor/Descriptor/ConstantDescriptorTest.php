@@ -98,12 +98,11 @@ final class ConstantDescriptorTest extends MockeryTestCase
     {
         $expected = new String_();
 
-        $varTag = new VarDescriptor('var');
-        $varTag->setType($expected);
+        $varTag = new VarDescriptor('var', $expected);
 
         $this->fixture->getTags()->set('var', new Collection([$varTag]));
 
-        $this->assertEquals($expected, $this->fixture->getType());
+        $this->assertSame($expected, $this->fixture->getType());
     }
 
     /**
@@ -246,7 +245,7 @@ final class ConstantDescriptorTest extends MockeryTestCase
     public function testVarTagsInheritWhenNoneArePresent() : void
     {
         // Arrange
-        $varTagDescriptor = new VarDescriptor('var');
+        $varTagDescriptor = new VarDescriptor('var', null);
         $varCollection = new Collection([$varTagDescriptor]);
         $this->fixture->getTags()->clear();
         $parentProperty = $this->whenFixtureHasConstantInParentClassWithSameName($this->fixture->getName());

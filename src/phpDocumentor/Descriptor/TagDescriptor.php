@@ -34,16 +34,8 @@ class TagDescriptor implements Descriptor, Filterable
      */
     public function __construct(string $name)
     {
-        $this->setName($name);
-        $this->errors = new Collection();
-    }
-
-    /**
-     * Sets the name for this tag.
-     */
-    protected function setName(string $name) : void
-    {
         $this->name = $name;
+        $this->errors = new Collection();
     }
 
     /**

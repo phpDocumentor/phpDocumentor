@@ -59,8 +59,7 @@ class FunctionDescriptor extends DescriptorAbstract implements Interfaces\Functi
      */
     public function getResponse() : ReturnDescriptor
     {
-        $definedReturn = new ReturnDescriptor('return');
-        $definedReturn->setType($this->returnType);
+        $definedReturn = new ReturnDescriptor('return', $this->returnType);
 
         /** @var Collection|null $returnTags */
         $returnTags = $this->getTags()->get('return');

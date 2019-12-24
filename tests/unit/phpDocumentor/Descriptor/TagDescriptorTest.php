@@ -24,7 +24,6 @@ class TagDescriptorTest extends MockeryTestCase
     /**
      * @covers \phpDocumentor\Descriptor\TagDescriptor::__construct
      * @covers \phpDocumentor\Descriptor\TagDescriptor::getName
-     * @covers \phpDocumentor\Descriptor\TagDescriptor::setName
      */
     public function testNameIsRegisteredOnInstantiationAndReturned() : void
     {

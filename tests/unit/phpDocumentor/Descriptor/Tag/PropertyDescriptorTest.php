@@ -26,19 +26,12 @@ class PropertyDescriptorTest extends MockeryTestCase
     protected $fixture;
 
     /**
-     * Creates a new fixture object.
-     */
-    protected function setUp() : void
-    {
-        $this->fixture = new PropertyDescriptor('name');
-    }
-
-    /**
      * @covers \phpDocumentor\Descriptor\Tag\BaseTypes\TypedVariableAbstract::setVariableName
      * @covers \phpDocumentor\Descriptor\Tag\BaseTypes\TypedVariableAbstract::getVariableName
      */
     public function testSetAndGetVariableName() : void
     {
+        $this->fixture = new PropertyDescriptor('name', null);
         $this->assertEmpty($this->fixture->getVariableName());
 
         $this->fixture->setVariableName(self::EXAMPLE_NAME);

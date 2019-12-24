@@ -70,7 +70,7 @@ class MethodDescriptorTest extends MockeryTestCase
      */
     public function testSetAndGetResponse() : void
     {
-        $expected = new ReturnDescriptor('a');
+        $expected = new ReturnDescriptor('a', null);
         $this->assertNull($this->fixture->getResponse());
 
         $this->fixture->setResponse($expected);

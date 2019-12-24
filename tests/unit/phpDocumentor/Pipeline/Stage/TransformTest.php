@@ -20,8 +20,14 @@ use const DIRECTORY_SEPARATOR;
 use function getcwd;
 
 /**
+ * @uses \phpDocumentor\Pipeline\Stage\Payload
+ * @uses \phpDocumentor\Dsn
+ * @uses \phpDocumentor\Path
+ * @uses \phpDocumentor\Event\Dispatcher
+ *
  * @coversDefaultClass \phpDocumentor\Pipeline\Stage\Transform
  * @covers ::__construct
+ * @covers ::<private>
  */
 final class TransformTest extends TestCase
 {
@@ -114,6 +120,12 @@ final class TransformTest extends TestCase
     }
 
     /**
+     * @uses \phpDocumentor\Descriptor\ProjectDescriptor
+     * @uses \phpDocumentor\Descriptor\Collection
+     * @uses \phpDocumentor\Descriptor\NamespaceDescriptor
+     * @uses \phpDocumentor\Descriptor\DescriptorAbstract
+     * @uses \phpDocumentor\Compiler\Compiler
+     *
      * @covers ::__invoke
      * @covers ::doTransform
      */

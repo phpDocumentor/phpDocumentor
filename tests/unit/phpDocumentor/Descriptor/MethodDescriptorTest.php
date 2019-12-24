@@ -25,7 +25,16 @@ use function iterator_to_array;
 /**
  * Tests the functionality for the MethodDescriptor class.
  *
+ * @uses \phpDocumentor\Descriptor\Collection
+ * @uses \phpDocumentor\Descriptor\DescriptorAbstract::__construct
+ * @uses \phpDocumentor\Descriptor\DescriptorAbstract::setErrors
+ * @uses \phpDocumentor\Descriptor\DescriptorAbstract::setName
+ * @uses \phpDocumentor\Descriptor\DescriptorAbstract::setTags
+ * @uses \phpDocumentor\Descriptor\ArgumentDescriptor
+ * @uses \phpDocumentor\Descriptor\MethodDescriptor::setArguments
+ *
  * @coversDefaultClass \phpDocumentor\Descriptor\MethodDescriptor
+ * @covers ::__construct
  * @covers ::<private>
  * @covers ::<protected>
  */
@@ -44,6 +53,13 @@ final class MethodDescriptorTest extends MockeryTestCase
     }
 
     /**
+     * @uses \phpDocumentor\Descriptor\ClassDescriptor
+     * @uses \phpDocumentor\Descriptor\MethodDescriptor::setArguments
+     * @uses \phpDocumentor\Descriptor\DescriptorAbstract::getName
+     * @uses \phpDocumentor\Descriptor\DescriptorAbstract::setName
+     * @uses \phpDocumentor\Descriptor\DescriptorAbstract::getFullyQualifiedStructuralElementName
+     * @uses \phpDocumentor\Descriptor\DescriptorAbstract::setFullyQualifiedStructuralElementName
+     *
      * @covers ::setParent
      * @covers ::getParent
      */
@@ -60,8 +76,13 @@ final class MethodDescriptorTest extends MockeryTestCase
     }
 
     /**
+     * @uses \phpDocumentor\Descriptor\MethodDescriptor::setArguments
+     * @uses \phpDocumentor\Descriptor\DescriptorAbstract::getName
+     * @uses \phpDocumentor\Descriptor\DescriptorAbstract::setName
+     *
      * @covers ::setArguments
      * @covers ::getArguments
+     * @covers ::addArgument
      */
     public function testSettingAndGettingArguments() : void
     {
@@ -82,7 +103,11 @@ final class MethodDescriptorTest extends MockeryTestCase
     }
 
     /**
+     * @uses \phpDocumentor\Descriptor\DescriptorAbstract::setName
+     *
      * @covers ::addArgument
+     * @covers ::getArguments
+     * @covers ::setArguments
      */
     public function testAddingAnArgument() : void
     {
@@ -154,12 +179,18 @@ final class MethodDescriptorTest extends MockeryTestCase
     }
 
     /**
+     * @uses \phpDocumentor\Descriptor\MethodDescriptor::setParent
+     * @uses \phpDocumentor\Descriptor\ClassDescriptor
+     * @uses \phpDocumentor\Descriptor\DescriptorAbstract::getName
+     * @uses \phpDocumentor\Descriptor\DescriptorAbstract::setName
+     * @uses \phpDocumentor\Descriptor\DescriptorAbstract::getFullyQualifiedStructuralElementName
+     * @uses \phpDocumentor\Descriptor\DescriptorAbstract::setFullyQualifiedStructuralElementName
+     *
      * @covers ::getResponse
      */
     public function testRetrieveReturnTagForResponse() : void
     {
-        $returnDescriptor = new ReturnDescriptor('return');
-        $returnDescriptor->setType(new String_());
+        $returnDescriptor = new ReturnDescriptor('return', new String_());
 
         $this->assertNull($this->fixture->getResponse()->getType());
 
@@ -181,7 +212,13 @@ final class MethodDescriptorTest extends MockeryTestCase
     }
 
     /**
+     * @uses \phpDocumentor\Descriptor\MethodDescriptor::setParent
+     * @uses \phpDocumentor\Descriptor\DescriptorAbstract::getName
+     * @uses \phpDocumentor\Descriptor\DescriptorAbstract::setName
+     * @uses \phpDocumentor\Descriptor\DescriptorAbstract::setFullyQualifiedStructuralElementName
+     *
      * @covers ::getFile
+     * @covers ::getParent
      */
     public function testRetrieveFileAssociatedWithAMethod() : void
     {
@@ -196,6 +233,8 @@ final class MethodDescriptorTest extends MockeryTestCase
     }
 
     /**
+     * @uses \phpDocumentor\Descriptor\ClassDescriptor
+     *
      * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getSummary
      */
     public function testSummaryInheritsWhenNoneIsPresent() : void
@@ -214,6 +253,8 @@ final class MethodDescriptorTest extends MockeryTestCase
     }
 
     /**
+     * @uses \phpDocumentor\Descriptor\ClassDescriptor
+     *
      * @covers ::getSummary
      */
     public function testSummaryInheritsFromImplementedInterfaceWhenNoneIsPresent() : void
@@ -232,7 +273,17 @@ final class MethodDescriptorTest extends MockeryTestCase
     }
 
     /**
+     * @uses \phpDocumentor\Descriptor\MethodDescriptor::setArguments
+     * @uses \phpDocumentor\Descriptor\MethodDescriptor::setParent
+     * @uses \phpDocumentor\Descriptor\ClassDescriptor
+     * @uses \phpDocumentor\Descriptor\DescriptorAbstract::getName
+     * @uses \phpDocumentor\Descriptor\DescriptorAbstract::setName
+     * @uses \phpDocumentor\Descriptor\DescriptorAbstract::getFullyQualifiedStructuralElementName
+     * @uses \phpDocumentor\Descriptor\DescriptorAbstract::setFullyQualifiedStructuralElementName
+     *
      * @covers ::getDescription
+     * @covers ::getInheritedElement
+     * @covers ::getParent
      */
     public function testDescriptionInheritsWhenNoneIsPresent() : void
     {
@@ -250,7 +301,17 @@ final class MethodDescriptorTest extends MockeryTestCase
     }
 
     /**
+     * @uses \phpDocumentor\Descriptor\MethodDescriptor::setArguments
+     * @uses \phpDocumentor\Descriptor\MethodDescriptor::setParent
+     * @uses \phpDocumentor\Descriptor\ClassDescriptor
+     * @uses \phpDocumentor\Descriptor\DescriptorAbstract::getName
+     * @uses \phpDocumentor\Descriptor\DescriptorAbstract::setName
+     * @uses \phpDocumentor\Descriptor\DescriptorAbstract::getFullyQualifiedStructuralElementName
+     * @uses \phpDocumentor\Descriptor\DescriptorAbstract::setFullyQualifiedStructuralElementName
+     *
      * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getDescription
+     * @covers ::getInheritedElement
+     * @covers ::getParent
      */
     public function testDescriptionInheritsWhenInheritDocIsPresent() : void
     {
@@ -268,7 +329,17 @@ final class MethodDescriptorTest extends MockeryTestCase
     }
 
     /**
+     * @uses \phpDocumentor\Descriptor\MethodDescriptor::setArguments
+     * @uses \phpDocumentor\Descriptor\MethodDescriptor::setParent
+     * @uses \phpDocumentor\Descriptor\ClassDescriptor
+     * @uses \phpDocumentor\Descriptor\DescriptorAbstract::getName
+     * @uses \phpDocumentor\Descriptor\DescriptorAbstract::setName
+     * @uses \phpDocumentor\Descriptor\DescriptorAbstract::getFullyQualifiedStructuralElementName
+     * @uses \phpDocumentor\Descriptor\DescriptorAbstract::setFullyQualifiedStructuralElementName
+     *
      * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getDescription
+     * @covers ::getInheritedElement
+     * @covers ::getParent
      */
     public function testDescriptionIsAugmentedWhenInheritDocInlineTagIsPresent() : void
     {
@@ -286,6 +357,8 @@ final class MethodDescriptorTest extends MockeryTestCase
     }
 
     /**
+     * @uses \phpDocumentor\Descriptor\ClassDescriptor
+     *
      * @covers ::getReturn
      */
     public function testReturnTagsInheritWhenNoneArePresent() : void
@@ -305,6 +378,8 @@ final class MethodDescriptorTest extends MockeryTestCase
     }
 
     /**
+     * @uses \phpDocumentor\Descriptor\ClassDescriptor
+     *
      * @covers ::getParam
      */
     public function testParamTagsInheritWhenNoneArePresent() : void
@@ -324,8 +399,20 @@ final class MethodDescriptorTest extends MockeryTestCase
     }
 
     /**
+     * @uses \phpDocumentor\Descriptor\MethodDescriptor::setArguments
+     * @uses \phpDocumentor\Descriptor\MethodDescriptor::setParent
+     * @uses \phpDocumentor\Descriptor\ClassDescriptor
+     * @uses \phpDocumentor\Descriptor\DescriptorAbstract::getName
+     * @uses \phpDocumentor\Descriptor\DescriptorAbstract::setName
+     * @uses \phpDocumentor\Descriptor\DescriptorAbstract::getFullyQualifiedStructuralElementName
+     * @uses \phpDocumentor\Descriptor\DescriptorAbstract::setFullyQualifiedStructuralElementName
+     * @uses \phpDocumentor\Descriptor\DescriptorAbstract::getTags
+     * @uses \phpDocumentor\Descriptor\TagDescriptor::__construct
+     *
      * @covers ::getAuthor
      * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getAuthor
+     * @covers ::getInheritedElement
+     * @covers ::getParent
      */
     public function testAuthorTagsInheritWhenNoneArePresent() : void
     {
@@ -344,8 +431,20 @@ final class MethodDescriptorTest extends MockeryTestCase
     }
 
     /**
+     * @uses \phpDocumentor\Descriptor\MethodDescriptor::setArguments
+     * @uses \phpDocumentor\Descriptor\MethodDescriptor::setParent
+     * @uses \phpDocumentor\Descriptor\ClassDescriptor
+     * @uses \phpDocumentor\Descriptor\DescriptorAbstract::getName
+     * @uses \phpDocumentor\Descriptor\DescriptorAbstract::setName
+     * @uses \phpDocumentor\Descriptor\DescriptorAbstract::getFullyQualifiedStructuralElementName
+     * @uses \phpDocumentor\Descriptor\DescriptorAbstract::setFullyQualifiedStructuralElementName
+     * @uses \phpDocumentor\Descriptor\DescriptorAbstract::getTags
+     * @uses \phpDocumentor\Descriptor\TagDescriptor::__construct
+     *
      * @covers ::getVersion
      * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getVersion
+     * @covers ::getInheritedElement
+     * @covers ::getParent
      */
     public function testVersionTagsInheritWhenNoneArePresent() : void
     {
@@ -364,8 +463,21 @@ final class MethodDescriptorTest extends MockeryTestCase
     }
 
     /**
+     * @uses \phpDocumentor\Descriptor\ClassDescriptor
+     * @uses \phpDocumentor\Descriptor\MethodDescriptor::setArguments
+     * @uses \phpDocumentor\Descriptor\MethodDescriptor::setParent
+     * @uses \phpDocumentor\Descriptor\ClassDescriptor
+     * @uses \phpDocumentor\Descriptor\DescriptorAbstract::getName
+     * @uses \phpDocumentor\Descriptor\DescriptorAbstract::setName
+     * @uses \phpDocumentor\Descriptor\DescriptorAbstract::getFullyQualifiedStructuralElementName
+     * @uses \phpDocumentor\Descriptor\DescriptorAbstract::setFullyQualifiedStructuralElementName
+     * @uses \phpDocumentor\Descriptor\DescriptorAbstract::getTags
+     * @uses \phpDocumentor\Descriptor\TagDescriptor::__construct
+     *
      * @covers ::getCopyright
      * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getCopyright
+     * @covers ::getInheritedElement
+     * @covers ::getParent
      */
     public function testCopyrightTagsInheritWhenNoneArePresent() : void
     {

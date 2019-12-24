@@ -101,8 +101,7 @@ final class PropertyDescriptorTest extends MockeryTestCase
     {
         // Arrange
         $typesCollection = new Array_();
-        $varTagDescriptor = new VarDescriptor('var');
-        $varTagDescriptor->setType($typesCollection);
+        $varTagDescriptor = new VarDescriptor('var', $typesCollection);
         $varCollection = new Collection([$varTagDescriptor]);
         $this->fixture->getTags()->clear();
         $this->fixture->getTags()->set('var', $varCollection);
@@ -220,7 +219,7 @@ final class PropertyDescriptorTest extends MockeryTestCase
     public function testVarTagsInheritWhenNoneArePresent() : void
     {
         // Arrange
-        $varTagDescriptor = new VarDescriptor('var');
+        $varTagDescriptor = new VarDescriptor('var', null);
         $varCollection = new Collection([$varTagDescriptor]);
         $this->fixture->getTags()->clear();
         $parentProperty = $this->whenFixtureHasPropertyInParentClassWithSameName($this->fixture->getName());

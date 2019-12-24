@@ -24,16 +24,13 @@ use function trigger_error;
  */
 abstract class TypedAbstract extends TagDescriptor
 {
-    /** @var Type $types */
-    protected $types;
+    /** @var Type $type */
+    protected $type;
 
-    /**
-     * Sets a list of types associated with this tag.
-     */
-    public function setTypes(?Type $types = null) : void
+    public function __construct($name, ?Type $type)
     {
-        trigger_error('Use setType, because type is an object', E_USER_DEPRECATED);
-        $this->types = $types;
+        parent::__construct($name);
+        $this->type = $type;
     }
 
     /**
@@ -41,7 +38,7 @@ abstract class TypedAbstract extends TagDescriptor
      */
     public function setType(?Type $types = null) : void
     {
-        $this->types = $types;
+        $this->type = $types;
     }
 
 
@@ -51,11 +48,11 @@ abstract class TypedAbstract extends TagDescriptor
     public function getTypes() : array
     {
         trigger_error('Use getType, because type is an object', E_USER_DEPRECATED);
-        return array_filter([$this->types]);
+        return array_filter([$this->type]);
     }
 
     public function getType() : ?Type
     {
-        return $this->types;
+        return $this->type;
     }
 }

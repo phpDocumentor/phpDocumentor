@@ -30,6 +30,8 @@ use function get_class;
  * Tests the functionality for the Linker class.
  *
  * @coversDefaultClass \phpDocumentor\Compiler\Linker\Linker
+ * @covers ::__construct
+ * @covers ::<protected>
  */
 class LinkerTest extends MockeryTestCase
 {

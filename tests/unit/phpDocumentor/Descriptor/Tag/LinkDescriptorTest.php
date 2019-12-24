@@ -17,6 +17,12 @@ use Mockery\Adapter\Phpunit\MockeryTestCase;
 
 /**
  * Tests the functionality for the LinkDescriptor class.
+ *
+ * @uses \phpDocumentor\Descriptor\Collection
+ *
+ * @coversDefaultClass \phpDocumentor\Descriptor\Tag\LinkDescriptor
+ * @covers \phpDocumentor\Descriptor\TagDescriptor::__construct
+ * @covers ::__construct
  */
 final class LinkDescriptorTest extends MockeryTestCase
 {
@@ -34,8 +40,8 @@ final class LinkDescriptorTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Tag\LinkDescriptor::setLink
-     * @covers \phpDocumentor\Descriptor\Tag\LinkDescriptor::getLink
+     * @covers ::setLink
+     * @covers ::getLink
      */
     public function testSetAndGetLink() : void
     {

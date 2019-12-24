@@ -25,25 +25,15 @@ class ReturnDescriptorTest extends MockeryTestCase
     protected $fixture;
 
     /**
-     * Creates a new fixture object.
-     */
-    protected function setUp() : void
-    {
-        $this->fixture = new ReturnDescriptor('name');
-    }
-
-    /**
-     * @covers \phpDocumentor\Descriptor\Tag\BaseTypes\TypedAbstract::setTypes
-     * @covers \phpDocumentor\Descriptor\Tag\BaseTypes\TypedAbstract::getTypes
+     * @covers \phpDocumentor\Descriptor\Tag\BaseTypes\TypedAbstract::setType
+     * @covers \phpDocumentor\Descriptor\Tag\BaseTypes\TypedAbstract::getType
      */
     public function testSetAndGetTypes() : void
     {
         $expected = new Array_();
-        $this->assertNull($this->fixture->getType());
-
-        $this->fixture->setType($expected);
+        $this->fixture = new ReturnDescriptor('name',$expected);
         $result = $this->fixture->getType();
 
-        $this->assertEquals($expected, $result);
+        $this->assertSame($expected, $result);
     }
 }

@@ -171,8 +171,7 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
 
     public function getResponse() : ReturnDescriptor
     {
-        $definedReturn = new ReturnDescriptor('return');
-        $definedReturn->setType($this->returnType);
+        $definedReturn = new ReturnDescriptor('return', $this->returnType);
 
         /** @var Collection|null $returnTags */
         $returnTags = $this->getReturn();
