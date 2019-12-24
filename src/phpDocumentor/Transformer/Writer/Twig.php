@@ -20,7 +20,10 @@ use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 use const DIRECTORY_SEPARATOR;
+use function dirname;
+use function file_exists;
 use function file_put_contents;
+use function mkdir;
 use function preg_split;
 use function strlen;
 use function substr;
@@ -119,17 +122,29 @@ final class Twig extends WriterAbstract
                 continue;
             }
 
-            $destination = $this->pathGenerator->generate($node, $transformation);
-            if ($destination === null) {
+            $path = $this->pathGenerator->generate($node, $transformation);
+            if ($path === null) {
                 continue;
             }
 
-            $environment = $this->environmentFactory->create($project, $transformation, $destination);
+            $environment = $this->environmentFactory->create($project, $transformation, $path);
             $environment->addGlobal('node', $node);
 
             $html = $environment->render(substr($transformation->getSource(), strlen($templatePath)));
-            file_put_contents($destination, $html);
+
+            $path = $transformation->getTransformer()->getTarget() . $path;
+            $this->ensureDirectoryExists($path);
+            file_put_contents($path, $html);
         }
+    }
+
+    private function ensureDirectoryExists(string $destination) : void
+    {
+        if (!dirname($destination) || file_exists(dirname($destination))) {
+            return;
+        }
+
+        mkdir(dirname($destination), 0777, true);
     }
 
     /**

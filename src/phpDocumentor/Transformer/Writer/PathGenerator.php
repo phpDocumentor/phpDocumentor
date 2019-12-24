@@ -22,15 +22,12 @@ use UnexpectedValueException;
 use const DIRECTORY_SEPARATOR;
 use function array_map;
 use function current;
-use function dirname;
 use function explode;
 use function extension_loaded;
-use function file_exists;
 use function get_class;
 use function iconv;
 use function implode;
 use function is_string;
-use function mkdir;
 use function preg_replace_callback;
 use function sprintf;
 use function str_replace;
@@ -82,12 +79,27 @@ class PathGenerator
             return null;
         }
 
-        $destination = $transformation->getTransformer()->getTarget()
-            . $this->replaceVariablesInPath($path, $descriptor);
+        return $this->replaceVariablesInPath($path, $descriptor);
+    }
 
-        $this->ensureDirectoryExists($destination);
+    private function determinePath(Descriptor $descriptor, Transformation $transformation) : ?string
+    {
+        $path = DIRECTORY_SEPARATOR . $transformation->getArtifact();
+        if (!$transformation->getArtifact()) {
+            $url = $this->router->generate($descriptor);
+            if (!$url) {
+                throw new InvalidArgumentException(
+                    'No matching routing rule could be found for the given node, please provide an artifact location, '
+                    . 'encountered: ' . get_class($descriptor)
+                );
+            }
 
-        return $destination;
+            $path = $url[0] === DIRECTORY_SEPARATOR
+                ? str_replace('/', DIRECTORY_SEPARATOR, $url)
+                : null;
+        }
+
+        return $path;
     }
 
     private function replaceVariablesInPath(string $path, Descriptor $descriptor) : string
@@ -115,34 +127,5 @@ class PathGenerator
         }
 
         return $destination;
-    }
-
-    private function determinePath(Descriptor $descriptor, Transformation $transformation) : ?string
-    {
-        $path = DIRECTORY_SEPARATOR . $transformation->getArtifact();
-        if (!$transformation->getArtifact()) {
-            $url = $this->router->generate($descriptor);
-            if (!$url) {
-                throw new InvalidArgumentException(
-                    'No matching routing rule could be found for the given node, please provide an artifact location, '
-                    . 'encountered: ' . get_class($descriptor)
-                );
-            }
-
-            $path = $url[0] === DIRECTORY_SEPARATOR
-                ? str_replace('/', DIRECTORY_SEPARATOR, $url)
-                : null;
-        }
-
-        return $path;
-    }
-
-    private function ensureDirectoryExists(string $destination) : void
-    {
-        if (!dirname($destination) || file_exists(dirname($destination))) {
-            return;
-        }
-
-        mkdir(dirname($destination), 0777, true);
     }
 }

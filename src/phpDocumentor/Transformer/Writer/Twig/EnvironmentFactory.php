@@ -26,9 +26,8 @@ use function array_unshift;
 use function class_exists;
 use function class_implements;
 use function in_array;
+use function ltrim;
 use function preg_split;
-use function strlen;
-use function substr;
 
 class EnvironmentFactory
 {
@@ -78,13 +77,11 @@ class EnvironmentFactory
     private function addPhpDocumentorExtension(
         ProjectDescriptor $project,
         Transformation $transformation,
-        string $destination,
+        string $path,
         Environment $twigEnvironment
     ) : void {
         $base_extension = new Extension($project, $transformation, $this->renderer);
-        $base_extension->setDestination(
-            substr($destination, strlen($transformation->getTransformer()->getTarget()) + 1)
-        );
+        $base_extension->setDestination(ltrim($path, '/\\'));
         $twigEnvironment->addExtension($base_extension);
     }
 
