@@ -31,7 +31,7 @@ class ReturnDescriptorTest extends MockeryTestCase
     public function testSetAndGetTypes() : void
     {
         $expected = new Array_();
-        $this->fixture = new ReturnDescriptor('name',$expected);
+        $this->fixture = new ReturnDescriptor('name', $expected);
         $result = $this->fixture->getType();
 
         $this->assertSame($expected, $result);
