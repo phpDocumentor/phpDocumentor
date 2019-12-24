@@ -18,14 +18,13 @@ use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\Transformer\Router\Router;
 use phpDocumentor\Transformer\Transformation;
 use RuntimeException;
+use Symfony\Component\String\UnicodeString;
 use UnexpectedValueException;
 use const DIRECTORY_SEPARATOR;
 use function array_map;
 use function current;
 use function explode;
-use function extension_loaded;
 use function get_class;
-use function iconv;
 use function implode;
 use function is_string;
 use function preg_replace_callback;
@@ -105,19 +104,37 @@ class PathGenerator
     private function replaceVariablesInPath(string $path, Descriptor $descriptor) : string
     {
         $destination = preg_replace_callback(
-            '/{{([^}]+)}}/', // explicitly do not use the unicode modifier; this breaks windows
-            function ($query) use ($descriptor) {
-                // strip any surrounding \ or /
-                $filepart = trim((string) current($this->pathfinder->find($descriptor, $query[1])), '\\/');
-
-                // make it windows proof
-                if (extension_loaded('iconv')) {
-                    $filepart = iconv('UTF-8', 'ASCII//TRANSLIT', $filepart);
+            '/{{([^}]*)}}/', // explicitly do not use the unicode modifier; this breaks windows
+            function (array $query) use ($path, $descriptor) {
+                $variable = $query[1];
+                if (!$variable) {
+                    throw new RuntimeException(
+                        sprintf('Variable substitution in path %s failed, no variable was specified', $path)
+                    );
                 }
 
-                return strpos($filepart, '/') !== false
+                // Find value in Descriptor's properties / methods
+                $value = (string) current($this->pathfinder->find($descriptor, $variable));
+
+                // strip any special characters and surrounding \ or /
+                $filepart = trim(trim($value), '\\/');
+
+                // make it windows proof by transliterating to ASCII and by url encoding
+                $filepart = (new UnicodeString($filepart))->ascii()->toString();
+                $value = strpos($filepart, '/') !== false
                     ? implode('/', array_map('urlencode', explode('/', $filepart)))
                     : implode('\\', array_map('urlencode', explode('\\', $filepart)));
+
+                if (!$value) {
+                    throw new RuntimeException(
+                        sprintf(
+                            'Variable substitution in path %s failed, variable "%s" did not return a value',
+                            $path,
+                            $variable
+                        )
+                    );
+                }
+                return $value;
             },
             $path
         );

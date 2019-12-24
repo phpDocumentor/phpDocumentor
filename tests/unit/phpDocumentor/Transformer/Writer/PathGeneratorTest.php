@@ -13,18 +13,23 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Writer;
 
-use League\Flysystem\Adapter\Local;
-use League\Flysystem\Filesystem;
 use League\Flysystem\MountManager;
-use org\bovigo\vfs\vfsStream;
-use org\bovigo\vfs\vfsStreamDirectory;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Transformer\Router\Router;
 use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy\ObjectProphecy;
+use RuntimeException;
 
+/**
+ * @uses \phpDocumentor\Transformer\Writer\Pathfinder
+ * @uses \phpDocumentor\Transformer\Template
+ *
+ * @coversDefaultClass \phpDocumentor\Transformer\Writer\PathGenerator
+ * @covers ::__construct
+ * @covers ::<private>
+ */
 final class PathGeneratorTest extends TestCase
 {
     /** @var ObjectProphecy|Router */
@@ -36,54 +41,117 @@ final class PathGeneratorTest extends TestCase
     /** @var Template */
     private $template;
 
-    /** @var vfsStreamDirectory */
-    private $templatesFolder;
-
-    /** @var vfsStreamDirectory */
-    private $sourceFolder;
-
-    /** @var vfsStreamDirectory */
-    private $destinationFolder;
-
     protected function setUp() : void
     {
-        $root = vfsStream::setup();
-        $this->templatesFolder = vfsStream::newDirectory('templates');
-        $root->addChild($this->templatesFolder);
-        $this->sourceFolder = vfsStream::newDirectory('source');
-        $root->addChild($this->sourceFolder);
-        $this->destinationFolder = vfsStream::newDirectory('destination');
-        $root->addChild($this->destinationFolder);
-
-        $mountManager = new MountManager(
-            [
-                'templates' => new Filesystem(new Local($this->templatesFolder->url())),
-                'template' => new Filesystem(new Local($this->sourceFolder->url())),
-                'destination' => new Filesystem(new Local($this->destinationFolder->url())),
-            ]
-        );
-        $this->template = new Template('My Template', $mountManager);
+        $this->template = new Template('My Template', new MountManager());
 
         $this->router = $this->prophesize(Router::class);
         $pathfinder = new Pathfinder();
-        $this->generator = new PathGenerator(
-            $this->router->reveal(),
-            $pathfinder
-        );
+        $this->generator = new PathGenerator($this->router->reveal(), $pathfinder);
     }
 
-    public function testGenerateAPathForTheGivenDescriptor() : void
+    /**
+     * @covers ::generate
+     * @dataProvider providePathsToUrlEncode
+     */
+    public function testWhenAnArtifactIsProvidedGenerateAPathToThatLocation($artifact, $variable, $expected) : void
     {
-        $this->markTestIncomplete();
+        $transformation = $this->givenATransformationWithArtifact($artifact);
 
-        $transformation = new Transformation(
+        $descriptor = new FileDescriptor('hash');
+        $descriptor->setPath($variable);
+        $path = $this->generator->generate($descriptor, $transformation);
+
+        $this->assertSame($expected, $path);
+    }
+
+    /**
+     * @covers ::generate
+     */
+    public function testAnErrorOccursWhenAnUnknownVariableIsAsked() : void
+    {
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage(
+            'Variable substitution in path /file/{{a}} failed, variable "a" did not return a value'
+        );
+        $transformation = $this->givenATransformationWithArtifact('file/{{a}}');
+
+        $this->generator->generate(new FileDescriptor('hash'), $transformation);
+    }
+
+    /**
+     * @covers ::generate
+     */
+    public function testAnErrorOccursWhenAnEmptyVariableIsAsked() : void
+    {
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage(
+            'Variable substitution in path /file/{{}} failed, no variable was specified'
+        );
+        $transformation = $this->givenATransformationWithArtifact('file/{{}}');
+
+        $this->generator->generate(new FileDescriptor('hash'), $transformation);
+    }
+
+    private function givenATransformationWithArtifact(string $artifact) : Transformation
+    {
+        return new Transformation(
             $this->template,
             '',
             'twig',
             'templates/templateName/index.html.twig',
-            'index.html'
+            $artifact
         );
+    }
 
-        $this->generator->generate(new FileDescriptor('hash'), $transformation);
+    public function providePathsToUrlEncode() : array
+    {
+        return [
+            'without variables' => [
+                'file/index.html',
+                'thisIsAFile.php',
+                '/file/index.html',
+            ],
+            'normal path variable' => [
+                'file/{{path}}',
+                'thisIsAFile.php',
+                '/file/thisIsAFile.php',
+            ],
+            'transliterates from unicode to ascii' => [
+                'file/{{path}}',
+                'thisIsд.php',
+                '/file/thisIsd.php',
+            ],
+            'removes a leading and trailing directory separators' => [
+                'file/{{path}}',
+                '/thisIsAFile.php\\',
+                '/file/thisIsAFile.php',
+            ],
+            'removes whitespace' => [
+                'file/{{path}}',
+                ' thisIsAFile.php ',
+                '/file/thisIsAFile.php',
+            ],
+            'without directory separator all is encoded' => [
+                'file/{{path}}',
+                'this Is A (File).php',
+                '/file/this+Is+A+%28File%29.php',
+            ],
+            'with unix separator, each part is encoded' => [
+                'file/{{path}}',
+                'directory/this Is A (File).php',
+                '/file/directory/this+Is+A+%28File%29.php',
+            ],
+            'with windows separator, each part is encoded' => [
+                'file/{{path}}',
+                'directory\\this Is A (File).php',
+                '/file/directory\\this+Is+A+%28File%29.php',
+            ],
+            'with windows and unix separator, each unix part is encoded' => [
+                'file/{{path}}',
+                'directory/this Is\\A (File).php',
+                '/file/directory/this+Is%5CA+%28File%29.php',
+            ],
+        ];
     }
 }
