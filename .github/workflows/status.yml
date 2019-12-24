@@ -1,11 +1,14 @@
 on: status
 name: Ci status
 jobs:
-  - uses: 8398a7/action-slack@v2
-    with:
-      type: ${{ github.event.state }}
-      icon_emoji: ':octocat:'
-      channel: '#ci'
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # required
-      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
+  ci-status-update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: 8398a7/action-slack@v2
+        with:
+          type: ${{ github.event.state }}
+          icon_emoji: ':octocat:'
+          channel: '#ci'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # required
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
