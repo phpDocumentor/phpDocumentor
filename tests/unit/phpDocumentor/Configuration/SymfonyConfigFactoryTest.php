@@ -6,28 +6,39 @@ namespace phpDocumentor\Configuration;
 
 use org\bovigo\vfs\vfsStream;
 use phpDocumentor\Configuration\Definition\Upgradable;
+use phpDocumentor\Configuration\Exception\UnSupportedConfigVersionException;
+use phpDocumentor\Configuration\Exception\UpgradeFaildException;
 use phpDocumentor\Faker\Faker;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
-use RuntimeException;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
- * @coversDefaultClass
+ * @coversDefaultClass \phpDocumentor\Configuration\SymfonyConfigFactory
+ * @covers ::<private>
+ * @covers ::__construct
  */
 final class SymfonyConfigFactoryTest extends TestCase
 {
     use Faker;
 
+    /**
+     * @covers ::createDefault
+     */
     public function testGetDefaultConfig() : void
     {
         $fixture = $this->createConfigFactoryWithTestDefinition();
         $this->assertArrayHasKey(SymfonyConfigFactory::FIELD_CONFIG_VERSION, $fixture->createDefault());
     }
 
+    /**
+     * @uses \phpDocumentor\Configuration\Exception\UpgradeFaildException::create
+     *
+     * @covers ::createDefault
+     */
     public function testThrowsExeceptionWhenUpgradeFails() : void
     {
-        $this->expectException(RuntimeException::class);
+        $this->expectException(UpgradeFaildException::class);
 
         $configMock = $this->prophesize(ConfigurationInterface::class);
         $configMock->willImplement(Upgradable::class);
@@ -38,9 +49,14 @@ final class SymfonyConfigFactoryTest extends TestCase
         $this->assertArrayHasKey(SymfonyConfigFactory::FIELD_CONFIG_VERSION, $this->fixture->createDefault());
     }
 
+    /**
+     * @uses \phpDocumentor\Configuration\Exception\UnSupportedConfigVersionException::create
+     *
+     * @covers ::createFromFile
+     */
     public function testThrowsExceptionWhenConfigVersionIsNotSupported() : void
     {
-        $this->expectException(RuntimeException::class);
+        $this->expectException(UnSupportedConfigVersionException::class);
 
         $root = vfsStream::setup();
         $configFile = vfsStream::newFile('config.xml')->withContent(<<<XML

@@ -15,14 +15,14 @@ namespace phpDocumentor\Configuration;
 
 use phpDocumentor\Configuration\Definition\Normalizable;
 use phpDocumentor\Configuration\Definition\Upgradable;
+use phpDocumentor\Configuration\Exception\UnSupportedConfigVersionException;
+use phpDocumentor\Configuration\Exception\UpgradeFaildException;
 use RuntimeException;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\Util\XmlUtils;
 use function array_key_last;
 use function array_keys;
-use function implode;
-use function sprintf;
 
 class SymfonyConfigFactory
 {
@@ -97,13 +97,9 @@ class SymfonyConfigFactory
     {
         $definition = $this->configurationDefinitions[$configurationVersion] ?? null;
         if ($definition === null) {
-            throw new RuntimeException(
-                sprintf(
-                    'Configuration version "%s" is not supported by this version of phpDocumentor, '
-                    . 'supported versions are: %s',
-                    $configurationVersion,
-                    implode(', ', array_keys($this->configurationDefinitions))
-                )
+            throw UnSupportedConfigVersionException::create(
+                $configurationVersion,
+                array_keys($this->configurationDefinitions)
             );
         }
 
@@ -116,13 +112,7 @@ class SymfonyConfigFactory
         if (!isset($upgradedConfiguration[self::FIELD_CONFIG_VERSION])
             || $configuration[self::FIELD_CONFIG_VERSION] === $upgradedConfiguration[self::FIELD_CONFIG_VERSION]
         ) {
-            throw new RuntimeException(
-                sprintf(
-                    'Upgrading the configuration to the latest version failed, we were unable to upgrade '
-                    . 'version "%s" to a later version',
-                    $configuration[self::FIELD_CONFIG_VERSION]
-                )
-            );
+            throw UpgradeFaildException::create($configuration[self::FIELD_CONFIG_VERSION]);
         }
 
         return $upgradedConfiguration;
