@@ -9,12 +9,14 @@ use League\Flysystem\Adapter\NullAdapter;
 use League\Flysystem\Filesystem;
 use League\Flysystem\MountManager;
 use Mockery as m;
+use phpDocumentor\Configuration\SymfonyConfigFactory;
 use phpDocumentor\Parser\FlySystemFactory;
 use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Transformer;
 use phpDocumentor\Transformer\Writer\Collection;
 use Psr\Log\NullLogger;
+use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 
 final class Provider extends Base
 {
@@ -56,5 +58,16 @@ final class Provider extends Base
     public function flySystemFactory()
     {
         return new FlySystemFactory(new MountManager());
+    }
+
+    public function configTreeBuilder(string $version) : TreeBuilder
+    {
+        $treebuilder = new TreeBuilder('test');
+        $treebuilder->getRootNode()
+            ->addDefaultsIfNotSet()
+            ->children()
+            ->scalarNode(SymfonyConfigFactory::FIELD_CONFIG_VERSION)->defaultValue($version)->end();
+
+        return $treebuilder;
     }
 }
