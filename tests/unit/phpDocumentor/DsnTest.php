@@ -53,15 +53,15 @@ class DsnTest extends TestCase
     ) : void {
         $fixture = new Dsn($dsn);
 
-        $this->assertSame($normalizedDsn, (string) $fixture);
-        $this->assertSame($scheme, $fixture->getScheme());
-        $this->assertSame($user, $fixture->getUsername());
-        $this->assertSame($pass, $fixture->getPassword());
-        $this->assertSame($port, $fixture->getPort());
-        $this->assertSame($host, $fixture->getHost());
-        $this->assertEquals(new Path($path), $fixture->getPath());
-        $this->assertSame($query, $fixture->getQuery());
-        $this->assertSame($parameters, $fixture->getParameters());
+        $this->assertSame($normalizedDsn, (string) $fixture, 'Conversion to string fails');
+        $this->assertSame($scheme, $fixture->getScheme(), 'Scheme does not match');
+        $this->assertSame($user, $fixture->getUsername(), 'Username does not match');
+        $this->assertSame($pass, $fixture->getPassword(), 'Password does not match');
+        $this->assertSame($port, $fixture->getPort(), 'Port does not match');
+        $this->assertSame($host, $fixture->getHost(), 'Host does not match');
+        $this->assertEquals(new Path($path), $fixture->getPath(), 'Path does not match');
+        $this->assertSame($query, $fixture->getQuery(), 'Query does not match');
+        $this->assertSame($parameters, $fixture->getParameters(), 'Parameters do not match');
     }
 
     public function provideDsnsToTestAgainst() : array
@@ -144,6 +144,14 @@ class DsnTest extends TestCase
                 '/',
                 'github.com',
                 443,
+            ],
+            'test relative local file on unix without scheme containing parent dir' => [
+                '../project/src',
+                '../project/src',
+                // This is a relative URI reference and does not have a scheme,
+                // see https://tools.ietf.org/html/rfc3986#section-4.1
+                null,
+                '../project/src',
             ],
         ];
     }
