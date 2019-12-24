@@ -107,7 +107,7 @@ final class Transform
                 $transformer     = $event->getSubject();
                 $templates       = $transformer->getTemplates();
                 $transformations = $templates->getTransformations();
-                $this->logger->info(sprintf("\nApplying %d transformations", count($transformations)));
+                $this->logger->notice(sprintf("  Applying %d transformations", count($transformations)));
             }
         );
         Dispatcher::getInstance()->addListener(
@@ -117,14 +117,14 @@ final class Transform
                     return;
                 }
 
-                $this->logger->info('  Initialize writer "' . get_class($event->getWriter()) . '"');
+                $this->logger->info('    Initialize writer "' . get_class($event->getWriter()) . '"');
             }
         );
         Dispatcher::getInstance()->addListener(
             Transformer::EVENT_PRE_TRANSFORMATION,
             function (PreTransformationEvent $event) : void {
                 $this->logger->info(
-                    '  Execute transformation using writer "' . $event->getTransformation()->getWriter() . '"'
+                    '    Execute transformation using writer "' . $event->getTransformation()->getWriter() . '"'
                 );
             }
         );
@@ -153,8 +153,10 @@ final class Transform
 
     private function doTransform(ProjectDescriptorBuilder $builder) : void
     {
+        $this->logger->notice('Executing compiler passes');
         /** @var CompilerPassInterface $pass */
         foreach ($this->compiler as $pass) {
+            $this->logger->notice('  ' . $pass->getDescription());
             $pass->execute($builder->getProjectDescriptor());
         }
     }

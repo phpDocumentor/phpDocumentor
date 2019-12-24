@@ -20,9 +20,20 @@ use function json_decode;
 
 final class AutoloaderLocator
 {
+    private static $classLoader;
+
+    public static function loader() : ClassLoader
+    {
+        return self::autoload();
+    }
+
     public static function autoload() : ClassLoader
     {
-        return require static::findVendorPath() . '/autoload.php';
+        if (!static::$classLoader) {
+            static::$classLoader = require static::findVendorPath() . '/autoload.php';
+        }
+
+        return static::$classLoader;
     }
 
     /**

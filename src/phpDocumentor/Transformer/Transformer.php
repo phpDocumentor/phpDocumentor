@@ -271,10 +271,10 @@ class Transformer implements CompilerPassInterface
         $this->logger->log(
             LogLevel::NOTICE,
             sprintf(
-                '  Writer %s %s on %s',
+                '    Writer %s%s%s',
                 $transformation->getWriter(),
                 ($transformation->getQuery() ? ' using query "' . $transformation->getQuery() . '"' : ''),
-                $transformation->getArtifact()
+                $transformation->getArtifact() ? ' to ' . $transformation->getArtifact() : ''
             )
         );
 

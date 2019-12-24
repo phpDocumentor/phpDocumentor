@@ -144,6 +144,15 @@ services:
     phpDocumentor\Compiler\Linker\Linker:
         arguments: ['%linker.substitutions%']
 
+    # The locations and extensions are now coded into this service; but this should be injected using a pipeline
+    # stage with the registerExtension and registerLocation methods.
+    phpDocumentor\Extensions:
+        arguments:
+            $extensions:
+                - 'phpDocumentor\Extensions\Example'
+            $locations:
+                'phpDocumentor\Extensions\': 'data/Extensions'
+
     phpDocumentor\Compiler\Compiler:
         calls:
             - [insert, ['@phpDocumentor\Compiler\Pass\ElementsIndexBuilder', !php/const \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::COMPILER_PRIORITY]]
@@ -157,6 +166,7 @@ services:
             - [insert, ['@phpDocumentor\Compiler\Pass\ResolveInlineMarkers', !php/const \phpDocumentor\Compiler\Pass\ResolveInlineMarkers::COMPILER_PRIORITY]]
             - [insert, ['@phpDocumentor\Compiler\Pass\Debug', !php/const \phpDocumentor\Compiler\Pass\Debug::COMPILER_PRIORITY]]
             - [insert, ['@phpDocumentor\Compiler\Linker\Linker', !php/const \phpDocumentor\Compiler\Linker\Linker::COMPILER_PRIORITY]]
+            - [insert, ['@phpDocumentor\Extensions', !php/const \phpDocumentor\Extensions::COMPILER_PRIORITY]]
             - [insert, ['@phpDocumentor\Transformer\Transformer', !php/const \phpDocumentor\Transformer\Transformer::COMPILER_PRIORITY]]
 
     phpDocumentor\Reflection\Php\NodesFactory:
