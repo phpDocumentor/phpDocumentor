@@ -6,7 +6,7 @@ jobs:
     steps:
       - uses: 8398a7/action-slack@v2
         with:
-          type: ${{ github.event.state }}
+          status: ${{ github.event.state }}
           icon_emoji: ':octocat:'
           channel: '#ci'
         env:
