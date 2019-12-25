@@ -11,3 +11,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.ISSUE_TRIAGE }}
           GITHUB_PROJECT_URL: https://github.com/orgs/phpDocumentor/projects/4
           GITHUB_PROJECT_COLUMN_NAME: Needs triage
+      - name: add-new-prs-to-repository-based-project-column
+        uses: docker://takanabe/github-actions-automate-projects:v0.0.1
+        if: github.event_name == 'pull_request' && github.event.action == 'opened'
+        env:
+          GITHUB_TOKEN: ${{ secrets.ISSUE_TRIAGE }}
+          GITHUB_PROJECT_URL: https://github.com/orgs/phpDocumentor/projects/4
+          GITHUB_PROJECT_COLUMN_NAME: Needs triage
