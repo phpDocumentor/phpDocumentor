@@ -122,7 +122,7 @@ final class Twig extends WriterAbstract
             }
 
             $path = $this->pathGenerator->generate($node, $transformation);
-            if ($path === null) {
+            if ($path === '') {
                 continue;
             }
 

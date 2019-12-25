@@ -15,8 +15,8 @@ namespace phpDocumentor\Transformer\Writer\Twig;
 
 use Parsedown;
 use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\Transformer\Transformation;
 use Twig\Extension\AbstractExtension;
 use Twig\Extension\GlobalsInterface;
 use Twig\TwigFilter;
@@ -55,16 +55,13 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
     /**
      * Registers the structure and transformation with this extension.
      *
-     * @param ProjectDescriptor $project        Represents the complete Abstract Syntax Tree.
-     * @param Transformation    $transformation Represents the transformation meta data used in the current generation
-     *        cycle.
+     * @param ProjectDescriptor $project Represents the complete Abstract Syntax Tree.
      */
     public function __construct(
         ProjectDescriptor $project,
-        Transformation $transformation,
         ?LinkRenderer $routeRenderer = null
     ) {
-        $this->data          = $project;
+        $this->data = $project;
         $this->routeRenderer = $routeRenderer;
     }
 
@@ -75,7 +72,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
      * file. This destination is relative to the Project's root and can
      * be used for the calculation of nesting depths, etc.
      *
-     * @see Writer\Twig for the invocation of this method.
+     * @see EnvironmentFactory for the invocation of this method.
      */
     public function setDestination(string $destination) : void
     {
@@ -120,13 +117,13 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
      */
     public function getFilters() : array
     {
-        $parser        = Parsedown::instance();
+        $parser = Parsedown::instance();
         $routeRenderer = $this->routeRenderer;
 
         return [
             'markdown' => new TwigFilter(
                 'markdown',
-                static function ($value) use ($parser) {
+                static function (string $value) use ($parser) : string {
                     return $parser->text($value);
                 }
             ),
@@ -147,14 +144,14 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             ),
             'sort' => new TwigFilter(
                 'sort_*',
-                static function ($direction, $collection) {
+                static function (string $direction, $collection) {
                     if (!$collection instanceof Collection) {
                         return $collection;
                     }
 
                     $iterator = $collection->getIterator();
                     $iterator->uasort(
-                        static function ($a, $b) use ($direction) {
+                        static function (Descriptor $a, Descriptor $b) use ($direction) {
                             $aElem = strtolower($a->getName());
                             $bElem = strtolower($b->getName());
                             if ($aElem === $bElem) {
