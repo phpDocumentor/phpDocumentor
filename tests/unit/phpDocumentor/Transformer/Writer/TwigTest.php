@@ -74,7 +74,8 @@ final class TwigTest extends TestCase
             [
                 'templates' => new Filesystem(new Local($this->templatesFolder->url())),
                 'template' => new Filesystem(new Local($this->sourceFolder->url())),
-                'destination' => new Filesystem(new Local($this->destinationFolder->url())),
+                // VFS does not support locking, hence the 0
+                'destination' => new Filesystem(new Local($this->destinationFolder->url(), 0)),
             ]
         );
         $this->template = new Template('My Template', $mountManager);
@@ -102,8 +103,7 @@ final class TwigTest extends TestCase
      */
     public function testRendersTwigTemplateToDestination() : void
     {
-        $root = vfsStream::setup();
-        $targetDir = vfsStream::newDirectory('target')->at($root)->url();
+        $targetDir = $this->destinationFolder->url();
         $transformer = $this->givenTransformerWithTarget($targetDir);
 
         $this->givenATwigEnvironmentFactoryWithTemplates(

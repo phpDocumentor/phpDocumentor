@@ -123,6 +123,7 @@ trait IoTrait
         if (!UriString::parse($destination)['scheme']) {
             $destination = 'destination://' . $destination;
         }
+
         return $destination;
     }
 }

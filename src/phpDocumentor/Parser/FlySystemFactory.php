@@ -76,7 +76,7 @@ class FlySystemFactory implements FileSystemFactory
 
         return new Local(
             $root,
-            LOCK_EX,
+            $dsn->getScheme() !== 'vfs' ? LOCK_EX : 0, // VFS does not support locking
             Local::SKIP_LINKS
         );
     }
