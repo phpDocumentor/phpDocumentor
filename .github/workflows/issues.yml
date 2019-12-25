@@ -19,9 +19,10 @@ jobs:
           GITHUB_PROJECT_URL: https://github.com/orgs/phpDocumentor/projects/4
           GITHUB_PROJECT_COLUMN_NAME: Needs triage
       - name: move-labeled-issues-to-todo-column
-        uses: docker://takanabe/github-actions-automate-projects:v0.0.1
+        uses: konradpabjan/move-labeled-or-milestoned-issue@v2.0
         if: github.event_name == 'issues' && github.event.action == 'labeled'
-        env:
-          GITHUB_TOKEN: ${{ secrets.ISSUE_TRIAGE }}
-          GITHUB_PROJECT_URL: https://github.com/orgs/phpDocumentor/projects/4
-          GITHUB_PROJECT_COLUMN_NAME: To Do
+        with:
+          action-token: ${{ secrets.ISSUE_TRIAGE }}
+          project-url: https://github.com/orgs/phpDocumentor/projects/4
+          column-name: "To Do"
+          columns-to-ignore: "Done"
