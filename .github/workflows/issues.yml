@@ -1,13 +1,13 @@
-on: issues
+on: [issues, pull_request]
 name: Issue Triage
 jobs:
-  triage-new-issues-to-project-column:
+  add-new-issues-to-project-column:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@master
-    - name: add-new-issues-to-project-column
-      uses: takanabe/add-new-issues-to-project-column@master
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        PROJECT_COLUMN_NAME: Needs triage
-        PROJECT_NAME: Issue Triage
+      - name: add-new-issues-to-organization-based-project-column
+        uses: docker://takanabe/github-actions-automate-projects:v0.0.1
+        if: github.event_name == 'issues' && github.event.action == 'opened'
+        env:
+          GITHUB_TOKEN: ${{ secrets.ISSUE_TRIAGE }}
+          GITHUB_PROJECT_URL: https://github.com/orgs/phpDocumentor/projects/4
+          GITHUB_PROJECT_COLUMN_NAME: Needs triage
