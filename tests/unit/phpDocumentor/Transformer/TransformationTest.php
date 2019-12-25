@@ -41,12 +41,15 @@ final class TransformationTest extends m\Adapter\Phpunit\MockeryTestCase
     /** @var string */
     private $artifact = 'artifactString';
 
+    /** @var Template */
+    private $template;
+
     /**
      * Initializes the fixture and dependencies for this testcase.
      */
     protected function setUp() : void
     {
-        $this->template = new Template('My Template', $this->faker()->fileSystem());
+        $this->template = $this->faker()->template('My Template');
         $this->fixture = new Transformation(
             $this->template,
             $this->query,

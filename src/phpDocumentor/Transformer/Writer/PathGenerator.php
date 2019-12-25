@@ -20,7 +20,6 @@ use phpDocumentor\Transformer\Transformation;
 use RuntimeException;
 use Symfony\Component\String\UnicodeString;
 use UnexpectedValueException;
-use const DIRECTORY_SEPARATOR;
 use function array_map;
 use function current;
 use function explode;
@@ -29,7 +28,6 @@ use function implode;
 use function is_string;
 use function preg_replace_callback;
 use function sprintf;
-use function str_replace;
 use function strpos;
 use function trim;
 
@@ -66,24 +64,21 @@ class PathGenerator
      *   An artifact stating `classes/{{name}}.html` will try to find the
      *   node 'name' as a child of the given $node and use that value instead.
      *
-     * @return string|null returns the destination location or false if generation should be aborted.
+     * @return string returns the destination location or false if generation should be aborted.
      *
      * @throws InvalidArgumentException If no artifact is provided and no routing rule matches.
      * @throws UnexpectedValueException If the provided node does not contain anything.
      */
-    public function generate(Descriptor $descriptor, Transformation $transformation) : ?string
+    public function generate(Descriptor $descriptor, Transformation $transformation) : string
     {
         $path = $this->determinePath($descriptor, $transformation);
-        if ($path === null) {
-            return null;
-        }
 
         return $this->replaceVariablesInPath($path, $descriptor);
     }
 
-    private function determinePath(Descriptor $descriptor, Transformation $transformation) : ?string
+    private function determinePath(Descriptor $descriptor, Transformation $transformation) : string
     {
-        $path = DIRECTORY_SEPARATOR . $transformation->getArtifact();
+        $path = '/' . $transformation->getArtifact();
         if (!$transformation->getArtifact()) {
             $url = $this->router->generate($descriptor);
             if (!$url) {
@@ -92,10 +87,6 @@ class PathGenerator
                     . 'encountered: ' . get_class($descriptor)
                 );
             }
-
-            $path = $url[0] === DIRECTORY_SEPARATOR
-                ? str_replace('/', DIRECTORY_SEPARATOR, $url)
-                : null;
         }
 
         return $path;

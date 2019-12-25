@@ -15,7 +15,7 @@ namespace phpDocumentor\Transformer;
 
 use ArrayIterator;
 use InvalidArgumentException;
-use League\Flysystem\Filesystem;
+use League\Flysystem\MountManager;
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\Transformer\Template\Parameter;
 use PHPUnit\Framework\TestCase;
@@ -23,8 +23,6 @@ use function count;
 use function iterator_to_array;
 
 /**
- * Test class for \phpDocumentor\Transformer\Transformer.
- *
  * @coversDefaultClass \phpDocumentor\Transformer\Template
  * @covers ::__construct
  * @covers ::<private>
@@ -47,7 +45,7 @@ final class TemplateTest extends TestCase
     {
         $parameter = new Parameter('key', 'value');
 
-        $template = new Template('name', $this->givenExampleFilesystem());
+        $template = new Template('name', $this->givenExampleMountManager());
         $template->setAuthor('Mike');
         $template->setCopyright('copyright');
         $template->setDescription('description');
@@ -73,7 +71,7 @@ final class TemplateTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $template = new Template('name', $this->givenExampleFilesystem());
+        $template = new Template('name', $this->givenExampleMountManager());
         $template['key'] = 'value';
     }
 
@@ -84,7 +82,7 @@ final class TemplateTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $template = new Template('name', $this->givenExampleFilesystem());
+        $template = new Template('name', $this->givenExampleMountManager());
         $template->setVersion('abc');
     }
 
@@ -93,7 +91,7 @@ final class TemplateTest extends TestCase
      */
     public function testThatWeCanCheckIfATransformationIsRegistered() : void
     {
-        $template = new Template('name', $this->givenExampleFilesystem());
+        $template = new Template('name', $this->givenExampleMountManager());
         $transformation = new Transformation($template, '', '', '', '');
         $template['key'] = $transformation;
 
@@ -106,7 +104,7 @@ final class TemplateTest extends TestCase
      */
     public function testThatWeCanUnsetATransformation() : void
     {
-        $template = new Template('name', $this->givenExampleFilesystem());
+        $template = new Template('name', $this->givenExampleMountManager());
         $transformation = new Transformation($template, '', '', '', '');
         $template['key'] = $transformation;
 
@@ -122,7 +120,7 @@ final class TemplateTest extends TestCase
      */
     public function testThatWeCanCountTheNumberOfTransformations() : void
     {
-        $template = new Template('name', $this->givenExampleFilesystem());
+        $template = new Template('name', $this->givenExampleMountManager());
         $transformation = new Transformation($template, '', '', '', '');
         $template['key'] = $transformation;
 
@@ -134,7 +132,7 @@ final class TemplateTest extends TestCase
      */
     public function testThatWeCanIterateOnTheTransformations() : void
     {
-        $template = new Template('name', $this->givenExampleFilesystem());
+        $template = new Template('name', $this->givenExampleMountManager());
         $transformation = new Transformation($template, '', '', '', '');
         $template['key'] = $transformation;
 
@@ -149,7 +147,7 @@ final class TemplateTest extends TestCase
     {
         $parameter = new Parameter('key', 'value');
 
-        $template = new Template('name', $this->givenExampleFilesystem());
+        $template = new Template('name', $this->givenExampleMountManager());
         $transformation = new Transformation($template, '', '', '', '');
         $template['key'] = $transformation;
         $template->setParameter('key', $parameter);
@@ -159,8 +157,8 @@ final class TemplateTest extends TestCase
         $this->assertSame(['key' => $parameter], $transformation->getParameters());
     }
 
-    private function givenExampleFilesystem() : Filesystem
+    private function givenExampleMountManager() : MountManager
     {
-        return $this->faker()->fileSystem();
+        return new MountManager();
     }
 }

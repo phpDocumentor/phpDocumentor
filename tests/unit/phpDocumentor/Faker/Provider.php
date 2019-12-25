@@ -27,7 +27,11 @@ final class Provider extends Base
 
     public function template(string $name = 'test') : Template
     {
-        return new Template($name, $this->fileSystem());
+        return new Template($name, new MountManager([
+            'template' => $this->fileSystem(),
+            'templates' => $this->fileSystem(),
+            'destination' => $this->fileSystem(),
+        ]));
     }
 
     public function transformation(?Template $template = null) : Transformation
