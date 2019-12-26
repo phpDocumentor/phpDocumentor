@@ -39,8 +39,6 @@ final class CommandlineOptionsMiddleware
 
     public function __invoke(array $configuration) : array
     {
-        $configuration = ['phpdocumentor' => $configuration];
-
         $configuration = $this->overwriteDestinationFolder($configuration);
         $configuration = $this->disableCache($configuration);
         $configuration = $this->overwriteCacheFolder($configuration);
@@ -292,6 +290,6 @@ final class CommandlineOptionsMiddleware
 
     private function createDefaultApiSettings() : array
     {
-        return current($this->configFactory->createDefault()['versions'])['api'];
+        return current($this->configFactory->createDefault()['phpdocumentor']['versions'])['api'];
     }
 }

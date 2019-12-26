@@ -35,7 +35,7 @@ final class Payload extends ApplicationPayload
 
     public function getApiConfigs() : array
     {
-        //Grep only the first version for now. Multi version support will be added later
+        // Grep only the first version for now. Multi version support will be added later
         $version = current($this->getConfig()['phpdocumentor']['versions']);
 
         return $version['api'];

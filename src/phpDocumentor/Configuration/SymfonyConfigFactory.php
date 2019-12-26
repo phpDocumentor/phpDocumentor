@@ -16,7 +16,7 @@ namespace phpDocumentor\Configuration;
 use phpDocumentor\Configuration\Definition\Normalizable;
 use phpDocumentor\Configuration\Definition\Upgradable;
 use phpDocumentor\Configuration\Exception\UnSupportedConfigVersionException;
-use phpDocumentor\Configuration\Exception\UpgradeFaildException;
+use phpDocumentor\Configuration\Exception\UpgradeFailedException;
 use RuntimeException;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Processor;
@@ -62,7 +62,9 @@ class SymfonyConfigFactory
             );
         }
 
-        return $configuration;
+        // prefix is needed because other parts of the application require 'phpdocumentor' as root
+        // it would be nice to refactor this necessity away at some point
+        return ['phpdocumentor' => $configuration];
     }
 
     /**
@@ -112,7 +114,7 @@ class SymfonyConfigFactory
         if (!isset($upgradedConfiguration[self::FIELD_CONFIG_VERSION])
             || $configuration[self::FIELD_CONFIG_VERSION] === $upgradedConfiguration[self::FIELD_CONFIG_VERSION]
         ) {
-            throw UpgradeFaildException::create($configuration[self::FIELD_CONFIG_VERSION]);
+            throw UpgradeFailedException::create($configuration[self::FIELD_CONFIG_VERSION]);
         }
 
         return $upgradedConfiguration;
