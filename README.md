@@ -21,30 +21,30 @@ with the latest technologies and PHP language features.
 
 phpDocumentor v2 (stable)
 --------------
-The current stable version of phpdocumentor is v2.9. Which can be used to generate documentation for php
-applications up to php version 7.0. phpDocumentor is an old tool that doesn't support all 7.0 introduced features.
-It will not process any scalar type hints and requires docblock tags to generate api documentation.
-If your application/library is using php 7.0 or lower consult our [v2 branch] for installation instructions
+The current stable version of phpDocumentor is v2.9, which can be used to generate documentation for PHP
+applications up to PHP version 7.0. phpDocumentor is an old tool that doesn't support all 7.0 introduced features.
+It will not process any scalar type hints and requires docblock tags to generate API documentation.
+If your application/library is using PHP 7.0 or lower consult our [v2 branch] for installation instructions
 and detailed information about how to use phpDocumentor.
 
 phpDocumentor v3 (unstable)
 ---------------
 
 **Note:**
-The phpDocumentor team is currently working on a new phpDocumentor generation. Which will have full support for the latest features in PHP, so you can take advantage of all native type hints. v3 is still under heavy development
+The phpDocumentor team is currently working on a new phpDocumentor generation. It will have full support for the latest features in PHP, so you can take advantage of all native type hints. v3 is still under heavy development
 and is not stable enough to use in a daily development flow. 
 
 ### nightly builds
 
-Phpdocumentor doesn't have a nightly release. But during each pipeline, a [phar] artifact is built. If you want 
-to test the bleeding edge version of phpDocumentor have a look in the [actions](https://github.com/phpDocumentor/phpDocumentor/actions?query=workflow%3A%22Qa+workflow%22+is%3Asuccess) section of this repository.
+Phpdocumentor doesn't have a nightly release. However, during each pipeline a [phar] artifact is built. If you want 
+to test the bleeding edge version of phpDocumentor, have a look in the [actions](https://github.com/phpDocumentor/phpDocumentor/actions?query=workflow%3A%22Qa+workflow%22+is%3Asuccess) section of this repository.
 Each successful QA workflow has a download at the right upper corner.
 
 Installation
 ------------
-phpDocumentor requires php 7.2 or higher to run. However, code of lower php versions can be analyzed.
+phpDocumentor requires PHP 7.2 or higher to run. However, code of lower PHP versions can be analyzed.
 
-All templates provided with phpDocumentor so have support for Class diagrams based on the read code base. This will
+All templates provided with phpDocumentor have support for Class diagrams based on the read code base. This will
 require Graphviz to be installed on the machine running phpDocumentor. Graphviz is optional, and warnings about missing
 Graphviz can be ignored. However, your documentation will contain some dead links in this case.  
 
@@ -59,15 +59,15 @@ There are 3 ways to install phpDocumentor:
 
 `$ phive install --force-accept-unsigned phpDocumentor`
 
-For more information about phive have a look at their [website](https://phar.io/) 
-now you have phpDocumentor installed and it can be executed directly. 
+For more information about phive have a look at their [website](https://phar.io/).
+Now you have phpDocumentor installed and it can be executed directly. 
 
 `php tools/phpDocumentor`
 
 ### Using the PHAR
 
 1. Download the phar file from https://github.com/phpDocumentor/phpDocumentor/releases
-2. Profit!
+2. You can execute the phar like this: `php phpDocumentor.phar`
 
 ### Via docker
 
@@ -137,7 +137,7 @@ phpDocumentor supports the following:
   If you'd like you can use that to power your own tools or formatters!
 
 *Please note* that phpDocumentor 3 is still under heavy development. We aim to add all features needed to have full support
-for php 7+. But at this moment that is not the case.
+for PHP 7+. But at this moment that is not the case.
 
 Contact
 -------
