@@ -80,8 +80,8 @@ class PathGenerator
     {
         $path = '/' . $transformation->getArtifact();
         if (!$transformation->getArtifact()) {
-            $url = $this->router->generate($descriptor);
-            if (!$url) {
+            $path = $this->router->generate($descriptor);
+            if (!$path) {
                 throw new InvalidArgumentException(
                     'No matching routing rule could be found for the given node, please provide an artifact location, '
                     . 'encountered: ' . get_class($descriptor)
