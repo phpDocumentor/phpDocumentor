@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <div class="phpdocumentor-section">
+        {% include 'sidebar.html.twig' %}
+
+        <div class="nine phpdocumentor-columns">
+            {% include 'breadcrumbs.html.twig' %}
+
+            <h2 class="phpdocumentor-content__title">
+                {{ node.name }}
+                {% if node.parent %}
+                    <span class="phpdocumentor-class__extends">
+                    extends <a href="{{ link(node.parent) }}">{{ node.parent.name }}</a>
+                </span>
+                {% endif %}
+                {% if node.interfaces|length > 0 %}
+                    <span class="phpdocumentor-class__implements">
+                        implements
+                        {% for interface in node.interfaces %}
+                            <a href="{{ link(interface) }}">{{ interface.name }}</a>
+                        {% endfor %}
+                    </span>
+                {% endif %}
+            </h2>
+
+            <p class="phpdocumentor-class__summary">{{ node.summary }}</p>
+            <section class="phpdocumentor-class__description">{{ node.description|markdown }}</section>
+        </div>
+    </div>
+{% endblock %}

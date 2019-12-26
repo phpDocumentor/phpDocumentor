@@ -48,7 +48,7 @@ class ClassBasedFqsenUrlGenerator
         if (count($fqsenParts) === 1) {
             return $this->urlGenerator->generate(
                 'class',
-                ['className' => $className]
+                ['name' => $className]
             );
         }
 

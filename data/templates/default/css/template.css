@@ -1,5 +1,3 @@
-@import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro);
-
 :root {
     --container-width: 960px;
 
@@ -10,10 +8,11 @@
 
     --text-base-size: 1em;
     --text-scale-ratio: 1.2;
+    --text-color: #222;
 
-    --text-xxs: calc(var(--text-base-size) / var(--text-scale-ratio) / var(--text-scale-ratio) / var(--text-scale-ratio)) ;
-    --text-xs: calc(var(--text-base-size) / var(--text-scale-ratio) / var(--text-scale-ratio)) ;
-    --text-sm: calc(var(--text-base-size) / var(--text-scale-ratio)) ;
+    --text-xxs: calc(var(--text-base-size) / var(--text-scale-ratio) / var(--text-scale-ratio) / var(--text-scale-ratio));
+    --text-xs: calc(var(--text-base-size) / var(--text-scale-ratio) / var(--text-scale-ratio));
+    --text-sm: calc(var(--text-base-size) / var(--text-scale-ratio));
     --text-md: var(--text-base-size);
     --text-lg: calc(var(--text-base-size) * var(--text-scale-ratio));
     --text-xl: calc(var(--text-base-size) * var(--text-scale-ratio) * var(--text-scale-ratio));
@@ -23,12 +22,12 @@
     --text-xxxxxl: calc(var(--text-base-size) * var(--text-scale-ratio) * var(--text-scale-ratio) * var(--text-scale-ratio) * var(--text-scale-ratio) * var(--text-scale-ratio) * var(--text-scale-ratio));
 
     --spacing-base-size: 1rem;
-    --spacing-scale-ratio: 1.2;
+    --spacing-scale-ratio: 1.5;
 
-    --spacing-xxxs: calc(var(--spacing-base-size) / var(--spacing-scale-ratio) / var(--spacing-scale-ratio) / var(--spacing-scale-ratio) / var(--spacing-scale-ratio)) ;
-    --spacing-xxs: calc(var(--spacing-base-size) / var(--spacing-scale-ratio) / var(--spacing-scale-ratio) / var(--spacing-scale-ratio)) ;
-    --spacing-xs: calc(var(--spacing-base-size) / var(--spacing-scale-ratio) / var(--spacing-scale-ratio)) ;
-    --spacing-sm: calc(var(--spacing-base-size) / var(--spacing-scale-ratio)) ;
+    --spacing-xxxs: calc(var(--spacing-base-size) / var(--spacing-scale-ratio) / var(--spacing-scale-ratio) / var(--spacing-scale-ratio) / var(--spacing-scale-ratio));
+    --spacing-xxs: calc(var(--spacing-base-size) / var(--spacing-scale-ratio) / var(--spacing-scale-ratio) / var(--spacing-scale-ratio));
+    --spacing-xs: calc(var(--spacing-base-size) / var(--spacing-scale-ratio) / var(--spacing-scale-ratio));
+    --spacing-sm: calc(var(--spacing-base-size) / var(--spacing-scale-ratio));
     --spacing-md: var(--spacing-base-size);
     --spacing-lg: calc(var(--spacing-base-size) * var(--spacing-scale-ratio));
     --spacing-xl: calc(var(--spacing-base-size) * var(--spacing-scale-ratio) * var(--spacing-scale-ratio));
@@ -37,15 +36,26 @@
 
     --border-radius-base-size: 4px;
 
-    --link-color-primary: #1EAEDB;
-    --link-hover-color-primary: #0FA0CE;
-    --button-color-primary: #33C3F0;
-    --button-text-color-primary: #FFF;
+    --primary-color: hsl(96, 57%, 60%);
+    --primary-color-darken: hsl(96, 57%, 40%);
+    --primary-color-darker: hsl(96, 57%, 20%);
+
+    --top-header-bg-color: #333;
+    --top-header-text-color: white;
+    --top-header-height: calc(var(--text-sm) + 2 * var(--spacing-sm));
+    --header-bg-color: var(--primary-color);
+    --link-color-primary: var(--primary-color-darken);
+    --link-hover-color-primary: var(--primary-color-darker);
+    --button-color-primary: var(--primary-color);
+    --button-text-color-primary: white;
     --button-color: transparent;
-    --button-border-color: #bbb;
+    --button-border-color: var(--primary-color-darken);
     --button-text-color: #555;
     --form-field-color: #fff;
     --form-field-border-color: #D1D1D1;
+
+    --title-text-color: white;
+    --title-text-shadow-color: var(--primary-color-darker);
 }
 
 /* Grid
@@ -58,6 +68,7 @@
     padding: 0 var(--spacing-lg);
     box-sizing: border-box;
 }
+
 .phpdocumentor-column,
 .phpdocumentor-columns {
     width: 100%;
@@ -78,68 +89,150 @@
     .phpdocumentor-section {
         width: 80%;
     }
+
     .phpdocumentor-column,
     .phpdocumentor-columns {
         margin-left: 4%;
     }
+
     .phpdocumentor-column:first-child,
     .phpdocumentor-columns:first-child {
         margin-left: 0;
     }
 
     .one.phpdocumentor-column,
-    .one.phpdocumentor-columns                    { width: 4.66666666667%; }
-    .two.phpdocumentor-columns                    { width: 13.3333333333%; }
-    .three.phpdocumentor-columns                  { width: 22%;            }
-    .four.phpdocumentor-columns                   { width: 30.6666666667%; }
-    .five.phpdocumentor-columns                   { width: 39.3333333333%; }
-    .six.phpdocumentor-columns                    { width: 48%;            }
-    .seven.phpdocumentor-columns                  { width: 56.6666666667%; }
-    .eight.phpdocumentor-columns                  { width: 65.3333333333%; }
-    .nine.phpdocumentor-columns                   { width: 74.0%;          }
-    .ten.phpdocumentor-columns                    { width: 82.6666666667%; }
-    .eleven.phpdocumentor-columns                 { width: 91.3333333333%; }
-    .twelve.phpdocumentor-columns                 { width: 100%; margin-left: 0; }
+    .one.phpdocumentor-columns {
+        width: 4.66666666667%;
+    }
 
-    .one-third.phpdocumentor-column               { width: 30.6666666667%; }
-    .two-thirds.phpdocumentor-column              { width: 65.3333333333%; }
+    .two.phpdocumentor-columns {
+        width: 13.3333333333%;
+    }
 
-    .one-half.phpdocumentor-column                { width: 48%; }
+    .three.phpdocumentor-columns {
+        width: 22%;
+    }
+
+    .four.phpdocumentor-columns {
+        width: 30.6666666667%;
+    }
+
+    .five.phpdocumentor-columns {
+        width: 39.3333333333%;
+    }
+
+    .six.phpdocumentor-columns {
+        width: 48%;
+    }
+
+    .seven.phpdocumentor-columns {
+        width: 56.6666666667%;
+    }
+
+    .eight.phpdocumentor-columns {
+        width: 65.3333333333%;
+    }
+
+    .nine.phpdocumentor-columns {
+        width: 74.0%;
+    }
+
+    .ten.phpdocumentor-columns {
+        width: 82.6666666667%;
+    }
+
+    .eleven.phpdocumentor-columns {
+        width: 91.3333333333%;
+    }
+
+    .twelve.phpdocumentor-columns {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    .one-third.phpdocumentor-column {
+        width: 30.6666666667%;
+    }
+
+    .two-thirds.phpdocumentor-column {
+        width: 65.3333333333%;
+    }
+
+    .one-half.phpdocumentor-column {
+        width: 48%;
+    }
 
     /* Offsets */
     .offset-by-one.phpdocumentor-column,
-    .offset-by-one.phpdocumentor-columns          { margin-left: 8.66666666667%; }
+    .offset-by-one.phpdocumentor-columns {
+        margin-left: 8.66666666667%;
+    }
+
     .offset-by-two.phpdocumentor-column,
-    .offset-by-two.phpdocumentor-columns          { margin-left: 17.3333333333%; }
+    .offset-by-two.phpdocumentor-columns {
+        margin-left: 17.3333333333%;
+    }
+
     .offset-by-three.phpdocumentor-column,
-    .offset-by-three.phpdocumentor-columns        { margin-left: 26%;            }
+    .offset-by-three.phpdocumentor-columns {
+        margin-left: 26%;
+    }
+
     .offset-by-four.phpdocumentor-column,
-    .offset-by-four.phpdocumentor-columns         { margin-left: 34.6666666667%; }
+    .offset-by-four.phpdocumentor-columns {
+        margin-left: 34.6666666667%;
+    }
+
     .offset-by-five.phpdocumentor-column,
-    .offset-by-five.phpdocumentor-columns         { margin-left: 43.3333333333%; }
+    .offset-by-five.phpdocumentor-columns {
+        margin-left: 43.3333333333%;
+    }
+
     .offset-by-six.phpdocumentor-column,
-    .offset-by-six.phpdocumentor-columns          { margin-left: 52%;            }
+    .offset-by-six.phpdocumentor-columns {
+        margin-left: 52%;
+    }
+
     .offset-by-seven.phpdocumentor-column,
-    .offset-by-seven.phpdocumentor-columns        { margin-left: 60.6666666667%; }
+    .offset-by-seven.phpdocumentor-columns {
+        margin-left: 60.6666666667%;
+    }
+
     .offset-by-eight.phpdocumentor-column,
-    .offset-by-eight.phpdocumentor-columns        { margin-left: 69.3333333333%; }
+    .offset-by-eight.phpdocumentor-columns {
+        margin-left: 69.3333333333%;
+    }
+
     .offset-by-nine.phpdocumentor-column,
-    .offset-by-nine.phpdocumentor-columns         { margin-left: 78.0%;          }
+    .offset-by-nine.phpdocumentor-columns {
+        margin-left: 78.0%;
+    }
+
     .offset-by-ten.phpdocumentor-column,
-    .offset-by-ten.phpdocumentor-columns          { margin-left: 86.6666666667%; }
+    .offset-by-ten.phpdocumentor-columns {
+        margin-left: 86.6666666667%;
+    }
+
     .offset-by-eleven.phpdocumentor-column,
-    .offset-by-eleven.phpdocumentor-columns       { margin-left: 95.3333333333%; }
+    .offset-by-eleven.phpdocumentor-columns {
+        margin-left: 95.3333333333%;
+    }
 
     .offset-by-one-third.phpdocumentor-column,
-    .offset-by-one-third.phpdocumentor-columns    { margin-left: 34.6666666667%; }
+    .offset-by-one-third.phpdocumentor-columns {
+        margin-left: 34.6666666667%;
+    }
+
     .offset-by-two-thirds.phpdocumentor-column,
-    .offset-by-two-thirds.phpdocumentor-columns   { margin-left: 69.3333333333%; }
+    .offset-by-two-thirds.phpdocumentor-columns {
+        margin-left: 69.3333333333%;
+    }
 
     .offset-by-one-half.phpdocumentor-column,
-    .offset-by-one-half.phpdocumentor-columns     { margin-left: 52%; }
-
+    .offset-by-one-half.phpdocumentor-columns {
+        margin-left: 52%;
+    }
 }
-
 
 /* Base Styles
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
@@ -148,9 +241,55 @@ body {
     line-height: var(--line-height--primary);
     font-family: var(--font-primary);
     letter-spacing: var(--letter-spacing--primary);
-    color: #222;
+    color: var(--text-color);
 }
 
+.phpdocumentor-top-header {
+    background: var(--top-header-bg-color);
+    min-height: var(--top-header-height);
+    font-size: var(--text-sm);
+    color: var(--top-header-text-color);
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    padding: 0 var(--spacing-sm);
+}
+
+.phpdocumentor-header {
+    background: var(--header-bg-color);
+    display: flex;
+    margin-bottom: var(--spacing-lg);
+    position: relative;
+}
+
+.phpdocumentor-header:after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    right: 0;
+    border-bottom: 3px solid var(--header-bg-color);
+}
+
+.phpdocumentor-title {
+    color: var(--title-text-color);
+    text-shadow: 0 0 2px var(--title-text-shadow-color);
+    font-size: var(--text-xxxxl);
+    line-height: 1.2;
+    letter-spacing: .05rem;
+}
+
+.phpdocumentor-class__summary {
+    font-style: italic;
+}
+
+.phpdocumentor-class__extends,
+.phpdocumentor-class__implements {
+    display: block;
+    font-size: var(--text-xxs);
+    opacity: .7;
+    font-weight: normal;
+}
 
 /* Typography
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
@@ -163,12 +302,42 @@ body {
     margin-top: 0;
     margin-bottom: var(--spacing-lg);
 }
-.phpdocumentor h1 { font-size: var(--text-xxxxxl); line-height: 1.2;  letter-spacing: .025rem;}
-.phpdocumentor h2 { font-size: var(--text-xxxxl); line-height: 1.25; letter-spacing: .025rem; }
-.phpdocumentor h3 { font-size: var(--text-xxxl); line-height: 1.3;  letter-spacing: .025rem; }
-.phpdocumentor h4 { font-size: var(--text-xxl); line-height: 1.35; letter-spacing: .02rem; }
-.phpdocumentor h5 { font-size: var(--text-xl); line-height: 1.5;  letter-spacing: .0125rem; }
-.phpdocumentor h6 { font-size: var(--text-lg); line-height: var(--line-height--primary);  letter-spacing: 0; }
+
+.phpdocumentor h1 {
+    font-size: var(--text-xxxxl);
+    line-height: 1.2;
+    letter-spacing: .05rem;
+}
+
+.phpdocumentor h2 {
+    font-size: var(--text-xxxl);
+    line-height: 1.25;
+    letter-spacing: .05rem;
+}
+
+.phpdocumentor h3 {
+    font-size: var(--text-xxl);
+    line-height: 1.3;
+    letter-spacing: .05rem;
+}
+
+.phpdocumentor h4 {
+    font-size: var(--text-xl);
+    line-height: 1.35;
+    letter-spacing: .025rem;
+}
+
+.phpdocumentor h5 {
+    font-size: var(--text-lg);
+    line-height: 1.5;
+    letter-spacing: .0125rem;
+}
+
+.phpdocumentor h6 {
+    font-size: var(--text-md);
+    line-height: var(--line-height--primary);
+    letter-spacing: 0;
+}
 
 .phpdocumentor p {
     margin-top: 0;
@@ -180,6 +349,7 @@ body {
 .phpdocumentor a {
     color: var(--link-color-primary);
 }
+
 .phpdocumentor a:hover {
     color: var(--link-hover-color-primary);
 }
@@ -206,17 +376,20 @@ body {
     cursor: pointer;
     box-sizing: border-box;
 }
+
 .phpdocumentor-button:hover,
 .phpdocumentor-button:focus {
     color: #333;
     border-color: #888;
     outline: 0;
 }
+
 .phpdocumentor-button.button-primary {
     color: var(--button-text-color-primary);
     background-color: var(--button-color-primary);
     border-color: var(--button-color-primary);
 }
+
 .phpdocumentor-button.phpdocumentor-button--primary:hover,
 .phpdocumentor-button.phpdocumentor-button--primary:focus {
     color: var(--button-text-color-primary);
@@ -236,6 +409,7 @@ body {
     box-shadow: none;
     box-sizing: border-box;
 }
+
 /* Removes awkward default styles on some inputs for iOS */
 input[type="email"],
 input[type="number"],
@@ -249,27 +423,33 @@ textarea {
     -moz-appearance: none;
     appearance: none;
 }
+
 .phpdocumentor-textarea {
     min-height: 65px;
     padding-top: var(--spacing-xxxs);
     padding-bottom: var(--spacing-xxxs);
 }
+
 .phpdocumentor-field:focus {
     border: 1px solid var(--button-color-primary);
     outline: 0;
 }
+
 .phpdocumentor-label {
     display: block;
     margin-bottom: var(--spacing-xs);
 }
+
 .phpdocumentor-fieldset {
     padding: 0;
     border-width: 0;
 }
+
 input[type="checkbox"].phpdocumentor-field,
 input[type="radio"].phpdocumentor-field {
     display: inline;
 }
+
 .phpdocumentor-label > .phpdocumentor-label--body {
     display: inline-block;
     margin-left: var(--spacing-xs);
@@ -282,20 +462,24 @@ input[type="radio"].phpdocumentor-field {
 ul.phpdocumentor-list {
     list-style: circle inside;
 }
+
 ol.phpdocumentor-list {
     list-style: decimal inside;
 }
+
 ol.phpdocumentor-list, ul.phpdocumentor-list {
     padding-left: 0;
     margin-top: 0;
 }
+
 ul.phpdocumentor-list ul.phpdocumentor-list,
 ul.phpdocumentor-list ol.phpdocumentor-list,
 ol.phpdocumentor-list ol.phpdocumentor-list,
 ol.phpdocumentor-list ul.phpdocumentor-list {
-    margin: var(--spacing-xl) 0 var(--spacing-xl) calc(var(--spacing-xl) * 2);
+    margin: var(--spacing-xs) 0 var(--spacing-xs) calc(var(--spacing-xs) * 2);
     font-size: var(--text-sm);
 }
+
 li.phpdocumentor-list {
     margin-bottom: var(--spacing-md);
 }
@@ -317,6 +501,7 @@ ul.phpdocumentor-breadcrumbs > li + li:before {
     color: #ccc;
     content: "\\\A0";
 }
+
 /* Code
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 .phpdocumentor-code {
@@ -328,6 +513,7 @@ ul.phpdocumentor-breadcrumbs > li + li:before {
     border: 1px solid #E1E1E1;
     border-radius: var(--border-radius-base-size);
 }
+
 pre > .phpdocumentor-code {
     display: block;
     padding: var(--spacing-md) var(--spacing-xl);
@@ -343,10 +529,12 @@ td.phpdocumentor-cell {
     text-align: left;
     border-bottom: 1px solid #E1E1E1;
 }
+
 th.phpdocumentor-heading:first-child,
 td.phpdocumentor-cell:first-child {
     padding-left: 0;
 }
+
 th.phpdocumentor-heading:last-child,
 td.phpdocumentor-cell:last-child {
     padding-right: 0;
@@ -358,9 +546,11 @@ td.phpdocumentor-cell:last-child {
 .phpdocumentor-button {
     margin-bottom: var(--spacing-md);
 }
+
 .phpdocumentor-field {
     margin-bottom: var(--spacing-xl);
 }
+
 .phpdocumentor pre,
 .phpdocumentor blockquote,
 .phpdocumentor dl,
@@ -380,13 +570,16 @@ td.phpdocumentor-cell:last-child {
     width: 100%;
     box-sizing: border-box;
 }
+
 .phpdocumentor-max-full-width {
     max-width: 100%;
     box-sizing: border-box;
 }
+
 .phpdocumentor-pull-right {
     float: right;
 }
+
 .phpdocumentor-pull-left {
     float: left;
 }
@@ -423,18 +616,22 @@ on small devices, paste the mobile query code up in the buttons section and styl
 there.
 */
 
-
 /* Larger than mobile */
-@media (min-width: 400px) {}
+@media (min-width: 400px) {
+}
 
 /* Larger than phablet (also point when grid becomes active) */
-@media (min-width: 550px) {}
+@media (min-width: 550px) {
+}
 
 /* Larger than tablet */
-@media (min-width: 750px) {}
+@media (min-width: 750px) {
+}
 
 /* Larger than desktop */
-@media (min-width: 1000px) {}
+@media (min-width: 1000px) {
+}
 
 /* Larger than Desktop HD */
-@media (min-width: 1200px) {}
+@media (min-width: 1200px) {
+}

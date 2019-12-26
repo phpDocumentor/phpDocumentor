@@ -1,43 +1,54 @@
-{% extends 'layout.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block content %}
     <div class="phpdocumentor-section">
-        <div class="three phpdocumentor-columns">
-            <p>Getting started</p>
-            <ul class="phpdocumentor-list">
-                <li>Setup</li>
-                <li>Creating pages</li>
-                <li>Routing</li>
-                <li>Controllers</li>
-                <li>Templates</li>
-                <li>Configuration</li>
-            </ul>
-        </div>
+        {% include 'sidebar.html.twig' %}
+
         <div class="nine phpdocumentor-columns">
-            <ul class="phpdocumentor-breadcrumbs">
-                <li>Home</li>
-                <li>Documentation</li>
-                <li>Components</li>
-            </ul>
-            <h1>{{ node.fullyQualifiedStructuralElementName }}</h1>
-            <h2>Namespaces</h2>
+            {% include 'breadcrumbs.html.twig' %}
+
+            <h2>{{ node.name == '\\' ? 'API Documentation' : node.name }}</h2>
+            {% if node.children|length > 0 %}
+            <h3>Namespaces</h3>
             <ul>
                 {% for namespace in node.children %}
-                <li>{{ namespace|route|raw }}</li>
+                <li><a href="{{ link(namespace) }}">{{namespace.name}}</a></li>
                 {% endfor %}
             </ul>
+            {% endif %}
 
-            <h2>Interfaces and Classes</h2>
-            <ul>
+            {% if node.interfaces|length > 0 or node.classes|length > 0 %}
+            <h3>Interfaces and Classes</h3>
+            <dl>
                 {% for interface in node.interfaces %}
-                <li>{{ interface.fullyQualifiedStructuralElementName }}</li>
+                <dt><a href="{{ link(interface) }}">{{interface.name}}</a></dt>
+                <dd>{{interface.summary}}</dd>
                 {% endfor %}
-            </ul>
-            <ul>
+
                 {% for class in node.classes %}
-                <li>{{ class.fullyQualifiedStructuralElementName }}</li>
+                <dt><a href="{{ link(class) }}">{{class.name}}</a></dt>
+                <dd>{{class.summary}}</dd>
+                {% endfor %}
+            </dl>
+            {% endif %}
+
+            {% if node.constants|length > 0 %}
+            <h3>Constants</h3>
+            <ul>
+                {% for constant in node.constants %}
+                <li><a href="{{ link(constant) }}">{{constant.name}}</a></li>
                 {% endfor %}
             </ul>
+            {% endif %}
+
+            {% if node.functions|length > 0 %}
+            <h3>Functions</h3>
+            <ul>
+                {% for function in node.functions %}
+                <li><a href="{{ link(function) }}">{{function.name}}</a></li>
+                {% endfor %}
+            </ul>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

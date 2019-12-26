@@ -1,0 +1,19 @@
+<aside class="three phpdocumentor-columns">
+    <p>Getting Started</p>
+    <ul class="phpdocumentor-list">
+        <li>Setup</li>
+    </ul>
+    <p>API</p>
+    <ul class="phpdocumentor-list">
+        {% for namespace in project.namespace.children %}
+            <li>
+                {{ namespace|route('class:short')|raw }}
+                <ul class="phpdocumentor-list">
+                    {% for child in namespace.children %}
+                        <li><a href="{{ link(child) }}">{{child.name}}</a></li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+    </ul>
+</aside>

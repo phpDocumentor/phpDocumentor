@@ -16,11 +16,14 @@ namespace phpDocumentor\Transformer\Writer\Twig;
 use Parsedown;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\Descriptor;
+use phpDocumentor\Descriptor\DescriptorAbstract;
+use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use Twig\Extension\AbstractExtension;
 use Twig\Extension\GlobalsInterface;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
+use function array_unshift;
 use function strtolower;
 
 /**
@@ -107,6 +110,22 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
     {
         return [
             new TwigFunction('path', [$this->routeRenderer, 'convertToRootPath']),
+            new TwigFunction('link', [$this->routeRenderer, 'link']),
+            new TwigFunction(
+                'breadcrumbs',
+                static function (DescriptorAbstract $baseNode) {
+                    $results = [];
+                    $namespace = $baseNode instanceof NamespaceDescriptor
+                        ? $baseNode->getParent()
+                        : $baseNode->getNamespace();
+                    while ($namespace && $namespace->getName() !== '\\') {
+                        array_unshift($results, $namespace);
+                        $namespace = $namespace->getParent();
+                    }
+
+                    return $results;
+                }
+            ),
         ];
     }
 
@@ -125,7 +144,8 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
                 'markdown',
                 static function (string $value) use ($parser) : string {
                     return $parser->text($value);
-                }
+                },
+                ['is_safe' => ['all']]
             ),
             'trans' => new TwigFilter(
                 'trans',

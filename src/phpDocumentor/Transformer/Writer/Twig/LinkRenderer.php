@@ -82,6 +82,16 @@ final class LinkRenderer
         return $this->destination;
     }
 
+    public function link($value) : string
+    {
+        $uri = $this->router->generate($value);
+        if (!$uri) {
+            return $uri;
+        }
+
+        return $this->convertToRootPath($uri);
+    }
+
     /**
      * @param Type[]|CollectionDescriptor|Descriptor|Fqsen|Path|string|iterable $value
      *

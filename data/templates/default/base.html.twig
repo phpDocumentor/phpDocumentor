@@ -6,12 +6,18 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro">
     <link rel="stylesheet" href="{{ path('css/normalize.css') }}">
     <link rel="stylesheet" href="{{ path('css/template.css') }}">
     <link rel="icon" href="{{ path('images/favicon.ico') }}"/>
 </head>
 <body>
-
+<header class="phpdocumentor-top-header"></header>
+<header class="phpdocumentor-header">
+    <section class="phpdocumentor-section">
+        <h1 class="phpdocumentor-title">{{ project.name }}</h1>
+    </section>
+</header>
 <main class="phpdocumentor">
 {% block content %}{% endblock %}
 </main>
