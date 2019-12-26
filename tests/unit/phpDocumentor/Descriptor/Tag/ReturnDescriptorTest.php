@@ -18,6 +18,9 @@ use phpDocumentor\Reflection\Types\Array_;
 
 /**
  * Tests the functionality for the ReturnDescriptor class.
+ *
+ * @coversDefaultClass \phpDocumentor\Descriptor\Tag\ReturnDescriptor
+ * @covers \phpDocumentor\Descriptor\Tag\BaseTypes\TypedAbstract
  */
 class ReturnDescriptorTest extends MockeryTestCase
 {
@@ -25,8 +28,9 @@ class ReturnDescriptorTest extends MockeryTestCase
     protected $fixture;
 
     /**
-     * @covers \phpDocumentor\Descriptor\Tag\BaseTypes\TypedAbstract::setType
-     * @covers \phpDocumentor\Descriptor\Tag\BaseTypes\TypedAbstract::getType
+     * @uses \phpDocumentor\Reflection\Types\Array_
+     *
+     * @covers ::__construct
      */
     public function testSetAndGetTypes() : void
     {

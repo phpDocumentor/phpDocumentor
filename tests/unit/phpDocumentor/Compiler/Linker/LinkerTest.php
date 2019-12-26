@@ -31,7 +31,7 @@ use function get_class;
  *
  * @coversDefaultClass \phpDocumentor\Compiler\Linker\Linker
  * @covers ::__construct
- * @covers ::<protected>
+ * @covers ::<private>
  */
 class LinkerTest extends MockeryTestCase
 {

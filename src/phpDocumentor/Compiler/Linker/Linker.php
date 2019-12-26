@@ -58,13 +58,13 @@ class Linker implements CompilerPassInterface
     public const CONTEXT_MARKER = '@context';
 
     /** @var DescriptorAbstract[] */
-    protected $elementList = [];
+    private $elementList = [];
 
     /** @var string[][] */
-    protected $substitutions = [];
+    private $substitutions = [];
 
     /** @var string[] Prevent cycles by tracking which objects have been analyzed */
-    protected $processedObjects = [];
+    private $processedObjects = [];
 
     public function getDescription() : string
     {
@@ -265,7 +265,7 @@ class Linker implements CompilerPassInterface
      *
      * @param DescriptorAbstract|mixed $item
      */
-    protected function isDescriptorContainer($item) : bool
+    private function isDescriptorContainer($item) : bool
     {
         return $item instanceof FileDescriptor
             || $item instanceof NamespaceDescriptor
@@ -280,7 +280,7 @@ class Linker implements CompilerPassInterface
      *
      * @todo can we remove the nullable from this somehow to make the method contents simpler
      */
-    protected function replacePseudoTypes(string $fqsen, ?DescriptorAbstract $container) : string
+    private function replacePseudoTypes(string $fqsen, ?DescriptorAbstract $container) : string
     {
         $pseudoTypes = ['self', '$this'];
         foreach ($pseudoTypes as $pseudoType) {
@@ -298,7 +298,7 @@ class Linker implements CompilerPassInterface
     /**
      * Returns true if the context marker is found in the given FQSEN.
      */
-    protected function isContextMarkerInFqsen(string $fqsen) : bool
+    private function isContextMarkerInFqsen(string $fqsen) : bool
     {
         return strpos($fqsen, self::CONTEXT_MARKER) !== false;
     }
@@ -306,7 +306,7 @@ class Linker implements CompilerPassInterface
     /**
      * Normalizes the given FQSEN as if the context marker represents a class/interface/trait as parent.
      */
-    protected function getTypeWithClassAsContext(string $fqsen, DescriptorAbstract $container) : string
+    private function getTypeWithClassAsContext(string $fqsen, DescriptorAbstract $container) : string
     {
         if (!$container instanceof ClassDescriptor
             && !$container instanceof InterfaceDescriptor
@@ -323,7 +323,7 @@ class Linker implements CompilerPassInterface
     /**
      * Normalizes the given FQSEN as if the context marker represents a class/interface/trait as parent.
      */
-    protected function getTypeWithNamespaceAsContext(string $fqsen, DescriptorAbstract $container) : string
+    private function getTypeWithNamespaceAsContext(string $fqsen, DescriptorAbstract $container) : string
     {
         $namespace = $container instanceof NamespaceDescriptor ? $container : $container->getNamespace();
         $fqnn      = $namespace instanceof NamespaceDescriptor
@@ -336,7 +336,7 @@ class Linker implements CompilerPassInterface
     /**
      * Normalizes the given FQSEN as if the context marker represents the global namespace as parent.
      */
-    protected function getTypeWithGlobalNamespaceAsContext(string $fqsen) : string
+    private function getTypeWithGlobalNamespaceAsContext(string $fqsen) : string
     {
         return str_replace(self::CONTEXT_MARKER . '::', '\\', $fqsen);
     }
@@ -345,7 +345,7 @@ class Linker implements CompilerPassInterface
      * Attempts to find an element with the given Fqsen in the list of elements for this project and returns null if
      * it cannot find it.
      */
-    protected function fetchElementByFqsen(string $fqsen) : ?DescriptorAbstract
+    private function fetchElementByFqsen(string $fqsen) : ?DescriptorAbstract
     {
         return $this->elementList[$fqsen] ?? null;
     }

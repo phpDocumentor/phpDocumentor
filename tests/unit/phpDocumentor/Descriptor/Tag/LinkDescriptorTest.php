@@ -21,7 +21,7 @@ use Mockery\Adapter\Phpunit\MockeryTestCase;
  * @uses \phpDocumentor\Descriptor\Collection
  *
  * @coversDefaultClass \phpDocumentor\Descriptor\Tag\LinkDescriptor
- * @covers \phpDocumentor\Descriptor\TagDescriptor::__construct
+ * @covers \phpDocumentor\Descriptor\TagDescriptor
  * @covers ::__construct
  */
 final class LinkDescriptorTest extends MockeryTestCase
