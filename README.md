@@ -23,7 +23,7 @@ phpDocumentor v2 (stable)
 --------------
 The current stable version of phpdocumentor is v2.9. Which can be used to generate documentation for php
 applications up to php version 7.0. phpDocumentor is an old tool that doesn't support all 7.0 introduced features.
-It will not process any scalar type hints, and requires docblock tags to generate api documentation.
+It will not process any scalar type hints and requires docblock tags to generate api documentation.
 If your application/library is using php 7.0 or lower consult our [v2 branch] for installation instructions
 and detailed information about how to use phpDocumentor.
 
@@ -31,37 +31,50 @@ phpDocumentor v3 (unstable)
 ---------------
 
 **Note:**
-The phpDocumentor team is currently working on a new phpDocumentor generation. Which will have full support for 
-the latest features in php, so you can make advantage of all native type hints. v3 is still under heavy development
+The phpDocumentor team is currently working on a new phpDocumentor generation. Which will have full support for the latest features in PHP, so you can take advantage of all native type hints. v3 is still under heavy development
 and is not stable enough to use in a daily development flow. 
 
+### nightly builds
+
+Phpdocumentor doesn't have a nightly release. But during each pipeline, a [phar] artifact is built. If you want 
+to test the bleeding edge version of phpDocumentor have a look in the [actions](https://github.com/phpDocumentor/phpDocumentor/actions?query=workflow%3A%22Qa+workflow%22+is%3Asuccess) section of this repository.
+Each successful QA workflow has a download at the right upper corner.
 
 Installation
 ------------
-phpDocumentor requires php 7.2 or higher to run. However code of lower php versions can be analyzed.
+phpDocumentor requires php 7.2 or higher to run. However, code of lower php versions can be analyzed.
 
 All templates provided with phpDocumentor so have support for Class diagrams based on the read code base. This will
 require Graphviz to be installed on the machine running phpDocumentor. Graphviz is optional, and warnings about missing
-Graphviz can be ignored. However you documentation will contain some dead links in this case.  
+Graphviz can be ignored. However, your documentation will contain some dead links in this case.  
 
 There are 3 ways to install phpDocumentor:
 
-1. Using the PHAR
-2. Via [Docker](https://hub.docker.com/r/phpdoc/phpdoc/)
-3. Via [Composer](https://getcomposer.org)
+1. Using phive (recommended)
+2. Using the PHAR (manual install)
+3. Via [Docker](https://hub.docker.com/r/phpdoc/phpdoc/)
+4. Via [Composer](https://getcomposer.org)
+
+### Using Phive
+
+`$ phive install --force-accept-unsigned phpDocumentor`
+
+For more information about phive have a look at their [website](https://phar.io/) 
+now you have phpDocumentor installed and it can be executed directly. 
+
+`php tools/phpDocumentor`
 
 ### Using the PHAR
 
 1. Download the phar file from https://github.com/phpDocumentor/phpDocumentor/releases
-2. ???
-3. Profit!
+2. Profit!
 
 ### Via docker
 
 1. `$ docker pull phpdoc/phpdoc`
 2. `$ docker run --rm -v $(pwd):/data phpdoc/phpdoc`
 
-### Via Composer
+### Via Composer (not recommended)
 
 1. phpDocumentor is available on [Packagist](https://packagist.org/packages/phpDocumentor/phpDocumentor).
 2. It can be installed as a dependency of your project by running
@@ -73,7 +86,7 @@ Afterwards you are able to run phpDocumentor directly from your `vendor` directo
     $ php vendor/bin/phpdoc
 
 *Please note* that we are not able to be compatible with all types of setups. In
-some situations phpDocumentor will block updates of other packages. We do not recommend
+some situations, phpDocumentor will block updates of other packages. We do not recommend
 using composer to install phpDocumentor.
 
 ### Pear
@@ -91,7 +104,7 @@ This command will parse the source code provided using the `-d` argument and
 output it to the folder indicated by the `-t` argument.
 
 phpDocumentor supports a whole range of options to configure the output of your documentation.
-You can execute the following command, or check our website, for a more detailed listing of available command line options.
+You can execute the following command, or check our website, for a more detailed listing of available command-line options.
 
     $ phpdoc run -h
 
@@ -129,7 +142,7 @@ for php 7+. But at this moment that is not the case.
 Contact
 -------
 
-To come in contact is actually dead simple and can be done in a variety of ways.
+To come in contact is dead simple and can be done in a variety of ways.
 
 * Twitter: [@phpDocumentor](http://twitter.com/phpDocumentor)
 * Website: [http://www.phpdoc.org](http://www.phpdoc.org)
