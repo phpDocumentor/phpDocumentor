@@ -60,7 +60,16 @@ final class FlySystemLoader implements LoaderInterface
     }
 
     /**
-     * @inheritDoc
+     * Gets the cache key to use for the cache for a given template name.
+     *
+     * Simple straightforward implementation that checks the existence of the template, and if it exists: returns the
+     * name to be used as a cache key.
+     * 
+     * @param string $name The name of the template to load
+     *
+     * @return string The cache key
+     *
+     * @throws LoaderError When $name is not found
      */
     public function getCacheKey($name)
     {
