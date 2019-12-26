@@ -67,7 +67,7 @@ jobs:
         extension-csv: mbstring, intl, iconv, libxml, dom, json, simplexml, zlib
         ini-values-csv: memory_limit=2G, display_errors=On, error_reporting=-1
         coverage: xdebug
-        pecl: false
+        pecl: true
     - name: Run PHPUnit
       run: php tools/phpunit.phar
     - name: Quick check code coverage level
@@ -188,7 +188,7 @@ jobs:
           php-version: '7.2'
           extension-csv: mbstring, intl, iconv, libxml, dom, json, simplexml, zlib
           ini-values-csv: memory_limit=2G, display_errors=On, error_reporting=-1
-          pecl: false
+          pecl: true
       - name: Download PHAR file
         if: matrix.profile == 'phar'
         uses: actions/download-artifact@v1
@@ -219,7 +219,7 @@ jobs:
           php-version: '7.2'
           extension-csv: mbstring, intl, iconv, libxml, dom, json, simplexml, zlib
           ini-values-csv: memory_limit=2G, display_errors=On, error_reporting=-1
-          pecl: false
+          pecl: true
       - name: Download PHAR file
         uses: actions/download-artifact@v1
         with:
@@ -276,7 +276,7 @@ jobs:
         php-version: ${{ matrix.php-versions }}
         extension-csv: mbstring, intl, iconv, libxml, dom, json, simplexml, zlib
         ini-values-csv: memory_limit=2G, display_errors=On, error_reporting=-1
-        pecl: false
+        pecl: true
     - name: Run PHPUnit
       run: php tools/phpunit.phar
 
@@ -319,7 +319,7 @@ jobs:
           php-version: ${{ matrix.php-versions }}
           extension-csv: mbstring, intl, iconv, libxml, dom, json, simplexml, zlib
           ini-values-csv: memory_limit=2G, display_errors=On, error_reporting=-1
-          pecl: false
+          pecl: true
       - name: Download PHAR file
         if: matrix.profile == 'phar'
         uses: actions/download-artifact@v1
