@@ -24,20 +24,9 @@
             <directory suffix=".php">src/phpDocumentor</directory>
             <exclude>
                 <directory suffix=".php">src/phpDocumentor/*/Messages</directory>
-                <directory suffix=".php">src/phpDocumentor/Plugin/*/Tests</directory>
             </exclude>
         </whitelist>
     </filter>
-    <php>
-        <!--
-            Temporary folder for some tests' output.
-            Must already exist.
-            Defaults to the OS' temp folder.
-        -->
-        <!--<const name="phpDocumentor\PHPUnit\TEMP_DIR" value="/tmp" />-->
-        <!-- A folder guaranteed not to exist during the test run. -->
-        <const name="phpDocumentor\PHPUnit\UNKNOWN_DIR" value="/tmpa" />
-    </php>
     <logging>
         <log type="coverage-html"
             target="build/coverage"
