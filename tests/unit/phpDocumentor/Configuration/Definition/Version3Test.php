@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Configuration\Definition;
 
+use League\Uri\Uri;
 use phpDocumentor\Configuration\SymfonyConfigFactory;
 use phpDocumentor\Dsn;
 use phpDocumentor\Path;
@@ -58,7 +59,7 @@ final class Version3Test extends TestCase
         $expected['versions']['1.0.0']['api'][0]['markers']
             = $expected['versions']['1.0.0']['api'][0]['markers']['markers'];
 
-        $configuration = $definition->normalize($configuration);
+        $configuration = $definition->normalize($configuration,);
 
         $this->assertEquals($expected, $configuration);
     }
@@ -107,6 +108,26 @@ final class Version3Test extends TestCase
                 $this->defaultConfigurationOutput(),
             ],
         ];
+    }
+
+    /**
+     * @covers ::normalize
+     */
+    public function testNormalizingTheDsnBasedOnConfigLocation() : void
+    {
+        $definition = new Version3(self::DEFAULT_TEMPLATE_NAME);
+        $configuration = $this->defaultConfigurationOutput();
+        $expected = $this->defaultConfigurationOutput();
+        $expected['paths']['output'] = new Dsn('config/' . $expected['paths']['output']);
+        $expected['paths']['cache'] = new Path('config/' . $expected['paths']['cache']);
+        $expected['versions']['1.0.0']['api'][0]['extensions']
+            = $expected['versions']['1.0.0']['api'][0]['extensions']['extensions'];
+        $expected['versions']['1.0.0']['api'][0]['markers']
+            = $expected['versions']['1.0.0']['api'][0]['markers']['markers'];
+
+        $configuration = $definition->normalize($configuration, new Dsn('/project/config/phpdoc.xml'));
+
+        $this->assertEquals($expected, $configuration);
     }
 
     private function defaultConfigurationOutput() : array

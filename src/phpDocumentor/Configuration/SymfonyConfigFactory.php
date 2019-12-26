@@ -83,7 +83,7 @@ class SymfonyConfigFactory
         $processor = new Processor();
         $configuration = $processor->processConfiguration($definition, [$values]);
         if ($definition instanceof Normalizable) {
-            $configuration = $definition->normalize($configuration);
+            $configuration = $definition->normalize($configuration, null);
         }
 
         if ($definition instanceof Upgradable) {

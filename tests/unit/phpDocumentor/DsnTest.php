@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor;
 
+use League\Uri\Uri;
+use League\Uri\UriResolver;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -154,5 +156,44 @@ class DsnTest extends TestCase
                 '../project/src',
             ],
         ];
+    }
+
+    /**
+     * @dataProvider resolveDsnProvider
+     */
+    public function testResolve(string $baseDsn, string $srcDsn, string $expected) : void
+    {
+        $baseDsn = new Dsn($baseDsn);
+        $srcDsn = new Dsn($srcDsn);
+        $newSrcDns = $srcDsn->resolve($baseDsn);
+
+        $this->assertEquals($expected, (string) $newSrcDns);
+    }
+
+    public function resolveDsnProvider()
+    {
+        return
+            [
+                'Relative src uri level up' => [
+                    'file:///project/config',
+                    '../src',
+                    'file:///project/src'
+                ],
+                'Relative src deeper level' => [
+                    'file:///project/config',
+                    './src',
+                    'file:///project/config/src'
+                ],
+                'Absolute src uri' => [
+                    'file:///project/config',
+                    '/src',
+                    '/src'
+                ],
+                'Absolute src full dsn' => [
+                    'file:///project/config',
+                    'git+http://user:pw@github.com:8000/phpDocumentor/phpDocumentor2?q=qry1&x=qry2;branch=dev;other=xxx',
+                    'git+http://user:pw@github.com:8000/phpDocumentor/phpDocumentor2?q=qry1&x=qry2;branch=dev;other=xxx'
+                ]
+            ];
     }
 }

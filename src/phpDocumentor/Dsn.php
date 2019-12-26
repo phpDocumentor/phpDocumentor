@@ -13,8 +13,11 @@ declare(strict_types=1);
 
 namespace phpDocumentor;
 
+use GuzzleHttp\Psr7\Uri;
 use InvalidArgumentException;
 use League\Uri\Uri as LeagueUri;
+use League\Uri\UriInfo;
+use League\Uri\UriResolver;
 use Throwable;
 use function array_shift;
 use function array_splice;
@@ -209,5 +212,21 @@ final class Dsn
                 $exception
             );
         }
+    }
+
+    public function isRelative(): bool
+    {
+        return UriInfo::isRelativePath($this->uri);
+    }
+
+    public function resolve(Dsn $baseDsn) : Dsn
+    {
+        if (UriInfo::isAbsolute($this->uri) || UriInfo::isAbsolutePath($this->uri)) {
+            return $this;
+        }
+
+        $baseUri = rtrim(((string) $baseDsn->uri), '/');
+        $newUri = LeagueUri::createFromString($baseUri . '/' . $this->uri->getPath());
+        return new Dsn((string) UriResolver::resolve($newUri, $baseDsn->uri));
     }
 }
