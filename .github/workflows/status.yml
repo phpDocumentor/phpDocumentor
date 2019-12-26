@@ -5,6 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: 8398a7/action-slack@v2
+        if: contains(['cancelled', 'success', 'failure'], github.event.state)
         with:
           status: ${{ github.event.state }}
           icon_emoji: ':octocat:'
