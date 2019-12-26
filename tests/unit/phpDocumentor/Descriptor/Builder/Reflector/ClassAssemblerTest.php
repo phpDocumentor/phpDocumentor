@@ -66,16 +66,43 @@ DOCBLOCK;
             (string) $descriptor->getFullyQualifiedStructuralElementName()
         );
         $this->assertSame($name, $descriptor->getName());
-        $this->assertSame((string) $descriptor->getDescription(), $docBlockDescriptionContent);
+        $this->assertSame($docBlockDescriptionContent, (string) $descriptor->getDescription());
+    }
+
+    /**
+     * Creates a Descriptor from a provided class.
+     *
+     * @covers \phpDocumentor\Descriptor\Builder\Reflector\ClassAssembler::create
+     */
+    public function testParentIsOmittedWhenEqualToItself() : void
+    {
+        $name = 'ClassName';
+        $namespace = 'Namespace';
+        $classFqsen = new Fqsen('\\' . $namespace . '\\' . $name);
+        $docBlockDescriptionContent = <<<DOCBLOCK
+/**
+ * This is a example description
+ */
+DOCBLOCK;
+
+        $classReflectorMock = $this->getClassReflectorDescriptor($classFqsen, $classFqsen);
+
+        $descriptor = $this->fixture->create($classReflectorMock);
+
+        $this->assertSame(
+            '\\' . $namespace . '\\' . $name,
+            (string) $descriptor->getFullyQualifiedStructuralElementName()
+        );
+        $this->assertSame($name, $descriptor->getName());
+        $this->assertSame($docBlockDescriptionContent, (string) $descriptor->getDescription());
+        $this->assertSame(null, $descriptor->getParent());
     }
 
     /**
      * Create a ClassReflector mock
      */
-    protected function getClassReflectorDescriptor() : Class_
+    protected function getClassReflectorDescriptor(?Fqsen $classFqsen = null, ?Fqsen $parent = null) : Class_
     {
-        $name = 'ClassName';
-        $namespace = 'Namespace';
         $docBlockDescriptionContent = <<<DOCBLOCK
 /**
  * This is a example description
@@ -87,10 +114,16 @@ DOCBLOCK;
             []
         );
 
-        $classFqsen = new Fqsen('\\' . $namespace . '\\' . $name);
+        if ($classFqsen === null) {
+            $name = 'ClassName';
+            $namespace = 'Namespace';
+            $classFqsen = new Fqsen('\\' . $namespace . '\\' . $name);
+        }
+
         $classReflectorMock = new Class_(
             $classFqsen,
-            $docBlockMock
+            $docBlockMock,
+            $parent
         );
 
         $classReflectorMock->addConstant(new Constant(new Fqsen($classFqsen . '::Constant')));

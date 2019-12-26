@@ -45,7 +45,9 @@ class ClassAssembler extends AssemblerAbstract
             $this->extractPackageFromDocBlock($data->getDocBlock()) ?: $this->getBuilder()->getDefaultPackage()
         );
         $classDescriptor->setLine($data->getLocation()->getLineNumber());
-        $classDescriptor->setParent($data->getParent());
+        if ((string) $data->getParent() !== (string) $data->getFqsen()) {
+            $classDescriptor->setParent($data->getParent());
+        }
         $classDescriptor->setAbstract($data->isAbstract());
         $classDescriptor->setFinal($data->isFinal());
         $classDescriptor->setNamespace(substr((string) $data->getFqsen(), 0, -strlen($data->getName()) - 1));
