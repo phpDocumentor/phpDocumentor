@@ -25,8 +25,8 @@ use function is_array;
 
 final class CommandlineOptionsMiddleware
 {
-    /** @var string[] */
-    private $options = [];
+    /** @var array<string|string[]> */
+    private $options;
 
     /** @var ConfigurationFactory */
     private $configFactory;

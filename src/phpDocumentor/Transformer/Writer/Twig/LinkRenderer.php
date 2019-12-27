@@ -15,6 +15,7 @@ namespace phpDocumentor\Transformer\Writer\Twig;
 
 use InvalidArgumentException;
 use phpDocumentor\Descriptor\Descriptor;
+use phpDocumentor\Descriptor\Interfaces\TypeInterface;
 use phpDocumentor\Descriptor\Type\CollectionDescriptor;
 use phpDocumentor\Path;
 use phpDocumentor\Reflection\Fqsen;
@@ -93,7 +94,7 @@ final class LinkRenderer
     }
 
     /**
-     * @param Type[]|CollectionDescriptor|Descriptor|Fqsen|Path|string|iterable $value
+     * @param Type[]|CollectionDescriptor|Descriptor|Fqsen|Path|string|iterable|TypeInterface|TypeInterface[] $value
      *
      * @return string[]|string
      */

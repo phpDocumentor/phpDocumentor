@@ -40,7 +40,7 @@ class ExampleAssembler extends AssemblerAbstract
     /**
      * Creates a new Descriptor from the given Reflector.
      *
-     * @param Example $data
+     * @param Example|null $data
      *
      * @throws InvalidArgumentException If the provided parameter is not of type ExampleTag; the interface won't let
      *   up typehint the signature.

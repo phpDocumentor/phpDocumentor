@@ -79,7 +79,8 @@ class ExampleTagsEnricher implements CompilerPassInterface
                 continue;
             }
 
-            $matched[$match]  = true;
+            $matched[$match] = true;
+            /** @var Example|null $exampleReflector */
             $exampleReflector = Example::create($matches[1][$index]);
 
             $example = $this->exampleAssembler->create($exampleReflector);

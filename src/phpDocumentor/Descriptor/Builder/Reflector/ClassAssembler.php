@@ -18,6 +18,7 @@ use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\ConstantDescriptor;
 use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Descriptor\PropertyDescriptor;
+use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Php\Class_;
 use phpDocumentor\Reflection\Php\Constant;
 use phpDocumentor\Reflection\Php\Method;
@@ -123,7 +124,7 @@ class ClassAssembler extends AssemblerAbstract
     /**
      * Registers the used traits with the generated Class Descriptor.
      *
-     * @param string[] $traits
+     * @param Fqsen[] $traits
      */
     protected function addUses(array $traits, ClassDescriptor $classDescriptor) : void
     {

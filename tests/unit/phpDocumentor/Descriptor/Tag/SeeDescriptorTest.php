@@ -14,14 +14,14 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Tag;
 
 use Mockery\Adapter\Phpunit\MockeryTestCase;
+use phpDocumentor\Reflection\DocBlock\Tags\Reference\Fqsen as FqsenReference;
+use phpDocumentor\Reflection\Fqsen;
 
 /**
  * Tests the functionality for the SeeDescriptor class.
  */
 class SeeDescriptorTest extends MockeryTestCase
 {
-    public const EXAMPLE_REFERENCE = 'reference';
-
     /** @var SeeDescriptor $fixture */
     protected $fixture;
 
@@ -39,11 +39,10 @@ class SeeDescriptorTest extends MockeryTestCase
      */
     public function testSetAndGetReference() : void
     {
-        $this->assertEmpty($this->fixture->getReference());
-
-        $this->fixture->setReference(self::EXAMPLE_REFERENCE);
+        $refrence = new FqsenReference(new Fqsen('\someFunction()'));
+        $this->fixture->setReference($refrence);
         $result = $this->fixture->getReference();
 
-        $this->assertEquals(self::EXAMPLE_REFERENCE, $result);
+        $this->assertSame($refrence, $result);
     }
 }

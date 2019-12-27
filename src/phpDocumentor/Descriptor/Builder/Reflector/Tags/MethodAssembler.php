@@ -45,7 +45,7 @@ class MethodAssembler extends AssemblerAbstract
         $response->setType($data->getReturnType());
         $descriptor->setResponse($response);
 
-        /** @var string[] $argument */
+        /** @var array<string|Type> $argument */
         foreach ($data->getArguments() as $argument) {
             if (!array_key_exists('name', $argument) || !array_key_exists('type', $argument)) {
                 continue;

@@ -29,4 +29,4 @@ services:
     environment:
       PHP_EXTENSIONS: php7-intl
     volumes: [".:/app"]
-    command: "analyse src tests --no-progress --level 4 --configuration phpstan.neon"
+    command: "analyse src tests --no-progress --level 5 --configuration phpstan.neon"
