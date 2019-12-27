@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Tag;
 
-use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tags\Reference\Reference;
 
@@ -30,11 +29,8 @@ class SeeDescriptor extends TagDescriptor
         $this->reference = $reference;
     }
 
-    /**
-     * @return string
-     */
-    public function getReference()
+    public function getReference() : Reference
     {
-        return (string) $this->reference;
+        return $this->reference;
     }
 }
