@@ -18,6 +18,10 @@ use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\InterfaceDescriptor;
 use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
+use function str_replace;
+use function strlen;
+use function strpos;
+use function substr;
 
 final class DescriptorRepository
 {
