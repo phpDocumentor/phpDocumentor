@@ -177,28 +177,6 @@ class LinkerTest extends MockeryTestCase
 
     /**
      * @covers ::substitute
-     */
-    public function testSubstituteFqsenInUnknownTypeDescriptor() : void
-    {
-        // initialize parameters
-        $result = new ClassDescriptor();
-        $fieldName = 'field';
-
-        [$object, $fqsen] = $this->createMockUnknownTypeDescriptorForResult();
-
-        // prepare linker
-        $linker = new Linker([$fqsen => [$fieldName]]);
-        $linker->setObjectAliasesList([$fqsen => $result]);
-
-        // execute test.
-        $linker->substitute($object);
-
-        // mark test as successful due to asserts in Mockery
-        $this->assertTrue(true);
-    }
-
-    /**
-     * @covers ::substitute
      * @depends testSubstituteFqsenInObject
      */
     public function testMultipleSubstitutionsInOneObject() : void
@@ -383,16 +361,6 @@ class LinkerTest extends MockeryTestCase
         } else {
             $object->shouldReceive('setField')->never();
         }
-
-        return [$object, $fqsen];
-    }
-
-    private function createMockUnknownTypeDescriptorForResult() : array
-    {
-        $object = m::mock('phpDocumentor\Descriptor\Type\UnknownTypeDescriptor');
-        $fqsen = get_class($object);
-
-        $object->shouldReceive('getName')->andReturn('\Name');
 
         return [$object, $fqsen];
     }

@@ -17,8 +17,6 @@ use InvalidArgumentException;
 use League\Uri\Uri;
 use League\Uri\UriInfo;
 use phpDocumentor\Descriptor\Descriptor;
-use phpDocumentor\Descriptor\Interfaces\TypeInterface;
-use phpDocumentor\Descriptor\Type\CollectionDescriptor;
 use phpDocumentor\Path;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Type;
@@ -33,7 +31,6 @@ use function implode;
 use function is_array;
 use function is_iterable;
 use function ltrim;
-use function reset;
 use function sprintf;
 use function substr;
 
@@ -94,7 +91,7 @@ final class LinkRenderer
     }
 
     /**
-     * @param Type[]|CollectionDescriptor|Descriptor|Fqsen|Path|string|iterable|TypeInterface|TypeInterface[] $value
+     * @param Type[]|Descriptor|Fqsen|Path|string|iterable $value
      *
      * @return string[]|string
      */
@@ -102,10 +99,6 @@ final class LinkRenderer
     {
         if (is_array($value) && current($value) instanceof Type) {
             return $this->renderType($value);
-        }
-
-        if ($value instanceof CollectionDescriptor) {
-            return $this->renderTypeCollection($value, $presentation);
         }
 
         if (is_iterable($value)) {
@@ -176,32 +169,6 @@ final class LinkRenderer
         }
 
         return $result;
-    }
-
-    /**
-     * Renders the view representation for an array or collection.
-     */
-    private function renderTypeCollection(CollectionDescriptor $value, string $presentation) : string
-    {
-        $baseType = $this->render($value->getBaseType(), $presentation);
-        $keyTypes = $this->render($value->getKeyTypes(), $presentation);
-        $types = $this->render($value->getTypes(), $presentation);
-
-        $arguments = [];
-        if ($keyTypes) {
-            $arguments[] = implode('|', $keyTypes);
-        }
-
-        $arguments[] = implode('|', $types);
-
-        if ($value instanceof CollectionDescriptor && count($value->getKeyTypes()) === 0) {
-            $typeString = count($types) > 1 ? '(' . reset($arguments) . ')' : reset($arguments);
-            $collection = $typeString . '[]';
-        } else {
-            $collection = ($baseType ?: $value->getName()) . '&lt;' . implode(',', $arguments) . '&gt;';
-        }
-
-        return $collection;
     }
 
     /**
