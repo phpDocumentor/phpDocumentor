@@ -23,6 +23,7 @@ use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Descriptor\Type\UnknownTypeDescriptor;
+use phpDocumentor\Reflection\Fqsen;
 use Traversable;
 use function get_class;
 use function is_array;
@@ -58,13 +59,13 @@ class Linker implements CompilerPassInterface
     public const CONTEXT_MARKER = '@context';
 
     /** @var DescriptorAbstract[] */
-    protected $elementList = [];
+    private $elementList = [];
 
     /** @var string[][] */
-    protected $substitutions = [];
+    private $substitutions = [];
 
     /** @var string[] Prevent cycles by tracking which objects have been analyzed */
-    protected $processedObjects = [];
+    private $processedObjects = [];
 
     public function getDescription() : string
     {
@@ -130,18 +131,22 @@ class Linker implements CompilerPassInterface
      * item when null is passed.
      *
      * @param string|object|Traversable|array $item
-     * @param DescriptorAbstract|null         $container A descriptor that acts as container for all elements
+     * @param DescriptorAbstract|null $container A descriptor that acts as container for all elements
      *                                        underneath or null if there is no current container.
      *
      * @return string|DescriptorAbstract|null
      */
     public function substitute($item, $container = null)
     {
-        $result = null;
+        if ($item instanceof Fqsen) {
+            return $this->findAlias((string) $item, $container);
+        }
 
         if (is_string($item)) {
-            $result = $this->findAlias($item, $container);
-        } elseif (is_array($item) || ($item instanceof Traversable && !$item instanceof ProjectInterface)) {
+            return $this->findAlias($item, $container);
+        }
+
+        if (is_array($item) || ($item instanceof Traversable && !$item instanceof ProjectInterface)) {
             $isModified = false;
             foreach ($item as $key => $element) {
                 $isModified = true;
@@ -157,10 +162,15 @@ class Linker implements CompilerPassInterface
             if ($isModified) {
                 $result = $item;
             }
-        } elseif (is_object($item) && $item instanceof UnknownTypeDescriptor) {
-            $alias  = $this->findAlias($item->getName());
-            $result = $alias ?: $item;
-        } elseif (is_object($item)) {
+
+            return $result;
+        }
+
+        if ($item instanceof UnknownTypeDescriptor) {
+            return $this->findAlias($item->getName(), $container) ?: $item;
+        }
+
+        if (is_object($item)) {
             $hash = spl_object_hash($item);
             if (isset($this->processedObjects[$hash])) {
                 // if analyzed; just return
@@ -172,11 +182,11 @@ class Linker implements CompilerPassInterface
             $this->processedObjects[$hash] = $hash;
 
             $objectClassName = get_class($item);
-            $fieldNames      = $this->substitutions[$objectClassName] ?? [];
+            $fieldNames = $this->substitutions[$objectClassName] ?? [];
 
             foreach ($fieldNames as $fieldName) {
                 $fieldValue = $this->findFieldValue($item, $fieldName);
-                $response   = $this->substitute($fieldValue, $newContainer);
+                $response = $this->substitute($fieldValue, $newContainer);
 
                 // if the returned response is not an object it must be grafted on the calling object
                 if ($response === null) {
@@ -189,7 +199,7 @@ class Linker implements CompilerPassInterface
             }
         }
 
-        return $result;
+        return null;
     }
 
     /**
@@ -228,14 +238,14 @@ class Linker implements CompilerPassInterface
 
             // otherwise exchange `@context::element` for `\My\element` and if it exists, return that
             $namespaceContext = $this->getTypeWithNamespaceAsContext($fqsen, $container);
-            $namespaceMember  = $this->fetchElementByFqsen($namespaceContext);
+            $namespaceMember = $this->fetchElementByFqsen($namespaceContext);
             if ($namespaceMember) {
                 return $namespaceMember;
             }
 
             // otherwise check if the element exists in the global namespace and if it exists, return that
             $globalNamespaceContext = $this->getTypeWithGlobalNamespaceAsContext($fqsen);
-            $globalNamespaceMember  = $this->fetchElementByFqsen($globalNamespaceContext);
+            $globalNamespaceMember = $this->fetchElementByFqsen($globalNamespaceContext);
             if ($globalNamespaceMember) {
                 return $globalNamespaceMember;
             }
@@ -262,10 +272,8 @@ class Linker implements CompilerPassInterface
 
     /**
      * Returns true if the given Descriptor is a container type.
-     *
-     * @param DescriptorAbstract|mixed $item
      */
-    protected function isDescriptorContainer($item) : bool
+    private function isDescriptorContainer(object $item) : bool
     {
         return $item instanceof FileDescriptor
             || $item instanceof NamespaceDescriptor
@@ -280,7 +288,7 @@ class Linker implements CompilerPassInterface
      *
      * @todo can we remove the nullable from this somehow to make the method contents simpler
      */
-    protected function replacePseudoTypes(string $fqsen, ?DescriptorAbstract $container) : string
+    private function replacePseudoTypes(string $fqsen, ?DescriptorAbstract $container) : string
     {
         $pseudoTypes = ['self', '$this'];
         foreach ($pseudoTypes as $pseudoType) {
@@ -298,7 +306,7 @@ class Linker implements CompilerPassInterface
     /**
      * Returns true if the context marker is found in the given FQSEN.
      */
-    protected function isContextMarkerInFqsen(string $fqsen) : bool
+    private function isContextMarkerInFqsen(string $fqsen) : bool
     {
         return strpos($fqsen, self::CONTEXT_MARKER) !== false;
     }
@@ -306,7 +314,7 @@ class Linker implements CompilerPassInterface
     /**
      * Normalizes the given FQSEN as if the context marker represents a class/interface/trait as parent.
      */
-    protected function getTypeWithClassAsContext(string $fqsen, DescriptorAbstract $container) : string
+    private function getTypeWithClassAsContext(string $fqsen, DescriptorAbstract $container) : string
     {
         if (!$container instanceof ClassDescriptor
             && !$container instanceof InterfaceDescriptor
@@ -323,10 +331,10 @@ class Linker implements CompilerPassInterface
     /**
      * Normalizes the given FQSEN as if the context marker represents a class/interface/trait as parent.
      */
-    protected function getTypeWithNamespaceAsContext(string $fqsen, DescriptorAbstract $container) : string
+    private function getTypeWithNamespaceAsContext(string $fqsen, DescriptorAbstract $container) : string
     {
         $namespace = $container instanceof NamespaceDescriptor ? $container : $container->getNamespace();
-        $fqnn      = $namespace instanceof NamespaceDescriptor
+        $fqnn = $namespace instanceof NamespaceDescriptor
             ? $namespace->getFullyQualifiedStructuralElementName()
             : $namespace;
 
@@ -336,7 +344,7 @@ class Linker implements CompilerPassInterface
     /**
      * Normalizes the given FQSEN as if the context marker represents the global namespace as parent.
      */
-    protected function getTypeWithGlobalNamespaceAsContext(string $fqsen) : string
+    private function getTypeWithGlobalNamespaceAsContext(string $fqsen) : string
     {
         return str_replace(self::CONTEXT_MARKER . '::', '\\', $fqsen);
     }
@@ -345,7 +353,7 @@ class Linker implements CompilerPassInterface
      * Attempts to find an element with the given Fqsen in the list of elements for this project and returns null if
      * it cannot find it.
      */
-    protected function fetchElementByFqsen(string $fqsen) : ?DescriptorAbstract
+    private function fetchElementByFqsen(string $fqsen) : ?DescriptorAbstract
     {
         return $this->elementList[$fqsen] ?? null;
     }
