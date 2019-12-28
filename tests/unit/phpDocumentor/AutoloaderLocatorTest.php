@@ -16,11 +16,6 @@ namespace phpDocumentor;
 use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
-use function array_pop;
-use function file_exists;
-use function implode;
-use function preg_match;
-use function preg_split;
 use function putenv;
 
 final class AutoloaderLocatorTest extends TestCase
@@ -98,7 +93,7 @@ final class AutoloaderLocatorTest extends TestCase
         vfsStream::setup('root', null, $this->standaloneStructure);
         $baseDir = vfsStream::url('root/dummy/src/phpDocumentor');
         self::assertSame(
-            'vfs://root/dummy/vendor',
+            'vfs://root/dummy/src/phpDocumentor/../../vendor',
             AutoloaderLocator::findVendorPath($baseDir)
         );
     }
@@ -109,7 +104,7 @@ final class AutoloaderLocatorTest extends TestCase
         vfsStream::setup('root', null, $this->standaloneStructureCustomVendorDir);
         $baseDir = vfsStream::url('root/dummy/src/phpDocumentor');
         self::assertSame(
-            'vfs://root/dummy/custom-vendor',
+            'vfs://root/dummy/src/phpDocumentor/../../custom-vendor',
             AutoloaderLocator::findVendorPath($baseDir)
         );
         putenv('COMPOSER_VENDOR_DIR');
@@ -123,7 +118,7 @@ final class AutoloaderLocatorTest extends TestCase
             ->at($root->getChild('dummy'));
         $baseDir = vfsStream::url('root/dummy/src/phpDocumentor');
         self::assertSame(
-            'vfs://root/dummy/custom-vendor',
+            'vfs://root/dummy/src/phpDocumentor/../../custom-vendor',
             AutoloaderLocator::findVendorPath($baseDir)
         );
     }
@@ -137,7 +132,7 @@ final class AutoloaderLocatorTest extends TestCase
             ->at($root->getChild('dummy'));
         $baseDir = vfsStream::url('root/dummy/src/phpDocumentor');
         self::assertSame(
-            'vfs://root/dummy/custom-vendor',
+            'vfs://root/dummy/src/phpDocumentor/../../custom-vendor',
             AutoloaderLocator::findVendorPath($baseDir)
         );
         putenv('COMPOSER_VENDOR_DIR');
@@ -152,7 +147,7 @@ final class AutoloaderLocatorTest extends TestCase
             ->at($root->getChild('dummy'));
         $baseDir = vfsStream::url('root/dummy/src/phpDocumentor');
         self::assertSame(
-            'vfs://root/dummy/custom-vendor',
+            'vfs://root/dummy/src/phpDocumentor/../../custom-vendor',
             AutoloaderLocator::findVendorPath($baseDir)
         );
         putenv('COMPOSER');
@@ -164,7 +159,7 @@ final class AutoloaderLocatorTest extends TestCase
         vfsStream::newFile('autoload.php')->at($root->getChild('dummy')->getChild('vendor'));
         $baseDir = vfsStream::url('root/dummy/vendor/phpDocumentor/phpDocumentor/src/phpDocumentor');
         $this->assertSame(
-            'vfs://root/dummy/vendor',
+            'vfs://root/dummy/vendor/phpDocumentor/phpDocumentor/src/phpDocumentor/../../../../',
             AutoloaderLocator::findVendorPath($baseDir)
         );
     }
@@ -175,7 +170,7 @@ final class AutoloaderLocatorTest extends TestCase
         vfsStream::newFile('autoload.php')->at($root->getChild('dummy')->getChild('custom-vendor'));
         $baseDir = vfsStream::url('root/dummy/custom-vendor/phpDocumentor/phpDocumentor/src/phpDocumentor');
         $this->assertSame(
-            'vfs://root/dummy/custom-vendor',
+            'vfs://root/dummy/custom-vendor/phpDocumentor/phpDocumentor/src/phpDocumentor/../../../../',
             AutoloaderLocator::findVendorPath($baseDir)
         );
     }
@@ -187,7 +182,7 @@ final class AutoloaderLocatorTest extends TestCase
         vfsStream::newFile('autoload.php')->at($root->getChild('dummy')->getChild('custom-vendor'));
         $baseDir = vfsStream::url('root/dummy/custom-vendor/phpDocumentor/phpDocumentor/src/phpDocumentor');
         $this->assertSame(
-            'vfs://root/dummy/custom-vendor',
+            'vfs://root/dummy/custom-vendor/phpDocumentor/phpDocumentor/src/phpDocumentor/../../../../',
             AutoloaderLocator::findVendorPath($baseDir)
         );
         putenv('COMPOSER_VENDOR_DIR');
@@ -204,42 +199,4 @@ final class AutoloaderLocatorTest extends TestCase
         );
         AutoloaderLocator::findVendorPath($baseDir);
     }
-}
-
-/**
- * This function overrides the native realpath($url) function, removing
- * all the "..", ".", "///" of an url. Contrary to the native one,
- *
- * @link https://github.com/bovigo/vfsStream/issues/207
- *
- * @param string $url The url to simplify
- *
- * @return string|false The url to simplify or false if the file is missing
- */
-function realpath(string $url)
-{
-    preg_match('|^(\w+://)?(/)?(.*)$|', $url, $matches);
-    $protocol = $matches[1];
-    $root     = $matches[2];
-    $rest     = $matches[3];
-
-    $split = preg_split('|/|', $rest);
-
-    $cleaned = [];
-    foreach ($split as $item) {
-        if ($item === '.' || $item === '') {
-            // If it's a ./ then it's nothing (just that dir) so don't add/delete anything
-            continue;
-        }
-
-        if ($item === '..') {
-            // Remove the last item added since .. negates it.
-            $removed = array_pop($cleaned);
-        } else {
-            $cleaned[] = $item;
-        }
-    }
-
-    $cleaned = $protocol . $root . implode('/', $cleaned);
-    return file_exists($cleaned) ? $cleaned : false;
 }

@@ -39,9 +39,10 @@ final class AutoloaderLocator
      * {@link https://getcomposer.org/doc/03-cli.md#composer-vendor-dir COMPOSER_VENDOR_DIR environment variable}
      * and use it as vendor directory name if not empty.
      *
-     * If it's not specified, it will check if it is a standalone install (e.g. via git) and will look for a composer.json
-     * file 2 levels above as we are supposed to be in 'src/phpDocumentor' (The configuration file can be named differently
-     * based on the {@link https://getcomposer.org/doc/03-cli.md#composer COMPOSER environment variable}). If this file
+     * If it's not specified, it will check if it is a standalone install (e.g. via git) and will look for a
+     * composer.json file 2 levels above as we are supposed to be in 'src/phpDocumentor' (The configuration file
+     *  can be named differently based on the
+     * {@link https://getcomposer.org/doc/03-cli.md#composer COMPOSER environment variable}). If this file
      * contains a {@link https://getcomposer.org/doc/06-config.md#vendor-dir vendor-dir entry}, its value will be
      * used for the vendor directory location.
      *
@@ -68,8 +69,8 @@ final class AutoloaderLocator
             );
         }
 
-        $vendorDir = realpath($vendorDir);
-        if ($vendorDir === false) {
+        // Do not use realpath() here to don't break installation from phar
+        if (!file_exists($vendorDir)) {
             throw new RuntimeException('Unable to find vendor directory for ' . $baseDir);
         }
 
