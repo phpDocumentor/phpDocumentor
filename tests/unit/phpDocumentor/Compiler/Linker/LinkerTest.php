@@ -175,7 +175,7 @@ final class LinkerTest extends MockeryTestCase
     public function testSubstituteArrayRecursive() : void
     {
         $this->markTestIncomplete(
-            'Refactor this as mocking the linker is a no-no and is failing now that I extracted the DescriptorRepository'
+            'Refactor this as mocking the linker is a no-no; failing now that I extracted the DescriptorRepository'
         );
         /** @var Linker|m\MockInterface $mock */
         $mock = m::mock('phpDocumentor\Compiler\Linker\Linker');
@@ -200,7 +200,7 @@ final class LinkerTest extends MockeryTestCase
     public function testSubstituteSkipProcessed() : void
     {
         $this->markTestIncomplete(
-            'Refactor this as mocking the linker is a no-no and is failing now that I extracted the DescriptorRepository'
+            'Refactor this as mocking the linker is a no-no; failing now that I extracted the DescriptorRepository'
         );
         /** @var Linker|m\MockInterface $mock */
         $mock = m::mock('phpDocumentor\Compiler\Linker\Linker');
@@ -236,7 +236,7 @@ final class LinkerTest extends MockeryTestCase
     public function testExecute() : void
     {
         $this->markTestIncomplete(
-            'Refactor this as mocking the linker is a no-no and is failing now that I extracted the DescriptorRepository'
+            'Refactor this as mocking the linker is a no-no; failing now that I extracted the DescriptorRepository'
         );
         $indexes = new DescriptorCollection();
         $indexes->elements = new DescriptorCollection();

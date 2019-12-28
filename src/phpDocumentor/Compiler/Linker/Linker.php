@@ -13,20 +13,18 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Compiler\Linker;
 
-use ArrayAccess;
 use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\InterfaceDescriptor;
-use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Reflection\Fqsen;
 use Traversable;
 use function get_class;
-use function is_array;
+use function is_iterable;
 use function is_object;
 use function is_string;
 use function spl_object_hash;
@@ -98,14 +96,14 @@ class Linker implements CompilerPassInterface
      *
      * This method may do either of the following depending on the item's type
      *
-     * String
+     * FQSEN or String
      *     If the given item is a string then this method will attempt to find an appropriate Class, Interface or
-     *     TraitDescriptor object and return that. See {@see findAlias()} for more information on the normalization
-     *     of these strings.
+     *     TraitDescriptor object and return that. See {@see DescriptorRepository::findAlias()} for more information
+     *     on the normalization of these strings.
      *
      * Array or Traversable
      *     Iterate through each item, pass each key's contents to a new call to substitute and replace the key's
-     *     contents if the contents is not an object (objects automatically update and saves performance).
+     *     contents if the contents is not an object (objects automatically update and this saves performance).
      *
      * Object
      *     Determines all eligible substitutions using the substitutions property, construct a getter and retrieve
@@ -115,13 +113,13 @@ class Linker implements CompilerPassInterface
      * This method will return null if no substitution was possible and all of the above should not update the parent
      * item when null is passed.
      *
-     * @param string|object|Traversable|array $item
+     * @param string|object|iterable $item
      * @param DescriptorAbstract|null $container A descriptor that acts as container for all elements
      *                                        underneath or null if there is no current container.
      *
      * @return string|DescriptorAbstract|array|Traversable|null
      */
-    public function substitute($item, $container = null)
+    public function substitute($item, ?DescriptorAbstract $container = null)
     {
         if ($item instanceof Fqsen) {
             return $this->descriptorRepository->findAlias((string) $item, $container);
@@ -131,55 +129,34 @@ class Linker implements CompilerPassInterface
             return $this->descriptorRepository->findAlias($item, $container);
         }
 
-        if (is_array($item)
-            || ($item instanceof Traversable && $item instanceof ArrayAccess && !$item instanceof ProjectInterface)
-        ) {
-            $isModified = false;
-            foreach ($item as $key => $element) {
-                $isModified = true;
+        if (is_iterable($item)) {
+            return $this->substituteChildrenOfCollection($item, $container);
+        }
 
-                $element = $this->substitute($element, $container);
-                if ($element === null) {
-                    continue;
-                }
-
-                $item[$key] = $element;
-            }
-
-            if ($isModified) {
-                return $item;
-            }
-
+        if (!is_object($item)) {
             return null;
         }
 
-        if (is_object($item)) {
-            $hash = spl_object_hash($item);
-            if (isset($this->processedObjects[$hash])) {
-                // if analyzed; just return
-                return null;
+        $this->substituteMembersOfObject($item, $container);
+        return null;
+    }
+
+    private function substituteChildrenOfCollection(iterable $collection, ?DescriptorAbstract $container) : ?iterable
+    {
+        $isModified = false;
+        foreach ($collection as $key => $element) {
+            $isModified = true;
+
+            $element = $this->substitute($element, $container);
+            if ($element === null) {
+                continue;
             }
 
-            $newContainer = $this->isDescriptorContainer($item) ? $item : $container;
+            $collection[$key] = $element;
+        }
 
-            $this->processedObjects[$hash] = $hash;
-
-            $objectClassName = get_class($item);
-            $fieldNames = $this->substitutions[$objectClassName] ?? [];
-
-            foreach ($fieldNames as $fieldName) {
-                $fieldValue = $this->findFieldValue($item, $fieldName);
-                $response = $this->substitute($fieldValue, $newContainer);
-
-                // if the returned response is not an object it must be grafted on the calling object
-                if ($response === null) {
-                    continue;
-                }
-
-                // TODO Can we find another solution for this?
-                $setter = 'set' . ucfirst($fieldName);
-                $item->{$setter}($response);
-            }
+        if ($isModified) {
+            return $collection;
         }
 
         return null;
@@ -207,5 +184,34 @@ class Linker implements CompilerPassInterface
             || $item instanceof ClassDescriptor
             || $item instanceof TraitDescriptor
             || $item instanceof InterfaceDescriptor;
+    }
+
+    private function substituteMembersOfObject(object $object, ?DescriptorAbstract $container) : void
+    {
+        $hash = spl_object_hash($object);
+        if (isset($this->processedObjects[$hash])) {
+            // if analyzed; just return null to indicate processing is already done
+            return;
+        }
+
+        $newContainer = $this->isDescriptorContainer($object) ? $object : $container;
+
+        $this->processedObjects[$hash] = $hash;
+
+        $objectClassName = get_class($object);
+        $fieldNames = $this->substitutions[$objectClassName] ?? [];
+
+        foreach ($fieldNames as $fieldName) {
+            $fieldValue = $this->findFieldValue($object, $fieldName);
+            $response = $this->substitute($fieldValue, $newContainer);
+
+            if ($response === null) {
+                continue;
+            }
+
+            // TODO Can we find another solution for this?
+            $setter = 'set' . ucfirst($fieldName);
+            $object->{$setter}($response);
+        }
     }
 }
