@@ -27,15 +27,14 @@ use function get_class;
  * Tests the functionality for the Linker class.
  *
  * @coversDefaultClass \phpDocumentor\Compiler\Linker\Linker
+ * @covers ::__construct
+ * @covers ::<private>
  */
 class LinkerTest extends MockeryTestCase
 {
     /**
      * @covers ::setObjectAliasesList
      * @covers ::findAlias
-     * @covers ::isContextMarkerInFqsen()
-     * @covers ::fetchElementByFqsen()
-     * @covers ::getTypeWithClassAsContext()
      */
     public function testFindObjectAliasWithFqsenWhenContextIsClass() : void
     {
@@ -56,9 +55,6 @@ class LinkerTest extends MockeryTestCase
     /**
      * @covers ::setObjectAliasesList
      * @covers ::findAlias
-     * @covers ::isContextMarkerInFqsen()
-     * @covers ::fetchElementByFqsen()
-     * @covers ::getTypeWithNamespaceAsContext()
      */
     public function testFindObjectAliasWithFqsenAndContainerWhenContextIsContainerNamespace() : void
     {
@@ -79,9 +75,6 @@ class LinkerTest extends MockeryTestCase
     /**
      * @covers ::setObjectAliasesList
      * @covers ::findAlias
-     * @covers ::isContextMarkerInFqsen()
-     * @covers ::fetchElementByFqsen()
-     * @covers ::getTypeWithGlobalNamespaceAsContext()
      */
     public function testFindObjectAliasWithFqsenAndContainerWhenContextIsGlobalNamespace() : void
     {
@@ -101,11 +94,6 @@ class LinkerTest extends MockeryTestCase
 
     /**
      * @covers ::findAlias
-     * @covers ::isContextMarkerInFqsen()
-     * @covers ::fetchElementByFqsen()
-     * @covers ::getTypeWithClassAsContext()
-     * @covers ::getTypeWithNamespaceAsContext()
-     * @covers ::getTypeWithGlobalNamespaceAsContext()
      */
     public function testFindObjectAliasReturnsNamespaceContextWhenElementIsUndocumented() : void
     {
@@ -151,7 +139,6 @@ class LinkerTest extends MockeryTestCase
     }
 
     /**
-     * @covers ::__construct
      * @covers ::getSubstitutions
      */
     public function testSetFieldsToSubstitute() : void
@@ -167,9 +154,7 @@ class LinkerTest extends MockeryTestCase
     }
 
     /**
-     * @covers ::__construct
      * @covers ::substitute
-     * @covers ::isDescriptorContainer()
      */
     public function testSubstituteFqsenInObject() : void
     {
@@ -191,9 +176,7 @@ class LinkerTest extends MockeryTestCase
     }
 
     /**
-     * @covers ::__construct
      * @covers ::substitute
-     * @covers ::isDescriptorContainer()
      */
     public function testSubstituteFqsenInUnknownTypeDescriptor() : void
     {
@@ -215,7 +198,6 @@ class LinkerTest extends MockeryTestCase
     }
 
     /**
-     * @covers ::__construct
      * @covers ::substitute
      * @depends testSubstituteFqsenInObject
      */
@@ -388,7 +370,7 @@ class LinkerTest extends MockeryTestCase
     }
 
     /**
-     * @return array
+     * @covers ::execute
      */
     protected function createMockDescriptorForResult(?ClassDescriptor $result = null) : array
     {
@@ -405,10 +387,7 @@ class LinkerTest extends MockeryTestCase
         return [$object, $fqsen];
     }
 
-    /**
-     * @return array
-     */
-    protected function createMockUnknownTypeDescriptorForResult() : array
+    private function createMockUnknownTypeDescriptorForResult() : array
     {
         $object = m::mock('phpDocumentor\Descriptor\Type\UnknownTypeDescriptor');
         $fqsen = get_class($object);
