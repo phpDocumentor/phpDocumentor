@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Writer\Twig;
 
 use InvalidArgumentException;
+use League\Uri\Uri;
+use League\Uri\UriInfo;
 use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\Descriptor\Interfaces\TypeInterface;
 use phpDocumentor\Descriptor\Type\CollectionDescriptor;
@@ -30,11 +32,9 @@ use function explode;
 use function implode;
 use function is_array;
 use function is_iterable;
-use function is_string;
 use function ltrim;
 use function reset;
 use function sprintf;
-use function strpos;
 use function substr;
 
 /**
@@ -219,12 +219,7 @@ final class LinkRenderer
         }
         $url = $generatedUrl ? ltrim((string) $generatedUrl, '/') : false;
 
-        if (is_string($url)
-            && $url[0] !== '/'
-            && (strpos($url, 'http://') !== 0)
-            && (strpos($url, 'https://') !== 0)
-            && (strpos($url, 'ftp://') !== 0)
-        ) {
+        if ($url !== false && UriInfo::isRelativePath(Uri::createFromString($url))) {
             $url = $this->convertToRootPath($url);
         }
 

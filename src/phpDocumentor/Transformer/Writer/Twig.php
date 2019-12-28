@@ -48,34 +48,35 @@ use function substr;
  *
  * A simple example transformation line could be:
  *
- *     ```
- *     <transformation
- *         writer="twig"
- *         source="templates/twig/index.twig"
- *         artifact="index.html"/>
- *     ```
+ * ```
+ * <transformation
+ *     writer="twig"
+ *     source="templates/twig/index.twig"
+ *     artifact="index.html"
+ * />
+ * ```
  *
- *     This example transformation would use this writer to transform the
- *     index.twig template file in the twig template folder into index.html at
- *     the destination location.
- *     Since no Query is provided the 'node' global variable will contain
- *     the Project Descriptor of the Object Graph.
+ * This example transformation would use this writer to transform the
+ * index.twig template file in the twig template folder into index.html at
+ * the destination location.
+ * Since no Query is provided the 'node' global variable will contain
+ * the Project Descriptor of the Object Graph.
  *
  * A complex example transformation line could be:
  *
- *     ```
- *     <transformation
- *         query="indexes.classes"
- *         writer="twig"
- *         source="templates/twig/class.twig"
- *         artifact="{{name}}.html"/>
- *     ```
+ * ```
+ * <transformation
+ *     query="indexes.classes"
+ *     writer="twig"
+ *     source="templates/twig/class.twig"
+ *     artifact="{{name}}.html"/>
+ * ```
  *
- *     This example transformation would use this writer to transform the
- *     class.twig template file in the twig template folder into a file with
- *     the 'name' property for an individual class inside the Object Graph.
- *     Since a Query *is* provided will the 'node' global variable contain a
- *     specific instance of a class applicable to the current iteration.
+ * This example transformation would use this writer to transform the
+ * class.twig template file in the twig template folder into a file with
+ * the 'name' property for an individual class inside the Object Graph.
+ * Since a Query *is* provided will the 'node' global variable contain a
+ * specific instance of a class applicable to the current iteration.
  *
  * @see self::getDestinationPath() for more information about variables in the
  *     Artifact attribute.

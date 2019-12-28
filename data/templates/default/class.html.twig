@@ -18,7 +18,15 @@
                     <span class="phpdocumentor-class__implements">
                         implements
                         {% for interface in node.interfaces %}
-                            <a href="{{ link(interface) }}">{{ interface.name }}</a>
+                            <a href="{{ link(interface) }}">{{ interface.name }}</a>{% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    </span>
+                {% endif %}
+                {% if node.usedTraits|length > 0 %}
+                    <span class="phpdocumentor-class__extends">
+                        Uses
+                        {% for trait in node.usedTraits %}
+                            <a href="{{ link(trait) }}">{{ trait.name }}</a>{% if not loop.last %}, {% endif %}
                         {% endfor %}
                     </span>
                 {% endif %}
@@ -26,6 +34,59 @@
 
             <p class="phpdocumentor-class__summary">{{ node.summary }}</p>
             <section class="phpdocumentor-class__description">{{ node.description|markdown }}</section>
+
+            <h3>Table of Contents</h3>
+            <table class="phpdocumentor-table_of_contents">
+                {% for constant in node.constants %}
+                    <tr>
+                        <th class="phpdocumentor-heading">{{ constant.name }}</th>
+                        <td class="phpdocumentor-cell">{{ constant.summary }}</td>
+                        <td class="phpdocumentor-cell">{{ constant.value }}</td>
+                    </tr>
+                {% endfor %}
+                {% for property in node.properties %}
+                    <tr>
+                        <th class="phpdocumentor-heading">${{ property.name }}</th>
+                        <td class="phpdocumentor-cell">{{ property.summary }}</td>
+                        <td class="phpdocumentor-cell">{{ property.types|route('class:short')|join('|')|raw }}</td>
+                    </tr>
+                {% endfor %}
+                {% for property in node.magicProperties %}
+                    <tr>
+                        <th class="phpdocumentor-heading">${{ property.name }}</th>
+                        <td class="phpdocumentor-cell">{{ property.summary }}</td>
+                        <td class="phpdocumentor-cell">{{ property.types|route('class:short')|join('|')|raw }}</td>
+                    </tr>
+                {% endfor %}
+                {% for property in node.inheritedProperties %}
+                    <tr>
+                        <th class="phpdocumentor-heading">${{ property.name }}</th>
+                        <td class="phpdocumentor-cell">{{ property.summary }}</td>
+                        <td class="phpdocumentor-cell">{{ property.types|route('class:short')|join('|')|raw }}</td>
+                    </tr>
+                {% endfor %}
+                {% for method in node.methods %}
+                    <tr>
+                        <th class="phpdocumentor-heading">{{ method.name }}()</th>
+                        <td class="phpdocumentor-cell">{{ method.summary }}</td>
+                        <td class="phpdocumentor-cell">{{ method.response.types|route|join('|')|raw }}</td>
+                    </tr>
+                {% endfor %}
+                {% for method in node.magicMethods %}
+                    <tr>
+                        <th class="phpdocumentor-heading">{{ method.name }}()</th>
+                        <td class="phpdocumentor-cell">{{ method.summary }}</td>
+                        <td class="phpdocumentor-cell">{{ method.response.types|route|join('|')|raw }}</td>
+                    </tr>
+                {% endfor %}
+                {% for method in node.inheritedMethods %}
+                    <tr>
+                        <th class="phpdocumentor-heading">{{ method.parent.name }}::{{ method.name }}()</th>
+                        <td class="phpdocumentor-cell">{{ method.summary }}</td>
+                        <td class="phpdocumentor-cell">{{ method.response.types|route|join('|')|raw }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
         </div>
     </div>
 {% endblock %}

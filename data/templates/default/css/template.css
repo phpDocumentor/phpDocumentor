@@ -279,10 +279,14 @@ body {
     letter-spacing: .05rem;
 }
 
-.phpdocumentor-class__summary {
+.phpdocumentor-summary,
+.phpdocumentor-class__summary,
+.phpdocumentor-trait__summary,
+.phpdocumentor-interface__summary {
     font-style: italic;
 }
 
+.phpdocumentor-interface__extends,
 .phpdocumentor-class__extends,
 .phpdocumentor-class__implements {
     display: block;
@@ -291,6 +295,9 @@ body {
     font-weight: normal;
 }
 
+.phpdocumentor-table_of_contents {
+    font-size: var(--text-sm);
+}
 /* Typography
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 .phpdocumentor h1,
