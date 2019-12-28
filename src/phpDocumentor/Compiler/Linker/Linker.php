@@ -22,7 +22,6 @@ use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
-use phpDocumentor\Descriptor\Type\UnknownTypeDescriptor;
 use phpDocumentor\Reflection\Fqsen;
 use Traversable;
 use function get_class;
@@ -134,7 +133,7 @@ class Linker implements CompilerPassInterface
      * @param DescriptorAbstract|null $container A descriptor that acts as container for all elements
      *                                        underneath or null if there is no current container.
      *
-     * @return string|DescriptorAbstract|null
+     * @return string|DescriptorAbstract|array|Traversable|null
      */
     public function substitute($item, $container = null)
     {
@@ -160,10 +159,10 @@ class Linker implements CompilerPassInterface
             }
 
             if ($isModified) {
-                $result = $item;
+                return $item;
             }
 
-            return $result;
+            return null;
         }
 
         if (is_object($item)) {

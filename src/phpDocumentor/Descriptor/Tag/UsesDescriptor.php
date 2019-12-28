@@ -38,7 +38,7 @@ final class UsesDescriptor extends TagDescriptor
     /**
      * Sets the FQSEN or Descriptor to which this tag points.
      *
-     * @param Fqsen|Descriptor|null
+     * @param Fqsen|Descriptor|null $reference
      */
     public function setReference($reference) : void
     {
