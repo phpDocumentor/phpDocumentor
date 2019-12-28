@@ -15,6 +15,12 @@ namespace phpDocumentor;
 
 use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
+use function array_pop;
+use function file_exists;
+use function implode;
+use function preg_match;
+use function preg_split;
 
 final class AutoloaderLocatorTest extends TestCase
 {
@@ -55,14 +61,6 @@ final class AutoloaderLocatorTest extends TestCase
             ],
         ],
     ];
-
-    /** @var string */
-    private $customVendorDirComposer = '{
-    "config": {
-        "vendor-dir": "custom-vendor"
-    }
-    }';
-
 
     /**
      * Directory structure when phpdocumentor is installed from git.
@@ -115,34 +113,42 @@ final class AutoloaderLocatorTest extends TestCase
     {
         $root = vfsStream::setup('root', null, []);
         $baseDir = vfsStream::url('root/dummy/custom-vendor/phpDocumentor/phpDocumentor/src/phpDocumentor');
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('Unable to find vendor directory for vfs://root/dummy/custom-vendor/phpDocumentor/phpDocumentor/src/phpDocumentor');
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage(
+            'Unable to find vendor directory for '
+            . 'vfs://root/dummy/custom-vendor/phpDocumentor/phpDocumentor/src/phpDocumentor'
+        );
         AutoloaderLocator::findVendorPath($baseDir);
     }
 }
 
 /**
  * This function overrides the native realpath($url) function, removing
- * all the "..", ".", "///" of an url. Contrary to the native one, 
- * 
- * @see https://github.com/bovigo/vfsStream/issues/207
- * @param string $url
- * @param string|bool The cleaned url or false if it doesn't exist
+ * all the "..", ".", "///" of an url. Contrary to the native one,
+ *
+ * @link https://github.com/bovigo/vfsStream/issues/207
+ *
+ * @param string $url The url to simplify
+ *
+ * @return string|false The url to simplify or false if the file is missing
  */
 function realpath(string $url)
 {
-    preg_match("|^(\w+://)?(/)?(.*)$|", $url, $matches);
+    preg_match('|^(\w+://)?(/)?(.*)$|', $url, $matches);
     $protocol = $matches[1];
     $root     = $matches[2];
     $rest     = $matches[3];
-    
-    $split = preg_split("|/|", $rest);
+
+    $split = preg_split('|/|', $rest);
 
     $cleaned = [];
     foreach ($split as $item) {
         if ($item === '.' || $item === '') {
             // If it's a ./ then it's nothing (just that dir) so don't add/delete anything
-        } elseif ($item === '..') {
+            continue;
+        }
+
+        if ($item === '..') {
             // Remove the last item added since .. negates it.
             $removed = array_pop($cleaned);
         } else {
@@ -150,6 +156,6 @@ function realpath(string $url)
         }
     }
 
-    $cleaned = $protocol.$root.implode('/', $cleaned);
+    $cleaned = $protocol . $root . implode('/', $cleaned);
     return file_exists($cleaned) ? $cleaned : false;
 }
