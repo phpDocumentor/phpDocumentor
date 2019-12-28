@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Writer\Twig;
 
 use InvalidArgumentException;
+use League\Uri\Exceptions\SyntaxError;
 use League\Uri\Uri;
 use League\Uri\UriInfo;
 use phpDocumentor\Descriptor\Descriptor;
@@ -30,6 +31,7 @@ use function explode;
 use function implode;
 use function is_array;
 use function is_iterable;
+use function is_string;
 use function ltrim;
 use function sprintf;
 use function substr;
@@ -177,6 +179,15 @@ final class LinkRenderer
     private function renderLink($node, string $presentation) : string
     {
         $generatedUrl = $node;
+
+        if (is_string($node)) {
+            try {
+                $node = new Fqsen($node);
+            } catch (InvalidArgumentException $exception) {
+                // do nothing; apparently this was not an FQSEN
+            }
+        }
+
         if ($node instanceof Descriptor || $node instanceof Fqsen) {
             try {
                 $generatedUrl = $this->router->generate($node);
@@ -186,8 +197,12 @@ final class LinkRenderer
         }
         $url = $generatedUrl ? ltrim((string) $generatedUrl, '/') : false;
 
-        if ($url !== false && UriInfo::isRelativePath(Uri::createFromString($url))) {
-            $url = $this->convertToRootPath($url);
+        try {
+            if ($url !== false && UriInfo::isRelativePath(Uri::createFromString($url))) {
+                $url = $this->convertToRootPath($url);
+            }
+        } catch (SyntaxError $exception) {
+            // do nothing; the url apparently is not valid enough; let's just pass it on
         }
 
         switch ($presentation) {
