@@ -166,10 +166,6 @@ class Linker implements CompilerPassInterface
             return $result;
         }
 
-        if ($item instanceof UnknownTypeDescriptor) {
-            return $this->findAlias($item->getName(), $container) ?: $item;
-        }
-
         if (is_object($item)) {
             $hash = spl_object_hash($item);
             if (isset($this->processedObjects[$hash])) {

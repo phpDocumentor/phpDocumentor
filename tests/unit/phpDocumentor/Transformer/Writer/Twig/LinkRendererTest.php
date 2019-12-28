@@ -16,7 +16,6 @@ namespace phpDocumentor\Transformer\Writer\Twig;
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\Collection;
-use phpDocumentor\Descriptor\Type\CollectionDescriptor;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Types\Integer;
 use phpDocumentor\Transformer\Router\Router;
@@ -108,21 +107,6 @@ final class LinkRendererTest extends MockeryTestCase
      * @covers ::render
      * @covers ::convertToRootPath
      */
-    public function testRenderWithCollectionDescriptorWithNameIsNotArrayAndRepresentationUrl() : void
-    {
-        $this->router->shouldReceive('generate')->andReturn('ClassDescriptor');
-
-        $collectionDescriptor = $this->givenACollectionDescriptor('class');
-        $collectionDescriptor->setKeyTypes(['ClassDescriptor']);
-        $result = $this->renderer->render($collectionDescriptor, 'url');
-
-        $this->assertSame('ClassDescriptor&lt;ClassDescriptor,ClassDescriptor&gt;', $result);
-    }
-
-    /**
-     * @covers ::render
-     * @covers ::convertToRootPath
-     */
     public function testRenderReferenceToType() : void
     {
         $this->router->shouldReceive('generate')->never();
@@ -130,20 +114,6 @@ final class LinkRendererTest extends MockeryTestCase
         $result = $this->renderer->render([new Integer()], 'url');
 
         $this->assertSame(['int'], $result);
-    }
-
-    /**
-     * @covers ::render
-     * @covers ::convertToRootPath
-     */
-    public function testRenderWithCollectionDescriptorWithNameIsArrayAndRepresentationUrl() : void
-    {
-        $this->router->shouldReceive('generate')->andReturn('ClassDescriptor');
-
-        $collectionDescriptor = $this->givenACollectionDescriptor('array');
-        $result = $this->renderer->render($collectionDescriptor, 'url');
-
-        $this->assertSame('ClassDescriptor[]', $result);
     }
 
     /**
@@ -169,16 +139,6 @@ final class LinkRendererTest extends MockeryTestCase
         $result = $this->renderer->render($url, 'url');
 
         $this->assertSame($url, $result);
-    }
-
-    private function givenACollectionDescriptor(string $name) : CollectionDescriptor
-    {
-        $classDescriptor = m::mock('phpDocumentor\Descriptor\ClassDescriptor');
-        $classDescriptor->shouldReceive('getName')->andReturn($name);
-        $collectionDescriptor = new CollectionDescriptor($classDescriptor);
-        $collectionDescriptor->setTypes(['ClassDescriptor']);
-
-        return $collectionDescriptor;
     }
 
     public function provideUrls() : array
