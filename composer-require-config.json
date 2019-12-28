@@ -3,7 +3,8 @@
     "null", "true", "false",
     "static", "self", "parent",
     "array", "string", "int", "float", "bool", "iterable", "callable", "void", "object",
-    "Composer\\Autoload\\ClassLoader"
+    "Composer\\Autoload\\ClassLoader",
+    "League\\Uri\\Exceptions\\SyntaxError"
   ],
   "php-core-extensions" : [
     "Core",
