@@ -166,8 +166,11 @@ class Linker implements CompilerPassInterface
      * Returns the value of a field in the given object.
      *
      * @return string|object
+     *
+     * @todo this method is protected so that it can be mocked in the tests; a different solution should be found
+     *       for that test.
      */
-    private function findFieldValue(object $object, string $fieldName)
+    protected function findFieldValue(object $object, string $fieldName)
     {
         $getter = 'get' . ucfirst($fieldName);
 

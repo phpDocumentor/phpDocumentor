@@ -23,7 +23,7 @@ use function strlen;
 use function strpos;
 use function substr;
 
-final class DescriptorRepository
+class DescriptorRepository
 {
     private const CONTEXT_MARKER = '@context';
 
