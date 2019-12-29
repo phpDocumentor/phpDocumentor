@@ -16,7 +16,9 @@ namespace phpDocumentor\Compiler\Linker;
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\ClassDescriptor;
-use phpDocumentor\Descriptor\Collection as DescriptorCollection;
+use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Descriptor\ProjectDescriptor;
+use Prophecy\Argument;
 use function array_keys;
 use function get_class;
 
@@ -174,17 +176,13 @@ final class LinkerTest extends MockeryTestCase
      */
     public function testSubstituteArrayRecursive() : void
     {
-        $this->markTestIncomplete(
-            'Refactor this as mocking the linker is a no-no; failing now that I extracted the DescriptorRepository'
-        );
-        /** @var Linker|m\MockInterface $mock */
-        $mock = m::mock('phpDocumentor\Compiler\Linker\Linker');
-        $mock->shouldDeferMissing();
-        $mock->shouldReceive('findAlias')->andReturn('substituted');
+        $repository = $this->prophesize(DescriptorRepository::class);
+        $linker = new Linker([], $repository->reveal());
+        $repository->findAlias(Argument::cetera())->willReturn('substituted');
         $elementList = [
             'one' => ['two' => 'two'],
         ];
-        $result = $mock->substitute($elementList);
+        $result = $linker->substitute($elementList);
         $expected = [
             'one' => ['two' => 'substituted'],
         ];
@@ -199,12 +197,10 @@ final class LinkerTest extends MockeryTestCase
      */
     public function testSubstituteSkipProcessed() : void
     {
-        $this->markTestIncomplete(
-            'Refactor this as mocking the linker is a no-no; failing now that I extracted the DescriptorRepository'
-        );
         /** @var Linker|m\MockInterface $mock */
-        $mock = m::mock('phpDocumentor\Compiler\Linker\Linker');
-        $mock->shouldDeferMissing();
+        $mock = m::mock(Linker::class);
+        $mock->makePartial();
+        $mock->shouldAllowMockingProtectedMethods();
         $mock->shouldReceive('findFieldValue')->atMost()->once();
 
         $item = new ClassDescriptor();
@@ -235,22 +231,20 @@ final class LinkerTest extends MockeryTestCase
      */
     public function testExecute() : void
     {
-        $this->markTestIncomplete(
-            'Refactor this as mocking the linker is a no-no; failing now that I extracted the DescriptorRepository'
-        );
-        $indexes = new DescriptorCollection();
-        $indexes->elements = new DescriptorCollection();
-        $descriptor = m::mock('phpDocumentor\Descriptor\ProjectDescriptor');
-        $descriptor->shouldReceive('getIndexes')->andReturn($indexes);
+        $result = new ClassDescriptor();
+        $object = $this->prophesize(ClassDescriptor::class);
+        $fqsen = get_class($object);
 
-        /** @var Linker|m\MockInterface $mock */
-        $mock = m::mock(Linker::class);
-        $mock->shouldDeferMissing();
-        $mock->shouldReceive('substitute')->with($descriptor);
-        $mock->execute($descriptor);
+        $project = new ProjectDescriptor('project');
+        $project->setIndexes(new Collection(['elements' => new Collection([$fqsen => $result])]));
 
-        // mark test as successful due to asserts in Mockery
-        $this->assertTrue(true);
+        // prepare linker
+        $repository = $this->prophesize(DescriptorRepository::class);
+        $repository->setObjectAliasesList([$fqsen => $result])->shouldBeCalledOnce();
+        $linker = new Linker([$fqsen => ['field']], $repository->reveal());
+
+        // execute test.
+        $linker->execute($project);
     }
 
     /**
