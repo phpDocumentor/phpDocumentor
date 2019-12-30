@@ -15,6 +15,7 @@ namespace phpDocumentor\Parser;
 
 use Flyfinder\Path;
 use Flyfinder\Specification\AndSpecification;
+use Flyfinder\Specification\Glob;
 use Flyfinder\Specification\HasExtension;
 use Flyfinder\Specification\InPath;
 use Flyfinder\Specification\IsHidden;
@@ -39,19 +40,23 @@ final class SpecificationFactoryTest extends TestCase
 
     public function testCreateIgnoreHidden() : void
     {
-        $specification = $this->fixture->create(['some/path', 'a/second/path'], ['hidden' => true], ['php', 'php3']);
+        $specification = $this->fixture->create(
+            ['/some/path/**/*', '/a/second/path/**/*'],
+            ['hidden' => true],
+            ['php', 'php3']
+        );
 
         $this->assertEquals(
             new AndSpecification(
-                new OrSpecification(
-                    new InPath(new Path('some/path')),
-                    new InPath(new Path('a/second/path'))
-                ),
                 new AndSpecification(
                     new HasExtension(['php', 'php3']),
                     new NotSpecification(
                         new IsHidden()
                     )
+                ),
+                new OrSpecification(
+                    new Glob('/some/path/**/*'),
+                    new Glob('/a/second/path/**/*')
                 )
             ),
             $specification
@@ -61,23 +66,23 @@ final class SpecificationFactoryTest extends TestCase
     public function testCreateIgnorePath() : void
     {
         $specification = $this->fixture->create(
-            ['src/'],
-            ['paths' => ['src/some/path', 'src/some/other/path']],
+            ['/src/'],
+            ['paths' => ['/src/some/path', '/src/some/other/path']],
             ['php']
         );
 
         $this->assertEquals(
             new AndSpecification(
-                new InPath(new Path('src/')),
                 new AndSpecification(
                     new HasExtension(['php']),
                     new NotSpecification(
                         new OrSpecification(
-                            new InPath(new Path('src/some/path')),
-                            new InPath(new Path('src/some/other/path'))
+                            new Glob('/src/some/path'),
+                            new Glob('/src/some/other/path')
                         )
                     )
-                )
+                ),
+                new Glob('/src/')
             ),
             $specification
         );
@@ -85,13 +90,13 @@ final class SpecificationFactoryTest extends TestCase
 
     public function testNoPaths() : void
     {
-        $specification = $this->fixture->create([], ['paths' => ['src/some/path']], ['php']);
+        $specification = $this->fixture->create([], ['paths' => ['/src/some/path']], ['php']);
 
         $this->assertEquals(
             new AndSpecification(
                 new HasExtension(['php']),
                 new NotSpecification(
-                    new InPath(new Path('src/some/path'))
+                    new Glob('/src/some/path')
                 )
             ),
             $specification
@@ -100,12 +105,12 @@ final class SpecificationFactoryTest extends TestCase
 
     public function testNoIgnore() : void
     {
-        $specification = $this->fixture->create(['src/'], ['paths' => []], ['php']);
+        $specification = $this->fixture->create(['/src/'], ['paths' => []], ['php']);
 
         $this->assertEquals(
             new AndSpecification(
-                new InPath(new Path('src/')),
-                new HasExtension(['php'])
+                new HasExtension(['php']),
+                new Glob('/src/')
             ),
             $specification
         );
@@ -115,8 +120,8 @@ final class SpecificationFactoryTest extends TestCase
     {
         $specification = $this->fixture->create(
             [
-                new Path('PHPCompatibility/*'),
-                new Path('PHPCompatibility/Sniffs/'),
+                '/PHPCompatibility/*',
+                '/PHPCompatibility/Sniffs/',
             ],
             ['paths' => []],
             ['php']
@@ -124,11 +129,11 @@ final class SpecificationFactoryTest extends TestCase
 
         $this->assertEquals(
             new AndSpecification(
+                new HasExtension(['php']),
                 new OrSpecification(
-                    new InPath(new Path('PHPCompatibility/*')),
-                    new InPath(new Path('PHPCompatibility/Sniffs/'))
-                ),
-                new HasExtension(['php'])
+                    new Glob('/PHPCompatibility/*'),
+                    new Glob('/PHPCompatibility/Sniffs/')
+                )
             ),
             $specification
         );
