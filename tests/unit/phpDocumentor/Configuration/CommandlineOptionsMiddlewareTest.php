@@ -45,7 +45,7 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
         $middleware = new CommandlineOptionsMiddleware(['target' => $expected], $this->configurationFactory);
         $newConfiguration = $middleware($configuration);
 
-        $this->assertEquals(new Dsn($expected), $newConfiguration['phpdocumentor']['paths']['output']);
+        $this->assertEquals(Dsn::createFromString($expected), $newConfiguration['phpdocumentor']['paths']['output']);
     }
 
     /**
@@ -118,7 +118,7 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
 
         $this->assertEquals(
             [
-                'dsn' => new Dsn('.'),
+                'dsn' => Dsn::createFromString('.'),
                 'paths' => [new Path('./src/index.php')],
             ],
             current($newConfiguration['phpdocumentor']['versions'])['api'][0]['source']
@@ -137,7 +137,7 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
 
         $this->assertEquals(
             [
-                'dsn' => new Dsn('.'),
+                'dsn' => Dsn::createFromString('.'),
                 'paths' => [new Path('./src')],
             ],
             current($newConfiguration['phpdocumentor']['versions'])['api'][0]['source']
@@ -156,7 +156,7 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
 
         $this->assertEquals(
             [
-                'dsn' => new Dsn('.'),
+                'dsn' => Dsn::createFromString('.'),
                 'paths' => [new Path('.')],
             ],
             current($newConfiguration['phpdocumentor']['versions'])['api'][0]['source']
@@ -171,7 +171,7 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
 
         $this->assertEquals(
             [
-                'dsn' => new Dsn('/src'),
+                'dsn' => Dsn::createFromString('/src'),
                 'paths' => [new Path('./')],
             ],
             current($newConfiguration['phpdocumentor']['versions'])['api'][0]['source']
@@ -189,14 +189,14 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
 
         $this->assertEquals(
             [
-                'dsn' => new Dsn('/src'),
+                'dsn' => Dsn::createFromString('/src'),
                 'paths' => [new Path('./')],
             ],
             current($newConfiguration['phpdocumentor']['versions'])['api'][0]['source']
         );
         $this->assertEquals(
             [
-                'dsn' => new Dsn('.'),
+                'dsn' => Dsn::createFromString('.'),
                 'paths' => [new Path('./localSrc')],
             ],
             current($newConfiguration['phpdocumentor']['versions'])['api'][1]['source']

@@ -47,9 +47,9 @@ class CollectFilesIntegrationTest extends \PHPUnit\Framework\TestCase
                                     'api' => [
                                         [
                                             'source' => [
-                                                'dsn' => new Dsn('file://' . __DIR__ . '/assets/project1'),
+                                                'dsn' => Dsn::createFromString('file://' . __DIR__ . '/assets/project1'),
                                                 'paths' => [
-                                                    0 => 'src',
+                                                    0 => '/src**/*',
                                                 ],
                                             ],
                                             'ignore' => [
@@ -78,9 +78,9 @@ class CollectFilesIntegrationTest extends \PHPUnit\Framework\TestCase
                                     'api' => [
                                         [
                                             'source' => [
-                                                'dsn' => new Dsn('file://' . __DIR__ . '/assets/project1'),
+                                                'dsn' => Dsn::createFromString('file://' . __DIR__ . '/assets/project1'),
                                                 'paths' => [
-                                                    0 => 'src',
+                                                    0 => '/src/**/*',
                                                 ],
                                             ],
                                             'ignore' => [
@@ -93,9 +93,9 @@ class CollectFilesIntegrationTest extends \PHPUnit\Framework\TestCase
                                         ],
                                         [
                                             'source' => [
-                                                'dsn' => new Dsn('file://' . __DIR__ . '/assets/project2'),
+                                                'dsn' => Dsn::createFromString('file://' . __DIR__ . '/assets/project2'),
                                                 'paths' => [
-                                                    0 => 'src',
+                                                    0 => '/src/**/*',
                                                 ],
                                             ],
                                             'ignore' => [

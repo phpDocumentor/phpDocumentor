@@ -69,4 +69,12 @@ final class Path
             )
             || parse_url($file, PHP_URL_SCHEME) !== null;
     }
+
+    public static function dirname(Path $input) : self
+    {
+        $parts = explode('/', (string) $input);
+        array_pop($parts);
+
+        return new self(implode('/', $parts));
+    }
 }

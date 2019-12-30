@@ -13,11 +13,9 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Parser;
 
-use Flyfinder\Path;
 use Flyfinder\Specification\AndSpecification;
 use Flyfinder\Specification\Glob;
 use Flyfinder\Specification\HasExtension;
-use Flyfinder\Specification\InPath;
 use Flyfinder\Specification\IsHidden;
 use Flyfinder\Specification\NotSpecification;
 use Flyfinder\Specification\OrSpecification;

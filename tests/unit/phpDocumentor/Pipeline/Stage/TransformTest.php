@@ -139,7 +139,7 @@ final class TransformTest extends TestCase
         return [
             'phpdocumentor' => [
                 'paths' => [
-                    'output' => new Dsn($dsn),
+                    'output' => Dsn::createFromString($dsn),
                 ],
                 'templates' => $templates,
             ],

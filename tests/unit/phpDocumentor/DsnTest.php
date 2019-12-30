@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor;
 
-use League\Uri\Uri;
-use League\Uri\UriResolver;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -38,6 +36,7 @@ class DsnTest extends TestCase
      * @covers ::getQuery
      * @covers ::getParameters
      * @covers ::__toString
+     * @covers ::createFromString
      *
      * @dataProvider provideDsnsToTestAgainst
      */
@@ -52,8 +51,9 @@ class DsnTest extends TestCase
         string $pass = '',
         array $query = [],
         array $parameters = []
-    ) : void {
-        $fixture = new Dsn($dsn);
+    ) : void
+    {
+        $fixture = Dsn::createFromString($dsn);
 
         $this->assertSame($normalizedDsn, (string) $fixture, 'Conversion to string fails');
         $this->assertSame($scheme, $fixture->getScheme(), 'Scheme does not match');
@@ -159,41 +159,48 @@ class DsnTest extends TestCase
     }
 
     /**
+     * @covers ::resolve
+     *
      * @dataProvider resolveDsnProvider
      */
     public function testResolve(string $baseDsn, string $srcDsn, string $expected) : void
     {
-        $baseDsn = new Dsn($baseDsn);
-        $srcDsn = new Dsn($srcDsn);
+        $baseDsn   = Dsn::createFromString($baseDsn);
+        $srcDsn    = Dsn::createFromString($srcDsn);
         $newSrcDns = $srcDsn->resolve($baseDsn);
 
         $this->assertEquals($expected, (string) $newSrcDns);
     }
 
-    public function resolveDsnProvider()
+    public function resolveDsnProvider() : array
     {
         return
             [
                 'Relative src uri level up' => [
                     'file:///project/config',
                     '../src',
-                    'file:///project/src'
+                    'file:///project/src',
                 ],
                 'Relative src deeper level' => [
                     'file:///project/config',
                     './src',
-                    'file:///project/config/src'
+                    'file:///project/config/src',
                 ],
                 'Absolute src uri' => [
                     'file:///project/config',
                     '/src',
-                    '/src'
+                    '/src',
                 ],
                 'Absolute src full dsn' => [
                     'file:///project/config',
                     'git+http://user:pw@github.com:8000/phpDocumentor/phpDocumentor2?q=qry1&x=qry2;branch=dev;other=xxx',
-                    'git+http://user:pw@github.com:8000/phpDocumentor/phpDocumentor2?q=qry1&x=qry2;branch=dev;other=xxx'
-                ]
+                    'git+http://user:pw@github.com:8000/phpDocumentor/phpDocumentor2?q=qry1&x=qry2;branch=dev;other=xxx',
+                ],
+//                'Relative path in git dsn with parameters' => [
+//                    'git+http://user:pw@github.com:8000/phpDocumentor/phpDocumentor2?q=qry1&x=qry2;branch=dev;other=xxx',
+//                    './src',
+//                    'git+http://user:pw@github.com:8000/phpDocumentor/phpDocumentor2/src?q=qry1&x=qry2;branch=dev;other=xxx',
+//                ],
             ];
     }
 }

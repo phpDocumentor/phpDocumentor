@@ -88,12 +88,13 @@ final class Version3 implements ConfigurationInterface, Normalizable
 
     public function normalize(array $configuration, ?Dsn $configFile) : array
     {
-        $configuration['paths']['output'] = $this->normalizeDsn(new Dsn($configuration['paths']['output']), $configFile);
+        $configPath = $configFile === null ? null : $configFile->withPath(Path::dirname($configFile->getPath()));
+        $configuration['paths']['output'] = $this->normalizeDsn(Dsn::createFromString($configuration['paths']['output']), $configPath);
         $configuration['paths']['cache'] = new Path($configuration['paths']['cache']);
         foreach ($configuration['versions'] as $versionNumber => $version) {
             foreach ($version['api'] as $key => $api) {
                 $configuration['versions'][$versionNumber]['api'][$key]['source']['dsn']
-                    = $this->normalizeDsn(new Dsn($api['source']['dsn']), $configFile);
+                    = $this->normalizeDsn(Dsn::createFromString($api['source']['dsn']), $configPath);
                 foreach ($api['source']['paths'] as $subkey => $path) {
                     $configuration['versions'][$versionNumber]['api'][$key]['source']['paths'][$subkey] =
                         new Path($path);
@@ -105,7 +106,7 @@ final class Version3 implements ConfigurationInterface, Normalizable
             }
             foreach ($version['guide'] as $key => $guide) {
                 $configuration['versions'][$versionNumber]['guide'][$key]['source']['dsn']
-                    = $this->normalizeDsn(new Dsn($guide['source']['dsn']), $configFile);
+                    = $this->normalizeDsn(Dsn::createFromString($guide['source']['dsn']), $configPath);
                 foreach ($guide['source']['paths'] as $subkey => $path) {
                     $configuration['versions'][$versionNumber]['guide'][$key]['source']['paths'][$subkey] =
                         new Path($path);

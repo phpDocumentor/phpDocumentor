@@ -52,14 +52,36 @@ final class Version3Test extends TestCase
         $definition = new Version3(self::DEFAULT_TEMPLATE_NAME);
         $configuration = $this->defaultConfigurationOutput();
         $expected = $this->defaultConfigurationOutput();
-        $expected['paths']['output'] = new Dsn($expected['paths']['output']);
+        $expected['paths']['output'] = Dsn::createFromString($expected['paths']['output']);
         $expected['paths']['cache'] = new Path($expected['paths']['cache']);
         $expected['versions']['1.0.0']['api'][0]['extensions']
             = $expected['versions']['1.0.0']['api'][0]['extensions']['extensions'];
         $expected['versions']['1.0.0']['api'][0]['markers']
             = $expected['versions']['1.0.0']['api'][0]['markers']['markers'];
 
-        $configuration = $definition->normalize($configuration,);
+        $configuration = $definition->normalize($configuration, null);
+
+        $this->assertEquals($expected, $configuration);
+    }
+
+    /**
+     * @covers ::normalize
+     */
+    public function testNormalizingTheDsnBasedOnConfigLocation() : void
+    {
+        $definition = new Version3(self::DEFAULT_TEMPLATE_NAME);
+        $configuration = $this->defaultConfigurationOutput();
+        $expected = $this->defaultConfigurationOutput();
+
+        $expected['paths']['output'] = Dsn::createFromString('/project/config/' . $expected['paths']['output']);
+        $expected['paths']['cache'] = new Path( $expected['paths']['cache']);
+        $expected['versions']['1.0.0']['api'][0]['source']['dsn'] = Dsn::createFromString('/project/config/');
+        $expected['versions']['1.0.0']['api'][0]['extensions']
+                                     = $expected['versions']['1.0.0']['api'][0]['extensions']['extensions'];
+        $expected['versions']['1.0.0']['api'][0]['markers']
+                                     = $expected['versions']['1.0.0']['api'][0]['markers']['markers'];
+
+        $configuration = $definition->normalize($configuration, Dsn::createFromString('/project/config/phpdoc.xml'));
 
         $this->assertEquals($expected, $configuration);
     }
@@ -108,26 +130,6 @@ final class Version3Test extends TestCase
                 $this->defaultConfigurationOutput(),
             ],
         ];
-    }
-
-    /**
-     * @covers ::normalize
-     */
-    public function testNormalizingTheDsnBasedOnConfigLocation() : void
-    {
-        $definition = new Version3(self::DEFAULT_TEMPLATE_NAME);
-        $configuration = $this->defaultConfigurationOutput();
-        $expected = $this->defaultConfigurationOutput();
-        $expected['paths']['output'] = new Dsn('config/' . $expected['paths']['output']);
-        $expected['paths']['cache'] = new Path('config/' . $expected['paths']['cache']);
-        $expected['versions']['1.0.0']['api'][0]['extensions']
-            = $expected['versions']['1.0.0']['api'][0]['extensions']['extensions'];
-        $expected['versions']['1.0.0']['api'][0]['markers']
-            = $expected['versions']['1.0.0']['api'][0]['markers']['markers'];
-
-        $configuration = $definition->normalize($configuration, new Dsn('/project/config/phpdoc.xml'));
-
-        $this->assertEquals($expected, $configuration);
     }
 
     private function defaultConfigurationOutput() : array

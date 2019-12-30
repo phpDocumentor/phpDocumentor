@@ -32,7 +32,7 @@ final class CollectFilesTest extends MockeryTestCase
      */
     public function testFilesAreCollectedAndAddedToPayload() : void
     {
-        $dns = new Dsn('file://.');
+        $dns = Dsn::createFromString('file://.');
         $fileCollector = m::mock(FileCollector::class);
         $fileCollector->expects('getFiles')
             ->with(
