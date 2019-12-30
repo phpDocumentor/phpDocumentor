@@ -151,6 +151,46 @@ final class LinkerTest extends MockeryTestCase
     /**
      * @covers ::substitute
      */
+    public function testSubstitutingAnArrayWorksRecursively()
+    {
+        $fqsenString1 = '\My\Class1';
+        $fqsenString2 = '\My\Class2';
+        $fqsenString3 = '\My\Class3';
+        $container = null;
+        $class1 = $this->givenAnExampleClassDescriptor($fqsenString1);
+
+        $this->descriptorRepository->findAlias($fqsenString1, $container)->willReturn($class1);
+        $this->descriptorRepository->findAlias($fqsenString2, $container)->willReturn(null);
+        $this->descriptorRepository->findAlias($fqsenString3, $container)->willReturn('\My\Class3');
+
+        $result = $this->linker->substitute(
+            [
+                [
+                    new Fqsen($fqsenString1), // Will be resolved to a ClassDescriptor
+                    [
+                        new Fqsen($fqsenString2), // Won't be resolved and stays like this
+                    ],
+                ],
+                new Fqsen($fqsenString3), // Will be resolved to a string
+            ],
+            $container
+        );
+
+        $this->assertIsArray($result);
+        $this->assertCount(2, $result);
+        $this->assertCount(2, $result[0]);
+        $this->assertCount(1, $result[0][1]);
+        $this->assertInstanceOf(ClassDescriptor::class, $result[0][0]);
+        $this->assertInstanceOf(Fqsen::class, $result[0][1][0]);
+        $this->assertIsString($result[1]);
+        $this->assertSame($fqsenString1, (string) $result[0][0]->getFullyQualifiedStructuralElementName());
+        $this->assertEquals(new Fqsen($fqsenString2), $result[0][1][0]);
+        $this->assertSame($fqsenString3, $result[1]);
+    }
+
+    /**
+     * @covers ::substitute
+     */
     public function testSubstitutingWillReplaceFieldsIndicatedInSubstitutionsProperty()
     {
         $this->linker = new Linker([ClassDescriptor::class => ['parent']], $this->descriptorRepository->reveal());
@@ -172,6 +212,49 @@ final class LinkerTest extends MockeryTestCase
 
         // The parent field value should be replaced with the given class
         $this->assertEquals($parentClass, $class->getParent());
+    }
+
+    /**
+     * @covers ::substitute
+     */
+    public function testSubstitutingWontReplaceFieldsWhenTheyReturnNull()
+    {
+        $class = $this->prophesize(ClassDescriptor::class);
+        $class->getFullyQualifiedStructuralElementName()->willReturn(new Fqsen('\My\Class'));
+
+        $this->linker = new Linker([get_class($class->reveal()) => ['parent']], $this->descriptorRepository->reveal());
+
+        // Only when field returns null, no update happens
+        $class->getParent()->willReturn(null)->shouldBeCalledOnce();
+        $class->setParent(Argument::any())->shouldNotBeCalled();
+
+        // include it twice; should only have its parent set once (see above)
+        $this->linker->substitute($class->reveal());
+    }
+
+    /**
+     * @covers ::substitute
+     */
+    public function testSubstitutingWillReplaceFieldsOnceForEachObject()
+    {
+        $class = $this->prophesize(ClassDescriptor::class);
+        $class->getFullyQualifiedStructuralElementName()->willReturn(new Fqsen('\My\Class'));
+
+        $this->linker = new Linker([get_class($class->reveal()) => ['parent']], $this->descriptorRepository->reveal());
+
+        $parentFqsenString = '\My\Parent\Class';
+        $parentFqsenObject = new Fqsen($parentFqsenString);
+
+        $parentClass = $this->givenAnExampleClassDescriptor($parentFqsenString);
+
+        // Only ONCE, even though it is present multiple times
+        $class->getParent()->willReturn($parentFqsenObject)->shouldBeCalledOnce();
+        $class->setParent($parentClass)->shouldBeCalledOnce();
+
+        $this->descriptorRepository->findAlias($parentFqsenString, $class)->willReturn($parentClass);
+
+        // include it twice; should only have its parent set once (see above)
+        $this->linker->substitute([$class->reveal(), $class->reveal()]);
     }
 
     /**
