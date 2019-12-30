@@ -19,6 +19,7 @@ use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Reflection\Fqsen;
 use Prophecy\Argument;
+use Prophecy\Prophecy\ObjectProphecy;
 use function get_class;
 
 /**
@@ -30,7 +31,10 @@ use function get_class;
  */
 final class LinkerTest extends MockeryTestCase
 {
+    /** @var ObjectProphecy|DescriptorRepository */
     private $descriptorRepository;
+
+    /** @var Linker */
     private $linker;
 
     protected function setUp() : void
@@ -57,7 +61,7 @@ final class LinkerTest extends MockeryTestCase
     /**
      * @covers ::substitute
      */
-    public function testSubstituteReturnsNullWhenPassingAnUnsupportedItemType()
+    public function testSubstituteReturnsNullWhenPassingAnUnsupportedItemType() : void
     {
         $this->descriptorRepository->findAlias(Argument::cetera())->shouldNotBeCalled();
 
@@ -70,7 +74,7 @@ final class LinkerTest extends MockeryTestCase
     /**
      * @covers ::substitute
      */
-    public function testSubstituteReturnsDescriptorBasedOnFqsenString()
+    public function testSubstituteReturnsDescriptorBasedOnFqsenString() : void
     {
         $fqsenString = '\My\Class';
         $container = null;
@@ -87,7 +91,7 @@ final class LinkerTest extends MockeryTestCase
     /**
      * @covers ::substitute
      */
-    public function testSubstituteReturnsDescriptorBasedOnFqsenObject()
+    public function testSubstituteReturnsDescriptorBasedOnFqsenObject() : void
     {
         $fqsenString = '\My\Class';
         $container = null;
@@ -105,7 +109,7 @@ final class LinkerTest extends MockeryTestCase
     /**
      * @covers ::substitute
      */
-    public function testSubstituteReturnsNullIfFqsenCannotBeFound()
+    public function testSubstituteReturnsNullIfFqsenCannotBeFound() : void
     {
         $container = null;
         $this->descriptorRepository->findAlias('\My\Class', $container)->willReturn(null);
@@ -118,7 +122,7 @@ final class LinkerTest extends MockeryTestCase
     /**
      * @covers ::substitute
      */
-    public function testSubstitutingAnArrayReplacesAllElementsWithTheirDescriptors()
+    public function testSubstitutingAnArrayReplacesAllElementsWithTheirDescriptors() : void
     {
         $fqsenString1 = '\My\Class1';
         $fqsenString2 = '\My\Class2';
@@ -151,7 +155,7 @@ final class LinkerTest extends MockeryTestCase
     /**
      * @covers ::substitute
      */
-    public function testSubstitutingAnArrayWorksRecursively()
+    public function testSubstitutingAnArrayWorksRecursively() : void
     {
         $fqsenString1 = '\My\Class1';
         $fqsenString2 = '\My\Class2';
@@ -191,7 +195,7 @@ final class LinkerTest extends MockeryTestCase
     /**
      * @covers ::substitute
      */
-    public function testSubstitutingWillReplaceFieldsIndicatedInSubstitutionsProperty()
+    public function testSubstitutingWillReplaceFieldsIndicatedInSubstitutionsProperty() : void
     {
         $this->linker = new Linker([ClassDescriptor::class => ['parent']], $this->descriptorRepository->reveal());
 
@@ -217,7 +221,7 @@ final class LinkerTest extends MockeryTestCase
     /**
      * @covers ::substitute
      */
-    public function testSubstitutingWontReplaceFieldsWhenTheyReturnNull()
+    public function testSubstitutingWontReplaceFieldsWhenTheyReturnNull() : void
     {
         $class = $this->prophesize(ClassDescriptor::class);
         $class->getFullyQualifiedStructuralElementName()->willReturn(new Fqsen('\My\Class'));
@@ -235,7 +239,7 @@ final class LinkerTest extends MockeryTestCase
     /**
      * @covers ::substitute
      */
-    public function testSubstitutingWillReplaceFieldsOnceForEachObject()
+    public function testSubstitutingWillReplaceFieldsOnceForEachObject() : void
     {
         $class = $this->prophesize(ClassDescriptor::class);
         $class->getFullyQualifiedStructuralElementName()->willReturn(new Fqsen('\My\Class'));
