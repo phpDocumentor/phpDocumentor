@@ -13,13 +13,12 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Compiler\Linker;
 
-use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Reflection\Fqsen;
 use Prophecy\Argument;
-use function array_keys;
 use function get_class;
 
 /**
@@ -31,6 +30,15 @@ use function get_class;
  */
 final class LinkerTest extends MockeryTestCase
 {
+    private $descriptorRepository;
+    private $linker;
+
+    protected function setUp() : void
+    {
+        $this->descriptorRepository = $this->prophesize(DescriptorRepository::class);
+        $this->linker = new Linker([], $this->descriptorRepository->reveal());
+    }
+
     /**
      * @covers ::getSubstitutions
      */
@@ -49,171 +57,121 @@ final class LinkerTest extends MockeryTestCase
     /**
      * @covers ::substitute
      */
-    public function testSubstituteFqsenInObject() : void
+    public function testSubstituteReturnsNullWhenPassingAnUnsupportedItemType()
     {
-        // initialize parameters
-        $result = new ClassDescriptor();
-        $fieldName = 'field';
+        $this->descriptorRepository->findAlias(Argument::cetera())->shouldNotBeCalled();
 
-        [$object, $fqsen] = $this->createMockDescriptorForResult($result);
+        // for example, integers cannot be substituted
+        $result = $this->linker->substitute(1);
 
-        // prepare linker
-        $descriptorRepository = new DescriptorRepository();
-        $descriptorRepository->setObjectAliasesList([$fqsen => $result]);
-        $linker = new Linker([$fqsen => [$fieldName]], $descriptorRepository);
-
-        // execute test.
-        $linker->substitute($object);
-
-        // mark test as successful due to asserts in Mockery
-        $this->assertTrue(true);
+        $this->assertSame(null, $result);
     }
 
     /**
      * @covers ::substitute
-     * @depends testSubstituteFqsenInObject
      */
-    public function testMultipleSubstitutionsInOneObject() : void
+    public function testSubstituteReturnsDescriptorBasedOnFqsenString()
     {
-        // initialize parameters
-        $result = new ClassDescriptor();
-        $fieldNames = ['field1', 'field2'];
+        $fqsenString = '\My\Class';
+        $container = null;
 
-        // assert that the getField is called (and returns a FQSEN) and the setField is called with the expected object
-        $object = m::mock(ClassDescriptor::class);
-        $fqsen = get_class($object);
-        foreach (array_keys($fieldNames) as $index) {
-            $object->shouldReceive('getField' . ($index + 1))->atLeast()->once()->andReturn($fqsen);
-            $object->shouldReceive('setField' . ($index + 1))->atLeast()->once()->with($result);
-        }
+        $this->descriptorRepository->findAlias($fqsenString, $container)
+            ->willReturn($this->givenAnExampleClassDescriptor($fqsenString));
 
-        // prepare linker
-        $descriptorRepository = new DescriptorRepository();
-        $descriptorRepository->setObjectAliasesList([$fqsen => $result]);
-        $linker = new Linker([$fqsen => $fieldNames], $descriptorRepository);
+        $result = $this->linker->substitute($fqsenString, $container);
 
-        // execute test.
-        $linker->substitute($object);
-
-        // mark test as successful due to asserts in Mockery
-        $this->assertTrue(true);
+        $this->assertInstanceOf(ClassDescriptor::class, $result);
+        $this->assertSame($fqsenString, (string) $result->getFullyQualifiedStructuralElementName());
     }
 
     /**
      * @covers ::substitute
-     * @depends testSubstituteFqsenInObject
      */
-    public function testSubstituteFieldsViaChildObject() : void
+    public function testSubstituteReturnsDescriptorBasedOnFqsenObject()
     {
-        // initialize parameters
-        $result = new ClassDescriptor();
-        $childFieldName = 'field';
-        $fieldName = 'child';
+        $fqsenString = '\My\Class';
+        $container = null;
+        $fqsen = new Fqsen($fqsenString);
 
-        [$childObject, $childFqsen] = $this->createMockDescriptorForResult($result);
+        $this->descriptorRepository->findAlias($fqsenString, $container)
+            ->willReturn($this->givenAnExampleClassDescriptor($fqsenString));
 
-        $object = m::mock('phpDocumentor\Descripto\DescriptorAbstract');
-        $fqsen = get_class($object);
-        $object->shouldReceive('getChild')->atLeast()->once()->andReturn($childObject);
-        $object->shouldReceive('setChild')->never();
+        $result = $this->linker->substitute($fqsen, $container);
 
-        // prepare linker
-        $descriptorRepository = new DescriptorRepository();
-        $descriptorRepository->setObjectAliasesList([$childFqsen => $result]);
-        $linker = new Linker(
+        $this->assertInstanceOf(ClassDescriptor::class, $result);
+        $this->assertSame($fqsenString, (string) $result->getFullyQualifiedStructuralElementName());
+    }
+
+    /**
+     * @covers ::substitute
+     */
+    public function testSubstituteReturnsNullIfFqsenCannotBeFound()
+    {
+        $container = null;
+        $this->descriptorRepository->findAlias('\My\Class', $container)->willReturn(null);
+
+        $result = $this->linker->substitute('\My\Class', $container);
+
+        $this->assertNull($result);
+    }
+
+    /**
+     * @covers ::substitute
+     */
+    public function testSubstitutingAnArrayReplacesAllElementsWithTheirDescriptors()
+    {
+        $fqsenString1 = '\My\Class1';
+        $fqsenString2 = '\My\Class2';
+        $fqsenString3 = '\My\Class3';
+        $container = null;
+        $class1 = $this->givenAnExampleClassDescriptor($fqsenString1);
+
+        $this->descriptorRepository->findAlias($fqsenString1, $container)->willReturn($class1);
+        $this->descriptorRepository->findAlias($fqsenString2, $container)->willReturn(null);
+        $this->descriptorRepository->findAlias($fqsenString3, $container)->willReturn('\My\Class3');
+
+        $result = $this->linker->substitute(
             [
-                $fqsen => [$fieldName],
-                $childFqsen => [$childFieldName],
+                new Fqsen($fqsenString1), // Will be resolved to a ClassDescriptor
+                new Fqsen($fqsenString2), // Won't be resolved and stays like this
+                new Fqsen($fqsenString3), // Will be resolved to a string
             ],
-            $descriptorRepository
+            $container
         );
 
-        // execute test.
-        $linker->substitute($object);
-
-        // mark test as successful due to asserts in Mockery
-        $this->assertTrue(true);
-    }
-
-    /**
-     * @covers ::substitute
-     * @depends testSubstituteFqsenInObject
-     */
-    public function testSubstituteFieldsViaArrayOfChildObjects() : void
-    {
-        // initialize parameters
-        $result = new ClassDescriptor();
-        $childFieldName = 'field';
-        $fieldName = 'child';
-
-        [$childObject, $childFqsen] = $this->createMockDescriptorForResult($result);
-
-        $object = m::mock('phpDocumentor\Descriptor\DescriptorAbstract');
-        $fqsen = get_class($object);
-        $object->shouldReceive('getChild')->atLeast()->once()->andReturn([$childObject]);
-        $object->shouldReceive('setChild');
-
-        // prepare linker
-        $descriptorRepository = new DescriptorRepository();
-        $descriptorRepository->setObjectAliasesList([$childFqsen => $result]);
-        $linker = new Linker(
-            [
-                $fqsen => [$fieldName],
-                $childFqsen => [$childFieldName],
-            ],
-            $descriptorRepository
-        );
-
-        // execute test.
-        $linker->substitute($object);
-
-        // mark test as successful due to asserts in Mockery
-        $this->assertTrue(true);
+        $this->assertIsArray($result);
+        $this->assertInstanceOf(ClassDescriptor::class, $result[0]);
+        $this->assertInstanceOf(Fqsen::class, $result[1]);
+        $this->assertIsString($result[2]);
+        $this->assertSame($fqsenString1, (string) $result[0]->getFullyQualifiedStructuralElementName());
+        $this->assertEquals(new Fqsen($fqsenString2), $result[1]);
+        $this->assertSame($fqsenString3, $result[2]);
     }
 
     /**
      * @covers ::substitute
      */
-    public function testSubstituteArrayRecursive() : void
+    public function testSubstitutingWillReplaceFieldsIndicatedInSubstitutionsProperty()
     {
-        $repository = $this->prophesize(DescriptorRepository::class);
-        $linker = new Linker([], $repository->reveal());
-        $repository->findAlias(Argument::cetera())->willReturn('substituted');
-        $elementList = [
-            'one' => ['two' => 'two'],
-        ];
-        $result = $linker->substitute($elementList);
-        $expected = [
-            'one' => ['two' => 'substituted'],
-        ];
-        $this->assertSame($expected, $result);
-    }
+        $this->linker = new Linker([ClassDescriptor::class => ['parent']], $this->descriptorRepository->reveal());
 
-    /**
-     * Test that already processed objects don't substitute again
-     * Using mockery, as return value would be `null` in both cases
-     *
-     * @covers ::substitute
-     */
-    public function testSubstituteSkipProcessed() : void
-    {
-        /** @var Linker|m\MockInterface $mock */
-        $mock = m::mock(Linker::class);
-        $mock->makePartial();
-        $mock->shouldAllowMockingProtectedMethods();
-        $mock->shouldReceive('findFieldValue')->atMost()->once();
+        $class = $this->givenAnExampleClassDescriptor('\My\Class');
+        $parentFqsenString = '\My\Parent\Class';
+        $parentFqsenObject = new Fqsen($parentFqsenString);
+        $class->setParent($parentFqsenObject); // Set FQSEN that should be replaced
 
-        $item = new ClassDescriptor();
-        $item->attribute = 'foreachme';
+        $parentClass = $this->givenAnExampleClassDescriptor($parentFqsenString);
 
-        //findFieldValue() should be called
-        $result = $mock->substitute($item);
+        $this->descriptorRepository->findAlias($parentFqsenString, $class)->willReturn($parentClass);
 
-        //findFieldvalue() should NOT be called
-        $result = $mock->substitute($item);
+        $result = $this->linker->substitute($class);
 
-        // mark test as successful due to asserts in Mockery
-        $this->assertTrue(true);
+        // Classes are modified and this method returns null to indicate that the calling location does not need
+        // to be replaced.
+        $this->assertNull($result);
+
+        // The parent field value should be replaced with the given class
+        $this->assertEquals($parentClass, $class->getParent());
     }
 
     /**
@@ -247,21 +205,11 @@ final class LinkerTest extends MockeryTestCase
         $linker->execute($project);
     }
 
-    /**
-     * @covers ::execute
-     */
-    private function createMockDescriptorForResult(?ClassDescriptor $result = null) : array
+    private function givenAnExampleClassDescriptor(string $fqsenString) : ClassDescriptor
     {
-        $object = m::mock(ClassDescriptor::class);
-        $fqsen = get_class($object);
-        $object->shouldReceive('getField')->atLeast()->once()->andReturn($fqsen);
+        $exampleDescriptor = new ClassDescriptor();
+        $exampleDescriptor->setFullyQualifiedStructuralElementName(new Fqsen($fqsenString));
 
-        if ($result) {
-            $object->shouldReceive('setField')->atLeast()->once()->with($result);
-        } else {
-            $object->shouldReceive('setField')->never();
-        }
-
-        return [$object, $fqsen];
+        return $exampleDescriptor;
     }
 }
