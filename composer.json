@@ -61,7 +61,7 @@
         "symfony/stopwatch": "^5.0",
         "symfony/string": "5.0.*",
         "symfony/yaml": "^5.0",
-        "twig/twig": "~2.0",
+        "twig/twig": "~3.0",
         "webmozart/assert": "^1.3"
     },
     "minimum-stability": "stable",
