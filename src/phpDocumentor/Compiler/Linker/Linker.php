@@ -145,13 +145,12 @@ class Linker implements CompilerPassInterface
     {
         $isModified = false;
         foreach ($collection as $key => $element) {
-            $isModified = true;
-
             $element = $this->substitute($element, $container);
             if ($element === null) {
                 continue;
             }
 
+            $isModified = true;
             $collection[$key] = $element;
         }
 
