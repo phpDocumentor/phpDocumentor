@@ -244,60 +244,6 @@ body {
     color: var(--text-color);
 }
 
-.phpdocumentor-top-header {
-    background: var(--top-header-bg-color);
-    min-height: var(--top-header-height);
-    font-size: var(--text-sm);
-    color: var(--top-header-text-color);
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    padding: 0 var(--spacing-sm);
-}
-
-.phpdocumentor-header {
-    background: var(--header-bg-color);
-    display: flex;
-    margin-bottom: var(--spacing-lg);
-    position: relative;
-}
-
-.phpdocumentor-header:after {
-    content: '';
-    position: absolute;
-    bottom: -8px;
-    left: 0;
-    right: 0;
-    border-bottom: 3px solid var(--header-bg-color);
-}
-
-.phpdocumentor-title {
-    color: var(--title-text-color);
-    text-shadow: 0 0 2px var(--title-text-shadow-color);
-    font-size: var(--text-xxxxl);
-    line-height: 1.2;
-    letter-spacing: .05rem;
-}
-
-.phpdocumentor-summary,
-.phpdocumentor-class__summary,
-.phpdocumentor-trait__summary,
-.phpdocumentor-interface__summary {
-    font-style: italic;
-}
-
-.phpdocumentor-interface__extends,
-.phpdocumentor-class__extends,
-.phpdocumentor-class__implements {
-    display: block;
-    font-size: var(--text-xxs);
-    opacity: .7;
-    font-weight: normal;
-}
-
-.phpdocumentor-table_of_contents {
-    font-size: var(--text-sm);
-}
 /* Typography
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 .phpdocumentor h1,
@@ -613,6 +559,74 @@ td.phpdocumentor-cell:last-child {
     clear: both;
 }
 
+
+/* Elements
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+.phpdocumentor-top-header {
+    background: var(--top-header-bg-color);
+    min-height: var(--top-header-height);
+    font-size: var(--text-sm);
+    color: var(--top-header-text-color);
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    padding: 0 var(--spacing-sm);
+}
+
+.phpdocumentor-header {
+    background: var(--header-bg-color);
+    display: flex;
+    margin-bottom: var(--spacing-lg);
+    position: relative;
+}
+
+.phpdocumentor-header:after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    right: 0;
+    border-bottom: 3px solid var(--header-bg-color);
+}
+
+.phpdocumentor-title {
+    color: var(--title-text-color);
+    text-shadow: 0 0 2px var(--title-text-shadow-color);
+    font-size: var(--text-xxxxl);
+    line-height: 1.2;
+    letter-spacing: .05rem;
+}
+
+.phpdocumentor-summary,
+.phpdocumentor-class__summary,
+.phpdocumentor-trait__summary,
+.phpdocumentor-interface__summary {
+    font-style: italic;
+}
+
+.phpdocumentor-interface__extends,
+.phpdocumentor-class__extends,
+.phpdocumentor-class__implements {
+    display: block;
+    font-size: var(--text-xxs);
+    opacity: .7;
+    font-weight: normal;
+}
+
+.phpdocumentor-table_of_contents {
+    font-size: var(--text-sm);
+}
+
+.phpdocumentor .phpdocumentor-sidebar__category-header {
+    font-size: var(--text-lg);
+    margin-bottom: var(--spacing-sm);
+}
+
+.phpdocumentor .phpdocumentor-sidebar__root-namespace {
+    font-size: var(--text-md);
+    margin-bottom: var(--spacing-xxs);
+}
 
 /* Media Queries
 –––––––––––––––––––––––––––––––––––––––––––––––––– */

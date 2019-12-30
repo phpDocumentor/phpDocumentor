@@ -1,19 +1,11 @@
-<aside class="three phpdocumentor-columns">
-    <p>Getting Started</p>
-    <ul class="phpdocumentor-list">
-        <li>Setup</li>
-    </ul>
-    <p>API</p>
-    <ul class="phpdocumentor-list">
-        {% for namespace in project.namespace.children %}
-            <li>
-                {{ namespace|route('class:short')|raw }}
-                <ul class="phpdocumentor-list">
-                    {% for child in namespace.children %}
-                        <li><a href="{{ link(child) }}">{{child.name}}</a></li>
-                    {% endfor %}
-                </ul>
-            </li>
-        {% endfor %}
-    </ul>
+<aside class="three phpdocumentor-columns phpdocumentor-sidebar">
+    <h1 class="phpdocumentor-sidebar__category-header">API</h1>
+    {% for namespace in project.namespace.children %}
+        <h2 class="phpdocumentor-sidebar__root-namespace">{{ namespace|route('class:short')|raw }}</h2>
+        <ul class="phpdocumentor-list">
+            {% for child in namespace.children %}
+                <li><a href="{{ link(child) }}">{{ child.name }}</a></li>
+            {% endfor %}
+        </ul>
+    {% endfor %}
 </aside>
