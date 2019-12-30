@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @param   $param some description
+ * @param mixed $param some description
  */
 function test($param) {
 }
