@@ -83,7 +83,7 @@ final class Version2Test extends TestCase
     {
         return [
             SymfonyConfigFactory::FIELD_CONFIG_VERSION => '2',
-            'title' => 'my-doc',
+            'title' => 'Documentation',
             'parser' => [
                 'default-package-name' => 'Application',
                 'visibility' => ['public', 'protected', 'private'],

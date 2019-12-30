@@ -43,7 +43,7 @@ final class Version3 implements ConfigurationInterface, Normalizable
             ->addDefaultsIfNotSet()
             ->children()
                 ->scalarNode(SymfonyConfigFactory::FIELD_CONFIG_VERSION)->defaultValue('3')->end()
-                ->scalarNode('title')->defaultValue('my-doc')->end()
+                ->scalarNode('title')->defaultValue('Documentation')->end()
                 ->booleanNode('use-cache')->defaultTrue()->end()
                 ->arrayNode('paths')
                     ->addDefaultsIfNotSet()

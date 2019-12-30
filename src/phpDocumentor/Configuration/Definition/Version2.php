@@ -40,7 +40,7 @@ final class Version2 implements ConfigurationInterface, Upgradable
             ->addDefaultsIfNotSet()
             ->children()
                 ->scalarNode(SymfonyConfigFactory::FIELD_CONFIG_VERSION)->defaultValue('2')->end()
-                ->scalarNode('title')->defaultValue('my-doc')->end()
+                ->scalarNode('title')->defaultValue('Documentation')->end()
                 ->arrayNode('parser')
                     ->addDefaultsIfNotSet()
                     ->normalizeKeys(false)

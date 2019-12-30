@@ -118,7 +118,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
                     $namespace = $baseNode instanceof NamespaceDescriptor
                         ? $baseNode->getParent()
                         : $baseNode->getNamespace();
-                    while ($namespace && $namespace->getName() !== '\\') {
+                    while ($namespace instanceof NamespaceDescriptor && $namespace->getName() !== '\\') {
                         array_unshift($results, $namespace);
                         $namespace = $namespace->getParent();
                     }
