@@ -49,6 +49,23 @@ final class PathNormalizingMiddelwareTest extends TestCase
         );
     }
 
+    /**
+     * @dataProvider pathProvider
+     */
+    public function testNormalizedIgnoreToGlob(string $input, string $output) : void
+    {
+        $configuration = $this->givenAConfiguration();
+        $configuration['phpdocumentor']['versions']['1.0.0']['api'][0]['ignore']['paths'] = [$input];
+
+        $middleware = new PathNormalizingMiddelware();
+        $outputConfig = $middleware($configuration, Uri::createFromString('./config.xml'));
+
+        self::assertEquals(
+            [$output],
+            $outputConfig['phpdocumentor']['versions']['1.0.0']['api'][0]['ignore']['paths']
+        );
+    }
+
     public function pathProvider() : array
     {
         return [

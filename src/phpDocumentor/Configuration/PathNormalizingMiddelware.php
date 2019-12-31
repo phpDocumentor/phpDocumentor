@@ -22,25 +22,6 @@ final class PathNormalizingMiddelware
         return $configuration;
     }
 
-    private function pathToGlobPattern(string $path) : string
-    {
-        if (strpos($path, '.') === 0) {
-            $path = ltrim($path, '.');
-        }
-
-        if (strpos($path, '/') !== 0) {
-            $path = '/' . $path;
-        }
-
-        $path = rtrim($path, '/');
-
-        if (substr($path, -1) !== '*' && strpos($path, '.') === false) {
-            $path .= '/**/*';
-        }
-
-        return $path;
-    }
-
     /**
      * Transforms relative dsn to relative path of working dir.
      *
@@ -107,5 +88,24 @@ final class PathNormalizingMiddelware
         }
 
         return $configuration;
+    }
+
+    private function pathToGlobPattern(string $path) : string
+    {
+        if (strpos($path, '.') === 0) {
+            $path = ltrim($path, '.');
+        }
+
+        if (strpos($path, '/') !== 0) {
+            $path = '/' . $path;
+        }
+
+        $path = rtrim($path, '/');
+
+        if (substr($path, -1) !== '*' && strpos($path, '.') === false) {
+            $path .= '/**/*';
+        }
+
+        return $path;
     }
 }
