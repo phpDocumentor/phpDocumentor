@@ -16,9 +16,7 @@ namespace phpDocumentor\Pipeline\Stage\Parser;
 use phpDocumentor\Parser\FileCollector;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
-use function array_map;
 use function count;
-use function substr;
 
 final class CollectFiles
 {
