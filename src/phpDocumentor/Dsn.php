@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor;
 
+use Generator;
 use InvalidArgumentException;
 use League\Uri\Contracts\UriInterface;
 use League\Uri\Uri as LeagueUri;
@@ -80,7 +81,7 @@ final class Dsn
         return new self($uri, $parsedParameters, $dsn);
     }
 
-    private static function createFromUri(UriInterface $uri, array $parameters = []) : self
+    public static function createFromUri(UriInterface $uri, array $parameters = []) : self
     {
         $dsn = implode(';', [(string) $uri] + $parameters);
 
@@ -188,16 +189,15 @@ final class Dsn
 
         $baseUri = rtrim(((string) $baseDsn->uri), '/');
         $newUri = LeagueUri::createFromString($baseUri . '/' . $this->uri->getPath());
-        return Dsn::createFromUri(
+        return self::createFromUri(
             UriResolver::resolve($newUri, $baseDsn->uri),
             $baseDsn->parameters
         );
     }
 
-    public function withPath(Path $path): self
+    public function withPath(Path $path) : self
     {
         return self::createFromUri($this->uri->withPath((string) $path), $this->parameters);
-
     }
 
     /**
@@ -217,7 +217,7 @@ final class Dsn
         return $result;
     }
 
-    private static function parseParameter(string $part) : \Generator
+    private static function parseParameter(string $part) : Generator
     {
         $result = [];
         parse_str($part, $result);

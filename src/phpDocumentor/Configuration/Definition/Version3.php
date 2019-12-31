@@ -13,14 +13,12 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Configuration\Definition;
 
-use League\Uri\Contracts\UriInterface;
 use phpDocumentor\Configuration\SymfonyConfigFactory;
 use phpDocumentor\Dsn;
 use phpDocumentor\Path;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
-use function _HumbugBox7eb78fbcc73e\resolve;
 
 final class Version3 implements ConfigurationInterface, Normalizable
 {
@@ -86,15 +84,14 @@ final class Version3 implements ConfigurationInterface, Normalizable
         return $treebuilder;
     }
 
-    public function normalize(array $configuration, ?Dsn $configFile) : array
+    public function normalize(array $configuration) : array
     {
-        $configPath = $configFile === null ? null : $configFile->withPath(Path::dirname($configFile->getPath()));
-        $configuration['paths']['output'] = $this->normalizeDsn(Dsn::createFromString($configuration['paths']['output']), $configPath);
+        $configuration['paths']['output'] = Dsn::createFromString($configuration['paths']['output']);
         $configuration['paths']['cache'] = new Path($configuration['paths']['cache']);
         foreach ($configuration['versions'] as $versionNumber => $version) {
             foreach ($version['api'] as $key => $api) {
                 $configuration['versions'][$versionNumber]['api'][$key]['source']['dsn']
-                    = $this->normalizeDsn(Dsn::createFromString($api['source']['dsn']), $configPath);
+                    = Dsn::createFromString($api['source']['dsn']);
                 foreach ($api['source']['paths'] as $subkey => $path) {
                     $configuration['versions'][$versionNumber]['api'][$key]['source']['paths'][$subkey] =
                         new Path($path);
@@ -106,7 +103,7 @@ final class Version3 implements ConfigurationInterface, Normalizable
             }
             foreach ($version['guide'] as $key => $guide) {
                 $configuration['versions'][$versionNumber]['guide'][$key]['source']['dsn']
-                    = $this->normalizeDsn(Dsn::createFromString($guide['source']['dsn']), $configPath);
+                    = Dsn::createFromString($guide['source']['dsn']);
                 foreach ($guide['source']['paths'] as $subkey => $path) {
                     $configuration['versions'][$versionNumber]['guide'][$key]['source']['paths'][$subkey] =
                         new Path($path);
@@ -153,7 +150,7 @@ final class Version3 implements ConfigurationInterface, Normalizable
                         ->defaultValue('Application')
                     ->end()
                     ->scalarNode('encoding')->defaultValue('utf-8')->end()
-                    ->append($this->source(['.']))
+                    ->append($this->source(['/**/*']))
                     ->arrayNode('ignore')
                         ->addDefaultsIfNotSet()
                         ->fixXmlConfig('path')
@@ -237,14 +234,5 @@ final class Version3 implements ConfigurationInterface, Normalizable
             ->beforeNormalization()->castToArray()->end()
             ->defaultValue($defaultValue)
             ->prototype('scalar')->end();
-    }
-
-    private function normalizeDsn(Dsn $param, ?Dsn $configFile)
-    {
-        if ($configFile === null) {
-            return $param;
-        }
-
-        return $param->resolve($configFile);
     }
 }

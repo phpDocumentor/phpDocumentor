@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Configuration\Definition;
 
-use League\Uri\Uri;
 use phpDocumentor\Configuration\SymfonyConfigFactory;
 use phpDocumentor\Dsn;
 use phpDocumentor\Path;
@@ -59,29 +58,7 @@ final class Version3Test extends TestCase
         $expected['versions']['1.0.0']['api'][0]['markers']
             = $expected['versions']['1.0.0']['api'][0]['markers']['markers'];
 
-        $configuration = $definition->normalize($configuration, null);
-
-        $this->assertEquals($expected, $configuration);
-    }
-
-    /**
-     * @covers ::normalize
-     */
-    public function testNormalizingTheDsnBasedOnConfigLocation() : void
-    {
-        $definition = new Version3(self::DEFAULT_TEMPLATE_NAME);
-        $configuration = $this->defaultConfigurationOutput();
-        $expected = $this->defaultConfigurationOutput();
-
-        $expected['paths']['output'] = Dsn::createFromString('/project/config/' . $expected['paths']['output']);
-        $expected['paths']['cache'] = new Path( $expected['paths']['cache']);
-        $expected['versions']['1.0.0']['api'][0]['source']['dsn'] = Dsn::createFromString('/project/config/');
-        $expected['versions']['1.0.0']['api'][0]['extensions']
-                                     = $expected['versions']['1.0.0']['api'][0]['extensions']['extensions'];
-        $expected['versions']['1.0.0']['api'][0]['markers']
-                                     = $expected['versions']['1.0.0']['api'][0]['markers']['markers'];
-
-        $configuration = $definition->normalize($configuration, Dsn::createFromString('/project/config/phpdoc.xml'));
+        $configuration = $definition->normalize($configuration);
 
         $this->assertEquals($expected, $configuration);
     }
@@ -153,7 +130,7 @@ final class Version3Test extends TestCase
                             'encoding' => 'utf-8',
                             'source' => [
                                 'dsn' => '.',
-                                'paths' => ['.'],
+                                'paths' => ['/**/*'],
                             ],
                             'ignore' => [
                                 'hidden' => true,

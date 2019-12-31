@@ -18,6 +18,7 @@ use League\Uri\Uri;
 use phpDocumentor\Configuration\CommandlineOptionsMiddleware;
 use phpDocumentor\Configuration\Configuration;
 use phpDocumentor\Configuration\ConfigurationFactory;
+use phpDocumentor\Configuration\PathNormalizingMiddelware;
 use Psr\Log\LoggerInterface;
 use function realpath;
 use function sprintf;
@@ -51,6 +52,7 @@ final class Configure
         $this->configFactory->addMiddleware(
             new CommandlineOptionsMiddleware($options, $this->configFactory)
         );
+        $this->configFactory->addMiddleware(new PathNormalizingMiddelware());
 
         if ($options['config'] ?? null) {
             $path = $options['config'];
