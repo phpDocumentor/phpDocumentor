@@ -1,6 +1,6 @@
 describe('Frontpage', function() {
     before(function(){
-        cy.visit('tests/features/assets/projects/MariosPizzeria/build/api/index.html');
+        cy.visit('data/examples/MariosPizzeria/build/api/index.html');
     });
 
     it('Has "Documentation" as title', function() {

@@ -236,6 +236,33 @@ jobs:
       - name: Run phpDocumentor on itself
         run: php ./build/phpDocumentor.phar -vvv
 
+  cypress:
+    runs-on: ubuntu-latest
+    name: Cypress
+    needs:
+      - setup
+    steps:
+      - uses: actions/checkout@master
+      - name: Restore/cache vendor folder
+        uses: actions/cache@v1
+        with:
+          path: vendor
+          key: all-build-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            all-build-${{ hashFiles('**/composer.lock') }}
+            all-build-
+      - name: Setup PHP
+        uses: shivammathur/setup-php@master
+        with:
+          php-version: '7.2'
+          extension-csv: mbstring, intl, iconv, libxml, dom, json, simplexml, zlib
+          ini-values-csv: memory_limit=2G, display_errors=On, error_reporting=-1
+          pecl: true
+      - name: Build example project
+        run: cd data/examples/MariosPizzeria && ../../bin/phpdoc --template=default && cd ../..
+      - name: Run Cypress
+        uses: cypress-io/github-action@v1
+
   phpunit:
     runs-on: ${{ matrix.operating-system }}
     strategy:

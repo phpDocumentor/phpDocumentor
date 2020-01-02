@@ -52,7 +52,7 @@ npm-install:
 
 .PHONY: marios
 example-marios:
-	CURRENT_UID=$(shell id -u):$(shell id -g) docker-compose run --rm -v ${CURDIR}:/opt/phpdoc -w /opt/phpdoc/tests/features/assets/projects/MariosPizzeria phpdoc --template=default
+	CURRENT_UID=$(shell id -u):$(shell id -g) docker-compose run --rm -v ${CURDIR}:/opt/phpdoc -w /opt/phpdoc/data/examples/MariosPizzeria phpdoc --template=default
 
 .PHONY: test-template
 test-template: npm-install example-marios

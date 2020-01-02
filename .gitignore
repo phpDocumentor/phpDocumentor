@@ -6,7 +6,7 @@ bin/var-dump-server
 
 # Build folder and vendor folder are generated code; no need to version this
 build/*
-tests/features/assets/projects/MariosPizzeria/build/*
+data/examples/MariosPizzeria/build/*
 vendor/*
 node_modules/*
 tools/
