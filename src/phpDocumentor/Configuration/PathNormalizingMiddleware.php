@@ -12,7 +12,7 @@ use function rtrim;
 use function strpos;
 use function substr;
 
-final class PathNormalizingMiddelware
+final class PathNormalizingMiddleware
 {
     public function __invoke(array $configuration, ?Uri $uri) : array
     {

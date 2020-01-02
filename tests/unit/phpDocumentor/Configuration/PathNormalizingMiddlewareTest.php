@@ -8,11 +8,11 @@ use League\Uri\Uri;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @coversDefaultClass \phpDocumentor\Configuration\PathNormalizingMiddelware
+ * @coversDefaultClass \phpDocumentor\Configuration\PathNormalizingMiddleware
  * @covers ::__invoke
  * @covers ::<private>
  */
-final class PathNormalizingMiddelwareTest extends TestCase
+final class PathNormalizingMiddlewareTest extends TestCase
 {
     /** @var ConfigurationFactory */
     private $configurationFactory;
@@ -26,7 +26,7 @@ final class PathNormalizingMiddelwareTest extends TestCase
     public function testNoConfigUriLeavesConfigUnchanged() : void
     {
         $configuration = $this->givenAConfiguration();
-        $middleware = new PathNormalizingMiddelware();
+        $middleware = new PathNormalizingMiddleware();
         $outputConfig = $middleware($configuration, null);
 
         self::assertEquals($configuration, $outputConfig);
@@ -40,7 +40,7 @@ final class PathNormalizingMiddelwareTest extends TestCase
         $configuration = $this->givenAConfiguration();
         $configuration['phpdocumentor']['versions']['1.0.0']['api'][0]['source']['paths'] = [$input];
 
-        $middleware = new PathNormalizingMiddelware();
+        $middleware = new PathNormalizingMiddleware();
         $outputConfig = $middleware($configuration, Uri::createFromString('./config.xml'));
 
         self::assertEquals(
@@ -57,7 +57,7 @@ final class PathNormalizingMiddelwareTest extends TestCase
         $configuration = $this->givenAConfiguration();
         $configuration['phpdocumentor']['versions']['1.0.0']['api'][0]['ignore']['paths'] = [$input];
 
-        $middleware = new PathNormalizingMiddelware();
+        $middleware = new PathNormalizingMiddleware();
         $outputConfig = $middleware($configuration, Uri::createFromString('./config.xml'));
 
         self::assertEquals(
