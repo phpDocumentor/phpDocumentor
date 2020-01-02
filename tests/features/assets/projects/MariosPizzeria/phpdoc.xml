@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpdocumentor>
+    <parser>
+        <default-package-name>Marios</default-package-name>
+        <target>build/api-cache</target>
+    </parser>
+    <transformer>
+        <target>build/api</target>
+    </transformer>
+    <files>
+        <directory>.</directory>
+        <ignore>tests/*</ignore>
+    </files>
+    <transformations>
+        <template name="default" />
+    </transformations>
+</phpdocumentor>
