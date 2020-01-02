@@ -259,7 +259,7 @@ jobs:
           ini-values-csv: memory_limit=2G, display_errors=On, error_reporting=-1
           pecl: true
       - name: Build example project
-        run: cd data/examples/MariosPizzeria && ../../../bin/phpdoc --template=default && cd ../../..
+        run: ./bin/phpdoc --template=default --config=data/examples/MariosPizzeria/phpdoc.xml
       - name: Run Cypress
         uses: cypress-io/github-action@v1
 
