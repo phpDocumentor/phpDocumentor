@@ -45,3 +45,15 @@ pre-commit-test: phpcs phpstan test
 .PHONY: shell
 shell:
 	CURRENT_UID=$(shell id -u):$(shell id -g) docker-compose run --rm -v ${CURDIR}:/opt/phpdoc -w /opt/phpdoc --entrypoint=/bin/bash phpdoc
+
+.PHONY: npm-install
+npm-install:
+	docker run -it --rm -v ${CURDIR}:/opt/phpdoc -w /opt/phpdoc node npm install
+
+.PHONY: marios
+example-marios:
+	CURRENT_UID=$(shell id -u):$(shell id -g) docker-compose run --rm -v ${CURDIR}:/opt/phpdoc -w /opt/phpdoc/tests/features/assets/projects/MariosPizzeria phpdoc --template=default
+
+.PHONY: test-template
+test-template: npm-install example-marios
+	docker run -it --rm -v ${CURDIR}:/e2e -w /e2e cypress/included:3.2.0

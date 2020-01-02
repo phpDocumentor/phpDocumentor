@@ -1,11 +1,3 @@
-# IDE Shizzle; it is recommended to use a global .gitignore for this but since this is an OSS project we want to make
-# it easy to contribute
-.idea
-/nbproject/private/
-.buildpath
-.project
-.settings
-
 # No need to version the binary files of other tools
 bin/jsonlint*
 bin/validate-json*
@@ -14,21 +6,26 @@ bin/var-dump-server
 
 # Build folder and vendor folder are generated code; no need to version this
 build/*
+tests/features/assets/projects/MariosPizzeria/build/*
 vendor/*
+node_modules/*
 tools/
 temp/
 var/*
 *.phar
-screenshots
+cypress/screenshots
+cypress/videos
 .phpunit.result.cache
 
 # IDEs and editors
-/.idea
+.idea
+/nbproject/private/
+.buildpath
 .project
+.settings/
 .classpath
 .c9/
 *.launch
-.settings/
 *.sublime-workspace
 *.swp
 *.bkp
