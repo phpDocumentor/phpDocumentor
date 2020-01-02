@@ -53,5 +53,5 @@ shell:
 node_modules/.bin/cypress:
 	docker run -it --rm -v ${CURDIR}:/opt/phpdoc -w /opt/phpdoc node npm install
 
-data/examples/MariosPizzeria/build/api/index.html:
+data/examples/MariosPizzeria/build/api/index.html: data/examples/MariosPizzeria/**/*
 	CURRENT_UID=$(shell id -u):$(shell id -g) docker-compose run --rm -v ${CURDIR}:/opt/phpdoc -w /opt/phpdoc/data/examples/MariosPizzeria phpdoc --template=default
