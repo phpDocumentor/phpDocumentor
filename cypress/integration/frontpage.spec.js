@@ -1,5 +1,5 @@
 describe('Frontpage', function() {
-    before(function(){
+    beforeEach(function(){
         cy.visit('data/examples/MariosPizzeria/build/api/index.html');
     });
 
@@ -14,5 +14,17 @@ describe('Frontpage', function() {
 
     it('The "Marios" namespace in the sidebar', function() {
         cy.get('.phpdocumentor-sidebar').contains("Marios");
+    });
+
+    it('Can open the "Marios" namespace page from the sidebar', function() {
+        cy.get('.phpdocumentor-sidebar').contains("Marios").click();
+        cy.url().should('include', '/namespaces/marios.html');
+        cy.get('.phpdocumentor-content > h2').contains("Marios");
+    });
+
+    it('Can open the "Marios" namespace from the main content', function() {
+        cy.get('.phpdocumentor-content').contains("Marios").click();
+        cy.url().should('include', '/namespaces/marios.html');
+        cy.get('.phpdocumentor-content > h2').contains("Marios");
     });
 });

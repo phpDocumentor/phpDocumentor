@@ -35,6 +35,10 @@ test:
 	docker-compose run --rm phpunit ${ARGS}
 	docker-compose run --entrypoint=/usr/local/bin/php --rm phpunit tests/coverage-checker.php 69
 
+.PHONY: integration-test
+integration-test: node_modules/.bin/cypress data/examples/MariosPizzeria/build/api/index.html
+	docker run -it --rm -v ${CURDIR}:/e2e -w /e2e cypress/included:3.2.0
+
 .PHONY: behat
 behat:
 	docker-compose run --rm behat ./tools/behat ${ARGS}
@@ -46,14 +50,8 @@ pre-commit-test: phpcs phpstan test
 shell:
 	CURRENT_UID=$(shell id -u):$(shell id -g) docker-compose run --rm -v ${CURDIR}:/opt/phpdoc -w /opt/phpdoc --entrypoint=/bin/bash phpdoc
 
-.PHONY: npm-install
-npm-install:
+node_modules/.bin/cypress:
 	docker run -it --rm -v ${CURDIR}:/opt/phpdoc -w /opt/phpdoc node npm install
 
-.PHONY: marios
-example-marios:
+data/examples/MariosPizzeria/build/api/index.html:
 	CURRENT_UID=$(shell id -u):$(shell id -g) docker-compose run --rm -v ${CURDIR}:/opt/phpdoc -w /opt/phpdoc/data/examples/MariosPizzeria phpdoc --template=default
-
-.PHONY: test-template
-test-template: npm-install example-marios
-	docker run -it --rm -v ${CURDIR}:/e2e -w /e2e cypress/included:3.2.0
