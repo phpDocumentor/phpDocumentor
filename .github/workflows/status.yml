@@ -1,13 +1,15 @@
-on: status
+on:
+  check_suite:
+    types: [completed]
 name: Ci status
 jobs:
   ci-status-update:
     runs-on: ubuntu-latest
     steps:
       - uses: 8398a7/action-slack@v2
-        if: contains(['cancelled', 'success', 'failure'], github.event.state)
+        if: contains(['success', 'failure', 'cancelled'], github.event.conclusion)
         with:
-          status: ${{ github.event.state }}
+          status: ${{ github.event.conclusion }}
           icon_emoji: ':octocat:'
           channel: '#ci'
         env:
