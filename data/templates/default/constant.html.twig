@@ -1,0 +1,10 @@
+<a id="constant_{{ constant.name }}"></a>
+<section class="phpdocumentor-constant">
+    <h4 class="phpdocumentor-constant__signature">
+        ${{ constant.name }}
+        {% if constant.type %}: {{ constant.type|route('class:short')|join('|')|raw }}{% endif %}
+        = {{ constant.value }}
+    </h4>
+    <p class="phpdocumentor-summary">{{ constant.summary }}</p>
+    <section class="phpdocumentor-description">{{ constant.description }}</section>
+</section>

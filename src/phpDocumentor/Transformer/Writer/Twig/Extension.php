@@ -24,6 +24,7 @@ use Twig\Extension\GlobalsInterface;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 use function array_unshift;
+use function str_replace;
 use function strtolower;
 
 /**
@@ -65,7 +66,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
         ?LinkRenderer $routeRenderer = null
     ) {
         $this->data = $project;
-        $this->routeRenderer = $routeRenderer;
+        $this->routeRenderer = $routeRenderer->withProject($project);
     }
 
     /**
@@ -143,7 +144,11 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             'markdown' => new TwigFilter(
                 'markdown',
                 static function (string $value) use ($parser) : string {
-                    return $parser->text($value);
+                    return str_replace(
+                        ['<pre>', '<code>'],
+                        ['<pre class="prettyprint">', '<code class="prettyprint">'],
+                        $parser->text($value)
+                    );
                 },
                 ['is_safe' => ['all']]
             ),
@@ -160,7 +165,8 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
                     string $presentation = LinkRenderer::PRESENTATION_NORMAL
                 ) use ($routeRenderer) {
                     return $routeRenderer->render($value, $presentation);
-                }
+                },
+                ['is_safe' => ['all']]
             ),
             'sort' => new TwigFilter(
                 'sort_*',

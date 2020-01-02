@@ -45,6 +45,7 @@ parameters:
           - 'tags'
           - 'type'
       'phpDocumentor\Descriptor\Tag\ParamDescriptor': ['type']
+      'phpDocumentor\Descriptor\Tag\VarDescriptor': ['type']
       'phpDocumentor\Descriptor\Tag\ReturnDescriptor': ['type']
       'phpDocumentor\Descriptor\Tag\SeeDescriptor': ['reference']
       'phpDocumentor\Descriptor\Tag\UsesDescriptor': ['reference']

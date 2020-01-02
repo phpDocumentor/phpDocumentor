@@ -18,9 +18,11 @@ use League\Uri\Exceptions\SyntaxError;
 use League\Uri\Uri;
 use League\Uri\UriInfo;
 use phpDocumentor\Descriptor\Descriptor;
+use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Path;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Type;
+use phpDocumentor\Reflection\Types\Object_;
 use phpDocumentor\Transformer\Router\Router;
 use const DIRECTORY_SEPARATOR;
 use function array_fill;
@@ -51,6 +53,9 @@ final class LinkRenderer
     /** @var Router */
     private $router;
 
+    /** @var ProjectDescriptor|null */
+    private $project;
+
     public function __construct(Router $router)
     {
         $this->router = $router;
@@ -72,6 +77,14 @@ final class LinkRenderer
     public function setDestination(string $destination) : void
     {
         $this->destination = $destination;
+    }
+
+    public function withProject(ProjectDescriptor $projectDescriptor) : self
+    {
+        $result = clone $this;
+        $result->project = $projectDescriptor;
+
+        return $result;
     }
 
     /**
@@ -174,7 +187,7 @@ final class LinkRenderer
     }
 
     /**
-     * @param string|Path|Descriptor|Fqsen $node
+     * @param string|Path|Object_|Descriptor|Fqsen $node
      */
     private function renderLink($node, string $presentation) : string
     {
@@ -188,7 +201,30 @@ final class LinkRenderer
             }
         }
 
-        if ($node instanceof Descriptor || $node instanceof Fqsen) {
+        if ($node instanceof Object_) {
+            $node = $node->getFqsen() ?: $node;
+        }
+
+        if ($node instanceof Fqsen) {
+            $node = $this->project->findElement($node) ?: $node;
+        }
+
+        // With an unlinked object, we don't know if the page for it exists; so we don't render a link to it.
+        if (is_string($node) || $node instanceof Fqsen || $node instanceof Type) {
+            // With an unlinked object and the class:short presentation; only show the last bit
+            if ($presentation === self::PRESENTATION_CLASS_SHORT && (!$node instanceof Type)) {
+                $parts = explode('\\', (string) $node);
+                if (count($parts) <= 1) {
+                    return (string) $node;
+                }
+
+                return sprintf('<abbr title="%s">%s</abbr>', (string) $node, end($parts));
+            }
+
+            return (string) $node;
+        }
+
+        if ($node instanceof Descriptor) {
             try {
                 $generatedUrl = $this->router->generate($node);
             } catch (InvalidArgumentException $e) {
@@ -210,8 +246,12 @@ final class LinkRenderer
                 return $url ?: '';
             case self::PRESENTATION_CLASS_SHORT:
                 $parts = explode('\\', (string) $node);
-                $node = end($parts);
-                break;
+                return sprintf(
+                    '<a href="%s"><abbr title="%s">%s</abbr></a>',
+                    $url,
+                    (string) $node,
+                    end($parts)
+                );
         }
 
         return $url ? sprintf('<a href="%s">%s</a>', $url, (string) $node) : (string) $node;

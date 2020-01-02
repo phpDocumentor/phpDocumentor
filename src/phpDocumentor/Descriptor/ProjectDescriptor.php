@@ -189,4 +189,13 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
 
         return (bool) ($visibilityAllowed & $visibility);
     }
+
+    public function findElement(Fqsen $fqsen) : ?Descriptor
+    {
+        if (!isset($this->getIndexes()['elements'])) {
+            return null;
+        }
+
+        return $this->getIndexes()['elements']->get((string) $fqsen);
+    }
 }

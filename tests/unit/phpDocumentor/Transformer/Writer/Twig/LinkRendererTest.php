@@ -15,7 +15,9 @@ namespace phpDocumentor\Transformer\Writer\Twig;
 
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
+use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Types\Integer;
 use phpDocumentor\Transformer\Router\Router;
@@ -24,6 +26,7 @@ use function str_replace;
 
 /**
  * @coversDefaultClass \phpDocumentor\Transformer\Writer\Twig\LinkRenderer
+ * @covers ::__construct
  * @covers ::<private>
  */
 final class LinkRendererTest extends MockeryTestCase
@@ -34,15 +37,18 @@ final class LinkRendererTest extends MockeryTestCase
     /** @var LinkRenderer */
     private $renderer;
 
+    /** @var ProjectDescriptor */
+    private $projectDescriptor;
+
     protected function setUp() : void
     {
         $this->router = m::mock(Router::class);
-
-        $this->renderer = new LinkRenderer($this->router);
+        $this->projectDescriptor = new ProjectDescriptor('project');
+        $this->projectDescriptor->getIndexes()->set('elements', new Collection());
+        $this->renderer = (new LinkRenderer($this->router))->withProject($this->projectDescriptor);
     }
 
     /**
-     * @covers ::__construct
      * @covers ::getDestination
      * @covers ::setDestination
      */
@@ -59,11 +65,16 @@ final class LinkRendererTest extends MockeryTestCase
      */
     public function testRenderWithFqsenAndRepresentationUrl() : void
     {
+        $fqsen = new Fqsen('\My\Namespace\Class');
+        $descriptor = new ClassDescriptor();
+        $descriptor->setFullyQualifiedStructuralElementName($fqsen);
+        $this->projectDescriptor->getIndexes()->get('elements')->set('\My\Namespace\Class', $descriptor);
+
         $this->router
             ->shouldReceive('generate')
             ->andReturn('/classes/My.Namespace.Class.html');
 
-        $result = $this->renderer->render(new Fqsen('\My\Namespace\Class'), 'url');
+        $result = $this->renderer->render($fqsen, 'url');
 
         $this->assertSame('classes/My.Namespace.Class.html', $result);
     }
@@ -74,12 +85,17 @@ final class LinkRendererTest extends MockeryTestCase
      */
     public function testRenderWithCollectionOfFqsensAndRepresentationUrl() : void
     {
+        $fqsen = new Fqsen('\My\Namespace\Class');
+        $descriptor = new ClassDescriptor();
+        $descriptor->setFullyQualifiedStructuralElementName($fqsen);
+        $this->projectDescriptor->getIndexes()->get('elements')->set('\My\Namespace\Class', $descriptor);
+
         $this->router
             ->shouldReceive('generate')
             ->andReturn('/classes/My.Namespace.Class.html');
 
         $this->renderer->setDestination(str_replace('/', DIRECTORY_SEPARATOR, '/root/of/project'));
-        $collection = new Collection([new Fqsen('\My\Namespace\Class')]);
+        $collection = new Collection([$fqsen]);
         $result = $this->renderer->render($collection, 'url');
 
         $this->assertSame(['../../../classes/My.Namespace.Class.html'], $result);
@@ -91,11 +107,15 @@ final class LinkRendererTest extends MockeryTestCase
     public function testConvertToRootPathWithUrlAndAtSignInRelativePath() : void
     {
         $this->router->shouldReceive('generate')
-            ->with(m::on(function (Fqsen $fqsen) {
-                $this->assertSame((string) $fqsen, '\Class::$property');
+            ->with(
+                m::on(
+                    function (Fqsen $fqsen) {
+                        $this->assertSame((string) $fqsen, '\Class::$property');
 
-                return true;
-            }))
+                        return true;
+                    }
+                )
+            )
             ->andReturn('@Class::$property');
 
         $result = $this->renderer->convertToRootPath('@Class::$property');
@@ -121,11 +141,19 @@ final class LinkRendererTest extends MockeryTestCase
      */
     public function testRenderWithFqsenAndRepresentationClassShort() : void
     {
+        $fqsen = new Fqsen('\My\Namespace\Class');
+        $descriptor = new ClassDescriptor();
+        $descriptor->setFullyQualifiedStructuralElementName($fqsen);
+        $this->projectDescriptor->getIndexes()->get('elements')->set('\My\Namespace\Class', $descriptor);
+
         $this->router->shouldReceive('generate')->andReturn('/classes/My.Namespace.Class.html');
 
-        $result = $this->renderer->render(new Fqsen('\My\Namespace\Class'), 'class:short');
+        $result = $this->renderer->render($fqsen, 'class:short');
 
-        $this->assertSame('<a href="classes/My.Namespace.Class.html">Class</a>', $result);
+        $this->assertSame(
+            '<a href="classes/My.Namespace.Class.html"><abbr title="\My\Namespace\Class">Class</abbr></a>',
+            $result
+        );
     }
 
     /**

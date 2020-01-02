@@ -1,50 +1,44 @@
 {% extends 'base.html.twig' %}
 
 {% block content %}
-    <div class="phpdocumentor-section">
-        {% include 'sidebar.html.twig' %}
+    {% include 'breadcrumbs.html.twig' %}
 
-        <div class="nine phpdocumentor-columns">
-            {% include 'breadcrumbs.html.twig' %}
+    <h2 class="phpdocumentor-content__title">
+        {{ node.name }}
+    </h2>
 
-            <h2 class="phpdocumentor-content__title">
-                {{ node.name }}
-            </h2>
+    <p class="phpdocumentor-trait__summary">{{ node.summary }}</p>
+    <section class="phpdocumentor-trait__description">{{ node.description|markdown }}</section>
 
-            <p class="phpdocumentor-trait__summary">{{ node.summary }}</p>
-            <section class="phpdocumentor-trait__description">{{ node.description|markdown }}</section>
-
-            <h3>Table of Contents</h3>
-            <table class="phpdocumentor-table_of_contents">
-                {% for property in node.properties %}
-                    <tr>
-                        <th class="phpdocumentor-heading">${{ property.name }}</th>
-                        <td class="phpdocumentor-cell">{{ property.summary }}</td>
-                        <td class="phpdocumentor-cell">{{ property.types|route('class:short')|join('|')|raw }}</td>
-                    </tr>
-                {% endfor %}
-                {% for property in node.magicProperties %}
-                    <tr>
-                        <th class="phpdocumentor-heading">${{ property.name }}</th>
-                        <td class="phpdocumentor-cell">{{ property.summary }}</td>
-                        <td class="phpdocumentor-cell">{{ property.types|route('class:short')|join('|')|raw }}</td>
-                    </tr>
-                {% endfor %}
-                {% for method in node.methods %}
-                    <tr>
-                        <th class="phpdocumentor-heading">{{ method.name }}()</th>
-                        <td class="phpdocumentor-cell">{{ method.summary }}</td>
-                        <td class="phpdocumentor-cell">{{ method.response.types|route|join('|')|raw }}</td>
-                    </tr>
-                {% endfor %}
-                {% for method in node.magicMethods %}
-                    <tr>
-                        <th class="phpdocumentor-heading">{{ method.name }}()</th>
-                        <td class="phpdocumentor-cell">{{ method.summary }}</td>
-                        <td class="phpdocumentor-cell">{{ method.response.types|route|join('|')|raw }}</td>
-                    </tr>
-                {% endfor %}
-            </table>
-        </div>
-    </div>
+    <h3>Table of Contents</h3>
+    <table class="phpdocumentor-table_of_contents">
+        {% for property in node.properties %}
+            <tr>
+                <th class="phpdocumentor-heading">${{ property.name }}</th>
+                <td class="phpdocumentor-cell">{{ property.summary }}</td>
+                <td class="phpdocumentor-cell">{{ property.types|route('class:short')|join('|')|raw }}</td>
+            </tr>
+        {% endfor %}
+        {% for property in node.magicProperties %}
+            <tr>
+                <th class="phpdocumentor-heading">${{ property.name }}</th>
+                <td class="phpdocumentor-cell">{{ property.summary }}</td>
+                <td class="phpdocumentor-cell">{{ property.types|route('class:short')|join('|')|raw }}</td>
+            </tr>
+        {% endfor %}
+        {% for method in node.methods %}
+            <tr>
+                <th class="phpdocumentor-heading">{{ method.name }}()</th>
+                <td class="phpdocumentor-cell">{{ method.summary }}</td>
+                <td class="phpdocumentor-cell">{{ method.response.types|route|join('|')|raw }}</td>
+            </tr>
+        {% endfor %}
+        {% for method in node.magicMethods %}
+            <tr>
+                <th class="phpdocumentor-heading">{{ method.name }}()</th>
+                <td class="phpdocumentor-cell">{{ method.summary }}</td>
+                <td class="phpdocumentor-cell">{{ method.response.types|route|join('|')|raw }}</td>
+            </tr>
+        {% endfor %}
+    </table>
 {% endblock %}

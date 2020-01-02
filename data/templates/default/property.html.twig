@@ -1,0 +1,10 @@
+<a id="property_{{ property.name }}"></a>
+<section class="phpdocumentor-property">
+    <h4 class="phpdocumentor-property__signature">
+        ${{ property.name }}
+        {% if property.type %}: {{ property.type|route('class:short')|join('|')|raw }}{% endif %}
+        {% if property.default %} = {{ property.default }}{% endif %}
+    </h4>
+    <p class="phpdocumentor-summary">{{ property.summary }}</p>
+    <section class="phpdocumentor-description">{{ property.description }}</section>
+</section>

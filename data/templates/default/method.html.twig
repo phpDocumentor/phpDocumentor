@@ -1,0 +1,45 @@
+<a id="method_{{ method.name }}"></a>
+<section class="phpdocumentor-method">
+    <h4 class="phpdocumentor-method__name">{{ method.name }}()</h4>
+    {% if method.summary %}
+    <p class="phpdocumentor-summary">{{ method.summary }}</p>
+    {% endif %}
+    <code class="phpdocumentor-method__signature phpdocumentor-code prettyprint">
+        {{ method.visibility }}
+        {{ method.name }}(
+        {% for argument in method.arguments %}
+            {% if argument.default %}[{% endif %}{% if not loop.first %}, {% endif %}
+            ${{ argument.name }} : {{ argument.type|route('class:short')|join('|')|raw }}
+            {% if argument.default %} = {{ argument.default }} ]{% endif %}
+        {% endfor %}
+        )
+        : {{ method.response.type|route('class:short')|join('|')|raw }}
+    </code>
+
+    {% if method.description %}
+    <section class="phpdocumentor-description">{{ method.description|markdown }}</section>
+    {% endif %}
+
+    {% if method.arguments|length > 0 %}
+        <h5>Parameters</h5>
+        <dl>
+            {% for argument in method.arguments %}
+                <dt>
+                    <strong>${{ argument.name }}</strong>
+                    : {{ argument.type|route('class:short')|join('|')|raw }}
+                    {% if argument.default %} = {{ argument.default }}{% endif %}
+                </dt>
+                <dd>{{ argument.description }}</dd>
+            {% endfor %}
+        </dl>
+    {% endif %}
+
+    {% if (method.response.type and method.response.type != 'void') or method.response.description %}
+        <h5>Return values</h5>
+        {{ method.response.type|route('class:short')|join('|')|raw }}
+        {% if method.response.description %}
+            &mdash; {{ method.response.description }}
+        {% endif %}
+    {% endif %}
+
+</section>

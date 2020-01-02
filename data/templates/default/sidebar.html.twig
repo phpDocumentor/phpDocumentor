@@ -1,10 +1,17 @@
 <aside class="three phpdocumentor-columns phpdocumentor-sidebar">
+    <section data-search-form class="phpdocumentor-search">
+        <h1 class="phpdocumentor-sidebar__category-header">Search</h1>
+        <label class="phpdocumentor-label">
+            <span class="visually-hidden">Search for</span>
+            <input type="search" class="phpdocumentor-field phpdocumentor-search__field" placeholder="Loading .." disabled />
+        </label>
+    </section>
     <h1 class="phpdocumentor-sidebar__category-header">API</h1>
     {% for namespace in project.namespace.children %}
-        <h2 class="phpdocumentor-sidebar__root-namespace">{{ namespace|route('class:short')|raw }}</h2>
+        <h2 class="phpdocumentor-sidebar__root-namespace">{{ namespace|route('class:short') }}</h2>
         <ul class="phpdocumentor-list">
             {% for child in namespace.children %}
-                <li><a href="{{ link(child) }}">{{ child.name }}</a></li>
+                <li>{{ child|route('class:short') }}</li>
             {% endfor %}
         </ul>
     {% endfor %}

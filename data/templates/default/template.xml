@@ -10,6 +10,8 @@
     <transformation writer="twig" query="indexes.classes" source="templates/default/class.html.twig" />
     <transformation writer="twig" query="indexes.interfaces" source="templates/default/interface.html.twig" />
     <transformation writer="twig" query="indexes.traits" source="templates/default/trait.html.twig" />
+    <transformation writer="twig" source="templates/default/search.js.twig" artifact="js/search.js" />
+    <transformation writer="twig" source="templates/default/searchIndex.js.twig" artifact="js/searchIndex.js" />
   </transformations>
   <parameters>
     <parameter key="twig-debug">true</parameter>

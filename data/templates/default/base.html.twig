@@ -10,6 +10,10 @@
     <link rel="stylesheet" href="{{ path('css/normalize.css') }}">
     <link rel="stylesheet" href="{{ path('css/template.css') }}">
     <link rel="icon" href="{{ path('images/favicon.ico') }}"/>
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.4.6/fuse.min.js"></script>
+    <script src="{{ path('js/search.js') }}"></script>
+    <script defer src="{{ path('js/searchIndex.js') }}"></script>
 </head>
 <body>
 <header class="phpdocumentor-top-header"></header>
@@ -19,7 +23,20 @@
     </section>
 </header>
 <main class="phpdocumentor">
-{% block content %}{% endblock %}
+    <div class="phpdocumentor-section">
+        {% include 'sidebar.html.twig' %}
+
+        <div class="nine phpdocumentor-columns phpdocumentor-content">
+        {% block content %}{% endblock %}
+            <div data-search-results class="phpdocumentor-search-results phpdocumentor-search-results--hidden">
+
+                <h2>Search results</h2>
+                <ul class="phpdocumentor-search-results__entries">
+
+                </ul>
+            </div>
+        </div>
+    </div>
 </main>
 
 </body>
