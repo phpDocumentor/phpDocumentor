@@ -86,12 +86,12 @@ final class Version3 implements ConfigurationInterface, Normalizable
 
     public function normalize(array $configuration) : array
     {
-        $configuration['paths']['output'] = new Dsn($configuration['paths']['output']);
+        $configuration['paths']['output'] = Dsn::createFromString($configuration['paths']['output']);
         $configuration['paths']['cache'] = new Path($configuration['paths']['cache']);
         foreach ($configuration['versions'] as $versionNumber => $version) {
             foreach ($version['api'] as $key => $api) {
                 $configuration['versions'][$versionNumber]['api'][$key]['source']['dsn']
-                    = new Dsn($api['source']['dsn']);
+                    = Dsn::createFromString($api['source']['dsn']);
                 foreach ($api['source']['paths'] as $subkey => $path) {
                     $configuration['versions'][$versionNumber]['api'][$key]['source']['paths'][$subkey] =
                         new Path($path);
@@ -103,7 +103,7 @@ final class Version3 implements ConfigurationInterface, Normalizable
             }
             foreach ($version['guide'] as $key => $guide) {
                 $configuration['versions'][$versionNumber]['guide'][$key]['source']['dsn']
-                    = new Dsn($guide['source']['dsn']);
+                    = Dsn::createFromString($guide['source']['dsn']);
                 foreach ($guide['source']['paths'] as $subkey => $path) {
                     $configuration['versions'][$versionNumber]['guide'][$key]['source']['paths'][$subkey] =
                         new Path($path);
@@ -150,7 +150,7 @@ final class Version3 implements ConfigurationInterface, Normalizable
                         ->defaultValue('Application')
                     ->end()
                     ->scalarNode('encoding')->defaultValue('utf-8')->end()
-                    ->append($this->source(['.']))
+                    ->append($this->source(['/**/*']))
                     ->arrayNode('ignore')
                         ->addDefaultsIfNotSet()
                         ->fixXmlConfig('path')

@@ -16,9 +16,7 @@ namespace phpDocumentor\Pipeline\Stage\Parser;
 use phpDocumentor\Parser\FileCollector;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
-use function array_map;
 use function count;
-use function substr;
 
 final class CollectFiles
 {
@@ -39,24 +37,10 @@ final class CollectFiles
         foreach ($payload->getApiConfigs() as $apiConfig) {
             $this->log('Collecting files from ' . $apiConfig['source']['dsn']);
 
-            $ignorePaths = array_map(
-                static function ($value) {
-                    if (substr((string) $value, -1) === '*') {
-                        return substr($value, 0, -1);
-                    }
-
-                    return $value;
-                },
-                $apiConfig['ignore']['paths'] ?? []
-            );
-
             $files = $this->fileCollector->getFiles(
                 $apiConfig['source']['dsn'],
                 $apiConfig['source']['paths'],
-                [
-                    'paths' => $ignorePaths,
-                    'hidden' => $apiConfig['ignore']['hidden'],
-                ],
+                $apiConfig['ignore'],
                 $apiConfig['extensions']
             );
 

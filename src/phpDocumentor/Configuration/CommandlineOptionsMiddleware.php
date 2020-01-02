@@ -66,7 +66,7 @@ final class CommandlineOptionsMiddleware
     private function overwriteDestinationFolder(array $configuration) : array
     {
         if (isset($this->options['target']) && $this->options['target']) {
-            $configuration['phpdocumentor']['paths']['output'] = new Dsn($this->options['target']);
+            $configuration['phpdocumentor']['paths']['output'] = Dsn::createFromString($this->options['target']);
         }
 
         return $configuration;
@@ -167,7 +167,7 @@ final class CommandlineOptionsMiddleware
             //A version may contain multiple APIs.
             if (Path::isAbsolutePath($path)) {
                 $apiConfig = $currentApiConfig;
-                $apiConfig['source']['dsn'] = new Dsn($path);
+                $apiConfig['source']['dsn'] = Dsn::createFromString($path);
                 $apiConfig['source']['paths'] = [new Path('./')];
                 $version['api'][] = $apiConfig;
             } else {

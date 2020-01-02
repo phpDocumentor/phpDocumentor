@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace phpDocumentor;
 
+use Generator;
 use InvalidArgumentException;
+use League\Uri\Contracts\UriInterface;
 use League\Uri\Uri as LeagueUri;
+use League\Uri\UriInfo;
+use League\Uri\UriResolver;
 use Throwable;
 use function array_shift;
 use function array_splice;
@@ -22,6 +26,7 @@ use function explode;
 use function implode;
 use function parse_str;
 use function preg_match;
+use function rtrim;
 use function sprintf;
 
 /**
@@ -48,7 +53,7 @@ final class Dsn
     /** @var string */
     private $dsn;
 
-    /** @var LeagueUri */
+    /** @var UriInterface */
     private $uri;
 
     /** @var string[] */
@@ -57,9 +62,30 @@ final class Dsn
     /**
      * Initializes the Dsn
      */
-    public function __construct(string $dsn)
+    public function __construct(UriInterface $uri, array $parameters, string $dsn)
     {
-        $this->parse($dsn);
+        $this->dsn = $dsn;
+        $this->parameters = $parameters;
+        $this->uri = $uri;
+    }
+
+    public static function createFromString(string $dsn) : self
+    {
+        $parameters = explode(';', $dsn);
+        $uri = self::parseUri(array_shift($parameters));
+        $parsedParameters = self::parseParameters($parameters);
+
+        array_splice($parameters, 0, 0, (string) $uri);
+        $dsn = implode(';', $parameters);
+
+        return new self($uri, $parsedParameters, $dsn);
+    }
+
+    public static function createFromUri(UriInterface $uri, array $parameters = []) : self
+    {
+        $dsn = implode(';', [(string) $uri] + $parameters);
+
+        return new self($uri, $parameters, $dsn);
     }
 
     /**
@@ -155,17 +181,23 @@ final class Dsn
         return $this->parameters;
     }
 
-    /**
-     * Parses the given DSN
-     */
-    private function parse(string $dsn) : void
+    public function resolve(Dsn $baseDsn) : self
     {
-        $parameters = explode(';', $dsn);
-        $this->uri = $this->parseUri(array_shift($parameters));
-        $this->parseParameters($parameters);
+        if (UriInfo::isAbsolute($this->uri) || UriInfo::isAbsolutePath($this->uri)) {
+            return $this;
+        }
 
-        array_splice($parameters, 0, 0, (string) $this->uri);
-        $this->dsn = implode(';', $parameters);
+        $baseUri = rtrim(((string) $baseDsn->uri), '/');
+        $newUri = LeagueUri::createFromString($baseUri . '/' . $this->uri->getPath());
+        return self::createFromUri(
+            UriResolver::resolve($newUri, $baseDsn->uri),
+            $baseDsn->parameters
+        );
+    }
+
+    public function withPath(Path $path) : self
+    {
+        return self::createFromUri($this->uri->withPath((string) $path), $this->parameters);
     }
 
     /**
@@ -173,24 +205,29 @@ final class Dsn
      *
      * @param string[] $parameters
      */
-    private function parseParameters(array $parameters) : void
+    private static function parseParameters(array $parameters) : array
     {
+        $result = [];
         foreach ($parameters as $parameter) {
-            $this->parseParameter($parameter);
+            foreach (self::parseParameter($parameter) as $key => $value) {
+                $result[$key] = $value;
+            }
         }
+
+        return $result;
     }
 
-    private function parseParameter(string $part) : void
+    private static function parseParameter(string $part) : Generator
     {
         $result = [];
         parse_str($part, $result);
 
         foreach ($result as $key => $value) {
-            $this->parameters[$key] = $value;
+            yield $key => $value;
         }
     }
 
-    private function parseUri(string $uriString) : LeagueUri
+    private static function parseUri(string $uriString) : UriInterface
     {
         try {
             if (preg_match('~^[a-zA-Z]+:\\\\~', $uriString)) {

@@ -41,7 +41,7 @@ final class FlySystemCollectorTest extends TestCase
         );
 
         $files = $fileCollector->getFiles(
-            new Dsn($this->scheme() . __DIR__ . DIRECTORY_SEPARATOR . 'assets'),
+            Dsn::createFromString($this->scheme() . __DIR__ . DIRECTORY_SEPARATOR . 'assets'),
             [],
             [],
             ['php']

@@ -22,6 +22,7 @@ default:
       contexts:
         - phpDocumentor\Behat\Contexts\EnvironmentContext:
             workingDir: /tmp/phpdoc-behat/config
+        - phpDocumentor\Behat\Contexts\Ast\FileContext:
       paths:    [ "%paths.base%/tests/features/config" ]
       filters:
         tags: "~@wip"
@@ -51,6 +52,7 @@ phar:
         - phpDocumentor\Behat\Contexts\EnvironmentContext:
             workingDir: /tmp/phpdoc-behat/config
             pharPath: build/phpDocumentor.phar
+        - phpDocumentor\Behat\Contexts\Ast\FileContext:
       paths:    [ "%paths.base%/tests/features/config" ]
       filters:
         tags: "~@wip"

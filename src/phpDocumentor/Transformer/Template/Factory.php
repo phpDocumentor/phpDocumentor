@@ -152,7 +152,7 @@ class Factory
     {
         $configPath = rtrim($nameOrPath, DIRECTORY_SEPARATOR) . '/template.xml';
         if (file_exists($configPath) && is_readable($configPath)) {
-            return $this->flySystemFactory->create(new Dsn(rtrim($nameOrPath, DIRECTORY_SEPARATOR)));
+            return $this->flySystemFactory->create(Dsn::createFromString(rtrim($nameOrPath, DIRECTORY_SEPARATOR)));
         }
 
         // if we load a global template

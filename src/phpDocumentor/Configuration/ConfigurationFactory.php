@@ -67,7 +67,7 @@ final class ConfigurationFactory
             }
         }
 
-        return new Configuration($this->applyMiddleware($this->createDefault()->getArrayCopy()));
+        return new Configuration($this->applyMiddleware($this->createDefault()->getArrayCopy(), null));
     }
 
     public function createDefault() : Configuration
@@ -92,7 +92,7 @@ final class ConfigurationFactory
 
         $config = $this->symfonyConfigFactory->createFromFile($filename);
 
-        return new Configuration($this->applyMiddleware($config));
+        return new Configuration($this->applyMiddleware($config, $uri));
     }
 
     /**
@@ -102,10 +102,10 @@ final class ConfigurationFactory
      *
      * @return array
      */
-    private function applyMiddleware(array $configuration) : array
+    private function applyMiddleware(array $configuration, ?Uri $uri) : array
     {
         foreach ($this->middlewares as $middleware) {
-            $configuration = $middleware($configuration);
+            $configuration = $middleware($configuration, $uri);
         }
 
         return $configuration;

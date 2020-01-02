@@ -15,7 +15,10 @@ namespace phpDocumentor;
 
 use Webmozart\Assert\Assert;
 use const PHP_URL_SCHEME;
+use function array_pop;
 use function ctype_alpha;
+use function explode;
+use function implode;
 use function parse_url;
 use function strlen;
 use function strspn;
@@ -68,5 +71,13 @@ final class Path
                 && strspn($file, '/\\', 2, 1)
             )
             || parse_url($file, PHP_URL_SCHEME) !== null;
+    }
+
+    public static function dirname(Path $input) : self
+    {
+        $parts = explode('/', (string) $input);
+        array_pop($parts);
+
+        return new self(implode('/', $parts));
     }
 }

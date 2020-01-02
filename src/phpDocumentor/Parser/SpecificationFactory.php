@@ -13,13 +13,10 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Parser;
 
-use Flyfinder\Path;
-use Flyfinder\Specification\AndSpecification;
+use Flyfinder\Specification\Glob;
 use Flyfinder\Specification\HasExtension;
-use Flyfinder\Specification\InPath;
 use Flyfinder\Specification\IsHidden;
 use Flyfinder\Specification\NotSpecification;
-use Flyfinder\Specification\OrSpecification;
 use Flyfinder\Specification\SpecificationInterface;
 use phpDocumentor\Parser\SpecificationFactoryInterface as FactoryInterface;
 
@@ -31,66 +28,46 @@ final class SpecificationFactory implements FactoryInterface
     /**
      * Creates a SpecificationInterface object based on the ignore and extension parameters.
      *
-     * @var (\phpDocumentor\Path|string)[] $paths
-     * @var (\phpDocumentor\Path|string)[] $ignore
+     * @var string[] $globs
+     * @var string[] $ignore
      * @var string[] $extensions
      */
-    public function create(array $paths, array $ignore, array $extensions) : SpecificationInterface
+    public function create(array $globs, array $ignore, array $extensions) : SpecificationInterface
     {
         $pathSpec = null;
-        foreach ($paths as $path) {
+        foreach ($globs as $path) {
             if ($pathSpec === null) {
-                $pathSpec = $this->inPath((string) $path);
+                $pathSpec = new Glob($path);
                 continue;
             }
 
-            $pathSpec = $this->orSpec($this->inPath((string) $path), $pathSpec);
+            $pathSpec = $pathSpec->orSpecification(new Glob($path));
         }
 
         $ignoreSpec = null;
         foreach ($ignore['paths'] ?? [] as $path) {
             if ($ignoreSpec === null) {
-                $ignoreSpec = $this->inPath((string) $path);
+                $ignoreSpec = new Glob($path);
                 continue;
             }
 
-            $ignoreSpec = $this->orSpec($this->inPath((string) $path), $ignoreSpec);
+            $ignoreSpec = $ignoreSpec->orSpecification(new Glob($path));
         }
 
         if (($ignore['hidden'] ?? false) === true) {
             $ignoreSpec = $ignoreSpec === null
                 ? new IsHidden()
-                : $this->orSpec(new IsHidden(), $ignoreSpec);
+                : $ignoreSpec->orSpecification(new IsHidden());
         }
 
         $result = new HasExtension($extensions);
         if ($ignoreSpec !== null) {
-            $result = $this->andSpec($result, $this->notSpec($ignoreSpec));
+            $result = $result->andSpecification(new NotSpecification($ignoreSpec));
         }
         if ($pathSpec !== null) {
-            $result = $this->andSpec($pathSpec, $result);
+            $result = $result->andSpecification($pathSpec);
         }
 
         return $result;
-    }
-
-    private function inPath(string $path) : InPath
-    {
-        return new InPath(new Path((string) $path));
-    }
-
-    private function orSpec(SpecificationInterface $or, SpecificationInterface $spec) : SpecificationInterface
-    {
-        return new OrSpecification($spec, $or);
-    }
-
-    private function notSpec(SpecificationInterface $ignoreSpec) : SpecificationInterface
-    {
-        return new NotSpecification($ignoreSpec);
-    }
-
-    private function andSpec(SpecificationInterface $spec, SpecificationInterface $spec2) : SpecificationInterface
-    {
-        return new AndSpecification($spec, $spec2);
     }
 }

@@ -103,7 +103,7 @@ class Transformer implements CompilerPassInterface
     public function setTarget(string $target) : void
     {
         $this->target = $target;
-        $this->destination = $this->flySystemFactory->create(new Dsn($target));
+        $this->destination = $this->flySystemFactory->create(Dsn::createFromString($target));
     }
 
     /**
@@ -123,7 +123,7 @@ class Transformer implements CompilerPassInterface
     {
         $dsnString = $this->getTemplates()->getTemplatesPath();
         try {
-            $filesystem = $this->flySystemFactory->create(new Dsn($dsnString));
+            $filesystem = $this->flySystemFactory->create(Dsn::createFromString($dsnString));
         } catch (InvalidArgumentException $e) {
             throw new RuntimeException(
                 'Unable to access the folder with the global templates, received DSN is: ' . $dsnString

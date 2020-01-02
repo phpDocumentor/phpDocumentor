@@ -51,7 +51,7 @@ final class Version3Test extends TestCase
         $definition = new Version3(self::DEFAULT_TEMPLATE_NAME);
         $configuration = $this->defaultConfigurationOutput();
         $expected = $this->defaultConfigurationOutput();
-        $expected['paths']['output'] = new Dsn($expected['paths']['output']);
+        $expected['paths']['output'] = Dsn::createFromString($expected['paths']['output']);
         $expected['paths']['cache'] = new Path($expected['paths']['cache']);
         $expected['versions']['1.0.0']['api'][0]['extensions']
             = $expected['versions']['1.0.0']['api'][0]['extensions']['extensions'];
@@ -130,7 +130,7 @@ final class Version3Test extends TestCase
                             'encoding' => 'utf-8',
                             'source' => [
                                 'dsn' => '.',
-                                'paths' => ['.'],
+                                'paths' => ['/**/*'],
                             ],
                             'ignore' => [
                                 'hidden' => true,

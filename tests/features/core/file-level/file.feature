@@ -28,4 +28,4 @@ Feature: Parsing a php file
     And the ast has a file named "test.php" with a summary:
     """
     This file is part of phpDocumentor.
-    """git
+    """
