@@ -9,10 +9,10 @@
     </transformer>
     <files>
         <directory>.</directory>
-        <ignore>tests/*</ignore>
-        <ignore>build/*</ignore>
-        <ignore>var/*</ignore>
-        <ignore>vendor/*</ignore>
+        <ignore>tests/**/*</ignore>
+        <ignore>build/**/*</ignore>
+        <ignore>var/**/*</ignore>
+        <ignore>vendor/**/*</ignore>
     </files>
     <transformations>
         <template name="clean" />
