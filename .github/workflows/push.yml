@@ -259,9 +259,9 @@ jobs:
           ini-values-csv: memory_limit=2G, display_errors=On, error_reporting=-1
           pecl: true
       - name: Build example project using Clean template
-        run: ./bin/phpdoc --template=clean --config=data/examples/MariosPizzeria/phpdoc.xml --target=data/examples/MariosPizzeria/build/clean
+        run: ./bin/phpdoc --template=clean --config=data/examples/MariosPizzeria/phpdoc.xml --target=build/clean
       - name: Build example project using Default template
-        run: ./bin/phpdoc --template=default --config=data/examples/MariosPizzeria/phpdoc.xml --target=data/examples/MariosPizzeria/build/default
+        run: ./bin/phpdoc --template=default --config=data/examples/MariosPizzeria/phpdoc.xml --target=build/default
       - name: Test templates using Cypress
         uses: cypress-io/github-action@v1
 
