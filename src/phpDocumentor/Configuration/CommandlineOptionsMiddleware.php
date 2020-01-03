@@ -31,10 +31,14 @@ final class CommandlineOptionsMiddleware
     /** @var ConfigurationFactory */
     private $configFactory;
 
-    public function __construct(array $options, ConfigurationFactory $configFactory)
+    /** @var Dsn */
+    private $currentWorkingDir;
+
+    public function __construct(array $options, ConfigurationFactory $configFactory, string $currentWorkingDir)
     {
         $this->options = $options;
         $this->configFactory = $configFactory;
+        $this->currentWorkingDir = Dsn::createFromString($currentWorkingDir);
     }
 
     public function __invoke(array $configuration) : array
@@ -66,7 +70,8 @@ final class CommandlineOptionsMiddleware
     private function overwriteDestinationFolder(array $configuration) : array
     {
         if (isset($this->options['target']) && $this->options['target']) {
-            $configuration['phpdocumentor']['paths']['output'] = Dsn::createFromString($this->options['target']);
+            $configuration['phpdocumentor']['paths']['output'] = Dsn::createFromString($this->options['target'])
+                ->resolve($this->currentWorkingDir);
         }
 
         return $configuration;

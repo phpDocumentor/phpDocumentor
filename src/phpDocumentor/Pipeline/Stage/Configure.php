@@ -20,6 +20,7 @@ use phpDocumentor\Configuration\Configuration;
 use phpDocumentor\Configuration\ConfigurationFactory;
 use phpDocumentor\Configuration\PathNormalizingMiddleware;
 use Psr\Log\LoggerInterface;
+use function getcwd;
 use function realpath;
 use function sprintf;
 
@@ -50,7 +51,7 @@ final class Configure
     public function __invoke(array $options) : array
     {
         $this->configFactory->addMiddleware(
-            new CommandlineOptionsMiddleware($options, $this->configFactory)
+            new CommandlineOptionsMiddleware($options, $this->configFactory, getcwd())
         );
         $this->configFactory->addMiddleware(new PathNormalizingMiddleware());
 

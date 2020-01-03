@@ -1,6 +1,6 @@
 describe('Frontpage', function() {
     beforeEach(function(){
-        cy.visit('data/examples/MariosPizzeria/build/clean/index.html');
+        cy.visit('build/clean/index.html');
     });
 
     it('Has the "Marios" namespace in the main content', function() {

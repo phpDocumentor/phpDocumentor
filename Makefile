@@ -36,7 +36,7 @@ test:
 	docker-compose run --entrypoint=/usr/local/bin/php --rm phpunit tests/coverage-checker.php 69
 
 .PHONY: integration-test
-integration-test: node_modules/.bin/cypress data/examples/MariosPizzeria/build/default/index.html data/examples/MariosPizzeria/build/clean/index.html
+integration-test: node_modules/.bin/cypress build/default/index.html build/clean/index.html
 	docker run -it --rm -v ${CURDIR}:/e2e -w /e2e cypress/included:3.2.0
 
 .PHONY: behat
@@ -53,8 +53,8 @@ shell:
 node_modules/.bin/cypress:
 	docker run -it --rm -v ${CURDIR}:/opt/phpdoc -w /opt/phpdoc node npm install
 
-data/examples/MariosPizzeria/build/default/index.html: data/examples/MariosPizzeria/**/*
-	CURRENT_UID=$(shell id -u):$(shell id -g) docker-compose run --rm -v ${CURDIR}:/opt/phpdoc -w /opt/phpdoc/data/examples/MariosPizzeria phpdoc --template=default --target=build/default
+build/default/index.html: data/examples/MariosPizzeria/**/*
+	CURRENT_UID=$(shell id -u):$(shell id -g) docker-compose run --rm -v ${CURDIR}:/opt/phpdoc phpdoc --config=data/examples/MariosPizzeria/phpdoc.xml --template=default --target=build/default
 
-data/examples/MariosPizzeria/build/clean/index.html: data/examples/MariosPizzeria/**/*
-	CURRENT_UID=$(shell id -u):$(shell id -g) docker-compose run --rm -v ${CURDIR}:/opt/phpdoc -w /opt/phpdoc/data/examples/MariosPizzeria phpdoc --template=clean --target=build/clean
+build/clean/index.html: data/examples/MariosPizzeria/**/*
+	CURRENT_UID=$(shell id -u):$(shell id -g) docker-compose run --rm -v ${CURDIR}:/opt/phpdoc phpdoc --config=data/examples/MariosPizzeria/phpdoc.xml --template=clean --target=build/clean

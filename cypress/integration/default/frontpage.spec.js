@@ -1,6 +1,6 @@
 describe('Frontpage', function() {
     beforeEach(function(){
-        cy.visit('data/examples/MariosPizzeria/build/default/index.html');
+        cy.visit('build/default/index.html');
     });
 
     it('Has "Documentation" as title', function() {

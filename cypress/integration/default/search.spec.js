@@ -1,6 +1,6 @@
 describe('Search', function() {
     beforeEach(function(){
-        cy.visit('data/examples/MariosPizzeria/build/default/index.html');
+        cy.visit('build/default/index.html');
     });
 
     it('Has an active search form in the sidebar', function() {
