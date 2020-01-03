@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor;
 
-use phpDocumentor\Exception\InvalidArgumentException;
 use Webmozart\Assert\Assert;
 use const PHP_URL_SCHEME;
 use function array_pop;
@@ -21,6 +20,7 @@ use function ctype_alpha;
 use function explode;
 use function implode;
 use function parse_url;
+use function sprintf;
 use function strlen;
 use function strspn;
 
