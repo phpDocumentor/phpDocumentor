@@ -104,15 +104,10 @@ class RunCommand extends Command
                 <comment>Available commands:</comment>
                 <info>  help
                   list
-                  parse
                   run
-                  transform
                 <comment>project</comment>
                   project:run
-                <comment>template</comment>
-                  template:generate
-                  template:list
-                  template:package</info>
+                </info>
                 
                 You can get a more detailed listing of the commands using the <info>list</info>
                 command and get help by prepending the word <info>help</info> to the command
