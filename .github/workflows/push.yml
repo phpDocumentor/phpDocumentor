@@ -237,8 +237,14 @@ jobs:
         run: php ./build/phpDocumentor.phar -vvv
 
   cypress:
-    runs-on: ubuntu-latest
-    name: Cypress
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        operating-system:
+          - ubuntu-latest
+          - windows-latest
+          - macOS-latest
+    name: E2E tests [${{ matrix.operating-system }}]
     needs:
       - setup
     steps:
