@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor;
 
+use phpDocumentor\Exception\InvalidArgumentException;
 use Webmozart\Assert\Assert;
 use const PHP_URL_SCHEME;
 use function array_pop;
@@ -37,7 +38,10 @@ final class Path
      */
     public function __construct(string $path)
     {
-        Assert::stringNotEmpty($path);
+        Assert::stringNotEmpty(
+            $path,
+            sprintf('"%s" is not al valid path', $path)
+        );
 
         $this->path = $path;
     }
