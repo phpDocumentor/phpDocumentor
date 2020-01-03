@@ -32,4 +32,28 @@ describe('Class Detail Page', function() {
         cy.get('.phpdocumentor-content > .phpdocumentor-class__description')
             .contains("This class provides an interface through which you can order pizza's and pasta's from Mario's Pizzeria.");
     });
+
+    it('Shows a single implemented interface; which is not clickable because it is external', function() {
+        cy.get('.phpdocumentor-class__implements').contains("JsonSerializable");
+        cy.get('.phpdocumentor-class__implements abbr')
+            .should("have.attr", 'title', '\\JsonSerializable');
+    });
+
+    it('Show methods with return type in the Table of Contents', function() {
+        cy.get('.phpdocumentor-table_of_contents th')
+            .contains("jsonSerialize()").parent()
+            .next() // empty description
+            .next().contains('array'); // type
+    });
+
+    describe('Showing a method in a class', function() {
+        let methods;
+        before(function(){
+            methods = cy.get('.phpdocumentor-method');
+        });
+
+        it('Has a method called jsonSerialize', function() {
+            methods.get('.phpdocumentor-method__name').contains("jsonSerialize()");
+        });
+    });
 });

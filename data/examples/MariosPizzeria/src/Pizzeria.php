@@ -9,6 +9,13 @@ namespace Marios;
  *
  * This class provides an interface through which you can order pizza's and pasta's from Mario's Pizzeria.
  */
-final class Pizzeria
+final class Pizzeria implements \JsonSerializable
 {
+    /**
+     * @inheritDoc
+     */
+    public function jsonSerialize(): array
+    {
+        return [];
+    }
 }
