@@ -236,15 +236,9 @@ jobs:
       - name: Run phpDocumentor on itself
         run: php ./build/phpDocumentor.phar -vvv
 
-  cypress:
-    runs-on: ${{ matrix.operating-system }}
-    strategy:
-      matrix:
-        operating-system:
-          - ubuntu-latest
-          - windows-latest
-          - macOS-latest
-    name: E2E tests [${{ matrix.operating-system }}]
+  e2e:
+    runs-on: ubuntu-latest
+    name: E2E tests [ubuntu-latest]
     needs:
       - setup
     steps:
@@ -270,6 +264,42 @@ jobs:
         run: ./bin/phpdoc --template=default --config=data/examples/MariosPizzeria/phpdoc.xml --target=build/default
       - name: Test templates using Cypress
         uses: cypress-io/github-action@v1
+
+  e2e-matrix:
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        operating-system:
+          - ubuntu-latest
+          - windows-latest
+          - macOS-latest
+    name: E2E tests [${{ matrix.operating-system }}]
+    needs:
+      - e2e
+    steps:
+      - uses: actions/checkout@master
+      - name: Restore/cache vendor folder
+        uses: actions/cache@v1
+        with:
+          path: vendor
+          key: all-build-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            all-build-${{ hashFiles('**/composer.lock') }}
+            all-build-
+      - name: Setup PHP
+        uses: shivammathur/setup-php@master
+        with:
+          php-version: '7.2'
+          extension-csv: mbstring, intl, iconv, libxml, dom, json, simplexml, zlib
+          ini-values-csv: memory_limit=2G, display_errors=On, error_reporting=-1
+          pecl: true
+      - name: Build example project using Clean template
+        run: ./bin/phpdoc --template=clean --config=data/examples/MariosPizzeria/phpdoc.xml --target=build/clean
+      - name: Build example project using Default template
+        run: ./bin/phpdoc --template=default --config=data/examples/MariosPizzeria/phpdoc.xml --target=build/default
+      - name: Test templates using Cypress
+        uses: cypress-io/github-action@v1
+        continue-on-error: true
 
   phpunit:
     runs-on: ${{ matrix.operating-system }}
