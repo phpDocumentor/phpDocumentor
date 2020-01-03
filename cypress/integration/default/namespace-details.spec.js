@@ -1,6 +1,6 @@
 describe('Namespace Detail Page', function() {
     beforeEach(function(){
-        cy.visit('data/examples/MariosPizzeria/build/api/namespaces/marios.html');
+        cy.visit('data/examples/MariosPizzeria/build/default/namespaces/marios.html');
     });
 
     it('Has "Marios" as title', function() {
