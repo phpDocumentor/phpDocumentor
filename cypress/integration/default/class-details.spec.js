@@ -1,6 +1,6 @@
 describe('Class Detail Page', function() {
     beforeEach(function(){
-        cy.visit('data/examples/MariosPizzeria/build/default/classes/Marios-Pizzeria.html');
+        cy.visit('build/default/classes/Marios-Pizzeria.html');
     });
 
     it('Has "Pizzeria" as title', function() {

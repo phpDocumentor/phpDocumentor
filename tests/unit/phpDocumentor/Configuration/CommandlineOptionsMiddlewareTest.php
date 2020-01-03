@@ -35,14 +35,17 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
     }
 
     /**
+     * @dataProvider targetPathProvider
      * @covers ::__invoke
      */
-    public function testItShouldOverwriteTheDestinationFolderBasedOnTheTargetOption() : void
-    {
-        $expected = '/abc';
+    public function testItShouldOverwriteTheDestinationFolderBasedOnTheTargetOption(
+        string $argument,
+        string $workingDir,
+        string $expected
+    ) : void {
         $configuration = ['phpdocumentor' => ['paths' => ['output' => '/tmp']]];
 
-        $middleware = new CommandlineOptionsMiddleware(['target' => $expected], $this->configurationFactory);
+        $middleware = $this->createCommandlineOptionsMiddleware(['target' => $argument], $workingDir);
         $newConfiguration = $middleware($configuration);
 
         $this->assertEquals(Dsn::createFromString($expected), $newConfiguration['phpdocumentor']['paths']['output']);
@@ -54,8 +57,8 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
     public function testItShouldDisableTheCacheBasedOnTheForceOption() : void
     {
         $configuration = ['phpdocumentor' => ['use-cache' => true]];
+        $middleware = $this->createCommandlineOptionsMiddleware(['force' => true]);
 
-        $middleware = new CommandlineOptionsMiddleware(['force' => true], $this->configurationFactory);
         $newConfiguration = $middleware($configuration);
 
         $this->assertFalse($newConfiguration['phpdocumentor']['use-cache']);
@@ -68,8 +71,7 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
     {
         $expected = '/abc';
         $configuration = ['phpdocumentor' => ['paths' => ['cache' => '/tmp']]];
-
-        $middleware = new CommandlineOptionsMiddleware(['cache-folder' => $expected], $this->configurationFactory);
+        $middleware = $this->createCommandlineOptionsMiddleware(['cache-folder' => $expected]);
         $newConfiguration = $middleware->__invoke($configuration);
 
         $this->assertEquals(new Path($expected), $newConfiguration['phpdocumentor']['paths']['cache']);
@@ -82,8 +84,8 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
     {
         $expected = 'phpDocumentor3';
         $configuration = ['phpdocumentor' => ['title' => 'phpDocumentor2']];
+        $middleware = $this->createCommandlineOptionsMiddleware(['title' => $expected]);
 
-        $middleware = new CommandlineOptionsMiddleware(['title' => $expected], $this->configurationFactory);
         $newConfiguration = $middleware($configuration);
 
         $this->assertSame($expected, $newConfiguration['phpdocumentor']['title']);
@@ -96,8 +98,8 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
     {
         $expected = 'clean';
         $configuration = ['phpdocumentor' => ['templates' => [['name' => 'responsive']]]];
+        $middleware = $this->createCommandlineOptionsMiddleware(['template' => $expected]);
 
-        $middleware = new CommandlineOptionsMiddleware(['template' => $expected], $this->configurationFactory);
         $newConfiguration = $middleware($configuration);
 
         $this->assertSame([['name' => $expected]], $newConfiguration['phpdocumentor']['templates']);
@@ -110,10 +112,7 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
     {
         $configuration = $this->givenAConfigurationWithoutApiDefinition();
 
-        $middleware = new CommandlineOptionsMiddleware(
-            ['filename' => ['./src/index.php']],
-            $this->configurationFactory
-        );
+        $middleware = $this->createCommandlineOptionsMiddleware(['filename' => ['./src/index.php']]);
         $newConfiguration = $middleware($configuration);
 
         $this->assertEquals(
@@ -131,8 +130,8 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
     public function testItShouldAddSourceDirectoriesForDefaultConfiguration() : void
     {
         $configuration = $this->givenAConfigurationWithoutApiDefinition();
+        $middleware = $this->createCommandlineOptionsMiddleware(['directory' => ['./src']]);
 
-        $middleware = new CommandlineOptionsMiddleware(['directory' => ['./src']], $this->configurationFactory);
         $newConfiguration = $middleware($configuration);
 
         $this->assertEquals(
@@ -150,8 +149,8 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
     public function testItShouldKeepSourceDirectoriesWhenNoneWereProvideOnCommandLine() : void
     {
         $configuration = $this->givenAConfiguration();
+        $middleware = $this->createCommandlineOptionsMiddleware(['directory' => []]);
 
-        $middleware = new CommandlineOptionsMiddleware(['directory' => []], $this->configurationFactory);
         $newConfiguration = $middleware($configuration);
 
         $this->assertEquals(
@@ -166,7 +165,8 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
     public function testItShouldAddAbsoluteSourcePathsToNewApi() : void
     {
         $configuration = $this->givenAConfiguration();
-        $middleware = new CommandlineOptionsMiddleware(['directory' => ['/src']], $this->configurationFactory);
+        $middleware = $this->createCommandlineOptionsMiddleware(['directory' => ['/src']]);
+
         $newConfiguration = $middleware($configuration);
 
         $this->assertEquals(
@@ -181,10 +181,8 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
     public function testItShouldAddAbsoluteSourcePathsToNewApiAndRelativeToCurrent() : void
     {
         $configuration = $this->givenAConfiguration();
-        $middleware = new CommandlineOptionsMiddleware(
-            ['directory' => ['/src', './localSrc']],
-            $this->configurationFactory
-        );
+        $middleware = $this->createCommandlineOptionsMiddleware(['directory' => ['/src', './localSrc']]);
+
         $newConfiguration = $middleware($configuration);
 
         $this->assertEquals(
@@ -210,9 +208,9 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
     public function testItShouldRegisterExtensionsForDefaultConfiguration() : void
     {
         $configuration = $this->givenAConfigurationWithoutApiDefinition();
-
         $extensions = ['php7', 'php5'];
-        $middleware = new CommandlineOptionsMiddleware(['extensions' => $extensions], $this->configurationFactory);
+        $middleware = $this->createCommandlineOptionsMiddleware(['extensions' => $extensions]);
+
         $newConfiguration = $middleware($configuration);
 
         $this->assertEquals(
@@ -227,8 +225,8 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
     public function testItShouldReplaceIgnoredDirectoriesForDefaultConfiguration() : void
     {
         $configuration = $this->givenAConfigurationWithoutApiDefinition();
+        $middleware = $this->createCommandlineOptionsMiddleware(['ignore' => ['./src']]);
 
-        $middleware = new CommandlineOptionsMiddleware(['ignore' => ['./src']], $this->configurationFactory);
         $newConfiguration = $middleware($configuration);
 
         $this->assertEquals(
@@ -247,9 +245,9 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
     public function testItShouldOverwriteTheMarkersOfTheDefaultConfiguration() : void
     {
         $configuration = $this->givenAConfigurationWithoutApiDefinition();
-
         $markers = ['FIXME2', 'TODOSOMETIME'];
-        $middleware = new CommandlineOptionsMiddleware(['markers' => $markers], $this->configurationFactory);
+        $middleware = $this->createCommandlineOptionsMiddleware(['markers' => $markers]);
+
         $newConfiguration = $middleware($configuration);
 
         $this->assertEquals(
@@ -264,9 +262,9 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
     public function testItShouldOverwriteTheVisibilitySetInTheDefaultConfiguration() : void
     {
         $configuration = $this->givenAConfigurationWithoutApiDefinition();
-
         $visibility = ['public'];
-        $middleware = new CommandlineOptionsMiddleware(['visibility' => $visibility], $this->configurationFactory);
+        $middleware = $this->createCommandlineOptionsMiddleware(['visibility' => $visibility]);
+
         $newConfiguration = $middleware($configuration);
 
         $this->assertEquals(
@@ -281,12 +279,9 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
     public function testItShouldOverwriteTheDefaultPackageNameSetInTheDefaultConfiguration() : void
     {
         $configuration = $this->givenAConfigurationWithoutApiDefinition();
-
         $defaultPackageName = ['public'];
-        $middleware = new CommandlineOptionsMiddleware(
-            ['defaultpackagename' => $defaultPackageName],
-            $this->configurationFactory
-        );
+        $middleware = $this->createCommandlineOptionsMiddleware(['defaultpackagename' => $defaultPackageName]);
+
         $newConfiguration = $middleware($configuration);
 
         $this->assertEquals(
@@ -302,7 +297,7 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
     {
         $configuration = $this->givenAConfigurationWithoutApiDefinition();
 
-        $middleware = new CommandlineOptionsMiddleware(['sourcecode' => true], $this->configurationFactory);
+        $middleware = $this->createCommandlineOptionsMiddleware(['sourcecode' => true]);
         $newConfiguration = $middleware($configuration);
 
         $this->assertEquals(
@@ -310,7 +305,7 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
             current($newConfiguration['phpdocumentor']['versions'])['api'][0]['include-source']
         );
 
-        $middleware = new CommandlineOptionsMiddleware(['sourcecode' => false], $this->configurationFactory);
+        $middleware = $this->createCommandlineOptionsMiddleware(['sourcecode' => false]);
         $newConfiguration = $middleware($configuration);
 
         $this->assertEquals(
@@ -333,5 +328,40 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
     private function givenAConfiguration() : array
     {
         return $this->configurationFactory->createDefault()->getArrayCopy();
+    }
+
+    public function targetPathProvider() : array
+    {
+        return [
+            'absolute path' => [
+                '/abc',
+                '/opt/myProject',
+                '/abc',
+            ],
+            'relative path in current dir' => [
+                './abc',
+                '/opt/myProject',
+                '/opt/myProject/abc',
+            ],
+            'relative path directory up' => [
+                '../abc',
+                '/opt/myProject',
+                '/opt/abc',
+            ],
+        ];
+    }
+
+    /**
+     * @param array $options
+     */
+    private function createCommandlineOptionsMiddleware(
+        array $options,
+        $workingDir = '/'
+    ) : CommandlineOptionsMiddleware {
+        return new CommandlineOptionsMiddleware(
+            $options,
+            $this->configurationFactory,
+            $workingDir
+        );
     }
 }

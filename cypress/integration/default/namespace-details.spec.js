@@ -1,6 +1,6 @@
 describe('Namespace Detail Page', function() {
     beforeEach(function(){
-        cy.visit('data/examples/MariosPizzeria/build/default/namespaces/marios.html');
+        cy.visit('build/default/namespaces/marios.html');
     });
 
     it('Has "Marios" as title', function() {
@@ -68,7 +68,7 @@ describe('Namespace Detail Page', function() {
 
 describe('Namespace Detail Page for a (sub)namespace', function() {
     beforeEach(function(){
-        cy.visit('data/examples/MariosPizzeria/build/default/namespaces/marios-pizza.html');
+        cy.visit('build/default/namespaces/marios-pizza.html');
     });
 
     it('Has "Pizza" as title', function() {
