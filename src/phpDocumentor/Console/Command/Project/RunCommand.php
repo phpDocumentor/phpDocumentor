@@ -89,7 +89,7 @@ class RunCommand extends Command
                 
                     <info>$ phpdoc run -d [directory to parse] -t [output directory]</info>
                 
-                This will parse every file ending with .php, .php3 and .phtml in <directory
+                This will parse every file ending with .php in <directory
                 to parse> and then output a HTML site containing easily readable documentation
                 in <output directory>.
                 
@@ -130,13 +130,15 @@ HELP
                 'filename',
                 'f',
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
-                'Comma-separated list of files to parse. The wildcards ? and * are supported'
+                'File to parse, glob patterns are supported. Provide multiple options of this type to add
+                multiple files.'
             )
             ->addOption(
                 'directory',
                 'd',
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
-                'Comma-separated list of directories to (recursively) parse'
+                'directory to parse, glob patterns are supported. Provide multiple options of this type to add
+                multiple directories.'
             )
             ->addOption(
                 'encoding',
@@ -148,21 +150,21 @@ HELP
                 'extensions',
                 null,
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
-                'Comma-separated list of extensions to parse, defaults to php, php3 and phtml'
+                'Provide multiple options of this type to add multiple extensions. default is php'
             )
             ->addOption(
                 'ignore',
                 'i',
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
-                'Comma-separated list of file(s) and directories (relative to the source-code directory) that will be '
-                . 'ignored. Wildcards * and ? are supported'
+                'File(s) and directories (relative to the source-code directory) that will be '
+                . 'ignored. Glob patterns are supported. Add multiple options of this type of add more ignore patterns'
             )
             ->addOption(
                 'ignore-tags',
                 null,
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
-                'Comma-separated list of tags that will be ignored, defaults to none. package, subpackage and ignore '
-                . 'may not be ignored.'
+                'Tag that will be ignored, defaults to none. package, subpackage and ignore '
+                . 'may not be ignored. Add multiple options of this type to ignore multiple tags.'
             )
             ->addOption(
                 'hidden',
@@ -205,8 +207,9 @@ HELP
                 'visibility',
                 null,
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
-                'Specifies the parse visibility that should be displayed in the documentation (comma separated e.g. '
-                . '"public,protected")'
+                'Specifies the parse visibility that should be displayed in the documentation. Add multiple options of 
+                this type to specify multiple levels.'
+                . '("public,protected")'
             )
             ->addOption(
                 'defaultpackagename',
