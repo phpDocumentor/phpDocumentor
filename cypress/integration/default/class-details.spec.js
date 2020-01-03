@@ -52,8 +52,29 @@ describe('Class Detail Page', function() {
             methods = cy.get('.phpdocumentor-method');
         });
 
-        it('Has a method called jsonSerialize', function() {
-            methods.get('.phpdocumentor-method__name').contains("jsonSerialize()");
+        describe('Shows the jsonSerialize implemented method from the JsonSerializable interface', function () {
+            let method;
+            before(function(){
+                method = methods.get('.phpdocumentor-method__name').contains("jsonSerialize()").parent();
+            });
+
+            it('Shows the name "jsonSerialize()"', function() {
+                method.get('.phpdocumentor-method__name').contains("jsonSerialize()");
+            });
+
+            it('Does not show a name or description because it @inheritdocs an external method', function() {
+                method.get('.phpdocumentor-summary').should('not.exist');
+                method.get('.phpdocumentor-description').should('not.exist');
+            });
+
+            it('Has a pretty-printed signature', function() {
+                const signature = method.get('.phpdocumentor-method__signature');
+                signature.should('have.class', 'prettyprinted');
+
+                signature.contains("public");
+                signature.contains("jsonSerialize");
+                signature.contains("array");
+            });
         });
     });
 });
