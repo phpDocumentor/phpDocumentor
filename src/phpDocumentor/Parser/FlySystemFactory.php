@@ -22,9 +22,14 @@ use League\Flysystem\MountManager;
 use LogicException;
 use phpDocumentor\Dsn;
 use const LOCK_EX;
+use const PHP_OS_FAMILY;
 use function assert;
 use function hash;
 use function in_array;
+use function sprintf;
+use function strlen;
+use function strpos;
+use function substr;
 
 class FlySystemFactory implements FileSystemFactory
 {
@@ -61,7 +66,7 @@ class FlySystemFactory implements FileSystemFactory
     private function createAdapter(Dsn $dsn) : AdapterInterface
     {
         if (!in_array($dsn->getScheme(), [null, 'file', 'vfs', 'phar'])) {
-            throw new InvalidArgumentException('http and https are not supported yet');
+            throw new InvalidArgumentException(sprintf('"%s" is not a supported file system yet', $dsn->getScheme()));
         }
 
         try {
@@ -72,6 +77,12 @@ class FlySystemFactory implements FileSystemFactory
                 0,
                 $e
             );
+        }
+
+        if (PHP_OS_FAMILY === 'Windows') {
+            if (strpos($root, 'file:///') === 0) {
+                $root = substr($root, strlen('file:///'));
+            }
         }
 
         return new Local(
