@@ -37,6 +37,8 @@ class CollectFilesIntegrationTest extends \PHPUnit\Framework\TestCase
 
     public function payloadProvider()
     {
+        $scheme = $this->createFileScheme();
+
         return [
             'single dir' => [
                 'payload' => $payload = new Payload(
@@ -47,7 +49,7 @@ class CollectFilesIntegrationTest extends \PHPUnit\Framework\TestCase
                                     'api' => [
                                         [
                                             'source' => [
-                                                'dsn' => Dsn::createFromString('file://' . __DIR__ . '/assets/project1'),
+                                                'dsn' => Dsn::createFromString($scheme . __DIR__ . '/assets/project1'),
                                                 'paths' => [
                                                     0 => '/src**/*',
                                                 ],
@@ -78,7 +80,7 @@ class CollectFilesIntegrationTest extends \PHPUnit\Framework\TestCase
                                     'api' => [
                                         [
                                             'source' => [
-                                                'dsn' => Dsn::createFromString('file://' . __DIR__ . '/assets/project1'),
+                                                'dsn' => Dsn::createFromString($scheme . __DIR__ . '/assets/project1'),
                                                 'paths' => [
                                                     0 => '/src/**/*',
                                                 ],
@@ -93,7 +95,7 @@ class CollectFilesIntegrationTest extends \PHPUnit\Framework\TestCase
                                         ],
                                         [
                                             'source' => [
-                                                'dsn' => Dsn::createFromString('file://' . __DIR__ . '/assets/project2'),
+                                                'dsn' => Dsn::createFromString($scheme . __DIR__ . '/assets/project2'),
                                                 'paths' => [
                                                     0 => '/src/**/*',
                                                 ],
@@ -116,5 +118,22 @@ class CollectFilesIntegrationTest extends \PHPUnit\Framework\TestCase
                 'files_expected' => 4,
             ]
         ];
+    }
+
+    /**
+     * Adds extra / on windows
+     *
+     * Because windows is using prefixes its drives with letters the first / is
+     * after that letter. Since we do not know in the this test the value of __DIR__
+     * an extra / is added on windows to make sure we are providing a valid scheme.
+     */
+    private function createFileScheme() : string
+    {
+        $scheme = 'file://';
+
+        if (PHP_OS_FAMILY === 'Windows') {
+            $scheme .= '/';
+        }
+        return $scheme;
     }
 }

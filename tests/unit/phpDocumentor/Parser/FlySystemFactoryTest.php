@@ -23,6 +23,8 @@ use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Dsn;
 use const DIRECTORY_SEPARATOR;
+use const PHP_OS_FAMILY;
+use function substr;
 use function sys_get_temp_dir;
 
 /**
@@ -67,7 +69,10 @@ final class FlySystemFactoryTest extends MockeryTestCase
         /** @var AbstractAdapter $adapter */
         $adapter = $result->getAdapter();
         $pathPrefix = $adapter->getPathPrefix();
-        $this->assertSame((string) $this->dsn . DIRECTORY_SEPARATOR, $pathPrefix);
+
+        $expected = $this->formatOsSpecificResult();
+
+        $this->assertSame($expected . DIRECTORY_SEPARATOR, $pathPrefix);
     }
 
     /**
@@ -107,5 +112,20 @@ final class FlySystemFactoryTest extends MockeryTestCase
         $fileSystem = $this->fixture->create($this->dsn);
 
         $fileSystem->find(new InPath(new Path('a')));
+    }
+
+    /**
+     * @see FlySystemFactory::stripScheme
+     */
+    private function formatOsSpecificResult() : string
+    {
+        $expected = (string) $this->dsn;
+        if (PHP_OS_FAMILY === 'Windows') {
+            $expected = substr((string) $this->dsn, 8);
+            if ($expected === false) {
+                $this->fail('dsn is not valid');
+            }
+        }
+        return $expected;
     }
 }
