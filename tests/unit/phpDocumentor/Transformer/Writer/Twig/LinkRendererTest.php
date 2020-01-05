@@ -21,8 +21,6 @@ use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Types\Integer;
 use phpDocumentor\Transformer\Router\Router;
-use const DIRECTORY_SEPARATOR;
-use function str_replace;
 
 /**
  * @coversDefaultClass \phpDocumentor\Transformer\Writer\Twig\LinkRenderer
@@ -94,7 +92,7 @@ final class LinkRendererTest extends MockeryTestCase
             ->shouldReceive('generate')
             ->andReturn('/classes/My.Namespace.Class.html');
 
-        $this->renderer->setDestination(str_replace('/', DIRECTORY_SEPARATOR, '/root/of/project'));
+        $this->renderer->setDestination('/root/of/project');
         $collection = new Collection([$fqsen]);
         $result = $this->renderer->render($collection, 'url');
 

@@ -24,7 +24,6 @@ use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Type;
 use phpDocumentor\Reflection\Types\Object_;
 use phpDocumentor\Transformer\Router\Router;
-use const DIRECTORY_SEPARATOR;
 use function array_fill;
 use function count;
 use function current;
@@ -278,7 +277,7 @@ final class LinkRenderer
      */
     private function getPathPrefixBasedOnDepth() : string
     {
-        $directoryDepth = count(explode(DIRECTORY_SEPARATOR, $this->getDestination()));
+        $directoryDepth = count(explode('/', $this->getDestination()));
 
         return $directoryDepth > 1
             ? implode('/', array_fill(0, $directoryDepth - 1, '..')) . '/'
