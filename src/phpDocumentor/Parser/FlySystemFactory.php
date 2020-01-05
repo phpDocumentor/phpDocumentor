@@ -79,16 +79,30 @@ class FlySystemFactory implements FileSystemFactory
             );
         }
 
+        return new Local(
+            $this->stripScheme($root),
+            $dsn->getScheme() !== 'vfs' ? LOCK_EX : 0, // VFS does not support locking
+            Local::SKIP_LINKS
+        );
+    }
+
+    /**
+     * Removes file:/// scheme from the dsn when needed.
+     *
+     * The local adapter of flysystem cannot handle the file:/// on all windows
+     * platforms. At the moment it is unsure why this is exactly happening this way
+     * but it seems that php on windows 10 is not able to handle streams properly while
+     * windows server is able to do this.
+     *
+     * Github actions will NOT reproduce this behavior since they are running a server edition of windows.
+     */
+    private function stripScheme(string $root) : string
+    {
         if (PHP_OS_FAMILY === 'Windows') {
             if (strpos($root, 'file:///') === 0) {
                 $root = substr($root, strlen('file:///'));
             }
         }
-
-        return new Local(
-            $root,
-            $dsn->getScheme() !== 'vfs' ? LOCK_EX : 0, // VFS does not support locking
-            Local::SKIP_LINKS
-        );
+        return $root;
     }
 }
