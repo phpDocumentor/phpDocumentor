@@ -64,16 +64,16 @@
         },
         {
             "name": "erusev/parsedown",
-            "version": "1.7.3",
+            "version": "1.7.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/erusev/parsedown.git",
-                "reference": "6d893938171a817f4e9bc9e86f2da1e370b7bcd7"
+                "reference": "cb17b6477dfff935958ba01325f2e8a2bfa6dab3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/erusev/parsedown/zipball/6d893938171a817f4e9bc9e86f2da1e370b7bcd7",
-                "reference": "6d893938171a817f4e9bc9e86f2da1e370b7bcd7",
+                "url": "https://api.github.com/repos/erusev/parsedown/zipball/cb17b6477dfff935958ba01325f2e8a2bfa6dab3",
+                "reference": "cb17b6477dfff935958ba01325f2e8a2bfa6dab3",
                 "shasum": ""
             },
             "require": {
@@ -106,7 +106,7 @@
                 "markdown",
                 "parser"
             ],
-            "time": "2019-03-17T18:48:37+00:00"
+            "time": "2019-12-30T22:54:17+00:00"
         },
         {
             "name": "jean85/pretty-package-versions",
@@ -791,12 +791,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/GraphViz.git",
-                "reference": "e1eb7bcad583700c46c942206a5687e90c2c518f"
+                "reference": "2bcbe0814df9ed2b37c0672652e56639c7a178c2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/GraphViz/zipball/e1eb7bcad583700c46c942206a5687e90c2c518f",
-                "reference": "e1eb7bcad583700c46c942206a5687e90c2c518f",
+                "url": "https://api.github.com/repos/phpDocumentor/GraphViz/zipball/2bcbe0814df9ed2b37c0672652e56639c7a178c2",
+                "reference": "2bcbe0814df9ed2b37c0672652e56639c7a178c2",
                 "shasum": ""
             },
             "require": {
@@ -831,7 +831,7 @@
                 }
             ],
             "description": "Wrapper for Graphviz",
-            "time": "2019-12-30T09:15:32+00:00"
+            "time": "2020-01-06T09:28:17+00:00"
         },
         {
             "name": "phpdocumentor/reflection",
