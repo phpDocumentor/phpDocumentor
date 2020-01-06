@@ -791,12 +791,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/GraphViz.git",
-                "reference": "e1eb7bcad583700c46c942206a5687e90c2c518f"
+                "reference": "2bcbe0814df9ed2b37c0672652e56639c7a178c2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/GraphViz/zipball/e1eb7bcad583700c46c942206a5687e90c2c518f",
-                "reference": "e1eb7bcad583700c46c942206a5687e90c2c518f",
+                "url": "https://api.github.com/repos/phpDocumentor/GraphViz/zipball/2bcbe0814df9ed2b37c0672652e56639c7a178c2",
+                "reference": "2bcbe0814df9ed2b37c0672652e56639c7a178c2",
                 "shasum": ""
             },
             "require": {
@@ -831,7 +831,7 @@
                 }
             ],
             "description": "Wrapper for Graphviz",
-            "time": "2019-12-30T09:15:32+00:00"
+            "time": "2020-01-06T09:28:17+00:00"
         },
         {
             "name": "phpdocumentor/reflection",
@@ -3241,16 +3241,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v2.12.2",
+            "version": "v2.12.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "d761fd1f1c6b867ae09a7d8119a6d95d06dc44ed"
+                "reference": "97b6311585cae66a26833b14b33785f5797f7d39"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/d761fd1f1c6b867ae09a7d8119a6d95d06dc44ed",
-                "reference": "d761fd1f1c6b867ae09a7d8119a6d95d06dc44ed",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/97b6311585cae66a26833b14b33785f5797f7d39",
+                "reference": "97b6311585cae66a26833b14b33785f5797f7d39",
                 "shasum": ""
             },
             "require": {
@@ -3260,8 +3260,7 @@
             },
             "require-dev": {
                 "psr/container": "^1.0",
-                "symfony/debug": "^3.4|^4.2",
-                "symfony/phpunit-bridge": "^4.4@dev|^5.0"
+                "symfony/phpunit-bridge": "^4.4|^5.0"
             },
             "type": "library",
             "extra": {
@@ -3290,7 +3289,6 @@
                 },
                 {
                     "name": "Twig Team",
-                    "homepage": "https://twig.symfony.com/contributors",
                     "role": "Contributors"
                 },
                 {
@@ -3304,7 +3302,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2019-11-11T16:52:09+00:00"
+            "time": "2019-12-28T07:12:03+00:00"
         },
         {
             "name": "webmozart/assert",
