@@ -161,16 +161,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "1.0.62",
+            "version": "1.0.63",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "14dd5d7dff5fbc29ca9a2a53ff109760e40d91a0"
+                "reference": "8132daec326565036bc8e8d1876f77ec183a7bd6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/14dd5d7dff5fbc29ca9a2a53ff109760e40d91a0",
-                "reference": "14dd5d7dff5fbc29ca9a2a53ff109760e40d91a0",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/8132daec326565036bc8e8d1876f77ec183a7bd6",
+                "reference": "8132daec326565036bc8e8d1876f77ec183a7bd6",
                 "shasum": ""
             },
             "require": {
@@ -241,7 +241,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2019-12-29T14:46:55+00:00"
+            "time": "2020-01-04T16:30:31+00:00"
         },
         {
             "name": "league/pipeline",
@@ -791,12 +791,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/GraphViz.git",
-                "reference": "e1eb7bcad583700c46c942206a5687e90c2c518f"
+                "reference": "2bcbe0814df9ed2b37c0672652e56639c7a178c2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/GraphViz/zipball/e1eb7bcad583700c46c942206a5687e90c2c518f",
-                "reference": "e1eb7bcad583700c46c942206a5687e90c2c518f",
+                "url": "https://api.github.com/repos/phpDocumentor/GraphViz/zipball/2bcbe0814df9ed2b37c0672652e56639c7a178c2",
+                "reference": "2bcbe0814df9ed2b37c0672652e56639c7a178c2",
                 "shasum": ""
             },
             "require": {
@@ -831,7 +831,7 @@
                 }
             ],
             "description": "Wrapper for Graphviz",
-            "time": "2019-12-30T09:15:32+00:00"
+            "time": "2020-01-06T09:28:17+00:00"
         },
         {
             "name": "phpdocumentor/reflection",
