@@ -7,9 +7,9 @@ docs
 features
 tests
 tools
+var
 
 *.md
-composer.*
 behat.yml
 box.json
 Makefile

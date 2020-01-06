@@ -6,27 +6,8 @@ services:
     volumes: [".:/opt/phpdoc"]
     working_dir: "/opt/phpdoc"
 
-  phpunit:
-    build: docker/with-pcov
-    volumes: [".:/opt/phpdoc"]
-    working_dir: "/opt/phpdoc"
-    entrypoint: ["./tools/phpunit", "-v"]
-
   behat:
-    build: docker/dev
+    build: .
     volumes: [".:/opt/phpdoc"]
     working_dir: "/opt/phpdoc"
     command: ["./tools/behat"]
-
-  phpcs:
-    image: phpdoc/phpcs-ga:master
-    volumes: [".:/opt/phpdoc"]
-    working_dir: "/opt/phpdoc"
-    command: ["-d memory_limit=1024M"]
-
-  phpstan:
-    image: phpdoc/phpstan-ga:latest
-    environment:
-      PHP_EXTENSIONS: php7-intl
-    volumes: [".:/app"]
-    command: "analyse src tests --no-progress --level 5 --configuration phpstan.neon"

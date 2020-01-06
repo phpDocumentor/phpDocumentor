@@ -1,3 +1,4 @@
+CURRENT_UID ?=
 ARGS ?=
 
 .PHONY: phar
@@ -15,25 +16,24 @@ install-phive:
 
 .PHONY: setup
 setup: install-phive
-	docker build -t phpdoc/dev docker/with-xdebug; \
-	docker run -it --rm -v${CURDIR}:/opt/phpdoc -w /opt/phpdoc phpdoc/dev tools/phive.phar install --force-accept-unsigned
+	docker-compose run --rm --entrypoint=/usr/local/bin/php phpdoc tools/phive.phar install --copy --trust-gpg-keys 4AA394086372C20A,D2CCAC42F6295E7D,E82B2FB314E9906E,8E730BA25823D8B5,D0254321FB74703A --force-accept-unsigned
 
 .PHONY: phpcs
 phpcs:
-	docker-compose run --rm phpcs ${ARGS}
+	docker run -it --rm -v${CURDIR}:/opt/project -w /opt/project phpdoc/phpcs-ga:latest -d memory_limit=1024M -s ${ARGS}
 
 .PHONY: phpcbf
 phpcbf:
-	docker-compose run --rm phpcs phpcbf ${ARGS}
+	docker run -it --rm -v${CURDIR}:/opt/project -w /opt/project phpdoc/phpcs-ga:latest phpcbf ${ARGS}
 
 .PHONY: phpstan
 phpstan:
-	docker-compose run --rm phpstan ${ARGS}
+	docker run -it --rm -v${CURDIR}:/opt/project -w /opt/project phpdoc/phpstan-ga:latest analyse src --no-progress --level 5 --configuration phpstan.neon ${ARGS}
 
 .PHONY: test
 test:
-	docker-compose run --rm phpunit ${ARGS}
-	docker-compose run --entrypoint=/usr/local/bin/php --rm phpunit tests/coverage-checker.php 69
+	docker run -it --rm -v${CURDIR}:/github/workspace phpdoc/phpunit-ga
+	docker run -it --rm -v${CURDIR}:/data -w /data php:7.2 -f ./tests/coverage-checker.php 69
 
 .PHONY: integration-test
 integration-test: node_modules/.bin/cypress build/default/index.html build/clean/index.html
@@ -48,13 +48,13 @@ pre-commit-test: phpcs phpstan test
 
 .PHONY: shell
 shell:
-	CURRENT_UID=$(shell id -u):$(shell id -g) docker-compose run --rm -v ${CURDIR}:/opt/phpdoc -w /opt/phpdoc --entrypoint=/bin/bash phpdoc
+	CURRENT_UID=$(shell id -u):$(shell id -g) docker-compose run --rm --entrypoint=/bin/bash phpdoc
 
 node_modules/.bin/cypress:
 	docker run -it --rm -v ${CURDIR}:/opt/phpdoc -w /opt/phpdoc node npm install
 
 build/default/index.html: data/examples/MariosPizzeria/**/*
-	CURRENT_UID=$(shell id -u):$(shell id -g) docker-compose run --rm -v ${CURDIR}:/opt/phpdoc phpdoc --config=data/examples/MariosPizzeria/phpdoc.xml --template=default --target=build/default
+	CURRENT_UID=$(shell id -u):$(shell id -g) docker-compose run --rm phpdoc --config=data/examples/MariosPizzeria/phpdoc.xml --template=default --target=build/default
 
 build/clean/index.html: data/examples/MariosPizzeria/**/*
-	CURRENT_UID=$(shell id -u):$(shell id -g) docker-compose run --rm -v ${CURDIR}:/opt/phpdoc phpdoc --config=data/examples/MariosPizzeria/phpdoc.xml --template=clean --target=build/clean
+	CURRENT_UID=$(shell id -u):$(shell id -g) docker-compose run --rm phpdoc --config=data/examples/MariosPizzeria/phpdoc.xml --template=clean --target=build/clean
