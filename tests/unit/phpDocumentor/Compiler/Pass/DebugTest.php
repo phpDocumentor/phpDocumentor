@@ -15,25 +15,31 @@ namespace phpDocumentor\Compiler\Pass;
 
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
+use phpDocumentor\Descriptor\ProjectAnalyzer;
+use phpDocumentor\Descriptor\ProjectDescriptor;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 
 /**
- * Tests the functionality for the Debug Pass
+ * @coversDefaultClass \phpDocumentor\Compiler\Pass\Debug
+ * @covers ::__construct
+ * @covers ::<private>
  */
-class DebugTest extends MockeryTestCase
+final class DebugTest extends MockeryTestCase
 {
     /**
-     * @covers \phpDocumentor\Compiler\Pass\Debug::execute
+     * @covers ::execute
      */
     public function testLogDebugAnalysis() : void
     {
         $testString = 'test';
-        $projectDescriptorMock = m::mock('phpDocumentor\Descriptor\ProjectDescriptor');
+        $projectDescriptorMock = m::mock(ProjectDescriptor::class);
 
-        $loggerMock = m::mock('Psr\Log\LoggerInterface')
+        $loggerMock = m::mock(LoggerInterface::class)
             ->shouldReceive('debug')->with($testString)
             ->getMock();
 
-        $analyzerMock = m::mock('phpDocumentor\Descriptor\ProjectAnalyzer')
+        $analyzerMock = m::mock(ProjectAnalyzer::class)
             ->shouldReceive('analyze')->with($projectDescriptorMock)
             ->shouldReceive('__toString')->andReturn($testString)
             ->getMock();
@@ -45,12 +51,12 @@ class DebugTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Compiler\Pass\Debug::getDescription
+     * @covers ::getDescription
      */
     public function testGetDescription() : void
     {
-        $debug = new Debug(m::mock('Psr\Log\LoggerInterface'), m::mock('phpDocumentor\Descriptor\ProjectAnalyzer'));
-        $expected = 'Analyze results and write report to log';
-        $this->assertSame($expected, $debug->getDescription());
+        $debug = new Debug(new NullLogger(), m::mock(ProjectAnalyzer::class));
+
+        $this->assertSame('Analyze results and write report to log', $debug->getDescription());
     }
 }

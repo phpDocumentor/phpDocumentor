@@ -13,10 +13,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Compiler\Linker;
 
-use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\ClassDescriptor;
-use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Reflection\Fqsen;
 
@@ -30,15 +28,49 @@ final class DescriptorRepositoryTest extends MockeryTestCase
      * @covers ::setObjectAliasesList
      * @covers ::findAlias
      */
-    public function testFindObjectAliasWithFqsenWhenContextIsClass() : void
+    public function testFindObjectUsingWithFqsen() : void
+    {
+        $object = new ClassDescriptor();
+        $fqsen = new Fqsen('\phpDocumentor\Descriptor\MyClass');
+
+        $linker = new DescriptorRepository();
+        $linker->setObjectAliasesList([(string) $fqsen => $object]);
+
+        $this->assertSame($object, $linker->findAlias((string) $fqsen));
+    }
+
+    /**
+     * @covers ::setObjectAliasesList
+     * @covers ::findAlias
+     */
+    public function testFindObjectUsingPseudoTypes() : void
+    {
+        $object = new ClassDescriptor();
+        $fqsen = new Fqsen('\phpDocumentor\Descriptor\MyClass::MyMethod()');
+
+        $container = new ClassDescriptor();
+        $container->setFullyQualifiedStructuralElementName(new Fqsen('\phpDocumentor\Descriptor\MyClass'));
+
+        $linker = new DescriptorRepository();
+        $linker->setObjectAliasesList([(string) $fqsen => $object]);
+
+        $this->assertSame($object, $linker->findAlias('self::MyMethod()', $container));
+        $this->assertSame($object, $linker->findAlias('$this::MyMethod()', $container));
+    }
+
+    /**
+     * @covers ::setObjectAliasesList
+     * @covers ::findAlias
+     */
+    public function testFindObjectUsingFqsenWithContextMarker() : void
     {
         $object = new ClassDescriptor();
         $fqsenWithContextMarker = '@context::MyMethod()';
         $fqsen = new Fqsen('\phpDocumentor\Descriptor\MyClass::MyMethod()');
-        $container = m::mock(ClassDescriptor::class);
-        $container->shouldReceive('getFullyQualifiedStructuralElementName')
-            ->andReturn(new Fqsen('\phpDocumentor\Descriptor\MyClass'));
-        $container->shouldReceive('getNamespace')->andReturn('\phpDocumentor\Descriptor');
+
+        $container = new ClassDescriptor();
+        $container->setFullyQualifiedStructuralElementName(new Fqsen('\phpDocumentor\Descriptor\MyClass'));
+        $container->setNamespace('\phpDocumentor\Descriptor');
 
         $linker = new DescriptorRepository();
         $linker->setObjectAliasesList([(string) $fqsen => $object]);
@@ -50,15 +82,15 @@ final class DescriptorRepositoryTest extends MockeryTestCase
      * @covers ::setObjectAliasesList
      * @covers ::findAlias
      */
-    public function testFindObjectAliasWithFqsenAndContainerWhenContextIsContainerNamespace() : void
+    public function testFindObjectUsingFqsenWhenContextRepresentsTheNamespace() : void
     {
         $object = new ClassDescriptor();
         $fqsenWithContextMarker = '@context::MyClass';
         $fqsen = '\phpDocumentor\Descriptor\MyClass';
-        $container = m::mock(DescriptorAbstract::class);
-        $container->shouldReceive('getFullyQualifiedStructuralElementName')
-            ->andReturn(new Fqsen('\phpDocumentor\Descriptor'));
-        $container->shouldReceive('getNamespace')->andReturn('\phpDocumentor\Descriptor');
+
+        $container = new ClassDescriptor();
+        $container->setFullyQualifiedStructuralElementName(new Fqsen('\phpDocumentor\Descriptor'));
+        $container->setNamespace('\phpDocumentor\Descriptor');
 
         $linker = new DescriptorRepository();
         $linker->setObjectAliasesList([$fqsen => $object]);
@@ -75,10 +107,10 @@ final class DescriptorRepositoryTest extends MockeryTestCase
         $object = new ClassDescriptor();
         $fqsenWithContextMarker = '@context::MyClass';
         $fqsen = '\MyClass';
-        $container = m::mock(DescriptorAbstract::class);
-        $container->shouldReceive('getFullyQualifiedStructuralElementName')
-            ->andReturn(new Fqsen('\phpDocumentor\Descriptor'));
-        $container->shouldReceive('getNamespace')->andReturn('\phpDocumentor\Descriptor');
+
+        $container = new ClassDescriptor();
+        $container->setFullyQualifiedStructuralElementName(new Fqsen('\phpDocumentor\Descriptor'));
+        $container->setNamespace('\phpDocumentor\Descriptor');
 
         $linker = new DescriptorRepository();
         $linker->setObjectAliasesList([$fqsen => $object]);
@@ -92,11 +124,9 @@ final class DescriptorRepositoryTest extends MockeryTestCase
     public function testFindObjectAliasReturnsNamespaceContextWhenElementIsUndocumented() : void
     {
         $fqsenWithContextMarker = '@context::MyClass';
-        $container = m::mock(NamespaceDescriptor::class);
-        $container
-            ->shouldReceive('getFullyQualifiedStructuralElementName')
-            ->andReturn(new Fqsen('\phpDocumentor\Descriptor'));
-        $container->shouldReceive('getNamespace')->andReturn('\phpDocumentor\Descriptor');
+        $container = new NamespaceDescriptor();
+        $container->setFullyQualifiedStructuralElementName(new Fqsen('\phpDocumentor\Descriptor'));
+        $container->setNamespace('\phpDocumentor');
 
         $linker = new DescriptorRepository();
 

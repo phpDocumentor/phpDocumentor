@@ -18,6 +18,7 @@ use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\InterfaceDescriptor;
 use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
+use function sprintf;
 use function str_replace;
 use function strlen;
 use function strpos;
@@ -55,35 +56,38 @@ class DescriptorRepository
      */
     public function findAlias(string $fqsen, ?DescriptorAbstract $container = null)
     {
-        $fqsen = $this->replacePseudoTypes($fqsen, $container);
-
-        if ($this->isContextMarkerInFqsen($fqsen) && $container instanceof DescriptorAbstract) {
-            // first exchange `@context::element` for `\My\Class::element` and if it exists, return that
-            $classMember = $this->fetchElementByFqsen($this->getTypeWithClassAsContext($fqsen, $container));
-            if ($classMember) {
-                return $classMember;
-            }
-
-            // otherwise exchange `@context::element` for `\My\element` and if it exists, return that
-            $namespaceContext = $this->getTypeWithNamespaceAsContext($fqsen, $container);
-            $namespaceMember = $this->fetchElementByFqsen($namespaceContext);
-            if ($namespaceMember) {
-                return $namespaceMember;
-            }
-
-            // otherwise check if the element exists in the global namespace and if it exists, return that
-            $globalNamespaceContext = $this->getTypeWithGlobalNamespaceAsContext($fqsen);
-            $globalNamespaceMember = $this->fetchElementByFqsen($globalNamespaceContext);
-            if ($globalNamespaceMember) {
-                return $globalNamespaceMember;
-            }
-
-            // Otherwise we assume it is an undocumented class/interface/trait and return `\My\element` so
-            // that the name containing the marker may be replaced by the class reference as string
-            return $namespaceContext;
+        if (!$container instanceof DescriptorAbstract) {
+            return $this->fetchElementByFqsen($fqsen);
         }
 
-        return $this->fetchElementByFqsen($fqsen);
+        $fqsen = $this->replacePseudoTypes($fqsen, $container);
+        if (!$this->isContextMarkerInFqsen($fqsen)) {
+            return $this->fetchElementByFqsen($fqsen);
+        }
+
+        // first exchange `@context::element` for `\My\Class::element` and if it exists, return that
+        $classMember = $this->fetchElementByFqsen($this->getTypeWithClassAsContext($fqsen, $container));
+        if ($classMember) {
+            return $classMember;
+        }
+
+        // otherwise exchange `@context::element` for `\My\element` and if it exists, return that
+        $namespaceContext = $this->getTypeWithNamespaceAsContext($fqsen, $container);
+        $namespaceMember = $this->fetchElementByFqsen($namespaceContext);
+        if ($namespaceMember) {
+            return $namespaceMember;
+        }
+
+        // otherwise check if the element exists in the global namespace and if it exists, return that
+        $globalNamespaceContext = $this->getTypeWithGlobalNamespaceAsContext($fqsen);
+        $globalNamespaceMember = $this->fetchElementByFqsen($globalNamespaceContext);
+        if ($globalNamespaceMember) {
+            return $globalNamespaceMember;
+        }
+
+        // Otherwise we assume it is an undocumented class/interface/trait and return `\My\element` so
+        // that the name containing the marker may be replaced by the class reference as string
+        return $namespaceContext;
     }
 
     /**
@@ -99,19 +103,20 @@ class DescriptorRepository
     /**
      * Replaces pseudo-types, such as `self`, into a normalized version based on the last container that was
      * encountered.
-     *
-     * @todo can we remove the nullable from this somehow to make the method contents simpler
      */
-    private function replacePseudoTypes(string $fqsen, ?DescriptorAbstract $container) : string
+    private function replacePseudoTypes(string $fqsen, DescriptorAbstract $container) : string
     {
         $pseudoTypes = ['self', '$this'];
         foreach ($pseudoTypes as $pseudoType) {
-            if ((strpos($fqsen, $pseudoType . '::') !== 0 && $fqsen !== $pseudoType) || !$container) {
+            if (strpos($fqsen, $pseudoType . '::') !== 0 && $fqsen !== $pseudoType) {
                 continue;
             }
 
-            $fqsen = $container->getFullyQualifiedStructuralElementName()
-                . substr($fqsen, strlen($pseudoType));
+            return sprintf(
+                '%s%s',
+                $container->getFullyQualifiedStructuralElementName(),
+                substr($fqsen, strlen($pseudoType))
+            );
         }
 
         return $fqsen;
