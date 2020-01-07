@@ -119,6 +119,9 @@ final class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
      */
     private function resolveTag(array $match)
     {
+        // The checks below are impossible to reproduce in a test because of the regular expression in
+        // the resolveSeeAndLinkTags method
+        // @codeCoverageIgnoreStart
         try {
             $tagReflector = $this->createLinkOrSeeTagFromRegexMatch($match);
         } catch (InvalidArgumentException $e) {
@@ -128,6 +131,7 @@ final class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
         if (!$tagReflector instanceof BaseTag) {
             return $match;
         }
+        // @codeCoverageIgnoreEnd
 
         $link = $this->getLinkText($tagReflector);
         $description = (string) $tagReflector->getDescription();

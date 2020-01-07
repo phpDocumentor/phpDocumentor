@@ -95,6 +95,40 @@ final class ResolveInlineLinkAndSeeTagsTest extends MockeryTestCase
     /**
      * @covers ::execute
      */
+    public function testDescriptionsWithASeeTagWithALinkRendersAMarkdownLink() : void
+    {
+        $description = 'This is a {@see http://example.com description}';
+        $expected = 'This is a [description](http://example.com)';
+
+        $descriptor = $this->givenAChildDescriptorWithDescription($description);
+        $collection = $this->givenACollection($descriptor);
+        $project = $this->givenAProjectDescriptorWithChildDescriptors($collection);
+
+        $this->fixture->execute($project);
+
+        $this->thenDescriptionOfDescriptorIsChangedInto($descriptor, $expected);
+    }
+
+    /**
+     * @covers ::execute
+     */
+    public function testDescriptionsWithALinkTagRendersAMarkdownLink() : void
+    {
+        $description = 'This is a {@link http://example.com description}';
+        $expected = 'This is a [description](http://example.com)';
+
+        $descriptor = $this->givenAChildDescriptorWithDescription($description);
+        $collection = $this->givenACollection($descriptor);
+        $project = $this->givenAProjectDescriptorWithChildDescriptors($collection);
+
+        $this->fixture->execute($project);
+
+        $this->thenDescriptionOfDescriptorIsChangedInto($descriptor, $expected);
+    }
+
+    /**
+     * @covers ::execute
+     */
     public function testTagsOtherThanSeeOrLinkAreNotAffected() : void
     {
         $description = 'Description with {@author John Doe}';
