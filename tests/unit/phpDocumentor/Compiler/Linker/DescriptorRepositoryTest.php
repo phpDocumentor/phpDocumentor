@@ -33,10 +33,10 @@ final class DescriptorRepositoryTest extends MockeryTestCase
         $object = new ClassDescriptor();
         $fqsen = new Fqsen('\phpDocumentor\Descriptor\MyClass');
 
-        $linker = new DescriptorRepository();
-        $linker->setObjectAliasesList([(string) $fqsen => $object]);
+        $repository = new DescriptorRepository();
+        $repository->setObjectAliasesList([(string) $fqsen => $object]);
 
-        $this->assertSame($object, $linker->findAlias((string) $fqsen));
+        $this->assertSame($object, $repository->findAlias((string) $fqsen));
     }
 
     /**
@@ -51,11 +51,11 @@ final class DescriptorRepositoryTest extends MockeryTestCase
         $container = new ClassDescriptor();
         $container->setFullyQualifiedStructuralElementName(new Fqsen('\phpDocumentor\Descriptor\MyClass'));
 
-        $linker = new DescriptorRepository();
-        $linker->setObjectAliasesList([(string) $fqsen => $object]);
+        $repository = new DescriptorRepository();
+        $repository->setObjectAliasesList([(string) $fqsen => $object]);
 
-        $this->assertSame($object, $linker->findAlias('self::MyMethod()', $container));
-        $this->assertSame($object, $linker->findAlias('$this::MyMethod()', $container));
+        $this->assertSame($object, $repository->findAlias('self::MyMethod()', $container));
+        $this->assertSame($object, $repository->findAlias('$this::MyMethod()', $container));
     }
 
     /**
@@ -72,10 +72,10 @@ final class DescriptorRepositoryTest extends MockeryTestCase
         $container->setFullyQualifiedStructuralElementName(new Fqsen('\phpDocumentor\Descriptor\MyClass'));
         $container->setNamespace('\phpDocumentor\Descriptor');
 
-        $linker = new DescriptorRepository();
-        $linker->setObjectAliasesList([(string) $fqsen => $object]);
+        $repository = new DescriptorRepository();
+        $repository->setObjectAliasesList([(string) $fqsen => $object]);
 
-        $this->assertSame($object, $linker->findAlias($fqsenWithContextMarker, $container));
+        $this->assertSame($object, $repository->findAlias($fqsenWithContextMarker, $container));
     }
 
     /**
@@ -92,10 +92,10 @@ final class DescriptorRepositoryTest extends MockeryTestCase
         $container->setFullyQualifiedStructuralElementName(new Fqsen('\phpDocumentor\Descriptor'));
         $container->setNamespace('\phpDocumentor\Descriptor');
 
-        $linker = new DescriptorRepository();
-        $linker->setObjectAliasesList([$fqsen => $object]);
+        $repository = new DescriptorRepository();
+        $repository->setObjectAliasesList([$fqsen => $object]);
 
-        $this->assertSame($object, $linker->findAlias($fqsenWithContextMarker, $container));
+        $this->assertSame($object, $repository->findAlias($fqsenWithContextMarker, $container));
     }
 
     /**
@@ -112,10 +112,10 @@ final class DescriptorRepositoryTest extends MockeryTestCase
         $container->setFullyQualifiedStructuralElementName(new Fqsen('\phpDocumentor\Descriptor'));
         $container->setNamespace('\phpDocumentor\Descriptor');
 
-        $linker = new DescriptorRepository();
-        $linker->setObjectAliasesList([$fqsen => $object]);
+        $repository = new DescriptorRepository();
+        $repository->setObjectAliasesList([$fqsen => $object]);
 
-        $this->assertSame($object, $linker->findAlias($fqsenWithContextMarker, $container));
+        $this->assertSame($object, $repository->findAlias($fqsenWithContextMarker, $container));
     }
 
     /**
@@ -128,11 +128,11 @@ final class DescriptorRepositoryTest extends MockeryTestCase
         $container->setFullyQualifiedStructuralElementName(new Fqsen('\phpDocumentor\Descriptor'));
         $container->setNamespace('\phpDocumentor');
 
-        $linker = new DescriptorRepository();
+        $repository = new DescriptorRepository();
 
         $this->assertSame(
             '\phpDocumentor\Descriptor\MyClass',
-            (string) $linker->findAlias($fqsenWithContextMarker, $container)
+            (string) $repository->findAlias($fqsenWithContextMarker, $container)
         );
     }
 
@@ -141,8 +141,8 @@ final class DescriptorRepositoryTest extends MockeryTestCase
      */
     public function testFindObjectAliasReturnsNothingWithUnknownFqsen() : void
     {
-        $linker = new DescriptorRepository();
+        $repository = new DescriptorRepository();
 
-        $this->assertNull($linker->findAlias('\phpDocumentor\MyClass'));
+        $this->assertNull($repository->findAlias('\phpDocumentor\MyClass'));
     }
 }

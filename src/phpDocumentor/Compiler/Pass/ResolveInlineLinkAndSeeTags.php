@@ -15,19 +15,19 @@ namespace phpDocumentor\Compiler\Pass;
 
 use InvalidArgumentException;
 use phpDocumentor\Compiler\CompilerPassInterface;
+use phpDocumentor\Compiler\Linker\DescriptorRepository;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\Reflection\DocBlock\DescriptionFactory;
-use phpDocumentor\Reflection\DocBlock\StandardTagFactory;
 use phpDocumentor\Reflection\DocBlock\Tag;
+use phpDocumentor\Reflection\DocBlock\TagFactory;
+use phpDocumentor\Reflection\DocBlock\Tags\BaseTag;
 use phpDocumentor\Reflection\DocBlock\Tags\Link;
 use phpDocumentor\Reflection\DocBlock\Tags\Reference\Fqsen;
 use phpDocumentor\Reflection\DocBlock\Tags\See;
-use phpDocumentor\Reflection\FqsenResolver;
-use phpDocumentor\Reflection\TypeResolver;
 use phpDocumentor\Reflection\Types\Context;
 use phpDocumentor\Transformer\Router\Router;
+use Webmozart\Assert\Assert;
 use function preg_match;
 use function preg_replace_callback;
 use function sprintf;
@@ -36,7 +36,7 @@ use function sprintf;
  * This step in the compilation process iterates through all elements and scans their descriptions for an inline `@see`
  * or `@link` tag and resolves them to a markdown link.
  */
-class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
+final class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
 {
     public const COMPILER_PRIORITY = 9002;
 
@@ -51,12 +51,23 @@ class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
     /** @var Collection */
     private $elementCollection;
 
+    /** @var DescriptorRepository */
+    private $descriptorRepository;
+
+    /** @var TagFactory */
+    private $tagFactory;
+
     /**
      * Registers the router with this pass.
      */
-    public function __construct(Router $router)
-    {
+    public function __construct(
+        Router $router,
+        DescriptorRepository $descriptorRepository,
+        TagFactory $tagFactory
+    ) {
         $this->router = $router;
+        $this->descriptorRepository = $descriptorRepository;
+        $this->tagFactory = $tagFactory;
     }
 
     public function getDescription() : string
@@ -108,25 +119,30 @@ class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
      */
     private function resolveTag(array $match)
     {
-        $tagReflector = $this->createLinkOrSeeTagFromRegexMatch($match);
-        if (!$tagReflector instanceof See && !$tagReflector instanceof Link) {
+        try {
+            $tagReflector = $this->createLinkOrSeeTagFromRegexMatch($match);
+        } catch (InvalidArgumentException $e) {
             return $match;
         }
 
-        $link        = $this->getLinkText($tagReflector);
+        if (!$tagReflector instanceof BaseTag) {
+            return $match;
+        }
+
+        $link = $this->getLinkText($tagReflector);
         $description = (string) $tagReflector->getDescription();
 
         if ($this->isUrl($link)) {
             return $this->generateMarkdownLink($link, $description ?: $link);
         }
 
-        $link    = $this->resolveQsen($link);
-        $element = $this->findElement($link);
-        if (!$element) {
-            return (string) $link;
+        $fqsen = (string) $link;
+        $element = $this->descriptorRepository->findAlias($fqsen, $this->descriptor);
+        if (!$element instanceof DescriptorAbstract) {
+            return $fqsen;
         }
 
-        return $this->resolveElement($element, $link, $description);
+        return $this->resolveElement($element, $fqsen, $description);
     }
 
     /**
@@ -138,73 +154,33 @@ class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
     }
 
     /**
-     * Checks if the link represents a Fully Qualified Structural Element Name.
-     *
-     * @param Fqsen|string $link
-     */
-    private function isFqsen($link) : bool
-    {
-        return $link instanceof Fqsen;
-    }
-
-    /**
      * Creates a Tag Reflector from the given array of tag line, tag name and tag content.
      *
      * @param string[] $match
      */
-    private function createLinkOrSeeTagFromRegexMatch(array $match) : Tag
+    private function createLinkOrSeeTagFromRegexMatch(array $match) : ?Tag
     {
         [, $tagName, $tagContent] = $match;
 
-        $fqsenResolver      = new FqsenResolver();
-        $tagFactory         = new StandardTagFactory($fqsenResolver);
-        $descriptionFactory = new DescriptionFactory($tagFactory);
-        $tagFactory->addService($descriptionFactory);
-        $tagFactory->addService(new TypeResolver($fqsenResolver));
-
-        switch ($tagName) {
-            case 'see':
-                return See::create($tagContent, $fqsenResolver, $descriptionFactory, $this->createDocBlockContext());
-            case 'link':
-                return Link::create($tagContent, $descriptionFactory, $this->createDocBlockContext());
-        }
-
-        throw new InvalidArgumentException(
+        Assert::oneOf(
+            $tagName,
+            ['see', 'link'],
             sprintf('Tag with name: "%s" cannot be used to create a link', $tagName)
         );
-    }
 
-    /**
-     * Resolves a QSEN to a FQSEN.
-     *
-     * If a relative QSEN is provided then this method will attempt to resolve it given the current namespace and
-     * namespace aliases.
-     *
-     * @param Fqsen|string $link
-     *
-     * @return Fqsen|string
-     */
-    private function resolveQsen($link)
-    {
-        if (!$this->isFqsen($link)) {
-            return $link;
-        }
-
-        return $link;
+        return $this->tagFactory->create('@' . $tagName . ' ' . $tagContent, $this->createDocBlockContext());
     }
 
     /**
      * Generates a Markdown link to the given Descriptor or returns the link text if no route to the Descriptor could
      * be matched.
-     *
-     * @param Fqsen|string $link
      */
-    private function resolveElement(DescriptorAbstract $element, $link, ?string $description = null) : string
+    private function resolveElement(DescriptorAbstract $element, string $link, ?string $description = null) : string
     {
         $url = $this->router->generate($element);
         if ($url) {
-            $url  = '..' . $url;
-            $link = $this->generateMarkdownLink($url, $description ?: (string) $link);
+            $url = '..' . $url;
+            $link = $this->generateMarkdownLink($url, $description ?: $link);
         }
 
         return $link;
@@ -230,21 +206,11 @@ class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
     }
 
     /**
-     * Tries to find an element with the given FQSEN in the elements listing for this project.
-     *
-     * @param Fqsen|string $fqsen
-     */
-    private function findElement($fqsen) : ?DescriptorAbstract
-    {
-        return $this->elementCollection[(string) $fqsen] ?? null;
-    }
-
-    /**
      * Creates a DocBlock context containing the namespace and aliases for the current descriptor.
      */
     private function createDocBlockContext() : Context
     {
-        $file             = $this->descriptor->getFile();
+        $file = $this->descriptor->getFile();
         $namespaceAliases = $file ? $file->getNamespaceAliases()->getAll() : [];
         foreach ($namespaceAliases as $alias => $fqsen) {
             $namespaceAliases[$alias] = (string) $fqsen;

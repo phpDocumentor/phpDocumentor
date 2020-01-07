@@ -161,7 +161,14 @@ services:
         factory: [phpDocumentor\Reflection\Php\NodesFactory, 'createInstance']
 
     phpDocumentor\Reflection\PrettyPrinter: ~
-
+    phpDocumentor\Reflection\FqsenResolver: ~
+    phpDocumentor\Reflection\DocBlock\TagFactory: '@phpDocumentor\Reflection\DocBlock\StandardTagFactory'
+    phpDocumentor\Reflection\DocBlock\StandardTagFactory:
+      calls:
+        - [ 'addService', ['@phpDocumentor\Reflection\DocBlock\DescriptionFactory']]
+        - [ 'addService', ['@phpDocumentor\Reflection\TypeResolver']]
+    phpDocumentor\Reflection\TypeResolver: ~
+    phpDocumentor\Reflection\DocBlock\DescriptionFactory: ~
     phpDocumentor\Reflection\DocBlockFactoryInterface:
         class: phpDocumentor\Reflection\DocBlockFactory
         factory: [\phpDocumentor\Reflection\DocBlockFactory, 'createInstance']

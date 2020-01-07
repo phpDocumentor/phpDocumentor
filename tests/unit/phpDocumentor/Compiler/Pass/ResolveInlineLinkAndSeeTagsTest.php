@@ -16,10 +16,17 @@ namespace phpDocumentor\Compiler\Pass;
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery\MockInterface;
+use phpDocumentor\Compiler\Linker\DescriptorRepository;
+use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Reflection\DocBlock\DescriptionFactory;
+use phpDocumentor\Reflection\DocBlock\StandardTagFactory;
+use phpDocumentor\Reflection\Fqsen;
+use phpDocumentor\Reflection\FqsenResolver;
+use phpDocumentor\Reflection\TypeResolver;
 use phpDocumentor\Transformer\Router\Router;
 
 /**
@@ -27,7 +34,7 @@ use phpDocumentor\Transformer\Router\Router;
  * @covers ::__construct
  * @covers ::<private>
  */
-class ResolveInlineLinkAndSeeTagsTest extends MockeryTestCase
+final class ResolveInlineLinkAndSeeTagsTest extends MockeryTestCase
 {
     /** @var Router|MockInterface */
     private $router;
@@ -41,7 +48,24 @@ class ResolveInlineLinkAndSeeTagsTest extends MockeryTestCase
     protected function setUp() : void
     {
         $this->router = m::mock(Router::class);
-        $this->fixture = new ResolveInlineLinkAndSeeTags($this->router);
+
+        $fqsen = new Fqsen('\phpDocumentor\LinkDescriptor');
+        $object = new ClassDescriptor();
+        $object->setFullyQualifiedStructuralElementName($fqsen);
+        $object->setNamespace('\phpDocumentor');
+
+        $repository = new DescriptorRepository();
+        $repository->setObjectAliasesList([(string) $fqsen => $object]);
+
+        $tagFactory = new StandardTagFactory(new FqsenResolver());
+        $tagFactory->addService(new TypeResolver(new FqsenResolver()));
+        $tagFactory->addService(new DescriptionFactory($tagFactory));
+
+        $this->fixture = new ResolveInlineLinkAndSeeTags(
+            $this->router,
+            $repository,
+            $tagFactory
+        );
     }
 
     /**
@@ -55,65 +79,23 @@ class ResolveInlineLinkAndSeeTagsTest extends MockeryTestCase
     /**
      * @covers ::execute
      */
-    public function testReplaceDescriptionIfItContainsNoSeeOrLink() : void
+    public function testDescriptionsWithoutTagsAreUnchanged() : void
     {
         $description = 'This is a description';
 
         $descriptor = $this->givenAChildDescriptorWithDescription($description);
         $collection = $this->givenACollection($descriptor);
+        $project = $this->givenAProjectDescriptorWithChildDescriptors($collection);
+
+        $this->fixture->execute($project);
+
         $this->thenDescriptionOfDescriptorIsChangedInto($descriptor, $description);
-
-        $project = $this->givenAProjectDescriptorWithChildDescriptors($collection);
-
-        $this->fixture->execute($project);
     }
 
     /**
      * @covers ::execute
      */
-    public function testReplaceDescriptionIfItContainsASeeButFileIsNotAvailable() : void
-    {
-        $description = 'Description with {@see ARandomDescriptor}';
-        $expected = 'Description with \ARandomDescriptor';
-
-        $descriptor = $this->givenAChildDescriptorWithDescription($description);
-        $collection = $this->givenACollection($descriptor);
-        $elementToLinkTo = $this->givenAnElementToLinkTo();
-
-        $this->whenDescriptionContainsSeeOrLinkWithElement($descriptor, $elementToLinkTo);
-
-        $this->thenDescriptionOfDescriptorIsChangedInto($descriptor, $expected);
-
-        $project = $this->givenAProjectDescriptorWithChildDescriptors($collection);
-
-        $this->fixture->execute($project);
-    }
-
-    /**
-     * @covers ::execute
-     */
-    public function testReplaceDescriptionIfItContainsASeeAndFileIsPresent() : void
-    {
-        $description = 'Description with {@see LinkDescriptor}';
-        $expected = 'Description with [\phpDocumentor\LinkDescriptor](../classes/phpDocumentor.LinkDescriptor.html)';
-
-        $descriptor = $this->givenAChildDescriptorWithDescription($description);
-        $collection = $this->givenACollection($descriptor);
-        $elementToLinkTo = $this->givenAnElementToLinkTo();
-
-        $this->whenDescriptionContainsSeeOrLinkWithElement($descriptor, $elementToLinkTo);
-
-        $this->thenDescriptionOfDescriptorIsChangedInto($descriptor, $expected);
-
-        $project = $this->givenAProjectDescriptorWithChildDescriptors($collection);
-
-        $this->fixture->execute($project);
-    }
-
-    /**
-     * @covers ::execute
-     */
-    public function testReplaceDescriptionIfItContainsAnotherTag() : void
+    public function testTagsOtherThanSeeOrLinkAreNotAffected() : void
     {
         $description = 'Description with {@author John Doe}';
         $expected = 'Description with {@author John Doe}';
@@ -121,11 +103,72 @@ class ResolveInlineLinkAndSeeTagsTest extends MockeryTestCase
         $descriptor = $this->givenAChildDescriptorWithDescription($description);
         $collection = $this->givenACollection($descriptor);
 
+        $project = $this->givenAProjectDescriptorWithChildDescriptors($collection);
+
+        $this->fixture->execute($project);
+
         $this->thenDescriptionOfDescriptorIsChangedInto($descriptor, $expected);
+    }
+
+    /**
+     * @covers ::execute
+     */
+    public function testReplaceDescriptionIfItContainsASeeTagButFqsenIsNotInProject() : void
+    {
+        $description = 'Description with {@see ARandomDescriptor}';
+        $expected = 'Description with \phpDocumentor\ARandomDescriptor';
+
+        $descriptor = $this->givenAChildDescriptorWithDescription($description);
+        $collection = $this->givenACollection($descriptor);
+        $elementToLinkTo = $this->givenAnElementToLinkTo();
+
+        $this->whenDescriptionContainsSeeOrLinkWithElement($descriptor, $elementToLinkTo);
 
         $project = $this->givenAProjectDescriptorWithChildDescriptors($collection);
 
         $this->fixture->execute($project);
+
+        $this->thenDescriptionOfDescriptorIsChangedInto($descriptor, $expected);
+    }
+
+    /**
+     * @covers ::execute
+     */
+    public function testReplaceDescriptionIfItContainsASeeTagAndFqsenIsInProject() : void
+    {
+        $description = 'Description with {@see \phpDocumentor\LinkDescriptor}';
+        $expected = 'Description with [\phpDocumentor\LinkDescriptor](../classes/phpDocumentor.LinkDescriptor.html)';
+        $elementToLinkTo = $this->givenAnElementToLinkTo();
+
+        $descriptor = $this->givenAChildDescriptorWithDescription($description);
+        $this->whenDescriptionContainsSeeOrLinkWithElement($descriptor, $elementToLinkTo);
+
+        $collection = $this->givenACollection($descriptor);
+        $project = $this->givenAProjectDescriptorWithChildDescriptors($collection);
+
+        $this->fixture->execute($project);
+
+        $this->thenDescriptionOfDescriptorIsChangedInto($descriptor, $expected);
+    }
+
+    /**
+     * @covers ::execute
+     */
+    public function testReplaceDescriptionIfFqsenIsAnAlias() : void
+    {
+        $description = 'Description with {@see LinkDescriptor}';
+        $expected = 'Description with [\phpDocumentor\LinkDescriptor](../classes/phpDocumentor.LinkDescriptor.html)';
+        $elementToLinkTo = $this->givenAnElementToLinkTo();
+
+        $descriptor = $this->givenAChildDescriptorWithDescription($description);
+        $this->whenDescriptionContainsSeeOrLinkWithElement($descriptor, $elementToLinkTo);
+
+        $collection = $this->givenACollection($descriptor);
+        $project = $this->givenAProjectDescriptorWithChildDescriptors($collection);
+
+        $this->fixture->execute($project);
+
+        $this->thenDescriptionOfDescriptorIsChangedInto($descriptor, $expected);
     }
 
     /**
@@ -135,6 +178,7 @@ class ResolveInlineLinkAndSeeTagsTest extends MockeryTestCase
     {
         $descriptor = new FileDescriptor('7ft6ds57');
         $descriptor->setDescription($description);
+        $descriptor->setNamespace('phpDocumentor');
 
         return $descriptor;
     }
@@ -184,9 +228,9 @@ class ResolveInlineLinkAndSeeTagsTest extends MockeryTestCase
     /**
      * Verifies if the given descriptor's setDescription method is called with the given value.
      */
-    public function thenDescriptionOfDescriptorIsChangedInto(FileDescriptor $descriptor, string $expected) : void
+    private function thenDescriptionOfDescriptorIsChangedInto(FileDescriptor $descriptor, string $expected) : void
     {
-        $descriptor->setDescription($expected);
+        $this->assertSame($expected, $descriptor->getDescription());
     }
 
     /**
