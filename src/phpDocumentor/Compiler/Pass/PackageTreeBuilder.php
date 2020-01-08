@@ -22,6 +22,7 @@ use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Reflection\Fqsen;
 use function explode;
 use function ltrim;
+use function str_replace;
 use function ucfirst;
 
 /**
@@ -33,7 +34,7 @@ use function ucfirst;
  * If the package tree were to be persisted then both locations needed to be
  * invalidated if a file were to change.
  */
-class PackageTreeBuilder implements CompilerPassInterface
+final class PackageTreeBuilder implements CompilerPassInterface
 {
     public const COMPILER_PRIORITY = 9001;
 
@@ -46,17 +47,20 @@ class PackageTreeBuilder implements CompilerPassInterface
     {
         $rootPackageDescriptor = new PackageDescriptor();
         $rootPackageDescriptor->setName('\\');
-        $project->getIndexes()->set('packages', new Collection());
-        $project->getIndexes()->packages['\\'] = $rootPackageDescriptor;
+
+        $packages = new Collection();
+        $packages['\\'] = $rootPackageDescriptor;
 
         foreach ($project->getFiles() as $file) {
-            $this->addElementsOfTypeToPackage($project, [$file], 'files');
-            $this->addElementsOfTypeToPackage($project, $file->getConstants()->getAll(), 'constants');
-            $this->addElementsOfTypeToPackage($project, $file->getFunctions()->getAll(), 'functions');
-            $this->addElementsOfTypeToPackage($project, $file->getClasses()->getAll(), 'classes');
-            $this->addElementsOfTypeToPackage($project, $file->getInterfaces()->getAll(), 'interfaces');
-            $this->addElementsOfTypeToPackage($project, $file->getTraits()->getAll(), 'traits');
+            $this->addElementsOfTypeToPackage($packages, [$file], 'files');
+            $this->addElementsOfTypeToPackage($packages, $file->getConstants()->getAll(), 'constants');
+            $this->addElementsOfTypeToPackage($packages, $file->getFunctions()->getAll(), 'functions');
+            $this->addElementsOfTypeToPackage($packages, $file->getClasses()->getAll(), 'classes');
+            $this->addElementsOfTypeToPackage($packages, $file->getInterfaces()->getAll(), 'interfaces');
+            $this->addElementsOfTypeToPackage($packages, $file->getTraits()->getAll(), 'traits');
         }
+
+        $project->getIndexes()->set('packages', $packages);
     }
 
     /**
@@ -66,12 +70,12 @@ class PackageTreeBuilder implements CompilerPassInterface
      * element. If a package does not exist yet it will automatically be created.
      *
      * @param DescriptorAbstract[] $elements Series of elements to add to their respective package.
-     * @param string               $type     Declares which field of the package will be populated with the given
+     * @param string $type Declares which field of the package will be populated with the given
      *                   series of elements. This name will be transformed to a getter which must exist. Out of
      *                   performance considerations will no effort be done to verify whether the provided type is
      *                   valid.
      */
-    protected function addElementsOfTypeToPackage(ProjectDescriptor $project, array $elements, string $type) : void
+    private function addElementsOfTypeToPackage(Collection $packages, array $elements, string $type) : void
     {
         /** @var DescriptorAbstract $element */
         foreach ($elements as $element) {
@@ -80,7 +84,7 @@ class PackageTreeBuilder implements CompilerPassInterface
             if ($packageTags instanceof Collection) {
                 $packageTag = $packageTags->getIterator()->current();
                 if ($packageTag instanceof TagDescriptor) {
-                    $packageName = $packageTag->getDescription();
+                    $packageName = str_replace(['.', '_'], ['\\', '\\'], $packageTag->getDescription());
                 }
             }
 
@@ -88,18 +92,18 @@ class PackageTreeBuilder implements CompilerPassInterface
             if ($subpackageCollection instanceof Collection && $subpackageCollection->count() > 0) {
                 $subpackageTag = $subpackageCollection->getIterator()->current();
                 if ($subpackageTag instanceof TagDescriptor) {
-                    $packageName .= '\\' . $subpackageTag->getDescription();
+                    $packageName .= '\\' . str_replace(['.', '_'], ['\\', '\\'], $subpackageTag->getDescription());
                 }
             }
 
             // ensure consistency by trimming the slash prefix and then re-appending it.
             $packageIndexName = '\\' . ltrim((string) $packageName, '\\');
-            if (!isset($project->getIndexes()->packages[$packageIndexName])) {
-                $this->createPackageDescriptorTree($project, (string) $packageName);
+            if (!isset($packages[$packageIndexName])) {
+                $this->createPackageDescriptorTree($packages, (string) $packageName);
             }
 
             /** @var PackageDescriptor $package */
-            $package = $project->getIndexes()->packages[$packageIndexName];
+            $package = $packages[$packageIndexName];
 
             // replace textual representation with an object representation
             $element->setPackage($package);
@@ -124,21 +128,21 @@ class PackageTreeBuilder implements CompilerPassInterface
      * created PackageDescriptors. Each index key is prefixed with a tilde (~) so that it will not conflict with
      * other FQSEN's, such as classes or interfaces.
      *
-     * @see ProjectDescriptor::getPackage() for the root package.
      * @see PackageDescriptor::getChildren() for the child packages of a given package.
+     * @see ProjectDescriptor::getPackage() for the root package.
      *
      * @param string $packageName A FQNN of the package (and parents) to create.
      */
-    protected function createPackageDescriptorTree(ProjectDescriptor $project, string $packageName) : void
+    private function createPackageDescriptorTree(Collection $packages, string $packageName) : void
     {
         $parts = explode('\\', ltrim($packageName, '\\'));
-        $fqnn  = '';
+        $fqnn = '';
 
         // this method does not use recursion to traverse the tree but uses a pointer that will be overridden with the
         // next item that is to be traversed (child package) at the end of the loop.
 
         /** @var PackageDescriptor $pointer */
-        $pointer = $project->getIndexes()->packages['\\'];
+        $pointer = $packages['\\'];
         foreach ($parts as $part) {
             $fqnn .= '\\' . $part;
             if ($pointer->getChildren()->get($part)) {
@@ -156,7 +160,7 @@ class PackageTreeBuilder implements CompilerPassInterface
             $pointer->getChildren()->set($part ?: 'UNKNOWN', $interimPackageDescriptor);
 
             // add to index
-            $project->getIndexes()->packages[$fqnn] = $interimPackageDescriptor;
+            $packages[$fqnn] = $interimPackageDescriptor;
 
             // move pointer forward
             $pointer = $interimPackageDescriptor;

@@ -26,9 +26,9 @@ use function array_keys;
 use function sort;
 
 /**
- * Tests the functionality for the ElementsIndexBuilder
- *
- * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder
+ * @coversDefaultClass \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder
+ * @covers ::<private>
+ * @covers ::<protected>
  */
 class NamespaceTreeBuilderTest extends MockeryTestCase
 {
@@ -47,7 +47,7 @@ class NamespaceTreeBuilderTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::getDescription
+     * @covers ::getDescription
      */
     public function testGetDescription() : void
     {
@@ -58,7 +58,7 @@ class NamespaceTreeBuilderTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::execute
+     * @covers ::execute
      * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::addElementsOfTypeToNamespace
      */
     public function testNamespaceStringIsConvertedToTreeAndAddedToElements() : void
