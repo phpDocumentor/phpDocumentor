@@ -90,7 +90,13 @@ class DsnTest extends TestCase
                 'C:\\phpdocumentor\\tests\\unit\\phpDocumentor\\Parser',
                 'file:///C:/phpdocumentor/tests/unit/phpDocumentor/Parser',
                 'file',
-                '/C:/phpdocumentor/tests/unit/phpDocumentor/Parser',
+                'C:/phpdocumentor/tests/unit/phpDocumentor/Parser',
+            ],
+            'test local file on windows without scheme and forward slashes' => [
+                'c:/phpdocumentor/tests/unit/phpDocumentor/Parser',
+                'file:///c:/phpdocumentor/tests/unit/phpDocumentor/Parser',
+                'file',
+                'c:/phpdocumentor/tests/unit/phpDocumentor/Parser',
             ],
             'test relative local file on unix without scheme' => [
                 'project/src',
@@ -110,9 +116,9 @@ class DsnTest extends TestCase
             ],
             'test local file on windows with scheme' => [
                 'file:///C:\\phpdocumentor\\tests',
-                'file:///C:\\phpdocumentor\\tests',
+                'file:///C:/phpdocumentor/tests',
                 'file',
-                '/C:\\phpdocumentor\\tests',
+                'C:/phpdocumentor/tests',
             ],
             'test http port is inferred on git' => [
                 'git+http://github.com',
@@ -161,13 +167,14 @@ class DsnTest extends TestCase
      * @covers ::resolve
      * @dataProvider resolveDsnProvider
      */
-    public function testResolve(string $baseDsn, string $srcDsn, string $expected) : void
+    public function testResolve(string $baseDsn, string $srcDsn, string $expected, ?string $scheme) : void
     {
         $baseDsn   = Dsn::createFromString($baseDsn);
         $srcDsn    = Dsn::createFromString($srcDsn);
         $newSrcDns = $srcDsn->resolve($baseDsn);
 
         $this->assertEquals($expected, (string) $newSrcDns);
+        $this->assertEquals($scheme, $newSrcDns->getScheme());
     }
 
     public function resolveDsnProvider() : array
@@ -177,21 +184,37 @@ class DsnTest extends TestCase
                 'file:///project/config',
                 '../src',
                 'file:///project/src',
+                'file',
             ],
             'Relative src deeper level' => [
                 'file:///project/config',
                 './src',
                 'file:///project/config/src',
+                'file',
             ],
             'Absolute src uri' => [
                 'file:///project/config',
                 '/src',
                 '/src',
+                null,
             ],
             'Absolute src full dsn' => [
                 'file:///project/config',
                 'git+http://user:pw@github.com:8000/phpDocumentor/phpDocumentor2?q=qry1&x=qry2;branch=dev;other=xxx',
                 'git+http://user:pw@github.com:8000/phpDocumentor/phpDocumentor2?q=qry1&x=qry2;branch=dev;other=xxx',
+                'git+http'
+            ],
+            'Relative windows uri' => [
+                'file:///c:/project/config',
+                './src',
+                'file:///c:/project/config/src',
+                'file',
+            ],
+            'Relative windows uri without scheme' => [
+                'c:/project/config',
+                './src',
+                'file:///c:/project/config/src',
+                'file',
             ],
 //                'Relative path in git dsn with parameters' => [
 //                    'git+http://user:pw@github.com:8000/phpDocumentor/phpDocumentor2?q=qry1&x=qry2;branch=dev;other=xxx',

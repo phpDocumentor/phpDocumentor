@@ -19,6 +19,7 @@ use phpDocumentor\Configuration\CommandlineOptionsMiddleware;
 use phpDocumentor\Configuration\Configuration;
 use phpDocumentor\Configuration\ConfigurationFactory;
 use phpDocumentor\Configuration\PathNormalizingMiddleware;
+use phpDocumentor\UriFactory;
 use Psr\Log\LoggerInterface;
 use function getcwd;
 use function realpath;
@@ -51,7 +52,7 @@ final class Configure
     public function __invoke(array $options) : array
     {
         $this->configFactory->addMiddleware(
-            new CommandlineOptionsMiddleware($options, $this->configFactory, getcwd())
+            new CommandlineOptionsMiddleware($options, $this->configFactory, 'file:///' . getcwd())
         );
         $this->configFactory->addMiddleware(new PathNormalizingMiddleware());
 
@@ -73,7 +74,7 @@ final class Configure
 
                 $this->logger->notice(sprintf('Using the configuration file at: %s', $path));
                 $this->configuration->exchangeArray(
-                    $this->configFactory->fromUri(Uri::createFromString($uri))->getArrayCopy()
+                    $this->configFactory->fromUri(UriFactory::createUri($uri))->getArrayCopy()
                 );
             } else {
                 $this->logger->notice('Not using any configuration file, relying on application defaults');
