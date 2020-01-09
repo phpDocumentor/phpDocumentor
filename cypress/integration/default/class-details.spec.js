@@ -49,17 +49,33 @@ describe('Class Detail Page', function() {
     describe('Showing a method in a class', function() {
         let methods;
         before(function(){
+            cy.visit('build/default/classes/Marios-Pizzeria.html');
             methods = cy.get('.phpdocumentor-method');
         });
 
-        describe('Shows the jsonSerialize implemented method from the JsonSerializable interface', function () {
+        it('Shows the variadic indicator with argument "$pizzas" in the "order" method', function() {
+            let method = methods.get('.phpdocumentor-method__name').contains("order()").parent();
+            method.get('.phpdocumentor-method-signature__argument__variadic-operator').contains('...');
+        });
+
+        describe('Shows the "jsonSerialize" implemented method from the "JsonSerializable" interface', function () {
             let method;
             before(function(){
-                method = methods.get('.phpdocumentor-method__name').contains("jsonSerialize()").parent();
+                method = methods.get('.phpdocumentor-method__name').contains('jsonSerialize()').parent();
             });
 
             it('Shows the name "jsonSerialize()"', function() {
                 method.get('.phpdocumentor-method__name').contains("jsonSerialize()");
+            });
+
+            it('Shows the file name where "jsonSerialize()" is located', function() {
+                let el = method.get('.phpdocumentor-element-found-in__file');
+                el.contains('Pizzeria.php');
+                el.should('have.attr', 'title', '/data/examples/MariosPizzeria/Pizzeria.php');
+            });
+
+            it('Shows the line number where "jsonSerialize()" is located', function() {
+                method.get('.phpdocumentor-element-found-in__line').should('be.an', 'integer');
             });
 
             it('Does not show a name or description because it @inheritdocs an external method', function() {
@@ -67,13 +83,24 @@ describe('Class Detail Page', function() {
                 method.get('.phpdocumentor-description').should('not.exist');
             });
 
-            it('Has a pretty-printed signature', function() {
-                const signature = method.get('.phpdocumentor-method__signature');
-                signature.should('have.class', 'prettyprinted');
+            describe('signature', function () {
+                let signature;
 
-                signature.contains("public");
-                signature.contains("jsonSerialize");
-                signature.contains("array");
+                beforeEach(function(){
+                    signature = method.get('phpdocumentor-method-signature');
+                });
+
+                it('Shows the "public" visibility specifier', function() {
+                    signature.get('phpdocumentor-method-signature__visibility').contains('public');
+                });
+
+                it('Shows the name of the method', function() {
+                    signature.get('.phpdocumentor-method-signature__argument__name').contains('jsonSerialize');
+                });
+
+                it('Shows the "array" return value', function() {
+                    signature.get('.phpdocumentor-method-signature__argument__return-type').contains('array');
+                });
             });
         });
     });

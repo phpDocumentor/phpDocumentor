@@ -11,6 +11,11 @@ namespace Marios;
  */
 final class Pizzeria implements \JsonSerializable
 {
+    public function order(Pizza ...$pizzas): bool
+    {
+        return true;
+    }
+
     /**
      * @inheritDoc
      */

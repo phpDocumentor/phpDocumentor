@@ -625,7 +625,11 @@ td.phpdocumentor-cell:last-child {
     margin-bottom: var(--spacing-md);
 }
 
-.phpdocumentor-method__signature {
+.phpdocumentor-method {
+    position: relative;
+}
+
+.phpdocumentor-method-signature {
     display: inline-block;
     font-size: var(--text-sm);
     margin-bottom: var(--spacing-md);
@@ -744,6 +748,13 @@ td.phpdocumentor-cell:last-child {
     background-color: lightgray;
 }
 
+.phpdocumentor-element-found-in {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: var(--text-sm);
+    color: gray;
+}
 /* Media Queries
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 /*

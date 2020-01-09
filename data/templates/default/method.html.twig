@@ -1,19 +1,37 @@
 <a id="method_{{ method.name }}"></a>
-<section class="phpdocumentor-method">
+<article
+        class="
+            phpdocumentor-method
+            phpdocumentor-method--{{ method.visibility }}
+            {% if method.deprecated %}phpdocumentor-method--deprecated{% endif %}
+            {% if method.abstract %}phpdocumentor-method--abstract{% endif %}
+            {% if method.static %}phpdocumentor-method--static{% endif %}
+            {% if method.final %}phpdocumentor-method--final{% endif %}
+        "
+>
     <h4 class="phpdocumentor-method__name">{{ method.name }}()</h4>
+    <aside class="phpdocumentor-element-found-in">
+        <abbr class="phpdocumentor-element-found-in__file" title="{{ method.file.path }}">{{ method.file.name }}</abbr>
+        :
+        <span class="phpdocumentor-element-found-in__line">{{ method.line }}</span>
+    </aside>
     {% if method.summary %}
     <p class="phpdocumentor-summary">{{ method.summary }}</p>
     {% endif %}
-    <code class="phpdocumentor-method__signature phpdocumentor-code prettyprint">
-        {{ method.visibility }}
-        {{ method.name }}(
+    <code class="phpdocumentor-method-signature phpdocumentor-code">
+        <span class="phpdocumentor-method-signature__visibility">{{ method.visibility }}</span>
+        <span class="phpdocumentor-method-signature__name">{{ method.name }}</span>(
         {% for argument in method.arguments %}
+            <span class="phpdocumentor-method-signature__argument">
             {% if argument.default %}[{% endif %}{% if not loop.first %}, {% endif %}
-            ${{ argument.name }} : {{ argument.type|route('class:short')|join('|')|raw }}
-            {% if argument.default %} = {{ argument.default }} ]{% endif %}
+                {% if argument.isVariadic %}<span class="phpdocumentor-method-signature__argument__variadic-operator">...</span>{% endif %}
+                <span class="phpdocumentor-method-signature__argument__name">${{ argument.name }}</span> :
+                <span class="phpdocumentor-method-signature__argument__return-type">{{ argument.type|route('class:short')|join('|')|raw }}</span>
+                {% if argument.default %} = <span class="phpdocumentor-method-signature__argument__default-value">{{ argument.default }}</span> ]{% endif %}
+            </span>
         {% endfor %}
         )
-        : {{ method.response.type|route('class:short')|join('|')|raw }}
+        : <span class="phpdocumentor-method-signature__response_type">{{ method.response.type|route('class:short')|join('|')|raw }}</span>
     </code>
 
     {% if method.description %}
@@ -21,25 +39,37 @@
     {% endif %}
 
     {% if method.arguments|length > 0 %}
-        <h5>Parameters</h5>
-        <dl>
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+        <dl class="phpdocumentor-argument-list">
             {% for argument in method.arguments %}
-                <dt>
-                    <strong>${{ argument.name }}</strong>
-                    : {{ argument.type|route('class:short')|join('|')|raw }}
-                    {% if argument.default %} = {{ argument.default }}{% endif %}
+                <dt class="phpdocumentor-argument-list__entry">
+                    <span class="phpdocumentor-method-signature__argument__name">${{ argument.name }}</span>
+                    : <span class="phpdocumentor-method-signature__argument__return-type">{{ argument.type|route('class:short')|join('|')|raw }}</span>
+                    {% if argument.default %} = <span class="phpdocumentor-method-signature__argument__default-value">{{ argument.default }}</span>{% endif %}
                 </dt>
-                <dd>{{ argument.description }}</dd>
+                <dd class="phpdocumentor-argument-list__definition"><section class="phpdocumentor-description">{{ argument.description|markdown }}</section></dd>
+            {% endfor %}
+        </dl>
+    {% endif %}
+
+    {% if method.tags|length > 0 %}
+        <h5 class="phpdocumentor-tag-list__heading">Tags</h5>
+        <dl class="phpdocumentor-tag-list">
+            {% for tag in method.tags %}
+                <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">{{ tag.name }}</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition"><section class="phpdocumentor-description">{{ argument.description|markdown }}</section></dd>
             {% endfor %}
         </dl>
     {% endif %}
 
     {% if (method.response.type and method.response.type != 'void') or method.response.description %}
-        <h5>Return values</h5>
-        {{ method.response.type|route('class:short')|join('|')|raw }}
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+        <span class="phpdocumentor-method-signature__response_type">{{ method.response.type|route('class:short')|join('|')|raw }}</span>
         {% if method.response.description %}
-            &mdash; {{ method.response.description }}
+            &mdash; <span class="phpdocumentor-description">{{ method.response.description|markdown }}</span>
         {% endif %}
     {% endif %}
 
-</section>
+</article>
