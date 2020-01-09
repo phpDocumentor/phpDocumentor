@@ -14,20 +14,18 @@ declare(strict_types=1);
 namespace phpDocumentor;
 
 use Generator;
-use InvalidArgumentException;
 use League\Uri\Contracts\UriInterface;
-use League\Uri\Uri as LeagueUri;
 use League\Uri\UriInfo;
 use League\Uri\UriResolver;
-use Throwable;
 use function array_shift;
 use function array_splice;
 use function explode;
 use function implode;
+use function ltrim;
 use function parse_str;
 use function preg_match;
 use function rtrim;
-use function sprintf;
+use function strpos;
 
 /**
  * Data Source Name (DSN), a reference to a path on a local or remote system with the ability to add parameters.
@@ -162,10 +160,10 @@ final class Dsn
         return new Path($this->uri->getPath() ?: '/');
     }
 
-    public function isWindowsLocalPath()
+    public function isWindowsLocalPath() : bool
     {
         $path = ltrim($this->uri->getPath(), '/');
-        return preg_match(UriFactory::WINDOWS_URI_FORMAT, $path);
+        return preg_match(UriFactory::WINDOWS_URI_FORMAT, $path) === 1;
     }
 
     /**

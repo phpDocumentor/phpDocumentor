@@ -27,9 +27,6 @@ use function assert;
 use function hash;
 use function in_array;
 use function sprintf;
-use function strlen;
-use function strpos;
-use function substr;
 
 class FlySystemFactory implements FileSystemFactory
 {

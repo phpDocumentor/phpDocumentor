@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Pipeline\Stage;
 
+use InvalidArgumentException;
 use League\Uri\Contracts\UriInterface;
 use phpDocumentor\Configuration\Configuration;
 use phpDocumentor\Configuration\ConfigurationFactory;
@@ -37,7 +38,7 @@ final class ConfigureTest extends TestCase
 
     public function testInvalidConfigPathWillThrowException() : void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $logger = $this->prophesize(LoggerInterface::class);
         $configurationFactory = $this->prophesize(ConfigurationFactory::class);
         $configurationFactory->addMiddleware(Argument::any())->shouldBeCalledTimes(2);

@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace phpDocumentor\Pipeline\Stage;
 
 use InvalidArgumentException;
-use League\Uri\Uri;
 use phpDocumentor\Configuration\CommandlineOptionsMiddleware;
 use phpDocumentor\Configuration\Configuration;
 use phpDocumentor\Configuration\ConfigurationFactory;

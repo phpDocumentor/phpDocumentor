@@ -202,7 +202,7 @@ class DsnTest extends TestCase
                 'file:///project/config',
                 'git+http://user:pw@github.com:8000/phpDocumentor/phpDocumentor2?q=qry1&x=qry2;branch=dev;other=xxx',
                 'git+http://user:pw@github.com:8000/phpDocumentor/phpDocumentor2?q=qry1&x=qry2;branch=dev;other=xxx',
-                'git+http'
+                'git+http',
             ],
             'Relative windows uri' => [
                 'file:///c:/project/config',
