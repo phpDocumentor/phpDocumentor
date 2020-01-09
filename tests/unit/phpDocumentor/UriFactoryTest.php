@@ -48,4 +48,13 @@ final class UriFactoryTest extends TestCase
             ],
         ];
     }
+
+    /**
+     * @covers ::createUri
+     */
+    public function testInvalidUriThrowsInvalidArgumentException()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        UriFactory::createUri('http:/aaads/@asa:aaa');
+    }
 }

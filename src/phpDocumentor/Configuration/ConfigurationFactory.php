@@ -22,7 +22,7 @@ use function sprintf;
 /**
  * The ConfigurationFactory converts the configuration xml from a Uri into an array.
  */
-final class ConfigurationFactory
+/*final*/ class ConfigurationFactory
 {
     /**
      * A series of callables that take the configuration array as parameter and should return that array or a modified
