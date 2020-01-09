@@ -18,8 +18,11 @@
     {% if method.summary %}
     <p class="phpdocumentor-summary">{{ method.summary }}</p>
     {% endif %}
-    <code class="phpdocumentor-method-signature phpdocumentor-code">
+    <code class="phpdocumentor-method-signature phpdocumentor-code {% if method.deprecated %}phpdocumentor-method-signature--deprecated{% endif %}">
         <span class="phpdocumentor-method-signature__visibility">{{ method.visibility }}</span>
+        {% if method.abstract %}<span class="phpdocumentor-method-signature__abstract">abstract</span>{% endif %}
+        {% if method.final %}<span class="phpdocumentor-method-signature__final">final</span>{% endif %}
+        {% if method.static %}<span class="phpdocumentor-method-signature__static">static</span>{% endif %}
         <span class="phpdocumentor-method-signature__name">{{ method.name }}</span>(
         {% for argument in method.arguments %}
             <span class="phpdocumentor-method-signature__argument">
@@ -47,19 +50,22 @@
                     : <span class="phpdocumentor-method-signature__argument__return-type">{{ argument.type|route('class:short')|join('|')|raw }}</span>
                     {% if argument.default %} = <span class="phpdocumentor-method-signature__argument__default-value">{{ argument.default }}</span>{% endif %}
                 </dt>
-                <dd class="phpdocumentor-argument-list__definition"><section class="phpdocumentor-description">{{ argument.description|markdown }}</section></dd>
+                <dd class="phpdocumentor-argument-list__definition"><section class="phpdocumentor-description">{{ argument.description|default('')|markdown }}</section></dd>
             {% endfor %}
         </dl>
     {% endif %}
 
-    {% if method.tags|length > 0 %}
+    {% set visibleTags = method.tags|filter((v,k) => k not in ['param', 'return']) %}
+    {% if visibleTags|length > 0 %}
         <h5 class="phpdocumentor-tag-list__heading">Tags</h5>
         <dl class="phpdocumentor-tag-list">
-            {% for tag in method.tags %}
-                <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">{{ tag.name }}</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition"><section class="phpdocumentor-description">{{ argument.description|markdown }}</section></dd>
+            {% for name,seriesOfTag in visibleTags %}
+                {% for tag in seriesOfTag %}
+                    <dt class="phpdocumentor-tag-list__entry">
+                        <span class="phpdocumentor-tag__name">{{ name }}</span>
+                    </dt>
+                    <dd class="phpdocumentor-tag-list__definition"><section class="phpdocumentor-description">{{ tag.description|default('')|markdown }}</section></dd>
+                {% endfor %}
             {% endfor %}
         </dl>
     {% endif %}
