@@ -95,7 +95,7 @@ class FlySystemFactory implements FileSystemFactory
      */
     private function formatDsn(Dsn $dsn) : string
     {
-        if (PHP_OS_FAMILY === 'Windows' && $dsn->isWindowsLocalPath()) {
+        if (PHP_OS_FAMILY === 'Windows' && $dsn->isWindowsLocalPath() && $dsn->getScheme() === 'file') {
             return (string) $dsn->getPath();
         }
 

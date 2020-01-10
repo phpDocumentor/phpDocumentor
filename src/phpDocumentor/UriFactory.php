@@ -24,6 +24,10 @@ final class UriFactory
     {
         try {
             $uriString = str_replace(DIRECTORY_SEPARATOR, '/', $uriString);
+            if (strpos($uriString, 'phar://') === 0) {
+                return self::createPharUri($uriString);
+            }
+
             if (preg_match(self::WINDOWS_URI_FORMAT, $uriString)) {
                 if (strpos($uriString, 'file:///') === 0) {
                     $uriString = substr($uriString, strlen('file:///'));
@@ -44,5 +48,21 @@ final class UriFactory
                 $exception
             );
         }
+    }
+
+    private static function createPharUri(string $uriString) : UriInterface
+    {
+        $path = substr($uriString, strlen('phar://'));
+        if (strpos($path, '/') !== 0) {
+            $path = '/' . $path;
+        }
+
+        return LeagueUri::createFromComponents(
+            [
+                'scheme' => 'phar',
+                'host' => '',
+                'path' => $path,
+            ]
+        );
     }
 }

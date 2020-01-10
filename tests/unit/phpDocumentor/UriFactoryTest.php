@@ -47,6 +47,16 @@ final class UriFactoryTest extends TestCase
                 'file',
                 '/my/path',
             ],
+            'phar path' => [
+                'phar:///my/path',
+                'phar',
+                '/my/path',
+            ],
+            'phar windows path' => [
+                'phar://c:/my/path',
+                'phar',
+                '/c:/my/path',
+            ],
         ];
     }
 

@@ -86,6 +86,12 @@ class DsnTest extends TestCase
                 'phar',
                 '/app/build/phpDocumentor.phar/src/phpDocumentor/../../data/templates',
             ],
+            'test that a URI pointing to a file in a phar works on windows' => [
+                'phar://c:/app/build/phpDocumentor.phar/src/phpDocumentor/../../data/templates',
+                'phar://c:/app/build/phpDocumentor.phar/src/phpDocumentor/../../data/templates',
+                'phar',
+                'c:/app/build/phpDocumentor.phar/src/phpDocumentor/../../data/templates',
+            ],
             'test local file on windows without scheme' => [
                 'C:\\phpdocumentor\\tests\\unit\\phpDocumentor\\Parser',
                 'file:///C:/phpdocumentor/tests/unit/phpDocumentor/Parser',

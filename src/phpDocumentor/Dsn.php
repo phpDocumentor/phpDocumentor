@@ -91,6 +91,10 @@ final class Dsn
      */
     public function __toString() : string
     {
+        if ($this->getScheme() === 'phar' && $this->isWindowsLocalPath()) {
+            return 'phar://' . $this->getPath();
+        }
+
         return $this->dsn;
     }
 
