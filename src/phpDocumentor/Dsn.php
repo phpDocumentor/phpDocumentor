@@ -62,9 +62,9 @@ final class Dsn
      */
     public function __construct(UriInterface $uri, array $parameters, string $dsn)
     {
-        $this->dsn        = $dsn;
+        $this->dsn = $dsn;
         $this->parameters = $parameters;
-        $this->uri        = $uri;
+        $this->uri = $uri;
     }
 
     public static function createFromString(string $dsn) : self
