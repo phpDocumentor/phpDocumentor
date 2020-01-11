@@ -27,9 +27,6 @@ use function assert;
 use function hash;
 use function in_array;
 use function sprintf;
-use function strlen;
-use function strpos;
-use function substr;
 
 class FlySystemFactory implements FileSystemFactory
 {
@@ -80,7 +77,7 @@ class FlySystemFactory implements FileSystemFactory
         }
 
         return new Local(
-            $this->stripScheme($root),
+            $this->formatDsn($dsn),
             $dsn->getScheme() !== 'vfs' ? LOCK_EX : 0, // VFS does not support locking
             Local::SKIP_LINKS
         );
@@ -96,13 +93,12 @@ class FlySystemFactory implements FileSystemFactory
      *
      * Github actions will NOT reproduce this behavior since they are running a server edition of windows.
      */
-    private function stripScheme(string $root) : string
+    private function formatDsn(Dsn $dsn) : string
     {
-        if (PHP_OS_FAMILY === 'Windows') {
-            if (strpos($root, 'file:///') === 0) {
-                $root = substr($root, strlen('file:///'));
-            }
+        if (PHP_OS_FAMILY === 'Windows' && $dsn->isWindowsLocalPath() && $dsn->getScheme() === 'file') {
+            return (string) $dsn->getPath();
         }
-        return $root;
+
+        return (string) $dsn;
     }
 }

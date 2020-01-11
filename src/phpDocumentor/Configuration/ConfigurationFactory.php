@@ -13,15 +13,16 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Configuration;
 
-use League\Uri\Uri;
+use League\Uri\Contracts\UriInterface;
 use phpDocumentor\Configuration\Exception\InvalidConfigPathException;
+use phpDocumentor\UriFactory;
 use function file_exists;
 use function sprintf;
 
 /**
  * The ConfigurationFactory converts the configuration xml from a Uri into an array.
  */
-final class ConfigurationFactory
+/*final*/ class ConfigurationFactory
 {
     /**
      * A series of callables that take the configuration array as parameter and should return that array or a modified
@@ -61,7 +62,7 @@ final class ConfigurationFactory
     {
         foreach ($this->defaultFiles as $file) {
             try {
-                return $this->fromUri(Uri::createFromString($file));
+                return $this->fromUri(UriFactory::createUri($file));
             } catch (InvalidConfigPathException $e) {
                 continue;
             }
@@ -78,11 +79,11 @@ final class ConfigurationFactory
     /**
      * Converts the phpDocumentor configuration xml to an array.
      *
-     * @param Uri $uri The location of the file to be loaded.
+     * @param UriInterface $uri The location of the file to be loaded.
      *
      * @throws InvalidConfigPathException If $uri points to an inexistent file.
      */
-    public function fromUri(Uri $uri) : Configuration
+    public function fromUri(UriInterface $uri) : Configuration
     {
         $filename = (string) $uri;
 
@@ -102,7 +103,7 @@ final class ConfigurationFactory
      *
      * @return array
      */
-    private function applyMiddleware(array $configuration, ?Uri $uri) : array
+    private function applyMiddleware(array $configuration, ?UriInterface $uri) : array
     {
         foreach ($this->middlewares as $middleware) {
             $configuration = $middleware($configuration, $uri);

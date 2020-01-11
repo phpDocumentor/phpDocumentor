@@ -14,20 +14,18 @@ declare(strict_types=1);
 namespace phpDocumentor;
 
 use Generator;
-use InvalidArgumentException;
 use League\Uri\Contracts\UriInterface;
-use League\Uri\Uri as LeagueUri;
 use League\Uri\UriInfo;
 use League\Uri\UriResolver;
-use Throwable;
 use function array_shift;
 use function array_splice;
 use function explode;
 use function implode;
+use function ltrim;
 use function parse_str;
 use function preg_match;
 use function rtrim;
-use function sprintf;
+use function strpos;
 
 /**
  * Data Source Name (DSN), a reference to a path on a local or remote system with the ability to add parameters.
@@ -71,8 +69,8 @@ final class Dsn
 
     public static function createFromString(string $dsn) : self
     {
-        $parameters = explode(';', $dsn);
-        $uri = self::parseUri(array_shift($parameters));
+        $parameters       = explode(';', $dsn);
+        $uri              = UriFactory::createUri(array_shift($parameters));
         $parsedParameters = self::parseParameters($parameters);
 
         array_splice($parameters, 0, 0, (string) $uri);
@@ -93,6 +91,10 @@ final class Dsn
      */
     public function __toString() : string
     {
+        if ($this->getScheme() === 'phar' && $this->isWindowsLocalPath()) {
+            return 'phar://' . $this->getPath();
+        }
+
         return $this->dsn;
     }
 
@@ -155,7 +157,17 @@ final class Dsn
      */
     public function getPath() : Path
     {
+        if ($this->isWindowsLocalPath()) {
+            return new Path(ltrim($this->uri->getPath(), '/'));
+        }
+
         return new Path($this->uri->getPath() ?: '/');
+    }
+
+    public function isWindowsLocalPath() : bool
+    {
+        $path = ltrim($this->uri->getPath(), '/');
+        return preg_match(UriFactory::WINDOWS_URI_FORMAT, $path) === 1;
     }
 
     /**
@@ -188,7 +200,7 @@ final class Dsn
         }
 
         $baseUri = rtrim(((string) $baseDsn->uri), '/');
-        $newUri = LeagueUri::createFromString($baseUri . '/' . $this->uri->getPath());
+        $newUri  = UriFactory::createUri($baseUri . '/' . $this->uri->getPath());
         return self::createFromUri(
             UriResolver::resolve($newUri, $baseDsn->uri),
             $baseDsn->parameters
@@ -197,7 +209,12 @@ final class Dsn
 
     public function withPath(Path $path) : self
     {
-        return self::createFromUri($this->uri->withPath((string) $path), $this->parameters);
+        $pathString = (string) $path;
+        if (strpos($pathString, '/') !== 0) {
+            $pathString = '/' . $pathString;
+        }
+
+        return self::createFromUri($this->uri->withPath($pathString), $this->parameters);
     }
 
     /**
@@ -224,27 +241,6 @@ final class Dsn
 
         foreach ($result as $key => $value) {
             yield $key => $value;
-        }
-    }
-
-    private static function parseUri(string $uriString) : UriInterface
-    {
-        try {
-            if (preg_match('~^[a-zA-Z]+:\\\\~', $uriString)) {
-                return LeagueUri::createFromWindowsPath($uriString);
-            }
-
-            return LeagueUri::createFromString($uriString);
-        } catch (Throwable $exception) {
-            throw new InvalidArgumentException(
-                sprintf(
-                    'The DSN "%s" could not be parsed, the following error occured: %s',
-                    $uriString,
-                    $exception->getMessage()
-                ),
-                0,
-                $exception
-            );
         }
     }
 }

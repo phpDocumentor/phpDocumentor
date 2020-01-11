@@ -40,7 +40,7 @@ final class Path
     {
         Assert::stringNotEmpty(
             $path,
-            sprintf('"%s" is not al valid path', $path)
+            sprintf('"%s" is not a valid path', $path)
         );
 
         $this->path = $path;
