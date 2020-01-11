@@ -11,6 +11,20 @@ installed before installing phpDocumentor.
 -  `intl extension for PHP`_
 -  Graphviz_
 
+PHAR
+----
+
+You can download the latest PHAR file from http://www.phpdoc.org/phpDocumentor.phar.
+
+.. important::
+
+   Some installations of PHP can have trouble executing the phar file. If you have any issues, please consult the
+   following website first: http://silex.sensiolabs.org/doc/phar.html#pitfalls
+
+The phar file can be used by simply invoking php and providing the phar file as a parameter::
+
+  $ php phpDocumentor.phar -d . -t docs/api
+
 Using PEAR
 ----------
 
@@ -27,22 +41,15 @@ And to install phpDocumentor you can use the following command::
 When the installation is finished you can invoke the ``phpdoc`` command from any path in your system. It is recommended
 to read the :doc:`../getting-started/index` section next as it will explain how to quickly start using phpDocumentor.
 
-PHAR
-----
-
-You can download the latest PHAR file from http://www.phpdoc.org/phpDocumentor.phar.
+Using Composer
+--------------
 
 .. important::
 
-   Some installations of PHP can have trouble executing the phar file. If you have any issues, please consult the
-   following website first: http://silex.sensiolabs.org/doc/phar.html#pitfalls
-
-The phar file can be used by simply invoking php and providing the phar file as a parameter::
-
-  $ php phpDocumentor.phar -d . -t docs/api
-
-Using Composer
---------------
+   This method of installation was initially provided as a convenience; with time however it was common for
+   dependency conflicts between phpDocumentor and the host application to arise. The phpDocumentor team does
+   not recommend this installation method and is unable to provide support on issues stemming from
+   dependency conflicts.
 
 Installing phpDocumentor using Composer_ is a matter of creating a directory to host your files and executing the
 following command::
