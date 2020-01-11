@@ -42,7 +42,7 @@ final class StopwatchMiddleware implements Middleware
     /**
      * Executes this middleware class.
      */
-    public function execute(Command $command, callable $next) : ?object
+    public function execute(Command $command, callable $next) : object
     {
         $result = $next($command);
 

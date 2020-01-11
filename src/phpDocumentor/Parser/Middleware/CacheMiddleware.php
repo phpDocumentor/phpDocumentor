@@ -31,6 +31,7 @@ final class CacheMiddleware implements Middleware
 {
     /** @var CacheInterface */
     private $cache;
+
     /** @var LoggerInterface */
     private $logger;
 
@@ -46,9 +47,11 @@ final class CacheMiddleware implements Middleware
      *
      * @param CreateCommand $command
      *
+     * @return File
+     *
      * @throws InvalidArgumentException
      */
-    public function execute(Command $command, callable $next) : ?File
+    public function execute(Command $command, callable $next) : object
     {
         $itemName = md5($command->getFile()->path());
 

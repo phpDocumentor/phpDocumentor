@@ -2,12 +2,22 @@
 
 declare(strict_types=1);
 
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link http://phpdoc.org
+ */
+
 namespace Parser\Middleware;
 
 use Exception;
 use phpDocumentor\Parser\Middleware\ErrorHandlingMiddleware;
 use phpDocumentor\Reflection\File\LocalFile;
 use phpDocumentor\Reflection\Php\Factory\File\CreateCommand;
+use phpDocumentor\Reflection\Php\File;
 use phpDocumentor\Reflection\Php\ProjectFactoryStrategies;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -26,22 +36,23 @@ final class ErrorHandlingMiddlewareTest extends TestCase
     public function testThatParsingStartIsLogged() : void
     {
         $filename = __FILE__;
-        $command  = new CreateCommand(new LocalFile($filename), new ProjectFactoryStrategies([]));
+        $expected = new File('abc', $filename);
+        $command = new CreateCommand(new LocalFile($filename), new ProjectFactoryStrategies([]));
 
         $logger = $this->prophesize(LoggerInterface::class);
         $logger->log(LogLevel::INFO, 'Starting to parse file: ' . __FILE__, [])->shouldBeCalled();
 
         $middleware = new ErrorHandlingMiddleware($logger->reveal());
-        $result     = $middleware->execute(
+        $result = $middleware->execute(
             $command,
-            function (CreateCommand $receivedCommand) use ($command) {
+            function (CreateCommand $receivedCommand) use ($command, $expected) {
                 $this->assertSame($command, $receivedCommand);
 
-                return 'result';
+                return $expected;
             }
         );
 
-        $this->assertSame('result', $result);
+        $this->assertSame($expected, $result);
     }
 
     /**
@@ -50,7 +61,7 @@ final class ErrorHandlingMiddlewareTest extends TestCase
     public function testThatAnErrorIsLogged() : void
     {
         $filename = __FILE__;
-        $command  = new CreateCommand(new LocalFile($filename), new ProjectFactoryStrategies([]));
+        $command = new CreateCommand(new LocalFile($filename), new ProjectFactoryStrategies([]));
 
         $logger = $this->prophesize(LoggerInterface::class);
         $logger->log(LogLevel::INFO, 'Starting to parse file: ' . __FILE__, [])->shouldBeCalled();
@@ -61,13 +72,17 @@ final class ErrorHandlingMiddlewareTest extends TestCase
         )->shouldBeCalled();
 
         $middleware = new ErrorHandlingMiddleware($logger->reveal());
-        $result     = $middleware->execute(
+
+        /** @var File $result */
+        $result = $middleware->execute(
             $command,
             static function (CreateCommand $receivedCommand) : void {
                 throw new Exception('this is a test');
             }
         );
 
-        $this->assertNull($result);
+        $this->assertInstanceOf(File::class, $result);
+        $this->assertSame('', $result->getHash());
+        $this->assertSame($filename, $result->getPath());
     }
 }

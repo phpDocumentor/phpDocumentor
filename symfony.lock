@@ -83,18 +83,6 @@
     "psr/log": {
         "version": "1.0.2"
     },
-    "sebastian/comparator": {
-        "version": "3.0.2"
-    },
-    "sebastian/diff": {
-        "version": "3.0.2"
-    },
-    "sebastian/exporter": {
-        "version": "3.1.2"
-    },
-    "sebastian/recursion-context": {
-        "version": "3.0.0"
-    },
     "symfony/cache": {
         "version": "v4.0.3"
     },
