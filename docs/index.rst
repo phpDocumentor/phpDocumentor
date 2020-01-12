@@ -9,5 +9,4 @@ Learn about phpDocumentor
     guides/index
     references/index
     internals/index
-    cookbook/index
     glossary
