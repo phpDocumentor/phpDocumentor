@@ -20,5 +20,6 @@ RUN ln -sf /dev/stdout /var/log/nginx/access.log \
  && ln -sf /dev/stderr /var/log/nginx/error.log
 
 COPY --from=build /data/html /usr/share/nginx/html/$VERSION
+COPY .static/redirectToLatest.html /usr/share/nginx/html/index.html
 
 STOPSIGNAL SIGQUIT
