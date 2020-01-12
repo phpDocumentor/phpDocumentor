@@ -8,10 +8,10 @@
 
 
 phpDocumentor
-======
+=============
 
 What is phpDocumentor?
-----------------
+----------------------
 
 phpDocumentor is an application that is capable of analyzing your PHP source code and
 DocBlock comments to generate a complete set of API Documentation.
@@ -20,40 +20,44 @@ Inspired by phpDocumentor 1 and JavaDoc it continues to innovate and is up to da
 with the latest technologies and PHP language features.
 
 phpDocumentor v2 (stable)
---------------
+-------------------------
+
 The current stable version of phpDocumentor is v2.9, which can be used to generate documentation for PHP
 applications up to PHP version 7.0. phpDocumentor is an old tool that doesn't support all 7.0 introduced features.
 It will not process any scalar type hints and requires docblock tags to generate API documentation.
 If your application/library is using PHP 7.0 or lower consult our [v2 branch] for installation instructions
 and detailed information about how to use phpDocumentor.
 
-phpDocumentor v3 (unstable)
----------------
+phpDocumentor v3 (under development)
+------------------------------------
 
 **Note:**
-The phpDocumentor team is currently working on a new phpDocumentor generation. It will have full support for the latest features in PHP, so you can take advantage of all native type hints. v3 is still under heavy development
+The phpDocumentor team is currently working on a new phpDocumentor generation. It will have full support for the 
+latest features in PHP, so you can take advantage of all native type hints. v3 is still under development
 and is not stable enough to use in a daily development flow. 
 
-### nightly builds
+### Nightly builds
 
 Phpdocumentor doesn't have a nightly release. However, during each pipeline a [phar] artifact is built. If you want 
-to test the bleeding edge version of phpDocumentor, have a look in the [actions](https://github.com/phpDocumentor/phpDocumentor/actions?query=workflow%3A%22Qa+workflow%22+is%3Asuccess) section of this repository.
+to test the bleeding edge version of phpDocumentor, have a look in the [actions] section of this repository.
 Each successful QA workflow has a download at the right upper corner.
 
 Installation
 ------------
+
 phpDocumentor requires PHP 7.2 or higher to run. However, code of lower PHP versions can be analyzed.
 
 All templates provided with phpDocumentor have support for Class diagrams based on the read code base. This will
-require Graphviz to be installed on the machine running phpDocumentor. Graphviz is optional, and warnings about missing
-Graphviz can be ignored. However, your documentation will contain some dead links in this case.  
+require the application [Graphviz] to be installed on the machine running phpDocumentor. Rendering the class diagrams 
+using [Graphviz] is optional, and warnings about missing [Graphviz] can be ignored. However, your documentation will 
+contain some dead links in this case.  
 
 There are 3 ways to install phpDocumentor:
 
 1. Using phive (recommended)
 2. Using the PHAR (manual install)
-3. Via [Docker](https://hub.docker.com/r/phpdoc/phpdoc/)
-4. Via [Composer](https://getcomposer.org)
+3. Via [Docker]
+4. Via [Composer]
 
 ### Using Phive
 
@@ -89,12 +93,14 @@ Afterwards you are able to run phpDocumentor directly from your `vendor` directo
 some situations, phpDocumentor will block updates of other packages. We do not recommend
 using composer to install phpDocumentor.
 
-### Pear
-Starting from phpDocumentor v3 we decided to drop pear support. We will provide the
-already released versions of phpDocumentor v2. But these versions won't be maintained.
+### PEAR
+
+Starting from phpDocumentor v3 we decided to drop PEAR support due to declining use. We will provide the
+already released versions of phpDocumentor v2, but these versions will be community maintained so that 
+the team can focus on phpDocumentor 3.
 
 How to use phpDocumentor?
--------------------
+-------------------------
 
 The easiest way to run phpDocumentor is by running the following command:
 
@@ -117,7 +123,7 @@ Please consult the documentation to see the format and supported options.
 Documentation
 -------------
 
-For more detailed information you can check our online documentation at [http://phpdoc.org/docs/latest/index.html](http://phpdoc.org/docs/latest/index.html).
+For more detailed information you can check our online documentation at https://docs.phpdoc.org.
 
 Features
 --------
@@ -136,17 +142,23 @@ phpDocumentor supports the following:
 * *Two-step process*, phpDocumentor first generates a cache with your application structure before creating the output.
   If you'd like you can use that to power your own tools or formatters!
 
-*Please note* that phpDocumentor 3 is still under heavy development. We aim to add all features needed to have full support
-for PHP 7+. But at this moment that is not the case.
+*Please note* that phpDocumentor 3 is still under development. We will add all features needed to have full support
+for PHP 7.0 and higher.
 
 Contact
 -------
 
 To come in contact is dead simple and can be done in a variety of ways.
 
-* Twitter: [@phpDocumentor](http://twitter.com/phpDocumentor)
-* Website: [http://www.phpdoc.org](http://www.phpdoc.org)
-* Github:  [http://www.github.com/phpDocumentor/phpDocumentor](http://www.github.com/phpDocumentor/phpDocumentor)
-* E-mail:  [mike@phpdoc.org](mailto:mike@phpdoc.org)
+* Twitter: [@phpDocumentor]
+* Website: https://www.phpdoc.org
+* Github:  https://www.github.com/phpDocumentor/phpDocumentor
+* E-mail:  [mike@phpdoc.org]
 
-[v2 branch]: (https://github.com/phpDocumentor/phpDocumentor/tree/2.9)
+[@phpDocumentor]: http://twitter.com/phpDocumentor
+[v2 branch]: https://github.com/phpDocumentor/phpDocumentor/tree/2.9
+[Graphviz]: https://www.graphviz.org/download/
+[actions]: https://github.com/phpDocumentor/phpDocumentor/actions?query=workflow%3A%22Qa+workflow%22+is%3Asuccess
+[Docker]: https://hub.docker.com/r/phpdoc/phpdoc/
+[Composer]: https://getcomposer.org/
+[mike@phpdoc.org]: mailto:mike@phpdoc.org
