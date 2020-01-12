@@ -1,9 +1,9 @@
 import sys, os
 
 project   = u'phpDocumentor'
-copyright = u'2013, Mike van Riel'
-version   = '2.1'
-release   = '2.1.0'
+copyright = u'2020, Mike van Riel'
+version   = '3.0'
+release   = '3.0.0'
 
 sys.path.append(os.path.abspath('../../.exts'))
 extensions     = ['sphinx.ext.intersphinx', 'sphinx.ext.ifconfig', 'plantuml']
