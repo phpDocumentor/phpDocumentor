@@ -14,12 +14,10 @@ RUN mkdir /data \
 
 FROM nginx:alpine
 
-ARG VERSION=latest
-
 RUN ln -sf /dev/stdout /var/log/nginx/access.log \
  && ln -sf /dev/stderr /var/log/nginx/error.log
 
-COPY --from=build /data/html /usr/share/nginx/html/$VERSION
+COPY --from=build /data/html /usr/share/nginx/html/$DOCKER_TAG
 
 STOPSIGNAL SIGQUIT
 
