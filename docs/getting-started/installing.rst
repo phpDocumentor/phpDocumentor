@@ -73,7 +73,7 @@ This command can also be used to add phpDocumentor to your existing composer-bas
 
 .. _Composer:               http:/getcomposer.org
 .. _`PHP 5.3.3`:            http://www.php.net
-.. _Graphviz:               http://graphviz.org/Download..php
+.. _Graphviz:               http://graphviz.org/download/
 .. _intl extension for PHP: http://www.php.net/intl
 .. _XSL extension for PHP:  http://www.php.net/xsl
 .. _Twig:                   http://twig.sensiolabs.org
