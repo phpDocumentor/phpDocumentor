@@ -1,23 +1,26 @@
-FROM python:2-slim-stretch
+FROM python:2-slim-stretch as build
 
 ENV LANG en_US.UTF-8
-ENV BUILDDIR /var/www
+ENV BUILDDIR /data
+
 RUN mkdir -p /usr/share/man/man1 \
-  && apt-get update && apt-get install -yq python-sphinx plantuml make \
-  && apt-get install --no-install-recommends -yq nginx \
-  && rm -rf /var/lib/apt/lists/*
+  && apt-get update && apt-get install -yq python-sphinx plantuml make
 
-ADD . /src
+COPY . /src
 
-RUN  cd /src \
-  && make BUILDDIR=$BUILDDIR clean html \
-  && apt-get remove -yq python-sphinx plantuml make \
-    # forward request and error logs to docker log collector
-    && ln -sf /dev/stdout /var/log/nginx/access.log \
-    && ln -sf /dev/stderr /var/log/nginx/error.log
+RUN mkdir /data \
+  && cd /src \
+  && make BUILDDIR=$BUILDDIR clean html
 
-EXPOSE 80
+FROM nginx:alpine
 
-STOPSIGNAL SIGTERM
+ARG VERSION=latest
+
+RUN ln -sf /dev/stdout /var/log/nginx/access.log \
+ && ln -sf /dev/stderr /var/log/nginx/error.log
+
+COPY --from=build /data/html /usr/share/nginx/html/$VERSION
+
+STOPSIGNAL SIGQUIT
 
 CMD ["nginx", "-g", "daemon off;"]
