@@ -630,11 +630,11 @@ td.phpdocumentor-cell:last-child {
 }
 
 .phpdocumentor-method--deprecated .phpdocumentor-method__name,
-.phpdocumentor-method-signature--deprecated .phpdocumentor-method-signature__name {
+.phpdocumentor-signature--deprecated .phpdocumentor-signature__name {
     text-decoration: line-through;
 }
 
-.phpdocumentor-method-signature {
+.phpdocumentor-signature {
     display: inline-block;
     font-size: var(--text-sm);
     margin-bottom: var(--spacing-md);

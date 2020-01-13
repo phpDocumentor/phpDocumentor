@@ -58,7 +58,7 @@ describe('Class Detail Page', function() {
 
         it('Shows the variadic indicator with argument "$pizzas" in the "order" method', function() {
             let method = methods.get('.phpdocumentor-method__name').contains("order()").parent();
-            method.get('.phpdocumentor-method-signature__argument__variadic-operator').contains('...');
+            method.get('.phpdocumentor-signature__argument__variadic-operator').contains('...');
         });
 
         describe('Shows the "jsonSerialize" method; as an example of a public, implemented, method from the "JsonSerializable" interface', function () {
@@ -103,19 +103,19 @@ describe('Class Detail Page', function() {
                 let signature;
 
                 beforeEach(function(){
-                    signature = method.get('.phpdocumentor-method-signature');
+                    signature = method.get('.phpdocumentor-signature');
                 });
 
                 it('Shows the "public" visibility specifier', function() {
-                    signature.get('.phpdocumentor-method-signature__visibility').contains('public');
+                    signature.get('.phpdocumentor-signature__visibility').contains('public');
                 });
 
                 it('Shows the name of the method', function() {
-                    signature.get('.phpdocumentor-method-signature__argument__name').contains('jsonSerialize');
+                    signature.get('.phpdocumentor-signature__argument__name').contains('jsonSerialize');
                 });
 
                 it('Shows the "array" return value', function() {
-                    signature.get('.phpdocumentor-method-signature__argument__return-type').contains('array');
+                    signature.get('.phpdocumentor-signature__argument__return-type').contains('array');
                 });
             });
         });
@@ -148,19 +148,19 @@ describe('Class Detail Page', function() {
                 let signature;
 
                 beforeEach(function(){
-                    signature = method.get('.phpdocumentor-method-signature');
+                    signature = method.get('.phpdocumentor-signature');
                 });
 
                 it('Shows the "protected" visibility specifier', function() {
-                    signature.get('.phpdocumentor-method-signature__visibility').contains('protected');
+                    signature.get('.phpdocumentor-signature__visibility').contains('protected');
                 });
 
                 it('Shows the "static" keyword', function() {
-                    signature.get('.phpdocumentor-method-signature__static').contains('static');
+                    signature.get('.phpdocumentor-signature__static').contains('static');
                 });
 
                 it('Shows "array" as return value', function() {
-                    signature.get('.phpdocumentor-method-signature__argument__return-type').contains('array');
+                    signature.get('.phpdocumentor-signature__argument__return-type').contains('array');
                 });
             });
         });
@@ -193,24 +193,24 @@ describe('Class Detail Page', function() {
                 let signature;
 
                 beforeEach(function(){
-                    signature = method.get('.phpdocumentor-method-signature');
+                    signature = method.get('.phpdocumentor-signature');
                 });
 
                 it('has the deprecated modifier', function() {
-                    signature.should('have.class', '.phpdocumentor-method-signature--deprecated');
+                    signature.should('have.class', '.phpdocumentor-signature--deprecated');
                 });
 
                 it('Shows the "private" visibility specifier', function() {
-                    signature.get('.phpdocumentor-method-signature__visibility').contains('private');
+                    signature.get('.phpdocumentor-signature__visibility').contains('private');
                 });
 
                 it('Shows the "final" keyword', function() {
-                    signature.get('.phpdocumentor-method-signature__final').contains('final');
+                    signature.get('.phpdocumentor-signature__final').contains('final');
                 });
 
                 it('Shows "false" as return value; the return tag overrides the typehint', function() {
                     // @todo fix this; this should have failed!!!
-                    signature.get('.phpdocumentor-method-signature__argument__return-type').contains('false');
+                    signature.get('.phpdocumentor-signature__argument__return-type').contains('false');
                 });
             });
         });
