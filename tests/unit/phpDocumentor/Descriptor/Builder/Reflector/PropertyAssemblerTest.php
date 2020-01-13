@@ -67,6 +67,7 @@ final class PropertyAssemblerTest extends MockeryTestCase
         $this->assertSame($propertyName, $descriptor->getName());
         $this->assertSame('\\' . $namespace, $descriptor->getNamespace());
         $this->assertSame('protected', (string) $descriptor->getVisibility());
+        $this->assertSame('string', (string) $descriptor->getType());
         $this->assertFalse($descriptor->isStatic());
     }
 
@@ -81,7 +82,11 @@ final class PropertyAssemblerTest extends MockeryTestCase
         return new Property(
             new Fqsen('\\' . $namespace . '::$' . $propertyName),
             new Visibility(Visibility::PROTECTED_),
-            $docBlockMock
+            $docBlockMock,
+            null,
+            false,
+            null,
+            new String_()
         );
     }
 

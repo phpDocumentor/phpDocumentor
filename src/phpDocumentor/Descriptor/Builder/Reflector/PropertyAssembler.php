@@ -38,6 +38,10 @@ class PropertyAssembler extends AssemblerAbstract
         $propertyDescriptor->setStatic($data->isStatic());
         $propertyDescriptor->setDefault($data->getDefault());
 
+        if ($data->getType()) {
+            $propertyDescriptor->setType($data->getType());
+        }
+
         $this->assembleDocBlock($data->getDocBlock(), $propertyDescriptor);
         $propertyDescriptor->setLine($data->getLocation()->getLineNumber());
 
