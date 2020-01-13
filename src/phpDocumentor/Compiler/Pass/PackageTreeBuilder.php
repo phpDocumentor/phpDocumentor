@@ -84,7 +84,7 @@ final class PackageTreeBuilder implements CompilerPassInterface
             if ($packageTags instanceof Collection) {
                 $packageTag = $packageTags->getIterator()->current();
                 if ($packageTag instanceof TagDescriptor) {
-                    $packageName = str_replace(['.', '_'], ['\\', '\\'], $packageTag->getDescription());
+                    $packageName = $this->normalizePackageName($packageTag->getDescription());
                 }
             }
 
@@ -92,7 +92,7 @@ final class PackageTreeBuilder implements CompilerPassInterface
             if ($subpackageCollection instanceof Collection && $subpackageCollection->count() > 0) {
                 $subpackageTag = $subpackageCollection->getIterator()->current();
                 if ($subpackageTag instanceof TagDescriptor) {
-                    $packageName .= '\\' . str_replace(['.', '_'], ['\\', '\\'], $subpackageTag->getDescription());
+                    $packageName .= '\\' . $this->normalizePackageName($subpackageTag->getDescription());
                 }
             }
 
@@ -165,5 +165,16 @@ final class PackageTreeBuilder implements CompilerPassInterface
             // move pointer forward
             $pointer = $interimPackageDescriptor;
         }
+    }
+
+    /**
+     * Converts all old-style separators into namespace-style separators.
+     *
+     * Please note that the trim will, by design, remove any trailing spearators. This makes it easier to
+     * integrate in the rest of this class and allows `\My[Package]` to convert to `\My\Package`.
+     */
+    private function normalizePackageName(string $packageName) : string
+    {
+        return rtrim(str_replace(['.', '_', '-', '[', ']'], ['\\', '\\', '\\', '\\', '\\'], $packageName), '\\');
     }
 }

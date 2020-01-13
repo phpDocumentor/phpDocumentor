@@ -176,6 +176,46 @@ final class PackageTreeBuilderTest extends TestCase
     /**
      * @covers ::execute
      */
+    public function testPackagesMayHaveHyphensAsSeparators() : void
+    {
+        $packageName = 'My-Package';
+
+        $file = new FileDescriptor('hash');
+        $this->withPackage($packageName, $file);
+
+        $project = $this->givenProjectWithFile($file);
+
+        $this->fixture->execute($project);
+
+        $packages = $project->getIndexes()->get('packages');
+
+        $this->assertTrue(isset($packages['\\My\\Package']));
+        $this->assertContains($file, $packages['\\My\\Package']->getFiles()->getAll());
+    }
+
+    /**
+     * @covers ::execute
+     */
+    public function testPackagesMayHaveSquareBracketsAsSeparators() : void
+    {
+        $packageName = 'My[Package]';
+
+        $file = new FileDescriptor('hash');
+        $this->withPackage($packageName, $file);
+
+        $project = $this->givenProjectWithFile($file);
+
+        $this->fixture->execute($project);
+
+        $packages = $project->getIndexes()->get('packages');
+
+        $this->assertTrue(isset($packages['\\My\\Package']));
+        $this->assertContains($file, $packages['\\My\\Package']->getFiles()->getAll());
+    }
+
+    /**
+     * @covers ::execute
+     */
     public function testPackagesMayHaveDotsAsSeparators() : void
     {
         $packageName = 'My.Package';
