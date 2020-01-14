@@ -1,10 +1,27 @@
 <a id="constant_{{ constant.name }}"></a>
-<section class="phpdocumentor-constant">
-    <h4 class="phpdocumentor-constant__signature">
-        ${{ constant.name }}
-        {% if constant.type %}: {{ constant.type|route('class:short')|join('|')|raw }}{% endif %}
-        = {{ constant.value }}
-    </h4>
-    <p class="phpdocumentor-summary">{{ constant.summary }}</p>
+<article
+        class="
+            phpdocumentor-constant
+            phpdocumentor-constant--{{ constant.visibility }}
+            {% if constant.deprecated %}phpdocumentor-element--deprecated{% endif %}
+        "
+>
+    <h4 class="phpdocumentor-constant__name">{{ constant.name }}</h4>
+    <aside class="phpdocumentor-element-found-in">
+        <abbr class="phpdocumentor-element-found-in__file" title="{{ constant.file.path }}">{{ constant.file.name }}</abbr>
+        :
+        <span class="phpdocumentor-element-found-in__line">{{ constant.line }}</span>
+    </aside>
+    {% if constant.summary %}
+        <p class="phpdocumentor-summary">{{ constant.summary }}</p>
+    {% endif %}
+    <code class="phpdocumentor-signature phpdocumentor-code {% if constant.deprecated %}phpdocumentor-signature--deprecated{% endif %}">
+        <span class="phpdocumentor-signature__visibility">{{ constant.visibility }}</span>
+        <span class="phpdocumentor-signature__type">{{ not constant.type ? "mixed" : constant.type|route('class:short')|join('|')|raw }}</span>
+        <span class="phpdocumentor-signature__name">${{ constant.name }}</span>
+        = <span class="phpdocumentor-signature__default-value">{{ constant.value ?: '""' }}</span>
+    </code>
+    {% if constant.description %}
     <section class="phpdocumentor-description">{{ constant.description }}</section>
-</section>
+    {% endif %}
+</article>

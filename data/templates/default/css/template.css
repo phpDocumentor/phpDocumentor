@@ -629,7 +629,9 @@ td.phpdocumentor-cell:last-child {
     position: relative;
 }
 
-.phpdocumentor-method--deprecated .phpdocumentor-method__name,
+.phpdocumentor-element--deprecated .phpdocumentor-method__name,
+.phpdocumentor-element--deprecated .phpdocumentor-constant__name,
+.phpdocumentor-element--deprecated .phpdocumentor-property__name,
 .phpdocumentor-signature--deprecated .phpdocumentor-signature__name {
     text-decoration: line-through;
 }

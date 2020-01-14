@@ -4,9 +4,10 @@
             phpdocumentor-property
             phpdocumentor-property--{{ property.visibility }}
             {% if property.static %}phpdocumentor-property--static{% endif %}
+            {% if property.deprecated %}phpdocumentor-element--deprecated{% endif %}
         "
 >
-    <h4 class="phpdocumentor-property__name">{{ property.name }}()</h4>
+    <h4 class="phpdocumentor-property__name">${{ property.name }}</h4>
     <aside class="phpdocumentor-element-found-in">
         <abbr class="phpdocumentor-element-found-in__file" title="{{ property.file.path }}">{{ property.file.name }}</abbr>
         :
@@ -22,5 +23,7 @@
         <span class="phpdocumentor-signature__name">${{ property.name }}</span>
         {% if property.default is not null %} = <span class="phpdocumentor-signature__default-value">{{ property.default ?: '""' }}</span>{% endif %}
     </code>
+    {% if property.description %}
     <section class="phpdocumentor-description">{{ property.description }}</section>
+    {% endif %}
 </article>

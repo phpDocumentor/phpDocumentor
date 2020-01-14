@@ -3,10 +3,10 @@
         class="
             phpdocumentor-method
             phpdocumentor-method--{{ method.visibility }}
-            {% if method.deprecated %}phpdocumentor-method--deprecated{% endif %}
-            {% if method.abstract %}phpdocumentor-method--abstract{% endif %}
-            {% if method.static %}phpdocumentor-method--static{% endif %}
-            {% if method.final %}phpdocumentor-method--final{% endif %}
+            {% if method.deprecated %}phpdocumentor-element--deprecated{% endif %}
+            {% if method.abstract %}phpdocumentor-element--abstract{% endif %}
+            {% if method.static %}phpdocumentor-element--static{% endif %}
+            {% if method.final %}phpdocumentor-element--final{% endif %}
         "
 >
     <h4 class="phpdocumentor-method__name">{{ method.name }}()</h4>

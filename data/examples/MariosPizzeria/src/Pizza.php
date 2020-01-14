@@ -6,6 +6,18 @@ namespace Marios;
 
 final class Pizza
 {
+    public const TYPE_ITALIAN = 'italian';
+
+    /**
+     * Not a real pizza.
+     *
+     * Does not need much more of an explanation, does it? ;)
+     *
+     * @deprecated
+     * @var string
+     */
+    private const TYPE_AMERICAN = 'american';
+
     /**
      * Name of your own custom Pizza.
      *

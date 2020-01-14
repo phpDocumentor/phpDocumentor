@@ -88,15 +88,15 @@ describe('Class Detail Page', function() {
             });
 
             it('Has a "public" visibility class to influence styling', function() {
-                method.should('have.class', '.phpdocumentor-method---public');
-                method.should('not.have.class', '.phpdocumentor-method---protected');
-                method.should('not.have.class', '.phpdocumentor-method---private');
+                method.should('have.class', '.phpdocumentor-element---public');
+                method.should('not.have.class', '.phpdocumentor-element---protected');
+                method.should('not.have.class', '.phpdocumentor-element---private');
             });
 
             it('Is not marked as static, final or abstract', function() {
-                method.should('not.have.class', '.phpdocumentor-method---final');
-                method.should('not.have.class', '.phpdocumentor-method---static');
-                method.should('not.have.class', '.phpdocumentor-method---abstract');
+                method.should('not.have.class', '.phpdocumentor-element---final');
+                method.should('not.have.class', '.phpdocumentor-element---static');
+                method.should('not.have.class', '.phpdocumentor-element---abstract');
             });
 
             describe('signature', function () {
@@ -132,16 +132,16 @@ describe('Class Detail Page', function() {
             });
 
             it('Has a "protected private" visibility class to influence styling', function() {
-                method.should('not.have.class', '.phpdocumentor-method---public');
-                method.should('have.class', '.phpdocumentor-method---protected');
-                method.should('not.have.class', '.phpdocumentor-method---private');
+                method.should('not.have.class', '.phpdocumentor-element---public');
+                method.should('have.class', '.phpdocumentor-element---protected');
+                method.should('not.have.class', '.phpdocumentor-element---private');
             });
 
             it('Is marked as static, but not as final, deprecated or abstract', function() {
-                method.should('not.have.class', '.phpdocumentor-method---final');
-                method.should('have.class', '.phpdocumentor-method---static');
-                method.should('not.have.class', '.phpdocumentor-method---abstract');
-                method.should('not.have.class', '.phpdocumentor-method---deprecated');
+                method.should('not.have.class', '.phpdocumentor-element---final');
+                method.should('have.class', '.phpdocumentor-element---static');
+                method.should('not.have.class', '.phpdocumentor-element---abstract');
+                method.should('not.have.class', '.phpdocumentor-element---deprecated');
             });
 
             describe('signature', function () {
@@ -177,16 +177,16 @@ describe('Class Detail Page', function() {
             });
 
             it('Has a "private" visibility class to influence styling', function() {
-                method.should('not.have.class', '.phpdocumentor-method---public');
-                method.should('not.have.class', '.phpdocumentor-method---protected');
-                method.should('have.class', '.phpdocumentor-method---private');
+                method.should('not.have.class', '.phpdocumentor-element---public');
+                method.should('not.have.class', '.phpdocumentor-element---protected');
+                method.should('have.class', '.phpdocumentor-element---private');
             });
 
             it('Is marked as final and deprecated, but not as static or abstract', function() {
-                method.should('have.class', '.phpdocumentor-method---final');
-                method.should('not.have.class', '.phpdocumentor-method---static');
-                method.should('not.have.class', '.phpdocumentor-method---abstract');
-                method.should('have.class', '.phpdocumentor-method---deprecated');
+                method.should('have.class', '.phpdocumentor-element---final');
+                method.should('not.have.class', '.phpdocumentor-element---static');
+                method.should('not.have.class', '.phpdocumentor-element---abstract');
+                method.should('have.class', '.phpdocumentor-element---deprecated');
             });
 
             describe('signature', function () {
