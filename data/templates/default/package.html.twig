@@ -3,21 +3,12 @@
 {% block content %}
     {% include 'breadcrumbs.html.twig' %}
 
-    <h2>API Documentation</h2>
+    <h2>{{ node.name == '\\' ? 'API Documentation' : node.name }}</h2>
 
     {% if node.children is not empty %}
-        <h3>Namespaces</h3>
-        <dl>
-            {% for namespace in node.children %}
-                <dt>{{ namespace|route('class:short') }}</dt>
-            {% endfor %}
-        </dl>
-    {% endif %}
-
-    {% if project.package.children is not empty %}
         <h3>Packages</h3>
         <dl>
-            {% for package in project.package.children %}
+            {% for package in node.children %}
                 <dt>{{ package|route('class:short') }}</dt>
             {% endfor %}
         </dl>

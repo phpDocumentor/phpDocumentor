@@ -612,6 +612,7 @@ td.phpdocumentor-cell:last-child {
     font-style: italic;
 }
 
+.phpdocumentor-element__package,
 .phpdocumentor-interface__extends,
 .phpdocumentor-class__extends,
 .phpdocumentor-class__implements {
@@ -621,10 +622,15 @@ td.phpdocumentor-cell:last-child {
     opacity: .7;
 }
 
+.phpdocumentor-element__package .phpdocumentor-breadcrumbs {
+    display: inline;
+}
+
 .phpdocumentor-description {
     margin-bottom: var(--spacing-md);
 }
 
+.phpdocumentor-element,
 .phpdocumentor-function,
 .phpdocumentor-constant,
 .phpdocumentor-property,
@@ -648,6 +654,12 @@ td.phpdocumentor-cell:last-child {
 
 .phpdocumentor-table_of_contents {
     font-size: var(--text-sm);
+}
+
+.phpdocumentor .phpdocumentor-sidebar li {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .phpdocumentor .phpdocumentor-sidebar__category-header {

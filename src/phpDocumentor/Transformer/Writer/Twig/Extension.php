@@ -18,6 +18,7 @@ use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\NamespaceDescriptor;
+use phpDocumentor\Descriptor\PackageDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use Twig\Extension\AbstractExtension;
 use Twig\Extension\GlobalsInterface;
@@ -92,6 +93,9 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
     {
         return [
             'project' => $this->data,
+            'usesNamespaces' => count($this->data->getIndexes()->get('namespaces')) > 1,
+            // packages always have the root package AND the default package
+            'usesPackages' => count($this->data->getIndexes()->get('packages')) > 2,
         ];
     }
 
@@ -122,6 +126,21 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
                     while ($namespace instanceof NamespaceDescriptor && $namespace->getName() !== '\\') {
                         array_unshift($results, $namespace);
                         $namespace = $namespace->getParent();
+                    }
+
+                    return $results;
+                }
+            ),
+            new TwigFunction(
+                'packages',
+                static function (DescriptorAbstract $baseNode) {
+                    $results = [];
+                    $package = $baseNode instanceof PackageDescriptor
+                        ? $baseNode->getParent()
+                        : $baseNode->getPackage();
+                    while ($package instanceof PackageDescriptor && $package->getName() !== '\\') {
+                        array_unshift($results, $package);
+                        $package = $package->getParent();
                     }
 
                     return $results;

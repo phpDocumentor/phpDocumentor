@@ -1,17 +1,20 @@
 <a id="function_{{ function.name }}"></a>
 <article
         class="
+            phpdocumentor-element
             phpdocumentor-function
             phpdocumentor-function--{{ function.visibility }}
             {% if function.deprecated %}phpdocumentor-element--deprecated{% endif %}
         "
 >
     <h4 class="phpdocumentor-function__name">{{ function.name }}()</h4>
+
     <aside class="phpdocumentor-element-found-in">
         <abbr class="phpdocumentor-element-found-in__file" title="{{ function.file.path }}">{{ function.file.name }}</abbr>
         :
         <span class="phpdocumentor-element-found-in__line">{{ function.line }}</span>
     </aside>
+
     {% if function.summary %}
     <p class="phpdocumentor-summary">{{ function.summary }}</p>
     {% endif %}

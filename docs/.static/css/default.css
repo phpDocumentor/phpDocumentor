@@ -655,6 +655,7 @@ td.phpdocumentor-cell:last-child {
     margin-bottom: var(--spacing-md);
 }
 
+.phpdocumentor-class,
 .phpdocumentor-function,
 .phpdocumentor-property,
 .phpdocumentor-constant,
