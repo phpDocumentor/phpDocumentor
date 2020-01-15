@@ -9,7 +9,7 @@
 >
     <h4 class="phpdocumentor-constant__name">{{ constant.name }}</h4>
     <aside class="phpdocumentor-element-found-in">
-        <abbr class="phpdocumentor-element-found-in__file" title="{{ constant.file.path }}">{{ constant.file.name }}</abbr>
+        <abbr class="phpdocumentor-element-found-in__file" title="{{ constant.file.path }}">{{ constant.file|route('file:short') }}</abbr>
         :
         <span class="phpdocumentor-element-found-in__line">{{ constant.line }}</span>
     </aside>

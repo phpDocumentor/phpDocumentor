@@ -5,7 +5,7 @@
 
     <h2 class="phpdocumentor-content__title">
         {{ node.name }}
-        {% if node.usedTraits|length > 0 %}
+        {% if node.usedTraits is not empty %}
             <span class="phpdocumentor-trait__extends">
                 Uses
                 {% for trait in node.usedTraits %}
@@ -14,6 +14,11 @@
             </span>
         {% endif %}
     </h2>
+    <aside class="phpdocumentor-element-found-in">
+        <abbr class="phpdocumentor-element-found-in__file" title="{{ node.file.path }}">{{ node.file|route('file:short') }}</abbr>
+        :
+        <span class="phpdocumentor-element-found-in__line">{{ node.line }}</span>
+    </aside>
 
     <p class="phpdocumentor-trait__summary">{{ node.summary }}</p>
     <section class="phpdocumentor-trait__description">{{ node.description|markdown }}</section>

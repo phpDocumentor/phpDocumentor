@@ -25,6 +25,7 @@ use Twig\Extension\GlobalsInterface;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 use function array_unshift;
+use function count;
 use function str_replace;
 use function strtolower;
 

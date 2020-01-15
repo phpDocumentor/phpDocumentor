@@ -45,6 +45,7 @@ final class LinkRenderer
     public const PRESENTATION_NORMAL = 'normal';
     public const PRESENTATION_URL = 'url';
     public const PRESENTATION_CLASS_SHORT = 'class:short';
+    public const PRESENTATION_FILE_SHORT = 'file:short';
 
     /** @var string */
     private $destination = '';
@@ -209,7 +210,7 @@ final class LinkRenderer
         }
 
         // With an unlinked object, we don't know if the page for it exists; so we don't render a link to it.
-        if (is_string($node) || $node instanceof Fqsen || $node instanceof Type) {
+        if ($node instanceof Fqsen || $node instanceof Type) {
             // With an unlinked object and the class:short presentation; only show the last bit
             if ($presentation === self::PRESENTATION_CLASS_SHORT && (!$node instanceof Type)) {
                 $parts = explode('\\', (string) $node);
@@ -245,6 +246,14 @@ final class LinkRenderer
                 return $url ?: '';
             case self::PRESENTATION_CLASS_SHORT:
                 $parts = explode('\\', (string) $node);
+                return sprintf(
+                    '<a href="%s"><abbr title="%s">%s</abbr></a>',
+                    $url,
+                    (string) $node,
+                    end($parts)
+                );
+            case self::PRESENTATION_FILE_SHORT:
+                $parts = explode('/', (string) $node);
                 return sprintf(
                     '<a href="%s"><abbr title="%s">%s</abbr></a>',
                     $url,

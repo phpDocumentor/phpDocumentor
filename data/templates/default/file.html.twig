@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    {% include 'breadcrumbs.html.twig' %}
+
+    <h2>{{ node.name }}</h2>
+
+    {% if node.interfaces is not empty or node.classes is not empty %}
+        <h3>Interfaces, Classes and Traits</h3>
+        <dl>
+            {% for interface in node.interfaces %}
+                <dt>{{ interface|route('class:short') }}</dt>
+                <dd>{{ interface.summary }}</dd>
+            {% endfor %}
+
+            {% for class in node.classes %}
+                <dt>{{ class|route('class:short') }}</dt>
+                <dd>{{ class.summary }}</dd>
+            {% endfor %}
+
+            {% for trait in node.traits %}
+                <dt>{{ trait|route('class:short') }}</dt>
+                <dd>{{ trait.summary }}</dd>
+            {% endfor %}
+        </dl>
+    {% endif %}
+
+    {% if node.constants is not empty or node.functions is not empty %}
+    <h3>Table of Contents</h3>
+    <table class="phpdocumentor-table_of_contents">
+        {% for constant in node.constants %}
+            <tr>
+                <th class="phpdocumentor-heading">{{ constant|route('class:short') }}</th>
+                <td class="phpdocumentor-cell">{{ constant.summary }}</td>
+                <td class="phpdocumentor-cell">{{ constant.value }}</td>
+            </tr>
+        {% endfor %}
+        {% for function in node.functions %}
+            <tr>
+                <th class="phpdocumentor-heading">{{ function|route('class:short') }}</th>
+                <td class="phpdocumentor-cell">{{ function.summary }}</td>
+                <td class="phpdocumentor-cell">{{ function.type|route('class:short'|join('|')|raw) }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+
+    {% if node.constants is not empty %}
+        <h3>Constants</h3>
+        <ul>
+            {% for constant in node.constants %}
+                <li><a href="{{ link(constant) }}">{{ constant.name }}</a></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if node.functions is not empty %}
+        <section>
+            <h3 class="phpdocumentor-functions__header">Functions</h3>
+            {% for function in node.functions %}
+                {% include 'function.html.twig' %}
+            {% endfor %}
+        </section>
+    {% endif %}
+{% endblock %}

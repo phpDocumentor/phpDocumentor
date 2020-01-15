@@ -329,4 +329,9 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
     {
         return $this->path;
     }
+
+    public function __toString() : string
+    {
+        return $this->getPath();
+    }
 }

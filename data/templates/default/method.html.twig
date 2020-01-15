@@ -11,7 +11,7 @@
 >
     <h4 class="phpdocumentor-method__name">{{ method.name }}()</h4>
     <aside class="phpdocumentor-element-found-in">
-        <abbr class="phpdocumentor-element-found-in__file" title="{{ method.file.path }}">{{ method.file.name }}</abbr>
+        <abbr class="phpdocumentor-element-found-in__file" title="{{ method.file.path }}">{{ method.file|route('file:short') }}</abbr>
         :
         <span class="phpdocumentor-element-found-in__line">{{ method.line }}</span>
     </aside>
