@@ -82,7 +82,6 @@ final class ProjectDescriptorTest extends MockeryTestCase
     }
 
     /**
-     * @covers ::__construct
      * @covers ::setNamespace
      * @covers ::getNamespace
      */
@@ -97,7 +96,17 @@ final class ProjectDescriptorTest extends MockeryTestCase
     }
 
     /**
-     * @covers ::__construct
+     * @covers ::setNamespace
+     * @covers ::getNamespace
+     */
+    public function testRootPackageIsSetForProject() : void
+    {
+        $this->assertInstanceOf('phpDocumentor\Descriptor\PackageDescriptor', $this->fixture->getPackage());
+        $this->assertSame('\\', (string) $this->fixture->getPackage()->getName());
+        $this->assertSame('\\', (string) $this->fixture->getPackage()->getFullyQualifiedStructuralElementName());
+    }
+
+    /**
      * @covers ::setSettings
      * @covers ::getSettings
      */

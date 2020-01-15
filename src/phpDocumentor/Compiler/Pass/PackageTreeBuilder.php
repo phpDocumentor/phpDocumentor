@@ -19,9 +19,12 @@ use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\PackageDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
+use phpDocumentor\Parser\Parser;
 use phpDocumentor\Reflection\Fqsen;
 use function explode;
 use function ltrim;
+use function preg_replace;
+use function rtrim;
 use function str_replace;
 use function ucfirst;
 
@@ -36,6 +39,14 @@ use function ucfirst;
  */
 final class PackageTreeBuilder implements CompilerPassInterface
 {
+    /** @var Parser */
+    private $parser;
+
+    public function __construct(Parser $parser)
+    {
+        $this->parser = $parser;
+    }
+
     public const COMPILER_PRIORITY = 9001;
 
     public function getDescription() : string
@@ -45,11 +56,8 @@ final class PackageTreeBuilder implements CompilerPassInterface
 
     public function execute(ProjectDescriptor $project) : void
     {
-        $rootPackageDescriptor = new PackageDescriptor();
-        $rootPackageDescriptor->setName('\\');
-
         $packages = new Collection();
-        $packages['\\'] = $rootPackageDescriptor;
+        $packages['\\'] = $project->getPackage();
 
         foreach ($project->getFiles() as $file) {
             $this->addElementsOfTypeToPackage($packages, [$file], 'files');
@@ -94,6 +102,10 @@ final class PackageTreeBuilder implements CompilerPassInterface
                 if ($subpackageTag instanceof TagDescriptor) {
                     $packageName .= '\\' . $this->normalizePackageName($subpackageTag->getDescription());
                 }
+            }
+
+            if ($packageName === '') {
+                $packageName = $this->parser->getDefaultPackageName();
             }
 
             // ensure consistency by trimming the slash prefix and then re-appending it.
@@ -175,6 +187,8 @@ final class PackageTreeBuilder implements CompilerPassInterface
      */
     private function normalizePackageName(string $packageName) : string
     {
-        return rtrim(str_replace(['.', '_', '-', '[', ']'], ['\\', '\\', '\\', '\\', '\\'], $packageName), '\\');
+        $name = rtrim(str_replace(['.', '_', '-', '[', ']'], ['\\', '\\', '\\', '\\', '\\'], $packageName), '\\');
+
+        return preg_replace('/[^A-Za-z0-9\\\\]/', '', $name);
     }
 }

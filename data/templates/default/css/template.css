@@ -625,10 +625,14 @@ td.phpdocumentor-cell:last-child {
     margin-bottom: var(--spacing-md);
 }
 
+.phpdocumentor-function,
+.phpdocumentor-constant,
+.phpdocumentor-property,
 .phpdocumentor-method {
     position: relative;
 }
 
+.phpdocumentor-element--deprecated .phpdocumentor-function__name,
 .phpdocumentor-element--deprecated .phpdocumentor-method__name,
 .phpdocumentor-element--deprecated .phpdocumentor-constant__name,
 .phpdocumentor-element--deprecated .phpdocumentor-property__name,
@@ -651,18 +655,21 @@ td.phpdocumentor-cell:last-child {
     margin-bottom: var(--spacing-sm);
 }
 
+.phpdocumentor .phpdocumentor-sidebar__root-package,
 .phpdocumentor .phpdocumentor-sidebar__root-namespace {
     font-size: var(--text-md);
     margin-bottom: var(--spacing-xxs);
 }
 
 .phpdocumentor-constant:not(:last-child),
+.phpdocumentor-function:not(:last-child),
 .phpdocumentor-method:not(:last-child),
 .phpdocumentor-property:not(:last-child) {
     border-bottom: 1px solid var(--primary-color-lighten);
     padding-bottom: var(--spacing-lg);
 }
 
+.phpdocumentor-functions__header,
 .phpdocumentor-constants__header,
 .phpdocumentor-properties__header,
 .phpdocumentor-methods__header {

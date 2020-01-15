@@ -6,11 +6,21 @@
             <input type="search" class="phpdocumentor-field phpdocumentor-search__field" placeholder="Loading .." disabled />
         </label>
     </section>
-    <h1 class="phpdocumentor-sidebar__category-header">API</h1>
+    <h1 class="phpdocumentor-sidebar__category-header">Namespaces</h1>
     {% for namespace in project.namespace.children %}
         <h2 class="phpdocumentor-sidebar__root-namespace">{{ namespace|route('class:short') }}</h2>
         <ul class="phpdocumentor-list">
             {% for child in namespace.children %}
+                <li>{{ child|route('class:short') }}</li>
+            {% endfor %}
+        </ul>
+    {% endfor %}
+
+    <h1 class="phpdocumentor-sidebar__category-header">Packages</h1>
+    {% for package in project.package.children %}
+        <h2 class="phpdocumentor-sidebar__root-package">{{ package|route('class:short') }}</h2>
+        <ul class="phpdocumentor-list">
+            {% for child in package.children %}
                 <li>{{ child|route('class:short') }}</li>
             {% endfor %}
         </ul>

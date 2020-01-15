@@ -5,6 +5,14 @@
 
     <h2 class="phpdocumentor-content__title">
         {{ node.name }}
+        {% if node.usedTraits|length > 0 %}
+            <span class="phpdocumentor-trait__extends">
+                Uses
+                {% for trait in node.usedTraits %}
+                    {{ trait|route('trait:short') }}{% if not loop.last %}, {% endif %}
+                {% endfor %}
+            </span>
+        {% endif %}
     </h2>
 
     <p class="phpdocumentor-trait__summary">{{ node.summary }}</p>
@@ -14,31 +22,75 @@
     <table class="phpdocumentor-table_of_contents">
         {% for property in node.properties %}
             <tr>
-                <th class="phpdocumentor-heading">${{ property.name }}</th>
+                <th class="phpdocumentor-heading"><a href="{{ link(property) }}">${{ property.name }}</a></th>
                 <td class="phpdocumentor-cell">{{ property.summary }}</td>
-                <td class="phpdocumentor-cell">{{ property.types|route('class:short')|join('|')|raw }}</td>
+                <td class="phpdocumentor-cell">{{ property.type|route('trait:short')|join('|')|raw }}</td>
             </tr>
         {% endfor %}
         {% for property in node.magicProperties %}
             <tr>
-                <th class="phpdocumentor-heading">${{ property.name }}</th>
+                <th class="phpdocumentor-heading"><a href="{{ link(property) }}">${{ property.name }}</a></th>
                 <td class="phpdocumentor-cell">{{ property.summary }}</td>
-                <td class="phpdocumentor-cell">{{ property.types|route('class:short')|join('|')|raw }}</td>
+                <td class="phpdocumentor-cell">{{ property.type|route('trait:short')|join('|')|raw }}</td>
+            </tr>
+        {% endfor %}
+        {% for property in node.inheritedProperties %}
+            <tr>
+                <th class="phpdocumentor-heading"><a href="{{ link(property) }}">${{ property.name }}</a></th>
+                <td class="phpdocumentor-cell">{{ property.summary }}</td>
+                <td class="phpdocumentor-cell">{{ property.type|route('trait:short')|join('|')|raw }}</td>
             </tr>
         {% endfor %}
         {% for method in node.methods %}
             <tr>
-                <th class="phpdocumentor-heading">{{ method.name }}()</th>
+                <th class="phpdocumentor-heading"><a href="{{ link(method) }}">{{ method.name }}()</a></th>
                 <td class="phpdocumentor-cell">{{ method.summary }}</td>
-                <td class="phpdocumentor-cell">{{ method.response.types|route|join('|')|raw }}</td>
+                <td class="phpdocumentor-cell">{{ method.response.type|route('trait:short')|join('|')|raw }}</td>
             </tr>
         {% endfor %}
         {% for method in node.magicMethods %}
             <tr>
-                <th class="phpdocumentor-heading">{{ method.name }}()</th>
+                <th class="phpdocumentor-heading"><a href="{{ link(method) }}">{{ method.name }}()</a></th>
                 <td class="phpdocumentor-cell">{{ method.summary }}</td>
-                <td class="phpdocumentor-cell">{{ method.response.types|route|join('|')|raw }}</td>
+                <td class="phpdocumentor-cell">{{ method.response.type|route('trait:short')|join('|')|raw }}</td>
+            </tr>
+        {% endfor %}
+        {% for method in node.inheritedMethods %}
+            <tr>
+                <th class="phpdocumentor-heading"><a href="{{ link(method) }}">{{ method.name }}()</a></th>
+                <td class="phpdocumentor-cell">{{ method.summary }}</td>
+                <td class="phpdocumentor-cell">{{ method.response.type|route('trait:short')|join('|')|raw }}</td>
             </tr>
         {% endfor %}
     </table>
+
+    {% if node.properties|length > 0 or node.magicProperties|length > 0 or node.inheritedProperties|length > 0 %}
+        <section>
+            <h3 class="phpdocumentor-properties__header">Properties</h3>
+            {% for property in node.properties %}
+                {% include 'property.html.twig' %}
+            {% endfor %}
+            {% for property in node.magicProperties %}
+                {% include 'property.html.twig' %}
+            {% endfor %}
+            {% for property in node.inheritedProperties %}
+                {% include 'property.html.twig' %}
+            {% endfor %}
+        </section>
+    {% endif %}
+
+    {% if node.methods|length > 0 or node.magicMethods|length > 0 or node.inheritedMethods|length > 0 %}
+        <section>
+            <h3 class="phpdocumentor-methods__header">Methods</h3>
+            {% for method in node.methods %}
+                {% include 'method.html.twig' %}
+            {% endfor %}
+            {% for method in node.magicMethods %}
+                {% include 'method.html.twig' %}
+            {% endfor %}
+            {% for method in node.inheritedMethods %}
+                {% include 'method.html.twig' %}
+            {% endfor %}
+        </section>
+    {% endif %}
 {% endblock %}

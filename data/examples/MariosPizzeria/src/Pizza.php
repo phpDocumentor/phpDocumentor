@@ -4,8 +4,13 @@ declare(strict_types=1);
 
 namespace Marios;
 
+/**
+ * @package Domain
+ */
 final class Pizza
 {
+    use SharedTrait { sayHello as private myPrivateHello; }
+
     public const TYPE_ITALIAN = 'italian';
 
     /**
@@ -33,4 +38,15 @@ final class Pizza
      * @deprecated
      */
     public $extra;
+
+    /**
+     * Om nom nom.
+     *
+     * What else do you do with a pizza? Put it in your freezer?
+     *
+     * @return void
+     */
+    public function eatIt()
+    {
+    }
 }

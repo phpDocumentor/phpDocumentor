@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Descriptor\Interfaces\NamespaceInterface;
+use phpDocumentor\Descriptor\Interfaces\PackageInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
 use phpDocumentor\Reflection\Fqsen;
 
@@ -23,22 +24,25 @@ use phpDocumentor\Reflection\Fqsen;
 class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
 {
     /** @var string $name */
-    protected $name = '';
+    private $name = '';
 
     /** @var NamespaceDescriptor $namespace */
-    protected $namespace;
+    private $namespace;
+
+    /** @var PackageInterface $package */
+    private $package;
 
     /** @var Collection $files */
-    protected $files;
+    private $files;
 
     /** @var Collection $indexes */
-    protected $indexes;
+    private $indexes;
 
     /** @var Settings $settings */
-    protected $settings;
+    private $settings;
 
     /** @var Collection $partials */
-    protected $partials;
+    private $partials;
 
     /**
      * Initializes this descriptor.
@@ -52,6 +56,11 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
         $namespace->setName('\\');
         $namespace->setFullyQualifiedStructuralElementName(new Fqsen('\\'));
         $this->setNamespace($namespace);
+
+        $package = new PackageDescriptor();
+        $package->setName('\\');
+        $package->setFullyQualifiedStructuralElementName(new Fqsen('\\'));
+        $this->setPackage($package);
 
         $this->setFiles(new Collection());
         $this->setIndexes(new Collection());
@@ -197,5 +206,15 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
         }
 
         return $this->getIndexes()['elements']->get((string) $fqsen);
+    }
+
+    private function setPackage(PackageInterface $package) : void
+    {
+        $this->package = $package;
+    }
+
+    public function getPackage() : PackageInterface
+    {
+        return $this->package;
     }
 }

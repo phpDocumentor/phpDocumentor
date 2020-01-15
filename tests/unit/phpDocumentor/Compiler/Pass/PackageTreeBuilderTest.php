@@ -23,6 +23,7 @@ use phpDocumentor\Descriptor\InterfaceDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
+use phpDocumentor\Parser\Parser;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -32,12 +33,17 @@ use PHPUnit\Framework\TestCase;
  */
 final class PackageTreeBuilderTest extends TestCase
 {
+    private const DEFAULT_PACKAGE_NAME = 'Default';
+
     /** @var PackageTreeBuilder $fixture */
     private $fixture;
 
     protected function setUp() : void
     {
-        $this->fixture = new PackageTreeBuilder();
+        $parser = $this->prophesize(Parser::class);
+        $parser->getDefaultPackageName()->willReturn(self::DEFAULT_PACKAGE_NAME);
+
+        $this->fixture = new PackageTreeBuilder($parser->reveal());
     }
 
     /**
@@ -296,7 +302,7 @@ final class PackageTreeBuilderTest extends TestCase
         $packages = $project->getIndexes()->get('packages');
 
         // @todo: shouldn't this constant have inherited his file's Package?
-        $this->assertContains($constant, $packages['\\']->getConstants()->getAll());
+        $this->assertContains($constant, $packages['\\' . self::DEFAULT_PACKAGE_NAME]->getConstants()->getAll());
     }
 
     /**
@@ -318,7 +324,7 @@ final class PackageTreeBuilderTest extends TestCase
         $packages = $project->getIndexes()->get('packages');
 
         // @todo: shouldn't this function have inherited his file's Package?
-        $this->assertContains($function, $packages['\\']->getFunctions()->getAll());
+        $this->assertContains($function, $packages['\\' . self::DEFAULT_PACKAGE_NAME]->getFunctions()->getAll());
     }
 
     /**
@@ -340,7 +346,7 @@ final class PackageTreeBuilderTest extends TestCase
         $packages = $project->getIndexes()->get('packages');
 
         // @todo: shouldn't this interface have inherited his file's Package?
-        $this->assertContains($interface, $packages['\\']->getInterfaces()->getAll());
+        $this->assertContains($interface, $packages['\\' . self::DEFAULT_PACKAGE_NAME]->getInterfaces()->getAll());
     }
 
     /**
@@ -362,7 +368,7 @@ final class PackageTreeBuilderTest extends TestCase
         $packages = $project->getIndexes()->get('packages');
 
         // @todo: shouldn't this trait have inherited his file's Package?
-        $this->assertContains($trait, $packages['\\']->getTraits()->getAll());
+        $this->assertContains($trait, $packages['\\' . self::DEFAULT_PACKAGE_NAME]->getTraits()->getAll());
     }
 
     /**
@@ -384,7 +390,7 @@ final class PackageTreeBuilderTest extends TestCase
         $packages = $project->getIndexes()->get('packages');
 
         // @todo: shouldn't this class have inherited his file's Package?
-        $this->assertContains($class, $packages['\\']->getClasses()->getAll());
+        $this->assertContains($class, $packages['\\' . self::DEFAULT_PACKAGE_NAME]->getClasses()->getAll());
     }
 
     private function withPackage(string $packageName, DescriptorAbstract $file) : void

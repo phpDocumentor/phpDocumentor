@@ -655,6 +655,9 @@ td.phpdocumentor-cell:last-child {
     margin-bottom: var(--spacing-md);
 }
 
+.phpdocumentor-function,
+.phpdocumentor-property,
+.phpdocumentor-constant,
 .phpdocumentor-method {
     position: relative;
 }
@@ -684,6 +687,7 @@ td.phpdocumentor-cell:last-child {
     margin-bottom: var(--spacing-xxs);
 }
 
+.phpdocumentor-function:not(:last-child),
 .phpdocumentor-constant:not(:last-child),
 .phpdocumentor-method:not(:last-child),
 .phpdocumentor-property:not(:last-child) {
@@ -691,6 +695,7 @@ td.phpdocumentor-cell:last-child {
     padding-bottom: var(--spacing-lg);
 }
 
+.phpdocumentor-functions__header,
 .phpdocumentor-constants__header,
 .phpdocumentor-properties__header,
 .phpdocumentor-methods__header {
