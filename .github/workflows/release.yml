@@ -1,4 +1,4 @@
-on: release
+on: [release, push]
 name: Release workflow
 jobs:
   composer:
@@ -27,8 +27,13 @@ jobs:
       with:
         args: gpg --command-fd 0 --pinentry-mode loopback -u info@phpdoc.org --batch
           --detach-sign --output build/phpDocumentor.phar.asc build/phpDocumentor.phar
-    - name: release phar
-      uses: fnkr/github-action-ghr@v1
-      env:
-        GHR_PATH: build/
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Upload PHAR file
+      uses: actions/upload-artifact@v1
+      with:
+        name: phpDocumentor.phar
+        path: build/
+#    - name: release phar
+#      uses: fnkr/github-action-ghr@v1
+#      env:
+#        GHR_PATH: build/
+#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
