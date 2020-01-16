@@ -20,6 +20,7 @@ use function array_merge;
 use function array_unique;
 use function count;
 use function current;
+use function end;
 use function explode;
 use function is_array;
 
@@ -50,12 +51,18 @@ final class CommandlineOptionsMiddleware
         $configuration = $this->overwriteTemplates($configuration);
 
         if (!isset($configuration['phpdocumentor']['versions'])) {
-            return $configuration;
+            $configuration['phpdocumentor']['versions'][] = $this->createDefaultVersionSettings();
+        }
+
+        if ($this->shouldReduceNumberOfVersionsToOne($configuration)) {
+            $configuration['phpdocumentor']['versions'] = [
+                end($configuration['phpdocumentor']['versions'])
+            ];
         }
 
         foreach ($configuration['phpdocumentor']['versions'] as &$version) {
-            $version = $this->setFilesInPath($version);
             $version = $this->setDirectoriesInPath($version);
+            $version = $this->setFilesInPath($version);
             $version = $this->registerExtensions($version);
             $version = $this->overwriteIgnoredPaths($version);
             $version = $this->overwriteMarkers($version);
@@ -148,28 +155,27 @@ final class CommandlineOptionsMiddleware
     private function setDirectoriesInPath(array $version) : array
     {
         /** @var string|string[]|null $directory */
-        $directory = $this->options['directory'] ?? null;
+        $directory = $this->options['directory'] ?? '';
         if (!$directory) {
             return $version;
         }
 
-        if (!is_array($directory)) {
-            $directory = [$directory];
+        // this will ensure that if we receive an array with comma-separated values; that we make a single array with
+        // all values split
+        $directory = explode(',', implode(',', $directory));
+
+        $currentApiConfig = current($version['api'] ?? []);
+        if (!$currentApiConfig) {
+            $currentApiConfig = current($this->createDefaultApiSettings());
         }
 
-        $currentApiConfig = current($this->createDefaultApiSettings());
-
-        if (isset($version['api'])) {
-            $currentApiConfig = current($version['api']);
-        }
-
-        //Reset the current config, because directory it overwriting the config.
+        // Reset the current config, because directory is overwriting the config.
         $currentApiConfig['source']['paths'] = [];
-        $version['api'] = [];
 
+        $version['api'] = [];
         foreach ($directory as $path) {
-            //If the passed directory is an absolute path this should be handled as a new Api
-            //A version may contain multiple APIs.
+            // If the passed directory is an absolute path this should be handled as a new Api
+            // A version may contain multiple APIs.
             if (Path::isAbsolutePath($path)) {
                 $apiConfig = $currentApiConfig;
                 $apiConfig['source']['dsn'] = Dsn::createFromString($path);
@@ -293,8 +299,23 @@ final class CommandlineOptionsMiddleware
         return $version;
     }
 
+    private function createDefaultVersionSettings() : array
+    {
+        return current($this->configFactory->createDefault()['phpdocumentor']['versions']);
+    }
+
     private function createDefaultApiSettings() : array
     {
-        return current($this->configFactory->createDefault()['phpdocumentor']['versions'])['api'];
+        return $this->createDefaultVersionSettings()['api'];
+    }
+
+    /**
+     * If the source path was influenced; we can no longer reliable render multiple versions as such we reduce
+     * the list of versions to the last one; assuming that is the most recent / desirable one.
+     */
+    private function shouldReduceNumberOfVersionsToOne(array $configuration) : bool
+    {
+        return ($this->options['filename'] || $this->options['directory'])
+            && count($configuration['phpdocumentor']['versions']) > 1;
     }
 }
