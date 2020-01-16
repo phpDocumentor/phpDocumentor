@@ -13,9 +13,11 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
+use InvalidArgumentException;
 use phpDocumentor\Descriptor\Tag\BaseTypes\TypedVariableAbstract;
 use phpDocumentor\Reflection\Fqsen;
 use function ltrim;
+use function sprintf;
 
 /**
  * Descriptor representing a Class.
@@ -275,18 +277,30 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
 
         $properties = new Collection();
 
-        /** @var Tag\PropertyDescriptor $propertyTag */
-        foreach ($propertyTags as $propertyTag) {
-            if (!$propertyTag instanceof TypedVariableAbstract) {
-                continue;
-            }
-            $property = new PropertyDescriptor();
-            $property->setName(ltrim($propertyTag->getVariableName(), '$'));
-            $property->setDescription($propertyTag->getDescription());
-            $property->setType($propertyTag->getType());
-            $property->setParent($this);
+        try {
+            /** @var Tag\PropertyDescriptor $propertyTag */
+            foreach ($propertyTags as $propertyTag) {
+                if (!$propertyTag instanceof TypedVariableAbstract) {
+                    continue;
+                }
+                $property = new PropertyDescriptor();
+                $property->setName(ltrim($propertyTag->getVariableName(), '$'));
+                $property->setDescription($propertyTag->getDescription());
+                $property->setType($propertyTag->getType());
+                $property->setParent($this);
 
-            $properties->add($property);
+                $properties->add($property);
+            }
+        } catch (InvalidArgumentException $e) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    'Failed to get magic properties from "%s": %s',
+                    $this->getFullyQualifiedStructuralElementName(),
+                    $e->getMessage()
+                ),
+                0,
+                $e
+            );
         }
 
         if ($this->getParent() instanceof self) {
