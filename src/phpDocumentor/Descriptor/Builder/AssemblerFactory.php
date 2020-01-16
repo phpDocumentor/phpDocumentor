@@ -26,6 +26,7 @@ use phpDocumentor\Descriptor\Builder\Reflector\Tags\AuthorAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\DeprecatedAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\ExampleAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\GenericTagAssembler;
+use phpDocumentor\Descriptor\Builder\Reflector\Tags\InvalidTagAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\LinkAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\MethodAssembler as MethodTagAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\ParamAssembler;
@@ -144,6 +145,7 @@ class AssemblerFactory
         $factory->register(Matcher::forType(Tags\Property::class), new PropertyTagAssembler());
         $factory->register(Matcher::forType(Tags\PropertyRead::class), new PropertyTagAssembler());
         $factory->register(Matcher::forType(Tags\PropertyWrite::class), new PropertyTagAssembler());
+        $factory->register(Matcher::forType(Tags\InvalidTag::class), new InvalidTagAssembler());
         $factory->register(Matcher::forType(Var_::class), new VarAssembler());
         $factory->register(Matcher::forType(Param::class), new ParamAssembler());
         $factory->register(Matcher::forType(Throws::class), new ThrowsAssembler());
