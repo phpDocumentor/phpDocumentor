@@ -138,6 +138,8 @@ final class CommandlineOptionsMiddleware
             return $version;
         }
 
+        $filename = explode(',', implode(',', $filename));
+
         if (!isset($version['api'])) {
             $version['api'] = $this->createDefaultApiSettings();
         }
