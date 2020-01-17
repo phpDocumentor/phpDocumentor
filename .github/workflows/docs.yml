@@ -18,7 +18,7 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - name: 'phpDoc clean'
-      - uses: ./ # use this repo as an action
+        uses: ./ # use this repo as an action
         with:
           template: 'clean'
           target: 'build/clean'
@@ -27,6 +27,8 @@ jobs:
         with:
           template: 'default'
           target: 'build/default'
+      - name: 'Fix file permissions'
+        run: 'sudo chown $USER ./build'
       - name: 'Copy docker files'
         run: 'cp ./data/demo/* ./build'
       - name: Build
