@@ -17,11 +17,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
+      - name: 'phpDoc clean'
       - uses: ./ # use this repo as an action
         with:
           template: 'clean'
           target: 'build/clean'
-      - uses: ./ # use this repo as an action
+      - name: 'phpDoc default'
+        uses: ./ # use this repo as an action
         with:
           template: 'default'
           target: 'build/default'
+      - name: 'Copy docker files'
+        run: 'cp ./data/demo/* ./build'
+      - name: Build
+        uses: elgohr/Publish-Docker-Github-Action@master
+        with:
+          name: phpdocumentor/phpdocumentor/demo.phpdoc.org
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: docker.pkg.github.com
+          context: build
