@@ -22,6 +22,7 @@ use function count;
 use function current;
 use function end;
 use function explode;
+use function implode;
 use function is_array;
 
 final class CommandlineOptionsMiddleware
@@ -56,7 +57,7 @@ final class CommandlineOptionsMiddleware
 
         if ($this->shouldReduceNumberOfVersionsToOne($configuration)) {
             $configuration['phpdocumentor']['versions'] = [
-                end($configuration['phpdocumentor']['versions'])
+                end($configuration['phpdocumentor']['versions']),
             ];
         }
 

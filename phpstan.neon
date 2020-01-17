@@ -17,32 +17,27 @@ parameters:
     -
             message: "#^Parameter \\#1 \\$value of method phpDocumentor\\\\GraphViz\\\\Graph\\:\\:setCenter\\(\\) expects bool, string given\\.$#"
             count: 1
-            path: src/phpDocumentor/Transformer/Writer/Graph.php
+            path: src/phpDocumentor/Transformer/Writer/Graph/GraphVizClassDiagram.php
 
     -
             message: "#^Parameter \\#1 \\$value of method phpDocumentor\\\\GraphViz\\\\Graph\\:\\:setConcentrate\\(\\) expects bool, string given\\.$#"
             count: 1
-            path: src/phpDocumentor/Transformer/Writer/Graph.php
+            path: src/phpDocumentor/Transformer/Writer/Graph/GraphVizClassDiagram.php
 
     -
             message: "#^Parameter \\#1 \\$value of method phpDocumentor\\\\GraphViz\\\\Graph\\:\\:setRankSep\\(\\) expects float, string given\\.$#"
             count: 1
-            path: src/phpDocumentor/Transformer/Writer/Graph.php
-
-    -
-            message: "#^Parameter \\#2 \\$namespace of method phpDocumentor\\\\Transformer\\\\Writer\\\\Graph\\:\\:buildNamespaceTree\\(\\) expects phpDocumentor\\\\Descriptor\\\\NamespaceDescriptor, phpDocumentor\\\\Descriptor\\\\Interfaces\\\\NamespaceInterface given\\.$#"
-            count: 1
-            path: src/phpDocumentor/Transformer/Writer/Graph.php
+            path: src/phpDocumentor/Transformer/Writer/Graph/GraphVizClassDiagram.php
 
     -
             message: "#^Parameter \\#1 \\$value of method phpDocumentor\\\\GraphViz\\\\Node\\:\\:setFontSize\\(\\) expects float, string given\\.$#"
             count: 1
-            path: src/phpDocumentor/Transformer/Writer/Graph.php
+            path: src/phpDocumentor/Transformer/Writer/Graph/GraphVizClassDiagram.php
 
     -
             message: "#^Parameter \\#1 \\$value of method phpDocumentor\\\\GraphViz\\\\Graph\\:\\:setFontSize\\(\\) expects float, string given\\.$#"
             count: 1
-            path: src/phpDocumentor/Transformer/Writer/Graph.php
+            path: src/phpDocumentor/Transformer/Writer/Graph/GraphVizClassDiagram.php
   excludes_analyse:
    #test data
     - %currentWorkingDirectory%/tests/features/**/*.php
