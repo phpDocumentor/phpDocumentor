@@ -20,5 +20,8 @@ jobs:
       - uses: ./ # use this repo as an action
         with:
           template: 'clean'
-          config: 'data/examples/MariosPizzeria/phpdoc.xml'
           target: 'build/clean'
+      - uses: ./ # use this repo as an action
+        with:
+          template: 'default'
+          target: 'build/default'
