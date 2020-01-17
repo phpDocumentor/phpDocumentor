@@ -24,3 +24,5 @@ RUN cd /opt/phpdoc \
     && echo "memory_limit=-1" >> /usr/local/etc/php/conf.d/phpdoc.ini
 
 ENTRYPOINT ["/opt/phpdoc/bin/phpdoc"]
+
+CMD ["help", "run"]

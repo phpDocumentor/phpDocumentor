@@ -1,15 +1,24 @@
 on: [push]
 name: Docs & Demo
 jobs:
-  docs:
+#  docs:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@master
+#      - name: Build
+#        uses: elgohr/Publish-Docker-Github-Action@master
+#        with:
+#          name: phpdocumentor/phpdocumentor/docs.phpdoc.org
+#          username: ${{ github.actor }}
+#          password: ${{ secrets.GITHUB_TOKEN }}
+#          registry: docker.pkg.github.com
+#          context: docs
+  demo:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - name: Publish to Registry
-        uses: elgohr/Publish-Docker-Github-Action@master
+      - uses: ./ # use this repo as an action
         with:
-          name: phpdocumentor/phpdocumentor/docs.phpdoc.org
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-          registry: docker.pkg.github.com
-          context: docs
+          template: 'clean'
+          config: 'data/examples/MariosPizzeria/phpdoc.xml'
+          target: 'build/clean'
