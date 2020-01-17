@@ -1,4 +1,4 @@
-Feature: Invalid tags in souce file
+Feature: Invalid tags in source file
   In order to find issues in docblocks
   As a user
   I want to be able to see the invalid tags in a report
@@ -7,4 +7,3 @@ Feature: Invalid tags in souce file
     Given A single file named "test.php" based on "invalidTag.php"
     When I run "phpdoc -f test.php"
     Then file "test.php" must contain an error
-
