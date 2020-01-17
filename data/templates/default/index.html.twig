@@ -14,7 +14,7 @@
         </dl>
     {% endif %}
 
-    {% if project.package.children is not empty %}
+    {% if project.package.children|length > 2 %}
         <h3>Packages</h3>
         <dl>
             {% for package in project.package.children %}

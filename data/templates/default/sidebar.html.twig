@@ -16,6 +16,7 @@
         </ul>
     {% endfor %}
 
+    {% if project.package.children|length > 2 %}
     <h1 class="phpdocumentor-sidebar__category-header">Packages</h1>
     {% for package in project.package.children %}
         <h2 class="phpdocumentor-sidebar__root-package">{{ package|route('class:short') }}</h2>
@@ -25,4 +26,11 @@
             {% endfor %}
         </ul>
     {% endfor %}
+    {% endif %}
+
+    <h1 class="phpdocumentor-sidebar__category-header">Reports</h1>
+    <h2 class="phpdocumentor-sidebar__root-package"><a href="{{ path('graphs/classes.html') }}">Class Diagram</a></h2>
+    <h2 class="phpdocumentor-sidebar__root-package"><a href="{{ path('reports/deprecated.html') }}">Deprecated</a></h2>
+    <h2 class="phpdocumentor-sidebar__root-package"><a href="{{ path('reports/errors.html') }}">Errors</a></h2>
+    <h2 class="phpdocumentor-sidebar__root-package"><a href="{{ path('reports/markers.html') }}">Markers</a></h2>
 </aside>

@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% set deprecatedElements = project.indexes.elements|filter(element => element.deprecated) %}
+{%
+    set filesWithDeprecatedElements = deprecatedElements|reduce(
+        (unique, item) => item.file.path in unique|keys ? unique : unique|merge({(item.file.path): item.file}), {}
+    )
+%}
+
+{% block title %}
+    {{ project.name }} &raquo; Deprecated elements
+{% endblock %}
+
+{% block content %}
+    <ul class="phpdocumentor-breadcrumbs">
+        <li><a href="{{ path("/index.html") }}">Home</a></li>
+    </ul>
+
+    <div class="phpdocumentor-row">
+        <h2 class="phpdocumentor-content__title">Deprecated</h2>
+
+        {% if filesWithDeprecatedElements is not empty %}
+        <h3>Table of Contents</h3>
+        <table class="phpdocumentor-table_of_contents">
+            {% for file in filesWithDeprecatedElements %}
+                <tr>
+                    <td class="phpdocumentor-cell"><a href="#{{ file.path }}">{{ file.path }}</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+        {% endif %}
+
+        {% for file in filesWithDeprecatedElements %}
+            <a id="{{ file.path }}"></a>
+            <h3><abbr title="{{ file.path }}">{{ file.name }}</abbr></h3>
+            <table>
+                <tr>
+                    <th class="phpdocumentor-heading">Line</th>
+                    <th class="phpdocumentor-heading">Element</th>
+                    <th class="phpdocumentor-heading">Reason</th>
+                </tr>
+                {% for element in deprecatedElements|filter(el => el.file == file) %}
+                    {% for tag in element.tags.deprecated %}
+                        <tr>
+                            <td class="phpdocumentor-cell">{{ element.line }}</td>
+                            <td class="phpdocumentor-cell">{{ element|route}}</td>
+                            <td class="phpdocumentor-cell">{{ tag.description }}</td>
+                        </tr>
+                    {% endfor %}
+                {% endfor %}
+            </table>
+        {% else %}
+            <div class="phpdocumentor-admonition phpdocumentor-admonition--success">
+                No deprecated elements have been found in this project.
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

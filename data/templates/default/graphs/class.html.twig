@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+{% endblock %}
+
+{% block javascripts %}
+    <script src='https://unpkg.com/panzoom@8.7.3/dist/panzoom.min.js'></script>
+{% endblock %}
+
+{% block content %}
+    <div class="phpdocumentor-class-graph">
+        <img class="phpdocumentor-class-graph__graph" src="classes.svg" id="scene" />
+    </div>
+    <script type="text/javascript">
+        var element = document.querySelector('#scene');
+
+        // And pass it to panzoom
+        panzoom(element, {
+            smoothScroll: false
+        })
+    </script>
+{% endblock %}

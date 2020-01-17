@@ -14,6 +14,11 @@
     <transformation writer="twig" query="indexes.traits" source="templates/default/trait.html.twig" />
     <transformation writer="twig" source="templates/default/search.js.twig" artifact="js/search.js" />
     <transformation writer="twig" source="templates/default/searchIndex.js.twig" artifact="js/searchIndex.js" />
+    <transformation writer="twig" source="templates/default/graphs/class.html.twig" artifact="graphs/classes.html" />
+    <transformation writer="twig" source="templates/default/reports/errors.html.twig" artifact="reports/errors.html" />
+    <transformation writer="twig" source="templates/default/reports/deprecated.html.twig" artifact="reports/deprecated.html" />
+    <transformation writer="twig" source="templates/default/reports/markers.html.twig" artifact="reports/markers.html" />
+    <transformation writer="Graph" source="Class" artifact="graphs/classes.svg" />
   </transformations>
   <parameters>
     <parameter key="twig-debug">true</parameter>
