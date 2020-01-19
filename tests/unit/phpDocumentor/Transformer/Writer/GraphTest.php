@@ -18,6 +18,11 @@ use phpDocumentor\Transformer\Writer\Graph\PlantumlClassDiagram;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 
+/**
+ * @coversDefaultClass \phpDocumentor\Transformer\Writer\Graph
+ * @covers ::__construct
+ * @covers ::<private>
+ */
 final class GraphTest extends TestCase
 {
     /** @var Graph */
@@ -28,6 +33,9 @@ final class GraphTest extends TestCase
         $this->graph = new Graph(new GraphVizClassDiagram(), new PlantumlClassDiagram(new NullLogger()));
     }
 
+    /**
+     * @covers ::getDefaultSettings
+     */
     public function testItExposesCustomSettingToEnableGraphs()
     {
         $this->assertSame(['graphs.enabled' => false], $this->graph->getDefaultSettings());

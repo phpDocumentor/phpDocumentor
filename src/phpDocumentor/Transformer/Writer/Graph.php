@@ -49,7 +49,7 @@ final class Graph extends WriterAbstract implements ProjectDescriptor\WithCustom
     }
 
     /**
-     * Invokes the query method contained in this class.
+     * Generates a UML class diagram using PlantUML or our native GraphViz integration.
      *
      * @param ProjectDescriptor $project Document containing the structure.
      * @param Transformation $transformation Transformation to execute.

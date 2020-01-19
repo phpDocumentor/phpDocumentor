@@ -27,6 +27,8 @@ use phpDocumentor\Reflection\Types\String_;
  * Tests the functionality for the ConstantDescriptor class.
  *
  * @coversDefaultClass \phpDocumentor\Descriptor\ConstantDescriptor
+ * @covers ::__construct
+ * @covers ::<private>
  */
 final class ConstantDescriptorTest extends MockeryTestCase
 {
@@ -77,6 +79,7 @@ final class ConstantDescriptorTest extends MockeryTestCase
     }
 
     /**
+     * @covers ::getType
      * @covers ::getTypes
      * @covers ::setTypes
      */
@@ -88,13 +91,15 @@ final class ConstantDescriptorTest extends MockeryTestCase
         $this->fixture->setTypes($expected);
 
         $this->assertSame($expected, $this->fixture->getType());
+        $this->assertSame([$expected], $this->fixture->getTypes());
     }
 
     /**
+     * @covers ::getType
      * @covers ::getTypes
      * @covers ::getVar
      */
-    public function testTestgetTypesDerivedFromVarTag() : void
+    public function testDeterminingTypeDerivedFromVarTag() : void
     {
         $expected = new String_();
 
@@ -107,6 +112,15 @@ final class ConstantDescriptorTest extends MockeryTestCase
     }
 
     /**
+     * @covers ::getVar
+     */
+    public function testEmptyCollectionIsReturnedWhenNoVarTagsPresent() : void
+    {
+        $this->assertEquals(new Collection(), $this->fixture->getVar());
+    }
+
+    /**
+     * @covers ::getInheritedElement
      * @covers ::getTypes
      * @covers ::getVar
      */

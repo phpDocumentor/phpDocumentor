@@ -7,6 +7,9 @@ namespace phpDocumentor\Configuration\Exception;
 use RuntimeException;
 use function sprintf;
 
+/**
+ * @codeCoverageIgnore
+ */
 final class UpgradeFailedException extends RuntimeException
 {
     public static function create(string $currentVersion) : self
