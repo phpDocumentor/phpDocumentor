@@ -58,6 +58,12 @@ services:
         bind:
           $defaultTemplateName: 'default'
           $globalTemplatesPath: "@=service('phpDocumentor\\\\Application').templateDirectory()"
+          $servicesWithCustomSettings: !tagged_iterator app.with_custom_settings
+    _instanceof:
+      # Tag any service that implements WithCustomSettings so that we can auto-register them
+      # with the ProjectDescriptor
+      phpDocumentor\Descriptor\ProjectDescriptor\WithCustomSettings:
+        tags: ['app.with_custom_settings']
 
     ###################################################################################
     ## Autoloading definitions for whole namespaces ###################################

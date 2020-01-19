@@ -29,7 +29,7 @@ use const DIRECTORY_SEPARATOR;
  *
  * * 'class' (default), a Class Diagram generated using GraphViz
  */
-final class Graph extends WriterAbstract
+final class Graph extends WriterAbstract implements ProjectDescriptor\WithCustomSettings
 {
     /** @var GraphVizClassDiagram */
     private $classDiagramGenerator;
@@ -43,6 +43,13 @@ final class Graph extends WriterAbstract
         $this->plantumlClassDiagram = $plantumlClassDiagram;
     }
 
+    public function getDefaultSettings() : array
+    {
+        return [
+            'graphs.enabled' => false,
+        ];
+    }
+
     /**
      * Invokes the query method contained in this class.
      *
@@ -51,6 +58,10 @@ final class Graph extends WriterAbstract
      */
     public function transform(ProjectDescriptor $project, Transformation $transformation) : void
     {
+        if ($project->getSettings()->getCustom()['graphs.enabled'] === false) {
+            return;
+        }
+
         $filename = $this->getDestinationPath($transformation);
 
         switch ($transformation->getSource() ?: 'class') {

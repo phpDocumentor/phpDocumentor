@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\ProjectDescriptor;
 
+use phpDocumentor\Descriptor\ProjectDescriptor;
+
 /**
  * Contains the Settings for the current Project.
  */
@@ -40,6 +42,13 @@ final class Settings
 
     /** @var string[] */
     private $markers = [];
+
+    /**
+     * A flexible list of settings that can be used by Writers, templates and more as additional settings.
+     *
+     * @var string[]
+     */
+    private $custom = [];
 
     /**
      * Stores the visibilities that are allowed to be executed as a bitflag.
@@ -106,6 +115,25 @@ final class Settings
     public function getMarkers() : array
     {
         return $this->markers;
+    }
+
+    /**
+     * A flexible list of settings that can be used by Writers, templates and more as additional settings.
+     *
+     * Some writers or templates can have their own specific settings; this can be registered here and accessed in
+     * various locations through the accessor {@see ProjectDescriptor::getSettings()} or in the templates using
+     * the `project.settings.other` variable.
+     *
+     * @return string[]
+     */
+    public function getCustom() : array
+    {
+        return $this->custom;
+    }
+
+    public function setCustom(array $settings) : void
+    {
+        $this->custom = $settings;
     }
 
     /**

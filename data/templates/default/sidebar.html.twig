@@ -33,7 +33,9 @@
     {% endif %}
 
     <h1 class="phpdocumentor-sidebar__category-header">Reports</h1>
+    {% if project.settings.custom['graphs.enabled'] %}
     <h2 class="phpdocumentor-sidebar__root-package"><a href="{{ path('graphs/classes.html') }}">Class Diagram</a></h2>
+    {% endif %}
     <h2 class="phpdocumentor-sidebar__root-package"><a href="{{ path('reports/deprecated.html') }}">Deprecated</a></h2>
     <h2 class="phpdocumentor-sidebar__root-package"><a href="{{ path('reports/errors.html') }}">Errors</a></h2>
     <h2 class="phpdocumentor-sidebar__root-package"><a href="{{ path('reports/markers.html') }}">Markers</a></h2>

@@ -18,6 +18,7 @@ use phpDocumentor\Descriptor\Builder\AssemblerFactory;
 use phpDocumentor\Descriptor\Builder\AssemblerInterface;
 use phpDocumentor\Descriptor\Filter\Filter;
 use phpDocumentor\Descriptor\Filter\Filterable;
+use phpDocumentor\Descriptor\ProjectDescriptor\WithCustomSettings;
 use phpDocumentor\Reflection\Php\Project;
 use function get_class;
 
@@ -41,10 +42,17 @@ class ProjectDescriptorBuilder
     /** @var string */
     private $defaultPackage = '';
 
-    public function __construct(AssemblerFactory $assemblerFactory, Filter $filterManager)
-    {
+    /** @var WithCustomSettings[] */
+    private $servicesWithCustomSettings;
+
+    public function __construct(
+        AssemblerFactory $assemblerFactory,
+        Filter $filterManager,
+        iterable $servicesWithCustomSettings = []
+    ) {
         $this->assemblerFactory = $assemblerFactory;
         $this->filter = $filterManager;
+        $this->servicesWithCustomSettings = $servicesWithCustomSettings;
     }
 
     public function createProjectDescriptor() : void
@@ -155,6 +163,15 @@ class ProjectDescriptorBuilder
     {
         $packageName = $project->getRootNamespace()->getFqsen()->getName();
         $this->defaultPackage = $packageName;
+
+        $customSettings = $this->getProjectDescriptor()->getSettings()->getCustom();
+        foreach ($this->servicesWithCustomSettings as $service) {
+            // We assume that the custom settings have the non-default settings and we should not override those;
+            // that is why we merge the custom settings on top of the default settings; this will cause the overrides
+            // to remain in place.
+            $customSettings = array_merge($service->getDefaultSettings(), $customSettings);
+        }
+        $this->getProjectDescriptor()->getSettings()->setCustom($customSettings);
 
         foreach ($project->getFiles() as $file) {
             $descriptor = $this->buildDescriptor($file);
