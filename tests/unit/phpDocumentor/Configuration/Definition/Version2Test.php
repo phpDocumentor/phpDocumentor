@@ -19,7 +19,7 @@ use function getcwd;
 
 final class Version2Test extends TestCase
 {
-    private const DEFAULT_TEMPLATE_NAME = 'clean';
+    private const DEFAULT_TEMPLATE_NAME = 'default';
 
     /**
      * @dataProvider provideTestConfiguration

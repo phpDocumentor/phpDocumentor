@@ -94,9 +94,8 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
     {
         return [
             'project' => $this->data,
-            'usesNamespaces' => count($this->data->getIndexes()->get('namespaces')) > 1,
-            // packages always have the root package AND the default package
-            'usesPackages' => count($this->data->getIndexes()->get('packages')) > 2,
+            'usesNamespaces' => count($this->data->getNamespace()->getChildren()) > 0,
+            'usesPackages' => count($this->data->getPackage()->getChildren()) > 1,
         ];
     }
 

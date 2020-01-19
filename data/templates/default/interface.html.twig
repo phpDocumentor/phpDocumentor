@@ -8,8 +8,8 @@
             {% if node.parent is not empty %}
                 <span class="phpdocumentor-interface__extends">
                     extends
-                    {% for interface in node.parents %}
-                        {{ node|route('class:short') }}{% if not loop.last %}, {% endif %}
+                    {% for interface in node.parent %}
+                        {{ interface|route('class:short') }}{% if not loop.last %}, {% endif %}
                     {% endfor %}
                 </span>
             {% endif %}

@@ -30,7 +30,7 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
 
     protected function setUp() : void
     {
-        $definition = new Definition\Version3('clean');
+        $definition = new Definition\Version3('default');
         $this->configurationFactory = new ConfigurationFactory([], new SymfonyConfigFactory(['3' => $definition]));
     }
 
@@ -96,7 +96,7 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
      */
     public function testItShouldOverrideTheListOfTemplatesBasedOnTheTemplateOption() : void
     {
-        $expected = 'clean';
+        $expected = 'default';
         $configuration = ['phpdocumentor' => ['templates' => [['name' => 'responsive']]]];
         $middleware = $this->createCommandlineOptionsMiddleware(['template' => $expected]);
 

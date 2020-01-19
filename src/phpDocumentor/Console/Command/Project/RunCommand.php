@@ -26,9 +26,14 @@ use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Stopwatch\Stopwatch;
+use Symfony\Component\Stopwatch\StopwatchEvent;
 use function count;
 use function file_put_contents;
+use function floor;
+use function round;
 use function serialize;
+use function sprintf;
 
 /**
  * Parse and transform the given directory (-d|-f) to the given location (-t).
@@ -245,6 +250,9 @@ HELP
      */
     protected function execute(InputInterface $input, OutputInterface $output) : int
     {
+        $stopwatch = new Stopwatch();
+        $event = $stopwatch->start('all');
+
         $output->writeln('phpDocumentor ' . $this->getApplication()->getVersion());
         $output->writeln('');
 
@@ -257,8 +265,10 @@ HELP
             file_put_contents('ast.dump', serialize($this->projectDescriptorBuilder->getProjectDescriptor()));
         }
 
+        $event->stop();
         $output->writeln('');
-        $output->writeln('All done!');
+
+        $output->writeln(sprintf('All done in %s!', $this->durationInText($event)));
 
         return 0;
     }
@@ -302,5 +312,18 @@ HELP
             }
         );
         // @codeCoverageIgnoreEnd
+    }
+
+    private function durationInText(StopwatchEvent $event) : string
+    {
+        $durationText = '';
+        $duration = round($event->getDuration() / 1000);
+        if ($duration > 59) {
+            $minutes = floor($duration / 60);
+            $durationText .= sprintf('%s minute%s ', $minutes, $minutes > 1 ? 's' : '');
+        }
+        $durationText .= ($duration % 60) . ' seconds';
+
+        return $durationText;
     }
 }

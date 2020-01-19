@@ -56,7 +56,7 @@ services:
         autoconfigure: true
         public: false
         bind:
-          $defaultTemplateName: 'clean'
+          $defaultTemplateName: 'default'
           $globalTemplatesPath: "@=service('phpDocumentor\\\\Application').templateDirectory()"
 
     ###################################################################################

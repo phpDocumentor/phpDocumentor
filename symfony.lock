@@ -11,6 +11,9 @@
     "hamcrest/hamcrest-php": {
         "version": "v2.0.0"
     },
+    "jawira/plantuml": {
+        "version": "v1.27.0"
+    },
     "jean85/pretty-package-versions": {
         "version": "1.2"
     },

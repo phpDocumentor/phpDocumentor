@@ -16,6 +16,7 @@ namespace phpDocumentor\Transformer\Writer;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Writer\Graph\GraphVizClassDiagram;
+use phpDocumentor\Transformer\Writer\Graph\PlantumlClassDiagram;
 use const DIRECTORY_SEPARATOR;
 
 /**
@@ -33,9 +34,13 @@ final class Graph extends WriterAbstract
     /** @var GraphVizClassDiagram */
     private $classDiagramGenerator;
 
-    public function __construct(GraphVizClassDiagram $classDiagramGenerator)
+    /** @var PlantumlClassDiagram */
+    private $plantumlClassDiagram;
+
+    public function __construct(GraphVizClassDiagram $classDiagramGenerator, PlantumlClassDiagram $plantumlClassDiagram)
     {
         $this->classDiagramGenerator = $classDiagramGenerator;
+        $this->plantumlClassDiagram = $plantumlClassDiagram;
     }
 
     /**
@@ -52,6 +57,7 @@ final class Graph extends WriterAbstract
             case 'class':
             default:
                 $this->classDiagramGenerator->create($project, $filename);
+                $this->plantumlClassDiagram->create($project, $filename);
         }
     }
 

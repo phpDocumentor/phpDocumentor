@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "859942a9700b37e9a8b43629f85d672f",
+    "content-hash": "1751a061fcc155280524e77b81349b32",
     "packages": [
         {
             "name": "composer/ca-bundle",
@@ -107,6 +107,46 @@
                 "parser"
             ],
             "time": "2019-12-30T22:54:17+00:00"
+        },
+        {
+            "name": "jawira/plantuml",
+            "version": "v1.27.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jawira/plantuml.git",
+                "reference": "f6c74509186d6b58bc1ed7191a001456c1a49bd4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jawira/plantuml/zipball/f6c74509186d6b58bc1ed7191a001456c1a49bd4",
+                "reference": "f6c74509186d6b58bc1ed7191a001456c1a49bd4",
+                "shasum": ""
+            },
+            "suggest": {
+                "pds/skeleton": "Standard PHP package skeleton",
+                "phing/phing": "PHP Build Tool"
+            },
+            "bin": [
+                "bin/plantuml"
+            ],
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Jawira Portugal"
+                }
+            ],
+            "description": "Provides PlantUML integration: plantuml executable and plantuml.jar",
+            "keywords": [
+                "diagram",
+                "plantuml",
+                "plantuml.jar",
+                "uml"
+            ],
+            "time": "2019-12-15T03:06:03+00:00"
         },
         {
             "name": "jean85/pretty-package-versions",

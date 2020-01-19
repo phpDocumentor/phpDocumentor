@@ -260,6 +260,15 @@ final class LinkRenderer
                     (string) $node,
                     end($parts)
                 );
+            default:
+                if ($presentation !== '') {
+                    return sprintf(
+                        '<a href="%s"><abbr title="%s">%s</abbr></a>',
+                        $url,
+                        (string) $node,
+                        $presentation
+                    );
+                }
         }
 
         return $url ? sprintf('<a href="%s">%s</a>', $url, (string) $node) : (string) $node;

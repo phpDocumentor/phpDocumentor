@@ -27,7 +27,7 @@ use function array_replace_recursive;
  */
 final class Version3Test extends TestCase
 {
-    private const DEFAULT_TEMPLATE_NAME = 'clean';
+    private const DEFAULT_TEMPLATE_NAME = 'default';
 
     /**
      * @dataProvider provideTestConfiguration

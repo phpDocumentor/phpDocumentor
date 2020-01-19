@@ -5,7 +5,7 @@
   <version>1.0.0</version>
   <transformations>
     <transformation query="copy" writer="FileIo" source="templates/default/css" artifact="css"/>
-    <transformation writer="twig" query="namespace" source="templates/default/index.html.twig" artifact="index.html"/>
+    <transformation writer="twig" source="templates/default/index.html.twig" artifact="index.html"/>
     <transformation writer="twig" query="files" source="templates/default/file.html.twig" />
     <transformation writer="twig" query="indexes.namespaces" source="templates/default/namespace.html.twig" />
     <transformation writer="twig" query="indexes.packages" source="templates/default/package.html.twig" />

@@ -2,6 +2,7 @@
 bin/*
 !bin/phpdoc
 !bin/console
+!bin/plantuml
 build
 docs
 features

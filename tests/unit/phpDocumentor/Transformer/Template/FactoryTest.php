@@ -57,7 +57,7 @@ final class FactoryTest extends MockeryTestCase
     public function testThatATemplateCanBeLoaded() : void
     {
         // Arrange
-        $templateName = 'clean';
+        $templateName = 'default';
         $templateDirectory = $this->givenAnExampleTemplateInDirectoryCalled($templateName);
         $this->globalTemplates->addChild($templateDirectory);
 
@@ -191,7 +191,7 @@ final class FactoryTest extends MockeryTestCase
   </transformations>
 </template>
 XML;
-        $templateDirectory = vfsStream::newDirectory('clean');
+        $templateDirectory = vfsStream::newDirectory('default');
         $templateDirectory->addChild(vfsStream::newFile('template.xml')->setContent($xml));
 
         return $templateDirectory;

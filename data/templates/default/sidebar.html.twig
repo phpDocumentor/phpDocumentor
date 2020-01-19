@@ -7,16 +7,20 @@
         </label>
     </section>
     <h1 class="phpdocumentor-sidebar__category-header">Namespaces</h1>
-    {% for namespace in project.namespace.children %}
-        <h2 class="phpdocumentor-sidebar__root-namespace">{{ namespace|route('class:short') }}</h2>
-        <ul class="phpdocumentor-list">
-            {% for child in namespace.children %}
-                <li>{{ child|route('class:short') }}</li>
-            {% endfor %}
-        </ul>
-    {% endfor %}
 
-    {% if project.package.children|length > 2 %}
+    {% if usesNamespaces or not usesPackages %}
+        <h2 class="phpdocumentor-sidebar__root-namespace">{{ project.namespace|route('Global') }}</h2>
+        {% for namespace in project.namespace.children %}
+            <h3 class="phpdocumentor-sidebar__root-namespace">{{ namespace|route('class:short') }}</h3>
+            <ul class="phpdocumentor-list">
+                {% for child in namespace.children %}
+                    <li>{{ child|route('class:short') }}</li>
+                {% endfor %}
+            </ul>
+        {% endfor %}
+    {% endif %}
+
+    {% if usesPackages %}
     <h1 class="phpdocumentor-sidebar__category-header">Packages</h1>
     {% for package in project.package.children %}
         <h2 class="phpdocumentor-sidebar__root-package">{{ package|route('class:short') }}</h2>

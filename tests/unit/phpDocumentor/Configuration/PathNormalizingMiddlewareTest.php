@@ -19,7 +19,7 @@ final class PathNormalizingMiddlewareTest extends TestCase
 
     protected function setUp() : void
     {
-        $definition = new Definition\Version3('clean');
+        $definition = new Definition\Version3('default');
         $this->configurationFactory = new ConfigurationFactory([], new SymfonyConfigFactory(['3' => $definition]));
     }
 
