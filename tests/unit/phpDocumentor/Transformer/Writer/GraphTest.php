@@ -36,7 +36,7 @@ final class GraphTest extends TestCase
     /**
      * @covers ::getDefaultSettings
      */
-    public function testItExposesCustomSettingToEnableGraphs()
+    public function testItExposesCustomSettingToEnableGraphs() : void
     {
         $this->assertSame(['graphs.enabled' => false], $this->graph->getDefaultSettings());
     }

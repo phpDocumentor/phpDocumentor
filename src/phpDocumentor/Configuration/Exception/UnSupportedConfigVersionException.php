@@ -18,7 +18,7 @@ use function implode;
 use function sprintf;
 
 /**
- * @codeCoverageIgnore 
+ * @codeCoverageIgnore
  */
 final class UnSupportedConfigVersionException extends RuntimeException
 {
