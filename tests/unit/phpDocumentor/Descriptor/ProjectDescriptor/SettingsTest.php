@@ -71,6 +71,7 @@ final class SettingsTest extends TestCase
 
         $this->assertTrue($settings->isModified());
     }
+
     /**
      * @covers ::getVisibility
      * @covers ::setVisibility
@@ -96,6 +97,35 @@ final class SettingsTest extends TestCase
         $this->assertFalse($settings->isModified());
 
         $settings->setVisibility(Settings::VISIBILITY_PUBLIC);
+
+        $this->assertTrue($settings->isModified());
+    }
+
+    /**
+     * @covers ::getCustom
+     * @covers ::setCustom
+     */
+    public function testItCanStoreCustomSettings() : void
+    {
+        $settings = new Settings();
+
+        $this->assertSame([], $settings->getCustom());
+
+        $settings->setCustom(['key' => 'value']);
+
+        $this->assertSame(['key' => 'value'], $settings->getCustom());
+    }
+
+    /**
+     * @covers ::isModified
+     */
+    public function testDetectSettingsAreModifiedWhenSettingNewCustomSettings() : void
+    {
+        $settings = new Settings();
+
+        $this->assertFalse($settings->isModified());
+
+        $settings->setCustom(['key' => 'value']);
 
         $this->assertTrue($settings->isModified());
     }
