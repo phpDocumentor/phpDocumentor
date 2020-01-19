@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace phpDocumentor\Console\Command\Project;
 
 use League\Pipeline\PipelineInterface;
-use phpDocumentor\Descriptor\ProjectDescriptor\WithCustomSettings;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Parser\Event\PreFileEvent;
@@ -24,6 +23,7 @@ use phpDocumentor\Transformer\Event\PreTransformEvent;
 use phpDocumentor\Transformer\Transformer;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -35,7 +35,6 @@ use function floor;
 use function round;
 use function serialize;
 use function sprintf;
-use function var_export;
 
 /**
  * Parse and transform the given directory (-d|-f) to the given location (-t).
@@ -68,19 +67,14 @@ class RunCommand extends Command
     /** @var ProgressBar */
     private $transformerProgressBar;
 
-    /** @var WithCustomSettings[] */
-    private $servicesWithCustomSettings;
-
     public function __construct(
         ProjectDescriptorBuilder $projectDescriptorBuilder,
-        PipelineInterface $pipeline,
-        iterable $servicesWithCustomSettings = []
+        PipelineInterface $pipeline
     ) {
         parent::__construct('project:run');
 
         $this->projectDescriptorBuilder = $projectDescriptorBuilder;
         $this->pipeline = $pipeline;
-        $this->servicesWithCustomSettings = $servicesWithCustomSettings;
     }
 
     /**
@@ -276,8 +270,8 @@ HELP
         $output->writeln('');
 
         if ($input->getOption('list-settings')) {
-            $this->listSettings($output);
-            return 0;
+            return ($this->getApplication()->find('settings:list'))
+                ->run(new ArrayInput([]), $output);
         }
 
         $this->observeProgressToShowProgressBars($output);
@@ -292,6 +286,9 @@ HELP
         $event->stop();
         $output->writeln('');
 
+        if ($output->getVerbosity() === OutputInterface::VERBOSITY_VERBOSE) {
+            $output->writeln(sprintf('Observed max. memory usage: %s mb', round($event->getMemory() / 1024 / 1024, 2)));
+        }
         $output->writeln(sprintf('All done in %s!', $this->durationInText($event)));
 
         return 0;
@@ -349,22 +346,5 @@ HELP
         $durationText .= ($duration % 60) . ' seconds';
 
         return $durationText;
-    }
-
-    private function listSettings(OutputInterface $output) : void
-    {
-        $output->writeln('The following settings are supported using <info>--setting</info> or <info>-s</info>.');
-        $output->writeln('');
-        $output->writeln('<comment>Settings:</comment>');
-
-        foreach ($this->servicesWithCustomSettings as $servicesWithCustomSetting) {
-            foreach ($servicesWithCustomSetting->getDefaultSettings() as $setting => $default) {
-                $output->writeln(
-                    sprintf('  <info>%s</info> <comment>[default: %s]</comment>', $setting, var_export($default, true))
-                );
-            }
-        }
-
-        $output->writeln('');
     }
 }

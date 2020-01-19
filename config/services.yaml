@@ -113,11 +113,7 @@ services:
           - '@phpDocumentor\Descriptor\ProjectDescriptorBuilder'
           - '@phpdoc.complete.pipeline'
 
-    phpDocumentor\Console\Command\Project\ParseCommand:
-        arguments: ['@phpdoc.parse.pipeline']
-
-    phpDocumentor\Console\Command\Project\TransformCommand:
-        arguments: ['@phpdoc.transform.pipeline']
+    phpDocumentor\Console\Command\Project\ListSettingsCommand: ~
 
     phpDocumentor\Descriptor\Builder\AssemblerFactory:
         class: 'phpDocumentor\Descriptor\Builder\AssemblerFactory'
