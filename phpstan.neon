@@ -51,8 +51,10 @@ parameters:
     - %currentWorkingDirectory%/src/phpDocumentor/Parser/Command/Project/ParseCommand.php
    # method doesn't exist??? phpDocumentor\Plugin\Scrybe\Converter\ToLatexInterface::setTableOfContents()
     - %currentWorkingDirectory%/src/phpDocumentor/Plugin/Scrybe/Command/Manual/ToLatexCommand.php
-   # exclude scrybe, since this is not a working plugin at the moment
-    - %currentWorkingDirectory%/src/phpDocumentor/Plugin/Scrybe/**/*.php
+   # exclude guide generation, since this is not a working system at the moment
+    - %currentWorkingDirectory%/src/phpDocumentor/Guides/*.php
+    - %currentWorkingDirectory%/src/phpDocumentor/Pipeline/Stage/RenderGuide.php
+    - %currentWorkingDirectory%/src/phpDocumentor/Guides/**/*.php
    # needs adjustment of interface in phpDocumentor/reflection in order to be able to typehint the command
     - %currentWorkingDirectory%/src/phpDocumentor/Parser/Middleware/*.php
    # phpunit TestCase while having to use a composer-global install ("Class PHPUnit\\Framework\\TestCase not found and could not be autoloaded")

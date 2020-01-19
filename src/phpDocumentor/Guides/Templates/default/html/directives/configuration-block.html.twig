@@ -1,0 +1,9 @@
+<div class="configuration-block">
+    <ul class="simple">
+        {% for block in blocks %}
+            <li>
+                <em>{{ block.language }}</em>
+                {{ block.code|raw }}
+            </li>
+        {% endfor %}
+    </ul>

@@ -1,0 +1,150 @@
+{# TEMPLATE VAR SETTINGS #}
+{#{%- set url_root = pathto('', 1) %}#}
+{#{%- if url_root == '#' %}{% set url_root = '' %}{% endif %}#}
+{#{%- if not embedded and docstitle %}#}
+    {#{%- set titlesuffix = " &mdash; "|safe + docstitle|e %}#}
+{#{%- else %}#}
+    {#{%- set titlesuffix = "" %}#}
+{#{%- endif %}#}
+{#{%- set lang_attr = 'en' if language == None else (language | replace('_', '-')) %}#}
+
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {#{% block htmltitle %}#}
+    {#<title>{{ title|striptags|e }}{{ titlesuffix }}</title>#}
+    {#{% endblock %}#}
+
+    {# FAVICON #}
+    {#{% if favicon %}#}
+    {#<link rel="shortcut icon" href="{{ pathto('_static/' + favicon, 1) }}"/>#}
+    {#{% endif %}#}
+    {# CANONICAL URL #}
+    {#{% if theme_canonical_url %}#}
+    {#<link rel="canonical" href="{{ theme_canonical_url }}{{ pagename }}.html"/>#}
+    {#{% endif %}#}
+
+    {# CSS #}
+
+    <link rel="stylesheet" href="{{ asset('css/theme.css') }}" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('css/badge_only.css') }}" type="text/css" />
+
+    {# Keep modernizr in head - http://modernizr.com/docs/#installing #}
+    <script src="{{ asset('js/modernizr.min.js') }}"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+{% block extrabody %} {% endblock %}
+<div class="wy-grid-for-nav">
+
+    {# SIDE NAV, TOGGLES ON MOBILE #}
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+        <div class="wy-side-scroll">
+            <div class="wy-side-nav-search">
+                {% block sidebartitle %}
+
+                    {#{% if logo and theme_logo_only %}#}
+                    {#<a href="{{ pathto(master_doc) }}">#}
+                    {#{% else %}#}
+                    {#<a href="{{ pathto(master_doc) }}" class="icon icon-home"> {{ project }}#}
+                    {#{% endif %}#}
+
+                    {#{% if logo %}#}
+                    {# Not strictly valid HTML, but it's the only way to display/scale#}
+                    {#it properly, without weird scripting or heaps of work#}
+                    {##}
+                    {#<img src="{{ pathto('_static/' + logo, 1) }}" class="logo" alt="Logo"/>#}
+                    {#{% endif %}#}
+                    {#</a>#}
+                {% endblock %}
+            </div>
+
+            <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                {#{% block menu %}#}
+                {##}
+                {#The singlehtml builder doesn't handle this toctree call when the#}
+                {#toctree is empty. Skip building this for now.#}
+                {##}
+                {#{% if 'singlehtml' not in builder %}#}
+                {#{% set global_toc = toctree(maxdepth=theme_navigation_depth|int,#}
+                {#collapse=theme_collapse_navigation|tobool,#}
+                {#includehidden=theme_includehidden|tobool,#}
+                {#titles_only=theme_titles_only|tobool) %}#}
+                {#{% endif %}#}
+                {#{% if global_toc %}#}
+                {#{{ global_toc }}#}
+                {#{% else %}#}
+                {#<!-- Local TOC -->#}
+                {#<div class="local-toc">{{ toc }}</div>#}
+                {#{% endif %}#}
+                {#{% endblock %}#}
+                {#</div>#}
+            </div>
+        </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+        {# MOBILE NAV, TRIGGLES SIDE NAV ON TOGGLE #}
+        {#<nav class="wy-nav-top" aria-label="top navigation">#}
+        {#{% block mobile_nav %}#}
+        {#<i data-toggle="wy-nav-top" class="fa fa-bars"></i>#}
+        {#<a href="{{ pathto(master_doc) }}">{{ project }}</a>#}
+        {#{% endblock %}#}
+        {#</nav>#}
+
+
+        <div class="wy-nav-content">
+            {%- block content %}
+                <div class="rst-content">
+                    {#{% include "breadcrumbs.html" %}#}
+                    <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+                        {%- block document %}
+                            <div itemprop="articleBody">
+                                {% block body %}{% endblock %}
+                            </div>
+                        {%- endblock %}
+                    </div>
+                    {#{% include "footer.html" %}#}
+                </div>
+            {%- endblock %}
+        </div>
+
+    </section>
+
+</div>
+{#{% include "versions.html" %}#}
+
+{#<script type="text/javascript">#}
+{#var DOCUMENTATION_OPTIONS = {#}
+{#URL_ROOT: '{{ url_root }}',#}
+{#VERSION: '{{ release|e }}',#}
+{#LANGUAGE: '{{ language }}',#}
+{#COLLAPSE_INDEX: false,#}
+{#FILE_SUFFIX: '{{ '' if no_search_suffix else file_suffix }}',#}
+{#HAS_SOURCE:  {{ has_source|lower }},#}
+{#SOURCELINK_SUFFIX: '{{ sourcelink_suffix }}'#}
+{#}#}
+{#</script>#}
+{#{%- for scriptfile in script_files %}#}
+{#<script type="text/javascript" src="{{ pathto(scriptfile, 1) }}"></script>#}
+{#{%- endfor %}#}
+
+<script type="text/javascript" src="{{ asset('js/theme.js') }}"></script>
+
+{#<script type="text/javascript">#}
+{#jQuery(function () {#}
+{#SphinxRtdTheme.Navigation.enable({{ 'true' if theme_sticky_navigation|tobool else 'false' }})#}
+{#})#}
+{#</script>#}
+
+{%- block footer %} {% endblock %}
+
+</body>
+</html>

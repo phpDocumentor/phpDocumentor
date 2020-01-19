@@ -1,0 +1,9 @@
+<li>
+    <a href="{{ tocItem.targetUrl }}">{{ tocItem.title|raw }}</a>
+
+    {% if tocItem.children|length %}
+        {% include "toc-level.html.twig" with {
+            tocItems:tocItem.children
+        } %}
+    {% endif %}
+</li>
