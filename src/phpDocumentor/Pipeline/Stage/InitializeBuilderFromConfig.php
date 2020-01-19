@@ -33,6 +33,7 @@ final class InitializeBuilderFromConfig
         $builder->createProjectDescriptor();
         $builder->setName($configuration['phpdocumentor']['title'] ?? '');
         $builder->setPartials($this->partials);
+        $builder->setCustomSettings($configuration['phpdocumentor']['settings'] ?? []);
 
         return $payload;
     }

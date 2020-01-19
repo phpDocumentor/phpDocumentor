@@ -87,6 +87,8 @@ class RunCommandTest extends MockeryTestCase
                 'defaultpackagename',
                 'sourcecode',
                 'template',
+                'setting',
+                'list-settings',
                 'parseprivate',
             ],
             array_keys($options)

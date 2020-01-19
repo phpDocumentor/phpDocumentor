@@ -45,9 +45,7 @@ final class Graph extends WriterAbstract implements ProjectDescriptor\WithCustom
 
     public function getDefaultSettings() : array
     {
-        return [
-            'graphs.enabled' => false,
-        ];
+        return [ 'graphs.enabled' => false ];
     }
 
     /**

@@ -20,5 +20,5 @@ namespace phpDocumentor\Descriptor\ProjectDescriptor;
  */
 interface WithCustomSettings
 {
-    public function getDefaultSettings(): array;
+    public function getDefaultSettings() : array;
 }

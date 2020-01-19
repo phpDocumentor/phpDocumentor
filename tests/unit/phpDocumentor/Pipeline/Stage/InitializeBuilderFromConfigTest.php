@@ -28,6 +28,7 @@ final class InitializeBuilderFromConfigTest extends TestCase
         $builder->createProjectDescriptor()->shouldBeCalledOnce();
         $builder->setName('my-title')->shouldBeCalledOnce();
         $builder->setPartials($partials)->shouldBeCalledOnce();
+        $builder->setCustomSettings([])->shouldBeCalledOnce();
 
         $fixture(new Payload(['phpdocumentor' => ['title' => 'my-title']], $builder->reveal()));
     }

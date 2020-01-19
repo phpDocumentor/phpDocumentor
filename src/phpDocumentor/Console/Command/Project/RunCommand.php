@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Console\Command\Project;
 
 use League\Pipeline\PipelineInterface;
+use phpDocumentor\Descriptor\ProjectDescriptor\WithCustomSettings;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Parser\Event\PreFileEvent;
@@ -34,6 +35,7 @@ use function floor;
 use function round;
 use function serialize;
 use function sprintf;
+use function var_export;
 
 /**
  * Parse and transform the given directory (-d|-f) to the given location (-t).
@@ -66,14 +68,19 @@ class RunCommand extends Command
     /** @var ProgressBar */
     private $transformerProgressBar;
 
+    /** @var WithCustomSettings[] */
+    private $servicesWithCustomSettings;
+
     public function __construct(
         ProjectDescriptorBuilder $projectDescriptorBuilder,
-        PipelineInterface $pipeline
+        PipelineInterface $pipeline,
+        iterable $servicesWithCustomSettings = []
     ) {
         parent::__construct('project:run');
 
         $this->projectDescriptorBuilder = $projectDescriptorBuilder;
         $this->pipeline = $pipeline;
+        $this->servicesWithCustomSettings = $servicesWithCustomSettings;
     }
 
     /**
@@ -236,6 +243,18 @@ HELP
                 'Name of the template to use (optional)'
             )
             ->addOption(
+                'setting',
+                's',
+                InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
+                'Provide custom setting(s) as "key=value", run again with <info>--list-settings</info> for a list'
+            )
+            ->addOption(
+                'list-settings',
+                null,
+                InputOption::VALUE_NONE,
+                'Returns a list of available settings'
+            )
+            ->addOption(
                 'parseprivate',
                 null,
                 InputOption::VALUE_NONE,
@@ -255,6 +274,11 @@ HELP
 
         $output->writeln('phpDocumentor ' . $this->getApplication()->getVersion());
         $output->writeln('');
+
+        if ($input->getOption('list-settings')) {
+            $this->listSettings($output);
+            return 0;
+        }
 
         $this->observeProgressToShowProgressBars($output);
 
@@ -325,5 +349,22 @@ HELP
         $durationText .= ($duration % 60) . ' seconds';
 
         return $durationText;
+    }
+
+    private function listSettings(OutputInterface $output) : void
+    {
+        $output->writeln('The following settings are supported using <info>--setting</info> or <info>-s</info>.');
+        $output->writeln('');
+        $output->writeln('<comment>Settings:</comment>');
+
+        foreach ($this->servicesWithCustomSettings as $servicesWithCustomSetting) {
+            foreach ($servicesWithCustomSetting->getDefaultSettings() as $setting => $default) {
+                $output->writeln(
+                    sprintf('  <info>%s</info> <comment>[default: %s]</comment>', $setting, var_export($default, true))
+                );
+            }
+        }
+
+        $output->writeln('');
     }
 }

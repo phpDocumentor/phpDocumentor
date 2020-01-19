@@ -50,6 +50,7 @@ final class CommandlineOptionsMiddleware
         $configuration = $this->overwriteCacheFolder($configuration);
         $configuration = $this->overwriteTitle($configuration);
         $configuration = $this->overwriteTemplates($configuration);
+        $configuration = $this->overwriteSettings($configuration);
 
         if (!isset($configuration['phpdocumentor']['versions'])) {
             $configuration['phpdocumentor']['versions'][] = $this->createDefaultVersionSettings();
@@ -320,5 +321,31 @@ final class CommandlineOptionsMiddleware
     {
         return ($this->options['filename'] || $this->options['directory'])
             && count($configuration['phpdocumentor']['versions']) > 1;
+    }
+
+    private function overwriteSettings(array $configuration) : array
+    {
+        if (!($configuration['phpdocumentor']['settings'] ?? null)) {
+            $configuration['phpdocumentor']['settings'] = [];
+        }
+
+        foreach (($this->options['setting'] ?? []) as $setting) {
+            [$key, $value] = explode('=', $setting);
+
+            if (!$key || !$value) {
+                continue;
+            }
+
+            if ($value === 'on' || $value === 'true') {
+                $value = true;
+            }
+            if ($value === 'off' || $value === 'false') {
+                $value = false;
+            }
+
+            $configuration['phpdocumentor']['settings'][$key] = $value;
+        }
+
+        return $configuration;
     }
 }

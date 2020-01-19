@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\ProjectDescriptor;
 
-use phpDocumentor\Descriptor\ProjectDescriptor;
-
 /**
  * Contains the Settings for the current Project.
  */
@@ -46,7 +44,7 @@ final class Settings
     /**
      * A flexible list of settings that can be used by Writers, templates and more as additional settings.
      *
-     * @var string[]
+     * @var (string|bool)[]
      */
     private $custom = [];
 
@@ -124,7 +122,7 @@ final class Settings
      * various locations through the accessor {@see ProjectDescriptor::getSettings()} or in the templates using
      * the `project.settings.other` variable.
      *
-     * @return string[]
+     * @return (string|bool)[]
      */
     public function getCustom() : array
     {
@@ -133,7 +131,7 @@ final class Settings
 
     public function setCustom(array $settings) : void
     {
-        $this->custom = $settings;
+        $this->setValueAndCheckIfModified('custom', $settings);
     }
 
     /**

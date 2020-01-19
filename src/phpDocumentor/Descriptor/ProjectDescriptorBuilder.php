@@ -20,6 +20,7 @@ use phpDocumentor\Descriptor\Filter\Filter;
 use phpDocumentor\Descriptor\Filter\Filterable;
 use phpDocumentor\Descriptor\ProjectDescriptor\WithCustomSettings;
 use phpDocumentor\Reflection\Php\Project;
+use function array_merge;
 use function get_class;
 
 /**
@@ -229,6 +230,11 @@ class ProjectDescriptorBuilder
     public function setMarkers(array $markers) : void
     {
         $this->project->getSettings()->setMarkers($markers);
+    }
+
+    public function setCustomSettings(array $customSettings) : void
+    {
+        $this->project->getSettings()->setCustom($customSettings);
     }
 
     public function setIncludeSource(bool $includeSources) : void
