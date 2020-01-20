@@ -20,13 +20,6 @@ use RuntimeException;
 
 class MethodReference extends Reference
 {
-    private $symfonyApiUrl;
-
-    public function __construct(string $symfonyApiUrl)
-    {
-        $this->symfonyApiUrl = $symfonyApiUrl;
-    }
-
     public function getName() : string
     {
         return 'method';
@@ -48,7 +41,7 @@ class MethodReference extends Reference
         return new ResolvedReference(
             $environment->getCurrentFileName(),
             $methodName . '()',
-            sprintf('%s/%s.html#method_%s', $this->symfonyApiUrl, str_replace('\\', '/', $className), $methodName),
+            sprintf('%s/%s.html#method_%s', '', str_replace('\\', '/', $className), $methodName),
             [],
             [
                 'title' => sprintf('%s::%s()', $className, $methodName),

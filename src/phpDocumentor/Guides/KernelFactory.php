@@ -16,24 +16,35 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides;
 
 use Doctrine\RST\Configuration as RSTParserConfiguration;
+use Doctrine\RST\Directives\Directive as Directive;
 use Doctrine\RST\Kernel;
-use phpDocumentor\Guides\Directive as SymfonyDirectives;
-use phpDocumentor\Guides\Reference as SymfonyReferences;
+use Doctrine\RST\References\Reference;
 use phpDocumentor\Guides\Twig\AssetsExtension;
 
 final class KernelFactory
 {
     /** @var string */
     private $globalTemplatesPath;
-    /**
-     * @var string
-     */
+
+    /** @var string */
     private $globalCachePath;
 
-    public function __construct(string $globalTemplatesPath, string $globalCachePath)
-    {
+    /** @var Directive[] */
+    private $directives;
+
+    /** @var Reference[] */
+    private $references;
+
+    public function __construct(
+        string $globalTemplatesPath,
+        string $globalCachePath,
+        array $directives = [],
+        array $references = []
+    ) {
         $this->globalTemplatesPath = $globalTemplatesPath;
         $this->globalCachePath = $globalCachePath;
+        $this->directives = $directives;
+        $this->references = $references;
     }
 
     public function createKernel(BuildContext $buildContext) : Kernel
@@ -47,7 +58,7 @@ final class KernelFactory
             $configuration->setUseCachedMetas(false);
         }
 
-        $configuration->addFormat(new HtmlFormat($configuration->getTemplateRenderer(),$configuration->getFormat()));
+        $configuration->addFormat(new HtmlFormat($configuration->getTemplateRenderer(), $configuration->getFormat()));
 
         if ($parseSubPath = $buildContext->getParseSubPath()) {
             $configuration->setBaseUrl($buildContext->getSymfonyDocUrl());
@@ -63,49 +74,9 @@ final class KernelFactory
 
         return new DocsKernel(
             $configuration,
-            self::getDirectives(),
-            self::getReferences($buildContext),
+            $this->directives,
+            $this->references,
             $buildContext
         );
-    }
-
-    private static function getDirectives() : array
-    {
-        return [
-            new SymfonyDirectives\AdmonitionDirective(),
-            new SymfonyDirectives\CautionDirective(),
-            new SymfonyDirectives\CodeBlockDirective(),
-            new SymfonyDirectives\ConfigurationBlockDirective(),
-            new SymfonyDirectives\DeprecatedDirective(),
-            new SymfonyDirectives\IndexDirective(),
-            new SymfonyDirectives\RoleDirective(),
-            new SymfonyDirectives\NoteDirective(),
-            new SymfonyDirectives\HintDirective(),
-            new SymfonyDirectives\SeeAlsoDirective(),
-            new SymfonyDirectives\SidebarDirective(),
-            new SymfonyDirectives\TipDirective(),
-            new SymfonyDirectives\ImportantDirective(),
-            new SymfonyDirectives\TopicDirective(),
-            new SymfonyDirectives\WarningDirective(),
-            new SymfonyDirectives\VersionAddedDirective(),
-            new SymfonyDirectives\BestPracticeDirective(),
-            new SymfonyDirectives\GlossaryDirective(),
-        ];
-    }
-
-    private static function getReferences(BuildContext $buildContext) : array
-    {
-        return [
-            new SymfonyReferences\ClassReference($buildContext->getSymfonyApiUrl()),
-            new SymfonyReferences\MethodReference($buildContext->getSymfonyApiUrl()),
-            new SymfonyReferences\NamespaceReference($buildContext->getSymfonyApiUrl()),
-            new SymfonyReferences\PhpFunctionReference($buildContext->getPhpDocUrl()),
-            new SymfonyReferences\PhpMethodReference($buildContext->getPhpDocUrl()),
-            new SymfonyReferences\PhpClassReference($buildContext->getPhpDocUrl()),
-            new SymfonyReferences\TermReference(),
-            new SymfonyReferences\LeaderReference(),
-            new SymfonyReferences\MergerReference(),
-            new SymfonyReferences\DeciderReference(),
-        ];
     }
 }

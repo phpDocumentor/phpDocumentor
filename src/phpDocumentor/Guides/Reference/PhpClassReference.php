@@ -19,13 +19,6 @@ use Doctrine\RST\References\ResolvedReference;
 
 class PhpClassReference extends Reference
 {
-    private $phpDocUrl;
-
-    public function __construct(string $phpDocUrl)
-    {
-        $this->phpDocUrl = $phpDocUrl;
-    }
-
     public function getName() : string
     {
         return 'phpclass';
@@ -36,7 +29,7 @@ class PhpClassReference extends Reference
         return new ResolvedReference(
             $environment->getCurrentFileName(),
             $data,
-            sprintf('%s/class.%s.php', $this->phpDocUrl, strtolower($data)),
+            sprintf('%s/class.%s.php', '', strtolower($data)),
             [],
             [
                 'title' => $data,

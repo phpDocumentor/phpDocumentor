@@ -19,13 +19,6 @@ use Doctrine\RST\References\ResolvedReference;
 
 class PhpMethodReference extends Reference
 {
-    private $phpDocUrl;
-
-    public function __construct(string $phpDocUrl)
-    {
-        $this->phpDocUrl = $phpDocUrl;
-    }
-
     public function getName() : string
     {
         return 'phpmethod';
@@ -39,7 +32,7 @@ class PhpMethodReference extends Reference
         return new ResolvedReference(
             $environment->getCurrentFileName(),
             $data . '()',
-            sprintf('%s/%s.%s.php', $this->phpDocUrl, strtolower($class), strtolower($method)),
+            sprintf('%s/%s.%s.php', '', strtolower($class), strtolower($method)),
             [],
             [
                 'title' => $class,
