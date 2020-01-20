@@ -56,8 +56,8 @@ final class PathNormalizingMiddleware
                 $configuration['phpdocumentor']['versions'][$versionNumber]['api'][$key]['source']['dsn']
                     = $api['source']['dsn']->resolve($configPath);
             }
-            foreach ($version['guide'] as $key => $guide) {
-                $configuration['phpdocumentor']['versions'][$versionNumber]['guide'][$key]['source']['dsn']
+            foreach ($version['guides'] as $key => $guide) {
+                $configuration['phpdocumentor']['versions'][$versionNumber]['guides'][$key]['source']['dsn']
                     = $guide['source']['dsn']->resolve($configPath);
             }
         }
@@ -79,9 +79,9 @@ final class PathNormalizingMiddleware
                         $this->pathToGlobPattern((string) $path);
                 }
             }
-            foreach ($version['guide'] as $key => $guide) {
+            foreach ($version['guides'] as $key => $guide) {
                 foreach ($guide['source']['paths'] as $subkey => $path) {
-                    $configuration['versions'][$versionNumber]['guide'][$key]['source']['paths'][$subkey] =
+                    $configuration['versions'][$versionNumber]['guides'][$key]['source']['paths'][$subkey] =
                         $this->pathToGlobPattern((string) $path);
                 }
             }

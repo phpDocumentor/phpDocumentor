@@ -1,10 +1,16 @@
-<?php declare(strict_types=1);
+<?php
 
-/*
- * This file is part of the Docs Builder package.
- * (c) Ryan Weaver <ryan@symfonycasts.com>
+declare(strict_types=1);
+
+/**
+ * This file is part of phpDocumentor.
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
+ *
+ * @link http://phpdoc.org
+ * @author Ryan Weaver <ryan@symfonycasts.com> on the original DocBuilder.
+ * @author Mike van Riel <me@mikevanriel.com> for adapting this to phpDocumentor.
  */
 
 namespace phpDocumentor\Guides;
@@ -15,30 +21,33 @@ use phpDocumentor\Guides\Directive as SymfonyDirectives;
 use phpDocumentor\Guides\Reference as SymfonyReferences;
 use phpDocumentor\Guides\Twig\AssetsExtension;
 
-/**
- * Class KernelFactory.
- */
 final class KernelFactory
 {
-    public static function createKernel(BuildContext $buildContext, ?UrlChecker $urlChecker = null): Kernel
+    /** @var string */
+    private $globalTemplatesPath;
+    /**
+     * @var string
+     */
+    private $globalCachePath;
+
+    public function __construct(string $globalTemplatesPath, string $globalCachePath)
+    {
+        $this->globalTemplatesPath = $globalTemplatesPath;
+        $this->globalCachePath = $globalCachePath;
+    }
+
+    public function createKernel(BuildContext $buildContext) : Kernel
     {
         $configuration = new RSTParserConfiguration();
-        $configuration->setCustomTemplateDirs([__DIR__.'/Templates']);
-        $configuration->setTheme($buildContext->getTheme());
-        $configuration->setCacheDir(sprintf('%s/var/cache', $buildContext->getCacheDir()));
+        $configuration->setCustomTemplateDirs([$this->globalTemplatesPath]);
+        $configuration->setCacheDir(sprintf('%s/guide-cache', $this->globalCachePath));
         $configuration->abortOnError(false);
 
         if ($buildContext->getDisableCache()) {
             $configuration->setUseCachedMetas(false);
         }
 
-        $configuration->addFormat(
-            new SymfonyHTMLFormat(
-                $configuration->getTemplateRenderer(),
-                $configuration->getFormat(),
-                $urlChecker
-            )
-        );
+        $configuration->addFormat(new HtmlFormat($configuration->getTemplateRenderer(),$configuration->getFormat()));
 
         if ($parseSubPath = $buildContext->getParseSubPath()) {
             $configuration->setBaseUrl($buildContext->getSymfonyDocUrl());
@@ -50,7 +59,7 @@ final class KernelFactory
         }
 
         $twig = $configuration->getTemplateEngine();
-        $twig->addExtension(new AssetsExtension($buildContext->getOutputDir()));
+        $twig->addExtension(new AssetsExtension());
 
         return new DocsKernel(
             $configuration,
@@ -60,7 +69,7 @@ final class KernelFactory
         );
     }
 
-    private static function getDirectives(): array
+    private static function getDirectives() : array
     {
         return [
             new SymfonyDirectives\AdmonitionDirective(),
@@ -84,7 +93,7 @@ final class KernelFactory
         ];
     }
 
-    private static function getReferences(BuildContext $buildContext): array
+    private static function getReferences(BuildContext $buildContext) : array
     {
         return [
             new SymfonyReferences\ClassReference($buildContext->getSymfonyApiUrl()),

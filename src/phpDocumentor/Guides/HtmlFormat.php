@@ -2,11 +2,15 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Docs Builder package.
- * (c) Ryan Weaver <ryan@symfonycasts.com>
+/**
+ * This file is part of phpDocumentor.
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
+ *
+ * @link http://phpdoc.org
+ * @author Ryan Weaver <ryan@symfonycasts.com> on the original DocBuilder.
+ * @author Mike van Riel <me@mikevanriel.com> for adapting this to phpDocumentor.
  */
 
 namespace phpDocumentor\Guides;
@@ -17,31 +21,24 @@ use Doctrine\RST\Nodes\SpanNode;
 use Doctrine\RST\Renderers\CallableNodeRendererFactory;
 use Doctrine\RST\Renderers\NodeRendererFactory;
 use Doctrine\RST\Templates\TemplateRenderer;
-use phpDocumentor\Guides\CI\UrlChecker;
 
-/**
- * Class SymfonyHTMLFormat.
- */
-final class SymfonyHTMLFormat implements Format
+final class HtmlFormat implements Format
 {
     protected $templateRenderer;
     private $htmlFormat;
-    /** @var UrlChecker|null */
-    private $urlChecker;
 
-    public function __construct(TemplateRenderer $templateRenderer, Format $HTMLFormat, ?UrlChecker $urlChecker = null)
+    public function __construct(TemplateRenderer $templateRenderer, Format $format)
     {
         $this->templateRenderer = $templateRenderer;
-        $this->htmlFormat = $HTMLFormat;
-        $this->urlChecker = $urlChecker;
+        $this->htmlFormat = $format;
     }
 
-    public function getFileExtension(): string
+    public function getFileExtension() : string
     {
         return Format::HTML;
     }
 
-    public function getDirectives(): array
+    public function getDirectives() : array
     {
         return $this->htmlFormat->getDirectives();
     }
@@ -49,7 +46,7 @@ final class SymfonyHTMLFormat implements Format
     /**
      * @return NodeRendererFactory[]
      */
-    public function getNodeRendererFactories(): array
+    public function getNodeRendererFactories() : array
     {
         $nodeRendererFactories = $this->htmlFormat->getNodeRendererFactories();
 
@@ -67,8 +64,7 @@ final class SymfonyHTMLFormat implements Format
                 return new Renderers\SpanNodeRenderer(
                     $node->getEnvironment(),
                     $node,
-                    $this->templateRenderer,
-                    $this->urlChecker
+                    $this->templateRenderer
                 );
             }
         );

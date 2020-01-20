@@ -2,21 +2,28 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Docs Builder package.
- * (c) Ryan Weaver <ryan@symfonycasts.com>
+/**
+ * This file is part of phpDocumentor.
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
+ *
+ * @link http://phpdoc.org
+ * @author Ryan Weaver <ryan@symfonycasts.com> on the original DocBuilder.
+ * @author Mike van Riel <me@mikevanriel.com> for adapting this to phpDocumentor.
  */
 
 namespace phpDocumentor\Guides\Generator;
 
 use Doctrine\RST\Meta\MetaEntry;
 use Doctrine\RST\Meta\Metas;
+use InvalidArgumentException;
+use LogicException;
+use phpDocumentor\Guides\BuildContext;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
-use phpDocumentor\Guides\BuildContext;
+use function dirname;
 
 class HtmlForPdfGenerator
 {
@@ -33,7 +40,7 @@ class HtmlForPdfGenerator
     public function generateHtmlForPdf()
     {
         $finder = new Finder();
-        $finder->in($this->buildContext->getOutputDir())
+        $finder->in($this->buildContext->getOutputFilesystem())
             ->depth(0)
             ->notName([$this->buildContext->getParseSubPath(), '_images']);
 
@@ -42,35 +49,39 @@ class HtmlForPdfGenerator
             $fs->remove($file->getRealPath());
         }
 
-        $basePath = sprintf('%s/%s', $this->buildContext->getOutputDir(), $this->buildContext->getParseSubPath());
+        $basePath = sprintf(
+            '%s/%s',
+            $this->buildContext->getOutputFilesystem(),
+            $this->buildContext->getParseSubPath()
+        );
         $indexFile = sprintf('%s/%s', $basePath, 'index.html');
         if (!$fs->exists($indexFile)) {
-            throw new \InvalidArgumentException(sprintf('File "%s" does not exist', $indexFile));
+            throw new InvalidArgumentException(sprintf('File "%s" does not exist', $indexFile));
         }
 
         // extracting all files from index's TOC, in the right order
-        $parserFilename = $this->getParserFilename($indexFile, $this->buildContext->getOutputDir());
+        $parserFilename = $this->getParserFilename($indexFile, $this->buildContext->getOutputFilesystem());
         $meta = $this->getMetaEntry($parserFilename);
         $files = current($meta->getTocs());
         array_unshift($files, sprintf('%s/index', $this->buildContext->getParseSubPath()));
 
         // building one big html file with all contents
         $content = '';
-        $htmlDir = $this->buildContext->getOutputDir();
+        $htmlDir = $this->buildContext->getOutputFilesystem();
         $relativeImagesPath = str_repeat('../', substr_count($this->buildContext->getParseSubPath(), '/'));
         foreach ($files as $file) {
             $meta = $this->getMetaEntry($file);
 
             $filename = sprintf('%s/%s.html', $htmlDir, $file);
             if (!$fs->exists($filename)) {
-                throw new \LogicException(sprintf('File "%s" does not exist', $filename));
+                throw new LogicException(sprintf('File "%s" does not exist', $filename));
             }
 
             // extract <body> content
             $crawler = new Crawler(file_get_contents($filename));
             $fileContent = $crawler->filter('body')->html();
 
-            $dir = \dirname($meta->getFile());
+            $dir = dirname($meta->getFile());
             $fileContent = $this->fixInternalUrls($fileContent, $dir);
 
             $fileContent = $this->fixInternalImages($fileContent, $relativeImagesPath);
@@ -95,7 +106,7 @@ class HtmlForPdfGenerator
         $fs->remove($basePath);
     }
 
-    private function fixInternalUrls(string $fileContent, string $dir): string
+    private function fixInternalUrls(string $fileContent, string $dir) : string
     {
         return preg_replace_callback(
             '/href="([^"]+?)"/',
@@ -105,7 +116,7 @@ class HtmlForPdfGenerator
                 }
 
                 $path = [];
-                foreach (explode('/', $dir.'/'.str_replace(['.html', '#'], ['', '-'], $matches[1])) as $part) {
+                foreach (explode('/', $dir . '/' . str_replace(['.html', '#'], ['', '-'], $matches[1])) as $part) {
                     if ('..' == $part) {
                         array_pop($path);
                     } else {
@@ -121,12 +132,12 @@ class HtmlForPdfGenerator
         );
     }
 
-    private function fixInternalImages(string $fileContent, string $relativeImagesPath): string
+    private function fixInternalImages(string $fileContent, string $relativeImagesPath) : string
     {
         return $fileContent = preg_replace('{src="(?:\.\./)+([^"]+?)"}', "src=\"$relativeImagesPath$1\"", $fileContent);
     }
 
-    private function fixUniqueIdsAndAnchors(string $fileContent, string $uid): string
+    private function fixUniqueIdsAndAnchors(string $fileContent, string $uid) : string
     {
         return preg_replace_callback(
             '/id="([^"]+)"/',
@@ -158,19 +169,19 @@ class HtmlForPdfGenerator
         return $content;
     }
 
-    private function getMetaEntry(string $parserFilename): MetaEntry
+    private function getMetaEntry(string $parserFilename) : MetaEntry
     {
         $metaEntry = $this->metas->get($parserFilename);
 
         if (null === $metaEntry) {
-            throw new \LogicException(sprintf('Could not find MetaEntry for file "%s"', $parserFilename));
+            throw new LogicException(sprintf('Could not find MetaEntry for file "%s"', $parserFilename));
         }
 
         return $metaEntry;
     }
 
-    private function getParserFilename(string $filePath, string $inputDir): string
+    private function getParserFilename(string $filePath, string $inputDir) : string
     {
-        return $parserFilename = str_replace([$inputDir.'/', '.html'], ['', ''], $filePath);
+        return $parserFilename = str_replace([$inputDir . '/', '.html'], ['', ''], $filePath);
     }
 }

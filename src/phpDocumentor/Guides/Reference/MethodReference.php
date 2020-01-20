@@ -1,10 +1,14 @@
 <?php
 
-/*
- * This file is part of the Docs Builder package.
- * (c) Ryan Weaver <ryan@symfonycasts.com>
+/**
+ * This file is part of phpDocumentor.
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
+ *
+ * @link http://phpdoc.org
+ * @author Ryan Weaver <ryan@symfonycasts.com> on the original DocBuilder.
+ * @author Mike van Riel <me@mikevanriel.com> for adapting this to phpDocumentor.
  */
 
 namespace phpDocumentor\Guides\Reference;
@@ -12,6 +16,7 @@ namespace phpDocumentor\Guides\Reference;
 use Doctrine\RST\Environment;
 use Doctrine\RST\References\Reference;
 use Doctrine\RST\References\ResolvedReference;
+use RuntimeException;
 
 class MethodReference extends Reference
 {
@@ -22,25 +27,27 @@ class MethodReference extends Reference
         $this->symfonyApiUrl = $symfonyApiUrl;
     }
 
-    public function getName(): string
+    public function getName() : string
     {
         return 'method';
     }
 
-    public function resolve(Environment $environment, string $data): ResolvedReference
+    public function resolve(Environment $environment, string $data) : ResolvedReference
     {
         $className = explode('::', $data)[0];
         $className = str_replace('\\\\', '\\', $className);
 
         if (false === strpos($data, '::')) {
-            throw new \RuntimeException(sprintf('Malformed method reference  "%s" in file "%s"', $data, $environment->getCurrentFileName()));
+            throw new RuntimeException(
+                sprintf('Malformed method reference  "%s" in file "%s"', $data, $environment->getCurrentFileName())
+            );
         }
 
         $methodName = explode('::', $data)[1];
 
         return new ResolvedReference(
             $environment->getCurrentFileName(),
-            $methodName.'()',
+            $methodName . '()',
             sprintf('%s/%s.html#method_%s', $this->symfonyApiUrl, str_replace('\\', '/', $className), $methodName),
             [],
             [

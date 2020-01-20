@@ -92,6 +92,9 @@
     "psr/log": {
         "version": "1.0.2"
     },
+    "scrivo/highlight.php": {
+        "version": "v9.17.1.0"
+    },
     "symfony/cache": {
         "version": "v4.0.3"
     },

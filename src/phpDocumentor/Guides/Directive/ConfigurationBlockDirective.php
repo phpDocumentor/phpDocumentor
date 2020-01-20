@@ -1,10 +1,14 @@
 <?php
 
-/*
- * This file is part of the Docs Builder package.
- * (c) Ryan Weaver <ryan@symfonycasts.com>
+/**
+ * This file is part of phpDocumentor.
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
+ *
+ * @link http://phpdoc.org
+ * @author Ryan Weaver <ryan@symfonycasts.com> on the original DocBuilder.
+ * @author Mike van Riel <me@mikevanriel.com> for adapting this to phpDocumentor.
  */
 
 namespace phpDocumentor\Guides\Directive;
@@ -17,12 +21,12 @@ use function strtoupper;
 
 class ConfigurationBlockDirective extends SubDirective
 {
-    public function getName(): string
+    public function getName() : string
     {
         return 'configuration-block';
     }
 
-    public function processSub(Parser $parser, ?Node $document, string $variable, string $data, array $options): ?Node
+    public function processSub(Parser $parser, ?Node $document, string $variable, string $data, array $options) : ?Node
     {
         $blocks = [];
         foreach ($document->getNodes() as $node) {
@@ -51,7 +55,7 @@ class ConfigurationBlockDirective extends SubDirective
     /**
      * A hack to print exactly what we want in the tab of a configuration block.
      */
-    private function formatLanguageTab(string $language): string
+    private function formatLanguageTab(string $language) : string
     {
         switch ($language) {
             case 'php-annotations':

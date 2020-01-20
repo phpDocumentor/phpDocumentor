@@ -1,40 +1,40 @@
 <?php declare(strict_types=1);
 
-/*
- * This file is part of the Docs Builder package.
- * (c) Ryan Weaver <ryan@symfonycasts.com>
+/**
+ * This file is part of phpDocumentor.
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
+ *
+ * @link http://phpdoc.org
+ * @author Ryan Weaver <ryan@symfonycasts.com> on the original DocBuilder.
+ * @author Mike van Riel <me@mikevanriel.com> for adapting this to phpDocumentor.
  */
 
 namespace phpDocumentor\Guides;
 
 use Doctrine\RST\Configuration;
 use Exception;
+use League\Flysystem\FilesystemInterface;
 use LogicException;
 
 class BuildContext
 {
-    private $symfonyVersion;
     private $symfonyApiUrl;
     private $phpDocUrl;
     private $symfonyDocUrl;
 
     private $runtimeInitialized = false;
     private $sourceDir;
-    private $outputDir;
+    private $outputFilesystem;
     private $parseSubPath;
     private $disableCache = false;
-    private $theme;
-    private $cacheDirectory;
 
     public function __construct(
-        string $symfonyVersion,
         string $symfonyApiUrl,
         string $phpDocUrl,
         string $symfonyDocUrl
     ) {
-        $this->symfonyVersion = $symfonyVersion;
         $this->symfonyApiUrl = $symfonyApiUrl;
         $this->phpDocUrl = $phpDocUrl;
         $this->symfonyDocUrl = $symfonyDocUrl;
@@ -42,30 +42,19 @@ class BuildContext
 
     public function initializeRuntimeConfig(
         string $sourceDir,
-        string $outputDir,
+        FilesystemInterface $output,
         ?string $parseSubPath = null,
-        bool $disableCache = false,
-        string $theme = Configuration::THEME_DEFAULT
+        bool $disableCache = false
     ) {
         if (!file_exists($sourceDir)) {
             throw new Exception(sprintf('Source directory "%s" does not exist', $sourceDir));
         }
 
-        if (!file_exists($outputDir)) {
-            throw new Exception(sprintf('Output directory "%s" does not exist', $outputDir));
-        }
-
         $this->sourceDir = realpath($sourceDir);
-        $this->outputDir = realpath($outputDir);
+        $this->outputFilesystem = $output;
         $this->parseSubPath = $parseSubPath;
         $this->disableCache = $disableCache;
-        $this->theme = $theme;
         $this->runtimeInitialized = true;
-    }
-
-    public function getSymfonyVersion() : string
-    {
-        return $this->symfonyVersion;
     }
 
     public function getSymfonyApiUrl() : string
@@ -90,11 +79,11 @@ class BuildContext
         return $this->sourceDir;
     }
 
-    public function getOutputDir() : string
+    public function getOutputFilesystem() : FilesystemInterface
     {
         $this->checkThatRuntimeConfigIsInitialized();
 
-        return $this->outputDir;
+        return $this->outputFilesystem;
     }
 
     public function getParseSubPath() : ?string
@@ -109,23 +98,6 @@ class BuildContext
         $this->checkThatRuntimeConfigIsInitialized();
 
         return $this->disableCache;
-    }
-
-    public function getTheme() : string
-    {
-        $this->checkThatRuntimeConfigIsInitialized();
-
-        return $this->theme;
-    }
-
-    public function getCacheDir() : string
-    {
-        return $this->cacheDirectory ?: $this->getOutputDir() . '/.cache';
-    }
-
-    public function setCacheDirectory(string $cacheDirectory)
-    {
-        $this->cacheDirectory = $cacheDirectory;
     }
 
     private function checkThatRuntimeConfigIsInitialized()

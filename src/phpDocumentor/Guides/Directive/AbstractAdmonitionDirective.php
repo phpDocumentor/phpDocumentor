@@ -1,10 +1,14 @@
 <?php
 
-/*
- * This file is part of the Docs Builder package.
- * (c) Ryan Weaver <ryan@symfonycasts.com>
+/**
+ * This file is part of phpDocumentor.
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
+ *
+ * @link http://phpdoc.org
+ * @author Ryan Weaver <ryan@symfonycasts.com> on the original DocBuilder.
+ * @author Mike van Riel <me@mikevanriel.com> for adapting this to phpDocumentor.
  */
 
 namespace phpDocumentor\Guides\Directive;
@@ -27,8 +31,13 @@ abstract class AbstractAdmonitionDirective extends SubDirective
         $this->text = $text;
     }
 
-    final public function processSub(Parser $parser, ?Node $document, string $variable, string $data, array $options): ?Node
-    {
+    final public function processSub(
+        Parser $parser,
+        ?Node $document,
+        string $variable,
+        string $data,
+        array $options
+    ) : ?Node {
         $wrapperDiv = $parser->renderTemplate(
             'directives/admonition.html.twig',
             [
@@ -41,7 +50,7 @@ abstract class AbstractAdmonitionDirective extends SubDirective
         return $parser->getNodeFactory()->createWrapperNode($document, $wrapperDiv, '</div></div>');
     }
 
-    final public function getName(): string
+    final public function getName() : string
     {
         return $this->name;
     }

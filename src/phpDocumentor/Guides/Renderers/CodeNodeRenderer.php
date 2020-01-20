@@ -2,11 +2,15 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Docs Builder package.
- * (c) Ryan Weaver <ryan@symfonycasts.com>
+/**
+ * This file is part of phpDocumentor.
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
+ *
+ * @link http://phpdoc.org
+ * @author Ryan Weaver <ryan@symfonycasts.com> on the original DocBuilder.
+ * @author Mike van Riel <me@mikevanriel.com> for adapting this to phpDocumentor.
  */
 
 namespace phpDocumentor\Guides\Renderers;
@@ -15,6 +19,8 @@ use Doctrine\RST\Nodes\CodeNode;
 use Doctrine\RST\Renderers\NodeRenderer;
 use Doctrine\RST\Templates\TemplateRenderer;
 use Highlight\Highlighter;
+use function count;
+use function in_array;
 
 class CodeNodeRenderer implements NodeRenderer
 {
@@ -62,7 +68,7 @@ class CodeNodeRenderer implements NodeRenderer
         $code = implode("\n", $lines);
 
         $lineNumbers = '';
-        for ($i = 1; $i <= \count($lines); ++$i) {
+        for ($i = 1; $i <= count($lines); ++$i) {
             $lineNumbers .= str_pad((string) $i, 2, ' ', STR_PAD_LEFT) . "\n";
         }
 
@@ -94,7 +100,7 @@ class CodeNodeRenderer implements NodeRenderer
             ['text']
         );
 
-        return \in_array($lang, $supportedLanguages);
+        return in_array($lang, $supportedLanguages);
     }
 
     private function getLines(string $code) : array

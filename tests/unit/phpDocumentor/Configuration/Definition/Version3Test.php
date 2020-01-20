@@ -53,11 +53,15 @@ final class Version3Test extends TestCase
         $expected = $this->defaultConfigurationOutput();
         $expected['paths']['output'] = Dsn::createFromString($expected['paths']['output']);
         $expected['paths']['cache'] = new Path($expected['paths']['cache']);
+        $expected['versions']['1.0.0']['api'] = $expected['versions']['1.0.0']['apis'];
+        unset($expected['versions']['1.0.0']['apis']);
         $expected['versions']['1.0.0']['api'][0]['extensions']
             = $expected['versions']['1.0.0']['api'][0]['extensions']['extensions'];
         $expected['versions']['1.0.0']['api'][0]['markers']
             = $expected['versions']['1.0.0']['api'][0]['markers']['markers'];
-
+        $expected['versions']['1.0.0']['api'][0]['visibility']
+            = $expected['versions']['1.0.0']['api'][0]['visibilities'];
+        unset($expected['versions']['1.0.0']['api'][0]['visibilities']);
         $configuration = $definition->normalize($configuration);
 
         $this->assertEquals($expected, $configuration);
@@ -98,7 +102,7 @@ final class Version3Test extends TestCase
                 [
                     'versions' => [
                         '1.0.0' => [
-                            'api' => [
+                            'apis' => [
                                 [],
                             ],
                         ],
@@ -122,10 +126,10 @@ final class Version3Test extends TestCase
             'versions' => [
                 '1.0.0' => [
                     'folder' => '',
-                    'api' => [
+                    'apis' => [
                         [
                             'format' => 'php',
-                            'visibility' => ['public', 'protected', 'private'],
+                            'visibilities' => ['public', 'protected', 'private'],
                             'default-package-name' => 'Application',
                             'encoding' => 'utf-8',
                             'source' => [
@@ -146,7 +150,7 @@ final class Version3Test extends TestCase
                             'ignore-tags' => [],
                         ],
                     ],
-                    'guide' => [],
+                    'guides' => [],
                 ],
             ],
             'templates' => [
@@ -172,7 +176,7 @@ final class Version3Test extends TestCase
         // for the version we do want to check whether the defaults are kept; so instead of using array_replace,
         // we first extract the default key from our described default and change it to resemble our expected end-state
         $version = $configuration['versions']['1.0.0'];
-        $version['api'][0]['source'] = [
+        $version['apis'][0]['source'] = [
             'dsn' => $dsn,
             'paths' => $paths,
         ];

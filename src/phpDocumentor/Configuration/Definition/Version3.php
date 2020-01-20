@@ -57,6 +57,8 @@ final class Version3 implements ConfigurationInterface, Normalizable
                     ->useAttributeAsKey('number')
                     ->addDefaultChildrenIfNoneSet('1.0.0')
                     ->prototype('array')
+                        ->fixXmlConfig('api', 'apis')
+                        ->fixXmlConfig('guide')
                         ->children()
                             ->scalarNode('folder')->defaultValue('')->end()
                             ->append($this->apiSection())
@@ -93,10 +95,18 @@ final class Version3 implements ConfigurationInterface, Normalizable
 
     public function normalize(array $configuration) : array
     {
+        $configuration['configVersion'] = (string) $configuration['configVersion'];
         $configuration['paths']['output'] = Dsn::createFromString($configuration['paths']['output']);
         $configuration['paths']['cache'] = new Path($configuration['paths']['cache']);
+
         foreach ($configuration['versions'] as $versionNumber => $version) {
-            foreach ($version['api'] as $key => $api) {
+            // for array normalization to work, I need to use fixXmlConfig; but that doesn't seem to work
+            // when you want to keep the key the same (api => api) but requires the plural to be differently named.
+            // the rest of the app doesn't use a plural; so I undo that pluralisation here.
+            $configuration['versions'][$versionNumber]['api'] = $configuration['versions'][$versionNumber]['apis'];
+            unset($configuration['versions'][$versionNumber]['apis']);
+
+            foreach ($version['apis'] as $key => $api) {
                 $configuration['versions'][$versionNumber]['api'][$key]['source']['dsn']
                     = Dsn::createFromString($api['source']['dsn']);
                 foreach ($api['source']['paths'] as $subkey => $path) {
@@ -107,12 +117,19 @@ final class Version3 implements ConfigurationInterface, Normalizable
                     $configuration['versions'][$versionNumber]['api'][$key]['extensions']['extensions'];
                 $configuration['versions'][$versionNumber]['api'][$key]['markers'] =
                     $configuration['versions'][$versionNumber]['api'][$key]['markers']['markers'];
+                // for array normalization to work, I need to use fixXmlConfig; but that doesn't seem to work
+                // when you want to keep the key the same (api => api) but requires the plural to be differently named.
+                // the rest of the app doesn't use a plural; so I undo that pluralisation here.
+                $configuration['versions'][$versionNumber]['api'][$key]['visibility'] =
+                    $configuration['versions'][$versionNumber]['api'][$key]['visibilities'];
+                unset($configuration['versions'][$versionNumber]['api'][$key]['visibilities']);
             }
-            foreach ($version['guide'] as $key => $guide) {
-                $configuration['versions'][$versionNumber]['guide'][$key]['source']['dsn']
+
+            foreach ($version['guides'] as $key => $guide) {
+                $configuration['versions'][$versionNumber]['guides'][$key]['source']['dsn']
                     = Dsn::createFromString($guide['source']['dsn']);
                 foreach ($guide['source']['paths'] as $subkey => $path) {
-                    $configuration['versions'][$versionNumber]['guide'][$key]['source']['paths'][$subkey] =
+                    $configuration['versions'][$versionNumber]['guides'][$key]['source']['paths'][$subkey] =
                         new Path($path);
                 }
             }
@@ -123,20 +140,21 @@ final class Version3 implements ConfigurationInterface, Normalizable
 
     private function apiSection() : ArrayNodeDefinition
     {
-        $treebuilder = new TreeBuilder('api');
+        $treebuilder = new TreeBuilder('apis');
 
         return $treebuilder->getRootNode()
             ->addDefaultChildrenIfNoneSet(1)
             ->prototype('array')
                 ->addDefaultsIfNotSet()
                 ->normalizeKeys(false)
+                ->fixXmlConfig('visibility', 'visibilities')
                 ->children()
                     ->enumNode('format')
                         ->info('In which language is your code written?')
                         ->values(['php'])
                         ->defaultValue('php')
                     ->end()
-                    ->arrayNode('visibility')
+                    ->arrayNode('visibilities')
                         ->prototype('enum')
                             ->info('What is the deepest level of visibility to include in the documentation?')
                             ->values([
@@ -206,7 +224,7 @@ final class Version3 implements ConfigurationInterface, Normalizable
 
     private function guideSection() : ArrayNodeDefinition
     {
-        $treebuilder = new TreeBuilder('guide');
+        $treebuilder = new TreeBuilder('guides');
 
         return $treebuilder->getRootNode()
             ->prototype('array')

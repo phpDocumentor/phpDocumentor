@@ -14,28 +14,48 @@ declare(strict_types=1);
 namespace phpDocumentor\Pipeline\Stage;
 
 use Doctrine\RST\Builder;
-use Doctrine\RST\Meta\Metas;
+use League\Flysystem\Adapter\Local;
+use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemInterface;
 use phpDocumentor\Dsn;
 use phpDocumentor\Guides\BuildContext;
 use phpDocumentor\Guides\Generator\HtmlForPdfGenerator;
 use phpDocumentor\Guides\Generator\JsonGenerator;
 use phpDocumentor\Guides\KernelFactory;
 use phpDocumentor\Parser\FileCollector;
+use phpDocumentor\Parser\FlySystemFactory;
+use phpDocumentor\Parser\FlySystemMirror;
+use phpDocumentor\Path;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * @experimental Do not use; this stage is meant as a sandbox / playground to experiment with generating guides.
  */
 final class RenderGuide
 {
+    /** @var LoggerInterface */
     private $logger;
+
+    /** @var FileCollector */
     private $fileCollector;
 
-    public function __construct(LoggerInterface $logger, FileCollector $fileCollector)
-    {
+    /** @var FlySystemFactory */
+    private $flySystemFactory;
+    /**
+     * @var KernelFactory
+     */
+    private $kernelFactory;
+
+    public function __construct(
+        LoggerInterface $logger,
+        FileCollector $fileCollector,
+        FlySystemFactory $flySystemFactory,
+        KernelFactory $kernelFactory
+    ) {
         $this->logger = $logger;
         $this->fileCollector = $fileCollector;
+        $this->flySystemFactory = $flySystemFactory;
+        $this->kernelFactory = $kernelFactory;
     }
 
     public function __invoke(Payload $payload)
@@ -44,71 +64,54 @@ final class RenderGuide
             return $payload;
         }
 
-        var_dump('test');
         $configuration = $payload->getConfig();
-        $output = $this->getTargetLocationBasedOnDsn($configuration['phpdocumentor']['paths']['output']);
 
-        if (!is_dir($output)) {
-            mkdir($output, 0777, true);
+        /** @var Dsn $dsn */
+        $dsn = $configuration['phpdocumentor']['paths']['output'];
+        $dsn = $dsn->withPath(new Path(((string) $dsn->getPath()) . '/docs'));
+        $output = $this->flySystemFactory->create($dsn);
+
+        foreach ($configuration['phpdocumentor']['versions'] as $version) {
+            foreach ($version['guides'] ?? [] as $guide) {
+                // TODO: Yes, hardcoded for the POC; because we need to convert the builder to use flysystem or
+                //       the filecollector
+                $this->renderGuide(__DIR__ . '/../../../../docs', $output);
+            }
         }
-        $generateJson = false;
+
+        // Temporary die on purpose; prevents API docs from processing for now. The feature flag above will ensure
+        // normal operation
+        die();
+        return $payload;
+    }
+
+    private function renderGuide(string $source, FilesystemInterface $output) : array
+    {
         $buildContext = new BuildContext(
-            '1.0.0',
             'https://api.symfony.com',
             'https://docs.symfony.com',
             'https://docs.symfony.com'
         );
-        $buildContext->initializeRuntimeConfig(
-        // TODO: Yes, hardcoded for the POC; because we need to convert the builder to use flysystem or
-        //       the filecollector
-            __DIR__ . '/../../../../docs',
-            $output
-        );
+        $buildContext->initializeRuntimeConfig($source, $output);
 
-        $builder = new Builder(
-            KernelFactory::createKernel($buildContext, $this->urlChecker ?? null)
-        );
+        $builder = new Builder($this->kernelFactory->createKernel($buildContext));
 
-        $builder->build(
-            $buildContext->getSourceDir(),
-            $buildContext->getOutputDir()
-        );
+        $temporaryFolder = sys_get_temp_dir() . '/phpdocumentor/guide/output';
+        $builder->build($buildContext->getSourceDir(), $temporaryFolder);
 
-        // contains the errors accumulated during the build
-        //$buildErrors = $builder->getErrorManager()->getErrors();
+        $sourceFilesystem = new Filesystem(new Local($temporaryFolder));
+        FlySystemMirror::mirror($sourceFilesystem, $buildContext->getOutputFilesystem());
 
         $metas = $builder->getMetas();
         if ($buildContext->getParseSubPath()) {
-            $this->renderDocForPDF($metas, $buildContext);
-        } elseif ($generateJson) {
-            $this->generateJson($metas, $buildContext);
+            $htmlForPdfGenerator = new HtmlForPdfGenerator($metas, $buildContext);
+            $htmlForPdfGenerator->generateHtmlForPdf();
+        } elseif (false) {
+            $jsonGenerator = new JsonGenerator($metas, $buildContext);
+            $jsonGenerator->setOutput($this->io);
+            $jsonGenerator->generateJson();
         }
 
-        return $payload;
-    }
-
-    private function getTargetLocationBasedOnDsn(Dsn $dsn) : string
-    {
-        $target = $dsn->getPath();
-        $fileSystem = new Filesystem();
-        if (!$fileSystem->isAbsolutePath((string) $target)) {
-            $target = getcwd() . DIRECTORY_SEPARATOR . $target;
-        }
-
-        // TODO: /docs is temporary; we should be able to reconfigure the subfolder for the guide
-        return (string) $target . '/docs';
-    }
-
-    private function generateJson(Metas $metas, BuildContext $buildContext)
-    {
-        $jsonGenerator = new JsonGenerator($metas, $buildContext);
-        $jsonGenerator->setOutput($this->io);
-        $jsonGenerator->generateJson();
-    }
-
-    private function renderDocForPDF(Metas $metas, BuildContext $buildContext)
-    {
-        $htmlForPdfGenerator = new HtmlForPdfGenerator($metas, $buildContext);
-        $htmlForPdfGenerator->generateHtmlForPdf();
+        return $builder->getErrorManager()->getErrors();
     }
 }

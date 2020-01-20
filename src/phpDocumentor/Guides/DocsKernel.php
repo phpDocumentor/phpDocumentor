@@ -1,10 +1,14 @@
 <?php
 
-/*
- * This file is part of the Docs Builder package.
- * (c) Ryan Weaver <ryan@symfonycasts.com>
+/**
+ * This file is part of phpDocumentor.
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
+ *
+ * @link http://phpdoc.org
+ * @author Ryan Weaver <ryan@symfonycasts.com> on the original DocBuilder.
+ * @author Mike van Riel <me@mikevanriel.com> for adapting this to phpDocumentor.
  */
 
 namespace phpDocumentor\Guides;
@@ -23,14 +27,18 @@ class DocsKernel extends Kernel
 {
     private $buildContext;
 
-    public function __construct(?Configuration $configuration = null, $directives = [], $references = [], BuildContext $buildContext)
-    {
+    public function __construct(
+        ?Configuration $configuration = null,
+        $directives = [],
+        $references = [],
+        BuildContext $buildContext
+    ) {
         parent::__construct($configuration, $directives, $references);
 
         $this->buildContext = $buildContext;
     }
 
-    public function initBuilder(Builder $builder): void
+    public function initBuilder(Builder $builder) : void
     {
         $this->initializeListeners(
             $builder->getConfiguration()->getEventManager(),
@@ -41,15 +49,15 @@ class DocsKernel extends Kernel
     private function initializeListeners(EventManager $eventManager, ErrorManager $errorManager)
     {
         $eventManager->addEventListener(
-           PreNodeRenderEvent::PRE_NODE_RENDER,
-           new CopyImagesListener($this->buildContext, $errorManager)
-       );
+            PreNodeRenderEvent::PRE_NODE_RENDER,
+            new CopyImagesListener($this->buildContext, $errorManager)
+        );
 
         if (!$this->buildContext->getParseSubPath()) {
             $eventManager->addEventListener(
-               [PostBuildRenderEvent::POST_BUILD_RENDER],
-               new AssetsCopyListener($this->buildContext->getOutputDir())
-           );
+                [PostBuildRenderEvent::POST_BUILD_RENDER],
+                new AssetsCopyListener($this->buildContext->getOutputFilesystem())
+            );
         }
     }
 }

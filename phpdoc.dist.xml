@@ -1,20 +1,37 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<phpdocumentor>
-    <parser>
-        <default-package-name>phpDocumentor</default-package-name>
-        <target>build/api-cache</target>
-    </parser>
-    <transformer>
-        <target>build/api</target>
-    </transformer>
-    <files>
-        <directory>.</directory>
-        <ignore>tests/**/*</ignore>
-        <ignore>build/**/*</ignore>
-        <ignore>var/**/*</ignore>
-        <ignore>vendor/**/*</ignore>
-    </files>
-    <transformations>
-        <template name="clean" />
-    </transformations>
+<phpdocumentor
+        configVersion="3"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.phpdoc.org"
+        xsi:noNamespaceSchemaLocation="data/xsd/phpdoc.xsd"
+>
+    <paths>
+        <output>build/api</output>
+        <cache>build/api-cache</cache>
+    </paths>
+    <version number="3.0.0">
+        <folder>latest</folder>
+        <api>
+            <source dsn=".">
+                <path>src</path>
+            </source>
+            <ignore hidden="true" symlinks="true">
+                <path>tests/**/*</path>
+                <path>build/**/*</path>
+                <path>var/**/*</path>
+                <path>vendor/**/*</path>
+            </ignore>
+            <extensions>
+                <extension>php</extension>
+            </extensions>
+            <visibility>private</visibility>
+            <default-package-name>phpDocumentor</default-package-name>
+        </api>
+        <guide>
+            <source dsn=".">
+                <path>docs</path>
+            </source>
+        </guide>
+    </version>
+    <template name="default"/>
 </phpdocumentor>
