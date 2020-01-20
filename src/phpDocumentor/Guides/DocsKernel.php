@@ -29,11 +29,11 @@ class DocsKernel extends Kernel
 
     public function __construct(
         ?Configuration $configuration = null,
-        $directives = [],
-        $references = [],
+        iterable $directives = [],
+        iterable $references = [],
         BuildContext $buildContext
     ) {
-        parent::__construct($configuration, $directives, $references);
+        parent::__construct($configuration, iterator_to_array($directives), iterator_to_array($references));
 
         $this->buildContext = $buildContext;
     }

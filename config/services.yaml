@@ -263,33 +263,13 @@ services:
 
     phpDocumentor\Guides\KernelFactory:
       arguments:
-        $directives:
-          - '@phpDocumentor\Guides\Directive\AdmonitionDirective'
-          - '@phpDocumentor\Guides\Directive\CautionDirective'
-          - '@phpDocumentor\Guides\Directive\CodeBlockDirective'
-          - '@phpDocumentor\Guides\Directive\ConfigurationBlockDirective'
-          - '@phpDocumentor\Guides\Directive\DeprecatedDirective'
-          - '@phpDocumentor\Guides\Directive\IndexDirective'
-          - '@phpDocumentor\Guides\Directive\RoleDirective'
-          - '@phpDocumentor\Guides\Directive\NoteDirective'
-          - '@phpDocumentor\Guides\Directive\HintDirective'
-          - '@phpDocumentor\Guides\Directive\SeeAlsoDirective'
-          - '@phpDocumentor\Guides\Directive\SidebarDirective'
-          - '@phpDocumentor\Guides\Directive\TipDirective'
-          - '@phpDocumentor\Guides\Directive\ImportantDirective'
-          - '@phpDocumentor\Guides\Directive\TopicDirective'
-          - '@phpDocumentor\Guides\Directive\WarningDirective'
-          - '@phpDocumentor\Guides\Directive\VersionAddedDirective'
-          - '@phpDocumentor\Guides\Directive\BestPracticeDirective'
-          - '@phpDocumentor\Guides\Directive\GlossaryDirective'
-        $references:
-          - '@phpDocumentor\Guides\Reference\ClassReference'
-          - '@phpDocumentor\Guides\Reference\MethodReference'
-          - '@phpDocumentor\Guides\Reference\NamespaceReference'
-          - '@phpDocumentor\Guides\Reference\PhpFunctionReference'
-          - '@phpDocumentor\Guides\Reference\PhpMethodReference'
-          - '@phpDocumentor\Guides\Reference\PhpClassReference'
-          - '@phpDocumentor\Guides\Reference\TermReference'
-          - '@phpDocumentor\Guides\Reference\LeaderReference'
-          - '@phpDocumentor\Guides\Reference\MergerReference'
-          - '@phpDocumentor\Guides\Reference\DeciderReference'
+        $directives: !tagged_iterator phpdoc.guides.directive
+        $references: !tagged_iterator phpdoc.guides.reference
+
+    phpDocumentor\Guides\Directive\:
+      resource: '../src/phpDocumentor/Guides/Directive'
+      tags: [ { name: 'phpdoc.guides.directive' } ]
+
+    phpDocumentor\Guides\Reference\:
+      resource: '../src/phpDocumentor/Guides/Reference'
+      tags: [ { name: 'phpdoc.guides.reference' } ]

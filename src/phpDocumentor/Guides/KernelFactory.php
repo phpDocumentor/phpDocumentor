@@ -38,8 +38,8 @@ final class KernelFactory
     public function __construct(
         string $globalTemplatesPath,
         string $globalCachePath,
-        array $directives = [],
-        array $references = []
+        iterable $directives = [],
+        iterable $references = []
     ) {
         $this->globalTemplatesPath = $globalTemplatesPath;
         $this->globalCachePath = $globalCachePath;
