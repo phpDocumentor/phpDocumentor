@@ -53,11 +53,9 @@ class DocsKernel extends Kernel
             new CopyImagesListener($this->buildContext, $errorManager)
         );
 
-        if (!$this->buildContext->getParseSubPath()) {
-            $eventManager->addEventListener(
-                [PostBuildRenderEvent::POST_BUILD_RENDER],
-                new AssetsCopyListener($this->buildContext->getOutputFilesystem())
-            );
-        }
+        $eventManager->addEventListener(
+            [PostBuildRenderEvent::POST_BUILD_RENDER],
+            new AssetsCopyListener($this->buildContext->getOutputFilesystem())
+        );
     }
 }

@@ -249,6 +249,7 @@ services:
     phpDocumentor\Transformer\Writer\Graph: ~
     phpDocumentor\Transformer\Writer\Twig: ~
     phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory: ~
+    phpDocumentor\Transformer\Writer\RenderGuide: ~
 
     phpDocumentor\Transformer\Writer\Collection:
         calls:
@@ -256,6 +257,7 @@ services:
             - { method: offsetSet, arguments: ['sourcecode', '@phpDocumentor\Transformer\Writer\Sourcecode']}
             - { method: offsetSet, arguments: ['Graph', '@phpDocumentor\Transformer\Writer\Graph']}
             - { method: offsetSet, arguments: ['twig', '@phpDocumentor\Transformer\Writer\Twig']}
+            - { method: offsetSet, arguments: ['RenderGuide', '@phpDocumentor\Transformer\Writer\RenderGuide']}
 
   ###################################################################################
   ## Guides - EXPERIMENTAL ##########################################################

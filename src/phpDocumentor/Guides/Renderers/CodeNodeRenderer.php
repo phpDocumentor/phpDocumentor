@@ -48,10 +48,14 @@ class CodeNodeRenderer implements NodeRenderer
     /** @var TemplateRenderer */
     private $templateRenderer;
 
-    public function __construct(CodeNode $codeNode, TemplateRenderer $templateRenderer)
+    /** @var string */
+    private $globalTemplatesPath;
+
+    public function __construct(CodeNode $codeNode, TemplateRenderer $templateRenderer, string $globalTemplatesPath)
     {
         $this->codeNode = $codeNode;
         $this->templateRenderer = $templateRenderer;
+        $this->globalTemplatesPath = $globalTemplatesPath;
     }
 
     public function render() : string
@@ -82,6 +86,7 @@ class CodeNodeRenderer implements NodeRenderer
         return $this->templateRenderer->render(
             'code.html.twig',
             [
+                'codeNode' => $this->codeNode,
                 'language' => $language,
                 'languageMapping' => self::LANGUAGES_MAPPING[$language] ?? $language,
                 'code' => $code,
@@ -123,8 +128,8 @@ class CodeNodeRenderer implements NodeRenderer
     private function configureHighlighter()
     {
         if (false === self::$isHighlighterConfigured) {
-            Highlighter::registerLanguage('php', __DIR__ . '/../Templates/highlight.php/php.json', true);
-            Highlighter::registerLanguage('twig', __DIR__ . '/../Templates/highlight.php/twig.json', true);
+            Highlighter::registerLanguage('php', $this->globalTemplatesPath . '/guides/highlight.php/php.json', true);
+            Highlighter::registerLanguage('twig', $this->globalTemplatesPath . '/guides/highlight.php/twig.json', true);
         }
 
         self::$isHighlighterConfigured = true;

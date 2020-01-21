@@ -33,14 +33,6 @@ services:
         - { name: 'phpdoc.pipeline.api_documentation.parse', priority: -1000 }
 
   ###################################################################################
-  ## Autoloading definitions for guide rendering stages      ########################
-  ###################################################################################
-
-    phpDocumentor\Pipeline\Stage\RenderGuide:
-      tags:
-        - { name: 'phpdoc.pipeline.guide', priority: 10000 }
-
-  ###################################################################################
   ## Autoloading definitions for parser stages      #################################
   ###################################################################################
 

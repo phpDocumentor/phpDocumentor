@@ -26,11 +26,13 @@ final class HtmlFormat implements Format
 {
     protected $templateRenderer;
     private $htmlFormat;
+    private $globalTemplatesPath;
 
-    public function __construct(TemplateRenderer $templateRenderer, Format $format)
+    public function __construct(TemplateRenderer $templateRenderer, Format $format, string $globalTemplatesPath)
     {
         $this->templateRenderer = $templateRenderer;
         $this->htmlFormat = $format;
+        $this->globalTemplatesPath = $globalTemplatesPath;
     }
 
     public function getFileExtension() : string
@@ -54,7 +56,8 @@ final class HtmlFormat implements Format
             function (CodeNode $node) {
                 return new Renderers\CodeNodeRenderer(
                     $node,
-                    $this->templateRenderer
+                    $this->templateRenderer,
+                    $this->globalTemplatesPath
                 );
             }
         );

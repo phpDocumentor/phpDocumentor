@@ -245,4 +245,9 @@ class ProjectDescriptorBuilder
             $this->project->getSettings()->excludeSource();
         }
     }
+
+    public function addVersion(VersionDescriptor $version) : void
+    {
+        $this->project->getVersions()->add($version);
+    }
 }

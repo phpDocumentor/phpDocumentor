@@ -62,6 +62,14 @@ final class LinkRenderer
     }
 
     /**
+     * @deprecated in favour of withDestination()
+     */
+    public function setDestination(string $destination) : void
+    {
+        $this->destination = $destination;
+    }
+
+    /**
      * Sets the destination directory relative to the Project's Root.
      *
      * The destination is the target directory containing the resulting
@@ -70,13 +78,13 @@ final class LinkRenderer
      *
      * For this specific extension the destination is provided in the
      * Twig writer itself.
-     *
-     * @see \phpDocumentor\Transformer\Writer\Twig for the invocation
-     *     of this method.
      */
-    public function setDestination(string $destination) : void
+    public function withDestination(string $destination) : self
     {
-        $this->destination = $destination;
+        $result = clone $this;
+        $result->destination = $destination;
+
+        return $result;
     }
 
     public function withProject(ProjectDescriptor $projectDescriptor) : self

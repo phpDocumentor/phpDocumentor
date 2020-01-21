@@ -82,7 +82,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
      */
     public function setDestination(string $destination) : void
     {
-        $this->routeRenderer->setDestination($destination);
+        $this->routeRenderer = $this->routeRenderer->withDestination($destination);
     }
 
     /**

@@ -13,7 +13,10 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Pipeline\Stage;
 
+use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\Collection as PartialsCollection;
+use phpDocumentor\Descriptor\GuideSetDescriptor;
+use phpDocumentor\Descriptor\VersionDescriptor;
 
 final class InitializeBuilderFromConfig
 {
@@ -34,6 +37,17 @@ final class InitializeBuilderFromConfig
         $builder->setName($configuration['phpdocumentor']['title'] ?? '');
         $builder->setPartials($this->partials);
         $builder->setCustomSettings($configuration['phpdocumentor']['settings'] ?? []);
+
+        foreach (($configuration['phpdocumentor']['versions'] ?? []) as $number => $version) {
+            $documentationSets = new Collection();
+
+            foreach ($version['guides'] ?? [] as $guide) {
+                $documentationSets->add(new GuideSetDescriptor('', $guide['source']));
+            }
+
+            $version = new VersionDescriptor($number, $documentationSets);
+            $builder->addVersion($version);
+        }
 
         return $payload;
     }

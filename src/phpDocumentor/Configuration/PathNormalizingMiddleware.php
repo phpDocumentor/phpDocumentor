@@ -82,7 +82,7 @@ final class PathNormalizingMiddleware
             foreach ($version['guides'] as $key => $guide) {
                 foreach ($guide['source']['paths'] as $subkey => $path) {
                     $configuration['versions'][$versionNumber]['guides'][$key]['source']['paths'][$subkey] =
-                        $this->pathToGlobPattern((string) $path);
+                        $this->normalizePath((string) $path);
                 }
             }
         }
@@ -90,7 +90,7 @@ final class PathNormalizingMiddleware
         return $configuration;
     }
 
-    private function pathToGlobPattern(string $path) : string
+    private function normalizePath(string $path) : string
     {
         if (strpos($path, '.') === 0) {
             $path = ltrim($path, '.');
@@ -100,7 +100,12 @@ final class PathNormalizingMiddleware
             $path = '/' . $path;
         }
 
-        $path = rtrim($path, '/');
+        return rtrim($path, '/');
+    }
+
+    private function pathToGlobPattern(string $path) : string
+    {
+        $path = $this->normalizePath($path);
 
         if (substr($path, -1) !== '*' && strpos($path, '.') === false) {
             $path .= '/**/*';

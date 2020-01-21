@@ -44,6 +44,9 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
     /** @var Collection $partials */
     private $partials;
 
+    /** @var Collection $versions */
+    private $versions;
+
     /**
      * Initializes this descriptor.
      */
@@ -66,6 +69,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
         $this->setIndexes(new Collection());
 
         $this->setPartials(new Collection());
+        $this->versions = new Collection();
     }
 
     /**
@@ -216,5 +220,10 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
     public function getPackage() : PackageInterface
     {
         return $this->package;
+    }
+
+    public function getVersions() : Collection
+    {
+        return $this->versions;
     }
 }

@@ -19,7 +19,11 @@ use Doctrine\RST\Configuration as RSTParserConfiguration;
 use Doctrine\RST\Directives\Directive as Directive;
 use Doctrine\RST\Kernel;
 use Doctrine\RST\References\Reference;
+use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Guides\Twig\AssetsExtension;
+use phpDocumentor\Transformer\Writer\Twig\Extension;
+use phpDocumentor\Transformer\Writer\Twig\LinkRenderer;
+use Twig\Loader\FilesystemLoader;
 
 final class KernelFactory
 {
@@ -35,9 +39,13 @@ final class KernelFactory
     /** @var Reference[] */
     private $references;
 
+    /** @var LinkRenderer */
+    private $linkRenderer;
+
     public function __construct(
         string $globalTemplatesPath,
         string $globalCachePath,
+        LinkRenderer $linkRenderer,
         iterable $directives = [],
         iterable $references = []
     ) {
@@ -45,38 +53,40 @@ final class KernelFactory
         $this->globalCachePath = $globalCachePath;
         $this->directives = $directives;
         $this->references = $references;
+        $this->linkRenderer = $linkRenderer;
     }
 
-    public function createKernel(BuildContext $buildContext) : Kernel
+    public function createKernel(ProjectDescriptor $projectDescriptor, BuildContext $buildContext) : Kernel
     {
         $configuration = new RSTParserConfiguration();
-        $configuration->setCustomTemplateDirs([$this->globalTemplatesPath]);
+        $configuration->setCustomTemplateDirs([ $this->globalTemplatesPath . '/guides' ]);
         $configuration->setCacheDir(sprintf('%s/guide-cache', $this->globalCachePath));
         $configuration->abortOnError(false);
 
-        if ($buildContext->getDisableCache()) {
-            $configuration->setUseCachedMetas(false);
-        }
+        // disable caches while developing
+        $configuration->setUseCachedMetas(false);
 
-        $configuration->addFormat(new HtmlFormat($configuration->getTemplateRenderer(), $configuration->getFormat()));
-
-        if ($parseSubPath = $buildContext->getParseSubPath()) {
-            $configuration->setBaseUrl($buildContext->getSymfonyDocUrl());
-            $configuration->setBaseUrlEnabledCallable(
-                static function (string $path) use ($parseSubPath): bool {
-                    return 0 !== strpos($path, $parseSubPath);
-                }
-            );
-        }
+        $configuration->addFormat(
+            new HtmlFormat(
+                $configuration->getTemplateRenderer(),
+                $configuration->getFormat(),
+                $this->globalTemplatesPath
+            )
+        );
 
         $twig = $configuration->getTemplateEngine();
-        $twig->addExtension(new AssetsExtension());
 
-        return new DocsKernel(
-            $configuration,
-            $this->directives,
-            $this->references,
-            $buildContext
-        );
+        $twig->addExtension(new AssetsExtension());
+        $extension = new Extension($projectDescriptor, $this->linkRenderer);
+        // TODO: This setDestination option is meant to be used on a file-by-file basis. Just like this extension
+        //       This may not work in this situation and we may need to discover a different root finding solution
+        $extension->setDestination('docs/test');
+        $twig->addExtension($extension);
+
+        /** @var FilesystemLoader $loader */
+        $loader = $twig->getLoader();
+        $loader->prependPath($this->globalTemplatesPath . '/default');
+
+        return new DocsKernel($configuration, $this->directives, $this->references, $buildContext);
     }
 }

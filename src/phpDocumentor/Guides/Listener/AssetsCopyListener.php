@@ -18,7 +18,6 @@ namespace phpDocumentor\Guides\Listener;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemInterface;
-use League\Flysystem\MountManager;
 use phpDocumentor\Parser\FlySystemMirror;
 
 final class AssetsCopyListener
