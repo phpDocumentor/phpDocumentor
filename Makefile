@@ -43,8 +43,12 @@ integration-test: node_modules/.bin/cypress build/default/index.html build/clean
 behat:
 	docker-compose run --rm behat ./tools/behat ${ARGS}
 
+.PHONY: composer-require-checker
+composer-require-checker:
+	docker run -it --rm -v${PWD}:/data -w /data  phpga/composer-require-checker-ga check --config-file /data/composer-require-config.json composer.json
+
 .PHONY: pre-commit-test
-pre-commit-test: phpcs phpstan test
+pre-commit-test:  test phpcs phpstan composer-require-checker
 
 .PHONY: shell
 shell:
