@@ -33,9 +33,20 @@ jobs:
         run: 'cp ./data/demo/* ./build'
       - name: Build
         uses: elgohr/Publish-Docker-Github-Action@master
+        env:
+          VERSION: '3.0'
         with:
           name: phpdocumentor/phpdocumentor/demo.phpdoc.org
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: docker.pkg.github.com
           context: build
+          buildargs: VERSION
+          tags: '3.0'
+        id: demo_build
+      - name: 'deploy'
+        uses: ./.github/actions/docker-deploy # use this repo as an action
+        with:
+          keelBaseUrl: ${{ secrets.KEEL_BASE_URL }}
+          image: 'docker.pkg.github.com/phpdocumentor/phpdocumentor/demo.phpdoc.org'
+          tag: ${{ steps.demo_build.outputs.tag }}
