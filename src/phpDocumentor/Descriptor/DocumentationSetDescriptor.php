@@ -21,6 +21,9 @@ abstract class DocumentationSetDescriptor
     /** @var array */
     protected $source = [];
 
+    /** @var string */
+    protected $output = [];
+
     public function getName() : string
     {
         return $this->name;
@@ -39,5 +42,10 @@ abstract class DocumentationSetDescriptor
     public function getSource() : array
     {
         return $this->source;
+    }
+
+    public function getOutput() : string
+    {
+        return $this->output;
     }
 }

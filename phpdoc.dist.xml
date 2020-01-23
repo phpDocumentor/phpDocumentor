@@ -15,6 +15,7 @@
             <source dsn=".">
                 <path>src</path>
             </source>
+            <output>api</output>
             <ignore hidden="true" symlinks="true">
                 <path>tests/**/*</path>
                 <path>build/**/*</path>
@@ -31,6 +32,7 @@
             <source dsn=".">
                 <path>docs</path>
             </source>
+            <output>dox</output>
         </guide>
     </version>
     <template name="default"/>

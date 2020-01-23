@@ -176,6 +176,7 @@ final class Version3 implements ConfigurationInterface, Normalizable
                     ->end()
                     ->scalarNode('encoding')->defaultValue('utf-8')->end()
                     ->append($this->source(['/**/*']))
+                    ->scalarNode('output')->defaultValue('.')->end()
                     ->arrayNode('ignore')
                         ->addDefaultsIfNotSet()
                         ->fixXmlConfig('path')
@@ -234,6 +235,7 @@ final class Version3 implements ConfigurationInterface, Normalizable
                         ->defaultValue('rst')
                     ->end()
                     ->append($this->source())
+                    ->scalarNode('output')->defaultValue('docs')->end()
                 ->end()
             ->end();
     }

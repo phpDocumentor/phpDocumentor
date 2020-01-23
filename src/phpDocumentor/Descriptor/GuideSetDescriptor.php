@@ -15,9 +15,10 @@ namespace phpDocumentor\Descriptor;
 
 final class GuideSetDescriptor extends DocumentationSetDescriptor
 {
-    public function __construct(string $name, array $source)
+    public function __construct(string $name, array $source, string $output)
     {
         $this->name = $name;
         $this->source = $source;
+        $this->output = $output;
     }
 }

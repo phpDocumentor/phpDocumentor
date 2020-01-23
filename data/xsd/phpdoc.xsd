@@ -78,6 +78,7 @@
     <xs:complexType name="phpApiType" mixed="true">
         <xs:sequence>
             <xs:element name="source" type="pd:sourceType" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="output" type="xs:string" minOccurs="0" maxOccurs="1" default="" />
             <xs:element name="ignore" type="pd:ignoreType" minOccurs="0" maxOccurs="1"/>
             <xs:element name="extensions" type="pd:extensionsType" minOccurs="0" maxOccurs="1"/>
             <xs:element name="visibility" type="pd:visibility" minOccurs="1" maxOccurs="1"/>
@@ -91,6 +92,7 @@
     <xs:complexType name="rstGuideType">
         <xs:sequence>
             <xs:element name="source" type="pd:sourceType" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="output" type="xs:string" minOccurs="0" maxOccurs="1" default="docs" />
         </xs:sequence>
         <xs:attribute name="format" type="xs:string" default="rst" />
     </xs:complexType>

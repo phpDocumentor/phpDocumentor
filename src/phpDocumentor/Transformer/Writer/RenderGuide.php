@@ -72,7 +72,13 @@ final class RenderGuide extends WriterAbstract
                     continue;
                 }
 
-                $buildContext = new BuildContext($output, 'docs', 'default', $cachePath, false);
+                $buildContext = new BuildContext(
+                    $output,
+                    $documentationSet->getOutput(),
+                    'default',
+                    $cachePath,
+                    false
+                );
 
                 $inputFolder = rtrim(
                     $this->determineInputFolder($documentationSet->getSource()['dsn'], $cachePath),
