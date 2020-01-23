@@ -61,17 +61,16 @@ final class KernelFactory
     {
         $configuration = new RSTParserConfiguration();
         $configuration->setCustomTemplateDirs([ $this->globalTemplatesPath . '/guides' ]);
-        $configuration->setCacheDir(sprintf('%s/guide-cache', $this->globalCachePath));
+        $configuration->setCacheDir($buildContext->getCachePath());
         $configuration->abortOnError(false);
-
-        // disable caches while developing
-        $configuration->setUseCachedMetas(false);
+        $configuration->setUseCachedMetas($buildContext->isCacheEnabled());
 
         $configuration->addFormat(
             new HtmlFormat(
                 $configuration->getTemplateRenderer(),
                 $configuration->getFormat(),
-                $this->globalTemplatesPath
+                $this->globalTemplatesPath,
+                $buildContext->getDestinationPath()
             )
         );
 
@@ -82,7 +81,7 @@ final class KernelFactory
 
         /** @var FilesystemLoader $loader */
         $loader = $twig->getLoader();
-        $loader->prependPath($this->globalTemplatesPath . '/default');
+        $loader->prependPath($this->globalTemplatesPath . '/' . $buildContext->getTemplate());
 
         return new DocsKernel($configuration, $this->directives, $this->references, $buildContext);
     }

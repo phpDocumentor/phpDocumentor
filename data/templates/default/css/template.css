@@ -803,6 +803,32 @@ td.phpdocumentor-cell:last-child {
     width: 100%;
 }
 
+/* Other
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+.phpdocumentor-content h1 .headerlink,
+.phpdocumentor-content h2 .headerlink,
+.phpdocumentor-content h3 .headerlink,
+.phpdocumentor-content h4 .headerlink,
+.phpdocumentor-content h5 .headerlink,
+.phpdocumentor-content h6 .headerlink
+{
+    display: none;
+    padding-left: 10px;
+    text-decoration: none;
+    color: silver;
+}
+
+.phpdocumentor-content h1:hover .headerlink,
+.phpdocumentor-content h2:hover .headerlink,
+.phpdocumentor-content h3:hover .headerlink,
+.phpdocumentor-content h4:hover .headerlink,
+.phpdocumentor-content h5:hover .headerlink,
+.phpdocumentor-content h6:hover .headerlink
+{
+    display: initial;
+}
+
 /* Media Queries
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 /*

@@ -15,17 +15,50 @@ namespace phpDocumentor\Guides;
 
 use League\Flysystem\FilesystemInterface;
 
-class BuildContext
+final class BuildContext
 {
     private $outputFilesystem;
+    private $destinationPath;
+    private $template;
+    private $cachePath;
+    private $enableCache;
 
-    public function __construct(FilesystemInterface $output)
-    {
+    public function __construct(
+        FilesystemInterface $output,
+        string $destinationPath,
+        string $template,
+        string $cachePath,
+        bool $enableCache = true
+    ) {
         $this->outputFilesystem = $output;
+        $this->destinationPath = $destinationPath;
+        $this->template = $template;
+        $this->cachePath = $cachePath;
+        $this->enableCache = $enableCache;
     }
 
     public function getOutputFilesystem() : FilesystemInterface
     {
         return $this->outputFilesystem;
+    }
+
+    public function getDestinationPath() : string
+    {
+        return $this->destinationPath;
+    }
+
+    public function getTemplate() : string
+    {
+        return $this->template;
+    }
+
+    public function getCachePath() : string
+    {
+        return $this->cachePath;
+    }
+
+    public function isCacheEnabled() : bool
+    {
+        return $this->enableCache;
     }
 }

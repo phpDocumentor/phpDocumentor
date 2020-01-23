@@ -63,6 +63,7 @@ final class RenderGuide extends WriterAbstract
         }
 
         $output = $transformation->getTransformer()->destination();
+        $cachePath = sprintf('%s/guide', $this->globalCachePath);
 
         /** @var VersionDescriptor $version */
         foreach ($project->getVersions() as $version) {
@@ -71,29 +72,34 @@ final class RenderGuide extends WriterAbstract
                     continue;
                 }
 
-                $inputFolder = rtrim($this->determineInputFolder($documentationSet->getSource()['dsn']), '/');
+                $buildContext = new BuildContext($output, 'docs', 'default', $cachePath, false);
+
+                $inputFolder = rtrim(
+                    $this->determineInputFolder($documentationSet->getSource()['dsn'], $cachePath),
+                    '/'
+                );
                 $inputFolder .= $documentationSet->getSource()['paths'][0] ?? '';
 
-                $tempOutputPath = sprintf('%s/guide/output', $this->globalCachePath);
+                $tempOutputPath = sprintf('%s/output', $cachePath);
 
-                $builder = new Builder($this->kernelFactory->createKernel($project, new BuildContext($output)));
+                $builder = new Builder($this->kernelFactory->createKernel($project, $buildContext));
                 $builder->build($inputFolder, $tempOutputPath);
 
                 $tempFilesystem = new Filesystem(new Local($tempOutputPath));
-                FlySystemMirror::mirror($tempFilesystem, $output, '', 'docs');
+                FlySystemMirror::mirror($tempFilesystem, $output, '', $buildContext->getDestinationPath());
                 // $builder->getErrorManager()->getErrors();
             }
         }
     }
 
-    private function determineInputFolder(Dsn $dsn) : string
+    private function determineInputFolder(Dsn $dsn, string $cachePath) : string
     {
         if ($dsn->getScheme() === null) {
             return (string) $dsn->getPath();
         }
 
         $input = $this->flySystemFactory->create($dsn);
-        $inputFolder = sprintf('%s/guide/input', $this->globalCachePath);
+        $inputFolder = sprintf('%s/input', $cachePath);
 
         $inputFilesystem = new Filesystem(new Local($inputFolder));
         FlySystemMirror::mirror($input, $inputFilesystem);

@@ -20,25 +20,31 @@ final class DocumentNodeRenderer extends \Doctrine\RST\HTML\Renderers\DocumentNo
      */
     private $templateRenderer;
 
+    /**
+     * @var string
+     */
+    private $subFolderInProject;
+
     public function __construct(
         DocumentNode $document,
-        TemplateRenderer $templateRenderer
+        TemplateRenderer $templateRenderer,
+        string $subFolderInProject
     ) {
         parent::__construct($document, $templateRenderer);
+
         $this->document = $document;
         $this->templateRenderer = $templateRenderer;
+        $this->subFolderInProject = trim($subFolderInProject, '/');
     }
 
     public function renderDocument() : string
     {
-        // @todo: Do not hardcode this but get it from the RenderGuide writer somehow
-        $urlPrefix = 'docs/';
-        $this->setCurrentFileNameInTwigToDetermineRelativePathsToDocumentationRoot($urlPrefix);
+        $this->setCurrentFileNameInTwigToDetermineRelativePathsToDocumentationRoot($this->subFolderInProject);
 
         return $this->templateRenderer->render('document.html.twig', [
             'headerNodes' => $this->assembleHeader(),
             'bodyNodes' => $this->render(),
-            'menu' => $this->assembleMenu($urlPrefix),
+            'menu' => $this->assembleMenu($this->subFolderInProject),
         ]);
     }
 
@@ -49,14 +55,14 @@ final class DocumentNodeRenderer extends \Doctrine\RST\HTML\Renderers\DocumentNo
         $index = $metas->get('index');
         $menu = [
             'label' => $index->getTitle(),
-            'path' => $urlPrefix . $index->getUrl(),
+            'path' => $urlPrefix . '/' . $index->getUrl(),
             'items' => []
         ];
         foreach ($index->getTocs()[0] as $url) {
             $meta = $metas->get($url);
             $menu['items'][] = [
                 'label' => $meta->getTitle(),
-                'path' => $urlPrefix . $meta->getUrl(),
+                'path' => $urlPrefix . '/' . $meta->getUrl(),
                 'items' => []
             ];
         }
@@ -78,6 +84,6 @@ final class DocumentNodeRenderer extends \Doctrine\RST\HTML\Renderers\DocumentNo
     {
         /** @var Extension $extension */
         $extension = $this->document->getConfiguration()->getTemplateEngine()->getExtension(Extension::class);
-        $extension->setDestination($urlPrefix . $this->document->getEnvironment()->getCurrentFileName());
+        $extension->setDestination($urlPrefix . '/' . $this->document->getEnvironment()->getCurrentFileName());
     }
 }

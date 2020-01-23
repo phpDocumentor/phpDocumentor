@@ -6,6 +6,7 @@
 </h2>
 {% endif %}
 
+{% if menuItem.items is not empty %}
 <ul class="phpdocumentor-list">
     {% for child in menuItem.items|default([]) %}
         <li>
@@ -13,4 +14,4 @@
         </li>
     {% endfor %}
 </ul>
-
+{% endif %}
