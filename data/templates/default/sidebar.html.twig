@@ -6,8 +6,12 @@
             <input type="search" class="phpdocumentor-field phpdocumentor-search__field" placeholder="Loading .." disabled />
         </label>
     </section>
-    <h1 class="phpdocumentor-sidebar__category-header">Namespaces</h1>
 
+    {% if menu %}
+    {{ include('menu.html.twig', {menuItem: menu}, with_context = false) }}
+    {% endif %}
+
+    <h1 class="phpdocumentor-sidebar__category-header">Namespaces</h1>
     {% if usesNamespaces or not usesPackages %}
         <h2 class="phpdocumentor-sidebar__root-namespace">{{ project.namespace|route('Global') }}</h2>
         {% for namespace in project.namespace.children %}

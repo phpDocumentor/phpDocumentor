@@ -17,6 +17,7 @@ namespace phpDocumentor\Guides;
 
 use Doctrine\RST\Formats\Format;
 use Doctrine\RST\Nodes\CodeNode;
+use Doctrine\RST\Nodes\DocumentNode;
 use Doctrine\RST\Nodes\SpanNode;
 use Doctrine\RST\Renderers\CallableNodeRendererFactory;
 use Doctrine\RST\Renderers\NodeRendererFactory;
@@ -51,6 +52,15 @@ final class HtmlFormat implements Format
     public function getNodeRendererFactories() : array
     {
         $nodeRendererFactories = $this->htmlFormat->getNodeRendererFactories();
+
+        $nodeRendererFactories[DocumentNode::class] = new CallableNodeRendererFactory(
+            function (DocumentNode $node) {
+                return new Renderers\DocumentNodeRenderer(
+                    $node,
+                    $this->templateRenderer
+                );
+            }
+        );
 
         $nodeRendererFactories[CodeNode::class] = new CallableNodeRendererFactory(
             function (CodeNode $node) {

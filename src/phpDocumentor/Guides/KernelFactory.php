@@ -19,6 +19,7 @@ use Doctrine\RST\Configuration as RSTParserConfiguration;
 use Doctrine\RST\Directives\Directive as Directive;
 use Doctrine\RST\Kernel;
 use Doctrine\RST\References\Reference;
+use Doctrine\RST\UrlGenerator;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Guides\Twig\AssetsExtension;
 use phpDocumentor\Transformer\Writer\Twig\Extension;
@@ -77,11 +78,7 @@ final class KernelFactory
         $twig = $configuration->getTemplateEngine();
 
         $twig->addExtension(new AssetsExtension());
-        $extension = new Extension($projectDescriptor, $this->linkRenderer);
-        // TODO: This setDestination option is meant to be used on a file-by-file basis. Just like this extension
-        //       This may not work in this situation and we may need to discover a different root finding solution
-        $extension->setDestination('docs/test');
-        $twig->addExtension($extension);
+        $twig->addExtension(new Extension($projectDescriptor, $this->linkRenderer));
 
         /** @var FilesystemLoader $loader */
         $loader = $twig->getLoader();

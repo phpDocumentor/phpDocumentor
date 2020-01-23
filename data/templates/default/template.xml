@@ -4,22 +4,22 @@
   <email>mike@phpdoc.org</email>
   <version>1.0.0</version>
   <transformations>
-<!--    <transformation query="copy" writer="FileIo" source="templates/default/css" artifact="css"/>-->
-<!--    <transformation writer="twig" source="templates/default/index.html.twig" artifact="index.html"/>-->
-<!--    <transformation writer="twig" query="files" source="templates/default/file.html.twig" />-->
-<!--    <transformation writer="twig" query="indexes.namespaces" source="templates/default/namespace.html.twig" />-->
-<!--    <transformation writer="twig" query="indexes.packages" source="templates/default/package.html.twig" />-->
-<!--    <transformation writer="twig" query="indexes.classes" source="templates/default/class.html.twig" />-->
-<!--    <transformation writer="twig" query="indexes.interfaces" source="templates/default/interface.html.twig" />-->
-<!--    <transformation writer="twig" query="indexes.traits" source="templates/default/trait.html.twig" />-->
-<!--    <transformation writer="twig" source="templates/default/search.js.twig" artifact="js/search.js" />-->
-<!--    <transformation writer="twig" source="templates/default/searchIndex.js.twig" artifact="js/searchIndex.js" />-->
-<!--    <transformation writer="twig" source="templates/default/graphs/class.html.twig" artifact="graphs/classes.html" />-->
-<!--    <transformation writer="twig" source="templates/default/reports/errors.html.twig" artifact="reports/errors.html" />-->
-<!--    <transformation writer="twig" source="templates/default/reports/deprecated.html.twig" artifact="reports/deprecated.html" />-->
-<!--    <transformation writer="twig" source="templates/default/reports/markers.html.twig" artifact="reports/markers.html" />-->
+    <transformation query="copy" writer="FileIo" source="templates/default/css" artifact="css"/>
+    <transformation writer="twig" source="templates/default/index.html.twig" artifact="index.html"/>
+    <transformation writer="twig" query="files" source="templates/default/file.html.twig" />
+    <transformation writer="twig" query="indexes.namespaces" source="templates/default/namespace.html.twig" />
+    <transformation writer="twig" query="indexes.packages" source="templates/default/package.html.twig" />
+    <transformation writer="twig" query="indexes.classes" source="templates/default/class.html.twig" />
+    <transformation writer="twig" query="indexes.interfaces" source="templates/default/interface.html.twig" />
+    <transformation writer="twig" query="indexes.traits" source="templates/default/trait.html.twig" />
+    <transformation writer="twig" source="templates/default/search.js.twig" artifact="js/search.js" />
+    <transformation writer="twig" source="templates/default/searchIndex.js.twig" artifact="js/searchIndex.js" />
+    <transformation writer="twig" source="templates/default/graphs/class.html.twig" artifact="graphs/classes.html" />
+    <transformation writer="twig" source="templates/default/reports/errors.html.twig" artifact="reports/errors.html" />
+    <transformation writer="twig" source="templates/default/reports/deprecated.html.twig" artifact="reports/deprecated.html" />
+    <transformation writer="twig" source="templates/default/reports/markers.html.twig" artifact="reports/markers.html" />
     <transformation writer="RenderGuide" />
-<!--    <transformation writer="Graph" source="Class" artifact="graphs/classes.svg" />-->
+    <transformation writer="Graph" source="Class" artifact="graphs/classes.svg" />
   </transformations>
   <parameters>
     <parameter key="twig-debug">true</parameter>

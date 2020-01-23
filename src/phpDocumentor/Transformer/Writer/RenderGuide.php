@@ -57,6 +57,7 @@ final class RenderGuide extends WriterAbstract
      */
     public function transform(ProjectDescriptor $project, Transformation $transformation) : void
     {
+        // Feature flag: Guides are disables by default since this is an experimental feature
         if (!($project->getSettings()->getCustom()['guides.enabled'] ?? false)) {
             return;
         }
