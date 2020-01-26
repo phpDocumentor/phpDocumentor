@@ -44,15 +44,27 @@ class StripOnVisibility implements FilterInterface
      */
     public function __invoke(?Filterable $value) : ?Filterable
     {
-        if ($value instanceof VisibilityInterface
-            && !$this->builder->getProjectDescriptor()->isVisibilityAllowed(
-                $this->toVisibility($value->getVisibility())
-            )
-        ) {
-            return null;
+        if (!$value instanceof DescriptorAbstract) {
+            return $value;
         }
 
-        return $value;
+        // if a Descriptor is marked as 'api' and this is set as a visibility; _always_ show it; even if the visibility
+        // is not set
+        if (isset($value->getTags()['api'])
+            && $this->builder->getProjectDescriptor()->isVisibilityAllowed(Settings::VISIBILITY_API)
+        ) {
+            return $value;
+        }
+
+        if (!$value instanceof VisibilityInterface) {
+            return $value;
+        }
+
+        if ($this->builder->getProjectDescriptor()->isVisibilityAllowed($this->toVisibility($value->getVisibility()))) {
+            return $value;
+        }
+
+        return null;
     }
 
     private function toVisibility(string $visibility) : int

@@ -16,14 +16,12 @@ namespace phpDocumentor\Configuration;
 use phpDocumentor\Dsn;
 use phpDocumentor\Path;
 use function array_map;
-use function array_merge;
 use function array_unique;
 use function count;
 use function current;
 use function end;
 use function explode;
 use function implode;
-use function is_array;
 
 final class CommandlineOptionsMiddleware
 {
@@ -270,19 +268,11 @@ final class CommandlineOptionsMiddleware
             return $version;
         }
 
-        if (!is_array($visibilityFlags)) {
-            $visibilityFlags = [$visibilityFlags];
-        }
-
         if (!isset($version['api'])) {
             $version['api'] = $this->createDefaultApiSettings();
         }
 
-        $visibilities = [];
-        foreach ($visibilityFlags as $visibility) {
-            $visibilities = array_merge($visibilities, explode(',', $visibility));
-        }
-        $visibilities = array_unique($visibilities);
+        $visibilities = array_unique(explode(',', implode(',', $visibilityFlags)));
         $version['api'][0]['visibility'] = $visibilities;
 
         return $version;

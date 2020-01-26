@@ -26,6 +26,8 @@ final class Settings
 
     public const VISIBILITY_INTERNAL = 8;
 
+    public const VISIBILITY_API = 16;
+
     /** @var integer by default ignore internal visibility but show others */
     public const VISIBILITY_DEFAULT = 7;
 

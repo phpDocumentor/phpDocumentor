@@ -162,7 +162,7 @@ final class Version3 implements ConfigurationInterface, Normalizable
                                 'public', // include all methods, properties and constants that are public
                                 'protected', // include  all methods, properties and constants that are protected
                                 'private', // include all methods, properties and constants that are private
-                                'hidden', // include all elements tagged with `@hidden`
+                                'internal', // include all elements tagged with `@internal`
                             ])
                         ->end()
                         ->defaultValue(['public', 'protected', 'private'])

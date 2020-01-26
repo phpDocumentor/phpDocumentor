@@ -29,7 +29,11 @@ use function md5;
 final class EmittingMiddlewareTest extends TestCase
 {
     /**
+     * Test is ran in a separate process because sometimes a Parser in another test registers itself to the
+     * EventDispatcher; this should be fixed.
+     *
      * @covers ::execute
+     * @runInSeparateProcess
      */
     public function testEmitsPreParsingEvent() : void
     {

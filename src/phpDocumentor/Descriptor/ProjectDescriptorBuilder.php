@@ -20,8 +20,10 @@ use phpDocumentor\Descriptor\Filter\Filter;
 use phpDocumentor\Descriptor\Filter\Filterable;
 use phpDocumentor\Descriptor\ProjectDescriptor\WithCustomSettings;
 use phpDocumentor\Reflection\Php\Project;
+use RuntimeException;
 use function array_merge;
 use function get_class;
+use function sprintf;
 
 /**
  * Builds a Project Descriptor and underlying tree.
@@ -202,6 +204,9 @@ class ProjectDescriptorBuilder
 
         foreach ($visibilities as $item) {
             switch ($item) {
+                case 'api':
+                    $visibility |= ProjectDescriptor\Settings::VISIBILITY_API;
+                    break;
                 case 'public':
                     $visibility |= ProjectDescriptor\Settings::VISIBILITY_PUBLIC;
                     break;
@@ -211,6 +216,16 @@ class ProjectDescriptorBuilder
                 case 'private':
                     $visibility |= ProjectDescriptor\Settings::VISIBILITY_PRIVATE;
                     break;
+                case 'internal':
+                    $visibility |= ProjectDescriptor\Settings::VISIBILITY_INTERNAL;
+                    break;
+                default:
+                    throw new RuntimeException(
+                        sprintf(
+                            '%s is not a type of visibility, supported is: api, public, protected, private or internal',
+                            $item
+                        )
+                    );
             }
         }
 

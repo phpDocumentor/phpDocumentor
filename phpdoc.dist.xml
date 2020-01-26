@@ -25,7 +25,6 @@
             <extensions>
                 <extension>php</extension>
             </extensions>
-            <visibility>private</visibility>
             <default-package-name>phpDocumentor</default-package-name>
         </api>
         <guide>
