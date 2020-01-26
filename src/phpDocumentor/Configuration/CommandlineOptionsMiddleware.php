@@ -319,7 +319,7 @@ final class CommandlineOptionsMiddleware
      */
     private function shouldReduceNumberOfVersionsToOne(array $configuration) : bool
     {
-        return ($this->options['filename'] || $this->options['directory'])
+        return ($this->options['filename'] ?? null || $this->options['directory'] ?? null)
             && count($configuration['phpdocumentor']['versions']) > 1;
     }
 
