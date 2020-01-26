@@ -4,13 +4,13 @@ describe('Class Detail Page', function() {
     });
 
     it('Has "Pizzeria" as title', function() {
-        cy.get('.phpdocumentor-content > h2').contains("Pizzeria");
+        cy.get('.phpdocumentor-content__title').contains("Pizzeria");
     });
 
     it('Has a breadcrumb featuring "Home" and "Marios"', function() {
         cy.get('.phpdocumentor-breadcrumbs').contains("Home");
         cy.get('.phpdocumentor-breadcrumbs').contains("Marios");
-        cy.get('.phpdocumentor-breadcrumbs > li').should('have.length', 2);
+        cy.get('.phpdocumentor-breadcrumbs > li').should('have.length', 3);
     });
 
     it('will send you to the index when clicking on "Home" in the breadcrumb', function() {
@@ -24,12 +24,12 @@ describe('Class Detail Page', function() {
     });
 
     it('Has a summary', function() {
-        cy.get('.phpdocumentor-content > .phpdocumentor-class__summary')
+        cy.get('.phpdocumentor-class__summary')
             .contains("Entrypoint for this pizza ordering application.");
     });
 
     it('Has a description', function() {
-        cy.get('.phpdocumentor-content > .phpdocumentor-class__description')
+        cy.get('.phpdocumentor-class__description')
             .contains("This class provides an interface through which you can order pizza's and pasta's from Mario's Pizzeria.");
     });
 

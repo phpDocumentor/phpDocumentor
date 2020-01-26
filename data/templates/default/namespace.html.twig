@@ -3,7 +3,7 @@
 {% block content %}
     {% include 'breadcrumbs.html.twig' %}
 
-    <h2>{{ node.name == '\\' ? 'API Documentation' : node.name }}</h2>
+    <h2 class="phpdocumentor-content__title">{{ node.name == '\\' ? 'API Documentation' : node.name }}</h2>
 
     {% if node.children is not empty %}
         <h3>Namespaces</h3>

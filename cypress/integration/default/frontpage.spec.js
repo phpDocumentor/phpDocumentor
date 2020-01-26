@@ -12,11 +12,6 @@ describe('Frontpage', function() {
         cy.get('.phpdocumentor-field.phpdocumentor-search__field');
     });
 
-    it('Has a breadcrumb featuring "Home"', function() {
-        cy.get('.phpdocumentor-breadcrumbs').contains("Home");
-        cy.get('.phpdocumentor-breadcrumbs > li').should('have.length', 1);
-    });
-
     it('Has the "Marios" namespace in the sidebar', function() {
         cy.get('.phpdocumentor-sidebar').contains("Marios");
     });
