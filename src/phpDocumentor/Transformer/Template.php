@@ -30,7 +30,7 @@ use function preg_match;
 final class Template implements ArrayAccess, Countable, IteratorAggregate
 {
     /** @var string Name for this template */
-    private $name = null;
+    private $name = '';
 
     /** @var string The name and optionally mail address of the author, i.e. `Mike van Riel <me@mikevanriel.com>`. */
     private $author = '';
@@ -67,7 +67,7 @@ final class Template implements ArrayAccess, Countable, IteratorAggregate
     /**
      * Name for this template.
      */
-    public function getName() : ?string
+    public function getName() : string
     {
         return $this->name;
     }

@@ -77,7 +77,7 @@ final class RenderGuide extends WriterAbstract
                     $documentationSet->getOutput(),
                     'default',
                     $cachePath,
-                    false
+                    $project->getSettings()->getCustom()['guides.cache'] ?? true
                 );
 
                 $inputFolder = rtrim(

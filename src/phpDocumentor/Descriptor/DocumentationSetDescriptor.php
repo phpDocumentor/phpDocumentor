@@ -22,7 +22,7 @@ abstract class DocumentationSetDescriptor
     protected $source = [];
 
     /** @var string */
-    protected $output = [];
+    protected $output = '.';
 
     public function getName() : string
     {

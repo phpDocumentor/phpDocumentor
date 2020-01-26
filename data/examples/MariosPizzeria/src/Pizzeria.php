@@ -8,6 +8,16 @@ namespace Marios;
  * Entrypoint for this pizza ordering application.
  *
  * This class provides an interface through which you can order pizza's and pasta's from Mario's Pizzeria.
+ *
+ * We have:
+ * - American pizzas
+ * - And real (italian) pizzas
+ *
+ * @link https://wwww.phpdoc.org
+ * @link https://docs.phpdoc.org
+ *
+ * @since 3.0
+ * @since 3.1 Does extra stuff
  */
 final class Pizzeria implements \JsonSerializable
 {

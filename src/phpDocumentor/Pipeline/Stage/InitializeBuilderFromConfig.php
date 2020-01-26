@@ -42,8 +42,7 @@ final class InitializeBuilderFromConfig
             $documentationSets = new Collection();
 
             foreach ($version['guides'] ?? [] as $guide) {
-                $documentationSets->add(new
-                GuideSetDescriptor('', $guide['source'], $guide['output']));
+                $documentationSets->add(new GuideSetDescriptor('', $guide['source'], $guide['output']));
             }
 
             $version = new VersionDescriptor($number, $documentationSets);
