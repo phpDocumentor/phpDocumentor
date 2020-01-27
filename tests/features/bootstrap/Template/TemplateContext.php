@@ -33,7 +33,7 @@ final class TemplateContext implements Context
     {
         $environment = $scope->getEnvironment();
 
-        $this->environmentContext = $environment->getContext('phpDocumentor\Behat\Contexts\EnvironmentContext');
+        $this->environmentContext = $environment->getContext(EnvironmentContext::class);
     }
 
     /** @BeforeScenario */

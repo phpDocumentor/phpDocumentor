@@ -353,7 +353,7 @@ final class PropertyDescriptorTest extends MockeryTestCase
      */
     protected function whenFixtureIsDirectlyRelatedToAFile()
     {
-        $file = m::mock('\phpDocumentor\Descriptor\FileDescriptor');
+        $file = m::mock(FileDescriptor::class);
         $this->fixture->setFile($file);
         return $file;
     }
@@ -365,8 +365,8 @@ final class PropertyDescriptorTest extends MockeryTestCase
      */
     protected function whenFixtureIsRelatedToAClassWithFile()
     {
-        $file = m::mock('\phpDocumentor\Descriptor\FileDescriptor');
-        $parent = m::mock('\phpDocumentor\Descriptor\ClassDescriptor');
+        $file = m::mock(FileDescriptor::class);
+        $parent = m::mock(ClassDescriptor::class);
         $parent->shouldReceive('getFile')->andReturn($file);
         $parent->shouldReceive('getFullyQualifiedStructuralElementName')->andReturn(new Fqsen('\Class1'));
         $this->fixture->setParent($parent);

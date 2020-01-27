@@ -40,10 +40,10 @@ class MethodAssemblerTest extends MockeryTestCase
      */
     protected function setUp() : void
     {
-        $this->builderMock = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
+        $this->builderMock = m::mock(ProjectDescriptorBuilder::class);
         $this->builderMock->shouldReceive('buildDescriptor')->andReturn(null);
 
-        $this->argumentAssemblerMock = m::mock('phpDocumentor\Descriptor\Builder\Reflector\ArgumentAssembler');
+        $this->argumentAssemblerMock = m::mock(ArgumentAssembler::class);
         $this->argumentAssemblerMock->shouldReceive('getBuilder')->once()->andReturn(null);
         $this->argumentAssemblerMock->shouldReceive('setBuilder')->once();
 

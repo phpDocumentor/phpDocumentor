@@ -22,6 +22,9 @@ use phpDocumentor\Reflection\Php\Class_;
 use phpDocumentor\Reflection\Php\Constant;
 use phpDocumentor\Reflection\Php\Method;
 use phpDocumentor\Reflection\Php\Property;
+use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
+use phpDocumentor\Descriptor\MethodDescriptor;
+use phpDocumentor\Descriptor\ConstantDescriptor;
 
 /**
  * Test class for \phpDocumentor\Descriptor\Builder
@@ -139,7 +142,7 @@ DOCBLOCK;
      */
     protected function getProjectDescriptorBuilderMock() : MockInterface
     {
-        $projectDescriptorBuilderMock = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
+        $projectDescriptorBuilderMock = m::mock(ProjectDescriptorBuilder::class);
         $projectDescriptorBuilderMock->shouldReceive('getDefaultPackage')->andReturn('\\');
         $projectDescriptorBuilderMock->shouldReceive('buildDescriptor')->andReturnUsing(
             static function ($param) {
@@ -153,13 +156,13 @@ DOCBLOCK;
                         break;
 
                     case 'Method':
-                        $mock = m::mock('phpDocumentor\Descriptor\MethodDescriptor');
+                        $mock = m::mock(MethodDescriptor::class);
                         $mock->shouldReceive('getName')->once()->andReturn('Mock');
                         $mock->shouldReceive('setParent')->once()->andReturn();
                         break;
 
                     case 'Constant':
-                        $mock = m::mock('phpDocumentor\Descriptor\ConstantDescriptor');
+                        $mock = m::mock(ConstantDescriptor::class);
                         $mock->shouldReceive('getName')->once()->andReturn('Mock');
                         $mock->shouldReceive('setParent')->once()->andReturn();
                         break;

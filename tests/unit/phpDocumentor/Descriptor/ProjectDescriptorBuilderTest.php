@@ -16,6 +16,7 @@ namespace phpDocumentor\Descriptor;
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\Builder\AssemblerFactory;
+use phpDocumentor\Descriptor\Filter\Filter;
 
 /**
  * Tests the functionality for the ProjectDescriptorBuilder class.
@@ -40,7 +41,7 @@ class ProjectDescriptorBuilderTest extends MockeryTestCase
     protected function setUp() : void
     {
         $this->assemblerFactory = $this->createAssemblerFactoryMock();
-        $filterMock = m::mock('phpDocumentor\Descriptor\Filter\Filter');
+        $filterMock = m::mock(Filter::class);
 
         $this->fixture = new ProjectDescriptorBuilder($this->assemblerFactory, $filterMock);
     }
@@ -53,7 +54,7 @@ class ProjectDescriptorBuilderTest extends MockeryTestCase
     {
         $this->fixture->createProjectDescriptor();
 
-        $this->assertInstanceOf('phpDocumentor\Descriptor\ProjectDescriptor', $this->fixture->getProjectDescriptor());
+        $this->assertInstanceOf(ProjectDescriptor::class, $this->fixture->getProjectDescriptor());
         $this->assertEquals(
             ProjectDescriptorBuilder::DEFAULT_PROJECT_NAME,
             $this->fixture->getProjectDescriptor()->getName()
@@ -70,7 +71,7 @@ class ProjectDescriptorBuilderTest extends MockeryTestCase
 
     protected function createFileDescriptorCreationMock() : void
     {
-        $fileDescriptor = m::mock('phpDocumentor\Descriptor\FileDescriptor');
+        $fileDescriptor = m::mock(FileDescriptor::class);
         $fileDescriptor->shouldReceive('setErrors');
         $fileDescriptor->shouldReceive('getPath')->andReturn('abc');
 
@@ -95,6 +96,6 @@ class ProjectDescriptorBuilderTest extends MockeryTestCase
      */
     protected function createAssemblerFactoryMock()
     {
-        return m::mock('phpDocumentor\Descriptor\Builder\AssemblerFactory');
+        return m::mock(AssemblerFactory::class);
     }
 }

@@ -29,7 +29,7 @@ final class ProjectAnalyzerTest extends MockeryTestCase
     public function testIfStringOutputContainsAllCounters() : void
     {
         // Arrange
-        $classDescriptor1 = $this->givenAClassWithParent('phpDocumentor\Descriptor\ClassDescriptor');
+        $classDescriptor1 = $this->givenAClassWithParent(ClassDescriptor::class);
         $projectDescriptor = $this->givenAProjectMock();
         $this->whenProjectDescriptorHasTheFollowingFiles($projectDescriptor, [1, 2, 3, 4]);
         $this->whenProjectDescriptorHasTheFollowingElements(
@@ -86,7 +86,7 @@ TEXT;
      */
     private function givenAProjectMock() : m\MockInterface
     {
-        return m::mock('phpDocumentor\Descriptor\ProjectDescriptor')->shouldIgnoreMissing();
+        return m::mock(ProjectDescriptor::class)->shouldIgnoreMissing();
     }
 
     /**
@@ -107,7 +107,7 @@ TEXT;
         array $elements
     ) : void {
         $projectDescriptor->shouldReceive('getIndexes->get')
-            ->with('elements', m::type('phpDocumentor\Descriptor\Collection'))
+            ->with('elements', m::type(DescriptorCollection::class))
             ->andReturn(new Collection($elements));
     }
 

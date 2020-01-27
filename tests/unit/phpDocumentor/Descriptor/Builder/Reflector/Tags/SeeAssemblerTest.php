@@ -39,7 +39,7 @@ class SeeAssemblerTest extends MockeryTestCase
      */
     protected function setUp() : void
     {
-        $this->builderMock = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
+        $this->builderMock = m::mock(ProjectDescriptorBuilder::class);
         $this->fixture = new SeeAssembler();
         $this->fixture->setBuilder($this->builderMock);
     }

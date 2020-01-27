@@ -24,6 +24,7 @@ use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Reflection\Fqsen;
 use function array_keys;
 use function sort;
+use phpDocumentor\Descriptor\NamespaceDescriptor;
 
 /**
  * @coversDefaultClass \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder
@@ -84,11 +85,11 @@ class NamespaceTreeBuilderTest extends MockeryTestCase
             $elementNames
         );
         $this->assertInstanceOf(
-            'phpDocumentor\Descriptor\NamespaceDescriptor',
+            NamespaceDescriptor::class,
             $this->project->getNamespace()->getChildren()->get('My')
         );
         $this->assertInstanceOf(
-            'phpDocumentor\Descriptor\NamespaceDescriptor',
+            NamespaceDescriptor::class,
             $this->project->getNamespace()->getChildren()->get('My')->getChildren()->get('Space')
         );
         $this->assertSame($elements['~\\My'], $this->project->getNamespace()->getChildren()->get('My'));

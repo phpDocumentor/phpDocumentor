@@ -24,7 +24,7 @@ class ReturnAssemblerTest extends MockeryTestCase
      */
     protected function setUp() : void
     {
-        $this->builder = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
+        $this->builder = m::mock(ProjectDescriptorBuilder::class);
         $this->fixture = new ReturnAssembler();
         $this->fixture->setBuilder($this->builder);
     }

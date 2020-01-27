@@ -16,6 +16,7 @@ namespace phpDocumentor\Descriptor;
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Reflection\Fqsen;
+use phpDocumentor\Descriptor\Interfaces\ChildInterface;
 
 /**
  * Tests the functionality for the DescriptorAbstract class.
@@ -30,7 +31,7 @@ class DescriptorAbstractTest extends MockeryTestCase
      */
     protected function setUp() : void
     {
-        $this->fixture = m::mock('phpDocumentor\Descriptor\DescriptorAbstract');
+        $this->fixture = m::mock(DescriptorAbstract::class);
         $this->fixture->shouldDeferMissing();
     }
 
@@ -40,7 +41,7 @@ class DescriptorAbstractTest extends MockeryTestCase
     public function testInitialize() : void
     {
         /** @var m\MockInterface|DescriptorAbstract $mock */
-        $mock = $this->getMockBuilder('phpDocumentor\Descriptor\DescriptorAbstract')
+        $mock = $this->getMockBuilder(DescriptorAbstract::class)
             ->disableOriginalConstructor()
             ->getMock();
         $mock->expects($this->once())->method('setTags')->with(new Collection());
@@ -82,7 +83,7 @@ class DescriptorAbstractTest extends MockeryTestCase
     {
         $this->assertEquals('', $this->fixture->getNamespace());
 
-        $mock = m::mock('phpDocumentor\Descriptor\NamespaceDescriptor');
+        $mock = m::mock(NamespaceDescriptor::class);
 
         $this->fixture->setNamespace($mock);
 
@@ -136,7 +137,7 @@ class DescriptorAbstractTest extends MockeryTestCase
     {
         /** @var m\MockInterface|DescriptorAbstract $mock */
         $mock = m::mock(
-            'phpDocumentor\Descriptor\DescriptorAbstract, phpDocumentor\Descriptor\Interfaces\ChildInterface'
+            DescriptorAbstract::class, ChildInterface::class
         );
         $mock->shouldDeferMissing();
 
@@ -156,7 +157,7 @@ class DescriptorAbstractTest extends MockeryTestCase
     {
         /** @var m\MockInterface|DescriptorAbstract $mock */
         $mock = m::mock(
-            'phpDocumentor\Descriptor\DescriptorAbstract, phpDocumentor\Descriptor\Interfaces\ChildInterface'
+            DescriptorAbstract::class, ChildInterface::class
         );
         $mock->shouldDeferMissing();
 
@@ -176,7 +177,7 @@ class DescriptorAbstractTest extends MockeryTestCase
     {
         /** @var m\MockInterface|DescriptorAbstract $mock */
         $mock = m::mock(
-            'phpDocumentor\Descriptor\DescriptorAbstract, phpDocumentor\Descriptor\Interfaces\ChildInterface'
+            DescriptorAbstract::class, ChildInterface::class
         );
         $mock->shouldDeferMissing();
 
@@ -199,9 +200,9 @@ class DescriptorAbstractTest extends MockeryTestCase
         $this->assertNull($this->fixture->getFile());
         $this->assertSame(0, $this->fixture->getLine());
 
-        $this->fixture->setLocation(m::mock('phpDocumentor\Descriptor\FileDescriptor'), 5);
+        $this->fixture->setLocation(m::mock(FileDescriptor::class), 5);
 
-        $this->assertInstanceOf('phpDocumentor\Descriptor\FileDescriptor', $this->fixture->getFile());
+        $this->assertInstanceOf(FileDescriptor::class, $this->fixture->getFile());
         $this->assertSame(5, $this->fixture->getLine());
     }
 
@@ -226,7 +227,7 @@ class DescriptorAbstractTest extends MockeryTestCase
         $this->assertSame('', $this->fixture->getPath());
 
         /** @var m\MockInterface $file */
-        $file = m::mock('phpDocumentor\Descriptor\FileDescriptor');
+        $file = m::mock(FileDescriptor::class);
         $file->shouldReceive('getPath')->andReturn('path');
         $this->fixture->setLocation($file);
 
@@ -240,7 +241,7 @@ class DescriptorAbstractTest extends MockeryTestCase
     public function testSettingAndGettingTags() : void
     {
         /** @var Collection $mock */
-        $mock = m::mock('phpDocumentor\Descriptor\Collection');
+        $mock = m::mock(Collection::class);
         $this->fixture->setTags($mock);
 
         $this->assertSame($mock, $this->fixture->getTags());
@@ -265,7 +266,7 @@ class DescriptorAbstractTest extends MockeryTestCase
     public function testSettingAndGettingErrors() : void
     {
         /** @var Collection $mock */
-        $mock = m::mock('phpDocumentor\Descriptor\Collection');
+        $mock = m::mock(Collection::class);
         $this->fixture->setErrors($mock);
 
         $this->assertSame($mock, $this->fixture->getErrors());

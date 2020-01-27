@@ -58,7 +58,7 @@ final class ProjectDescriptorTest extends MockeryTestCase
      */
     public function testGetSetFiles() : void
     {
-        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getFiles());
+        $this->assertInstanceOf(Collection::class, $this->fixture->getFiles());
 
         $filesCollection = new Collection();
         $this->fixture->setFiles($filesCollection);
@@ -73,7 +73,7 @@ final class ProjectDescriptorTest extends MockeryTestCase
      */
     public function testGetSetIndexes() : void
     {
-        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getIndexes());
+        $this->assertInstanceOf(Collection::class, $this->fixture->getIndexes());
 
         $indexCollection = new Collection();
         $this->fixture->setIndexes($indexCollection);
@@ -87,7 +87,7 @@ final class ProjectDescriptorTest extends MockeryTestCase
      */
     public function testGetSetNamespace() : void
     {
-        $this->assertInstanceOf('phpDocumentor\Descriptor\NamespaceDescriptor', $this->fixture->getNamespace());
+        $this->assertInstanceOf(NamespaceDescriptor::class, $this->fixture->getNamespace());
 
         $namespaceDescriptor = new NamespaceDescriptor();
         $this->fixture->setNamespace($namespaceDescriptor);
@@ -101,7 +101,7 @@ final class ProjectDescriptorTest extends MockeryTestCase
      */
     public function testRootPackageIsSetForProject() : void
     {
-        $this->assertInstanceOf('phpDocumentor\Descriptor\PackageDescriptor', $this->fixture->getPackage());
+        $this->assertInstanceOf(PackageDescriptor::class, $this->fixture->getPackage());
         $this->assertSame('\\', (string) $this->fixture->getPackage()->getName());
         $this->assertSame('\\', (string) $this->fixture->getPackage()->getFullyQualifiedStructuralElementName());
     }
@@ -112,7 +112,7 @@ final class ProjectDescriptorTest extends MockeryTestCase
      */
     public function testGetSetSettings() : void
     {
-        $this->assertInstanceOf('phpDocumentor\Descriptor\ProjectDescriptor\Settings', $this->fixture->getSettings());
+        $this->assertInstanceOf(Settings::class, $this->fixture->getSettings());
 
         $settings = new Settings();
         $this->fixture->setSettings($settings);
@@ -128,7 +128,7 @@ final class ProjectDescriptorTest extends MockeryTestCase
     public function testGetSetPartials() : void
     {
         $result = $this->fixture->getPartials();
-        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $result);
+        $this->assertInstanceOf(Collection::class, $result);
 
         $partialsCollection = new Collection();
         $this->fixture->setPartials($partialsCollection);

@@ -21,7 +21,7 @@ class DispatcherTest extends MockeryTestCase
      */
     public function testFactoryMethodReturnsInstanceOfSelf() : void
     {
-        $this->assertInstanceOf('phpDocumentor\Event\Dispatcher', Dispatcher::getInstance());
+        $this->assertInstanceOf(Dispatcher::class, Dispatcher::getInstance());
     }
 
     /**
@@ -60,7 +60,7 @@ class DispatcherTest extends MockeryTestCase
         $fixture = Dispatcher::getInstance('mine');
         $this->assertSame($fixture, Dispatcher::getInstance('mine'));
 
-        $newObject = m::mock('phpDocumentor\Event\Dispatcher');
+        $newObject = m::mock(Dispatcher::class);
         Dispatcher::setInstance('mine', $newObject);
         $this->assertSame($newObject, Dispatcher::getInstance('mine'));
     }

@@ -17,6 +17,8 @@ use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Types\Mixed_;
+use phpDocumentor\Descriptor\Tag\MethodDescriptor as TagMethodDescriptor;
+use phpDocumentor\Descriptor\Tag\PropertyDescriptor as TagPropertyDescriptor;
 
 /**
  * Tests the functionality for the TraitDescriptor class.
@@ -97,7 +99,7 @@ final class TraitDescriptorTest extends MockeryTestCase
      */
     public function testMagicMethodsReturnsExpectedCollectionWithTags(bool $isStatic) : void
     {
-        $mockMethodDescriptor = m::mock('phpDocumentor\Descriptor\Tag\MethodDescriptor');
+        $mockMethodDescriptor = m::mock(TagMethodDescriptor::class);
         $mockMethodDescriptor->shouldReceive('getMethodName')->andReturn('Sample');
         $mockMethodDescriptor->shouldReceive('isStatic')->andReturn($isStatic);
         $mockMethodDescriptor->shouldReceive('getDescription')->andReturn('Sample description');
@@ -159,7 +161,7 @@ final class TraitDescriptorTest extends MockeryTestCase
      */
     public function testMagicPropertiesReturnsExpectedCollectionWithTags() : void
     {
-        $mockTagPropertyDescriptor = m::mock('phpDocumentor\Descriptor\Tag\PropertyDescriptor');
+        $mockTagPropertyDescriptor = m::mock(TagPropertyDescriptor::class);
         $mockTagPropertyDescriptor->shouldReceive('getVariableName')->andReturn('Sample');
         $mockTagPropertyDescriptor->shouldReceive('getDescription')->andReturn('Sample description');
         $mockTagPropertyDescriptor->shouldReceive('getType')->andReturn(new Mixed_());
@@ -183,10 +185,10 @@ final class TraitDescriptorTest extends MockeryTestCase
     public function testSettingAndGettingPackage() : void
     {
         $package = new PackageDescriptor();
-        $mockPropertyDescriptor = m::mock('phpDocumentor\Descriptor\PropertyDescriptor');
+        $mockPropertyDescriptor = m::mock(PropertyDescriptor::class);
         $mockPropertyDescriptor->shouldReceive('setPackage')->with($package);
 
-        $mockMethodDescriptor = m::mock('phpDocumentor\Descriptor\MethodDescriptor');
+        $mockMethodDescriptor = m::mock(MethodDescriptor::class);
         $mockMethodDescriptor->shouldReceive('setPackage')->with($package);
 
         $propertyCollection = new Collection([$mockPropertyDescriptor]);

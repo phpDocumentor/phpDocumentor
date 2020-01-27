@@ -48,7 +48,7 @@ final class FlySystemFactoryTest extends MockeryTestCase
 
     protected function setUp() : void
     {
-        $this->mountManagerMock = m::mock('League\Flysystem\MountManager');
+        $this->mountManagerMock = m::mock(MountManager::class);
         $this->filesystemMock = m::mock(Filesystem::class);
         $this->dsn = Dsn::createFromString(sys_get_temp_dir());
         $this->fixture = new FlySystemFactory($this->mountManagerMock);

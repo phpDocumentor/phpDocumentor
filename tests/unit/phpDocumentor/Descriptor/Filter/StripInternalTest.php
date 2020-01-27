@@ -16,6 +16,7 @@ namespace phpDocumentor\Descriptor\Filter;
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
+use phpDocumentor\Descriptor\DescriptorAbstract;
 
 /**
  * Tests the functionality for the StripInternal class.
@@ -35,7 +36,7 @@ final class StripInternalTest extends MockeryTestCase
      */
     protected function setUp() : void
     {
-        $this->builderMock = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
+        $this->builderMock = m::mock(ProjectDescriptorBuilder::class);
         $this->fixture = new StripInternal($this->builderMock);
     }
 
@@ -45,7 +46,7 @@ final class StripInternalTest extends MockeryTestCase
     public function testStripsInternalTagFromDescription() : void
     {
         $this->builderMock->shouldReceive('getProjectDescriptor->isVisibilityAllowed')->andReturn(false);
-        $descriptor = m::mock('phpDocumentor\Descriptor\DescriptorAbstract');
+        $descriptor = m::mock(DescriptorAbstract::class);
         $descriptor->shouldReceive('getTags->get')->with('internal')->andReturn(null);
 
         $descriptor->shouldReceive('getDescription')->andReturn('without {@internal blabla }}internal tag');
@@ -60,7 +61,7 @@ final class StripInternalTest extends MockeryTestCase
     public function testStripsInternalTagFromDescriptionIfTagDescriptionContainsBraces() : void
     {
         $this->builderMock->shouldReceive('getProjectDescriptor->isVisibilityAllowed')->andReturn(false);
-        $descriptor = m::mock('phpDocumentor\Descriptor\DescriptorAbstract');
+        $descriptor = m::mock(DescriptorAbstract::class);
         $descriptor->shouldReceive('getTags->get')->with('internal')->andReturn(null);
 
         $descriptor->shouldReceive('getDescription')->andReturn('without {@internal bla{bla} }}internal tag');
@@ -75,7 +76,7 @@ final class StripInternalTest extends MockeryTestCase
     public function testResolvesInternalTagFromDescriptionIfParsePrivateIsTrue() : void
     {
         $this->builderMock->shouldReceive('getProjectDescriptor->isVisibilityAllowed')->andReturn(true);
-        $descriptor = m::mock('phpDocumentor\Descriptor\DescriptorAbstract');
+        $descriptor = m::mock(DescriptorAbstract::class);
 
         $descriptor->shouldReceive('getDescription')->andReturn('without {@internal blabla }}internal tag');
         $descriptor->shouldReceive('setDescription')->with('without blabla internal tag');
@@ -90,7 +91,7 @@ final class StripInternalTest extends MockeryTestCase
     {
         $this->builderMock->shouldReceive('getProjectDescriptor->isVisibilityAllowed')->andReturn(false);
 
-        $descriptor = m::mock('phpDocumentor\Descriptor\DescriptorAbstract');
+        $descriptor = m::mock(DescriptorAbstract::class);
         $descriptor->shouldReceive('getDescription');
         $descriptor->shouldReceive('setDescription');
         $descriptor->shouldReceive('getTags->get')->with('internal')->andReturn(true);
@@ -105,7 +106,7 @@ final class StripInternalTest extends MockeryTestCase
     {
         $this->builderMock->shouldReceive('getProjectDescriptor->isVisibilityAllowed')->andReturn(true);
 
-        $descriptor = m::mock('phpDocumentor\Descriptor\DescriptorAbstract');
+        $descriptor = m::mock(DescriptorAbstract::class);
         $descriptor->shouldReceive('getDescription');
         $descriptor->shouldReceive('setDescription');
         $descriptor->shouldReceive('getTags->get')->with('internal')->andReturn(true);
@@ -120,7 +121,7 @@ final class StripInternalTest extends MockeryTestCase
     {
         $this->builderMock->shouldReceive('getProjectDescriptor->isVisibilityAllowed')->andReturn(true);
 
-        $descriptor = m::mock('phpDocumentor\Descriptor\DescriptorAbstract');
+        $descriptor = m::mock(DescriptorAbstract::class);
         $descriptor->shouldReceive('getDescription');
         $descriptor->shouldReceive('setDescription');
         $descriptor->shouldReceive('getTags->get')->with('internal')->andReturn(false);

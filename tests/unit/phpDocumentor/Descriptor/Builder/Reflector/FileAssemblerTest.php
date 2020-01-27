@@ -22,6 +22,8 @@ use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\Php\File;
 use function md5;
+use phpDocumentor\Descriptor\DescriptorAbstract;
+use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 
 /**
  * Test class for \phpDocumentor\Descriptor\Builder
@@ -56,7 +58,7 @@ final class FileAssemblerTest extends MockeryTestCase
         $content = '<?php ... ?>';
         $hash = md5($content);
 
-        $abstractDescriptor = m::mock('phpDocumentor\Descriptor\DescriptorAbstract');
+        $abstractDescriptor = m::mock(DescriptorAbstract::class);
         $abstractDescriptor->shouldReceive('getLineNumber')->andReturn(1337);
 
         $docBlockDescription = new DocBlock\Description(
@@ -114,7 +116,7 @@ DOCBLOCK
         $settings = new Settings();
         $settings->includeSource();
 
-        $projectDescriptorBuilderMock = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
+        $projectDescriptorBuilderMock = m::mock(ProjectDescriptorBuilder::class);
         $projectDescriptorBuilderMock->shouldReceive('getDefaultPackage')
             ->andReturn($this->defaultPackage);
 
@@ -123,7 +125,7 @@ DOCBLOCK
 
         $projectDescriptorBuilderMock->shouldReceive('buildDescriptor')->andReturnUsing(
             static function ($param) {
-                $mock = m::mock('phpDocumentor\Descriptor\DescriptorAbstract');
+                $mock = m::mock(DescriptorAbstract::class);
                 $mock->shouldReceive('setLocation')->atLeast()->once();
                 $mock->shouldReceive('getTags')->atLeast()->once()->andReturn(new Collection());
                 $mock->shouldReceive('getFullyQualifiedStructuralElementName')

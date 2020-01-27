@@ -56,7 +56,7 @@ class MethodDescriptorTest extends MockeryTestCase
     public function testSetAndGetArguments() : void
     {
         $expected = new Collection(['a' => 'b']);
-        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getArguments());
+        $this->assertInstanceOf(Collection::class, $this->fixture->getArguments());
 
         $this->fixture->setArguments($expected);
         $result = $this->fixture->getArguments();

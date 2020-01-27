@@ -37,7 +37,7 @@ class TagDescriptorTest extends MockeryTestCase
      */
     public function testIfErrorsAreInitializedToAnEmptyCollectionOnInstantiation() : void
     {
-        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getErrors());
+        $this->assertInstanceOf(Collection::class, $this->fixture->getErrors());
         $this->assertEmpty($this->fixture->getErrors()->getAll());
     }
 
