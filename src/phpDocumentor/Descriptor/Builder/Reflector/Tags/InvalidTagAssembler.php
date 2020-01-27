@@ -8,6 +8,7 @@ use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Descriptor\Validation\Error;
 use phpDocumentor\Reflection\DocBlock\Tags\InvalidTag;
+use function sprintf;
 
 final class InvalidTagAssembler extends AssemblerAbstract
 {
@@ -23,7 +24,12 @@ final class InvalidTagAssembler extends AssemblerAbstract
         $descriptor->getErrors()->add(
             new Error(
                 'ERROR',
-                $data->getException()->getMessage(),
+                sprintf(
+                    'Tag "%s" with body "%s" has error %s',
+                    $data->getName(),
+                    $data->render(null),
+                    $data->getException() === null ? '' : $data->getException()->getMessage()
+                ),
                 null
             )
         );
