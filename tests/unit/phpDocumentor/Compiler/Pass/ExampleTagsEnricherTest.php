@@ -8,8 +8,8 @@ use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery\MockInterface;
 use phpDocumentor\Descriptor\DescriptorAbstract;
-use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\Example\Finder;
+use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Reflection\DocBlock\ExampleFinder;
 
 /**
