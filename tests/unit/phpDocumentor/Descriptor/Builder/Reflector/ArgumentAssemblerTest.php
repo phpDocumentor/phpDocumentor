@@ -19,6 +19,7 @@ use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\Php\Argument;
 use phpDocumentor\Reflection\Type;
 use phpDocumentor\Reflection\Types\Boolean;
+use phpDocumentor\Descriptor\Tag\ParamDescriptor;
 
 /**
  * Test class for phpDocumentor\Descriptor\Builder\Reflector\ArgumentAssembler
@@ -36,7 +37,7 @@ class ArgumentAssemblerTest extends MockeryTestCase
      */
     protected function setUp() : void
     {
-        $this->builderMock = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
+        $this->builderMock = m::mock(ProjectDescriptorBuilder::class);
         $this->fixture = new ArgumentAssembler();
         $this->fixture->setBuilder($this->builderMock);
     }
@@ -75,7 +76,7 @@ class ArgumentAssemblerTest extends MockeryTestCase
         $argumentReflectorMock = $this->givenAnArgumentReflectorWithNameAndType($name, $type);
 
         // Mock a paramDescriptor
-        $paramDescriptorTagMock = m::mock('phpDocumentor\Descriptor\Tag\ParamDescriptor');
+        $paramDescriptorTagMock = m::mock(ParamDescriptor::class);
         $paramDescriptorTagMock->shouldReceive('getVariableName')->once()->andReturn($name);
         $paramDescriptorTagMock->shouldReceive('getDescription')->once()->andReturn('Is this a good argument, or nah?');
         $paramDescriptorTagMock->shouldReceive('getType')->once()->andReturn($type);
@@ -103,7 +104,7 @@ class ArgumentAssemblerTest extends MockeryTestCase
         $argumentReflectorMock = $this->givenAnArgumentReflectorWithNameAndType($name, $type, true);
 
         // Mock a paramDescriptor
-        $paramDescriptorTagMock = m::mock('phpDocumentor\Descriptor\Tag\ParamDescriptor');
+        $paramDescriptorTagMock = m::mock(ParamDescriptor::class);
         $paramDescriptorTagMock->shouldReceive('getVariableName')->once()->andReturn($name);
         $paramDescriptorTagMock->shouldReceive('getDescription')->once()->andReturn('Is this a good argument, or nah?');
         $paramDescriptorTagMock->shouldReceive('getType')->once()->andReturn($type);

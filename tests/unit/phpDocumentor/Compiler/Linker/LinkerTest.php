@@ -21,6 +21,7 @@ use phpDocumentor\Reflection\Fqsen;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use function get_class;
+use phpDocumentor\Descriptor\FileDescriptor;
 
 /**
  * Tests the functionality for the Linker class.
@@ -49,9 +50,9 @@ final class LinkerTest extends MockeryTestCase
     public function testSetFieldsToSubstitute() : void
     {
         $elementList = [
-            'phpDocumentor\Descriptor\ProjectDescriptor' => 'files',
-            'phpDocumentor\Descriptor\FileDescriptor' => 'classes',
-            'phpDocumentor\Descriptor\ClassDescriptor' => 'parent',
+            ProjectDescriptor::class => 'files',
+            FileDescriptor::class    => 'classes',
+            ClassDescriptor::class   => 'parent',
         ];
         $linker = new Linker($elementList, new DescriptorRepository());
 

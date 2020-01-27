@@ -16,6 +16,7 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\FunctionDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Behat\Contexts\EnvironmentContext;
 
 class BaseContext
 {
@@ -27,7 +28,7 @@ class BaseContext
     {
         $environment = $scope->getEnvironment();
 
-        $this->environmentContext = $environment->getContext('phpDocumentor\Behat\Contexts\EnvironmentContext');
+        $this->environmentContext = $environment->getContext(EnvironmentContext::class);
     }
 
     protected function findClassByFqsen(string $classFqsen) : ClassDescriptor

@@ -24,7 +24,7 @@ class VarAssemblerTest extends MockeryTestCase
      */
     protected function setUp() : void
     {
-        $this->builder = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
+        $this->builder = m::mock(ProjectDescriptorBuilder::class);
         $this->fixture = new VarAssembler();
         $this->fixture->setBuilder($this->builder);
     }

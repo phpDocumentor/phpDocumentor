@@ -20,6 +20,7 @@ use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Descriptor\TagDescriptor;
+use phpDocumentor\Descriptor\DescriptorAbstract;
 
 /**
  * Tests the functionality for the StripOnVisibility class.
@@ -39,7 +40,7 @@ final class StripOnVisibilityTest extends MockeryTestCase
      */
     protected function setUp() : void
     {
-        $this->builderMock = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
+        $this->builderMock = m::mock(ProjectDescriptorBuilder::class);
         $this->fixture = new StripOnVisibility($this->builderMock);
     }
 
@@ -104,7 +105,7 @@ final class StripOnVisibilityTest extends MockeryTestCase
     {
         $this->builderMock->shouldReceive('getProjectDescriptor->isVisibilityAllowed')->andReturn(false);
 
-        $descriptor = m::mock('\phpDocumentor\Descriptor\DescriptorAbstract');
+        $descriptor = m::mock(DescriptorAbstract::class);
         $descriptor->shouldReceive('getTags')->andReturn(new Collection());
 
         $this->assertSame($descriptor, $this->fixture->__invoke($descriptor));

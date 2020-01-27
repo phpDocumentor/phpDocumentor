@@ -41,7 +41,7 @@ class FunctionAssemblerTest extends MockeryTestCase
      */
     protected function setUp() : void
     {
-        $this->builderMock = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
+        $this->builderMock = m::mock(ProjectDescriptorBuilder::class);
         $this->builderMock->shouldReceive('buildDescriptor')->andReturnUsing(
             static function ($value) {
                 switch (get_class($value)) {
@@ -52,7 +52,7 @@ class FunctionAssemblerTest extends MockeryTestCase
                 }
             }
         );
-        $this->argumentAssemblerMock = m::mock('phpDocumentor\Descriptor\Builder\Reflector\ArgumentAssembler');
+        $this->argumentAssemblerMock = m::mock(ArgumentAssembler::class);
         $this->argumentAssemblerMock->shouldReceive('getBuilder')->andReturnNull();
         $this->argumentAssemblerMock->shouldReceive('setBuilder')->with($this->builderMock);
         $this->fixture = new FunctionAssembler($this->argumentAssemblerMock);

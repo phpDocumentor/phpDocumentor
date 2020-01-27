@@ -36,7 +36,7 @@ final class PropertyAssemblerTest extends MockeryTestCase
      */
     protected function setUp() : void
     {
-        $this->builderMock = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
+        $this->builderMock = m::mock(ProjectDescriptorBuilder::class);
         $this->builderMock->shouldReceive('buildDescriptor')->andReturn(null);
 
         $this->fixture = new PropertyAssembler();

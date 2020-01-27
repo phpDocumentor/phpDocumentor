@@ -39,7 +39,7 @@ class UsesAssemblerTest extends MockeryTestCase
      */
     protected function setUp() : void
     {
-        $this->builderMock = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
+        $this->builderMock = m::mock(ProjectDescriptorBuilder::class);
         $this->fixture = new UsesAssembler();
         $this->fixture->setBuilder($this->builderMock);
     }

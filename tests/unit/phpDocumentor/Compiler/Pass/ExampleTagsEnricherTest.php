@@ -9,6 +9,8 @@ use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery\MockInterface;
 use phpDocumentor\Descriptor\Example\Finder;
 use phpDocumentor\Reflection\DocBlock\ExampleFinder;
+use phpDocumentor\Descriptor\DescriptorAbstract;
+use phpDocumentor\Descriptor\ProjectDescriptor;
 
 /**
  * Tests the \phpDocumentor\Compiler\Pass\ExampleTagsEnricher class.
@@ -128,7 +130,7 @@ class ExampleTagsEnricherTest extends MockeryTestCase
      */
     private function givenAChildDescriptorWithDescription(string $description) : MockInterface
     {
-        $descriptor = m::mock('phpDocumentor\Descriptor\DescriptorAbstract');
+        $descriptor = m::mock(DescriptorAbstract::class);
         $descriptor->shouldReceive('getDescription')->andReturn($description);
 
         return $descriptor;
@@ -141,7 +143,7 @@ class ExampleTagsEnricherTest extends MockeryTestCase
      */
     private function givenAProjectDescriptorWithChildDescriptors($descriptors) : MockInterface
     {
-        $projectDescriptor = m::mock('phpDocumentor\Descriptor\ProjectDescriptor');
+        $projectDescriptor = m::mock(ProjectDescriptor::class);
         $projectDescriptor->shouldReceive('getIndexes->get')->with('elements')->andReturn($descriptors);
 
         return $projectDescriptor;
