@@ -19,12 +19,12 @@ use phpDocumentor\Descriptor\ConstantDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\FunctionDescriptor;
 use phpDocumentor\Descriptor\InterfaceDescriptor;
+use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Reflection\Fqsen;
 use function array_keys;
 use function sort;
-use phpDocumentor\Descriptor\NamespaceDescriptor;
 
 /**
  * @coversDefaultClass \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder

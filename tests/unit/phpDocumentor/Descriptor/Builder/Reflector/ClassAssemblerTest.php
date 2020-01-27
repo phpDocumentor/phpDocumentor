@@ -16,15 +16,15 @@ namespace phpDocumentor\Descriptor\Builder\Reflector;
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery\MockInterface;
+use phpDocumentor\Descriptor\ConstantDescriptor;
+use phpDocumentor\Descriptor\MethodDescriptor;
+use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Php\Class_;
 use phpDocumentor\Reflection\Php\Constant;
 use phpDocumentor\Reflection\Php\Method;
 use phpDocumentor\Reflection\Php\Property;
-use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
-use phpDocumentor\Descriptor\MethodDescriptor;
-use phpDocumentor\Descriptor\ConstantDescriptor;
 
 /**
  * Test class for \phpDocumentor\Descriptor\Builder

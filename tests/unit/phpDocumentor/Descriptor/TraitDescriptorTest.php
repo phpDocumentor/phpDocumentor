@@ -15,10 +15,10 @@ namespace phpDocumentor\Descriptor;
 
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
-use phpDocumentor\Reflection\Fqsen;
-use phpDocumentor\Reflection\Types\Mixed_;
 use phpDocumentor\Descriptor\Tag\MethodDescriptor as TagMethodDescriptor;
 use phpDocumentor\Descriptor\Tag\PropertyDescriptor as TagPropertyDescriptor;
+use phpDocumentor\Reflection\Fqsen;
+use phpDocumentor\Reflection\Types\Mixed_;
 
 /**
  * Tests the functionality for the TraitDescriptor class.

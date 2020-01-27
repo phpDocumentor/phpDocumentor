@@ -17,13 +17,13 @@ use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery\MockInterface;
 use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\PackageDescriptor;
+use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\Php\File;
 use function md5;
-use phpDocumentor\Descriptor\DescriptorAbstract;
-use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 
 /**
  * Test class for \phpDocumentor\Descriptor\Builder

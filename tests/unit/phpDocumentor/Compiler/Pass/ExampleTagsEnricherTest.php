@@ -7,10 +7,10 @@ namespace phpDocumentor\Compiler\Pass;
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery\MockInterface;
-use phpDocumentor\Descriptor\Example\Finder;
-use phpDocumentor\Reflection\DocBlock\ExampleFinder;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\Example\Finder;
+use phpDocumentor\Reflection\DocBlock\ExampleFinder;
 
 /**
  * Tests the \phpDocumentor\Compiler\Pass\ExampleTagsEnricher class.
