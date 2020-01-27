@@ -137,7 +137,8 @@ class DescriptorAbstractTest extends MockeryTestCase
     {
         /** @var m\MockInterface|DescriptorAbstract $mock */
         $mock = m::mock(
-            DescriptorAbstract::class, ChildInterface::class
+            DescriptorAbstract::class,
+            ChildInterface::class
         );
         $mock->shouldDeferMissing();
 
@@ -157,7 +158,8 @@ class DescriptorAbstractTest extends MockeryTestCase
     {
         /** @var m\MockInterface|DescriptorAbstract $mock */
         $mock = m::mock(
-            DescriptorAbstract::class, ChildInterface::class
+            DescriptorAbstract::class,
+            ChildInterface::class
         );
         $mock->shouldDeferMissing();
 
@@ -177,7 +179,8 @@ class DescriptorAbstractTest extends MockeryTestCase
     {
         /** @var m\MockInterface|DescriptorAbstract $mock */
         $mock = m::mock(
-            DescriptorAbstract::class, ChildInterface::class
+            DescriptorAbstract::class,
+            ChildInterface::class
         );
         $mock->shouldDeferMissing();
 
