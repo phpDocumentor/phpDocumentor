@@ -130,6 +130,9 @@ final class Transform
         );
     }
 
+    /**
+     * @param array<string, string> $templateNames
+     */
     private function loadTemplatesBasedOnNames(array $templateNames) : void
     {
         $stopWatch = new Stopwatch();

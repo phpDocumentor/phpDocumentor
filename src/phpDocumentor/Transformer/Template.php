@@ -26,6 +26,9 @@ use function preg_match;
 
 /**
  * Model representing a template.
+ *
+ * @template-implements ArrayAccess<int|string, Transformation>
+ * @template-implements IteratorAggregate<int|string, Transformation>
  */
 final class Template implements ArrayAccess, Countable, IteratorAggregate
 {
@@ -272,6 +275,9 @@ final class Template implements ArrayAccess, Countable, IteratorAggregate
         }
     }
 
+    /**
+     * @return ArrayIterator<int|string, Transformation>
+     */
     public function getIterator() : ArrayIterator
     {
         return new ArrayIterator($this->transformations);

@@ -105,6 +105,9 @@ final class LinkRenderer
         return $this->destination;
     }
 
+    /**
+     * @param Descriptor|Fqsen|Uri $value
+     */
     public function link($value) : string
     {
         $uri = $this->router->generate($value);
@@ -288,6 +291,9 @@ final class LinkRenderer
         return $url ? sprintf('<a href="%s">%s</a>', $url, (string) $node) : (string) $node;
     }
 
+    /**
+     * @param iterable<Type> $value
+     */
     private function renderType(iterable $value) : array
     {
         $result = [];

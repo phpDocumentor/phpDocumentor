@@ -31,7 +31,7 @@ interface ChildInterface
     /**
      * Sets the parent for this Descriptor.
      *
-     * @param ?DescriptorAbstract $parent
+     * @param DescriptorAbstract|Fqsen|string|null $parent
      */
-    public function setParent(?DescriptorAbstract $parent) : void;
+    public function setParent($parent) : void;
 }

@@ -18,6 +18,9 @@ use League\Pipeline\PipelineInterface;
 
 final class PipelineFactory
 {
+    /**
+     * @param iterable<callable> $stages
+     */
     public static function create(iterable $stages) : PipelineInterface
     {
         $builder = new PipelineBuilder();

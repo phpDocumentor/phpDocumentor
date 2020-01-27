@@ -26,6 +26,9 @@ use function count;
  *
  * The goal for this class is to allow Descriptors to be easily retrieved and set so that interaction in
  * templates becomes easier.
+ *
+ * @template-implements ArrayAccess<string|int, mixed>
+ * @template-implements IteratorAggregate<string|int, mixed>
  */
 class Collection implements Countable, IteratorAggregate, ArrayAccess
 {
@@ -96,6 +99,8 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * Retrieves an iterator to traverse this object.
+     *
+     * @return ArrayIterator<string|int, mixed>
      */
     public function getIterator() : ArrayIterator
     {

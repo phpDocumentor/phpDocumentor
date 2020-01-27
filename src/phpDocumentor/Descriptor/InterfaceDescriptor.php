@@ -20,7 +20,7 @@ use phpDocumentor\Reflection\Fqsen;
  */
 class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\InterfaceInterface
 {
-    /** @var Collection $extends */
+    /** @var Collection $parents */
     protected $parents;
 
     /** @var Collection $constants */

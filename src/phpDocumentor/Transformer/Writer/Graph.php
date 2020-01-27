@@ -43,6 +43,9 @@ final class Graph extends WriterAbstract implements ProjectDescriptor\WithCustom
         $this->plantumlClassDiagram = $plantumlClassDiagram;
     }
 
+    /**
+     * @return array<string, bool>
+     */
     public function getDefaultSettings() : array
     {
         return [ 'graphs.enabled' => false ];

@@ -27,7 +27,7 @@ class ConstantDescriptor extends DescriptorAbstract implements Interfaces\Consta
     /** @var ClassDescriptor|InterfaceDescriptor|null $parent */
     protected $parent;
 
-    /** @var Type $type */
+    /** @var Type $types */
     protected $types;
 
     /** @var string $value */
