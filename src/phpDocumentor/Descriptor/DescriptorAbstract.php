@@ -44,7 +44,7 @@ abstract class DescriptorAbstract implements Descriptor, Filterable
     /** @var string $description A more extensive description of this element. */
     protected $description = '';
 
-    /** @var FileDescriptor|null $file The file to which this element belongs; if applicable */
+    /** @var FileDescriptor|null $fileDescriptor The file to which this element belongs; if applicable */
     protected $fileDescriptor;
 
     /** @var int $line The line number on which this element occurs. */

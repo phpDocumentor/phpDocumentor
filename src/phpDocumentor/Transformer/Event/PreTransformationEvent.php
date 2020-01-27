@@ -27,7 +27,7 @@ final class PreTransformationEvent extends Event
     /** @var object */
     private $subject;
 
-    public function __construct($subject, Transformation $transformation)
+    public function __construct(object $subject, Transformation $transformation)
     {
         $this->subject = $subject;
         $this->transformation = $transformation;

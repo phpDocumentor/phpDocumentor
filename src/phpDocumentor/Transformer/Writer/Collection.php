@@ -23,6 +23,8 @@ use function preg_match;
  * In this collection we can receive writers.
  *
  * In addition this class can also verify if all requirements for the various writers in it are met.
+ *
+ * @template-extends ArrayObject<string,WriterAbstract>
  */
 class Collection extends ArrayObject
 {

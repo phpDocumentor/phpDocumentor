@@ -138,6 +138,8 @@ final class Settings
 
     /**
      * Sets a property's value and if it differs from the previous then mark these settings as modified.
+     *
+     * @param int|bool|array $value
      */
     private function setValueAndCheckIfModified(string $propertyName, $value) : void
     {

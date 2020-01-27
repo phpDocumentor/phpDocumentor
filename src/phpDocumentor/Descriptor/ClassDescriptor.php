@@ -24,7 +24,11 @@ use function sprintf;
  */
 class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInterface
 {
-    /** @var ClassDescriptor|null $extends Reference to an instance of the superclass for this class, if any. */
+    /**
+     * Reference to an instance of the superclass for this class, if any.
+     *
+     * @var DescriptorAbstract|Fqsen|string|null $parent
+     */
     protected $parent;
 
     /** @var Collection $implements References to interfaces that are implemented by this class. */
@@ -63,7 +67,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     }
 
     /**
-     * {@inheritDoc}
+     * @param DescriptorAbstract|Fqsen|string|null $parents
      */
     public function setParent($parents) : void
     {
@@ -71,7 +75,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     }
 
     /**
-     * {@inheritDoc}
+     * @return DescriptorAbstract|Fqsen|string|null
      */
     public function getParent()
     {
@@ -97,7 +101,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     /**
      * {@inheritDoc}
      */
-    public function setFinal($final) : void
+    public function setFinal(bool $final) : void
     {
         $this->final = $final;
     }
@@ -113,7 +117,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     /**
      * {@inheritDoc}
      */
-    public function setAbstract($abstract) : void
+    public function setAbstract(bool $abstract) : void
     {
         $this->abstract = $abstract;
     }
@@ -145,7 +149,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     /**
      * {@inheritDoc}
      */
-    public function getInheritedConstants()
+    public function getInheritedConstants() : Collection
     {
         if ($this->getParent() === null || (!$this->getParent() instanceof self)) {
             return new Collection();

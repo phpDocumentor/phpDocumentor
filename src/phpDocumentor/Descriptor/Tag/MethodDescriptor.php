@@ -30,7 +30,7 @@ class MethodDescriptor extends TagDescriptor
     /** @var bool */
     private $static;
 
-    public function __construct($name)
+    public function __construct(string $name)
     {
         parent::__construct($name);
 
