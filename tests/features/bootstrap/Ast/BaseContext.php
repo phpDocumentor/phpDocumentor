@@ -13,10 +13,10 @@
 namespace phpDocumentor\Behat\Contexts\Ast;
 
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use phpDocumentor\Behat\Contexts\EnvironmentContext;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\FunctionDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\Behat\Contexts\EnvironmentContext;
 
 class BaseContext
 {
