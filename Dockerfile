@@ -19,7 +19,8 @@ ENV PATH="/opt/phpdoc/bin:${PATH}"
 COPY . /opt/phpdoc
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
-RUN cd /opt/phpdoc /usr/bin/composer install --prefer-dist -o --no-interaction --no-dev \
+RUN cd /opt/phpdoc \
+    && /usr/bin/composer install --prefer-dist -o --no-interaction --no-dev \
     && echo "memory_limit=-1" >> /usr/local/etc/php/conf.d/phpdoc.ini
 
 ENTRYPOINT ["/opt/phpdoc/bin/phpdoc"]
