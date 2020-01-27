@@ -16,10 +16,10 @@ namespace phpDocumentor\Descriptor\Builder\Reflector;
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
+use phpDocumentor\Descriptor\Tag\ParamDescriptor;
 use phpDocumentor\Reflection\Php\Argument;
 use phpDocumentor\Reflection\Type;
 use phpDocumentor\Reflection\Types\Boolean;
-use phpDocumentor\Descriptor\Tag\ParamDescriptor;
 
 /**
  * Test class for phpDocumentor\Descriptor\Builder\Reflector\ArgumentAssembler

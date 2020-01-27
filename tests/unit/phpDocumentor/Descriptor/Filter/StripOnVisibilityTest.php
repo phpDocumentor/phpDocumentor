@@ -16,11 +16,11 @@ namespace phpDocumentor\Descriptor\Filter;
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Descriptor\TagDescriptor;
-use phpDocumentor\Descriptor\DescriptorAbstract;
 
 /**
  * Tests the functionality for the StripOnVisibility class.

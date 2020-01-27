@@ -15,8 +15,8 @@ namespace phpDocumentor\Descriptor;
 
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
-use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Descriptor\Interfaces\ChildInterface;
+use phpDocumentor\Reflection\Fqsen;
 
 /**
  * Tests the functionality for the DescriptorAbstract class.

@@ -15,8 +15,8 @@ namespace phpDocumentor\Transformer\Event;
 
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
-use stdClass;
 use phpDocumentor\Descriptor\ProjectDescriptor;
+use stdClass;
 
 /**
  * @coversDefaultClass \phpDocumentor\Transformer\Event\PreTransformEvent

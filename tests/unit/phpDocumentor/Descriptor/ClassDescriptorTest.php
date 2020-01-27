@@ -15,13 +15,13 @@ namespace phpDocumentor\Descriptor;
 
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
+use phpDocumentor\Descriptor\Tag\MethodDescriptor as TagMethodDescriptor;
+use phpDocumentor\Descriptor\Tag\PropertyDescriptor as TagPropertyDescriptor;
 use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Types\String_;
 use stdClass;
 use function current;
-use phpDocumentor\Descriptor\Tag\PropertyDescriptor as TagPropertyDescriptor;
-use phpDocumentor\Descriptor\Tag\MethodDescriptor as TagMethodDescriptor;
 
 /**
  * Tests the functionality for the ClassDescriptor class.

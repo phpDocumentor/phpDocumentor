@@ -15,8 +15,8 @@ namespace phpDocumentor\Descriptor\Filter;
 
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
-use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Descriptor\DescriptorAbstract;
+use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 
 /**
  * Tests the functionality for the StripInternal class.

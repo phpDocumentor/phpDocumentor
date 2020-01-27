@@ -16,12 +16,12 @@ namespace phpDocumentor\Compiler\Linker;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Reflection\Fqsen;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use function get_class;
-use phpDocumentor\Descriptor\FileDescriptor;
 
 /**
  * Tests the functionality for the Linker class.
