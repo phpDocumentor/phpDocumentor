@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f23858167902b61593c222bb5e1f9259",
+    "content-hash": "5649c2f1e168a5bb0a08ca8bc202f4c6",
     "packages": [
         {
             "name": "composer/ca-bundle",
@@ -1118,16 +1118,16 @@
         },
         {
             "name": "phpdocumentor/reflection-docblock",
-            "version": "5.0.0-alpha9",
+            "version": "5.0.0-beta",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/ReflectionDocBlock.git",
-                "reference": "cf16f630f2211d388b8d254bf2ea936c232b3cb4"
+                "reference": "93919e334b0cb304fb04429b4b3a3b1e1787c873"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/cf16f630f2211d388b8d254bf2ea936c232b3cb4",
-                "reference": "cf16f630f2211d388b8d254bf2ea936c232b3cb4",
+                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/93919e334b0cb304fb04429b4b3a3b1e1787c873",
+                "reference": "93919e334b0cb304fb04429b4b3a3b1e1787c873",
                 "shasum": ""
             },
             "require": {
@@ -1167,7 +1167,7 @@
                 }
             ],
             "description": "With this component, a library can provide support for annotations via DocBlocks or otherwise retrieve information that is embedded in a DocBlock.",
-            "time": "2020-01-16T08:49:07+00:00"
+            "time": "2020-01-27T20:01:09+00:00"
         },
         {
             "name": "phpdocumentor/type-resolver",
@@ -3932,7 +3932,7 @@
         "phpdocumentor/graphviz": 20,
         "phpdocumentor/reflection": 10,
         "phpdocumentor/reflection-common": 15,
-        "phpdocumentor/reflection-docblock": 15
+        "phpdocumentor/reflection-docblock": 10
     },
     "prefer-stable": false,
     "prefer-lowest": false,
