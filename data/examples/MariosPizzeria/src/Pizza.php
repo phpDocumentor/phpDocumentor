@@ -23,6 +23,8 @@ final class Pizza
      */
     private const TYPE_AMERICAN = 'american';
 
+    private const TYPE_HYBRID = ['italian,spanish',1, 'american'];
+
     /**
      * Name of your own custom Pizza.
      *

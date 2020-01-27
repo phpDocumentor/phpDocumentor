@@ -163,7 +163,7 @@ services:
         class: phpDocumentor\Reflection\Php\NodesFactory
         factory: [phpDocumentor\Reflection\Php\NodesFactory, 'createInstance']
 
-    phpDocumentor\Reflection\PrettyPrinter: ~
+    PhpParser\PrettyPrinter\Standard: ~
     phpDocumentor\Reflection\FqsenResolver: ~
     phpDocumentor\Reflection\DocBlock\TagFactory: '@phpDocumentor\Reflection\DocBlock\StandardTagFactory'
     phpDocumentor\Reflection\DocBlock\StandardTagFactory:
