@@ -20,6 +20,8 @@ use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Types\Integer;
+use phpDocumentor\Reflection\Types\Nullable;
+use phpDocumentor\Reflection\Types\Object_;
 use phpDocumentor\Transformer\Router\Router;
 
 /**
@@ -75,6 +77,27 @@ final class LinkRendererTest extends MockeryTestCase
         $result = $this->renderer->render($fqsen, 'url');
 
         $this->assertSame('classes/My.Namespace.Class.html', $result);
+    }
+
+    /**
+     * @covers ::render
+     * @covers ::convertToRootPath
+     */
+    public function testRenderWithNullableFqsen() : void
+    {
+        $fqsen = new Fqsen('\My\Namespace\Class');
+        $descriptor = new ClassDescriptor();
+        $descriptor->setFullyQualifiedStructuralElementName($fqsen);
+        $this->projectDescriptor->getIndexes()->get('elements')->set('\My\Namespace\Class', $descriptor);
+
+        $this->router
+            ->shouldReceive('generate')
+            ->andReturn('/classes/My.Namespace.Class.html');
+
+        $nullable = new Nullable(new Object_($fqsen));
+        $result = $this->renderer->render($nullable, 'url');
+
+        $this->assertSame(['classes/My.Namespace.Class.html', 'null'], $result);
     }
 
     /**

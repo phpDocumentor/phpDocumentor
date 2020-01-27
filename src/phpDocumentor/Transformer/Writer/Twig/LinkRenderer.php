@@ -22,6 +22,8 @@ use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Path;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Type;
+use phpDocumentor\Reflection\Types\Null_;
+use phpDocumentor\Reflection\Types\Nullable;
 use phpDocumentor\Reflection\Types\Object_;
 use phpDocumentor\Transformer\Router\Router;
 use function array_fill;
@@ -114,7 +116,7 @@ final class LinkRenderer
     }
 
     /**
-     * @param Type[]|Descriptor|Fqsen|Path|string|iterable $value
+     * @param Type[]|Type|Descriptor|Fqsen|Path|string|iterable $value
      *
      * @return string[]|string
      */
@@ -122,6 +124,10 @@ final class LinkRenderer
     {
         if (is_array($value) && current($value) instanceof Type) {
             return $this->renderType($value);
+        }
+
+        if ($value instanceof Nullable) {
+            return $this->renderASeriesOfLinks([$value->getActualType(), new Null_()], $presentation);
         }
 
         if (is_iterable($value)) {
