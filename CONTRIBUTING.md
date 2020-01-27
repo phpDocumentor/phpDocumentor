@@ -48,7 +48,7 @@ Once you cloned the repository you should be able to run the following commands 
 
 To run the tests you can use the following command:
 
-    $ make phpunit
+    $ make test
 
 Before issuing a pull request it is also recommended to run the following commands:
 
@@ -77,6 +77,16 @@ unit tests in your pull requests as they also help understand what the contribut
 In order to run the unit tests you can execute the following command from your phpDocumentor folder:
 
     $ make test
+
+### Running tests without Docker
+
+To make sure that the application is tested in a controlled way we use Docker. However, sometimes it is not possible to
+use Docker on a development machine. In these cases it is recommended to run the following commands:
+
+    $ make install-phive
+    $ ./tools/phive.phar install --copy --trust-gpg-keys 4AA394086372C20A,D2CCAC42F6295E7D,E82B2FB314E9906E,8E730BA25823D8B5,D0254321FB74703A --force-accept-unsigned
+
+And after this you can run phpunit using `./tools/phpunit`. 
 
 [PROGIT]:             http://git-scm.com/book
 [GITHUB_HELP_PR]:     https://help.github.com/articles/using-pull-requests
