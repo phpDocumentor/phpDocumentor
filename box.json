@@ -7,7 +7,6 @@
     "directories-bin": ["data"],
     "files": [
         "vendor/autoload.php",
-        "vendor/herrera-io/phar-update/res/schema.json",
         "VERSION"
     ],
     "finder": [
@@ -24,10 +23,7 @@
                 "vendor/cilex/console-service-provider/src",
                 "vendor/composer",
                 "vendor/hamcrest",
-                "vendor/herrera-io",
-                "vendor/seld/jsonlint",
-                "vendor/justinrainbow/json-schema",
-                "vendor/kherge/version",
+                "vendor/padraic",
                 "vendor/doctrine/annotations/lib",
                 "vendor/doctrine/lexer/lib",
                 "vendor/erusev/parsedown",
