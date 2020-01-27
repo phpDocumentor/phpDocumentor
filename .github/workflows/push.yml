@@ -186,7 +186,7 @@ jobs:
           php-version: '7.2'
           extensions: mbstring, intl, iconv, libxml, dom, json, simplexml, zlib
           ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
-          pecl: true
+          tools: pecl
       - name: Download PHAR file
         if: matrix.profile == 'phar'
         uses: actions/download-artifact@v1
@@ -217,7 +217,7 @@ jobs:
           php-version: '7.2'
           extensions: mbstring, intl, iconv, libxml, dom, json, simplexml, zlib
           ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
-          pecl: true
+          tools: pecl
       - name: Download PHAR file
         uses: actions/download-artifact@v1
         with:
@@ -251,7 +251,7 @@ jobs:
           php-version: '7.2'
           extensions: mbstring, intl, iconv, libxml, dom, json, simplexml, zlib
           ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
-          pecl: true
+          tools: pecl
       - name: Build example project using Clean template
         run: ./bin/phpdoc --template=clean -vvv --config=data/examples/MariosPizzeria/phpdoc.xml --target=build/clean
       - name: Build example project using Default template
@@ -286,14 +286,13 @@ jobs:
           php-version: '7.2'
           extensions: mbstring, intl, iconv, libxml, dom, json, simplexml, zlib
           ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
-          pecl: true
+          tools: pecl
       - name: Build example project using Clean template
         run: ./bin/phpdoc --template=clean --config=data/examples/MariosPizzeria/phpdoc.xml --target=build/clean
       - name: Build example project using Default template
         run: ./bin/phpdoc --template=default --config=data/examples/MariosPizzeria/phpdoc.xml --target=build/default
       - name: Test templates using Cypress
         uses: cypress-io/github-action@v1
-        continue-on-error: true
 
   phpunit:
     runs-on: ${{ matrix.operating-system }}
@@ -339,7 +338,7 @@ jobs:
         php-version: ${{ matrix.php-versions }}
         extensions: mbstring, intl, iconv, libxml, dom, json, simplexml, zlib
         ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
-        pecl: true
+        tools: pecl
     - name: Run PHPUnit
       run: php tools/phpunit.phar
 
@@ -380,9 +379,9 @@ jobs:
         uses: shivammathur/setup-php@master
         with:
           php-version: ${{ matrix.php-versions }}
-          extensions: mbstring, intl, iconv, libxml, dom, json, simplexml, zlib
+          extensions: mbstring, intl, iconv, libxml, dom, json, simplexml, zlib, fileinfo
           ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
-          pecl: true
+          tools: pecl
       - name: Download PHAR file
         if: matrix.profile == 'phar'
         uses: actions/download-artifact@v1
@@ -391,4 +390,3 @@ jobs:
           path: build
       - name: Run Behat
         run: php tools/behat -p ${{ matrix.profile }}
-        continue-on-error: true
