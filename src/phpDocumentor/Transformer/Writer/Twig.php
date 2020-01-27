@@ -19,7 +19,6 @@ use phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
-use const DIRECTORY_SEPARATOR;
 use function ltrim;
 use function preg_split;
 use function strlen;
@@ -141,8 +140,12 @@ final class Twig extends WriterAbstract
      */
     private function getTemplatePath(Transformation $transformation) : string
     {
-        $parts = preg_split('[\\\\|/]', $transformation->getSource());
+        $parts = preg_split('~[\\\\|/]~', $transformation->getSource());
 
-        return $parts[0] . DIRECTORY_SEPARATOR . $parts[1];
+        if ($parts[0] !== 'templates') {
+            return '';
+        }
+
+        return $parts[0] . '/' . $parts[1];
     }
 }
