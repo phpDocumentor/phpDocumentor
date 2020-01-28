@@ -14,14 +14,12 @@ declare(strict_types=1);
 namespace phpDocumentor;
 
 use RuntimeException;
-use const DIRECTORY_SEPARATOR;
 use function date_default_timezone_set;
 use function extension_loaded;
 use function file_exists;
 use function file_get_contents;
 use function ini_get;
 use function ini_set;
-use function sys_get_temp_dir;
 use function trim;
 
 /**
@@ -57,11 +55,6 @@ final class Application
     public function __construct()
     {
         $this->defineIniSettings();
-    }
-
-    public function cacheFolder() : string
-    {
-        return sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpdocumentor' . DIRECTORY_SEPARATOR . 'pools';
     }
 
     /**

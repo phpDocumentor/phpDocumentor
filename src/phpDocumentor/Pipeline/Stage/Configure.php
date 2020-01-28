@@ -18,6 +18,7 @@ use phpDocumentor\Configuration\CommandlineOptionsMiddleware;
 use phpDocumentor\Configuration\Configuration;
 use phpDocumentor\Configuration\ConfigurationFactory;
 use phpDocumentor\Configuration\PathNormalizingMiddleware;
+use phpDocumentor\Parser\Cache\Locator;
 use phpDocumentor\UriFactory;
 use Psr\Log\LoggerInterface;
 use function getcwd;
@@ -35,14 +36,19 @@ final class Configure
     /** @var LoggerInterface */
     private $logger;
 
+    /** @var Locator */
+    private $locator;
+
     public function __construct(
         ConfigurationFactory $configFactory,
         Configuration $configuration,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        Locator $locator
     ) {
         $this->configFactory = $configFactory;
         $this->configuration = $configuration;
         $this->logger = $logger;
+        $this->locator = $locator;
     }
 
     /**
@@ -64,8 +70,7 @@ final class Configure
                 if ($uri === false) {
                     throw new InvalidArgumentException(
                         sprintf(
-                            'The configuration file in path "%s" can not be '
-                            . 'found or read',
+                            'The configuration file in path "%s" can not be found or read',
                             $path
                         )
                     );
@@ -85,6 +90,7 @@ final class Configure
             );
         }
 
+        $this->locator->providePath($this->configuration['phpdocumentor']['paths']['cache']);
         return $this->configuration->getArrayCopy();
     }
 }

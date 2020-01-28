@@ -7,6 +7,8 @@ bin/plantuml
 
 # Build folder and vendor folder are generated code; no need to version this
 build/*
+.phpdoc/*
+!.phpdoc/template/*
 data/examples/MariosPizzeria/build/*
 vendor/*
 node_modules/*

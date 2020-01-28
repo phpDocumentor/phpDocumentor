@@ -120,8 +120,8 @@ final class Version3Test extends TestCase
             'title' => 'Documentation',
             'use-cache' => true,
             'paths' => [
-                'output' => 'build/api',
-                'cache' => 'build/api-cache',
+                'output' => '.phpdoc/build',
+                'cache' => '.phpdoc/cache',
             ],
             'versions' => [
                 '1.0.0' => [

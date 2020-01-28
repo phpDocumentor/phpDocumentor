@@ -17,9 +17,12 @@ use InvalidArgumentException;
 use League\Uri\Contracts\UriInterface;
 use phpDocumentor\Configuration\Configuration;
 use phpDocumentor\Configuration\ConfigurationFactory;
+use phpDocumentor\Parser\Cache\Locator;
+use phpDocumentor\Path;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
+use function sys_get_temp_dir;
 
 /**
  * @coversDefaultClass \phpDocumentor\Pipeline\Stage\Configure
@@ -29,8 +32,23 @@ use Psr\Log\LoggerInterface;
  */
 final class ConfigureTest extends TestCase
 {
+    /** @var Locator */
+    private $cacheLocator;
+
+    protected function setUp() : void
+    {
+        $this->cacheLocator = $this->prophesize(Locator::class);
+    }
+
     public function testConfigNoneWillIgnoreFileLoad() : void
     {
+        $cachePath = new Path(sys_get_temp_dir() . '/phpdocumentor');
+        $config = [
+            'phpdocumentor' => ['paths' => ['cache' => $cachePath]],
+        ];
+
+        $this->cacheLocator->providePath($cachePath);
+
         $logger = $this->prophesize(LoggerInterface::class);
         $configurationFactory = $this->prophesize(ConfigurationFactory::class);
         $configurationFactory->addMiddleware(Argument::any())->shouldBeCalledTimes(2);
@@ -38,11 +56,12 @@ final class ConfigureTest extends TestCase
 
         $stage = new Configure(
             $configurationFactory->reveal(),
-            new Configuration(),
-            $logger->reveal()
+            new Configuration($config),
+            $logger->reveal(),
+            $this->cacheLocator->reveal()
         );
 
-        self::assertEquals([], $stage(['config' => 'none']));
+        self::assertEquals($config, $stage(['config' => 'none']));
     }
 
     public function testInvalidConfigPathWillThrowException() : void
@@ -57,7 +76,8 @@ final class ConfigureTest extends TestCase
         $stage = new Configure(
             $configurationFactory->reveal(),
             new Configuration(),
-            $logger->reveal()
+            $logger->reveal(),
+            $this->cacheLocator->reveal()
         );
 
         $stage(['config' => 'some/invalid/file.xml']);
@@ -65,7 +85,13 @@ final class ConfigureTest extends TestCase
 
     public function testNoConfigOptionWillLoadDefaultFiles() : void
     {
-        $config = ['test' => 'some config'];
+        $cachePath = new Path(sys_get_temp_dir() . '/phpdocumentor');
+        $config = [
+            'phpdocumentor' => ['paths' => ['cache' => $cachePath]],
+        ];
+
+        $this->cacheLocator->providePath($cachePath);
+
         $logger = $this->prophesize(LoggerInterface::class);
         $configurationFactory = $this->prophesize(ConfigurationFactory::class);
         $configurationFactory->addMiddleware(Argument::any())->shouldBeCalledTimes(2);
@@ -75,7 +101,8 @@ final class ConfigureTest extends TestCase
         $stage = new Configure(
             $configurationFactory->reveal(),
             new Configuration(),
-            $logger->reveal()
+            $logger->reveal(),
+            $this->cacheLocator->reveal()
         );
 
         $actual = $stage([]);
@@ -85,7 +112,13 @@ final class ConfigureTest extends TestCase
 
     public function testConfigWithValidFileWillCallFactory() : void
     {
-        $config = ['test' => 'some config'];
+        $cachePath = new Path(sys_get_temp_dir() . '/phpdocumentor');
+        $config = [
+            'phpdocumentor' => ['paths' => ['cache' => $cachePath]],
+        ];
+
+        $this->cacheLocator->providePath($cachePath);
+
         $logger = $this->prophesize(LoggerInterface::class);
         $configurationFactory = $this->prophesize(ConfigurationFactory::class);
         $configurationFactory->addMiddleware(Argument::any())->shouldBeCalledTimes(2);
@@ -96,7 +129,8 @@ final class ConfigureTest extends TestCase
         $stage = new Configure(
             $configurationFactory->reveal(),
             new Configuration(),
-            $logger->reveal()
+            $logger->reveal(),
+            $this->cacheLocator->reveal()
         );
 
         $actual = $stage(['config' => __FILE__]);

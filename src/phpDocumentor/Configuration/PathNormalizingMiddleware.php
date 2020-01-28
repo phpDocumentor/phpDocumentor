@@ -17,6 +17,10 @@ final class PathNormalizingMiddleware
     public function __invoke(array $configuration, ?Uri $uri) : array
     {
         $configuration = $this->makeDsnRelativeToConfig($configuration, $uri);
+
+        $configuration['phpdocumentor']['paths']['cache']
+            = $this->normalizeCachePath($uri, $configuration['phpdocumentor']['paths']['cache']);
+
         $configuration['phpdocumentor'] = $this->normalizePaths($configuration['phpdocumentor']);
 
         return $configuration;
@@ -112,5 +116,19 @@ final class PathNormalizingMiddleware
         }
 
         return $path;
+    }
+
+    public function normalizeCachePath(?Uri $uri, Path $cachePath) : Path
+    {
+        if ($cachePath::isAbsolutePath((string) $cachePath)) {
+            return $cachePath;
+        }
+
+        $basePath = '';
+        if ($uri instanceof Uri) {
+            $basePath = (string) Path::dirname(new Path($uri->getPath())) . '/';
+        }
+
+        return new Path($basePath . (string) $cachePath);
     }
 }

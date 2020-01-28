@@ -20,8 +20,7 @@ framework:
 
 services:
     app.projectcache.provider:
-        class: Symfony\Component\Cache\Adapter\FilesystemAdapter
+        abstract: true
+        class: phpDocumentor\Parser\Cache\FilesystemAdapter
         arguments:
             - 'phpdoc'
-            - 31556926 # one year
-            - '@=service("phpDocumentor\\Application").cacheFolder()'

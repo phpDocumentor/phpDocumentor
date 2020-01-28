@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Writer\Twig;
 
 use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Parser\Cache\Locator;
 use phpDocumentor\Transformer\Transformation;
 use Twig\Environment;
 use Twig\Extension\DebugExtension;
@@ -25,9 +26,13 @@ class EnvironmentFactory
     /** @var LinkRenderer */
     private $renderer;
 
-    public function __construct(LinkRenderer $renderer)
+    /** @var Locator */
+    private $locator;
+
+    public function __construct(LinkRenderer $renderer, Locator $locator)
     {
         $this->renderer = $renderer;
+        $this->locator = $locator;
     }
 
     public function create(
@@ -45,6 +50,7 @@ class EnvironmentFactory
             )
         );
 
+        $env->setCache((string) $this->locator->locate('twig'));
         $this->addPhpDocumentorExtension($project, $destination, $env);
         $this->enableDebugWhenParameterIsSet($transformation, $env);
 

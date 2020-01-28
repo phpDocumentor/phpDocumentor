@@ -19,7 +19,6 @@ use Doctrine\RST\Configuration as RSTParserConfiguration;
 use Doctrine\RST\Directives\Directive as Directive;
 use Doctrine\RST\Kernel;
 use Doctrine\RST\References\Reference;
-use Doctrine\RST\UrlGenerator;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Guides\Twig\AssetsExtension;
 use phpDocumentor\Transformer\Writer\Twig\Extension;
@@ -30,9 +29,6 @@ final class KernelFactory
 {
     /** @var string */
     private $globalTemplatesPath;
-
-    /** @var string */
-    private $globalCachePath;
 
     /** @var Directive[] */
     private $directives;
@@ -45,13 +41,11 @@ final class KernelFactory
 
     public function __construct(
         string $globalTemplatesPath,
-        string $globalCachePath,
         LinkRenderer $linkRenderer,
         iterable $directives = [],
         iterable $references = []
     ) {
         $this->globalTemplatesPath = $globalTemplatesPath;
-        $this->globalCachePath = $globalCachePath;
         $this->directives = $directives;
         $this->references = $references;
         $this->linkRenderer = $linkRenderer;
@@ -60,7 +54,7 @@ final class KernelFactory
     public function createKernel(ProjectDescriptor $projectDescriptor, BuildContext $buildContext) : Kernel
     {
         $configuration = new RSTParserConfiguration();
-        $configuration->setCustomTemplateDirs([ $this->globalTemplatesPath . '/guides' ]);
+        $configuration->setCustomTemplateDirs([$this->globalTemplatesPath . '/guides']);
         $configuration->setCacheDir($buildContext->getCachePath());
         $configuration->abortOnError(false);
         $configuration->setUseCachedMetas($buildContext->isCacheEnabled());

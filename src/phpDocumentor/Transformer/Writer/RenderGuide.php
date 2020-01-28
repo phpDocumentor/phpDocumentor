@@ -22,6 +22,7 @@ use phpDocumentor\Descriptor\VersionDescriptor;
 use phpDocumentor\Dsn;
 use phpDocumentor\Guides\BuildContext;
 use phpDocumentor\Guides\KernelFactory;
+use phpDocumentor\Parser\Cache\Locator;
 use phpDocumentor\Parser\FlySystemFactory;
 use phpDocumentor\Parser\FlySystemMirror;
 use phpDocumentor\Transformer\Transformation;
@@ -39,17 +40,17 @@ final class RenderGuide extends WriterAbstract
     /** @var KernelFactory */
     private $kernelFactory;
 
-    /** @var string */
-    private $globalCachePath;
+    /** @var Locator */
+    private $cacheLocator;
 
     public function __construct(
         FlySystemFactory $flySystemFactory,
         KernelFactory $kernelFactory,
-        string $globalCachePath
+        Locator $cacheLocator
     ) {
         $this->flySystemFactory = $flySystemFactory;
         $this->kernelFactory = $kernelFactory;
-        $this->globalCachePath = $globalCachePath;
+        $this->cacheLocator = $cacheLocator;
     }
 
     /**
@@ -63,7 +64,7 @@ final class RenderGuide extends WriterAbstract
         }
 
         $output = $transformation->getTransformer()->destination();
-        $cachePath = sprintf('%s/guide', $this->globalCachePath);
+        $cachePath = (string) $this->cacheLocator->locate('guide');
 
         /** @var VersionDescriptor $version */
         foreach ($project->getVersions() as $version) {

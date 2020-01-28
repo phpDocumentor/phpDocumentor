@@ -15,6 +15,8 @@ namespace phpDocumentor\Transformer\Writer\Twig;
 
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Faker\Faker;
+use phpDocumentor\Parser\Cache\Locator;
+use phpDocumentor\Path;
 use phpDocumentor\Transformer\Router\Router;
 use phpDocumentor\Transformer\Template\Parameter;
 use PHPUnit\Framework\TestCase;
@@ -31,6 +33,26 @@ final class EnvironmentFactoryTest extends TestCase
 {
     use Faker;
 
+    /** @var Locator */
+    private $cacheLocator;
+
+    /** @var Router */
+    private $router;
+
+    /** @var EnvironmentFactory */
+    private $factory;
+
+    protected function setUp() : void
+    {
+        $this->router = $this->prophesize(Router::class);
+        $this->cacheLocator = $this->prophesize(Locator::class);
+
+        $this->factory = new EnvironmentFactory(
+            new LinkRenderer($this->router->reveal()),
+            $this->cacheLocator->reveal()
+        );
+    }
+
     /**
      * @uses \phpDocumentor\Descriptor\ProjectDescriptor
      * @uses \phpDocumentor\Transformer\Writer\Twig\LinkRenderer
@@ -39,15 +61,17 @@ final class EnvironmentFactoryTest extends TestCase
      */
     public function testItCreatesATwigEnvironmentWithThephpDocumentorExtension() : void
     {
-        $router = $this->prophesize(Router::class);
-        $factory = new EnvironmentFactory(new LinkRenderer($router->reveal()));
+        $cacheFolder = new Path('/tmp/cache/twig');
+
+        $this->cacheLocator->locate('twig')->willReturn($cacheFolder);
         $transformation = $this->faker()->transformation();
 
-        $environment = $factory->create(new ProjectDescriptor('name'), $transformation, '/home');
+        $environment = $this->factory->create(new ProjectDescriptor('name'), $transformation, '/home');
 
         $this->assertInstanceOf(Environment::class, $environment);
         $this->assertCount(4, $environment->getExtensions());
         $this->assertTrue($environment->hasExtension(Extension::class));
+        $this->assertSame((string) $cacheFolder, $environment->getCache());
     }
 
     /**
@@ -58,12 +82,14 @@ final class EnvironmentFactoryTest extends TestCase
      */
     public function testItCreatesATwigEnvironmentWithTheCorrectTemplateLoaders() : void
     {
-        $router = $this->prophesize(Router::class);
-        $factory = new EnvironmentFactory(new LinkRenderer($router->reveal()));
+        $cacheFolder = new Path('/tmp/cache/twig');
+
+        $this->cacheLocator->locate('twig')->willReturn($cacheFolder);
+
         $transformation = $this->faker()->transformation();
         $mountManager = $transformation->template()->files();
 
-        $environment = $factory->create(new ProjectDescriptor('name'), $transformation, '/home');
+        $environment = $this->factory->create(new ProjectDescriptor('name'), $transformation, '/home');
 
         /** @var ChainLoader $loader */
         $loader = $environment->getLoader();
@@ -87,12 +113,14 @@ final class EnvironmentFactoryTest extends TestCase
      */
     public function testTheCreatedEnvironmentHasTheDebugExtensionWhenTheCorrectParameterIsSet() : void
     {
-        $router = $this->prophesize(Router::class);
-        $factory = new EnvironmentFactory(new LinkRenderer($router->reveal()));
+        $cacheFolder = new Path('/tmp/cache/twig');
+
+        $this->cacheLocator->locate('twig')->willReturn($cacheFolder);
+
         $transformation = $this->faker()->transformation();
         $transformation->setParameters([new Parameter('twig-debug', 'true')]);
 
-        $environment = $factory->create(new ProjectDescriptor('name'), $transformation, '/home');
+        $environment = $this->factory->create(new ProjectDescriptor('name'), $transformation, '/home');
 
         $this->assertTrue($environment->isDebug());
         $this->assertTrue($environment->isAutoReload());

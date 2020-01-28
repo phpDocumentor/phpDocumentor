@@ -57,7 +57,6 @@ services:
         public: false
         bind:
           $defaultTemplateName: 'default'
-          $globalCachePath: '@=service("phpDocumentor\\Application").cacheFolder()'
           $globalTemplatesPath: "@=service('phpDocumentor\\\\Application').templateDirectory()"
           $servicesWithCustomSettings: !tagged_iterator app.with_custom_settings
     _instanceof:

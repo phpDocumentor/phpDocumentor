@@ -14,9 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor;
 
 use PHPUnit\Framework\TestCase;
-use const DIRECTORY_SEPARATOR;
 use function file_get_contents;
-use function sys_get_temp_dir;
 use function trim;
 
 /**
@@ -32,18 +30,5 @@ final class ApplicationTest extends TestCase
     public function testItReturnsTheVersionNumberFromTheVersionFile() : void
     {
         $this->assertSame(trim(file_get_contents(__DIR__ . '/../../../VERSION')), Application::VERSION());
-    }
-
-    /**
-     * @covers ::cacheFolder
-     */
-    public function testCacheFolderForPoolsIsSetToTempFolder() : void
-    {
-        $application = new Application();
-
-        $this->assertSame(
-            sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpdocumentor' . DIRECTORY_SEPARATOR . 'pools',
-            $application->cacheFolder()
-        );
     }
 }
