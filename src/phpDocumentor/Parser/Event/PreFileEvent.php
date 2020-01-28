@@ -27,6 +27,8 @@ final class PreFileEvent extends EventAbstract
      * Creates a new instance of a derived object and return that.
      *
      * Used as convenience method for fluent interfaces.
+     *
+     * @return self
      */
     public static function createInstance(object $subject) : EventAbstract
     {

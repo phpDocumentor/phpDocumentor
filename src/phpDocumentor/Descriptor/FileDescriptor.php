@@ -13,10 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
-use phpDocumentor\Descriptor\Interfaces\ClassInterface;
-use phpDocumentor\Descriptor\Interfaces\FunctionInterface;
-use phpDocumentor\Descriptor\Interfaces\InterfaceInterface;
-use phpDocumentor\Descriptor\Interfaces\TraitInterface;
 use function method_exists;
 
 /**
@@ -42,16 +38,16 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
     /** @var Collection $constants */
     protected $constants;
 
-    /** @var Collection $functions */
+    /** @var Collection<FunctionDescriptor> $functions */
     protected $functions;
 
-    /** @var Collection $classes */
+    /** @var Collection<ClassDescriptor> $classes */
     protected $classes;
 
-    /** @var Collection $interfaces */
+    /** @var Collection<InterfaceDescriptor> $interfaces */
     protected $interfaces;
 
-    /** @var Collection $traits */
+    /** @var Collection<TraitDescriptor> $traits */
     protected $traits;
 
     /** @var Collection $markers */
@@ -162,7 +158,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
     /**
      * Returns a list of function descriptors contained in this file.
      *
-     * @return Collection|FunctionInterface[]
+     * @return Collection<FunctionDescriptor>
      */
     public function getFunctions() : Collection
     {
@@ -180,7 +176,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
     /**
      * Returns a list of class descriptors contained in this file.
      *
-     * @return Collection|ClassInterface[]
+     * @return Collection<ClassDescriptor>
      */
     public function getClasses() : Collection
     {
@@ -198,7 +194,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
     /**
      * Returns a list of interface descriptors contained in this file.
      *
-     * @return Collection|InterfaceInterface[]
+     * @return Collection<InterfaceDescriptor>
      */
     public function getInterfaces() : Collection
     {
@@ -216,7 +212,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
     /**
      * Returns a list of trait descriptors contained in this file.
      *
-     * @return Collection|TraitInterface[]
+     * @return Collection<TraitDescriptor>
      */
     public function getTraits() : Collection
     {

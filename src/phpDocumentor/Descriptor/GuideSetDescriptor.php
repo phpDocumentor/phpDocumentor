@@ -13,8 +13,15 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
+use phpDocumentor\Dsn;
+
 final class GuideSetDescriptor extends DocumentationSetDescriptor
 {
+    /**
+     * @param array<Dsn|list<string>> $source
+     *
+     * @phpstan-param array{dsn: Dsn, paths: array<int, string>} $source
+     */
     public function __construct(string $name, array $source, string $output)
     {
         $this->name = $name;

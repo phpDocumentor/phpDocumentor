@@ -173,7 +173,6 @@ class Transformation
      */
     public function getParameter(string $name) : ?Parameter
     {
-        /** @var Parameter $parameter */
         foreach ($this->parameters as $parameter) {
             if ($parameter->key() === $name) {
                 return $parameter;
@@ -194,7 +193,6 @@ class Transformation
     {
         $parameters = [];
 
-        /** @var Parameter $parameter */
         foreach ($this->parameters as $parameter) {
             if ($parameter->key() !== $name) {
                 continue;

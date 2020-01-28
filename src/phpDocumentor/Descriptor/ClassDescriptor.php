@@ -31,7 +31,11 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
      */
     protected $parent;
 
-    /** @var Collection $implements References to interfaces that are implemented by this class. */
+    /**
+     * References to interfaces that are implemented by this class.
+     *
+     * @var Collection<InterfaceDescriptor|Fqsen> $implements
+     */
     protected $implements;
 
     /** @var bool $abstract Whether this is an abstract class. */
@@ -40,16 +44,16 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     /** @var bool $final Whether this class is marked as final and can't be subclassed. */
     protected $final = false;
 
-    /** @var Collection $constants References to constants defined in this class. */
+    /** @var Collection<?ConstantDescriptor> $constants References to constants defined in this class. */
     protected $constants;
 
-    /** @var Collection $properties References to properties defined in this class. */
+    /** @var Collection<?PropertyDescriptor> $properties References to properties defined in this class. */
     protected $properties;
 
-    /** @var Collection $methods References to methods defined in this class. */
+    /** @var Collection<?MethodDescriptor> $methods References to methods defined in this class. */
     protected $methods;
 
-    /** @var Collection $usedTraits References to traits consumed by this class */
+    /** @var Collection<TraitDescriptor> $usedTraits References to traits consumed by this class */
     protected $usedTraits;
 
     /**
@@ -205,6 +209,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
         /** @var Collection $methodTags */
         $methodTags = clone $this->getTags()->get('method', new Collection());
 
+        /** @var Collection<MethodDescriptor> $methods */
         $methods = new Collection();
 
         /** @var Tag\MethodDescriptor $methodTag */
@@ -279,6 +284,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
         $propertyTags = $propertyTags->merge($this->getTags()->get('property-read', new Collection()));
         $propertyTags = $propertyTags->merge($this->getTags()->get('property-write', new Collection()));
 
+        /** @var Collection<PropertyDescriptor> $properties */
         $properties = new Collection();
 
         try {

@@ -25,6 +25,9 @@ final class TransformToPayload
         $this->descriptorBuilder = $descriptorBuilder;
     }
 
+    /**
+     * @param array<string, string> $configuration
+     */
     public function __invoke(array $configuration) : Payload
     {
         return new Payload($configuration, $this->descriptorBuilder);

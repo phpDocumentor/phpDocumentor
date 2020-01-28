@@ -60,6 +60,7 @@ class FunctionAssembler extends AssemblerAbstract
      */
     protected function mapReflectorPropertiesOntoDescriptor(Function_ $reflector, FunctionDescriptor $descriptor) : void
     {
+        /** @var Collection<TagDescriptor> $packages */
         $packages = new Collection();
         $package  = $this->extractPackageFromDocBlock($reflector->getDocBlock());
         //TODO: this looks like a potential bug. Have to investigate this!

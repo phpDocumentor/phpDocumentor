@@ -28,9 +28,12 @@ final class SpecificationFactory implements FactoryInterface
     /**
      * Creates a SpecificationInterface object based on the ignore and extension parameters.
      *
-     * @var string[] $globs
-     * @var string[] $ignore
-     * @var string[] $extensions
+     * @param list<string> $globs
+     * @param array<string, null|bool|array<string>> $ignore
+     * @param list<string> $extensions
+     *
+     * @phpstan-param array<int, string> $globs
+     * @phpstan-param array<int, string> $extensions
      */
     public function create(array $globs, array $ignore, array $extensions) : SpecificationInterface
     {

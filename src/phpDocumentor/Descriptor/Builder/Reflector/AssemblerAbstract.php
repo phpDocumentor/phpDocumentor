@@ -38,7 +38,6 @@ abstract class AssemblerAbstract extends BaseAssembler
         $target->setSummary($docBlock->getSummary());
         $target->setDescription((string) $docBlock->getDescription());
 
-        /** @var DocBlock\Tag $tag */
         foreach ($docBlock->getTags() as $tag) {
             $tagDescriptor = $this->builder->buildDescriptor($tag);
 

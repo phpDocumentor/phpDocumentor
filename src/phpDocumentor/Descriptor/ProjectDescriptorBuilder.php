@@ -45,9 +45,12 @@ class ProjectDescriptorBuilder
     /** @var string */
     private $defaultPackage = '';
 
-    /** @var WithCustomSettings[] */
+    /** @var iterable<WithCustomSettings> */
     private $servicesWithCustomSettings;
 
+    /**
+     * @param iterable<WithCustomSettings> $servicesWithCustomSettings
+     */
     public function __construct(
         AssemblerFactory $assemblerFactory,
         Filter $filterManager,
@@ -197,6 +200,9 @@ class ProjectDescriptorBuilder
         return $this->defaultPackage;
     }
 
+    /**
+     * @param array<string, array<string>> $apiConfig
+     */
     public function setVisibility(array $apiConfig) : void
     {
         $visibilities = $apiConfig['visibility'];
@@ -242,11 +248,17 @@ class ProjectDescriptorBuilder
         $this->project->setPartials($partials);
     }
 
+    /**
+     * @param array<string> $markers
+     */
     public function setMarkers(array $markers) : void
     {
         $this->project->getSettings()->setMarkers($markers);
     }
 
+    /**
+     * @param array<string, string> $customSettings
+     */
     public function setCustomSettings(array $customSettings) : void
     {
         $this->project->getSettings()->setCustom($customSettings);

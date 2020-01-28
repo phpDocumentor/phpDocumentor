@@ -59,6 +59,8 @@ final class Dsn
 
     /**
      * Initializes the Dsn
+     *
+     * @param array<string> $parameters
      */
     public function __construct(UriInterface $uri, array $parameters, string $dsn)
     {
@@ -79,6 +81,9 @@ final class Dsn
         return new self($uri, $parsedParameters, $dsn);
     }
 
+    /**
+     * @param array<string> $parameters
+     */
     public static function createFromUri(UriInterface $uri, array $parameters = []) : self
     {
         $dsn = implode(';', [(string) $uri] + $parameters);
@@ -221,6 +226,8 @@ final class Dsn
      * validates and sets the parameters property
      *
      * @param string[] $parameters
+     *
+     * @return array<string, string>
      */
     private static function parseParameters(array $parameters) : array
     {
@@ -234,6 +241,9 @@ final class Dsn
         return $result;
     }
 
+    /**
+     * @return Generator<string, string>
+     */
     private static function parseParameter(string $part) : Generator
     {
         $result = [];

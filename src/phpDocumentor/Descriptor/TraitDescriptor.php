@@ -70,6 +70,7 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
         /** @var Collection $methodTags */
         $methodTags = clone $this->getTags()->get('method', new Collection());
 
+        /** @var Collection<MethodDescriptor> $methods */
         $methods = new Collection();
 
         /** @var Tag\MethodDescriptor $methodTag */
@@ -117,6 +118,7 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
         $propertyTags->merge($this->getTags()->get('property-read', new Collection()));
         $propertyTags->merge($this->getTags()->get('property-write', new Collection()));
 
+        /** @var Collection<PropertyDescriptor> $properties */
         $properties = new Collection();
 
         /** @var Tag\PropertyDescriptor $propertyTag */

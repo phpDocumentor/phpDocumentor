@@ -19,12 +19,15 @@ use phpDocumentor\Reflection\File;
 interface FileCollector
 {
     /**
-     * @param Dsn      $dsn        dsn of source.
-     * @param string[] $paths
-     * @param array    $ignore     array containing keys 'paths' and 'hidden'
-     * @param string[] $extensions
+     * @param Dsn                  $dsn        dsn of source.
+     * @param list<string>         $paths
+     * @param array<string, mixed> $ignore     array containing keys 'paths' and 'hidden'
+     * @param list<string>         $extensions
      *
      * @return File[]
+     *
+     * @phpstan-param array<int, string>         $paths
+     * @phpstan-param array<int, string>         $extensions
      */
     public function getFiles(Dsn $dsn, array $paths, array $ignore, array $extensions) : array;
 }

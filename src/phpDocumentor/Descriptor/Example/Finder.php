@@ -99,6 +99,8 @@ class Finder
      * 2. Checks the source folder for the given filename
      * 3. Checks the 'examples' folder in the current working directory for examples
      * 4. Checks the path relative to the current working directory for the given filename
+     *
+     * @return ?array<string>
      */
     private function getExampleFileContents(string $filename) : ?array
     {

@@ -32,7 +32,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
     /** @var PackageInterface $package */
     private $package;
 
-    /** @var Collection $files */
+    /** @var Collection<FileDescriptor> $files */
     private $files;
 
     /** @var Collection $indexes */
@@ -107,7 +107,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
     /**
      * Returns all files with their sub-elements.
      *
-     * @return Collection|FileDescriptor[]
+     * @return Collection<FileDescriptor>
      */
     public function getFiles() : Collection
     {

@@ -27,18 +27,19 @@ use function count;
  * The goal for this class is to allow Descriptors to be easily retrieved and set so that interaction in
  * templates becomes easier.
  *
- * @template-implements ArrayAccess<string|int, mixed>
- * @template-implements IteratorAggregate<string|int, mixed>
+ * @template T
+ * @template-implements ArrayAccess<string|int, T>
+ * @template-implements IteratorAggregate<string|int, T>
  */
 class Collection implements Countable, IteratorAggregate, ArrayAccess
 {
-    /** @var mixed[] $items */
+    /** @var array<T> $items */
     protected $items = [];
 
     /**
      * Constructs a new collection object with optionally a series of items, generally Descriptors.
      *
-     * @param DescriptorAbstract[]|mixed[] $items
+     * @param array<T> $items
      */
     public function __construct(array $items = [])
     {
@@ -48,7 +49,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
     /**
      * Adds a new item to this collection, generally a Descriptor.
      *
-     * @param DescriptorAbstract|mixed $item
+     * @param T $item
      */
     public function add($item) : void
     {
@@ -58,8 +59,8 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
     /**
      * Sets a new object onto the collection or clear it using null.
      *
-     * @param string|int                    $index An index value to recognize this item with.
-     * @param DescriptorAbstract|mixed|null $item  The item to store, generally a Descriptor but may be something else.
+     * @param string|int $index An index value to recognize this item with.
+     * @param T          $item  The item to store, generally a Descriptor but may be something else.
      */
     public function set($index, $item) : void
     {
@@ -74,9 +75,11 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
      * tree building operations.
      *
      * @param string|int $index
-     * @param mixed      $valueIfEmpty If the index does not exist it will be created with this value and returned.
+     * @param T          $valueIfEmpty If the index does not exist it will be created with this value and returned.
      *
      * @return mixed The contents of the element with the given index and the provided default if the key doesn't exist.
+     *
+     * @phpstan-return ?T
      */
     public function get($index, $valueIfEmpty = null)
     {
@@ -90,7 +93,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
     /**
      * Retrieves all items from this collection as PHP Array.
      *
-     * @return mixed[]
+     * @return array<T>
      */
     public function getAll() : array
     {
@@ -100,7 +103,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
     /**
      * Retrieves an iterator to traverse this object.
      *
-     * @return ArrayIterator<string|int, mixed>
+     * @return ArrayIterator<string|int, T>
      */
     public function getIterator() : ArrayIterator
     {
@@ -127,6 +130,8 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
      * Retrieves an item as if it were a property of the collection.
      *
      * @return mixed
+     *
+     * @phpstan-return ?T
      */
     public function __get(string $name)
     {
@@ -149,6 +154,8 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
      * @param string|int $offset The offset to retrieve.
      *
      * @return mixed
+     *
+     * @phpstan-return ?T
      */
     public function offsetGet($offset)
     {

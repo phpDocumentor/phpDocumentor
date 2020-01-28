@@ -39,7 +39,7 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
     /** @var string $visibility */
     protected $visibility = 'public';
 
-    /** @var Collection */
+    /** @var Collection<ArgumentDescriptor> */
     protected $arguments;
 
     /** @var Type */
@@ -143,7 +143,7 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
     }
 
     /**
-     * {@inheritDoc}
+     * @param Collection<ArgumentDescriptor> $arguments
      */
     public function setArguments(Collection $arguments) : void
     {
@@ -236,12 +236,11 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
      *    2. if a method is found with the same name; return the first one encountered.
      * 2. if the parent is a class and implements interfaces, check each interface for a method with the exact same
      *    name. If such a method is found, return the first hit.
-     *
-     * @return mixed|DescriptorAbstract|MethodDescriptor|null
      */
-    public function getInheritedElement()
+    public function getInheritedElement() : ?MethodDescriptor
     {
         if ($this->inheritedElement !== null) {
+            assert($this->inheritedElement instanceof MethodDescriptor);
             return $this->inheritedElement;
         }
 

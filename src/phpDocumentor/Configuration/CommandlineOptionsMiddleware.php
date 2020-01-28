@@ -34,6 +34,9 @@ final class CommandlineOptionsMiddleware
     /** @var Dsn */
     private $currentWorkingDir;
 
+    /**
+     * @param array<string|string[]> $options
+     */
     public function __construct(array $options, ConfigurationFactory $configFactory, string $currentWorkingDir)
     {
         $this->options = $options;

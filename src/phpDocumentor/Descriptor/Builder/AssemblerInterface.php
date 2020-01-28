@@ -16,6 +16,9 @@ namespace phpDocumentor\Descriptor\Builder;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
+use phpDocumentor\Reflection\DocBlock\Tag;
+use phpDocumentor\Reflection\Element;
+use phpDocumentor\Reflection\Php\Argument;
 
 /**
  * Interface for Assembler classes that transform data to specific Descriptor types.
@@ -25,7 +28,7 @@ interface AssemblerInterface
     /**
      * Creates a Descriptor from the provided data.
      *
-     * @param mixed $data
+     * @param Element|Tag|Argument $data
      *
      * @return Descriptor|Collection
      */

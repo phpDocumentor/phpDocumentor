@@ -278,7 +278,6 @@ class Transformer implements CompilerPassInterface
             )
         );
 
-        /** @var PreTransformationEvent $preTransformationEvent */
         $preTransformationEvent = PreTransformationEvent::create($this, $transformation);
         Dispatcher::getInstance()->dispatch($preTransformationEvent, self::EVENT_PRE_TRANSFORMATION);
 

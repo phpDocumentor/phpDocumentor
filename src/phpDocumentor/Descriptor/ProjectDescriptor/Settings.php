@@ -131,6 +131,9 @@ final class Settings
         return $this->custom;
     }
 
+    /**
+     * @param array<string, string> $settings
+     */
     public function setCustom(array $settings) : void
     {
         $this->setValueAndCheckIfModified('custom', $settings);
@@ -139,7 +142,7 @@ final class Settings
     /**
      * Sets a property's value and if it differs from the previous then mark these settings as modified.
      *
-     * @param int|bool|array $value
+     * @param int|bool|array<string, string> $value
      */
     private function setValueAndCheckIfModified(string $propertyName, $value) : void
     {

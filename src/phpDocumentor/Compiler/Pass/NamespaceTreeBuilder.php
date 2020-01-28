@@ -80,7 +80,6 @@ class NamespaceTreeBuilder implements CompilerPassInterface
      */
     protected function addElementsOfTypeToNamespace(ProjectDescriptor $project, array $elements, string $type) : void
     {
-        /** @var DescriptorAbstract $element */
         foreach ($elements as $element) {
             $namespaceName = (string) $element->getNamespace();
             //TODO: find out why this can happen. Some bug in the assembler?

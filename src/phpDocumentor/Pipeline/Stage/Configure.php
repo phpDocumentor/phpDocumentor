@@ -59,6 +59,8 @@ final class Configure
     }
 
     /**
+     * @param array<string|string[]> $options
+     *
      * @return array<string, array>
      */
     public function __invoke(array $options) : array

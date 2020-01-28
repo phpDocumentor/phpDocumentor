@@ -22,6 +22,13 @@ interface SpecificationFactoryInterface
 {
     /**
      * Creates a SpecificationInterface object based on the ignore and extension parameters.
+     *
+     * @param list<string> $paths
+     * @param array<string, null|bool|array<string>> $ignore
+     * @param list<string> $extensions
+     *
+     * @phpstan-param array<int, string> $paths
+     * @phpstan-param array<int, string> $extensions
      */
     public function create(array $paths, array $ignore, array $extensions) : SpecificationInterface;
 }

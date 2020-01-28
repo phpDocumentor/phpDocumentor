@@ -28,7 +28,9 @@ final class Pathfinder
      * element. This method will silently fail if an invalid query was provided; in such a case the given object
      * is returned.
      *
-     * @return Traversable|array
+     * @return Traversable<mixed>|list<mixed>
+     *
+     * @phpstan-return Traversable<mixed>|array<int, mixed>
      */
     public function find(object $object, string $query)
     {

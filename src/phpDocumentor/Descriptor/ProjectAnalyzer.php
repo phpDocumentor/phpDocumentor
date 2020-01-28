@@ -91,9 +91,13 @@ TEXT;
     /**
      * Increments the counter for element's class in the class counters.
      *
-     * @param array $classCounters
+     * @param array<string, int> $classCounters
      *
-     * @return array
+     * @return array<string, int>
+     *
+     * @phpstan-param array<class-string<DescriptorAbstract>, int> $classCounters
+     *
+     * @phpstan-return array<class-string<DescriptorAbstract>, int>
      */
     protected function addElementToCounter(array $classCounters, DescriptorAbstract $element) : array
     {
@@ -125,7 +129,7 @@ TEXT;
     /**
      * Returns all elements from the project descriptor.
      *
-     * @return DescriptorAbstract[]|Collection
+     * @return Collection<DescriptorAbstract>
      */
     protected function findAllElements(ProjectDescriptor $projectDescriptor) : Collection
     {

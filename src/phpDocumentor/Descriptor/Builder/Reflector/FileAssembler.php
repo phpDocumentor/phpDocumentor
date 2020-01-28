@@ -203,7 +203,7 @@ class FileAssembler extends AssemblerAbstract
     /**
      * Registers the markers that were found in a File with the File Descriptor.
      *
-     * @param string[] $markers
+     * @param array<array<string>> $markers
      */
     protected function addMarkers(array $markers, FileDescriptor $fileDescriptor) : void
     {
@@ -221,6 +221,7 @@ class FileAssembler extends AssemblerAbstract
 
     protected function overridePackageTag(File $data, FileDescriptor $fileDescriptor) : void
     {
+        /** @var Collection<TagDescriptor> $packages */
         $packages = new Collection();
         $package  = $this->extractPackageFromDocBlock($data->getDocBlock());
         if (!$package) {

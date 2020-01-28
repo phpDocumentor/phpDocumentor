@@ -37,13 +37,13 @@ final class MarkerFromTagsExtractor implements CompilerPassInterface
     {
         /** @var DescriptorAbstract $element */
         foreach ($project->getIndexes()->get('elements', new Collection()) as $element) {
+            /** @var TagDescriptor[] $todos */
             $todos = $element->getTags()->get('todo');
 
             if (!$todos) {
                 continue;
             }
 
-            /** @var TagDescriptor $todo */
             foreach ($todos as $todo) {
                 $fileDescriptor = $this->getFileDescriptor($element);
                 $this->addTodoMarkerToFile($fileDescriptor, $todo, $element->getLine());

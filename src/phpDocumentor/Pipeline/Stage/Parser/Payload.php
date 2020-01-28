@@ -25,6 +25,7 @@ final class Payload extends ApplicationPayload
     private $files;
 
     /**
+     * @param array<string, string|array<mixed>> $config
      * @param File[] $files
      */
     public function __construct(array $config, ProjectDescriptorBuilder $builder, array $files = [])
@@ -33,6 +34,11 @@ final class Payload extends ApplicationPayload
         $this->files = $files;
     }
 
+    /**
+     * @return list<array<array<mixed>|bool|string>>
+     *
+     * @phpstan-return array<int, array<array<mixed>|bool|string>>
+     */
     public function getApiConfigs() : array
     {
         // Grep only the first version for now. Multi version support will be added later
@@ -41,6 +47,9 @@ final class Payload extends ApplicationPayload
         return $version['api'];
     }
 
+    /**
+     * @param array<File> $files
+     */
     public function withFiles(array $files) : Payload
     {
         return new self(

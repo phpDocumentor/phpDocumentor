@@ -80,13 +80,12 @@ final class SeeTagContext extends BaseContext implements Context
     }
 
     /**
-     * @param $reference
+     * @param string $reference
      * @param SeeDescriptor[] $seeTags
      * @throws Exception
      */
-    private function hasSeeTagReference($seeTags, $reference) : void
+    private function hasSeeTagReference($seeTags, string $reference) : void
     {
-        /** @var SeeDescriptor $tag */
         foreach ($seeTags as $tag) {
             if (((string) $tag->getReference()) === $reference) {
                 return;

@@ -191,7 +191,11 @@ final class LinkRenderer
     /**
      * Returns a series of anchors and strings for the given collection of routable items.
      *
-     * @return string[]
+     * @param iterable<mixed> $value
+     *
+     * @return list<string>
+     *
+     * @phpstan-return array<int, string>
      */
     private function renderASeriesOfLinks(iterable $value, string $presentation) : array
     {
@@ -293,6 +297,10 @@ final class LinkRenderer
 
     /**
      * @param iterable<Type> $value
+     *
+     * @return list<string>
+     *
+     * @phpstan-return array<int, string>
      */
     private function renderType(iterable $value) : array
     {
