@@ -44,7 +44,7 @@
         "phpdocumentor/graphviz": "^2.0@dev",
         "phpdocumentor/reflection": "^4.0@beta",
         "phpdocumentor/reflection-common": "^2.0@alpha",
-        "phpdocumentor/reflection-docblock": "^5.0@alpha",
+        "phpdocumentor/reflection-docblock": "^5.0@beta",
         "phpdocumentor/type-resolver": "^1.0",
         "psr/cache": "^1.0",
         "psr/log": "^1.1",

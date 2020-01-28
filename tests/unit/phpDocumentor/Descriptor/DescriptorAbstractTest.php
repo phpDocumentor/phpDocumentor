@@ -20,6 +20,9 @@ use phpDocumentor\Reflection\Fqsen;
 
 /**
  * Tests the functionality for the DescriptorAbstract class.
+ *
+ * @coversDefaultClass \phpDocumentor\Descriptor\DescriptorAbstract
+ * @covers ::<private>
  */
 class DescriptorAbstractTest extends MockeryTestCase
 {
@@ -36,7 +39,7 @@ class DescriptorAbstractTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::__construct
+     * @covers ::__construct
      */
     public function testInitialize() : void
     {
@@ -50,8 +53,8 @@ class DescriptorAbstractTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::setFullyQualifiedStructuralElementName
-     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getFullyQualifiedStructuralElementName
+     * @covers ::setFullyQualifiedStructuralElementName
+     * @covers ::getFullyQualifiedStructuralElementName
      */
     public function testSettingAndGettingFullyQualifiedStructuralElementName() : void
     {
@@ -63,8 +66,8 @@ class DescriptorAbstractTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::setName
-     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getName
+     * @covers ::setName
+     * @covers ::getName
      */
     public function testSettingAndGettingName() : void
     {
@@ -76,8 +79,8 @@ class DescriptorAbstractTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::setNamespace
-     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getNamespace
+     * @covers ::setNamespace
+     * @covers ::getNamespace
      */
     public function testSettingAndGettingNamespace() : void
     {
@@ -91,8 +94,8 @@ class DescriptorAbstractTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::setSummary
-     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getSummary
+     * @covers ::setSummary
+     * @covers ::getSummary
      */
     public function testSettingAndGettingSummary() : void
     {
@@ -104,8 +107,8 @@ class DescriptorAbstractTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::setDescription
-     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getDescription
+     * @covers ::setDescription
+     * @covers ::getDescription
      */
     public function testSettingAndGettingDescription() : void
     {
@@ -117,8 +120,8 @@ class DescriptorAbstractTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::setPackage
-     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getPackage
+     * @covers ::setPackage
+     * @covers ::getPackage
      */
     public function testSettingAndGettingPackage() : void
     {
@@ -131,7 +134,7 @@ class DescriptorAbstractTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getAuthor
+     * @covers ::getAuthor
      */
     public function testGetAuthor() : void
     {
@@ -152,7 +155,7 @@ class DescriptorAbstractTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getVersion
+     * @covers ::getVersion
      */
     public function testGetVersion() : void
     {
@@ -173,7 +176,7 @@ class DescriptorAbstractTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getCopyright
+     * @covers ::getCopyright
      */
     public function testGetCopyRight() : void
     {
@@ -194,9 +197,9 @@ class DescriptorAbstractTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::setLocation
-     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getFile
-     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getLine
+     * @covers ::setLocation
+     * @covers ::getFile
+     * @covers ::getLine
      */
     public function testSettingAndGettingLocation() : void
     {
@@ -210,8 +213,8 @@ class DescriptorAbstractTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::setLine
-     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getLine
+     * @covers ::setLine
+     * @covers ::getLine
      */
     public function testSetLineNumber() : void
     {
@@ -223,7 +226,7 @@ class DescriptorAbstractTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getPath
+     * @covers ::getPath
      */
     public function testGetPath() : void
     {
@@ -238,8 +241,8 @@ class DescriptorAbstractTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::setTags
-     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getTags
+     * @covers ::setTags
+     * @covers ::getTags
      */
     public function testSettingAndGettingTags() : void
     {
@@ -251,7 +254,7 @@ class DescriptorAbstractTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::isDeprecated
+     * @covers ::isDeprecated
      */
     public function testIsDeprecated() : void
     {
@@ -263,20 +266,29 @@ class DescriptorAbstractTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::setErrors
-     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getErrors
+     * @covers ::setErrors
+     * @covers ::getErrors
      */
     public function testSettingAndGettingErrors() : void
     {
-        /** @var Collection $mock */
-        $mock = m::mock(Collection::class);
-        $this->fixture->setErrors($mock);
+        $tagErrors = new Collection(['myTag Error']);
+        $tagDescriptor = $this->prophesize(TagDescriptor::class);
+        $tagDescriptor->getErrors()->willReturn($tagErrors);
 
-        $this->assertSame($mock, $this->fixture->getErrors());
+        $this->fixture->setErrors(new Collection(['myDescriptor Error']));
+        $this->fixture->setTags(new Collection([new Collection([$tagDescriptor->reveal()])]));
+
+        $this->assertEquals(
+            [
+                'myDescriptor Error',
+                'myTag Error',
+            ],
+            $this->fixture->getErrors()->getAll()
+        );
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::__toString
+     * @covers ::__toString
      */
     public function testToString() : void
     {

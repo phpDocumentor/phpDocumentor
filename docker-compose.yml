@@ -10,4 +10,4 @@ services:
     build: .
     volumes: [".:/opt/phpdoc"]
     working_dir: "/opt/phpdoc"
-    command: ["./tools/behat"]
+    entrypoint: ["php", "./tools/behat"]

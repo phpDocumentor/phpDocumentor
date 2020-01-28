@@ -346,7 +346,14 @@ abstract class DescriptorAbstract implements Descriptor, Filterable
      */
     public function getErrors() : Collection
     {
-        return $this->errors;
+        $errors = (new Collection())->merge($this->errors);
+        foreach ($this->tags as $tags) {
+            foreach ($tags as $tag) {
+                $errors = $errors->merge($tag->getErrors());
+            }
+        }
+
+        return $errors;
     }
 
     /**

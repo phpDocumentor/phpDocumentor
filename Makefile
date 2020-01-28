@@ -46,7 +46,7 @@ integration-test: node_modules/.bin/cypress build/default/index.html build/clean
 
 .PHONY: behat
 behat:
-	docker-compose run --rm behat ./tools/behat ${ARGS}
+	docker-compose run --rm behat ${ARGS}
 
 .PHONY: composer-require-checker
 composer-require-checker:

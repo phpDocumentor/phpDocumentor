@@ -615,4 +615,17 @@ class ApiContext extends BaseContext implements Context
         Assert::isInstanceOf($propertyDescriptor, PropertyDescriptor::class);
         Assert::eq($type, (string) $propertyDescriptor->getType());
     }
+
+    /**
+     * @Then /^file "([^"]*)" must contain an error$/
+     */
+    public function fileMustContainAnError($filename) : void
+    {
+        $ast = $this->getAst();
+
+        /** @var FileDescriptor $file */
+        $file = $ast->getFiles()->get($filename);
+
+        Assert::count($file->getAllErrors(), 1);
+    }
 }

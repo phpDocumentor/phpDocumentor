@@ -40,7 +40,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
      *
      * @param DescriptorAbstract[]|mixed[] $items
      */
-    public function __construct($items = [])
+    public function __construct(array $items = [])
     {
         $this->items = $items;
     }

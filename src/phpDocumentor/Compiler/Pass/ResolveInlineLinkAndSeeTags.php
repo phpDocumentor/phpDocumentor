@@ -162,7 +162,7 @@ final class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
      *
      * @param string[] $match
      */
-    private function createLinkOrSeeTagFromRegexMatch(array $match) : ?Tag
+    private function createLinkOrSeeTagFromRegexMatch(array $match) : Tag
     {
         [, $tagName, $tagContent] = $match;
 
