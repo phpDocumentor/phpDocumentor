@@ -24,6 +24,7 @@
                 "vendor/composer",
                 "vendor/hamcrest",
                 "vendor/padraic",
+                "vendor/webmozart",
                 "vendor/doctrine/annotations/lib",
                 "vendor/doctrine/lexer/lib",
                 "vendor/erusev/parsedown",
