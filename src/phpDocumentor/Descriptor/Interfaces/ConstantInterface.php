@@ -28,7 +28,9 @@ interface ConstantInterface extends ElementInterface, TypeInterface
     /**
      * Returns the types that may be present in this constant.
      *
-     * @return Type[]
+     * @return list<?Type>
+     *
+     * @phpstan-return array<int, ?Type>
      */
     public function getTypes() : array;
 

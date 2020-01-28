@@ -19,6 +19,7 @@ use Doctrine\RST\Configuration as RSTParserConfiguration;
 use Doctrine\RST\Directives\Directive as Directive;
 use Doctrine\RST\Kernel;
 use Doctrine\RST\References\Reference;
+use IteratorAggregate;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Guides\Twig\AssetsExtension;
 use phpDocumentor\Transformer\Writer\Twig\Extension;
@@ -30,10 +31,10 @@ final class KernelFactory
     /** @var string */
     private $globalTemplatesPath;
 
-    /** @var Directive[] */
+    /** @var IteratorAggregate<Directive> */
     private $directives;
 
-    /** @var Reference[] */
+    /** @var IteratorAggregate<Reference> */
     private $references;
 
     /** @var LinkRenderer */
@@ -42,8 +43,8 @@ final class KernelFactory
     public function __construct(
         string $globalTemplatesPath,
         LinkRenderer $linkRenderer,
-        iterable $directives = [],
-        iterable $references = []
+        IteratorAggregate $directives,
+        IteratorAggregate $references
     ) {
         $this->globalTemplatesPath = $globalTemplatesPath;
         $this->directives = $directives;

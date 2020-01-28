@@ -100,7 +100,9 @@ class PropertyDescriptor extends DescriptorAbstract implements
     }
 
     /**
-     * {@inheritDoc}
+     * @return list<string>
+     *
+     * @phpstan-return array<int, string>
      */
     public function getTypes() : array
     {
@@ -166,10 +168,8 @@ class PropertyDescriptor extends DescriptorAbstract implements
 
     /**
      * Returns the property from which this one should inherit, if any.
-     *
-     * @return mixed|null
      */
-    public function getInheritedElement()
+    public function getInheritedElement() : ?PropertyDescriptor
     {
         /** @var ClassDescriptor|InterfaceDescriptor|null $associatedClass */
         $associatedClass = $this->getParent();

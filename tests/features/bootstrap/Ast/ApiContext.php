@@ -314,7 +314,6 @@ class ApiContext extends BaseContext implements Context
      */
     public function classHasConstant($classFqsen, $constantName)
     {
-        /** @var ClassDescriptor $class */
         $class = $this->findClassByFqsen($classFqsen);
         $constant = $class->getConstants()->get($constantName);
         Assert::isInstanceOf($constant, ConstantDescriptor::class);

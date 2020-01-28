@@ -20,6 +20,7 @@ use Doctrine\RST\ErrorManager;
 use Doctrine\RST\Event\PostBuildRenderEvent;
 use Doctrine\RST\Event\PreNodeRenderEvent;
 use Doctrine\RST\Kernel;
+use IteratorAggregate;
 use phpDocumentor\Guides\Listener\AssetsCopyListener;
 use phpDocumentor\Guides\Listener\CopyImagesListener;
 
@@ -29,8 +30,8 @@ class DocsKernel extends Kernel
 
     public function __construct(
         ?Configuration $configuration = null,
-        iterable $directives = [],
-        iterable $references = [],
+        IteratorAggregate $directives,
+        IteratorAggregate $references,
         BuildContext $buildContext
     ) {
         parent::__construct($configuration, iterator_to_array($directives), iterator_to_array($references));

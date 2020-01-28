@@ -38,9 +38,9 @@ class StripOnVisibility implements FilterInterface
     /**
      * Filter Descriptor with based on visibility.
      *
-     * @param DescriptorAbstract $value
+     * @param DescriptorAbstract|Filterable $value
      *
-     * @return DescriptorAbstract|null
+     * @return DescriptorAbstract|Filterable|null
      */
     public function __invoke(?Filterable $value) : ?Filterable
     {

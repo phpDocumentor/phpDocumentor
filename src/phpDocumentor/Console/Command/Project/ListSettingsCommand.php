@@ -22,9 +22,12 @@ use function var_export;
 
 final class ListSettingsCommand extends Command
 {
-    /** @var WithCustomSettings[] */
+    /** @var iterable<WithCustomSettings> */
     private $servicesWithCustomSettings;
 
+    /**
+     * @param iterable<WithCustomSettings> $servicesWithCustomSettings
+     */
     public function __construct(iterable $servicesWithCustomSettings)
     {
         parent::__construct('settings:list');

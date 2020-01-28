@@ -29,6 +29,18 @@ final class FlySystemCollector implements FileCollector
         $this->flySystemFactory     = $flySystemFactory;
     }
 
+    /**
+     * @param list<string>         $paths
+     * @param array<string, mixed> $ignore
+     * @param list<string>         $extensions
+     *
+     * @return list<FlySystemFile>
+     *
+     * @phpstan-param array<int, string>         $paths
+     * @phpstan-param array<int, string>         $extensions
+     *
+     * @phpstan-return array<int, FlySystemFile>
+     */
     public function getFiles(Dsn $dsn, array $paths, array $ignore, array $extensions) : array
     {
         $specs = $this->specificationFactory->create($paths, $ignore, $extensions);

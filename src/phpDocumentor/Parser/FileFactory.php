@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Parser;
 
+use IteratorAggregate;
+use phpDocumentor\Reflection\Middleware\Middleware;
 use phpDocumentor\Reflection\Php\Factory;
 use phpDocumentor\Reflection\Php\NodesFactory;
 use function iterator_to_array;
@@ -22,8 +24,10 @@ final class FileFactory
     /**
      * Symfony's !tagged helper expression returns an iterable object; but the FileFactory requires an array.
      * This means that we need to unpack the middlewares iterable first as a plain array in this factory.
+     *
+     * @param IteratorAggregate<Middleware> $middlewares
      */
-    public static function createInstance(NodesFactory $nodesFactory, iterable $middlewares) : Factory\File
+    public static function createInstance(NodesFactory $nodesFactory, IteratorAggregate $middlewares) : Factory\File
     {
         return new Factory\File($nodesFactory, iterator_to_array($middlewares));
     }

@@ -85,7 +85,6 @@ final class PackageTreeBuilder implements CompilerPassInterface
      */
     private function addElementsOfTypeToPackage(Collection $packages, array $elements, string $type) : void
     {
-        /** @var DescriptorAbstract $element */
         foreach ($elements as $element) {
             $packageName = '';
             $packageTags = $element->getTags()->get('package');

@@ -20,13 +20,13 @@ use phpDocumentor\Reflection\Fqsen;
  */
 class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\InterfaceInterface
 {
-    /** @var Collection $parents */
+    /** @var Collection<InterfaceDescriptor> $parents */
     protected $parents;
 
-    /** @var Collection $constants */
+    /** @var Collection<ConstantDescriptor> $constants */
     protected $constants;
 
-    /** @var Collection $methods */
+    /** @var Collection<MethodDescriptor> $methods */
     protected $methods;
 
     /**

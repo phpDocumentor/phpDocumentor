@@ -32,7 +32,7 @@ use function explode;
 
 final class GraphVizClassDiagram implements Generator
 {
-    /** @var Node[] a cache where nodes for classes, interfaces and traits are stored for reference */
+    /** @var array<string, ?Node> a cache where nodes for classes, interfaces and traits are stored for reference */
     private $nodeCache = [];
 
     /** @var GraphVizGraph[] */

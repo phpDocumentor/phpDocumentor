@@ -17,18 +17,24 @@ use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 
 class Payload
 {
-    /** @var array */
+    /** @var array<string, string|array<mixed>> */
     private $config;
 
     /** @var ProjectDescriptorBuilder */
     private $builder;
 
+    /**
+     * @param array<string, string|array<mixed>> $config
+     */
     public function __construct(array $config, ProjectDescriptorBuilder $builder)
     {
         $this->config = $config;
         $this->builder = $builder;
     }
 
+    /**
+     * @return array<string, string|array<mixed>>
+     */
     public function getConfig() : array
     {
         return $this->config;

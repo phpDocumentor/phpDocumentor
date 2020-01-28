@@ -85,7 +85,6 @@ final class UsesTagContext extends BaseContext implements Context
      */
     private function hasUsesTagReference($usesTags, string $reference) : void
     {
-        /** @var UsesDescriptor $tag */
         foreach ($usesTags as $tag) {
             if (((string) $tag->getReference()) === $reference) {
                 return;

@@ -14,6 +14,11 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Interfaces;
 
 use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Descriptor\ConstantDescriptor;
+use phpDocumentor\Descriptor\InterfaceDescriptor;
+use phpDocumentor\Descriptor\MethodDescriptor;
+use phpDocumentor\Descriptor\PropertyDescriptor;
+use phpDocumentor\Reflection\Fqsen;
 
 /**
  * Common interface representing the description of a class.
@@ -23,8 +28,10 @@ use phpDocumentor\Descriptor\Collection;
  */
 interface ClassInterface extends ElementInterface, ChildInterface, TypeInterface
 {
+    /** @param Collection<InterfaceDescriptor> $interfaces */
     public function setInterfaces(Collection $interfaces) : void;
 
+    /** @return Collection<InterfaceDescriptor|Fqsen> */
     public function getInterfaces() : Collection;
 
     public function setFinal(bool $final) : void;
@@ -35,19 +42,27 @@ interface ClassInterface extends ElementInterface, ChildInterface, TypeInterface
 
     public function isAbstract() : bool;
 
+    /** @param Collection<?ConstantDescriptor> $constants */
     public function setConstants(Collection $constants) : void;
 
+    /** @return Collection<?ConstantDescriptor> */
     public function getConstants() : Collection;
 
+    /** @param Collection<?MethodDescriptor> $methods */
     public function setMethods(Collection $methods) : void;
 
+    /** @return Collection<?MethodDescriptor> */
     public function getMethods() : Collection;
 
+    /** @return Collection<MethodDescriptor> */
     public function getInheritedMethods() : Collection;
 
+    /** @param Collection<?PropertyDescriptor> $properties */
     public function setProperties(Collection $properties) : void;
 
+    /** @return Collection<?PropertyDescriptor> */
     public function getProperties() : Collection;
 
+    /** @return Collection<PropertyDescriptor> */
     public function getInheritedProperties() : Collection;
 }
