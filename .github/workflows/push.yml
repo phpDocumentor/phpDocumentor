@@ -42,6 +42,31 @@ jobs:
       - name: Install PHAR dependencies
         run: tools/phive.phar --no-progress install --copy --trust-gpg-keys 4AA394086372C20A,D2CCAC42F6295E7D,E82B2FB314E9906E --force-accept-unsigned
 
+  dummy:
+    runs-on: ubuntu-latest
+    name: test dummy
+    needs:
+      - setup
+    steps:
+      - uses: actions/checkout@master
+      - name: Restore/cache vendor folder
+        uses: actions/cache@v1
+        with:
+          path: vendor
+          key: all-build-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            all-build-${{ hashFiles('**/composer.lock') }}
+            all-build-
+      - name: Setup PHP
+        uses: shivammathur/setup-php@master
+        with:
+          php-version: 7.4
+          extensions: mbstring, intl, iconv, libxml, dom, json, simplexml, zlib, fileinfo
+          ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
+          tools: pecl
+      - name: Run Behat
+        run: php tools/behat -p default
+
   phpunit-with-coverage:
     runs-on: ubuntu-latest
     name: Unit tests [7.2 | ubuntu-latest]
