@@ -9,7 +9,8 @@
     </transformer>
     <files>
         <directory>.</directory>
-        <ignore>tests/*</ignore>
+        <ignore>tests/**/*</ignore>
+        <ignore>build/**/*</ignore>
     </files>
     <transformations>
         <template name="default" />

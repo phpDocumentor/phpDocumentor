@@ -78,7 +78,13 @@ class Locator
             if (!@mkdir($namespacePath, 0777, true)) {
                 $error = error_get_last();
                 if ($error) {
-                    throw new RuntimeException($error['message']);
+                    throw new RuntimeException(
+                        sprintf(
+                            'Received error "%s", while attempting to create directory "%s"',
+                            $error['message'],
+                            $namespacePath
+                        )
+                    );
                 }
             }
         }
