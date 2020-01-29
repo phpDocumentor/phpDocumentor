@@ -126,7 +126,12 @@ final class PathNormalizingMiddleware
 
         $basePath = '';
         if ($uri instanceof Uri) {
-            $basePath = (string) Path::dirname(new Path($uri->getPath())) . '/';
+            $basePath = (string) Path::dirname(new Path($uri->getPath()));
+
+            // only add the slash in the middle if $basePath actually contains a value
+            if ($basePath) {
+                $basePath .= '/';
+            }
         }
 
         return new Path($basePath . (string) $cachePath);
