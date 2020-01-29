@@ -23,6 +23,7 @@ use PHPUnit\Framework\TestCase;
 use Twig\Environment;
 use Twig\Extension\DebugExtension;
 use Twig\Loader\ChainLoader;
+use function md5;
 
 /**
  * @coversDefaultClass \phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory
@@ -62,9 +63,11 @@ final class EnvironmentFactoryTest extends TestCase
     public function testItCreatesATwigEnvironmentWithThephpDocumentorExtension() : void
     {
         $cacheFolder = new Path('/tmp/cache/twig');
-
-        $this->cacheLocator->locate('twig')->willReturn($cacheFolder);
         $transformation = $this->faker()->transformation();
+
+        $this->cacheLocator
+            ->locate('twig/' . md5($transformation->template()->getName()))
+            ->willReturn($cacheFolder);
 
         $environment = $this->factory->create(new ProjectDescriptor('name'), $transformation, '/home');
 
@@ -83,10 +86,12 @@ final class EnvironmentFactoryTest extends TestCase
     public function testItCreatesATwigEnvironmentWithTheCorrectTemplateLoaders() : void
     {
         $cacheFolder = new Path('/tmp/cache/twig');
-
-        $this->cacheLocator->locate('twig')->willReturn($cacheFolder);
-
         $transformation = $this->faker()->transformation();
+
+        $this->cacheLocator
+            ->locate('twig/' . md5($transformation->template()->getName()))
+            ->willReturn($cacheFolder);
+
         $mountManager = $transformation->template()->files();
 
         $environment = $this->factory->create(new ProjectDescriptor('name'), $transformation, '/home');
@@ -114,10 +119,12 @@ final class EnvironmentFactoryTest extends TestCase
     public function testTheCreatedEnvironmentHasTheDebugExtensionWhenTheCorrectParameterIsSet() : void
     {
         $cacheFolder = new Path('/tmp/cache/twig');
-
-        $this->cacheLocator->locate('twig')->willReturn($cacheFolder);
-
         $transformation = $this->faker()->transformation();
+
+        $this->cacheLocator
+            ->locate('twig/' . md5($transformation->template()->getName()))
+            ->willReturn($cacheFolder);
+
         $transformation->setParameters([new Parameter('twig-debug', 'true')]);
 
         $environment = $this->factory->create(new ProjectDescriptor('name'), $transformation, '/home');

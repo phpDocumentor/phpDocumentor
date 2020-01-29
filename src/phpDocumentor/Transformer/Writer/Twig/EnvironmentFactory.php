@@ -20,6 +20,7 @@ use Twig\Environment;
 use Twig\Extension\DebugExtension;
 use Twig\Loader\ChainLoader;
 use function ltrim;
+use function md5;
 
 class EnvironmentFactory
 {
@@ -50,7 +51,7 @@ class EnvironmentFactory
             )
         );
 
-        $env->setCache((string) $this->locator->locate('twig'));
+        $env->setCache((string) $this->locator->locate('twig/' . md5($transformation->template()->getName())));
         $this->addPhpDocumentorExtension($project, $destination, $env);
         $this->enableDebugWhenParameterIsSet($transformation, $env);
 
