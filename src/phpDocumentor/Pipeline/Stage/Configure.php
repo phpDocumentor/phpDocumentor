@@ -57,7 +57,7 @@ final class Configure
     public function __invoke(array $options) : array
     {
         $this->configFactory->addMiddleware(
-            new CommandlineOptionsMiddleware($options, $this->configFactory, 'file:///' . getcwd())
+            new CommandlineOptionsMiddleware($options, $this->configFactory, getcwd())
         );
         $this->configFactory->addMiddleware(new PathNormalizingMiddleware());
 
