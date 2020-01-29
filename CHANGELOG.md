@@ -3,7 +3,8 @@
 # BREAKING CHANGES
  -  Minimum PHP version to run this is 7.2 in (79e3e5b2) thanks to [Mike van Riel]
  -  Trunk based development in (fd06a056) thanks to [Mike van Riel]
- -  Merge pull request #2137 from phpDocumentor/remove-xml-writer-and-supporting-classes in (24169d9d) thanks to [Jaap van Otterdijk]
+ -  Support for XML-based templates was dropped in (24169d9d) thanks to [Mike van Riel]
+ -  Support for rendering an XML-based ast (structure.xml) was dropped in (24169d9d) thanks to [Mike van Riel]
 
 # ADDED
  -  Add reports to the new template in (3f6701fb) thanks to [Mike van Riel]
@@ -75,6 +76,7 @@
  -  Unresolved types could not be rendered in (62acc2e5) thanks to [Mike van Riel]
 
 # REMOVED
+ -  Remove validation of DocBlocks
  -  Remove compression on phar in (104f5b84) thanks to [Jaapio]
  -  Remove default language and set per job in (6aa21973) thanks to [Mike van Riel]
  -  Removed Travis and Appveyor since Github Actions does all in (29fda4cd) thanks to [Mike van Riel]
