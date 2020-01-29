@@ -72,20 +72,18 @@ class Locator
 
     public function locate(string $namespace = '') : Path
     {
-        $namespacePath = rtrim(sprintf('%s/%s', (string) $this->root(), $namespace) . '/');
+        $namespacePath = rtrim(sprintf('%s/%s', (string) $this->root(), $namespace), '/');
 
-        if (!is_dir($namespacePath)) {
-            if (!@mkdir($namespacePath, 0777, true)) {
-                $error = error_get_last();
-                if ($error) {
-                    throw new RuntimeException(
-                        sprintf(
-                            'Received error "%s", while attempting to create directory "%s"',
-                            $error['message'],
-                            $namespacePath
-                        )
-                    );
-                }
+        if (!is_dir($namespacePath) && !@mkdir($namespacePath, 0777, true)) {
+            $error = error_get_last();
+            if ($error) {
+                throw new RuntimeException(
+                    sprintf(
+                        'Received error "%s", while attempting to create directory "%s"',
+                        $error['message'],
+                        $namespacePath
+                    )
+                );
             }
         }
 

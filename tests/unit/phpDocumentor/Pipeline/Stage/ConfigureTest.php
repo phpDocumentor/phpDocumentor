@@ -48,6 +48,7 @@ final class ConfigureTest extends TestCase
         ];
 
         $this->cacheLocator->providePath($cachePath);
+        $this->cacheLocator->locate()->willReturn($cachePath);
 
         $logger = $this->prophesize(LoggerInterface::class);
         $configurationFactory = $this->prophesize(ConfigurationFactory::class);
@@ -91,6 +92,7 @@ final class ConfigureTest extends TestCase
         ];
 
         $this->cacheLocator->providePath($cachePath);
+        $this->cacheLocator->locate()->willReturn($cachePath);
 
         $logger = $this->prophesize(LoggerInterface::class);
         $configurationFactory = $this->prophesize(ConfigurationFactory::class);
@@ -118,6 +120,7 @@ final class ConfigureTest extends TestCase
         ];
 
         $this->cacheLocator->providePath($cachePath);
+        $this->cacheLocator->locate()->willReturn($cachePath);
 
         $logger = $this->prophesize(LoggerInterface::class);
         $configurationFactory = $this->prophesize(ConfigurationFactory::class);
