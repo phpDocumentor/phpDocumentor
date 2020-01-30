@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Configuration;
 
 use League\Uri\Uri;
+use phpDocumentor\Path;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -64,6 +65,49 @@ final class PathNormalizingMiddlewareTest extends TestCase
             [$output],
             $outputConfig['phpdocumentor']['versions']['1.0.0']['api'][0]['ignore']['paths']
         );
+    }
+
+    /**
+     * @dataProvider cachePathProvider
+     */
+    public function testNormalizeCachePath(string $input, string $output, string $configPath) : void
+    {
+        $configuration = $this->givenAConfiguration();
+        $configuration['phpdocumentor']['paths']['cache'] = new Path($input);
+
+        $middleware = new PathNormalizingMiddleware();
+        $outputConfig = $middleware(
+            $configuration,
+            Uri::createFromString($configPath)
+        );
+
+        self::assertSame($output, (string) $outputConfig['phpdocumentor']['paths']['cache']);
+    }
+
+    public function cachePathProvider() : array
+    {
+        return [
+            'Absolute paths are not normalized' => [
+                '/opt/myProject',
+                '/opt/myProject',
+                '/data/phpdocumentor/config.xml',
+            ],
+            'Absolute windows paths are not normalized' => [
+                'D:\opt\myProject',
+                'D:\opt\myProject',
+                '/data/phpdocumentor/config.xml',
+            ],
+            'Relative unix paths are changed to an absolute path with the config folder as prefix' => [
+                '.phpdoc/cache',
+                '/data/phpdocumentor/.phpdoc/cache',
+                '/data/phpdocumentor/config.xml',
+            ],
+            'Relative paths on Windows are changed to an absolute path with the config folder as prefix' => [
+                '.phpdoc\cache',
+                'd:/data/phpdocumentor/.phpdoc/cache',
+                'D:/data/phpdocumentor/config.xml',
+            ],
+        ];
     }
 
     public function pathProvider() : array

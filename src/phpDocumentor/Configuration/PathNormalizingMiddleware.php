@@ -124,16 +124,13 @@ final class PathNormalizingMiddleware
             return $cachePath;
         }
 
-        $basePath = '';
-        if ($uri instanceof Uri) {
-            $basePath = (string) Path::dirname(new Path($uri->getPath()));
-
-            // only add the slash in the middle if $basePath actually contains a value
-            if ($basePath) {
-                $basePath .= '/';
-            }
+        if (!$uri instanceof Uri) {
+            return $cachePath;
         }
 
-        return new Path($basePath . (string) $cachePath);
+        $configFile = Dsn::createFromUri($uri);
+        $configPath = $configFile->withPath(Path::dirname($configFile->getPath()));
+
+        return Dsn::createFromString((string) $cachePath)->resolve($configPath)->getPath();
     }
 }
