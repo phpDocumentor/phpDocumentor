@@ -18,7 +18,9 @@ use phpDocumentor\Configuration\CommandlineOptionsMiddleware;
 use phpDocumentor\Configuration\Configuration;
 use phpDocumentor\Configuration\ConfigurationFactory;
 use phpDocumentor\Configuration\PathNormalizingMiddleware;
+use phpDocumentor\Configuration\ProvideTemplateOverridePathMiddleware;
 use phpDocumentor\Parser\Cache\Locator;
+use phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory;
 use phpDocumentor\UriFactory;
 use Psr\Log\LoggerInterface;
 use function getcwd;
@@ -39,16 +41,21 @@ final class Configure
     /** @var Locator */
     private $locator;
 
+    /** @var EnvironmentFactory */
+    private $environmentFactory;
+
     public function __construct(
         ConfigurationFactory $configFactory,
         Configuration $configuration,
         LoggerInterface $logger,
-        Locator $locator
+        Locator $locator,
+        EnvironmentFactory $environmentFactory
     ) {
         $this->configFactory = $configFactory;
         $this->configuration = $configuration;
         $this->logger = $logger;
         $this->locator = $locator;
+        $this->environmentFactory = $environmentFactory;
     }
 
     /**
@@ -60,39 +67,40 @@ final class Configure
             new CommandlineOptionsMiddleware($options, $this->configFactory, getcwd())
         );
         $this->configFactory->addMiddleware(new PathNormalizingMiddleware());
+        $this->configFactory->addMiddleware(new ProvideTemplateOverridePathMiddleware($this->environmentFactory));
 
-        if ($options['config'] ?? null) {
-            $path = $options['config'];
-            // if the path equals none then we fallback to the defaults but
-            // don't load anything from the filesystem
-            if ($path !== 'none') {
-                $uri = realpath($path);
-                if ($uri === false) {
-                    throw new InvalidArgumentException(
-                        sprintf(
-                            'The configuration file in path "%s" can not be found or read',
-                            $path
-                        )
-                    );
-                }
+        $this->loadConfigurationFile($options['config'] ?? '');
+        $this->locator->providePath($this->configuration['phpdocumentor']['paths']['cache']);
+        $this->logger->info(sprintf('Logging to: %s', $this->locator->locate()));
 
-                $this->logger->notice(sprintf('Using the configuration file at: %s', $path));
-                $this->configuration->exchangeArray(
-                    $this->configFactory->fromUri(UriFactory::createUri($uri))->getArrayCopy()
-                );
-            } else {
-                $this->logger->notice('Not using any configuration file, relying on application defaults');
-            }
-        } else {
+        return $this->configuration->getArrayCopy();
+    }
+
+    private function loadConfigurationFile(string $path) : void
+    {
+        if ($path === '') {
             $this->logger->notice('Using the configuration file at the default location');
-            $this->configuration->exchangeArray(
-                $this->configFactory->fromDefaultLocations()->getArrayCopy()
+            $this->configuration->exchangeArray($this->configFactory->fromDefaultLocations()->getArrayCopy());
+
+            return;
+        }
+
+        // if the path equals none then we fallback to the defaults but don't load anything from the filesystem
+        if ($path === 'none') {
+            $this->logger->notice('Not using any configuration file, relying on application defaults');
+            return;
+        }
+
+        $uri = realpath($path);
+        if ($uri === false) {
+            throw new InvalidArgumentException(
+                sprintf('The configuration file in path "%s" can not be found or read', $path)
             );
         }
 
-        $this->locator->providePath($this->configuration['phpdocumentor']['paths']['cache']);
-
-        $this->logger->info(sprintf('Logging to: %s', $this->locator->locate()));
-        return $this->configuration->getArrayCopy();
+        $this->logger->notice(sprintf('Using the configuration file at: %s', $path));
+        $this->configuration->exchangeArray(
+            $this->configFactory->fromUri(UriFactory::createUri($uri))->getArrayCopy()
+        );
     }
 }

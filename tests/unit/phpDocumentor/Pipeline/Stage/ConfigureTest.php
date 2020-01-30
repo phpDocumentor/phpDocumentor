@@ -19,6 +19,7 @@ use phpDocumentor\Configuration\Configuration;
 use phpDocumentor\Configuration\ConfigurationFactory;
 use phpDocumentor\Parser\Cache\Locator;
 use phpDocumentor\Path;
+use phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
@@ -52,14 +53,15 @@ final class ConfigureTest extends TestCase
 
         $logger = $this->prophesize(LoggerInterface::class);
         $configurationFactory = $this->prophesize(ConfigurationFactory::class);
-        $configurationFactory->addMiddleware(Argument::any())->shouldBeCalledTimes(2);
+        $configurationFactory->addMiddleware(Argument::any())->shouldBeCalledTimes(3);
         $configurationFactory->fromDefaultLocations()->shouldNotBeCalled();
 
         $stage = new Configure(
             $configurationFactory->reveal(),
             new Configuration($config),
             $logger->reveal(),
-            $this->cacheLocator->reveal()
+            $this->cacheLocator->reveal(),
+            $this->prophesize(EnvironmentFactory::class)->reveal()
         );
 
         self::assertEquals($config, $stage(['config' => 'none']));
@@ -70,7 +72,7 @@ final class ConfigureTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $logger = $this->prophesize(LoggerInterface::class);
         $configurationFactory = $this->prophesize(ConfigurationFactory::class);
-        $configurationFactory->addMiddleware(Argument::any())->shouldBeCalledTimes(2);
+        $configurationFactory->addMiddleware(Argument::any())->shouldBeCalledTimes(3);
         $configurationFactory->fromDefaultLocations()->shouldNotBeCalled();
         $configurationFactory->fromUri()->shouldNotBeCalled();
 
@@ -78,7 +80,8 @@ final class ConfigureTest extends TestCase
             $configurationFactory->reveal(),
             new Configuration(),
             $logger->reveal(),
-            $this->cacheLocator->reveal()
+            $this->cacheLocator->reveal(),
+            $this->prophesize(EnvironmentFactory::class)->reveal()
         );
 
         $stage(['config' => 'some/invalid/file.xml']);
@@ -96,7 +99,7 @@ final class ConfigureTest extends TestCase
 
         $logger = $this->prophesize(LoggerInterface::class);
         $configurationFactory = $this->prophesize(ConfigurationFactory::class);
-        $configurationFactory->addMiddleware(Argument::any())->shouldBeCalledTimes(2);
+        $configurationFactory->addMiddleware(Argument::any())->shouldBeCalledTimes(3);
         $configurationFactory->fromDefaultLocations()->willReturn(new Configuration($config));
         $configurationFactory->fromUri()->shouldNotBeCalled();
 
@@ -104,7 +107,8 @@ final class ConfigureTest extends TestCase
             $configurationFactory->reveal(),
             new Configuration(),
             $logger->reveal(),
-            $this->cacheLocator->reveal()
+            $this->cacheLocator->reveal(),
+            $this->prophesize(EnvironmentFactory::class)->reveal()
         );
 
         $actual = $stage([]);
@@ -124,7 +128,7 @@ final class ConfigureTest extends TestCase
 
         $logger = $this->prophesize(LoggerInterface::class);
         $configurationFactory = $this->prophesize(ConfigurationFactory::class);
-        $configurationFactory->addMiddleware(Argument::any())->shouldBeCalledTimes(2);
+        $configurationFactory->addMiddleware(Argument::any())->shouldBeCalledTimes(3);
         $configurationFactory->fromDefaultLocations()->shouldNotBeCalled();
         $configurationFactory->fromUri(Argument::type(UriInterface::class))
             ->willReturn(new Configuration($config));
@@ -133,7 +137,8 @@ final class ConfigureTest extends TestCase
             $configurationFactory->reveal(),
             new Configuration(),
             $logger->reveal(),
-            $this->cacheLocator->reveal()
+            $this->cacheLocator->reveal(),
+            $this->prophesize(EnvironmentFactory::class)->reveal()
         );
 
         $actual = $stage(['config' => __FILE__]);
