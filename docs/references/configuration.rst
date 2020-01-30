@@ -41,23 +41,30 @@ Basic configuration
 phpDocumentor follows the *convention over configuration* style and as such it is only necessary to specify the options
 which you want to change with regard to the defaults.
 
-The easiest way to find out what the defaults are is to look in the configuration template, which is located in
-``[PHPDOC FOLDER]/data/phpdoc.tpl.xml`` or to examine the specifications in this document.
+The best way to write your configuration is by linking our xsd file in your configuration file. This way xml editors
+can help you to discover the elements that can be added in your configuration.
 
 Usually the following configuration suffices for your project::
 
     <?xml version="1.0" encoding="UTF-8" ?>
-    <phpdoc>
-      <parser>
-        <target>data/output</target>
-      </parser>
-      <transformer>
-        <target>data/output</target>
-      </transformer>
-      <files>
-        <directory>.</directory>
-      </files>
-    </phpdoc>
+    <phpdocumentor
+            configVersion="3"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns="http://www.phpdoc.org"
+            xsi:noNamespaceSchemaLocation="http://docs.phpdoc.org/latest/phpdoc.xsd"
+    >
+        <paths>
+            <output>build/api</output>
+            <cache>build/cache</cache>
+        </paths>
+        <version number="3.0.0">
+            <api>
+                <source dsn=".">
+                    <path>src</path>
+                </source>
+            </api>
+        </version>
+    </phpdocumentor>
 
 The configuration expects you to specify for both what their output(target) folder should be.
 
@@ -67,257 +74,101 @@ The configuration expects you to specify for both what their output(target) fold
     provide a staging location where you indefinitely store your structure file and benefit from the increased speed
     when doing multiple runs. This is called **Incremental Processing** or **Incremental Parsing**.
 
-The transformer expects the source file to be at the target location of the parser so you need not specify that
-explicitly.
+phpDocumentor automatically uses the cache directory when possible there is way to configure this.
 
-The files section allows you to specify where the source code for your project is and what files to ignore.
+The ``api/source`` section allows you to specify where the source code for your project is and what files to ignore. The
+``dsn`` attribute specifies the location of your project. Currently only relative and absolute paths are supported.
+A relative ``dsn`` is relative to the location of your config file.
 
 ::
 
-      <files>
-        <file>test.php</file>
-        <file>bin/*</file>
-        <directory>src</directory>
-        <directory>tes??</directory>
-        <ignore>test/*</ignore>
-      </files>
+    <source dsn="file:///my/project">
+        <path>test.php</path>
+        <path>bin/*</path>
+        <path>src</path>
+        <path>tes??</path>
+        <path>test/**/*</path>
+    </source>
 
-It is allowed to use relative paths here; just remember that these are relative from the the location of your
-configuration file.
+The paths in source are relative to the ``dsn``; It is not possible to use absolute paths in a path.
 
-It is possible to specify specific files or a specific set of **files** using the ``file`` element. As with the
-``-f`` parameter it supports wildcards.
+The **path** element does support glob patterns in include files and directories. When no wildcards are included
+the path is expected to be a directory tree that needs to be included. Thus ``src`` will include all files under ``src``.
 
-In addition you can also provide entire **directory** trees using the element. This also supports the use of wildcards.
-Please note that, in contrary to the ``file`` element, the ``directory`` element is recursive and will tell
-phpDocumentor to process all files contained in this folder and every subfolder.
+Reference
+---------
+
+The phpDocumentor configuration file contains the following top-level
+elements which are explained in more detail in the sub-chapters.
+
+- paths
+- version
+- setting
+- template
+
+Paths
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Paths is forming the base output location of phpDocumentor. More specific output locations can be specified in the ``version`` element.
+
+``output`` is the base path to place the output of the ``transformation`` stage.
+``cache`` it the base path to store the cache used by phpDocumentor during the ``parsing`` stage.
+
+::
+
+    <paths>
+        <output>string</output>
+        <!--Optional:-->
+        <cache>string</cache>
+    </paths>
+
+Version
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Version is the main element to instruct phpDocumentor what needs to be done. A project could have multiple versions.
+
+Each version defined in a config MUST have a unique ``number`` attribute. And may have one or more ``api`` or ``guide`` elements.
+
+To have more control where the output of each version is stored a version may have a ``folder`` element. The folder element
+is a compliment to the ``paths/output`` defined path. When ``folder`` is omitted the output of a version is stored in
+``paths/output`` without any additional paths.
+
+::
+
+    <version number="latest">
+        <folder>latest</folder>
+        <api> <!-- optional --> </api>
+        <guide> <!-- optional --> </guide>
+    </version>
+
+.. note::
+  Currently only single version projects are supported. The configuration format is prepared to support multiple.
+
+Api
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The api element part of a ``version`` it describes a project source api that needs to be processed by phpDocumentor.
+A minimal setup of ``api`` only contains ``source`` element.
+
+::
+
+   <api>
+      <source dsn="./path/to/project">
+        <path>src</path>
+      </source>
+    </api>
+
+Also ``api` may contain an ``output`` element that forms the full path to the location where the rendered docblock api
+is located. The value of ``output`` is appended to the ``paths/output`` element and the optional ``folder`` element
+of its version.
 
 In some cases you will have to **ignore** certain files in your project; examples of these can be third party libraries
 and/or tests. In this case you can use the ``ignore`` element and provide a pattern (not a path) to ignore. Thus if you
 provide ``*test*`` it will ignore any file or directory containing the text *test* in it.
 
-The *starting point* or *base directory* for the ignore directive is the *Project Root*; which is the highest folder
-that all files share in common. Thus if you provide a single directory and that does not contain any parseable files
-and only on subfolder (which does contain parseable files) then the *Project Root* if not the given folder but the
-subfolder.
+See Appendix B for a full example of the options available in ``api``
 
-Reference
----------
 
-The phpDocumentor configuration file contains the following top level
-elements which are explained in more detail in the sub-chapters.
-
--  Title, the title for this project, *may contain HTML*
--  Parser, all settings related to the conversion of the source
-   code to the cache.
--  Transformer, all settings related to the process of transforming
-   the cache to a human readable format, such as HTML or PDF.
--  Logging, all settings related to the generation of logs.
--  Transformations, the default template and additional
-   transformations can be specified in this section.
--  Files, a fileset where to mention which files and folders to include and
-   which to ignore.
-
-Title
-~~~~~
-
-The title is a single element used to alter the logo / text section identifying
-for which project the documentation is generated.
-
-It is possible to use HTML in order, for example, include a logo in the text.
-
-*Example*
-
-::
-
-    <title><![CDATA[<b>My</b> Project]]></title>
-
-Parser
-~~~~~~
-
-The parser section contains all settings related to the conversion
-of your project's source to the intermediate structure format of
-phpDocumentor (structure.xml).
-
-The following fields are supported:
-
--  *default-package-name*, optional element which defines the name of the
-   default package. This is the name of the package when none is provided.
--  *target*, the target location where to store the structure.xml,
-   also used as source location for the transformer. This can be either a
-   relative or absolute folder.
-   Relative folders are relative to the location of the configuration file.
--  *encoding*, optional element which defines the file encoding to use.
--  *markers*, contains a listing of prefixes used in single line comments to
-   mark a segment of code using a single word (by default FIXME and TODO
-   are supported).
-
-   Example::
-
-       // TODO: do something
-
--  *extensions*, contains a list of extension's which a file
-   must have to be interpreted. If a file does not have the extension
-   mentioned in this list then it is not parsed.
-   By default these are: php, php3 and phtml.
-
-*Example*
-
-::
-
-    <parser>
-      <target>output</target>
-      <encoding>utf8</encoding>
-      <markers>
-        <item>TODO</item>
-        <item>FIXME</item>
-      </markers>
-      <extensions>
-        <extension>php</extension>
-        <extension>php3</extension>
-        <extension>phtml</extension>
-      </extensions>
-    </parser>
-
-Transformer
-~~~~~~~~~~~
-
-The transformer section contains most settings related to the
-transformation of the intermediate structure format (structure.xml)
-to a human-readable set of documentation. The format of this set of
-documentation is determined by the template choice which is present
-in the ``transformations`` head section.
-
-.. NOTE::
-
-    The transformer determines the location of the intermediate
-    structure format (structure.xml) by retrieving the ``target``
-    element in the ``parser`` section.
-
-The following fields are supported:
-
-- *target*, the target location where to store the generated
-  documentation files.
-- *external-class-documentation* (*v0.14.0*), with this element you can link the
-  documentation generated by phpDocumentor to the URL of a library based on the
-  prefix of the class. This element may be used multiple times and each time
-  has a ``prefix`` and ``uri`` element which specify which class to link where.
-  The ``uri`` element supports 2 substitution variables: {CLASS} and
-  {LOWERCASE_CLASS}.
-
-      Please note that if the class is part of a namespace that
-      the backslashes are also copied; with exception of the 'root' (start of the
-      class name).
-
-*Example*
-
-::
-
-    <transformer>
-        <target>output</target>
-        <external-class-documentation>
-            <prefix>HTML_QuickForm2</prefix>
-            <uri>http://pear.php.net/package/HTML_QuickForm2/docs/latest/HTML_QuickForm2/{CLASS}.html</uri>
-        </external-class-documentation>
-    </transformer>
-
-Logging
-~~~~~~~
-
-The logging section contains all settings related to the logging of
-information in phpDocumentor.
-
-.. NOTE::
-
-    phpDocumentor does not 'care' whether the specified logging paths exist;
-    if they do not then no log files are generated.
-
-The following fields are supported:
-
--  *level*, determines the minimum level of information that is
-   supplied. Any priority equal to or higher than the given is
-   included in the log files and is output to the screen. All
-   priorities lower than the given are not logged. The following
-   values are allowed (in order from highest to lowest priority):
-
-   - emerg
-   - alert
-   - crit
-   - err
-   - warn
-   - notice
-   - info
-   - debug
-   - quiet
-
--  *paths*, contains all folders to where phpDocumentor may log.
--  *default*, this is the path of the default logging file, the
-   name may be augmented with a {DATE} variable to provide a
-   timestamp and {APP_ROOT} to indicate the root of the phpDocumentor application.
--  *errors*, messages with level *debug* are not added to the
-   default log but in a separate log file whose path you can declare
-   here. As with the *default* log file you can augment the path with
-   the {DATE} variable.
-
-*Example*:
-
-::
-
-    <logging>
-        <level>warn</level>
-        <paths>
-            <default>{APP_ROOT}/data/log/{DATE}.log</default>
-            <errors>{APP_ROOT}/data/log/{DATE}.errors.log</errors>
-        </paths>
-    </logging>
-
-Transformations
-~~~~~~~~~~~~~~~
-
-The transformations section controls the behaviour applied in
-transforming the intermediate structure format to the final human-readable
-output.
-
-The following fields are supported:
-
-- *template*, the name or path of a template to use. This element may be used
-  multiple times to combine several templates though usually you only supply one.
-  Example::
-
-      <template name="responsive"/>
-
-  ::
-
-      <template name="/home/mvriel/phpDocumentor Templates/myTemplate"/>
-
-- *transformation*, it is also possible to execute additional transformations
-  specifically for this project by defining your own transformations here.
-
-*Example*:
-
-::
-
-    <transformations>
-        <template name="responsive" />
-    </transformations>
-
-Files
-~~~~~
-
-Please see the previous sub-chapter `Basic configuration`_ for a complete
-description of the files section.
-
-*Example*
-
-::
-
-      <files>
-        <file>test.php</file>
-        <file>bin/*</file>
-        <directory>src</directory>
-        <directory>tes??</directory>
-        <ignore>test/*</ignore>
-      </files>
 
 Appendix A: basic configuration example
 ---------------------------------------
@@ -325,17 +176,24 @@ Appendix A: basic configuration example
 ::
 
     <?xml version="1.0" encoding="UTF-8" ?>
-    <phpdoc>
-      <parser>
-        <target>data/output</target>
-      </parser>
-      <transformer>
-        <target>data/output</target>
-      </transformer>
-      <files>
-        <directory>.</directory>
-      </files>
-    </phpdoc>
+    <phpdocumentor
+            configVersion="3"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns="http://www.phpdoc.org"
+            xsi:noNamespaceSchemaLocation="http://docs.phpdoc.org/latest/phpdoc.xsd"
+    >
+        <paths>
+            <output>build/api</output>
+            <cache>build/cache</cache>
+        </paths>
+        <version number="3.0.0">
+            <api>
+                <source dsn=".">
+                    <path>src</path>
+                </source>
+            </api>
+        </version>
+    </phpdocumentor>
 
 Appendix B: complete configuration example
 ------------------------------------------
@@ -343,40 +201,62 @@ Appendix B: complete configuration example
 ::
 
     <?xml version="1.0" encoding="UTF-8" ?>
-    <phpdoc>
-        <title>My project</title>
-        <parser>
-            <target>output</target>
-            <encoding>utf8</encoding>
-            <markers>
-                <item>TODO</item>
-                <item>FIXME</item>
-            </markers>
-            <extensions>
-                <extension>php</extension>
-                <extension>php3</extension>
-                <extension>phtml</extension>
-            </extensions>
-            <visibility></visibility>
-        </parser>
-        <transformer>
-            <target>output</target>
-        </transformer>
-        <logging>
-            <level>warn</level>
-            <paths>
-                <default>{APP_ROOT}/data/log/{DATE}.log</default>
-                <errors>{APP_ROOT}/data/log/{DATE}.errors.log</errors>
-            </paths>
-        </logging>
-        <transformations>
-            <template name="responsive" />
-        </transformations>
-        <files>
-            <file>test.php</file>
-            <file>bin/*</file>
-            <directory>src</directory>
-            <directory>tes??</directory>
-            <ignore>test/*</ignore>
-        </files>
-    </phpdoc>
+    <phpdocumentor configVersion="3.0">
+      <paths>
+        <output>build/docs</output>
+        <!--Optional:-->
+        <cache>string</cache>
+      </paths>
+      <!--Zero or more repetitions:-->
+      <version number="3.0">
+        <!--Optional:-->
+        <folder>latest</folder>
+        <!--Zero or more repetitions:-->
+        <api format="php">
+          <source dsn=".">
+            <!--1 or more repetitions:-->
+            <path>src</path>
+          </source>
+          <!--Optional:-->
+          <output>api</output>
+          <!--Optional:-->
+          <ignore hidden="true" symlinks="true">
+            <!--1 or more repetitions:-->
+            <path>tests</path>
+          </ignore>
+          <!--Optional:-->
+          <extensions>
+            <!--1 or more repetitions:-->
+            <extension>php</extension>
+          </extensions>
+          <!--Optional:-->
+          <visibility>private</visibility>
+          <!--Optional:-->
+          <default-package-name>MyPackage</default-package-name>
+          <!--Optional:-->
+          <include-source>true</include-source>
+          <!--Optional:-->
+          <markers>
+            <!--1 or more repetitions:-->
+            <marker>TODO</marker>
+            <marker>FIXME</marker>
+          </markers>
+        </api>
+        <!--Zero or more repetitions:-->
+        <guide format="rst">
+          <source dsn=".">
+            <!--1 or more repetitions:-->
+            <path>support/docs</path>
+          </source>
+          <!--Optional:-->
+          <output>docs</output>
+        </guide>
+      </version>
+      <!--Zero or more repetitions:-->
+      <setting name="string" value="string"/>
+      <!--Zero or more repetitions:-->
+      <template name="string" location="string">
+        <!--Zero or more repetitions:-->
+        <parameter name="string" value="string"/>
+      </template>
+    </phpdocumentor>
