@@ -8,6 +8,7 @@ use League\Uri\Uri;
 use phpDocumentor\Dsn;
 use phpDocumentor\Path;
 use phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory;
+use function file_exists;
 
 final class ProvideTemplateOverridePathMiddleware
 {
