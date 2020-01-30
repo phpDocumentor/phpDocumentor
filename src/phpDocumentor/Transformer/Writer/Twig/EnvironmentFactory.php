@@ -15,10 +15,12 @@ namespace phpDocumentor\Transformer\Writer\Twig;
 
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Parser\Cache\Locator;
+use phpDocumentor\Path;
 use phpDocumentor\Transformer\Transformation;
 use Twig\Environment;
 use Twig\Extension\DebugExtension;
 use Twig\Loader\ChainLoader;
+use Twig\Loader\FilesystemLoader;
 use function ltrim;
 use function md5;
 
@@ -30,10 +32,18 @@ class EnvironmentFactory
     /** @var Locator */
     private $locator;
 
+    /** @var ?Path */
+    private $templateOverridesAt;
+
     public function __construct(LinkRenderer $renderer, Locator $locator)
     {
         $this->renderer = $renderer;
         $this->locator = $locator;
+    }
+
+    public function withTemplateOverridesAt(Path $path) : void
+    {
+        $this->templateOverridesAt = $path;
     }
 
     public function create(
@@ -42,14 +52,15 @@ class EnvironmentFactory
         string $destination
     ) : Environment {
         $mountManager = $transformation->template()->files();
-        $env = new Environment(
-            new ChainLoader(
-                [
-                    new FlySystemLoader($mountManager->getFilesystem('template')),
-                    new FlySystemLoader($mountManager->getFilesystem('templates')),
-                ]
-            )
-        );
+
+        $loaders = [];
+        if ($this->templateOverridesAt instanceof Path) {
+            $loaders[] = new FilesystemLoader([(string) $this->templateOverridesAt]);
+        }
+        $loaders[] = new FlySystemLoader($mountManager->getFilesystem('template'));
+        $loaders[] = new FlySystemLoader($mountManager->getFilesystem('templates'));
+
+        $env = new Environment(new ChainLoader($loaders));
 
         $env->setCache((string) $this->locator->locate('twig/' . md5($transformation->template()->getName())));
         $this->addPhpDocumentorExtension($project, $destination, $env);
