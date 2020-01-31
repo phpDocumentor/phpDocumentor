@@ -428,7 +428,7 @@ jobs:
           tags: '3.0'
         id: demo_build
       - name: 'deploy'
-        uses: ./.github/actions/docker-deploy # use this repo as an action
+        uses: jaapio/keelsh-deploy@1.0.0
         with:
           keelBaseUrl: ${{ secrets.KEEL_BASE_URL }}
           image: 'docker.pkg.github.com/phpdocumentor/phpdocumentor/demo.phpdoc.org'
