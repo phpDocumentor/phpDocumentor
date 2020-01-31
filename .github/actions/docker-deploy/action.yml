@@ -1,0 +1,26 @@
+name: 'docker deploy'
+description: 'Calls webhook to deploy docker image'
+inputs:
+  image:
+    description: 'image url to push'
+    required: true
+  keelBaseUrl:
+    description: 'base url of keel webhook, http://keel.yourdomain.com:9300'
+    required: true
+  tag:
+    description: 'tag to push'
+    required: false
+    default: "latest"
+
+runs:
+  using: 'docker'
+  image: 'curlimages/curl:latest'
+  args:
+    - '--silent'
+    - '--show-error'
+    - '--fail'
+    - '-X'
+    - 'POST'
+    - '-d'
+    - '{"name": "${{ inputs.image }}", "tag": "${{ inputs.tag }}"}'
+    - '${{ inputs.keelBaseUrl }}/v1/webhooks/native'

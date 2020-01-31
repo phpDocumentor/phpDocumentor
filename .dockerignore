@@ -1,6 +1,7 @@
 .*
 bin/*
 !bin/phpdoc
+!bin/githubaction
 !bin/console
 !bin/plantuml
 build
@@ -9,6 +10,7 @@ features
 tests
 tools
 var
+vendor
 
 *.md
 behat.yml
