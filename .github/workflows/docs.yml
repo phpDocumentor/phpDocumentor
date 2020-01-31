@@ -3,12 +3,17 @@ name: Docs
 jobs:
   docs:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version:
+          - "2.9"
+          - "latest"
     steps:
       - uses: actions/checkout@master
-      - name: Build
+      - name: Build docs ${{ matrix.version }}
         uses: elgohr/Publish-Docker-Github-Action@master
         env:
-          VERSION: '2.9'
+          VERSION: ${{ matrix.version }}
         with:
           name: phpdocumentor/phpdocumentor/docs.phpdoc.org
           username: ${{ github.actor }}
@@ -16,9 +21,9 @@ jobs:
           registry: docker.pkg.github.com
           context: docs
           buildargs: VERSION
-          tags: '2.9'
+          tags: ${{ matrix.version }}
         id: docs_build
-      - name: 'deploy'
+      - name: Publish docs ${{ matrix.version }}
         uses: jaapio/keelsh-deploy@master
         with:
           keelBaseUrl: ${{ secrets.KEEL_BASE_URL }}
