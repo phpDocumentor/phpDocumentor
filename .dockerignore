@@ -1,5 +1,6 @@
 bin/*
 !bin/phpdoc
+!bin/githubaction
 build.properties
 build.xml
 build/*

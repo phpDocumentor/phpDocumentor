@@ -1,0 +1,16 @@
+#!/usr/bin/env php
+<?php
+
+set_time_limit(0);
+
+$arguments = array_filter([
+    'template' => getenv('INPUT_TEMPLATE'),
+    'config' => getenv('INPUT_CONFIG'),
+    'target' => getenv('INPUT_TARGET'),
+]);
+
+foreach ($arguments as $flag => $value) {
+    $_SERVER['argv'][] = sprintf('--%s=%s', $flag, $value);
+}
+
+require_once __DIR__.'/phpdoc';

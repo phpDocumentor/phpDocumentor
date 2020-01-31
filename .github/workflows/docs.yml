@@ -1,5 +1,5 @@
 on: [push]
-name: Docs
+name: Docs & Demo
 jobs:
   docs:
     runs-on: ubuntu-latest
@@ -24,8 +24,51 @@ jobs:
           tags: ${{ matrix.version }}
         id: docs_build
       - name: Publish docs ${{ matrix.version }}
-        uses: jaapio/keelsh-deploy@master
+        uses: jaapio/keelsh-deploy@1.0.0
         with:
           keelBaseUrl: ${{ secrets.KEEL_BASE_URL }}
           image: 'docker.pkg.github.com/phpdocumentor/phpdocumentor/docs.phpdoc.org'
           tag: ${{ steps.docs_build.outputs.tag }}
+
+  demo:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version:
+          - "2.9"
+          #- "latest"
+    steps:
+      - uses: actions/checkout@master
+      - name: 'phpDoc clean'
+        uses: ./ # use this repo as an action
+        with:
+          template: 'clean'
+          target: 'build/clean'
+      - name: 'phpDoc responsive'
+        uses: ./ # use this repo as an action
+        with:
+          template: 'responsive'
+          target: 'build/responsive'
+      - name: 'Fix file permissions'
+        run: 'sudo chown $USER ./build'
+      - name: 'Copy docker files'
+        run: 'cp ./data/demo/* ./build'
+      - name: Build
+        uses: elgohr/Publish-Docker-Github-Action@master
+        env:
+          VERSION: ${{ matrix.version }}
+        with:
+          name: phpdocumentor/phpdocumentor/demo.phpdoc.org
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: docker.pkg.github.com
+          context: build
+          buildargs: VERSION
+          tags: ${{ matrix.version }}
+        id: demo_build
+      - name: 'deploy'
+        uses: jaapio/keelsh-deploy@1.0.0
+        with:
+          keelBaseUrl: ${{ secrets.KEEL_BASE_URL }}
+          image: 'docker.pkg.github.com/phpdocumentor/phpdocumentor/demo.phpdoc.org'
+          tag: ${{ steps.demo_build.outputs.tag }}
