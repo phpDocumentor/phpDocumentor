@@ -36,7 +36,7 @@ jobs:
       matrix:
         version:
           - "2.9"
-          #- "latest"
+          - "latest"
     steps:
       - uses: actions/checkout@master
       - name: 'phpDoc clean'
