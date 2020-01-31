@@ -1,4 +1,9 @@
-2020-01-28: Version 3.0.0
+2020-01-31: Version unreleased
+
+# Removed
+- Self update command thanks to [Jaapio]
+
+2020-01-31: Version 3.0.0-beta
 
 # BREAKING CHANGES
  -  Minimum PHP version to run this is 7.2 thanks to [Mike van Riel]
