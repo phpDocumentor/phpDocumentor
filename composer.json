@@ -39,7 +39,6 @@
         "league/uri": "^6.0",
         "league/uri-interfaces": "^2.0",
         "ocramius/package-versions": "^1.4",
-        "padraic/phar-updater": "^1.0",
         "phpdocumentor/flyfinder": "^1.0@beta",
         "phpdocumentor/graphviz": "^2.0@dev",
         "phpdocumentor/reflection": "^4.0@beta",
