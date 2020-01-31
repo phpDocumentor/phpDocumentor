@@ -1,5 +1,8 @@
-on: [push]
-name: Docs & Demo
+on:
+  push:
+    paths:
+      - 'docs/**'
+name: Docs
 jobs:
   docs:
     runs-on: ubuntu-latest
@@ -24,40 +27,3 @@ jobs:
           keelBaseUrl: ${{ secrets.KEEL_BASE_URL }}
           image: 'docker.pkg.github.com/phpdocumentor/phpdocumentor/docs.phpdoc.org'
           tag: ${{ steps.docs_build.outputs.tag }}
-  demo:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@master
-      - name: 'phpDoc clean'
-        uses: ./ # use this repo as an action
-        with:
-          template: 'clean'
-          target: 'build/clean'
-      - name: 'phpDoc default'
-        uses: ./ # use this repo as an action
-        with:
-          template: 'default'
-          target: 'build/default'
-      - name: 'Fix file permissions'
-        run: 'sudo chown $USER ./build'
-      - name: 'Copy docker files'
-        run: 'cp ./data/demo/* ./build'
-      - name: Build
-        uses: elgohr/Publish-Docker-Github-Action@master
-        env:
-          VERSION: '3.0'
-        with:
-          name: phpdocumentor/phpdocumentor/demo.phpdoc.org
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-          registry: docker.pkg.github.com
-          context: build
-          buildargs: VERSION
-          tags: '3.0'
-        id: demo_build
-      - name: 'deploy'
-        uses: ./.github/actions/docker-deploy # use this repo as an action
-        with:
-          keelBaseUrl: ${{ secrets.KEEL_BASE_URL }}
-          image: 'docker.pkg.github.com/phpdocumentor/phpdocumentor/demo.phpdoc.org'
-          tag: ${{ steps.demo_build.outputs.tag }}
