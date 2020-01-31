@@ -1,18 +1,29 @@
 on: [push]
 name: Docs & Demo
 jobs:
-#  docs:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@master
-#      - name: Build
-#        uses: elgohr/Publish-Docker-Github-Action@master
-#        with:
-#          name: phpdocumentor/phpdocumentor/docs.phpdoc.org
-#          username: ${{ github.actor }}
-#          password: ${{ secrets.GITHUB_TOKEN }}
-#          registry: docker.pkg.github.com
-#          context: docs
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Build
+        uses: elgohr/Publish-Docker-Github-Action@master
+        env:
+          VERSION: '3.0'
+        with:
+          name: phpdocumentor/phpdocumentor/docs.phpdoc.org
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: docker.pkg.github.com
+          context: docs
+          buildargs: VERSION
+          tags: '3.0'
+        id: docs_build
+      - name: 'deploy'
+        uses: ./.github/actions/docker-deploy # use this repo as an action
+        with:
+          keelBaseUrl: ${{ secrets.KEEL_BASE_URL }}
+          image: 'docker.pkg.github.com/phpdocumentor/phpdocumentor/docs.phpdoc.org'
+          tag: ${{ steps.docs_build.outputs.tag }}
   demo:
     runs-on: ubuntu-latest
     steps:
