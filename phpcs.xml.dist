@@ -12,7 +12,7 @@
         <include-pattern>*\.php</include-pattern>
     </rule>
 
-    <rule ref="Doctrine">
+    <rule ref="phpDocumentor">
         <exclude name="Generic.Formatting.MultipleStatementAlignment.NotSame" />
         <exclude name="SlevomatCodingStandard.TypeHints.UselessConstantTypeHint.UselessDocComment" />
 
