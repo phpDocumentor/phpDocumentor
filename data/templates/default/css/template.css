@@ -351,6 +351,10 @@ body {
     white-space: nowrap;
 }
 
+.phpdocumentor-button--wide {
+    width: 100%;
+}
+
 .phpdocumentor-button:hover,
 .phpdocumentor-button:focus {
     border-color: #888;
@@ -431,6 +435,7 @@ input[type="radio"].phpdocumentor-field {
 
 /* Lists
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
+div.phpdocumentor-list > ul,
 ul.phpdocumentor-list {
     list-style: circle inside;
 }
@@ -439,11 +444,14 @@ ol.phpdocumentor-list {
     list-style: decimal inside;
 }
 
-ol.phpdocumentor-list, ul.phpdocumentor-list {
+div.phpdocumentor-list > ul,
+ol.phpdocumentor-list,
+ul.phpdocumentor-list {
     margin-top: 0;
     padding-left: 0;
 }
 
+div.phpdocumentor-list > ul ul,
 ul.phpdocumentor-list ul.phpdocumentor-list,
 ul.phpdocumentor-list ol.phpdocumentor-list,
 ol.phpdocumentor-list ol.phpdocumentor-list,

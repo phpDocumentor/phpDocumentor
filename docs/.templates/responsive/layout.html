@@ -33,10 +33,9 @@
         {% if not theme_nosidebar|tobool %}
             {%- block sidebarlogo %}
                 {%- if logo %}
-    <p class="logo"><a href="{{ pathto(master_doc) }}">
-        <img class="logo" src="{{ pathto('_static/' + logo, 1) }}"
-             alt="Logo"/>
-    </a></p>
+    <a class="phpdocumentor-logo__link" href="{{ pathto(master_doc) }}">
+        <img class="phpdocumentor-logologo" src="{{ pathto('_static/' + logo, 1) }}" alt="Logo"/>
+    </a>
                 {%- endif %}
             {%- endblock %}
             {%- block sidebarsearch %}
@@ -98,14 +97,12 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro">
     <link rel="stylesheet" href="{{ pathto('_static/css/normalize.css', 1) }}" type="text/css"/>
     <link rel="stylesheet" href="{{ pathto('_static/css/default.css', 1) }}" type="text/css"/>
-    <link rel="shortcut icon" href="http://demo.phpdoc.org/Responsive/img/favicon.ico">
+    <link rel="shortcut icon" href="{{ pathto('_static/img/favicon.png', 1) }}">
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.4.6/fuse.min.js"></script>
-    <link rel="apple-touch-icon" href="http://demo.phpdoc.org/Responsive/img/apple-touch-icon.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="http://demo.phpdoc.org/Responsive/img/apple-touch-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="114x114"
-          href="http://demo.phpdoc.org/Responsive/img/apple-touch-icon-114x114.png">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0/js/all.min.js" integrity="sha256-0vuk8LXoyrmCjp1f0O300qo1M75ZQyhH9X3J6d+scmk=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0/css/all.min.css" integrity="sha256-ybRkN9dBjhcS2qrW1z+hfCxq+1aBdwyQM5wlQoQVt/0=" crossorigin="anonymous" />    <link rel="apple-touch-icon" sizes="72x72" href="http://demo.phpdoc.org/Responsive/img/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="{{ pathto('_static/img/favicon.png', 1) }}">
     {%- block linktags %}
     {%- if hasdoc('about') %}
     <link rel="author" title="{{ _('About these documents') }}" href="{{ pathto('about') }}"/>
@@ -145,17 +142,12 @@
 <body>
 <header class="phpdocumentor-top-header">
     <nav class="phpdocumentor-section">
-        <ul class="phpdocumentor-top-navigation__list">
-            <li>
-                <a href="https://docs.phpdoc.org">Documentation</a>
-            </li>
-            <li>
-                <a href="https://demo.phpdoc.org">Demo</a>
-            </li>
-            <li><a href="https://www.phpdoc.org/templates">Templates</a></li>
-            <li><a href="https://www.phpdoc.org/contact">Contact</a></li>
-            <li><a href="https://www.phpdoc.org/about">About</a></li>
-        </ul>
+        <a href="//www.phpdoc.org/about">About</a>
+        <a href="//docs.phpdoc.org/3.0/">Documentation</a>
+        <a href="//demo.phpdoc.org/3.0/">Templates</a>
+        <a href="//www.phpdoc.org/contact">Contact</a>
+        <a href="//twitter.com/phpdocumentor"><i class="fab fa-twitter"></i></a>
+        <a href="//github.com/phpdocumentor/phpdocumentor"><i class="fab fa-github"></i></a>
     </nav>
 </header>
 <header class="phpdocumentor-header">
@@ -178,16 +170,6 @@
 
                 {% block body %} {% endblock %}
             </div>
-        </div>
-
-        <div class="phpdocumentor-row">
-            <footer class="twelve phpdocumentor-columns">
-                <p>
-                    {% trans sphinx_version=sphinx_version|e %}Created using <a
-                        href="http://sphinx.pocoo.org/">Sphinx</a> {{ sphinx_version
-                    }}.{% endtrans %}
-                </p>
-            </footer>
         </div>
     </main>
 </main>
