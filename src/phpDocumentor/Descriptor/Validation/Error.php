@@ -27,9 +27,12 @@ class Error
     /** @var int $line */
     protected $line = 0;
 
-    /** @var array $context */
+    /** @var mixed[] $context */
     protected $context = [];
 
+    /**
+     * @param mixed[] $context
+     */
     public function __construct(string $severity, string $code, ?int $line, array $context = [])
     {
         $this->severity = $severity;
@@ -53,6 +56,9 @@ class Error
         return $this->severity;
     }
 
+    /**
+     * @return mixed[]
+     */
     public function getContext() : array
     {
         return $this->context;

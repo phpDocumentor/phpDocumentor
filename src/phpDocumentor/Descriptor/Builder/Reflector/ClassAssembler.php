@@ -124,7 +124,7 @@ class ClassAssembler extends AssemblerAbstract
     /**
      * Registers the used traits with the generated Class Descriptor.
      *
-     * @param Fqsen[] $traits
+     * @param array<Fqsen> $traits
      */
     protected function addUses(array $traits, ClassDescriptor $classDescriptor) : void
     {

@@ -93,6 +93,11 @@ final class Version3 implements ConfigurationInterface, Normalizable
         return $treebuilder;
     }
 
+    /**
+     * @param array<string, mixed> $configuration
+     *
+     * @return array<string, array<mixed>>
+     */
     public function normalize(array $configuration) : array
     {
         $configuration['configVersion'] = (string) $configuration['configVersion'];
@@ -240,6 +245,9 @@ final class Version3 implements ConfigurationInterface, Normalizable
             ->end();
     }
 
+    /**
+     * @param array<string> $defaultPaths
+     */
     private function source(array $defaultPaths = []) : ArrayNodeDefinition
     {
         $treebuilder = new TreeBuilder('source');
@@ -253,6 +261,9 @@ final class Version3 implements ConfigurationInterface, Normalizable
             ->end();
     }
 
+    /**
+     * @param array<string> $defaultValue
+     */
     private function paths(array $defaultValue = []) : ArrayNodeDefinition
     {
         $treebuilder = new TreeBuilder('paths');

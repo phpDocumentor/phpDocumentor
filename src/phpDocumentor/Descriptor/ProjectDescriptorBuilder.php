@@ -19,6 +19,10 @@ use phpDocumentor\Descriptor\Builder\AssemblerInterface;
 use phpDocumentor\Descriptor\Filter\Filter;
 use phpDocumentor\Descriptor\Filter\Filterable;
 use phpDocumentor\Descriptor\ProjectDescriptor\WithCustomSettings;
+use phpDocumentor\Reflection\DocBlock\Tag;
+use phpDocumentor\Reflection\Element;
+use phpDocumentor\Reflection\Php\Argument;
+use phpDocumentor\Reflection\Php\File;
 use phpDocumentor\Reflection\Php\Project;
 use RuntimeException;
 use function array_merge;
@@ -77,9 +81,9 @@ class ProjectDescriptorBuilder
     /**
      * Takes the given data and attempts to build a Descriptor from it.
      *
-     * @param mixed $data
+     * @param Element|File|Tag|Argument $data
      *
-     * @return Descriptor|Collection|null
+     * @return Descriptor|Collection<DescriptorAbstract>|null
      *
      * @throws InvalidArgumentException If no Assembler could be found that matches the given data.
      */
@@ -129,7 +133,9 @@ class ProjectDescriptorBuilder
      * Filters each descriptor, validates them, stores the validation results and returns a collection of transmuted
      * objects.
      *
-     * @param DescriptorAbstract[] $descriptor
+     * @param Collection<DescriptorAbstract> $descriptor
+     *
+     * @return Collection<DescriptorAbstract>
      */
     private function filterEachDescriptor(iterable $descriptor) : Collection
     {

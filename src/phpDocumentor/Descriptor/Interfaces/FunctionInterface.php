@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Interfaces;
 
+use phpDocumentor\Descriptor\ArgumentDescriptor;
 use phpDocumentor\Descriptor\Collection;
 
 /**
@@ -22,11 +23,15 @@ interface FunctionInterface extends ElementInterface, TypeInterface
 {
     /**
      * Sets the arguments related to this function.
+     *
+     * @param Collection<ArgumentDescriptor> $arguments
      */
     public function setArguments(Collection $arguments) : void;
 
     /**
      * Returns the arguments related to this function.
+     *
+     * @return Collection<ArgumentDescriptor>
      */
     public function getArguments() : Collection;
 }

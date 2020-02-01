@@ -15,6 +15,7 @@ namespace phpDocumentor\Descriptor;
 
 use InvalidArgumentException;
 use phpDocumentor\Descriptor\Tag\BaseTypes\TypedVariableAbstract;
+use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
 use phpDocumentor\Reflection\Fqsen;
 use function ltrim;
 use function sprintf;
@@ -53,7 +54,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     /** @var Collection<?MethodDescriptor> $methods References to methods defined in this class. */
     protected $methods;
 
-    /** @var Collection<TraitDescriptor> $usedTraits References to traits consumed by this class */
+    /** @var Collection<TraitDescriptor>|Collection<Fqsen> $usedTraits References to traits consumed by this class */
     protected $usedTraits;
 
     /**
@@ -102,33 +103,21 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
         return $this->implements;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setFinal(bool $final) : void
     {
         $this->final = $final;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function isFinal() : bool
     {
         return $this->final;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setAbstract(bool $abstract) : void
     {
         $this->abstract = $abstract;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function isAbstract() : bool
     {
         return $this->abstract;
@@ -151,7 +140,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     }
 
     /**
-     * {@inheritDoc}
+     * @return Collection<?ConstantDescriptor>
      */
     public function getInheritedConstants() : Collection
     {
@@ -204,9 +193,12 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
         return $inheritedMethods->merge($this->getParent()->getInheritedMethods());
     }
 
+    /**
+     * @return Collection<MethodDescriptor>
+     */
     public function getMagicMethods() : Collection
     {
-        /** @var Collection $methodTags */
+        /** @var Collection<MethodDescriptor> $methodTags */
         $methodTags = clone $this->getTags()->get('method', new Collection());
 
         /** @var Collection<MethodDescriptor> $methods */
@@ -220,6 +212,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
             $method->setStatic($methodTag->isStatic());
             $method->setParent($this);
 
+            /** @var Collection<ReturnDescriptor> $returnTags */
             $returnTags = $method->getTags()->get('return', new Collection());
             $returnTags->add($methodTag->getResponse());
 
@@ -277,9 +270,12 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
         return $inheritedProperties->merge($this->getParent()->getInheritedProperties());
     }
 
+    /**
+     * @return Collection<PropertyDescriptor>
+     */
     public function getMagicProperties() : Collection
     {
-        /** @var Collection $propertyTags */
+        /** @var Collection<Tag\PropertyDescriptor> $propertyTags */
         $propertyTags = clone $this->getTags()->get('property', new Collection());
         $propertyTags = $propertyTags->merge($this->getTags()->get('property-read', new Collection()));
         $propertyTags = $propertyTags->merge($this->getTags()->get('property-write', new Collection()));
@@ -357,6 +353,8 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
 
     /**
      * Sets a collection of all traits used by this class.
+     *
+     * @param Collection<TraitDescriptor>|Collection<Fqsen> $usedTraits
      */
     public function setUsedTraits(Collection $usedTraits) : void
     {
@@ -367,6 +365,8 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
      * Returns the traits used by this class.
      *
      * Returned values may either be a string (when the Trait is not in this project) or a TraitDescriptor.
+     *
+     * @return Collection<TraitDescriptor>|Collection<Fqsen>
      */
     public function getUsedTraits() : Collection
     {
@@ -376,7 +376,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     /**
      * @return ClassDescriptor|Fqsen|null
      */
-    public function getInheritedElement()
+    public function getInheritedElement() : ?object
     {
         return $this->getParent();
     }

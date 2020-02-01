@@ -22,7 +22,7 @@ use function current;
  */
 class FunctionDescriptor extends DescriptorAbstract implements Interfaces\FunctionInterface
 {
-    /** @var Collection $arguments */
+    /** @var Collection<ArgumentDescriptor> $arguments */
     protected $arguments;
 
     /** @var Type */
@@ -54,15 +54,12 @@ class FunctionDescriptor extends DescriptorAbstract implements Interfaces\Functi
         return $this->arguments;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getResponse() : ReturnDescriptor
     {
         $definedReturn = new ReturnDescriptor('return');
         $definedReturn->setType($this->returnType);
 
-        /** @var Collection|null $returnTags */
+        /** @var Collection<ReturnDescriptor>|null $returnTags */
         $returnTags = $this->getTags()->get('return');
 
         if ($returnTags instanceof Collection && $returnTags->count() > 0) {

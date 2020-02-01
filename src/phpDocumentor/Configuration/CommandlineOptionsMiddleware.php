@@ -44,6 +44,11 @@ final class CommandlineOptionsMiddleware
         $this->currentWorkingDir = Dsn::createFromString($currentWorkingDir);
     }
 
+    /**
+     * @param array<string, array<string, array<string, mixed>>> $configuration
+     *
+     * @return array<string, array<string, array<string, mixed>>>
+     */
     public function __invoke(array $configuration) : array
     {
         $configuration = $this->overwriteDestinationFolder($configuration);
@@ -77,6 +82,11 @@ final class CommandlineOptionsMiddleware
         return $configuration;
     }
 
+    /**
+     * @param array<string, array<string, array<string, mixed>>> $configuration
+     *
+     * @return array<string, array<string, array<string, mixed>>>
+     */
     private function overwriteDestinationFolder(array $configuration) : array
     {
         if (isset($this->options['target']) && $this->options['target']) {
@@ -89,6 +99,10 @@ final class CommandlineOptionsMiddleware
 
     /**
      * Changes the given configuration array so that the cache handling is disabled.
+     *
+     * @param array<string, array<string, array<string, mixed>>> $configuration
+     *
+     * @return array<string, array<string, array<string, mixed>>>
      */
     private function disableCache(array $configuration) : array
     {
@@ -99,6 +113,11 @@ final class CommandlineOptionsMiddleware
         return $configuration;
     }
 
+    /**
+     * @param array<string, array<string, array<string, mixed>>> $configuration
+     *
+     * @return array<string, array<string, array<string, mixed>>>
+     */
     private function overwriteCacheFolder(array $configuration) : array
     {
         if (isset($this->options['cache-folder']) && $this->options['cache-folder']) {
@@ -108,6 +127,11 @@ final class CommandlineOptionsMiddleware
         return $configuration;
     }
 
+    /**
+     * @param array<string, array<string, array<string, mixed>>> $configuration
+     *
+     * @return array<string, array<string, array<string, mixed>>>
+     */
     private function overwriteTitle(array $configuration) : array
     {
         if (isset($this->options['title']) && $this->options['title']) {
@@ -119,6 +143,10 @@ final class CommandlineOptionsMiddleware
 
     /**
      * Changes the given configuration array to feature the templates from the options.
+     *
+     * @param array<string, array<string, array<string, mixed>>> $configuration
+     *
+     * @return array<string, array<string, array<string, mixed>>>
      */
     private function overwriteTemplates(array $configuration) : array
     {
@@ -134,6 +162,11 @@ final class CommandlineOptionsMiddleware
         return $configuration;
     }
 
+    /**
+     * @param array<string, array<int, array<string, mixed>>> $version
+     *
+     * @return array<string, array<int, array<string, mixed>>>
+     */
     private function setFilesInPath(array $version) : array
     {
         $filename = $this->options['filename'] ?? null;
@@ -157,6 +190,11 @@ final class CommandlineOptionsMiddleware
         return $version;
     }
 
+    /**
+     * @param array<string, array<int, array<string, mixed>>> $version
+     *
+     * @return array<string, array<int, array<string, mixed>>>
+     */
     private function setDirectoriesInPath(array $version) : array
     {
         /** @var string|string[]|null $directory */
@@ -198,6 +236,11 @@ final class CommandlineOptionsMiddleware
         return $version;
     }
 
+    /**
+     * @param array<string, array<int, array<string, mixed>>> $version
+     *
+     * @return array<string, array<int, array<string, mixed>>>
+     */
     private function registerExtensions(array $version) : array
     {
         if (!isset($this->options['extensions']) || !$this->options['extensions']) {
@@ -213,6 +256,11 @@ final class CommandlineOptionsMiddleware
         return $version;
     }
 
+    /**
+     * @param array<string, array<int, array<string, mixed>>> $version
+     *
+     * @return array<string, array<int, array<string, mixed>>>
+     */
     private function overwriteIgnoredPaths(array $version) : array
     {
         if (!isset($this->options['ignore']) || !$this->options['ignore']) {
@@ -233,6 +281,11 @@ final class CommandlineOptionsMiddleware
         return $version;
     }
 
+    /**
+     * @param array<string, array<int, array<string, mixed>>> $version
+     *
+     * @return array<string, array<int, array<string, mixed>>>
+     */
     private function overwriteMarkers(array $version) : array
     {
         if (!isset($this->options['markers']) || !$this->options['markers']) {
@@ -248,6 +301,11 @@ final class CommandlineOptionsMiddleware
         return $version;
     }
 
+    /**
+     * @param array<string, array<int, array<string, mixed>>> $version
+     *
+     * @return array<string, array<int, array<string, mixed>>>
+     */
     private function overwriteIncludeSource(array $version) : array
     {
         if (!isset($this->options['sourcecode'])) {
@@ -263,6 +321,11 @@ final class CommandlineOptionsMiddleware
         return $version;
     }
 
+    /**
+     * @param array<string, array<int, array<string, mixed>>> $version
+     *
+     * @return array<string, array<int, array<string, mixed>>>
+     */
     private function overwriteVisibility(array $version) : array
     {
         /** @var string[]|string|null $visibilityFlags */
@@ -281,6 +344,11 @@ final class CommandlineOptionsMiddleware
         return $version;
     }
 
+    /**
+     * @param array<string, array<int, array<string, mixed>>> $version
+     *
+     * @return array<string, array<int, array<string, mixed>>>
+     */
     private function overwriteDefaultPackageName(array $version) : array
     {
         if (!isset($this->options['defaultpackagename']) || !$this->options['defaultpackagename']) {
@@ -296,11 +364,17 @@ final class CommandlineOptionsMiddleware
         return $version;
     }
 
+    /**
+     * @return array<mixed>
+     */
     private function createDefaultVersionSettings() : array
     {
         return current($this->configFactory->createDefault()['phpdocumentor']['versions']);
     }
 
+    /**
+     * @return array<mixed>
+     */
     private function createDefaultApiSettings() : array
     {
         return $this->createDefaultVersionSettings()['api'];
@@ -309,6 +383,8 @@ final class CommandlineOptionsMiddleware
     /**
      * If the source path was influenced; we can no longer reliable render multiple versions as such we reduce
      * the list of versions to the last one; assuming that is the most recent / desirable one.
+     *
+     * @param array<string, array<string, array<string, mixed>>> $configuration
      */
     private function shouldReduceNumberOfVersionsToOne(array $configuration) : bool
     {
@@ -316,6 +392,11 @@ final class CommandlineOptionsMiddleware
             && count($configuration['phpdocumentor']['versions']) > 1;
     }
 
+    /**
+     * @param array<string, array<string, array<string, mixed>>> $configuration
+     *
+     * @return array<string, array<string, array<string, mixed>>>
+     */
     private function overwriteSettings(array $configuration) : array
     {
         if (!($configuration['phpdocumentor']['settings'] ?? null)) {

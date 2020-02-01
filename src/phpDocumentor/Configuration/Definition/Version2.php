@@ -157,12 +157,16 @@ final class Version2 implements ConfigurationInterface, Upgradable
     /**
      * Upgrades the version 2 configuration to the version 3 configuration.
      *
+     * @param array<string, array<string, mixed>> $values
+     *
+     * @return array<string, string|array<mixed>>
+     *
      * @todo not all options are included yet; finish this
-     * @inheritDoc
      */
     public function upgrade(array $values) : array
     {
         return [
+
             SymfonyConfigFactory::FIELD_CONFIG_VERSION => '3',
             'paths' => [
                 'output' => $values['transformer']['target'],

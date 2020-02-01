@@ -15,6 +15,9 @@ namespace phpDocumentor\Configuration;
 
 use ArrayObject;
 
+/**
+ * @template-extends ArrayObject<string, mixed>
+ */
 final class Configuration extends ArrayObject
 {
 }

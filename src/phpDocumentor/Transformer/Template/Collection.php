@@ -14,12 +14,15 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Template;
 
 use ArrayObject;
+use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Transformer;
 use phpDocumentor\Transformer\Writer\Collection as WriterCollection;
 
 /**
  * Contains a collection of Templates that may be queried.
+ *
+ * @template-extends ArrayObject<string, Template>
  */
 class Collection extends ArrayObject
 {

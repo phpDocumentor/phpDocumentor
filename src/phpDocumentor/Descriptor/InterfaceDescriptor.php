@@ -20,7 +20,7 @@ use phpDocumentor\Reflection\Fqsen;
  */
 class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\InterfaceInterface
 {
-    /** @var Collection<InterfaceDescriptor> $parents */
+    /** @var Collection<InterfaceDescriptor|Fqsen> $parents */
     protected $parents;
 
     /** @var Collection<ConstantDescriptor> $constants */
@@ -41,6 +41,9 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
         $this->setMethods(new Collection());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function setParent(Collection $parents) : void
     {
         $this->parents = $parents;
@@ -71,7 +74,7 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
     }
 
     /**
-     * {@inheritDoc}
+     * @return Collection<ConstantDescriptor>
      */
     public function getInheritedConstants() : Collection
     {
@@ -145,7 +148,7 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
     /**
      * @return InterfaceDescriptor|Fqsen|null
      */
-    public function getInheritedElement()
+    public function getInheritedElement() : ?object
     {
         return $this->getParent()->count() > 0
             ? $this->getParent()->getIterator()->current()

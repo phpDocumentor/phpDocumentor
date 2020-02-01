@@ -126,6 +126,7 @@ final class LinkRenderer
     public function render($value, string $presentation)
     {
         if (is_array($value) && current($value) instanceof Type) {
+            /** @var iterable<Type> $value Assuming every element of iterable is similar */
             return $this->renderType($value);
         }
 

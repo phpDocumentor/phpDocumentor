@@ -26,7 +26,7 @@ class TagDescriptor implements Descriptor, Filterable
     /** @var string $description A description line for this tag */
     protected $description = '';
 
-    /** @var Collection A collection of errors found during filtering. */
+    /** @var Collection<Validation\Error> A collection of errors found during filtering. */
     protected $errors;
 
     /**
@@ -72,6 +72,8 @@ class TagDescriptor implements Descriptor, Filterable
 
     /**
      * Sets a list of errors found on the usage of this tag.
+     *
+     * @param Collection<Validation\Error> $errors
      */
     public function setErrors(Collection $errors) : void
     {
@@ -80,6 +82,8 @@ class TagDescriptor implements Descriptor, Filterable
 
     /**
      * Returns all errors associated with this tag.
+     *
+     * @return Collection<Validation\Error>
      */
     public function getErrors() : Collection
     {

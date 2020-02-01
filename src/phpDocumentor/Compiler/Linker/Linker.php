@@ -15,6 +15,7 @@ namespace phpDocumentor\Compiler\Linker;
 
 use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\ClassDescriptor;
+use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\InterfaceDescriptor;
@@ -113,11 +114,11 @@ class Linker implements CompilerPassInterface
      * This method will return null if no substitution was possible and all of the above should not update the parent
      * item when null is passed.
      *
-     * @param string|object|iterable $item
-     * @param DescriptorAbstract|null $container A descriptor that acts as container for all elements
-     *                                        underneath or null if there is no current container.
+     * @param string|Fqsen|object|iterable $item
+     * @param DescriptorAbstract|null      $container A descriptor that acts as container for all elements
+     *                                                underneath or null if there is no current container.
      *
-     * @return string|DescriptorAbstract|array|Traversable|null
+     * @return string|DescriptorAbstract|array|iterable|null
      */
     public function substitute($item, ?DescriptorAbstract $container = null)
     {

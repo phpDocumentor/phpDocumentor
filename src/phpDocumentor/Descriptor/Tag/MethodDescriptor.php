@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Tag;
 
+use phpDocumentor\Descriptor\ArgumentDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\TagDescriptor;
 
@@ -21,7 +22,7 @@ class MethodDescriptor extends TagDescriptor
     /** @var string */
     private $methodName = '';
 
-    /** @var Collection */
+    /** @var Collection<ArgumentDescriptor> */
     private $arguments;
 
     /** @var ?ReturnDescriptor */
@@ -48,7 +49,7 @@ class MethodDescriptor extends TagDescriptor
     }
 
     /**
-     * @param mixed $arguments
+     * @param Collection<ArgumentDescriptor> $arguments
      */
     public function setArguments($arguments) : void
     {
@@ -56,15 +57,15 @@ class MethodDescriptor extends TagDescriptor
     }
 
     /**
-     * @return mixed
+     * @return Collection<ArgumentDescriptor>
      */
-    public function getArguments()
+    public function getArguments() : Collection
     {
         return $this->arguments;
     }
 
     /**
-     * @param mixed $response
+     * @param ?ReturnDescriptor $response
      */
     public function setResponse($response) : void
     {

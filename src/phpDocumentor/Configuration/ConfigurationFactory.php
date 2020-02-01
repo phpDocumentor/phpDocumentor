@@ -40,6 +40,8 @@ use function sprintf;
 
     /**
      * Initializes the ConfigurationFactory.
+     *
+     * @param array<string> $defaultFiles
      */
     public function __construct(array $defaultFiles, SymfonyConfigFactory $symfonyConfigFactory)
     {
@@ -99,9 +101,9 @@ use function sprintf;
     /**
      * Applies all middleware callbacks onto the configuration.
      *
-     * @param array $configuration
+     * @param array<string, string|array<mixed>> $configuration
      *
-     * @return array
+     * @return array<string, string|array<mixed>>
      */
     private function applyMiddleware(array $configuration, ?UriInterface $uri) : array
     {

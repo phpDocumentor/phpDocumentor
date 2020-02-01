@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Descriptor\Filter\Filterable;
+use phpDocumentor\Descriptor\Tag\AuthorDescriptor;
+use phpDocumentor\Descriptor\Validation\Error;
 use phpDocumentor\Reflection\Fqsen;
 use function str_ireplace;
 use function strpos;
@@ -50,10 +52,10 @@ abstract class DescriptorAbstract implements Descriptor, Filterable
     /** @var int $line The line number on which this element occurs. */
     protected $line = 0;
 
-    /** @var Collection $tags The tags associated with this element. */
+    /** @var Collection<Collection<TagDescriptor>> $tags The tags associated with this element. */
     protected $tags;
 
-    /** @var Collection $errors A list of errors found while building this element. */
+    /** @var Collection<Validation\Error> $errors A list of errors found while building this element. */
     protected $errors;
 
     /** @var DescriptorAbstract|null the element from which to inherit information in this element */
@@ -229,6 +231,8 @@ abstract class DescriptorAbstract implements Descriptor, Filterable
 
     /**
      * Sets the tags associated with this element.
+     *
+     * @param Collection<Collection<TagDescriptor>> $tags
      */
     public function setTags(Collection $tags) : void
     {
@@ -237,6 +241,8 @@ abstract class DescriptorAbstract implements Descriptor, Filterable
 
     /**
      * Returns the tags associated with this element.
+     *
+     * @return Collection<Collection<TagDescriptor>>
      */
     public function getTags() : Collection
     {
@@ -271,9 +277,12 @@ abstract class DescriptorAbstract implements Descriptor, Filterable
         return null;
     }
 
+    /**
+     * @return Collection<AuthorDescriptor>
+     */
     public function getAuthor() : Collection
     {
-        /** @var Collection $author */
+        /** @var Collection<AuthorDescriptor> $author */
         $author = $this->getTags()->get('author', new Collection());
         if ($author->count() !== 0) {
             return $author;
@@ -289,10 +298,12 @@ abstract class DescriptorAbstract implements Descriptor, Filterable
 
     /**
      * Returns the versions for this element.
+     *
+     * @return Collection<VersionDescriptor>
      */
     public function getVersion() : Collection
     {
-        /** @var Collection $version */
+        /** @var Collection<VersionDescriptor> $version */
         $version = $this->getTags()->get('version', new Collection());
         if ($version->count() !== 0) {
             return $version;
@@ -308,10 +319,12 @@ abstract class DescriptorAbstract implements Descriptor, Filterable
 
     /**
      * Returns the copyrights for this element.
+     *
+     * @return Collection<TagDescriptor>
      */
     public function getCopyright() : Collection
     {
-        /** @var Collection $copyright */
+        /** @var Collection<TagDescriptor> $copyright */
         $copyright = $this->getTags()->get('copyright', new Collection());
         if ($copyright->count() !== 0) {
             return $copyright;
@@ -335,6 +348,8 @@ abstract class DescriptorAbstract implements Descriptor, Filterable
 
     /**
      * Sets a list of all errors associated with this element.
+     *
+     * @param Collection<Error> $errors
      */
     public function setErrors(Collection $errors) : void
     {
@@ -343,6 +358,8 @@ abstract class DescriptorAbstract implements Descriptor, Filterable
 
     /**
      * Returns all errors that occur in this element.
+     *
+     * @return Collection<Error>
      */
     public function getErrors() : Collection
     {

@@ -26,9 +26,9 @@ class ArgumentAssembler extends AssemblerAbstract
      * Creates a Descriptor from the provided data.
      *
      * @param Argument $data
-     * @param ParamDescriptor[] $params
+     * @param iterable<ParamDescriptor> $params
      */
-    public function create($data, $params = []) : ArgumentDescriptor
+    public function create($data, iterable $params = []) : ArgumentDescriptor
     {
         $argumentDescriptor = new ArgumentDescriptor();
         $argumentDescriptor->setName($data->getName());

@@ -33,7 +33,7 @@ use function count;
  */
 class Collection implements Countable, IteratorAggregate, ArrayAccess
 {
-    /** @var array<T> $items */
+    /** @var array<?T> $items */
     protected $items = [];
 
     /**
@@ -75,7 +75,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
      * tree building operations.
      *
      * @param string|int $index
-     * @param T          $valueIfEmpty If the index does not exist it will be created with this value and returned.
+     * @param T|mixed    $valueIfEmpty If the index does not exist it will be created with this value and returned.
      *
      * @return mixed The contents of the element with the given index and the provided default if the key doesn't exist.
      *
@@ -93,7 +93,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
     /**
      * Retrieves all items from this collection as PHP Array.
      *
-     * @return array<T>
+     * @return array<?T>
      */
     public function getAll() : array
     {
@@ -103,7 +103,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
     /**
      * Retrieves an iterator to traverse this object.
      *
-     * @return ArrayIterator<string|int, T>
+     * @return ArrayIterator<string|int, ?T>
      */
     public function getIterator() : ArrayIterator
     {
@@ -191,6 +191,10 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * Returns a new collection with the items from this collection and the provided combined.
+     *
+     * @param Collection $collection should be Collection<T> but create issues with inherited Descriptors
+     *
+     * @return Collection<?T>
      */
     public function merge(self $collection) : Collection
     {

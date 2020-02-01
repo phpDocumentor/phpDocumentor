@@ -63,7 +63,7 @@ class Transformer implements CompilerPassInterface
     /** @var Template\Collection $templates */
     protected $templates;
 
-    /** @var Writer\Collection|WriterAbstract[] $writers */
+    /** @var Writer\Collection $writers */
     protected $writers;
 
     /** @var Transformation[] $transformations */

@@ -26,10 +26,8 @@ final class NamespaceAssembler extends AssemblerAbstract
      * Creates a Descriptor from the provided data.
      *
      * @param Namespace_ $data
-     *
-     * @return DescriptorAbstract|Collection
      */
-    public function create($data)
+    public function create($data) : NamespaceDescriptor
     {
         $descriptor = new NamespaceDescriptor();
         $descriptor->setName($data->getName());

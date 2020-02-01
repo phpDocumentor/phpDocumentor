@@ -28,8 +28,8 @@ use phpDocumentor\Reflection\Fqsen;
  */
 interface ClassInterface extends ElementInterface, ChildInterface, TypeInterface
 {
-    /** @param Collection<InterfaceDescriptor> $interfaces */
-    public function setInterfaces(Collection $interfaces) : void;
+    /** @param Collection<InterfaceDescriptor|Fqsen> $implements */
+    public function setInterfaces(Collection $implements) : void;
 
     /** @return Collection<InterfaceDescriptor|Fqsen> */
     public function getInterfaces() : Collection;

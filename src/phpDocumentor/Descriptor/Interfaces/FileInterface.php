@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Interfaces;
 
 use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Descriptor\NamespaceDescriptor;
+use phpDocumentor\Descriptor\Validation;
 
 /**
  * Describes the public interface for a description of a File.
@@ -26,9 +28,15 @@ interface FileInterface extends ElementInterface, ContainerInterface
 
     public function getSource() : ?string;
 
+    /**
+     * @return Collection<NamespaceDescriptor>
+     */
     public function getNamespaceAliases() : Collection;
 
     public function getIncludes() : Collection;
 
+    /**
+     * @return Collection<Validation\Error>
+     */
     public function getErrors() : Collection;
 }
