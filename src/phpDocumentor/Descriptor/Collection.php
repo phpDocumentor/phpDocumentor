@@ -77,9 +77,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
      * @param string|int $index
      * @param T          $valueIfEmpty If the index does not exist it will be created with this value and returned.
      *
-     * @return mixed The contents of the element with the given index and the provided default if the key doesn't exist.
-     *
-     * @phpstan-return ?T
+     * @return ?T The contents of the element with the given index and the provided default if the key doesn't exist.
      */
     public function get($index, $valueIfEmpty = null)
     {
@@ -129,9 +127,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
     /**
      * Retrieves an item as if it were a property of the collection.
      *
-     * @return mixed
-     *
-     * @phpstan-return ?T
+     * @return ?T
      */
     public function __get(string $name)
     {
@@ -153,9 +149,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
      *
      * @param string|int $offset The offset to retrieve.
      *
-     * @return mixed
-     *
-     * @phpstan-return ?T
+     * @return ?T
      */
     public function offsetGet($offset)
     {
