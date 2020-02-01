@@ -97,10 +97,6 @@ jobs:
             all-tools-
       - name: Code style check
         uses: phpDocumentor/coding-standard@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          args: -d memory_limit=1024M
 
   phpstan:
     runs-on: ubuntu-latest
