@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Router;
 
-use ArrayObject;
 use League\Uri\Uri;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\ConstantDescriptor;
@@ -32,7 +31,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 use function strrpos;
 use function substr;
 
-class Router extends ArrayObject
+class Router
 {
     /** @var ClassBasedFqsenUrlGenerator */
     private $fqsenUrlGenerator;
@@ -51,8 +50,6 @@ class Router extends ArrayObject
         $this->fqsenUrlGenerator = $fqsenUrlGenerator;
         $this->urlGenerator = $urlGenerator;
         $this->slugger = $slugger;
-
-        parent::__construct();
     }
 
     /**
