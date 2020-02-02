@@ -46,6 +46,7 @@ final class CollectFiles
 
             $payload = $payload->withFiles($files);
         }
+
         $this->log('OK');
 
         if (count($payload->getFiles()) === 0) {

@@ -20,12 +20,12 @@ use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Process\Process;
-use const PHP_EOL;
 use function addslashes;
 use function copy;
 use function file_put_contents;
 use function implode;
 use function sys_get_temp_dir;
+use const PHP_EOL;
 
 final class PlantumlClassDiagram implements Generator
 {
@@ -93,11 +93,13 @@ PUML;
 
                 $implements[] = addslashes($parentFqsen);
             }
+
             if ($implements !== []) {
                 $implements = ' implements ' . implode(',', $implements);
             } else {
                 $implements = '';
             }
+
             foreach ($class->getUsedTraits() as $parent) {
                 $parentFqsen = $parent instanceof TraitDescriptor
                     ? (string) $parent->getFullyQualifiedStructuralElementName()
@@ -105,6 +107,7 @@ PUML;
 
                 $output .= addslashes($parentFqsen) . ' <-- ' . $className . ' : uses' . PHP_EOL;
             }
+
             $output .= <<<PUML
 
 {$abstract}class {$className}{$extends}{$implements} {
@@ -125,6 +128,7 @@ PUML;
 
                 $implements[] = addslashes($parentFqsen);
             }
+
             if ($implements !== []) {
                 $implements = ' extends ' . implode(',', $implements);
             } else {
@@ -150,6 +154,7 @@ PUML;
 
                 $output .= addslashes($parentFqsen) . ' <-- ' . $className . ' : uses' . PHP_EOL;
             }
+
             $output .= <<<PUML
 
 class {$className} << (T,#FF7700) Trait >> {

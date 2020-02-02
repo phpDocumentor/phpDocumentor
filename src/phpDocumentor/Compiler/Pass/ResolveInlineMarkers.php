@@ -17,22 +17,19 @@ use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
-use const PREG_OFFSET_CAPTURE;
-use const PREG_SET_ORDER;
 use function implode;
 use function preg_match_all;
 use function str_replace;
 use function str_split;
 use function strlen;
 use function trim;
+use const PREG_OFFSET_CAPTURE;
+use const PREG_SET_ORDER;
 
 final class ResolveInlineMarkers implements CompilerPassInterface
 {
     public const COMPILER_PRIORITY = 9000;
 
-    /**
-     * {@inheritDoc}
-     */
     public function getDescription() : string
     {
         return 'Collect all markers in a file';
@@ -47,7 +44,7 @@ final class ResolveInlineMarkers implements CompilerPassInterface
 
         /** @var FileDescriptor $file */
         foreach ($project->getFiles() as $file) {
-            $marker_data = [];
+            $markerData = [];
             $matches     = [];
             $source = $file->getSource() ?: '';
 
@@ -61,12 +58,12 @@ final class ResolveInlineMarkers implements CompilerPassInterface
             foreach ($matches as $match) {
                 [$before] = str_split($source, $match[1][1]); // fetches all the text before the match
 
-                $line_number = strlen($before) - strlen(str_replace("\n", '', $before)) + 1;
+                $lineNumber = strlen($before) - strlen(str_replace("\n", '', $before)) + 1;
 
-                $marker_data[] = ['type' => trim($match[1][0], '@'), 'line' => $line_number, $match[2][0]];
+                $markerData[] = ['type' => trim($match[1][0], '@'), 'line' => $lineNumber, $match[2][0]];
             }
 
-            $file->setMarkers(new Collection($marker_data));
+            $file->setMarkers(new Collection($markerData));
         }
     }
 }

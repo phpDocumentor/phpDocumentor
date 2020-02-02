@@ -45,6 +45,7 @@ final class Provider extends Base
             $templateCollection = m::mock(Template\Collection::class);
             $templateCollection->shouldIgnoreMissing();
         }
+
         $writerCollectionMock = m::mock(Collection::class);
         $writerCollectionMock->shouldIgnoreMissing();
 

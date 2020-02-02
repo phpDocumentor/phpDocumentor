@@ -7,8 +7,8 @@ namespace phpDocumentor\Descriptor;
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\Collection as DescriptorCollection;
-use const PHP_EOL;
 use function str_replace;
+use const PHP_EOL;
 
 /**
  * @coversDefaultClass \phpDocumentor\Descriptor\ProjectAnalyzer
@@ -70,6 +70,7 @@ TEXT;
     {
         $classDescriptor1 = new ClassDescriptor();
         $classDescriptor1->setParent($parent);
+
         return $classDescriptor1;
     }
 

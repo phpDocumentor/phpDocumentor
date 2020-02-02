@@ -59,41 +59,26 @@ class PropertyDescriptor extends DescriptorAbstract implements
         return $this->parent;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setDefault(?string $default) : void
     {
         $this->default = $default;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getDefault() : ?string
     {
         return $this->default;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setStatic(bool $static) : void
     {
         $this->static = $static;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function isStatic() : bool
     {
         return $this->static;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setType(Type $type) : void
     {
         $this->type = $type;
@@ -126,17 +111,11 @@ class PropertyDescriptor extends DescriptorAbstract implements
         return $this->type;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setVisibility(string $visibility) : void
     {
         $this->visibility = $visibility;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getVisibility() : string
     {
         return $this->visibility;

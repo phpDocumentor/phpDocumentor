@@ -8,40 +8,28 @@
     <exclude-pattern>*/src/phpDocumentor/Guides/*$</exclude-pattern>
     <exclude-pattern>*/src/phpDocumentor/Pipeline/Stage/RenderGuide.php$</exclude-pattern>
     <arg value="p"/>
-    <rule ref="PSR2">
-        <include-pattern>*\.php</include-pattern>
-    </rule>
 
-    <rule ref="Doctrine">
-        <exclude name="Generic.Formatting.MultipleStatementAlignment.NotSame" />
-        <exclude name="SlevomatCodingStandard.TypeHints.UselessConstantTypeHint.UselessDocComment" />
-
+    <rule ref="phpDocumentor">
         <!-- Should be removed/fixed again once we pass the round of checks -->
-        <exclude name="Squiz.Commenting.FunctionComment.SpacingAfterParamType" />
-        <exclude name="Squiz.Commenting.FunctionComment.SpacingAfterParamName" />
         <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingTraversableParameterTypeHintSpecification" />
         <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingTraversablePropertyTypeHintSpecification" />
         <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingTraversableReturnTypeHintSpecification" />
         <exclude name="SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint" />
         <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint" />
-        <exclude name="SlevomatCodingStandard.Namespaces.UnusedUses" />
+        <exclude name="SlevomatCodingStandard.PHP.RequireExplicitAssertion.RequiredExplicitAssertion" />
+        <exclude name="SlevomatCodingStandard.Commenting.InlineDocCommentDeclaration.MissingVariable" />
+        <exclude name="SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification" />
+        <exclude name="SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingTraversableTypeHintSpecification" />
+        <exclude name="SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingTraversableTypeHintSpecification" />
     </rule>
 
     <rule ref="SlevomatCodingStandard.Functions.StaticClosure.ClosureNotStatic">
         <exclude-pattern>*/tests/unit/phpDocumentor/Console/ApplicationTest.php</exclude-pattern>
     </rule>
 
-    <rule ref="Squiz.Classes.ValidClassName.NotCamelCaps">
-        <exclude-pattern>*/src/*_.php</exclude-pattern>
-    </rule>
-
     <rule ref="SlevomatCodingStandard.Namespaces.UnusedUses.MismatchingCaseSensitivity">
         <exclude-pattern>*/src/*/ResolveInlineLinkAndSeeTags.php</exclude-pattern>
         <exclude-pattern>*/src/*/*Assembler*.php</exclude-pattern>
-    </rule>
-
-    <rule ref="SlevomatCodingStandard.Classes.SuperfluousExceptionNaming.SuperfluousSuffix">
-        <exclude-pattern>*/src/*/*Exception.php</exclude-pattern>
     </rule>
 
     <rule ref="SlevomatCodingStandard.Classes.SuperfluousInterfaceNaming">
@@ -56,13 +44,24 @@
         <exclude-pattern>*/src/*/*Abstract.php</exclude-pattern>
     </rule>
 
-    <rule ref="PSR1.Methods.CamelCapsMethodName.NotCamelCaps">
-         <exclude-pattern>*/tests/unit/*.php</exclude-pattern>
-     </rule>
+    <rule ref="SlevomatCodingStandard.Classes.SuperfluousTraitNaming.SuperfluousSuffix">
+        <exclude-pattern>src/phpDocumentor/Transformer/Writer/*Trait.php</exclude-pattern>
+    </rule>
 
-    <rule ref="Generic.Formatting.SpaceAfterNot">
-        <properties>
-            <property name="spacing" value="0" />
-        </properties>
+    <!-- Should be removed/fixed again once we pass the round of checks -->
+    <rule ref="SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingTraversableTypeHintSpecification">
+         <exclude-pattern>*/tests/*</exclude-pattern>
+    </rule>
+
+    <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification">
+         <exclude-pattern>*/tests/*</exclude-pattern>
+    </rule>
+
+    <rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingTraversableTypeHintSpecification">
+         <exclude-pattern>*/tests/*</exclude-pattern>
+    </rule>
+
+    <rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingAnyTypeHint">
+         <exclude-pattern>*/tests/*</exclude-pattern>
     </rule>
 </ruleset>

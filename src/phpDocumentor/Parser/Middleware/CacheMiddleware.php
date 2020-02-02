@@ -60,6 +60,7 @@ final class CacheMiddleware implements Middleware
             function () use ($next, $command) {
                 $this->logger->log(LogLevel::NOTICE, 'Parsing ' . $command->getFile()->path());
                 $file = $next($command);
+
                 return base64_encode(serialize($file));
             }
         );

@@ -100,6 +100,7 @@ final class MarkerFromTagsExtractorTest extends MockeryTestCase
         $fileDescriptor1 = new FileDescriptor('123');
         $elementIndex = $this->project->getIndexes()->get('elements', new Collection());
         $elementIndex->add($fileDescriptor1);
+
         return $fileDescriptor1;
     }
 
@@ -128,6 +129,7 @@ final class MarkerFromTagsExtractorTest extends MockeryTestCase
 
         $elementIndex = $this->project->getIndexes()->get('elements', new Collection());
         $elementIndex->add($classDescriptor);
+
         return $classDescriptor;
     }
 }

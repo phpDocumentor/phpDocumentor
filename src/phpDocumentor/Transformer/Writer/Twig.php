@@ -39,7 +39,7 @@ use function substr;
  *   Suppose a Query `indexes.classes` is given then this writer will be
  *   invoked as many times as there are classes in the project and the
  *   'node' global variable in twig will be filled with each individual
- *   class entry.
+ *
  *
  * When using the Query attribute in the transformation it is important to
  * use a variable in the Artifact attribute as well (otherwise the same file

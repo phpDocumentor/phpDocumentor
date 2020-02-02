@@ -21,7 +21,6 @@ use phpDocumentor\Transformer\Transformation;
  */
 abstract class WriterAbstract
 {
-    // @codeCoverageIgnoreStart
     /**
      * This method verifies whether PHP has all requirements needed to run this writer.
      *
@@ -29,12 +28,13 @@ abstract class WriterAbstract
      * should be thrown; this indicates to the calling process that this writer will not function.
      *
      * @throws Exception\RequirementMissing When a requirements is missing stating which one.
+     *
+     * @codeCoverageIgnore
      */
     public function checkRequirements() : void
     {
         // empty body since most writers do not have requirements
     }
-    // @codeCoverageIgnoreEnd
 
     /**
      * Abstract definition of the transformation method.

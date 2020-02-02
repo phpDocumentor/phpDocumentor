@@ -28,7 +28,7 @@ final class Settings
 
     public const VISIBILITY_API = 16;
 
-    /** @var integer by default ignore internal visibility but show others */
+    /** @var int by default ignore internal visibility but show others */
     public const VISIBILITY_DEFAULT = 7;
 
     /** @var bool Represents whether this settings object has been modified */

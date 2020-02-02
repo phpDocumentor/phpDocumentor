@@ -15,7 +15,6 @@ namespace phpDocumentor\Compiler\Linker;
 
 use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\ClassDescriptor;
-use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\InterfaceDescriptor;
@@ -23,7 +22,6 @@ use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Reflection\Fqsen;
-use Traversable;
 use function get_class;
 use function is_iterable;
 use function is_object;
@@ -139,6 +137,7 @@ class Linker implements CompilerPassInterface
         }
 
         $this->substituteMembersOfObject($item, $container);
+
         return null;
     }
 

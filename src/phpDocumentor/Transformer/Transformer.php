@@ -51,7 +51,7 @@ class Transformer implements CompilerPassInterface
 
     public const EVENT_POST_TRANSFORM = 'transformer.transform.post';
 
-    /** @var integer represents the priority in the Compiler queue. */
+    /** @var int represents the priority in the Compiler queue. */
     public const COMPILER_PRIORITY = 5000;
 
     /** @var string|null $target Target location where to output the artifacts */

@@ -96,11 +96,7 @@ jobs:
             all-tools-${{ github.sha }}-
             all-tools-
       - name: Code style check
-        uses: docker://phpdoc/phpcs-ga:master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          args: -d memory_limit=1024M
+        uses: phpDocumentor/coding-standard@master
 
   phpstan:
     runs-on: ubuntu-latest

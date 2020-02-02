@@ -22,7 +22,7 @@ setup: install-phive
 
 .PHONY: phpcs
 phpcs:
-	docker run -it --rm -v${CURDIR}:/opt/project -w /opt/project phpdoc/phpcs-ga:latest -d memory_limit=1024M -s ${ARGS}
+	docker run -it --rm -v${CURDIR}:/opt/project -w /opt/project phpdoc/phpcs-ga:latest -s ${ARGS}
 
 .PHONY: phpcbf
 phpcbf:

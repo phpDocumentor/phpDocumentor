@@ -15,9 +15,9 @@ namespace phpDocumentor\Descriptor\Tag\BaseTypes;
 
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Reflection\Type;
-use const E_USER_DEPRECATED;
 use function array_filter;
 use function trigger_error;
+use const E_USER_DEPRECATED;
 
 /**
  * Base descriptor for tags that have a type associated with them.
@@ -44,7 +44,6 @@ abstract class TypedAbstract extends TagDescriptor
         $this->types = $types;
     }
 
-
     /**
      * Returns the list of types associated with this tag.
      *
@@ -55,6 +54,7 @@ abstract class TypedAbstract extends TagDescriptor
     public function getTypes() : array
     {
         trigger_error('Use getType, because type is an object', E_USER_DEPRECATED);
+
         return array_filter([$this->types]);
     }
 

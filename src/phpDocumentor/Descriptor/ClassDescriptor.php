@@ -87,17 +87,11 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
         return $this->parent;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setInterfaces(Collection $implements) : void
     {
         $this->implements = $implements;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getInterfaces() : Collection
     {
         return $this->implements;
@@ -123,17 +117,11 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
         return $this->abstract;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setConstants(Collection $constants) : void
     {
         $this->constants = $constants;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getConstants() : Collection
     {
         return $this->constants;
@@ -153,25 +141,16 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
         return $inheritedConstants->merge($this->getParent()->getInheritedConstants());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setMethods(Collection $methods) : void
     {
         $this->methods = $methods;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getMethods() : Collection
     {
         return $this->methods;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getInheritedMethods() : Collection
     {
         $inheritedMethods = new Collection();
@@ -230,25 +209,16 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
         return $methods;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setProperties(Collection $properties) : void
     {
         $this->properties = $properties;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getProperties() : Collection
     {
         return $this->properties;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getInheritedProperties() : Collection
     {
         $inheritedProperties = new Collection();
@@ -289,6 +259,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
                 if (!$propertyTag instanceof TypedVariableAbstract) {
                     continue;
                 }
+
                 $property = new PropertyDescriptor();
                 $property->setName(ltrim($propertyTag->getVariableName(), '$'));
                 $property->setDescription($propertyTag->getDescription());

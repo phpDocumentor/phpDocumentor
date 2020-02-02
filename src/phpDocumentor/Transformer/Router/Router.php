@@ -60,18 +60,21 @@ class Router
         if ($node instanceof FileDescriptor) {
             return $this->generateUrlForDescriptor('file', $node->getPath());
         }
+
         if ($node instanceof PackageDescriptor) {
             return $this->generateUrlForDescriptor(
                 'package',
                 (string) $node->getFullyQualifiedStructuralElementName()
             );
         }
+
         if ($node instanceof NamespaceDescriptor) {
             return $this->generateUrlForDescriptor(
                 'namespace',
                 (string) $node->getFullyQualifiedStructuralElementName()
             );
         }
+
         if ($node instanceof ClassDescriptor
             || $node instanceof InterfaceDescriptor
             || $node instanceof TraitDescriptor
@@ -81,6 +84,7 @@ class Router
                 (string) $node->getFullyQualifiedStructuralElementName()
             );
         }
+
         if ($node instanceof ConstantDescriptor
             && ($node->getParent() instanceof FileDescriptor || !$node->getParent())) {
             return $this->generateUrlForDescriptor(
@@ -89,6 +93,7 @@ class Router
                 'constant_' . $node->getName()
             );
         }
+
         if ($node instanceof ConstantDescriptor
             && !($node->getParent() instanceof FileDescriptor || !$node->getParent())) {
             return $this->generateUrlForDescriptor(
@@ -97,6 +102,7 @@ class Router
                 'constant_' . $node->getName()
             );
         }
+
         if ($node instanceof MethodDescriptor) {
             return $this->generateUrlForDescriptor(
                 'class',
@@ -104,6 +110,7 @@ class Router
                 'method_' . $node->getName()
             );
         }
+
         if ($node instanceof FunctionDescriptor) {
             return $this->generateUrlForDescriptor(
                 'namespace',
@@ -111,6 +118,7 @@ class Router
                 'function_' . $node->getName()
             );
         }
+
         if ($node instanceof PropertyDescriptor) {
             return $this->generateUrlForDescriptor(
                 'class',
@@ -154,6 +162,7 @@ class Router
         if ($type === 'namespace') {
             $slug = $slug->lower();
         }
+
         return $slug->toString() ?: $default;
     }
 

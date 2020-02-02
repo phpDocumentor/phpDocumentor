@@ -81,7 +81,6 @@ final class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
      */
     public function execute(ProjectDescriptor $project) : void
     {
-        /** @var Collection<DescriptorAbstract> $elementCollection */
         $this->elementCollection = $project->getIndexes()->get('elements');
 
         foreach ($this->elementCollection as $descriptor) {
@@ -131,6 +130,7 @@ final class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
         if (!$tagReflector instanceof BaseTag) {
             return $match;
         }
+
         // @codeCoverageIgnoreEnd
 
         $link = $this->getLinkText($tagReflector);

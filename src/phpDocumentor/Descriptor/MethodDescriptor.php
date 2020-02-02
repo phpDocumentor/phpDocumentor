@@ -114,9 +114,6 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
         $this->visibility = $visibility;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getVisibility() : string
     {
         return $this->visibility;
@@ -141,9 +138,6 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
         $this->arguments->set($name, $argument);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getArguments() : Collection
     {
         return $this->arguments;
@@ -227,6 +221,7 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
     {
         if ($this->inheritedElement !== null) {
             assert($this->inheritedElement instanceof MethodDescriptor);
+
             return $this->inheritedElement;
         }
 

@@ -126,6 +126,7 @@ class FunctionAssemblerTest extends MockeryTestCase
     protected function givenADocBlockObject() : DocBlock
     {
         $docBlockDescription = new DocBlock\Description('This is an example description');
+
         return new DocBlock(
             'This is a example description',
             $docBlockDescription,

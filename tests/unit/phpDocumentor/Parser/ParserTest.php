@@ -132,13 +132,13 @@ final class ParserTest extends MockeryTestCase
      */
     public function testMarkers() : void
     {
-        $fixture_data = ['FIXME', 'TODO', 'DOIT'];
+        $fixtureData = ['FIXME', 'TODO', 'DOIT'];
 
         // default is TODO and FIXME
         $this->assertEquals(['TODO', 'FIXME'], $this->fixture->getMarkers());
 
-        $this->fixture->setMarkers($fixture_data);
-        $this->assertEquals($fixture_data, $this->fixture->getMarkers());
+        $this->fixture->setMarkers($fixtureData);
+        $this->assertEquals($fixtureData, $this->fixture->getMarkers());
     }
 
     /**

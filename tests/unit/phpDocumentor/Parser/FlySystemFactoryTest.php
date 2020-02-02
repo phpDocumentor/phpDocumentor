@@ -22,10 +22,10 @@ use LogicException;
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Dsn;
-use const DIRECTORY_SEPARATOR;
-use const PHP_OS_FAMILY;
 use function substr;
 use function sys_get_temp_dir;
+use const DIRECTORY_SEPARATOR;
+use const PHP_OS_FAMILY;
 
 /**
  * @coversDefaultClass \phpDocumentor\Parser\FlySystemFactory
@@ -126,6 +126,7 @@ final class FlySystemFactoryTest extends MockeryTestCase
                 $this->fail('dsn is not valid');
             }
         }
+
         return $expected;
     }
 }

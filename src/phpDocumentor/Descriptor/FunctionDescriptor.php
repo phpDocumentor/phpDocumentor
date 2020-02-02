@@ -38,17 +38,11 @@ class FunctionDescriptor extends DescriptorAbstract implements Interfaces\Functi
         $this->setArguments(new Collection());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setArguments(Collection $arguments) : void
     {
         $this->arguments = $arguments;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getArguments() : Collection
     {
         return $this->arguments;

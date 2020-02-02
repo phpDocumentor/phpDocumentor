@@ -26,11 +26,11 @@ use phpDocumentor\Transformer\Transformer;
 use RecursiveDirectoryIterator;
 use RuntimeException;
 use SimpleXMLElement;
-use const DIRECTORY_SEPARATOR;
 use function file_exists;
 use function in_array;
 use function is_readable;
 use function rtrim;
+use const DIRECTORY_SEPARATOR;
 
 class Factory
 {
@@ -72,7 +72,7 @@ class Factory
         /** @var RecursiveDirectoryIterator $files */
         $files = new DirectoryIterator($this->getTemplatesPath());
 
-        $template_names = [];
+        $templateNames = [];
         while ($files->valid()) {
             $name = $files->getBasename();
 
@@ -82,11 +82,11 @@ class Factory
                 continue;
             }
 
-            $template_names[] = $name;
+            $templateNames[] = $name;
             $files->next();
         }
 
-        return $template_names;
+        return $templateNames;
     }
 
     /**
@@ -125,6 +125,7 @@ class Factory
             $parameterObject = new Parameter((string) $parameter->attributes()->key, (string) $parameter);
             $template->setParameter($parameterObject->key(), $parameterObject);
         }
+
         $i = 0;
         foreach ($xml->transformations->transformation as $transformation) {
             $transformationObject = new Transformation(
@@ -139,10 +140,12 @@ class Factory
                 $parameterObject = new Parameter((string) $parameter->attributes()->key, (string) $parameter);
                 $parameters[$parameterObject->key()] = $parameterObject;
             }
+
             $transformationObject->setParameters($parameters);
 
             $template[$i++] = $transformationObject;
         }
+
         $template->propagateParameters();
 
         return $template;

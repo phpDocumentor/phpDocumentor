@@ -16,9 +16,9 @@ namespace phpDocumentor\Parser;
 use League\Flysystem\MountManager;
 use phpDocumentor\Dsn;
 use PHPUnit\Framework\TestCase;
+use function stripos;
 use const DIRECTORY_SEPARATOR;
 use const PHP_OS;
-use function stripos;
 
 /**
  * @coversDefaultClass \phpDocumentor\Parser\FlySystemCollector
@@ -58,6 +58,7 @@ final class FlySystemCollectorTest extends TestCase
         if (stripos(PHP_OS, 'WIN') === 0) {
             $scheme .= '/';
         }
+
         return $scheme;
     }
 }

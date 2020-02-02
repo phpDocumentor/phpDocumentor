@@ -57,6 +57,7 @@ class EnvironmentFactory
         if ($this->templateOverridesAt instanceof Path) {
             $loaders[] = new FilesystemLoader([(string) $this->templateOverridesAt]);
         }
+
         $loaders[] = new FlySystemLoader($mountManager->getFilesystem('template'));
         $loaders[] = new FlySystemLoader($mountManager->getFilesystem('templates'));
 

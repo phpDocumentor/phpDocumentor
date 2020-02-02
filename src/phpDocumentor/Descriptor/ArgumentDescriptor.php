@@ -13,10 +13,9 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
-use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Type;
-use const E_USER_DEPRECATED;
 use function trigger_error;
+use const E_USER_DEPRECATED;
 
 /**
  * Descriptor representing a single Argument of a method or function.
@@ -51,17 +50,11 @@ class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\Argume
         return $this->method;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setType(?Type $type) : void
     {
         $this->type = $type;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getType() : ?Type
     {
         if ($this->type === null && $this->getInheritedElement() !== null) {
@@ -79,6 +72,7 @@ class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\Argume
     public function getTypes() : array
     {
         trigger_error('Please use getType', E_USER_DEPRECATED);
+
         return [$this->getType()];
     }
 
@@ -98,17 +92,11 @@ class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\Argume
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setDefault(?string $value) : void
     {
         $this->default = $value;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getDefault() : ?string
     {
         return $this->default;
@@ -122,9 +110,6 @@ class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\Argume
         $this->byReference = $byReference;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function isByReference() : bool
     {
         return $this->byReference;

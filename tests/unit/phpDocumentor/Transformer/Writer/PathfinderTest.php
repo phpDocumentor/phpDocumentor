@@ -94,9 +94,11 @@ final class PathfinderTest extends TestCase
                         if ($name === 'emptyString') {
                             return '';
                         }
+
                         if ($name === 'magic') {
                             return 'value';
                         }
+
                         if ($name === 'falseProperty') {
                             return false;
                         }

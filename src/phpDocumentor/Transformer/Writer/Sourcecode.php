@@ -16,7 +16,6 @@ namespace phpDocumentor\Transformer\Writer;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Transformer\Transformation;
-use const DIRECTORY_SEPARATOR;
 use function count;
 use function dirname;
 use function explode;
@@ -25,6 +24,7 @@ use function file_put_contents;
 use function htmlentities;
 use function mkdir;
 use function str_repeat;
+use const DIRECTORY_SEPARATOR;
 
 /**
  * Sourcecode transformation writer; generates syntax highlighted source files in a destination's subfolder.

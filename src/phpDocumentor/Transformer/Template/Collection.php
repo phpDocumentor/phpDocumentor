@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Template;
 
 use ArrayObject;
+//phpcs:ignore SlevomatCodingStandard.Namespaces.UnusedUses.UnusedUse
 use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Transformer;

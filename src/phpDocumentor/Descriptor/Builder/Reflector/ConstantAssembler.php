@@ -37,7 +37,7 @@ class ConstantAssembler extends AssemblerAbstract
         $constantDescriptor->setValue($data->getValue());
         // Reflection library formulates namespace as global but this is not wanted for phpDocumentor itself
         $constantDescriptor->setNamespace(
-            substr((string) $data->getFqsen(), 0, - strlen($data->getName()) - static::SEPARATOR_SIZE)
+            substr((string) $data->getFqsen(), 0, - strlen($data->getName()) - self::SEPARATOR_SIZE)
         );
         $constantDescriptor->setFullyQualifiedStructuralElementName($data->getFqsen());
 

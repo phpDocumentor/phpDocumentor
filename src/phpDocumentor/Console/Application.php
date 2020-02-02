@@ -88,10 +88,10 @@ class Application extends BaseApplication
 
     private function detectVersion() : string
     {
-        $version = static::VERSION;
+        $version = self::VERSION;
 
         // prevent replacing the version by the PEAR building
-        if (sprintf('%s%s%s', '@', 'package_version', '@') === static::VERSION) {
+        if (sprintf('%s%s%s', '@', 'package_version', '@') === self::VERSION) {
             $version = trim(file_get_contents(__DIR__ . '/../../../VERSION'));
             // @codeCoverageIgnoreStart
             try {
@@ -99,6 +99,7 @@ class Application extends BaseApplication
                 $version = sprintf('v%s', ltrim($version, 'v'));
             } catch (OutOfBoundsException $e) {
             }
+
             // @codeCoverageIgnoreEnd
         }
 
