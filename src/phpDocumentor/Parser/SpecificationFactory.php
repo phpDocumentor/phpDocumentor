@@ -29,7 +29,7 @@ final class SpecificationFactory implements FactoryInterface
      * Creates a SpecificationInterface object based on the ignore and extension parameters.
      *
      * @param list<string> $globs
-     * @param array<string, null|bool|array<string>> $ignore
+     * @param array<string, bool|array<string>|null> $ignore
      * @param list<string> $extensions
      *
      * @phpstan-param array<int, string> $globs
@@ -67,6 +67,7 @@ final class SpecificationFactory implements FactoryInterface
         if ($ignoreSpec !== null) {
             $result = $result->andSpecification(new NotSpecification($ignoreSpec));
         }
+
         if ($pathSpec !== null) {
             $result = $result->andSpecification($pathSpec);
         }

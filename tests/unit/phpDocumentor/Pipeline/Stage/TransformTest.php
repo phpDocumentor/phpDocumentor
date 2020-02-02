@@ -16,8 +16,8 @@ use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\ProphecyMock;
 use Psr\Log\LoggerInterface;
-use const DIRECTORY_SEPARATOR;
 use function getcwd;
+use const DIRECTORY_SEPARATOR;
 
 /**
  * @coversDefaultClass \phpDocumentor\Pipeline\Stage\Transform

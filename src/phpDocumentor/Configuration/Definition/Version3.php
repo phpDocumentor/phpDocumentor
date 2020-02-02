@@ -118,6 +118,7 @@ final class Version3 implements ConfigurationInterface, Normalizable
                     $configuration['versions'][$versionNumber]['api'][$key]['source']['paths'][$subkey] =
                         new Path($path);
                 }
+
                 $configuration['versions'][$versionNumber]['api'][$key]['extensions'] =
                     $configuration['versions'][$versionNumber]['api'][$key]['extensions']['extensions'];
                 $configuration['versions'][$versionNumber]['api'][$key]['markers'] =

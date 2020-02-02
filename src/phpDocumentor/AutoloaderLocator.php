@@ -85,6 +85,7 @@ final class AutoloaderLocator
     public static function findComposerConfigurationPath() : string
     {
         $filename = getenv('COMPOSER') ?: 'composer';
+
         return $filename . '.json';
     }
 

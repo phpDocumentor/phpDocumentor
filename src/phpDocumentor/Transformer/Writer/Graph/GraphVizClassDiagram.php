@@ -69,7 +69,7 @@ final class GraphVizClassDiagram implements Generator
         $containers = array_merge($classes, $interfaces, $traits);
 
         foreach ($containers as $container) {
-            $from_name = (string) $container->getFullyQualifiedStructuralElementName();
+            $fromName = (string) $container->getFullyQualifiedStructuralElementName();
 
             $parents = [];
             $implemented = [];
@@ -87,7 +87,7 @@ final class GraphVizClassDiagram implements Generator
 
             /** @var string|ClassDescriptor|InterfaceDescriptor $parent */
             foreach ($parents as $parent) {
-                $edge = $this->createEdge($from_name, $parent);
+                $edge = $this->createEdge($fromName, $parent);
                 if ($edge === null) {
                     continue;
                 }
@@ -98,7 +98,7 @@ final class GraphVizClassDiagram implements Generator
 
             /** @var string|ClassDescriptor|InterfaceDescriptor $parent */
             foreach ($implemented as $parent) {
-                $edge = $this->createEdge($from_name, $parent);
+                $edge = $this->createEdge($fromName, $parent);
                 if ($edge === null) {
                     continue;
                 }
@@ -134,28 +134,28 @@ final class GraphVizClassDiagram implements Generator
      *
      * @param string|ClassDescriptor|InterfaceDescriptor|TraitDescriptor $to
      */
-    private function createEdge(string $from_name, $to) : ?Edge
+    private function createEdge(string $fromName, $to) : ?Edge
     {
-        $to_name = (string) ($to instanceof DescriptorAbstract ? $to->getFullyQualifiedStructuralElementName() : $to);
+        $toName = (string) ($to instanceof DescriptorAbstract ? $to->getFullyQualifiedStructuralElementName() : $to);
 
-        if (!isset($this->nodeCache[$from_name])) {
-            $namespaceParts = explode('\\', $from_name);
-            $this->nodeCache[$from_name] = $this->createEmptyNode(
+        if (!isset($this->nodeCache[$fromName])) {
+            $namespaceParts = explode('\\', $fromName);
+            $this->nodeCache[$fromName] = $this->createEmptyNode(
                 array_pop($namespaceParts),
-                $this->createNamespaceGraph($from_name)
+                $this->createNamespaceGraph($fromName)
             );
         }
 
-        if (!isset($this->nodeCache[$to_name])) {
-            $namespaceParts = explode('\\', $to_name);
-            $this->nodeCache[$to_name] = $this->createEmptyNode(
+        if (!isset($this->nodeCache[$toName])) {
+            $namespaceParts = explode('\\', $toName);
+            $this->nodeCache[$toName] = $this->createEmptyNode(
                 array_pop($namespaceParts),
-                $this->createNamespaceGraph($to_name)
+                $this->createNamespaceGraph($toName)
             );
         }
 
-        $fromNode = $this->nodeCache[$from_name];
-        $toNode = $this->nodeCache[$to_name];
+        $fromNode = $this->nodeCache[$fromName];
+        $toNode = $this->nodeCache[$toName];
         if ($fromNode !== null && $toNode !== null) {
             return Edge::create($fromNode, $toNode);
         }
@@ -211,14 +211,14 @@ final class GraphVizClassDiagram implements Generator
      */
     protected function buildNamespaceTree(GraphVizGraph $graph, NamespaceInterface $namespace) : void
     {
-        $full_namespace_name = (string) $namespace->getFullyQualifiedStructuralElementName();
-        if ($full_namespace_name === '\\') {
-            $full_namespace_name = 'Global';
+        $fullNamespaceName = (string) $namespace->getFullyQualifiedStructuralElementName();
+        if ($fullNamespaceName === '\\') {
+            $fullNamespaceName = 'Global';
         }
 
         $label = $namespace->getName() === '\\' ? 'Global' : $namespace->getName();
-        $sub_graph = $this->createGraphForNamespace($full_namespace_name, $label);
-        $this->namespaceCache[$full_namespace_name] = $sub_graph;
+        $subGraph = $this->createGraphForNamespace($fullNamespaceName, $label);
+        $this->namespaceCache[$fullNamespaceName] = $subGraph;
 
         $elements = array_merge(
             $namespace->getClasses()->getAll(),
@@ -226,38 +226,38 @@ final class GraphVizClassDiagram implements Generator
             $namespace->getTraits()->getAll()
         );
 
-        /** @var ClassDescriptor|InterfaceDescriptor|TraitDescriptor $sub_element */
-        foreach ($elements as $sub_element) {
+        /** @var ClassDescriptor|InterfaceDescriptor|TraitDescriptor $subElement */
+        foreach ($elements as $subElement) {
             $node = Node::create(
-                (string) $sub_element->getFullyQualifiedStructuralElementName(),
-                $sub_element->getName()
+                (string) $subElement->getFullyQualifiedStructuralElementName(),
+                $subElement->getName()
             )
                 ->setShape('box')
                 ->setFontName('Courier')
                 ->setFontSize('11');
 
-            if ($sub_element instanceof ClassDescriptor && $sub_element->isAbstract()) {
-                $node->setLabel('<«abstract»<br/>' . $sub_element->getName() . '>');
+            if ($subElement instanceof ClassDescriptor && $subElement->isAbstract()) {
+                $node->setLabel('<«abstract»<br/>' . $subElement->getName() . '>');
             }
 
-            //$full_name = $sub_element->getFullyQualifiedStructuralElementName();
+            //$full_name = $subElement->getFullyQualifiedStructuralElementName();
             //$node->setURL($this->class_paths[$full_name]);
             //$node->setTarget('_parent');
 
-            $this->nodeCache[(string) $sub_element->getFullyQualifiedStructuralElementName()] = $node;
-            $sub_graph->setNode($node);
+            $this->nodeCache[(string) $subElement->getFullyQualifiedStructuralElementName()] = $node;
+            $subGraph->setNode($node);
         }
 
         foreach ($namespace->getChildren()->getAll() as $element) {
-            $this->buildNamespaceTree($sub_graph, $element);
+            $this->buildNamespaceTree($subGraph, $element);
         }
 
-        $graph->addGraph($sub_graph);
+        $graph->addGraph($subGraph);
     }
 
-    private function createGraphForNamespace(string $full_namespace_name, string $label) : GraphVizGraph
+    private function createGraphForNamespace(string $fullNamespaceName, string $label) : GraphVizGraph
     {
-        return GraphVizGraph::create('cluster_' . $full_namespace_name)
+        return GraphVizGraph::create('cluster_' . $fullNamespaceName)
             ->setLabel($label)
             ->setFontColor('gray')
             ->setFontSize('11')

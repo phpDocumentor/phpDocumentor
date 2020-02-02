@@ -463,7 +463,6 @@ final class ClassDescriptorTest extends MockeryTestCase
         $mock->shouldReceive('getMethods')->andReturn($methodCollection);
         $methodDescriptor->shouldReceive('setPackage')->with($package);
 
-        /** @var ClassDescriptor $mock */
         $mock->setPackage($package);
 
         $this->assertTrue(true);

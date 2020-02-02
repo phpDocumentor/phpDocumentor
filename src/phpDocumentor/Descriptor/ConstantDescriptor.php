@@ -65,9 +65,6 @@ class ConstantDescriptor extends DescriptorAbstract implements Interfaces\Consta
         return $this->parent;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setTypes(Type $types) : void
     {
         $this->types = $types;
@@ -93,17 +90,11 @@ class ConstantDescriptor extends DescriptorAbstract implements Interfaces\Consta
         return $this->types;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setValue(string $value) : void
     {
         $this->value = $value;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getValue() : string
     {
         return $this->value;

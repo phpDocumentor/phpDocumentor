@@ -16,8 +16,6 @@ namespace phpDocumentor;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class DsnTest
- *
  * @coversDefaultClass \phpDocumentor\Dsn
  * @covers ::__construct
  * @covers ::<private>

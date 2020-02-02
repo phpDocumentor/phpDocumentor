@@ -183,6 +183,7 @@ class ProjectDescriptorBuilder
             // to remain in place.
             $customSettings = array_merge($service->getDefaultSettings(), $customSettings);
         }
+
         $this->getProjectDescriptor()->getSettings()->setCustom($customSettings);
 
         foreach ($project->getFiles() as $file) {

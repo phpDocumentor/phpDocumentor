@@ -355,6 +355,7 @@ final class PropertyDescriptorTest extends MockeryTestCase
     {
         $file = m::mock(FileDescriptor::class);
         $this->fixture->setFile($file);
+
         return $file;
     }
 

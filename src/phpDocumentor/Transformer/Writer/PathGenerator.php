@@ -125,6 +125,7 @@ class PathGenerator
                         )
                     );
                 }
+
                 return $value;
             },
             $path

@@ -41,33 +41,21 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
         $this->setMethods(new Collection());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setParent(Collection $parents) : void
     {
         $this->parents = $parents;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getParent() : Collection
     {
         return $this->parents;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setConstants(Collection $constants) : void
     {
         $this->constants = $constants;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getConstants() : Collection
     {
         return $this->constants;
@@ -93,25 +81,16 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
         return $inheritedConstants;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setMethods(Collection $methods) : void
     {
         $this->methods = $methods;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getMethods() : Collection
     {
         return $this->methods;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getInheritedMethods() : Collection
     {
         $inheritedMethods = new Collection();

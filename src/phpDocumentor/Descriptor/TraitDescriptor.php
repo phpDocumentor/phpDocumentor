@@ -41,25 +41,16 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
         $this->setUsedTraits(new Collection());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setMethods(Collection $methods) : void
     {
         $this->methods = $methods;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getMethods() : Collection
     {
         return $this->methods;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getInheritedMethods() : Collection
     {
         return new Collection();
@@ -90,25 +81,16 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
         return $methods;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setProperties(Collection $properties) : void
     {
         $this->properties = $properties;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getProperties() : Collection
     {
         return $this->properties;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getInheritedProperties() : Collection
     {
         return new Collection();

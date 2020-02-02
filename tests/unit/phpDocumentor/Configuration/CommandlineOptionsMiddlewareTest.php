@@ -201,7 +201,6 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
         );
     }
 
-
     /**
      * @covers ::__invoke
      */

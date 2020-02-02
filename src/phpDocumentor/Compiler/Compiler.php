@@ -21,7 +21,7 @@ use Webmozart\Assert\Assert;
  */
 class Compiler extends SplPriorityQueue
 {
-    /** @var integer Default priority assigned to Compiler Passes without provided priority */
+    /** @var int Default priority assigned to Compiler Passes without provided priority */
     public const PRIORITY_DEFAULT = 10000;
 
     /**

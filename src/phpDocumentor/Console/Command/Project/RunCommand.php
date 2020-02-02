@@ -289,6 +289,7 @@ HELP
         if ($output->getVerbosity() === OutputInterface::VERBOSITY_VERBOSE) {
             $output->writeln(sprintf('Observed max. memory usage: %s mb', round($event->getMemory() / 1024 / 1024, 2)));
         }
+
         $output->writeln(sprintf('All done in %s!', $this->durationInText($event)));
 
         return 0;
@@ -343,6 +344,7 @@ HELP
             $minutes = floor($duration / 60);
             $durationText .= sprintf('%s minute%s ', $minutes, $minutes > 1 ? 's' : '');
         }
+
         $durationText .= ($duration % 60) . ' seconds';
 
         return $durationText;

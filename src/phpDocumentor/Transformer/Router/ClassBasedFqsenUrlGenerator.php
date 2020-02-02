@@ -54,6 +54,7 @@ class ClassBasedFqsenUrlGenerator
 
         if (strpos($fqsenParts[1], '$') !== false) {
             $propertyName = explode('$', $fqsenParts[1]);
+
             return $this->urlGenerator->generate(
                 'class',
                 [
@@ -65,6 +66,7 @@ class ClassBasedFqsenUrlGenerator
 
         if (strpos($fqsenParts[1], '()') !== false) {
             $methodName = explode('()', $fqsenParts[1]);
+
             return $this->urlGenerator->generate(
                 'class',
                 [

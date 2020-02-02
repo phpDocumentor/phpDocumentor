@@ -253,6 +253,7 @@ final class LinkRenderer
                 $generatedUrl = '';
             }
         }
+
         $url = $generatedUrl ? ltrim((string) $generatedUrl, '/') : false;
 
         try {
@@ -264,10 +265,12 @@ final class LinkRenderer
         }
 
         switch ($presentation) {
-            case self::PRESENTATION_URL: // return the first url
+            case self::PRESENTATION_URL:
+                // return the first url
                 return $url ?: '';
             case self::PRESENTATION_CLASS_SHORT:
                 $parts = explode('\\', (string) $node);
+
                 return sprintf(
                     '<a href="%s"><abbr title="%s">%s</abbr></a>',
                     $url,
@@ -276,6 +279,7 @@ final class LinkRenderer
                 );
             case self::PRESENTATION_FILE_SHORT:
                 $parts = explode('/', (string) $node);
+
                 return sprintf(
                     '<a href="%s"><abbr title="%s">%s</abbr></a>',
                     $url,

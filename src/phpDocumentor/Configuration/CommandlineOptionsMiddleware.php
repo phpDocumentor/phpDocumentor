@@ -413,6 +413,7 @@ final class CommandlineOptionsMiddleware
             if ($value === 'on' || $value === 'true') {
                 $value = true;
             }
+
             if ($value === 'off' || $value === 'false') {
                 $value = false;
             }

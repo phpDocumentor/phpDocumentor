@@ -96,7 +96,7 @@ jobs:
             all-tools-${{ github.sha }}-
             all-tools-
       - name: Code style check
-        uses: phpDocumentor/coding-standard@master
+        uses: phpDocumentor/coding-standard@latest
 
   phpstan:
     runs-on: ubuntu-latest

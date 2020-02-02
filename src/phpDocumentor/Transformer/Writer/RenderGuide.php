@@ -53,9 +53,6 @@ final class RenderGuide extends WriterAbstract
         $this->cacheLocator = $cacheLocator;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function transform(ProjectDescriptor $project, Transformation $transformation) : void
     {
         // Feature flag: Guides are disables by default since this is an experimental feature

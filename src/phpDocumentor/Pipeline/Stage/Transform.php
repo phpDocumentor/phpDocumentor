@@ -28,12 +28,12 @@ use phpDocumentor\Transformer\Writer\WriterAbstract;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Stopwatch\Stopwatch;
-use const DIRECTORY_SEPARATOR;
 use function array_column;
 use function count;
 use function get_class;
 use function getcwd;
 use function sprintf;
+use const DIRECTORY_SEPARATOR;
 
 /**
  * Transforms the structure file into the specified output format

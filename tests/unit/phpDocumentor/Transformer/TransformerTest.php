@@ -33,7 +33,7 @@ final class TransformerTest extends MockeryTestCase
     use Faker;
 
     /** @var int Max length of description printed. */
-    private static $MAX_DESCRIPTION_LENGTH = 68;
+    private const MAX_DESCRIPTION_LENGTH = 68;
 
     /** @var Transformer $fixture */
     private $fixture = null;
@@ -159,6 +159,6 @@ final class TransformerTest extends MockeryTestCase
     {
         $description = $this->fixture->getDescription();
         $this->assertNotNull($description);
-        $this->assertLessThanOrEqual(static::$MAX_DESCRIPTION_LENGTH, strlen($description));
+        $this->assertLessThanOrEqual(self::MAX_DESCRIPTION_LENGTH, strlen($description));
     }
 }

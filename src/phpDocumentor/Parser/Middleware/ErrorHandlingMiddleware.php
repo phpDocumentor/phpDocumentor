@@ -55,6 +55,8 @@ final class ErrorHandlingMiddleware implements Middleware
 
     /**
      * Dispatches a logging request.
+     *
+     * @param mixed[] $parameters
      */
     private function log(string $message, string $priority = LogLevel::INFO, array $parameters = []) : void
     {

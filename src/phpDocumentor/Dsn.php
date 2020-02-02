@@ -172,6 +172,7 @@ final class Dsn
     public function isWindowsLocalPath() : bool
     {
         $path = ltrim($this->uri->getPath(), '/');
+
         return preg_match(UriFactory::WINDOWS_URI_FORMAT, $path) === 1;
     }
 
@@ -206,6 +207,7 @@ final class Dsn
 
         $baseUri = rtrim(((string) $baseDsn->uri), '/');
         $newUri  = UriFactory::createUri($baseUri . '/' . $this->uri->getPath());
+
         return self::createFromUri(
             UriResolver::resolve($newUri, $baseDsn->uri),
             $baseDsn->parameters

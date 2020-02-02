@@ -34,7 +34,9 @@ trait IoTrait
             if ($transformation->template()->files()->has($destination)) {
                 $transformation->template()->files()->delete($destination);
             }
+
             $transformation->template()->files()->copy($path, $destination);
+
             return;
         }
 
@@ -93,6 +95,7 @@ trait IoTrait
         if ($findPathSeparator === false) {
             return $path;
         }
+
         return ltrim(substr($path, $findPathSeparator), '/');
     }
 
