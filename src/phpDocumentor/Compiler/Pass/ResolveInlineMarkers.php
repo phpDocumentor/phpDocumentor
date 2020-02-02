@@ -60,10 +60,8 @@ final class ResolveInlineMarkers implements CompilerPassInterface
 
                 $lineNumber = strlen($before) - strlen(str_replace("\n", '', $before)) + 1;
 
-                $markerData[] = ['type' => trim($match[1][0], '@'), 'line' => $lineNumber, $match[2][0]];
+                $file->getMarkers()->add(['type' => trim($match[1][0], '@'), 'line' => $lineNumber, $match[2][0]]);
             }
-
-            $file->setMarkers(new Collection($markerData));
         }
     }
 }
