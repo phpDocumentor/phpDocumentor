@@ -172,7 +172,7 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
     public function getReturn() : Collection
     {
         /** @var Collection<ReturnDescriptor> $var */
-        $var = $this->getTags()->get('return', new Collection());
+        $var = $this->getTags()->get('return', new Collection())->filter(ReturnDescriptor::class);
         if ($var->count() !== 0) {
             return $var;
         }

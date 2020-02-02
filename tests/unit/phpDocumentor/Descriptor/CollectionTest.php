@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor;
 
 use Mockery\Adapter\Phpunit\MockeryTestCase;
+use stdClass;
 
 /**
  * Tests the functionality for the Collection class.
@@ -214,5 +215,21 @@ final class CollectionTest extends MockeryTestCase
         $result = $this->fixture->merge($collection2);
 
         $this->assertSame($expected, $result->getAll());
+    }
+
+    /**
+     * @covers ::filter
+     */
+    public function testFilterReturnsOnlyInstancesOfCertainType() : void
+    {
+        $expected = [0 => new stdClass()];
+
+        $this->fixture[0] = new stdClass();
+        $this->fixture[1] = null;
+        $this->fixture[2] = 'string';
+
+        $result = $this->fixture->filter(stdClass::class)->getAll();
+
+        $this->assertEquals($expected, $result);
     }
 }
