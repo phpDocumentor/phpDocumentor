@@ -77,6 +77,7 @@ final class PackageTreeBuilder implements CompilerPassInterface
      * This method will assign the given elements to the package as registered in the package field of that
      * element. If a package does not exist yet it will automatically be created.
      *
+     * @param Collection<PackageDescriptor> $packages
      * @param DescriptorAbstract[] $elements Series of elements to add to their respective package.
      * @param string $type Declares which field of the package will be populated with the given
      *                   series of elements. This name will be transformed to a getter which must exist. Out of
@@ -142,6 +143,7 @@ final class PackageTreeBuilder implements CompilerPassInterface
      * @see PackageDescriptor::getChildren() for the child packages of a given package.
      * @see ProjectDescriptor::getPackage() for the root package.
      *
+     * @param Collection<PackageDescriptor> $packages
      * @param string $packageName A FQNN of the package (and parents) to create.
      */
     private function createPackageDescriptorTree(Collection $packages, string $packageName) : void

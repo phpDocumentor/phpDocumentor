@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
+use phpDocumentor\Descriptor\Tag\ParamDescriptor;
 use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Type;
@@ -78,57 +79,36 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
         return $this->parent;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setAbstract(bool $abstract) : void
     {
         $this->abstract = $abstract;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function isAbstract() : bool
     {
         return $this->abstract;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setFinal(bool $final) : void
     {
         $this->final = $final;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function isFinal() : bool
     {
         return $this->final;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setStatic(bool $static) : void
     {
         $this->static = $static;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function isStatic() : bool
     {
         return $this->static;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setVisibility(string $visibility) : void
     {
         $this->visibility = $visibility;
@@ -174,7 +154,7 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
         $definedReturn = new ReturnDescriptor('return');
         $definedReturn->setType($this->returnType);
 
-        /** @var Collection|null $returnTags */
+        /** @var Collection<ReturnDescriptor>|null $returnTags */
         $returnTags = $this->getReturn();
 
         if ($returnTags instanceof Collection && $returnTags->count() > 0) {
@@ -192,9 +172,12 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
         return $this->getParent()->getFile();
     }
 
+    /**
+     * @return Collection<ReturnDescriptor>
+     */
     public function getReturn() : Collection
     {
-        /** @var Collection $var */
+        /** @var Collection<ReturnDescriptor> $var */
         $var = $this->getTags()->get('return', new Collection());
         if ($var->count() !== 0) {
             return $var;
@@ -208,9 +191,12 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
         return new Collection();
     }
 
+    /**
+     * @return Collection<ParamDescriptor>
+     */
     public function getParam() : Collection
     {
-        /** @var Collection $var */
+        /** @var Collection<ParamDescriptor> $var */
         $var = $this->getTags()->get('param', new Collection());
         if ($var instanceof Collection && $var->count() > 0) {
             return $var;
@@ -250,7 +236,7 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
             return null;
         }
 
-        /** @var ClassDescriptor|InterfaceDescriptor|Collection $parentClass |null */
+        /** @var ClassDescriptor|InterfaceDescriptor|Collection<?InterfaceDescriptor> $parentClass */
         $parentClass = $associatedClass->getParent();
         if ($parentClass instanceof ClassDescriptor || $parentClass instanceof Collection) {
             // the parent of a class is always a class, but the parent of an interface is a collection of interfaces.

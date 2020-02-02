@@ -20,13 +20,13 @@ use function ltrim;
  */
 class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInterface
 {
-    /** @var Collection $properties */
+    /** @var Collection<PropertyDescriptor> $properties */
     protected $properties;
 
-    /** @var Collection $methods */
+    /** @var Collection<MethodDescriptor> $methods */
     protected $methods;
 
-    /** @var Collection $usedTraits */
+    /** @var Collection<TraitDescriptor|string> $usedTraits */
     protected $usedTraits;
 
     /**
@@ -65,9 +65,12 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
         return new Collection();
     }
 
+    /**
+     * @return Collection<MethodDescriptor>
+     */
     public function getMagicMethods() : Collection
     {
-        /** @var Collection $methodTags */
+        /** @var Collection<Tag\MethodDescriptor> $methodTags */
         $methodTags = clone $this->getTags()->get('method', new Collection());
 
         /** @var Collection<MethodDescriptor> $methods */
@@ -111,9 +114,12 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
         return new Collection();
     }
 
+    /**
+     * @return Collection<PropertyDescriptor>
+     */
     public function getMagicProperties() : Collection
     {
-        /** @var Collection $propertyTags */
+        /** @var Collection<Tag\PropertyDescriptor> $propertyTags */
         $propertyTags = clone $this->getTags()->get('property', new Collection());
         $propertyTags->merge($this->getTags()->get('property-read', new Collection()));
         $propertyTags->merge($this->getTags()->get('property-write', new Collection()));
@@ -153,6 +159,8 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
 
     /**
      * Sets a collection of all traits used by this class.
+     *
+     * @param Collection<TraitDescriptor|string> $usedTraits
      */
     public function setUsedTraits(Collection $usedTraits) : void
     {
@@ -163,6 +171,8 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
      * Returns the traits used by this class.
      *
      * Returned values may either be a string (when the Trait is not in this project) or a TraitDescriptor.
+     *
+     * @return Collection<TraitDescriptor|string>
      */
     public function getUsedTraits() : Collection
     {

@@ -15,6 +15,7 @@ namespace phpDocumentor\Descriptor\Interfaces;
 
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\FileDescriptor;
+use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Reflection\Fqsen;
 
 /**
@@ -81,6 +82,8 @@ interface ElementInterface
 
     /**
      * Returns all tags associated with this element.
+     *
+     * @return Collection<TagDescriptor>
      */
     public function getTags() : Collection;
 }

@@ -48,7 +48,7 @@ final class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
     /** @var DescriptorAbstract */
     private $descriptor;
 
-    /** @var Collection */
+    /** @var Collection<DescriptorAbstract> */
     private $elementCollection;
 
     /** @var DescriptorRepository */

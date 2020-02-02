@@ -82,14 +82,12 @@ class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\Argume
         return [$this->getType()];
     }
 
-    /**
-     * @return mixed|DescriptorAbstract|Fqsen|string|null
-     */
-    public function getInheritedElement()
+    public function getInheritedElement() : ?ArgumentDescriptor
     {
         if ($this->method instanceof MethodDescriptor &&
             $this->method->getInheritedElement() instanceof MethodDescriptor) {
             $parents = $this->method->getInheritedElement()->getArguments();
+            /** @var ArgumentDescriptor $parentArgument */
             foreach ($parents as $parentArgument) {
                 if ($parentArgument->getName() === $this->getName()) {
                     return $parentArgument;

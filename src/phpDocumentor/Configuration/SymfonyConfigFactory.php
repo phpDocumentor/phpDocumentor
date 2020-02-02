@@ -32,11 +32,17 @@ class SymfonyConfigFactory
     /** @var ConfigurationInterface[] $configurationDefinitions */
     private $configurationDefinitions = [];
 
+    /**
+     * @param ConfigurationInterface[] $definitions
+     */
     public function __construct(array $definitions)
     {
         $this->configurationDefinitions = $definitions;
     }
 
+    /**
+     * @return array<string, array<string, string|array<mixed>>>
+     */
     public function createFromFile(string $filename) : array
     {
         $values = XmlUtils::loadFile($filename, null);
@@ -45,6 +51,9 @@ class SymfonyConfigFactory
         return $this->generateConfiguration($values);
     }
 
+    /**
+     * @return array<string, array<string, string|array<mixed>>>
+     */
     public function createDefault() : array
     {
         return $this->generateConfiguration([
@@ -52,6 +61,11 @@ class SymfonyConfigFactory
         ]);
     }
 
+    /**
+     * @param array<string, string> $values
+     *
+     * @return array<string, array<string, string|array<mixed>>>
+     */
     private function generateConfiguration(array $values) : array
     {
         $configuration = $this->processConfiguration($values);
@@ -73,6 +87,10 @@ class SymfonyConfigFactory
      * When this version of the configuration can be upgraded (which is detected by the Upgradable interface on the
      * Configuration definition) then it will do so and re-run this method with the upgraded values. The 'configVersion'
      * field will tell which definition should be used; when none is provided then a version 2 configuration is assumed.
+     *
+     * @param array<string, string|array<mixed>> $values
+     *
+     * @return array<string, string|array<mixed>>
      */
     private function processConfiguration(array $values) : array
     {
@@ -108,6 +126,11 @@ class SymfonyConfigFactory
         return $definition;
     }
 
+    /**
+     * @param array<string, string|array<string, mixed>> $configuration
+     *
+     * @return array<string, string|array<string, mixed>>
+     */
     private function upgradeConfiguration(Upgradable $definition, array $configuration) : array
     {
         $upgradedConfiguration = $definition->upgrade($configuration);

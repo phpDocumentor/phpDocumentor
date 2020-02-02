@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Interfaces;
 
+use phpDocumentor\Descriptor\ArgumentDescriptor;
 use phpDocumentor\Descriptor\Collection;
 
 /**
@@ -24,6 +25,9 @@ interface MethodInterface extends ElementInterface, TypeInterface
 
     public function isAbstract() : bool;
 
+    /**
+     * @return Collection<ArgumentDescriptor>
+     */
     public function getArguments() : Collection;
 
     public function setFinal(bool $final) : void;

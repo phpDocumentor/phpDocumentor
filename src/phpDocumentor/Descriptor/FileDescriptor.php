@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
+use phpDocumentor\Descriptor\Validation\Error;
 use function method_exists;
 
 /**
@@ -29,13 +30,13 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
     /** @var string|null $source */
     protected $source = null;
 
-    /** @var Collection $namespaceAliases */
+    /** @var Collection<NamespaceDescriptor> $namespaceAliases */
     protected $namespaceAliases;
 
     /** @var Collection $includes */
     protected $includes;
 
-    /** @var Collection $constants */
+    /** @var Collection<ConstantDescriptor> $constants */
     protected $constants;
 
     /** @var Collection<FunctionDescriptor> $functions */
@@ -50,7 +51,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
     /** @var Collection<TraitDescriptor> $traits */
     protected $traits;
 
-    /** @var Collection $markers */
+    /** @var Collection<array<int|string, mixed>> $markers */
     protected $markers;
 
     /**
@@ -109,6 +110,8 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
 
     /**
      * Returns the namespace aliases that have been defined in this file.
+     *
+     * @return Collection<NamespaceDescriptor>
      */
     public function getNamespaceAliases() : Collection
     {
@@ -117,6 +120,8 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
 
     /**
      * Sets the collection of namespace aliases for this file.
+     *
+     * @param Collection<NamespaceDescriptor> $namespaceAliases
      */
     public function setNamespaceAliases(Collection $namespaceAliases) : void
     {
@@ -141,6 +146,8 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
 
     /**
      * Returns a list of constant descriptors contained in this file.
+     *
+     * {@inheritDoc}
      */
     public function getConstants() : Collection
     {
@@ -149,6 +156,8 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
 
     /**
      * Sets a list of constant descriptors contained in this file.
+     *
+     * @param Collection<ConstantDescriptor> $constants
      */
     public function setConstants(Collection $constants) : void
     {
@@ -158,7 +167,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
     /**
      * Returns a list of function descriptors contained in this file.
      *
-     * @return Collection<FunctionDescriptor>
+     * {@inheritDoc}
      */
     public function getFunctions() : Collection
     {
@@ -167,6 +176,8 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
 
     /**
      * Sets a list of function descriptors contained in this file.
+     *
+     * @param Collection<FunctionDescriptor> $functions
      */
     public function setFunctions(Collection $functions) : void
     {
@@ -176,7 +187,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
     /**
      * Returns a list of class descriptors contained in this file.
      *
-     * @return Collection<ClassDescriptor>
+     * {@inheritDoc}
      */
     public function getClasses() : Collection
     {
@@ -185,6 +196,8 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
 
     /**
      * Sets a list of class descriptors contained in this file.
+     *
+     * @param Collection<ClassDescriptor> $classes
      */
     public function setClasses(Collection $classes) : void
     {
@@ -194,7 +207,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
     /**
      * Returns a list of interface descriptors contained in this file.
      *
-     * @return Collection<InterfaceDescriptor>
+     * {@inheritDoc}
      */
     public function getInterfaces() : Collection
     {
@@ -203,6 +216,8 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
 
     /**
      * Sets a list of interface descriptors contained in this file.
+     *
+     * @param Collection<InterfaceDescriptor> $interfaces
      */
     public function setInterfaces(Collection $interfaces) : void
     {
@@ -212,7 +227,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
     /**
      * Returns a list of trait descriptors contained in this file.
      *
-     * @return Collection<TraitDescriptor>
+     * {@inheritDoc}
      */
     public function getTraits() : Collection
     {
@@ -221,6 +236,8 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
 
     /**
      * Sets a list of trait descriptors contained in this file.
+     *
+     * @param Collection<TraitDescriptor> $traits
      */
     public function setTraits(Collection $traits) : void
     {
@@ -236,6 +253,8 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
      * ```
      * // TODO: This is an item that needs to be done.
      * ```
+     *
+     * @return Collection<array<int|string, mixed>>
      */
     public function getMarkers() : Collection
     {
@@ -246,6 +265,8 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
      * Sets a series of markers contained in this file.
      *
      * @see getMarkers() for more information on markers.
+     *
+     * @param Collection<array<int|string, mixed>> $markers
      */
     public function setMarkers(Collection $markers) : void
     {
@@ -254,6 +275,8 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
 
     /**
      * Returns a list of all errors in this file and all its child elements.
+     *
+     * @return Collection<?Error>
      */
     public function getAllErrors() : Collection
     {

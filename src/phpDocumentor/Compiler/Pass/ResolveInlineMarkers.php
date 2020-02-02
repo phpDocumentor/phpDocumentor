@@ -15,6 +15,7 @@ namespace phpDocumentor\Compiler\Pass;
 
 use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use const PREG_OFFSET_CAPTURE;
 use const PREG_SET_ORDER;
@@ -44,6 +45,7 @@ final class ResolveInlineMarkers implements CompilerPassInterface
     {
         $markerTerms = $project->getSettings()->getMarkers();
 
+        /** @var FileDescriptor $file */
         foreach ($project->getFiles() as $file) {
             $marker_data = [];
             $matches     = [];

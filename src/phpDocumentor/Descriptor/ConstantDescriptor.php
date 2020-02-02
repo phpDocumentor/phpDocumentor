@@ -109,9 +109,12 @@ class ConstantDescriptor extends DescriptorAbstract implements Interfaces\Consta
         return $this->value;
     }
 
+    /**
+     * @return Collection<VarDescriptor>
+     */
     public function getVar() : Collection
     {
-        /** @var Collection $var */
+        /** @var Collection<VarDescriptor> $var */
         $var = $this->getTags()->get('var', new Collection());
         if ($var->count() !== 0) {
             return $var;
@@ -135,10 +138,8 @@ class ConstantDescriptor extends DescriptorAbstract implements Interfaces\Consta
 
     /**
      * Returns the Constant from which this one should inherit, if any.
-     *
-     * @return mixed|null
      */
-    public function getInheritedElement()
+    public function getInheritedElement() : ?ConstantDescriptor
     {
         /** @var ClassDescriptor|InterfaceDescriptor|null $associatedClass */
         $associatedClass = $this->getParent();

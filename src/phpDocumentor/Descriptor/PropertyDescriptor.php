@@ -142,9 +142,12 @@ class PropertyDescriptor extends DescriptorAbstract implements
         return $this->visibility;
     }
 
+    /**
+     * @return Collection<VarDescriptor>
+     */
     public function getVar() : Collection
     {
-        /** @var Collection $var */
+        /** @var Collection<VarDescriptor> $var */
         $var = $this->getTags()->get('var', new Collection());
         if ($var->count() !== 0) {
             return $var;

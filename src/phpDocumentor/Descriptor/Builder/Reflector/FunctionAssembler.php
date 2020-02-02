@@ -16,6 +16,7 @@ namespace phpDocumentor\Descriptor\Builder\Reflector;
 use phpDocumentor\Descriptor\ArgumentDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\FunctionDescriptor;
+use phpDocumentor\Descriptor\Tag\ParamDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Reflection\Php\Argument;
 use phpDocumentor\Reflection\Php\Function_;
@@ -115,7 +116,8 @@ class FunctionAssembler extends AssemblerAbstract
         FunctionDescriptor $functionDescriptor,
         Argument $argument
     ) : ArgumentDescriptor {
-        $params = $functionDescriptor->getTags()->get('param', []);
+        /** @var Collection<ParamDescriptor> $params */
+        $params = $functionDescriptor->getTags()->get('param', new Collection());
 
         if (!$this->argumentAssembler->getBuilder()) {
             $this->argumentAssembler->setBuilder($this->builder);

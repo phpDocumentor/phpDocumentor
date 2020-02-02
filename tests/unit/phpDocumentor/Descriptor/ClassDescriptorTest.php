@@ -369,8 +369,8 @@ final class ClassDescriptorTest extends MockeryTestCase
         $description = 'description';
         $response = new ReturnDescriptor('return');
         $response->setType(new String_());
-        $arguments = m::mock('phpDocumentor\Descriptor\Tag\ArgumentDescriptor');
-        $arguments->shouldReceive('setMethod');
+        $argument = m::mock(ArgumentDescriptor::class);
+        $argument->shouldReceive('setMethod');
 
         $this->assertEquals(0, $this->fixture->getMagicMethods()->count());
 
@@ -378,7 +378,7 @@ final class ClassDescriptorTest extends MockeryTestCase
         $methodMock->shouldReceive('getMethodName')->andReturn($methodName);
         $methodMock->shouldReceive('getDescription')->andReturn($description);
         $methodMock->shouldReceive('getResponse')->andReturn($response);
-        $methodMock->shouldReceive('getArguments')->andReturn($arguments);
+        $methodMock->shouldReceive('getArguments')->andReturn(new Collection(['argument1' => $argument]));
         $methodMock->shouldReceive('isStatic')->andReturn($isStatic);
 
         $this->fixture->getTags()->get('method', new Collection())->add($methodMock);

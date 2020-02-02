@@ -14,6 +14,11 @@ use function substr;
 
 final class PathNormalizingMiddleware
 {
+    /**
+     * @param array<string, array<string, array<string, mixed>>> $configuration
+     *
+     * @return array<string, array<string, array<string, mixed>>>
+     */
     public function __invoke(array $configuration, ?Uri $uri) : array
     {
         $configuration = $this->makeDsnRelativeToConfig($configuration, $uri);
@@ -40,9 +45,9 @@ final class PathNormalizingMiddleware
      *
      * Absolute DSNs are untouched.
      *
-     * @param array $configuration
+     * @param array<string, array<string, array<string, mixed>>> $configuration
      *
-     * @return array
+     * @return array<string, array<string, array<string, mixed>>>
      */
     private function makeDsnRelativeToConfig(array $configuration, ?Uri $uri) : array
     {
@@ -69,6 +74,11 @@ final class PathNormalizingMiddleware
         return $configuration;
     }
 
+    /**
+     * @param array<string, array<string, array<string, mixed>>> $configuration
+     *
+     * @return array<string, array<string, array<string, mixed>>>
+     */
     private function normalizePaths(array $configuration) : array
     {
         foreach ($configuration['versions'] as $versionNumber => $version) {

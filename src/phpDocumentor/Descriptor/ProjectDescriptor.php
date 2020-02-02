@@ -44,7 +44,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
     /** @var Collection $partials */
     private $partials;
 
-    /** @var Collection $versions */
+    /** @var Collection<VersionDescriptor> $versions */
     private $versions;
 
     /**
@@ -98,6 +98,8 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
 
     /**
      * Sets all files on this project.
+     *
+     * @var Collection<FileDescriptor>
      */
     public function setFiles(Collection $files) : void
     {
@@ -222,6 +224,9 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
         return $this->package;
     }
 
+    /**
+     * @return Collection<VersionDescriptor>
+     */
     public function getVersions() : Collection
     {
         return $this->versions;

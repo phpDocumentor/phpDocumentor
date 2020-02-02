@@ -20,6 +20,11 @@ final class ProvideTemplateOverridePathMiddleware
         $this->environmentFactory = $environmentFactory;
     }
 
+    /**
+     * @param array<string, array<string, array<mixed>>> $configuration
+     *
+     * @return array<string, array<string, array<mixed>>>
+     */
     public function __invoke(array $configuration, ?Uri $uri) : array
     {
         $path = $this->normalizePath($uri, new Path('.phpdoc/template'));
