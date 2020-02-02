@@ -26,7 +26,7 @@ use function trim;
 /**
  * Base class for descriptors containing the most used options.
  */
-abstract class DescriptorAbstract implements Descriptor, Filterable
+abstract class DescriptorAbstract implements Filterable
 {
     /** @var Fqsen Fully Qualified Structural Element Name; the FQCN including method, property of constant name */
     protected $fqsen;

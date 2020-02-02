@@ -20,9 +20,12 @@ use phpDocumentor\Descriptor\VersionDescriptor;
 
 final class InitializeBuilderFromConfig
 {
-    /** @var PartialsCollection */
+    /** @var PartialsCollection<string> */
     private $partials;
 
+    /**
+     * @param PartialsCollection<string> $partials
+     */
     public function __construct(PartialsCollection $partials)
     {
         $this->partials = $partials;
