@@ -16,6 +16,7 @@ namespace phpDocumentor\Compiler\Pass;
 use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
+use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\PackageDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
@@ -59,6 +60,7 @@ final class PackageTreeBuilder implements CompilerPassInterface
         $packages = new Collection();
         $packages['\\'] = $project->getPackage();
 
+        /** @var FileDescriptor $file */
         foreach ($project->getFiles() as $file) {
             $this->addElementsOfTypeToPackage($packages, [$file], 'files');
             $this->addElementsOfTypeToPackage($packages, $file->getConstants()->getAll(), 'constants');
@@ -78,11 +80,11 @@ final class PackageTreeBuilder implements CompilerPassInterface
      * element. If a package does not exist yet it will automatically be created.
      *
      * @param Collection<PackageDescriptor> $packages
-     * @param DescriptorAbstract[] $elements Series of elements to add to their respective package.
+     * @param array<DescriptorAbstract>     $elements Series of elements to add to their respective package.
      * @param string $type Declares which field of the package will be populated with the given
-     *                   series of elements. This name will be transformed to a getter which must exist. Out of
-     *                   performance considerations will no effort be done to verify whether the provided type is
-     *                   valid.
+     *                     series of elements. This name will be transformed to a getter which must exist. Out of
+     *                     performance considerations will no effort be done to verify whether the provided type is
+     *                     valid.
      */
     private function addElementsOfTypeToPackage(Collection $packages, array $elements, string $type) : void
     {
@@ -123,7 +125,7 @@ final class PackageTreeBuilder implements CompilerPassInterface
             // add element to package
             $getter = 'get' . ucfirst($type);
 
-            /** @var Collection $collection */
+            /** @var Collection<DescriptorAbstract> $collection */
             $collection = $package->{$getter}();
             $collection->add($element);
         }

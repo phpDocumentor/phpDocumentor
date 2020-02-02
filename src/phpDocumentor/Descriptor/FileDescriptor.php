@@ -33,7 +33,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
     /** @var Collection<NamespaceDescriptor> $namespaceAliases */
     protected $namespaceAliases;
 
-    /** @var Collection $includes */
+    /** @var Collection<string> $includes */
     protected $includes;
 
     /** @var Collection<ConstantDescriptor> $constants */
@@ -130,6 +130,8 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
 
     /**
      * Returns a list of all includes that have been declared in this file.
+     *
+     * @return Collection<string>
      */
     public function getIncludes() : Collection
     {
@@ -138,6 +140,8 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
 
     /**
      * Sets a list of all includes that have been declared in this file.
+     *
+     * @param Collection<string> $includes
      */
     public function setIncludes(Collection $includes) : void
     {

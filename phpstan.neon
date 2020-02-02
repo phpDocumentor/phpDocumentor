@@ -3,6 +3,7 @@ includes:
     - ./vendor/phpdocumentor/graphviz/extension.neon
 
 parameters:
+  level: 6
   inferPrivatePropertyTypeFromConstructor: true
   ignoreErrors:
     # PHPStan does not play nice with Symfony Config's fluid interface
@@ -13,11 +14,13 @@ parameters:
 
     - '#Call to an undefined method League\\Flysystem\\Filesystem::find()#'
     # Bad design of descriptors.
-    - '#Access to an undefined property phpDocumentor\\Descriptor\\Collection::\$[a-z]+#'
+    - '#Access to an undefined property phpDocumentor\\Descriptor\\Collection<phpDocumentor\\Descriptor\\Collection<phpDocumentor\\Descriptor\\DescriptorAbstract>>::\$[a-z]+#'
     # Issue on the content of this collection https://github.com/phpDocumentor/phpDocumentor/pull/2249#issuecomment-581111947
-    - '#Parameter \#1 \$item of method phpDocumentor\\Descriptor\\Collection<phpDocumentor\\Descriptor\\TagDescriptor>::add\(\) expects phpDocumentor\\Descriptor\\TagDescriptor, phpDocumentor\\Descriptor\\Collection<phpDocumentor\\Descriptor\\DescriptorAbstract>\|phpDocumentor\\Descriptor\\Descriptor given\.#'
+    - '#Parameter \#1 \$item of method phpDocumentor\\Descriptor\\Collection<phpDocumentor\\Descriptor\\TagDescriptor>::add\(\) expects phpDocumentor\\Descriptor\\TagDescriptor, phpDocumentor\\Descriptor\\Collection<phpDocumentor\\Descriptor\\DescriptorAbstract>\|phpDocumentor\\Descriptor\\DescriptorAbstract given\.#'
     # Issue with nullability in generics. Maybe Phpstan bug?
     - '#Return type \(ArrayIterator<int\|string, T\|null>\) of method phpDocumentor\\Descriptor\\Collection::getIterator\(\) should be compatible with return type \(Traversable<int\|string, T>\) of method IteratorAggregate<int\|string,T>::getIterator\(\)#'
+    # Covariance issues with Collections. Maybe an feature to submit to Phpstan?
+    - '#Method phpDocumentor\\Descriptor\\Collection::merge\(\) has parameter \$collection#'
     -
             message: "#^Parameter \\#1 \\$value of method phpDocumentor\\\\GraphViz\\\\Graph\\:\\:setCenter\\(\\) expects bool, string given\\.$#"
             count: 1

@@ -30,7 +30,7 @@ phpcbf:
 
 .PHONY: phpstan
 phpstan:
-	docker run -it --rm -v${CURDIR}:/opt/project -w /opt/project phpdoc/phpstan-ga:latest analyse src --no-progress --level 5 --configuration phpstan.neon ${ARGS}
+	docker run -it --rm -v${CURDIR}:/opt/project -w /opt/project phpdoc/phpstan-ga:latest analyse src --no-progress --configuration phpstan.neon ${ARGS}
 
 .PHONY: test
 test:

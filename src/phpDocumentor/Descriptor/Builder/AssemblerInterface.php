@@ -15,6 +15,7 @@ namespace phpDocumentor\Descriptor\Builder;
 
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\Descriptor;
+use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock\Tag;
 use phpDocumentor\Reflection\Element;
@@ -30,7 +31,7 @@ interface AssemblerInterface
      *
      * @param Element|Tag|Argument $data
      *
-     * @return Descriptor|Collection
+     * @return Descriptor|Collection<DescriptorAbstract>
      */
     public function create($data);
 

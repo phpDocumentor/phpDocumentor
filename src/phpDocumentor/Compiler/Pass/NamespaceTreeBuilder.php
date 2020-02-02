@@ -20,6 +20,7 @@ use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Reflection\Fqsen;
+use Webmozart\Assert\Assert;
 use function strlen;
 use function substr;
 use function ucfirst;
@@ -102,13 +103,15 @@ class NamespaceTreeBuilder implements CompilerPassInterface
                 $this->addToParentNamespace($project, $namespace);
             }
 
+            Assert::isInstanceOf($namespace, NamespaceDescriptor::class);
+
             // replace textual representation with an object representation
             $element->setNamespace($namespace);
 
             // add element to namespace
             $getter = 'get' . ucfirst($type);
 
-            /** @var Collection $collection */
+            /** @var Collection<DescriptorAbstract> $collection */
             $collection = $namespace->{$getter}();
             $collection->add($element);
         }

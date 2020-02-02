@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Compiler\Linker;
 
+use ArrayAccess;
 use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\DescriptorAbstract;
@@ -22,7 +23,10 @@ use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Reflection\Fqsen;
+use phpDocumentor\Reflection\Types\Compound;
+use Webmozart\Assert\Assert;
 use function get_class;
+use function is_array;
 use function is_iterable;
 use function is_object;
 use function is_string;
@@ -112,11 +116,11 @@ class Linker implements CompilerPassInterface
      * This method will return null if no substitution was possible and all of the above should not update the parent
      * item when null is passed.
      *
-     * @param string|Fqsen|object|iterable $item
-     * @param DescriptorAbstract|null      $container A descriptor that acts as container for all elements
-     *                                                underneath or null if there is no current container.
+     * @param string|Fqsen|object|array<mixed> $item
+     * @param DescriptorAbstract|null          $container A descriptor that acts as container for all elements
+     *                                                    underneath or null if there is no current container.
      *
-     * @return string|DescriptorAbstract|array|iterable|null
+     * @return string|DescriptorAbstract|array<mixed>|null
      */
     public function substitute($item, ?DescriptorAbstract $container = null)
     {
@@ -129,6 +133,8 @@ class Linker implements CompilerPassInterface
         }
 
         if (is_iterable($item)) {
+            Assert::true(is_array($item) || $item instanceof ArrayAccess || $item instanceof Compound);
+
             return $this->substituteChildrenOfCollection($item, $container);
         }
 
@@ -141,8 +147,15 @@ class Linker implements CompilerPassInterface
         return null;
     }
 
+    //phpcs:disable Generic.Files.LineLength.TooLong
+    /**
+     * @param array<string|DescriptorAbstract|null>|(ArrayAccess<array-key, string|DescriptorAbstract>&iterable<array-key, string|DescriptorAbstract>) $collection
+     *
+     * @return array<string|DescriptorAbstract|null>|(ArrayAccess<array-key, string|DescriptorAbstract>&iterable<array-key, string|DescriptorAbstract>)|null
+     */
     private function substituteChildrenOfCollection(iterable $collection, ?DescriptorAbstract $container) : ?iterable
     {
+        //phpcs:enable Generic.Files.LineLength.TooLong
         $isModified = false;
         foreach ($collection as $key => $element) {
             $element = $this->substitute($element, $container);

@@ -127,7 +127,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          args: analyse src tests --level 5 --configuration phpstan.neon
+          args: analyse src tests --configuration phpstan.neon
 
   build-phar:
     runs-on: ubuntu-latest

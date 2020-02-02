@@ -112,7 +112,7 @@ class ElementsIndexBuilder implements CompilerPassInterface
      * Adds a series of descriptors to the given list of collections.
      *
      * @param DescriptorAbstract|DescriptorAbstract[] $elements
-     * @param Collection[]                            $indexes
+     * @param array<Collection<DescriptorAbstract>>   $indexes
      */
     protected function addElementsToIndexes($elements, array $indexes) : void
     {
@@ -122,7 +122,7 @@ class ElementsIndexBuilder implements CompilerPassInterface
 
         /** @var DescriptorAbstract $element */
         foreach ($elements as $element) {
-            /** @var Collection $collection */
+            /** @var Collection<DescriptorAbstract> $collection */
             foreach ($indexes as $collection) {
                 $collection->set($this->getIndexKey($element), $element);
             }
