@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace phpDocumentor\Compiler\Pass;
 
 use phpDocumentor\Compiler\CompilerPassInterface;
-use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use function implode;
@@ -60,7 +59,13 @@ final class ResolveInlineMarkers implements CompilerPassInterface
 
                 $lineNumber = strlen($before) - strlen(str_replace("\n", '', $before)) + 1;
 
-                $file->getMarkers()->add(['type' => trim($match[1][0], '@'), 'line' => $lineNumber, $match[2][0]]);
+                $file->getMarkers()->add(
+                    [
+                        'type' => trim($match[1][0], '@'),
+                        'line' => $lineNumber,
+                        'message' => $match[2][0],
+                    ]
+                );
             }
         }
     }
