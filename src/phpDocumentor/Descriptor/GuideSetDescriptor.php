@@ -20,7 +20,7 @@ final class GuideSetDescriptor extends DocumentationSetDescriptor
     /**
      * @param array<Dsn|list<string>> $source
      *
-     * @phpstan-param array{dsn: Dsn, paths: array<int, string>} $source
+     * @phpstan-param array{dsn: Dsn, paths: list<string>} $source
      */
     public function __construct(string $name, array $source, string $output)
     {

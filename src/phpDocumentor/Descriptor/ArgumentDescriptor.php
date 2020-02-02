@@ -66,8 +66,6 @@ class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\Argume
 
     /**
      * @return list<?Type>
-     *
-     * @phpstan-return array<int, ?Type>
      */
     public function getTypes() : array
     {

@@ -86,8 +86,6 @@ class PropertyDescriptor extends DescriptorAbstract implements
 
     /**
      * @return list<string>
-     *
-     * @phpstan-return array<int, string>
      */
     public function getTypes() : array
     {

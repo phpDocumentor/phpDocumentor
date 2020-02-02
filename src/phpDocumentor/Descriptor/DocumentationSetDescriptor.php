@@ -21,7 +21,7 @@ abstract class DocumentationSetDescriptor
     protected $name = '';
 
     /**
-     * @phpstan-var array{dsn?: Dsn, paths?: array<int, string>}
+     * @phpstan-var array{dsn?: Dsn, paths?: list<string>}
      * @var array<Dsn|list<string>>
      */
     protected $source = [];
@@ -46,7 +46,7 @@ abstract class DocumentationSetDescriptor
      *   it was ran and makes it uncacheable. But should this be cached? In any case, I need it for the RenderGuide
      *   writer at the moment; so refactor this once that becomes clearer.
      *
-     * @phpstan-return array{dsn?: Dsn, paths?: array<int, string>}
+     * @phpstan-return array{dsn?: Dsn, paths?: list<string>}
      */
     public function getSource() : array
     {

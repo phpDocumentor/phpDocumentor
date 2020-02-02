@@ -25,9 +25,6 @@ interface FileCollector
      * @param list<string>         $extensions
      *
      * @return File[]
-     *
-     * @phpstan-param array<int, string>         $paths
-     * @phpstan-param array<int, string>         $extensions
      */
     public function getFiles(Dsn $dsn, array $paths, array $ignore, array $extensions) : array;
 }

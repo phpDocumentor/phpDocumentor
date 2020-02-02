@@ -35,11 +35,6 @@ final class FlySystemCollector implements FileCollector
      * @param list<string>         $extensions
      *
      * @return list<FlySystemFile>
-     *
-     * @phpstan-param array<int, string>         $paths
-     * @phpstan-param array<int, string>         $extensions
-     *
-     * @phpstan-return array<int, FlySystemFile>
      */
     public function getFiles(Dsn $dsn, array $paths, array $ignore, array $extensions) : array
     {

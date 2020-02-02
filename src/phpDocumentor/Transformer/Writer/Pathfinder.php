@@ -29,10 +29,8 @@ final class Pathfinder
      * is returned.
      *
      * @return Traversable<mixed>|list<mixed>
-     *
-     * @phpstan-return Traversable<mixed>|array<int, mixed>
      */
-    public function find(object $object, string $query)
+    public function find(object $object, string $query) : iterable
     {
         if ($query) {
             $node = $this->walkObjectTree($object, $query);

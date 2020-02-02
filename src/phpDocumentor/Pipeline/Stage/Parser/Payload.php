@@ -36,8 +36,6 @@ final class Payload extends ApplicationPayload
 
     /**
      * @return list<array<array<mixed>|bool|string>>
-     *
-     * @phpstan-return array<int, array<array<mixed>|bool|string>>
      */
     public function getApiConfigs() : array
     {

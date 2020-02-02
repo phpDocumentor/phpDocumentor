@@ -26,9 +26,6 @@ interface SpecificationFactoryInterface
      * @param list<string> $paths
      * @param array<string, bool|array<string>|null> $ignore
      * @param list<string> $extensions
-     *
-     * @phpstan-param array<int, string> $paths
-     * @phpstan-param array<int, string> $extensions
      */
     public function create(array $paths, array $ignore, array $extensions) : SpecificationInterface;
 }

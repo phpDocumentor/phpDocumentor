@@ -48,8 +48,6 @@ abstract class TypedAbstract extends TagDescriptor
      * Returns the list of types associated with this tag.
      *
      * @return list<Type>
-     *
-     * @phpstan-return array<int, Type>
      */
     public function getTypes() : array
     {

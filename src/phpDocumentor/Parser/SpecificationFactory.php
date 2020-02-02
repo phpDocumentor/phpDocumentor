@@ -31,9 +31,6 @@ final class SpecificationFactory implements FactoryInterface
      * @param list<string> $globs
      * @param array<string, bool|array<string>|null> $ignore
      * @param list<string> $extensions
-     *
-     * @phpstan-param array<int, string> $globs
-     * @phpstan-param array<int, string> $extensions
      */
     public function create(array $globs, array $ignore, array $extensions) : SpecificationInterface
     {
