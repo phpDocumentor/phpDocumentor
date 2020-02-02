@@ -17,6 +17,7 @@ use phpDocumentor\Descriptor\ArgumentDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Descriptor\Tag\ParamDescriptor;
+use phpDocumentor\Reflection\DocBlock\Tags\InvalidTag;
 use phpDocumentor\Reflection\DocBlock\Tags\Param;
 use phpDocumentor\Reflection\Php\Argument;
 use phpDocumentor\Reflection\Php\Method;
@@ -96,7 +97,7 @@ class MethodAssembler extends AssemblerAbstract
     protected function addArgument(Argument $argument, MethodDescriptor $descriptor) : void
     {
         /** @var Collection<ParamDescriptor> $params */
-        $params = $descriptor->getTags()->get('param', new Collection());
+        $params = $descriptor->getTags()->get('param', new Collection())->filter(ParamDescriptor::class);
 
         if (!$this->argumentAssembler->getBuilder()) {
             $this->argumentAssembler->setBuilder($this->builder);
@@ -119,9 +120,9 @@ class MethodAssembler extends AssemblerAbstract
 
         $paramTags = $data->getDocBlock()->getTagsByName('param');
 
-        /** @var Param|bool $lastParamTag */
+        /** @var Param|InvalidTag|bool $lastParamTag */
         $lastParamTag = end($paramTags);
-        if ($lastParamTag === false) {
+        if (!$lastParamTag instanceof Param) {
             return;
         }
 

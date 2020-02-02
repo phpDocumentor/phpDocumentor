@@ -117,7 +117,7 @@ class FunctionAssembler extends AssemblerAbstract
         Argument $argument
     ) : ArgumentDescriptor {
         /** @var Collection<ParamDescriptor> $params */
-        $params = $functionDescriptor->getTags()->get('param', new Collection());
+        $params = $functionDescriptor->getTags()->get('param', new Collection())->filter(ParamDescriptor::class);
 
         if (!$this->argumentAssembler->getBuilder()) {
             $this->argumentAssembler->setBuilder($this->builder);

@@ -53,8 +53,8 @@ class FunctionDescriptor extends DescriptorAbstract implements Interfaces\Functi
         $definedReturn = new ReturnDescriptor('return');
         $definedReturn->setType($this->returnType);
 
-        /** @var Collection<ReturnDescriptor>|null $returnTags */
-        $returnTags = $this->getTags()->get('return');
+        /** @var Collection<ReturnDescriptor> $returnTags */
+        $returnTags = $this->getTags()->get('return', new Collection())->filter(ReturnDescriptor::class);
 
         if ($returnTags instanceof Collection && $returnTags->count() > 0) {
             return current($returnTags->getAll());

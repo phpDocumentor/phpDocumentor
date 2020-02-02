@@ -18,6 +18,7 @@ use ArrayIterator;
 use Countable;
 use InvalidArgumentException;
 use IteratorAggregate;
+use function array_filter;
 use function array_merge;
 use function count;
 
@@ -199,5 +200,22 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
     public function merge(self $collection) : Collection
     {
         return new self(array_merge($this->items, $collection->getAll()));
+    }
+
+    /**
+     * @param class-string<T> $className
+     *
+     * @return Collection<object&T>
+     */
+    public function filter(string $className) : Collection
+    {
+        return new self(
+            array_filter(
+                $this->getAll(),
+                static function ($item) use ($className) {
+                    return $item instanceof $className;
+                }
+            )
+        );
     }
 }

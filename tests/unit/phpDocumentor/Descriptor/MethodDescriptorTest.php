@@ -293,7 +293,7 @@ final class MethodDescriptorTest extends MockeryTestCase
         $this->assertInstanceOf(Collection::class, $this->fixture->getReturn());
         $this->assertSame(0, $this->fixture->getReturn()->count());
 
-        $returnTagDescriptor = new AuthorDescriptor('return');
+        $returnTagDescriptor = new ReturnDescriptor('return');
         $returnCollection = new Collection([$returnTagDescriptor]);
         $this->fixture->getTags()->clear();
         $parentProperty = $this->whenFixtureHasMethodInParentClassWithSameName($this->fixture->getName());
@@ -301,7 +301,7 @@ final class MethodDescriptorTest extends MockeryTestCase
 
         $result = $this->fixture->getReturn();
 
-        $this->assertSame($returnCollection, $result);
+        $this->assertEquals($returnCollection, $result);
     }
 
     /**
