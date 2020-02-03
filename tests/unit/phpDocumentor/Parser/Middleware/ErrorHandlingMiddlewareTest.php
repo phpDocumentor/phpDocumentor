@@ -20,6 +20,7 @@ use phpDocumentor\Reflection\Php\Factory\File\CreateCommand;
 use phpDocumentor\Reflection\Php\File;
 use phpDocumentor\Reflection\Php\ProjectFactoryStrategies;
 use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 
@@ -70,6 +71,12 @@ final class ErrorHandlingMiddlewareTest extends TestCase
             '  Unable to parse file "' . __FILE__ . '", an error was detected: this is a test',
             []
         )->shouldBeCalled();
+        $logger->log(
+            LogLevel::NOTICE,
+            Argument::containingString('  -- Found in '),
+            []
+        )->shouldBeCalled();
+        $logger->log(LogLevel::DEBUG, Argument::any(), [])->shouldBeCalled();
 
         $middleware = new ErrorHandlingMiddleware($logger->reveal());
 
