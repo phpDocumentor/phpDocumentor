@@ -215,13 +215,16 @@ services:
     # Increments the progress bar; by placing it in front of the cache you see the progress bar
     # increment, even while we only consume the cache
     phpDocumentor\Parser\Middleware\EmittingMiddleware:
-      tags: [ { name: 'phpdoc.parser.middleware', priority: 4500 } ]
+        tags: [ { name: 'phpdoc.parser.middleware', priority: 4500 } ]
 
     phpDocumentor\Parser\Middleware\CacheMiddleware:
         tags: [ { name: 'phpdoc.parser.middleware', priority: 4000 } ]
 
     phpDocumentor\Parser\Middleware\ErrorHandlingMiddleware:
         tags: [ { name: 'phpdoc.parser.middleware', priority: 3000 } ]
+
+    phpDocumentor\Parser\Middleware\ReEncodingMiddleware:
+      tags: [ { name: 'phpdoc.parser.middleware', priority: 2000 } ]
 
     ###################################################################################
     ## Autoloading definitions for external services ##################################

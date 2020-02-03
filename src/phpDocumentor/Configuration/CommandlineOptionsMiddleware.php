@@ -76,6 +76,7 @@ final class CommandlineOptionsMiddleware
             $version = $this->overwriteMarkers($version);
             $version = $this->overwriteIncludeSource($version);
             $version = $this->overwriteVisibility($version);
+            $version = $this->overwriteEncoding($version);
             $version = $this->overwriteDefaultPackageName($version);
         }
 
@@ -422,5 +423,27 @@ final class CommandlineOptionsMiddleware
         }
 
         return $configuration;
+    }
+
+    /**
+     * @param array<string, array<int, array<string, mixed>>> $version
+     *
+     * @return array<string, array<int, array<string, mixed>>>
+     */
+    private function overwriteEncoding(array $version) : array
+    {
+        /** @var string|null $encoding */
+        $encoding = $this->options['encoding'] ?? null;
+        if (!$encoding) {
+            return $version;
+        }
+
+        if (!isset($version['api'])) {
+            $version['api'] = $this->createDefaultApiSettings();
+        }
+
+        $version['api'][0]['encoding'] = $encoding;
+
+        return $version;
     }
 }

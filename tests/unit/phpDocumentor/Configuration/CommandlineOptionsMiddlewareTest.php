@@ -275,6 +275,23 @@ final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
     /**
      * @covers ::__invoke
      */
+    public function testItShouldOverwriteTheEncodingSetInTheDefaultConfiguration() : void
+    {
+        $configuration = $this->givenAConfigurationWithoutApiDefinition();
+        $encoding = 'iso-8859-1';
+        $middleware = $this->createCommandlineOptionsMiddleware(['encoding' => $encoding]);
+
+        $newConfiguration = $middleware($configuration);
+
+        $this->assertEquals(
+            $encoding,
+            current($newConfiguration['phpdocumentor']['versions'])['api'][0]['encoding']
+        );
+    }
+
+    /**
+     * @covers ::__invoke
+     */
     public function testItShouldOverwriteTheDefaultPackageNameSetInTheDefaultConfiguration() : void
     {
         $configuration = $this->givenAConfigurationWithoutApiDefinition();

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Pipeline\Stage\Parser;
 
+use phpDocumentor\Parser\Middleware\ReEncodingMiddleware;
 use phpDocumentor\Parser\Parser;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
@@ -33,16 +34,21 @@ final class ParseFiles
     /** @var AdapterInterface */
     private $descriptorsCache;
 
+    /** @var ReEncodingMiddleware */
+    private $reEncodingMiddleware;
+
     public function __construct(
         Parser $parser,
         LoggerInterface $logger,
         AdapterInterface $filesCache,
-        AdapterInterface $descriptorsCache
+        AdapterInterface $descriptorsCache,
+        ReEncodingMiddleware $reEncodingMiddleware
     ) {
         $this->parser = $parser;
         $this->logger = $logger;
         $this->filesCache = $filesCache;
         $this->descriptorsCache = $descriptorsCache;
+        $this->reEncodingMiddleware = $reEncodingMiddleware;
     }
 
     public function __invoke(Payload $payload) : Payload
@@ -67,7 +73,8 @@ final class ParseFiles
             );
         }
 
-        $this->parser->setEncoding($apiConfig['encoding']);
+        $this->reEncodingMiddleware->withEncoding($apiConfig['encoding']);
+
         $this->parser->setMarkers($apiConfig['markers']);
         $this->parser->setIgnoredTags($apiConfig['ignore-tags']);
         $this->parser->setValidate($apiConfig['validate']);
