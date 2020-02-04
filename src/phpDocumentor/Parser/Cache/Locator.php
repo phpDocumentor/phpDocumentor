@@ -53,6 +53,15 @@ class Locator
     /** @var FilesystemAdapter */
     private $descriptorCache;
 
+    public function __construct(CacheInterface $files, CacheInterface $descriptors)
+    {
+        assert($files instanceof FilesystemAdapter);
+        assert($descriptors instanceof FilesystemAdapter);
+
+        $this->fileCache = $files;
+        $this->descriptorCache = $descriptors;
+    }
+
     public function providePath(Path $path) : void
     {
         $this->path = $path;
