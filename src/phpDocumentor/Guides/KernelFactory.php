@@ -40,6 +40,18 @@ final class KernelFactory
     /** @var LinkRenderer */
     private $linkRenderer;
 
+    public function __construct(
+        string $globalTemplatesPath,
+        LinkRenderer $linkRenderer,
+        IteratorAggregate $directives,
+        IteratorAggregate $references
+    ) {
+        $this->globalTemplatesPath = $globalTemplatesPath;
+        $this->directives = $directives;
+        $this->references = $references;
+        $this->linkRenderer = $linkRenderer;
+    }
+
     public function createKernel(ProjectDescriptor $projectDescriptor, BuildContext $buildContext) : Kernel
     {
         $configuration = new RSTParserConfiguration();
