@@ -44,6 +44,27 @@ class Filter
         $this->factory = $factory;
     }
 
+    public function attachDefaults(ProjectDescriptorBuilder $descriptorBuilder) : void
+    {
+        $stripOnVisibility       = new StripOnVisibility($descriptorBuilder);
+        $filtersOnAllDescriptors = [
+            new StripInternal($descriptorBuilder),
+            new StripIgnore($descriptorBuilder),
+        ];
+
+        foreach ($filtersOnAllDescriptors as $filter) {
+            $this->attach(ConstantDescriptor::class, $filter);
+            $this->attach(FunctionDescriptor::class, $filter);
+            $this->attach(InterfaceDescriptor::class, $filter);
+            $this->attach(TraitDescriptor::class, $filter);
+            $this->attach(PropertyDescriptor::class, $filter);
+            $this->attach(MethodDescriptor::class, $filter);
+        }
+
+        $this->attach(PropertyDescriptor::class, $stripOnVisibility);
+        $this->attach(MethodDescriptor::class, $stripOnVisibility);
+    }
+
     /**
      * Attaches a filter to a specific FQCN.
      */
