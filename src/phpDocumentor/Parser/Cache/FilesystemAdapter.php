@@ -27,6 +27,15 @@ final class FilesystemAdapter extends AbstractAdapter implements PruneableInterf
 
     private const TTL_ONE_YEAR = 31556926;
 
+    public function __construct(string $namespace = 'phpdoc', int $defaultLifetime = self::TTL_ONE_YEAR)
+    {
+        $this->marshaller = new DefaultMarshaller();
+
+        parent::__construct($namespace, $defaultLifetime);
+
+        $this->init($namespace, sys_get_temp_dir() . '/phpdocumentor');
+    }
+
     /**
      * Sets up the caching folder with the given namespace.
      *
