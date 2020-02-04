@@ -179,17 +179,6 @@ class Transformer implements CompilerPassInterface
     }
 
     /**
-     * Dispatches a logging request to log a debug message.
-     *
-     * This method can be used by writers to output logs without having to know anything about
-     * the logging mechanism of phpDocumentor.
-     */
-    public function debug(string $message) : void
-    {
-        $this->log($message, LogLevel::DEBUG);
-    }
-
-    /**
      * Initializes all writers that are used during this transformation.
      *
      * @param Transformation[] $transformations

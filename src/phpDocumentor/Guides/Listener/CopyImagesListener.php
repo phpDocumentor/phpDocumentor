@@ -32,40 +32,4 @@ class CopyImagesListener
         $this->buildContext = $buildContext;
         $this->errorManager = $errorManager;
     }
-
-    public function preNodeRender(PreNodeRenderEvent $event)
-    {
-        $node = $event->getNode();
-        if (!$node instanceof ImageNode) {
-            return;
-        }
-
-        $sourceImage = $node->getEnvironment()->absoluteRelativePath($node->getUrl());
-
-        if (!file_exists($sourceImage)) {
-            $this->errorManager->error(
-                sprintf(
-                    'Missing image file "%s" in "%s"',
-                    $node->getUrl(),
-                    $node->getEnvironment()->getCurrentFileName()
-                )
-            );
-
-            return;
-        }
-
-        $fileInfo = new SplFileInfo($sourceImage);
-        $fs = new Filesystem();
-
-        // the /_images path is currently hardcoded here and respected
-        // in the overridden image node template
-        $newPath = '/_images/' . $fileInfo->getFilename();
-        $fs->copy($sourceImage, $this->buildContext->getOutputFilesystem() . $newPath, true);
-
-        $node->setValue(
-            $node->getEnvironment()->relativeUrl(
-                '/_images/' . $fileInfo->getFilename()
-            )
-        );
-    }
 }

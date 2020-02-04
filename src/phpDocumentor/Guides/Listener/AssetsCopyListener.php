@@ -29,11 +29,4 @@ final class AssetsCopyListener
     {
         $this->targetFilesystem = $targetFilesystem;
     }
-
-    public function postBuildRender()
-    {
-        $sourceFilesystem = new Filesystem(new Local(sprintf('%s/../Templates/rtd/assets', __DIR__)));
-
-        FlySystemMirror::mirror($sourceFilesystem, $this->targetFilesystem, '', 'assets');
-    }
 }

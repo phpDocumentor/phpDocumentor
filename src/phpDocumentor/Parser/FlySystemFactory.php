@@ -67,7 +67,6 @@ class FlySystemFactory implements FileSystemFactory
         }
 
         try {
-            $root = (string) $dsn;
         } catch (InvalidArgumentException $e) {
             throw new InvalidArgumentException(
                 'Failed to determine the root path for the given DSN, received: ' . (string) $dsn,

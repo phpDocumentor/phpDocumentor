@@ -30,11 +30,6 @@ final class VersionDescriptor
         $this->number = $number;
     }
 
-    public function getNumber() : string
-    {
-        return $this->number;
-    }
-
     /**
      * @return Collection<GuideSetDescriptor>
      */

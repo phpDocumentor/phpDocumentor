@@ -200,25 +200,6 @@ class FileAssembler extends AssemblerAbstract
         }
     }
 
-    /**
-     * Registers the markers that were found in a File with the File Descriptor.
-     *
-     * @param array<array<string>> $markers
-     */
-    protected function addMarkers(array $markers, FileDescriptor $fileDescriptor) : void
-    {
-        foreach ($markers as $marker) {
-            [$type, $message, $line] = $marker;
-            $fileDescriptor->getMarkers()->add(
-                [
-                    'type' => $type,
-                    'message' => $message,
-                    'line' => $line,
-                ]
-            );
-        }
-    }
-
     protected function overridePackageTag(File $data, FileDescriptor $fileDescriptor) : void
     {
         /** @var Collection<TagDescriptor> $packages */

@@ -30,32 +30,9 @@ abstract class TypedAbstract extends TagDescriptor
     /**
      * Sets a list of types associated with this tag.
      */
-    public function setTypes(?Type $types = null) : void
-    {
-        trigger_error('Use setType, because type is an object', E_USER_DEPRECATED);
-        $this->types = $types;
-    }
-
-    /**
-     * Sets a list of types associated with this tag.
-     */
     public function setType(?Type $types = null) : void
     {
         $this->types = $types;
-    }
-
-    /**
-     * Returns the list of types associated with this tag.
-     *
-     * @return list<Type>
-     *
-     * @phpstan-return array<int, Type>
-     */
-    public function getTypes() : array
-    {
-        trigger_error('Use getType, because type is an object', E_USER_DEPRECATED);
-
-        return array_filter([$this->types]);
     }
 
     public function getType() : ?Type

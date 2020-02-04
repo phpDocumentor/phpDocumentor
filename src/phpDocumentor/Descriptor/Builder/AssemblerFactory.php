@@ -120,43 +120,4 @@ class AssemblerFactory
 
         return null;
     }
-
-    public static function createDefault(ExampleFinder $exampleFinder) : self
-    {
-        $factory = new AssemblerFactory();
-        $argumentAssembler = new ArgumentAssembler();
-
-        $factory->register(Matcher::forType(File::class), new FileAssembler());
-        $factory->register(Matcher::forType(Constant::class), new ConstantAssembler());
-        $factory->register(Matcher::forType(Trait_::class), new TraitAssembler());
-        $factory->register(Matcher::forType(Class_::class), new ClassAssembler());
-        $factory->register(Matcher::forType(Interface_::class), new InterfaceAssembler());
-        $factory->register(Matcher::forType(Property::class), new PropertyAssembler());
-        $factory->register(Matcher::forType(Argument::class), $argumentAssembler);
-        $factory->register(Matcher::forType(Method::class), new MethodAssembler($argumentAssembler));
-        $factory->register(Matcher::forType(Function_::class), new FunctionAssembler($argumentAssembler));
-        $factory->register(Matcher::forType(Namespace_::class), new NamespaceAssembler());
-
-        $factory->register(Matcher::forType(Author::class), new AuthorAssembler());
-        $factory->register(Matcher::forType(Deprecated::class), new DeprecatedAssembler());
-        $factory->register(Matcher::forType(Example::class), new ExampleAssembler($exampleFinder));
-        $factory->register(Matcher::forType(Link::class), new LinkAssembler());
-        $factory->register(Matcher::forType(Tags\Method::class), new MethodTagAssembler());
-        $factory->register(Matcher::forType(Tags\Property::class), new PropertyTagAssembler());
-        $factory->register(Matcher::forType(Tags\PropertyRead::class), new PropertyTagAssembler());
-        $factory->register(Matcher::forType(Tags\PropertyWrite::class), new PropertyTagAssembler());
-        $factory->register(Matcher::forType(Tags\InvalidTag::class), new InvalidTagAssembler());
-        $factory->register(Matcher::forType(Var_::class), new VarAssembler());
-        $factory->register(Matcher::forType(Param::class), new ParamAssembler());
-        $factory->register(Matcher::forType(Throws::class), new ThrowsAssembler());
-        $factory->register(Matcher::forType(Return_::class), new ReturnAssembler());
-        $factory->register(Matcher::forType(Uses::class), new UsesAssembler());
-        $factory->register(Matcher::forType(See::class), new SeeAssembler());
-        $factory->register(Matcher::forType(Since::class), new SinceAssembler());
-        $factory->register(Matcher::forType(Version::class), new VersionAssembler());
-
-        $factory->registerFallback(Matcher::forType(Tag::class), new GenericTagAssembler());
-
-        return $factory;
-    }
 }

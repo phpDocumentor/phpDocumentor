@@ -46,21 +46,8 @@ class Error
         return $this->code;
     }
 
-    public function getLine() : int
-    {
-        return $this->line;
-    }
-
     public function getSeverity() : string
     {
         return $this->severity;
-    }
-
-    /**
-     * @return mixed[]
-     */
-    public function getContext() : array
-    {
-        return $this->context;
     }
 }

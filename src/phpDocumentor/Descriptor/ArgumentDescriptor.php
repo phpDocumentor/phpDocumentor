@@ -64,18 +64,6 @@ class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\Argume
         return $this->type;
     }
 
-    /**
-     * @return list<?Type>
-     *
-     * @phpstan-return array<int, ?Type>
-     */
-    public function getTypes() : array
-    {
-        trigger_error('Please use getType', E_USER_DEPRECATED);
-
-        return [$this->getType()];
-    }
-
     public function getInheritedElement() : ?ArgumentDescriptor
     {
         if ($this->method instanceof MethodDescriptor &&
