@@ -83,7 +83,7 @@ class ProjectDescriptorBuilder
      *
      * @param Element|File|Tag|Argument $data
      *
-     * @return Descriptor|Collection<DescriptorAbstract>|null
+     * @return DescriptorAbstract|Collection<DescriptorAbstract>|null
      *
      * @throws InvalidArgumentException If no Assembler could be found that matches the given data.
      */
@@ -250,6 +250,9 @@ class ProjectDescriptorBuilder
         $this->project->setName($title);
     }
 
+    /**
+     * @param Collection<string> $partials
+     */
     public function setPartials(Collection $partials) : void
     {
         $this->project->setPartials($partials);

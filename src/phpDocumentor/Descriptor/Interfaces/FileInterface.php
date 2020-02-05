@@ -33,6 +33,9 @@ interface FileInterface extends ElementInterface, ContainerInterface
      */
     public function getNamespaceAliases() : Collection;
 
+    /**
+     * @return Collection<string>
+     */
     public function getIncludes() : Collection;
 
     /**

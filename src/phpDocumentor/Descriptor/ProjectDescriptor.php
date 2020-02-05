@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
-use phpDocumentor\Descriptor\Interfaces\NamespaceInterface;
 use phpDocumentor\Descriptor\Interfaces\PackageInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
 use phpDocumentor\Reflection\Fqsen;
@@ -35,13 +34,13 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
     /** @var Collection<FileDescriptor> $files */
     private $files;
 
-    /** @var Collection $indexes */
+    /** @var Collection<Collection<DescriptorAbstract>> $indexes */
     private $indexes;
 
     /** @var Settings $settings */
     private $settings;
 
-    /** @var Collection $partials */
+    /** @var Collection<string> $partials */
     private $partials;
 
     /** @var Collection<VersionDescriptor> $versions */
@@ -99,7 +98,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
     /**
      * Sets all files on this project.
      *
-     * @var Collection<FileDescriptor>
+     * @param Collection<FileDescriptor> $files
      */
     public function setFiles(Collection $files) : void
     {
@@ -122,6 +121,8 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
      * An index is a compilation of references to elements, usually constructed in a compiler step, that aids template
      * generation by providing a conveniently assembled list. An example of such an index is the 'marker' index where
      * a list of TODOs and FIXMEs are located in a central location for reporting.
+     *
+     * @param Collection<Collection<DescriptorAbstract>> $indexes
      */
     public function setIndexes(Collection $indexes) : void
     {
@@ -132,6 +133,8 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
      * Returns all indexes in this project.
      *
      * @see setIndexes() for more information on what indexes are.
+     *
+     * @return Collection<Collection<DescriptorAbstract>>
      */
     public function getIndexes() : Collection
     {
@@ -149,7 +152,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
     /**
      * Returns the root (global) namespace.
      */
-    public function getNamespace() : NamespaceInterface
+    public function getNamespace() : NamespaceDescriptor
     {
         return $this->namespace;
     }
@@ -175,6 +178,8 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
      *
      * Partials are blocks of text that can be inserted anywhere in a template using a special indicator. An example is
      * the introduction partial that can add a custom piece of text to the homepage.
+     *
+     * @param Collection<string> $partials
      */
     public function setPartials(Collection $partials) : void
     {
@@ -185,6 +190,8 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
      * Returns a list of all partials.
      *
      * @see setPartials() for more information on partials.
+     *
+     * @return Collection<string>
      */
     public function getPartials() : Collection
     {
