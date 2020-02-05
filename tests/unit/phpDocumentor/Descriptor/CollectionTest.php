@@ -225,7 +225,7 @@ final class CollectionTest extends MockeryTestCase
         $expected = [0 => new stdClass()];
 
         $this->fixture[0] = new stdClass();
-        $this->fixture[1] = null;
+        $this->fixture[1] = false;
         $this->fixture[2] = 'string';
 
         $result = $this->fixture->filter(stdClass::class)->getAll();

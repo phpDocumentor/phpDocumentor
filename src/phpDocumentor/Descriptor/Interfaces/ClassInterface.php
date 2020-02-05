@@ -42,25 +42,25 @@ interface ClassInterface extends ElementInterface, ChildInterface, TypeInterface
 
     public function isAbstract() : bool;
 
-    /** @param Collection<?ConstantDescriptor> $constants */
+    /** @param Collection<ConstantDescriptor> $constants */
     public function setConstants(Collection $constants) : void;
 
-    /** @return Collection<?ConstantDescriptor> */
+    /** @return Collection<ConstantDescriptor> */
     public function getConstants() : Collection;
 
-    /** @param Collection<?MethodDescriptor> $methods */
+    /** @param Collection<MethodDescriptor> $methods */
     public function setMethods(Collection $methods) : void;
 
-    /** @return Collection<?MethodDescriptor> */
+    /** @return Collection<MethodDescriptor> */
     public function getMethods() : Collection;
 
     /** @return Collection<?MethodDescriptor> */
     public function getInheritedMethods() : Collection;
 
-    /** @param Collection<?PropertyDescriptor> $properties */
+    /** @param Collection<PropertyDescriptor> $properties */
     public function setProperties(Collection $properties) : void;
 
-    /** @return Collection<?PropertyDescriptor> */
+    /** @return Collection<PropertyDescriptor> */
     public function getProperties() : Collection;
 
     /** @return Collection<?PropertyDescriptor> */

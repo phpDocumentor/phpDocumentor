@@ -45,13 +45,13 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     /** @var bool $final Whether this class is marked as final and can't be subclassed. */
     protected $final = false;
 
-    /** @var Collection<?ConstantDescriptor> $constants References to constants defined in this class. */
+    /** @var Collection<ConstantDescriptor> $constants References to constants defined in this class. */
     protected $constants;
 
-    /** @var Collection<?PropertyDescriptor> $properties References to properties defined in this class. */
+    /** @var Collection<PropertyDescriptor> $properties References to properties defined in this class. */
     protected $properties;
 
-    /** @var Collection<?MethodDescriptor> $methods References to methods defined in this class. */
+    /** @var Collection<MethodDescriptor> $methods References to methods defined in this class. */
     protected $methods;
 
     /** @var Collection<TraitDescriptor>|Collection<Fqsen> $usedTraits References to traits consumed by this class */
@@ -128,7 +128,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     }
 
     /**
-     * @return Collection<?ConstantDescriptor>
+     * @return Collection<ConstantDescriptor>
      */
     public function getInheritedConstants() : Collection
     {
@@ -297,29 +297,14 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
         parent::setPackage($package);
 
         foreach ($this->getConstants() as $constant) {
-            // TODO #840: Workaround; for some reason there are NULLs in the constants array.
-            if (!$constant) {
-                continue;
-            }
-
             $constant->setPackage($package);
         }
 
         foreach ($this->getProperties() as $property) {
-            // TODO #840: Workaround; for some reason there are NULLs in the properties array.
-            if (!$property) {
-                continue;
-            }
-
             $property->setPackage($package);
         }
 
         foreach ($this->getMethods() as $method) {
-            // TODO #840: Workaround; for some reason there are NULLs in the methods array.
-            if (!$method) {
-                continue;
-            }
-
             $method->setPackage($package);
         }
     }
