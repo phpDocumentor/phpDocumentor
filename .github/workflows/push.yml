@@ -107,7 +107,7 @@ jobs:
             all-build-${{ hashFiles('**/composer.lock') }}
             all-build-
       - name: PHPStan
-        uses: docker://phpdoc/phpstan-ga:latest
+        uses: phpDocumentor/phpstan-ga@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
