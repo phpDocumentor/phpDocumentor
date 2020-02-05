@@ -66,16 +66,6 @@ class FlySystemFactory implements FileSystemFactory
             throw new InvalidArgumentException(sprintf('"%s" is not a supported file system yet', $dsn->getScheme()));
         }
 
-        try {
-            $root = (string) $dsn;
-        } catch (InvalidArgumentException $e) {
-            throw new InvalidArgumentException(
-                'Failed to determine the root path for the given DSN, received: ' . (string) $dsn,
-                0,
-                $e
-            );
-        }
-
         return new Local(
             $this->formatDsn($dsn),
             $dsn->getScheme() !== 'vfs' ? LOCK_EX : 0, // VFS does not support locking
