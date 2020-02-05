@@ -23,7 +23,7 @@ use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Reflection\Fqsen;
-use phpDocumentor\Reflection\Types\Compound;
+use phpDocumentor\Reflection\Type;
 use Webmozart\Assert\Assert;
 use function get_class;
 use function is_array;
@@ -124,6 +124,10 @@ class Linker implements CompilerPassInterface
      */
     public function substitute($item, ?DescriptorAbstract $container = null)
     {
+        if ($item instanceof Type) {
+            return null;
+        }
+
         if ($item instanceof Fqsen) {
             return $this->descriptorRepository->findAlias((string) $item, $container);
         }
@@ -133,7 +137,7 @@ class Linker implements CompilerPassInterface
         }
 
         if (is_iterable($item)) {
-            Assert::true(is_array($item) || $item instanceof ArrayAccess || $item instanceof Compound);
+            Assert::true(is_array($item) || $item instanceof ArrayAccess);
 
             return $this->substituteChildrenOfCollection($item, $container);
         }
@@ -144,10 +148,10 @@ class Linker implements CompilerPassInterface
 
         $this->substituteMembersOfObject($item, $container);
 
+        //phpcs:disable Generic.Files.LineLength.TooLong
         return null;
     }
 
-    //phpcs:disable Generic.Files.LineLength.TooLong
     /**
      * @param array<string|DescriptorAbstract|null>|(ArrayAccess<array-key, string|DescriptorAbstract>&iterable<array-key, string|DescriptorAbstract>) $collection
      *
