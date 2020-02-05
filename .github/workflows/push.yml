@@ -87,14 +87,6 @@ jobs:
           restore-keys: |
             all-build-${{ hashFiles('**/composer.lock') }}
             all-build-
-      - name: Restore/cache tools folder
-        uses: actions/cache@v1
-        with:
-          path: tools
-          key: all-tools-${{ github.sha }}
-          restore-keys: |
-            all-tools-${{ github.sha }}-
-            all-tools-
       - name: Code style check
         uses: phpDocumentor/coding-standard@master
         with:
@@ -114,16 +106,8 @@ jobs:
           restore-keys: |
             all-build-${{ hashFiles('**/composer.lock') }}
             all-build-
-      - name: Restore/cache tools folder
-        uses: actions/cache@v1
-        with:
-          path: tools
-          key: all-tools-${{ github.sha }}
-          restore-keys: |
-            all-tools-${{ github.sha }}-
-            all-tools-
       - name: PHPStan
-        uses: docker://phpdoc/phpstan-ga:latest
+        uses: phpDocumentor/phpstan-ga@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
