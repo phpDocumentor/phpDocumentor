@@ -54,7 +54,7 @@ interface ClassInterface extends ElementInterface, ChildInterface, TypeInterface
     /** @return Collection<MethodDescriptor> */
     public function getMethods() : Collection;
 
-    /** @return Collection<?MethodDescriptor> */
+    /** @return Collection<MethodDescriptor> */
     public function getInheritedMethods() : Collection;
 
     /** @param Collection<PropertyDescriptor> $properties */
@@ -63,6 +63,6 @@ interface ClassInterface extends ElementInterface, ChildInterface, TypeInterface
     /** @return Collection<PropertyDescriptor> */
     public function getProperties() : Collection;
 
-    /** @return Collection<?PropertyDescriptor> */
+    /** @return Collection<PropertyDescriptor> */
     public function getInheritedProperties() : Collection;
 }

@@ -153,7 +153,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
 
     public function getInheritedMethods() : Collection
     {
-        /** @var Collection<?MethodDescriptor> $inheritedMethods */
+        /** @var Collection<MethodDescriptor> $inheritedMethods */
         $inheritedMethods = new Collection();
 
         foreach ($this->getUsedTraits() as $trait) {
@@ -222,7 +222,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
 
     public function getInheritedProperties() : Collection
     {
-        /** @var Collection<?PropertyDescriptor> $inheritedProperties */
+        /** @var Collection<PropertyDescriptor> $inheritedProperties */
         $inheritedProperties = new Collection();
 
         foreach ($this->getUsedTraits() as $trait) {

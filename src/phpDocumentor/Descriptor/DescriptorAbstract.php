@@ -359,11 +359,11 @@ abstract class DescriptorAbstract implements Filterable
     /**
      * Returns all errors that occur in this element.
      *
-     * @return Collection<?Error>
+     * @return Collection<Error>
      */
     public function getErrors() : Collection
     {
-        /** @var Collection<?Error> $errors */
+        /** @var Collection<Error> $errors */
         $errors = (new Collection())->merge($this->errors);
         foreach ($this->tags as $tags) {
             foreach ($tags as $tag) {
