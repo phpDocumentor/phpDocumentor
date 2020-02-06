@@ -28,7 +28,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     /**
      * Reference to an instance of the superclass for this class, if any.
      *
-     * @var ClassDescriptor|InterfaceDescriptor|Fqsen|string|null $parent
+     * @var ClassDescriptor|Fqsen|string|null $parent
      */
     protected $parent;
 
@@ -72,7 +72,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     }
 
     /**
-     * @param ClassDescriptor|InterfaceDescriptor|Fqsen|string|null $parents
+     * @param ClassDescriptor|Fqsen|string|null $parents
      */
     public function setParent($parents) : void
     {
@@ -80,7 +80,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     }
 
     /**
-     * @return ClassDescriptor|InterfaceDescriptor|Fqsen|string|null
+     * @return ClassDescriptor|Fqsen|string|null
      */
     public function getParent()
     {
