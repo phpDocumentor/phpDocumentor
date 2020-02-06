@@ -15,7 +15,6 @@ namespace phpDocumentor\Descriptor\Filter;
 
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
-use Webmozart\Assert\Assert;
 
 /**
  * Strips any Descriptor if the ignore tag is present with that element.
@@ -36,9 +35,8 @@ class StripIgnore implements FilterInterface
     /**
      * Filter Descriptor with ignore tags.
      */
-    public function __invoke(?Filterable $value) : ?Filterable
+    public function __invoke(?DescriptorAbstract $value) : ?DescriptorAbstract
     {
-        Assert::nullOrIsInstanceOf($value, DescriptorAbstract::class);
         if ($value !== null && $value->getTags()->get('ignore')) {
             return null;
         }

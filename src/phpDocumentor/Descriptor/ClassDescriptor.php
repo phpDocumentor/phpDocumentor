@@ -28,7 +28,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     /**
      * Reference to an instance of the superclass for this class, if any.
      *
-     * @var DescriptorAbstract|Fqsen|string|null $parent
+     * @var ClassDescriptor|InterfaceDescriptor|Fqsen|string|null $parent
      */
     protected $parent;
 
@@ -72,7 +72,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     }
 
     /**
-     * @param DescriptorAbstract|Fqsen|string|null $parents
+     * @param ClassDescriptor|InterfaceDescriptor|Fqsen|string|null $parents
      */
     public function setParent($parents) : void
     {
@@ -80,7 +80,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     }
 
     /**
-     * @return DescriptorAbstract|Fqsen|string|null
+     * @return ClassDescriptor|InterfaceDescriptor|Fqsen|string|null
      */
     public function getParent()
     {
@@ -153,6 +153,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
 
     public function getInheritedMethods() : Collection
     {
+        /** @var Collection<?MethodDescriptor> $inheritedMethods */
         $inheritedMethods = new Collection();
 
         foreach ($this->getUsedTraits() as $trait) {
@@ -221,6 +222,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
 
     public function getInheritedProperties() : Collection
     {
+        /** @var Collection<?PropertyDescriptor> $inheritedProperties */
         $inheritedProperties = new Collection();
 
         foreach ($this->getUsedTraits() as $trait) {

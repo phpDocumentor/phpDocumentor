@@ -37,15 +37,11 @@ class StripOnVisibility implements FilterInterface
 
     /**
      * Filter Descriptor with based on visibility.
-     *
-     * @param DescriptorAbstract|Filterable $value
-     *
-     * @return DescriptorAbstract|Filterable|null
      */
-    public function __invoke(?Filterable $value) : ?Filterable
+    public function __invoke(?DescriptorAbstract $value) : ?DescriptorAbstract
     {
-        if (!$value instanceof DescriptorAbstract) {
-            return $value;
+        if ($value === null) {
+            return null;
         }
 
         // if a Descriptor is marked as 'api' and this is set as a visibility; _always_ show it; even if the visibility

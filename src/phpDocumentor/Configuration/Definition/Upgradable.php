@@ -20,9 +20,9 @@ interface Upgradable
      * The 'configVersion' field in the result will inform the ConfigurationFactory what the next Configuration
      * definition should be used to parse this result.
      *
-     * @param array<string, array<string, mixed>> $values
+     * @param array<string, string|array<string, mixed>> $values
      *
-     * @return array<string, string|array<mixed>>
+     * @return array<string, string|array<string, mixed>>
      */
     public function upgrade(array $values) : array;
 }

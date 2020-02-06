@@ -69,7 +69,7 @@ interface InterfaceInterface extends ElementInterface, TypeInterface
     /**
      * Returns a list of all methods that were inherited from parent interfaces.
      *
-     * @return Collection<MethodDescriptor>
+     * @return Collection<?MethodDescriptor>
      */
     public function getInheritedMethods() : Collection;
 }

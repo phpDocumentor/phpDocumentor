@@ -44,12 +44,8 @@ class StripInternal implements FilterInterface
 
     /**
      * If the ProjectDescriptor's settings allow internal tags then return the Descriptor, otherwise null to filter it.
-     *
-     * @param DescriptorAbstract $value
-     *
-     * @return DescriptorAbstract|null
      */
-    public function __invoke(?Filterable $value) : ?Filterable
+    public function __invoke(?DescriptorAbstract $value) : ?DescriptorAbstract
     {
         $isInternalAllowed = $this->builder->getProjectDescriptor()->isVisibilityAllowed(Settings::VISIBILITY_INTERNAL);
         if ($isInternalAllowed) {

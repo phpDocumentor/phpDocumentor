@@ -213,7 +213,7 @@ class ProjectDescriptorBuilder
     public function setVisibility(array $apiConfig) : void
     {
         $visibilities = $apiConfig['visibility'];
-        $visibility = null;
+        $visibility = 0;
 
         foreach ($visibilities as $item) {
             switch ($item) {

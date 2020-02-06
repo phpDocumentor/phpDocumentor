@@ -102,7 +102,7 @@ final class CommandlineOptionsMiddleware
      *
      * @param array<string, array<string, array<string, mixed>>> $configuration
      *
-     * @return array<string, array<string, array<string, mixed>>>
+     * @return array<string, array<string, array<string, mixed>|false>>
      */
     private function disableCache(array $configuration) : array
     {

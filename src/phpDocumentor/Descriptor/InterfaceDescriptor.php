@@ -62,10 +62,11 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
     }
 
     /**
-     * @return Collection<ConstantDescriptor>
+     * @return Collection<?ConstantDescriptor>
      */
     public function getInheritedConstants() : Collection
     {
+        /** @var Collection<?ConstantDescriptor> $inheritedConstants */
         $inheritedConstants = new Collection();
 
         /** @var self $parent */
@@ -93,6 +94,7 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
 
     public function getInheritedMethods() : Collection
     {
+        /** @var Collection<?MethodDescriptor> $inheritedMethods */
         $inheritedMethods = new Collection();
 
         /** @var self $parent */
