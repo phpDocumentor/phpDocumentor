@@ -66,8 +66,8 @@ jobs:
           all-tools-
     - name: PHPUnit
       uses: docker://phpdoc/phpunit-ga:latest
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        args: --testsuite=unit
     - name: Upload to Scrutinizer
       run: tools/ocular code-coverage:upload --format=php-clover build/logs/clover.xml
     - name: Quick check code coverage level
@@ -162,6 +162,14 @@ jobs:
           restore-keys: |
             all-build-${{ hashFiles('**/composer.lock') }}
             all-build-
+      - name: Restore/cache tools folder
+        uses: actions/cache@v1
+        with:
+          path: tools
+          key: all-tools-${{ github.sha }}
+          restore-keys: |
+            all-tools-${{ github.sha }}-
+            all-tools-
       - name: Setup PHP
         uses: shivammathur/setup-php@master
         with:
@@ -177,6 +185,8 @@ jobs:
           path: build
       - name: Run Behat
         run: php tools/behat -p ${{ matrix.profile }}
+      - name: Run PHPUnit functional
+        run: php tools/phpunit.phar --testsuite=integration,functional
 
   smoketest:
     runs-on: ubuntu-latest
@@ -322,7 +332,7 @@ jobs:
         ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
         tools: pecl
     - name: Run PHPUnit
-      run: php tools/phpunit.phar
+      run: php tools/phpunit.phar --testsuite=unit,integration
 
   behat:
     runs-on: ${{ matrix.operating-system }}
@@ -342,7 +352,7 @@ jobs:
         exclude: # already covered in pre-test with coverage above
           - operating-system: 'ubuntu-latest'
             php-versions: '7.2'
-    name: Integration tests [${{ matrix.profile }} | ${{ matrix.php-versions }} | ${{ matrix.operating-system }}]
+    name: Functional tests [${{ matrix.profile }} | ${{ matrix.php-versions }} | ${{ matrix.operating-system }}]
     needs:
       - behat-quick-feedback
       - phpstan
@@ -357,6 +367,14 @@ jobs:
           restore-keys: |
             all-build-${{ hashFiles('**/composer.lock') }}
             all-build-
+      - name: Restore/cache tools folder
+        uses: actions/cache@v1
+        with:
+          path: tools
+          key: all-tools-${{ github.sha }}
+          restore-keys: |
+            all-tools-${{ github.sha }}-
+            all-tools-
       - name: Setup PHP
         uses: shivammathur/setup-php@master
         with:
@@ -372,6 +390,8 @@ jobs:
           path: build
       - name: Run Behat
         run: php tools/behat -p ${{ matrix.profile }}
+      - name: Run PHPUnit functional
+        run: php tools/phpunit.phar --testsuite=functional
 
   demo:
     runs-on: ubuntu-latest

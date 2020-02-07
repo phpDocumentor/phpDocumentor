@@ -33,18 +33,20 @@ phpstan:
 	docker run -it --rm -v${CURDIR}:/opt/project -w /opt/project phpdoc/phpstan-ga:latest analyse src tests --configuration phpstan.neon ${ARGS}
 
 .PHONY: test
-test:
-	docker run -it --rm -v${CURDIR}:/github/workspace phpdoc/phpunit-ga
+test: unit-test
 	docker run -it --rm -v${CURDIR}:/data -w /data php:7.2 -f ./tests/coverage-checker.php 69
 
-.PHONY: phpunit
-phpunit: test
+unit-test: ARGS=--testsuite=unit
+integration-test: ARGS=--testsuite=integration --no-coverage
+functional-test: ARGS=--testsuite=functional --no-coverage
 
-.PHONY: integration-test
-integration-test: node_modules/.bin/cypress build/default/index.html build/clean/index.html
+unit-test integration-test functional-test:
+	docker run -it --rm -v${CURDIR}:/github/workspace phpdoc/phpunit-ga $(ARGS)
+
+.PHONY: e2e-test
+e2e-test: node_modules/.bin/cypress build/default/index.html build/clean/index.html
 	docker run -it --rm -v ${CURDIR}:/e2e -w /e2e cypress/included:3.2.0
 
-.PHONY: behat
 behat:
 	docker-compose run --rm behat ${ARGS}
 
