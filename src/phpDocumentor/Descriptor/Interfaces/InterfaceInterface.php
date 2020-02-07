@@ -29,7 +29,7 @@ interface InterfaceInterface extends ElementInterface, TypeInterface
      *
      * @return Collection<InterfaceDescriptor|Fqsen>
      */
-    public function getParent() : ?Collection;
+    public function getParent() : Collection;
 
     /**
      * Sets the parent for this Descriptor.

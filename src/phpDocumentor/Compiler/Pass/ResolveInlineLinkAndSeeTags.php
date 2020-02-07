@@ -101,6 +101,7 @@ final class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
         $descriptor->setDescription(
             preg_replace_callback(
                 self::REGEX_INLINE_LINK_OR_SEE_TAG,
+                /** @param list<string> $match */
                 function (array $match) {
                     return $this->resolveTag($match);
                 },
@@ -112,9 +113,9 @@ final class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
     /**
      * Resolves an individual tag, indicated by the results of the Regex used to extract tags.
      *
-     * @param string[] $match
+     * @param list<string> $match
      *
-     * @return string|string[]
+     * @return string|list<string>
      */
     private function resolveTag(array $match)
     {
@@ -160,7 +161,7 @@ final class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
     /**
      * Creates a Tag Reflector from the given array of tag line, tag name and tag content.
      *
-     * @param string[] $match
+     * @param list<string> $match
      */
     private function createLinkOrSeeTagFromRegexMatch(array $match) : Tag
     {

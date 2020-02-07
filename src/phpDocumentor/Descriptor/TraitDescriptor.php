@@ -100,10 +100,11 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
      */
     public function getMagicProperties() : Collection
     {
+        $tags = $this->getTags();
         /** @var Collection<Tag\PropertyDescriptor> $propertyTags */
-        $propertyTags = $this->getTags()->get('property', new Collection());
-        $propertyTags->merge($this->getTags()->get('property-read', new Collection()));
-        $propertyTags->merge($this->getTags()->get('property-write', new Collection()));
+        $propertyTags = $tags->get('property', new Collection())->filter(Tag\PropertyDescriptor::class)
+            ->merge($tags->get('property-read', new Collection())->filter(Tag\PropertyDescriptor::class))
+            ->merge($tags->get('property-write', new Collection())->filter(Tag\PropertyDescriptor::class));
 
         $properties = Collection::fromClassString(PropertyDescriptor::class);
 

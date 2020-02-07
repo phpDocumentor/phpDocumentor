@@ -68,7 +68,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
         $this->setIndexes(new Collection());
 
         $this->setPartials(new Collection());
-        $this->versions = new Collection();
+        $this->versions = Collection::fromClassString(VersionDescriptor::class);
     }
 
     /**

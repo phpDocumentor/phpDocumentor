@@ -134,7 +134,7 @@ class HtmlForPdfGenerator
 
     private function fixInternalImages(string $fileContent, string $relativeImagesPath) : string
     {
-        return $fileContent = preg_replace('{src="(?:\.\./)+([^"]+?)"}', "src=\"$relativeImagesPath$1\"", $fileContent);
+        return preg_replace('{src="(?:\.\./)+([^"]+?)"}', "src=\"$relativeImagesPath$1\"", $fileContent);
     }
 
     private function fixUniqueIdsAndAnchors(string $fileContent, string $uid) : string
@@ -182,6 +182,6 @@ class HtmlForPdfGenerator
 
     private function getParserFilename(string $filePath, string $inputDir) : string
     {
-        return $parserFilename = str_replace([$inputDir . '/', '.html'], ['', ''], $filePath);
+        return str_replace([$inputDir.'/', '.html'], ['', ''], $filePath);
     }
 }

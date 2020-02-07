@@ -35,7 +35,7 @@ class TagDescriptor implements Filterable
     public function __construct(string $name)
     {
         $this->setName($name);
-        $this->errors = new Collection();
+        $this->errors = Collection::fromClassString(Validation\Error::class);
     }
 
     /**

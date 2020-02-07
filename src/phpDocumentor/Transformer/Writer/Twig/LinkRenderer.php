@@ -119,14 +119,14 @@ final class LinkRenderer
     }
 
     /**
-     * @param Type[]|Type|Descriptor|Fqsen|Path|string|iterable $value
+     * @param array<Type>|Type|Descriptor|Fqsen|Path|string|iterable<mixed> $value
      *
      * @return string[]|string
      */
     public function render($value, string $presentation)
     {
         if (is_array($value) && current($value) instanceof Type) {
-            /** @var iterable<Type> $value Assuming every element of iterable is similar */
+            /** @var array<Type> $value Assuming every element of iterable is similar */
             return $this->renderType($value);
         }
 

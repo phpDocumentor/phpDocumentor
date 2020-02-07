@@ -17,8 +17,8 @@ parameters:
     - '#Access to an undefined property phpDocumentor\\Descriptor\\Collection<phpDocumentor\\Descriptor\\Collection<phpDocumentor\\Descriptor\\DescriptorAbstract>>::\$[a-z]+#'
     # Issue on the content of this collection https://github.com/phpDocumentor/phpDocumentor/pull/2249#issuecomment-581111947
     - '#Parameter \#1 \$item of method phpDocumentor\\Descriptor\\Collection<phpDocumentor\\Descriptor\\TagDescriptor>::add\(\) expects phpDocumentor\\Descriptor\\TagDescriptor, phpDocumentor\\Descriptor\\Collection<phpDocumentor\\Descriptor\\DescriptorAbstract>\|phpDocumentor\\Descriptor\\DescriptorAbstract given\.#'
-    # Covariance issues with Collections. Maybe an feature to submit to Phpstan?
-    - '#Method phpDocumentor\\Descriptor\\Collection::merge\(\) has parameter \$collection#'
+    # https://github.com/phpDocumentor/phpDocumentor/issues/2279
+    - '#Instanceof between phpDocumentor\\Descriptor\\Collection<phpDocumentor\\Descriptor\\InterfaceDescriptor\|phpDocumentor\\Reflection\\Fqsen>\|phpDocumentor\\Reflection\\Fqsen\|string\|null and phpDocumentor\\Descriptor\\InterfaceDescriptor will always evaluate to false\.#'
     -
             message: "#^Parameter \\#1 \\$value of method phpDocumentor\\\\GraphViz\\\\Graph\\:\\:setCenter\\(\\) expects bool, string given\\.$#"
             count: 1
@@ -49,19 +49,12 @@ parameters:
     - %currentWorkingDirectory%/tests/data/*.php
     - %currentWorkingDirectory%/tests/features/assets/**/*.php
     - %currentWorkingDirectory%/tests/ReferenceImplementation.php
-   # files with issues because of removed validators
-    - %currentWorkingDirectory%/src/phpDocumentor/Plugin/Core/Transformer/Writer/Xml.php
-    - %currentWorkingDirectory%/src/phpDocumentor/Plugin/Core/Transformer/Writer/Checkstyle.php
-   # use of magic methods
-    - %currentWorkingDirectory%/src/phpDocumentor/Parser/Command/Project/ParseCommand.php
-   # method doesn't exist??? phpDocumentor\Plugin\Scrybe\Converter\ToLatexInterface::setTableOfContents()
-    - %currentWorkingDirectory%/src/phpDocumentor/Plugin/Scrybe/Command/Manual/ToLatexCommand.php
    # exclude guide generation, since this is not a working system at the moment
     - %currentWorkingDirectory%/src/phpDocumentor/Guides/*.php
     - %currentWorkingDirectory%/src/phpDocumentor/Pipeline/Stage/RenderGuide.php
     - %currentWorkingDirectory%/src/phpDocumentor/Guides/**/*.php
    # needs adjustment of interface in phpDocumentor/reflection in order to be able to typehint the command
-    - %currentWorkingDirectory%/src/phpDocumentor/Parser/Middleware/*.php
+    - %currentWorkingDirectory%/src/phpDocumentor/Parser/Middleware/CacheMiddleware.php
    # phpunit TestCase while having to use a composer-global install ("Class PHPUnit\\Framework\\TestCase not found and could not be autoloaded")
     - %currentWorkingDirectory%/tests/unit/**/*.php
     - %currentWorkingDirectory%/tests/integration/**/*.php

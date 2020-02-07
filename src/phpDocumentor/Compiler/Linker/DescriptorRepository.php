@@ -28,7 +28,7 @@ class DescriptorRepository
 {
     private const CONTEXT_MARKER = '@context';
 
-    /** @var DescriptorAbstract[] */
+    /** @var array<DescriptorAbstract> */
     private $elementList = [];
 
     /**
@@ -93,7 +93,7 @@ class DescriptorRepository
     /**
      * Sets the list of object aliases to resolve the FQSENs with.
      *
-     * @param DescriptorAbstract[] $elementList
+     * @param array<DescriptorAbstract> $elementList
      */
     public function setObjectAliasesList(array $elementList) : void
     {

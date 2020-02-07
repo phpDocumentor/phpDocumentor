@@ -203,7 +203,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
     /**
      * Returns a new collection with the items from this collection and the provided combined.
      *
-     * @param Collection $collection should be Collection<T> but create issues with inherited Descriptors
+     * @param Collection<T> $collection
      *
      * @return Collection<T>
      */
@@ -215,9 +215,11 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param class-string<T> $className
+     * @param class-string<F> $className
      *
-     * @return Collection<object&T>
+     * @return Collection<object&F&T>
+     *
+     * @template F
      */
     public function filter(string $className) : Collection
     {

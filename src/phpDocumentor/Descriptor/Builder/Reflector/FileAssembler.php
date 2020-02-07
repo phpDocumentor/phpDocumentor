@@ -37,7 +37,7 @@ class FileAssembler extends AssemblerAbstract
     /**
      * Creates a Descriptor from the provided data.
      *
-     * @param mixed $data TODO: should be FileDescriptor type, but cause weird issues
+     * @param File $data
      */
     public function create($data) : FileDescriptor
     {
