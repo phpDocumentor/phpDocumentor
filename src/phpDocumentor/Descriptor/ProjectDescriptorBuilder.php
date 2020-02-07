@@ -139,7 +139,7 @@ class ProjectDescriptorBuilder
      */
     private function filterEachDescriptor(iterable $descriptor) : Collection
     {
-        $descriptors = new Collection();
+        $descriptors = Collection::fromClassString(DescriptorAbstract::class);
         foreach ($descriptor as $key => $item) {
             $item = $this->filterDescriptor($item);
             if (!$item) {

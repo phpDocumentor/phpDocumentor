@@ -221,8 +221,7 @@ class FileAssembler extends AssemblerAbstract
 
     protected function overridePackageTag(File $data, FileDescriptor $fileDescriptor) : void
     {
-        /** @var Collection<TagDescriptor> $packages */
-        $packages = new Collection();
+        $packages = Collection::fromClassString(TagDescriptor::class);
         $package  = $this->extractPackageFromDocBlock($data->getDocBlock());
         if (!$package) {
             $package = $this->getBuilder()->getDefaultPackage();

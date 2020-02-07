@@ -153,8 +153,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
 
     public function getInheritedMethods() : Collection
     {
-        /** @var Collection<MethodDescriptor> $inheritedMethods */
-        $inheritedMethods = new Collection();
+        $inheritedMethods = Collection::fromClassString(MethodDescriptor::class);
 
         foreach ($this->getUsedTraits() as $trait) {
             if (!$trait instanceof TraitDescriptor) {
@@ -181,8 +180,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
         /** @var Collection<MethodDescriptor> $methodTags */
         $methodTags = clone $this->getTags()->get('method', new Collection());
 
-        /** @var Collection<MethodDescriptor> $methods */
-        $methods = new Collection();
+        $methods = Collection::fromClassString(MethodDescriptor::class);
 
         /** @var Tag\MethodDescriptor $methodTag */
         foreach ($methodTags as $methodTag) {
@@ -222,8 +220,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
 
     public function getInheritedProperties() : Collection
     {
-        /** @var Collection<PropertyDescriptor> $inheritedProperties */
-        $inheritedProperties = new Collection();
+        $inheritedProperties = Collection::fromClassString(PropertyDescriptor::class);
 
         foreach ($this->getUsedTraits() as $trait) {
             if (!$trait instanceof TraitDescriptor) {
@@ -252,8 +249,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
         $propertyTags = $propertyTags->merge($this->getTags()->get('property-read', new Collection()));
         $propertyTags = $propertyTags->merge($this->getTags()->get('property-write', new Collection()));
 
-        /** @var Collection<PropertyDescriptor> $properties */
-        $properties = new Collection();
+        $properties = Collection::fromClassString(PropertyDescriptor::class);
 
         try {
             /** @var Tag\PropertyDescriptor $propertyTag */
