@@ -232,16 +232,17 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @template C
-     *
      * @param class-string<C> $classString
      * @param array<C> $elements
      *
      * @return Collection<C>
+     *
+     * @template C
      */
     public static function fromClassString(string $classString, array $elements = []) : Collection
     {
         Assert::classExists($classString);
+
         return new Collection($elements);
     }
 }
