@@ -136,7 +136,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
             return new Collection();
         }
 
-        $inheritedConstants = clone $this->getParent()->getConstants();
+        $inheritedConstants = $this->getParent()->getConstants();
 
         return $inheritedConstants->merge($this->getParent()->getInheritedConstants());
     }
@@ -161,14 +161,14 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
                 continue;
             }
 
-            $inheritedMethods = $inheritedMethods->merge(clone $trait->getMethods());
+            $inheritedMethods = $inheritedMethods->merge($trait->getMethods());
         }
 
         if ($this->getParent() === null || (!$this->getParent() instanceof self)) {
             return $inheritedMethods;
         }
 
-        $inheritedMethods = $inheritedMethods->merge(clone $this->getParent()->getMethods());
+        $inheritedMethods = $inheritedMethods->merge($this->getParent()->getMethods());
 
         return $inheritedMethods->merge($this->getParent()->getInheritedMethods());
     }
@@ -179,7 +179,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     public function getMagicMethods() : Collection
     {
         /** @var Collection<MethodDescriptor> $methodTags */
-        $methodTags = clone $this->getTags()->get('method', new Collection());
+        $methodTags = $this->getTags()->get('method', new Collection());
 
         /** @var Collection<MethodDescriptor> $methods */
         $methods = new Collection();
@@ -230,14 +230,14 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
                 continue;
             }
 
-            $inheritedProperties = $inheritedProperties->merge(clone $trait->getProperties());
+            $inheritedProperties = $inheritedProperties->merge($trait->getProperties());
         }
 
         if ($this->getParent() === null || (!$this->getParent() instanceof self)) {
             return $inheritedProperties;
         }
 
-        $inheritedProperties = $inheritedProperties->merge(clone $this->getParent()->getProperties());
+        $inheritedProperties = $inheritedProperties->merge($this->getParent()->getProperties());
 
         return $inheritedProperties->merge($this->getParent()->getInheritedProperties());
     }
@@ -248,7 +248,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     public function getMagicProperties() : Collection
     {
         /** @var Collection<Tag\PropertyDescriptor> $propertyTags */
-        $propertyTags = clone $this->getTags()->get('property', new Collection());
+        $propertyTags = $this->getTags()->get('property', new Collection());
         $propertyTags = $propertyTags->merge($this->getTags()->get('property-read', new Collection()));
         $propertyTags = $propertyTags->merge($this->getTags()->get('property-write', new Collection()));
 
