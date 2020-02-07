@@ -68,6 +68,7 @@ final class FileLevelFunctionalTest extends TestCase
                 PHP_BINARY,
                 __DIR__ . '/../../../../bin/phpdoc',
                 '-vvv',
+                '--config=none',
                 '--force',
                 '--filename=test.php',
             ],

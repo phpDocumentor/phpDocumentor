@@ -90,6 +90,9 @@ final class Configure
         // if the path equals none then we fallback to the defaults but don't load anything from the filesystem
         if ($path === 'none') {
             $this->logger->notice('Not using any configuration file, relying on application defaults');
+            $this->configuration->exchangeArray(
+                $this->configFactory->fromDefault()->getArrayCopy()
+            );
 
             return;
         }

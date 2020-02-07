@@ -98,6 +98,11 @@ use function sprintf;
         return new Configuration($this->applyMiddleware($config, $uri));
     }
 
+    public function fromDefault() : Configuration
+    {
+        return  new Configuration($this->applyMiddleware($this->createDefault()->getArrayCopy(), null));
+    }
+
     /**
      * Applies all middleware callbacks onto the configuration.
      *
