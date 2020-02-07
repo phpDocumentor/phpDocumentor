@@ -18,6 +18,7 @@ use ArrayIterator;
 use Countable;
 use InvalidArgumentException;
 use IteratorAggregate;
+use Webmozart\Assert\Assert;
 use function array_filter;
 use function array_merge;
 use function count;
@@ -34,7 +35,7 @@ use function count;
  */
 class Collection implements Countable, IteratorAggregate, ArrayAccess
 {
-    /** @var array<?T> $items */
+    /** @var array<T> $items */
     protected $items = [];
 
     /**
@@ -44,6 +45,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
      */
     public function __construct(array $items = [])
     {
+        Assert::allNotNull($items);
         $this->items = $items;
     }
 
@@ -54,6 +56,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
      */
     public function add($item) : void
     {
+        Assert::notNull($item);
         $this->items[] = $item;
     }
 
@@ -65,6 +68,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
      */
     public function set($index, $item) : void
     {
+        Assert::notNull($item);
         $this->offsetSet($index, $item);
     }
 
@@ -76,9 +80,11 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
      * tree building operations.
      *
      * @param string|int $index
-     * @param T|mixed    $valueIfEmpty If the index does not exist it will be created with this value and returned.
+     * @param mixed      $valueIfEmpty If the index does not exist it will be created with this value and returned.
      *
      * @return mixed The contents of the element with the given index and the provided default if the key doesn't exist.
+     *
+     * @phpstan-param T $valueIfEmpty
      *
      * @phpstan-return ?T
      */
@@ -94,7 +100,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
     /**
      * Retrieves all items from this collection as PHP Array.
      *
-     * @return array<?T>
+     * @return array<T>
      */
     public function getAll() : array
     {
@@ -104,7 +110,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
     /**
      * Retrieves an iterator to traverse this object.
      *
-     * @return ArrayIterator<string|int, ?T>
+     * @return ArrayIterator<string|int, T>
      */
     public function getIterator() : ArrayIterator
     {
@@ -170,12 +176,16 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
      * @param mixed           $value  The value to set.
      *
      * @throws InvalidArgumentException If the key is null or an empty string.
+     *
+     * @phpstan-param T       $value
      */
     public function offsetSet($offset, $value) : void
     {
         if ($offset === '' || $offset === null) {
             throw new InvalidArgumentException('The key of a collection must always be set');
         }
+
+        Assert::notNull($value);
 
         $this->items[$offset] = $value;
     }
@@ -195,10 +205,12 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
      *
      * @param Collection $collection should be Collection<T> but create issues with inherited Descriptors
      *
-     * @return Collection<?T>
+     * @return Collection<T>
      */
     public function merge(self $collection) : Collection
     {
+        Assert::allNotNull($collection);
+
         return new self(array_merge($this->items, $collection->getAll()));
     }
 

@@ -231,16 +231,12 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
             return null;
         }
 
-        /** @var ClassDescriptor|InterfaceDescriptor|Collection<?InterfaceDescriptor> $parentClass */
+        /** @var ClassDescriptor|InterfaceDescriptor|Collection<InterfaceDescriptor> $parentClass */
         $parentClass = $associatedClass->getParent();
         if ($parentClass instanceof ClassDescriptor || $parentClass instanceof Collection) {
             // the parent of a class is always a class, but the parent of an interface is a collection of interfaces.
             $parents = $parentClass instanceof ClassDescriptor ? [$parentClass] : $parentClass->getAll();
             foreach ($parents as $parent) {
-                if (!($parent instanceof ClassDescriptor) && !($parent instanceof InterfaceDescriptor)) {
-                    continue;
-                }
-
                 /** @var MethodDescriptor|null $parentMethod */
                 $parentMethod = $parent->getMethods()->get($this->getName());
                 if ($parentMethod instanceof MethodDescriptor) {
