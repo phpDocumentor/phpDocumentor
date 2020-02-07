@@ -86,15 +86,22 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
      *
      * @phpstan-param T $valueIfEmpty
      *
-     * @phpstan-return ?T
+     * @phpstan-return T
      */
     public function get($index, $valueIfEmpty = null)
     {
-        if (!$this->offsetExists($index) && $valueIfEmpty !== null) {
-            $this->offsetSet($index, $valueIfEmpty);
+        if (!$this->offsetExists($index)) {
+            if($valueIfEmpty !== null) {
+                $this->offsetSet($index, $valueIfEmpty);
+            }
+            else{
+                throw new InvalidArgumentException('A default value should be provided in case the index is empty');
+            }
         }
 
-        return $this->offsetGet($index);
+        $element = $this->offsetGet($index);
+        Assert::notNull($element);
+        return $element;
     }
 
     /**
@@ -138,7 +145,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
      *
      * @return mixed
      *
-     * @phpstan-return ?T
+     * @phpstan-return T
      */
     public function __get(string $name)
     {
