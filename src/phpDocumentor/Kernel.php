@@ -69,6 +69,20 @@ class Kernel extends BaseKernel
         return $this->getProjectDir() . '/var/log';
     }
 
+    /**
+     * Override needed for auto-detection when installed using Composer.
+     *
+     * I am not quite sure why, but without this overridden method Symfony will use the 'src' directory as Project Dir
+     * when phpDocumentor is installed using Composer. Without being installed with composer it works fine without
+     * this hack.
+     *
+     * @return string
+     */
+    public function getProjectDir()
+    {
+        return parent::getProjectDir();
+    }
+
     public function registerBundles() : iterable
     {
         $contents = require $this->getProjectDir() . '/config/bundles.php';
