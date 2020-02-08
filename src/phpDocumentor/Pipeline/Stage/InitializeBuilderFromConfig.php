@@ -42,8 +42,7 @@ final class InitializeBuilderFromConfig
         $builder->setCustomSettings($configuration['phpdocumentor']['settings'] ?? []);
 
         foreach (($configuration['phpdocumentor']['versions'] ?? []) as $number => $version) {
-            /** @var Collection<GuideSetDescriptor> $documentationSets */
-            $documentationSets = new Collection();
+            $documentationSets = Collection::fromClassString(GuideSetDescriptor::class);
 
             foreach ($version['guides'] ?? [] as $guide) {
                 $documentationSets->add(new GuideSetDescriptor('', $guide['source'], $guide['output']));
