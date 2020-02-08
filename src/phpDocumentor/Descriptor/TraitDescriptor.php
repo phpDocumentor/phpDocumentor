@@ -62,7 +62,7 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
     public function getMagicMethods() : Collection
     {
         /** @var Collection<Tag\MethodDescriptor> $methodTags */
-        $methodTags = clone $this->getTags()->get('method', new Collection());
+        $methodTags = $this->getTags()->get('method', new Collection());
 
         /** @var Collection<MethodDescriptor> $methods */
         $methods = new Collection();
@@ -102,7 +102,7 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
     public function getMagicProperties() : Collection
     {
         /** @var Collection<Tag\PropertyDescriptor> $propertyTags */
-        $propertyTags = clone $this->getTags()->get('property', new Collection());
+        $propertyTags = $this->getTags()->get('property', new Collection());
         $propertyTags->merge($this->getTags()->get('property-read', new Collection()));
         $propertyTags->merge($this->getTags()->get('property-write', new Collection()));
 
