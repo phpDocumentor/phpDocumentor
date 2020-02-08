@@ -104,11 +104,7 @@ class ProjectDescriptorBuilder
         // create Descriptor and populate with the provided data
         $descriptor = $assembler->create($data);
 
-        if ($descriptor instanceof Descriptor) {
-            return $this->filterDescriptor($descriptor);
-        }
-
-        return $this->filterEachDescriptor($descriptor);
+        return $this->filterDescriptor($descriptor);
     }
 
     /**
@@ -127,29 +123,6 @@ class ProjectDescriptorBuilder
     public function filter(Filterable $descriptor) : ?Filterable
     {
         return $this->filter->filter($descriptor);
-    }
-
-    /**
-     * Filters each descriptor, validates them, stores the validation results and returns a collection of transmuted
-     * objects.
-     *
-     * @param Collection<DescriptorAbstract> $descriptor
-     *
-     * @return Collection<DescriptorAbstract>
-     */
-    private function filterEachDescriptor(iterable $descriptor) : Collection
-    {
-        $descriptors = Collection::fromClassString(DescriptorAbstract::class);
-        foreach ($descriptor as $key => $item) {
-            $item = $this->filterDescriptor($item);
-            if (!$item) {
-                continue;
-            }
-
-            $descriptors[$key] = $item;
-        }
-
-        return $descriptors;
     }
 
     /**

@@ -13,9 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Builder;
 
-use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\Descriptor;
-use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock\Tag;
 use phpDocumentor\Reflection\Element;
@@ -26,14 +24,16 @@ use phpDocumentor\Reflection\Php\Argument;
  */
 interface AssemblerInterface
 {
+    //phpcs:disable
     /**
      * Creates a Descriptor from the provided data.
      *
      * @param Element|Tag|Argument $data
      *
-     * @return Descriptor|Collection<DescriptorAbstract>
+     * @return Descriptor
      */
     public function create($data);
+    //phpcs:enable
 
     public function setBuilder(ProjectDescriptorBuilder $builder) : void;
 }
