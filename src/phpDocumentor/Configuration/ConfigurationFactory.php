@@ -100,7 +100,7 @@ use function sprintf;
 
     public function fromDefault() : Configuration
     {
-        return  new Configuration($this->applyMiddleware($this->createDefault()->getArrayCopy(), null));
+        return new Configuration($this->applyMiddleware($this->createDefault()->getArrayCopy(), null));
     }
 
     /**
