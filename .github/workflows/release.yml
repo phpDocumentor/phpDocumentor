@@ -1,4 +1,6 @@
-on: release
+on:
+  release:
+    types: [published]
 name: Release workflow
 jobs:
   composer:
