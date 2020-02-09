@@ -13,7 +13,8 @@
         "psr-4": {
             "phpDocumentor\\": [
                 "tests/unit/phpDocumentor/",
-                "tests/integration/phpDocumentor/"
+                "tests/integration/phpDocumentor/",
+                "tests/functional/phpDocumentor/"
             ],
             "phpDocumentor\\Behat\\Contexts\\": [
                 "tests/features/bootstrap"
@@ -41,9 +42,9 @@
         "ocramius/package-versions": "^1.4",
         "phpdocumentor/flyfinder": "^1.0@beta",
         "phpdocumentor/graphviz": "^2.0@dev",
-        "phpdocumentor/reflection": "^4.0@beta",
-        "phpdocumentor/reflection-common": "^2.0@alpha",
-        "phpdocumentor/reflection-docblock": "^5.0@beta",
+        "phpdocumentor/reflection": "^4.0",
+        "phpdocumentor/reflection-common": "^2.0",
+        "phpdocumentor/reflection-docblock": "^5.0",
         "phpdocumentor/type-resolver": "^1.0",
         "psr/cache": "^1.0",
         "psr/log": "^1.1",

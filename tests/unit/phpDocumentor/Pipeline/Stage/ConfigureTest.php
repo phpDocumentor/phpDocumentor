@@ -55,6 +55,9 @@ final class ConfigureTest extends TestCase
         $configurationFactory = $this->prophesize(ConfigurationFactory::class);
         $configurationFactory->addMiddleware(Argument::any())->shouldBeCalledTimes(3);
         $configurationFactory->fromDefaultLocations()->shouldNotBeCalled();
+        $configurationFactory->fromDefault()->willReturn(
+            new Configuration($config)
+        );
 
         $stage = new Configure(
             $configurationFactory->reveal(),

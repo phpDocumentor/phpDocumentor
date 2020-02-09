@@ -65,3 +65,4 @@ parameters:
    # phpunit TestCase while having to use a composer-global install ("Class PHPUnit\\Framework\\TestCase not found and could not be autoloaded")
     - %currentWorkingDirectory%/tests/unit/**/*.php
     - %currentWorkingDirectory%/tests/integration/**/*.php
+    - %currentWorkingDirectory%/tests/functional/**/*.php
