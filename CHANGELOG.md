@@ -1,7 +1,21 @@
-2020-01-31: Version unreleased
+2020-02-09: Version 3.0.0-rc
 
 # Removed
 - Self update command thanks to [Jaapio]
+
+# FIXED
+- Docblock errors are now visible in default template, #2250 thanks to [Jaapio]
+- Run doesn't ignore cache with `--force`, #2257 thanks to [Mike van Riel]
+- `--config=none` doesn't respect commandline arguments thanks to [Jaapio]
+- Tag bodies starting with `[` are not accepted, #2260 thanks to [Jaapio]
+- Files starting with shebang are not parsed, #2259 thanks to [Jaapio]
+- Inline markers are not detected, #2256 thanks to [Jaapio]
+- Files with non utf-8 encoding are not processed correctly, #2254 [Jaapio]
+
+# CI
+ - Bring PHPStan to lvl 6 thanks to [Orklah]
+ - Internals are better typed thanks to [Orklah]
+ - Upgrade Coding standards to phpdoc coding standards thanks to [Jaapio]
 
 2020-01-31: Version 3.0.0-beta
 
