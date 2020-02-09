@@ -4,40 +4,17 @@ declare(strict_types=1);
 
 namespace functional\phpDocumentor\core;
 
-use FilesystemIterator;
+use phpDocumentor\FunctionalTestCase;
 use phpDocumentor\Descriptor\FileDescriptor;
-use phpDocumentor\Descriptor\ProjectDescriptor;
-use PHPUnit\Framework\TestCase;
-use RecursiveDirectoryIterator;
-use RecursiveIteratorIterator;
-use Symfony\Component\Process\Process;
 
-final class FileLevelFunctionalTest extends TestCase
+final class FileLevelFunctionalTest extends FunctionalTestCase
 {
-    private $workingDir;
-
-    protected function setUp() : void
-    {
-        $this->workingDir = tempnam(sys_get_temp_dir(), 'phpdoc');
-        unlink($this->workingDir);
-        mkdir($this->workingDir);
-    }
-
-    protected function tearDown() : void
-    {
-        $di = new RecursiveDirectoryIterator($this->workingDir, FilesystemIterator::SKIP_DOTS);
-        $ri = new RecursiveIteratorIterator($di, RecursiveIteratorIterator::CHILD_FIRST);
-        foreach ($ri as $file) {
-            $file->isDir() ? rmdir((string)$file) : unlink((string)$file);
-        }
-    }
-
     /**
      * @dataProvider emptishFileProvider
      */
     public function testEmptyPHPFileContainsFileLevelDocBlock(string $file) : void
     {
-        $this->runPHPDocWithFile($file)->getOutput($file);
+        $this->runPHPDocWithFile($file);
         $project = $this->loadAst();
 
         $this->assertCount(1, $project->getFiles());
@@ -59,31 +36,7 @@ final class FileLevelFunctionalTest extends TestCase
         ];
     }
 
-    private function runPHPDocWithFile(string $string) : Process
-    {
-        copy($string, $this->workingDir . '/test.php');
-
-        $process = new Process(
-            [
-                PHP_BINARY,
-                __DIR__ . '/../../../../bin/phpdoc',
-                '-vvv',
-                '--config=none',
-                '--force',
-                '--filename=test.php',
-            ],
-            $this->workingDir
-        );
-
-        return $process->mustRun();
-    }
-
-    private function loadAst() : ProjectDescriptor
-    {
-        return unserialize(file_get_contents($this->workingDir . '/ast.dump'));
-    }
-
-    private function assertFileSummary(string $string, FileDescriptor $file)
+    private function assertFileSummary(string $string, FileDescriptor $file) : void
     {
         self::assertSame($string, $file->getSummary());
     }
