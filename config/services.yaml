@@ -218,6 +218,8 @@ services:
         tags: [ { name: 'phpdoc.parser.middleware', priority: 4500 } ]
 
     phpDocumentor\Parser\Middleware\CacheMiddleware:
+        arguments:
+          $files: '@files'
         tags: [ { name: 'phpdoc.parser.middleware', priority: 4000 } ]
 
     phpDocumentor\Parser\Middleware\ErrorHandlingMiddleware:

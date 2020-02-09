@@ -6,7 +6,5 @@ Internals
 
    project-management
    flow
+   caching
    contructing-the-ast
-   tags
-   versioning
-   build-and-release-process

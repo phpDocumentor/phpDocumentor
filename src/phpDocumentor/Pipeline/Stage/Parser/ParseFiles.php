@@ -17,7 +17,6 @@ use phpDocumentor\Parser\Middleware\ReEncodingMiddleware;
 use phpDocumentor\Parser\Parser;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
-use Symfony\Component\Cache\Adapter\AdapterInterface;
 use function current;
 
 final class ParseFiles
@@ -28,26 +27,16 @@ final class ParseFiles
     /** @var LoggerInterface */
     private $logger;
 
-    /** @var AdapterInterface */
-    private $filesCache;
-
-    /** @var AdapterInterface */
-    private $descriptorsCache;
-
     /** @var ReEncodingMiddleware */
     private $reEncodingMiddleware;
 
     public function __construct(
         Parser $parser,
         LoggerInterface $logger,
-        AdapterInterface $filesCache,
-        AdapterInterface $descriptorsCache,
         ReEncodingMiddleware $reEncodingMiddleware
     ) {
         $this->parser = $parser;
         $this->logger = $logger;
-        $this->filesCache = $filesCache;
-        $this->descriptorsCache = $descriptorsCache;
         $this->reEncodingMiddleware = $reEncodingMiddleware;
     }
 
@@ -56,23 +45,13 @@ final class ParseFiles
         /*
          * For now settings of the first api are used.
          * We need to change this later, when we accept more different things
-        */
+         */
         $apiConfig = current($payload->getApiConfigs());
 
         $builder = $payload->getBuilder();
         $builder->setVisibility($apiConfig);
         $builder->setMarkers($apiConfig['markers']);
         $builder->setIncludeSource($apiConfig['include-source']);
-
-        if ($builder->getProjectDescriptor()->getSettings()->isModified()) {
-            $this->filesCache->clear();
-            $this->descriptorsCache->clear();
-            $this->log(
-                'One of the project\'s settings have changed, forcing a complete rebuild',
-                LogLevel::NOTICE
-            );
-        }
-
         $this->reEncodingMiddleware->withEncoding($apiConfig['encoding']);
 
         $this->parser->setMarkers($apiConfig['markers']);

@@ -22,6 +22,9 @@ services:
   ###################################################################################
 
   phpDocumentor\Pipeline\Stage\Cache\PurgeCachesWhenForced:
+    arguments:
+      $filesCache: '@files'
+      $descriptorsCache: '@descriptors'
     tags:
       - { name: 'phpdoc.pipeline.application.configuration', priority: 7000 }
 

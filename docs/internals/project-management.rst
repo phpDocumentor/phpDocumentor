@@ -1,7 +1,7 @@
 Project Management
 ==================
 
-.. note:: This documentation is about hwo the phpDocumentor team is organized and how it determines priorities and which
+.. note:: This documentation is about how the phpDocumentor team is organized and how it determines priorities and which
           tooling to use. When you are a user of phpDocumentor you can safely ignore this piece of documentation.
 
 .. note:: As with many open source projects, the phpDocumentor team consists of a very small number of core contributors
@@ -27,7 +27,7 @@ To manage the phpDocumentor project we distinguish between three different workf
 Responding to issues
 ~~~~~~~~~~~~~~~~~~~~
 
-The phpDocumentor team reviews any incoming issue and performs a form of triage; in this phase the urgency of the issue
+The phpDocumentor team reviews any incoming issue and performs triage; in this phase the urgency of the issue
 is determined and what type of issue this is. We distinguish between bugs, enhancements, research and documentation
 issues. During triage an issue is labelled with one of these labels to indicate its type.
 
@@ -44,16 +44,16 @@ Github project; see `Planning and developing of new features`_ for more informat
 Pull requests
 ~~~~~~~~~~~~~
 
-When a pull request comes in this is considered an urgent activity that should be responded to as quickly as
+When a pull request comes in, this is considered an urgent activity that should be responded to as quickly as
 availability allows.
 
 Please refer to the CONTRIBUTING.md in the root of this project for what we expect from a pull request. When a pull
-request does not match this criteria it is vital to be as helpful as an be and guide the issuer on how to help us get
+request does not match this criteria it is vital to be as helpful as can be and guide the issuer on how to help us get
 the pull request included.
 
 There are times when the content of a pull request does not match the strategy or intended architecture of
 phpDocumentor. In these cases it may happen that the team is not able to accept a contribution. This does not mean a
-pull request is bad or we do not appreciate the time that the issuer has spent; sometimes some things do not fit into
+pull request is bad or we do not appreciate the time that the issuer has spent; sometimes things do not fit into
 the whole or have an, unforeseeable, adverse impact elsewhere.
 
 Planning and developing of new features
