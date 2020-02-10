@@ -324,7 +324,7 @@ final class LinkRenderer
      */
     private function getPathPrefixBasedOnDepth() : string
     {
-        $directoryDepth = count(explode('/', $this->getDestination()));
+        $directoryDepth = substr_count($this->getDestination(), '/') + 1;
 
         return $directoryDepth > 1
             ? implode('/', array_fill(0, $directoryDepth - 1, '..')) . '/'
@@ -333,7 +333,7 @@ final class LinkRenderer
 
     private function isReferenceToFqsen(string $path) : bool
     {
-        return $path[0] === '@';
+        return strpos($path, '@') === 0;
     }
 
     private function withoutLeadingSlash(string $path) : string

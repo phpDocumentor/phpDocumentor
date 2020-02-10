@@ -164,7 +164,7 @@ abstract class DescriptorAbstract implements Filterable
      */
     public function getDescription() : string
     {
-        if ($this->description && strpos(strtolower((string) $this->description), '{@inheritdoc}') === false) {
+        if ($this->description && stripos((string)$this->description, '{@inheritdoc}') === false) {
             return $this->description;
         }
 
@@ -386,7 +386,7 @@ abstract class DescriptorAbstract implements Filterable
      */
     public function __call(string $name, array $arguments)
     {
-        if (substr($name, 0, 3) !== 'get') {
+        if (strpos($name, 'get') !== 0) {
             return null;
         }
 

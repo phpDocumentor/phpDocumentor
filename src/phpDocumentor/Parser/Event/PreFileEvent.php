@@ -21,7 +21,7 @@ use phpDocumentor\Event\EventAbstract;
 final class PreFileEvent extends EventAbstract
 {
     /** @var string */
-    protected $file = '';
+    private $file = '';
 
     /**
      * Creates a new instance of a derived object and return that.

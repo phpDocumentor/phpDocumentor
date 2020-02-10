@@ -220,7 +220,7 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
     public function getInheritedElement() : ?MethodDescriptor
     {
         if ($this->inheritedElement !== null) {
-            assert($this->inheritedElement instanceof MethodDescriptor);
+            assert($this->inheritedElement instanceof self);
 
             return $this->inheritedElement;
         }
@@ -239,7 +239,7 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
             foreach ($parents as $parent) {
                 /** @var MethodDescriptor|null $parentMethod */
                 $parentMethod = $parent->getMethods()->get($this->getName());
-                if ($parentMethod instanceof MethodDescriptor) {
+                if ($parentMethod instanceof self) {
                     $this->inheritedElement = $parentMethod;
 
                     return $this->inheritedElement;
@@ -257,7 +257,7 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
 
                 /** @var ?MethodDescriptor $parentMethod */
                 $parentMethod = $interface->getMethods()->get($this->getName());
-                if ($parentMethod instanceof MethodDescriptor) {
+                if ($parentMethod instanceof self) {
                     $this->inheritedElement = $parentMethod;
 
                     return $this->inheritedElement;

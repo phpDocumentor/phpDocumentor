@@ -85,17 +85,17 @@ PUML;
                 $extends = ' extends ' . addslashes($parentFqsen);
             }
 
-            $implements = [];
+            $implementsList = [];
             foreach ($class->getInterfaces() as $parent) {
                 $parentFqsen = $parent instanceof InterfaceDescriptor
                     ? (string) $parent->getFullyQualifiedStructuralElementName()
                     : (string) $parent;
 
-                $implements[] = addslashes($parentFqsen);
+                $implementsList[] = addslashes($parentFqsen);
             }
 
-            if ($implements !== []) {
-                $implements = ' implements ' . implode(',', $implements);
+            if ($implementsList !== []) {
+                $implements = ' implements ' . implode(',', $implementsList);
             } else {
                 $implements = '';
             }
@@ -120,17 +120,17 @@ PUML;
         foreach ($namespace->getInterfaces() as $interface) {
             $interfaceName = addslashes((string) $interface->getFullyQualifiedStructuralElementName());
 
-            $implements = [];
+            $implementsList = [];
             foreach ($interface->getParent() as $parent) {
                 $parentFqsen = $parent instanceof InterfaceDescriptor
                     ? (string) $parent->getFullyQualifiedStructuralElementName()
                     : (string) $parent;
 
-                $implements[] = addslashes($parentFqsen);
+                $implementsList[] = addslashes($parentFqsen);
             }
 
-            if ($implements !== []) {
-                $implements = ' extends ' . implode(',', $implements);
+            if ($implementsList !== []) {
+                $implements = ' extends ' . implode(',', $implementsList);
             } else {
                 $implements = '';
             }

@@ -49,7 +49,7 @@ class ExampleAssembler extends AssemblerAbstract
     {
         Assert::isInstanceOf($data, Example::class);
         $descriptor = new ExampleDescriptor($data->getName());
-        $descriptor->setFilePath((string) $data->getFilePath());
+        $descriptor->setFilePath($data->getFilePath());
         $descriptor->setStartingLine($data->getStartingLine());
         $descriptor->setLineCount($data->getLineCount());
         $descriptor->setDescription((string) $data->getDescription());

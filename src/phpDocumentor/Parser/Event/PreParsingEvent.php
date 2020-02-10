@@ -21,7 +21,7 @@ use phpDocumentor\Event\EventAbstract;
 final class PreParsingEvent extends EventAbstract
 {
     /** @var int */
-    protected $fileCount;
+    private $fileCount;
 
     /**
      * Creates a new instance of a derived object and return that.

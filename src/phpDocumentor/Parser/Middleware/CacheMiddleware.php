@@ -65,6 +65,6 @@ final class CacheMiddleware implements Middleware
             }
         );
 
-        return unserialize(base64_decode($cacheResponse));
+        return unserialize(base64_decode($cacheResponse), ['allowed_classes' => File::class]);
     }
 }

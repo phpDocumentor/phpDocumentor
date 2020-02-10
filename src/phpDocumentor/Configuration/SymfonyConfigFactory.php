@@ -30,7 +30,7 @@ class SymfonyConfigFactory
     private const DEFAULT_CONFIG_VERSION = '2';
 
     /** @var ConfigurationInterface[] $configurationDefinitions */
-    private $configurationDefinitions = [];
+    private $configurationDefinitions;
 
     /**
      * @param ConfigurationInterface[] $definitions
@@ -45,7 +45,7 @@ class SymfonyConfigFactory
      */
     public function createFromFile(string $filename) : array
     {
-        $values = XmlUtils::loadFile($filename, null);
+        $values = XmlUtils::loadFile($filename);
         $values = XmlUtils::convertDomElementToArray($values->documentElement);
 
         return $this->generateConfiguration($values);

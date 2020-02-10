@@ -21,7 +21,7 @@ use phpDocumentor\Event\EventAbstract;
  */
 final class PostTransformEvent extends EventAbstract
 {
-    /** @var ProjectDescriptor */
+    /** @var ProjectDescriptor|null */
     private $project;
 
     /**

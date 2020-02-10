@@ -22,7 +22,7 @@ use phpDocumentor\Reflection\Fqsen;
  */
 final class UsesDescriptor extends TagDescriptor
 {
-    /** @var Fqsen|Descriptor the FQSEN where the uses tag refers to */
+    /** @var Fqsen|Descriptor|null the FQSEN where the uses tag refers to */
     private $reference;
 
     /**

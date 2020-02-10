@@ -33,7 +33,7 @@ use function sprintf;
     private $middlewares = [];
 
     /** @var string[] */
-    private $defaultFiles = [];
+    private $defaultFiles;
 
     /** @var SymfonyConfigFactory */
     private $symfonyConfigFactory;

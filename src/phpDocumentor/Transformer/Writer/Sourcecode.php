@@ -16,9 +16,7 @@ namespace phpDocumentor\Transformer\Writer;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Transformer\Transformation;
-use function count;
 use function dirname;
-use function explode;
 use function file_exists;
 use function file_put_contents;
 use function htmlentities;
@@ -49,7 +47,7 @@ class Sourcecode extends WriterAbstract
             $filename = $file->getPath();
             $source   = $file->getSource();
 
-            $root = str_repeat('../', count(explode(DIRECTORY_SEPARATOR, $filename)));
+            $root = str_repeat('../', substr_count($filename, DIRECTORY_SEPARATOR) + 1);
             $path = $artifact . DIRECTORY_SEPARATOR . $filename;
             if (!file_exists(dirname($path))) {
                 mkdir(dirname($path), 0755, true);

@@ -113,7 +113,7 @@ class AssemblerFactory
     {
         /** @var AssemblerMatcher $candidate */
         foreach (array_merge($this->assemblers, $this->fallbackAssemblers) as $candidate) {
-            if ($candidate->match($criteria) === true) {
+            if ($candidate->match($criteria)) {
                 return $candidate->getAssembler();
             }
         }
@@ -123,7 +123,7 @@ class AssemblerFactory
 
     public static function createDefault(ExampleFinder $exampleFinder) : self
     {
-        $factory = new AssemblerFactory();
+        $factory = new self();
         $argumentAssembler = new ArgumentAssembler();
 
         $factory->register(Matcher::forType(File::class), new FileAssembler());
