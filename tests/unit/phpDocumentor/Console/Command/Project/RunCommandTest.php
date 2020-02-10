@@ -18,6 +18,7 @@ use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Console\Application;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
+use phpDocumentor\GithubSemVerReleaseChecker;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\StringInput;
@@ -49,7 +50,11 @@ class RunCommandTest extends MockeryTestCase
             )
             ->once();
 
-        $command = new RunCommand(m::mock(ProjectDescriptorBuilder::class), $pipeline);
+        $command = new RunCommand(
+            m::mock(ProjectDescriptorBuilder::class),
+            $pipeline,
+            $this->prophesize(GithubSemVerReleaseChecker::class)->reveal()
+        );
         $application = m::mock(Application::class);
         $application->shouldReceive('getVersion')->andReturn('3.0');
         $application->shouldReceive('getHelperSet')->andReturn(new HelperSet());
@@ -65,7 +70,11 @@ class RunCommandTest extends MockeryTestCase
     public function testCommandIsConfiguredWithTheRightOptions() : void
     {
         $pipeline = m::mock(PipelineInterface::class);
-        $command = new RunCommand(m::mock(ProjectDescriptorBuilder::class), $pipeline);
+        $command = new RunCommand(
+            m::mock(ProjectDescriptorBuilder::class),
+            $pipeline,
+            $this->prophesize(GithubSemVerReleaseChecker::class)->reveal()
+        );
         $options = $command->getDefinition()->getOptions();
         $this->assertEquals(
             [

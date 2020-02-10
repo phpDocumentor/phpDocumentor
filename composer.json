@@ -22,6 +22,7 @@
     },
     "require": {
         "php": ">=7.2.5",
+        "ext-curl": "*",
         "ext-ctype": "*",
         "ext-dom": "*",
         "ext-iconv": "*",
@@ -29,6 +30,7 @@
         "ext-libxml": "*",
         "ext-simplexml": "*",
         "ext-zlib": "*",
+        "composer/semver": "^1.5",
         "doctrine/event-manager": "^1.1",
         "doctrine/rst-parser": "dev-master@dev",
         "erusev/parsedown": "~1.0",

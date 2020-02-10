@@ -57,7 +57,7 @@ services:
         public: false
         bind:
           $defaultTemplateName: 'default'
-          $globalTemplatesPath: "@=service('phpDocumentor\\\\Application').templateDirectory()"
+          $globalTemplatesPath: "@=service('phpDocumentor\\\\Transformer\\\\Transformer').templateDirectory()"
           $servicesWithCustomSettings: !tagged_iterator app.with_custom_settings
     _instanceof:
       # Tag any service that implements WithCustomSettings so that we can auto-register them
@@ -105,8 +105,6 @@ services:
     Twig\Environment:
       arguments:
         $loader: '@Twig\Loader\FilesystemLoader'
-
-    phpDocumentor\Application: ~
 
     phpDocumentor\Console\Command\Project\RunCommand:
         arguments:
@@ -231,6 +229,8 @@ services:
     ###################################################################################
     ## Autoloading definitions for external services ##################################
     ###################################################################################
+
+    Composer\Semver\VersionParser: ~
 
     phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper:
         arguments:

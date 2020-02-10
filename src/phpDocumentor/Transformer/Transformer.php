@@ -31,6 +31,7 @@ use phpDocumentor\Transformer\Writer\WriterAbstract;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use RuntimeException;
+use function file_exists;
 use function in_array;
 use function sprintf;
 
@@ -88,6 +89,22 @@ class Transformer implements CompilerPassInterface
         $this->writers = $writerCollection;
         $this->logger = $logger;
         $this->flySystemFactory = $flySystemFactory;
+    }
+
+    public static function templateDirectory() : string
+    {
+        // @codeCoverageIgnoreStart
+        $templateDir = __DIR__ . '/../../../data/templates';
+
+        // when installed using composer the templates are in a different folder
+        $composerTemplatePath = __DIR__ . '/../../../../templates';
+        if (file_exists($composerTemplatePath)) {
+            $templateDir = $composerTemplatePath;
+        }
+
+        return $templateDir;
+
+        // @codeCoverageIgnoreEnd
     }
 
     public function getDescription() : string

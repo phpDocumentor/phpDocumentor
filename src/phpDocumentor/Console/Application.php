@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Console;
 
 use Jean85\PrettyVersions;
+use Jean85\Version;
 use OutOfBoundsException;
 use PackageVersions\Versions;
 use Symfony\Bundle\FrameworkBundle\Console\Application as BaseApplication;
@@ -22,10 +23,8 @@ use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\HttpKernel\KernelInterface;
-use function file_get_contents;
 use function ltrim;
 use function sprintf;
-use function trim;
 
 class Application extends BaseApplication
 {
@@ -37,6 +36,11 @@ class Application extends BaseApplication
 
         $this->setName('phpDocumentor');
         $this->setVersion($this->detectVersion());
+    }
+
+    public static function VERSION() : Version
+    {
+        return PrettyVersions::getVersion(Versions::ROOT_PACKAGE_NAME);
     }
 
     protected function getCommandName(InputInterface $input) : ?string
@@ -92,12 +96,11 @@ class Application extends BaseApplication
 
         // prevent replacing the version by the PEAR building
         if (sprintf('%s%s%s', '@', 'package_version', '@') === self::VERSION) {
-            $version = trim(file_get_contents(__DIR__ . '/../../../VERSION'));
             // @codeCoverageIgnoreStart
             try {
-                $version = PrettyVersions::getVersion(Versions::ROOT_PACKAGE_NAME)->getPrettyVersion();
-                $version = sprintf('v%s', ltrim($version, 'v'));
+                $version = sprintf('v%s', ltrim(self::VERSION()->getPrettyVersion(), 'v'));
             } catch (OutOfBoundsException $e) {
+                $version = 'Unknown';
             }
 
             // @codeCoverageIgnoreEnd

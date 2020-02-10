@@ -13,8 +13,11 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Console;
 
+use Jean85\PrettyVersions;
+use Jean85\Version;
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
+use PackageVersions\Versions;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -88,6 +91,17 @@ class ApplicationTest extends MockeryTestCase
 
         $this->assertTrue($definition->hasOption('config'));
         $this->assertTrue($definition->hasOption('log'));
+    }
+
+    /**
+     * @covers ::VERSION
+     */
+    public function testItReturnsTheVersionNumberFromComposer() : void
+    {
+        $result = Application::VERSION();
+
+        $this->assertInstanceOf(Version::class, $result);
+        $this->assertEquals(PrettyVersions::getVersion(Versions::ROOT_PACKAGE_NAME), $result);
     }
 
     /**

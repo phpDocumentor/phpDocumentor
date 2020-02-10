@@ -3,7 +3,6 @@
     "output": "build/phpDocumentor.phar",
     "files": [
         "config/bundles.php",
-        "VERSION",
         "config/secrets/prod/.gitkeep",
         "composer.json",
         "symfony.lock",

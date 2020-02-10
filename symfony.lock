@@ -1,4 +1,7 @@
 {
+    "composer/semver": {
+        "version": "1.5.1"
+    },
     "doctrine/event-manager": {
         "version": "1.1.0"
     },

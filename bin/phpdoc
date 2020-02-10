@@ -1,16 +1,34 @@
 #!/usr/bin/env php
 <?php
 
-use phpDocumentor\AutoloaderLocator;
-use phpDocumentor\Kernel;
 use Doctrine\Common\Annotations\AnnotationRegistry;
+use phpDocumentor\AutoloaderLocator;
 use phpDocumentor\Console\Application;
+use phpDocumentor\Kernel;
 use Symfony\Bundle\FrameworkBundle\Console\Application as SymfonyApplication;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Debug\Debug;
 use Symfony\Component\Dotenv\Dotenv;
 
 set_time_limit(0);
+ini_set('memory_limit', '-1');
+
+// This is done to prevent any warnings being outputted in relation to using date/time functions.
+if (ini_get('date.timezone') === false) {
+    date_default_timezone_set('UTC');
+}
+
+if (extension_loaded('Zend OPcache')
+    && ini_get('opcache.enable')
+    && ini_get('opcache.enable_cli')
+    && ini_get('opcache.save_comments') === '0'
+) {
+    throw new RuntimeException('Please enable opcache.save_comments in php.ini.');
+}
+
+if (extension_loaded('Zend Optimizer+') && ini_get('zend_optimizerplus.save_comments') === '0') {
+    throw new RuntimeException('Please enable zend_optimizerplus.save_comments in php.ini.');
+}
 
 require __DIR__ . '/../src/phpDocumentor/AutoloaderLocator.php';
 $loader = AutoloaderLocator::autoload();
@@ -21,15 +39,18 @@ if (!class_exists(SymfonyApplication::class)) {
 
 if (!isset($_SERVER['PHPDOC_ENV']) && !Kernel::isPhar()) {
     if (!class_exists(Dotenv::class)) {
-        throw new RuntimeException('APP_ENV environment variable is not defined. You need to define environment variables for configuration or add "symfony/dotenv" as a Composer dependency to load variables from a .env file.');
+        throw new RuntimeException(
+            'APP_ENV environment variable is not defined. You need to define environment variables for configuration or add "symfony/dotenv" as a Composer dependency to load variables from a .env file.'
+        );
     }
-    (new Dotenv())->load(__DIR__.'/../.env');
+    (new Dotenv())->load(__DIR__ . '/../.env');
 }
 
 $input = new ArgvInput();
 $defaultEnv = 'prod';
 $env = $input->getParameterOption(['--env', '-e'], $_SERVER['PHPDOC_ENV'] ?? $defaultEnv);
-$debug = ($_SERVER['PHPDOC_DEBUG'] ?? ('prod' !== $env && 'phar' !== $env)) && !$input->hasParameterOption(['--no-debug', '']);
+$debug = ($_SERVER['PHPDOC_DEBUG'] ??
+        ('prod' !== $env && 'phar' !== $env)) && !$input->hasParameterOption(['--no-debug', '']);
 
 if ($debug) {
     umask(0000);

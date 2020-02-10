@@ -14,8 +14,10 @@ declare(strict_types=1);
 namespace phpDocumentor\Console\Command\Project;
 
 use League\Pipeline\PipelineInterface;
+use phpDocumentor\Console\Application;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Event\Dispatcher;
+use phpDocumentor\GithubSemVerReleaseChecker;
 use phpDocumentor\Parser\Event\PreFileEvent;
 use phpDocumentor\Parser\Event\PreParsingEvent;
 use phpDocumentor\Transformer\Event\PostTransformationEvent;
@@ -29,6 +31,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\Component\Stopwatch\StopwatchEvent;
+use Throwable;
 use function count;
 use function file_put_contents;
 use function floor;
@@ -67,14 +70,19 @@ class RunCommand extends Command
     /** @var ProgressBar */
     private $transformerProgressBar;
 
+    /** @var GithubSemVerReleaseChecker */
+    private $releaseChecker;
+
     public function __construct(
         ProjectDescriptorBuilder $projectDescriptorBuilder,
-        PipelineInterface $pipeline
+        PipelineInterface $pipeline,
+        GithubSemVerReleaseChecker $releaseChecker
     ) {
         parent::__construct('project:run');
 
         $this->projectDescriptorBuilder = $projectDescriptorBuilder;
         $this->pipeline = $pipeline;
+        $this->releaseChecker = $releaseChecker;
     }
 
     /**
@@ -268,6 +276,13 @@ HELP
 
         $output->writeln('phpDocumentor ' . $this->getApplication()->getVersion());
         $output->writeln('');
+
+        try {
+            $this->releaseChecker->check(Application::VERSION()->getShortVersion());
+        } catch (Throwable $exception) {
+            $output->writeln(sprintf('<error>%s</error>', $exception->getMessage()));
+            $output->writeln('');
+        }
 
         if ($input->getOption('list-settings')) {
             return ($this->getApplication()->find('settings:list'))
