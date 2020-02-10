@@ -55,7 +55,7 @@ final class Dsn
     private $uri;
 
     /** @var string[] */
-    private $parameters = [];
+    private $parameters;
 
     /**
      * Initializes the Dsn
@@ -251,8 +251,6 @@ final class Dsn
         $result = [];
         parse_str($part, $result);
 
-        foreach ($result as $key => $value) {
-            yield $key => $value;
-        }
+        yield from $result;
     }
 }

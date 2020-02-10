@@ -37,7 +37,7 @@ final class ProvideTemplateOverridePathMiddleware
 
     public function normalizePath(?Uri $uri, Path $path) : Path
     {
-        if (!$uri instanceof Uri) {
+        if ($uri === null) {
             return $path;
         }
 

@@ -48,8 +48,9 @@ class InterfaceAssembler extends AssemblerAbstract
         $this->addConstants($data->getConstants(), $interfaceDescriptor);
         $this->addMethods($data->getMethods(), $interfaceDescriptor);
 
+        $interfaceParent = $interfaceDescriptor->getParent();
         foreach ($data->getParents() as $interfaceClassName) {
-            $interfaceDescriptor->getParent()->set((string) $interfaceClassName, $interfaceClassName);
+            $interfaceParent->set((string) $interfaceClassName, $interfaceClassName);
         }
 
         return $interfaceDescriptor;

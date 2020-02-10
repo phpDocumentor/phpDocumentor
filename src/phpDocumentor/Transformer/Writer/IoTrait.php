@@ -17,7 +17,6 @@ use League\Flysystem\FileNotFoundException;
 use League\Uri\UriString;
 use phpDocumentor\Transformer\Transformation;
 use function ltrim;
-use function strlen;
 use function strpos;
 use function substr;
 
@@ -101,8 +100,8 @@ trait IoTrait
 
     private function isGlobalTemplateReference(string $path) : bool
     {
-        return substr($path, 0, strlen('templates/')) === 'templates/'
-            || substr($path, 0, strlen('templates://')) === 'templates://';
+        return strpos($path, 'templates/') === 0
+            || strpos($path, 'templates://') === 0;
     }
 
     private function normalizeSourcePath(string $path) : string

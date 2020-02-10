@@ -54,8 +54,9 @@ class ClassAssembler extends AssemblerAbstract
         $classDescriptor->setFinal($data->isFinal());
         $classDescriptor->setNamespace(substr((string) $data->getFqsen(), 0, -strlen($data->getName()) - 1));
 
+        $interfaces = $classDescriptor->getInterfaces();
         foreach ($data->getInterfaces() as $interfaceClassName) {
-            $classDescriptor->getInterfaces()->set((string) $interfaceClassName, $interfaceClassName);
+            $interfaces->set((string) $interfaceClassName, $interfaceClassName);
         }
 
         $this->assembleDocBlock($data->getDocBlock(), $classDescriptor);

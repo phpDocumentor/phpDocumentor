@@ -209,7 +209,7 @@ final class GraphVizClassDiagram implements Generator
     /**
      * Builds a tree of namespace subgraphs with their classes associated.
      */
-    protected function buildNamespaceTree(GraphVizGraph $graph, NamespaceInterface $namespace) : void
+    private function buildNamespaceTree(GraphVizGraph $graph, NamespaceInterface $namespace) : void
     {
         $fullNamespaceName = (string) $namespace->getFullyQualifiedStructuralElementName();
         if ($fullNamespaceName === '\\') {

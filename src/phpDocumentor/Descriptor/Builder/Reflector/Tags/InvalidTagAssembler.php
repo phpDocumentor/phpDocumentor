@@ -27,7 +27,7 @@ final class InvalidTagAssembler extends AssemblerAbstract
                 sprintf(
                     'Tag "%s" with body "%s" has error %s',
                     $data->getName(),
-                    $data->render(null),
+                    $data->render(),
                     $data->getException() === null ? '' : $data->getException()->getMessage()
                 ),
                 null

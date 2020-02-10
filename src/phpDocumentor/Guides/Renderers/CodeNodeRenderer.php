@@ -105,7 +105,7 @@ class CodeNodeRenderer implements NodeRenderer
             ['text']
         );
 
-        return in_array($lang, $supportedLanguages);
+        return in_array($lang, $supportedLanguages, true);
     }
 
     private function getLines(string $code) : array
@@ -127,7 +127,7 @@ class CodeNodeRenderer implements NodeRenderer
 
     private function configureHighlighter()
     {
-        if (false === self::$isHighlighterConfigured) {
+        if (!self::$isHighlighterConfigured) {
             Highlighter::registerLanguage('php', $this->globalTemplatesPath . '/guides/highlight.php/php.json', true);
             Highlighter::registerLanguage('twig', $this->globalTemplatesPath . '/guides/highlight.php/twig.json', true);
         }

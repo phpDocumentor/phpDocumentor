@@ -58,7 +58,7 @@ class Parser
     private $encoding = 'utf-8';
 
     /** @var Stopwatch $stopwatch The profiling component that measures time and memory usage over time */
-    private $stopwatch = null;
+    private $stopwatch;
 
     /** @var ProjectFactory */
     private $projectFactory;

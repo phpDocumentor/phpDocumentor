@@ -18,8 +18,8 @@ use phpDocumentor\Transformer\Writer\WriterAbstract;
 
 final class WriterInitializationEvent extends EventAbstract
 {
-    /** @var WriterAbstract */
-    protected $writer;
+    /** @var WriterAbstract|null */
+    private $writer;
 
     /**
      * Creates a new instance of a derived object and return that.

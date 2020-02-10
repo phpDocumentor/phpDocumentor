@@ -54,7 +54,7 @@ class Linker implements CompilerPassInterface
     public const COMPILER_PRIORITY = 10000;
 
     /** @var string[][] */
-    private $substitutions = [];
+    private $substitutions;
 
     /** @var string[] Prevent cycles by tracking which objects have been analyzed */
     private $processedObjects = [];

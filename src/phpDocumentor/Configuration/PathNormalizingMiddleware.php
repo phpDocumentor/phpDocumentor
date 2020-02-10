@@ -136,7 +136,7 @@ final class PathNormalizingMiddleware
             return $cachePath;
         }
 
-        if (!$uri instanceof Uri) {
+        if ($uri === null) {
             return $cachePath;
         }
 

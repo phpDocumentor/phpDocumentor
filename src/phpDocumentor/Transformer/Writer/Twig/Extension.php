@@ -53,10 +53,10 @@ use function strtolower;
 final class Extension extends AbstractExtension implements ExtensionInterface, GlobalsInterface
 {
     /** @var ProjectDescriptor */
-    protected $data;
+    private $data;
 
     /** @var LinkRenderer */
-    protected $routeRenderer;
+    private $routeRenderer;
 
     /**
      * Registers the structure and transformation with this extension.

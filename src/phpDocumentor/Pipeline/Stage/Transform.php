@@ -100,7 +100,8 @@ final class Transform
      */
     private function connectOutputToEvents() : void
     {
-        Dispatcher::getInstance()->addListener(
+        $dispatcherInstance = Dispatcher::getInstance();
+        $dispatcherInstance->addListener(
             Transformer::EVENT_PRE_TRANSFORM,
             function (PreTransformEvent $event) : void {
                 /** @var Transformer $transformer */
@@ -110,7 +111,7 @@ final class Transform
                 $this->logger->info(sprintf("\nApplying %d transformations", count($transformations)));
             }
         );
-        Dispatcher::getInstance()->addListener(
+        $dispatcherInstance->addListener(
             Transformer::EVENT_PRE_INITIALIZATION,
             function (WriterInitializationEvent $event) : void {
                 if (!($event->getWriter() instanceof WriterAbstract)) {
@@ -120,7 +121,7 @@ final class Transform
                 $this->logger->info('  Initialize writer "' . get_class($event->getWriter()) . '"');
             }
         );
-        Dispatcher::getInstance()->addListener(
+        $dispatcherInstance->addListener(
             Transformer::EVENT_PRE_TRANSFORMATION,
             function (PreTransformationEvent $event) : void {
                 $this->logger->info(

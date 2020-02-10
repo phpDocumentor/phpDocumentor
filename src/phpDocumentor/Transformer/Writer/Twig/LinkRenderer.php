@@ -37,7 +37,9 @@ use function is_iterable;
 use function is_string;
 use function ltrim;
 use function sprintf;
+use function strpos;
 use function substr;
+use function substr_count;
 
 /**
  * Renders an HTML anchor pointing to the location of the provided element.
@@ -324,7 +326,7 @@ final class LinkRenderer
      */
     private function getPathPrefixBasedOnDepth() : string
     {
-        $directoryDepth = count(explode('/', $this->getDestination()));
+        $directoryDepth = substr_count($this->getDestination(), '/') + 1;
 
         return $directoryDepth > 1
             ? implode('/', array_fill(0, $directoryDepth - 1, '..')) . '/'
@@ -333,7 +335,7 @@ final class LinkRenderer
 
     private function isReferenceToFqsen(string $path) : bool
     {
-        return $path[0] === '@';
+        return strpos($path, '@') === 0;
     }
 
     private function withoutLeadingSlash(string $path) : string

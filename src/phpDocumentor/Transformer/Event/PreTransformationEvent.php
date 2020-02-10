@@ -22,7 +22,7 @@ use Symfony\Contracts\EventDispatcher\Event;
 final class PreTransformationEvent extends Event
 {
     /** @var Transformation */
-    protected $transformation;
+    private $transformation;
 
     /** @var object */
     private $subject;

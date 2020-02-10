@@ -19,10 +19,10 @@ namespace phpDocumentor\Transformer\Template;
 final class Parameter
 {
     /** @var string */
-    private $key = '';
+    private $key;
 
     /** @var string */
-    private $value = '';
+    private $value;
 
     public function __construct(string $key, string $value)
     {

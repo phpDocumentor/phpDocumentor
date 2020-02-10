@@ -37,7 +37,7 @@ final class ErrorHandlingMiddleware implements Middleware
         assert($command instanceof CreateCommand);
 
         $filename = $command->getFile()->path();
-        $this->log('Starting to parse file: ' . $filename, LogLevel::INFO);
+        $this->log('Starting to parse file: ' . $filename);
 
         try {
             return $next($command);

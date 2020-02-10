@@ -25,7 +25,7 @@ use Doctrine\RST\Templates\TemplateRenderer;
 
 final class HtmlFormat implements Format
 {
-    protected $templateRenderer;
+    private $templateRenderer;
     private $htmlFormat;
     private $globalTemplatesPath;
     private $subFolder;

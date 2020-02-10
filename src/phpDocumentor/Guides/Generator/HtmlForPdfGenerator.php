@@ -111,13 +111,13 @@ class HtmlForPdfGenerator
         return preg_replace_callback(
             '/href="([^"]+?)"/',
             function ($matches) use ($dir) {
-                if ('http' === substr($matches[1], 0, 4) || '#' === substr($matches[1], 0, 1)) {
+                if (strpos($matches[1], 'http') === 0 || strpos($matches[1], '#') === 0) {
                     return $matches[0];
                 }
 
                 $path = [];
                 foreach (explode('/', $dir . '/' . str_replace(['.html', '#'], ['', '-'], $matches[1])) as $part) {
-                    if ('..' == $part) {
+                    if ('..' === $part) {
                         array_pop($path);
                     } else {
                         $path[] = $part;

@@ -56,7 +56,7 @@ class DescriptorRepository
      */
     public function findAlias(string $fqsen, ?DescriptorAbstract $container = null)
     {
-        if (!$container instanceof DescriptorAbstract) {
+        if ($container === null) {
             return $this->fetchElementByFqsen($fqsen);
         }
 
