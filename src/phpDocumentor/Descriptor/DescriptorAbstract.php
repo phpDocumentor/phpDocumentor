@@ -38,7 +38,7 @@ abstract class DescriptorAbstract implements Filterable
     /** @var NamespaceDescriptor|string $namespace The namespace for this element */
     protected $namespace = '';
 
-    /** @var PackageDescriptor $package The package with which this element is associated */
+    /** @var PackageDescriptor|string $package The package with which this element is associated */
     protected $package;
 
     /** @var string $summary A summary describing the function of this element in short. */
@@ -364,8 +364,7 @@ abstract class DescriptorAbstract implements Filterable
      */
     public function getErrors() : Collection
     {
-        /** @var Collection<Error> $errors */
-        $errors = (new Collection())->merge($this->errors);
+        $errors = $this->errors;
         foreach ($this->tags as $tags) {
             foreach ($tags as $tag) {
                 $errors = $errors->merge($tag->getErrors());

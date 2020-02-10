@@ -57,7 +57,7 @@ final class PackageTreeBuilder implements CompilerPassInterface
 
     public function execute(ProjectDescriptor $project) : void
     {
-        $packages = new Collection();
+        $packages = Collection::fromClassString(PackageDescriptor::class);
         $packages['\\'] = $project->getPackage();
 
         /** @var FileDescriptor $file */

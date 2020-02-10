@@ -18,6 +18,7 @@ use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock\Tag;
 use phpDocumentor\Reflection\Element;
 use phpDocumentor\Reflection\Php\Argument;
+use phpDocumentor\Reflection\Php\File;
 
 /**
  * Interface for Assembler classes that transform data to specific Descriptor types.
@@ -28,7 +29,7 @@ interface AssemblerInterface
     /**
      * Creates a Descriptor from the provided data.
      *
-     * @param Element|Tag|Argument $data
+     * @param Element|Tag|Argument|File $data
      *
      * @return Descriptor
      */

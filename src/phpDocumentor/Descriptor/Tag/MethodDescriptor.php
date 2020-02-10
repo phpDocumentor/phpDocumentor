@@ -35,7 +35,7 @@ class MethodDescriptor extends TagDescriptor
     {
         parent::__construct($name);
 
-        $this->arguments = new Collection();
+        $this->arguments = Collection::fromClassString(ArgumentDescriptor::class);
     }
 
     public function setMethodName(string $methodName) : void

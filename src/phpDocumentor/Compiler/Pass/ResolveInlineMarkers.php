@@ -43,7 +43,6 @@ final class ResolveInlineMarkers implements CompilerPassInterface
 
         /** @var FileDescriptor $file */
         foreach ($project->getFiles() as $file) {
-            $markerData = [];
             $matches     = [];
             $source = $file->getSource() ?: '';
 

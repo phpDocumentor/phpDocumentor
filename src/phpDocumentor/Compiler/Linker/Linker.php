@@ -13,9 +13,10 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Compiler\Linker;
 
-use ArrayAccess;
 use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\ClassDescriptor;
+use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\InterfaceDescriptor;
@@ -113,14 +114,15 @@ class Linker implements CompilerPassInterface
      *     the field's contents. Pass these contents to a new call of substitute and use a setter to replace the field's
      *     contents if anything other than null is returned.
      *
+     * The Container is a descriptor that acts as container for all elements underneath or null if there is no current
+     * container.
+     *
      * This method will return null if no substitution was possible and all of the above should not update the parent
      * item when null is passed.
      *
-     * @param string|Fqsen|object|array<mixed> $item
-     * @param DescriptorAbstract|null          $container A descriptor that acts as container for all elements
-     *                                                    underneath or null if there is no current container.
+     * @param string|Fqsen|Type|Collection<mixed>|array<mixed>|Descriptor $item
      *
-     * @return string|DescriptorAbstract|array<mixed>|null
+     * @return string|DescriptorAbstract|Collection<string|DescriptorAbstract>|array<string|DescriptorAbstract>|null
      */
     public function substitute($item, ?DescriptorAbstract $container = null)
     {
@@ -137,7 +139,7 @@ class Linker implements CompilerPassInterface
         }
 
         if (is_iterable($item)) {
-            Assert::true(is_array($item) || $item instanceof ArrayAccess);
+            Assert::true(is_array($item) || $item instanceof Collection);
 
             return $this->substituteChildrenOfCollection($item, $container);
         }
@@ -148,18 +150,16 @@ class Linker implements CompilerPassInterface
 
         $this->substituteMembersOfObject($item, $container);
 
-        //phpcs:disable Generic.Files.LineLength.TooLong
         return null;
     }
 
     /**
-     * @param array<string|DescriptorAbstract|null>|(ArrayAccess<array-key, string|DescriptorAbstract>&iterable<array-key, string|DescriptorAbstract>) $collection
+     * @param array<string|DescriptorAbstract>|Collection<string|DescriptorAbstract> $collection
      *
-     * @return array<string|DescriptorAbstract|null>|(ArrayAccess<array-key, string|DescriptorAbstract>&iterable<array-key, string|DescriptorAbstract>)|null
+     * @return array<string|DescriptorAbstract>|Collection<string|DescriptorAbstract>|null
      */
     private function substituteChildrenOfCollection(iterable $collection, ?DescriptorAbstract $container) : ?iterable
     {
-        //phpcs:enable Generic.Files.LineLength.TooLong
         $isModified = false;
         foreach ($collection as $key => $element) {
             $element = $this->substitute($element, $container);

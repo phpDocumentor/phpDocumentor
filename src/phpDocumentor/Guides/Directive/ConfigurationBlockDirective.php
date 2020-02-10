@@ -15,8 +15,11 @@ namespace phpDocumentor\Guides\Directive;
 
 use Doctrine\RST\Directives\SubDirective;
 use Doctrine\RST\Nodes\CodeNode;
+use Doctrine\RST\Nodes\DocumentNode;
 use Doctrine\RST\Nodes\Node;
 use Doctrine\RST\Parser;
+use Webmozart\Assert\Assert;
+
 use function strtoupper;
 
 class ConfigurationBlockDirective extends SubDirective
@@ -28,6 +31,8 @@ class ConfigurationBlockDirective extends SubDirective
 
     public function processSub(Parser $parser, ?Node $document, string $variable, string $data, array $options) : ?Node
     {
+        Assert::isInstanceOf($document, DocumentNode::class);
+
         $blocks = [];
         foreach ($document->getNodes() as $node) {
             if (!$node instanceof CodeNode) {

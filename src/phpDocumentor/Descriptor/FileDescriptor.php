@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Descriptor\Validation\Error;
+use phpDocumentor\Reflection\Fqsen;
 use function method_exists;
 
 /**
@@ -30,7 +31,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
     /** @var string|null $source */
     protected $source = null;
 
-    /** @var Collection<NamespaceDescriptor> $namespaceAliases */
+    /** @var Collection<NamespaceDescriptor>|Collection<Fqsen> $namespaceAliases */
     protected $namespaceAliases;
 
     /** @var Collection<string> $includes */
@@ -111,7 +112,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
     /**
      * Returns the namespace aliases that have been defined in this file.
      *
-     * @return Collection<NamespaceDescriptor>
+     * @return Collection<NamespaceDescriptor>|Collection<Fqsen>
      */
     public function getNamespaceAliases() : Collection
     {
@@ -121,7 +122,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
     /**
      * Sets the collection of namespace aliases for this file.
      *
-     * @param Collection<NamespaceDescriptor> $namespaceAliases
+     * @param Collection<NamespaceDescriptor>|Collection<Fqsen> $namespaceAliases
      */
     public function setNamespaceAliases(Collection $namespaceAliases) : void
     {
@@ -286,9 +287,15 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
     {
         $errors = $this->getErrors();
 
-        $types = $this->getClasses()->merge($this->getInterfaces())->merge($this->getTraits());
+        $types = Collection::fromClassString(DescriptorAbstract::class)
+            ->merge($this->getClasses())
+            ->merge($this->getInterfaces())
+            ->merge($this->getTraits());
 
-        $elements = $this->getFunctions()->merge($this->getConstants())->merge($types);
+        $elements = Collection::fromClassString(DescriptorAbstract::class)
+            ->merge($this->getFunctions())
+            ->merge($this->getConstants())
+            ->merge($types);
 
         foreach ($elements as $element) {
             $errors = $errors->merge($element->getErrors());
