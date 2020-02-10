@@ -18,6 +18,7 @@ use phpDocumentor\Descriptor\Tag\AuthorDescriptor;
 use phpDocumentor\Descriptor\Validation\Error;
 use phpDocumentor\Reflection\Fqsen;
 use function str_ireplace;
+use function stripos;
 use function strpos;
 use function strtolower;
 use function substr;
@@ -164,7 +165,7 @@ abstract class DescriptorAbstract implements Filterable
      */
     public function getDescription() : string
     {
-        if ($this->description && stripos((string)$this->description, '{@inheritdoc}') === false) {
+        if ($this->description && stripos((string) $this->description, '{@inheritdoc}') === false) {
             return $this->description;
         }
 

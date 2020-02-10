@@ -22,6 +22,7 @@ use function file_put_contents;
 use function htmlentities;
 use function mkdir;
 use function str_repeat;
+use function substr_count;
 use const DIRECTORY_SEPARATOR;
 
 /**

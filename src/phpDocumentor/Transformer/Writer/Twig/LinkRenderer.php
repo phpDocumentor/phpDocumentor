@@ -37,7 +37,9 @@ use function is_iterable;
 use function is_string;
 use function ltrim;
 use function sprintf;
+use function strpos;
 use function substr;
+use function substr_count;
 
 /**
  * Renders an HTML anchor pointing to the location of the provided element.
