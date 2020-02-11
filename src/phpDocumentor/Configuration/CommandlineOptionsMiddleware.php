@@ -115,9 +115,9 @@ final class CommandlineOptionsMiddleware
     }
 
     /**
-     * @param array<string, array<string, array<string, mixed>>> $configuration
+     * @param array<string, array<string, array<string, mixed>|false>> $configuration
      *
-     * @return array<string, array<string, array<string, mixed>>>
+     * @return array<string, array<string, array<string, mixed>|false>>
      */
     private function overwriteCacheFolder(array $configuration) : array
     {
@@ -129,9 +129,9 @@ final class CommandlineOptionsMiddleware
     }
 
     /**
-     * @param array<string, array<string, array<string, mixed>>> $configuration
+     * @param array<string, array<string, array<string, mixed>|false>> $configuration
      *
-     * @return array<string, array<string, array<string, mixed>>>
+     * @return array<string, array<string, array<string, mixed>|false>>
      */
     private function overwriteTitle(array $configuration) : array
     {
@@ -145,9 +145,9 @@ final class CommandlineOptionsMiddleware
     /**
      * Changes the given configuration array to feature the templates from the options.
      *
-     * @param array<string, array<string, array<string, mixed>>> $configuration
+     * @param array<string, array<string, array<string, mixed>|false>> $configuration
      *
-     * @return array<string, array<string, array<string, mixed>>>
+     * @return array<string, array<string, array<string, mixed>|false>>
      */
     private function overwriteTemplates(array $configuration) : array
     {
@@ -394,9 +394,9 @@ final class CommandlineOptionsMiddleware
     }
 
     /**
-     * @param array<string, array<string, array<string, mixed>>> $configuration
+     * @param array<string, array<string, array<string, mixed>|false>> $configuration
      *
-     * @return array<string, array<string, array<string, mixed>>>
+     * @return array<string, array<string, array<string, mixed>|false>>
      */
     private function overwriteSettings(array $configuration) : array
     {

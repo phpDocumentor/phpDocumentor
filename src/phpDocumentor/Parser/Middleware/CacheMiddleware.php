@@ -21,6 +21,7 @@ use Psr\Cache\InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Symfony\Contracts\Cache\CacheInterface;
+use Webmozart\Assert\Assert;
 use function base64_decode;
 use function base64_encode;
 use function md5;
@@ -45,14 +46,14 @@ final class CacheMiddleware implements Middleware
      * Executes this middle ware class.
      * A middle ware class MUST return a File object or call the $next callable.
      *
-     * @param CreateCommand $command
-     *
      * @return File
      *
      * @throws InvalidArgumentException
      */
     public function execute(Command $command, callable $next) : object
     {
+        Assert::isInstanceOf($command, CreateCommand::class);
+
         $itemName = md5($command->getFile()->path());
 
         $cacheResponse = $this->cache->get(
