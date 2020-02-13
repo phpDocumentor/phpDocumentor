@@ -48,7 +48,7 @@ interface PropertyInterface extends ElementInterface, TypeInterface
     /**
      * Returns the types associated with the value(s) for this property.
      */
-    public function getType() : ?Type;
+    public function getType() : Type;
 
     /**
      * Sets whether this property is available from inside or outside its class and/or descendants.

@@ -78,7 +78,7 @@ class ConstantDescriptor extends DescriptorAbstract implements Interfaces\Consta
         return [$this->getType()];
     }
 
-    public function getType() : ?Type
+    public function getType() : Type
     {
         if ($this->types === null) {
             $var = $this->getVar()->get(0);

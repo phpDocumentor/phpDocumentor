@@ -56,7 +56,7 @@ abstract class TypedAbstract extends TagDescriptor
         return array_filter([$this->types]);
     }
 
-    public function getType() : ?Type
+    public function getType() : Type
     {
         return $this->types;
     }

@@ -55,7 +55,7 @@ class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\Argume
         $this->type = $type;
     }
 
-    public function getType() : ?Type
+    public function getType() : Type
     {
         if ($this->type === null && $this->getInheritedElement() !== null) {
             $this->setType($this->getInheritedElement()->getType());
@@ -65,7 +65,7 @@ class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\Argume
     }
 
     /**
-     * @return list<?Type>
+     * @return list<Type>
      */
     public function getTypes() : array
     {
