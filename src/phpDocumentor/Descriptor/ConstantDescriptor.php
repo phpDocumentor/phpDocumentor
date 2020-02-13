@@ -75,7 +75,7 @@ class ConstantDescriptor extends DescriptorAbstract implements Interfaces\Consta
      */
     public function getTypes() : array
     {
-        return [$this->getType()];
+        return array_filter([$this->getType()]);
     }
 
     public function getType() : ?Type

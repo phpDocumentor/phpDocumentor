@@ -65,13 +65,13 @@ class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\Argume
     }
 
     /**
-     * @return list<?Type>
+     * @return list<Type>
      */
     public function getTypes() : array
     {
         trigger_error('Please use getType', E_USER_DEPRECATED);
 
-        return [$this->getType()];
+        return array_filter([$this->getType()]);
     }
 
     public function getInheritedElement() : ?ArgumentDescriptor
