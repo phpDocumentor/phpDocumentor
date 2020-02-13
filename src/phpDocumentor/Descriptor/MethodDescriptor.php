@@ -172,7 +172,7 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
     public function getReturn() : Collection
     {
         /** @var Collection<ReturnDescriptor> $var */
-        $var = $this->getTags()->get('return', new Collection())->filter(ReturnDescriptor::class);
+        $var = $this->getTags()->fetch('return', new Collection())->filter(ReturnDescriptor::class);
         if ($var->count() !== 0) {
             return $var;
         }
@@ -191,7 +191,7 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
     public function getParam() : Collection
     {
         /** @var Collection<ParamDescriptor> $var */
-        $var = $this->getTags()->get('param', new Collection());
+        $var = $this->getTags()->fetch('param', new Collection());
         if ($var instanceof Collection && $var->count() > 0) {
             return $var;
         }
@@ -238,7 +238,7 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
             $parents = $parentClass instanceof ClassDescriptor ? [$parentClass] : $parentClass->getAll();
             foreach ($parents as $parent) {
                 /** @var MethodDescriptor|null $parentMethod */
-                $parentMethod = $parent->getMethods()->get($this->getName());
+                $parentMethod = $parent->getMethods()->fetch($this->getName());
                 if ($parentMethod instanceof self) {
                     $this->inheritedElement = $parentMethod;
 
@@ -256,7 +256,7 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
                 }
 
                 /** @var ?MethodDescriptor $parentMethod */
-                $parentMethod = $interface->getMethods()->get($this->getName());
+                $parentMethod = $interface->getMethods()->fetch($this->getName());
                 if ($parentMethod instanceof self) {
                     $this->inheritedElement = $parentMethod;
 

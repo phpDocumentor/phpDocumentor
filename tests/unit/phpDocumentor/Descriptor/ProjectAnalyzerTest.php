@@ -107,7 +107,7 @@ TEXT;
         m\MockInterface $projectDescriptor,
         array $elements
     ) : void {
-        $projectDescriptor->shouldReceive('getIndexes->get')
+        $projectDescriptor->shouldReceive('getIndexes->fetch')
             ->with('elements', m::type(DescriptorCollection::class))
             ->andReturn(new Collection($elements));
     }

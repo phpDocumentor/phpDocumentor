@@ -125,7 +125,7 @@ class PropertyDescriptor extends DescriptorAbstract implements
     public function getVar() : Collection
     {
         /** @var Collection<VarDescriptor> $var */
-        $var = $this->getTags()->get('var', new Collection());
+        $var = $this->getTags()->fetch('var', new Collection());
         if ($var->count() !== 0) {
             return $var;
         }
@@ -162,7 +162,7 @@ class PropertyDescriptor extends DescriptorAbstract implements
             /** @var ClassDescriptor|InterfaceDescriptor $parentClass */
             $parentClass = $associatedClass->getParent();
 
-            return $parentClass->getProperties()->get($this->getName());
+            return $parentClass->getProperties()->fetch($this->getName());
         }
 
         return null;

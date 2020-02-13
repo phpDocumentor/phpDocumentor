@@ -168,7 +168,7 @@ class ProjectDescriptorBuilder
             $this->getProjectDescriptor()->getFiles()->set($descriptor->getPath(), $descriptor);
         }
 
-        $namespaces = $this->getProjectDescriptor()->getIndexes()->get('namespaces', new Collection());
+        $namespaces = $this->getProjectDescriptor()->getIndexes()->fetch('namespaces', new Collection());
 
         foreach ($project->getNamespaces() as $namespace) {
             $namespaces->set((string) $namespace->getFqsen(), $this->buildDescriptor($namespace));

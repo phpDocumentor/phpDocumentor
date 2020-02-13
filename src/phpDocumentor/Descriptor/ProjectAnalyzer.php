@@ -133,6 +133,6 @@ TEXT;
      */
     protected function findAllElements(ProjectDescriptor $projectDescriptor) : Collection
     {
-        return $projectDescriptor->getIndexes()->get('elements', new Collection());
+        return $projectDescriptor->getIndexes()->fetch('elements', new Collection());
     }
 }

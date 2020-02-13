@@ -47,7 +47,7 @@ final class StripInternalTest extends MockeryTestCase
     {
         $this->builderMock->shouldReceive('getProjectDescriptor->isVisibilityAllowed')->andReturn(false);
         $descriptor = m::mock(DescriptorAbstract::class);
-        $descriptor->shouldReceive('getTags->get')->with('internal')->andReturn(null);
+        $descriptor->shouldReceive('getTags->fetch')->with('internal')->andReturn(null);
 
         $descriptor->shouldReceive('getDescription')->andReturn('without {@internal blabla }}internal tag');
         $descriptor->shouldReceive('setDescription')->with('without internal tag');
@@ -62,7 +62,7 @@ final class StripInternalTest extends MockeryTestCase
     {
         $this->builderMock->shouldReceive('getProjectDescriptor->isVisibilityAllowed')->andReturn(false);
         $descriptor = m::mock(DescriptorAbstract::class);
-        $descriptor->shouldReceive('getTags->get')->with('internal')->andReturn(null);
+        $descriptor->shouldReceive('getTags->fetch')->with('internal')->andReturn(null);
 
         $descriptor->shouldReceive('getDescription')->andReturn('without {@internal bla{bla} }}internal tag');
         $descriptor->shouldReceive('setDescription')->with('without internal tag');
@@ -94,7 +94,7 @@ final class StripInternalTest extends MockeryTestCase
         $descriptor = m::mock(DescriptorAbstract::class);
         $descriptor->shouldReceive('getDescription');
         $descriptor->shouldReceive('setDescription');
-        $descriptor->shouldReceive('getTags->get')->with('internal')->andReturn(true);
+        $descriptor->shouldReceive('getTags->fetch')->with('internal')->andReturn(true);
 
         $this->assertNull($this->fixture->__invoke($descriptor));
     }

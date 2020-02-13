@@ -47,7 +47,7 @@ abstract class AssemblerAbstract extends BaseAssembler
             }
 
             $target->getTags()
-                ->get($tag->getName(), new Collection())
+                ->fetch($tag->getName(), new Collection())
                 ->add($tagDescriptor);
         }
     }

@@ -61,9 +61,9 @@ final class GraphVizClassDiagram implements Generator
 
         $this->buildNamespaceTree($graph, $project->getNamespace());
 
-        $classes = $project->getIndexes()->get('classes', new Collection())->getAll();
-        $interfaces = $project->getIndexes()->get('interfaces', new Collection())->getAll();
-        $traits = $project->getIndexes()->get('traits', new Collection())->getAll();
+        $classes = $project->getIndexes()->fetch('classes', new Collection())->getAll();
+        $interfaces = $project->getIndexes()->fetch('interfaces', new Collection())->getAll();
+        $traits = $project->getIndexes()->fetch('traits', new Collection())->getAll();
 
         /** @var ClassDescriptor[]|InterfaceDescriptor[]|TraitDescriptor[] $containers */
         $containers = array_merge($classes, $interfaces, $traits);

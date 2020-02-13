@@ -241,7 +241,7 @@ class ApiContext extends BaseContext implements Context
     {
         $class = $this->findClassByFqsen($classFqsen);
         /** @var MethodDescriptor $method */
-        $method = $class->getMethods()->get($methodName, null);
+        $method = $class->getMethods()->fetch($methodName, null);
         $methodNames = implode(', ', array_keys($class->getMethods()->getAll()));
 
         $visibilityLevel = $this->getAst()->getSettings()->getVisibility();
@@ -263,7 +263,7 @@ class ApiContext extends BaseContext implements Context
     {
         $class = $this->findClassByFqsen($classFqsen);
         /** @var PropertyDescriptor $property */
-        $property = $class->getProperties()->get($propertyName, null);
+        $property = $class->getProperties()->fetch($propertyName, null);
         Assert::isInstanceOf($property, PropertyDescriptor::class);
         Assert::eq($propertyName, $property->getName());
     }
@@ -346,7 +346,7 @@ class ApiContext extends BaseContext implements Context
     private static function AssertTagCount($element, $tagName, $expectedNumber)
     {
         /** @var Collection $tagCollection */
-        $tagCollection = $element->getTags()->get($tagName, new Collection());
+        $tagCollection = $element->getTags()->fetch($tagName, new Collection());
 
         Assert::eq((int) $expectedNumber, $tagCollection->count());
         if ($expectedNumber > 0) {
@@ -465,7 +465,7 @@ class ApiContext extends BaseContext implements Context
     {
         $class = $this->findClassByFqsen($classFqsen);
         /** @var MethodDescriptor $method */
-        $method = $class->getMethods()->get($methodName, null);
+        $method = $class->getMethods()->fetch($methodName, null);
         Assert::isInstanceOf($method, MethodDescriptor::class);
         Assert::eq($methodName, $method->getName());
 

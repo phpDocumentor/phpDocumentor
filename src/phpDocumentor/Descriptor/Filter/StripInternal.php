@@ -58,7 +58,7 @@ class StripInternal implements FilterInterface
         $value->setDescription(preg_replace('/\{@internal\s(.+?)\}\}/', '', $value->getDescription()));
 
         // if internal elements are not allowed; filter this element
-        if ($value->getTags()->get('internal')) {
+        if ($value->getTags()->fetch('internal')) {
             return null;
         }
 

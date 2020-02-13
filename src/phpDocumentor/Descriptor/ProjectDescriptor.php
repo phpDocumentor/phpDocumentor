@@ -218,7 +218,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
             return null;
         }
 
-        return $this->getIndexes()['elements']->get((string) $fqsen);
+        return $this->getIndexes()['elements']->fetch((string) $fqsen);
     }
 
     private function setPackage(PackageInterface $package) : void

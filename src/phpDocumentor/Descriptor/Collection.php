@@ -18,6 +18,7 @@ use ArrayIterator;
 use Countable;
 use InvalidArgumentException;
 use IteratorAggregate;
+use OutOfRangeException;
 use Webmozart\Assert\Assert;
 use function array_filter;
 use function array_merge;
@@ -73,6 +74,24 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
+     * Retrieves a specific item from the Collection with its index. If index is not found, an exception is thrown
+     *
+     * @param string|int $index
+     *
+     * @return mixed The contents of the element with the given index
+     *
+     * @phpstan-return T
+     */
+    public function get($index)
+    {
+        if (!isset($this->items[$index])) {
+            throw new OutOfRangeException($index . ' offset not found in Collection');
+        }
+
+        return $this->items[$index];
+    }
+
+    /**
      * Retrieves a specific item from the Collection with its index.
      *
      * Please note that this method (intentionally) has the side effect that whenever a key does not exist that it will
@@ -84,11 +103,13 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
      *
      * @return mixed The contents of the element with the given index and the provided default if the key doesn't exist.
      *
-     * @phpstan-param T $valueIfEmpty
+     * @phpstan-param D $valueIfEmpty
      *
-     * @phpstan-return ?T
+     * @phpstan-return T|D
+     *
+     * @template D
      */
-    public function get($index, $valueIfEmpty = null)
+    public function fetch($index, $valueIfEmpty = null)
     {
         if (!$this->offsetExists($index) && $valueIfEmpty !== null) {
             $this->offsetSet($index, $valueIfEmpty);

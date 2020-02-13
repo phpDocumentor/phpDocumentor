@@ -31,7 +31,7 @@ final class UsesTagContext extends BaseContext implements Context
     public function classHasTagUsesReferencingUrl($classFqsen, $reference)
     {
         $class = $this->findClassByFqsen($classFqsen);
-        $usesTags = $class->getTags()->get('uses', []);
+        $usesTags = $class->getTags()->fetch('uses', []);
         $this->hasUsesTagReference($usesTags, $reference);
     }
 
@@ -53,7 +53,7 @@ final class UsesTagContext extends BaseContext implements Context
     {
         $count = 0;
         $class = $this->findClassByFqsen($classFqsen);
-        $usesTags = $class->getTags()->get('uses', []);
+        $usesTags = $class->getTags()->fetch('uses', []);
         /** @var UsesTag $tag */
         foreach ($usesTags as $tag) {
             $r = (string) $tag->getReference();
@@ -75,7 +75,7 @@ final class UsesTagContext extends BaseContext implements Context
     public function functionHasUsesTagReferencing(string $function, string $reference)
     {
         $functionDescriptor = $this->findFunctionByFqsen($function);
-        $this->hasUsesTagReference($functionDescriptor->getTags()->get('uses', []), $reference);
+        $this->hasUsesTagReference($functionDescriptor->getTags()->fetch('uses', []), $reference);
     }
 
     /**

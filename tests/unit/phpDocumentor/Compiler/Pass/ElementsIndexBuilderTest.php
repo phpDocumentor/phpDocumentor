@@ -293,7 +293,7 @@ class ElementsIndexBuilderTest extends MockeryTestCase
         );
 
         // class properties are not indexed separately
-        $this->assertNull($this->project->getIndexes()->get('properties'));
+        $this->assertNull($this->project->getIndexes()->fetch('properties'));
     }
 
     /**
@@ -336,6 +336,6 @@ class ElementsIndexBuilderTest extends MockeryTestCase
         );
 
         // class methods are not indexed separately
-        $this->assertNull($this->project->getIndexes()->get('methods'));
+        $this->assertNull($this->project->getIndexes()->fetch('methods'));
     }
 }

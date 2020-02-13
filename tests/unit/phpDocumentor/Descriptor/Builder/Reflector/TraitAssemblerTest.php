@@ -54,6 +54,6 @@ final class TraitAssemblerTest extends MockeryTestCase
         static::assertEquals('\My\Space', $result->getNamespace());
         static::assertSame($traitFqsen, $result->getFullyQualifiedStructuralElementName());
         static::assertEquals('MyTrait', $result->getName());
-        static::assertInstanceOf(MethodDescriptor::class, $result->getMethods()->get('method', false));
+        static::assertInstanceOf(MethodDescriptor::class, $result->getMethods()->fetch('method', false));
     }
 }

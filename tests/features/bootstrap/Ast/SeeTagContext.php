@@ -32,7 +32,7 @@ final class SeeTagContext extends BaseContext implements Context
     public function classHasTagSeeReferencingUrl($classFqsen, $reference)
     {
         $class = $this->findClassByFqsen($classFqsen);
-        $seeTags = $class->getTags()->get('see', []);
+        $seeTags = $class->getTags()->fetch('see', []);
         $this->hasSeeTagReference($seeTags, $reference);
     }
 
@@ -55,7 +55,7 @@ final class SeeTagContext extends BaseContext implements Context
     {
         $count = 0;
         $class = $this->findClassByFqsen($classFqsen);
-        $seeTags = $class->getTags()->get('see', []);
+        $seeTags = $class->getTags()->fetch('see', []);
         /** @var SeeDescriptor $tag */
         foreach ($seeTags as $tag) {
             $r = (string) $tag->getReference();
@@ -76,7 +76,7 @@ final class SeeTagContext extends BaseContext implements Context
     public function functionHasSeeTagReferencing(string $function, string $reference)
     {
         $functionDescriptor = $this->findFunctionByFqsen($function);
-        $this->hasSeeTagReference($functionDescriptor->getTags()->get('see', []), $reference);
+        $this->hasSeeTagReference($functionDescriptor->getTags()->fetch('see', []), $reference);
     }
 
     /**
