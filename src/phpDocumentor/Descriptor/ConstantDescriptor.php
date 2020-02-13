@@ -18,6 +18,7 @@ use phpDocumentor\Descriptor\Tag\VarDescriptor;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Type;
 use Webmozart\Assert\Assert;
+use function array_filter;
 
 /**
  * Descriptor representing a constant
@@ -75,7 +76,7 @@ class ConstantDescriptor extends DescriptorAbstract implements Interfaces\Consta
      */
     public function getTypes() : array
     {
-        return [$this->getType()];
+        return array_filter([$this->getType()]);
     }
 
     public function getType() : ?Type
