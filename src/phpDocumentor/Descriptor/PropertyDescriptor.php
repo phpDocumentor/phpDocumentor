@@ -96,7 +96,7 @@ class PropertyDescriptor extends DescriptorAbstract implements
         return [];
     }
 
-    public function getType() : ?Type
+    public function getType() : Type
     {
         if ($this->type === null) {
             /** @var VarDescriptor|bool $var */

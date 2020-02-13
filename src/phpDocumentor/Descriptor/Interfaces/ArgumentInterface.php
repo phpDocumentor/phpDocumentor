@@ -44,7 +44,7 @@ interface ArgumentInterface extends ElementInterface
      *
      * @see self::setTypes() for details on what types represent.
      */
-    public function getType() : ?Type;
+    public function getType() : Type;
 
     /**
      * Sets the default value for an argument expressed as a string.
