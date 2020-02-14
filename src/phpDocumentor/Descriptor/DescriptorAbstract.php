@@ -284,7 +284,7 @@ abstract class DescriptorAbstract implements Filterable
     public function getAuthor() : Collection
     {
         /** @var Collection<AuthorDescriptor> $author */
-        $author = $this->getTags()->get('author', new Collection());
+        $author = $this->getTags()->fetch('author', new Collection());
         if ($author->count() !== 0) {
             return $author;
         }
@@ -305,7 +305,7 @@ abstract class DescriptorAbstract implements Filterable
     public function getVersion() : Collection
     {
         /** @var Collection<VersionDescriptor> $version */
-        $version = $this->getTags()->get('version', new Collection());
+        $version = $this->getTags()->fetch('version', new Collection());
         if ($version->count() !== 0) {
             return $version;
         }
@@ -326,7 +326,7 @@ abstract class DescriptorAbstract implements Filterable
     public function getCopyright() : Collection
     {
         /** @var Collection<TagDescriptor> $copyright */
-        $copyright = $this->getTags()->get('copyright', new Collection());
+        $copyright = $this->getTags()->fetch('copyright', new Collection());
         if ($copyright->count() !== 0) {
             return $copyright;
         }
@@ -393,7 +393,7 @@ abstract class DescriptorAbstract implements Filterable
         $tagName = substr($name, 3);
         $tagName[0] = strtolower($tagName[0]); // lowercase the first letter
 
-        return $this->getTags()->get($tagName, new Collection());
+        return $this->getTags()->fetch($tagName, new Collection());
     }
 
     /**

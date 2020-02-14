@@ -46,8 +46,8 @@ class NamespaceTreeBuilder implements CompilerPassInterface
 
     public function execute(ProjectDescriptor $project) : void
     {
-        $project->getIndexes()->get('elements', new Collection())->set('~\\', $project->getNamespace());
-        $project->getIndexes()->get('namespaces', new Collection())->set('\\', $project->getNamespace());
+        $project->getIndexes()->fetch('elements', new Collection())->set('~\\', $project->getNamespace());
+        $project->getIndexes()->fetch('namespaces', new Collection())->set('\\', $project->getNamespace());
 
         foreach ($project->getFiles() as $file) {
             $this->addElementsOfTypeToNamespace($project, $file->getConstants()->getAll(), 'constants');
@@ -88,7 +88,7 @@ class NamespaceTreeBuilder implements CompilerPassInterface
                 $namespaceName = '\\';
             }
 
-            $namespace = $project->getIndexes()->get('namespaces', new Collection())->get($namespaceName);
+            $namespace = $project->getIndexes()->fetch('namespaces', new Collection())->fetch($namespaceName);
 
             if ($namespace === null) {
                 $namespace = new NamespaceDescriptor();
@@ -98,7 +98,7 @@ class NamespaceTreeBuilder implements CompilerPassInterface
                 $namespaceName = substr((string) $fqsen, 0, -strlen($fqsen->getName()) - 1);
                 $namespace->setNamespace($namespaceName);
                 $project->getIndexes()
-                    ->get('namespaces')
+                    ->fetch('namespaces')
                     ->set((string) $namespace->getFullyQualifiedStructuralElementName(), $namespace);
                 $this->addToParentNamespace($project, $namespace);
             }
@@ -120,8 +120,8 @@ class NamespaceTreeBuilder implements CompilerPassInterface
     private function addToParentNamespace(ProjectDescriptor $project, NamespaceDescriptor $namespace) : void
     {
         /** @var NamespaceDescriptor|null $parent */
-        $parent = $project->getIndexes()->get('namespaces')->get($namespace->getNamespace());
-        $project->getIndexes()->get('elements')->set(
+        $parent = $project->getIndexes()->fetch('namespaces')->fetch($namespace->getNamespace());
+        $project->getIndexes()->fetch('elements')->set(
             '~' . (string) $namespace->getFullyQualifiedStructuralElementName(),
             $namespace
         );
@@ -135,7 +135,7 @@ class NamespaceTreeBuilder implements CompilerPassInterface
                 $namespaceName = substr((string) $fqsen, 0, -strlen($parent->getName()) - 1);
                 $parent->setNamespace($namespaceName === '' ? '\\' : $namespaceName);
                 $project->getIndexes()
-                    ->get('namespaces')
+                    ->fetch('namespaces')
                     ->set((string) $parent->getFullyQualifiedStructuralElementName(), $parent);
                 $this->addToParentNamespace($project, $parent);
             }

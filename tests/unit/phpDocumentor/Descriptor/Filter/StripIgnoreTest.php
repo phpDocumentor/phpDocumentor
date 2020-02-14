@@ -46,7 +46,7 @@ final class StripIgnoreTest extends MockeryTestCase
     public function testStripsIgnoreTagFromDescription() : void
     {
         $descriptor = m::mock(DescriptorAbstract::class);
-        $descriptor->shouldReceive('getTags->get')->with('ignore')->andReturn(true);
+        $descriptor->shouldReceive('getTags->fetch')->with('ignore')->andReturn(true);
 
         $this->assertNull($this->fixture->__invoke($descriptor));
     }
@@ -57,7 +57,7 @@ final class StripIgnoreTest extends MockeryTestCase
     public function testDescriptorIsUnmodifiedIfThereIsNoIgnoreTag() : void
     {
         $descriptor = m::mock(DescriptorAbstract::class);
-        $descriptor->shouldReceive('getTags->get')->with('ignore')->andReturn(false);
+        $descriptor->shouldReceive('getTags->fetch')->with('ignore')->andReturn(false);
 
         $this->assertEquals($descriptor, $this->fixture->__invoke($descriptor));
     }

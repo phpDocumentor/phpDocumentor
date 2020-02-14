@@ -36,9 +36,9 @@ final class MarkerFromTagsExtractor implements CompilerPassInterface
     public function execute(ProjectDescriptor $project) : void
     {
         /** @var DescriptorAbstract $element */
-        foreach ($project->getIndexes()->get('elements', new Collection()) as $element) {
+        foreach ($project->getIndexes()->fetch('elements', new Collection()) as $element) {
             /** @var TagDescriptor[] $todos */
-            $todos = $element->getTags()->get('todo');
+            $todos = $element->getTags()->fetch('todo');
 
             if (!$todos) {
                 continue;

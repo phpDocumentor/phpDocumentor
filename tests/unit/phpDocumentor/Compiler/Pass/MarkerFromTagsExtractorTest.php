@@ -98,7 +98,7 @@ final class MarkerFromTagsExtractorTest extends MockeryTestCase
     protected function givenProjectHasFileDescriptor() : FileDescriptor
     {
         $fileDescriptor1 = new FileDescriptor('123');
-        $elementIndex = $this->project->getIndexes()->get('elements', new Collection());
+        $elementIndex = $this->project->getIndexes()->fetch('elements', new Collection());
         $elementIndex->add($fileDescriptor1);
 
         return $fileDescriptor1;
@@ -111,7 +111,7 @@ final class MarkerFromTagsExtractorTest extends MockeryTestCase
         $todoTag = new TagDescriptor('todo');
         $todoTag->setDescription($description);
 
-        $todoTags = $descriptor->getTags()->get('todo', []);
+        $todoTags = $descriptor->getTags()->fetch('todo', []);
         $todoTags[] = $todoTag;
         $descriptor->getTags()->set('todo', $todoTags);
     }
@@ -127,7 +127,7 @@ final class MarkerFromTagsExtractorTest extends MockeryTestCase
             $classDescriptor->setFile($fileDescriptor);
         }
 
-        $elementIndex = $this->project->getIndexes()->get('elements', new Collection());
+        $elementIndex = $this->project->getIndexes()->fetch('elements', new Collection());
         $elementIndex->add($classDescriptor);
 
         return $classDescriptor;

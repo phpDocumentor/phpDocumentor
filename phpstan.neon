@@ -15,10 +15,11 @@ parameters:
     - '#Call to an undefined method League\\Flysystem\\Filesystem::find()#'
     # Bad design of descriptors.
     - '#Access to an undefined property phpDocumentor\\Descriptor\\Collection<phpDocumentor\\Descriptor\\Collection<phpDocumentor\\Descriptor\\DescriptorAbstract>>::\$[a-z]+#'
-    # Issue on the content of this collection https://github.com/phpDocumentor/phpDocumentor/pull/2249#issuecomment-581111947
-    - '#Parameter \#1 \$item of method phpDocumentor\\Descriptor\\Collection<phpDocumentor\\Descriptor\\TagDescriptor>::add\(\) expects phpDocumentor\\Descriptor\\TagDescriptor, phpDocumentor\\Descriptor\\Collection<phpDocumentor\\Descriptor\\DescriptorAbstract>\|phpDocumentor\\Descriptor\\DescriptorAbstract given\.#'
     # https://github.com/phpDocumentor/phpDocumentor/issues/2279
     - '#Instanceof between phpDocumentor\\Descriptor\\Collection<phpDocumentor\\Descriptor\\InterfaceDescriptor\|phpDocumentor\\Reflection\\Fqsen>\|phpDocumentor\\Reflection\\Fqsen\|string\|null and phpDocumentor\\Descriptor\\InterfaceDescriptor will always evaluate to false\.#'
+    # PHPStan doesn't support @template D of T but will still complain if we put a D in a Collection of T !
+    - '#Parameter \#2 \$value of method phpDocumentor\\Descriptor\\Collection<T>::offsetSet\(\) expects T, D given\.#'
+
     -
             message: "#^Parameter \\#1 \\$value of method phpDocumentor\\\\GraphViz\\\\Graph\\:\\:setCenter\\(\\) expects bool, string given\\.$#"
             count: 1

@@ -123,7 +123,7 @@ final class CollectionTest extends MockeryTestCase
         $this->assertEquals('abc', $this->fixture->get('a'));
         $this->assertCount(1, $this->fixture);
 
-        $this->assertEquals('def', $this->fixture->get(1, 'def'));
+        $this->assertEquals('def', $this->fixture->fetch(1, 'def'));
         $this->assertCount(2, $this->fixture);
     }
 

@@ -90,7 +90,7 @@ final class PackageTreeBuilder implements CompilerPassInterface
     {
         foreach ($elements as $element) {
             $packageName = '';
-            $packageTags = $element->getTags()->get('package');
+            $packageTags = $element->getTags()->fetch('package');
             if ($packageTags instanceof Collection) {
                 $packageTag = $packageTags->getIterator()->current();
                 if ($packageTag instanceof TagDescriptor) {
@@ -98,7 +98,7 @@ final class PackageTreeBuilder implements CompilerPassInterface
                 }
             }
 
-            $subpackageCollection = $element->getTags()->get('subpackage');
+            $subpackageCollection = $element->getTags()->fetch('subpackage');
             if ($subpackageCollection instanceof Collection && $subpackageCollection->count() > 0) {
                 $subpackageTag = $subpackageCollection->getIterator()->current();
                 if ($subpackageTag instanceof TagDescriptor) {
@@ -160,7 +160,7 @@ final class PackageTreeBuilder implements CompilerPassInterface
         $pointer = $packages['\\'];
         foreach ($parts as $part) {
             $fqnn .= '\\' . $part;
-            if ($pointer->getChildren()->get($part)) {
+            if ($pointer->getChildren()->fetch($part)) {
                 $pointer = $pointer->getChildren()->get($part);
                 continue;
             }

@@ -37,7 +37,7 @@ class StripIgnore implements FilterInterface
      */
     public function __invoke(?DescriptorAbstract $value) : ?DescriptorAbstract
     {
-        if ($value !== null && $value->getTags()->get('ignore')) {
+        if ($value !== null && $value->getTags()->fetch('ignore')) {
             return null;
         }
 

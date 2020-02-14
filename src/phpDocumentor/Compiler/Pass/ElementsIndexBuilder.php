@@ -43,11 +43,11 @@ class ElementsIndexBuilder implements CompilerPassInterface
         $elementCollection = new Collection();
         $project->getIndexes()->set('elements', $elementCollection);
 
-        $constantsIndex  = $project->getIndexes()->get('constants', new Collection());
-        $functionsIndex  = $project->getIndexes()->get('functions', new Collection());
-        $classesIndex    = $project->getIndexes()->get('classes', new Collection());
-        $interfacesIndex = $project->getIndexes()->get('interfaces', new Collection());
-        $traitsIndex     = $project->getIndexes()->get('traits', new Collection());
+        $constantsIndex  = $project->getIndexes()->fetch('constants', new Collection());
+        $functionsIndex  = $project->getIndexes()->fetch('functions', new Collection());
+        $classesIndex    = $project->getIndexes()->fetch('classes', new Collection());
+        $interfacesIndex = $project->getIndexes()->fetch('interfaces', new Collection());
+        $traitsIndex     = $project->getIndexes()->fetch('traits', new Collection());
 
         foreach ($project->getFiles() as $file) {
             $this->addElementsToIndexes($file->getConstants()->getAll(), [$constantsIndex, $elementCollection]);

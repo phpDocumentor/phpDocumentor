@@ -237,7 +237,7 @@ final class ClassDescriptorTest extends MockeryTestCase
         $propertyMock->shouldReceive('getDescription')->andReturn($description);
         $propertyMock->shouldReceive('getType')->andReturn(new String_());
 
-        $this->fixture->getTags()->get('property', new Collection())->add($propertyMock);
+        $this->fixture->getTags()->fetch('property', new Collection())->add($propertyMock);
 
         $magicProperties = $this->fixture->getMagicProperties();
 
@@ -381,7 +381,7 @@ final class ClassDescriptorTest extends MockeryTestCase
         $methodMock->shouldReceive('getArguments')->andReturn(new Collection(['argument1' => $argument]));
         $methodMock->shouldReceive('isStatic')->andReturn($isStatic);
 
-        $this->fixture->getTags()->get('method', new Collection())->add($methodMock);
+        $this->fixture->getTags()->fetch('method', new Collection())->add($methodMock);
 
         $magicMethods = $this->fixture->getMagicMethods();
 

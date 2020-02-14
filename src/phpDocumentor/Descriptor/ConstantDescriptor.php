@@ -81,7 +81,7 @@ class ConstantDescriptor extends DescriptorAbstract implements Interfaces\Consta
     public function getType() : ?Type
     {
         if ($this->types === null) {
-            $var = $this->getVar()->get(0);
+            $var = $this->getVar()->fetch(0);
             if ($var instanceof VarDescriptor) {
                 return $var->getType();
             }
@@ -106,7 +106,7 @@ class ConstantDescriptor extends DescriptorAbstract implements Interfaces\Consta
     public function getVar() : Collection
     {
         /** @var Collection<VarDescriptor> $var */
-        $var = $this->getTags()->get('var', new Collection());
+        $var = $this->getTags()->fetch('var', new Collection());
         if ($var->count() !== 0) {
             return $var;
         }
@@ -143,7 +143,7 @@ class ConstantDescriptor extends DescriptorAbstract implements Interfaces\Consta
             /** @var ClassDescriptor|InterfaceDescriptor $parentClass */
             $parentClass = $associatedClass->getParent();
 
-            return $parentClass->getConstants()->get($this->getName());
+            return $parentClass->getConstants()->fetch($this->getName());
         }
 
         return null;

@@ -82,9 +82,9 @@ class FileAssembler extends AssemblerAbstract
             }
 
             $constantDescriptor->setLocation($fileDescriptor, $constant->getLocation()->getLineNumber());
-            if (count($constantDescriptor->getTags()->get('package', new Collection())) === 0) {
+            if (count($constantDescriptor->getTags()->fetch('package', new Collection())) === 0) {
                 $constantDescriptor->getTags()
-                    ->set('package', $fileDescriptor->getTags()->get('package', new Collection()));
+                    ->set('package', $fileDescriptor->getTags()->fetch('package', new Collection()));
             }
 
             $fileDescriptor->getConstants()->set(
@@ -108,9 +108,9 @@ class FileAssembler extends AssemblerAbstract
             }
 
             $functionDescriptor->setLocation($fileDescriptor, $function->getLocation()->getLineNumber());
-            if (count($functionDescriptor->getTags()->get('package', new Collection())) === 0) {
+            if (count($functionDescriptor->getTags()->fetch('package', new Collection())) === 0) {
                 $functionDescriptor->getTags()
-                    ->set('package', $fileDescriptor->getTags()->get('package', new Collection()));
+                    ->set('package', $fileDescriptor->getTags()->fetch('package', new Collection()));
             }
 
             $fileDescriptor->getFunctions()->set(
@@ -134,10 +134,10 @@ class FileAssembler extends AssemblerAbstract
             }
 
             $classDescriptor->setLocation($fileDescriptor, $class->getLocation()->getLineNumber());
-            if (count($classDescriptor->getTags()->get('package', new Collection())) === 0) {
+            if (count($classDescriptor->getTags()->fetch('package', new Collection())) === 0) {
                 $classDescriptor->getTags()->set(
                     'package',
-                    $fileDescriptor->getTags()->get('package', new Collection())
+                    $fileDescriptor->getTags()->fetch('package', new Collection())
                 );
             }
 
@@ -162,9 +162,9 @@ class FileAssembler extends AssemblerAbstract
             }
 
             $interfaceDescriptor->setLocation($fileDescriptor, $interface->getLocation()->getLineNumber());
-            if (count($interfaceDescriptor->getTags()->get('package', new Collection())) === 0) {
+            if (count($interfaceDescriptor->getTags()->fetch('package', new Collection())) === 0) {
                 $interfaceDescriptor->getTags()
-                    ->set('package', $fileDescriptor->getTags()->get('package', new Collection()));
+                    ->set('package', $fileDescriptor->getTags()->fetch('package', new Collection()));
             }
 
             $fileDescriptor->getInterfaces()->set(
@@ -188,9 +188,9 @@ class FileAssembler extends AssemblerAbstract
             }
 
             $traitDescriptor->setLocation($fileDescriptor, $trait->getLocation()->getLineNumber());
-            if (count($traitDescriptor->getTags()->get('package', new Collection())) === 0) {
+            if (count($traitDescriptor->getTags()->fetch('package', new Collection())) === 0) {
                 $traitDescriptor->getTags()
-                    ->set('package', $fileDescriptor->getTags()->get('package', new Collection()));
+                    ->set('package', $fileDescriptor->getTags()->fetch('package', new Collection()));
             }
 
             $fileDescriptor->getTraits()->set(
