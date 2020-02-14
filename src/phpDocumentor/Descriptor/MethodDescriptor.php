@@ -17,6 +17,7 @@ use phpDocumentor\Descriptor\Tag\ParamDescriptor;
 use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Type;
+use phpDocumentor\Reflection\Types\Mixed_;
 use function assert;
 use function current;
 
@@ -148,11 +149,13 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
         $definedReturn = new ReturnDescriptor('return');
         $definedReturn->setType($this->returnType);
 
-        /** @var Collection<ReturnDescriptor>|null $returnTags */
-        $returnTags = $this->getReturn();
+        if ($this->returnType === null || $this->returnType instanceof Mixed_) {
+            /** @var Collection<ReturnDescriptor>|null $returnTags */
+            $returnTags = $this->getReturn();
 
-        if ($returnTags instanceof Collection && $returnTags->count() > 0) {
-            return current($returnTags->getAll());
+            if ($returnTags instanceof Collection && $returnTags->count() > 0) {
+                return current($returnTags->getAll());
+            }
         }
 
         return $definedReturn;
