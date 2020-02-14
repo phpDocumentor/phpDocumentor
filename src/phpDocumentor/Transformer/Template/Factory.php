@@ -177,14 +177,15 @@ class Factory
         Filesystem $hostFilesystem,
         string $subfolder
     ) : Filesystem {
-        if (!$hostFilesystem->getAdapter() instanceof AbstractAdapter) {
+        $hostFilesystemAdapter = $hostFilesystem->getAdapter();
+        if (!$hostFilesystemAdapter instanceof AbstractAdapter) {
             throw new RuntimeException(
                 'Failed to load template, The filesystem of the global templates does not support '
                 . 'getting a subfolder from it'
             );
         }
 
-        $templateAdapter = clone $hostFilesystem->getAdapter();
+        $templateAdapter = clone $hostFilesystemAdapter;
         $globalRoot = $templateAdapter->getPathPrefix();
         $templateAdapter->setPathPrefix($globalRoot . $subfolder);
 
