@@ -74,7 +74,7 @@ final class LinkRendererTest extends MockeryTestCase
             ->shouldReceive('generate')
             ->andReturn('/classes/My.Namespace.Class.html');
 
-        $result = $this->renderer->render($fqsen, 'url');
+        $result = $this->renderer->render($fqsen, LinkRenderer::PRESENTATION_URL);
 
         $this->assertSame('classes/My.Namespace.Class.html', $result);
     }
@@ -95,7 +95,7 @@ final class LinkRendererTest extends MockeryTestCase
             ->andReturn('/classes/My.Namespace.Class.html');
 
         $nullable = new Nullable(new Object_($fqsen));
-        $result = $this->renderer->render($nullable, 'url');
+        $result = $this->renderer->render($nullable, LinkRenderer::PRESENTATION_URL);
 
         $this->assertSame(['classes/My.Namespace.Class.html', 'null'], $result);
     }
@@ -117,7 +117,7 @@ final class LinkRendererTest extends MockeryTestCase
 
         $this->renderer->setDestination('/root/of/project');
         $collection = new Collection([$fqsen]);
-        $result = $this->renderer->render($collection, 'url');
+        $result = $this->renderer->render($collection, LinkRenderer::PRESENTATION_URL);
 
         $this->assertSame(['../../../classes/My.Namespace.Class.html'], $result);
     }
@@ -152,7 +152,7 @@ final class LinkRendererTest extends MockeryTestCase
     {
         $this->router->shouldReceive('generate')->never();
 
-        $result = $this->renderer->render([new Integer()], 'url');
+        $result = $this->renderer->render([new Integer()], LinkRenderer::PRESENTATION_URL);
 
         $this->assertSame(['int'], $result);
     }
@@ -169,7 +169,7 @@ final class LinkRendererTest extends MockeryTestCase
 
         $this->router->shouldReceive('generate')->andReturn('/classes/My.Namespace.Class.html');
 
-        $result = $this->renderer->render($fqsen, 'class:short');
+        $result = $this->renderer->render($fqsen, LinkRenderer::PRESENTATION_CLASS_SHORT);
 
         $this->assertSame(
             '<a href="classes/My.Namespace.Class.html"><abbr title="\My\Namespace\Class">Class</abbr></a>',
@@ -185,7 +185,7 @@ final class LinkRendererTest extends MockeryTestCase
     {
         $this->router->shouldReceive('generate')->andReturn($url);
 
-        $result = $this->renderer->render($url, 'url');
+        $result = $this->renderer->render($url, LinkRenderer::PRESENTATION_URL);
 
         $this->assertSame($url, $result);
     }

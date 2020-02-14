@@ -109,7 +109,7 @@ final class FlySystemLoader implements LoaderInterface
     private function resolveTemplateName(string $name) : string
     {
         $prefix = $this->templatePath;
-        if ($this->templatePath !== null && $this->templatePath !== '') {
+        if ($prefix !== '') {
             $prefix = rtrim($prefix, '/') . '/';
         }
 

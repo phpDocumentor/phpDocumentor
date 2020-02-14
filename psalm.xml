@@ -13,101 +13,52 @@
         <ignoreFiles>
             <directory name="vendor" />
             <!-- This specific file seems a work in progress -->
-            <file name="phpDocumentor\Guides\Generator\HtmlForPdfGenerator.php"/>
+            <file name="src/phpDocumentor/Guides/Generator/HtmlForPdfGenerator.php"/>
         </ignoreFiles>
     </projectFiles>
 
     <issueHandlers>
-        <LessSpecificReturnType errorLevel="info" />
-
         <!-- level 3 issues - slightly lazy code writing, but provably low false-negatives -->
 
         <DeprecatedMethod errorLevel="info" />
-        <DeprecatedProperty errorLevel="info" />
-        <DeprecatedClass errorLevel="info" />
-        <DeprecatedConstant errorLevel="info" />
-        <DeprecatedFunction errorLevel="info" />
-        <DeprecatedInterface errorLevel="info" />
-        <DeprecatedTrait errorLevel="info" />
-
-        <InternalMethod errorLevel="info" />
-        <InternalProperty errorLevel="info" />
-        <InternalClass errorLevel="info" />
 
         <MissingClosureReturnType errorLevel="info" />
-        <MissingReturnType errorLevel="info" />
         <MissingPropertyType errorLevel="info" />
         <InvalidDocblock errorLevel="info" />
-        <MisplacedRequiredParam errorLevel="info" />
 
         <PropertyNotSetInConstructor errorLevel="info" />
-        <MissingConstructor errorLevel="info" />
         <MissingClosureParamType errorLevel="info" />
-        <MissingParamType errorLevel="info" />
-
-        <RedundantCondition errorLevel="info" />
 
         <DocblockTypeContradiction errorLevel="info" />
         <RedundantConditionGivenDocblockType errorLevel="info" />
 
         <UnresolvableInclude errorLevel="info" />
 
-        <RawObjectIteration errorLevel="info" />
-
-        <InvalidStringClass errorLevel="info" />
-
         <!-- level 4 issues - points to possible deficiencies in logic, higher false-positives -->
 
-        <MoreSpecificReturnType errorLevel="info" />
-        <LessSpecificReturnStatement errorLevel="info" />
         <TypeCoercion errorLevel="info" />
 
         <PossiblyFalseArgument errorLevel="info" />
         <PossiblyFalseIterator errorLevel="info" />
-        <PossiblyFalseOperand errorLevel="error" />
-        <PossiblyFalsePropertyAssignmentValue errorLevel="error" />
-        <PossiblyFalseReference errorLevel="error" />
         <PossiblyInvalidArgument errorLevel="info" />
         <PossiblyInvalidArrayAccess errorLevel="info" />
         <PossiblyInvalidArrayAssignment errorLevel="info" />
         <PossiblyInvalidArrayOffset errorLevel="info" />
         <PossiblyInvalidCast errorLevel="info" />
-        <PossiblyInvalidFunctionCall errorLevel="error" />
         <PossiblyInvalidIterator errorLevel="info" />
         <PossiblyInvalidMethodCall errorLevel="info" />
-        <PossiblyInvalidOperand errorLevel="error" />
-        <PossiblyInvalidPropertyAssignment errorLevel="error" />
-        <PossiblyInvalidPropertyAssignmentValue errorLevel="error" />
-        <PossiblyInvalidPropertyFetch errorLevel="error" />
         <PossiblyNullArgument errorLevel="info" />
-        <PossiblyNullArrayAccess errorLevel="error" />
-        <PossiblyNullArrayAssignment errorLevel="error" />
-        <PossiblyNullArrayOffset errorLevel="error" />
-        <PossiblyNullFunctionCall errorLevel="error" />
-        <PossiblyNullIterator errorLevel="info" />
         <PossiblyNullOperand errorLevel="info" />
-        <PossiblyNullPropertyAssignment errorLevel="error" />
         <PossiblyNullPropertyAssignmentValue errorLevel="info" />
-        <PossiblyNullPropertyFetch errorLevel="error" />
         <PossiblyNullReference errorLevel="info" />
-        <PossiblyUndefinedGlobalVariable errorLevel="error" />
-        <PossiblyUndefinedVariable errorLevel="error" />
         <PossiblyUndefinedArrayOffset errorLevel="info" />
         <PossiblyUndefinedMethod errorLevel="info" />
-        <PossibleRawObjectIteration errorLevel="error" />
 
         <!-- level 5 issues - should be avoided at most costs... -->
 
-        <ForbiddenCode errorLevel="error" />
         <ImplicitToStringCast errorLevel="info" />
         <InvalidScalarArgument errorLevel="info" />
-        <InvalidToString errorLevel="error" />
         <InvalidOperand errorLevel="info" />
-        <NoInterfaceProperties errorLevel="error" />
-        <TooManyArguments errorLevel="error" />
-        <TypeDoesNotContainType errorLevel="error" />
-        <TypeDoesNotContainNull errorLevel="error" />
-        <MissingDocblockType errorLevel="error" />
         <ImplementedReturnTypeMismatch errorLevel="info" />
         <ImplementedParamTypeMismatch errorLevel="info" />
 
@@ -119,36 +70,10 @@
         <FalsableReturnStatement errorLevel="info" />
 
         <MoreSpecificImplementedParamType errorLevel="info" />
-        <LessSpecificImplementedReturnType errorLevel="info" />
-
-        <InvalidReturnStatement errorLevel="error" />
-        <InvalidReturnType errorLevel="error" />
-        <UndefinedThisPropertyAssignment errorLevel="error" />
-        <UndefinedInterfaceMethod errorLevel="error" />
 
         <!-- level 7 issues - even worse -->
-
-        <UndefinedThisPropertyAssignment errorLevel="error" />
-        <UndefinedPropertyAssignment errorLevel="error" />
-        <UndefinedThisPropertyFetch errorLevel="error" />
-        <UndefinedPropertyFetch errorLevel="error" />
-
         <InvalidReturnStatement errorLevel="info" />
         <InvalidReturnType errorLevel="info" />
-        <InvalidArgument errorLevel="error" />
-        <InvalidPropertyAssignmentValue errorLevel="error" />
-        <InvalidArrayOffset errorLevel="error" />
-        <InvalidArrayAssignment errorLevel="error" />
-        <InvalidArrayAccess errorLevel="error" />
-        <InvalidClone errorLevel="error" />
-
-        <!-- level 8 issues - some fatal errors in PHP -->
-
-        <ReservedWord errorLevel="error" />
-        <MethodSignatureMismatch errorLevel="error" />
-        <OverriddenMethodAccess errorLevel="error" />
-        <InaccessibleProperty errorLevel="error" />
-
 
         <!-- User Defined -->
         <UndefinedMagicMethod>
@@ -168,26 +93,11 @@
                 <referencedFunction name="phpDocumentor\Descriptor\Collection::merge"/>
                 <referencedFunction name="phpDocumentor\Descriptor\Collection::add"/>
                 <referencedFunction name="phpDocumentor\Descriptor\Collection::set"/>
-                <!-- For now, Collection::get() can return null but is often chained. We should create a method (fetch?)
-                that can't return null when we know we have elements for the specific offset -->
-                <referencedFunction name="phpDocumentor\Compiler\Pass\ElementsIndexBuilder::addElementsToIndexes"/>
                 <!-- Either current() works on something else than an array and Psalm is wrong or this methods *can* return an object,
                 but just happen not to in this specific call -->
                 <referencedFunction name="current"/>
             </errorLevel>
         </InvalidArgument>
-
-        <!-- For now, Collection::get() can return null but is often chained. We should create a method (fetch?)
-        that can't return null when we know we have elements for the specific offset -->
-        <NullReference errorLevel="suppress" />
-
-        <!-- For now, Collection::get() can return null but is often chained. We should create a method (fetch?)
-        that can't return null when we know we have elements for the specific offset -->
-        <NullIterator>
-            <errorLevel type="suppress">
-                <file name="phpDocumentor\Compiler\Pass\ResolveInlineLinkAndSeeTags.php"/>
-            </errorLevel>
-        </NullIterator>
 
         <!-- Unnecessary @var annotations are mainly for PHPStorm when it can't read Generics.
         This could be removed when https://youtrack.jetbrains.com/issue/WI-47158 will be resolved
@@ -204,7 +114,7 @@
         <UnusedClosureParam>
             <errorLevel type="suppress">
                 <!-- Not sure what's going on -->
-                <file name="phpDocumentor\Console\Command\Project\RunCommand.php"/>
+                <file name="src/phpDocumentor/Console/Command/Project/RunCommand.php"/>
             </errorLevel>
         </UnusedClosureParam>
     </issueHandlers>

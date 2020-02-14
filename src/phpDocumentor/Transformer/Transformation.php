@@ -21,7 +21,7 @@ use phpDocumentor\Transformer\Template\Parameter;
 class Transformation
 {
     /** @var string Reference to an object containing the business logic used to execute this transformation. */
-    private $writer = null;
+    private $writer;
 
     /** @var string the location where the output should be sent to; the exact function differs per writer. */
     private $artifact = '';

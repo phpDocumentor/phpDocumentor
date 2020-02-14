@@ -72,7 +72,7 @@ class CodeNodeRenderer implements NodeRenderer
         $code = implode("\n", $lines);
 
         $lineNumbers = '';
-        for ($i = 1; $i <= count($lines); ++$i) {
+        for ($i = 1, $nbLines = count($lines); $i <= $nbLines; ++$i) {
             $lineNumbers .= str_pad((string) $i, 2, ' ', STR_PAD_LEFT) . "\n";
         }
 

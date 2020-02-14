@@ -68,7 +68,7 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
     {
         $inheritedConstants = Collection::fromClassString(ConstantDescriptor::class);
 
-        /** @var self $parent */
+        /** @var InterfaceDescriptor|Fqsen $parent */
         foreach ($this->getParent() as $parent) {
             if (!$parent instanceof Interfaces\InterfaceInterface) {
                 continue;
@@ -95,9 +95,9 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
     {
         $inheritedMethods = Collection::fromClassString(MethodDescriptor::class);
 
-        /** @var self $parent */
+        /** @var InterfaceDescriptor|Fqsen $parent */
         foreach ($this->getParent() as $parent) {
-            if (!$parent instanceof Interfaces\InterfaceInterface) {
+            if ($parent instanceof Fqsen) {
                 continue;
             }
 

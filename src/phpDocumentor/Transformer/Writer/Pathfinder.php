@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Writer;
 
+use phpDocumentor\Descriptor\Descriptor;
 use Traversable;
 use function explode;
 use function is_array;
@@ -27,6 +28,8 @@ final class Pathfinder
      * This method interprets the provided query string and walks through the given object to find the correct
      * element. This method will silently fail if an invalid query was provided; in such a case the given object
      * is returned.
+     *
+     * @param Traversable<string, mixed>|Descriptor $object
      *
      * @return Traversable<mixed>|list<mixed>
      */
@@ -48,14 +51,14 @@ final class Pathfinder
     /**
      * Walks an object graph and/or array using a twig query string.
      *
-     * @param Traversable|mixed $objectOrArray
+     * @param Traversable<string, mixed>|Descriptor $object
      * @param string $query A path to walk separated by dots, i.e. `namespace.namespaces`.
      *
      * @return mixed
      */
-    private function walkObjectTree($objectOrArray, string $query)
+    private function walkObjectTree(object $object, string $query)
     {
-        $node = $objectOrArray;
+        $node = $object;
         $elements = explode('.', $query);
 
         // walk through the tree

@@ -54,7 +54,7 @@ class Linker implements CompilerPassInterface
 {
     public const COMPILER_PRIORITY = 10000;
 
-    /** @var string[][] */
+    /** @var array<class-string, array<string>> */
     private $substitutions;
 
     /** @var string[] Prevent cycles by tracking which objects have been analyzed */
@@ -71,7 +71,7 @@ class Linker implements CompilerPassInterface
     /**
      * Initializes the linker with a series of Descriptors to link to.
      *
-     * @param string[][] $substitutions
+     * @param array<class-string, array<string>> $substitutions
      */
     public function __construct(array $substitutions, DescriptorRepository $descriptorRepository)
     {
@@ -192,6 +192,8 @@ class Linker implements CompilerPassInterface
 
     /**
      * Returns true if the given Descriptor is a container type.
+     *
+     * @psalm-assert DescriptorAbstract $item
      */
     private function isDescriptorContainer(object $item) : bool
     {
