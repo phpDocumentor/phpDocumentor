@@ -79,7 +79,6 @@
         "fzaninotto/faker": "^1.9"
     },
     "suggest": {
-        "ext-twig": "Enabling the twig extension improves the generation of twig based templates.",
         "ext-ctype": "For best performance"
     },
     "config": {
