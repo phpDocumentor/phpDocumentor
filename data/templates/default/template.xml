@@ -19,6 +19,7 @@
     <transformation writer="twig" source="templates/default/reports/errors.html.twig" artifact="reports/errors.html" />
     <transformation writer="twig" source="templates/default/reports/deprecated.html.twig" artifact="reports/deprecated.html" />
     <transformation writer="twig" source="templates/default/reports/markers.html.twig" artifact="reports/markers.html" />
+    <transformation writer="twig" source="templates/default/indices/files.html.twig" artifact="indices/files.html" />
     <transformation writer="RenderGuide" />
     <transformation writer="Graph" source="Class" artifact="graphs/classes.svg" />
   </transformations>

@@ -1,6 +1,6 @@
 <aside class="three phpdocumentor-columns phpdocumentor-sidebar">
     <section data-search-form class="phpdocumentor-search">
-        <h1 class="phpdocumentor-sidebar__category-header">Search</h1>
+        <h2 class="phpdocumentor-sidebar__category-header">Search</h2>
         <label class="phpdocumentor-label">
             <span class="visually-hidden">Search for</span>
             <input type="search" class="phpdocumentor-field phpdocumentor-search__field" placeholder="Loading .." disabled />
@@ -8,39 +8,52 @@
     </section>
 
     {% if menu %}
-    {{ include('menu.html.twig', {menuItem: menu}, with_context = false) }}
+    <section class="phpdocumentor-sidebar__category">
+        {{ include('menu.html.twig', {menuItem: menu}, with_context = false) }}
+    </section>
     {% endif %}
 
-    <h1 class="phpdocumentor-sidebar__category-header">Namespaces</h1>
-    {% if usesNamespaces or not usesPackages %}
-        <h2 class="phpdocumentor-sidebar__root-namespace">{{ project.namespace|route('Global') }}</h2>
-        {% for namespace in project.namespace.children %}
-            <h3 class="phpdocumentor-sidebar__root-namespace">{{ namespace|route('class:short') }}</h3>
+    <section class="phpdocumentor-sidebar__category">
+        <h2 class="phpdocumentor-sidebar__category-header">Namespaces</h2>
+        {% if usesNamespaces or not usesPackages %}
+            <h3 class="phpdocumentor-sidebar__root-namespace">{{ project.namespace|route('Global') }}</h3>
+            {% for namespace in project.namespace.children %}
+                <h4 class="phpdocumentor-sidebar__root-namespace">{{ namespace|route('class:short') }}</h4>
+                <ul class="phpdocumentor-list">
+                    {% for child in namespace.children %}
+                        <li>{{ child|route('class:short') }}</li>
+                    {% endfor %}
+                </ul>
+            {% endfor %}
+        {% endif %}
+    </section>
+
+    {% if usesPackages %}
+    <section class="phpdocumentor-sidebar__category">
+        <h2 class="phpdocumentor-sidebar__category-header">Packages</h2>
+        {% for package in project.package.children %}
+            <h3 class="phpdocumentor-sidebar__root-package">{{ package|route('class:short') }}</h3>
             <ul class="phpdocumentor-list">
-                {% for child in namespace.children %}
+                {% for child in package.children %}
                     <li>{{ child|route('class:short') }}</li>
                 {% endfor %}
             </ul>
         {% endfor %}
+    </section>
     {% endif %}
 
-    {% if usesPackages %}
-    <h1 class="phpdocumentor-sidebar__category-header">Packages</h1>
-    {% for package in project.package.children %}
-        <h2 class="phpdocumentor-sidebar__root-package">{{ package|route('class:short') }}</h2>
-        <ul class="phpdocumentor-list">
-            {% for child in package.children %}
-                <li>{{ child|route('class:short') }}</li>
-            {% endfor %}
-        </ul>
-    {% endfor %}
-    {% endif %}
+    <section class="phpdocumentor-sidebar__category">
+        <h2 class="phpdocumentor-sidebar__category-header">Reports</h2>
+        {% if project.settings.custom['graphs.enabled'] %}
+        <h3 class="phpdocumentor-sidebar__root-package"><a href="{{ path('graphs/classes.html') }}">Class Diagram</a></h3>
+        {% endif %}
+        <h3 class="phpdocumentor-sidebar__root-package"><a href="{{ path('reports/deprecated.html') }}">Deprecated</a></h3>
+        <h3 class="phpdocumentor-sidebar__root-package"><a href="{{ path('reports/errors.html') }}">Errors</a></h3>
+        <h3 class="phpdocumentor-sidebar__root-package"><a href="{{ path('reports/markers.html') }}">Markers</a></h3>
+    </section>
 
-    <h1 class="phpdocumentor-sidebar__category-header">Reports</h1>
-    {% if project.settings.custom['graphs.enabled'] %}
-    <h2 class="phpdocumentor-sidebar__root-package"><a href="{{ path('graphs/classes.html') }}">Class Diagram</a></h2>
-    {% endif %}
-    <h2 class="phpdocumentor-sidebar__root-package"><a href="{{ path('reports/deprecated.html') }}">Deprecated</a></h2>
-    <h2 class="phpdocumentor-sidebar__root-package"><a href="{{ path('reports/errors.html') }}">Errors</a></h2>
-    <h2 class="phpdocumentor-sidebar__root-package"><a href="{{ path('reports/markers.html') }}">Markers</a></h2>
+    <section class="phpdocumentor-sidebar__category">
+        <h2 class="phpdocumentor-sidebar__category-header">Indices</h2>
+        <h3 class="phpdocumentor-sidebar__root-package"><a href="{{ path('indices/files.html') }}">Files</a></h3>
+    </section>
 </aside>

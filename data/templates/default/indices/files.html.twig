@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    {% set orderedFiles = project.files|sort((a,b) => a.name <=> b.name) %}
+
+    <h2>Files</h2>
+    {% for letter in range('a', 'z') %}
+        {% set filesStartingWith = orderedFiles|filter(v => v.name|first|lower == letter) %}
+        {% if filesStartingWith is not empty %}
+        <h3>{{ letter|upper }}</h3>
+        <ul class="phpdocumentor-list">
+        {% for file in filesStartingWith %}
+            <li>{{ file|route('file:short') }}</li>
+        {% endfor %}
+        </ul>
+        {% endif %}
+    {% endfor %}
+{% endblock %}
