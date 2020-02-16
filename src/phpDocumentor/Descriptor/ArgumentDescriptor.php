@@ -100,10 +100,7 @@ class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\Argume
         return $this->default;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function setByReference($byReference) : void
+    public function setByReference(bool $byReference) : void
     {
         $this->byReference = $byReference;
     }

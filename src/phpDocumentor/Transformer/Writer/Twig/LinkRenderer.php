@@ -110,7 +110,7 @@ final class LinkRenderer
     /**
      * @param Descriptor|Fqsen|Uri $value
      */
-    public function link($value) : string
+    public function link(object $value) : string
     {
         $uri = $this->router->generate($value);
         if (!$uri) {

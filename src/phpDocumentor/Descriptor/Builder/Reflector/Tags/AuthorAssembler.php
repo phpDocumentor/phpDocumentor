@@ -30,7 +30,7 @@ class AuthorAssembler extends AssemblerAbstract
      *
      * @param Author $data
      */
-    public function create($data) : AuthorDescriptor
+    public function create(object $data) : AuthorDescriptor
     {
         $descriptor = new AuthorDescriptor($data->getName());
         $descriptor->setDescription((string) $data);

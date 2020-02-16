@@ -75,7 +75,7 @@ class ExampleAssemblerTest extends MockeryTestCase
      */
     public function testExceptionIsThrownIfTheWrongObjectIsPassed() : void
     {
-        $this->expectException('InvalidArgumentException');
+        $this->expectException('TypeError');
         $this->fixture->create('this is an error');
     }
 

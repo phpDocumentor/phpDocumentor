@@ -30,7 +30,7 @@ final class AssetsCopyListener
         $this->targetFilesystem = $targetFilesystem;
     }
 
-    public function postBuildRender()
+    public function postBuildRender() : void
     {
         $sourceFilesystem = new Filesystem(new Local(sprintf('%s/../Templates/rtd/assets', __DIR__)));
 

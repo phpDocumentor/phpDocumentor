@@ -55,7 +55,7 @@ class Router
     /**
      * @param Descriptor|Fqsen|Uri $node
      */
-    public function generate($node) : string
+    public function generate(object $node) : string
     {
         if ($node instanceof FileDescriptor) {
             return $this->generateUrlForDescriptor('file', $node->getPath());

@@ -40,7 +40,7 @@ class ConstantDescriptor extends DescriptorAbstract implements Interfaces\Consta
      *
      * @throws InvalidArgumentException If anything other than a class, interface or null was passed.
      */
-    public function setParent($parent) : void
+    public function setParent(?DescriptorAbstract $parent) : void
     {
         Assert::nullOrIsInstanceOfAny(
             $parent,
@@ -60,7 +60,7 @@ class ConstantDescriptor extends DescriptorAbstract implements Interfaces\Consta
     /**
      * @return ClassDescriptor|InterfaceDescriptor|FileDescriptor|null
      */
-    public function getParent()
+    public function getParent() : ?DescriptorAbstract
     {
         return $this->parent;
     }

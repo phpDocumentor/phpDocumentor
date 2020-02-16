@@ -88,7 +88,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
     /**
      * Returns an array of global variables to inject into a Twig template.
      *
-     * @return mixed[]
+     * @return array<string, ProjectDescriptor|bool>
      */
     public function getGlobals() : array
     {

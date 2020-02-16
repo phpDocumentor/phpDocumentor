@@ -13,6 +13,11 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Builder;
 
+use phpDocumentor\Reflection\DocBlock\Tag;
+use phpDocumentor\Reflection\Element;
+use phpDocumentor\Reflection\Php\Argument;
+use phpDocumentor\Reflection\Php\File;
+
 final class AssemblerMatcher
 {
     /** @var callable */
@@ -28,7 +33,7 @@ final class AssemblerMatcher
     }
 
     /**
-     * @param mixed $criteria
+     * @param Element|File|Tag|Argument $criteria
      */
     public function match($criteria) : bool
     {

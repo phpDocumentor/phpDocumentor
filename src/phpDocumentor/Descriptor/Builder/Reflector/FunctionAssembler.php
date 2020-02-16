@@ -45,7 +45,7 @@ class FunctionAssembler extends AssemblerAbstract
      *
      * @param Function_ $data
      */
-    public function create($data) : FunctionDescriptor
+    public function create(object $data) : FunctionDescriptor
     {
         $functionDescriptor = new FunctionDescriptor();
 

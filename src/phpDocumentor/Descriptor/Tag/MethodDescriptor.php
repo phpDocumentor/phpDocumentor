@@ -51,7 +51,7 @@ class MethodDescriptor extends TagDescriptor
     /**
      * @param Collection<ArgumentDescriptor> $arguments
      */
-    public function setArguments($arguments) : void
+    public function setArguments(Collection $arguments) : void
     {
         $this->arguments = $arguments;
     }
@@ -67,7 +67,7 @@ class MethodDescriptor extends TagDescriptor
     /**
      * @param ?ReturnDescriptor $response
      */
-    public function setResponse($response) : void
+    public function setResponse(?ReturnDescriptor $response) : void
     {
         $this->response = $response;
     }

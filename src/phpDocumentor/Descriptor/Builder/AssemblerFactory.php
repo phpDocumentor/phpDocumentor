@@ -54,6 +54,7 @@ use phpDocumentor\Reflection\DocBlock\Tags\Throws;
 use phpDocumentor\Reflection\DocBlock\Tags\Uses;
 use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use phpDocumentor\Reflection\DocBlock\Tags\Version;
+use phpDocumentor\Reflection\Element;
 use phpDocumentor\Reflection\Php\Argument;
 use phpDocumentor\Reflection\Php\Class_;
 use phpDocumentor\Reflection\Php\Constant;
@@ -107,7 +108,7 @@ class AssemblerFactory
     /**
      * Retrieves a matching Assembler based on the provided criteria or null if none was found.
      *
-     * @param mixed $criteria
+     * @param Element|File|Tag|Argument $criteria
      */
     public function get($criteria) : ?AssemblerInterface
     {

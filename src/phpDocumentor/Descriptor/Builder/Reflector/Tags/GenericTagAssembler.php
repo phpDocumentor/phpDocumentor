@@ -25,7 +25,7 @@ class GenericTagAssembler extends AssemblerAbstract
      *
      * @param Tag $data
      */
-    public function create($data) : TagDescriptor
+    public function create(object $data) : TagDescriptor
     {
         $descriptor = new TagDescriptor($data->getName());
 

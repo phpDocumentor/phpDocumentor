@@ -30,7 +30,7 @@ class SeeAssembler extends AssemblerAbstract
      *
      * @param See $data
      */
-    public function create($data) : SeeDescriptor
+    public function create(object $data) : SeeDescriptor
     {
         $descriptor = new SeeDescriptor($data->getName());
         $descriptor->setDescription((string) $data->getDescription());

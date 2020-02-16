@@ -21,10 +21,7 @@ class SeeDescriptor extends TagDescriptor
     /** @var Reference $reference */
     private $reference;
 
-    /**
-     * @param Reference $reference
-     */
-    public function setReference($reference) : void
+    public function setReference(Reference $reference) : void
     {
         $this->reference = $reference;
     }

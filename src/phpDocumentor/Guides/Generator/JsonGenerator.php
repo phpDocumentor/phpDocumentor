@@ -42,7 +42,7 @@ class JsonGenerator
         $this->buildContext = $buildContext;
     }
 
-    public function generateJson()
+    public function generateJson() : void
     {
         $fs = new Filesystem();
 
@@ -81,7 +81,7 @@ class JsonGenerator
         $progressBar->finish();
     }
 
-    public function setOutput(SymfonyStyle $output)
+    public function setOutput(SymfonyStyle $output) : void
     {
         $this->output = $output;
     }

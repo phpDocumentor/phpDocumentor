@@ -17,7 +17,7 @@ final class InvalidTagAssembler extends AssemblerAbstract
      *
      * @param InvalidTag $data
      */
-    public function create($data) : TagDescriptor
+    public function create(object $data) : TagDescriptor
     {
         $descriptor = new TagDescriptor($data->getName());
         $descriptor->setDescription((string) $data);

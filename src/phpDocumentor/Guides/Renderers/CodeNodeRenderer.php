@@ -125,7 +125,7 @@ class CodeNodeRenderer implements NodeRenderer
         return array_reverse($reversedLines);
     }
 
-    private function configureHighlighter()
+    private function configureHighlighter() : void
     {
         if (!self::$isHighlighterConfigured) {
             Highlighter::registerLanguage('php', $this->globalTemplatesPath . '/guides/highlight.php/php.json', true);

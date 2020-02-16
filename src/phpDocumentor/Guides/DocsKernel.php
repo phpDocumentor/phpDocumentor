@@ -47,7 +47,7 @@ class DocsKernel extends Kernel
         );
     }
 
-    private function initializeListeners(EventManager $eventManager, ErrorManager $errorManager)
+    private function initializeListeners(EventManager $eventManager, ErrorManager $errorManager) : void
     {
         $eventManager->addEventListener(
             PreNodeRenderEvent::PRE_NODE_RENDER,

@@ -30,10 +30,7 @@ final class Version3 implements ConfigurationInterface, Normalizable
         $this->defaultTemplateName = $defaultTemplateName;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder() : TreeBuilder
     {
         $treebuilder = new TreeBuilder('phpdocumentor');
 

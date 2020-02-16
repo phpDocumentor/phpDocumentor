@@ -87,7 +87,7 @@ class ProjectDescriptorBuilder
      *
      * @throws InvalidArgumentException If no Assembler could be found that matches the given data.
      */
-    public function buildDescriptor($data)
+    public function buildDescriptor(object $data) : ?object
     {
         $assembler = $this->getAssembler($data);
         if (!$assembler) {
@@ -110,9 +110,9 @@ class ProjectDescriptorBuilder
     /**
      * Attempts to find an assembler matching the given data.
      *
-     * @param mixed $data
+     * @param Element|File|Tag|Argument $data
      */
-    public function getAssembler($data) : ?AssemblerInterface
+    public function getAssembler(object $data) : ?AssemblerInterface
     {
         return $this->assemblerFactory->get($data);
     }

@@ -32,7 +32,7 @@ class TraitAssembler extends AssemblerAbstract
      *
      * @param Trait_ $data
      */
-    public function create($data) : TraitDescriptor
+    public function create(object $data) : TraitDescriptor
     {
         $traitDescriptor = new TraitDescriptor();
 

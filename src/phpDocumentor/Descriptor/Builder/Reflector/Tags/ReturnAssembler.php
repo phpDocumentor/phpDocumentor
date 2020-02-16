@@ -30,7 +30,7 @@ class ReturnAssembler extends AssemblerAbstract
      *
      * @param Return_ $data
      */
-    public function create($data) : ReturnDescriptor
+    public function create(object $data) : ReturnDescriptor
     {
         $descriptor = new ReturnDescriptor($data->getName());
         $descriptor->setDescription((string) $data->getDescription());

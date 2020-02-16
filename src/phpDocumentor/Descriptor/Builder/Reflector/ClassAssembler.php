@@ -36,7 +36,7 @@ class ClassAssembler extends AssemblerAbstract
      *
      * @param Class_ $data
      */
-    public function create($data) : ClassDescriptor
+    public function create(object $data) : ClassDescriptor
     {
         $classDescriptor = new ClassDescriptor();
 
