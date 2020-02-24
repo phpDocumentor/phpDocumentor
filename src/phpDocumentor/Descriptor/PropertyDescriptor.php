@@ -24,7 +24,7 @@ class PropertyDescriptor extends DescriptorAbstract implements
     Interfaces\PropertyInterface,
     Interfaces\VisibilityInterface
 {
-    /** @var ClassDescriptor|TraitDescriptor $parent */
+    /** @var ClassDescriptor|TraitDescriptor|null $parent */
     protected $parent;
 
     /** @var Type $type */
@@ -42,7 +42,7 @@ class PropertyDescriptor extends DescriptorAbstract implements
     /**
      * @param ClassDescriptor|TraitDescriptor $parent
      */
-    public function setParent($parent) : void
+    public function setParent(DescriptorAbstract $parent) : void
     {
         $this->setFullyQualifiedStructuralElementName(
             new Fqsen($parent->getFullyQualifiedStructuralElementName() . '::$' . $this->getName())
@@ -52,9 +52,9 @@ class PropertyDescriptor extends DescriptorAbstract implements
     }
 
     /**
-     * @return ClassDescriptor|TraitDescriptor
+     * @return ClassDescriptor|TraitDescriptor|null
      */
-    public function getParent()
+    public function getParent() : ?DescriptorAbstract
     {
         return $this->parent;
     }

@@ -30,7 +30,7 @@ class LinkAssembler extends AssemblerAbstract
      *
      * @param Link $data
      */
-    public function create($data) : LinkDescriptor
+    public function create(object $data) : LinkDescriptor
     {
         $descriptor = new LinkDescriptor($data->getName());
         $descriptor->setLink($data->getLink());

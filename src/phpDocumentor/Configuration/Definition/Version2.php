@@ -29,10 +29,7 @@ final class Version2 implements ConfigurationInterface, Upgradable
         $this->defaultTemplateName = $defaultTemplateName;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder() : TreeBuilder
     {
         $treebuilder = new TreeBuilder('phpdocumentor');
 

@@ -33,7 +33,7 @@ class CopyImagesListener
         $this->errorManager = $errorManager;
     }
 
-    public function preNodeRender(PreNodeRenderEvent $event)
+    public function preNodeRender(PreNodeRenderEvent $event) : void
     {
         $node = $event->getNode();
         if (!$node instanceof ImageNode) {

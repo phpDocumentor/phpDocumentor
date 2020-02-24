@@ -25,7 +25,7 @@ use function current;
  */
 class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodInterface, Interfaces\VisibilityInterface
 {
-    /** @var ClassDescriptor|InterfaceDescriptor|TraitDescriptor $parent */
+    /** @var ClassDescriptor|InterfaceDescriptor|TraitDescriptor|null $parent */
     protected $parent;
 
     /** @var bool $abstract */
@@ -59,7 +59,7 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
     /**
      * @param ClassDescriptor|InterfaceDescriptor|TraitDescriptor $parent
      */
-    public function setParent($parent) : void
+    public function setParent(DescriptorAbstract $parent) : void
     {
         $this->setFullyQualifiedStructuralElementName(
             new Fqsen($parent->getFullyQualifiedStructuralElementName() . '::' . $this->getName() . '()')
@@ -72,9 +72,9 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
     }
 
     /**
-     * @return ClassDescriptor|InterfaceDescriptor|TraitDescriptor
+     * @return ClassDescriptor|InterfaceDescriptor|TraitDescriptor|null
      */
-    public function getParent()
+    public function getParent() : ?DescriptorAbstract
     {
         return $this->parent;
     }

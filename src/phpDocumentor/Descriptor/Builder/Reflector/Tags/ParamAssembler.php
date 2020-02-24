@@ -30,7 +30,7 @@ class ParamAssembler extends AssemblerAbstract
      *
      * @param Param $data
      */
-    public function create($data) : ParamDescriptor
+    public function create(object $data) : ParamDescriptor
     {
         $descriptor = new ParamDescriptor($data->getName());
         $descriptor->setDescription((string) $data->getDescription());

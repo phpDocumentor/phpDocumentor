@@ -30,7 +30,7 @@ class VarAssembler extends AssemblerAbstract
      *
      * @param Var_ $data
      */
-    public function create($data) : VarDescriptor
+    public function create(object $data) : VarDescriptor
     {
         $descriptor = new VarDescriptor($data->getName());
         $descriptor->setDescription((string) $data->getDescription());

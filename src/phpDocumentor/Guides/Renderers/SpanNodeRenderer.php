@@ -36,7 +36,7 @@ class SpanNodeRenderer extends BaseSpanNodeRenderer
     }
 
     /**
-     * @param mixed[] $attributes
+     * @param string[] $attributes
      */
     public function link(?string $url, string $title, array $attributes = []) : string
     {

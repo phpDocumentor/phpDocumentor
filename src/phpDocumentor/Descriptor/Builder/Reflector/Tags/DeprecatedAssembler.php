@@ -30,7 +30,7 @@ class DeprecatedAssembler extends AssemblerAbstract
      *
      * @param Deprecated $data
      */
-    public function create($data) : DeprecatedDescriptor
+    public function create(object $data) : DeprecatedDescriptor
     {
         $descriptor = new DeprecatedDescriptor($data->getName());
         $descriptor->setDescription((string) $data->getDescription());

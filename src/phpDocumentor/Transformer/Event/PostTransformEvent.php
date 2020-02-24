@@ -47,7 +47,7 @@ final class PostTransformEvent extends EventAbstract
      *
      * @return $this
      */
-    public function setProject(ProjectDescriptor $project)
+    public function setProject(ProjectDescriptor $project) : self
     {
         $this->project = $project;
 

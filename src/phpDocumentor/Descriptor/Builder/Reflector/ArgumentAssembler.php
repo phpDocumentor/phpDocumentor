@@ -28,7 +28,7 @@ class ArgumentAssembler extends AssemblerAbstract
      * @param Argument $data
      * @param iterable<ParamDescriptor> $params
      */
-    public function create($data, iterable $params = []) : ArgumentDescriptor
+    public function create(object $data, iterable $params = []) : ArgumentDescriptor
     {
         $argumentDescriptor = new ArgumentDescriptor();
         $argumentDescriptor->setName($data->getName());

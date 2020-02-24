@@ -224,7 +224,7 @@ final class Template implements ArrayAccess, Countable, IteratorAggregate
      *
      * @link http://php.net/manual/en/arrayaccess.offsetexists.php
      *
-     * @param mixed $offset An offset to check for.
+     * @param int|string $offset An offset to check for.
      *
      * @return bool Returns true on success or false on failure.
      */

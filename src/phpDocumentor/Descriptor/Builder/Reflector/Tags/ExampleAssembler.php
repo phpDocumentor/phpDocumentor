@@ -40,12 +40,12 @@ class ExampleAssembler extends AssemblerAbstract
     /**
      * Creates a new Descriptor from the given Reflector.
      *
-     * @param Example|null $data
+     * @param Example $data
      *
      * @throws InvalidArgumentException If the provided parameter is not of type ExampleTag; the interface won't let
      *   up typehint the signature.
      */
-    public function create($data) : ExampleDescriptor
+    public function create(object $data) : ExampleDescriptor
     {
         Assert::isInstanceOf($data, Example::class);
         $descriptor = new ExampleDescriptor($data->getName());

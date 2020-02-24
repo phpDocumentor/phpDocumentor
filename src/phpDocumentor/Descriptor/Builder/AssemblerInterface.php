@@ -33,7 +33,7 @@ interface AssemblerInterface
      *
      * @return Descriptor
      */
-    public function create($data);
+    public function create(object $data);
     //phpcs:enable
 
     public function setBuilder(ProjectDescriptorBuilder $builder) : void;

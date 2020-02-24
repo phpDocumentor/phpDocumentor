@@ -24,7 +24,7 @@ class UsesAssembler extends AssemblerAbstract
      *
      * @param Uses $data
      */
-    public function create($data) : UsesDescriptor
+    public function create(object $data) : UsesDescriptor
     {
         $descriptor = new UsesDescriptor($data->getName());
         $descriptor->setDescription((string) $data->getDescription());

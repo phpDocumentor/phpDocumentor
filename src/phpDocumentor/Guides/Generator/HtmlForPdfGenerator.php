@@ -37,7 +37,7 @@ class HtmlForPdfGenerator
         $this->buildContext = $buildContext;
     }
 
-    public function generateHtmlForPdf()
+    public function generateHtmlForPdf() : void
     {
         $finder = new Finder();
         $finder->in($this->buildContext->getOutputFilesystem())
@@ -148,7 +148,7 @@ class HtmlForPdfGenerator
         );
     }
 
-    private function cleanupContent(string $content)
+    private function cleanupContent(string $content) : string
     {
         // remove internal anchors
         $content = preg_replace('#<a class="headerlink"([^>]+)>¶</a>#', '', $content);
