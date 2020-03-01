@@ -41,6 +41,8 @@ final class StopwatchMiddleware implements Middleware
 
     /**
      * Executes this middleware class.
+     *
+     * @param callable(Command): object $next
      */
     public function execute(Command $command, callable $next) : object
     {

@@ -23,6 +23,9 @@ use function class_exists;
 
 final class EmittingMiddleware implements Middleware
 {
+    /**
+     * @param callable(Command): object $next
+     */
     public function execute(Command $command, callable $next) : object
     {
         assert($command instanceof CreateCommand);

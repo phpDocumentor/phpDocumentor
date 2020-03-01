@@ -46,6 +46,8 @@ final class CacheMiddleware implements Middleware
      * Executes this middle ware class.
      * A middle ware class MUST return a File object or call the $next callable.
      *
+     * @param callable(Command): object $next
+     *
      * @return File
      *
      * @throws InvalidArgumentException

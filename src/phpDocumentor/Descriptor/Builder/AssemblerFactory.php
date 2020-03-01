@@ -81,8 +81,8 @@ class AssemblerFactory
     /**
      * Registers an assembler instance to this factory.
      *
-     * @param callable $matcher A callback function accepting the criteria as only parameter and which must
-     *     return a boolean.
+     * @param callable(object) : bool $matcher A callback function accepting the criteria as only parameter and which
+     *     must return a boolean.
      * @param AssemblerInterface $assembler An instance of the Assembler that will be returned if the callback returns
      *     true with the provided criteria.
      */
@@ -95,8 +95,8 @@ class AssemblerFactory
      * Registers an assembler instance to this factory that is to be executed after all other assemblers have been
      * checked.
      *
-     * @param callable $matcher A callback function accepting the criteria as only parameter and which must
-     *     return a boolean.
+     * @param callable(object) : bool $matcher A callback function accepting the criteria as only parameter and which
+     *     must return a boolean.
      * @param AssemblerInterface $assembler An instance of the Assembler that will be returned if the callback returns
      *     true with the provided criteria.
      */

@@ -157,6 +157,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
      */
     public function getFilters() : array
     {
+        /** @var Parsedown $parser */
         $parser = Parsedown::instance();
         $routeRenderer = $this->routeRenderer;
 

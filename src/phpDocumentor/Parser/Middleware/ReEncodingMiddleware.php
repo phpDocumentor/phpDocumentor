@@ -29,6 +29,9 @@ final class ReEncodingMiddleware implements Middleware
         $this->encoding = $encoding;
     }
 
+    /**
+     * @param callable(Command): object $next
+     */
     public function execute(Command $command, callable $next) : object
     {
         if (!$command instanceof CreateCommand) {

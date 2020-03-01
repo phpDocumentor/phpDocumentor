@@ -196,7 +196,7 @@ final class LinkRenderer
     /**
      * Returns a series of anchors and strings for the given collection of routable items.
      *
-     * @param iterable<mixed> $value
+     * @param iterable<array<Type>|Type|DescriptorAbstract|Fqsen|Path|string|iterable<mixed>> $value
      *
      * @return list<string>
      */

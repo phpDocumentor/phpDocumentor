@@ -28,7 +28,7 @@ use function sprintf;
      * A series of callables that take the configuration array as parameter and should return that array or a modified
      * version of it.
      *
-     * @var callable[]
+     * @var array<callable(mixed[], ?UriInterface) : mixed[]>
      */
     private $middlewares = [];
 
@@ -51,6 +51,8 @@ use function sprintf;
 
     /**
      * Adds a middleware callback that allows the consumer to alter the configuration array when it is constructed.
+     *
+     * @param callable(mixed[], ?UriInterface) : mixed[] $middleware
      */
     public function addMiddleware(callable $middleware) : void
     {

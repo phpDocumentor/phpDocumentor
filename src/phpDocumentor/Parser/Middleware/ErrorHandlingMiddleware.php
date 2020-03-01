@@ -32,6 +32,9 @@ final class ErrorHandlingMiddleware implements Middleware
         $this->logger = $logger;
     }
 
+    /**
+     * @param callable(Command): object $next
+     */
     public function execute(Command $command, callable $next) : object
     {
         assert($command instanceof CreateCommand);

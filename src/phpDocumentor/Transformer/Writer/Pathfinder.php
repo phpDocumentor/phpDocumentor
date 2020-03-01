@@ -29,7 +29,7 @@ final class Pathfinder
      * element. This method will silently fail if an invalid query was provided; in such a case the given object
      * is returned.
      *
-     * @param Traversable<string, mixed>|Descriptor $object
+     * @param Traversable<string, Descriptor>|Descriptor $object
      *
      * @return Traversable<mixed>|list<mixed>
      */
@@ -51,7 +51,7 @@ final class Pathfinder
     /**
      * Walks an object graph and/or array using a twig query string.
      *
-     * @param Traversable<string, mixed>|Descriptor $object
+     * @param Traversable<string, Descriptor>|Descriptor $object
      * @param string $query A path to walk separated by dots, i.e. `namespace.namespaces`.
      *
      * @return mixed
