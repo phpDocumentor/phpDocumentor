@@ -33,19 +33,26 @@ final class TemplateTest extends TestCase
 
     /**
      * @covers ::getName
+     * @covers ::getAuthor
+     * @covers ::setAuthor
      * @covers ::getDescription
+     * @covers ::setDescription
      * @covers ::getCopyright
-     * @covers ::getDescription
+     * @covers ::setCopyright
      * @covers ::getParameters
+     * @covers ::setParameter
      * @covers ::getVersion
+     * @covers ::setVersion
      * @covers ::offsetSet
      * @covers ::offsetGet
+     * @covers ::files
      */
     public function testConstructingATemplateWithAllProperties() : void
     {
         $parameter = new Parameter('key', 'value');
+        $files = $this->givenExampleMountManager();
 
-        $template = new Template('name', $this->givenExampleMountManager());
+        $template = new Template('name', $files);
         $template->setAuthor('Mike');
         $template->setCopyright('copyright');
         $template->setDescription('description');
@@ -61,11 +68,12 @@ final class TemplateTest extends TestCase
         $this->assertSame('description', $template->getDescription());
         $this->assertSame($parameter, $template->getParameters()['key']);
         $this->assertSame('1.0.0', $template->getVersion());
+        $this->assertSame($files, $template->files());
         $this->assertSame($transformation, $template['key']);
     }
 
     /**
-     * @covers ::offsetGet
+     * @covers ::offsetSet
      */
     public function testThatArrayElementsMayOnlyBeTransformations() : void
     {
@@ -100,6 +108,7 @@ final class TemplateTest extends TestCase
     }
 
     /**
+     * @covers ::offsetExists
      * @covers ::offsetUnset
      */
     public function testThatWeCanUnsetATransformation() : void
