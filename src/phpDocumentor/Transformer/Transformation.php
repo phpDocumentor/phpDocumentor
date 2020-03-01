@@ -58,20 +58,10 @@ class Transformation
     public function __construct(Template $template, string $query, string $writer, string $source, string $artifact)
     {
         $this->template = $template;
-        $this->setQuery($query);
-        $this->setWriter($writer);
-        $this->setSource($source);
-        $this->setArtifact($artifact);
-    }
-
-    /**
-     * Sets the query.
-     *
-     * @param string $query Free-form string with writer-specific values.
-     */
-    public function setQuery(string $query) : void
-    {
         $this->query = $query;
+        $this->writer = $writer;
+        $this->source = $source;
+        $this->artifact = $artifact;
     }
 
     /**
@@ -83,31 +73,11 @@ class Transformation
     }
 
     /**
-     * Sets the writer type and instantiates a writer.
-     *
-     * @param string $writer Name of writer to instantiate.
-     */
-    public function setWriter(string $writer) : void
-    {
-        $this->writer = $writer;
-    }
-
-    /**
      * Returns the class name of the associated writer.
      */
     public function getWriter() : string
     {
         return $this->writer;
-    }
-
-    /**
-     * Sets the source / type which the writer will use to generate artifacts from.
-     *
-     * @param string $source Free-form string with writer-specific meaning.
-     */
-    public function setSource(string $source) : void
-    {
-        $this->source = $source;
     }
 
     /**
@@ -121,20 +91,6 @@ class Transformation
     public function template() : Template
     {
         return $this->template;
-    }
-
-    /**
-     * Filename of the resulting artifact relative to the root.
-     *
-     * If the query results in a set of artifacts (multiple nodes / array);
-     * then this string must contain an identifying variable as returned by the
-     * writer.
-     *
-     * @param string $artifact Name of artifact to generate; usually a filepath.
-     */
-    public function setArtifact(string $artifact) : void
-    {
-        $this->artifact = $artifact;
     }
 
     /**

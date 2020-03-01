@@ -60,6 +60,14 @@ final class TransformationTest extends m\Adapter\Phpunit\MockeryTestCase
     }
 
     /**
+     * @covers ::template
+     */
+    public function testGetTemplate() : void
+    {
+        $this->assertSame($this->template, $this->fixture->template());
+    }
+
+    /**
      * @covers ::getQuery
      */
     public function testGetQuery() : void
@@ -135,6 +143,7 @@ final class TransformationTest extends m\Adapter\Phpunit\MockeryTestCase
      */
     public function testGetParametersWithKeyWithNonExistingName() : void
     {
+        $parameters = $this->givenAParameter();
         $this->assertSame([], $this->fixture->getParametersWithKey('somethingElse'));
     }
 
