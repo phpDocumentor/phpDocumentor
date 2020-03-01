@@ -19,6 +19,7 @@ use phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
+use Webmozart\Assert\Assert;
 use function ltrim;
 use function preg_split;
 use function strlen;
@@ -141,6 +142,8 @@ final class Twig extends WriterAbstract
     private function getTemplatePath(Transformation $transformation) : string
     {
         $parts = preg_split('~[\\\\|/]~', $transformation->getSource());
+
+        Assert::isArray($parts);
 
         if ($parts[0] !== 'templates') {
             return '';

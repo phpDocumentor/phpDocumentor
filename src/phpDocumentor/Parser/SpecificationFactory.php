@@ -34,6 +34,7 @@ final class SpecificationFactory implements FactoryInterface
      */
     public function create(array $globs, array $ignore, array $extensions) : SpecificationInterface
     {
+        /** @var ?Glob $pathSpec */
         $pathSpec = null;
         foreach ($globs as $path) {
             if ($pathSpec === null) {
@@ -44,6 +45,7 @@ final class SpecificationFactory implements FactoryInterface
             $pathSpec = $pathSpec->orSpecification(new Glob($path));
         }
 
+        /** @var ?Glob $ignoreSpec */
         $ignoreSpec = null;
         foreach ($ignore['paths'] ?? [] as $path) {
             if ($ignoreSpec === null) {

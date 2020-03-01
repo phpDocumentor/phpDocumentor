@@ -27,7 +27,7 @@ class PropertyDescriptor extends DescriptorAbstract implements
     /** @var ClassDescriptor|TraitDescriptor|null $parent */
     protected $parent;
 
-    /** @var Type $type */
+    /** @var Type|null $type */
     protected $type;
 
     /** @var string $default */

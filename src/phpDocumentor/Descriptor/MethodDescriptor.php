@@ -127,7 +127,6 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
         $this->arguments = Collection::fromClassString(ArgumentDescriptor::class);
 
         foreach ($arguments as $argument) {
-            assert($argument instanceof ArgumentDescriptor);
             $this->addArgument($argument->getName(), $argument);
         }
     }
@@ -231,7 +230,6 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
             return null;
         }
 
-        /** @var ClassDescriptor|Collection<InterfaceDescriptor>|Fqsen|string|null $parentClass */
         $parentClass = $associatedClass->getParent();
         if ($parentClass instanceof ClassDescriptor || $parentClass instanceof Collection) {
             // the parent of a class is always a class, but the parent of an interface is a collection of interfaces.
@@ -249,9 +247,9 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
 
         // also check all implemented interfaces next if the parent is a class and not an interface
         if ($associatedClass instanceof ClassDescriptor) {
-            /** @var InterfaceDescriptor $interface */
+            /** @var InterfaceDescriptor|Fqsen $interface */
             foreach ($associatedClass->getInterfaces() as $interface) {
-                if (!$interface instanceof InterfaceDescriptor) {
+                if ($interface instanceof Fqsen) {
                     continue;
                 }
 

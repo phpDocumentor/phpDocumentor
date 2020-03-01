@@ -156,7 +156,7 @@ final class Version2 implements ConfigurationInterface, Upgradable
      *
      * @param array<string, array<string, mixed>> $values
      *
-     * @return array<string, string|array<mixed>>
+     * @return array<string, array<int|string, mixed>|string>
      *
      * @todo not all options are included yet; finish this
      */

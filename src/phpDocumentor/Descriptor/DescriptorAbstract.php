@@ -382,7 +382,7 @@ abstract class DescriptorAbstract implements Filterable
      *
      * @param array<mixed> $arguments
      *
-     * @return Collection<mixed>|null
+     * @return Collection<TagDescriptor>|null
      */
     public function __call(string $name, array $arguments)
     {

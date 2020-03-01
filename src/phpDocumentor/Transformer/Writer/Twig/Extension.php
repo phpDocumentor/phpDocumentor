@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Writer\Twig;
 
+use ArrayIterator;
 use Parsedown;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\Descriptor;
@@ -189,11 +190,8 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             ),
             'sort' => new TwigFilter(
                 'sort_*',
-                static function (string $direction, $collection) {
-                    if (!$collection instanceof Collection) {
-                        return $collection;
-                    }
-
+                /** @var Collection<Descriptor> $collection */
+                static function (string $direction, Collection $collection) : ArrayIterator {
                     $iterator = $collection->getIterator();
                     $iterator->uasort(
                         static function (Descriptor $a, Descriptor $b) use ($direction) {

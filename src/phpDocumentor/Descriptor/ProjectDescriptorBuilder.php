@@ -83,11 +83,9 @@ class ProjectDescriptorBuilder
      *
      * @param Element|File|Tag|Argument $data
      *
-     * @return DescriptorAbstract|Collection<DescriptorAbstract>|null
-     *
      * @throws InvalidArgumentException If no Assembler could be found that matches the given data.
      */
-    public function buildDescriptor(object $data) : ?object
+    public function buildDescriptor(object $data) : ?Descriptor
     {
         $assembler = $this->getAssembler($data);
         if (!$assembler) {

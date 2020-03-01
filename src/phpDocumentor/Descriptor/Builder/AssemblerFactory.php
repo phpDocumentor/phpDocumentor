@@ -110,7 +110,7 @@ class AssemblerFactory
      *
      * @param Element|File|Tag|Argument $criteria
      */
-    public function get($criteria) : ?AssemblerInterface
+    public function get(object $criteria) : ?AssemblerInterface
     {
         /** @var AssemblerMatcher $candidate */
         foreach (array_merge($this->assemblers, $this->fallbackAssemblers) as $candidate) {

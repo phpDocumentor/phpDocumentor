@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor;
 
 use InvalidArgumentException;
-use phpDocumentor\Descriptor\Tag\BaseTypes\TypedVariableAbstract;
 use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
 use phpDocumentor\Reflection\Fqsen;
 use function ltrim;
@@ -255,10 +254,6 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
         try {
             /** @var Tag\PropertyDescriptor $propertyTag */
             foreach ($propertyTags as $propertyTag) {
-                if (!$propertyTag instanceof TypedVariableAbstract) {
-                    continue;
-                }
-
                 $property = new PropertyDescriptor();
                 $property->setName(ltrim($propertyTag->getVariableName(), '$'));
                 $property->setDescription($propertyTag->getDescription());

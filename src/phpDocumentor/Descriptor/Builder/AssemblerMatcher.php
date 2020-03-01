@@ -35,7 +35,7 @@ final class AssemblerMatcher
     /**
      * @param Element|File|Tag|Argument $criteria
      */
-    public function match($criteria) : bool
+    public function match(object $criteria) : bool
     {
         $matcher = $this->matcher;
 

@@ -18,6 +18,7 @@ use League\Uri\Exceptions\SyntaxError;
 use League\Uri\Uri;
 use League\Uri\UriInfo;
 use phpDocumentor\Descriptor\Descriptor;
+use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Path;
 use phpDocumentor\Reflection\Fqsen;
@@ -26,6 +27,7 @@ use phpDocumentor\Reflection\Types\Null_;
 use phpDocumentor\Reflection\Types\Nullable;
 use phpDocumentor\Reflection\Types\Object_;
 use phpDocumentor\Transformer\Router\Router;
+use Webmozart\Assert\Assert;
 use function array_fill;
 use function count;
 use function current;
@@ -121,7 +123,7 @@ final class LinkRenderer
     }
 
     /**
-     * @param array<Type>|Type|Descriptor|Fqsen|Path|string|iterable<mixed> $value
+     * @param array<Type>|Type|DescriptorAbstract|Fqsen|Path|string|iterable<mixed> $value
      *
      * @return string[]|string
      */
@@ -209,7 +211,9 @@ final class LinkRenderer
     }
 
     /**
-     * @param string|Path|Object_|Descriptor|Fqsen $node
+     * @param string|Path|Object_|DescriptorAbstract|Fqsen $node
+     *
+     * @psalm-param string $presentation
      */
     private function renderLink($node, string $presentation) : string
     {
@@ -247,6 +251,7 @@ final class LinkRenderer
         }
 
         if ($node instanceof Descriptor) {
+            Assert::isInstanceOf($node, DescriptorAbstract::class);
             try {
                 $generatedUrl = $this->router->generate($node);
             } catch (InvalidArgumentException $e) {

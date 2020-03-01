@@ -16,7 +16,6 @@ namespace phpDocumentor\Transformer\Writer;
 use Doctrine\RST\Builder;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
-use phpDocumentor\Descriptor\GuideSetDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\VersionDescriptor;
 use phpDocumentor\Dsn;
@@ -66,10 +65,6 @@ final class RenderGuide extends WriterAbstract
         /** @var VersionDescriptor $version */
         foreach ($project->getVersions() as $version) {
             foreach ($version->getDocumentationSets() as $documentationSet) {
-                if (!$documentationSet instanceof GuideSetDescriptor) {
-                    continue;
-                }
-
                 $buildContext = new BuildContext(
                     $output,
                     $documentationSet->getOutput(),
