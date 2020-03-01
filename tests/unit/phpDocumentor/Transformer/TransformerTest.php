@@ -77,7 +77,6 @@ final class TransformerTest extends MockeryTestCase
         $writerCollectionMock = m::mock(Collection::class);
         $writerCollectionMock->shouldIgnoreMissing();
         $flySystemFactory = m::mock(FlySystemFactory::class);
-        $flySystemFactory->shouldReceive('create')->andReturn($this->faker()->fileSystem());
 
         $fixture = new Transformer(
             $templateCollectionMock,
@@ -92,14 +91,19 @@ final class TransformerTest extends MockeryTestCase
     /**
      * @covers ::getTarget
      * @covers ::setTarget
+     * @covers ::destination
      */
     public function testSettingAndGettingATarget() : void
     {
+        $filesystem = $this->faker()->fileSystem();
+        $this->flySystemFactory->shouldReceive('create')->andReturn($filesystem);
+
         $this->assertEquals('', $this->fixture->getTarget());
 
         $this->fixture->setTarget(__DIR__);
 
         $this->assertEquals(__DIR__, $this->fixture->getTarget());
+        $this->assertEquals($filesystem, $this->fixture->destination());
     }
 
     /**

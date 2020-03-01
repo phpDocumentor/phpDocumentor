@@ -122,6 +122,7 @@ class Transformer implements CompilerPassInterface
     public function getTemplatesDirectory() : Filesystem
     {
         $dsnString = $this->getTemplates()->getTemplatesPath();
+
         try {
             $filesystem = $this->flySystemFactory->create(Dsn::createFromString($dsnString));
         } catch (InvalidArgumentException $e) {
@@ -165,28 +166,6 @@ class Transformer implements CompilerPassInterface
         Dispatcher::getInstance()->dispatch($postTransformEvent, self::EVENT_POST_TRANSFORM);
 
         $this->logger->log(LogLevel::NOTICE, 'Finished transformation process');
-    }
-
-    /**
-     * Dispatches a logging request.
-     *
-     * This method can be used by writers to output logs without having to know anything about
-     * the logging mechanism of phpDocumentor.
-     */
-    public function log(string $message, string $priority = LogLevel::INFO) : void
-    {
-        $this->logger->log($priority, $message);
-    }
-
-    /**
-     * Dispatches a logging request to log a debug message.
-     *
-     * This method can be used by writers to output logs without having to know anything about
-     * the logging mechanism of phpDocumentor.
-     */
-    public function debug(string $message) : void
-    {
-        $this->log($message, LogLevel::DEBUG);
     }
 
     /**
