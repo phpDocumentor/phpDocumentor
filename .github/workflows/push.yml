@@ -4,19 +4,31 @@ on:
       - master
   pull_request:
 name: Qa workflow
+env:
+  extensions: mbstring, intl, iconv, libxml, dom, json, simplexml, zlib, fileinfo
+  key: cache-v1 # can be any string, change to clear the extension cache.
+  defaultPHPVersion: '7.2'
 jobs:
   setup:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - name: Restore/cache vendor folder
+
+      - name: Setup cache environment
+        id: cache-env
+        uses: shivammathur/cache-extensions@v1
+        with:
+          php-version: ${{ env.defaultPHPVersion }}
+          extensions: ${{ env.extensions }}
+          key: ${{ env.key }}
+
+      - name: Cache extensions
         uses: actions/cache@v1
         with:
-          path: vendor
-          key: all-build-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            all-build-${{ hashFiles('**/composer.lock') }}
-            all-build-
+          path: ${{ steps.cache-env.outputs.dir }}
+          key: ${{ steps.cache-env.outputs.key }}
+          restore-keys: ${{ steps.cache-env.outputs.key }}
+
       - name: Restore/cache tools folder
         uses: actions/cache@v1
         with:
@@ -25,12 +37,30 @@ jobs:
           restore-keys: |
             all-tools-${{ github.sha }}-
             all-tools-
-      - name: composer
-        uses: docker://composer
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@master
         with:
-          args: install --no-interaction --prefer-dist --optimize-autoloader
+          php-version: ${{ env.defaultPHPVersion }}
+          extensions: ${{ env.extensions }}
+          ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
+          tools: pecl
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache composer dependencies
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install Composer dependencies
+        run: |
+          composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+
       - name: composer-require-checker
         uses: docker://phpga/composer-require-checker-ga
         env:
@@ -40,7 +70,7 @@ jobs:
       - name: Install phive
         run: make install-phive
       - name: Install PHAR dependencies
-        run: tools/phive.phar --no-progress install --copy --trust-gpg-keys 4AA394086372C20A,D2CCAC42F6295E7D,E82B2FB314E9906E --force-accept-unsigned
+        run: tools/phive.phar --no-progress install --copy --trust-gpg-keys 4AA394086372C20A,D2CCAC42F6295E7D,E82B2FB314E9906E,8A03EA3B385DBAA1 --force-accept-unsigned
 
   phpunit-with-coverage:
     runs-on: ubuntu-latest
@@ -48,14 +78,22 @@ jobs:
     needs: setup
     steps:
     - uses: actions/checkout@master
-    - name: Restore/cache vendor folder
+
+    - name: Setup cache environment
+      id: cache-env
+      uses: shivammathur/cache-extensions@v1
+      with:
+        php-version: ${{ env.defaultPHPVersion }}
+        extensions: ${{ env.extensions }}
+        key: ${{ env.key }}
+
+    - name: Cache extensions
       uses: actions/cache@v1
       with:
-        path: vendor
-        key: all-build-${{ hashFiles('**/composer.lock') }}
-        restore-keys: |
-          all-build-${{ hashFiles('**/composer.lock') }}
-          all-build-
+        path: ${{ steps.cache-env.outputs.dir }}
+        key: ${{ steps.cache-env.outputs.key }}
+        restore-keys: ${{ steps.cache-env.outputs.key }}
+
     - name: Restore/cache tools folder
       uses: actions/cache@v1
       with:
@@ -64,6 +102,30 @@ jobs:
         restore-keys: |
           all-tools-${{ github.sha }}-
           all-tools-
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@master
+      with:
+        php-version: ${{ env.defaultPHPVersion }}
+        extensions: ${{ env.extensions }}
+        ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
+        tools: pecl, psalm
+
+    - name: Get composer cache directory
+      id: composer-cache
+      run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+    - name: Cache composer dependencies
+      uses: actions/cache@v1
+      with:
+        path: ${{ steps.composer-cache.outputs.dir }}
+        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+        restore-keys: ${{ runner.os }}-composer-
+
+    - name: Install Composer dependencies
+      run: |
+        composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+
     - name: PHPUnit
       uses: docker://phpdoc/phpunit-ga:latest
       with:
@@ -98,20 +160,116 @@ jobs:
       - setup
     steps:
       - uses: actions/checkout@master
-      - name: Restore/cache vendor folder
+
+      - name: Setup cache environment
+        id: cache-env
+        uses: shivammathur/cache-extensions@v1
+        with:
+          php-version: ${{ env.defaultPHPVersion }}
+          extensions: ${{ env.extensions }}
+          key: ${{ env.key }}
+
+      - name: Cache extensions
         uses: actions/cache@v1
         with:
-          path: vendor
-          key: all-build-${{ hashFiles('**/composer.lock') }}
+          path: ${{ steps.cache-env.outputs.dir }}
+          key: ${{ steps.cache-env.outputs.key }}
+          restore-keys: ${{ steps.cache-env.outputs.key }}
+
+      - name: Restore/cache tools folder
+        uses: actions/cache@v1
+        with:
+          path: tools
+          key: all-tools-${{ github.sha }}
           restore-keys: |
-            all-build-${{ hashFiles('**/composer.lock') }}
-            all-build-
+            all-tools-${{ github.sha }}-
+            all-tools-
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@master
+        with:
+          php-version: ${{ env.defaultPHPVersion }}
+          extensions: ${{ env.extensions }}
+          ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
+          tools: pecl
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache composer dependencies
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install Composer dependencies
+        run: |
+          composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+
       - name: PHPStan
         uses: phpDocumentor/phpstan-ga@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           args: analyse src tests --configuration phpstan.neon
+
+  psalm:
+    runs-on: ubuntu-latest
+    needs: [setup]
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Setup cache environment
+        id: cache-env
+        uses: shivammathur/cache-extensions@v1
+        with:
+          php-version: ${{ env.defaultPHPVersion }}
+          extensions: ${{ env.extensions }}
+          key: ${{ env.key }}
+
+      - name: Cache extensions
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.cache-env.outputs.dir }}
+          key: ${{ steps.cache-env.outputs.key }}
+          restore-keys: ${{ steps.cache-env.outputs.key }}
+
+      - name: Restore/cache tools folder
+        uses: actions/cache@v1
+        with:
+          path: tools
+          key: all-tools-${{ github.sha }}
+          restore-keys: |
+            all-tools-${{ github.sha }}-
+            all-tools-
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@master
+        with:
+          php-version: ${{ env.defaultPHPVersion }}
+          extensions: ${{ env.extensions }}
+          ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
+          tools: pecl, psalm
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache composer dependencies
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install Composer dependencies
+        run: |
+          composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+
+      - name: Psalm
+        run: psalm --output-format=github
 
   build-phar:
     runs-on: ubuntu-latest
@@ -120,14 +278,54 @@ jobs:
       - setup
     steps:
       - uses: actions/checkout@master
-      - name: Restore/cache vendor folder
+
+      - name: Setup cache environment
+        id: cache-env
+        uses: shivammathur/cache-extensions@v1
+        with:
+          php-version: ${{ env.defaultPHPVersion }}
+          extensions: ${{ env.extensions }}
+          key: ${{ env.key }}
+
+      - name: Cache extensions
         uses: actions/cache@v1
         with:
-          path: vendor
-          key: all-build-${{ hashFiles('**/composer.lock') }}
+          path: ${{ steps.cache-env.outputs.dir }}
+          key: ${{ steps.cache-env.outputs.key }}
+          restore-keys: ${{ steps.cache-env.outputs.key }}
+
+      - name: Restore/cache tools folder
+        uses: actions/cache@v1
+        with:
+          path: tools
+          key: all-tools-${{ github.sha }}
           restore-keys: |
-            all-build-${{ hashFiles('**/composer.lock') }}
-            all-build-
+            all-tools-${{ github.sha }}-
+            all-tools-
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@master
+        with:
+          php-version: ${{ env.defaultPHPVersion }}
+          extensions: ${{ env.extensions }}
+          ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
+          tools: pecl
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache composer dependencies
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install Composer dependencies
+        run: |
+          composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+
       - name: warm cache
         uses: docker://phpdoc/phar-ga:master
         with:
@@ -229,21 +427,54 @@ jobs:
       - setup
     steps:
       - uses: actions/checkout@master
-      - name: Restore/cache vendor folder
+
+      - name: Setup cache environment
+        id: cache-env
+        uses: shivammathur/cache-extensions@v1
+        with:
+          php-version: ${{ env.defaultPHPVersion }}
+          extensions: ${{ env.extensions }}
+          key: ${{ env.key }}
+
+      - name: Cache extensions
         uses: actions/cache@v1
         with:
-          path: vendor
-          key: all-build-${{ hashFiles('**/composer.lock') }}
+          path: ${{ steps.cache-env.outputs.dir }}
+          key: ${{ steps.cache-env.outputs.key }}
+          restore-keys: ${{ steps.cache-env.outputs.key }}
+
+      - name: Restore/cache tools folder
+        uses: actions/cache@v1
+        with:
+          path: tools
+          key: all-tools-${{ github.sha }}
           restore-keys: |
-            all-build-${{ hashFiles('**/composer.lock') }}
-            all-build-
+            all-tools-${{ github.sha }}-
+            all-tools-
+
       - name: Setup PHP
         uses: shivammathur/setup-php@master
         with:
-          php-version: '7.2'
-          extensions: mbstring, intl, iconv, libxml, dom, json, simplexml, zlib
+          php-version: ${{ env.defaultPHPVersion }}
+          extensions: ${{ env.extensions }}
           ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
           tools: pecl
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache composer dependencies
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install Composer dependencies
+        run: |
+          composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+
       - name: Build example project using Clean template
         run: ./bin/phpdoc --template=clean -vvv --config=data/examples/MariosPizzeria/phpdoc.xml --target=build/clean
       - name: Build example project using Default template
@@ -255,6 +486,8 @@ jobs:
     runs-on: ${{ matrix.operating-system }}
     strategy:
       matrix:
+        php-versions:
+          - '7.2'
         operating-system:
           - ubuntu-16.04
           - windows-latest
@@ -264,21 +497,54 @@ jobs:
       - e2e
     steps:
       - uses: actions/checkout@master
-      - name: Restore/cache vendor folder
+
+      - name: Setup cache environment
+        id: cache-env
+        uses: shivammathur/cache-extensions@v1
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions: ${{ env.extensions }}
+          key: ${{ env.key }}
+
+      - name: Cache extensions
         uses: actions/cache@v1
         with:
-          path: vendor
-          key: all-build-${{ hashFiles('**/composer.lock') }}
+          path: ${{ steps.cache-env.outputs.dir }}
+          key: ${{ steps.cache-env.outputs.key }}
+          restore-keys: ${{ steps.cache-env.outputs.key }}
+
+      - name: Restore/cache tools folder
+        uses: actions/cache@v1
+        with:
+          path: tools
+          key: all-tools-${{ github.sha }}
           restore-keys: |
-            all-build-${{ hashFiles('**/composer.lock') }}
-            all-build-
+            all-tools-${{ github.sha }}-
+            all-tools-
+
       - name: Setup PHP
         uses: shivammathur/setup-php@master
         with:
-          php-version: '7.2'
-          extensions: mbstring, intl, iconv, libxml, dom, json, simplexml, zlib
+          php-version: ${{ matrix.php-versions }}
+          extensions: ${{ env.extensions }}
           ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
           tools: pecl
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache composer dependencies
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install Composer dependencies
+        run: |
+          composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+
       - name: Build example project using Clean template
         run: ./bin/phpdoc --template=clean --config=data/examples/MariosPizzeria/phpdoc.xml --target=build/clean
       - name: Build example project using Default template
@@ -302,20 +568,29 @@ jobs:
           - operating-system: 'ubuntu-latest'
             php-versions: '7.2'
     name: Unit tests [${{ matrix.php-versions }} | ${{ matrix.operating-system }}]
+
     needs:
     - phpunit-with-coverage
     - phpstan
     - codestyle
     steps:
     - uses: actions/checkout@master
-    - name: Restore/cache vendor folder
+
+    - name: Setup cache environment
+      id: cache-env
+      uses: shivammathur/cache-extensions@v1
+      with:
+        php-version: ${{ matrix.php-versions }}
+        extensions: ${{ env.extensions }}
+        key: ${{ env.key }}
+
+    - name: Cache extensions
       uses: actions/cache@v1
       with:
-        path: vendor
-        key: all-build-${{ hashFiles('**/composer.lock') }}
-        restore-keys: |
-          all-build-${{ hashFiles('**/composer.lock') }}
-          all-build-
+        path: ${{ steps.cache-env.outputs.dir }}
+        key: ${{ steps.cache-env.outputs.key }}
+        restore-keys: ${{ steps.cache-env.outputs.key }}
+
     - name: Restore/cache tools folder
       uses: actions/cache@v1
       with:
@@ -324,13 +599,30 @@ jobs:
         restore-keys: |
           all-tools-${{ github.sha }}-
           all-tools-
+
     - name: Setup PHP
       uses: shivammathur/setup-php@master
       with:
         php-version: ${{ matrix.php-versions }}
-        extensions: mbstring, intl, iconv, libxml, dom, json, simplexml, zlib
+        extensions: ${{ env.extensions }}
         ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
         tools: pecl
+
+    - name: Get composer cache directory
+      id: composer-cache
+      run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+    - name: Cache composer dependencies
+      uses: actions/cache@v1
+      with:
+        path: ${{ steps.composer-cache.outputs.dir }}
+        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+        restore-keys: ${{ runner.os }}-composer-
+
+    - name: Install Composer dependencies
+      run: |
+        composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+
     - name: Run PHPUnit
       run: php tools/phpunit.phar --testsuite=unit,integration
 
@@ -359,14 +651,22 @@ jobs:
       - codestyle
     steps:
       - uses: actions/checkout@master
-      - name: Restore/cache vendor folder
+
+      - name: Setup cache environment
+        id: cache-env
+        uses: shivammathur/cache-extensions@v1
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions: ${{ env.extensions }}
+          key: ${{ env.key }}
+
+      - name: Cache extensions
         uses: actions/cache@v1
         with:
-          path: vendor
-          key: all-build-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            all-build-${{ hashFiles('**/composer.lock') }}
-            all-build-
+          path: ${{ steps.cache-env.outputs.dir }}
+          key: ${{ steps.cache-env.outputs.key }}
+          restore-keys: ${{ steps.cache-env.outputs.key }}
+
       - name: Restore/cache tools folder
         uses: actions/cache@v1
         with:
@@ -375,21 +675,40 @@ jobs:
           restore-keys: |
             all-tools-${{ github.sha }}-
             all-tools-
+
       - name: Setup PHP
         uses: shivammathur/setup-php@master
         with:
           php-version: ${{ matrix.php-versions }}
-          extensions: mbstring, intl, iconv, libxml, dom, json, simplexml, zlib, fileinfo
+          extensions: ${{ env.extensions }}
           ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
           tools: pecl
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache composer dependencies
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install Composer dependencies
+        run: |
+          composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+
       - name: Download PHAR file
         if: matrix.profile == 'phar'
         uses: actions/download-artifact@v1
         with:
           name: phpDocumentor.phar
           path: build
+
       - name: Run Behat
         run: php tools/behat -p ${{ matrix.profile }}
+
       - name: Run PHPUnit functional
         run: php tools/phpunit.phar --testsuite=functional
 

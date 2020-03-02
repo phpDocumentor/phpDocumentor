@@ -32,6 +32,10 @@ phpcbf:
 phpstan:
 	docker run -it --rm -v${CURDIR}:/opt/project -w /opt/project phpdoc/phpstan-ga:latest analyse src tests --configuration phpstan.neon ${ARGS}
 
+.PHONY: psalm
+psalm:
+	docker run -it --rm -v${CURDIR}:/data -w /data php:7.2 ./tools/psalm
+
 .PHONY: test
 test: unit-test
 	docker run -it --rm -v${CURDIR}:/data -w /data php:7.2 -f ./tests/coverage-checker.php 69
