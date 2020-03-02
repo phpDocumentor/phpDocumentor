@@ -96,6 +96,8 @@
                 <!-- Either current() works on something else than an array and Psalm is wrong or this methods *can* return an object,
                 but just happen not to in this specific call -->
                 <referencedFunction name="current"/>
+                <!-- psalm bug -->
+                <referencedFunction name="phpDocumentor\Descriptor\Collection::offsetSet" />
             </errorLevel>
         </InvalidArgument>
 
