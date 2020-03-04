@@ -18,6 +18,7 @@ use phpDocumentor\Reflection\Middleware\Command;
 use phpDocumentor\Reflection\Middleware\Middleware;
 use phpDocumentor\Reflection\Php\Factory\File\CreateCommand;
 use Symfony\Component\String\ByteString;
+use Webmozart\Assert\Assert;
 
 final class ReEncodingMiddleware implements Middleware
 {
@@ -34,9 +35,7 @@ final class ReEncodingMiddleware implements Middleware
      */
     public function execute(Command $command, callable $next) : object
     {
-        if (!$command instanceof CreateCommand) {
-            return $next($command);
-        }
+        Assert::isInstanceOf($command, CreateCommand::class);
 
         $file = new ReEncodedFile(
             $command->getFile()->path(),

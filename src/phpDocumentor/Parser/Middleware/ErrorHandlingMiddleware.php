@@ -20,7 +20,7 @@ use phpDocumentor\Reflection\Php\File;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Throwable;
-use function assert;
+use Webmozart\Assert\Assert;
 
 final class ErrorHandlingMiddleware implements Middleware
 {
@@ -37,7 +37,7 @@ final class ErrorHandlingMiddleware implements Middleware
      */
     public function execute(Command $command, callable $next) : object
     {
-        assert($command instanceof CreateCommand);
+        Assert::isInstanceOf($command, CreateCommand::class);
 
         $filename = $command->getFile()->path();
         $this->log('Starting to parse file: ' . $filename);

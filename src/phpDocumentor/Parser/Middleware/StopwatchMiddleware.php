@@ -15,9 +15,11 @@ namespace phpDocumentor\Parser\Middleware;
 
 use phpDocumentor\Reflection\Middleware\Command;
 use phpDocumentor\Reflection\Middleware\Middleware;
+use phpDocumentor\Reflection\Php\Factory\File\CreateCommand;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Symfony\Component\Stopwatch\Stopwatch;
+use Webmozart\Assert\Assert;
 use function end;
 use function number_format;
 use function sprintf;
@@ -46,6 +48,8 @@ final class StopwatchMiddleware implements Middleware
      */
     public function execute(Command $command, callable $next) : object
     {
+        Assert::isInstanceOf($command, CreateCommand::class);
+
         $result = $next($command);
 
         $lap       = $this->stopwatch->lap('parser.parse');

@@ -25,7 +25,7 @@ final class ProvideTemplateOverridePathMiddleware implements MiddlewareInterface
      *
      * @return array<string, array<string, array<string, mixed>>>
      */
-    public function __invoke(array $configuration, ?UriInterface $uri) : array
+    public function __invoke(array $configuration, ?UriInterface $uri = null) : array
     {
         $path = $this->normalizePath($uri, new Path('.phpdoc/template'));
         if (file_exists((string) $path)) {

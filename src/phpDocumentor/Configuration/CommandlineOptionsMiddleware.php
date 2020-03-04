@@ -50,7 +50,7 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
      *
      * @return array<string, array<string, array<string, mixed>>>
      */
-    public function __invoke(array $configuration, ?UriInterface $uri) : array
+    public function __invoke(array $configuration, ?UriInterface $uri = null) : array
     {
         $configuration = $this->overwriteDestinationFolder($configuration);
         $configuration = $this->disableCache($configuration);

@@ -28,7 +28,6 @@ final class AssemblerMatcher
 
     /**
      * @param Matcher<mixed> $matcher
-     * @param AssemblerInterface $assembler
      */
     public function __construct(Matcher $matcher, AssemblerInterface $assembler)
     {

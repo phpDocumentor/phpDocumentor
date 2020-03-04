@@ -18,7 +18,7 @@ use phpDocumentor\Parser\Event\PreFileEvent;
 use phpDocumentor\Reflection\Middleware\Command;
 use phpDocumentor\Reflection\Middleware\Middleware;
 use phpDocumentor\Reflection\Php\Factory\File\CreateCommand;
-use function assert;
+use Webmozart\Assert\Assert;
 use function class_exists;
 
 final class EmittingMiddleware implements Middleware
@@ -28,7 +28,7 @@ final class EmittingMiddleware implements Middleware
      */
     public function execute(Command $command, callable $next) : object
     {
-        assert($command instanceof CreateCommand);
+        Assert::isInstanceOf($command, CreateCommand::class);
 
         if (class_exists(Dispatcher::class)) {
             Dispatcher::getInstance()->dispatch(

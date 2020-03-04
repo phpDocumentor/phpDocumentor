@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Configuration;
 
-
 use League\Uri\Contracts\UriInterface;
 
 interface MiddlewareInterface
@@ -23,5 +22,5 @@ interface MiddlewareInterface
      *
      * @return array<string, array<string, array<string, mixed>>>
      */
-    public function __invoke(array $configuration, ?UriInterface $uri) : array;
+    public function __invoke(array $configuration, ?UriInterface $uri = null) : array;
 }
