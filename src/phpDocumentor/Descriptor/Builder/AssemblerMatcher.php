@@ -20,17 +20,17 @@ use phpDocumentor\Reflection\Php\File;
 
 final class AssemblerMatcher
 {
-    /** @var callable(object) : bool */
+    /** @var Matcher<mixed> */
     private $matcher;
 
     /** @var AssemblerInterface */
     private $assembler;
 
     /**
-     * @param callable(object) : bool $matcher
+     * @param Matcher<mixed> $matcher
      * @param AssemblerInterface $assembler
      */
-    public function __construct(callable $matcher, AssemblerInterface $assembler)
+    public function __construct(Matcher $matcher, AssemblerInterface $assembler)
     {
         $this->matcher   = $matcher;
         $this->assembler = $assembler;

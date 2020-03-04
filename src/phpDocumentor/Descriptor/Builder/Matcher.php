@@ -17,7 +17,7 @@ final class Matcher
     /**
      * @param class-string<StaticT> $type
      *
-     * @return static<StaticT>
+     * @return Matcher<StaticT>
      *
      * @template StaticT
      */
