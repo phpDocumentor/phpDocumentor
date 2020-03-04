@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Configuration;
 
+use League\Uri\Contracts\UriInterface;
 use phpDocumentor\Dsn;
 use phpDocumentor\Path;
 use function array_map;
@@ -23,7 +24,7 @@ use function end;
 use function explode;
 use function implode;
 
-final class CommandlineOptionsMiddleware
+final class CommandlineOptionsMiddleware implements MiddlewareInterface
 {
     /** @var array<string|string[]> */
     private $options;
@@ -49,7 +50,7 @@ final class CommandlineOptionsMiddleware
      *
      * @return array<string, array<string, array<string, mixed>>>
      */
-    public function __invoke(array $configuration) : array
+    public function __invoke(array $configuration, ?UriInterface $uri) : array
     {
         $configuration = $this->overwriteDestinationFolder($configuration);
         $configuration = $this->disableCache($configuration);

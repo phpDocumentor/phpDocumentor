@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Configuration;
 
-use League\Uri\Uri;
+use League\Uri\Contracts\UriInterface;
 use phpDocumentor\Dsn;
 use phpDocumentor\Path;
 use phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory;
 use function file_exists;
 
-final class ProvideTemplateOverridePathMiddleware
+final class ProvideTemplateOverridePathMiddleware implements MiddlewareInterface
 {
     /** @var EnvironmentFactory */
     private $environmentFactory;
@@ -21,11 +21,11 @@ final class ProvideTemplateOverridePathMiddleware
     }
 
     /**
-     * @param array<string, array<string, array<mixed>>> $configuration
+     * @param array<string, array<string, array<string, mixed>>> $configuration
      *
-     * @return array<string, array<string, array<mixed>>>
+     * @return array<string, array<string, array<string, mixed>>>
      */
-    public function __invoke(array $configuration, ?Uri $uri) : array
+    public function __invoke(array $configuration, ?UriInterface $uri) : array
     {
         $path = $this->normalizePath($uri, new Path('.phpdoc/template'));
         if (file_exists((string) $path)) {
@@ -35,7 +35,7 @@ final class ProvideTemplateOverridePathMiddleware
         return $configuration;
     }
 
-    public function normalizePath(?Uri $uri, Path $path) : Path
+    public function normalizePath(?UriInterface $uri, Path $path) : Path
     {
         if ($uri === null) {
             return $path;
