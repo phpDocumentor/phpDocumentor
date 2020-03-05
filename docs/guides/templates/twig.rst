@@ -1,9 +1,9 @@
 Using twig
 ==========
 
-phpDocumentor provides the `Twig 1.x engine`_ as a rendering engine for templates.
+phpDocumentor provides the `Twig 2.x engine`_ as a rendering engine for templates.
 
-.. _Twig 1.x engine: https://twig.symfony.com/doc/1.x/
+.. _Twig 2.x engine: https://twig.symfony.com/doc/2.x/
 
 Configuration
 -------------

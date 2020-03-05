@@ -7,8 +7,3 @@ References
    phpdoc/index
    configuration
    commands/index
-
-.. toctree::
-   :hidden:
-
-   writers/index

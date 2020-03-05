@@ -8,11 +8,8 @@ Guides
    types
    inheritance
    running-phpdocumentor
-   manuals/index
 
 .. toctree::
    :hidden:
 
-   project-integration
    templates
-   service-providers
