@@ -5,6 +5,6 @@ Internals
    :maxdepth: 2
 
    project-management
+   configuration
    flow
    caching
-   contructing-the-ast
