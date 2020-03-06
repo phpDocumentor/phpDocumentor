@@ -87,7 +87,7 @@ class MethodAssemblerTest extends MockeryTestCase
         $this->assertSame($expectedFqsen, (string) $descriptor->getFullyQualifiedStructuralElementName());
         $this->assertSame($methodName, $descriptor->getName());
         $this->assertSame('\\' . $namespace, $descriptor->getNamespace());
-        $this->assertSame('protected', (string) $descriptor->getVisibility());
+        $this->assertSame('protected', $descriptor->getVisibility());
         $this->assertFalse($descriptor->isFinal());
         $this->assertFalse($descriptor->isAbstract());
         $this->assertFalse($descriptor->isStatic());

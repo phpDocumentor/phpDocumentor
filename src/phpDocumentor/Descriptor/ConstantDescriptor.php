@@ -22,7 +22,9 @@ use Webmozart\Assert\Assert;
 /**
  * Descriptor representing a constant
  */
-class ConstantDescriptor extends DescriptorAbstract implements Interfaces\ConstantInterface
+class ConstantDescriptor extends DescriptorAbstract implements
+    Interfaces\ConstantInterface,
+    Interfaces\VisibilityInterface
 {
     /** @var ClassDescriptor|InterfaceDescriptor|null $parent */
     protected $parent;
@@ -32,6 +34,9 @@ class ConstantDescriptor extends DescriptorAbstract implements Interfaces\Consta
 
     /** @var string $value */
     protected $value = '';
+
+    /** @var string $visibility */
+    protected $visibility = 'public';
 
     /**
      * Registers a parent class or interface with this constant.
@@ -147,5 +152,15 @@ class ConstantDescriptor extends DescriptorAbstract implements Interfaces\Consta
         }
 
         return null;
+    }
+
+    public function setVisibility(string $visibility) : void
+    {
+        $this->visibility = $visibility;
+    }
+
+    public function getVisibility() : string
+    {
+        return $this->visibility;
     }
 }

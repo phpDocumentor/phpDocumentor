@@ -66,7 +66,7 @@ final class PropertyAssemblerTest extends MockeryTestCase
         $this->assertSame($expectedFqsen, (string) $descriptor->getFullyQualifiedStructuralElementName());
         $this->assertSame($propertyName, $descriptor->getName());
         $this->assertSame('\\' . $namespace, $descriptor->getNamespace());
-        $this->assertSame('protected', (string) $descriptor->getVisibility());
+        $this->assertSame('protected', $descriptor->getVisibility());
         $this->assertSame('string', (string) $descriptor->getType());
         $this->assertFalse($descriptor->isStatic());
     }

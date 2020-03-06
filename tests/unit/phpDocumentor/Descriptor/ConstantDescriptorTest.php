@@ -436,4 +436,17 @@ final class ConstantDescriptorTest extends MockeryTestCase
 
         return $result;
     }
+
+    /**
+     * @covers ::getVisibility
+     * @covers ::setVisibility
+     */
+    public function testSettingAndGettingVisibility() : void
+    {
+        $this->assertEquals('public', $this->fixture->getVisibility());
+
+        $this->fixture->setVisibility('private');
+
+        $this->assertEquals('private', $this->fixture->getVisibility());
+    }
 }
