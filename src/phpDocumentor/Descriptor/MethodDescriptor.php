@@ -233,7 +233,8 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
         $parentClass = $associatedClass->getParent();
         if ($parentClass instanceof ClassDescriptor || $parentClass instanceof Collection) {
             // the parent of a class is always a class, but the parent of an interface is a collection of interfaces.
-            $parents = $parentClass instanceof ClassDescriptor ? [$parentClass] : $parentClass->getAll();
+            $parents = $parentClass instanceof ClassDescriptor ? [$parentClass] :
+                $parentClass->filter(InterfaceDescriptor::class);
             foreach ($parents as $parent) {
                 /** @var MethodDescriptor|null $parentMethod */
                 $parentMethod = $parent->getMethods()->fetch($this->getName());
