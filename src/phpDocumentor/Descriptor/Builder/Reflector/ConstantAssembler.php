@@ -44,6 +44,7 @@ class ConstantAssembler extends AssemblerAbstract
         $this->assembleDocBlock($data->getDocBlock(), $constantDescriptor);
 
         $constantDescriptor->setLine($data->getLocation()->getLineNumber());
+        $constantDescriptor->setVisibility((string) $data->getVisibility() ?: 'public');
 
         return $constantDescriptor;
     }

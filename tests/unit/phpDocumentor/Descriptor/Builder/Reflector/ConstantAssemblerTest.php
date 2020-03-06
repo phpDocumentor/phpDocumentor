@@ -67,5 +67,6 @@ DOCBLOCK
         );
         $this->assertSame('\\' . $namespace, $descriptor->getNamespace());
         $this->assertSame($pi, $descriptor->getValue());
+        $this->assertSame('public', $descriptor->getVisibility());
     }
 }
