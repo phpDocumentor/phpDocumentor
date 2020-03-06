@@ -29,6 +29,7 @@ use function array_unshift;
 use function count;
 use function str_replace;
 use function strtolower;
+use function var_export;
 
 /**
  * Basic extension adding phpDocumentor specific functionality for Twig
@@ -214,12 +215,12 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
                     return $iterator;
                 }
             ),
-            new TwigFilter(
+            'export' => new TwigFilter(
                 'export',
-                static function($var) {
+                static function ($var) {
                     return var_export($var, true);
                 }
-            )
+            ),
         ];
     }
 }
