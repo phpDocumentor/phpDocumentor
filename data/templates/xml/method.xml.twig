@@ -1,0 +1,11 @@
+{# @var method phpDocumentor\Descriptor\MethodDescriptor #}
+<method final="{{ method.final | export }}" abstract="{{ method.abstract | export }}" static="{{ method.static | export }}" namespace="{{ method.namespace }}" line="{{ method.line }}" visibility="{{ method.visibility }}">
+    <name>{{ method.name }}</name>
+    <full_name>{{ method.fullyQualifiedStructuralElementName }}</full_name>
+    <value>{{ method.value }}</value>
+    {% if inherited_from %}<inherited_from>{{ inherited_from }}</inherited_from>{% endif %}
+    {% for argument in method.arguments %}
+        {{ include('argument.xml.twig', {descriptor: argument}) }}
+    {% endfor %}
+    {{ include('docblock.xml.twig', {descriptor: method}) }}
+</method>

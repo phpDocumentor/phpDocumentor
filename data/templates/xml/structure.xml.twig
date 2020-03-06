@@ -1,0 +1,115 @@
+<?xml version="1.0"?>
+<project name="{{ project.name }}">
+    {# @var file \phpDocumentor\Descriptor\FileDescriptor #}
+    {% for file in project.files %}
+        <file path="{{ file.path }}" hash="{{ file.hash }}">
+            {{ include('docblock.xml.twig', {descriptor: file}) }}
+            {% for alias in file.namespaceAliases|keys %}
+                <namespace-alias name="{{ alias }}"/>
+            {% endfor %}
+
+
+            {% for constant in file.constants %}
+                {{ include('constant.xml.twig', {constant: constant}) }}
+            {% endfor %}
+
+            {# @var function \phpDocumentor\Descriptor\FunctionDescriptor #}
+            {% for function in file.functions %}
+                <function>
+                    <name>{{ function.name }}</name>
+                    <full_name>{{ function.fullyQualifiedStructuralElementName }}</full_name>
+                    {{ include('docblock.xml.twig', {descriptor: c}) }}
+                    {% for argument in function.arguments %}
+                        {{ include('argument.xml.twig', {descriptor: argument}) }}
+                    {% endfor %}
+                </function>
+            {% endfor %}
+
+            {# @var interface \phpDocumentor\Descriptor\InterfaceDescriptor #}
+            {% for interface in file.interfaces %}
+                <interface>
+                    <name>{{ interface.name }}</name>
+                    <full_name>{{ interface.fullyQualifiedStructuralElementName }}</full_name>
+                    {{ include('docblock.xml.twig', {descriptor: interface}) }}
+                    {# @var parent \phpDocumentor\Descriptor\InterfaceDescriptor #}
+                    {% for parent in interface.parent %}
+                        <extends>{{ parent }}</extends>
+                    {% endfor %}
+                    {% for constant in interface.constants %}
+                        {{ include('constant.xml.twig', {constant: constant}) }}
+                    {% endfor %}
+                    {% for method in interface.methods %}
+                        {{ include('method.xml.twig', {method: method}) }}
+                    {% endfor %}
+                </interface>
+            {% endfor %}
+
+            {# @var class \phpDocumentor\Descriptor\ClassDescriptor #}
+            {% for class in file.classes %}
+                <class final="{{ class.final | export }}" abstract="{{ class.abstract | export }}" namespace="{{ trait.namespace }}" line="{{ trait.line }}">
+                    <name>{{ class.name }}</name>
+                    <full_name>{{ class.fullyQualifiedStructuralElementName }}</full_name>
+                    {{ include('docblock.xml.twig', {descriptor: class}) }}
+                    {% if class.parent %}
+                        <extends>{{ class.parent }}</extends> {% endif %}
+
+                    {% for interface in class.interfaces %}
+                        <implements>{{ interface }}</implements>
+                    {% endfor %}
+
+                    {% for constant in class.constants %}
+                        {{ include('constant.xml.twig', {constant: constant}) }}
+                    {% endfor %}
+                    {% for constant in class.inheritedConstants %}
+                        {{ include('constant.xml.twig', {constant: constant, inherited_from: constant.parent}) }}
+                    {% endfor %}
+
+                    {% for property in class.properties %}
+                        {{ include('property.xml.twig', {property: property}) }}
+                    {% endfor %}
+                    {% for property in class.inheritedPropertiess %}
+                        {{ include('property.xml.twig', {property: property, inherited_from: property.parent}) }}
+                    {% endfor %}
+
+                    {% for method in class.methods %}
+                        {{ include('method.xml.twig', {method: method}) }}
+                    {% endfor %}
+                    {% for method in class.inheritedMethods %}
+                        {{ include('method.xml.twig', {method: method, inherited_from: method.parent}) }}
+                    {% endfor %}
+                </class>
+            {% endfor %}
+
+            {# @var trait \phpDocumentor\Descriptor\TraitDescriptor #}
+            {% for trait in file.traits %}
+                <trait namespace="{{ trait.namespace }}" line="{{ trait.line }}">
+                    <name>{{ trait.name }}</name>
+                    <full_name>{{ trait.fullyQualifiedStructuralElementName }}</full_name>
+                    {{ include('docblock.xml.twig', {descriptor: trait}) }}
+                    {% for property in trait.properties %}
+                        {{ include('property.xml.twig', {property: property}) }}
+                    {% endfor %}
+
+                    {% for method in trait.methods %}
+                        {{ include('method.xml.twig', {method: method}) }}
+                    {% endfor %}
+                </trait>
+            {% endfor %}
+
+            {% for marker in file.markers %}
+                <{{ marker.type | lower }} line="{{ marker.line }}">{{ marker.message }}</{{ marker.type | lower }}>
+            {% endfor %}
+
+            <parse_markers>
+                {% for error in file.allErrors %}
+                    <error code="" line="{{ error.line }}">{{ error.code }}</error>
+                {% endfor %}
+            </parse_markers>
+        </file>
+    {% endfor %}
+
+    {% for namespace in project.indexes.get('namespaces') %}
+        {{ include('namespace_tree.xml.twig', {namespace: namespace}) }}
+    {% endfor %}
+
+</project>

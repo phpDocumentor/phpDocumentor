@@ -1,0 +1,8 @@
+{# @var constant phpDocumentor\Descriptor\ConstantDescriptor #}
+<constant namespace="{{ constant.namespace }}" line="{{ constant.line }}" visibility="{{ constant.visibility }}">
+    <name>{{ constant.name }}</name>
+    <full_name>{{ constant.fullyQualifiedStructuralElementName }}</full_name>
+    <value>{{ constant.value }}</value>
+    {% if inherited_from %}<inherited_from>{{ inherited_from }}</inherited_from>{% endif %}
+    {{ include('docblock.xml.twig', {descriptor: c}) }}
+</constant>

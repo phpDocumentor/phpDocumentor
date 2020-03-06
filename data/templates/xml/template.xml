@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <name>xml</name>
+  <author>Jaap van Otterdijk</author>
+  <email>mike@phpdoc.org</email>
+  <version>1.0.0</version>
+  <transformations>
+    <transformation writer="twig" source="templates/xml/structure.xml.twig" artifact="structure.xml"/>
+  </transformations>
+  <parameters>
+    <parameter key="twig-debug">true</parameter>
+  </parameters>
+</template>

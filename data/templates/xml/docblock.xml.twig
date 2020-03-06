@@ -1,0 +1,20 @@
+{# @var descriptor \phpDocumentor\Descriptor\DescriptorAbstract #}
+<docblock line="{{ descriptor.line }}">
+    <description>{{ descriptor.summary }}</description>
+    <long-description>{{ descriptor.description }}</long-description>
+
+    {% for tags in descriptor.tags %}
+        {% for tag in tags %}
+        <tag
+                name="{{ tag.name }}"
+                description="{{ tag.description }}"
+                {% if tag.link %} link="{{ tag.link }}"{% endif %}
+                {% if tag.version %} version="{{ tag.version }}"{% endif %}
+                {% if tag.reference %} link="{{ tag.reference }}"{% endif %}
+                {% if tag.variableName %} variable="{{ tag.variableName }}"{% endif %}
+                {% if tag.methodName %} method_name="{{ tag.methodName }}"{% endif %}
+                {% if tag.type %} type="{{ tag.type }}"{% endif %}
+        />
+        {% endfor %}
+    {% endfor %}
+</docblock>

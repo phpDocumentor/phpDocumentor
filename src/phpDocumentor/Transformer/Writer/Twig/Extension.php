@@ -214,6 +214,12 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
                     return $iterator;
                 }
             ),
+            new TwigFilter(
+                'export',
+                static function($var) {
+                    return var_export($var, true);
+                }
+            )
         ];
     }
 }

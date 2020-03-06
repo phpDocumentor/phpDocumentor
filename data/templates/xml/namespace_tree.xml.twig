@@ -1,0 +1,10 @@
+{# @var namespace \phpDocumentor\Descriptor\NamespaceDescriptor #}
+{% if namespace.children.count > 0 %}
+<namespace name="{{ namespace.name }}" full_name="{{ namespace.fullyQualifiedStructuralElementName }}">
+    {% for child in namespace.children %}
+        {{ include('namespace_tree.xml.twig', {namespace: child}) }}
+    {% endfor %}
+</namespace>
+{% else %}
+<namespace name="{{ namespace.name }}" full_name="{{ namespace.fullyQualifiedStructuralElementName }}" />
+{% endif %}
