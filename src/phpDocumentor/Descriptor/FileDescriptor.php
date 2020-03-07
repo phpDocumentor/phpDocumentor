@@ -302,22 +302,30 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
         }
 
         foreach ($types as $element) {
-            foreach ($element->getMethods() as $item) {
-                $errors = $errors->merge($item->getErrors());
+            if($element instanceof ClassDescriptor ||
+                $element instanceof InterfaceDescriptor ||
+                $element instanceof TraitDescriptor
+            ) {
+                foreach ($element->getMethods() as $item) {
+                    $errors = $errors->merge($item->getErrors());
+                }
             }
 
-            if (method_exists($element, 'getConstants')) {
+
+            if($element instanceof ClassDescriptor ||
+                $element instanceof InterfaceDescriptor
+            ) {
                 foreach ($element->getConstants() as $item) {
                     $errors = $errors->merge($item->getErrors());
                 }
             }
 
-            if (!method_exists($element, 'getProperties')) {
-                continue;
-            }
-
-            foreach ($element->getProperties() as $item) {
-                $errors = $errors->merge($item->getErrors());
+            if($element instanceof ClassDescriptor ||
+                $element instanceof TraitDescriptor
+            ) {
+                foreach ($element->getProperties() as $item) {
+                    $errors = $errors->merge($item->getErrors());
+                }
             }
         }
 
