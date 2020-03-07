@@ -85,8 +85,7 @@ class Router
             );
         }
 
-        if ($node instanceof ConstantDescriptor
-            && ($node->getParent() instanceof FileDescriptor || !$node->getParent())) {
+        if ($node instanceof ConstantDescriptor && $node->getParent() === null) {
             return $this->generateUrlForDescriptor(
                 'namespace',
                 (string) $node->getNamespace(),
@@ -94,8 +93,7 @@ class Router
             );
         }
 
-        if ($node instanceof ConstantDescriptor
-            && !($node->getParent() instanceof FileDescriptor || !$node->getParent())) {
+        if ($node instanceof ConstantDescriptor && $node->getParent() !== null) {
             return $this->generateUrlForDescriptor(
                 'class',
                 (string) $node->getParent()->getFullyQualifiedStructuralElementName(),
