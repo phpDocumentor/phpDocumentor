@@ -13,8 +13,6 @@ parameters:
     - '#.*NodeDefinition::addDefaultsIfNotSet.*#'
 
     - '#Call to an undefined method League\\Flysystem\\Filesystem::find()#'
-    # Bad design of descriptors.
-    - '#Access to an undefined property phpDocumentor\\Descriptor\\Collection<phpDocumentor\\Descriptor\\Collection<phpDocumentor\\Descriptor\\DescriptorAbstract>>::\$[a-z]+#'
     # https://github.com/phpDocumentor/phpDocumentor/issues/2279
     - '#Instanceof between phpDocumentor\\Descriptor\\Collection<phpDocumentor\\Descriptor\\InterfaceDescriptor\|phpDocumentor\\Reflection\\Fqsen>\|phpDocumentor\\Reflection\\Fqsen\|string\|null and phpDocumentor\\Descriptor\\InterfaceDescriptor will always evaluate to false\.#'
     # PHPStan doesn't support @template D of T but will still complain if we put a D in a Collection of T !
