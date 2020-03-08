@@ -155,18 +155,6 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * Retrieves an item as if it were a property of the collection.
-     *
-     * @return mixed
-     *
-     * @phpstan-return ?T
-     */
-    public function __get(string $name)
-    {
-        return $this->get($name);
-    }
-
-    /**
      * Checks whether an item in this collection exists.
      *
      * @param string|int $offset The index to check on.

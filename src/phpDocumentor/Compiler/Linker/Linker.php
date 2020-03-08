@@ -81,7 +81,7 @@ class Linker implements CompilerPassInterface
 
     public function execute(ProjectDescriptor $project) : void
     {
-        $this->descriptorRepository->setObjectAliasesList($project->getIndexes()->elements->getAll());
+        $this->descriptorRepository->setObjectAliasesList($project->getIndexes()->get('elements')->getAll());
         $this->substitute($project);
     }
 

@@ -112,13 +112,11 @@ final class CollectionTest extends MockeryTestCase
 
     /**
      * @covers ::get
-     * @covers ::__get
      * @covers ::offsetGet
      */
     public function testRetrievalOfItems() : void
     {
         $this->fixture['a'] = 'abc';
-        $this->assertEquals('abc', $this->fixture->__get('a'));
         $this->assertEquals('abc', $this->fixture['a']);
         $this->assertEquals('abc', $this->fixture->get('a'));
         $this->assertCount(1, $this->fixture);
