@@ -15,7 +15,6 @@ namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Descriptor\Validation\Error;
 use phpDocumentor\Reflection\Fqsen;
-use function method_exists;
 
 /**
  * Represents a file in the project.
@@ -302,17 +301,26 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
         }
 
         foreach ($types as $element) {
-            foreach ($element->getMethods() as $item) {
-                $errors = $errors->merge($item->getErrors());
+            if ($element instanceof ClassDescriptor ||
+                $element instanceof InterfaceDescriptor ||
+                $element instanceof TraitDescriptor
+            ) {
+                foreach ($element->getMethods() as $item) {
+                    $errors = $errors->merge($item->getErrors());
+                }
             }
 
-            if (method_exists($element, 'getConstants')) {
+            if ($element instanceof ClassDescriptor ||
+                $element instanceof InterfaceDescriptor
+            ) {
                 foreach ($element->getConstants() as $item) {
                     $errors = $errors->merge($item->getErrors());
                 }
             }
 
-            if (!method_exists($element, 'getProperties')) {
+            if (!$element instanceof ClassDescriptor &&
+                !$element instanceof TraitDescriptor
+            ) {
                 continue;
             }
 
