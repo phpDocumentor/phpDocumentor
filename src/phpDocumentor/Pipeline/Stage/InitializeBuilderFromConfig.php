@@ -48,7 +48,7 @@ final class InitializeBuilderFromConfig
                 $documentationSets->add(new GuideSetDescriptor('', $guide['source'], $guide['output']));
             }
 
-            $version = new VersionDescriptor($number, $documentationSets);
+            $version = new VersionDescriptor($version['number'], $documentationSets);
             $builder->addVersion($version);
         }
 

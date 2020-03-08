@@ -19,6 +19,9 @@ use phpDocumentor\Path;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
+use function is_int;
+use function is_string;
+use function var_export;
 
 final class Version3 implements ConfigurationInterface, Normalizable
 {
@@ -51,12 +54,27 @@ final class Version3 implements ConfigurationInterface, Normalizable
                     ->end()
                 ->end()
                 ->arrayNode('versions')
-                    ->useAttributeAsKey('number')
+                    ->useAttributeAsKey('number', false)
                     ->addDefaultChildrenIfNoneSet('1.0.0')
                     ->prototype('array')
                         ->fixXmlConfig('api', 'apis')
                         ->fixXmlConfig('guide')
                         ->children()
+                            ->scalarNode('number')
+                                ->defaultValue('1.0.0')
+                                ->beforeNormalization()
+                                ->always(
+                                    //We need to revert the phpize call in XmlUtils. Version number is always a string!
+                                    static function ($value) {
+                                        if (!is_int($value) && !is_string($value)) {
+                                            return var_export($value, true);
+                                        }
+
+                                        return $value;
+                                    }
+                                )
+                                ->end()
+                            ->end()
                             ->scalarNode('folder')->defaultValue('')->end()
                             ->append($this->apiSection())
                             ->append($this->guideSection())

@@ -125,6 +125,7 @@ final class Version3Test extends TestCase
             ],
             'versions' => [
                 '1.0.0' => [
+                    'number' => '1.0.0',
                     'folder' => '',
                     'apis' => [
                         [
@@ -182,6 +183,8 @@ final class Version3Test extends TestCase
             'paths' => $paths,
         ];
         unset($configuration['versions']['1.0.0']);
+
+        $version['number'] = $versionString;
         $configuration['versions'][$versionString] = $version;
 
         return $configuration;
