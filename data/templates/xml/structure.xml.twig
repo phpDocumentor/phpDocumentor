@@ -4,6 +4,13 @@
     {% for file in project.files %}
         <file path="{{ file.path }}" hash="{{ file.hash }}">
             {{ include('docblock.xml.twig', {descriptor: file}) }}
+
+            {% for include in file.includes %}
+                <include>
+                    <name>{{ include }}</name>
+                </include>
+            {% endfor %}
+
             {% for alias in file.namespaceAliases|keys %}
                 <namespace-alias name="{{ alias }}"/>
             {% endfor %}
@@ -15,7 +22,7 @@
 
             {# @var function \phpDocumentor\Descriptor\FunctionDescriptor #}
             {% for function in file.functions %}
-                <function>
+                <function namespace="{{ function.namespace }}" line="{{ function.line }}" package="{{ function.package }}">
                     <name>{{ function.name }}</name>
                     <full_name>{{ function.fullyQualifiedStructuralElementName }}</full_name>
                     {{ include('docblock.xml.twig', {descriptor: function}) }}
@@ -27,7 +34,7 @@
 
             {# @var interface \phpDocumentor\Descriptor\InterfaceDescriptor #}
             {% for interface in file.interfaces %}
-                <interface>
+                <interface namespace="{{ interface.namespace }}" line="{{ interface.line }}" package="{{ interface.package }}">
                     <name>{{ interface.name }}</name>
                     <full_name>{{ interface.fullyQualifiedStructuralElementName }}</full_name>
                     {{ include('docblock.xml.twig', {descriptor: interface}) }}
