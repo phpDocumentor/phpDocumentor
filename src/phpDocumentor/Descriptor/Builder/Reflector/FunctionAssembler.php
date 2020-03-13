@@ -91,9 +91,12 @@ class FunctionAssembler extends AssemblerAbstract
     protected function addArgumentsToFunctionDescriptor(array $arguments, FunctionDescriptor $functionDescriptor) : void
     {
         foreach ($arguments as $argument) {
+            $descriptor = $this->createArgumentDescriptor($functionDescriptor, $argument);
+            $descriptor->setLine($functionDescriptor->getLine());
+
             $this->addArgumentDescriptorToFunction(
                 $functionDescriptor,
-                $this->createArgumentDescriptor($functionDescriptor, $argument)
+                $descriptor
             );
         }
     }

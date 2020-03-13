@@ -18,7 +18,7 @@
                 <function>
                     <name>{{ function.name }}</name>
                     <full_name>{{ function.fullyQualifiedStructuralElementName }}</full_name>
-                    {{ include('docblock.xml.twig', {descriptor: c}) }}
+                    {{ include('docblock.xml.twig', {descriptor: function}) }}
                     {% for argument in function.arguments %}
                         {{ include('argument.xml.twig', {descriptor: argument}) }}
                     {% endfor %}
@@ -46,7 +46,7 @@
 
             {# @var class \phpDocumentor\Descriptor\ClassDescriptor #}
             {% for class in file.classes %}
-                <class final="{{ class.final | export }}" abstract="{{ class.abstract | export }}" namespace="{{ trait.namespace }}" line="{{ trait.line }}">
+                <class final="{{ class.final | export }}" abstract="{{ class.abstract | export }}" namespace="{{ class.namespace }}" line="{{ class.line }}">
                     <name>{{ class.name }}</name>
                     <full_name>{{ class.fullyQualifiedStructuralElementName }}</full_name>
                     {{ include('docblock.xml.twig', {descriptor: class}) }}
@@ -100,16 +100,13 @@
                 <{{ marker.type | lower }} line="{{ marker.line }}">{{ marker.message }}</{{ marker.type | lower }}>
             {% endfor %}
 
-            <parse_markers>
-                {% for error in file.allErrors %}
+            <parse_markers>{% for error in file.allErrors %}
                     <error code="" line="{{ error.line }}">{{ error.code }}</error>
-                {% endfor %}
-            </parse_markers>
+            {% endfor %}</parse_markers>
         </file>
     {% endfor %}
 
     {% for namespace in project.indexes.get('namespaces') %}
         {{ include('namespace_tree.xml.twig', {namespace: namespace}) }}
     {% endfor %}
-
 </project>

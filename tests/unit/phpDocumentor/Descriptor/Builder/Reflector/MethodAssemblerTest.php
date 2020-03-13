@@ -83,7 +83,7 @@ class MethodAssemblerTest extends MockeryTestCase
         $descriptor = $this->fixture->create($methodReflectorMock);
 
         // Assert
-        $expectedFqsen = '\\' . $namespace . '::' . $methodName . '()';
+        $expectedFqsen = '\\' . $namespace . '\\myClass::' . $methodName . '()';
         $this->assertSame($expectedFqsen, (string) $descriptor->getFullyQualifiedStructuralElementName());
         $this->assertSame($methodName, $descriptor->getName());
         $this->assertSame('\\' . $namespace, $descriptor->getNamespace());
@@ -177,7 +177,7 @@ class MethodAssemblerTest extends MockeryTestCase
         ?DocBlock $docBlockMock = null
     ) : Method {
         $method = new Method(
-            new Fqsen('\\' . $namespace . '::' . $methodName . '()'),
+            new Fqsen('\\' . $namespace . '\\myClass::' . $methodName . '()'),
             new Visibility(Visibility::PROTECTED_),
             $docBlockMock
         );

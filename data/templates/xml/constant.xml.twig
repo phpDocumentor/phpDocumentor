@@ -4,5 +4,5 @@
     <full_name>{{ constant.fullyQualifiedStructuralElementName }}</full_name>
     <value>{{ constant.value }}</value>
     {% if inherited_from %}<inherited_from>{{ inherited_from }}</inherited_from>{% endif %}
-    {{ include('docblock.xml.twig', {descriptor: c}) }}
+    {{ include('docblock.xml.twig', {descriptor: constant}) }}
 </constant>

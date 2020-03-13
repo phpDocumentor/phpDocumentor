@@ -23,7 +23,7 @@ use phpDocumentor\Reflection\Php\Argument;
 use phpDocumentor\Reflection\Php\Method;
 use function array_key_exists;
 use function end;
-use function strlen;
+use function strrpos;
 use function substr;
 
 /**
@@ -54,7 +54,7 @@ class MethodAssembler extends AssemblerAbstract
             substr(
                 (string) $data->getFqsen(),
                 0,
-                -strlen($data->getName()) - 4
+                strrpos((string) $data->getFqsen(), '\\')
             )
         );
         $this->mapReflectorToDescriptor($data, $methodDescriptor);
@@ -104,6 +104,7 @@ class MethodAssembler extends AssemblerAbstract
         }
 
         $argumentDescriptor = $this->argumentAssembler->create($argument, $params);
+        $argumentDescriptor->setLine($descriptor->getLine());
 
         $descriptor->addArgument($argumentDescriptor->getName(), $argumentDescriptor);
     }
