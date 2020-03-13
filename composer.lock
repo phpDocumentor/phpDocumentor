@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1a1850f43ebee8b87ef78e486269f816",
+    "content-hash": "846213e0fbb5023999f864f26f5fb95e",
     "packages": [
         {
             "name": "doctrine/event-manager",
@@ -743,16 +743,16 @@
         },
         {
             "name": "phpdocumentor/flyfinder",
-            "version": "1.0.0-beta4",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/FlyFinder.git",
-                "reference": "b8256cecae96eb37d8275399928c39d7689d3105"
+                "reference": "0443e747872cc4a4d8f4b830d16a0357c14df7a6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/FlyFinder/zipball/b8256cecae96eb37d8275399928c39d7689d3105",
-                "reference": "b8256cecae96eb37d8275399928c39d7689d3105",
+                "url": "https://api.github.com/repos/phpDocumentor/FlyFinder/zipball/0443e747872cc4a4d8f4b830d16a0357c14df7a6",
+                "reference": "0443e747872cc4a4d8f4b830d16a0357c14df7a6",
                 "shasum": ""
             },
             "require": {
@@ -786,7 +786,7 @@
                 "Flysystem",
                 "phpdoc"
             ],
-            "time": "2019-12-20T16:43:49+00:00"
+            "time": "2020-03-13T14:02:28+00:00"
         },
         {
             "name": "phpdocumentor/graphviz",
@@ -3751,7 +3751,6 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "doctrine/rst-parser": 20,
-        "phpdocumentor/flyfinder": 10,
         "phpdocumentor/graphviz": 20
     },
     "prefer-stable": false,
