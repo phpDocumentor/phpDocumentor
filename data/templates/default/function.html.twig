@@ -57,19 +57,7 @@
     {% endif %}
 
     {% set visibleTags = function.tags|filter((v,k) => k not in ['param', 'return', 'package']) %}
-    {% if visibleTags|length > 0 %}
-        <h5 class="phpdocumentor-tag-list__heading">Tags</h5>
-        <dl class="phpdocumentor-tag-list">
-            {% for name,seriesOfTag in visibleTags %}
-                {% for tag in seriesOfTag %}
-                    <dt class="phpdocumentor-tag-list__entry">
-                        <span class="phpdocumentor-tag__name">{{ name }}</span>
-                    </dt>
-                    <dd class="phpdocumentor-tag-list__definition"><section class="phpdocumentor-description">{{ tag.description|default('')|markdown }}</section></dd>
-                {% endfor %}
-            {% endfor %}
-        </dl>
-    {% endif %}
+    {{ include ('tags.html.twig', {tags: visibleTags}) }}
 
     {% if (function.response.type and function.response.type != 'void') or function.response.description %}
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>

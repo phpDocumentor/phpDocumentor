@@ -1,0 +1,24 @@
+{% if tags|length > 0 %}
+    <h5 class="phpdocumentor-tag-list__heading">Tags</h5>
+    <dl class="phpdocumentor-tag-list">
+        {% for name,seriesOfTag in tags %}
+            {% for tag in seriesOfTag %}
+                <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">{{ name }}</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                    {% if tag.type %}
+                        <span class="phpdocumentor-tag-link">{{ tag.type|route('class:short')|join('|')|raw }}</span>
+                    {% endif %}
+                    {% if tag.reference %}
+                        <span class="phpdocumentor-tag-link">{{ tag.reference|route('class:short')|join('|')|raw }}</span>
+                    {% endif %}
+                    {% if tag.link %}
+                        <a class="phpdocumentor-tag-link" href="{{ tag.link }}">{{ tag.link }}</a>
+                    {% endif %}
+                    <section class="phpdocumentor-description">{{ tag.description|default('')|markdown }}</section>
+                </dd>
+            {% endfor %}
+        {% endfor %}
+    </dl>
+{% endif %}

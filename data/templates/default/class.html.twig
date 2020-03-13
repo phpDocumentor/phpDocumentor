@@ -46,6 +46,8 @@
 
         <p class="phpdocumentor-class__summary">{{ node.summary }}</p>
         <section class="phpdocumentor-class__description">{{ node.description|markdown }}</section>
+        {% set visibleTags = node.tags|filter((v,k) => k not in ['package']) %}
+        {{ include ('tags.html.twig', {tags: visibleTags}) }}
 
         <h3>Table of Contents</h3>
         <table class="phpdocumentor-table_of_contents">

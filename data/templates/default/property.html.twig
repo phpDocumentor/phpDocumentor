@@ -26,4 +26,6 @@
     {% if property.description %}
     <section class="phpdocumentor-description">{{ property.description }}</section>
     {% endif %}
+    {% set visibleTags = property.tags|filter((v,k) => k not in ['var']) %}
+    {{ include ('tags.html.twig', {tags: visibleTags}) }}
 </article>
