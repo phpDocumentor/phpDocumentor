@@ -14,5 +14,5 @@ jobs:
         uses: technote-space/broken-link-checker-action@v1
         with:
           TARGET: https://docs.phpdoc.org/3.0
-          RECURSIVE: true
-          LABELS: documentation
+          RECURSIVE: 'true'
+          LABELS: 'documentation'
