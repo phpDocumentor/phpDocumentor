@@ -13,6 +13,6 @@ jobs:
       - name: Broken Link Check
         uses: technote-space/broken-link-checker-action@v1
         with:
-          TARGET: https://docs.phpdoc.org/3.0
+          TARGET: 'https://docs.phpdoc.org'
           RECURSIVE: 'true'
           LABELS: 'documentation'
