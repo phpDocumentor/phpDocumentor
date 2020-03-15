@@ -7,36 +7,34 @@ System Requirements
 phpDocumentor has several dependencies on other software packages. Please make sure that you have these
 installed before installing phpDocumentor.
 
--  `PHP 7.1.0`_
--  `intl extension for PHP`_
--  Graphviz_
+-  `PHP 7.2.0`_
+-  Graphviz_ (optional)
+-  PlantUML_ (optional)
+
+Phive
+----
+
+   $ phive install phpDocumentor
+
+For more information about phive have a look at their [website](https://phar.io/).
+Now you have phpDocumentor installed and it can be executed directly. 
+
 
 PHAR
 ----
 
-You can download the latest PHAR file from https://www.phpdoc.org/phpDocumentor.phar.
-
-.. important::
-
-   Some installations of PHP can have trouble executing the phar file. If you have any issues, please consult the
-   following website first: http://silex.sensiolabs.org/doc/phar.html#pitfalls
+You can download the latest PHAR file from https://github.com/phpDocumentor/phpDocumentor/releases.
 
 The phar file can be used by simply invoking php and providing the phar file as a parameter::
 
   $ php phpDocumentor.phar -d . -t docs/api
 
-Using PEAR
-----------
 
-PEAR provides the latest released version of phpDocumentor and is an easy way to set up your machine.
+Docker
+----
 
-You can prepare your PEAR installation using the following commands::
-
-    $ pear channel-discover pear.phpdoc.org
-
-And to install phpDocumentor you can use the following command::
-
-    $ pear install phpdoc/phpDocumentor
+1. `$ docker pull phpdoc/phpdoc`
+2. `$ docker run --rm -v $(pwd):/data phpdoc/phpdoc`
 
 When the installation is finished you can invoke the ``phpdoc`` command from any path in your system. It is recommended
 to read the :doc:`../getting-started/index` section next as it will explain how to quickly start using phpDocumentor.
@@ -54,7 +52,7 @@ Using Composer
 Installing phpDocumentor using Composer_ is a matter of creating a directory to host your files and executing the
 following command::
 
-    $ composer require "phpdocumentor/phpdocumentor:2.*"
+    $ composer require "phpdocumentor/phpdocumentor:^3.0"
 
 This command can also be used to add phpDocumentor to your existing composer-based project
 
@@ -64,7 +62,7 @@ This command can also be used to add phpDocumentor to your existing composer-bas
    own project it is advised to use one of the other installation methods.
 
 .. _Composer:               http:/getcomposer.org
-.. _`PHP 7.1.0`:            http://www.php.net
+.. _`PHP 7.2.0`:            http://www.php.net
 .. _Graphviz:               http://graphviz.org/download/
-.. _intl extension for PHP: http://www.php.net/intl
+.. _PlantUML:               https://plantuml.com/download
 .. _Twig:                   http://twig.sensiolabs.org

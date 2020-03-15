@@ -1,5 +1,5 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
-[![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Fphpdocumentor%2Fphpdocumentor%2Fbadge%3Fref%3Dmaster&style=flat&label=build&logo=none)](https://actions-badge.atrox.dev/phpdocumentor/phpdocumentor/goto?ref=master)
+![Qa workflow](https://github.com/phpDocumentor/phpDocumentor/workflows/Qa%20workflow/badge.svg)
 [![Code Coverage](https://scrutinizer-ci.com/g/phpDocumentor/phpDocumentor/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/phpDocumentor/phpDocumentor/?branch=master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/phpDocumentor/phpDocumentor/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/phpDocumentor/phpDocumentor/?branch=master)
 ![Packagist Version](https://img.shields.io/packagist/v/phpdocumentor/phpdocumentor?label=packagist%20stable)
