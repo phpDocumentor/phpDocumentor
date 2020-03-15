@@ -24,7 +24,7 @@ use const E_USER_DEPRECATED;
  */
 abstract class TypedAbstract extends TagDescriptor
 {
-    /** @var Type $types */
+    /** @var Type|null $types */
     protected $types;
 
     /**
