@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Reflection\Type;
+use function array_filter;
 use function trigger_error;
 use const E_USER_DEPRECATED;
 
@@ -65,13 +66,13 @@ class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\Argume
     }
 
     /**
-     * @return list<?Type>
+     * @return list<Type>
      */
     public function getTypes() : array
     {
         trigger_error('Please use getType', E_USER_DEPRECATED);
 
-        return [$this->getType()];
+        return array_filter([$this->getType()]);
     }
 
     public function getInheritedElement() : ?ArgumentDescriptor
