@@ -20,6 +20,9 @@ use Twig\Loader\LoaderInterface;
 use Twig\Source;
 use function rtrim;
 use function sprintf;
+use function strlen;
+use function strpos;
+use function substr;
 
 final class FlySystemLoader implements LoaderInterface
 {
@@ -29,10 +32,17 @@ final class FlySystemLoader implements LoaderInterface
     /** @var string */
     private $templatePath;
 
-    public function __construct(FilesystemInterface $filesystem, string $templatePath = '')
+    /**
+     * @var string prefix used to allow extends of base templates. For example
+     *  `{% extends 'template::css/template.css.twig' %}`
+     */
+    private $overloadPrefix;
+
+    public function __construct(FilesystemInterface $filesystem, string $templatePath = '', string $overloadPrefix = '')
     {
         $this->filesystem = $filesystem;
         $this->templatePath = $templatePath;
+        $this->overloadPrefix = $overloadPrefix;
     }
 
     /**
@@ -108,6 +118,10 @@ final class FlySystemLoader implements LoaderInterface
 
     private function resolveTemplateName(string $name) : string
     {
+        if (strpos($name, $this->overloadPrefix) === 0) {
+            $name = substr($name, strlen($this->overloadPrefix));
+        }
+
         $prefix = $this->templatePath;
         if ($prefix !== '') {
             $prefix = rtrim($prefix, '/') . '/';
