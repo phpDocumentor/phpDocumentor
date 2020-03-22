@@ -38,7 +38,7 @@ psalm:
 
 .PHONY: test
 test: unit-test
-	docker run -it --rm -v${CURDIR}:/data -w /data php:7.2 -f ./tests/coverage-checker.php 69
+	docker run -it --rm -v${CURDIR}:/data -w /data php:7.2 -f ./tests/coverage-checker.php 71
 
 unit-test: ARGS=--testsuite=unit
 integration-test: ARGS=--testsuite=integration --no-coverage
