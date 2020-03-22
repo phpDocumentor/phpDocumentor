@@ -33,16 +33,19 @@ final class FlySystemLoader implements LoaderInterface
     private $templatePath;
 
     /**
-     * @var string prefix used to allow extends of base templates. For example
+     * @var string|null prefix used to allow extends of base templates. For example
      *  `{% extends 'template::css/template.css.twig' %}`
      */
     private $overloadPrefix;
 
-    public function __construct(FilesystemInterface $filesystem, string $templatePath = '', string $overloadPrefix = '')
-    {
+    public function __construct(
+        FilesystemInterface $filesystem,
+        string $templatePath = '',
+        ?string $overloadPrefix = null
+    ) {
         $this->filesystem = $filesystem;
         $this->templatePath = $templatePath;
-        $this->overloadPrefix = $overloadPrefix;
+        $this->overloadPrefix = $overloadPrefix !== null ? $overloadPrefix . '::' : null;
     }
 
     /**
@@ -118,7 +121,7 @@ final class FlySystemLoader implements LoaderInterface
 
     private function resolveTemplateName(string $name) : string
     {
-        if (strpos($name, $this->overloadPrefix) === 0) {
+        if (($this->overloadPrefix !== null) && strpos($name, $this->overloadPrefix) === 0) {
             $name = substr($name, strlen($this->overloadPrefix));
         }
 
