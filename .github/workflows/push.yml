@@ -54,8 +54,8 @@ jobs:
         uses: actions/cache@v1
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-
+          key: composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: composer-
 
       - name: Install Composer dependencies
         run: |
@@ -119,8 +119,8 @@ jobs:
       uses: actions/cache@v1
       with:
         path: ${{ steps.composer-cache.outputs.dir }}
-        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-        restore-keys: ${{ runner.os }}-composer-
+        key: composer-${{ hashFiles('**/composer.lock') }}
+        restore-keys: composer-
 
     - name: Install Composer dependencies
       run: |
@@ -201,8 +201,8 @@ jobs:
         uses: actions/cache@v1
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-
+          key: composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: composer-
 
       - name: Install Composer dependencies
         run: |
@@ -261,8 +261,8 @@ jobs:
         uses: actions/cache@v1
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-
+          key: composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: composer-
 
       - name: Install Composer dependencies
         run: |
@@ -319,8 +319,8 @@ jobs:
         uses: actions/cache@v1
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-
+          key: composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: composer-
 
       - name: Install Composer dependencies
         run: |
@@ -468,8 +468,8 @@ jobs:
         uses: actions/cache@v1
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-
+          key: composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: composer-
 
       - name: Install Composer dependencies
         run: |
@@ -538,8 +538,8 @@ jobs:
         uses: actions/cache@v1
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-
+          key: composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: composer-
 
       - name: Install Composer dependencies
         run: |
@@ -616,8 +616,8 @@ jobs:
       uses: actions/cache@v1
       with:
         path: ${{ steps.composer-cache.outputs.dir }}
-        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-        restore-keys: ${{ runner.os }}-composer-
+        key: composer-${{ hashFiles('**/composer.lock') }}
+        restore-keys: composer-
 
     - name: Install Composer dependencies
       run: |
@@ -692,8 +692,8 @@ jobs:
         uses: actions/cache@v1
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-
+          key: composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: composer-
 
       - name: Install Composer dependencies
         run: |
