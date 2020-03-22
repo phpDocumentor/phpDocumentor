@@ -8,6 +8,7 @@ env:
   extensions: mbstring, intl, iconv, libxml, dom, json, simplexml, zlib, fileinfo
   key: cache-v1 # can be any string, change to clear the extension cache.
   defaultPHPVersion: '7.2'
+  phiveGPGKeys: 4AA394086372C20A,D2CCAC42F6295E7D,E82B2FB314E9906E,8A03EA3B385DBAA1
 jobs:
   setup:
     runs-on: ubuntu-latest
@@ -32,11 +33,9 @@ jobs:
       - name: Restore/cache tools folder
         uses: actions/cache@v1
         with:
-          path: tools
-          key: all-tools-${{ github.sha }}
-          restore-keys: |
-            all-tools-${{ github.sha }}-
-            all-tools-
+          path: $HOME/.phive
+          key: all-tools-${{ hashFiles('**/phive.xml') }}
+          restore-keys:  all-tools-
 
       - name: Setup PHP
         uses: shivammathur/setup-php@master
@@ -70,7 +69,7 @@ jobs:
       - name: Install phive
         run: make install-phive
       - name: Install PHAR dependencies
-        run: tools/phive.phar --no-progress install --copy --trust-gpg-keys 4AA394086372C20A,D2CCAC42F6295E7D,E82B2FB314E9906E,8A03EA3B385DBAA1 --force-accept-unsigned
+        run: tools/phive.phar --no-progress install --copy --trust-gpg-keys ${{ env.phiveGPGKeys }} --force-accept-unsigned
 
   phpunit-with-coverage:
     runs-on: ubuntu-latest
@@ -97,11 +96,9 @@ jobs:
     - name: Restore/cache tools folder
       uses: actions/cache@v1
       with:
-        path: tools
-        key: all-tools-${{ github.sha }}
-        restore-keys: |
-          all-tools-${{ github.sha }}-
-          all-tools-
+        path: $HOME/.phive
+        key: all-tools-${{ hashFiles('**/phive.xml') }}
+        restore-keys:  all-tools-
 
     - name: Setup PHP
       uses: shivammathur/setup-php@master
@@ -125,6 +122,11 @@ jobs:
     - name: Install Composer dependencies
       run: |
         composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+
+    - name: Install phive
+      run: make install-phive
+    - name: Install PHAR dependencies
+      run: tools/phive.phar --no-progress install --copy --trust-gpg-keys ${{ env.phiveGPGKeys }} --force-accept-unsigned
 
     - name: PHPUnit
       uses: docker://phpdoc/phpunit-ga:latest
@@ -175,15 +177,6 @@ jobs:
           path: ${{ steps.cache-env.outputs.dir }}
           key: ${{ steps.cache-env.outputs.key }}
           restore-keys: ${{ steps.cache-env.outputs.key }}
-
-      - name: Restore/cache tools folder
-        uses: actions/cache@v1
-        with:
-          path: tools
-          key: all-tools-${{ github.sha }}
-          restore-keys: |
-            all-tools-${{ github.sha }}-
-            all-tools-
 
       - name: Setup PHP
         uses: shivammathur/setup-php@master
@@ -236,15 +229,6 @@ jobs:
           key: ${{ steps.cache-env.outputs.key }}
           restore-keys: ${{ steps.cache-env.outputs.key }}
 
-      - name: Restore/cache tools folder
-        uses: actions/cache@v1
-        with:
-          path: tools
-          key: all-tools-${{ github.sha }}
-          restore-keys: |
-            all-tools-${{ github.sha }}-
-            all-tools-
-
       - name: Setup PHP
         uses: shivammathur/setup-php@master
         with:
@@ -293,15 +277,6 @@ jobs:
           path: ${{ steps.cache-env.outputs.dir }}
           key: ${{ steps.cache-env.outputs.key }}
           restore-keys: ${{ steps.cache-env.outputs.key }}
-
-      - name: Restore/cache tools folder
-        uses: actions/cache@v1
-        with:
-          path: tools
-          key: all-tools-${{ github.sha }}
-          restore-keys: |
-            all-tools-${{ github.sha }}-
-            all-tools-
 
       - name: Setup PHP
         uses: shivammathur/setup-php@master
@@ -360,14 +335,7 @@ jobs:
           restore-keys: |
             all-build-${{ hashFiles('**/composer.lock') }}
             all-build-
-      - name: Restore/cache tools folder
-        uses: actions/cache@v1
-        with:
-          path: tools
-          key: all-tools-${{ github.sha }}
-          restore-keys: |
-            all-tools-${{ github.sha }}-
-            all-tools-
+
       - name: Setup PHP
         uses: shivammathur/setup-php@master
         with:
@@ -375,12 +343,26 @@ jobs:
           extensions: mbstring, intl, iconv, libxml, dom, json, simplexml, zlib
           ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
           tools: pecl
+
+      - name: Restore/cache tools folder
+        uses: actions/cache@v1
+        with:
+          path: $HOME/.phive
+          key: all-tools-${{ hashFiles('**/phive.xml') }}
+          restore-keys:  all-tools-
+
+      - name: Install phive
+        run: make install-phive
+      - name: Install PHAR dependencies
+        run: tools/phive.phar --no-progress install --copy --trust-gpg-keys ${{ env.phiveGPGKeys }} --force-accept-unsigned
+
       - name: Download PHAR file
         if: matrix.profile == 'phar'
         uses: actions/download-artifact@v1
         with:
           name: phpDocumentor.phar
           path: build
+
       - name: Run Behat
         run: php tools/behat -p ${{ matrix.profile }}
       - name: Run PHPUnit functional
@@ -443,15 +425,6 @@ jobs:
           key: ${{ steps.cache-env.outputs.key }}
           restore-keys: ${{ steps.cache-env.outputs.key }}
 
-      - name: Restore/cache tools folder
-        uses: actions/cache@v1
-        with:
-          path: tools
-          key: all-tools-${{ github.sha }}
-          restore-keys: |
-            all-tools-${{ github.sha }}-
-            all-tools-
-
       - name: Setup PHP
         uses: shivammathur/setup-php@master
         with:
@@ -512,15 +485,6 @@ jobs:
           path: ${{ steps.cache-env.outputs.dir }}
           key: ${{ steps.cache-env.outputs.key }}
           restore-keys: ${{ steps.cache-env.outputs.key }}
-
-      - name: Restore/cache tools folder
-        uses: actions/cache@v1
-        with:
-          path: tools
-          key: all-tools-${{ github.sha }}
-          restore-keys: |
-            all-tools-${{ github.sha }}-
-            all-tools-
 
       - name: Setup PHP
         uses: shivammathur/setup-php@master
@@ -591,15 +555,6 @@ jobs:
         key: ${{ steps.cache-env.outputs.key }}
         restore-keys: ${{ steps.cache-env.outputs.key }}
 
-    - name: Restore/cache tools folder
-      uses: actions/cache@v1
-      with:
-        path: tools
-        key: all-tools-${{ github.sha }}
-        restore-keys: |
-          all-tools-${{ github.sha }}-
-          all-tools-
-
     - name: Setup PHP
       uses: shivammathur/setup-php@master
       with:
@@ -622,6 +577,18 @@ jobs:
     - name: Install Composer dependencies
       run: |
         composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+
+    - name: Restore/cache tools folder
+      uses: actions/cache@v1
+      with:
+        path: $HOME/.phive
+        key: all-tools-${{ hashFiles('**/phive.xml') }}
+        restore-keys:  all-tools-
+
+    - name: Install phive
+      run: make install-phive
+    - name: Install PHAR dependencies
+      run: tools/phive.phar --no-progress install --copy --trust-gpg-keys ${{ env.phiveGPGKeys }} --force-accept-unsigned
 
     - name: Run PHPUnit
       run: php tools/phpunit.phar --testsuite=unit,integration
@@ -667,15 +634,6 @@ jobs:
           key: ${{ steps.cache-env.outputs.key }}
           restore-keys: ${{ steps.cache-env.outputs.key }}
 
-      - name: Restore/cache tools folder
-        uses: actions/cache@v1
-        with:
-          path: tools
-          key: all-tools-${{ github.sha }}
-          restore-keys: |
-            all-tools-${{ github.sha }}-
-            all-tools-
-
       - name: Setup PHP
         uses: shivammathur/setup-php@master
         with:
@@ -698,6 +656,18 @@ jobs:
       - name: Install Composer dependencies
         run: |
           composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+
+      - name: Restore/cache tools folder
+        uses: actions/cache@v1
+        with:
+          path: $HOME/.phive
+          key: all-tools-${{ hashFiles('**/phive.xml') }}
+          restore-keys:  all-tools-
+
+      - name: Install phive
+        run: make install-phive
+      - name: Install PHAR dependencies
+        run: tools/phive.phar --no-progress install --copy --trust-gpg-keys ${{ env.phiveGPGKeys }} --force-accept-unsigned
 
       - name: Download PHAR file
         if: matrix.profile == 'phar'
