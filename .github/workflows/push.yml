@@ -9,11 +9,15 @@ env:
   key: cache-v1 # can be any string, change to clear the extension cache.
   defaultPHPVersion: '7.2'
   phiveGPGKeys: 4AA394086372C20A,D2CCAC42F6295E7D,E82B2FB314E9906E,8A03EA3B385DBAA1
+  phiveHome: $GITHUB_WORKSPACE/.phive
 jobs:
   setup:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
+
+      - name: test
+        run: echo ${{ env.phiveHome }}
 
       - name: Setup cache environment
         id: cache-env
@@ -33,9 +37,9 @@ jobs:
       - name: Restore/cache tools folder
         uses: actions/cache@v1
         with:
-          path: $HOME/.phive
-          key: all-tools-${{ hashFiles('**/phive.xml') }}
-          restore-keys:  all-tools-
+          path: .phive
+          key: all-tools2-${{ hashFiles('**/phive.xml') }}
+          restore-keys:  all-tools2-
 
       - name: Setup PHP
         uses: shivammathur/setup-php@master
@@ -71,7 +75,7 @@ jobs:
       - name: Install PHAR dependencies
         env:
           GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: tools/phive.phar --no-progress --home $HOME/.phive install --copy --trust-gpg-keys ${{ env.phiveGPGKeys }} --force-accept-unsigned
+        run: tools/phive.phar --no-progress --home ${{ env.phiveHome }} install --copy --trust-gpg-keys ${{ env.phiveGPGKeys }} --force-accept-unsigned
 
   phpunit-with-coverage:
     runs-on: ubuntu-latest
@@ -98,9 +102,9 @@ jobs:
     - name: Restore/cache tools folder
       uses: actions/cache@v1
       with:
-        path: $HOME/.phive
-        key: all-tools-${{ hashFiles('**/phive.xml') }}
-        restore-keys:  all-tools-
+        path: .phive
+        key: all-tools2-${{ hashFiles('**/phive.xml') }}
+        restore-keys:  all-tools2-
 
     - name: Setup PHP
       uses: shivammathur/setup-php@master
@@ -130,7 +134,7 @@ jobs:
     - name: Install PHAR dependencies
       env:
         GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: tools/phive.phar --no-progress --home $HOME/.phive install --copy --trust-gpg-keys ${{ env.phiveGPGKeys }} --force-accept-unsigned
+      run: tools/phive.phar --no-progress --home ${{ env.phiveHome }} install --copy --trust-gpg-keys ${{ env.phiveGPGKeys }} --force-accept-unsigned
 
     - name: PHPUnit
       uses: docker://phpdoc/phpunit-ga:latest
@@ -351,14 +355,14 @@ jobs:
       - name: Restore/cache tools folder
         uses: actions/cache@v1
         with:
-          path: $HOME/.phive
-          key: all-tools-${{ hashFiles('**/phive.xml') }}
-          restore-keys:  all-tools-
+          path: .phive
+          key: all-tools2-${{ hashFiles('**/phive.xml') }}
+          restore-keys:  all-tools2-
 
       - name: Install PHAR dependencies
         env:
           GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: phive --no-progress --home $HOME/.phive install --copy --trust-gpg-keys ${{ env.phiveGPGKeys }} --force-accept-unsigned
+        run: phive --no-progress --home ${{ env.phiveHome }} install --copy --trust-gpg-keys ${{ env.phiveGPGKeys }} --force-accept-unsigned
 
       - name: Download PHAR file
         if: matrix.profile == 'phar'
@@ -585,14 +589,14 @@ jobs:
     - name: Restore/cache tools folder
       uses: actions/cache@v1
       with:
-        path: $HOME/.phive
-        key: all-tools-${{ hashFiles('**/phive.xml') }}
-        restore-keys:  all-tools-
+        path: .phive
+        key: all-tools2-${{ hashFiles('**/phive.xml') }}
+        restore-keys:  all-tools2-
 
     - name: Install PHAR dependencies
       env:
         GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: phive --no-progress --home $HOME/.phive install --copy --trust-gpg-keys ${{ env.phiveGPGKeys }} --force-accept-unsigned
+      run: phive --no-progress --home ${{ env.phiveHome }} install --copy --trust-gpg-keys ${{ env.phiveGPGKeys }} --force-accept-unsigned
 
     - name: Run PHPUnit
       run: php tools/phpunit --testsuite=unit,integration
@@ -664,14 +668,14 @@ jobs:
       - name: Restore/cache tools folder
         uses: actions/cache@v1
         with:
-          path: $HOME/.phive
-          key: all-tools-${{ hashFiles('**/phive.xml') }}
-          restore-keys:  all-tools-
+          path: .phive
+          key: all-tools2-${{ hashFiles('**/phive.xml') }}
+          restore-keys:  all-tools2-
 
       - name: Install PHAR dependencies
         env:
           GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: phive --no-progress --home $HOME/.phive install --copy --trust-gpg-keys ${{ env.phiveGPGKeys }} --force-accept-unsigned
+        run: phive --no-progress --home ${{ env.phiveHome }} install --copy --trust-gpg-keys ${{ env.phiveGPGKeys }} --force-accept-unsigned
 
       - name: Download PHAR file
         if: matrix.profile == 'phar'
