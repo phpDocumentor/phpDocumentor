@@ -356,6 +356,8 @@ jobs:
           restore-keys:  all-tools-
 
       - name: Install PHAR dependencies
+        env:
+          GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: phive --no-progress --home $HOME/.phive install --copy --trust-gpg-keys ${{ env.phiveGPGKeys }} --force-accept-unsigned
 
       - name: Download PHAR file
