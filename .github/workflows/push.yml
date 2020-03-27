@@ -644,7 +644,7 @@ jobs:
           php-version: ${{ matrix.php-versions }}
           extensions: ${{ env.extensions }}
           ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
-          tools: pecl
+          tools: pecl, phive
 
       - name: Get composer cache directory
         id: composer-cache
