@@ -7,6 +7,9 @@
                     <span class="phpdocumentor-tag__name">{{ name }}</span>
                 </dt>
                 <dd class="phpdocumentor-tag-list__definition">
+                    {% if tag.version %}
+                        <span class="phpdocumentor-tag-link">{{ tag.version }}</span>
+                    {% endif %}
                     {% if tag.type %}
                         <span class="phpdocumentor-tag-link">{{ tag.type|route('class:short')|join('|')|raw }}</span>
                     {% endif %}
