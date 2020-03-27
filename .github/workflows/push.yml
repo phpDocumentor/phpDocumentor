@@ -366,7 +366,7 @@ jobs:
       - name: Run Behat
         run: php tools/behat -p ${{ matrix.profile }}
       - name: Run PHPUnit functional
-        run: php tools/phpunit.phar --testsuite=integration,functional
+        run: php tools/phpunit --testsuite=integration,functional
 
   smoketest:
     runs-on: ubuntu-latest
@@ -591,7 +591,7 @@ jobs:
       run: tools/phive.phar --no-progress install --copy --trust-gpg-keys ${{ env.phiveGPGKeys }} --force-accept-unsigned
 
     - name: Run PHPUnit
-      run: php tools/phpunit.phar --testsuite=unit,integration
+      run: php tools/phpunit --testsuite=unit,integration
 
   behat:
     runs-on: ${{ matrix.operating-system }}
@@ -680,7 +680,7 @@ jobs:
         run: php tools/behat -p ${{ matrix.profile }}
 
       - name: Run PHPUnit functional
-        run: php tools/phpunit.phar --testsuite=functional
+        run: php tools/phpunit --testsuite=functional
 
   demo:
     runs-on: ubuntu-latest
