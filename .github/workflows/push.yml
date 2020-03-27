@@ -34,13 +34,6 @@ jobs:
           key: ${{ steps.cache-env.outputs.key }}
           restore-keys: ${{ steps.cache-env.outputs.key }}
 
-      - name: Restore/cache tools folder
-        uses: actions/cache@v1
-        with:
-          path: .phive
-          key: all-tools2-${{ hashFiles('**/phive.xml') }}
-          restore-keys:  all-tools2-
-
       - name: Setup PHP
         uses: shivammathur/setup-php@master
         with:
@@ -98,13 +91,6 @@ jobs:
         path: ${{ steps.cache-env.outputs.dir }}
         key: ${{ steps.cache-env.outputs.key }}
         restore-keys: ${{ steps.cache-env.outputs.key }}
-
-    - name: Restore/cache tools folder
-      uses: actions/cache@v1
-      with:
-        path: .phive
-        key: all-tools2-${{ hashFiles('**/phive.xml') }}
-        restore-keys:  all-tools2-
 
     - name: Setup PHP
       uses: shivammathur/setup-php@master
@@ -352,13 +338,6 @@ jobs:
           ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
           tools: pecl, phive
 
-      - name: Restore/cache tools folder
-        uses: actions/cache@v1
-        with:
-          path: .phive
-          key: all-tools2-${{ hashFiles('**/phive.xml') }}
-          restore-keys:  all-tools2-
-
       - name: Install PHAR dependencies
         env:
           GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -586,13 +565,6 @@ jobs:
       run: |
         composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
 
-    - name: Restore/cache tools folder
-      uses: actions/cache@v1
-      with:
-        path: .phive
-        key: all-tools2-${{ hashFiles('**/phive.xml') }}
-        restore-keys:  all-tools2-
-
     - name: Install PHAR dependencies
       env:
         GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -664,13 +636,6 @@ jobs:
       - name: Install Composer dependencies
         run: |
           composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
-
-      - name: Restore/cache tools folder
-        uses: actions/cache@v1
-        with:
-          path: .phive
-          key: all-tools2-${{ hashFiles('**/phive.xml') }}
-          restore-keys:  all-tools2-
 
       - name: Install PHAR dependencies
         env:
