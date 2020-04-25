@@ -1,0 +1,41 @@
+## {{ project.name }}
+Last update `{{ "now"|date('F jS, Y \\a\\t H:i') }}`
+
+{% if project.indexes.namespaces|length > 0 or not project.indexes.packages %}
+### Namespaces
+##### [\\](Namespaces)
+{% for namespace in project.indexes.namespaces|sort_asc if namespace.name != '\\' %}
+##### [{{ namespace.name|raw }}](ns-{{ namespace.name }})
+
+{% endfor %}
+{% endif %}
+
+{#% if project.indexes.traits|length > 0 %}
+### [Traits](Traits) => overview?
+{% endif %#}
+
+{#% if project.indexes.interfaces|length > 0 %}
+### [Interfaces](Interfaces) => overview?
+{% endif %#}
+
+{% if project.indexes.classes|length > 0 %}
+### Classes
+{% for class in project.indexes.classes|sort_asc %}
+##### [{{ class.name|raw }}](class-{{ class.name }})
+
+{% endfor %}
+{% endif %}
+
+{% if project.indexes.constants|length > 0 %}
+### Constants
+{% for constant in project.indexes.constants|sort_asc %}
+##### [{{ constant.name|raw }}](file-{{ node.path|split('/')|last|replace({'.php':".php.md", '.js':".js.md"}) }})
+{% endfor %}
+{% endif %}
+
+{#% if project.indexes.functions|length > 0 %}
+### Functions
+{% for function in project.indexes.functions|sort_asc %}
+##### [{{ function.name|raw }}](files/{{ node.path|split('/')|last|replace({'.php':".php.md", '.js':".js.md"}) }})
+{% endfor %}
+{% endif %#}

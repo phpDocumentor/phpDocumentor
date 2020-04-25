@@ -1,0 +1,169 @@
+`{{ node.path }}`
+
+---
+
+## {{ node.summary }}
+{% if node.description %}{{ node.description|raw }}{% endif %}
+
+{% if method.deprecated %}`Deprecated !`
+
+> *{{ method.tags.deprecated[0].description }}*
+{% endif %}
+
+{% for tagName,tags in node.tags if tagName in ['example'] %}
+{% if loop.first %}### Examples
+{% endif %}
+{% for tag in tags %}
+#### {{ tag.description|escape }}
+```
+{{ tag.example|escape }}
+```{% endfor %}
+{% endfor %}
+
+#### Package
+{% if node.package is not empty and node.package != '\\' %}{{ node.subpackage ? (node.package ~ '\\' ~ node.subpackage) : node.package }}{% endif %}
+
+{% for parent in node.parent %}
+{% if loop.first %}#### Parents
+{% endif %}
+- [{{ parent.fullyQualifiedStructuralElementName }}]({{ parent|route('url') }})
+{% endfor %}
+
+{% for tagName,tags in node.tags if tagName in ['link', 'see'] %}
+{% if loop.first %}**See also**
+{% endif %}
+{% for tag in tags %}
+- [{{ tag.description ?: tag.reference }}]({{ (tag.reference|route('url')) ?: tag.link }})
+{% endfor %}
+{% endfor %}
+
+{% for tagName,tags in node.tags if tagName Name not in ['link', 'see', 'abstract', 'method', 'package', 'subpackage'] %}
+#### {{ tagName }}
+{% for tag in tags %}
+* {% if tag.version %}`{{ tag.version }}` {% endif %}{{ tag.description|raw }}
+{% endfor %}{% endfor %}
+
+
+### Overview
+
+#### Constants
+{% for constant in node.inheritedConstants.merge(node.constants)|sort_asc %}[{{ constant.name }}()](#{{ constant.name }}){% if constant.deprecated %} `deprecated`{% else %} | {% endif %}{% else %}_No constants found_{% endfor %}
+
+#### Public Methods
+{% for method in node.inheritedMethods.merge(node.methods)|sort_asc if method.visibility == 'public' %}[{{ method.name }}()](#{{ method.name }}){% if method.deprecated %} `deprecated`{% endif %} | {% else %}_No public methods found_{% endfor %}
+
+#### Proteced Methods
+{% for method in node.inheritedMethods.merge(node.methods)|sort_asc if method.visibility == 'protected' %}[{{ method.name }}()](#{{ method.name }}){% if method.deprecated %} `deprecated`{% endif %} | {% else %}_No protected methods found_{% endfor %}
+
+
+{% if node.constants|length > 0 %}### Constants
+
+{% for constant in node.inheritedConstants.merge(node.constants)|sort_asc %}
+#### {{ constant.name }}
+`{{ constant.name }} = {{ constant.value|raw }}{% if not (constant.types is empty) %} : {{ constant.types|join('|') }}{% endif %}`
+{% if (node.parent is not null and constant.parent.fullyQualifiedStructuralElementName != node.fullyQualifiedStructuralElementName) %}
+* Inherited from [{{ constant.parent.fullyQualifiedStructuralElementName }}](class-{{ constant.parent.fullyQualifiedStructuralElementName|replace({'\\':""}) }})
+{% endif %}
+{% if constant.deprecated %}`deprecated` {{ constant.tags.deprecated[0].description }}{% endif %}
+
+{{ constant.summary }}
+
+{% if constant.description %}> {{ constant.description|raw }}{% endif %}
+
+{% if (node.parent is null) %}[{{ node.path }}](file-{{ node.path|split('/')|last|replace({'.php':".php.md", '.js':".js.md"}) }}){% endif %}
+
+{% for tagName,tags in constant.tags if tagName in ['link', 'see'] %}
+{% if loop.first %}**See also**
+{% endif %}
+{% for tag in tags %}
+- [{{ tag.description ?: tag.reference }}]({{ tag.reference|route('url') ?: tag.link }})
+{% endfor %}
+{% endfor %}
+{% for tagName,tags in constant.tags if tagName in ['uses'] %}
+{% if loop.first %}**Uses**
+{% endif %}
+{% for tag in tags %}[{{ tag.description ?: tag.reference }}]({{ tag.reference|route('url') }}){% endfor %}
+{% endfor %}
+{% for tagName,tags in constant.tags if tagName not in ['link', 'see', 'var', 'deprecated', 'uses'] %}
+{% if loop.first %}##### Tags
+{% endif %}
+{% for tag in tags %}
+- **{{ tagName }}**: {% if tag.version %}`{{ tag.version }}` {% endif %}{{ tag.description|raw }}
+{% endfor %}
+{% endfor %}
+{% endfor %}
+{% endif %}
+
+
+{% if node.inheritedMethods.merge(node.methods)|length > 0 %}### Methods
+
+{% for method in node.inheritedMethods.merge(node.methods)|sort_asc %}
+#### {{ method.name }}()
+
+{{ method.summary }}
+
+{% if method.description %}> {{ method.description|raw }}{% endif %}
+
+{% if (method.parent is not null and method.parent.fullyQualifiedStructuralElementName != method.fullyQualifiedStructuralElementName) %}
+* Inherited from [{{ method.parent.fullyQualifiedStructuralElementName }}](class-{{ method.parent.fullyQualifiedStructuralElementName|replace({'\\':""}) }})
+{% endif %}
+
+`{{ method.visibility }}` `{{ method.name }}({% for argument in method.arguments %}{{ argument.types ? argument.types|join('|')~' ' }} {{ argument.isVariadic ? '...' }}${{ argument.name }}{{ argument.default ? ' = '~argument.default }}{% if not loop.last %}, {% endif %}{% endfor %}) {{ method.response.types ? ': '~method.response.types|join('|') }}`
+{% if method.deprecated %}`deprecated`{% if method.tags.deprecated[0].version %} `>{{ method.tags.deprecated[0].version }}`{% endif %} {{ method.tags.deprecated[0].description }}{% endif %}
+{% if method.static %}`static` {% endif %}{% if method.abstract %}`abstract` {% endif %}{% if method.final %}`final` {% endif %}
+
+{% if (method.parent is null) %}[{{ method.path }}](file-{{ method.path|split('/')|last|replace({'.php':".php.md", '.js':".js.md"}) }}){% endif %}
+
+{% for tagName,tags in method.tags if tagName in ['link', 'see'] %}
+{% if loop.first %}**See also**
+{% endif %}
+{% for tag in tags %}
+- [{{ tag.description ?: tag.reference }}]({{ tag.reference|route('url') ?: tag.link }})
+{% endfor %}
+{% endfor %}
+{% for tagName,tags in method.tags if tagName in ['uses'] %}
+{% if loop.first %}**Uses**
+{% endif %}
+{% for tag in tags %}[{{ tag.description ?: tag.reference }}]({{ tag.reference|route('url') }}){% endfor %}
+{% endfor %}
+{% for tagName,tags in method.tags if tagName not in ['link', 'see', 'abstract', 'example', 'param', 'return', 'access', 'deprecated', 'throws', 'throw', 'uses'] %}
+{% if loop.first %}##### Tags
+{% endif %}
+{% for tag in tags %}
+- **{{ tagName }}**: {% if tag.version %}`{{ tag.version }}` {% endif %}{{ tag.description|raw }}
+{% endfor %}
+{% endfor %}
+{% endfor %}
+{% endif %}
+
+{% if method.arguments|length > 0 %}##### Parameters
+{% for argument in method.arguments %}
+`{{ argument.types|raw }}` `${{ argument.name }} {{ argument.isVariadic ? '(variadic)' }}` {{ argument.description|raw }}
+{% endfor %}
+{% endif %}
+
+{% if method.tags.throws|length > 0 or method.tags.throw|length > 0 %}##### Throws
+{% for exception in method.tags.throws %}
+{{ exception.types|raw }}{% if exception.description %} – {{ exception.description|raw }}{% endif %}
+{% endfor %}
+{% for exception in method.tags.throw %}
+{{ exception.types|raw }}{% if exception.description %} – {{ exception.description|raw }}{% endif %}
+{% endfor %}
+{% endif %}
+
+{% if method.response and method.response.types|join() != 'void' %}##### Returns
+{{ method.response.types|raw }}{% if exception.description %} – {{ method.response.description|raw }}{% endif %}
+{% endif %}
+
+{% for tagName,tags in method.tags if tagName in ['example'] %}
+{% if loop.first %}##### Examples{% endif %}
+{% for tag in tags %}
+**{{ tag.description|escape }}**
+```
+{{ tag.example|escape }}
+```
+{% endfor %}
+{% endfor %}
+
+***
+[\\](Home) » Interfaces » {{ node.name }}

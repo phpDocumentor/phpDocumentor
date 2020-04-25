@@ -1,0 +1,24 @@
+**Navigation**
+{% for element in project.indexes.elements if element.deprecated %}
+{% if element.file.path != previousPath %}
+* [{{ element.file.path }}](#{{ element.file.path|replace({'/': "", '.': ""}) }})
+{% endif %}
+{% set previousPath = element.file.path %}
+{% endfor %}
+
+{% for element in project.indexes.elements if element.deprecated %}
+{% if element.file.path != previousPath %}
+## [{{ element.file.path }}](file-{{ element.file.name }})
+
+{{ element.tags.deprecated.count }} Deprecated elements
+{% endif %}
+{% for tag in element.tags.deprecated %}
+- {{ element.fullyQualifiedStructuralElementName }} (line {{ element.line }}): {{ tag.description|raw }}
+{% endfor %}
+{% set previousPath = element.file.path %}
+{% else %}
+`No deprecated elements have been found in this project.`
+{% endfor %}
+
+***
+[\\](Home) » Deprecated elements

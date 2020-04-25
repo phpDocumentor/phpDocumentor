@@ -1,0 +1,52 @@
+## {{ node.name }}
+{% if node.description %}{{ node.description|raw }}{% endif %}
+
+{% if node.children|length > 0 %}
+### Namespaces
+{% for namespace in node.children|sort_asc %}
+#### [{{ namespace.name }}](ns-{{ namespace.name|replace({'\\':""}) }})
+{% endfor %}{% endif %}
+
+{% if node.traits|length > 0 %}
+### Traits
+{% for trait in node.traits|sort_asc %}
+#### [{{ trait.name }}](trait-{{ trait.name }})
+{% if trait.summary %}*{{ trait.summary }}*
+
+{% endif %}{% endfor %}{% endif %}
+
+{% if node.interfaces|length > 0 %}
+### Interfaces
+{% for interface in node.interfaces|sort_asc %}
+#### [{{ interface.name }}](interface-{{ interface.name }})
+{% if interface.summary %}*{{ interface.summary }}*
+
+{% endif %}{% endfor %}{% endif %}
+
+{% if node.classes|length > 0 %}
+### Classes
+{% for class in node.classes|sort_asc %}
+#### [{{ class.name }}](class-{{ class.name }})
+{% if class.summary %}*{{ class.summary }}*
+
+{% endif %}{% endfor %}{% endif %}
+
+{% if node.constants|length > 0 %}
+### Constants
+{% for constant in node.constants|sort_asc %}
+* {{ constant.name }}{% if constant.summary %}: {{ constant.summary }}{% endif %}
+{% endfor %}{% endif %}
+
+{% if node.functions|length > 0 %}
+### Functions
+{% for key, method in node.functions|sort_asc %}
+* [{{ method.name }}](file-{{ method.path|split('/')|last }})
+{% endfor %}{% endif %}
+
+{% if project.settings.shouldIncludeSource %}                    
+## Source
+[{{ node.name }}]({{ node.path }}{{ node.name }})
+{% endif %}
+
+***
+[\\](Home) » [Namespaces](Namespaces) » [{{ node.parent.name }}](ns-{{ node.parent.name }})

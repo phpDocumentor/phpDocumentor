@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <author>oliveratgithub</author>
+  <email>github@raduner.ch</email>
+  <version>1.0.0</version>
+  <copyright>GNU GPLv3</copyright>
+  <description>This template transforms your phpDocu into markdown based GitHub Wiki pages ready to push to a GitHub repository</description>
+  <transformations>
+    <transformation writer="twig" query="namespace" source="Namespaces.md.twig" artifact="Namespaces.md" />
+    <transformation writer="twig" query="indexes.classes" source="Classes.md.twig" artifact="classes/class-{{name}}.md" />
+    <transformation writer="twig" query="indexes.traits" source="Classes.md.twig" artifact="traits/trait-{{name}}.md" />
+    <transformation writer="twig" query="files" source="Files.md.twig" artifact="files/file-{{name}}.md" />
+    <transformation writer="twig" source="Markers.md.twig" artifact="Markers.md"/>
+    <transformation writer="twig" source="Errors.md.twig" artifact="Errors.md"/>
+    <transformation writer="twig" source="Deprecated.md.twig" artifact="Deprecated.md"/>
+    <transformation writer="twig" source="Graphs.md.twig" artifact="Graphs.md"/>
+    <transformation writer="twig" source="Home.md.twig" artifact="Home.md"/>
+    <transformation writer="twig" source="_Sidebar.md.twig" artifact="_Sidebar.md"/>
+    <transformation writer="twig" source="_Footer.md.twig" artifact="_Footer.md"/>
+    <transformation query="copy" writer="FileIo" source="/images" artifact="images"/>
+    <transformation writer="Graph" source="class" artifact="images/classes.svg" />
+    <transformation writer="twig" query="indexes.namespaces" source="Namespaces.md.twig" artifact="namespaces/ns-{{name}}.md" />
+    <transformation writer="twig" query="indexes.interfaces" source="Interfaces.md.twig" artifact="interfaces/interface-{{name}}.md" />
+  </transformations>
+  <parameters>
+    <parameter key="twig-debug">true</parameter>
+  </parameters>
+</template>

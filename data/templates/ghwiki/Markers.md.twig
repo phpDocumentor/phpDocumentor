@@ -1,0 +1,27 @@
+**Navigation**
+{% set markerCount = 0 %}
+{% for file in project.files %}
+{% if file.markers.count > 0 %}
+* [{{ file.path }}](#{{ file.path|replace({'/': "", '.': ""}) }})
+{% endif %}
+{% set markerCount = markerCount + file.markers.count %}
+{% endfor %}
+
+{% if markerCount <= 0 %}
+`No markers have been found in this project.`
+{% endif %}
+
+{% for file in project.files %}
+{% if file.markers.count > 0 %}
+## [{{ file.path }}](file-{{ file.name }})
+
+{{ file.markers.count }} Markers
+
+{% for marker in file.markers %}
+- [ ] {{ marker.type }} (line {{ marker.line }}): {{ marker.message|raw }}
+{% endfor %}
+{% endif %}
+{% endfor %}
+
+***
+[\\](Home) » Markers

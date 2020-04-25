@@ -1,0 +1,34 @@
+### [API documentation](Home)
+
+{% if project.namespace.children|length > 0 %}
+{% for namespace in project.namespace.children|sort_asc %}
+[{{ namespace.name }}](ns-{{ namespace.name }})
+
+{% endfor %}
+{% endif %}
+
+---
+### Graphs
+
+[Class Hierarchy Diagram]({{ path('Graphs') }})
+
+---
+### Reports
+
+{% set errorCount = 0 %}
+{% for file in project.files %}
+{% set errorCount = errorCount + file.allerrors.count %}
+{% endfor %}
+[Errors ({{ errorCount }})]({{ path('Errors') }})
+
+{% set deprecatedCount = 0 %}
+{% for element in project.indexes.elements if element.deprecated %}
+{% set deprecatedCount = deprecatedCount + element.tags.deprecated.count %}
+{% endfor %}
+[Deprecated ({{ deprecatedCount }})]({{ path('Deprecated') }})
+
+{% set markerCount = 0 %}
+{% for file in project.files %}
+{% set markerCount = markerCount + file.markers.count %}
+{% endfor %}
+[Markers ({{ markerCount }})]({{ path('Markers') }})
