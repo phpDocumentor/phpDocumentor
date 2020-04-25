@@ -2,6 +2,15 @@
 
 declare(strict_types=1);
 
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link http://phpdoc.org
+ */
+
 namespace phpDocumentor\Configuration;
 
 use League\Uri\Uri;
@@ -9,9 +18,22 @@ use phpDocumentor\Dsn;
 use phpDocumentor\Path;
 use phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory;
 use function file_exists;
+use function getcwd;
 
+/**
+ * Determines the path where the general template overrides are.
+ *
+ * Since phpDocumentor 3, we now have the feature that in the subfolder '.phpdoc/template' relative to where your
+ * configuration file resides you can add twig templates with the same name as those used in a template. When you
+ * do this, that file will be used instead of the one in the template, and you can customize rendering this way.
+ *
+ * This configuration middleware is responsible for finding the path where these overrides are, and adding this to the
+ * Twig Environment Factory so that it can be added as a template source once the Twig Environment is created.
+ */
 final class ProvideTemplateOverridePathMiddleware
 {
+    public const PATH_TO_TEMPLATE_OVERRIDES = '.phpdoc/template';
+
     /** @var EnvironmentFactory */
     private $environmentFactory;
 
@@ -25,9 +47,9 @@ final class ProvideTemplateOverridePathMiddleware
      *
      * @return array<string, array<string, array<mixed>>>
      */
-    public function __invoke(array $configuration, ?Uri $uri) : array
+    public function __invoke(array $configuration, ?Uri $pathOfConfigFile) : array
     {
-        $path = $this->normalizePath($uri, new Path('.phpdoc/template'));
+        $path = $this->normalizePath($pathOfConfigFile, new Path(self::PATH_TO_TEMPLATE_OVERRIDES));
         if (file_exists((string) $path)) {
             $this->environmentFactory->withTemplateOverridesAt($path);
         }
@@ -35,10 +57,10 @@ final class ProvideTemplateOverridePathMiddleware
         return $configuration;
     }
 
-    public function normalizePath(?Uri $uri, Path $path) : Path
+    private function normalizePath(?Uri $uri, Path $path) : Path
     {
         if ($uri === null) {
-            return $path;
+            return new Path(getcwd() . '/' . $path);
         }
 
         $configFile = Dsn::createFromUri($uri);

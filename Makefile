@@ -36,9 +36,12 @@ phpstan:
 psalm:
 	docker run -it --rm -v${CURDIR}:/data -w /data php:7.2 ./tools/psalm
 
+.PHONY: lint
+lint: phpcs
+
 .PHONY: test
 test: unit-test
-	docker run -it --rm -v${CURDIR}:/data -w /data php:7.2 -f ./tests/coverage-checker.php 71
+	docker run -it --rm -v${CURDIR}:/data -w /data php:7.2 -f ./tests/coverage-checker.php 72
 
 unit-test: ARGS=--testsuite=unit
 integration-test: ARGS=--testsuite=integration --no-coverage

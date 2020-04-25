@@ -129,7 +129,7 @@ jobs:
     - name: Upload to Scrutinizer
       run: tools/ocular code-coverage:upload --format=php-clover build/logs/clover.xml
     - name: Quick check code coverage level
-      run: php tests/coverage-checker.php 71
+      run: php tests/coverage-checker.php 72
 
   codestyle:
     runs-on: ubuntu-latest
