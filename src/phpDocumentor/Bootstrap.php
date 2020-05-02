@@ -113,36 +113,51 @@ class Bootstrap
     /**
      * Attempts to find the location of the vendor folder.
      *
-     * This method tries to check for a composer.json in a directory 5 levels below the folder of this Bootstrap file.
+     * This method tries to check for a autoload.php in a directory 4 levels above the folder of this Bootstrap file.
      * This is the expected location if phpDocumentor is installed using composer because the current directory for
-     * this file is expected to be 'vendor/phpdocumentor/phpdocumentor/src/phpDocumentor'.
+     * this file is expected to be 'vendor/phpdocumentor/phpdocumentor/src/phpDocumentor'. This approach will work
+     * independently from the name of the vendor directory.
      *
-     * If a composer.json is found we will try to extract the vendor folder name using the 'vendor-dir' configuration
-     * option of composer or assume it is vendor if that option is not set.
+     * If not found, it will get the value of a
+     * {@link https://getcomposer.org/doc/03-cli.md#composer-vendor-dir COMPOSER_VENDOR_DIR environment variable}
+     * and use it as vendor directory name if not empty.
      *
+     * If it's not specified, it will check if it is a standalone install (e.g. via git) and will look for a
+     * composer.json file 2 levels above as we are supposed to be in 'src/phpDocumentor' (The configuration file
+     *  can be named differently based on the
+     * {@link https://getcomposer.org/doc/03-cli.md#composer COMPOSER environment variable}). If this file
+     * contains a {@link https://getcomposer.org/doc/06-config.md#vendor-dir vendor-dir entry}, its value will be
+     * used for the vendor directory location.
      *
-     * If no custom composer.json can be found, then we assume that the vendor folder is that of phpDocumentor itself,
-     * which is `../../vendor` starting from this folder.
+     * If none of these has a specified value, it will use the default 'vendor' directory name.
      *
-     * If neither locations exist, then this method returns null because no vendor path could be found.
+     * Finally, if the directory doesn't exist, it will throw an exception.
      *
-     * @param $baseDir parameter for test purposes only.
-     * @return string|null
+     * @param  string $baseDir parameter for test purposes only.
+     *
+     * @return string The vendor directory path
+     *
+     * @throws RuntimeException If the vendor directory is not findable.
      */
-    public function findVendorPath($baseDir = __DIR__)
+    public static function findVendorPath(string $baseDir = __DIR__)
     {
-        // default installation
-        $vendorDir = $baseDir . '/../../vendor';
-
         // Composerised installation, vendor/phpdocumentor/phpdocumentor/src/phpDocumentor is __DIR__
-        $rootFolderWhenInstalledWithComposer = $baseDir . '/../../../../../';
-        $composerConfigurationPath           = $rootFolderWhenInstalledWithComposer .'composer.json';
-        if (file_exists($composerConfigurationPath)) {
-            $vendorDir = $rootFolderWhenInstalledWithComposer
-                . $this->getCustomVendorPathFromComposer($composerConfigurationPath);
+        $vendorFolderWhenInstalledWithComposer = $baseDir . '/../../../../';
+        if (file_exists($vendorFolderWhenInstalledWithComposer . '/autoload.php')) {
+            $vendorDir = $vendorFolderWhenInstalledWithComposer;
+        } else {
+            // Repository cloned via git
+            $vendorDir = $baseDir . '/../../' . static::getCustomVendorPathFromComposer(
+                $baseDir . '/../../' . static::findComposerConfigurationPath()
+            );
         }
 
-        return file_exists($vendorDir) ? $vendorDir : null;
+        // Do not use realpath() here to don't break installation from phar
+        if (!file_exists($vendorDir)) {
+            throw new RuntimeException('Unable to find vendor directory for ' . $baseDir);
+        }
+
+        return $vendorDir;
     }
 
     /**
