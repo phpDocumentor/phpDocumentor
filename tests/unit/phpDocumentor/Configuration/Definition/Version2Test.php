@@ -70,9 +70,9 @@ final class Version2Test extends TestCase
                 ],
                 'templates' => [
                     [
-                        'name' => self::DEFAULT_TEMPLATE_NAME
-                    ]
-                ]
+                        'name' => self::DEFAULT_TEMPLATE_NAME,
+                    ],
+                ],
             ],
             $upgradedConfiguration
         );

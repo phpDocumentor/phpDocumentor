@@ -13,7 +13,10 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
+use InvalidArgumentException;
+use phpDocumentor\Descriptor\Validation\Error;
 use function ltrim;
+use function sprintf;
 
 /**
  * Descriptor representing a Trait.
@@ -114,7 +117,20 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
             $property->setName(ltrim($propertyTag->getVariableName(), '$'));
             $property->setDescription($propertyTag->getDescription());
             $property->setType($propertyTag->getType());
-            $property->setParent($this);
+            try {
+                $property->setParent($this);
+            } catch (InvalidArgumentException $e) {
+                $property->getErrors()->add(
+                    new Error(
+                        'ERROR',
+                        sprintf(
+                            'Property name is invalid %s',
+                            $e->getMessage()
+                        ),
+                        null
+                    )
+                );
+            }
 
             $properties->add($property);
         }

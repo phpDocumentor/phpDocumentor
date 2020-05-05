@@ -120,6 +120,10 @@ class Router
         }
 
         if ($node instanceof PropertyDescriptor) {
+            if ($node->getParent() === null) {
+                return '';
+            }
+
             return $this->generateUrlForDescriptor(
                 'class',
                 (string) $node->getParent()->getFullyQualifiedStructuralElementName(),

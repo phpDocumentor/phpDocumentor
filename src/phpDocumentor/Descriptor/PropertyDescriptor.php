@@ -44,11 +44,11 @@ class PropertyDescriptor extends DescriptorAbstract implements
      */
     public function setParent(DescriptorAbstract $parent) : void
     {
+        $this->parent = $parent;
+
         $this->setFullyQualifiedStructuralElementName(
             new Fqsen($parent->getFullyQualifiedStructuralElementName() . '::$' . $this->getName())
         );
-
-        $this->parent = $parent;
     }
 
     /**

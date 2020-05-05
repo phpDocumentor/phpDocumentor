@@ -17,6 +17,7 @@ use phpDocumentor\Configuration\SymfonyConfigFactory;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use function array_merge;
+use function array_values;
 use function getcwd;
 
 final class Version2 implements ConfigurationInterface, Upgradable
@@ -192,7 +193,7 @@ final class Version2 implements ConfigurationInterface, Upgradable
                     ],
                 ],
             ],
-            'templates' => array_values($values['transformations']['templates'])
+            'templates' => array_values($values['transformations']['templates']),
         ];
     }
 }

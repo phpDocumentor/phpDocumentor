@@ -18,6 +18,7 @@ use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\Tag\MethodDescriptor as TagMethodDescriptor;
 use phpDocumentor\Descriptor\Tag\PropertyDescriptor as TagPropertyDescriptor;
 use phpDocumentor\Reflection\Fqsen;
+use phpDocumentor\Reflection\Type;
 use phpDocumentor\Reflection\Types\Mixed_;
 
 /**
@@ -158,13 +159,17 @@ final class TraitDescriptorTest extends MockeryTestCase
 
     /**
      * @covers ::getMagicProperties
+     * @dataProvider provideMagicProperties
      */
-    public function testMagicPropertiesReturnsExpectedCollectionWithTags() : void
-    {
+    public function testMagicPropertiesReturnsExpectedCollectionWithTags(
+        string $name,
+        string $description,
+        Type $type
+    ) : void {
         $mockTagPropertyDescriptor = m::mock(TagPropertyDescriptor::class);
-        $mockTagPropertyDescriptor->shouldReceive('getVariableName')->andReturn('Sample');
-        $mockTagPropertyDescriptor->shouldReceive('getDescription')->andReturn('Sample description');
-        $mockTagPropertyDescriptor->shouldReceive('getType')->andReturn(new Mixed_());
+        $mockTagPropertyDescriptor->shouldReceive('getVariableName')->andReturn($name);
+        $mockTagPropertyDescriptor->shouldReceive('getDescription')->andReturn($description);
+        $mockTagPropertyDescriptor->shouldReceive('getType')->andReturn($type);
 
         $propertyCollection = new Collection([$mockTagPropertyDescriptor]);
         $this->fixture->getTags()->set('property', $propertyCollection);
@@ -173,10 +178,29 @@ final class TraitDescriptorTest extends MockeryTestCase
 
         $magicPropertiesCollection = $this->fixture->getMagicProperties();
         $this->assertSame(1, $magicPropertiesCollection->count());
-        $this->assertSame('Sample', $magicPropertiesCollection[0]->getName());
-        $this->assertSame('Sample description', $magicPropertiesCollection[0]->getDescription());
-        $this->assertEquals(new Mixed_(), $magicPropertiesCollection[0]->getType());
+        $this->assertSame($name, $magicPropertiesCollection[0]->getName());
+        $this->assertSame($description, $magicPropertiesCollection[0]->getDescription());
+        $this->assertEquals($type, $magicPropertiesCollection[0]->getType());
         $this->assertSame($this->fixture, $magicPropertiesCollection[0]->getParent());
+    }
+
+    /**
+     * @return array<string, mixed[]>
+     */
+    public function provideMagicProperties() : array
+    {
+        return [
+            'normal sample' => [
+                'name' => 'Sample',
+                'description' => 'Sample Description',
+                'type' => new Mixed_(),
+            ],
+            'without name' => [
+                'name' => '',
+                'description' => 'Sample Description',
+                'type' => new Mixed_(),
+            ],
+        ];
     }
 
     /**
