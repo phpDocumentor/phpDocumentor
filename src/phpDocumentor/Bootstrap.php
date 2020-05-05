@@ -12,6 +12,7 @@
 namespace phpDocumentor;
 
 use Composer\Autoload\ClassLoader;
+use RuntimeException;
 
 /**
  * This class provides a bootstrap for all application who wish to interface with phpDocumentor.
@@ -139,7 +140,7 @@ class Bootstrap
      *
      * @throws RuntimeException If the vendor directory is not findable.
      */
-    public static function findVendorPath(string $baseDir = __DIR__)
+    public static function findVendorPath($baseDir = __DIR__)
     {
         // Composerised installation, vendor/phpdocumentor/phpdocumentor/src/phpDocumentor is __DIR__
         $vendorFolderWhenInstalledWithComposer = $baseDir . '/../../../../';
@@ -160,18 +161,43 @@ class Bootstrap
         return $vendorDir;
     }
 
+
     /**
-     * Retrieves the custom vendor-dir from the given composer.json or returns 'vendor'.
+     * Retrieves the custom composer configuration path based on the
+     * {@link https://getcomposer.org/doc/03-cli.md#composer COMPOSER environment variable}
+     * or returns the default 'composer.json'.
+     */
+    private static function findComposerConfigurationPath()
+    {
+        $filename = getenv('COMPOSER') ?: 'composer';
+
+        return $filename . '.json';
+    }
+
+    /**
+     * Retrieves the custom vendor directory name from
+     * the {@link https://getcomposer.org/doc/03-cli.md#composer-vendor-dir COMPOSER_VENDOR_DIR environment variable},
+     * from the {@link https://getcomposer.org/doc/06-config.md#vendor-dir vendor-dir entry} of the given composer.json,
+     * or returns 'vendor'.
      *
      * @param string $composerConfigurationPath the path pointing to the composer.json
-     *
-     * @return string
      */
-    protected function getCustomVendorPathFromComposer($composerConfigurationPath)
+    private static function getCustomVendorPathFromComposer($composerConfigurationPath)
     {
-        $composerFile = file_get_contents($composerConfigurationPath);
-        $composerJson = json_decode($composerFile, true);
+        $vendorDir = getenv('COMPOSER_VENDOR_DIR');
+        if ($vendorDir) {
+            return $vendorDir;
+        }
 
-        return isset($composerJson['config']['vendor-dir']) ? $composerJson['config']['vendor-dir'] : 'vendor';
+        $vendorDir = 'vendor';
+        if (file_exists($composerConfigurationPath)) {
+            $composerFile = file_get_contents($composerConfigurationPath);
+            $composerJson = json_decode($composerFile, true);
+            if ($composerJson && !empty($composerJson['config']['vendor-dir'])) {
+                $vendorDir = $composerJson['config']['vendor-dir'];
+            }
+        }
+
+        return $vendorDir;
     }
 }
