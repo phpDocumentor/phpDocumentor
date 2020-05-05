@@ -43,6 +43,7 @@ final class Version2Test extends TestCase
         $this->assertSame(
             [
                 SymfonyConfigFactory::FIELD_CONFIG_VERSION => '3',
+                'title' => 'Documentation',
                 'paths' => [
                     'output' => 'build/api',
                     'cache' => 'build/api-cache',
@@ -67,6 +68,11 @@ final class Version2Test extends TestCase
                         ],
                     ],
                 ],
+                'templates' => [
+                    [
+                        'name' => self::DEFAULT_TEMPLATE_NAME
+                    ]
+                ]
             ],
             $upgradedConfiguration
         );

@@ -165,6 +165,7 @@ final class Version2 implements ConfigurationInterface, Upgradable
         return [
 
             SymfonyConfigFactory::FIELD_CONFIG_VERSION => '3',
+            'title' => $values['title'],
             'paths' => [
                 'output' => $values['transformer']['target'],
                 'cache' => $values['parser']['target'],
@@ -191,6 +192,7 @@ final class Version2 implements ConfigurationInterface, Upgradable
                     ],
                 ],
             ],
+            'templates' => array_values($values['transformations']['templates'])
         ];
     }
 }
