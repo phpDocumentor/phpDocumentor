@@ -164,7 +164,6 @@ final class Version2 implements ConfigurationInterface, Upgradable
     public function upgrade(array $values) : array
     {
         return [
-
             SymfonyConfigFactory::FIELD_CONFIG_VERSION => '3',
             'title' => $values['title'],
             'paths' => [
@@ -178,10 +177,16 @@ final class Version2 implements ConfigurationInterface, Upgradable
                         [
                             'default-package-name' => $values['parser']['default-package-name'],
                             'source' => [
-                                'paths' => array_merge($values['files']['files'], $values['files']['directories']),
+                                'paths' => array_map(
+                                    [$this, 'convertSingleStarPathEndingIntoGlobPattern'],
+                                    array_merge($values['files']['files'], $values['files']['directories'])
+                                ),
                             ],
                             'ignore' => [
-                                'paths' => $values['files']['ignores'],
+                                'paths' => array_map(
+                                    [$this, 'convertSingleStarPathEndingIntoGlobPattern'],
+                                    $values['files']['ignores']
+                                ),
                             ],
                             'extensions' => [
                                 'extensions' => $values['parser']['extensions']['extensions'],
@@ -195,5 +200,27 @@ final class Version2 implements ConfigurationInterface, Upgradable
             ],
             'templates' => array_values($values['transformations']['templates']),
         ];
+    }
+
+    /**
+     * Make a `/*` ending backwards compatible for v2.
+     *
+     * In phpDocumentor 3 we started adopting the glob pattern with globstar extension to properly define patterns
+     * matching file paths. This is incompatible with phpDocumentor 2, that interpreted a * to mean any number of
+     * characters, including the path separator.
+     *
+     * To ensure this behaviour is properly translated, this method will detect if a path ends with /*, and if it is
+     * not a globstar pattern, we convert it to one. This matches the behaviour in phpDocumentor 2 without user
+     * interaction.
+     *
+     * @link https://www.gnu.org/software/bash/manual/html_node/Pattern-Matching.html
+     */
+    private function convertSingleStarPathEndingIntoGlobPattern(string $path): string
+    {
+        if (mb_substr($path, -2) === '/*' && mb_substr($path, -4) !== '**/*') {
+            $path .= '*/*';
+        }
+
+        return $path;
     }
 }

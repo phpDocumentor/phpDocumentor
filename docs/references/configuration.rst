@@ -107,7 +107,7 @@ elements which are explained in more detail in the sub-chapters.
 - template
 
 Paths
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~
 
 Paths is forming the base output location of phpDocumentor. More specific output locations can be specified in the ``version`` element.
 
@@ -123,7 +123,7 @@ Paths is forming the base output location of phpDocumentor. More specific output
     </paths>
 
 Version
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~
 
 Version is the main element to instruct phpDocumentor what needs to be done. A project could have multiple versions.
 
@@ -145,7 +145,7 @@ is a compliment to the ``paths/output`` defined path. When ``folder`` is omitted
   Currently only single version projects are supported. The configuration format is prepared to support multiple.
 
 Api
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^
 
 The api element part of a ``version`` it describes a project source api that needs to be processed by phpDocumentor.
 A minimal setup of ``api`` only contains ``source`` element.
@@ -162,13 +162,21 @@ Also ``api` may contain an ``output`` element that forms the full path to the lo
 is located. The value of ``output`` is appended to the ``paths/output`` element and the optional ``folder`` element
 of its version.
 
-In some cases you will have to **ignore** certain files in your project; examples of these can be third party libraries
-and/or tests. In this case you can use the ``ignore`` element and provide a pattern (not a path) to ignore. Thus if you
-provide ``*test*`` it will ignore any file or directory containing the text *test* in it.
+**Ignoring files**
 
-See Appendix B for a full example of the options available in ``api``
+In some cases you will want to ignore a set of files in your project. Examples of these can be:
+third party libraries, SDKs, Framework scaffolding or tests. In this case, you can use the ``ignore`` element
+and provide a glob pattern to determine which files to ignore. Thus, if you provide ``tests/**/*`` it will ignore
+any file or (sub)directory in the folder ``tests``.
 
+.. note::
 
+    Version 2 of the configuration considered ``tests/*`` to mean any file and subdirectory in the folder ``tests``,
+    this behaviour changed in Version 3 of the configuration to provide more power to the ignore pattern, and to make
+    it compatible with patterns used in existing tools. This matches the way glob works on Unix/Linux with the globstar
+    extension enabled.
+
+See Appendix B for a full example of the options available in ``api``.
 
 Appendix A: basic configuration example
 ---------------------------------------
@@ -222,7 +230,7 @@ Appendix B: complete configuration example
           <!--Optional:-->
           <ignore hidden="true" symlinks="true">
             <!--1 or more repetitions:-->
-            <path>tests</path>
+            <path>tests/**/*</path>
           </ignore>
           <!--Optional:-->
           <extensions>

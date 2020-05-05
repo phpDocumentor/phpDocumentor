@@ -78,10 +78,32 @@ final class Version2Test extends TestCase
         );
     }
 
+    public function testThatWildcardsAreExpandedWhenUpgradingToAVersion3InputArrayForIgnoredPaths() : void
+    {
+        $oldStyleWildcard = 'tests/*';
+        $newStyleGlobPattern = 'tests/**/*';
+
+        $configuration = new Version2(self::DEFAULT_TEMPLATE_NAME);
+
+        $values = $this->defaultConfigurationOutput();
+        $values['files']['ignores'] = [$oldStyleWildcard, 'vendor/**/*', 'sdk'];
+        $upgradedConfiguration = $configuration->upgrade($values);
+
+        $this->assertSame(
+            [$newStyleGlobPattern, 'vendor/**/*', 'sdk'],
+            current(current($upgradedConfiguration['version'])['api'])['ignore']['paths']
+        );
+    }
+
     public function provideTestConfiguration() : array
     {
+        $defaultConfigurationOutput = $this->defaultConfigurationOutput();
+        $configurationOutputWithIgnore = $this->defaultConfigurationOutput();
+        $configurationOutputWithIgnore['files']['ignores'] = ['tests/*'];
+
         return [
-            'default configuration' => [[], $this->defaultConfigurationOutput()],
+            'default configuration' => [[], $defaultConfigurationOutput],
+            'ignored folder with wildcard' => [['files' => ['ignore' => ['tests/*']]], $configurationOutputWithIgnore],
         ];
     }
 
