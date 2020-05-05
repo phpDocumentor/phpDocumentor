@@ -16,9 +16,11 @@ namespace phpDocumentor\Configuration\Definition;
 use phpDocumentor\Configuration\SymfonyConfigFactory;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
+use function array_map;
 use function array_merge;
 use function array_values;
 use function getcwd;
+use function substr;
 
 final class Version2 implements ConfigurationInterface, Upgradable
 {
@@ -178,13 +180,17 @@ final class Version2 implements ConfigurationInterface, Upgradable
                             'default-package-name' => $values['parser']['default-package-name'],
                             'source' => [
                                 'paths' => array_map(
-                                    [$this, 'convertSingleStarPathEndingIntoGlobPattern'],
+                                    function ($value) {
+                                        return $this->convertSingleStarPathEndingIntoGlobPattern($value);
+                                    },
                                     array_merge($values['files']['files'], $values['files']['directories'])
                                 ),
                             ],
                             'ignore' => [
                                 'paths' => array_map(
-                                    [$this, 'convertSingleStarPathEndingIntoGlobPattern'],
+                                    function ($value) {
+                                        return $this->convertSingleStarPathEndingIntoGlobPattern($value);
+                                    },
                                     $values['files']['ignores']
                                 ),
                             ],
@@ -215,9 +221,9 @@ final class Version2 implements ConfigurationInterface, Upgradable
      *
      * @link https://www.gnu.org/software/bash/manual/html_node/Pattern-Matching.html
      */
-    private function convertSingleStarPathEndingIntoGlobPattern(string $path): string
+    private function convertSingleStarPathEndingIntoGlobPattern(string $path) : string
     {
-        if (mb_substr($path, -2) === '/*' && mb_substr($path, -4) !== '**/*') {
+        if (substr($path, -2) === '/*' && substr($path, -4) !== '**/*') {
             $path .= '*/*';
         }
 

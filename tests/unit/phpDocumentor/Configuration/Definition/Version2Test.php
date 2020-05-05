@@ -15,6 +15,7 @@ namespace phpDocumentor\Configuration\Definition;
 
 use phpDocumentor\Configuration\SymfonyConfigFactory;
 use PHPUnit\Framework\TestCase;
+use function current;
 use function getcwd;
 
 final class Version2Test extends TestCase
