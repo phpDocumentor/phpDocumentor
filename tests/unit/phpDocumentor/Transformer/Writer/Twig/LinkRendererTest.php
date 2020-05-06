@@ -177,6 +177,22 @@ final class LinkRendererTest extends MockeryTestCase
         );
     }
 
+    public function testRenderCollectionLikeReturnType() : void
+    {
+        $return = new \phpDocumentor\Reflection\Types\Collection(
+            new Fqsen('\My\Namespace\Collection'),
+            new Object_(new Fqsen('\My\Namespace\Class'))
+        );
+
+        $result = $this->renderer->render($return, LinkRenderer::PRESENTATION_CLASS_SHORT);
+
+        $this->assertSame(
+            '<abbr title="\My\Namespace\Collection">Collection</abbr>&lt;string|int, ' .
+            '<abbr title="\My\Namespace\Class">Class</abbr>&gt;',
+            $result
+        );
+    }
+
     /**
      * @covers ::render
      * @dataProvider provideUrls

@@ -369,7 +369,6 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
      * Sets the file path for this file relative to the project's root.
      *
      * @internal should not be called by any other class than the assamblers
-     *
      */
     public function setPath(string $path) : void
     {

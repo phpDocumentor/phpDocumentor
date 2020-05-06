@@ -23,6 +23,7 @@ use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Path;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Type;
+use phpDocumentor\Reflection\Types\Collection;
 use phpDocumentor\Reflection\Types\Null_;
 use phpDocumentor\Reflection\Types\Nullable;
 use phpDocumentor\Reflection\Types\Object_;
@@ -211,7 +212,7 @@ final class LinkRenderer
     }
 
     /**
-     * @param string|Path|Object_|DescriptorAbstract|Fqsen $node
+     * @param string|Path|Type|DescriptorAbstract|Fqsen $node
      *
      * @psalm-param string $presentation
      */
@@ -233,6 +234,14 @@ final class LinkRenderer
 
         if ($node instanceof Fqsen) {
             $node = $this->project->findElement($node) ?: $node;
+        }
+
+        if ($node instanceof Collection) {
+            $valueLink = $this->renderLink($node->getValueType(), $presentation);
+            $keyLink = $this->renderLink($node->getKeyType(), $presentation);
+            $typeLink = $this->renderLink($node->getFqsen(), $presentation);
+
+            return sprintf('%s&lt;%s, %s&gt;', $typeLink, $keyLink, $valueLink);
         }
 
         // With an unlinked object, we don't know if the page for it exists; so we don't render a link to it.
