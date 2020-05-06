@@ -17,7 +17,7 @@ Phive
    $ phive install phpDocumentor
 
 For more information about phive have a look at their [website](https://phar.io/).
-Now you have phpDocumentor installed and it can be executed directly. 
+Now you have phpDocumentor installed and it can be executed directly.
 
 
 PHAR
@@ -61,8 +61,8 @@ This command can also be used to add phpDocumentor to your existing composer-bas
    phpDocumentor uses a fair number of other libraries, if you do not want those dependencies imported into your
    own project it is advised to use one of the other installation methods.
 
-.. _Composer:               http:/getcomposer.org
-.. _`PHP 7.2.0`:            http://www.php.net
-.. _Graphviz:               http://graphviz.org/download/
+.. _Composer:               https://getcomposer.org
+.. _`PHP 7.2.0`:            https://www.php.net
+.. _Graphviz:               https://graphviz.org/download/
 .. _PlantUML:               https://plantuml.com/download
-.. _Twig:                   http://twig.sensiolabs.org
+.. _Twig:                   https://twig.sensiolabs.org
