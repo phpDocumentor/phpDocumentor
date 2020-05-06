@@ -24,7 +24,7 @@
         {% if property.default is not null %} = <span class="phpdocumentor-signature__default-value">{{ property.default ?: '""' }}</span>{% endif %}
     </code>
     {% if property.description %}
-    <section class="phpdocumentor-description">{{ property.description }}</section>
+    <section class="phpdocumentor-description">{{ property.description | markdown }}</section>
     {% endif %}
     {% set visibleTags = property.tags|filter((v,k) => k not in ['var']) %}
     {{ include ('tags.html.twig', {tags: visibleTags}) }}
