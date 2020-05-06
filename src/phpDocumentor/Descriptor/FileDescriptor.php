@@ -19,6 +19,10 @@ use phpDocumentor\Reflection\Fqsen;
 /**
  * Represents a file in the project.
  *
+ * This class contains all structural elements of the file it represents. In most modern projects a
+ * file will contain a single element like a Class, Interface or Trait, sometimes multiple functions.
+ * Depending on the config settings of the parsed project it might include all source code from the file in the project.
+ *
  * @api
  * @package phpDocumentor\AST
  */
@@ -97,6 +101,8 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
 
     /**
      * Retrieves the contents of this file.
+     *
+     * When source is included in parsing process this property will contain the raw file contents.
      */
     public function getSource() : ?string
     {
@@ -105,6 +111,8 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
 
     /**
      * Sets the source contents for this file.
+     *
+     * @internal should not be called by any other class than the assamblers
      */
     public function setSource(?string $source) : void
     {
@@ -113,6 +121,10 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
 
     /**
      * Returns the namespace aliases that have been defined in this file.
+     *
+     * A namespace alias can either be a full descriptor of the namespace or just a {@see Fqsen}
+     * when the namespace was not part of the processed code. When it is a {@see NamespaceDescriptor} it
+     * will contain all structural elements in the namespace not just the once in this particlar file.
      *
      * @return Collection<NamespaceDescriptor>|Collection<Fqsen>
      */
@@ -123,6 +135,8 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
 
     /**
      * Sets the collection of namespace aliases for this file.
+     *
+     * @internal should not be called by any other class than the assamblers
      *
      * @param Collection<NamespaceDescriptor>|Collection<Fqsen> $namespaceAliases
      */
@@ -144,6 +158,8 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
     /**
      * Sets a list of all includes that have been declared in this file.
      *
+     * @internal should not be called by any other class than the assamblers
+     *
      * @param Collection<string> $includes
      */
     public function setIncludes(Collection $includes) : void
@@ -163,6 +179,8 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
 
     /**
      * Sets a list of constant descriptors contained in this file.
+     *
+     * @internal should not be called by any other class than the assamblers
      *
      * @param Collection<ConstantDescriptor> $constants
      */
@@ -184,6 +202,8 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
     /**
      * Sets a list of function descriptors contained in this file.
      *
+     * @internal should not be called by any other class than the assamblers
+     *
      * @param Collection<FunctionDescriptor> $functions
      */
     public function setFunctions(Collection $functions) : void
@@ -203,6 +223,8 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
 
     /**
      * Sets a list of class descriptors contained in this file.
+     *
+     * @internal should not be called by any other class than the assamblers
      *
      * @param Collection<ClassDescriptor> $classes
      */
@@ -224,6 +246,8 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
     /**
      * Sets a list of interface descriptors contained in this file.
      *
+     * @internal should not be called by any other class than the assamblers
+     *
      * @param Collection<InterfaceDescriptor> $interfaces
      */
     public function setInterfaces(Collection $interfaces) : void
@@ -243,6 +267,8 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
 
     /**
      * Sets a list of trait descriptors contained in this file.
+     *
+     * @internal should not be called by any other class than the assamblers
      *
      * @param Collection<TraitDescriptor> $traits
      */
@@ -271,6 +297,8 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
     /**
      * Sets a series of markers contained in this file.
      *
+     * @internal should not be called by any other class than the assamblers
+     *
      * @see getMarkers() for more information on markers.
      *
      * @param Collection<array<int|string, mixed>> $markers
@@ -282,6 +310,8 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
 
     /**
      * Returns a list of all errors in this file and all its child elements.
+     *
+     * All errors from structual elements in the file are collected to the deepes level.
      *
      * @return Collection<Error>
      */
@@ -337,6 +367,9 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
 
     /**
      * Sets the file path for this file relative to the project's root.
+     *
+     * @internal should not be called by any other class than the assamblers
+     *
      */
     public function setPath(string $path) : void
     {
@@ -344,7 +377,9 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
     }
 
     /**
-     * Returns the file path relative to the project's root.
+     * Returns the relative file path.
+     *
+     * The path is a relative to the source file based on the dsn of the config.
      */
     public function getPath() : string
     {
