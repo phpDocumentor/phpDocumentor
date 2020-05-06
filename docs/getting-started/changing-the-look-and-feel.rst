@@ -139,5 +139,5 @@ Read more
 
 * :doc:`../guides/templates`
 
-.. _templates: http://www.phpdoc.org/templates
+.. _templates: https://www.phpdoc.org/templates
 .. _template directory: https://github.com/phpDocumentor/phpDocumentor/tree/master/data/templates/default

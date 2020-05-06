@@ -64,7 +64,7 @@ It tries to achieve this goal by:
 
 .. _`PHPDoc Standard`: https://github.com/phpDocumentor/phpDocumentor2/blob/develop/docs/PSR.md
 .. _phpDocumentor:     https://github.com/phpDocumentor/phpDocumentor2
-.. _templates:         http://www.phpdoc.org/templates
+.. _templates:         https://www.phpdoc.org/templates
 
 .. note::
   Reference documentation and user manuals are still work in progress.
