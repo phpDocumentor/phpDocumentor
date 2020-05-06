@@ -62,8 +62,8 @@ It tries to achieve this goal by:
   documentation and how each of the applications work.
 * Providing templates_ to change the look and feel of phpDocumentor.
 
-.. _`PHPDoc Standard`: https://github.com/phpDocumentor/phpDocumentor2/blob/develop/docs/PSR.md
-.. _phpDocumentor:     https://github.com/phpDocumentor/phpDocumentor2
+.. _`PHPDoc Standard`: https://github.com/php-fig/fig-standards/blob/master/proposed/phpdoc.md
+.. _phpDocumentor:     https://github.com/phpDocumentor/phpDocumentor
 .. _templates:         https://www.phpdoc.org/templates
 
 .. note::
