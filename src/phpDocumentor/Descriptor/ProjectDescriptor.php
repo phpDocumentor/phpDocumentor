@@ -19,6 +19,9 @@ use phpDocumentor\Reflection\Fqsen;
 
 /**
  * Represents the entire project with its files, namespaces and indexes.
+ *
+ * @api
+ * @package phpDocumentor\AST
  */
 class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
 {

@@ -17,6 +17,9 @@ use phpDocumentor\Descriptor\TagDescriptor;
 
 /**
  * Descriptor representing the example tag with a descriptor.
+ *
+ * @api
+ * @package phpDocumentor\AST\Tags
  */
 final class ExampleDescriptor extends TagDescriptor
 {

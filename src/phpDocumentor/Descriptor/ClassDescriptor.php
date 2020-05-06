@@ -21,6 +21,9 @@ use function sprintf;
 
 /**
  * Descriptor representing a Class.
+ *
+ * @api
+ * @package phpDocumentor\AST
  */
 class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInterface
 {
@@ -71,6 +74,8 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     }
 
     /**
+     * @internal should not be called by any other class than the assamblers
+     *
      * @param ClassDescriptor|Fqsen|string|null $parents
      */
     public function setParent($parents) : void
@@ -86,6 +91,11 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
         return $this->parent;
     }
 
+    /**
+     * @internal should not be called by any other class than the assamblers
+     *
+     * @param Collection<InterfaceDescriptor|Fqsen> $implements
+     */
     public function setInterfaces(Collection $implements) : void
     {
         $this->implements = $implements;
@@ -96,6 +106,9 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
         return $this->implements;
     }
 
+    /**
+     * @internal should not be called by any other class than the assamblers
+     */
     public function setFinal(bool $final) : void
     {
         $this->final = $final;
@@ -106,6 +119,9 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
         return $this->final;
     }
 
+    /**
+     * @internal should not be called by any other class than the assamblers
+     */
     public function setAbstract(bool $abstract) : void
     {
         $this->abstract = $abstract;
@@ -116,6 +132,11 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
         return $this->abstract;
     }
 
+    /**
+     * @internal should not be called by any other class than the assamblers
+     *
+     * @param Collection<ConstantDescriptor> $constants
+     */
     public function setConstants(Collection $constants) : void
     {
         $this->constants = $constants;
@@ -140,6 +161,11 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
         return $inheritedConstants->merge($this->getParent()->getInheritedConstants());
     }
 
+    /**
+     * @internal should not be called by any other class than the assamblers
+     *
+     * @param Collection<MethodDescriptor> $methods
+     */
     public function setMethods(Collection $methods) : void
     {
         $this->methods = $methods;
@@ -207,6 +233,11 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
         return $methods;
     }
 
+    /**
+     * @internal should not be called by any other class than the assamblers
+     *
+     * @param Collection<PropertyDescriptor> $properties
+     */
     public function setProperties(Collection $properties) : void
     {
         $this->properties = $properties;

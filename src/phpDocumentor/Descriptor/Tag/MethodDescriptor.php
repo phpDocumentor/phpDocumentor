@@ -17,6 +17,10 @@ use phpDocumentor\Descriptor\ArgumentDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\TagDescriptor;
 
+/**
+ * @api
+ * @package phpDocumentor\AST\Tags
+ */
 class MethodDescriptor extends TagDescriptor
 {
     /** @var string */

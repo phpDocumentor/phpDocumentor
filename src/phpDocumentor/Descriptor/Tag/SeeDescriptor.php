@@ -16,6 +16,10 @@ namespace phpDocumentor\Descriptor\Tag;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tags\Reference\Reference;
 
+/**
+ * @api
+ * @package phpDocumentor\AST\Tags
+ */
 class SeeDescriptor extends TagDescriptor
 {
     /** @var Reference $reference */

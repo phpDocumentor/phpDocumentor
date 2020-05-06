@@ -73,6 +73,8 @@ abstract class DescriptorAbstract implements Filterable
 
     /**
      * Sets the Fully Qualified Structural Element Name (FQSEN) for this element.
+     *
+     * @internal should not be called by any other class than the assamblers
      */
     public function setFullyQualifiedStructuralElementName(Fqsen $name) : void
     {
@@ -89,6 +91,8 @@ abstract class DescriptorAbstract implements Filterable
 
     /**
      * Sets the local name for this element.
+     *
+     * @internal should not be called by any other class than the assamblers
      */
     public function setName(string $name) : void
     {
@@ -105,6 +109,8 @@ abstract class DescriptorAbstract implements Filterable
 
     /**
      * Sets the namespace (name) for this element.
+     *
+     * @internal should not be called by any other class than the assamblers
      *
      * @param NamespaceDescriptor|string $namespace
      */
@@ -125,6 +131,8 @@ abstract class DescriptorAbstract implements Filterable
 
     /**
      * Sets the summary describing this element in short.
+     *
+     * @internal should not be called by any other class than the assamblers
      */
     public function setSummary(string $summary) : void
     {
@@ -152,6 +160,8 @@ abstract class DescriptorAbstract implements Filterable
 
     /**
      * Sets a description for this element.
+     *
+     * @internal should not be called by any other class than the assamblers
      */
     public function setDescription(string $description) : void
     {
@@ -183,6 +193,8 @@ abstract class DescriptorAbstract implements Filterable
 
     /**
      * Sets the file and linenumber where this element is at.
+     *
+     * @internal should not be called by any other class than the assamblers
      */
     public function setLocation(FileDescriptor $file, int $line = 0) : void
     {
@@ -208,6 +220,8 @@ abstract class DescriptorAbstract implements Filterable
 
     /**
      * Sets the file to which this element is associated.
+     *
+     * @internal should not be called by any other class than the assamblers
      */
     public function setFile(FileDescriptor $file) : void
     {
@@ -224,6 +238,8 @@ abstract class DescriptorAbstract implements Filterable
 
     /**
      * Sets the line number for this element's location in the source file.
+     *
+     * @internal should not be called by any other class than the assamblers
      */
     public function setLine(int $lineNumber) : void
     {
@@ -232,6 +248,8 @@ abstract class DescriptorAbstract implements Filterable
 
     /**
      * Sets the tags associated with this element.
+     *
+     * @internal should not be called by any other class than the assamblers
      *
      * @param Collection<Collection<TagDescriptor>> $tags
      */
@@ -252,6 +270,8 @@ abstract class DescriptorAbstract implements Filterable
 
     /**
      * Sets the name of the package to which this element belongs.
+     *
+     * @internal should not be called by any other class than the assamblers
      *
      * @param PackageDescriptor|string $package
      */
@@ -349,6 +369,8 @@ abstract class DescriptorAbstract implements Filterable
 
     /**
      * Sets a list of all errors associated with this element.
+     *
+     * @internal should not be called by any other class than the assamblers
      *
      * @param Collection<Error> $errors
      */

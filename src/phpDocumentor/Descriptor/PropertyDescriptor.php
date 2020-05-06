@@ -19,6 +19,9 @@ use phpDocumentor\Reflection\Type;
 
 /**
  * Descriptor representing a property.
+ *
+ * @api
+ * @package phpDocumentor\AST
  */
 class PropertyDescriptor extends DescriptorAbstract implements
     Interfaces\PropertyInterface,

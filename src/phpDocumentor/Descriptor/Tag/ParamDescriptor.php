@@ -15,6 +15,9 @@ namespace phpDocumentor\Descriptor\Tag;
 
 /**
  * Descriptor representing the param tag with a function or method.
+ *
+ * @api
+ * @package phpDocumentor\AST\Tags
  */
 class ParamDescriptor extends BaseTypes\TypedVariableAbstract
 {

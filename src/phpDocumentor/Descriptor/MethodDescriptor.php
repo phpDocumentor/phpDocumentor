@@ -22,6 +22,9 @@ use function current;
 
 /**
  * Descriptor representing a Method in a Class, Interface or Trait.
+ *
+ * @api
+ * @package phpDocumentor\AST
  */
 class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodInterface, Interfaces\VisibilityInterface
 {

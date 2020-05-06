@@ -17,6 +17,9 @@ use phpDocumentor\Descriptor\TagDescriptor;
 
 /**
  * Descriptor representing the author tag with a descriptor.
+ *
+ * @api
+ * @package phpDocumentor\AST\Tags
  */
 class AuthorDescriptor extends TagDescriptor
 {

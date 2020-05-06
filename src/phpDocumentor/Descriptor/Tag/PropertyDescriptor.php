@@ -15,6 +15,9 @@ namespace phpDocumentor\Descriptor\Tag;
 
 /**
  * Descriptor representing the property tag on a class or trait.
+ *
+ * @api
+ * @package phpDocumentor\AST\Tags
  */
 class PropertyDescriptor extends BaseTypes\TypedVariableAbstract
 {

@@ -17,6 +17,9 @@ use phpDocumentor\Descriptor\TagDescriptor;
 
 /**
  * Descriptor representing the since tag with another descriptor.
+ *
+ * @api
+ * @package phpDocumentor\AST\Tags
  */
 class SinceDescriptor extends TagDescriptor
 {

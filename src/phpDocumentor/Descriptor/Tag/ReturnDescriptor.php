@@ -15,6 +15,9 @@ namespace phpDocumentor\Descriptor\Tag;
 
 /**
  * Descriptor representing the return tag on a function or method.
+ *
+ * @api
+ * @package phpDocumentor\AST\Tags
  */
 class ReturnDescriptor extends BaseTypes\TypedAbstract
 {

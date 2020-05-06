@@ -17,6 +17,9 @@ use phpDocumentor\Descriptor\TagDescriptor;
 
 /**
  * Descriptor representing the version tag on a class, interface, trait or file.
+ *
+ * @api
+ * @package phpDocumentor\AST\Tags
  */
 class VersionDescriptor extends TagDescriptor
 {

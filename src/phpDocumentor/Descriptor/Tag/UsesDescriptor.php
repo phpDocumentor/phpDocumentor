@@ -19,6 +19,9 @@ use phpDocumentor\Reflection\Fqsen;
 
 /**
  * Descriptor representing the uses tag on any element.
+ *
+ * @api
+ * @package phpDocumentor\AST\Tags
  */
 final class UsesDescriptor extends TagDescriptor
 {

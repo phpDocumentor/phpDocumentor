@@ -17,6 +17,9 @@ use phpDocumentor\Descriptor\TagDescriptor;
 
 /**
  * Descriptor representing the link tag with a descriptor.
+ *
+ * @api
+ * @package phpDocumentor\AST\Tags
  */
 class LinkDescriptor extends TagDescriptor
 {

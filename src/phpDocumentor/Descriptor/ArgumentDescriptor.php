@@ -20,6 +20,9 @@ use const E_USER_DEPRECATED;
 
 /**
  * Descriptor representing a single Argument of a method or function.
+ *
+ * @api
+ * @package phpDocumentor\AST
  */
 class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\ArgumentInterface
 {

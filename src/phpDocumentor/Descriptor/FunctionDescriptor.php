@@ -19,6 +19,9 @@ use function current;
 
 /**
  * Descriptor representing a function.
+ *
+ * @api
+ * @package phpDocumentor\AST
  */
 class FunctionDescriptor extends DescriptorAbstract implements Interfaces\FunctionInterface
 {

@@ -20,6 +20,9 @@ use function sprintf;
 
 /**
  * Descriptor representing a Trait.
+ *
+ * @api
+ * @package phpDocumentor\AST
  */
 class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInterface
 {

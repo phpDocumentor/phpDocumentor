@@ -17,6 +17,9 @@ use phpDocumentor\Reflection\Fqsen;
 
 /**
  * Descriptor representing an Interface.
+ *
+ * @api
+ * @package phpDocumentor\AST
  */
 class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\InterfaceInterface
 {

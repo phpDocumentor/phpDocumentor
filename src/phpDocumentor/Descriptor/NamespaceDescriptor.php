@@ -15,6 +15,9 @@ namespace phpDocumentor\Descriptor;
 
 /**
  * Represents a namespace and its children for a project.
+ *
+ * @api
+ * @package phpDocumentor\AST
  */
 class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\NamespaceInterface
 {

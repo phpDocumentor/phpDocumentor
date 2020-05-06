@@ -22,6 +22,9 @@ use function array_filter;
 
 /**
  * Descriptor representing a constant
+ *
+ * @api
+ * @package phpDocumentor\AST
  */
 class ConstantDescriptor extends DescriptorAbstract implements
     Interfaces\ConstantInterface,

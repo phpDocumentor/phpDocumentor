@@ -18,6 +18,9 @@ use phpDocumentor\Reflection\Fqsen;
 
 /**
  * Represents a file in the project.
+ *
+ * @api
+ * @package phpDocumentor\AST
  */
 class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterface
 {

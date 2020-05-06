@@ -17,6 +17,9 @@ use phpDocumentor\Descriptor\TagDescriptor;
 
 /**
  * Descriptor representing the deprecated tag with a descriptor.
+ *
+ * @api
+ * @package phpDocumentor\AST\Tags
  */
 final class DeprecatedDescriptor extends TagDescriptor
 {
