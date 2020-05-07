@@ -67,7 +67,7 @@ class ConstantDescriptor extends DescriptorAbstract implements
     }
 
     /**
-     * @return ClassDescriptor|InterfaceDescriptor|FileDescriptor|null
+     * @return ClassDescriptor|InterfaceDescriptor|null
      */
     public function getParent() : ?DescriptorAbstract
     {
