@@ -17,6 +17,7 @@ use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\Builder\AssemblerFactory;
 use phpDocumentor\Descriptor\Filter\Filter;
+use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
 
 /**
  * Tests the functionality for the ProjectDescriptorBuilder class.
@@ -97,5 +98,56 @@ class ProjectDescriptorBuilderTest extends MockeryTestCase
     protected function createAssemblerFactoryMock()
     {
         return m::mock(AssemblerFactory::class);
+    }
+
+    /**
+     * @dataProvider visibilityProvider
+     */
+    public function testSetVisibility(
+        array $setting,
+        int $expectedValue
+    ) : void {
+        $this->fixture->createProjectDescriptor();
+        $this->fixture->setVisibility(['visibility' => $setting]);
+        $projectSettings = $this->fixture->getProjectDescriptor()->getSettings();
+
+        self::assertEquals($expectedValue, $projectSettings->getVisibility());
+    }
+
+    /**
+     * @return array<array<string[], int>>
+     */
+    public function visibilityProvider() : array
+    {
+        return [
+            [
+                'settings' => ['public'],
+                'expected' => Settings::VISIBILITY_PUBLIC,
+            ],
+            [
+                'settings' => ['protected'],
+                'expected' => Settings::VISIBILITY_PROTECTED,
+            ],
+            [
+                'settings' => ['private'],
+                'expected' => Settings::VISIBILITY_PRIVATE,
+            ],
+            [
+                'settings' => ['public', 'private'],
+                'expected' => Settings::VISIBILITY_PRIVATE | Settings::VISIBILITY_PUBLIC,
+            ],
+            [
+                'settings' => ['public', 'internal'],
+                'expected' => Settings::VISIBILITY_PUBLIC | Settings::VISIBILITY_INTERNAL,
+            ],
+            [
+                'settings' => ['public', 'internal'],
+                'expected' => Settings::VISIBILITY_PUBLIC | Settings::VISIBILITY_INTERNAL,
+            ],
+            [
+                'settings' => ['internal'],
+                'expected' => Settings::VISIBILITY_DEFAULT | Settings::VISIBILITY_INTERNAL,
+            ],
+        ];
     }
 }

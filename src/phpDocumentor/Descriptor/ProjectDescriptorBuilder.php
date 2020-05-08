@@ -213,6 +213,10 @@ class ProjectDescriptorBuilder
             }
         }
 
+        if ($visibility === ProjectDescriptor\Settings::VISIBILITY_INTERNAL) {
+            $visibility |= ProjectDescriptor\Settings::VISIBILITY_DEFAULT;
+        }
+
         $this->project->getSettings()->setVisibility($visibility);
     }
 
