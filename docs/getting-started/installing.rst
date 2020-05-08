@@ -16,7 +16,7 @@ Phive
 
    $ phive install phpDocumentor
 
-For more information about phive have a look at their [website](https://phar.io/).
+For more information about phive have a look at their website_
 Now you have phpDocumentor installed and it can be executed directly.
 
 
@@ -66,3 +66,4 @@ This command can also be used to add phpDocumentor to your existing composer-bas
 .. _Graphviz:               https://graphviz.org/download/
 .. _PlantUML:               https://plantuml.com/download
 .. _Twig:                   https://twig.sensiolabs.org
+.. _website:                https://phar.io/

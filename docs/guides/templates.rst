@@ -73,8 +73,8 @@ Writers
 More Than a Theme
 -----------------
 
-:doc:`templates/structure`
-:doc:`templates/twig`
+* :doc:`templates/structure`
+* :doc:`templates/twig`
 
 Related topics
 --------------
