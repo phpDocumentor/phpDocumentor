@@ -48,6 +48,8 @@
     --title-text-color: white;
     --title-text-shadow-color: var(--primary-color-darker);
 
+    --sidebar-border-color: var(--primary-color);
+
     /* Grid */
     --container-width: 960px;
     --top-header-height: calc(var(--text-lg) + 2 * var(--spacing-sm));
@@ -698,6 +700,10 @@ td.phpdocumentor-cell:last-child {
 
 .phpdocumentor-content {
     position: relative;
+}
+
+.phpdocumentor-sidebar {
+    border-right: var(--sidebar-border-color) solid 1px;
 }
 
 /* Other
