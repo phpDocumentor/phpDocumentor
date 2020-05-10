@@ -27,8 +27,6 @@
 
     --text-color: #4b3b40;
 
-    --top-header-bg-color: var(--primary-color-lighter); /* #d1f5be; */
-    --top-header-text-color: var(--text-color);
     --header-bg-color: var(--primary-color);
     --code-background-color: var(--primary-color-lighter);
     --code-border-color: var(--primary-color-darken);
@@ -52,7 +50,6 @@
 
     /* Grid */
     --container-width: 960px;
-    --top-header-height: calc(var(--text-lg) + 2 * var(--spacing-sm));
 
     /* Spacing */
     --spacing-base-size: 1rem;
@@ -594,87 +591,9 @@ td.phpdocumentor-cell:last-child {
 /* Elements
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 
-.phpdocumentor-top-header {
-    align-items: center;
-    background: var(--top-header-bg-color);
-    color: var(--top-header-text-color);
-    display: flex;
-    flex-direction: row;
-    font-size: var(--text-md);
-    min-height: var(--top-header-height);
-    padding: 0 var(--spacing-sm);
-    text-align: right;
-}
-
-.phpdocumentor-top-header a {
-    color: var(--primary-color-darker);
-    display: inline-block;
-    text-decoration: none;
-}
-.phpdocumentor-top-header a span {
-    border-bottom: 1px solid transparent;
-    transition: border-bottom-color .2s ease-in-out;
-}
-.phpdocumentor-top-header a:hover {
-    color: var(--text-color);
-}
-.phpdocumentor-top-header a:hover span {
-    border-bottom: 1px solid var(--text-color);
-}
-.phpdocumentor-top-header a:not(:first-of-type):before {
-    display: inline-block;
-    color: #ccc;
-    content: "/";
-    padding: 0 var(--spacing-xxs);
-}
-
-.phpdocumentor-header {
-    background: var(--header-bg-color);
-    display: flex;
-    margin-bottom: var(--spacing-xl);
-    position: relative;
-}
-
-.phpdocumentor-header:after {
-    border-bottom: 3px solid var(--header-bg-color);
-    bottom: -8px;
-    content: '';
-    left: 0;
-    position: absolute;
-    right: 0;
-}
-
-.phpdocumentor-header p {
-    color: white;
-    font-size: var(--text-lg);
-}
-
-.phpdocumentor-logo__link {
-    text-decoration: none;
-}
-
-.phpdocumentor-logo {
-    display: inline-block;
-    float: left;
-    width: 80px;
-    border: 5px solid white;
-    border-radius: 15px;
-    margin: 20px 20px 20px 0;
-}
-
-.phpdocumentor-title {
-    color: var(--title-text-color);
-    font-size: var(--text-xxxxl);
-    letter-spacing: .05rem;
-    line-height: 1.2;
-    text-shadow: 0 0 2px var(--title-text-shadow-color);
-}
-.phpdocumentor-title small {
-    text-shadow: none;
-    font-size: var(--text-xxs);
-    display: block;
-    margin: var(--spacing-sm) 0;
-}
+{% include 'components/header.css.twig' %}
+{% include 'components/header-title.css.twig' %}
+{% include 'components/topnav.css.twig' %}
 
 .phpdocumentor .phpdocumentor-sidebar li {
     white-space: nowrap;

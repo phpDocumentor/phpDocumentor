@@ -1,0 +1,9 @@
+<nav class="phpdocumentor-topnav">
+    {% for key,menu in topMenu|default([]) %}
+        <ul class="phpdocumentor-topnav__menu -{{ key }}">
+            {% for menuitem in menu %}
+                <li class="phpdocumentor-topnav__menu-item"><a href="{{ menuitem.url }}">{{ menuitem.name }}</a></li>
+            {% endfor %}
+        </ul>
+    {% endfor %}
+</nav>

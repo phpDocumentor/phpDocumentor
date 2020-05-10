@@ -20,12 +20,8 @@
     {% endblock %}
 </head>
 <body>
-    <header class="phpdocumentor-top-header"></header>
-    <header class="phpdocumentor-header">
-        <section class="phpdocumentor-section">
-            <h1 class="phpdocumentor-title">{{ project.name }}</h1>
-        </section>
-    </header>
+    {% include 'components/header.html.twig' %}
+
     <main class="phpdocumentor">
         <div class="phpdocumentor-section">
             {% include 'sidebar.html.twig' %}
