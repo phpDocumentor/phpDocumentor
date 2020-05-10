@@ -6,15 +6,14 @@ bin/var-dump-server
 bin/plantuml
 
 # Build folder and vendor folder are generated code; no need to version this
-build/*
-.phpdoc/*
-!.phpdoc/template/*
-data/examples/MariosPizzeria/build/*
-vendor/*
-node_modules/*
+build/
+.phpdoc/cache/
+data/examples/MariosPizzeria/build/
+vendor/
+node_modules/
 tools/
 temp/
-var/*
+var/
 *.phar
 cypress/screenshots
 cypress/videos
