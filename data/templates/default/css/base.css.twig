@@ -27,6 +27,7 @@
 
     --text-color: #4b3b40;
 
+    --header-height: var(--spacing-xxxxl);
     --header-bg-color: var(--primary-color);
     --code-background-color: var(--primary-color-lighter);
     --code-border-color: var(--primary-color-darken);
@@ -43,13 +44,12 @@
     --admonition-success-color: var(--primary-color);
     --admonition-border-color: silver;
     --table-separator-color: var(--primary-color-lighten);
-    --title-text-color: white;
-    --title-text-shadow-color: var(--primary-color-darker);
+    --title-text-color: var(--primary-color);
 
     --sidebar-border-color: var(--primary-color);
 
     /* Grid */
-    --container-width: 960px;
+    --container-width: 1200px;
 
     /* Spacing */
     --spacing-base-size: 1rem;
@@ -64,20 +64,14 @@
     --spacing-xl: calc(var(--spacing-base-size) * var(--spacing-scale-ratio) * var(--spacing-scale-ratio));
     --spacing-xxl: calc(var(--spacing-base-size) * var(--spacing-scale-ratio) * var(--spacing-scale-ratio) * var(--spacing-scale-ratio));
     --spacing-xxxl: calc(var(--spacing-base-size) * var(--spacing-scale-ratio) * var(--spacing-scale-ratio) * var(--spacing-scale-ratio) * var(--spacing-scale-ratio));
+    --spacing-xxxxl: calc(var(--spacing-base-size) * var(--spacing-scale-ratio) * var(--spacing-scale-ratio) * var(--spacing-scale-ratio) * var(--spacing-scale-ratio) * var(--spacing-scale-ratio));
 
     --border-radius-base-size: 3px;
 }
 
 /* Grid
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
-.phpdocumentor-section {
-    box-sizing: border-box;
-    margin: 0 auto;
-    max-width: var(--container-width);
-    padding: 0 var(--spacing-lg);
-    position: relative;
-    width: 100%;
-}
+{% include 'components/section.css.twig' %}
 
 .phpdocumentor-column,
 .phpdocumentor-columns {
@@ -88,18 +82,10 @@
 
 /* For devices larger than 400px */
 @media (min-width: 400px) {
-    .phpdocumentor-section {
-        padding: 0;
-        width: 85%;
-    }
 }
 
 /* For devices larger than 550px */
 @media (min-width: 550px) {
-    .phpdocumentor-section {
-        width: 80%;
-    }
-
     .phpdocumentor-column,
     .phpdocumentor-columns {
         margin-left: 4%;
@@ -574,18 +560,6 @@ td.phpdocumentor-cell:last-child {
 
 .phpdocumentor-admonition--success {
     border-color: var(--admonition-success-color);
-}
-
-/* Clearing
-–––––––––––––––––––––––––––––––––––––––––––––––––– */
-
-/* Self Clearing Goodness */
-.phpdocumentor-section:after,
-.phpdocumentor-row:after,
-.phpdocumentor-cf {
-    clear: both;
-    content: "";
-    display: table;
 }
 
 /* Elements

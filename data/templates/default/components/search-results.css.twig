@@ -1,0 +1,46 @@
+.phpdocumentor-search-results {
+    backdrop-filter: blur(5px);
+    background: var(--popover-background-color);
+    min-height: 100%;
+    left: calc(var(--spacing-lg) * -1);
+    position: absolute;
+    right: calc(var(--spacing-lg) * -1);
+    top: 0;
+    padding: 0 var(--spacing-lg);
+    opacity: 1;
+    pointer-events: all;
+
+    transition: opacity .3s, background .3s;
+}
+
+.phpdocumentor-search-results--hidden {
+    background: transparent;
+    backdrop-filter: blur(0);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.phpdocumentor-search-results__entries {
+    list-style: none;
+    padding: 0;
+}
+
+.phpdocumentor-search-results__entry {
+    border-bottom: 1px solid var(--table-separator-color);
+    padding: var(--spacing-sm) var(--spacing-md);
+    text-align: left;
+}
+
+.phpdocumentor-search-results__entry a {
+    display: block;
+}
+
+.phpdocumentor-search-results__entry small {
+    margin-top: var(--spacing-xs);
+    margin-bottom: var(--spacing-md);
+    color: var(--primary-color-darker);
+    display: block;
+}
+.phpdocumentor-search-results__entry h3 {
+    margin: 0;
+}

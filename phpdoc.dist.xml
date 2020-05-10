@@ -5,6 +5,7 @@
         xmlns="http://www.phpdoc.org"
         xsi:noNamespaceSchemaLocation="data/xsd/phpdoc.xsd"
 >
+    <title>phpDocumentor</title>
     <paths>
         <output>build/api</output>
     </paths>

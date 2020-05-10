@@ -1,19 +1,32 @@
 .phpdocumentor-topnav {
-    align-self: center;
+    display: flex;
+    flex: 1;
+    margin-left: 4%;
+}
+
+.phpdocumentor-topnav__menu.-social {
+    margin-left: auto;
 }
 
 .phpdocumentor-topnav__menu {
+    display: inline-block;
     list-style: none;
     margin: 0;
     padding: 0;
 }
+
 .phpdocumentor-topnav__menu-item {
     display: inline;
     margin: 0;
+    padding: 0 var(--spacing-lg) 0 0;
+}
+
+.phpdocumentor-topnav__menu-item:last-of-type {
     padding: 0;
 }
 
 .phpdocumentor-topnav__menu-item a {
+    display: inline-block;
     color: var(--text-color);
     text-decoration: none;
     font-size: var(--text-lg);
