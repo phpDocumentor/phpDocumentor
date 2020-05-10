@@ -29,16 +29,12 @@ class EnvironmentFactory
     /** @var LinkRenderer */
     private $renderer;
 
-    /** @var Locator */
-    private $locator;
-
     /** @var ?Path */
     private $templateOverridesAt;
 
-    public function __construct(LinkRenderer $renderer, Locator $locator)
+    public function __construct(LinkRenderer $renderer)
     {
         $this->renderer = $renderer;
-        $this->locator = $locator;
     }
 
     public function withTemplateOverridesAt(Path $path) : void
@@ -63,9 +59,8 @@ class EnvironmentFactory
 
         $env = new Environment(new ChainLoader($loaders));
 
-        $env->setCache((string) $this->locator->locate('twig/' . md5($transformation->template()->getName())));
         $this->addPhpDocumentorExtension($project, $destination, $env);
-        $this->enableDebugWhenParameterIsSet($transformation, $env);
+        $this->enableDebug($env);
 
         return $env;
     }
@@ -83,14 +78,9 @@ class EnvironmentFactory
         $twigEnvironment->addExtension($extension);
     }
 
-    private function enableDebugWhenParameterIsSet(Transformation $transformation, Environment $twigEnvironment) : void
+    private function enableDebug(Environment $twigEnvironment) : void
     {
-        $debugParameter = $transformation->getParameter('twig-debug');
-        $isDebug = $debugParameter ? $debugParameter->value() : false;
-        if ($isDebug !== 'true') {
-            return;
-        }
-
+        $twigEnvironment->setCache(false);
         $twigEnvironment->enableDebug();
         $twigEnvironment->enableAutoReload();
         $twigEnvironment->addExtension(new DebugExtension());
