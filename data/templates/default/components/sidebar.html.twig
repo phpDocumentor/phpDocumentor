@@ -33,11 +33,13 @@
         <h2 class="phpdocumentor-sidebar__category-header">Packages</h2>
         {% for package in project.package.children %}
             <h3 class="phpdocumentor-sidebar__root-package">{{ package|route('class:short') }}</h3>
+            {% if package.children is not empty %}
             <ul class="phpdocumentor-list">
                 {% for child in package.children %}
                     <li>{{ child|route('class:short') }}</li>
                 {% endfor %}
             </ul>
+            {% endif %}
         {% endfor %}
     </section>
     {% endif %}

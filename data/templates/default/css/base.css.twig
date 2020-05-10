@@ -46,7 +46,7 @@
     --table-separator-color: var(--primary-color-lighten);
     --title-text-color: var(--primary-color);
 
-    --sidebar-border-color: var(--primary-color);
+    --sidebar-border-color: var(--primary-color-lighten);
 
     /* Grid */
     --container-width: 1200px;
@@ -568,35 +568,10 @@ td.phpdocumentor-cell:last-child {
 {% include 'components/header.css.twig' %}
 {% include 'components/header-title.css.twig' %}
 {% include 'components/topnav.css.twig' %}
-
-.phpdocumentor .phpdocumentor-sidebar li {
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-}
-
-.phpdocumentor .phpdocumentor-sidebar__category {
-    margin-bottom: var(--spacing-lg);
-}
-
-.phpdocumentor .phpdocumentor-sidebar__category-header {
-    font-size: var(--text-lg);
-    margin-bottom: var(--spacing-xs);
-}
-
-.phpdocumentor .phpdocumentor-sidebar__root-package,
-.phpdocumentor .phpdocumentor-sidebar__root-namespace {
-    font-size: var(--text-md);
-    margin-top: var(--spacing-xs);
-    margin-bottom: var(--spacing-xs);
-}
+{% include 'components/sidebar.css.twig' %}
 
 .phpdocumentor-content {
     position: relative;
-}
-
-.phpdocumentor-sidebar {
-    border-right: var(--sidebar-border-color) solid 1px;
 }
 
 /* Other
