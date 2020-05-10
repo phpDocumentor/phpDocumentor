@@ -58,7 +58,7 @@ final class EnvironmentFactoryTest extends TestCase
         $environment = $this->factory->create(new ProjectDescriptor('name'), $transformation, '/home');
 
         $this->assertInstanceOf(Environment::class, $environment);
-        $this->assertCount(4, $environment->getExtensions());
+        $this->assertCount(5, $environment->getExtensions());
         $this->assertTrue($environment->hasExtension(Extension::class));
     }
 
