@@ -25,6 +25,5 @@
     {% if constant.description %}
     <section class="phpdocumentor-description">{{ constant.description }}</section>
     {% endif %}
-    {% set visibleTags = constant.tags|filter((v,k) => k not in ['var']) %}
-    {{ include ('tags.html.twig', {tags: visibleTags}) }}
+    {{ include ('components/tags.html.twig', {tags: constant.tags}) }}
 </article>

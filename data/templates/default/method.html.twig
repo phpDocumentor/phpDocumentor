@@ -56,8 +56,7 @@
         </dl>
     {% endif %}
 
-    {% set visibleTags = method.tags|filter((v,k) => k not in ['param', 'return']) %}
-    {{ include ('tags.html.twig', {tags: visibleTags}) }}
+    {{ include ('components/tags.html.twig', {tags: method.tags}) }}
 
     {% if (method.response.type and method.response.type != 'void') or method.response.description %}
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>

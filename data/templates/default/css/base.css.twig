@@ -24,6 +24,7 @@
     --primary-color-darker: hsl(96, 57%, 20%);
     --primary-color-lighten: hsl(96, 57%, 80%);
     --primary-color-lighter: hsl(96, 57%, 97%);
+    --dark-gray: #d1d1d1;
 
     --text-color: #4b3b40;
 
@@ -39,7 +40,7 @@
     --popover-background-color: hsla(96, 57%, 95%, 0.9);
     --link-color-primary: var(--primary-color-darken);
     --link-hover-color-primary: var(--primary-color-darker);
-    --form-field-border-color: #D1D1D1;
+    --form-field-border-color: var(--dark-gray);
     --form-field-color: #fff;
     --admonition-success-color: var(--primary-color);
     --admonition-border-color: silver;
@@ -255,6 +256,7 @@ body {
 .phpdocumentor h6 {
     margin-bottom: var(--spacing-lg);
     margin-top: var(--spacing-lg);
+    font-weight: 600;
 }
 
 .phpdocumentor h1 {
@@ -449,23 +451,7 @@ li.phpdocumentor-list {
     margin-bottom: var(--spacing-md);
 }
 
-ul.phpdocumentor-breadcrumbs {
-    font-size: var(--text-sm);
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-ul.phpdocumentor-breadcrumbs > li {
-    display: inline-block;
-    margin: 0;
-}
-
-ul.phpdocumentor-breadcrumbs > li + li:before {
-    color: #ccc;
-    content: "\\\A0";
-    padding: 0 var(--spacing-xxs);
-}
+{% include 'components/breadcrumbs.css.twig' %}
 
 /* Code
 –––––––––––––––––––––––––––––––––––––––––––––––––– */

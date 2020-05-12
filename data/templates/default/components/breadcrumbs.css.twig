@@ -1,0 +1,22 @@
+.phpdocumentor ul.phpdocumentor-breadcrumbs {
+    font-size: var(--text-md);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.phpdocumentor ul.phpdocumentor-breadcrumbs a {
+    color: var(--text-color);
+    text-decoration: none;
+}
+
+.phpdocumentor ul.phpdocumentor-breadcrumbs > li {
+    display: inline-block;
+    margin: 0;
+}
+
+.phpdocumentor ul.phpdocumentor-breadcrumbs > li + li:before {
+    color: var(--dark-gray);
+    content: "\\\A0";
+    padding: 0;
+}

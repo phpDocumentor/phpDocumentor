@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block content %}
-    {% include 'breadcrumbs.html.twig' %}
+    {% include 'components/breadcrumbs.html.twig' %}
 
     <h2>{{ node.name == '\\' ? 'API Documentation' : node.name }}</h2>
 

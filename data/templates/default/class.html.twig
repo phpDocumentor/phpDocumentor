@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block content %}
-    {% include 'breadcrumbs.html.twig' %}
+    {% include 'components/breadcrumbs.html.twig' %}
 
     <article class="phpdocumentor-element phpdocumentor-class">
         <h2 class="phpdocumentor-content__title">
@@ -13,7 +13,7 @@
             {% endif %}
             {% if usesPackages %}
                 <div class="phpdocumentor-element__package">
-                    in
+                    in package
                     <ul class="phpdocumentor-breadcrumbs">
                         {% for breadcrumb in packages(node) %}
                             <li><a href="{{ link(breadcrumb) }}">{{ breadcrumb.name }}</a></li>
@@ -46,61 +46,8 @@
 
         <p class="phpdocumentor-class__summary">{{ node.summary }}</p>
         <section class="phpdocumentor-class__description">{{ node.description|markdown }}</section>
-        {% set visibleTags = node.tags|filter((v,k) => k not in ['package']) %}
-        {{ include ('tags.html.twig', {tags: visibleTags}) }}
-
-        <h3>Table of Contents</h3>
-        <table class="phpdocumentor-table_of_contents">
-            {% for constant in node.constants %}
-                <tr>
-                    <th class="phpdocumentor-heading"><a href="{{ link(constant) }}">{{ constant.name }}</a></th>
-                    <td class="phpdocumentor-cell">{{ constant.summary }}</td>
-                    <td class="phpdocumentor-cell">{{ constant.value }}</td>
-                </tr>
-            {% endfor %}
-            {% for property in node.properties %}
-                <tr>
-                    <th class="phpdocumentor-heading"><a href="{{ link(property) }}">${{ property.name }}</a></th>
-                    <td class="phpdocumentor-cell">{{ property.summary }}</td>
-                    <td class="phpdocumentor-cell">{{ property.type|route('class:short')|join('|')|raw }}</td>
-                </tr>
-            {% endfor %}
-            {% for property in node.magicProperties %}
-                <tr>
-                    <th class="phpdocumentor-heading"><a href="{{ link(property) }}">${{ property.name }}</a></th>
-                    <td class="phpdocumentor-cell">{{ property.summary }}</td>
-                    <td class="phpdocumentor-cell">{{ property.type|route('class:short')|join('|')|raw }}</td>
-                </tr>
-            {% endfor %}
-            {% for property in node.inheritedProperties %}
-                <tr>
-                    <th class="phpdocumentor-heading"><a href="{{ link(property) }}">${{ property.name }}</a></th>
-                    <td class="phpdocumentor-cell">{{ property.summary }}</td>
-                    <td class="phpdocumentor-cell">{{ property.type|route('class:short')|join('|')|raw }}</td>
-                </tr>
-            {% endfor %}
-            {% for method in node.methods %}
-                <tr>
-                    <th class="phpdocumentor-heading"><a href="{{ link(method) }}">{{ method.name }}()</a></th>
-                    <td class="phpdocumentor-cell">{{ method.summary }}</td>
-                    <td class="phpdocumentor-cell">{{ method.response.type|route('class:short')|join('|')|raw }}</td>
-                </tr>
-            {% endfor %}
-            {% for method in node.magicMethods %}
-                <tr>
-                    <th class="phpdocumentor-heading"><a href="{{ link(method) }}">{{ method.name }}()</a></th>
-                    <td class="phpdocumentor-cell">{{ method.summary }}</td>
-                    <td class="phpdocumentor-cell">{{ method.response.type|route('class:short')|join('|')|raw }}</td>
-                </tr>
-            {% endfor %}
-            {% for method in node.inheritedMethods %}
-                <tr>
-                    <th class="phpdocumentor-heading"><a href="{{ link(method) }}">{{ method.name }}()</a></th>
-                    <td class="phpdocumentor-cell">{{ method.summary }}</td>
-                    <td class="phpdocumentor-cell">{{ method.response.type|route('class:short')|join('|')|raw }}</td>
-                </tr>
-            {% endfor %}
-        </table>
+        {{ include ('components/tags.html.twig', {tags: node.tags}) }}
+        {{ include ('components/table-of-contents.html.twig') }}
 
         {% if node.constants is not empty %}
             <section>

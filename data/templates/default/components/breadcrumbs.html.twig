@@ -1,5 +1,4 @@
 <ul class="phpdocumentor-breadcrumbs">
-    <li><a href="{{ path("/index.html") }}">Home</a></li>
     {% if usesNamespaces %}
         {% for breadcrumb in breadcrumbs(node) %}
             <li><a href="{{ link(breadcrumb) }}">{{ breadcrumb.name }}</a></li>
