@@ -1,60 +1,36 @@
 <h3>Table of Contents</h3>
 
-<table class="phpdocumentor-table_of_contents">
+<dl class="phpdocumentor-table_of_contents">
     {% for constant in node.constants|default([]) %}
-        <tr>
-            <th class="phpdocumentor-heading"><a href="{{ link(constant) }}">{{ constant.name }}</a></th>
-            <td class="phpdocumentor-cell">{{ constant.summary }}</td>
-            <td class="phpdocumentor-cell">{{ constant.value }}</td>
-        </tr>
+            <dt><a href="{{ link(constant) }}">{{ constant.name }}</a> = {{ constant.value }}</dt>
+            <dd>{{ constant.summary }}</dd>
     {% endfor %}
     {% for property in node.properties|default([]) %}
-        <tr>
-            <th class="phpdocumentor-heading"><a href="{{ link(property) }}">${{ property.name }}</a></th>
-            <td class="phpdocumentor-cell">{{ property.summary }}</td>
-            <td class="phpdocumentor-cell">{{ property.type|route('class:short')|join('|')|raw }}</td>
-        </tr>
+            <dt><a href="{{ link(property) }}">${{ property.name }}</a> : {{ property.type|route('class:short')|join('|')|raw }}</dt>
+            <dd>{{ property.summary }}</dd>
     {% endfor %}
     {% for property in node.magicProperties|default([]) %}
-        <tr>
-            <th class="phpdocumentor-heading"><a href="{{ link(property) }}">${{ property.name }}</a></th>
-            <td class="phpdocumentor-cell">{{ property.summary }}</td>
-            <td class="phpdocumentor-cell">{{ property.type|route('class:short')|join('|')|raw }}</td>
-        </tr>
+            <dt><a href="{{ link(property) }}">${{ property.name }}</a> : {{ property.type|route('class:short')|join('|')|raw }}</dt>
+            <dd>{{ property.summary }}</dd>
     {% endfor %}
     {% for property in node.inheritedProperties|default([]) %}
-        <tr>
-            <th class="phpdocumentor-heading"><a href="{{ link(property) }}">${{ property.name }}</a></th>
-            <td class="phpdocumentor-cell">{{ property.summary }}</td>
-            <td class="phpdocumentor-cell">{{ property.type|route('class:short')|join('|')|raw }}</td>
-        </tr>
+            <dt><a href="{{ link(property) }}">${{ property.name }}</a> : {{ property.type|route('class:short')|join('|')|raw }}</dt>
+            <dd>{{ property.summary }}</dd>
     {% endfor %}
     {% for method in node.methods|default([]) %}
-        <tr>
-            <th class="phpdocumentor-heading"><a href="{{ link(method) }}">{{ method.name }}()</a></th>
-            <td class="phpdocumentor-cell">{{ method.summary }}</td>
-            <td class="phpdocumentor-cell">{{ method.response.type|route('class:short')|join('|')|raw }}</td>
-        </tr>
+            <dt><a href="{{ link(method) }}">{{ method.name }}()</a> : {{ method.response.type|route('class:short')|join('|')|raw }}</dt>
+            <dd>{{ method.summary }}</dd>
     {% endfor %}
     {% for method in node.magicMethods|default([]) %}
-        <tr>
-            <th class="phpdocumentor-heading"><a href="{{ link(method) }}">{{ method.name }}()</a></th>
-            <td class="phpdocumentor-cell">{{ method.summary }}</td>
-            <td class="phpdocumentor-cell">{{ method.response.type|route('class:short')|join('|')|raw }}</td>
-        </tr>
+            <dt><a href="{{ link(method) }}">{{ method.name }}()</a> : {{ method.response.type|route('class:short')|join('|')|raw }}</dt>
+            <dd>{{ method.summary }}</dd>
     {% endfor %}
     {% for method in node.inheritedMethods|default([]) %}
-        <tr>
-            <th class="phpdocumentor-heading"><a href="{{ link(method) }}">{{ method.name }}()</a></th>
-            <td class="phpdocumentor-cell">{{ method.summary }}</td>
-            <td class="phpdocumentor-cell">{{ method.response.type|route('class:short')|join('|')|raw }}</td>
-        </tr>
+            <dt><a href="{{ link(method) }}">{{ method.name }}()</a> : {{ method.response.type|route('class:short')|join('|')|raw }}</dt>
+            <dd>{{ method.summary }}</dd>
     {% endfor %}
     {% for function in node.functions|default([]) %}
-        <tr>
-            <th class="phpdocumentor-heading">{{ function|route('class:short') }}</th>
-            <td class="phpdocumentor-cell">{{ function.summary }}</td>
-            <td class="phpdocumentor-cell">{{ function.type|route('class:short'|join('|')|raw) }}</td>
-        </tr>
+            <dt>{{ function|route('class:short') }} : {{ function.type|route('class:short'|join('|')|raw) }}</dt>
+            <dd>{{ function.summary }}</dd>
     {% endfor %}
-</table>
+</dl>
