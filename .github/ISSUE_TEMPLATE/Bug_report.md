@@ -22,7 +22,8 @@ about: If something isn't working as expected 🤔.
 
 <!--
 Include as many relevant details about the environment you experienced the bug in.
-Because many issues only occur on a specific code base, please add a link to your project, or attach the project code that is      involved to this issue report. -->
+Because many issues only occur on a specific code base, please add a link to your project, or attach the project code that is involved to this issue report.
+-->
 
 * Version used: 3.0.0-alpha1
 * Install method
