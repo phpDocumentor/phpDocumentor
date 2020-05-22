@@ -150,7 +150,7 @@ Reaching out to us is easy, and can be done with:
 
 * Twitter: [@phpDocumentor]
 * Website: https://www.phpdoc.org
-* Github:  https://www.github.com/phpDocumentor/phpDocumentor
+* GitHub:  https://www.github.com/phpDocumentor/phpDocumentor
 * E-mail:  [mike@phpdoc.org]
 
 [@phpDocumentor]: https://twitter.com/phpDocumentor
