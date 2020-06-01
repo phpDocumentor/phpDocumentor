@@ -10,6 +10,7 @@ update_configs:
       - match:
           dependency_type: "production"
           update_type: "semver:patch"
+
   - package_manager: "javascript"
     directory: "/"
     update_schedule: "weekly"
@@ -17,6 +18,7 @@ update_configs:
       - match:
           dependency_type: "all"
           update_type: "all"
+
   - package_manager: "docker"
     directory: "/"
     update_schedule: "weekly"
