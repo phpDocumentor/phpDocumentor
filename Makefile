@@ -1,5 +1,7 @@
-CURRENT_UID ?=
 ARGS ?=
+
+.USER = CURRENT_UID=$(shell id -u):$(shell id -g)
+.DOCKER_COMPOSE_RUN = ${.USER} docker-compose run --rm
 
 .PHONY: phar
 phar:
@@ -54,8 +56,9 @@ unit-test integration-test functional-test:
 e2e-test: node_modules/.bin/cypress build/default/index.html build/clean/index.html
 	docker run -it --rm -v ${CURDIR}:/e2e -w /e2e cypress/included:3.2.0
 
+.PHONY: behat
 behat:
-	docker-compose run --rm behat ${ARGS}
+	${.DOCKER_COMPOSE_RUN} behat ${ARGS}
 
 .PHONY: composer-require-checker
 composer-require-checker:
@@ -66,13 +69,13 @@ pre-commit-test: test phpcs phpstan composer-require-checker
 
 .PHONY: shell
 shell:
-	CURRENT_UID=$(shell id -u):$(shell id -g) docker-compose run --rm --entrypoint=/bin/bash phpdoc
+	${.DOCKER_COMPOSE_RUN} --entrypoint=/bin/bash phpdoc
 
 node_modules/.bin/cypress:
 	docker run -it --rm -v ${CURDIR}:/opt/phpdoc -w /opt/phpdoc node npm install
 
 build/default/index.html: data/examples/MariosPizzeria/**/*
-	CURRENT_UID=$(shell id -u):$(shell id -g) docker-compose run --rm phpdoc --config=data/examples/MariosPizzeria/phpdoc.xml --template=default --target=build/default
+	${.DOCKER_COMPOSE_RUN} phpdoc --config=data/examples/MariosPizzeria/phpdoc.xml --template=default --target=build/default
 
 build/clean/index.html: data/examples/MariosPizzeria/**/*
-	CURRENT_UID=$(shell id -u):$(shell id -g) docker-compose run --rm phpdoc --config=data/examples/MariosPizzeria/phpdoc.xml --template=clean --target=build/clean
+	${.DOCKER_COMPOSE_RUN} phpdoc --config=data/examples/MariosPizzeria/phpdoc.xml --template=clean --target=build/clean
