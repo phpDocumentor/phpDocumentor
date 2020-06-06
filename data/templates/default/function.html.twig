@@ -56,7 +56,7 @@
         </dl>
     {% endif %}
 
-    {{ include ('tags.html.twig', {tags: function.tags}) }}
+    {{ include ('components/tags.html.twig', {tags: function.tags}) }}
 
     {% if (function.response.type and function.response.type != 'void') or function.response.description %}
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
