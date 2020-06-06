@@ -5,7 +5,7 @@ Overview
 --------
 
 If all is well you have read the :doc:`Getting Started<../getting-started/your-first-set-of-documentation>` and got a
-basic idea on what a :term:`DocBlock` is and what you can do with it. In this guide I will repeat some of the bits and
+basic idea on what a DocBlock is and what you can do with it. In this guide I will repeat some of the bits and
 then dive a lot deeper in and discuss the details on what constitutes a DocBlock and what you can do with it.
 
 Anatomy of a DocBlock
@@ -14,13 +14,13 @@ Anatomy of a DocBlock
 Using a DocBlock you are able to effectively document your application's API (Application Programming Interface) by
 describing the function of, and relations between, elements in your source code, such as classes and methods.
 
-In reality a :term:`DocBlock` is in fact the name for a combination of a, so-called, :term:`DocComment` and a block of
-the :term:`PHPDoc` Domain Specific Language (DSL). A DocComment is the container that contains documentation that can
+In reality a DocBlock is in fact the name for a combination of a, so-called, DocComment and a block of
+the PHPDoc Domain Specific Language (DSL). A DocComment is the container that contains documentation that can
 be formatted according to the :doc:`PHPDoc Standard<../references/phpdoc/index>`.
 
 .. important::
 
-   A DocBlock is always associated with one, and just one, :term:`Structural Element` in PHP; so this may either be
+   A DocBlock is always associated with one, and just one, Structural Element in PHP; so this may either be
    a file, class, interface, trait, function, constant, method, property or variable.
 
 **DocComments**
@@ -44,7 +44,7 @@ That is easy, right?
 
 **PHPDoc**
 
-Something a little more extensive is the PHPDoc DSL. Inside :term:`DocComments` phpDocumentor, and many other tools with
+Something a little more extensive is the PHPDoc DSL. Inside DocComments phpDocumentor, and many other tools with
 it, expect to find a block of text that matches the :doc:`PHPDoc Standard<../references/phpdoc/index>`.
 
 Commonly a piece of PHPDoc consists of the following three parts in order of appearance:
@@ -102,7 +102,7 @@ The nice thing about this description is that you can format your text according
 `Github-flavoured Markdown`_. Using this format it is easy to make your text bold, add inline code examples or
 easily generate links to other sites.
 
-Another nifty feature is that you can use a series of :term:`Inline Tags` to refer to other parts of the documentation
+Another nifty feature is that you can use a series of Inline Tags to refer to other parts of the documentation
 (``{@see}``), inherit the description of a parent (``{@inheritDoc}``) and more. Once you finish reading this guide
 you should definitely take a look at the :doc:`../references/phpdoc/inline-tags/index` to see which `Inline Tags` there
 are and what they do.
@@ -187,7 +187,7 @@ descriptions.
 Annotations
 +++++++++++
 
-In addition to the above you might also encounter :term:`Annotations` when viewing DocBlocks. An :term:`Annotation` is
+In addition to the above you might also encounter Annotations when viewing DocBlocks. An Annotation is
 a specialized form of tag that not only documents a specific aspect of the associated element but also influences the
 way the application behaves.
 
@@ -203,7 +203,7 @@ the tag name is separated into two parts, a namespace and the actual annotation 
 .. important::
 
    Some annotation libraries support Annotations both with and without a namespace. When given the opportunity use a
-   namespace to prevent conflicts with existing tags in the :term:`PHPDoc Standard`.
+   namespace to prevent conflicts with existing tags in the PHPDoc Standard.
 
    When you are using the regular tag syntax it is recommended to prefix the tag with a name representing your
    application or organisation's name and a hyphen. For example::

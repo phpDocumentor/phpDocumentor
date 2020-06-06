@@ -6,13 +6,13 @@ The @return tag is used to document the return value of functions or methods.
 Syntax
 ------
 
-    @return [:term:`Type`] [<description>]
+    @return [Type] [<description>]
 
 Description
 -----------
 
 With the @return tag it is possible to document the return type and function of a
-function or method. When provided it MUST contain a :term:`Type` to indicate
+function or method. When provided it MUST contain a Type to indicate
 what is returned; the description on the other hand is OPTIONAL yet
 RECOMMENDED in case of complicated return structures, such as associative arrays.
 
@@ -27,17 +27,17 @@ method. Exceptions to this recommendation are:
 2. **functions and methods without a `return` value**, the @return tag MAY be
    omitted here, in which case `@return void` is implied.
 
-This tag MUST NOT occur more than once in a :term:`PHPDoc` and is limited to
-:term:`Structural Elements` of type method or function.
+This tag MUST NOT occur more than once in a PHPDoc and is limited to
+Structural Elements of type method or function.
 
 Effects in phpDocumentor
 ------------------------
 
-:term:`Structural Elements` of type method or function, that are tagged with the
+Structural Elements of type method or function, that are tagged with the
 @return tag, will have an additional section *Returns* in their content description
-that shows the return :term:`Type` and description.
+that shows the return Type and description.
 
-If the return :term:`Type` is a class that is documented by phpDocumentor, then a link
+If the return Type is a class that is documented by phpDocumentor, then a link
 to that class' documentation is provided.
 
 Examples

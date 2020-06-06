@@ -20,8 +20,8 @@ usage.
 Syntax
 ------
 
-    @global [:term:`Type`] [name]
-    @global [:term:`Type`] [description]
+    @global [Type] [name]
+    @global [Type] [description]
 
 Description
 -----------
@@ -50,7 +50,7 @@ Function usage
 
 The function/method @global syntax MAY be used to document usage of global
 variables in a function, and MUST NOT have a $ starting the third word. The
-:term:`Type` will be ignored if a match is made between the declared global
+Type will be ignored if a match is made between the declared global
 variable and a variable documented in the project.
 
 A parser SHOULD display the optional description unmodified.

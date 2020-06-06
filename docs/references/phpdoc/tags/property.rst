@@ -6,7 +6,7 @@ The @property tag allows a class to know which 'magic' properties are present.
 Syntax
 ------
 
-    @property [:term:`Type`] [name] [<description>]
+    @property [Type] [name] [<description>]
 
 Description
 -----------
@@ -20,13 +20,13 @@ __get() method to provide it.
 In this situation, the child class would have a @property tag for each magic
 property.
 
-@property tags MUST NOT be used in a :term:`PHPDoc` that is not associated with
+@property tags MUST NOT be used in a PHPDoc that is not associated with
 a *class* or *interface*.
 
 Effects in phpDocumentor
 ------------------------
 
-:term:`Structural Elements` of type *class* or *interface* tagged with the
+Structural Elements of type *class* or *interface* tagged with the
 @property tag will show an extra property in their property listing matching the
 data provided with this tag.
 

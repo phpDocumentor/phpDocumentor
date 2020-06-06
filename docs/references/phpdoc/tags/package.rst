@@ -1,7 +1,7 @@
 @package
 ========
 
-The @package tag is used to categorize :term:`Structural Elements` into logical
+The @package tag is used to categorize Structural Elements into logical
 subdivisions.
 
 Syntax
@@ -13,7 +13,7 @@ Description
 -----------
 
 The @package tag can be used as a counterpart or supplement to Namespaces.
-Namespaces provide a functional subdivision of :term:`Structural Elements` where
+Namespaces provide a functional subdivision of Structural Elements where
 the @package tag can provide a *logical* subdivision in which way the elements
 can be grouped with a different hierarchy.
 
@@ -28,7 +28,7 @@ RECOMMENDED to keep the depth at less or equal than six levels.
     separator for compatibility with existing projects. Despite this the
     backslash is RECOMMENDED as separator.
 
-Please note that the @package applies to different :term:`Structural Elements`
+Please note that the @package applies to different Structural Elements
 depending where it is defined.
 
 1. If the @package is defined in the *file-level* DocBlock then it only applies
@@ -45,12 +45,12 @@ depending where it is defined.
    This means that a function which is contained in a namespace with the
    @package tag assumes that package.
 
-This tag MUST NOT occur more than once in a :term:`PHPDoc`.
+This tag MUST NOT occur more than once in a PHPDoc.
 
 Effects in phpDocumentor
 ------------------------
 
-:term:`Structural Elements` tagged with the @package tag are grouped and
+Structural Elements tagged with the @package tag are grouped and
 organized in their own sidebar section.
 
 Examples

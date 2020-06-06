@@ -1,18 +1,18 @@
 @throws
 =======
 
-The @throws tag is used to indicate whether :term:`Structural Elements` could
+The @throws tag is used to indicate whether Structural Elements could
 throw a specific type of exception.
 
 Syntax
 ------
 
-    @throws [:term:`Type`] [<description>]
+    @throws [Type] [<description>]
 
 Description
 -----------
 
-The @throws tag MAY be used to indicate that :term:`Structural Elements` could
+The @throws tag MAY be used to indicate that Structural Elements could
 throw a specific type of error.
 
 The type provided with this tag MUST represent an object of the class Exception

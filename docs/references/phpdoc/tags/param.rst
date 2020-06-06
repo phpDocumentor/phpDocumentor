@@ -6,14 +6,14 @@ The @param tag is used to document a single argument of a function or method.
 Syntax
 ------
 
-    @param [:term:`Type`] [name] [<description>]
+    @param [Type] [name] [<description>]
 
 Description
 -----------
 
 With the @param tag it is possible to document the type and function of a
 single argument of a function or method. When provided it MUST contain a
-:term:`Type` to indicate what is expected; the description on the other hand is
+Type to indicate what is expected; the description on the other hand is
 OPTIONAL yet RECOMMENDED in case of complicated structures, such as associative
 arrays.
 
@@ -23,16 +23,16 @@ delimiting.
 It is RECOMMENDED when documenting to use this tag with every function and
 method. Exceptions to this recommendation are:
 
-This tag MUST NOT occur more than once per argument in a :term:`PHPDoc` and is
-limited to :term:`Structural Elements` of type method or function.
+This tag MUST NOT occur more than once per argument in a PHPDoc and is
+limited to Structural Elements of type method or function.
 
 Effects in phpDocumentor
 ------------------------
 
-:term:`Structural Elements` of type method or function, that are tagged with the
+Structural Elements of type method or function, that are tagged with the
 @param tag, will have additional information in the section regarding Arguments.
 
-If the return :term:`Type` is a class that is documented by phpDocumentor, then
+If the return Type is a class that is documented by phpDocumentor, then
 a link to that class' documentation is provided.
 
 .. note::

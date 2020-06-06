@@ -4,7 +4,7 @@ Running phpDocumentor
 In this guide we are going to explain how to generate documentation for your application and how to tune it to your
 liking. phpDocumentor supports a wide range of options related to the generation of documentation that can help you.
 
-phpDocumentor is a command-line application that supports several actions, called :term:`commands`, with which you can
+phpDocumentor is a command-line application that supports several actions, called *commands*, with which you can
 generate your documentation but also, for example, display a list of installed templates. In this guide we are only
 going to discuss the default command: ``project:run``, you can find a list of all supported commands in the
 :doc:`command reference<../references/commands/index>`
@@ -104,7 +104,7 @@ somewhere down the tree.
    Enclose any value for an option that provides a wildcard with double quotes to prevent your command line from
    interpreting them.
 
-When you want to provide a relative path, keep in mind that this is relative to the :term:`Project Root Folder`.
+When you want to provide a relative path, keep in mind that this is relative to the Project Root Folder.
 The project's root folder is the first folder that the provided folders have in common, so for
 ``-d "src/phpDocumentor,src/SomethingElse" this is the directory "src" and not the current working directory. When in doubt,
 check the output of phpDocumentor, it mentions the project's root folder after all files are collected.
@@ -167,7 +167,7 @@ Markers
 -------
 
 phpDocumentor is mostly about DocBlocks and processing inline documentation. However it will also collect
-:term:`markers`.
+markers.
 
 In short, a Marker is a single-line inline comment that starts with a single, identifying, word and has a description.
 Let's take a look at an example to make this less abstract::

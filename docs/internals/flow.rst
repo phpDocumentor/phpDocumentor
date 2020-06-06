@@ -148,10 +148,10 @@ will remove all files from that cache that are not present in the file listing t
 contain any entries that are not intended to be documented.
 
 Once that is done phpDocumentor should have a description of your Project, represented by an instance of the
-ProjectDescriptor class, that may be pre-populated with the :term:`Abstract Syntax Tree` (other Descriptors) that were
+ProjectDescriptor class, that may be pre-populated with the Abstract Syntax Tree (other Descriptors) that were
 discovered during a previous run.
 
-When phpDocumentor is ready to create, or actually refresh, the :term:`AST` it will iterate over all files that were
+When phpDocumentor is ready to create, or actually refresh, the AST it will iterate over all files that were
 discovered. A hash is generated of each file and checked with the cache if this file is still *fresh*. Should the hash
 not exist in the Cache or it differs for a given file then phpDocumentor will create a new representation of that file
 and overwrite the previous one.
@@ -159,7 +159,7 @@ and overwrite the previous one.
 .. important::
 
    At this stage all links between elements, such as that of an ``@see`` tag, are still strings containing the
-   :term:`FQSEN` that references another element. It is not until much later, in the Linker, where the text references
+   FQSEN that references another element. It is not until much later, in the Linker, where the text references
    are converted into actual references to other objects.
 
    This is done because:

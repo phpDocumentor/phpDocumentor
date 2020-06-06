@@ -37,7 +37,7 @@ This means that any class may be addressed
 
       use phpDocumentor\Descriptor\ParamDescriptor as Param
 
-  Now you can refer to the class above as ``Param`` from any tag that refers to a :term:`Type`.
+  Now you can refer to the class above as ``Param`` from any tag that refers to a Type.
 
 .. warning::
 

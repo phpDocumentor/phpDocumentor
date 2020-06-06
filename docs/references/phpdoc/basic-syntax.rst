@@ -42,7 +42,7 @@ This is an example of a DocBlock as it can be encountered:
 Which elements can have a DocBlock
 ----------------------------------
 
-:term:`Structural Elements` can all be preceded by a DocBlock. The following elements are counted as such:
+Structural Elements can all be preceded by a DocBlock. The following elements are counted as such:
 
     * namespace
     * require(_once)
@@ -55,7 +55,7 @@ Which elements can have a DocBlock
     * constant
     * variables, both local and global scope.
 
-A more detailed description of what :term:`Structural Elements` are and how DocBlocks apply to them can be found in
+A more detailed description of what Structural Elements are and how DocBlocks apply to them can be found in
 the :doc:`definitions`.
 
 Sections

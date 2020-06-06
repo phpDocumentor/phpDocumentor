@@ -1,7 +1,7 @@
 @internal
 =========
 
-The @internal tag is used to denote that associated :term:`Structural Elements`
+The @internal tag is used to denote that associated Structural Elements
 are elements internal to this application or library. It may also be used inside
 a long description to insert a piece of text that is only applicable for
 the developers of this software.
@@ -23,7 +23,7 @@ Description
 -----------
 
 The @internal tag can be used as counterpart of the @api tag, indicating that
-the associated :term:`Structural Elements` are used purely for the internal
+the associated Structural Elements are used purely for the internal
 workings of this piece of software.
 
 An additional use of @internal is to add internal comments or additional
@@ -32,16 +32,16 @@ to withhold certain business-critical or confusing information when generating
 documentation from the source code of this piece of software.
 
     It is NOT RECOMMENDED to store passwords or security sensitive information
-    in your :term:`DocBlock`. Not even with this tag.
+    in your DocBlock. Not even with this tag.
 
 Effects in phpDocumentor
 ------------------------
 
-:term:`Structural Elements`, or parts of the long description when the tag is
+Structural Elements, or parts of the long description when the tag is
 used inline, tagged with the @internal tag will be filtered out when creating
 the HTML output unless the ``--parseprivate`` command line argument is used.
 
-The :term:`Abstract Syntax Tree` will still contain the internal information.
+The Abstract Syntax Tree will still contain the internal information.
 Any consumer of this file is responsible for filtering the information.
 
 Examples
