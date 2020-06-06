@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Writer\Twig;
 
 use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\Parser\Cache\Locator;
 use phpDocumentor\Path;
 use phpDocumentor\Transformer\Transformation;
 use Twig\Environment;
@@ -22,7 +21,6 @@ use Twig\Extension\DebugExtension;
 use Twig\Loader\ChainLoader;
 use Twig\Loader\FilesystemLoader;
 use function ltrim;
-use function md5;
 
 class EnvironmentFactory
 {
