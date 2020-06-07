@@ -50,8 +50,8 @@ Usually the following configuration suffices for your project::
     <phpdocumentor
             configVersion="3"
             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-            xmlns="http://www.phpdoc.org"
-            xsi:noNamespaceSchemaLocation="http://docs.phpdoc.org/latest/phpdoc.xsd"
+            xmlns="https://www.phpdoc.org"
+            xsi:noNamespaceSchemaLocation="https://docs.phpdoc.org/latest/phpdoc.xsd"
     >
         <paths>
             <output>build/api</output>
@@ -187,8 +187,8 @@ Appendix A: basic configuration example
     <phpdocumentor
             configVersion="3"
             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-            xmlns="http://www.phpdoc.org"
-            xsi:noNamespaceSchemaLocation="http://docs.phpdoc.org/latest/phpdoc.xsd"
+            xmlns="https://www.phpdoc.org"
+            xsi:noNamespaceSchemaLocation="https://docs.phpdoc.org/latest/phpdoc.xsd"
     >
         <paths>
             <output>build/api</output>

@@ -11,11 +11,11 @@
   -->
 
 <xs:schema
-        targetNamespace="http://www.phpdoc.org"
+        targetNamespace="https://www.phpdoc.org"
         attributeFormDefault="unqualified"
         elementFormDefault="qualified"
         xmlns:xs="http://www.w3.org/2001/XMLSchema"
-        xmlns:pd="http://www.phpdoc.org"
+        xmlns:pd="https://www.phpdoc.org"
         version="3.0"
 >
     <xs:simpleType name="dsn"><xs:restriction base="xs:string"/></xs:simpleType>
