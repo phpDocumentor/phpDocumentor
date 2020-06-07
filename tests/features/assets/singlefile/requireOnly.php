@@ -6,7 +6,6 @@
  *  file that was distributed with this source code.
  *
  *  @copyright 2010-2018 Mike van Riel<mike@phpdoc.org>
- *  @license   http://www.opensource.org/licenses/mit-license.php MIT
  *  @link      https://phpdoc.org
  */
 echo 'foo';
