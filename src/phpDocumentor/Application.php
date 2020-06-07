@@ -90,7 +90,7 @@ final class Application
      * This is done to prevent any warnings being outputted in relation to using
      * date/time functions.
      *
-     * @link http://php.net/manual/en/function.date-default-timezone-get.php for more information how PHP determines the
+     * @link https://www.php.net/function.date-default-timezone-get for more information how PHP determines the
      *     default timezone.
      */
     private function setTimezone() : void
