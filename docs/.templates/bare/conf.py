@@ -65,8 +65,8 @@ epub_title      = u'phpDocumentor'
 epub_author     = u'Mike van Riel'
 epub_publisher  = u'Mike van Riel'
 epub_copyright  = u'2012, Mike van Riel'
-epub_scheme     = 'http://www.phpdoc.org'
-epub_identifier = 'http://www.phpdoc.org'
+epub_scheme     = 'https://www.phpdoc.org'
+epub_identifier = 'https://www.phpdoc.org'
 
 # A unique identification for the text.
 #epub_uid = ''
