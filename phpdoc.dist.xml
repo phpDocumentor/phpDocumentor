@@ -2,7 +2,7 @@
 <phpdocumentor
         configVersion="3"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns="http://www.phpdoc.org"
+        xmlns="https://www.phpdoc.org"
         xsi:noNamespaceSchemaLocation="data/xsd/phpdoc.xsd"
 >
     <title>phpDocumentor</title>
