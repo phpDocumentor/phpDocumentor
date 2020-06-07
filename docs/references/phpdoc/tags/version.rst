@@ -19,7 +19,7 @@ consumer is informed about elements at a particular version.
 
 It is RECOMMENDED that the version number matches a semantic version number as
 described in the Semantic Versioning Standard version 2.0 at
-http://www.semver.org.
+https://semver.org/.
 
 Version vectors from Version Control Systems are also supported, though they
 MUST follow the form:

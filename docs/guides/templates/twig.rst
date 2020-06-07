@@ -90,7 +90,7 @@ markdown
 
 Renders Markdown text into HTML, using the `Parsedown`_ engine.
 
-.. _Parsedown: http://parsedown.org/
+.. _Parsedown: https://parsedown.org/
 
 trans
 ~~~~~

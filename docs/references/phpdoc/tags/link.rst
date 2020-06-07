@@ -28,7 +28,7 @@ Structural Elements or part of the long description, when used inline,
 to an URI.
 
 The URI MUST be complete and well-formed as specified in
-`RFC2396 <http://www.ietf.org/rfc/rfc2396.txt>`_.
+`RFC2396 <https://www.ietf.org/rfc/rfc2396.txt>`_.
 
 The @link tag MAY have a description appended to indicate the type of relation
 defined by this occurrence.
@@ -49,7 +49,7 @@ Normal tag:
    :linenos:
 
     /**
-     * @link http://example.com/my/bar Documentation of Foo.
+     * @link https://example.com/my/bar Documentation of Foo.
      *
      * @return integer Indicates the number of items.
      */
@@ -66,7 +66,7 @@ Inline tag:
     /**
      * This method counts the occurrences of Foo.
      *
-     * When no more Foo ({@link http://example.com/my/bar}) are given this
+     * When no more Foo ({@link https://example.com/my/bar}) are given this
      * function will add one as there must always be one Foo.
      *
      * @return integer Indicates the number of items.
