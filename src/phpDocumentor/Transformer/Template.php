@@ -210,7 +210,7 @@ final class Template implements ArrayAccess, Countable, IteratorAggregate
     /**
      * Offset to unset.
      *
-     * @link http://php.net/manual/en/arrayaccess.offsetunset.php
+     * @link https://www.php.net/arrayaccess.offsetunset
      *
      * @param int|string $offset Index of item to unset.
      */
@@ -222,7 +222,7 @@ final class Template implements ArrayAccess, Countable, IteratorAggregate
     /**
      * Whether a offset exists.
      *
-     * @link http://php.net/manual/en/arrayaccess.offsetexists.php
+     * @link https://www.php.net/arrayaccess.offsetexists
      *
      * @param int|string $offset An offset to check for.
      *
@@ -236,7 +236,7 @@ final class Template implements ArrayAccess, Countable, IteratorAggregate
     /**
      * Count the number of transformations.
      *
-     * @link http://php.net/manual/en/countable.count.php
+     * @link https://www.php.net/countable.count
      *
      * @return int The count as an integer.
      */
