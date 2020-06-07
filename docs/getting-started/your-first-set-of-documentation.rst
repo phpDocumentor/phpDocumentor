@@ -217,4 +217,4 @@ phpDocumentor; see the guide on :doc:`../guides/running-phpdocumentor` for more 
 .. _Property:       https://www.php.net/language.oop5.properties
 .. _Method:         https://www.php.net/language.oop5.basic
 .. _Markdown:       http://daringfireball.com
-.. _templates:      http://phpdoc.org/templates
+.. _templates:      https://phpdoc.org/templates

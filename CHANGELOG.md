@@ -590,7 +590,7 @@ to 2.0.0a13.
 
 In the following list we have tried to exhaustively document the list of changes and their impact. Due to the size of
 the refactoring it is nigh impossible to make a 100% accurate list. Please contact us if you have questions; the website
-http://www.phpdoc.org describes various methods.
+https://www.phpdoc.org describes various methods.
 
 ```
 ADDED      Twig Writer
