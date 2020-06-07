@@ -4,10 +4,12 @@
 
     <file>src</file>
     <file>tests/unit</file>
-    <exclude-pattern>*\.(css|js)$</exclude-pattern>
     <exclude-pattern>*/src/phpDocumentor/Guides/*$</exclude-pattern>
-    <exclude-pattern>*/src/phpDocumentor/Pipeline/Stage/RenderGuide.php$</exclude-pattern>
+    <exclude-pattern>*/src/phpDocumentor/Pipeline/Stage/RenderGuide\.php$</exclude-pattern>
     <arg value="p"/>
+    <arg name="extensions" value="php"/>
+    <arg name="basepath" value="."/>
+    <arg name="parallel" value="12"/>
 
     <rule ref="phpDocumentor">
         <!-- Should be removed/fixed again once we pass the round of checks -->
@@ -40,31 +42,31 @@
     </rule>
 
     <rule ref="SlevomatCodingStandard.Functions.StaticClosure.ClosureNotStatic">
-        <exclude-pattern>*/tests/unit/phpDocumentor/Console/ApplicationTest.php</exclude-pattern>
+        <exclude-pattern>*/tests/unit/phpDocumentor/Console/ApplicationTest\.php$</exclude-pattern>
     </rule>
 
     <rule ref="SlevomatCodingStandard.Namespaces.UnusedUses.MismatchingCaseSensitivity">
-        <exclude-pattern>*/src/*/ResolveInlineLinkAndSeeTags.php</exclude-pattern>
-        <exclude-pattern>*/src/*/*Assembler*.php</exclude-pattern>
+        <exclude-pattern>*/src/*/ResolveInlineLinkAndSeeTags\.php$</exclude-pattern>
+        <exclude-pattern>*/src/*/*Assembler*\.php$</exclude-pattern>
     </rule>
 
     <rule ref="SlevomatCodingStandard.Classes.SuperfluousInterfaceNaming">
-        <exclude-pattern>*/src/*/*Interface.php</exclude-pattern>
+        <exclude-pattern>*/src/*/*Interface\.php$</exclude-pattern>
     </rule>
 
     <rule ref="SlevomatCodingStandard.Classes.SuperfluousAbstractClassNaming.SuperfluousPrefix">
-        <exclude-pattern>*/src/*/Abstract*.php</exclude-pattern>
+        <exclude-pattern>*/src/*/Abstract*\.php$</exclude-pattern>
     </rule>
 
     <rule ref="SlevomatCodingStandard.Classes.SuperfluousAbstractClassNaming.SuperfluousSuffix">
-        <exclude-pattern>*/src/*/*Abstract.php</exclude-pattern>
+        <exclude-pattern>*/src/*/*Abstract\.php$</exclude-pattern>
     </rule>
 
     <rule ref="SlevomatCodingStandard.Classes.SuperfluousTraitNaming.SuperfluousSuffix">
-        <exclude-pattern>src/phpDocumentor/Transformer/Writer/*Trait.php</exclude-pattern>
+        <exclude-pattern>src/phpDocumentor/Transformer/Writer/*Trait\.php$</exclude-pattern>
     </rule>
     <rule ref="Generic.CodeAnalysis.UselessOverridingMethod.Found">
-        <exclude-pattern>src/phpDocumentor/Kernel.php</exclude-pattern>
+        <exclude-pattern>src/phpDocumentor/Kernel\.php$</exclude-pattern>
     </rule>
 
     <!-- Should be removed/fixed again once we pass the round of checks -->
