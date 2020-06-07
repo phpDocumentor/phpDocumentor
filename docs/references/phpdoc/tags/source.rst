@@ -3,7 +3,7 @@
 
 .. important::
 
-   The effects of this tag are not yet fully implemented in PhpDocumentor2.
+   The effects of this tag are not yet fully implemented in phpDocumentor 3.
 
 The @source tag shows the source code of :term:`Structural Elements`.
 

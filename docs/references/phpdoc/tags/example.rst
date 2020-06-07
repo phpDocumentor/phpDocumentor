@@ -3,7 +3,7 @@
 
 .. important::
 
-   The effects of this tag are not yet fully implemented in PhpDocumentor2.
+   The effects of this tag are not yet fully implemented in phpDocumentor 3.
 
 The @example tag shows the code of a specified example file, or optionally, just
 a portion of it.
@@ -27,7 +27,7 @@ A location to a file MUST be specified. It can be specified as a relative or
 absolute URI, or as a relative or absolute file path. Use double quotes around
 the location to explicitly specify that it is a file path.
 
-To expand a relative URI or filepath, PhpDocumentor looks into multiple folders,
+To expand a relative URI or filepath, phpDocumentor looks into multiple folders,
 until it finds an existing and readable file matching the one specified. The
 folders being analyzed (in this order) are:
 -  A specific folder, specified at the configuration file or command line.

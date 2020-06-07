@@ -93,7 +93,7 @@ directory you can customize parts of the generated HTML. For example, when you w
 you create an empty file named `breadcrumbs.html.twig` in `.phpdoc/template/`.
 Have a look in the `template directory`_ which other files can be overwritten.
 
-Besides the templates phpdocumentor allows you to customize the looks of the included templates just by modifying the CSS.
+Besides the templates phpDocumentor allows you to customize the looks of the included templates just by modifying the CSS.
 To do this you have to create a file named `template.css.twig` in `.phpdoc/template/css`. The minimal contents should be as
 below. The `base::` prefix allows you to extend files from the original template.
 
