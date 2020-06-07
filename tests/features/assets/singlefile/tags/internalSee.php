@@ -31,7 +31,7 @@ namespace phpDocumentor\Descriptor;
  *
  * @see http://www.phpdoc.org
  * @see https://www.phpdoc.org
- * @see http://phpdoc.org
+ * @see https://phpdoc.org
  * @see http://www.phpdoc.org/docs/latest/references/phpdoc/tags/uses.html
  * @see ftp://somesite.nl
  *
@@ -90,7 +90,7 @@ class TestSeeTagIssue
      *
      * @see http://www.phpdoc.org
      * @see https://www.phpdoc.org
-     * @see http://phpdoc.org
+     * @see https://phpdoc.org
      * @see http://www.phpdoc.org/docs/latest/references/phpdoc/tags/uses.html
      * @see ftp://somesite.nl
      *
@@ -149,7 +149,7 @@ class TestSeeTagIssue
      *
      * @see http://www.phpdoc.org
      * @see https://www.phpdoc.org
-     * @see http://phpdoc.org
+     * @see https://phpdoc.org
      * @see http://www.phpdoc.org/docs/latest/references/phpdoc/tags/uses.html
      * @see ftp://somesite.nl
      *
@@ -208,7 +208,7 @@ class TestSeeTagIssue
      *
      * @see http://www.phpdoc.org
      * @see https://www.phpdoc.org
-     * @see http://phpdoc.org
+     * @see https://phpdoc.org
      * @see http://www.phpdoc.org/docs/latest/references/phpdoc/tags/uses.html
      * @see ftp://somesite.nl
      *

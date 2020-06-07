@@ -20,7 +20,7 @@ use Mockery\Adapter\Phpunit\MockeryTestCase;
  */
 final class LinkDescriptorTest extends MockeryTestCase
 {
-    public const EXAMPLE_LINK = 'http://phpdoc.org';
+    public const EXAMPLE_LINK = 'https://phpdoc.org';
 
     /** @var LinkDescriptor $fixture */
     protected $fixture;
