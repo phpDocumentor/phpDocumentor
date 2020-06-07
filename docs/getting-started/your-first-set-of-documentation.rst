@@ -208,13 +208,13 @@ There are a lot more options to phpDocumentor and you can define them all in a :
 and include that in your project but that is out of scope for this tutorial. If you'd like to know more on running
 phpDocumentor; see the guide on :doc:`../guides/running-phpdocumentor` for more information.
 
-.. _Function:       http://php.net/manual/en/language.functions.php
-.. _Constant:       http://php.net/manual/en/language.constants.php
-.. _Class:          http://php.net/manual/en/language.oop5.basic.php
-.. _Interface:      http://php.net/manual/en/language.oop5.interfaces.php
-.. _Trait:          http://php.net/manual/en/language.oop5.traits.php
-.. _Class constant: http://php.net/manual/en/language.oop5.constants.php
-.. _Property:       http://php.net/manual/en/language.oop5.properties.php
-.. _Method:         http://php.net/manual/en/language.oop5.basic.php
+.. _Function:       https://www.php.net/language.functions
+.. _Constant:       https://www.php.net/language.constants
+.. _Class:          https://www.php.net/language.oop5.basic
+.. _Interface:      https://www.php.net/language.oop5.interfaces
+.. _Trait:          https://www.php.net/language.oop5.traits
+.. _Class constant: https://www.php.net/language.oop5.constants
+.. _Property:       https://www.php.net/language.oop5.properties
+.. _Method:         https://www.php.net/language.oop5.basic
 .. _Markdown:       http://daringfireball.com
 .. _templates:      http://phpdoc.org/templates

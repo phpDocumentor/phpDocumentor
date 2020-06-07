@@ -48,7 +48,7 @@ This means that any class may be addressed
 Of course this is only a short introduction on class name resolution with PHP. When you want to know more on how PHP
 resolves class names, please read the `php manual on namespacing`_.
 
-.. _php manual on namespacing: http://php.net
+.. _php manual on namespacing: https://www.php.net/language.namespaces
 
 Primitives
 ~~~~~~~~~~
