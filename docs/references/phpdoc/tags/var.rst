@@ -43,4 +43,4 @@ Even compound statements may be documented:
       protected $name, $description;
     }
 
-.. _property: http://www.php.net/manual/en/language.oop5.properties.php
+.. _property: https://www.php.net/language.oop5.properties

@@ -90,7 +90,7 @@ The following keywords are recognized:
 
 8.  **resource**, the element to which this type applies is a resource per
     the definition of PHP at
-    http://www.php.net/manual/en/language.types.resource.php.
+    https://www.php.net/language.types.resource.
 
 9.  **void**, this type is commonly only used when defining the return type of a
     method or function.
@@ -180,7 +180,7 @@ The following keywords are recognized:
 
 11. **callable**, the element to which this type applies is a pointer to a
     function call. This may be any type of callback as defined in the PHP manual
-    at http://php.net/manual/en/language.pseudo-types.php.
+    at https://www.php.net/language.types.callable.
 
 12. **false** or **true**, the element to which this type applies will have
     the value true or false. No other value will be returned from this
