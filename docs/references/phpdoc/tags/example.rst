@@ -20,7 +20,7 @@ or inline
 Description
 -----------
 
-The @example tag can be used to demonstrate the use of :term:`Structural Elements`
+The @example tag can be used to demonstrate the use of Structural Elements
 by presenting the contents of files that use them.
 
 A location to a file MUST be specified. It can be specified as a relative or

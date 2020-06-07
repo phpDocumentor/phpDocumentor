@@ -5,10 +5,10 @@
 
    The effects of the inline version of this tag are not yet fully implemented
    in phpDocumentor 3. There's only URI support (i.e. no support for
-   :term:`Structural Elements`), and even that is available only in long descriptions.
+   Structural Elements), and even that is available only in long descriptions.
 
 The @link tag indicates a custom relation between associated
-:term:`Structural Elements` and a website, which is identified by an absolute
+Structural Elements and a website, which is identified by an absolute
 URI.
 
 Syntax
@@ -24,7 +24,7 @@ Description
 -----------
 
 The @link tag can be used to define a relation, or link, between
-:term:`Structural Elements` or part of the long description, when used inline,
+Structural Elements or part of the long description, when used inline,
 to an URI.
 
 The URI MUST be complete and well-formed as specified in
@@ -36,7 +36,7 @@ defined by this occurrence.
 Effects in phpDocumentor
 ------------------------
 
-:term:`Structural Elements`, or inline text in a long description, tagged with
+Structural Elements, or inline text in a long description, tagged with
 the @link tag will show a link in their description. If a description is
 provided with the tag then this will be used as link text instead of the URL itself.
 

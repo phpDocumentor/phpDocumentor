@@ -31,13 +31,13 @@ the return type to communicate that.
 There must be a return type, ``static`` on its own would mean that the method
 returns an instance of the child class which the method is called on.
 
-@method tags MUST NOT be used in a :term:`PHPDoc` that is not associated with
+@method tags MUST NOT be used in a PHPDoc that is not associated with
 a *class* or *interface*.
 
 Effects in phpDocumentor
 ------------------------
 
-:term:`Structural Elements` of type *class* or *interface* tagged with the
+Structural Elements of type *class* or *interface* tagged with the
 @method tag will show an extra method in their method listing matching the
 data provided with this tag.
 

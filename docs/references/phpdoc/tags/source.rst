@@ -5,7 +5,7 @@
 
    The effects of this tag are not yet fully implemented in phpDocumentor 3.
 
-The @source tag shows the source code of :term:`Structural Elements`.
+The @source tag shows the source code of Structural Elements.
 
 Syntax
 ------
@@ -16,7 +16,7 @@ Description
 -----------
 
 The @source tag can be used to communicate the implementation of
-:term:`Structural Elements` by presenting their source code, or more typically -
+Structural Elements by presenting their source code, or more typically -
 portions of it.
 
 If specified, the starting line MUST be a positive integer. Counting starts at

@@ -11,13 +11,13 @@ Writing a DocBlock
 ------------------
 
 A DocBlock is a piece of inline *documentation* in your source code that informs you what a class, method or other
-:term:`Structural Element` its function is.
+Structural Element its function is.
 
 Which elements can be documented?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Before we discuss what a DocBlock looks like, let's first zoom into what you can document with them. phpDocumentor
-follows the PHPDoc definition and recognizes the following :term:`Structural Elements`:
+follows the PHPDoc definition and recognizes the following Structural Elements:
 
 * Function_
 * Constant_
@@ -28,7 +28,7 @@ follows the PHPDoc definition and recognizes the following :term:`Structural Ele
 * Property_
 * Method_
 
-In addition to the above the PHPDoc standard also supports :term:`DocBlocks` for *Files* and include/require statements,
+In addition to the above the PHPDoc standard also supports DocBlocks for *Files* and include/require statements,
 even though PHP itself does not know this concept.
 
 Each of these elements can have exactly one DocBlock associated with it, which directly precedes it. No code or
@@ -37,9 +37,9 @@ comments may be between a DocBlock and the start of an element's definition.
 What does a DocBlock look like?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:term:`DocBlocks` are always enclosed in a comment-type, called :term:`DocComment`, that starts with ``/**`` and ends
+DocBlocks are always enclosed in a comment-type, called DocComment, that starts with ``/**`` and ends
 with ``*/``. Each line in between the opening and closing statement should start with an asterisk (``*``). Every
-:term:`DocBlock` precedes exactly one :term:`Structural Element` and all contents of the :term:`DocBlock` apply to that
+DocBlock precedes exactly one Structural Element and all contents of the DocBlock apply to that
 associated element.
 
 For example:
@@ -60,7 +60,7 @@ For example:
 
    Quite often projects will want to document the license or function for an entire file instead of a single element.
    This can be accomplished by having a DocBlock as the first element encountered in a file. It is important to note that
-   whenever another :term:`Structural Element` directly follows the DocBlock that it is no longer recognized as a
+   whenever another Structural Element directly follows the DocBlock that it is no longer recognized as a
    File-level DocBlock but belonging to the subsequent element.
 
    The following DocBlock is a File-level DocBlock:
@@ -92,10 +92,10 @@ For example:
       {
       }
 
-DocBlocks are divided into the following three parts. Each of these parts is optional, except that a :term:`Description`
-may not exist without a :term:`Summary`.
+DocBlocks are divided into the following three parts. Each of these parts is optional, except that a Description
+may not exist without a Summary.
 
-:term:`Summary`
+Summary
   Sometimes called a short description, provides a brief introduction into the function of the associated element.
   A Summary ends
   in one of these situations:
@@ -103,12 +103,12 @@ may not exist without a :term:`Summary`.
     1. A dot is following by a line break, or
     2. Two subsequent line breaks are encountered.
 
-:term:`Description`
+Description
   Sometimes called the long description, can provide more information. Examples of additional information is a
   description of a function's algorithm, a usage example or description how a class fits in the whole of the
   application's architecture. The description ends when the first tag is encountered or when the DocBlock is closed.
 
-:term:`Tags` and :term:`annotations`
+Tags and Annotations
   These provide a way to succinctly and uniformly provide meta-information about the associated element. This could,
   for example, describe the type of information that is returned by a method or function. Each tag is preceded by an
   at-sign (`@`) and starts on a new line.
@@ -143,11 +143,11 @@ Line 2
   shows that a DocBlock starts with the opening sequence ``/**``.
 
 Line 3
-  has an example of a :term:`Summary`. This is, usually, a single line but may cover multiple lines as long as the end
+  has an example of a Summary. This is, usually, a single line but may cover multiple lines as long as the end
   of the summary, as defined in the previous chapter, is not reached.
 
 Line 5 and 6
-  show an example of a :term:`Description`, which may span multiple lines and can be formatted using the
+  show an example of a Description, which may span multiple lines and can be formatted using the
   Markdown_ markup language. Using Markdown_ you can make text bold, italic, add numbered lists and even provide code
   examples.
 

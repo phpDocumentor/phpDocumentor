@@ -13,7 +13,7 @@ produce HTML files that you can serve from your website.
 While building a template there are three important steps:
 
 1. Creating a template definition file.
-2. Defining all :term:`transformations` that your template must do.
+2. Defining all transformations that your template must do.
 3. Writing your Twig templates and providing assets.
 
 Each of these steps is covered in the following subchapters, so if you want to make your own template you can just read
@@ -27,7 +27,7 @@ on and follow along with the text.
 Create your template definition
 -------------------------------
 
-Simply put, a template is a combination of :term:`transformations` that will read the data that phpDocumentor has
+Simply put, a template is a combination of transformations that will read the data that phpDocumentor has
 aggregated and transform that into the output that you desire, such as an HTML page.
 
 In order for phpDocumentor to know what to do there is always a template definition file present, called

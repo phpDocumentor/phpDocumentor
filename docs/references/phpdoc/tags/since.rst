@@ -6,7 +6,7 @@
    The effects of this tag are not yet fully implemented in phpDocumentor 3.
 
 The @since tag indicates at which version did the associated
-:term:`Structural Elements` became available.
+Structural Elements became available.
 
 Syntax
 ------
@@ -17,7 +17,7 @@ Description
 -----------
 
 The @since tag can be used to indicate since which version specific
-:term:`Structural Elements` have become available.
+Structural Elements have become available.
 
 This information can be used to generate a set of API Documentation where the
 consumer is informed which application version is necessary for a specific
@@ -26,7 +26,7 @@ element.
 The version MUST follow the same rules as the :doc:`version` tag's vector and
 MAY have a description to provide additional information.
 
-This tag can occur multiple times within a :term:`PHPDoc`. In that case, each
+This tag can occur multiple times within a PHPDoc. In that case, each
 occurrence is treated as an entry to a change log. It is RECOMMENDED that you
 also provide a description to each such tag.
 

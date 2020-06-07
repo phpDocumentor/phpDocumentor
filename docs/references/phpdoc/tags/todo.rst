@@ -2,7 +2,7 @@
 =====
 
 The @todo tag is used to indicate whether any development activities should
-still be executed on associated :term:`Structural Elements`.
+still be executed on associated Structural Elements.
 
 Syntax
 ------
@@ -13,7 +13,7 @@ Description
 -----------
 
 The @todo tag is used to indicate that an activity surrounding the associated
-:term:`Structural Elements` must still occur. Each tag MUST be accompanied by
+Structural Elements must still occur. Each tag MUST be accompanied by
 a description that communicates the intent of the original author; this could
 however be as short as providing an issue number.
 

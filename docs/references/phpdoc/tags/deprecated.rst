@@ -1,7 +1,7 @@
 @deprecated
 ===========
 
-The @deprecated tag is used to indicate which :term:`Structural elements` are
+The @deprecated tag is used to indicate which Structural Elements are
 deprecated and are to be removed in a future version.
 
 Syntax
@@ -12,7 +12,7 @@ Syntax
 Description
 -----------
 
-The @deprecated tag declares that the associated :term:`Structural elements` will
+The @deprecated tag declares that the associated Structural Elements will
 be removed in a future version as it has become obsolete or its usage is otherwise
 not recommended.
 
@@ -24,12 +24,12 @@ MUST follow the same rules as those by the :doc:`version` tag's vector.
 It is RECOMMENDED (but not required) to provide an additional description stating
 why the associated element is deprecated.
 If it is superceded by another method it is RECOMMENDED to add a @see tag in the
-same :term:`PHPDoc` pointing to the new element.
+same PHPDoc pointing to the new element.
 
 Effects in phpDocumentor
 ------------------------
 
-:term:`Structural Elements` tagged with the @deprecated tag will be listed in the
+Structural Elements tagged with the @deprecated tag will be listed in the
 *Deprecated elements* report and their name will be shown as strike through.
 
 Examples

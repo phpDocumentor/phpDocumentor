@@ -1,7 +1,7 @@
 Definition of a 'Type'
 ======================
 
-Many tags use a :term:`Type` as part of their definition (such as the @return tag).
+Many tags use a Type as part of their definition (such as the @return tag).
 These types differ from the official PHP definition to be able to represent all
 kinds of data.
 
@@ -22,7 +22,7 @@ ABNF
                                |"double"|"object"|"mixed"|"array"|"resource"|"scalar"
                                |"void"|"null"|"callback"|"false"|"true"|"self"
 
-When a :term:`Type` is used the user will expect a value, or set of values, as
+When a Type is used the user will expect a value, or set of values, as
 detailed below.
 
 Atomic (singular) type
@@ -53,7 +53,7 @@ Keyword
 
 A keyword defining the purpose of this type. Not every element is determined
 by a class but still worth of a classification to assist the developer in
-understanding the code covered by the :term:`PHPDoc`.
+understanding the code covered by the PHPDoc.
 
 .. NOTE::
 
@@ -228,7 +228,7 @@ The following keywords are recognized:
 Multiple types
 --------------
 
-When the :term:`Type` consists of multiple (sub-)types then these MUST be
+When the Type consists of multiple (sub-)types then these MUST be
 separated with the vertical bar sign (|).
 
 For example:
@@ -241,14 +241,14 @@ For example:
 Arrays
 ------
 
-The value represented by :term:`Type` can be an array. The type MUST be defined
+The value represented by Type can be an array. The type MUST be defined
 following the format of one of the following options:
 
 1. **unspecified**, no definition of the contents of the represented array is given.
    Example: ``@return array``
 
-2. **specified containing a single type**, the :term:`Type` definition informs
-   the reader of the type of each array element. Only one :term:`Type` is then
+2. **specified containing a single type**, the Type definition informs
+   the reader of the type of each array element. Only one Type is then
    expected as element for a given array.
 
    Example: ``@return int[]``

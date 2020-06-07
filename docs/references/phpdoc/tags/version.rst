@@ -1,7 +1,7 @@
 @version
 ========
 
-The @version tag indicates the current version of :term:`Structural Elements`.
+The @version tag indicates the current version of Structural Elements.
 
 Syntax
 ------
@@ -12,7 +12,7 @@ Description
 -----------
 
 The @version tag can be used to indicate the current version of
-:term:`Structural Elements`.
+Structural Elements.
 
 This information can be used to generate a set of API Documentation where the
 consumer is informed about elements at a particular version.

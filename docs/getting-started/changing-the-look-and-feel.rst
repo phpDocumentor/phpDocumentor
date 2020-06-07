@@ -5,7 +5,7 @@ Overview
 --------
 
 With this tutorial, I want to show you how the look and feel of phpDocumentor can be changed using one of the
-existing :term:`templates` or by selecting a custom-made :term:`template`.
+existing templates or by selecting a custom-made template.
 
 What is a template?
 -------------------
@@ -13,11 +13,11 @@ What is a template?
 To be fair, the title of this tutorial is mildly misleading. Why? A template in phpDocumentor means so much
 more than just the look and feel of your generated documentation.
 
-A template in phpDocumentor is a series of actions, called :term:`transformations`, that is capable of crafting the
+A template in phpDocumentor is a series of actions, called *transformations*, that is capable of crafting the
 desired output. With this mechanism, it is possible to generate HTML, XML, PDF but also to copy files to a destination
 location or generate a report of errors found while scanning your project.
 
-This is possible because a :term:`template` is a collection of those :term:`transformations`; that can combine
+This is possible because a template is a collection of those transformations; that can combine
 the assets of a template and your project's structure information into a set of documentation.
 
 Selecting a template
@@ -116,7 +116,7 @@ A tutorial for creating your custom documentation with Twig is offered in the ch
 :doc:`creating-your-own-template-using-twig`, for a complete overview of all options and possibilities see the guide
 on :doc:`creating templates<../guides/templates>` how to accomplish this.
 
-If you want to tweak one or two things it is also possible to define :term:`transformations` directly in your
+If you want to tweak one or two things it is also possible to define transformations directly in your
 configuration file. This way you can override the index, copy files (such as PDFs) or generate additional documents.
 
 For example, here we see how a PDF (located at ``data/specification.pdf`` of the template folder) is copied to the
