@@ -37,7 +37,7 @@ v3 is still under development and is not stable enough to use in a daily develop
 
 ### Nightly builds
 
-Phpdocumentor doesn't have a nightly release.
+PhpDocumentor doesn't have a nightly release.
 However, during each pipeline a [phar] artifact is built.
 If you want to test the bleeding edge version of phpDocumentor, have a look in the [actions] section of this repository.
 Each successful QA workflow has a download at the right upper corner.
@@ -45,7 +45,7 @@ Each successful QA workflow has a download at the right upper corner.
 Installation
 ------------
 
-phpDocumentor requires PHP 7.2 or higher to run.
+PhpDocumentor requires PHP 7.2 or higher to run.
 However, code of earlier PHP versions can be analyzed.
 
 All templates provided with phpDocumentor have support for Class diagrams based on the read code base.

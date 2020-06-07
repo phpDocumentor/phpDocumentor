@@ -41,7 +41,7 @@ using Sphinx_. For more information on installing Sphinx_ we would like to refer
    In the future we will migrate towards Scrybe_ but given the current state of that project it is currently
    not possible.
 
-For our API Documentation we eat our own dogfood and generate it using phpDocumentor2.
+For our API Documentation we eat our own dogfood and generate it using phpDocumentor 3.
 
 Style Guide
 -----------

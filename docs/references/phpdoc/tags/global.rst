@@ -3,12 +3,12 @@
 
 .. important::
 
-   This tag is not included in phpDocumentor 2.0 and may be included in a
+   This tag is not included in phpDocumentor 3.0 and may be included in a
    subsequent version.
 
 .. note::
 
-   This definition is not yet official for phpDocumentor2; slight changes may
+   This definition is not yet official for phpDocumentor 3; slight changes may
    be made to this definition to match new standards. These changes will however
    remain compatible with this definition.
 

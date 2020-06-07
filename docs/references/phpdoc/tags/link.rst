@@ -4,7 +4,7 @@
 .. important::
 
    The effects of the inline version of this tag are not yet fully implemented
-   in PhpDocumentor2. There's only URI support (i.e. no support for
+   in phpDocumentor 3. There's only URI support (i.e. no support for
    :term:`Structural Elements`), and even that is available only in long descriptions.
 
 The @link tag indicates a custom relation between associated
