@@ -12,13 +12,13 @@ installed before installing phpDocumentor.
 -  PlantUML_ (optional)
 
 Phive
-----
+-----
 
    $ phive install phpDocumentor
 
 Once you run the command, phpDocumentor will be installed and it can be executed directly.
 
-For more information about phive have a look at their website_.
+For more information about Phive have a look at the `Phive website`_.
 
 
 PHAR
@@ -26,16 +26,16 @@ PHAR
 
 You can download the latest PHAR file from https://github.com/phpDocumentor/phpDocumentor/releases.
 
-The phar file can be used by invoking php directly and providing the phar file as a parameter::
+The phar file can be used by invoking PHP directly and providing the phar file as a parameter::
 
    $ php phpDocumentor.phar -d . -t docs/api
 
 
 Docker
-----
+------
 
-1. `$ docker pull phpdoc/phpdoc`
-2. `$ docker run --rm -v $(pwd):/data phpdoc/phpdoc`
+    $ docker pull phpdoc/phpdoc
+    $ docker run --rm -v $(pwd):/data phpdoc/phpdoc
 
 When the installation is finished you can invoke the ``phpdoc`` command from any path in your system.
 
@@ -44,7 +44,7 @@ Using Composer
 
 .. important::
 
-   This method of installation was initially provided as a convenience; with time however it was common for
+   This method of installation was initially provided as a convenience; with time, however, it was common for
    dependency conflicts between phpDocumentor and the host application to arise. The phpDocumentor team does
    not recommend this installation method and is unable to provide support on issues stemming from
    dependency conflicts.
@@ -64,11 +64,11 @@ After installation, you can invoke phpDocumentor from the root of your project u
    own project it is advised to use one of the other installation methods.
 
 
-It is recommended to read the :doc:`../getting-started/your-first-set-of-documentation` section next as it will explain how to quickly start using phpDocumentor.
+It is recommended to read the :doc:`your-first-set-of-documentation` section next as it will explain how to quickly start using phpDocumentor.
 
 .. _Composer:               https://getcomposer.org
 .. _`PHP 7.2.5`:            https://www.php.net
 .. _Graphviz:               https://graphviz.org/download/
 .. _PlantUML:               https://plantuml.com/download
 .. _Twig:                   https://twig.symfony.com/
-.. _website:                https://phar.io/
+.. _Phive website:          https://phar.io/
