@@ -7,7 +7,7 @@
  *
  *  @copyright 2010-${YEAR} Mike van Riel<mike@phpdoc.org>
  *  @license   http://www.opensource.org/licenses/mit-license.php MIT
- *  @link      http://phpdoc.org
+ *  @link      https://phpdoc.org
  */
 
 

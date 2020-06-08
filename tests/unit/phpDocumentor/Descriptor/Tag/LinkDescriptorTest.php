@@ -8,7 +8,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @link http://phpdoc.org
+ * @link https://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor\Tag;
@@ -20,7 +20,7 @@ use Mockery\Adapter\Phpunit\MockeryTestCase;
  */
 final class LinkDescriptorTest extends MockeryTestCase
 {
-    public const EXAMPLE_LINK = 'http://phpdoc.org';
+    public const EXAMPLE_LINK = 'https://phpdoc.org';
 
     /** @var LinkDescriptor $fixture */
     protected $fixture;

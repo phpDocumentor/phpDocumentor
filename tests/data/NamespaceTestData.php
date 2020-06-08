@@ -10,7 +10,7 @@
  * @author     Mike van Riel <mike.vanriel@naenius.com>
  * @copyright  2010-2018 Mike van Riel / Naenius (http://www.naenius.com)
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://phpdoc.org
+ * @link       https://phpdoc.org
  */
 
 namespace foo;
@@ -31,7 +31,7 @@ use My\Full\NSname;
  * @subpackage Tests
  * @author     Mike van Riel <mike.vanriel@naenius.com>
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://phpdoc.org
+ * @link       https://phpdoc.org
  */
 class NamespaceTest
 {
@@ -95,7 +95,7 @@ class NamespaceTest
  * @subpackage Tests
  * @author     Mike van Riel <mike.vanriel@naenius.com>
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://phpdoc.org
+ * @link       https://phpdoc.org
  */
 class DocBlocTest
 {

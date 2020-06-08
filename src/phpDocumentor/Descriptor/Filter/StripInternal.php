@@ -8,7 +8,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @link http://phpdoc.org
+ * @link https://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor\Filter;
@@ -27,7 +27,7 @@ use function preg_replace;
  * Similarly, whenever the normal @internal tag is used should this filter return null if the visibility does not allow
  * INTERNAL information. This will remove this descriptor from the project.
  *
- * @link http://www.phpdoc.org/docs/latest/for-users/phpdoc/tags/internal.html
+ * @link https://docs.phpdoc.org/latest/references/phpdoc/tags/internal.html
  */
 class StripInternal implements FilterInterface
 {

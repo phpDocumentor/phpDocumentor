@@ -122,7 +122,7 @@ Please consult the documentation to see the format and supported options.
 Documentation
 -------------
 
-For more detailed information you can check our online documentation at https://docs.phpdoc.org.
+For more detailed information you can check our online documentation at https://docs.phpdoc.org/.
 
 Features
 --------
