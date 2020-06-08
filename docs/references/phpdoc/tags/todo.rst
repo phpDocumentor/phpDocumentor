@@ -1,21 +1,23 @@
 @todo
 =====
 
-The @todo tag is used to indicate whether any development activities should
-still be executed on associated Structural Elements.
+The ``@todo`` tag is used to indicate whether any development activities should
+still be executed on associated *Structural Elements*.
 
 Syntax
 ------
+
+.. code-block::
 
     @todo [description]
 
 Description
 -----------
 
-The @todo tag is used to indicate that an activity surrounding the associated
-Structural Elements must still occur. Each tag MUST be accompanied by
-a description that communicates the intent of the original author; this could
-however be as short as providing an issue number.
+The ``@todo`` tag is used to indicate that an activity surrounding the associated
+*Structural Elements* must still occur. Each tag MUST be accompanied by
+a description that communicates the intent of the original author; this
+description can be as short as providing an issue number.
 
 Effects in phpDocumentor
 ------------------------
@@ -37,7 +39,7 @@ Examples
     /**
      * Counts the number of items in the provided array.
      *
-     * @todo add an array parameter to count
+     * @todo Add an array parameter to count.
      *
      * @return int Returns the number of elements.
      */
