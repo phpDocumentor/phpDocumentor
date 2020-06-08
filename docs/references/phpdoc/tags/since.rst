@@ -1,39 +1,43 @@
 @since
 ======
 
-.. important::
-
-   The effects of this tag are not yet fully implemented in phpDocumentor 3.
-
-The @since tag indicates at which version did the associated
-Structural Elements became available.
+The ``@since`` tag is used to denote _when_ an element was introduced or modified.
 
 Syntax
 ------
 
-    @since [version] [<description>]
+.. code-block::
+
+    @since [<version>] [<description>]
 
 Description
 -----------
 
-The @since tag can be used to indicate since which version specific
-Structural Elements have become available.
+The ``@since`` tag can be used to document the "version" of the introduction
+or modification of a *Structural Element*.
+
+It is RECOMMENDED that the version matches a semantic version number (x.x.x)
+and it MAY have a description to provide additional information.
 
 This information can be used to generate a set of API Documentation where the
 consumer is informed which application version is necessary for a specific
 element.
 
-The version MUST follow the same rules as the :doc:`version` tag's vector and
-MAY have a description to provide additional information.
-
 This tag can occur multiple times within a PHPDoc. In that case, each
 occurrence is treated as an entry to a change log. It is RECOMMENDED that you
 also provide a description to each such tag.
 
+The ``@since`` tag SHOULD NOT be used to show the current version of an element,
+the :doc:`version` tag MAY be used for that purpose.
+
 Effects in phpDocumentor
 ------------------------
 
-phpDocumentor shows the version information with the documented element.
+.. important::
+
+   The effects of this tag are not yet fully implemented in phpDocumentor 3.
+
+PhpDocumentor shows the version information with the documented element.
 
 Examples
 --------
@@ -42,9 +46,11 @@ Examples
    :linenos:
 
     /**
+     * @version 1.5.0
+     *
      * @since 1.0.1 First time this was introduced.
      *
-     * @return integer Indicates the number of items.
+     * @return int Indicates the number of items.
      */
     function count()
     {
