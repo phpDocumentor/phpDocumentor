@@ -119,5 +119,11 @@
                 <file name="src/phpDocumentor/Console/Command/Project/RunCommand.php"/>
             </errorLevel>
         </UnusedClosureParam>
+        
+        <TooManyTemplateParams>
+            <errorLevel type="suppress">
+                <file name="src/phpDocumentor/Compiler/Compiler.php"/>
+            </errorLevel>
+        </TooManyTemplateParams>
     </issueHandlers>
 </psalm>
