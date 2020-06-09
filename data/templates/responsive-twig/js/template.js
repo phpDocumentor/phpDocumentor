@@ -145,7 +145,7 @@ $(document).ready(function() {
         $("body > .container").prepend(
             '<div class="alert alert-error"><a class="close" data-dismiss="alert">×</a>' +
             'You are using Google Chrome in a local environment; AJAX interaction has been ' +
-            'disabled because Chrome cannot <a href="http://code.google.com/p/chromium/issues/detail?id=40787">' +
+            'disabled because Chrome cannot <a href="https://bugs.chromium.org/p/chromium/issues/detail?id=40787">' +
             'retrieve files using Ajax</a>.</div>'
         );
     }
