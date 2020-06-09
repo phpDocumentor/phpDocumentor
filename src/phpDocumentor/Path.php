@@ -38,7 +38,7 @@ final class Path
      */
     public function __construct(string $path)
     {
-        Assert::stringNotEmpty(
+        Assert::notEmpty(
             $path,
             sprintf('"%s" is not a valid path', $path)
         );
