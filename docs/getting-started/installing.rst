@@ -70,5 +70,5 @@ It is recommended to read the :doc:`../getting-started/your-first-set-of-documen
 .. _`PHP 7.2.5`:            https://www.php.net
 .. _Graphviz:               https://graphviz.org/download/
 .. _PlantUML:               https://plantuml.com/download
-.. _Twig:                   https://twig.sensiolabs.org
+.. _Twig:                   https://twig.symfony.com/
 .. _website:                https://phar.io/

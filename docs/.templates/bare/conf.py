@@ -89,7 +89,7 @@ epub_identifier = 'https://www.phpdoc.org'
 #epub_tocdup = True
 
 # Example configuration for intersphinx: refer to the Python standard library.
-intersphinx_mapping = {'http://docs.python.org/': None}
+intersphinx_mapping = {'https://docs.python.org/': None}
 
 # UML diagramming tool
 plantuml = ['java', '-jar', '.exts/plantuml.jar']

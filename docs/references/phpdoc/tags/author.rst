@@ -16,7 +16,7 @@ or has made significant modifications to them. This tag MAY also contain an
 e-mail address. If an e-mail address is provided it MUST follow
 the author's name and be contained in chevrons, or angle brackets, and MUST
 adhere to the syntax defined in section 3.4.1 of
-`RFC5322 <http://www.ietf.org/rfc/rfc5322.txt>`_.
+`RFC5322 <https://www.ietf.org/rfc/rfc5322.txt>`_.
 
 Effects in phpDocumentor
 ------------------------
