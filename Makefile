@@ -22,6 +22,15 @@ install-phive: tools/phive.phar
 setup: install-phive
 	docker-compose run --rm --entrypoint=/usr/local/bin/php phpdoc tools/phive.phar install --copy --trust-gpg-keys 4AA394086372C20A,D2CCAC42F6295E7D,E82B2FB314E9906E,8E730BA25823D8B5,D0254321FB74703A --force-accept-unsigned
 
+.PHONY: pull-containers
+pull-containers:
+	docker pull phpdoc/phpcs-ga
+	docker pull phpdoc/phpstan-ga
+	docker pull phpdoc/phpunit-ga
+	docker pull phpga/composer-require-checker-ga
+	docker pull php:7.2
+	docker pull node
+
 .PHONY: phpcs
 phpcs:
 	docker run -it --rm -v${CURDIR}:/opt/project -w /opt/project phpdoc/phpcs-ga:latest -s ${ARGS}
