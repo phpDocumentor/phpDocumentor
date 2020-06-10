@@ -1,43 +1,47 @@
 @see
 ====
 
-The @see tag indicates a reference from the associated
-Structural Elements to a website or other Structural Elements.
+The ``@see`` tag indicates a reference from the associated
+*Structural Element(s)* to a website or other *Structural Element(s)*.
 
 Syntax
 ------
+
+.. code-block::
 
     @see [URI | FQSEN] [<description>]
 
 or inline
 
-   {\@see [URI | FQSEN] [<description>]}
+.. code-block::
+
+   {@see [URI | FQSEN] [<description>]}
 
 Description
 -----------
 
-The @see tag can be used to define a reference to other
-Structural Elements or to an URI.
+The ``@see`` tag can be used to define a reference to other *Structural Elements*
+or to a URI.
 
-When defining a reference to another Structural Elements you can provide
+When defining a reference to other *Structural Elements*, you can refer to
 a specific element by appending a double colon and providing the name of that
-element (also called the FQSEN).
+element (also called the "Fully Qualified Structural Element Name" or _FQSEN_).
 
-A URI MUST be complete and well-formed as specified in
-`RFC2396 <https://www.ietf.org/rfc/rfc2396.txt>`_.
+A URI MUST be complete and well-formed as specified in `RFC 2396`_.
 
-The @see tag SHOULD have a description appended to indicate the type of
-reference defined by this occurrence.
+The ``@see`` tag SHOULD have a description to provide additional information
+regarding the relationship between the element and its target.
 
-The @see tag cannot refer to a namespace element.
+The ``@see`` tag cannot refer to a namespace element.
 
 Effects in phpDocumentor
 ------------------------
 
-Structural Elements, or inline text in a long description, tagged with
-the @see tag will show a link in their description. If a description is
-provided with the tag then this will be used as link text instead of the URL
-itself.
+*Structural Elements*, or inline text in a long description, tagged with
+the ``@see`` tag will show a link in their description.
+
+If a description is provided with the tag then this will be used as link text
+instead of the URL itself.
 
 Examples
 --------
@@ -48,11 +52,12 @@ Normal tag:
    :linenos:
 
     /**
+     * @see number_of()                Alias.
+     * @see MyClass::$items            For the property whose items are counted.
+     * @see MyClass::setItems()        To set the items for this collection.
      * @see https://example.com/my/bar Documentation of Foo.
-     * @see MyClass::$items           For the property whose items are counted.
-     * @see MyClass::setItems()       To set the items for this collection.
      *
-     * @return integer Indicates the number of items.
+     * @return int Indicates the number of items.
      */
     function count()
     {
@@ -65,9 +70,13 @@ Inline tag:
    :linenos:
 
     /**
-     * @return integer Indicates the number of {@see MyClass} items.
+     * @return int Indicates the number of {@see \Vendor\Package\ClassName}
+     *             items.
      */
     function count()
     {
         <...>
     }
+
+
+.. _RFC 2396:      https://www.ietf.org/rfc/rfc2396.txt
