@@ -1,21 +1,24 @@
 @throws
 =======
 
-The @throws tag is used to indicate whether Structural Elements could
-throw a specific type of exception.
+The ``@throws`` tag is used to indicate whether *Structural Elements*
+throw a specific type of `Throwable`_ (`exception or error`_).
 
 Syntax
 ------
+
+.. code-block::
 
     @throws [Type] [<description>]
 
 Description
 -----------
 
-The @throws tag MAY be used to indicate that Structural Elements could
-throw a specific type of error.
+The ``@throws`` tag MAY be used to indicate that *Structural Elements* throw
+a specific type of error.
 
-The type provided with this tag MUST represent an object of the class Exception
+The :doc:`Type <../types>` provided with this tag MUST represent an object
+that implements the `Throwable`_ interface, such as an `Error`_, `Exception`_
 or any subclass thereof.
 
 This tag is used to present in your documentation which error COULD occur and
@@ -29,7 +32,7 @@ detailed view is created and the consumer knows for which errors to check.
 Effects in phpDocumentor
 ------------------------
 
-phpDocumentor shows a listing of errors thrown by the documented element and
+PhpDocumentor shows a listing of errors thrown by the documented element and
 allows readers to click-through to the given exception type if it is present in
 the project.
 
@@ -44,8 +47,8 @@ Examples
      *
      * @param mixed[] $array Array structure to count the elements of.
      *
-     * @throws InvalidArgumentException if the provided argument is not of type
-     *     'array'.
+     * @throws InvalidArgumentException if the provided argument is
+     *                                  not of type 'array'.
      *
      * @return int Returns the number of elements.
      */
@@ -53,3 +56,8 @@ Examples
     {
         <...>
     }
+
+.. _Throwable:           https://www.php.net/class.throwable
+.. _exception or error:  https://www.php.net/language.exceptions
+.. _Error:               https://www.php.net/class.error
+.. _Exception:           https://www.php.net/class.exception
