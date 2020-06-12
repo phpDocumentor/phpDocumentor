@@ -119,6 +119,12 @@
                 <file name="src/phpDocumentor/Console/Command/Project/RunCommand.php"/>
             </errorLevel>
         </UnusedClosureParam>
+        
+        <TooManyTemplateParams>
+            <errorLevel type="suppress">
+                <file name="src/phpDocumentor/Compiler/Compiler.php"/>
+            </errorLevel>
+        </TooManyTemplateParams>
 
         <DeprecatedClass>
             <errorLevel type="suppress">
@@ -126,5 +132,6 @@
                 <referencedClass name="League\Flysystem\MountManager"/>
             </errorLevel>
         </DeprecatedClass>
+
     </issueHandlers>
 </psalm>
