@@ -3,18 +3,10 @@
 {% block content %}
     {% include 'components/breadcrumbs.html.twig' %}
 
-    {% include 'components/namespace-title.html.twig' %}
-
-    {% if node.children is not empty %}
-        <h3>Namespaces</h3>
-        <dl>
-            {% for namespace in node.children %}
-                <dt>{{ namespace|route('class:short') }}</dt>
-            {% endfor %}
-        </dl>
-    {% endif %}
-
-    {{ include ('components/table-of-contents.html.twig') }}
-    {{ include ('components/constants.html.twig') }}
-    {{ include ('components/functions.html.twig') }}
+    <article class="phpdocumentor-element -namespace">
+        {{ include('components/namespace-title.html.twig') }}
+        {{ include('components/table-of-contents.html.twig', {'namespaces': node.children}) }}
+        {{ include('components/constants.html.twig') }}
+        {{ include('components/functions.html.twig') }}
+    </article>
 {% endblock %}

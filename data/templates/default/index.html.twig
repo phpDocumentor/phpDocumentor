@@ -3,79 +3,18 @@
 {% block content %}
     <h2>Documentation</h2>
 
-    {% if usesNamespaces or not usePackages %}
-        <h3>Namespaces</h3>
-        <dl>
-            {% for namespace in project.namespace.children %}
-                <dt>{{ namespace|route('class:short') }}</dt>
-            {% endfor %}
-        </dl>
-    {% endif %}
+    {% set node = project.namespace %}
 
-    {% if usesPackages %}
-        <h3>Packages</h3>
-        <dl>
-            {% for package in project.package.children %}
-                <dt>{{ package|route('class:short') }}</dt>
-            {% endfor %}
-        </dl>
-    {% endif %}
-
-    {% if project.namespace.interfaces is not empty or project.namespace.classes is not empty %}
-        <h3>Interfaces, Classes and Traits</h3>
-        <dl>
-            {% for interface in project.namespace.interfaces %}
-                <dt>{{ interface|route('class:short') }}</dt>
-                <dd>{{ interface.summary }}</dd>
-            {% endfor %}
-
-            {% for class in project.namespace.classes %}
-                <dt>{{ class|route('class:short') }}</dt>
-                <dd>{{ class.summary }}</dd>
-            {% endfor %}
-
-            {% for trait in project.namespace.traits %}
-                <dt>{{ trait|route('class:short') }}</dt>
-                <dd>{{ trait.summary }}</dd>
-            {% endfor %}
-        </dl>
-    {% endif %}
-
-    {% if project.namespace.constants is not empty or project.namespace.functions is not empty %}
-    <h3>Table of Contents</h3>
-    <table class="phpdocumentor-table_of_contents">
-        {% for constant in project.namespace.constants %}
-            <tr>
-                <th class="phpdocumentor-heading">{{ constant|route('class:short') }}</th>
-                <td class="phpdocumentor-cell">{{ constant.summary }}</td>
-                <td class="phpdocumentor-cell">{{ constant.value }}</td>
-            </tr>
-        {% endfor %}
-        {% for function in project.namespace.functions %}
-            <tr>
-                <th class="phpdocumentor-heading">{{ function|route('class:short') }}</th>
-                <td class="phpdocumentor-cell">{{ function.summary }}</td>
-                <td class="phpdocumentor-cell">{{ function.type|route('class:short'|join('|')|raw) }}</td>
-            </tr>
-        {% endfor %}
-    </table>
-    {% endif %}
-
-    {% if project.namespace.constants is not empty %}
-        <h3>Constants</h3>
-        <ul>
-            {% for constant in project.namespace.constants %}
-                <li><a href="{{ link(constant) }}">{{ constant.name }}</a></li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-
-    {% if project.namespace.functions is not empty %}
-        <section>
-            <h3 class="phpdocumentor-functions__header">Functions</h3>
-            {% for function in project.namespace.functions %}
-                {% include 'components/function.html.twig' %}
-            {% endfor %}
-        </section>
-    {% endif %}
+    {{
+    include(
+        'components/table-of-contents.html.twig',
+        {
+            'node': project.namespace,
+            'namespaces': usesNamespaces or not usesPackages ? node.children : [],
+            'packages': usesPackages ? project.package.children : []
+        }
+    )
+    }}
+    {{ include('components/constants.html.twig', {'node': project.namespace}) }}
+    {{ include('components/functions.html.twig', {'node': project.namespace}) }}
 {% endblock %}
