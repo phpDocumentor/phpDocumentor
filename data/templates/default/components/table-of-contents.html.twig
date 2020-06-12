@@ -2,35 +2,35 @@
 
 <dl class="phpdocumentor-table_of_contents">
     {% for constant in node.constants|default([]) %}
-            <dt><a href="{{ link(constant) }}">{{ constant.name }}</a> = {{ constant.value }}</dt>
+            <dt class="-constant"><a href="{{ link(constant) }}">{{ constant.name }}</a> = {{ constant.value }}</dt>
             <dd>{{ constant.summary }}</dd>
     {% endfor %}
     {% for property in node.properties|default([]) %}
-            <dt><a href="{{ link(property) }}">${{ property.name }}</a> : {{ property.type|route('class:short')|join('|')|raw }}</dt>
+            <dt class="-property"><a href="{{ link(property) }}">${{ property.name }}</a> : {{ property.type|route('class:short')|join('|')|raw }}</dt>
             <dd>{{ property.summary }}</dd>
     {% endfor %}
     {% for property in node.magicProperties|default([]) %}
-            <dt><a href="{{ link(property) }}">${{ property.name }}</a> : {{ property.type|route('class:short')|join('|')|raw }}</dt>
+            <dt class="-property"><a href="{{ link(property) }}">${{ property.name }}</a> : {{ property.type|route('class:short')|join('|')|raw }}</dt>
             <dd>{{ property.summary }}</dd>
     {% endfor %}
     {% for property in node.inheritedProperties|default([]) %}
-            <dt><a href="{{ link(property) }}">${{ property.name }}</a> : {{ property.type|route('class:short')|join('|')|raw }}</dt>
+            <dt class="-property"><a href="{{ link(property) }}">${{ property.name }}</a> : {{ property.type|route('class:short')|join('|')|raw }}</dt>
             <dd>{{ property.summary }}</dd>
     {% endfor %}
     {% for method in node.methods|default([]) %}
-            <dt><a href="{{ link(method) }}">{{ method.name }}()</a> : {{ method.response.type|route('class:short')|join('|')|raw }}</dt>
+            <dt class="-method"><a href="{{ link(method) }}">{{ method.name }}()</a> : {{ method.response.type|route('class:short')|join('|')|raw }}</dt>
             <dd>{{ method.summary }}</dd>
     {% endfor %}
     {% for method in node.magicMethods|default([]) %}
-            <dt><a href="{{ link(method) }}">{{ method.name }}()</a> : {{ method.response.type|route('class:short')|join('|')|raw }}</dt>
+            <dt class="-method"><a href="{{ link(method) }}">{{ method.name }}()</a> : {{ method.response.type|route('class:short')|join('|')|raw }}</dt>
             <dd>{{ method.summary }}</dd>
     {% endfor %}
     {% for method in node.inheritedMethods|default([]) %}
-            <dt><a href="{{ link(method) }}">{{ method.name }}()</a> : {{ method.response.type|route('class:short')|join('|')|raw }}</dt>
+            <dt class="-method"><a href="{{ link(method) }}">{{ method.name }}()</a> : {{ method.response.type|route('class:short')|join('|')|raw }}</dt>
             <dd>{{ method.summary }}</dd>
     {% endfor %}
     {% for function in node.functions|default([]) %}
-            <dt>{{ function|route('class:short') }} : {{ function.type|route('class:short'|join('|')|raw) }}</dt>
+            <dt class="-function">{{ function|route('class:short') }} : {{ function.type|route('class:short'|join('|')|raw) }}</dt>
             <dd>{{ function.summary }}</dd>
     {% endfor %}
 </dl>

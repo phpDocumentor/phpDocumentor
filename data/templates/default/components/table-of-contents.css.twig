@@ -2,5 +2,43 @@
 }
 
 .phpdocumentor-table_of_contents dt {
-    padding-top: var(--spacing-xs)
+    padding-top: var(--spacing-xs);
+    margin-left: 2rem;
+}
+
+.phpdocumentor-table_of_contents dt:before {
+    width: 1.25rem;
+    height: 1.25rem;
+    line-height: 1.25rem;
+    background: var(--primary-color);
+    content: 'M';
+    position: absolute;
+    left: 0;
+    border-radius: 50%;
+    font-weight: 600;
+    color: white;
+    text-align: center;
+    font-size: .75rem;
+    margin-top: .2rem;
+}
+
+.phpdocumentor-table_of_contents dt.-method:before {
+    content: 'M'
+}
+
+.phpdocumentor-table_of_contents dt.-function:before {
+    content: 'M'
+}
+
+.phpdocumentor-table_of_contents dt.-property:before {
+    content: 'F'
+}
+
+.phpdocumentor-table_of_contents dt.-constant:before {
+    content: 'C'
+}
+
+.phpdocumentor-table_of_contents dd {
+    font-style: italic;
+    margin-left: 2rem;
 }
