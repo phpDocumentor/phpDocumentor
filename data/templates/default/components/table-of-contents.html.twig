@@ -2,35 +2,27 @@
 
 <dl class="phpdocumentor-table-of-contents">
     {% for constant in node.constants|default([]) %}
-            <dt class="phpdocumentor-table-of-contents__entry -constant -{{ constant.visibility }}"><a href="{{ link(constant) }}">{{ constant.name }}</a> = {{ constant.value }}</dt>
-            <dd>{{ constant.summary }}</dd>
+        {{ include('components/table-of-contents-entry.html.twig', {'type': 'constant', 'node': constant}) }}
     {% endfor %}
     {% for property in node.properties|default([]) %}
-            <dt class="phpdocumentor-table-of-contents__entry -property -{{ property.visibility }}"><a href="{{ link(property) }}">${{ property.name }}</a> : {{ property.type|route('class:short')|join('|')|raw }}</dt>
-            <dd>{{ property.summary }}</dd>
+        {{ include('components/table-of-contents-entry.html.twig', {'type': 'property', 'node': property}) }}
     {% endfor %}
     {% for property in node.magicProperties|default([]) %}
-            <dt class="phpdocumentor-table-of-contents__entry -property -{{ property.visibility }}"><a href="{{ link(property) }}">${{ property.name }}</a> : {{ property.type|route('class:short')|join('|')|raw }}</dt>
-            <dd>{{ property.summary }}</dd>
+        {{ include('components/table-of-contents-entry.html.twig', {'type': 'property', 'node': property}) }}
     {% endfor %}
     {% for property in node.inheritedProperties|default([]) %}
-            <dt class="phpdocumentor-table-of-contents__entry -property -{{ property.visibility }}"><a href="{{ link(property) }}">${{ property.name }}</a> : {{ property.type|route('class:short')|join('|')|raw }}</dt>
-            <dd>{{ property.summary }}</dd>
+        {{ include('components/table-of-contents-entry.html.twig', {'type': 'property', 'node': property}) }}
     {% endfor %}
     {% for method in node.methods|default([]) %}
-            <dt class="phpdocumentor-table-of-contents__entry -method -{{ method.visibility }}"><a href="{{ link(method) }}">{{ method.name }}()</a> : {{ method.response.type|route('class:short')|join('|')|raw }}</dt>
-            <dd>{{ method.summary }}</dd>
+        {{ include('components/table-of-contents-entry.html.twig', {'type': 'method', 'node': method}) }}
     {% endfor %}
     {% for method in node.magicMethods|default([]) %}
-            <dt class="phpdocumentor-table-of-contents__entry -method -{{ method.visibility }}"><a href="{{ link(method) }}">{{ method.name }}()</a> : {{ method.response.type|route('class:short')|join('|')|raw }}</dt>
-            <dd>{{ method.summary }}</dd>
+        {{ include('components/table-of-contents-entry.html.twig', {'type': 'method', 'node': method}) }}
     {% endfor %}
     {% for method in node.inheritedMethods|default([]) %}
-            <dt class="phpdocumentor-table-of-contents__entry -method -{{ method.visibility }}"><a href="{{ link(method) }}">{{ method.name }}()</a> : {{ method.response.type|route('class:short')|join('|')|raw }}</dt>
-            <dd>{{ method.summary }}</dd>
+        {{ include('components/table-of-contents-entry.html.twig', {'type': 'method', 'node': method}) }}
     {% endfor %}
     {% for function in node.functions|default([]) %}
-            <dt class="phpdocumentor-table-of-contents__entry -function -{{ function.visibility }}">{{ function|route('class:short') }} : {{ function.type|route('class:short'|join('|')|raw) }}</dt>
-            <dd>{{ function.summary }}</dd>
+        {{ include('components/table-of-contents-entry.html.twig', {'type': 'function', 'node': function}) }}
     {% endfor %}
 </dl>
