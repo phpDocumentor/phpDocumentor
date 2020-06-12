@@ -3,55 +3,12 @@
 {% block content %}
     {% include 'components/breadcrumbs.html.twig' %}
 
-    <h2 class="phpdocumentor-content__title">
-        {{ node.name }}
-        {% if node.usedTraits is not empty %}
-            <span class="phpdocumentor-trait__extends">
-                Uses
-                {% for trait in node.usedTraits %}
-                    {{ trait|route('trait:short') }}{% if not loop.last %}, {% endif %}
-                {% endfor %}
-            </span>
-        {% endif %}
-    </h2>
-    <aside class="phpdocumentor-element-found-in">
-        <abbr class="phpdocumentor-element-found-in__file" title="{{ node.file.path }}">{{ node.file|route('file:short') }}</abbr>
-        :
-        <span class="phpdocumentor-element-found-in__line">{{ node.line }}</span>
-    </aside>
+    <article class="phpdocumentor-element -trait">
+        {{ include('components/trait-title.html.twig') }}
+        {{ include('components/element-found-in.html.twig') }}
+        {{ include('components/element-header.html.twig') }}
 
-    <p class="phpdocumentor-trait__summary">{{ node.summary }}</p>
-    <section class="phpdocumentor-trait__description">{{ node.description|markdown }}</section>
-    {{ include ('components/tags.html.twig', {tags: node.tags}) }}
-    {{ include ('components/table-of-contents.html.twig') }}
-
-    {% if node.properties|length > 0 or node.magicProperties|length > 0 or node.inheritedProperties|length > 0 %}
-        <section>
-            <h3 class="phpdocumentor-properties__header">Properties</h3>
-            {% for property in node.properties %}
-                {% include 'property.html.twig' %}
-            {% endfor %}
-            {% for property in node.magicProperties %}
-                {% include 'property.html.twig' %}
-            {% endfor %}
-            {% for property in node.inheritedProperties %}
-                {% include 'property.html.twig' %}
-            {% endfor %}
-        </section>
-    {% endif %}
-
-    {% if node.methods|length > 0 or node.magicMethods|length > 0 or node.inheritedMethods|length > 0 %}
-        <section>
-            <h3 class="phpdocumentor-methods__header">Methods</h3>
-            {% for method in node.methods %}
-                {% include 'method.html.twig' %}
-            {% endfor %}
-            {% for method in node.magicMethods %}
-                {% include 'method.html.twig' %}
-            {% endfor %}
-            {% for method in node.inheritedMethods %}
-                {% include 'method.html.twig' %}
-            {% endfor %}
-        </section>
-    {% endif %}
+        {{ include('components/properties.html.twig') }}
+        {{ include('components/methods.html.twig') }}
+    </article>
 {% endblock %}

@@ -1,0 +1,11 @@
+{% if node.constants is not empty %}
+    <section>
+        <h3 class="phpdocumentor-constants__header">Constants</h3>
+        {% for constant in node.constants %}
+            {% include 'components/constant.html.twig' %}
+        {% endfor %}
+        {% for constant in node.inheritedConstants %}
+            {% include 'components/constant.html.twig' %}
+        {% endfor %}
+    </section>
+{% endif %}

@@ -1,0 +1,21 @@
+<h2 class="phpdocumentor-content__title">
+    {{ node.name }}
+    {% if node.parent is not empty %}
+        <span class="phpdocumentor-interface__extends">
+                    extends
+                    {% for interface in node.parent %}
+                        {{ interface|route('class:short') }}{% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                </span>
+    {% endif %}
+    {% if usesPackages %}
+        <div class="phpdocumentor-element__package">
+            in
+            <ul class="phpdocumentor-breadcrumbs">
+                {% for breadcrumb in packages(node) %}
+                    <li><a href="{{ link(breadcrumb) }}">{{ breadcrumb.name }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+</h2>

@@ -1,0 +1,5 @@
+<p class="phpdocumentor-summary">{{ node.summary }}</p>
+<section class="phpdocumentor-description">{{ node.description|markdown }}</section>
+{{ include ('components/tags.html.twig', {tags: node.tags}) }}
+
+{{ include ('components/table-of-contents.html.twig') }}
