@@ -1,12 +1,27 @@
-.phpdocumentor-table_of_contents {
+.phpdocumentor-table-of-contents {
 }
 
-.phpdocumentor-table_of_contents dt {
+.phpdocumentor-table-of-contents .phpdocumentor-table-of-contents__entry {
     padding-top: var(--spacing-xs);
     margin-left: 2rem;
 }
 
-.phpdocumentor-table_of_contents dt:before {
+.phpdocumentor-table-of-contents .phpdocumentor-table-of-contents__entry:after {
+    content: '';
+    height: 12px;
+    width: 12px;
+    left: 16px;
+    position: absolute;
+}
+.phpdocumentor-table-of-contents .phpdocumentor-table-of-contents__entry.-private:after {
+    background: url('data:image/svg+xml;utf8,{{ include('icons/private.svg.twig')|trim|raw }}') no-repeat;
+}
+.phpdocumentor-table-of-contents .phpdocumentor-table-of-contents__entry.-protected:after {
+    left: 13px;
+    background: url('data:image/svg+xml;utf8,{{ include('icons/protected.svg.twig')|trim|raw }}') no-repeat;
+}
+
+.phpdocumentor-table-of-contents .phpdocumentor-table-of-contents__entry:before {
     width: 1.25rem;
     height: 1.25rem;
     line-height: 1.25rem;
@@ -22,23 +37,23 @@
     margin-top: .2rem;
 }
 
-.phpdocumentor-table_of_contents dt.-method:before {
+.phpdocumentor-table-of-contents .phpdocumentor-table-of-contents__entry.-method:before {
     content: 'M'
 }
 
-.phpdocumentor-table_of_contents dt.-function:before {
+.phpdocumentor-table-of-contents .phpdocumentor-table-of-contents__entry.-function:before {
     content: 'M'
 }
 
-.phpdocumentor-table_of_contents dt.-property:before {
+.phpdocumentor-table-of-contents .phpdocumentor-table-of-contents__entry.-property:before {
     content: 'F'
 }
 
-.phpdocumentor-table_of_contents dt.-constant:before {
+.phpdocumentor-table-of-contents .phpdocumentor-table-of-contents__entry.-constant:before {
     content: 'C'
 }
 
-.phpdocumentor-table_of_contents dd {
+.phpdocumentor-table-of-contents dd {
     font-style: italic;
     margin-left: 2rem;
 }
