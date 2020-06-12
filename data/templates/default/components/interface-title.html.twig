@@ -2,11 +2,11 @@
     {{ node.name }}
     {% if node.parent is not empty %}
         <span class="phpdocumentor-interface__extends">
-                    extends
-                    {% for interface in node.parent %}
-                        {{ interface|route('class:short') }}{% if not loop.last %}, {% endif %}
-                    {% endfor %}
-                </span>
+            extends
+            {% for interface in node.parent %}
+                {{ interface|route('class:short') }}{% if not loop.last %}, {% endif %}
+            {% endfor %}
+        </span>
     {% endif %}
     {% if usesPackages %}
         <div class="phpdocumentor-element__package">

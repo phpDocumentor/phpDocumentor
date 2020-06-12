@@ -1,3 +1,24 @@
+{% if node.interfaces is not empty or node.classes is not empty %}
+    <h3>Interfaces, Classes and Traits</h3>
+    <dl>
+        {% for interface in node.interfaces %}
+            <dt>{{ interface|route('class:short') }}</dt>
+            <dd>{{ interface.summary }}</dd>
+        {% endfor %}
+
+        {% for class in node.classes %}
+            <dt>{{ class|route('class:short') }}</dt>
+            <dd>{{ class.summary }}</dd>
+        {% endfor %}
+
+        {% for trait in node.traits %}
+            <dt>{{ trait|route('class:short') }}</dt>
+            <dd>{{ trait.summary }}</dd>
+        {% endfor %}
+    </dl>
+{% endif %}
+
+{% if node.constants is not empty or node.functions is not empty or node.methods is not empty or node.properties is not empty %}
 <h3>Table of Contents</h3>
 
 <dl class="phpdocumentor-table-of-contents">
@@ -26,3 +47,4 @@
         {{ include('components/table-of-contents-entry.html.twig', {'type': 'function', 'node': function}) }}
     {% endfor %}
 </dl>
+{% endif %}

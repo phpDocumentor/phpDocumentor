@@ -1,0 +1,8 @@
+{% if node.functions is not empty %}
+    <section>
+        <h3 class="phpdocumentor-functions__header">Functions</h3>
+        {% for function in node.functions %}
+            {% include 'components/function.html.twig' %}
+        {% endfor %}
+    </section>
+{% endif %}

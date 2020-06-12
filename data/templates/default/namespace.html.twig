@@ -3,7 +3,7 @@
 {% block content %}
     {% include 'components/breadcrumbs.html.twig' %}
 
-    <h2 class="phpdocumentor-content__title">{{ node.name == '\\' ? 'API Documentation' : node.name }}</h2>
+    {% include 'components/namespace-title.html.twig' %}
 
     {% if node.children is not empty %}
         <h3>Namespaces</h3>
@@ -14,45 +14,7 @@
         </dl>
     {% endif %}
 
-    {% if node.interfaces is not empty or node.classes is not empty %}
-        <h3>Interfaces, Classes and Traits</h3>
-        <dl>
-            {% for interface in node.interfaces %}
-                <dt>{{ interface|route('class:short') }}</dt>
-                <dd>{{ interface.summary }}</dd>
-            {% endfor %}
-
-            {% for class in node.classes %}
-                <dt>{{ class|route('class:short') }}</dt>
-                <dd>{{ class.summary }}</dd>
-            {% endfor %}
-
-            {% for trait in node.traits %}
-                <dt>{{ trait|route('class:short') }}</dt>
-                <dd>{{ trait.summary }}</dd>
-            {% endfor %}
-        </dl>
-    {% endif %}
-
-    {% if node.constants is not empty or node.functions is not empty %}
-        {{ include ('components/table-of-contents.html.twig') }}
-    {% endif %}
-
-    {% if node.constants is not empty %}
-        <h3>Constants</h3>
-        <ul>
-            {% for constant in node.constants %}
-                <li><a href="{{ link(constant) }}">{{ constant.name }}</a></li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-
-    {% if node.functions is not empty %}
-        <section>
-            <h3 class="phpdocumentor-functions__header">Functions</h3>
-            {% for function in node.functions %}
-                {% include 'components/function.html.twig' %}
-            {% endfor %}
-        </section>
-    {% endif %}
+    {{ include ('components/table-of-contents.html.twig') }}
+    {{ include ('components/constants.html.twig') }}
+    {{ include ('components/functions.html.twig') }}
 {% endblock %}
