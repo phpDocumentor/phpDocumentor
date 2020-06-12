@@ -5,7 +5,7 @@ on:
   pull_request:
 name: Qa workflow
 env:
-  extensions: mbstring, intl, iconv, libxml, dom, json, simplexml, zlib, fileinfo
+  extensions: mbstring, intl, iconv, libxml, dom, json, simplexml, zlib, fileinfo, gnupg
   key: cache-v1 # can be any string, change to clear the extension cache.
   defaultPHPVersion: '7.2'
   phiveGPGKeys: 4AA394086372C20A,D2CCAC42F6295E7D,E82B2FB314E9906E,8A03EA3B385DBAA1
@@ -502,7 +502,7 @@ jobs:
         php-version: ${{ matrix.php-versions }}
         extensions: ${{ env.extensions }}
         ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
-        tools: pecl, phive
+        tools: pecl, phive:0.13.3
 
     - name: Get composer cache directory
       id: composer-cache

@@ -364,7 +364,7 @@ ADDED:     Support for writing PDF files using a Twig template by adding the PDF
 ADDED:     More documentation on types, running phpDocumentor, the @var tag.
 ADDED:     Support for sorting lists with Twig and XSLT.
 ADDED:     Basic support for generating reference documentation with ReST documents.
-CHANGED:   Replaced custom phar building with the library from http://box-project.org.
+CHANGED:   Replaced custom phar building with the library from https://box-project.github.io/.
 FIXED:     #1090: GraphViz issues where the global namespace caused GraphViz not to generate.
 FIXED:     #1037 by @siad007: if opcode cache is enabled for CLI then annotations are dropped.
 FIXED:     #1031: Fixed inheritance for the summary, description, tags and the way @inheritdoc works.

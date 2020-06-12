@@ -125,5 +125,13 @@
                 <file name="src/phpDocumentor/Compiler/Compiler.php"/>
             </errorLevel>
         </TooManyTemplateParams>
+
+        <DeprecatedClass>
+            <errorLevel type="suppress">
+                <!-- MountManager will be removed in Flysystem V2 -->
+                <referencedClass name="League\Flysystem\MountManager"/>
+            </errorLevel>
+        </DeprecatedClass>
+
     </issueHandlers>
 </psalm>

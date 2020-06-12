@@ -119,6 +119,6 @@ Outline
     Service Providers
     Templates
 
-.. _RestructuredText: http://docutils.sourceforge.net/rst.html
-.. _Sphinx:           http://sphinx-doc.org
-.. _Scrybe:           http://github.com/phpDocumentor/Scrybe
+.. _RestructuredText: https://docutils.sourceforge.io/rst.html
+.. _Sphinx:           https://www.sphinx-doc.org/
+.. _Scrybe:           https://github.com/phpDocumentor/Scrybe

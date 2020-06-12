@@ -211,7 +211,7 @@ the tag name is separated into two parts, a namespace and the actual annotation 
        phpdoc-event onClick
 
 To read more on annotations I recommend taking a look at the slides for Rafael Dohms' talk on annotations
-(http://www.slideshare.net/rdohms/annotations-in-php-they-exist) or view his talk
+(https://www.slideshare.net/rdohms/annotations-in-php-they-exist) or view his talk
 (http://protalk.me/annotating-with-annotations).
 
 Related topics
@@ -223,5 +223,5 @@ Related topics
 * :doc:`../references/phpdoc/index`, for a complete, and more elaborate, reference on the syntax and capabilities of
   DocBlocks.
 
-.. _Github-glavoured Markdown: https://help.github.com/articles/github-flavored-markdown
-.. _Markdown:                  http://daringfireball.net/projects/markdown/
+.. _Github-glavoured Markdown: https://help.github.com/github/writing-on-github/basic-writing-and-formatting-syntax
+.. _Markdown:                  https://daringfireball.net/projects/markdown/

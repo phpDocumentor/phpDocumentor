@@ -24,7 +24,7 @@ a specific element by appending a double colon and providing the name of that
 element (also called the FQSEN).
 
 A URI MUST be complete and well-formed as specified in
-`RFC2396 <http://www.ietf.org/rfc/rfc2396.txt>`_.
+`RFC2396 <https://www.ietf.org/rfc/rfc2396.txt>`_.
 
 The @see tag SHOULD have a description appended to indicate the type of
 reference defined by this occurrence.
@@ -48,7 +48,7 @@ Normal tag:
    :linenos:
 
     /**
-     * @see http://example.com/my/bar Documentation of Foo.
+     * @see https://example.com/my/bar Documentation of Foo.
      * @see MyClass::$items           For the property whose items are counted.
      * @see MyClass::setItems()       To set the items for this collection.
      *

@@ -17,7 +17,7 @@ GitHub Usage & Branching
 ------------------------
 
 Once you decide you want to contribute to phpDocumentor (which we really appreciate!) you can fork the project from
-http://github.com/phpDocumentor/phpDocumentor.
+https://github.com/phpDocumentor/phpDocumentor.
 
 Currently phpDocumentor version 3.0 is developed in our `master` branch. Large parts of the code in there will be
 rewritten or removed. If you want to contribute to phpDocumentor v3.0, create your feature branch from `master`. If you
@@ -88,7 +88,7 @@ use Docker on a development machine. In these cases it is recommended to run the
 
 And after this you can run phpunit using `./tools/phpunit`. 
 
-[PROGIT]:             http://git-scm.com/book
+[PROGIT]:             https://git-scm.com/book
 [GITHUB_HELP_PR]:     https://help.github.com/articles/using-pull-requests
-[PSR2]:               https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md
-[PHP_FIG]:            http://www.php-fig.org/
+[PSR2]:               https://www.php-fig.org/psr/psr-2/
+[PHP_FIG]:            https://www.php-fig.org/

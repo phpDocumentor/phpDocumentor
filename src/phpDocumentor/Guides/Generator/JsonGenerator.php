@@ -189,7 +189,7 @@ class JsonGenerator
         ];
     }
 
-    private function getNextPrevInformation(string $parserFilename) : ?array
+    private function getNextPrevInformation(string $parserFilename) : array
     {
         $meta = $this->getMetaEntry($parserFilename, true);
         $parentFile = $meta->getParent();
