@@ -1,13 +1,9 @@
-{% if node.properties is not empty or node.magicProperties is not empty or node.inheritedProperties is not empty %}
-    <section>
+{% set properties = properties(node) %}
+
+{% if properties is not empty %}
+    <section class="phpdocumentor-properties">
         <h3 class="phpdocumentor-properties__header">Properties</h3>
-        {% for property in node.properties %}
-            {% include 'components/property.html.twig' %}
-        {% endfor %}
-        {% for property in node.magicProperties %}
-            {% include 'components/property.html.twig' %}
-        {% endfor %}
-        {% for property in node.inheritedProperties %}
+        {% for property in properties %}
             {% include 'components/property.html.twig' %}
         {% endfor %}
     </section>

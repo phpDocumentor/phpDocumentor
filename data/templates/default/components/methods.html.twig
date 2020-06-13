@@ -1,13 +1,8 @@
-{% if node.methods is not empty or node.magicMethods is not empty or node.inheritedMethods is not empty %}
-    <section>
+{% set methods = methods(node) %}
+{% if methods is not empty %}
+    <section class="phpdocumentor-methods">
         <h3 class="phpdocumentor-methods__header">Methods</h3>
-        {% for method in node.methods %}
-            {% include 'components/method.html.twig' %}
-        {% endfor %}
-        {% for method in node.magicMethods %}
-            {% include 'components/method.html.twig' %}
-        {% endfor %}
-        {% for method in node.inheritedMethods %}
+        {% for method in methods %}
             {% include 'components/method.html.twig' %}
         {% endfor %}
     </section>

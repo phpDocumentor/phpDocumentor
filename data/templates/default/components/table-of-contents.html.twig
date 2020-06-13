@@ -39,29 +39,21 @@
 </dl>
 {% endif %}
 
-{% if node.constants is not empty or node.functions is not empty or node.methods is not empty or node.properties is not empty %}
+{% set constants = constants(node) %}
+{% set properties = properties(node) %}
+{% set methods = methods(node) %}
+
+{% if constants is not empty or node.functions is not empty or methods is not empty or properties is not empty %}
 <h3>Table of Contents</h3>
 
 <dl class="phpdocumentor-table-of-contents">
-    {% for constant in node.constants|default([]) %}
+    {% for constant in constants(node) %}
         {{ include('components/table-of-contents-entry.html.twig', {'type': 'constant', 'node': constant}) }}
     {% endfor %}
-    {% for property in node.properties|default([]) %}
+    {% for property in properties(node) %}
         {{ include('components/table-of-contents-entry.html.twig', {'type': 'property', 'node': property}) }}
     {% endfor %}
-    {% for property in node.magicProperties|default([]) %}
-        {{ include('components/table-of-contents-entry.html.twig', {'type': 'property', 'node': property}) }}
-    {% endfor %}
-    {% for property in node.inheritedProperties|default([]) %}
-        {{ include('components/table-of-contents-entry.html.twig', {'type': 'property', 'node': property}) }}
-    {% endfor %}
-    {% for method in node.methods|default([]) %}
-        {{ include('components/table-of-contents-entry.html.twig', {'type': 'method', 'node': method}) }}
-    {% endfor %}
-    {% for method in node.magicMethods|default([]) %}
-        {{ include('components/table-of-contents-entry.html.twig', {'type': 'method', 'node': method}) }}
-    {% endfor %}
-    {% for method in node.inheritedMethods|default([]) %}
+    {% for method in methods(node) %}
         {{ include('components/table-of-contents-entry.html.twig', {'type': 'method', 'node': method}) }}
     {% endfor %}
     {% for function in node.functions|default([]) %}
