@@ -4,13 +4,7 @@
 
     {{ include('components/element-found-in.html.twig', {'node': constant}) }}
     {{ include('components/summary.html.twig', {'node': constant}) }}
-
-    <code class="phpdocumentor-signature phpdocumentor-code {% if constant.deprecated %}-deprecated{% endif %}">
-        <span class="phpdocumentor-signature__visibility">{{ constant.visibility }}</span>
-        <span class="phpdocumentor-signature__type">{{ not constant.type ? "mixed" : constant.type|route('class:short')|join('|')|raw }}</span>
-        <span class="phpdocumentor-signature__name">${{ constant.name }}</span>
-        = <span class="phpdocumentor-signature__default-value">{{ constant.value ?: '""' }}</span>
-    </code>
+    {{ include('components/constant-signature.html.twig', {'node': constant}) }}
 
     {{ include('components/description.html.twig', {'node': constant}) }}
     {{ include ('components/tags.html.twig', {tags: constant.tags}) }}

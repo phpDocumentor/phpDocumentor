@@ -1,0 +1,19 @@
+<code class="phpdocumentor-code phpdocumentor-signature {% if node.deprecated %}-deprecated{% endif %}">
+    <span class="phpdocumentor-signature__visibility">{{ node.visibility }}</span>
+    {% if node.abstract %}<span class="phpdocumentor-signature__abstract">abstract</span>{% endif %}
+    {% if node.final %}<span class="phpdocumentor-signature__final">final</span>{% endif %}
+    {% if node.static %}<span class="phpdocumentor-signature__static">static</span>{% endif %}
+    <span class="phpdocumentor-signature__name">{{ node.name }}</span>(
+    {% for argument in node.arguments %}
+        <span class="phpdocumentor-signature__argument">
+            {% if argument.default %}[{% endif %}{% if not loop.first %}, {% endif %}
+            {% if argument.isVariadic %}<span class="phpdocumentor-signature__argument__variadic-operator">...</span>{% endif %}
+            {%- if argument.byReference -%}<span class="phpdocumentor-signature__argument__reference-operator">&amp;</span>{%- endif -%}
+                <span class="phpdocumentor-signature__argument__name">${{ argument.name }}</span> :
+                <span class="phpdocumentor-signature__argument__return-type">{{ argument.type|route('class:short')|join('|')|raw }}</span>
+                {% if argument.default %} = <span class="phpdocumentor-signature__argument__default-value">{{ argument.default }}</span> ]{% endif %}
+            </span>
+    {% endfor %}
+    )
+    : <span class="phpdocumentor-signature__response_type">{{ node.response.type|route('class:short')|join('|')|raw }}</span>
+</code>

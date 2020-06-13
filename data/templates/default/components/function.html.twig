@@ -1,54 +1,11 @@
 <a id="function_{{ function.name }}"></a>
 <article class="phpdocumentor-element -function -{{ function.visibility }} {% if function.deprecated %}-deprecated{% endif %}">
     <h4 class="phpdocumentor-element__name">{{ function.name }}()</h4>
-
-    {{ include('components/elements-found-in.html.twig', {'node': function}) }}
+    {{ include('components/element-found-in.html.twig', {'node': function}) }}
     {{ include('components/summary.html.twig', {'node': function}) }}
-
-    <code class="phpdocumentor-signature phpdocumentor-code {% if function.deprecated %}-deprecated{% endif %}">
-        <span class="phpdocumentor-signature__visibility">{{ function.visibility }}</span>
-        {% if function.abstract %}<span class="phpdocumentor-signature__abstract">abstract</span>{% endif %}
-        {% if function.final %}<span class="phpdocumentor-signature__final">final</span>{% endif %}
-        {% if function.static %}<span class="phpdocumentor-signature__static">static</span>{% endif %}
-        <span class="phpdocumentor-signature__name">{{ function.name }}</span>(
-        {% for argument in function.arguments %}
-            <span class="phpdocumentor-signature__argument">
-            {% if argument.default %}[{% endif %}{% if not loop.first %}, {% endif %}
-                {% if argument.isVariadic %}<span class="phpdocumentor-signature__argument__variadic-operator">...</span>{% endif %}
-                {%- if argument.byReference -%}<span class="phpdocumentor-signature__argument__reference-operator">&amp;</span>{%- endif -%}
-                <span class="phpdocumentor-signature__argument__name">${{ argument.name }}</span> :
-                <span class="phpdocumentor-signature__argument__return-type">{{ argument.type|route('class:short')|join('|')|raw }}</span>
-                {% if argument.default %} = <span class="phpdocumentor-signature__argument__default-value">{{ argument.default }}</span> ]{% endif %}
-            </span>
-        {% endfor %}
-        )
-        : <span class="phpdocumentor-signature__response_type">{{ function.response.type|route('class:short')|join('|')|raw }}</span>
-    </code>
-
+    {{ include('components/method-signature.html.twig', {'node': function}) }}
     {{ include('components/description.html.twig', {'node': function}) }}
-
-    {% if function.arguments|length > 0 %}
-        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
-        <dl class="phpdocumentor-argument-list">
-            {% for argument in function.arguments %}
-                <dt class="phpdocumentor-argument-list__entry">
-                    <span class="phpdocumentor-signature__argument__name">${{ argument.name }}</span>
-                    : <span class="phpdocumentor-signature__argument__return-type">{{ argument.type|route('class:short')|join('|')|raw }}</span>
-                    {% if argument.default %} = <span class="phpdocumentor-signature__argument__default-value">{{ argument.default }}</span>{% endif %}
-                </dt>
-                <dd class="phpdocumentor-argument-list__definition"><section class="phpdocumentor-description">{{ argument.description|default('')|markdown }}</section></dd>
-            {% endfor %}
-        </dl>
-    {% endif %}
-
-    {{ include ('components/tags.html.twig', {tags: function.tags}) }}
-
-    {% if (function.response.type and function.response.type != 'void') or function.response.description %}
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-        <span class="phpdocumentor-signature__response_type">{{ function.response.type|route('class:short')|join('|')|raw }}</span>
-        {% if function.response.description %}
-            &mdash; <span class="phpdocumentor-description">{{ function.response.description|markdown }}</span>
-        {% endif %}
-    {% endif %}
-
+    {{ include('components/method-arguments.html.twig', {'node': function}) }}
+    {{ include('components/tags.html.twig', {tags: function.tags}) }}
+    {{ include('components/method-response.html.twig', {'node': function}) }}
 </article>

@@ -9,54 +9,12 @@
             {% if method.final %}-final{% endif %}
         "
 >
-    <h4 class="phpdocumentor-method__name">{{ method.name }}()</h4>
+    <h4 class="phpdocumentor-element__name">{{ method.name }}()</h4>
     {{ include('components/element-found-in.html.twig', {'node': method}) }}
     {{ include('components/summary.html.twig', {'node': method}) }}
-
-    <code class="phpdocumentor-signature phpdocumentor-code {% if method.deprecated %}-deprecated{% endif %}">
-        <span class="phpdocumentor-signature__visibility">{{ method.visibility }}</span>
-        {% if method.abstract %}<span class="phpdocumentor-signature__abstract">abstract</span>{% endif %}
-        {% if method.final %}<span class="phpdocumentor-signature__final">final</span>{% endif %}
-        {% if method.static %}<span class="phpdocumentor-signature__static">static</span>{% endif %}
-        <span class="phpdocumentor-signature__name">{{ method.name }}</span>(
-        {% for argument in method.arguments %}
-            <span class="phpdocumentor-signature__argument">
-            {% if argument.default %}[{% endif %}{% if not loop.first %}, {% endif %}
-                {% if argument.isVariadic %}<span class="phpdocumentor-signature__argument__variadic-operator">...</span>{% endif %}
-                {%- if argument.byReference -%}<span class="phpdocumentor-signature__argument__reference-operator">&amp;</span>{%- endif -%}
-                <span class="phpdocumentor-signature__argument__name">${{ argument.name }}</span> :
-                <span class="phpdocumentor-signature__argument__return-type">{{ argument.type|route('class:short')|join('|')|raw }}</span>
-                {% if argument.default %} = <span class="phpdocumentor-signature__argument__default-value">{{ argument.default }}</span> ]{% endif %}
-            </span>
-        {% endfor %}
-        )
-        : <span class="phpdocumentor-signature__response_type">{{ method.response.type|route('class:short')|join('|')|raw }}</span>
-    </code>
-
+    {{ include('components/method-signature.html.twig', {'node': method}) }}
     {{ include('components/description.html.twig', {'node': method}) }}
-
-    {% if method.arguments|length > 0 %}
-        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
-        <dl class="phpdocumentor-argument-list">
-            {% for argument in method.arguments %}
-                <dt class="phpdocumentor-argument-list__entry">
-                    <span class="phpdocumentor-signature__argument__name">${{ argument.name }}</span>
-                    : <span class="phpdocumentor-signature__argument__return-type">{{ argument.type|route('class:short')|join('|')|raw }}</span>
-                    {% if argument.default %} = <span class="phpdocumentor-signature__argument__default-value">{{ argument.default }}</span>{% endif %}
-                </dt>
-                <dd class="phpdocumentor-argument-list__definition"><section class="phpdocumentor-description">{{ argument.description|default('')|markdown }}</section></dd>
-            {% endfor %}
-        </dl>
-    {% endif %}
-
-    {{ include ('components/tags.html.twig', {tags: method.tags}) }}
-
-    {% if (method.response.type and method.response.type != 'void') or method.response.description %}
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-        <span class="phpdocumentor-signature__response_type">{{ method.response.type|route('class:short')|join('|')|raw }}</span>
-        {% if method.response.description %}
-            &mdash; <span class="phpdocumentor-description">{{ method.response.description|markdown }}</span>
-        {% endif %}
-    {% endif %}
-
+    {{ include('components/method-arguments.html.twig', {'node': method}) }}
+    {{ include('components/tags.html.twig', {'tags': method.tags}) }}
+    {{ include('components/method-response.html.twig', {'node': method}) }}
 </article>
