@@ -1,0 +1,25 @@
+.phpdocumentor-element {
+    position: relative;
+}
+
+.phpdocumentor-element__package,
+.phpdocumentor-element__extends,
+.phpdocumentor-element__implements {
+    display: block;
+    font-size: var(--text-xxs);
+    font-weight: normal;
+    opacity: .7;
+}
+
+.phpdocumentor-element__package .phpdocumentor-breadcrumbs {
+    display: inline;
+}
+
+.phpdocumentor-element:not(:last-child) {
+    border-bottom: 1px solid var(--primary-color-lighten);
+    padding-bottom: var(--spacing-lg);
+}
+
+.phpdocumentor-element.-deprecated .phpdocumentor-element__name {
+    text-decoration: line-through;
+}

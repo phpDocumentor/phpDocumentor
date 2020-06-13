@@ -1,0 +1,47 @@
+.phpdocumentor-button {
+    background-color: var(--button-color);
+    border: 1px solid var(--button-border-color);
+    border-radius: var(--border-radius-base-size);
+    box-sizing: border-box;
+    color: var(--button-text-color);
+    cursor: pointer;
+    display: inline-block;
+    font-size: var(--text-sm);
+    font-weight: 600;
+    height: 38px;
+    letter-spacing: .1rem;
+    line-height: 38px;
+    padding: 0 var(--spacing-xxl);
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.phpdocumentor-button--wide {
+    width: 100%;
+}
+
+.phpdocumentor-button:hover,
+.phpdocumentor-button:focus {
+    border-color: #888;
+    color: #333;
+    outline: 0;
+}
+
+.phpdocumentor-button.button-primary {
+    background-color: var(--button-color-primary);
+    border-color: var(--button-color-primary);
+    color: var(--button-text-color-primary);
+}
+
+.phpdocumentor-button.phpdocumentor-button--primary:hover,
+.phpdocumentor-button.phpdocumentor-button--primary:focus {
+    background-color: var(--link-color-primary);
+    border-color: var(--link-color-primary);
+    color: var(--button-text-color-primary);
+}
+
+.phpdocumentor-button {
+    margin-bottom: var(--spacing-md);
+}

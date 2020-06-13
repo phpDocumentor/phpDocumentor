@@ -1,21 +1,17 @@
 <a id="property_{{ property.name }}"></a>
 <article
         class="
-            phpdocumentor-property
-            phpdocumentor-property--{{ property.visibility }}
-            {% if property.static %}phpdocumentor-property--static{% endif %}
-            {% if property.deprecated %}phpdocumentor-element--deprecated{% endif %}
+            phpdocumentor-element
+            -property
+            -{{ property.visibility }}
+            {% if property.static %}-static{% endif %}
+            {% if property.deprecated %}-deprecated{% endif %}
         "
 >
     <h4 class="phpdocumentor-property__name">${{ property.name }}</h4>
-    <aside class="phpdocumentor-element-found-in">
-        <abbr class="phpdocumentor-element-found-in__file" title="{{ property.file.path }}">{{ property.file|route('file:short') }}</abbr>
-        :
-        <span class="phpdocumentor-element-found-in__line">{{ property.line }}</span>
-    </aside>
-    {% if property.summary %}
-        <p class="phpdocumentor-summary">{{ property.summary }}</p>
-    {% endif %}
+    {{ include('components/element-found-in.html.twig', {'node': property}) }}
+    {{ include('components/summary.html.twig', {'node': property}) }}
+
     <code class="phpdocumentor-signature phpdocumentor-code {% if property.deprecated %}phpdocumentor-signature--deprecated{% endif %}">
         <span class="phpdocumentor-signature__visibility">{{ property.visibility }}</span>
         {% if property.static %}<span class="phpdocumentor-signature__static">static</span>{% endif %}
@@ -23,8 +19,7 @@
         <span class="phpdocumentor-signature__name">${{ property.name }}</span>
         {% if property.default is not null %} = <span class="phpdocumentor-signature__default-value">{{ property.default ?: '""' }}</span>{% endif %}
     </code>
-    {% if property.description %}
-    <section class="phpdocumentor-description">{{ property.description | markdown }}</section>
-    {% endif %}
+
+    {{ include('components/description.html.twig', {'node': property}) }}
     {{ include ('components/tags.html.twig', {tags: property.tags}) }}
 </article>

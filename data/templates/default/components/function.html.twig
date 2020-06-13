@@ -1,24 +1,11 @@
 <a id="function_{{ function.name }}"></a>
-<article
-        class="
-            phpdocumentor-element
-            phpdocumentor-function
-            phpdocumentor-function--{{ function.visibility }}
-            {% if function.deprecated %}phpdocumentor-element--deprecated{% endif %}
-        "
->
-    <h4 class="phpdocumentor-function__name">{{ function.name }}()</h4>
+<article class="phpdocumentor-element -function -{{ function.visibility }} {% if function.deprecated %}-deprecated{% endif %}">
+    <h4 class="phpdocumentor-element__name">{{ function.name }}()</h4>
 
-    <aside class="phpdocumentor-element-found-in">
-        <abbr class="phpdocumentor-element-found-in__file" title="{{ function.file.path }}">{{ function.file|route('file:short') }}</abbr>
-        :
-        <span class="phpdocumentor-element-found-in__line">{{ function.line }}</span>
-    </aside>
+    {{ include('components/elements-found-in.html.twig', {'node': function}) }}
+    {{ include('components/summary.html.twig', {'node': function}) }}
 
-    {% if function.summary %}
-    <p class="phpdocumentor-summary">{{ function.summary }}</p>
-    {% endif %}
-    <code class="phpdocumentor-signature phpdocumentor-code {% if function.deprecated %}phpdocumentor-signature--deprecated{% endif %}">
+    <code class="phpdocumentor-signature phpdocumentor-code {% if function.deprecated %}-deprecated{% endif %}">
         <span class="phpdocumentor-signature__visibility">{{ function.visibility }}</span>
         {% if function.abstract %}<span class="phpdocumentor-signature__abstract">abstract</span>{% endif %}
         {% if function.final %}<span class="phpdocumentor-signature__final">final</span>{% endif %}
@@ -38,9 +25,7 @@
         : <span class="phpdocumentor-signature__response_type">{{ function.response.type|route('class:short')|join('|')|raw }}</span>
     </code>
 
-    {% if function.description %}
-    <section class="phpdocumentor-description">{{ function.description|markdown }}</section>
-    {% endif %}
+    {{ include('components/description.html.twig', {'node': function}) }}
 
     {% if function.arguments|length > 0 %}
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>

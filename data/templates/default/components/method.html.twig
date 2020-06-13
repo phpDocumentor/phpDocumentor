@@ -1,24 +1,19 @@
 <a id="method_{{ method.name }}"></a>
 <article
-        class="
-            phpdocumentor-method
-            phpdocumentor-method--{{ method.visibility }}
-            {% if method.deprecated %}phpdocumentor-element--deprecated{% endif %}
-            {% if method.abstract %}phpdocumentor-element--abstract{% endif %}
-            {% if method.static %}phpdocumentor-element--static{% endif %}
-            {% if method.final %}phpdocumentor-element--final{% endif %}
+        class="phpdocumentor-element
+            -method
+            -{{ method.visibility }}
+            {% if method.deprecated %}-deprecated{% endif %}
+            {% if method.abstract %}-abstract{% endif %}
+            {% if method.static %}-static{% endif %}
+            {% if method.final %}-final{% endif %}
         "
 >
     <h4 class="phpdocumentor-method__name">{{ method.name }}()</h4>
-    <aside class="phpdocumentor-element-found-in">
-        <abbr class="phpdocumentor-element-found-in__file" title="{{ method.file.path }}">{{ method.file|route('file:short') }}</abbr>
-        :
-        <span class="phpdocumentor-element-found-in__line">{{ method.line }}</span>
-    </aside>
-    {% if method.summary %}
-    <p class="phpdocumentor-summary">{{ method.summary }}</p>
-    {% endif %}
-    <code class="phpdocumentor-signature phpdocumentor-code {% if method.deprecated %}phpdocumentor-signature--deprecated{% endif %}">
+    {{ include('components/element-found-in.html.twig', {'node': method}) }}
+    {{ include('components/summary.html.twig', {'node': method}) }}
+
+    <code class="phpdocumentor-signature phpdocumentor-code {% if method.deprecated %}-deprecated{% endif %}">
         <span class="phpdocumentor-signature__visibility">{{ method.visibility }}</span>
         {% if method.abstract %}<span class="phpdocumentor-signature__abstract">abstract</span>{% endif %}
         {% if method.final %}<span class="phpdocumentor-signature__final">final</span>{% endif %}
@@ -38,9 +33,7 @@
         : <span class="phpdocumentor-signature__response_type">{{ method.response.type|route('class:short')|join('|')|raw }}</span>
     </code>
 
-    {% if method.description %}
-    <section class="phpdocumentor-description">{{ method.description|markdown }}</section>
-    {% endif %}
+    {{ include('components/description.html.twig', {'node': method}) }}
 
     {% if method.arguments|length > 0 %}
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>

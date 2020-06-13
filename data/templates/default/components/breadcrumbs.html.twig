@@ -1,11 +1,6 @@
+{% set breadcrumbs = usesNamespaces ? breadcrumbs(node) : packages(node) %}
 <ul class="phpdocumentor-breadcrumbs">
-    {% if usesNamespaces %}
-        {% for breadcrumb in breadcrumbs(node) %}
-            <li><a href="{{ link(breadcrumb) }}">{{ breadcrumb.name }}</a></li>
-        {% endfor %}
-    {% else %}
-        {% for breadcrumb in packages(node) %}
-            <li><a href="{{ link(breadcrumb) }}">{{ breadcrumb.name }}</a></li>
-        {% endfor %}
-    {% endif %}
+    {% for breadcrumb in breadcrumbs %}
+        <li class="phpdocumentor-breadcrumb"><a href="{{ link(breadcrumb) }}">{{ breadcrumb.name }}</a></li>
+    {% endfor %}
 </ul>
