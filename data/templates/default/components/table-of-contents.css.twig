@@ -25,8 +25,8 @@
     width: 1.25rem;
     height: 1.25rem;
     line-height: 1.25rem;
-    background: var(--primary-color);
-    content: 'M';
+    background: transparent url('data:image/svg+xml;utf8,{{ include('icons/method.svg.twig')|trim|raw }}') no-repeat center center;
+    content: '';
     position: absolute;
     left: 0;
     border-radius: 50%;
@@ -38,19 +38,43 @@
 }
 
 .phpdocumentor-table-of-contents .phpdocumentor-table-of-contents__entry.-method:before {
-    content: 'M'
+    content: 'M';
+    background-image: url('data:image/svg+xml;utf8,{{ include('icons/method.svg.twig')|trim|raw }}');
 }
 
 .phpdocumentor-table-of-contents .phpdocumentor-table-of-contents__entry.-function:before {
-    content: 'M'
+    content: 'M';
+    background-image: url('data:image/svg+xml;utf8,{{ include('icons/method.svg.twig')|trim|raw }}');
 }
 
 .phpdocumentor-table-of-contents .phpdocumentor-table-of-contents__entry.-property:before {
-    content: 'F'
+    content: 'P'
 }
 
 .phpdocumentor-table-of-contents .phpdocumentor-table-of-contents__entry.-constant:before {
+    content: 'C';
+    background-color: transparent;
+    background-image: url('data:image/svg+xml;utf8,{{ include('icons/constant.svg.twig')|trim|raw }}');
+}
+
+.phpdocumentor-table-of-contents .phpdocumentor-table-of-contents__entry.-class:before {
     content: 'C'
+}
+
+.phpdocumentor-table-of-contents .phpdocumentor-table-of-contents__entry.-interface:before {
+    content: 'I'
+}
+
+.phpdocumentor-table-of-contents .phpdocumentor-table-of-contents__entry.-trait:before {
+    content: 'T'
+}
+
+.phpdocumentor-table-of-contents .phpdocumentor-table-of-contents__entry.-namespace:before {
+    content: 'N'
+}
+
+.phpdocumentor-table-of-contents .phpdocumentor-table-of-contents__entry.-package:before {
+    content: 'P'
 }
 
 .phpdocumentor-table-of-contents dd {
