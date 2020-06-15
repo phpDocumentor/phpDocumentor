@@ -1,6 +1,6 @@
 FROM composer:1.6.5 AS composer
 
-FROM php:7.2
+FROM php:7.4.7
 
 # /usr/share/man/man1 needs to be created before installing openjdk-11-jre lest it will fail
 # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=863199#23
