@@ -3,5 +3,5 @@
     {% if node.static %}<span class="phpdocumentor-signature__static">static</span>{% endif %}
     <span class="phpdocumentor-signature__type">{{ not node.type ? "mixed" : node.type|route('class:short')|join('|')|raw }}</span>
     <span class="phpdocumentor-signature__name">${{ node.name }}</span>
-    {% if node.default is not null %} = <span class="phpdocumentor-signature__default-value">{{ node.default ?: '""' }}</span>{% endif %}
+    {% if node.default is not null %} = <span class="phpdocumentor-signature__default-value">{{ node.default is not null ? node.default : '""' }}</span>{% endif %}
 </code>
