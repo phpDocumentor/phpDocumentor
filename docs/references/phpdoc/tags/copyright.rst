@@ -1,18 +1,20 @@
 @copyright
 ==========
 
-The @copyright tag is used to document the copyright information for
-Structural Elements.
+The ``@copyright`` tag is used to document the copyright information of any
+*Structural Element*.
 
 Syntax
 ------
+
+.. code-block::
 
     @copyright [description]
 
 Description
 -----------
 
-The @copyright tag defines who holds the copyright over Structural Elements.
+The ``@copyright`` tag defines who holds the copyright over the *Structural Element*.
 The copyright indicated with this tag applies to the Structural Elements
 with which it is associated and all child elements unless otherwise noted.
 
@@ -23,7 +25,7 @@ covered by this copyright and the organization involved.
 Effects in phpDocumentor
 ------------------------
 
-Structural Elements tagged with the @copyright tag will show a *Copyright*
+Structural Elements tagged with the ``@copyright`` tag will show a *Copyright*
 header in their description containing the contents of this tag.
 
 Examples
