@@ -19,8 +19,6 @@ parameters:
     - '#Instanceof between phpDocumentor\\Descriptor\\Collection<phpDocumentor\\Descriptor\\InterfaceDescriptor\|phpDocumentor\\Reflection\\Fqsen>\|phpDocumentor\\Reflection\\Fqsen\|string\|null and phpDocumentor\\Descriptor\\InterfaceDescriptor will always evaluate to false\.#'
     # PHPStan doesn't support @template D of T but will still complain if we put a D in a Collection of T !
     - '#Parameter \#2 \$value of method phpDocumentor\\Descriptor\\Collection<T>::offsetSet\(\) expects T, D given\.#'
-    # Bug in PHPStan https://github.com/phpstan/phpstan/issues/3415
-    - '#Call to an undefined method phpDocumentor\\Parser\\Cache\\FilesystemAdapter::doInit\(\).#'
 
     -
             message: "#^Parameter \\#1 \\$value of method phpDocumentor\\\\GraphViz\\\\Graph\\:\\:setCenter\\(\\) expects bool, string given\\.$#"
