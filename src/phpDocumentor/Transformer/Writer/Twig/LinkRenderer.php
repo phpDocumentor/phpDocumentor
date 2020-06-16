@@ -213,7 +213,7 @@ final class LinkRenderer
     }
 
     /**
-     * @param string|Path|Type|DescriptorAbstract|Fqsen $node
+     * @param string|Path|Type|DescriptorAbstract|Fqsen|Reference\Fqsen $node
      *
      * @psalm-param string $presentation
      */
