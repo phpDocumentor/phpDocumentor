@@ -1,7 +1,9 @@
 <dt class="phpdocumentor-table-of-contents__entry -{{ type }} -{{ node.visibility }}">
     <a href="{{ link(node) }}">{{ type == 'property' ? '$' }}{{ node.name }}{{ type == 'method' or type == 'function' ? '()' }}</a>
-    {% if type == 'constant' %} = {{ node.value }}{% endif %}
-    {% if type == 'property' %} : {{ node.type|route('class:short')|join('|')|raw }}{% endif %}
-    {% if type == 'method' or type == 'function' %} : {{ node.response.type|route('class:short')|join('|')|raw }}{% endif %}
+    <span>
+        {% if type == 'constant' %}&nbsp;= {{ node.value }}{% endif %}
+        {% if type == 'property' %}&nbsp;: {{ node.type|route('class:short')|join('|')|raw }}{% endif %}
+        {% if type == 'method' or type == 'function' %}&nbsp;: {{ node.response.type|route('class:short')|join('|')|raw }}{% endif %}
+    </span>
 </dt>
 <dd>{{ node.summary }}</dd>

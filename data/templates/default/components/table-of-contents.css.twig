@@ -4,6 +4,18 @@
 .phpdocumentor-table-of-contents .phpdocumentor-table-of-contents__entry {
     padding-top: var(--spacing-xs);
     margin-left: 2rem;
+    display: flex;
+}
+
+.phpdocumentor-table-of-contents .phpdocumentor-table-of-contents__entry > a {
+    flex: 0 1 auto;
+}
+
+.phpdocumentor-table-of-contents .phpdocumentor-table-of-contents__entry > span {
+    flex: 1;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .phpdocumentor-table-of-contents .phpdocumentor-table-of-contents__entry:after {
