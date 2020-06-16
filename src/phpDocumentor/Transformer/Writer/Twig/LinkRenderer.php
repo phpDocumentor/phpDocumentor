@@ -21,6 +21,7 @@ use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Path;
+use phpDocumentor\Reflection\DocBlock\Tags\Reference;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Type;
 use phpDocumentor\Reflection\Types\Collection;
@@ -219,6 +220,10 @@ final class LinkRenderer
     private function renderLink($node, string $presentation) : string
     {
         $generatedUrl = $node;
+
+        if ($node instanceof Reference\Fqsen) {
+            $node = (string) $node;
+        }
 
         if (is_string($node)) {
             try {
