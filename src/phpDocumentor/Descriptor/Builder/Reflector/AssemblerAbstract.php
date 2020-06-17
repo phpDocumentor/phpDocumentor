@@ -22,6 +22,7 @@ use phpDocumentor\Reflection\Types\Compound;
 use function array_values;
 use function count;
 use function reset;
+use function stripcslashes;
 use function trim;
 
 abstract class AssemblerAbstract extends BaseAssembler
@@ -84,5 +85,14 @@ abstract class AssemblerAbstract extends BaseAssembler
         }
 
         return $type;
+    }
+
+    protected function pretifyValue(?string $value) : ?string
+    {
+        if ($value === null) {
+            return null;
+        }
+
+        return stripcslashes($value);
     }
 }

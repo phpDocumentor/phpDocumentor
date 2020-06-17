@@ -38,7 +38,7 @@ class ArgumentAssembler extends AssemblerAbstract
             $this->overwriteTypeAndDescriptionFromParamTag($data, $paramDescriptor, $argumentDescriptor);
         }
 
-        $argumentDescriptor->setDefault($data->getDefault());
+        $argumentDescriptor->setDefault($this->pretifyValue($data->getDefault()));
         $argumentDescriptor->setByReference($data->isByReference());
         $argumentDescriptor->setVariadic($data->isVariadic());
 
