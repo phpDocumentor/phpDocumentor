@@ -44,16 +44,10 @@ then a link to that class' documentation is provided.
 
 .. note::
 
-   phpDocumentor will try to analyze correct usage and presence of the ``@param``
-   tag; as such it will provide error information in the following scenarios:
-
-   * A ``@param`` is provided but no argument was found matching the ``@param``.
-   * The name of the ``@param`` does not match the name of argument at the same
-     position.
-   * A mismatch between the type hint, if present, and the type declaration was
-     detected.
-   * The type declaration is ``type``; this is an invalid type and often provided
-     by IDEs.
+   phpDocumentor will not verify whether a documented type is in line with
+   a declared type.
+   Such verification, if desired, can be executed by static analyzer tools
+   like `PHPStan`_ or `PHP_CodeSniffer`_.
 
 Examples
 --------
@@ -78,3 +72,5 @@ Examples
 
 
 .. _argument of a function or method: https://www.php.net/functions.arguments
+.. _PHPStan:                          https://phpstan.org/
+.. _PHP_CodeSniffer:                  https://github.com/squizlabs/php_codesniffer/
