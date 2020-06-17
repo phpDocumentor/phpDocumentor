@@ -15,6 +15,7 @@ namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use phpDocumentor\Descriptor\ConstantDescriptor;
 use phpDocumentor\Reflection\Php\Constant;
+use function stripcslashes;
 use function strlen;
 use function substr;
 
@@ -34,7 +35,7 @@ class ConstantAssembler extends AssemblerAbstract
     {
         $constantDescriptor = new ConstantDescriptor();
         $constantDescriptor->setName($data->getName());
-        $constantDescriptor->setValue($data->getValue());
+        $constantDescriptor->setValue(stripcslashes($data->getValue()));
         // Reflection library formulates namespace as global but this is not wanted for phpDocumentor itself
         $constantDescriptor->setNamespace(
             substr((string) $data->getFqsen(), 0, - strlen($data->getName()) - self::SEPARATOR_SIZE)
