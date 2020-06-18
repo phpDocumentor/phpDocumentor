@@ -94,7 +94,7 @@ final class PackageTreeBuilder implements CompilerPassInterface
             if ($packageTags instanceof Collection) {
                 $packageTag = $packageTags->getIterator()->current();
                 if ($packageTag instanceof TagDescriptor) {
-                    $packageName = $this->normalizePackageName($packageTag->getDescription());
+                    $packageName = $this->normalizePackageName((string) $packageTag->getDescription());
                 }
             }
 
@@ -102,7 +102,7 @@ final class PackageTreeBuilder implements CompilerPassInterface
             if ($subpackageCollection instanceof Collection && $subpackageCollection->count() > 0) {
                 $subpackageTag = $subpackageCollection->getIterator()->current();
                 if ($subpackageTag instanceof TagDescriptor) {
-                    $packageName .= '\\' . $this->normalizePackageName($subpackageTag->getDescription());
+                    $packageName .= '\\' . $this->normalizePackageName((string) $subpackageTag->getDescription());
                 }
             }
 
