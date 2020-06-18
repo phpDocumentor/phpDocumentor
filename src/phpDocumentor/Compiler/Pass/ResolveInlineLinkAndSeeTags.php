@@ -81,11 +81,11 @@ final class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
      */
     public function execute(ProjectDescriptor $project) : void
     {
-        $this->elementCollection = $project->getIndexes()->get('elements');
-
-        foreach ($this->elementCollection as $descriptor) {
-            $this->resolveSeeAndLinkTags($descriptor);
-        }
+//        $this->elementCollection = $project->getIndexes()->get('elements');
+//
+//        foreach ($this->elementCollection as $descriptor) {
+//            $this->resolveSeeAndLinkTags($descriptor);
+//        }
     }
 
     /**

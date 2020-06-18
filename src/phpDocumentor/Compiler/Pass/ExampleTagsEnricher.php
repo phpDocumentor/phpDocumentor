@@ -50,12 +50,12 @@ class ExampleTagsEnricher implements CompilerPassInterface
 
     public function execute(ProjectDescriptor $project) : void
     {
-        /** @var DescriptorAbstract[] $elements */
-        $elements = $project->getIndexes()->get('elements');
-
-        foreach ($elements as $element) {
-            $element->setDescription($this->replaceInlineExamples($element));
-        }
+//        /** @var DescriptorAbstract[] $elements */
+//        $elements = $project->getIndexes()->get('elements');
+//
+//        foreach ($elements as $element) {
+//            $element->setDescription($this->replaceInlineExamples($element));
+//        }
     }
 
     /**
