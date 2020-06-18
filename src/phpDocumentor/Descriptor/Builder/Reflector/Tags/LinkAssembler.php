@@ -34,7 +34,7 @@ class LinkAssembler extends AssemblerAbstract
     {
         $descriptor = new LinkDescriptor($data->getName());
         $descriptor->setLink($data->getLink());
-        $descriptor->setDescription((string) $data->getDescription());
+        $descriptor->setDescription($data->getDescription());
 
         return $descriptor;
     }

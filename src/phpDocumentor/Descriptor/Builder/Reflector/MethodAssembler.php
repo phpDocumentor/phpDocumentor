@@ -138,7 +138,7 @@ class MethodAssembler extends AssemblerAbstract
         $argument = new ArgumentDescriptor();
         $argument->setName($lastParamTag->getVariableName());
         $argument->setType($types);
-        $argument->setDescription((string) $lastParamTag->getDescription());
+        $argument->setDescription($lastParamTag->getDescription());
         $argument->setLine($methodDescriptor->getLine());
         $argument->setVariadic(true);
 

@@ -16,6 +16,7 @@ namespace phpDocumentor\Descriptor;
 use phpDocumentor\Descriptor\Filter\Filterable;
 use phpDocumentor\Descriptor\Tag\AuthorDescriptor;
 use phpDocumentor\Descriptor\Validation\Error;
+use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\Fqsen;
 use function str_ireplace;
 use function stripos;
@@ -44,8 +45,8 @@ abstract class DescriptorAbstract implements Filterable
     /** @var string $summary A summary describing the function of this element in short. */
     protected $summary = '';
 
-    /** @var string $description A more extensive description of this element. */
-    protected $description = '';
+    /** @var Description $description A more extensive description of this element. */
+    protected $description;
 
     /** @var FileDescriptor|null $fileDescriptor The file to which this element belongs; if applicable */
     protected $fileDescriptor;
@@ -69,6 +70,7 @@ abstract class DescriptorAbstract implements Filterable
     {
         $this->setTags(new Collection());
         $this->setErrors(new Collection());
+        $this->description = new Description('');
     }
 
     /**
@@ -161,9 +163,10 @@ abstract class DescriptorAbstract implements Filterable
     /**
      * Sets a description for this element.
      *
+     * @param Description $description
      * @internal should not be called by any other class than the assamblers
      */
-    public function setDescription(string $description) : void
+    public function setDescription(Description $description) : void
     {
         $this->description = $description;
     }
@@ -173,9 +176,9 @@ abstract class DescriptorAbstract implements Filterable
      *
      * This method will automatically attempt to inherit the parent's description if this one has none.
      */
-    public function getDescription() : string
+    public function getDescription() : Description
     {
-        if ($this->description && stripos((string) $this->description, '{@inheritdoc}') === false) {
+        if ($this->description !== null && stripos((string) $this->description, '{@inheritdoc}') === false) {
             return $this->description;
         }
 
@@ -183,9 +186,13 @@ abstract class DescriptorAbstract implements Filterable
         if ($parentElement instanceof self) {
             $parentDescription = $parentElement->getDescription();
 
-            return $this->description
-                ? str_ireplace('{@inheritdoc}', $parentDescription, $this->description)
-                : $parentDescription;
+            if ($this->description === null) {
+                return $parentDescription;
+            }
+
+//            return $this->description
+//                ? str_ireplace('{@inheritdoc}', $parentDescription, $this->description)
+//                : $parentDescription;
         }
 
         return $this->description;

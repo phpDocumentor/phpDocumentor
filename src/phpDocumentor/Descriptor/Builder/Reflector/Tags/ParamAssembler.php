@@ -33,9 +33,9 @@ class ParamAssembler extends AssemblerAbstract
     public function create(object $data) : ParamDescriptor
     {
         $descriptor = new ParamDescriptor($data->getName());
-        $descriptor->setDescription((string) $data->getDescription());
+        $descriptor->setDescription($data->getDescription());
         $descriptor->setVariableName($data->getVariableName());
-        $descriptor->setType(AssemblerAbstract::deduplicateTypes($data->getType()));
+        $descriptor->setType($data->getType());
 
         return $descriptor;
     }

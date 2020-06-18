@@ -33,7 +33,7 @@ class VarAssembler extends AssemblerAbstract
     public function create(object $data) : VarDescriptor
     {
         $descriptor = new VarDescriptor($data->getName());
-        $descriptor->setDescription((string) $data->getDescription());
+        $descriptor->setDescription($data->getDescription());
         $descriptor->setVariableName($data->getVariableName());
 
         $descriptor->setType(AssemblerAbstract::deduplicateTypes($data->getType()));
