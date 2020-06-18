@@ -37,7 +37,7 @@ class MethodAssembler extends AssemblerAbstract
     public function create(object $data) : MethodDescriptor
     {
         $descriptor = new MethodDescriptor($data->getName());
-        $descriptor->setDescription((string) $data->getDescription());
+        $descriptor->setDescription($data->getDescription());
         $descriptor->setMethodName($data->getMethodName());
         $descriptor->setStatic($data->isStatic());
 

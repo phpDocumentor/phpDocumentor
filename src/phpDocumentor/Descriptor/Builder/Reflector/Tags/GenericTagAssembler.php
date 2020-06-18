@@ -30,7 +30,7 @@ class GenericTagAssembler extends AssemblerAbstract
         $descriptor = new TagDescriptor($data->getName());
 
         if ($data instanceof BaseTag) {
-            $descriptor->setDescription((string) $data->getDescription());
+            $descriptor->setDescription($data->getDescription());
         }
 
         return $descriptor;

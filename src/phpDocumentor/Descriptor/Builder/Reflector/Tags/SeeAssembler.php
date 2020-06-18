@@ -33,7 +33,7 @@ class SeeAssembler extends AssemblerAbstract
     public function create(object $data) : SeeDescriptor
     {
         $descriptor = new SeeDescriptor($data->getName());
-        $descriptor->setDescription((string) $data->getDescription());
+        $descriptor->setDescription($data->getDescription());
 
         $reference = $data->getReference();
         $descriptor->setReference($reference);

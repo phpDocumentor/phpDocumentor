@@ -33,8 +33,8 @@ class ReturnAssembler extends AssemblerAbstract
     public function create(object $data) : ReturnDescriptor
     {
         $descriptor = new ReturnDescriptor($data->getName());
-        $descriptor->setDescription((string) $data->getDescription());
-        $descriptor->setType(AssemblerAbstract::deduplicateTypes($data->getType()));
+        $descriptor->setDescription($data->getDescription());
+        $descriptor->setType($data->getType());
 
         return $descriptor;
     }

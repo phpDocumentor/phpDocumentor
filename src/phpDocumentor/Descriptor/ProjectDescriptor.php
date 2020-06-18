@@ -15,6 +15,7 @@ namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Descriptor\Interfaces\PackageInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
+use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\Fqsen;
 
 /**
@@ -50,6 +51,11 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
     private $versions;
 
     /**
+     * @var Description
+     */
+    private $description;
+
+    /**
      * Initializes this descriptor.
      */
     public function __construct(string $name)
@@ -72,6 +78,8 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
 
         $this->setPartials(new Collection());
         $this->versions = Collection::fromClassString(VersionDescriptor::class);
+
+        $this->description = new Description('');
     }
 
     /**
@@ -93,9 +101,9 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
     /**
      * Returns the description for this element.
      */
-    public function getDescription() : string
+    public function getDescription() : Description
     {
-        return '';
+        return $this->description;
     }
 
     /**

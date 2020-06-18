@@ -33,7 +33,7 @@ class VersionAssembler extends AssemblerAbstract
     public function create(object $data) : VersionDescriptor
     {
         $descriptor = new VersionDescriptor($data->getName());
-        $descriptor->setDescription((string) $data->getDescription());
+        $descriptor->setDescription($data->getDescription());
         $descriptor->setVersion($data->getVersion());
 
         return $descriptor;
