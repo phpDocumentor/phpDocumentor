@@ -2,6 +2,7 @@
     <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type">{{ method.response.type|route('class:short')|join('|')|raw }}</span>
     {% if method.response.description %}
-        &mdash; <span class="phpdocumentor-description">{{ method.response.description|markdown }}</span>
+        &mdash;
+        {{ include('components/description.html.twig', {'node': method.response.description}) }}
     {% endif %}
 {% endif %}

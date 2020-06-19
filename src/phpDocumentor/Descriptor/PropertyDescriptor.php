@@ -42,6 +42,12 @@ class PropertyDescriptor extends DescriptorAbstract implements
     /** @var string $visibility */
     protected $visibility = 'public';
 
+    /** @var bool */
+    private $readOnly = false;
+
+    /** @var bool */
+    private $writeOnly = false;
+
     /**
      * @param ClassDescriptor|TraitDescriptor $parent
      */
@@ -169,5 +175,25 @@ class PropertyDescriptor extends DescriptorAbstract implements
         }
 
         return null;
+    }
+
+    public function setReadOnly(bool $value): void
+    {
+        $this->readOnly = $value;
+    }
+
+    public function isReadOnly() : bool
+    {
+        return $this->readOnly;
+    }
+
+    public function setWriteOnly(bool $value): void
+    {
+        $this->writeOnly = $value;
+    }
+
+    public function isWriteOnly() : bool
+    {
+        return $this->writeOnly;
     }
 }

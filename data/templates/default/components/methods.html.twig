@@ -1,4 +1,4 @@
-{% set methods = methods(node) %}
+{% set methods = methods(node)|sortByVisibility %}
 {% if methods is not empty %}
     <section class="phpdocumentor-methods">
         <h3 class="phpdocumentor-methods__header">Methods</h3>

@@ -1,4 +1,4 @@
-{% set constants = constants(node) %}
+{% set constants = constants(node)|sortByVisibility %}
 
 {% if constants is not empty %}
     <section class="phpdocumentor-constants">

@@ -21,6 +21,20 @@ use phpDocumentor\Reflection\Type;
 interface PropertyInterface extends ElementInterface, TypeInterface
 {
     /**
+     * Returns true when this property is intended to be read-only.
+     *
+     * @link https://docs.phpdoc.org/latest/references/phpdoc/tags/property-read.html
+     */
+    public function isReadOnly(): bool;
+
+    /**
+     * Returns true when this property is intended to be write-only.
+     *
+     * @link https://docs.phpdoc.org/latest/references/phpdoc/tags/property-write.html
+     */
+    public function isWriteOnly(): bool;
+
+    /**
      * Stores a textual representation of the default value for a property.
      */
     public function setDefault(string $default) : void;

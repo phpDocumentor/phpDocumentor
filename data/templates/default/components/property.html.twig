@@ -6,9 +6,17 @@
             -{{ property.visibility }}
             {% if property.static %}-static{% endif %}
             {% if property.deprecated %}-deprecated{% endif %}
+            {% if property.writeOnly %}-write-only{% endif %}
+            {% if property.readOnly %}-read-only{% endif %}
         "
 >
-    <h4 class="phpdocumentor-element__name">${{ property.name }}</h4>
+    <h4 class="phpdocumentor-element__name">
+        ${{ property.name }}
+        <span class="phpdocumentor-element__modifiers">
+            {% if property.writeOnly %}<small class="phpdocumentor-element__modifier">write-only</small>{% endif %}
+            {% if property.readOnly %}<small class="phpdocumentor-element__modifier">read-only</small>{% endif %}
+        </span>
+    </h4>
     {{ include('components/element-found-in.html.twig', {'node': property}) }}
     {{ include('components/summary.html.twig', {'node': property}) }}
     {{ include('components/property-signature.html.twig', {'node': property}) }}

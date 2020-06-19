@@ -54,20 +54,16 @@ lint: phpcs
 test: unit-test
 	docker run -it --rm -v${CURDIR}:/data -w /data php:7.2 -f ./tests/coverage-checker.php 72
 
-unit-test: ARGS=--testsuite=unit
-integration-test: ARGS=--testsuite=integration --no-coverage
-functional-test: ARGS=--testsuite=functional --no-coverage
+unit-test: SUITE=--testsuite=unit
+integration-test: SUITE=--testsuite=integration --no-coverage
+functional-test: SUITE=--testsuite=functional --no-coverage
 
 unit-test integration-test functional-test:
-	docker run -it --rm -v${CURDIR}:/github/workspace phpdoc/phpunit-ga $(ARGS)
+	docker run -it --rm -v${CURDIR}:/github/workspace phpdoc/phpunit-ga $(SUITE) $(ARGS)
 
 .PHONY: e2e-test
 e2e-test: node_modules/.bin/cypress build/default/index.html build/clean/index.html
 	docker run -it --rm -v ${CURDIR}:/e2e -w /e2e cypress/included:3.2.0
-
-.PHONY: behat
-behat:
-	${.DOCKER_COMPOSE_RUN} behat ${ARGS}
 
 .PHONY: composer-require-checker
 composer-require-checker:

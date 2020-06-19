@@ -1,4 +1,4 @@
-{% set tags = tags|filter((v,k) => k not in ['var', 'param', 'return', 'package']) %}
+{% set tags = tags|filter((v,k) => k not in ['var', 'param', 'property', 'property-read', 'property-write', 'method', 'return', 'package']) %}
 
 {% if tags|length > 0 %}
     <h5 class="phpdocumentor-tag-list__heading">Tags</h5>
@@ -21,7 +21,7 @@
                     {% if tag.link %}
                         <a class="phpdocumentor-tag-link" href="{{ tag.link }}">{{ tag.link }}</a>
                     {% endif %}
-                    <section class="phpdocumentor-description">{{ tag.description|default('')|markdown }}</section>
+                    {{ include('components/description.html.twig', {'node': tag}) }}
                 </dd>
             {% endfor %}
         {% endfor %}

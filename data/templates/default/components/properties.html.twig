@@ -1,4 +1,4 @@
-{% set properties = properties(node) %}
+{% set properties = properties(node)|sortByVisibility %}
 
 {% if properties is not empty %}
     <section class="phpdocumentor-properties">

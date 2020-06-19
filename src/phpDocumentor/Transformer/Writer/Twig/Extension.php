@@ -18,6 +18,7 @@ use Parsedown;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\Descriptor\DescriptorAbstract;
+use phpDocumentor\Descriptor\Interfaces\VisibilityInterface;
 use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Descriptor\PackageDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
@@ -259,6 +260,37 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
                             }
 
                             return -1;
+                        }
+                    );
+
+                    return $iterator;
+                }
+            ),
+            'sortByVisibility' => new TwigFilter(
+                'sortByVisibility',
+                /** @var Collection<Descriptor> $collection */
+                static function (Collection $collection) : ArrayIterator {
+                    $visibilityOrder = [
+                        'public' => 0,
+                        'protected' => 1,
+                        'private' => 2,
+                    ];
+                    $iterator = $collection->getIterator();
+                    $iterator->uasort(
+                        static function (Descriptor $a, Descriptor $b) use ($visibilityOrder) {
+                            $prio = 0;
+                            if ($a instanceof VisibilityInterface && $b instanceof VisibilityInterface) {
+                                $prio = ($visibilityOrder[$a->getVisibility()] ?? 0) <=> ($visibilityOrder[$b->getVisibility()] ?? 0);
+                            }
+
+                            if ($prio !== 0) {
+                                return $prio;
+                            }
+
+                            $aElem = strtolower($a->getName());
+                            $bElem = strtolower($b->getName());
+
+                            return $aElem <=> $bElem;
                         }
                     );
 

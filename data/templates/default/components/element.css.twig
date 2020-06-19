@@ -2,6 +2,10 @@
     position: relative;
 }
 
+.phpdocumentor .phpdocumentor-element__name {
+    line-height: 1;
+}
+
 .phpdocumentor-element__package,
 .phpdocumentor-element__extends,
 .phpdocumentor-element__implements {
@@ -22,4 +26,13 @@
 
 .phpdocumentor-element.-deprecated .phpdocumentor-element__name {
     text-decoration: line-through;
+}
+
+.phpdocumentor-element__modifier {
+    font-size: var(--text-xxs);
+    padding: calc(var(--spacing-base-size) / 4) calc(var(--spacing-base-size) / 2);
+    color: var(--text-color);
+    background-color: var(--light-gray);
+    border-radius: 3px;
+    text-transform: uppercase;
 }

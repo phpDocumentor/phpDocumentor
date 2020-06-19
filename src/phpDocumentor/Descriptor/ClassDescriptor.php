@@ -289,6 +289,8 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
                 $property->setName(ltrim($propertyTag->getVariableName(), '$'));
                 $property->setDescription($propertyTag->getDescription());
                 $property->setType($propertyTag->getType());
+                $property->setWriteOnly($propertyTag->getName() === 'property-write');
+                $property->setReadOnly($propertyTag->getName() === 'property-read');
                 $property->setParent($this);
 
                 $properties->add($property);

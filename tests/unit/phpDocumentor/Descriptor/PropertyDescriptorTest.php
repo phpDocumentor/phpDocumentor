@@ -54,6 +54,32 @@ final class PropertyDescriptorTest extends MockeryTestCase
     }
 
     /**
+     * @covers ::isReadOnly
+     * @covers ::setReadOnly
+     */
+    public function testSettingAndGettingWhetherPropertyIsReadOnly() : void
+    {
+        $this->assertFalse($this->fixture->isReadOnly());
+
+        $this->fixture->setReadOnly(true);
+
+        $this->assertTrue($this->fixture->isReadOnly());
+    }
+
+    /**
+     * @covers ::isWriteOnly
+     * @covers ::setWriteOnly
+     */
+    public function testSettingAndGettingWhetherPropertyIsWriteOnly() : void
+    {
+        $this->assertFalse($this->fixture->isWriteOnly());
+
+        $this->fixture->setWriteOnly(true);
+
+        $this->assertTrue($this->fixture->isWriteOnly());
+    }
+
+    /**
      * @covers ::getVisibility
      * @covers ::setVisibility
      */
