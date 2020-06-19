@@ -10,7 +10,9 @@
     <section class="phpdocumentor-sidebar__category">
         <h2 class="phpdocumentor-sidebar__category-header">Namespaces</h2>
         {% if usesNamespaces or not usesPackages %}
+            {% if project.namespace.functions is not empty or project.namespace.constants is not empty or project.namespace.classes is not empty or project.namespace.interfaces is not empty or project.namespace.traits is not empty %}
             <h3 class="phpdocumentor-sidebar__root-namespace">{{ project.namespace|route('Global') }}</h3>
+            {% endif %}
             {% for namespace in project.namespace.children %}
                 <h4 class="phpdocumentor-sidebar__root-namespace">{{ namespace|route('class:short') }}</h4>
                 <ul class="phpdocumentor-list">
