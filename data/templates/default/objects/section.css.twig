@@ -7,15 +7,15 @@
     width: 100%;
 }
 
-@media (min-width: 400px) {
+@media (min-width: {{ breakpoints['ls'] }}) {
     .phpdocumentor-section {
         padding: 0;
-        width: 85%;
+        width: 95%;
     }
 }
 
-@media (min-width: 550px) {
+@media (min-width: {{ breakpoints['xl'] }}) {
     .phpdocumentor-section {
-        width: 80%;
+        width: 85%;
     }
 }

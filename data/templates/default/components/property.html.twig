@@ -1,4 +1,3 @@
-<a id="property_{{ property.name }}"></a>
 <article
         class="
             phpdocumentor-element
@@ -10,8 +9,9 @@
             {% if property.readOnly %}-read-only{% endif %}
         "
 >
-    <h4 class="phpdocumentor-element__name">
+    <h4 class="phpdocumentor-element__name" id="property_{{ property.name }}">
         ${{ property.name }}
+        <a href="#property_{{ property.name }}" class="headerlink"><i class="fas fa-link"></i></a>
         <span class="phpdocumentor-element__modifiers">
             {% if property.writeOnly %}<small class="phpdocumentor-element__modifier">write-only</small>{% endif %}
             {% if property.readOnly %}<small class="phpdocumentor-element__modifier">read-only</small>{% endif %}

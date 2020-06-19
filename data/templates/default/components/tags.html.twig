@@ -1,7 +1,10 @@
 {% set tags = tags|filter((v,k) => k not in ['var', 'param', 'property', 'property-read', 'property-write', 'method', 'return', 'package', 'api']) %}
 
 {% if tags|length > 0 %}
-    <h5 class="phpdocumentor-tag-list__heading">Tags</h5>
+    <h5 class="phpdocumentor-tag-list__heading" id="tags">
+        Tags
+        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
+    </h5>
     <dl class="phpdocumentor-tag-list">
         {% for name,seriesOfTag in tags %}
             {% for tag in seriesOfTag %}

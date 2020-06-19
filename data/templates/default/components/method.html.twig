@@ -1,4 +1,3 @@
-<a id="method_{{ method.name }}"></a>
 <article
         class="phpdocumentor-element
             -method
@@ -9,7 +8,10 @@
             {% if method.final %}-final{% endif %}
         "
 >
-    <h4 class="phpdocumentor-element__name">{{ method.name }}()</h4>
+    <h4 class="phpdocumentor-element__name" id="method_{{ method.name }}">
+        {{ method.name }}()
+        <a href="#method_{{ method.name }}" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
     {{ include('components/element-found-in.html.twig', {'node': method}) }}
     {{ include('components/summary.html.twig', {'node': method}) }}
     {{ include('components/method-signature.html.twig', {'node': method}) }}

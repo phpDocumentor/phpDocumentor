@@ -2,7 +2,10 @@
 
 {% if properties is not empty %}
     <section class="phpdocumentor-properties">
-        <h3 class="phpdocumentor-properties__header">Properties</h3>
+        <h3 class="phpdocumentor-elements__header" id="properties">
+            Properties
+            <a href="#properties" class="headerlink"><i class="fas fa-link"></i></a>
+        </h3>
         {% for property in properties %}
             {% include 'components/property.html.twig' %}
         {% endfor %}

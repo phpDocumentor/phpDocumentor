@@ -2,7 +2,10 @@
 
 {% if constants is not empty %}
     <section class="phpdocumentor-constants">
-        <h3 class="phpdocumentor-constants__header">Constants</h3>
+        <h3 class="phpdocumentor-elements__header" id="constants">
+            Constants
+            <a href="#constants" class="headerlink"><i class="fas fa-link"></i></a>
+        </h3>
         {% for constant in constants %}
             {% include 'components/constant.html.twig' %}
         {% endfor %}
