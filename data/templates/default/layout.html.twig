@@ -20,7 +20,7 @@
         <script defer src="{{ path('js/searchIndex.js') }}"></script>
     {% endblock %}
 </head>
-<body>
+<body id="top">
     {% include 'components/header.html.twig' %}
 
     <main class="phpdocumentor">
@@ -32,7 +32,9 @@
                 {% include 'components/search-results.html.twig' %}
             </div>
         </div>
+        {{ include('components/back-to-top.html.twig') }}
     </main>
+
     <script>
         cssVars({});
     </script>
