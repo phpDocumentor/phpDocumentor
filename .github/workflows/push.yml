@@ -569,32 +569,32 @@ jobs:
           image: 'docker.pkg.github.com/phpdocumentor/phpdocumentor/demo.phpdoc.org'
           tag: ${{ steps.demo_build.outputs.tag }}
 
-    build-asset-pack:
-        needs:
-            - phpunit
-            - e2e
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v2
-            - name: 'Build assets'
-              uses: ./ # use this repo as an action
-              with:
-                  template: 'default'
-                  target: 'build/api'
-            - name: 'Copy assets'
-              run: |
-                  mkdir -p data/asset-builder/css; \
-                  mkdir -p data/asset-builder/js; \
-                  cp -r build/api/css/base.css data/asset-builder/css/base.css; \
-                  cp -r build/api/css/normalize.css data/asset-builder/css/normalize.css; \
-                  cp -r build/api/js/search.js data/asset-builder/js/search.js;
-            # Setup .npmrc file to publish to GitHub Packages
-            - uses: actions/setup-node@v1
-              with:
-                  node-version: '12.x'
-                  registry-url: 'https://npm.pkg.github.com'
-                  scope: '@phpdocumentor'
-            - run: npm install
-            - run: npm publish
-              env:
-                  NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}        
+  build-asset-pack:
+    needs:
+    - phpunit
+    - e2e
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: 'Build assets'
+      uses: ./ # use this repo as an action
+      with:
+          template: 'default'
+          target: 'build/api'
+    - name: 'Copy assets'
+      run: |
+          mkdir -p data/asset-builder/css; \
+          mkdir -p data/asset-builder/js; \
+          cp -r build/api/css/base.css data/asset-builder/css/base.css; \
+          cp -r build/api/css/normalize.css data/asset-builder/css/normalize.css; \
+          cp -r build/api/js/search.js data/asset-builder/js/search.js;
+    # Setup .npmrc file to publish to GitHub Packages
+    - uses: actions/setup-node@v1
+      with:
+          node-version: '12.x'
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@phpdocumentor'
+    - run: npm install
+    - run: npm publish
+      env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}        
