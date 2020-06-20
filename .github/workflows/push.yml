@@ -581,6 +581,8 @@ jobs:
           cp -r build/api/css/base.css data/asset-builder/css/base.css; \
           cp -r build/api/css/normalize.css data/asset-builder/css/normalize.css; \
           cp -r build/api/js/search.js data/asset-builder/js/search.js;
+    - name: 'Switch to assets context'
+      run: cd data/asset-builder
     # Setup .npmrc file to publish to GitHub Packages
     - uses: actions/setup-node@v1
       with:
