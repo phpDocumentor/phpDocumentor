@@ -1,8 +1,8 @@
 {% if (method.response.type and method.response.type != 'void') or method.response.description %}
     <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type">{{ method.response.type|route('class:short')|join('|')|raw }}</span>
-    {% if method.response.description %}
+    {% if method.response %}
         &mdash;
-        {{ include('components/description.html.twig', {'node': method.response.description}) }}
+        {{ include('components/description.html.twig', {'node': method.response}) }}
     {% endif %}
 {% endif %}
