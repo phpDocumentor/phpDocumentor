@@ -452,7 +452,7 @@ jobs:
 
   phpunit:
     runs-on: ${{ matrix.operating-system }}
-    continue-on-error: matrix.operating-system == 'windows-latest'
+    continue-on-error: ${{ matrix.operating-system }} == 'windows-latest'
     strategy:
       fail-fast: false
       matrix:
