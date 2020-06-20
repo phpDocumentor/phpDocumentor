@@ -533,7 +533,6 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - phpunit
-      - e2e
     if: github.event_name == 'push'
     steps:
       - uses: actions/checkout@master
@@ -574,7 +573,6 @@ jobs:
   build-asset-pack:
     needs:
     - phpunit
-    - e2e
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
