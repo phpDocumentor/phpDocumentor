@@ -526,7 +526,7 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - phpunit
-    if: github.event_name == 'push'
+    if: github.ref == 'refs/heads/master'
     steps:
       - uses: actions/checkout@v2
       - name: 'phpDoc clean'
@@ -564,9 +564,10 @@ jobs:
           tag: ${{ steps.demo_build.outputs.tag }}
 
   build-asset-pack:
-#    needs:
-#    - phpunit
+    needs:
+    - phpunit
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
     steps:
     - uses: actions/checkout@v2
     - name: 'Build assets'
