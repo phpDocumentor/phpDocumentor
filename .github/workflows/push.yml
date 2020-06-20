@@ -14,10 +14,7 @@ jobs:
   setup:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
-
-      - name: test
-        run: echo ${{ env.phiveHome }}
+      - uses: actions/checkout@v2
 
       - name: Setup cache environment
         id: cache-env
@@ -28,7 +25,7 @@ jobs:
           key: ${{ env.key }}
 
       - name: Cache extensions
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           path: ${{ steps.cache-env.outputs.dir }}
           key: ${{ steps.cache-env.outputs.key }}
@@ -47,7 +44,7 @@ jobs:
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
 
       - name: Cache composer dependencies
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: composer-${{ hashFiles('**/composer.lock') }}
@@ -63,19 +60,13 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           args: check --config-file ./composer-require-config.json composer.json
-      - name: Install phive
-        run: make install-phive
-      - name: Install PHAR dependencies
-        env:
-          GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: tools/phive.phar --no-progress --home ${{ env.phiveHome }} install --copy --trust-gpg-keys ${{ env.phiveGPGKeys }} --force-accept-unsigned
 
   phpunit-with-coverage:
     runs-on: ubuntu-latest
     name: Unit tests [7.2 | ubuntu-latest]
     needs: setup
     steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@v2
 
     - name: Setup cache environment
       id: cache-env
@@ -86,7 +77,7 @@ jobs:
         key: ${{ env.key }}
 
     - name: Cache extensions
-      uses: actions/cache@v1
+      uses: actions/cache@v2
       with:
         path: ${{ steps.cache-env.outputs.dir }}
         key: ${{ steps.cache-env.outputs.key }}
@@ -105,7 +96,7 @@ jobs:
       run: echo "::set-output name=dir::$(composer config cache-files-dir)"
 
     - name: Cache composer dependencies
-      uses: actions/cache@v1
+      uses: actions/cache@v2
       with:
         path: ${{ steps.composer-cache.outputs.dir }}
         key: composer-${{ hashFiles('**/composer.lock') }}
@@ -136,9 +127,9 @@ jobs:
     needs:
       - setup
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v2
       - name: Restore/cache vendor folder
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           path: vendor
           key: all-build-${{ hashFiles('**/composer.lock') }}
@@ -146,7 +137,7 @@ jobs:
             all-build-${{ hashFiles('**/composer.lock') }}
             all-build-
       - name: Code style check
-        uses: phpDocumentor/coding-standard@master
+        uses: phpDocumentor/coding-standard@latest
         with:
           args: -s
 
@@ -155,7 +146,7 @@ jobs:
     needs:
       - setup
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v2
 
       - name: Setup cache environment
         id: cache-env
@@ -166,7 +157,7 @@ jobs:
           key: ${{ env.key }}
 
       - name: Cache extensions
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           path: ${{ steps.cache-env.outputs.dir }}
           key: ${{ steps.cache-env.outputs.key }}
@@ -185,7 +176,7 @@ jobs:
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
 
       - name: Cache composer dependencies
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: composer-${{ hashFiles('**/composer.lock') }}
@@ -206,7 +197,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [setup]
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v2
 
       - name: Setup cache environment
         id: cache-env
@@ -217,7 +208,7 @@ jobs:
           key: ${{ env.key }}
 
       - name: Cache extensions
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           path: ${{ steps.cache-env.outputs.dir }}
           key: ${{ steps.cache-env.outputs.key }}
@@ -236,7 +227,7 @@ jobs:
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
 
       - name: Cache composer dependencies
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: composer-${{ hashFiles('**/composer.lock') }}
@@ -255,7 +246,7 @@ jobs:
     needs:
       - setup
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v2
 
       - name: Setup cache environment
         id: cache-env
@@ -266,7 +257,7 @@ jobs:
           key: ${{ env.key }}
 
       - name: Cache extensions
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           path: ${{ steps.cache-env.outputs.dir }}
           key: ${{ steps.cache-env.outputs.key }}
@@ -285,7 +276,7 @@ jobs:
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
 
       - name: Cache composer dependencies
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: composer-${{ hashFiles('**/composer.lock') }}
@@ -315,9 +306,9 @@ jobs:
     needs:
       - build-phar
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v2
       - name: Restore/cache vendor folder
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           path: vendor
           key: all-build-${{ hashFiles('**/composer.lock') }}
@@ -350,7 +341,7 @@ jobs:
     needs:
       - setup
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v2
 
       - name: Setup cache environment
         id: cache-env
@@ -361,7 +352,7 @@ jobs:
           key: ${{ env.key }}
 
       - name: Cache extensions
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           path: ${{ steps.cache-env.outputs.dir }}
           key: ${{ steps.cache-env.outputs.key }}
@@ -380,7 +371,7 @@ jobs:
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
 
       - name: Cache composer dependencies
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: composer-${{ hashFiles('**/composer.lock') }}
@@ -412,7 +403,7 @@ jobs:
     needs:
       - e2e
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v2
 
       - name: Setup cache environment
         id: cache-env
@@ -423,7 +414,7 @@ jobs:
           key: ${{ env.key }}
 
       - name: Cache extensions
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           path: ${{ steps.cache-env.outputs.dir }}
           key: ${{ steps.cache-env.outputs.key }}
@@ -442,7 +433,7 @@ jobs:
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
 
       - name: Cache composer dependencies
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: composer-${{ hashFiles('**/composer.lock') }}
@@ -462,6 +453,7 @@ jobs:
   phpunit:
     runs-on: ${{ matrix.operating-system }}
     strategy:
+      fail-fast: false
       matrix:
         operating-system:
           - ubuntu-latest
@@ -481,7 +473,7 @@ jobs:
     - phpstan
     - codestyle
     steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@v2
 
     - name: Setup cache environment
       id: cache-env
@@ -492,7 +484,7 @@ jobs:
         key: ${{ env.key }}
 
     - name: Cache extensions
-      uses: actions/cache@v1
+      uses: actions/cache@v2
       with:
         path: ${{ steps.cache-env.outputs.dir }}
         key: ${{ steps.cache-env.outputs.key }}
@@ -504,14 +496,14 @@ jobs:
         php-version: ${{ matrix.php-versions }}
         extensions: ${{ env.extensions }}
         ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
-        tools: pecl, phive:0.13.3
+        tools: pecl, phive
 
     - name: Get composer cache directory
       id: composer-cache
       run: echo "::set-output name=dir::$(composer config cache-files-dir)"
 
     - name: Cache composer dependencies
-      uses: actions/cache@v1
+      uses: actions/cache@v2
       with:
         path: ${{ steps.composer-cache.outputs.dir }}
         key: composer-${{ hashFiles('**/composer.lock') }}
@@ -535,7 +527,7 @@ jobs:
       - phpunit
     if: github.event_name == 'push'
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v2
       - name: 'phpDoc clean'
         uses: ./ # use this repo as an action
         with:
