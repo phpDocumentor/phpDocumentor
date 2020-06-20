@@ -564,8 +564,8 @@ jobs:
           tag: ${{ steps.demo_build.outputs.tag }}
 
   build-asset-pack:
-    needs:
-    - phpunit
+#    needs:
+#    - phpunit
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
