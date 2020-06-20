@@ -25,14 +25,14 @@ interface PropertyInterface extends ElementInterface, TypeInterface
      *
      * @link https://docs.phpdoc.org/latest/references/phpdoc/tags/property-read.html
      */
-    public function isReadOnly(): bool;
+    public function isReadOnly() : bool;
 
     /**
      * Returns true when this property is intended to be write-only.
      *
      * @link https://docs.phpdoc.org/latest/references/phpdoc/tags/property-write.html
      */
-    public function isWriteOnly(): bool;
+    public function isWriteOnly() : bool;
 
     /**
      * Stores a textual representation of the default value for a property.

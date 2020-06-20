@@ -177,7 +177,7 @@ class PropertyDescriptor extends DescriptorAbstract implements
         return null;
     }
 
-    public function setReadOnly(bool $value): void
+    public function setReadOnly(bool $value) : void
     {
         $this->readOnly = $value;
     }
@@ -187,7 +187,7 @@ class PropertyDescriptor extends DescriptorAbstract implements
         return $this->readOnly;
     }
 
-    public function setWriteOnly(bool $value): void
+    public function setWriteOnly(bool $value) : void
     {
         $this->writeOnly = $value;
     }
