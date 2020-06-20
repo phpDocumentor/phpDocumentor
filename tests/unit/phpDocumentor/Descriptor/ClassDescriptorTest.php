@@ -236,6 +236,7 @@ final class ClassDescriptorTest extends MockeryTestCase
         $propertyMock->shouldReceive('getVariableName')->andReturn($variableName);
         $propertyMock->shouldReceive('getDescription')->andReturn($description);
         $propertyMock->shouldReceive('getType')->andReturn(new String_());
+        $propertyMock->shouldReceive('getName')->andReturn('property');
 
         $this->fixture->getTags()->fetch('property', new Collection())->add($propertyMock);
 

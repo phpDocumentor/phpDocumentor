@@ -20,7 +20,7 @@ install-phive: tools/phive.phar
 
 .PHONY: setup
 setup: install-phive
-	docker-compose run --rm --entrypoint=/usr/local/bin/php phpdoc tools/phive.phar install --copy --trust-gpg-keys 4AA394086372C20A,D2CCAC42F6295E7D,E82B2FB314E9906E,8E730BA25823D8B5,D0254321FB74703A --force-accept-unsigned
+	docker-compose run --rm --entrypoint=/usr/local/bin/php phpdoc tools/phive.phar install --copy --trust-gpg-keys 4AA394086372C20A,D2CCAC42F6295E7D,E82B2FB314E9906E,8E730BA25823D8B5,D0254321FB74703A,8A03EA3B385DBAA1 --force-accept-unsigned
 
 .PHONY: pull-containers
 pull-containers:
