@@ -27,18 +27,18 @@ describe('Class Detail Page', function() {
     });
 
     it('Has a summary', function() {
-        cy.get('.phpdocumentor-class__summary')
+        cy.get('.phpdocumentor-summary')
             .contains("Entrypoint for this pizza ordering application.");
     });
 
     it('Has a description', function() {
-        cy.get('.phpdocumentor-class__description')
+        cy.get('.phpdocumentor-description')
             .contains("This class provides an interface through which you can order pizza's and pasta's from Mario's Pizzeria.");
     });
 
     it('Shows a single implemented interface; which is not clickable because it is external', function() {
-        cy.get('.phpdocumentor-class__implements').contains("JsonSerializable");
-        cy.get('.phpdocumentor-class__implements abbr')
+        cy.get('.phpdocumentor-element__implements').contains("JsonSerializable");
+        cy.get('.phpdocumentor-element__implements abbr')
             .should("have.attr", 'title', '\\JsonSerializable');
     });
 
@@ -55,12 +55,12 @@ describe('Class Detail Page', function() {
 
          before(function(){
             cy.visit('build/default/classes/Marios-Pizzeria.html');
-            methods = cy.get('.phpdocumentor-method');
+            methods = cy.get('.phpdocumentor-element.-method');
         });
 
         it('Shows the variadic indicator with argument "$pizzas" in the "order" method', function() {
-            let method = methods.get('.phpdocumentor-method__name').contains("order()").parent();
-            method.get('.phpdocumentor-signature__argument__variadic-operator').contains('...');
+            let method = methods.get('.phpdocumentor-element__name').contains("order()").parent();
+            method.get('.phpdocumentor-signature__element__variadic-operator').contains('...');
         });
 
         describe('Shows the "jsonSerialize" method; as an example of a public, implemented, method from the "JsonSerializable" interface', function () {
@@ -71,7 +71,7 @@ describe('Class Detail Page', function() {
             });
 
             it('Shows the name "jsonSerialize()"', function() {
-                method.get('.phpdocumentor-method__name').contains("jsonSerialize()");
+                method.get('.phpdocumentor-element__name').contains("jsonSerialize()");
             });
 
             it('Shows the file name where "jsonSerialize()" is located', function() {
@@ -90,15 +90,15 @@ describe('Class Detail Page', function() {
             });
 
             it('Has a "public" visibility class to influence styling', function() {
-                method.should('have.class', '.phpdocumentor-element---public');
-                method.should('not.have.class', '.phpdocumentor-element---protected');
-                method.should('not.have.class', '.phpdocumentor-element---private');
+                method.should('have.class', '.-public');
+                method.should('not.have.class', '.-protected');
+                method.should('not.have.class', '.-private');
             });
 
             it('Is not marked as static, final or abstract', function() {
-                method.should('not.have.class', '.phpdocumentor-element---final');
-                method.should('not.have.class', '.phpdocumentor-element---static');
-                method.should('not.have.class', '.phpdocumentor-element---abstract');
+                method.should('not.have.class', '.-final');
+                method.should('not.have.class', '.-static');
+                method.should('not.have.class', '.-abstract');
             });
 
             describe('signature', function () {
@@ -130,20 +130,20 @@ describe('Class Detail Page', function() {
             });
 
             it('Shows the name "doOrder()"', function() {
-                method.get('.phpdocumentor-method__name').contains("doOrder()");
+                method.get('.phpdocumentor-element__name').contains("doOrder()");
             });
 
             it('Has a "protected private" visibility class to influence styling', function() {
-                method.should('not.have.class', '.phpdocumentor-element---public');
-                method.should('have.class', '.phpdocumentor-element---protected');
-                method.should('not.have.class', '.phpdocumentor-element---private');
+                method.should('not.have.class', '.-public');
+                method.should('have.class', '.-protected');
+                method.should('not.have.class', '.-private');
             });
 
             it('Is marked as static, but not as final, deprecated or abstract', function() {
-                method.should('not.have.class', '.phpdocumentor-element---final');
-                method.should('have.class', '.phpdocumentor-element---static');
-                method.should('not.have.class', '.phpdocumentor-element---abstract');
-                method.should('not.have.class', '.phpdocumentor-element---deprecated');
+                method.should('not.have.class', '.-final');
+                method.should('have.class', '.-static');
+                method.should('not.have.class', '.-abstract');
+                method.should('not.have.class', '.-deprecated');
             });
 
             describe('signature', function () {
@@ -175,20 +175,20 @@ describe('Class Detail Page', function() {
             });
 
             it('Shows the name "doOldOrder()"', function() {
-                method.get('.phpdocumentor-method__name').contains("doOldOrder()");
+                method.get('.phpdocumentor-element__name').contains("doOldOrder()");
             });
 
             it('Has a "private" visibility class to influence styling', function() {
-                method.should('not.have.class', '.phpdocumentor-element---public');
-                method.should('not.have.class', '.phpdocumentor-element---protected');
-                method.should('have.class', '.phpdocumentor-element---private');
+                method.should('not.have.class', '.-public');
+                method.should('not.have.class', '.-protected');
+                method.should('have.class', '.-private');
             });
 
             it('Is marked as final and deprecated, but not as static or abstract', function() {
-                method.should('have.class', '.phpdocumentor-element---final');
-                method.should('not.have.class', '.phpdocumentor-element---static');
-                method.should('not.have.class', '.phpdocumentor-element---abstract');
-                method.should('have.class', '.phpdocumentor-element---deprecated');
+                method.should('have.class', '.-final');
+                method.should('not.have.class', '.-static');
+                method.should('not.have.class', '.-abstract');
+                method.should('have.class', '.-deprecated');
             });
 
             describe('signature', function () {
@@ -199,7 +199,7 @@ describe('Class Detail Page', function() {
                 });
 
                 it('has the deprecated modifier', function() {
-                    signature.should('have.class', '.phpdocumentor-signature--deprecated');
+                    signature.should('have.class', '.-deprecated');
                 });
 
                 it('Shows the "private" visibility specifier', function() {
