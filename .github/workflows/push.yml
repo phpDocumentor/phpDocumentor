@@ -589,7 +589,11 @@ jobs:
           node-version: '12.x'
           registry-url: 'https://npm.pkg.github.com'
           scope: '@phpdocumentor'
-    - run: npm install
-    - run: npm publish
+    - run: |
+            cd data/asset-builder; \
+            npm install
+    - run: |
+             npm publish; \
+             cd data/asset-builder;
       env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}        
