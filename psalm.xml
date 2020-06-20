@@ -6,7 +6,7 @@
     xmlns="https://getpsalm.org/schema/config"
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
     autoloader="vendor/autoload.php"
-    findUnusedVariablesAndParams="true"
+    findUnusedVariablesAndParams="false"
 >
     <projectFiles>
         <directory name="src" />
@@ -119,7 +119,7 @@
                 <file name="src/phpDocumentor/Console/Command/Project/RunCommand.php"/>
             </errorLevel>
         </UnusedClosureParam>
-        
+
         <TooManyTemplateParams>
             <errorLevel type="suppress">
                 <file name="src/phpDocumentor/Compiler/Compiler.php"/>
