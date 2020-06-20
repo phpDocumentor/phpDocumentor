@@ -1,5 +1,10 @@
 {
   "name": "@phpdocumentor/template-default-assets",
+  "repository" : {
+    "type" : "git",
+    "url": "ssh://git@github.com/phpDocumentor/phpDocumentor.git",
+    "directory": "data/asset-builder"
+  },
   "version": "1.0.0",
   "description": "The base assets used to render the default template",
   "files": [
