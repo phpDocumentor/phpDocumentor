@@ -452,9 +452,7 @@ jobs:
 
   phpunit:
     runs-on: ${{ matrix.operating-system }}
-    continue-on-error: ${{ matrix.operating-system == 'windows-latest' }}
     strategy:
-      fail-fast: false
       matrix:
         operating-system:
           - ubuntu-latest
@@ -517,7 +515,7 @@ jobs:
     - name: Install PHAR dependencies
       env:
         GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: phive --no-progress --home ${{ env.phiveHome }} install --copy --trust-gpg-keys ${{ env.phiveGPGKeys }} --force-accept-unsigned
+      run: phive --no-progress install --copy --trust-gpg-keys ${{ env.phiveGPGKeys }} --force-accept-unsigned
 
     - name: Run PHPUnit
       run: php tools/phpunit --testsuite=unit,integration
