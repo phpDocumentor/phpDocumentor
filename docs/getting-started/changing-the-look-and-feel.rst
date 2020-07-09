@@ -7,11 +7,11 @@ Overview
 With this tutorial, I want to show you how the look and feel of phpDocumentor can be changed using one of the
 existing templates or by selecting a custom-made template.
 
-What is a template?
--------------------
-
 To be fair, the title of this tutorial is mildly misleading. Why? A template in phpDocumentor means so much
 more than just the look and feel of your generated documentation.
+
+What is a template?
+-------------------
 
 A template in phpDocumentor is a series of actions, called *transformations*, that is capable of crafting the
 desired output. With this mechanism, it is possible to generate HTML, XML, PDF but also to copy files to a destination
@@ -24,15 +24,15 @@ Selecting a template
 --------------------
 
 phpDocumentor has several different templates_ out-of-the-box to customize the look and feel of your documentation.
-The ``default`` template has been created to be fully customizable with just CSS. We will explain later on this page how
+The ``default`` template has been created to be fully customizable using only CSS. We will explain later on this page how
 you can customize this ``default`` template.
 
 .. note::
 
-The number of templates provided by phpDocumentor have been reduced a lot. Maintaining a template takes a lot of time.
-Therefore we dropped all XML based templates that were provided by phpDocumentor 2. For people who developed an XML template
-in the past a new ``xml`` template has been added with the same structure as in v2. This should allow you to transform the
-XML manually to recreate your documentation.
+    The number of templates provided by phpDocumentor have been reduced a lot. Maintaining a template takes a lot of time.
+    Therefore we dropped all XML based templates that were provided by phpDocumentor 2. For people who developed an XML
+    template in the past a new ``xml`` template has been added with the same structure as in v2. This should allow you
+    to transform the XML manually to recreate your documentation.
 
 To apply a template other than the default you can add the ``--template`` option::
 
@@ -51,17 +51,6 @@ You can instruct phpDocumentor to use multiple templates by using a comma-separa
 
 Here you can see how both the ``xml`` template and the ``clean`` template are applied; which results in both
 HTML documentation and an XML structure document.
-
-Using a custom template
------------------------
-
-When you have a company or project-branded template you can also use that with phpDocumentor by providing the location
-of your template's folder::
-
-    $ phpdoc -d "./src" -t "./docs/api" --template="data/templates/my_template"
-
-In the above example is demonstrated how a custom template in a folder ``data/templates/my_template``, relative to
-the current working directory is being used to generate documentation.
 
 Adding templates to configuration
 ---------------------------------
@@ -88,22 +77,22 @@ Customizing the look and feel
 -----------------------------
 
 phpDocumentor allows you to customize the look and feel with some small steps. When you specify a build-in template
-phpDocumentor will first look in `<project_root>/.phpdoc/template` for files. By adding your twig file in this
+phpDocumentor will first look in ``<project_root>/.phpdoc/template`` for files. By adding your twig file in this
 directory you can customize parts of the generated HTML. For example, when you want to remove breadcrumbs,
-you create an empty file named `breadcrumbs.html.twig` in `.phpdoc/template/`.
+you create an empty file named ``breadcrumbs.html.twig`` in ``.phpdoc/template/``.
 Have a look in the `template directory`_ which other files can be overwritten.
 
-Besides the templates phpDocumentor allows you to customize the looks of the included templates just by modifying the CSS.
-To do this you have to create a file named `template.css.twig` in `.phpdoc/template/css`. The minimal contents should be as
-below. The `base::` prefix allows you to extend files from the original template.
+Besides the templates phpDocumentor allows you to customize the looks of the included templates by modifying the CSS.
+To do this you have to create a file named ``template.css.twig ` in ``.phpdoc/template/css``. The minimal contents
+should be as below. The ``base::`` prefix allows you to extend files from the original template.
 
 .. code-block:: css
 
-{% extends 'base::css/template.css.twig' %}
+    {% extends 'base::css/template.css.twig' %}
 
-{% block custom %}
-/* your overwrites here */
-{% endblock %}
+    {% block custom %}
+    /* your overwrites here */
+    {% endblock %}
 
 Creating your own look and feel
 -------------------------------
@@ -134,9 +123,22 @@ destination location (the target folder) so that it may be referred to, and link
         </transformations>
     </phpdocumentor>
 
+Using a custom template
+-----------------------
+
+When you have a company or project-branded template you can also use that with phpDocumentor by providing the location
+of your template's folder::
+
+    $ phpdoc -d "./src" -t "./docs/api" --template="data/templates/my_template"
+
+In the above example is demonstrated how a custom template in a folder ``data/templates/my_template``, relative to
+the current working directory is being used to generate documentation.
+
+
 Read more
 ---------
 
+* :doc:`creating-your-own-template-using-twig`
 * :doc:`../guides/templates`
 
 .. _templates: https://phpdoc.org/templates
