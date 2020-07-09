@@ -1,33 +1,34 @@
 @license
 ========
 
-The @license tag is used to indicate which license is applicable for the associated
-Structural Elements.
+The ``@license`` tag is used to indicate which license is applicable for the associated
+*Structural Elements*.
 
 Syntax
 ------
+
+.. code-block::
 
     @license [<url>] [name]
 
 Description
 -----------
 
-The @license tag provides the user with the name and URL of the license that is
-applicable to Structural Elements and any of their child elements.
+The ``@license`` tag provides the user with the name and URL of the license that is
+applicable to a *Structural Element* and any of its child elements.
 
-It is NOT RECOMMENDED to apply @license tags to any PHPDoc other than
-file-level PHPDocs as this may cause confusion which license applies at which
-time.
+It is RECOMMENDED to apply @license tags ONLY to file-level PHPDocs, to prevent
+confusion over which license applies to any particular *Structural Element*.
 
-Whenever multiple licenses apply MUST there be one @license tag per applicable
+Whenever multiple licenses apply, there MUST be one ``@license`` tag per applicable
 license.
 
 Effects in phpDocumentor
 ------------------------
 
-Structural Elements tagged with the @license tag will show a link to the
-given license in case an URL is provided or the name contains one of the following
-license forms:
+*Structural Elements* tagged with the ``@license`` tag will show a link to the
+given license in case a URL is provided or the name is one of the following
+license names:
 
 * GPL, or GNU General Public License, version 2
 * GPL, or GNU General Public License, version 3
@@ -45,7 +46,9 @@ Examples
 .. code-block:: php
    :linenos:
 
+    <?php
     /**
      * @license GPL
+     *
      * @license https://opensource.org/licenses/gpl-license.php GNU Public License
      */
