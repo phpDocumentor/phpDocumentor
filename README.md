@@ -51,7 +51,7 @@ However, code of earlier PHP versions can be analyzed.
 All templates provided with phpDocumentor have support for Class diagrams based on the read code base.
 This will require the application [Graphviz] to be installed on the machine running phpDocumentor.
 Rendering the class diagrams using [Graphviz] is optional, and warnings about missing [Graphviz] can be ignored.
-However, your documentation will contain some dead links in this case.
+However, your documentation will contain some dead links in this case. Class diagram will be created with option `--setting=graphs.enabled=true`.
 
 There are 3 ways to install phpDocumentor:
 
