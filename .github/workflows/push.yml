@@ -52,7 +52,7 @@ jobs:
 
       - name: Install Composer dependencies
         run: |
-          composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+          composer install --no-progress --prefer-dist --optimize-autoloader
 
       - name: composer-require-checker
         uses: docker://phpga/composer-require-checker-ga
@@ -104,7 +104,7 @@ jobs:
 
     - name: Install Composer dependencies
       run: |
-        composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+        composer install --no-progress --prefer-dist --optimize-autoloader
 
     - name: Install phive
       run: make install-phive
@@ -184,7 +184,7 @@ jobs:
 
       - name: Install Composer dependencies
         run: |
-          composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+          composer install --no-progress --prefer-dist --optimize-autoloader
 
       - name: PHPStan
         uses: phpDocumentor/phpstan-ga@master
@@ -235,7 +235,7 @@ jobs:
 
       - name: Install Composer dependencies
         run: |
-          composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+          composer install --no-progress --prefer-dist --optimize-autoloader
 
       - name: Psalm
         run: psalm --output-format=github
@@ -284,7 +284,7 @@ jobs:
 
       - name: Install Composer dependencies
         run: |
-          composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+          composer install --no-progress --prefer-dist --optimize-autoloader
 
       - name: warm cache
         uses: docker://phpdoc/phar-ga:master
@@ -379,7 +379,7 @@ jobs:
 
       - name: Install Composer dependencies
         run: |
-          composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+          composer install --no-progress --prefer-dist --optimize-autoloader
 
       - name: Build example project using Clean template
         run: ./bin/phpdoc --template=clean -vvv --config=data/examples/MariosPizzeria/phpdoc.xml --target=build/clean
@@ -441,7 +441,7 @@ jobs:
 
       - name: Install Composer dependencies
         run: |
-          composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+          composer install --no-progress --prefer-dist --optimize-autoloader
 
       - name: Build example project using Clean template
         run: ./bin/phpdoc --template=clean --config=data/examples/MariosPizzeria/phpdoc.xml --target=build/clean
@@ -510,7 +510,7 @@ jobs:
 
     - name: Install Composer dependencies
       run: |
-        composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+        composer install --no-progress --prefer-dist --optimize-autoloader
 
     - name: Install PHAR dependencies
       env:
