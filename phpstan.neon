@@ -12,7 +12,7 @@ parameters:
     - '#.*NodeDefinition::fixXmlConfig.*#'
     - '#.*NodeDefinition::addDefaultsIfNotSet.*#'
 
-    - '#Call to an undefined method League\\Flysystem\\Filesystem::find()#'
+    - '#Call to an undefined method League\\Flysystem\\Filesystem::find\(\)#'
     # Bad design of descriptors.
     - '#Access to an undefined property phpDocumentor\\Descriptor\\Collection<phpDocumentor\\Descriptor\\Collection<phpDocumentor\\Descriptor\\DescriptorAbstract>>::\$[a-z]+#'
     # https://github.com/phpDocumentor/phpDocumentor/issues/2279
