@@ -89,7 +89,7 @@ jobs:
         php-version: ${{ env.defaultPHPVersion }}
         extensions: ${{ env.extensions }}
         ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
-        tools: pecl
+        tools: pecl, phive
 
     - name: Get composer cache directory
       id: composer-cache
@@ -106,12 +106,10 @@ jobs:
       run: |
         composer install --no-progress --prefer-dist --optimize-autoloader
 
-    - name: Install phive
-      run: make install-phive
     - name: Install PHAR dependencies
       env:
         GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: tools/phive.phar --no-progress install --copy --trust-gpg-keys ${{ env.phiveGPGKeys }} --force-accept-unsigned
+      run: phive --no-progress install --copy --trust-gpg-keys ${{ env.phiveGPGKeys }} --force-accept-unsigned
 
     - name: PHPUnit
       uses: docker://phpdoc/phpunit-ga:latest
