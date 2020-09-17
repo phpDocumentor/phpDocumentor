@@ -4,5 +4,5 @@
   <phar name="composer-require-checker" version="^2.0.0" installed="2.1.0" location="./tools/composer-require-checker" copy="true"/>
   <phar name="php-coveralls/php-coveralls" version="^2.2.0" installed="2.2.0" location="./tools/php-coveralls" copy="true"/>
   <phar name="scrutinizer-ci/ocular" version="^1.6.0" installed="1.6.0" location="./tools/ocular" copy="true" force-accept-unsigned="true"/>
-  <phar name="psalm" version="^3.9.3" installed="3.9.3" location="./tools/psalm" copy="true"/>
+  <phar name="psalm" version="^3.9.3" installed="3.16" location="./tools/psalm" copy="true"/>
 </phive>

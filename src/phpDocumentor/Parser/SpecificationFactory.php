@@ -28,15 +28,15 @@ final class SpecificationFactory implements FactoryInterface
     /**
      * Creates a SpecificationInterface object based on the ignore and extension parameters.
      *
-     * @param list<string> $globs
+     * @param list<string> $paths
      * @param array<string, bool|array<string>|null> $ignore
      * @param list<string> $extensions
      */
-    public function create(array $globs, array $ignore, array $extensions) : SpecificationInterface
+    public function create(array $paths, array $ignore, array $extensions) : SpecificationInterface
     {
         /** @var ?Glob $pathSpec */
         $pathSpec = null;
-        foreach ($globs as $path) {
+        foreach ($paths as $path) {
             if ($pathSpec === null) {
                 $pathSpec = new Glob($path);
                 continue;
