@@ -52,7 +52,7 @@ lint: phpcs
 
 .PHONY: test
 test: unit-test
-	docker run -it --rm -v${CURDIR}:/data -w /data php:7.2 -f ./tests/coverage-checker.php 72
+	docker run -it --rm -v${CURDIR}:/data -w /data php:7.2 -f ./tests/coverage-checker.php 71
 
 unit-test: SUITE=--testsuite=unit
 integration-test: SUITE=--testsuite=integration --no-coverage
