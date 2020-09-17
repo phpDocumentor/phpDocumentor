@@ -111,7 +111,7 @@ jobs:
     - name: Install PHAR dependencies
       env:
         GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: tools/phive.phar --no-progress --home ${{ env.phiveHome }} install --copy --trust-gpg-keys ${{ env.phiveGPGKeys }} --force-accept-unsigned
+      run: tools/phive.phar --no-progress install --copy --trust-gpg-keys ${{ env.phiveGPGKeys }} --force-accept-unsigned
 
     - name: PHPUnit
       uses: docker://phpdoc/phpunit-ga:latest
