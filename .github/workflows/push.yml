@@ -586,11 +586,23 @@ jobs:
           node-version: '12.x'
           registry-url: 'https://npm.pkg.github.com'
           scope: '@phpdocumentor'
-    - run: |
-            cd data/asset-builder; \
-            npm install
-    - run: |
-             cd data/asset-builder; \
-             npm publish;
+    - name: 'Install dependencies'
+      run: |
+        cd data/asset-builder; \
+        npm install
+    - name: 'Bump version'
+      run: |
+        cd data/asset-builder; \
+        npm version preminor --preid=build
+    - name: 'Publish package'
+      run: |
+        cd data/asset-builder; \
+        npm publish --access public
       env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}        
+        NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Push back package version
+      uses: devops-infra/action-commit-push@0.1
+      with:
+        github_token: "${{ secrets.GITHUB_TOKEN }}"
+        commit_message: "[AUTO] Assets package version bump"
