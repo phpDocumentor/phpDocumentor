@@ -15,6 +15,7 @@ namespace phpDocumentor\Descriptor\Filter;
 
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
+use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 
@@ -41,47 +42,82 @@ final class StripInternalTest extends MockeryTestCase
     }
 
     /**
+     * @uses \phpDocumentor\Descriptor\ClassDescriptor
+     *
      * @covers ::__invoke
+     * @dataProvider removedInternalTagProvider
      */
-    public function testStripsInternalTagFromDescription() : void
+    public function testStripsInternalTagFromDescription(string $inputDescription, string $output) : void
     {
         $this->builderMock->shouldReceive('getProjectDescriptor->isVisibilityAllowed')->andReturn(false);
-        $descriptor = m::mock(DescriptorAbstract::class);
-        $descriptor->shouldReceive('getTags->fetch')->with('internal')->andReturn(null);
-
-        $descriptor->shouldReceive('getDescription')->andReturn('without {@internal blabla }}internal tag');
-        $descriptor->shouldReceive('setDescription')->with('without internal tag');
-
-        $this->assertSame($descriptor, $this->fixture->__invoke($descriptor));
+        $descriptor = new ClassDescriptor();
+        $descriptor->setDescription($inputDescription);
+        $this->assertSame($output, $this->fixture->__invoke($descriptor)->getDescription());
     }
 
     /**
-     * @covers ::__invoke
+     * @return array<string, string[]>
      */
-    public function testStripsInternalTagFromDescriptionIfTagDescriptionContainsBraces() : void
+    public function removedInternalTagProvider() : array
     {
-        $this->builderMock->shouldReceive('getProjectDescriptor->isVisibilityAllowed')->andReturn(false);
-        $descriptor = m::mock(DescriptorAbstract::class);
-        $descriptor->shouldReceive('getTags->fetch')->with('internal')->andReturn(null);
-
-        $descriptor->shouldReceive('getDescription')->andReturn('without {@internal bla{bla} }}internal tag');
-        $descriptor->shouldReceive('setDescription')->with('without internal tag');
-
-        $this->assertSame($descriptor, $this->fixture->__invoke($descriptor));
+        return [
+            'description with inline internaltag' => [
+                'without {@internal blabla }internal tag',
+                'without internal tag',
+            ],
+// Bug: https://github.com/phpDocumentor/ReflectionDocBlock/issues/255
+//            'internal tag with braces' => [
+//                'without {@internal bla{bla} }internal tag',
+//                'without internal tag',
+//            ],
+            'legacy format internal tags' => [
+                'without {@internal blabla }}internal tag',
+                'without internal tag',
+            ],
+            'legacy format with braces' => [
+                'without {@internal bla{bla} }}internal tag',
+                'without internal tag',
+            ],
+        ];
     }
 
     /**
+     * @uses \phpDocumentor\Descriptor\ClassDescriptor
+     *
      * @covers ::__invoke
+     * @dataProvider resolvedInternalTagProvider
      */
-    public function testResolvesInternalTagFromDescriptionIfParsePrivateIsTrue() : void
+    public function testResolvesInternalTagFromDescription(string $inputDescription, string $output) : void
     {
         $this->builderMock->shouldReceive('getProjectDescriptor->isVisibilityAllowed')->andReturn(true);
-        $descriptor = m::mock(DescriptorAbstract::class);
+        $descriptor = new ClassDescriptor();
+        $descriptor->setDescription($inputDescription);
+        $this->assertSame($output, $this->fixture->__invoke($descriptor)->getDescription());
+    }
 
-        $descriptor->shouldReceive('getDescription')->andReturn('without {@internal blabla }}internal tag');
-        $descriptor->shouldReceive('setDescription')->with('without blabla internal tag');
-
-        $this->assertSame($descriptor, $this->fixture->__invoke($descriptor));
+    /**
+     * @return array<string, string[]>
+     */
+    public function resolvedInternalTagProvider() : array
+    {
+        return [
+            'description with inline internaltag' => [
+                'without {@internal blabla }internal tag',
+                'without blabla internal tag',
+            ],
+            'internal tag with braces' => [
+                'without {@internal bla{bla} }internal tag',
+                'without bla{bla }internal tag',
+            ],
+            'legacy format internal tags' => [
+                'without {@internal bla{bla} }}internal tag',
+                'without bla{bla} internal tag',
+            ],
+            'legacy format with braces' => [
+                'without {@internal bla{bla} }}internal tag',
+                'without bla{bla} internal tag',
+            ],
+        ];
     }
 
     /**
