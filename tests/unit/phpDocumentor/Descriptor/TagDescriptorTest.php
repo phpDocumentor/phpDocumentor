@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor;
 
 use Mockery\Adapter\Phpunit\MockeryTestCase;
+use phpDocumentor\Reflection\DocBlock\Description;
 
 class TagDescriptorTest extends MockeryTestCase
 {
@@ -64,8 +65,8 @@ class TagDescriptorTest extends MockeryTestCase
     public function testSettingAndReturningADescription() : void
     {
         // Arrange
-        $description = 'Description';
-        $this->assertSame('', $this->fixture->getDescription());
+        $description = new Description('Description');
+        $this->assertEquals(new Description(''), $this->fixture->getDescription());
 
         // Act
         $this->fixture->setDescription($description);

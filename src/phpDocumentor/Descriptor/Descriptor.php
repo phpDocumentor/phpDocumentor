@@ -30,5 +30,5 @@ interface Descriptor
      *
      * This method will automatically attempt to inherit the parent's description if this one has none.
      */
-    public function getDescription() : Description;
+    public function getDescription() : ?Description;
 }

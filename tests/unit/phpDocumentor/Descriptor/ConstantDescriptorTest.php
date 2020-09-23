@@ -201,60 +201,6 @@ final class ConstantDescriptorTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getDescription
-     */
-    public function testDescriptionInheritsWhenNoneIsPresent() : void
-    {
-        // Arrange
-        $description = 'This is a description';
-        $this->fixture->setDescription('');
-        $parentConstant = $this->whenFixtureHasConstantInParentClassWithSameName($this->fixture->getName());
-        $parentConstant->setDescription($description);
-
-        // Act
-        $result = $this->fixture->getDescription();
-
-        // Assert
-        $this->assertSame($description, $result);
-    }
-
-    /**
-     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getDescription
-     */
-    public function testDescriptionInheritsWhenInheritDocIsPresent() : void
-    {
-        // Arrange
-        $description = 'This is a description';
-        $this->fixture->setDescription('{@inheritDoc}');
-        $parentConstant = $this->whenFixtureHasConstantInParentClassWithSameName($this->fixture->getName());
-        $parentConstant->setDescription($description);
-
-        // Act
-        $result = $this->fixture->getDescription();
-
-        // Assert
-        $this->assertSame($description, $result);
-    }
-
-    /**
-     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getDescription
-     */
-    public function testDescriptionIsAugmentedWhenInheritDocInlineTagIsPresent() : void
-    {
-        // Arrange
-        $description = 'This is a description';
-        $this->fixture->setDescription('Original description {@inheritDoc}');
-        $parentConstant = $this->whenFixtureHasConstantInParentClassWithSameName($this->fixture->getName());
-        $parentConstant->setDescription($description);
-
-        // Act
-        $result = $this->fixture->getDescription();
-
-        // Assert
-        $this->assertSame('Original description ' . $description, $result);
-    }
-
-    /**
      * @covers ::getVar
      */
     public function testVarTagsInheritWhenNoneArePresent() : void

@@ -18,6 +18,8 @@ use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\Tag\AuthorDescriptor;
 use phpDocumentor\Descriptor\Tag\VarDescriptor;
 use phpDocumentor\Descriptor\Tag\VersionDescriptor;
+use phpDocumentor\Reflection\DocBlock\Description;
+use phpDocumentor\Reflection\DocBlock\Tags\Generic;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Types\Array_;
 
@@ -166,78 +168,6 @@ final class PropertyDescriptorTest extends MockeryTestCase
 
         // Assert
         $this->assertSame($file, $result);
-    }
-
-    /**
-     * @covers ::getSummary
-     */
-    public function testSummaryInheritsWhenNoneIsPresent() : void
-    {
-        // Arrange
-        $summary = 'This is a summary';
-        $this->fixture->setSummary('');
-        $parentProperty = $this->whenFixtureHasPropertyInParentClassWithSameName($this->fixture->getName());
-        $parentProperty->setSummary($summary);
-
-        // Act
-        $result = $this->fixture->getSummary();
-
-        // Assert
-        $this->assertSame($summary, $result);
-    }
-
-    /**
-     * @covers ::getDescription
-     */
-    public function testDescriptionInheritsWhenNoneIsPresent() : void
-    {
-        // Arrange
-        $description = 'This is a description';
-        $this->fixture->setDescription('');
-        $parentProperty = $this->whenFixtureHasPropertyInParentClassWithSameName($this->fixture->getName());
-        $parentProperty->setDescription($description);
-
-        // Act
-        $result = $this->fixture->getDescription();
-
-        // Assert
-        $this->assertSame($description, $result);
-    }
-
-    /**
-     * @covers ::getDescription()
-     */
-    public function testDescriptionInheritsWhenInheritDocIsPresent() : void
-    {
-        // Arrange
-        $description = 'This is a description';
-        $this->fixture->setDescription('{@inheritDoc}');
-        $parentProperty = $this->whenFixtureHasPropertyInParentClassWithSameName($this->fixture->getName());
-        $parentProperty->setDescription($description);
-
-        // Act
-        $result = $this->fixture->getDescription();
-
-        // Assert
-        $this->assertSame($description, $result);
-    }
-
-    /**
-     * @covers ::getDescription()
-     */
-    public function testDescriptionIsAugmentedWhenInheritDocInlineTagIsPresent() : void
-    {
-        // Arrange
-        $description = 'This is a description';
-        $this->fixture->setDescription('Original description {@inheritDoc}');
-        $parentProperty = $this->whenFixtureHasPropertyInParentClassWithSameName($this->fixture->getName());
-        $parentProperty->setDescription($description);
-
-        // Act
-        $result = $this->fixture->getDescription();
-
-        // Assert
-        $this->assertSame('Original description ' . $description, $result);
     }
 
     /**

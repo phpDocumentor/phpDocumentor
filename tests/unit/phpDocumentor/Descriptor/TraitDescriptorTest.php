@@ -17,6 +17,7 @@ use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\Tag\MethodDescriptor as TagMethodDescriptor;
 use phpDocumentor\Descriptor\Tag\PropertyDescriptor as TagPropertyDescriptor;
+use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Type;
 use phpDocumentor\Reflection\Types\Mixed_;
@@ -100,10 +101,11 @@ final class TraitDescriptorTest extends MockeryTestCase
      */
     public function testMagicMethodsReturnsExpectedCollectionWithTags(bool $isStatic) : void
     {
+        $description = new Description('Sample description');
         $mockMethodDescriptor = m::mock(TagMethodDescriptor::class);
         $mockMethodDescriptor->shouldReceive('getMethodName')->andReturn('Sample');
         $mockMethodDescriptor->shouldReceive('isStatic')->andReturn($isStatic);
-        $mockMethodDescriptor->shouldReceive('getDescription')->andReturn('Sample description');
+        $mockMethodDescriptor->shouldReceive('getDescription')->andReturn($description);
 
         $methodCollection = new Collection([$mockMethodDescriptor]);
         $this->fixture->getTags()->set('method', $methodCollection);
@@ -112,7 +114,7 @@ final class TraitDescriptorTest extends MockeryTestCase
         $this->assertInstanceOf(Collection::class, $magicMethodsCollection);
         $this->assertSame(1, $magicMethodsCollection->count());
         $this->assertSame('Sample', $magicMethodsCollection[0]->getName());
-        $this->assertSame('Sample description', $magicMethodsCollection[0]->getDescription());
+        $this->assertSame($description, $magicMethodsCollection[0]->getDescription());
         $this->assertSame($isStatic, $magicMethodsCollection[0]->isStatic());
         $this->assertSame($this->fixture, $magicMethodsCollection[0]->getParent());
     }
@@ -163,7 +165,7 @@ final class TraitDescriptorTest extends MockeryTestCase
      */
     public function testMagicPropertiesReturnsExpectedCollectionWithTags(
         string $name,
-        string $description,
+        Description $description,
         Type $type
     ) : void {
         $mockTagPropertyDescriptor = m::mock(TagPropertyDescriptor::class);
@@ -192,12 +194,12 @@ final class TraitDescriptorTest extends MockeryTestCase
         return [
             'normal sample' => [
                 'name' => 'Sample',
-                'description' => 'Sample Description',
+                'description' => new Description('Sample Description'),
                 'type' => new Mixed_(),
             ],
             'without name' => [
                 'name' => '',
-                'description' => 'Sample Description',
+                'description' => new Description('Sample Description'),
                 'type' => new Mixed_(),
             ],
         ];

@@ -62,7 +62,7 @@ interface ElementInterface
     /**
      * Returns a longer description for this element.
      */
-    public function getDescription() : Description;
+    public function getDescription() : ?Description;
 
     /**
      * Sets the file and location for this element.
