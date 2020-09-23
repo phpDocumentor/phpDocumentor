@@ -18,6 +18,7 @@ use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\Tag\MethodDescriptor as TagMethodDescriptor;
 use phpDocumentor\Descriptor\Tag\PropertyDescriptor as TagPropertyDescriptor;
 use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
+use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Types\String_;
 use stdClass;
@@ -227,7 +228,7 @@ final class ClassDescriptorTest extends MockeryTestCase
     public function testGetMagicPropertiesUsingPropertyTags() : void
     {
         $variableName = 'variableName';
-        $description = 'description';
+        $description = new Description('description');
         $types = new Collection(['string']);
 
         $this->assertEquals(0, $this->fixture->getMagicProperties()->count());
@@ -367,7 +368,7 @@ final class ClassDescriptorTest extends MockeryTestCase
     public function testGetMagicMethods(bool $isStatic) : void
     {
         $methodName = 'methodName';
-        $description = 'description';
+        $description = new Description('description');
         $response = new ReturnDescriptor('return');
         $response->setType(new String_());
         $argument = m::mock(ArgumentDescriptor::class);
@@ -496,24 +497,6 @@ final class ClassDescriptorTest extends MockeryTestCase
 
         // Assert
         $this->assertSame($summary, $result);
-    }
-
-    /**
-     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getDescription
-     */
-    public function testDescriptionInheritsWhenNoneIsPresent() : void
-    {
-        // Arrange
-        $description = 'This is a description';
-        $this->fixture->setDescription('');
-        $parentInterface = $this->whenFixtureHasParentClass();
-        $parentInterface->setDescription($description);
-
-        // Act
-        $result = $this->fixture->getDescription();
-
-        // Assert
-        $this->assertSame($description, $result);
     }
 
     protected function whenFixtureHasParentClass() : ClassDescriptor

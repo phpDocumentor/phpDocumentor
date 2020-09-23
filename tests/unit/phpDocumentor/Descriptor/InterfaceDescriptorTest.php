@@ -112,24 +112,6 @@ final class InterfaceDescriptorTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getDescription
-     */
-    public function testDescriptionInheritsWhenNoneIsPresent() : void
-    {
-        // Arrange
-        $description = 'This is a description';
-        $this->fixture->setDescription('');
-        $parentInterface = $this->whenFixtureHasParentInterface();
-        $parentInterface->setDescription($description);
-
-        // Act
-        $result = $this->fixture->getDescription();
-
-        // Assert
-        $this->assertSame($description, $result);
-    }
-
-    /**
      * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getAuthor
      */
     public function testAuthorTagsInheritWhenNoneArePresent() : void

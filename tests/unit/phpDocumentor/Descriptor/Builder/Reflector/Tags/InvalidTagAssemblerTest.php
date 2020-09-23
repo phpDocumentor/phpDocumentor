@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 
+use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\DocBlock\Tags\InvalidTag;
 use PHPUnit\Framework\TestCase;
 
@@ -20,7 +21,7 @@ final class InvalidTagAssemblerTest extends TestCase
         $assembler = new InvalidTagAssembler();
         $tag = $assembler->create(InvalidTag::create('Tag body', 'name'));
 
-        self::assertSame('Tag body', $tag->getDescription());
+        self::assertEquals(new Description('Tag body'), $tag->getDescription());
         self::assertSame('name', $tag->getName());
         self::assertEquals('ERROR', $tag->getErrors()[0]->getSeverity());
         self::assertEquals(

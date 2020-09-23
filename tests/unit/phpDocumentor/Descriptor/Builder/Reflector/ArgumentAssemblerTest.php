@@ -17,6 +17,7 @@ use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Descriptor\Tag\ParamDescriptor;
+use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\Php\Argument;
 use phpDocumentor\Reflection\Type;
 use phpDocumentor\Reflection\Types\Boolean;
@@ -64,6 +65,8 @@ class ArgumentAssemblerTest extends MockeryTestCase
     }
 
     /**
+     * @uses \phpDocumentor\Descriptor\Tag\ParamDescriptor
+     *
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\ArgumentAssembler::create
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\ArgumentAssembler::overwriteTypeAndDescriptionFromParamTag
      */
@@ -72,17 +75,18 @@ class ArgumentAssemblerTest extends MockeryTestCase
         // Arrange
         $name = 'goodArgument';
         $type = new Boolean();
+        $description = new Description('description');
 
         $argumentReflectorMock = $this->givenAnArgumentReflectorWithNameAndType($name, $type);
 
         // Mock a paramDescriptor
-        $paramDescriptorTagMock = m::mock(ParamDescriptor::class);
-        $paramDescriptorTagMock->shouldReceive('getVariableName')->once()->andReturn($name);
-        $paramDescriptorTagMock->shouldReceive('getDescription')->once()->andReturn('Is this a good argument, or nah?');
-        $paramDescriptorTagMock->shouldReceive('getType')->once()->andReturn($type);
+        $paramDescriptor = new ParamDescriptor('param');
+        $paramDescriptor->setVariableName($name);
+        $paramDescriptor->setDescription($description);
+        $paramDescriptor->setType($type);
 
         // Act
-        $descriptor = $this->fixture->create($argumentReflectorMock, [$paramDescriptorTagMock]);
+        $descriptor = $this->fixture->create($argumentReflectorMock, [$paramDescriptor]);
 
         // Assert
         $this->assertSame($name, $descriptor->getName());
@@ -90,9 +94,12 @@ class ArgumentAssemblerTest extends MockeryTestCase
         $this->assertNull($descriptor->getDefault());
         $this->assertFalse($descriptor->isByReference());
         $this->assertFalse($descriptor->isVariadic());
+        $this->assertSame($description, $descriptor->getDescription());
     }
 
     /**
+     * @uses \phpDocumentor\Descriptor\Tag\ParamDescriptor
+     *
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\ArgumentAssembler::create
      */
     public function testIfVariadicArgumentsAreDetected() : void
@@ -100,17 +107,18 @@ class ArgumentAssemblerTest extends MockeryTestCase
         // Arrange
         $name = 'goodArgument';
         $type = new Boolean();
+        $description = new Description('description');
 
         $argumentReflectorMock = $this->givenAnArgumentReflectorWithNameAndType($name, $type, true);
 
         // Mock a paramDescriptor
-        $paramDescriptorTagMock = m::mock(ParamDescriptor::class);
-        $paramDescriptorTagMock->shouldReceive('getVariableName')->once()->andReturn($name);
-        $paramDescriptorTagMock->shouldReceive('getDescription')->once()->andReturn('Is this a good argument, or nah?');
-        $paramDescriptorTagMock->shouldReceive('getType')->once()->andReturn($type);
+        $paramDescriptor = new ParamDescriptor('param');
+        $paramDescriptor->setVariableName($name);
+        $paramDescriptor->setDescription($description);
+        $paramDescriptor->setType($type);
 
         // Act
-        $descriptor = $this->fixture->create($argumentReflectorMock, [$paramDescriptorTagMock]);
+        $descriptor = $this->fixture->create($argumentReflectorMock, [$paramDescriptor]);
 
         // Assert
         $this->assertSame($name, $descriptor->getName());
@@ -118,6 +126,7 @@ class ArgumentAssemblerTest extends MockeryTestCase
         $this->assertNull($descriptor->getDefault());
         $this->assertFalse($descriptor->isByReference());
         $this->assertTrue($descriptor->isVariadic());
+        $this->assertSame($description, $descriptor->getDescription());
     }
 
     protected function givenAnArgumentReflectorWithNameAndType(

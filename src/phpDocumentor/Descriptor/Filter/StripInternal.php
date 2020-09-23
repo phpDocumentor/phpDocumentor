@@ -48,16 +48,16 @@ class StripInternal implements FilterInterface
     public function __invoke(?DescriptorAbstract $value) : ?DescriptorAbstract
     {
         $isInternalAllowed = $this->builder->getProjectDescriptor()->isVisibilityAllowed(Settings::VISIBILITY_INTERNAL);
-        if ($isInternalAllowed) {
-            $value->setDescription(preg_replace('/\{@internal\s(.+?)\}\}/', '$1', $value->getDescription()));
-            $value->setDescription(preg_replace('/\{@internal\s(.+?)\}/', '$1', $value->getDescription()));
-
-            return $value;
-        }
-
-        // remove inline @internal tags
-        $value->setDescription(preg_replace('/\{@internal\s(.+?)\}\}/', '', $value->getDescription()));
-        $value->setDescription(preg_replace('/\{@internal\s(.+?)\}/', '', $value->getDescription()));
+//        if ($isInternalAllowed) {
+//            $value->setDescription(preg_replace('/\{@internal\s(.+?)\}\}/', '$1', $value->getDescription()));
+//            $value->setDescription(preg_replace('/\{@internal\s(.+?)\}/', '$1', $value->getDescription()));
+//
+//            return $value;
+//        }
+//
+//        // remove inline @internal tags
+//        $value->setDescription(preg_replace('/\{@internal\s(.+?)\}\}/', '', $value->getDescription()));
+//        $value->setDescription(preg_replace('/\{@internal\s(.+?)\}/', '', $value->getDescription()));
 
         // if internal elements are not allowed; filter this element
         if ($value->getTags()->fetch('internal')) {

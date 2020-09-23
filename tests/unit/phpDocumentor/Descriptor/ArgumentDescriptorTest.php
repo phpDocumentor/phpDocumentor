@@ -116,51 +116,6 @@ final class ArgumentDescriptorTest extends TestCase
     }
 
     /**
-     * @covers ::getDescription
-     */
-    public function testDescriptionInheritsWhenNoneIsPresent() : void
-    {
-        $fixture = new ArgumentDescriptor();
-
-        // Arrange
-        $description = 'This is a description';
-        $fixture->setDescription('');
-        $parentArgument = $this->whenFixtureHasMethodAndArgumentInParentClassWithSameName(
-            $fixture,
-            'same_argument'
-        );
-        $parentArgument->setDescription($description);
-
-        // Act
-        $result = $fixture->getDescription();
-
-        // Assert
-        $this->assertSame($description, $result);
-    }
-
-    /**
-     * @covers ::getDescription
-     */
-    public function testDescriptionIsNotInheritedWhenPresent() : void
-    {
-        $fixture = new ArgumentDescriptor();
-
-        // Arrange
-        $description = 'This is a description';
-        $fixture->setDescription($description);
-        $parentArgument = $this->whenFixtureHasMethodAndArgumentInParentClassWithSameName(
-            $fixture,
-            'same_argument'
-        );
-        $parentArgument->setDescription('some random text');
-        // Act
-        $result = $fixture->getDescription();
-
-        // Assert
-        $this->assertSame($description, $result);
-    }
-
-    /**
      * @covers ::setMethod
      * @covers ::getInheritedElement
      */

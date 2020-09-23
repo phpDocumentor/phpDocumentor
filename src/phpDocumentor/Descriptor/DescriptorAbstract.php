@@ -70,7 +70,6 @@ abstract class DescriptorAbstract implements Filterable
     {
         $this->setTags(new Collection());
         $this->setErrors(new Collection());
-        $this->description = new Description('');
     }
 
     /**
@@ -176,26 +175,18 @@ abstract class DescriptorAbstract implements Filterable
      *
      * This method will automatically attempt to inherit the parent's description if this one has none.
      */
-    public function getDescription() : Description
+    public function getDescription() : ?Description
     {
-        if ($this->description !== null && stripos((string) $this->description, '{@inheritdoc}') === false) {
+        if ($this->description !== null) {
             return $this->description;
         }
 
         $parentElement = $this->getInheritedElement();
         if ($parentElement instanceof self) {
-            $parentDescription = $parentElement->getDescription();
-
-            if ($this->description === null) {
-                return $parentDescription;
-            }
-
-//            return $this->description
-//                ? str_ireplace('{@inheritdoc}', $parentDescription, $this->description)
-//                : $parentDescription;
+            return $parentElement->getDescription();
         }
 
-        return $this->description;
+        return null;
     }
 
     /**

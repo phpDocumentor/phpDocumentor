@@ -68,7 +68,7 @@ final class MethodAssemblerTest extends MockeryTestCase
 
         $this->assertEquals($returnType, $descriptor->getResponse()->getType());
         $this->assertSame($name, $descriptor->getMethodName());
-        $this->assertSame((string) $description, $descriptor->getDescription());
+        $this->assertEquals($description ?? new Description(''), $descriptor->getDescription());
         $this->assertSame(count($arguments), $descriptor->getArguments()->count());
         foreach ($arguments as $argument) {
             $this->assertSame($argument['type'], $descriptor->getArguments()->get($argument['name'])->getType());
