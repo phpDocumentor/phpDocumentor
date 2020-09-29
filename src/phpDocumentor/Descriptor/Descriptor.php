@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
-use phpDocumentor\Reflection\DocBlock\Description;
-
 /**
  * Base class for descriptors containing the most used options.
  */
@@ -30,5 +28,5 @@ interface Descriptor
      *
      * This method will automatically attempt to inherit the parent's description if this one has none.
      */
-    public function getDescription() : ?Description;
+    public function getDescription() : ?DocBlock\DescriptionDescriptor;
 }

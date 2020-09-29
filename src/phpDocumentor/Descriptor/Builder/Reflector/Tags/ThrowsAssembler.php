@@ -30,10 +30,9 @@ class ThrowsAssembler extends AssemblerAbstract
      *
      * @param Throws $data
      */
-    public function create(object $data) : ThrowsDescriptor
+    public function buildDescriptor(object $data) : ThrowsDescriptor
     {
         $descriptor = new ThrowsDescriptor($data->getName());
-        $descriptor->setDescription($data->getDescription());
         $descriptor->setType(AssemblerAbstract::deduplicateTypes($data->getType()));
 
         return $descriptor;

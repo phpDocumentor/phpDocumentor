@@ -45,7 +45,7 @@ abstract class DescriptorAbstract implements Filterable
     /** @var string $summary A summary describing the function of this element in short. */
     protected $summary = '';
 
-    /** @var Description $description A more extensive description of this element. */
+    /** @var DocBlock\DescriptionDescriptor|null $description A more extensive description of this element. */
     protected $description;
 
     /** @var FileDescriptor|null $fileDescriptor The file to which this element belongs; if applicable */
@@ -162,10 +162,10 @@ abstract class DescriptorAbstract implements Filterable
     /**
      * Sets a description for this element.
      *
-     * @param Description $description
+     * @param ?DocBlock\DescriptionDescriptor $description
      * @internal should not be called by any other class than the assamblers
      */
-    public function setDescription(Description $description) : void
+    public function setDescription(?DocBlock\DescriptionDescriptor $description) : void
     {
         $this->description = $description;
     }
@@ -175,7 +175,7 @@ abstract class DescriptorAbstract implements Filterable
      *
      * This method will automatically attempt to inherit the parent's description if this one has none.
      */
-    public function getDescription() : ?Description
+    public function getDescription() : ?DocBlock\DescriptionDescriptor
     {
         if ($this->description !== null) {
             return $this->description;

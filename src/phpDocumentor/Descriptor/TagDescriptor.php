@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
+use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
+use phpDocumentor\Descriptor\DocBlock\InlineTagDescriptor;
 use phpDocumentor\Descriptor\Filter\Filterable;
 use phpDocumentor\Reflection\DocBlock\Description;
 
@@ -22,12 +24,12 @@ use phpDocumentor\Reflection\DocBlock\Description;
  * @api
  * @package phpDocumentor\AST
  */
-class TagDescriptor implements Filterable
+class TagDescriptor implements Filterable, InlineTagDescriptor
 {
     /** @var string $name Name of the tag. */
     protected $name;
 
-    /** @var Description $description A description line for this tag */
+    /** @var DescriptionDescriptor $description A description line for this tag */
     protected $description;
 
     /** @var Collection<Validation\Error> A collection of errors found during filtering. */
@@ -36,11 +38,11 @@ class TagDescriptor implements Filterable
     /**
      * Initializes the tag by setting the name and errors,
      */
-    public function __construct(string $name)
+    public function __construct(string $name, ?DescriptionDescriptor $description = null)
     {
         $this->setName($name);
         $this->errors = Collection::fromClassString(Validation\Error::class);
-        $this->description = new Description('');
+        $this->setDescription($description);
     }
 
     /**
@@ -62,17 +64,22 @@ class TagDescriptor implements Filterable
     /**
      * Sets a description for this tab instance.
      */
-    public function setDescription(?Description $description) : void
+    public function setDescription(?DescriptionDescriptor $description) : void
     {
-        $this->description = $description ?? new Description('');
+        $this->description = $description ?? new DescriptionDescriptor(new Description(''), []);
     }
 
     /**
      * Returns the description for this tag,
      */
-    public function getDescription() : Description
+    public function getDescription() : DescriptionDescriptor
     {
         return $this->description;
+    }
+
+    public function __toString() : string
+    {
+        return (string) $this->description;
     }
 
     /**

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Interfaces;
 
 use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Reflection\DocBlock\Description;
@@ -57,12 +58,12 @@ interface ElementInterface
     /**
      * Sets a longer description for this element.
      */
-    public function setDescription(Description $description) : void;
+    public function setDescription(DescriptionDescriptor $description) : void;
 
     /**
      * Returns a longer description for this element.
      */
-    public function getDescription() : ?Description;
+    public function getDescription() : ?DescriptionDescriptor;
 
     /**
      * Sets the file and location for this element.

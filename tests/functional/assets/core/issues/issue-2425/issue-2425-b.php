@@ -1,3 +1,7 @@
 <?php
+namespace Project\Other\Level;
 
-declare(strict_types=1);
+class Issue2425B
+{
+    public function bar() {}
+}

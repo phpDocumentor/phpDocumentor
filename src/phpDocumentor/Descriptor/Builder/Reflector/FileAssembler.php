@@ -16,6 +16,7 @@ namespace phpDocumentor\Descriptor\Builder\Reflector;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\ConstantDescriptor;
+use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\FunctionDescriptor;
 use phpDocumentor\Descriptor\InterfaceDescriptor;
@@ -229,7 +230,7 @@ class FileAssembler extends AssemblerAbstract
         }
 
         $tag = new TagDescriptor('package');
-        $tag->setDescription(new Description($package));
+        $tag->setDescription(new DescriptionDescriptor(new Description($package), []));
         $packages->add($tag);
         $fileDescriptor->getTags()->set('package', $packages);
     }

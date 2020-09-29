@@ -8,10 +8,12 @@ use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\Example\Finder;
 use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\DocBlock\ExampleFinder;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
+use phpDocumentor\Reflection\DocBlock\Tags\Example;
 
 /**
  * Tests the \phpDocumentor\Compiler\Pass\ExampleTagsEnricher class.
@@ -48,7 +50,7 @@ class ExampleTagsEnricherTest extends TestCase
      */
     public function testReplaceExampleTagReturnsDescriptionIfItContainsNoExampleTags() : void
     {
-        $description = 'This is a description';
+        $description = new Description('This is a description');
 
         $descriptor = $this->givenAChildDescriptorWithDescription($description);
         $this->thenDescriptionOfDescriptorIsChangedInto($descriptor, $description);
@@ -67,8 +69,14 @@ class ExampleTagsEnricherTest extends TestCase
      */
     public function testReplaceExampleTagWithExampleContents() : void
     {
+        $description = new Description(
+            'This is a description with %$1 without description.',
+            [
+                new Example('example2.txt')
+            ]
+        );
+
         $exampleText = 'Example Text';
-        $description = 'This is a description with {@example example2.txt} without description.';
         $expected    = "This is a description with `${exampleText}` without description.";
 
         $descriptor = $this->givenAChildDescriptorWithDescription($description);
@@ -129,7 +137,7 @@ class ExampleTagsEnricherTest extends TestCase
     /**
      * Returns a mocked Descriptor with its description set to the given value.
      */
-    private function givenAChildDescriptorWithDescription(string $description) : ObjectProphecy
+    private function givenAChildDescriptorWithDescription(Description $description) : ObjectProphecy
     {
         $descriptor = $this->prophesize(DescriptorAbstract::class);
         $descriptor->getDescription()->shouldBeCalled()->willReturn($description);
@@ -156,7 +164,7 @@ class ExampleTagsEnricherTest extends TestCase
     /**
      * Verifies if the given descriptor's setDescription method is called with the given value.
      */
-    public function thenDescriptionOfDescriptorIsChangedInto(ObjectProphecy $descriptor, string $expected) : void
+    public function thenDescriptionOfDescriptorIsChangedInto(ObjectProphecy $descriptor, Description $expected) : void
     {
         $descriptor->setDescription(Argument::exact($expected))->shouldBeCalled();
     }

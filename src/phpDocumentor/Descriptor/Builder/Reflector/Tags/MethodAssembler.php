@@ -34,10 +34,9 @@ class MethodAssembler extends AssemblerAbstract
      *
      * @param Method $data
      */
-    public function create(object $data) : MethodDescriptor
+    public function buildDescriptor(object $data) : MethodDescriptor
     {
         $descriptor = new MethodDescriptor($data->getName());
-        $descriptor->setDescription($data->getDescription());
         $descriptor->setMethodName($data->getMethodName());
         $descriptor->setStatic($data->isStatic());
 
@@ -68,7 +67,7 @@ class MethodAssembler extends AssemblerAbstract
     private function createArgumentDescriptorForMagicMethod(string $name, Type $type) : ArgumentDescriptor
     {
         $argumentDescriptor = new ArgumentDescriptor();
-        $argumentDescriptor->setType(AssemblerAbstract::deduplicateTypes($type));
+        $argumentDescriptor->setType($type);
         $argumentDescriptor->setName($name);
 
         return $argumentDescriptor;
