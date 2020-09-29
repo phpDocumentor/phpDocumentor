@@ -539,6 +539,11 @@ jobs:
         run: 'sudo chown $USER ./build'
       - name: 'Copy docker files'
         run: 'cp ./data/demo/* ./build'
+      - uses: danielr1996/envsubst-action@1.0.0
+        name: 'Insert cache-busting hash into html'
+        with:
+          input: ./build/index.html.dist
+          output: ./build/index.html
       - name: Build
         uses: elgohr/Publish-Docker-Github-Action@master
         env:
