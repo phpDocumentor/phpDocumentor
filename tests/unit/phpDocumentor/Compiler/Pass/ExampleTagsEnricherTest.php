@@ -10,7 +10,9 @@ use Mockery\MockInterface;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\Example\Finder;
 use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\DocBlock\ExampleFinder;
+use phpDocumentor\Reflection\DocBlock\Tags\Example;
 
 /**
  * Tests the \phpDocumentor\Compiler\Pass\ExampleTagsEnricher class.
@@ -47,7 +49,7 @@ class ExampleTagsEnricherTest extends MockeryTestCase
      */
     public function testReplaceExampleTagReturnsDescriptionIfItContainsNoExampleTags() : void
     {
-        $description = 'This is a description';
+        $description = new Description('This is a description');
 
         $descriptor = $this->givenAChildDescriptorWithDescription($description);
         $this->thenDescriptionOfDescriptorIsChangedInto($descriptor, $description);
@@ -66,8 +68,14 @@ class ExampleTagsEnricherTest extends MockeryTestCase
      */
     public function testReplaceExampleTagWithExampleContents() : void
     {
+        $description = new Description(
+            'This is a description with %$1 without description.',
+            [
+                new Example('example2.txt')
+            ]
+        );
+
         $exampleText = 'Example Text';
-        $description = 'This is a description with {@example example2.txt} without description.';
         $expected    = "This is a description with `${exampleText}` without description.";
 
         $descriptor = $this->givenAChildDescriptorWithDescription($description);
@@ -128,7 +136,7 @@ class ExampleTagsEnricherTest extends MockeryTestCase
     /**
      * Returns a mocked Descriptor with its description set to the given value.
      */
-    private function givenAChildDescriptorWithDescription(string $description) : MockInterface
+    private function givenAChildDescriptorWithDescription(Description $description) : MockInterface
     {
         $descriptor = m::mock(DescriptorAbstract::class);
         $descriptor->shouldReceive('getDescription')->andReturn($description);
@@ -152,7 +160,7 @@ class ExampleTagsEnricherTest extends MockeryTestCase
     /**
      * Verifies if the given descriptor's setDescription method is called with the given value.
      */
-    public function thenDescriptionOfDescriptorIsChangedInto(m\MockInterface $descriptor, string $expected) : void
+    public function thenDescriptionOfDescriptorIsChangedInto(m\MockInterface $descriptor, Description $expected) : void
     {
         $descriptor->shouldReceive('setDescription')->with($expected);
     }

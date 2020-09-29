@@ -16,6 +16,7 @@ namespace phpDocumentor\Descriptor\Builder;
 use phpDocumentor\Descriptor\Builder\Reflector\ArgumentAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\ClassAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\ConstantAssembler;
+use phpDocumentor\Descriptor\Builder\Reflector\Docblock\DescriptionAssemblerReducer;
 use phpDocumentor\Descriptor\Builder\Reflector\FileAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\FunctionAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\InterfaceAssembler;
@@ -127,6 +128,8 @@ class AssemblerFactory
         $factory = new self();
         $argumentAssembler = new ArgumentAssembler();
 
+        $descriptionReducer = new DescriptionAssemblerReducer();
+
         $factory->register(Matcher::forType(File::class), new FileAssembler());
         $factory->register(Matcher::forType(Constant::class), new ConstantAssembler());
         $factory->register(Matcher::forType(Trait_::class), new TraitAssembler());
@@ -141,7 +144,7 @@ class AssemblerFactory
         $factory->register(Matcher::forType(Author::class), new AuthorAssembler());
         $factory->register(Matcher::forType(Deprecated::class), new DeprecatedAssembler());
         $factory->register(Matcher::forType(Example::class), new ExampleAssembler($exampleFinder));
-        $factory->register(Matcher::forType(Link::class), new LinkAssembler());
+        $factory->register(Matcher::forType(Link::class), new LinkAssembler($descriptionReducer));
         $factory->register(Matcher::forType(Tags\Method::class), new MethodTagAssembler());
         $factory->register(Matcher::forType(Tags\Property::class), new PropertyTagAssembler());
         $factory->register(Matcher::forType(Tags\PropertyRead::class), new PropertyTagAssembler());

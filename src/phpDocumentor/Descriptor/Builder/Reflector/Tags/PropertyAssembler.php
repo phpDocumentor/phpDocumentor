@@ -30,11 +30,10 @@ class PropertyAssembler extends AssemblerAbstract
      *
      * @param Property $data
      */
-    public function create(object $data) : PropertyDescriptor
+    public function buildDescriptor(object $data) : PropertyDescriptor
     {
         $descriptor = new PropertyDescriptor($data->getName());
         $descriptor->setVariableName($data->getVariableName());
-        $descriptor->setDescription($data->getDescription());
         $descriptor->setType($data->getType());
 
         return $descriptor;

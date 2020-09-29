@@ -24,6 +24,7 @@ use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Parser\Parser;
+use phpDocumentor\Reflection\DocBlock\Description;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -396,7 +397,7 @@ final class PackageTreeBuilderTest extends TestCase
     private function withPackage(string $packageName, DescriptorAbstract $file) : void
     {
         $packageTag = new TagDescriptor('package');
-        $packageTag->setDescription($packageName);
+        $packageTag->setDescription(new Description($packageName));
 
         $file->getTags()['package'] = new Collection([$packageTag]);
     }
@@ -404,7 +405,7 @@ final class PackageTreeBuilderTest extends TestCase
     private function withSubpackage(string $packageName, DescriptorAbstract $file) : void
     {
         $packageTag = new TagDescriptor('subpackage');
-        $packageTag->setDescription($packageName);
+        $packageTag->setDescription(new Description($packageName));
 
         $file->getTags()['subpackage'] = new Collection([$packageTag]);
     }

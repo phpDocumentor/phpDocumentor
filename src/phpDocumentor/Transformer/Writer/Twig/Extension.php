@@ -18,12 +18,18 @@ use Parsedown;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\Descriptor\DescriptorAbstract;
+use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
 use phpDocumentor\Descriptor\Interfaces\VisibilityInterface;
 use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Descriptor\PackageDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\Tag\ExampleDescriptor;
+use phpDocumentor\Descriptor\Tag\LinkDescriptor;
+use phpDocumentor\Descriptor\Tag\SeeDescriptor;
 use phpDocumentor\Reflection\DocBlock\Description;
+use phpDocumentor\Reflection\DocBlock\Tags\Example;
 use phpDocumentor\Reflection\DocBlock\Tags\See;
+use phpDocumentor\Reflection\DocBlock\Tags\Link;
 use Twig\Extension\AbstractExtension;
 use Twig\Extension\GlobalsInterface;
 use Twig\TwigFilter;
@@ -309,17 +315,27 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             ),
             'description' => new TwigFilter(
                 'description',
-                static function (Description $description) use ($routeRenderer) {
+                static function (?DescriptionDescriptor $description) use ($routeRenderer) {
+
+                    if ($description === null || $description->getBodyTemplate() === '') {
+                        return '';
+                    }
 
                     $tagStrings = [];
-
                     foreach ($description->getTags() as $tag) {
-                        if ($tag instanceof See) {
-                            $tagStrings[] = $routeRenderer->render($tag->getReference(), LinkRenderer::PRESENTATION_CLASS_SHORT);
+                        if ($tag instanceof SeeDescriptor) {
+                            $tagStrings[] = $routeRenderer->render($tag->getReference(),
+                                LinkRenderer::PRESENTATION_CLASS_SHORT);
+                        } elseif ($tag instanceof LinkDescriptor) {
+                            $tagStrings[] = sprintf('[%s](%s)', $tag->getDescription(), $tag->getLink());
+                        } elseif ($tag instanceof ExampleDescriptor) {
+                            //TODO: need to render examples in a proper way!
+                        } else {
+                            $tagStrings[] = (string) $tag;
                         }
                     }
 
-                    return vprintf($description->getBodyTemplate(), $tagStrings);
+                    return vsprintf($description->getBodyTemplate(), $tagStrings);
                 }
             )
         ];

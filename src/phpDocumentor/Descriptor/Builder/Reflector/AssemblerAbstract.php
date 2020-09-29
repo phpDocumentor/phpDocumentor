@@ -14,8 +14,11 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use phpDocumentor\Descriptor\Builder\AssemblerAbstract as BaseAssembler;
+use phpDocumentor\Descriptor\Builder\AssemblerReducer;
+use phpDocumentor\Descriptor\Builder\Reflector\Docblock\DescriptionAssemblerReducer;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
+use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\Type;
 use phpDocumentor\Reflection\Types\Compound;
@@ -28,6 +31,29 @@ use function trim;
 abstract class AssemblerAbstract extends BaseAssembler
 {
     /**
+     * @var AssemblerReducer[]
+     */
+    private $reducers;
+
+    public function __construct(AssemblerReducer ...$reducers)
+    {
+        $this->reducers = $reducers;
+    }
+
+    public function create(object $data)
+    {
+        $descriptor = $this->buildDescriptor($data);
+
+        foreach ($this->reducers as $reducer) {
+            $descriptor = $reducer->create($data, $descriptor);
+        }
+
+        return $descriptor;
+    }
+
+    protected function buildDescriptor(object $data) {}
+
+    /**
      * Assemble DocBlock.
      */
     protected function assembleDocBlock(?DocBlock $docBlock, DescriptorAbstract $target) : void
@@ -37,7 +63,10 @@ abstract class AssemblerAbstract extends BaseAssembler
         }
 
         $target->setSummary($docBlock->getSummary());
-        $target->setDescription($docBlock->getDescription());
+
+        $reducer = new DescriptionAssemblerReducer();
+        $reducer->setBuilder($this->getBuilder());
+        $target = $reducer->create($docBlock, $target);
 
         foreach ($docBlock->getTags() as $tag) {
             $tagDescriptor = $this->builder->buildDescriptor($tag);

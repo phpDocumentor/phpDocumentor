@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
+use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
 use phpDocumentor\Descriptor\Interfaces\PackageInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
 use phpDocumentor\Reflection\DocBlock\Description;
@@ -51,7 +52,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
     private $versions;
 
     /**
-     * @var Description
+     * @var DescriptionDescriptor
      */
     private $description;
 
@@ -79,7 +80,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
         $this->setPartials(new Collection());
         $this->versions = Collection::fromClassString(VersionDescriptor::class);
 
-        $this->description = new Description('');
+        $this->description = new DescriptionDescriptor(new Description(''), []);
     }
 
     /**
@@ -101,7 +102,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
     /**
      * Returns the description for this element.
      */
-    public function getDescription() : Description
+    public function getDescription() : DescriptionDescriptor
     {
         return $this->description;
     }

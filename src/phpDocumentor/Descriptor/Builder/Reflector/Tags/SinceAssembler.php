@@ -30,10 +30,9 @@ class SinceAssembler extends AssemblerAbstract
      *
      * @param Since $data
      */
-    public function create(object $data) : SinceDescriptor
+    public function buildDescriptor(object $data) : SinceDescriptor
     {
         $descriptor = new SinceDescriptor($data->getName());
-        $descriptor->setDescription($data->getDescription());
         $descriptor->setVersion($data->getVersion());
 
         return $descriptor;
