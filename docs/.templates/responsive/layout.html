@@ -56,7 +56,7 @@
             {%- block sidebartoc %}
     <h1 class="phpdocumentor-sidebar__category-header">{{ _('Guide') }}</h1>
     <div class="phpdocumentor-list">
-    {{ toctree() }}
+    {{ toc }}
     </div>
             {%- endblock %}
             {%- block sidebarrel %}
@@ -175,12 +175,11 @@
 
 <main class="phpdocumentor">
     <main class="phpdocumentor-section">
-
         <div class="phpdocumentor-row">
-            <div class="-three phpdocumentor-column">
+            <nav class="-four phpdocumentor-column phpdocumentor-sidebar">
                 {%- block sidebar2 %}{{ sidebar() }}{% endblock %}
-            </div>
-            <div class="-nine phpdocumentor-column phpdocumentor-guide-contents contents">
+            </nav>
+            <div class="-eight phpdocumentor-column phpdocumentor-guide-contents contents">
                 <div class="phpdocumentor-breadcrumbs">
                     {%- block header %}{% endblock %}
                     {%- block relbar1 %}{{ relbar() }}{% endblock %}
