@@ -23,6 +23,9 @@
     "league/flysystem": {
         "version": "1.0.41"
     },
+    "league/mime-type-detection": {
+        "version": "1.4.0"
+    },
     "league/pipeline": {
         "version": "0.3.0"
     },
@@ -187,6 +190,9 @@
     },
     "symfony/polyfill-php73": {
         "version": "v1.12.0"
+    },
+    "symfony/polyfill-php80": {
+        "version": "v1.18.1"
     },
     "symfony/process": {
         "version": "v5.0.0"

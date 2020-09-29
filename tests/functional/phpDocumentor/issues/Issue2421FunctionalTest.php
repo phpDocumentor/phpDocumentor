@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace functional\phpDocumentor\core;
+namespace functional\phpDocumentor\issues;
 
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\ConstantDescriptor;

@@ -130,6 +130,7 @@
             <errorLevel type="suppress">
                 <!-- MountManager will be removed in Flysystem V2 -->
                 <referencedClass name="League\Flysystem\MountManager"/>
+                <referencedClass name="PackageVersions\Versions"/>
             </errorLevel>
         </DeprecatedClass>
 

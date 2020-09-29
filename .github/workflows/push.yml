@@ -89,7 +89,7 @@ jobs:
         php-version: ${{ env.defaultPHPVersion }}
         extensions: ${{ env.extensions }}
         ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
-        tools: pecl
+        tools: pecl, phive
 
     - name: Get composer cache directory
       id: composer-cache
@@ -106,12 +106,10 @@ jobs:
       run: |
         composer install --no-progress --prefer-dist --optimize-autoloader
 
-    - name: Install phive
-      run: make install-phive
     - name: Install PHAR dependencies
       env:
         GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: tools/phive.phar --no-progress --home ${{ env.phiveHome }} install --copy --trust-gpg-keys ${{ env.phiveGPGKeys }} --force-accept-unsigned
+      run: phive --no-progress install --copy --trust-gpg-keys ${{ env.phiveGPGKeys }} --force-accept-unsigned phpunit scrutinizer-ci/ocular
 
     - name: PHPUnit
       uses: docker://phpdoc/phpunit-ga:latest
@@ -220,7 +218,7 @@ jobs:
           php-version: ${{ env.defaultPHPVersion }}
           extensions: ${{ env.extensions }}
           ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
-          tools: pecl, psalm:3.11.2
+          tools: pecl, psalm
 
       - name: Get composer cache directory
         id: composer-cache
@@ -515,7 +513,7 @@ jobs:
     - name: Install PHAR dependencies
       env:
         GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: phive --no-progress install --copy --trust-gpg-keys ${{ env.phiveGPGKeys }} --force-accept-unsigned
+      run: phive --no-progress install --copy --trust-gpg-keys ${{ env.phiveGPGKeys }} --force-accept-unsigned phpunit:^8.4
 
     - name: Run PHPUnit
       run: php tools/phpunit --testsuite=unit,integration
@@ -588,11 +586,23 @@ jobs:
           node-version: '12.x'
           registry-url: 'https://npm.pkg.github.com'
           scope: '@phpdocumentor'
-    - run: |
-            cd data/asset-builder; \
-            npm install
-    - run: |
-             cd data/asset-builder; \
-             npm publish;
+    - name: 'Install dependencies'
+      run: |
+        cd data/asset-builder; \
+        npm install
+    - name: 'Bump version'
+      run: |
+        cd data/asset-builder; \
+        npm version preminor --preid=build
+    - name: 'Publish package'
+      run: |
+        cd data/asset-builder; \
+        npm publish --access public
       env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}        
+        NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Push back package version
+      uses: devops-infra/action-commit-push@0.1
+      with:
+        github_token: "${{ secrets.GITHUB_TOKEN }}"
+        commit_message: "[AUTO] Assets package version bump"
