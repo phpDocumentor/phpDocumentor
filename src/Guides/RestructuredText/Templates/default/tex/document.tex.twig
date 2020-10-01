@@ -1,0 +1,22 @@
+{% if isMain %}
+\documentclass[11pt]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{cite}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{mathrsfs}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{listings}
+{% for node in document.headerNodes %}
+{{ node.render() }}
+{% endfor %}
+\begin{document}
+{% endif %}
+\label{{ '{' }}{{ document.environment.url}}{{ '}' }}
+{{ body|raw }}
+{% if isMain %}
+\end{document}
+{% endif %}

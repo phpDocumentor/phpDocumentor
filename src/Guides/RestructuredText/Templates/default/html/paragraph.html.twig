@@ -1,0 +1,7 @@
+{% apply spaceless %}
+    {% set text = paragraphNode.value.render()|trim %}
+
+    {% if text %}
+        <p{% if paragraphNode.classes %} class="{{ paragraphNode.classesString }}"{% endif %}>{{ text|raw }}</p>
+    {% endif %}
+{% endapply %}

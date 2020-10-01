@@ -265,15 +265,20 @@ services:
   ## Guides - EXPERIMENTAL ##########################################################
   ###################################################################################
 
+    phpDocumentor\Guides\:
+      resource: '../src/Guides/*'
+
     phpDocumentor\Guides\KernelFactory:
       arguments:
         $directives: !tagged_iterator phpdoc.guides.directive
         $references: !tagged_iterator phpdoc.guides.reference
 
-    phpDocumentor\Guides\Directive\:
-      resource: '../src/phpDocumentor/Guides/Directive'
+    phpDocumentor\Guides\RestructuredText\Directives\:
+      resource: '../src/Guides/RestructuredText/Directives/*'
       tags: [ { name: 'phpdoc.guides.directive' } ]
 
-    phpDocumentor\Guides\Reference\:
-      resource: '../src/phpDocumentor/Guides/Reference'
+    phpDocumentor\Guides\RestructuredText\References\:
+      resource: '../src/Guides/RestructuredText/References/*'
+      exclude:
+        - '../src/Guides/RestructuredText/References/{Resolver,ResolvedReference}.php'
       tags: [ { name: 'phpdoc.guides.reference' } ]

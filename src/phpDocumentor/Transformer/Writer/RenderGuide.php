@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Writer;
 
-use Doctrine\RST\Builder;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
 use phpDocumentor\Descriptor\ProjectDescriptor;
@@ -21,18 +20,23 @@ use phpDocumentor\Descriptor\VersionDescriptor;
 use phpDocumentor\Dsn;
 use phpDocumentor\Guides\BuildContext;
 use phpDocumentor\Guides\KernelFactory;
+use phpDocumentor\Guides\RestructuredText\Builder;
 use phpDocumentor\Parser\Cache\Locator;
 use phpDocumentor\Parser\FlySystemFactory;
 use phpDocumentor\Parser\FlySystemMirror;
 use phpDocumentor\Transformer\Transformation;
+use Psr\Log\LoggerInterface;
 use function rtrim;
 use function sprintf;
 
 /**
  * @experimental Do not use; this stage is meant as a sandbox / playground to experiment with generating guides.
  */
-final class RenderGuide extends WriterAbstract
+final class RenderGuide extends WriterAbstract implements ProjectDescriptor\WithCustomSettings
 {
+    private const FEATURE_FLAG = 'guides.enabled';
+    private const SETTING_CACHE = 'guides.cache';
+
     /** @var FlySystemFactory */
     private $flySystemFactory;
 
@@ -42,22 +46,31 @@ final class RenderGuide extends WriterAbstract
     /** @var Locator */
     private $cacheLocator;
 
+    /** @var LoggerInterface */
+    private $logger;
+
     public function __construct(
         FlySystemFactory $flySystemFactory,
         KernelFactory $kernelFactory,
-        Locator $cacheLocator
+        Locator $cacheLocator,
+        LoggerInterface $logger
     ) {
         $this->flySystemFactory = $flySystemFactory;
         $this->kernelFactory = $kernelFactory;
         $this->cacheLocator = $cacheLocator;
+        $this->logger = $logger;
     }
 
     public function transform(ProjectDescriptor $project, Transformation $transformation) : void
     {
-        // Feature flag: Guides are disables by default since this is an experimental feature
-        if (!($project->getSettings()->getCustom()['guides.enabled'] ?? false)) {
+        // Feature flag: Guides are disabled by default since this is an experimental feature
+        if (!($project->getSettings()->getCustom()[self::FEATURE_FLAG])) {
             return;
         }
+
+        $this->logger->warning(
+            'Generating guides is experimental, no BC guarantees are given, use at your own risk'
+        );
 
         $output = $transformation->getTransformer()->destination();
         $cachePath = (string) $this->cacheLocator->locate('guide');
@@ -70,7 +83,7 @@ final class RenderGuide extends WriterAbstract
                     $documentationSet->getOutput(),
                     'default',
                     $cachePath,
-                    $project->getSettings()->getCustom()['guides.cache'] ?? true
+                    $project->getSettings()->getCustom()[self::SETTING_CACHE]
                 );
 
                 $inputFolder = rtrim(
@@ -104,5 +117,13 @@ final class RenderGuide extends WriterAbstract
         FlySystemMirror::mirror($input, $inputFilesystem);
 
         return $inputFolder;
+    }
+
+    public function getDefaultSettings() : array
+    {
+        return [
+            self::FEATURE_FLAG => false,
+            self::SETTING_CACHE => true,
+        ];
     }
 }

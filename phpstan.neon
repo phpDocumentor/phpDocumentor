@@ -51,9 +51,9 @@ parameters:
     - %currentWorkingDirectory%/tests/features/assets/**/*.php
     - %currentWorkingDirectory%/tests/ReferenceImplementation.php
    # exclude guide generation, since this is not a working system at the moment
-    - %currentWorkingDirectory%/src/phpDocumentor/Guides/*.php
+    - %currentWorkingDirectory%/src/Guides/*.php
     - %currentWorkingDirectory%/src/phpDocumentor/Pipeline/Stage/RenderGuide.php
-    - %currentWorkingDirectory%/src/phpDocumentor/Guides/**/*.php
+    - %currentWorkingDirectory%/src/Guides/**/*.php
    # needs adjustment of interface in phpDocumentor/reflection in order to be able to typehint the command
     - %currentWorkingDirectory%/src/phpDocumentor/Parser/Middleware/CacheMiddleware.php
    # phpunit TestCase while having to use a composer-global install ("Class PHPUnit\\Framework\\TestCase not found and could not be autoloaded")

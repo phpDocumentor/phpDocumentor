@@ -1,9 +1,6 @@
 {
     "doctrine/event-manager": {
-        "version": "1.1.0"
-    },
-    "doctrine/rst-parser": {
-        "version": "dev-master"
+        "version": "1.1.1"
     },
     "erusev/parsedown": {
         "version": "1.6.4"
@@ -28,6 +25,9 @@
     },
     "league/pipeline": {
         "version": "0.3.0"
+    },
+    "league/tactician": {
+        "version": "v1.0.3"
     },
     "league/uri": {
         "version": "6.0.1"

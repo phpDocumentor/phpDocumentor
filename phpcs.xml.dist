@@ -4,7 +4,7 @@
 
     <file>src</file>
     <file>tests/unit</file>
-    <exclude-pattern>*/src/phpDocumentor/Guides/*$</exclude-pattern>
+    <exclude-pattern>*/src/Guides/*$</exclude-pattern>
     <exclude-pattern>*/src/phpDocumentor/Pipeline/Stage/RenderGuide\.php$</exclude-pattern>
     <arg value="p"/>
     <arg name="extensions" value="php"/>

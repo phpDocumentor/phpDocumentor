@@ -1,0 +1,13 @@
+{% spaceless %}
+<figure>
+    {{ figureNode.image.render()|raw }}
+
+    {% if figureNode.document %}
+        {% set caption = figureNode.document.render()|trim %}
+
+        {% if caption %}
+            <figcaption>{{ caption|raw }}</figcaption>
+        {% endif %}
+    {% endif %}
+</figure>
+{% endspaceless %}

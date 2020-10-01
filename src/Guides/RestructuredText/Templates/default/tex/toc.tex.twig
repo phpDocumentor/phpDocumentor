@@ -1,0 +1,4 @@
+\tableofcontents
+{% for tocItem in tocItems %}
+\input{{ '{' }}{{ tocItem.url }}{{ '}' }}
+{% endfor %}

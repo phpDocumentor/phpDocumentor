@@ -1,0 +1,23 @@
+<table{% if tableNode.classes %} class="{{ tableNode.classesString }}"{% endif %}>
+    {% if tableHeaderRows is not empty %}
+        <thead>
+            {% for tableHeaderRow in tableHeaderRows %}
+                <tr>
+                    {% for column in tableHeaderRow.columns %}
+                        <th{% if column.colspan > 1 %} colspan="{{ column.colspan }}"{% endif %}>{{ column.render|raw }}</th>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </thead>
+    {% endif %}
+
+    <tbody>
+        {% for tableRow in tableRows %}
+            <tr>
+                {% for column in tableRow.columns %}
+                    <td{% if column.colSpan > 1 %} colspan="{{ column.colSpan }}"{% endif %}{% if column.rowSpan > 1 %} rowspan="{{ column.rowSpan }}"{% endif %}>{{ column.render|raw }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

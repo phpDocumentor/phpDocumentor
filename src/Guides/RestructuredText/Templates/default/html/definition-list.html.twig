@@ -1,0 +1,34 @@
+{% spaceless %}
+<dl{% if definitionListNode.classes %} class="{{ definitionListNode.classesString }}"{% endif %}>
+    {% for definitionListTerm in definitionList.terms %}
+        {% if definitionListTerm.classifiers is empty %}
+            <dt>{{ definitionListTerm.term.render()|raw }}</dt>
+        {% else %}
+            <dt>
+                {{ definitionListTerm.term.render()|raw }}
+
+                {% for classifier in definitionListTerm.classifiers %}
+                    <span class="classifier-delimiter">:</span>
+                    <span class="classifier">{{ classifier.render()|raw }}</span>
+                {% endfor %}
+            </dt>
+        {% endif %}
+
+        {% if definitionListTerm.definitions|length > 1 %}
+            <dd>
+                {% for definition in definitionListTerm.definitions %}
+                    {% if loop.first %}
+                        <p class="first">{{ definition.render()|raw }}</p>
+                    {% elseif loop.last %}
+                        <p class="last">{{ definition.render()|raw }}</p>
+                    {% else %}
+                        <p>{{ definition.render()|raw }}</p>
+                    {% endif %}
+                {% endfor %}
+            </dd>
+        {% elseif definitionListTerm.definitions|length == 1 %}
+            <dd>{{ definitionListTerm.firstDefinition.render()|raw }}</dd>
+        {% endif %}
+    {% endfor %}
+</dl>
+{% endspaceless %}
