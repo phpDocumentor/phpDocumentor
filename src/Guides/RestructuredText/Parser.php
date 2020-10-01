@@ -17,9 +17,6 @@ use function sprintf;
 
 class Parser implements \phpDocumentor\Guides\Parser
 {
-    /** @var Configuration */
-    private $configuration;
-
     /** @var Kernel */
     private $kernel;
 
@@ -41,11 +38,8 @@ class Parser implements \phpDocumentor\Guides\Parser
     /** @var DocumentParser|null */
     private $documentParser;
 
-    public function __construct(
-        Kernel $kernel,
-        Environment $environment
-    ) {
-        $this->configuration = $kernel->getConfiguration();
+    public function __construct(Kernel $kernel, Environment $environment)
+    {
         $this->kernel        = $kernel;
         $this->environment   = $environment;
 
@@ -60,15 +54,12 @@ class Parser implements \phpDocumentor\Guides\Parser
 
     public function getNodeFactory() : NodeFactory
     {
-        return $this->configuration->getNodeFactory($this->environment);
+        return $this->kernel->getConfiguration()->getNodeFactory($this->environment);
     }
 
-    /**
-     * @param mixed[] $parameters
-     */
     public function renderTemplate(string $template, array $parameters = []) : string
     {
-        return $this->configuration->getTemplateRenderer()->render($template, $parameters);
+        return $this->kernel->getConfiguration()->getTemplateRenderer()->render($template, $parameters);
     }
 
     public function initDirectives() : void
@@ -189,7 +180,7 @@ class Parser implements \phpDocumentor\Guides\Parser
             $this,
             $this->environment,
             $this->getNodeFactory(),
-            $this->configuration->getEventManager(),
+            $this->kernel->getConfiguration()->getEventManager(),
             $this->directives,
             $this->includeAllowed,
             $this->includeRoot

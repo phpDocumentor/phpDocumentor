@@ -13,12 +13,13 @@ declare(strict_types=1);
  * @author Mike van Riel <me@mikevanriel.com> for adapting this to phpDocumentor.
  */
 
-namespace phpDocumentor\Guides\RestructuredText\Directives;
+namespace phpDocumentor\Guides\RestructuredText\HTML\Directives;
 
-class HintDirective extends AbstractAdmonitionDirective
+class WarningDirective extends AbstractAdmonitionDirective
 {
     public function __construct()
     {
-        parent::__construct('hint', 'Hint');
+        // we render warning and caution the same
+        parent::__construct('warning', 'Warning');
     }
 }

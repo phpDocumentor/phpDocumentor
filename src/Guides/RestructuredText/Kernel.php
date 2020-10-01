@@ -4,7 +4,14 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText;
 
+use Doctrine\Common\EventManager;
+use IteratorAggregate;
+use phpDocumentor\Guides\BuildContext;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive;
+use phpDocumentor\Guides\RestructuredText\Event\PostBuildRenderEvent;
+use phpDocumentor\Guides\RestructuredText\Event\PreNodeRenderEvent;
+use phpDocumentor\Guides\RestructuredText\Listener\AssetsCopyListener;
+use phpDocumentor\Guides\RestructuredText\Listener\CopyImagesListener;
 use phpDocumentor\Guides\RestructuredText\Nodes\DocumentNode;
 use phpDocumentor\Guides\RestructuredText\References\Doc;
 use phpDocumentor\Guides\RestructuredText\References\Reference;
@@ -21,16 +28,15 @@ class Kernel
     /** @var Reference[] */
     private $references;
 
-    /**
-     * @param Directive[] $directives
-     * @param Reference[] $references
-     */
+    private $buildContext;
+
     public function __construct(
-        ?Configuration $configuration = null,
-        array $directives = [],
-        array $references = []
+        Configuration $configuration,
+        IteratorAggregate $directives,
+        IteratorAggregate $references,
+        BuildContext $buildContext
     ) {
-        $this->configuration = $configuration ?? new Configuration();
+        $this->configuration = $configuration;
 
         $this->directives = array_merge([
             new Directives\Dummy(),
@@ -38,12 +44,35 @@ class Kernel
             new Directives\Raw(),
             new Directives\Replace(),
             new Directives\Toctree(),
-        ], $this->configuration->getFormat()->getDirectives(), $directives);
+        ], $this->configuration->getFormat()->getDirectives(), iterator_to_array($directives));
 
         $this->references = array_merge([
             new References\Doc(),
             new References\Doc('ref', true),
-        ], $this->createReferences(), $references);
+        ], $this->createReferences(), iterator_to_array($references));
+
+        $this->buildContext = $buildContext;
+    }
+
+    public function initBuilder(Builder $builder) : void
+    {
+        $this->initializeListeners(
+            $builder->getConfiguration()->getEventManager(),
+            $builder->getErrorManager()
+        );
+    }
+
+    private function initializeListeners(EventManager $eventManager, ErrorManager $errorManager) : void
+    {
+        $eventManager->addEventListener(
+            PreNodeRenderEvent::PRE_NODE_RENDER,
+            new CopyImagesListener($this->buildContext, $errorManager)
+        );
+
+        $eventManager->addEventListener(
+            [PostBuildRenderEvent::POST_BUILD_RENDER],
+            new AssetsCopyListener($this->buildContext->getOutputFilesystem())
+        );
     }
 
     public function getConfiguration() : Configuration

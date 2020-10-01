@@ -13,14 +13,12 @@ declare(strict_types=1);
  * @author Mike van Riel <me@mikevanriel.com> for adapting this to phpDocumentor.
  */
 
-namespace phpDocumentor\Guides\RestructuredText\Directives;
+namespace phpDocumentor\Guides\RestructuredText\HTML\Directives;
 
-use phpDocumentor\Guides\RestructuredText\Directives\SubDirective;
-
-class RoleDirective extends SubDirective
+class SeeAlsoDirective extends AbstractAdmonitionDirective
 {
-    public function getName() : string
+    public function __construct()
     {
-        return 'role';
+        parent::__construct('seealso', 'See also');
     }
 }

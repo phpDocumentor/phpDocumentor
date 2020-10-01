@@ -13,12 +13,12 @@ declare(strict_types=1);
  * @author Mike van Riel <me@mikevanriel.com> for adapting this to phpDocumentor.
  */
 
-namespace phpDocumentor\Guides\RestructuredText\Directives;
+namespace phpDocumentor\Guides\RestructuredText\HTML\Directives;
 
-class NoteDirective extends AbstractAdmonitionDirective
+class TipDirective extends AbstractAdmonitionDirective
 {
     public function __construct()
     {
-        parent::__construct('note', 'Note');
+        parent::__construct('tip', 'Tip');
     }
 }

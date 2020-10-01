@@ -13,13 +13,14 @@ declare(strict_types=1);
  * @author Mike van Riel <me@mikevanriel.com> for adapting this to phpDocumentor.
  */
 
-namespace phpDocumentor\Guides\RestructuredText\Directives;
+namespace phpDocumentor\Guides\RestructuredText\HTML\Directives;
 
-class WarningDirective extends AbstractAdmonitionDirective
+use phpDocumentor\Guides\RestructuredText\Directives\SubDirective;
+
+class RoleDirective extends SubDirective
 {
-    public function __construct()
+    public function getName() : string
     {
-        // we render warning and caution the same
-        parent::__construct('warning', 'Warning');
+        return 'role';
     }
 }

@@ -13,12 +13,17 @@ declare(strict_types=1);
  * @author Mike van Riel <me@mikevanriel.com> for adapting this to phpDocumentor.
  */
 
-namespace phpDocumentor\Guides\RestructuredText\Directives;
+namespace phpDocumentor\Guides\RestructuredText\HTML\Directives;
 
-class BestPracticeDirective extends AbstractAdmonitionDirective
+use phpDocumentor\Guides\RestructuredText\Directives\SubDirective;
+
+/**
+ * @deprecated
+ */
+class GlossaryDirective extends SubDirective
 {
-    public function __construct()
+    public function getName() : string
     {
-        parent::__construct('best-practice', 'Best Practice');
+        return 'glossary';
     }
 }

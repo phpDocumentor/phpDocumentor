@@ -13,28 +13,33 @@ declare(strict_types=1);
  * @author Mike van Riel <me@mikevanriel.com> for adapting this to phpDocumentor.
  */
 
-namespace phpDocumentor\Guides\RestructuredText\Directives;
+namespace phpDocumentor\Guides\RestructuredText\HTML\Directives;
 
 use phpDocumentor\Guides\RestructuredText\Directives\SubDirective;
 use phpDocumentor\Guides\RestructuredText\Nodes\Node;
 use phpDocumentor\Guides\RestructuredText\Parser;
 
-class VersionAddedDirective extends SubDirective
+class TopicDirective extends SubDirective
 {
-    public function getName() : string
-    {
-        return 'versionadded';
-    }
-
-    public function processSub(Parser $parser, ?Node $document, string $variable, string $data, array $options) : ?Node
-    {
+    final public function processSub(
+        Parser $parser,
+        ?Node $document,
+        string $variable,
+        string $data,
+        array $options
+    ) : ?Node {
         $wrapperDiv = $parser->renderTemplate(
-            'directives/version-added.html.twig',
+            'directives/topic.html.twig',
             [
-                'version' => $data,
+                'name' => $data,
             ]
         );
 
-        return $parser->getNodeFactory()->createWrapperNode($document, $wrapperDiv, '</div></div>');
+        return $parser->getNodeFactory()->createWrapperNode($document, $wrapperDiv, '</div>');
+    }
+
+    public function getName() : string
+    {
+        return 'topic';
     }
 }

@@ -87,11 +87,6 @@ class Configuration
 
         $this->templateEngineAdapter = new TwigAdapter($this);
         $this->templateRenderer      = new TwigTemplateRenderer($this);
-
-        $this->formats = [
-            Format::HTML => new InternalFormat(new HTMLFormat($this->templateRenderer)),
-            Format::LATEX => new InternalFormat(new LaTeXFormat($this->templateRenderer)),
-        ];
     }
 
     public function getCacheDir() : string

@@ -51,30 +51,6 @@ class DocumentNodeRenderer implements NodeRenderer, FullDocumentNodeRenderer
             'menu' => $this->assembleMenu($this->subFolderInProject),
         ]);
     }
-//    public function renderDocument() : string
-//    {
-//        $headerNodes = '';
-//
-//        foreach ($this->document->getHeaderNodes() as $node) {
-//            $headerNodes .= $node->render() . "\n";
-//        }
-//
-//        $html = $this->templateRenderer->render('document.html.twig', [
-//            'headerNodes' => $headerNodes,
-//            'bodyNodes' => $this->render(),
-//        ]);
-//
-//        if ($this->document->getConfiguration()->getIndentHTML()) {
-//            return $this->indentHTML($html);
-//        }
-//
-//        return $html;
-//    }
-//
-//    private function indentHTML(string $html) : string
-//    {
-//        return (new Indenter())->indent($html);
-//    }
 
     private function assembleMenu(string $urlPrefix) : array
     {

@@ -13,33 +13,28 @@ declare(strict_types=1);
  * @author Mike van Riel <me@mikevanriel.com> for adapting this to phpDocumentor.
  */
 
-namespace phpDocumentor\Guides\RestructuredText\Directives;
+namespace phpDocumentor\Guides\RestructuredText\HTML\Directives;
 
 use phpDocumentor\Guides\RestructuredText\Directives\SubDirective;
 use phpDocumentor\Guides\RestructuredText\Nodes\Node;
 use phpDocumentor\Guides\RestructuredText\Parser;
 
-class TopicDirective extends SubDirective
+class DeprecatedDirective extends SubDirective
 {
-    final public function processSub(
-        Parser $parser,
-        ?Node $document,
-        string $variable,
-        string $data,
-        array $options
-    ) : ?Node {
+    public function getName() : string
+    {
+        return 'deprecated';
+    }
+
+    public function processSub(Parser $parser, ?Node $document, string $variable, string $data, array $options) : ?Node
+    {
         $wrapperDiv = $parser->renderTemplate(
-            'directives/topic.html.twig',
+            'directives/deprecated.html.twig',
             [
-                'name' => $data,
+                'version' => $data,
             ]
         );
 
-        return $parser->getNodeFactory()->createWrapperNode($document, $wrapperDiv, '</div>');
-    }
-
-    public function getName() : string
-    {
-        return 'topic';
+        return $parser->getNodeFactory()->createWrapperNode($document, $wrapperDiv, '</div></div>');
     }
 }

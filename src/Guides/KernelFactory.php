@@ -19,7 +19,9 @@ use IteratorAggregate;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Guides\RestructuredText\Configuration;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive;
+use phpDocumentor\Guides\RestructuredText\HTML\HTMLFormat;
 use phpDocumentor\Guides\RestructuredText\Kernel;
+use phpDocumentor\Guides\RestructuredText\LaTeX\LaTeXFormat;
 use phpDocumentor\Guides\RestructuredText\References\Reference;
 use phpDocumentor\Guides\RestructuredText\Twig\AssetsExtension;
 use phpDocumentor\Transformer\Writer\Twig\Extension;
@@ -61,13 +63,13 @@ final class KernelFactory
         $configuration->setUseCachedMetas($buildContext->isCacheEnabled());
 
         $configuration->addFormat(
-            new HtmlFormat(
+            new HTMLFormat(
                 $configuration->getTemplateRenderer(),
-                $configuration->getFormat(),
                 $this->globalTemplatesPath,
                 $buildContext->getDestinationPath()
             )
         );
+        $configuration->addFormat(new LaTeXFormat($configuration->getTemplateRenderer()));
 
         $twig = $configuration->getTemplateEngine();
 
@@ -78,6 +80,6 @@ final class KernelFactory
         $loader = $twig->getLoader();
         $loader->prependPath($this->globalTemplatesPath . '/' . $buildContext->getTemplate());
 
-        return new DocsKernel($configuration, $this->directives, $this->references, $buildContext);
+        return new Kernel($configuration, $this->directives, $this->references, $buildContext);
     }
 }
