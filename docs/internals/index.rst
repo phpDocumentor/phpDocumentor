@@ -12,4 +12,6 @@ The docs can be interesting for anyone working on the codebase of phpDocumentor.
    configuration
    flow
    caching
+   guides
    file-access
+   custom-settings

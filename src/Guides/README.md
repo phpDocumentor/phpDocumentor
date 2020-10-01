@@ -5,7 +5,5 @@
 >
 > This is a follow-up to an earlier POC and can, at best, seen as an incubator project. 
 
-The code for rendering guides based off RestructuredText-based documentation is based on, and with permission of, 
-Ryan Weaver his work on the [docs-builder] package.
+## Attribution
 
-[docs-builder]: https://github.com/ryanweaver/docs-builder

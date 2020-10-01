@@ -70,7 +70,7 @@ composer-require-checker:
 	docker run -it --rm -v${PWD}:/data -w /data  phpga/composer-require-checker-ga check --config-file /data/composer-require-config.json composer.json
 
 .PHONY: pre-commit-test
-pre-commit-test: test phpcs phpstan composer-require-checker
+pre-commit-test: test phpcs phpstan psalm composer-require-checker
 
 .PHONY: shell
 shell:

@@ -12,8 +12,7 @@
         <directory name="src" />
         <ignoreFiles>
             <directory name="vendor" />
-            <!-- This specific file seems a work in progress -->
-            <file name="src/phpDocumentor/Guides/Generator/HtmlForPdfGenerator.php"/>
+            <directory name="src/Guides" />
         </ignoreFiles>
     </projectFiles>
 
