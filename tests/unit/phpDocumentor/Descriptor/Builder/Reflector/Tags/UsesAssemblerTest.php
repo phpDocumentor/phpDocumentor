@@ -46,6 +46,7 @@ class UsesAssemblerTest extends MockeryTestCase
 
     /**
      * @covers ::create
+     * @covers ::buildDescriptor
      */
     public function testCreateUsesDescriptorFromUsesTagWhenReferenceIsRelativeClassnameNotInNamespaceAliasses() : void
     {

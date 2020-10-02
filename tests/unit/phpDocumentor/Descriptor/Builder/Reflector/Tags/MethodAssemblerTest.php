@@ -55,6 +55,7 @@ final class MethodAssemblerTest extends MockeryTestCase
      * @dataProvider provideNotations
      * @covers       ::create
      * @covers       ::createArgumentDescriptorForMagicMethod
+     * @covers       ::buildDescriptor
      */
     public function testCreateMethodDescriptorFromVariousNotations(
         Type $returnType,
