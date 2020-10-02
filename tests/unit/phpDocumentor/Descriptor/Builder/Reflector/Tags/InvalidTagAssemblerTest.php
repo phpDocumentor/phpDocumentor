@@ -21,7 +21,7 @@ final class InvalidTagAssemblerTest extends TestCase
         $assembler = new InvalidTagAssembler();
         $tag = $assembler->create(InvalidTag::create('Tag body', 'name'));
 
-        self::assertEquals(new Description('Tag body'), $tag->getDescription());
+        self::assertEquals('Tag body', $tag->getDescription());
         self::assertSame('name', $tag->getName());
         self::assertEquals('ERROR', $tag->getErrors()[0]->getSeverity());
         self::assertEquals(

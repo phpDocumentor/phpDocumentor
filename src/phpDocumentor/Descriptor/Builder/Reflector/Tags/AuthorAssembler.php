@@ -13,7 +13,10 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 
+use phpDocumentor\Descriptor\Builder\AssemblerReducer;
 use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
+use phpDocumentor\Descriptor\Builder\Reflector\Docblock\DescriptionAssemblerReducer;
+use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
 use phpDocumentor\Descriptor\Tag\AuthorDescriptor;
 use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\DocBlock\Tags\Author;
@@ -33,6 +36,9 @@ class AuthorAssembler extends AssemblerAbstract
      */
     protected function buildDescriptor(object $data): AuthorDescriptor
     {
-        return new AuthorDescriptor($data->getName());
+        $tag = new AuthorDescriptor($data->getName());
+        $tag->setDescription(new DescriptionDescriptor(new Description((string)$data), []));
+
+        return $tag;
     }
 }

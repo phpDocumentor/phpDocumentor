@@ -23,7 +23,7 @@ use phpDocumentor\Reflection\DocBlock\Tags\Link;
  * This object will read the reflected information for the `@link` tag and create a {@see LinkDescriptor} object that
  * can be used in the rest of the application and templates.
  */
-class LinkAssembler extends AssemblerAbstract
+class LinkAssembler extends BaseTagAssembler
 {
     /**
      * Creates a new Descriptor from the given Reflector.

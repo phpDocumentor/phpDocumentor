@@ -329,7 +329,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
                         } elseif ($tag instanceof LinkDescriptor) {
                             $tagStrings[] = sprintf('[%s](%s)', $tag->getDescription(), $tag->getLink());
                         } elseif ($tag instanceof ExampleDescriptor) {
-                            //TODO: need to render examples in a proper way!
+                            $tagStrings[] = $tag->getDescription() . "\n" . '```php' . "\n" . $tag->getExample() . "\n" . '```';
                         } else {
                             $tagStrings[] = (string) $tag;
                         }

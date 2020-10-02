@@ -23,7 +23,7 @@ use phpDocumentor\Reflection\DocBlock\Tags\Version;
  * This object will read the reflected information for the `@version` tag and create a {@see VersionDescriptor} object
  * that can be used in the rest of the application and templates.
  */
-class VersionAssembler extends AssemblerAbstract
+class VersionAssembler extends BaseTagAssembler
 {
     /**
      * Creates a new Descriptor from the given Reflector.

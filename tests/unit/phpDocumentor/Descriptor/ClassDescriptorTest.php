@@ -15,14 +15,8 @@ namespace phpDocumentor\Descriptor;
 
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
-use phpDocumentor\Descriptor\Tag\MethodDescriptor as TagMethodDescriptor;
-use phpDocumentor\Descriptor\Tag\PropertyDescriptor as TagPropertyDescriptor;
-use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
-use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\Fqsen;
-use phpDocumentor\Reflection\Types\String_;
 use stdClass;
-use function current;
 
 /**
  * Tests the functionality for the ClassDescriptor class.
@@ -33,6 +27,9 @@ final class ClassDescriptorTest extends MockeryTestCase
 {
     /** @var ClassDescriptor $fixture */
     protected $fixture;
+
+    use MagicPropertyContainerTests;
+    use MagicMethodContainerTests;
 
     /**
      * Creates a new (emoty) fixture object.
@@ -222,42 +219,6 @@ final class ClassDescriptorTest extends MockeryTestCase
         $this->assertTrue($this->fixture->isFinal());
     }
 
-    /**
-     * @covers ::getMagicProperties
-     */
-    public function testGetMagicPropertiesUsingPropertyTags() : void
-    {
-        $variableName = 'variableName';
-        $description = new Description('description');
-        $types = new Collection(['string']);
-
-        $this->assertEquals(0, $this->fixture->getMagicProperties()->count());
-
-        $propertyMock = m::mock(TagPropertyDescriptor::class);
-        $propertyMock->shouldReceive('getVariableName')->andReturn($variableName);
-        $propertyMock->shouldReceive('getDescription')->andReturn($description);
-        $propertyMock->shouldReceive('getType')->andReturn(new String_());
-        $propertyMock->shouldReceive('getName')->andReturn('property');
-
-        $this->fixture->getTags()->fetch('property', new Collection())->add($propertyMock);
-
-        $magicProperties = $this->fixture->getMagicProperties();
-
-        $this->assertCount(1, $magicProperties);
-
-        /** @var PropertyDescriptor $magicProperty */
-        $magicProperty = current($magicProperties->getAll());
-        $this->assertEquals($variableName, $magicProperty->getName());
-        $this->assertEquals($description, $magicProperty->getDescription());
-        $this->assertEquals([new String_()], $magicProperty->getTypes());
-
-        $mock = m::mock(ClassDescriptor::class);
-        $mock->shouldReceive('getMagicProperties')->andReturn(new Collection(['magicProperties']));
-        $this->fixture->setParent($mock);
-
-        $magicProperties = $this->fixture->getMagicProperties();
-        $this->assertCount(2, $magicProperties);
-    }
 
     /**
      * @covers ::getInheritedConstants
@@ -359,65 +320,6 @@ final class ClassDescriptorTest extends MockeryTestCase
         // Assert
         $this->assertInstanceOf(Collection::class, $result);
         $this->assertSame($expected, $result->getAll());
-    }
-
-    /**
-     * @covers       ::getMagicMethods
-     * @dataProvider provideMagicMethodProperties
-     */
-    public function testGetMagicMethods(bool $isStatic) : void
-    {
-        $methodName = 'methodName';
-        $description = new Description('description');
-        $response = new ReturnDescriptor('return');
-        $response->setType(new String_());
-        $argument = m::mock(ArgumentDescriptor::class);
-        $argument->shouldReceive('setMethod');
-
-        $this->assertEquals(0, $this->fixture->getMagicMethods()->count());
-
-        $methodMock = m::mock(TagMethodDescriptor::class);
-        $methodMock->shouldReceive('getMethodName')->andReturn($methodName);
-        $methodMock->shouldReceive('getDescription')->andReturn($description);
-        $methodMock->shouldReceive('getResponse')->andReturn($response);
-        $methodMock->shouldReceive('getArguments')->andReturn(new Collection(['argument1' => $argument]));
-        $methodMock->shouldReceive('isStatic')->andReturn($isStatic);
-
-        $this->fixture->getTags()->fetch('method', new Collection())->add($methodMock);
-
-        $magicMethods = $this->fixture->getMagicMethods();
-
-        $this->assertCount(1, $magicMethods);
-
-        /** @var MethodDescriptor $magicMethod */
-        $magicMethod = current($magicMethods->getAll());
-        $this->assertEquals($methodName, $magicMethod->getName());
-        $this->assertEquals($description, $magicMethod->getDescription());
-        $this->assertEquals($response, $magicMethod->getResponse());
-        $this->assertEquals($isStatic, $magicMethod->isStatic());
-
-        $mock = m::mock(ClassDescriptor::class);
-        $mock->shouldReceive('getMagicMethods')->andReturn(new Collection(['magicMethods']));
-        $this->fixture->setParent($mock);
-
-        $magicMethods = $this->fixture->getMagicMethods();
-        $this->assertCount(2, $magicMethods);
-    }
-
-    /**
-     * Provider to test different properties for a class magic method
-     * (provides isStatic)
-     *
-     * @return bool[][]
-     */
-    public function provideMagicMethodProperties() : array
-    {
-        return [
-            // Instance magic method (default)
-            [false],
-            // Static magic method
-            [true],
-        ];
     }
 
     /**

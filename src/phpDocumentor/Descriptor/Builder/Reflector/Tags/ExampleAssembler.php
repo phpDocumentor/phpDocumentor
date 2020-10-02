@@ -16,6 +16,7 @@ namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 use InvalidArgumentException;
 use phpDocumentor\Descriptor\Builder\AssemblerReducer;
 use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
+use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
 use phpDocumentor\Descriptor\Tag\ExampleDescriptor;
 use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\DocBlock\ExampleFinder;
@@ -55,6 +56,7 @@ class ExampleAssembler extends AssemblerAbstract
         $descriptor->setFilePath($data->getFilePath());
         $descriptor->setStartingLine($data->getStartingLine());
         $descriptor->setLineCount($data->getLineCount());
+        $descriptor->setDescription(new DescriptionDescriptor(new Description($data->getDescription()), []));
         $descriptor->setExample($this->finder->find($data));
 
         return $descriptor;

@@ -15,6 +15,7 @@ namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use phpDocumentor\Descriptor\ArgumentDescriptor;
 use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
 use phpDocumentor\Descriptor\FunctionDescriptor;
 use phpDocumentor\Descriptor\Tag\ParamDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
@@ -67,7 +68,7 @@ class FunctionAssembler extends AssemblerAbstract
         //TODO: this looks like a potential bug. Have to investigate this!
         if ($package) {
             $tag = new TagDescriptor('package');
-            $tag->setDescription(new Description($package));
+            $tag->setDescription(new DescriptionDescriptor(new Description($package), []));
             $packages->add($tag);
         }
 

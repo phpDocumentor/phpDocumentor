@@ -64,7 +64,7 @@ class ExampleAssemblerTest extends MockeryTestCase
         $descriptor = $this->fixture->create($exampleTagMock);
 
         $this->assertSame(self::TAG_NAME, $descriptor->getName());
-        $this->assertEquals(new Description(self::EXAMPLE_DESCRIPTION), $descriptor->getDescription());
+        $this->assertEquals(self::EXAMPLE_DESCRIPTION, $descriptor->getDescription());
         $this->assertSame(self::EXAMPLE_FILE_PATH, $descriptor->getFilePath());
         $this->assertSame(self::EXAMPLE_STARTING_LINE, $descriptor->getStartingLine());
         $this->assertSame(self::EXAMPLE_LINE_COUNT, $descriptor->getLineCount());

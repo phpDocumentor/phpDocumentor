@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 
+use phpDocumentor\Descriptor\Builder\AssemblerReducer;
 use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
+use phpDocumentor\Descriptor\Builder\Reflector\Docblock\DescriptionAssemblerReducer;
 use phpDocumentor\Descriptor\Tag\SeeDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tags\See;
 
@@ -23,7 +25,7 @@ use phpDocumentor\Reflection\DocBlock\Tags\See;
  * This class will gather the properties that were parsed by the Reflection mechanism for, specifically, an `@see` tag
  * and use that to create a SeeDescriptor that describes all properties that an `@see` tag may have.
  */
-class SeeAssembler extends AssemblerAbstract
+class SeeAssembler extends BaseTagAssembler
 {
     /**
      * Creates a new Descriptor from the given Reflector.
