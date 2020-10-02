@@ -22,6 +22,8 @@ use phpDocumentor\Reflection\DocBlock\Tags\Example;
 
 /**
  * Tests for the \phpDocumentor\Descriptor\Builder\Reflector\Tags\ExampleAssembler class.
+ *
+ * @coversDefaultClass \phpDocumentor\Descriptor\Builder\Reflector\Tags\ExampleAssembler
  */
 class ExampleAssemblerTest extends MockeryTestCase
 {
@@ -53,8 +55,9 @@ class ExampleAssemblerTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\Tags\ExampleAssembler::__construct
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\Tags\ExampleAssembler::create
+     * @covers ::__construct
+     * @covers ::create
+     * @covers ::buildDescriptor
      */
     public function testCreateDescriptorFromExampleTag() : void
     {
@@ -72,7 +75,7 @@ class ExampleAssemblerTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\Tags\ExampleAssembler::create
+     * @covers ::create
      */
     public function testExceptionIsThrownIfTheWrongObjectIsPassed() : void
     {

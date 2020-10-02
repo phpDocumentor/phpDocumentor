@@ -31,6 +31,7 @@ class ReturnAssemblerTest extends MockeryTestCase
 
     /**
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\Tags\ReturnAssembler::create
+     * @covers \phpDocumentor\Descriptor\Builder\Reflector\Tags\ReturnAssembler::buildDescriptor
      */
     public function testCreatingReturnDescriptorFromReflector() : void
     {

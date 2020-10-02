@@ -31,6 +31,7 @@ class VarAssemblerTest extends MockeryTestCase
 
     /**
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\Tags\VarAssembler::create
+     * @covers \phpDocumentor\Descriptor\Builder\Reflector\Tags\VarAssembler::buildDescriptor
      */
     public function testCreatingVarDescriptorFromReflector() : void
     {

@@ -22,6 +22,10 @@ use PHPUnit\Framework\TestCase;
  */
 class AuthorAssemblerTest extends TestCase
 {
+    /**
+     * @covers ::create
+     * @covers ::buildDescriptor
+     */
     public function testCreate() : void
     {
         $feature = new AuthorAssembler();
