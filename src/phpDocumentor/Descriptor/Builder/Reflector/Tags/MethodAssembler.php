@@ -27,7 +27,7 @@ use function array_key_exists;
  * This object will read the reflected information for the `@method` tag and create a {@see MethodDescriptor} object
  * that can be used in the rest of the application and templates.
  */
-class MethodAssembler extends AssemblerAbstract
+class MethodAssembler extends BaseTagAssembler
 {
     /**
      * Creates a new Descriptor from the given Reflector.

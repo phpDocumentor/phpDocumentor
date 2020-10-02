@@ -15,6 +15,7 @@ namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
+use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Descriptor\Tag\ParamDescriptor;
 use phpDocumentor\Reflection\DocBlock\Description;
@@ -75,7 +76,7 @@ class ArgumentAssemblerTest extends MockeryTestCase
         // Arrange
         $name = 'goodArgument';
         $type = new Boolean();
-        $description = new Description('description');
+        $description = new DescriptionDescriptor(new Description('description'), []);
 
         $argumentReflectorMock = $this->givenAnArgumentReflectorWithNameAndType($name, $type);
 
@@ -107,7 +108,7 @@ class ArgumentAssemblerTest extends MockeryTestCase
         // Arrange
         $name = 'goodArgument';
         $type = new Boolean();
-        $description = new Description('description');
+        $description = new DescriptionDescriptor(new Description('description'), []);
 
         $argumentReflectorMock = $this->givenAnArgumentReflectorWithNameAndType($name, $type, true);
 

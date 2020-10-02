@@ -23,7 +23,7 @@ use phpDocumentor\Reflection\DocBlock\Tags\Property;
  * This object will read the reflected information for the `@property` tag and create a {@see PropertyDescriptor}
  * object that can be used in the rest of the application and templates.
  */
-class PropertyAssembler extends AssemblerAbstract
+class PropertyAssembler extends BaseTagAssembler
 {
     /**
      * Creates a new Descriptor from the given Reflector.

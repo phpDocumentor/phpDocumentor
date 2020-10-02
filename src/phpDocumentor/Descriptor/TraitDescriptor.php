@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor;
 
 use InvalidArgumentException;
+use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
 use phpDocumentor\Descriptor\Validation\Error;
 use function ltrim;
 use function sprintf;
@@ -79,6 +80,14 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
             $method->setDescription($methodTag->getDescription());
             $method->setStatic($methodTag->isStatic());
             $method->setParent($this);
+
+            /** @var Collection<ReturnDescriptor> $returnTags */
+            $returnTags = $method->getTags()->fetch('return', new Collection());
+            $returnTags->add($methodTag->getResponse());
+
+            foreach ($methodTag->getArguments() as $name => $argument) {
+                $method->addArgument($name, $argument);
+            }
 
             $methods->add($method);
         }

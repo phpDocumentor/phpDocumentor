@@ -23,7 +23,7 @@ use phpDocumentor\Reflection\DocBlock\Tags\Param;
  * This object will read the reflected information for the `@param` tag and create a {@see ParamDescriptor} object that
  * can be used in the rest of the application and templates.
  */
-class ParamAssembler extends AssemblerAbstract
+class ParamAssembler extends BaseTagAssembler
 {
     /**
      * Creates a new Descriptor from the given Reflector.

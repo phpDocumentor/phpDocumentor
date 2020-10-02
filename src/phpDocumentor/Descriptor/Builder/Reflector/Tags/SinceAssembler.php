@@ -23,7 +23,7 @@ use phpDocumentor\Reflection\DocBlock\Tags\Since;
  * This object will read the reflected information for the `@since` tag and create a {@see SinceDescriptor} object that
  * can be used in the rest of the application and templates.
  */
-class SinceAssembler extends AssemblerAbstract
+class SinceAssembler extends BaseTagAssembler
 {
     /**
      * Creates a new Descriptor from the given Reflector.

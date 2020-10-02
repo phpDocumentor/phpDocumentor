@@ -17,7 +17,7 @@ use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
 use phpDocumentor\Descriptor\Tag\UsesDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tags\Uses;
 
-class UsesAssembler extends AssemblerAbstract
+class UsesAssembler extends BaseTagAssembler
 {
     /**
      * Creates a new Descriptor from the given Reflector.
