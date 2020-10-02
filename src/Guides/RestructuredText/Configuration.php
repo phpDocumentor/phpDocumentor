@@ -7,18 +7,12 @@ namespace phpDocumentor\Guides\RestructuredText;
 use Doctrine\Common\EventArgs;
 use Doctrine\Common\EventManager;
 use phpDocumentor\Guides\RestructuredText\Formats\Format;
-use phpDocumentor\Guides\RestructuredText\Formats\InternalFormat;
-use phpDocumentor\Guides\RestructuredText\HTML\HTMLFormat;
-use phpDocumentor\Guides\RestructuredText\LaTeX\LaTeXFormat;
 use phpDocumentor\Guides\RestructuredText\NodeFactory\DefaultNodeFactory;
 use phpDocumentor\Guides\RestructuredText\NodeFactory\NodeFactory;
 use phpDocumentor\Guides\RestructuredText\NodeFactory\NodeInstantiator;
 use phpDocumentor\Guides\RestructuredText\Nodes\NodeTypes;
 use phpDocumentor\Guides\RestructuredText\Renderers\NodeRendererFactory;
-use phpDocumentor\Guides\RestructuredText\Templates\TemplateEngineAdapter;
 use phpDocumentor\Guides\RestructuredText\Templates\TemplateRenderer;
-use phpDocumentor\Guides\RestructuredText\Templates\TwigAdapter;
-use phpDocumentor\Guides\RestructuredText\Templates\TwigTemplateRenderer;
 use RuntimeException;
 use Twig\Environment as TwigEnvironment;
 use function sprintf;
@@ -30,9 +24,6 @@ class Configuration
 
     /** @var string */
     private $cacheDir;
-
-    /** @var string[] */
-    private $customTemplateDirs = [];
 
     /** @var string */
     private $theme = self::THEME_DEFAULT;
@@ -76,17 +67,11 @@ class Configuration
     /** @var EventManager */
     private $eventManager;
 
-    /** @var TemplateEngineAdapter */
-    private $templateEngineAdapter;
-
     public function __construct()
     {
         $this->cacheDir = sys_get_temp_dir() . '/doctrine-rst-parser';
 
         $this->eventManager = new EventManager();
-
-        $this->templateEngineAdapter = new TwigAdapter($this);
-        $this->templateRenderer      = new TwigTemplateRenderer($this);
     }
 
     public function getCacheDir() : string
@@ -114,28 +99,7 @@ class Configuration
      */
     public function getTemplateEngine()
     {
-        return $this->templateEngineAdapter->getTemplateEngine();
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getCustomTemplateDirs() : array
-    {
-        return $this->customTemplateDirs;
-    }
-
-    /**
-     * @param string[] $customTemplateDirs
-     */
-    public function setCustomTemplateDirs(array $customTemplateDirs) : void
-    {
-        $this->customTemplateDirs = $customTemplateDirs;
-    }
-
-    public function addCustomTemplateDir(string $customTemplateDir) : void
-    {
-        $this->customTemplateDirs[] = $customTemplateDir;
+        return $this->templateRenderer->getTemplateEngine();
     }
 
     public function getTheme() : string

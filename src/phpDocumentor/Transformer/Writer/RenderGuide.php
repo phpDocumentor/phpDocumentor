@@ -25,6 +25,7 @@ use phpDocumentor\Parser\Cache\Locator;
 use phpDocumentor\Parser\FlySystemFactory;
 use phpDocumentor\Parser\FlySystemMirror;
 use phpDocumentor\Transformer\Transformation;
+use phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory;
 use Psr\Log\LoggerInterface;
 use function rtrim;
 use function sprintf;
@@ -49,16 +50,21 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
     /** @var LoggerInterface */
     private $logger;
 
+    /** @var EnvironmentFactory */
+    private $environmentFactory;
+
     public function __construct(
         FlySystemFactory $flySystemFactory,
         KernelFactory $kernelFactory,
         Locator $cacheLocator,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        EnvironmentFactory $environmentFactory
     ) {
         $this->flySystemFactory = $flySystemFactory;
         $this->kernelFactory = $kernelFactory;
         $this->cacheLocator = $cacheLocator;
         $this->logger = $logger;
+        $this->environmentFactory = $environmentFactory;
     }
 
     public function transform(ProjectDescriptor $project, Transformation $transformation) : void
@@ -93,8 +99,9 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
                 $inputFolder .= $documentationSet->getSource()['paths'][0] ?? '';
 
                 $tempOutputPath = sprintf('%s/output', $cachePath);
+                $environment = $this->environmentFactory->create($project, $transformation, $tempOutputPath);
 
-                $builder = new Builder($this->kernelFactory->createKernel($project, $buildContext));
+                $builder = new Builder($this->kernelFactory->createKernel($buildContext, $environment));
                 $builder->build($inputFolder, $tempOutputPath);
 
                 $tempFilesystem = new Filesystem(new Local($tempOutputPath));
