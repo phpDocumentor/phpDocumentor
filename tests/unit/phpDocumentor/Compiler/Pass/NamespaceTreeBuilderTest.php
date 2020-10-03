@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Compiler\Pass;
 
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\ConstantDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
@@ -23,6 +22,7 @@ use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Reflection\Fqsen;
+use PHPUnit\Framework\TestCase;
 use function array_keys;
 use function sort;
 
@@ -31,7 +31,7 @@ use function sort;
  * @covers ::<private>
  * @covers ::<protected>
  */
-class NamespaceTreeBuilderTest extends MockeryTestCase
+class NamespaceTreeBuilderTest extends TestCase
 {
     /** @var NamespaceTreeBuilder $fixture */
     protected $fixture;

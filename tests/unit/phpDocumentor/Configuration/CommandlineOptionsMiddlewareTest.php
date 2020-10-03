@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Configuration;
 
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Dsn;
 use phpDocumentor\Path;
+use PHPUnit\Framework\TestCase;
 use function current;
 
 /**
@@ -23,7 +23,7 @@ use function current;
  * @covers ::__construct
  * @covers ::<private>
  */
-final class CommandlineOptionsMiddlewareTest extends MockeryTestCase
+final class CommandlineOptionsMiddlewareTest extends TestCase
 {
     /** @var ConfigurationFactory */
     private $configurationFactory;

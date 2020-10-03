@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Event;
 
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Event\Mock\EventAbstract as EventAbstractMock;
+use PHPUnit\Framework\TestCase;
 use stdClass;
 
 /**
  * Test for the EventAbstract class.
  */
-class EventAbstractTest extends MockeryTestCase
+class EventAbstractTest extends TestCase
 {
     /**
      * @covers \phpDocumentor\Event\EventAbstract::__construct

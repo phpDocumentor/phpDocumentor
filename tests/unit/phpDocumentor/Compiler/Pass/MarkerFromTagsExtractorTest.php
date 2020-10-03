@@ -13,15 +13,15 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Compiler\Pass;
 
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
+use PHPUnit\Framework\TestCase;
 
-final class MarkerFromTagsExtractorTest extends MockeryTestCase
+final class MarkerFromTagsExtractorTest extends TestCase
 {
     /** @var MarkerFromTagsExtractor */
     private $fixture;

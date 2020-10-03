@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
-use Mockery\Adapter\Phpunit\MockeryTestCase;
+use PHPUnit\Framework\TestCase;
 use stdClass;
 
 /**
@@ -21,7 +21,7 @@ use stdClass;
  *
  * @coversDefaultClass \phpDocumentor\Descriptor\Collection
  */
-final class CollectionTest extends MockeryTestCase
+final class CollectionTest extends TestCase
 {
     /** @var Collection $fixture */
     private $fixture;

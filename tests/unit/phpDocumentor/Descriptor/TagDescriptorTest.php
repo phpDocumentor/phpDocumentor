@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
-use Mockery\Adapter\Phpunit\MockeryTestCase;
+use PHPUnit\Framework\TestCase;
 
-class TagDescriptorTest extends MockeryTestCase
+class TagDescriptorTest extends TestCase
 {
     public const TAG_NAME = 'test';
 

@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Tag;
 
-use Mockery\Adapter\Phpunit\MockeryTestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests the functionality for the DeprecatedDescriptor class.
  *
  * @coversDefaultClass \phpDocumentor\Descriptor\Tag\DeprecatedDescriptor
  */
-final class DeprecatedDescriptorTest extends MockeryTestCase
+final class DeprecatedDescriptorTest extends TestCase
 {
     public const EXAMPLE_VERSION = '2.0';
 

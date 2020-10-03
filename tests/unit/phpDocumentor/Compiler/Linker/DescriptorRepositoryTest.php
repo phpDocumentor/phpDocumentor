@@ -13,16 +13,16 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Compiler\Linker;
 
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Reflection\Fqsen;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @coversDefaultClass \phpDocumentor\Compiler\Linker\DescriptorRepository
  * @covers ::<private>
  */
-final class DescriptorRepositoryTest extends MockeryTestCase
+final class DescriptorRepositoryTest extends TestCase
 {
     /**
      * @covers ::setObjectAliasesList
