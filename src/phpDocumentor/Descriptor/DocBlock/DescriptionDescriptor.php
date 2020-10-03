@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\DocBlock;
 
+use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Reflection\DocBlock\Description;
-use phpDocumentor\Reflection\DocBlock\Tags\Formatter\PassthroughFormatter;
 
 final class DescriptionDescriptor
 {
@@ -15,12 +15,12 @@ final class DescriptionDescriptor
     private $description;
 
     /**
-     * @var InlineTagDescriptor[]
+     * @var TagDescriptor[]
      */
     private $inlineTags;
 
     /**
-     * @param InlineTagDescriptor[] $inlineTags
+     * @param TagDescriptor[] $inlineTags
      */
     public function __construct(?Description $description, array $inlineTags)
     {
@@ -33,7 +33,7 @@ final class DescriptionDescriptor
         return $this->description->getBodyTemplate();
     }
 
-    public function replaceTag(int $position, ?InlineTagDescriptor $tagDescriptor) : void
+    public function replaceTag(int $position, ?TagDescriptor $tagDescriptor) : void
     {
         $this->inlineTags[$position] = $tagDescriptor;
     }
@@ -41,7 +41,7 @@ final class DescriptionDescriptor
     /**
      * Returns the tags for this description
      *
-     * @return InlineTagDescriptor[]
+     * @return TagDescriptor[]
      */
     public function getTags() : array
     {
