@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Compiler\Pass;
 
-use Mockery as m;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
-use Mockery\MockInterface;
 use phpDocumentor\Compiler\Linker\DescriptorRepository;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Collection;
@@ -28,15 +25,17 @@ use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\FqsenResolver;
 use phpDocumentor\Reflection\TypeResolver;
 use phpDocumentor\Transformer\Router\Router;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @coversDefaultClass \phpDocumentor\Compiler\Pass\ResolveInlineLinkAndSeeTags
  * @covers ::__construct
  * @covers ::<private>
  */
-final class ResolveInlineLinkAndSeeTagsTest extends MockeryTestCase
+final class ResolveInlineLinkAndSeeTagsTest extends TestCase
 {
-    /** @var Router|MockInterface */
+    /** @var Router|MockObject */
     private $router;
 
     /** @var ResolveInlineLinkAndSeeTags */
@@ -47,7 +46,7 @@ final class ResolveInlineLinkAndSeeTagsTest extends MockeryTestCase
      */
     protected function setUp() : void
     {
-        $this->router = m::mock(Router::class);
+        $this->router = $this->createMock(Router::class);
 
         $fqsen = new Fqsen('\phpDocumentor\LinkDescriptor');
         $object = new ClassDescriptor();
@@ -220,12 +219,14 @@ final class ResolveInlineLinkAndSeeTagsTest extends MockeryTestCase
     /**
      * Returns a mocked Project Descriptor.
      *
-     * @param Collection|MockInterface $descriptors
+     * @param Collection|MockObject $descriptors
      */
-    private function givenAProjectDescriptorWithChildDescriptors($descriptors) : MockInterface
+    private function givenAProjectDescriptorWithChildDescriptors($descriptors) : MockObject
     {
-        $projectDescriptor = m::mock(ProjectDescriptor::class);
-        $projectDescriptor->shouldReceive('getIndexes')->andReturn($descriptors);
+        $projectDescriptor = $this->createMock(ProjectDescriptor::class);
+        $projectDescriptor->expects($this->atLeastOnce())
+            ->method('getIndexes')
+            ->willReturn($descriptors);
 
         return $projectDescriptor;
     }
@@ -244,17 +245,19 @@ final class ResolveInlineLinkAndSeeTagsTest extends MockeryTestCase
     /**
      * Returns a collection with descriptor. This collection will be scanned to see if a link can be made to a file.
      *
-     * @param DescriptorAbstract|MockInterface $descriptor
+     * @param DescriptorAbstract|MockObject $descriptor
      *
-     * @return Collection|MockInterface
+     * @return Collection|MockObject
      */
     private function givenACollection($descriptor)
     {
-        $collection = m::mock(Collection::class);
+        $collection = $this->createMock(Collection::class);
 
         $items = ['\phpDocumentor\LinkDescriptor' => $descriptor];
 
-        $collection->shouldReceive('get')->once()->andReturn($items);
+        $collection->expects($this->once())
+            ->method('get')
+            ->willReturn($items);
 
         return $collection;
     }
@@ -274,7 +277,8 @@ final class ResolveInlineLinkAndSeeTagsTest extends MockeryTestCase
         FileDescriptor $descriptor,
         FileDescriptor $elementToLinkTo
     ) : FileDescriptor {
-        $this->router->shouldReceive('generate')->andReturn('/classes/phpDocumentor.LinkDescriptor.html');
+        $this->router->method('generate')
+            ->willReturn('/classes/phpDocumentor.LinkDescriptor.html');
         $descriptor->setFile($elementToLinkTo);
 
         return $descriptor;

@@ -13,10 +13,9 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Compiler\Pass;
 
-use Mockery as m;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\ProjectAnalyzer;
 use phpDocumentor\Descriptor\ProjectDescriptor;
+use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
@@ -25,7 +24,7 @@ use Psr\Log\NullLogger;
  * @covers ::__construct
  * @covers ::<private>
  */
-final class DebugTest extends MockeryTestCase
+final class DebugTest extends TestCase
 {
     /**
      * @covers ::execute
@@ -33,16 +32,20 @@ final class DebugTest extends MockeryTestCase
     public function testLogDebugAnalysis() : void
     {
         $testString = 'test';
-        $projectDescriptorMock = m::mock(ProjectDescriptor::class);
+        $projectDescriptorMock = $this->createMock(ProjectDescriptor::class);
 
-        $loggerMock = m::mock(LoggerInterface::class)
-            ->shouldReceive('debug')->with($testString)
-            ->getMock();
+        $loggerMock = $this->createMock(LoggerInterface::class);
+        $loggerMock->expects($this->atLeastOnce())
+            ->method('debug')
+            ->with($testString);
 
-        $analyzerMock = m::mock(ProjectAnalyzer::class)
-            ->shouldReceive('analyze')->with($projectDescriptorMock)
-            ->shouldReceive('__toString')->andReturn($testString)
-            ->getMock();
+        $analyzerMock = $this->createMock(ProjectAnalyzer::class);
+        $analyzerMock->expects($this->atLeastOnce())
+            ->method('analyze')
+            ->with($projectDescriptorMock);
+        $analyzerMock->expects($this->atLeastOnce())
+            ->method('__toString')
+            ->willReturn($testString);
 
         $fixture = new Debug($loggerMock, $analyzerMock);
         $fixture->execute($projectDescriptorMock);
@@ -55,7 +58,7 @@ final class DebugTest extends MockeryTestCase
      */
     public function testGetDescription() : void
     {
-        $debug = new Debug(new NullLogger(), m::mock(ProjectAnalyzer::class));
+        $debug = new Debug(new NullLogger(), $this->createMock(ProjectAnalyzer::class));
 
         $this->assertSame('Analyze results and write report to log', $debug->getDescription());
     }

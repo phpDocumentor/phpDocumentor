@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Compiler\Pass;
 
-use Mockery as m;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
-use Mockery\MockInterface;
+use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\Example\Finder;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Reflection\DocBlock\ExampleFinder;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests the \phpDocumentor\Compiler\Pass\ExampleTagsEnricher class.
  */
-class ExampleTagsEnricherTest extends MockeryTestCase
+class ExampleTagsEnricherTest extends TestCase
 {
-    /** @var Finder|m\MockInterface */
+    /** @var Finder|MockObject */
     private $finderMock;
 
     /** @var ExampleTagsEnricher */
@@ -28,7 +28,7 @@ class ExampleTagsEnricherTest extends MockeryTestCase
      */
     protected function setUp() : void
     {
-        $this->finderMock = m::mock(ExampleFinder::class);
+        $this->finderMock = $this->createMock(ExampleFinder::class);
         $this->fixture    = new ExampleTagsEnricher($this->finderMock);
     }
 
@@ -128,10 +128,12 @@ class ExampleTagsEnricherTest extends MockeryTestCase
     /**
      * Returns a mocked Descriptor with its description set to the given value.
      */
-    private function givenAChildDescriptorWithDescription(string $description) : MockInterface
+    private function givenAChildDescriptorWithDescription(string $description) : MockObject
     {
-        $descriptor = m::mock(DescriptorAbstract::class);
-        $descriptor->shouldReceive('getDescription')->andReturn($description);
+        $descriptor = $this->createMock(DescriptorAbstract::class);
+        $descriptor->expects($this->atLeastOnce())
+            ->method('getDescription')
+            ->willReturn($description);
 
         return $descriptor;
     }
@@ -139,12 +141,17 @@ class ExampleTagsEnricherTest extends MockeryTestCase
     /**
      * Returns a mocked Project Descriptor.
      *
-     * @param m\MockInterface[] $descriptors
+     * @param MockObject[] $descriptors
      */
-    private function givenAProjectDescriptorWithChildDescriptors($descriptors) : MockInterface
+    private function givenAProjectDescriptorWithChildDescriptors($descriptors) : MockObject
     {
-        $projectDescriptor = m::mock(ProjectDescriptor::class);
-        $projectDescriptor->shouldReceive('getIndexes->get')->with('elements')->andReturn($descriptors);
+        $collection = $this->createMock(Collection::class);
+        $collection->method('get')->willReturn($descriptors);
+
+        $projectDescriptor = $this->createMock(ProjectDescriptor::class);
+        $projectDescriptor->expects($this->atLeastOnce())
+            ->method('getIndexes')
+            ->willReturn($collection);
 
         return $projectDescriptor;
     }
@@ -152,9 +159,9 @@ class ExampleTagsEnricherTest extends MockeryTestCase
     /**
      * Verifies if the given descriptor's setDescription method is called with the given value.
      */
-    public function thenDescriptionOfDescriptorIsChangedInto(m\MockInterface $descriptor, string $expected) : void
+    public function thenDescriptionOfDescriptorIsChangedInto(MockObject $descriptor, string $expected) : void
     {
-        $descriptor->shouldReceive('setDescription')->with($expected);
+        $descriptor->method('setDescription')->with($expected);
     }
 
     /**
@@ -162,7 +169,7 @@ class ExampleTagsEnricherTest extends MockeryTestCase
      */
     private function whenExampleTxtFileContains(string $exampleText) : void
     {
-        $this->finderMock->shouldReceive('find')->andReturn($exampleText);
+        $this->finderMock->expects($this->atLeastOnce())->method('find')->willReturn($exampleText);
     }
 
     /**
@@ -171,6 +178,6 @@ class ExampleTagsEnricherTest extends MockeryTestCase
      */
     private function whenExampleTxtFileContainsAndMustBeCalledOnlyOnce(string $exampleText) : void
     {
-        $this->finderMock->shouldReceive('find')->once()->andReturn($exampleText);
+        $this->finderMock->expects($this->once())->method('find')->willReturn($exampleText);;
     }
 }
