@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Compiler\Pass;
 
-use Mockery as m;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
-use Mockery\MockInterface;
 use phpDocumentor\Compiler\Linker\DescriptorRepository;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Collection;
@@ -28,15 +25,18 @@ use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\FqsenResolver;
 use phpDocumentor\Reflection\TypeResolver;
 use phpDocumentor\Transformer\Router\Router;
+use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
+use Prophecy\Prophecy\ObjectProphecy;
 
 /**
  * @coversDefaultClass \phpDocumentor\Compiler\Pass\ResolveInlineLinkAndSeeTags
  * @covers ::__construct
  * @covers ::<private>
  */
-final class ResolveInlineLinkAndSeeTagsTest extends MockeryTestCase
+final class ResolveInlineLinkAndSeeTagsTest extends TestCase
 {
-    /** @var Router|MockInterface */
+    /** @var Router|ObjectProphecy */
     private $router;
 
     /** @var ResolveInlineLinkAndSeeTags */
@@ -47,7 +47,7 @@ final class ResolveInlineLinkAndSeeTagsTest extends MockeryTestCase
      */
     protected function setUp() : void
     {
-        $this->router = m::mock(Router::class);
+        $this->router = $this->prophesize(Router::class);
 
         $fqsen = new Fqsen('\phpDocumentor\LinkDescriptor');
         $object = new ClassDescriptor();
@@ -62,7 +62,7 @@ final class ResolveInlineLinkAndSeeTagsTest extends MockeryTestCase
         $tagFactory->addService(new DescriptionFactory($tagFactory));
 
         $this->fixture = new ResolveInlineLinkAndSeeTags(
-            $this->router,
+            $this->router->reveal(),
             $repository,
             $tagFactory
         );
@@ -87,7 +87,7 @@ final class ResolveInlineLinkAndSeeTagsTest extends MockeryTestCase
         $collection = $this->givenACollection($descriptor);
         $project = $this->givenAProjectDescriptorWithChildDescriptors($collection);
 
-        $this->fixture->execute($project);
+        $this->fixture->execute($project->reveal());
 
         $this->thenDescriptionOfDescriptorIsChangedInto($descriptor, $description);
     }
@@ -104,7 +104,7 @@ final class ResolveInlineLinkAndSeeTagsTest extends MockeryTestCase
         $collection = $this->givenACollection($descriptor);
         $project = $this->givenAProjectDescriptorWithChildDescriptors($collection);
 
-        $this->fixture->execute($project);
+        $this->fixture->execute($project->reveal());
 
         $this->thenDescriptionOfDescriptorIsChangedInto($descriptor, $expected);
     }
@@ -121,7 +121,7 @@ final class ResolveInlineLinkAndSeeTagsTest extends MockeryTestCase
         $collection = $this->givenACollection($descriptor);
         $project = $this->givenAProjectDescriptorWithChildDescriptors($collection);
 
-        $this->fixture->execute($project);
+        $this->fixture->execute($project->reveal());
 
         $this->thenDescriptionOfDescriptorIsChangedInto($descriptor, $expected);
     }
@@ -139,7 +139,7 @@ final class ResolveInlineLinkAndSeeTagsTest extends MockeryTestCase
 
         $project = $this->givenAProjectDescriptorWithChildDescriptors($collection);
 
-        $this->fixture->execute($project);
+        $this->fixture->execute($project->reveal());
 
         $this->thenDescriptionOfDescriptorIsChangedInto($descriptor, $expected);
     }
@@ -154,13 +154,10 @@ final class ResolveInlineLinkAndSeeTagsTest extends MockeryTestCase
 
         $descriptor = $this->givenAChildDescriptorWithDescription($description);
         $collection = $this->givenACollection($descriptor);
-        $elementToLinkTo = $this->givenAnElementToLinkTo();
-
-        $this->whenDescriptionContainsSeeOrLinkWithElement($descriptor, $elementToLinkTo);
 
         $project = $this->givenAProjectDescriptorWithChildDescriptors($collection);
 
-        $this->fixture->execute($project);
+        $this->fixture->execute($project->reveal());
 
         $this->thenDescriptionOfDescriptorIsChangedInto($descriptor, $expected);
     }
@@ -180,7 +177,7 @@ final class ResolveInlineLinkAndSeeTagsTest extends MockeryTestCase
         $collection = $this->givenACollection($descriptor);
         $project = $this->givenAProjectDescriptorWithChildDescriptors($collection);
 
-        $this->fixture->execute($project);
+        $this->fixture->execute($project->reveal());
 
         $this->thenDescriptionOfDescriptorIsChangedInto($descriptor, $expected);
     }
@@ -200,7 +197,7 @@ final class ResolveInlineLinkAndSeeTagsTest extends MockeryTestCase
         $collection = $this->givenACollection($descriptor);
         $project = $this->givenAProjectDescriptorWithChildDescriptors($collection);
 
-        $this->fixture->execute($project);
+        $this->fixture->execute($project->reveal());
 
         $this->thenDescriptionOfDescriptorIsChangedInto($descriptor, $expected);
     }
@@ -220,12 +217,12 @@ final class ResolveInlineLinkAndSeeTagsTest extends MockeryTestCase
     /**
      * Returns a mocked Project Descriptor.
      *
-     * @param Collection|MockInterface $descriptors
+     * @param Collection|ObjectProphecy $descriptors
      */
-    private function givenAProjectDescriptorWithChildDescriptors($descriptors) : MockInterface
+    private function givenAProjectDescriptorWithChildDescriptors($descriptors) : ObjectProphecy
     {
-        $projectDescriptor = m::mock(ProjectDescriptor::class);
-        $projectDescriptor->shouldReceive('getIndexes')->andReturn($descriptors);
+        $projectDescriptor = $this->prophesize(ProjectDescriptor::class);
+        $projectDescriptor->getIndexes()->shouldBeCalled()->willReturn($descriptors);
 
         return $projectDescriptor;
     }
@@ -244,17 +241,17 @@ final class ResolveInlineLinkAndSeeTagsTest extends MockeryTestCase
     /**
      * Returns a collection with descriptor. This collection will be scanned to see if a link can be made to a file.
      *
-     * @param DescriptorAbstract|MockInterface $descriptor
+     * @param DescriptorAbstract|ObjectProphecy $descriptor
      *
-     * @return Collection|MockInterface
+     * @return Collection|ObjectProphecy
      */
     private function givenACollection($descriptor)
     {
-        $collection = m::mock(Collection::class);
+        $collection = $this->prophesize(Collection::class);
 
         $items = ['\phpDocumentor\LinkDescriptor' => $descriptor];
 
-        $collection->shouldReceive('get')->once()->andReturn($items);
+        $collection->get(Argument::any())->shouldBeCalledOnce()->willReturn($items);
 
         return $collection;
     }
@@ -274,7 +271,7 @@ final class ResolveInlineLinkAndSeeTagsTest extends MockeryTestCase
         FileDescriptor $descriptor,
         FileDescriptor $elementToLinkTo
     ) : FileDescriptor {
-        $this->router->shouldReceive('generate')->andReturn('/classes/phpDocumentor.LinkDescriptor.html');
+        $this->router->generate(Argument::any())->shouldBeCalled()->willReturn('/classes/phpDocumentor.LinkDescriptor.html');
         $descriptor->setFile($elementToLinkTo);
 
         return $descriptor;
