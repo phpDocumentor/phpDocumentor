@@ -20,7 +20,7 @@
 2020-01-31: Version 3.0.0-beta
 
 # BREAKING CHANGES
- -  Minimum PHP version to run this is 7.2 thanks to [Mike van Riel]
+ -  Minimum PHP version to run this is 7.4 thanks to [Mike van Riel]
  -  Trunk based development thanks to [Mike van Riel]
  -  Support for XML-based templates was dropped thanks to [Mike van Riel]
  -  Support for rendering an XML-based ast (structure.xml) was dropped thanks to [Mike van Riel]

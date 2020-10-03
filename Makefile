@@ -28,7 +28,7 @@ pull-containers:
 	docker pull phpdoc/phpstan-ga
 	docker pull phpdoc/phpunit-ga
 	docker pull phpga/composer-require-checker-ga
-	docker pull php:7.2
+	docker pull php:7.4
 	docker pull node
 
 .PHONY: phpcs
@@ -45,14 +45,14 @@ phpstan:
 
 .PHONY: psalm
 psalm:
-	docker run -it --rm -v${CURDIR}:/data -w /data php:7.2 ./tools/psalm
+	docker run -it --rm -v${CURDIR}:/data -w /data php:7.4 ./tools/psalm
 
 .PHONY: lint
 lint: phpcs
 
 .PHONY: test
 test: unit-test
-	docker run -it --rm -v${CURDIR}:/data -w /data php:7.2 -f ./tests/coverage-checker.php 71
+	docker run -it --rm -v${CURDIR}:/data -w /data php:7.4 -f ./tests/coverage-checker.php 71
 
 unit-test: SUITE=--testsuite=unit
 integration-test: SUITE=--testsuite=integration --no-coverage

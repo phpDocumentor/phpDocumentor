@@ -7,7 +7,7 @@ name: Qa workflow
 env:
   extensions: mbstring, intl, iconv, libxml, dom, json, simplexml, zlib, fileinfo, gnupg
   key: cache-v1 # can be any string, change to clear the extension cache.
-  defaultPHPVersion: '7.2'
+  defaultPHPVersion: '7.4'
   phiveGPGKeys: 4AA394086372C20A,D2CCAC42F6295E7D,E82B2FB314E9906E,8A03EA3B385DBAA1
   phiveHome: $GITHUB_WORKSPACE/.phive
 jobs:
@@ -63,7 +63,7 @@ jobs:
 
   phpunit-with-coverage:
     runs-on: ubuntu-latest
-    name: Unit tests [7.2 | ubuntu-latest]
+    name: Unit tests [7.4 | ubuntu-latest]
     needs: setup
     steps:
     - uses: actions/checkout@v2
@@ -316,7 +316,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@master
         with:
-          php-version: '7.2'
+          php-version: '7.4'
           extensions: mbstring, intl, iconv, libxml, dom, json, simplexml, zlib
           ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
           tools: pecl
@@ -392,7 +392,7 @@ jobs:
     strategy:
       matrix:
         php-versions:
-          - '7.2'
+          - '7.4'
         operating-system:
           - ubuntu-16.04
           - windows-latest
@@ -457,12 +457,10 @@ jobs:
           - windows-latest
           - macOS-latest
         php-versions:
-          - '7.2'
-          - '7.3'
           - '7.4'
         exclude: # already covered in pre-test with coverage above
           - operating-system: 'ubuntu-latest'
-            php-versions: '7.2'
+            php-versions: '7.4'
     name: Unit tests [${{ matrix.php-versions }} | ${{ matrix.operating-system }}]
 
     needs:

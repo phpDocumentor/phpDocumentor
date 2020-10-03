@@ -7,7 +7,7 @@ System Requirements
 phpDocumentor has several dependencies on other software packages. Please make sure that you have these
 installed before installing phpDocumentor.
 
--  `PHP 7.2.5`_ or higher
+-  `PHP 7.4.0`_ or higher
 -  Graphviz_ (optional)
 -  PlantUML_ (optional)
 
@@ -67,7 +67,7 @@ After installation, you can invoke phpDocumentor from the root of your project u
 It is recommended to read the :doc:`your-first-set-of-documentation` section next as it will explain how to quickly start using phpDocumentor.
 
 .. _Composer:               https://getcomposer.org
-.. _`PHP 7.2.5`:            https://www.php.net
+.. _`PHP 7.4.0`:            https://www.php.net
 .. _Graphviz:               https://graphviz.org/download/
 .. _PlantUML:               https://plantuml.com/download
 .. _Twig:                   https://twig.symfony.com/

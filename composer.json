@@ -24,7 +24,7 @@
         }
     },
     "require": {
-        "php": ">=7.2.5",
+        "php": ">=7.4.0",
         "ext-ctype": "*",
         "ext-dom": "*",
         "ext-iconv": "*",
@@ -87,7 +87,7 @@
         },
         "sort-packages": true,
         "platform": {
-            "php": "7.2.5"
+            "php": "7.4.0"
         }
     },
     "replace": {

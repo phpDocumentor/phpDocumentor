@@ -45,7 +45,7 @@ Each successful QA workflow has a download at the right upper corner.
 Installation
 ------------
 
-PhpDocumentor requires PHP 7.2 or higher to run.
+PhpDocumentor requires PHP 7.4 or higher to run.
 However, code of earlier PHP versions can be analyzed.
 
 All templates provided with phpDocumentor have support for Class diagrams based on the read code base.
