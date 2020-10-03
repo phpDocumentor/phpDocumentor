@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Example;
 
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use org\bovigo\vfs\vfsStream;
 use phpDocumentor\Descriptor\Tag\ExampleDescriptor;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use function chdir;
 use function sys_get_temp_dir;
@@ -23,7 +23,7 @@ use function sys_get_temp_dir;
 /**
  * Tests for the \phpDocumentor\Descriptor\Example\Finder class.
  */
-final class FinderTest extends MockeryTestCase
+final class FinderTest extends TestCase
 {
     public const EXAMPLE_TEXT = 'This is an example';
 

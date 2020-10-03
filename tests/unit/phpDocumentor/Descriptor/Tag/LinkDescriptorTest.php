@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Tag;
 
-use Mockery\Adapter\Phpunit\MockeryTestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests the functionality for the LinkDescriptor class.
  */
-final class LinkDescriptorTest extends MockeryTestCase
+final class LinkDescriptorTest extends TestCase
 {
     public const EXAMPLE_LINK = 'https://phpdoc.org';
 

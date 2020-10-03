@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Event;
 
-use Mockery\Adapter\Phpunit\MockeryTestCase;
+use PHPUnit\Framework\TestCase;
 use stdClass;
 
 /**
  * @coversDefaultClass \phpDocumentor\Transformer\Event\PostTransformationEvent
  * @covers ::__construct
  */
-final class PostTransformationEventTest extends MockeryTestCase
+final class PostTransformationEventTest extends TestCase
 {
     /** @var PostTransformationEvent $fixture */
     private $fixture;

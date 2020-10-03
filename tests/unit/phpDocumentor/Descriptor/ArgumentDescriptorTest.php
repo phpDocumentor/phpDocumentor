@@ -13,15 +13,15 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Types\Integer;
 use phpDocumentor\Reflection\Types\String_;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @coversDefaultClass \phpDocumentor\Descriptor\ArgumentDescriptor
  */
-final class ArgumentDescriptorTest extends MockeryTestCase
+final class ArgumentDescriptorTest extends TestCase
 {
     /**
      * @covers ::getType

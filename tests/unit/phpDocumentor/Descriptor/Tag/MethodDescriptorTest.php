@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Tag;
 
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\Collection;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests the functionality for the MethodDescriptor class.
  */
-class MethodDescriptorTest extends MockeryTestCase
+class MethodDescriptorTest extends TestCase
 {
     public const EXAMPLE_NAME = 'methodname';
 

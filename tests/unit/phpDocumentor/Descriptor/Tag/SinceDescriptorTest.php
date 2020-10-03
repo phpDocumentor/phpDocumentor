@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Tag;
 
-use Mockery\Adapter\Phpunit\MockeryTestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests the functionality for the SinceDescriptor class.
  */
-class SinceDescriptorTest extends MockeryTestCase
+class SinceDescriptorTest extends TestCase
 {
     public const EXAMPLE_VERSION = 'version';
 

@@ -13,15 +13,15 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests the functionality for the ProjectDescriptor class.
  *
  * @coversDefaultClass \phpDocumentor\Descriptor\ProjectDescriptor
  */
-final class ProjectDescriptorTest extends MockeryTestCase
+final class ProjectDescriptorTest extends TestCase
 {
     public const EXAMPLE_NAME = 'Initial name';
 

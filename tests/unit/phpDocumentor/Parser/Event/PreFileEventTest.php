@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Parser\Event;
 
-use Mockery\Adapter\Phpunit\MockeryTestCase;
+use PHPUnit\Framework\TestCase;
 use stdClass;
 
 /**
@@ -21,7 +21,7 @@ use stdClass;
  * @covers ::__construct
  * @covers ::<private>
  */
-class PreFileEventTest extends MockeryTestCase
+class PreFileEventTest extends TestCase
 {
     /** @var PreFileEvent $fixture */
     protected $fixture;

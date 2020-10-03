@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Tag;
 
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Reflection\Types\Array_;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests the functionality for the ReturnDescriptor class.
  */
-class ReturnDescriptorTest extends MockeryTestCase
+class ReturnDescriptorTest extends TestCase
 {
     /** @var ReturnDescriptor $fixture */
     protected $fixture;

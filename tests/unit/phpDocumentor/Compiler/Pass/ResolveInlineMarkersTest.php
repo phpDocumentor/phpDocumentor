@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Compiler\Pass;
 
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
+use PHPUnit\Framework\TestCase;
 
-final class ResolveInlineMarkersTest extends MockeryTestCase
+final class ResolveInlineMarkersTest extends TestCase
 {
     public function testExecuteSetsMarkers() : void
     {
