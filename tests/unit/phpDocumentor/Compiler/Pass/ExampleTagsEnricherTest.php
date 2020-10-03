@@ -4,20 +4,21 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Compiler\Pass;
 
-use Mockery as m;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
-use Mockery\MockInterface;
+use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\Example\Finder;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Reflection\DocBlock\ExampleFinder;
+use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
+use Prophecy\Prophecy\ObjectProphecy;
 
 /**
  * Tests the \phpDocumentor\Compiler\Pass\ExampleTagsEnricher class.
  */
-class ExampleTagsEnricherTest extends MockeryTestCase
+class ExampleTagsEnricherTest extends TestCase
 {
-    /** @var Finder|m\MockInterface */
+    /** @var Finder|ObjectProphecy */
     private $finderMock;
 
     /** @var ExampleTagsEnricher */
@@ -28,8 +29,8 @@ class ExampleTagsEnricherTest extends MockeryTestCase
      */
     protected function setUp() : void
     {
-        $this->finderMock = m::mock(ExampleFinder::class);
-        $this->fixture    = new ExampleTagsEnricher($this->finderMock);
+        $this->finderMock = $this->prophesize(ExampleFinder::class);
+        $this->fixture    = new ExampleTagsEnricher($this->finderMock->reveal());
     }
 
     /**
@@ -52,9 +53,9 @@ class ExampleTagsEnricherTest extends MockeryTestCase
         $descriptor = $this->givenAChildDescriptorWithDescription($description);
         $this->thenDescriptionOfDescriptorIsChangedInto($descriptor, $description);
 
-        $project = $this->givenAProjectDescriptorWithChildDescriptors([$descriptor]);
+        $project = $this->givenAProjectDescriptorWithChildDescriptors([$descriptor->reveal()]);
 
-        $this->fixture->execute($project);
+        $this->fixture->execute($project->reveal());
 
         $this->assertTrue(true);
     }
@@ -74,9 +75,9 @@ class ExampleTagsEnricherTest extends MockeryTestCase
         $this->whenExampleTxtFileContains($exampleText);
         $this->thenDescriptionOfDescriptorIsChangedInto($descriptor, $expected);
 
-        $project = $this->givenAProjectDescriptorWithChildDescriptors([$descriptor]);
+        $project = $this->givenAProjectDescriptorWithChildDescriptors([$descriptor->reveal()]);
 
-        $this->fixture->execute($project);
+        $this->fixture->execute($project->reveal());
 
         $this->assertTrue(true);
     }
@@ -96,9 +97,9 @@ class ExampleTagsEnricherTest extends MockeryTestCase
         $this->whenExampleTxtFileContains($exampleText);
         $this->thenDescriptionOfDescriptorIsChangedInto($descriptor, $expected);
 
-        $project = $this->givenAProjectDescriptorWithChildDescriptors([$descriptor]);
+        $project = $this->givenAProjectDescriptorWithChildDescriptors([$descriptor->reveal()]);
 
-        $this->fixture->execute($project);
+        $this->fixture->execute($project->reveal());
 
         $this->assertTrue(true);
     }
@@ -118,9 +119,9 @@ class ExampleTagsEnricherTest extends MockeryTestCase
         $this->whenExampleTxtFileContainsAndMustBeCalledOnlyOnce($exampleText);
         $this->thenDescriptionOfDescriptorIsChangedInto($descriptor, $expected);
 
-        $project = $this->givenAProjectDescriptorWithChildDescriptors([$descriptor]);
+        $project = $this->givenAProjectDescriptorWithChildDescriptors([$descriptor->reveal()]);
 
-        $this->fixture->execute($project);
+        $this->fixture->execute($project->reveal());
 
         $this->assertTrue(true);
     }
@@ -128,10 +129,10 @@ class ExampleTagsEnricherTest extends MockeryTestCase
     /**
      * Returns a mocked Descriptor with its description set to the given value.
      */
-    private function givenAChildDescriptorWithDescription(string $description) : MockInterface
+    private function givenAChildDescriptorWithDescription(string $description) : ObjectProphecy
     {
-        $descriptor = m::mock(DescriptorAbstract::class);
-        $descriptor->shouldReceive('getDescription')->andReturn($description);
+        $descriptor = $this->prophesize(DescriptorAbstract::class);
+        $descriptor->getDescription()->shouldBeCalled()->willReturn($description);
 
         return $descriptor;
     }
@@ -139,12 +140,15 @@ class ExampleTagsEnricherTest extends MockeryTestCase
     /**
      * Returns a mocked Project Descriptor.
      *
-     * @param m\MockInterface[] $descriptors
+     * @param ObjectProphecy[] $descriptors
      */
-    private function givenAProjectDescriptorWithChildDescriptors($descriptors) : MockInterface
+    private function givenAProjectDescriptorWithChildDescriptors($descriptors) : ObjectProphecy
     {
-        $projectDescriptor = m::mock(ProjectDescriptor::class);
-        $projectDescriptor->shouldReceive('getIndexes->get')->with('elements')->andReturn($descriptors);
+        $collection = $this->prophesize(Collection::class);
+        $collection->get(Argument::exact('elements'))->willReturn($descriptors);
+
+        $projectDescriptor = $this->prophesize(ProjectDescriptor::class);
+        $projectDescriptor->getIndexes()->shouldBeCalled()->willReturn($collection->reveal());
 
         return $projectDescriptor;
     }
@@ -152,9 +156,9 @@ class ExampleTagsEnricherTest extends MockeryTestCase
     /**
      * Verifies if the given descriptor's setDescription method is called with the given value.
      */
-    public function thenDescriptionOfDescriptorIsChangedInto(m\MockInterface $descriptor, string $expected) : void
+    public function thenDescriptionOfDescriptorIsChangedInto(ObjectProphecy $descriptor, string $expected) : void
     {
-        $descriptor->shouldReceive('setDescription')->with($expected);
+        $descriptor->setDescription(Argument::exact($expected))->shouldBeCalled();
     }
 
     /**
@@ -162,7 +166,7 @@ class ExampleTagsEnricherTest extends MockeryTestCase
      */
     private function whenExampleTxtFileContains(string $exampleText) : void
     {
-        $this->finderMock->shouldReceive('find')->andReturn($exampleText);
+        $this->finderMock->find(Argument::any())->shouldBeCalled()->willReturn($exampleText);
     }
 
     /**
@@ -171,6 +175,6 @@ class ExampleTagsEnricherTest extends MockeryTestCase
      */
     private function whenExampleTxtFileContainsAndMustBeCalledOnlyOnce(string $exampleText) : void
     {
-        $this->finderMock->shouldReceive('find')->once()->andReturn($exampleText);
+        $this->finderMock->find(Argument::any())->shouldBeCalledOnce()->willReturn($exampleText);
     }
 }
