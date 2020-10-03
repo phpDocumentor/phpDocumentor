@@ -15,6 +15,7 @@ use phpDocumentor\Guides\RestructuredText\Listener\CopyImagesListener;
 use phpDocumentor\Guides\RestructuredText\Nodes\DocumentNode;
 use phpDocumentor\Guides\RestructuredText\References\Doc;
 use phpDocumentor\Guides\RestructuredText\References\Reference;
+use Psr\Log\LoggerInterface;
 use function array_merge;
 
 class Kernel
@@ -30,11 +31,15 @@ class Kernel
 
     private $buildContext;
 
+    /** @var LoggerInterface */
+    private $logger;
+
     public function __construct(
         Configuration $configuration,
         IteratorAggregate $directives,
         IteratorAggregate $references,
-        BuildContext $buildContext
+        BuildContext $buildContext,
+        LoggerInterface $logger
     ) {
         $this->configuration = $configuration;
 
@@ -52,21 +57,19 @@ class Kernel
         ], $this->createReferences(), iterator_to_array($references));
 
         $this->buildContext = $buildContext;
+        $this->logger = $logger;
     }
 
     public function initBuilder(Builder $builder) : void
     {
-        $this->initializeListeners(
-            $builder->getConfiguration()->getEventManager(),
-            $builder->getErrorManager()
-        );
+        $this->initializeListeners($builder->getConfiguration()->getEventManager());
     }
 
-    private function initializeListeners(EventManager $eventManager, ErrorManager $errorManager) : void
+    private function initializeListeners(EventManager $eventManager) : void
     {
         $eventManager->addEventListener(
             PreNodeRenderEvent::PRE_NODE_RENDER,
-            new CopyImagesListener($this->buildContext, $errorManager)
+            new CopyImagesListener($this->buildContext, $this->logger)
         );
 
         $eventManager->addEventListener(
@@ -106,5 +109,10 @@ class Kernel
     protected function createReferences() : array
     {
         return [];
+    }
+
+    public function getLogger(): LoggerInterface
+    {
+        return $this->logger;
     }
 }

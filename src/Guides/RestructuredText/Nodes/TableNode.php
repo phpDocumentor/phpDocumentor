@@ -151,8 +151,7 @@ class TableNode extends Node
 
         if (count($this->errors) > 0) {
             $parser->getEnvironment()
-                ->getErrorManager()
-                ->error(sprintf("%s\nin file %s\n\n%s", $this->errors[0], $parser->getFilename(), $tableAsString));
+                ->addError(sprintf("%s\nin file %s\n\n%s", $this->errors[0], $parser->getFilename(), $tableAsString));
 
             $this->data    = [];
             $this->headers = [];

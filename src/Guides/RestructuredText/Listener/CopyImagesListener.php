@@ -15,22 +15,24 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\Listener;
 
-use phpDocumentor\Guides\RestructuredText\ErrorManager;
+use phpDocumentor\Guides\BuildContext;
 use phpDocumentor\Guides\RestructuredText\Event\PreNodeRenderEvent;
 use phpDocumentor\Guides\RestructuredText\Nodes\ImageNode;
-use phpDocumentor\Guides\BuildContext;
+use Psr\Log\LoggerInterface;
 use SplFileInfo;
 use Symfony\Component\Filesystem\Filesystem;
 
 class CopyImagesListener
 {
     private $buildContext;
-    private $errorManager;
 
-    public function __construct(BuildContext $buildContext, ErrorManager $errorManager)
+    /** @var LoggerInterface */
+    private $logger;
+
+    public function __construct(BuildContext $buildContext, LoggerInterface $logger)
     {
         $this->buildContext = $buildContext;
-        $this->errorManager = $errorManager;
+        $this->logger = $logger;
     }
 
     public function preNodeRender(PreNodeRenderEvent $event) : void
@@ -43,7 +45,7 @@ class CopyImagesListener
         $sourceImage = $node->getEnvironment()->absoluteRelativePath($node->getUrl());
 
         if (!file_exists($sourceImage)) {
-            $this->errorManager->error(
+            $this->logger->error(
                 sprintf(
                     'Missing image file "%s" in "%s"',
                     $node->getUrl(),

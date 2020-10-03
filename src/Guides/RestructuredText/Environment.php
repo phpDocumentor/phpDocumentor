@@ -11,6 +11,7 @@ use phpDocumentor\Guides\RestructuredText\References\Reference;
 use phpDocumentor\Guides\RestructuredText\References\ResolvedReference;
 use phpDocumentor\Guides\RestructuredText\Templates\TemplateRenderer;
 use InvalidArgumentException;
+use Psr\Log\LoggerInterface;
 use function array_shift;
 use function dirname;
 use function iconv;
@@ -25,9 +26,6 @@ class Environment
 {
     /** @var Configuration */
     private $configuration;
-
-    /** @var ErrorManager */
-    private $errorManager;
 
     /** @var UrlGenerator */
     private $urlGenerator;
@@ -83,13 +81,14 @@ class Environment
     /** @var InvalidLink[] */
     private $invalidLinks = [];
 
-    public function __construct(Configuration $configuration)
+    /** @var LoggerInterface */
+    private $logger;
+
+    public function __construct(Configuration $configuration, LoggerInterface $logger)
     {
         $this->configuration = $configuration;
-        $this->errorManager  = new ErrorManager($this->configuration);
-        $this->urlGenerator  = new UrlGenerator(
-            $this->configuration
-        );
+        $this->logger = $logger;
+        $this->urlGenerator  = new UrlGenerator($this->configuration);
         $this->metas         = new Metas();
 
         $this->reset();
@@ -111,16 +110,6 @@ class Environment
     public function getConfiguration() : Configuration
     {
         return $this->configuration;
-    }
-
-    public function getErrorManager() : ErrorManager
-    {
-        return $this->errorManager;
-    }
-
-    public function setErrorManager(ErrorManager $errorManager) : void
-    {
-        $this->errorManager = $errorManager;
     }
 
     public function setMetas(Metas $metas) : void
@@ -467,7 +456,7 @@ class Environment
 
     public function addError(string $message) : void
     {
-        $this->errorManager->error($message);
+        $this->logger->error($message);
     }
 
     public static function slugify(string $text) : string
@@ -495,7 +484,7 @@ class Environment
 
     private function addMissingReferenceSectionError(string $section) : void
     {
-        $this->errorManager->error(sprintf(
+        $this->addError(sprintf(
             'Unknown reference section "%s"%s',
             $section,
             $this->getCurrentFileName() !== '' ? sprintf(' in "%s" ', $this->getCurrentFileName()) : ''

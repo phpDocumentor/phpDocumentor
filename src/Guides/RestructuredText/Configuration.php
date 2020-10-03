@@ -35,9 +35,6 @@ class Configuration
     private $baseUrlEnabledCallable;
 
     /** @var bool */
-    private $abortOnError = true;
-
-    /** @var bool */
     private $ignoreInvalidReferences = false;
 
     /** @var bool */
@@ -148,16 +145,6 @@ class Configuration
         }
 
         return true;
-    }
-
-    public function isAbortOnError() : bool
-    {
-        return $this->abortOnError;
-    }
-
-    public function abortOnError(bool $abortOnError) : void
-    {
-        $this->abortOnError = $abortOnError;
     }
 
     public function getIgnoreInvalidReferences() : bool

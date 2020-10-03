@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\RestructuredText\Builder;
 
 use phpDocumentor\Guides\RestructuredText\Environment;
-use phpDocumentor\Guides\RestructuredText\ErrorManager;
 use phpDocumentor\Guides\RestructuredText\Kernel;
 use phpDocumentor\Guides\RestructuredText\Meta\Metas;
 use phpDocumentor\Guides\RestructuredText\Nodes\DocumentNode;
@@ -16,9 +15,6 @@ class ParseQueueProcessor
 {
     /** @var Kernel */
     private $kernel;
-
-    /** @var ErrorManager */
-    private $errorManager;
 
     /** @var Metas */
     private $metas;
@@ -37,7 +33,6 @@ class ParseQueueProcessor
 
     public function __construct(
         Kernel $kernel,
-        ErrorManager $errorManager,
         Metas $metas,
         Documents $documents,
         string $directory,
@@ -45,7 +40,6 @@ class ParseQueueProcessor
         string $fileExtension
     ) {
         $this->kernel          = $kernel;
-        $this->errorManager    = $errorManager;
         $this->metas           = $metas;
         $this->documents       = $documents;
         $this->directory       = $directory;
@@ -88,14 +82,13 @@ class ParseQueueProcessor
 
     private function createFileParser(string $file) : Parser
     {
-        $parser = new Parser($this->kernel, new Environment($this->kernel->getConfiguration()));
+        $parser = new Parser($this->kernel, new Environment($this->kernel->getConfiguration(), $this->kernel->getLogger()));
 
         $environment = $parser->getEnvironment();
         $environment->setMetas($this->metas);
         $environment->setCurrentFileName($file);
         $environment->setCurrentDirectory($this->directory);
         $environment->setTargetDirectory($this->targetDirectory);
-        $environment->setErrorManager($this->errorManager);
 
         return $parser;
     }

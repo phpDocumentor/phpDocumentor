@@ -6,7 +6,6 @@ namespace phpDocumentor\Guides\RestructuredText\Nodes;
 
 use phpDocumentor\Guides\RestructuredText\Configuration;
 use phpDocumentor\Guides\RestructuredText\Environment;
-use phpDocumentor\Guides\RestructuredText\ErrorManager;
 use phpDocumentor\Guides\RestructuredText\Renderers\FullDocumentNodeRenderer;
 use Exception;
 use function array_unshift;
@@ -22,9 +21,6 @@ class DocumentNode extends Node
     /** @var Configuration */
     protected $configuration;
 
-    /** @var ErrorManager */
-    protected $errorManager;
-
     /** @var Node[] */
     protected $headerNodes = [];
 
@@ -37,7 +33,6 @@ class DocumentNode extends Node
 
         $this->environment   = $environment;
         $this->configuration = $environment->getConfiguration();
-        $this->errorManager  = $environment->getErrorManager();
     }
 
     public function getEnvironment() : Environment
@@ -234,7 +229,7 @@ class DocumentNode extends Node
         $currentFileName = $this->environment->getCurrentFileName();
 
         foreach ($this->environment->getInvalidLinks() as $invalidLink) {
-            $this->errorManager->error(sprintf(
+            $this->environment->addError(sprintf(
                 'Found invalid reference "%s"%s',
                 $invalidLink->getName(),
                 $currentFileName !== '' ? sprintf(' in file "%s"', $currentFileName) : ''
