@@ -17,6 +17,7 @@ use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\ConstantDescriptor;
 use phpDocumentor\Descriptor\DescriptorAbstract;
+use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\FunctionDescriptor;
 use phpDocumentor\Descriptor\InterfaceDescriptor;
@@ -397,7 +398,7 @@ final class PackageTreeBuilderTest extends TestCase
     private function withPackage(string $packageName, DescriptorAbstract $file) : void
     {
         $packageTag = new TagDescriptor('package');
-        $packageTag->setDescription(new Description($packageName));
+        $packageTag->setDescription(new DescriptionDescriptor(new Description($packageName), []));
 
         $file->getTags()['package'] = new Collection([$packageTag]);
     }
@@ -405,7 +406,7 @@ final class PackageTreeBuilderTest extends TestCase
     private function withSubpackage(string $packageName, DescriptorAbstract $file) : void
     {
         $packageTag = new TagDescriptor('subpackage');
-        $packageTag->setDescription(new Description($packageName));
+        $packageTag->setDescription(new DescriptionDescriptor(new Description($packageName), []));
 
         $file->getTags()['subpackage'] = new Collection([$packageTag]);
     }
