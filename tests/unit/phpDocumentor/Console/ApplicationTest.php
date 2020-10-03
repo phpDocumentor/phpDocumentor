@@ -13,10 +13,11 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Console;
 
-use Mockery as m;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
+use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\StringInput;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -25,25 +26,27 @@ use Symfony\Component\HttpKernel\KernelInterface;
  * @covers ::__construct
  * @covers ::<private>
  */
-class ApplicationTest extends MockeryTestCase
+class ApplicationTest extends TestCase
 {
     /** @var Application */
     private $feature;
 
     public function setUp() : void
     {
-        $kernelMock = m::mock(KernelInterface::class);
-        $kernelMock->shouldIgnoreMissing();
-        $kernelMock->shouldReceive('getBundles')->andReturn([]);
-        $kernelMock->shouldReceive('getContainer->has')->andReturn(false);
-        $kernelMock->shouldReceive('getContainer->hasParameter')->andReturn(false);
-        $kernelMock->shouldReceive('getContainer->get')
-            ->with('event_dispatcher')
-            ->andReturn(new EventDispatcher());
+        $container = $this->prophesize(ContainerInterface::class);
+        $container->get(Argument::exact('event_dispatcher'))
+            ->willReturn(new EventDispatcher());
+        $container->get(Argument::any())->willReturn(false);
+        $container->has(Argument::any())->willReturn(false);
+        $container->hasParameter(Argument::any())->willReturn(false);
 
-        $kernelMock->shouldReceive('getContainer->get')->andReturn(false);
+        $kernelMock = $this->prophesize(KernelInterface::class);
+        $kernelMock->getBundles()->willReturn([]);
+        $kernelMock->getContainer()->willReturn($container->reveal());
+        $kernelMock->getEnvironment()->willReturn();
+        $kernelMock->boot()->willReturn();
 
-        $this->feature = new Application($kernelMock);
+        $this->feature = new Application($kernelMock->reveal());
         $this->feature->setAutoExit(false);
     }
 
