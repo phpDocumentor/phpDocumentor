@@ -24,7 +24,7 @@ use phpDocumentor\Reflection\DocBlock\Description;
  * @api
  * @package phpDocumentor\AST
  */
-class TagDescriptor implements Filterable, InlineTagDescriptor
+class TagDescriptor implements Filterable
 {
     /** @var string $name Name of the tag. */
     protected $name;

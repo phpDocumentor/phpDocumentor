@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
+use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
 use PHPUnit\Framework\TestCase;
 use phpDocumentor\Reflection\DocBlock\Description;
 
@@ -65,8 +66,8 @@ class TagDescriptorTest extends TestCase
     public function testSettingAndReturningADescription() : void
     {
         // Arrange
-        $description = new Description('Description');
-        $this->assertEquals(new Description(''), $this->fixture->getDescription());
+        $description = new DescriptionDescriptor(new Description('Description'), []);
+        $this->assertEquals(new DescriptionDescriptor(new Description(''), []), $this->fixture->getDescription());
 
         // Act
         $this->fixture->setDescription($description);

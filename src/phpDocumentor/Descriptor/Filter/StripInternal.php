@@ -48,16 +48,18 @@ class StripInternal implements FilterInterface
     public function __invoke(?DescriptorAbstract $value) : ?DescriptorAbstract
     {
         $isInternalAllowed = $this->builder->getProjectDescriptor()->isVisibilityAllowed(Settings::VISIBILITY_INTERNAL);
-//        if ($isInternalAllowed) {
-//            $value->setDescription(preg_replace('/\{@internal\s(.+?)\}\}/', '$1', $value->getDescription()));
-//            $value->setDescription(preg_replace('/\{@internal\s(.+?)\}/', '$1', $value->getDescription()));
-//
-//            return $value;
-//        }
-//
-//        // remove inline @internal tags
-//        $value->setDescription(preg_replace('/\{@internal\s(.+?)\}\}/', '', $value->getDescription()));
-//        $value->setDescription(preg_replace('/\{@internal\s(.+?)\}/', '', $value->getDescription()));
+        if ($isInternalAllowed || $value === null) {
+            return $value;
+        }
+
+        if ($value->getDescription() !== null) {
+            // remove inline @internal tags
+            foreach ($value->getDescription()->getTags() as $position => $tag) {
+                if ($tag->getName() === 'internal') {
+                    $value->getDescription()->replaceTag($position, null);
+                }
+            }
+        }
 
         // if internal elements are not allowed; filter this element
         if ($value->getTags()->fetch('internal')) {
