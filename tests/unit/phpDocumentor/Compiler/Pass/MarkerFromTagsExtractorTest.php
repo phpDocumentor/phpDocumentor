@@ -17,9 +17,11 @@ use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
+use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
+use phpDocumentor\Reflection\DocBlock\Description;
 
 final class MarkerFromTagsExtractorTest extends MockeryTestCase
 {
@@ -109,7 +111,7 @@ final class MarkerFromTagsExtractorTest extends MockeryTestCase
         string $description
     ) : void {
         $todoTag = new TagDescriptor('todo');
-        $todoTag->setDescription($description);
+        $todoTag->setDescription(new DescriptionDescriptor(new Description($description), []));
 
         $todoTags = $descriptor->getTags()->fetch('todo', []);
         $todoTags[] = $todoTag;
