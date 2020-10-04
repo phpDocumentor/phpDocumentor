@@ -175,7 +175,7 @@ final class ParserTest extends TestCase
         $expectedProject = new Project(ProjectDescriptorBuilder::DEFAULT_PROJECT_NAME);
         $this->projectFactory->create(
             Argument::exact(ProjectDescriptorBuilder::DEFAULT_PROJECT_NAME),
-            Argument::exact($files),
+            Argument::exact($files)
         )->shouldBeCalled()->willReturn($expectedProject);
 
         $project = $this->fixture->parse($files);
