@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\Meta;
 
-use phpDocumentor\Guides\RestructuredText\Environment;
 use LogicException;
+use phpDocumentor\Guides\RestructuredText\Environment;
 use function array_merge;
 use function array_search;
 use function in_array;

@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\Nodes;
 
-use phpDocumentor\Guides\RestructuredText\Configuration;
+use Exception;
 use phpDocumentor\Guides\RestructuredText\Environment;
 use phpDocumentor\Guides\RestructuredText\Renderers\FullDocumentNodeRenderer;
-use Exception;
 use function array_unshift;
 use function count;
 use function is_string;
@@ -17,9 +16,6 @@ class DocumentNode extends Node
 {
     /** @var Environment */
     protected $environment;
-
-    /** @var Configuration */
-    protected $configuration;
 
     /** @var Node[] */
     protected $headerNodes = [];
@@ -31,18 +27,12 @@ class DocumentNode extends Node
     {
         parent::__construct();
 
-        $this->environment   = $environment;
-        $this->configuration = $environment->getConfiguration();
+        $this->environment = $environment;
     }
 
     public function getEnvironment() : Environment
     {
         return $this->environment;
-    }
-
-    public function getConfiguration() : Configuration
-    {
-        return $this->configuration;
     }
 
     /**
@@ -222,7 +212,7 @@ class DocumentNode extends Node
 
     private function postRenderValidate() : void
     {
-        if ($this->configuration->getIgnoreInvalidReferences() !== false) {
+        if ($this->environment->getConfiguration()->getIgnoreInvalidReferences() !== false) {
             return;
         }
 

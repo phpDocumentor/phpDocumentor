@@ -11,7 +11,7 @@ use phpDocumentor\Guides\RestructuredText\Nodes;
 use phpDocumentor\Guides\RestructuredText\Renderers;
 use phpDocumentor\Guides\RestructuredText\Renderers\CallableNodeRendererFactory;
 use phpDocumentor\Guides\RestructuredText\Renderers\NodeRendererFactory;
-use phpDocumentor\Guides\RestructuredText\Templates\TemplateRenderer;
+use phpDocumentor\Guides\RestructuredText\TemplateRenderer;
 
 class LaTeXFormat implements Format
 {

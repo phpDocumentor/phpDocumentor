@@ -5,11 +5,15 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\RestructuredText;
 
 use phpDocumentor\Guides\RestructuredText\Directives\Directive;
+use phpDocumentor\Guides\RestructuredText\NodeFactory\DefaultNodeFactory;
 use phpDocumentor\Guides\RestructuredText\NodeFactory\NodeFactory;
+use phpDocumentor\Guides\RestructuredText\NodeFactory\NodeInstantiator;
 use phpDocumentor\Guides\RestructuredText\Nodes\DocumentNode;
+use phpDocumentor\Guides\RestructuredText\Nodes\NodeTypes;
 use phpDocumentor\Guides\RestructuredText\Nodes\SpanNode;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
 use InvalidArgumentException;
+use phpDocumentor\Guides\RestructuredText\Renderers\NodeRendererFactory;
 use RuntimeException;
 use function file_exists;
 use function file_get_contents;
@@ -38,13 +42,21 @@ class Parser implements \phpDocumentor\Guides\Parser
     /** @var DocumentParser|null */
     private $documentParser;
 
+    /** @var NodeFactory */
+    private $nodeFactory;
+
+    /** @var array */
+    private $nodeRegistry;
+
     public function __construct(Kernel $kernel, Environment $environment)
     {
         $this->kernel        = $kernel;
         $this->environment   = $environment;
 
+        $this->environment->setNodeFactory($this->getNodeFactory());
         $this->initDirectives();
         $this->initReferences();
+        $this->nodeRegistry = $kernel->getNodes();
     }
 
     public function getSubParser() : Parser
@@ -54,7 +66,15 @@ class Parser implements \phpDocumentor\Guides\Parser
 
     public function getNodeFactory() : NodeFactory
     {
-        return $this->kernel->getConfiguration()->getNodeFactory($this->environment);
+        if ($this->nodeFactory !== null) {
+            return $this->nodeFactory;
+        }
+
+        $instantiators = [];
+        foreach ($this->nodeRegistry as $nodeName => $nodeClass) {
+            $instantiators[] = $this->createNodeInstantiator($nodeName, $nodeClass);
+        }
+        return new DefaultNodeFactory($this->kernel->getConfiguration()->getEventManager(), ...$instantiators);
     }
 
     public function renderTemplate(string $template, array $parameters = []) : string
@@ -83,11 +103,6 @@ class Parser implements \phpDocumentor\Guides\Parser
     public function getEnvironment() : Environment
     {
         return $this->environment;
-    }
-
-    public function getKernel() : Kernel
-    {
-        return $this->kernel;
     }
 
     public function registerDirective(Directive $directive) : void
@@ -184,6 +199,19 @@ class Parser implements \phpDocumentor\Guides\Parser
             $this->directives,
             $this->includeAllowed,
             $this->includeRoot
+        );
+    }
+
+    private function createNodeInstantiator(string $type, string $nodeClassName) : NodeInstantiator
+    {
+        $configuration = $this->kernel->getConfiguration();
+        $nodeRendererFactory = $configuration->getFormat()->getNodeRendererFactories()[$nodeClassName] ?? null;
+
+        return new NodeInstantiator(
+            $type,
+            $nodeClassName,
+            $nodeRendererFactory,
+            $configuration->getEventManager()
         );
     }
 }

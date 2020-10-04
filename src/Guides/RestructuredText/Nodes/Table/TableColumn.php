@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\Nodes\Table;
 
-use phpDocumentor\Guides\RestructuredText\Nodes\Node;
 use LogicException;
+use phpDocumentor\Guides\RestructuredText\Nodes\Node;
 use function strlen;
 use function trim;
 use function utf8_encode;

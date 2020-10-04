@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\Nodes\Table;
 
-use phpDocumentor\Guides\RestructuredText\Exception\InvalidTableStructure;
 use InvalidArgumentException;
 use LogicException;
+use phpDocumentor\Guides\RestructuredText\Exception\InvalidTableStructure;
 use function array_map;
 use function implode;
 use function sprintf;

@@ -8,7 +8,7 @@ use phpDocumentor\Guides\RestructuredText\Nodes\DocumentNode;
 use phpDocumentor\Guides\RestructuredText\Renderers\DocumentNodeRenderer as BaseDocumentRender;
 use phpDocumentor\Guides\RestructuredText\Renderers\FullDocumentNodeRenderer;
 use phpDocumentor\Guides\RestructuredText\Renderers\NodeRenderer;
-use phpDocumentor\Guides\RestructuredText\Templates\TemplateRenderer;
+use phpDocumentor\Guides\RestructuredText\TemplateRenderer;
 use phpDocumentor\Transformer\Writer\Twig\Extension;
 
 class DocumentNodeRenderer implements NodeRenderer, FullDocumentNodeRenderer
@@ -19,9 +19,7 @@ class DocumentNodeRenderer implements NodeRenderer, FullDocumentNodeRenderer
     /** @var TemplateRenderer */
     private $templateRenderer;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $subFolderInProject;
 
     public function __construct(
@@ -87,7 +85,7 @@ class DocumentNodeRenderer implements NodeRenderer, FullDocumentNodeRenderer
     private function setCurrentFileNameInTwigToDetermineRelativePathsToDocumentationRoot(string $urlPrefix) : void
     {
         /** @var Extension $extension */
-        $extension = $this->document->getConfiguration()->getTemplateEngine()->getExtension(Extension::class);
+        $extension = $this->templateRenderer->getTemplateEngine()->getExtension(Extension::class);
         $extension->setDestination($urlPrefix . '/' . $this->document->getEnvironment()->getCurrentFileName());
     }
 }

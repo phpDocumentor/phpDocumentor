@@ -7,7 +7,7 @@ namespace phpDocumentor\Guides\RestructuredText\LaTeX\Renderers;
 use phpDocumentor\Guides\RestructuredText\Environment;
 use phpDocumentor\Guides\RestructuredText\Nodes\TocNode;
 use phpDocumentor\Guides\RestructuredText\Renderers\NodeRenderer;
-use phpDocumentor\Guides\RestructuredText\Templates\TemplateRenderer;
+use phpDocumentor\Guides\RestructuredText\TemplateRenderer;
 
 class TocNodeRenderer implements NodeRenderer
 {

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\Parser;
 
-use phpDocumentor\Guides\RestructuredText\Nodes\TableNode;
 use Exception;
+use phpDocumentor\Guides\RestructuredText\Nodes\TableNode;
 use function count;
 use function in_array;
 use function sprintf;
