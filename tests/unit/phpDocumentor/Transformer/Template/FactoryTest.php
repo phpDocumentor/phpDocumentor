@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Template;
 
-use Mockery as m;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\Parser\FlySystemFactory;
 use phpDocumentor\Transformer\Transformer;
 use phpDocumentor\Transformer\Writer\Collection as WriterCollection;
+use PHPUnit\Framework\TestCase;
+use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Log\NullLogger;
 
 /**
@@ -28,14 +28,16 @@ use Psr\Log\NullLogger;
  * @covers ::__construct
  * @covers ::<private>
  */
-final class FactoryTest extends MockeryTestCase
+final class FactoryTest extends TestCase
 {
     use Faker;
 
     /** @var Factory */
     private $fixture;
-    /** @var m\LegacyMockInterface|m\MockInterface|FlySystemFactory */
+
+    /** @var ObjectProphecy|FlySystemFactory */
     private $flySystemFactory;
+
     /** @var vfsStreamDirectory */
     private $globalTemplates;
 
@@ -61,12 +63,12 @@ final class FactoryTest extends MockeryTestCase
         $templateDirectory = $this->givenAnExampleTemplateInDirectoryCalled($templateName);
         $this->globalTemplates->addChild($templateDirectory);
 
-        $templateCollection = m::mock(Collection::class);
-        $templateCollection->shouldReceive('getTemplatesPath')->andReturn($this->globalTemplates->url());
+        $templateCollection = $this->prophesize(Collection::class);
+        $templateCollection->getTemplatesPath()->shouldBeCalled()->willReturn($this->globalTemplates->url());
 
         $transformer = new Transformer(
-            $templateCollection,
-            m::mock(WriterCollection::class),
+            $templateCollection->reveal(),
+            $this->prophesize(WriterCollection::class)->reveal(),
             new NullLogger(),
             $this->flySystemFactory
         );
@@ -102,12 +104,12 @@ final class FactoryTest extends MockeryTestCase
 
         // Arrange
         $templateName = 'does-not-exist';
-        $templateCollection = m::mock(Collection::class);
-        $templateCollection->shouldReceive('getTemplatesPath')->andReturn($this->globalTemplates->url());
+        $templateCollection = $this->prophesize(Collection::class);
+        $templateCollection->getTemplatesPath()->willReturn($this->globalTemplates->url());
 
         $transformer = new Transformer(
-            $templateCollection,
-            m::mock(WriterCollection::class),
+            $templateCollection->reveal(),
+            $this->prophesize(WriterCollection::class)->reveal(),
             new NullLogger(),
             $this->flySystemFactory
         );

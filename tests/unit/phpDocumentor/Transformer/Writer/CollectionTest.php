@@ -13,21 +13,20 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Writer;
 
-use Mockery as m;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
-use Mockery\MockInterface;
 use phpDocumentor\Transformer\Router\Router;
+use PHPUnit\Framework\TestCase;
+use Prophecy\Prophecy\ObjectProphecy;
 use stdClass;
 
 /**
  * Test class for phpDocumentor\Transformer\Writer\Collection
  */
-final class CollectionTest extends MockeryTestCase
+final class CollectionTest extends TestCase
 {
-    /** @var MockInterface|Router */
+    /** @var ObjectProphecy|Router */
     private $routers;
 
-    /** @var MockInterface|WriterAbstract */
+    /** @var ObjectProphecy|WriterAbstract */
     private $writer;
 
     /** @var Collection */
@@ -38,9 +37,9 @@ final class CollectionTest extends MockeryTestCase
      */
     protected function setUp() : void
     {
-        $this->routers = m::mock(Router::class);
-        $this->writer = m::mock(WriterAbstract::class);
-        $this->fixture = new Collection($this->routers);
+        $this->routers = $this->prophesize(Router::class);
+        $this->writer = $this->prophesize(WriterAbstract::class);
+        $this->fixture = new Collection($this->routers->reveal());
     }
 
     /**
@@ -58,7 +57,7 @@ final class CollectionTest extends MockeryTestCase
     public function testOffsetSetWithInvalidIndexName() : void
     {
         $this->expectException('InvalidArgumentException');
-        $this->fixture->offsetSet('i', $this->writer);
+        $this->fixture->offsetSet('i', $this->writer->reveal());
     }
 
     /**
@@ -77,7 +76,7 @@ final class CollectionTest extends MockeryTestCase
     {
         $this->registerWriter();
 
-        $this->assertSame($this->writer, $this->fixture->offsetGet('index'));
+        $this->assertSame($this->writer->reveal(), $this->fixture->offsetGet('index'));
     }
 
     /**
@@ -87,7 +86,7 @@ final class CollectionTest extends MockeryTestCase
     {
         $this->registerWriter();
 
-        $this->writer->shouldReceive('checkRequirements')->once();
+        $this->writer->checkRequirements()->shouldBeCalledOnce();
         $this->fixture->checkRequirements();
 
         $this->assertTrue(true);
@@ -98,6 +97,6 @@ final class CollectionTest extends MockeryTestCase
      */
     private function registerWriter() : void
     {
-        $this->fixture->offsetSet('index', $this->writer);
+        $this->fixture->offsetSet('index', $this->writer->reveal());
     }
 }
