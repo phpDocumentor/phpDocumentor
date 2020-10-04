@@ -335,7 +335,6 @@ jobs:
   e2e:
     runs-on: ubuntu-16.04
     name: E2E tests [ubuntu-latest]
-    continue-on-error: true
     needs:
       - setup
     steps:
@@ -388,7 +387,6 @@ jobs:
 
   e2e-matrix:
     runs-on: ${{ matrix.operating-system }}
-    continue-on-error: true
     strategy:
       matrix:
         php-versions:
