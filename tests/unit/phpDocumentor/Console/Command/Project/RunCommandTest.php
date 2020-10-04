@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace phpDocumentor\Console\Command\Project;
 
 use League\Pipeline\PipelineInterface;
-use Mockery as m;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Console\Application;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
+use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\StringInput;
@@ -29,7 +29,7 @@ use function array_keys;
  * @covers ::__construct
  * @covers ::<private>
  */
-class RunCommandTest extends MockeryTestCase
+class RunCommandTest extends TestCase
 {
     /**
      * @covers ::execute
@@ -39,22 +39,20 @@ class RunCommandTest extends MockeryTestCase
         $input = new StringInput('--force -f abc');
         $output = new BufferedOutput();
 
-        $pipeline = m::mock(PipelineInterface::class);
-        $pipeline
-            ->shouldReceive('__invoke')
-            ->withArgs(
-                static function (array $options) {
-                    return $options['force'] === true && $options['filename'] === ['abc'];
-                }
-            )
-            ->once();
+        $pipeline = $this->prophesize(PipelineInterface::class);
+        $pipeline->__invoke(Argument::that(static function (array $options) {
+            return $options['force'] === true && $options['filename'] === ['abc'];
+        }))
+            ->shouldBeCalledTimes(1);
 
-        $command = new RunCommand(m::mock(ProjectDescriptorBuilder::class), $pipeline);
-        $application = m::mock(Application::class);
-        $application->shouldReceive('getVersion')->andReturn('3.0');
-        $application->shouldReceive('getHelperSet')->andReturn(new HelperSet());
-        $application->shouldReceive('getDefinition')->andReturn(new InputDefinition());
-        $command->setApplication($application);
+        $descriptor = $this->prophesize(ProjectDescriptorBuilder::class);
+
+        $command = new RunCommand($descriptor->reveal(), $pipeline->reveal());
+        $application = $this->prophesize(Application::class);
+        $application->getVersion()->willReturn('3.0');
+        $application->getHelperSet()->willReturn(new HelperSet());
+        $application->getDefinition()->willReturn(new InputDefinition());
+        $command->setApplication($application->reveal());
 
         $this->assertSame(0, $command->run($input, $output));
     }
@@ -64,8 +62,9 @@ class RunCommandTest extends MockeryTestCase
      */
     public function testCommandIsConfiguredWithTheRightOptions() : void
     {
-        $pipeline = m::mock(PipelineInterface::class);
-        $command = new RunCommand(m::mock(ProjectDescriptorBuilder::class), $pipeline);
+        $descriptor = $this->prophesize(ProjectDescriptorBuilder::class);
+        $pipeline = $this->prophesize(PipelineInterface::class);
+        $command = new RunCommand($descriptor->reveal(), $pipeline->reveal());
         $options = $command->getDefinition()->getOptions();
         $this->assertEquals(
             [
