@@ -22,7 +22,7 @@ use phpDocumentor\Guides\RestructuredText\HTML\HTMLFormat;
 use phpDocumentor\Guides\RestructuredText\Kernel;
 use phpDocumentor\Guides\RestructuredText\LaTeX\LaTeXFormat;
 use phpDocumentor\Guides\RestructuredText\References\Reference;
-use phpDocumentor\Guides\RestructuredText\Templates\TemplateRenderer;
+use phpDocumentor\Guides\RestructuredText\TemplateRenderer;
 use phpDocumentor\Guides\RestructuredText\Templates\TwigTemplateRenderer;
 use phpDocumentor\Guides\RestructuredText\Twig\AssetsExtension;
 use Psr\Log\LoggerInterface;
@@ -57,6 +57,7 @@ final class KernelFactory
     public function createKernel(BuildContext $buildContext, Environment $environment) : Kernel
     {
         $templateRenderer = new TemplateRenderer($environment, 'guides');
+        $environment->addExtension(new AssetsExtension());
 
         $configuration = new Configuration();
         $configuration->setTemplateRenderer($templateRenderer);
@@ -71,8 +72,6 @@ final class KernelFactory
             )
         );
         $configuration->addFormat(new LaTeXFormat($templateRenderer));
-
-        $environment->addExtension(new AssetsExtension());
 
         return new Kernel($configuration, $this->directives, $this->references, $buildContext, $this->logger);
     }

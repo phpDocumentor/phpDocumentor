@@ -28,23 +28,18 @@ class ParseQueueProcessor
     /** @var string */
     private $targetDirectory;
 
-    /** @var string */
-    private $fileExtension;
-
     public function __construct(
         Kernel $kernel,
         Metas $metas,
         Documents $documents,
         string $directory,
-        string $targetDirectory,
-        string $fileExtension
+        string $targetDirectory
     ) {
         $this->kernel          = $kernel;
         $this->metas           = $metas;
         $this->documents       = $documents;
         $this->directory       = $directory;
         $this->targetDirectory = $targetDirectory;
-        $this->fileExtension   = $fileExtension;
     }
 
     public function process(ParseQueue $parseQueue) : void
@@ -100,6 +95,8 @@ class ParseQueueProcessor
 
     private function buildDocumentUrl(DocumentNode $document) : string
     {
-        return $document->getEnvironment()->getUrl() . '.' . $this->fileExtension;
+        $fileExtension = $this->kernel->getConfiguration()->getFileExtension();
+
+        return $document->getEnvironment()->getUrl() . '.' . $fileExtension;
     }
 }

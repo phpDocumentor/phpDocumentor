@@ -6,7 +6,7 @@ namespace phpDocumentor\Guides\RestructuredText\HTML\Renderers;
 
 use phpDocumentor\Guides\RestructuredText\Nodes\ListNode;
 use phpDocumentor\Guides\RestructuredText\Renderers\FormatListRenderer;
-use phpDocumentor\Guides\RestructuredText\Templates\TemplateRenderer;
+use phpDocumentor\Guides\RestructuredText\TemplateRenderer;
 use RuntimeException;
 use function array_filter;
 use function array_map;

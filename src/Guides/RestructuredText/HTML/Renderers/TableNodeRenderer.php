@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\HTML\Renderers;
 
+use LogicException;
 use phpDocumentor\Guides\RestructuredText\Nodes\TableNode;
 use phpDocumentor\Guides\RestructuredText\Renderers\NodeRenderer;
-use phpDocumentor\Guides\RestructuredText\Templates\TemplateRenderer;
-use LogicException;
+use phpDocumentor\Guides\RestructuredText\TemplateRenderer;
 use function sprintf;
 
 class TableNodeRenderer implements NodeRenderer

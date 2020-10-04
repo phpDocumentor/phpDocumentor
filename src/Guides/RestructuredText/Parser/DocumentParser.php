@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\RestructuredText\Parser;
 
 use Doctrine\Common\EventManager;
+use Exception;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive;
 use phpDocumentor\Guides\RestructuredText\Environment;
 use phpDocumentor\Guides\RestructuredText\Event\PostParseDocumentEvent;
@@ -18,7 +19,6 @@ use phpDocumentor\Guides\RestructuredText\Nodes\TableNode;
 use phpDocumentor\Guides\RestructuredText\Nodes\TitleNode;
 use phpDocumentor\Guides\RestructuredText\Parser;
 use phpDocumentor\Guides\RestructuredText\Parser\Directive as ParserDirective;
-use Exception;
 use Throwable;
 use function array_search;
 use function chr;

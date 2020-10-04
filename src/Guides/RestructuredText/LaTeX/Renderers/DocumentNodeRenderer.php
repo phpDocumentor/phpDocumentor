@@ -9,7 +9,7 @@ use phpDocumentor\Guides\RestructuredText\Nodes\MainNode;
 use phpDocumentor\Guides\RestructuredText\Renderers\DocumentNodeRenderer as BaseDocumentRender;
 use phpDocumentor\Guides\RestructuredText\Renderers\FullDocumentNodeRenderer;
 use phpDocumentor\Guides\RestructuredText\Renderers\NodeRenderer;
-use phpDocumentor\Guides\RestructuredText\Templates\TemplateRenderer;
+use phpDocumentor\Guides\RestructuredText\TemplateRenderer;
 use function count;
 
 class DocumentNodeRenderer implements NodeRenderer, FullDocumentNodeRenderer
