@@ -13,19 +13,21 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Builder;
 
-use phpDocumentor\Reflection\DocBlock\Tag;
-use phpDocumentor\Reflection\Element;
-use phpDocumentor\Reflection\Php\Argument;
-use phpDocumentor\Reflection\Php\File;
-
+/**
+ * @template TDescriptor as \phpDocumentor\Descriptor\Descriptor
+ * @template TInput as object
+ */
 final class AssemblerMatcher
 {
     /** @var callable */
     private $matcher;
 
-    /** @var AssemblerInterface */
+    /** @var AssemblerInterface<TDescriptor, TInput> */
     private $assembler;
 
+    /**
+     * @param AssemblerInterface<TDescriptor, TInput> $assembler
+     */
     public function __construct(callable $matcher, AssemblerInterface $assembler)
     {
         $this->matcher   = $matcher;
@@ -33,7 +35,7 @@ final class AssemblerMatcher
     }
 
     /**
-     * @param Element|File|Tag|Argument $criteria
+     * @param TInput $criteria
      */
     public function match(object $criteria) : bool
     {
@@ -42,6 +44,9 @@ final class AssemblerMatcher
         return $matcher($criteria);
     }
 
+    /**
+     * @return AssemblerInterface<TDescriptor, TInput>
+     */
     public function getAssembler() : AssemblerInterface
     {
         return $this->assembler;

@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
+use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
 use phpDocumentor\Descriptor\Filter\Filterable;
+use phpDocumentor\Reflection\DocBlock\Description;
 
 /**
  * Base class for any tag descriptor and used when a tag has no specific descriptor.
@@ -26,8 +28,8 @@ class TagDescriptor implements Filterable
     /** @var string $name Name of the tag. */
     protected $name;
 
-    /** @var string $description A description line for this tag */
-    protected $description = '';
+    /** @var DescriptionDescriptor $description A description line for this tag */
+    protected $description;
 
     /** @var Collection<Validation\Error> A collection of errors found during filtering. */
     protected $errors;
@@ -35,10 +37,11 @@ class TagDescriptor implements Filterable
     /**
      * Initializes the tag by setting the name and errors,
      */
-    public function __construct(string $name)
+    public function __construct(string $name, ?DescriptionDescriptor $description = null)
     {
         $this->setName($name);
         $this->errors = Collection::fromClassString(Validation\Error::class);
+        $this->setDescription($description);
     }
 
     /**
@@ -60,17 +63,22 @@ class TagDescriptor implements Filterable
     /**
      * Sets a description for this tab instance.
      */
-    public function setDescription(string $description) : void
+    public function setDescription(?DescriptionDescriptor $description) : void
     {
-        $this->description = $description;
+        $this->description = $description ?? new DescriptionDescriptor(new Description(''), []);
     }
 
     /**
      * Returns the description for this tag,
      */
-    public function getDescription() : string
+    public function getDescription() : DescriptionDescriptor
     {
         return $this->description;
+    }
+
+    public function __toString() : string
+    {
+        return (string) $this->description;
     }
 
     /**

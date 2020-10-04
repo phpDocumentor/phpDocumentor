@@ -15,6 +15,7 @@ namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use phpDocumentor\Descriptor\ArgumentDescriptor;
 use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
 use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Descriptor\Tag\ParamDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tags\InvalidTag;
@@ -28,6 +29,8 @@ use function substr;
 
 /**
  * Assembles a MethodDescriptor from a MethodReflector.
+ *
+ * @extends AssemblerAbstract<MethodDescriptor, Method>
  */
 class MethodAssembler extends AssemblerAbstract
 {
@@ -138,7 +141,7 @@ class MethodAssembler extends AssemblerAbstract
         $argument = new ArgumentDescriptor();
         $argument->setName($lastParamTag->getVariableName());
         $argument->setType($types);
-        $argument->setDescription((string) $lastParamTag->getDescription());
+        $argument->setDescription(new DescriptionDescriptor($lastParamTag->getDescription(), []));
         $argument->setLine($methodDescriptor->getLine());
         $argument->setVariadic(true);
 

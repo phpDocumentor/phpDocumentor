@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use Mockery\Adapter\Phpunit\MockeryTestCase;
+use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Php\Constant;
@@ -34,6 +35,7 @@ class ConstantAssemblerTest extends MockeryTestCase
     protected function setUp() : void
     {
         $this->fixture = new ConstantAssembler();
+        $this->fixture->setBuilder($this->createStub(ProjectDescriptorBuilder::class));
     }
 
     /**

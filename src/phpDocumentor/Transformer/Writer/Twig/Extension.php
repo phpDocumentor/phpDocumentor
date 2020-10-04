@@ -18,10 +18,14 @@ use Parsedown;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\Descriptor\DescriptorAbstract;
+use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
 use phpDocumentor\Descriptor\Interfaces\VisibilityInterface;
 use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Descriptor\PackageDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\Tag\ExampleDescriptor;
+use phpDocumentor\Descriptor\Tag\LinkDescriptor;
+use phpDocumentor\Descriptor\Tag\SeeDescriptor;
 use Twig\Extension\AbstractExtension;
 use Twig\Extension\GlobalsInterface;
 use Twig\TwigFilter;
@@ -29,9 +33,11 @@ use Twig\TwigFunction;
 use function array_unshift;
 use function count;
 use function method_exists;
+use function sprintf;
 use function str_replace;
 use function strtolower;
 use function var_export;
+use function vsprintf;
 
 /**
  * Basic extension adding phpDocumentor specific functionality for Twig
@@ -215,7 +221,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
         return [
             'markdown' => new TwigFilter(
                 'markdown',
-                static function (string $value) use ($parser) : string {
+                static function (?string $value) use ($parser) : string {
                     return str_replace(
                         ['<pre>', '<code>'],
                         ['<pre class="prettyprint">', '<code class="prettyprint">'],
@@ -303,6 +309,33 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
                 'export',
                 static function ($var) {
                     return var_export($var, true);
+                }
+            ),
+            'description' => new TwigFilter(
+                'description',
+                static function (?DescriptionDescriptor $description) use ($routeRenderer) {
+                    if ($description === null || $description->getBodyTemplate() === '') {
+                        return '';
+                    }
+
+                    $tagStrings = [];
+                    foreach ($description->getTags() as $tag) {
+                        if ($tag instanceof SeeDescriptor) {
+                            $tagStrings[] = $routeRenderer->render(
+                                $tag->getReference(),
+                                LinkRenderer::PRESENTATION_CLASS_SHORT
+                            );
+                        } elseif ($tag instanceof LinkDescriptor) {
+                            $tagStrings[] = sprintf('[%s](%s)', $tag->getDescription(), $tag->getLink());
+                        } elseif ($tag instanceof ExampleDescriptor) {
+                            $tagStrings[] = $tag->getDescription() . "\n"
+                                . '```php' . "\n" . $tag->getExample() . "\n" . '```';
+                        } else {
+                            $tagStrings[] = (string) $tag;
+                        }
+                    }
+
+                    return vsprintf($description->getBodyTemplate(), $tagStrings);
                 }
             ),
         ];

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 
-use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
 use phpDocumentor\Descriptor\Tag\ParamDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tags\Param;
 
@@ -22,20 +21,21 @@ use phpDocumentor\Reflection\DocBlock\Tags\Param;
  *
  * This object will read the reflected information for the `@param` tag and create a {@see ParamDescriptor} object that
  * can be used in the rest of the application and templates.
+ *
+ * @extends BaseTagAssembler<ParamDescriptor, Param>
  */
-class ParamAssembler extends AssemblerAbstract
+class ParamAssembler extends BaseTagAssembler
 {
     /**
      * Creates a new Descriptor from the given Reflector.
      *
      * @param Param $data
      */
-    public function create(object $data) : ParamDescriptor
+    public function buildDescriptor(object $data) : ParamDescriptor
     {
         $descriptor = new ParamDescriptor($data->getName());
-        $descriptor->setDescription((string) $data->getDescription());
-        $descriptor->setVariableName($data->getVariableName());
-        $descriptor->setType(AssemblerAbstract::deduplicateTypes($data->getType()));
+        $descriptor->setVariableName((string) $data->getVariableName());
+        $descriptor->setType($data->getType());
 
         return $descriptor;
     }

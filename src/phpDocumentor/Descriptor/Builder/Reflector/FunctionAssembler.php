@@ -15,9 +15,11 @@ namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use phpDocumentor\Descriptor\ArgumentDescriptor;
 use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
 use phpDocumentor\Descriptor\FunctionDescriptor;
 use phpDocumentor\Descriptor\Tag\ParamDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
+use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\Php\Argument;
 use phpDocumentor\Reflection\Php\Function_;
 use function strlen;
@@ -26,6 +28,8 @@ use function trim;
 
 /**
  * Assembles a FunctionDescriptor from a FunctionReflector.
+ *
+ * @extends AssemblerAbstract<FunctionDescriptor, Function_>
  */
 class FunctionAssembler extends AssemblerAbstract
 {
@@ -66,7 +70,7 @@ class FunctionAssembler extends AssemblerAbstract
         //TODO: this looks like a potential bug. Have to investigate this!
         if ($package) {
             $tag = new TagDescriptor('package');
-            $tag->setDescription($package);
+            $tag->setDescription(new DescriptionDescriptor(new Description($package), []));
             $packages->add($tag);
         }
 

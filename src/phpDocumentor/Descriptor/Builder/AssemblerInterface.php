@@ -13,15 +13,11 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Builder;
 
-use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
-use phpDocumentor\Reflection\DocBlock\Tag;
-use phpDocumentor\Reflection\Element;
-use phpDocumentor\Reflection\Php\Argument;
-use phpDocumentor\Reflection\Php\File;
 
 /**
- * Interface for Assembler classes that transform data to specific Descriptor types.
+ * @template TDescriptor of \phpDocumentor\Descriptor\Descriptor
+ * @template TInput of object
  */
 interface AssemblerInterface
 {
@@ -29,9 +25,9 @@ interface AssemblerInterface
     /**
      * Creates a Descriptor from the provided data.
      *
-     * @param Element|Tag|Argument|File $data
+     * @param TInput $data
      *
-     * @return Descriptor
+     * @return TDescriptor
      */
     public function create(object $data);
     //phpcs:enable

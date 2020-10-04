@@ -17,8 +17,6 @@ use phpDocumentor\Descriptor\Filter\Filterable;
 use phpDocumentor\Descriptor\Tag\AuthorDescriptor;
 use phpDocumentor\Descriptor\Validation\Error;
 use phpDocumentor\Reflection\Fqsen;
-use function str_ireplace;
-use function stripos;
 use function strpos;
 use function strtolower;
 use function substr;
@@ -44,8 +42,8 @@ abstract class DescriptorAbstract implements Filterable
     /** @var string $summary A summary describing the function of this element in short. */
     protected $summary = '';
 
-    /** @var string $description A more extensive description of this element. */
-    protected $description = '';
+    /** @var DocBlock\DescriptionDescriptor|null $description A more extensive description of this element. */
+    protected $description;
 
     /** @var FileDescriptor|null $fileDescriptor The file to which this element belongs; if applicable */
     protected $fileDescriptor;
@@ -162,8 +160,10 @@ abstract class DescriptorAbstract implements Filterable
      * Sets a description for this element.
      *
      * @internal should not be called by any other class than the assamblers
+     *
+     * @param ?DocBlock\DescriptionDescriptor $description
      */
-    public function setDescription(string $description) : void
+    public function setDescription(?DocBlock\DescriptionDescriptor $description) : void
     {
         $this->description = $description;
     }
@@ -173,22 +173,18 @@ abstract class DescriptorAbstract implements Filterable
      *
      * This method will automatically attempt to inherit the parent's description if this one has none.
      */
-    public function getDescription() : string
+    public function getDescription() : ?DocBlock\DescriptionDescriptor
     {
-        if ($this->description && stripos((string) $this->description, '{@inheritdoc}') === false) {
+        if ($this->description !== null) {
             return $this->description;
         }
 
         $parentElement = $this->getInheritedElement();
         if ($parentElement instanceof self) {
-            $parentDescription = $parentElement->getDescription();
-
-            return $this->description
-                ? str_ireplace('{@inheritdoc}', $parentDescription, $this->description)
-                : $parentDescription;
+            return $parentElement->getDescription();
         }
 
-        return $this->description;
+        return null;
     }
 
     /**

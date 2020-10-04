@@ -46,6 +46,7 @@ class SeeAssemblerTest extends MockeryTestCase
 
     /**
      * @covers ::create
+     * @covers ::buildDescriptor
      */
     public function testCreateSeeDescriptorFromSeeTagWhenReferenceIsRelativeClassnameNotInNamespaceAliasses() : void
     {
@@ -68,6 +69,7 @@ class SeeAssemblerTest extends MockeryTestCase
 
     /**
      * @covers ::create
+     * @covers ::buildDescriptor
      * @dataProvider provideReferences
      */
     public function testCreateSeeDescriptorFromSeeTagWhenReferenceIsUrl($reference) : void

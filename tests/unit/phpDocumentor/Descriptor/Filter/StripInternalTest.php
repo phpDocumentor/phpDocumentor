@@ -17,7 +17,10 @@ use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\DescriptorAbstract;
+use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
+use phpDocumentor\Descriptor\TagDescriptor;
+use phpDocumentor\Reflection\DocBlock\Description as DocBlockDescription;
 
 /**
  * Tests the functionality for the StripInternal class.
@@ -45,79 +48,45 @@ final class StripInternalTest extends MockeryTestCase
      * @uses \phpDocumentor\Descriptor\ClassDescriptor
      *
      * @covers ::__invoke
-     * @dataProvider removedInternalTagProvider
      */
-    public function testStripsInternalTagFromDescription(string $inputDescription, string $output) : void
+    public function testStripsInternalTagFromDescription() : void
     {
+        $otherTag = new TagDescriptor('other');
+        $description = new DescriptionDescriptor(
+            new DocBlockDescription('irelavant'),
+            [
+                new TagDescriptor('internal'),
+                $otherTag,
+            ]
+        );
+
         $this->builderMock->shouldReceive('getProjectDescriptor->isVisibilityAllowed')->andReturn(false);
         $descriptor = new ClassDescriptor();
-        $descriptor->setDescription($inputDescription);
-        $this->assertSame($output, $this->fixture->__invoke($descriptor)->getDescription());
-    }
-
-    /**
-     * @return array<string, string[]>
-     */
-    public function removedInternalTagProvider() : array
-    {
-        return [
-            'description with inline internaltag' => [
-                'without {@internal blabla }internal tag',
-                'without internal tag',
-            ],
-// Bug: https://github.com/phpDocumentor/ReflectionDocBlock/issues/255
-//            'internal tag with braces' => [
-//                'without {@internal bla{bla} }internal tag',
-//                'without internal tag',
-//            ],
-            'legacy format internal tags' => [
-                'without {@internal blabla }}internal tag',
-                'without internal tag',
-            ],
-            'legacy format with braces' => [
-                'without {@internal bla{bla} }}internal tag',
-                'without internal tag',
-            ],
-        ];
+        $descriptor->setDescription($description);
+        $this->assertSame([null, $otherTag], $this->fixture->__invoke($descriptor)->getDescription()->getTags());
     }
 
     /**
      * @uses \phpDocumentor\Descriptor\ClassDescriptor
      *
      * @covers ::__invoke
-     * @dataProvider resolvedInternalTagProvider
      */
-    public function testResolvesInternalTagFromDescription(string $inputDescription, string $output) : void
+    public function testKeepsInternalTagsInDescription() : void
     {
+        $tags = [
+            new TagDescriptor('internal'),
+            new TagDescriptor('other'),
+        ];
+
+        $description = new DescriptionDescriptor(
+            new DocBlockDescription('irelavant'),
+            $tags
+        );
+
         $this->builderMock->shouldReceive('getProjectDescriptor->isVisibilityAllowed')->andReturn(true);
         $descriptor = new ClassDescriptor();
-        $descriptor->setDescription($inputDescription);
-        $this->assertSame($output, $this->fixture->__invoke($descriptor)->getDescription());
-    }
-
-    /**
-     * @return array<string, string[]>
-     */
-    public function resolvedInternalTagProvider() : array
-    {
-        return [
-            'description with inline internaltag' => [
-                'without {@internal blabla }internal tag',
-                'without blabla internal tag',
-            ],
-            'internal tag with braces' => [
-                'without {@internal bla{bla} }internal tag',
-                'without bla{bla }internal tag',
-            ],
-            'legacy format internal tags' => [
-                'without {@internal bla{bla} }}internal tag',
-                'without bla{bla} internal tag',
-            ],
-            'legacy format with braces' => [
-                'without {@internal bla{bla} }}internal tag',
-                'without bla{bla} internal tag',
-            ],
-        ];
+        $descriptor->setDescription($description);
+        $this->assertSame($tags, $this->fixture->__invoke($descriptor)->getDescription()->getTags());
     }
 
     /**

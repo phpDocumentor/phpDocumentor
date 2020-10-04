@@ -15,6 +15,7 @@ namespace phpDocumentor\Descriptor;
 
 use InvalidArgumentException;
 use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
+use phpDocumentor\Descriptor\Validation\Error;
 use phpDocumentor\Reflection\Fqsen;
 use function ltrim;
 use function sprintf;
@@ -282,29 +283,30 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
 
         $properties = Collection::fromClassString(PropertyDescriptor::class);
 
-        try {
-            /** @var Tag\PropertyDescriptor $propertyTag */
-            foreach ($propertyTags as $propertyTag) {
-                $property = new PropertyDescriptor();
-                $property->setName(ltrim($propertyTag->getVariableName(), '$'));
-                $property->setDescription($propertyTag->getDescription());
-                $property->setType($propertyTag->getType());
-                $property->setWriteOnly($propertyTag->getName() === 'property-write');
-                $property->setReadOnly($propertyTag->getName() === 'property-read');
+        /** @var Tag\PropertyDescriptor $propertyTag */
+        foreach ($propertyTags as $propertyTag) {
+            $property = new PropertyDescriptor();
+            $property->setName(ltrim($propertyTag->getVariableName(), '$'));
+            $property->setDescription($propertyTag->getDescription());
+            $property->setType($propertyTag->getType());
+            $property->setWriteOnly($propertyTag->getName() === 'property-write');
+            $property->setReadOnly($propertyTag->getName() === 'property-read');
+            try {
                 $property->setParent($this);
-
-                $properties->add($property);
+            } catch (InvalidArgumentException $e) {
+                $property->getErrors()->add(
+                    new Error(
+                        'ERROR',
+                        sprintf(
+                            'Property name is invalid %s',
+                            $e->getMessage()
+                        ),
+                        null
+                    )
+                );
             }
-        } catch (InvalidArgumentException $e) {
-            throw new InvalidArgumentException(
-                sprintf(
-                    'Failed to get magic properties from "%s": %s',
-                    $this->getFullyQualifiedStructuralElementName(),
-                    $e->getMessage()
-                ),
-                0,
-                $e
-            );
+
+            $properties->add($property);
         }
 
         if ($this->getParent() instanceof self) {

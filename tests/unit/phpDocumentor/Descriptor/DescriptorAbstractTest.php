@@ -15,7 +15,9 @@ namespace phpDocumentor\Descriptor;
 
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
+use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
 use phpDocumentor\Descriptor\Interfaces\ChildInterface;
+use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\Fqsen;
 
 /**
@@ -34,8 +36,7 @@ class DescriptorAbstractTest extends MockeryTestCase
      */
     protected function setUp() : void
     {
-        $this->fixture = m::mock(DescriptorAbstract::class);
-        $this->fixture->shouldDeferMissing();
+        $this->fixture = new TestSubjectDescriptor();
     }
 
     /**
@@ -107,16 +108,47 @@ class DescriptorAbstractTest extends MockeryTestCase
     }
 
     /**
+     * @covers ::getSummary
+     */
+    public function testSummaryInheritsWhenNoneIsPresent() : void
+    {
+        // Arrange
+        $summary = 'This is a summary';
+        $parent = new TestSubjectDescriptor();
+        $parent->setSummary($summary);
+
+        $this->fixture->setSummary('');
+        $this->fixture->setParent($parent);
+
+        // Act
+        $result = $this->fixture->getSummary();
+
+        // Assert
+        $this->assertSame($summary, $result);
+    }
+
+    /**
      * @covers ::setDescription
      * @covers ::getDescription
      */
     public function testSettingAndGettingDescription() : void
     {
-        $this->assertSame('', $this->fixture->getDescription());
+        $this->assertNull($this->fixture->getDescription());
 
-        $this->fixture->setDescription('description');
+        $description = new DescriptionDescriptor(new Description('description'), []);
+        $this->fixture->setDescription($description);
 
-        $this->assertSame('description', $this->fixture->getDescription());
+        $this->assertSame($description, $this->fixture->getDescription());
+    }
+
+    public function testWhenDescriptionIsNullParentDescriptionIsInherited() : void
+    {
+        $parent = new TestSubjectDescriptor();
+        $description = new DescriptionDescriptor(new Description('parent'), []);
+        $parent->setDescription($description);
+        $this->fixture->setParent($parent);
+
+        self::assertSame($description, $this->fixture->getDescription());
     }
 
     /**

@@ -21,6 +21,8 @@ use phpDocumentor\Reflection\DocBlock\Tags\Example;
 
 /**
  * Tests for the \phpDocumentor\Descriptor\Builder\Reflector\Tags\ExampleAssembler class.
+ *
+ * @coversDefaultClass \phpDocumentor\Descriptor\Builder\Reflector\Tags\ExampleAssembler
  */
 class ExampleAssemblerTest extends MockeryTestCase
 {
@@ -52,8 +54,9 @@ class ExampleAssemblerTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\Tags\ExampleAssembler::__construct
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\Tags\ExampleAssembler::create
+     * @covers ::__construct
+     * @covers ::create
+     * @covers ::buildDescriptor
      */
     public function testCreateDescriptorFromExampleTag() : void
     {
@@ -63,7 +66,7 @@ class ExampleAssemblerTest extends MockeryTestCase
         $descriptor = $this->fixture->create($exampleTagMock);
 
         $this->assertSame(self::TAG_NAME, $descriptor->getName());
-        $this->assertSame(self::EXAMPLE_DESCRIPTION, $descriptor->getDescription());
+        $this->assertEquals(self::EXAMPLE_DESCRIPTION, $descriptor->getDescription());
         $this->assertSame(self::EXAMPLE_FILE_PATH, $descriptor->getFilePath());
         $this->assertSame(self::EXAMPLE_STARTING_LINE, $descriptor->getStartingLine());
         $this->assertSame(self::EXAMPLE_LINE_COUNT, $descriptor->getLineCount());
@@ -71,7 +74,7 @@ class ExampleAssemblerTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\Tags\ExampleAssembler::create
+     * @covers ::create
      */
     public function testExceptionIsThrownIfTheWrongObjectIsPassed() : void
     {

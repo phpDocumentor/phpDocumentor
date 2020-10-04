@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 
 use phpDocumentor\Descriptor\ArgumentDescriptor;
-use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
 use phpDocumentor\Descriptor\Tag\MethodDescriptor;
 use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tags\Method;
@@ -26,18 +25,19 @@ use function array_key_exists;
  *
  * This object will read the reflected information for the `@method` tag and create a {@see MethodDescriptor} object
  * that can be used in the rest of the application and templates.
+ *
+ * @extends BaseTagAssembler<MethodDescriptor, Method>
  */
-class MethodAssembler extends AssemblerAbstract
+class MethodAssembler extends BaseTagAssembler
 {
     /**
      * Creates a new Descriptor from the given Reflector.
      *
      * @param Method $data
      */
-    public function create(object $data) : MethodDescriptor
+    public function buildDescriptor(object $data) : MethodDescriptor
     {
         $descriptor = new MethodDescriptor($data->getName());
-        $descriptor->setDescription((string) $data->getDescription());
         $descriptor->setMethodName($data->getMethodName());
         $descriptor->setStatic($data->isStatic());
 
@@ -68,7 +68,7 @@ class MethodAssembler extends AssemblerAbstract
     private function createArgumentDescriptorForMagicMethod(string $name, Type $type) : ArgumentDescriptor
     {
         $argumentDescriptor = new ArgumentDescriptor();
-        $argumentDescriptor->setType(AssemblerAbstract::deduplicateTypes($type));
+        $argumentDescriptor->setType($type);
         $argumentDescriptor->setName($name);
 
         return $argumentDescriptor;

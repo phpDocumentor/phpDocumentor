@@ -14,13 +14,17 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use phpDocumentor\Descriptor\ArgumentDescriptor;
+use phpDocumentor\Descriptor\Builder\AssemblerAbstract as BaseAssembler;
 use phpDocumentor\Descriptor\Tag\ParamDescriptor;
 use phpDocumentor\Reflection\Php\Argument;
+use function stripcslashes;
 
 /**
  * Assembles an ArgumentDescriptor using an ArgumentReflector and ParamDescriptors.
+ *
+ * @extends BaseAssembler<ArgumentDescriptor, Argument>
  */
-class ArgumentAssembler extends AssemblerAbstract
+class ArgumentAssembler extends BaseAssembler
 {
     /**
      * Creates a Descriptor from the provided data.
@@ -59,5 +63,14 @@ class ArgumentAssembler extends AssemblerAbstract
 
         $argumentDescriptor->setDescription($paramDescriptor->getDescription());
         $argumentDescriptor->setType($paramDescriptor->getType());
+    }
+
+    protected function pretifyValue(?string $value) : ?string
+    {
+        if ($value === null) {
+            return null;
+        }
+
+        return stripcslashes($value);
     }
 }

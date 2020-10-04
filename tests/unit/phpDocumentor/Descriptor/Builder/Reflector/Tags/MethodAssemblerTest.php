@@ -55,6 +55,7 @@ final class MethodAssemblerTest extends MockeryTestCase
      * @dataProvider provideNotations
      * @covers       ::create
      * @covers       ::createArgumentDescriptorForMagicMethod
+     * @covers       ::buildDescriptor
      */
     public function testCreateMethodDescriptorFromVariousNotations(
         Type $returnType,
@@ -68,7 +69,7 @@ final class MethodAssemblerTest extends MockeryTestCase
 
         $this->assertEquals($returnType, $descriptor->getResponse()->getType());
         $this->assertSame($name, $descriptor->getMethodName());
-        $this->assertSame((string) $description, $descriptor->getDescription());
+        $this->assertEquals($description ?? '', (string) $descriptor->getDescription());
         $this->assertSame(count($arguments), $descriptor->getArguments()->count());
         foreach ($arguments as $argument) {
             $this->assertSame($argument['type'], $descriptor->getArguments()->get($argument['name'])->getType());

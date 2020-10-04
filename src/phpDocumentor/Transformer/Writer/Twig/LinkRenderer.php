@@ -125,7 +125,7 @@ final class LinkRenderer
     }
 
     /**
-     * @param array<Type>|Type|DescriptorAbstract|Fqsen|Path|string|iterable<mixed> $value
+     * @param array<Type>|Type|DescriptorAbstract|Fqsen|Reference\Reference|Path|string|iterable<mixed> $value
      *
      * @return string[]|string
      */

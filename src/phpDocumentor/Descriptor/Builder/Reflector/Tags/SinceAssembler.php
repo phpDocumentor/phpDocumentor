@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 
-use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
 use phpDocumentor\Descriptor\Tag\SinceDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tags\Since;
 
@@ -22,18 +21,19 @@ use phpDocumentor\Reflection\DocBlock\Tags\Since;
  *
  * This object will read the reflected information for the `@since` tag and create a {@see SinceDescriptor} object that
  * can be used in the rest of the application and templates.
+ *
+ * @extends BaseTagAssembler<SinceDescriptor, Since>
  */
-class SinceAssembler extends AssemblerAbstract
+class SinceAssembler extends BaseTagAssembler
 {
     /**
      * Creates a new Descriptor from the given Reflector.
      *
      * @param Since $data
      */
-    public function create(object $data) : SinceDescriptor
+    public function buildDescriptor(object $data) : SinceDescriptor
     {
         $descriptor = new SinceDescriptor($data->getName());
-        $descriptor->setDescription((string) $data->getDescription());
         $descriptor->setVersion($data->getVersion());
 
         return $descriptor;

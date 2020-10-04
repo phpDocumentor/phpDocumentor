@@ -196,96 +196,6 @@ final class MethodDescriptorTest extends MockeryTestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getSummary
-     */
-    public function testSummaryInheritsWhenNoneIsPresent() : void
-    {
-        // Arrange
-        $summary = 'This is a summary';
-        $this->fixture->setSummary('');
-        $parentMethod = $this->whenFixtureHasMethodInParentClassWithSameName($this->fixture->getName());
-        $parentMethod->setSummary($summary);
-
-        // Act
-        $result = $this->fixture->getSummary();
-
-        // Assert
-        $this->assertSame($summary, $result);
-    }
-
-    /**
-     * @covers ::getSummary
-     */
-    public function testSummaryInheritsFromImplementedInterfaceWhenNoneIsPresent() : void
-    {
-        // Arrange
-        $summary = 'This is a summary';
-        $this->fixture->setSummary('');
-        $parentMethod = $this->whenFixtureHasMethodInImplementedInterfaceWithSameName($this->fixture->getName());
-        $parentMethod->setSummary($summary);
-
-        // Act
-        $result = $this->fixture->getSummary();
-
-        // Assert
-        $this->assertSame($summary, $result);
-    }
-
-    /**
-     * @covers ::getDescription
-     */
-    public function testDescriptionInheritsWhenNoneIsPresent() : void
-    {
-        // Arrange
-        $description = 'This is a description';
-        $this->fixture->setDescription('');
-        $parentMethod = $this->whenFixtureHasMethodInParentClassWithSameName($this->fixture->getName());
-        $parentMethod->setDescription($description);
-
-        // Act
-        $result = $this->fixture->getDescription();
-
-        // Assert
-        $this->assertSame($description, $result);
-    }
-
-    /**
-     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getDescription
-     */
-    public function testDescriptionInheritsWhenInheritDocIsPresent() : void
-    {
-        // Arrange
-        $description = 'This is a description';
-        $this->fixture->setDescription('{@inheritDoc}');
-        $parentMethod = $this->whenFixtureHasMethodInParentClassWithSameName($this->fixture->getName());
-        $parentMethod->setDescription($description);
-
-        // Act
-        $result = $this->fixture->getDescription();
-
-        // Assert
-        $this->assertSame($description, $result);
-    }
-
-    /**
-     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getDescription
-     */
-    public function testDescriptionIsAugmentedWhenInheritDocInlineTagIsPresent() : void
-    {
-        // Arrange
-        $description = 'This is a description';
-        $this->fixture->setDescription('Original description {@inheritDoc}');
-        $parentMethod = $this->whenFixtureHasMethodInParentClassWithSameName($this->fixture->getName());
-        $parentMethod->setDescription($description);
-
-        // Act
-        $result = $this->fixture->getDescription();
-
-        // Assert
-        $this->assertSame('Original description ' . $description, $result);
-    }
-
-    /**
      * @covers ::getReturn
      */
     public function testReturnTagsInheritWhenNoneArePresent() : void
@@ -414,27 +324,6 @@ final class MethodDescriptorTest extends MockeryTestCase
         $class = new ClassDescriptor();
         $class->setFullyQualifiedStructuralElementName(new Fqsen('\My\Class'));
         $class->setParent($parent);
-
-        $this->fixture->setParent($class);
-
-        return $result;
-    }
-
-    /**
-     * @param string $name The name of the current method.
-     */
-    private function whenFixtureHasMethodInImplementedInterfaceWithSameName(string $name) : MethodDescriptor
-    {
-        $result = new MethodDescriptor();
-        $result->setName($name);
-
-        $parent = new InterfaceDescriptor();
-        $parent->setFullyQualifiedStructuralElementName(new Fqsen('\My\Interface'));
-        $parent->getMethods()->set($name, $result);
-
-        $class = new ClassDescriptor();
-        $class->setFullyQualifiedStructuralElementName(new Fqsen('\My\Class'));
-        $class->getInterfaces()->set('Implemented', $parent);
 
         $this->fixture->setParent($class);
 

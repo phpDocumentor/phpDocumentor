@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 
-use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
 use phpDocumentor\Descriptor\Tag\VarDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 
@@ -22,21 +21,22 @@ use phpDocumentor\Reflection\DocBlock\Tags\Var_;
  *
  * This object will read the reflected information for the `@var` tag and create a {@see VarDescriptor} object that
  * can be used in the rest of the application and templates.
+ *
+ * @extends BaseTagAssembler<VarDescriptor, Var_>
  */
-class VarAssembler extends AssemblerAbstract
+class VarAssembler extends BaseTagAssembler
 {
     /**
      * Creates a new Descriptor from the given Reflector.
      *
      * @param Var_ $data
      */
-    public function create(object $data) : VarDescriptor
+    public function buildDescriptor(object $data) : VarDescriptor
     {
         $descriptor = new VarDescriptor($data->getName());
-        $descriptor->setDescription((string) $data->getDescription());
-        $descriptor->setVariableName($data->getVariableName());
+        $descriptor->setVariableName((string) $data->getVariableName());
 
-        $descriptor->setType(AssemblerAbstract::deduplicateTypes($data->getType()));
+        $descriptor->setType($data->getType());
 
         return $descriptor;
     }

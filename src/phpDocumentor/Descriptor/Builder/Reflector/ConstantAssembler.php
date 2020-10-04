@@ -20,6 +20,8 @@ use function substr;
 
 /**
  * Assembles a ConstantDescriptor from a ConstantReflector.
+ *
+ * @extends AssemblerAbstract<ConstantDescriptor, Constant>
  */
 class ConstantAssembler extends AssemblerAbstract
 {

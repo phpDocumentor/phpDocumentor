@@ -77,7 +77,7 @@ final class MarkerFromTagsExtractor implements CompilerPassInterface
         $fileDescriptor->getMarkers()->add(
             [
                 'type' => 'TODO',
-                'message' => $todo->getDescription(),
+                'message' => (string) $todo->getDescription(),
                 'line' => $lineNumber,
             ]
         );

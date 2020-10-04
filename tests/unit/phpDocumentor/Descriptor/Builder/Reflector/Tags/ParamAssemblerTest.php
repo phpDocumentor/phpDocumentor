@@ -31,6 +31,7 @@ class ParamAssemblerTest extends MockeryTestCase
 
     /**
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\Tags\ParamAssembler::create
+     * @covers \phpDocumentor\Descriptor\Builder\Reflector\Tags\ParamAssembler::buildDescriptor
      */
     public function testCreatingParamDescriptorFromReflector() : void
     {

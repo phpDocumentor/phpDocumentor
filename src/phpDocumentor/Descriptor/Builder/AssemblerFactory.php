@@ -16,6 +16,7 @@ namespace phpDocumentor\Descriptor\Builder;
 use phpDocumentor\Descriptor\Builder\Reflector\ArgumentAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\ClassAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\ConstantAssembler;
+use phpDocumentor\Descriptor\Builder\Reflector\Docblock\DescriptionAssemblerReducer;
 use phpDocumentor\Descriptor\Builder\Reflector\FileAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\FunctionAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\InterfaceAssembler;
@@ -39,6 +40,7 @@ use phpDocumentor\Descriptor\Builder\Reflector\Tags\UsesAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\VarAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\VersionAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\TraitAssembler;
+use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\Reflection\DocBlock\ExampleFinder;
 use phpDocumentor\Reflection\DocBlock\Tag;
 use phpDocumentor\Reflection\DocBlock\Tags;
@@ -54,7 +56,6 @@ use phpDocumentor\Reflection\DocBlock\Tags\Throws;
 use phpDocumentor\Reflection\DocBlock\Tags\Uses;
 use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use phpDocumentor\Reflection\DocBlock\Tags\Version;
-use phpDocumentor\Reflection\Element;
 use phpDocumentor\Reflection\Php\Argument;
 use phpDocumentor\Reflection\Php\Class_;
 use phpDocumentor\Reflection\Php\Constant;
@@ -72,10 +73,10 @@ use function array_merge;
  */
 class AssemblerFactory
 {
-    /** @var AssemblerMatcher[] */
+    /** @var AssemblerMatcher<Descriptor, object>[] */
     protected $assemblers = [];
 
-    /** @var AssemblerMatcher[] */
+    /** @var AssemblerMatcher<Descriptor, object>[] */
     protected $fallbackAssemblers = [];
 
     /**
@@ -83,8 +84,8 @@ class AssemblerFactory
      *
      * @param callable $matcher A callback function accepting the criteria as only parameter and which must
      *     return a boolean.
-     * @param AssemblerInterface $assembler An instance of the Assembler that will be returned if the callback returns
-     *     true with the provided criteria.
+     * @param AssemblerInterface<Descriptor, object> $assembler An instance of the Assembler that
+     *     will be returned if the callback returns true with the provided criteria.
      */
     public function register(callable $matcher, AssemblerInterface $assembler) : void
     {
@@ -97,8 +98,8 @@ class AssemblerFactory
      *
      * @param callable $matcher A callback function accepting the criteria as only parameter and which must
      *     return a boolean.
-     * @param AssemblerInterface $assembler An instance of the Assembler that will be returned if the callback returns
-     *     true with the provided criteria.
+     * @param AssemblerInterface<Descriptor, object> $assembler An instance of the Assembler that
+     *     will be returned if the callback returns true with the provided criteria.
      */
     public function registerFallback(callable $matcher, AssemblerInterface $assembler) : void
     {
@@ -108,11 +109,17 @@ class AssemblerFactory
     /**
      * Retrieves a matching Assembler based on the provided criteria or null if none was found.
      *
-     * @param Element|File|Tag|Argument $criteria
+     * @param TInput $criteria
+     * @param class-string<TDescriptor> $type
+     *
+     * @return AssemblerInterface<TDescriptor, TInput>
+     *
+     * @template TInput of object
+     * @template TDescriptor of Descriptor
      */
-    public function get(object $criteria) : ?AssemblerInterface
+    public function get(object $criteria, string $type) : ?AssemblerInterface
     {
-        /** @var AssemblerMatcher $candidate */
+        /** @var AssemblerMatcher<TDescriptor, TInput> $candidate */
         foreach (array_merge($this->assemblers, $this->fallbackAssemblers) as $candidate) {
             if ($candidate->match($criteria)) {
                 return $candidate->getAssembler();
@@ -126,6 +133,8 @@ class AssemblerFactory
     {
         $factory = new self();
         $argumentAssembler = new ArgumentAssembler();
+
+        $descriptionReducer = new DescriptionAssemblerReducer();
 
         $factory->register(Matcher::forType(File::class), new FileAssembler());
         $factory->register(Matcher::forType(Constant::class), new ConstantAssembler());
@@ -141,7 +150,7 @@ class AssemblerFactory
         $factory->register(Matcher::forType(Author::class), new AuthorAssembler());
         $factory->register(Matcher::forType(Deprecated::class), new DeprecatedAssembler());
         $factory->register(Matcher::forType(Example::class), new ExampleAssembler($exampleFinder));
-        $factory->register(Matcher::forType(Link::class), new LinkAssembler());
+        $factory->register(Matcher::forType(Link::class), new LinkAssembler($descriptionReducer));
         $factory->register(Matcher::forType(Tags\Method::class), new MethodTagAssembler());
         $factory->register(Matcher::forType(Tags\Property::class), new PropertyTagAssembler());
         $factory->register(Matcher::forType(Tags\PropertyRead::class), new PropertyTagAssembler());

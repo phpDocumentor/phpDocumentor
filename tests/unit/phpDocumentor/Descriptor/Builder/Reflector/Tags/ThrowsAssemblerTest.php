@@ -32,6 +32,7 @@ class ThrowsAssemblerTest extends MockeryTestCase
 
     /**
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\Tags\ThrowsAssembler::create
+     * @covers \phpDocumentor\Descriptor\Builder\Reflector\Tags\ThrowsAssembler::buildDescriptor
      */
     public function testCreatingThrowsDescriptorFromReflector() : void
     {

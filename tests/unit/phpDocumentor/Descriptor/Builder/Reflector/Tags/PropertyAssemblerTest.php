@@ -31,6 +31,7 @@ class PropertyAssemblerTest extends MockeryTestCase
 
     /**
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\Tags\PropertyAssembler::create
+     * @covers \phpDocumentor\Descriptor\Builder\Reflector\Tags\PropertyAssembler::buildDescriptor
      */
     public function testCreatingPropertyDescriptorFromReflector() : void
     {

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 
-use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
 use phpDocumentor\Descriptor\Tag\PropertyDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tags\Property;
 
@@ -22,20 +21,21 @@ use phpDocumentor\Reflection\DocBlock\Tags\Property;
  *
  * This object will read the reflected information for the `@property` tag and create a {@see PropertyDescriptor}
  * object that can be used in the rest of the application and templates.
+ *
+ * @extends BaseTagAssembler<PropertyDescriptor, Property>
  */
-class PropertyAssembler extends AssemblerAbstract
+class PropertyAssembler extends BaseTagAssembler
 {
     /**
      * Creates a new Descriptor from the given Reflector.
      *
      * @param Property $data
      */
-    public function create(object $data) : PropertyDescriptor
+    public function buildDescriptor(object $data) : PropertyDescriptor
     {
         $descriptor = new PropertyDescriptor($data->getName());
         $descriptor->setVariableName($data->getVariableName());
-        $descriptor->setDescription((string) $data->getDescription());
-        $descriptor->setType(AssemblerAbstract::deduplicateTypes($data->getType()));
+        $descriptor->setType($data->getType());
 
         return $descriptor;
     }

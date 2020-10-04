@@ -13,21 +13,22 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 
-use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
 use phpDocumentor\Descriptor\Tag\UsesDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tags\Uses;
 
-class UsesAssembler extends AssemblerAbstract
+/**
+ * @extends BaseTagAssembler<UsesDescriptor, Uses>
+ */
+class UsesAssembler extends BaseTagAssembler
 {
     /**
      * Creates a new Descriptor from the given Reflector.
      *
      * @param Uses $data
      */
-    public function create(object $data) : UsesDescriptor
+    public function buildDescriptor(object $data) : UsesDescriptor
     {
         $descriptor = new UsesDescriptor($data->getName());
-        $descriptor->setDescription((string) $data->getDescription());
         $reference = $data->getReference();
 
         $descriptor->setReference($reference);
