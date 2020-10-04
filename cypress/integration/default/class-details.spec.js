@@ -43,7 +43,7 @@ describe('Class Detail Page', function() {
     });
 
     it('Show methods with return type in the Table of Contents', function() {
-        cy.get('.phpdocumentor-table_of_contents dt')
+        cy.get('.phpdocumentor-table-of-contents__entry')
             .contains("jsonSerialize()").parent()
             .contains(': array'); // type
     });
@@ -51,7 +51,7 @@ describe('Class Detail Page', function() {
     describe('Showing a method in a class', function() {
         let methods;
 
-        const findMethod = (name) => methods.get('.phpdocumentor-method__name').contains(name).parent();
+        const findMethod = (name) => methods.get('.phpdocumentor-element__name').contains(name).parent();
 
          before(function(){
             cy.visit('build/default/classes/Marios-Pizzeria.html');
