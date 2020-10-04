@@ -36,8 +36,6 @@ class Raw extends Directive
             return;
         }
 
-        $kernel = $parser->getKernel();
-
         if ($node instanceof CodeNode) {
             $node->setRaw(true);
         }

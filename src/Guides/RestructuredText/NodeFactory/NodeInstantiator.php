@@ -27,13 +27,10 @@ class NodeInstantiator
 
     /** @var EventManager|null */
     private $eventManager;
-    /** @var Environment */
-    private $environment;
 
     public function __construct(
         string $type,
         string $className,
-        Environment $environment,
         ?NodeRendererFactory $nodeRendererFactory = null,
         ?EventManager $eventManager = null
     ) {
@@ -53,7 +50,6 @@ class NodeInstantiator
         $this->className           = $className;
         $this->nodeRendererFactory = $nodeRendererFactory;
         $this->eventManager        = $eventManager;
-        $this->environment         = $environment;
     }
 
     public function getType() : string
@@ -76,8 +72,6 @@ class NodeInstantiator
         if ($this->eventManager !== null) {
             $node->setEventManager($this->eventManager);
         }
-
-        $node->setEnvironment($this->environment);
 
         return $node;
     }

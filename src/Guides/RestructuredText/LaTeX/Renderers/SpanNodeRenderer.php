@@ -8,7 +8,7 @@ use phpDocumentor\Guides\RestructuredText\Environment;
 use phpDocumentor\Guides\RestructuredText\Nodes\SpanNode;
 use phpDocumentor\Guides\RestructuredText\References\ResolvedReference;
 use phpDocumentor\Guides\RestructuredText\Renderers\SpanNodeRenderer as BaseSpanNodeRenderer;
-use phpDocumentor\Guides\RestructuredText\Templates\TemplateRenderer;
+use phpDocumentor\Guides\RestructuredText\TemplateRenderer;
 use function is_string;
 use function substr;
 use function trim;

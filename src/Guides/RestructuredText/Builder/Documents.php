@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\Builder;
 
+use InvalidArgumentException;
 use phpDocumentor\Guides\RestructuredText\Meta\Metas;
 use phpDocumentor\Guides\RestructuredText\Nodes\DocumentNode;
-use InvalidArgumentException;
 use Symfony\Component\Filesystem\Filesystem;
 use function dirname;
 use function is_dir;

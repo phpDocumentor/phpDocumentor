@@ -251,7 +251,6 @@ services:
     phpDocumentor\Transformer\Writer\Graph: ~
     phpDocumentor\Transformer\Writer\Twig: ~
     phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory: ~
-    phpDocumentor\Transformer\Writer\RenderGuide: ~
 
     phpDocumentor\Transformer\Writer\Collection:
         calls:
@@ -264,6 +263,7 @@ services:
   ###################################################################################
   ## Guides - EXPERIMENTAL ##########################################################
   ###################################################################################
+    phpDocumentor\Transformer\Writer\RenderGuide: ~
 
     phpDocumentor\Guides\:
       resource: '../src/Guides/*'
@@ -272,6 +272,10 @@ services:
       arguments:
         $directives: !tagged_iterator phpdoc.guides.directive
         $references: !tagged_iterator phpdoc.guides.reference
+
+    phpDocumentor\Guides\RestructuredText\Command\:
+      resource: '../src/Guides/RestructuredText/Command/*Handler.php'
+      tags: [{name: tactician.handler, typehints: true}]
 
     phpDocumentor\Guides\RestructuredText\Directives\:
       resource: '../src/Guides/RestructuredText/Directives/*'

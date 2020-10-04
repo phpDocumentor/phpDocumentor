@@ -12,7 +12,7 @@ use phpDocumentor\Guides\RestructuredText\NodeFactory\NodeFactory;
 use phpDocumentor\Guides\RestructuredText\NodeFactory\NodeInstantiator;
 use phpDocumentor\Guides\RestructuredText\Nodes\NodeTypes;
 use phpDocumentor\Guides\RestructuredText\Renderers\NodeRendererFactory;
-use phpDocumentor\Guides\RestructuredText\Templates\TemplateRenderer;
+use phpDocumentor\Guides\RestructuredText\TemplateRenderer;
 use RuntimeException;
 use Twig\Environment as TwigEnvironment;
 use function sprintf;
@@ -197,58 +197,9 @@ class Configuration
         $this->fileExtension = $fileExtension;
     }
 
-    public function getNodeFactory(Environment $environment) : NodeFactory
-    {
-        if ($this->nodeFactory !== null) {
-            return $this->nodeFactory;
-        }
-
-        return new DefaultNodeFactory(
-            $this->eventManager,
-            $this->createNodeInstantiator($environment, NodeTypes::DOCUMENT, Nodes\DocumentNode::class),
-            $this->createNodeInstantiator($environment, NodeTypes::SPAN, Nodes\SpanNode::class),
-            $this->createNodeInstantiator($environment, NodeTypes::TOC, Nodes\TocNode::class),
-            $this->createNodeInstantiator($environment, NodeTypes::TITLE, Nodes\TitleNode::class),
-            $this->createNodeInstantiator($environment, NodeTypes::SEPARATOR, Nodes\SeparatorNode::class),
-            $this->createNodeInstantiator($environment, NodeTypes::CODE, Nodes\CodeNode::class),
-            $this->createNodeInstantiator($environment, NodeTypes::QUOTE, Nodes\QuoteNode::class),
-            $this->createNodeInstantiator($environment, NodeTypes::PARAGRAPH, Nodes\ParagraphNode::class),
-            $this->createNodeInstantiator($environment, NodeTypes::ANCHOR, Nodes\AnchorNode::class),
-            $this->createNodeInstantiator($environment, NodeTypes::LIST, Nodes\ListNode::class),
-            $this->createNodeInstantiator($environment, NodeTypes::TABLE, Nodes\TableNode::class),
-            $this->createNodeInstantiator($environment, NodeTypes::DEFINITION_LIST, Nodes\DefinitionListNode::class),
-            $this->createNodeInstantiator($environment, NodeTypes::WRAPPER, Nodes\WrapperNode::class),
-            $this->createNodeInstantiator($environment, NodeTypes::FIGURE, Nodes\FigureNode::class),
-            $this->createNodeInstantiator($environment, NodeTypes::IMAGE, Nodes\ImageNode::class),
-            $this->createNodeInstantiator($environment, NodeTypes::META, Nodes\MetaNode::class),
-            $this->createNodeInstantiator($environment, NodeTypes::RAW, Nodes\RawNode::class),
-            $this->createNodeInstantiator($environment, NodeTypes::DUMMY, Nodes\DummyNode::class),
-            $this->createNodeInstantiator($environment, NodeTypes::MAIN, Nodes\MainNode::class),
-            $this->createNodeInstantiator($environment, NodeTypes::BLOCK, Nodes\BlockNode::class),
-            $this->createNodeInstantiator($environment, NodeTypes::CALLABLE, Nodes\CallableNode::class),
-            $this->createNodeInstantiator($environment, NodeTypes::SECTION_BEGIN, Nodes\SectionBeginNode::class),
-            $this->createNodeInstantiator($environment, NodeTypes::SECTION_END, Nodes\SectionEndNode::class)
-        );
-    }
-
-    public function setNodeFactory(NodeFactory $nodeFactory) : void
-    {
-        $this->nodeFactory = $nodeFactory;
-    }
-
-    public function setEventManager(EventManager $eventManager) : void
-    {
-        $this->eventManager = $eventManager;
-    }
-
     public function getEventManager() : EventManager
     {
         return $this->eventManager;
-    }
-
-    public function dispatchEvent(string $eventName, ?EventArgs $eventArgs = null) : void
-    {
-        $this->eventManager->dispatchEvent($eventName, $eventArgs);
     }
 
     public function addFormat(Format $format) : void
@@ -270,21 +221,5 @@ class Configuration
     public function getSourceFileExtension() : string
     {
         return $this->sourceFileExtension;
-    }
-
-    private function createNodeInstantiator(Environment $environment, string $type, string $nodeClassName) : NodeInstantiator
-    {
-        return new NodeInstantiator(
-            $type,
-            $nodeClassName,
-            $environment,
-            $this->getNodeRendererFactory($nodeClassName),
-            $this->eventManager
-        );
-    }
-
-    private function getNodeRendererFactory(string $nodeClassName) : ?NodeRendererFactory
-    {
-        return $this->getFormat()->getNodeRendererFactories()[$nodeClassName] ?? null;
     }
 }

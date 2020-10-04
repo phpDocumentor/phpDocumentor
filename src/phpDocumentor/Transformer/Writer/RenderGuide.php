@@ -53,18 +53,23 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
     /** @var EnvironmentFactory */
     private $environmentFactory;
 
+    /** @var Builder */
+    private $builder;
+
     public function __construct(
         FlySystemFactory $flySystemFactory,
         KernelFactory $kernelFactory,
         Locator $cacheLocator,
         LoggerInterface $logger,
-        EnvironmentFactory $environmentFactory
+        EnvironmentFactory $environmentFactory,
+        Builder $builder
     ) {
         $this->flySystemFactory = $flySystemFactory;
         $this->kernelFactory = $kernelFactory;
         $this->cacheLocator = $cacheLocator;
         $this->logger = $logger;
         $this->environmentFactory = $environmentFactory;
+        $this->builder = $builder;
     }
 
     public function transform(ProjectDescriptor $project, Transformation $transformation) : void
@@ -101,8 +106,8 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
                 $tempOutputPath = sprintf('%s/output', $cachePath);
                 $environment = $this->environmentFactory->create($project, $transformation, $tempOutputPath);
 
-                $builder = new Builder($this->kernelFactory->createKernel($buildContext, $environment));
-                $builder->build($inputFolder, $tempOutputPath);
+                $kernel = $this->kernelFactory->createKernel($buildContext, $environment);
+                $this->builder->build($kernel, $inputFolder, $tempOutputPath);
 
                 $tempFilesystem = new Filesystem(new Local($tempOutputPath));
                 FlySystemMirror::mirror($tempFilesystem, $output, '', $buildContext->getDestinationPath());

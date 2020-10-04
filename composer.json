@@ -39,6 +39,7 @@
         "league/flysystem": "^1.0",
         "league/pipeline": "^1.0",
         "league/tactician": "^1.0",
+        "league/tactician-bundle": "^1.2",
         "league/uri": "^6.0",
         "league/uri-interfaces": "^2.0",
         "phpdocumentor/flyfinder": "^1.0",

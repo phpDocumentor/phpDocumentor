@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace phpDocumentor\Guides\RestructuredText\Templates;
+namespace phpDocumentor\Guides\RestructuredText;
 
 use Twig\Environment;
 use function rtrim;

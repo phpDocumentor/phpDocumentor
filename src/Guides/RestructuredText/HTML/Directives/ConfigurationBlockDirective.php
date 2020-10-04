@@ -21,7 +21,6 @@ use phpDocumentor\Guides\RestructuredText\Nodes\DocumentNode;
 use phpDocumentor\Guides\RestructuredText\Nodes\Node;
 use phpDocumentor\Guides\RestructuredText\Parser;
 use Webmozart\Assert\Assert;
-
 use function strtoupper;
 
 class ConfigurationBlockDirective extends SubDirective

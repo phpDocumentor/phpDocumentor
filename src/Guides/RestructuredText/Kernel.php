@@ -13,6 +13,7 @@ use phpDocumentor\Guides\RestructuredText\Event\PreNodeRenderEvent;
 use phpDocumentor\Guides\RestructuredText\Listener\AssetsCopyListener;
 use phpDocumentor\Guides\RestructuredText\Listener\CopyImagesListener;
 use phpDocumentor\Guides\RestructuredText\Nodes\DocumentNode;
+use phpDocumentor\Guides\RestructuredText\Nodes\NodeTypes;
 use phpDocumentor\Guides\RestructuredText\References\Doc;
 use phpDocumentor\Guides\RestructuredText\References\Reference;
 use Psr\Log\LoggerInterface;
@@ -62,7 +63,7 @@ class Kernel
 
     public function initBuilder(Builder $builder) : void
     {
-        $this->initializeListeners($builder->getConfiguration()->getEventManager());
+        $this->initializeListeners($this->getConfiguration()->getEventManager());
     }
 
     private function initializeListeners(EventManager $eventManager) : void
@@ -97,6 +98,35 @@ class Kernel
     public function getReferences() : array
     {
         return $this->references;
+    }
+
+    public function getNodes() : array
+    {
+        return [
+            NodeTypes::DOCUMENT => Nodes\DocumentNode::class,
+            NodeTypes::SPAN => Nodes\SpanNode::class,
+            NodeTypes::TOC => Nodes\TocNode::class,
+            NodeTypes::TITLE => Nodes\TitleNode::class,
+            NodeTypes::SEPARATOR => Nodes\SeparatorNode::class,
+            NodeTypes::CODE => Nodes\CodeNode::class,
+            NodeTypes::QUOTE => Nodes\QuoteNode::class,
+            NodeTypes::PARAGRAPH => Nodes\ParagraphNode::class,
+            NodeTypes::ANCHOR => Nodes\AnchorNode::class,
+            NodeTypes::LIST => Nodes\ListNode::class,
+            NodeTypes::TABLE => Nodes\TableNode::class,
+            NodeTypes::DEFINITION_LIST => Nodes\DefinitionListNode::class,
+            NodeTypes::WRAPPER => Nodes\WrapperNode::class,
+            NodeTypes::FIGURE => Nodes\FigureNode::class,
+            NodeTypes::IMAGE => Nodes\ImageNode::class,
+            NodeTypes::META => Nodes\MetaNode::class,
+            NodeTypes::RAW => Nodes\RawNode::class,
+            NodeTypes::DUMMY => Nodes\DummyNode::class,
+            NodeTypes::MAIN => Nodes\MainNode::class,
+            NodeTypes::BLOCK => Nodes\BlockNode::class,
+            NodeTypes::CALLABLE => Nodes\CallableNode::class,
+            NodeTypes::SECTION_BEGIN => Nodes\SectionBeginNode::class,
+            NodeTypes::SECTION_END => Nodes\SectionEndNode::class
+        ];
     }
 
     public function postParse(DocumentNode $document) : void

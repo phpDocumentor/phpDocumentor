@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\Nodes;
 
+use Exception;
+use LogicException;
 use phpDocumentor\Guides\RestructuredText\Exception\InvalidTableStructure;
 use phpDocumentor\Guides\RestructuredText\Nodes\Table\TableColumn;
 use phpDocumentor\Guides\RestructuredText\Nodes\Table\TableRow;
 use phpDocumentor\Guides\RestructuredText\Parser;
 use phpDocumentor\Guides\RestructuredText\Parser\LineChecker;
 use phpDocumentor\Guides\RestructuredText\Parser\TableSeparatorLineConfig;
-use Exception;
-use LogicException;
 use function array_keys;
 use function array_reverse;
 use function array_values;

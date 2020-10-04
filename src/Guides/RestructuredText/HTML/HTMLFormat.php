@@ -23,7 +23,7 @@ use phpDocumentor\Guides\RestructuredText\Nodes\DocumentNode;
 use phpDocumentor\Guides\RestructuredText\Nodes\SpanNode;
 use phpDocumentor\Guides\RestructuredText\Renderers\CallableNodeRendererFactory;
 use phpDocumentor\Guides\RestructuredText\Renderers\NodeRendererFactory;
-use phpDocumentor\Guides\RestructuredText\Templates\TemplateRenderer;
+use phpDocumentor\Guides\RestructuredText\TemplateRenderer;
 
 final class HTMLFormat implements Format
 {

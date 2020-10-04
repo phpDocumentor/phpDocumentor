@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\Builder;
 
-use phpDocumentor\Guides\RestructuredText\Meta\Metas;
 use InvalidArgumentException;
+use phpDocumentor\Guides\RestructuredText\Meta\Metas;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use function sprintf;
@@ -14,31 +14,15 @@ use function substr;
 
 class Scanner
 {
-    /** @var string */
-    private $fileExtension;
-
-    /** @var string */
-    private $directory;
-
     /** @var Metas */
     private $metas;
-
-    /** @var Finder */
-    private $finder;
 
     /** @var SplFileInfo[] */
     private $fileInfos = [];
 
-    public function __construct(string $fileExtension, string $directory, Metas $metas, ?Finder $finder = null)
+    public function __construct(Metas $metas)
     {
-        $this->fileExtension = $fileExtension;
-        $this->directory     = $directory;
-        $this->metas         = $metas;
-
-        $this->finder = $finder ?: new Finder();
-        $this->finder->in($this->directory)
-            ->files()
-            ->name('*.' . $this->fileExtension);
+        $this->metas = $metas;
     }
 
     /**
@@ -48,14 +32,19 @@ class Scanner
      * objects, and avoids adding files to the parse queue that have
      * not changed and whose direct dependencies have not changed.
      */
-    public function scan() : ParseQueue
+    public function scan(string $directory, string $extension) : ParseQueue
     {
+        $finder = new Finder();
+        $finder->in($directory)
+            ->files()
+            ->name('*.' . $extension);
+
         // completely populate the splFileInfos property
         $this->fileInfos = [];
-        foreach ($this->finder as $fileInfo) {
+        foreach ($finder as $fileInfo) {
             $relativeFilename = $fileInfo->getRelativePathname();
             // strip off the extension
-            $documentPath = substr($relativeFilename, 0, -(strlen($this->fileExtension) + 1));
+            $documentPath = substr($relativeFilename, 0, -(strlen($extension) + 1));
 
             $this->fileInfos[$documentPath] = $fileInfo;
         }
@@ -64,14 +53,14 @@ class Scanner
         foreach ($this->fileInfos as $filename => $fileInfo) {
             $parseQueue->addFile(
                 $filename,
-                $this->doesFileRequireParsing($filename, $parseQueue)
+                $this->doesFileRequireParsing($filename, $extension)
             );
         }
 
         return $parseQueue;
     }
 
-    private function doesFileRequireParsing(string $filename, ParseQueue $parseQueue) : bool
+    private function doesFileRequireParsing(string $filename, string $extension) : bool
     {
         if (! isset($this->fileInfos[$filename])) {
             throw new InvalidArgumentException(sprintf('No file info found for "%s" - file does not exist.', $filename));
@@ -79,10 +68,10 @@ class Scanner
 
         $file = $this->fileInfos[$filename];
 
-        $documentFilename = $this->getFilenameFromFile($file);
+        $documentFilename = $this->getFilenameFromFile($file, $extension);
         $entry            = $this->metas->get($documentFilename);
 
-        if ($this->hasFileBeenUpdated($filename)) {
+        if ($this->hasFileBeenUpdated($filename, $extension)) {
             // File is new or changed and thus need to be parsed
             return true;
         }
@@ -116,7 +105,7 @@ class Scanner
             }
 
             // finally, we need to recursively ask if this file needs parsing
-            if ($this->hasFileBeenUpdated($dependency)) {
+            if ($this->hasFileBeenUpdated($dependency, $extension)) {
                 return true;
             }
         }
@@ -125,11 +114,11 @@ class Scanner
         return false;
     }
 
-    private function hasFileBeenUpdated(string $filename) : bool
+    private function hasFileBeenUpdated(string $filename, string $extension) : bool
     {
         $file = $this->fileInfos[$filename];
 
-        $documentFilename = $this->getFilenameFromFile($file);
+        $documentFilename = $this->getFilenameFromFile($file, $extension);
         $entry            = $this->metas->get($documentFilename);
 
         // File is new or changed
@@ -139,8 +128,8 @@ class Scanner
     /**
      * Converts foo/bar.rst to foo/bar (the document filename)
      */
-    private function getFilenameFromFile(SplFileInfo $file) : string
+    private function getFilenameFromFile(SplFileInfo $file, string $extension) : string
     {
-        return substr($file->getRelativePathname(), 0, -(strlen($this->fileExtension) + 1));
+        return substr($file->getRelativePathname(), 0, -(strlen($extension) + 1));
     }
 }

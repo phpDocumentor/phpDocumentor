@@ -9,7 +9,7 @@ use phpDocumentor\Guides\RestructuredText\Meta\Metas;
 use phpDocumentor\Guides\RestructuredText\NodeFactory\NodeFactory;
 use phpDocumentor\Guides\RestructuredText\References\Reference;
 use phpDocumentor\Guides\RestructuredText\References\ResolvedReference;
-use phpDocumentor\Guides\RestructuredText\Templates\TemplateRenderer;
+use phpDocumentor\Guides\RestructuredText\TemplateRenderer;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use function array_shift;
@@ -84,6 +84,9 @@ class Environment
     /** @var LoggerInterface */
     private $logger;
 
+    /** @var NodeFactory|null */
+    private $nodeFactory;
+
     public function __construct(Configuration $configuration, LoggerInterface $logger)
     {
         $this->configuration = $configuration;
@@ -117,9 +120,14 @@ class Environment
         $this->metas = $metas;
     }
 
+    public function setNodeFactory(NodeFactory $nodeFactory)
+    {
+        $this->nodeFactory = $nodeFactory;
+    }
+
     public function getNodeFactory() : NodeFactory
     {
-        return $this->configuration->getNodeFactory($this);
+        return $this->nodeFactory;
     }
 
     public function getTemplateRenderer() : TemplateRenderer
