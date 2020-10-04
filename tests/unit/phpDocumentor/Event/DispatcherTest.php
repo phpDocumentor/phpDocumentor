@@ -8,13 +8,12 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Event;
 
-use Mockery as m;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test for the Dispatcher class.
  */
-class DispatcherTest extends MockeryTestCase
+class DispatcherTest extends TestCase
 {
     /**
      * @covers \phpDocumentor\Event\Dispatcher::getInstance
@@ -60,8 +59,8 @@ class DispatcherTest extends MockeryTestCase
         $fixture = Dispatcher::getInstance('mine');
         $this->assertSame($fixture, Dispatcher::getInstance('mine'));
 
-        $newObject = m::mock(Dispatcher::class);
-        Dispatcher::setInstance('mine', $newObject);
-        $this->assertSame($newObject, Dispatcher::getInstance('mine'));
+        $newObject = $this->prophesize(Dispatcher::class);
+        Dispatcher::setInstance('mine', $newObject->reveal());
+        $this->assertSame($newObject->reveal(), Dispatcher::getInstance('mine'));
     }
 }
