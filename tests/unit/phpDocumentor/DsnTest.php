@@ -63,11 +63,16 @@ class DsnTest extends TestCase
         $this->assertSame($parameters, $fixture->getParameters(), 'Parameters do not match');
     }
 
-    public function testPathNotStartingWithSlash()
+    /**
+     * @covers ::createFromString
+     * @covers ::withPath
+     * @covers ::getPath
+     */
+    public function testPathNotStartingWithSlash() : void
     {
-        $dns = Dsn::createFromString($dsn);
-        $dns = $dns->withPath("PathWithoutSlash");
-        $this->assertEquals(new Path("/PathWithoutSlash"), $fixture->getPath(), 'Path does not match');
+        $dns = Dsn::createFromString('file://test');
+        $dns = $dns->withPath(new Path("PathWithoutSlash"));
+        $this->assertEquals(new Path("/PathWithoutSlash"), $dns->getPath(), 'Path does not match');
     }
 
     public function provideDsnsToTestAgainst() : array
