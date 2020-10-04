@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Tag;
 
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Reflection\Fqsen;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests the functionality for the UsesDescriptor class.
  */
-class UsesDescriptorTest extends MockeryTestCase
+class UsesDescriptorTest extends TestCase
 {
     public const EXAMPLE_REFERENCE = '\Reference';
 

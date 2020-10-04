@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Tag;
 
-use Mockery\Adapter\Phpunit\MockeryTestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests the functionality for the VersionDescriptor class.
  */
-class VersionDescriptorTest extends MockeryTestCase
+class VersionDescriptorTest extends TestCase
 {
     public const EXAMPLE_VERSION = '2.0';
 

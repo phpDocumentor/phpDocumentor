@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Tag;
 
-use Mockery\Adapter\Phpunit\MockeryTestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests the functionality for the PropertyDescriptor class.
  */
-class PropertyDescriptorTest extends MockeryTestCase
+class PropertyDescriptorTest extends TestCase
 {
     public const EXAMPLE_NAME = 'variableName';
 

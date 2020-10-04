@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Cache;
 
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 /**
@@ -29,7 +29,7 @@ use Symfony\Component\Cache\Adapter\FilesystemAdapter;
  * @coversDefaultClass \phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper
  * @covers ::__construct
  */
-final class ProjectDescriptorMapperTest extends MockeryTestCase
+final class ProjectDescriptorMapperTest extends TestCase
 {
     /** @var ProjectDescriptorMapper */
     private $mapper;

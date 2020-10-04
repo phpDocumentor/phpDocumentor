@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Tag;
 
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Reflection\DocBlock\Tags\Reference\Fqsen as FqsenReference;
 use phpDocumentor\Reflection\Fqsen;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests the functionality for the SeeDescriptor class.
  */
-class SeeDescriptorTest extends MockeryTestCase
+class SeeDescriptorTest extends TestCase
 {
     /** @var SeeDescriptor $fixture */
     protected $fixture;

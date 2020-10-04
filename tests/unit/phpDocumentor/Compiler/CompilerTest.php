@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Compiler;
 
-use Mockery\Adapter\Phpunit\MockeryTestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests the functionality for the Compiler.
  */
-class CompilerTest extends MockeryTestCase
+class CompilerTest extends TestCase
 {
     /** @var Compiler $fixture */
     protected $fixture;
