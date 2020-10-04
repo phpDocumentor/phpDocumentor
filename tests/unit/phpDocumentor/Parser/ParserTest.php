@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Parser;
 
-use Mockery as m;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
-use Mockery\MockInterface;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamFile;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
@@ -24,6 +21,9 @@ use phpDocumentor\Parser\Event\PreParsingEvent;
 use phpDocumentor\Reflection\File\LocalFile;
 use phpDocumentor\Reflection\Php\Project;
 use phpDocumentor\Reflection\ProjectFactory;
+use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
+use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Log\NullLogger;
 use Symfony\Component\Stopwatch\Stopwatch;
 use function ini_set;
@@ -36,12 +36,12 @@ use function sys_get_temp_dir;
  * @covers ::__construct
  * @covers ::<private>
  */
-final class ParserTest extends MockeryTestCase
+final class ParserTest extends TestCase
 {
     /** @var Parser */
     protected $fixture = null;
 
-    /** @var MockInterface|ProjectFactory */
+    /** @var ObjectProphecy|ProjectFactory */
     private $projectFactory;
 
     /**
@@ -50,10 +50,10 @@ final class ParserTest extends MockeryTestCase
     protected function setUp() : void
     {
         ini_set('zend.script_encoding', '');
-        $this->projectFactory = m::mock(ProjectFactory::class);
+        $this->projectFactory = $this->prophesize(ProjectFactory::class);
 
         $this->fixture = new Parser(
-            $this->projectFactory,
+            $this->projectFactory->reveal(),
             new Stopwatch(),
             new NullLogger()
         );
@@ -66,8 +66,8 @@ final class ParserTest extends MockeryTestCase
     public function testSetAndGetIgnoredTags() : void
     {
         $parser = new Parser(
-            m::mock(ProjectFactory::class),
-            m::mock(Stopwatch::class),
+            $this->prophesize(ProjectFactory::class)->reveal(),
+            $this->prophesize(Stopwatch::class)->reveal(),
             new NullLogger()
         );
         $this->assertEquals([], $parser->getIgnoredTags());
@@ -148,8 +148,8 @@ final class ParserTest extends MockeryTestCase
     public function testSetAndGetDefaultPackageName() : void
     {
         $parser = new Parser(
-            m::mock(ProjectFactory::class),
-            m::mock(Stopwatch::class),
+            $this->prophesize(ProjectFactory::class)->reveal(),
+            $this->prophesize(Stopwatch::class)->reveal(),
             new NullLogger()
         );
 
@@ -173,9 +173,10 @@ final class ParserTest extends MockeryTestCase
         ];
 
         $expectedProject = new Project(ProjectDescriptorBuilder::DEFAULT_PROJECT_NAME);
-        $this->projectFactory->shouldReceive('create')
-            ->with(ProjectDescriptorBuilder::DEFAULT_PROJECT_NAME, $files)
-            ->andReturn($expectedProject);
+        $this->projectFactory->create(
+            Argument::exact(ProjectDescriptorBuilder::DEFAULT_PROJECT_NAME),
+            Argument::exact($files),
+        )->shouldBeCalled()->willReturn($expectedProject);
 
         $project = $this->fixture->parse($files);
 
@@ -200,7 +201,7 @@ final class ParserTest extends MockeryTestCase
             }
         );
 
-        $this->projectFactory->shouldReceive('create')->andReturn(
+        $this->projectFactory->create(Argument::any(), Argument::any())->shouldBeCalled()->willReturn(
             new Project(ProjectDescriptorBuilder::DEFAULT_PROJECT_NAME)
         );
 

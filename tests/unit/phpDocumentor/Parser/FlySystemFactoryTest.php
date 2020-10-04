@@ -19,9 +19,10 @@ use League\Flysystem\Adapter\AbstractAdapter;
 use League\Flysystem\Filesystem;
 use League\Flysystem\MountManager;
 use LogicException;
-use Mockery as m;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Dsn;
+use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
+use Prophecy\Prophecy\ObjectProphecy;
 use function substr;
 use function sys_get_temp_dir;
 use const DIRECTORY_SEPARATOR;
@@ -32,15 +33,15 @@ use const PHP_OS_FAMILY;
  * @covers ::__construct
  * @covers ::<private>
  */
-final class FlySystemFactoryTest extends MockeryTestCase
+final class FlySystemFactoryTest extends TestCase
 {
     /** @var FlySystemFactory */
     private $fixture;
 
-    /** @var m\Mock|MountManager */
+    /** @var ObjectProphecy|MountManager */
     private $mountManagerMock;
 
-    /** @var m\Mock|Filesystem */
+    /** @var ObjectProphecy|Filesystem */
     private $filesystemMock;
 
     /** @var Dsn */
@@ -48,10 +49,10 @@ final class FlySystemFactoryTest extends MockeryTestCase
 
     protected function setUp() : void
     {
-        $this->mountManagerMock = m::mock(MountManager::class);
-        $this->filesystemMock = m::mock(Filesystem::class);
+        $this->mountManagerMock = $this->prophesize(MountManager::class);
+        $this->filesystemMock = $this->prophesize(Filesystem::class);
         $this->dsn = Dsn::createFromString(sys_get_temp_dir());
-        $this->fixture = new FlySystemFactory($this->mountManagerMock);
+        $this->fixture = new FlySystemFactory($this->mountManagerMock->reveal());
     }
 
     /**
@@ -59,8 +60,8 @@ final class FlySystemFactoryTest extends MockeryTestCase
      */
     public function testCreateLocalFilesystemWithoutCache() : void
     {
-        $this->mountManagerMock->shouldReceive('mountFilesystem')->once();
-        $this->mountManagerMock->shouldReceive('getFilesystem')->once()->andThrow(LogicException::class);
+        $this->mountManagerMock->mountFilesystem(Argument::any(), Argument::any())->shouldBeCalledOnce();
+        $this->mountManagerMock->getFilesystem(Argument::any())->shouldBeCalledOnce()->willThrow(LogicException::class);
 
         $result = $this->fixture->create($this->dsn);
 
@@ -80,9 +81,9 @@ final class FlySystemFactoryTest extends MockeryTestCase
      */
     public function testCreateLocalFilesystemWithCache() : void
     {
-        $this->mountManagerMock->shouldReceive('mountFilesystem')->never();
-        $this->mountManagerMock->shouldReceive('getFilesystem')->once()->andReturn($this->filesystemMock);
-        $this->filesystemMock->shouldReceive('addPlugin');
+        $this->filesystemMock->addPlugin(Argument::any())->shouldBeCalled();
+        $this->mountManagerMock->mountFilesystem(Argument::any(), Argument::any())->shouldNotBeCalled();
+        $this->mountManagerMock->getFilesystem(Argument::any())->shouldBeCalledOnce()->willReturn($this->filesystemMock->reveal());
 
         $result = $this->fixture->create($this->dsn);
 
@@ -95,8 +96,8 @@ final class FlySystemFactoryTest extends MockeryTestCase
     public function testUnsupportedScheme() : void
     {
         $this->expectException('InvalidArgumentException');
-        $this->mountManagerMock->shouldReceive('mountFilesystem')->never();
-        $this->mountManagerMock->shouldReceive('getFilesystem')->once()->andThrow(LogicException::class);
+        $this->mountManagerMock->mountFilesystem(Argument::any(), Argument::any())->shouldNotBeCalled();
+        $this->mountManagerMock->getFilesystem(Argument::any())->shouldBeCalledOnce()->willThrow(LogicException::class);
         $dsn = Dsn::createFromString('git+http://github.com');
 
         $this->fixture->create($dsn);
@@ -107,8 +108,8 @@ final class FlySystemFactoryTest extends MockeryTestCase
      */
     public function testFlyFinderIsRegistered() : void
     {
-        $this->mountManagerMock->shouldReceive('mountFilesystem')->once();
-        $this->mountManagerMock->shouldReceive('getFilesystem')->once()->andThrow(LogicException::class);
+        $this->mountManagerMock->mountFilesystem(Argument::any(), Argument::any())->shouldBeCalledOnce();
+        $this->mountManagerMock->getFilesystem(Argument::any())->shouldBeCalledOnce()->willThrow(LogicException::class);
         $fileSystem = $this->fixture->create($this->dsn);
 
         $fileSystem->find(new InPath(new Path('a')));

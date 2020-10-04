@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Pipeline\Stage\Parser;
 
-use Mockery as m;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Dsn;
 use phpDocumentor\Parser\FileCollector;
+use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
 use Psr\Log\NullLogger;
 
 /**
@@ -25,7 +25,7 @@ use Psr\Log\NullLogger;
  * @covers ::__construct
  * @covers ::<private>
  */
-final class CollectFilesTest extends MockeryTestCase
+final class CollectFilesTest extends TestCase
 {
     /**
      * @covers ::__invoke
@@ -33,20 +33,18 @@ final class CollectFilesTest extends MockeryTestCase
     public function testFilesAreCollectedAndAddedToPayload() : void
     {
         $dns = Dsn::createFromString('file://.');
-        $fileCollector = m::mock(FileCollector::class);
-        $fileCollector->expects('getFiles')
-            ->with(
-                $dns,
-                ['src'],
-                [
-                    'paths' => [],
-                    'hidden' => null,
-                ],
-                ['php']
-            )
-            ->andReturn([]);
+        $fileCollector = $this->prophesize(FileCollector::class);
+        $fileCollector->getFiles(
+            Argument::exact($dns),
+            Argument::exact(['src']),
+            Argument::exact([
+                'paths' => [],
+                'hidden' => null,
+            ]),
+            Argument::exact(['php'])
+        )->shouldBeCalled()->willReturn([]);
 
-        $fixture = new CollectFiles($fileCollector, new NullLogger());
+        $fixture = new CollectFiles($fileCollector->reveal(), new NullLogger());
 
         $payload = new Payload(
             [
@@ -70,7 +68,7 @@ final class CollectFilesTest extends MockeryTestCase
                     ],
                 ],
             ],
-            m::mock(ProjectDescriptorBuilder::class)
+            $this->prophesize(ProjectDescriptorBuilder::class)->reveal()
         );
 
         $result = $fixture($payload);
