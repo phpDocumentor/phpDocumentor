@@ -39,6 +39,8 @@ final class RenderHandler
             if ($destination->has($directory)) {
                 $destination->createDir($directory);
             }
+
+            $destination->put($target, $document->renderDocument());
         }
     }
 
