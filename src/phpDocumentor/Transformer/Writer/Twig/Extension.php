@@ -221,7 +221,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
         return [
             'markdown' => new TwigFilter(
                 'markdown',
-                static function (string $value) use ($parser) : string {
+                static function (?string $value) use ($parser) : string {
                     return str_replace(
                         ['<pre>', '<code>'],
                         ['<pre class="prettyprint">', '<code class="prettyprint">'],
