@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Writer\Twig;
 
-use Mockery as m;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\ProjectDescriptor;
@@ -23,15 +21,18 @@ use phpDocumentor\Reflection\Types\Integer;
 use phpDocumentor\Reflection\Types\Nullable;
 use phpDocumentor\Reflection\Types\Object_;
 use phpDocumentor\Transformer\Router\Router;
+use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
+use Prophecy\Prophecy\ObjectProphecy;
 
 /**
  * @coversDefaultClass \phpDocumentor\Transformer\Writer\Twig\LinkRenderer
  * @covers ::__construct
  * @covers ::<private>
  */
-final class LinkRendererTest extends MockeryTestCase
+final class LinkRendererTest extends TestCase
 {
-    /** @var Router */
+    /** @var Router|ObjectProphecy */
     private $router;
 
     /** @var LinkRenderer */
@@ -42,10 +43,10 @@ final class LinkRendererTest extends MockeryTestCase
 
     protected function setUp() : void
     {
-        $this->router = m::mock(Router::class);
+        $this->router = $this->prophesize(Router::class);
         $this->projectDescriptor = new ProjectDescriptor('project');
         $this->projectDescriptor->getIndexes()->set('elements', new Collection());
-        $this->renderer = (new LinkRenderer($this->router))->withProject($this->projectDescriptor);
+        $this->renderer = (new LinkRenderer($this->router->reveal()))->withProject($this->projectDescriptor);
     }
 
     /**
@@ -70,9 +71,7 @@ final class LinkRendererTest extends MockeryTestCase
         $descriptor->setFullyQualifiedStructuralElementName($fqsen);
         $this->projectDescriptor->getIndexes()->get('elements')->set('\My\Namespace\Class', $descriptor);
 
-        $this->router
-            ->shouldReceive('generate')
-            ->andReturn('/classes/My.Namespace.Class.html');
+        $this->router->generate(Argument::any())->willReturn('/classes/My.Namespace.Class.html');
 
         $result = $this->renderer->render($fqsen, LinkRenderer::PRESENTATION_URL);
 
@@ -90,9 +89,7 @@ final class LinkRendererTest extends MockeryTestCase
         $descriptor->setFullyQualifiedStructuralElementName($fqsen);
         $this->projectDescriptor->getIndexes()->get('elements')->set('\My\Namespace\Class', $descriptor);
 
-        $this->router
-            ->shouldReceive('generate')
-            ->andReturn('/classes/My.Namespace.Class.html');
+        $this->router->generate(Argument::any())->willReturn('/classes/My.Namespace.Class.html');
 
         $nullable = new Nullable(new Object_($fqsen));
         $result = $this->renderer->render($nullable, LinkRenderer::PRESENTATION_URL);
@@ -111,9 +108,7 @@ final class LinkRendererTest extends MockeryTestCase
         $descriptor->setFullyQualifiedStructuralElementName($fqsen);
         $this->projectDescriptor->getIndexes()->get('elements')->set('\My\Namespace\Class', $descriptor);
 
-        $this->router
-            ->shouldReceive('generate')
-            ->andReturn('/classes/My.Namespace.Class.html');
+        $this->router->generate(Argument::any())->willReturn('/classes/My.Namespace.Class.html');
 
         $this->renderer->setDestination('/root/of/project');
         $collection = new Collection([$fqsen]);
@@ -127,17 +122,11 @@ final class LinkRendererTest extends MockeryTestCase
      */
     public function testConvertToRootPathWithUrlAndAtSignInRelativePath() : void
     {
-        $this->router->shouldReceive('generate')
-            ->with(
-                m::on(
-                    function (Fqsen $fqsen) {
-                        $this->assertSame((string) $fqsen, '\Class::$property');
+        $this->router->generate(Argument::that(function (Fqsen $fqsen) {
+            $this->assertSame((string) $fqsen, '\Class::$property');
 
-                        return true;
-                    }
-                )
-            )
-            ->andReturn('@Class::$property');
+            return true;
+        }))->willReturn('@Class::$property');
 
         $result = $this->renderer->convertToRootPath('@Class::$property');
 
@@ -150,7 +139,7 @@ final class LinkRendererTest extends MockeryTestCase
      */
     public function testRenderReferenceToType() : void
     {
-        $this->router->shouldReceive('generate')->never();
+        $this->router->generate(Argument::any())->shouldNotBeCalled();
 
         $result = $this->renderer->render([new Integer()], LinkRenderer::PRESENTATION_URL);
 
@@ -167,7 +156,7 @@ final class LinkRendererTest extends MockeryTestCase
         $descriptor->setFullyQualifiedStructuralElementName($fqsen);
         $this->projectDescriptor->getIndexes()->get('elements')->set('\My\Namespace\Class', $descriptor);
 
-        $this->router->shouldReceive('generate')->andReturn('/classes/My.Namespace.Class.html');
+        $this->router->generate(Argument::any())->shouldBeCalled()->willReturn('/classes/My.Namespace.Class.html');
 
         $result = $this->renderer->render($fqsen, LinkRenderer::PRESENTATION_CLASS_SHORT);
 
@@ -199,8 +188,6 @@ final class LinkRendererTest extends MockeryTestCase
      */
     public function testRenderWithUrl(string $url) : void
     {
-        $this->router->shouldReceive('generate')->andReturn($url);
-
         $result = $this->renderer->render($url, LinkRenderer::PRESENTATION_URL);
 
         $this->assertSame($url, $result);

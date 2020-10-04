@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Template;
 
-use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Writer\Collection as WriterCollection;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
+use Prophecy\Prophecy\ObjectProphecy;
 
 /**
  * @coversDefaultClass \phpDocumentor\Transformer\Template\Collection
@@ -30,10 +30,10 @@ final class CollectionTest extends MockeryTestCase
 {
     use Faker;
 
-    /** @var m\MockInterface|WriterCollection */
+    /** @var ObjectProphecy|WriterCollection */
     private $writerCollectionMock;
 
-    /** @var m\MockInterface|Factory */
+    /** @var ObjectProphecy|Factory */
     private $factoryMock;
 
     /** @var Collection */
@@ -44,9 +44,9 @@ final class CollectionTest extends MockeryTestCase
      */
     protected function setUp() : void
     {
-        $this->factoryMock = m::mock(Factory::class);
-        $this->writerCollectionMock = m::mock(WriterCollection::class);
-        $this->fixture = new Collection($this->factoryMock, $this->writerCollectionMock);
+        $this->factoryMock = $this->prophesize(Factory::class);
+        $this->writerCollectionMock = $this->prophesize(WriterCollection::class);
+        $this->fixture = new Collection($this->factoryMock->reveal(), $this->writerCollectionMock->reveal());
     }
 
     /**
@@ -54,25 +54,20 @@ final class CollectionTest extends MockeryTestCase
      */
     public function testIfLoadRetrievesTemplateFromFactoryAndRegistersIt() : void
     {
-        // Arrange
         $templateName = 'default';
         $template = $this->faker()->template($templateName);
         $template['a'] = $this->givenAnEmptyTransformation($template);
 
         $transformer = $this->faker()->transformer();
-        $this->factoryMock->shouldReceive('get')->with($transformer, $templateName)->andReturn($template);
+        $this->factoryMock->get($transformer, $templateName)->shouldBeCalled()->willReturn($template);
 
-        $writer = m::mock(WriterAbstract::class);
-        $writer->shouldReceive('checkRequirements')->andReturnNull();
+        $writer = $this->prophesize(WriterAbstract::class);
+        $writer->checkRequirements()->shouldBeCalled();
 
-        $this->writerCollectionMock
-            ->shouldReceive('offsetGet')->with('')
-            ->andReturn($writer);
+        $this->writerCollectionMock->offsetGet('')->shouldBeCalled()->willReturn($writer->reveal());
 
-        // Act
         $this->fixture->load($transformer, $templateName);
 
-        // Assert
         $this->assertCount(1, $this->fixture);
         $this->assertArrayHasKey($templateName, $this->fixture);
         $this->assertSame($template, $this->fixture[$templateName]);
@@ -83,14 +78,11 @@ final class CollectionTest extends MockeryTestCase
      */
     public function testCollectionProvidesTemplatesPath() : void
     {
-        // Arrange
         $path = '/tmp';
-        $this->factoryMock->shouldReceive('getTemplatesPath')->andReturn($path);
+        $this->factoryMock->getTemplatesPath()->shouldBeCalled()->willReturn($path);
 
-        // Act
         $result = $this->fixture->getTemplatesPath();
 
-        // Assert
         $this->assertSame($path, $result);
     }
 
@@ -99,7 +91,6 @@ final class CollectionTest extends MockeryTestCase
      */
     public function testIfAllTransformationsCanBeRetrieved() : void
     {
-        // Arrange
         $transformation1 = $this->givenAnEmptyTransformation();
         $transformation2 = $this->givenAnEmptyTransformation();
         $transformation3 = $this->givenAnEmptyTransformation();
@@ -109,10 +100,8 @@ final class CollectionTest extends MockeryTestCase
         );
         $this->whenThereIsATemplateWithNameAndTransformations('template2', ['c' => $transformation3]);
 
-        // Act
         $result = $this->fixture->getTransformations();
 
-        // Assert
         $this->assertCount(3, $result);
         $this->assertSame([$transformation1, $transformation2, $transformation3], $result);
     }

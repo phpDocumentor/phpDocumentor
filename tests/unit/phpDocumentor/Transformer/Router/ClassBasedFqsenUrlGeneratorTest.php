@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Router;
 
-use Mockery as m;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Reflection\Fqsen;
+use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 
@@ -26,7 +26,7 @@ use Symfony\Component\String\Slugger\AsciiSlugger;
  * @covers ::__construct
  * @covers ::<private>
  */
-class ClassBasedFqsenUrlGeneratorTest extends MockeryTestCase
+class ClassBasedFqsenUrlGeneratorTest extends TestCase
 {
     /**
      * @covers ::__invoke
@@ -34,16 +34,14 @@ class ClassBasedFqsenUrlGeneratorTest extends MockeryTestCase
      */
     public function testGenerateUrlForFqsenDescriptor(string $fromFqsen, string $toPath) : void
     {
-        // Arrange
-        $urlGenerator = m::mock(UrlGeneratorInterface::class);
-        $urlGenerator->shouldReceive('generate')->andReturn($toPath);
-        $fqsen = new Fqsen($fromFqsen);
-        $fixture = new ClassBasedFqsenUrlGenerator($urlGenerator, new AsciiSlugger());
+        $urlGenerator = $this->prophesize(UrlGeneratorInterface::class);
+        $urlGenerator->generate(Argument::any(), Argument::any())->shouldBeCalled()->willReturn($toPath);
 
-        // Act
+        $fqsen = new Fqsen($fromFqsen);
+        $fixture = new ClassBasedFqsenUrlGenerator($urlGenerator->reveal(), new AsciiSlugger());
+
         $result = $fixture($fqsen);
 
-        // Assert
         $this->assertSame($toPath, $result);
     }
 
