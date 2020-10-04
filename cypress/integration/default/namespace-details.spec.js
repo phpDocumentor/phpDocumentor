@@ -55,8 +55,7 @@ describe('Namespace Detail Page', function() {
             .next().get('.phpdocumentor-element__name').contains("heatOven");
     });
 
-    // TODO: Test shows broken behaviour, fix that
-    it.skip('Has a section "Constants" featuring the "OVEN_TEMPERATURE" constant', function() {
+    it('Has a section "Constants" featuring the "OVEN_TEMPERATURE" constant', function() {
         cy.get('.phpdocumentor-elements__header').contains("Constants")
             .next().get('dt a').contains("OVEN_TEMPERATURE");
     });
