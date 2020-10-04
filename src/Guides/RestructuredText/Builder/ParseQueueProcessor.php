@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\Builder;
 
+use phpDocumentor\Guides\RestructuredText\Configuration;
 use phpDocumentor\Guides\RestructuredText\Environment;
 use phpDocumentor\Guides\RestructuredText\Kernel;
 use phpDocumentor\Guides\RestructuredText\Meta\Metas;
@@ -22,41 +23,44 @@ class ParseQueueProcessor
     /** @var Documents */
     private $documents;
 
-    /** @var string */
-    private $directory;
-
-    /** @var string */
-    private $targetDirectory;
-
-    public function __construct(
-        Kernel $kernel,
-        Metas $metas,
-        Documents $documents,
-        string $directory,
-        string $targetDirectory
-    ) {
-        $this->kernel          = $kernel;
-        $this->metas           = $metas;
-        $this->documents       = $documents;
-        $this->directory       = $directory;
-        $this->targetDirectory = $targetDirectory;
+    public function __construct(Metas $metas, Documents $documents)
+    {
+        $this->metas = $metas;
+        $this->documents = $documents;
     }
 
-    public function process(ParseQueue $parseQueue) : void
+    public function process(Kernel $kernel, ParseQueue $parseQueue, string $currentDirectory) : void
     {
-        foreach ($parseQueue->getAllFilesThatRequireParsing() as $file) {
-            $this->processFile($file);
+        $this->kernel = $kernel;
+        $this->guardThatAnIndexFileExists($currentDirectory, $kernel->getConfiguration());
+
+        foreach ($parseQueue as $file) {
+            $this->processFile($file, $currentDirectory);
         }
     }
 
-    private function processFile(string $file) : void
+    private function guardThatAnIndexFileExists(string $directory, Configuration $configuration): void
     {
-        $fileAbsolutePath = $this->buildFileAbsolutePath($file);
+        $indexName = $configuration->getNameOfIndexFile();
+        $extension = $configuration->getSourceFileExtension();
+        $indexFilename = sprintf('%s.%s', $indexName, $extension);
+        if (!file_exists($directory . '/' . $indexFilename)) {
+            throw new \InvalidArgumentException(sprintf('Could not find index file "%s" in "%s"', $indexFilename, $directory));
+        }
+    }
 
-        $parser = $this->createFileParser($file);
+    private function processFile(string $file, string $currentDirectory) : void
+    {
+        $configuration = $this->kernel->getConfiguration();
 
-        $environment = $parser->getEnvironment();
+        $environment = new Environment($configuration, $this->kernel->getLogger());
+        $environment->setMetas($this->metas);
+        $environment->setCurrentFileName($file);
+        $environment->setCurrentDirectory($currentDirectory);
 
+        $parser = new Parser($this->kernel, $environment);
+
+        $fileAbsolutePath = $this->buildFileAbsolutePath($file, $currentDirectory, $configuration->getSourceFileExtension());
         $document = $parser->parseFile($fileAbsolutePath);
 
         $this->documents->addDocument($file, $document);
@@ -65,7 +69,7 @@ class ParseQueueProcessor
 
         $this->metas->set(
             $file,
-            $this->buildDocumentUrl($document),
+            $this->buildDocumentUrl($document, $configuration->getFileExtension()),
             (string) $document->getTitle(),
             $document->getTitles(),
             $document->getTocs(),
@@ -75,28 +79,13 @@ class ParseQueueProcessor
         );
     }
 
-    private function createFileParser(string $file) : Parser
+    private function buildFileAbsolutePath(string $file, string $currentDirectory, string $extension) : string
     {
-        $parser = new Parser($this->kernel, new Environment($this->kernel->getConfiguration(), $this->kernel->getLogger()));
-
-        $environment = $parser->getEnvironment();
-        $environment->setMetas($this->metas);
-        $environment->setCurrentFileName($file);
-        $environment->setCurrentDirectory($this->directory);
-        $environment->setTargetDirectory($this->targetDirectory);
-
-        return $parser;
+        return $currentDirectory . '/' . $file . '.' . $extension;
     }
 
-    private function buildFileAbsolutePath(string $file) : string
+    private function buildDocumentUrl(DocumentNode $document, string $extension) : string
     {
-        return $this->directory . '/' . $file . '.rst';
-    }
-
-    private function buildDocumentUrl(DocumentNode $document) : string
-    {
-        $fileExtension = $this->kernel->getConfiguration()->getFileExtension();
-
-        return $document->getEnvironment()->getUrl() . '.' . $fileExtension;
+        return $document->getEnvironment()->getUrl() . '.' . $extension;
     }
 }

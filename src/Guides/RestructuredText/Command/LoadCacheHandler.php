@@ -30,6 +30,6 @@ final class LoadCacheHandler
             return;
         }
 
-        $this->cachedMetasLoader->loadCachedMetaEntries($command->getOutputDirectory(), $this->metas);
+        $this->cachedMetasLoader->loadCachedMetaEntries($command->getCacheDirectory(), $this->metas);
     }
 }

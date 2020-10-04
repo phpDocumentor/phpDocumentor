@@ -4,15 +4,9 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText;
 
-use Doctrine\Common\EventArgs;
 use Doctrine\Common\EventManager;
 use phpDocumentor\Guides\RestructuredText\Formats\Format;
-use phpDocumentor\Guides\RestructuredText\NodeFactory\DefaultNodeFactory;
 use phpDocumentor\Guides\RestructuredText\NodeFactory\NodeFactory;
-use phpDocumentor\Guides\RestructuredText\NodeFactory\NodeInstantiator;
-use phpDocumentor\Guides\RestructuredText\Nodes\NodeTypes;
-use phpDocumentor\Guides\RestructuredText\Renderers\NodeRendererFactory;
-use phpDocumentor\Guides\RestructuredText\TemplateRenderer;
 use RuntimeException;
 use Twig\Environment as TwigEnvironment;
 use function sprintf;
@@ -50,6 +44,9 @@ class Configuration
     private $fileExtension = Format::HTML;
 
     /** @var string */
+    private $indexName = 'index';
+
+    /** @var string */
     private $sourceFileExtension = 'rst';
 
     /** @var TemplateRenderer */
@@ -57,9 +54,6 @@ class Configuration
 
     /** @var Format[] */
     private $formats;
-
-    /** @var NodeFactory|null */
-    private $nodeFactory;
 
     /** @var EventManager */
     private $eventManager;
@@ -216,6 +210,11 @@ class Configuration
         }
 
         return $this->formats[$this->fileExtension];
+    }
+
+    public function getNameOfIndexFile() : string
+    {
+        return $this->indexName;
     }
 
     public function getSourceFileExtension() : string

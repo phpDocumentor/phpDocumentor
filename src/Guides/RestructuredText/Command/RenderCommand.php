@@ -4,20 +4,24 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\Command;
 
+use League\Flysystem\FilesystemInterface;
+
 final class RenderCommand
 {
-    private $directory;
+    /** @var FilesystemInterface */
+    private $filesystem;
+
     private $outputDirectory;
 
-    public function __construct(string $directory, string $outputDirectory)
+    public function __construct(FilesystemInterface $filesystem, string $outputDirectory)
     {
-        $this->directory = $directory;
         $this->outputDirectory = $outputDirectory;
+        $this->filesystem = $filesystem;
     }
 
-    public function getDirectory(): string
+    public function getDestination(): FilesystemInterface
     {
-        return $this->directory;
+        return $this->filesystem;
     }
 
     public function getOutputDirectory(): string

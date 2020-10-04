@@ -14,9 +14,9 @@ use function unserialize;
 
 final class CachedMetasLoader
 {
-    public function loadCachedMetaEntries(string $targetDirectory, Metas $metas) : void
+    public function loadCachedMetaEntries(string $cacheDirectory, Metas $metas) : void
     {
-        $metaCachePath = $this->getMetaCachePath($targetDirectory);
+        $metaCachePath = $this->getMetaCachePath($cacheDirectory);
         if (! file_exists($metaCachePath)) {
             return;
         }
@@ -30,9 +30,9 @@ final class CachedMetasLoader
         $metas->setMetaEntries(unserialize($contents));
     }
 
-    public function cacheMetaEntries(string $targetDirectory, Metas $metas) : void
+    public function cacheMetaEntries(string $cacheDirectory, Metas $metas) : void
     {
-        file_put_contents($this->getMetaCachePath($targetDirectory), serialize($metas->getAll()));
+        file_put_contents($this->getMetaCachePath($cacheDirectory), serialize($metas->getAll()));
     }
 
     private function getMetaCachePath(string $targetDirectory) : string

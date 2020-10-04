@@ -51,10 +51,11 @@ class Scanner
 
         $parseQueue = new ParseQueue();
         foreach ($this->fileInfos as $filename => $fileInfo) {
-            $parseQueue->addFile(
-                $filename,
-                $this->doesFileRequireParsing($filename, $extension)
-            );
+            if (!$this->doesFileRequireParsing($filename, $extension)) {
+                continue;
+            }
+
+            $parseQueue->add($filename);
         }
 
         return $parseQueue;

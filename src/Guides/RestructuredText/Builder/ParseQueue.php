@@ -4,52 +4,24 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\Builder;
 
-use InvalidArgumentException;
-use function array_filter;
-use function array_key_exists;
-use function array_keys;
-use function sprintf;
-
-final class ParseQueue
+final class ParseQueue implements \IteratorAggregate
 {
     /**
-     * An array where each key is the filename and the value is a
-     * boolean indicating if the file needs to be parsed or not.
-     *
-     * @var bool[]
+     * @var string[]
      */
-    private $fileStatuses = [];
+    private $files = [];
 
-    public function addFile(string $filename, bool $parseNeeded) : void
+    public function add(string $filename) : void
     {
-        if (isset($this->fileStatuses[$filename])) {
-            throw new InvalidArgumentException(sprintf('File "%s" is already in the parse queue', $filename));
+        if (in_array($filename, $this->files, true)) {
+            return;
         }
 
-        $this->fileStatuses[$filename] = $parseNeeded;
+        $this->files[] = $filename;
     }
 
-    public function isFileKnownToParseQueue(string $filename) : bool
+    public function getIterator()
     {
-        return array_key_exists($filename, $this->fileStatuses);
-    }
-
-    public function doesFileRequireParsing(string $filename) : bool
-    {
-        if (! $this->isFileKnownToParseQueue($filename)) {
-            throw new InvalidArgumentException(sprintf('File "%s" is not known to the parse queue', $filename));
-        }
-
-        return $this->fileStatuses[$filename];
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getAllFilesThatRequireParsing() : array
-    {
-        return array_keys(array_filter($this->fileStatuses, static function (bool $parseNeeded) {
-            return $parseNeeded;
-        }));
+        return new \ArrayIterator($this->files);
     }
 }

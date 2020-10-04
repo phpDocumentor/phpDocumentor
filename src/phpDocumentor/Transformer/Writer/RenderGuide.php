@@ -103,15 +103,10 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
                 );
                 $inputFolder .= $documentationSet->getSource()['paths'][0] ?? '';
 
-                $tempOutputPath = sprintf('%s/output', $cachePath);
-                $environment = $this->environmentFactory->create($project, $transformation, $tempOutputPath);
+                $environment = $this->environmentFactory->create($project, $transformation, $documentationSet->getOutput());
 
                 $kernel = $this->kernelFactory->createKernel($buildContext, $environment);
-                $this->builder->build($kernel, $inputFolder, $tempOutputPath);
-
-                $tempFilesystem = new Filesystem(new Local($tempOutputPath));
-                FlySystemMirror::mirror($tempFilesystem, $output, '', $buildContext->getDestinationPath());
-                // $builder->getErrorManager()->getErrors();
+                $this->builder->build($kernel, $inputFolder, $output, $documentationSet->getOutput());
             }
         }
     }

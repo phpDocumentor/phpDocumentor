@@ -42,9 +42,6 @@ class Environment
     /** @var string */
     private $currentDirectory = '.';
 
-    /** @var string */
-    private $targetDirectory = '.';
-
     /** @var string|null */
     private $url = null;
 
@@ -400,16 +397,6 @@ class Environment
     public function absoluteRelativePath(string $url) : string
     {
         return $this->currentDirectory . '/' . $this->getDirName() . '/' . $this->relativeUrl($url);
-    }
-
-    public function setTargetDirectory(string $directory) : void
-    {
-        $this->targetDirectory = $directory;
-    }
-
-    public function getTargetDirectory() : string
-    {
-        return $this->targetDirectory;
     }
 
     public function getUrl() : string

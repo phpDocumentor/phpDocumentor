@@ -11,12 +11,12 @@ final class PersistCacheCommand
     /** @var Kernel */
     private $kernel;
 
-    private $outputDirectory;
+    private $cacheDirectory;
 
-    public function __construct(Kernel $kernel, string $outputDirectory)
+    public function __construct(Kernel $kernel, string $cacheDirectory)
     {
         $this->kernel = $kernel;
-        $this->outputDirectory = $outputDirectory;
+        $this->cacheDirectory = $cacheDirectory;
     }
 
     public function getKernel(): Kernel
@@ -24,8 +24,8 @@ final class PersistCacheCommand
         return $this->kernel;
     }
 
-    public function getOutputDirectory(): string
+    public function getCacheDirectory(): string
     {
-        return $this->outputDirectory;
+        return $this->cacheDirectory;
     }
 }

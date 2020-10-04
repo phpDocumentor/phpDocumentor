@@ -8,20 +8,21 @@ use phpDocumentor\Guides\RestructuredText\Kernel;
 
 final class LoadCacheCommand
 {
-    private $outputDirectory;
+    /** @var string */
+    private $cacheDirectory;
 
     /** @var Kernel */
     private $kernel;
 
-    public function __construct(Kernel $kernel, string $outputDirectory)
+    public function __construct(Kernel $kernel, string $cacheDirectory)
     {
         $this->kernel = $kernel;
-        $this->outputDirectory = $outputDirectory;
+        $this->cacheDirectory = $cacheDirectory;
     }
 
-    public function getOutputDirectory(): string
+    public function getCacheDirectory(): string
     {
-        return $this->outputDirectory;
+        return $this->cacheDirectory;
     }
 
     public function getKernel(): Kernel
