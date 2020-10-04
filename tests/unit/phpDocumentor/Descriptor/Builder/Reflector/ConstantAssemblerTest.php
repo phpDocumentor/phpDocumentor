@@ -72,4 +72,38 @@ DOCBLOCK
         $this->assertSame($pi, $descriptor->getValue());
         $this->assertSame('public', $descriptor->getVisibility());
     }
+
+    /**
+     * Creates a Descriptor from a provided class.
+     *
+     * @covers ::create
+     */
+    public function testCreateNamespaceConstantDescriptorFromReflector() : void
+    {
+        $pi = '3.14159265359';
+        $name = 'constPI';
+        $namespace = 'Namespace';
+
+        $docBlockDescription = new DocBlock\Description(
+            <<<DOCBLOCK
+            /**
+             * This is a example description
+             */
+DOCBLOCK
+        );
+
+        $docBlockMock = new DocBlock('This is a example description', $docBlockDescription);
+        $constantReflectorMock = new Constant(new Fqsen('\\' . $namespace . '\\' . $name), $docBlockMock, $pi);
+
+        $descriptor = $this->fixture->create($constantReflectorMock);
+
+        $this->assertSame($name, $descriptor->getName());
+        $this->assertSame(
+            '\\' . $namespace . '\\' . $name,
+            (string) $descriptor->getFullyQualifiedStructuralElementName()
+        );
+        $this->assertSame('\\' . $namespace, $descriptor->getNamespace());
+        $this->assertSame($pi, $descriptor->getValue());
+        $this->assertSame('public', $descriptor->getVisibility());
+    }
 }
