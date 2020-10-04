@@ -1,3 +1,5 @@
 <?php
-
-declare(strict_types=1);
+/**
+ * Summary.
+ */
+class ImplementIssue2445 extends Issue2445 {}

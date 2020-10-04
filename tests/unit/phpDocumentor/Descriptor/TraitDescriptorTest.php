@@ -15,12 +15,7 @@ namespace phpDocumentor\Descriptor;
 
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
-use phpDocumentor\Descriptor\Tag\MethodDescriptor as TagMethodDescriptor;
-use phpDocumentor\Descriptor\Tag\PropertyDescriptor as TagPropertyDescriptor;
-use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\Fqsen;
-use phpDocumentor\Reflection\Type;
-use phpDocumentor\Reflection\Types\Mixed_;
 
 /**
  * Tests the functionality for the TraitDescriptor class.
@@ -32,7 +27,6 @@ final class TraitDescriptorTest extends MockeryTestCase
 {
     /** @var TraitDescriptor $fixture */
     private $fixture;
-
     use MagicPropertyContainerTests;
     use MagicMethodContainerTests;
 

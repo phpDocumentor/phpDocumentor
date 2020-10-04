@@ -27,7 +27,7 @@ final class DescriptionAssemblerReducerTest extends TestCase
     public function testCreateSetsDescriptionDescriptor() : void
     {
         $builder = $this->prophesize(ProjectDescriptorBuilder::class);
-        $builder->buildDescriptor(Argument::type(DocBlock\Tag::class))
+        $builder->buildDescriptor(Argument::type(DocBlock\Tag::class), Argument::is(TagDescriptor::class))
             ->willReturn(new TagDescriptor('Tag'));
 
         $inputData = new DocBlock(

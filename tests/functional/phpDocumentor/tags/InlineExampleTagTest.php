@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace functional\phpDocumentor\tags;
 
+use phpDocumentor\FunctionalTestCase;
 
-class InlineExampleTagTest
+final class InlineExampleTagTest extends FunctionalTestCase
 {
-
+    public function
 }

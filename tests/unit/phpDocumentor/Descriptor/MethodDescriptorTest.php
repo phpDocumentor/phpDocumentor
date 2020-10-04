@@ -329,25 +329,4 @@ final class MethodDescriptorTest extends MockeryTestCase
 
         return $result;
     }
-
-    /**
-     * @param string $name The name of the current method.
-     */
-    private function whenFixtureHasMethodInImplementedInterfaceWithSameName(string $name) : MethodDescriptor
-    {
-        $result = new MethodDescriptor();
-        $result->setName($name);
-
-        $parent = new InterfaceDescriptor();
-        $parent->setFullyQualifiedStructuralElementName(new Fqsen('\My\Interface'));
-        $parent->getMethods()->set($name, $result);
-
-        $class = new ClassDescriptor();
-        $class->setFullyQualifiedStructuralElementName(new Fqsen('\My\Class'));
-        $class->getInterfaces()->set('Implemented', $parent);
-
-        $this->fixture->setParent($class);
-
-        return $result;
-    }
 }

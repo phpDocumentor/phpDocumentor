@@ -19,10 +19,6 @@ use phpDocumentor\Descriptor\Builder\AssemblerInterface;
 use phpDocumentor\Descriptor\Filter\Filter;
 use phpDocumentor\Descriptor\Filter\Filterable;
 use phpDocumentor\Descriptor\ProjectDescriptor\WithCustomSettings;
-use phpDocumentor\Reflection\DocBlock\Tag;
-use phpDocumentor\Reflection\Element;
-use phpDocumentor\Reflection\Php\Argument;
-use phpDocumentor\Reflection\Php\File;
 use phpDocumentor\Reflection\Php\Project;
 use RuntimeException;
 use function array_merge;
@@ -81,13 +77,19 @@ class ProjectDescriptorBuilder
     /**
      * Takes the given data and attempts to build a Descriptor from it.
      *
-     * @param Element|File|Tag|Argument $data
+     * @param TInput $data
+     * @param class-string<TDescriptor> $type
+     *
+     * @return TDescriptor|null
      *
      * @throws InvalidArgumentException If no Assembler could be found that matches the given data.
+     *
+     * @template TInput of object
+     * @template TDescriptor of Descriptor
      */
-    public function buildDescriptor(object $data) : ?Descriptor
+    public function buildDescriptor(object $data, string $type) : ?Descriptor
     {
-        $assembler = $this->getAssembler($data);
+        $assembler = $this->getAssembler($data, $type);
         if (!$assembler) {
             throw new InvalidArgumentException(
                 'Unable to build a Descriptor; the provided data did not match any Assembler ' .
@@ -100,23 +102,36 @@ class ProjectDescriptorBuilder
         }
 
         // create Descriptor and populate with the provided data
-        $descriptor = $assembler->create($data);
+        /** @var TDescriptor|null $descriptor */
+        $descriptor = $this->filterDescriptor($assembler->create($data));
 
-        return $this->filterDescriptor($descriptor);
+        return $descriptor;
     }
 
     /**
      * Attempts to find an assembler matching the given data.
      *
-     * @param Element|File|Tag|Argument $data
+     * @param TInput $data
+     * @param class-string<TDescriptor> $type
+     *
+     * @return AssemblerInterface<Descriptor, TInput>|null
+     *
+     * @template TInput as object
+     * @template TDescriptor as Descriptor
      */
-    public function getAssembler(object $data) : ?AssemblerInterface
+    public function getAssembler(object $data, string $type) : ?AssemblerInterface
     {
-        return $this->assemblerFactory->get($data);
+        return $this->assemblerFactory->get($data, $type);
     }
 
     /**
      * Analyzes a Descriptor and alters its state based on its state or even removes the descriptor.
+     *
+     * @param TDescriptor $descriptor
+     *
+     * @return TDescriptor|null
+     *
+     * @template TDescriptor as Filterable
      */
     public function filter(Filterable $descriptor) : ?Filterable
     {
@@ -126,6 +141,12 @@ class ProjectDescriptorBuilder
     /**
      * Filters a descriptor, validates it, stores the validation results and returns the transmuted object or null
      * if it is supposed to be removed.
+     *
+     * @param TDescriptor $descriptor
+     *
+     * @return TDescriptor|null
+     *
+     * @template TDescriptor as Descriptor
      */
     protected function filterDescriptor(Descriptor $descriptor) : ?Descriptor
     {
@@ -134,10 +155,8 @@ class ProjectDescriptorBuilder
         }
 
         // filter the descriptor; this may result in the descriptor being removed!
+        /** @var TDescriptor|null $descriptor */
         $descriptor = $this->filter($descriptor);
-        if (!$descriptor instanceof Descriptor) {
-            return null;
-        }
 
         return $descriptor;
     }
@@ -158,8 +177,8 @@ class ProjectDescriptorBuilder
         $this->getProjectDescriptor()->getSettings()->setCustom($customSettings);
 
         foreach ($project->getFiles() as $file) {
-            $descriptor = $this->buildDescriptor($file);
-            if (!$descriptor instanceof FileDescriptor) {
+            $descriptor = $this->buildDescriptor($file, FileDescriptor::class);
+            if ($descriptor === null) {
                 continue;
             }
 
@@ -169,7 +188,10 @@ class ProjectDescriptorBuilder
         $namespaces = $this->getProjectDescriptor()->getIndexes()->fetch('namespaces', new Collection());
 
         foreach ($project->getNamespaces() as $namespace) {
-            $namespaces->set((string) $namespace->getFqsen(), $this->buildDescriptor($namespace));
+            $namespaces->set(
+                (string) $namespace->getFqsen(),
+                $this->buildDescriptor($namespace, NamespaceDescriptor::class)
+            );
         }
     }
 

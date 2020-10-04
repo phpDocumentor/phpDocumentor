@@ -17,6 +17,10 @@ use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 
 /**
  * Base class for all assemblers.
+ *
+ * @template TDescriptor of \phpDocumentor\Descriptor\Descriptor
+ * @template TInput of object
+ * @implements AssemblerInterface<TDescriptor, TInput>
  */
 abstract class AssemblerAbstract implements AssemblerInterface
 {

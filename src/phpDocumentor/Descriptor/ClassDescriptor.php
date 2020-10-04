@@ -309,7 +309,6 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
             $properties->add($property);
         }
 
-
         if ($this->getParent() instanceof self) {
             $properties = $properties->merge($this->getParent()->getMagicProperties());
         }

@@ -51,9 +51,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
     /** @var Collection<VersionDescriptor> $versions */
     private $versions;
 
-    /**
-     * @var DescriptionDescriptor
-     */
+    /** @var DescriptionDescriptor */
     private $description;
 
     /**

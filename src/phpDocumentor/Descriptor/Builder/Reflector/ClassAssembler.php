@@ -28,6 +28,8 @@ use function substr;
 
 /**
  * Assembles an ClassDescriptor using an ClassReflector.
+ *
+ * @extends AssemblerAbstract<ClassDescriptor, Class_>
  */
 class ClassAssembler extends AssemblerAbstract
 {
@@ -77,8 +79,8 @@ class ClassAssembler extends AssemblerAbstract
     protected function addConstants(array $constants, ClassDescriptor $classDescriptor) : void
     {
         foreach ($constants as $constant) {
-            $constantDescriptor = $this->getBuilder()->buildDescriptor($constant);
-            if (!($constantDescriptor instanceof ConstantDescriptor)) {
+            $constantDescriptor = $this->getBuilder()->buildDescriptor($constant, ConstantDescriptor::class);
+            if ($constantDescriptor === null) {
                 continue;
             }
 
@@ -95,8 +97,8 @@ class ClassAssembler extends AssemblerAbstract
     protected function addProperties(array $properties, ClassDescriptor $classDescriptor) : void
     {
         foreach ($properties as $property) {
-            $propertyDescriptor = $this->getBuilder()->buildDescriptor($property);
-            if (!($propertyDescriptor instanceof PropertyDescriptor)) {
+            $propertyDescriptor = $this->getBuilder()->buildDescriptor($property, PropertyDescriptor::class);
+            if ($propertyDescriptor === null) {
                 continue;
             }
 
@@ -113,8 +115,8 @@ class ClassAssembler extends AssemblerAbstract
     protected function addMethods(array $methods, ClassDescriptor $classDescriptor) : void
     {
         foreach ($methods as $method) {
-            $methodDescriptor = $this->getBuilder()->buildDescriptor($method);
-            if (!($methodDescriptor instanceof MethodDescriptor)) {
+            $methodDescriptor = $this->getBuilder()->buildDescriptor($method, MethodDescriptor::class);
+            if ($methodDescriptor === null) {
                 continue;
             }
 

@@ -26,6 +26,8 @@ use Webmozart\Assert\Assert;
 /**
  * This class collects data from the example tag definition of the Reflection library, tries to find the correlating
  * example file on disk and creates a complete Descriptor from that.
+ *
+ * @extends AssemblerAbstract<ExampleDescriptor, Example>
  */
 class ExampleAssembler extends AssemblerAbstract
 {

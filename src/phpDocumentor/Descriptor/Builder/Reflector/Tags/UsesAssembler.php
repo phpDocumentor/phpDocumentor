@@ -13,10 +13,12 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 
-use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
 use phpDocumentor\Descriptor\Tag\UsesDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tags\Uses;
 
+/**
+ * @extends BaseTagAssembler<UsesDescriptor, Uses>
+ */
 class UsesAssembler extends BaseTagAssembler
 {
     /**

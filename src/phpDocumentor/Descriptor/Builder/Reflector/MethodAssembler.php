@@ -29,6 +29,8 @@ use function substr;
 
 /**
  * Assembles a MethodDescriptor from a MethodReflector.
+ *
+ * @extends AssemblerAbstract<MethodDescriptor, Method>
  */
 class MethodAssembler extends AssemblerAbstract
 {

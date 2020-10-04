@@ -20,6 +20,8 @@ use function substr;
 
 /**
  * Assembles a PropertyDescriptor from a PropertyReflector.
+ *
+ * @extends AssemblerAbstract<PropertyDescriptor, Property>
  */
 class PropertyAssembler extends AssemblerAbstract
 {

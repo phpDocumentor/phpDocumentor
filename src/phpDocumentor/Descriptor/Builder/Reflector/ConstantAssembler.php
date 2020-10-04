@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
-use phpDocumentor\Descriptor\Builder\AssemblerReducer;
-use phpDocumentor\Descriptor\Builder\Reflector\Docblock\DescriptionAssemblerReducer;
 use phpDocumentor\Descriptor\ConstantDescriptor;
 use phpDocumentor\Reflection\Php\Constant;
 use function strlen;
@@ -22,6 +20,8 @@ use function substr;
 
 /**
  * Assembles a ConstantDescriptor from a ConstantReflector.
+ *
+ * @extends AssemblerAbstract<ConstantDescriptor, Constant>
  */
 class ConstantAssembler extends AssemblerAbstract
 {

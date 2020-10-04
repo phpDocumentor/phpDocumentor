@@ -24,6 +24,8 @@ use function substr;
 
 /**
  * Assembles an TraitDescriptor using an TraitReflector.
+ *
+ * @extends AssemblerAbstract<TraitDescriptor, Trait_>
  */
 class TraitAssembler extends AssemblerAbstract
 {
@@ -62,8 +64,8 @@ class TraitAssembler extends AssemblerAbstract
     protected function addProperties(array $properties, TraitDescriptor $traitDescriptor) : void
     {
         foreach ($properties as $property) {
-            $propertyDescriptor = $this->getBuilder()->buildDescriptor($property);
-            if (!($propertyDescriptor instanceof PropertyDescriptor)) {
+            $propertyDescriptor = $this->getBuilder()->buildDescriptor($property, PropertyDescriptor::class);
+            if ($propertyDescriptor === null) {
                 continue;
             }
 
@@ -80,8 +82,8 @@ class TraitAssembler extends AssemblerAbstract
     protected function addMethods(array $methods, TraitDescriptor $traitDescriptor) : void
     {
         foreach ($methods as $method) {
-            $methodDescriptor = $this->getBuilder()->buildDescriptor($method);
-            if (!($methodDescriptor instanceof MethodDescriptor)) {
+            $methodDescriptor = $this->getBuilder()->buildDescriptor($method, MethodDescriptor::class);
+            if ($methodDescriptor === null) {
                 continue;
             }
 

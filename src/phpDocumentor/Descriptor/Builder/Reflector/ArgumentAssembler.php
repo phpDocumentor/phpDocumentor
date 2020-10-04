@@ -13,13 +13,16 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
-use phpDocumentor\Descriptor\Builder\AssemblerAbstract as BaseAssembler;
 use phpDocumentor\Descriptor\ArgumentDescriptor;
+use phpDocumentor\Descriptor\Builder\AssemblerAbstract as BaseAssembler;
 use phpDocumentor\Descriptor\Tag\ParamDescriptor;
 use phpDocumentor\Reflection\Php\Argument;
+use function stripcslashes;
 
 /**
  * Assembles an ArgumentDescriptor using an ArgumentReflector and ParamDescriptors.
+ *
+ * @extends BaseAssembler<ArgumentDescriptor, Argument>
  */
 class ArgumentAssembler extends BaseAssembler
 {

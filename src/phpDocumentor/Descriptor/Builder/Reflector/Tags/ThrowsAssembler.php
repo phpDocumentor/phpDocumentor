@@ -22,6 +22,8 @@ use phpDocumentor\Reflection\DocBlock\Tags\Throws;
  *
  * This object will read the reflected information for the `@throws` tag and create a {@see ThrowsDescriptor} object
  * that can be used in the rest of the application and templates.
+ *
+ * @extends BaseTagAssembler<ThrowsDescriptor, Throws>
  */
 class ThrowsAssembler extends BaseTagAssembler
 {
