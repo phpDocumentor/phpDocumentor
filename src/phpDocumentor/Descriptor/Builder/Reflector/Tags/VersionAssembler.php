@@ -13,22 +13,20 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 
-use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
 use phpDocumentor\Descriptor\Tag\VersionDescriptor;
-use phpDocumentor\Reflection\DocBlock\Tags\Version;
 
 /**
  * Constructs a new descriptor from the Reflector for an `@version` tag.
  *
  * This object will read the reflected information for the `@version` tag and create a {@see VersionDescriptor} object
  * that can be used in the rest of the application and templates.
+ *
+ * @extends BaseTagAssembler<VersionDescriptor, \phpDocumentor\Reflection\DocBlock\Tags\Version>
  */
 class VersionAssembler extends BaseTagAssembler
 {
     /**
      * Creates a new Descriptor from the given Reflector.
-     *
-     * @param Version $data
      */
     public function buildDescriptor(object $data) : VersionDescriptor
     {

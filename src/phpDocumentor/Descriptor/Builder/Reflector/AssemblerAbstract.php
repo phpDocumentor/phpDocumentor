@@ -18,7 +18,7 @@ use phpDocumentor\Descriptor\Builder\AssemblerReducer;
 use phpDocumentor\Descriptor\Builder\Reflector\Docblock\DescriptionAssemblerReducer;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
-use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
+use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\Type;
 use phpDocumentor\Reflection\Types\Compound;
@@ -28,11 +28,14 @@ use function reset;
 use function stripcslashes;
 use function trim;
 
+/**
+ * @template TDescriptor of \phpDocumentor\Descriptor\Descriptor
+ * @template TInput of object
+ * @extends  BaseAssembler<TDescriptor, TInput>
+ */
 abstract class AssemblerAbstract extends BaseAssembler
 {
-    /**
-     * @var AssemblerReducer[]
-     */
+    /** @var AssemblerReducer[] */
     private $reducers;
 
     public function __construct(AssemblerReducer ...$reducers)
@@ -40,6 +43,11 @@ abstract class AssemblerAbstract extends BaseAssembler
         $this->reducers = $reducers;
     }
 
+    /**
+     * @param TInput $data
+     *
+     * @return TDescriptor|null
+     */
     public function create(object $data)
     {
         $descriptor = $this->buildDescriptor($data);
@@ -51,7 +59,15 @@ abstract class AssemblerAbstract extends BaseAssembler
         return $descriptor;
     }
 
-    protected function buildDescriptor(object $data) {}
+    /**
+     * @param TInput $data
+     *
+     * @return TDescriptor|null
+     */
+    protected function buildDescriptor(object $data)
+    {
+        return null;
+    }
 
     /**
      * Assemble DocBlock.
@@ -69,7 +85,7 @@ abstract class AssemblerAbstract extends BaseAssembler
         $target = $reducer->create($docBlock, $target);
 
         foreach ($docBlock->getTags() as $tag) {
-            $tagDescriptor = $this->builder->buildDescriptor($tag);
+            $tagDescriptor = $this->builder->buildDescriptor($tag, TagDescriptor::class);
 
             // allow filtering of tags
             if (!$tagDescriptor) {

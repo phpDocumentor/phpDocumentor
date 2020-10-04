@@ -17,7 +17,7 @@ trait MagicPropertyContainerTests
     public function testGetMagicPropertiesUsingPropertyTags() : void
     {
         $variableName = 'variableName';
-        $description = new DescriptionDescriptor(new Description('description'), []) ;
+        $description = new DescriptionDescriptor(new Description('description'), []);
         $propertyTag = new TagPropertyDescriptor('property', $description);
         $propertyTag->setType(new String_());
         $propertyTag->setVariableName($variableName);
@@ -43,7 +43,7 @@ trait MagicPropertyContainerTests
      */
     public function testGetMagicPropertyWithoutName() : void
     {
-        $description = new DescriptionDescriptor(new Description('description'), []) ;
+        $description = new DescriptionDescriptor(new Description('description'), []);
 
         self::assertEquals(0, $this->fixture->getMagicProperties()->count());
 

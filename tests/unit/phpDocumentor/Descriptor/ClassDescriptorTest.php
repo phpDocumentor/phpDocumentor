@@ -27,7 +27,6 @@ final class ClassDescriptorTest extends MockeryTestCase
 {
     /** @var ClassDescriptor $fixture */
     protected $fixture;
-
     use MagicPropertyContainerTests;
     use MagicMethodContainerTests;
 
@@ -218,7 +217,6 @@ final class ClassDescriptorTest extends MockeryTestCase
 
         $this->assertTrue($this->fixture->isFinal());
     }
-
 
     /**
      * @covers ::getInheritedConstants

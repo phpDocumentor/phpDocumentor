@@ -8,21 +8,23 @@ use phpDocumentor\Descriptor\Builder\AssemblerAbstract;
 use phpDocumentor\Descriptor\Builder\AssemblerReducer;
 use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
-use phpDocumentor\Descriptor\DocBlock\InlineTagDescriptor;
-use phpDocumentor\Reflection\DocBlock;
+use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tag;
-use phpDocumentor\Reflection\DocBlock\Tags\BaseTag;
 
+/**
+ * @template TDescriptor of \phpDocumentor\Descriptor\DescriptorAbstract
+ * @template TInput of object
+ * @extends AssemblerAbstract<TDescriptor, TInput>
+ */
 final class DescriptionAssemblerReducer extends AssemblerAbstract implements AssemblerReducer
 {
     /**
-     * @template T of Descriptor
+     * @param TInput $data
+     * @param TDescriptor $descriptor
      *
-     * @param BaseTag|DocBlock $data
-     * @param T $descriptor
-     * @return T
+     * @return TDescriptor
      */
-    public function create(object $data, Descriptor $descriptor = null) : ?Descriptor
+    public function create(object $data, ?Descriptor $descriptor = null) : ?Descriptor
     {
         if ($descriptor === null) {
             return null;
@@ -40,16 +42,16 @@ final class DescriptionAssemblerReducer extends AssemblerAbstract implements Ass
 
     /**
      * @param Tag[] $tags
-     * @return InlineTagDescriptor[]
+     *
+     * @return TagDescriptor[]
      */
     private function createTags(array $tags) : array
     {
-
         $result = [];
         foreach ($tags as $tag) {
-            $result[] = $this->builder->buildDescriptor($tag);
+            $result[] = $this->builder->buildDescriptor($tag, TagDescriptor::class);
         }
 
-        return array_filter($result);
+        return $result;
     }
 }

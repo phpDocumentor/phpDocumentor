@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
-use phpDocumentor\Descriptor\DocBlock\InlineTagDescriptor;
 use phpDocumentor\Descriptor\Filter\Filterable;
 use phpDocumentor\Reflection\DocBlock\Description;
 

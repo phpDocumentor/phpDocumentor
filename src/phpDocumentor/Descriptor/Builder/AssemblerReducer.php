@@ -15,10 +15,11 @@ use phpDocumentor\Descriptor\Descriptor;
 interface AssemblerReducer
 {
     /**
-     * @template T of Descriptor
-     *
      * @param T|null $descriptor
+     *
      * @return T|null
+     *
+     * @template T of Descriptor
      */
-    public function create(object $data, ?Descriptor $descriptor = null): ?Descriptor;
+    public function create(object $data, ?Descriptor $descriptor = null) : ?Descriptor;
 }

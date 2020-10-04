@@ -24,6 +24,8 @@ use function substr;
 
 /**
  * Assembles an InterfaceDescriptor using an InterfaceReflector.
+ *
+ * @extends AssemblerAbstract<InterfaceDescriptor, Interface_>
  */
 class InterfaceAssembler extends AssemblerAbstract
 {
@@ -64,8 +66,8 @@ class InterfaceAssembler extends AssemblerAbstract
     protected function addConstants(array $constants, InterfaceDescriptor $interfaceDescriptor) : void
     {
         foreach ($constants as $constant) {
-            $constantDescriptor = $this->getBuilder()->buildDescriptor($constant);
-            if (!($constantDescriptor instanceof ConstantDescriptor)) {
+            $constantDescriptor = $this->getBuilder()->buildDescriptor($constant, ConstantDescriptor::class);
+            if ($constantDescriptor === null) {
                 continue;
             }
 
@@ -82,8 +84,8 @@ class InterfaceAssembler extends AssemblerAbstract
     protected function addMethods(array $methods, InterfaceDescriptor $interfaceDescriptor) : void
     {
         foreach ($methods as $method) {
-            $methodDescriptor = $this->getBuilder()->buildDescriptor($method);
-            if (!($methodDescriptor instanceof MethodDescriptor)) {
+            $methodDescriptor = $this->getBuilder()->buildDescriptor($method, MethodDescriptor::class);
+            if ($methodDescriptor === null) {
                 continue;
             }
 

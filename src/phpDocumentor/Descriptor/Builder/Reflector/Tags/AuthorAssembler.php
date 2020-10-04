@@ -13,9 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 
-use phpDocumentor\Descriptor\Builder\AssemblerReducer;
 use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
-use phpDocumentor\Descriptor\Builder\Reflector\Docblock\DescriptionAssemblerReducer;
 use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
 use phpDocumentor\Descriptor\Tag\AuthorDescriptor;
 use phpDocumentor\Reflection\DocBlock\Description;
@@ -26,6 +24,8 @@ use phpDocumentor\Reflection\DocBlock\Tags\Author;
  *
  * This object will read the reflected information for the `@author` tag and create a {@see AuthorDescriptor} object
  * that can be used in the rest of the application and templates.
+ *
+ * @extends AssemblerAbstract<AuthorDescriptor, Author>
  */
 class AuthorAssembler extends AssemblerAbstract
 {
@@ -34,10 +34,10 @@ class AuthorAssembler extends AssemblerAbstract
      *
      * @param Author $data
      */
-    protected function buildDescriptor(object $data): AuthorDescriptor
+    protected function buildDescriptor(object $data) : AuthorDescriptor
     {
         $tag = new AuthorDescriptor($data->getName());
-        $tag->setDescription(new DescriptionDescriptor(new Description((string)$data), []));
+        $tag->setDescription(new DescriptionDescriptor(new Description((string) $data), []));
 
         return $tag;
     }

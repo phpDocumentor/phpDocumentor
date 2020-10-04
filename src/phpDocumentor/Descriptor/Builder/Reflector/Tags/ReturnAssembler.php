@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 
-use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
 use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tags\Return_;
 
@@ -22,6 +21,8 @@ use phpDocumentor\Reflection\DocBlock\Tags\Return_;
  *
  * This object will read the reflected information for the `@return` tag and create a {@see ReturnDescriptor} object
  * that can be used in the rest of the application and templates.
+ *
+ * @extends BaseTagAssembler<ReturnDescriptor, Return_>
  */
 class ReturnAssembler extends BaseTagAssembler
 {

@@ -15,6 +15,7 @@ namespace phpDocumentor\Descriptor;
 
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
+use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
 use phpDocumentor\Descriptor\Interfaces\ChildInterface;
 use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\Fqsen;
@@ -126,7 +127,6 @@ class DescriptorAbstractTest extends MockeryTestCase
         $this->assertSame($summary, $result);
     }
 
-
     /**
      * @covers ::setDescription
      * @covers ::getDescription
@@ -135,7 +135,7 @@ class DescriptorAbstractTest extends MockeryTestCase
     {
         $this->assertNull($this->fixture->getDescription());
 
-        $description = new Description('description');
+        $description = new DescriptionDescriptor(new Description('description'), []);
         $this->fixture->setDescription($description);
 
         $this->assertSame($description, $this->fixture->getDescription());
@@ -144,7 +144,7 @@ class DescriptorAbstractTest extends MockeryTestCase
     public function testWhenDescriptionIsNullParentDescriptionIsInherited() : void
     {
         $parent = new TestSubjectDescriptor();
-        $description = new Description('parent');
+        $description = new DescriptionDescriptor(new Description('parent'), []);
         $parent->setDescription($description);
         $this->fixture->setParent($parent);
 

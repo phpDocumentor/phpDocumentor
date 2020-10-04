@@ -75,6 +75,12 @@ class Filter
 
     /**
      * Filters the given Descriptor and returns the altered object.
+     *
+     * @param TDescriptor $descriptor
+     *
+     * @return TDescriptor|null
+     *
+     * @template TDescriptor as Filterable
      */
     public function filter(Filterable $descriptor) : ?Filterable
     {

@@ -28,6 +28,8 @@ use function trim;
 
 /**
  * Assembles a FunctionDescriptor from a FunctionReflector.
+ *
+ * @extends AssemblerAbstract<FunctionDescriptor, Function_>
  */
 class FunctionAssembler extends AssemblerAbstract
 {

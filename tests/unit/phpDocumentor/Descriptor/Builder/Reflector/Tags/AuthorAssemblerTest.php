@@ -32,6 +32,6 @@ class AuthorAssemblerTest extends TestCase
         $result = $feature->create(new Author('Jaapio', 'jaap@phpdoc.org'));
 
         self::assertInstanceOf(AuthorDescriptor::class, $result);
-        self::assertEquals('Jaapio <jaap@phpdoc.org>', (string)$result->getDescription());
+        self::assertEquals('Jaapio <jaap@phpdoc.org>', (string) $result->getDescription());
     }
 }

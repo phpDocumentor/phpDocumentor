@@ -14,7 +14,6 @@ use PHPUnit\Framework\TestCase;
  */
 final class DescriptionDescriptorTest extends TestCase
 {
-
     /**
      * @covers ::__construct
      * @covers ::getBodyTemplate
@@ -43,18 +42,17 @@ final class DescriptionDescriptorTest extends TestCase
 
         $descriptor = new DescriptionDescriptor(
             $description,
-            [
-                new TagDescriptor(
-                    'internal',
-                    new DescriptionDescriptor(
-                        new Description('Some text'),
-                        []
-                    )
+            [new TagDescriptor(
+                'internal',
+                new DescriptionDescriptor(
+                    new Description('Some text'),
+                    []
                 )
+            ),
             ]
         );
 
-        self::assertSame((string)$description, (string)$descriptor);
+        self::assertSame((string) $description, (string) $descriptor);
     }
 
     /**
@@ -70,14 +68,13 @@ final class DescriptionDescriptorTest extends TestCase
 
         $descriptor = new DescriptionDescriptor(
             $description,
-            [
-                new TagDescriptor(
-                    'internal',
-                    new DescriptionDescriptor(
-                        new Description('Some text'),
-                        []
-                    )
+            [new TagDescriptor(
+                'internal',
+                new DescriptionDescriptor(
+                    new Description('Some text'),
+                    []
                 )
+            ),
             ]
         );
 
@@ -86,7 +83,7 @@ final class DescriptionDescriptorTest extends TestCase
             $tagDescriptorReplacement
         );
 
-        self::assertSame($expected, (string)$descriptor);
+        self::assertSame($expected, (string) $descriptor);
     }
 
     public function replacementProvider() : array
@@ -100,12 +97,12 @@ final class DescriptionDescriptorTest extends TestCase
                         []
                     )
                 ),
-                'my template {@internal Replaced}'
+                'my template {@internal Replaced}',
             ],
             'replace with null' => [
                 null,
-                'my template '
-            ]
+                'my template ',
+            ],
         ];
     }
 }

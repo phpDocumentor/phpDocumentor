@@ -33,6 +33,8 @@ use function count;
 
 /**
  * Assembles an FileDescriptor using an FileReflector and ParamDescriptors.
+ *
+ * @extends AssemblerAbstract<FileDescriptor, File>
  */
 class FileAssembler extends AssemblerAbstract
 {
@@ -78,8 +80,8 @@ class FileAssembler extends AssemblerAbstract
     protected function addConstants(array $constants, FileDescriptor $fileDescriptor) : void
     {
         foreach ($constants as $constant) {
-            $constantDescriptor = $this->getBuilder()->buildDescriptor($constant);
-            if (!$constantDescriptor instanceof ConstantDescriptor) {
+            $constantDescriptor = $this->getBuilder()->buildDescriptor($constant, ConstantDescriptor::class);
+            if ($constantDescriptor === null) {
                 continue;
             }
 
@@ -104,8 +106,8 @@ class FileAssembler extends AssemblerAbstract
     protected function addFunctions(array $functions, FileDescriptor $fileDescriptor) : void
     {
         foreach ($functions as $function) {
-            $functionDescriptor = $this->getBuilder()->buildDescriptor($function);
-            if (!$functionDescriptor instanceof FunctionDescriptor) {
+            $functionDescriptor = $this->getBuilder()->buildDescriptor($function, FunctionDescriptor::class);
+            if ($functionDescriptor === null) {
                 continue;
             }
 
@@ -130,8 +132,8 @@ class FileAssembler extends AssemblerAbstract
     protected function addClasses(array $classes, FileDescriptor $fileDescriptor) : void
     {
         foreach ($classes as $class) {
-            $classDescriptor = $this->getBuilder()->buildDescriptor($class);
-            if (!$classDescriptor instanceof ClassDescriptor) {
+            $classDescriptor = $this->getBuilder()->buildDescriptor($class, ClassDescriptor::class);
+            if ($classDescriptor === null) {
                 continue;
             }
 
@@ -158,8 +160,8 @@ class FileAssembler extends AssemblerAbstract
     protected function addInterfaces(array $interfaces, FileDescriptor $fileDescriptor) : void
     {
         foreach ($interfaces as $interface) {
-            $interfaceDescriptor = $this->getBuilder()->buildDescriptor($interface);
-            if (!$interfaceDescriptor instanceof InterfaceDescriptor) {
+            $interfaceDescriptor = $this->getBuilder()->buildDescriptor($interface, InterfaceDescriptor::class);
+            if ($interfaceDescriptor === null) {
                 continue;
             }
 
@@ -184,8 +186,8 @@ class FileAssembler extends AssemblerAbstract
     protected function addTraits(array $traits, FileDescriptor $fileDescriptor) : void
     {
         foreach ($traits as $trait) {
-            $traitDescriptor = $this->getBuilder()->buildDescriptor($trait);
-            if (!$traitDescriptor instanceof TraitDescriptor) {
+            $traitDescriptor = $this->getBuilder()->buildDescriptor($trait, TraitDescriptor::class);
+            if ($traitDescriptor === null) {
                 continue;
             }
 

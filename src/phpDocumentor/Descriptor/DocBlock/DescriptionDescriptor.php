@@ -6,21 +6,19 @@ namespace phpDocumentor\Descriptor\DocBlock;
 
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Reflection\DocBlock\Description;
+use function trim;
+use function vsprintf;
 
 final class DescriptionDescriptor
 {
-    /**
-     * @var Description
-     */
+    /** @var Description */
     private $description;
 
-    /**
-     * @var TagDescriptor[]
-     */
+    /** @var array<int, TagDescriptor|null> */
     private $inlineTags;
 
     /**
-     * @param TagDescriptor[] $inlineTags
+     * @param array<int, TagDescriptor|null> $inlineTags
      */
     public function __construct(?Description $description, array $inlineTags)
     {
@@ -41,7 +39,7 @@ final class DescriptionDescriptor
     /**
      * Returns the tags for this description
      *
-     * @return TagDescriptor[]
+     * @return array<int, TagDescriptor|null>
      */
     public function getTags() : array
     {

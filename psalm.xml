@@ -97,6 +97,8 @@
                 <referencedFunction name="current"/>
                 <!-- psalm bug -->
                 <referencedFunction name="phpDocumentor\Descriptor\Collection::offsetSet" />
+                <referencedFunction name="phpDocumentor\Descriptor\Builder\AssemblerFactory::register" />
+                <referencedFunction name="phpDocumentor\Descriptor\Builder\AssemblerFactory::registerFallback" />
             </errorLevel>
         </InvalidArgument>
 

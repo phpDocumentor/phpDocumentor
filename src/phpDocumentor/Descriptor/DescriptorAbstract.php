@@ -16,10 +16,7 @@ namespace phpDocumentor\Descriptor;
 use phpDocumentor\Descriptor\Filter\Filterable;
 use phpDocumentor\Descriptor\Tag\AuthorDescriptor;
 use phpDocumentor\Descriptor\Validation\Error;
-use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\Fqsen;
-use function str_ireplace;
-use function stripos;
 use function strpos;
 use function strtolower;
 use function substr;
@@ -162,8 +159,9 @@ abstract class DescriptorAbstract implements Filterable
     /**
      * Sets a description for this element.
      *
-     * @param ?DocBlock\DescriptionDescriptor $description
      * @internal should not be called by any other class than the assamblers
+     *
+     * @param ?DocBlock\DescriptionDescriptor $description
      */
     public function setDescription(?DocBlock\DescriptionDescriptor $description) : void
     {

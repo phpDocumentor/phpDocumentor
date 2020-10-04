@@ -26,10 +26,6 @@ use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\Tag\ExampleDescriptor;
 use phpDocumentor\Descriptor\Tag\LinkDescriptor;
 use phpDocumentor\Descriptor\Tag\SeeDescriptor;
-use phpDocumentor\Reflection\DocBlock\Description;
-use phpDocumentor\Reflection\DocBlock\Tags\Example;
-use phpDocumentor\Reflection\DocBlock\Tags\See;
-use phpDocumentor\Reflection\DocBlock\Tags\Link;
 use Twig\Extension\AbstractExtension;
 use Twig\Extension\GlobalsInterface;
 use Twig\TwigFilter;
@@ -37,9 +33,11 @@ use Twig\TwigFunction;
 use function array_unshift;
 use function count;
 use function method_exists;
+use function sprintf;
 use function str_replace;
 use function strtolower;
 use function var_export;
+use function vsprintf;
 
 /**
  * Basic extension adding phpDocumentor specific functionality for Twig
@@ -316,7 +314,6 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             'description' => new TwigFilter(
                 'description',
                 static function (?DescriptionDescriptor $description) use ($routeRenderer) {
-
                     if ($description === null || $description->getBodyTemplate() === '') {
                         return '';
                     }
@@ -324,12 +321,15 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
                     $tagStrings = [];
                     foreach ($description->getTags() as $tag) {
                         if ($tag instanceof SeeDescriptor) {
-                            $tagStrings[] = $routeRenderer->render($tag->getReference(),
-                                LinkRenderer::PRESENTATION_CLASS_SHORT);
+                            $tagStrings[] = $routeRenderer->render(
+                                $tag->getReference(),
+                                LinkRenderer::PRESENTATION_CLASS_SHORT
+                            );
                         } elseif ($tag instanceof LinkDescriptor) {
                             $tagStrings[] = sprintf('[%s](%s)', $tag->getDescription(), $tag->getLink());
                         } elseif ($tag instanceof ExampleDescriptor) {
-                            $tagStrings[] = $tag->getDescription() . "\n" . '```php' . "\n" . $tag->getExample() . "\n" . '```';
+                            $tagStrings[] = $tag->getDescription() . "\n"
+                                . '```php' . "\n" . $tag->getExample() . "\n" . '```';
                         } else {
                             $tagStrings[] = (string) $tag;
                         }
@@ -337,7 +337,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
 
                     return vsprintf($description->getBodyTemplate(), $tagStrings);
                 }
-            )
+            ),
         ];
     }
 }

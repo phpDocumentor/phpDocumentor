@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Filter;
 
-use _HumbugBox7eb78fbcc73e\phpDocumentor\Reflection\DocBlock\Description;
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\ClassDescriptor;
@@ -57,7 +56,7 @@ final class StripInternalTest extends MockeryTestCase
             new DocBlockDescription('irelavant'),
             [
                 new TagDescriptor('internal'),
-                $otherTag
+                $otherTag,
             ]
         );
 
