@@ -71,8 +71,8 @@ class DsnTest extends TestCase
     public function testPathNotStartingWithSlash() : void
     {
         $dns = Dsn::createFromString('file://test');
-        $dns = $dns->withPath(new Path("PathWithoutSlash"));
-        $this->assertEquals(new Path("/PathWithoutSlash"), $dns->getPath(), 'Path does not match');
+        $dns = $dns->withPath(new Path('PathWithoutSlash'));
+        $this->assertEquals(new Path('/PathWithoutSlash'), $dns->getPath(), 'Path does not match');
     }
 
     public function provideDsnsToTestAgainst() : array
