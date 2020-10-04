@@ -36,6 +36,26 @@ describe('Class Detail Page', function() {
             .contains("This class provides an interface through which you can order pizza's and pasta's from Mario's Pizzeria.");
     });
 
+    it('Has a tags', function () {
+        cy.get('.phpdocumentor-tag-list__heading')
+            .contains("Tags")
+    })
+
+    describe ('Shows class tags', function () {
+        it('Shows link without description', function() {
+            cy.get('.phpdocumentor-element.-class  > .phpdocumentor-tag-list >.phpdocumentor-tag-list__definition > a')
+                .contains('https://wwww.phpdoc.org')
+                .should('have.attr', 'href', 'https://wwww.phpdoc.org')
+        });
+
+        it('Shows link with description', function() {
+            cy.get('.phpdocumentor-element.-class  > .phpdocumentor-tag-list >.phpdocumentor-tag-list__definition > a')
+                .contains('docs')
+                .parent()
+                .should('have.attr', 'href', 'https://docs.phpdoc.org')
+        });
+    });
+
     it('Shows a single implemented interface; which is not clickable because it is external', function() {
         cy.get('.phpdocumentor-element__implements').contains("JsonSerializable");
         cy.get('.phpdocumentor-element__implements abbr')

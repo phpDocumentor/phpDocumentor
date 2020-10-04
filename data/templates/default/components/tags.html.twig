@@ -22,9 +22,12 @@
                         <span class="phpdocumentor-tag-link">{{ tag.reference|route('class:short')|join('|')|raw }}</span>
                     {% endif %}
                     {% if tag.link %}
-                        <a class="phpdocumentor-tag-link" href="{{ tag.link }}">{% if tag.description %} {{ tag.descripion | description | markdown }} {% else %} {{ tag.link }} {%  endif %}</a>
+                        <a class="phpdocumentor-tag-link" href="{{ tag.link }}">{% if tag.description is not empty %} {{ tag.description | description | markdown }} {% else %} {{ tag.link }} {%  endif %}</a>
                     {% endif %}
-                    {{ include('components/description.html.twig', {'node': tag}) }}
+
+                    {% if not tag.link %}
+                         {{ include('components/description.html.twig', {'node': tag}) }}
+                    {% endif %}
                 </dd>
             {% endfor %}
         {% endfor %}

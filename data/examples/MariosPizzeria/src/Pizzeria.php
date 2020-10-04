@@ -14,7 +14,7 @@ namespace Marios;
  * - And real (italian) pizzas
  *
  * @link https://wwww.phpdoc.org
- * @link https://docs.phpdoc.org
+ * @link https://docs.phpdoc.org docs
  *
  * @since 3.0
  * @since 3.1 Does extra stuff
