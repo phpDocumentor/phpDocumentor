@@ -6,7 +6,6 @@ namespace phpDocumentor\Guides\RestructuredText\Command;
 
 use phpDocumentor\Guides\RestructuredText\Builder\ParseQueueProcessor;
 use phpDocumentor\Guides\RestructuredText\Builder\Scanner;
-use phpDocumentor\Guides\RestructuredText\Configuration;
 
 final class ParseDirectoryHandler
 {
@@ -27,11 +26,12 @@ final class ParseDirectoryHandler
         $kernel = $command->getKernel();
 
         $extension = $kernel->getConfiguration()->getSourceFileExtension();
-        $parseQueue = $this->scanner->scan($command->getDirectory(), $extension);
+        $parseQueue = $this->scanner->scan($command->getOrigin(), $command->getDirectory(), $extension);
 
         $this->parseQueueProcessor->process(
             $kernel,
             $parseQueue,
+            $command->getOrigin(),
             $command->getDirectory()
         );
     }

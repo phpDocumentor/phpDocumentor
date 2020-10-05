@@ -60,7 +60,7 @@ class DocumentNodeRenderer implements NodeRenderer, FullDocumentNodeRenderer
             'path' => $urlPrefix . '/' . $index->getUrl(),
             'items' => []
         ];
-        foreach ($index->getTocs()[0] as $url) {
+        foreach ($index->getTocs()[0] ?? [] as $url) {
             $meta = $metas->get($url);
             $menu['items'][] = [
                 'label' => $meta->getTitle(),

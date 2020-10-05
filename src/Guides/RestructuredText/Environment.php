@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText;
 
+use League\Flysystem\FilesystemInterface;
 use phpDocumentor\Guides\RestructuredText\Meta\MetaEntry;
 use phpDocumentor\Guides\RestructuredText\Meta\Metas;
 use phpDocumentor\Guides\RestructuredText\NodeFactory\NodeFactory;
@@ -38,6 +39,9 @@ class Environment
 
     /** @var string */
     private $currentFileName = '';
+
+    /** @var FilesystemInterface */
+    private $origin;
 
     /** @var string */
     private $currentDirectory = '.';
@@ -84,9 +88,10 @@ class Environment
     /** @var NodeFactory|null */
     private $nodeFactory;
 
-    public function __construct(Configuration $configuration, LoggerInterface $logger)
+    public function __construct(Configuration $configuration, LoggerInterface $logger, FilesystemInterface $origin)
     {
         $this->configuration = $configuration;
+        $this->origin = $origin;
         $this->logger = $logger;
         $this->urlGenerator  = new UrlGenerator($this->configuration);
         $this->metas         = new Metas();
@@ -382,6 +387,11 @@ class Environment
     public function getCurrentFileName() : string
     {
         return $this->currentFileName;
+    }
+
+    public function getOrigin(): FilesystemInterface
+    {
+        return $this->origin;
     }
 
     public function setCurrentDirectory(string $directory) : void

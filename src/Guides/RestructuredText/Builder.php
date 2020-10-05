@@ -21,13 +21,18 @@ class Builder
         $this->commandBus = $commandBus;
     }
 
-    public function build(Kernel $kernel, string $directory, FilesystemInterface $filesystem, string $targetDirectory = 'output') : void
-    {
+    public function build(
+        Kernel $kernel,
+        FilesystemInterface $origin,
+        string $directory,
+        FilesystemInterface $destination,
+        string $targetDirectory = 'output'
+    ) : void {
         $cacheDir = $kernel->getConfiguration()->getCacheDir();
 
         $this->commandBus->handle(new LoadCacheCommand($kernel, $cacheDir));
-        $this->commandBus->handle(new ParseDirectoryCommand($kernel, $directory));
-        $this->commandBus->handle(new RenderCommand($filesystem, $targetDirectory));
+        $this->commandBus->handle(new ParseDirectoryCommand($kernel, $origin, $directory));
+        $this->commandBus->handle(new RenderCommand($destination, $targetDirectory));
         $this->commandBus->handle(new PersistCacheCommand($kernel, $cacheDir));
     }
 }

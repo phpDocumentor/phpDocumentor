@@ -42,52 +42,20 @@ class FileIncluder
             function ($match) {
                 $path = $this->environment->absoluteRelativePath($match[1]);
 
-                if (! file_exists($path)) {
+                $origin = $this->environment->getOrigin();
+                if (!$origin->has($path)) {
                     throw new RuntimeException(sprintf('Include "%s" does not exist or is not readable.', $match[0]));
                 }
 
-                if ($this->isFileIncludeAllowed($path)) {
-                    $contents = file_get_contents($path);
+                $contents = $origin->read($path);
 
-                    if ($contents === false) {
-                        throw new RuntimeException(sprintf('Could not load file from path %s', $path));
-                    }
-
-                    return $this->includeFiles($contents);
+                if ($contents === false) {
+                    throw new RuntimeException(sprintf('Could not load file from path %s', $path));
                 }
 
-                return '';
+                return $this->includeFiles($contents);
             },
             $document
         );
-    }
-
-    private function isFileIncludeAllowed(string $path) : bool
-    {
-        if (! $this->includeAllowed) {
-            return false;
-        }
-
-        if (! @is_readable($path)) {
-            return false;
-        }
-
-        if ($this->includeRoot === '') {
-            return true;
-        }
-
-        $real = realpath($path);
-
-        if ($real === false) {
-            return false;
-        }
-
-        foreach (explode(':', $this->includeRoot) as $root) {
-            if (strpos($real, $root) === 0) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }

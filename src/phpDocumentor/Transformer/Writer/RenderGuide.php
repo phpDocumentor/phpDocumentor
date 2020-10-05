@@ -15,6 +15,7 @@ namespace phpDocumentor\Transformer\Writer;
 
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\VersionDescriptor;
 use phpDocumentor\Dsn;
@@ -27,6 +28,7 @@ use phpDocumentor\Parser\FlySystemMirror;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Stopwatch\Stopwatch;
 use function rtrim;
 use function sprintf;
 
@@ -89,6 +91,10 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
         /** @var VersionDescriptor $version */
         foreach ($project->getVersions() as $version) {
             foreach ($version->getDocumentationSets() as $documentationSet) {
+                $stopwatch = new Stopwatch(true);
+                $stopwatch->start('guide');
+                $dsn = $documentationSet->getSource()['dsn'];
+                $this->logger->info('Rendering guide ' . $dsn);
                 $buildContext = new BuildContext(
                     $output,
                     $documentationSet->getOutput(),
@@ -97,33 +103,25 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
                     $project->getSettings()->getCustom()[self::SETTING_CACHE]
                 );
 
-                $inputFolder = rtrim(
-                    $this->determineInputFolder($documentationSet->getSource()['dsn'], $cachePath),
-                    '/'
-                );
-                $inputFolder .= $documentationSet->getSource()['paths'][0] ?? '';
+                $input = $this->flySystemFactory->create($dsn);
+                $inputFolder = $documentationSet->getSource()['paths'][0] ?? '';
 
                 $environment = $this->environmentFactory->create($project, $transformation, $documentationSet->getOutput());
 
                 $kernel = $this->kernelFactory->createKernel($buildContext, $environment);
-                $this->builder->build($kernel, $inputFolder, $output, $documentationSet->getOutput());
+                $this->builder->build($kernel, $input, $inputFolder, $output, $documentationSet->getOutput());
+
+                $stopwatchEvent = $stopwatch->stop('guide');
+                $this->logger->info(
+                    sprintf(
+                        'Completed rendering guide %s in %.2fms using %.2f mb memory',
+                        (string) $dsn,
+                        $stopwatchEvent->getDuration(),
+                        $stopwatchEvent->getMemory() / 1024 / 1024
+                    )
+                );
             }
         }
-    }
-
-    private function determineInputFolder(Dsn $dsn, string $cachePath) : string
-    {
-        if ($dsn->getScheme() === null) {
-            return (string) $dsn->getPath();
-        }
-
-        $input = $this->flySystemFactory->create($dsn);
-        $inputFolder = sprintf('%s/input', $cachePath);
-
-        $inputFilesystem = new Filesystem(new Local($inputFolder));
-        FlySystemMirror::mirror($input, $inputFilesystem);
-
-        return $inputFolder;
     }
 
     public function getDefaultSettings() : array

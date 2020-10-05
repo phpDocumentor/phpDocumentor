@@ -7,7 +7,7 @@ namespace phpDocumentor\Guides\RestructuredText;
 use Twig\Environment;
 use function rtrim;
 
-class TemplateRenderer
+final class TemplateRenderer
 {
     /** @var Environment */
     private $environment;

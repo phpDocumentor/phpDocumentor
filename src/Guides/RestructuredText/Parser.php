@@ -4,19 +4,15 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText;
 
+use InvalidArgumentException;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive;
 use phpDocumentor\Guides\RestructuredText\NodeFactory\DefaultNodeFactory;
 use phpDocumentor\Guides\RestructuredText\NodeFactory\NodeFactory;
 use phpDocumentor\Guides\RestructuredText\NodeFactory\NodeInstantiator;
 use phpDocumentor\Guides\RestructuredText\Nodes\DocumentNode;
-use phpDocumentor\Guides\RestructuredText\Nodes\NodeTypes;
 use phpDocumentor\Guides\RestructuredText\Nodes\SpanNode;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
-use InvalidArgumentException;
-use phpDocumentor\Guides\RestructuredText\Renderers\NodeRendererFactory;
 use RuntimeException;
-use function file_exists;
-use function file_get_contents;
 use function sprintf;
 
 class Parser implements \phpDocumentor\Guides\Parser
@@ -46,7 +42,7 @@ class Parser implements \phpDocumentor\Guides\Parser
     private $nodeFactory;
 
     /** @var array */
-    private $nodeRegistry;
+    private $nodeRegistry = [];
 
     public function __construct(Kernel $kernel, Environment $environment)
     {
@@ -174,13 +170,14 @@ class Parser implements \phpDocumentor\Guides\Parser
 
     public function parseFile(string $file) : DocumentNode
     {
-        if (! file_exists($file)) {
+        $origin = $this->environment->getOrigin();
+        if (! $origin->has($file)) {
             throw new InvalidArgumentException(sprintf('File at path %s does not exist', $file));
         }
 
         $this->filename = $file;
 
-        $contents = file_get_contents($file);
+        $contents = $origin->read($file);
 
         if ($contents === false) {
             throw new InvalidArgumentException(sprintf('Could not load file from path %s', $file));

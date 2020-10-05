@@ -44,18 +44,26 @@ class Kernel
     ) {
         $this->configuration = $configuration;
 
-        $this->directives = array_merge([
-            new Directives\Dummy(),
-            new Directives\CodeBlock(),
-            new Directives\Raw(),
-            new Directives\Replace(),
-            new Directives\Toctree(),
-        ], $this->configuration->getFormat()->getDirectives(), iterator_to_array($directives));
+        $this->directives = array_merge(
+            [
+                new Directives\Dummy(),
+                new Directives\CodeBlock(),
+                new Directives\Raw(),
+                new Directives\Replace(),
+                new Directives\Toctree(),
+            ],
+            $this->configuration->getFormat()->getDirectives(),
+            iterator_to_array($directives)
+        );
 
-        $this->references = array_merge([
-            new References\Doc(),
-            new References\Doc('ref', true),
-        ], $this->createReferences(), iterator_to_array($references));
+        $this->references = array_merge(
+            [
+                new References\Doc(),
+                new References\Doc('ref', true),
+            ],
+            $this->createReferences(),
+            iterator_to_array($references)
+        );
 
         $this->buildContext = $buildContext;
         $this->logger = $logger;
