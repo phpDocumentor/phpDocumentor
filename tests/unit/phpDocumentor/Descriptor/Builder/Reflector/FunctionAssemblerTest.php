@@ -13,17 +13,17 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\ArgumentDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Php\Argument;
 use phpDocumentor\Reflection\Php\Function_;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument as ProphecyArgument;
 use Prophecy\Prophecy\ObjectProphecy;
 
-class FunctionAssemblerTest extends MockeryTestCase
+class FunctionAssemblerTest extends TestCase
 {
     /** @var FunctionAssembler $fixture */
     protected $fixture;
