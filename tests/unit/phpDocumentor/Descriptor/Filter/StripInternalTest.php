@@ -13,24 +13,30 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Filter;
 
-use Mockery as m;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\ClassDescriptor;
+use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
+use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Reflection\DocBlock\Description as DocBlockDescription;
+use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
+use Prophecy\Prophecy\ObjectProphecy;
 
 /**
  * Tests the functionality for the StripInternal class.
  *
  * @coversDefaultClass \phpDocumentor\Descriptor\Filter\StripInternal
  */
-final class StripInternalTest extends MockeryTestCase
+final class StripInternalTest extends TestCase
 {
-    /** @var ProjectDescriptorBuilder|m\Mock */
+    /** @var ProjectDescriptorBuilder|ObjectProphecy */
     private $builderMock;
+
+    /** @var ProjectDescriptor|ObjectProphecy */
+    private $projectDescriptor;
 
     /** @var StripInternal $fixture */
     private $fixture;
@@ -40,8 +46,10 @@ final class StripInternalTest extends MockeryTestCase
      */
     protected function setUp() : void
     {
-        $this->builderMock = m::mock(ProjectDescriptorBuilder::class);
-        $this->fixture = new StripInternal($this->builderMock);
+        $this->projectDescriptor = $this->prophesize(ProjectDescriptor::class);
+        $this->builderMock = $this->prophesize(ProjectDescriptorBuilder::class);
+        $this->builderMock->getProjectDescriptor()->shouldBeCalled()->willReturn($this->projectDescriptor->reveal());
+        $this->fixture = new StripInternal($this->builderMock->reveal());
     }
 
     /**
@@ -60,7 +68,10 @@ final class StripInternalTest extends MockeryTestCase
             ]
         );
 
-        $this->builderMock->shouldReceive('getProjectDescriptor->isVisibilityAllowed')->andReturn(false);
+        $this->projectDescriptor->isVisibilityAllowed(Argument::any())
+            ->shouldBeCalled()
+            ->willReturn(false);
+
         $descriptor = new ClassDescriptor();
         $descriptor->setDescription($description);
         $this->assertSame([null, $otherTag], $this->fixture->__invoke($descriptor)->getDescription()->getTags());
@@ -83,7 +94,10 @@ final class StripInternalTest extends MockeryTestCase
             $tags
         );
 
-        $this->builderMock->shouldReceive('getProjectDescriptor->isVisibilityAllowed')->andReturn(true);
+        $this->projectDescriptor->isVisibilityAllowed(Argument::any())
+            ->shouldBeCalled()
+            ->willReturn(true);
+
         $descriptor = new ClassDescriptor();
         $descriptor->setDescription($description);
         $this->assertSame($tags, $this->fixture->__invoke($descriptor)->getDescription()->getTags());
@@ -94,14 +108,18 @@ final class StripInternalTest extends MockeryTestCase
      */
     public function testRemovesDescriptorIfTaggedAsInternal() : void
     {
-        $this->builderMock->shouldReceive('getProjectDescriptor->isVisibilityAllowed')->andReturn(false);
+        $this->projectDescriptor->isVisibilityAllowed(Argument::any())
+            ->shouldBeCalled()
+            ->willReturn(false);
 
-        $descriptor = m::mock(DescriptorAbstract::class);
-        $descriptor->shouldReceive('getDescription');
-        $descriptor->shouldReceive('setDescription');
-        $descriptor->shouldReceive('getTags->fetch')->with('internal')->andReturn(true);
+        $collection = $this->prophesize(Collection::class);
+        $collection->fetch('internal')->shouldBeCalled()->willReturn(true);
 
-        $this->assertNull($this->fixture->__invoke($descriptor));
+        $descriptor = $this->prophesize(DescriptorAbstract::class);
+        $descriptor->getDescription()->shouldBeCalled()->willReturn();
+        $descriptor->getTags()->shouldBeCalled()->willReturn($collection->reveal());
+
+        $this->assertNull($this->fixture->__invoke($descriptor->reveal()));
     }
 
     /**
@@ -109,14 +127,13 @@ final class StripInternalTest extends MockeryTestCase
      */
     public function testKeepsDescriptorIfTaggedAsInternalAndParsePrivateIsTrue() : void
     {
-        $this->builderMock->shouldReceive('getProjectDescriptor->isVisibilityAllowed')->andReturn(true);
+        $this->projectDescriptor->isVisibilityAllowed(Argument::any())
+            ->shouldBeCalled()
+            ->willReturn(true);
 
-        $descriptor = m::mock(DescriptorAbstract::class);
-        $descriptor->shouldReceive('getDescription');
-        $descriptor->shouldReceive('setDescription');
-        $descriptor->shouldReceive('getTags->get')->with('internal')->andReturn(true);
+        $descriptor = $this->prophesize(DescriptorAbstract::class);
 
-        $this->assertSame($descriptor, $this->fixture->__invoke($descriptor));
+        $this->assertSame($descriptor->reveal(), $this->fixture->__invoke($descriptor->reveal()));
     }
 
     /**
@@ -124,13 +141,12 @@ final class StripInternalTest extends MockeryTestCase
      */
     public function testDescriptorIsUnmodifiedIfThereIsNoInternalTag() : void
     {
-        $this->builderMock->shouldReceive('getProjectDescriptor->isVisibilityAllowed')->andReturn(true);
+        $this->projectDescriptor->isVisibilityAllowed(Argument::any())
+            ->shouldBeCalled()
+            ->willReturn(true);
 
-        $descriptor = m::mock(DescriptorAbstract::class);
-        $descriptor->shouldReceive('getDescription');
-        $descriptor->shouldReceive('setDescription');
-        $descriptor->shouldReceive('getTags->get')->with('internal')->andReturn(false);
+        $descriptor = $this->prophesize(DescriptorAbstract::class);
 
-        $this->assertEquals($descriptor, $this->fixture->__invoke($descriptor));
+        $this->assertEquals($descriptor->reveal(), $this->fixture->__invoke($descriptor->reveal()));
     }
 }

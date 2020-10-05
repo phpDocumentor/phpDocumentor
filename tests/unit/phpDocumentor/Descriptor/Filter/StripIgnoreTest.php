@@ -13,19 +13,20 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Filter;
 
-use Mockery as m;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
+use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
+use PHPUnit\Framework\TestCase;
+use Prophecy\Prophecy\ObjectProphecy;
 
 /**
  * Tests the functionality for the StripIgnore class.
  *
  * @coversDefaultClass \phpDocumentor\Descriptor\Filter\StripIgnore
  */
-final class StripIgnoreTest extends MockeryTestCase
+final class StripIgnoreTest extends TestCase
 {
-    /** @var ProjectDescriptorBuilder|m\Mock */
+    /** @var ProjectDescriptorBuilder|ObjectProphecy */
     private $builderMock;
 
     /** @var StripIgnore $fixture */
@@ -36,8 +37,8 @@ final class StripIgnoreTest extends MockeryTestCase
      */
     protected function setUp() : void
     {
-        $this->builderMock = m::mock(ProjectDescriptorBuilder::class);
-        $this->fixture = new StripIgnore($this->builderMock);
+        $this->builderMock = $this->prophesize(ProjectDescriptorBuilder::class);
+        $this->fixture = new StripIgnore($this->builderMock->reveal());
     }
 
     /**
@@ -45,10 +46,13 @@ final class StripIgnoreTest extends MockeryTestCase
      */
     public function testStripsIgnoreTagFromDescription() : void
     {
-        $descriptor = m::mock(DescriptorAbstract::class);
-        $descriptor->shouldReceive('getTags->fetch')->with('ignore')->andReturn(true);
+        $collection = $this->prophesize(Collection::class);
+        $collection->fetch('ignore')->shouldBeCalled()->willReturn(true);
 
-        $this->assertNull($this->fixture->__invoke($descriptor));
+        $descriptor = $this->prophesize(DescriptorAbstract::class);
+        $descriptor->getTags()->shouldBeCalled()->willReturn($collection->reveal());
+
+        $this->assertNull($this->fixture->__invoke($descriptor->reveal()));
     }
 
     /**
@@ -56,10 +60,13 @@ final class StripIgnoreTest extends MockeryTestCase
      */
     public function testDescriptorIsUnmodifiedIfThereIsNoIgnoreTag() : void
     {
-        $descriptor = m::mock(DescriptorAbstract::class);
-        $descriptor->shouldReceive('getTags->fetch')->with('ignore')->andReturn(false);
+        $collection = $this->prophesize(Collection::class);
+        $collection->fetch('ignore')->shouldBeCalled()->willReturn(false);
 
-        $this->assertEquals($descriptor, $this->fixture->__invoke($descriptor));
+        $descriptor = $this->prophesize(DescriptorAbstract::class);
+        $descriptor->getTags()->shouldBeCalled()->willReturn($collection->reveal());
+
+        $this->assertEquals($descriptor->reveal(), $this->fixture->__invoke($descriptor->reveal()));
     }
 
     /**
