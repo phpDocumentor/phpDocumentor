@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
-use Mockery as m;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
-use Mockery\MockInterface;
 use phpDocumentor\Descriptor\ConstantDescriptor;
 use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
@@ -25,13 +22,16 @@ use phpDocumentor\Reflection\Php\Class_;
 use phpDocumentor\Reflection\Php\Constant;
 use phpDocumentor\Reflection\Php\Method;
 use phpDocumentor\Reflection\Php\Property;
+use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
+use Prophecy\Prophecy\ObjectProphecy;
 
 /**
  * Test class for \phpDocumentor\Descriptor\Builder
  *
  * @covers \phpDocumentor\Descriptor\Builder\Reflector\ClassAssembler
  */
-class ClassAssemblerTest extends MockeryTestCase
+class ClassAssemblerTest extends TestCase
 {
     /** @var ClassAssembler $fixture */
     protected $fixture;
@@ -42,7 +42,7 @@ class ClassAssemblerTest extends MockeryTestCase
     protected function setUp() : void
     {
         $this->fixture = new ClassAssembler();
-        $this->fixture->setBuilder($this->getProjectDescriptorBuilderMock());
+        $this->fixture->setBuilder($this->getProjectDescriptorBuilderMock()->reveal());
     }
 
     /**
@@ -140,37 +140,35 @@ DOCBLOCK;
     /**
      * Create a descriptor builder mock
      */
-    protected function getProjectDescriptorBuilderMock() : MockInterface
+    protected function getProjectDescriptorBuilderMock() : ObjectProphecy
     {
-        $projectDescriptorBuilderMock = m::mock(ProjectDescriptorBuilder::class);
-        $projectDescriptorBuilderMock->shouldReceive('getDefaultPackage')->andReturn('\\');
-        $projectDescriptorBuilderMock->shouldReceive('buildDescriptor')->andReturnUsing(
-            static function ($param) {
-                $mock = null;
+        $projectDescriptorBuilderMock = $this->prophesize(ProjectDescriptorBuilder::class);
+        $projectDescriptorBuilderMock->getDefaultPackage()->shouldBeCalled()->willReturn('\\');
+        $projectDescriptorBuilderMock->buildDescriptor(Argument::any(), Argument::any())->will(function ($param) {
+            switch ($param) {
+                case 'Properties':
+                    $mock = $this->prophesize('phpDocumentor\Descriptor\PropertiesDescriptor');
+                    $mock->getName()->shouldBeCalledOnce()->willReturn('Mock');
+                    $mock->setParent()->shouldBeCalledOnce()->willReturn();
+                    break;
 
-                switch ($param) {
-                    case 'Properties':
-                        $mock = m::mock('phpDocumentor\Descriptor\PropertiesDescriptor');
-                        $mock->shouldReceive('getName')->once()->andReturn('Mock');
-                        $mock->shouldReceive('setParent')->once()->andReturn();
-                        break;
+                case 'Method':
+                    $mock = $this->prophesize(MethodDescriptor::class);
+                    $mock->getName()->shouldBeCalledOnce()->willReturn('Mock');
+                    $mock->setParent()->shouldBeCalledOnce()->willReturn();
+                    break;
 
-                    case 'Method':
-                        $mock = m::mock(MethodDescriptor::class);
-                        $mock->shouldReceive('getName')->once()->andReturn('Mock');
-                        $mock->shouldReceive('setParent')->once()->andReturn();
-                        break;
-
-                    case 'Constant':
-                        $mock = m::mock(ConstantDescriptor::class);
-                        $mock->shouldReceive('getName')->once()->andReturn('Mock');
-                        $mock->shouldReceive('setParent')->once()->andReturn();
-                        break;
-                }
-
-                return $mock;
+                case 'Constant':
+                    $mock = $this->prophesize(ConstantDescriptor::class);
+                    $mock->getName()->shouldBeCalledOnce()->willReturn('Mock');
+                    $mock->setParent()->shouldBeCalledOnce()->willReturn();
+                    break;
+                default:
+                    return null;
             }
-        );
+
+            return $mock->reveal();
+        });
 
         return $projectDescriptorBuilderMock;
     }

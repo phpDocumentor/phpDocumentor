@@ -13,27 +13,25 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
-use InvalidArgumentException;
-use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\ArgumentDescriptor;
-use phpDocumentor\Descriptor\PackageDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Php\Argument;
 use phpDocumentor\Reflection\Php\Function_;
-use function get_class;
+use Prophecy\Argument as ProphecyArgument;
+use Prophecy\Prophecy\ObjectProphecy;
 
 class FunctionAssemblerTest extends MockeryTestCase
 {
     /** @var FunctionAssembler $fixture */
     protected $fixture;
 
-    /** @var ArgumentAssembler|m\MockInterface */
+    /** @var ArgumentAssembler|ObjectProphecy */
     protected $argumentAssemblerMock;
 
-    /** @var ProjectDescriptorBuilder|m\MockInterface */
+    /** @var ProjectDescriptorBuilder|ObjectProphecy */
     protected $builderMock;
 
     /**
@@ -41,22 +39,13 @@ class FunctionAssemblerTest extends MockeryTestCase
      */
     protected function setUp() : void
     {
-        $this->builderMock = m::mock(ProjectDescriptorBuilder::class);
-        $this->builderMock->shouldReceive('buildDescriptor')->andReturnUsing(
-            static function ($value) {
-                switch (get_class($value)) {
-                    case DocBlock\Tags\Generic::class && $value->getName() === 'package':
-                        return new PackageDescriptor();
-                    default:
-                        throw new InvalidArgumentException('didn\'t expect ' . get_class($value));
-                }
-            }
-        );
-        $this->argumentAssemblerMock = m::mock(ArgumentAssembler::class);
-        $this->argumentAssemblerMock->shouldReceive('getBuilder')->andReturnNull();
-        $this->argumentAssemblerMock->shouldReceive('setBuilder')->with($this->builderMock);
-        $this->fixture = new FunctionAssembler($this->argumentAssemblerMock);
-        $this->fixture->setBuilder($this->builderMock);
+        $this->builderMock = $this->prophesize(ProjectDescriptorBuilder::class);
+        $this->builderMock->buildDescriptor(ProphecyArgument::any(), ProphecyArgument::any())->shouldBeCalled();
+        $this->argumentAssemblerMock = $this->prophesize(ArgumentAssembler::class);
+        $this->argumentAssemblerMock->getBuilder()->shouldBeCalled()->willReturn(null);
+        $this->argumentAssemblerMock->setBuilder($this->builderMock->reveal())->shouldBeCalled();
+        $this->fixture = new FunctionAssembler($this->argumentAssemblerMock->reveal());
+        $this->fixture->setBuilder($this->builderMock->reveal());
     }
 
     /**
@@ -84,7 +73,10 @@ class FunctionAssemblerTest extends MockeryTestCase
         $argumentDescriptor = new ArgumentDescriptor();
         $argumentDescriptor->setName($argumentName);
 
-        $this->argumentAssemblerMock->shouldReceive('create')->andReturn($argumentDescriptor);
+        $this->argumentAssemblerMock
+            ->create(ProphecyArgument::any(), ProphecyArgument::any())
+            ->shouldBeCalled()
+            ->willReturn($argumentDescriptor);
 
         // Act
         $descriptor = $this->fixture->create($functionReflectorMock);
@@ -101,14 +93,12 @@ class FunctionAssemblerTest extends MockeryTestCase
 
     /**
      * Creates a sample function reflector for the tests with the given data.
-     *
-     * @param DocBlock|m\MockInterface $docBlockMock
      */
     protected function givenAFunctionReflector(
         string $namespace,
         string $functionName,
         Argument $argumentMock,
-        $docBlockMock
+        DocBlock $docBlockMock
     ) : Function_ {
         $functionReflectorMock = new Function_(
             new Fqsen('\\' . $namespace . '\\' . $functionName . '()'),
