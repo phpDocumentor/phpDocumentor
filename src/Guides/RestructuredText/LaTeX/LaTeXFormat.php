@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\LaTeX;
 
+use phpDocumentor\Guides\Nodes;
+use phpDocumentor\Guides\Renderers;
+use phpDocumentor\Guides\Renderers\CallableNodeRendererFactory;
+use phpDocumentor\Guides\Renderers\NodeRendererFactory;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive;
 use phpDocumentor\Guides\RestructuredText\Formats\Format;
 use phpDocumentor\Guides\RestructuredText\LaTeX;
-use phpDocumentor\Guides\RestructuredText\Nodes;
-use phpDocumentor\Guides\RestructuredText\Renderers;
-use phpDocumentor\Guides\RestructuredText\Renderers\CallableNodeRendererFactory;
-use phpDocumentor\Guides\RestructuredText\Renderers\NodeRendererFactory;
-use phpDocumentor\Guides\RestructuredText\TemplateRenderer;
+use phpDocumentor\Guides\TemplateRenderer;
 
 class LaTeXFormat implements Format
 {
@@ -52,7 +52,7 @@ class LaTeXFormat implements Format
         return [
             Nodes\AnchorNode::class => new CallableNodeRendererFactory(
                 function (Nodes\AnchorNode $node) {
-                    return new LaTeX\Renderers\AnchorNodeRenderer(
+                    return new Renderers\LaTeX\AnchorNodeRenderer(
                         $node,
                         $this->templateRenderer
                     );
@@ -60,7 +60,7 @@ class LaTeXFormat implements Format
             ),
             Nodes\CodeNode::class => new CallableNodeRendererFactory(
                 function (Nodes\CodeNode $node) {
-                    return new LaTeX\Renderers\CodeNodeRenderer(
+                    return new Renderers\LaTeX\CodeNodeRenderer(
                         $node,
                         $this->templateRenderer
                     );
@@ -68,7 +68,7 @@ class LaTeXFormat implements Format
             ),
             Nodes\ImageNode::class => new CallableNodeRendererFactory(
                 function (Nodes\ImageNode $node) {
-                    return new LaTeX\Renderers\ImageNodeRenderer(
+                    return new Renderers\LaTeX\ImageNodeRenderer(
                         $node,
                         $this->templateRenderer
                     );
@@ -78,13 +78,13 @@ class LaTeXFormat implements Format
                 function (Nodes\ListNode $node) {
                     return new Renderers\ListNodeRenderer(
                         $node,
-                        new LaTeX\Renderers\ListRenderer($node, $this->templateRenderer)
+                        new Renderers\LaTeX\ListRenderer($node, $this->templateRenderer)
                     );
                 }
             ),
             Nodes\MetaNode::class => new CallableNodeRendererFactory(
                 function (Nodes\MetaNode $node) {
-                    return new LaTeX\Renderers\MetaNodeRenderer(
+                    return new Renderers\LaTeX\MetaNodeRenderer(
                         $node,
                         $this->templateRenderer
                     );
@@ -92,7 +92,7 @@ class LaTeXFormat implements Format
             ),
             Nodes\ParagraphNode::class => new CallableNodeRendererFactory(
                 function (Nodes\ParagraphNode $node) {
-                    return new LaTeX\Renderers\ParagraphNodeRenderer(
+                    return new Renderers\LaTeX\ParagraphNodeRenderer(
                         $node,
                         $this->templateRenderer
                     );
@@ -100,7 +100,7 @@ class LaTeXFormat implements Format
             ),
             Nodes\QuoteNode::class => new CallableNodeRendererFactory(
                 function (Nodes\QuoteNode $node) {
-                    return new LaTeX\Renderers\QuoteNodeRenderer(
+                    return new Renderers\LaTeX\QuoteNodeRenderer(
                         $node,
                         $this->templateRenderer
                     );
@@ -108,21 +108,21 @@ class LaTeXFormat implements Format
             ),
             Nodes\SeparatorNode::class => new CallableNodeRendererFactory(
                 function (Nodes\SeparatorNode $node) {
-                    return new LaTeX\Renderers\SeparatorNodeRenderer(
+                    return new Renderers\LaTeX\SeparatorNodeRenderer(
                         $this->templateRenderer
                     );
                 }
             ),
             Nodes\TableNode::class => new CallableNodeRendererFactory(
                 static function (Nodes\TableNode $node) {
-                    return new LaTeX\Renderers\TableNodeRenderer(
+                    return new Renderers\LaTeX\TableNodeRenderer(
                         $node
                     );
                 }
             ),
             Nodes\TitleNode::class => new CallableNodeRendererFactory(
                 function (Nodes\TitleNode $node) {
-                    return new LaTeX\Renderers\TitleNodeRenderer(
+                    return new Renderers\LaTeX\TitleNodeRenderer(
                         $node,
                         $this->templateRenderer
                     );
@@ -130,7 +130,7 @@ class LaTeXFormat implements Format
             ),
             Nodes\TocNode::class => new CallableNodeRendererFactory(
                 function (Nodes\TocNode $node) {
-                    return new LaTeX\Renderers\TocNodeRenderer(
+                    return new Renderers\LaTeX\TocNodeRenderer(
                         $node->getEnvironment(),
                         $node,
                         $this->templateRenderer
@@ -139,7 +139,7 @@ class LaTeXFormat implements Format
             ),
             Nodes\DocumentNode::class => new CallableNodeRendererFactory(
                 function (Nodes\DocumentNode $node) {
-                    return new LaTeX\Renderers\DocumentNodeRenderer(
+                    return new Renderers\LaTeX\DocumentNodeRenderer(
                         $node,
                         $this->templateRenderer
                     );
@@ -147,7 +147,7 @@ class LaTeXFormat implements Format
             ),
             Nodes\SpanNode::class => new CallableNodeRendererFactory(
                 function (Nodes\SpanNode $node) {
-                    return new LaTeX\Renderers\SpanNodeRenderer(
+                    return new Renderers\LaTeX\SpanNodeRenderer(
                         $node->getEnvironment(),
                         $node,
                         $this->templateRenderer

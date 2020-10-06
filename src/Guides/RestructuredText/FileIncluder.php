@@ -4,15 +4,10 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText;
 
+use phpDocumentor\Guides\Environment;
 use RuntimeException;
-use function explode;
-use function file_exists;
-use function file_get_contents;
-use function is_readable;
 use function preg_replace_callback;
-use function realpath;
 use function sprintf;
-use function strpos;
 
 class FileIncluder
 {

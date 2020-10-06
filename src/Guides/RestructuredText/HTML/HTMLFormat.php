@@ -15,15 +15,48 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\HTML;
 
+use phpDocumentor\Guides\Nodes\AnchorNode;
+use phpDocumentor\Guides\Nodes\CallableNode;
+use phpDocumentor\Guides\Nodes\CodeNode;
+use phpDocumentor\Guides\Nodes\DefinitionListNode;
+use phpDocumentor\Guides\Nodes\DocumentNode;
+use phpDocumentor\Guides\Nodes\FigureNode;
+use phpDocumentor\Guides\Nodes\ImageNode;
+use phpDocumentor\Guides\Nodes\ListNode;
+use phpDocumentor\Guides\Nodes\MetaNode;
+use phpDocumentor\Guides\Nodes\ParagraphNode;
+use phpDocumentor\Guides\Nodes\QuoteNode;
+use phpDocumentor\Guides\Nodes\SectionBeginNode;
+use phpDocumentor\Guides\Nodes\SectionEndNode;
+use phpDocumentor\Guides\Nodes\SeparatorNode;
+use phpDocumentor\Guides\Nodes\SpanNode;
+use phpDocumentor\Guides\Nodes\TableNode;
+use phpDocumentor\Guides\Nodes\TitleNode;
+use phpDocumentor\Guides\Nodes\TocNode;
+use phpDocumentor\Guides\Renderers\CallableNodeRenderer;
+use phpDocumentor\Guides\Renderers\CallableNodeRendererFactory;
+use phpDocumentor\Guides\Renderers\Html\AnchorNodeRenderer;
+use phpDocumentor\Guides\Renderers\Html\CodeNodeRenderer;
+use phpDocumentor\Guides\Renderers\Html\DefinitionListNodeRenderer;
+use phpDocumentor\Guides\Renderers\Html\DocumentNodeRenderer;
+use phpDocumentor\Guides\Renderers\Html\FigureNodeRenderer;
+use phpDocumentor\Guides\Renderers\Html\ImageNodeRenderer;
+use phpDocumentor\Guides\Renderers\Html\ListRenderer;
+use phpDocumentor\Guides\Renderers\Html\MetaNodeRenderer;
+use phpDocumentor\Guides\Renderers\Html\ParagraphNodeRenderer;
+use phpDocumentor\Guides\Renderers\Html\QuoteNodeRenderer;
+use phpDocumentor\Guides\Renderers\Html\SectionBeginNodeRenderer;
+use phpDocumentor\Guides\Renderers\Html\SectionEndNodeRenderer;
+use phpDocumentor\Guides\Renderers\Html\SeparatorNodeRenderer;
+use phpDocumentor\Guides\Renderers\Html\SpanNodeRenderer;
+use phpDocumentor\Guides\Renderers\Html\TableNodeRenderer;
+use phpDocumentor\Guides\Renderers\Html\TitleNodeRenderer;
+use phpDocumentor\Guides\Renderers\Html\TocNodeRenderer;
+use phpDocumentor\Guides\Renderers\ListNodeRenderer;
+use phpDocumentor\Guides\Renderers\NodeRendererFactory;
 use phpDocumentor\Guides\RestructuredText;
 use phpDocumentor\Guides\RestructuredText\Formats\Format;
-use phpDocumentor\Guides\RestructuredText\HTML\Renderers\DocumentNodeRenderer;
-use phpDocumentor\Guides\RestructuredText\Nodes\CodeNode;
-use phpDocumentor\Guides\RestructuredText\Nodes\DocumentNode;
-use phpDocumentor\Guides\RestructuredText\Nodes\SpanNode;
-use phpDocumentor\Guides\RestructuredText\Renderers\CallableNodeRendererFactory;
-use phpDocumentor\Guides\RestructuredText\Renderers\NodeRendererFactory;
-use phpDocumentor\Guides\RestructuredText\TemplateRenderer;
+use phpDocumentor\Guides\TemplateRenderer;
 
 final class HTMLFormat implements Format
 {
@@ -67,120 +100,120 @@ final class HTMLFormat implements Format
     public function getNodeRendererFactories() : array
     {
         $nodeRendererFactories = [
-            RestructuredText\Nodes\AnchorNode::class => new CallableNodeRendererFactory(
-                function (RestructuredText\Nodes\AnchorNode $node) {
-                    return new RestructuredText\HTML\Renderers\AnchorNodeRenderer(
+            AnchorNode::class => new CallableNodeRendererFactory(
+                function (AnchorNode $node) {
+                    return new AnchorNodeRenderer(
                         $node,
                         $this->templateRenderer
                     );
                 }
             ),
-            RestructuredText\Nodes\DefinitionListNode::class => new CallableNodeRendererFactory(
-                function (RestructuredText\Nodes\DefinitionListNode $node) {
-                    return new RestructuredText\HTML\Renderers\DefinitionListNodeRenderer(
+            DefinitionListNode::class => new CallableNodeRendererFactory(
+                function (DefinitionListNode $node) {
+                    return new DefinitionListNodeRenderer(
                         $node,
                         $this->templateRenderer
                     );
                 }
             ),
-            RestructuredText\Nodes\FigureNode::class => new CallableNodeRendererFactory(
-                function (RestructuredText\Nodes\FigureNode $node) {
-                    return new RestructuredText\HTML\Renderers\FigureNodeRenderer(
+            FigureNode::class => new CallableNodeRendererFactory(
+                function (FigureNode $node) {
+                    return new FigureNodeRenderer(
                         $node,
                         $this->templateRenderer
                     );
                 }
             ),
-            RestructuredText\Nodes\ImageNode::class => new CallableNodeRendererFactory(
-                function (RestructuredText\Nodes\ImageNode $node) {
-                    return new RestructuredText\HTML\Renderers\ImageNodeRenderer(
+            ImageNode::class => new CallableNodeRendererFactory(
+                function (ImageNode $node) {
+                    return new ImageNodeRenderer(
                         $node,
                         $this->templateRenderer
                     );
                 }
             ),
-            RestructuredText\Nodes\ListNode::class => new CallableNodeRendererFactory(
-                function (RestructuredText\Nodes\ListNode $node) {
-                    return new RestructuredText\Renderers\ListNodeRenderer(
+            ListNode::class => new CallableNodeRendererFactory(
+                function (ListNode $node) {
+                    return new ListNodeRenderer(
                         $node,
-                        new RestructuredText\HTML\Renderers\ListRenderer($node, $this->templateRenderer)
+                        new ListRenderer($node, $this->templateRenderer)
                     );
                 }
             ),
-            RestructuredText\Nodes\MetaNode::class => new CallableNodeRendererFactory(
-                function (RestructuredText\Nodes\MetaNode $node) {
-                    return new RestructuredText\HTML\Renderers\MetaNodeRenderer(
-                        $node,
-                        $this->templateRenderer
-                    );
-                }
-            ),
-            RestructuredText\Nodes\ParagraphNode::class => new CallableNodeRendererFactory(
-                function (RestructuredText\Nodes\ParagraphNode $node) {
-                    return new RestructuredText\HTML\Renderers\ParagraphNodeRenderer(
+            MetaNode::class => new CallableNodeRendererFactory(
+                function (MetaNode $node) {
+                    return new MetaNodeRenderer(
                         $node,
                         $this->templateRenderer
                     );
                 }
             ),
-            RestructuredText\Nodes\QuoteNode::class => new CallableNodeRendererFactory(
-                function (RestructuredText\Nodes\QuoteNode $node) {
-                    return new RestructuredText\HTML\Renderers\QuoteNodeRenderer(
+            ParagraphNode::class => new CallableNodeRendererFactory(
+                function (ParagraphNode $node) {
+                    return new ParagraphNodeRenderer(
                         $node,
                         $this->templateRenderer
                     );
                 }
             ),
-            RestructuredText\Nodes\SeparatorNode::class => new CallableNodeRendererFactory(
-                function (RestructuredText\Nodes\SeparatorNode $node) {
-                    return new RestructuredText\HTML\Renderers\SeparatorNodeRenderer(
-                        $this->templateRenderer
-                    );
-                }
-            ),
-            RestructuredText\Nodes\TableNode::class => new CallableNodeRendererFactory(
-                function (RestructuredText\Nodes\TableNode $node) {
-                    return new RestructuredText\HTML\Renderers\TableNodeRenderer(
+            QuoteNode::class => new CallableNodeRendererFactory(
+                function (QuoteNode $node) {
+                    return new QuoteNodeRenderer(
                         $node,
                         $this->templateRenderer
                     );
                 }
             ),
-            RestructuredText\Nodes\TitleNode::class => new CallableNodeRendererFactory(
-                function (RestructuredText\Nodes\TitleNode $node) {
-                    return new RestructuredText\HTML\Renderers\TitleNodeRenderer(
+            SeparatorNode::class => new CallableNodeRendererFactory(
+                function (SeparatorNode $node) {
+                    return new SeparatorNodeRenderer(
+                        $this->templateRenderer
+                    );
+                }
+            ),
+            TableNode::class => new CallableNodeRendererFactory(
+                function (TableNode $node) {
+                    return new TableNodeRenderer(
                         $node,
                         $this->templateRenderer
                     );
                 }
             ),
-            RestructuredText\Nodes\TocNode::class => new CallableNodeRendererFactory(
-                function (RestructuredText\Nodes\TocNode $node) {
-                    return new RestructuredText\HTML\Renderers\TocNodeRenderer(
+            TitleNode::class => new CallableNodeRendererFactory(
+                function (TitleNode $node) {
+                    return new TitleNodeRenderer(
+                        $node,
+                        $this->templateRenderer
+                    );
+                }
+            ),
+            TocNode::class => new CallableNodeRendererFactory(
+                function (TocNode $node) {
+                    return new TocNodeRenderer(
                         $node->getEnvironment(),
                         $node,
                         $this->templateRenderer
                     );
                 }
             ),
-            RestructuredText\Nodes\CallableNode::class => new CallableNodeRendererFactory(
-                static function (RestructuredText\Nodes\CallableNode $node) {
-                    return new RestructuredText\Renderers\CallableNodeRenderer(
+            CallableNode::class => new CallableNodeRendererFactory(
+                static function (CallableNode $node) {
+                    return new CallableNodeRenderer(
                         $node
                     );
                 }
             ),
-            RestructuredText\Nodes\SectionBeginNode::class => new CallableNodeRendererFactory(
-                function (RestructuredText\Nodes\SectionBeginNode $node) {
-                    return new RestructuredText\HTML\Renderers\SectionBeginNodeRenderer(
+            SectionBeginNode::class => new CallableNodeRendererFactory(
+                function (SectionBeginNode $node) {
+                    return new SectionBeginNodeRenderer(
                         $node,
                         $this->templateRenderer
                     );
                 }
             ),
-            RestructuredText\Nodes\SectionEndNode::class => new CallableNodeRendererFactory(
-                function (RestructuredText\Nodes\SectionEndNode $node) {
-                    return new RestructuredText\HTML\Renderers\SectionEndNodeRenderer(
+            SectionEndNode::class => new CallableNodeRendererFactory(
+                function (SectionEndNode $node) {
+                    return new SectionEndNodeRenderer(
                         $node,
                         $this->templateRenderer
                     );
@@ -200,7 +233,7 @@ final class HTMLFormat implements Format
 
         $nodeRendererFactories[CodeNode::class] = new CallableNodeRendererFactory(
             function (CodeNode $node) {
-                return new RestructuredText\HTML\Renderers\CodeNodeRenderer(
+                return new CodeNodeRenderer(
                     $node,
                     $this->templateRenderer,
                     $this->globalTemplatesPath
@@ -210,7 +243,7 @@ final class HTMLFormat implements Format
 
         $nodeRendererFactories[SpanNode::class] = new CallableNodeRendererFactory(
             function (SpanNode $node) {
-                return new RestructuredText\HTML\Renderers\SpanNodeRenderer(
+                return new SpanNodeRenderer(
                     $node->getEnvironment(),
                     $node,
                     $this->templateRenderer

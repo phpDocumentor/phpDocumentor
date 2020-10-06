@@ -16,10 +16,10 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\RestructuredText\HTML\Directives;
 
 use Exception;
+use phpDocumentor\Guides\Nodes\CodeNode;
+use phpDocumentor\Guides\Nodes\Node;
+use phpDocumentor\Guides\Renderers\Html\CodeNodeRenderer;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive;
-use phpDocumentor\Guides\RestructuredText\HTML\Renderers\CodeNodeRenderer;
-use phpDocumentor\Guides\RestructuredText\Nodes\CodeNode;
-use phpDocumentor\Guides\RestructuredText\Nodes\Node;
 use phpDocumentor\Guides\RestructuredText\Parser;
 
 class CodeBlockDirective extends Directive

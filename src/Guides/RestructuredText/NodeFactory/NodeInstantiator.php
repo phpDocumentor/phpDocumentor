@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\RestructuredText\NodeFactory;
 
 use Doctrine\Common\EventManager;
-use phpDocumentor\Guides\RestructuredText\Environment;
-use phpDocumentor\Guides\RestructuredText\Nodes\Node;
-use phpDocumentor\Guides\RestructuredText\Nodes\NodeTypes;
-use phpDocumentor\Guides\RestructuredText\Renderers\NodeRendererFactory;
 use InvalidArgumentException;
+use phpDocumentor\Guides\Nodes\Node;
+use phpDocumentor\Guides\Nodes\NodeTypes;
+use phpDocumentor\Guides\Renderers\NodeRendererFactory;
 use function in_array;
 use function is_subclass_of;
 use function sprintf;

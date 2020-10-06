@@ -16,15 +16,14 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides;
 
 use IteratorAggregate;
-use phpDocumentor\Guides\RestructuredText\Configuration;
+use phpDocumentor\Guides\Configuration;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive;
 use phpDocumentor\Guides\RestructuredText\HTML\HTMLFormat;
 use phpDocumentor\Guides\RestructuredText\Kernel;
 use phpDocumentor\Guides\RestructuredText\LaTeX\LaTeXFormat;
-use phpDocumentor\Guides\RestructuredText\References\Reference;
-use phpDocumentor\Guides\RestructuredText\TemplateRenderer;
+use phpDocumentor\Guides\References\Reference;
 use phpDocumentor\Guides\RestructuredText\Templates\TwigTemplateRenderer;
-use phpDocumentor\Guides\RestructuredText\Twig\AssetsExtension;
+use phpDocumentor\Guides\Twig\AssetsExtension;
 use Psr\Log\LoggerInterface;
 use Twig\Environment;
 

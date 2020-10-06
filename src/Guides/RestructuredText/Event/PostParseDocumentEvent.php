@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\RestructuredText\Event;
 
 use Doctrine\Common\EventArgs;
-use phpDocumentor\Guides\RestructuredText\Nodes\DocumentNode;
+use phpDocumentor\Guides\Nodes\DocumentNode;
 
 final class PostParseDocumentEvent extends EventArgs
 {

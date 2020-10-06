@@ -4,13 +4,10 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\Command;
 
-use phpDocumentor\Guides\RestructuredText\Builder\Documents;
-use phpDocumentor\Guides\RestructuredText\Builder\ParseQueueProcessor;
-use phpDocumentor\Guides\RestructuredText\Builder\Scanner;
-use phpDocumentor\Guides\RestructuredText\Configuration;
-use phpDocumentor\Guides\RestructuredText\Environment;
-use phpDocumentor\Guides\RestructuredText\Meta\Metas;
-use phpDocumentor\Guides\RestructuredText\Nodes\DocumentNode;
+use phpDocumentor\Guides\Documents;
+use phpDocumentor\Guides\Metas;
+use phpDocumentor\Guides\Nodes\DocumentNode;
+use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\RestructuredText\Parser;
 use Psr\Log\LoggerInterface;
 

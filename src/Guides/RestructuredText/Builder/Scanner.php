@@ -10,7 +10,8 @@ use Flyfinder\Specification\HasExtension;
 use Flyfinder\Specification\InPath;
 use InvalidArgumentException;
 use League\Flysystem\FilesystemInterface;
-use phpDocumentor\Guides\RestructuredText\Meta\Metas;
+use phpDocumentor\Guides\Files;
+use phpDocumentor\Guides\Metas;
 use function sprintf;
 
 class Scanner
@@ -33,7 +34,7 @@ class Scanner
      * objects, and avoids adding files to the parse queue that have
      * not changed and whose direct dependencies have not changed.
      */
-    public function scan(FilesystemInterface $filesystem, string $directory, string $extension) : ParseQueue
+    public function scan(FilesystemInterface $filesystem, string $directory, string $extension) : Files
     {
         $directory = trim($directory, '/');
         $files = $filesystem->find(
@@ -52,7 +53,7 @@ class Scanner
             $this->fileInfos[$documentPath] = $fileInfo;
         }
 
-        $parseQueue = new ParseQueue();
+        $parseQueue = new Files();
         foreach ($this->fileInfos as $filename => $fileInfo) {
             if (!$this->doesFileRequireParsing($filename)) {
                 continue;

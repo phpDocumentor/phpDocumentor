@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\HTML\Directives;
 
+use phpDocumentor\Guides\Nodes\DocumentNode;
+use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive;
-use phpDocumentor\Guides\RestructuredText\Nodes\DocumentNode;
-use phpDocumentor\Guides\RestructuredText\Nodes\Node;
 use phpDocumentor\Guides\RestructuredText\Parser;
 
 /**

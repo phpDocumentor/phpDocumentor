@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\Parser;
 
-use phpDocumentor\Guides\RestructuredText\Nodes\SpanNode;
+use phpDocumentor\Guides\Nodes\SpanNode;
 use RuntimeException;
 
 class DefinitionListTerm

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\RestructuredText\Parser;
 
 use Exception;
-use phpDocumentor\Guides\RestructuredText\Nodes\TableNode;
+use phpDocumentor\Guides\Nodes\TableNode;
 use function count;
 use function in_array;
 use function sprintf;

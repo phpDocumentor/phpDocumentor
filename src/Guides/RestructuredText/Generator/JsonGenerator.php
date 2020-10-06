@@ -15,11 +15,11 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\Generator;
 
-use phpDocumentor\Guides\RestructuredText\Environment;
-use phpDocumentor\Guides\RestructuredText\Meta\MetaEntry;
-use phpDocumentor\Guides\RestructuredText\Meta\Metas;
 use Exception;
 use phpDocumentor\Guides\BuildContext;
+use phpDocumentor\Guides\Meta\Entry;
+use phpDocumentor\Guides\Metas;
+use phpDocumentor\Guides\Environment;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -86,7 +86,7 @@ class JsonGenerator
         $this->output = $output;
     }
 
-    private function generateToc(MetaEntry $metaEntry, ?array $titles) : array
+    private function generateToc(Entry $metaEntry, ?array $titles) : array
     {
         if (null === $titles) {
             return [];
@@ -215,7 +215,7 @@ class JsonGenerator
         return [$toc, $indexCurrentFile];
     }
 
-    private function getMetaEntry(string $parserFilename, bool $throwOnMissing = false) : ?MetaEntry
+    private function getMetaEntry(string $parserFilename, bool $throwOnMissing = false) : ?Entry
     {
         $metaEntry = $this->metas->get($parserFilename);
 

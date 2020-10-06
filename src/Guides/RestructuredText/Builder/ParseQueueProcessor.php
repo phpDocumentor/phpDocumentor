@@ -6,8 +6,9 @@ namespace phpDocumentor\Guides\RestructuredText\Builder;
 
 use League\Flysystem\FilesystemInterface;
 use League\Tactician\CommandBus;
+use phpDocumentor\Guides\Files;
 use phpDocumentor\Guides\RestructuredText\Command\ParseFileCommand;
-use phpDocumentor\Guides\RestructuredText\Configuration;
+use phpDocumentor\Guides\Configuration;
 use phpDocumentor\Guides\RestructuredText\Kernel;
 
 class ParseQueueProcessor
@@ -20,7 +21,7 @@ class ParseQueueProcessor
         $this->commandBus = $commandBus;
     }
 
-    public function process(Kernel $kernel, ParseQueue $parseQueue, FilesystemInterface $origin, string $currentDirectory) : void
+    public function process(Kernel $kernel, Files $parseQueue, FilesystemInterface $origin, string $currentDirectory) : void
     {
         $this->guardThatAnIndexFileExists($origin, $currentDirectory, $kernel->getConfiguration());
 

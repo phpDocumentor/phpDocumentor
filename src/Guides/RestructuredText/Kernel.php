@@ -6,16 +6,18 @@ namespace phpDocumentor\Guides\RestructuredText;
 
 use Doctrine\Common\EventManager;
 use IteratorAggregate;
+use phpDocumentor;
 use phpDocumentor\Guides\BuildContext;
+use phpDocumentor\Guides\Configuration;
+use phpDocumentor\Guides\Nodes;
+use phpDocumentor\Guides\Nodes\NodeTypes;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive;
 use phpDocumentor\Guides\RestructuredText\Event\PostBuildRenderEvent;
 use phpDocumentor\Guides\RestructuredText\Event\PreNodeRenderEvent;
 use phpDocumentor\Guides\RestructuredText\Listener\AssetsCopyListener;
 use phpDocumentor\Guides\RestructuredText\Listener\CopyImagesListener;
-use phpDocumentor\Guides\RestructuredText\Nodes\DocumentNode;
-use phpDocumentor\Guides\RestructuredText\Nodes\NodeTypes;
-use phpDocumentor\Guides\RestructuredText\References\Doc;
-use phpDocumentor\Guides\RestructuredText\References\Reference;
+use phpDocumentor\Guides\References\Doc;
+use phpDocumentor\Guides\References\Reference;
 use Psr\Log\LoggerInterface;
 use function array_merge;
 
@@ -58,8 +60,8 @@ class Kernel
 
         $this->references = array_merge(
             [
-                new References\Doc(),
-                new References\Doc('ref', true),
+                new phpDocumentor\Guides\References\Doc(),
+                new phpDocumentor\Guides\References\Doc('ref', true),
             ],
             $this->createReferences(),
             iterator_to_array($references)
@@ -137,7 +139,7 @@ class Kernel
         ];
     }
 
-    public function postParse(DocumentNode $document) : void
+    public function postParse(Nodes\DocumentNode $document) : void
     {
     }
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\Toc;
 
-use phpDocumentor\Guides\RestructuredText\Environment;
+use phpDocumentor\Guides\Environment;
 use Symfony\Component\Finder\Finder;
 use function array_merge;
 use function realpath;

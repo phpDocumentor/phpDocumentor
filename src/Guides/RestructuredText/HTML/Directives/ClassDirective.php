@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\HTML\Directives;
 
+use phpDocumentor\Guides\Nodes\DocumentNode;
+use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\RestructuredText\Directives\SubDirective;
-use phpDocumentor\Guides\RestructuredText\Environment;
-use phpDocumentor\Guides\RestructuredText\Nodes\DocumentNode;
-use phpDocumentor\Guides\RestructuredText\Nodes\Node;
+use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\RestructuredText\Parser;
 use function array_map;
 use function explode;

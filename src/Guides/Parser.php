@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides;
 
-use phpDocumentor\Guides\RestructuredText\Nodes\DocumentNode;
+use phpDocumentor\Guides\Nodes\DocumentNode;
 
 interface Parser
 {

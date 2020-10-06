@@ -15,11 +15,11 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\Generator;
 
-use phpDocumentor\Guides\RestructuredText\Meta\MetaEntry;
-use phpDocumentor\Guides\RestructuredText\Meta\Metas;
 use InvalidArgumentException;
 use LogicException;
 use phpDocumentor\Guides\BuildContext;
+use phpDocumentor\Guides\Meta\Entry;
+use phpDocumentor\Guides\Metas;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -169,7 +169,7 @@ class HtmlForPdfGenerator
         return $content;
     }
 
-    private function getMetaEntry(string $parserFilename) : MetaEntry
+    private function getMetaEntry(string $parserFilename) : Entry
     {
         $metaEntry = $this->metas->get($parserFilename);
 

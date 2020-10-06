@@ -10,16 +10,16 @@ final class PreBuildParseEvent extends BuildEvent
 {
     public const PRE_BUILD_PARSE = 'preBuildParse';
 
-    /** @var Builder\ParseQueue */
+    /** @var \phpDocumentor\Guides\Files */
     private $parseQueue;
 
-    public function __construct(Builder $builder, string $directory, string $targetDirectory, Builder\ParseQueue $parseQueue)
+    public function __construct(Builder $builder, string $directory, string $targetDirectory, \phpDocumentor\Guides\Files $parseQueue)
     {
         parent::__construct($builder, $directory, $targetDirectory);
         $this->parseQueue = $parseQueue;
     }
 
-    public function getParseQueue() : Builder\ParseQueue
+    public function getParseQueue() : \phpDocumentor\Guides\Files
     {
         return $this->parseQueue;
     }

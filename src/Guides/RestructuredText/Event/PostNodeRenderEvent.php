@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\RestructuredText\Event;
 
 use Doctrine\Common\EventArgs;
-use phpDocumentor\Guides\RestructuredText\Renderers\RenderedNode;
+use phpDocumentor\Guides\Renderers\RenderedNode;
 
 final class PostNodeRenderEvent extends EventArgs
 {

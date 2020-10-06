@@ -279,8 +279,8 @@ services:
       resource: '../src/Guides/RestructuredText/Directives/*'
       tags: [ { name: 'phpdoc.guides.directive' } ]
 
-    phpDocumentor\Guides\RestructuredText\References\:
-      resource: '../src/Guides/RestructuredText/References/*'
+    phpDocumentor\Guides\References\:
+      resource: '../src/Guides/References/*'
       exclude:
-        - '../src/Guides/RestructuredText/References/{Resolver,ResolvedReference}.php'
+        - '../src/Guides/References/{Resolver,ResolvedReference}.php'
       tags: [ { name: 'phpdoc.guides.reference' } ]

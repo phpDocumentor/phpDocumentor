@@ -16,8 +16,8 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\RestructuredText\Listener;
 
 use phpDocumentor\Guides\BuildContext;
+use phpDocumentor\Guides\Nodes\ImageNode;
 use phpDocumentor\Guides\RestructuredText\Event\PreNodeRenderEvent;
-use phpDocumentor\Guides\RestructuredText\Nodes\ImageNode;
 use Psr\Log\LoggerInterface;
 use SplFileInfo;
 use Symfony\Component\Filesystem\Filesystem;

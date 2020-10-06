@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\RestructuredText\Command;
 
 use League\Flysystem\FilesystemInterface;
-use phpDocumentor\Guides\RestructuredText\Builder\Documents;
-use phpDocumentor\Guides\RestructuredText\Meta\Metas;
+use phpDocumentor\Guides\Documents;
+use phpDocumentor\Guides\Metas;
 
 final class RenderHandler
 {

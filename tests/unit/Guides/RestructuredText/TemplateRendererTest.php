@@ -2,6 +2,7 @@
 
 namespace phpDocumentor\Guides\RestructuredText;
 
+use phpDocumentor\Guides\TemplateRenderer;
 use PHPUnit\Framework\TestCase;
 use Twig\Environment;
 

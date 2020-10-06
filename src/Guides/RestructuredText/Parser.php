@@ -5,17 +5,19 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\RestructuredText;
 
 use InvalidArgumentException;
+use phpDocumentor\Guides\Environment;
+use phpDocumentor\Guides\Nodes\DocumentNode;
+use phpDocumentor\Guides\Nodes\SpanNode;
+use phpDocumentor\Guides\Parser as ParserInterface;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive;
 use phpDocumentor\Guides\RestructuredText\NodeFactory\DefaultNodeFactory;
 use phpDocumentor\Guides\RestructuredText\NodeFactory\NodeFactory;
 use phpDocumentor\Guides\RestructuredText\NodeFactory\NodeInstantiator;
-use phpDocumentor\Guides\RestructuredText\Nodes\DocumentNode;
-use phpDocumentor\Guides\RestructuredText\Nodes\SpanNode;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
 use RuntimeException;
 use function sprintf;
 
-class Parser implements \phpDocumentor\Guides\Parser
+class Parser implements ParserInterface
 {
     /** @var Kernel */
     private $kernel;
