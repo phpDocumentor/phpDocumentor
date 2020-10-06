@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace phpDocumentor\Guides\RestructuredText;
 
 use phpDocumentor\Guides\TemplateRenderer;
@@ -8,7 +10,7 @@ use Twig\Environment;
 
 final class TemplateRendererTest extends TestCase
 {
-    public function test_it_renders_a_twig_template_using_the_given_twig_environment(): void
+    public function test_it_renders_a_twig_template_using_the_given_twig_environment() : void
     {
         $renderedTemplateWithNewline = "output\n";
         $renderedTemplateWithoutNewline = 'output';
@@ -23,7 +25,7 @@ final class TemplateRendererTest extends TestCase
         $this->assertSame($renderedTemplateWithoutNewline, $result);
     }
 
-    public function test_the_engine_can_be_accessed_for_adding_extension(): void
+    public function test_the_engine_can_be_accessed_for_adding_extension() : void
     {
         $environment = $this->prophesize(Environment::class)->reveal();
 

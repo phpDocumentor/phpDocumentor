@@ -13,23 +13,17 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Writer;
 
-use League\Flysystem\Adapter\Local;
-use League\Flysystem\Filesystem;
-use League\Flysystem\FilesystemInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\VersionDescriptor;
-use phpDocumentor\Dsn;
 use phpDocumentor\Guides\BuildContext;
 use phpDocumentor\Guides\KernelFactory;
 use phpDocumentor\Guides\RestructuredText\Builder;
 use phpDocumentor\Parser\Cache\Locator;
 use phpDocumentor\Parser\FlySystemFactory;
-use phpDocumentor\Parser\FlySystemMirror;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Stopwatch\Stopwatch;
-use function rtrim;
 use function sprintf;
 
 /**
@@ -106,7 +100,11 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
                 $input = $this->flySystemFactory->create($dsn);
                 $inputFolder = $documentationSet->getSource()['paths'][0] ?? '';
 
-                $environment = $this->environmentFactory->create($project, $transformation, $documentationSet->getOutput());
+                $environment = $this->environmentFactory->create(
+                    $project,
+                    $transformation,
+                    $documentationSet->getOutput()
+                );
 
                 $kernel = $this->kernelFactory->createKernel($buildContext, $environment);
                 $this->builder->build($kernel, $input, $inputFolder, $output, $documentationSet->getOutput());
