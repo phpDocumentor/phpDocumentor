@@ -3,9 +3,6 @@ monolog:
         main:
             type: console
             action_level: error
-            handler: console
-        console:
-            type:   console
             process_psr_3_messages: false
             channels: ["!event", "!doctrine"]
             verbosity_levels:
