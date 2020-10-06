@@ -43,7 +43,7 @@ class FunctionAssemblerTest extends TestCase
     {
         $this->builderMock = $this->prophesize(ProjectDescriptorBuilder::class);
         $this->builderMock->buildDescriptor(
-            ProphecyArgument::that(            static function ($value) {
+            ProphecyArgument::that(static function ($value) {
                 switch (get_class($value)) {
                     case DocBlock\Tags\Generic::class && $value->getName() === 'package':
                         return new PackageDescriptor();
