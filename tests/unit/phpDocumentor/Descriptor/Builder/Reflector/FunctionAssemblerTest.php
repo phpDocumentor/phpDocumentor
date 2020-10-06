@@ -24,6 +24,7 @@ use phpDocumentor\Reflection\Php\Function_;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument as ProphecyArgument;
 use Prophecy\Prophecy\ObjectProphecy;
+use function get_class;
 
 class FunctionAssemblerTest extends TestCase
 {
