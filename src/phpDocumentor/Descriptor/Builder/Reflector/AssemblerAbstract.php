@@ -53,6 +53,10 @@ abstract class AssemblerAbstract extends BaseAssembler
         $descriptor = $this->buildDescriptor($data);
 
         foreach ($this->reducers as $reducer) {
+            if ($reducer instanceof AssemblerAbstract) {
+                $reducer->setBuilder($this->getBuilder());
+            }
+
             $descriptor = $reducer->create($data, $descriptor);
         }
 
