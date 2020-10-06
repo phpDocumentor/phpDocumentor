@@ -13,24 +13,29 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Filter;
 
-use Mockery as m;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\MethodDescriptor;
+use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Descriptor\TagDescriptor;
+use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
+use Prophecy\Prophecy\ObjectProphecy;
 
 /**
  * Tests the functionality for the StripOnVisibility class.
  *
  * @coversDefaultClass \phpDocumentor\Descriptor\Filter\StripOnVisibility
  */
-final class StripOnVisibilityTest extends MockeryTestCase
+final class StripOnVisibilityTest extends TestCase
 {
-    /** @var ProjectDescriptorBuilder|m\Mock */
+    /** @var ProjectDescriptorBuilder|ObjectProphecy */
     private $builderMock;
+
+    /** @var ProjectDescriptor|ObjectProphecy */
+    private $projectDescriptor;
 
     /** @var StripOnVisibility $fixture */
     private $fixture;
@@ -40,8 +45,10 @@ final class StripOnVisibilityTest extends MockeryTestCase
      */
     protected function setUp() : void
     {
-        $this->builderMock = m::mock(ProjectDescriptorBuilder::class);
-        $this->fixture = new StripOnVisibility($this->builderMock);
+        $this->projectDescriptor = $this->prophesize(ProjectDescriptor::class);
+        $this->builderMock = $this->prophesize(ProjectDescriptorBuilder::class);
+        $this->builderMock->getProjectDescriptor()->shouldBeCalled()->willReturn($this->projectDescriptor->reveal());
+        $this->fixture = new StripOnVisibility($this->builderMock->reveal());
     }
 
     /**
@@ -49,15 +56,15 @@ final class StripOnVisibilityTest extends MockeryTestCase
      */
     public function testStripsDescriptorIfVisibilityIsNotAllowed() : void
     {
-        $this->builderMock->shouldReceive('getProjectDescriptor->isVisibilityAllowed')
-            ->with(Settings::VISIBILITY_PUBLIC)
-            ->andReturn(false);
+        $this->projectDescriptor->isVisibilityAllowed(Argument::exact(Settings::VISIBILITY_PUBLIC))
+            ->shouldBeCalled()
+            ->willReturn(false);
 
-        $descriptor = m::mock(MethodDescriptor::class);
-        $descriptor->shouldReceive('getVisibility')->andReturn('public');
-        $descriptor->shouldReceive('getTags')->andReturn(new Collection());
+        $descriptor = $this->prophesize(MethodDescriptor::class);
+        $descriptor->getVisibility()->shouldBeCalled()->willReturn('public');
+        $descriptor->getTags()->shouldBeCalled()->willReturn(new Collection());
 
-        $this->assertNull($this->fixture->__invoke($descriptor));
+        $this->assertNull($this->fixture->__invoke($descriptor->reveal()));
     }
 
     /**
@@ -65,21 +72,21 @@ final class StripOnVisibilityTest extends MockeryTestCase
      */
     public function testItNeverStripsDescriptorIfApiIsSet() : void
     {
-        $this->builderMock->shouldReceive('getProjectDescriptor->isVisibilityAllowed')
-            ->with(Settings::VISIBILITY_API)->andReturn(true);
+        $this->projectDescriptor->isVisibilityAllowed(Argument::exact(Settings::VISIBILITY_API))
+            ->shouldBeCalled()
+            ->willReturn(true);
 
         // if API already return true; then we do not expect a call with for the PUBLIC visibility
-        $this->builderMock->shouldNotReceive('getProjectDescriptor->isVisibilityAllowed')
-            ->with(Settings::VISIBILITY_PUBLIC);
+        $this->projectDescriptor->isVisibilityAllowed(Argument::exact(Settings::VISIBILITY_PUBLIC))
+            ->shouldNotBeCalled();
 
-        $descriptor = m::mock(MethodDescriptor::class);
-        $descriptor->shouldReceive('getVisibility')->andReturn('public');
+        $descriptor = $this->prophesize(MethodDescriptor::class);
 
         $tagsCollection = new Collection();
         $tagsCollection->set('api', new TagDescriptor('api'));
-        $descriptor->shouldReceive('getTags')->andReturn($tagsCollection);
+        $descriptor->getTags()->shouldBeCalled()->willReturn($tagsCollection);
 
-        $this->assertSame($descriptor, $this->fixture->__invoke($descriptor));
+        $this->assertSame($descriptor->reveal(), $this->fixture->__invoke($descriptor->reveal()));
     }
 
     /**
@@ -87,15 +94,15 @@ final class StripOnVisibilityTest extends MockeryTestCase
      */
     public function testKeepsDescriptorIfVisibilityIsAllowed() : void
     {
-        $this->builderMock->shouldReceive('getProjectDescriptor->isVisibilityAllowed')
-            ->with(Settings::VISIBILITY_PUBLIC)
-            ->andReturn(true);
+        $this->projectDescriptor->isVisibilityAllowed(Argument::exact(Settings::VISIBILITY_PUBLIC))
+            ->shouldBeCalled()
+            ->willReturn(true);
 
-        $descriptor = m::mock(MethodDescriptor::class);
-        $descriptor->shouldReceive('getVisibility')->andReturn('public');
-        $descriptor->shouldReceive('getTags')->andReturn(new Collection());
+        $descriptor = $this->prophesize(MethodDescriptor::class);
+        $descriptor->getVisibility()->shouldBeCalled()->willReturn('public');
+        $descriptor->getTags()->shouldBeCalled()->willReturn(new Collection());
 
-        $this->assertSame($descriptor, $this->fixture->__invoke($descriptor));
+        $this->assertSame($descriptor->reveal(), $this->fixture->__invoke($descriptor->reveal()));
     }
 
     /**
@@ -103,11 +110,11 @@ final class StripOnVisibilityTest extends MockeryTestCase
      */
     public function testKeepsDescriptorIfDescriptorNotInstanceOfVisibilityInterface() : void
     {
-        $this->builderMock->shouldReceive('getProjectDescriptor->isVisibilityAllowed')->andReturn(false);
+        $this->builderMock->getProjectDescriptor()->shouldNotBeCalled();
 
-        $descriptor = m::mock(DescriptorAbstract::class);
-        $descriptor->shouldReceive('getTags')->andReturn(new Collection());
+        $descriptor = $this->prophesize(DescriptorAbstract::class);
+        $descriptor->getTags()->shouldBeCalled()->willReturn(new Collection());
 
-        $this->assertSame($descriptor, $this->fixture->__invoke($descriptor));
+        $this->assertSame($descriptor->reveal(), $this->fixture->__invoke($descriptor->reveal()));
     }
 }

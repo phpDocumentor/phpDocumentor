@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Filter;
 
 use League\Pipeline\Pipeline;
-use Mockery as m;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
+use PHPUnit\Framework\TestCase;
+use Prophecy\Prophecy\ObjectProphecy;
 use function get_class;
 
 /**
@@ -24,14 +24,14 @@ use function get_class;
  * @coversDefaultClass \phpDocumentor\Descriptor\Filter\Filter
  * @covers ::__construct
  */
-final class FilterTest extends MockeryTestCase
+final class FilterTest extends TestCase
 {
     public const FQCN = 'SomeFilterClass';
 
-    /** @var ClassFactory|m\Mock */
+    /** @var ClassFactory|ObjectProphecy */
     protected $classFactoryMock;
 
-    /** @var FilterInterface|m\Mock */
+    /** @var FilterInterface|ObjectProphecy */
     protected $filterChainMock;
 
     /** @var Filter $fixture */
@@ -42,9 +42,9 @@ final class FilterTest extends MockeryTestCase
      */
     protected function setUp() : void
     {
-        $this->classFactoryMock = m::mock(ClassFactory::class);
-        $this->filterChainMock = m::mock(Pipeline::class);
-        $this->fixture = new Filter($this->classFactoryMock);
+        $this->classFactoryMock = $this->prophesize(ClassFactory::class);
+        $this->filterChainMock = $this->prophesize(Pipeline::class);
+        $this->fixture = new Filter($this->classFactoryMock->reveal());
     }
 
     /**
@@ -52,11 +52,11 @@ final class FilterTest extends MockeryTestCase
      */
     public function testAttach() : void
     {
-        $filterMock = m::mock(FilterInterface::class);
+        $filterMock = $this->prophesize(FilterInterface::class);
 
-        $this->classFactoryMock->shouldReceive('attachTo')->with(self::FQCN, $filterMock);
+        $this->classFactoryMock->attachTo(self::FQCN, $filterMock->reveal())->shouldBeCalled();
 
-        $this->fixture->attach(self::FQCN, $filterMock);
+        $this->fixture->attach(self::FQCN, $filterMock->reveal());
     }
 
     /**
@@ -64,11 +64,17 @@ final class FilterTest extends MockeryTestCase
      */
     public function testFilter() : void
     {
-        $filterableMock = m::mock(Filterable::class);
+        $filterableMock = $this->prophesize(Filterable::class)->reveal();
 
-        $this->filterChainMock->shouldReceive('__invoke')->with($filterableMock)->andReturn($filterableMock);
+        $this->filterChainMock
+            ->__invoke($filterableMock)
+            ->shouldBeCalled()
+            ->willReturn($filterableMock);
+
         $this->classFactoryMock
-            ->shouldReceive('getChainFor')->with(get_class($filterableMock))->andReturn($this->filterChainMock);
+            ->getChainFor(get_class($filterableMock))
+            ->shouldBeCalled()
+            ->willReturn($this->filterChainMock->reveal());
 
         $this->assertSame($filterableMock, $this->fixture->filter($filterableMock));
     }
