@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
+use InvalidArgumentException;
 use phpDocumentor\Descriptor\ArgumentDescriptor;
+use phpDocumentor\Descriptor\PackageDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\Fqsen;
@@ -40,7 +42,17 @@ class FunctionAssemblerTest extends TestCase
     protected function setUp() : void
     {
         $this->builderMock = $this->prophesize(ProjectDescriptorBuilder::class);
-        $this->builderMock->buildDescriptor(ProphecyArgument::any(), ProphecyArgument::any())->shouldBeCalled();
+        $this->builderMock->buildDescriptor(
+            ProphecyArgument::that(            static function ($value) {
+                switch (get_class($value)) {
+                    case DocBlock\Tags\Generic::class && $value->getName() === 'package':
+                        return new PackageDescriptor();
+                    default:
+                        throw new InvalidArgumentException('didn\'t expect ' . get_class($value));
+                }
+            }),
+            ProphecyArgument::any()
+        )->shouldBeCalled();
         $this->argumentAssemblerMock = $this->prophesize(ArgumentAssembler::class);
         $this->argumentAssemblerMock->getBuilder()->shouldBeCalled()->willReturn(null);
         $this->argumentAssemblerMock->setBuilder($this->builderMock->reveal())->shouldBeCalled();

@@ -146,12 +146,6 @@ DOCBLOCK;
         $projectDescriptorBuilderMock->getDefaultPackage()->shouldBeCalled()->willReturn('\\');
         $projectDescriptorBuilderMock->buildDescriptor(Argument::any(), Argument::any())->will(function ($param) {
             switch ($param) {
-                case 'Properties':
-                    $mock = $this->prophesize('phpDocumentor\Descriptor\PropertiesDescriptor');
-                    $mock->getName()->shouldBeCalledOnce()->willReturn('Mock');
-                    $mock->setParent()->shouldBeCalledOnce()->willReturn();
-                    break;
-
                 case 'Method':
                     $mock = $this->prophesize(MethodDescriptor::class);
                     $mock->getName()->shouldBeCalledOnce()->willReturn('Mock');
