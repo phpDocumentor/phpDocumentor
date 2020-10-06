@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 
-use Mockery as m;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\DocBlock\Tags\Method;
@@ -24,18 +22,20 @@ use phpDocumentor\Reflection\Types\Integer;
 use phpDocumentor\Reflection\Types\Mixed_;
 use phpDocumentor\Reflection\Types\String_;
 use phpDocumentor\Reflection\Types\Void_;
+use PHPUnit\Framework\TestCase;
+use Prophecy\Prophecy\ObjectProphecy;
 use function count;
 
 /**
  * @coversDefaultClass \phpDocumentor\Descriptor\Builder\Reflector\Tags\MethodAssembler
  * @covers ::<private>
  */
-final class MethodAssemblerTest extends MockeryTestCase
+final class MethodAssemblerTest extends TestCase
 {
     /** @var MethodAssembler */
     private $fixture;
 
-    /** @var m\MockInterface|ProjectDescriptorBuilder */
+    /** @var ProjectDescriptorBuilder|ObjectProphecy */
     protected $builder;
 
     /**
@@ -43,9 +43,9 @@ final class MethodAssemblerTest extends MockeryTestCase
      */
     protected function setUp() : void
     {
-        $this->builder = m::mock(ProjectDescriptorBuilder::class);
+        $this->builder = $this->prophesize(ProjectDescriptorBuilder::class);
         $this->fixture = new MethodAssembler();
-        $this->fixture->setBuilder($this->builder);
+        $this->fixture->setBuilder($this->builder->reveal());
     }
 
     /**
