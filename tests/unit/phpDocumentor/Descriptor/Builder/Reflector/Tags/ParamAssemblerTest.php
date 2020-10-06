@@ -36,7 +36,8 @@ class ParamAssemblerTest extends TestCase
     public function testCreatingParamDescriptorFromReflector() : void
     {
         $reflector = new Param(
-            '$myParameter', new String_(),
+            '$myParameter',
+            new String_(),
             false,
             new Description('This is a description')
         );
