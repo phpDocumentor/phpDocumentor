@@ -13,11 +13,22 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Writer;
 
+use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemInterface;
+use League\Tactician\CommandBus;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\VersionDescriptor;
-use phpDocumentor\Guides\BuildContext;
+use phpDocumentor\Dsn;
+use phpDocumentor\Guides\Configuration;
 use phpDocumentor\Guides\KernelFactory;
-use phpDocumentor\Guides\RestructuredText\Builder;
+use phpDocumentor\Guides\RestructuredText\Command\LoadCacheCommand;
+use phpDocumentor\Guides\RestructuredText\Command\ParseDirectoryCommand;
+use phpDocumentor\Guides\RestructuredText\Command\PersistCacheCommand;
+use phpDocumentor\Guides\RestructuredText\Command\RenderCommand;
+use phpDocumentor\Guides\RestructuredText\HTML\HTMLFormat;
+use phpDocumentor\Guides\RestructuredText\LaTeX\LaTeXFormat;
+use phpDocumentor\Guides\TemplateRenderer;
+use phpDocumentor\Guides\Twig\AssetsExtension;
 use phpDocumentor\Parser\Cache\Locator;
 use phpDocumentor\Parser\FlySystemFactory;
 use phpDocumentor\Transformer\Transformation;
@@ -31,14 +42,11 @@ use function sprintf;
  */
 final class RenderGuide extends WriterAbstract implements ProjectDescriptor\WithCustomSettings
 {
-    private const FEATURE_FLAG = 'guides.enabled';
+    public const FEATURE_FLAG = 'guides.enabled';
     private const SETTING_CACHE = 'guides.cache';
 
     /** @var FlySystemFactory */
     private $flySystemFactory;
-
-    /** @var KernelFactory */
-    private $kernelFactory;
 
     /** @var Locator */
     private $cacheLocator;
@@ -49,23 +57,26 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
     /** @var EnvironmentFactory */
     private $environmentFactory;
 
-    /** @var Builder */
-    private $builder;
+    /** @var CommandBus */
+    private $commandBus;
+
+    /** @var string */
+    private $globalTemplatesPath;
 
     public function __construct(
         FlySystemFactory $flySystemFactory,
-        KernelFactory $kernelFactory,
         Locator $cacheLocator,
         LoggerInterface $logger,
         EnvironmentFactory $environmentFactory,
-        Builder $builder
+        CommandBus $commandBus,
+        string $globalTemplatesPath
     ) {
         $this->flySystemFactory = $flySystemFactory;
-        $this->kernelFactory = $kernelFactory;
         $this->cacheLocator = $cacheLocator;
         $this->logger = $logger;
         $this->environmentFactory = $environmentFactory;
-        $this->builder = $builder;
+        $this->commandBus = $commandBus;
+        $this->globalTemplatesPath = $globalTemplatesPath;
     }
 
     public function transform(ProjectDescriptor $project, Transformation $transformation) : void
@@ -79,45 +90,35 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
             'Generating guides is experimental, no BC guarantees are given, use at your own risk'
         );
 
-        $output = $transformation->getTransformer()->destination();
+        $destination = $transformation->getTransformer()->destination();
         $cachePath = (string) $this->cacheLocator->locate('guide');
 
         /** @var VersionDescriptor $version */
         foreach ($project->getVersions() as $version) {
             foreach ($version->getDocumentationSets() as $documentationSet) {
-                $stopwatch = new Stopwatch(true);
-                $stopwatch->start('guide');
                 $dsn = $documentationSet->getSource()['dsn'];
-                $this->logger->info('Rendering guide ' . $dsn);
-                $buildContext = new BuildContext(
-                    $output,
-                    $documentationSet->getOutput(),
-                    'default',
+                $stopwatch = $this->startRenderingSetMessage($dsn);
+                $useCache = $project->getSettings()->getCustom()[self::SETTING_CACHE];
+
+                $origin = $this->flySystemFactory->create($dsn);
+                $directory = $documentationSet->getSource()['paths'][0] ?? '';
+                $targetDirectory = $documentationSet->getOutput();
+
+                $this->commandBus->handle(new LoadCacheCommand($cachePath, $useCache));
+                $this->parse(
+                    $targetDirectory,
                     $cachePath,
-                    $project->getSettings()->getCustom()[self::SETTING_CACHE]
-                );
-
-                $input = $this->flySystemFactory->create($dsn);
-                $inputFolder = $documentationSet->getSource()['paths'][0] ?? '';
-
-                $environment = $this->environmentFactory->create(
+                    $useCache,
                     $project,
                     $transformation,
-                    $documentationSet->getOutput()
+                    $origin,
+                    $directory
                 );
+                $this->render($destination, $targetDirectory);
 
-                $kernel = $this->kernelFactory->createKernel($buildContext, $environment);
-                $this->builder->build($kernel, $input, $inputFolder, $output, $documentationSet->getOutput());
+                $this->commandBus->handle(new PersistCacheCommand($cachePath, $useCache));
 
-                $stopwatchEvent = $stopwatch->stop('guide');
-                $this->logger->info(
-                    sprintf(
-                        'Completed rendering guide %s in %.2fms using %.2f mb memory',
-                        (string) $dsn,
-                        $stopwatchEvent->getDuration(),
-                        $stopwatchEvent->getMemory() / 1024 / 1024
-                    )
-                );
+                $this->completedRenderingSetMessage($stopwatch, $dsn);
             }
         }
     }
@@ -128,5 +129,57 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
             self::FEATURE_FLAG => false,
             self::SETTING_CACHE => true,
         ];
+    }
+
+    private function startRenderingSetMessage(Dsn $dsn): Stopwatch
+    {
+        $stopwatch = new Stopwatch(true);
+        $stopwatch->start('guide');
+        $this->logger->info('Rendering guide ' . $dsn);
+
+        return $stopwatch;
+    }
+
+    private function completedRenderingSetMessage(Stopwatch $stopwatch, Dsn $dsn): void
+    {
+        $stopwatchEvent = $stopwatch->stop('guide');
+        $this->logger->info(
+            sprintf(
+                'Completed rendering guide %s in %.2fms using %.2f mb memory',
+                (string)$dsn,
+                $stopwatchEvent->getDuration(),
+                $stopwatchEvent->getMemory() / 1024 / 1024
+            )
+        );
+    }
+
+    private function parse(
+        string $targetDirectory,
+        string $cachePath,
+        bool $useCache,
+        ProjectDescriptor $project,
+        Transformation $transformation,
+        Filesystem $origin,
+        string $directory
+    ): void {
+        $environment = $this->environmentFactory->create($project, $transformation, $targetDirectory);
+
+        $templateRenderer = new TemplateRenderer($environment, 'guides');
+        $environment->addExtension(new AssetsExtension());
+
+        $configuration = new Configuration();
+        $configuration->setTemplateRenderer($templateRenderer);
+        $configuration->setCacheDir($cachePath);
+        $configuration->setUseCachedMetas($useCache);
+
+        $configuration->addFormat(new HTMLFormat($templateRenderer, $this->globalTemplatesPath, $targetDirectory));
+        $configuration->addFormat(new LaTeXFormat($templateRenderer));
+
+        $this->commandBus->handle(new ParseDirectoryCommand($configuration, $origin, $directory));
+    }
+
+    private function render(FilesystemInterface $destination, string $targetDirectory): void
+    {
+        $this->commandBus->handle(new RenderCommand($destination, $targetDirectory));
     }
 }

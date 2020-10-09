@@ -6,9 +6,7 @@ namespace phpDocumentor\Guides;
 
 use Doctrine\Common\EventManager;
 use phpDocumentor\Guides\Formats\Format;
-use phpDocumentor\Guides\TemplateRenderer;
 use RuntimeException;
-use Twig\Environment as TwigEnvironment;
 use function sprintf;
 use function sys_get_temp_dir;
 
@@ -83,14 +81,6 @@ class Configuration
     public function setTemplateRenderer(TemplateRenderer $templateRenderer) : void
     {
         $this->templateRenderer = $templateRenderer;
-    }
-
-    /**
-     * @return mixed|TwigEnvironment
-     */
-    public function getTemplateEngine()
-    {
-        return $this->templateRenderer->getTemplateEngine();
     }
 
     public function getTheme() : string

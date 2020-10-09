@@ -4,28 +4,26 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\Command;
 
-use phpDocumentor\Guides\RestructuredText\Kernel;
-
 final class PersistCacheCommand
 {
-    /** @var Kernel */
-    private $kernel;
-
     private $cacheDirectory;
 
-    public function __construct(Kernel $kernel, string $cacheDirectory)
-    {
-        $this->kernel = $kernel;
-        $this->cacheDirectory = $cacheDirectory;
-    }
+    /** @var bool */
+    private $useCache;
 
-    public function getKernel(): Kernel
+    public function __construct(string $cacheDirectory, bool $useCache = false)
     {
-        return $this->kernel;
+        $this->cacheDirectory = $cacheDirectory;
+        $this->useCache = $useCache;
     }
 
     public function getCacheDirectory(): string
     {
         return $this->cacheDirectory;
+    }
+
+    public function useCache(): bool
+    {
+        return $this->useCache;
     }
 }

@@ -1,9 +1,9 @@
 <aside class="phpdocumentor-column -four phpdocumentor-sidebar">
     {{ include('components/search.html.twig') }}
 
-    {% if menu %}
+    {% if menu() %}
     <section class="phpdocumentor-sidebar__category">
-        {{ include('menu.html.twig', {menuItem: menu}, with_context = false) }}
+        {{ include('menu.html.twig', {menuItem: menu()}, with_context = false) }}
     </section>
     {% endif %}
 

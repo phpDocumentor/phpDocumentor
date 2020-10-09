@@ -4,23 +4,32 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText;
 
+use Doctrine\Common\EventManager;
 use InvalidArgumentException;
+use phpDocumentor\Guides\Configuration;
 use phpDocumentor\Guides\Environment;
+use phpDocumentor\Guides\Formats\Format;
 use phpDocumentor\Guides\Nodes\DocumentNode;
+use phpDocumentor\Guides\Nodes;
+use phpDocumentor\Guides\Nodes\NodeTypes;
 use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\Parser as ParserInterface;
+use phpDocumentor\Guides\References\Doc;
+use phpDocumentor\Guides\References\Reference;
+use phpDocumentor\Guides\Renderers\NodeRendererFactory;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive;
 use phpDocumentor\Guides\RestructuredText\NodeFactory\DefaultNodeFactory;
 use phpDocumentor\Guides\RestructuredText\NodeFactory\NodeFactory;
 use phpDocumentor\Guides\RestructuredText\NodeFactory\NodeInstantiator;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
+use phpDocumentor\Guides\TemplateRenderer;
 use RuntimeException;
 use function sprintf;
 
 class Parser implements ParserInterface
 {
-    /** @var Kernel */
-    private $kernel;
+    /** @var Configuration */
+    private $configuration;
 
     /** @var Environment */
     private $environment;
@@ -43,23 +52,69 @@ class Parser implements ParserInterface
     /** @var NodeFactory */
     private $nodeFactory;
 
-    /** @var array */
+    /** @var array<Nodes\Node> */
     private $nodeRegistry = [];
 
-    public function __construct(Kernel $kernel, Environment $environment)
-    {
-        $this->kernel        = $kernel;
-        $this->environment   = $environment;
+    /** @var array<Reference> */
+    private $references = [];
 
+    /** @var EventManager */
+    private $eventManager;
+
+    /** @var Format */
+    private $format;
+
+    /** @var NodeRendererFactory[]  */
+    private $nodeRendererFactories;
+
+    /** @var TemplateRenderer */
+    private $templateRenderer;
+
+    public function __construct(Configuration $configuration, Environment $environment, array $directives, array $references)
+    {
+        $this->configuration = $configuration;
+        $this->environment = $environment;
+        $this->directives = $directives;
+        $this->references = $references;
+        $this->eventManager = $configuration->getEventManager();
+        $this->format = $configuration->getFormat();
+        $this->nodeRendererFactories = $this->format->getNodeRendererFactories();
+        $this->templateRenderer = $this->configuration->getTemplateRenderer();
+
+        $this->nodeRegistry = [
+            NodeTypes::DOCUMENT => Nodes\DocumentNode::class,
+            NodeTypes::SPAN => Nodes\SpanNode::class,
+            NodeTypes::TOC => Nodes\TocNode::class,
+            NodeTypes::TITLE => Nodes\TitleNode::class,
+            NodeTypes::SEPARATOR => Nodes\SeparatorNode::class,
+            NodeTypes::CODE => Nodes\CodeNode::class,
+            NodeTypes::QUOTE => Nodes\QuoteNode::class,
+            NodeTypes::PARAGRAPH => Nodes\ParagraphNode::class,
+            NodeTypes::ANCHOR => Nodes\AnchorNode::class,
+            NodeTypes::LIST => Nodes\ListNode::class,
+            NodeTypes::TABLE => Nodes\TableNode::class,
+            NodeTypes::DEFINITION_LIST => Nodes\DefinitionListNode::class,
+            NodeTypes::WRAPPER => Nodes\WrapperNode::class,
+            NodeTypes::FIGURE => Nodes\FigureNode::class,
+            NodeTypes::IMAGE => Nodes\ImageNode::class,
+            NodeTypes::META => Nodes\MetaNode::class,
+            NodeTypes::RAW => Nodes\RawNode::class,
+            NodeTypes::DUMMY => Nodes\DummyNode::class,
+            NodeTypes::MAIN => Nodes\MainNode::class,
+            NodeTypes::BLOCK => Nodes\BlockNode::class,
+            NodeTypes::CALLABLE => Nodes\CallableNode::class,
+            NodeTypes::SECTION_BEGIN => Nodes\SectionBeginNode::class,
+            NodeTypes::SECTION_END => Nodes\SectionEndNode::class
+        ];
+
+        $this->initDirectives($directives);
+        $this->initReferences($references);
         $this->environment->setNodeFactory($this->getNodeFactory());
-        $this->initDirectives();
-        $this->initReferences();
-        $this->nodeRegistry = $kernel->getNodes();
     }
 
     public function getSubParser() : Parser
     {
-        return new Parser($this->kernel, $this->environment);
+        return new Parser($this->configuration, $this->environment, $this->directives, $this->references);
     }
 
     public function getNodeFactory() : NodeFactory
@@ -72,26 +127,42 @@ class Parser implements ParserInterface
         foreach ($this->nodeRegistry as $nodeName => $nodeClass) {
             $instantiators[] = $this->createNodeInstantiator($nodeName, $nodeClass);
         }
-        return new DefaultNodeFactory($this->kernel->getConfiguration()->getEventManager(), ...$instantiators);
+        return new DefaultNodeFactory($this->eventManager, ...$instantiators);
     }
 
     public function renderTemplate(string $template, array $parameters = []) : string
     {
-        return $this->kernel->getConfiguration()->getTemplateRenderer()->render($template, $parameters);
+        return $this->templateRenderer->render($template, $parameters);
     }
 
-    public function initDirectives() : void
+    public function initDirectives(array $directives) : void
     {
-        $directives = $this->kernel->getDirectives();
+        $directives = array_merge(
+            [
+                new Directives\Dummy(),
+                new Directives\CodeBlock(),
+                new Directives\Raw(),
+                new Directives\Replace(),
+                new Directives\Toctree(),
+            ],
+            $this->format->getDirectives(),
+            $directives
+        );
 
         foreach ($directives as $directive) {
             $this->registerDirective($directive);
         }
     }
 
-    public function initReferences() : void
+    public function initReferences(array $references) : void
     {
-        $references = $this->kernel->getReferences();
+        $references = array_merge(
+            [
+                new Doc(),
+                new Doc('ref', true),
+            ],
+            $references
+        );
 
         foreach ($references as $reference) {
             $this->environment->registerReference($reference);
@@ -194,7 +265,7 @@ class Parser implements ParserInterface
             $this,
             $this->environment,
             $this->getNodeFactory(),
-            $this->kernel->getConfiguration()->getEventManager(),
+            $this->eventManager,
             $this->directives,
             $this->includeAllowed,
             $this->includeRoot
@@ -203,14 +274,11 @@ class Parser implements ParserInterface
 
     private function createNodeInstantiator(string $type, string $nodeClassName) : NodeInstantiator
     {
-        $configuration = $this->kernel->getConfiguration();
-        $nodeRendererFactory = $configuration->getFormat()->getNodeRendererFactories()[$nodeClassName] ?? null;
-
         return new NodeInstantiator(
             $type,
             $nodeClassName,
-            $nodeRendererFactory,
-            $configuration->getEventManager()
+            $this->nodeRendererFactories[$nodeClassName] ?? null,
+            $this->eventManager
         );
     }
 }

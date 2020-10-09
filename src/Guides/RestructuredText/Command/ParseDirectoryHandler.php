@@ -23,13 +23,13 @@ final class ParseDirectoryHandler
 
     public function handle(ParseDirectoryCommand $command)
     {
-        $kernel = $command->getKernel();
+        $configuration = $command->getConfiguration();
 
-        $extension = $kernel->getConfiguration()->getSourceFileExtension();
+        $extension = $configuration->getSourceFileExtension();
         $parseQueue = $this->scanner->scan($command->getOrigin(), $command->getDirectory(), $extension);
 
         $this->parseQueueProcessor->process(
-            $kernel,
+            $configuration,
             $parseQueue,
             $command->getOrigin(),
             $command->getDirectory()

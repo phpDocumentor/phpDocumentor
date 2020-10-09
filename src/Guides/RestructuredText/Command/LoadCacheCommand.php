@@ -4,20 +4,18 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\Command;
 
-use phpDocumentor\Guides\RestructuredText\Kernel;
-
 final class LoadCacheCommand
 {
     /** @var string */
     private $cacheDirectory;
 
-    /** @var Kernel */
-    private $kernel;
+    /** @var bool */
+    private $useCaching;
 
-    public function __construct(Kernel $kernel, string $cacheDirectory)
+    public function __construct(string $cacheDirectory, bool $useCaching = true)
     {
-        $this->kernel = $kernel;
         $this->cacheDirectory = $cacheDirectory;
+        $this->useCaching = $useCaching;
     }
 
     public function getCacheDirectory(): string
@@ -25,8 +23,8 @@ final class LoadCacheCommand
         return $this->cacheDirectory;
     }
 
-    public function getKernel(): Kernel
+    public function useCaching()
     {
-        return $this->kernel;
+        return $this->useCaching;
     }
 }

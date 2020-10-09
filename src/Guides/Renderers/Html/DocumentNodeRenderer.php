@@ -46,31 +46,32 @@ class DocumentNodeRenderer implements NodeRenderer, FullDocumentNodeRenderer
         return $this->templateRenderer->render('document.html.twig', [
             'headerNodes' => $this->assembleHeader(),
             'bodyNodes' => $output,
-            'menu' => $this->assembleMenu($this->subFolderInProject),
+//            'menu' => $this->assembleMenu($this->subFolderInProject),
         ]);
     }
 
-    private function assembleMenu(string $urlPrefix) : array
-    {
-        $metas = $this->document->getEnvironment()->getMetas();
-
-        $index = $metas->get('index');
-        $menu = [
-            'label' => $index->getTitle(),
-            'path' => $urlPrefix . '/' . $index->getUrl(),
-            'items' => []
-        ];
-        foreach ($index->getTocs()[0] ?? [] as $url) {
-            $meta = $metas->get($url);
-            $menu['items'][] = [
-                'label' => $meta->getTitle(),
-                'path' => $urlPrefix . '/' . $meta->getUrl(),
-                'items' => []
-            ];
-        }
-
-        return $menu;
-    }
+//    private function assembleMenu(string $urlPrefix) : array
+//    {
+//        $metas = $this->document->getEnvironment()->getMetas();
+//
+//        $index = $metas->get('index');
+//        $menu = [
+//            'label' => $index->getTitle(),
+//            'path' => $urlPrefix . '/' . $index->getUrl(),
+//            'items' => []
+//        ];
+//
+//        foreach ($index->getTocs()[0] ?? [] as $url) {
+//            $meta = $metas->get($url);
+//            $menu['items'][] = [
+//                'label' => $meta->getTitle(),
+//                'path' => $urlPrefix . '/' . $meta->getUrl(),
+//                'items' => []
+//            ];
+//        }
+//
+//        return $menu;
+//    }
 
     private function assembleHeader() : string
     {

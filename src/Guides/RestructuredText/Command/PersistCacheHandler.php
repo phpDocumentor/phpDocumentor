@@ -23,9 +23,7 @@ final class PersistCacheHandler
 
     public function handle(PersistCacheCommand $command)
     {
-        $configuration = $command->getKernel()->getConfiguration();
-
-        if (!$configuration->getUseCachedMetas()) {
+        if (!$command->useCache()) {
             return;
         }
 

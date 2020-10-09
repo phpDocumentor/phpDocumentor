@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\RestructuredText\Command;
 
 use League\Flysystem\FilesystemInterface;
-use phpDocumentor\Guides\RestructuredText\Kernel;
+use phpDocumentor\Guides\Configuration;
 
 final class ParseDirectoryCommand
 {
-    /** @var Kernel */
-    private $kernel;
+    /** @var Configuration */
+    private $configuration;
 
     /** @var FilesystemInterface */
     private $origin;
@@ -18,16 +18,16 @@ final class ParseDirectoryCommand
     /** @var string  */
     private $directory;
 
-    public function __construct(Kernel $kernel, FilesystemInterface $origin, string $directory)
+    public function __construct(Configuration $configuration, FilesystemInterface $origin, string $directory)
     {
-        $this->kernel = $kernel;
+        $this->configuration = $configuration;
         $this->origin = $origin;
         $this->directory = $directory;
     }
 
-    public function getKernel(): Kernel
+    public function getConfiguration(): Configuration
     {
-        return $this->kernel;
+        return $this->configuration;
     }
 
     public function getOrigin(): FilesystemInterface

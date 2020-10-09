@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Writer\Twig;
 
 use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Guides\Twig\TocExtension;
 use phpDocumentor\Path;
 use phpDocumentor\Transformer\Transformation;
 use Twig\Environment;
@@ -29,10 +30,15 @@ class EnvironmentFactory
 
     /** @var ?Path */
     private $templateOverridesAt;
+    /**
+     * @var TocExtension
+     */
+    private $tocExtension;
 
-    public function __construct(LinkRenderer $renderer)
+    public function __construct(LinkRenderer $renderer, TocExtension $tocExtension)
     {
         $this->renderer = $renderer;
+        $this->tocExtension = $tocExtension;
     }
 
     public function withTemplateOverridesAt(Path $path) : void
@@ -58,6 +64,7 @@ class EnvironmentFactory
         $env = new Environment(new ChainLoader($loaders));
 
         $this->addPhpDocumentorExtension($project, $destination, $env);
+        $env->addExtension($this->tocExtension);
         $this->enableDebug($env);
 
         return $env;

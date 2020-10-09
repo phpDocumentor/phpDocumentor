@@ -22,25 +22,43 @@ final class ParseFileHandler
     /** @var LoggerInterface */
     private $logger;
 
-    public function __construct(Metas $metas, Documents $documents, LoggerInterface $logger)
-    {
+    /** @var \IteratorAggregate */
+    private $directives;
+    /**
+     * @var \IteratorAggregate
+     */
+    private $references;
+
+    public function __construct(
+        Metas $metas,
+        Documents $documents,
+        LoggerInterface $logger,
+        \IteratorAggregate $directives,
+        \IteratorAggregate $references
+    ) {
         $this->metas = $metas;
         $this->documents = $documents;
         $this->logger = $logger;
+        $this->directives = $directives;
+        $this->references = $references;
     }
 
     public function handle(ParseFileCommand $command): void
     {
-        $kernel = $command->getKernel();
+        $configuration = $command->getConfiguration();
         $file = $command->getFile();
-        $configuration = $kernel->getConfiguration();
 
-        $environment = new Environment($configuration, $kernel->getLogger(), $command->getOrigin());
+        $environment = new Environment($configuration, $this->logger, $command->getOrigin());
         $environment->setMetas($this->metas);
         $environment->setCurrentFileName($file);
         $environment->setCurrentDirectory($command->getDirectory());
 
-        $parser = new Parser($kernel, $environment);
+        $parser = new Parser(
+            $configuration,
+            $environment,
+            iterator_to_array($this->directives),
+            iterator_to_array($this->references)
+        );
 
         $fileAbsolutePath = $this->buildPathOnFileSystem(
             $file,
@@ -52,8 +70,6 @@ final class ParseFileHandler
         $document = $parser->parseFile($fileAbsolutePath);
 
         $this->documents->addDocument($file, $document);
-
-        $kernel->postParse($document);
 
         $url = $this->buildDocumentUrl($document, $configuration->getFileExtension());
         $this->metas->set(

@@ -23,9 +23,7 @@ final class LoadCacheHandler
 
     public function handle(LoadCacheCommand $command): void
     {
-        $configuration = $command->getKernel()->getConfiguration();
-
-        if (!$configuration->getUseCachedMetas()) {
+        if (!$command->useCaching()) {
             return;
         }
 

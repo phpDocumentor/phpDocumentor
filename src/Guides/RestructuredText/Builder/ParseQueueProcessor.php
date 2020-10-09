@@ -9,7 +9,6 @@ use League\Tactician\CommandBus;
 use phpDocumentor\Guides\Files;
 use phpDocumentor\Guides\RestructuredText\Command\ParseFileCommand;
 use phpDocumentor\Guides\Configuration;
-use phpDocumentor\Guides\RestructuredText\Kernel;
 
 class ParseQueueProcessor
 {
@@ -21,12 +20,12 @@ class ParseQueueProcessor
         $this->commandBus = $commandBus;
     }
 
-    public function process(Kernel $kernel, Files $parseQueue, FilesystemInterface $origin, string $currentDirectory) : void
+    public function process(Configuration $configuration, Files $parseQueue, FilesystemInterface $origin, string $currentDirectory) : void
     {
-        $this->guardThatAnIndexFileExists($origin, $currentDirectory, $kernel->getConfiguration());
+        $this->guardThatAnIndexFileExists($origin, $currentDirectory, $configuration);
 
         foreach ($parseQueue as $file) {
-            $this->commandBus->handle(new ParseFileCommand($kernel, $origin, $currentDirectory, $file));
+            $this->commandBus->handle(new ParseFileCommand($configuration, $origin, $currentDirectory, $file));
         }
     }
 

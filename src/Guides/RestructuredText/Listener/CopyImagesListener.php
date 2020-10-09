@@ -24,50 +24,47 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class CopyImagesListener
 {
-    private $buildContext;
-
     /** @var LoggerInterface */
     private $logger;
 
-    public function __construct(BuildContext $buildContext, LoggerInterface $logger)
+    public function __construct(LoggerInterface $logger)
     {
-        $this->buildContext = $buildContext;
         $this->logger = $logger;
     }
 
     public function preNodeRender(PreNodeRenderEvent $event) : void
     {
-        $node = $event->getNode();
-        if (!$node instanceof ImageNode) {
-            return;
-        }
-
-        $sourceImage = $node->getEnvironment()->absoluteRelativePath($node->getUrl());
-
-        if (!file_exists($sourceImage)) {
-            $this->logger->error(
-                sprintf(
-                    'Missing image file "%s" in "%s"',
-                    $node->getUrl(),
-                    $node->getEnvironment()->getCurrentFileName()
-                )
-            );
-
-            return;
-        }
-
-        $fileInfo = new SplFileInfo($sourceImage);
-        $fs = new Filesystem();
-
-        // the /_images path is currently hardcoded here and respected
-        // in the overridden image node template
-        $newPath = '/_images/' . $fileInfo->getFilename();
-        $fs->copy($sourceImage, $this->buildContext->getOutputFilesystem() . $newPath, true);
-
-        $node->setValue(
-            $node->getEnvironment()->relativeUrl(
-                '/_images/' . $fileInfo->getFilename()
-            )
-        );
+//        $node = $event->getNode();
+//        if (!$node instanceof ImageNode) {
+//            return;
+//        }
+//
+//        $sourceImage = $node->getEnvironment()->absoluteRelativePath($node->getUrl());
+//
+//        if (!file_exists($sourceImage)) {
+//            $this->logger->error(
+//                sprintf(
+//                    'Missing image file "%s" in "%s"',
+//                    $node->getUrl(),
+//                    $node->getEnvironment()->getCurrentFileName()
+//                )
+//            );
+//
+//            return;
+//        }
+//
+//        $fileInfo = new SplFileInfo($sourceImage);
+//        $fs = new Filesystem();
+//
+//        // the /_images path is currently hardcoded here and respected
+//        // in the overridden image node template
+//        $newPath = '/_images/' . $fileInfo->getFilename();
+//        $fs->copy($sourceImage, $this->buildContext->getOutputFilesystem() . $newPath, true);
+//
+//        $node->setValue(
+//            $node->getEnvironment()->relativeUrl(
+//                '/_images/' . $fileInfo->getFilename()
+//            )
+//        );
     }
 }

@@ -22,18 +22,10 @@ use phpDocumentor\Parser\FlySystemMirror;
 
 final class AssetsCopyListener
 {
-    /** @var FilesystemInterface */
-    private $targetFilesystem;
-
-    public function __construct(FilesystemInterface $targetFilesystem)
-    {
-        $this->targetFilesystem = $targetFilesystem;
-    }
-
     public function postBuildRender() : void
     {
-        $sourceFilesystem = new Filesystem(new Local(sprintf('%s/../Templates/rtd/assets', __DIR__)));
-
-        FlySystemMirror::mirror($sourceFilesystem, $this->targetFilesystem, '', 'assets');
+//        $sourceFilesystem = new Filesystem(new Local(sprintf('%s/../Templates/rtd/assets', __DIR__)));
+//
+//        FlySystemMirror::mirror($sourceFilesystem, $this->targetFilesystem, '', 'assets');
     }
 }
