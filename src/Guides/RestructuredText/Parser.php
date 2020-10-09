@@ -65,6 +65,7 @@ class Parser implements ParserInterface
 
     public function __construct(
         Configuration $configuration,
+        TemplateRenderer $templateRenderer,
         Environment $environment,
         EventManager $eventManager,
         NodeFactory $nodeFactory,
@@ -77,7 +78,7 @@ class Parser implements ParserInterface
         $this->references = $references;
         $this->eventManager = $eventManager;
         $this->format = $configuration->getFormat();
-        $this->templateRenderer = $configuration->getTemplateRenderer();
+        $this->templateRenderer = $templateRenderer;
         $this->nodeFactory = $nodeFactory;
 
         $this->initDirectives($directives);
@@ -89,6 +90,7 @@ class Parser implements ParserInterface
     {
         return new Parser(
             $this->configuration,
+            $this->templateRenderer,
             $this->environment,
             $this->eventManager,
             $this->nodeFactory,

@@ -21,6 +21,7 @@ use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\VersionDescriptor;
 use phpDocumentor\Dsn;
 use phpDocumentor\Guides\Configuration;
+use phpDocumentor\Guides\Formats\Format;
 use phpDocumentor\Guides\RestructuredText\Command\LoadCacheCommand;
 use phpDocumentor\Guides\RestructuredText\Command\ParseDirectoryCommand;
 use phpDocumentor\Guides\RestructuredText\Command\PersistCacheCommand;
@@ -60,8 +61,8 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
     /** @var CommandBus */
     private $commandBus;
 
-    /** @var string */
-    private $globalTemplatesPath;
+    /** @var array<Format> */
+    private $outputFormats = [];
 
     public function __construct(
         FlySystemFactory $flySystemFactory,
@@ -69,14 +70,14 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
         LoggerInterface $logger,
         EnvironmentFactory $environmentFactory,
         CommandBus $commandBus,
-        string $globalTemplatesPath
+        iterable $outputFormats
     ) {
         $this->flySystemFactory = $flySystemFactory;
         $this->cacheLocator = $cacheLocator;
         $this->logger = $logger;
         $this->environmentFactory = $environmentFactory;
         $this->commandBus = $commandBus;
-        $this->globalTemplatesPath = $globalTemplatesPath;
+        $this->outputFormats = $outputFormats;
     }
 
     public function transform(ProjectDescriptor $project, Transformation $transformation) : void
@@ -95,7 +96,7 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
         /** @var VersionDescriptor $version */
         foreach ($project->getVersions() as $version) {
             foreach ($version->getDocumentationSets() as $documentationSet) {
-                $this->renderDocumentationSet($documentationSet, $project, $cachePath, $transformation);
+                $this->renderDocumentationSet($documentationSet, $project, $transformation, $cachePath);
             }
         }
     }
@@ -111,10 +112,9 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
     private function renderDocumentationSet(
         DocumentationSetDescriptor $documentationSet,
         ProjectDescriptor $project,
-        string $cachePath,
-        Transformation $transformation
+        Transformation $transformation,
+        string $cachePath
     ) : void {
-        $destination = $transformation->getTransformer()->destination();
         $dsn = $documentationSet->getSource()['dsn'];
         $stopwatch = $this->startRenderingSetMessage($dsn);
         $useCache = $project->getSettings()->getCustom()[self::SETTING_CACHE];
@@ -124,16 +124,13 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
         $targetDirectory = $documentationSet->getOutput();
 
         $this->commandBus->handle(new LoadCacheCommand($cachePath, $useCache));
-        $this->parse(
-            $targetDirectory,
-            $cachePath,
-            $useCache,
-            $project,
-            $transformation,
-            $origin,
-            $directory
-        );
-        $this->render($destination, $targetDirectory);
+
+        $environment = $this->environmentFactory->create($project, $transformation, $targetDirectory);
+        $environment->addExtension(new AssetsExtension());
+        $templateRenderer = new TemplateRenderer($environment, 'guides', $targetDirectory);
+
+        $this->parse($origin, $templateRenderer, $directory);
+        $this->render($transformation->getTransformer()->destination(), $targetDirectory);
 
         $this->commandBus->handle(new PersistCacheCommand($cachePath, $useCache));
 
@@ -142,7 +139,7 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
 
     private function startRenderingSetMessage(Dsn $dsn) : Stopwatch
     {
-        $stopwatch = new Stopwatch(true);
+        $stopwatch = new Stopwatch();
         $stopwatch->start('guide');
         $this->logger->info('Rendering guide ' . $dsn);
 
@@ -162,27 +159,9 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
         );
     }
 
-    private function parse(
-        string $targetDirectory,
-        string $cachePath,
-        bool $useCache,
-        ProjectDescriptor $project,
-        Transformation $transformation,
-        Filesystem $origin,
-        string $directory
-    ) : void {
-        $environment = $this->environmentFactory->create($project, $transformation, $targetDirectory);
-
-        $templateRenderer = new TemplateRenderer($environment, 'guides');
-        $environment->addExtension(new AssetsExtension());
-
-        $configuration = new Configuration();
-        $configuration->setTemplateRenderer($templateRenderer);
-        $configuration->setCacheDir($cachePath);
-        $configuration->setUseCachedMetas($useCache);
-
-        $configuration->addFormat(new HTMLFormat($targetDirectory));
-        $configuration->addFormat(new LaTeXFormat());
+    private function parse(Filesystem $origin, TemplateRenderer $templateRenderer, string $directory) : void
+    {
+        $configuration = new Configuration($templateRenderer, $this->outputFormats);
 
         $this->commandBus->handle(new ParseDirectoryCommand($configuration, $origin, $directory));
     }

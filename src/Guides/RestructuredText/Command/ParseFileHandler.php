@@ -89,15 +89,18 @@ final class ParseFileHandler
             NodeTypes::SECTION_END => Nodes\SectionEndNode::class
         ];
 
+        $templateRenderer = $configuration->getTemplateRenderer();
+
         $nodeFactory = DefaultNodeFactory::createFromRegistry(
             $this->eventManager,
             $configuration->getFormat(),
-            $configuration->getTemplateRenderer(),
+            $templateRenderer,
             $nodeRegistry
         );
 
         $parser = new Parser(
             $configuration,
+            $templateRenderer,
             $environment,
             $this->eventManager,
             $nodeFactory,

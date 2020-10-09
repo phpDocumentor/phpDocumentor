@@ -19,17 +19,10 @@ class DocumentNodeRenderer implements NodeRenderer, FullDocumentNodeRenderer
     /** @var TemplateRenderer */
     private $templateRenderer;
 
-    /** @var string */
-    private $subFolderInProject;
-
-    public function __construct(
-        DocumentNode $document,
-        TemplateRenderer $templateRenderer,
-        string $subFolderInProject
-    ) {
+    public function __construct(DocumentNode $document, TemplateRenderer $templateRenderer)
+    {
         $this->document = $document;
         $this->templateRenderer = $templateRenderer;
-        $this->subFolderInProject = trim($subFolderInProject, '/');
     }
 
     public function render() : string
@@ -39,7 +32,7 @@ class DocumentNodeRenderer implements NodeRenderer, FullDocumentNodeRenderer
 
     public function renderDocument() : string
     {
-        $this->setCurrentFileNameInTwigToDetermineRelativePathsToDocumentationRoot($this->subFolderInProject);
+        $this->templateRenderer->setDestination($this->document->getEnvironment()->getCurrentFileName());
 
         $output = $this->render();
 
@@ -57,13 +50,5 @@ class DocumentNodeRenderer implements NodeRenderer, FullDocumentNodeRenderer
             $headerNodes .= $node->render() . "\n";
         }
         return $headerNodes;
-    }
-
-    private function setCurrentFileNameInTwigToDetermineRelativePathsToDocumentationRoot(string $urlPrefix) : void
-    {
-        /** @var Extension $extension */
-        $extension = $this->templateRenderer->getTemplateEngine()->getExtension(Extension::class);
-        $destination = $urlPrefix . '/' . $this->document->getEnvironment()->getCurrentFileName();
-        $extension->setDestination($destination);
     }
 }

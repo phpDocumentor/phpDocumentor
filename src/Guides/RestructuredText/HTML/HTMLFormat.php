@@ -60,13 +60,6 @@ use phpDocumentor\Guides\TemplateRenderer;
 
 final class HTMLFormat implements Format
 {
-    private $subFolder;
-
-    public function __construct(string $subFolder)
-    {
-        $this->subFolder = $subFolder;
-    }
-
     public function getFileExtension() : string
     {
         return Format::HTML;
@@ -218,8 +211,7 @@ final class HTMLFormat implements Format
             function (DocumentNode $node) use ($templateRenderer) {
                 return new DocumentNodeRenderer(
                     $node,
-                    $templateRenderer,
-                    $this->subFolder
+                    $templateRenderer
                 );
             }
         );

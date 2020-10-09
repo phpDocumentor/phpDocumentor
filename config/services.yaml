@@ -263,7 +263,11 @@ services:
   ###################################################################################
     Doctrine\Common\EventManager: ~
 
-    phpDocumentor\Transformer\Writer\RenderGuide: ~
+    phpDocumentor\Transformer\Writer\RenderGuide:
+      arguments:
+        $outputFormats:
+          - '@phpDocumentor\Guides\RestructuredText\HTML\HTMLFormat'
+          - '@phpDocumentor\Guides\RestructuredText\LaTeX\LaTeXFormat'
 
     phpDocumentor\Guides\:
       resource: '../src/Guides/*'

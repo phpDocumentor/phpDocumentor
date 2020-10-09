@@ -7,18 +7,9 @@ namespace phpDocumentor\Guides;
 use phpDocumentor\Guides\Formats\Format;
 use RuntimeException;
 use function sprintf;
-use function sys_get_temp_dir;
 
 class Configuration
 {
-    public const THEME_DEFAULT = 'default';
-
-    /** @var string */
-    private $cacheDir;
-
-    /** @var string */
-    private $theme = self::THEME_DEFAULT;
-
     /** @var string */
     private $baseUrl = '';
 
@@ -30,9 +21,6 @@ class Configuration
 
     /** @var int */
     private $initialHeaderLevel = 1;
-
-    /** @var bool */
-    private $useCachedMetas = true;
 
     /** @var string */
     private $fileExtension = Format::HTML;
@@ -49,39 +37,15 @@ class Configuration
     /** @var Format[] */
     private $formats;
 
-    public function __construct()
+    public function __construct(TemplateRenderer $templateRenderer, array $outputFormats)
     {
-        $this->cacheDir = sys_get_temp_dir() . '/doctrine-rst-parser';
-    }
-
-    public function getCacheDir() : string
-    {
-        return $this->cacheDir;
-    }
-
-    public function setCacheDir(string $cacheDir) : void
-    {
-        $this->cacheDir = $cacheDir;
+        $this->templateRenderer = $templateRenderer;
+        $this->addFormat(...$outputFormats);
     }
 
     public function getTemplateRenderer() : TemplateRenderer
     {
         return $this->templateRenderer;
-    }
-
-    public function setTemplateRenderer(TemplateRenderer $templateRenderer) : void
-    {
-        $this->templateRenderer = $templateRenderer;
-    }
-
-    public function getTheme() : string
-    {
-        return $this->theme;
-    }
-
-    public function setTheme(string $theme) : void
-    {
-        $this->theme = $theme;
     }
 
     public function getBaseUrl() : string
@@ -132,24 +96,14 @@ class Configuration
         $this->ignoreInvalidReferences = $ignoreInvalidReferences;
     }
 
-    public function setInitialHeaderLevel(int $initialHeaderLevel) : void
-    {
-        $this->initialHeaderLevel = $initialHeaderLevel;
-    }
-
     public function getInitialHeaderLevel() : int
     {
         return $this->initialHeaderLevel;
     }
 
-    public function setUseCachedMetas(bool $useCachedMetas) : void
+    public function setInitialHeaderLevel(int $initialHeaderLevel) : void
     {
-        $this->useCachedMetas = $useCachedMetas;
-    }
-
-    public function getUseCachedMetas() : bool
-    {
-        return $this->useCachedMetas;
+        $this->initialHeaderLevel = $initialHeaderLevel;
     }
 
     public function getFileExtension() : string
@@ -162,11 +116,6 @@ class Configuration
         $this->fileExtension = $fileExtension;
     }
 
-    public function addFormat(Format $format) : void
-    {
-        $this->formats[$format->getFileExtension()] = $format;
-    }
-
     public function getFormat() : Format
     {
         if (! isset($this->formats[$this->fileExtension])) {
@@ -176,6 +125,13 @@ class Configuration
         }
 
         return $this->formats[$this->fileExtension];
+    }
+
+    public function addFormat(Format ...$format) : void
+    {
+        foreach ($format as $item) {
+            $this->formats[$item->getFileExtension()] = $item;
+        }
     }
 
     public function getNameOfIndexFile() : string
