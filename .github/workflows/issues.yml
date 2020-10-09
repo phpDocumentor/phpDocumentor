@@ -8,6 +8,6 @@ jobs:
         uses: docker://takanabe/github-actions-automate-projects:v0.0.1
         if: github.event_name == 'issues' && github.event.action == 'opened'
         env:
-          GITHUB_TOKEN: ${{ secrets.ISSUE_TRIAGE }}
+          GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}
           GITHUB_PROJECT_URL: https://github.com/orgs/phpDocumentor/projects/4
           GITHUB_PROJECT_COLUMN_NAME: Needs triage
