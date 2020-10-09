@@ -6,9 +6,9 @@ namespace phpDocumentor\Guides\RestructuredText\Builder;
 
 use League\Flysystem\FilesystemInterface;
 use League\Tactician\CommandBus;
+use phpDocumentor\Guides\Configuration;
 use phpDocumentor\Guides\Files;
 use phpDocumentor\Guides\RestructuredText\Command\ParseFileCommand;
-use phpDocumentor\Guides\Configuration;
 
 class ParseQueueProcessor
 {

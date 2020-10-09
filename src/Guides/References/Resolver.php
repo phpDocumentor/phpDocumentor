@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\References;
 
-use phpDocumentor\Guides\Meta\Entry;
 use phpDocumentor\Guides\Environment;
+use phpDocumentor\Guides\Meta\Entry;
 
 class Resolver
 {

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\Formats;
 
 use phpDocumentor\Guides\Renderers\NodeRendererFactory;
+use phpDocumentor\Guides\TemplateRenderer;
 
 interface Format
 {
@@ -16,5 +17,5 @@ interface Format
     /**
      * @return NodeRendererFactory[]
      */
-    public function getNodeRendererFactories() : array;
+    public function getNodeRendererFactories(TemplateRenderer $templateRenderer) : array;
 }

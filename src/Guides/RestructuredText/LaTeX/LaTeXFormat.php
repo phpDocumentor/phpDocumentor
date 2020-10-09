@@ -15,14 +15,6 @@ use phpDocumentor\Guides\TemplateRenderer;
 
 class LaTeXFormat implements Format
 {
-    /** @var TemplateRenderer */
-    private $templateRenderer;
-
-    public function __construct(TemplateRenderer $templateRenderer)
-    {
-        $this->templateRenderer = $templateRenderer;
-    }
-
     public function getFileExtension() : string
     {
         return Format::LATEX;
@@ -47,69 +39,69 @@ class LaTeXFormat implements Format
     /**
      * @return NodeRendererFactory[]
      */
-    public function getNodeRendererFactories() : array
+    public function getNodeRendererFactories(TemplateRenderer $templateRenderer) : array
     {
         return [
             Nodes\AnchorNode::class => new CallableNodeRendererFactory(
-                function (Nodes\AnchorNode $node) {
+                function (Nodes\AnchorNode $node) use ($templateRenderer) {
                     return new Renderers\LaTeX\AnchorNodeRenderer(
                         $node,
-                        $this->templateRenderer
+                        $templateRenderer
                     );
                 }
             ),
             Nodes\CodeNode::class => new CallableNodeRendererFactory(
-                function (Nodes\CodeNode $node) {
+                function (Nodes\CodeNode $node) use ($templateRenderer) {
                     return new Renderers\LaTeX\CodeNodeRenderer(
                         $node,
-                        $this->templateRenderer
+                        $templateRenderer
                     );
                 }
             ),
             Nodes\ImageNode::class => new CallableNodeRendererFactory(
-                function (Nodes\ImageNode $node) {
+                function (Nodes\ImageNode $node) use ($templateRenderer) {
                     return new Renderers\LaTeX\ImageNodeRenderer(
                         $node,
-                        $this->templateRenderer
+                        $templateRenderer
                     );
                 }
             ),
             Nodes\ListNode::class => new CallableNodeRendererFactory(
-                function (Nodes\ListNode $node) {
+                function (Nodes\ListNode $node) use ($templateRenderer) {
                     return new Renderers\ListNodeRenderer(
                         $node,
-                        new Renderers\LaTeX\ListRenderer($node, $this->templateRenderer)
+                        new Renderers\LaTeX\ListRenderer($node, $templateRenderer)
                     );
                 }
             ),
             Nodes\MetaNode::class => new CallableNodeRendererFactory(
-                function (Nodes\MetaNode $node) {
+                function (Nodes\MetaNode $node) use ($templateRenderer) {
                     return new Renderers\LaTeX\MetaNodeRenderer(
                         $node,
-                        $this->templateRenderer
+                        $templateRenderer
                     );
                 }
             ),
             Nodes\ParagraphNode::class => new CallableNodeRendererFactory(
-                function (Nodes\ParagraphNode $node) {
+                function (Nodes\ParagraphNode $node) use ($templateRenderer) {
                     return new Renderers\LaTeX\ParagraphNodeRenderer(
                         $node,
-                        $this->templateRenderer
+                        $templateRenderer
                     );
                 }
             ),
             Nodes\QuoteNode::class => new CallableNodeRendererFactory(
-                function (Nodes\QuoteNode $node) {
+                function (Nodes\QuoteNode $node) use ($templateRenderer) {
                     return new Renderers\LaTeX\QuoteNodeRenderer(
                         $node,
-                        $this->templateRenderer
+                        $templateRenderer
                     );
                 }
             ),
             Nodes\SeparatorNode::class => new CallableNodeRendererFactory(
-                function (Nodes\SeparatorNode $node) {
+                function (Nodes\SeparatorNode $node) use ($templateRenderer) {
                     return new Renderers\LaTeX\SeparatorNodeRenderer(
-                        $this->templateRenderer
+                        $templateRenderer
                     );
                 }
             ),
@@ -121,36 +113,36 @@ class LaTeXFormat implements Format
                 }
             ),
             Nodes\TitleNode::class => new CallableNodeRendererFactory(
-                function (Nodes\TitleNode $node) {
+                function (Nodes\TitleNode $node) use ($templateRenderer) {
                     return new Renderers\LaTeX\TitleNodeRenderer(
                         $node,
-                        $this->templateRenderer
+                        $templateRenderer
                     );
                 }
             ),
             Nodes\TocNode::class => new CallableNodeRendererFactory(
-                function (Nodes\TocNode $node) {
+                function (Nodes\TocNode $node) use ($templateRenderer) {
                     return new Renderers\LaTeX\TocNodeRenderer(
                         $node->getEnvironment(),
                         $node,
-                        $this->templateRenderer
+                        $templateRenderer
                     );
                 }
             ),
             Nodes\DocumentNode::class => new CallableNodeRendererFactory(
-                function (Nodes\DocumentNode $node) {
+                function (Nodes\DocumentNode $node) use ($templateRenderer) {
                     return new Renderers\LaTeX\DocumentNodeRenderer(
                         $node,
-                        $this->templateRenderer
+                        $templateRenderer
                     );
                 }
             ),
             Nodes\SpanNode::class => new CallableNodeRendererFactory(
-                function (Nodes\SpanNode $node) {
+                function (Nodes\SpanNode $node) use ($templateRenderer) {
                     return new Renderers\LaTeX\SpanNodeRenderer(
                         $node->getEnvironment(),
                         $node,
-                        $this->templateRenderer
+                        $templateRenderer
                     );
                 }
             ),

@@ -60,17 +60,10 @@ use phpDocumentor\Guides\TemplateRenderer;
 
 final class HTMLFormat implements Format
 {
-    private $templateRenderer;
-    private $globalTemplatesPath;
     private $subFolder;
 
-    public function __construct(
-        TemplateRenderer $templateRenderer,
-        string $globalTemplatesPath,
-        string $subFolder
-    ) {
-        $this->templateRenderer = $templateRenderer;
-        $this->globalTemplatesPath = $globalTemplatesPath;
+    public function __construct(string $subFolder)
+    {
         $this->subFolder = $subFolder;
     }
 
@@ -97,102 +90,102 @@ final class HTMLFormat implements Format
     /**
      * @return NodeRendererFactory[]
      */
-    public function getNodeRendererFactories() : array
+    public function getNodeRendererFactories(TemplateRenderer $templateRenderer) : array
     {
         $nodeRendererFactories = [
             AnchorNode::class => new CallableNodeRendererFactory(
-                function (AnchorNode $node) {
+                function (AnchorNode $node) use ($templateRenderer) {
                     return new AnchorNodeRenderer(
                         $node,
-                        $this->templateRenderer
+                        $templateRenderer
                     );
                 }
             ),
             DefinitionListNode::class => new CallableNodeRendererFactory(
-                function (DefinitionListNode $node) {
+                function (DefinitionListNode $node) use ($templateRenderer) {
                     return new DefinitionListNodeRenderer(
                         $node,
-                        $this->templateRenderer
+                        $templateRenderer
                     );
                 }
             ),
             FigureNode::class => new CallableNodeRendererFactory(
-                function (FigureNode $node) {
+                function (FigureNode $node) use ($templateRenderer) {
                     return new FigureNodeRenderer(
                         $node,
-                        $this->templateRenderer
+                        $templateRenderer
                     );
                 }
             ),
             ImageNode::class => new CallableNodeRendererFactory(
-                function (ImageNode $node) {
+                function (ImageNode $node) use ($templateRenderer) {
                     return new ImageNodeRenderer(
                         $node,
-                        $this->templateRenderer
+                        $templateRenderer
                     );
                 }
             ),
             ListNode::class => new CallableNodeRendererFactory(
-                function (ListNode $node) {
+                function (ListNode $node) use ($templateRenderer) {
                     return new ListNodeRenderer(
                         $node,
-                        new ListRenderer($node, $this->templateRenderer)
+                        new ListRenderer($node, $templateRenderer)
                     );
                 }
             ),
             MetaNode::class => new CallableNodeRendererFactory(
-                function (MetaNode $node) {
+                function (MetaNode $node) use ($templateRenderer) {
                     return new MetaNodeRenderer(
                         $node,
-                        $this->templateRenderer
+                        $templateRenderer
                     );
                 }
             ),
             ParagraphNode::class => new CallableNodeRendererFactory(
-                function (ParagraphNode $node) {
+                function (ParagraphNode $node) use ($templateRenderer) {
                     return new ParagraphNodeRenderer(
                         $node,
-                        $this->templateRenderer
+                        $templateRenderer
                     );
                 }
             ),
             QuoteNode::class => new CallableNodeRendererFactory(
-                function (QuoteNode $node) {
+                function (QuoteNode $node) use ($templateRenderer) {
                     return new QuoteNodeRenderer(
                         $node,
-                        $this->templateRenderer
+                        $templateRenderer
                     );
                 }
             ),
             SeparatorNode::class => new CallableNodeRendererFactory(
-                function (SeparatorNode $node) {
+                function (SeparatorNode $node) use ($templateRenderer) {
                     return new SeparatorNodeRenderer(
-                        $this->templateRenderer
+                        $templateRenderer
                     );
                 }
             ),
             TableNode::class => new CallableNodeRendererFactory(
-                function (TableNode $node) {
+                function (TableNode $node) use ($templateRenderer) {
                     return new TableNodeRenderer(
                         $node,
-                        $this->templateRenderer
+                        $templateRenderer
                     );
                 }
             ),
             TitleNode::class => new CallableNodeRendererFactory(
-                function (TitleNode $node) {
+                function (TitleNode $node) use ($templateRenderer) {
                     return new TitleNodeRenderer(
                         $node,
-                        $this->templateRenderer
+                        $templateRenderer
                     );
                 }
             ),
             TocNode::class => new CallableNodeRendererFactory(
-                function (TocNode $node) {
+                function (TocNode $node) use ($templateRenderer) {
                     return new TocNodeRenderer(
                         $node->getEnvironment(),
                         $node,
-                        $this->templateRenderer
+                        $templateRenderer
                     );
                 }
             ),
@@ -204,49 +197,48 @@ final class HTMLFormat implements Format
                 }
             ),
             SectionBeginNode::class => new CallableNodeRendererFactory(
-                function (SectionBeginNode $node) {
+                function (SectionBeginNode $node) use ($templateRenderer) {
                     return new SectionBeginNodeRenderer(
                         $node,
-                        $this->templateRenderer
+                        $templateRenderer
                     );
                 }
             ),
             SectionEndNode::class => new CallableNodeRendererFactory(
-                function (SectionEndNode $node) {
+                function (SectionEndNode $node) use ($templateRenderer) {
                     return new SectionEndNodeRenderer(
                         $node,
-                        $this->templateRenderer
+                        $templateRenderer
                     );
                 }
             ),
         ];
 
         $nodeRendererFactories[DocumentNode::class] = new CallableNodeRendererFactory(
-            function (DocumentNode $node) {
+            function (DocumentNode $node) use ($templateRenderer) {
                 return new DocumentNodeRenderer(
                     $node,
-                    $this->templateRenderer,
+                    $templateRenderer,
                     $this->subFolder
                 );
             }
         );
 
         $nodeRendererFactories[CodeNode::class] = new CallableNodeRendererFactory(
-            function (CodeNode $node) {
+            function (CodeNode $node) use ($templateRenderer) {
                 return new CodeNodeRenderer(
                     $node,
-                    $this->templateRenderer,
-                    $this->globalTemplatesPath
+                    $templateRenderer
                 );
             }
         );
 
         $nodeRendererFactories[SpanNode::class] = new CallableNodeRendererFactory(
-            function (SpanNode $node) {
+            function (SpanNode $node) use ($templateRenderer) {
                 return new SpanNodeRenderer(
                     $node->getEnvironment(),
                     $node,
-                    $this->templateRenderer
+                    $templateRenderer
                 );
             }
         );

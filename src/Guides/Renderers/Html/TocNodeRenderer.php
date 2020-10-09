@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\Renderers\Html;
 
+use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Nodes\TocNode;
 use phpDocumentor\Guides\Renderers\NodeRenderer;
-use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\TemplateRenderer;
 use function count;
 use function is_array;

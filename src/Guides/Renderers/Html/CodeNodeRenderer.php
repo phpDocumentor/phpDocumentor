@@ -48,14 +48,10 @@ class CodeNodeRenderer implements NodeRenderer
     /** @var TemplateRenderer */
     private $templateRenderer;
 
-    /** @var string */
-    private $globalTemplatesPath;
-
-    public function __construct(CodeNode $codeNode, TemplateRenderer $templateRenderer, string $globalTemplatesPath)
+    public function __construct(CodeNode $codeNode, TemplateRenderer $templateRenderer)
     {
         $this->codeNode = $codeNode;
         $this->templateRenderer = $templateRenderer;
-        $this->globalTemplatesPath = $globalTemplatesPath;
     }
 
     public function render() : string
@@ -127,10 +123,10 @@ class CodeNodeRenderer implements NodeRenderer
 
     private function configureHighlighter() : void
     {
-        if (!self::$isHighlighterConfigured) {
-            Highlighter::registerLanguage('php', $this->globalTemplatesPath . '/guides/highlight.php/php.json', true);
-            Highlighter::registerLanguage('twig', $this->globalTemplatesPath . '/guides/highlight.php/twig.json', true);
-        }
+//        if (!self::$isHighlighterConfigured) {
+//            Highlighter::registerLanguage('php', 'guides/highlight.php/php.json', true);
+//            Highlighter::registerLanguage('twig', 'guides/highlight.php/twig.json', true);
+//        }
 
         self::$isHighlighterConfigured = true;
     }

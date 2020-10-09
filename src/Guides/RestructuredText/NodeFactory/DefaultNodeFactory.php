@@ -6,6 +6,7 @@ namespace phpDocumentor\Guides\RestructuredText\NodeFactory;
 
 use Doctrine\Common\EventManager;
 use InvalidArgumentException;
+use phpDocumentor\Guides\Formats\Format;
 use phpDocumentor\Guides\Nodes\AnchorNode;
 use phpDocumentor\Guides\Nodes\BlockNode;
 use phpDocumentor\Guides\Nodes\CallableNode;
@@ -36,6 +37,7 @@ use phpDocumentor\Guides\RestructuredText\Event\PostNodeCreateEvent;
 use phpDocumentor\Guides\RestructuredText\Parser;
 use phpDocumentor\Guides\RestructuredText\Parser\DefinitionList;
 use phpDocumentor\Guides\RestructuredText\Parser\LineChecker;
+use phpDocumentor\Guides\TemplateRenderer;
 use function sprintf;
 
 class DefaultNodeFactory implements NodeFactory
@@ -55,6 +57,27 @@ class DefaultNodeFactory implements NodeFactory
         }
     }
 
+    public static function createFromRegistry(
+        EventManager $eventManager,
+        Format $format,
+        TemplateRenderer $templateRenderer,
+        array $nodeRegistry
+    ) : self {
+        $instantiators = [];
+        foreach ($nodeRegistry as $nodeName => $nodeClass) {
+            $nodeRendererFactories = $format->getNodeRendererFactories($templateRenderer);
+            $nodeRendererFactory = $nodeRendererFactories[$nodeClass] ?? null;
+
+            $instantiators[] = new NodeInstantiator(
+                $nodeName,
+                $nodeClass,
+                $nodeRendererFactory,
+                $eventManager
+            );
+        }
+
+        return new static($eventManager, ...$instantiators);
+    }
     public function createDocumentNode(Environment $environment) : DocumentNode
     {
         /** @var DocumentNode $document */

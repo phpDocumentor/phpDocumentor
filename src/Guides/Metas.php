@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides;
 
 use phpDocumentor\Guides\Meta\Entry;
-use phpDocumentor\Guides\Environment;
 use function strtolower;
 
 class Metas

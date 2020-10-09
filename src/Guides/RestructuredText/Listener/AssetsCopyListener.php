@@ -15,11 +15,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\Listener;
 
-use League\Flysystem\Adapter\Local;
-use League\Flysystem\Filesystem;
-use League\Flysystem\FilesystemInterface;
-use phpDocumentor\Parser\FlySystemMirror;
-
 final class AssetsCopyListener
 {
     public function postBuildRender() : void

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\RestructuredText\Event;
 
 use Doctrine\Common\EventArgs;
-use phpDocumentor\Guides\RestructuredText\Builder;
 
 abstract class BuildEvent extends EventArgs
 {

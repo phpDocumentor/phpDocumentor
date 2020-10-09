@@ -261,6 +261,8 @@ services:
   ###################################################################################
   ## Guides - EXPERIMENTAL ##########################################################
   ###################################################################################
+    Doctrine\Common\EventManager: ~
+
     phpDocumentor\Transformer\Writer\RenderGuide: ~
 
     phpDocumentor\Guides\:

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\Toc;
 
-use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Environment;
+use phpDocumentor\Guides\Nodes\Node;
 use function array_filter;
 use function array_map;
 use function explode;

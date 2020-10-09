@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides;
 
-use Doctrine\Common\EventManager;
 use phpDocumentor\Guides\Formats\Format;
 use RuntimeException;
 use function sprintf;
@@ -29,9 +28,6 @@ class Configuration
     /** @var bool */
     private $ignoreInvalidReferences = false;
 
-    /** @var bool */
-    private $indentHTML = false;
-
     /** @var int */
     private $initialHeaderLevel = 1;
 
@@ -53,14 +49,9 @@ class Configuration
     /** @var Format[] */
     private $formats;
 
-    /** @var EventManager */
-    private $eventManager;
-
     public function __construct()
     {
         $this->cacheDir = sys_get_temp_dir() . '/doctrine-rst-parser';
-
-        $this->eventManager = new EventManager();
     }
 
     public function getCacheDir() : string
@@ -141,16 +132,6 @@ class Configuration
         $this->ignoreInvalidReferences = $ignoreInvalidReferences;
     }
 
-    public function setIndentHTML(bool $indentHTML) : void
-    {
-        $this->indentHTML = $indentHTML;
-    }
-
-    public function getIndentHTML() : bool
-    {
-        return $this->indentHTML;
-    }
-
     public function setInitialHeaderLevel(int $initialHeaderLevel) : void
     {
         $this->initialHeaderLevel = $initialHeaderLevel;
@@ -179,11 +160,6 @@ class Configuration
     public function setFileExtension(string $fileExtension) : void
     {
         $this->fileExtension = $fileExtension;
-    }
-
-    public function getEventManager() : EventManager
-    {
-        return $this->eventManager;
     }
 
     public function addFormat(Format $format) : void

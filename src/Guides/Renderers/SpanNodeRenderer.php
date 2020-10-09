@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\Renderers;
 
 use InvalidArgumentException;
-use phpDocumentor\Guides\Nodes\Node;
-use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\InvalidLink;
+use phpDocumentor\Guides\Nodes\Node;
+use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\RestructuredText\Span\SpanToken;
 use function is_string;
 use function preg_replace;

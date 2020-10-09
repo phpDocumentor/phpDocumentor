@@ -181,8 +181,8 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
         $configuration->setCacheDir($cachePath);
         $configuration->setUseCachedMetas($useCache);
 
-        $configuration->addFormat(new HTMLFormat($templateRenderer, $this->globalTemplatesPath, $targetDirectory));
-        $configuration->addFormat(new LaTeXFormat($templateRenderer));
+        $configuration->addFormat(new HTMLFormat($targetDirectory));
+        $configuration->addFormat(new LaTeXFormat());
 
         $this->commandBus->handle(new ParseDirectoryCommand($configuration, $origin, $directory));
     }

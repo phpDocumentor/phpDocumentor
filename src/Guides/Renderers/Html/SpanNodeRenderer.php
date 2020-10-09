@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\Renderers\Html;
 
-use phpDocumentor\Guides\Nodes\SpanNode;
-use phpDocumentor\Guides\Renderers\SpanNodeRenderer as BaseSpanNodeRenderer;
 use phpDocumentor\Guides\Environment;
+use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\References\ResolvedReference;
+use phpDocumentor\Guides\Renderers\SpanNodeRenderer as BaseSpanNodeRenderer;
 use phpDocumentor\Guides\TemplateRenderer;
 use function htmlspecialchars;
 use function trim;

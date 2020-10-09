@@ -6,11 +6,11 @@ namespace phpDocumentor\Guides\Nodes;
 
 use Doctrine\Common\EventArgs;
 use Doctrine\Common\EventManager;
+use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Renderers\DefaultNodeRenderer;
 use phpDocumentor\Guides\Renderers\NodeRenderer;
 use phpDocumentor\Guides\Renderers\NodeRendererFactory;
 use phpDocumentor\Guides\Renderers\RenderedNode;
-use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\RestructuredText\Event\PostNodeRenderEvent;
 use phpDocumentor\Guides\RestructuredText\Event\PreNodeRenderEvent;
 use function implode;

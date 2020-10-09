@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\Command;
 
+use Doctrine\Common\EventManager;
 use phpDocumentor\Guides\Documents;
-use phpDocumentor\Guides\Metas;
-use phpDocumentor\Guides\Nodes\DocumentNode;
 use phpDocumentor\Guides\Environment;
+use phpDocumentor\Guides\Metas;
+use phpDocumentor\Guides\Nodes;
+use phpDocumentor\Guides\Nodes\DocumentNode;
+use phpDocumentor\Guides\Nodes\NodeTypes;
+use phpDocumentor\Guides\RestructuredText\NodeFactory\DefaultNodeFactory;
 use phpDocumentor\Guides\RestructuredText\Parser;
 use Psr\Log\LoggerInterface;
 
@@ -28,11 +32,16 @@ final class ParseFileHandler
      * @var \IteratorAggregate
      */
     private $references;
+    /**
+     * @var EventManager
+     */
+    private $eventManager;
 
     public function __construct(
         Metas $metas,
         Documents $documents,
         LoggerInterface $logger,
+        EventManager $eventManager,
         \IteratorAggregate $directives,
         \IteratorAggregate $references
     ) {
@@ -41,6 +50,7 @@ final class ParseFileHandler
         $this->logger = $logger;
         $this->directives = $directives;
         $this->references = $references;
+        $this->eventManager = $eventManager;
     }
 
     public function handle(ParseFileCommand $command): void
@@ -53,9 +63,44 @@ final class ParseFileHandler
         $environment->setCurrentFileName($file);
         $environment->setCurrentDirectory($command->getDirectory());
 
+        $nodeRegistry = [
+            NodeTypes::DOCUMENT => Nodes\DocumentNode::class,
+            NodeTypes::SPAN => Nodes\SpanNode::class,
+            NodeTypes::TOC => Nodes\TocNode::class,
+            NodeTypes::TITLE => Nodes\TitleNode::class,
+            NodeTypes::SEPARATOR => Nodes\SeparatorNode::class,
+            NodeTypes::CODE => Nodes\CodeNode::class,
+            NodeTypes::QUOTE => Nodes\QuoteNode::class,
+            NodeTypes::PARAGRAPH => Nodes\ParagraphNode::class,
+            NodeTypes::ANCHOR => Nodes\AnchorNode::class,
+            NodeTypes::LIST => Nodes\ListNode::class,
+            NodeTypes::TABLE => Nodes\TableNode::class,
+            NodeTypes::DEFINITION_LIST => Nodes\DefinitionListNode::class,
+            NodeTypes::WRAPPER => Nodes\WrapperNode::class,
+            NodeTypes::FIGURE => Nodes\FigureNode::class,
+            NodeTypes::IMAGE => Nodes\ImageNode::class,
+            NodeTypes::META => Nodes\MetaNode::class,
+            NodeTypes::RAW => Nodes\RawNode::class,
+            NodeTypes::DUMMY => Nodes\DummyNode::class,
+            NodeTypes::MAIN => Nodes\MainNode::class,
+            NodeTypes::BLOCK => Nodes\BlockNode::class,
+            NodeTypes::CALLABLE => Nodes\CallableNode::class,
+            NodeTypes::SECTION_BEGIN => Nodes\SectionBeginNode::class,
+            NodeTypes::SECTION_END => Nodes\SectionEndNode::class
+        ];
+
+        $nodeFactory = DefaultNodeFactory::createFromRegistry(
+            $this->eventManager,
+            $configuration->getFormat(),
+            $configuration->getTemplateRenderer(),
+            $nodeRegistry
+        );
+
         $parser = new Parser(
             $configuration,
             $environment,
+            $this->eventManager,
+            $nodeFactory,
             iterator_to_array($this->directives),
             iterator_to_array($this->references)
         );
