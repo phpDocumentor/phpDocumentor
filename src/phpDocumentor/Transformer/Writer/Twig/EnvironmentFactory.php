@@ -30,9 +30,8 @@ class EnvironmentFactory
 
     /** @var ?Path */
     private $templateOverridesAt;
-    /**
-     * @var TocExtension
-     */
+
+    /** @var TocExtension */
     private $tocExtension;
 
     public function __construct(LinkRenderer $renderer, TocExtension $tocExtension)

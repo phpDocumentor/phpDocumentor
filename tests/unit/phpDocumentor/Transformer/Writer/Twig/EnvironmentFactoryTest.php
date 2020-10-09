@@ -15,6 +15,8 @@ namespace phpDocumentor\Transformer\Writer\Twig;
 
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Faker\Faker;
+use phpDocumentor\Guides\Metas;
+use phpDocumentor\Guides\Twig\TocExtension;
 use phpDocumentor\Transformer\Router\Router;
 use PHPUnit\Framework\TestCase;
 use Twig\Environment;
@@ -41,7 +43,8 @@ final class EnvironmentFactoryTest extends TestCase
         $this->router = $this->prophesize(Router::class);
 
         $this->factory = new EnvironmentFactory(
-            new LinkRenderer($this->router->reveal())
+            new LinkRenderer($this->router->reveal()),
+            new TocExtension(new Metas())
         );
     }
 
@@ -58,7 +61,7 @@ final class EnvironmentFactoryTest extends TestCase
         $environment = $this->factory->create(new ProjectDescriptor('name'), $transformation, '/home');
 
         $this->assertInstanceOf(Environment::class, $environment);
-        $this->assertCount(5, $environment->getExtensions());
+        $this->assertCount(6, $environment->getExtensions());
         $this->assertTrue($environment->hasExtension(Extension::class));
     }
 
@@ -106,7 +109,7 @@ final class EnvironmentFactoryTest extends TestCase
         $this->assertTrue($environment->isDebug());
         $this->assertTrue($environment->isAutoReload());
         $this->assertInstanceOf(Environment::class, $environment);
-        $this->assertCount(5, $environment->getExtensions());
+        $this->assertCount(6, $environment->getExtensions());
         $this->assertTrue($environment->hasExtension(Extension::class));
         $this->assertTrue($environment->hasExtension(DebugExtension::class));
     }
