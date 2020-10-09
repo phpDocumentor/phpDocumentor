@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace phpDocumentor\Guides\RestructuredText\Command;
+namespace phpDocumentor\Guides\Handlers;
 
 use League\Flysystem\FilesystemInterface;
 use phpDocumentor\Guides\Documents;
 use phpDocumentor\Guides\Metas;
+use phpDocumentor\Guides\RenderCommand;
 
 final class RenderHandler
 {

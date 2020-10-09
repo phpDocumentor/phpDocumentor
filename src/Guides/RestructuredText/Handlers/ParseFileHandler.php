@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace phpDocumentor\Guides\RestructuredText\Command;
+namespace phpDocumentor\Guides\RestructuredText\Handlers;
 
 use Doctrine\Common\EventManager;
 use phpDocumentor\Guides\Documents;
@@ -12,6 +12,7 @@ use phpDocumentor\Guides\Nodes;
 use phpDocumentor\Guides\Nodes\DocumentNode;
 use phpDocumentor\Guides\Nodes\NodeTypes;
 use phpDocumentor\Guides\RestructuredText\NodeFactory\DefaultNodeFactory;
+use phpDocumentor\Guides\RestructuredText\ParseFileCommand;
 use phpDocumentor\Guides\RestructuredText\Parser;
 use Psr\Log\LoggerInterface;
 

@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace phpDocumentor\Guides\RestructuredText\Command;
+namespace phpDocumentor\Guides\Handlers;
 
+use phpDocumentor\Guides\LoadCacheCommand;
 use phpDocumentor\Guides\Metas;
 use phpDocumentor\Guides\RestructuredText\Meta\CachedMetasLoader;
 

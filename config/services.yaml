@@ -272,11 +272,15 @@ services:
     phpDocumentor\Guides\:
       resource: '../src/Guides/*'
 
-    phpDocumentor\Guides\RestructuredText\Command\:
-      resource: '../src/Guides/RestructuredText/Command/*Handler.php'
+    phpDocumentor\Guides\Handlers\:
+      resource: '../src/Guides/Handlers/*Handler.php'
       tags: [{name: tactician.handler, typehints: true}]
 
-    phpDocumentor\Guides\RestructuredText\Command\ParseFileHandler:
+    phpDocumentor\Guides\RestructuredText\Handlers\:
+      resource: '../src/Guides/RestructuredText/Handlers/*Handler.php'
+      tags: [{name: tactician.handler, typehints: true}]
+
+    phpDocumentor\Guides\RestructuredText\Handlers\ParseFileHandler:
       arguments:
         $directives: !tagged_iterator phpdoc.guides.directive
         $references: !tagged_iterator phpdoc.guides.reference

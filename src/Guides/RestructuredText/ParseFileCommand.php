@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace phpDocumentor\Guides\RestructuredText\Command;
+namespace phpDocumentor\Guides\RestructuredText;
 
 use League\Flysystem\FilesystemInterface;
 use phpDocumentor\Guides\Configuration;

@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace phpDocumentor\Guides\RestructuredText\Command;
+namespace phpDocumentor\Guides\RestructuredText\Handlers;
 
 use phpDocumentor\Guides\RestructuredText\Builder\ParseQueueProcessor;
 use phpDocumentor\Guides\RestructuredText\Builder\Scanner;
+use phpDocumentor\Guides\RestructuredText\ParseDirectoryCommand;
 
 final class ParseDirectoryHandler
 {
