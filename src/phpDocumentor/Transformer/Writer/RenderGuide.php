@@ -54,28 +54,20 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
     /** @var CommandBus */
     private $commandBus;
 
-    /** @var iterable<Format> */
-    private $outputFormats;
-
     /** @var Renderer */
     private $renderer;
 
-    /**
-     * @param iterable<Format> $outputFormats
-     */
     public function __construct(
         FlySystemFactory $flySystemFactory,
         Renderer $renderer,
         Locator $cacheLocator,
         LoggerInterface $logger,
-        CommandBus $commandBus,
-        iterable $outputFormats
+        CommandBus $commandBus
     ) {
         $this->flySystemFactory = $flySystemFactory;
         $this->cacheLocator = $cacheLocator;
         $this->logger = $logger;
         $this->commandBus = $commandBus;
-        $this->outputFormats = $outputFormats;
         $this->renderer = $renderer;
     }
 
@@ -118,16 +110,12 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
         $stopwatch = $this->startRenderingSetMessage($dsn);
         $useCache = $project->getSettings()->getCustom()[self::SETTING_CACHE];
 
-        $origin = $this->flySystemFactory->create($dsn);
-        $directory = $documentationSet->getSource()['paths'][0] ?? '';
-        $this->commandBus->handle(new LoadCacheCommand($cachePath, $useCache));
-
-        $this->parse($origin, $directory);
+//        $this->commandBus->handle(new LoadCacheCommand($cachePath, $useCache));
 
         $this->renderer->initialize($project, $documentationSet, $transformation);
         $this->render($transformation->getTransformer()->destination(), $documentationSet->getOutput());
 
-        $this->commandBus->handle(new PersistCacheCommand($cachePath, $useCache));
+//        $this->commandBus->handle(new PersistCacheCommand($cachePath, $useCache));
 
         $this->completedRenderingSetMessage($stopwatch, $dsn);
     }
@@ -152,13 +140,6 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
                 $stopwatchEvent->getMemory() / 1024 / 1024
             )
         );
-    }
-
-    private function parse(Filesystem $origin, string $directory) : void
-    {
-        $configuration = new Configuration($this->outputFormats);
-
-        $this->commandBus->handle(new ParseDirectoryCommand($configuration, $origin, $directory));
     }
 
     private function render(FilesystemInterface $destination, string $targetDirectory) : void

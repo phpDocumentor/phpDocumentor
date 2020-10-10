@@ -264,10 +264,14 @@ services:
     Doctrine\Common\EventManager: ~
 
     phpDocumentor\Transformer\Writer\RenderGuide:
+
+    phpDocumentor\Pipeline\Stage\Parser\ParseGuides:
       arguments:
         $outputFormats:
           - '@phpDocumentor\Guides\RestructuredText\HTML\HTMLFormat'
           - '@phpDocumentor\Guides\RestructuredText\LaTeX\LaTeXFormat'
+      tags:
+        - { name: 'phpdoc.pipeline.api_documentation.parse', priority: 0 }
 
     phpDocumentor\Guides\:
       resource: '../src/Guides/*'
