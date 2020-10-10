@@ -258,9 +258,9 @@ services:
             - { method: offsetSet, arguments: ['twig', '@phpDocumentor\Transformer\Writer\Twig']}
             - { method: offsetSet, arguments: ['RenderGuide', '@phpDocumentor\Transformer\Writer\RenderGuide']}
 
-  ###################################################################################
-  ## Guides - EXPERIMENTAL ##########################################################
-  ###################################################################################
+    ###################################################################################
+    ## Guides - EXPERIMENTAL ##########################################################
+    ###################################################################################
     Doctrine\Common\EventManager: ~
 
     phpDocumentor\Transformer\Writer\RenderGuide:
@@ -272,6 +272,15 @@ services:
           - '@phpDocumentor\Guides\RestructuredText\LaTeX\LaTeXFormat'
       tags:
         - { name: 'phpdoc.pipeline.api_documentation.parse', priority: 0 }
+
+    phpDocumentor\Pipeline\Stage\Cache\LoadGuidesFromCache:
+      tags:
+        - { name: 'phpdoc.pipeline.api_documentation.parse', priority: 2000 }
+        - { name: 'phpdoc.pipeline.api_documentation.transform', priority: 5000 }
+
+    phpDocumentor\Pipeline\Stage\Cache\StoreGuidesToCache:
+      tags:
+        - { name: 'phpdoc.pipeline.api_documentation.parse', priority: -1000 }
 
     phpDocumentor\Guides\:
       resource: '../src/Guides/*'

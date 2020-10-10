@@ -173,9 +173,6 @@
     "symfony/http-kernel": {
         "version": "v4.0.3"
     },
-    "symfony/mime": {
-        "version": "v5.0.0"
-    },
     "symfony/monolog-bridge": {
         "version": "v4.0.3"
     },
@@ -193,9 +190,6 @@
     },
     "symfony/polyfill-intl-grapheme": {
         "version": "v1.13.1"
-    },
-    "symfony/polyfill-intl-idn": {
-        "version": "v1.12.0"
     },
     "symfony/polyfill-intl-normalizer": {
         "version": "v1.13.1"
