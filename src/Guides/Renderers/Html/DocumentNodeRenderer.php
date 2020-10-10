@@ -5,24 +5,23 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\Renderers\Html;
 
 use phpDocumentor\Guides\Nodes\DocumentNode;
+use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\Renderers\DocumentNodeRenderer as BaseDocumentRender;
 use phpDocumentor\Guides\Renderers\FullDocumentNodeRenderer;
 use phpDocumentor\Guides\Renderers\NodeRenderer;
-use phpDocumentor\Guides\TemplateRenderer;
-use phpDocumentor\Transformer\Writer\Twig\Extension;
 
 class DocumentNodeRenderer implements NodeRenderer, FullDocumentNodeRenderer
 {
     /** @var DocumentNode */
     private $document;
 
-    /** @var TemplateRenderer */
-    private $templateRenderer;
+    /** @var Renderer */
+    private $renderer;
 
-    public function __construct(DocumentNode $document, TemplateRenderer $templateRenderer)
+    public function __construct(DocumentNode $document)
     {
         $this->document = $document;
-        $this->templateRenderer = $templateRenderer;
+        $this->renderer = $document->getEnvironment()->getRenderer();
     }
 
     public function render() : string
@@ -32,11 +31,11 @@ class DocumentNodeRenderer implements NodeRenderer, FullDocumentNodeRenderer
 
     public function renderDocument() : string
     {
-        $this->templateRenderer->setDestination($this->document->getEnvironment()->getCurrentFileName());
+        $this->renderer->setDestination($this->document->getEnvironment()->getCurrentFileName());
 
         $output = $this->render();
 
-        return $this->templateRenderer->render('document.html.twig', [
+        return $this->renderer->render('document.html.twig', [
             'headerNodes' => $this->assembleHeader(),
             'bodyNodes' => $output,
         ]);

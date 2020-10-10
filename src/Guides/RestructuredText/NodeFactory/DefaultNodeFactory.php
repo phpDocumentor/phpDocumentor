@@ -33,6 +33,7 @@ use phpDocumentor\Guides\Nodes\TitleNode;
 use phpDocumentor\Guides\Nodes\TocNode;
 use phpDocumentor\Guides\Nodes\WrapperNode;
 use phpDocumentor\Guides\Environment;
+use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\RestructuredText\Event\PostNodeCreateEvent;
 use phpDocumentor\Guides\RestructuredText\Parser;
 use phpDocumentor\Guides\RestructuredText\Parser\DefinitionList;
@@ -60,24 +61,26 @@ class DefaultNodeFactory implements NodeFactory
     public static function createFromRegistry(
         EventManager $eventManager,
         Format $format,
-        TemplateRenderer $templateRenderer,
+        Environment $environment,
         array $nodeRegistry
     ) : self {
         $instantiators = [];
         foreach ($nodeRegistry as $nodeName => $nodeClass) {
-            $nodeRendererFactories = $format->getNodeRendererFactories($templateRenderer);
+            $nodeRendererFactories = $format->getNodeRendererFactories();
             $nodeRendererFactory = $nodeRendererFactories[$nodeClass] ?? null;
 
             $instantiators[] = new NodeInstantiator(
                 $nodeName,
                 $nodeClass,
                 $nodeRendererFactory,
-                $eventManager
+                $eventManager,
+                $environment
             );
         }
 
         return new static($eventManager, ...$instantiators);
     }
+
     public function createDocumentNode(Environment $environment) : DocumentNode
     {
         /** @var DocumentNode $document */

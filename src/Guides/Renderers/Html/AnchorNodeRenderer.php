@@ -6,26 +6,23 @@ namespace phpDocumentor\Guides\Renderers\Html;
 
 use phpDocumentor\Guides\Nodes\AnchorNode;
 use phpDocumentor\Guides\Renderers\NodeRenderer;
-use phpDocumentor\Guides\TemplateRenderer;
 
 class AnchorNodeRenderer implements NodeRenderer
 {
     /** @var AnchorNode */
     private $anchorNode;
 
-    /** @var TemplateRenderer */
-    private $templateRenderer;
-
-    public function __construct(AnchorNode $anchorNode, TemplateRenderer $templateRenderer)
+    public function __construct(AnchorNode $anchorNode)
     {
-        $this->anchorNode       = $anchorNode;
-        $this->templateRenderer = $templateRenderer;
+        $this->anchorNode = $anchorNode;
     }
 
     public function render() : string
     {
-        return $this->templateRenderer->render('anchor.html.twig', [
-            'anchorNode' => $this->anchorNode,
-        ]);
+        return $this->anchorNode->getEnvironment()->getRenderer()
+            ->render(
+                'anchor.html.twig', [
+                'anchorNode' => $this->anchorNode,
+            ]);
     }
 }

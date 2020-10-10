@@ -32,7 +32,7 @@ class Title extends Directive
     ) : void {
         $document = $parser->getDocument();
 
-        $title = $parser->renderTemplate('title.html.twig', ['title' => $data]);
+        $title = $document->getEnvironment()->getRenderer()->render('title.html.twig', ['title' => $data]);
 
         $document->addHeaderNode(
             $parser->getNodeFactory()->createRawNode($title)

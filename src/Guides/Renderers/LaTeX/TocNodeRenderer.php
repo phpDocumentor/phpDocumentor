@@ -6,8 +6,8 @@ namespace phpDocumentor\Guides\Renderers\LaTeX;
 
 use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Nodes\TocNode;
+use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\Renderers\NodeRenderer;
-use phpDocumentor\Guides\TemplateRenderer;
 
 class TocNodeRenderer implements NodeRenderer
 {
@@ -17,14 +17,14 @@ class TocNodeRenderer implements NodeRenderer
     /** @var TocNode */
     private $tocNode;
 
-    /** @var TemplateRenderer */
-    private $templateRenderer;
+    /** @var Renderer */
+    private $renderer;
 
-    public function __construct(Environment $environment, TocNode $tocNode, TemplateRenderer $templateRenderer)
+    public function __construct(TocNode $tocNode)
     {
-        $this->environment      = $environment;
-        $this->tocNode          = $tocNode;
-        $this->templateRenderer = $templateRenderer;
+        $this->environment = $tocNode->getEnvironment();
+        $this->tocNode = $tocNode;
+        $this->renderer = $tocNode->getEnvironment()->getRenderer();
     }
 
     public function render() : string
@@ -43,7 +43,7 @@ class TocNodeRenderer implements NodeRenderer
             $tocItems[] = ['url' => $url];
         }
 
-        return $this->templateRenderer->render('toc.tex.twig', [
+        return $this->renderer->render('toc.tex.twig', [
             'tocNode' => $this->tocNode,
             'tocItems' => $tocItems,
         ]);

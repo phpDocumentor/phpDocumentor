@@ -6,10 +6,10 @@ namespace phpDocumentor\Guides\Renderers\LaTeX;
 
 use phpDocumentor\Guides\Nodes\DocumentNode;
 use phpDocumentor\Guides\Nodes\MainNode;
+use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\Renderers\DocumentNodeRenderer as BaseDocumentRender;
 use phpDocumentor\Guides\Renderers\FullDocumentNodeRenderer;
 use phpDocumentor\Guides\Renderers\NodeRenderer;
-use phpDocumentor\Guides\TemplateRenderer;
 use function count;
 
 class DocumentNodeRenderer implements NodeRenderer, FullDocumentNodeRenderer
@@ -17,13 +17,13 @@ class DocumentNodeRenderer implements NodeRenderer, FullDocumentNodeRenderer
     /** @var DocumentNode */
     private $document;
 
-    /** @var TemplateRenderer */
-    private $templateRenderer;
+    /** @var Renderer */
+    private $renderer;
 
-    public function __construct(DocumentNode $document, TemplateRenderer $templateRenderer)
+    public function __construct(DocumentNode $document)
     {
-        $this->document         = $document;
-        $this->templateRenderer = $templateRenderer;
+        $this->document = $document;
+        $this->renderer = $document->getEnvironment()->getRenderer();
     }
 
     public function render() : string
@@ -33,7 +33,7 @@ class DocumentNodeRenderer implements NodeRenderer, FullDocumentNodeRenderer
 
     public function renderDocument() : string
     {
-        return $this->templateRenderer->render('document.tex.twig', [
+        return $this->renderer->render('document.tex.twig', [
             'isMain' => $this->isMain(),
             'document' => $this->document,
             'body' => $this->render(),

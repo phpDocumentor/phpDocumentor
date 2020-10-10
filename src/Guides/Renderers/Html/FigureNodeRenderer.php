@@ -5,26 +5,26 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\Renderers\Html;
 
 use phpDocumentor\Guides\Nodes\FigureNode;
+use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\Renderers\NodeRenderer;
-use phpDocumentor\Guides\TemplateRenderer;
 
 class FigureNodeRenderer implements NodeRenderer
 {
     /** @var FigureNode */
     private $figureNode;
 
-    /** @var TemplateRenderer */
-    private $templateRenderer;
+    /** @var Renderer */
+    private $renderer;
 
-    public function __construct(FigureNode $figureNode, TemplateRenderer $templateRenderer)
+    public function __construct(FigureNode $figureNode)
     {
         $this->figureNode       = $figureNode;
-        $this->templateRenderer = $templateRenderer;
+        $this->renderer = $figureNode->getEnvironment()->getRenderer();
     }
 
     public function render() : string
     {
-        return $this->templateRenderer->render('figure.html.twig', [
+        return $this->renderer->render('figure.html.twig', [
             'figureNode' => $this->figureNode,
         ]);
     }

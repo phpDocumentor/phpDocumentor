@@ -47,7 +47,7 @@ class Wrap extends SubDirective
             $id = '';
         }
 
-        $divOpen = $parser->renderTemplate('div-open.html.twig', [
+        $divOpen = $document->getEnvironment()->getRenderer()->render('div-open.html.twig', [
             'id' => $id,
             'class' => $this->class,
         ]);

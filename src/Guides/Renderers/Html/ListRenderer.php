@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\Renderers\Html;
 
 use phpDocumentor\Guides\Nodes\ListNode;
+use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\Renderers\FormatListRenderer;
-use phpDocumentor\Guides\TemplateRenderer;
 use RuntimeException;
 use function array_filter;
 use function array_map;
@@ -19,18 +19,18 @@ class ListRenderer implements FormatListRenderer
     /** @var ListNode */
     private $listNode;
 
-    /** @var TemplateRenderer */
-    private $templateRenderer;
+    /** @var Renderer */
+    private $renderer;
 
-    public function __construct(ListNode $listNode, TemplateRenderer $templateRenderer)
+    public function __construct(ListNode $listNode)
     {
         $this->listNode         = $listNode;
-        $this->templateRenderer = $templateRenderer;
+        $this->renderer = $listNode->getEnvironment()->getRenderer();
     }
 
     public function createElement(string $text, string $prefix) : string
     {
-        return $this->templateRenderer->render('list-item.html.twig', [
+        return $this->renderer->render('list-item.html.twig', [
             'listNode' => $this->listNode,
             'text' => $text,
             'prefix' => $prefix,
@@ -42,7 +42,7 @@ class ListRenderer implements FormatListRenderer
      */
     public function createList(bool $ordered) : array
     {
-        $lines = explode("\n", $this->templateRenderer->render('list.html.twig', [
+        $lines = explode("\n", $this->renderer->render('list.html.twig', [
             'listNode' => $this->listNode,
             'keyword' => $ordered ? 'ol' : 'ul',
         ]));

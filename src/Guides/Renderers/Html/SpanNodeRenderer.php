@@ -4,52 +4,51 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\Renderers\Html;
 
-use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\References\ResolvedReference;
+use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\Renderers\SpanNodeRenderer as BaseSpanNodeRenderer;
-use phpDocumentor\Guides\TemplateRenderer;
 use function htmlspecialchars;
 use function trim;
 
 class SpanNodeRenderer extends BaseSpanNodeRenderer
 {
-    /** @var TemplateRenderer */
-    private $templateRenderer;
+    /** @var Renderer */
+    private $renderer;
 
-    public function __construct(
-        Environment $environment,
-        SpanNode $span,
-        TemplateRenderer $templateRenderer
-    ) {
-        parent::__construct($environment, $span);
-
-        $this->templateRenderer = $templateRenderer;
+    public function __construct(SpanNode $span)
+    {
+        $this->renderer = $span->getEnvironment()->getRenderer();
+        parent::__construct($span->getEnvironment(), $span);
     }
 
     public function emphasis(string $text) : string
     {
-        return $this->templateRenderer->render('emphasis.html.twig', ['text' => $text]);
+        return $this->renderer->render('emphasis.html.twig', ['text' => $text]);
     }
 
     public function strongEmphasis(string $text) : string
     {
-        return $this->templateRenderer->render('strong-emphasis.html.twig', ['text' => $text]);
+        return $this->renderer->render('strong-emphasis.html.twig', ['text' => $text]);
     }
 
     public function nbsp() : string
     {
-        return $this->templateRenderer->render('nbsp.html.twig');
+        return 'nbsp;';
+        // TODO: this is called in DocumentNode's getTitle function during parsing; wtf?
+        // return $this->renderer->render('nbsp.html.twig');
     }
 
     public function br() : string
     {
-        return $this->templateRenderer->render('br.html.twig');
+        return '<br>';
+        // TODO: this is called in DocumentNode's getTitle function during parsing; wtf?
+        // return $this->renderer->render('br.html.twig');
     }
 
     public function literal(string $text) : string
     {
-        return $this->templateRenderer->render('literal.html.twig', ['text' => $text]);
+        return $this->renderer->render('literal.html.twig', ['text' => $text]);
     }
 
     /**
@@ -59,7 +58,7 @@ class SpanNodeRenderer extends BaseSpanNodeRenderer
     {
         $url = (string) $url;
 
-        return $this->templateRenderer->render('link.html.twig', [
+        return $this->renderer->render('link.html.twig', [
             'url' => $this->environment->generateUrl($url),
             'title' => $title,
             'attributes' => $attributes,

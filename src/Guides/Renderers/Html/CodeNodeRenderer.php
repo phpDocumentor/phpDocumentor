@@ -17,8 +17,8 @@ namespace phpDocumentor\Guides\Renderers\Html;
 
 use Highlight\Highlighter;
 use phpDocumentor\Guides\Nodes\CodeNode;
+use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\Renderers\NodeRenderer;
-use phpDocumentor\Guides\TemplateRenderer;
 use function count;
 use function in_array;
 
@@ -45,13 +45,13 @@ class CodeNodeRenderer implements NodeRenderer
     /** @var CodeNode */
     private $codeNode;
 
-    /** @var TemplateRenderer */
-    private $templateRenderer;
+    /** @var Renderer */
+    private $renderer;
 
-    public function __construct(CodeNode $codeNode, TemplateRenderer $templateRenderer)
+    public function __construct(CodeNode $codeNode)
     {
         $this->codeNode = $codeNode;
-        $this->templateRenderer = $templateRenderer;
+        $this->renderer = $codeNode->getEnvironment()->getRenderer();
     }
 
     public function render() : string
@@ -79,7 +79,7 @@ class CodeNodeRenderer implements NodeRenderer
             $code = $highLighter->highlight(self::LANGUAGES_MAPPING[$language] ?? $language, $code)->value;
         }
 
-        return $this->templateRenderer->render(
+        return $this->renderer->render(
             'code.html.twig',
             [
                 'codeNode' => $this->codeNode,

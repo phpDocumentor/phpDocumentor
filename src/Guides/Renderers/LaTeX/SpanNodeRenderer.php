@@ -4,53 +4,49 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\Renderers\LaTeX;
 
-use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\References\ResolvedReference;
+use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\Renderers\SpanNodeRenderer as BaseSpanNodeRenderer;
-use phpDocumentor\Guides\TemplateRenderer;
 use function is_string;
 use function substr;
 use function trim;
 
 class SpanNodeRenderer extends BaseSpanNodeRenderer
 {
-    /** @var TemplateRenderer */
-    private $templateRenderer;
+    /** @var Renderer */
+    private $renderer;
 
-    public function __construct(
-        Environment $environment,
-        SpanNode $span,
-        TemplateRenderer $templateRenderer
-    ) {
-        parent::__construct($environment, $span);
+    public function __construct(SpanNode $span)
+    {
+        parent::__construct($span->getEnvironment(), $span);
 
-        $this->templateRenderer = $templateRenderer;
+        $this->renderer = $span->getEnvironment()->getRenderer();
     }
 
     public function emphasis(string $text) : string
     {
-        return $this->templateRenderer->render('emphasis.tex.twig', ['text' => $text]);
+        return $this->renderer->render('emphasis.tex.twig', ['text' => $text]);
     }
 
     public function strongEmphasis(string $text) : string
     {
-        return $this->templateRenderer->render('strong-emphasis.tex.twig', ['text' => $text]);
+        return $this->renderer->render('strong-emphasis.tex.twig', ['text' => $text]);
     }
 
     public function nbsp() : string
     {
-        return $this->templateRenderer->render('nbsp.tex.twig');
+        return $this->renderer->render('nbsp.tex.twig');
     }
 
     public function br() : string
     {
-        return $this->templateRenderer->render('br.tex.twig');
+        return $this->renderer->render('br.tex.twig');
     }
 
     public function literal(string $text) : string
     {
-        return $this->templateRenderer->render('literal.tex.twig', ['text' => $text]);
+        return $this->renderer->render('literal.tex.twig', ['text' => $text]);
     }
 
     /**
@@ -68,7 +64,7 @@ class SpanNodeRenderer extends BaseSpanNodeRenderer
             $url = $this->environment->getUrl() . $url;
         }
 
-        return $this->templateRenderer->render('link.tex.twig', [
+        return $this->renderer->render('link.tex.twig', [
             'type' => $type,
             'url' => $url,
             'title' => $title,

@@ -28,7 +28,7 @@ class SidebarDirective extends SubDirective
 
     public function processSub(Parser $parser, ?Node $document, string $variable, string $data, array $options) : ?Node
     {
-        $wrapperDiv = $parser->renderTemplate(
+        $wrapperDiv = $document->getEnvironment()->getRenderer()->render(
             'directives/sidebar.html.twig',
             [
                 'title' => $data,

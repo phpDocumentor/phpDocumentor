@@ -5,26 +5,26 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\Renderers\Html;
 
 use phpDocumentor\Guides\Nodes\SectionEndNode;
+use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\Renderers\NodeRenderer;
-use phpDocumentor\Guides\TemplateRenderer;
 
 class SectionEndNodeRenderer implements NodeRenderer
 {
     /** @var SectionEndNode */
     private $sectionEndNode;
 
-    /** @var TemplateRenderer */
-    private $templateRenderer;
+    /** @var Renderer */
+    private $renderer;
 
-    public function __construct(SectionEndNode $sectionEndNode, TemplateRenderer $templateRenderer)
+    public function __construct(SectionEndNode $sectionEndNode)
     {
         $this->sectionEndNode   = $sectionEndNode;
-        $this->templateRenderer = $templateRenderer;
+        $this->renderer = $sectionEndNode->getEnvironment()->getRenderer();
     }
 
     public function render() : string
     {
-        return $this->templateRenderer->render('section-end.html.twig', [
+        return $this->renderer->render('section-end.html.twig', [
             'sectionEndNode' => $this->sectionEndNode,
         ]);
     }

@@ -40,7 +40,7 @@ abstract class AbstractAdmonitionDirective extends SubDirective
         string $data,
         array $options
     ) : ?Node {
-        $wrapperDiv = $parser->renderTemplate(
+        $wrapperDiv = $document->getEnvironment()->getRenderer()->render(
             'directives/admonition.html.twig',
             [
                 'name' => $this->name,

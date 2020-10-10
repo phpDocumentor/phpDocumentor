@@ -9,7 +9,6 @@ use InvalidArgumentException;
 use phpDocumentor\Guides\Configuration;
 use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Formats\Format;
-use phpDocumentor\Guides\Nodes;
 use phpDocumentor\Guides\Nodes\DocumentNode;
 use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\Parser as ParserInterface;
@@ -18,7 +17,6 @@ use phpDocumentor\Guides\References\Reference;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive;
 use phpDocumentor\Guides\RestructuredText\NodeFactory\NodeFactory;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
-use phpDocumentor\Guides\TemplateRenderer;
 use RuntimeException;
 use function sprintf;
 
@@ -48,9 +46,6 @@ class Parser implements ParserInterface
     /** @var NodeFactory */
     private $nodeFactory;
 
-    /** @var array<Nodes\Node> */
-    private $nodeRegistry = [];
-
     /** @var array<Reference> */
     private $references = [];
 
@@ -60,12 +55,8 @@ class Parser implements ParserInterface
     /** @var Format */
     private $format;
 
-    /** @var TemplateRenderer */
-    private $templateRenderer;
-
     public function __construct(
         Configuration $configuration,
-        TemplateRenderer $templateRenderer,
         Environment $environment,
         EventManager $eventManager,
         NodeFactory $nodeFactory,
@@ -78,7 +69,6 @@ class Parser implements ParserInterface
         $this->references = $references;
         $this->eventManager = $eventManager;
         $this->format = $configuration->getFormat();
-        $this->templateRenderer = $templateRenderer;
         $this->nodeFactory = $nodeFactory;
 
         $this->initDirectives($directives);
@@ -90,7 +80,6 @@ class Parser implements ParserInterface
     {
         return new Parser(
             $this->configuration,
-            $this->templateRenderer,
             $this->environment,
             $this->eventManager,
             $this->nodeFactory,
@@ -102,11 +91,6 @@ class Parser implements ParserInterface
     public function getNodeFactory() : NodeFactory
     {
         return $this->nodeFactory;
-    }
-
-    public function renderTemplate(string $template, array $parameters = []) : string
-    {
-        return $this->templateRenderer->render($template, $parameters);
     }
 
     public function initDirectives(array $directives) : void

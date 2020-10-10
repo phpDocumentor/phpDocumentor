@@ -7,7 +7,6 @@ namespace phpDocumentor\Guides\Renderers\Html;
 use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Nodes\TocNode;
 use phpDocumentor\Guides\Renderers\NodeRenderer;
-use phpDocumentor\Guides\TemplateRenderer;
 use function count;
 use function is_array;
 
@@ -19,14 +18,10 @@ class TocNodeRenderer implements NodeRenderer
     /** @var TocNode */
     private $tocNode;
 
-    /** @var TemplateRenderer */
-    private $templateRenderer;
-
-    public function __construct(Environment $environment, TocNode $tocNode, TemplateRenderer $templateRenderer)
+    public function __construct(TocNode $tocNode)
     {
-        $this->environment      = $environment;
-        $this->tocNode          = $tocNode;
-        $this->templateRenderer = $templateRenderer;
+        $this->environment = $tocNode->getEnvironment();
+        $this->tocNode = $tocNode;
     }
 
     public function render() : string
@@ -51,7 +46,7 @@ class TocNodeRenderer implements NodeRenderer
             $this->buildLevel($url, $reference->getTitles(), 1, $tocItems);
         }
 
-        return $this->templateRenderer->render('toc.html.twig', [
+        return $this->tocNode->getEnvironment()->getRenderer()->render('toc.html.twig', [
             'tocNode' => $this->tocNode,
             'tocItems' => $tocItems,
         ]);

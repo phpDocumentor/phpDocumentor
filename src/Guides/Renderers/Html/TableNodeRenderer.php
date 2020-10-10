@@ -6,8 +6,8 @@ namespace phpDocumentor\Guides\Renderers\Html;
 
 use LogicException;
 use phpDocumentor\Guides\Nodes\TableNode;
+use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\Renderers\NodeRenderer;
-use phpDocumentor\Guides\TemplateRenderer;
 use function sprintf;
 
 class TableNodeRenderer implements NodeRenderer
@@ -15,13 +15,13 @@ class TableNodeRenderer implements NodeRenderer
     /** @var TableNode */
     private $tableNode;
 
-    /** @var TemplateRenderer */
-    private $templateRenderer;
+    /** @var Renderer */
+    private $renderer;
 
-    public function __construct(TableNode $tableNode, TemplateRenderer $templateRenderer)
+    public function __construct(TableNode $tableNode)
     {
         $this->tableNode        = $tableNode;
-        $this->templateRenderer = $templateRenderer;
+        $this->renderer = $tableNode->getEnvironment()->getRenderer();
     }
 
     public function render() : string
@@ -44,7 +44,7 @@ class TableNodeRenderer implements NodeRenderer
             unset($rows[$k]);
         }
 
-        return $this->templateRenderer->render('table.html.twig', [
+        return $this->renderer->render('table.html.twig', [
             'tableNode' => $this->tableNode,
             'tableHeaderRows' => $tableHeaderRows,
             'tableRows' => $rows,

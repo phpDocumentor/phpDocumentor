@@ -5,26 +5,26 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\Renderers\LaTeX;
 
 use phpDocumentor\Guides\Nodes\ParagraphNode;
+use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\Renderers\NodeRenderer;
-use phpDocumentor\Guides\TemplateRenderer;
 
 class ParagraphNodeRenderer implements NodeRenderer
 {
     /** @var ParagraphNode */
     private $paragraphNode;
 
-    /** @var TemplateRenderer */
-    private $templateRenderer;
+    /** @var Renderer */
+    private $renderer;
 
-    public function __construct(ParagraphNode $paragraphNode, TemplateRenderer $templateRenderer)
+    public function __construct(ParagraphNode $paragraphNode)
     {
         $this->paragraphNode    = $paragraphNode;
-        $this->templateRenderer = $templateRenderer;
+        $this->renderer = $paragraphNode->getEnvironment()->getRenderer();
     }
 
     public function render() : string
     {
-        return $this->templateRenderer->render('paragraph.tex.twig', [
+        return $this->renderer->render('paragraph.tex.twig', [
             'paragraphNode' => $this->paragraphNode,
         ]);
     }

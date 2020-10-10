@@ -23,7 +23,7 @@ class AdmonitionDirective extends SubDirective
 {
     public function processSub(Parser $parser, ?Node $document, string $variable, string $data, array $options) : ?Node
     {
-        $wrapperDiv = $parser->renderTemplate(
+        $wrapperDiv = $document->getEnvironment()->getRenderer()->render(
             'directives/admonition.html.twig',
             [
                 // a bit strange, but on the old markup we literally

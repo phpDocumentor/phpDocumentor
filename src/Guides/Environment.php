@@ -86,9 +86,13 @@ class Environment
     /** @var Factory|null */
     private $nodeFactory;
 
-    public function __construct(Configuration $configuration, LoggerInterface $logger, FilesystemInterface $origin)
+    /** @var Renderer */
+    private $renderer;
+
+    public function __construct(Configuration $configuration, Renderer $renderer, LoggerInterface $logger, FilesystemInterface $origin)
     {
         $this->configuration = $configuration;
+        $this->renderer = $renderer;
         $this->origin = $origin;
         $this->logger = $logger;
         $this->urlGenerator  = new UrlGenerator($this->configuration);
@@ -130,9 +134,9 @@ class Environment
         return $this->nodeFactory;
     }
 
-    public function getTemplateRenderer() : TemplateRenderer
+    public function getRenderer() : Renderer
     {
-        return $this->configuration->getTemplateRenderer();
+        return $this->renderer;
     }
 
     public function registerReference(Reference $reference) : void

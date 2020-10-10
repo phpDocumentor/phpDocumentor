@@ -11,6 +11,7 @@ use phpDocumentor\Guides\Metas;
 use phpDocumentor\Guides\Nodes;
 use phpDocumentor\Guides\Nodes\DocumentNode;
 use phpDocumentor\Guides\Nodes\NodeTypes;
+use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\RestructuredText\NodeFactory\DefaultNodeFactory;
 use phpDocumentor\Guides\RestructuredText\ParseFileCommand;
 use phpDocumentor\Guides\RestructuredText\Parser;
@@ -29,18 +30,20 @@ final class ParseFileHandler
 
     /** @var \IteratorAggregate */
     private $directives;
-    /**
-     * @var \IteratorAggregate
-     */
+
+    /** @var \IteratorAggregate */
     private $references;
-    /**
-     * @var EventManager
-     */
+
+    /** @var EventManager */
     private $eventManager;
+
+    /** @var Renderer */
+    private $renderer;
 
     public function __construct(
         Metas $metas,
         Documents $documents,
+        Renderer $renderer,
         LoggerInterface $logger,
         EventManager $eventManager,
         \IteratorAggregate $directives,
@@ -52,6 +55,7 @@ final class ParseFileHandler
         $this->directives = $directives;
         $this->references = $references;
         $this->eventManager = $eventManager;
+        $this->renderer = $renderer;
     }
 
     public function handle(ParseFileCommand $command): void
@@ -59,7 +63,7 @@ final class ParseFileHandler
         $configuration = $command->getConfiguration();
         $file = $command->getFile();
 
-        $environment = new Environment($configuration, $this->logger, $command->getOrigin());
+        $environment = new Environment($configuration, $this->renderer, $this->logger, $command->getOrigin());
         $environment->setMetas($this->metas);
         $environment->setCurrentFileName($file);
         $environment->setCurrentDirectory($command->getDirectory());
@@ -90,18 +94,15 @@ final class ParseFileHandler
             NodeTypes::SECTION_END => Nodes\SectionEndNode::class
         ];
 
-        $templateRenderer = $configuration->getTemplateRenderer();
-
         $nodeFactory = DefaultNodeFactory::createFromRegistry(
             $this->eventManager,
             $configuration->getFormat(),
-            $templateRenderer,
+            $environment,
             $nodeRegistry
         );
 
         $parser = new Parser(
             $configuration,
-            $templateRenderer,
             $environment,
             $this->eventManager,
             $nodeFactory,

@@ -6,6 +6,7 @@ namespace phpDocumentor\Guides\RestructuredText\NodeFactory;
 
 use Doctrine\Common\EventManager;
 use InvalidArgumentException;
+use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\NodeTypes;
 use phpDocumentor\Guides\Renderers\NodeRendererFactory;
@@ -27,11 +28,15 @@ class NodeInstantiator
     /** @var EventManager|null */
     private $eventManager;
 
+    /** @var Environment|null */
+    private $environment;
+
     public function __construct(
         string $type,
         string $className,
         ?NodeRendererFactory $nodeRendererFactory = null,
-        ?EventManager $eventManager = null
+        ?EventManager $eventManager = null,
+        ?Environment $environment = null
     ) {
         if (! in_array($type, NodeTypes::NODES, true)) {
             throw new InvalidArgumentException(
@@ -49,6 +54,7 @@ class NodeInstantiator
         $this->className           = $className;
         $this->nodeRendererFactory = $nodeRendererFactory;
         $this->eventManager        = $eventManager;
+        $this->environment         = $environment;
     }
 
     public function getType() : string
@@ -63,6 +69,10 @@ class NodeInstantiator
     {
         /** @var Node $node */
         $node = new $this->className(...$arguments);
+
+        if ($this->environment !== null) {
+            $node->setEnvironment($this->environment);
+        }
 
         if ($this->nodeRendererFactory !== null) {
             $node->setNodeRendererFactory($this->nodeRendererFactory);

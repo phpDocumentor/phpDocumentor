@@ -5,21 +5,21 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\Renderers\LaTeX;
 
 use phpDocumentor\Guides\Nodes\TitleNode;
+use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\Renderers\NodeRenderer;
-use phpDocumentor\Guides\TemplateRenderer;
 
 class TitleNodeRenderer implements NodeRenderer
 {
     /** @var TitleNode */
     private $titleNode;
 
-    /** @var TemplateRenderer */
-    private $templateRenderer;
+    /** @var Renderer */
+    private $renderer;
 
-    public function __construct(TitleNode $titleNode, TemplateRenderer $templateRenderer)
+    public function __construct(TitleNode $titleNode)
     {
-        $this->titleNode        = $titleNode;
-        $this->templateRenderer = $templateRenderer;
+        $this->titleNode = $titleNode;
+        $this->renderer = $titleNode->getEnvironment()->getRenderer();
     }
 
     public function render() : string
@@ -34,7 +34,7 @@ class TitleNodeRenderer implements NodeRenderer
             }
         }
 
-        return $this->templateRenderer->render('title.tex.twig', [
+        return $this->renderer->render('title.tex.twig', [
             'type' => $type,
             'titleNode' => $this->titleNode,
         ]);

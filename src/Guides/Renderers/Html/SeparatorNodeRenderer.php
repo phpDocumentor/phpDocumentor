@@ -4,21 +4,22 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\Renderers\Html;
 
+use phpDocumentor\Guides\Nodes\SeparatorNode;
+use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\Renderers\NodeRenderer;
-use phpDocumentor\Guides\TemplateRenderer;
 
 class SeparatorNodeRenderer implements NodeRenderer
 {
-    /** @var TemplateRenderer */
-    private $templateRenderer;
+    /** @var Renderer */
+    private $renderer;
 
-    public function __construct(TemplateRenderer $templateRenderer)
+    public function __construct(SeparatorNode $separatorNode)
     {
-        $this->templateRenderer = $templateRenderer;
+        $this->renderer = $separatorNode->getEnvironment()->getRenderer();
     }
 
     public function render() : string
     {
-        return $this->templateRenderer->render('separator.html.twig');
+        return $this->renderer->render('separator.html.twig');
     }
 }

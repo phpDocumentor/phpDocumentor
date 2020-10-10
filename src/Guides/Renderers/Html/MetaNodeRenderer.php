@@ -5,26 +5,26 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\Renderers\Html;
 
 use phpDocumentor\Guides\Nodes\MetaNode;
+use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\Renderers\NodeRenderer;
-use phpDocumentor\Guides\TemplateRenderer;
 
 class MetaNodeRenderer implements NodeRenderer
 {
     /** @var MetaNode */
     private $metaNode;
 
-    /** @var TemplateRenderer */
-    private $templateRenderer;
+    /** @var Renderer */
+    private $renderer;
 
-    public function __construct(MetaNode $metaNode, TemplateRenderer $templateRenderer)
+    public function __construct(MetaNode $metaNode)
     {
         $this->metaNode         = $metaNode;
-        $this->templateRenderer = $templateRenderer;
+        $this->renderer = $metaNode->getEnvironment()->getRenderer();
     }
 
     public function render() : string
     {
-        return $this->templateRenderer->render('meta.html.twig', [
+        return $this->renderer->render('meta.html.twig', [
             'metaNode' => $this->metaNode,
         ]);
     }

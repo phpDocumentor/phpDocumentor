@@ -172,7 +172,7 @@ class DocumentNode extends Node
         }
 
         $this->addHeaderNode($this->environment->getNodeFactory()->createRawNode(
-            $this->environment->getTemplateRenderer()->render('stylesheet-link.html.twig', ['css' => $css])
+            $this->environment->getRenderer()->render('stylesheet-link.html.twig', ['css' => $css])
         ));
     }
 
@@ -185,7 +185,7 @@ class DocumentNode extends Node
         }
 
         $this->addHeaderNode($this->environment->getNodeFactory()->createRawNode(
-            $this->environment->getTemplateRenderer()->render('javascript.html.twig', ['js' => $js])
+            $this->environment->getRenderer()->render('javascript.html.twig', ['js' => $js])
         ));
     }
 
@@ -198,7 +198,7 @@ class DocumentNode extends Node
         }
 
         $this->addHeaderNode($this->environment->getNodeFactory()->createRawNode(
-            $this->environment->getTemplateRenderer()->render('favicon.html.twig', ['url' => $url])
+            $this->environment->getRenderer()->render('favicon.html.twig', ['url' => $url])
         ));
     }
 

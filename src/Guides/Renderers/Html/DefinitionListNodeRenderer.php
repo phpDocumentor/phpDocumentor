@@ -5,26 +5,26 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\Renderers\Html;
 
 use phpDocumentor\Guides\Nodes\DefinitionListNode;
+use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\Renderers\NodeRenderer;
-use phpDocumentor\Guides\TemplateRenderer;
 
 class DefinitionListNodeRenderer implements NodeRenderer
 {
     /** @var DefinitionListNode */
     private $definitionListNode;
 
-    /** @var TemplateRenderer */
-    private $templateRenderer;
+    /** @var Renderer */
+    private $renderer;
 
-    public function __construct(DefinitionListNode $definitionListNode, TemplateRenderer $templateRenderer)
+    public function __construct(DefinitionListNode $definitionListNode)
     {
         $this->definitionListNode = $definitionListNode;
-        $this->templateRenderer   = $templateRenderer;
+        $this->renderer = $definitionListNode->getEnvironment()->getRenderer();
     }
 
     public function render() : string
     {
-        return $this->templateRenderer->render('definition-list.html.twig', [
+        return $this->renderer->render('definition-list.html.twig', [
             'definitionListNode' => $this->definitionListNode,
             'definitionList' => $this->definitionListNode->getDefinitionList(),
         ]);

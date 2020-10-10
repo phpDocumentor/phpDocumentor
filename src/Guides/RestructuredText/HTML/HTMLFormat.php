@@ -56,7 +56,6 @@ use phpDocumentor\Guides\Renderers\ListNodeRenderer;
 use phpDocumentor\Guides\Renderers\NodeRendererFactory;
 use phpDocumentor\Guides\RestructuredText;
 use phpDocumentor\Guides\RestructuredText\Formats\Format;
-use phpDocumentor\Guides\TemplateRenderer;
 
 final class HTMLFormat implements Format
 {
@@ -83,103 +82,67 @@ final class HTMLFormat implements Format
     /**
      * @return NodeRendererFactory[]
      */
-    public function getNodeRendererFactories(TemplateRenderer $templateRenderer) : array
+    public function getNodeRendererFactories() : array
     {
         $nodeRendererFactories = [
             AnchorNode::class => new CallableNodeRendererFactory(
-                function (AnchorNode $node) use ($templateRenderer) {
-                    return new AnchorNodeRenderer(
-                        $node,
-                        $templateRenderer
-                    );
+                function (AnchorNode $node) {
+                    return new AnchorNodeRenderer($node);
                 }
             ),
             DefinitionListNode::class => new CallableNodeRendererFactory(
-                function (DefinitionListNode $node) use ($templateRenderer) {
-                    return new DefinitionListNodeRenderer(
-                        $node,
-                        $templateRenderer
-                    );
+                function (DefinitionListNode $node) {
+                    return new DefinitionListNodeRenderer($node);
                 }
             ),
             FigureNode::class => new CallableNodeRendererFactory(
-                function (FigureNode $node) use ($templateRenderer) {
-                    return new FigureNodeRenderer(
-                        $node,
-                        $templateRenderer
-                    );
+                function (FigureNode $node){
+                    return new FigureNodeRenderer($node);
                 }
             ),
             ImageNode::class => new CallableNodeRendererFactory(
-                function (ImageNode $node) use ($templateRenderer) {
-                    return new ImageNodeRenderer(
-                        $node,
-                        $templateRenderer
-                    );
+                function (ImageNode $node) {
+                    return new ImageNodeRenderer($node);
                 }
             ),
             ListNode::class => new CallableNodeRendererFactory(
-                function (ListNode $node) use ($templateRenderer) {
-                    return new ListNodeRenderer(
-                        $node,
-                        new ListRenderer($node, $templateRenderer)
-                    );
+                function (ListNode $node) {
+                    return new ListNodeRenderer($node, new ListRenderer($node));
                 }
             ),
             MetaNode::class => new CallableNodeRendererFactory(
-                function (MetaNode $node) use ($templateRenderer) {
-                    return new MetaNodeRenderer(
-                        $node,
-                        $templateRenderer
-                    );
+                function (MetaNode $node) {
+                    return new MetaNodeRenderer($node);
                 }
             ),
             ParagraphNode::class => new CallableNodeRendererFactory(
-                function (ParagraphNode $node) use ($templateRenderer) {
-                    return new ParagraphNodeRenderer(
-                        $node,
-                        $templateRenderer
-                    );
+                function (ParagraphNode $node) {
+                    return new ParagraphNodeRenderer($node);
                 }
             ),
             QuoteNode::class => new CallableNodeRendererFactory(
-                function (QuoteNode $node) use ($templateRenderer) {
-                    return new QuoteNodeRenderer(
-                        $node,
-                        $templateRenderer
-                    );
+                function (QuoteNode $node) {
+                    return new QuoteNodeRenderer($node);
                 }
             ),
             SeparatorNode::class => new CallableNodeRendererFactory(
-                function (SeparatorNode $node) use ($templateRenderer) {
-                    return new SeparatorNodeRenderer(
-                        $templateRenderer
-                    );
+                function (SeparatorNode $node) {
+                    return new SeparatorNodeRenderer($node);
                 }
             ),
             TableNode::class => new CallableNodeRendererFactory(
-                function (TableNode $node) use ($templateRenderer) {
-                    return new TableNodeRenderer(
-                        $node,
-                        $templateRenderer
-                    );
+                function (TableNode $node) {
+                    return new TableNodeRenderer($node);
                 }
             ),
             TitleNode::class => new CallableNodeRendererFactory(
-                function (TitleNode $node) use ($templateRenderer) {
-                    return new TitleNodeRenderer(
-                        $node,
-                        $templateRenderer
-                    );
+                function (TitleNode $node) {
+                    return new TitleNodeRenderer($node);
                 }
             ),
             TocNode::class => new CallableNodeRendererFactory(
-                function (TocNode $node) use ($templateRenderer) {
-                    return new TocNodeRenderer(
-                        $node->getEnvironment(),
-                        $node,
-                        $templateRenderer
-                    );
+                function (TocNode $node) {
+                    return new TocNodeRenderer($node);
                 }
             ),
             CallableNode::class => new CallableNodeRendererFactory(
@@ -190,48 +153,32 @@ final class HTMLFormat implements Format
                 }
             ),
             SectionBeginNode::class => new CallableNodeRendererFactory(
-                function (SectionBeginNode $node) use ($templateRenderer) {
-                    return new SectionBeginNodeRenderer(
-                        $node,
-                        $templateRenderer
-                    );
+                function (SectionBeginNode $node) {
+                    return new SectionBeginNodeRenderer($node);
                 }
             ),
             SectionEndNode::class => new CallableNodeRendererFactory(
-                function (SectionEndNode $node) use ($templateRenderer) {
-                    return new SectionEndNodeRenderer(
-                        $node,
-                        $templateRenderer
-                    );
+                function (SectionEndNode $node) {
+                    return new SectionEndNodeRenderer($node);
                 }
             ),
         ];
 
         $nodeRendererFactories[DocumentNode::class] = new CallableNodeRendererFactory(
-            function (DocumentNode $node) use ($templateRenderer) {
-                return new DocumentNodeRenderer(
-                    $node,
-                    $templateRenderer
-                );
+            function (DocumentNode $node) {
+                return new DocumentNodeRenderer($node);
             }
         );
 
         $nodeRendererFactories[CodeNode::class] = new CallableNodeRendererFactory(
-            function (CodeNode $node) use ($templateRenderer) {
-                return new CodeNodeRenderer(
-                    $node,
-                    $templateRenderer
-                );
+            function (CodeNode $node)  {
+                return new CodeNodeRenderer($node);
             }
         );
 
         $nodeRendererFactories[SpanNode::class] = new CallableNodeRendererFactory(
-            function (SpanNode $node) use ($templateRenderer) {
-                return new SpanNodeRenderer(
-                    $node->getEnvironment(),
-                    $node,
-                    $templateRenderer
-                );
+            function (SpanNode $node) {
+                return new SpanNodeRenderer($node);
             }
         );
 

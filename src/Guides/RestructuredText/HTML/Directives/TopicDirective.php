@@ -28,7 +28,7 @@ class TopicDirective extends SubDirective
         string $data,
         array $options
     ) : ?Node {
-        $wrapperDiv = $parser->renderTemplate(
+        $wrapperDiv = $document->getEnvironment()->getRenderer()->render(
             'directives/topic.html.twig',
             [
                 'name' => $data,

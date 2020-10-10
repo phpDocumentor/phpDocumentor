@@ -5,26 +5,26 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\Renderers\LaTeX;
 
 use phpDocumentor\Guides\Nodes\QuoteNode;
+use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\Renderers\NodeRenderer;
-use phpDocumentor\Guides\TemplateRenderer;
 
 class QuoteNodeRenderer implements NodeRenderer
 {
     /** @var QuoteNode */
     private $quoteNode;
 
-    /** @var TemplateRenderer */
-    private $templateRenderer;
+    /** @var Renderer */
+    private $renderer;
 
-    public function __construct(QuoteNode $quoteNode, TemplateRenderer $templateRenderer)
+    public function __construct(QuoteNode $quoteNode)
     {
         $this->quoteNode        = $quoteNode;
-        $this->templateRenderer = $templateRenderer;
+        $this->renderer = $quoteNode->getEnvironment()->getRenderer();
     }
 
     public function render() : string
     {
-        return $this->templateRenderer->render('quote.tex.twig', [
+        return $this->renderer->render('quote.tex.twig', [
             'quoteNode' => $this->quoteNode,
         ]);
     }

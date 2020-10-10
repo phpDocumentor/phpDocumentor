@@ -31,15 +31,14 @@ class Configuration
     /** @var string */
     private $sourceFileExtension = 'rst';
 
-    /** @var TemplateRenderer */
-    private $templateRenderer;
-
     /** @var Format[] */
     private $formats;
 
-    public function __construct(TemplateRenderer $templateRenderer, array $outputFormats)
+    /**
+     * @param iterable<Format> $outputFormats
+     */
+    public function __construct(iterable $outputFormats)
     {
-        $this->templateRenderer = $templateRenderer;
         $this->addFormat(...$outputFormats);
     }
 

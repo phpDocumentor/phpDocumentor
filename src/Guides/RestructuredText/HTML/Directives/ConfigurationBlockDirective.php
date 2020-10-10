@@ -48,7 +48,7 @@ class ConfigurationBlockDirective extends SubDirective
             ];
         }
 
-        $wrapperDiv = $parser->renderTemplate(
+        $wrapperDiv = $document->getEnvironment()->getRenderer()->render(
             'directives/configuration-block.html.twig',
             [
                 'blocks' => $blocks,

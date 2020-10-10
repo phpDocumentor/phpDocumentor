@@ -23,17 +23,13 @@ use phpDocumentor\Dsn;
 use phpDocumentor\Guides\Configuration;
 use phpDocumentor\Guides\Formats\Format;
 use phpDocumentor\Guides\LoadCacheCommand;
-use phpDocumentor\Guides\RestructuredText\ParseDirectoryCommand;
 use phpDocumentor\Guides\PersistCacheCommand;
 use phpDocumentor\Guides\RenderCommand;
-use phpDocumentor\Guides\RestructuredText\HTML\HTMLFormat;
-use phpDocumentor\Guides\RestructuredText\LaTeX\LaTeXFormat;
-use phpDocumentor\Guides\TemplateRenderer;
-use phpDocumentor\Guides\Twig\AssetsExtension;
+use phpDocumentor\Guides\Renderer;
+use phpDocumentor\Guides\RestructuredText\ParseDirectoryCommand;
 use phpDocumentor\Parser\Cache\Locator;
 use phpDocumentor\Parser\FlySystemFactory;
 use phpDocumentor\Transformer\Transformation;
-use phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Stopwatch\Stopwatch;
 use function sprintf;
@@ -55,29 +51,32 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
     /** @var LoggerInterface */
     private $logger;
 
-    /** @var EnvironmentFactory */
-    private $environmentFactory;
-
     /** @var CommandBus */
     private $commandBus;
 
-    /** @var array<Format> */
-    private $outputFormats = [];
+    /** @var iterable<Format> */
+    private $outputFormats;
 
+    /** @var Renderer */
+    private $renderer;
+
+    /**
+     * @param iterable<Format> $outputFormats
+     */
     public function __construct(
         FlySystemFactory $flySystemFactory,
+        Renderer $renderer,
         Locator $cacheLocator,
         LoggerInterface $logger,
-        EnvironmentFactory $environmentFactory,
         CommandBus $commandBus,
         iterable $outputFormats
     ) {
         $this->flySystemFactory = $flySystemFactory;
         $this->cacheLocator = $cacheLocator;
         $this->logger = $logger;
-        $this->environmentFactory = $environmentFactory;
         $this->commandBus = $commandBus;
         $this->outputFormats = $outputFormats;
+        $this->renderer = $renderer;
     }
 
     public function transform(ProjectDescriptor $project, Transformation $transformation) : void
@@ -121,16 +120,12 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
 
         $origin = $this->flySystemFactory->create($dsn);
         $directory = $documentationSet->getSource()['paths'][0] ?? '';
-        $targetDirectory = $documentationSet->getOutput();
-
         $this->commandBus->handle(new LoadCacheCommand($cachePath, $useCache));
 
-        $environment = $this->environmentFactory->create($project, $transformation, $targetDirectory);
-        $environment->addExtension(new AssetsExtension());
-        $templateRenderer = new TemplateRenderer($environment, 'guides', $targetDirectory);
+        $this->parse($origin, $directory);
 
-        $this->parse($origin, $templateRenderer, $directory);
-        $this->render($transformation->getTransformer()->destination(), $targetDirectory);
+        $this->renderer->initialize($project, $documentationSet, $transformation);
+        $this->render($transformation->getTransformer()->destination(), $documentationSet->getOutput());
 
         $this->commandBus->handle(new PersistCacheCommand($cachePath, $useCache));
 
@@ -159,9 +154,9 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
         );
     }
 
-    private function parse(Filesystem $origin, TemplateRenderer $templateRenderer, string $directory) : void
+    private function parse(Filesystem $origin, string $directory) : void
     {
-        $configuration = new Configuration($templateRenderer, $this->outputFormats);
+        $configuration = new Configuration($this->outputFormats);
 
         $this->commandBus->handle(new ParseDirectoryCommand($configuration, $origin, $directory));
     }

@@ -50,7 +50,7 @@ abstract class SpanNodeRenderer implements NodeRenderer, SpanRenderer
     {
         $url = (string) $url;
 
-        return $this->templateRenderer->render(
+        return $this->environment->getRenderer()->render(
             'link.html.twig',
             [
                 'url' => $this->environment->generateUrl($url),
