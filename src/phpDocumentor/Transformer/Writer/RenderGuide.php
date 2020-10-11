@@ -69,9 +69,7 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
 
     public function getDefaultSettings() : array
     {
-        return [
-            self::FEATURE_FLAG => false
-        ];
+        return [self::FEATURE_FLAG => false];
     }
 
     private function renderDocumentationSet(

@@ -42,11 +42,6 @@ class Configuration
         $this->addFormat(...$outputFormats);
     }
 
-    public function getTemplateRenderer() : TemplateRenderer
-    {
-        return $this->templateRenderer;
-    }
-
     public function getBaseUrl() : string
     {
         return $this->baseUrl;

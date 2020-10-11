@@ -9,16 +9,26 @@ class WrapperNode extends Node
     /** @var Node|null */
     protected $node;
 
-    /** @var string */
+    /** @var string|callable */
     protected $before;
 
-    /** @var string */
+    /** @var string|callable */
     protected $after;
 
-    public function __construct(?Node $node, string $before = '', string $after = '')
+    /**
+     * @param string|callable $before
+     * @param string|callable $after
+     */
+    public function __construct(?Node $node, $before = '', $after = '')
     {
         parent::__construct();
 
+        if (!is_string($before) && !is_callable($before)) {
+            throw new \InvalidArgumentException('$before must be a string or a callable returning a string');
+        }
+        if (!is_string($after) && !is_callable($after)) {
+            throw new \InvalidArgumentException('$after must be a string or a callable returning a string');
+        }
         $this->node   = $node;
         $this->before = $before;
         $this->after  = $after;
@@ -28,6 +38,16 @@ class WrapperNode extends Node
     {
         $contents = $this->node !== null ? $this->node->render() : '';
 
-        return $this->before . $contents . $this->after;
+        $before = $this->before;
+        if (is_callable($before)) {
+            $before = $before();
+        }
+
+        $after = $this->after;
+        if (is_callable($after)) {
+            $after = $after();
+        }
+
+        return $before . $contents . $after;
     }
 }

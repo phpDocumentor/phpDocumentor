@@ -62,8 +62,6 @@ class TocNodeRenderer implements NodeRenderer
         int $level,
         array &$tocItems
     ) : void {
-        $html = '';
-
         foreach ($titles as $k => $entry) {
             [$title, $children] = $entry;
 

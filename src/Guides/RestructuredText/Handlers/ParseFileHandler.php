@@ -61,12 +61,13 @@ final class ParseFileHandler
     public function handle(ParseFileCommand $command): void
     {
         $configuration = $command->getConfiguration();
+        $directory = $command->getDirectory();
         $file = $command->getFile();
 
         $environment = new Environment($configuration, $this->renderer, $this->logger, $command->getOrigin());
         $environment->setMetas($this->metas);
         $environment->setCurrentFileName($file);
-        $environment->setCurrentDirectory($command->getDirectory());
+        $environment->setCurrentDirectory($directory);
 
         $nodeRegistry = [
             NodeTypes::DOCUMENT => Nodes\DocumentNode::class,
@@ -112,7 +113,7 @@ final class ParseFileHandler
 
         $fileAbsolutePath = $this->buildPathOnFileSystem(
             $file,
-            $command->getDirectory(),
+            $directory,
             $configuration->getSourceFileExtension()
         );
 

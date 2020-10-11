@@ -59,9 +59,23 @@ interface Factory
 
     public function createAnchorNode(?string $value = null): AnchorNode;
 
-    public function createRawNode(string $value): RawNode;
+    /**
+     * Creates a node that returns the raw output from the given callable.
+     *
+     * Because the parsing process and the rendering process is separate, and the twig environment may not yet exist
+     * during parsing, the given argument is a callable that will be called upon rendering.
+     *
+     * @param callable $value function that will return the rendered representation of this node
+     *
+     * @return RawNode
+     */
+    public function createRawNode(callable $value): RawNode;
 
     public function createDocumentNode(Environment $environment): DocumentNode;
 
-    public function createWrapperNode(?Node $node, string $before = '', string $after = ''): WrapperNode;
+    /**
+     * @param string|callable $before
+     * @param string|callable $after
+     */
+    public function createWrapperNode(?Node $node, $before = '', $after = ''): WrapperNode;
 }

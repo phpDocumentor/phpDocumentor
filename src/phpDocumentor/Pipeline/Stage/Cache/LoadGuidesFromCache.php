@@ -27,13 +27,16 @@ final class LoadGuidesFromCache
     {
         $configuration = $payload->getConfig();
         if ($configuration['phpdocumentor']['settings']['guides.enabled'] === true) {
-            if ($configuration['phpdocumentor']['use-cache']
-                && !$payload->getBuilder()->getProjectDescriptor()->getSettings()->isModified()
-            ) {
+            $useCache = $configuration['phpdocumentor']['use-cache'];
+            if ($useCache && !$payload->getBuilder()->getProjectDescriptor()->getSettings()->isModified()) {
                 $this->logger->info('Loading project from cache');
-                $this->commandBus->handle(new LoadCacheCommand(
-                    ((string) $configuration['phpdocumentor']['paths']['cache']) . '/guides',
-                    $configuration['phpdocumentor']['use-cache'])
+
+                $cacheFolder = $configuration['phpdocumentor']['paths']['cache'];
+                $this->commandBus->handle(
+                    new LoadCacheCommand(
+                        ((string) $cacheFolder) . '/guides',
+                        $useCache
+                    )
                 );
             }
         }

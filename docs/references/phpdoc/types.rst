@@ -55,7 +55,7 @@ A keyword defining the purpose of this type. Not every element is determined
 by a class but still worth of a classification to assist the developer in
 understanding the code covered by the PHPDoc.
 
-.. NOTE::
+.. note::
 
     Most of these keywords are allowed as class names in PHP and as
     such are hard to distinguish from real classes. As such the keywords MUST

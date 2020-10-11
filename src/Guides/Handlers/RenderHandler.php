@@ -33,7 +33,7 @@ final class RenderHandler
     public function render(FilesystemInterface $destination, string $targetDirectory) : void
     {
         foreach ($this->documents->getAll() as $file => $document) {
-            $target = $this->getTargetOf($targetDirectory, $file);
+            $target = $this->getTargetOf($file);
 
             $directory = dirname($target);
 
@@ -45,7 +45,7 @@ final class RenderHandler
         }
     }
 
-    private function getTargetOf(string $targetDirectory, string $file) : string
+    private function getTargetOf(string $file) : string
     {
         $metaEntry = $this->metas->get($file);
 
@@ -53,6 +53,6 @@ final class RenderHandler
             throw new \InvalidArgumentException(sprintf('Could not find target file for %s', $file));
         }
 
-        return $targetDirectory . '/' . $metaEntry->getUrl();
+        return $metaEntry->getUrl();
     }
 }

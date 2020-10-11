@@ -401,11 +401,6 @@ class Environment
         $this->currentDirectory = $directory;
     }
 
-    public function getCurrentDirectory() : string
-    {
-        return $this->currentDirectory;
-    }
-
     public function absoluteRelativePath(string $url) : string
     {
         return $this->currentDirectory . '/' . $this->getDirName() . '/' . $this->relativeUrl($url);

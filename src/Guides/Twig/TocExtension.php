@@ -39,7 +39,6 @@ class TocExtension extends AbstractExtension
     public function menu() : array
     {
         $index = $this->metas->get('index');
-        $urlPrefix = '';
 
         if ($index === null) {
             return [];
@@ -47,7 +46,7 @@ class TocExtension extends AbstractExtension
 
         $menu = [
             'label' => $index->getTitle(),
-            'path' => $urlPrefix . '/' . $index->getUrl(),
+            'path' => 'dox/' . $index->getUrl(),
             'items' => []
         ];
 
@@ -55,7 +54,7 @@ class TocExtension extends AbstractExtension
             $meta = $this->metas->get($url);
             $menu['items'][] = [
                 'label' => $meta->getTitle(),
-                'path' => $urlPrefix . '/' . $meta->getUrl(),
+                'path' => 'dox/' . $meta->getUrl(),
                 'items' => []
             ];
         }

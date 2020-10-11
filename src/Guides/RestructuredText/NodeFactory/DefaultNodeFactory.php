@@ -198,7 +198,7 @@ class DefaultNodeFactory implements NodeFactory
         return $definitionListNode;
     }
 
-    public function createWrapperNode(?Node $node, string $before = '', string $after = '') : WrapperNode
+    public function createWrapperNode(?Node $node, $before = '', $after = '') : WrapperNode
     {
         /** @var WrapperNode $wrapperNode */
         $wrapperNode = $this->create(NodeTypes::WRAPPER, [$node, $before, $after]);
@@ -233,7 +233,7 @@ class DefaultNodeFactory implements NodeFactory
         return $metaNode;
     }
 
-    public function createRawNode(string $value) : RawNode
+    public function createRawNode(callable $value) : RawNode
     {
         /** @var RawNode $rawNode */
         $rawNode = $this->create(NodeTypes::RAW, [$value]);

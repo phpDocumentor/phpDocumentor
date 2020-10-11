@@ -33,7 +33,9 @@ class Title extends Directive
         $document = $parser->getDocument();
 
         $document->addHeaderNode(
-            $parser->getNodeFactory()->createRawNode('\title{' . $data . '}')
+            $parser->getNodeFactory()->createRawNode(function() use ($data) {
+                return '\title{' . $data . '}';
+            })
         );
 
         if ($node === null) {

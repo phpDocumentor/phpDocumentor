@@ -74,8 +74,12 @@ final class HTMLFormat implements Format
             new RestructuredText\HTML\Directives\Title(),
             new RestructuredText\HTML\Directives\Url(),
             new RestructuredText\HTML\Directives\Div(),
-            new RestructuredText\HTML\Directives\Wrap('note'),
             new RestructuredText\HTML\Directives\ClassDirective(),
+            new RestructuredText\HTML\Directives\ImportantDirective(),
+            new RestructuredText\HTML\Directives\NoteDirective(),
+            new RestructuredText\HTML\Directives\WarningDirective(),
+            new RestructuredText\HTML\Directives\HintDirective(),
+            new RestructuredText\HTML\Directives\SidebarDirective(),
         ];
     }
 

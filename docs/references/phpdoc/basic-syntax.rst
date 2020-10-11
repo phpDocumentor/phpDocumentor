@@ -76,7 +76,7 @@ allow the user to skim the documentation in search of the required template.
 Summaries should always end in either a full stop, or 2 consecutive new lines. If it is not closed like this then any
 description will be considered as part of the summary.
 
-.. NOTE::
+.. note::
 
     A full stop means that the dot (`.`) needs to be succeeded by a new line. This way it is possible to mention
     abbreviations as "e.g.", version numbers or other texts containing dots without ending the summary.

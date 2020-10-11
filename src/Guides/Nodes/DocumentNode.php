@@ -165,40 +165,49 @@ class DocumentNode extends Node
 
     public function addCss(string $css) : void
     {
-        $css = $this->environment->relativeUrl($css);
+        $environment = $this->environment;
+        $css = $environment->relativeUrl($css);
 
         if ($css === null) {
             throw new Exception(sprintf('Could not get relative url for css %s', $css));
         }
 
-        $this->addHeaderNode($this->environment->getNodeFactory()->createRawNode(
-            $this->environment->getRenderer()->render('stylesheet-link.html.twig', ['css' => $css])
+        $this->addHeaderNode($environment->getNodeFactory()->createRawNode(
+            function() use ($environment, $css) {
+                return $environment->getRenderer()->render('stylesheet-link.html.twig', ['css' => $css]);
+            }
         ));
     }
 
     public function addJs(string $js) : void
     {
-        $js = $this->environment->relativeUrl($js);
+        $environment = $this->environment;
+        $js = $environment->relativeUrl($js);
 
         if ($js === null) {
             throw new Exception(sprintf('Could not get relative url for js %s', $js));
         }
 
-        $this->addHeaderNode($this->environment->getNodeFactory()->createRawNode(
-            $this->environment->getRenderer()->render('javascript.html.twig', ['js' => $js])
+        $this->addHeaderNode($environment->getNodeFactory()->createRawNode(
+            function() use ($environment, $js) {
+                return $environment->getRenderer()->render('javascript.html.twig', ['js' => $js]);
+            }
         ));
     }
 
     public function addFavicon(string $url = '/favicon.ico') : void
     {
-        $url = $this->environment->relativeUrl($url);
+        $environment = $this->environment;
+        $url = $environment->relativeUrl($url);
 
         if ($url === null) {
             throw new Exception(sprintf('Could not get relative url for favicon %s', $url));
         }
 
-        $this->addHeaderNode($this->environment->getNodeFactory()->createRawNode(
-            $this->environment->getRenderer()->render('favicon.html.twig', ['url' => $url])
+        $this->addHeaderNode($environment->getNodeFactory()->createRawNode(
+            function() use ($environment, $url) {
+                return $environment->getRenderer()->render('favicon.html.twig', ['url' => $url]);
+            }
         ));
     }
 
