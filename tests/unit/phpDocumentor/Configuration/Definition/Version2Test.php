@@ -64,6 +64,7 @@ final class Version2Test extends TestCase
                                 'extensions' => [
                                     'extensions' => ['php', 'php3', 'phtml'],
                                 ],
+                                'visibilities' => ['public', 'protected', 'private'],
                                 'markers' => ['markers' => ['TODO', 'FIXME']],
                             ],
                         ],
@@ -115,7 +116,7 @@ final class Version2Test extends TestCase
             'title' => 'Documentation',
             'parser' => [
                 'default-package-name' => 'Application',
-                'visibility' => ['public', 'protected', 'private'],
+                'visibility' => 'public,protected,private',
                 'target' => 'build/api-cache',
                 'encoding' => 'utf-8',
                 'extensions' => ['extensions' => ['php', 'php3', 'phtml']],

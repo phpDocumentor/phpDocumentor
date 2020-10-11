@@ -11,7 +11,7 @@
   -->
 
 <phpdocumentor
-        version="3"
+        configVersion="3"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="https://www.phpdoc.org"
         xsi:noNamespaceSchemaLocation="phpdoc.xsd"
 >
@@ -35,6 +35,12 @@
             </extensions>
             <visibility>public</visibility>
             <default-package-name>Default</default-package-name>
+            <ignore-tags>
+                <ignore-tag>extends</ignore-tag>
+            </ignore-tags>
+            <examples dsn=".">
+                <path>examples</path>
+            </examples>
             <markers>
                 <marker>TODO</marker>
                 <marker>FIXME</marker>
@@ -46,4 +52,5 @@
             </source>
         </guide>
     </version>
+    <template name="clean"/>
 </phpdocumentor>

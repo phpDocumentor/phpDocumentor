@@ -368,6 +368,41 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
     }
 
     /**
+     * @covers ::__invoke
+     */
+    public function testItShouldAddExampleDirToConfig() : void
+    {
+        $configuration = $this->givenAConfiguration();
+        $middleware = $this->createCommandlineOptionsMiddleware(['examples-dir' => '/src']);
+
+        $newConfiguration = $middleware($configuration);
+
+        $this->assertEquals(
+            [
+                'dsn' => Dsn::createFromString('/src'),
+                'paths' => [new Path('./')],
+            ],
+            current($newConfiguration['phpdocumentor']['versions'])['api'][0]['examples']
+        );
+    }
+
+    public function testItShouldAddExampleDirToConfigA() : void
+    {
+        $configuration = $this->givenAConfigurationWithoutApiDefinition();
+        $middleware = $this->createCommandlineOptionsMiddleware(['examples-dir' => '/src']);
+
+        $newConfiguration = $middleware($configuration);
+
+        $this->assertEquals(
+            [
+                'dsn' => Dsn::createFromString('/src'),
+                'paths' => [new Path('./')],
+            ],
+            current($newConfiguration['phpdocumentor']['versions'])['api'][0]['examples']
+        );
+    }
+
+    /**
      * @param array $options
      */
     private function createCommandlineOptionsMiddleware(

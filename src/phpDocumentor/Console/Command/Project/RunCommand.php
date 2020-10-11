@@ -237,6 +237,12 @@ HELP
                 'Name of the template to use (optional)'
             )
             ->addOption(
+                'examples-dir',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'Directory to seacher for example files referenced by @example tags'
+            )
+            ->addOption(
                 'setting',
                 's',
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,

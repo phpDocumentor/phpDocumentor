@@ -87,6 +87,8 @@
             <xs:element name="default-package-name" type="xs:string" minOccurs="0" maxOccurs="1"/>
             <xs:element name="include-source" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false"/>
             <xs:element name="markers" type="pd:markersType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="ignore-tags" type="pd:ignoreTagsType" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="examples" type="pd:sourceType" minOccurs="0" maxOccurs="1"/>
         </xs:sequence>
         <xs:attribute name="format" type="xs:string" default="php" />
     </xs:complexType>
@@ -112,6 +114,12 @@
         </xs:sequence>
         <xs:attribute name="hidden" type="xs:boolean"/>
         <xs:attribute name="symlinks" type="xs:boolean"/>
+    </xs:complexType>
+
+    <xs:complexType name="ignoreTagsType">
+        <xs:sequence>
+            <xs:element name="ignore-tag" type="xs:string" minOccurs="1" maxOccurs="unbounded"/>
+        </xs:sequence>
     </xs:complexType>
 
     <xs:complexType name="extensionsType">

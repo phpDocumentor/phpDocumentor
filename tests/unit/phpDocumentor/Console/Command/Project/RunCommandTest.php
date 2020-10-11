@@ -86,6 +86,7 @@ class RunCommandTest extends TestCase
                 'defaultpackagename',
                 'sourcecode',
                 'template',
+                'examples-dir',
                 'setting',
                 'list-settings',
                 'parseprivate',
