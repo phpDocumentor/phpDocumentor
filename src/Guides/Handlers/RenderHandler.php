@@ -32,8 +32,10 @@ final class RenderHandler
 
     public function render(FilesystemInterface $destination, string $targetDirectory) : void
     {
+        $basePath = $targetDirectory ? $targetDirectory . '/' : '';
+
         foreach ($this->documents->getAll() as $file => $document) {
-            $target = $this->getTargetOf($file);
+            $target = $basePath . $this->getTargetOf($file);
 
             $directory = dirname($target);
 

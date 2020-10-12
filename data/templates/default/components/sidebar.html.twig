@@ -3,6 +3,7 @@
 
     {% if menu() %}
     <section class="phpdocumentor-sidebar__category">
+        <h2 class="phpdocumentor-sidebar__category-header">Documentation</h2>
         {{ include('menu.html.twig', {menuItem: menu()}, with_context = false) }}
     </section>
     {% endif %}
