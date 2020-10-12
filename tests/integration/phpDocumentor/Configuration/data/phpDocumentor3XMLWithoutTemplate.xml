@@ -11,7 +11,7 @@
   -->
 
 <phpdocumentor
-        version="3"
+        configVersion="3"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="https://www.phpdoc.org"
         xsi:noNamespaceSchemaLocation="phpdoc.xsd"
 >
@@ -21,13 +21,27 @@
     </paths>
     <version number="1.0.0">
         <folder>latest</folder>
+        <api format="php">
+            <source dsn="file://.">
+                <path>src</path>
+            </source>
+            <ignore hidden="true" symlinks="true">
+                <path>src/ServiceDefinitions.php</path>
+            </ignore>
+            <extensions>
+                <extension>php</extension>
+                <extension>php3</extension>
+                <extension>phtml</extension>
+            </extensions>
+            <visibility>public</visibility>
+            <default-package-name>Default</default-package-name>
+            <markers>
+                <marker>TODO</marker>
+                <marker>FIXME</marker>
+            </markers>
+        </api>
         <guide format="rst">
             <source dsn="file://../phpDocumentor/phpDocumentor2">
-                <path>docs</path>
-            </source>
-        </guide>
-        <guide format="rst">
-            <source dsn="file://../phpDocumentor/phpDocumentor3">
                 <path>docs</path>
             </source>
         </guide>

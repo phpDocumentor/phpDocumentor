@@ -19,7 +19,9 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 use function array_map;
 use function array_merge;
 use function array_values;
+use function explode;
 use function getcwd;
+use function implode;
 use function substr;
 
 final class Version2 implements ConfigurationInterface, Upgradable
@@ -46,18 +48,9 @@ final class Version2 implements ConfigurationInterface, Upgradable
                     ->normalizeKeys(false)
                     ->children()
                         ->scalarNode('default-package-name')->defaultValue('Application')->end()
-                        ->arrayNode('visibility')
-                            ->defaultValue(['public', 'protected', 'private'])
-                            ->prototype('enum')
-                                ->info('What is the deepest level of visibility to include in the documentation?')
-                                ->values([
-                                    'api', // include all elements tagged with the `@api` tag
-                                    'public', // include all methods, properties and constants that are public
-                                    'protected', // include all methods, properties and constants that are protected
-                                    'private', // include all methods, properties and constants that are private
-                                    'internal', // include all elements tagged with `@internal`
-                                ])
-                            ->end()
+                        ->scalarNode('visibility')
+                            ->defaultValue(implode(',', ['public', 'protected', 'private']))
+                            ->info('What is the deepest level of visibility to include in the documentation?')
                         ->end()
                         ->scalarNode('target')->defaultValue('build/api-cache')->end()
                         ->scalarNode('encoding')
@@ -197,6 +190,10 @@ final class Version2 implements ConfigurationInterface, Upgradable
                             'extensions' => [
                                 'extensions' => $values['parser']['extensions']['extensions'],
                             ],
+                            'visibilities' => $values['parser']['visibility'] ? explode(
+                                ',',
+                                $values['parser']['visibility']
+                            ) : null,
                             'markers' => [
                                 'markers' => $values['parser']['markers']['items'],
                             ],

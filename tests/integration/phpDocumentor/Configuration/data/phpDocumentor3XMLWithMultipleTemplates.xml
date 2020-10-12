@@ -11,7 +11,7 @@
   -->
 
 <phpdocumentor
-        version="3"
+        configVersion="3"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="https://www.phpdoc.org"
         xsi:noNamespaceSchemaLocation="phpdoc.xsd"
 >
@@ -19,10 +19,8 @@
         <output>file://build/docs</output>
         <cache>/tmp/phpdoc-doc-cache</cache>
     </paths>
-    <version number="1.0.0">
-        <folder>earliest</folder>
-    </version>
-    <version number="2.0.0">
-        <folder>latest</folder>
-    </version>
+    <template name="clean"
+              location="https://github.com/phpDocumentor/phpDocumentor2/tree/develop/data/templates/clean"/>
+    <template name="tainted"
+              location="https://github.com/phpDocumentor/phpDocumentor2/tree/develop/data/templates/tainted"/>
 </phpdocumentor>

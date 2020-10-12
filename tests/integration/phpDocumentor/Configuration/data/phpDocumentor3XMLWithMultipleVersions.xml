@@ -11,30 +11,18 @@
   -->
 
 <phpdocumentor
-        version="3"
+        configVersion="3"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="https://www.phpdoc.org"
         xsi:noNamespaceSchemaLocation="phpdoc.xsd"
 >
     <paths>
-        <output></output>
+        <output>file://build/docs</output>
+        <cache>/tmp/phpdoc-doc-cache</cache>
     </paths>
-    <version number="">
-        <folder></folder>
-        <api format="">
-            <source>
-                <path></path>
-            </source>
-            <ignore>
-                <path></path>
-            </ignore>
-            <extensions>
-                <extension></extension>
-            </extensions>
-            <visibility>public</visibility>
-            <markers>
-                <marker></marker>
-            </markers>
-        </api>
+    <version number="1.0.0">
+        <folder>earliest</folder>
     </version>
-    <template/>
+    <version number="2.0.0">
+        <folder>latest</folder>
+    </version>
 </phpdocumentor>

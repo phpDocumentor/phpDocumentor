@@ -76,6 +76,7 @@ final class CommandlineOptionsMiddleware
             $version = $this->overwriteMarkers($version);
             $version = $this->overwriteIncludeSource($version);
             $version = $this->overwriteVisibility($version);
+            $version = $this->overwriteExamples($version);
             $version = $this->overwriteEncoding($version);
             $version = $this->overwriteDefaultPackageName($version);
         }
@@ -361,6 +362,31 @@ final class CommandlineOptionsMiddleware
         }
 
         $version['api'][0]['default-package-name'] = $this->options['defaultpackagename'];
+
+        return $version;
+    }
+
+    /**
+     * @param array<string, array<int, array<string, mixed>>> $version
+     *
+     * @return array<string, array<int, array<string, mixed>>>
+     */
+    private function overwriteExamples(array $version) : array
+    {
+        /** @var string|null $examples */
+        $examples = $this->options['examples-dir'] ?? null;
+        if (!$examples) {
+            return $version;
+        }
+
+        if (!isset($version['api'])) {
+            $version['api'] = $this->createDefaultApiSettings();
+        }
+
+        $version['api'][0]['examples'] = [
+            'dsn' => Dsn::createFromString($examples),
+            'paths' => ['./'],
+        ];
 
         return $version;
     }

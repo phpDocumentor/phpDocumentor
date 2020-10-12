@@ -98,6 +98,25 @@ final class Version3Test extends TestCase
                 ],
                 $this->defaultConfigurationWithOneApiWithOverriddenSource('latest', 'file:///tmp', ['src']),
             ],
+            'configuration with example' => [
+                [
+                    'paths' => ['output' => '/tmp'],
+                    'version' => [
+                        [
+                            'number' => 'latest',
+                            'api' => [
+                                [
+                                    'examples' => [
+                                        'dsn' => 'file:///tmp',
+                                        'path' => ['src'],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                $this->defaultConfigurationWithOneApiWithOverriddenExamples('latest', 'file:///tmp', ['src']),
+            ],
             'minimal configuration' => [
                 [
                     'versions' => [
@@ -179,6 +198,33 @@ final class Version3Test extends TestCase
         // we first extract the default key from our described default and change it to resemble our expected end-state
         $version = $configuration['versions']['1.0.0'];
         $version['apis'][0]['source'] = [
+            'dsn' => $dsn,
+            'paths' => $paths,
+        ];
+        unset($configuration['versions']['1.0.0']);
+
+        $version['number'] = $versionString;
+        $configuration['versions'][$versionString] = $version;
+
+        return $configuration;
+    }
+
+    private function defaultConfigurationWithOneApiWithOverriddenExamples(
+        string $versionString,
+        string $dsn,
+        array $paths
+    ) : array {
+        $configuration = array_replace_recursive(
+            $this->defaultConfigurationOutput(),
+            [
+                'paths' => ['output' => '/tmp'],
+            ]
+        );
+
+        // for the version we do want to check whether the defaults are kept; so instead of using array_replace,
+        // we first extract the default key from our described default and change it to resemble our expected end-state
+        $version = $configuration['versions']['1.0.0'];
+        $version['apis'][0]['examples'] = [
             'dsn' => $dsn,
             'paths' => $paths,
         ];
