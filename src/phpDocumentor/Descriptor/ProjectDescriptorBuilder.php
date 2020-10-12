@@ -77,14 +77,12 @@ class ProjectDescriptorBuilder
     /**
      * Takes the given data and attempts to build a Descriptor from it.
      *
-     * @param TInput $data
      * @param class-string<TDescriptor> $type
      *
      * @return TDescriptor|null
      *
      * @throws InvalidArgumentException If no Assembler could be found that matches the given data.
      *
-     * @template TInput of object
      * @template TDescriptor of Descriptor
      */
     public function buildDescriptor(object $data, string $type) : ?Descriptor
@@ -102,7 +100,6 @@ class ProjectDescriptorBuilder
         }
 
         // create Descriptor and populate with the provided data
-        /** @var TDescriptor|null $descriptor */
         $descriptor = $this->filterDescriptor($assembler->create($data));
 
         return $descriptor;
@@ -114,7 +111,7 @@ class ProjectDescriptorBuilder
      * @param TInput $data
      * @param class-string<TDescriptor> $type
      *
-     * @return AssemblerInterface<Descriptor, TInput>|null
+     * @return AssemblerInterface<TDescriptor, TInput>|null
      *
      * @template TInput as object
      * @template TDescriptor as Descriptor
@@ -155,7 +152,6 @@ class ProjectDescriptorBuilder
         }
 
         // filter the descriptor; this may result in the descriptor being removed!
-        /** @var TDescriptor|null $descriptor */
         $descriptor = $this->filter($descriptor);
 
         return $descriptor;

@@ -70,13 +70,16 @@ use function array_merge;
 
 /**
  * Attempts to retrieve an Assembler for the provided criteria.
+ *
+ * @template TInput of object
+ * @template TDescriptor of Descriptor
  */
 class AssemblerFactory
 {
-    /** @var AssemblerMatcher<Descriptor, object>[] */
+    /** @var AssemblerMatcher<TDescriptor, TInput>[] */
     protected $assemblers = [];
 
-    /** @var AssemblerMatcher<Descriptor, object>[] */
+    /** @var AssemblerMatcher<TDescriptor, TInput>[] */
     protected $fallbackAssemblers = [];
 
     /**
@@ -84,7 +87,7 @@ class AssemblerFactory
      *
      * @param callable $matcher A callback function accepting the criteria as only parameter and which must
      *     return a boolean.
-     * @param AssemblerInterface<Descriptor, object> $assembler An instance of the Assembler that
+     * @param AssemblerInterface<TDescriptor, TInput> $assembler An instance of the Assembler that
      *     will be returned if the callback returns true with the provided criteria.
      */
     public function register(callable $matcher, AssemblerInterface $assembler) : void
@@ -98,7 +101,7 @@ class AssemblerFactory
      *
      * @param callable $matcher A callback function accepting the criteria as only parameter and which must
      *     return a boolean.
-     * @param AssemblerInterface<Descriptor, object> $assembler An instance of the Assembler that
+     * @param AssemblerInterface<TDescriptor, TInput> $assembler An instance of the Assembler that
      *     will be returned if the callback returns true with the provided criteria.
      */
     public function registerFallback(callable $matcher, AssemblerInterface $assembler) : void
@@ -109,17 +112,21 @@ class AssemblerFactory
     /**
      * Retrieves a matching Assembler based on the provided criteria or null if none was found.
      *
-     * @param TInput $criteria
-     * @param class-string<TDescriptor> $type
+     * @param TParamInput $criteria
+     * @param class-string<TParamDescriptor> $type
      *
-     * @return AssemblerInterface<TDescriptor, TInput>
+     * @return AssemblerInterface<TParamDescriptor, TParamInput>|null
      *
-     * @template TInput of object
-     * @template TDescriptor of Descriptor
+     * @template TParamInput of TInput
+     * @template TParamDescriptor of TDescriptor
      */
     public function get(object $criteria, string $type) : ?AssemblerInterface
     {
-        /** @var AssemblerMatcher<TDescriptor, TInput> $candidate */
+        /**
+         * @var AssemblerMatcher<TParamDescriptor, TParamInput> $candidate This is cheating, but there's no way to make
+         * psalm understand that TParamDescriptor & TParamInput given in param happen to be the same as the one in the
+         * factory. We know it is because they matched.
+         */
         foreach (array_merge($this->assemblers, $this->fallbackAssemblers) as $candidate) {
             if ($candidate->match($criteria)) {
                 return $candidate->getAssembler();
