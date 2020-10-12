@@ -1,12 +1,10 @@
 <?xml version="1.0"?>
 <psalm
-    totallyTyped="false"
     resolveFromConfigFile="true"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns="https://getpsalm.org/schema/config"
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
-    autoloader="vendor/autoload.php"
-    findUnusedVariablesAndParams="false"
+    errorLevel="7"
 >
     <projectFiles>
         <directory name="src" />
@@ -17,63 +15,6 @@
     </projectFiles>
 
     <issueHandlers>
-        <!-- level 3 issues - slightly lazy code writing, but provably low false-negatives -->
-
-        <DeprecatedMethod errorLevel="info" />
-
-        <MissingClosureReturnType errorLevel="info" />
-        <MissingPropertyType errorLevel="info" />
-        <InvalidDocblock errorLevel="info" />
-
-        <PropertyNotSetInConstructor errorLevel="info" />
-        <MissingClosureParamType errorLevel="info" />
-
-        <DocblockTypeContradiction errorLevel="info" />
-        <RedundantConditionGivenDocblockType errorLevel="info" />
-
-        <UnresolvableInclude errorLevel="info" />
-
-        <!-- level 4 issues - points to possible deficiencies in logic, higher false-positives -->
-
-        <TypeCoercion errorLevel="info" />
-
-        <PossiblyFalseArgument errorLevel="info" />
-        <PossiblyFalseIterator errorLevel="info" />
-        <PossiblyInvalidArgument errorLevel="info" />
-        <PossiblyInvalidArrayAccess errorLevel="info" />
-        <PossiblyInvalidArrayAssignment errorLevel="info" />
-        <PossiblyInvalidArrayOffset errorLevel="info" />
-        <PossiblyInvalidCast errorLevel="info" />
-        <PossiblyInvalidIterator errorLevel="info" />
-        <PossiblyInvalidMethodCall errorLevel="info" />
-        <PossiblyNullArgument errorLevel="info" />
-        <PossiblyNullOperand errorLevel="info" />
-        <PossiblyNullPropertyAssignmentValue errorLevel="info" />
-        <PossiblyNullReference errorLevel="info" />
-        <PossiblyUndefinedArrayOffset errorLevel="info" />
-        <PossiblyUndefinedMethod errorLevel="info" />
-
-        <!-- level 5 issues - should be avoided at most costs... -->
-
-        <ImplicitToStringCast errorLevel="info" />
-        <InvalidScalarArgument errorLevel="info" />
-        <InvalidOperand errorLevel="info" />
-        <ImplementedReturnTypeMismatch errorLevel="info" />
-        <ImplementedParamTypeMismatch errorLevel="info" />
-
-        <!-- level 6 issues - really bad things -->
-
-        <InvalidNullableReturnType errorLevel="info" />
-        <NullableReturnStatement errorLevel="info" />
-        <InvalidFalsableReturnType errorLevel="info" />
-        <FalsableReturnStatement errorLevel="info" />
-
-        <MoreSpecificImplementedParamType errorLevel="info" />
-
-        <!-- level 7 issues - even worse -->
-        <InvalidReturnStatement errorLevel="info" />
-        <InvalidReturnType errorLevel="info" />
-
         <!-- User Defined -->
         <UndefinedMagicMethod>
             <errorLevel type="suppress">
@@ -96,7 +37,6 @@
                 but just happen not to in this specific call -->
                 <referencedFunction name="current"/>
                 <!-- psalm bug -->
-                <referencedFunction name="phpDocumentor\Descriptor\Collection::offsetSet" />
                 <referencedFunction name="phpDocumentor\Descriptor\Builder\AssemblerFactory::register" />
                 <referencedFunction name="phpDocumentor\Descriptor\Builder\AssemblerFactory::registerFallback" />
             </errorLevel>
@@ -113,13 +53,6 @@
                 <referencedClass name="Psr\Cache\InvalidArgumentException"/>
             </errorLevel>
         </InvalidThrow>
-
-        <UnusedClosureParam>
-            <errorLevel type="suppress">
-                <!-- Not sure what's going on -->
-                <file name="src/phpDocumentor/Console/Command/Project/RunCommand.php"/>
-            </errorLevel>
-        </UnusedClosureParam>
 
         <TooManyTemplateParams>
             <errorLevel type="suppress">
