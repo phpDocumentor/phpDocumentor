@@ -132,6 +132,9 @@ services:
             - "@=service('kernel').getWorkingDir() ~ '/phpdoc.xml'"
             - "@=service('kernel').getWorkingDir() ~ '/phpdoc.dist.xml'"
             - "@=service('kernel').getWorkingDir() ~ '/phpdoc.xml.dist'"
+            - "@=service('kernel').getWorkingDir() ~ '/.phpdoc.xml.dist'"
+            - "@=service('kernel').getWorkingDir() ~ '/.phpdoc.xml'"
+            - "@=service('kernel').getWorkingDir() ~ '/.phpdoc.dist.xml'"
           $symfonyConfigFactory: '@phpDocumentor\Configuration\SymfonyConfigFactory'
 
     phpDocumentor\Configuration\SymfonyConfigFactory:
