@@ -44,6 +44,18 @@ final class VisiblityFilterFuncionalTest extends FunctionalTestCase
             [
                 'public',
                 1
+            ],
+            [
+                'public,protected',
+                2
+            ],
+            [
+                'protected',
+                1
+            ],
+            [
+                'private',
+                1
             ]
         ];
     }

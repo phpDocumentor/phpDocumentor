@@ -63,6 +63,7 @@ class Filter
 
         $this->attach(PropertyDescriptor::class, $stripOnVisibility);
         $this->attach(MethodDescriptor::class, $stripOnVisibility);
+        $this->attach(ConstantDescriptor::class, $stripOnVisibility);
     }
 
     /**
