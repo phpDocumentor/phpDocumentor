@@ -2,6 +2,15 @@
 
 declare(strict_types=1);
 
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link https://phpdoc.org
+ */
+
 namespace phpDocumentor\Guides\Renderers;
 
 use phpDocumentor\Guides\Nodes\ListNode;
@@ -19,7 +28,7 @@ class ListNodeRenderer implements NodeRenderer
 
     public function __construct(ListNode $listNode, FormatListRenderer $formatListRenderer)
     {
-        $this->listNode           = $listNode;
+        $this->listNode = $listNode;
         $this->formatListRenderer = $formatListRenderer;
     }
 
@@ -33,15 +42,15 @@ class ListNodeRenderer implements NodeRenderer
             /** @var SpanNode $text */
             $text = $line['text'];
 
-            $prefix   = $line['prefix'];
-            $ordered  = $line['ordered'];
+            $prefix = $line['prefix'];
+            $ordered = $line['ordered'];
             $newDepth = $line['depth'];
 
             if ($depth < $newDepth) {
-                $tags    = $this->formatListRenderer->createList($ordered);
-                $value  .= $tags[0];
+                $tags = $this->formatListRenderer->createList($ordered);
+                $value .= $tags[0];
                 $stack[] = [$newDepth, $tags[1] . "\n"];
-                $depth   = $newDepth;
+                $depth = $newDepth;
             }
 
             while ($depth > $newDepth) {
@@ -53,7 +62,7 @@ class ListNodeRenderer implements NodeRenderer
 
                 $value .= $top[1];
                 array_pop($stack);
-                $top   = $stack[count($stack) - 1];
+                $top = $stack[count($stack) - 1];
                 $depth = $top[0];
             }
 
@@ -62,7 +71,7 @@ class ListNodeRenderer implements NodeRenderer
 
         while ($stack) {
             [$d, $closing] = array_pop($stack);
-            $value        .= $closing;
+            $value .= $closing;
         }
 
         return $value;

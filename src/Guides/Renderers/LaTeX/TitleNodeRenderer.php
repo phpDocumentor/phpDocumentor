@@ -2,6 +2,15 @@
 
 declare(strict_types=1);
 
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link https://phpdoc.org
+ */
+
 namespace phpDocumentor\Guides\Renderers\LaTeX;
 
 use phpDocumentor\Guides\Nodes\TitleNode;
@@ -34,9 +43,12 @@ class TitleNodeRenderer implements NodeRenderer
             }
         }
 
-        return $this->renderer->render('title.tex.twig', [
-            'type' => $type,
-            'titleNode' => $this->titleNode,
-        ]);
+        return $this->renderer->render(
+            'title.tex.twig',
+            [
+                'type' => $type,
+                'titleNode' => $this->titleNode,
+            ]
+        );
     }
 }

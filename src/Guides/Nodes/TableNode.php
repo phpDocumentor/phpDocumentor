@@ -2,6 +2,15 @@
 
 declare(strict_types=1);
 
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link https://phpdoc.org
+ */
+
 namespace phpDocumentor\Guides\Nodes;
 
 use Exception;
@@ -66,7 +75,7 @@ class TableNode extends Node
         parent::__construct();
 
         $this->pushSeparatorLine($separatorLineConfig);
-        $this->type        = $type;
+        $this->type = $type;
         $this->lineChecker = $lineChecker;
     }
 
@@ -153,7 +162,7 @@ class TableNode extends Node
             $parser->getEnvironment()
                 ->addError(sprintf("%s\nin file %s\n\n%s", $this->errors[0], $parser->getFilename(), $tableAsString));
 
-            $this->data    = [];
+            $this->data = [];
             $this->headers = [];
 
             return;
@@ -211,14 +220,14 @@ class TableNode extends Node
 
         // if the final header row is *after* the last data line, it's not
         // really a header "ending" and so there are no headers
-        $lastDataLineNumber = array_keys($this->rawDataLines)[count($this->rawDataLines)-1];
+        $lastDataLineNumber = array_keys($this->rawDataLines)[count($this->rawDataLines) - 1];
         if ($finalHeadersRow > $lastDataLineNumber) {
             $finalHeadersRow = 0;
         }
 
         // todo - support "---" in the future for colspan
-        $columnRanges       = $this->separatorLineConfigs[0]->getPartRanges();
-        $lastColumnRangeEnd = array_values($columnRanges)[count($columnRanges)-1][1];
+        $columnRanges = $this->separatorLineConfigs[0]->getPartRanges();
+        $lastColumnRangeEnd = array_values($columnRanges)[count($columnRanges) - 1][1];
         foreach ($this->rawDataLines as $i => $line) {
             $row = new TableRow();
             // loop over where all the columns should be
@@ -227,10 +236,12 @@ class TableNode extends Node
             foreach ($columnRanges as $columnRange) {
                 $isRangeBeyondText = $columnRange[0] >= strlen($line);
                 // check for content in the "gap"
-                if ($previousColumnEnd !== null && ! $isRangeBeyondText) {
+                if ($previousColumnEnd !== null && !$isRangeBeyondText) {
                     $gapText = substr($line, $previousColumnEnd, $columnRange[0] - $previousColumnEnd);
                     if (strlen(trim($gapText)) !== 0) {
-                        $this->addError(sprintf('Malformed table: content "%s" appears in the "gap" on row "%s"', $gapText, $line));
+                        $this->addError(
+                            sprintf('Malformed table: content "%s" appears in the "gap" on row "%s"', $gapText, $line)
+                        );
                     }
                 }
 
@@ -291,12 +302,18 @@ class TableNode extends Node
     private function compilePrettyTable() : void
     {
         // loop over ALL separator lines to find ALL of the column ranges
-        $columnRanges    = [];
+        $columnRanges = [];
         $finalHeadersRow = 0;
         foreach ($this->separatorLineConfigs as $rowIndex => $separatorLine) {
             if ($separatorLine->isHeader()) {
                 if ($finalHeadersRow !== 0) {
-                    $this->addError(sprintf('Malformed table: multiple "header rows" using "===" were found. See table lines "%d" and "%d"', $finalHeadersRow + 1, $rowIndex));
+                    $this->addError(
+                        sprintf(
+                            'Malformed table: multiple "header rows" using "===" were found. See table lines "%d" and "%d"',
+                            $finalHeadersRow + 1,
+                            $rowIndex
+                        )
+                    );
                 }
 
                 // indicates that "=" was used
@@ -305,11 +322,11 @@ class TableNode extends Node
 
             foreach ($separatorLine->getPartRanges() as $columnRange) {
                 $colStart = $columnRange[0];
-                $colEnd   = $columnRange[1];
+                $colEnd = $columnRange[1];
 
                 // we don't have this "start" yet? just add it
                 // in theory, should only happen for the first row
-                if (! isset($columnRanges[$colStart])) {
+                if (!isset($columnRanges[$colStart])) {
                     $columnRanges[$colStart] = $colEnd;
 
                     continue;
@@ -339,7 +356,7 @@ class TableNode extends Node
         }
 
         /** @var TableRow[] $rows */
-        $rows                 = [];
+        $rows = [];
         $partialSeparatorRows = [];
         foreach ($this->rawDataLines as $rowIndex => $line) {
             $row = new TableRow();
@@ -353,12 +370,15 @@ class TableNode extends Node
             }
 
             $currentColumnStart = null;
-            $currentSpan        = 1;
-            $previousColumnEnd  = null;
+            $currentSpan = 1;
+            $previousColumnEnd = null;
             foreach ($columnRanges as $start => $end) {
                 // a content line that ends before it should
                 if ($end >= strlen($line)) {
-                    $this->errors[] = sprintf("Malformed table: Line\n\n%s\n\ndoes not appear to be a complete table row", $line);
+                    $this->errors[] = sprintf(
+                        "Malformed table: Line\n\n%s\n\ndoes not appear to be a complete table row",
+                        $line
+                    );
 
                     break;
                 }
@@ -380,7 +400,7 @@ class TableNode extends Node
                             substr($line, $currentColumnStart, $previousColumnEnd - $currentColumnStart),
                             $currentSpan
                         );
-                        $currentSpan        = 1;
+                        $currentSpan = 1;
                         $currentColumnStart = null;
                     }
                 }
@@ -418,12 +438,15 @@ class TableNode extends Node
                 // that this column in the next row should also be
                 // included in that previous row's content
                 foreach ($row->getColumns() as $columnIndex => $column) {
-                    if (! $column->isCompletelyEmpty() && str_repeat('-', strlen($column->getContent())) === $column->getContent()) {
+                    if (!$column->isCompletelyEmpty() && str_repeat(
+                            '-',
+                            strlen($column->getContent())
+                        ) === $column->getContent()) {
                         // only a line separator in this column - not content!
                         continue;
                     }
 
-                    $prevTargetColumn = $this->findColumnInPreviousRows((int) $columnIndex, $rows, (int) $rowIndex);
+                    $prevTargetColumn = $this->findColumnInPreviousRows((int)$columnIndex, $rows, (int)$rowIndex);
                     $prevTargetColumn->addContent("\n" . $column->getContent());
                     $prevTargetColumn->incrementRowSpan();
                     // mark that this column on the next row should also be added
@@ -440,8 +463,8 @@ class TableNode extends Node
             // check if the previous row was a partial separator row, and
             // we need to take some columns and add them to a previous row's content
             foreach ($columnIndexesCurrentlyInRowspan as $columnIndex) {
-                $prevTargetColumn = $this->findColumnInPreviousRows($columnIndex, $rows, (int) $rowIndex);
-                $columnInRowspan  = $row->getColumn($columnIndex);
+                $prevTargetColumn = $this->findColumnInPreviousRows($columnIndex, $rows, (int)$rowIndex);
+                $columnInRowspan = $row->getColumn($columnIndex);
                 if ($columnInRowspan === null) {
                     throw new LogicException('Cannot find column for index "%s"', $columnIndex);
                 }
@@ -457,15 +480,15 @@ class TableNode extends Node
             // was no "separator" and this is really just a
             // continuation of this row.
             $nextRowCounter = 1;
-            while (isset($rows[(int) $rowIndex + $nextRowCounter])) {
+            while (isset($rows[(int)$rowIndex + $nextRowCounter])) {
                 // but if the next line is actually a partial separator, then
                 // it is not a continuation of the content - quit now
-                if (isset($partialSeparatorRows[(int) $rowIndex + $nextRowCounter])) {
+                if (isset($partialSeparatorRows[(int)$rowIndex + $nextRowCounter])) {
                     break;
                 }
 
-                $targetRow = $rows[(int) $rowIndex + $nextRowCounter];
-                unset($rows[(int) $rowIndex + $nextRowCounter]);
+                $targetRow = $rows[(int)$rowIndex + $nextRowCounter];
+                unset($rows[(int)$rowIndex + $nextRowCounter]);
 
                 try {
                     $row->absorbRowContent($targetRow);
@@ -492,7 +515,7 @@ class TableNode extends Node
     private function getTableAsString() : string
     {
         $lines = [];
-        $i     = 0;
+        $i = 0;
         while (isset($this->separatorLineConfigs[$i]) || isset($this->rawDataLines[$i])) {
             if (isset($this->separatorLineConfigs[$i])) {
                 $lines[] = $this->separatorLineConfigs[$i]->getRawContent();

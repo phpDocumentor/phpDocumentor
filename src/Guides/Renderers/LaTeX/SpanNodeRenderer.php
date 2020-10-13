@@ -2,6 +2,15 @@
 
 declare(strict_types=1);
 
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link https://phpdoc.org
+ */
+
 namespace phpDocumentor\Guides\Renderers\LaTeX;
 
 use phpDocumentor\Guides\Nodes\SpanNode;
@@ -64,12 +73,15 @@ class SpanNodeRenderer extends BaseSpanNodeRenderer
             $url = $this->environment->getUrl() . $url;
         }
 
-        return $this->renderer->render('link.tex.twig', [
-            'type' => $type,
-            'url' => $url,
-            'title' => $title,
-            'attributes' => $attributes,
-        ]);
+        return $this->renderer->render(
+            'link.tex.twig',
+            [
+                'type' => $type,
+                'url' => $url,
+                'title' => $title,
+                'attributes' => $attributes,
+            ]
+        );
     }
 
     public function escape(string $span) : string
@@ -83,7 +95,7 @@ class SpanNodeRenderer extends BaseSpanNodeRenderer
     public function reference(ResolvedReference $reference, array $value) : string
     {
         $text = $value['text'] ?: $reference->getTitle();
-        $url  = $reference->getUrl();
+        $url = $reference->getUrl();
 
         if ($value['anchor'] !== '') {
             $url .= $value['anchor'];

@@ -2,6 +2,15 @@
 
 declare(strict_types=1);
 
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link https://phpdoc.org
+ */
+
 namespace phpDocumentor\Guides\Renderers\Html;
 
 use LogicException;
@@ -20,14 +29,14 @@ class TableNodeRenderer implements NodeRenderer
 
     public function __construct(TableNode $tableNode)
     {
-        $this->tableNode        = $tableNode;
+        $this->tableNode = $tableNode;
         $this->renderer = $tableNode->getEnvironment()->getRenderer();
     }
 
     public function render() : string
     {
         $headers = $this->tableNode->getHeaders();
-        $rows    = $this->tableNode->getData();
+        $rows = $this->tableNode->getData();
 
         $tableHeaderRows = [];
 
@@ -36,7 +45,7 @@ class TableNodeRenderer implements NodeRenderer
                 continue;
             }
 
-            if (! isset($rows[$k])) {
+            if (!isset($rows[$k])) {
                 throw new LogicException(sprintf('Row "%d" should be a header, but that row does not exist.', $k));
             }
 
@@ -44,10 +53,13 @@ class TableNodeRenderer implements NodeRenderer
             unset($rows[$k]);
         }
 
-        return $this->renderer->render('table.html.twig', [
-            'tableNode' => $this->tableNode,
-            'tableHeaderRows' => $tableHeaderRows,
-            'tableRows' => $rows,
-        ]);
+        return $this->renderer->render(
+            'table.html.twig',
+            [
+                'tableNode' => $this->tableNode,
+                'tableHeaderRows' => $tableHeaderRows,
+                'tableRows' => $rows,
+            ]
+        );
     }
 }

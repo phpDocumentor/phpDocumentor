@@ -2,6 +2,15 @@
 
 declare(strict_types=1);
 
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link https://phpdoc.org
+ */
+
 namespace phpDocumentor\Guides\Renderers\Html;
 
 use phpDocumentor\Guides\Environment;
@@ -46,15 +55,18 @@ class TocNodeRenderer implements NodeRenderer
             $this->buildLevel($url, $reference->getTitles(), 1, $tocItems);
         }
 
-        return $this->tocNode->getEnvironment()->getRenderer()->render('toc.html.twig', [
-            'tocNode' => $this->tocNode,
-            'tocItems' => $tocItems,
-        ]);
+        return $this->tocNode->getEnvironment()->getRenderer()->render(
+            'toc.html.twig',
+            [
+                'tocNode' => $this->tocNode,
+                'tocItems' => $tocItems,
+            ]
+        );
     }
 
     /**
      * @param mixed[]|array $titles
-     * @param mixed[]       $tocItems
+     * @param mixed[] $tocItems
      */
     private function buildLevel(
         ?string $url,

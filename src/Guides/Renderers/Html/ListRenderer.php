@@ -2,6 +2,15 @@
 
 declare(strict_types=1);
 
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link https://phpdoc.org
+ */
+
 namespace phpDocumentor\Guides\Renderers\Html;
 
 use phpDocumentor\Guides\Nodes\ListNode;
@@ -24,17 +33,20 @@ class ListRenderer implements FormatListRenderer
 
     public function __construct(ListNode $listNode)
     {
-        $this->listNode         = $listNode;
+        $this->listNode = $listNode;
         $this->renderer = $listNode->getEnvironment()->getRenderer();
     }
 
     public function createElement(string $text, string $prefix) : string
     {
-        return $this->renderer->render('list-item.html.twig', [
-            'listNode' => $this->listNode,
-            'text' => $text,
-            'prefix' => $prefix,
-        ]);
+        return $this->renderer->render(
+            'list-item.html.twig',
+            [
+                'listNode' => $this->listNode,
+                'text' => $text,
+                'prefix' => $prefix,
+            ]
+        );
     }
 
     /**
@@ -42,16 +54,27 @@ class ListRenderer implements FormatListRenderer
      */
     public function createList(bool $ordered) : array
     {
-        $lines = explode("\n", $this->renderer->render('list.html.twig', [
-            'listNode' => $this->listNode,
-            'keyword' => $ordered ? 'ol' : 'ul',
-        ]));
+        $lines = explode(
+            "\n",
+            $this->renderer->render(
+                'list.html.twig',
+                [
+                    'listNode' => $this->listNode,
+                    'keyword' => $ordered ? 'ol' : 'ul',
+                ]
+            )
+        );
 
         $lines = array_map('trim', $lines);
 
-        $lines = array_values(array_filter($lines, static function (string $line) {
-            return $line !== '';
-        }));
+        $lines = array_values(
+            array_filter(
+                $lines,
+                static function (string $line) {
+                    return $line !== '';
+                }
+            )
+        );
 
         if (count($lines) !== 2) {
             throw new RuntimeException('list.html.twig must contain only 2 lines');

@@ -26,6 +26,8 @@ use function trim;
  * Application class for phpDocumentor.
  *
  * Can be used as bootstrap when the run method is not invoked.
+ *
+ * @codeCoverageIgnore Nothing in this file is really testable or needed to be tested
  */
 final class Application
 {
@@ -36,7 +38,6 @@ final class Application
 
     public static function templateDirectory() : string
     {
-        // @codeCoverageIgnoreStart
         $templateDir = __DIR__ . '/../../data/templates';
 
         // when installed using composer the templates are in a different folder
@@ -46,8 +47,6 @@ final class Application
         }
 
         return $templateDir;
-
-        // @codeCoverageIgnoreEnd
     }
 
     /**
@@ -80,8 +79,6 @@ final class Application
         if (extension_loaded('Zend Optimizer+') && ini_get('zend_optimizerplus.save_comments') === '0') {
             throw new RuntimeException('Please enable zend_optimizerplus.save_comments in php.ini.');
         }
-
-        // @codeCoverageIgnoreEnd
     }
 
     /**
@@ -95,12 +92,10 @@ final class Application
      */
     private function setTimezone() : void
     {
-        // @codeCoverageIgnoreStart
         if (ini_get('date.timezone') !== false) {
             return;
         }
 
         date_default_timezone_set('UTC');
-        // @codeCoverageIgnoreEnd
     }
 }

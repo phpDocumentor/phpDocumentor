@@ -2,6 +2,15 @@
 
 declare(strict_types=1);
 
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link https://phpdoc.org
+ */
+
 namespace phpDocumentor\Guides\Nodes;
 
 use Exception;
@@ -64,7 +73,7 @@ class DocumentNode extends Node
         }
 
         foreach ($this->nodes as $node) {
-            if (! $function($node)) {
+            if (!$function($node)) {
                 continue;
             }
 
@@ -92,9 +101,11 @@ class DocumentNode extends Node
     {
         $tocs = [];
 
-        $nodes = $this->getNodes(static function ($node) {
-            return $node instanceof TocNode;
-        });
+        $nodes = $this->getNodes(
+            static function ($node) {
+                return $node instanceof TocNode;
+            }
+        );
 
         /** @var TocNode $toc */
         foreach ($nodes as $toc) {
@@ -119,22 +130,22 @@ class DocumentNode extends Node
         $levels = [&$titles];
 
         foreach ($this->nodes as $node) {
-            if (! ($node instanceof TitleNode)) {
+            if (!($node instanceof TitleNode)) {
                 continue;
             }
 
-            $level       = $node->getLevel();
-            $text        = $node->getValue()->getValue();
+            $level = $node->getLevel();
+            $text = $node->getValue()->getValue();
             $redirection = $node->getTarget();
-            $value       = $redirection !== '' ? [$text, $redirection] : $text;
+            $value = $redirection !== '' ? [$text, $redirection] : $text;
 
-            if (! isset($levels[$level - 1])) {
+            if (!isset($levels[$level - 1])) {
                 continue;
             }
 
-            $parent         = &$levels[$level - 1];
-            $element        = [$value, []];
-            $parent[]       = $element;
+            $parent = &$levels[$level - 1];
+            $element = [$value, []];
+            $parent[] = $element;
             $levels[$level] = &$parent[count($parent) - 1][1];
         }
 
@@ -172,11 +183,13 @@ class DocumentNode extends Node
             throw new Exception(sprintf('Could not get relative url for css %s', $css));
         }
 
-        $this->addHeaderNode($environment->getNodeFactory()->createRawNode(
-            function() use ($environment, $css) {
-                return $environment->getRenderer()->render('stylesheet-link.html.twig', ['css' => $css]);
-            }
-        ));
+        $this->addHeaderNode(
+            $environment->getNodeFactory()->createRawNode(
+                function () use ($environment, $css) {
+                    return $environment->getRenderer()->render('stylesheet-link.html.twig', ['css' => $css]);
+                }
+            )
+        );
     }
 
     public function addJs(string $js) : void
@@ -188,11 +201,13 @@ class DocumentNode extends Node
             throw new Exception(sprintf('Could not get relative url for js %s', $js));
         }
 
-        $this->addHeaderNode($environment->getNodeFactory()->createRawNode(
-            function() use ($environment, $js) {
-                return $environment->getRenderer()->render('javascript.html.twig', ['js' => $js]);
-            }
-        ));
+        $this->addHeaderNode(
+            $environment->getNodeFactory()->createRawNode(
+                function () use ($environment, $js) {
+                    return $environment->getRenderer()->render('javascript.html.twig', ['js' => $js]);
+                }
+            )
+        );
     }
 
     public function addFavicon(string $url = '/favicon.ico') : void
@@ -204,11 +219,13 @@ class DocumentNode extends Node
             throw new Exception(sprintf('Could not get relative url for favicon %s', $url));
         }
 
-        $this->addHeaderNode($environment->getNodeFactory()->createRawNode(
-            function() use ($environment, $url) {
-                return $environment->getRenderer()->render('favicon.html.twig', ['url' => $url]);
-            }
-        ));
+        $this->addHeaderNode(
+            $environment->getNodeFactory()->createRawNode(
+                function () use ($environment, $url) {
+                    return $environment->getRenderer()->render('favicon.html.twig', ['url' => $url]);
+                }
+            )
+        );
     }
 
     protected function doRenderDocument() : string
@@ -228,11 +245,13 @@ class DocumentNode extends Node
         $currentFileName = $this->environment->getCurrentFileName();
 
         foreach ($this->environment->getInvalidLinks() as $invalidLink) {
-            $this->environment->addError(sprintf(
-                'Found invalid reference "%s"%s',
-                $invalidLink->getName(),
-                $currentFileName !== '' ? sprintf(' in file "%s"', $currentFileName) : ''
-            ));
+            $this->environment->addError(
+                sprintf(
+                    'Found invalid reference "%s"%s',
+                    $invalidLink->getName(),
+                    $currentFileName !== '' ? sprintf(' in file "%s"', $currentFileName) : ''
+                )
+            );
         }
     }
 }

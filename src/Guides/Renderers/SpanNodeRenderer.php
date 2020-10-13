@@ -2,6 +2,15 @@
 
 declare(strict_types=1);
 
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link https://phpdoc.org
+ */
+
 namespace phpDocumentor\Guides\Renderers;
 
 use InvalidArgumentException;
@@ -29,7 +38,7 @@ abstract class SpanNodeRenderer implements NodeRenderer, SpanRenderer
         SpanNode $span
     ) {
         $this->environment = $environment;
-        $this->span        = $span;
+        $this->span = $span;
     }
 
     public function render() : string
@@ -48,7 +57,7 @@ abstract class SpanNodeRenderer implements NodeRenderer, SpanRenderer
      */
     public function link(?string $url, string $title, array $attributes = []) : string
     {
-        $url = (string) $url;
+        $url = (string)$url;
 
         return $this->environment->getRenderer()->render(
             'link.html.twig',
@@ -79,16 +88,24 @@ abstract class SpanNodeRenderer implements NodeRenderer, SpanRenderer
 
     private function renderStrongEmphasis(string $span) : string
     {
-        return preg_replace_callback('/\*\*(.+)\*\*/mUsi', function (array $matches) : string {
-            return $this->strongEmphasis($matches[1]);
-        }, $span);
+        return preg_replace_callback(
+            '/\*\*(.+)\*\*/mUsi',
+            function (array $matches) : string {
+                return $this->strongEmphasis($matches[1]);
+            },
+            $span
+        );
     }
 
     private function renderEmphasis(string $span) : string
     {
-        return preg_replace_callback('/\*(.+)\*/mUsi', function (array $matches) : string {
-            return $this->emphasis($matches[1]);
-        }, $span);
+        return preg_replace_callback(
+            '/\*(.+)\*/mUsi',
+            function (array $matches) : string {
+                return $this->emphasis($matches[1]);
+            },
+            $span
+        );
     }
 
     private function renderNbsp(string $span) : string
@@ -98,23 +115,27 @@ abstract class SpanNodeRenderer implements NodeRenderer, SpanRenderer
 
     private function renderVariables(string $span) : string
     {
-        return preg_replace_callback('/\|(.+)\|/mUsi', function (array $match) : string {
-            $variable = $this->environment->getVariable($match[1]);
+        return preg_replace_callback(
+            '/\|(.+)\|/mUsi',
+            function (array $match) : string {
+                $variable = $this->environment->getVariable($match[1]);
 
-            if ($variable === null) {
-                return '';
-            }
+                if ($variable === null) {
+                    return '';
+                }
 
-            if ($variable instanceof Node) {
-                return $variable->render();
-            }
+                if ($variable instanceof Node) {
+                    return $variable->render();
+                }
 
-            if (is_string($variable)) {
-                return $variable;
-            }
+                if (is_string($variable)) {
+                    return $variable;
+                }
 
-            return (string) $variable;
-        }, $span);
+                return (string)$variable;
+            },
+            $span
+        );
     }
 
     private function renderBrs(string $span) : string
@@ -172,7 +193,7 @@ abstract class SpanNodeRenderer implements NodeRenderer, SpanRenderer
 
     private function renderLink(SpanToken $spanToken, string $span) : string
     {
-        $url  = $spanToken->get('url');
+        $url = $spanToken->get('url');
         $link = $spanToken->get('link');
 
         if ($url === '') {

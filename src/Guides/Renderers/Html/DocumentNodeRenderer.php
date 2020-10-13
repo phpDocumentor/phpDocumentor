@@ -2,6 +2,15 @@
 
 declare(strict_types=1);
 
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link https://phpdoc.org
+ */
+
 namespace phpDocumentor\Guides\Renderers\Html;
 
 use phpDocumentor\Guides\Nodes\DocumentNode;
@@ -35,10 +44,13 @@ class DocumentNodeRenderer implements NodeRenderer, FullDocumentNodeRenderer
 
         $output = $this->render();
 
-        return $this->renderer->render('document.html.twig', [
-            'headerNodes' => $this->assembleHeader(),
-            'bodyNodes' => $output,
-        ]);
+        return $this->renderer->render(
+            'document.html.twig',
+            [
+                'headerNodes' => $this->assembleHeader(),
+                'bodyNodes' => $output,
+            ]
+        );
     }
 
     private function assembleHeader() : string

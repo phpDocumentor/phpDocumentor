@@ -9,8 +9,6 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  *
  * @link https://phpdoc.org
- * @author Ryan Weaver <ryan@symfonycasts.com> on the original DocBuilder.
- * @author Mike van Riel <me@mikevanriel.com> for adapting this to phpDocumentor.
  */
 
 namespace phpDocumentor\Guides\Renderers\Html;
@@ -69,7 +67,7 @@ class CodeNodeRenderer implements NodeRenderer
 
         $lineNumbers = '';
         for ($i = 1, $nbLines = count($lines); $i <= $nbLines; ++$i) {
-            $lineNumbers .= str_pad((string) $i, 2, ' ', STR_PAD_LEFT) . "\n";
+            $lineNumbers .= str_pad((string)$i, 2, ' ', STR_PAD_LEFT) . "\n";
         }
 
         $language = $this->codeNode->getLanguage() ?? 'php';

@@ -2,6 +2,15 @@
 
 declare(strict_types=1);
 
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link https://phpdoc.org
+ */
+
 namespace phpDocumentor\Guides\Renderers\Html;
 
 use phpDocumentor\Guides\Nodes\SpanNode;
@@ -56,13 +65,16 @@ class SpanNodeRenderer extends BaseSpanNodeRenderer
      */
     public function link(?string $url, string $title, array $attributes = []) : string
     {
-        $url = (string) $url;
+        $url = (string)$url;
 
-        return $this->renderer->render('link.html.twig', [
-            'url' => $this->environment->generateUrl($url),
-            'title' => $title,
-            'attributes' => $attributes,
-        ]);
+        return $this->renderer->render(
+            'link.html.twig',
+            [
+                'url' => $this->environment->generateUrl($url),
+                'title' => $title,
+                'attributes' => $attributes,
+            ]
+        );
     }
 
     public function escape(string $span) : string
@@ -87,7 +99,7 @@ class SpanNodeRenderer extends BaseSpanNodeRenderer
             }
             $link = $this->link($url, $text, $reference->getAttributes());
 
-        // reference to anchor in existing document
+            // reference to anchor in existing document
         } elseif ($value['url'] !== null) {
             $url = $this->environment->getLink($value['url']);
 

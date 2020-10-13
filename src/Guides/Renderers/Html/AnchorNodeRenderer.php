@@ -2,6 +2,15 @@
 
 declare(strict_types=1);
 
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link https://phpdoc.org
+ */
+
 namespace phpDocumentor\Guides\Renderers\Html;
 
 use phpDocumentor\Guides\Nodes\AnchorNode;
@@ -21,8 +30,10 @@ class AnchorNodeRenderer implements NodeRenderer
     {
         return $this->anchorNode->getEnvironment()->getRenderer()
             ->render(
-                'anchor.html.twig', [
-                'anchorNode' => $this->anchorNode,
-            ]);
+                'anchor.html.twig',
+                [
+                    'anchorNode' => $this->anchorNode,
+                ]
+            );
     }
 }

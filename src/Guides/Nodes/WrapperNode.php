@@ -2,7 +2,18 @@
 
 declare(strict_types=1);
 
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link https://phpdoc.org
+ */
+
 namespace phpDocumentor\Guides\Nodes;
+
+use InvalidArgumentException;
 
 class WrapperNode extends Node
 {
@@ -24,14 +35,14 @@ class WrapperNode extends Node
         parent::__construct();
 
         if (!is_string($before) && !is_callable($before)) {
-            throw new \InvalidArgumentException('$before must be a string or a callable returning a string');
+            throw new InvalidArgumentException('$before must be a string or a callable returning a string');
         }
         if (!is_string($after) && !is_callable($after)) {
-            throw new \InvalidArgumentException('$after must be a string or a callable returning a string');
+            throw new InvalidArgumentException('$after must be a string or a callable returning a string');
         }
-        $this->node   = $node;
+        $this->node = $node;
         $this->before = $before;
-        $this->after  = $after;
+        $this->after = $after;
     }
 
     protected function doRender() : string

@@ -2,6 +2,15 @@
 
 declare(strict_types=1);
 
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link https://phpdoc.org
+ */
+
 namespace phpDocumentor\Guides\Renderers\LaTeX;
 
 use phpDocumentor\Guides\Nodes\SpanNode;
@@ -28,13 +37,13 @@ class TableNodeRenderer implements NodeRenderer
         $rows = [];
         foreach ($this->tableNode->getData() as $row) {
             $rowTex = '';
-            $cols   = max($cols, count($row->getColumns()));
+            $cols = max($cols, count($row->getColumns()));
 
             /** @var SpanNode $col */
             foreach ($row->getColumns() as $n => $col) {
                 $rowTex .= $col->render();
 
-                if ((int) $n + 1 >= count($row->getColumns())) {
+                if ((int)$n + 1 >= count($row->getColumns())) {
                     continue;
                 }
 
@@ -42,7 +51,7 @@ class TableNodeRenderer implements NodeRenderer
             }
 
             $rowTex .= ' \\\\' . "\n";
-            $rows[]  = $rowTex;
+            $rows[] = $rowTex;
         }
 
         $aligns = [];
@@ -51,7 +60,7 @@ class TableNodeRenderer implements NodeRenderer
         }
 
         $aligns = '|' . implode('|', $aligns) . '|';
-        $rows   = "\\hline\n" . implode("\\hline\n", $rows) . "\\hline\n";
+        $rows = "\\hline\n" . implode("\\hline\n", $rows) . "\\hline\n";
 
         return "\\begin{tabular}{" . $aligns . "}\n" . $rows . "\n\\end{tabular}\n";
     }

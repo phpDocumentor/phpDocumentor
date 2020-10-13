@@ -2,6 +2,15 @@
 
 declare(strict_types=1);
 
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link https://phpdoc.org
+ */
+
 namespace phpDocumentor\Guides;
 
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
@@ -18,12 +27,6 @@ final class Renderer
     /** @var TemplateRenderer|null */
     private $templateRenderer;
 
-    /** @var \League\Flysystem\FilesystemInterface */
-    private $destination;
-
-    /** @var string */
-    private $targetDirectory;
-
     public function __construct(EnvironmentFactory $environmentFactory)
     {
         $this->environmentFactory = $environmentFactory;
@@ -34,13 +37,11 @@ final class Renderer
         DocumentationSetDescriptor $documentationSet,
         Transformation $transformation
     ) : void {
-        $this->targetDirectory = $documentationSet->getOutput();
+        $targetDirectory = $documentationSet->getOutput();
 
-        $environment = $this->environmentFactory->create($project, $transformation, $this->targetDirectory);
+        $environment = $this->environmentFactory->create($project, $transformation, $targetDirectory);
         $environment->addExtension(new AssetsExtension());
-        $this->templateRenderer = new TemplateRenderer($environment, 'guides', $this->targetDirectory);
-
-        $this->destination = $transformation->getTransformer()->destination();
+        $this->templateRenderer = new TemplateRenderer($environment, 'guides', $targetDirectory);
     }
 
     public function render(string $template, array $context = []) : string

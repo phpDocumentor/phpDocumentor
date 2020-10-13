@@ -2,6 +2,15 @@
 
 declare(strict_types=1);
 
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link https://phpdoc.org
+ */
+
 namespace phpDocumentor\Guides\Renderers\LaTeX;
 
 use phpDocumentor\Guides\Nodes\ImageNode;
@@ -18,14 +27,17 @@ class ImageNodeRenderer implements NodeRenderer
 
     public function __construct(ImageNode $imageNode)
     {
-        $this->imageNode        = $imageNode;
+        $this->imageNode = $imageNode;
         $this->renderer = $imageNode->getEnvironment()->getRenderer();
     }
 
     public function render() : string
     {
-        return $this->renderer->render('image.tex.twig', [
-            'imageNode' => $this->imageNode,
-        ]);
+        return $this->renderer->render(
+            'image.tex.twig',
+            [
+                'imageNode' => $this->imageNode,
+            ]
+        );
     }
 }

@@ -2,6 +2,15 @@
 
 declare(strict_types=1);
 
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link https://phpdoc.org
+ */
+
 namespace phpDocumentor\Guides\Renderers\LaTeX;
 
 use phpDocumentor\Guides\Nodes\DocumentNode;
@@ -33,17 +42,24 @@ class DocumentNodeRenderer implements NodeRenderer, FullDocumentNodeRenderer
 
     public function renderDocument() : string
     {
-        return $this->renderer->render('document.tex.twig', [
-            'isMain' => $this->isMain(),
-            'document' => $this->document,
-            'body' => $this->render(),
-        ]);
+        return $this->renderer->render(
+            'document.tex.twig',
+            [
+                'isMain' => $this->isMain(),
+                'document' => $this->document,
+                'body' => $this->render(),
+            ]
+        );
     }
 
     private function isMain() : bool
     {
-        return count($this->document->getNodes(static function ($node) {
-            return $node instanceof MainNode;
-        })) !== 0;
+        return count(
+                $this->document->getNodes(
+                    static function ($node) {
+                        return $node instanceof MainNode;
+                    }
+                )
+            ) !== 0;
     }
 }

@@ -2,6 +2,15 @@
 
 declare(strict_types=1);
 
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link https://phpdoc.org
+ */
+
 namespace phpDocumentor\Guides\Renderers\LaTeX;
 
 use phpDocumentor\Guides\Nodes\ParagraphNode;
@@ -18,14 +27,17 @@ class ParagraphNodeRenderer implements NodeRenderer
 
     public function __construct(ParagraphNode $paragraphNode)
     {
-        $this->paragraphNode    = $paragraphNode;
+        $this->paragraphNode = $paragraphNode;
         $this->renderer = $paragraphNode->getEnvironment()->getRenderer();
     }
 
     public function render() : string
     {
-        return $this->renderer->render('paragraph.tex.twig', [
-            'paragraphNode' => $this->paragraphNode,
-        ]);
+        return $this->renderer->render(
+            'paragraph.tex.twig',
+            [
+                'paragraphNode' => $this->paragraphNode,
+            ]
+        );
     }
 }

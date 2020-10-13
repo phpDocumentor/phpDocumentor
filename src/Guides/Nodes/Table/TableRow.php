@@ -2,6 +2,15 @@
 
 declare(strict_types=1);
 
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link https://phpdoc.org
+ */
+
 namespace phpDocumentor\Guides\Nodes\Table;
 
 use InvalidArgumentException;
@@ -60,7 +69,13 @@ final class TableRow
         foreach ($this->getColumns() as $columnIndex => $column) {
             $targetColumn = $targetRow->getColumn($columnIndex);
             if ($targetColumn === null) {
-                throw new InvalidTableStructure(sprintf('Malformed table: lines "%s" and "%s" appear to be in the same row, but don\'t share the same number of columns.', $this->toString(), $targetRow->toString()));
+                throw new InvalidTableStructure(
+                    sprintf(
+                        'Malformed table: lines "%s" and "%s" appear to be in the same row, but don\'t share the same number of columns.',
+                        $this->toString(),
+                        $targetRow->toString()
+                    )
+                );
             }
 
             $column->addContent("\n" . $targetColumn->getContent());
@@ -69,9 +84,15 @@ final class TableRow
 
     public function toString() : string
     {
-        return implode(' | ', array_map(static function (TableColumn $column) {
-            return $column->getContent();
-        }, $this->columns));
+        return implode(
+            ' | ',
+            array_map(
+                static function (TableColumn $column) {
+                    return $column->getContent();
+                },
+                $this->columns
+            )
+        );
     }
 
     public function removeColumn(int $columnIndex) : void
