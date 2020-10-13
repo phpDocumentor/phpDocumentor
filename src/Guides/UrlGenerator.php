@@ -43,7 +43,14 @@ final class UrlGenerator
             return rtrim($baseUrl, '/') . '/' . ltrim($canonicalPath, '/');
         }
 
-        return (string) $this->relativeUrl($path, $currentFileName);
+        $relativeUrl = (string)$this->relativeUrl($path, $currentFileName);
+
+        dump('----');
+        dump($path);
+        dump($currentFileName);
+        dump($relativeUrl);
+
+        return $relativeUrl;
     }
 
     public function absoluteUrl(string $dirName, string $url) : string
