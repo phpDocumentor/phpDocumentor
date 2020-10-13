@@ -78,18 +78,18 @@
     </xs:complexType>
 
     <xs:complexType name="phpApiType" mixed="true">
-        <xs:all>
+        <xs:sequence>
             <xs:element name="source" type="pd:sourceType" minOccurs="1" maxOccurs="1"/>
             <xs:element name="output" type="xs:string" minOccurs="0" maxOccurs="1" default="" />
             <xs:element name="ignore" type="pd:ignoreType" minOccurs="0" maxOccurs="1"/>
             <xs:element name="extensions" type="pd:extensionsType" minOccurs="0" maxOccurs="1"/>
-            <xs:element name="visibility" type="pd:visibility" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="visibility" type="pd:visibility" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element name="default-package-name" type="xs:string" minOccurs="0" maxOccurs="1"/>
             <xs:element name="include-source" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false"/>
             <xs:element name="markers" type="pd:markersType" minOccurs="0" maxOccurs="1"/>
             <xs:element name="ignore-tags" type="pd:ignoreTagsType" minOccurs="0" maxOccurs="1" />
             <xs:element name="examples" type="pd:sourceType" minOccurs="0" maxOccurs="1"/>
-        </xs:all>
+        </xs:sequence>
         <xs:attribute name="format" type="xs:string" default="php" />
     </xs:complexType>
 
