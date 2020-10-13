@@ -33,19 +33,22 @@ class FunctionalTestCase extends TestCase
         }
     }
 
-    protected function runPHPDocWithFile(string $string) : Process
+    protected function runPHPDocWithFile(string $string, array $arguments = []) : Process
     {
         copy($string, $this->workingDir . '/test.php');
 
         $process = new Process(
-            [
+            array_merge(
+                [
                 PHP_BINARY,
                 __DIR__ . '/../../../bin/phpdoc',
                 '-vvv',
                 '--config=none',
                 '--force',
                 '--filename=test.php',
-            ],
+                ],
+                $arguments
+            ),
             $this->workingDir
         );
 
