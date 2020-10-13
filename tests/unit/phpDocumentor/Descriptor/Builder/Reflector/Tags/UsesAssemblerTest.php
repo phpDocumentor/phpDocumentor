@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 
-use Mockery as m;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\DocBlock\Tags\Uses;
 use phpDocumentor\Reflection\Fqsen;
+use PHPUnit\Framework\TestCase;
+use Prophecy\Prophecy\ObjectProphecy;
 
 /**
  * Test class for phpDocumentor\Descriptor\Builder\Reflector\Tags\UsesAssembler
@@ -26,12 +26,12 @@ use phpDocumentor\Reflection\Fqsen;
  * @coversDefaultClass \phpDocumentor\Descriptor\Builder\Reflector\Tags\UsesAssembler
  * @covers ::<private>
  */
-class UsesAssemblerTest extends MockeryTestCase
+class UsesAssemblerTest extends TestCase
 {
     /** @var UsesAssembler $fixture */
     protected $fixture;
 
-    /** @var ProjectDescriptorBuilder|m\MockInterface */
+    /** @var ProjectDescriptorBuilder|ObjectProphecy */
     protected $builderMock;
 
     /**
@@ -39,9 +39,9 @@ class UsesAssemblerTest extends MockeryTestCase
      */
     protected function setUp() : void
     {
-        $this->builderMock = m::mock(ProjectDescriptorBuilder::class);
+        $this->builderMock = $this->prophesize(ProjectDescriptorBuilder::class);
         $this->fixture = new UsesAssembler();
-        $this->fixture->setBuilder($this->builderMock);
+        $this->fixture->setBuilder($this->builderMock->reveal());
     }
 
     /**
