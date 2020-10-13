@@ -83,10 +83,7 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
         $this->renderer->initialize($project, $documentationSet, $transformation);
 
         $this->commandBus->handle(
-            new RenderCommand(
-                $transformation->getTransformer()->destination(),
-                $documentationSet->getOutput()
-            )
+            new RenderCommand($transformation->getTransformer()->destination())
         );
 
         $this->completedRenderingSetMessage($stopwatch, $dsn);

@@ -34,17 +34,13 @@ final class RenderHandler
 
     public function handle(RenderCommand $command) : void
     {
-        $targetDirectory = $command->getOutputDirectory();
-
-        $this->render($command->getDestination(), $targetDirectory);
+        $this->render($command->getDestination());
     }
 
-    public function render(FilesystemInterface $destination, string $targetDirectory) : void
+    public function render(FilesystemInterface $destination) : void
     {
-        $basePath = $targetDirectory ? $targetDirectory . '/' : '';
-
         foreach ($this->documents->getAll() as $file => $document) {
-            $target = $basePath . $this->getTargetOf($file);
+            $target = $this->getTargetOf($file);
 
             $directory = dirname($target);
 

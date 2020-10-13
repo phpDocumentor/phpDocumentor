@@ -43,6 +43,9 @@ final class Configuration
     /** @var Format[] */
     private $formats;
 
+    /** @var string */
+    private $outputFolder = '';
+
     /**
      * @param iterable<Format> $outputFormats
      */
@@ -145,5 +148,15 @@ final class Configuration
     public function getSourceFileExtension() : string
     {
         return $this->sourceFileExtension;
+    }
+
+    public function getOutputFolder(): string
+    {
+        return $this->outputFolder;
+    }
+
+    public function setOutputFolder(string $outputFolder): void
+    {
+        $this->outputFolder = $outputFolder;
     }
 }

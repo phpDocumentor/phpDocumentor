@@ -122,7 +122,9 @@ final class ParseFileHandler
 
         $this->documents->addDocument($file, $document);
 
-        $url = $this->buildDocumentUrl($document, $configuration->getFileExtension());
+        $outputFolder = $configuration->getOutputFolder() ? $configuration->getOutputFolder() . '/' : '';
+        $url = $outputFolder . $this->buildDocumentUrl($document, $configuration->getFileExtension());
+
         $this->metas->set(
             $file,
             $url,

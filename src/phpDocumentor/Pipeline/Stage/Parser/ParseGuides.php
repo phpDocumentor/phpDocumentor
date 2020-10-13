@@ -67,6 +67,7 @@ final class ParseGuides
             $directory = $config['source']['paths'][0] ?? '';
 
             $configuration = new Configuration($this->outputFormats);
+            $configuration->setOutputFolder((string) $config['output']);
 
             $this->commandBus->handle(new ParseDirectoryCommand($configuration, $origin, $directory));
         }

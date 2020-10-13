@@ -37,7 +37,6 @@ final class UrlGenerator
     public function generateUrl(string $path, string $currentFileName, string $dirName) : string
     {
         $canonicalPath = (string) $this->canonicalUrl($dirName, $path);
-
         if ($this->configuration->isBaseUrlEnabled($canonicalPath)) {
             $baseUrl = $this->configuration->getBaseUrl();
 
