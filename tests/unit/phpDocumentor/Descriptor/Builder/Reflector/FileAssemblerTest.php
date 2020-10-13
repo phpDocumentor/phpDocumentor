@@ -13,16 +13,17 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
-use Mockery as m;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
-use Mockery\MockInterface;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\PackageDescriptor;
+use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\Php\File;
+use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
+use Prophecy\Prophecy\ObjectProphecy;
 use function md5;
 
 /**
@@ -30,7 +31,7 @@ use function md5;
  *
  * @covers \phpDocumentor\Descriptor\Builder\Reflector\FileAssembler
  */
-final class FileAssemblerTest extends MockeryTestCase
+final class FileAssemblerTest extends TestCase
 {
     /** @var FileAssembler $fixture */
     private $fixture;
@@ -46,7 +47,7 @@ final class FileAssemblerTest extends MockeryTestCase
         $this->defaultPackage = new PackageDescriptor();
         $this->defaultPackage->setName('\\PhpDocumentor');
         $this->fixture = new FileAssembler();
-        $this->fixture->setBuilder($this->getProjectDescriptorBuilderMock());
+        $this->fixture->setBuilder($this->getProjectDescriptorBuilderMock()->reveal());
     }
 
     /**
@@ -57,9 +58,6 @@ final class FileAssemblerTest extends MockeryTestCase
         $filename = 'file.php';
         $content = '<?php ... ?>';
         $hash = md5($content);
-
-        $abstractDescriptor = m::mock(DescriptorAbstract::class);
-        $abstractDescriptor->shouldReceive('getLineNumber')->andReturn(1337);
 
         $docBlockDescription = new DocBlock\Description(
             <<<DOCBLOCK
@@ -72,32 +70,6 @@ DOCBLOCK
         $docBlockMock = new DocBlock('This is a example description', $docBlockDescription);
 
         $fileReflectorMock = new File($hash, $filename, $content, $docBlockMock);
-//        $fileReflectorMock->shouldReceive('getConstants')->once()->andReturn(
-//            new Collection(array($abstractDescriptor))
-//        );
-//
-//        $fileReflectorMock->shouldReceive('getFunctions')->once()->andReturn(
-//            new Collection(array($abstractDescriptor))
-//        );
-//
-//        $fileReflectorMock->shouldReceive('getClasses')->once()->andReturn(
-//            new Collection(array($abstractDescriptor))
-//        );
-//
-//        $fileReflectorMock->shouldReceive('getInterfaces')->once()->andReturn(
-//            new Collection(array($abstractDescriptor))
-//        );
-//
-//        $fileReflectorMock->shouldReceive('getTraits')->once()->andReturn(
-//            new Collection(array($abstractDescriptor))
-//        );
-//
-//        $fileReflectorMock->shouldReceive('getMarkers')->once()->andReturn(
-//            array('type', 'message', 1337)
-//        );
-//
-//        $fileReflectorMock->shouldReceive('getIncludes')->andReturn(new Collection);
-//        $fileReflectorMock->shouldReceive('getNamespaceAliases')->andReturn(new Collection);
 
         $descriptor = $this->fixture->create($fileReflectorMock);
 
@@ -111,30 +83,29 @@ DOCBLOCK
     /**
      * Create a descriptor builder mock
      */
-    protected function getProjectDescriptorBuilderMock() : MockInterface
+    protected function getProjectDescriptorBuilderMock() : ObjectProphecy
     {
         $settings = new Settings();
         $settings->includeSource();
 
-        $projectDescriptorBuilderMock = m::mock(ProjectDescriptorBuilder::class);
-        $projectDescriptorBuilderMock->shouldReceive('getDefaultPackage')
-            ->andReturn($this->defaultPackage);
+        $projectDescriptor = $this->prophesize(ProjectDescriptor::class);
+        $projectDescriptor->getSettings()->shouldBeCalled()->willReturn($settings);
 
-        $projectDescriptorBuilderMock->shouldReceive('getProjectDescriptor->getSettings')
-            ->andReturn($settings);
+        $projectDescriptorBuilderMock = $this->prophesize(ProjectDescriptorBuilder::class);
+        $projectDescriptorBuilderMock->getDefaultPackage()->shouldBeCalled()->willReturn($this->defaultPackage);
+        $projectDescriptorBuilderMock
+            ->getProjectDescriptor()
+            ->shouldBeCalled()
+            ->willReturn($projectDescriptor->reveal());
 
-        $projectDescriptorBuilderMock->shouldReceive('buildDescriptor')->andReturnUsing(
-            static function ($param) {
-                $mock = m::mock(DescriptorAbstract::class);
-                $mock->shouldReceive('setLocation')->atLeast()->once();
-                $mock->shouldReceive('getTags')->atLeast()->once()->andReturn(new Collection());
-                $mock->shouldReceive('getFullyQualifiedStructuralElementName')
-                    ->once()
-                    ->andReturn('Frank_is_een_eindbaas');
+        $projectDescriptorBuilderMock->buildDescriptor(Argument::any(), Argument::any())->will(function () {
+            $mock = $this->prophesize(DescriptorAbstract::class);
+            $mock->setLocation(Argument::any())->shouldBeCalled();
+            $mock->getTags()->shouldBeCalled()->willReturn(new Collection());
+            $mock->getFullyQualifiedStructuralElementName()->shouldBeCalledOnce()->willReturn('Frank_is_een_eindbaas');
 
-                return $mock;
-            }
-        );
+            return $mock->reveal();
+        });
 
         return $projectDescriptorBuilderMock;
     }

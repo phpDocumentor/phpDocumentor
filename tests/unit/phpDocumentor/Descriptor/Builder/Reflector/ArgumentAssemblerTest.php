@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
-use Mockery as m;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Descriptor\Tag\ParamDescriptor;
@@ -22,16 +20,18 @@ use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\Php\Argument;
 use phpDocumentor\Reflection\Type;
 use phpDocumentor\Reflection\Types\Boolean;
+use PHPUnit\Framework\TestCase;
+use Prophecy\Prophecy\ObjectProphecy;
 
 /**
  * Test class for phpDocumentor\Descriptor\Builder\Reflector\ArgumentAssembler
  */
-class ArgumentAssemblerTest extends MockeryTestCase
+class ArgumentAssemblerTest extends TestCase
 {
     /** @var ArgumentAssembler $fixture */
     protected $fixture;
 
-    /** @var ProjectDescriptorBuilder|m\MockInterface */
+    /** @var ProjectDescriptorBuilder|ObjectProphecy */
     protected $builderMock;
 
     /**
@@ -39,9 +39,9 @@ class ArgumentAssemblerTest extends MockeryTestCase
      */
     protected function setUp() : void
     {
-        $this->builderMock = m::mock(ProjectDescriptorBuilder::class);
+        $this->builderMock = $this->prophesize(ProjectDescriptorBuilder::class);
         $this->fixture = new ArgumentAssembler();
-        $this->fixture->setBuilder($this->builderMock);
+        $this->fixture->setBuilder($this->builderMock->reveal());
     }
 
     /**

@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
-use Mockery as m;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\DocBlock\Description;
@@ -22,13 +20,16 @@ use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Php\Property;
 use phpDocumentor\Reflection\Php\Visibility;
 use phpDocumentor\Reflection\Types\String_;
+use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
+use Prophecy\Prophecy\ObjectProphecy;
 
-final class PropertyAssemblerTest extends MockeryTestCase
+final class PropertyAssemblerTest extends TestCase
 {
     /** @var PropertyAssembler $fixture */
     protected $fixture;
 
-    /** @var ProjectDescriptorBuilder|m\MockInterface */
+    /** @var ProjectDescriptorBuilder|ObjectProphecy */
     protected $builderMock;
 
     /**
@@ -36,11 +37,11 @@ final class PropertyAssemblerTest extends MockeryTestCase
      */
     protected function setUp() : void
     {
-        $this->builderMock = m::mock(ProjectDescriptorBuilder::class);
-        $this->builderMock->shouldReceive('buildDescriptor')->andReturn(null);
+        $this->builderMock = $this->prophesize(ProjectDescriptorBuilder::class);
+        $this->builderMock->buildDescriptor(Argument::any(), Argument::any())->shouldBeCalled()->willReturn(null);
 
         $this->fixture = new PropertyAssembler();
-        $this->fixture->setBuilder($this->builderMock);
+        $this->fixture->setBuilder($this->builderMock->reveal());
     }
 
     /**
@@ -100,7 +101,11 @@ final class PropertyAssemblerTest extends MockeryTestCase
         $tags = [];
 
         if ($withTags) {
-            $tags[] = new DocBlock\Tags\Var_('variableName', new String_(), new Description('Var description'));
+            $tags[] = new DocBlock\Tags\Var_(
+                'variableName',
+                new String_(),
+                new Description('Var description')
+            );
         }
 
         return new DocBlock('This is a example description', $docBlockDescription, $tags);
