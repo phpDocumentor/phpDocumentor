@@ -22,6 +22,7 @@ use function in_array;
 
 class CodeNodeRenderer implements NodeRenderer
 {
+    /** @var bool */
     private static $isHighlighterConfigured = false;
 
     private const LANGUAGES_MAPPING = [
@@ -102,6 +103,9 @@ class CodeNodeRenderer implements NodeRenderer
         return in_array($lang, $supportedLanguages, true);
     }
 
+    /**
+     * @return array<string>
+     */
     private function getLines(string $code) : array
     {
         $lines = preg_split('/\r\n|\r|\n/', $code);

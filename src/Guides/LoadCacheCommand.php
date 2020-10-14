@@ -32,7 +32,7 @@ final class LoadCacheCommand
         return $this->cacheDirectory;
     }
 
-    public function useCaching()
+    public function useCaching(): bool
     {
         return $this->useCaching;
     }

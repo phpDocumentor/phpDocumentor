@@ -39,7 +39,7 @@ class FileIncluder
 
                 $origin = $this->environment->getOrigin();
                 if (!$origin->has($path)) {
-                    throw new RuntimeException(sprintf('Include "%s" does not exist or is not readable.', $match[0]));
+                    throw new RuntimeException(sprintf('Include "%s" (%s) does not exist or is not readable.', $match[0], $path));
                 }
 
                 $contents = $origin->read($path);

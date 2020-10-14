@@ -58,6 +58,9 @@ class DefaultNodeFactory implements NodeFactory
         }
     }
 
+    /**
+     * @param array<string, string> $nodeRegistry
+     */
     public static function createFromRegistry(
         EventManager $eventManager,
         Format $format,
@@ -78,7 +81,7 @@ class DefaultNodeFactory implements NodeFactory
             );
         }
 
-        return new static($eventManager, ...$instantiators);
+        return new self($eventManager, ...$instantiators);
     }
 
     public function createDocumentNode(Environment $environment) : DocumentNode

@@ -44,6 +44,9 @@ final class Renderer
         $this->templateRenderer = new TemplateRenderer($environment, 'guides', $targetDirectory);
     }
 
+    /**
+     * @param array<mixed> $context
+     */
     public function render(string $template, array $context = []) : string
     {
         if ($this->templateRenderer === null) {
@@ -53,7 +56,7 @@ final class Renderer
         return $this->templateRenderer->render($template, $context);
     }
 
-    public function setDestination(string $destination)
+    public function setDestination(string $destination) : void
     {
         $this->templateRenderer->setDestination($destination);
     }

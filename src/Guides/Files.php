@@ -13,7 +13,14 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides;
 
-final class Files implements \IteratorAggregate
+use ArrayIterator;
+use Iterator;
+use IteratorAggregate;
+
+/**
+ * @implements IteratorAggregate<string>
+ */
+final class Files implements IteratorAggregate
 {
     /** @var string[] */
     private $files = [];
@@ -27,8 +34,11 @@ final class Files implements \IteratorAggregate
         $this->files[] = $filename;
     }
 
-    public function getIterator()
+    /**
+     * @return Iterator<string>
+     */
+    public function getIterator(): Iterator
     {
-        return new \ArrayIterator($this->files);
+        return new ArrayIterator($this->files);
     }
 }

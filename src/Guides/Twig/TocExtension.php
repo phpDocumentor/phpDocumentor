@@ -36,6 +36,9 @@ class TocExtension extends AbstractExtension
         ];
     }
 
+    /**
+     * @return array<string, array<int, array<string, array|string>>|string>
+     */
     public function menu() : array
     {
         $index = $this->metas->get('index');

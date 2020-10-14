@@ -8,7 +8,7 @@ use Doctrine\Common\EventManager;
 use InvalidArgumentException;
 use phpDocumentor\Guides\Configuration;
 use phpDocumentor\Guides\Environment;
-use phpDocumentor\Guides\Formats\Format;
+use phpDocumentor\Guides\RestructuredText\Formats\Format;
 use phpDocumentor\Guides\Nodes\DocumentNode;
 use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\Parser as ParserInterface;
@@ -55,6 +55,10 @@ class Parser implements ParserInterface
     /** @var Format */
     private $format;
 
+    /**
+     * @param array<Directive> $directives
+     * @param array<Reference> $references
+     */
     public function __construct(
         Configuration $configuration,
         Environment $environment,
@@ -68,8 +72,9 @@ class Parser implements ParserInterface
         $this->directives = $directives;
         $this->references = $references;
         $this->eventManager = $eventManager;
-        $this->format = $configuration->getFormat();
         $this->nodeFactory = $nodeFactory;
+        assert($configuration->getFormat() instanceof Format);
+        $this->format = $configuration->getFormat();
 
         $this->initDirectives($directives);
         $this->initReferences($references);
@@ -93,6 +98,9 @@ class Parser implements ParserInterface
         return $this->nodeFactory;
     }
 
+    /**
+     * @param array<Directive> $directives
+     */
     public function initDirectives(array $directives) : void
     {
         $directives = array_merge(
@@ -112,6 +120,9 @@ class Parser implements ParserInterface
         }
     }
 
+    /**
+     * @param array<Reference> $references
+     */
     public function initReferences(array $references) : void
     {
         $references = array_merge(

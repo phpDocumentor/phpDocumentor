@@ -5,16 +5,20 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\RestructuredText\Handlers;
 
 use Doctrine\Common\EventManager;
+use IteratorAggregate;
 use phpDocumentor\Guides\Documents;
 use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Metas;
 use phpDocumentor\Guides\Nodes;
 use phpDocumentor\Guides\Nodes\DocumentNode;
 use phpDocumentor\Guides\Nodes\NodeTypes;
+use phpDocumentor\Guides\References\Reference;
 use phpDocumentor\Guides\Renderer;
+use phpDocumentor\Guides\RestructuredText\Directives\Directive;
 use phpDocumentor\Guides\RestructuredText\NodeFactory\DefaultNodeFactory;
 use phpDocumentor\Guides\RestructuredText\ParseFileCommand;
 use phpDocumentor\Guides\RestructuredText\Parser;
+use phpDocumentor\Transformer\Router\Router;
 use Psr\Log\LoggerInterface;
 
 final class ParseFileHandler
@@ -28,10 +32,10 @@ final class ParseFileHandler
     /** @var LoggerInterface */
     private $logger;
 
-    /** @var \IteratorAggregate */
+    /** @var IteratorAggregate<Directive> */
     private $directives;
 
-    /** @var \IteratorAggregate */
+    /** @var IteratorAggregate<Reference> */
     private $references;
 
     /** @var EventManager */
@@ -40,15 +44,24 @@ final class ParseFileHandler
     /** @var Renderer */
     private $renderer;
 
+    /** @var Router */
+    private $router;
+
+    /**
+     * @param IteratorAggregate<Directive> $directives
+     * @param IteratorAggregate<Reference> $references
+     */
     public function __construct(
         Metas $metas,
         Documents $documents,
         Renderer $renderer,
         LoggerInterface $logger,
         EventManager $eventManager,
-        \IteratorAggregate $directives,
-        \IteratorAggregate $references
-    ) {
+        Router $router,
+        IteratorAggregate $directives,
+        IteratorAggregate $references
+    )
+    {
         $this->metas = $metas;
         $this->documents = $documents;
         $this->logger = $logger;
@@ -56,15 +69,16 @@ final class ParseFileHandler
         $this->references = $references;
         $this->eventManager = $eventManager;
         $this->renderer = $renderer;
+        $this->router = $router;
     }
 
-    public function handle(ParseFileCommand $command): void
+    public function handle(ParseFileCommand $command) : void
     {
         $configuration = $command->getConfiguration();
         $directory = $command->getDirectory();
         $file = $command->getFile();
 
-        $environment = new Environment($configuration, $this->renderer, $this->logger, $command->getOrigin());
+        $environment = new Environment($configuration, $this->renderer, $this->logger, $command->getOrigin(), $this->router);
         $environment->setMetas($this->metas);
         $environment->setCurrentFileName($file);
         $environment->setCurrentDirectory($directory);
@@ -128,10 +142,10 @@ final class ParseFileHandler
         $this->metas->set(
             $file,
             $url,
-            (string) $document->getTitle(),
+            (string)$document->getTitle(),
             $document->getTitles(),
             $document->getTocs(),
-            (int) filemtime($fileAbsolutePath),
+            (int)filemtime($fileAbsolutePath),
             $environment->getDependencies(),
             $environment->getLinks()
         );

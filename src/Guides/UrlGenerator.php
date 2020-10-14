@@ -13,50 +13,42 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides;
 
-use function array_pop;
-use function basename;
-use function count;
-use function explode;
+use League\Uri\UriInfo;
+use phpDocumentor\Transformer\Router\Router;
+use phpDocumentor\UriFactory;
+use Symfony\Component\Routing\Generator\UrlGenerator as SymfonyUrlGenerator;
 use function implode;
 use function ltrim;
-use function preg_match;
 use function rtrim;
-use function strpos;
-use function substr;
 
 final class UrlGenerator
 {
     /** @var Configuration */
     private $configuration;
 
-    public function __construct(Configuration $configuration)
+    /** @var Router */
+    private $router;
+
+    public function __construct(Configuration $configuration, Router $router)
     {
         $this->configuration = $configuration;
+        $this->router = $router;
     }
 
-    public function generateUrl(string $path, string $currentFileName, string $dirName) : string
+    public function generateUrl(string $path, string $currentFileName, string $dirName): string
     {
-        $canonicalPath = (string) $this->canonicalUrl($dirName, $path);
-        if ($this->configuration->isBaseUrlEnabled($canonicalPath)) {
-            $baseUrl = $this->configuration->getBaseUrl();
-
-            return rtrim($baseUrl, '/') . '/' . ltrim($canonicalPath, '/');
+        $uri = UriFactory::createUri($path);
+        if (UriInfo::isAbsolute($uri)) {
+            return $path;
         }
 
-        $relativeUrl = (string)$this->relativeUrl($path, $currentFileName);
-
-        dump('----');
-        dump($path);
-        dump($currentFileName);
-        dump($relativeUrl);
-
-        return $relativeUrl;
+        return $this->relativeUrl($path);
     }
 
-    public function absoluteUrl(string $dirName, string $url) : string
+    public function absoluteUrl(string $dirName, string $url): string
     {
-        // if $url is already an absolute path, just return it
-        if ($url[0] === '/') {
+        $uri = UriFactory::createUri($url);
+        if (UriInfo::isAbsolute($uri)) {
             return $url;
         }
 
@@ -71,101 +63,27 @@ final class UrlGenerator
      * relative URL to "path/to/something/else.html", the result will
      * be else.html. Else, "../" will be added to go to the upper directory
      */
-    public function relativeUrl(?string $url, string $currentFileName) : ?string
+    public function relativeUrl(?string $url): ?string
     {
-        if ($url === null) {
-            return null;
-        }
-
-        // If string contains ://, it is considered as absolute
-        if (preg_match('/:\\/\\//mUsi', $url) > 0) {
-            return $url;
-        }
-
-        // If string begins with "/", the "/" is removed to resolve the
-        // relative path
-        if ($url !== '' && $url[0] === '/') {
-            $url = substr($url, 1);
-
-            if ($this->samePrefix($url, $currentFileName)) {
-                // If the prefix is the same, simply returns the file name
-                $relative = basename($url);
-            } else {
-                // Else, returns enough ../ to get upper
-                $relative = '';
-
-                $depth = count(explode('/', $currentFileName)) - 1;
-
-                for ($k = 0; $k < $depth; $k++) {
-                    $relative .= '../';
-                }
-
-                $relative .= $url;
-            }
-        } else {
-            $relative = $url;
-        }
-
-        return $relative;
+        return SymfonyUrlGenerator::getRelativePath($this->configuration->getOutputFolder(), $url);
     }
 
-    public function canonicalUrl(string $dirName, string $url) : ?string
+    public function canonicalUrl(string $dirName, string $url): ?string
     {
-        if ($url !== '') {
-            if ($url[0] === '/') {
-                // If the URL begins with a "/", the following is the
-                // canonical URL
-                return substr($url, 1);
-            }
-
-            // Else, the canonical name is under the current dir
-            if ($dirName !== '') {
-                $path = $url;
-
-                // the url is already a canonical url
-                if (strpos($url, $dirName . '/') === 0) {
-                    return $url;
-                }
-
-                return $this->canonicalize($dirName . '/' . $path);
-            }
-
-            return $this->canonicalize($url);
-        }
-
-        return null;
+        return $this->router->generate(UriFactory::createUri($url));
     }
 
-    private function canonicalize(string $url) : string
+    private function getPathPrefixBasedOnDepth(): string
     {
-        $parts = explode('/', $url);
-        $stack = [];
+        $directoryDepth = substr_count($this->configuration->getOutputFolder(), '/') + 1;
 
-        foreach ($parts as $part) {
-            if ($part === '..') {
-                array_pop($stack);
-            } else {
-                $stack[] = $part;
-            }
-        }
-
-        return implode('/', $stack);
+        return $directoryDepth > 1
+            ? implode('/', array_fill(0, $directoryDepth - 1, '..')) . '/'
+            : '';
     }
 
-    private function samePrefix(string $url, string $currentFileName) : bool
+    private function withoutLeadingSlash(string $path): string
     {
-        $partsA = explode('/', $url);
-        $partsB = explode('/', $currentFileName);
-
-        $n = count($partsA);
-
-        if ($n !== count($partsB)) {
-            return false;
-        }
-
-        unset($partsA[$n - 1]);
-        unset($partsB[$n - 1]);
-
-        return $partsA === $partsB;
+        return ltrim($path, '/');
     }
 }

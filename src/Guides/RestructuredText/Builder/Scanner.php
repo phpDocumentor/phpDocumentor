@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\Builder;
 
+use Flyfinder\Finder;
 use Flyfinder\Path;
 use Flyfinder\Specification\AndSpecification;
 use Flyfinder\Specification\HasExtension;
@@ -37,6 +38,7 @@ class Scanner
     public function scan(FilesystemInterface $filesystem, string $directory, string $extension) : Files
     {
         $directory = trim($directory, '/');
+        /** @var array<array<string>> $files */
         $files = $filesystem->find(
             new AndSpecification(new InPath(new Path($directory)), new HasExtension([$extension]))
         );
@@ -121,10 +123,13 @@ class Scanner
 
     private function hasFileBeenUpdated(string $filename) : bool
     {
+        /** @var array<string> $file */
         $file = $this->fileInfos[$filename];
 
         $documentFilename = $this->getFilenameFromFile($file);
-        $entry            = $this->metas->get($documentFilename);
+
+        /** @var array<string>|null $entry */
+        $entry = $this->metas->get($documentFilename);
 
         // File is new or changed
         return $entry === null || $entry['timestamp'] < $file['timestamp'];
@@ -132,10 +137,13 @@ class Scanner
 
     /**
      * Converts foo/bar.rst to foo/bar (the document filename)
+     *
+     * @param array<string> $fileInfo
      */
     private function getFilenameFromFile(array $fileInfo) : string
     {
         $directory = $fileInfo['dirname'] ? $fileInfo['dirname'] . '/' : '';
+
         return $directory . $fileInfo['filename'];
     }
 }

@@ -22,7 +22,7 @@ final class ParseDirectoryHandler
         $this->parseQueueProcessor = $parseQueueProcessor;
     }
 
-    public function handle(ParseDirectoryCommand $command)
+    public function handle(ParseDirectoryCommand $command) : void
     {
         $configuration = $command->getConfiguration();
 

@@ -19,6 +19,7 @@ use phpDocumentor\Guides\Meta\Entry;
 use phpDocumentor\Guides\Nodes\Factory;
 use phpDocumentor\Guides\References\Reference;
 use phpDocumentor\Guides\References\ResolvedReference;
+use phpDocumentor\Transformer\Router\Router;
 use Psr\Log\LoggerInterface;
 use function array_shift;
 use function dirname;
@@ -98,13 +99,13 @@ final class Environment
     /** @var Renderer */
     private $renderer;
 
-    public function __construct(Configuration $configuration, Renderer $renderer, LoggerInterface $logger, FilesystemInterface $origin)
+    public function __construct(Configuration $configuration, Renderer $renderer, LoggerInterface $logger, FilesystemInterface $origin, Router $router)
     {
         $this->configuration = $configuration;
         $this->renderer = $renderer;
         $this->origin = $origin;
         $this->logger = $logger;
-        $this->urlGenerator  = new UrlGenerator($this->configuration);
+        $this->urlGenerator  = new UrlGenerator($this->configuration, $router);
         $this->metas         = new Metas();
 
         $this->reset();
@@ -133,7 +134,7 @@ final class Environment
         $this->metas = $metas;
     }
 
-    public function setNodeFactory(Factory $nodeFactory)
+    public function setNodeFactory(Factory $nodeFactory) : void
     {
         $this->nodeFactory = $nodeFactory;
     }
@@ -357,7 +358,7 @@ final class Environment
 
     public function relativeUrl(?string $url) : ?string
     {
-        return $this->urlGenerator->relativeUrl($url, $this->currentFileName);
+        return $this->urlGenerator->relativeUrl($url);
     }
 
     public function absoluteUrl(string $url) : string
