@@ -40,7 +40,6 @@ use phpDocumentor\Descriptor\Builder\Reflector\Tags\UsesAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\VarAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\VersionAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\TraitAssembler;
-use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\Reflection\DocBlock\ExampleFinder;
 use phpDocumentor\Reflection\DocBlock\Tag;
 use phpDocumentor\Reflection\DocBlock\Tags;
@@ -72,7 +71,7 @@ use function array_merge;
  * Attempts to retrieve an Assembler for the provided criteria.
  *
  * @template TInput of object
- * @template TDescriptor of Descriptor
+ * @template TDescriptor of \phpDocumentor\Descriptor\Descriptor
  */
 class AssemblerFactory
 {
@@ -117,8 +116,8 @@ class AssemblerFactory
      *
      * @return AssemblerInterface<TParamDescriptor, TParamInput>|null
      *
-     * @template TParamInput of TInput
-     * @template TParamDescriptor of TDescriptor
+     * @psalm-template TParamInput of object
+     * @psalm-template TParamDescriptor of \phpDocumentor\Descriptor\Descriptor
      */
     public function get(object $criteria, string $type) : ?AssemblerInterface
     {
@@ -136,8 +135,12 @@ class AssemblerFactory
         return null;
     }
 
+    /**
+     * @return self<TInput, TDescriptor>
+     */
     public static function createDefault(ExampleFinder $exampleFinder) : self
     {
+        /** @var self<TInput, TDescriptor> $factory */
         $factory = new self();
         $argumentAssembler = new ArgumentAssembler();
 

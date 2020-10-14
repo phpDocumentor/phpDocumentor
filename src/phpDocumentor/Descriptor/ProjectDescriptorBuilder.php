@@ -33,7 +33,7 @@ class ProjectDescriptorBuilder
     /** @var string */
     public const DEFAULT_PROJECT_NAME = 'Untitled project';
 
-    /** @var AssemblerFactory $assemblerFactory */
+    /** @var AssemblerFactory<object, Descriptor> $assemblerFactory */
     protected $assemblerFactory;
 
     /** @var Filter $filter */
@@ -49,6 +49,7 @@ class ProjectDescriptorBuilder
     private $servicesWithCustomSettings;
 
     /**
+     * @param AssemblerFactory<object, Descriptor> $assemblerFactory
      * @param iterable<WithCustomSettings> $servicesWithCustomSettings
      */
     public function __construct(
@@ -100,9 +101,7 @@ class ProjectDescriptorBuilder
         }
 
         // create Descriptor and populate with the provided data
-        $descriptor = $this->filterDescriptor($assembler->create($data));
-
-        return $descriptor;
+        return $this->filterDescriptor($assembler->create($data));
     }
 
     /**

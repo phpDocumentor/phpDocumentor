@@ -25,8 +25,7 @@ parameters:
     - '#Parameter \#2 \$value of method phpDocumentor\\Descriptor\\Collection<T>::offsetSet\(\) expects T, D given\.#'
 
     # PHPStan doesn't support inheritance of TDescriptor
-    - '#Parameter \#2 \$assembler of method phpDocumentor\\Descriptor\\Builder\\AssemblerFactory::(register|registerFallback)\(\) expects phpDocumentor\\Descriptor\\Builder\\AssemblerInterface.* given\.#'
-
+    - '#Parameter \#2 \$assembler of method phpDocumentor\\Descriptor\\Builder\\AssemblerFactory<TInput of object,TDescriptor of phpDocumentor\\Descriptor\\Descriptor>::(register|registerFallback)\(\) expects phpDocumentor\\Descriptor\\Builder\\AssemblerInterface.* given\.#'
     -
             message: "#^Parameter \\#1 \\$value of method phpDocumentor\\\\GraphViz\\\\Graph\\:\\:setCenter\\(\\) expects bool, string given\\.$#"
             count: 1
