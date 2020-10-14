@@ -19,7 +19,8 @@ use Webmozart\Assert\Assert;
 /**
  * Contains a series of compiler steps in a specific order; ready to be executed during transformation.
  *
- * @template-extends SplPriorityQueue<CompilerPassInterface, int>
+ * @psalm-template-extends SplPriorityQueue<CompilerPassInterface, int>
+ * @template-extends SplPriorityQueue<int, CompilerPassInterface>
  */
 class Compiler extends SplPriorityQueue
 {
