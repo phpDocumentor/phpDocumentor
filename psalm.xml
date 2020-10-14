@@ -10,7 +10,6 @@
         <directory name="src" />
         <ignoreFiles>
             <directory name="vendor" />
-            <directory name="src/Guides" />
         </ignoreFiles>
     </projectFiles>
 

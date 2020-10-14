@@ -67,7 +67,7 @@ class SpanProcessor
     }
 
     /**
-     * @param string[] $tokenData
+     * @param mixed[] $tokenData
      */
     private function addToken(string $type, string $id, array $tokenData) : void
     {
