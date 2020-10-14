@@ -9,8 +9,6 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  *
  * @link https://phpdoc.org
- * @author Ryan Weaver <ryan@symfonycasts.com> on the original DocBuilder.
- * @author Mike van Riel <me@mikevanriel.com> for adapting this to phpDocumentor.
  */
 
 namespace phpDocumentor\Guides\Twig;
@@ -50,7 +48,7 @@ class TocExtension extends AbstractExtension
         $menu = [
             'label' => $index->getTitle(),
             'path' => $index->getUrl(),
-            'items' => []
+            'items' => [],
         ];
 
         foreach ($index->getTocs()[0] ?? [] as $url) {
@@ -58,7 +56,7 @@ class TocExtension extends AbstractExtension
             $menu['items'][] = [
                 'label' => $meta->getTitle(),
                 'path' => $meta->getUrl(),
-                'items' => []
+                'items' => [],
             ];
         }
 

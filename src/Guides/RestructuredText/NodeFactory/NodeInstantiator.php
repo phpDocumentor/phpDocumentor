@@ -38,13 +38,13 @@ class NodeInstantiator
         ?EventManager $eventManager = null,
         ?Environment $environment = null
     ) {
-        if (! in_array($type, NodeTypes::NODES, true)) {
+        if (!in_array($type, NodeTypes::NODES, true)) {
             throw new InvalidArgumentException(
                 sprintf('Node type %s is not a valid node type.', $type)
             );
         }
 
-        if (! is_subclass_of($className, Node::class)) {
+        if (!is_subclass_of($className, Node::class)) {
             throw new InvalidArgumentException(
                 sprintf('%s class is not a subclass of %s', $className, Node::class)
             );

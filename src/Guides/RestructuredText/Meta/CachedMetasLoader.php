@@ -18,7 +18,7 @@ final class CachedMetasLoader
     public function loadCachedMetaEntries(string $cacheDirectory, Metas $metas) : void
     {
         $metaCachePath = $this->getMetaCachePath($cacheDirectory);
-        if (! file_exists($metaCachePath)) {
+        if (!file_exists($metaCachePath)) {
             return;
         }
 

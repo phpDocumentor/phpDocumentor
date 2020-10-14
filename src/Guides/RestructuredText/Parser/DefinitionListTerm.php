@@ -52,7 +52,7 @@ class DefinitionListTerm
 
     public function getFirstDefinition() : SpanNode
     {
-        if (! isset($this->definitions[0])) {
+        if (!isset($this->definitions[0])) {
             throw new RuntimeException('No definitions found.');
         }
 

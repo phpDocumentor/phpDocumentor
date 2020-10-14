@@ -124,7 +124,7 @@ final class Configuration
 
     public function getFormat() : Format
     {
-        if (! isset($this->formats[$this->fileExtension])) {
+        if (!isset($this->formats[$this->fileExtension])) {
             throw new RuntimeException(
                 sprintf('Format %s does not exist.', $this->fileExtension)
             );
@@ -150,12 +150,12 @@ final class Configuration
         return $this->sourceFileExtension;
     }
 
-    public function getOutputFolder(): string
+    public function getOutputFolder() : string
     {
         return $this->outputFolder;
     }
 
-    public function setOutputFolder(string $outputFolder): void
+    public function setOutputFolder(string $outputFolder) : void
     {
         $this->outputFolder = $outputFolder;
     }

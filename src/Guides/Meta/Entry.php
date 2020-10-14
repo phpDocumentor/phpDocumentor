@@ -56,9 +56,9 @@ final class Entry
 
     /**
      * @param string[][]|string[][][] $titles
-     * @param mixed[][]               $tocs
-     * @param string[]                $depends
-     * @param string[]                $links
+     * @param mixed[][] $tocs
+     * @param string[] $depends
+     * @param string[] $links
      */
     public function __construct(
         string $file,
@@ -70,14 +70,14 @@ final class Entry
         array $links,
         int $mtime
     ) {
-        $this->file    = $file;
-        $this->url     = $url;
-        $this->title   = $title;
-        $this->titles  = $titles;
-        $this->tocs    = $tocs;
+        $this->file = $file;
+        $this->url = $url;
+        $this->title = $title;
+        $this->titles = $titles;
+        $this->tocs = $tocs;
         $this->depends = $depends;
-        $this->links   = $links;
-        $this->mtime   = $mtime;
+        $this->links = $links;
+        $this->mtime = $mtime;
     }
 
     public function getFile() : string
@@ -151,10 +151,12 @@ final class Entry
         $key = array_search($originalDependency, $this->depends, true);
 
         if ($key === false) {
-            throw new LogicException(sprintf('Could not find dependency "%s" in MetaEntry for "%s"', $originalDependency, $this->file));
+            throw new LogicException(
+                sprintf('Could not find dependency "%s" in MetaEntry for "%s"', $originalDependency, $this->file)
+            );
         }
 
-        $this->depends[$key]          = $newDependency;
+        $this->depends[$key] = $newDependency;
         $this->resolvedDependencies[] = $originalDependency;
     }
 
@@ -210,7 +212,7 @@ final class Entry
                 $titles[] = $title[0];
             }
 
-            if (! is_array($title[1])) {
+            if (!is_array($title[1])) {
                 continue;
             }
 

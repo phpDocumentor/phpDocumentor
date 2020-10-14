@@ -9,8 +9,6 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  *
  * @link https://phpdoc.org
- * @author Ryan Weaver <ryan@symfonycasts.com> on the original DocBuilder.
- * @author Mike van Riel <me@mikevanriel.com> for adapting this to phpDocumentor.
  */
 
 namespace phpDocumentor\Guides\RestructuredText\HTML\Directives;
@@ -21,6 +19,7 @@ use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Renderers\Html\CodeNodeRenderer;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive;
 use phpDocumentor\Guides\RestructuredText\Parser;
+use function sprintf;
 
 class CodeBlockDirective extends Directive
 {
@@ -41,7 +40,7 @@ class CodeBlockDirective extends Directive
 
         $node->setLanguage($data);
 
-        if ('' !== $variable) {
+        if ($variable !== '') {
             $environment = $parser->getEnvironment();
             $environment->setVariable($variable, $node);
         } else {

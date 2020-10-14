@@ -60,7 +60,7 @@ class TableParser
             // either a simple table or not a separator line
 
             // if line char is not "=" or "-", not a separator line
-            if (! in_array($chars[0], [self::SIMPLE_TABLE_LETTER, self::SIMPLE_TABLE_LETTER_ALT], true)) {
+            if (!in_array($chars[0], [self::SIMPLE_TABLE_LETTER, self::SIMPLE_TABLE_LETTER_ALT], true)) {
                 return null;
             }
 

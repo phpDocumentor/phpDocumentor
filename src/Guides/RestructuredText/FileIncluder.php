@@ -14,20 +14,9 @@ class FileIncluder
     /** @var Environment */
     private $environment;
 
-    /** @var bool */
-    private $includeAllowed = true;
-
-    /** @var string */
-    private $includeRoot;
-
-    public function __construct(
-        Environment $environment,
-        bool $includeAllowed,
-        string $includeRoot
-    ) {
-        $this->environment    = $environment;
-        $this->includeAllowed = $includeAllowed;
-        $this->includeRoot    = $includeRoot;
+    public function __construct(Environment $environment)
+    {
+        $this->environment = $environment;
     }
 
     public function includeFiles(string $document) : string
@@ -39,7 +28,9 @@ class FileIncluder
 
                 $origin = $this->environment->getOrigin();
                 if (!$origin->has($path)) {
-                    throw new RuntimeException(sprintf('Include "%s" (%s) does not exist or is not readable.', $match[0], $path));
+                    throw new RuntimeException(
+                        sprintf('Include "%s" (%s) does not exist or is not readable.', $match[0], $path)
+                    );
                 }
 
                 $contents = $origin->read($path);

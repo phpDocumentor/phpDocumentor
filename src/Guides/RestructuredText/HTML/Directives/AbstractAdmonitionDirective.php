@@ -9,8 +9,6 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  *
  * @link https://phpdoc.org
- * @author Ryan Weaver <ryan@symfonycasts.com> on the original DocBuilder.
- * @author Mike van Riel <me@mikevanriel.com> for adapting this to phpDocumentor.
  */
 
 namespace phpDocumentor\Guides\RestructuredText\HTML\Directives;
@@ -41,7 +39,7 @@ abstract class AbstractAdmonitionDirective extends SubDirective
         array $options
     ) : ?Node {
         $environment = $document->getEnvironment();
-        $wrapperDiv = function() use ($environment, $options) {
+        $wrapperDiv = function () use ($environment, $options) {
             return $environment->getRenderer()->render(
                 'directives/admonition.html.twig',
                 [

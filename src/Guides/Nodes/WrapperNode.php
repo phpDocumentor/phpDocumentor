@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\Nodes;
 
 use InvalidArgumentException;
+use function is_callable;
+use function is_string;
 
 class WrapperNode extends Node
 {
@@ -37,9 +39,11 @@ class WrapperNode extends Node
         if (!is_string($before) && !is_callable($before)) {
             throw new InvalidArgumentException('$before must be a string or a callable returning a string');
         }
+
         if (!is_string($after) && !is_callable($after)) {
             throw new InvalidArgumentException('$after must be a string or a callable returning a string');
         }
+
         $this->node = $node;
         $this->before = $before;
         $this->after = $after;

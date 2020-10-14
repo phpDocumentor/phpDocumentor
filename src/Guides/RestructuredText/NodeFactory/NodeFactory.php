@@ -15,7 +15,11 @@ use phpDocumentor\Guides\RestructuredText\Parser\TableSeparatorLineConfig;
 
 interface NodeFactory extends Factory
 {
-    public function createTableNode(TableSeparatorLineConfig $separatorLineConfig, string $type, LineChecker $lineChecker) : TableNode;
+    public function createTableNode(
+        TableSeparatorLineConfig $separatorLineConfig,
+        string $type,
+        LineChecker $lineChecker
+    ) : TableNode;
 
     /**
      * @param string|string[]|SpanNode $span

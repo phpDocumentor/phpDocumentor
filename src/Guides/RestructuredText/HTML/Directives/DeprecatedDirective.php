@@ -9,8 +9,6 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  *
  * @link https://phpdoc.org
- * @author Ryan Weaver <ryan@symfonycasts.com> on the original DocBuilder.
- * @author Mike van Riel <me@mikevanriel.com> for adapting this to phpDocumentor.
  */
 
 namespace phpDocumentor\Guides\RestructuredText\HTML\Directives;
@@ -30,9 +28,7 @@ class DeprecatedDirective extends SubDirective
     {
         $wrapperDiv = $document->getEnvironment()->getRenderer()->render(
             'directives/deprecated.html.twig',
-            [
-                'version' => $data,
-            ]
+            ['version' => $data]
         );
 
         return $parser->getNodeFactory()->createWrapperNode($document, $wrapperDiv, '</div></div>');

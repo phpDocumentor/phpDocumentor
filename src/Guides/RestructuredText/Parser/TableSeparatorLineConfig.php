@@ -29,21 +29,26 @@ final class TableSeparatorLineConfig
     /**
      * @param int[][] $partRanges
      */
-    public function __construct(bool $isHeader, string $tableType, array $partRanges, string $lineCharacter, string $rawContent)
-    {
-        if (! in_array($tableType, [TableNode::TYPE_SIMPLE, TableNode::TYPE_PRETTY], true)) {
+    public function __construct(
+        bool $isHeader,
+        string $tableType,
+        array $partRanges,
+        string $lineCharacter,
+        string $rawContent
+    ) {
+        if (!in_array($tableType, [TableNode::TYPE_SIMPLE, TableNode::TYPE_PRETTY], true)) {
             throw new InvalidArgumentException(sprintf('Invalid table type'));
         }
 
-        if (! in_array($lineCharacter, ['=', '-'], true)) {
+        if (!in_array($lineCharacter, ['=', '-'], true)) {
             throw new InvalidArgumentException(sprintf('Unexpected line character "%s"', $lineCharacter));
         }
 
-        $this->isHeader      = $isHeader;
-        $this->tableType     = $tableType;
-        $this->partRanges    = $partRanges;
+        $this->isHeader = $isHeader;
+        $this->tableType = $tableType;
+        $this->partRanges = $partRanges;
         $this->lineCharacter = $lineCharacter;
-        $this->rawContent    = $rawContent;
+        $this->rawContent = $rawContent;
     }
 
     public function isHeader() : bool

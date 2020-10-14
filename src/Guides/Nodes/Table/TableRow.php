@@ -71,7 +71,8 @@ final class TableRow
             if ($targetColumn === null) {
                 throw new InvalidTableStructure(
                     sprintf(
-                        'Malformed table: lines "%s" and "%s" appear to be in the same row, but don\'t share the same number of columns.',
+                        'Malformed table: lines "%s" and "%s" appear to be in the same row, '
+                        . 'but don\'t share the same number of columns.',
                         $this->toString(),
                         $targetRow->toString()
                     )

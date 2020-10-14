@@ -43,7 +43,7 @@ class TableNodeRenderer implements NodeRenderer
             foreach ($row->getColumns() as $n => $col) {
                 $rowTex .= $col->render();
 
-                if ((int)$n + 1 >= count($row->getColumns())) {
+                if ((int) $n + 1 >= count($row->getColumns())) {
                     continue;
                 }
 

@@ -57,7 +57,7 @@ class ClassDirective extends SubDirective
         foreach ($nodes as $node) {
             $node->setClasses($classes);
 
-            if (! ($node instanceof DocumentNode)) {
+            if (!($node instanceof DocumentNode)) {
                 continue;
             }
 

@@ -31,12 +31,12 @@ final class LoadCacheHandler
         $this->cachedMetasLoader = $cachedMetasLoader;
     }
 
-    public function handle(LoadCacheCommand $command): void
+    public function handle(LoadCacheCommand $command) : void
     {
         if (!$command->useCaching()) {
             return;
         }
 
-        // $this->cachedMetasLoader->loadCachedMetaEntries($command->getCacheDirectory(), $this->metas);
+         $this->cachedMetasLoader->loadCachedMetaEntries($command->getCacheDirectory(), $this->metas);
     }
 }

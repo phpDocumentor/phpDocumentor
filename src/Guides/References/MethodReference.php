@@ -15,6 +15,10 @@ namespace phpDocumentor\Guides\References;
 
 use phpDocumentor\Guides\Environment;
 use RuntimeException;
+use function explode;
+use function sprintf;
+use function str_replace;
+use function strpos;
 
 class MethodReference extends Reference
 {
@@ -28,7 +32,7 @@ class MethodReference extends Reference
         $className = explode('::', $data)[0];
         $className = str_replace('\\\\', '\\', $className);
 
-        if (false === strpos($data, '::')) {
+        if (strpos($data, '::') === false) {
             throw new RuntimeException(
                 sprintf('Malformed method reference  "%s" in file "%s"', $data, $environment->getCurrentFileName())
             );

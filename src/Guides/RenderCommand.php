@@ -25,7 +25,7 @@ final class RenderCommand
         $this->filesystem = $filesystem;
     }
 
-    public function getDestination(): FilesystemInterface
+    public function getDestination() : FilesystemInterface
     {
         return $this->filesystem;
     }

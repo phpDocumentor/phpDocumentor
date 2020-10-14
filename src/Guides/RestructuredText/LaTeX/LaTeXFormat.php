@@ -11,7 +11,6 @@ use phpDocumentor\Guides\Renderers\NodeRendererFactory;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive;
 use phpDocumentor\Guides\RestructuredText\Formats\Format;
 use phpDocumentor\Guides\RestructuredText\LaTeX;
-use phpDocumentor\Guides\TemplateRenderer;
 
 class LaTeXFormat implements Format
 {
@@ -43,22 +42,22 @@ class LaTeXFormat implements Format
     {
         return [
             Nodes\AnchorNode::class => new CallableNodeRendererFactory(
-                function (Nodes\AnchorNode $node) {
+                static function (Nodes\AnchorNode $node) {
                     return new Renderers\LaTeX\AnchorNodeRenderer($node);
                 }
             ),
             Nodes\CodeNode::class => new CallableNodeRendererFactory(
-                function (Nodes\CodeNode $node) {
+                static function (Nodes\CodeNode $node) {
                     return new Renderers\LaTeX\CodeNodeRenderer($node);
                 }
             ),
             Nodes\ImageNode::class => new CallableNodeRendererFactory(
-                function (Nodes\ImageNode $node) {
+                static function (Nodes\ImageNode $node) {
                     return new Renderers\LaTeX\ImageNodeRenderer($node);
                 }
             ),
             Nodes\ListNode::class => new CallableNodeRendererFactory(
-                function (Nodes\ListNode $node) {
+                static function (Nodes\ListNode $node) {
                     return new Renderers\ListNodeRenderer(
                         $node,
                         new Renderers\LaTeX\ListRenderer($node)
@@ -66,22 +65,22 @@ class LaTeXFormat implements Format
                 }
             ),
             Nodes\MetaNode::class => new CallableNodeRendererFactory(
-                function (Nodes\MetaNode $node) {
+                static function (Nodes\MetaNode $node) {
                     return new Renderers\LaTeX\MetaNodeRenderer($node);
                 }
             ),
             Nodes\ParagraphNode::class => new CallableNodeRendererFactory(
-                function (Nodes\ParagraphNode $node) {
+                static function (Nodes\ParagraphNode $node) {
                     return new Renderers\LaTeX\ParagraphNodeRenderer($node);
                 }
             ),
             Nodes\QuoteNode::class => new CallableNodeRendererFactory(
-                function (Nodes\QuoteNode $node) {
+                static function (Nodes\QuoteNode $node) {
                     return new Renderers\LaTeX\QuoteNodeRenderer($node);
                 }
             ),
             Nodes\SeparatorNode::class => new CallableNodeRendererFactory(
-                function (Nodes\SeparatorNode $node) {
+                static function (Nodes\SeparatorNode $node) {
                     return new Renderers\LaTeX\SeparatorNodeRenderer($node);
                 }
             ),
@@ -91,22 +90,22 @@ class LaTeXFormat implements Format
                 }
             ),
             Nodes\TitleNode::class => new CallableNodeRendererFactory(
-                function (Nodes\TitleNode $node) {
+                static function (Nodes\TitleNode $node) {
                     return new Renderers\LaTeX\TitleNodeRenderer($node);
                 }
             ),
             Nodes\TocNode::class => new CallableNodeRendererFactory(
-                function (Nodes\TocNode $node) {
+                static function (Nodes\TocNode $node) {
                     return new Renderers\LaTeX\TocNodeRenderer($node);
                 }
             ),
             Nodes\DocumentNode::class => new CallableNodeRendererFactory(
-                function (Nodes\DocumentNode $node) {
+                static function (Nodes\DocumentNode $node) {
                     return new Renderers\LaTeX\DocumentNodeRenderer($node);
                 }
             ),
             Nodes\SpanNode::class => new CallableNodeRendererFactory(
-                function (Nodes\SpanNode $node) {
+                static function (Nodes\SpanNode $node) {
                     return new Renderers\LaTeX\SpanNodeRenderer($node);
                 }
             ),

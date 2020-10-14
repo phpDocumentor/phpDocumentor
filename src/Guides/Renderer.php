@@ -18,6 +18,7 @@ use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Guides\Twig\AssetsExtension;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory;
+use RuntimeException;
 
 final class Renderer
 {
@@ -50,7 +51,7 @@ final class Renderer
     public function render(string $template, array $context = []) : string
     {
         if ($this->templateRenderer === null) {
-            throw new \RuntimeException('Renderer should be initialized before use');
+            throw new RuntimeException('Renderer should be initialized before use');
         }
 
         return $this->templateRenderer->render($template, $context);

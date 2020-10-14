@@ -20,7 +20,7 @@ use function sprintf;
 
 class ResolvedReference
 {
-    /** @var ?string */
+    /** @var string|null */
     private $file;
 
     /** @var string|null */
@@ -87,7 +87,10 @@ class ResolvedReference
     private function validateAttributes(array $attributes) : void
     {
         foreach ($attributes as $attribute => $value) {
-            if (! is_string($attribute) || $attribute === 'href' || ! (bool) preg_match('/^[a-zA-Z\_][\w\.\-_]+$/', $attribute)) {
+            if (!is_string($attribute)
+                || $attribute === 'href'
+                || !(bool) preg_match('/^[a-zA-Z\_][\w\.\-_]+$/', $attribute)
+            ) {
                 throw new RuntimeException(sprintf('Attribute with name "%s" is not allowed', $attribute));
             }
         }

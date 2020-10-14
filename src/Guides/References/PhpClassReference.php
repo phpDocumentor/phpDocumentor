@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\References;
 
 use phpDocumentor\Guides\Environment;
+use function sprintf;
+use function strtolower;
 
 class PhpClassReference extends Reference
 {
@@ -29,9 +31,7 @@ class PhpClassReference extends Reference
             $data,
             sprintf('%s/class.%s.php', '', strtolower($data)),
             [],
-            [
-                'title' => $data,
-            ]
+            ['title' => $data]
         );
     }
 }

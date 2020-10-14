@@ -13,10 +13,13 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\Handlers;
 
+use InvalidArgumentException;
 use League\Flysystem\FilesystemInterface;
 use phpDocumentor\Guides\Documents;
 use phpDocumentor\Guides\Metas;
 use phpDocumentor\Guides\RenderCommand;
+use function dirname;
+use function sprintf;
 
 final class RenderHandler
 {
@@ -57,7 +60,7 @@ final class RenderHandler
         $metaEntry = $this->metas->get($file);
 
         if ($metaEntry === null) {
-            throw new \InvalidArgumentException(sprintf('Could not find target file for %s', $file));
+            throw new InvalidArgumentException(sprintf('Could not find target file for %s', $file));
         }
 
         return $metaEntry->getUrl();

@@ -5,6 +5,7 @@ includes:
 parameters:
   level: 6
   inferPrivatePropertyTypeFromConstructor: true
+  treatPhpDocTypesAsCertain: false
   ignoreErrors:
     # PHPStan does not play nice with Symfony Config's fluid interface
     - '#.*NodeDefinition::prototype.*#'

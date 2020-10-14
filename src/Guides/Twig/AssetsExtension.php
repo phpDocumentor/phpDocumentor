@@ -9,14 +9,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  *
  * @link https://phpdoc.org
- * @author Ryan Weaver <ryan@symfonycasts.com> on the original DocBuilder.
- * @author Mike van Riel <me@mikevanriel.com> for adapting this to phpDocumentor.
  */
 
 namespace phpDocumentor\Guides\Twig;
 
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
+use function sprintf;
 
 class AssetsExtension extends AbstractExtension
 {

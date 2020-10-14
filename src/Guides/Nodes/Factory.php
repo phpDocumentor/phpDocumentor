@@ -17,7 +17,6 @@ use phpDocumentor\Guides\Environment;
 
 interface Factory
 {
-
     public function createQuoteNode(DocumentNode $documentNode) : QuoteNode;
 
     public function createTitleNode(Node $value, int $level, string $token) : TitleNode;
@@ -75,8 +74,6 @@ interface Factory
      * during parsing, the given argument is a callable that will be called upon rendering.
      *
      * @param callable $value function that will return the rendered representation of this node
-     *
-     * @return RawNode
      */
     public function createRawNode(callable $value) : RawNode;
 

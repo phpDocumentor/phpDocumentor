@@ -185,7 +185,7 @@ class DocumentNode extends Node
 
         $this->addHeaderNode(
             $environment->getNodeFactory()->createRawNode(
-                function () use ($environment, $css) {
+                static function () use ($environment, $css) {
                     return $environment->getRenderer()->render('stylesheet-link.html.twig', ['css' => $css]);
                 }
             )
@@ -203,7 +203,7 @@ class DocumentNode extends Node
 
         $this->addHeaderNode(
             $environment->getNodeFactory()->createRawNode(
-                function () use ($environment, $js) {
+                static function () use ($environment, $js) {
                     return $environment->getRenderer()->render('javascript.html.twig', ['js' => $js]);
                 }
             )
@@ -221,7 +221,7 @@ class DocumentNode extends Node
 
         $this->addHeaderNode(
             $environment->getNodeFactory()->createRawNode(
-                function () use ($environment, $url) {
+                static function () use ($environment, $url) {
                     return $environment->getRenderer()->render('favicon.html.twig', ['url' => $url]);
                 }
             )

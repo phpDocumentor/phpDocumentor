@@ -60,6 +60,7 @@ class DocumentNodeRenderer implements NodeRenderer, FullDocumentNodeRenderer
         foreach ($this->document->getHeaderNodes() as $node) {
             $headerNodes .= $node->render() . "\n";
         }
+
         return $headerNodes;
     }
 }

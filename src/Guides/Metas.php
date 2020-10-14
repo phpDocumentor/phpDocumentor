@@ -71,7 +71,7 @@ final class Metas
             foreach ($toc as $child) {
                 $this->parents[$child] = $file;
 
-                if (! isset($this->entries[$child])) {
+                if (!isset($this->entries[$child])) {
                     continue;
                 }
 
@@ -90,7 +90,7 @@ final class Metas
             $mtime
         );
 
-        if (! isset($this->parents[$file])) {
+        if (!isset($this->parents[$file])) {
             return;
         }
 

@@ -17,8 +17,6 @@ use League\Uri\UriInfo;
 use phpDocumentor\Transformer\Router\Router;
 use phpDocumentor\UriFactory;
 use Symfony\Component\Routing\Generator\UrlGenerator as SymfonyUrlGenerator;
-use function implode;
-use function ltrim;
 use function rtrim;
 
 final class UrlGenerator
@@ -35,7 +33,7 @@ final class UrlGenerator
         $this->router = $router;
     }
 
-    public function generateUrl(string $path, string $currentFileName, string $dirName): string
+    public function generateUrl(string $path, string $currentFileName, string $dirName) : string
     {
         $uri = UriFactory::createUri($path);
         if (UriInfo::isAbsolute($uri)) {
@@ -45,7 +43,7 @@ final class UrlGenerator
         return $this->relativeUrl($path);
     }
 
-    public function absoluteUrl(string $dirName, string $url): string
+    public function absoluteUrl(string $dirName, string $url) : string
     {
         $uri = UriFactory::createUri($url);
         if (UriInfo::isAbsolute($uri)) {
@@ -63,27 +61,13 @@ final class UrlGenerator
      * relative URL to "path/to/something/else.html", the result will
      * be else.html. Else, "../" will be added to go to the upper directory
      */
-    public function relativeUrl(?string $url): ?string
+    public function relativeUrl(?string $url) : ?string
     {
         return SymfonyUrlGenerator::getRelativePath($this->configuration->getOutputFolder(), $url);
     }
 
-    public function canonicalUrl(string $dirName, string $url): ?string
+    public function canonicalUrl(string $dirName, string $url) : ?string
     {
         return $this->router->generate(UriFactory::createUri($url));
-    }
-
-    private function getPathPrefixBasedOnDepth(): string
-    {
-        $directoryDepth = substr_count($this->configuration->getOutputFolder(), '/') + 1;
-
-        return $directoryDepth > 1
-            ? implode('/', array_fill(0, $directoryDepth - 1, '..')) . '/'
-            : '';
-    }
-
-    private function withoutLeadingSlash(string $path): string
-    {
-        return ltrim($path, '/');
     }
 }

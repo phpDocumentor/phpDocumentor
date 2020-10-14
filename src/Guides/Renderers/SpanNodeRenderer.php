@@ -57,7 +57,7 @@ abstract class SpanNodeRenderer implements NodeRenderer, SpanRenderer
      */
     public function link(?string $url, string $title, array $attributes = []) : string
     {
-        $url = (string)$url;
+        $url = (string) $url;
 
         return $this->environment->getRenderer()->render(
             'link.html.twig',
@@ -132,7 +132,7 @@ abstract class SpanNodeRenderer implements NodeRenderer, SpanRenderer
                     return $variable;
                 }
 
-                return (string)$variable;
+                return (string) $variable;
             },
             $span
         );

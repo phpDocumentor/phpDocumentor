@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\Builder;
 
-use Flyfinder\Finder;
 use Flyfinder\Path;
 use Flyfinder\Specification\AndSpecification;
 use Flyfinder\Specification\HasExtension;
@@ -14,6 +13,9 @@ use League\Flysystem\FilesystemInterface;
 use phpDocumentor\Guides\Files;
 use phpDocumentor\Guides\Metas;
 use function sprintf;
+use function strlen;
+use function substr;
+use function trim;
 
 class Scanner
 {
@@ -69,14 +71,16 @@ class Scanner
 
     private function doesFileRequireParsing(string $filename) : bool
     {
-        if (! isset($this->fileInfos[$filename])) {
-            throw new InvalidArgumentException(sprintf('No file info found for "%s" - file does not exist.', $filename));
+        if (!isset($this->fileInfos[$filename])) {
+            throw new InvalidArgumentException(
+                sprintf('No file info found for "%s" - file does not exist.', $filename)
+            );
         }
 
         $file = $this->fileInfos[$filename];
 
         $documentFilename = $this->getFilenameFromFile($file);
-        $entry            = $this->metas->get($documentFilename);
+        $entry = $this->metas->get($documentFilename);
 
         if ($this->hasFileBeenUpdated($filename)) {
             // File is new or changed and thus need to be parsed
@@ -107,7 +111,7 @@ class Scanner
              */
 
             // dependency no longer exists? We should re-parse this file
-            if (! isset($this->fileInfos[$dependency])) {
+            if (!isset($this->fileInfos[$dependency])) {
                 return true;
             }
 

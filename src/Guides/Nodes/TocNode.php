@@ -65,11 +65,11 @@ class TocNode extends Node
     public function getDepth() : int
     {
         if (isset($this->options['depth'])) {
-            return (int)$this->options['depth'];
+            return (int) $this->options['depth'];
         }
 
         if (isset($this->options['maxdepth'])) {
-            return (int)$this->options['maxdepth'];
+            return (int) $this->options['maxdepth'];
         }
 
         return self::DEFAULT_DEPTH;

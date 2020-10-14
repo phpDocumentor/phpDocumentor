@@ -33,7 +33,7 @@ class Title extends Directive
         $document = $parser->getDocument();
 
         $environment = $node->getEnvironment();
-        $title = function() use ($environment, $data) {
+        $title = static function () use ($environment, $data) {
             return $environment->getRenderer()->render('title.html.twig', ['title' => $data]);
         };
 

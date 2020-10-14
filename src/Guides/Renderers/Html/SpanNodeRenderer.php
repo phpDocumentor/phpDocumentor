@@ -44,6 +44,7 @@ class SpanNodeRenderer extends BaseSpanNodeRenderer
     public function nbsp() : string
     {
         return 'nbsp;';
+
         // TODO: this is called in DocumentNode's getTitle function during parsing; wtf?
         // return $this->renderer->render('nbsp.html.twig');
     }
@@ -51,6 +52,7 @@ class SpanNodeRenderer extends BaseSpanNodeRenderer
     public function br() : string
     {
         return '<br>';
+
         // TODO: this is called in DocumentNode's getTitle function during parsing; wtf?
         // return $this->renderer->render('br.html.twig');
     }
@@ -65,7 +67,7 @@ class SpanNodeRenderer extends BaseSpanNodeRenderer
      */
     public function link(?string $url, string $title, array $attributes = []) : string
     {
-        $url = (string)$url;
+        $url = (string) $url;
 
         return $this->renderer->render(
             'link.html.twig',
@@ -97,6 +99,7 @@ class SpanNodeRenderer extends BaseSpanNodeRenderer
             if ($value['anchor'] !== null) {
                 $url .= '#' . $value['anchor'];
             }
+
             $link = $this->link($url, $text, $reference->getAttributes());
 
             // reference to anchor in existing document

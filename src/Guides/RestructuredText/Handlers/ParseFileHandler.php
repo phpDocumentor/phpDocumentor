@@ -20,6 +20,11 @@ use phpDocumentor\Guides\RestructuredText\ParseFileCommand;
 use phpDocumentor\Guides\RestructuredText\Parser;
 use phpDocumentor\Transformer\Router\Router;
 use Psr\Log\LoggerInterface;
+use function filemtime;
+use function iterator_to_array;
+use function ltrim;
+use function sprintf;
+use function trim;
 
 final class ParseFileHandler
 {
@@ -60,8 +65,7 @@ final class ParseFileHandler
         Router $router,
         IteratorAggregate $directives,
         IteratorAggregate $references
-    )
-    {
+    ) {
         $this->metas = $metas;
         $this->documents = $documents;
         $this->logger = $logger;
@@ -78,7 +82,8 @@ final class ParseFileHandler
         $directory = $command->getDirectory();
         $file = $command->getFile();
 
-        $environment = new Environment($configuration, $this->renderer, $this->logger, $command->getOrigin(), $this->router);
+        $environment =
+            new Environment($configuration, $this->renderer, $this->logger, $command->getOrigin(), $this->router);
         $environment->setMetas($this->metas);
         $environment->setCurrentFileName($file);
         $environment->setCurrentDirectory($directory);
@@ -106,7 +111,7 @@ final class ParseFileHandler
             NodeTypes::BLOCK => Nodes\BlockNode::class,
             NodeTypes::CALLABLE => Nodes\CallableNode::class,
             NodeTypes::SECTION_BEGIN => Nodes\SectionBeginNode::class,
-            NodeTypes::SECTION_END => Nodes\SectionEndNode::class
+            NodeTypes::SECTION_END => Nodes\SectionEndNode::class,
         ];
 
         $nodeFactory = DefaultNodeFactory::createFromRegistry(
@@ -142,10 +147,10 @@ final class ParseFileHandler
         $this->metas->set(
             $file,
             $url,
-            (string)$document->getTitle(),
+            (string) $document->getTitle(),
             $document->getTitles(),
             $document->getTocs(),
-            (int)filemtime($fileAbsolutePath),
+            (int) filemtime($fileAbsolutePath),
             $environment->getDependencies(),
             $environment->getLinks()
         );

@@ -16,6 +16,7 @@ namespace phpDocumentor\Guides;
 use ArrayIterator;
 use Iterator;
 use IteratorAggregate;
+use function in_array;
 
 /**
  * @implements IteratorAggregate<string>
@@ -37,7 +38,7 @@ final class Files implements IteratorAggregate
     /**
      * @return Iterator<string>
      */
-    public function getIterator(): Iterator
+    public function getIterator() : Iterator
     {
         return new ArrayIterator($this->files);
     }
