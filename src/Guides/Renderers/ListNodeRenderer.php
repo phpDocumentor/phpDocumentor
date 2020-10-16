@@ -70,7 +70,7 @@ class ListNodeRenderer implements NodeRenderer
         }
 
         while ($stack) {
-            [$d, $closing] = array_pop($stack);
+            [, $closing] = array_pop($stack);
             $value .= $closing;
         }
 

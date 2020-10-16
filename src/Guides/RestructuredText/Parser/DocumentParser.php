@@ -349,8 +349,6 @@ class DocumentParser
                 break;
 
             case State::COMMENT:
-                $isComment = false;
-
                 if (!$this->lineChecker->isComment($line) && (trim($line) === '' || $line[0] !== ' ')) {
                     $this->setState(State::BEGIN);
 
