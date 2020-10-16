@@ -44,7 +44,7 @@ class DocumentParser
     private $eventManager;
 
     /** @var Directive[] */
-    private $directives = [];
+    private $directives;
 
     /** @var DocumentNode */
     private $document;

@@ -19,7 +19,7 @@ use function strtolower;
 final class Metas
 {
     /** @var Entry[] */
-    private $entries = [];
+    private $entries;
 
     /** @var string[] */
     private $parents = [];

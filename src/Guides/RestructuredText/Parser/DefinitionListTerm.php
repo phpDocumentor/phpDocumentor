@@ -13,10 +13,10 @@ class DefinitionListTerm
     private $term;
 
     /** @var SpanNode[] */
-    private $classifiers = [];
+    private $classifiers;
 
     /** @var SpanNode[] */
-    private $definitions = [];
+    private $definitions;
 
     /**
      * @param SpanNode[] $classifiers
