@@ -16,7 +16,7 @@ namespace phpDocumentor\Parser\Cache;
 use phpDocumentor\Path;
 use RuntimeException;
 use Symfony\Contracts\Cache\CacheInterface;
-use function assert;
+use Webmozart\Assert\Assert;
 use function error_get_last;
 use function is_dir;
 use function mkdir;
@@ -55,8 +55,8 @@ class Locator
 
     public function __construct(CacheInterface $files, CacheInterface $descriptors)
     {
-        assert($files instanceof FilesystemAdapter);
-        assert($descriptors instanceof FilesystemAdapter);
+        Assert::isInstanceOf($files, FilesystemAdapter::class);
+        Assert::isInstanceOf($descriptors, FilesystemAdapter::class);
 
         $this->fileCache = $files;
         $this->descriptorCache = $descriptors;
