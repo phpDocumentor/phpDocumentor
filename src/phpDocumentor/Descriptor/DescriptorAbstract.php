@@ -160,8 +160,6 @@ abstract class DescriptorAbstract implements Filterable
      * Sets a description for this element.
      *
      * @internal should not be called by any other class than the assamblers
-     *
-     * @param ?DocBlock\DescriptionDescriptor $description
      */
     public function setDescription(?DocBlock\DescriptionDescriptor $description) : void
     {
@@ -397,8 +395,6 @@ abstract class DescriptorAbstract implements Filterable
      *
      * Important: __call() is not a fast method of access; it is preferred to directly use the getTags() collection.
      * This interface is provided to allow for uniform and easy access to certain tags.
-     *
-     * @param array<mixed> $arguments
      *
      * @return Collection<TagDescriptor>|null
      */

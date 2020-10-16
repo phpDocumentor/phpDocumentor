@@ -402,9 +402,6 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
         );
     }
 
-    /**
-     * @param array $options
-     */
     private function createCommandlineOptionsMiddleware(
         array $options,
         $workingDir = '/'

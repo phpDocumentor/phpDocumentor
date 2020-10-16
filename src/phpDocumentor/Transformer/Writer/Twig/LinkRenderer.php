@@ -214,8 +214,6 @@ final class LinkRenderer
 
     /**
      * @param string|Path|Type|DescriptorAbstract|Fqsen|Reference\Fqsen $node
-     *
-     * @psalm-param string $presentation
      */
     private function renderLink($node, string $presentation) : string
     {

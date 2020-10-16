@@ -61,7 +61,6 @@ class BaseContext
     }
 
     /**
-     * @return ProjectDescriptor|null
      * @throws \Exception when AST file doesn't exist
      */
     protected function getAst() : ?ProjectDescriptor
