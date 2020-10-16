@@ -19,7 +19,6 @@ use phpDocumentor\Guides\Meta\Entry;
 use phpDocumentor\Guides\Nodes\Factory;
 use phpDocumentor\Guides\References\Reference;
 use phpDocumentor\Guides\References\ResolvedReference;
-use phpDocumentor\Transformer\Router\Router;
 use Psr\Log\LoggerInterface;
 use function array_shift;
 use function dirname;
@@ -103,14 +102,13 @@ final class Environment
         Configuration $configuration,
         Renderer $renderer,
         LoggerInterface $logger,
-        FilesystemInterface $origin,
-        Router $router
+        FilesystemInterface $origin
     ) {
         $this->configuration = $configuration;
         $this->renderer = $renderer;
         $this->origin = $origin;
         $this->logger = $logger;
-        $this->urlGenerator = new UrlGenerator($this->configuration, $router);
+        $this->urlGenerator = new UrlGenerator();
         $this->metas = new Metas();
 
         $this->reset();
@@ -365,7 +363,9 @@ final class Environment
 
     public function relativeUrl(?string $url) : ?string
     {
-        return $this->urlGenerator->relativeUrl($url);
+        $basePath = '/' . $this->getConfiguration()->getOutputFolder() . '/' . $this->getCurrentFileName() . '.html';
+
+        return $this->urlGenerator->relativeUrl($basePath, $url);
     }
 
     public function absoluteUrl(string $url) : string
@@ -380,11 +380,7 @@ final class Environment
 
     public function generateUrl(string $path) : string
     {
-        return $this->urlGenerator->generateUrl(
-            $path,
-            $this->currentFileName,
-            $this->getDirName()
-        );
+        return $this->urlGenerator->generateUrl($path, $this->getDirName());
     }
 
     public function getDirName() : string

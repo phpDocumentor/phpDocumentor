@@ -18,7 +18,6 @@ use phpDocumentor\Guides\RestructuredText\Directives\Directive;
 use phpDocumentor\Guides\RestructuredText\NodeFactory\DefaultNodeFactory;
 use phpDocumentor\Guides\RestructuredText\ParseFileCommand;
 use phpDocumentor\Guides\RestructuredText\Parser;
-use phpDocumentor\Transformer\Router\Router;
 use Psr\Log\LoggerInterface;
 use function filemtime;
 use function iterator_to_array;
@@ -49,9 +48,6 @@ final class ParseFileHandler
     /** @var Renderer */
     private $renderer;
 
-    /** @var Router */
-    private $router;
-
     /**
      * @param IteratorAggregate<Directive> $directives
      * @param IteratorAggregate<Reference> $references
@@ -62,7 +58,6 @@ final class ParseFileHandler
         Renderer $renderer,
         LoggerInterface $logger,
         EventManager $eventManager,
-        Router $router,
         IteratorAggregate $directives,
         IteratorAggregate $references
     ) {
@@ -73,7 +68,6 @@ final class ParseFileHandler
         $this->references = $references;
         $this->eventManager = $eventManager;
         $this->renderer = $renderer;
-        $this->router = $router;
     }
 
     public function handle(ParseFileCommand $command) : void
@@ -82,8 +76,7 @@ final class ParseFileHandler
         $directory = $command->getDirectory();
         $file = $command->getFile();
 
-        $environment =
-            new Environment($configuration, $this->renderer, $this->logger, $command->getOrigin(), $this->router);
+        $environment = new Environment($configuration, $this->renderer, $this->logger, $command->getOrigin());
         $environment->setMetas($this->metas);
         $environment->setCurrentFileName($file);
         $environment->setCurrentDirectory($directory);

@@ -53,9 +53,9 @@ final class Metas
 
     /**
      * @param string[][] $titles
-     * @param mixed[][]  $tocs
-     * @param string[]   $depends
-     * @param string[]   $links
+     * @param mixed[][] $tocs
+     * @param string[] $depends
+     * @param string[] $links
      */
     public function set(
         string $file,

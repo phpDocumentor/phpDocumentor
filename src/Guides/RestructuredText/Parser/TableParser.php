@@ -34,7 +34,7 @@ class TableParser
     {
         $header = false;
         $pretty = false;
-        $line   = trim($line);
+        $line = trim($line);
 
         if ($line === '') {
             return null;
@@ -95,7 +95,7 @@ class TableParser
                 continue;
             }
 
-            $parts[]          = [$currentPartStart, $i];
+            $parts[] = [$currentPartStart, $i];
             $currentPartStart = null;
         }
 
@@ -133,7 +133,7 @@ class TableParser
      */
     private function findTableChars(string $line) : ?array
     {
-        $lineChar  = $line[0];
+        $lineChar = $line[0];
         $spaceChar = null;
 
         for ($i = 0; $i < strlen($line); $i++) {

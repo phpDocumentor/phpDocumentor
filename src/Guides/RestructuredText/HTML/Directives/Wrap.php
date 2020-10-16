@@ -22,7 +22,7 @@ class Wrap extends SubDirective
 
     public function __construct(string $class, bool $uniqid = false)
     {
-        $this->class  = $class;
+        $this->class = $class;
         $this->uniqid = $uniqid;
     }
 
@@ -47,10 +47,13 @@ class Wrap extends SubDirective
             $id = '';
         }
 
-        $divOpen = $document->getEnvironment()->getRenderer()->render('div-open.html.twig', [
-            'id' => $id,
-            'class' => $this->class,
-        ]);
+        $divOpen = $document->getEnvironment()->getRenderer()->render(
+            'div-open.html.twig',
+            [
+                'id' => $id,
+                'class' => $this->class,
+            ]
+        );
 
         return $parser->getNodeFactory()->createWrapperNode(
             $document,

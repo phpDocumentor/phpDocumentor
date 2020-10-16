@@ -18,7 +18,7 @@ abstract class BuildEvent extends EventArgs
         string $directory,
         string $targetDirectory
     ) {
-        $this->directory       = $directory;
+        $this->directory = $directory;
         $this->targetDirectory = $targetDirectory;
     }
 

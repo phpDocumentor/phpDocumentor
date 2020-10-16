@@ -23,10 +23,10 @@ class ListLine
      */
     public function __construct(string $prefix, bool $ordered, int $depth, $text)
     {
-        $this->prefix  = $prefix;
+        $this->prefix = $prefix;
         $this->ordered = $ordered;
-        $this->depth   = $depth;
-        $this->text    = $text;
+        $this->depth = $depth;
+        $this->text = $text;
     }
 
     public function getPrefix() : string

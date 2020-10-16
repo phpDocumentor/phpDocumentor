@@ -23,9 +23,11 @@ class Dummy extends Directive
         string $data,
         array $options
     ) : ?Node {
-        return $parser->getNodeFactory()->createDummyNode([
-            'data' => $data,
-            'options' => $options,
-        ]);
+        return $parser->getNodeFactory()->createDummyNode(
+            [
+                'data' => $data,
+                'options' => $options,
+            ]
+        );
     }
 }

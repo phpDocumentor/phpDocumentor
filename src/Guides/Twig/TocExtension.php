@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\Twig;
 
+use phpDocumentor\Guides\Meta\Entry;
 use phpDocumentor\Guides\Metas;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
@@ -41,7 +42,7 @@ class TocExtension extends AbstractExtension
     {
         $index = $this->metas->get('index');
 
-        if ($index === null) {
+        if (!$index instanceof Entry) {
             return [];
         }
 
@@ -53,6 +54,10 @@ class TocExtension extends AbstractExtension
 
         foreach ($index->getTocs()[0] ?? [] as $url) {
             $meta = $this->metas->get($url);
+            if (!$meta instanceof Entry) {
+                continue;
+            }
+
             $menu['items'][] = [
                 'label' => $meta->getTitle(),
                 'path' => $meta->getUrl(),

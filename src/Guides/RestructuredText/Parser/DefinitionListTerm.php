@@ -24,7 +24,7 @@ class DefinitionListTerm
      */
     public function __construct(SpanNode $term, array $classifiers, array $definitions)
     {
-        $this->term        = $term;
+        $this->term = $term;
         $this->classifiers = $classifiers;
         $this->definitions = $definitions;
     }

@@ -14,60 +14,96 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides;
 
 use League\Uri\UriInfo;
-use phpDocumentor\Transformer\Router\Router;
 use phpDocumentor\UriFactory;
 use Symfony\Component\Routing\Generator\UrlGenerator as SymfonyUrlGenerator;
-use function rtrim;
+use function array_pop;
+use function explode;
+use function implode;
+use function ltrim;
 
 final class UrlGenerator
 {
-    /** @var Configuration */
-    private $configuration;
-
-    /** @var Router */
-    private $router;
-
-    public function __construct(Configuration $configuration, Router $router)
-    {
-        $this->configuration = $configuration;
-        $this->router = $router;
-    }
-
-    public function generateUrl(string $path, string $currentFileName, string $dirName) : string
+    public function generateUrl(string $path, string $dirName) : string
     {
         $uri = UriFactory::createUri($path);
         if (UriInfo::isAbsolute($uri)) {
             return $path;
         }
 
-        return $this->relativeUrl($path);
+        return $this->relativeUrl($dirName, $path);
     }
 
-    public function absoluteUrl(string $dirName, string $url) : string
+    /**
+     * Returns the absolute path, including prefixing '/'.
+     *
+     * This method will, by design, return an absolute path including the prefixing slash. The slash will make it clear
+     * to the other URL generating methods that this need not be resolved and can stay the same.
+     */
+    public function absoluteUrl(string $basePath, string $url) : string
     {
         $uri = UriFactory::createUri($url);
         if (UriInfo::isAbsolute($uri)) {
             return $url;
         }
 
-        // $url is a relative path so join it together with the
-        // current $dirName to produce an absolute url
-        return rtrim($dirName, '/') . '/' . $url;
+        return '/' . $basePath . '/' . $url;
     }
 
     /**
-     * Resolves a relative URL using directories, for instance, if the
-     * current directory is "path/to/something", and you want to get the
-     * relative URL to "path/to/something/else.html", the result will
-     * be else.html. Else, "../" will be added to go to the upper directory
+     * Resolves a relative URL using directories.
+     *
+     * For instance, if the current directory is "path/to/something", and you want to get the relative URL to
+     * "path/to/something/else.html", the result will be else.html. Else, "../" will be added to go to the upper
+     * directory.
      */
-    public function relativeUrl(?string $url) : ?string
+    public function relativeUrl(string $basePath, string $url) : ?string
     {
-        return SymfonyUrlGenerator::getRelativePath($this->configuration->getOutputFolder(), $url);
+        $uri = UriFactory::createUri($url);
+
+        if (UriInfo::isAbsolute($uri)) {
+            return $url;
+        }
+
+        if (UriInfo::isRelativePath($uri)) {
+            return $url;
+        }
+
+        return SymfonyUrlGenerator::getRelativePath($basePath, ltrim($url, '/'));
     }
 
-    public function canonicalUrl(string $dirName, string $url) : ?string
+    /**
+     * Returns the Path used in the Metas to find this file.
+     *
+     * The Metas collection, which is used to build the table of contents, uses these canonical paths as a unique
+     * identifier to find the metadata for that file. Technically speaking, the canonical URL is the absolute URL
+     * without the preceeding slash. But due to the many locations that this method is used; it will do its own
+     * resolving.
+     *
+     * @todo simplify this method into the other methods or vice versa
+     */
+    public function canonicalUrl(string $basePath, string $url) : string
     {
-        return $this->router->generate(UriFactory::createUri($url));
+        if ($url[0] === '/') {
+            return ltrim($url, '/');
+        }
+
+        $dirNameParts = explode('/', $basePath);
+        $urlParts = explode('/', $url);
+        $urlPass1 = [];
+
+        foreach ($urlParts as $part) {
+            if ($part === '.') {
+                continue;
+            }
+
+            if ($part === '..') {
+                array_pop($dirNameParts);
+                continue;
+            }
+
+            $urlPass1[] = $part;
+        }
+
+        return ltrim(implode('/', $dirNameParts) . '/' . implode('/', $urlPass1), '/');
     }
 }

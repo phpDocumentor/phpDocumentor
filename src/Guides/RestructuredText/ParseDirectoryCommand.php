@@ -15,7 +15,7 @@ final class ParseDirectoryCommand
     /** @var FilesystemInterface */
     private $origin;
 
-    /** @var string  */
+    /** @var string */
     private $directory;
 
     public function __construct(Configuration $configuration, FilesystemInterface $origin, string $directory)

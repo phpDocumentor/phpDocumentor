@@ -37,6 +37,6 @@ final class PersistCacheHandler
             return;
         }
 
-         $this->cachedMetasLoader->cacheMetaEntries($command->getCacheDirectory(), $this->metas);
+        $this->cachedMetasLoader->cacheMetaEntries($command->getCacheDirectory(), $this->metas);
     }
 }

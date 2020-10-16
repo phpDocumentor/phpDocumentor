@@ -37,13 +37,13 @@ class ResolvedReference
 
     /**
      * @param string[][]|string[][][] $titles
-     * @param string[]                $attributes
+     * @param string[] $attributes
      */
     public function __construct(?string $file, ?string $title, ?string $url, array $titles = [], array $attributes = [])
     {
-        $this->file   = $file;
-        $this->title  = $title;
-        $this->url    = $url;
+        $this->file = $file;
+        $this->title = $title;
+        $this->url = $url;
         $this->titles = $titles;
 
         $this->validateAttributes($attributes);

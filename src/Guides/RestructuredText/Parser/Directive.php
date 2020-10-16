@@ -24,9 +24,9 @@ class Directive
     public function __construct(string $variable, string $name, string $data, array $options = [])
     {
         $this->variable = $variable;
-        $this->name     = $name;
-        $this->data     = $data;
-        $this->options  = $options;
+        $this->name = $name;
+        $this->data = $data;
+        $this->options = $options;
     }
 
     public function getVariable() : string

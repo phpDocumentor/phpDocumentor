@@ -50,11 +50,11 @@ class NodeInstantiator
             );
         }
 
-        $this->type                = $type;
-        $this->className           = $className;
+        $this->type = $type;
+        $this->className = $className;
         $this->nodeRendererFactory = $nodeRendererFactory;
-        $this->eventManager        = $eventManager;
-        $this->environment         = $environment;
+        $this->eventManager = $eventManager;
+        $this->environment = $environment;
     }
 
     public function getType() : string

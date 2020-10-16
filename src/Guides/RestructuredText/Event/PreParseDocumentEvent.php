@@ -19,7 +19,7 @@ final class PreParseDocumentEvent extends EventArgs
 
     public function __construct(Parser $parser, string $contents)
     {
-        $this->parser   = $parser;
+        $this->parser = $parser;
         $this->contents = $contents;
     }
 

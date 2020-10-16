@@ -34,8 +34,8 @@ class Doc extends Reference
 
     public function __construct(string $name = 'doc', bool $dependenciesMustBeResolved = false)
     {
-        $this->name                       = $name;
-        $this->resolver                   = new Resolver();
+        $this->name = $name;
+        $this->resolver = new Resolver();
         $this->dependenciesMustBeResolved = $dependenciesMustBeResolved;
     }
 

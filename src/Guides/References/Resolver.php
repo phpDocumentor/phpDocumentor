@@ -50,7 +50,6 @@ class Resolver
         array $attributes = []
     ) : ?ResolvedReference {
         $entry = null;
-
         $file = $environment->canonicalUrl($data);
 
         if ($file !== null) {
