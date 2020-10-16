@@ -396,6 +396,8 @@ abstract class DescriptorAbstract implements Filterable
      * Important: __call() is not a fast method of access; it is preferred to directly use the getTags() collection.
      * This interface is provided to allow for uniform and easy access to certain tags.
      *
+     * @param array<mixed> $arguments
+     *
      * @return Collection<TagDescriptor>|null
      */
     public function __call(string $name, array $arguments)

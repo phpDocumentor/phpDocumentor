@@ -45,6 +45,9 @@ final class Renderer
         $this->templateRenderer = new TemplateRenderer($environment, 'guides', $targetDirectory);
     }
 
+    /**
+     * @param array<string, mixed> $context
+     */
     public function render(string $template, array $context = []) : string
     {
         if ($this->templateRenderer === null) {
