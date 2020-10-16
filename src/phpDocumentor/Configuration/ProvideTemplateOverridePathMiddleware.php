@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Configuration;
 
-use League\Uri\Uri;
+use League\Uri\Contracts\UriInterface;
 use phpDocumentor\Dsn;
 use phpDocumentor\Path;
 use phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory;
@@ -30,7 +30,7 @@ use function getcwd;
  * This configuration middleware is responsible for finding the path where these overrides are, and adding this to the
  * Twig Environment Factory so that it can be added as a template source once the Twig Environment is created.
  */
-final class ProvideTemplateOverridePathMiddleware
+final class ProvideTemplateOverridePathMiddleware implements MiddlewareInterface
 {
     public const PATH_TO_TEMPLATE_OVERRIDES = '.phpdoc/template';
 
@@ -43,11 +43,11 @@ final class ProvideTemplateOverridePathMiddleware
     }
 
     /**
-     * @param array<string, array<string, array<mixed>>> $configuration
+     * @param array<string, array<string, array<string, mixed>>> $configuration
      *
-     * @return array<string, array<string, array<mixed>>>
+     * @return array<string, array<string, array<string, mixed>>>
      */
-    public function __invoke(array $configuration, ?Uri $pathOfConfigFile) : array
+    public function __invoke(array $configuration, ?UriInterface $pathOfConfigFile = null) : array
     {
         $path = $this->normalizePath($pathOfConfigFile, new Path(self::PATH_TO_TEMPLATE_OVERRIDES));
         if (file_exists((string) $path)) {
@@ -57,7 +57,7 @@ final class ProvideTemplateOverridePathMiddleware
         return $configuration;
     }
 
-    private function normalizePath(?Uri $uri, Path $path) : Path
+    private function normalizePath(?UriInterface $uri, Path $path) : Path
     {
         if ($uri === null) {
             return new Path(getcwd() . '/' . $path);
