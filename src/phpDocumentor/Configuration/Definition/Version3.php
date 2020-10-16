@@ -230,7 +230,7 @@ final class Version3 implements ConfigurationInterface, Normalizable
                         ->fixXmlConfig('path')
                         ->children()
                         ->scalarNode('dsn')->defaultValue('.')->end()
-                        ->append($this->paths([]))
+                        ->append($this->paths())
                         ->end()
                     ->end()
                     ->booleanNode('validate')
