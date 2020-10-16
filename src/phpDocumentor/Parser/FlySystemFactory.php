@@ -21,7 +21,7 @@ use League\Flysystem\Filesystem;
 use League\Flysystem\MountManager;
 use LogicException;
 use phpDocumentor\Dsn;
-use function assert;
+use Webmozart\Assert\Assert;
 use function hash;
 use function in_array;
 use function sprintf;
@@ -55,7 +55,7 @@ class FlySystemFactory implements FileSystemFactory
 
         $filesystem->addPlugin(new Finder());
 
-        assert($filesystem instanceof Filesystem);
+        Assert::isInstanceOf($filesystem, Filesystem::class);
 
         return $filesystem;
     }

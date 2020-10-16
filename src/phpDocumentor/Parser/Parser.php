@@ -22,7 +22,7 @@ use phpDocumentor\Reflection\ProjectFactory;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Symfony\Component\Stopwatch\Stopwatch;
-use function assert;
+use Webmozart\Assert\Assert;
 use function count;
 use function ini_get;
 use function round;
@@ -216,7 +216,7 @@ class Parser
         $this->startTimingTheParsePhase();
 
         $event = PreParsingEvent::createInstance($this);
-        assert($event instanceof PreParsingEvent);
+        Assert::isInstanceOf($event, PreParsingEvent::class);
         Dispatcher::getInstance()
             ->dispatch(
                 $event->setFileCount(count($files)),

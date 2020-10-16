@@ -18,8 +18,8 @@ use phpDocumentor\Guides\RestructuredText\Formats\Format;
 use phpDocumentor\Guides\RestructuredText\NodeFactory\NodeFactory;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
 use RuntimeException;
+use Webmozart\Assert\Assert;
 use function array_merge;
-use function assert;
 use function sprintf;
 
 class Parser implements ParserInterface
@@ -69,7 +69,7 @@ class Parser implements ParserInterface
         $this->references = $references;
         $this->eventManager = $eventManager;
         $this->nodeFactory = $nodeFactory;
-        assert($configuration->getFormat() instanceof Format);
+        Assert::isInstanceOf($configuration->getFormat(), Format::class);
         $this->format = $configuration->getFormat();
 
         $this->initDirectives($directives);
