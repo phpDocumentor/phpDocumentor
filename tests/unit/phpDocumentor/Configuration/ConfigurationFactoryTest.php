@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Configuration;
 
+use League\Uri\Contracts\UriInterface;
 use League\Uri\Uri;
 use org\bovigo\vfs\vfsStream;
 use phpDocumentor\Configuration\Exception\InvalidConfigPathException;
@@ -53,8 +54,12 @@ final class ConfigurationFactoryTest extends TestCase
      */
     public function testCreatingTheDefaultConfigurationDoesNotApplyAnyMiddleware() : void
     {
-        $middleware = static function (array $values) {
-            return $values + ['anotherExample'];
+        $middleware = new class implements MiddlewareInterface
+        {
+            public function __invoke(array $values, ?UriInterface $uri = null) : array
+            {
+                return $values + ['anotherExample'];
+            }
         };
 
         $configuration = ['exampleConfig'];
@@ -159,8 +164,12 @@ final class ConfigurationFactoryTest extends TestCase
      */
     public function testCreatingAConfigurationUsingTheGivenUriAppliesAnyMiddleware() : void
     {
-        $middleware = static function (array $values) {
-            return $values + ['anotherExample'];
+        $middleware = new class implements MiddlewareInterface
+        {
+            public function __invoke(array $values, ?UriInterface $uri = null) : array
+            {
+                return $values + ['anotherExample'];
+            }
         };
 
         // using __FILE__ so that it passes the file does not exist scenario

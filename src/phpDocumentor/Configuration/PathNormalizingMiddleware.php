@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Configuration;
 
-use League\Uri\Uri;
+use League\Uri\Contracts\UriInterface;
 use phpDocumentor\Dsn;
 use phpDocumentor\Path;
 use function ltrim;
@@ -21,14 +21,14 @@ use function rtrim;
 use function strpos;
 use function substr;
 
-final class PathNormalizingMiddleware
+final class PathNormalizingMiddleware implements MiddlewareInterface
 {
     /**
      * @param array<string, array<string, array<string, mixed>>> $configuration
      *
      * @return array<string, array<string, array<string, mixed>>>
      */
-    public function __invoke(array $configuration, ?Uri $uri) : array
+    public function __invoke(array $configuration, ?UriInterface $uri = null) : array
     {
         $configuration = $this->makeDsnRelativeToConfig($configuration, $uri);
 
@@ -58,7 +58,7 @@ final class PathNormalizingMiddleware
      *
      * @return array<string, array<string, array<string, mixed>>>
      */
-    private function makeDsnRelativeToConfig(array $configuration, ?Uri $uri) : array
+    private function makeDsnRelativeToConfig(array $configuration, ?UriInterface $uri) : array
     {
         if ($uri === null) {
             return $configuration;
@@ -139,7 +139,7 @@ final class PathNormalizingMiddleware
         return $path;
     }
 
-    public function normalizeCachePath(?Uri $uri, Path $cachePath) : Path
+    public function normalizeCachePath(?UriInterface $uri, Path $cachePath) : Path
     {
         if ($cachePath::isAbsolutePath((string) $cachePath)) {
             return $cachePath;
