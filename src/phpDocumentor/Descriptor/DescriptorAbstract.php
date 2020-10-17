@@ -17,6 +17,7 @@ use phpDocumentor\Descriptor\Filter\Filterable;
 use phpDocumentor\Descriptor\Tag\AuthorDescriptor;
 use phpDocumentor\Descriptor\Validation\Error;
 use phpDocumentor\Reflection\Fqsen;
+use function lcfirst;
 use function strpos;
 use function strtolower;
 use function substr;
@@ -407,7 +408,7 @@ abstract class DescriptorAbstract implements Filterable
         }
 
         $tagName = substr($name, 3);
-        $tagName[0] = strtolower($tagName[0]); // lowercase the first letter
+        $tagName = lcfirst($tagName);
 
         return $this->getTags()->fetch($tagName, new Collection());
     }
