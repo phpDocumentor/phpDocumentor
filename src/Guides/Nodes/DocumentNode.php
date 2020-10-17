@@ -177,16 +177,16 @@ class DocumentNode extends Node
     public function addCss(string $css) : void
     {
         $environment = $this->environment;
-        $css = $environment->relativeUrl($css);
+        $relativeCss = $environment->relativeUrl($css);
 
-        if ($css === null) {
+        if ($relativeCss === null) {
             throw new Exception(sprintf('Could not get relative url for css %s', $css));
         }
 
         $this->addHeaderNode(
             $environment->getNodeFactory()->createRawNode(
-                static function () use ($environment, $css) {
-                    return $environment->getRenderer()->render('stylesheet-link.html.twig', ['css' => $css]);
+                static function () use ($environment, $relativeCss) {
+                    return $environment->getRenderer()->render('stylesheet-link.html.twig', ['css' => $relativeCss]);
                 }
             )
         );
@@ -195,16 +195,16 @@ class DocumentNode extends Node
     public function addJs(string $js) : void
     {
         $environment = $this->environment;
-        $js = $environment->relativeUrl($js);
+        $relativeJs = $environment->relativeUrl($js);
 
-        if ($js === null) {
+        if ($relativeJs === null) {
             throw new Exception(sprintf('Could not get relative url for js %s', $js));
         }
 
         $this->addHeaderNode(
             $environment->getNodeFactory()->createRawNode(
-                static function () use ($environment, $js) {
-                    return $environment->getRenderer()->render('javascript.html.twig', ['js' => $js]);
+                static function () use ($environment, $relativeJs) {
+                    return $environment->getRenderer()->render('javascript.html.twig', ['js' => $relativeJs]);
                 }
             )
         );
@@ -213,16 +213,16 @@ class DocumentNode extends Node
     public function addFavicon(string $url = '/favicon.ico') : void
     {
         $environment = $this->environment;
-        $url = $environment->relativeUrl($url);
+        $relativeUrl = $environment->relativeUrl($url);
 
-        if ($url === null) {
+        if ($relativeUrl === null) {
             throw new Exception(sprintf('Could not get relative url for favicon %s', $url));
         }
 
         $this->addHeaderNode(
             $environment->getNodeFactory()->createRawNode(
-                static function () use ($environment, $url) {
-                    return $environment->getRenderer()->render('favicon.html.twig', ['url' => $url]);
+                static function () use ($environment, $relativeUrl) {
+                    return $environment->getRenderer()->render('favicon.html.twig', ['url' => $relativeUrl]);
                 }
             )
         );
