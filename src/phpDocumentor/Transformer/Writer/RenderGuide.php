@@ -15,6 +15,7 @@ namespace phpDocumentor\Transformer\Writer;
 
 use League\Tactician\CommandBus;
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
+use phpDocumentor\Descriptor\GuideSetDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\VersionDescriptor;
 use phpDocumentor\Dsn;
@@ -62,6 +63,10 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
         /** @var VersionDescriptor $version */
         foreach ($project->getVersions() as $version) {
             foreach ($version->getDocumentationSets() as $documentationSet) {
+                if (!$documentationSet instanceof GuideSetDescriptor) {
+                    continue;
+                }
+
                 $this->renderDocumentationSet($documentationSet, $project, $transformation);
             }
         }

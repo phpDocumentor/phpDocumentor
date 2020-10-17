@@ -18,11 +18,11 @@ final class VersionDescriptor
     /** @var string */
     private $number;
 
-    /** @var Collection<GuideSetDescriptor> */
+    /** @var Collection<DocumentationSetDescriptor> */
     private $documentationSets;
 
     /**
-     * @param Collection<GuideSetDescriptor> $documentationSets
+     * @param Collection<DocumentationSetDescriptor> $documentationSets
      */
     public function __construct(string $number, Collection $documentationSets)
     {
@@ -36,7 +36,7 @@ final class VersionDescriptor
     }
 
     /**
-     * @return Collection<GuideSetDescriptor>
+     * @return Collection<DocumentationSetDescriptor>
      */
     public function getDocumentationSets() : Collection
     {
