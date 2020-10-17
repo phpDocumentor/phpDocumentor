@@ -35,7 +35,7 @@ final class PreTransformationEvent extends Event
 
     public static function create(object $subject, Transformation $transformation) : self
     {
-        return new static($subject, $transformation);
+        return new self($subject, $transformation);
     }
 
     public function getTransformation() : Transformation

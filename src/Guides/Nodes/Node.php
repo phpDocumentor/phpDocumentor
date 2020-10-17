@@ -132,7 +132,7 @@ abstract class Node
             return '';
         }
 
-        if ($this->value instanceof Node) {
+        if ($this->value instanceof self) {
             return $this->value->getValueString();
         }
 

@@ -24,7 +24,7 @@ final class AutoloaderLocator
 {
     public static function autoload() : ClassLoader
     {
-        return require static::findVendorPath() . '/autoload.php';
+        return require self::findVendorPath() . '/autoload.php';
     }
 
     /**
@@ -64,8 +64,8 @@ final class AutoloaderLocator
             $vendorDir = $vendorFolderWhenInstalledWithComposer;
         } else {
             // Repository cloned via git
-            $vendorDir = $baseDir . '/../../' . static::getCustomVendorPathFromComposer(
-                $baseDir . '/../../' . static::findComposerConfigurationPath()
+            $vendorDir = $baseDir . '/../../' . self::getCustomVendorPathFromComposer(
+                $baseDir . '/../../' . self::findComposerConfigurationPath()
             );
         }
 
