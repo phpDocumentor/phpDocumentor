@@ -65,6 +65,9 @@
     "ocramius/package-versions": {
         "version": "1.3.0"
     },
+    "ocramius/proxy-manager": {
+        "version": "2.2.3"
+    },
     "php": {
         "version": "7.2.5"
     },
@@ -206,6 +209,9 @@
     "symfony/process": {
         "version": "v5.0.0"
     },
+    "symfony/proxy-manager-bridge": {
+        "version": "v5.0.11"
+    },
     "symfony/routing": {
         "version": "4.0",
         "recipe": {
@@ -235,5 +241,11 @@
     },
     "webmozart/assert": {
         "version": "1.2.0"
+    },
+    "zendframework/zend-code": {
+        "version": "3.4.1"
+    },
+    "zendframework/zend-eventmanager": {
+        "version": "3.2.1"
     }
 }
