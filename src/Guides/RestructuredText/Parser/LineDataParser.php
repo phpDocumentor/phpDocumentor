@@ -81,8 +81,6 @@ class LineDataParser
         }
 
         if (preg_match('/^(\s+):(.+):(\s*)$/mUsi', $line, $match) > 0) {
-            $value = trim($match[3]);
-
             return new DirectiveOption($match[2], true);
         }
 
@@ -105,7 +103,6 @@ class LineDataParser
     public function parseListLine(string $line) : ?ListLine
     {
         $depth = 0;
-        $i = 0;
 
         for ($i = 0; $i < strlen($line); $i++) {
             $char = $line[$i];

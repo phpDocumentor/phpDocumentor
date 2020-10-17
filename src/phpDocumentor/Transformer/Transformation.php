@@ -24,16 +24,16 @@ class Transformation
     private $writer;
 
     /** @var string the location where the output should be sent to; the exact function differs per writer. */
-    private $artifact = '';
+    private $artifact;
 
     /** @var string the location where input for a writer should come from; the exact function differs per writer. */
-    private $source = '';
+    private $source;
 
     /**
      * @var string a filter or other form of limitation on what information of the AST is used; the exact function
      *     differs per writer.
      */
-    private $query = '';
+    private $query;
 
     /** @var Transformer The object guiding the transformation process and having meta-data of it. */
     private $transformer;

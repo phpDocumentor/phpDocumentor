@@ -31,7 +31,7 @@ class Parser implements ParserInterface
     private $environment;
 
     /** @var Directive[] */
-    private $directives = [];
+    private $directives;
 
     /** @var string|null */
     private $filename = null;
@@ -43,7 +43,7 @@ class Parser implements ParserInterface
     private $nodeFactory;
 
     /** @var array<Reference> */
-    private $references = [];
+    private $references;
 
     /** @var EventManager */
     private $eventManager;

@@ -160,8 +160,6 @@ abstract class DescriptorAbstract implements Filterable
      * Sets a description for this element.
      *
      * @internal should not be called by any other class than the assamblers
-     *
-     * @param ?DocBlock\DescriptionDescriptor $description
      */
     public function setDescription(?DocBlock\DescriptionDescriptor $description) : void
     {

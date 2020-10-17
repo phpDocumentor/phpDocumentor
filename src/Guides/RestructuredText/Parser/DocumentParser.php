@@ -44,7 +44,7 @@ class DocumentParser
     private $eventManager;
 
     /** @var Directive[] */
-    private $directives = [];
+    private $directives;
 
     /** @var DocumentNode */
     private $document;
@@ -349,8 +349,6 @@ class DocumentParser
                 break;
 
             case State::COMMENT:
-                $isComment = false;
-
                 if (!$this->lineChecker->isComment($line) && (trim($line) === '' || $line[0] !== ' ')) {
                     $this->setState(State::BEGIN);
 

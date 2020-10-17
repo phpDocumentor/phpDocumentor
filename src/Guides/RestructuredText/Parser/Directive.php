@@ -16,7 +16,7 @@ class Directive
     private $data;
 
     /** @var mixed[] */
-    private $options = [];
+    private $options;
 
     /**
      * @param mixed[] $options

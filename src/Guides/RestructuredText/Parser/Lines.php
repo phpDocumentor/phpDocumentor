@@ -12,7 +12,7 @@ use Iterator;
 class Lines implements Iterator
 {
     /** @var string[] */
-    private $lines = [];
+    private $lines;
 
     /** @var int */
     private $position = 0;

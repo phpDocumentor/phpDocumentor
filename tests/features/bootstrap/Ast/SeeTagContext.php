@@ -79,7 +79,6 @@ final class SeeTagContext extends BaseContext implements Context
     }
 
     /**
-     * @param string $reference
      * @param SeeDescriptor[] $seeTags
      * @throws Exception
      */

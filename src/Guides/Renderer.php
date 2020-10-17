@@ -46,7 +46,7 @@ final class Renderer
     }
 
     /**
-     * @param array<mixed> $context
+     * @param array<string, mixed> $context
      */
     public function render(string $template, array $context = []) : string
     {

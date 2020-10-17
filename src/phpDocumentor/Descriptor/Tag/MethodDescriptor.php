@@ -68,9 +68,6 @@ class MethodDescriptor extends TagDescriptor
         return $this->arguments;
     }
 
-    /**
-     * @param ?ReturnDescriptor $response
-     */
     public function setResponse(?ReturnDescriptor $response) : void
     {
         $this->response = $response;

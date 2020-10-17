@@ -320,7 +320,6 @@ class ApiContext extends BaseContext implements Context
 
     /**
      * @param string $className
-     * @return ClassDescriptor
      * @throws \Exception
      */
     private function findClassByName($className) : ClassDescriptor
