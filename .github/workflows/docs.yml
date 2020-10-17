@@ -7,8 +7,25 @@ jobs:
   docs:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
-      - name: Build
+      - uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@master
+        with:
+          php-version: ${{ env.defaultPHPVersion }}
+          extensions: ${{ env.extensions }}
+          ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
+          tools: pecl
+
+      - name: Install Composer dependencies
+        run: |
+          composer install --no-progress --prefer-dist --optimize-autoloader
+
+      - name: Generate Documentation
+        run: |
+          ./bin/phpdoc --setting="guides.enabled=true" --force -v
+
+      - name: Build Container
         uses: elgohr/Publish-Docker-Github-Action@master
         env:
           VERSION: '3.0'
@@ -21,6 +38,7 @@ jobs:
           buildargs: VERSION
           tags: '3.0'
         id: docs_build
+
       - name: 'deploy'
         uses: jaapio/keelsh-deploy@1.0.0
         with:

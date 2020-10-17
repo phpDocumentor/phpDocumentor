@@ -7,7 +7,7 @@
 >
     <title>phpDocumentor</title>
     <paths>
-        <output>build/api</output>
+        <output>docs/.build</output>
     </paths>
     <version number="3.0.0">
         <folder>latest</folder>
@@ -31,7 +31,7 @@
             <source dsn=".">
                 <path>docs</path>
             </source>
-            <output>dox</output>
+            <output>guide</output>
         </guide>
     </version>
     <template name="default"/>
