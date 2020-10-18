@@ -17,18 +17,17 @@ use phpDocumentor\Descriptor\Filter\Filterable;
 
 final class NullDescriptor implements Filterable
 {
-
-    public function getName(): string
+    public function getName() : string
     {
         return '';
     }
 
-    public function getDescription(): ?DocBlock\DescriptionDescriptor
+    public function getDescription() : ?DocBlock\DescriptionDescriptor
     {
         return null;
     }
 
-    public function setErrors(Collection $errors): void
+    public function setErrors(Collection $errors) : void
     {
     }
 }

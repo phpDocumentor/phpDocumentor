@@ -43,8 +43,8 @@ class MethodAssemblerTest extends TestCase
     protected function setUp() : void
     {
         $this->builderMock = $this->prophesize(ProjectDescriptorBuilder::class);
-        $this->builderMock  ->buildDescriptor(ProphecyArgument::any(), ProphecyArgument::any())
-                            ->willReturn(new NullDescriptor());
+        $this->builderMock->buildDescriptor(ProphecyArgument::any(), ProphecyArgument::any())
+                          ->willReturn(new NullDescriptor());
 
         $this->argumentAssemblerMock = $this->prophesize(ArgumentAssembler::class);
         $this->argumentAssemblerMock->getBuilder()->shouldBeCalledOnce()->willReturn(null);

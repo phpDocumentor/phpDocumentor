@@ -39,9 +39,9 @@ final class PropertyAssemblerTest extends TestCase
     protected function setUp() : void
     {
         $this->builderMock = $this->prophesize(ProjectDescriptorBuilder::class);
-        $this->builderMock  ->buildDescriptor(Argument::any(), Argument::any())
-                            ->shouldBeCalled()
-                            ->willReturn(new NullDescriptor());
+        $this->builderMock->buildDescriptor(Argument::any(), Argument::any())
+                          ->shouldBeCalled()
+                          ->willReturn(new NullDescriptor());
 
         $this->fixture = new PropertyAssembler();
         $this->fixture->setBuilder($this->builderMock->reveal());
