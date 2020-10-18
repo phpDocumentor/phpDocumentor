@@ -28,7 +28,7 @@ final class WriterInitializationEvent extends EventAbstract
      */
     public static function createInstance(object $subject) : EventAbstract
     {
-        return new static($subject);
+        return new self($subject);
     }
 
     /**
