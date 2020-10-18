@@ -55,6 +55,8 @@ final class Version3Test extends TestCase
         $expected['paths']['cache'] = new Path($expected['paths']['cache']);
         $expected['versions']['1.0.0']['api'] = $expected['versions']['1.0.0']['apis'];
         unset($expected['versions']['1.0.0']['apis']);
+        $expected['versions']['1.0.0']['api'][0]['ignore-tags']
+            = $expected['versions']['1.0.0']['api'][0]['ignore-tags']['ignore_tags'];
         $expected['versions']['1.0.0']['api'][0]['extensions']
             = $expected['versions']['1.0.0']['api'][0]['extensions']['extensions'];
         $expected['versions']['1.0.0']['api'][0]['markers']
@@ -167,7 +169,7 @@ final class Version3Test extends TestCase
                             'include-source' => true,
                             'validate' => false,
                             'markers' => ['markers' => ['TODO', 'FIXME']],
-                            'ignore-tags' => [],
+                            'ignore-tags' => ['ignore_tags' => []],
                             'output' => '.',
                         ],
                     ],

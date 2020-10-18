@@ -45,9 +45,6 @@ class Parser
     /** @var string[] which markers (i.e. TODO or FIXME) to collect */
     private $markers = ['TODO', 'FIXME'];
 
-    /** @var string[] which tags to ignore */
-    private $ignoredTags = [];
-
     /** @var string target location's root path */
     private $path = '';
 
@@ -124,26 +121,6 @@ class Parser
     public function getMarkers() : array
     {
         return $this->markers;
-    }
-
-    /**
-     * Sets a list of tags to ignore.
-     *
-     * @param string[] $ignoredTags A list of tags to ignore.
-     */
-    public function setIgnoredTags(array $ignoredTags) : void
-    {
-        $this->ignoredTags = $ignoredTags;
-    }
-
-    /**
-     * Returns the list of ignored tags.
-     *
-     * @return string[]
-     */
-    public function getIgnoredTags() : array
-    {
-        return $this->ignoredTags;
     }
 
     /**

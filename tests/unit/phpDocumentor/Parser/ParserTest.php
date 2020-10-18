@@ -60,23 +60,6 @@ final class ParserTest extends TestCase
     }
 
     /**
-     * @covers ::getIgnoredTags
-     * @covers ::setIgnoredTags
-     */
-    public function testSetAndGetIgnoredTags() : void
-    {
-        $parser = new Parser(
-            $this->prophesize(ProjectFactory::class)->reveal(),
-            $this->prophesize(Stopwatch::class)->reveal(),
-            new NullLogger()
-        );
-        $this->assertEquals([], $parser->getIgnoredTags());
-
-        $parser->setIgnoredTags(['param']);
-        $this->assertEquals(['param'], $parser->getIgnoredTags());
-    }
-
-    /**
      * @covers ::setEncoding
      * @covers ::getEncoding
      */

@@ -13,14 +13,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Filter;
 
-use phpDocumentor\Descriptor\ConstantDescriptor;
-use phpDocumentor\Descriptor\FunctionDescriptor;
-use phpDocumentor\Descriptor\InterfaceDescriptor;
-use phpDocumentor\Descriptor\MethodDescriptor;
-use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
-use phpDocumentor\Descriptor\PropertyDescriptor;
-use phpDocumentor\Descriptor\TraitDescriptor;
-use function get_class;
+use League\Pipeline\InterruptibleProcessor;
+use League\Pipeline\Pipeline;
 
 /**
  * Filter used to manipulate a descriptor after being build.
@@ -30,48 +24,24 @@ use function get_class;
  */
 class Filter
 {
-    /** @var int default priority for a filter in the series of filters. */
-    public const DEFAULT_PRIORITY = 1000;
-
-    /** @var ClassFactory */
-    protected $factory;
+    /** @var Pipeline */
+    private $pipeline;
 
     /**
-     * Constructs the filter and attaches the factory to it.
+     * Constructs the filter pipeline.
+     *
+     * Filters are allowed to return null when a elements needs to be removed. Therefor a
+     * default InterruptibleProcessor processor is applied which prevents the errors in these situations.
+     *
+     * @param iterable<FilterInterface> $filters
      */
-    public function __construct(ClassFactory $factory)
+    public function __construct(iterable $filters)
     {
-        $this->factory = $factory;
-    }
+        $nullInteruption = new InterruptibleProcessor(static function (?Filterable $value) {
+            return $value !== null;
+        });
 
-    public function attachDefaults(ProjectDescriptorBuilder $descriptorBuilder) : void
-    {
-        $stripOnVisibility       = new StripOnVisibility($descriptorBuilder);
-        $filtersOnAllDescriptors = [
-            new StripInternal($descriptorBuilder),
-            new StripIgnore($descriptorBuilder),
-        ];
-
-        foreach ($filtersOnAllDescriptors as $filter) {
-            $this->attach(ConstantDescriptor::class, $filter);
-            $this->attach(FunctionDescriptor::class, $filter);
-            $this->attach(InterfaceDescriptor::class, $filter);
-            $this->attach(TraitDescriptor::class, $filter);
-            $this->attach(PropertyDescriptor::class, $filter);
-            $this->attach(MethodDescriptor::class, $filter);
-        }
-
-        $this->attach(PropertyDescriptor::class, $stripOnVisibility);
-        $this->attach(MethodDescriptor::class, $stripOnVisibility);
-        $this->attach(ConstantDescriptor::class, $stripOnVisibility);
-    }
-
-    /**
-     * Attaches a filter to a specific FQCN.
-     */
-    public function attach(string $fqcn, FilterInterface $filter) : void
-    {
-        $this->factory->attachTo($fqcn, $filter);
+        $this->pipeline = new Pipeline($nullInteruption, ...$filters);
     }
 
     /**
@@ -85,8 +55,6 @@ class Filter
      */
     public function filter(Filterable $descriptor) : ?Filterable
     {
-        $chain = $this->factory->getChainFor(get_class($descriptor));
-
-        return $chain($descriptor);
+        return $this->pipeline->process($descriptor);
     }
 }

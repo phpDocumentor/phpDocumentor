@@ -68,12 +68,4 @@ final class StripIgnoreTest extends TestCase
 
         $this->assertEquals($descriptor->reveal(), $this->fixture->__invoke($descriptor->reveal()));
     }
-
-    /**
-     * @covers ::__invoke
-     */
-    public function testNullIsReturnedIfThereIsNoDescriptor() : void
-    {
-        $this->assertNull($this->fixture->__invoke(null));
-    }
 }

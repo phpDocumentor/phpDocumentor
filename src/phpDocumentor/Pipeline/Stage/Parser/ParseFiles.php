@@ -52,10 +52,10 @@ final class ParseFiles
         $builder->setVisibility($apiConfig);
         $builder->setMarkers($apiConfig['markers']);
         $builder->setIncludeSource($apiConfig['include-source']);
+        $builder->setIgnoredTags($apiConfig['ignore-tags']);
         $this->reEncodingMiddleware->withEncoding($apiConfig['encoding']);
 
         $this->parser->setMarkers($apiConfig['markers']);
-        $this->parser->setIgnoredTags($apiConfig['ignore-tags']);
         $this->parser->setValidate($apiConfig['validate']);
         $this->parser->setDefaultPackageName($apiConfig['default-package-name']);
 

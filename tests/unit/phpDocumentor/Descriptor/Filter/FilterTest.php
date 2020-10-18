@@ -13,10 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Filter;
 
-use League\Pipeline\Pipeline;
 use PHPUnit\Framework\TestCase;
-use Prophecy\Prophecy\ObjectProphecy;
-use function get_class;
 
 /**
  * Tests the functionality for the Filter class.
@@ -26,39 +23,6 @@ use function get_class;
  */
 final class FilterTest extends TestCase
 {
-    public const FQCN = 'SomeFilterClass';
-
-    /** @var ClassFactory|ObjectProphecy */
-    protected $classFactoryMock;
-
-    /** @var FilterInterface|ObjectProphecy */
-    protected $filterChainMock;
-
-    /** @var Filter $fixture */
-    protected $fixture;
-
-    /**
-     * Creates a new (empty) fixture object.
-     */
-    protected function setUp() : void
-    {
-        $this->classFactoryMock = $this->prophesize(ClassFactory::class);
-        $this->filterChainMock = $this->prophesize(Pipeline::class);
-        $this->fixture = new Filter($this->classFactoryMock->reveal());
-    }
-
-    /**
-     * @covers ::attach
-     */
-    public function testAttach() : void
-    {
-        $filterMock = $this->prophesize(FilterInterface::class);
-
-        $this->classFactoryMock->attachTo(self::FQCN, $filterMock->reveal())->shouldBeCalled();
-
-        $this->fixture->attach(self::FQCN, $filterMock->reveal());
-    }
-
     /**
      * @covers ::filter
      */
@@ -66,16 +30,17 @@ final class FilterTest extends TestCase
     {
         $filterableMock = $this->prophesize(Filterable::class)->reveal();
 
-        $this->filterChainMock
-            ->__invoke($filterableMock)
-            ->shouldBeCalled()
-            ->willReturn($filterableMock);
+        $filterStep = new class implements FilterInterface {
+            public function __invoke(Filterable $filterable) : ?Filterable
+            {
+                return $filterable;
+            }
+        };
 
-        $this->classFactoryMock
-            ->getChainFor(get_class($filterableMock))
-            ->shouldBeCalled()
-            ->willReturn($this->filterChainMock->reveal());
+        $filter = new Filter(
+            [$filterStep]
+        );
 
-        $this->assertSame($filterableMock, $this->fixture->filter($filterableMock));
+        $this->assertSame($filterableMock, $filter->filter($filterableMock));
     }
 }

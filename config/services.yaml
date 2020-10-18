@@ -65,6 +65,9 @@ services:
       phpDocumentor\Descriptor\ProjectDescriptor\WithCustomSettings:
         tags: ['app.with_custom_settings']
 
+      phpDocumentor\Descriptor\Filter\FilterInterface:
+        tags: ['phpdoc.descriptor.filter']
+
     ###################################################################################
     ## Autoloading definitions for whole namespaces ###################################
     ###################################################################################
@@ -120,8 +123,9 @@ services:
         factory: ['phpDocumentor\Descriptor\Builder\AssemblerFactory', 'createDefault']
 
     phpDocumentor\Descriptor\Filter\Filter:
-        calls:
-            - [attachDefaults]
+        lazy: true
+        arguments:
+          - !tagged_iterator 'phpdoc.descriptor.filter'
 
     phpDocumentor\Configuration\Configuration:
         factory: ['@phpDocumentor\Configuration\ConfigurationFactory', 'fromDefaultLocations']
