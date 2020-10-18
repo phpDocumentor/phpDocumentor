@@ -44,18 +44,7 @@ final class InitializeBuilderFromConfig
         $builder->setCustomSettings($configuration['phpdocumentor']['settings'] ?? []);
 
         foreach (($configuration['phpdocumentor']['versions'] ?? []) as $version) {
-            $documentationSets = Collection::fromClassString(DocumentationSetDescriptor::class);
-
-            foreach ($version['guides'] ?? [] as $guide) {
-                $documentationSets->add(new GuideSetDescriptor('', $guide['source'], $guide['output']));
-            }
-
-            foreach ($version['api'] ?? [] as $api) {
-                $documentationSets->add(new ApiSetDescriptor('', $api['source'], $api['output']));
-            }
-
-            $version = new VersionDescriptor($version['number'], $documentationSets);
-            $builder->addVersion($version);
+            $builder->addVersion(VersionDescriptor::fromConfiguration($version));
         }
 
         return $payload;

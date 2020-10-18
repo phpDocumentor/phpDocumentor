@@ -102,14 +102,15 @@ final class Environment
         Configuration $configuration,
         Renderer $renderer,
         LoggerInterface $logger,
-        FilesystemInterface $origin
+        FilesystemInterface $origin,
+        Metas $metas
     ) {
         $this->configuration = $configuration;
         $this->renderer = $renderer;
         $this->origin = $origin;
         $this->logger = $logger;
         $this->urlGenerator = new UrlGenerator();
-        $this->metas = new Metas();
+        $this->metas = $metas;
 
         $this->reset();
     }

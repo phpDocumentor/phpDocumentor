@@ -76,8 +76,13 @@ final class ParseFileHandler
         $directory = $command->getDirectory();
         $file = $command->getFile();
 
-        $environment = new Environment($configuration, $this->renderer, $this->logger, $command->getOrigin());
-        $environment->setMetas($this->metas);
+        $environment = new Environment(
+            $configuration,
+            $this->renderer,
+            $this->logger,
+            $command->getOrigin(),
+            $this->metas
+        );
         $environment->setCurrentFileName($file);
         $environment->setCurrentDirectory($directory);
 

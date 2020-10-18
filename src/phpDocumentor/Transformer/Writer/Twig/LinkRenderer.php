@@ -64,6 +64,9 @@ final class LinkRenderer
     /** @var ProjectDescriptor|null */
     private $project;
 
+    /** @var bool */
+    private $convertToRootPath = true;
+
     public function __construct(Router $router)
     {
         $this->router = $router;
@@ -103,6 +106,14 @@ final class LinkRenderer
         return $result;
     }
 
+    public function doNotConvertUrlsToRootPath(): self
+    {
+        $result = clone $this;
+        $result->convertToRootPath = false;
+
+        return $result;
+    }
+
     /**
      * Returns the target directory relative to the Project's Root.
      */
@@ -121,7 +132,7 @@ final class LinkRenderer
             return $uri;
         }
 
-        return $this->convertToRootPath($uri);
+        return $this->convertToRootPath($this->withoutLeadingSlash($uri));
     }
 
     /**
@@ -178,7 +189,7 @@ final class LinkRenderer
      *       namespace reference. As such we assume a class as that is the
      *       most common occurrence.
      */
-    public function convertToRootPath(string $pathOrReference) : ?string
+    public function convertToRootPath(string $pathOrReference, bool $force = false) : ?string
     {
         if ($this->isReferenceToFqsen($pathOrReference)) {
             try {
@@ -192,7 +203,12 @@ final class LinkRenderer
             return null;
         }
 
-        return $this->getPathPrefixBasedOnDepth() . $this->withoutLeadingSlash($pathOrReference);
+        $withoutLeadingSlash = $this->withoutLeadingSlash($pathOrReference);
+        if ($this->convertToRootPath || $force) {
+            return $this->getPathPrefixBasedOnDepth() . $withoutLeadingSlash;
+        }
+
+        return $withoutLeadingSlash;
     }
 
     /**

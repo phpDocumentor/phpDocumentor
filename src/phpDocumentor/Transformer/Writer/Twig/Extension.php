@@ -79,7 +79,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
     public function __construct(
         ProjectDescriptor $project,
         MarkdownConverterInterface $markdownConverter,
-        ?LinkRenderer $routeRenderer = null
+        LinkRenderer $routeRenderer
     ) {
         $this->data = $project;
         $this->routeRenderer = $routeRenderer->withProject($project);
@@ -97,7 +97,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
      */
     public function setDestination(string $destination) : void
     {
-        $this->routeRenderer->setDestination($destination);
+        $this->routeRenderer = $this->routeRenderer->withDestination($destination);
     }
 
     /**
@@ -129,8 +129,32 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
     public function getFunctions() : array
     {
         return [
-            new TwigFunction('path', [$this->routeRenderer, 'convertToRootPath']),
-            new TwigFunction('link', [$this->routeRenderer, 'link']),
+            new TwigFunction(
+                'renderBaseUrlHeader',
+                function () : string {
+                    $this->routeRenderer = $this->routeRenderer->doNotConvertUrlsToRootPath();
+
+                    $absolutePath = $this->routeRenderer->convertToRootPath('/', true);
+                    if (!$absolutePath) {
+                        return '';
+                    }
+
+                    return '<base href="' . $absolutePath . '">';
+                },
+                ['is_safe' => ['all']]
+            ),
+            new TwigFunction(
+                'path',
+                function(string $url): string {
+                    return $this->routeRenderer->convertToRootPath($url, true);
+                }
+            ),
+            new TwigFunction(
+                'link',
+                function ($element): string {
+                    return $this->routeRenderer->link($element);
+                }
+            ),
             new TwigFunction(
                 'breadcrumbs',
                 static function (DescriptorAbstract $baseNode) {
@@ -241,11 +265,8 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             ),
             'route' => new TwigFilter(
                 'route',
-                static function (
-                    $value,
-                    string $presentation = LinkRenderer::PRESENTATION_NORMAL
-                ) use ($routeRenderer) {
-                    return $routeRenderer->render($value, $presentation);
+                function ($value, string $presentation = LinkRenderer::PRESENTATION_NORMAL) {
+                    return $this->routeRenderer->render($value, $presentation);
                 },
                 ['is_safe' => ['all']]
             ),
@@ -316,7 +337,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             ),
             'description' => new TwigFilter(
                 'description',
-                static function (?DescriptionDescriptor $description) use ($routeRenderer) {
+                function (?DescriptionDescriptor $description) {
                     if ($description === null || $description->getBodyTemplate() === '') {
                         return '';
                     }
@@ -324,7 +345,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
                     $tagStrings = [];
                     foreach ($description->getTags() as $tag) {
                         if ($tag instanceof SeeDescriptor) {
-                            $tagStrings[] = $routeRenderer->render(
+                            $tagStrings[] = $this->routeRenderer->render(
                                 $tag->getReference(),
                                 LinkRenderer::PRESENTATION_CLASS_SHORT
                             );
