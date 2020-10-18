@@ -116,8 +116,8 @@ class ProjectDescriptorBuilder
      *
      * @return AssemblerInterface<Descriptor, TInput>|null
      *
-     * @template TInput as object
-     * @template TDescriptor as Descriptor
+     * @template TInput of object
+     * @template TDescriptor of Descriptor
      */
     public function getAssembler(object $data, string $type) : ?AssemblerInterface
     {
@@ -131,7 +131,7 @@ class ProjectDescriptorBuilder
      *
      * @return TDescriptor|NullDescriptor
      *
-     * @template TDescriptor as Filterable
+     * @template TDescriptor of Filterable
      */
     public function filter(Filterable $descriptor) : Filterable
     {
@@ -146,7 +146,7 @@ class ProjectDescriptorBuilder
      *
      * @return TDescriptor|NullDescriptor
      *
-     * @template TDescriptor as Descriptor
+     * @template TDescriptor of Descriptor
      */
     protected function filterDescriptor(Descriptor $descriptor) : Descriptor
     {
@@ -189,7 +189,7 @@ class ProjectDescriptorBuilder
         foreach ($project->getNamespaces() as $namespace) {
             $namespaceDescriptor = $this->buildDescriptor($namespace, NamespaceDescriptor::class);
 
-            if ($descriptor instanceof NullDescriptor) {
+            if ($namespaceDescriptor instanceof NullDescriptor) {
                 continue;
             }
 
