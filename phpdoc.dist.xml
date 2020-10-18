@@ -25,6 +25,13 @@
             <extensions>
                 <extension>php</extension>
             </extensions>
+            <ignore-tags>
+                <ignore-tag>template</ignore-tag>
+                <ignore-tag>template-extends</ignore-tag>
+                <ignore-tag>template-implements</ignore-tag>
+                <ignore-tag>extends</ignore-tag>
+                <ignore-tag>implements</ignore-tag>
+            </ignore-tags>
             <default-package-name>phpDocumentor</default-package-name>
         </api>
         <guide>
