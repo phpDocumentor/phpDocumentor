@@ -134,6 +134,8 @@ final class Version3 implements ConfigurationInterface, Normalizable
                         new Path($path);
                 }
 
+                $configuration['versions'][$versionNumber]['api'][$key]['ignore-tags'] =
+                    $configuration['versions'][$versionNumber]['api'][$key]['ignore-tags']['ignore_tags'];
                 $configuration['versions'][$versionNumber]['api'][$key]['extensions'] =
                     $configuration['versions'][$versionNumber]['api'][$key]['extensions']['extensions'];
                 $configuration['versions'][$versionNumber]['api'][$key]['markers'] =
@@ -208,9 +210,15 @@ final class Version3 implements ConfigurationInterface, Normalizable
                         ->end()
                     ->end()
                     ->arrayNode('ignore-tags')
-                        ->defaultValue([])
-                        ->beforeNormalization()->castToArray()->end()
-                        ->prototype('scalar')->end()
+                        ->addDefaultsIfNotSet()
+                        ->fixXmlConfig('ignore_tag')
+                        ->children()
+                            ->arrayNode('ignore_tags')
+                                ->defaultValue([])
+                                ->beforeNormalization()->castToArray()->end()
+                                ->prototype('scalar')->end()
+                            ->end()
+                        ->end()
                     ->end()
                     ->arrayNode('extensions')
                         ->addDefaultsIfNotSet()
