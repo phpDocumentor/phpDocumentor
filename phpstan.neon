@@ -24,6 +24,9 @@ parameters:
     # PHPStan doesn't support @template D of T but will still complain if we put a D in a Collection of T !
     - '#Parameter \#2 \$value of method phpDocumentor\\Descriptor\\Collection<T>::offsetSet\(\) expects T, D given\.#'
 
+    # phpstan/phpstan/issues/3951
+    - '#Method phpDocumentor\\Descriptor\\ProjectDescriptorBuilder::filterDescriptor\(\) should return TDescriptor of phpDocumentor\\Descriptor\\Descriptor\|null but returns phpDocumentor\\Descriptor\\Filter\\Filterable\|null\.#'
+
     # PHPStan doesn't support inheritance of TDescriptor
     - '#Parameter \#2 \$assembler of method phpDocumentor\\Descriptor\\Builder\\AssemblerFactory<TInput of object,TDescriptor of phpDocumentor\\Descriptor\\Descriptor>::(register|registerFallback)\(\) expects phpDocumentor\\Descriptor\\Builder\\AssemblerInterface.* given\.#'
     -
