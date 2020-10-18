@@ -83,14 +83,14 @@ class ProjectDescriptorBuilder
      * @param TInput $data
      * @param class-string<TDescriptor> $type
      *
-     * @return TDescriptor|null
+     * @return TDescriptor|NullDescriptor
      *
      * @throws InvalidArgumentException If no Assembler could be found that matches the given data.
      *
      * @template TInput of object
      * @template TDescriptor of Descriptor
      */
-    public function buildDescriptor(object $data, string $type) : ?Descriptor
+    public function buildDescriptor(object $data, string $type) : Descriptor
     {
         $assembler = $this->getAssembler($data, $type);
         if (!$assembler) {
@@ -105,10 +105,7 @@ class ProjectDescriptorBuilder
         }
 
         // create Descriptor and populate with the provided data
-        /** @var TDescriptor|null $descriptor */
-        $descriptor = $this->filterDescriptor($assembler->create($data));
-
-        return $descriptor;
+        return $this->filterDescriptor($assembler->create($data));
     }
 
     /**
@@ -132,11 +129,11 @@ class ProjectDescriptorBuilder
      *
      * @param TDescriptor $descriptor
      *
-     * @return TDescriptor|null
+     * @return TDescriptor|NullDescriptor
      *
      * @template TDescriptor as Filterable
      */
-    public function filter(Filterable $descriptor) : ?Filterable
+    public function filter(Filterable $descriptor) : Filterable
     {
         return $this->filter->filter($descriptor);
     }
@@ -147,18 +144,17 @@ class ProjectDescriptorBuilder
      *
      * @param TDescriptor $descriptor
      *
-     * @return TDescriptor|null
+     * @return TDescriptor|NullDescriptor
      *
      * @template TDescriptor as Descriptor
      */
-    protected function filterDescriptor(Descriptor $descriptor) : ?Descriptor
+    protected function filterDescriptor(Descriptor $descriptor) : Descriptor
     {
         if (!$descriptor instanceof Filterable) {
             return $descriptor;
         }
 
         // filter the descriptor; this may result in the descriptor being removed!
-        /** @var TDescriptor|null $descriptor */
         $descriptor = $this->filter($descriptor);
 
         return $descriptor;
@@ -181,7 +177,7 @@ class ProjectDescriptorBuilder
 
         foreach ($project->getFiles() as $file) {
             $descriptor = $this->buildDescriptor($file, FileDescriptor::class);
-            if ($descriptor === null) {
+            if ($descriptor instanceof NullDescriptor) {
                 continue;
             }
 
@@ -191,9 +187,15 @@ class ProjectDescriptorBuilder
         $namespaces = $this->getProjectDescriptor()->getIndexes()->fetch('namespaces', new Collection());
 
         foreach ($project->getNamespaces() as $namespace) {
+            $namespaceDescriptor = $this->buildDescriptor($namespace, NamespaceDescriptor::class);
+
+            if ($descriptor instanceof NullDescriptor) {
+                continue;
+            }
+
             $namespaces->set(
                 (string) $namespace->getFqsen(),
-                $this->buildDescriptor($namespace, NamespaceDescriptor::class)
+                $namespaceDescriptor
             );
         }
     }

@@ -15,6 +15,7 @@ namespace phpDocumentor\Descriptor\Filter;
 
 use League\Pipeline\InterruptibleProcessor;
 use League\Pipeline\Pipeline;
+use phpDocumentor\Descriptor\NullDescriptor;
 
 /**
  * Filter used to manipulate a descriptor after being build.
@@ -49,12 +50,14 @@ class Filter
      *
      * @param TDescriptor $descriptor
      *
-     * @return TDescriptor|null
+     * @return TDescriptor|NullDescriptor
      *
      * @template TDescriptor as Filterable
      */
-    public function filter(Filterable $descriptor) : ?Filterable
+    public function filter(Filterable $descriptor) : Filterable
     {
-        return $this->pipeline->process($descriptor);
+        $result = $this->pipeline->process($descriptor);
+
+        return $result ?? new NullDescriptor();
     }
 }

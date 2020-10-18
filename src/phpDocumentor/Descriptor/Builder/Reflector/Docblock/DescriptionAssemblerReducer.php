@@ -8,6 +8,7 @@ use phpDocumentor\Descriptor\Builder\AssemblerAbstract;
 use phpDocumentor\Descriptor\Builder\AssemblerReducer;
 use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
+use phpDocumentor\Descriptor\NullDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tag;
 
@@ -49,7 +50,13 @@ final class DescriptionAssemblerReducer extends AssemblerAbstract implements Ass
     {
         $result = [];
         foreach ($tags as $tag) {
-            $result[] = $this->builder->buildDescriptor($tag, TagDescriptor::class);
+            $tagDescriptor = $this->builder->buildDescriptor($tag, TagDescriptor::class);
+
+            if ($tagDescriptor instanceof NullDescriptor) {
+                continue;
+            }
+
+            $result[] = $tagDescriptor;
         }
 
         return $result;

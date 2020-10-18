@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use phpDocumentor\Descriptor\MethodDescriptor;
+use phpDocumentor\Descriptor\NullDescriptor;
 use phpDocumentor\Descriptor\PropertyDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Reflection\Php\Method;
@@ -65,7 +66,8 @@ class TraitAssembler extends AssemblerAbstract
     {
         foreach ($properties as $property) {
             $propertyDescriptor = $this->getBuilder()->buildDescriptor($property, PropertyDescriptor::class);
-            if ($propertyDescriptor === null) {
+
+            if ($propertyDescriptor instanceof NullDescriptor) {
                 continue;
             }
 
@@ -83,7 +85,8 @@ class TraitAssembler extends AssemblerAbstract
     {
         foreach ($methods as $method) {
             $methodDescriptor = $this->getBuilder()->buildDescriptor($method, MethodDescriptor::class);
-            if ($methodDescriptor === null) {
+
+            if ($methodDescriptor instanceof NullDescriptor) {
                 continue;
             }
 

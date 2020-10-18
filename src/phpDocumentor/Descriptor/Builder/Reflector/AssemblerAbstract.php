@@ -18,6 +18,7 @@ use phpDocumentor\Descriptor\Builder\AssemblerReducer;
 use phpDocumentor\Descriptor\Builder\Reflector\Docblock\DescriptionAssemblerReducer;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
+use phpDocumentor\Descriptor\NullDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\Type;
@@ -91,8 +92,7 @@ abstract class AssemblerAbstract extends BaseAssembler
         foreach ($docBlock->getTags() as $tag) {
             $tagDescriptor = $this->builder->buildDescriptor($tag, TagDescriptor::class);
 
-            // allow filtering of tags
-            if (!$tagDescriptor) {
+            if ($tagDescriptor instanceof NullDescriptor) {
                 continue;
             }
 

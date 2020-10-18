@@ -17,6 +17,7 @@ use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\ConstantDescriptor;
 use phpDocumentor\Descriptor\MethodDescriptor;
+use phpDocumentor\Descriptor\NullDescriptor;
 use phpDocumentor\Descriptor\PropertyDescriptor;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Php\Class_;
@@ -80,7 +81,8 @@ class ClassAssembler extends AssemblerAbstract
     {
         foreach ($constants as $constant) {
             $constantDescriptor = $this->getBuilder()->buildDescriptor($constant, ConstantDescriptor::class);
-            if ($constantDescriptor === null) {
+
+            if ($constantDescriptor instanceof NullDescriptor) {
                 continue;
             }
 
@@ -98,7 +100,8 @@ class ClassAssembler extends AssemblerAbstract
     {
         foreach ($properties as $property) {
             $propertyDescriptor = $this->getBuilder()->buildDescriptor($property, PropertyDescriptor::class);
-            if ($propertyDescriptor === null) {
+
+            if ($propertyDescriptor instanceof NullDescriptor) {
                 continue;
             }
 
@@ -116,7 +119,8 @@ class ClassAssembler extends AssemblerAbstract
     {
         foreach ($methods as $method) {
             $methodDescriptor = $this->getBuilder()->buildDescriptor($method, MethodDescriptor::class);
-            if ($methodDescriptor === null) {
+
+            if ($methodDescriptor instanceof NullDescriptor) {
                 continue;
             }
 

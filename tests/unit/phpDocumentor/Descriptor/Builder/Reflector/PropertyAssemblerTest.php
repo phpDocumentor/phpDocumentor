@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
+use phpDocumentor\Descriptor\NullDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\DocBlock\Description;
@@ -38,7 +39,7 @@ final class PropertyAssemblerTest extends TestCase
     protected function setUp() : void
     {
         $this->builderMock = $this->prophesize(ProjectDescriptorBuilder::class);
-        $this->builderMock->buildDescriptor(Argument::any(), Argument::any())->shouldBeCalled()->willReturn(null);
+        $this->builderMock->buildDescriptor(Argument::any(), Argument::any())->shouldBeCalled()->willReturn(new NullDescriptor());
 
         $this->fixture = new PropertyAssembler();
         $this->fixture->setBuilder($this->builderMock->reveal());

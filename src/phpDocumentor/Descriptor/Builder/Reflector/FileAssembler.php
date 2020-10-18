@@ -20,6 +20,7 @@ use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\FunctionDescriptor;
 use phpDocumentor\Descriptor\InterfaceDescriptor;
+use phpDocumentor\Descriptor\NullDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Reflection\DocBlock\Description;
@@ -81,7 +82,8 @@ class FileAssembler extends AssemblerAbstract
     {
         foreach ($constants as $constant) {
             $constantDescriptor = $this->getBuilder()->buildDescriptor($constant, ConstantDescriptor::class);
-            if ($constantDescriptor === null) {
+
+            if ($constantDescriptor instanceof NullDescriptor) {
                 continue;
             }
 
@@ -107,7 +109,8 @@ class FileAssembler extends AssemblerAbstract
     {
         foreach ($functions as $function) {
             $functionDescriptor = $this->getBuilder()->buildDescriptor($function, FunctionDescriptor::class);
-            if ($functionDescriptor === null) {
+
+            if ($functionDescriptor instanceof NullDescriptor) {
                 continue;
             }
 
@@ -133,7 +136,8 @@ class FileAssembler extends AssemblerAbstract
     {
         foreach ($classes as $class) {
             $classDescriptor = $this->getBuilder()->buildDescriptor($class, ClassDescriptor::class);
-            if ($classDescriptor === null) {
+
+            if ($classDescriptor instanceof NullDescriptor) {
                 continue;
             }
 
@@ -161,7 +165,8 @@ class FileAssembler extends AssemblerAbstract
     {
         foreach ($interfaces as $interface) {
             $interfaceDescriptor = $this->getBuilder()->buildDescriptor($interface, InterfaceDescriptor::class);
-            if ($interfaceDescriptor === null) {
+
+            if ($interfaceDescriptor instanceof NullDescriptor) {
                 continue;
             }
 
@@ -187,7 +192,8 @@ class FileAssembler extends AssemblerAbstract
     {
         foreach ($traits as $trait) {
             $traitDescriptor = $this->getBuilder()->buildDescriptor($trait, TraitDescriptor::class);
-            if ($traitDescriptor === null) {
+
+            if ($traitDescriptor instanceof NullDescriptor) {
                 continue;
             }
 
