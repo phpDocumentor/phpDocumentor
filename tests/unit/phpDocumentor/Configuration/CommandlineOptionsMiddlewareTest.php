@@ -402,6 +402,26 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
         );
     }
 
+    /**
+     * @covers ::__invoke
+     */
+    public function testItShouldOverwriteTheIgnoredTagsOfTheDefaultConfiguration() : void
+    {
+        $configuration = $this->givenAConfiguration();
+        $tags = ['return', 'param'];
+        $middleware = $this->createCommandlineOptionsMiddleware(['ignore-tags' => $tags]);
+
+        $newConfiguration = $middleware($configuration);
+
+        $this->assertEquals(
+            $tags,
+            current($newConfiguration['phpdocumentor']['versions'])['api'][0]['ignore-tags']
+        );
+    }
+
+    /**
+     * @param array $options
+     */
     private function createCommandlineOptionsMiddleware(
         array $options,
         $workingDir = '/'

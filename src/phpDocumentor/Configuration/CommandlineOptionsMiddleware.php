@@ -74,6 +74,7 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
             $version = $this->setFilesInPath($version);
             $version = $this->registerExtensions($version);
             $version = $this->overwriteIgnoredPaths($version);
+            $version = $this->overwriteIgnoredTags($version);
             $version = $this->overwriteMarkers($version);
             $version = $this->overwriteIncludeSource($version);
             $version = $this->overwriteVisibility($version);
@@ -280,6 +281,26 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
             },
             $this->options['ignore']
         );
+
+        return $version;
+    }
+
+    /**
+     * @param array<string, array<int, array<string, mixed>>> $version
+     *
+     * @return array<string, array<int, array<string, mixed>>>
+     */
+    private function overwriteIgnoredTags(array $version) : array
+    {
+        if (!isset($this->options['ignore-tags']) || !$this->options['ignore-tags']) {
+            return $version;
+        }
+
+        if (!isset($version['api'])) {
+            $version['api'] = $this->createDefaultApiSettings();
+        }
+
+        $version['api'][0]['ignore-tags'] = $this->options['ignore-tags'];
 
         return $version;
     }
