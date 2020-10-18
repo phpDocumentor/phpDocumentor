@@ -48,6 +48,9 @@ class ProjectDescriptorBuilder
     /** @var iterable<WithCustomSettings> */
     private $servicesWithCustomSettings;
 
+    /** @var string[] */
+    private $ignoredTags = [];
+
     /**
      * @param iterable<WithCustomSettings> $servicesWithCustomSettings
      */
@@ -283,5 +286,17 @@ class ProjectDescriptorBuilder
     public function addVersion(VersionDescriptor $version) : void
     {
         $this->project->getVersions()->add($version);
+    }
+
+    /** @param string[] $ignoredTags */
+    public function setIgnoredTags(array $ignoredTags) : void
+    {
+        $this->ignoredTags = $ignoredTags;
+    }
+
+    /** @return string[] */
+    public function getIgnoredTags() : array
+    {
+        return $this->ignoredTags;
     }
 }
