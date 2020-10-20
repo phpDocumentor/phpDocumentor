@@ -106,7 +106,7 @@ final class LinkRenderer
         return $result;
     }
 
-    public function doNotConvertUrlsToRootPath(): self
+    public function doNotConvertUrlsToRootPath() : self
     {
         $result = clone $this;
         $result->convertToRootPath = false;

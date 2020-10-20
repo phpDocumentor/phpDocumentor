@@ -145,19 +145,19 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             ),
             new TwigFunction(
                 'path',
-                function(string $url): string {
+                function (string $url) : string {
                     return $this->routeRenderer->convertToRootPath($url);
                 }
             ),
             new TwigFunction(
                 'link',
-                function (object $element): string {
+                function (object $element) : string {
                     return $this->routeRenderer->link($element);
                 }
             ),
             new TwigFunction(
                 'breadcrumbs',
-                static function (DescriptorAbstract $baseNode) {
+                static function (DescriptorAbstract $baseNode) : array {
                     $results = [];
                     $namespace = $baseNode instanceof NamespaceDescriptor
                         ? $baseNode->getParent()
@@ -172,7 +172,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             ),
             new TwigFunction(
                 'packages',
-                static function (DescriptorAbstract $baseNode) {
+                static function (DescriptorAbstract $baseNode) : array {
                     $results = [];
                     $package = $baseNode instanceof PackageDescriptor
                         ? $baseNode->getParent()
@@ -185,54 +185,63 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
                     return $results;
                 }
             ),
-            new TwigFunction('methods', static function (DescriptorAbstract $descriptor) : Collection {
-                $methods = new Collection();
-                if (method_exists($descriptor, 'getInheritedMethods')) {
-                    $methods = $methods->merge($descriptor->getInheritedMethods());
-                }
+            new TwigFunction(
+                'methods',
+                static function (DescriptorAbstract $descriptor) : Collection {
+                    $methods = new Collection();
+                    if (method_exists($descriptor, 'getInheritedMethods')) {
+                        $methods = $methods->merge($descriptor->getInheritedMethods());
+                    }
 
-                if (method_exists($descriptor, 'getMagicMethods')) {
-                    $methods = $methods->merge($descriptor->getMagicMethods());
-                }
+                    if (method_exists($descriptor, 'getMagicMethods')) {
+                        $methods = $methods->merge($descriptor->getMagicMethods());
+                    }
 
-                if (method_exists($descriptor, 'getMethods')) {
-                    $methods = $methods->merge($descriptor->getMethods());
-                }
+                    if (method_exists($descriptor, 'getMethods')) {
+                        $methods = $methods->merge($descriptor->getMethods());
+                    }
 
-                return $methods;
-            }),
-            new TwigFunction('properties', static function (DescriptorAbstract $descriptor) : Collection {
-                $properties = new Collection();
-                if (method_exists($descriptor, 'getInheritedProperties')) {
-                    $properties = $properties->merge($descriptor->getInheritedProperties());
+                    return $methods;
                 }
+            ),
+            new TwigFunction(
+                'properties',
+                static function (DescriptorAbstract $descriptor) : Collection {
+                    $properties = new Collection();
+                    if (method_exists($descriptor, 'getInheritedProperties')) {
+                        $properties = $properties->merge($descriptor->getInheritedProperties());
+                    }
 
-                if (method_exists($descriptor, 'getMagicProperties')) {
-                    $properties = $properties->merge($descriptor->getMagicProperties());
+                    if (method_exists($descriptor, 'getMagicProperties')) {
+                        $properties = $properties->merge($descriptor->getMagicProperties());
+                    }
+
+                    if (method_exists($descriptor, 'getProperties')) {
+                        $properties = $properties->merge($descriptor->getProperties());
+                    }
+
+                    return $properties;
                 }
+            ),
+            new TwigFunction(
+                'constants',
+                static function (DescriptorAbstract $descriptor) : Collection {
+                    $constants = new Collection();
+                    if (method_exists($descriptor, 'getInheritedConstants')) {
+                        $constants = $constants->merge($descriptor->getInheritedConstants());
+                    }
 
-                if (method_exists($descriptor, 'getProperties')) {
-                    $properties = $properties->merge($descriptor->getProperties());
+                    if (method_exists($descriptor, 'getMagicConstants')) {
+                        $constants = $constants->merge($descriptor->getMagicConstants());
+                    }
+
+                    if (method_exists($descriptor, 'getConstants')) {
+                        $constants = $constants->merge($descriptor->getConstants());
+                    }
+
+                    return $constants;
                 }
-
-                return $properties;
-            }),
-            new TwigFunction('constants', static function (DescriptorAbstract $descriptor) : Collection {
-                $constants = new Collection();
-                if (method_exists($descriptor, 'getInheritedConstants')) {
-                    $constants = $constants->merge($descriptor->getInheritedConstants());
-                }
-
-                if (method_exists($descriptor, 'getMagicConstants')) {
-                    $constants = $constants->merge($descriptor->getMagicConstants());
-                }
-
-                if (method_exists($descriptor, 'getConstants')) {
-                    $constants = $constants->merge($descriptor->getConstants());
-                }
-
-                return $constants;
-            }),
+            ),
         ];
     }
 

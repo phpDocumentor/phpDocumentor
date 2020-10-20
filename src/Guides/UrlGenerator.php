@@ -15,7 +15,6 @@ namespace phpDocumentor\Guides;
 
 use League\Uri\UriInfo;
 use phpDocumentor\UriFactory;
-use Symfony\Component\Routing\Generator\UrlGenerator as SymfonyUrlGenerator;
 use function array_pop;
 use function explode;
 use function implode;
@@ -50,11 +49,7 @@ final class UrlGenerator
     }
 
     /**
-     * Resolves a relative URL using directories.
-     *
-     * For instance, if the current directory is "path/to/something", and you want to get the relative URL to
-     * "path/to/something/else.html", the result will be else.html. Else, "../" will be added to go to the upper
-     * directory.
+     * Resolves a relative URL/
      */
     public function relativeUrl(string $basePath, string $url) : ?string
     {
@@ -68,7 +63,7 @@ final class UrlGenerator
             return $url;
         }
 
-        return SymfonyUrlGenerator::getRelativePath($basePath, ltrim($url, '/'));
+        return ltrim($url, '/');
     }
 
     /**

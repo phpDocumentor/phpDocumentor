@@ -13,11 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Pipeline\Stage;
 
-use phpDocumentor\Descriptor\ApiSetDescriptor;
-use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\Collection as PartialsCollection;
-use phpDocumentor\Descriptor\DocumentationSetDescriptor;
-use phpDocumentor\Descriptor\GuideSetDescriptor;
 use phpDocumentor\Descriptor\VersionDescriptor;
 
 final class InitializeBuilderFromConfig

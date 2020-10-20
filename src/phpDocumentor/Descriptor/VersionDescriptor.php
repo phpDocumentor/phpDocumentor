@@ -43,7 +43,10 @@ final class VersionDescriptor
         return $this->documentationSets;
     }
 
-    public static function fromConfiguration(array $config): self
+    /**
+     * @param array<mixed> $config
+     */
+    public static function fromConfiguration(array $config) : self
     {
         $documentationSets = Collection::fromClassString(DocumentationSetDescriptor::class);
 
