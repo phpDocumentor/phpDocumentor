@@ -48,7 +48,7 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
     /**
      * @param array<string, array<string, array<string, mixed>>> $configuration
      *
-     * @return array<string, array<string, array<string, mixed>>>
+     * @return array<string, array<string, array<int|string, array<mixed>|mixed>|false>>
      */
     public function __invoke(array $configuration, ?UriInterface $uri = null) : array
     {

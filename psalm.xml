@@ -4,7 +4,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns="https://getpsalm.org/schema/config"
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
-    errorLevel="7"
+    errorLevel="6"
 >
     <projectFiles>
         <directory name="src" />
@@ -68,5 +68,25 @@
             </errorLevel>
         </DeprecatedClass>
 
+        <InvalidReturnStatement>
+            <errorLevel type="suppress">
+                <!-- Discussed here #2271-->
+                <file name="src/phpDocumentor/Descriptor/ClassDescriptor.php"/>
+                <file name="src/phpDocumentor/Descriptor/PropertyDescriptor.php"/>
+                <!-- Linker & LinkRenderer works with a lot of types and transform each of them individually. They'll have to be refactored -->
+                <file name="src/phpDocumentor/Transformer/Writer/Twig/LinkRenderer.php"/>
+                <file name="src/phpDocumentor/Compiler/Linker/Linker.php"/>
+            </errorLevel>
+        </InvalidReturnStatement>
+
+        <InvalidReturnType>
+            <errorLevel type="suppress">
+                <!-- Discussed here #2271-->
+                <file name="src/phpDocumentor/Descriptor/PropertyDescriptor.php"/>
+                <!-- Linker & LinkRenderer works with a lot of types and transform each of them individually. They'll have to be refactored -->
+                <file name="src/phpDocumentor/Transformer/Writer/Twig/LinkRenderer.php"/>
+                <file name="src/phpDocumentor/Compiler/Linker/Linker.php"/>
+            </errorLevel>
+        </InvalidReturnType>
     </issueHandlers>
 </psalm>
