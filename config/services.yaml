@@ -246,6 +246,7 @@ services:
     League\CommonMark\Extension\DisallowedRawHtml\DisallowedRawHtmlExtension:
       tags: ['commonmark.extension']
 
+    League\CommonMark\MarkdownConverterInterface: '@League\CommonMark\CommonMarkConverter'
     League\CommonMark\CommonMarkConverter:
       factory: ['@phpDocumentor\Transformer\Writer\Twig\CommonMarkFactory', 'createConverter']
       arguments:
