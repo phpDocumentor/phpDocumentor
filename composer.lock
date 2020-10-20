@@ -3731,16 +3731,16 @@
         },
         {
             "name": "symfony/proxy-manager-bridge",
-            "version": "v5.0.11",
+            "version": "v5.1.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/proxy-manager-bridge.git",
-                "reference": "c9279782d3282fe69aff55dbe8d24939cac88f57"
+                "reference": "b36513c849ec303cf0a309beeebd43e32e894aae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/proxy-manager-bridge/zipball/c9279782d3282fe69aff55dbe8d24939cac88f57",
-                "reference": "c9279782d3282fe69aff55dbe8d24939cac88f57",
+                "url": "https://api.github.com/repos/symfony/proxy-manager-bridge/zipball/b36513c849ec303cf0a309beeebd43e32e894aae",
+                "reference": "b36513c849ec303cf0a309beeebd43e32e894aae",
                 "shasum": ""
             },
             "require": {
@@ -3757,7 +3757,7 @@
             "type": "symfony-bridge",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "5.0-dev"
+                    "dev-master": "5.1-dev"
                 }
             },
             "autoload": {
@@ -3798,7 +3798,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-05-20T17:38:26+00:00"
+            "time": "2020-09-02T16:23:27+00:00"
         },
         {
             "name": "symfony/routing",
