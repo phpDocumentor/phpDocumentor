@@ -4,20 +4,20 @@ Your First Set of Documentation
 Overview
 --------
 
-The goal of this tutorial is to introduce you in writing and subsequently generating effective documentation with
-phpDocumentor.
+The goal of this tutorial is to introduce you to writing and subsequently generating effective documentation
+with phpDocumentor.
 
 Writing a DocBlock
 ------------------
 
-A DocBlock is a piece of inline *documentation* in your source code that informs you what a class, method or other
-Structural Element its function is.
+A DocBlock is a piece of *documentation* in your source code that informs you what the function of
+a certain class, method or other *Structural Element* is.
 
 Which elements can be documented?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Before we discuss what a DocBlock looks like, let's first zoom into what you can document with them. phpDocumentor
-follows the PHPDoc definition and recognizes the following Structural Elements:
+Before we discuss what a DocBlock looks like, let's first zoom in on what you can document with them.
+PhpDocumentor follows the PHPDoc definition and recognizes the following *Structural Elements*:
 
 * Function_
 * Constant_
@@ -28,19 +28,19 @@ follows the PHPDoc definition and recognizes the following Structural Elements:
 * Property_
 * Method_
 
-In addition to the above the PHPDoc standard also supports DocBlocks for *Files* and include/require statements,
-even though PHP itself does not know this concept.
+In addition to the above, the PHPDoc standard also supports DocBlocks for *Files* and ``include``/``require``
+statements, even though PHP itself does not know this concept.
 
-Each of these elements can have exactly one DocBlock associated with it, which directly precedes it. No code or
-comments may be between a DocBlock and the start of an element's definition.
+Each of these elements can have exactly one DocBlock associated with it, which directly precedes it.
+No code or comments may be between a DocBlock and the start of an element's definition.
 
 What does a DocBlock look like?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-DocBlocks are always enclosed in a comment-type, called DocComment, that starts with ``/**`` and ends
-with ``*/``. Each line in between the opening and closing statement should start with an asterisk (``*``). Every
-DocBlock precedes exactly one Structural Element and all contents of the DocBlock apply to that
-associated element.
+DocBlocks are always enclosed in a particular comment-type, called *DocComment*. A DocComment starts
+with ``/**`` (opener) and ends with ``*/`` (closer). Each line in between the DocComment opener and
+its closer should start with an asterisk (``*``). Every DocBlock precedes exactly one *Structural Element*
+and all contents of the DocBlock apply to that associated element.
 
 For example:
 
@@ -58,10 +58,10 @@ For example:
 
    **File-level DocBlocks**
 
-   Quite often projects will want to document the license or function for an entire file instead of a single element.
-   This can be accomplished by having a DocBlock as the first element encountered in a file. It is important to note that
-   whenever another Structural Element directly follows the DocBlock that it is no longer recognized as a
-   File-level DocBlock but belonging to the subsequent element.
+   Quite often projects will also want to document the license or role for an entire file.
+   This can be accomplished by having a DocBlock as the first element encountered in a file.
+   It is important to note that whenever another *Structural Element* directly follows the DocBlock,
+   it is no longer recognized as a File-level DocBlock, but as belonging to the subsequent element.
 
    The following DocBlock is a File-level DocBlock:
 
@@ -79,7 +79,7 @@ For example:
       {
       }
 
-   However in the following example the DocBlock belongs to the class:
+   In contrast, in the following example the DocBlock belongs to the class:
 
    .. code-block:: php
 
@@ -96,22 +96,22 @@ DocBlocks are divided into the following three parts. Each of these parts is opt
 may not exist without a Summary.
 
 Summary
-  Sometimes called a short description, provides a brief introduction into the function of the associated element.
-  A Summary ends
-  in one of these situations:
+  The Summary, sometimes called a short description, provides a brief introduction into the function
+  of the associated element. A Summary ends when it encounters either of the below situations::
 
-    1. A dot is following by a line break, or
-    2. Two subsequent line breaks are encountered.
+    * a period ``.``, followed by a line break
+    * or a blank (comment) line.
 
 Description
-  Sometimes called the long description, can provide more information. Examples of additional information is a
-  description of a function's algorithm, a usage example or description how a class fits in the whole of the
-  application's architecture. The description ends when the first tag is encountered or when the DocBlock is closed.
+  The Description, sometimes called the long description, can provide more information. Examples of additional
+  information are: a description of a function's algorithm, a usage example or a description of how a class
+  fits in the whole of the application's architecture. The description ends when the first tag is encountered
+  on a new line or when the DocBlock is closed.
 
 Tags and Annotations
-  These provide a way to succinctly and uniformly provide meta-information about the associated element. This could,
-  for example, describe the type of information that is returned by a method or function. Each tag is preceded by an
-  at-sign (`@`) and starts on a new line.
+  These provide a way to succinctly and uniformly provide meta-information about the associated element.
+  Tags can, for example, describe the type of information that is returned by a method or function.
+  Each tag is preceded by an at-sign (``@``) and starts on a new line.
 
 Example
 ~~~~~~~
@@ -125,11 +125,12 @@ A DocBlock looks like this:
     /**
      * A summary informing the user what the associated element does.
      *
-     * A *description*, that can span multiple lines, to go _in-depth_ into the details of this element
-     * and to provide some background information or textual references.
+     * A *description*, that can span multiple lines, to go _in-depth_ into
+     * the details of this element and to provide some background information
+     * or textual references.
      *
-     * @param string $myArgument With a *description* of this argument, these may also
-     *    span multiple lines.
+     * @param string $myArgument With a *description* of this argument,
+     *                           these may also span multiple lines.
      *
      * @return void
      */
@@ -146,31 +147,32 @@ Line 3
   has an example of a Summary. This is, usually, a single line but may cover multiple lines as long as the end
   of the summary, as defined in the previous chapter, is not reached.
 
-Line 5 and 6
+Line 5, 6 and 7
   show an example of a Description, which may span multiple lines and can be formatted using the
-  Markdown_ markup language. Using Markdown_ you can make text bold, italic, add numbered lists and even provide code
-  examples.
+  Markdown_ markup language. Using Markdown_ you can make text **bold**, *italic*, add numbered lists
+  and even provide ``code`` examples.
 
-Line 8 and 11
-  show that you can include :doc:`tags<../references/phpdoc/tags/index>` with your DocBlocks to provide additional
-  information about the succeeding element.
-  In this example we declare that the argument ``$myArgument`` is of type string, with a description what this argument
-  represents, and we declare that the return value for this method is void, which means that there is no value returned.
+Line 9 and 12
+  show that you can include :doc:`tags<../references/phpdoc/tags/index>` in your DocBlocks to provide
+  additional information about the succeeding element.
+  In this example, we declare that the argument ``$myArgument`` is of type ``string``, with a description
+  what this argument represents, and we declare that the return value for this method is ``void``, which
+  means that no value will be returned.
 
-Line 12
-  shows the closing statement ``*/``, which is the same as that for a multiline comment (``/* .. */``).
+Line 13
+  shows the closing sequence ``*/``, which is the same as that for a multi-line comment (``/* .. */``).
 
-If you'd like to know more about what DocBlocks do for you, visit the chapter :doc:`../guides/docblocks` for more
-in-depth information.
+If you'd like to know more about what DocBlocks do for you, visit the chapter :doc:`../guides/docblocks`
+for more in-depth information.
 
 Running phpDocumentor
 ---------------------
 
-After you have :doc:`installed <installing>` phpDocumentor you can use the ``phpdoc`` command to generate
+After you have :doc:`installed<installing>` phpDocumentor you can use the ``phpdoc`` command to generate
 your documentation.
 
-In this document we expect that the phpdoc command is available; thus whenever we ask you to run a command
-it would be in the following form::
+Throughout this documentation we expect that the ``phpdoc`` command is available; thus whenever we ask you
+to run a command, it will be in the following form::
 
     $ phpdoc
 
@@ -195,18 +197,21 @@ For example::
 
     $ phpdoc -d ./src -t ./docs/api
 
-What the above example does is scan all files in the ``src`` directory and its subdirectories, perform an analysis and
-generate a website containing the documentation in the folder ``docs/api``. If you want you can even omit the ``-t``
-option, in which case the output will be written to a subfolder called ``output``.
+What the above example does, is scan all files in the ``src`` directory and its subdirectories, perform
+an analysis and generate a website containing the documentation in the folder ``docs/api``. If you want,
+you can omit the ``-t`` option, in which case the output will be written to a subfolder called ``output``.
 
-.. hint::
+Read more
+~~~~~~~~~
 
-   phpDocumentor features several templates_ with which you can change the appearance of your documentation. See the
-   chapter :doc:`changing-the-look-and-feel` for more information on how to switch between templates.
+PhpDocumentor features several templates_ with which you can change the appearance of your documentation.
+See the chapter :doc:`changing-the-look-and-feel` for more information on how to switch between templates.
 
-There are a lot more options to phpDocumentor and you can define them all in a :doc:`../references/configuration` file
-and include that in your project but that is out of scope for this tutorial. If you'd like to know more on running
-phpDocumentor; see the guide on :doc:`../guides/running-phpdocumentor` for more information.
+There are a lot more options to phpDocumentor. To maintain consistent documentation, it is good practice
+to define them all in a :doc:`../references/configuration` file and to include that in your project.
+
+If you'd like to know more on running phpDocumentor; see the guide on :doc:`../guides/running-phpdocumentor`
+for more information.
 
 .. _Function:       https://www.php.net/language.functions
 .. _Constant:       https://www.php.net/language.constants
