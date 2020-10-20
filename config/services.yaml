@@ -243,9 +243,14 @@ services:
 
     League\Flysystem\MountManager: ~
 
-    Parsedown:
-        class: Parsedown
-        factory: ['Parsedown', 'instance']
+    League\CommonMark\Extension\DisallowedRawHtml\DisallowedRawHtmlExtension:
+      tags: ['commonmark.extension']
+
+    League\CommonMark\CommonMarkConverter:
+      factory: ['@phpDocumentor\Transformer\Writer\Twig\CommonMarkFactory', 'createConverter']
+      arguments:
+        - !tagged 'commonmark.extension'
+
 
     ###################################################################################
     ## Writers ########################################################################

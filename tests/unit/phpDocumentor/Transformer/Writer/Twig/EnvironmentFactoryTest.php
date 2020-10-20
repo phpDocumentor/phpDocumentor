@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Writer\Twig;
 
+use League\CommonMark\MarkdownConverterInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\Guides\Metas;
@@ -41,10 +42,12 @@ final class EnvironmentFactoryTest extends TestCase
     protected function setUp() : void
     {
         $this->router = $this->prophesize(Router::class);
+        $markDownConverter = $this->prophesize(MarkdownConverterInterface::class);
 
         $this->factory = new EnvironmentFactory(
             new LinkRenderer($this->router->reveal()),
-            new TocExtension(new Metas())
+            new TocExtension(new Metas()),
+            $markDownConverter->reveal()
         );
     }
 

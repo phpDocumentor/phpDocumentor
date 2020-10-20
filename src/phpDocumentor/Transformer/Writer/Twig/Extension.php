@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Writer\Twig;
 
 use ArrayIterator;
-use Parsedown;
+use League\CommonMark\MarkdownConverterInterface;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\Descriptor\DescriptorAbstract;
@@ -68,6 +68,9 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
     /** @var LinkRenderer */
     private $routeRenderer;
 
+    /** @var MarkdownConverterInterface */
+    private $markdownConverter;
+
     /**
      * Registers the structure and transformation with this extension.
      *
@@ -75,10 +78,12 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
      */
     public function __construct(
         ProjectDescriptor $project,
+        MarkdownConverterInterface $markdownConverter,
         ?LinkRenderer $routeRenderer = null
     ) {
         $this->data = $project;
         $this->routeRenderer = $routeRenderer->withProject($project);
+        $this->markdownConverter = $markdownConverter;
     }
 
     /**
@@ -214,18 +219,16 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
      */
     public function getFilters() : array
     {
-        $parser = Parsedown::instance();
-        $parser->setSafeMode(true);
         $routeRenderer = $this->routeRenderer;
 
         return [
             'markdown' => new TwigFilter(
                 'markdown',
-                static function (?string $value) use ($parser) : string {
+                function (?string $value) : string {
                     return str_replace(
                         ['<pre>', '<code>'],
                         ['<pre class="prettyprint">', '<code class="prettyprint">'],
-                        $parser->text($value)
+                        $this->markdownConverter->convertToHtml($value)
                     );
                 },
                 ['is_safe' => ['all']]
