@@ -146,12 +146,12 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             new TwigFunction(
                 'path',
                 function(string $url): string {
-                    return $this->routeRenderer->convertToRootPath($url, true);
+                    return $this->routeRenderer->convertToRootPath($url);
                 }
             ),
             new TwigFunction(
                 'link',
-                function ($element): string {
+                function (object $element): string {
                     return $this->routeRenderer->link($element);
                 }
             ),
