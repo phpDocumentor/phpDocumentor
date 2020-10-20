@@ -1,7 +1,7 @@
 {% if isChild|default(false) == false %}
 <h2 class="phpdocumentor-sidebar__root-package">
 {% endif %}
-    <a href="{{ path(menuItem.path) }}">{{ menuItem.label }}</a>
+    <a href="{{ menuItem.path }}">{{ menuItem.label }}</a>
 {% if isChild|default(false) == false %}
 </h2>
 {% endif %}

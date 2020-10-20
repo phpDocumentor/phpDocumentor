@@ -42,4 +42,22 @@ final class VersionDescriptor
     {
         return $this->documentationSets;
     }
+
+    /**
+     * @param array<mixed> $config
+     */
+    public static function fromConfiguration(array $config) : self
+    {
+        $documentationSets = Collection::fromClassString(DocumentationSetDescriptor::class);
+
+        foreach ($config['guides'] ?? [] as $guide) {
+            $documentationSets->add(new GuideSetDescriptor('', $guide['source'], $guide['output']));
+        }
+
+        foreach ($config['api'] ?? [] as $api) {
+            $documentationSets->add(new ApiSetDescriptor('', $api['source'], $api['output']));
+        }
+
+        return new self($config['number'], $documentationSets);
+    }
 }
