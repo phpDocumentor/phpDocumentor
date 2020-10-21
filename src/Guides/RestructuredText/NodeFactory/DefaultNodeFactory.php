@@ -6,6 +6,7 @@ namespace phpDocumentor\Guides\RestructuredText\NodeFactory;
 
 use Doctrine\Common\EventManager;
 use InvalidArgumentException;
+use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Formats\Format;
 use phpDocumentor\Guides\Nodes\AnchorNode;
 use phpDocumentor\Guides\Nodes\BlockNode;
@@ -32,13 +33,10 @@ use phpDocumentor\Guides\Nodes\TableNode;
 use phpDocumentor\Guides\Nodes\TitleNode;
 use phpDocumentor\Guides\Nodes\TocNode;
 use phpDocumentor\Guides\Nodes\WrapperNode;
-use phpDocumentor\Guides\Environment;
-use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\RestructuredText\Event\PostNodeCreateEvent;
 use phpDocumentor\Guides\RestructuredText\Parser;
 use phpDocumentor\Guides\RestructuredText\Parser\DefinitionList;
 use phpDocumentor\Guides\RestructuredText\Parser\LineChecker;
-use phpDocumentor\Guides\TemplateRenderer;
 use function sprintf;
 
 class DefaultNodeFactory implements NodeFactory
@@ -58,6 +56,9 @@ class DefaultNodeFactory implements NodeFactory
         }
     }
 
+    /**
+     * @param array<string, string> $nodeRegistry
+     */
     public static function createFromRegistry(
         EventManager $eventManager,
         Format $format,
@@ -78,7 +79,7 @@ class DefaultNodeFactory implements NodeFactory
             );
         }
 
-        return new static($eventManager, ...$instantiators);
+        return new self($eventManager, ...$instantiators);
     }
 
     public function createDocumentNode(Environment $environment) : DocumentNode
@@ -171,8 +172,11 @@ class DefaultNodeFactory implements NodeFactory
         return $listNode;
     }
 
-    public function createTableNode(Parser\TableSeparatorLineConfig $separatorLineConfig, string $type, LineChecker $lineChecker) : TableNode
-    {
+    public function createTableNode(
+        Parser\TableSeparatorLineConfig $separatorLineConfig,
+        string $type,
+        LineChecker $lineChecker
+    ) : TableNode {
         /** @var TableNode $tableNode */
         $tableNode = $this->create(NodeTypes::TABLE, [$separatorLineConfig, $type, $lineChecker]);
 
@@ -198,6 +202,10 @@ class DefaultNodeFactory implements NodeFactory
         return $definitionListNode;
     }
 
+    /**
+     * @param string|callable $before
+     * @param string|callable $after
+     */
     public function createWrapperNode(?Node $node, $before = '', $after = '') : WrapperNode
     {
         /** @var WrapperNode $wrapperNode */
@@ -301,7 +309,7 @@ class DefaultNodeFactory implements NodeFactory
 
     private function getNodeInstantiator(string $type) : NodeInstantiator
     {
-        if (! isset($this->nodeInstantiators[$type])) {
+        if (!isset($this->nodeInstantiators[$type])) {
             throw new InvalidArgumentException(sprintf('Could not find node instantiator of type %s', $type));
         }
 

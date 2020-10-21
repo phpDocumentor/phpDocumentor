@@ -14,6 +14,10 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\References;
 
 use phpDocumentor\Guides\Environment;
+use function sprintf;
+use function str_replace;
+use function strrchr;
+use function substr;
 
 class NamespaceReference extends Reference
 {
@@ -31,9 +35,7 @@ class NamespaceReference extends Reference
             substr(strrchr($className, '\\'), 1),
             sprintf('%s/%s.html', '', str_replace('\\', '/', $className)),
             [],
-            [
-                'title' => $className,
-            ]
+            ['title' => $className]
         );
     }
 }

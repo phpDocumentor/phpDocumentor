@@ -24,12 +24,6 @@
     <filter>
         <whitelist>
             <directory suffix=".php">src/phpDocumentor</directory>
-            <exclude>
-                <directory suffix=".php">src/phpDocumentor/*/Messages</directory>
-                <directory suffix=".php">src/phpDocumentor/Guides</directory>
-                <directory suffix=".php">src/phpDocumentor/Pipeline/Stage/RenderGuide.php</directory>
-                <directory suffix=".php">src/phpDocumentor/Plugin/*/Tests</directory>
-            </exclude>
         </whitelist>
     </filter>
     <logging>

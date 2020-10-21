@@ -36,9 +36,9 @@ class SpanProcessor
     public function __construct(Environment $environment, string $span)
     {
         $this->environment = $environment;
-        $this->span        = $span;
-        $this->tokenId     = 0;
-        $this->prefix      = mt_rand() . '|' . time();
+        $this->span = $span;
+        $this->tokenId = 0;
+        $this->prefix = mt_rand() . '|' . time();
     }
 
     public function process() : string
@@ -67,7 +67,7 @@ class SpanProcessor
     }
 
     /**
-     * @param string[] $tokenData
+     * @param mixed[] $tokenData
      */
     private function addToken(string $type, string $id, array $tokenData) : void
     {
@@ -81,10 +81,14 @@ class SpanProcessor
             function (array $match) {
                 $id = $this->generateId();
 
-                $this->addToken(SpanToken::TYPE_LITERAL, $id, [
-                    'type' => 'literal',
-                    'text' => htmlspecialchars($match[1]),
-                ]);
+                $this->addToken(
+                    SpanToken::TYPE_LITERAL,
+                    $id,
+                    [
+                        'type' => 'literal',
+                        'text' => htmlspecialchars($match[1]),
+                    ]
+                );
 
                 return $id;
             },
@@ -95,9 +99,13 @@ class SpanProcessor
     private function replaceTitleLetters(string $span) : string
     {
         foreach ($this->environment->getTitleLetters() as $level => $letter) {
-            $span = preg_replace_callback('/\#\\' . $letter . '/mUsi', function (array $match) use ($level) {
-                return $this->environment->getNumber($level);
-            }, $span);
+            $span = preg_replace_callback(
+                '/\#\\' . $letter . '/mUsi',
+                function (array $match) use ($level) {
+                    return $this->environment->getNumber($level);
+                },
+                $span
+            );
         }
 
         return $span;
@@ -105,35 +113,43 @@ class SpanProcessor
 
     private function replaceReferences(string $span) : string
     {
-        return preg_replace_callback('/:([a-z0-9]+):`(.+)`/mUsi', function ($match) {
-            $section = $match[1];
+        return preg_replace_callback(
+            '/:([a-z0-9]+):`(.+)`/mUsi',
+            function ($match) {
+                $section = $match[1];
 
-            $url    = $match[2];
-            $id     = $this->generateId();
-            $anchor = null;
+                $url = $match[2];
+                $id = $this->generateId();
+                $anchor = null;
 
-            $text = null;
-            if (preg_match('/^(.+)<(.+)>$/mUsi', $url, $match) > 0) {
-                $text = $match[1];
-                $url  = $match[2];
-            }
+                $text = null;
+                if (preg_match('/^(.+)<(.+)>$/mUsi', $url, $match) > 0) {
+                    $text = $match[1];
+                    $url = $match[2];
+                }
 
-            if (preg_match('/^(.+)#(.+)$/mUsi', $url, $match) > 0) {
-                $url    = $match[1];
-                $anchor = $match[2];
-            }
+                if (preg_match('/^(.+)#(.+)$/mUsi', $url, $match) > 0) {
+                    $url = $match[1];
+                    $anchor = $match[2];
+                }
 
-            $this->addToken(SpanToken::TYPE_REFERENCE, $id, [
-                'section' => $section,
-                'url' => $url,
-                'text' => $text,
-                'anchor' => $anchor,
-            ]);
+                $this->addToken(
+                    SpanToken::TYPE_REFERENCE,
+                    $id,
+                    [
+                        'section' => $section,
+                        'url' => $url,
+                        'text' => $text,
+                        'anchor' => $anchor,
+                    ]
+                );
 
-            $this->environment->found($section, $url);
+                $this->environment->found($section, $url);
 
-            return $id;
-        }, $span);
+                return $id;
+            },
+            $span
+        );
     }
 
     private function replaceLinks(string $span) : string
@@ -177,7 +193,7 @@ class SpanProcessor
             // extract the url if the link was in this format: `test link <https://www.google.com>`_
             if (preg_match('/^(.+)[ \n]<(.+)>$/mUsi', $link, $m) > 0) {
                 $link = $m[1];
-                $url  = $m[2];
+                $url = $m[2];
 
                 $this->environment->setLink($link, $url);
             }
@@ -185,17 +201,21 @@ class SpanProcessor
             // extract the url if the link was in this format: `<https://www.google.com>`_
             if (preg_match('/^<(.+)>$/mUsi', $link, $m) > 0) {
                 $link = $m[1];
-                $url  = $m[1];
+                $url = $m[1];
 
                 $this->environment->setLink($link, $url);
             }
 
             $id = $this->generateId();
 
-            $this->addToken(SpanToken::TYPE_LINK, $id, [
-                'link' => $link,
-                'url' => $url,
-            ]);
+            $this->addToken(
+                SpanToken::TYPE_LINK,
+                $id,
+                [
+                    'link' => $link,
+                    'url' => $url,
+                ]
+            );
 
             return $prev . $id . $next;
         };
@@ -227,13 +247,17 @@ class SpanProcessor
 
         // Standalone hyperlink callback
         $standaloneHyperlinkCallback = function ($match, $scheme = '') {
-            $id  = $this->generateId();
+            $id = $this->generateId();
             $url = $match[1];
 
-            $this->addToken(SpanToken::TYPE_LINK, $id, [
-                'link' => $url,
-                'url' => $scheme . $url,
-            ]);
+            $this->addToken(
+                SpanToken::TYPE_LINK,
+                $id,
+                [
+                    'link' => $url,
+                    'url' => $scheme . $url,
+                ]
+            );
 
             return $id;
         };
@@ -258,13 +282,17 @@ class SpanProcessor
             . '])+)\]))/msi';
 
         $standaloneEmailAddressCallback = function (array $match) {
-            $id  = $this->generateId();
+            $id = $this->generateId();
             $url = $match[1];
 
-            $this->addToken(SpanToken::TYPE_LINK, $id, [
-                'link' => $url,
-                'url' => 'mailto:' . $url,
-            ]);
+            $this->addToken(
+                SpanToken::TYPE_LINK,
+                $id,
+                [
+                    'link' => $url,
+                    'url' => 'mailto:' . $url,
+                ]
+            );
 
             return $id;
         };

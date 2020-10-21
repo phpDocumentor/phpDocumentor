@@ -19,7 +19,7 @@ use function strtolower;
 final class Metas
 {
     /** @var Entry[] */
-    private $entries = [];
+    private $entries;
 
     /** @var string[] */
     private $parents = [];
@@ -53,9 +53,9 @@ final class Metas
 
     /**
      * @param string[][] $titles
-     * @param mixed[][]  $tocs
-     * @param string[]   $depends
-     * @param string[]   $links
+     * @param mixed[][] $tocs
+     * @param string[] $depends
+     * @param string[] $links
      */
     public function set(
         string $file,
@@ -71,7 +71,7 @@ final class Metas
             foreach ($toc as $child) {
                 $this->parents[$child] = $file;
 
-                if (! isset($this->entries[$child])) {
+                if (!isset($this->entries[$child])) {
                     continue;
                 }
 
@@ -90,7 +90,7 @@ final class Metas
             $mtime
         );
 
-        if (! isset($this->parents[$file])) {
+        if (!isset($this->parents[$file])) {
             return;
         }
 

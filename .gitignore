@@ -1,4 +1,5 @@
 # No need to version the binary files of other tools
+bin/commonmark
 bin/jsonlint*
 bin/validate-json*
 bin/phpstan

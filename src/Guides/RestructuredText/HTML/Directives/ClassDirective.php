@@ -35,9 +35,12 @@ class ClassDirective extends SubDirective
 
         $classes = explode(' ', $data);
 
-        $normalizedClasses = array_map(static function (string $class) {
-            return Environment::slugify($class);
-        }, $classes);
+        $normalizedClasses = array_map(
+            static function (string $class) {
+                return Environment::slugify($class);
+            },
+            $classes
+        );
 
         $document->setClasses($normalizedClasses);
 
@@ -49,7 +52,7 @@ class ClassDirective extends SubDirective
     }
 
     /**
-     * @param Node[]   $nodes
+     * @param Node[] $nodes
      * @param string[] $classes
      */
     private function setNodesClasses(array $nodes, array $classes) : void
@@ -57,7 +60,7 @@ class ClassDirective extends SubDirective
         foreach ($nodes as $node) {
             $node->setClasses($classes);
 
-            if (! ($node instanceof DocumentNode)) {
+            if (!($node instanceof DocumentNode)) {
                 continue;
             }
 

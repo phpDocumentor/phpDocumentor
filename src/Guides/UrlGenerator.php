@@ -13,153 +13,92 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides;
 
+use League\Uri\UriInfo;
+use phpDocumentor\UriFactory;
 use function array_pop;
-use function basename;
-use function count;
 use function explode;
 use function implode;
 use function ltrim;
-use function preg_match;
-use function rtrim;
-use function strpos;
-use function substr;
 
 final class UrlGenerator
 {
-    /** @var Configuration */
-    private $configuration;
-
-    public function __construct(Configuration $configuration)
+    public function generateUrl(string $path, string $dirName) : string
     {
-        $this->configuration = $configuration;
-    }
-
-    public function generateUrl(string $path, string $currentFileName, string $dirName) : string
-    {
-        $canonicalPath = (string) $this->canonicalUrl($dirName, $path);
-
-        if ($this->configuration->isBaseUrlEnabled($canonicalPath)) {
-            $baseUrl = $this->configuration->getBaseUrl();
-
-            return rtrim($baseUrl, '/') . '/' . ltrim($canonicalPath, '/');
+        $uri = UriFactory::createUri($path);
+        if (UriInfo::isAbsolute($uri)) {
+            return $path;
         }
 
-        return (string) $this->relativeUrl($path, $currentFileName);
-    }
-
-    public function absoluteUrl(string $dirName, string $url) : string
-    {
-        // if $url is already an absolute path, just return it
-        if ($url[0] === '/') {
-            return $url;
-        }
-
-        // $url is a relative path so join it together with the
-        // current $dirName to produce an absolute url
-        return rtrim($dirName, '/') . '/' . $url;
+        return $this->relativeUrl($dirName, $path);
     }
 
     /**
-     * Resolves a relative URL using directories, for instance, if the
-     * current directory is "path/to/something", and you want to get the
-     * relative URL to "path/to/something/else.html", the result will
-     * be else.html. Else, "../" will be added to go to the upper directory
+     * Returns the absolute path, including prefixing '/'.
+     *
+     * This method will, by design, return an absolute path including the prefixing slash. The slash will make it clear
+     * to the other URL generating methods that this need not be resolved and can stay the same.
      */
-    public function relativeUrl(?string $url, string $currentFileName) : ?string
+    public function absoluteUrl(string $basePath, string $url) : string
     {
-        if ($url === null) {
-            return null;
-        }
-
-        // If string contains ://, it is considered as absolute
-        if (preg_match('/:\\/\\//mUsi', $url) > 0) {
+        $uri = UriFactory::createUri($url);
+        if (UriInfo::isAbsolute($uri)) {
             return $url;
         }
 
-        // If string begins with "/", the "/" is removed to resolve the
-        // relative path
-        if ($url !== '' && $url[0] === '/') {
-            $url = substr($url, 1);
-
-            if ($this->samePrefix($url, $currentFileName)) {
-                // If the prefix is the same, simply returns the file name
-                $relative = basename($url);
-            } else {
-                // Else, returns enough ../ to get upper
-                $relative = '';
-
-                $depth = count(explode('/', $currentFileName)) - 1;
-
-                for ($k = 0; $k < $depth; $k++) {
-                    $relative .= '../';
-                }
-
-                $relative .= $url;
-            }
-        } else {
-            $relative = $url;
-        }
-
-        return $relative;
+        return '/' . $basePath . '/' . $url;
     }
 
-    public function canonicalUrl(string $dirName, string $url) : ?string
+    /**
+     * Resolves a relative URL/
+     */
+    public function relativeUrl(string $basePath, string $url) : ?string
     {
-        if ($url !== '') {
-            if ($url[0] === '/') {
-                // If the URL begins with a "/", the following is the
-                // canonical URL
-                return substr($url, 1);
-            }
+        $uri = UriFactory::createUri($url);
 
-            // Else, the canonical name is under the current dir
-            if ($dirName !== '') {
-                $path = $url;
-
-                // the url is already a canonical url
-                if (strpos($url, $dirName . '/') === 0) {
-                    return $url;
-                }
-
-                return $this->canonicalize($dirName . '/' . $path);
-            }
-
-            return $this->canonicalize($url);
+        if (UriInfo::isAbsolute($uri)) {
+            return $url;
         }
 
-        return null;
+        if (UriInfo::isRelativePath($uri)) {
+            return $url;
+        }
+
+        return ltrim($url, '/');
     }
 
-    private function canonicalize(string $url) : string
+    /**
+     * Returns the Path used in the Metas to find this file.
+     *
+     * The Metas collection, which is used to build the table of contents, uses these canonical paths as a unique
+     * identifier to find the metadata for that file. Technically speaking, the canonical URL is the absolute URL
+     * without the preceeding slash. But due to the many locations that this method is used; it will do its own
+     * resolving.
+     *
+     * @todo simplify this method into the other methods or vice versa
+     */
+    public function canonicalUrl(string $basePath, string $url) : string
     {
-        $parts = explode('/', $url);
-        $stack = [];
+        if ($url[0] === '/') {
+            return ltrim($url, '/');
+        }
 
-        foreach ($parts as $part) {
+        $dirNameParts = explode('/', $basePath);
+        $urlParts = explode('/', $url);
+        $urlPass1 = [];
+
+        foreach ($urlParts as $part) {
+            if ($part === '.') {
+                continue;
+            }
+
             if ($part === '..') {
-                array_pop($stack);
-            } else {
-                $stack[] = $part;
+                array_pop($dirNameParts);
+                continue;
             }
+
+            $urlPass1[] = $part;
         }
 
-        return implode('/', $stack);
-    }
-
-    private function samePrefix(string $url, string $currentFileName) : bool
-    {
-        $partsA = explode('/', $url);
-        $partsB = explode('/', $currentFileName);
-
-        $n = count($partsA);
-
-        if ($n !== count($partsB)) {
-            return false;
-        }
-
-        unset($partsA[$n - 1]);
-        unset($partsB[$n - 1]);
-
-        return $partsA === $partsB;
+        return ltrim(implode('/', $dirNameParts) . '/' . implode('/', $urlPass1), '/');
     }
 }

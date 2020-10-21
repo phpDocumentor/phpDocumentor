@@ -6,9 +6,9 @@ namespace phpDocumentor\Guides\RestructuredText\Span;
 
 class SpanToken
 {
-    public const TYPE_LITERAL   = 'literal';
+    public const TYPE_LITERAL = 'literal';
     public const TYPE_REFERENCE = 'reference';
-    public const TYPE_LINK      = 'link';
+    public const TYPE_LINK = 'link';
 
     /** @var string */
     private $type;
@@ -24,9 +24,9 @@ class SpanToken
      */
     public function __construct(string $type, string $id, array $token)
     {
-        $this->type          = $type;
-        $this->id            = $id;
-        $this->token         = $token;
+        $this->type = $type;
+        $this->id = $id;
+        $this->token = $token;
         $this->token['type'] = $type;
     }
 

@@ -6,8 +6,7 @@
     "array_key_last",
     "Composer\\Autoload\\ClassLoader",
     "League\\Uri\\Exceptions\\SyntaxError",
-    "PackageVersions\\Versions",
-    "phpDocumentor\\Guides\\RestructuredText\\Builder"
+    "PackageVersions\\Versions"
   ],
   "php-core-extensions" : [
     "Core",

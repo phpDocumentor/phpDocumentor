@@ -18,11 +18,11 @@ final class VersionDescriptor
     /** @var string */
     private $number;
 
-    /** @var Collection<GuideSetDescriptor> */
+    /** @var Collection<DocumentationSetDescriptor> */
     private $documentationSets;
 
     /**
-     * @param Collection<GuideSetDescriptor> $documentationSets
+     * @param Collection<DocumentationSetDescriptor> $documentationSets
      */
     public function __construct(string $number, Collection $documentationSets)
     {
@@ -36,10 +36,28 @@ final class VersionDescriptor
     }
 
     /**
-     * @return Collection<GuideSetDescriptor>
+     * @return Collection<DocumentationSetDescriptor>
      */
     public function getDocumentationSets() : Collection
     {
         return $this->documentationSets;
+    }
+
+    /**
+     * @param array<mixed> $config
+     */
+    public static function fromConfiguration(array $config) : self
+    {
+        $documentationSets = Collection::fromClassString(DocumentationSetDescriptor::class);
+
+        foreach ($config['guides'] ?? [] as $guide) {
+            $documentationSets->add(new GuideSetDescriptor('', $guide['source'], $guide['output']));
+        }
+
+        foreach ($config['api'] ?? [] as $api) {
+            $documentationSets->add(new ApiSetDescriptor('', $api['source'], $api['output']));
+        }
+
+        return new self($config['number'], $documentationSets);
     }
 }

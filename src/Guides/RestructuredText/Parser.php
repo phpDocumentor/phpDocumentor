@@ -8,16 +8,18 @@ use Doctrine\Common\EventManager;
 use InvalidArgumentException;
 use phpDocumentor\Guides\Configuration;
 use phpDocumentor\Guides\Environment;
-use phpDocumentor\Guides\Formats\Format;
 use phpDocumentor\Guides\Nodes\DocumentNode;
 use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\Parser as ParserInterface;
 use phpDocumentor\Guides\References\Doc;
 use phpDocumentor\Guides\References\Reference;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive;
+use phpDocumentor\Guides\RestructuredText\Formats\Format;
 use phpDocumentor\Guides\RestructuredText\NodeFactory\NodeFactory;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
 use RuntimeException;
+use Webmozart\Assert\Assert;
+use function array_merge;
 use function sprintf;
 
 class Parser implements ParserInterface
@@ -29,13 +31,7 @@ class Parser implements ParserInterface
     private $environment;
 
     /** @var Directive[] */
-    private $directives = [];
-
-    /** @var bool */
-    private $includeAllowed = true;
-
-    /** @var string */
-    private $includeRoot = '';
+    private $directives;
 
     /** @var string|null */
     private $filename = null;
@@ -47,7 +43,7 @@ class Parser implements ParserInterface
     private $nodeFactory;
 
     /** @var array<Reference> */
-    private $references = [];
+    private $references;
 
     /** @var EventManager */
     private $eventManager;
@@ -55,6 +51,10 @@ class Parser implements ParserInterface
     /** @var Format */
     private $format;
 
+    /**
+     * @param array<Directive> $directives
+     * @param array<Reference> $references
+     */
     public function __construct(
         Configuration $configuration,
         Environment $environment,
@@ -68,8 +68,9 @@ class Parser implements ParserInterface
         $this->directives = $directives;
         $this->references = $references;
         $this->eventManager = $eventManager;
-        $this->format = $configuration->getFormat();
         $this->nodeFactory = $nodeFactory;
+        Assert::isInstanceOf($configuration->getFormat(), Format::class);
+        $this->format = $configuration->getFormat();
 
         $this->initDirectives($directives);
         $this->initReferences($references);
@@ -93,6 +94,9 @@ class Parser implements ParserInterface
         return $this->nodeFactory;
     }
 
+    /**
+     * @param array<Directive> $directives
+     */
     public function initDirectives(array $directives) : void
     {
         $directives = array_merge(
@@ -112,6 +116,9 @@ class Parser implements ParserInterface
         }
     }
 
+    /**
+     * @param array<Reference> $references
+     */
     public function initReferences(array $references) : void
     {
         $references = array_merge(
@@ -151,27 +158,6 @@ class Parser implements ParserInterface
         return $this->filename ?: '(unknown)';
     }
 
-    public function getIncludeAllowed() : bool
-    {
-        return $this->includeAllowed;
-    }
-
-    public function getIncludeRoot() : string
-    {
-        return $this->includeRoot;
-    }
-
-    public function setIncludePolicy(bool $includeAllowed, ?string $directory = null) : self
-    {
-        $this->includeAllowed = $includeAllowed;
-
-        if ($directory !== null) {
-            $this->includeRoot = $directory;
-        }
-
-        return $this;
-    }
-
     /**
      * @param string|string[]|SpanNode $span
      */
@@ -202,7 +188,7 @@ class Parser implements ParserInterface
     public function parseFile(string $file) : DocumentNode
     {
         $origin = $this->environment->getOrigin();
-        if (! $origin->has($file)) {
+        if (!$origin->has($file)) {
             throw new InvalidArgumentException(sprintf('File at path %s does not exist', $file));
         }
 
@@ -224,9 +210,7 @@ class Parser implements ParserInterface
             $this->environment,
             $this->getNodeFactory(),
             $this->eventManager,
-            $this->directives,
-            $this->includeAllowed,
-            $this->includeRoot
+            $this->directives
         );
     }
 }

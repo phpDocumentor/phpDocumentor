@@ -17,7 +17,7 @@ use phpDocumentor\Guides\Renderers\NodeRendererFactory;
 
 interface Format
 {
-    public const HTML  = 'html';
+    public const HTML = 'html';
     public const LATEX = 'tex';
 
     public function getFileExtension() : string;

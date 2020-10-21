@@ -44,13 +44,7 @@ class DocumentParser
     private $eventManager;
 
     /** @var Directive[] */
-    private $directives = [];
-
-    /** @var bool */
-    private $includeAllowed = true;
-
-    /** @var string */
-    private $includeRoot = '';
+    private $directives;
 
     /** @var DocumentNode */
     private $document;
@@ -105,21 +99,17 @@ class DocumentParser
         Environment $environment,
         NodeFactory $nodeFactory,
         EventManager $eventManager,
-        array $directives,
-        bool $includeAllowed,
-        string $includeRoot
+        array $directives
     ) {
-        $this->parser         = $parser;
-        $this->environment    = $environment;
-        $this->nodeFactory    = $nodeFactory;
-        $this->eventManager   = $eventManager;
-        $this->directives     = $directives;
-        $this->includeAllowed = $includeAllowed;
-        $this->includeRoot    = $includeRoot;
+        $this->parser = $parser;
+        $this->environment = $environment;
+        $this->nodeFactory = $nodeFactory;
+        $this->eventManager = $eventManager;
+        $this->directives = $directives;
         $this->lineDataParser = new LineDataParser($this->parser, $eventManager);
-        $this->lineChecker    = new LineChecker($this->lineDataParser);
-        $this->tableParser    = new TableParser();
-        $this->buffer         = new Buffer();
+        $this->lineChecker = new LineChecker($this->lineDataParser);
+        $this->tableParser = new TableParser();
+        $this->buffer = new Buffer();
     }
 
     public function getDocument() : DocumentNode
@@ -157,8 +147,8 @@ class DocumentParser
     private function init() : void
     {
         $this->specialLetter = false;
-        $this->buffer        = new Buffer();
-        $this->nodeBuffer    = null;
+        $this->buffer = new Buffer();
+        $this->nodeBuffer = null;
     }
 
     private function setState(string $state) : void
@@ -171,11 +161,7 @@ class DocumentParser
         $document = str_replace("\r\n", "\n", $document);
         $document = sprintf("\n%s\n", $document);
 
-        $document = (new FileIncluder(
-            $this->environment,
-            $this->includeAllowed,
-            $this->includeRoot
-        ))->includeFiles($document);
+        $document = (new FileIncluder($this->environment))->includeFiles($document);
 
         // Removing UTF-8 BOM
         $document = str_replace("\xef\xbb\xbf", '', $document);
@@ -278,15 +264,17 @@ class DocumentParser
                         $this->nodeBuffer = $tableNode;
                     }
                 }
+
                 break;
 
             case State::LIST:
-                if (! $this->parseListLine($line)) {
+                if (!$this->parseListLine($line)) {
                     $this->flush();
                     $this->setState(State::BEGIN);
 
                     return false;
                 }
+
                 break;
 
             case State::DEFINITION_LIST:
@@ -309,7 +297,7 @@ class DocumentParser
                     $separatorLineConfig = $this->tableParser->parseTableSeparatorLine($line);
 
                     // not sure if this is possible, being cautious
-                    if (! $this->nodeBuffer instanceof TableNode) {
+                    if (!$this->nodeBuffer instanceof TableNode) {
                         throw new Exception('Node Buffer should be a TableNode instance');
                     }
 
@@ -339,6 +327,7 @@ class DocumentParser
                             $this->buffer->push($line);
                             $this->setState(State::SEPARATOR);
                         }
+
                         $this->flush();
                         $this->setState(State::BEGIN);
                     } elseif ($this->lineChecker->isDirective($line)) {
@@ -356,21 +345,21 @@ class DocumentParser
                     $this->flush();
                     $this->setState(State::BEGIN);
                 }
+
                 break;
 
             case State::COMMENT:
-                $isComment = false;
-
-                if (! $this->lineChecker->isComment($line) && (trim($line) === '' || $line[0] !== ' ')) {
+                if (!$this->lineChecker->isComment($line) && (trim($line) === '' || $line[0] !== ' ')) {
                     $this->setState(State::BEGIN);
 
                     return false;
                 }
+
                 break;
 
             case State::BLOCK:
             case State::CODE:
-                if (! $this->lineChecker->isBlockLine($line)) {
+                if (!$this->lineChecker->isBlockLine($line)) {
                     $this->flush();
                     $this->setState(State::BEGIN);
 
@@ -378,12 +367,13 @@ class DocumentParser
                 } else {
                     $this->buffer->push($line);
                 }
+
                 break;
 
             case State::DIRECTIVE:
-                if (! $this->isDirectiveOption($line)) {
-                    if (! $this->lineChecker->isDirective($line)) {
-                        $directive    = $this->getCurrentDirective();
+                if (!$this->isDirectiveOption($line)) {
+                    if (!$this->lineChecker->isDirective($line)) {
+                        $directive = $this->getCurrentDirective();
                         $this->isCode = $directive !== null ? $directive->wantCode() : false;
                         $this->setState(State::BEGIN);
 
@@ -393,6 +383,7 @@ class DocumentParser
                     $this->flush();
                     $this->initDirective($line);
                 }
+
                 break;
 
             default:
@@ -430,7 +421,8 @@ class DocumentParser
                             foreach ($this->openTitleNodes as $titleNode) {
                                 $this->endOpenSection($titleNode);
                             }
-                        // same level as the last so just close the last open section
+
+                            // same level as the last so just close the last open section
                         } elseif ($node->getLevel() === $this->lastTitleNode->getLevel()) {
                             $this->endOpenSection($this->lastTitleNode);
                         }
@@ -525,7 +517,10 @@ class DocumentParser
                     $message = sprintf(
                         'Error while processing "%s" directive%s: %s',
                         $currentDirective->getName(),
-                        $this->environment->getCurrentFileName() !== '' ? sprintf(' in "%s"', $this->environment->getCurrentFileName()) : '',
+                        $this->environment->getCurrentFileName() !== '' ? sprintf(
+                            ' in "%s"',
+                            $this->environment->getCurrentFileName()
+                        ) : '',
                         $e->getMessage()
                     );
 
@@ -547,7 +542,7 @@ class DocumentParser
 
     private function hasBuffer() : bool
     {
-        return ! $this->buffer->isEmpty() || $this->nodeBuffer !== null;
+        return !$this->buffer->isEmpty() || $this->nodeBuffer !== null;
     }
 
     private function getCurrentDirective() : ?Directive
@@ -586,11 +581,14 @@ class DocumentParser
             return false;
         }
 
-        if (! isset($this->directives[$parserDirective->getName()])) {
+        if (!isset($this->directives[$parserDirective->getName()])) {
             $message = sprintf(
                 'Unknown directive: "%s" %sfor line "%s"',
                 $parserDirective->getName(),
-                $this->environment->getCurrentFileName() !== '' ? sprintf('in "%s" ', $this->environment->getCurrentFileName()) : '',
+                $this->environment->getCurrentFileName() !== '' ? sprintf(
+                    'in "%s" ',
+                    $this->environment->getCurrentFileName()
+                ) : '',
                 $line
             );
 
@@ -663,6 +661,7 @@ class DocumentParser
 
                     $listNode->addLine($this->listLine->toArray());
                 }
+
                 $this->listLine = $listLine;
             } else {
                 if ($this->listLine instanceof ListLine && ($this->listFlow || $line[0] === ' ')) {
@@ -671,6 +670,7 @@ class DocumentParser
                     $flush = true;
                 }
             }
+
             $this->listFlow = true;
         } else {
             $this->listFlow = false;

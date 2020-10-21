@@ -31,7 +31,7 @@ final class PersistCacheHandler
         $this->cachedMetasLoader = $cachedMetasLoader;
     }
 
-    public function handle(PersistCacheCommand $command)
+    public function handle(PersistCacheCommand $command) : void
     {
         if (!$command->useCache()) {
             return;

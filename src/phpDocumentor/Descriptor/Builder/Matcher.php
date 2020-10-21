@@ -15,15 +15,15 @@ final class Matcher
     private $type;
 
     /**
-     * @param class-string<StaticT> $type
+     * @param class-string<SelfT> $type
      *
-     * @return static<StaticT>
+     * @return self<SelfT>
      *
-     * @template StaticT
+     * @template SelfT
      */
     public static function forType(string $type) : self
     {
-        return new static($type);
+        return new self($type);
     }
 
     /**

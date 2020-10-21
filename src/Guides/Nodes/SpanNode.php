@@ -44,7 +44,7 @@ class SpanNode extends Node
             $span = implode("\n", $span);
         }
 
-        if ($span instanceof SpanNode) {
+        if ($span instanceof self) {
             $span = $span->render();
         }
 

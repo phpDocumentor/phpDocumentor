@@ -9,8 +9,6 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  *
  * @link https://phpdoc.org
- * @author Ryan Weaver <ryan@symfonycasts.com> on the original DocBuilder.
- * @author Mike van Riel <me@mikevanriel.com> for adapting this to phpDocumentor.
  */
 
 namespace phpDocumentor\Guides\RestructuredText\HTML;
@@ -90,62 +88,62 @@ final class HTMLFormat implements Format
     {
         $nodeRendererFactories = [
             AnchorNode::class => new CallableNodeRendererFactory(
-                function (AnchorNode $node) {
+                static function (AnchorNode $node) {
                     return new AnchorNodeRenderer($node);
                 }
             ),
             DefinitionListNode::class => new CallableNodeRendererFactory(
-                function (DefinitionListNode $node) {
+                static function (DefinitionListNode $node) {
                     return new DefinitionListNodeRenderer($node);
                 }
             ),
             FigureNode::class => new CallableNodeRendererFactory(
-                function (FigureNode $node){
+                static function (FigureNode $node) {
                     return new FigureNodeRenderer($node);
                 }
             ),
             ImageNode::class => new CallableNodeRendererFactory(
-                function (ImageNode $node) {
+                static function (ImageNode $node) {
                     return new ImageNodeRenderer($node);
                 }
             ),
             ListNode::class => new CallableNodeRendererFactory(
-                function (ListNode $node) {
+                static function (ListNode $node) {
                     return new ListNodeRenderer($node, new ListRenderer($node));
                 }
             ),
             MetaNode::class => new CallableNodeRendererFactory(
-                function (MetaNode $node) {
+                static function (MetaNode $node) {
                     return new MetaNodeRenderer($node);
                 }
             ),
             ParagraphNode::class => new CallableNodeRendererFactory(
-                function (ParagraphNode $node) {
+                static function (ParagraphNode $node) {
                     return new ParagraphNodeRenderer($node);
                 }
             ),
             QuoteNode::class => new CallableNodeRendererFactory(
-                function (QuoteNode $node) {
+                static function (QuoteNode $node) {
                     return new QuoteNodeRenderer($node);
                 }
             ),
             SeparatorNode::class => new CallableNodeRendererFactory(
-                function (SeparatorNode $node) {
+                static function (SeparatorNode $node) {
                     return new SeparatorNodeRenderer($node);
                 }
             ),
             TableNode::class => new CallableNodeRendererFactory(
-                function (TableNode $node) {
+                static function (TableNode $node) {
                     return new TableNodeRenderer($node);
                 }
             ),
             TitleNode::class => new CallableNodeRendererFactory(
-                function (TitleNode $node) {
+                static function (TitleNode $node) {
                     return new TitleNodeRenderer($node);
                 }
             ),
             TocNode::class => new CallableNodeRendererFactory(
-                function (TocNode $node) {
+                static function (TocNode $node) {
                     return new TocNodeRenderer($node);
                 }
             ),
@@ -157,31 +155,31 @@ final class HTMLFormat implements Format
                 }
             ),
             SectionBeginNode::class => new CallableNodeRendererFactory(
-                function (SectionBeginNode $node) {
+                static function (SectionBeginNode $node) {
                     return new SectionBeginNodeRenderer($node);
                 }
             ),
             SectionEndNode::class => new CallableNodeRendererFactory(
-                function (SectionEndNode $node) {
+                static function (SectionEndNode $node) {
                     return new SectionEndNodeRenderer($node);
                 }
             ),
         ];
 
         $nodeRendererFactories[DocumentNode::class] = new CallableNodeRendererFactory(
-            function (DocumentNode $node) {
+            static function (DocumentNode $node) {
                 return new DocumentNodeRenderer($node);
             }
         );
 
         $nodeRendererFactories[CodeNode::class] = new CallableNodeRendererFactory(
-            function (CodeNode $node)  {
+            static function (CodeNode $node) {
                 return new CodeNodeRenderer($node);
             }
         );
 
         $nodeRendererFactories[SpanNode::class] = new CallableNodeRendererFactory(
-            function (SpanNode $node) {
+            static function (SpanNode $node) {
                 return new SpanNodeRenderer($node);
             }
         );

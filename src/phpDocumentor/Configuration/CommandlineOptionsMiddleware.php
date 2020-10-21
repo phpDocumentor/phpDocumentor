@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Configuration;
 
+use League\Uri\Contracts\UriInterface;
 use phpDocumentor\Dsn;
 use phpDocumentor\Path;
 use function array_map;
@@ -23,7 +24,7 @@ use function end;
 use function explode;
 use function implode;
 
-final class CommandlineOptionsMiddleware
+final class CommandlineOptionsMiddleware implements MiddlewareInterface
 {
     /** @var array<string|string[]> */
     private $options;
@@ -47,9 +48,9 @@ final class CommandlineOptionsMiddleware
     /**
      * @param array<string, array<string, array<string, mixed>>> $configuration
      *
-     * @return array<string, array<string, array<string, mixed>>>
+     * @return array<string, array<string, array<int|string, array<mixed>|mixed>|false>>
      */
-    public function __invoke(array $configuration) : array
+    public function __invoke(array $configuration, ?UriInterface $uri = null) : array
     {
         $configuration = $this->overwriteDestinationFolder($configuration);
         $configuration = $this->disableCache($configuration);
@@ -73,6 +74,7 @@ final class CommandlineOptionsMiddleware
             $version = $this->setFilesInPath($version);
             $version = $this->registerExtensions($version);
             $version = $this->overwriteIgnoredPaths($version);
+            $version = $this->overwriteIgnoredTags($version);
             $version = $this->overwriteMarkers($version);
             $version = $this->overwriteIncludeSource($version);
             $version = $this->overwriteVisibility($version);
@@ -279,6 +281,26 @@ final class CommandlineOptionsMiddleware
             },
             $this->options['ignore']
         );
+
+        return $version;
+    }
+
+    /**
+     * @param array<string, array<int, array<string, mixed>>> $version
+     *
+     * @return array<string, array<int, array<string, mixed>>>
+     */
+    private function overwriteIgnoredTags(array $version) : array
+    {
+        if (!isset($this->options['ignore-tags']) || !$this->options['ignore-tags']) {
+            return $version;
+        }
+
+        if (!isset($version['api'])) {
+            $version['api'] = $this->createDefaultApiSettings();
+        }
+
+        $version['api'][0]['ignore-tags'] = $this->options['ignore-tags'];
 
         return $version;
     }

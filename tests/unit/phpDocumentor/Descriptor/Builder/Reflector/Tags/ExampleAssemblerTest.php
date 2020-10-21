@@ -13,18 +13,19 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 
-use Mockery as m;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\Example\Finder;
 use phpDocumentor\Reflection\DocBlock\ExampleFinder;
 use phpDocumentor\Reflection\DocBlock\Tags\Example;
+use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
+use Prophecy\Prophecy\ObjectProphecy;
 
 /**
  * Tests for the \phpDocumentor\Descriptor\Builder\Reflector\Tags\ExampleAssembler class.
  *
  * @coversDefaultClass \phpDocumentor\Descriptor\Builder\Reflector\Tags\ExampleAssembler
  */
-class ExampleAssemblerTest extends MockeryTestCase
+class ExampleAssemblerTest extends TestCase
 {
     public const EXAMPLE_FILE_PATH = 'examples/example.txt';
 
@@ -41,7 +42,7 @@ class ExampleAssemblerTest extends MockeryTestCase
     /** @var ExampleAssembler */
     private $fixture;
 
-    /** @var Finder|m\MockInterface */
+    /** @var Finder|ObjectProphecy */
     private $finderMock;
 
     /**
@@ -49,8 +50,8 @@ class ExampleAssemblerTest extends MockeryTestCase
      */
     protected function setUp() : void
     {
-        $this->finderMock = m::mock(ExampleFinder::class);
-        $this->fixture = new ExampleAssembler($this->finderMock);
+        $this->finderMock = $this->prophesize(ExampleFinder::class);
+        $this->fixture = new ExampleAssembler($this->finderMock->reveal());
     }
 
     /**
@@ -101,6 +102,6 @@ class ExampleAssemblerTest extends MockeryTestCase
      */
     private function whenExampleFileContains(string $exampleText) : void
     {
-        $this->finderMock->shouldReceive('find')->andReturn($exampleText);
+        $this->finderMock->find(Argument::any())->shouldBeCalled()->willReturn($exampleText);
     }
 }

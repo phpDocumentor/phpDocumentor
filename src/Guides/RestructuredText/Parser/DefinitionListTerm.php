@@ -13,10 +13,10 @@ class DefinitionListTerm
     private $term;
 
     /** @var SpanNode[] */
-    private $classifiers = [];
+    private $classifiers;
 
     /** @var SpanNode[] */
-    private $definitions = [];
+    private $definitions;
 
     /**
      * @param SpanNode[] $classifiers
@@ -24,7 +24,7 @@ class DefinitionListTerm
      */
     public function __construct(SpanNode $term, array $classifiers, array $definitions)
     {
-        $this->term        = $term;
+        $this->term = $term;
         $this->classifiers = $classifiers;
         $this->definitions = $definitions;
     }
@@ -52,7 +52,7 @@ class DefinitionListTerm
 
     public function getFirstDefinition() : SpanNode
     {
-        if (! isset($this->definitions[0])) {
+        if (!isset($this->definitions[0])) {
             throw new RuntimeException('No definitions found.');
         }
 

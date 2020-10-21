@@ -15,7 +15,7 @@ final class ParseDirectoryCommand
     /** @var FilesystemInterface */
     private $origin;
 
-    /** @var string  */
+    /** @var string */
     private $directory;
 
     public function __construct(Configuration $configuration, FilesystemInterface $origin, string $directory)
@@ -25,17 +25,17 @@ final class ParseDirectoryCommand
         $this->directory = $directory;
     }
 
-    public function getConfiguration(): Configuration
+    public function getConfiguration() : Configuration
     {
         return $this->configuration;
     }
 
-    public function getOrigin(): FilesystemInterface
+    public function getOrigin() : FilesystemInterface
     {
         return $this->origin;
     }
 
-    public function getDirectory(): string
+    public function getDirectory() : string
     {
         return $this->directory;
     }

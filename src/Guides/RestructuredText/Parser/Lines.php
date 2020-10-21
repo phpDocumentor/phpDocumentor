@@ -6,10 +6,13 @@ namespace phpDocumentor\Guides\RestructuredText\Parser;
 
 use Iterator;
 
+/**
+ * @implements Iterator<string>
+ */
 class Lines implements Iterator
 {
     /** @var string[] */
-    private $lines = [];
+    private $lines;
 
     /** @var int */
     private $position = 0;

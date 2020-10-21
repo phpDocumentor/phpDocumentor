@@ -65,6 +65,9 @@ services:
       phpDocumentor\Descriptor\ProjectDescriptor\WithCustomSettings:
         tags: ['app.with_custom_settings']
 
+      phpDocumentor\Descriptor\Filter\FilterInterface:
+        tags: ['phpdoc.descriptor.filter']
+
     ###################################################################################
     ## Autoloading definitions for whole namespaces ###################################
     ###################################################################################
@@ -120,8 +123,9 @@ services:
         factory: ['phpDocumentor\Descriptor\Builder\AssemblerFactory', 'createDefault']
 
     phpDocumentor\Descriptor\Filter\Filter:
-        calls:
-            - [attachDefaults]
+        lazy: true
+        arguments:
+          - !tagged_iterator 'phpdoc.descriptor.filter'
 
     phpDocumentor\Configuration\Configuration:
         factory: ['@phpDocumentor\Configuration\ConfigurationFactory', 'fromDefaultLocations']
@@ -132,6 +136,9 @@ services:
             - "@=service('kernel').getWorkingDir() ~ '/phpdoc.xml'"
             - "@=service('kernel').getWorkingDir() ~ '/phpdoc.dist.xml'"
             - "@=service('kernel').getWorkingDir() ~ '/phpdoc.xml.dist'"
+            - "@=service('kernel').getWorkingDir() ~ '/.phpdoc.xml.dist'"
+            - "@=service('kernel').getWorkingDir() ~ '/.phpdoc.xml'"
+            - "@=service('kernel').getWorkingDir() ~ '/.phpdoc.dist.xml'"
           $symfonyConfigFactory: '@phpDocumentor\Configuration\SymfonyConfigFactory'
 
     phpDocumentor\Configuration\SymfonyConfigFactory:
@@ -236,9 +243,15 @@ services:
 
     League\Flysystem\MountManager: ~
 
-    Parsedown:
-        class: Parsedown
-        factory: ['Parsedown', 'instance']
+    League\CommonMark\Extension\DisallowedRawHtml\DisallowedRawHtmlExtension:
+      tags: ['commonmark.extension']
+
+    League\CommonMark\MarkdownConverterInterface: '@League\CommonMark\CommonMarkConverter'
+    League\CommonMark\CommonMarkConverter:
+      factory: ['@phpDocumentor\Transformer\Writer\Twig\CommonMarkFactory', 'createConverter']
+      arguments:
+        - !tagged 'commonmark.extension'
+
 
     ###################################################################################
     ## Writers ########################################################################

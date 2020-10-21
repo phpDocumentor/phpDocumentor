@@ -35,12 +35,12 @@ final class TemplateRenderer
         $this->subFolder = $subFolder;
     }
 
-    public function getTemplateEngine(): Environment
+    public function getTemplateEngine() : Environment
     {
         return $this->environment;
     }
 
-    public function setDestination(string $filename)
+    public function setDestination(string $filename) : void
     {
         /** @var Extension $extension */
         $extension = $this->getTemplateEngine()->getExtension(Extension::class);

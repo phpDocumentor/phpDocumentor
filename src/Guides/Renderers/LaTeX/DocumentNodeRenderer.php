@@ -54,12 +54,12 @@ class DocumentNodeRenderer implements NodeRenderer, FullDocumentNodeRenderer
 
     private function isMain() : bool
     {
-        return count(
-                $this->document->getNodes(
-                    static function ($node) {
-                        return $node instanceof MainNode;
-                    }
-                )
-            ) !== 0;
+        $nodes = $this->document->getNodes(
+            static function ($node) {
+                return $node instanceof MainNode;
+            }
+        );
+
+        return count($nodes) !== 0;
     }
 }

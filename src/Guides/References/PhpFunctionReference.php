@@ -14,6 +14,9 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\References;
 
 use phpDocumentor\Guides\Environment;
+use function sprintf;
+use function str_replace;
+use function strtolower;
 
 class PhpFunctionReference extends Reference
 {
@@ -29,9 +32,7 @@ class PhpFunctionReference extends Reference
             $data,
             sprintf('%s/function.%s.php', '', str_replace('_', '-', strtolower($data))),
             [],
-            [
-                'title' => $data,
-            ]
+            ['title' => $data]
         );
     }
 }

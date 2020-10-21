@@ -30,7 +30,7 @@ class LineChecker
 
         $letter = $line[0];
 
-        if (! in_array($letter, self::HEADER_LETTERS, true)) {
+        if (!in_array($letter, self::HEADER_LETTERS, true)) {
             return null;
         }
 
@@ -48,7 +48,7 @@ class LineChecker
         $listLine = $this->lineParser->parseListLine($line);
 
         if ($listLine !== null) {
-            return $listLine->getDepth() === 0 || ! $isCode;
+            return $listLine->getDepth() === 0 || !$isCode;
         }
 
         return false;
@@ -88,6 +88,6 @@ class LineChecker
             return false;
         }
 
-        return ! $this->isDefinitionList($nextLine);
+        return !$this->isDefinitionList($nextLine);
     }
 }

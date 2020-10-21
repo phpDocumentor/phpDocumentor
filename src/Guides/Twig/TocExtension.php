@@ -9,12 +9,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  *
  * @link https://phpdoc.org
- * @author Ryan Weaver <ryan@symfonycasts.com> on the original DocBuilder.
- * @author Mike van Riel <me@mikevanriel.com> for adapting this to phpDocumentor.
  */
 
 namespace phpDocumentor\Guides\Twig;
 
+use phpDocumentor\Guides\Meta\Entry;
 use phpDocumentor\Guides\Metas;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
@@ -36,26 +35,33 @@ class TocExtension extends AbstractExtension
         ];
     }
 
+    /**
+     * @return array<string, array<int, array<string, array|string>>|string>
+     */
     public function menu() : array
     {
         $index = $this->metas->get('index');
 
-        if ($index === null) {
+        if (!$index instanceof Entry) {
             return [];
         }
 
         $menu = [
             'label' => $index->getTitle(),
-            'path' => 'dox/' . $index->getUrl(),
-            'items' => []
+            'path' => $index->getUrl(),
+            'items' => [],
         ];
 
         foreach ($index->getTocs()[0] ?? [] as $url) {
             $meta = $this->metas->get($url);
+            if (!$meta instanceof Entry) {
+                continue;
+            }
+
             $menu['items'][] = [
                 'label' => $meta->getTitle(),
-                'path' => 'dox/' . $meta->getUrl(),
-                'items' => []
+                'path' => $meta->getUrl(),
+                'items' => [],
             ];
         }
 

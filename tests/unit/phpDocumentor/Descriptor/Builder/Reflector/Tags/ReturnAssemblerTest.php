@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 
-use Mockery as m;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\DocBlock\Tags\Return_;
 use phpDocumentor\Reflection\Types\String_;
+use PHPUnit\Framework\TestCase;
+use Prophecy\Prophecy\ObjectProphecy;
 
-class ReturnAssemblerTest extends MockeryTestCase
+class ReturnAssemblerTest extends TestCase
 {
     /** @var ReturnAssembler */
     private $fixture;
 
-    /** @var m\MockInterface|ProjectDescriptorBuilder */
+    /** @var ProjectDescriptorBuilder|ObjectProphecy */
     private $builder;
 
     /**
@@ -24,9 +24,9 @@ class ReturnAssemblerTest extends MockeryTestCase
      */
     protected function setUp() : void
     {
-        $this->builder = m::mock(ProjectDescriptorBuilder::class);
+        $this->builder = $this->prophesize(ProjectDescriptorBuilder::class);
         $this->fixture = new ReturnAssembler();
-        $this->fixture->setBuilder($this->builder);
+        $this->fixture->setBuilder($this->builder->reveal());
     }
 
     /**

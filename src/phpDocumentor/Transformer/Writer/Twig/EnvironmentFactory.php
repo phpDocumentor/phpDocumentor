@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Writer\Twig;
 
+use League\CommonMark\MarkdownConverterInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Guides\Twig\TocExtension;
 use phpDocumentor\Path;
@@ -34,10 +35,17 @@ class EnvironmentFactory
     /** @var TocExtension */
     private $tocExtension;
 
-    public function __construct(LinkRenderer $renderer, TocExtension $tocExtension)
-    {
+    /** @var MarkdownConverterInterface */
+    private $markDownConverter;
+
+    public function __construct(
+        LinkRenderer $renderer,
+        TocExtension $tocExtension,
+        MarkdownConverterInterface $markDownConverter
+    ) {
         $this->renderer = $renderer;
         $this->tocExtension = $tocExtension;
+        $this->markDownConverter = $markDownConverter;
     }
 
     public function withTemplateOverridesAt(Path $path) : void
@@ -77,7 +85,7 @@ class EnvironmentFactory
         string $path,
         Environment $twigEnvironment
     ) : void {
-        $extension = new Extension($project, $this->renderer);
+        $extension = new Extension($project, $this->markDownConverter, $this->renderer);
         $extension->setDestination(ltrim($path, '/\\'));
         $twigEnvironment->addExtension($extension);
     }

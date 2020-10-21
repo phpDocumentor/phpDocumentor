@@ -20,22 +20,13 @@ final class RenderCommand
     /** @var FilesystemInterface */
     private $filesystem;
 
-    /** @var string */
-    private $outputDirectory;
-
-    public function __construct(FilesystemInterface $filesystem, string $outputDirectory)
+    public function __construct(FilesystemInterface $filesystem)
     {
-        $this->outputDirectory = $outputDirectory;
         $this->filesystem = $filesystem;
     }
 
-    public function getDestination(): FilesystemInterface
+    public function getDestination() : FilesystemInterface
     {
         return $this->filesystem;
-    }
-
-    public function getOutputDirectory(): string
-    {
-        return $this->outputDirectory;
     }
 }

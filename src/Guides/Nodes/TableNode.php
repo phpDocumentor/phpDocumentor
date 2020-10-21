@@ -309,7 +309,8 @@ class TableNode extends Node
                 if ($finalHeadersRow !== 0) {
                     $this->addError(
                         sprintf(
-                            'Malformed table: multiple "header rows" using "===" were found. See table lines "%d" and "%d"',
+                            'Malformed table: multiple "header rows" using "===" were found. See table '
+                            . 'lines "%d" and "%d"',
                             $finalHeadersRow + 1,
                             $rowIndex
                         )
@@ -411,6 +412,7 @@ class TableNode extends Node
                 if ($currentColumnStart === null) {
                     $currentColumnStart = $start;
                 }
+
                 $previousColumnEnd = $end;
             }
 
@@ -438,7 +440,8 @@ class TableNode extends Node
                 // that this column in the next row should also be
                 // included in that previous row's content
                 foreach ($row->getColumns() as $columnIndex => $column) {
-                    if (!$column->isCompletelyEmpty() && str_repeat(
+                    if (!$column->isCompletelyEmpty()
+                        && str_repeat(
                             '-',
                             strlen($column->getContent())
                         ) === $column->getContent()) {
@@ -446,7 +449,7 @@ class TableNode extends Node
                         continue;
                     }
 
-                    $prevTargetColumn = $this->findColumnInPreviousRows((int)$columnIndex, $rows, (int)$rowIndex);
+                    $prevTargetColumn = $this->findColumnInPreviousRows((int) $columnIndex, $rows, (int) $rowIndex);
                     $prevTargetColumn->addContent("\n" . $column->getContent());
                     $prevTargetColumn->incrementRowSpan();
                     // mark that this column on the next row should also be added
@@ -463,32 +466,34 @@ class TableNode extends Node
             // check if the previous row was a partial separator row, and
             // we need to take some columns and add them to a previous row's content
             foreach ($columnIndexesCurrentlyInRowspan as $columnIndex) {
-                $prevTargetColumn = $this->findColumnInPreviousRows($columnIndex, $rows, (int)$rowIndex);
+                $prevTargetColumn = $this->findColumnInPreviousRows($columnIndex, $rows, (int) $rowIndex);
                 $columnInRowspan = $row->getColumn($columnIndex);
                 if ($columnInRowspan === null) {
                     throw new LogicException('Cannot find column for index "%s"', $columnIndex);
                 }
+
                 $prevTargetColumn->addContent("\n" . $columnInRowspan->getContent());
 
                 // now this column actually needs to be removed from this row,
                 // as it's not a real column that needs to be printed
                 $row->removeColumn($columnIndex);
             }
+
             $columnIndexesCurrentlyInRowspan = [];
 
             // if the next row is just $i+1, it means there
             // was no "separator" and this is really just a
             // continuation of this row.
             $nextRowCounter = 1;
-            while (isset($rows[(int)$rowIndex + $nextRowCounter])) {
+            while (isset($rows[(int) $rowIndex + $nextRowCounter])) {
                 // but if the next line is actually a partial separator, then
                 // it is not a continuation of the content - quit now
-                if (isset($partialSeparatorRows[(int)$rowIndex + $nextRowCounter])) {
+                if (isset($partialSeparatorRows[(int) $rowIndex + $nextRowCounter])) {
                     break;
                 }
 
-                $targetRow = $rows[(int)$rowIndex + $nextRowCounter];
-                unset($rows[(int)$rowIndex + $nextRowCounter]);
+                $targetRow = $rows[(int) $rowIndex + $nextRowCounter];
+                unset($rows[(int) $rowIndex + $nextRowCounter]);
 
                 try {
                     $row->absorbRowContent($targetRow);

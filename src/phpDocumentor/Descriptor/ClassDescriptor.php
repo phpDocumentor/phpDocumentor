@@ -359,9 +359,9 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     }
 
     /**
-     * @return ClassDescriptor|Fqsen|null
+     * @return ClassDescriptor|Fqsen|string|null
      */
-    public function getInheritedElement() : ?object
+    public function getInheritedElement()
     {
         return $this->getParent();
     }

@@ -25,7 +25,7 @@ class LineDataParser
 
     public function __construct(Parser $parser, EventManager $eventManager)
     {
-        $this->parser       = $parser;
+        $this->parser = $parser;
         $this->eventManager = $eventManager;
     }
 
@@ -81,8 +81,6 @@ class LineDataParser
         }
 
         if (preg_match('/^(\s+):(.+):(\s*)$/mUsi', $line, $match) > 0) {
-            $value = trim($match[3]);
-
             return new DirectiveOption($match[2], true);
         }
 
@@ -105,7 +103,6 @@ class LineDataParser
     public function parseListLine(string $line) : ?ListLine
     {
         $depth = 0;
-        $i     = 0;
 
         for ($i = 0; $i < strlen($line); $i++) {
             $char = $line[$i];
@@ -145,9 +142,9 @@ class LineDataParser
      */
     public function parseDefinitionList(array $lines) : DefinitionList
     {
-        $definitionList     = [];
+        $definitionList = [];
         $definitionListTerm = null;
-        $currentDefinition  = null;
+        $currentDefinition = null;
 
         foreach ($lines as $key => $line) {
             // term definition line
@@ -156,7 +153,7 @@ class LineDataParser
 
                 $currentDefinition .= $definition . ' ';
 
-            // non empty string
+                // non empty string
             } elseif (trim($line) !== '') {
                 // we are starting a new term so if we have an existing
                 // term with definitions, add it to the definition list
@@ -173,9 +170,12 @@ class LineDataParser
                 $term = $parts[0];
                 unset($parts[0]);
 
-                $classifiers = array_map(function (string $classifier) {
-                    return $this->parser->createSpanNode($classifier);
-                }, array_map('trim', $parts));
+                $classifiers = array_map(
+                    function (string $classifier) {
+                        return $this->parser->createSpanNode($classifier);
+                    },
+                    array_map('trim', $parts)
+                );
 
                 $definitionListTerm = [
                     'term' => $this->parser->createSpanNode($term),
@@ -183,7 +183,7 @@ class LineDataParser
                     'definitions' => [],
                 ];
 
-            // last line
+                // last line
             } elseif ($definitionListTerm !== null && trim($line) === '' && count($lines) - 1 === $key) {
                 if ($currentDefinition !== null) {
                     $definitionListTerm['definitions'][] = $this->parser->createSpanNode($currentDefinition);
@@ -197,7 +197,7 @@ class LineDataParser
                     $definitionListTerm['definitions']
                 );
 
-            // empty line, start of a new definition for the current term
+                // empty line, start of a new definition for the current term
             } elseif ($currentDefinition !== null && $definitionListTerm !== null && trim($line) === '') {
                 $definitionListTerm['definitions'][] = $this->parser->createSpanNode($currentDefinition);
 

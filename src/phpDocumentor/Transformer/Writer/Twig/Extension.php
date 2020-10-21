@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Writer\Twig;
 
 use ArrayIterator;
-use Parsedown;
+use League\CommonMark\MarkdownConverterInterface;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\Descriptor\DescriptorAbstract;
@@ -68,6 +68,9 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
     /** @var LinkRenderer */
     private $routeRenderer;
 
+    /** @var MarkdownConverterInterface */
+    private $markdownConverter;
+
     /**
      * Registers the structure and transformation with this extension.
      *
@@ -75,10 +78,12 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
      */
     public function __construct(
         ProjectDescriptor $project,
-        ?LinkRenderer $routeRenderer = null
+        MarkdownConverterInterface $markdownConverter,
+        LinkRenderer $routeRenderer
     ) {
         $this->data = $project;
         $this->routeRenderer = $routeRenderer->withProject($project);
+        $this->markdownConverter = $markdownConverter;
     }
 
     /**
@@ -92,7 +97,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
      */
     public function setDestination(string $destination) : void
     {
-        $this->routeRenderer->setDestination($destination);
+        $this->routeRenderer = $this->routeRenderer->withDestination($destination);
     }
 
     /**
@@ -124,11 +129,35 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
     public function getFunctions() : array
     {
         return [
-            new TwigFunction('path', [$this->routeRenderer, 'convertToRootPath']),
-            new TwigFunction('link', [$this->routeRenderer, 'link']),
+            new TwigFunction(
+                'renderBaseUrlHeader',
+                function () : string {
+                    $this->routeRenderer = $this->routeRenderer->doNotConvertUrlsToRootPath();
+
+                    $absolutePath = $this->routeRenderer->convertToRootPath('/', true);
+                    if (!$absolutePath) {
+                        return '';
+                    }
+
+                    return '<base href="' . $absolutePath . '">';
+                },
+                ['is_safe' => ['all']]
+            ),
+            new TwigFunction(
+                'path',
+                function (string $url) : string {
+                    return $this->routeRenderer->convertToRootPath($url);
+                }
+            ),
+            new TwigFunction(
+                'link',
+                function (object $element) : string {
+                    return $this->routeRenderer->link($element);
+                }
+            ),
             new TwigFunction(
                 'breadcrumbs',
-                static function (DescriptorAbstract $baseNode) {
+                static function (DescriptorAbstract $baseNode) : array {
                     $results = [];
                     $namespace = $baseNode instanceof NamespaceDescriptor
                         ? $baseNode->getParent()
@@ -143,7 +172,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             ),
             new TwigFunction(
                 'packages',
-                static function (DescriptorAbstract $baseNode) {
+                static function (DescriptorAbstract $baseNode) : array {
                     $results = [];
                     $package = $baseNode instanceof PackageDescriptor
                         ? $baseNode->getParent()
@@ -156,54 +185,63 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
                     return $results;
                 }
             ),
-            new TwigFunction('methods', static function (DescriptorAbstract $descriptor) : Collection {
-                $methods = new Collection();
-                if (method_exists($descriptor, 'getInheritedMethods')) {
-                    $methods = $methods->merge($descriptor->getInheritedMethods());
-                }
+            new TwigFunction(
+                'methods',
+                static function (DescriptorAbstract $descriptor) : Collection {
+                    $methods = new Collection();
+                    if (method_exists($descriptor, 'getInheritedMethods')) {
+                        $methods = $methods->merge($descriptor->getInheritedMethods());
+                    }
 
-                if (method_exists($descriptor, 'getMagicMethods')) {
-                    $methods = $methods->merge($descriptor->getMagicMethods());
-                }
+                    if (method_exists($descriptor, 'getMagicMethods')) {
+                        $methods = $methods->merge($descriptor->getMagicMethods());
+                    }
 
-                if (method_exists($descriptor, 'getMethods')) {
-                    $methods = $methods->merge($descriptor->getMethods());
-                }
+                    if (method_exists($descriptor, 'getMethods')) {
+                        $methods = $methods->merge($descriptor->getMethods());
+                    }
 
-                return $methods;
-            }),
-            new TwigFunction('properties', static function (DescriptorAbstract $descriptor) : Collection {
-                $properties = new Collection();
-                if (method_exists($descriptor, 'getInheritedProperties')) {
-                    $properties = $properties->merge($descriptor->getInheritedProperties());
+                    return $methods;
                 }
+            ),
+            new TwigFunction(
+                'properties',
+                static function (DescriptorAbstract $descriptor) : Collection {
+                    $properties = new Collection();
+                    if (method_exists($descriptor, 'getInheritedProperties')) {
+                        $properties = $properties->merge($descriptor->getInheritedProperties());
+                    }
 
-                if (method_exists($descriptor, 'getMagicProperties')) {
-                    $properties = $properties->merge($descriptor->getMagicProperties());
+                    if (method_exists($descriptor, 'getMagicProperties')) {
+                        $properties = $properties->merge($descriptor->getMagicProperties());
+                    }
+
+                    if (method_exists($descriptor, 'getProperties')) {
+                        $properties = $properties->merge($descriptor->getProperties());
+                    }
+
+                    return $properties;
                 }
+            ),
+            new TwigFunction(
+                'constants',
+                static function (DescriptorAbstract $descriptor) : Collection {
+                    $constants = new Collection();
+                    if (method_exists($descriptor, 'getInheritedConstants')) {
+                        $constants = $constants->merge($descriptor->getInheritedConstants());
+                    }
 
-                if (method_exists($descriptor, 'getProperties')) {
-                    $properties = $properties->merge($descriptor->getProperties());
+                    if (method_exists($descriptor, 'getMagicConstants')) {
+                        $constants = $constants->merge($descriptor->getMagicConstants());
+                    }
+
+                    if (method_exists($descriptor, 'getConstants')) {
+                        $constants = $constants->merge($descriptor->getConstants());
+                    }
+
+                    return $constants;
                 }
-
-                return $properties;
-            }),
-            new TwigFunction('constants', static function (DescriptorAbstract $descriptor) : Collection {
-                $constants = new Collection();
-                if (method_exists($descriptor, 'getInheritedConstants')) {
-                    $constants = $constants->merge($descriptor->getInheritedConstants());
-                }
-
-                if (method_exists($descriptor, 'getMagicConstants')) {
-                    $constants = $constants->merge($descriptor->getMagicConstants());
-                }
-
-                if (method_exists($descriptor, 'getConstants')) {
-                    $constants = $constants->merge($descriptor->getConstants());
-                }
-
-                return $constants;
-            }),
+            ),
         ];
     }
 
@@ -214,18 +252,16 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
      */
     public function getFilters() : array
     {
-        $parser = Parsedown::instance();
-        $parser->setSafeMode(true);
         $routeRenderer = $this->routeRenderer;
 
         return [
             'markdown' => new TwigFilter(
                 'markdown',
-                static function (?string $value) use ($parser) : string {
+                function (?string $value) : string {
                     return str_replace(
                         ['<pre>', '<code>'],
                         ['<pre class="prettyprint">', '<code class="prettyprint">'],
-                        $parser->text($value)
+                        $this->markdownConverter->convertToHtml($value ?? '')
                     );
                 },
                 ['is_safe' => ['all']]
@@ -238,11 +274,8 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             ),
             'route' => new TwigFilter(
                 'route',
-                static function (
-                    $value,
-                    string $presentation = LinkRenderer::PRESENTATION_NORMAL
-                ) use ($routeRenderer) {
-                    return $routeRenderer->render($value, $presentation);
+                function ($value, string $presentation = LinkRenderer::PRESENTATION_NORMAL) {
+                    return $this->routeRenderer->render($value, $presentation);
                 },
                 ['is_safe' => ['all']]
             ),
@@ -313,7 +346,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             ),
             'description' => new TwigFilter(
                 'description',
-                static function (?DescriptionDescriptor $description) use ($routeRenderer) {
+                function (?DescriptionDescriptor $description) {
                     if ($description === null || $description->getBodyTemplate() === '') {
                         return '';
                     }
@@ -321,7 +354,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
                     $tagStrings = [];
                     foreach ($description->getTags() as $tag) {
                         if ($tag instanceof SeeDescriptor) {
-                            $tagStrings[] = $routeRenderer->render(
+                            $tagStrings[] = $this->routeRenderer->render(
                                 $tag->getReference(),
                                 LinkRenderer::PRESENTATION_CLASS_SHORT
                             );

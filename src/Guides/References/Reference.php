@@ -34,7 +34,7 @@ abstract class Reference
      * Resolve the reference and returns an array
      *
      * @param Environment $environment the Environment in use
-     * @param string      $data        the data of the reference
+     * @param string $data the data of the reference
      */
     abstract public function resolve(Environment $environment, string $data) : ?ResolvedReference;
 
@@ -42,7 +42,7 @@ abstract class Reference
      * Called when a reference is just found
      *
      * @param Environment $environment the Environment in use
-     * @param string      $data        the data of the reference
+     * @param string $data the data of the reference
      */
     public function found(Environment $environment, string $data) : void
     {

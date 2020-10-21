@@ -98,27 +98,32 @@ final class Environment
     /** @var Renderer */
     private $renderer;
 
-    public function __construct(Configuration $configuration, Renderer $renderer, LoggerInterface $logger, FilesystemInterface $origin)
-    {
+    public function __construct(
+        Configuration $configuration,
+        Renderer $renderer,
+        LoggerInterface $logger,
+        FilesystemInterface $origin,
+        Metas $metas
+    ) {
         $this->configuration = $configuration;
         $this->renderer = $renderer;
         $this->origin = $origin;
         $this->logger = $logger;
-        $this->urlGenerator  = new UrlGenerator($this->configuration);
-        $this->metas         = new Metas();
+        $this->urlGenerator = new UrlGenerator();
+        $this->metas = $metas;
 
         $this->reset();
     }
 
     public function reset() : void
     {
-        $this->titleLetters      = [];
+        $this->titleLetters = [];
         $this->currentTitleLevel = 0;
-        $this->levels            = [];
-        $this->counters          = [];
+        $this->levels = [];
+        $this->counters = [];
 
         for ($level = 0; $level < 16; $level++) {
-            $this->levels[$level]   = 1;
+            $this->levels[$level] = 1;
             $this->counters[$level] = 0;
         }
     }
@@ -133,7 +138,7 @@ final class Environment
         $this->metas = $metas;
     }
 
-    public function setNodeFactory(Factory $nodeFactory)
+    public function setNodeFactory(Factory $nodeFactory) : void
     {
         $this->nodeFactory = $nodeFactory;
     }
@@ -155,7 +160,7 @@ final class Environment
 
     public function resolve(string $section, string $data) : ?ResolvedReference
     {
-        if (! isset($this->references[$section])) {
+        if (!isset($this->references[$section])) {
             $this->addMissingReferenceSectionError($section);
 
             return null;
@@ -170,7 +175,7 @@ final class Environment
 
             if ($this->getMetaEntry() !== null) {
                 $this->getMetaEntry()->removeDependency(
-                    // use the original name
+                // use the original name
                     $this->originalDependencyNames[$data] ?? $data
                 );
             }
@@ -180,7 +185,7 @@ final class Environment
 
         if (isset($this->unresolvedDependencies[$data]) && $this->getMetaEntry() !== null) {
             $this->getMetaEntry()->resolveDependency(
-                // use the unique, unresolved name
+            // use the unique, unresolved name
                 $this->unresolvedDependencies[$data],
                 $resolvedReference->getFile()
             );
@@ -235,7 +240,7 @@ final class Environment
                 continue;
             }
 
-            $this->levels[$currentLevel]   = 1;
+            $this->levels[$currentLevel] = 1;
             $this->counters[$currentLevel] = 0;
         }
 
@@ -319,7 +324,7 @@ final class Environment
     {
         if ($requiresResolving) {
             // a hack to avoid collisions between resolved and unresolved dependencies
-            $dependencyName                            = 'UNRESOLVED__' . $dependency;
+            $dependencyName = 'UNRESOLVED__' . $dependency;
             $this->unresolvedDependencies[$dependency] = $dependencyName;
             // map the original dependency name to the one that will be stored
             $this->originalDependencyNames[$dependency] = $dependencyName;
@@ -329,10 +334,12 @@ final class Environment
             $canonicalDependency = $this->canonicalUrl($dependency);
 
             if ($canonicalDependency === null) {
-                throw new InvalidArgumentException(sprintf(
-                    'Could not get canonical url for dependency %s',
-                    $dependency
-                ));
+                throw new InvalidArgumentException(
+                    sprintf(
+                        'Could not get canonical url for dependency %s',
+                        $dependency
+                    )
+                );
             }
 
             $dependencyName = $canonicalDependency;
@@ -357,7 +364,9 @@ final class Environment
 
     public function relativeUrl(?string $url) : ?string
     {
-        return $this->urlGenerator->relativeUrl($url, $this->currentFileName);
+        $basePath = '/' . $this->getConfiguration()->getOutputFolder() . '/' . $this->getCurrentFileName() . '.html';
+
+        return $this->urlGenerator->relativeUrl($basePath, $url);
     }
 
     public function absoluteUrl(string $url) : string
@@ -372,11 +381,7 @@ final class Environment
 
     public function generateUrl(string $path) : string
     {
-        return $this->urlGenerator->generateUrl(
-            $path,
-            $this->currentFileName,
-            $this->getDirName()
-        );
+        return $this->urlGenerator->generateUrl($path, $this->getDirName());
     }
 
     public function getDirName() : string
@@ -400,7 +405,7 @@ final class Environment
         return $this->currentFileName;
     }
 
-    public function getOrigin(): FilesystemInterface
+    public function getOrigin() : FilesystemInterface
     {
         return $this->origin;
     }
@@ -495,10 +500,12 @@ final class Environment
 
     private function addMissingReferenceSectionError(string $section) : void
     {
-        $this->addError(sprintf(
-            'Unknown reference section "%s"%s',
-            $section,
-            $this->getCurrentFileName() !== '' ? sprintf(' in "%s" ', $this->getCurrentFileName()) : ''
-        ));
+        $this->addError(
+            sprintf(
+                'Unknown reference section "%s"%s',
+                $section,
+                $this->getCurrentFileName() !== '' ? sprintf(' in "%s" ', $this->getCurrentFileName()) : ''
+            )
+        );
     }
 }

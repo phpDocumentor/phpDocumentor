@@ -13,6 +13,9 @@ use League\Flysystem\FilesystemInterface;
 use phpDocumentor\Guides\Files;
 use phpDocumentor\Guides\Metas;
 use function sprintf;
+use function strlen;
+use function substr;
+use function trim;
 
 class Scanner
 {
@@ -37,6 +40,7 @@ class Scanner
     public function scan(FilesystemInterface $filesystem, string $directory, string $extension) : Files
     {
         $directory = trim($directory, '/');
+        /** @var array<array<string>> $files */
         $files = $filesystem->find(
             new AndSpecification(new InPath(new Path($directory)), new HasExtension([$extension]))
         );
@@ -67,14 +71,16 @@ class Scanner
 
     private function doesFileRequireParsing(string $filename) : bool
     {
-        if (! isset($this->fileInfos[$filename])) {
-            throw new InvalidArgumentException(sprintf('No file info found for "%s" - file does not exist.', $filename));
+        if (!isset($this->fileInfos[$filename])) {
+            throw new InvalidArgumentException(
+                sprintf('No file info found for "%s" - file does not exist.', $filename)
+            );
         }
 
         $file = $this->fileInfos[$filename];
 
         $documentFilename = $this->getFilenameFromFile($file);
-        $entry            = $this->metas->get($documentFilename);
+        $entry = $this->metas->get($documentFilename);
 
         if ($this->hasFileBeenUpdated($filename)) {
             // File is new or changed and thus need to be parsed
@@ -105,7 +111,7 @@ class Scanner
              */
 
             // dependency no longer exists? We should re-parse this file
-            if (! isset($this->fileInfos[$dependency])) {
+            if (!isset($this->fileInfos[$dependency])) {
                 return true;
             }
 
@@ -121,10 +127,13 @@ class Scanner
 
     private function hasFileBeenUpdated(string $filename) : bool
     {
+        /** @var array<string> $file */
         $file = $this->fileInfos[$filename];
 
         $documentFilename = $this->getFilenameFromFile($file);
-        $entry            = $this->metas->get($documentFilename);
+
+        /** @var array<string>|null $entry */
+        $entry = $this->metas->get($documentFilename);
 
         // File is new or changed
         return $entry === null || $entry['timestamp'] < $file['timestamp'];
@@ -132,10 +141,13 @@ class Scanner
 
     /**
      * Converts foo/bar.rst to foo/bar (the document filename)
+     *
+     * @param array<string> $fileInfo
      */
     private function getFilenameFromFile(array $fileInfo) : string
     {
         $directory = $fileInfo['dirname'] ? $fileInfo['dirname'] . '/' : '';
+
         return $directory . $fileInfo['filename'];
     }
 }

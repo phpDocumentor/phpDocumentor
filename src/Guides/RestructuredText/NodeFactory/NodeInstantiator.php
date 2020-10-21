@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\NodeFactory;
 
-use Doctrine\Common\EventManager;
 use InvalidArgumentException;
 use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Nodes\Node;
@@ -25,9 +24,6 @@ class NodeInstantiator
     /** @var NodeRendererFactory|null */
     private $nodeRendererFactory;
 
-    /** @var EventManager|null */
-    private $eventManager;
-
     /** @var Environment|null */
     private $environment;
 
@@ -35,26 +31,24 @@ class NodeInstantiator
         string $type,
         string $className,
         ?NodeRendererFactory $nodeRendererFactory = null,
-        ?EventManager $eventManager = null,
         ?Environment $environment = null
     ) {
-        if (! in_array($type, NodeTypes::NODES, true)) {
+        if (!in_array($type, NodeTypes::NODES, true)) {
             throw new InvalidArgumentException(
                 sprintf('Node type %s is not a valid node type.', $type)
             );
         }
 
-        if (! is_subclass_of($className, Node::class)) {
+        if (!is_subclass_of($className, Node::class)) {
             throw new InvalidArgumentException(
                 sprintf('%s class is not a subclass of %s', $className, Node::class)
             );
         }
 
-        $this->type                = $type;
-        $this->className           = $className;
+        $this->type = $type;
+        $this->className = $className;
         $this->nodeRendererFactory = $nodeRendererFactory;
-        $this->eventManager        = $eventManager;
-        $this->environment         = $environment;
+        $this->environment = $environment;
     }
 
     public function getType() : string
@@ -76,10 +70,6 @@ class NodeInstantiator
 
         if ($this->nodeRendererFactory !== null) {
             $node->setNodeRendererFactory($this->nodeRendererFactory);
-        }
-
-        if ($this->eventManager !== null) {
-            $node->setEventManager($this->eventManager);
         }
 
         return $node;

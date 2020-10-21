@@ -22,7 +22,7 @@ use phpDocumentor\Reflection\ProjectFactory;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Symfony\Component\Stopwatch\Stopwatch;
-use function assert;
+use Webmozart\Assert\Assert;
 use function count;
 use function ini_get;
 use function round;
@@ -44,9 +44,6 @@ class Parser
 
     /** @var string[] which markers (i.e. TODO or FIXME) to collect */
     private $markers = ['TODO', 'FIXME'];
-
-    /** @var string[] which tags to ignore */
-    private $ignoredTags = [];
 
     /** @var string target location's root path */
     private $path = '';
@@ -127,26 +124,6 @@ class Parser
     }
 
     /**
-     * Sets a list of tags to ignore.
-     *
-     * @param string[] $ignoredTags A list of tags to ignore.
-     */
-    public function setIgnoredTags(array $ignoredTags) : void
-    {
-        $this->ignoredTags = $ignoredTags;
-    }
-
-    /**
-     * Returns the list of ignored tags.
-     *
-     * @return string[]
-     */
-    public function getIgnoredTags() : array
-    {
-        return $this->ignoredTags;
-    }
-
-    /**
      * Sets the base path of the files that will be parsed.
      *
      * @param string $path Must be an absolute path.
@@ -216,7 +193,7 @@ class Parser
         $this->startTimingTheParsePhase();
 
         $event = PreParsingEvent::createInstance($this);
-        assert($event instanceof PreParsingEvent);
+        Assert::isInstanceOf($event, PreParsingEvent::class);
         Dispatcher::getInstance()
             ->dispatch(
                 $event->setFileCount(count($files)),

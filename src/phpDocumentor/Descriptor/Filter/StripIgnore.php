@@ -14,30 +14,22 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Filter;
 
 use phpDocumentor\Descriptor\DescriptorAbstract;
-use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 
 /**
  * Strips any Descriptor if the ignore tag is present with that element.
  */
 class StripIgnore implements FilterInterface
 {
-    /** @var ProjectDescriptorBuilder $builder */
-    protected $builder;
-
-    /**
-     * Initializes this filter with an instance of the builder to retrieve the latest ProjectDescriptor from.
-     */
-    public function __construct(ProjectDescriptorBuilder $builder)
-    {
-        $this->builder = $builder;
-    }
-
     /**
      * Filter Descriptor with ignore tags.
      */
-    public function __invoke(?DescriptorAbstract $value) : ?DescriptorAbstract
+    public function __invoke(Filterable $value) : ?Filterable
     {
-        if ($value !== null && $value->getTags()->fetch('ignore')) {
+        if (!$value instanceof DescriptorAbstract) {
+            return $value;
+        }
+
+        if ($value->getTags()->fetch('ignore')) {
             return null;
         }
 

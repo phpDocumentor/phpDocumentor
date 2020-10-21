@@ -33,7 +33,7 @@ class ProjectDescriptorBuilder
     /** @var string */
     public const DEFAULT_PROJECT_NAME = 'Untitled project';
 
-    /** @var AssemblerFactory $assemblerFactory */
+    /** @var AssemblerFactory<object, Descriptor> $assemblerFactory */
     protected $assemblerFactory;
 
     /** @var Filter $filter */
@@ -48,7 +48,11 @@ class ProjectDescriptorBuilder
     /** @var iterable<WithCustomSettings> */
     private $servicesWithCustomSettings;
 
+    /** @var string[] */
+    private $ignoredTags = [];
+
     /**
+     * @param AssemblerFactory<object, Descriptor> $assemblerFactory
      * @param iterable<WithCustomSettings> $servicesWithCustomSettings
      */
     public function __construct(
@@ -77,14 +81,12 @@ class ProjectDescriptorBuilder
     /**
      * Takes the given data and attempts to build a Descriptor from it.
      *
-     * @param TInput $data
      * @param class-string<TDescriptor> $type
      *
      * @return TDescriptor|null
      *
      * @throws InvalidArgumentException If no Assembler could be found that matches the given data.
      *
-     * @template TInput of object
      * @template TDescriptor of Descriptor
      */
     public function buildDescriptor(object $data, string $type) : ?Descriptor
@@ -102,10 +104,7 @@ class ProjectDescriptorBuilder
         }
 
         // create Descriptor and populate with the provided data
-        /** @var TDescriptor|null $descriptor */
-        $descriptor = $this->filterDescriptor($assembler->create($data));
-
-        return $descriptor;
+        return $this->filterDescriptor($assembler->create($data));
     }
 
     /**
@@ -114,7 +113,7 @@ class ProjectDescriptorBuilder
      * @param TInput $data
      * @param class-string<TDescriptor> $type
      *
-     * @return AssemblerInterface<Descriptor, TInput>|null
+     * @return AssemblerInterface<TDescriptor, TInput>|null
      *
      * @template TInput as object
      * @template TDescriptor as Descriptor
@@ -155,7 +154,6 @@ class ProjectDescriptorBuilder
         }
 
         // filter the descriptor; this may result in the descriptor being removed!
-        /** @var TDescriptor|null $descriptor */
         $descriptor = $this->filter($descriptor);
 
         return $descriptor;
@@ -283,5 +281,17 @@ class ProjectDescriptorBuilder
     public function addVersion(VersionDescriptor $version) : void
     {
         $this->project->getVersions()->add($version);
+    }
+
+    /** @param string[] $ignoredTags */
+    public function setIgnoredTags(array $ignoredTags) : void
+    {
+        $this->ignoredTags = $ignoredTags;
+    }
+
+    /** @return string[] */
+    public function getIgnoredTags() : array
+    {
+        return $this->ignoredTags;
     }
 }

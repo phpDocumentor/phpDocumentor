@@ -9,25 +9,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  *
  * @link https://phpdoc.org
- * @author Ryan Weaver <ryan@symfonycasts.com> on the original DocBuilder.
- * @author Mike van Riel <me@mikevanriel.com> for adapting this to phpDocumentor.
  */
 
 namespace phpDocumentor\Guides\RestructuredText\Listener;
 
 use phpDocumentor\Guides\RestructuredText\Event\PreNodeRenderEvent;
-use Psr\Log\LoggerInterface;
 
 class CopyImagesListener
 {
-    /** @var LoggerInterface */
-    private $logger;
-
-    public function __construct(LoggerInterface $logger)
-    {
-        $this->logger = $logger;
-    }
-
     public function preNodeRender(PreNodeRenderEvent $event) : void
     {
 //        $node = $event->getNode();

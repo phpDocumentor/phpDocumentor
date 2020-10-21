@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Router;
 
-use League\Uri\Uri;
+use League\Uri\Contracts\UriInterface;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\ConstantDescriptor;
 use phpDocumentor\Descriptor\Descriptor;
@@ -53,7 +53,7 @@ class Router
     }
 
     /**
-     * @param Descriptor|Fqsen|Uri $node
+     * @param Descriptor|Fqsen|UriInterface $node
      */
     public function generate(object $node) : string
     {
@@ -134,7 +134,7 @@ class Router
         }
 
         // if this is a link to an external page; return that URL
-        if ($node instanceof Uri) {
+        if ($node instanceof UriInterface) {
             return (string) $node;
         }
 

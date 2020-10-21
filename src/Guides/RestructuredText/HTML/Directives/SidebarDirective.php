@@ -9,8 +9,6 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  *
  * @link https://phpdoc.org
- * @author Ryan Weaver <ryan@symfonycasts.com> on the original DocBuilder.
- * @author Mike van Riel <me@mikevanriel.com> for adapting this to phpDocumentor.
  */
 
 namespace phpDocumentor\Guides\RestructuredText\HTML\Directives;
@@ -29,12 +27,10 @@ class SidebarDirective extends SubDirective
     public function processSub(Parser $parser, ?Node $document, string $variable, string $data, array $options) : ?Node
     {
         $environment = $document->getEnvironment();
-        $wrapperDiv = function() use ($environment, $data) {
+        $wrapperDiv = static function () use ($environment, $data) {
             $environment->getRenderer()->render(
                 'directives/sidebar.html.twig',
-                [
-                    'title' => $data,
-                ]
+                ['title' => $data]
             );
         };
 

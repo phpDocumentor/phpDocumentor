@@ -43,7 +43,7 @@ final class DescriptionAssemblerReducer extends AssemblerAbstract implements Ass
     /**
      * @param Tag[] $tags
      *
-     * @return TagDescriptor[]
+     * @return list<TagDescriptor|null>
      */
     private function createTags(array $tags) : array
     {

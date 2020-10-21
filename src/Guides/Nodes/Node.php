@@ -32,9 +32,6 @@ abstract class Node
     /** @var NodeRendererFactory|null */
     private $nodeRendererFactory;
 
-    /** @var EventManager|null */
-    private $eventManager;
-
     /** @var Environment|null */
     protected $environment;
 
@@ -57,11 +54,6 @@ abstract class Node
         $this->nodeRendererFactory = $nodeRendererFactory;
     }
 
-    public function setEventManager(EventManager $eventManager) : void
-    {
-        $this->eventManager = $eventManager;
-    }
-
     public function setEnvironment(Environment $environment) : void
     {
         $this->environment = $environment;
@@ -74,17 +66,7 @@ abstract class Node
 
     public function render() : string
     {
-        $this->dispatchEvent(
-            PreNodeRenderEvent::PRE_NODE_RENDER,
-            new PreNodeRenderEvent($this)
-        );
-
         $renderedNode = new RenderedNode($this, $this->doRender());
-
-        $this->dispatchEvent(
-            PostNodeRenderEvent::POST_NODE_RENDER,
-            new PostNodeRenderEvent($renderedNode)
-        );
 
         return $renderedNode->getRendered();
     }
@@ -132,7 +114,7 @@ abstract class Node
             return '';
         }
 
-        if ($this->value instanceof Node) {
+        if ($this->value instanceof self) {
             return $this->value->getValueString();
         }
 
@@ -146,8 +128,6 @@ abstract class Node
     {
         if ($lines !== []) {
             $firstLine = $lines[0];
-
-            $k = 0;
 
             for ($k = 0; $k < strlen($firstLine); $k++) {
                 if (trim($firstLine[$k]) !== '') {
@@ -191,14 +171,5 @@ abstract class Node
     private function createDefaultRenderer() : NodeRenderer
     {
         return new DefaultNodeRenderer($this);
-    }
-
-    public function dispatchEvent(string $eventName, ?EventArgs $eventArgs = null) : void
-    {
-        if ($this->eventManager === null) {
-            return;
-        }
-
-        $this->eventManager->dispatchEvent($eventName, $eventArgs);
     }
 }

@@ -11,7 +11,7 @@ use function implode;
 class Buffer
 {
     /** @var string[] */
-    private $lines = [];
+    private $lines;
 
     /**
      * @param string[] $lines
@@ -73,7 +73,7 @@ class Buffer
     {
         $lastLineKey = count($this->lines) - 1;
 
-        if (! isset($this->lines[$lastLineKey])) {
+        if (!isset($this->lines[$lastLineKey])) {
             return null;
         }
 

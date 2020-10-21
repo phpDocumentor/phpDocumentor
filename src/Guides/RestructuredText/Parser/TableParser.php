@@ -34,7 +34,7 @@ class TableParser
     {
         $header = false;
         $pretty = false;
-        $line   = trim($line);
+        $line = trim($line);
 
         if ($line === '') {
             return null;
@@ -60,7 +60,7 @@ class TableParser
             // either a simple table or not a separator line
 
             // if line char is not "=" or "-", not a separator line
-            if (! in_array($chars[0], [self::SIMPLE_TABLE_LETTER, self::SIMPLE_TABLE_LETTER_ALT], true)) {
+            if (!in_array($chars[0], [self::SIMPLE_TABLE_LETTER, self::SIMPLE_TABLE_LETTER_ALT], true)) {
                 return null;
             }
 
@@ -74,7 +74,6 @@ class TableParser
         /** @var int|null $currentPartStart */
         $currentPartStart = null;
 
-        $i = 0;
         for ($i = 0; $i < strlen($line); $i++) {
             // we found the "line char": "-" or "="
             if ($line[$i] === $chars[0]) {
@@ -95,7 +94,7 @@ class TableParser
                 continue;
             }
 
-            $parts[]          = [$currentPartStart, $i];
+            $parts[] = [$currentPartStart, $i];
             $currentPartStart = null;
         }
 
@@ -133,7 +132,7 @@ class TableParser
      */
     private function findTableChars(string $line) : ?array
     {
-        $lineChar  = $line[0];
+        $lineChar = $line[0];
         $spaceChar = null;
 
         for ($i = 0; $i < strlen($line); $i++) {

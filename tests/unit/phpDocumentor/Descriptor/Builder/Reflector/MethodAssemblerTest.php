@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
-use Mockery as m;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\ArgumentDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock;
@@ -23,16 +21,19 @@ use phpDocumentor\Reflection\Php\Argument;
 use phpDocumentor\Reflection\Php\Method;
 use phpDocumentor\Reflection\Php\Visibility;
 use phpDocumentor\Reflection\Types\String_;
+use PHPUnit\Framework\TestCase;
+use Prophecy\Argument as ProphecyArgument;
+use Prophecy\Prophecy\ObjectProphecy;
 
-class MethodAssemblerTest extends MockeryTestCase
+class MethodAssemblerTest extends TestCase
 {
     /** @var MethodAssembler $fixture */
     protected $fixture;
 
-    /** @var ArgumentAssembler|m\MockInterface */
+    /** @var ArgumentAssembler|ObjectProphecy */
     protected $argumentAssemblerMock;
 
-    /** @var ProjectDescriptorBuilder|m\MockInterface */
+    /** @var ProjectDescriptorBuilder|ObjectProphecy */
     protected $builderMock;
 
     /**
@@ -40,15 +41,15 @@ class MethodAssemblerTest extends MockeryTestCase
      */
     protected function setUp() : void
     {
-        $this->builderMock = m::mock(ProjectDescriptorBuilder::class);
-        $this->builderMock->shouldReceive('buildDescriptor')->andReturn(null);
+        $this->builderMock = $this->prophesize(ProjectDescriptorBuilder::class);
+        $this->builderMock->buildDescriptor(ProphecyArgument::any(), ProphecyArgument::any())->willReturn(null);
 
-        $this->argumentAssemblerMock = m::mock(ArgumentAssembler::class);
-        $this->argumentAssemblerMock->shouldReceive('getBuilder')->once()->andReturn(null);
-        $this->argumentAssemblerMock->shouldReceive('setBuilder')->once();
+        $this->argumentAssemblerMock = $this->prophesize(ArgumentAssembler::class);
+        $this->argumentAssemblerMock->getBuilder()->shouldBeCalledOnce()->willReturn(null);
+        $this->argumentAssemblerMock->setBuilder(ProphecyArgument::any())->shouldBeCalledOnce();
 
-        $this->fixture = new MethodAssembler($this->argumentAssemblerMock);
-        $this->fixture->setBuilder($this->builderMock);
+        $this->fixture = new MethodAssembler($this->argumentAssemblerMock->reveal());
+        $this->fixture->setBuilder($this->builderMock->reveal());
     }
 
     /**
@@ -77,7 +78,10 @@ class MethodAssemblerTest extends MockeryTestCase
         $argumentDescriptor = new ArgumentDescriptor();
         $argumentDescriptor->setName($argumentName);
 
-        $this->argumentAssemblerMock->shouldReceive('create')->andReturn($argumentDescriptor);
+        $this->argumentAssemblerMock
+            ->create(ProphecyArgument::any(), ProphecyArgument::any())
+            ->shouldBeCalled()
+            ->willReturn($argumentDescriptor);
 
         // Act
         $descriptor = $this->fixture->create($methodReflectorMock);
@@ -121,7 +125,10 @@ class MethodAssemblerTest extends MockeryTestCase
         $argumentDescriptor = new ArgumentDescriptor();
         $argumentDescriptor->setName($argumentName);
 
-        $this->argumentAssemblerMock->shouldReceive('create')->andReturn($argumentDescriptor);
+        $this->argumentAssemblerMock
+            ->create(ProphecyArgument::any(), ProphecyArgument::any())
+            ->shouldBeCalled()
+            ->willReturn($argumentDescriptor);
 
         // Act
         $descriptor = $this->fixture->create($methodReflectorMock);
@@ -157,7 +164,10 @@ class MethodAssemblerTest extends MockeryTestCase
         $argumentDescriptor = new ArgumentDescriptor();
         $argumentDescriptor->setName($argumentName);
 
-        $this->argumentAssemblerMock->shouldReceive('create')->andReturn($argumentDescriptor);
+        $this->argumentAssemblerMock
+            ->create(ProphecyArgument::any(), ProphecyArgument::any())
+            ->shouldBeCalled()
+            ->willReturn($argumentDescriptor);
 
         // Act
         $descriptor = $this->fixture->create($methodReflectorMock);

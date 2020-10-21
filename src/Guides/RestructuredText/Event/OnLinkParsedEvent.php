@@ -21,8 +21,8 @@ final class OnLinkParsedEvent extends EventArgs
 
     public function __construct(string $url, string $linkType, string $currentFileName)
     {
-        $this->url             = $url;
-        $this->linkType        = $linkType;
+        $this->url = $url;
+        $this->linkType = $linkType;
         $this->currentFileName = $currentFileName;
     }
 

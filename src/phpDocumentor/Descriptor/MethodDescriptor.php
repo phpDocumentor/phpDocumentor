@@ -17,7 +17,7 @@ use phpDocumentor\Descriptor\Tag\ParamDescriptor;
 use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Type;
-use function assert;
+use Webmozart\Assert\Assert;
 use function current;
 
 /**
@@ -222,7 +222,7 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
     public function getInheritedElement() : ?MethodDescriptor
     {
         if ($this->inheritedElement !== null) {
-            assert($this->inheritedElement instanceof self);
+            Assert::isInstanceOf($this->inheritedElement, self::class);
 
             return $this->inheritedElement;
         }
