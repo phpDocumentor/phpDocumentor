@@ -13,13 +13,15 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Writer\Twig;
 
+use Generator;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Collection;
-use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Reflection\Fqsen;
+use phpDocumentor\Reflection\Type;
 use phpDocumentor\Reflection\Types\Array_;
 use phpDocumentor\Reflection\Types\Integer;
+use phpDocumentor\Reflection\Types\Iterable_;
 use phpDocumentor\Reflection\Types\Mixed_;
 use phpDocumentor\Reflection\Types\Nullable;
 use phpDocumentor\Reflection\Types\Object_;
@@ -28,6 +30,9 @@ use phpDocumentor\Transformer\Router\Router;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
+use function get_class;
+use function gettype;
+use function is_object;
 
 /**
  * @coversDefaultClass \phpDocumentor\Transformer\Writer\Twig\LinkRenderer
@@ -65,53 +70,72 @@ final class LinkRendererTest extends TestCase
     }
 
     /**
+     * @param ClassDescriptor|Fqsen $input
+     *
      * @dataProvider descriptorLinkProvider
      * @covers ::render
      */
-    public function testRenderLinkFromDescriptor(DescriptorAbstract $input, string $presentation, string $output) : void
+    public function testRenderLinkFromDescriptor($input, string $presentation, string $output) : void
     {
+        $classDescriptor = $this->createClassDescriptor(new Fqsen('\My\Namespace\Class'));
         $this->projectDescriptor->getIndexes()->get('elements')
-            ->set((string) $input->getFullyQualifiedStructuralElementName(), $input);
+            ->set((string) $classDescriptor->getFullyQualifiedStructuralElementName(), $classDescriptor);
 
-        $this->router->generate($input)->willReturn('/classes/My.Namespace.Class.html');
+        $this->router->generate($classDescriptor)->willReturn('/classes/My.Namespace.Class.html');
 
         $result = $this->renderer->render($input, $presentation);
 
         self::assertSame($output, $result);
     }
 
-    /** array<string, mixed[]> */
-    public function descriptorLinkProvider() : array
+    /** @return Generator<string, mixed[]> */
+    public function descriptorLinkProvider() : Generator
     {
+        $inputs = [
+            $this->createClassDescriptor(new Fqsen('\My\Namespace\Class')),
+            new Fqsen('\My\Namespace\Class'),
+            new \phpDocumentor\Reflection\DocBlock\Tags\Reference\Fqsen(new Fqsen('\My\Namespace\Class')),
+            '\My\Namespace\Class',
+        ];
+
+        foreach ($inputs as $input) {
+            yield from $this->baseLinkProvider($input);
+        }
+    }
+
+    public function baseLinkProvider($input) : array
+    {
+        $name = is_object($input) ? get_class($input) : gettype($input);
+
         return [
-            'Class with presentation url' => [
-                $this->createClassDescriptor(new Fqsen('\My\Namespace\Class')),
+            $name . ' with presentation url' => [
+                $input,
                 LinkRenderer::PRESENTATION_URL,
                 'classes/My.Namespace.Class.html',
             ],
-            'Class with presentation normal' => [
-                $this->createClassDescriptor(new Fqsen('\My\Namespace\Class')),
+            $name . ' with presentation normal' => [
+                $input,
                 LinkRenderer::PRESENTATION_NORMAL,
                 '<a href="classes/My.Namespace.Class.html"><abbr title="\My\Namespace\Class">Class</abbr></a>',
             ],
-            'Class with presentation class short' => [
-                $this->createClassDescriptor(new Fqsen('\My\Namespace\Class')),
+            $name . ' with presentation class short' => [
+                $input,
                 LinkRenderer::PRESENTATION_CLASS_SHORT,
                 '<a href="classes/My.Namespace.Class.html"><abbr title="\My\Namespace\Class">Class</abbr></a>',
             ],
-            'Class with presentation file short' => [
-                $this->createClassDescriptor(new Fqsen('\My\Namespace\Class')),
+            $name . ' with presentation file short' => [
+                $input,
                 LinkRenderer::PRESENTATION_FILE_SHORT,
                 '<a href="classes/My.Namespace.Class.html">' .
                 '<abbr title="\My\Namespace\Class">\My\Namespace\Class</abbr></a>',
             ],
-            'Class with presentation other' => [
-                $this->createClassDescriptor(new Fqsen('\My\Namespace\Class')),
+            $name . ' with presentation other' => [
+                $input,
                 'other',
                 '<a href="classes/My.Namespace.Class.html"><abbr title="\My\Namespace\Class">other</abbr></a>',
             ],
-            'Class with presentation empty' => [
-                $this->createClassDescriptor(new Fqsen('\My\Namespace\Class')),
+            $name . ' with presentation empty' => [
+                $input,
                 '',
                 '<a href="classes/My.Namespace.Class.html">\My\Namespace\Class</a>',
             ],
@@ -124,24 +148,6 @@ final class LinkRendererTest extends TestCase
         $descriptor->setFullyQualifiedStructuralElementName($fqsen);
 
         return $descriptor;
-    }
-
-    /**
-     * @covers ::render
-     * @covers ::convertToRootPath
-     */
-    public function testRenderWithFqsenAndRepresentationUrl() : void
-    {
-        $fqsen = new Fqsen('\My\Namespace\Class');
-        $descriptor = new ClassDescriptor();
-        $descriptor->setFullyQualifiedStructuralElementName($fqsen);
-        $this->projectDescriptor->getIndexes()->get('elements')->set('\My\Namespace\Class', $descriptor);
-
-        $this->router->generate(Argument::any())->willReturn('/classes/My.Namespace.Class.html');
-
-        $result = $this->renderer->render($fqsen, LinkRenderer::PRESENTATION_URL);
-
-        $this->assertSame('classes/My.Namespace.Class.html', $result);
     }
 
     /**
@@ -232,20 +238,76 @@ final class LinkRendererTest extends TestCase
         );
     }
 
-    public function testRenderCollectionLikeReturnType() : void
+    /**
+     * @dataProvider typeRouteProvider
+     */
+    public function testRenderType(Type $input, string $presentation, string $output) : void
     {
-        $return = new \phpDocumentor\Reflection\Types\Collection(
-            new Fqsen('\My\Namespace\Collection'),
-            new Object_(new Fqsen('\My\Namespace\Class'))
-        );
+        $classDescriptor = $this->createClassDescriptor(new Fqsen('\My\Namespace\Class'));
+        $this->projectDescriptor->getIndexes()->get('elements')
+            ->set((string) $classDescriptor->getFullyQualifiedStructuralElementName(), $classDescriptor);
 
-        $result = $this->renderer->render($return, LinkRenderer::PRESENTATION_CLASS_SHORT);
+        $this->router->generate($classDescriptor)->willReturn('/classes/My.Namespace.Class.html');
 
-        $this->assertSame(
-            '<abbr title="\My\Namespace\Collection">Collection</abbr>&lt;string|int, ' .
-            '<abbr title="\My\Namespace\Class">Class</abbr>&gt;',
-            $result
-        );
+        $result = $this->renderer->render($input, $presentation);
+
+        self::assertSame($output, $result);
+    }
+
+    public function typeRouteProvider() : array
+    {
+        return [
+            'collection with class' => [
+                new \phpDocumentor\Reflection\Types\Collection(
+                    new Fqsen('\My\Namespace\Collection'),
+                    new Object_(new Fqsen('\My\Namespace\Class'))
+                ),
+                LinkRenderer::PRESENTATION_CLASS_SHORT,
+                '<abbr title="\My\Namespace\Collection">Collection</abbr>&lt;string|int, ' .
+                '<a href="classes/My.Namespace.Class.html"><abbr title="\My\Namespace\Class">Class</abbr></a>&gt;',
+            ],
+            'collection with not existing class' => [
+                new \phpDocumentor\Reflection\Types\Collection(
+                    new Fqsen('\My\Namespace\Collection'),
+                    new Object_(new Fqsen('\My\Namespace\OtherClass'))
+                ),
+                LinkRenderer::PRESENTATION_CLASS_SHORT,
+                '<abbr title="\My\Namespace\Collection">Collection</abbr>&lt;string|int, ' .
+                '<abbr title="\My\Namespace\OtherClass">OtherClass</abbr>&gt;',
+            ],
+            'array with scalar only' => [
+                new Array_(
+                    new String_(),
+                    new Array_(new String_(), new Mixed_())
+                ),
+                LinkRenderer::PRESENTATION_CLASS_SHORT,
+                'array&lt;array&lt;mixed, string&gt;, string&gt;',
+            ],
+            'array with class link' => [
+                new Array_(
+                    new Object_(new Fqsen('\My\Namespace\Class')),
+                    new String_()
+                ),
+                LinkRenderer::PRESENTATION_CLASS_SHORT,
+                'array&lt;string, <a href="classes/My.Namespace.Class.html">' .
+                '<abbr title="\My\Namespace\Class">Class</abbr></a>&gt;',
+            ],
+            'array without key' => [
+                new Array_(
+                    new String_()
+                ),
+                LinkRenderer::PRESENTATION_CLASS_SHORT,
+                'array&lt;string|int, string&gt;',
+            ],
+            'iteratable with scalar only' => [
+                new Iterable_(
+                    new String_(),
+                    new Iterable_(new String_(), new Mixed_())
+                ),
+                LinkRenderer::PRESENTATION_CLASS_SHORT,
+                'iteratable&lt;iteratable&lt;mixed, string&gt;, string&gt;',
+            ],
+        ];
     }
 
     /**
