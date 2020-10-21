@@ -36,7 +36,7 @@ final class Provider extends Base
 
     public function transformation(?Template $template = null) : Transformation
     {
-        return new Transformation($template ?: $this->template(), '', '', '', '');
+        return new Transformation($template ?? $this->template(), '', '', '', '');
     }
 
     public function transformer(?Template\Collection $templateCollection = null) : Transformer

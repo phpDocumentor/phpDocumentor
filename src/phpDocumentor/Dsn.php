@@ -116,7 +116,7 @@ final class Dsn
      */
     public function getHost() : string
     {
-        return $this->uri->getHost() ?: '';
+        return $this->uri->getHost() ?? '';
     }
 
     /**
@@ -146,7 +146,7 @@ final class Dsn
      */
     public function getUsername() : string
     {
-        return explode(':', $this->uri->getUserInfo() ?: '')[0];
+        return explode(':', $this->uri->getUserInfo() ?? '')[0];
     }
 
     /**
@@ -154,7 +154,7 @@ final class Dsn
      */
     public function getPassword() : string
     {
-        return explode(':', $this->uri->getUserInfo() ?: '')[1] ?? '';
+        return explode(':', $this->uri->getUserInfo() ?? '')[1] ?? '';
     }
 
     /**
@@ -184,7 +184,7 @@ final class Dsn
     public function getQuery() : array
     {
         $result = [];
-        parse_str($this->uri->getQuery() ?: '', $result);
+        parse_str($this->uri->getQuery() ?? '', $result);
 
         return $result;
     }

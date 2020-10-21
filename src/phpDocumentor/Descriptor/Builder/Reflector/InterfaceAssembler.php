@@ -41,7 +41,7 @@ class InterfaceAssembler extends AssemblerAbstract
         $interfaceDescriptor->setFullyQualifiedStructuralElementName($data->getFqsen());
         $interfaceDescriptor->setName($data->getName());
         $interfaceDescriptor->setLine($data->getLocation()->getLineNumber());
-        $interfaceDescriptor->setPackage($this->extractPackageFromDocBlock($data->getDocBlock()) ?: '');
+        $interfaceDescriptor->setPackage($this->extractPackageFromDocBlock($data->getDocBlock()) ?? '');
 
         // Reflection library formulates namespace as global but this is not wanted for phpDocumentor itself
         $interfaceDescriptor->setNamespace(substr((string) $data->getFqsen(), 0, -strlen($data->getName()) - 1));

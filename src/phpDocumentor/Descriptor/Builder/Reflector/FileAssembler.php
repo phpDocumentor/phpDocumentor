@@ -47,7 +47,7 @@ class FileAssembler extends AssemblerAbstract
     {
         $fileDescriptor = new FileDescriptor($data->getHash());
         $fileDescriptor->setPackage(
-            $this->extractPackageFromDocBlock($data->getDocBlock()) ?: $this->getBuilder()->getDefaultPackage()
+            $this->extractPackageFromDocBlock($data->getDocBlock()) ?? $this->getBuilder()->getDefaultPackage()
         );
 
         $fileDescriptor->setName($data->getName());

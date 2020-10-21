@@ -133,7 +133,7 @@ class ConstantDescriptor extends DescriptorAbstract implements
      */
     public function getFile() : FileDescriptor
     {
-        return parent::getFile() ?: $this->getParent()->getFile();
+        return parent::getFile() ?? $this->getParent()->getFile();
     }
 
     /**

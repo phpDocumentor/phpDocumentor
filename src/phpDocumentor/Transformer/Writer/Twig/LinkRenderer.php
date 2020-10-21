@@ -251,11 +251,11 @@ final class LinkRenderer
         }
 
         if ($node instanceof Object_) {
-            $node = $node->getFqsen() ?: $node;
+            $node = $node->getFqsen() ?? $node;
         }
 
         if ($node instanceof Fqsen) {
-            $node = $this->project->findElement($node) ?: $node;
+            $node = $this->project->findElement($node) ?? $node;
         }
 
         if ($node instanceof AbstractList) {
