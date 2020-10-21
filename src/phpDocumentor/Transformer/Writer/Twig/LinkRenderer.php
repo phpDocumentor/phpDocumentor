@@ -24,7 +24,10 @@ use phpDocumentor\Path;
 use phpDocumentor\Reflection\DocBlock\Tags\Reference;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Type;
+use phpDocumentor\Reflection\Types\AbstractList;
+use phpDocumentor\Reflection\Types\Array_;
 use phpDocumentor\Reflection\Types\Collection;
+use phpDocumentor\Reflection\Types\Iterable_;
 use phpDocumentor\Reflection\Types\Null_;
 use phpDocumentor\Reflection\Types\Nullable;
 use phpDocumentor\Reflection\Types\Object_;
@@ -255,12 +258,8 @@ final class LinkRenderer
             $node = $this->project->findElement($node) ?: $node;
         }
 
-        if ($node instanceof Collection) {
-            $valueLink = $this->renderLink($node->getValueType(), $presentation);
-            $keyLink = $this->renderLink($node->getKeyType(), $presentation);
-            $typeLink = $this->renderLink($node->getFqsen(), $presentation);
-
-            return sprintf('%s&lt;%s, %s&gt;', $typeLink, $keyLink, $valueLink);
+        if ($node instanceof AbstractList) {
+            return $this->renderAbstractListLinks($node, $presentation);
         }
 
         // With an unlinked object, we don't know if the page for it exists; so we don't render a link to it.
@@ -391,5 +390,26 @@ final class LinkRenderer
         }
 
         return new Fqsen($strippedAtSign);
+    }
+
+    private function renderAbstractListLinks(AbstractList $node, string $presentation) : string
+    {
+        $typeLink = null;
+        $valueLink = $this->renderLink($node->getValueType(), $presentation);
+        $keyLink = $this->renderLink($node->getKeyType(), $presentation);
+
+        if ($node instanceof Collection) {
+            $typeLink = $this->renderLink($node->getFqsen(), $presentation);
+        }
+
+        if ($node instanceof Array_) {
+            $typeLink = 'array';
+        }
+
+        if ($node instanceof Iterable_) {
+            $typeLink = 'iteratable';
+        }
+
+        return sprintf('%s&lt;%s, %s&gt;', $typeLink, $keyLink, $valueLink);
     }
 }

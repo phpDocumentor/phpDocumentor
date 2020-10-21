@@ -74,7 +74,6 @@ class DefaultNodeFactory implements NodeFactory
                 $nodeName,
                 $nodeClass,
                 $nodeRendererFactory,
-                $eventManager,
                 $environment
             );
         }
