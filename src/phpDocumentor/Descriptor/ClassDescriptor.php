@@ -203,12 +203,10 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
      */
     public function getMagicMethods() : Collection
     {
-        /** @var Collection<MethodDescriptor> $methodTags */
-        $methodTags = $this->getTags()->fetch('method', new Collection());
+        $methodTags = $this->getTags()->fetch('method', new Collection())->filter(Tag\MethodDescriptor::class);
 
         $methods = Collection::fromClassString(MethodDescriptor::class);
 
-        /** @var Tag\MethodDescriptor $methodTag */
         foreach ($methodTags as $methodTag) {
             $method = new MethodDescriptor();
             $method->setName($methodTag->getMethodName());
@@ -216,8 +214,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
             $method->setStatic($methodTag->isStatic());
             $method->setParent($this);
 
-            /** @var Collection<ReturnDescriptor> $returnTags */
-            $returnTags = $method->getTags()->fetch('return', new Collection());
+            $returnTags = $method->getTags()->fetch('return', new Collection())->filter(ReturnDescriptor::class);
             $returnTags->add($methodTag->getResponse());
 
             foreach ($methodTag->getArguments() as $name => $argument) {
