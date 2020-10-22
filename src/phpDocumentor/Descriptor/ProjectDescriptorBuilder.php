@@ -27,16 +27,13 @@ use function sprintf;
 
 /**
  * Builds a Project Descriptor and underlying tree.
- *
- * @template TDescriptor of Descriptor
- * @template TInput as object
  */
 class ProjectDescriptorBuilder
 {
     /** @var string */
     public const DEFAULT_PROJECT_NAME = 'Untitled project';
 
-    /** @var AssemblerFactory<TInput, TDescriptor> $assemblerFactory */
+    /** @var AssemblerFactory<object, Descriptor> $assemblerFactory */
     protected $assemblerFactory;
 
     /** @var Filter $filter */
@@ -55,7 +52,7 @@ class ProjectDescriptorBuilder
     private $ignoredTags = [];
 
     /**
-     * @param AssemblerFactory<TInput, TDescriptor> $assemblerFactory
+     * @param AssemblerFactory<object, Descriptor> $assemblerFactory
      * @param iterable<WithCustomSettings> $servicesWithCustomSettings
      */
     public function __construct(
@@ -89,6 +86,8 @@ class ProjectDescriptorBuilder
      * @return TDescriptor|null
      *
      * @throws InvalidArgumentException If no Assembler could be found that matches the given data.
+     *
+     * @template TDescriptor of Descriptor
      */
     public function buildDescriptor(object $data, string $type) : ?Descriptor
     {
@@ -115,6 +114,9 @@ class ProjectDescriptorBuilder
      * @param class-string<TDescriptor> $type
      *
      * @return AssemblerInterface<TDescriptor, TInput>|null
+     *
+     * @template TInput as object
+     * @template TDescriptor as Descriptor
      */
     public function getAssembler(object $data, string $type) : ?AssemblerInterface
     {
@@ -124,11 +126,11 @@ class ProjectDescriptorBuilder
     /**
      * Analyzes a Descriptor and alters its state based on its state or even removes the descriptor.
      *
-     * @param TFilterable $descriptor
+     * @param TDescriptor $descriptor
      *
-     * @return TFilterable|null
+     * @return TDescriptor|null
      *
-     * @template TFilterable as Filterable
+     * @template TDescriptor as Filterable
      */
     public function filter(Filterable $descriptor) : ?Filterable
     {
@@ -142,6 +144,8 @@ class ProjectDescriptorBuilder
      * @param TDescriptor $descriptor
      *
      * @return TDescriptor|null
+     *
+     * @template TDescriptor as Descriptor
      */
     protected function filterDescriptor(Descriptor $descriptor) : ?Descriptor
     {

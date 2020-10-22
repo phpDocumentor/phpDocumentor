@@ -111,15 +111,18 @@ class AssemblerFactory
     /**
      * Retrieves a matching Assembler based on the provided criteria or null if none was found.
      *
-     * @param TInput $criteria
-     * @param class-string<TDescriptor> $type
+     * @param TParamInput $criteria
+     * @param class-string<TParamDescriptor> $type
      *
-     * @return AssemblerInterface<TDescriptor, TInput>|null
+     * @return AssemblerInterface<TParamDescriptor, TParamInput>|null
+     *
+     * @psalm-template TParamInput of object
+     * @psalm-template TParamDescriptor of \phpDocumentor\Descriptor\Descriptor
      */
     public function get(object $criteria, string $type) : ?AssemblerInterface
     {
         /**
-         * @var AssemblerMatcher<TDescriptor, TInput> $candidate This is cheating, but there's no way to make
+         * @var AssemblerMatcher<TParamDescriptor, TParamInput> $candidate This is cheating, but there's no way to make
          * psalm understand that TParamDescriptor & TParamInput given in param happen to be the same as the one in the
          * factory. We know it is because they matched.
          */
