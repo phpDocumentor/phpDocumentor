@@ -34,7 +34,7 @@ The phar file can be used by invoking PHP directly and providing the phar file a
 Docker
 ------
 
-    $ docker pull phpdoc/phpdoc
+    $ docker pull phpdoc/phpdoc:3
     $ docker run --rm -v $(pwd):/data phpdoc/phpdoc
 
 When the installation is finished you can invoke the ``phpdoc`` command from any path in your system.

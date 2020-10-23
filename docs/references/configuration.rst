@@ -44,7 +44,9 @@ which you want to change with regard to the defaults.
 The best way to write your configuration is by linking our xsd file in your configuration file. This way xml editors
 can help you to discover the elements that can be added in your configuration.
 
-Usually the following configuration suffices for your project::
+Usually the following configuration suffices for your project
+
+.. code-block:: xml
 
     <?xml version="1.0" encoding="UTF-8" ?>
     <phpdocumentor
@@ -80,7 +82,7 @@ The ``api/source`` section allows you to specify where the source code for your 
 ``dsn`` attribute specifies the location of your project. Currently only relative and absolute paths are supported.
 A relative ``dsn`` is relative to the location of your config file.
 
-::
+.. code-block:: xml
 
     <source dsn="file:///my/project">
         <path>test.php</path>
@@ -114,7 +116,7 @@ Paths is forming the base output location of phpDocumentor. More specific output
 ``output`` is the base path to place the output of the ``transformation`` stage.
 ``cache`` it the base path to store the cache used by phpDocumentor during the ``parsing`` stage.
 
-::
+.. code-block:: xml
 
     <paths>
         <output>string</output>
@@ -133,7 +135,7 @@ To have more control where the output of each version is stored a version may ha
 is a compliment to the ``paths/output`` defined path. When ``folder`` is omitted the output of a version is stored in
 ``paths/output`` without any additional paths.
 
-::
+.. code-block:: xml
 
     <version number="latest">
         <folder>latest</folder>
@@ -150,7 +152,7 @@ Api
 The api element part of a ``version`` it describes a project source api that needs to be processed by phpDocumentor.
 A minimal setup of ``api`` only contains ``source`` element.
 
-::
+.. code-block:: xml
 
    <api>
       <source dsn="./path/to/project">
@@ -181,7 +183,7 @@ See Appendix B for a full example of the options available in ``api``.
 Appendix A: basic configuration example
 ---------------------------------------
 
-::
+.. code-block:: xml
 
     <?xml version="1.0" encoding="UTF-8" ?>
     <phpdocumentor
@@ -206,7 +208,7 @@ Appendix A: basic configuration example
 Appendix B: complete configuration example
 ------------------------------------------
 
-::
+.. code-block:: xml
 
     <?xml version="1.0" encoding="UTF-8" ?>
     <phpdocumentor configVersion="3.0">
