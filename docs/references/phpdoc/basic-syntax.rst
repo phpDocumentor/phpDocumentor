@@ -76,6 +76,8 @@ allow the user to skim the documentation in search of the required template.
 Summaries should always end in either a full stop, or 2 consecutive new lines. If it is not closed like this then any
 description will be considered as part of the summary.
 
+Summaries shall be plain text. Unlike other text elements in DocBlocks Markdown is not supported, nor are tags.
+
 .. note::
 
     A full stop means that the dot (`.`) needs to be succeeded by a new line. This way it is possible to mention
