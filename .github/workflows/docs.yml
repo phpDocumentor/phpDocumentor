@@ -2,6 +2,7 @@ on:
   push:
     paths:
       - 'docs/**'
+      - 'data/templates/default/**'
 name: Docs
 env:
   extensions: mbstring, intl, iconv, libxml, dom, json, simplexml, zlib, fileinfo, gnupg
