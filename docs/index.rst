@@ -27,3 +27,4 @@ The documentation is divided into 4 sections,
 4. :doc:`internals/index`, care to contribute to phpDocumentor or interested in its architecture? Then this section
    is for you.
 
+
