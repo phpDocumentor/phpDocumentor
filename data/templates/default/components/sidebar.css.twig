@@ -1,7 +1,3 @@
-.phpdocumentor-sidebar {
-    border-right: var(--sidebar-border-color) solid 1px;
-}
-
 .phpdocumentor .phpdocumentor-sidebar .phpdocumentor-list {
     padding-top: var(--spacing-xs);
     padding-left: var(--spacing-md);
@@ -54,4 +50,10 @@
     padding-left: var(--spacing-md);
     color: var(--text-color);
     font-weight: normal;
+}
+
+@media (min-width: {{ breakpoints['md'] }}) {
+    .phpdocumentor-sidebar {
+        border-right: var(--sidebar-border-color) solid 1px;
+    }
 }

@@ -4,9 +4,8 @@
     font-size: var(--text-xxl);
     letter-spacing: .05rem;
     font-weight: normal;
-    width: 30.6666666667%;
+    width: auto;
     margin: 0;
-    border-right: var(--sidebar-border-color) solid 1px;
     display: flex;
     align-items: center;
 }
@@ -29,6 +28,18 @@
 .phpdocumentor-title__link:hover {
     transform: perspective(15rem) translateX(.5rem);
     font-weight: 600;
+}
+
+@media (min-width: {{ breakpoints['md'] }}) {
+    .phpdocumentor-title {
+        width: 30.6666666667%;
+        border-right: var(--sidebar-border-color) solid 1px;
+        min-height: var(--header-height);
+    }
+
+    .phpdocumentor-title__link {
+        transform-origin: left;
+    }
 }
 
 @media (min-width: {{ breakpoints['xl'] }}) {

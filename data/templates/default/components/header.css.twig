@@ -2,8 +2,41 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    height: auto;
+    padding: var(--spacing-md) var(--spacing-md);
 }
 
-.phpdocumentor-header > * {
-    height: var(--header-height);
+.phpdocumentor-header__menu-button {
+    position: absolute;
+    top: -100%;
+    left: -100%;
+}
+.phpdocumentor-header__menu-icon {
+    font-size: 2rem;
+    color: var(--primary-color);
+}
+
+.phpdocumentor-header__menu-button:checked ~ .phpdocumentor-topnav {
+    max-height: 250px;
+    padding-top: var(--spacing-md);
+}
+
+@media (min-width: {{ breakpoints['md'] }}) {
+    .phpdocumentor-header {
+        flex-direction: row;
+        padding: var(--spacing-lg) var(--spacing-lg);
+        min-height: var(--header-height);
+    }
+
+    .phpdocumentor-header__menu-icon {
+        display: none;
+    }
+}
+
+@media (min-width: {{ breakpoints['xxl'] }}) {
+    .phpdocumentor-header {
+        padding: 0;
+    }
 }
