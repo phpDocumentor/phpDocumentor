@@ -18,29 +18,32 @@ DocBlock comments to generate a complete set of API Documentation.
 
 Inspired by phpDocumentor 1 and JavaDoc it continues to innovate and is up to date with the latest technologies and PHP language features.
 
-phpDocumentor v2 (stable)
--------------------------
-
-The current stable version of phpDocumentor is v2.9.1, which can be used to generate documentation for PHP
-applications up to PHP version 7.0.
-phpDocumentor is an old tool that doesn't support all 7.0 introduced features.
-It will not process any scalar type hints and requires docblock tags to generate API documentation.
-If your application/library is using PHP 7.0 or lower consult our [v2 branch] for installation instructions and detailed information about how to use phpDocumentor.
-
-phpDocumentor v3 (under development)
+phpDocumentor v3 (Stable)
 ------------------------------------
 
-**Note:**
-The phpDocumentor team is currently working on a new phpDocumentor generation.
-It will have full support for the latest PHP features, so you can take advantage of all native type hints.
-v3 is still under development and is not stable enough to use in a daily development flow.
+v3 is the latest stable release. 
 
-### Nightly builds
+Documentation
+-------------
 
-PhpDocumentor doesn't have a nightly release.
-However, during each pipeline a [phar] artifact is built.
-If you want to test the bleeding edge version of phpDocumentor, have a look in the [actions] section of this repository.
-Each successful QA workflow has a download at the right upper corner.
+For more detailed information you can check our online documentation at https://docs.phpdoc.org/.
+
+Features
+--------
+
+phpDocumentor supports the following:
+
+* *PHP 7.0+ compatible*, full support for Namespaces, Closures and more are provided.
+* *Docblock over types*, docblocks can be more explicit about types not all formats are supported by native php.
+* *Shows any tag*, some tags add additional functionality to phpDocumentor (such as @link).
+* *Low memory usage*, peak memory usage for small projects is less than 20MB, medium projects 40MB and large frameworks 100MB.
+* *Incremental parsing*, if you kept the Structure file from a previous run, you get an additional performance boost of up
+  to 80% on top of the mentioned processing speed increase above.
+* *Easy template building*, if you want to make a branding you only have to call 1 task and edit 3 files.
+* *Two-step process*, phpDocumentor first generates a cache with your application structure before creating the output.
+  If you'd like you can use that to power your own tools or formatters!
+* *Generics support*, with more static analysis in php types have become more complex. phpDocumentor understand these types. 
+  And will render them as first class types.
 
 Installation
 ------------
@@ -81,23 +84,17 @@ Now you have phpDocumentor installed, it can be executed like this:
 
 ### Via Composer (not recommended)
 
-1. phpDocumentor is available on [Packagist](https://packagist.org/packages/phpDocumentor/phpDocumentor).
-2. It can be installed as a dependency of your project by running
+But wait? What about composer?
 
-        $ composer require --dev phpdocumentor/phpdocumentor dev-master
+Ah, you discovered our secret. There is a phpdocumentor composer package that you can use to install phpDocumentor.
 
-Afterwards you are able to run phpDocumentor directly from your `vendor` directory:
+However: phpDocumentor is a complex application, and its libraries are used in countless other libraries and applications (2 of our libraries have more than 150 million downloads each); and this means that the chances for a conflict between one of our dependencies and yours is high. And when I say high, it is really high.
 
-    $ php vendor/bin/phpdoc
-
-*Please note* that we cannot support all configurations.
-In some situations, phpDocumentor will block updates of other packages.
-We do not recommend using Composer to install phpDocumentor.
+So, because of the above: we do not endorse nor actively support installing phpDocumentor using Composer.
 
 ### PEAR
 
 Starting from phpDocumentor v3 we decided to drop PEAR support due to declining use.
-We will provide the already released versions of phpDocumentor v2, but these versions will be community maintained so that the team can focus on phpDocumentor 3.
 
 How to use phpDocumentor?
 -------------------------
@@ -119,29 +116,12 @@ Configuration file(s)
 phpDocumentor also supports the use of configuration files (named phpdoc.xml or phpdoc.dist.xml by default).
 Please consult the documentation to see the format and supported options.
 
-Documentation
--------------
+### Nightly builds
 
-For more detailed information you can check our online documentation at https://docs.phpdoc.org/.
-
-Features
---------
-
-phpDocumentor supports the following:
-
-* *PHP 7.0 compatible*, full support for Namespaces, Closures and more are provided.
-* *Shows any tag*, some tags add additional functionality to phpDocumentor (such as @link).
-* *Processing speed*, Zend Framework experiences a significant reduction in processing time compared to phpDocumentor 1.
-* *Low memory usage*, peak memory usage for small projects is less than 20MB, medium projects 40MB and large frameworks 100MB.
-* *Incremental parsing*, if you kept the Structure file from a previous run, you get an additional performance boost of up
-  to 80% on top of the mentioned processing speed increase above.
-* *Easy template building*, if you want to make a branding you only have to call 1 task and edit 3 files.
-* *Command-line compatibility with phpDocumentor 1*, phpDocumentor 2 is an application in its own right but the basic phpDocumentor 1 arguments, such as --directory, --file and --target, have been adopted.
-* *Two-step process*, phpDocumentor first generates a cache with your application structure before creating the output.
-  If you'd like you can use that to power your own tools or formatters!
-
-phpDocumentor 3 is still under development.
-We will add all features that are needed to have full support for PHP 7.0 and higher.
+PhpDocumentor doesn't have a nightly release.
+However, during each pipeline a [phar] artifact is built.
+If you want to test the bleeding edge version of phpDocumentor, have a look in the [actions] section of this repository.
+Each successful QA workflow has a download at the right upper corner.
 
 Contact
 -------
