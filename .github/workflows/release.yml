@@ -14,15 +14,15 @@ jobs:
       with:
         args: install --no-interaction --prefer-dist --optimize-autoloader
     - name: warm cache
-      uses: docker://phpdoc/phar-ga:master
+      uses: phpDocumentor/phar-ga@latest
       with:
         args: php bin/console cache:warmup --env=prod
     - name: build phar
-      uses: docker://phpdoc/phar-ga:master
+      uses: phpDocumentor/phar-ga@latest
       with:
         args: box compile
     - name: sign phar
-      uses: docker://phpdoc/phar-ga:master
+      uses: phpDocumentor/phar-ga@latest
       env:
         PASSPHRASE: ${{ secrets.PASSPHRASE }}
         SECRET_KEY: ${{ secrets.SECRET_KEY }}
