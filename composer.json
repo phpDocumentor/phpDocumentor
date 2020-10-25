@@ -111,7 +111,7 @@
         "symfony": {
             "id": "01C32VS9393M1CP9R8TEJMH62G",
             "allow-contrib": false,
-            "require": "5.0.*"
+            "require": "^5.0"
         }
     }
 }
