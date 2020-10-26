@@ -27,7 +27,6 @@ pull-containers:
 	docker pull phpdoc/phpcs-ga
 	docker pull phpdoc/phpstan-ga
 	docker pull phpdoc/phpunit-ga
-	docker pull phpga/composer-require-checker-ga
 	docker pull php:7.2
 	docker pull node
 
@@ -67,7 +66,7 @@ e2e-test: node_modules/.bin/cypress build/default/index.html build/clean/index.h
 
 .PHONY: composer-require-checker
 composer-require-checker:
-	docker run -it --rm -v${PWD}:/data -w /data  phpga/composer-require-checker-ga check --config-file /data/composer-require-config.json composer.json
+	${.DOCKER_COMPOSE_RUN} --entrypoint=./tools/composer-require-checker phpdoc  check --config-file /opt/phpdoc/composer-require-config.json composer.json
 
 .PHONY: pre-commit-test
 pre-commit-test: test phpcs phpstan psalm composer-require-checker
