@@ -73,6 +73,8 @@ var Search = (function () {
 
         form.classList.toggle('phpdocumentor-search--has-results', false);
         searchResults.classList.add('phpdocumentor-search-results--hidden');
+        var searchField = document.querySelector('[data-search-form] input[type="search"]');
+        searchField.blur();
     }
 
     function search(event) {
@@ -117,15 +119,18 @@ var Search = (function () {
         fuse = new Fuse(index, options);
 
         var form = document.querySelector('[data-search-form]');
-        var searchField = document.querySelector('[data-search-form] input[type="search"');
+        var searchField = document.querySelector('[data-search-form] input[type="search"]');
 
         form.classList.add('phpdocumentor-search--active');
 
-        searchField.setAttribute('placeholder', 'Search for ..');
+        searchField.setAttribute('placeholder', 'Search (Press "/" to focus)');
         searchField.removeAttribute('disabled');
         searchField.addEventListener('keyup', debounce(search, 300));
 
         window.addEventListener('keyup', function (event) {
+            if (event.key === '/') {
+                searchField.focus();
+            }
             if (event.code === 'Escape') {
                 close();
             }
