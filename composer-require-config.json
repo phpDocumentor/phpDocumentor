@@ -12,13 +12,7 @@
     "Core",
     "date",
     "pcre",
-    "filter",
-    "dom",
-    "libxml",
-    "hash",
-    "SimpleXML",
     "Phar",
-    "zlib",
     "Reflection",
     "SPL",
     "standard"
