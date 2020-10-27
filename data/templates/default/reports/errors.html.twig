@@ -21,7 +21,7 @@
         {% for file in project.files|filter(file => file.allErrors is not empty) %}
             {% if file.allerrors.count > 0 %}
                 <tr>
-                    <td class="phpdocumentor-cell"><a href="reports/errors.html#{{ file.path }}">{{ file.path }}</a></td>
+                    <td class="phpdocumentor-cell"><a href="{{ target_path }}#{{ file.path }}">{{ file.path }}</a></td>
                     <td class="phpdocumentor-cell">{{ file.allErrors.count }}</td>
                 </tr>
             {% endif %}

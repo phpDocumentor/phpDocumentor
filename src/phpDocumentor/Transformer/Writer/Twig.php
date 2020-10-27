@@ -130,7 +130,10 @@ final class Twig extends WriterAbstract
             $environment = $this->environmentFactory->create($project, $transformation, $path);
             $environment->addGlobal('node', $node);
 
-            $output = $environment->render(substr($transformation->getSource(), strlen($templatePath)));
+            $output = $environment->render(
+                substr($transformation->getSource(), strlen($templatePath)),
+                ['target_path' => ltrim($path, '/\\')]
+            );
 
             $this->persistTo($transformation, ltrim($path, '/\\'), $output);
         }
