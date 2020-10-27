@@ -33,13 +33,7 @@ it is easier for readers to connect with the flow of the documentation.
 Tools
 -----
 
-Our user documentation is written using the `RestructuredText`_ markup style and converted to HTML and PDF
-using Sphinx_. For more information on installing Sphinx_ we would like to refer you to their website.
-
-.. note::
-
-   In the future we will migrate towards Scrybe_ but given the current state of that project it is currently
-   not possible.
+Our user documentation is written using the `RestructuredText`_ markup style
 
 For our API Documentation we eat our own dogfood and generate it using phpDocumentor 3.
 
