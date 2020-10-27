@@ -52,3 +52,24 @@ jobs:
           keelBaseUrl: ${{ secrets.KEEL_BASE_URL }}
           image: 'docker.pkg.github.com/phpdocumentor/phpdocumentor/docs.phpdoc.org'
           tag: ${{ steps.docs_build.outputs.tag }}
+
+      - name: Build Container
+        uses: elgohr/Publish-Docker-Github-Action@master
+        env:
+          VERSION: 'latest'
+        with:
+          name: phpdocumentor/phpdocumentor/docs.phpdoc.org
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: docker.pkg.github.com
+          context: docs
+          buildargs: VERSION
+          tags: 'latest'
+        id: docs_build
+
+      - name: 'deploy'
+        uses: jaapio/keelsh-deploy@1.0.0
+        with:
+          keelBaseUrl: ${{ secrets.KEEL_BASE_URL }}
+          image: 'docker.pkg.github.com/phpdocumentor/phpdocumentor/docs.phpdoc.org'
+          tag: ${{ steps.docs_build.outputs.tag }}

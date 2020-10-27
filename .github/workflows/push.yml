@@ -542,6 +542,7 @@ jobs:
         with:
           input: ./build/index.html.dist
           output: ./build/index.html
+
       - name: Build
         uses: elgohr/Publish-Docker-Github-Action@master
         env:
@@ -555,12 +556,34 @@ jobs:
           buildargs: VERSION
           tags: '3.0'
         id: demo_build
+
       - name: 'deploy'
         uses: jaapio/keelsh-deploy@1.0.0
         with:
           keelBaseUrl: ${{ secrets.KEEL_BASE_URL }}
           image: 'docker.pkg.github.com/phpdocumentor/phpdocumentor/demo.phpdoc.org'
           tag: ${{ steps.demo_build.outputs.tag }}
+
+      - name: Build
+        uses: elgohr/Publish-Docker-Github-Action@master
+        env:
+          VERSION: 'latest'
+        with:
+          name: phpdocumentor/phpdocumentor/demo.phpdoc.org
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: docker.pkg.github.com
+          context: build
+          buildargs: VERSION
+          tags: 'latest'
+        id: demo_latest_build
+
+      - name: 'deploy'
+        uses: jaapio/keelsh-deploy@1.0.0
+        with:
+          keelBaseUrl: ${{ secrets.KEEL_BASE_URL }}
+          image: 'docker.pkg.github.com/phpdocumentor/phpdocumentor/demo.phpdoc.org'
+          tag: ${{ steps.demo_latest_build.outputs.tag }}
 
 #  build-asset-pack:
 #    needs:
