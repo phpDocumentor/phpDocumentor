@@ -1,7 +1,7 @@
 .phpdocumentor-header {
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: stretch;
     flex-wrap: wrap;
     justify-content: space-between;
     height: auto;
@@ -13,6 +13,7 @@
     top: -100%;
     left: -100%;
 }
+
 .phpdocumentor-header__menu-icon {
     font-size: 2rem;
     color: var(--primary-color);
@@ -23,7 +24,7 @@
     padding-top: var(--spacing-md);
 }
 
-@media (min-width: {{ breakpoints['md'] }}) {
+@media (min-width: {{ breakpoints['menu'] }}) {
     .phpdocumentor-header {
         flex-direction: row;
         padding: var(--spacing-lg) var(--spacing-lg);
@@ -35,6 +36,12 @@
     }
 }
 
+@media (min-width: {{ breakpoints['xl'] }}) {
+    .phpdocumentor-header {
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+}
 @media (min-width: {{ breakpoints['xxl'] }}) {
     .phpdocumentor-header {
         padding: 0;
