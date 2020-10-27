@@ -65,11 +65,11 @@ jobs:
           context: docs
           buildargs: VERSION
           tags: 'latest'
-        id: docs_build
+        id: docs_latest_build
 
       - name: 'deploy'
         uses: jaapio/keelsh-deploy@1.0.0
         with:
           keelBaseUrl: ${{ secrets.KEEL_BASE_URL }}
           image: 'docker.pkg.github.com/phpdocumentor/phpdocumentor/docs.phpdoc.org'
-          tag: ${{ steps.docs_build.outputs.tag }}
+          tag: ${{ steps.docs_latest_build.outputs.tag }}

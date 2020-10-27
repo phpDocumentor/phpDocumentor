@@ -33,9 +33,9 @@ it is easier for readers to connect with the flow of the documentation.
 Tools
 -----
 
-Our user documentation is written using the `RestructuredText`_ markup style
+Our user documentation is written using the `RestructuredText`_ markup style.
 
-For our API Documentation we eat our own dogfood and generate it using phpDocumentor 3.
+For our Documentation we eat our own dogfood and generate it using phpDocumentor 3.
 
 Style Guide
 -----------
