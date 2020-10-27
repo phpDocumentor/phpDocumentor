@@ -12,7 +12,7 @@ use phpDocumentor\FunctionalTestCase;
 
 final class Issue2466FunctionalTest extends FunctionalTestCase
 {
-    public function testConstantEscapedValueIsProcessedCorrectly() : void
+    public function testPropertyXmlContainsExpectedValues() : void
     {
         $this->runPHPDocWithFile(__DIR__ . '/../../assets/core/issues/issue-2466/issue-2466.php', ['--template=xml', '-tout', ]);
         $xml = $this->loadContents('out/structure.xml');
