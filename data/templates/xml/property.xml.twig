@@ -2,7 +2,7 @@
 <property namespace="{{ property.namespace }}" line="{{ property.line }}" visibility="{{ property.visibility }}">
     <name>{{ property.name }}</name>
     <full_name>{{ property.fullyQualifiedStructuralElementName }}</full_name>
-    <default>{{ property.value }}</default>
+    <default>{{ property.default }}</default>
     {% if inherited_from %}<inherited_from>{{ inherited_from }}</inherited_from>{% endif %}
-    {{ include('docblock.xml.twig', {descriptor: c}) }}
+    {{ include('docblock.xml.twig', {descriptor: property}) }}
 </property>
