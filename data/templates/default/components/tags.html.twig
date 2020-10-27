@@ -1,4 +1,4 @@
-{% set tags = tags|filter((v,k) => k not in ['var', 'param', 'property', 'property-read', 'property-write', 'method', 'return', 'package', 'api']) %}
+{% set tags = node.tags|filter((v,k) => k not in ['var', 'param', 'property', 'property-read', 'property-write', 'method', 'return', 'package', 'api']) %}
 
 {% if tags|length > 0 %}
     <h5 class="phpdocumentor-tag-list__heading" id="tags">

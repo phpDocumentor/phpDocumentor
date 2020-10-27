@@ -20,7 +20,7 @@
                 {% for file in filesWithMarkers %}
                     {% if file.markers.count > 0 %}
                         <tr>
-                            <td class="phpdocumentor-cell"><a href="#{{ file.path }}">{{ file.path }}</a></td>
+                            <td class="phpdocumentor-cell"><a href="reports/markers.html#{{ file.path }}">{{ file.path }}</a></td>
                             <td class="phpdocumentor-cell">{{ file.markers.count }}</td>
                         </tr>
                     {% endif %}

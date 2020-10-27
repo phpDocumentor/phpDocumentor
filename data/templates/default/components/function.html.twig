@@ -1,13 +1,13 @@
 <article class="phpdocumentor-element -function -{{ function.visibility }} {% if function.deprecated %}-deprecated{% endif %}">
     <h4 class="phpdocumentor-element__name" id="function_{{ function.name }}">
         {{ function.name }}()
-        <a href="#function_{{ function.name }}" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="{{ link(function) }}" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     {{ include('components/element-found-in.html.twig', {'node': function}) }}
     {{ include('components/summary.html.twig', {'node': function}) }}
     {{ include('components/method-signature.html.twig', {'node': function}) }}
     {{ include('components/description.html.twig', {'node': function}) }}
     {{ include('components/method-arguments.html.twig', {'node': function}) }}
-    {{ include('components/tags.html.twig', {tags: function.tags}) }}
+    {{ include('components/tags.html.twig', {'node': function}) }}
     {{ include('components/method-response.html.twig', {'node': function}) }}
 </article>

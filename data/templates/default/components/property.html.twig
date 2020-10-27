@@ -11,7 +11,7 @@
 >
     <h4 class="phpdocumentor-element__name" id="property_{{ property.name }}">
         ${{ property.name }}
-        <a href="#property_{{ property.name }}" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="{{ link(property) }}" class="headerlink"><i class="fas fa-link"></i></a>
         <span class="phpdocumentor-element__modifiers">
             {% if property.writeOnly %}<small class="phpdocumentor-element__modifier">write-only</small>{% endif %}
             {% if property.readOnly %}<small class="phpdocumentor-element__modifier">read-only</small>{% endif %}
@@ -21,5 +21,5 @@
     {{ include('components/summary.html.twig', {'node': property}) }}
     {{ include('components/property-signature.html.twig', {'node': property}) }}
     {{ include('components/description.html.twig', {'node': property}) }}
-    {{ include ('components/tags.html.twig', {tags: property.tags}) }}
+    {{ include ('components/tags.html.twig', {'node': property}) }}
 </article>
