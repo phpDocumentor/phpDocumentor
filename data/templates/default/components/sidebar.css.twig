@@ -1,3 +1,9 @@
+.phpdocumentor-sidebar {
+    margin: 0;
+    overflow: hidden;
+    max-height: 0;
+}
+
 .phpdocumentor .phpdocumentor-sidebar .phpdocumentor-list {
     padding-top: var(--spacing-xs);
     padding-left: var(--spacing-md);
@@ -55,5 +61,41 @@
 @media (min-width: {{ breakpoints['md'] }}) {
     .phpdocumentor-sidebar {
         border-right: var(--sidebar-border-color) solid 1px;
+    }
+}
+
+.phpdocumentor-sidebar__menu-button {
+    position: absolute;
+    top: -100%;
+    left: -100%;
+}
+
+.phpdocumentor-sidebar__menu-icon {
+    font-size: var(--text-md);
+    font-weight: 600;
+    background: var(--primary-color);
+    color: white;
+    margin: 0 0 var(--spacing-lg);
+    display: block;
+    padding: var(--spacing-sm);
+    text-align: center;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: .15rem;
+}
+
+.phpdocumentor-sidebar__menu-button:checked ~ .phpdocumentor-sidebar {
+    max-height: 100%;
+    padding-top: var(--spacing-md);
+}
+
+@media (min-width: {{ breakpoints['md'] }}) {
+    .phpdocumentor-sidebar {
+        overflow: visible;
+        max-height: 100%;
+    }
+
+    .phpdocumentor-sidebar__menu-icon {
+        display: none;
     }
 }
