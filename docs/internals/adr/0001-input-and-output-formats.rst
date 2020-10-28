@@ -38,12 +38,17 @@ Decision
 Provide:
 
 1. the concept of Input and Output formats in phpDocumentor itself by promoting the 'Guides' models
-2. Change the Twig writer to select the correct twig files based on extension, instead of selecting a different template
+2. Change the Twig writer to select the correct twig files based on extension, instead of selecting a different template.
 
 Model Input and Output formats
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-TBW
+In the bigger picture, an input format dictates how that should be parsed (thus the workflow / pipeline associated
+with it) and an output format dictates the inverse; how it is rendered. If you look at it from this perspective, a
+Format is an instrumental part when you want to support multiple Inputs and Outputs.
+
+As such, an Input Format class and Output Format class should be introduced that will link a file type (i.e. extension)
+to a Pipeline that is used to parse or render that file-type.
 
 Change the Twig writer
 ~~~~~~~~~~~~~~~~~~~~~~
