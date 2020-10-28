@@ -59,5 +59,10 @@ class FunctionalTestCase extends TestCase
     {
         return unserialize(file_get_contents($this->workingDir . '/ast.dump'));
     }
+    
+    protected function loadContents($filename) : string
+    {
+        return file_get_contents($this->workingDir . '/' . $filename);
+    }
 
 }
