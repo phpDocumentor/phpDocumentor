@@ -237,4 +237,40 @@ describe('Class Detail Page', function() {
             });
         });
     });
+
+    describe ('Showing a method with parameters in a class', function() {
+        let methods;
+
+        const findMethod = (name) => methods.get('.phpdocumentor-element__name').contains(name).parent();
+
+        before(function(){
+            cy.visit('build/default/classes/Marios-Oven.html');
+            methods = cy.get('.phpdocumentor-element.-method');
+        });
+
+        describe ('Shows the "heatToTemp" method; as an example of a method with params having a default value', function() {
+            let method;
+
+            before(function(){
+                method = findMethod('heatToTemp()');
+            });
+
+            describe('signature', function () {
+                let signature;
+
+                beforeEach(function () {
+                    signature = method.get('.phpdocumentor-signature');
+                });
+
+                it('Show the name of argument $temp', function () {
+                    signature.get('.phpdocumentor-signature__argument__name').contains('$temp');
+                });
+
+                it('Show the default value of argument $temp', function () {
+                    signature.get('.phpdocumentor-signature__argument__name').contains('$temp').parent()
+                        .get('.phpdocumentor-signature__argument__default-value').contains('self::DEFAULT_TEMPERATURE')
+                });
+            });
+        })
+    });
 });
