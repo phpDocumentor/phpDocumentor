@@ -179,6 +179,7 @@ services:
         factory: [\phpDocumentor\Reflection\DocBlockFactory, 'createInstance']
     phpDocumentor\Reflection\Php\Factory\Argument: ~
     phpDocumentor\Reflection\Php\Factory\Class_: ~
+    phpDocumentor\Reflection\Php\Factory\Define: ~
     phpDocumentor\Reflection\Php\Factory\ClassConstant: ~
     phpDocumentor\Reflection\Php\Factory\GlobalConstant: ~
     phpDocumentor\Reflection\Php\Factory\DocBlock: ~
@@ -200,6 +201,7 @@ services:
             -
                 - '@phpDocumentor\Reflection\Php\Factory\Argument'
                 - '@phpDocumentor\Reflection\Php\Factory\Class_'
+                - '@phpDocumentor\Reflection\Php\Factory\Define'
                 - '@phpDocumentor\Reflection\Php\Factory\ClassConstant'
                 - '@phpDocumentor\Reflection\Php\Factory\GlobalConstant'
                 - '@phpDocumentor\Reflection\Php\Factory\DocBlock'
