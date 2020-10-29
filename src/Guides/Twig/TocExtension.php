@@ -38,7 +38,7 @@ class TocExtension extends AbstractExtension
     /**
      * @return array<string, array<int, array<string, array|string>>|string>
      */
-    public function menu() : array
+    public function menu(int $maxLevel = 2) : array
     {
         $index = $this->metas->get('index');
 
@@ -46,11 +46,20 @@ class TocExtension extends AbstractExtension
             return [];
         }
 
+        return $this->createMenuItem($index, $maxLevel);
+    }
+
+    private function createMenuItem(Entry $index, int $levelsRemaining) : array
+    {
         $menu = [
             'label' => $index->getTitle(),
             'path' => $index->getUrl(),
             'items' => [],
         ];
+
+        if ($levelsRemaining < 1) {
+            return $menu;
+        }
 
         foreach ($index->getTocs()[0] ?? [] as $url) {
             $meta = $this->metas->get($url);
@@ -58,11 +67,7 @@ class TocExtension extends AbstractExtension
                 continue;
             }
 
-            $menu['items'][] = [
-                'label' => $meta->getTitle(),
-                'path' => $meta->getUrl(),
-                'items' => [],
-            ];
+            $menu['items'][] = $this->createMenuItem($meta, $levelsRemaining - 1);
         }
 
         return $menu;

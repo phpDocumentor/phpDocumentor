@@ -3,10 +3,13 @@
     Menu
 </label>
 <aside class="phpdocumentor-column -four phpdocumentor-sidebar">
-    {% if menu() %}
+    {% set menu = menu() %}
+    {% if menu %}
     <section class="phpdocumentor-sidebar__category">
-        <h2 class="phpdocumentor-sidebar__category-header">Documentation</h2>
-        {{ include('menu.html.twig', {menuItem: menu()}, with_context = false) }}
+        <h2 class="phpdocumentor-sidebar__category-header"><a href="{{ menu.path }}">{{ menu.label }}</a></h2>
+        {% for menuItem in menu.items %}
+            {{ include('menu.html.twig', {menuItem: menuItem}, with_context = false) }}
+        {% endfor %}
     </section>
     {% endif %}
 

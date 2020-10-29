@@ -10,8 +10,8 @@
    references/index
    internals/index
 
-Welcome
-=======
+Documentation
+=============
 
 Welcome to the complete documentation for phpDocumentor.
 
