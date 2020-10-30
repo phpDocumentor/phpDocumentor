@@ -119,7 +119,7 @@ final class Metas
      */
     private function doesLinkExist(array $links, string $link) : bool
     {
-        foreach ($links as $name => $url) {
+        foreach ($links as $name => $_url) {
             if ($name === strtolower($link)) {
                 return true;
             }

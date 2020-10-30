@@ -58,7 +58,7 @@ class Scanner
         }
 
         $parseQueue = new Files();
-        foreach ($this->fileInfos as $filename => $fileInfo) {
+        foreach ($this->fileInfos as $filename => $_fileInfo) {
             if (!$this->doesFileRequireParsing($filename)) {
                 continue;
             }
