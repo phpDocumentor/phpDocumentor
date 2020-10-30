@@ -311,7 +311,7 @@ final class Environment
             $link = $this->links[$name];
 
             if ($relative) {
-                return (string) $this->relativeUrl($link);
+                return $this->relativeUrl($link);
             }
 
             return $link;
@@ -362,7 +362,7 @@ final class Environment
         return $this->dependencies;
     }
 
-    public function relativeUrl(?string $url) : ?string
+    public function relativeUrl(?string $url) : string
     {
         $basePath = '/' . $this->getConfiguration()->getOutputFolder() . '/' . $this->getCurrentFileName() . '.html';
 

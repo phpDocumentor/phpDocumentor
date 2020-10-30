@@ -28,7 +28,7 @@ interface SpanRenderer
     public function literal(string $text) : string;
 
     /**
-     * @param mixed[] $attributes
+     * @param string[] $attributes
      */
     public function link(?string $url, string $title, array $attributes = []) : string;
 

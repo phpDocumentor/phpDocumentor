@@ -37,10 +37,6 @@ class Image extends Directive
 
         $url = $environment->relativeUrl($data);
 
-        if ($url === null) {
-            throw new Exception(sprintf('Could not build relative url for %s', $data));
-        }
-
         return $parser->getNodeFactory()->createImageNode($url, $options);
     }
 }

@@ -33,7 +33,7 @@ class ProjectDescriptorBuilder
     /** @var string */
     public const DEFAULT_PROJECT_NAME = 'Untitled project';
 
-    /** @var AssemblerFactory<object, Descriptor> $assemblerFactory */
+    /** @var AssemblerFactory $assemblerFactory */
     protected $assemblerFactory;
 
     /** @var Filter $filter */
@@ -52,7 +52,6 @@ class ProjectDescriptorBuilder
     private $ignoredTags = [];
 
     /**
-     * @param AssemblerFactory<object, Descriptor> $assemblerFactory
      * @param iterable<WithCustomSettings> $servicesWithCustomSettings
      */
     public function __construct(

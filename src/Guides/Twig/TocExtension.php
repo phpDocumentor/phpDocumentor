@@ -50,7 +50,7 @@ class TocExtension extends AbstractExtension
     }
 
     /**
-     * @return array<string, array<int, array<string, array|string>>|string>
+     * @return array{label: string, path: string, items: list<array<mixed>>}
      */
     private function createMenuItem(Entry $index, int $levelsRemaining) : array
     {

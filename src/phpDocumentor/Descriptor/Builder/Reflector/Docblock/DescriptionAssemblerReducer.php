@@ -7,22 +7,20 @@ namespace phpDocumentor\Descriptor\Builder\Reflector\Docblock;
 use phpDocumentor\Descriptor\Builder\AssemblerAbstract;
 use phpDocumentor\Descriptor\Builder\AssemblerReducer;
 use phpDocumentor\Descriptor\Descriptor;
+use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tag;
 
 /**
- * @template TDescriptor of \phpDocumentor\Descriptor\DescriptorAbstract
- * @template TInput of object
- * @extends AssemblerAbstract<TDescriptor, TInput>
+ * @extends AssemblerAbstract<DescriptorAbstract, object>
  */
 final class DescriptionAssemblerReducer extends AssemblerAbstract implements AssemblerReducer
 {
     /**
-     * @param TInput $data
-     * @param TDescriptor $descriptor
+     * @param DescriptorAbstract|null $descriptor
      *
-     * @return TDescriptor
+     * @return DescriptorAbstract|null
      */
     public function create(object $data, ?Descriptor $descriptor = null) : ?Descriptor
     {

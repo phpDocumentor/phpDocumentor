@@ -40,10 +40,6 @@ class Figure extends SubDirective
 
         $url = $environment->relativeUrl($data);
 
-        if ($url === null) {
-            throw new Exception(sprintf('Could not get relative url for %s', $data));
-        }
-
         $nodeFactory = $parser->getNodeFactory();
 
         return $parser->getNodeFactory()->createFigureNode(

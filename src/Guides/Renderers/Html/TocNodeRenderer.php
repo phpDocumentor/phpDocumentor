@@ -65,8 +65,8 @@ class TocNodeRenderer implements NodeRenderer
     }
 
     /**
-     * @param mixed[]|array $titles
-     * @param mixed[] $tocItems
+     * @param mixed[][] $titles
+     * @param mixed[][] $tocItems
      */
     private function buildLevel(
         ?string $url,
@@ -104,7 +104,7 @@ class TocNodeRenderer implements NodeRenderer
     /**
      * @param string[]|string $title
      *
-     * @return mixed[]
+     * @return array{mixed, string}
      */
     private function generateTarget(?string $url, $title) : array
     {

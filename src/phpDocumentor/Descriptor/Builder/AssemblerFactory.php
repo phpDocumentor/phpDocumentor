@@ -40,6 +40,7 @@ use phpDocumentor\Descriptor\Builder\Reflector\Tags\UsesAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\VarAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\VersionAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\TraitAssembler;
+use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\Reflection\DocBlock\ExampleFinder;
 use phpDocumentor\Reflection\DocBlock\Tag;
 use phpDocumentor\Reflection\DocBlock\Tags;
@@ -69,16 +70,13 @@ use function array_merge;
 
 /**
  * Attempts to retrieve an Assembler for the provided criteria.
- *
- * @template TInput of object
- * @template TDescriptor of \phpDocumentor\Descriptor\Descriptor
  */
 class AssemblerFactory
 {
-    /** @var AssemblerMatcher<TDescriptor, TInput>[] */
+    /** @var AssemblerMatcher[] */
     protected $assemblers = [];
 
-    /** @var AssemblerMatcher<TDescriptor, TInput>[] */
+    /** @var AssemblerMatcher[] */
     protected $fallbackAssemblers = [];
 
     /**
@@ -86,7 +84,7 @@ class AssemblerFactory
      *
      * @param callable $matcher A callback function accepting the criteria as only parameter and which must
      *     return a boolean.
-     * @param AssemblerInterface<TDescriptor, TInput> $assembler An instance of the Assembler that
+     * @param AssemblerInterface<Descriptor, object> $assembler An instance of the Assembler that
      *     will be returned if the callback returns true with the provided criteria.
      */
     public function register(callable $matcher, AssemblerInterface $assembler) : void
@@ -100,7 +98,7 @@ class AssemblerFactory
      *
      * @param callable $matcher A callback function accepting the criteria as only parameter and which must
      *     return a boolean.
-     * @param AssemblerInterface<TDescriptor, TInput> $assembler An instance of the Assembler that
+     * @param AssemblerInterface<Descriptor, object> $assembler An instance of the Assembler that
      *     will be returned if the callback returns true with the provided criteria.
      */
     public function registerFallback(callable $matcher, AssemblerInterface $assembler) : void
@@ -121,13 +119,13 @@ class AssemblerFactory
      */
     public function get(object $criteria, string $type) : ?AssemblerInterface
     {
-        /**
-         * @var AssemblerMatcher<TParamDescriptor, TParamInput> $candidate This is cheating, but there's no way to make
-         * psalm understand that TParamDescriptor & TParamInput given in param happen to be the same as the one in the
-         * factory. We know it is because they matched.
-         */
         foreach (array_merge($this->assemblers, $this->fallbackAssemblers) as $candidate) {
             if ($candidate->match($criteria)) {
+                /**
+                 * @var AssemblerInterface<TParamDescriptor, TParamInput> This is cheating, but there's no way to make
+                 * psalm understand that TParamDescriptor & TParamInput given in param happen to be the same as the one
+                 * in the factory. We know it is because they matched.
+                 */
                 return $candidate->getAssembler();
             }
         }
@@ -135,12 +133,8 @@ class AssemblerFactory
         return null;
     }
 
-    /**
-     * @return self<TInput, TDescriptor>
-     */
     public static function createDefault(ExampleFinder $exampleFinder) : self
     {
-        /** @var self<TInput, TDescriptor> $factory */
         $factory = new self();
         $argumentAssembler = new ArgumentAssembler();
 

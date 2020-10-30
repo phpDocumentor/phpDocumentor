@@ -13,20 +13,18 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Builder;
 
-/**
- * @template TDescriptor as \phpDocumentor\Descriptor\Descriptor
- * @template TInput as object
- */
+use phpDocumentor\Descriptor\Descriptor;
+
 final class AssemblerMatcher
 {
     /** @var callable */
     private $matcher;
 
-    /** @var AssemblerInterface<TDescriptor, TInput> */
+    /** @var AssemblerInterface<Descriptor, object> */
     private $assembler;
 
     /**
-     * @param AssemblerInterface<TDescriptor, TInput> $assembler
+     * @param AssemblerInterface<Descriptor, object> $assembler
      */
     public function __construct(callable $matcher, AssemblerInterface $assembler)
     {
@@ -34,9 +32,6 @@ final class AssemblerMatcher
         $this->assembler = $assembler;
     }
 
-    /**
-     * @param TInput $criteria
-     */
     public function match(object $criteria) : bool
     {
         $matcher = $this->matcher;
@@ -45,7 +40,7 @@ final class AssemblerMatcher
     }
 
     /**
-     * @return AssemblerInterface<TDescriptor, TInput>
+     * @return AssemblerInterface<Descriptor, object>
      */
     public function getAssembler() : AssemblerInterface
     {
