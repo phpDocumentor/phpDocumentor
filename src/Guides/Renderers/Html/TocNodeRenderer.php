@@ -74,7 +74,7 @@ class TocNodeRenderer implements NodeRenderer
         int $level,
         array &$tocItems
     ) : void {
-        foreach ($titles as $k => $entry) {
+        foreach ($titles as $entry) {
             [$title, $children] = $entry;
 
             [$title, $target] = $this->generateTarget($url, $title);

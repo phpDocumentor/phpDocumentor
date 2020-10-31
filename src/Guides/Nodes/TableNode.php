@@ -168,7 +168,7 @@ class TableNode extends Node
             return;
         }
 
-        foreach ($this->data as $i => $row) {
+        foreach ($this->data as $row) {
             foreach ($row->getColumns() as $col) {
                 $lines = explode("\n", $col->getContent());
 
@@ -506,7 +506,7 @@ class TableNode extends Node
         }
 
         // one more loop to set headers
-        foreach ($rows as $rowIndex => $row) {
+        foreach ($rows as $rowIndex => $_row) {
             if ($rowIndex > $finalHeadersRow) {
                 continue;
             }
