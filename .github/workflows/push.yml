@@ -448,6 +448,7 @@ jobs:
 
   phpunit:
     runs-on: ${{ matrix.operating-system }}
+    continue-on-error: ${{ matrix.php-versions == '8.0' }}
     strategy:
       matrix:
         operating-system:
@@ -462,7 +463,6 @@ jobs:
         exclude: # already covered in pre-test with coverage above
           - operating-system: 'ubuntu-latest'
             php-versions: '7.2'
-        continue-on-error: ${{ matrix.php-versions == '8.0' }}
     name: Unit tests [${{ matrix.php-versions }} | ${{ matrix.operating-system }}]
 
     needs:
