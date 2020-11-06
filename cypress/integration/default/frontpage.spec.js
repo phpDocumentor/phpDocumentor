@@ -8,7 +8,7 @@ describe('Frontpage', function() {
     });
 
     it('Has a search bar', function() {
-        cy.get('.phpdocumentor-sidebar__category-header').contains("Search");
+        cy.get('.phpdocumentor-header').contains("Search");
         cy.get('.phpdocumentor-field.phpdocumentor-search__field');
     });
 

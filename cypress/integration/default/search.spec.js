@@ -4,7 +4,7 @@ describe('Search', function() {
     });
 
     it('Has an active search form in the sidebar', function() {
-        cy.get('.phpdocumentor-sidebar').get('.phpdocumentor-search')
+        cy.get('.phpdocumentor-header').get('.phpdocumentor-search')
             .get('input[type="search"]').should('not.be.disabled');
     });
 
@@ -15,11 +15,11 @@ describe('Search', function() {
     });
 
     it('Opens the results and shows results for "Pizza"', function() {
-        cy.get('.phpdocumentor-sidebar .phpdocumentor-search')
+        cy.get('.phpdocumentor-header .phpdocumentor-search')
             .should('not.have.class', 'phpdocumentor-search--has-results')
             .get('input[type="search"]')
             .type('pizza');
-        cy.get('.phpdocumentor-sidebar .phpdocumentor-search')
+        cy.get('.phpdocumentor-header .phpdocumentor-search')
             .should('have.class', 'phpdocumentor-search--has-results');
 
         let searchResults = cy.get('.phpdocumentor-search-results');
@@ -33,7 +33,7 @@ describe('Search', function() {
     });
 
     it('Goes to the detail page for the search result "Pizza"', function() {
-        cy.get('.phpdocumentor-sidebar .phpdocumentor-search input[type="search"]')
+        cy.get('.phpdocumentor-header .phpdocumentor-search input[type="search"]')
             .type('pizza');
 
         let searchResults = cy.get('.phpdocumentor-search-results');
@@ -42,13 +42,13 @@ describe('Search', function() {
     });
 
     it('Closes the results when clearing the search field', function() {
-        cy.get('.phpdocumentor-sidebar .phpdocumentor-search input[type="search"]')
+        cy.get('.phpdocumentor-header .phpdocumentor-search input[type="search"]')
             .type('pizza');
-        cy.get('.phpdocumentor-sidebar .phpdocumentor-search')
+        cy.get('.phpdocumentor-header .phpdocumentor-search')
             .should('have.class', 'phpdocumentor-search--has-results');
-        cy.get('.phpdocumentor-sidebar .phpdocumentor-search input[type="search"]')
+        cy.get('.phpdocumentor-header .phpdocumentor-search input[type="search"]')
             .clear();
-        cy.get('.phpdocumentor-sidebar .phpdocumentor-search')
+        cy.get('.phpdocumentor-header .phpdocumentor-search')
             .should('not.have.class', 'phpdocumentor-search--has-results');
 
         cy.get('.phpdocumentor-search-results')
@@ -58,13 +58,13 @@ describe('Search', function() {
     });
 
     it('Closes the results when pressing escape', function() {
-        cy.get('.phpdocumentor-sidebar .phpdocumentor-search input[type="search"]')
+        cy.get('.phpdocumentor-header .phpdocumentor-search input[type="search"]')
             .type('pizza')
             .blur(); // Ensure focus is gone
 
         cy.get('body').type('{esc}');
 
-        cy.get('.phpdocumentor-sidebar .phpdocumentor-search')
+        cy.get('.phpdocumentor-header .phpdocumentor-search')
             .should('not.have.class', 'phpdocumentor-search--has-results');
 
         cy.get('.phpdocumentor-search-results')
