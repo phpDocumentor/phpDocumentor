@@ -458,6 +458,7 @@ jobs:
           - '7.2'
           - '7.3'
           - '7.4'
+          - '8.0'
         exclude: # already covered in pre-test with coverage above
           - operating-system: 'ubuntu-latest'
             php-versions: '7.2'
@@ -511,7 +512,13 @@ jobs:
     - name: Install PHAR dependencies
       env:
         GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: phive --no-progress install --copy --trust-gpg-keys ${{ env.phiveGPGKeys }} --force-accept-unsigned phpunit:^8.4
+      run: phive --no-progress install --copy --trust-gpg-keys ${{ env.phiveGPGKeys }} --force-accept-unsigned
+
+    - name: Install phpunit 8 for php 7.2
+      if: matrix.php-versions == '7.2'
+      env:
+        GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: phive --no-progress install --copy --trust-gpg-keys ${{ env.phiveGPGKeys }} phpunit:^8.5
 
     - name: Run PHPUnit
       run: php tools/phpunit --testsuite=unit,integration
