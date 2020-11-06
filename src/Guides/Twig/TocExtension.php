@@ -49,6 +49,9 @@ class TocExtension extends AbstractExtension
         return $this->createMenuItem($index, $maxLevel);
     }
 
+    /**
+     * @return array<string, array<int, array<string, array|string>>|string>
+     */
     private function createMenuItem(Entry $index, int $levelsRemaining) : array
     {
         $menu = [
