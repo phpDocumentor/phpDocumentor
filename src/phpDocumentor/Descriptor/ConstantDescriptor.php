@@ -17,7 +17,6 @@ use InvalidArgumentException;
 use phpDocumentor\Descriptor\Tag\VarDescriptor;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Type;
-use Webmozart\Assert\Assert;
 use function array_filter;
 
 /**
