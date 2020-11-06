@@ -101,7 +101,7 @@ class SpanProcessor
         foreach ($this->environment->getTitleLetters() as $level => $letter) {
             $span = preg_replace_callback(
                 '/\#\\' . $letter . '/mUsi',
-                function (array $match) use ($level) {
+                function () use ($level) {
                     return $this->environment->getNumber($level);
                 },
                 $span
@@ -158,7 +158,7 @@ class SpanProcessor
         $this->environment->resetAnonymousStack();
 
         if (preg_match_all('/(_*)(([a-z0-9]+)|(`(.+)`))__/mUsi', $span, $matches) > 0) {
-            foreach ($matches[3] as $k => $y) {
+            foreach ($matches[3] as $k => $_y) {
                 $name = $matches[3][$k] ?: $matches[5][$k];
 
                 // string prefixed with _ is not an anonymous link

@@ -252,8 +252,6 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
      */
     public function getFilters() : array
     {
-        $routeRenderer = $this->routeRenderer;
-
         return [
             'markdown' => new TwigFilter(
                 'markdown',

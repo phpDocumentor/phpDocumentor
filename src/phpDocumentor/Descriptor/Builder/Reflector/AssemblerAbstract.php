@@ -127,7 +127,7 @@ abstract class AssemblerAbstract extends BaseAssembler
         if ($type instanceof Compound) {
             $normalizedTypes = [];
 
-            foreach ($type as $typePart) {
+            foreach ($type->getIterator() as $typePart) {
                 $normalizedTypes[(string) $typePart] = $typePart;
             }
 

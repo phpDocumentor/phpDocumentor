@@ -51,12 +51,6 @@ class ConstantDescriptor extends DescriptorAbstract implements
      */
     public function setParent(?DescriptorAbstract $parent) : void
     {
-        Assert::nullOrIsInstanceOfAny(
-            $parent,
-            [ClassDescriptor::class, InterfaceDescriptor::class],
-            'Constants can only have an interface or class as parent'
-        );
-
         $fqsen = $parent !== null
             ? $parent->getFullyQualifiedStructuralElementName() . '::' . $this->getName()
             : $this->getName();

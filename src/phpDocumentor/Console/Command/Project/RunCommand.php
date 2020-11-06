@@ -319,7 +319,7 @@ HELP
         );
         $dispatcherInstance->addListener(
             'parser.file.pre',
-            function (PreFileEvent $event) : void {
+            function () : void {
                 $this->progressBar->advance();
             }
         );
@@ -336,7 +336,7 @@ HELP
         );
         $dispatcherInstance->addListener(
             Transformer::EVENT_POST_TRANSFORMATION,
-            function (PostTransformationEvent $event) : void {
+            function () : void {
                 $this->transformerProgressBar->advance();
             }
         );

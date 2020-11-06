@@ -132,7 +132,7 @@ class DocumentParser
 
         $this->parseLines(trim($preParseDocumentEvent->getContents()));
 
-        foreach ($this->directives as $name => $directive) {
+        foreach ($this->directives as $directive) {
             $directive->finalize($this->document);
         }
 

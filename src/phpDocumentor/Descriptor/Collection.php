@@ -46,7 +46,6 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
      */
     public function __construct(array $items = [])
     {
-        Assert::allNotNull($items);
         $this->items = $items;
     }
 
@@ -57,7 +56,6 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
      */
     public function add($item) : void
     {
-        Assert::notNull($item);
         $this->items[] = $item;
     }
 
@@ -69,7 +67,6 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
      */
     public function set($index, $item) : void
     {
-        Assert::notNull($item);
         $this->offsetSet($index, $item);
     }
 
@@ -230,8 +227,6 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
      */
     public function merge(self $collection) : Collection
     {
-        Assert::allNotNull($collection);
-
         return new self(array_merge($this->items, $collection->getAll()));
     }
 
