@@ -17,16 +17,17 @@ use phpDocumentor\Descriptor\Descriptor;
 
 final class AssemblerMatcher
 {
-    /** @var callable */
+    /** @var Matcher<object> */
     private $matcher;
 
     /** @var AssemblerInterface<Descriptor, object> */
     private $assembler;
 
     /**
+     * @param Matcher<object> $matcher
      * @param AssemblerInterface<Descriptor, object> $assembler
      */
-    public function __construct(callable $matcher, AssemblerInterface $assembler)
+    public function __construct(Matcher $matcher, AssemblerInterface $assembler)
     {
         $this->matcher   = $matcher;
         $this->assembler = $assembler;

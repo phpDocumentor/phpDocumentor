@@ -27,6 +27,9 @@ parameters:
     # phpstan/phpstan/issues/3951
     - '#Method phpDocumentor\\Descriptor\\ProjectDescriptorBuilder::filterDescriptor\(\) should return TDescriptor of phpDocumentor\\Descriptor\\Descriptor\|null but returns phpDocumentor\\Descriptor\\Filter\\Filterable\|null\.#'
 
+    # PHPStan has issue when involving templates and parent types
+    - '#Parameter \#1 \$matcher of method phpDocumentor\\Descriptor\\Builder\\AssemblerFactory::(register|registerFallback)\(\) expects phpDocumentor\\Descriptor\\Builder\\Matcher<object>, phpDocumentor\\Descriptor\\Builder\\Matcher<.+> given\.#'
+
     # PHPStan doesn't support inheritance of TDescriptor
     - '#Parameter \#2 \$assembler of method phpDocumentor\\Descriptor\\Builder\\AssemblerFactory::(register|registerFallback)\(\) expects phpDocumentor\\Descriptor\\Builder\\AssemblerInterface.* given\.#'
     -

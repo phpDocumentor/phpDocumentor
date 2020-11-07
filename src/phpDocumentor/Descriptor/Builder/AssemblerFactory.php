@@ -82,12 +82,12 @@ class AssemblerFactory
     /**
      * Registers an assembler instance to this factory.
      *
-     * @param callable $matcher A callback function accepting the criteria as only parameter and which must
+     * @param Matcher<object> $matcher A callback function accepting the criteria as only parameter and which must
      *     return a boolean.
      * @param AssemblerInterface<Descriptor, object> $assembler An instance of the Assembler that
      *     will be returned if the callback returns true with the provided criteria.
      */
-    public function register(callable $matcher, AssemblerInterface $assembler) : void
+    public function register(Matcher $matcher, AssemblerInterface $assembler) : void
     {
         $this->assemblers[] = new AssemblerMatcher($matcher, $assembler);
     }
@@ -96,12 +96,12 @@ class AssemblerFactory
      * Registers an assembler instance to this factory that is to be executed after all other assemblers have been
      * checked.
      *
-     * @param callable $matcher A callback function accepting the criteria as only parameter and which must
+     * @param Matcher<object> $matcher A callback function accepting the criteria as only parameter and which must
      *     return a boolean.
      * @param AssemblerInterface<Descriptor, object> $assembler An instance of the Assembler that
      *     will be returned if the callback returns true with the provided criteria.
      */
-    public function registerFallback(callable $matcher, AssemblerInterface $assembler) : void
+    public function registerFallback(Matcher $matcher, AssemblerInterface $assembler) : void
     {
         $this->fallbackAssemblers[] = new AssemblerMatcher($matcher, $assembler);
     }
