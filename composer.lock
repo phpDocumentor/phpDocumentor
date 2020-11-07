@@ -2498,16 +2498,16 @@
         },
         {
             "name": "symfony/expression-language",
-            "version": "v5.1.7",
+            "version": "v5.1.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/expression-language.git",
-                "reference": "e16e66c309214143cc01dae6d1ff1ee13e7be4fa"
+                "reference": "2c3f5e7cf4495d9033cc2d212da6ccde0d22b067"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/expression-language/zipball/e16e66c309214143cc01dae6d1ff1ee13e7be4fa",
-                "reference": "e16e66c309214143cc01dae6d1ff1ee13e7be4fa",
+                "url": "https://api.github.com/repos/symfony/expression-language/zipball/2c3f5e7cf4495d9033cc2d212da6ccde0d22b067",
+                "reference": "2c3f5e7cf4495d9033cc2d212da6ccde0d22b067",
                 "shasum": ""
             },
             "require": {
@@ -2517,11 +2517,6 @@
                 "symfony/service-contracts": "^1.1|^2"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "5.1-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Symfony\\Component\\ExpressionLanguage\\": ""
@@ -2560,7 +2555,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-09-02T16:23:27+00:00"
+            "time": "2020-10-24T12:01:57+00:00"
         },
         {
             "name": "symfony/filesystem",
