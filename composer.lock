@@ -4341,16 +4341,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v2.14.0",
+            "version": "v2.14.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "d495243dade48c39b6a5261c26cdbd8c5703f6a0"
+                "reference": "5eb9ac5dfdd20c3f59495c22841adc5da980d312"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/d495243dade48c39b6a5261c26cdbd8c5703f6a0",
-                "reference": "d495243dade48c39b6a5261c26cdbd8c5703f6a0",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/5eb9ac5dfdd20c3f59495c22841adc5da980d312",
+                "reference": "5eb9ac5dfdd20c3f59495c22841adc5da980d312",
                 "shasum": ""
             },
             "require": {
@@ -4412,7 +4412,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-10-21T12:35:06+00:00"
+            "time": "2020-10-27T19:25:29+00:00"
         },
         {
             "name": "webmozart/assert",
