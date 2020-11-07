@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\Nodes;
 
-use Exception;
 use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Renderers\FullDocumentNodeRenderer;
 use function array_unshift;
