@@ -61,7 +61,6 @@ final class ParseGuides
             $config = current(current($payload->getConfig()['phpdocumentor']['versions'])['guides']);
             $dsn = $config['source']['dsn'];
             $inputFormat = $config['format'];
-            dump($inputFormat);
 
             $this->log('Parsing guides', LogLevel::NOTICE);
 
