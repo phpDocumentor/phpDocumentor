@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\Nodes;
 
-use Exception;
 use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Renderers\FullDocumentNodeRenderer;
 use function array_unshift;
@@ -179,10 +178,6 @@ class DocumentNode extends Node
         $environment = $this->environment;
         $relativeCss = $environment->relativeUrl($css);
 
-        if ($relativeCss === null) {
-            throw new Exception(sprintf('Could not get relative url for css %s', $css));
-        }
-
         $this->addHeaderNode(
             $environment->getNodeFactory()->createRawNode(
                 static function () use ($environment, $relativeCss) {
@@ -197,10 +192,6 @@ class DocumentNode extends Node
         $environment = $this->environment;
         $relativeJs = $environment->relativeUrl($js);
 
-        if ($relativeJs === null) {
-            throw new Exception(sprintf('Could not get relative url for js %s', $js));
-        }
-
         $this->addHeaderNode(
             $environment->getNodeFactory()->createRawNode(
                 static function () use ($environment, $relativeJs) {
@@ -214,10 +205,6 @@ class DocumentNode extends Node
     {
         $environment = $this->environment;
         $relativeUrl = $environment->relativeUrl($url);
-
-        if ($relativeUrl === null) {
-            throw new Exception(sprintf('Could not get relative url for favicon %s', $url));
-        }
 
         $this->addHeaderNode(
             $environment->getNodeFactory()->createRawNode(

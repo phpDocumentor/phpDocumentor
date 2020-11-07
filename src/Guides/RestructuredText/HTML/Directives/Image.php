@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\HTML\Directives;
 
-use Exception;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive;
 use phpDocumentor\Guides\RestructuredText\Parser;
-use function sprintf;
 
 /**
  * Renders an image, example :
@@ -36,10 +34,6 @@ class Image extends Directive
         $environment = $parser->getEnvironment();
 
         $url = $environment->relativeUrl($data);
-
-        if ($url === null) {
-            throw new Exception(sprintf('Could not get relative url for %s', $data));
-        }
 
         return $parser->getNodeFactory()->createImageNode($url, $options);
     }

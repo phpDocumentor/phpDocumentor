@@ -59,7 +59,7 @@ class SpanNodeRenderer extends BaseSpanNodeRenderer
     }
 
     /**
-     * @param mixed[] $attributes
+     * @param string[] $attributes
      */
     public function link(?string $url, string $title, array $attributes = []) : string
     {
@@ -90,7 +90,7 @@ class SpanNodeRenderer extends BaseSpanNodeRenderer
     }
 
     /**
-     * @param mixed[] $value
+     * @param string[] $value
      */
     public function reference(ResolvedReference $reference, array $value) : string
     {

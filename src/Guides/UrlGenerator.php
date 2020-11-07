@@ -51,7 +51,7 @@ final class UrlGenerator
     /**
      * Resolves a relative URL/
      */
-    public function relativeUrl(string $basePath, string $url) : ?string
+    public function relativeUrl(string $basePath, string $url) : string
     {
         $uri = UriFactory::createUri($url);
 
