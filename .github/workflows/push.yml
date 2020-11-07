@@ -201,7 +201,7 @@ jobs:
         id: cache-env
         uses: shivammathur/cache-extensions@v1
         with:
-          php-version: ${{ env.defaultPHPVersion }}
+          php-version: 7.4
           extensions: ${{ env.extensions }}
           key: ${{ env.key }}
 
