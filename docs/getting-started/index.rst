@@ -5,4 +5,5 @@ Getting started
     :maxdepth: 2
 
     installing
+    configuration
     your-first-set-of-documentation

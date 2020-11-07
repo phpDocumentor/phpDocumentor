@@ -267,7 +267,7 @@ final class Version3 implements ConfigurationInterface, Normalizable
             ->prototype('array')
                 ->children()
                     ->enumNode('format')
-                        ->values(['rst'])
+                        ->values(['rst', 'md'])
                         ->defaultValue('rst')
                     ->end()
                     ->append($this->source())

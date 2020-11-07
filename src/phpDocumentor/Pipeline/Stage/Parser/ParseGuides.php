@@ -60,13 +60,15 @@ final class ParseGuides
              */
             $config = current(current($payload->getConfig()['phpdocumentor']['versions'])['guides']);
             $dsn = $config['source']['dsn'];
+            $inputFormat = $config['format'];
+            dump($inputFormat);
 
             $this->log('Parsing guides', LogLevel::NOTICE);
 
             $origin = $this->flySystemFactory->create($dsn);
             $directory = $config['source']['paths'][0] ?? '';
 
-            $configuration = new Configuration($this->outputFormats);
+            $configuration = new Configuration($inputFormat, $this->outputFormats);
             $configuration->setOutputFolder((string) $config['output']);
 
             $this->commandBus->handle(new ParseDirectoryCommand($configuration, $origin, $directory));

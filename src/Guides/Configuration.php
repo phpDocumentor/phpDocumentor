@@ -49,8 +49,9 @@ final class Configuration
     /**
      * @param iterable<Format> $outputFormats
      */
-    public function __construct(iterable $outputFormats)
+    public function __construct(string $sourceFileExtension, iterable $outputFormats)
     {
+        $this->sourceFileExtension = $sourceFileExtension;
         $this->addFormat(...$outputFormats);
     }
 

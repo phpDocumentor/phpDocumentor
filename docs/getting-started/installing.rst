@@ -43,7 +43,7 @@ After that you can run it globally::
   $ phpDocumentor -d . -t docs/api
 
 Using Docker
-------------
+~~~~~~~~~~~~
 
 Although not an actual installation method: the easiest method to use phpDocumentor, if you have Docker installed, is to
 use our `Docker image`_. The Docker image comes with all dependencies pre-installed so that you do not have to install

@@ -8,7 +8,7 @@ use phpDocumentor\Guides\Nodes\DefinitionListNode;
 use phpDocumentor\Guides\Nodes\Factory;
 use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\Nodes\TableNode;
-use phpDocumentor\Guides\RestructuredText\Parser;
+use phpDocumentor\Guides\Parser;
 use phpDocumentor\Guides\RestructuredText\Parser\DefinitionList;
 use phpDocumentor\Guides\RestructuredText\Parser\LineChecker;
 use phpDocumentor\Guides\RestructuredText\Parser\TableSeparatorLineConfig;

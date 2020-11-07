@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\RestructuredText;
 
 use Doctrine\Common\EventManager;
-use InvalidArgumentException;
 use phpDocumentor\Guides\Configuration;
 use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Nodes\DocumentNode;
@@ -20,7 +19,6 @@ use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
 use RuntimeException;
 use Webmozart\Assert\Assert;
 use function array_merge;
-use function sprintf;
 
 class Parser implements ParserInterface
 {
@@ -183,24 +181,6 @@ class Parser implements ParserInterface
     public function parseFragment(string $contents) : DocumentNode
     {
         return $this->createDocumentParser()->parse($contents);
-    }
-
-    public function parseFile(string $file) : DocumentNode
-    {
-        $origin = $this->environment->getOrigin();
-        if (!$origin->has($file)) {
-            throw new InvalidArgumentException(sprintf('File at path %s does not exist', $file));
-        }
-
-        $this->filename = $file;
-
-        $contents = $origin->read($file);
-
-        if ($contents === false) {
-            throw new InvalidArgumentException(sprintf('Could not load file from path %s', $file));
-        }
-
-        return $this->parse($contents);
     }
 
     private function createDocumentParser() : DocumentParser

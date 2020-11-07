@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\Nodes;
 
 use phpDocumentor\Guides\Environment;
-use phpDocumentor\Guides\RestructuredText\Parser;
+use phpDocumentor\Guides\Parser;
 use phpDocumentor\Guides\RestructuredText\Span\SpanProcessor;
 use phpDocumentor\Guides\RestructuredText\Span\SpanToken;
 use function implode;

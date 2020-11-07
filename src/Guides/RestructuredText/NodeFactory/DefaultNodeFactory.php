@@ -33,10 +33,11 @@ use phpDocumentor\Guides\Nodes\TableNode;
 use phpDocumentor\Guides\Nodes\TitleNode;
 use phpDocumentor\Guides\Nodes\TocNode;
 use phpDocumentor\Guides\Nodes\WrapperNode;
+use phpDocumentor\Guides\Parser;
 use phpDocumentor\Guides\RestructuredText\Event\PostNodeCreateEvent;
-use phpDocumentor\Guides\RestructuredText\Parser;
 use phpDocumentor\Guides\RestructuredText\Parser\DefinitionList;
 use phpDocumentor\Guides\RestructuredText\Parser\LineChecker;
+use phpDocumentor\Guides\RestructuredText\Parser\TableSeparatorLineConfig;
 use function sprintf;
 
 class DefaultNodeFactory implements NodeFactory
@@ -172,7 +173,7 @@ class DefaultNodeFactory implements NodeFactory
     }
 
     public function createTableNode(
-        Parser\TableSeparatorLineConfig $separatorLineConfig,
+        TableSeparatorLineConfig $separatorLineConfig,
         string $type,
         LineChecker $lineChecker
     ) : TableNode {

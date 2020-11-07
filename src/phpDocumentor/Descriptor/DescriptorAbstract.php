@@ -28,7 +28,7 @@ use function trim;
  */
 abstract class DescriptorAbstract implements Filterable
 {
-    /** @var Fqsen Fully Qualified Structural Element Name; the FQCN including method, property of constant name */
+    /** @var Fqsen Fully Qualified Structural Element Name; the FQCN including method, property or constant name */
     protected $fqsen;
 
     /** @var string $name The local name for this element */
