@@ -16,6 +16,7 @@ namespace phpDocumentor\Configuration;
 use League\Uri\Contracts\UriInterface;
 use phpDocumentor\Dsn;
 use phpDocumentor\Path;
+use Webmozart\Assert\Assert;
 use function array_map;
 use function array_unique;
 use function count;
@@ -45,11 +46,13 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
         $this->currentWorkingDir = Dsn::createFromString($currentWorkingDir);
     }
 
+    //phpcs:disable Generic.Files.LineLength.TooLong
     /**
-     * @param array<string, array<string, array<string, mixed>>> $configuration
+     * @param array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string, cache: string}, versions?: array<string, array{api: array<int, array{ignore-tags: array, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibillity: string, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}}>, apis: array, guides: array}>, settings?: array<mixed>, templates?: non-empty-list<string>}} $configuration
      *
-     * @return array<string, array<string, array<int|string, array<mixed>|mixed>|false>>
+     * @return array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string|Dsn, cache: string|Path}, versions: array<string, array{api: array<int, array{ignore-tags: array, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibillity: string, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}}>, apis: array, guides: array}>, settings?: array<mixed>, templates?: non-empty-list<string>}}
      */
+    //phpcs:enable Generic.Files.LineLength.TooLong
     public function __invoke(array $configuration, ?UriInterface $uri = null) : array
     {
         $configuration = $this->overwriteDestinationFolder($configuration);
@@ -86,11 +89,13 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
         return $configuration;
     }
 
+    //phpcs:disable Generic.Files.LineLength.TooLong
     /**
-     * @param array<string, array<string, array<string, mixed>>> $configuration
+     * @param array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string, cache: string}, versions?: array<string, array{api: array<int, array{ignore-tags: array, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibillity: string, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}}>, apis: array, guides: array}>, settings?: array<mixed>, templates?: non-empty-list<string>}} $configuration
      *
-     * @return array<string, array<string, array<string, mixed>>>
+     * @return array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string|Dsn, cache: string}, versions?: array<string, array{api: array<int, array{ignore-tags: array, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibillity: string, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}}>, apis: array, guides: array}>, settings?: array<mixed>, templates?: non-empty-list<string>}}
      */
+    //phpcs:enable Generic.Files.LineLength.TooLong
     private function overwriteDestinationFolder(array $configuration) : array
     {
         if (isset($this->options['target']) && $this->options['target']) {
@@ -101,13 +106,15 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
         return $configuration;
     }
 
+    //phpcs:disable Generic.Files.LineLength.TooLong
     /**
      * Changes the given configuration array so that the cache handling is disabled.
      *
-     * @param array<string, array<string, array<string, mixed>>> $configuration
+     * @param array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string|Dsn, cache: string}, versions?: array<string, array{api: array<int, array{ignore-tags: array, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibillity: string, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}}>, apis: array, guides: array}>, settings?: array<mixed>, templates?: non-empty-list<string>}} $configuration
      *
-     * @return array<string, array<string, array<string, mixed>|false>>
+     * @return array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string|Dsn, cache: string}, versions?: array<string, array{api: array<int, array{ignore-tags: array, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibillity: string, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}}>, apis: array, guides: array}>, settings?: array<mixed>, templates?: non-empty-list<string>}}
      */
+    //phpcs:enable Generic.Files.LineLength.TooLong
     private function disableCache(array $configuration) : array
     {
         if (isset($this->options['force']) && $this->options['force']) {
@@ -117,11 +124,13 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
         return $configuration;
     }
 
+    //phpcs:disable Generic.Files.LineLength.TooLong
     /**
-     * @param array<string, array<string, array<string, mixed>|false>> $configuration
+     * @param array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string|Dsn, cache: string}, versions?: array<string, array{api: array<int, array{ignore-tags: array, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibillity: string, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}}>, apis: array, guides: array}>, settings?: array<mixed>, templates?: non-empty-list<string>}} $configuration
      *
-     * @return array<string, array<string, array<string, mixed>|false>>
+     * @return array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string|Dsn, cache: string|Path}, versions?: array<string, array{api: array<int, array{ignore-tags: array, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibillity: string, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}}>, apis: array, guides: array}>, settings?: array<mixed>, templates?: non-empty-list<string>}}
      */
+    //phpcs:enable Generic.Files.LineLength.TooLong
     private function overwriteCacheFolder(array $configuration) : array
     {
         if (isset($this->options['cache-folder']) && $this->options['cache-folder']) {
@@ -131,11 +140,13 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
         return $configuration;
     }
 
+    //phpcs:disable Generic.Files.LineLength.TooLong
     /**
-     * @param array<string, array<string, array<string, mixed>|false>> $configuration
+     * @param array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string|Dsn, cache: string|Path}, versions?: array<string, array{api: array<int, array{ignore-tags: array, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibillity: string, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}}>, apis: array, guides: array}>, settings?: array<mixed>, templates?: non-empty-list<string>}} $configuration
      *
-     * @return array<string, array<string, array<string, mixed>|false>>
+     * @return array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string|Dsn, cache: string|Path}, versions?: array<string, array{api: array<int, array{ignore-tags: array, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibillity: string, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}}>, apis: array, guides: array}>, settings?: array<mixed>, templates?: non-empty-list<string>}}
      */
+    //phpcs:enable Generic.Files.LineLength.TooLong
     private function overwriteTitle(array $configuration) : array
     {
         if (isset($this->options['title']) && $this->options['title']) {
@@ -145,13 +156,15 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
         return $configuration;
     }
 
+    //phpcs:disable Generic.Files.LineLength.TooLong
     /**
      * Changes the given configuration array to feature the templates from the options.
      *
-     * @param array<string, array<string, array<string, mixed>|false>> $configuration
+     * @param array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string|Dsn, cache: string|Path}, versions?: array<string, array{api: array<int, array{ignore-tags: array, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibillity: string, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}}>, apis: array, guides: array}>, settings?: array<mixed>, templates?: non-empty-list<string>}} $configuration
      *
-     * @return array<string, array<string, array<string, mixed>|false>>
+     * @return array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string|Dsn, cache: string|Path}, versions?: array<string, array{api: array<int, array{ignore-tags: array, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibillity: string, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}}>, apis: array, guides: array}>, settings?: array<mixed>, templates?: non-empty-list<string>}}
      */
+    //phpcs:enable Generic.Files.LineLength.TooLong
     private function overwriteTemplates(array $configuration) : array
     {
         if (isset($this->options['template']) && $this->options['template']) {
@@ -166,11 +179,13 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
         return $configuration;
     }
 
+    //phpcs:disable Generic.Files.LineLength.TooLong
     /**
-     * @param array<string, array<int, array<string, mixed>>> $version
+     * @param array{api: array<int, array{ignore-tags: array, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibillity: string, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}}>, apis: array, guides: array} $version
      *
-     * @return array<string, array<int, array<string, mixed>>>
+     * @return array{api: array<int, array{ignore-tags: array, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibillity: string, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}}>, apis: array, guides: array}
      */
+    //phpcs:enable Generic.Files.LineLength.TooLong
     private function setFilesInPath(array $version) : array
     {
         $filename = $this->options['filename'] ?? null;
@@ -194,11 +209,13 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
         return $version;
     }
 
+    //phpcs:disable Generic.Files.LineLength.TooLong
     /**
-     * @param array<string, array<int, array<string, mixed>>> $version
+     * @param array{api: array<int, array{ignore-tags: array, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibillity: string, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}}>, apis: array, guides: array} $version
      *
-     * @return array<string, array<int, array<string, mixed>>>
+     * @return array{api: array<int, array{ignore-tags: array, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibillity: string, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}}>, apis: array, guides: array}
      */
+    //phpcs:enable Generic.Files.LineLength.TooLong
     private function setDirectoriesInPath(array $version) : array
     {
         /** @var string|string[]|null $directory */
@@ -227,6 +244,7 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
                 $apiConfig = $currentApiConfig;
                 $apiConfig['source']['dsn'] = Dsn::createFromString($path);
                 $apiConfig['source']['paths'] = [new Path('./')];
+
                 $version['api'][] = $apiConfig;
             } else {
                 $currentApiConfig['source']['paths'][] = new Path($path);
@@ -240,11 +258,13 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
         return $version;
     }
 
+    //phpcs:disable Generic.Files.LineLength.TooLong
     /**
-     * @param array<string, array<int, array<string, mixed>>> $version
+     * @param array{api: array<int, array{ignore-tags: array, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibillity: string, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}}>, apis: array, guides: array} $version
      *
-     * @return array<string, array<int, array<string, mixed>>>
+     * @return array{api: array<int, array{ignore-tags: array, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibillity: string, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}}>, apis: array, guides: array}
      */
+    //phpcs:enable Generic.Files.LineLength.TooLong
     private function registerExtensions(array $version) : array
     {
         if (!isset($this->options['extensions']) || !$this->options['extensions']) {
@@ -255,16 +275,20 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
             $version['api'] = $this->createDefaultApiSettings();
         }
 
+        Assert::isArray($this->options['extensions']);
+
         $version['api'][0]['extensions'] = $this->options['extensions'];
 
         return $version;
     }
 
+    //phpcs:disable Generic.Files.LineLength.TooLong
     /**
-     * @param array<string, array<int, array<string, mixed>>> $version
+     * @param array{api: array<int, array{ignore-tags: array, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibillity: string, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}}>, apis: array, guides: array} $version
      *
-     * @return array<string, array<int, array<string, mixed>>>
+     * @return array{api: array<int, array{ignore-tags: array, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibillity: string, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}}>, apis: array, guides: array}
      */
+    //phpcs:enable Generic.Files.LineLength.TooLong
     private function overwriteIgnoredPaths(array $version) : array
     {
         if (!isset($this->options['ignore']) || !$this->options['ignore']) {
@@ -285,11 +309,13 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
         return $version;
     }
 
+    //phpcs:disable Generic.Files.LineLength.TooLong
     /**
-     * @param array<string, array<int, array<string, mixed>>> $version
+     * @param array{api: array<int, array{ignore-tags: array, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibillity: string, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}}>, apis: array, guides: array} $version
      *
-     * @return array<string, array<int, array<string, mixed>>>
+     * @return array{api: array<int, array{ignore-tags: array, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibillity: string, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}}>, apis: array, guides: array}
      */
+    //phpcs:enable Generic.Files.LineLength.TooLong
     private function overwriteIgnoredTags(array $version) : array
     {
         if (!isset($this->options['ignore-tags']) || !$this->options['ignore-tags']) {
@@ -300,16 +326,20 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
             $version['api'] = $this->createDefaultApiSettings();
         }
 
+        Assert::isArray($this->options['ignore-tags']);
+
         $version['api'][0]['ignore-tags'] = $this->options['ignore-tags'];
 
         return $version;
     }
 
+    //phpcs:disable Generic.Files.LineLength.TooLong
     /**
-     * @param array<string, array<int, array<string, mixed>>> $version
+     * @param array{api: array<int, array{ignore-tags: array, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibillity: string, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}}>, apis: array, guides: array} $version
      *
-     * @return array<string, array<int, array<string, mixed>>>
+     * @return array{api: array<int, array{ignore-tags: array, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibillity: string, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}}>, apis: array, guides: array}
      */
+    //phpcs:enable Generic.Files.LineLength.TooLong
     private function overwriteMarkers(array $version) : array
     {
         if (!isset($this->options['markers']) || !$this->options['markers']) {
@@ -320,16 +350,20 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
             $version['api'] = $this->createDefaultApiSettings();
         }
 
+        Assert::isArray($this->options['markers']);
+
         $version['api'][0]['markers'] = $this->options['markers'];
 
         return $version;
     }
 
+    //phpcs:disable Generic.Files.LineLength.TooLong
     /**
-     * @param array<string, array<int, array<string, mixed>>> $version
+     * @param array{api: array<int, array{ignore-tags: array, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibillity: string, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}}>, apis: array, guides: array} $version
      *
-     * @return array<string, array<int, array<string, mixed>>>
+     * @return array{api: array<int, array{ignore-tags: array, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibillity: string, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}}>, apis: array, guides: array}
      */
+    //phpcs:enable Generic.Files.LineLength.TooLong
     private function overwriteIncludeSource(array $version) : array
     {
         if (!isset($this->options['sourcecode'])) {
@@ -345,11 +379,13 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
         return $version;
     }
 
+    //phpcs:disable Generic.Files.LineLength.TooLong
     /**
-     * @param array<string, array<int, array<string, mixed>>> $version
+     * @param array{api: array<int, array{ignore-tags: array, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibillity: string, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}}>, apis: array, guides: array} $version
      *
-     * @return array<string, array<int, array<string, mixed>>>
+     * @return array{api: array<int, array{ignore-tags: array, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibillity: string, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}}>, apis: array, guides: array}
      */
+    //phpcs:enable Generic.Files.LineLength.TooLong
     private function overwriteVisibility(array $version) : array
     {
         /** @var string[]|string|null $visibilityFlags */
@@ -368,11 +404,13 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
         return $version;
     }
 
+    //phpcs:disable Generic.Files.LineLength.TooLong
     /**
-     * @param array<string, array<int, array<string, mixed>>> $version
+     * @param array{api: array<int, array{ignore-tags: array, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibillity: string, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}}>, apis: array, guides: array} $version
      *
-     * @return array<string, array<int, array<string, mixed>>>
+     * @return array{api: array<int, array{ignore-tags: array, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibillity: string, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}}>, apis: array, guides: array}
      */
+    //phpcs:enable Generic.Files.LineLength.TooLong
     private function overwriteDefaultPackageName(array $version) : array
     {
         if (!isset($this->options['defaultpackagename']) || !$this->options['defaultpackagename']) {
@@ -388,11 +426,13 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
         return $version;
     }
 
+    //phpcs:disable Generic.Files.LineLength.TooLong
     /**
-     * @param array<string, array<int, array<string, mixed>>> $version
+     * @param array{api: array<int, array{ignore-tags: array, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibillity: string, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}}>, apis: array, guides: array} $version
      *
-     * @return array<string, array<int, array<string, mixed>>>
+     * @return array{api: array<int, array{ignore-tags: array, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibillity: string, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}}>, apis: array, guides: array}
      */
+    //phpcs:enable Generic.Files.LineLength.TooLong
     private function overwriteExamples(array $version) : array
     {
         /** @var string|null $examples */
@@ -413,39 +453,47 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
         return $version;
     }
 
+    //phpcs:disable Generic.Files.LineLength.TooLong
     /**
-     * @return array<mixed>
+     * @return array{api: array<int, array{ignore-tags: array, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibillity: string, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}}>, apis: array, guides: array}
      */
+    //phpcs:enable Generic.Files.LineLength.TooLong
     private function createDefaultVersionSettings() : array
     {
         return current($this->configFactory->createDefault()['phpdocumentor']['versions']);
     }
 
+    //phpcs:disable Generic.Files.LineLength.TooLong
     /**
-     * @return array<mixed>
+     * @return array<int, array{ignore-tags: array, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibillity: string, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}}>
      */
+    //phpcs:enable Generic.Files.LineLength.TooLong
     private function createDefaultApiSettings() : array
     {
         return $this->createDefaultVersionSettings()['api'];
     }
 
+    //phpcs:disable Generic.Files.LineLength.TooLong
     /**
      * If the source path was influenced; we can no longer reliable render multiple versions as such we reduce
      * the list of versions to the last one; assuming that is the most recent / desirable one.
      *
-     * @param array<string, array<string, array<string, mixed>>> $configuration
+     * @param array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string|Dsn, cache: string|Path}, versions: array<string, array{api: array<int, array{ignore-tags: array, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibillity: string, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}}>, apis: array, guides: array}>, settings?: array<mixed>, templates?: non-empty-list<string>}} $configuration
      */
+    //phpcs:enable Generic.Files.LineLength.TooLong
     private function shouldReduceNumberOfVersionsToOne(array $configuration) : bool
     {
         return (($this->options['filename'] ?? '') !== '' || ($this->options['directory'] ?? '') !== '')
             && count($configuration['phpdocumentor']['versions']) > 1;
     }
 
+    //phpcs:disable Generic.Files.LineLength.TooLong
     /**
-     * @param array<string, array<string, array<string, mixed>|false>> $configuration
+     * @param array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string|Dsn, cache: string|Path}, versions?: array<string, array{api: array<int, array{ignore-tags: array, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibillity: string, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}}>, apis: array, guides: array}>, settings?: array<mixed>, templates?: non-empty-list<string>}} $configuration
      *
-     * @return array<string, array<string, array<string, mixed>|false>>
+     * @return array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string|Dsn, cache: string|Path}, versions?: array<string, array{api: array<int, array{ignore-tags: array, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibillity: string, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}}>, apis: array, guides: array}>, settings?: array<mixed>, templates?: non-empty-list<string>}}
      */
+    //phpcs:enable Generic.Files.LineLength.TooLong
     private function overwriteSettings(array $configuration) : array
     {
         if (!($configuration['phpdocumentor']['settings'] ?? null)) {
@@ -473,11 +521,13 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
         return $configuration;
     }
 
+    //phpcs:disable Generic.Files.LineLength.TooLong
     /**
-     * @param array<string, array<int, array<string, mixed>>> $version
+     * @param array{api: array<int, array{ignore-tags: array, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibillity: string, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}}>, apis: array, guides: array} $version
      *
-     * @return array<string, array<int, array<string, mixed>>>
+     * @return array{api: array<int, array{ignore-tags: array, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibillity: string, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}}>, apis: array, guides: array}
      */
+    //phpcs:enable Generic.Files.LineLength.TooLong
     private function overwriteEncoding(array $version) : array
     {
         /** @var string|null $encoding */

@@ -23,11 +23,13 @@ use function substr;
 
 final class PathNormalizingMiddleware implements MiddlewareInterface
 {
+    //phpcs:disable Generic.Files.LineLength.TooLong
     /**
-     * @param array<string, array<string, array<string, mixed>>> $configuration
+     * @param array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string|Dsn, cache: string|Path}, versions?: array<string, array{api: array<int, array{ignore-tags: array, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibillity: string, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}}>, apis: array, guides: array}>, settings?: array<mixed>, templates?: non-empty-list<string>}} $configuration
      *
-     * @return array<string, array<string, array<string, mixed>>>
+     * @return array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string|Dsn, cache: string|Path}, versions?: array<string, array{api: array<int, array{ignore-tags: array, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibillity: string, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}}>, apis: array, guides: array}>, settings?: array<mixed>, templates?: non-empty-list<string>}}
      */
+    //phpcs:enable Generic.Files.LineLength.TooLong
     public function __invoke(array $configuration, ?UriInterface $uri = null) : array
     {
         $configuration = $this->makeDsnRelativeToConfig($configuration, $uri);
@@ -40,6 +42,7 @@ final class PathNormalizingMiddleware implements MiddlewareInterface
         return $configuration;
     }
 
+    //phpcs:disable Generic.Files.LineLength.TooLong
     /**
      * Transforms relative dsn to relative path of working dir.
      *
@@ -54,10 +57,11 @@ final class PathNormalizingMiddleware implements MiddlewareInterface
      *
      * Absolute DSNs are untouched.
      *
-     * @param array<string, array<string, array<string, mixed>>> $configuration
+     * @param array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: Dsn, cache: Path}, versions?: array<string, array{api: array<int, array{ignore-tags: array, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibillity: string, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}}>, apis: array, guides: array}>, settings?: array<mixed>, templates?: non-empty-list<string>}} $configuration
      *
-     * @return array<string, array<string, array<string, mixed>>>
+     * @return array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: Dsn, cache: Path}, versions?: array<string, array{api: array<int, array{ignore-tags: array, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibillity: string, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}}>, apis: array, guides: array}>, settings?: array<mixed>, templates?: non-empty-list<string>}}
      */
+    //phpcs:enable Generic.Files.LineLength.TooLong
     private function makeDsnRelativeToConfig(array $configuration, ?UriInterface $uri) : array
     {
         if ($uri === null) {
@@ -84,11 +88,13 @@ final class PathNormalizingMiddleware implements MiddlewareInterface
         return $configuration;
     }
 
+    //phpcs:disable Generic.Files.LineLength.TooLong
     /**
-     * @param array<string, array<string, array<string, mixed>>> $configuration
+     * @param array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: Dsn, cache: Path}, versions?: array<string, array{api: array<int, array{ignore-tags: array, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibillity: string, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}}>, apis: array, guides: array}>, settings?: array<mixed>, templates?: non-empty-list<string>} $configuration
      *
-     * @return array<string, array<string, array<string, mixed>>>
+     * @return array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: Dsn, cache: Path}, versions?: array<string, array{api: array<int, array{ignore-tags: array, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibillity: string, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}}>, apis: array, guides: array}>, settings?: array<mixed>, templates?: non-empty-list<string>}
      */
+    //phpcs:enable Generic.Files.LineLength.TooLong
     private function normalizePaths(array $configuration) : array
     {
         foreach ($configuration['versions'] as $versionNumber => $version) {
