@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
+use Webmozart\Assert\Assert;
+
 /**
  * Represents a namespace and its children for a project.
  *
@@ -59,11 +61,13 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
 
     /**
      * Sets the parent namespace for this namespace.
-     *
-     * @param ?NamespaceDescriptor $parent
+     * {@inheritDoc}
      */
     public function setParent($parent) : void
     {
+        //phpcs:disable SlevomatCodingStandard.Classes.ModernClassNameReference.ClassNameReferencedViaMagicConstant
+        Assert::nullOrIsInstanceOf($parent, __CLASS__);
+
         $this->parent = $parent;
     }
 

@@ -150,7 +150,7 @@ final class Version2 implements ConfigurationInterface, Upgradable
     /**
      * Upgrades the version 2 configuration to the version 3 configuration.
      *
-     * @param array<string, array<string, mixed>> $values
+     * @param array<string, string|array<string, mixed>> $values
      *
      * @return array<string, array<int|string, mixed>|string>
      *

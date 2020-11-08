@@ -16,6 +16,7 @@ namespace phpDocumentor\Parser;
 use League\Flysystem\FileNotFoundException;
 use League\Flysystem\FilesystemInterface;
 use phpDocumentor\Reflection\File;
+use Webmozart\Assert\Assert;
 use function md5;
 
 final class FlySystemFile implements File
@@ -39,7 +40,11 @@ final class FlySystemFile implements File
      */
     public function getContents() : string
     {
-        return $this->fileSystem->read($this->fileName);
+        $contents = $this->fileSystem->read($this->fileName);
+
+        Assert::notFalse($contents);
+
+        return $contents;
     }
 
     /**

@@ -30,6 +30,7 @@ use Twig\Extension\AbstractExtension;
 use Twig\Extension\GlobalsInterface;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
+use Webmozart\Assert\Assert;
 use function array_unshift;
 use function count;
 use function method_exists;
@@ -146,7 +147,11 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             new TwigFunction(
                 'path',
                 function (string $url) : string {
-                    return $this->routeRenderer->convertToRootPath($url);
+                    $path = $this->routeRenderer->convertToRootPath($url);
+
+                    Assert::notNull($path);
+
+                    return $path;
                 }
             ),
             new TwigFunction(

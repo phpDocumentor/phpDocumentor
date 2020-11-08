@@ -135,7 +135,11 @@ final class LinkRenderer
             return $uri;
         }
 
-        return $this->convertToRootPath($this->withoutLeadingSlash($uri));
+        $path = $this->convertToRootPath($this->withoutLeadingSlash($uri));
+
+        Assert::notNull($path);
+
+        return $path;
     }
 
     /**

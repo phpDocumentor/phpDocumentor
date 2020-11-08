@@ -17,6 +17,7 @@ use InvalidArgumentException;
 use phpDocumentor\Descriptor\Tag\VarDescriptor;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Type;
+use Webmozart\Assert\Assert;
 use function array_filter;
 
 /**
@@ -126,7 +127,11 @@ class ConstantDescriptor extends DescriptorAbstract implements
      */
     public function getFile() : FileDescriptor
     {
-        return parent::getFile() ?? $this->getParent()->getFile();
+        $file = parent::getFile() ?? $this->getParent()->getFile();
+
+        Assert::notNull($file);
+
+        return $file;
     }
 
     /**
