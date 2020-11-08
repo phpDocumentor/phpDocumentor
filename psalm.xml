@@ -4,7 +4,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns="https://getpsalm.org/schema/config"
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
-    errorLevel="6"
+    errorLevel="5"
     findUnusedVariablesAndParams="true"
 >
     <projectFiles>
@@ -26,6 +26,13 @@
                 <referencedMethod name="League\Flysystem\Filesystem::find"/>
             </errorLevel>
         </UndefinedMagicMethod>
+
+        <UndefinedInterfaceMethod>
+            <errorLevel type="suppress">
+                <!-- not sure what's going on here -->
+                <referencedMethod name="League\Flysystem\FilesystemInterface::find"/>
+            </errorLevel>
+        </UndefinedInterfaceMethod>
 
         <InvalidArgument>
             <errorLevel type="suppress">
@@ -89,5 +96,19 @@
                 <file name="src/phpDocumentor/Compiler/Linker/Linker.php"/>
             </errorLevel>
         </InvalidReturnType>
+        
+        <UnusedMethodCall>
+            <errorLevel type="suppress">
+                <!-- Psalm think the call is unused. Don't know why -->
+                <referencedMethod name="Webmozart\Assert\Mixin::nullOrIsInstanceOf"/>
+            </errorLevel>
+        </UnusedMethodCall>
+
+        <MoreSpecificImplementedParamType>
+            <errorLevel type="suppress">
+                <!-- Missing documentation in phpDocumentor\Reflection library. Fixed in phpDocumentor/Reflection/pull/181. This can be removed starting from ^4.0.2 -->
+                <directory name="src/phpDocumentor/Parser/Middleware/"/>
+            </errorLevel>
+        </MoreSpecificImplementedParamType>
     </issueHandlers>
 </psalm>

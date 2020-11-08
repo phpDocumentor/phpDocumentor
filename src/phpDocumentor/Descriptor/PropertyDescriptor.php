@@ -16,6 +16,7 @@ namespace phpDocumentor\Descriptor;
 use phpDocumentor\Descriptor\Tag\VarDescriptor;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Type;
+use Webmozart\Assert\Assert;
 
 /**
  * Descriptor representing a property.
@@ -152,7 +153,11 @@ class PropertyDescriptor extends DescriptorAbstract implements
      */
     public function getFile() : FileDescriptor
     {
-        return $this->getParent()->getFile();
+        $file = $this->getParent()->getFile();
+
+        Assert::notNull($file);
+
+        return $file;
     }
 
     /**

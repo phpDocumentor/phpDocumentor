@@ -31,6 +31,7 @@ use phpDocumentor\Transformer\Writer\WriterAbstract;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use RuntimeException;
+use Webmozart\Assert\Assert;
 use function in_array;
 use function sprintf;
 
@@ -116,7 +117,11 @@ class Transformer implements CompilerPassInterface
 
     public function destination() : FilesystemInterface
     {
-        return $this->destination;
+        $destination = $this->destination;
+
+        Assert::notNull($destination);
+
+        return $destination;
     }
 
     public function getTemplatesDirectory() : Filesystem

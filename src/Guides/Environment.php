@@ -20,6 +20,7 @@ use phpDocumentor\Guides\Nodes\Factory;
 use phpDocumentor\Guides\References\Reference;
 use phpDocumentor\Guides\References\ResolvedReference;
 use Psr\Log\LoggerInterface;
+use Webmozart\Assert\Assert;
 use function array_shift;
 use function dirname;
 use function iconv;
@@ -145,6 +146,8 @@ final class Environment
 
     public function getNodeFactory() : Factory
     {
+        Assert::notNull($this->nodeFactory);
+
         return $this->nodeFactory;
     }
 

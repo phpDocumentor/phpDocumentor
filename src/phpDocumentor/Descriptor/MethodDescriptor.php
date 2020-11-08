@@ -165,7 +165,11 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
      */
     public function getFile() : FileDescriptor
     {
-        return $this->getParent()->getFile();
+        $file = $this->getParent()->getFile();
+
+        Assert::notNull($file);
+
+        return $file;
     }
 
     /**
