@@ -114,7 +114,7 @@ class DescriptorRepository
 
             return sprintf(
                 '%s%s',
-                $container->getFullyQualifiedStructuralElementName(),
+                (string) $container->getFullyQualifiedStructuralElementName(),
                 substr($fqsen, strlen($pseudoType))
             );
         }

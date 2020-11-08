@@ -22,7 +22,7 @@ interface Upgradable
      *
      * @param array<string, string|array<string, mixed>> $values
      *
-     * @return array<string, string|array<string, mixed>>
+     * @return array<string, string|array<int|string, mixed>>
      */
     public function upgrade(array $values) : array;
 }

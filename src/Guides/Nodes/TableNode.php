@@ -43,7 +43,7 @@ class TableNode extends Node
     public const TYPE_SIMPLE = 'simple';
     public const TYPE_PRETTY = 'pretty';
 
-    /** @var TableSeparatorLineConfig[] */
+    /** @var array<int, TableSeparatorLineConfig> */
     private $separatorLineConfigs = [];
 
     /** @var string[] */

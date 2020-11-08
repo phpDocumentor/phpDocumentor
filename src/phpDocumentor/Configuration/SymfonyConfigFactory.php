@@ -64,7 +64,7 @@ class SymfonyConfigFactory
     /**
      * @param array<string, string> $values
      *
-     * @return array<string, array<string, string|array<mixed>>>
+     * @return array{phpdocumentor: array<string, array|string>}
      */
     private function generateConfiguration(array $values) : array
     {
@@ -129,7 +129,7 @@ class SymfonyConfigFactory
     /**
      * @param array<string, string|array<string, mixed>> $configuration
      *
-     * @return array<string, string|array<string, mixed>>
+     * @return array{configVersion: array<int|string, mixed>|string}
      */
     private function upgradeConfiguration(Upgradable $definition, array $configuration) : array
     {

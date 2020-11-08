@@ -101,8 +101,8 @@ class SpanProcessor
         foreach ($this->environment->getTitleLetters() as $level => $letter) {
             $span = preg_replace_callback(
                 '/\#\\' . $letter . '/mUsi',
-                function () use ($level) {
-                    return $this->environment->getNumber($level);
+                function () use ($level) : string {
+                    return (string) $this->environment->getNumber($level);
                 },
                 $span
             );

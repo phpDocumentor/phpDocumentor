@@ -42,7 +42,7 @@ final class Paragraph extends AbstractBlock
             }
 
             echo 'PARAGRAPH CONTEXT: I am '
-                . ($event->isEntering() ? 'entering' : 'leaving')
+                . 'leaving'
                 . ' a '
                 . get_class($node)
                 . ' node'

@@ -27,7 +27,7 @@ interface AssemblerInterface
      *
      * @param TInput $data
      *
-     * @return TDescriptor
+     * @return TDescriptor|null
      */
     public function create(object $data);
     //phpcs:enable
