@@ -233,13 +233,14 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
     /**
      * @param class-string<F> $className
      *
-     * @return Collection<object&F&T>
+     * @return Collection<F>
      *
-     * @template F
+     * @template F of object
      */
     public function filter(string $className) : Collection
     {
-        return new self(
+        /** @var Collection<F> $collection */
+        $collection = new self(
             array_filter(
                 $this->getAll(),
                 static function ($item) use ($className) {
@@ -247,6 +248,8 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
                 }
             )
         );
+
+        return $collection;
     }
 
     /**

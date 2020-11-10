@@ -84,7 +84,7 @@ interface ElementInterface
     /**
      * Returns all tags associated with this element.
      *
-     * @return Collection<TagDescriptor>
+     * @return Collection<Collection<TagDescriptor>>
      */
     public function getTags() : Collection;
 }

@@ -41,10 +41,6 @@ class Title extends Directive
             $parser->getNodeFactory()->createRawNode($title)
         );
 
-        if ($node === null) {
-            return;
-        }
-
         $document->addNode($node);
     }
 }

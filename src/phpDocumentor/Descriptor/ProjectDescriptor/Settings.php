@@ -124,7 +124,7 @@ final class Settings
      * various locations through the accessor {@see ProjectDescriptor::getSettings()} or in the templates using
      * the `project.settings.other` variable.
      *
-     * @return (string|bool)[]
+     * @return array<string, bool|string>
      */
     public function getCustom() : array
     {
@@ -132,7 +132,7 @@ final class Settings
     }
 
     /**
-     * @param array<string, string> $settings
+     * @param array<string, bool|string> $settings
      */
     public function setCustom(array $settings) : void
     {
@@ -142,7 +142,7 @@ final class Settings
     /**
      * Sets a property's value and if it differs from the previous then mark these settings as modified.
      *
-     * @param int|bool|array<string, string> $value
+     * @param int|bool|array<string, bool|string> $value
      */
     private function setValueAndCheckIfModified(string $propertyName, $value) : void
     {

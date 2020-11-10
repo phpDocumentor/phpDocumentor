@@ -137,7 +137,7 @@ final class Parser implements ParserInterface
             }
 
             echo 'DOCUMENT CONTEXT: I am '
-                . ($event->isEntering() ? 'entering' : 'leaving')
+                . 'leaving'
                 . ' a '
                 . get_class($node)
                 . ' node'

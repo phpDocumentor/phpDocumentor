@@ -73,7 +73,7 @@ final class Configure
 
         $this->loadConfigurationFile($options['config'] ?? '');
         $this->locator->providePath($this->configuration['phpdocumentor']['paths']['cache']);
-        $this->logger->info(sprintf('Logging to: %s', $this->locator->locate()));
+        $this->logger->info(sprintf('Logging to: %s', (string) $this->locator->locate()));
 
         return $this->configuration->getArrayCopy();
     }

@@ -39,7 +39,7 @@ final class ListBlock extends AbstractBlock
             }
 
             echo 'LIST CONTEXT: I am '
-                . ($event->isEntering() ? 'entering' : 'leaving')
+                . 'leaving'
                 . ' a '
                 . get_class($node)
                 . ' node'
