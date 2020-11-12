@@ -19,6 +19,7 @@ use Flyfinder\Specification\IsHidden;
 use Flyfinder\Specification\NotSpecification;
 use Flyfinder\Specification\SpecificationInterface;
 use phpDocumentor\Parser\SpecificationFactoryInterface as FactoryInterface;
+use phpDocumentor\Path;
 
 /**
  * Factory class to build Specification used by FlyFinder when reading files to process.
@@ -28,7 +29,7 @@ final class SpecificationFactory implements FactoryInterface
     /**
      * Creates a SpecificationInterface object based on the ignore and extension parameters.
      *
-     * @param list<string> $paths
+     * @param list<string|Path> $paths
      * @param array<string, bool|array<string>|null> $ignore
      * @param list<string> $extensions
      */

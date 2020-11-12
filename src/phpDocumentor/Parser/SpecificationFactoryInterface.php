@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Parser;
 
 use Flyfinder\Specification\SpecificationInterface;
+use phpDocumentor\Path;
 
 /**
  * Interface for Specifications used to filter the FileSystem.
@@ -23,7 +24,7 @@ interface SpecificationFactoryInterface
     /**
      * Creates a SpecificationInterface object based on the ignore and extension parameters.
      *
-     * @param list<string> $paths
+     * @param list<string|Path> $paths
      * @param array<string, bool|array<string>|null> $ignore
      * @param list<string> $extensions
      */

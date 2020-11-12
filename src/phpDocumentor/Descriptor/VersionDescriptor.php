@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
+use phpDocumentor\Configuration\VersionSpecification;
+
 final class VersionDescriptor
 {
     /** @var string */
@@ -43,21 +45,18 @@ final class VersionDescriptor
         return $this->documentationSets;
     }
 
-    /**
-     * @param array<mixed> $config
-     */
-    public static function fromConfiguration(array $config) : self
+    public static function fromConfiguration(VersionSpecification $config) : self
     {
         $documentationSets = Collection::fromClassString(DocumentationSetDescriptor::class);
 
-        foreach ($config['guides'] ?? [] as $guide) {
+        foreach ($config->getGuides() ?? [] as $guide) {
             $documentationSets->add(new GuideSetDescriptor('', $guide['source'], $guide['output']));
         }
 
-        foreach ($config['api'] ?? [] as $api) {
+        foreach ($config->getApi() ?? [] as $api) {
             $documentationSets->add(new ApiSetDescriptor('', $api['source'], $api['output']));
         }
 
-        return new self($config['number'], $documentationSets);
+        return new self($config->getNumber(), $documentationSets);
     }
 }

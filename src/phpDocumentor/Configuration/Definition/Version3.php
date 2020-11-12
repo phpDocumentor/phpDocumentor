@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Configuration\Definition;
 
 use phpDocumentor\Configuration\SymfonyConfigFactory;
+use phpDocumentor\Configuration\VersionSpecification;
 use phpDocumentor\Dsn;
 use phpDocumentor\Path;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
@@ -110,9 +111,9 @@ final class Version3 implements ConfigurationInterface, Normalizable
 
     //phpcs:disable Generic.Files.LineLength.TooLong
     /**
-     * @param array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string, cache: string}, versions?: array<string, array{api: array<int, array{ignore-tags: array, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibillity: string, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}}>, apis: array, guides: array}>, settings?: array<mixed>, templates?: non-empty-list<string>} $configuration
+     * @param array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string, cache: string}, versions?: array<string, mixed>, settings?: array<mixed>, templates?: non-empty-list<string>} $configuration
      *
-     * @return array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: Dsn, cache: Path}, versions?: array<string, array{api: array<int, array{ignore-tags: array, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibillity: string, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}}>, apis: array, guides: array}>, settings?: array<mixed>, templates?: non-empty-list<string>}
+     * @return array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: Dsn, cache: Path}, versions?: array<string, VersionSpecification>, settings?: array<mixed>, templates?: non-empty-list<string>}
      */
     //phpcs:enable Generic.Files.LineLength.TooLong
     public function normalize(array $configuration) : array
@@ -129,35 +130,38 @@ final class Version3 implements ConfigurationInterface, Normalizable
             unset($configuration['versions'][$versionNumber]['apis']);
 
             foreach ($version['apis'] as $key => $api) {
-                $configuration['versions'][$versionNumber]['api'][$key]['source']['dsn']
-                    = Dsn::createFromString($api['source']['dsn']);
+                $apiKey = $configuration['versions'][$versionNumber]['api'][$key];
+
+                $apiKey['source']['dsn'] = Dsn::createFromString($api['source']['dsn']);
                 foreach ($api['source']['paths'] as $subkey => $path) {
-                    $configuration['versions'][$versionNumber]['api'][$key]['source']['paths'][$subkey] =
-                        new Path($path);
+                    $apiKey['source']['paths'][$subkey] = new Path($path);
                 }
 
-                $configuration['versions'][$versionNumber]['api'][$key]['ignore-tags'] =
-                    $configuration['versions'][$versionNumber]['api'][$key]['ignore-tags']['ignore_tags'];
-                $configuration['versions'][$versionNumber]['api'][$key]['extensions'] =
-                    $configuration['versions'][$versionNumber]['api'][$key]['extensions']['extensions'];
-                $configuration['versions'][$versionNumber]['api'][$key]['markers'] =
-                    $configuration['versions'][$versionNumber]['api'][$key]['markers']['markers'];
-                // for array normalization to work, I need to use fixXmlConfig; but that doesn't seem to work
-                // when you want to keep the key the same (api => api) but requires the plural to be differently named.
-                // the rest of the app doesn't use a plural; so I undo that pluralisation here.
-                $configuration['versions'][$versionNumber]['api'][$key]['visibility'] =
-                    $configuration['versions'][$versionNumber]['api'][$key]['visibilities'];
-                unset($configuration['versions'][$versionNumber]['api'][$key]['visibilities']);
+                $apiKey['ignore-tags'] = $apiKey['ignore-tags']['ignore_tags'];
+                $apiKey['extensions'] = $apiKey['extensions']['extensions'];
+                $apiKey['markers'] = $apiKey['markers']['markers'];
+                $apiKey['visibility'] = $apiKey['visibilities'];
+                unset($apiKey['visibilities']);
+
+                $configuration['versions'][$versionNumber]['api'][$key] = $apiKey;
             }
 
             foreach ($version['guides'] as $key => $guide) {
-                $configuration['versions'][$versionNumber]['guides'][$key]['source']['dsn']
-                    = Dsn::createFromString($guide['source']['dsn']);
+                $guidesKey = $configuration['versions'][$versionNumber]['guides'][$key];
+
+                $guidesKey['source']['dsn'] = Dsn::createFromString($guide['source']['dsn']);
                 foreach ($guide['source']['paths'] as $subkey => $path) {
-                    $configuration['versions'][$versionNumber]['guides'][$key]['source']['paths'][$subkey] =
-                        new Path($path);
+                    $guidesKey['source']['paths'][$subkey] = new Path($path);
                 }
+
+                $configuration['versions'][$versionNumber]['guides'][$key] = $guidesKey;
             }
+        }
+
+        //Now that we have a consistent structure, we will proceed to transform the big 'versions' array in an object
+        foreach ($configuration['versions'] as $versionNumber => $version) {
+            $configuration['versions'][$versionNumber]
+                = new VersionSpecification($versionNumber, $version['api'], $version['guides']);
         }
 
         return $configuration;

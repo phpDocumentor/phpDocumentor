@@ -58,7 +58,7 @@ final class ParseGuides
              * For now settings of the first guides are used.
              * We need to change this later, when we accept more different things
              */
-            $config = current(current($payload->getConfig()['phpdocumentor']['versions'])['guides']);
+            $config = current(current($payload->getConfig()['phpdocumentor']['versions'])->guides);
             $dsn = $config['source']['dsn'];
             $inputFormat = $config['format'];
 

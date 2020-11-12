@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Parser;
 
 use phpDocumentor\Dsn;
+use phpDocumentor\Path;
 
 final class FlySystemCollector implements FileCollector
 {
@@ -30,7 +31,7 @@ final class FlySystemCollector implements FileCollector
     }
 
     /**
-     * @param list<string>         $paths
+     * @param list<string|Path>    $paths
      * @param array<string, mixed> $ignore
      * @param list<string>         $extensions
      *

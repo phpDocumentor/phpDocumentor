@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Pipeline\Stage\Parser;
 
+use phpDocumentor\Configuration\VersionSpecification;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Dsn;
 use phpDocumentor\Parser\FileCollector;
@@ -46,28 +47,26 @@ final class CollectFilesTest extends TestCase
 
         $fixture = new CollectFiles($fileCollector->reveal(), new NullLogger());
 
-        $payload = new Payload(
+        $version = new VersionSpecification(
+            '1.0.0',
             [
-                'phpdocumentor' => [
-                    'versions' => [
-                        '1.0.0' => [
-                            'api' => [
-                                [
-                                    'source' => [
-                                        'dsn' => $dns,
-                                        'paths' => [0 => 'src'],
-                                    ],
-                                    'ignore' => [
-                                        'paths' => [],
-                                        'hidden' => null,
-                                    ],
-                                    'extensions' => ['php'],
-                                ],
-                            ],
-                        ],
+                [
+                    'source' => [
+                        'dsn' => $dns,
+                        'paths' => [0 => 'src'],
                     ],
+                    'ignore' => [
+                        'paths' => [],
+                        'hidden' => null,
+                    ],
+                    'extensions' => ['php'],
                 ],
             ],
+            null
+        );
+
+        $payload = new Payload(
+            ['phpdocumentor' => ['versions' => ['1.0.0' => $version]]],
             $this->prophesize(ProjectDescriptorBuilder::class)->reveal()
         );
 

@@ -13,7 +13,10 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Pipeline\Stage;
 
+use phpDocumentor\Configuration\VersionSpecification;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
+use phpDocumentor\Dsn;
+use phpDocumentor\Path;
 
 final class TransformToPayload
 {
@@ -25,9 +28,11 @@ final class TransformToPayload
         $this->descriptorBuilder = $descriptorBuilder;
     }
 
+    //phpcs:disable Generic.Files.LineLength.TooLong
     /**
-     * @param array<string, string> $configuration
+     * @param array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: Dsn, cache: Path}, versions?: array<string, VersionSpecification>, settings?: array<mixed>, templates?: non-empty-list<string>}} $configuration
      */
+    //phpcs:enable Generic.Files.LineLength.TooLong
     public function __invoke(array $configuration) : Payload
     {
         return new Payload($configuration, $this->descriptorBuilder);

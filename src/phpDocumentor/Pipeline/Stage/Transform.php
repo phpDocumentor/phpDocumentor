@@ -132,7 +132,7 @@ final class Transform
     }
 
     /**
-     * @param array<string, string> $templateNames
+     * @param array<int, string> $templateNames
      */
     private function loadTemplatesBasedOnNames(array $templateNames) : void
     {

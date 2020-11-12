@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Configuration\Definition;
 
 use phpDocumentor\Configuration\SymfonyConfigFactory;
-use phpDocumentor\Dsn;
+use phpDocumentor\Configuration\VersionSpecification;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use function array_map;
@@ -152,7 +152,7 @@ final class Version2 implements ConfigurationInterface, Upgradable
     /**
      * Upgrades the version 2 configuration to the version 3 configuration.
      *
-     * @param array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string, cache: string}, versions?: array<string, array{api: array<int, array{ignore-tags: array, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibillity: string, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}}>, apis: array, guides: array}>, settings?: array<mixed>, templates?: non-empty-list<string>, transformer: array{target: string}, parser: array{target: string, default-package-name: string, extensions: array{extensions: array}, visibility: string, markers: array{items: array}}, files: array{files: array, directories: array, ignores: array}, transformations: array{templates: array<string>}} $values
+     * @param array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string, cache: string}, versions?: array<string, VersionSpecification>, settings?: array<mixed>, templates?: non-empty-list<string>, transformer: array{target: string}, parser: array{target: string, default-package-name: string, extensions: array{extensions: array}, visibility: string, markers: array{items: array}}, files: array{files: array, directories: array, ignores: array}, transformations: array{templates: array<string>}} $values
      *
      * @return array{configVersion: string, title: string, paths: array{cache: string, output: string}, templates: non-empty-list<string>, version: array{array{api: array{array{default-package-name: string, extensions: array{extensions: array}, ignore: array{paths: array<string>}, markers: array{markers: array}, source: array{paths: array<string>}, visibilities: non-empty-list<string>|null}}, number: string}}}
      *
