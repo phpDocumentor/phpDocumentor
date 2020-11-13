@@ -63,12 +63,12 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
         $configuration = $this->overwriteSettings($configuration);
 
         if (!isset($configuration['phpdocumentor']['versions'])) {
-            $configuration['phpdocumentor']['versions'][] = $this->createDefaultVersionSettings();
+            $configuration['phpdocumentor']['versions']['1.0.0'] = $this->createDefaultVersionSettings();
         }
 
         if ($this->shouldReduceNumberOfVersionsToOne($configuration)) {
             $configuration['phpdocumentor']['versions'] = [
-                end($configuration['phpdocumentor']['versions']),
+                '1.0.0' => end($configuration['phpdocumentor']['versions']),
             ];
         }
 
