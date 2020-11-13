@@ -32,6 +32,11 @@ parameters:
 
     # PHPStan doesn't support inheritance of TDescriptor
     - '#Parameter \#2 \$assembler of method phpDocumentor\\Descriptor\\Builder\\AssemblerFactory::(register|registerFallback)\(\) expects phpDocumentor\\Descriptor\\Builder\\AssemblerInterface.* given\.#'
+
+    # Advanced transformations of array. PHPStan doesn't seem to keep nonEmpty flag through some array functions
+    - '#Method phpDocumentor\\Configuration\\CommandlineOptionsMiddleware::overwriteTemplates\(\) should return.+#'
+    - '#Method phpDocumentor\\Configuration\\Definition\\Version2::upgrade\(\) should return.+#'
+
     -
             message: "#^Parameter \\#1 \\$value of method phpDocumentor\\\\GraphViz\\\\Graph\\:\\:setCenter\\(\\) expects bool, string given\\.$#"
             count: 1
