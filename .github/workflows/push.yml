@@ -383,7 +383,7 @@ jobs:
       - name: Build example project using Default template
         run: ./bin/phpdoc --template=default -vvv --config=data/examples/MariosPizzeria/phpdoc.xml --target=build/default
       - name: Test templates using Cypress
-        uses: cypress-io/github-action@v1
+        uses: cypress-io/github-action@v2
 
   e2e-matrix:
     runs-on: ${{ matrix.operating-system }}
@@ -444,7 +444,7 @@ jobs:
       - name: Build example project using Default template
         run: ./bin/phpdoc --template=default --config=data/examples/MariosPizzeria/phpdoc.xml --target=build/default
       - name: Test templates using Cypress
-        uses: cypress-io/github-action@v1
+        uses: cypress-io/github-action@v2
 
   phpunit:
     runs-on: ${{ matrix.operating-system }}
