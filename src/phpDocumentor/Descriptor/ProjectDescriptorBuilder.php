@@ -198,11 +198,10 @@ class ProjectDescriptorBuilder
     }
 
     /**
-     * @param array<string, array<string>> $apiConfig
+     * @param array<string> $visibilities
      */
-    public function setVisibility(array $apiConfig) : void
+    public function setVisibility(array $visibilities) : void
     {
-        $visibilities = $apiConfig['visibility'];
         $visibility = 0;
 
         foreach ($visibilities as $item) {

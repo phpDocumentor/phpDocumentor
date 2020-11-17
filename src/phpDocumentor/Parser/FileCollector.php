@@ -14,13 +14,14 @@ declare(strict_types=1);
 namespace phpDocumentor\Parser;
 
 use phpDocumentor\Dsn;
+use phpDocumentor\Path;
 use phpDocumentor\Reflection\File;
 
 interface FileCollector
 {
     /**
      * @param Dsn                  $dsn        dsn of source.
-     * @param list<string>         $paths
+     * @param list<string|Path>    $paths
      * @param array<string, mixed> $ignore     array containing keys 'paths' and 'hidden'
      * @param list<string>         $extensions
      *

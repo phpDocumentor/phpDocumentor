@@ -49,7 +49,7 @@ final class ParseFiles
         $apiConfig = current($payload->getApiConfigs());
 
         $builder = $payload->getBuilder();
-        $builder->setVisibility($apiConfig);
+        $builder->setVisibility($apiConfig['visibility']);
         $builder->setMarkers($apiConfig['markers']);
         $builder->setIncludeSource($apiConfig['include-source']);
         $builder->setIgnoredTags($apiConfig['ignore-tags']);

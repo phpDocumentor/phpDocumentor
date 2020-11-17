@@ -25,9 +25,9 @@ final class PathNormalizingMiddleware implements MiddlewareInterface
 {
     //phpcs:disable Generic.Files.LineLength.TooLong
     /**
-     * @param array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string|Dsn, cache: string|Path}, versions?: array<string, array{api: array<int, array{ignore-tags: array, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibillity: string, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}}>, apis: array, guides: array}>, settings?: array<mixed>, templates?: non-empty-list<string>}} $configuration
+     * @param array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string|Dsn, cache: string|Path}, versions?: array<string, VersionSpecification>, settings?: array<mixed>, templates?: non-empty-list<string>}} $configuration
      *
-     * @return array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string|Dsn, cache: string|Path}, versions?: array<string, array{api: array<int, array{ignore-tags: array, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibillity: string, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}}>, apis: array, guides: array}>, settings?: array<mixed>, templates?: non-empty-list<string>}}
+     * @return array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string|Dsn, cache: string|Path}, versions?: array<string, VersionSpecification>, settings?: array<mixed>, templates?: non-empty-list<string>}}
      */
     //phpcs:enable Generic.Files.LineLength.TooLong
     public function __invoke(array $configuration, ?UriInterface $uri = null) : array
@@ -57,9 +57,9 @@ final class PathNormalizingMiddleware implements MiddlewareInterface
      *
      * Absolute DSNs are untouched.
      *
-     * @param array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: Dsn, cache: Path}, versions?: array<string, array{api: array<int, array{ignore-tags: array, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibillity: string, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}}>, apis: array, guides: array}>, settings?: array<mixed>, templates?: non-empty-list<string>}} $configuration
+     * @param array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: Dsn, cache: Path}, versions?: array<string, VersionSpecification>, settings?: array<mixed>, templates?: non-empty-list<string>}} $configuration
      *
-     * @return array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: Dsn, cache: Path}, versions?: array<string, array{api: array<int, array{ignore-tags: array, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibillity: string, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}}>, apis: array, guides: array}>, settings?: array<mixed>, templates?: non-empty-list<string>}}
+     * @return array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: Dsn, cache: Path}, versions?: array<string, VersionSpecification>, settings?: array<mixed>, templates?: non-empty-list<string>}}
      */
     //phpcs:enable Generic.Files.LineLength.TooLong
     private function makeDsnRelativeToConfig(array $configuration, ?UriInterface $uri) : array
@@ -73,15 +73,13 @@ final class PathNormalizingMiddleware implements MiddlewareInterface
 
         $configuration['phpdocumentor']['paths']['output'] =
             $configuration['phpdocumentor']['paths']['output']->resolve($configPath);
-        foreach ($configuration['phpdocumentor']['versions'] as $versionNumber => $version) {
-            foreach ($version['api'] as $key => $api) {
-                $configuration['phpdocumentor']['versions'][$versionNumber]['api'][$key]['source']['dsn']
-                    = $api['source']['dsn']->resolve($configPath);
+        foreach ($configuration['phpdocumentor']['versions'] as $version) {
+            foreach ($version->getApi() as $key => $api) {
+                $version->api[$key]['source']['dsn'] = $api['source']['dsn']->resolve($configPath);
             }
 
-            foreach ($version['guides'] as $key => $guide) {
-                $configuration['phpdocumentor']['versions'][$versionNumber]['guides'][$key]['source']['dsn']
-                    = $guide['source']['dsn']->resolve($configPath);
+            foreach ($version->getGuides() ?? [] as $key => $guide) {
+                $version->guides[$key]['source']['dsn'] = $guide['source']['dsn']->resolve($configPath);
             }
         }
 
@@ -90,30 +88,27 @@ final class PathNormalizingMiddleware implements MiddlewareInterface
 
     //phpcs:disable Generic.Files.LineLength.TooLong
     /**
-     * @param array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: Dsn, cache: Path}, versions?: array<string, array{api: array<int, array{ignore-tags: array, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibillity: string, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}}>, apis: array, guides: array}>, settings?: array<mixed>, templates?: non-empty-list<string>} $configuration
+     * @param array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: Dsn, cache: Path}, versions?: array<string, VersionSpecification>, settings?: array<mixed>, templates?: non-empty-list<string>} $configuration
      *
-     * @return array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: Dsn, cache: Path}, versions?: array<string, array{api: array<int, array{ignore-tags: array, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibillity: string, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}}>, apis: array, guides: array}>, settings?: array<mixed>, templates?: non-empty-list<string>}
+     * @return array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: Dsn, cache: Path}, versions?: array<string, VersionSpecification>, settings?: array<mixed>, templates?: non-empty-list<string>}
      */
     //phpcs:enable Generic.Files.LineLength.TooLong
     private function normalizePaths(array $configuration) : array
     {
-        foreach ($configuration['versions'] as $versionNumber => $version) {
-            foreach ($version['api'] as $key => $api) {
+        foreach ($configuration['versions'] as $version) {
+            foreach ($version->getApi() as $key => $api) {
                 foreach ($api['source']['paths'] as $subkey => $path) {
-                    $configuration['versions'][$versionNumber]['api'][$key]['source']['paths'][$subkey] =
-                        $this->pathToGlobPattern((string) $path);
+                    $version->api[$key]['source']['paths'][$subkey] = $this->pathToGlobPattern((string) $path);
                 }
 
                 foreach ($api['ignore']['paths'] as $subkey => $path) {
-                    $configuration['versions'][$versionNumber]['api'][$key]['ignore']['paths'][$subkey] =
-                        $this->pathToGlobPattern((string) $path);
+                    $version->api[$key]['ignore']['paths'][$subkey] = $this->pathToGlobPattern((string) $path);
                 }
             }
 
-            foreach ($version['guides'] as $key => $guide) {
+            foreach ($version->getGuides() ?? [] as $key => $guide) {
                 foreach ($guide['source']['paths'] as $subkey => $path) {
-                    $configuration['versions'][$versionNumber]['guides'][$key]['source']['paths'][$subkey] =
-                        $this->normalizePath((string) $path);
+                    $version->guides[$key]['source']['paths'][$subkey] = $this->normalizePath((string) $path);
                 }
             }
         }

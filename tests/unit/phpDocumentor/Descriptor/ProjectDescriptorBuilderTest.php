@@ -108,7 +108,7 @@ class ProjectDescriptorBuilderTest extends MockeryTestCase
         int $expectedValue
     ) : void {
         $this->fixture->createProjectDescriptor();
-        $this->fixture->setVisibility(['visibility' => $setting]);
+        $this->fixture->setVisibility($setting);
         $projectSettings = $this->fixture->getProjectDescriptor()->getSettings();
 
         self::assertEquals($expectedValue, $projectSettings->getVisibility());

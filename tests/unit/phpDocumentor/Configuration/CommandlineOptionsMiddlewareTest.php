@@ -120,7 +120,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
                 'dsn' => Dsn::createFromString('.'),
                 'paths' => [new Path('./src/index.php')],
             ],
-            current($newConfiguration['phpdocumentor']['versions'])['api'][0]['source']
+            current($newConfiguration['phpdocumentor']['versions'])->getApi()[0]['source']
         );
     }
 
@@ -139,7 +139,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
                 'dsn' => Dsn::createFromString('.'),
                 'paths' => [new Path('./src')],
             ],
-            current($newConfiguration['phpdocumentor']['versions'])['api'][0]['source']
+            current($newConfiguration['phpdocumentor']['versions'])->getApi()[0]['source']
         );
     }
 
@@ -158,7 +158,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
                 'dsn' => Dsn::createFromString('.'),
                 'paths' => ['/**/*'],
             ],
-            current($newConfiguration['phpdocumentor']['versions'])['api'][0]['source']
+            current($newConfiguration['phpdocumentor']['versions'])->getApi()[0]['source']
         );
     }
 
@@ -174,7 +174,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
                 'dsn' => Dsn::createFromString('/src'),
                 'paths' => [new Path('./')],
             ],
-            current($newConfiguration['phpdocumentor']['versions'])['api'][0]['source']
+            current($newConfiguration['phpdocumentor']['versions'])->getApi()[0]['source']
         );
     }
 
@@ -190,14 +190,14 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
                 'dsn' => Dsn::createFromString('/src'),
                 'paths' => [new Path('./')],
             ],
-            current($newConfiguration['phpdocumentor']['versions'])['api'][0]['source']
+            current($newConfiguration['phpdocumentor']['versions'])->getApi()[0]['source']
         );
         $this->assertEquals(
             [
                 'dsn' => Dsn::createFromString('.'),
                 'paths' => [new Path('./localSrc')],
             ],
-            current($newConfiguration['phpdocumentor']['versions'])['api'][1]['source']
+            current($newConfiguration['phpdocumentor']['versions'])->getApi()[1]['source']
         );
     }
 
@@ -214,7 +214,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
 
         $this->assertEquals(
             $extensions,
-            current($newConfiguration['phpdocumentor']['versions'])['api'][0]['extensions']
+            current($newConfiguration['phpdocumentor']['versions'])->getApi()[0]['extensions']
         );
     }
 
@@ -234,7 +234,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
                 'hidden' => true,
                 'symlinks' => true,
             ],
-            current($newConfiguration['phpdocumentor']['versions'])['api'][0]['ignore']
+            current($newConfiguration['phpdocumentor']['versions'])->getApi()[0]['ignore']
         );
     }
 
@@ -251,7 +251,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
 
         $this->assertEquals(
             $markers,
-            current($newConfiguration['phpdocumentor']['versions'])['api'][0]['markers']
+            current($newConfiguration['phpdocumentor']['versions'])->getApi()[0]['markers']
         );
     }
 
@@ -268,7 +268,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
 
         $this->assertEquals(
             $visibility,
-            current($newConfiguration['phpdocumentor']['versions'])['api'][0]['visibility']
+            current($newConfiguration['phpdocumentor']['versions'])->getApi()[0]['visibility']
         );
     }
 
@@ -285,7 +285,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
 
         $this->assertEquals(
             $encoding,
-            current($newConfiguration['phpdocumentor']['versions'])['api'][0]['encoding']
+            current($newConfiguration['phpdocumentor']['versions'])->getApi()[0]['encoding']
         );
     }
 
@@ -302,7 +302,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
 
         $this->assertEquals(
             $defaultPackageName,
-            current($newConfiguration['phpdocumentor']['versions'])['api'][0]['default-package-name']
+            current($newConfiguration['phpdocumentor']['versions'])->getApi()[0]['default-package-name']
         );
     }
 
@@ -318,7 +318,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
 
         $this->assertEquals(
             true,
-            current($newConfiguration['phpdocumentor']['versions'])['api'][0]['include-source']
+            current($newConfiguration['phpdocumentor']['versions'])->getApi()[0]['include-source']
         );
 
         $middleware = $this->createCommandlineOptionsMiddleware(['sourcecode' => false]);
@@ -326,7 +326,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
 
         $this->assertEquals(
             false,
-            current($newConfiguration['phpdocumentor']['versions'])['api'][0]['include-source']
+            current($newConfiguration['phpdocumentor']['versions'])->getApi()[0]['include-source']
         );
     }
 
@@ -336,7 +336,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
 
         // wipe version so that middleware needs to re-add the api key
         unset($configuration['phpdocumentor']['versions']);
-        $configuration['phpdocumentor']['versions'] = ['1.0.0' => []];
+        $configuration['phpdocumentor']['versions'] = ['1.0.0' => new VersionSpecification('1.0.0', [], null)];
 
         return $configuration;
     }
@@ -382,7 +382,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
                 'dsn' => Dsn::createFromString('/src'),
                 'paths' => [new Path('./')],
             ],
-            current($newConfiguration['phpdocumentor']['versions'])['api'][0]['examples']
+            current($newConfiguration['phpdocumentor']['versions'])->getApi()[0]['examples']
         );
     }
 
@@ -398,7 +398,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
                 'dsn' => Dsn::createFromString('/src'),
                 'paths' => [new Path('./')],
             ],
-            current($newConfiguration['phpdocumentor']['versions'])['api'][0]['examples']
+            current($newConfiguration['phpdocumentor']['versions'])->getApi()[0]['examples']
         );
     }
 
@@ -415,7 +415,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
 
         $this->assertEquals(
             $tags,
-            current($newConfiguration['phpdocumentor']['versions'])['api'][0]['ignore-tags']
+            current($newConfiguration['phpdocumentor']['versions'])->getApi()[0]['ignore-tags']
         );
     }
 

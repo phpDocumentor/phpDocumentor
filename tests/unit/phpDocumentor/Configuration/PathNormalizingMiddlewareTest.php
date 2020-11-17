@@ -48,14 +48,14 @@ final class PathNormalizingMiddlewareTest extends TestCase
     public function testNormalizedPathsToGlob(string $input, string $output) : void
     {
         $configuration = $this->givenAConfiguration();
-        $configuration['phpdocumentor']['versions']['1.0.0']['api'][0]['source']['paths'] = [$input];
+        $configuration['phpdocumentor']['versions']['1.0.0']->api[0]['source']['paths'] = [$input];
 
         $middleware = new PathNormalizingMiddleware();
         $outputConfig = $middleware($configuration, Uri::createFromString('./config.xml'));
 
         self::assertEquals(
             [$output],
-            $outputConfig['phpdocumentor']['versions']['1.0.0']['api'][0]['source']['paths']
+            $outputConfig['phpdocumentor']['versions']['1.0.0']->getApi()[0]['source']['paths']
         );
     }
 
@@ -65,14 +65,14 @@ final class PathNormalizingMiddlewareTest extends TestCase
     public function testNormalizedIgnoreToGlob(string $input, string $output) : void
     {
         $configuration = $this->givenAConfiguration();
-        $configuration['phpdocumentor']['versions']['1.0.0']['api'][0]['ignore']['paths'] = [$input];
+        $configuration['phpdocumentor']['versions']['1.0.0']->api[0]['ignore']['paths'] = [$input];
 
         $middleware = new PathNormalizingMiddleware();
         $outputConfig = $middleware($configuration, Uri::createFromString('./config.xml'));
 
         self::assertEquals(
             [$output],
-            $outputConfig['phpdocumentor']['versions']['1.0.0']['api'][0]['ignore']['paths']
+            $outputConfig['phpdocumentor']['versions']['1.0.0']->getApi()[0]['ignore']['paths']
         );
     }
 

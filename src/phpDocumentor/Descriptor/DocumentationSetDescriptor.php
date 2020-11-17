@@ -14,17 +14,15 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Dsn;
+use phpDocumentor\Path;
 
 abstract class DocumentationSetDescriptor
 {
     /** @var string */
     protected $name = '';
 
-    /**
-     * @phpstan-var array{dsn?: Dsn, paths?: list<string>}
-     * @var array<Dsn|list<string>>
-     */
-    protected $source = [];
+    /** @var array{dsn: Dsn, paths: array<Path|string>} */
+    protected $source;
 
     /** @var string */
     protected $output = '.';
@@ -40,13 +38,11 @@ abstract class DocumentationSetDescriptor
      * The returned array contains an element 'dsn' (of type DSN) and 'paths'; where each path represents one part
      * of the documentation set relative to the DSN.
      *
-     * @return array<Dsn|list<string>>
+     * @return array{dsn: Dsn, paths: array<Path|string>}
      *
      * @todo: should the source location be included in a Descriptor? This couples it to the file system upon which
      *   it was ran and makes it uncacheable. But should this be cached? In any case, I need it for the RenderGuide
      *   writer at the moment; so refactor this once that becomes clearer.
-     *
-     * @phpstan-return array{dsn?: Dsn, paths?: list<string>}
      */
     public function getSource() : array
     {
