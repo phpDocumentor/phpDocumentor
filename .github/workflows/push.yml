@@ -511,7 +511,11 @@ jobs:
         composer install --no-progress --prefer-dist --optimize-autoloader
 
     - name: Install phive
-      run: wget -O tools/phive https://theseer.dev/phive-debug.phar
+      run: |
+        wget -O tools/phive https://theseer.dev/phive-debug.phar &&
+        ls -al tools/
+
+
 
     - name: Install PHAR dependencies
       env:
