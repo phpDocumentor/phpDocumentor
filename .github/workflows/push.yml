@@ -512,10 +512,9 @@ jobs:
 
     - name: Install phive
       run: |
+        rm -f tools/phive &&
         wget -O tools/phive https://theseer.dev/phive-debug.phar &&
         ls -al tools/
-
-
 
     - name: Install PHAR dependencies
       env:
