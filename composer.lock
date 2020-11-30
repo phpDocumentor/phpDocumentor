@@ -3882,16 +3882,16 @@
         },
         {
             "name": "symfony/stopwatch",
-            "version": "v5.1.7",
+            "version": "v5.1.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/stopwatch.git",
-                "reference": "0f7c58cf81dbb5dd67d423a89d577524a2ec0323"
+                "reference": "fcda7f14c3b39d33f9c788aea9afb1b5f5c288c6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/stopwatch/zipball/0f7c58cf81dbb5dd67d423a89d577524a2ec0323",
-                "reference": "0f7c58cf81dbb5dd67d423a89d577524a2ec0323",
+                "url": "https://api.github.com/repos/symfony/stopwatch/zipball/fcda7f14c3b39d33f9c788aea9afb1b5f5c288c6",
+                "reference": "fcda7f14c3b39d33f9c788aea9afb1b5f5c288c6",
                 "shasum": ""
             },
             "require": {
@@ -3899,11 +3899,6 @@
                 "symfony/service-contracts": "^1.0|^2"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "5.1-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Symfony\\Component\\Stopwatch\\": ""
@@ -3942,7 +3937,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-05-20T17:43:50+00:00"
+            "time": "2020-11-01T15:43:26+00:00"
         },
         {
             "name": "symfony/string",
