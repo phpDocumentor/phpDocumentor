@@ -3795,16 +3795,16 @@
         },
         {
             "name": "symfony/routing",
-            "version": "v5.1.8",
+            "version": "v5.1.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/routing.git",
-                "reference": "d6ceee2a37b61b41079005207bf37746d1bfe71f"
+                "reference": "461b184cfe5c2e677bbd67761aa377914ab48a16"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/routing/zipball/d6ceee2a37b61b41079005207bf37746d1bfe71f",
-                "reference": "d6ceee2a37b61b41079005207bf37746d1bfe71f",
+                "url": "https://api.github.com/repos/symfony/routing/zipball/461b184cfe5c2e677bbd67761aa377914ab48a16",
+                "reference": "461b184cfe5c2e677bbd67761aa377914ab48a16",
                 "shasum": ""
             },
             "require": {
@@ -3878,7 +3878,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-10-24T12:01:57+00:00"
+            "time": "2020-11-26T23:46:31+00:00"
         },
         {
             "name": "symfony/stopwatch",
