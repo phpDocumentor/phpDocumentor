@@ -2857,16 +2857,16 @@
         },
         {
             "name": "symfony/http-foundation",
-            "version": "v5.1.7",
+            "version": "v5.1.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-foundation.git",
-                "reference": "353b42e7b4fd1c898aab09a059466c9cea74039b"
+                "reference": "1e6e9e28369ddd3fd66ca14a469c21ae9b51969a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/353b42e7b4fd1c898aab09a059466c9cea74039b",
-                "reference": "353b42e7b4fd1c898aab09a059466c9cea74039b",
+                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/1e6e9e28369ddd3fd66ca14a469c21ae9b51969a",
+                "reference": "1e6e9e28369ddd3fd66ca14a469c21ae9b51969a",
                 "shasum": ""
             },
             "require": {
@@ -2885,11 +2885,6 @@
                 "symfony/mime": "To use the file extension guesser"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "5.1-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Symfony\\Component\\HttpFoundation\\": ""
@@ -2928,7 +2923,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-09-27T14:14:57+00:00"
+            "time": "2020-11-15T22:55:04+00:00"
         },
         {
             "name": "symfony/http-kernel",
