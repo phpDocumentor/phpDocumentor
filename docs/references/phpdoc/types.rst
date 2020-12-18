@@ -222,9 +222,6 @@ The following keywords are recognized:
 14. **scalar**, the element to which this type applies is of any scalar type
     specifically: *string*, *float*, *int*, *bool*
 
-14. **scalar**, the element to which this type applies is of any scalar type
-    specifically: *string*, *float*, *int*, *bool*
-
 Multiple types
 --------------
 
