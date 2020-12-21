@@ -167,16 +167,16 @@
         },
         {
             "name": "jawira/plantuml",
-            "version": "v1.44.0",
+            "version": "v1.48.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jawira/plantuml.git",
-                "reference": "ab787e75c7dc48e4a77e13a2f1833d39d4f63719"
+                "reference": "88b04af0809baea25d45d47262f1c1025d409cae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jawira/plantuml/zipball/ab787e75c7dc48e4a77e13a2f1833d39d4f63719",
-                "reference": "ab787e75c7dc48e4a77e13a2f1833d39d4f63719",
+                "url": "https://api.github.com/repos/jawira/plantuml/zipball/88b04af0809baea25d45d47262f1c1025d409cae",
+                "reference": "88b04af0809baea25d45d47262f1c1025d409cae",
                 "shasum": ""
             },
             "suggest": {
@@ -203,7 +203,7 @@
                 "plantuml.jar",
                 "uml"
             ],
-            "time": "2020-10-16T13:06:07+00:00"
+            "time": "2020-12-18T14:05:57+00:00"
         },
         {
             "name": "jean85/pretty-package-versions",
@@ -1195,12 +1195,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/GraphViz.git",
-                "reference": "bbb7094993a53da6822bd691b360032c3d8c94fe"
+                "reference": "03e91cdef6479ce1930988354b7de70d275e3aff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/GraphViz/zipball/bbb7094993a53da6822bd691b360032c3d8c94fe",
-                "reference": "bbb7094993a53da6822bd691b360032c3d8c94fe",
+                "url": "https://api.github.com/repos/phpDocumentor/GraphViz/zipball/03e91cdef6479ce1930988354b7de70d275e3aff",
+                "reference": "03e91cdef6479ce1930988354b7de70d275e3aff",
                 "shasum": ""
             },
             "require": {
@@ -1235,7 +1235,7 @@
                 }
             ],
             "description": "Wrapper for Graphviz",
-            "time": "2020-10-26T06:32:22+00:00"
+            "time": "2020-12-18T14:52:03+00:00"
         },
         {
             "name": "phpdocumentor/reflection",
