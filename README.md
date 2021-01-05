@@ -56,7 +56,7 @@ This will require the application [Graphviz] to be installed on the machine runn
 Rendering the class diagrams using [Graphviz] is optional, and warnings about missing [Graphviz] can be ignored.
 However, your documentation will contain some dead links in this case. Class diagram will be created with option `--setting=graphs.enabled=true`.
 
-There are 3 ways to install phpDocumentor:
+There are 4 ways to install phpDocumentor:
 
 1. Using phive (recommended)
 2. Using the PHAR (manual install)
