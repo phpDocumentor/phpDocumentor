@@ -20,7 +20,7 @@ ABNF
     class-name               = 1*CHAR
     keyword                  = "string"|"integer"|"int"|"boolean"|"bool"|"float"
                                |"double"|"object"|"mixed"|"array"|"resource"|"scalar"
-                               |"void"|"null"|"callback"|"false"|"true"|"self"
+                               |"void"|"null"|"callable"|"false"|"true"|"self"
 
 When a Type is used the user will expect a value, or set of values, as
 detailed below.
