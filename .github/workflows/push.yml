@@ -8,7 +8,7 @@ env:
   extensions: mbstring, intl, iconv, libxml, dom, json, simplexml, zlib, fileinfo
   key: cache-v1 # can be any string, change to clear the extension cache.
   defaultPHPVersion: '7.2'
-  phiveGPGKeys: 4AA394086372C20A,D2CCAC42F6295E7D,E82B2FB314E9906E,8A03EA3B385DBAA1
+  phiveGPGKeys: 4AA394086372C20A,D2CCAC42F6295E7D,E82B2FB314E9906E,8A03EA3B385DBAA1,12CE0F1D262429A5
   phiveHome: $GITHUB_WORKSPACE/.phive
 jobs:
   setup:
