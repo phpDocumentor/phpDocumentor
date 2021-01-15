@@ -67,6 +67,10 @@
         <exclude-pattern>src/phpDocumentor/Kernel\.php$</exclude-pattern>
     </rule>
 
+    <rule ref="SlevomatCodingStandard.Commenting.InlineDocCommentDeclaration.NoAssignment">
+         <exclude-pattern>src/phpDocumentor/Descriptor/Collection\.php$</exclude-pattern>
+    </rule>
+
     <!-- Should be removed/fixed again once we pass the round of checks -->
     <rule ref="SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingTraversableTypeHintSpecification">
          <exclude-pattern>*/tests/*</exclude-pattern>

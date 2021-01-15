@@ -120,7 +120,10 @@ class NamespaceTreeBuilder implements CompilerPassInterface
     private function addToParentNamespace(ProjectDescriptor $project, NamespaceDescriptor $namespace) : void
     {
         /** @var NamespaceDescriptor|null $parent */
-        $parent = $project->getIndexes()->fetch('namespaces', new Collection())->fetch((string) $namespace->getNamespace());
+        $parent = $project->getIndexes()->fetch(
+            'namespaces',
+            new Collection()
+        )->fetch((string) $namespace->getNamespace());
         $project->getIndexes()->fetch('elements', new Collection())->set(
             '~' . (string) $namespace->getFullyQualifiedStructuralElementName(),
             $namespace

@@ -96,7 +96,8 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
      * @param string|int $index
      * @param ?TChild      $valueIfEmpty If the index does not exist it will be created with this value and returned.
      *
-     * @return TChild The contents of the element with the given index and the provided default if the key doesn't exist.
+     * @return TChild The contents of the element with the given index and the provided default if the key
+     *                doesn't exist.
      *
      * @psalm-return ($valueIfEmpty is null ? ?TChild: TChild)
      * @phpstan-return T|TChild
