@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace phpDocumentor\Pipeline\Stage\Parser;
 
 use League\Flysystem\MountManager;
+use phpDocumentor\Configuration\VersionSpecification;
 use phpDocumentor\Descriptor\Builder\AssemblerFactory;
-use phpDocumentor\Descriptor\Filter\ClassFactory;
 use phpDocumentor\Descriptor\Filter\Filter;
+use phpDocumentor\Descriptor\Filter\StripIgnore;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Dsn;
 use phpDocumentor\Parser\FlySystemCollector;
@@ -45,8 +46,9 @@ class CollectFilesIntegrationTest extends \PHPUnit\Framework\TestCase
                     [
                         'phpdocumentor' => [
                             'versions' => [
-                                '1.0.0' => [
-                                    'api' => [
+                                '1.0.0' => new VersionSpecification(
+                                    '1.0.0',
+                                    [
                                         [
                                             'source' => [
                                                 'dsn' => Dsn::createFromString($scheme . __DIR__ . '/assets/project1'),
@@ -63,11 +65,12 @@ class CollectFilesIntegrationTest extends \PHPUnit\Framework\TestCase
                                             ],
                                         ],
                                     ],
-                                ],
+                                    []
+                                ),
                             ],
                         ],
                     ],
-                    new ProjectDescriptorBuilder(new AssemblerFactory(), new Filter(new ClassFactory()))
+                    new ProjectDescriptorBuilder(new AssemblerFactory(), new Filter([new StripIgnore()]))
                 ),
                 'files_expected' => 2,
             ],
@@ -76,8 +79,9 @@ class CollectFilesIntegrationTest extends \PHPUnit\Framework\TestCase
                     [
                         'phpdocumentor' => [
                             'versions' => [
-                                '1.0.0' => [
-                                    'api' => [
+                                '1.0.0' => new VersionSpecification(
+                                    '1.0.0',
+                                    [
                                         [
                                             'source' => [
                                                 'dsn' => Dsn::createFromString($scheme . __DIR__ . '/assets/project1'),
@@ -109,14 +113,15 @@ class CollectFilesIntegrationTest extends \PHPUnit\Framework\TestCase
                                             ],
                                         ],
                                     ],
-                                ],
+                                    []
+                                ),
                             ],
                         ],
                     ],
-                    new ProjectDescriptorBuilder(new AssemblerFactory(), new Filter(new ClassFactory()))
+                    new ProjectDescriptorBuilder(new AssemblerFactory(), new Filter([new StripIgnore()]))
                 ),
                 'files_expected' => 4,
-            ]
+            ],
         ];
     }
 
@@ -127,7 +132,7 @@ class CollectFilesIntegrationTest extends \PHPUnit\Framework\TestCase
      * after that letter. Since we do not know in the this test the value of __DIR__
      * an extra / is added on windows to make sure we are providing a valid scheme.
      */
-    private function createFileScheme() : string
+    private function createFileScheme(): string
     {
         $scheme = 'file://';
 
