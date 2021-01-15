@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phive xmlns="https://phar.io/phive">
   <phar name="phpunit" version="^9.2" installed="9.3.7" location="./tools/phpunit" copy="true"/>
-  <phar name="composer-require-checker" version="^2.0.0" installed="2.1.0" location="./tools/composer-require-checker" copy="true"/>
+  <phar name="composer-require-checker" version="^2.1.0" installed="2.1.0" location="./tools/composer-require-checker" copy="false"/>
   <phar name="php-coveralls/php-coveralls" version="^2.2.0" installed="2.2.0" location="./tools/php-coveralls" copy="true"/>
   <phar name="scrutinizer-ci/ocular" version="^1.6.0" installed="1.6.0" location="./tools/ocular" copy="true" force-accept-unsigned="true"/>
-  <phar name="psalm" version="^4.1.0" installed="4.1.0" location="./tools/psalm" copy="true"/>
+  <phar name="psalm" version="^4.1.0" installed="4.4.1" location="./tools/psalm" copy="true"/>
 </phive>

@@ -75,9 +75,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
      *
      * @param string|int $index
      *
-     * @return mixed The contents of the element with the given index
-     *
-     * @phpstan-return T
+     * @return T The contents of the element with the given index
      */
     public function get($index)
     {
@@ -96,19 +94,19 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
      * tree building operations.
      *
      * @param string|int $index
-     * @param mixed      $valueIfEmpty If the index does not exist it will be created with this value and returned.
+     * @param ?TChild      $valueIfEmpty If the index does not exist it will be created with this value and returned.
      *
-     * @return mixed The contents of the element with the given index and the provided default if the key doesn't exist.
+     * @return TChild The contents of the element with the given index and the provided default if the key doesn't exist.
      *
-     * @phpstan-param D $valueIfEmpty
+     * @psalm-return ($valueIfEmpty is null ? ?TChild: TChild)
+     * @phpstan-return T|TChild
      *
-     * @phpstan-return T|D
-     *
-     * @template D
+     * @template TChild as T
      */
     public function fetch($index, $valueIfEmpty = null)
     {
         if (!$this->offsetExists($index) && $valueIfEmpty !== null) {
+            /** @var T $valueIfEmpty */
             $this->offsetSet($index, $valueIfEmpty);
         }
 
@@ -178,9 +176,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
      *
      * @param string|int $offset The offset to retrieve.
      *
-     * @return mixed
-     *
-     * @phpstan-return ?T
+     * @return ?T
      */
     public function offsetGet($offset)
     {
@@ -191,11 +187,9 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
      * Sets an item at the given index.
      *
      * @param string|int|null $offset The offset to assign the value to.
-     * @param mixed           $value  The value to set.
+     * @param T           $value  The value to set.
      *
      * @throws InvalidArgumentException If the key is null or an empty string.
-     *
-     * @phpstan-param T       $value
      */
     public function offsetSet($offset, $value) : void
     {

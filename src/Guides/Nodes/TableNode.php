@@ -302,6 +302,7 @@ class TableNode extends Node
     private function compilePrettyTable() : void
     {
         // loop over ALL separator lines to find ALL of the column ranges
+        /** @var array<int, int> $columnRanges */
         $columnRanges = [];
         $finalHeadersRow = 0;
         foreach ($this->separatorLineConfigs as $rowIndex => $separatorLine) {
@@ -372,6 +373,7 @@ class TableNode extends Node
 
             $currentColumnStart = null;
             $currentSpan = 1;
+            /** @var ?int $previousColumnEnd */
             $previousColumnEnd = null;
             foreach ($columnRanges as $start => $end) {
                 // a content line that ends before it should

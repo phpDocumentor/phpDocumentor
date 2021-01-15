@@ -21,8 +21,9 @@ parameters:
     - '#Access to an undefined property phpDocumentor\\Descriptor\\Collection<phpDocumentor\\Descriptor\\Collection<phpDocumentor\\Descriptor\\DescriptorAbstract>>::\$[a-z]+#'
     # https://github.com/phpDocumentor/phpDocumentor/issues/2279
     - '#Instanceof between phpDocumentor\\Descriptor\\Collection<phpDocumentor\\Descriptor\\InterfaceDescriptor\|phpDocumentor\\Reflection\\Fqsen>\|phpDocumentor\\Reflection\\Fqsen\|string\|null and phpDocumentor\\Descriptor\\InterfaceDescriptor will always evaluate to false\.#'
-    # PHPStan doesn't support @template D of T but will still complain if we put a D in a Collection of T !
-    - '#Parameter \#2 \$value of method phpDocumentor\\Descriptor\\Collection<T>::offsetSet\(\) expects T, D given\.#'
+    # PHPStan doesn't support @template TChild of T but will still complain if we put a TChild in a Collection of T !
+    - '#Parameter \#2 \$value of method phpDocumentor\\Descriptor\\Collection<T>::offsetSet\(\) expects T, TChild given\.#'
+    - '#PHPDoc tag @template TChild for method phpDocumentor\\Descriptor\\Collection::fetch\(\) with bound type T is not supported\.#'
 
     # phpstan/phpstan/issues/3951
     - '#Method phpDocumentor\\Descriptor\\ProjectDescriptorBuilder::filterDescriptor\(\) should return TDescriptor of phpDocumentor\\Descriptor\\Descriptor\|null but returns phpDocumentor\\Descriptor\\Filter\\Filterable\|null\.#'
