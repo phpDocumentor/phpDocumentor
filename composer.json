@@ -71,7 +71,7 @@
         "symfony/proxy-manager-bridge": "^5.0",
         "symfony/routing": "^5.0",
         "symfony/stopwatch": "^5.0",
-        "symfony/string": "5.1.*",
+        "symfony/string": "5.2.*",
         "symfony/yaml": "^5.0",
         "twig/twig": "~2.0",
         "webmozart/assert": "^1.3"
