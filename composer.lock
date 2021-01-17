@@ -1675,16 +1675,16 @@
         },
         {
             "name": "scrivo/highlight.php",
-            "version": "v9.18.1.4",
+            "version": "v9.18.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/scrivo/highlight.php.git",
-                "reference": "ee8007a215a27cb9c078e0328fb5de901d74ef9b"
+                "reference": "44a3d4136edb5ad8551590bf90f437db80b2d466"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/scrivo/highlight.php/zipball/ee8007a215a27cb9c078e0328fb5de901d74ef9b",
-                "reference": "ee8007a215a27cb9c078e0328fb5de901d74ef9b",
+                "url": "https://api.github.com/repos/scrivo/highlight.php/zipball/44a3d4136edb5ad8551590bf90f437db80b2d466",
+                "reference": "44a3d4136edb5ad8551590bf90f437db80b2d466",
                 "shasum": ""
             },
             "require": {
@@ -1697,9 +1697,6 @@
                 "sabberworm/php-css-parser": "^8.3",
                 "symfony/finder": "^2.8|^3.4",
                 "symfony/var-dumper": "^2.8|^3.4"
-            },
-            "suggest": {
-                "ext-dom": "Needed to make use of the features in the utilities namespace"
             },
             "type": "library",
             "autoload": {
@@ -1746,7 +1743,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-11-01T04:06:53+00:00"
+            "time": "2020-12-22T19:20:29+00:00"
         },
         {
             "name": "symfony/cache",
