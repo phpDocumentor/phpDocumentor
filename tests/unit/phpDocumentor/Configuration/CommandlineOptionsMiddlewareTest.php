@@ -43,7 +43,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
         string $workingDir,
         string $expected
     ) : void {
-        $configuration = ['phpdocumentor' => ['paths' => ['output' => '/tmp']]];
+        $configuration = new Configuration(['phpdocumentor' => ['paths' => ['output' => '/tmp']]]);
 
         $middleware = $this->createCommandlineOptionsMiddleware(['target' => $argument], $workingDir);
         $newConfiguration = $middleware($configuration);
@@ -56,7 +56,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
      */
     public function testItShouldDisableTheCacheBasedOnTheForceOption() : void
     {
-        $configuration = ['phpdocumentor' => ['use-cache' => true]];
+        $configuration = new Configuration(['phpdocumentor' => ['use-cache' => true]]);
         $middleware = $this->createCommandlineOptionsMiddleware(['force' => true]);
 
         $newConfiguration = $middleware($configuration);
@@ -70,7 +70,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
     public function testItShouldOverwriteTheCacheFolderBasedOnTheCacheFolderOption() : void
     {
         $expected = '/abc';
-        $configuration = ['phpdocumentor' => ['paths' => ['cache' => '/tmp']]];
+        $configuration = new Configuration(['phpdocumentor' => ['paths' => ['cache' => '/tmp']]]);
         $middleware = $this->createCommandlineOptionsMiddleware(['cache-folder' => $expected]);
         $newConfiguration = $middleware->__invoke($configuration);
 
@@ -83,7 +83,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
     public function testItShouldOverrideTheTitleBasedOnTheTitleOption() : void
     {
         $expected = 'phpDocumentor3';
-        $configuration = ['phpdocumentor' => ['title' => 'phpDocumentor2']];
+        $configuration = new Configuration(['phpdocumentor' => ['title' => 'phpDocumentor2']]);
         $middleware = $this->createCommandlineOptionsMiddleware(['title' => $expected]);
 
         $newConfiguration = $middleware($configuration);
@@ -97,7 +97,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
     public function testItShouldOverrideTheListOfTemplatesBasedOnTheTemplateOption() : void
     {
         $expected = 'default';
-        $configuration = ['phpdocumentor' => ['templates' => [['name' => 'responsive']]]];
+        $configuration = new Configuration(['phpdocumentor' => ['templates' => [['name' => 'responsive']]]]);
         $middleware = $this->createCommandlineOptionsMiddleware(['template' => $expected]);
 
         $newConfiguration = $middleware($configuration);
@@ -171,8 +171,8 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
 
         $this->assertEquals(
             [
-                'dsn' => Dsn::createFromString('/src'),
                 'paths' => [new Path('./')],
+                'dsn' => Dsn::createFromString('/src'),
             ],
             current($newConfiguration['phpdocumentor']['versions'])->getApi()[0]['source']
         );
@@ -187,15 +187,15 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
 
         $this->assertEquals(
             [
-                'dsn' => Dsn::createFromString('/src'),
                 'paths' => [new Path('./')],
+                'dsn' => Dsn::createFromString('/src'),
             ],
             current($newConfiguration['phpdocumentor']['versions'])->getApi()[0]['source']
         );
         $this->assertEquals(
             [
-                'dsn' => Dsn::createFromString('.'),
                 'paths' => [new Path('./localSrc')],
+                'dsn' => Dsn::createFromString('.'),
             ],
             current($newConfiguration['phpdocumentor']['versions'])->getApi()[1]['source']
         );
@@ -330,7 +330,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
         );
     }
 
-    private function givenAConfigurationWithoutApiDefinition() : array
+    private function givenAConfigurationWithoutApiDefinition() : Configuration
     {
         $configuration = $this->givenAConfiguration();
 
@@ -341,9 +341,9 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
         return $configuration;
     }
 
-    private function givenAConfiguration() : array
+    private function givenAConfiguration() : Configuration
     {
-        return $this->configurationFactory->createDefault()->getArrayCopy();
+        return $this->configurationFactory->createDefault();
     }
 
     public function targetPathProvider() : array

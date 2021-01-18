@@ -158,7 +158,7 @@ class ProjectDescriptorBuilder
         return $descriptor;
     }
 
-    public function build(Project $project) : void
+    public function createApiDocumentationSet(Project $project) : void
     {
         $packageName = $project->getRootNamespace()->getFqsen()->getName();
         $this->defaultPackage = $packageName;

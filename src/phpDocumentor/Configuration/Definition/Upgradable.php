@@ -23,9 +23,9 @@ interface Upgradable
      * The 'configVersion' field in the result will inform the ConfigurationFactory what the next Configuration
      * definition should be used to parse this result.
      *
-     * @param array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string, cache: string}, versions?: array<string, VersionSpecification>, settings?: array<mixed>, templates?: non-empty-list<string>, transformer: array{target: string}, parser: array{target: string, default-package-name: string, extensions: array{extensions: array}, visibility: string, markers: array{items: array}}, files: array{files: array, directories: array, ignores: array}, transformations: array{templates: array<string>}} $values
+     * @param array<string, mixed> $values
      *
-     * @return array{configVersion: string, paths: array{cache: string, output: string}, templates: non-empty-list<string>, title: string, version: array{array{api: array{array{default-package-name: mixed, extensions: array{extensions: mixed}, ignore: array{paths: array<string>}, markers: array{markers: mixed}, source: array{paths: array<string>}, visibilities: non-empty-list<string>|null}}, number: string}}}
+     * @return array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string, cache: string}, versions?: array<string, mixed>, settings?: array<mixed>, templates?: non-empty-list<string>}
      */
     //phpcs:enable Generic.Files.LineLength.TooLong
     public function upgrade(array $values) : array;

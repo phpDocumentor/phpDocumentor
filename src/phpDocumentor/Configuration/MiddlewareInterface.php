@@ -14,17 +14,8 @@ declare(strict_types=1);
 namespace phpDocumentor\Configuration;
 
 use League\Uri\Contracts\UriInterface;
-use phpDocumentor\Dsn;
-use phpDocumentor\Path;
 
 interface MiddlewareInterface
 {
-    //phpcs:disable Generic.Files.LineLength.TooLong
-    /**
-     * @param array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string|Dsn, cache: string|Path}, versions?: array<string, VersionSpecification>, settings?: array<mixed>, templates?: non-empty-list<string>}} $configuration
-     *
-     * @return array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string|Dsn, cache: string|Path}, versions?: array<string, VersionSpecification>, settings?: array<mixed>, templates?: non-empty-list<string>}}
-     */
-    //phpcs:enable Generic.Files.LineLength.TooLong
-    public function __invoke(array $configuration, ?UriInterface $uri = null) : array;
+    public function __invoke(Configuration $configuration, ?UriInterface $uri = null) : Configuration;
 }

@@ -18,6 +18,7 @@ use phpDocumentor\Dsn;
 use phpDocumentor\Path;
 use Webmozart\Assert\Assert;
 use function array_map;
+use function array_merge;
 use function array_unique;
 use function count;
 use function current;
@@ -46,14 +47,7 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
         $this->currentWorkingDir = Dsn::createFromString($currentWorkingDir);
     }
 
-    //phpcs:disable Generic.Files.LineLength.TooLong
-    /**
-     * @param array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string, cache: string}, versions?: array<string, VersionSpecification>, settings?: array<mixed>, templates?: non-empty-list<string>}} $configuration
-     *
-     * @return array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string|Dsn, cache: string|Path}, versions: array<string, VersionSpecification>, settings?: array<mixed>, templates?: non-empty-list<string>}}
-     */
-    //phpcs:enable Generic.Files.LineLength.TooLong
-    public function __invoke(array $configuration, ?UriInterface $uri = null) : array
+    public function __invoke(Configuration $configuration, ?UriInterface $uri = null) : Configuration
     {
         $configuration = $this->overwriteDestinationFolder($configuration);
         $configuration = $this->disableCache($configuration);
@@ -89,14 +83,7 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
         return $configuration;
     }
 
-    //phpcs:disable Generic.Files.LineLength.TooLong
-    /**
-     * @param array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string, cache: string}, versions?: array<string, VersionSpecification>, settings?: array<mixed>, templates?: non-empty-list<string>}} $configuration
-     *
-     * @return array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string|Dsn, cache: string}, versions?: array<string, VersionSpecification>, settings?: array<mixed>, templates?: non-empty-list<string>}}
-     */
-    //phpcs:enable Generic.Files.LineLength.TooLong
-    private function overwriteDestinationFolder(array $configuration) : array
+    private function overwriteDestinationFolder(Configuration $configuration) : Configuration
     {
         if (isset($this->options['target']) && $this->options['target']) {
             $configuration['phpdocumentor']['paths']['output'] = Dsn::createFromString($this->options['target'])
@@ -106,16 +93,7 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
         return $configuration;
     }
 
-    //phpcs:disable Generic.Files.LineLength.TooLong
-    /**
-     * Changes the given configuration array so that the cache handling is disabled.
-     *
-     * @param array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string|Dsn, cache: string}, versions?: array<string, VersionSpecification>, settings?: array<mixed>, templates?: non-empty-list<string>}} $configuration
-     *
-     * @return array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string|Dsn, cache: string}, versions?: array<string, VersionSpecification>, settings?: array<mixed>, templates?: non-empty-list<string>}}
-     */
-    //phpcs:enable Generic.Files.LineLength.TooLong
-    private function disableCache(array $configuration) : array
+    private function disableCache(Configuration $configuration) : Configuration
     {
         if (isset($this->options['force']) && $this->options['force']) {
             $configuration['phpdocumentor']['use-cache'] = false;
@@ -124,14 +102,7 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
         return $configuration;
     }
 
-    //phpcs:disable Generic.Files.LineLength.TooLong
-    /**
-     * @param array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string|Dsn, cache: string}, versions?: array<string, VersionSpecification>, settings?: array<mixed>, templates?: non-empty-list<string>}} $configuration
-     *
-     * @return array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string|Dsn, cache: string|Path}, versions?: array<string, VersionSpecification>, settings?: array<mixed>, templates?: non-empty-list<string>}}
-     */
-    //phpcs:enable Generic.Files.LineLength.TooLong
-    private function overwriteCacheFolder(array $configuration) : array
+    private function overwriteCacheFolder(Configuration $configuration) : Configuration
     {
         if (isset($this->options['cache-folder']) && $this->options['cache-folder']) {
             $configuration['phpdocumentor']['paths']['cache'] = new Path($this->options['cache-folder']);
@@ -140,14 +111,7 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
         return $configuration;
     }
 
-    //phpcs:disable Generic.Files.LineLength.TooLong
-    /**
-     * @param array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string|Dsn, cache: string|Path}, versions?: array<string, VersionSpecification>, settings?: array<mixed>, templates?: non-empty-list<string>}} $configuration
-     *
-     * @return array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string|Dsn, cache: string|Path}, versions?: array<string, VersionSpecification>, settings?: array<mixed>, templates?: non-empty-list<string>}}
-     */
-    //phpcs:enable Generic.Files.LineLength.TooLong
-    private function overwriteTitle(array $configuration) : array
+    private function overwriteTitle(Configuration $configuration) : Configuration
     {
         if (isset($this->options['title']) && $this->options['title']) {
             $configuration['phpdocumentor']['title'] = $this->options['title'];
@@ -156,16 +120,7 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
         return $configuration;
     }
 
-    //phpcs:disable Generic.Files.LineLength.TooLong
-    /**
-     * Changes the given configuration array to feature the templates from the options.
-     *
-     * @param array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string|Dsn, cache: string|Path}, versions?: array<string, VersionSpecification>, settings?: array<mixed>, templates?: non-empty-list<string>}} $configuration
-     *
-     * @return array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string|Dsn, cache: string|Path}, versions?: array<string, VersionSpecification>, settings?: array<mixed>, templates?: non-empty-list<string>}}
-     */
-    //phpcs:enable Generic.Files.LineLength.TooLong
-    private function overwriteTemplates(array $configuration) : array
+    private function overwriteTemplates(Configuration $configuration) : Configuration
     {
         if (isset($this->options['template']) && $this->options['template']) {
             $configuration['phpdocumentor']['templates'] = array_map(
@@ -188,15 +143,20 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
 
         $filename = explode(',', implode(',', $filename));
 
-        if (($version->getApi() ?? []) === []) {
-            $version->setApi($this->createDefaultApiSettings());
+        if (empty($version->getApi())) {
+            $version->addApi($this->createDefaultApiSettings());
         }
 
-        $version->api[0]['source']['paths'] = array_map(
-            static function ($path) : Path {
-                return new Path($path);
-            },
-            $filename
+        $version->api[0] = $version->api[0]->withSource(
+            [
+                'dsn' => $version->api[0]['source']['dsn'],
+                'paths' =>             array_map(
+                    static function ($path) : Path {
+                        return new Path($path);
+                    },
+                    $filename
+                ),
+            ]
         );
 
         return $version;
@@ -214,26 +174,42 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
         // all values split
         $directory = explode(',', implode(',', $directory));
 
-        $currentApiConfig = current($version->getApi() ?? []);
+        $currentApiConfig = current($version->getApi());
         if (!$currentApiConfig) {
-            $currentApiConfig = current($this->createDefaultApiSettings());
+            $currentApiConfig = $this->createDefaultApiSettings();
         }
 
         // Reset the current config, because directory is overwriting the config.
-        $currentApiConfig['source']['paths'] = [];
+        $currentApiConfig = $currentApiConfig->withSource(
+            [
+                'dsn' => $currentApiConfig['source']['dsn'],
+                'paths' => [],
+            ]
+        );
 
         $version->setApi([]);
         foreach ($directory as $path) {
             // If the passed directory is an absolute path this should be handled as a new Api
             // A version may contain multiple APIs.
             if (Path::isAbsolutePath($path)) {
-                $apiConfig = $currentApiConfig;
-                $apiConfig['source']['dsn'] = Dsn::createFromString($path);
-                $apiConfig['source']['paths'] = [new Path('./')];
-
-                $version->addApi($apiConfig);
+                $version->addApi(
+                    $currentApiConfig->withSource(
+                        [
+                            'dsn' => Dsn::createFromString($path),
+                            'paths' => [new Path('./')],
+                        ]
+                    )
+                );
             } else {
-                $currentApiConfig['source']['paths'][] = new Path($path);
+                $currentApiConfig = $currentApiConfig->withSource(
+                    [
+                        'dsn' => $currentApiConfig['source']['dsn'],
+                        'paths' => array_merge(
+                            $currentApiConfig['source']['paths'],
+                            [new Path($path)]
+                        ),
+                    ]
+                );
             }
         }
 
@@ -250,8 +226,8 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
             return $version;
         }
 
-        if (($version->getApi() ?? []) === []) {
-            $version->setApi($this->createDefaultApiSettings());
+        if (empty($version->getApi())) {
+            $version->addApi($this->createDefaultApiSettings());
         }
 
         Assert::isArray($this->options['extensions']);
@@ -267,15 +243,22 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
             return $version;
         }
 
-        if (($version->getApi() ?? []) === []) {
-            $version->setApi($this->createDefaultApiSettings());
+        if (empty($version->getApi())) {
+            $version->addApi($this->createDefaultApiSettings());
         }
 
-        $version->api[0]['ignore']['paths'] = array_map(
-            static function ($path) : Path {
-                return new Path($path);
-            },
-            $this->options['ignore']
+        $version->api[0]->setIgnore(
+            array_merge(
+                $version->api[0]['ignore'],
+                [
+                    'paths' => array_map(
+                        static function ($path) : Path {
+                            return new Path($path);
+                        },
+                        $this->options['ignore']
+                    ),
+                ]
+            )
         );
 
         return $version;
@@ -287,8 +270,8 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
             return $version;
         }
 
-        if (($version->getApi() ?? []) === []) {
-            $version->setApi($this->createDefaultApiSettings());
+        if (empty($version->getApi())) {
+            $version->addApi($this->createDefaultApiSettings());
         }
 
         Assert::isArray($this->options['ignore-tags']);
@@ -304,8 +287,8 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
             return $version;
         }
 
-        if (($version->getApi() ?? []) === []) {
-            $version->setApi($this->createDefaultApiSettings());
+        if (empty($version->getApi())) {
+            $version->addApi($this->createDefaultApiSettings());
         }
 
         Assert::isArray($this->options['markers']);
@@ -321,8 +304,8 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
             return $version;
         }
 
-        if (($version->getApi() ?? []) === []) {
-            $version->setApi($this->createDefaultApiSettings());
+        if (empty($version->getApi())) {
+            $version->addApi($this->createDefaultApiSettings());
         }
 
         $version->api[0]['include-source'] = $this->options['sourcecode'];
@@ -338,8 +321,8 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
             return $version;
         }
 
-        if (($version->getApi() ?? []) === []) {
-            $version->setApi($this->createDefaultApiSettings());
+        if (empty($version->getApi())) {
+            $version->addApi($this->createDefaultApiSettings());
         }
 
         $visibilities = array_unique(explode(',', implode(',', $visibilityFlags)));
@@ -354,8 +337,8 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
             return $version;
         }
 
-        if (($version->getApi() ?? []) === []) {
-            $version->setApi($this->createDefaultApiSettings());
+        if (empty($version->getApi())) {
+            $version->addApi($this->createDefaultApiSettings());
         }
 
         $version->api[0]['default-package-name'] = $this->options['defaultpackagename'];
@@ -371,8 +354,8 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
             return $version;
         }
 
-        if (($version->getApi() ?? []) === []) {
-            $version->setApi($this->createDefaultApiSettings());
+        if (empty($version->getApi())) {
+            $version->addApi($this->createDefaultApiSettings());
         }
 
         $version->api[0]['examples'] = [
@@ -388,38 +371,22 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
         return current($this->configFactory->createDefault()['phpdocumentor']['versions']);
     }
 
-    //phpcs:disable Generic.Files.LineLength.TooLong
-    /**
-     * @return array<int, array{source: array{dsn: Dsn, paths: array<Path>}, output?: string, ignore?: array{paths: non-empty-array<Path>}, extensions?: non-empty-list<string>, visibility?: array<string>, default-package-name?: string, include-source?: bool, markers?: non-empty-list<string>, ignore-tags?: non-empty-list<string>, examples?: array{dsn: Dsn, paths: list<string>}}>
-     */
-    //phpcs:enable Generic.Files.LineLength.TooLong
-    private function createDefaultApiSettings() : array
+    private function createDefaultApiSettings() : ApiSpecification
     {
-        return $this->createDefaultVersionSettings()->getApi();
+        return current($this->createDefaultVersionSettings()->getApi());
     }
 
-    //phpcs:disable Generic.Files.LineLength.TooLong
     /**
      * If the source path was influenced; we can no longer reliable render multiple versions as such we reduce
      * the list of versions to the last one; assuming that is the most recent / desirable one.
-     *
-     * @param array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string|Dsn, cache: string|Path}, versions: array<string, VersionSpecification>, settings?: array<mixed>, templates?: non-empty-list<string>}} $configuration
      */
-    //phpcs:enable Generic.Files.LineLength.TooLong
-    private function shouldReduceNumberOfVersionsToOne(array $configuration) : bool
+    private function shouldReduceNumberOfVersionsToOne(Configuration $configuration) : bool
     {
         return (($this->options['filename'] ?? '') !== '' || ($this->options['directory'] ?? '') !== '')
             && count($configuration['phpdocumentor']['versions']) > 1;
     }
 
-    //phpcs:disable Generic.Files.LineLength.TooLong
-    /**
-     * @param array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string|Dsn, cache: string|Path}, versions?: array<string, VersionSpecification>, settings?: array<mixed>, templates?: non-empty-list<string>}} $configuration
-     *
-     * @return array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string|Dsn, cache: string|Path}, versions?: array<string, VersionSpecification>, settings?: array<mixed>, templates?: non-empty-list<string>}}
-     */
-    //phpcs:enable Generic.Files.LineLength.TooLong
-    private function overwriteSettings(array $configuration) : array
+    private function overwriteSettings(Configuration $configuration) : Configuration
     {
         if (!($configuration['phpdocumentor']['settings'] ?? null)) {
             $configuration['phpdocumentor']['settings'] = [];
@@ -454,8 +421,8 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
             return $version;
         }
 
-        if (($version->getApi() ?? []) === []) {
-            $version->setApi($this->createDefaultApiSettings());
+        if (empty($version->getApi())) {
+            $version->addApi($this->createDefaultApiSettings());
         }
 
         $version->api[0]['encoding'] = $encoding;

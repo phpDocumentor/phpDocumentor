@@ -16,6 +16,8 @@ namespace phpDocumentor\Configuration;
 use League\Uri\Contracts\UriInterface;
 use phpDocumentor\Dsn;
 use phpDocumentor\Path;
+use function array_map;
+use function array_merge;
 use function ltrim;
 use function rtrim;
 use function strpos;
@@ -23,26 +25,16 @@ use function substr;
 
 final class PathNormalizingMiddleware implements MiddlewareInterface
 {
-    //phpcs:disable Generic.Files.LineLength.TooLong
-    /**
-     * @param array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string|Dsn, cache: string|Path}, versions?: array<string, VersionSpecification>, settings?: array<mixed>, templates?: non-empty-list<string>}} $configuration
-     *
-     * @return array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string|Dsn, cache: string|Path}, versions?: array<string, VersionSpecification>, settings?: array<mixed>, templates?: non-empty-list<string>}}
-     */
-    //phpcs:enable Generic.Files.LineLength.TooLong
-    public function __invoke(array $configuration, ?UriInterface $uri = null) : array
+    public function __invoke(Configuration $configuration, ?UriInterface $uri = null) : Configuration
     {
         $configuration = $this->makeDsnRelativeToConfig($configuration, $uri);
 
         $configuration['phpdocumentor']['paths']['cache']
             = $this->normalizeCachePath($uri, $configuration['phpdocumentor']['paths']['cache']);
 
-        $configuration['phpdocumentor'] = $this->normalizePaths($configuration['phpdocumentor']);
-
-        return $configuration;
+        return $this->normalizePaths($configuration);
     }
 
-    //phpcs:disable Generic.Files.LineLength.TooLong
     /**
      * Transforms relative dsn to relative path of working dir.
      *
@@ -56,13 +48,8 @@ final class PathNormalizingMiddleware implements MiddlewareInterface
      * In this case the src dir on the same level as the config dir is read.
      *
      * Absolute DSNs are untouched.
-     *
-     * @param array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: Dsn, cache: Path}, versions?: array<string, VersionSpecification>, settings?: array<mixed>, templates?: non-empty-list<string>}} $configuration
-     *
-     * @return array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: Dsn, cache: Path}, versions?: array<string, VersionSpecification>, settings?: array<mixed>, templates?: non-empty-list<string>}}
      */
-    //phpcs:enable Generic.Files.LineLength.TooLong
-    private function makeDsnRelativeToConfig(array $configuration, ?UriInterface $uri) : array
+    private function makeDsnRelativeToConfig(Configuration $configuration, ?UriInterface $uri) : Configuration
     {
         if ($uri === null) {
             return $configuration;
@@ -86,24 +73,35 @@ final class PathNormalizingMiddleware implements MiddlewareInterface
         return $configuration;
     }
 
-    //phpcs:disable Generic.Files.LineLength.TooLong
-    /**
-     * @param array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: Dsn, cache: Path}, versions?: array<string, VersionSpecification>, settings?: array<mixed>, templates?: non-empty-list<string>} $configuration
-     *
-     * @return array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: Dsn, cache: Path}, versions?: array<string, VersionSpecification>, settings?: array<mixed>, templates?: non-empty-list<string>}
-     */
-    //phpcs:enable Generic.Files.LineLength.TooLong
-    private function normalizePaths(array $configuration) : array
+    private function normalizePaths(Configuration $configuration) : Configuration
     {
-        foreach ($configuration['versions'] as $version) {
+        /** @var VersionSpecification $version */
+        foreach ($configuration['phpdocumentor']['versions'] as $version) {
             foreach ($version->getApi() as $key => $api) {
-                foreach ($api['source']['paths'] as $subkey => $path) {
-                    $version->api[$key]['source']['paths'][$subkey] = $this->pathToGlobPattern((string) $path);
-                }
+                $source = $version->api[$key]['source'];
+                $source['paths'] = array_map(
+                    function (string $path) : string {
+                        return $this->pathToGlobPattern($path);
+                    },
+                    $source['paths']
+                );
 
-                foreach ($api['ignore']['paths'] as $subkey => $path) {
-                    $version->api[$key]['ignore']['paths'][$subkey] = $this->pathToGlobPattern((string) $path);
-                }
+                $api = $api->withSource($source);
+                $api->setIgnore(
+                    array_merge(
+                        $api['ignore'],
+                        [
+                            'paths' => array_map(
+                                function (string $path) : string {
+                                    return $this->pathToGlobPattern($path);
+                                },
+                                $api['ignore']['paths']
+                            ),
+                        ]
+                    )
+                );
+
+                $version->api[$key] = $api;
             }
 
             foreach ($version->getGuides() ?? [] as $key => $guide) {

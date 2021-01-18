@@ -152,9 +152,9 @@ final class Version2 implements ConfigurationInterface, Upgradable
     /**
      * Upgrades the version 2 configuration to the version 3 configuration.
      *
-     * @param array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string, cache: string}, versions?: array<string, VersionSpecification>, settings?: array<mixed>, templates?: non-empty-list<string>, transformer: array{target: string}, parser: array{target: string, default-package-name: string, extensions: array{extensions: array}, visibility: string, markers: array{items: array}}, files: array{files: array, directories: array, ignores: array}, transformations: array{templates: array<string>}} $values
+     * @param array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string, cache: string}, versions?: array<string, mixed>, settings?: array<mixed>, templates?: non-empty-list<string>, transformer: array{target: string}, parser: array{target: string, default-package-name: string, extensions: array{extensions: array}, visibility: string, markers: array{items: array}}, files: array{files: array, directories: array, ignores: array}, transformations: array{templates: array<string>}} $values
      *
-     * @return array{configVersion: string, title: string, paths: array{cache: string, output: string}, templates: non-empty-list<string>, version: array{array{api: array{array{default-package-name: string, extensions: array{extensions: array}, ignore: array{paths: array<string>}, markers: array{markers: array}, source: array{paths: array<string>}, visibilities: non-empty-list<string>|null}}, number: string}}}
+     * @return array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string, cache: string}, versions?: array<string, mixed>, settings?: array<mixed>, templates?: non-empty-list<string>}
      *
      * @todo not all options are included yet; finish this
      */

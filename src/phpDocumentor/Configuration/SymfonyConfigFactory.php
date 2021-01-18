@@ -42,7 +42,7 @@ class SymfonyConfigFactory
 
     //phpcs:disable Generic.Files.LineLength.TooLong
     /**
-     * @return array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string, cache: string}, versions?: array<string, VersionSpecification>, settings?: array<mixed>, templates?: non-empty-list<string>}}
+     * @return array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string, cache: string}, versions?: array<string, array{ api: array{ignore-tags: array<string>, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibility: non-empty-array<string>, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}, encoding: string, output: string, default-package-name: string, examples: array{dsn: Dsn, paths: array}, include-source: bool}, guides: array}>, settings?: array<mixed>, templates?: non-empty-list<string>}}
      */
     //phpcs:enable Generic.Files.LineLength.TooLong
     public function createFromFile(string $filename) : array
@@ -55,7 +55,7 @@ class SymfonyConfigFactory
 
     //phpcs:disable Generic.Files.LineLength.TooLong
     /**
-     * @return array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string, cache: string}, versions?: array<string, VersionSpecification>, settings?: array<mixed>, templates?: non-empty-list<string>}}
+     * @return array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string, cache: string}, versions?: array<string, array{ api: array{ignore-tags: array<string>, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibility: non-empty-array<string>, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}, encoding: string, output: string, default-package-name: string, examples: array{dsn: Dsn, paths: array}, include-source: bool}, guides: array}>, settings?: array<mixed>, templates?: non-empty-list<string>}}
      */
     //phpcs:enable Generic.Files.LineLength.TooLong
     public function createDefault() : array
@@ -69,7 +69,7 @@ class SymfonyConfigFactory
     /**
      * @param array<mixed> $values
      *
-     * @return array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string, cache: string}, versions?: array<string, VersionSpecification>, settings?: array<mixed>, templates?: non-empty-list<string>}}
+     * @return array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string, cache: string}, versions?: array<string, array{ api: array{ignore-tags: array<string>, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibility: non-empty-array<string>, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}, encoding: string, output: string, default-package-name: string, examples: array{dsn: Dsn, paths: array}, include-source: bool}, guides: array}>, settings?: array<mixed>, templates?: non-empty-list<string>}}
      */
     //phpcs:enable Generic.Files.LineLength.TooLong
     private function generateConfiguration(array $values) : array
@@ -95,9 +95,9 @@ class SymfonyConfigFactory
      * Configuration definition) then it will do so and re-run this method with the upgraded values. The 'configVersion'
      * field will tell which definition should be used; when none is provided then a version 2 configuration is assumed.
      *
-     * @param array{configVersion?: string, title?: string, use-cache?: bool, paths?: array{output: string, cache: string}, versions?: array<string, mixed>, settings?: array<mixed>, templates?: non-empty-list<string>} $values
+     * @param array{configVersion?: string, title?: string, use-cache?: bool, paths?: array{output: string, cache: string}, versions?: array<string, array{ api: array{ignore-tags: array<string>, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibility: non-empty-array<string>, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}, encoding: string, output: string, default-package-name: string, examples: array{dsn: Dsn, paths: array}, include-source: bool}, guides: array}>, settings?: array<mixed>, templates?: non-empty-list<string>} $values
      *
-     * @return array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string, cache: string}, versions?: array<string, VersionSpecification>, settings?: array<mixed>, templates?: non-empty-list<string>}
+     * @return array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string, cache: string}, versions?: array<string, array{ api: array{ignore-tags: array<string>, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibility: non-empty-array<string>, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}, encoding: string, output: string, default-package-name: string, examples: array{dsn: Dsn, paths: array}, include-source: bool}, guides: array}>, settings?: array<mixed>, templates?: non-empty-list<string>}
      */
     //phpcs:enable Generic.Files.LineLength.TooLong
     private function processConfiguration(array $values) : array
@@ -136,9 +136,9 @@ class SymfonyConfigFactory
 
     //phpcs:disable Generic.Files.LineLength.TooLong
     /**
-     * @param array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string, cache: string}, versions?: array<string, VersionSpecification>, settings?: array<mixed>, templates?: non-empty-list<string>, transformer: array{target: string}, parser: array{target: string, default-package-name: string, extensions: array{extensions: array}, visibility: string, markers: array{items: array}}, files: array{files: array, directories: array, ignores: array}, transformations: array{templates: array}} $configuration
+     * @param array{configVersion?: string, title?: string, use-cache?: bool, paths?: array{output: string, cache: string}, versions?: array<string, array{ api: array{ignore-tags: array<string>, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibility: non-empty-array<string>, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}, encoding: string, output: string, default-package-name: string, examples: array{dsn: Dsn, paths: array}, include-source: bool}, guides: array}>, settings?: array<mixed>, templates?: non-empty-list<string>} $configuration
      *
-     * @return array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string, cache: string}, versions?: array<string, VersionSpecification>, settings?: array<mixed>, templates?: non-empty-list<string>}
+     * @return array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string, cache: string}, versions?: array<string, array{ api: array{ignore-tags: array<string>, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibility: non-empty-array<string>, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}, encoding: string, output: string, default-package-name: string, examples: array{dsn: Dsn, paths: array}, include-source: bool}, guides: array}>, settings?: array<mixed>, templates?: non-empty-list<string>}
      */
     //phpcs:enable Generic.Files.LineLength.TooLong
     private function upgradeConfiguration(Upgradable $definition, array $configuration) : array

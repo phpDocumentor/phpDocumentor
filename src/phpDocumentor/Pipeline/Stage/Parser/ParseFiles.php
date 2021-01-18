@@ -61,7 +61,7 @@ final class ParseFiles
 
         $this->log('Parsing files', LogLevel::NOTICE);
         $project = $this->parser->parse($payload->getFiles());
-        $payload->getBuilder()->build($project);
+        $payload->getBuilder()->createApiDocumentationSet($apiConfig, $project);
 
         return $payload;
     }

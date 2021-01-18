@@ -42,14 +42,7 @@ final class ProvideTemplateOverridePathMiddleware implements MiddlewareInterface
         $this->environmentFactory = $environmentFactory;
     }
 
-    //phpcs:disable Generic.Files.LineLength.TooLong
-    /**
-     * @param array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string, cache: string}, versions?: array<string, VersionSpecification>, settings?: array<mixed>, templates?: non-empty-list<string>}} $configuration
-     *
-     * @return array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string, cache: string}, versions?: array<string, VersionSpecification>, settings?: array<mixed>, templates?: non-empty-list<string>}}
-     */
-    //phpcs:enable Generic.Files.LineLength.TooLong
-    public function __invoke(array $configuration, ?UriInterface $pathOfConfigFile = null) : array
+    public function __invoke(Configuration $configuration, ?UriInterface $pathOfConfigFile = null) : Configuration
     {
         $path = $this->normalizePath($pathOfConfigFile, new Path(self::PATH_TO_TEMPLATE_OVERRIDES));
         if (file_exists((string) $path)) {

@@ -48,7 +48,13 @@ final class PathNormalizingMiddlewareTest extends TestCase
     public function testNormalizedPathsToGlob(string $input, string $output) : void
     {
         $configuration = $this->givenAConfiguration();
-        $configuration['phpdocumentor']['versions']['1.0.0']->api[0]['source']['paths'] = [$input];
+        $configuration['phpdocumentor']['versions']['1.0.0']->api[0] =
+            $configuration['phpdocumentor']['versions']['1.0.0']->api[0]->withSource(
+                [
+                    'dsn' => $configuration['phpdocumentor']['versions']['1.0.0']->api[0]['source']['dsn'],
+                    'paths' => [$input],
+                ]
+            );
 
         $middleware = new PathNormalizingMiddleware();
         $outputConfig = $middleware($configuration, Uri::createFromString('./config.xml'));
@@ -65,7 +71,7 @@ final class PathNormalizingMiddlewareTest extends TestCase
     public function testNormalizedIgnoreToGlob(string $input, string $output) : void
     {
         $configuration = $this->givenAConfiguration();
-        $configuration['phpdocumentor']['versions']['1.0.0']->api[0]['ignore']['paths'] = [$input];
+        $configuration['phpdocumentor']['versions']['1.0.0']->api[0]->setIgnore(['paths' => [$input]]);
 
         $middleware = new PathNormalizingMiddleware();
         $outputConfig = $middleware($configuration, Uri::createFromString('./config.xml'));
@@ -145,8 +151,8 @@ final class PathNormalizingMiddlewareTest extends TestCase
         ];
     }
 
-    private function givenAConfiguration() : array
+    private function givenAConfiguration() : Configuration
     {
-        return $this->configurationFactory->createDefault()->getArrayCopy();
+        return $this->configurationFactory->createDefault();
     }
 }

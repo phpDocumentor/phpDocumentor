@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace phpDocumentor\Configuration\Definition;
 
 use phpDocumentor\Configuration\SymfonyConfigFactory;
-use phpDocumentor\Configuration\VersionSpecification;
 use phpDocumentor\Dsn;
 use phpDocumentor\Path;
 use PHPUnit\Framework\TestCase;
@@ -54,21 +53,17 @@ final class Version3Test extends TestCase
         $expected = $this->defaultConfigurationOutput();
         $expected['paths']['output'] = Dsn::createFromString($expected['paths']['output']);
         $expected['paths']['cache'] = new Path($expected['paths']['cache']);
-        $expected['versions']['1.0.0']
-            = new VersionSpecification(
-                '1.0.0',
-                $expected['versions']['1.0.0']['apis'],
-                $expected['versions']['1.0.0']['guides']
-            );
-        $expected['versions']['1.0.0']->api[0]['ignore-tags']
-            = $expected['versions']['1.0.0']->getApi()[0]['ignore-tags']['ignore_tags'];
-        $expected['versions']['1.0.0']->api[0]['extensions']
-            = $expected['versions']['1.0.0']->getApi()[0]['extensions']['extensions'];
-        $expected['versions']['1.0.0']->api[0]['markers']
-            = $expected['versions']['1.0.0']->getApi()[0]['markers']['markers'];
-        $expected['versions']['1.0.0']->api[0]['visibility']
-            = $expected['versions']['1.0.0']->getApi()[0]['visibilities'];
-        unset($expected['versions']['1.0.0']->api[0]['visibilities']);
+        $expected['versions']['1.0.0']['api'] = $expected['versions']['1.0.0']['apis'];
+        unset($expected['versions']['1.0.0']['apis']);
+        $expected['versions']['1.0.0']['api'][0]['ignore-tags']
+            = $expected['versions']['1.0.0']['api'][0]['ignore-tags']['ignore_tags'];
+        $expected['versions']['1.0.0']['api'][0]['extensions']
+            = $expected['versions']['1.0.0']['api'][0]['extensions']['extensions'];
+        $expected['versions']['1.0.0']['api'][0]['markers']
+            = $expected['versions']['1.0.0']['api'][0]['markers']['markers'];
+        $expected['versions']['1.0.0']['api'][0]['visibility']
+            = $expected['versions']['1.0.0']['api'][0]['visibilities'];
+        unset($expected['versions']['1.0.0']['api'][0]['visibilities']);
         $configuration = $definition->normalize($configuration);
 
         $this->assertEquals($expected, $configuration);
