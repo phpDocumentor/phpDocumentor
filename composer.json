@@ -67,7 +67,7 @@
         "symfony/http-foundation": "^5.0.7",
         "symfony/http-kernel": "^5.0.8",
         "symfony/monolog-bundle": "^3.0",
-        "symfony/process": "5.1.*",
+        "symfony/process": "5.2.*",
         "symfony/proxy-manager-bridge": "^5.0",
         "symfony/routing": "^5.0",
         "symfony/stopwatch": "^5.0",
