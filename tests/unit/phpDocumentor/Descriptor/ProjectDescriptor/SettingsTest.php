@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\ProjectDescriptor;
 
+use phpDocumentor\Configuration\ApiSpecification;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -80,11 +81,11 @@ final class SettingsTest extends TestCase
     {
         $settings = new Settings();
 
-        $this->assertSame(Settings::VISIBILITY_DEFAULT, $settings->getVisibility());
+        $this->assertSame(ApiSpecification::VISIBILITY_DEFAULT, $settings->getVisibility());
 
-        $settings->setVisibility(Settings::VISIBILITY_PUBLIC);
+        $settings->setVisibility(ApiSpecification::VISIBILITY_PUBLIC);
 
-        $this->assertSame(Settings::VISIBILITY_PUBLIC, $settings->getVisibility());
+        $this->assertSame(ApiSpecification::VISIBILITY_PUBLIC, $settings->getVisibility());
     }
 
     /**
@@ -96,7 +97,7 @@ final class SettingsTest extends TestCase
 
         $this->assertFalse($settings->isModified());
 
-        $settings->setVisibility(Settings::VISIBILITY_PUBLIC);
+        $settings->setVisibility(ApiSpecification::VISIBILITY_PUBLIC);
 
         $this->assertTrue($settings->isModified());
     }

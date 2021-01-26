@@ -4,28 +4,20 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Filter;
 
+use phpDocumentor\Configuration\ApiSpecification;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DocBlock;
-use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Descriptor\TagDescriptor;
 use PHPUnit\Framework\TestCase;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 
 final class StripIgnoredTagsTest extends TestCase
 {
-    use ProphecyTrait;
-
-    /** @var ObjectProphecy */
-    private $builder;
-
     /** @var StripIgnoredTags */
     private $fixture;
 
     protected function setUp() : void
     {
-        $this->builder = $this->prophesize(ProjectDescriptorBuilder::class);
-        $this->fixture = new StripIgnoredTags($this->builder->reveal());
+        $this->fixture = new StripIgnoredTags();
     }
 
     public function testIgnoresNonTagDescriptors() : void
@@ -46,15 +38,19 @@ final class StripIgnoredTagsTest extends TestCase
             }
         };
 
-        self::assertSame($object, ($this->fixture)($object));
+        self::assertSame(
+            $object,
+            ($this->fixture)(new FilterPayload($object, ApiSpecification::createDefault()))->getFilterable()
+        );
     }
 
     public function testFiltersIgnoredTags() : void
     {
         $object = new TagDescriptor('someTag');
 
-        $this->builder->getIgnoredTags()->willReturn(['someTag']);
+        $apiSpecification = ApiSpecification::createDefault();
+        $apiSpecification['ignore-tags'] = ['someTag'];
 
-        self::assertNull(($this->fixture)($object));
+        self::assertNull(($this->fixture)(new FilterPayload($object, $apiSpecification))->getFilterable());
     }
 }

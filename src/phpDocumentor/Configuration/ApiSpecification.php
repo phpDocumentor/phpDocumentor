@@ -8,8 +8,10 @@ use ArrayAccess;
 use InvalidArgumentException;
 use phpDocumentor\Dsn;
 use phpDocumentor\Path;
+use RuntimeException;
 use function lcfirst;
 use function property_exists;
+use function sprintf;
 use function str_replace;
 use function ucwords;
 
@@ -18,6 +20,15 @@ use function ucwords;
  */
 final class ApiSpecification implements ArrayAccess
 {
+    public const VISIBILITY_PUBLIC = 1;
+    public const VISIBILITY_PROTECTED = 2;
+    public const VISIBILITY_PRIVATE = 4;
+    public const VISIBILITY_INTERNAL = 8;
+    public const VISIBILITY_API = 16;
+
+    /** @var int by default ignore internal visibility but show others */
+    public const VISIBILITY_DEFAULT = 7;
+
     /** @var array{dsn: Dsn, paths: array<Path>} */
     private $source;
 
@@ -114,6 +125,29 @@ final class ApiSpecification implements ArrayAccess
         );
     }
 
+    public static function createDefault() : ApiSpecification
+    {
+        return new self(
+            [
+                'dsn' => Dsn::createFromString('./'),
+                'paths' => [new Path('./src')],
+            ],
+            './api',
+            [
+                'paths' => [],
+            ],
+            ['php'],
+            [],
+            '',
+            false,
+            [],
+            [],
+            null,
+            'utf8',
+            false
+        );
+    }
+
     /**
      * @param array{dsn: Dsn, paths: array<Path>} $source
      */
@@ -184,5 +218,63 @@ final class ApiSpecification implements ArrayAccess
     private function normalizePropertyName(string $offset) : string
     {
         return lcfirst(str_replace('-', '', ucwords($offset, '-')));
+    }
+
+    /** @return string[] */
+    public function getIgnoredTags() : array
+    {
+        return $this->ignoreTags;
+    }
+
+    private function calculateVisablity() : int
+    {
+        $visibility = 0;
+
+        foreach ($this->visibility as $item) {
+            switch ($item) {
+                case 'api':
+                    $visibility |= self::VISIBILITY_API;
+                    break;
+                case 'public':
+                    $visibility |= self::VISIBILITY_PUBLIC;
+                    break;
+                case 'protected':
+                    $visibility |= self::VISIBILITY_PROTECTED;
+                    break;
+                case 'private':
+                    $visibility |= self::VISIBILITY_PRIVATE;
+                    break;
+                case 'internal':
+                    $visibility |= self::VISIBILITY_INTERNAL;
+                    break;
+                default:
+                    throw new RuntimeException(
+                        sprintf(
+                            '%s is not a type of visibility, supported is: api, public, protected, private or internal',
+                            $item
+                        )
+                    );
+            }
+        }
+
+        if ($visibility === self::VISIBILITY_INTERNAL) {
+            $visibility |= self::VISIBILITY_DEFAULT;
+        }
+
+        return $visibility;
+    }
+
+    /**
+     * Checks whether the Project supports the given visibility.
+     *
+     * @see Settings for a list of the available VISIBILITY_* constants.
+     *
+     * @param int $visibility One of the VISIBILITY_* constants of the Settings class.
+     */
+    public function isVisibilityAllowed(int $visibility) : bool
+    {
+        $visibilityAllowed = $this->calculateVisablity();
+
+        return (bool) ($visibilityAllowed & $visibility);
     }
 }

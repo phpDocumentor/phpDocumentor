@@ -13,12 +13,10 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Filter;
 
+use phpDocumentor\Configuration\ApiSpecification;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
-use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use PHPUnit\Framework\TestCase;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 
 /**
  * Tests the functionality for the StripIgnore class.
@@ -27,11 +25,6 @@ use Prophecy\Prophecy\ObjectProphecy;
  */
 final class StripIgnoreTest extends TestCase
 {
-    use ProphecyTrait;
-
-    /** @var ProjectDescriptorBuilder|ObjectProphecy */
-    private $builderMock;
-
     /** @var StripIgnore $fixture */
     private $fixture;
 
@@ -40,8 +33,7 @@ final class StripIgnoreTest extends TestCase
      */
     protected function setUp() : void
     {
-        $this->builderMock = $this->prophesize(ProjectDescriptorBuilder::class);
-        $this->fixture = new StripIgnore($this->builderMock->reveal());
+        $this->fixture = new StripIgnore();
     }
 
     /**
@@ -55,7 +47,11 @@ final class StripIgnoreTest extends TestCase
         $descriptor = $this->prophesize(DescriptorAbstract::class);
         $descriptor->getTags()->shouldBeCalled()->willReturn($collection->reveal());
 
-        $this->assertNull($this->fixture->__invoke($descriptor->reveal()));
+        $this->assertNull(
+            $this->fixture->__invoke(
+                new FilterPayload($descriptor->reveal(), ApiSpecification::createDefault())
+            )->getFilterable()
+        );
     }
 
     /**
@@ -69,6 +65,11 @@ final class StripIgnoreTest extends TestCase
         $descriptor = $this->prophesize(DescriptorAbstract::class);
         $descriptor->getTags()->shouldBeCalled()->willReturn($collection->reveal());
 
-        $this->assertEquals($descriptor->reveal(), $this->fixture->__invoke($descriptor->reveal()));
+        $this->assertEquals(
+            $descriptor->reveal(),
+            $this->fixture->__invoke(
+                new FilterPayload($descriptor->reveal(), ApiSpecification::createDefault())
+            )->getFilterable()
+        );
     }
 }

@@ -21,10 +21,8 @@ use phpDocumentor\Descriptor\Filter\Filter;
 use phpDocumentor\Descriptor\Filter\Filterable;
 use phpDocumentor\Descriptor\ProjectDescriptor\WithCustomSettings;
 use phpDocumentor\Reflection\Php\Project;
-use RuntimeException;
 use function array_merge;
 use function get_class;
-use function sprintf;
 
 /**
  * Builds a Project Descriptor and underlying tree.
@@ -49,8 +47,8 @@ class ProjectDescriptorBuilder
     /** @var iterable<WithCustomSettings> */
     private $servicesWithCustomSettings;
 
-    /** @var string[] */
-    private $ignoredTags = [];
+    /** @var ApiSpecification */
+    private $apiSpecification;
 
     /**
      * @param iterable<WithCustomSettings> $servicesWithCustomSettings
@@ -134,7 +132,7 @@ class ProjectDescriptorBuilder
      */
     public function filter(Filterable $descriptor) : ?Filterable
     {
-        return $this->filter->filter($descriptor);
+        return $this->filter->filter($descriptor, $this->apiSpecification);
     }
 
     /**
@@ -159,7 +157,12 @@ class ProjectDescriptorBuilder
         return $descriptor;
     }
 
-    public function createApiDocumentationSet(ApiSpecification $apiSpecification, Project $project) : void
+    public function setApiSpecification(ApiSpecification $apiSpecification) : void
+    {
+        $this->apiSpecification = $apiSpecification;
+    }
+
+    public function createApiDocumentationSet(Project $project) : void
     {
         $packageName = $project->getRootNamespace()->getFqsen()->getName();
         $this->defaultPackage = $packageName;
@@ -198,44 +201,8 @@ class ProjectDescriptorBuilder
         return $this->defaultPackage;
     }
 
-    /**
-     * @param array<string> $visibilities
-     */
-    public function setVisibility(array $visibilities) : void
+    public function setVisibility(int $visibility) : void
     {
-        $visibility = 0;
-
-        foreach ($visibilities as $item) {
-            switch ($item) {
-                case 'api':
-                    $visibility |= ProjectDescriptor\Settings::VISIBILITY_API;
-                    break;
-                case 'public':
-                    $visibility |= ProjectDescriptor\Settings::VISIBILITY_PUBLIC;
-                    break;
-                case 'protected':
-                    $visibility |= ProjectDescriptor\Settings::VISIBILITY_PROTECTED;
-                    break;
-                case 'private':
-                    $visibility |= ProjectDescriptor\Settings::VISIBILITY_PRIVATE;
-                    break;
-                case 'internal':
-                    $visibility |= ProjectDescriptor\Settings::VISIBILITY_INTERNAL;
-                    break;
-                default:
-                    throw new RuntimeException(
-                        sprintf(
-                            '%s is not a type of visibility, supported is: api, public, protected, private or internal',
-                            $item
-                        )
-                    );
-            }
-        }
-
-        if ($visibility === ProjectDescriptor\Settings::VISIBILITY_INTERNAL) {
-            $visibility |= ProjectDescriptor\Settings::VISIBILITY_DEFAULT;
-        }
-
         $this->project->getSettings()->setVisibility($visibility);
     }
 
@@ -253,14 +220,6 @@ class ProjectDescriptorBuilder
     }
 
     /**
-     * @param array<string> $markers
-     */
-    public function setMarkers(array $markers) : void
-    {
-        $this->project->getSettings()->setMarkers($markers);
-    }
-
-    /**
      * @param array<string, string> $customSettings
      */
     public function setCustomSettings(array $customSettings) : void
@@ -268,29 +227,8 @@ class ProjectDescriptorBuilder
         $this->project->getSettings()->setCustom($customSettings);
     }
 
-    public function setIncludeSource(bool $includeSources) : void
-    {
-        if ($includeSources) {
-            $this->project->getSettings()->includeSource();
-        } else {
-            $this->project->getSettings()->excludeSource();
-        }
-    }
-
     public function addVersion(VersionDescriptor $version) : void
     {
         $this->project->getVersions()->add($version);
-    }
-
-    /** @param string[] $ignoredTags */
-    public function setIgnoredTags(array $ignoredTags) : void
-    {
-        $this->ignoredTags = $ignoredTags;
-    }
-
-    /** @return string[] */
-    public function getIgnoredTags() : array
-    {
-        return $this->ignoredTags;
     }
 }

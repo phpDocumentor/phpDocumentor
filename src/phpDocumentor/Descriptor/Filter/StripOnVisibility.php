@@ -14,64 +14,54 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Filter;
 
 use InvalidArgumentException;
+use phpDocumentor\Configuration\ApiSpecification;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\Interfaces\VisibilityInterface;
-use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
-use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 
 /**
  * Strips any Descriptor if their visibility is allowed according to the ProjectDescriptorBuilder.
  */
 class StripOnVisibility implements FilterInterface
 {
-    /** @var ProjectDescriptorBuilder $builder */
-    protected $builder;
-
-    /**
-     * Initializes this filter with an instance of the builder to retrieve the latest ProjectDescriptor from.
-     */
-    public function __construct(ProjectDescriptorBuilder $builder)
-    {
-        $this->builder = $builder;
-    }
-
     /**
      * Filter Descriptor with based on visibility.
      */
-    public function __invoke(Filterable $value) : ?Filterable
+    public function __invoke(FilterPayload $payload) : FilterPayload
     {
-        if (!$value instanceof DescriptorAbstract) {
-            return $value;
+        if (!$payload->getFilterable() instanceof DescriptorAbstract) {
+            return $payload;
         }
+
+        $filterable = $payload->getFilterable();
 
         // if a Descriptor is marked as 'api' and this is set as a visibility; _always_ show it; even if the visibility
         // is not set
-        if (isset($value->getTags()['api'])
-            && $this->builder->getProjectDescriptor()->isVisibilityAllowed(Settings::VISIBILITY_API)
+        if (isset($filterable->getTags()['api'])
+            && $payload->getApiSpecification()->isVisibilityAllowed(ApiSpecification::VISIBILITY_API)
         ) {
-            return $value;
+            return $payload;
         }
 
-        if (!$value instanceof VisibilityInterface) {
-            return $value;
+        if (!$filterable instanceof VisibilityInterface) {
+            return $payload;
         }
 
-        if ($this->builder->getProjectDescriptor()->isVisibilityAllowed($this->toVisibility($value->getVisibility()))) {
-            return $value;
+        if ($payload->getApiSpecification()->isVisibilityAllowed($this->toVisibility($filterable->getVisibility()))) {
+            return $payload;
         }
 
-        return null;
+        return new FilterPayload(null, $payload->getApiSpecification());
     }
 
     private function toVisibility(string $visibility) : int
     {
         switch ($visibility) {
             case 'public':
-                return Settings::VISIBILITY_PUBLIC;
+                return ApiSpecification::VISIBILITY_PUBLIC;
             case 'protected':
-                return Settings::VISIBILITY_PROTECTED;
+                return ApiSpecification::VISIBILITY_PROTECTED;
             case 'private':
-                return Settings::VISIBILITY_PRIVATE;
+                return ApiSpecification::VISIBILITY_PRIVATE;
         }
 
         throw new InvalidArgumentException($visibility . ' is not a valid visibility');

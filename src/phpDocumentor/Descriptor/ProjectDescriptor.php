@@ -208,20 +208,6 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
         return $this->partials;
     }
 
-    /**
-     * Checks whether the Project supports the given visibility.
-     *
-     * @see Settings for a list of the available VISIBILITY_* constants.
-     *
-     * @param int $visibility One of the VISIBILITY_* constants of the Settings class.
-     */
-    public function isVisibilityAllowed(int $visibility) : bool
-    {
-        $visibilityAllowed = $this->getSettings()->getVisibility();
-
-        return (bool) ($visibilityAllowed & $visibility);
-    }
-
     public function findElement(Fqsen $fqsen) : ?Descriptor
     {
         if (!isset($this->getIndexes()['elements'])) {

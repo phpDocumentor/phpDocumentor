@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Filter;
 
+use phpDocumentor\Configuration\ApiSpecification;
 use phpDocumentor\Descriptor\DescriptorAbstract;
-use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
-use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 
 /**
  * Filters a Descriptor when the @internal inline tag, or normal tag, is used.
@@ -30,45 +29,42 @@ use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
  */
 class StripInternal implements FilterInterface
 {
-    /** @var ProjectDescriptorBuilder $builder */
-    protected $builder;
-
-    /**
-     * Initializes this filter with an instance of the builder to retrieve the latest ProjectDescriptor from.
-     */
-    public function __construct(ProjectDescriptorBuilder $builder)
-    {
-        $this->builder = $builder;
-    }
-
     /**
      * If the ProjectDescriptor's settings allow internal tags then return the Descriptor, otherwise null to filter it.
      */
-    public function __invoke(Filterable $value) : ?Filterable
+    public function __invoke(FilterPayload $payload) : FilterPayload
     {
-        $isInternalAllowed = $this->builder->getProjectDescriptor()->isVisibilityAllowed(Settings::VISIBILITY_INTERNAL);
+        $isInternalAllowed = $payload->getApiSpecification()->isVisibilityAllowed(
+            ApiSpecification::VISIBILITY_INTERNAL
+        );
+
         if ($isInternalAllowed) {
-            return $value;
+            return $payload;
         }
 
-        if ($value->getDescription() !== null) {
+        $filterable = $payload->getFilterable();
+        if ($filterable === null) {
+            return $payload;
+        }
+
+        if ($filterable->getDescription() !== null) {
             // remove inline @internal tags
-            foreach ($value->getDescription()->getTags() as $position => $tag) {
+            foreach ($filterable->getDescription()->getTags() as $position => $tag) {
                 if ($tag->getName() !== 'internal') {
                     continue;
                 }
 
-                $value->getDescription()->replaceTag($position, null);
+                $filterable->getDescription()->replaceTag($position, null);
             }
         }
 
-        if ($value instanceof DescriptorAbstract) {
+        if ($filterable instanceof DescriptorAbstract) {
             // if internal elements are not allowed; filter this element
-            if ($value->getTags()->fetch('internal')) {
-                return null;
+            if ($filterable->getTags()->fetch('internal')) {
+                return new FilterPayload(null, $payload->getApiSpecification());
             }
         }
 
-        return $value;
+        return $payload;
     }
 }

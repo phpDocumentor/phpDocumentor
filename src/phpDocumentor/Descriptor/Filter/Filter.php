@@ -15,6 +15,7 @@ namespace phpDocumentor\Descriptor\Filter;
 
 use League\Pipeline\InterruptibleProcessor;
 use League\Pipeline\Pipeline;
+use phpDocumentor\Configuration\ApiSpecification;
 
 /**
  * Filter used to manipulate a descriptor after being build.
@@ -37,8 +38,8 @@ class Filter
      */
     public function __construct(iterable $filters)
     {
-        $nullInteruption = new InterruptibleProcessor(static function (?Filterable $value) {
-            return $value !== null;
+        $nullInteruption = new InterruptibleProcessor(static function (FilterPayload $value) {
+            return $value->getFilterable() !== null;
         });
 
         $this->pipeline = new Pipeline($nullInteruption, ...$filters);
@@ -53,8 +54,8 @@ class Filter
      *
      * @template TDescriptor as Filterable
      */
-    public function filter(Filterable $descriptor) : ?Filterable
+    public function filter(Filterable $descriptor, ApiSpecification $apiSpecification) : ?Filterable
     {
-        return $this->pipeline->process($descriptor);
+        return $this->pipeline->process(new FilterPayload($descriptor, $apiSpecification))->getFilterable();
     }
 }

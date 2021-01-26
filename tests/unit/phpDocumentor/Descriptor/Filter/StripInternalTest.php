@@ -13,18 +13,14 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Filter;
 
+use phpDocumentor\Configuration\ApiSpecification;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
-use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Reflection\DocBlock\Description as DocBlockDescription;
 use PHPUnit\Framework\TestCase;
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 
 /**
  * Tests the functionality for the StripInternal class.
@@ -33,14 +29,6 @@ use Prophecy\Prophecy\ObjectProphecy;
  */
 final class StripInternalTest extends TestCase
 {
-    use ProphecyTrait;
-
-    /** @var ProjectDescriptorBuilder|ObjectProphecy */
-    private $builderMock;
-
-    /** @var ProjectDescriptor|ObjectProphecy */
-    private $projectDescriptor;
-
     /** @var StripInternal $fixture */
     private $fixture;
 
@@ -49,10 +37,7 @@ final class StripInternalTest extends TestCase
      */
     protected function setUp() : void
     {
-        $this->projectDescriptor = $this->prophesize(ProjectDescriptor::class);
-        $this->builderMock = $this->prophesize(ProjectDescriptorBuilder::class);
-        $this->builderMock->getProjectDescriptor()->shouldBeCalled()->willReturn($this->projectDescriptor->reveal());
-        $this->fixture = new StripInternal($this->builderMock->reveal());
+        $this->fixture = new StripInternal();
     }
 
     /**
@@ -71,13 +56,17 @@ final class StripInternalTest extends TestCase
             ]
         );
 
-        $this->projectDescriptor->isVisibilityAllowed(Argument::any())
-            ->shouldBeCalled()
-            ->willReturn(false);
+        $apiSpec = ApiSpecification::createDefault();
+        $apiSpec['visibility'] = ['public'];
 
         $descriptor = new ClassDescriptor();
         $descriptor->setDescription($description);
-        $this->assertSame([null, $otherTag], $this->fixture->__invoke($descriptor)->getDescription()->getTags());
+        $this->assertSame(
+            [null, $otherTag],
+            $this->fixture->__invoke(
+                new FilterPayload($descriptor, $apiSpec)
+            )->getFilterable()->getDescription()->getTags()
+        );
     }
 
     /**
@@ -97,13 +86,17 @@ final class StripInternalTest extends TestCase
             $tags
         );
 
-        $this->projectDescriptor->isVisibilityAllowed(Argument::any())
-            ->shouldBeCalled()
-            ->willReturn(true);
+        $apiSpec = ApiSpecification::createDefault();
+        $apiSpec['visibility'] = ['internal'];
 
         $descriptor = new ClassDescriptor();
         $descriptor->setDescription($description);
-        $this->assertSame($tags, $this->fixture->__invoke($descriptor)->getDescription()->getTags());
+        self::assertSame(
+            $tags,
+            $this->fixture->__invoke(
+                new FilterPayload($descriptor, $apiSpec)
+            )->getFilterable()->getDescription()->getTags()
+        );
     }
 
     /**
@@ -111,9 +104,8 @@ final class StripInternalTest extends TestCase
      */
     public function testRemovesDescriptorIfTaggedAsInternal() : void
     {
-        $this->projectDescriptor->isVisibilityAllowed(Argument::any())
-            ->shouldBeCalled()
-            ->willReturn(false);
+        $apiSpec = ApiSpecification::createDefault();
+        $apiSpec['visibility'] = ['public'];
 
         $collection = $this->prophesize(Collection::class);
         $collection->fetch('internal')->shouldBeCalled()->willReturn(true);
@@ -122,7 +114,9 @@ final class StripInternalTest extends TestCase
         $descriptor->getDescription()->shouldBeCalled()->willReturn();
         $descriptor->getTags()->shouldBeCalled()->willReturn($collection->reveal());
 
-        $this->assertNull($this->fixture->__invoke($descriptor->reveal()));
+        self::assertNull(
+            $this->fixture->__invoke(new FilterPayload($descriptor->reveal(), $apiSpec))->getFilterable()
+        );
     }
 
     /**
@@ -130,13 +124,15 @@ final class StripInternalTest extends TestCase
      */
     public function testKeepsDescriptorIfTaggedAsInternalAndParsePrivateIsTrue() : void
     {
-        $this->projectDescriptor->isVisibilityAllowed(Argument::any())
-            ->shouldBeCalled()
-            ->willReturn(true);
+        $apiSpec = ApiSpecification::createDefault();
+        $apiSpec['visibility'] = ['internal'];
 
         $descriptor = $this->prophesize(DescriptorAbstract::class);
 
-        $this->assertSame($descriptor->reveal(), $this->fixture->__invoke($descriptor->reveal()));
+        self::assertSame(
+            $descriptor->reveal(),
+            $this->fixture->__invoke(new FilterPayload($descriptor->reveal(), $apiSpec))->getFilterable()
+        );
     }
 
     /**
@@ -144,12 +140,14 @@ final class StripInternalTest extends TestCase
      */
     public function testDescriptorIsUnmodifiedIfThereIsNoInternalTag() : void
     {
-        $this->projectDescriptor->isVisibilityAllowed(Argument::any())
-            ->shouldBeCalled()
-            ->willReturn(true);
-
+        $apiSpec = ApiSpecification::createDefault();
         $descriptor = $this->prophesize(DescriptorAbstract::class);
+        $descriptor->getDescription()->willReturn(null);
+        $descriptor->getTags()->willReturn(new Collection());
 
-        $this->assertEquals($descriptor->reveal(), $this->fixture->__invoke($descriptor->reveal()));
+        self::assertSame(
+            $descriptor->reveal(),
+            $this->fixture->__invoke(new FilterPayload($descriptor->reveal(), $apiSpec))->getFilterable()
+        );
     }
 }
