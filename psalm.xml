@@ -109,6 +109,8 @@
                 <!-- Missing documentation in phpDocumentor\Reflection library. Fixed in phpDocumentor/Reflection/pull/181. This can be removed starting from ^4.0.2 -->
                 <directory name="src/phpDocumentor/Parser/Middleware/"/>
                 <directory name="src/phpDocumentor/Descriptor/Builder/Reflector/"/>
+                <file name="src/phpDocumentor/Configuration/Definition/Version2.php"/>
+                <file name="src/phpDocumentor/Configuration/Definition/Version3.php"/>
             </errorLevel>
         </MoreSpecificImplementedParamType>
 

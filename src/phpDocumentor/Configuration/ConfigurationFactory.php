@@ -15,6 +15,7 @@ namespace phpDocumentor\Configuration;
 
 use League\Uri\Contracts\UriInterface;
 use phpDocumentor\Configuration\Exception\InvalidConfigPathException;
+use phpDocumentor\Dsn;
 use phpDocumentor\UriFactory;
 use function array_map;
 use function file_exists;
@@ -118,7 +119,7 @@ use function sprintf;
 
     //phpcs:disable Generic.Files.LineLength.TooLong
     /**
-     * @param array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string, cache: string}, versions?: array<string, array{ api: array{ignore-tags: array<string>, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibility: non-empty-array<string>, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}, encoding: string, output: string, default-package-name: string, examples: array{dsn: Dsn, paths: array}, include-source: bool}, guides: array}>, settings?: array<mixed>, templates?: non-empty-list<string>}} $configuration
+     * @param array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string, cache: string}, versions?: array<string, array{ api: array{ignore-tags: array<string>, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibility: non-empty-array<string>, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}, encoding: string, output: string, default-package-name: string, examples: array{dsn: Dsn, paths: array}, include-source: bool, validate: bool}, guides: array}>, settings?: array<mixed>, templates?: non-empty-list<string>}} $configuration
      */
     //phpcs:enable Generic.Files.LineLength.TooLong
     private function createConfigurationFromArray(array $configuration) : Configuration

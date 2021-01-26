@@ -51,6 +51,9 @@ final class ApiSpecification implements ArrayAccess
     /** @var string */
     private $encoding;
 
+    /** @var bool */
+    private $validate;
+
     /**
      * @param array{dsn: Dsn, paths: array<Path>} $source
      * @param array{paths: array<Path>} $ignore
@@ -71,7 +74,8 @@ final class ApiSpecification implements ArrayAccess
         array $markers,
         array $ignoreTags,
         ?array $examples,
-        string $encoding
+        string $encoding,
+        bool $validate
     ) {
         $this->source = $source;
         $this->output = $output;
@@ -84,11 +88,14 @@ final class ApiSpecification implements ArrayAccess
         $this->ignoreTags = $ignoreTags;
         $this->examples = $examples;
         $this->encoding = $encoding;
+        $this->validate = $validate;
     }
 
+    //phpcs:disable Generic.Files.LineLength.TooLong
     /**
-     * @param array{ignore-tags: array<string>, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibility: non-empty-array<string>, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}, encoding: string, output: string, default-package-name: string, examples: array{dsn: Dsn, paths: array}, include-source: bool} $api
+     * @param array{ignore-tags: array<string>, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibility: non-empty-array<string>, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}, encoding: string, output: string, default-package-name: string, examples: array{dsn: Dsn, paths: array}, include-source: bool, validate: bool} $api
      */
+    //phpcs:enable Generic.Files.LineLength.TooLong
     public static function createFromArray(array $api) : self
     {
         return new self(
@@ -102,7 +109,8 @@ final class ApiSpecification implements ArrayAccess
             $api['markers'],
             $api['ignore-tags'],
             $api['examples'],
-            $api['encoding']
+            $api['encoding'],
+            $api['validate']
         );
     }
 

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Configuration\Definition;
 
-use phpDocumentor\Configuration\VersionSpecification;
 use phpDocumentor\Dsn;
 use phpDocumentor\Path;
 

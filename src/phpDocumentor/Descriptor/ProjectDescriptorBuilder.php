@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor;
 
 use InvalidArgumentException;
+use phpDocumentor\Configuration\ApiSpecification;
 use phpDocumentor\Descriptor\Builder\AssemblerFactory;
 use phpDocumentor\Descriptor\Builder\AssemblerInterface;
 use phpDocumentor\Descriptor\Filter\Filter;
@@ -158,7 +159,7 @@ class ProjectDescriptorBuilder
         return $descriptor;
     }
 
-    public function createApiDocumentationSet(Project $project) : void
+    public function createApiDocumentationSet(ApiSpecification $apiSpecification, Project $project) : void
     {
         $packageName = $project->getRootNamespace()->getFqsen()->getName();
         $this->defaultPackage = $packageName;

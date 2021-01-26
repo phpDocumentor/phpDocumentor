@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Configuration\Definition;
 
-use phpDocumentor\Configuration\VersionSpecification;
-
 interface Upgradable
 {
     //phpcs:disable Generic.Files.LineLength.TooLong
@@ -25,7 +23,7 @@ interface Upgradable
      *
      * @param array<string, mixed> $values
      *
-     * @return array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string, cache: string}, versions?: array<string, mixed>, settings?: array<mixed>, templates?: non-empty-list<string>}
+     * @return array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string, cache: string}, version?: array{array{api: array{array{default-package-name: string, extensions: array{extensions: array<array-key, string>}, ignore: array{paths: array<array-key, string>}, markers: array{markers: array<array-key, mixed>}, source: array{paths: array<array-key, string>}, visibilities: non-empty-list<string>}}, number: string}}}, settings?: array<mixed>, templates?: non-empty-list<string>}
      */
     //phpcs:enable Generic.Files.LineLength.TooLong
     public function upgrade(array $values) : array;
