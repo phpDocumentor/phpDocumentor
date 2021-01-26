@@ -124,7 +124,7 @@ use function sprintf;
     //phpcs:enable Generic.Files.LineLength.TooLong
     private function createConfigurationFromArray(array $configuration) : Configuration
     {
-        if ($configuration['phpdocumentor']['versions']) {
+        if (isset($configuration['phpdocumentor']['versions'])) {
             foreach ($configuration['phpdocumentor']['versions'] as $versionNumber => $version) {
                 $configuration['phpdocumentor']['versions'][$versionNumber] = new VersionSpecification(
                     $versionNumber,
