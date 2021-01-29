@@ -226,7 +226,7 @@ final class ApiSpecification implements ArrayAccess
         return $this->ignoreTags;
     }
 
-    private function calculateVisablity() : int
+    public function calculateVisablity() : int
     {
         $visibility = 0;
 

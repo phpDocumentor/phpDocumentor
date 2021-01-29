@@ -50,7 +50,7 @@ final class ParseFiles
 
         $builder = $payload->getBuilder();
         $builder->setApiSpecification($apiConfig);
-        $builder->setVisibility($apiConfig['visibility']);
+        $builder->setVisibility($apiConfig->calculateVisablity());
         $this->reEncodingMiddleware->withEncoding($apiConfig['encoding']);
 
         $this->parser->setMarkers($apiConfig['markers']);
