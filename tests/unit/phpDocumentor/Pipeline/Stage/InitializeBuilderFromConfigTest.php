@@ -16,10 +16,11 @@ namespace phpDocumentor\Pipeline\Stage;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 final class InitializeBuilderFromConfigTest extends TestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
 
     public function testSetNameAndPartialsOnBuilder() : void
     {

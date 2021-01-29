@@ -11,6 +11,7 @@ use phpDocumentor\Configuration\Exception\UpgradeFailedException;
 use phpDocumentor\Faker\Faker;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
@@ -21,7 +22,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 final class SymfonyConfigFactoryTest extends TestCase
 {
     use Faker;
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
 
     /**
      * @covers ::createDefault

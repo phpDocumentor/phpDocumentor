@@ -21,6 +21,7 @@ use phpDocumentor\Reflection\Php\File;
 use phpDocumentor\Reflection\Php\ProjectFactoryStrategies;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 
@@ -31,7 +32,7 @@ use Psr\Log\LogLevel;
  */
 final class ErrorHandlingMiddlewareTest extends TestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
 
     /**
      * @covers ::execute

@@ -23,6 +23,7 @@ use phpDocumentor\Reflection\Php\Project;
 use phpDocumentor\Reflection\ProjectFactory;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Log\NullLogger;
 use Symfony\Component\Stopwatch\Stopwatch;
@@ -38,7 +39,7 @@ use function sys_get_temp_dir;
  */
 final class ParserTest extends TestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
 
     /** @var Parser */
     protected $fixture = null;

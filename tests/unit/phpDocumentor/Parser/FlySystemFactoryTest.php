@@ -22,6 +22,7 @@ use LogicException;
 use phpDocumentor\Dsn;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use function substr;
 use function sys_get_temp_dir;
@@ -35,7 +36,7 @@ use const PHP_OS_FAMILY;
  */
 final class FlySystemFactoryTest extends TestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
 
     /** @var FlySystemFactory */
     private $fixture;

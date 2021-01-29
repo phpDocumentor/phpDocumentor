@@ -15,6 +15,7 @@ namespace phpDocumentor\Transformer\Event;
 
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use stdClass;
 
 /**
@@ -23,7 +24,7 @@ use stdClass;
  */
 final class PreTransformEventTest extends TestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
 
     /** @var PreTransformEvent $fixture */
     private $fixture;

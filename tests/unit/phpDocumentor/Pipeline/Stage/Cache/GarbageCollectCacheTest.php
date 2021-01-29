@@ -17,6 +17,7 @@ use phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Pipeline\Stage\Parser\Payload;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * @coversDefaultClass \phpDocumentor\Pipeline\Stage\Cache\GarbageCollectCache
@@ -25,7 +26,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class GarbageCollectCacheTest extends TestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
 
     /**
      * @covers ::__invoke

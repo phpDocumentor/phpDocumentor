@@ -29,6 +29,7 @@ use phpDocumentor\Reflection\Types\String_;
 use phpDocumentor\Transformer\Router\Router;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use function get_class;
 use function gettype;
@@ -41,7 +42,7 @@ use function is_object;
  */
 final class LinkRendererTest extends TestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
 
     /** @var Router|ObjectProphecy */
     private $router;

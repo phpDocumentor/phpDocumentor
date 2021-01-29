@@ -17,6 +17,7 @@ use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
 /**
@@ -26,7 +27,7 @@ use Prophecy\Prophecy\ObjectProphecy;
  */
 final class StripIgnoreTest extends TestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
 
     /** @var ProjectDescriptorBuilder|ObjectProphecy */
     private $builderMock;

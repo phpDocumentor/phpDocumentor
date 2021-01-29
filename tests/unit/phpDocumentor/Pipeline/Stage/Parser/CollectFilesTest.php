@@ -19,6 +19,7 @@ use phpDocumentor\Dsn;
 use phpDocumentor\Parser\FileCollector;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\NullLogger;
 
 /**
@@ -28,7 +29,7 @@ use Psr\Log\NullLogger;
  */
 final class CollectFilesTest extends TestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
 
     /**
      * @covers ::__invoke

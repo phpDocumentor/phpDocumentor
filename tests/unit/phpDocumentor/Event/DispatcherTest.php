@@ -9,13 +9,14 @@ declare(strict_types=1);
 namespace phpDocumentor\Event;
 
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * Test for the Dispatcher class.
  */
 class DispatcherTest extends TestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
 
     /**
      * @covers \phpDocumentor\Event\Dispatcher::getInstance

@@ -19,6 +19,7 @@ use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Writer\Collection as WriterCollection;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
 /**
@@ -28,7 +29,7 @@ use Prophecy\Prophecy\ObjectProphecy;
  */
 final class CollectionTest extends MockeryTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
     use Faker;
 
     /** @var ObjectProphecy|WriterCollection */

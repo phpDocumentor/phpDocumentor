@@ -21,6 +21,7 @@ use phpDocumentor\Reflection\Php\Argument;
 use phpDocumentor\Reflection\Type;
 use phpDocumentor\Reflection\Types\Boolean;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
 /**
@@ -28,7 +29,7 @@ use Prophecy\Prophecy\ObjectProphecy;
  */
 class ArgumentAssemblerTest extends TestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
 
     /** @var ArgumentAssembler $fixture */
     protected $fixture;

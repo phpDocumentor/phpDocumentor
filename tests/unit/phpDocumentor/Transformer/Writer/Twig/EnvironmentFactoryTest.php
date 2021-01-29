@@ -20,6 +20,7 @@ use phpDocumentor\Guides\Metas;
 use phpDocumentor\Guides\Twig\TocExtension;
 use phpDocumentor\Transformer\Router\Router;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Twig\Environment;
 use Twig\Extension\DebugExtension;
 use Twig\Loader\ChainLoader;
@@ -31,7 +32,7 @@ use Twig\Loader\ChainLoader;
  */
 final class EnvironmentFactoryTest extends TestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
     use Faker;
 
     /** @var Router */

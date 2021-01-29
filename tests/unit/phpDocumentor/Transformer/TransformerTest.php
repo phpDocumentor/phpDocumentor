@@ -20,6 +20,7 @@ use phpDocumentor\Transformer\Writer\Collection;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Log\NullLogger;
 use function strlen;
@@ -31,7 +32,7 @@ use function strlen;
  */
 final class TransformerTest extends TestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
     use Faker;
 
     /** @var int Max length of description printed. */

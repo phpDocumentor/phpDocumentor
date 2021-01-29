@@ -23,6 +23,7 @@ use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\Php\File;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use function md5;
 
@@ -33,7 +34,7 @@ use function md5;
  */
 final class FileAssemblerTest extends TestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
 
     /** @var FileAssembler $fixture */
     private $fixture;

@@ -14,13 +14,14 @@ declare(strict_types=1);
 namespace phpDocumentor\Compiler;
 
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * Tests the functionality for the Compiler.
  */
 class CompilerTest extends TestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
 
     /** @var Compiler $fixture */
     protected $fixture;

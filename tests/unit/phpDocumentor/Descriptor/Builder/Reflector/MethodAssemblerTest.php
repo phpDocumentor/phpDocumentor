@@ -23,11 +23,12 @@ use phpDocumentor\Reflection\Php\Visibility;
 use phpDocumentor\Reflection\Types\String_;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument as ProphecyArgument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
 class MethodAssemblerTest extends TestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
 
     /** @var MethodAssembler $fixture */
     protected $fixture;

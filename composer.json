@@ -18,6 +18,9 @@
                 "tests/integration/phpDocumentor/",
                 "tests/functional/phpDocumentor/"
             ],
+            "Prophecy\\" : [
+                "tests/unit/Prophecy"
+            ],
             "phpDocumentor\\Behat\\Contexts\\": [
                 "tests/features/bootstrap"
             ]

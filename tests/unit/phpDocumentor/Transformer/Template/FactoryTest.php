@@ -20,6 +20,7 @@ use phpDocumentor\Parser\FlySystemFactory;
 use phpDocumentor\Transformer\Transformer;
 use phpDocumentor\Transformer\Writer\Collection as WriterCollection;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Log\NullLogger;
 
@@ -30,7 +31,7 @@ use Psr\Log\NullLogger;
  */
 final class FactoryTest extends TestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
     use Faker;
 
     /** @var Factory */

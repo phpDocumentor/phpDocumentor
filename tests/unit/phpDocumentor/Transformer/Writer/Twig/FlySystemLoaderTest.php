@@ -7,6 +7,7 @@ namespace phpDocumentor\Transformer\Writer\Twig;
 use League\Flysystem\FileNotFoundException;
 use League\Flysystem\FilesystemInterface;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Twig\Error\LoaderError;
 use Twig\Source;
 
@@ -17,7 +18,7 @@ use Twig\Source;
  */
 final class FlySystemLoaderTest extends TestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
 
     /**
      * @covers ::exists
