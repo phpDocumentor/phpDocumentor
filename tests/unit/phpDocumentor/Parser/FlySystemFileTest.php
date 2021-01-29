@@ -6,6 +6,7 @@ namespace phpDocumentor\Parser;
 
 use League\Flysystem\FilesystemInterface;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use function md5;
 
 /**
@@ -15,6 +16,8 @@ use function md5;
  */
 final class FlySystemFileTest extends TestCase
 {
+    use ProphecyTrait;
+
     /**
      * @covers ::path()
      */

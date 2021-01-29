@@ -18,6 +18,7 @@ use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Php\Constant;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * Test class for \phpDocumentor\Descriptor\Builder
@@ -26,6 +27,8 @@ use PHPUnit\Framework\TestCase;
  */
 class ConstantAssemblerTest extends TestCase
 {
+    use ProphecyTrait;
+
     /** @var ConstantAssembler $fixture */
     protected $fixture;
 

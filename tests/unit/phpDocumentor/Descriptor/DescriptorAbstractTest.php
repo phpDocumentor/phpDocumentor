@@ -19,6 +19,7 @@ use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
 use phpDocumentor\Descriptor\Interfaces\ChildInterface;
 use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\Fqsen;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * Tests the functionality for the DescriptorAbstract class.
@@ -28,6 +29,8 @@ use phpDocumentor\Reflection\Fqsen;
  */
 class DescriptorAbstractTest extends MockeryTestCase
 {
+    use ProphecyTrait;
+
     /** @var DescriptorAbstract $fixture */
     protected $fixture;
 

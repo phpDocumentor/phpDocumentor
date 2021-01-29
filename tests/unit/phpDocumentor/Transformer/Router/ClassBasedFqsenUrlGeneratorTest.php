@@ -16,6 +16,7 @@ namespace phpDocumentor\Transformer\Router;
 use phpDocumentor\Reflection\Fqsen;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 
@@ -28,6 +29,8 @@ use Symfony\Component\String\Slugger\AsciiSlugger;
  */
 class ClassBasedFqsenUrlGeneratorTest extends TestCase
 {
+    use ProphecyTrait;
+
     /**
      * @covers ::__invoke
      * @dataProvider provideFqsens

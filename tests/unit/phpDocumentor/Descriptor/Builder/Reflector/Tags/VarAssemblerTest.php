@@ -9,10 +9,13 @@ use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use phpDocumentor\Reflection\Types\String_;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
 class VarAssemblerTest extends TestCase
 {
+    use ProphecyTrait;
+
     /** @var VarAssembler */
     private $fixture;
 

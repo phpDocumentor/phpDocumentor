@@ -23,6 +23,7 @@ use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Reflection\DocBlock\Description as DocBlockDescription;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
 /**
@@ -32,6 +33,8 @@ use Prophecy\Prophecy\ObjectProphecy;
  */
 final class StripInternalTest extends TestCase
 {
+    use ProphecyTrait;
+
     /** @var ProjectDescriptorBuilder|ObjectProphecy */
     private $builderMock;
 

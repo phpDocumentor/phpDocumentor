@@ -20,6 +20,7 @@ use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Reflection\Fqsen;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use function get_class;
 
@@ -32,6 +33,8 @@ use function get_class;
  */
 final class LinkerTest extends TestCase
 {
+    use ProphecyTrait;
+
     /** @var ObjectProphecy|DescriptorRepository */
     private $descriptorRepository;
 

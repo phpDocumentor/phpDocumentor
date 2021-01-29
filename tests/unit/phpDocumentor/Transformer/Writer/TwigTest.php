@@ -27,6 +27,7 @@ use phpDocumentor\Transformer\Transformer;
 use phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Twig\Environment;
 use Twig\Loader\ArrayLoader;
@@ -40,6 +41,7 @@ use Twig\Loader\ArrayLoader;
  */
 final class TwigTest extends TestCase
 {
+    use ProphecyTrait;
     use Faker;
 
     /** @var vfsStreamDirectory */

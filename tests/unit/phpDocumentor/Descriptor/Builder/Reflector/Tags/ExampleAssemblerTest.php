@@ -18,6 +18,7 @@ use phpDocumentor\Reflection\DocBlock\ExampleFinder;
 use phpDocumentor\Reflection\DocBlock\Tags\Example;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
 /**
@@ -27,6 +28,8 @@ use Prophecy\Prophecy\ObjectProphecy;
  */
 class ExampleAssemblerTest extends TestCase
 {
+    use ProphecyTrait;
+
     public const EXAMPLE_FILE_PATH = 'examples/example.txt';
 
     public const EXAMPLE_STARTING_LINE = 10;

@@ -17,12 +17,15 @@ use League\Uri\Uri;
 use phpDocumentor\Path;
 use phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use function chdir;
 use function dirname;
 use function realpath;
 
 final class ProvideTemplateOverridePathMiddlewareTest extends TestCase
 {
+    use ProphecyTrait;
+
     public function test_the_override_path_is_a_subfolder_of_the_folder_with_the_loaded_config_file() : void
     {
         $this->markTestSkipped(

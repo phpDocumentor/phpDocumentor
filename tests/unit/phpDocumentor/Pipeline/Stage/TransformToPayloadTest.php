@@ -15,6 +15,7 @@ namespace phpDocumentor\Pipeline\Stage;
 
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * @uses \phpDocumentor\Pipeline\Stage\Payload
@@ -24,6 +25,8 @@ use PHPUnit\Framework\TestCase;
  */
 final class TransformToPayloadTest extends TestCase
 {
+    use ProphecyTrait;
+
     /**
      * @covers ::__invoke
      */

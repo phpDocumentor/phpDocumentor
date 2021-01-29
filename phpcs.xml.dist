@@ -62,6 +62,7 @@
 
     <rule ref="SlevomatCodingStandard.Classes.SuperfluousTraitNaming.SuperfluousSuffix">
         <exclude-pattern>src/phpDocumentor/Transformer/Writer/*Trait\.php$</exclude-pattern>
+        <exclude-pattern>tests/unit/Prophecy/*Trait\.php$</exclude-pattern>
     </rule>
     <rule ref="Generic.CodeAnalysis.UselessOverridingMethod.Found">
         <exclude-pattern>src/phpDocumentor/Kernel\.php$</exclude-pattern>

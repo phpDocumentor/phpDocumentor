@@ -22,6 +22,7 @@ use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Descriptor\TagDescriptor;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
 /**
@@ -31,6 +32,8 @@ use Prophecy\Prophecy\ObjectProphecy;
  */
 final class StripOnVisibilityTest extends TestCase
 {
+    use ProphecyTrait;
+
     /** @var ProjectDescriptorBuilder|ObjectProphecy */
     private $builderMock;
 

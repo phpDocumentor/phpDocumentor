@@ -9,10 +9,13 @@ use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\DocBlock\Tags\Param;
 use phpDocumentor\Reflection\Types\String_;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
 class ParamAssemblerTest extends TestCase
 {
+    use ProphecyTrait;
+
     /** @var ParamAssembler */
     private $fixture;
 

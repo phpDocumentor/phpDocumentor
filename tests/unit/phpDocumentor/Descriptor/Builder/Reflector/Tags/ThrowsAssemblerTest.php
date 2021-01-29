@@ -10,10 +10,13 @@ use phpDocumentor\Reflection\DocBlock\Tags\Throws;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Types\Object_;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
 class ThrowsAssemblerTest extends TestCase
 {
+    use ProphecyTrait;
+
     /** @var ThrowsAssembler */
     private $fixture;
 

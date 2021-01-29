@@ -17,6 +17,7 @@ use phpDocumentor\Descriptor\ProjectAnalyzer;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
@@ -27,6 +28,8 @@ use Psr\Log\NullLogger;
  */
 final class DebugTest extends TestCase
 {
+    use ProphecyTrait;
+
     /**
      * @covers ::execute
      */

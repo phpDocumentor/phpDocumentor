@@ -15,6 +15,7 @@ namespace phpDocumentor\Console;
 
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -28,6 +29,8 @@ use Symfony\Component\HttpKernel\KernelInterface;
  */
 class ApplicationTest extends TestCase
 {
+    use ProphecyTrait;
+
     /** @var Application */
     private $feature;
 
@@ -95,8 +98,21 @@ class ApplicationTest extends TestCase
 
     /**
      * @covers ::getLongVersion
+     * @requires PHPUnit >= 9
      */
     public function testGetLongVersion() : void
+    {
+        self::assertMatchesRegularExpression(
+            '~phpDocumentor <info>v(.*)</info>~',
+            $this->feature->getLongVersion()
+        );
+    }
+
+    /**
+     * @covers ::getLongVersion
+     * @requires PHPUnit <= 8
+     */
+    public function testGetLongVersionPhp72() : void
     {
         self::assertRegExp(
             '~phpDocumentor <info>v(.*)</info>~',

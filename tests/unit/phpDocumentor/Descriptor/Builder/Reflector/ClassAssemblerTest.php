@@ -24,6 +24,7 @@ use phpDocumentor\Reflection\Php\Method;
 use phpDocumentor\Reflection\Php\Property;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
 /**
@@ -33,6 +34,8 @@ use Prophecy\Prophecy\ObjectProphecy;
  */
 class ClassAssemblerTest extends TestCase
 {
+    use ProphecyTrait;
+
     /** @var ClassAssembler $fixture */
     protected $fixture;
 

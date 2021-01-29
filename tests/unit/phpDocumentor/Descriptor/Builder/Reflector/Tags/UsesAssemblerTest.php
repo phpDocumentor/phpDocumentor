@@ -18,6 +18,7 @@ use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\DocBlock\Tags\Uses;
 use phpDocumentor\Reflection\Fqsen;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
 /**
@@ -28,6 +29,8 @@ use Prophecy\Prophecy\ObjectProphecy;
  */
 class UsesAssemblerTest extends TestCase
 {
+    use ProphecyTrait;
+
     /** @var UsesAssembler $fixture */
     protected $fixture;
 

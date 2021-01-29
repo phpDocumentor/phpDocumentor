@@ -15,6 +15,7 @@ namespace phpDocumentor\Transformer\Writer;
 
 use phpDocumentor\Transformer\Router\Router;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use stdClass;
 
@@ -23,6 +24,8 @@ use stdClass;
  */
 final class CollectionTest extends TestCase
 {
+    use ProphecyTrait;
+
     /** @var ObjectProphecy|Router */
     private $routers;
 

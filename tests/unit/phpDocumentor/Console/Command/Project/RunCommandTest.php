@@ -18,6 +18,7 @@ use phpDocumentor\Console\Application;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\StringInput;
@@ -31,6 +32,8 @@ use function array_keys;
  */
 class RunCommandTest extends TestCase
 {
+    use ProphecyTrait;
+
     /**
      * @covers ::execute
      */

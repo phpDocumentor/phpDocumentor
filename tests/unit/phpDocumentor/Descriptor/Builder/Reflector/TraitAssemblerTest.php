@@ -20,6 +20,7 @@ use phpDocumentor\Reflection\Php\Method;
 use phpDocumentor\Reflection\Php\Trait_;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * @uses \phpDocumentor\Descriptor\DescriptorAbstract
@@ -29,6 +30,8 @@ use Prophecy\Argument;
  */
 final class TraitAssemblerTest extends TestCase
 {
+    use ProphecyTrait;
+
     /**
      * @uses \phpDocumentor\Descriptor\Collection
      * @uses \phpDocumentor\Descriptor\MethodDescriptor

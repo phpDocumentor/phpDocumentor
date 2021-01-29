@@ -19,6 +19,7 @@ use phpDocumentor\Reflection\Php\Factory\File\CreateCommand;
 use phpDocumentor\Reflection\Php\File as PhpFile;
 use phpDocumentor\Reflection\Php\ProjectFactoryStrategies;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\String\Exception\InvalidArgumentException;
 use Symfony\Component\String\UnicodeString;
 
@@ -28,6 +29,8 @@ use Symfony\Component\String\UnicodeString;
  */
 final class ReEncodingMiddlewareTest extends TestCase
 {
+    use ProphecyTrait;
+
     /**
      * @covers ::withEncoding
      * @covers ::execute

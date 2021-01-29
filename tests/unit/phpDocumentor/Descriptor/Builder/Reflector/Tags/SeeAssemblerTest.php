@@ -18,6 +18,7 @@ use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\DocBlock\Tags\See;
 use phpDocumentor\Reflection\Fqsen;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
 /**
@@ -28,6 +29,8 @@ use Prophecy\Prophecy\ObjectProphecy;
  */
 class SeeAssemblerTest extends TestCase
 {
+    use ProphecyTrait;
+
     /** @var SeeAssembler $fixture */
     protected $fixture;
 

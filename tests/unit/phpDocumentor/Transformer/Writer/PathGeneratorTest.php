@@ -19,6 +19,7 @@ use phpDocumentor\Transformer\Router\Router;
 use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use RuntimeException;
 
@@ -32,6 +33,8 @@ use RuntimeException;
  */
 final class PathGeneratorTest extends TestCase
 {
+    use ProphecyTrait;
+
     /** @var ObjectProphecy|Router */
     private $router;
 

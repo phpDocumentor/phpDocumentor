@@ -22,6 +22,7 @@ use phpDocumentor\Path;
 use phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\LoggerInterface;
 use function sys_get_temp_dir;
 
@@ -33,6 +34,8 @@ use function sys_get_temp_dir;
  */
 final class ConfigureTest extends TestCase
 {
+    use ProphecyTrait;
+
     /** @var Locator */
     private $cacheLocator;
 

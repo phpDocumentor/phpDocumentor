@@ -18,6 +18,7 @@ use League\Uri\Uri;
 use org\bovigo\vfs\vfsStream;
 use phpDocumentor\Configuration\Exception\InvalidConfigPathException;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * @coversDefaultClass \phpDocumentor\Configuration\ConfigurationFactory
@@ -26,6 +27,8 @@ use PHPUnit\Framework\TestCase;
  */
 final class ConfigurationFactoryTest extends TestCase
 {
+    use ProphecyTrait;
+
     /**
      * @covers ::createDefault
      */
