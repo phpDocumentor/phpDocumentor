@@ -95,7 +95,7 @@ class Application extends BaseApplication
             $version = trim(file_get_contents(__DIR__ . '/../../../VERSION'));
             // @codeCoverageIgnoreStart
             try {
-                $version = PrettyVersions::getVersion(Versions::ROOT_PACKAGE_NAME)->getPrettyVersion();
+                $version = PrettyVersions::getRootPackageVersion()->getPrettyVersion();
                 $version = sprintf('v%s', ltrim($version, 'v'));
             } catch (OutOfBoundsException $e) {
             }
