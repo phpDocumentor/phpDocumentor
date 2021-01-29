@@ -31,6 +31,8 @@ use function array_keys;
  */
 class RunCommandTest extends TestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
+
     /**
      * @covers ::execute
      */

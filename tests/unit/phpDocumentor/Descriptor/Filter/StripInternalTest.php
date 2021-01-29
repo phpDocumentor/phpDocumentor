@@ -32,6 +32,8 @@ use Prophecy\Prophecy\ObjectProphecy;
  */
 final class StripInternalTest extends TestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
+
     /** @var ProjectDescriptorBuilder|ObjectProphecy */
     private $builderMock;
 

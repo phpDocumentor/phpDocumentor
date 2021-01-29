@@ -23,6 +23,8 @@ use stdClass;
  */
 final class CollectionTest extends TestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
+
     /** @var ObjectProphecy|Router */
     private $routers;
 

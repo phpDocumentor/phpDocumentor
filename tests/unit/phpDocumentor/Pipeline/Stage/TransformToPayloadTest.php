@@ -24,6 +24,8 @@ use PHPUnit\Framework\TestCase;
  */
 final class TransformToPayloadTest extends TestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
+
     /**
      * @covers ::__invoke
      */

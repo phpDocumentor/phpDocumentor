@@ -32,6 +32,8 @@ use Symfony\Component\Stopwatch\StopwatchPeriod;
  */
 final class StopwatchMiddlewareTest extends TestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
+
     /**
      * @covers ::execute
      */

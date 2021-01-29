@@ -19,6 +19,8 @@ use PHPUnit\Framework\TestCase;
 
 final class InitializeBuilderFromConfigTest extends TestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
+
     public function testSetNameAndPartialsOnBuilder() : void
     {
         $partials = new Collection();

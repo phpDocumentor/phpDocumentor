@@ -25,6 +25,8 @@ use const DIRECTORY_SEPARATOR;
  */
 final class TransformTest extends TestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
+
     /** @var ProjectDescriptorBuilder|ProphecyMock */
     private $projectDescriptorBuilder;
 

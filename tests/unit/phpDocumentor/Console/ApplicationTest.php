@@ -28,6 +28,8 @@ use Symfony\Component\HttpKernel\KernelInterface;
  */
 class ApplicationTest extends TestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
+
     /** @var Application */
     private $feature;
 
@@ -98,7 +100,7 @@ class ApplicationTest extends TestCase
      */
     public function testGetLongVersion() : void
     {
-        self::assertRegExp(
+        self::assertMatchesRegularExpression(
             '~phpDocumentor <info>v(.*)</info>~',
             $this->feature->getLongVersion()
         );

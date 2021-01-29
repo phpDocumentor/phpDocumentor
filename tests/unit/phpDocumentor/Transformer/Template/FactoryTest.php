@@ -30,6 +30,7 @@ use Psr\Log\NullLogger;
  */
 final class FactoryTest extends TestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     use Faker;
 
     /** @var Factory */

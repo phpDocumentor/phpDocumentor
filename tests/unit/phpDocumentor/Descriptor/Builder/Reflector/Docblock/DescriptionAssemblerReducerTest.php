@@ -14,6 +14,8 @@ use Prophecy\Argument;
 
 final class DescriptionAssemblerReducerTest extends TestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
+
     public function testNullDescriptorReturnsNull() : void
     {
         $reducer = new DescriptionAssemblerReducer();

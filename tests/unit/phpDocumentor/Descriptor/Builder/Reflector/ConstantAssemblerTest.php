@@ -26,6 +26,8 @@ use PHPUnit\Framework\TestCase;
  */
 class ConstantAssemblerTest extends TestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
+
     /** @var ConstantAssembler $fixture */
     protected $fixture;
 

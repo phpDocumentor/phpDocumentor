@@ -27,6 +27,8 @@ use Prophecy\Prophecy\ObjectProphecy;
 
 class MethodAssemblerTest extends TestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
+
     /** @var MethodAssembler $fixture */
     protected $fixture;
 

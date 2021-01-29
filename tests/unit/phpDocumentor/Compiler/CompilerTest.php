@@ -20,6 +20,8 @@ use PHPUnit\Framework\TestCase;
  */
 class CompilerTest extends TestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
+
     /** @var Compiler $fixture */
     protected $fixture;
 

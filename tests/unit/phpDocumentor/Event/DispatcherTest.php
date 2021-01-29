@@ -15,6 +15,8 @@ use PHPUnit\Framework\TestCase;
  */
 class DispatcherTest extends TestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
+
     /**
      * @covers \phpDocumentor\Event\Dispatcher::getInstance
      */

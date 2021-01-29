@@ -21,6 +21,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 final class SymfonyConfigFactoryTest extends TestCase
 {
     use Faker;
+    use \Prophecy\PhpUnit\ProphecyTrait;
 
     /**
      * @covers ::createDefault

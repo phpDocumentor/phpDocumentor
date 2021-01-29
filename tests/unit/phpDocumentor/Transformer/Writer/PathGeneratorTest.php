@@ -32,6 +32,8 @@ use RuntimeException;
  */
 final class PathGeneratorTest extends TestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
+
     /** @var ObjectProphecy|Router */
     private $router;
 

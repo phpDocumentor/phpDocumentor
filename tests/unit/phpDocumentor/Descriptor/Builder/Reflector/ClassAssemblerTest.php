@@ -33,6 +33,8 @@ use Prophecy\Prophecy\ObjectProphecy;
  */
 class ClassAssemblerTest extends TestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
+
     /** @var ClassAssembler $fixture */
     protected $fixture;
 

@@ -31,6 +31,7 @@ use Twig\Loader\ChainLoader;
  */
 final class EnvironmentFactoryTest extends TestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     use Faker;
 
     /** @var Router */

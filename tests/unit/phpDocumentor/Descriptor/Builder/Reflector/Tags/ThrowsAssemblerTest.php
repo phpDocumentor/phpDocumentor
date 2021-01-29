@@ -14,6 +14,8 @@ use Prophecy\Prophecy\ObjectProphecy;
 
 class ThrowsAssemblerTest extends TestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
+
     /** @var ThrowsAssembler */
     private $fixture;
 

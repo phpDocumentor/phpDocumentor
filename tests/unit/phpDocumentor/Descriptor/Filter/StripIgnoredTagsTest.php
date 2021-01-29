@@ -13,6 +13,8 @@ use Prophecy\Prophecy\ObjectProphecy;
 
 final class StripIgnoredTagsTest extends TestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
+
     /** @var ObjectProphecy */
     private $builder;
 

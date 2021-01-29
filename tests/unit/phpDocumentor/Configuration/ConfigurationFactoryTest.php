@@ -26,6 +26,8 @@ use PHPUnit\Framework\TestCase;
  */
 final class ConfigurationFactoryTest extends TestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
+
     /**
      * @covers ::createDefault
      */

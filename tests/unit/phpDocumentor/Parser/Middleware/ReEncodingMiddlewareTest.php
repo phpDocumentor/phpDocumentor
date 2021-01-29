@@ -28,6 +28,8 @@ use Symfony\Component\String\UnicodeString;
  */
 final class ReEncodingMiddlewareTest extends TestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
+
     /**
      * @covers ::withEncoding
      * @covers ::execute

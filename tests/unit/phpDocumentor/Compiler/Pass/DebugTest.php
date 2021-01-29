@@ -27,6 +27,8 @@ use Psr\Log\NullLogger;
  */
 final class DebugTest extends TestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
+
     /**
      * @covers ::execute
      */

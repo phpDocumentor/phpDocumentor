@@ -41,6 +41,8 @@ use function is_object;
  */
 final class LinkRendererTest extends TestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
+
     /** @var Router|ObjectProphecy */
     private $router;
 

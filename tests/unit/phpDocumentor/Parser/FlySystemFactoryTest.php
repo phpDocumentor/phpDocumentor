@@ -35,6 +35,8 @@ use const PHP_OS_FAMILY;
  */
 final class FlySystemFactoryTest extends TestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
+
     /** @var FlySystemFactory */
     private $fixture;
 

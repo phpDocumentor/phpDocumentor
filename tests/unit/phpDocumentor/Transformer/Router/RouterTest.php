@@ -37,6 +37,8 @@ use Symfony\Component\String\Slugger\AsciiSlugger;
  */
 final class RouterTest extends TestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
+
     /**
      * @covers ::generate
      * @dataProvider provideNodesWithExpectedUrls

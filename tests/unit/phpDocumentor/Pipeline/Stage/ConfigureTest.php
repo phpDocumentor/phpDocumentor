@@ -33,6 +33,8 @@ use function sys_get_temp_dir;
  */
 final class ConfigureTest extends TestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
+
     /** @var Locator */
     private $cacheLocator;
 

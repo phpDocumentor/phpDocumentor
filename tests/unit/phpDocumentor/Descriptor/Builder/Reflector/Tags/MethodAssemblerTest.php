@@ -32,6 +32,8 @@ use function count;
  */
 final class MethodAssemblerTest extends TestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
+
     /** @var MethodAssembler */
     private $fixture;
 

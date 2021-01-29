@@ -26,6 +26,8 @@ use Prophecy\Prophecy\ObjectProphecy;
  */
 final class StripIgnoreTest extends TestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
+
     /** @var ProjectDescriptorBuilder|ObjectProphecy */
     private $builderMock;
 

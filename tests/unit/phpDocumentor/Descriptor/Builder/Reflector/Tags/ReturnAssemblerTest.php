@@ -13,6 +13,8 @@ use Prophecy\Prophecy\ObjectProphecy;
 
 class ReturnAssemblerTest extends TestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
+
     /** @var ReturnAssembler */
     private $fixture;
 

@@ -29,6 +29,8 @@ use Prophecy\Argument;
  */
 final class TraitAssemblerTest extends TestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
+
     /**
      * @uses \phpDocumentor\Descriptor\Collection
      * @uses \phpDocumentor\Descriptor\MethodDescriptor

@@ -23,6 +23,8 @@ use stdClass;
  */
 final class PostTransformEventTest extends TestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
+
     /** @var PostTransformEvent $fixture */
     private $fixture;
 

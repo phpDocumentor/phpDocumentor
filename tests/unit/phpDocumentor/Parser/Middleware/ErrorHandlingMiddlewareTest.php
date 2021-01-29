@@ -31,6 +31,8 @@ use Psr\Log\LogLevel;
  */
 final class ErrorHandlingMiddlewareTest extends TestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
+
     /**
      * @covers ::execute
      */

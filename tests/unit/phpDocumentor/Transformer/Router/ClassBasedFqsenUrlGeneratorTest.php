@@ -28,6 +28,8 @@ use Symfony\Component\String\Slugger\AsciiSlugger;
  */
 class ClassBasedFqsenUrlGeneratorTest extends TestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
+
     /**
      * @covers ::__invoke
      * @dataProvider provideFqsens

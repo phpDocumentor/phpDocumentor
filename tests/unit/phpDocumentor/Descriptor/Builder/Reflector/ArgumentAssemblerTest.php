@@ -28,6 +28,8 @@ use Prophecy\Prophecy\ObjectProphecy;
  */
 class ArgumentAssemblerTest extends TestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
+
     /** @var ArgumentAssembler $fixture */
     protected $fixture;
 

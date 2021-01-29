@@ -28,6 +28,8 @@ use phpDocumentor\Reflection\Fqsen;
  */
 class DescriptorAbstractTest extends MockeryTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
+
     /** @var DescriptorAbstract $fixture */
     protected $fixture;
 

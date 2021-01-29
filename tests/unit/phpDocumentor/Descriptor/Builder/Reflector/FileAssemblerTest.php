@@ -33,6 +33,8 @@ use function md5;
  */
 final class FileAssemblerTest extends TestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
+
     /** @var FileAssembler $fixture */
     private $fixture;
 

@@ -32,6 +32,8 @@ use function get_class;
  */
 final class LinkerTest extends TestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
+
     /** @var ObjectProphecy|DescriptorRepository */
     private $descriptorRepository;
 

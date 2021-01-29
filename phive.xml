@@ -5,4 +5,5 @@
   <phar name="php-coveralls/php-coveralls" version="^2.2.0" installed="2.2.0" location="./tools/php-coveralls" copy="true"/>
   <phar name="scrutinizer-ci/ocular" version="^1.6.0" installed="1.6.0" location="./tools/ocular" copy="true" force-accept-unsigned="true"/>
   <phar name="psalm" version="^4.1.0" installed="4.4.1" location="./tools/psalm" copy="true"/>
+  <phar name="jaapio/prophecy-phpunit" version="^2.1.0" installed="2.1.0" location="./tools/phpunit.d/prophecy-phpunit.phar" copy="true"/>
 </phive>

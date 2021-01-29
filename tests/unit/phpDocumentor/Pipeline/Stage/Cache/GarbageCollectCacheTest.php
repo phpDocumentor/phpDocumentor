@@ -25,6 +25,8 @@ use PHPUnit\Framework\TestCase;
  */
 final class GarbageCollectCacheTest extends TestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
+
     /**
      * @covers ::__invoke
      */

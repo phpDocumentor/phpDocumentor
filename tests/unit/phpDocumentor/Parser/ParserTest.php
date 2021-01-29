@@ -38,6 +38,8 @@ use function sys_get_temp_dir;
  */
 final class ParserTest extends TestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
+
     /** @var Parser */
     protected $fixture = null;
 

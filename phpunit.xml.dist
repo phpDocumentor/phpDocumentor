@@ -9,6 +9,7 @@
          beStrictAboutOutputDuringTests="true"
          beStrictAboutTestsThatDoNotTestAnything="true"
          beStrictAboutCoversAnnotation="false"
+         extensionsDirectory="./tools/phpunit.d"
 >
     <testsuites>
         <testsuite name="unit">

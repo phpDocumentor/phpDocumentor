@@ -17,6 +17,8 @@ use Twig\Source;
  */
 final class FlySystemLoaderTest extends TestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
+
     /**
      * @covers ::exists
      * @dataProvider fileProvider

@@ -15,6 +15,8 @@ use function md5;
  */
 final class FlySystemFileTest extends TestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
+
     /**
      * @covers ::path()
      */

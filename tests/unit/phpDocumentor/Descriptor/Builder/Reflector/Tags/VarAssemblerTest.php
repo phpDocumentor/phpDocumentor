@@ -13,6 +13,8 @@ use Prophecy\Prophecy\ObjectProphecy;
 
 class VarAssemblerTest extends TestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
+
     /** @var VarAssembler */
     private $fixture;
 

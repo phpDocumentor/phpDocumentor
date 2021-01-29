@@ -28,6 +28,8 @@ use Psr\Log\NullLogger;
  */
 final class CollectFilesTest extends TestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
+
     /**
      * @covers ::__invoke
      */

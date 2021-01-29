@@ -40,6 +40,7 @@ use Twig\Loader\ArrayLoader;
  */
 final class TwigTest extends TestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     use Faker;
 
     /** @var vfsStreamDirectory */

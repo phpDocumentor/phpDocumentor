@@ -23,6 +23,8 @@ use PHPUnit\Framework\TestCase;
  */
 final class FilterTest extends TestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
+
     /**
      * @covers ::filter
      */

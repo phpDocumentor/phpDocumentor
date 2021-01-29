@@ -27,6 +27,8 @@ use Prophecy\Prophecy\ObjectProphecy;
  */
 class ExampleAssemblerTest extends TestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
+
     public const EXAMPLE_FILE_PATH = 'examples/example.txt';
 
     public const EXAMPLE_STARTING_LINE = 10;

@@ -31,6 +31,7 @@ use function strlen;
  */
 final class TransformerTest extends TestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     use Faker;
 
     /** @var int Max length of description printed. */

@@ -35,6 +35,8 @@ use PHPUnit\Framework\TestCase;
  */
 final class PackageTreeBuilderTest extends TestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
+
     private const DEFAULT_PACKAGE_NAME = 'Default';
 
     /** @var PackageTreeBuilder $fixture */

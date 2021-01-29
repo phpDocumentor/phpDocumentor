@@ -28,6 +28,7 @@ use Prophecy\Prophecy\ObjectProphecy;
  */
 final class CollectionTest extends MockeryTestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     use Faker;
 
     /** @var ObjectProphecy|WriterCollection */

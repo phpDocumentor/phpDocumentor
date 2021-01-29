@@ -28,6 +28,8 @@ use function get_class;
 
 class FunctionAssemblerTest extends TestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
+
     /** @var FunctionAssembler $fixture */
     protected $fixture;
 
