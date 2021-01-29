@@ -119,7 +119,7 @@ final class ApiSpecification implements ArrayAccess
             $api['include-source'],
             $api['markers'],
             $api['ignore-tags'],
-            $api['examples'],
+            $api['examples'] ?? [],
             $api['encoding'],
             $api['validate']
         );

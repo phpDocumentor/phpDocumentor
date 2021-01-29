@@ -17,6 +17,7 @@ use phpDocumentor\Configuration\ApiSpecification;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * Tests the functionality for the StripIgnore class.
@@ -25,6 +26,8 @@ use PHPUnit\Framework\TestCase;
  */
 final class StripIgnoreTest extends TestCase
 {
+    use ProphecyTrait;
+
     /** @var StripIgnore $fixture */
     private $fixture;
 

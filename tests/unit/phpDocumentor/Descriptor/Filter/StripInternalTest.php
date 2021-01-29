@@ -21,6 +21,7 @@ use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Reflection\DocBlock\Description as DocBlockDescription;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * Tests the functionality for the StripInternal class.
@@ -29,6 +30,8 @@ use PHPUnit\Framework\TestCase;
  */
 final class StripInternalTest extends TestCase
 {
+    use ProphecyTrait;
+
     /** @var StripInternal $fixture */
     private $fixture;
 

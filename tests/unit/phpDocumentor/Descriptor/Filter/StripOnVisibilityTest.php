@@ -19,6 +19,7 @@ use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * Tests the functionality for the StripOnVisibility class.
@@ -27,6 +28,8 @@ use PHPUnit\Framework\TestCase;
  */
 final class StripOnVisibilityTest extends TestCase
 {
+    use ProphecyTrait;
+
     /** @var StripOnVisibility $fixture */
     private $fixture;
 
