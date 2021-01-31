@@ -325,11 +325,27 @@ jobs:
           restore-keys: |
             all-build-${{ hashFiles('**/composer.lock') }}
             all-build-
+
+      - name: Setup cache environment
+        id: cache-env
+        uses: shivammathur/cache-extensions@v1
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions: ${{ env.extensions }}
+          key: ${{ env.key }}
+
+      - name: Cache extensions
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.cache-env.outputs.dir }}
+          key: ${{ steps.cache-env.outputs.key }}
+          restore-keys: ${{ steps.cache-env.outputs.key }}
+
       - name: Setup PHP
         uses: shivammathur/setup-php@master
         with:
           php-version: ${{ matrix.php-versions }}
-          extensions: mbstring, intl, iconv, libxml, dom, json, simplexml, zlib
+          extensions:  ${{ env.extensions }}
           ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
           tools: pecl
       - name: Download PHAR file
