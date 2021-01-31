@@ -62,14 +62,18 @@ final class PathNormalizingMiddleware implements MiddlewareInterface
             $configuration['phpdocumentor']['paths']['output']->resolve($configPath);
         /** @var VersionSpecification $version */
         foreach ($configuration['phpdocumentor']['versions'] as $version) {
+            $apiConfigs = [];
+
             foreach ($version->getApi() as $api) {
-                $api->withSource(
+                $apiConfigs[] = $api->withSource(
                     [
                         'dsn' => $api['source']['dsn']->resolve($configPath),
                         'paths' => $api['source']['paths'],
                     ]
                 );
             }
+
+            $version->setApi($apiConfigs);
 
             foreach ($version->getGuides() ?? [] as $key => &$guide) {
                 $version->guides[$key]['source']['dsn'] = $guide['source']['dsn']->resolve($configPath);

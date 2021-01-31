@@ -99,6 +99,23 @@ final class PathNormalizingMiddlewareTest extends TestCase
         self::assertSame($output, (string) $outputConfig['phpdocumentor']['paths']['cache']);
     }
 
+    public function testDsnResolvedByConfigPath() : void
+    {
+        $configuration = $this->givenAConfiguration();
+
+        $middleware = new PathNormalizingMiddleware();
+
+        $outputConfig = $middleware(
+            $configuration,
+            Uri::createFromString('/data/phpDocumentor/config.xml')
+        );
+
+        self::assertEquals(
+            '/data/phpDocumentor/',
+            (string) $outputConfig['phpdocumentor']['versions']['1.0.0']->api[0]['source']['dsn']
+        );
+    }
+
     public function cachePathProvider() : array
     {
         return [
