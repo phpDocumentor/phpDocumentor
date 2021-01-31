@@ -13,17 +13,13 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Filter;
 
+use phpDocumentor\Configuration\ApiSpecification;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\MethodDescriptor;
-use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
-use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Descriptor\TagDescriptor;
 use PHPUnit\Framework\TestCase;
-use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 
 /**
  * Tests the functionality for the StripOnVisibility class.
@@ -34,12 +30,6 @@ final class StripOnVisibilityTest extends TestCase
 {
     use ProphecyTrait;
 
-    /** @var ProjectDescriptorBuilder|ObjectProphecy */
-    private $builderMock;
-
-    /** @var ProjectDescriptor|ObjectProphecy */
-    private $projectDescriptor;
-
     /** @var StripOnVisibility $fixture */
     private $fixture;
 
@@ -48,10 +38,7 @@ final class StripOnVisibilityTest extends TestCase
      */
     protected function setUp() : void
     {
-        $this->projectDescriptor = $this->prophesize(ProjectDescriptor::class);
-        $this->builderMock = $this->prophesize(ProjectDescriptorBuilder::class);
-        $this->builderMock->getProjectDescriptor()->shouldBeCalled()->willReturn($this->projectDescriptor->reveal());
-        $this->fixture = new StripOnVisibility($this->builderMock->reveal());
+        $this->fixture = new StripOnVisibility();
     }
 
     /**
@@ -59,15 +46,18 @@ final class StripOnVisibilityTest extends TestCase
      */
     public function testStripsDescriptorIfVisibilityIsNotAllowed() : void
     {
-        $this->projectDescriptor->isVisibilityAllowed(Argument::exact(Settings::VISIBILITY_PUBLIC))
-            ->shouldBeCalled()
-            ->willReturn(false);
+        $apiSpec = ApiSpecification::createDefault();
+        $apiSpec['visibility'] = ['api'];
 
         $descriptor = $this->prophesize(MethodDescriptor::class);
         $descriptor->getVisibility()->shouldBeCalled()->willReturn('public');
         $descriptor->getTags()->shouldBeCalled()->willReturn(new Collection());
 
-        $this->assertNull($this->fixture->__invoke($descriptor->reveal()));
+        self::assertNull(
+            $this->fixture->__invoke(
+                new FilterPayload($descriptor->reveal(), $apiSpec)
+            )->getFilterable()
+        );
     }
 
     /**
@@ -75,13 +65,8 @@ final class StripOnVisibilityTest extends TestCase
      */
     public function testItNeverStripsDescriptorIfApiIsSet() : void
     {
-        $this->projectDescriptor->isVisibilityAllowed(Argument::exact(Settings::VISIBILITY_API))
-            ->shouldBeCalled()
-            ->willReturn(true);
-
-        // if API already return true; then we do not expect a call with for the PUBLIC visibility
-        $this->projectDescriptor->isVisibilityAllowed(Argument::exact(Settings::VISIBILITY_PUBLIC))
-            ->shouldNotBeCalled();
+        $apiSpec = ApiSpecification::createDefault();
+        $apiSpec['visibility'] = ['api'];
 
         $descriptor = $this->prophesize(MethodDescriptor::class);
 
@@ -89,7 +74,12 @@ final class StripOnVisibilityTest extends TestCase
         $tagsCollection->set('api', new TagDescriptor('api'));
         $descriptor->getTags()->shouldBeCalled()->willReturn($tagsCollection);
 
-        $this->assertSame($descriptor->reveal(), $this->fixture->__invoke($descriptor->reveal()));
+        self::assertSame(
+            $descriptor->reveal(),
+            $this->fixture->__invoke(
+                new FilterPayload($descriptor->reveal(), $apiSpec)
+            )->getFilterable()
+        );
     }
 
     /**
@@ -97,15 +87,19 @@ final class StripOnVisibilityTest extends TestCase
      */
     public function testKeepsDescriptorIfVisibilityIsAllowed() : void
     {
-        $this->projectDescriptor->isVisibilityAllowed(Argument::exact(Settings::VISIBILITY_PUBLIC))
-            ->shouldBeCalled()
-            ->willReturn(true);
+        $apiSpec = ApiSpecification::createDefault();
+        $apiSpec['visibility'] = ['public'];
 
         $descriptor = $this->prophesize(MethodDescriptor::class);
         $descriptor->getVisibility()->shouldBeCalled()->willReturn('public');
         $descriptor->getTags()->shouldBeCalled()->willReturn(new Collection());
 
-        $this->assertSame($descriptor->reveal(), $this->fixture->__invoke($descriptor->reveal()));
+        self::assertSame(
+            $descriptor->reveal(),
+            $this->fixture->__invoke(
+                new FilterPayload($descriptor->reveal(), $apiSpec)
+            )->getFilterable()
+        );
     }
 
     /**
@@ -113,11 +107,17 @@ final class StripOnVisibilityTest extends TestCase
      */
     public function testKeepsDescriptorIfDescriptorNotInstanceOfVisibilityInterface() : void
     {
-        $this->builderMock->getProjectDescriptor()->shouldNotBeCalled();
+        $apiSpec = ApiSpecification::createDefault();
+        $apiSpec['visibility'] = ['public'];
 
         $descriptor = $this->prophesize(DescriptorAbstract::class);
         $descriptor->getTags()->shouldBeCalled()->willReturn(new Collection());
 
-        $this->assertSame($descriptor->reveal(), $this->fixture->__invoke($descriptor->reveal()));
+        self::assertSame(
+            $descriptor->reveal(),
+            $this->fixture->__invoke(
+                new FilterPayload($descriptor->reveal(), $apiSpec)
+            )->getFilterable()
+        );
     }
 }

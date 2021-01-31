@@ -59,7 +59,7 @@ final class ConfigurationFactoryTest extends TestCase
     {
         $middleware = new class implements MiddlewareInterface
         {
-            public function __invoke(array $values, ?UriInterface $uri = null) : array
+            public function __invoke(Configuration $values, ?UriInterface $uri = null) : Configuration
             {
                 return $values + ['anotherExample'];
             }
@@ -169,9 +169,11 @@ final class ConfigurationFactoryTest extends TestCase
     {
         $middleware = new class implements MiddlewareInterface
         {
-            public function __invoke(array $values, ?UriInterface $uri = null) : array
+            public function __invoke(Configuration $values, ?UriInterface $uri = null) : Configuration
             {
-                return $values + ['anotherExample'];
+                $values['newKey'] = 'anotherExample';
+
+                return $values;
             }
         };
 
@@ -188,7 +190,7 @@ final class ConfigurationFactoryTest extends TestCase
         $response = $factory->fromUri($uri);
 
         $this->assertInstanceOf(Configuration::class, $response);
-        $this->assertSame($configuration + ['anotherExample'], $response->getArrayCopy());
+        $this->assertSame($configuration + ['newKey' => 'anotherExample'], $response->getArrayCopy());
     }
 
     /**

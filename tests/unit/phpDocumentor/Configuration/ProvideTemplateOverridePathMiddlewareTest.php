@@ -71,6 +71,6 @@ final class ProvideTemplateOverridePathMiddlewareTest extends TestCase
         $environmentFactory->withTemplateOverridesAt()->shouldNotBeCalled();
 
         $middleware = new ProvideTemplateOverridePathMiddleware($environmentFactory->reveal());
-        $middleware->__invoke([], Uri::createFromString($configurationFilePath));
+        $middleware->__invoke(new Configuration(), Uri::createFromString($configurationFilePath));
     }
 }

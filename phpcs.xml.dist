@@ -39,6 +39,10 @@
         </properties>
     </rule>
 
+    <rule ref="SlevomatCodingStandard.Classes.UnusedPrivateElements.WriteOnlyProperty">
+        <exclude-pattern>src/phpDocumentor/Configuration/ApiSpecification\.php$</exclude-pattern>
+    </rule>
+
     <rule ref="SlevomatCodingStandard.Functions.StaticClosure.ClosureNotStatic">
         <exclude-pattern>*/tests/unit/phpDocumentor/Console/ApplicationTest\.php$</exclude-pattern>
     </rule>

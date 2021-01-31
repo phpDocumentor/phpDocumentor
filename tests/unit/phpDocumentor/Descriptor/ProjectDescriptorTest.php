@@ -136,32 +136,4 @@ final class ProjectDescriptorTest extends TestCase
         $result = $this->fixture->getPartials();
         $this->assertSame($partialsCollection, $result);
     }
-
-    /**
-     * @covers ::isVisibilityAllowed
-     */
-    public function testIsVisibilityAllowed() : void
-    {
-        $this->assertTrue($this->fixture->isVisibilityAllowed(Settings::VISIBILITY_PUBLIC));
-        $this->assertTrue($this->fixture->isVisibilityAllowed(Settings::VISIBILITY_PROTECTED));
-        $this->assertTrue($this->fixture->isVisibilityAllowed(Settings::VISIBILITY_PRIVATE));
-        $this->assertFalse($this->fixture->isVisibilityAllowed(Settings::VISIBILITY_INTERNAL));
-
-        $settings = new Settings();
-        $settings->setVisibility(Settings::VISIBILITY_PROTECTED);
-        $this->fixture->setSettings($settings);
-
-        $this->assertFalse($this->fixture->isVisibilityAllowed(Settings::VISIBILITY_PUBLIC));
-        $this->assertTrue($this->fixture->isVisibilityAllowed(Settings::VISIBILITY_PROTECTED));
-        $this->assertFalse($this->fixture->isVisibilityAllowed(Settings::VISIBILITY_PRIVATE));
-        $this->assertFalse($this->fixture->isVisibilityAllowed(Settings::VISIBILITY_INTERNAL));
-
-        $settings->setVisibility(Settings::VISIBILITY_PROTECTED | Settings::VISIBILITY_INTERNAL);
-        $this->fixture->setSettings($settings);
-
-        $this->assertFalse($this->fixture->isVisibilityAllowed(Settings::VISIBILITY_PUBLIC));
-        $this->assertTrue($this->fixture->isVisibilityAllowed(Settings::VISIBILITY_PROTECTED));
-        $this->assertFalse($this->fixture->isVisibilityAllowed(Settings::VISIBILITY_PRIVATE));
-        $this->assertTrue($this->fixture->isVisibilityAllowed(Settings::VISIBILITY_INTERNAL));
-    }
 }

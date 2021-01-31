@@ -13,29 +13,18 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\ProjectDescriptor;
 
+use phpDocumentor\Configuration\ApiSpecification;
+
 /**
  * Contains the Settings for the current Project.
  */
 final class Settings
 {
-    public const VISIBILITY_PUBLIC = 1;
-
-    public const VISIBILITY_PROTECTED = 2;
-
-    public const VISIBILITY_PRIVATE = 4;
-
-    public const VISIBILITY_INTERNAL = 8;
-
-    public const VISIBILITY_API = 16;
-
-    /** @var int by default ignore internal visibility but show others */
-    public const VISIBILITY_DEFAULT = 7;
-
     /** @var bool Represents whether this settings object has been modified */
     private $isModified = false;
 
     /** @var int a bitflag representing which visibilities are contained and allowed in this project */
-    private $visibility = self::VISIBILITY_DEFAULT;
+    private $visibility = ApiSpecification::VISIBILITY_DEFAULT;
 
     /** @var bool */
     private $includeSource = false;

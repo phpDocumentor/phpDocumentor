@@ -15,7 +15,9 @@ namespace phpDocumentor\Configuration;
 
 use League\Uri\Contracts\UriInterface;
 use phpDocumentor\Configuration\Exception\InvalidConfigPathException;
+use phpDocumentor\Dsn;
 use phpDocumentor\UriFactory;
+use function array_map;
 use function file_exists;
 use function sprintf;
 
@@ -70,12 +72,12 @@ use function sprintf;
             }
         }
 
-        return new Configuration($this->applyMiddleware($this->createDefault()->getArrayCopy(), null));
+        return new Configuration($this->applyMiddleware($this->createDefault(), null));
     }
 
     public function createDefault() : Configuration
     {
-        return new Configuration($this->symfonyConfigFactory->createDefault());
+        return $this->createConfigurationFromArray($this->symfonyConfigFactory->createDefault());
     }
 
     /**
@@ -95,29 +97,48 @@ use function sprintf;
 
         $config = $this->symfonyConfigFactory->createFromFile($filename);
 
-        return new Configuration($this->applyMiddleware($config, $uri));
+        return $this->applyMiddleware($this->createConfigurationFromArray($config), $uri);
     }
 
     public function fromDefault() : Configuration
     {
-        return new Configuration($this->applyMiddleware($this->createDefault()->getArrayCopy(), null));
+        return $this->applyMiddleware($this->createDefault(), null);
     }
 
-    //phpcs:disable Generic.Files.LineLength.TooLong
     /**
      * Applies all middleware callbacks onto the configuration.
-     *
-     * @param array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string, cache: string}, versions?: array<string, VersionSpecification>, settings?: array<mixed>, templates?: non-empty-list<string>}} $configuration
-     *
-     * @return array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string, cache: string}, versions?: array<string, VersionSpecification>, settings?: array<mixed>, templates?: non-empty-list<string>}}
      */
-    //phpcs:enable Generic.Files.LineLength.TooLong
-    private function applyMiddleware(array $configuration, ?UriInterface $uri) : array
+    private function applyMiddleware(Configuration $configuration, ?UriInterface $uri) : Configuration
     {
         foreach ($this->middlewares as $middleware) {
             $configuration = $middleware($configuration, $uri);
         }
 
         return $configuration;
+    }
+
+    //phpcs:disable Generic.Files.LineLength.TooLong
+    /**
+     * @param array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string, cache: string}, versions?: array<string, array{ api: array{ignore-tags: array<string>, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibility: non-empty-array<string>, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}, encoding: string, output: string, default-package-name: string, examples: array{dsn: Dsn, paths: array}, include-source: bool, validate: bool}, guides: array}>, settings?: array<mixed>, templates?: non-empty-list<string>}} $configuration
+     */
+    //phpcs:enable Generic.Files.LineLength.TooLong
+    private function createConfigurationFromArray(array $configuration) : Configuration
+    {
+        if (isset($configuration['phpdocumentor']['versions'])) {
+            foreach ($configuration['phpdocumentor']['versions'] as $versionNumber => $version) {
+                $configuration['phpdocumentor']['versions'][$versionNumber] = new VersionSpecification(
+                    $versionNumber,
+                    array_map(
+                        static function ($api) : ApiSpecification {
+                            return ApiSpecification::createFromArray($api);
+                        },
+                        $version['api']
+                    ),
+                    $version['guides']
+                );
+            }
+        }
+
+        return new Configuration($configuration);
     }
 }

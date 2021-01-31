@@ -49,10 +49,8 @@ final class ParseFiles
         $apiConfig = current($payload->getApiConfigs());
 
         $builder = $payload->getBuilder();
-        $builder->setVisibility($apiConfig['visibility']);
-        $builder->setMarkers($apiConfig['markers']);
-        $builder->setIncludeSource($apiConfig['include-source']);
-        $builder->setIgnoredTags($apiConfig['ignore-tags']);
+        $builder->setApiSpecification($apiConfig);
+        $builder->setVisibility($apiConfig->calculateVisiblity());
         $this->reEncodingMiddleware->withEncoding($apiConfig['encoding']);
 
         $this->parser->setMarkers($apiConfig['markers']);
@@ -61,7 +59,7 @@ final class ParseFiles
 
         $this->log('Parsing files', LogLevel::NOTICE);
         $project = $this->parser->parse($payload->getFiles());
-        $payload->getBuilder()->build($project);
+        $payload->getBuilder()->createApiDocumentationSet($project);
 
         return $payload;
     }

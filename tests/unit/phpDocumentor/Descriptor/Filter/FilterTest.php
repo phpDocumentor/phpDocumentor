@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Filter;
 
+use phpDocumentor\Configuration\ApiSpecification;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
@@ -34,9 +35,9 @@ final class FilterTest extends TestCase
         $filterableMock = $this->prophesize(Filterable::class)->reveal();
 
         $filterStep = new class implements FilterInterface {
-            public function __invoke(Filterable $filterable) : ?Filterable
+            public function __invoke(FilterPayload $payload) : FilterPayload
             {
-                return $filterable;
+                return $payload;
             }
         };
 
@@ -44,6 +45,6 @@ final class FilterTest extends TestCase
             [$filterStep]
         );
 
-        $this->assertSame($filterableMock, $filter->filter($filterableMock));
+        $this->assertSame($filterableMock, $filter->filter($filterableMock, ApiSpecification::createDefault()));
     }
 }

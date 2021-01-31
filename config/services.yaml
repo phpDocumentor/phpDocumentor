@@ -123,7 +123,6 @@ services:
         factory: ['phpDocumentor\Descriptor\Builder\AssemblerFactory', 'createDefault']
 
     phpDocumentor\Descriptor\Filter\Filter:
-        lazy: true
         arguments:
           - !tagged_iterator 'phpdoc.descriptor.filter'
 

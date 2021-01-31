@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Pipeline\Stage\Parser;
 
+use phpDocumentor\Configuration\ApiSpecification;
 use phpDocumentor\Configuration\VersionSpecification;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Dsn;
@@ -41,7 +42,7 @@ final class Payload extends ApplicationPayload
 
     //phpcs:disable Generic.Files.LineLength.TooLong
     /**
-     * @return array<int, array{source: array{dsn: Dsn, paths: array<Path>}, output?: string, ignore?: array{paths: non-empty-array<Path>}, extensions?: non-empty-list<string>, visibility?: array<string>, default-package-name?: string, include-source?: bool, markers?: non-empty-list<string>, ignore-tags?: non-empty-list<string>, examples?: array{dsn: Dsn, paths: list<string>}, encoding?: string, validate?: bool}>
+     * @return array<int, ApiSpecification>
      */
     //phpcs:enable Generic.Files.LineLength.TooLong
     public function getApiConfigs() : array
