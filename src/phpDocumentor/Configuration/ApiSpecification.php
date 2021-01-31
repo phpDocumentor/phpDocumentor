@@ -226,7 +226,7 @@ final class ApiSpecification implements ArrayAccess
         return $this->ignoreTags;
     }
 
-    public function calculateVisablity() : int
+    public function calculateVisiblity() : int
     {
         $visibility = 0;
 
@@ -273,7 +273,7 @@ final class ApiSpecification implements ArrayAccess
      */
     public function isVisibilityAllowed(int $visibility) : bool
     {
-        $visibilityAllowed = $this->calculateVisablity();
+        $visibilityAllowed = $this->calculateVisiblity();
 
         return (bool) ($visibilityAllowed & $visibility);
     }
