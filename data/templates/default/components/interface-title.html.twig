@@ -1,7 +1,7 @@
 <h2 class="phpdocumentor-content__title">
     {{ node.name }}
     {% if node.parent is not empty %}
-        <span class="phpdocumentor-interface__extends">
+        <span class="phpdocumentor-element__extends">
             extends
             {% for interface in node.parent %}
                 {{ interface|route('class:short') }}{% if not loop.last %}, {% endif %}
