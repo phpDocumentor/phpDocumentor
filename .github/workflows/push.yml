@@ -37,7 +37,7 @@ jobs:
           php-version: ${{ env.defaultPHPVersion }}
           extensions: ${{ env.extensions }}
           ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
-          tools: composer-require-checker
+          tools: composer-require-checker:2.1.0
 
       - name: Get composer cache directory
         id: composer-cache
