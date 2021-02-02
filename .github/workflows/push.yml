@@ -293,7 +293,7 @@ jobs:
         with:
           args: box compile
       - name: Upload PHAR file
-        uses: actions/upload-artifact@v2.2.0
+        uses: actions/upload-artifact@v2.2.2
         with:
           name: phpDocumentor.phar
           path: build/phpDocumentor.phar
