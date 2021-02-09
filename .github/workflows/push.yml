@@ -55,7 +55,7 @@ jobs:
           composer install --no-progress --prefer-dist --optimize-autoloader
 
       - name: composer-require-checker
-        run: composer-require-checker check --config-file ./composer-require-config.json composer.json
+        run: composer-require-checker check --config-file $GITHUB_WORKSPACE/composer-require-config.json composer.json
 
   phpunit-with-coverage:
     runs-on: ubuntu-latest
