@@ -2,7 +2,7 @@ version: '3'
 services:
   phpdoc:
     build: .
-   # user: ${CURRENT_UID}
+    user: ${CURRENT_UID}
     volumes: [".:/opt/phpdoc"]
     working_dir: "/opt/phpdoc"
 
