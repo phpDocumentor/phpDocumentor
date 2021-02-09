@@ -15,7 +15,6 @@ namespace phpDocumentor\Console;
 
 use Jean85\PrettyVersions;
 use OutOfBoundsException;
-use PackageVersions\Versions;
 use Symfony\Bundle\FrameworkBundle\Console\Application as BaseApplication;
 use Symfony\Component\Console\Exception\CommandNotFoundException;
 use Symfony\Component\Console\Input\InputDefinition;
