@@ -16,7 +16,6 @@ namespace phpDocumentor\Transformer;
 use InvalidArgumentException;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemInterface;
-use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Dsn;
 use phpDocumentor\Event\Dispatcher;
@@ -38,7 +37,7 @@ use function sprintf;
 /**
  * Core class responsible for transforming the cache file to a set of artifacts.
  */
-class Transformer implements CompilerPassInterface
+class Transformer
 {
     public const EVENT_PRE_TRANSFORMATION = 'transformer.transformation.pre';
 

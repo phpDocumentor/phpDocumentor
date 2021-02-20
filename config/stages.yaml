@@ -61,6 +61,10 @@ services:
   ## Autoloading definitions for transform stages   #################################
   ###################################################################################
 
+  phpDocumentor\Pipeline\Stage\Compile:
+    tags:
+      - { name: 'phpdoc.pipeline.api_documentation.transform', priority: 5000 }
+
   phpDocumentor\Pipeline\Stage\Transform:
     tags:
       - { name: 'phpdoc.pipeline.api_documentation.transform', priority: 0 }
