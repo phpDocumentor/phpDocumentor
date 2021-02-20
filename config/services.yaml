@@ -158,7 +158,6 @@ services:
             - [insert, ['@phpDocumentor\Compiler\Pass\ResolveInlineMarkers', !php/const \phpDocumentor\Compiler\Pass\ResolveInlineMarkers::COMPILER_PRIORITY]]
             - [insert, ['@phpDocumentor\Compiler\Pass\Debug', !php/const \phpDocumentor\Compiler\Pass\Debug::COMPILER_PRIORITY]]
             - [insert, ['@phpDocumentor\Compiler\Linker\Linker', !php/const \phpDocumentor\Compiler\Linker\Linker::COMPILER_PRIORITY]]
-            - [insert, ['@phpDocumentor\Transformer\Transformer', !php/const \phpDocumentor\Transformer\Transformer::COMPILER_PRIORITY]]
 
     phpDocumentor\Reflection\Php\NodesFactory:
         class: phpDocumentor\Reflection\Php\NodesFactory

@@ -2,21 +2,9 @@
 
 declare(strict_types=1);
 
-/**
- * This file is part of phpDocumentor.
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- *
- * @link https://phpdoc.org
- */
-
 namespace phpDocumentor\Pipeline\Stage;
 
 use Exception;
-use phpDocumentor\Compiler\Compiler;
-use phpDocumentor\Compiler\CompilerPassInterface;
-use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Dsn;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Reflection\DocBlock\ExampleFinder;
@@ -46,13 +34,10 @@ use const DIRECTORY_SEPARATOR;
  * verbose option or stop additional information using the quiet option. Please
  * take note that the quiet option also disables logging to file.
  */
-final class Transform
+class Transform
 {
     /** @var Transformer $transformer Principal object for guiding the transformation process */
     private $transformer;
-
-    /** @var Compiler $compiler Collection of pre-transformation actions (Compiler Passes) */
-    private $compiler;
 
     /** @var LoggerInterface */
     private $logger;
@@ -65,12 +50,10 @@ final class Transform
      */
     public function __construct(
         Transformer $transformer,
-        Compiler $compiler,
         LoggerInterface $logger,
         ExampleFinder $exampleFinder
     ) {
         $this->transformer   = $transformer;
-        $this->compiler      = $compiler;
         $this->exampleFinder = $exampleFinder;
         $this->logger        = $logger;
 
@@ -90,7 +73,7 @@ final class Transform
         $this->loadTemplatesBasedOnNames($configuration['phpdocumentor']['templates']);
         $this->provideLocationsOfExamples();
 
-        $this->doTransform($payload->getBuilder());
+        $this->transformer->execute($payload->getBuilder()->getProjectDescriptor());
 
         return $payload;
     }
@@ -153,14 +136,6 @@ final class Transform
         }
 
         $this->transformer->setTarget((string) $target);
-    }
-
-    private function doTransform(ProjectDescriptorBuilder $builder) : void
-    {
-        /** @var CompilerPassInterface $pass */
-        foreach ($this->compiler as $pass) {
-            $pass->execute($builder->getProjectDescriptor());
-        }
     }
 
     private function provideLocationsOfExamples() : void
