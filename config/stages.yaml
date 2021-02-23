@@ -45,15 +45,11 @@ services:
     tags:
       - { name: 'phpdoc.pipeline.api_documentation.parse', priority: 5000 }
 
-  phpDocumentor\Pipeline\Stage\Parser\CollectFiles:
-    tags:
-      - { name: 'phpdoc.pipeline.api_documentation.parse', priority: 4000 }
-
   phpDocumentor\Pipeline\Stage\Cache\GarbageCollectCache:
     tags:
       - { name: 'phpdoc.pipeline.api_documentation.parse', priority: 3000 }
 
-  phpDocumentor\Pipeline\Stage\Parser\ParseFiles:
+  phpDocumentor\Pipeline\Stage\Parser\ParseAPIS:
     tags:
       - { name: 'phpdoc.pipeline.api_documentation.parse', priority: 0 }
 
