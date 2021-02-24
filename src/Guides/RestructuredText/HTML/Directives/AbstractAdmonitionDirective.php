@@ -50,6 +50,17 @@ abstract class AbstractAdmonitionDirective extends SubDirective
             );
         };
 
+//        $divOpen = $environment->getRenderer()->render(
+//            'directives/admonition.html.twig',
+//            [
+//                'name' => $this->name,
+//                'text' => $this->text,
+//                'class' => $options['class'] ?? null,
+//            ]
+//        );
+//
+        return $parser->getNodeFactory()->createWrapperNode($document, $wrapperDiv, '</div>');
+
         return $parser->getNodeFactory()->createRawNode($wrapperDiv);
     }
 
