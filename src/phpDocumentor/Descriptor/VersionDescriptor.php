@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
+use phpDocumentor\Configuration\VersionSpecification;
+
 final class VersionDescriptor
 {
     /** @var string */
@@ -52,5 +54,16 @@ final class VersionDescriptor
         }
 
         return $tocs;
+    }
+
+    public static function fromConfiguration(VersionSpecification $config): self
+    {
+        $documentationSets = Collection::fromClassString(DocumentationSetDescriptor::class);
+
+        foreach ($config->getGuides() ?? [] as $guide) {
+            $documentationSets->add(new GuideSetDescriptor('', $guide['source'], $guide['output']));
+        }
+
+        return new self($config->getNumber(), $documentationSets);
     }
 }

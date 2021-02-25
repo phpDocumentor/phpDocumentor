@@ -121,7 +121,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
      */
     public function getFiles(): Collection
     {
-        return $this->files;
+        return current($this->getVersions()->get(0)->getDocumentationSets()->filter(ApiSetDescriptor::class)->getAll())->getFiles();
     }
 
     /**

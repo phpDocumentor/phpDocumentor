@@ -18,6 +18,12 @@ use phpDocumentor\Configuration\Source;
 
 final class ApiSetDescriptor extends DocumentationSetDescriptor
 {
+    /** @var Collection<FileDescriptor> */
+    private $files;
+
+    /** @var Collection<NamespaceDescriptor> */
+    private $namespaces;
+
     /** @var ApiSpecification */
     private $apiSpecification;
 
@@ -25,13 +31,27 @@ final class ApiSetDescriptor extends DocumentationSetDescriptor
         string $name,
         Source $source,
         string $outputLocation,
+        Collection $files,
+        Collection $namespaces,
         ApiSpecification $apiSpecification
     ) {
         parent::__construct();
         $this->name = $name;
         $this->source = $source;
         $this->outputLocation = $outputLocation;
+        $this->files = $files;
+        $this->namespaces = $namespaces;
         $this->apiSpecification = $apiSpecification;
+    }
+
+    public function getFiles(): Collection
+    {
+        return $this->files;
+    }
+
+    public function getNamespaces(): Collection
+    {
+        return $this->namespaces;
     }
 
     public function getSettings(): ApiSpecification

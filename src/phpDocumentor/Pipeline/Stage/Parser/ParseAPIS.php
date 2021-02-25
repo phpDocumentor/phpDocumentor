@@ -15,6 +15,7 @@ namespace phpDocumentor\Pipeline\Stage\Parser;
 
 use phpDocumentor\Configuration\ApiSpecification;
 use phpDocumentor\Configuration\VersionSpecification;
+use phpDocumentor\Descriptor\ApiSetDescriptorBuilder;
 use phpDocumentor\Parser\FileCollector;
 use phpDocumentor\Parser\Middleware\ReEncodingMiddleware;
 use phpDocumentor\Parser\Parser;
@@ -38,7 +39,11 @@ final class ParseAPIS
     /** @var FileCollector */
     private $fileCollector;
 
+    /** @var ApiSetDescriptorBuilder */
+    private $builder;
+
     public function __construct(
+        ApiSetDescriptorBuilder $builder,
         FileCollector $fileCollector,
         Parser $parser,
         LoggerInterface $logger,
@@ -48,21 +53,25 @@ final class ParseAPIS
         $this->logger = $logger;
         $this->reEncodingMiddleware = $reEncodingMiddleware;
         $this->fileCollector = $fileCollector;
+        $this->builder = $builder;
     }
 
     public function __invoke(Payload $payload) : Payload
     {
         /** @var VersionSpecification $version */
         $version = current($payload->getConfig()['phpdocumentor']['versions']);
-        $builder = $payload->getBuilder();
+
+        $projectBuilder = $payload->getBuilder();
 
         foreach ($version->getApi() as $apiSpecification) {
+            $this->builder->reset();
+            $this->builder->setApiSpecification($apiSpecification);
+
             $files = $this->collectFiles($apiSpecification);
             $project = $this->createProject($apiSpecification, $files);
 
-            $builder->setApiSpecification($apiSpecification);
-            $builder->setVisibility($apiSpecification->calculateVisiblity());
-            $builder->createApiDocumentationSet($project);
+            $this->builder->setProject($project);
+            $projectBuilder->addDocumentationSet($version->getNumber(), $this->builder->getDocumentationSet());
         }
 
         return $payload;
