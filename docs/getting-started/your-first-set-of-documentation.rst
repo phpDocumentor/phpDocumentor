@@ -96,22 +96,22 @@ DocBlocks are divided into the following three parts. Each of these parts is opt
 may not exist without a Summary.
 
 Summary
-  The Summary, sometimes called a short description, provides a brief introduction into the function
-  of the associated element. A Summary ends when it encounters either of the below situations::
+    The Summary, sometimes called a short description, provides a brief introduction into the function
+    of the associated element. A Summary ends when it encounters either of the below situations:
 
-    * a period ``.``, followed by a line break
-    * or a blank (comment) line.
+    - a period ``.``, followed by a line break
+    - or a blank (comment) line.
 
 Description
-  The Description, sometimes called the long description, can provide more information. Examples of additional
-  information are: a description of a function's algorithm, a usage example or a description of how a class
-  fits in the whole of the application's architecture. The description ends when the first tag is encountered
-  on a new line or when the DocBlock is closed.
+    The Description, sometimes called the long description, can provide more information. Examples of additional
+    information are: a description of a function's algorithm, a usage example or a description of how a class
+    fits in the whole of the application's architecture. The description ends when the first tag is encountered
+    on a new line or when the DocBlock is closed.
 
 Tags and Annotations
-  These provide a way to succinctly and uniformly provide meta-information about the associated element.
-  Tags can, for example, describe the type of information that is returned by a method or function.
-  Each tag is preceded by an at-sign (``@``) and starts on a new line.
+    These provide a way to succinctly and uniformly provide meta-information about the associated element.
+    Tags can, for example, describe the type of information that is returned by a method or function.
+    Each tag is preceded by an at-sign (``@``) and starts on a new line.
 
 Example
 ~~~~~~~

@@ -3,19 +3,24 @@
     border-radius: var(--border-radius-base-size);
     border-color: var(--primary-color-lighten);
     background-color: var(--primary-color-lighter);
-    font-size: 85%;
-    padding: .5rem;
-    margin: 2rem 0;
+    padding: var(--spacing-lg);
+    margin: var(--spacing-lg) 0;
     display: flex;
     flex-direction: row;
+    align-items: flex-start;
 }
 
-.phpdocumentor-admonition--success {
+.phpdocumentor-admonition p:last-of-type {
+    margin-bottom: 0;
+}
+
+.phpdocumentor-admonition--success,
+.phpdocumentor-admonition.-success {
     border-color: var(--admonition-success-color);
 }
 
 .phpdocumentor-admonition__icon {
-    font-size: 2rem;
-    margin: .75rem 0.75rem 1.25rem 0.5rem;
+    margin-right: var(--spacing-md);
     color: var(--primary-color);
+    max-width: 3rem;
 }
