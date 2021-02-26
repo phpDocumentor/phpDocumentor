@@ -39,18 +39,23 @@ abstract class AbstractAdmonitionDirective extends SubDirective
         array $options
     ) : ?Node {
         $environment = $document->getEnvironment();
-        $wrapperDiv = function () use ($environment, $options) {
-            return $environment->getRenderer()->render(
-                'directives/admonition.html.twig',
-                [
-                    'name' => $this->name,
-                    'text' => $this->text,
-                    'class' => $options['class'] ?? null,
-                ]
-            );
-        };
 
-        return $parser->getNodeFactory()->createRawNode($wrapperDiv);
+        return $parser
+            ->getNodeFactory()
+            ->createWrapperNode(
+                $document,
+                function () use ($environment, $options) {
+                    return $environment->getRenderer()->render(
+                        'directives/admonition.html.twig',
+                        [
+                            'name' => $this->name,
+                            'text' => $this->text,
+                            'class' => $options['class'] ?? null,
+                        ]
+                    );
+                },
+                '</article></div>'
+            );
     }
 
     final public function getName() : string

@@ -7,7 +7,7 @@ documentation easier.
 phpDocumentor uses an XML-based configuration file with quite a few options; in this document we will go into a few
 common uses and how to set this up.
 
-::
+.. code-block:: xml
 
     <?xml version="1.0" encoding="UTF-8" ?>
     <phpdocumentor

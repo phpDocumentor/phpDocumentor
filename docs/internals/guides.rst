@@ -49,4 +49,9 @@ Directives
 Renderers
 ~~~~~~~~~
 
+Read More
+---------
+
+- `Writing Directives <./guides/writing-directives>`_
+
 .. _docs-builder: https://github.com/ryanweaver/docs-builder

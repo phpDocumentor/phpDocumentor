@@ -17,6 +17,8 @@ Installing phpDocumentor
 Using Phive
 ~~~~~~~~~~~
 
+If phive is globally installed, you can run the following command::
+
    $ phive install phpDocumentor
 
 Once you run the command, phpDocumentor will be installed and it can be executed directly.
