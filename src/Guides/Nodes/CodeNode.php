@@ -50,7 +50,7 @@ class CodeNode extends Node
         return $this->language;
     }
 
-    public function setStartingLineNumber(?int $lineNumber): void
+    public function setStartingLineNumber(?int $lineNumber) : void
     {
         $this->startingLineNumber = $lineNumber;
     }

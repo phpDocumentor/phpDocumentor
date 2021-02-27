@@ -43,16 +43,7 @@ class CodeBlock extends Directive
 
         if ($node instanceof CodeNode) {
             $node->setLanguage(trim($data));
-
-            $startingLineNumber = null;
-            if (isset($options['linenos'])) {
-                $startingLineNumber = 1;
-            }
-            $startingLineNumber = $options['number-lines'] ?? $options['lineno-start'] ?? $startingLineNumber;
-
-            if ($startingLineNumber !== null) {
-                $node->setStartingLineNumber((int)$startingLineNumber);
-            }
+            $this->setStartingLineNumberBasedOnOptions($options, $node);
         }
 
         if ($variable !== '') {
@@ -67,5 +58,24 @@ class CodeBlock extends Directive
     public function wantCode() : bool
     {
         return true;
+    }
+
+    /**
+     * @param string[] $options
+     */
+    private function setStartingLineNumberBasedOnOptions(array $options, CodeNode $node) : void
+    {
+        $startingLineNumber = null;
+        if (isset($options['linenos'])) {
+            $startingLineNumber = 1;
+        }
+
+        $startingLineNumber = $options['number-lines'] ?? $options['lineno-start'] ?? $startingLineNumber;
+
+        if ($startingLineNumber === null) {
+            return;
+        }
+
+        $node->setStartingLineNumber((int) $startingLineNumber);
     }
 }
