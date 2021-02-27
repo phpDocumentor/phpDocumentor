@@ -65,7 +65,7 @@ For example:
 
    The following DocBlock is a File-level DocBlock:
 
-   .. code-block:: php
+   .. code:: php
 
       <?php
       /**
@@ -172,7 +172,9 @@ After you have :doc:`installed<installing>` phpDocumentor you can use the ``phpd
 your documentation.
 
 Throughout this documentation we expect that the ``phpdoc`` command is available; thus whenever we ask you
-to run a command, it will be in the following form::
+to run a command, it will be in the following form
+
+.. code-block:: shell-session
 
     $ phpdoc
 
@@ -181,11 +183,15 @@ to run a command, it will be in the following form::
     When you have installed a version via composer or manually you should invoke the ``phpdoc`` script in
     the ``bin`` folder of your phpDocumentor installation.
 
-    Under Linux / MacOSX that would be::
+    Under Linux / MacOSX that would be
+
+    .. code-block:: shell-session
 
         $ [PHPDOC_FOLDER]/bin/phpdoc
 
-    And under Windows that would be::
+    And under Windows that would be
+
+    .. code-block:: shell-session
 
         $ [PHPDOC_FOLDER]\bin\phpdoc.bat
 
@@ -193,7 +199,9 @@ The basic usage of phpDocumentor is to provide an input location using the comma
 (``-d`` for a directory, ``-f`` for a file) and tell it to output your documentation to a folder of your
 liking (``-t``).
 
-For example::
+For example:
+
+.. code-block:: shell-session
 
     $ phpdoc -d ./src -t ./docs/api
 

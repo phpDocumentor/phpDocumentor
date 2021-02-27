@@ -2,6 +2,7 @@
     /* Typography */
     --font-primary: 'Source Sans Pro', Helvetica, Arial, sans-serif;
     --font-secondary: 'Source Sans Pro', Helvetica, Arial, sans-serif;
+    --font-monospace: 'Source Code Pro', monospace;
     --line-height--primary: 1.6;
     --letter-spacing--primary: .05rem;
     --text-base-size: 1em;
@@ -22,12 +23,13 @@
     --primary-color: hsl(96, 57%, 60%);
     --primary-color-darken: hsl(96, 57%, 40%);
     --primary-color-darker: hsl(96, 57%, 20%);
+    --primary-color-darkest: hsl(96, 57%, 10%);
     --primary-color-lighten: hsl(96, 57%, 80%);
     --primary-color-lighter: hsl(96, 57%, 99%);
     --dark-gray: #d1d1d1;
     --light-gray: #f0f0f0;
 
-    --text-color: #4b3b40;
+    --text-color: var(--primary-color-darkest);
 
     --header-height: var(--spacing-xxxxl);
     --header-bg-color: var(--primary-color);

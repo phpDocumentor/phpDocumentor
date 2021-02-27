@@ -13,13 +13,10 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\HTML\Directives;
 
-use Exception;
 use phpDocumentor\Guides\Nodes\CodeNode;
 use phpDocumentor\Guides\Nodes\Node;
-use phpDocumentor\Guides\Renderers\Html\CodeNodeRenderer;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive;
 use phpDocumentor\Guides\RestructuredText\Parser;
-use function sprintf;
 
 class CodeBlockDirective extends Directive
 {
@@ -34,11 +31,8 @@ class CodeBlockDirective extends Directive
             return;
         }
 
-        if (!CodeNodeRenderer::isLanguageSupported($data)) {
-            throw new Exception(sprintf('Unsupported code block language "%s"', $data));
-        }
-
         $node->setLanguage($data);
+        $node->setStartingLineNumber($options['number-lines'] ?? null);
 
         if ($variable !== '') {
             $environment = $parser->getEnvironment();

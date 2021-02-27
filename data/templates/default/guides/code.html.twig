@@ -1,1 +1,1 @@
-<pre class="{% if codeNode.classes %}{{ codeNode.classesString }}{% endif %} phpdocumentor-code -dark"><code class="{{ codeNode.language }}">{{ codeNode.value }}</code></pre>
+<pre><code class="language-{{ language }} {{ startingLineNumber ? 'line-numbers' }}" {{ startingLineNumber ? 'data-start=' ~ startingLineNumber }}>{{ code }}</code></pre>

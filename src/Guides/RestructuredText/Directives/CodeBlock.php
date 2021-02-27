@@ -17,6 +17,8 @@ use function trim;
  *      <?php
  *
  *      echo "Hello world!\n";
+ *
+ * @link https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#directive-code-block
  */
 class CodeBlock extends Directive
 {
@@ -41,6 +43,16 @@ class CodeBlock extends Directive
 
         if ($node instanceof CodeNode) {
             $node->setLanguage(trim($data));
+
+            $startingLineNumber = null;
+            if (isset($options['linenos'])) {
+                $startingLineNumber = 1;
+            }
+            $startingLineNumber = $options['number-lines'] ?? $options['lineno-start'] ?? $startingLineNumber;
+
+            if ($startingLineNumber !== null) {
+                $node->setStartingLineNumber((int)$startingLineNumber);
+            }
         }
 
         if ($variable !== '') {
