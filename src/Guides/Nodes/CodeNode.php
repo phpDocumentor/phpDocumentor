@@ -22,7 +22,10 @@ class CodeNode extends Node
     protected $raw = false;
 
     /** @var string|null */
-    protected $language = null;
+    protected $language;
+
+    /** @var int|null The line number to start counting from and display, or null to hide line numbers */
+    private $startingLineNumber;
 
     /**
      * @param string[] $lines
@@ -45,6 +48,16 @@ class CodeNode extends Node
     public function getLanguage() : ?string
     {
         return $this->language;
+    }
+
+    public function setStartingLineNumber(?int $lineNumber) : void
+    {
+        $this->startingLineNumber = $lineNumber;
+    }
+
+    public function getStartingLineNumber() : ?int
+    {
+        return $this->startingLineNumber;
     }
 
     public function setRaw(bool $raw) : void
