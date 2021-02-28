@@ -110,6 +110,18 @@ services:
         resource: '../src/phpDocumentor/Compiler'
 
     ###################################################################################
+    ## Definitions for specific flow related services #################################
+    ###################################################################################
+
+    phpdoc.flow.parser_provider:
+      class: phpDocumentor\FlowService\ServiceProvider
+      arguments: [!tagged_iterator { tag: 'phpdoc.flow.parser', index_by: 'documentation_type' }]
+
+    phpDocumentor\FlowService\Api\Parser:
+      tags:
+        - { name: 'phpdoc.flow.parser', documentation_type: 'phpDocumentor\Descriptor\ApiSetDescriptor' }
+
+    ###################################################################################
     ## Autoloading definitions for individual classes #################################
     ###################################################################################
 
@@ -229,8 +241,17 @@ services:
     phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory: ~
 
     phpDocumentor\Transformer\Writer\Collection:
-        arguments: [!tagged_iterator { tag: 'phpdoc.transformer.writer' }]
+      arguments: [!tagged_iterator { tag: 'phpdoc.transformer.writer' }]
 
     phpDocumentor\Transformer\Writer\Graph\PlantumlRenderer:
       arguments:
         $plantUmlBinaryPath: '%kernel.project_dir%/bin/plantuml'
+
+  ###################################################################################
+  ## Guides - EXPERIMENTAL ##########################################################
+  ###################################################################################
+    phpDocumentor\FlowService\Guide\Parser:
+      arguments:
+        $outputFormats: !tagged_iterator phpdoc.guides.format
+      tags:
+        - { name: 'phpdoc.flow.parser', documentation_type: 'phpDocumentor\Descriptor\GuideSetDescriptor' }

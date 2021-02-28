@@ -16,6 +16,7 @@ namespace phpDocumentor\Pipeline\Stage;
 use Exception;
 use phpDocumentor\Compiler\Compiler;
 use phpDocumentor\Compiler\CompilerPassInterface;
+use phpDocumentor\Descriptor\VersionDescriptor;
 
 /**
  * Compiles and links the ast objects into the full ast
@@ -40,9 +41,11 @@ final class Compile
      */
     public function __invoke(Payload $payload): Payload
     {
-        /** @var CompilerPassInterface $pass */
-        foreach ($this->compiler as $pass) {
-            $pass->execute($payload->getBuilder()->getProjectDescriptor());
+        /** @var VersionDescriptor $version */
+        foreach ($payload->getBuilder()->getProjectDescriptor()->getVersions() as $version) {
+            foreach ($version->getDocumentationSets() as $documentationSet) {
+                $this->compiler->compile($documentationSet);
+            }
         }
 
         return $payload;

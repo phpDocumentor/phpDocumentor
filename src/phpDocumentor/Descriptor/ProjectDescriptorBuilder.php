@@ -96,13 +96,4 @@ class ProjectDescriptorBuilder
     {
         $this->project->getVersions()->add($version);
     }
-
-    public function addDocumentationSet(string $versionNumber, DocumentationSetDescriptor $documentationSet): void
-    {
-        foreach ($this->project->getVersions() as $version) {
-            if ($version->getNumber() === $versionNumber) {
-                $version->getDocumentationSets()->add($documentationSet);
-            }
-        }
-    }
 }

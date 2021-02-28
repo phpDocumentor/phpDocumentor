@@ -40,7 +40,7 @@ class ElementsIndexBuilder implements CompilerPassInterface
         return 'Build "elements" index';
     }
 
-    public function execute(ProjectDescriptor $project): void
+    public function execute(\phpDocumentor\Descriptor\ApiSetDescriptor $project): void
     {
         $elementCollection = new Collection();
         $project->getIndexes()->set('elements', $elementCollection);

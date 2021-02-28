@@ -33,7 +33,7 @@ final class MarkerFromTagsExtractor implements CompilerPassInterface
         return 'Collect all markers embedded in tags';
     }
 
-    public function execute(ProjectDescriptor $project): void
+    public function execute(\phpDocumentor\Descriptor\ApiSetDescriptor $project): void
     {
         /** @var DescriptorAbstract $element */
         foreach ($project->getIndexes()->fetch('elements', new Collection()) as $element) {

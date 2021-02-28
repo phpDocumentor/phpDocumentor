@@ -20,4 +20,9 @@ use ArrayObject;
  */
 final class Configuration extends ArrayObject
 {
+    /** @return VersionSpecification[] */
+    public function getVersions(): array
+    {
+        return $this['phpdocumentor']['versions'];
+    }
 }

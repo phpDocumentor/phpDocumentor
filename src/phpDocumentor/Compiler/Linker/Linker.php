@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Compiler\Linker;
 
 use phpDocumentor\Compiler\CompilerPassInterface;
+use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\Descriptor;
@@ -81,7 +82,7 @@ class Linker implements CompilerPassInterface
         $this->descriptorRepository = $descriptorRepository;
     }
 
-    public function execute(ProjectDescriptor $project): void
+    public function execute(ApiSetDescriptor $project): void
     {
         $this->descriptorRepository->setObjectAliasesList($project->getIndexes()->elements->getAll());
         $this->substitute($project);

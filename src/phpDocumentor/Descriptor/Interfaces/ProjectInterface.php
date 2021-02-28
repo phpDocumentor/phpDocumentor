@@ -31,11 +31,4 @@ interface ProjectInterface
      * @return Collection<FileDescriptor>
      */
     public function getFiles(): Collection;
-
-    /**
-     * @return Collection<Collection<DescriptorAbstract>>
-     */
-    public function getIndexes(): Collection;
-
-    public function getNamespace(): NamespaceDescriptor;
 }

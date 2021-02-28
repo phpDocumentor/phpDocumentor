@@ -129,33 +129,24 @@ final class ApiSetDescriptorBuilder
         $this->name = '';
     }
 
-    public function getDocumentationSet(): DocumentationSetDescriptor
+    public function createDescriptors(ApiSetDescriptor $documentationSet): void
     {
-        $files = Collection::fromClassString(FileDescriptor::class);
-
         foreach ($this->project->getFiles() as $file) {
             $descriptor = $this->buildDescriptor($file, FileDescriptor::class);
             if ($descriptor === null) {
                 continue;
             }
 
-            $files->set($descriptor->getPath(), $descriptor);
+            $documentationSet->addFile($descriptor);
         }
 
-        $namespaces = Collection::fromClassString(NamespaceDescriptor::class);
         foreach ($this->project->getNamespaces() as $namespace) {
-            $namespaces->set(
-                (string) $namespace->getFqsen(),
-                $this->buildDescriptor($namespace, NamespaceDescriptor::class)
-            );
-        }
+            $descriptor = $this->buildDescriptor($namespace, NamespaceDescriptor::class);
+            if ($descriptor === null) {
+                continue;
+            }
 
-        return new ApiSetDescriptor(
-            $this->name,
-            $this->apiSpecification['source'],
-            $this->apiSpecification['output'],
-            $files,
-            $namespaces
-        );
+            $documentationSet->addNamespace($descriptor);
+        }
     }
 }

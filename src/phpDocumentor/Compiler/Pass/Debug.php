@@ -48,9 +48,9 @@ class Debug implements CompilerPassInterface
         return 'Analyze results and write report to log';
     }
 
-    public function execute(ProjectDescriptor $project): void
+    public function execute(\phpDocumentor\Descriptor\ApiSetDescriptor $project): void
     {
-        $this->analyzer->analyze($project);
-        $this->log->debug((string) $this->analyzer);
+//        $this->analyzer->analyze($project);
+//        $this->log->debug((string) $this->analyzer);
     }
 }

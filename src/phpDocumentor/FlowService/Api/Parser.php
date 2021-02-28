@@ -2,32 +2,24 @@
 
 declare(strict_types=1);
 
-/**
- * This file is part of phpDocumentor.
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- *
- * @link https://phpdoc.org
- */
-
-namespace phpDocumentor\Pipeline\Stage\Parser;
+namespace phpDocumentor\FlowService\Api;
 
 use phpDocumentor\Configuration\ApiSpecification;
-use phpDocumentor\Configuration\VersionSpecification;
+use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\ApiSetDescriptorBuilder;
+use phpDocumentor\Descriptor\DocumentationSetDescriptor;
+use phpDocumentor\FlowService\FlowService;
 use phpDocumentor\Parser\FileCollector;
+use phpDocumentor\Parser\Parser as ApiParser;
 use phpDocumentor\Parser\Middleware\ReEncodingMiddleware;
-use phpDocumentor\Parser\Parser;
 use phpDocumentor\Reflection\File;
 use phpDocumentor\Reflection\Php\Project;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
-use function current;
 
-final class ParseAPIS
+final class Parser implements FlowService
 {
-    /** @var Parser */
+    /** @var ApiParser */
     private $parser;
 
     /** @var LoggerInterface */
@@ -45,7 +37,7 @@ final class ParseAPIS
     public function __construct(
         ApiSetDescriptorBuilder $builder,
         FileCollector $fileCollector,
-        Parser $parser,
+        ApiParser $parser,
         LoggerInterface $logger,
         ReEncodingMiddleware $reEncodingMiddleware
     ) {
@@ -56,25 +48,20 @@ final class ParseAPIS
         $this->builder = $builder;
     }
 
-    public function __invoke(Payload $payload) : Payload
+    public function operate(DocumentationSetDescriptor $documentationSet): void
     {
-        /** @var VersionSpecification $version */
-        $version = current($payload->getConfig()['phpdocumentor']['versions']);
-
-        $projectBuilder = $payload->getBuilder();
-
-        foreach ($version->getApi() as $apiSpecification) {
-            $this->builder->reset();
-            $this->builder->setApiSpecification($apiSpecification);
-
-            $files = $this->collectFiles($apiSpecification);
-            $project = $this->createProject($apiSpecification, $files);
-
-            $this->builder->setProject($project);
-            $projectBuilder->addDocumentationSet($version->getNumber(), $this->builder->getDocumentationSet());
+        if (!$documentationSet instanceof ApiSetDescriptor) {
+            throw new \InvalidArgumentException('Invalid documentation set');
         }
 
-        return $payload;
+        $this->builder->reset();
+        $this->builder->setApiSpecification($documentationSet->getSettings());
+
+        $files = $this->collectFiles($documentationSet->getSettings());
+        $project = $this->createProject($documentationSet->getSettings(), $files);
+
+        $this->builder->setProject($project);
+        $this->builder->createDescriptors($documentationSet);
     }
 
     /** @return File[] */
