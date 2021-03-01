@@ -11,16 +11,17 @@ declare(strict_types=1);
  * @link https://phpdoc.org
  */
 
-namespace phpDocumentor\Transformer\Writer;
+namespace phpDocumentor\FlowService\Guide;
 
 use League\Tactician\CommandBus;
+use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\GuideSetDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\Descriptor\VersionDescriptor;
 use phpDocumentor\Dsn;
+use phpDocumentor\FlowService\FlowService;
 use phpDocumentor\Guides\RenderCommand;
 use phpDocumentor\Guides\Twig\EnvironmentBuilder;
-use phpDocumentor\Parser\FlySystemFactory;
+use phpDocumentor\FileSystem\FlySystemFactory;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory;
 use Psr\Log\LoggerInterface;
@@ -32,7 +33,7 @@ use function sprintf;
 /**
  * @experimental this feature is in alpha stages and can have unresolved issues or missing features.
  */
-final class RenderGuide extends WriterAbstract implements ProjectDescriptor\WithCustomSettings
+final class RenderGuide implements FlowService, ProjectDescriptor\WithCustomSettings
 {
     public const FEATURE_FLAG = 'guides.enabled';
 
@@ -66,41 +67,13 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
         return 'RenderGuide';
     }
 
-    public function transform(ProjectDescriptor $project, Transformation $transformation): void
+    public function operate(DocumentationSetDescriptor $documentationSet): void
     {
-        // Feature flag: Guides are disabled by default since this is an experimental feature
-        if (!($project->getSettings()->getCustom()[self::FEATURE_FLAG])) {
-            return;
-        }
-
         $this->logger->warning(
             'Generating guides is experimental, no BC guarantees are given, use at your own risk'
         );
 
-        /** @var VersionDescriptor $version */
-        foreach ($project->getVersions() as $version) {
-            foreach ($version->getDocumentationSets() as $documentationSet) {
-                if (!$documentationSet instanceof GuideSetDescriptor) {
-                    continue;
-                }
-
-                //TODO Extract this, as this code is dupplicated
-                $this->environmentBuilder->setEnvironmentFactory(
-                    function () use ($transformation, $project, $documentationSet) {
-                        $twig = $this->environmentFactory->create($project, $transformation->template());
-                        $twig->addGlobal('project', $project);
-                        $twig->addGlobal('usesNamespaces', count($project->getNamespace()->getChildren()) > 0);
-                        $twig->addGlobal('usesPackages', count($project->getPackage()->getChildren()) > 0);
-                        $twig->addGlobal('documentationSet', $documentationSet);
-                        $twig->addGlobal('destinationPath', null);
-
-                        return $twig;
-                    }
-                );
-
-                $this->renderDocumentationSet($documentationSet, $transformation);
-            }
-        }
+        $this->renderDocumentationSet($documentationSet);
     }
 
     public function getDefaultSettings(): array
@@ -110,10 +83,24 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
 
     private function renderDocumentationSet(
         GuideSetDescriptor $documentationSet,
+        ProjectDescriptor $project,
         Transformation $transformation
     ): void {
         $dsn = $documentationSet->getSource()->dsn();
         $stopwatch = $this->startRenderingSetMessage($dsn);
+
+        $this->environmentBuilder->setEnvironmentFactory(
+            function () use ($transformation, $project, $documentationSet) {
+                $twig = $this->environmentFactory->create($project, $transformation->template());
+                $twig->addGlobal('project', $project);
+                $twig->addGlobal('usesNamespaces', count($project->getNamespace()->getChildren()) > 0);
+                $twig->addGlobal('usesPackages', count($project->getPackage()->getChildren()) > 0);
+                $twig->addGlobal('documentationSet', $documentationSet);
+                $twig->addGlobal('destinationPath', null);
+
+                return $twig;
+            }
+        );
 
         $this->commandBus->handle(
             new RenderCommand(

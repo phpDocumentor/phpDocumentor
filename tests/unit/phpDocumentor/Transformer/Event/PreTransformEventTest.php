@@ -49,16 +49,16 @@ final class PreTransformEventTest extends TestCase
     }
 
     /**
-     * @covers ::getProject
-     * @covers ::setProject
+     * @covers ::getDocumentationSetDescriptor
+     * @covers ::setDocumentationSet
      */
     public function testSetAndGetProject(): void
     {
         $project = $this->prophesize(ProjectDescriptor::class);
-        $this->assertNull($this->fixture->getProject());
+        $this->assertNull($this->fixture->getDocumentationSetDescriptor());
 
-        $this->fixture->setProject($project->reveal());
+        $this->fixture->setDocumentationSet($project->reveal());
 
-        $this->assertSame($project->reveal(), $this->fixture->getProject());
+        $this->assertSame($project->reveal(), $this->fixture->getDocumentationSetDescriptor());
     }
 }

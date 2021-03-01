@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Event;
 
+use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Event\EventAbstract;
 use phpDocumentor\Transformer\Transformation;
@@ -22,8 +23,8 @@ use phpDocumentor\Transformer\Transformation;
  */
 final class PreTransformEvent extends EventAbstract
 {
-    /** @var ProjectDescriptor|null */
-    private $project;
+    /** @var DocumentationSetDescriptor|null */
+    private $documentationSetDescriptor;
 
     /** @var Transformation[] */
     private $transformations;
@@ -41,9 +42,9 @@ final class PreTransformEvent extends EventAbstract
     /**
      * Returns the descriptor describing the project.
      */
-    public function getProject(): ?ProjectDescriptor
+    public function getDocumentationSetDescriptor(): ?DocumentationSetDescriptor
     {
-        return $this->project;
+        return $this->documentationSetDescriptor;
     }
 
     /**
@@ -51,9 +52,9 @@ final class PreTransformEvent extends EventAbstract
      *
      * @return $this
      */
-    public function setProject(ProjectDescriptor $project): self
+    public function setDocumentationSet(DocumentationSetDescriptor $documentationSetDescriptor): self
     {
-        $this->project = $project;
+        $this->documentationSetDescriptor = $documentationSetDescriptor;
 
         return $this;
     }
