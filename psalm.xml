@@ -46,6 +46,8 @@
                 <!-- psalm bug -->
                 <referencedFunction name="phpDocumentor\Descriptor\Builder\AssemblerFactory::register" />
                 <referencedFunction name="phpDocumentor\Descriptor\Builder\AssemblerFactory::registerFallback" />
+                <!-- requires config design improvements -->
+                <referencedFunction name="phpDocumentor\Transformer\Template\Factory::getTemplates" />
             </errorLevel>
         </InvalidArgument>
 

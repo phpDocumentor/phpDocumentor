@@ -328,7 +328,7 @@ HELP
                 $output->writeln('Applying transformations (can take a while)');
                 $this->transformerProgressBar = new ProgressBar(
                     $output,
-                    count($event->getSubject()->getTemplates()->getTransformations())
+                    count($event->getTransformations())
                 );
             }
         );

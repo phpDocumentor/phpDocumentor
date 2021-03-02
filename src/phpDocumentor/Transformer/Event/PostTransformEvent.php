@@ -15,6 +15,7 @@ namespace phpDocumentor\Transformer\Event;
 
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Event\EventAbstract;
+use phpDocumentor\Transformer\Transformation;
 
 /**
  * Event happen right after all transformations have completed.
@@ -23,6 +24,9 @@ final class PostTransformEvent extends EventAbstract
 {
     /** @var ProjectDescriptor|null */
     private $project;
+
+    /** @var Transformation[] */
+    private $tranformations;
 
     /**
      * Creates a new instance of a derived object and return that.
@@ -52,5 +56,17 @@ final class PostTransformEvent extends EventAbstract
         $this->project = $project;
 
         return $this;
+    }
+
+    /** @param Transformation[] $transformations */
+    public function setTransformations(array $transformations) : void
+    {
+        $this->tranformations = $transformations;
+    }
+
+    /** @return Transformation[] */
+    public function getTransformations() : array
+    {
+        return $this->tranformations;
     }
 }

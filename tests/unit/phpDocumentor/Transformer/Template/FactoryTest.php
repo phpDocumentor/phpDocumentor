@@ -15,14 +15,15 @@ namespace phpDocumentor\Transformer\Template;
 
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
+use phpDocumentor\Dsn;
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\Parser\FlySystemFactory;
-use phpDocumentor\Transformer\Transformer;
 use phpDocumentor\Transformer\Writer\Collection as WriterCollection;
+use phpDocumentor\Transformer\Writer\WriterAbstract;
 use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
-use Psr\Log\NullLogger;
 
 /**
  * @coversDefaultClass \phpDocumentor\Transformer\Template\Factory
@@ -49,13 +50,20 @@ final class FactoryTest extends TestCase
     protected function setUp() : void
     {
         $this->globalTemplates = vfsStream::setup();
-
+        $this->writerCollectionMock = $this->prophesize(WriterCollection::class);
+        $this->writerCollectionMock->offsetGet(Argument::any())->willReturn(
+            $this->prophesize(WriterAbstract::class)->reveal()
+        );
         $this->flySystemFactory = $this->faker()->flySystemFactory();
-        $this->fixture = new Factory($this->flySystemFactory, vfsStream::url('root'));
+        $this->fixture = new Factory(
+            $this->writerCollectionMock->reveal(),
+            $this->flySystemFactory,
+            vfsStream::url('root')
+        );
     }
 
     /**
-     * @covers ::get
+     * @covers ::getTemplates
      * @covers ::createTemplateFromXml
      */
     public function testThatATemplateCanBeLoaded() : void
@@ -65,19 +73,11 @@ final class FactoryTest extends TestCase
         $templateDirectory = $this->givenAnExampleTemplateInDirectoryCalled($templateName);
         $this->globalTemplates->addChild($templateDirectory);
 
-        $templateCollection = $this->prophesize(Collection::class);
-        $templateCollection->getTemplatesPath()->shouldBeCalled()->willReturn($this->globalTemplates->url());
-
-        $transformer = new Transformer(
-            $templateCollection->reveal(),
-            $this->prophesize(WriterCollection::class)->reveal(),
-            new NullLogger(),
-            $this->flySystemFactory
-        );
-        $transformer->setTarget(vfsStream::url('root'));
-
         // Act
-        $result = $this->fixture->get($transformer, $templateName);
+        $result = $this->fixture->getTemplates(
+            [['name' => $templateName]],
+            $this->flySystemFactory->create(Dsn::createFromString('./build'))
+        )[$templateName];
 
         // Assert
         $this->assertSame($templateName, $result->getName());
@@ -98,27 +98,22 @@ final class FactoryTest extends TestCase
     }
 
     /**
-     * @covers ::get
+     * @covers ::getTemplates
      */
     public function testThatAnErrorOccuredWhenATemplateCannotBeFound() : void
     {
         $this->expectException(TemplateNotFound::class);
 
         // Arrange
-        $templateName = 'does-not-exist';
-        $templateCollection = $this->prophesize(Collection::class);
-        $templateCollection->getTemplatesPath()->willReturn($this->globalTemplates->url());
-
-        $transformer = new Transformer(
-            $templateCollection->reveal(),
-            $this->prophesize(WriterCollection::class)->reveal(),
-            new NullLogger(),
-            $this->flySystemFactory
-        );
-        $transformer->setTarget(vfsStream::url('root'));
+        $templateName = 'default';
+        $templateDirectory = $this->givenAnExampleTemplateInDirectoryCalled($templateName);
+        $this->globalTemplates->addChild($templateDirectory);
 
         // Act
-        $this->fixture->get($transformer, $templateName);
+        $this->fixture->getTemplates(
+            [['name' => 'does-not-exist']],
+            $this->flySystemFactory->create(Dsn::createFromString('./build'))
+        );
     }
 
     /**

@@ -17,48 +17,14 @@ use ArrayObject;
 //phpcs:ignore SlevomatCodingStandard.Namespaces.UnusedUses.UnusedUse
 use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
-use phpDocumentor\Transformer\Transformer;
-use phpDocumentor\Transformer\Writer\Collection as WriterCollection;
 
 /**
  * Contains a collection of Templates that may be queried.
  *
  * @template-extends ArrayObject<string, Template>
  */
-class Collection extends ArrayObject
+final class Collection extends ArrayObject
 {
-    /** @var Factory */
-    private $factory;
-
-    /** @var WriterCollection */
-    private $writerCollection;
-
-    /**
-     * Constructs this collection and requires a factory to load templates.
-     */
-    public function __construct(Factory $factory, WriterCollection $writerCollection)
-    {
-        parent::__construct([]);
-        $this->factory = $factory;
-        $this->writerCollection = $writerCollection;
-    }
-
-    /**
-     * Loads a template with the given name or file path.
-     */
-    public function load(Transformer $transformer, string $nameOrPath) : void
-    {
-        $template = $this->factory->get($transformer, $nameOrPath);
-
-        /** @var Transformation $transformation */
-        foreach ($template as $transformation) {
-            $writer = $this->writerCollection[$transformation->getWriter()];
-            $writer->checkRequirements();
-        }
-
-        $this[$template->getName()] = $template;
-    }
-
     /**
      * Returns a list of all transformations contained in the templates of this collection.
      *
@@ -74,13 +40,5 @@ class Collection extends ArrayObject
         }
 
         return $result;
-    }
-
-    /**
-     * Returns the path where all templates are stored.
-     */
-    public function getTemplatesPath() : string
-    {
-        return $this->factory->getTemplatesPath();
     }
 }

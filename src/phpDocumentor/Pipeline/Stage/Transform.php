@@ -5,18 +5,19 @@ declare(strict_types=1);
 namespace phpDocumentor\Pipeline\Stage;
 
 use Exception;
+use League\Flysystem\FilesystemInterface;
 use phpDocumentor\Dsn;
 use phpDocumentor\Event\Dispatcher;
-use phpDocumentor\Reflection\DocBlock\ExampleFinder;
+use phpDocumentor\Parser\FlySystemFactory;
+use phpDocumentor\Transformer\Event\PostTransformEvent;
 use phpDocumentor\Transformer\Event\PreTransformationEvent;
 use phpDocumentor\Transformer\Event\PreTransformEvent;
 use phpDocumentor\Transformer\Event\WriterInitializationEvent;
+use phpDocumentor\Transformer\Template\Factory;
 use phpDocumentor\Transformer\Transformer;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Stopwatch\Stopwatch;
-use function array_column;
 use function count;
 use function get_class;
 use function getcwd;
@@ -42,20 +43,25 @@ class Transform
     /** @var LoggerInterface */
     private $logger;
 
-    /** @var ExampleFinder */
-    private $exampleFinder;
+    /** @var Factory */
+    private $factory;
+
+    /** @var FlySystemFactory */
+    private $flySystemFactory;
 
     /**
      * Initializes the command with all necessary dependencies to construct human-suitable output from the AST.
      */
     public function __construct(
         Transformer $transformer,
+        FlySystemFactory $flySystemFactory,
         LoggerInterface $logger,
-        ExampleFinder $exampleFinder
+        Factory $factory
     ) {
         $this->transformer   = $transformer;
-        $this->exampleFinder = $exampleFinder;
         $this->logger        = $logger;
+        $this->factory       = $factory;
+        $this->flySystemFactory = $flySystemFactory;
 
         $this->connectOutputToEvents();
     }
@@ -69,11 +75,33 @@ class Transform
     {
         $configuration = $payload->getConfig();
 
-        $this->setTargetLocationBasedOnDsn($configuration['phpdocumentor']['paths']['output']);
-        $this->loadTemplatesBasedOnNames($configuration['phpdocumentor']['templates']);
-        $this->provideLocationsOfExamples();
+        $templates = $this->factory->getTemplates(
+            $configuration['phpdocumentor']['templates'],
+            $this->createFileSystem($configuration['phpdocumentor']['paths']['output'])
+        );
+        $project = $payload->getBuilder()->getProjectDescriptor();
+        $transformations = $templates->getTransformations();
 
-        $this->transformer->execute($payload->getBuilder()->getProjectDescriptor());
+        /** @var PreTransformEvent $preTransformEvent */
+        $preTransformEvent = PreTransformEvent::createInstance($this);
+        $preTransformEvent->setProject($project);
+        $preTransformEvent->setTransformations($transformations);
+        Dispatcher::getInstance()->dispatch(
+            $preTransformEvent,
+            Transformer::EVENT_PRE_TRANSFORM
+        );
+
+        $this->transformer->execute(
+            $project,
+            $transformations
+        );
+
+        /** @var PostTransformEvent $postTransformEvent */
+        $postTransformEvent = PostTransformEvent::createInstance($this);
+        $postTransformEvent->setProject($project);
+        $postTransformEvent->setTransformations($transformations);
+
+        Dispatcher::getInstance()->dispatch($postTransformEvent, Transformer::EVENT_POST_TRANSFORM);
 
         return $payload;
     }
@@ -87,10 +115,7 @@ class Transform
         $dispatcherInstance->addListener(
             Transformer::EVENT_PRE_TRANSFORM,
             function (PreTransformEvent $event) : void {
-                /** @var Transformer $transformer */
-                $transformer     = $event->getSubject();
-                $templates       = $transformer->getTemplates();
-                $transformations = $templates->getTransformations();
+                $transformations = $event->getTransformations();
                 $this->logger->info(sprintf("\nApplying %d transformations", count($transformations)));
             }
         );
@@ -114,20 +139,7 @@ class Transform
         );
     }
 
-    /**
-     * @param array<int, string> $templateNames
-     */
-    private function loadTemplatesBasedOnNames(array $templateNames) : void
-    {
-        $stopWatch = new Stopwatch();
-        foreach (array_column($templateNames, 'name') as $template) {
-            $stopWatch->start('load template');
-            $this->transformer->getTemplates()->load($this->transformer, $template);
-            $stopWatch->stop('load template');
-        }
-    }
-
-    private function setTargetLocationBasedOnDsn(Dsn $dsn) : void
+    private function createFileSystem(Dsn $dsn) : FilesystemInterface
     {
         $target     = $dsn->getPath();
         $fileSystem = new Filesystem();
@@ -135,14 +147,12 @@ class Transform
             $target = getcwd() . DIRECTORY_SEPARATOR . $target;
         }
 
-        $this->transformer->setTarget((string) $target);
-    }
+        $destination = $this->flySystemFactory->create(Dsn::createFromString((string) $target));
 
-    private function provideLocationsOfExamples() : void
-    {
-        //TODO: Should determine root based on filesystems. Could be an issue for multiple.
-        // Need some config update here.
-        $this->exampleFinder->setSourceDirectory(getcwd());
-        $this->exampleFinder->setExampleDirectories(['.']);
+        //TODO: the guides to need this, can we get rid of these lines?
+        $this->transformer->setTarget((string) $target);
+        $this->transformer->setDestination($destination);
+
+        return $destination;
     }
 }

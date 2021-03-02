@@ -13,23 +13,18 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer;
 
-use InvalidArgumentException;
-use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Dsn;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Parser\FlySystemFactory;
 use phpDocumentor\Transformer\Event\PostTransformationEvent;
-use phpDocumentor\Transformer\Event\PostTransformEvent;
 use phpDocumentor\Transformer\Event\PreTransformationEvent;
-use phpDocumentor\Transformer\Event\PreTransformEvent;
 use phpDocumentor\Transformer\Event\WriterInitializationEvent;
 use phpDocumentor\Transformer\Writer\Initializable;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
-use RuntimeException;
 use Webmozart\Assert\Assert;
 use function in_array;
 use function sprintf;
@@ -60,14 +55,8 @@ class Transformer
     /** @var FilesystemInterface|null $destination The destination filesystem to write to */
     private $destination = null;
 
-    /** @var Template\Collection $templates */
-    protected $templates;
-
     /** @var Writer\Collection $writers */
     protected $writers;
-
-    /** @var Transformation[] $transformations */
-    protected $transformations = [];
 
     /** @var LoggerInterface */
     private $logger;
@@ -79,12 +68,10 @@ class Transformer
      * Wires the template collection and writer collection to this transformer.
      */
     public function __construct(
-        Template\Collection $templateCollection,
         Writer\Collection $writerCollection,
         LoggerInterface $logger,
         FlySystemFactory $flySystemFactory
     ) {
-        $this->templates = $templateCollection;
         $this->writers = $writerCollection;
         $this->logger = $logger;
         $this->flySystemFactory = $flySystemFactory;
@@ -114,6 +101,11 @@ class Transformer
         return $this->target;
     }
 
+    public function setDestination(FilesystemInterface $filesystem) : void
+    {
+        $this->destination = $filesystem;
+    }
+
     public function destination() : FilesystemInterface
     {
         $destination = $this->destination;
@@ -123,51 +115,15 @@ class Transformer
         return $destination;
     }
 
-    public function getTemplatesDirectory() : Filesystem
-    {
-        $dsnString = $this->getTemplates()->getTemplatesPath();
-
-        try {
-            $filesystem = $this->flySystemFactory->create(Dsn::createFromString($dsnString));
-        } catch (InvalidArgumentException $e) {
-            throw new RuntimeException(
-                'Unable to access the folder with the global templates, received DSN is: ' . $dsnString
-            );
-        }
-
-        return $filesystem;
-    }
-
-    /**
-     * Returns the list of templates which are going to be adopted.
-     */
-    public function getTemplates() : Template\Collection
-    {
-        return $this->templates;
-    }
-
     /**
      * Transforms the given project into a series of artifacts as provided by the templates.
+     *
+     * @param Transformation[] $transformations
      */
-    public function execute(ProjectDescriptor $project) : void
+    public function execute(ProjectDescriptor $project, array $transformations) : void
     {
-        /** @var PreTransformEvent $preTransformEvent */
-        $preTransformEvent = PreTransformEvent::createInstance($this);
-        $preTransformEvent->setProject($project);
-        Dispatcher::getInstance()->dispatch(
-            $preTransformEvent,
-            self::EVENT_PRE_TRANSFORM
-        );
-
-        $transformations = $this->getTemplates()->getTransformations();
         $this->initializeWriters($project, $transformations);
         $this->transformProject($project, $transformations);
-
-        /** @var PostTransformEvent $postTransformEvent */
-        $postTransformEvent = PostTransformEvent::createInstance($this);
-        $postTransformEvent->setProject($project);
-
-        Dispatcher::getInstance()->dispatch($postTransformEvent, self::EVENT_POST_TRANSFORM);
 
         $this->logger->log(LogLevel::NOTICE, 'Finished transformation process');
     }
