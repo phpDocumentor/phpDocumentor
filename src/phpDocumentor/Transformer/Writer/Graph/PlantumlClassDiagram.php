@@ -32,9 +32,13 @@ final class PlantumlClassDiagram implements Generator
     /** @var LoggerInterface */
     private $logger;
 
-    public function __construct(LoggerInterface $logger)
+    /** @var string */
+    private $plantUmlBinaryPath;
+
+    public function __construct(LoggerInterface $logger, string $plantUmlBinaryPath)
     {
         $this->logger = $logger;
+        $this->plantUmlBinaryPath = $plantUmlBinaryPath;
     }
 
     public function create(ProjectDescriptor $project, string $filename) : void
@@ -58,7 +62,7 @@ $namespace
 PUML;
         file_put_contents($pumlFileLocation, $output);
 
-        $process = new Process(['../../../../../bin/plantuml', '-tsvg', $pumlFileLocation], __DIR__, null, null, 600.0);
+        $process = new Process([$this->plantUmlBinaryPath, '-tsvg', $pumlFileLocation], __DIR__, null, null, 600.0);
         $process->run();
 
         if ($process->isSuccessful()) {

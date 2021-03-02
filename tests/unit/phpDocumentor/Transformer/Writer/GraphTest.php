@@ -30,7 +30,7 @@ final class GraphTest extends TestCase
 
     protected function setUp() : void
     {
-        $this->graph = new Graph(new GraphVizClassDiagram(), new PlantumlClassDiagram(new NullLogger()));
+        $this->graph = new Graph(new GraphVizClassDiagram(), new PlantumlClassDiagram(new NullLogger(), ''));
     }
 
     /**
