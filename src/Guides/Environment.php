@@ -382,7 +382,10 @@ final class Environment
 
     public function outputUrl(string $url) : ?string
     {
-        return $this->urlGenerator->absoluteUrl($this->getConfiguration()->getOutputFolder(), $this->canonicalUrl($url));
+        return $this->urlGenerator->absoluteUrl(
+            $this->getConfiguration()->getOutputFolder(),
+            $this->canonicalUrl($url)
+        );
     }
 
     public function generateUrl(string $path) : string

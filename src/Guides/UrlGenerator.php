@@ -49,9 +49,7 @@ final class UrlGenerator
     }
 
     /**
-     * Resolves a relative URL/
-     * @param string $url
-     * @return string
+     * Resolves a relative URL.
      */
     public function relativeUrl(string $url) : string
     {

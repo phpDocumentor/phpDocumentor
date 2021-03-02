@@ -80,7 +80,7 @@ final class Renderer
      *   extension; and this extension would actually be nice to re-use in the rest of phpDocumentor as well. First,
      *   make it work here; then adapt for the rest :)
      */
-    public function setGuidesEnvironment(Environment $environment): void
+    public function setGuidesEnvironment(Environment $environment) : void
     {
         $this->environment->addGlobal('env', $environment);
     }

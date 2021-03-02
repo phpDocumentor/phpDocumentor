@@ -18,6 +18,8 @@ use phpDocumentor\Guides\Environment;
 use Psr\Log\LoggerInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
+use function sprintf;
+use function trim;
 
 final class AssetsExtension extends AbstractExtension
 {
@@ -42,6 +44,8 @@ final class AssetsExtension extends AbstractExtension
      * The layout for guides includes a BASE tag in the head, which creates the need for all relative urls to actually
      * be relative not to the current file's path; but the root of the Documentation Set. This means that, when
      * rendering paths, you always need to include the canonical path; not that relative to the current file.
+     *
+     * @param mixed[] $context
      */
     public function asset(array $context, string $path) : string
     {
