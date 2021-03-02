@@ -40,6 +40,7 @@ class DocumentNodeRenderer implements NodeRenderer, FullDocumentNodeRenderer
 
     public function renderDocument() : string
     {
+        $this->renderer->setGuidesEnvironment($this->document->getEnvironment());
         $this->renderer->setDestination($this->document->getEnvironment()->getUrl());
 
         $output = $this->render();

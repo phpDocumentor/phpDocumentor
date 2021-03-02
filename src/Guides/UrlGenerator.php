@@ -29,7 +29,7 @@ final class UrlGenerator
             return $path;
         }
 
-        return $this->relativeUrl($dirName, $path);
+        return $this->relativeUrl($path);
     }
 
     /**
@@ -50,8 +50,10 @@ final class UrlGenerator
 
     /**
      * Resolves a relative URL/
+     * @param string $url
+     * @return string
      */
-    public function relativeUrl(string $basePath, string $url) : string
+    public function relativeUrl(string $url) : string
     {
         $uri = UriFactory::createUri($url);
 

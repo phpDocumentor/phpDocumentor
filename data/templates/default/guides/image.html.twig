@@ -1,1 +1,8 @@
-<img src="{{ imageNode.url }}" {% for key, value in imageNode.options %}{{ key }}="{{ value }}" {% endfor %}/>
+<img
+    src="{{ asset(url) }}"
+    {% if width %}width="{{ width }}"{% endif%}
+    {% if height %}height="{{ height }}"{% endif%}
+    {% if align %}align="{{ align }}"{% endif%}
+    {% if alt %}alt="{{ alt }}"{% endif%}
+    {% if class %}class="{{ class }}"{% endif%}
+/>

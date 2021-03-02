@@ -18,6 +18,7 @@ use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Guides\Twig\AssetsExtension;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory;
+use Psr\Log\LoggerInterface;
 use RuntimeException;
 
 final class Renderer
@@ -28,9 +29,16 @@ final class Renderer
     /** @var TemplateRenderer|null */
     private $templateRenderer;
 
-    public function __construct(EnvironmentFactory $environmentFactory)
+    /** @var \Twig\Environment|null */
+    private $environment;
+
+    /** @var LoggerInterface */
+    private $logger;
+
+    public function __construct(EnvironmentFactory $environmentFactory, LoggerInterface $logger)
     {
         $this->environmentFactory = $environmentFactory;
+        $this->logger = $logger;
     }
 
     public function initialize(
@@ -40,9 +48,14 @@ final class Renderer
     ) : void {
         $targetDirectory = $documentationSet->getOutput();
 
-        $environment = $this->environmentFactory->create($project, $transformation, $targetDirectory);
-        $environment->addExtension(new AssetsExtension());
-        $this->templateRenderer = new TemplateRenderer($environment, 'guides', $targetDirectory);
+        $this->environment = $this->environmentFactory->create($project, $transformation, $targetDirectory);
+        $this->environment->addExtension(new AssetsExtension($this->logger));
+
+        // pre-set the global variable so that we can update it later
+        $this->environment->addGlobal('env', null);
+        $this->environment->addGlobal('destination', $transformation->getTransformer()->destination());
+
+        $this->templateRenderer = new TemplateRenderer($this->environment, 'guides', $targetDirectory);
     }
 
     /**
@@ -60,5 +73,15 @@ final class Renderer
     public function setDestination(string $destination) : void
     {
         $this->templateRenderer->setDestination($destination);
+    }
+
+    /**
+     * @todo I am not convinced that such a specific solution for Guides would be best since it is used in the Assets
+     *   extension; and this extension would actually be nice to re-use in the rest of phpDocumentor as well. First,
+     *   make it work here; then adapt for the rest :)
+     */
+    public function setGuidesEnvironment(Environment $environment): void
+    {
+        $this->environment->addGlobal('env', $environment);
     }
 }
