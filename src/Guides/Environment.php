@@ -367,9 +367,7 @@ final class Environment
 
     public function relativeUrl(?string $url) : string
     {
-        $basePath = '/' . $this->getConfiguration()->getOutputFolder() . '/' . $this->getCurrentFileName() . '.html';
-
-        return $this->urlGenerator->relativeUrl($basePath, $url);
+        return $this->urlGenerator->relativeUrl($url);
     }
 
     public function absoluteUrl(string $url) : string
@@ -382,9 +380,22 @@ final class Environment
         return $this->urlGenerator->canonicalUrl($this->getDirName(), $url);
     }
 
+    public function outputUrl(string $url) : ?string
+    {
+        return $this->urlGenerator->absoluteUrl(
+            $this->getConfiguration()->getOutputFolder(),
+            $this->canonicalUrl($url)
+        );
+    }
+
     public function generateUrl(string $path) : string
     {
         return $this->urlGenerator->generateUrl($path, $this->getDirName());
+    }
+
+    public function absoluteRelativePath(string $url) : string
+    {
+        return $this->currentDirectory . '/' . $this->getDirName() . '/' . $this->relativeUrl($url);
     }
 
     public function getDirName() : string
@@ -416,11 +427,6 @@ final class Environment
     public function setCurrentDirectory(string $directory) : void
     {
         $this->currentDirectory = $directory;
-    }
-
-    public function absoluteRelativePath(string $url) : string
-    {
-        return $this->currentDirectory . '/' . $this->getDirName() . '/' . $this->relativeUrl($url);
     }
 
     public function getUrl() : string

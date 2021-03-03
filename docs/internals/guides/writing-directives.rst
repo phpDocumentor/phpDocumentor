@@ -25,11 +25,11 @@ action.
 Examples
 --------
 
-.. code::
+.. code-block::
     .. DANGER::
        Beware killer rabbits!
 
-.. code::
+.. code-block::
     .. image:: picture.jpeg
        :height: 100px
        :width: 200 px
@@ -83,7 +83,7 @@ At time of writing, not much is known on what this exactly is or does. I infer i
 
 When I find out, I will write it down.
 
-.. code::
+.. code-block::
 
    A directive that parses the sub block and call the processSub that can
    be overloaded, like :

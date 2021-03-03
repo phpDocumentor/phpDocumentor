@@ -36,7 +36,12 @@ class ImageNodeRenderer implements NodeRenderer
         return $this->renderer->render(
             'image.html.twig',
             [
-                'imageNode' => $this->imageNode,
+                'url' => $this->imageNode->getUrl(),
+                'align' => $this->imageNode->getOptions()['align'] ?? null,
+                'height' => $this->imageNode->getOptions()['height'] ?? null,
+                'width' => $this->imageNode->getOptions()['width'] ?? null,
+                'class' => $this->imageNode->getClassesString(),
+                'alt' => $this->imageNode->getOptions()['alt'] ?? null,
             ]
         );
     }
