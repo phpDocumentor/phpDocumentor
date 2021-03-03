@@ -28,6 +28,13 @@ class UmlNodeRenderer implements NodeRenderer
 
     public function render(): string
     {
-        return $this->plantumlRenderer->render($this->umlNode->getValue()) ?: '';
+        return $this->umlNode->getEnvironment()->getRenderer()
+            ->render(
+                'uml.html.twig',
+                [
+                    'umlNode' => $this->umlNode,
+                    'svg' => $this->plantumlRenderer->render($this->umlNode->getValue()) ?: '',
+                ]
+            );
     }
 }

@@ -27,6 +27,13 @@ final class PlantumlRenderer
 
         $output = <<<PUML
 @startuml
+   skinparam ArrowColor #516f42
+   skinparam activityBorderColor #516f42
+   skinparam activityBackgroundColor #ffffff
+   skinparam activityDiamondBorderColor #516f42
+   skinparam activityDiamondBackgroundColor #ffffff
+   skinparam shadowing false
+
 $diagram
 @enduml
 PUML;

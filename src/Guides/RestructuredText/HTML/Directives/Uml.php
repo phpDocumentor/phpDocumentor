@@ -38,6 +38,8 @@ class Uml extends Directive
         }
 
         $node = $parser->getNodeFactory()->createUmlNode($node->getValue());
+        $node->setClasses(explode(' ', $options['classes'] ?? ''));
+        $node->setCaption($data);
 
         if ($variable !== '') {
             $environment = $parser->getEnvironment();
