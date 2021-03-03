@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Pipeline\Stage;
 
+use League\Flysystem\Adapter\NullAdapter;
+use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemInterface;
 use Mockery\LegacyMockInterface;
 use Mockery\MockInterface;
@@ -50,7 +52,8 @@ final class TransformTest extends TestCase
     public function setUp() : void
     {
         $projectDescriptor = new ProjectDescriptor('test');
-        $this->flySystemFactory         = $this->faker()->flySystemFactory();
+        $this->flySystemFactory         = $this->prophesize(FlySystemFactory::class);
+        $this->flySystemFactory->create(Argument::type(Dsn::class))->willReturn(new Filesystem(new NullAdapter()));
         $this->projectDescriptorBuilder = $this->prophesize(ProjectDescriptorBuilder::class);
         $this->projectDescriptorBuilder->getProjectDescriptor()->willReturn($projectDescriptor);
         $this->transformer              = $this->prophesize(Transformer::class);
@@ -61,7 +64,7 @@ final class TransformTest extends TestCase
 
         $this->transform = new Transform(
             $this->transformer->reveal(),
-            $this->flySystemFactory,
+            $this->flySystemFactory->reveal(),
             $this->logger->reveal(),
             $templateFactory->reveal()
         );
