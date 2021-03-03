@@ -44,7 +44,7 @@ class Transform
     private $logger;
 
     /** @var Factory */
-    private $factory;
+    private $templateFactory;
 
     /** @var FlySystemFactory */
     private $flySystemFactory;
@@ -56,11 +56,11 @@ class Transform
         Transformer $transformer,
         FlySystemFactory $flySystemFactory,
         LoggerInterface $logger,
-        Factory $factory
+        Factory $templateFactory
     ) {
         $this->transformer   = $transformer;
         $this->logger        = $logger;
-        $this->factory       = $factory;
+        $this->templateFactory  = $templateFactory;
         $this->flySystemFactory = $flySystemFactory;
 
         $this->connectOutputToEvents();
@@ -75,7 +75,7 @@ class Transform
     {
         $configuration = $payload->getConfig();
 
-        $templates = $this->factory->getTemplates(
+        $templates = $this->templateFactory->getTemplates(
             $configuration['phpdocumentor']['templates'],
             $this->createFileSystem($configuration['phpdocumentor']['paths']['output'])
         );

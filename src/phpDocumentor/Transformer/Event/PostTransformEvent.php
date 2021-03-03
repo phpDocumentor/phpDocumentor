@@ -26,7 +26,7 @@ final class PostTransformEvent extends EventAbstract
     private $project;
 
     /** @var Transformation[] */
-    private $tranformations;
+    private $transformations;
 
     /**
      * Creates a new instance of a derived object and return that.
@@ -61,12 +61,12 @@ final class PostTransformEvent extends EventAbstract
     /** @param Transformation[] $transformations */
     public function setTransformations(array $transformations) : void
     {
-        $this->tranformations = $transformations;
+        $this->transformations = $transformations;
     }
 
     /** @return Transformation[] */
     public function getTransformations() : array
     {
-        return $this->tranformations;
+        return $this->transformations;
     }
 }
