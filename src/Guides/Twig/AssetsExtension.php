@@ -18,6 +18,7 @@ use phpDocumentor\Guides\Environment;
 use Psr\Log\LoggerInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
+use Webmozart\Assert\Assert;
 use function sprintf;
 use function trim;
 
@@ -71,7 +72,7 @@ final class AssetsExtension extends AbstractExtension
 
         $sourcePath = $environment->absoluteRelativePath($path);
         $outputPath = $environment->outputUrl($path);
-
+        Assert::string($outputPath);
         if ($environment->getOrigin()->has($sourcePath) === false) {
             $this->logger->error(sprintf('Image reference not found "%s"', $sourcePath));
 
