@@ -31,6 +31,7 @@ use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\Nodes\TableNode;
 use phpDocumentor\Guides\Nodes\TitleNode;
 use phpDocumentor\Guides\Nodes\TocNode;
+use phpDocumentor\Guides\Nodes\UmlNode;
 use phpDocumentor\Guides\Renderers\CallableNodeRenderer;
 use phpDocumentor\Guides\Renderers\CallableNodeRendererFactory;
 use phpDocumentor\Guides\Renderers\Html\AnchorNodeRenderer;
@@ -52,11 +53,21 @@ use phpDocumentor\Guides\Renderers\Html\TitleNodeRenderer;
 use phpDocumentor\Guides\Renderers\Html\TocNodeRenderer;
 use phpDocumentor\Guides\Renderers\ListNodeRenderer;
 use phpDocumentor\Guides\Renderers\NodeRendererFactory;
+use phpDocumentor\Guides\Renderers\UmlNodeRenderer;
 use phpDocumentor\Guides\RestructuredText;
 use phpDocumentor\Guides\RestructuredText\Formats\Format;
+use phpDocumentor\Transformer\Writer\Graph\PlantumlRenderer;
 
 final class HTMLFormat implements Format
 {
+    /** @var PlantumlRenderer */
+    private $plantumlRenderer;
+
+    public function __construct(PlantumlRenderer $plantumlRenderer)
+    {
+        $this->plantumlRenderer = $plantumlRenderer;
+    }
+
     public function getFileExtension() : string
     {
         return Format::HTML;
@@ -67,6 +78,7 @@ final class HTMLFormat implements Format
         return [
             new RestructuredText\HTML\Directives\Image(),
             new RestructuredText\HTML\Directives\Figure(),
+            new RestructuredText\HTML\Directives\Uml(),
             new RestructuredText\HTML\Directives\Meta(),
             new RestructuredText\HTML\Directives\Stylesheet(),
             new RestructuredText\HTML\Directives\Title(),
@@ -100,6 +112,11 @@ final class HTMLFormat implements Format
             FigureNode::class => new CallableNodeRendererFactory(
                 static function (FigureNode $node) {
                     return new FigureNodeRenderer($node);
+                }
+            ),
+            UmlNode::class => new CallableNodeRendererFactory(
+                function (UmlNode $node) {
+                    return new UmlNodeRenderer($node, $this->plantumlRenderer);
                 }
             ),
             ImageNode::class => new CallableNodeRendererFactory(

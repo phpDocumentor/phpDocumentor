@@ -8,7 +8,6 @@ Generating the documentation for a project involves a fair number of steps but c
 Activity Diagram:
 
 .. uml::
-
    skinparam activityBorderColor #516f42
    skinparam activityBackgroundColor #a3dc7f
    skinparam shadowing false

@@ -6,6 +6,7 @@ namespace phpDocumentor\Guides\Renderers;
 
 use phpDocumentor\Guides\Nodes\UmlNode;
 use phpDocumentor\Guides\Renderer;
+use phpDocumentor\Transformer\Writer\Graph\PlantumlRenderer;
 
 class UmlNodeRenderer implements NodeRenderer
 {
@@ -15,14 +16,18 @@ class UmlNodeRenderer implements NodeRenderer
     /** @var Renderer */
     private $renderer;
 
-    public function __construct(UmlNode $umlNode)
+    /** @var PlantumlRenderer */
+    private $plantumlRenderer;
+
+    public function __construct(UmlNode $umlNode, PlantumlRenderer $plantumlRenderer)
     {
         $this->umlNode  = $umlNode;
         $this->renderer = $umlNode->getEnvironment()->getRenderer();
+        $this->plantumlRenderer = $plantumlRenderer;
     }
 
     public function render(): string
     {
-        return 'foo';
+        return $this->plantumlRenderer->render($this->umlNode->getValue()) ?: '';
     }
 }

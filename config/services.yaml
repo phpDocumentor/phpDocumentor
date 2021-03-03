@@ -275,6 +275,10 @@ services:
       arguments:
         $plantUmlBinaryPath: '%kernel.project_dir%/bin/plantuml'
 
+    phpDocumentor\Transformer\Writer\Graph\PlantumlRenderer:
+      arguments:
+        $plantUmlBinaryPath: '%kernel.project_dir%/bin/plantuml'
+
     ###################################################################################
     ## Guides - EXPERIMENTAL ##########################################################
     ###################################################################################

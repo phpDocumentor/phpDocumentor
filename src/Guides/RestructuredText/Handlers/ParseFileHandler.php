@@ -212,6 +212,7 @@ final class ParseFileHandler
             NodeTypes::CALLABLE => Nodes\CallableNode::class,
             NodeTypes::SECTION_BEGIN => Nodes\SectionBeginNode::class,
             NodeTypes::SECTION_END => Nodes\SectionEndNode::class,
+            NodeTypes::UML => Nodes\UmlNode::class,
         ];
 
         return DefaultNodeFactory::createFromRegistry(

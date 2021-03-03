@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\Nodes;
 
 use phpDocumentor\Guides\Environment;
+use phpDocumentor\Guides\RestructuredText\NodeFactory\DefaultNodeFactory;
 
 interface Factory
 {
@@ -84,4 +85,6 @@ interface Factory
      * @param string|callable $after
      */
     public function createWrapperNode(?Node $node, $before = '', $after = '') : WrapperNode;
+
+    public function createUmlNode(string $block) : UmlNode;
 }
