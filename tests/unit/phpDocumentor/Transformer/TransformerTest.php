@@ -41,9 +41,6 @@ final class TransformerTest extends TestCase
     /** @var Transformer $fixture */
     private $fixture = null;
 
-    /** @var ObjectProphecy|Template\Collection */
-    private $templateCollectionMock;
-
     /** @var ObjectProphecy|Collection */
     private $writerCollectionMock;
 
@@ -55,13 +52,11 @@ final class TransformerTest extends TestCase
      */
     protected function setUp() : void
     {
-        $this->templateCollectionMock = $this->prophesize(Template\Collection::class);
         $this->writerCollectionMock = $this->prophesize(Collection::class);
         $this->flySystemFactory = $this->prophesize(FlySystemFactory::class);
         $this->flySystemFactory->create(Argument::any())->willReturn($this->faker()->fileSystem());
 
         $this->fixture = new Transformer(
-            $this->templateCollectionMock->reveal(),
             $this->writerCollectionMock->reveal(),
             new NullLogger(),
             $this->flySystemFactory->reveal()
@@ -73,18 +68,16 @@ final class TransformerTest extends TestCase
      */
     public function testInitialization() : void
     {
-        $templateCollectionMock = $this->prophesize(Template\Collection::class);
         $writerCollectionMock = $this->prophesize(Collection::class);
         $flySystemFactory = $this->prophesize(FlySystemFactory::class);
 
         $fixture = new Transformer(
-            $templateCollectionMock->reveal(),
             $writerCollectionMock->reveal(),
             new NullLogger(),
             $flySystemFactory->reveal()
         );
 
-        $this->assertSame($templateCollectionMock->reveal(), $fixture->getTemplates());
+        self::assertSame('Transform analyzed project into artifacts', $fixture->getDescription());
     }
 
     /**
@@ -106,50 +99,27 @@ final class TransformerTest extends TestCase
     }
 
     /**
-     * @covers ::getTemplates
-     */
-    public function testRetrieveTemplateCollection() : void
-    {
-        $this->assertEquals($this->templateCollectionMock->reveal(), $this->fixture->getTemplates());
-    }
-
-    /**
      * @covers ::execute
      */
     public function testExecute() : void
     {
         $myTestWriter = 'myTestWriter';
-
-        $templateCollection = $this->prophesize(Template\Collection::class);
-
         $project = $this->prophesize(ProjectDescriptor::class);
 
         $myTestWriterMock = $this->prophesize(WriterAbstract::class);
         $myTestWriterMock->transform(Argument::any(), Argument::any())->shouldBeCalled();
 
-        $writerCollectionMock = $this->prophesize(Collection::class);
-        $writerCollectionMock->offsetGet($myTestWriter)
+        $this->writerCollectionMock->offsetGet($myTestWriter)
             ->shouldBeCalled()
             ->willReturn($myTestWriterMock->reveal());
-
-        $fixture = new Transformer(
-            $templateCollection->reveal(),
-            $writerCollectionMock->reveal(),
-            new NullLogger(),
-            $this->flySystemFactory->reveal()
-        );
 
         $transformation = $this->prophesize(Transformation::class);
         $transformation->getQuery()->shouldBeCalled()->willReturn('');
         $transformation->getWriter()->shouldBeCalled()->willReturn($myTestWriter);
         $transformation->getArtifact()->shouldBeCalled()->willReturn('');
-        $transformation->setTransformer(Argument::exact($fixture))->shouldBeCalled();
+        $transformation->setTransformer(Argument::exact($this->fixture))->shouldBeCalled();
 
-        $templateCollection->getTransformations()
-            ->shouldBeCalled()
-            ->willReturn([$transformation->reveal()]);
-
-        $fixture->execute($project->reveal());
+        $this->fixture->execute($project->reveal(), [$transformation->reveal()]);
     }
 
     /**

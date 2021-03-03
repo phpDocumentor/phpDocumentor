@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Template;
 
 use DirectoryIterator;
+use InvalidArgumentException;
 use League\Flysystem\Adapter\AbstractAdapter;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemInterface;
@@ -22,10 +23,12 @@ use phpDocumentor\Dsn;
 use phpDocumentor\Parser\FlySystemFactory;
 use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
-use phpDocumentor\Transformer\Transformer;
+use phpDocumentor\Transformer\Writer\Collection as WriterCollection;
 use RecursiveDirectoryIterator;
 use RuntimeException;
 use SimpleXMLElement;
+use Symfony\Component\Stopwatch\Stopwatch;
+use function array_column;
 use function file_exists;
 use function in_array;
 use function is_readable;
@@ -42,24 +45,53 @@ class Factory
     /** @var string */
     private $globalTemplatesPath;
 
+    /** @var WriterCollection */
+    private $writerCollection;
+
     /**
      * Constructs a new template factory with its dependencies.
      */
     public function __construct(
+        WriterCollection $writerCollection,
         FlySystemFactory $flySystemFactory,
         string $globalTemplatesPath
     ) {
         $this->flySystemFactory = $flySystemFactory;
         $this->globalTemplatesPath = $globalTemplatesPath;
+        $this->writerCollection = $writerCollection;
     }
 
     /**
      * Attempts to find, construct and return a template object with the given template name or (relative/absolute)
      * path.
+     *
+     * @param array<int, array{name:string}> $templates
      */
-    public function get(Transformer $transformer, string $nameOrPath) : Template
+    public function getTemplates(array $templates, FilesystemInterface $output) : Collection
     {
-        return $this->createTemplateFromXml($transformer, $nameOrPath);
+        $stopWatch = new Stopwatch();
+        $loadedTemplates = [];
+
+        foreach (array_column($templates, 'name') as $template) {
+            $stopWatch->start('load template');
+            $loadedTemplates[$template] = $this->loadTemplate($output, $template);
+            $stopWatch->stop('load template');
+        }
+
+        return new Collection($loadedTemplates);
+    }
+
+    private function loadTemplate(FilesystemInterface $output, string $template) : Template
+    {
+        $template = $this->createTemplateFromXml($output, $template);
+
+        /** @var Transformation $transformation */
+        foreach ($template as $transformation) {
+            $writer = $this->writerCollection[$transformation->getWriter()];
+            $writer->checkRequirements();
+        }
+
+        return $template;
     }
 
     /**
@@ -100,16 +132,16 @@ class Factory
     /**
      * Creates and returns a template object based on the provided template definition.
      */
-    protected function createTemplateFromXml(Transformer $transformer, string $nameOrPath) : Template
+    private function createTemplateFromXml(FilesystemInterface $filesystem, string $nameOrPath) : Template
     {
         // create the filesystems that a template needs to be able to manipulate, the source folder containing this
         // template its files; the destination to where it can write its files and a global templates folder where to
         // get global template files from
         $files = new MountManager(
             [
-                'templates' => $transformer->getTemplatesDirectory(),
-                'template' => $this->resolve($transformer, $nameOrPath),
-                'destination' => $transformer->destination(),
+                'templates' => $this->getTemplatesDirectory(),
+                'template' => $this->resolve($nameOrPath),
+                'destination' => $filesystem,
             ]
         );
 
@@ -151,7 +183,7 @@ class Factory
         return $template;
     }
 
-    private function resolve(Transformer $transformer, string $nameOrPath) : FilesystemInterface
+    private function resolve(string $nameOrPath) : FilesystemInterface
     {
         $configPath = rtrim($nameOrPath, DIRECTORY_SEPARATOR) . '/template.xml';
         if (file_exists($configPath) && is_readable($configPath)) {
@@ -159,7 +191,7 @@ class Factory
         }
 
         // if we load a global template
-        $globalTemplatesFilesystem = $transformer->getTemplatesDirectory();
+        $globalTemplatesFilesystem = $this->getTemplatesDirectory();
         if ($globalTemplatesFilesystem->has($nameOrPath)) {
             $templateFilesystem = $this->createNewFilesystemFromSubfolder($globalTemplatesFilesystem, $nameOrPath);
 
@@ -171,6 +203,20 @@ class Factory
         }
 
         throw new TemplateNotFound($nameOrPath);
+    }
+
+    private function getTemplatesDirectory() : Filesystem
+    {
+        $dsnString = $this->getTemplatesPath();
+        try {
+            $filesystem = $this->flySystemFactory->create(Dsn::createFromString($dsnString));
+        } catch (InvalidArgumentException $e) {
+            throw new RuntimeException(
+                'Unable to access the folder with the global templates, received DSN is: ' . $dsnString
+            );
+        }
+
+        return $filesystem;
     }
 
     private function createNewFilesystemFromSubfolder(

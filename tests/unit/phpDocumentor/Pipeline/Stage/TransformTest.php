@@ -4,11 +4,18 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Pipeline\Stage;
 
+use League\Flysystem\Adapter\NullAdapter;
+use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemInterface;
+use Mockery\LegacyMockInterface;
+use Mockery\MockInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Dsn;
-use phpDocumentor\Reflection\DocBlock\ExampleFinder;
+use phpDocumentor\Faker\Faker;
+use phpDocumentor\Parser\FlySystemFactory;
 use phpDocumentor\Transformer\Template\Collection;
+use phpDocumentor\Transformer\Template\Factory;
 use phpDocumentor\Transformer\Transformer;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
@@ -25,6 +32,7 @@ use const DIRECTORY_SEPARATOR;
 final class TransformTest extends TestCase
 {
     use ProphecyTrait;
+    use Faker;
 
     /** @var ProjectDescriptorBuilder|ProphecyMock */
     private $projectDescriptorBuilder;
@@ -35,32 +43,36 @@ final class TransformTest extends TestCase
     /** @var LoggerInterface|ProphecyMock */
     private $logger;
 
-    /** @var ExampleFinder|ProphecyMock */
-    private $exampleFinder;
-
     /** @var Compile */
     private $transform;
+
+    /** @var LegacyMockInterface|MockInterface|FlySystemFactory */
+    private $flySystemFactory;
 
     public function setUp() : void
     {
         $projectDescriptor = new ProjectDescriptor('test');
+        $this->flySystemFactory         = $this->prophesize(FlySystemFactory::class);
+        $this->flySystemFactory->create(Argument::type(Dsn::class))->willReturn(new Filesystem(new NullAdapter()));
         $this->projectDescriptorBuilder = $this->prophesize(ProjectDescriptorBuilder::class);
         $this->projectDescriptorBuilder->getProjectDescriptor()->willReturn($projectDescriptor);
         $this->transformer              = $this->prophesize(Transformer::class);
         $this->logger                   = $this->prophesize(LoggerInterface::class);
-        $this->exampleFinder            = $this->prophesize(ExampleFinder::class);
-        $this->transformer->execute($projectDescriptor)->shouldBeCalled();
+        $this->transformer->execute($projectDescriptor, [])->shouldBeCalled();
+        $templateFactory = $this->prophesize(Factory::class);
+        $templateFactory->getTemplates(Argument::any(), Argument::any())->willReturn(new Collection());
 
         $this->transform = new Transform(
             $this->transformer->reveal(),
+            $this->flySystemFactory->reveal(),
             $this->logger->reveal(),
-            $this->exampleFinder->reveal()
+            $templateFactory->reveal()
         );
     }
 
     /**
      * @covers ::__invoke
-     * @covers ::setTargetLocationBasedOnDsn
+     * @covers ::createFileSystem
      */
     public function test_if_target_location_for_output_is_set_with_a_relative_path() : void
     {
@@ -69,13 +81,14 @@ final class TransformTest extends TestCase
         $payload = new Payload($config, $this->projectDescriptorBuilder->reveal());
 
         $this->transformer->setTarget(getcwd() . DIRECTORY_SEPARATOR . '.')->shouldBeCalled();
+        $this->transformer->setDestination(Argument::type(FilesystemInterface::class))->shouldBeCalled();
 
         ($this->transform)($payload);
     }
 
     /**
      * @covers ::__invoke
-     * @covers ::setTargetLocationBasedOnDsn
+     * @covers ::createFileSystem
      */
     public function test_if_target_location_for_output_is_set_with_an_absolute_path() : void
     {
@@ -84,33 +97,7 @@ final class TransformTest extends TestCase
         $payload = new Payload($config, $this->projectDescriptorBuilder->reveal());
 
         $this->transformer->setTarget('/my/absolute/folder')->shouldBeCalled();
-
-        ($this->transform)($payload);
-    }
-
-    /**
-     * @covers ::__invoke
-     * @covers ::loadTemplatesBasedOnNames
-     */
-    public function test_loading_templates_with_a_given_set_of_template_names() : void
-    {
-        $config = $this->givenAnExampleConfigWithDsnAndTemplates(
-            'file://.',
-            [
-                ['name' => 'template1'],
-                ['name' => 'template2'],
-            ]
-        );
-
-        $payload = new Payload($config, $this->projectDescriptorBuilder->reveal());
-
-        $this->transformer->setTarget(Argument::any());
-
-        $templateCollection = $this->prophesize(Collection::class);
-        $templateCollection->load($this->transformer, 'template1')->shouldBeCalled();
-        $templateCollection->load($this->transformer, 'template2')->shouldBeCalled();
-
-        $this->transformer->getTemplates()->willReturn($templateCollection->reveal());
+        $this->transformer->setDestination(Argument::type(FilesystemInterface::class))->shouldBeCalled();
 
         ($this->transform)($payload);
     }
@@ -124,6 +111,7 @@ final class TransformTest extends TestCase
         $payload           = new Payload($config, $this->projectDescriptorBuilder->reveal());
 
         $this->transformer->setTarget(Argument::any());
+        $this->transformer->setDestination(Argument::type(FilesystemInterface::class));
 
         ($this->transform)($payload);
     }

@@ -17,10 +17,6 @@ use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
-use phpDocumentor\Transformer\Writer\Collection as WriterCollection;
-use phpDocumentor\Transformer\Writer\WriterAbstract;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 
 /**
  * @coversDefaultClass \phpDocumentor\Transformer\Template\Collection
@@ -29,14 +25,7 @@ use Prophecy\Prophecy\ObjectProphecy;
  */
 final class CollectionTest extends MockeryTestCase
 {
-    use ProphecyTrait;
     use Faker;
-
-    /** @var ObjectProphecy|WriterCollection */
-    private $writerCollectionMock;
-
-    /** @var ObjectProphecy|Factory */
-    private $factoryMock;
 
     /** @var Collection */
     private $fixture;
@@ -46,46 +35,7 @@ final class CollectionTest extends MockeryTestCase
      */
     protected function setUp() : void
     {
-        $this->factoryMock = $this->prophesize(Factory::class);
-        $this->writerCollectionMock = $this->prophesize(WriterCollection::class);
-        $this->fixture = new Collection($this->factoryMock->reveal(), $this->writerCollectionMock->reveal());
-    }
-
-    /**
-     * @covers ::load
-     */
-    public function testIfLoadRetrievesTemplateFromFactoryAndRegistersIt() : void
-    {
-        $templateName = 'default';
-        $template = $this->faker()->template($templateName);
-        $template['a'] = $this->givenAnEmptyTransformation($template);
-
-        $transformer = $this->faker()->transformer();
-        $this->factoryMock->get($transformer, $templateName)->shouldBeCalled()->willReturn($template);
-
-        $writer = $this->prophesize(WriterAbstract::class);
-        $writer->checkRequirements()->shouldBeCalled();
-
-        $this->writerCollectionMock->offsetGet('')->shouldBeCalled()->willReturn($writer->reveal());
-
-        $this->fixture->load($transformer, $templateName);
-
-        $this->assertCount(1, $this->fixture);
-        $this->assertArrayHasKey($templateName, $this->fixture);
-        $this->assertSame($template, $this->fixture[$templateName]);
-    }
-
-    /**
-     * @covers ::getTemplatesPath
-     */
-    public function testCollectionProvidesTemplatesPath() : void
-    {
-        $path = '/tmp';
-        $this->factoryMock->getTemplatesPath()->shouldBeCalled()->willReturn($path);
-
-        $result = $this->fixture->getTemplatesPath();
-
-        $this->assertSame($path, $result);
+        $this->fixture = new Collection([]);
     }
 
     /**
