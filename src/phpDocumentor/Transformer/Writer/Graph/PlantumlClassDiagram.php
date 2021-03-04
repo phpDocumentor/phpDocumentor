@@ -19,12 +19,9 @@ use phpDocumentor\Descriptor\Interfaces\NamespaceInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Process\Process;
 use function addslashes;
-use function copy;
 use function file_put_contents;
 use function implode;
-use function sys_get_temp_dir;
 use const PHP_EOL;
 
 final class PlantumlClassDiagram implements Generator
@@ -32,22 +29,19 @@ final class PlantumlClassDiagram implements Generator
     /** @var LoggerInterface */
     private $logger;
 
-    /** @var string */
-    private $plantUmlBinaryPath;
+    /** @var PlantumlRenderer */
+    private $plantumlRenderer;
 
-    public function __construct(LoggerInterface $logger, string $plantUmlBinaryPath)
+    public function __construct(LoggerInterface $logger, PlantumlRenderer $plantumlRenderer)
     {
         $this->logger = $logger;
-        $this->plantUmlBinaryPath = $plantUmlBinaryPath;
+        $this->plantumlRenderer = $plantumlRenderer;
     }
 
     public function create(ProjectDescriptor $project, string $filename) : void
     {
-        $tempFolder = sys_get_temp_dir() . '/phpdocumentor/';
-        $pumlFileLocation = $tempFolder . 'class.puml';
-
-        $namespace = $this->renderNamespace($project->getNamespace());
-        $output = <<<PUML
+        $output = $this->plantumlRenderer->render(
+            <<<PUML
 @startuml
 
 skinparam shadowing false
@@ -56,20 +50,19 @@ hide empty members
 left to right direction
 set namespaceSeparator \\\\
 
-$namespace
+{$this->renderNamespace($project->getNamespace())}
 
 @enduml
-PUML;
-        file_put_contents($pumlFileLocation, $output);
+PUML
+        );
 
-        $process = new Process([$this->plantUmlBinaryPath, '-tsvg', $pumlFileLocation], __DIR__, null, null, 600.0);
-        $process->run();
+        if (!$output) {
+            $this->logger->error('Generating the class diagram failed');
 
-        if ($process->isSuccessful()) {
-            copy($tempFolder . 'class.svg', $filename);
-        } else {
-            $this->logger->error('Generating the class diagram failed', ['error' => $process->getErrorOutput()]);
+            return;
         }
+
+        file_put_contents($output, $filename);
     }
 
     private function renderNamespace(NamespaceInterface $namespace) : string

@@ -271,7 +271,7 @@ services:
             - { method: offsetSet, arguments: ['twig', '@phpDocumentor\Transformer\Writer\Twig']}
             - { method: offsetSet, arguments: ['RenderGuide', '@phpDocumentor\Transformer\Writer\RenderGuide']}
 
-    phpDocumentor\Transformer\Writer\Graph\PlantumlClassDiagram:
+    phpDocumentor\Transformer\Writer\Graph\PlantumlRenderer:
       arguments:
         $plantUmlBinaryPath: '%kernel.project_dir%/bin/plantuml'
 

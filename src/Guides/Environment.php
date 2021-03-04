@@ -31,7 +31,7 @@ use function sprintf;
 use function strtolower;
 use function trim;
 
-final class Environment
+class Environment
 {
     /** @var Configuration */
     private $configuration;

@@ -4,23 +4,16 @@ Application Flow
 Introduction
 ------------
 
-Generating the documentation for a project involves a fair number of steps but can be best summarized with the following
-Activity Diagram:
+Generating the documentation for a project involves a fair number of steps but can be best summarized with this
+Activity Diagram.
 
-.. uml::
-
-   skinparam activityBorderColor #516f42
-   skinparam activityBackgroundColor #a3dc7f
-   skinparam shadowing false
+.. uml:: Main program flow
+   :classes: float-right
 
    start
-
    :Boot the application;
-
    :Parse files into an AST;
-
    :Transform AST into artifacts;
-
    stop
 
 This three step process enables phpDocumentor to break down a project into its most basic components, called Structural
@@ -50,10 +43,6 @@ this diagram (such as *Boot the application*, *Add File Representation to Projec
 surrounded by an additional border)
 
 .. uml::
-   skinparam activityBorderColor #516f42
-   skinparam activityBackgroundColor #a3dc7f
-   skinparam shadowing false
-
    start
 
    :Boot the application|
@@ -100,10 +89,6 @@ Boot the Application
 
 .. uml::
 
-   skinparam activityBorderColor #516f42
-   skinparam activityBackgroundColor #a3dc7f
-   skinparam shadowing false
-
    :Initialize dependencies using Application;
    :Load configuration;
    :Add logging;
@@ -118,10 +103,6 @@ Parse files into an AST
    to support the text.
 
 .. uml::
-
-   skinparam activityBorderColor #516f42
-   skinparam activityBackgroundColor #a3dc7f
-   skinparam shadowing false
 
    :Set parsing parameters;
    :Find project files;
@@ -174,10 +155,6 @@ __________________________________
 
 .. uml::
 
-   skinparam activityBorderColor #516f42
-   skinparam activityBackgroundColor #a3dc7f
-   skinparam shadowing false
-
    start
 
    :Reflect file;
@@ -202,10 +179,6 @@ ___________________
 
 .. uml::
 
-   skinparam activityBorderColor #516f42
-   skinparam activityBackgroundColor #a3dc7f
-   skinparam shadowing false
-
    start
 
    #f9f9f9:Emit event "transformer.transform.pre">
@@ -225,13 +198,3 @@ ___________________
 
 Link FQSENs to Descriptors
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. uml::
-
-   skinparam activityBorderColor #516f42
-   skinparam activityBackgroundColor #a3dc7f
-   skinparam shadowing false
-
-   start
-
-   stop

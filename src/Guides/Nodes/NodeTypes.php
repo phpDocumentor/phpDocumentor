@@ -39,6 +39,7 @@ final class NodeTypes
     public const CALLABLE = 'callable';
     public const SECTION_BEGIN = 'section_begin';
     public const SECTION_END = 'section_end';
+    public const UML = 'uml';
 
     public const NODES = [
         self::DOCUMENT,
@@ -65,6 +66,7 @@ final class NodeTypes
         self::CALLABLE,
         self::SECTION_BEGIN,
         self::SECTION_END,
+        self::UML,
     ];
 
     private function __construct()

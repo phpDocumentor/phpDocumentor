@@ -84,4 +84,6 @@ interface Factory
      * @param string|callable $after
      */
     public function createWrapperNode(?Node $node, $before = '', $after = '') : WrapperNode;
+
+    public function createUmlNode(string $block) : UmlNode;
 }

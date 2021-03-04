@@ -32,6 +32,7 @@ use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\Nodes\TableNode;
 use phpDocumentor\Guides\Nodes\TitleNode;
 use phpDocumentor\Guides\Nodes\TocNode;
+use phpDocumentor\Guides\Nodes\UmlNode;
 use phpDocumentor\Guides\Nodes\WrapperNode;
 use phpDocumentor\Guides\Parser;
 use phpDocumentor\Guides\RestructuredText\Event\PostNodeCreateEvent;
@@ -136,6 +137,14 @@ class DefaultNodeFactory implements NodeFactory
     {
         /** @var CodeNode $codeNode */
         $codeNode = $this->create(NodeTypes::CODE, [$lines]);
+
+        return $codeNode;
+    }
+
+    public function createUmlNode(string $block) : UmlNode
+    {
+        /** @var UmlNode $codeNode */
+        $codeNode = $this->create(NodeTypes::UML, [$block]);
 
         return $codeNode;
     }

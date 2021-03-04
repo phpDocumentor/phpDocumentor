@@ -13,9 +13,11 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Writer;
 
+use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Transformer\Writer\Graph\GraphVizClassDiagram;
 use phpDocumentor\Transformer\Writer\Graph\PlantumlClassDiagram;
-use PHPUnit\Framework\TestCase;
+use phpDocumentor\Transformer\Writer\Graph\PlantumlRenderer;
 use Psr\Log\NullLogger;
 
 /**
@@ -23,14 +25,17 @@ use Psr\Log\NullLogger;
  * @covers ::__construct
  * @covers ::<private>
  */
-final class GraphTest extends TestCase
+final class GraphTest extends MockeryTestCase
 {
     /** @var Graph */
     private $graph;
 
     protected function setUp() : void
     {
-        $this->graph = new Graph(new GraphVizClassDiagram(), new PlantumlClassDiagram(new NullLogger(), ''));
+        $this->graph = new Graph(
+            new GraphVizClassDiagram(),
+            new PlantumlClassDiagram(new NullLogger(), m::mock(PlantumlRenderer::class))
+        );
     }
 
     /**
