@@ -20,7 +20,7 @@ use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory;
 use RuntimeException;
 
-final class Renderer
+class Renderer
 {
     /** @var EnvironmentFactory */
     private $environmentFactory;

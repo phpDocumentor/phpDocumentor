@@ -21,14 +21,14 @@ class UmlNodeRenderer implements NodeRenderer
 
     public function __construct(UmlNode $umlNode, PlantumlRenderer $plantumlRenderer)
     {
-        $this->umlNode  = $umlNode;
+        $this->umlNode = $umlNode;
         $this->renderer = $umlNode->getEnvironment()->getRenderer();
         $this->plantumlRenderer = $plantumlRenderer;
     }
 
-    public function render(): string
+    public function render() : string
     {
-        return $this->umlNode->getEnvironment()->getRenderer()
+        return $this->renderer
             ->render(
                 'uml.html.twig',
                 [

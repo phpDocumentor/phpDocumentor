@@ -6,9 +6,9 @@ namespace phpDocumentor\Guides\RestructuredText\HTML\Directives;
 
 use phpDocumentor\Guides\Nodes\CodeNode;
 use phpDocumentor\Guides\Nodes\Node;
-use phpDocumentor\Guides\Nodes\UmlNode;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive;
 use phpDocumentor\Guides\RestructuredText\Parser;
+use function explode;
 
 /**
  * Renders a uml diagram, example:
@@ -26,7 +26,7 @@ use phpDocumentor\Guides\RestructuredText\Parser;
  */
 class Uml extends Directive
 {
-    public function getName(): string
+    public function getName() : string
     {
         return 'uml';
     }

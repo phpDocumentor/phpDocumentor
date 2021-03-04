@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\Nodes;
 
 use phpDocumentor\Guides\Environment;
-use phpDocumentor\Guides\RestructuredText\NodeFactory\DefaultNodeFactory;
 
 interface Factory
 {

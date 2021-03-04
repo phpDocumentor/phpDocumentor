@@ -9,7 +9,7 @@ class UmlNode extends Node
     /** @var string */
     private $caption = '';
 
-    public function setCaption(string $caption)
+    public function setCaption(string $caption) : void
     {
         $this->caption = $caption;
     }

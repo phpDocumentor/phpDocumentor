@@ -6,8 +6,11 @@ namespace phpDocumentor\Transformer\Writer\Graph;
 
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Process\Process;
+use function file_get_contents;
+use function file_put_contents;
+use function tempnam;
 
-final class PlantumlRenderer
+class PlantumlRenderer
 {
     /** @var LoggerInterface */
     private $logger;
@@ -21,7 +24,7 @@ final class PlantumlRenderer
         $this->plantUmlBinaryPath = $plantUmlBinaryPath;
     }
 
-    public function render(string $diagram): ?string
+    public function render(string $diagram) : ?string
     {
         $pumlFileLocation = tempnam('phpdocumentor', 'pu_');
 
@@ -44,6 +47,7 @@ PUML;
 
         if (!$process->isSuccessful()) {
             $this->logger->error('Generating the class diagram failed', ['error' => $process->getErrorOutput()]);
+
             return null;
         }
 
