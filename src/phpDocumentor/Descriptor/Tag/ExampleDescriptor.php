@@ -16,7 +16,7 @@ namespace phpDocumentor\Descriptor\Tag;
 use phpDocumentor\Descriptor\TagDescriptor;
 
 /**
- * Descriptor representing the example tag with a descriptor.
+ * Descriptor representing the example tag.
  *
  * @api
  * @package phpDocumentor\AST\Tags
@@ -26,11 +26,11 @@ final class ExampleDescriptor extends TagDescriptor
     /** @var string $filePath the content of the example. */
     private $filePath = '';
 
-    /** @var int|null $lineCount the content of the example. */
-    private $lineCount;
-
     /** @var int|null $startingLine the content of the example. */
     private $startingLine;
+
+    /** @var int|null $lineCount the content of the example. */
+    private $lineCount;
 
     /** @var string $example the content of the example. */
     private $example = '';

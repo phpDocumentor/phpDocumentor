@@ -41,12 +41,12 @@ class MethodDescriptorTest extends TestCase
      */
     public function testSetAndGetMethodName() : void
     {
-        $this->assertEmpty($this->fixture->getMethodName());
+        self::assertEmpty($this->fixture->getMethodName());
 
         $this->fixture->setMethodName(self::EXAMPLE_NAME);
         $result = $this->fixture->getMethodName();
 
-        $this->assertSame(self::EXAMPLE_NAME, $result);
+        self::assertSame(self::EXAMPLE_NAME, $result);
     }
 
     /**
@@ -56,12 +56,12 @@ class MethodDescriptorTest extends TestCase
     public function testSetAndGetArguments() : void
     {
         $expected = new Collection(['a' => 'b']);
-        $this->assertInstanceOf(Collection::class, $this->fixture->getArguments());
+        self::assertInstanceOf(Collection::class, $this->fixture->getArguments());
 
         $this->fixture->setArguments($expected);
         $result = $this->fixture->getArguments();
 
-        $this->assertSame($expected, $result);
+        self::assertSame($expected, $result);
     }
 
     /**
@@ -71,11 +71,24 @@ class MethodDescriptorTest extends TestCase
     public function testSetAndGetResponse() : void
     {
         $expected = new ReturnDescriptor('a');
-        $this->assertNull($this->fixture->getResponse());
+        self::assertNull($this->fixture->getResponse());
 
         $this->fixture->setResponse($expected);
         $result = $this->fixture->getResponse();
 
-        $this->assertSame($expected, $result);
+        self::assertSame($expected, $result);
+    }
+
+    /**
+     * @covers \phpDocumentor\Descriptor\Tag\MethodDescriptor::setStatic
+     * @covers \phpDocumentor\Descriptor\Tag\MethodDescriptor::isStatic
+     */
+    public function testRecordIfAMethodIsStatic() : void
+    {
+        self::assertFalse($this->fixture->isStatic());
+
+        $this->fixture->setStatic(true);
+
+        self::assertTrue($this->fixture->isStatic());
     }
 }

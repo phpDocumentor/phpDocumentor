@@ -33,7 +33,7 @@ class MethodDescriptor extends TagDescriptor
     private $response;
 
     /** @var bool */
-    private $static;
+    private $static = false;
 
     public function __construct(string $name)
     {

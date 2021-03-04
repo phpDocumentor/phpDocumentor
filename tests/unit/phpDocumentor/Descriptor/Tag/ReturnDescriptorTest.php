@@ -34,9 +34,11 @@ class ReturnDescriptorTest extends TestCase
 
     /**
      * @covers \phpDocumentor\Descriptor\Tag\BaseTypes\TypedAbstract::setTypes
+     * @covers \phpDocumentor\Descriptor\Tag\BaseTypes\TypedAbstract::setType
      * @covers \phpDocumentor\Descriptor\Tag\BaseTypes\TypedAbstract::getTypes
+     * @covers \phpDocumentor\Descriptor\Tag\BaseTypes\TypedAbstract::getType
      */
-    public function testSetAndGetTypes() : void
+    public function testSetAndGetType() : void
     {
         $expected = new Array_();
         $this->assertNull($this->fixture->getType());

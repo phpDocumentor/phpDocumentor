@@ -29,6 +29,10 @@ abstract class TypedAbstract extends TagDescriptor
 
     /**
      * Sets a list of types associated with this tag.
+     *
+     * @deprecated
+     *
+     * @codeCoverageIgnore because deprecated and the error makes phpunit fail
      */
     public function setTypes(?Type $types = null) : void
     {
@@ -47,7 +51,11 @@ abstract class TypedAbstract extends TagDescriptor
     /**
      * Returns the list of types associated with this tag.
      *
+     * @deprecated
+     *
      * @return list<Type>
+     *
+     * @codeCoverageIgnore because deprecated and the error makes phpunit fail
      */
     public function getTypes() : array
     {
