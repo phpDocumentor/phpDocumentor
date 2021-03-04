@@ -6,4 +6,3 @@ References
 
    phpdoc/index
    configuration
-   commands/index

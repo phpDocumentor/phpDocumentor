@@ -142,4 +142,3 @@ Read more
 ---------
 
 * :doc:`../guides/templates`
-* :doc:`../references/writers/index`

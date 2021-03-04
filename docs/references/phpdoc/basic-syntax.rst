@@ -55,9 +55,6 @@ Structural Elements can all be preceded by a DocBlock. The following elements ar
     * constant
     * variables, both local and global scope.
 
-A more detailed description of what Structural Elements are and how DocBlocks apply to them can be found in
-the :doc:`definitions`.
-
 Sections
 --------
 

@@ -23,8 +23,7 @@ An example of such output may be a website that documents the project's internal
 checkstyle XML document that describes which errors in the project's DocBlocks were found. Anything is possible.
 
 In this document I provide an overview of all moving parts in the application but do not explain each technical
-term in-depth. At the end of this document are reading suggestions but I recommend having the :doc:`../glossary`
-within reach.
+term in-depth.
 
 The flow in more detail
 -----------------------

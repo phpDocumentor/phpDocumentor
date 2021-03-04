@@ -223,5 +223,5 @@ Related topics
 * :doc:`../references/phpdoc/index`, for a complete, and more elaborate, reference on the syntax and capabilities of
   DocBlocks.
 
-.. _Github-glavoured Markdown: https://help.github.com/github/writing-on-github/basic-writing-and-formatting-syntax
+.. _Github-flavoured Markdown: https://help.github.com/github/writing-on-github/basic-writing-and-formatting-syntax
 .. _Markdown:                  https://daringfireball.net/projects/markdown/

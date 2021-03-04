@@ -124,5 +124,4 @@ not receive the overridden method's summary.
 Related topics
 --------------
 
-* :doc:`../references/phpdoc/inheritance`, for a complete, and more elaborate, reference on inheritance.
-* :doc:`../references/phpdoc/tags/inline/inheritdoc`, for a full description of the ``@inheritDoc`` inline tag.
+* :doc:`../references/phpdoc/inline-tags/inheritdoc`, for a full description of the ``@inheritDoc`` inline tag.

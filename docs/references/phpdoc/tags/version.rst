@@ -67,4 +67,4 @@ Examples
     }
 
 
-.. _Semantic Versioning Standard version 2.0  https://semver.org/
+.. _Semantic Versioning Standard version 2.0: https://semver.org/

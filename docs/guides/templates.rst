@@ -41,8 +41,7 @@ For example:
     to a folder named 'css' in the target location.
 
 In addition to the example above there are writers that are capable of generating a Checkstyle report of errors, one or
-more HTML files using a single twig template and more. Please see :doc:`../references/writers/index` for a complete
-list of writers and their actions.
+more HTML files using a single twig template and more.
 
 Almost each writer needs to know the following:
 
@@ -73,10 +72,4 @@ Writers
 More Than a Theme
 -----------------
 
-* :doc:`templates/structure`
 * :doc:`templates/twig`
-
-Related topics
---------------
-
-* :doc:`../references/writers/index`, for a complete list of available writers

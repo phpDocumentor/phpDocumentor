@@ -6,12 +6,11 @@ liking. phpDocumentor supports a wide range of options related to the generation
 
 phpDocumentor is a command-line application that supports several actions, called *commands*, with which you can
 generate your documentation but also, for example, display a list of installed templates. In this guide we are only
-going to discuss the default command: ``project:run``, you can find a list of all supported commands in the
-:doc:`command reference<../references/commands/index>`
+going to discuss the default command: ``project:run``.
 
 .. hint::
 
-   The :doc:`../references/commands/project_run` command is default to phpDocumentor, this means that it will be
+   The ``project:run`` command is default to phpDocumentor, this means that it will be
    executed when you omit the command name once you run phpDocumentor.
 
    The following command-line actions are aliases of eachother::

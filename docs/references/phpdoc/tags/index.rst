@@ -19,7 +19,7 @@ Tag reference
    method
    package
    param
-   @property <property>
+   property
    property-read
    property-write
    return
