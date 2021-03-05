@@ -7,7 +7,6 @@ namespace phpDocumentor\Guides\RestructuredText\LaTeX;
 use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Nodes;
 use phpDocumentor\Guides\Renderers;
-use phpDocumentor\Guides\Renderers\CallableNodeRendererFactory;
 use phpDocumentor\Guides\Renderers\NodeRendererFactory;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive;
 use phpDocumentor\Guides\RestructuredText\Formats\Format;
@@ -35,9 +34,6 @@ class LaTeXFormat implements Format
         ];
     }
 
-    /**
-     * @return NodeRendererFactory[]
-     */
     public function getNodeRendererFactory(Environment $environment) : NodeRendererFactory
     {
         $renderer = $environment->getRenderer();

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\Renderers\Html;
 
+use InvalidArgumentException;
 use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\TocNode;
@@ -33,9 +34,8 @@ class TocNodeRenderer implements NodeRenderer
     public function render(Node $node) : string
     {
         if ($node instanceof TocNode === false) {
-            throw new \InvalidArgumentException('Invalid node presented');
+            throw new InvalidArgumentException('Invalid node presented');
         }
-
 
         $options = $node->getOptions();
 

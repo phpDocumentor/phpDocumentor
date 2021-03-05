@@ -9,7 +9,6 @@ use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\NodeTypes;
 use phpDocumentor\Guides\Renderers\NodeRenderer;
-use phpDocumentor\Guides\Renderers\NodeRendererFactory;
 use function in_array;
 use function is_subclass_of;
 use function sprintf;

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\Renderers\Html;
 
+use InvalidArgumentException;
 use phpDocumentor\Guides\Nodes\CodeNode;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Renderer;
@@ -31,7 +32,7 @@ class CodeNodeRenderer implements NodeRenderer
     public function render(Node $node) : string
     {
         if ($node instanceof CodeNode === false) {
-            throw new \InvalidArgumentException('Invalid node presented');
+            throw new InvalidArgumentException('Invalid node presented');
         }
 
         $value = $node->getValue();

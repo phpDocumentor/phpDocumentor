@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\Renderers;
 
-use phpDocumentor\Guides\Nodes\Node;
-
 class InMemoryNodeRendererFactory implements NodeRendererFactory
 {
     /** @var array<class-string, NodeRenderer> */

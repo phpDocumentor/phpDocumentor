@@ -38,7 +38,7 @@ abstract class SpanNodeRenderer implements NodeRenderer, SpanRenderer
     public function render(Node $node) : string
     {
         if ($node instanceof SpanNode === false) {
-            throw new \InvalidArgumentException('Invalid node presented');
+            throw new InvalidArgumentException('Invalid node presented');
         }
 
         $value = $node->getValue();

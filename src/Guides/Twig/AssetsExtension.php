@@ -66,7 +66,7 @@ final class AssetsExtension extends AbstractExtension
         return trim($outputPath, '/');
     }
 
-    public function uml(string $source) : string
+    public function uml(string $source) : ?string
     {
         return $this->plantumlRenderer->render($source);
     }

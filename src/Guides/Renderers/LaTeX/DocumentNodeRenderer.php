@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\Renderers\LaTeX;
 
+use InvalidArgumentException;
 use phpDocumentor\Guides\Nodes\DocumentNode;
 use phpDocumentor\Guides\Nodes\MainNode;
 use phpDocumentor\Guides\Nodes\Node;
@@ -35,7 +36,7 @@ class DocumentNodeRenderer implements NodeRenderer, FullDocumentNodeRenderer
     public function render(Node $node) : string
     {
         if ($node instanceof DocumentNode === false) {
-            throw new \InvalidArgumentException('Invalid node presented');
+            throw new InvalidArgumentException('Invalid node presented');
         }
 
         return (new BaseDocumentRender())->render($node);

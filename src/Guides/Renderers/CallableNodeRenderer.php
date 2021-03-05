@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\Renderers;
 
+use InvalidArgumentException;
 use phpDocumentor\Guides\Nodes\CallableNode;
 use phpDocumentor\Guides\Nodes\Node;
 
@@ -21,7 +22,7 @@ class CallableNodeRenderer implements NodeRenderer
     public function render(Node $node) : string
     {
         if ($node instanceof CallableNode === false) {
-            throw new \InvalidArgumentException('Invalid node presented');
+            throw new InvalidArgumentException('Invalid node presented');
         }
 
         return $node->getCallable()();

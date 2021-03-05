@@ -16,6 +16,7 @@ namespace phpDocumentor\Guides\Nodes;
 use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Renderers\NodeRenderer;
 use phpDocumentor\Guides\Renderers\RenderedNode;
+use RuntimeException;
 use function implode;
 use function strlen;
 use function substr;
@@ -145,7 +146,7 @@ abstract class Node
     protected function getRenderer() : NodeRenderer
     {
         if ($this->nodeRenderer === null) {
-            throw new \RuntimeException('A node should always have a node renderer assigned');
+            throw new RuntimeException('A node should always have a node renderer assigned');
         }
 
         return $this->nodeRenderer;

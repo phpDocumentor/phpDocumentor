@@ -52,6 +52,6 @@ class ImageNode extends Node
      */
     public function getOption(string $name, $default = null)
     {
-        return $this->option[$name] ?? $default;
+        return $this->options[$name] ?? $default;
     }
 }

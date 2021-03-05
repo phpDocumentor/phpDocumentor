@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\Renderers;
 
+use InvalidArgumentException;
 use phpDocumentor\Guides\Nodes\ListNode;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\SpanNode;
@@ -32,7 +33,7 @@ class ListNodeRenderer implements NodeRenderer
     public function render(Node $node) : string
     {
         if ($node instanceof ListNode === false) {
-            throw new \InvalidArgumentException('Invalid node presented');
+            throw new InvalidArgumentException('Invalid node presented');
         }
 
         $depth = -1;

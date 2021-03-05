@@ -34,44 +34,23 @@ use phpDocumentor\Guides\Nodes\TitleNode;
 use phpDocumentor\Guides\Nodes\TocNode;
 use phpDocumentor\Guides\Nodes\UmlNode;
 use phpDocumentor\Guides\Renderers\CallableNodeRenderer;
-use phpDocumentor\Guides\Renderers\CallableNodeRendererFactory;
 use phpDocumentor\Guides\Renderers\DefaultNodeRenderer;
-use phpDocumentor\Guides\Renderers\Html\AnchorNodeRenderer;
 use phpDocumentor\Guides\Renderers\Html\CodeNodeRenderer;
 use phpDocumentor\Guides\Renderers\Html\DefinitionListNodeRenderer;
 use phpDocumentor\Guides\Renderers\Html\DocumentNodeRenderer;
-use phpDocumentor\Guides\Renderers\Html\FigureNodeRenderer;
-use phpDocumentor\Guides\Renderers\Html\ImageNodeRenderer;
 use phpDocumentor\Guides\Renderers\Html\ListRenderer;
-use phpDocumentor\Guides\Renderers\Html\MetaNodeRenderer;
-use phpDocumentor\Guides\Renderers\Html\ParagraphNodeRenderer;
-use phpDocumentor\Guides\Renderers\Html\QuoteNodeRenderer;
-use phpDocumentor\Guides\Renderers\Html\SectionBeginNodeRenderer;
-use phpDocumentor\Guides\Renderers\Html\SectionEndNodeRenderer;
-use phpDocumentor\Guides\Renderers\Html\SeparatorNodeRenderer;
 use phpDocumentor\Guides\Renderers\Html\SpanNodeRenderer;
 use phpDocumentor\Guides\Renderers\Html\TableNodeRenderer;
-use phpDocumentor\Guides\Renderers\Html\TitleNodeRenderer;
 use phpDocumentor\Guides\Renderers\Html\TocNodeRenderer;
-use phpDocumentor\Guides\Renderers\Html\UmlNodeRenderer;
 use phpDocumentor\Guides\Renderers\InMemoryNodeRendererFactory;
 use phpDocumentor\Guides\Renderers\ListNodeRenderer;
 use phpDocumentor\Guides\Renderers\NodeRendererFactory;
 use phpDocumentor\Guides\Renderers\TemplateNodeRenderer;
 use phpDocumentor\Guides\RestructuredText;
 use phpDocumentor\Guides\RestructuredText\Formats\Format;
-use phpDocumentor\Transformer\Writer\Graph\PlantumlRenderer;
 
 final class HTMLFormat implements Format
 {
-    /** @var PlantumlRenderer */
-    private $plantumlRenderer;
-
-    public function __construct(PlantumlRenderer $plantumlRenderer)
-    {
-        $this->plantumlRenderer = $plantumlRenderer;
-    }
-
     public function getFileExtension() : string
     {
         return Format::HTML;
@@ -103,7 +82,7 @@ final class HTMLFormat implements Format
         return new InMemoryNodeRendererFactory(
             [
                 AnchorNode::class => new TemplateNodeRenderer($renderer, 'anchor.html.twig'),
-                FigureNode::class =>new TemplateNodeRenderer($renderer, 'figure.html.twig'),
+                FigureNode::class => new TemplateNodeRenderer($renderer, 'figure.html.twig'),
                 MetaNode::class => new TemplateNodeRenderer($renderer, 'meta.html.twig'),
                 ParagraphNode::class => new TemplateNodeRenderer($renderer, 'paragraph.html.twig'),
                 QuoteNode::class => new TemplateNodeRenderer($renderer, 'quote.html.twig'),
