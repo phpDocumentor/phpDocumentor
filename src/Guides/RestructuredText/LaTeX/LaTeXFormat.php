@@ -44,14 +44,14 @@ class LaTeXFormat implements Format
 
         return new Renderers\InMemoryNodeRendererFactory(
             [
-                Nodes\AnchorNode::class => new Renderers\LaTeX\AnchorNodeRenderer($renderer),
-                Nodes\CodeNode::class => new Renderers\LaTeX\CodeNodeRenderer($renderer),
-                Nodes\ImageNode::class => new Renderers\LaTeX\ImageNodeRenderer($renderer),
+                Nodes\AnchorNode::class => new Renderers\TemplateNodeRenderer($renderer, 'anchor.tex.twig'),
+                Nodes\CodeNode::class => new Renderers\TemplateNodeRenderer($renderer, 'code.tex.twig'),
+                Nodes\ImageNode::class => new Renderers\TemplateNodeRenderer($renderer, 'image.tex.twig'),
+                Nodes\MetaNode::class => new Renderers\TemplateNodeRenderer($renderer, 'meta.tex.twig'),
+                Nodes\ParagraphNode::class => new Renderers\TemplateNodeRenderer($renderer, 'paragraph.tex.twig'),
+                Nodes\QuoteNode::class => new Renderers\TemplateNodeRenderer($renderer, 'quote.tex.twig'),
+                Nodes\SeparatorNode::class => new Renderers\TemplateNodeRenderer($renderer, 'separator.tex.twig'),
                 Nodes\ListNode::class => new Renderers\ListNodeRenderer(new Renderers\LaTeX\ListRenderer($renderer)),
-                Nodes\MetaNode::class => new Renderers\LaTeX\MetaNodeRenderer($renderer),
-                Nodes\ParagraphNode::class => new Renderers\LaTeX\ParagraphNodeRenderer($renderer),
-                Nodes\QuoteNode::class => new Renderers\LaTeX\QuoteNodeRenderer($renderer),
-                Nodes\SeparatorNode::class => new Renderers\LaTeX\SeparatorNodeRenderer($renderer),
                 Nodes\TableNode::class => new Renderers\LaTeX\TableNodeRenderer(),
                 Nodes\TitleNode::class => new Renderers\LaTeX\TitleNodeRenderer($renderer),
                 Nodes\TocNode::class => new Renderers\LaTeX\TocNodeRenderer($environment),

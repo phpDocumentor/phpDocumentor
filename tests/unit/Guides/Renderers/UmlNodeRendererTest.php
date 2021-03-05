@@ -9,6 +9,7 @@ use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Nodes\UmlNode;
 use phpDocumentor\Guides\Renderer;
+use phpDocumentor\Guides\Renderers\Html\UmlNodeRenderer;
 use phpDocumentor\Transformer\Writer\Graph\PlantumlRenderer;
 
 final class UmlNodeRendererTest extends MockeryTestCase

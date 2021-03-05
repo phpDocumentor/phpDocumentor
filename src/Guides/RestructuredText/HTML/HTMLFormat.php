@@ -53,10 +53,11 @@ use phpDocumentor\Guides\Renderers\Html\SpanNodeRenderer;
 use phpDocumentor\Guides\Renderers\Html\TableNodeRenderer;
 use phpDocumentor\Guides\Renderers\Html\TitleNodeRenderer;
 use phpDocumentor\Guides\Renderers\Html\TocNodeRenderer;
+use phpDocumentor\Guides\Renderers\Html\UmlNodeRenderer;
+use phpDocumentor\Guides\Renderers\InMemoryNodeRendererFactory;
 use phpDocumentor\Guides\Renderers\ListNodeRenderer;
 use phpDocumentor\Guides\Renderers\NodeRendererFactory;
-use phpDocumentor\Guides\Renderers\InMemoryNodeRendererFactory;
-use phpDocumentor\Guides\Renderers\UmlNodeRenderer;
+use phpDocumentor\Guides\Renderers\TemplateNodeRenderer;
 use phpDocumentor\Guides\RestructuredText;
 use phpDocumentor\Guides\RestructuredText\Formats\Format;
 use phpDocumentor\Transformer\Writer\Graph\PlantumlRenderer;
@@ -101,22 +102,22 @@ final class HTMLFormat implements Format
 
         return new InMemoryNodeRendererFactory(
             [
-                AnchorNode::class => new AnchorNodeRenderer($renderer),
+                AnchorNode::class => new TemplateNodeRenderer($renderer, 'anchor.html.twig'),
+                FigureNode::class =>new TemplateNodeRenderer($renderer, 'figure.html.twig'),
+                MetaNode::class => new TemplateNodeRenderer($renderer, 'meta.html.twig'),
+                ParagraphNode::class => new TemplateNodeRenderer($renderer, 'paragraph.html.twig'),
+                QuoteNode::class => new TemplateNodeRenderer($renderer, 'quote.html.twig'),
+                SeparatorNode::class => new TemplateNodeRenderer($renderer, 'separator.html.twig'),
+                TitleNode::class => new TemplateNodeRenderer($renderer, 'header-title.html.twig'),
+                SectionBeginNode::class => new TemplateNodeRenderer($renderer, 'section-begin.html.twig'),
+                SectionEndNode::class => new TemplateNodeRenderer($renderer, 'section-end.html.twig'),
+                ImageNode::class => new TemplateNodeRenderer($renderer, 'image.html.twig'),
+                UmlNode::class => new TemplateNodeRenderer($renderer, 'uml.html.twig'),
                 DefinitionListNode::class => new DefinitionListNodeRenderer($renderer),
-                FigureNode::class =>new FigureNodeRenderer($renderer),
-                UmlNode::class => new UmlNodeRenderer($this->plantumlRenderer, $renderer),
-                ImageNode::class => new ImageNodeRenderer($renderer),
                 ListNode::class => new ListNodeRenderer(new ListRenderer($renderer)),
-                MetaNode::class => new MetaNodeRenderer($renderer),
-                ParagraphNode::class => new ParagraphNodeRenderer($renderer),
-                QuoteNode::class => new QuoteNodeRenderer($renderer),
-                SeparatorNode::class => new SeparatorNodeRenderer($renderer),
                 TableNode::class => new TableNodeRenderer($renderer),
-                TitleNode::class => new TitleNodeRenderer($renderer),
                 TocNode::class => new TocNodeRenderer($environment),
                 CallableNode::class => new CallableNodeRenderer(),
-                SectionBeginNode::class => new SectionBeginNodeRenderer($renderer),
-                SectionEndNode::class => new SectionEndNodeRenderer($renderer),
                 DocumentNode::class => new DocumentNodeRenderer($environment),
                 CodeNode::class => new CodeNodeRenderer($renderer),
                 SpanNode::class => new SpanNodeRenderer($environment),
