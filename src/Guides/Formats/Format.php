@@ -23,8 +23,5 @@ interface Format
 
     public function getFileExtension() : string;
 
-    /**
-     * @return NodeRendererFactory[]
-     */
-    public function getNodeRendererFactories(Environment $environment) : array;
+    public function getNodeRendererFactory(Environment $environment) : NodeRendererFactory;
 }

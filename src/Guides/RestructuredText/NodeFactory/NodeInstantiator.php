@@ -8,6 +8,7 @@ use InvalidArgumentException;
 use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\NodeTypes;
+use phpDocumentor\Guides\Renderers\NodeRenderer;
 use phpDocumentor\Guides\Renderers\NodeRendererFactory;
 use function in_array;
 use function is_subclass_of;
@@ -21,17 +22,17 @@ class NodeInstantiator
     /** @var string */
     private $className;
 
-    /** @var NodeRendererFactory|null */
-    private $nodeRendererFactory;
+    /** @var NodeRenderer */
+    private $nodeRenderer;
 
-    /** @var Environment|null */
+    /** @var Environment */
     private $environment;
 
     public function __construct(
         string $type,
         string $className,
-        ?NodeRendererFactory $nodeRendererFactory = null,
-        ?Environment $environment = null
+        NodeRenderer $nodeRenderer,
+        Environment $environment
     ) {
         if (!in_array($type, NodeTypes::NODES, true)) {
             throw new InvalidArgumentException(
@@ -47,7 +48,7 @@ class NodeInstantiator
 
         $this->type = $type;
         $this->className = $className;
-        $this->nodeRendererFactory = $nodeRendererFactory;
+        $this->nodeRenderer = $nodeRenderer;
         $this->environment = $environment;
     }
 
@@ -63,14 +64,8 @@ class NodeInstantiator
     {
         /** @var Node $node */
         $node = new $this->className(...$arguments);
-
-        if ($this->environment !== null) {
-            $node->setEnvironment($this->environment);
-        }
-
-        if ($this->nodeRendererFactory !== null) {
-            $node->setNodeRendererFactory($this->nodeRendererFactory);
-        }
+        $node->setNodeRenderer($this->nodeRenderer);
+        $node->setEnvironment($this->environment);
 
         return $node;
     }

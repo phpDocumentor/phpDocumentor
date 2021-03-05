@@ -38,82 +38,28 @@ class LaTeXFormat implements Format
     /**
      * @return NodeRendererFactory[]
      */
-    public function getNodeRendererFactories(Environment $environment) : array
+    public function getNodeRendererFactory(Environment $environment) : NodeRendererFactory
     {
         $renderer = $environment->getRenderer();
-        return [
-            Nodes\AnchorNode::class => new CallableNodeRendererFactory(
-                static function () use ($renderer) {
-                    return new Renderers\LaTeX\AnchorNodeRenderer($renderer);
-                }
-            ),
-            Nodes\CodeNode::class => new CallableNodeRendererFactory(
-                static function () use ($renderer) {
-                    return new Renderers\LaTeX\CodeNodeRenderer($renderer);
-                }
-            ),
-            Nodes\ImageNode::class => new CallableNodeRendererFactory(
-                static function () use ($renderer) {
-                    return new Renderers\LaTeX\ImageNodeRenderer($renderer);
-                }
-            ),
-            Nodes\ListNode::class => new CallableNodeRendererFactory(
-                static function () use ($renderer) {
-                    return new Renderers\ListNodeRenderer(
-                        new Renderers\LaTeX\ListRenderer($renderer)
-                    );
-                }
-            ),
-            Nodes\MetaNode::class => new CallableNodeRendererFactory(
-                static function () use ($renderer) {
-                    return new Renderers\LaTeX\MetaNodeRenderer($renderer);
-                }
-            ),
-            Nodes\ParagraphNode::class => new CallableNodeRendererFactory(
-                static function () use ($renderer) {
-                    return new Renderers\LaTeX\ParagraphNodeRenderer($renderer);
-                }
-            ),
-            Nodes\QuoteNode::class => new CallableNodeRendererFactory(
-                static function () use ($renderer) {
-                    return new Renderers\LaTeX\QuoteNodeRenderer($renderer);
-                }
-            ),
-            Nodes\SeparatorNode::class => new CallableNodeRendererFactory(
-                static function () use ($renderer) {
-                    return new Renderers\LaTeX\SeparatorNodeRenderer($renderer);
-                }
-            ),
-            Nodes\TableNode::class => new CallableNodeRendererFactory(
-                static function () {
-                    return new Renderers\LaTeX\TableNodeRenderer();
-                }
-            ),
-            Nodes\TitleNode::class => new CallableNodeRendererFactory(
-                static function () use ($renderer) {
-                    return new Renderers\LaTeX\TitleNodeRenderer($renderer);
-                }
-            ),
-            Nodes\TocNode::class => new CallableNodeRendererFactory(
-                static function () use ($environment) {
-                    return new Renderers\LaTeX\TocNodeRenderer($environment);
-                }
-            ),
-            Nodes\DocumentNode::class => new CallableNodeRendererFactory(
-                static function () use ($renderer) {
-                    return new Renderers\LaTeX\DocumentNodeRenderer($renderer);
-                }
-            ),
-            Nodes\SpanNode::class => new CallableNodeRendererFactory(
-                static function () use ($environment) {
-                    return new Renderers\LaTeX\SpanNodeRenderer($environment);
-                }
-            ),
-            Nodes\CallableNode::class => new CallableNodeRendererFactory(
-                static function () {
-                    return new Renderers\CallableNodeRenderer();
-                }
-            ),
-        ];
+
+        return new Renderers\InMemoryNodeRendererFactory(
+            [
+                Nodes\AnchorNode::class => new Renderers\LaTeX\AnchorNodeRenderer($renderer),
+                Nodes\CodeNode::class => new Renderers\LaTeX\CodeNodeRenderer($renderer),
+                Nodes\ImageNode::class => new Renderers\LaTeX\ImageNodeRenderer($renderer),
+                Nodes\ListNode::class => new Renderers\ListNodeRenderer(new Renderers\LaTeX\ListRenderer($renderer)),
+                Nodes\MetaNode::class => new Renderers\LaTeX\MetaNodeRenderer($renderer),
+                Nodes\ParagraphNode::class => new Renderers\LaTeX\ParagraphNodeRenderer($renderer),
+                Nodes\QuoteNode::class => new Renderers\LaTeX\QuoteNodeRenderer($renderer),
+                Nodes\SeparatorNode::class => new Renderers\LaTeX\SeparatorNodeRenderer($renderer),
+                Nodes\TableNode::class => new Renderers\LaTeX\TableNodeRenderer(),
+                Nodes\TitleNode::class => new Renderers\LaTeX\TitleNodeRenderer($renderer),
+                Nodes\TocNode::class => new Renderers\LaTeX\TocNodeRenderer($environment),
+                Nodes\DocumentNode::class => new Renderers\LaTeX\DocumentNodeRenderer($renderer),
+                Nodes\SpanNode::class => new Renderers\LaTeX\SpanNodeRenderer($environment),
+                Nodes\CallableNode::class => new Renderers\CallableNodeRenderer(),
+            ],
+            new Renderers\DefaultNodeRenderer()
+        );
     }
 }

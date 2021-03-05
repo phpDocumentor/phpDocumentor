@@ -35,6 +35,7 @@ use phpDocumentor\Guides\Nodes\TocNode;
 use phpDocumentor\Guides\Nodes\UmlNode;
 use phpDocumentor\Guides\Renderers\CallableNodeRenderer;
 use phpDocumentor\Guides\Renderers\CallableNodeRendererFactory;
+use phpDocumentor\Guides\Renderers\DefaultNodeRenderer;
 use phpDocumentor\Guides\Renderers\Html\AnchorNodeRenderer;
 use phpDocumentor\Guides\Renderers\Html\CodeNodeRenderer;
 use phpDocumentor\Guides\Renderers\Html\DefinitionListNodeRenderer;
@@ -54,6 +55,7 @@ use phpDocumentor\Guides\Renderers\Html\TitleNodeRenderer;
 use phpDocumentor\Guides\Renderers\Html\TocNodeRenderer;
 use phpDocumentor\Guides\Renderers\ListNodeRenderer;
 use phpDocumentor\Guides\Renderers\NodeRendererFactory;
+use phpDocumentor\Guides\Renderers\InMemoryNodeRendererFactory;
 use phpDocumentor\Guides\Renderers\UmlNodeRenderer;
 use phpDocumentor\Guides\RestructuredText;
 use phpDocumentor\Guides\RestructuredText\Formats\Format;
@@ -93,114 +95,33 @@ final class HTMLFormat implements Format
         ];
     }
 
-    /**
-     * @return NodeRendererFactory[]
-     */
-    public function getNodeRendererFactories(Environment $environment) : array
+    public function getNodeRendererFactory(Environment $environment) : NodeRendererFactory
     {
         $renderer = $environment->getRenderer();
 
-        $nodeRendererFactories = [
-            AnchorNode::class => new CallableNodeRendererFactory(
-                static function () use ($renderer) {
-                    return new AnchorNodeRenderer($renderer);
-                }
-            ),
-            DefinitionListNode::class => new CallableNodeRendererFactory(
-                static function () use ($renderer)  {
-                    return new DefinitionListNodeRenderer($renderer);
-                }
-            ),
-            FigureNode::class => new CallableNodeRendererFactory(
-                static function () use ($renderer)  {
-                    return new FigureNodeRenderer($renderer);
-                }
-            ),
-            UmlNode::class => new CallableNodeRendererFactory(
-                function () use ($renderer)  {
-                    return new UmlNodeRenderer($this->plantumlRenderer, $renderer);
-                }
-            ),
-            ImageNode::class => new CallableNodeRendererFactory(
-                static function () use ($renderer)  {
-                    return new ImageNodeRenderer($renderer);
-                }
-            ),
-            ListNode::class => new CallableNodeRendererFactory(
-                static function () use ($renderer)  {
-                    return new ListNodeRenderer(new ListRenderer($renderer));
-                }
-            ),
-            MetaNode::class => new CallableNodeRendererFactory(
-                static function () use ($renderer)  {
-                    return new MetaNodeRenderer($renderer);
-                }
-            ),
-            ParagraphNode::class => new CallableNodeRendererFactory(
-                static function () use ($renderer)  {
-                    return new ParagraphNodeRenderer($renderer);
-                }
-            ),
-            QuoteNode::class => new CallableNodeRendererFactory(
-                static function () use ($renderer)  {
-                    return new QuoteNodeRenderer($renderer);
-                }
-            ),
-            SeparatorNode::class => new CallableNodeRendererFactory(
-                static function () use ($renderer)  {
-                    return new SeparatorNodeRenderer($renderer);
-                }
-            ),
-            TableNode::class => new CallableNodeRendererFactory(
-                static function () use ($renderer)  {
-                    return new TableNodeRenderer($renderer);
-                }
-            ),
-            TitleNode::class => new CallableNodeRendererFactory(
-                static function () use ($renderer)  {
-                    return new TitleNodeRenderer($renderer);
-                }
-            ),
-            TocNode::class => new CallableNodeRendererFactory(
-                static function () use ($environment)  {
-                    return new TocNodeRenderer($environment);
-                }
-            ),
-            CallableNode::class => new CallableNodeRendererFactory(
-                static function ()  {
-                    return new CallableNodeRenderer();
-                }
-            ),
-            SectionBeginNode::class => new CallableNodeRendererFactory(
-                static function () use ($renderer)  {
-                    return new SectionBeginNodeRenderer($renderer);
-                }
-            ),
-            SectionEndNode::class => new CallableNodeRendererFactory(
-                static function () use ($renderer)  {
-                    return new SectionEndNodeRenderer($renderer);
-                }
-            ),
-        ];
-
-        $nodeRendererFactories[DocumentNode::class] = new CallableNodeRendererFactory(
-            static function () use ($environment)  {
-                return new DocumentNodeRenderer($environment);
-            }
+        return new InMemoryNodeRendererFactory(
+            [
+                AnchorNode::class => new AnchorNodeRenderer($renderer),
+                DefinitionListNode::class => new DefinitionListNodeRenderer($renderer),
+                FigureNode::class =>new FigureNodeRenderer($renderer),
+                UmlNode::class => new UmlNodeRenderer($this->plantumlRenderer, $renderer),
+                ImageNode::class => new ImageNodeRenderer($renderer),
+                ListNode::class => new ListNodeRenderer(new ListRenderer($renderer)),
+                MetaNode::class => new MetaNodeRenderer($renderer),
+                ParagraphNode::class => new ParagraphNodeRenderer($renderer),
+                QuoteNode::class => new QuoteNodeRenderer($renderer),
+                SeparatorNode::class => new SeparatorNodeRenderer($renderer),
+                TableNode::class => new TableNodeRenderer($renderer),
+                TitleNode::class => new TitleNodeRenderer($renderer),
+                TocNode::class => new TocNodeRenderer($environment),
+                CallableNode::class => new CallableNodeRenderer(),
+                SectionBeginNode::class => new SectionBeginNodeRenderer($renderer),
+                SectionEndNode::class => new SectionEndNodeRenderer($renderer),
+                DocumentNode::class => new DocumentNodeRenderer($environment),
+                CodeNode::class => new CodeNodeRenderer($renderer),
+                SpanNode::class => new SpanNodeRenderer($environment),
+            ],
+            new DefaultNodeRenderer()
         );
-
-        $nodeRendererFactories[CodeNode::class] = new CallableNodeRendererFactory(
-            static function () use ($renderer)  {
-                return new CodeNodeRenderer($renderer);
-            }
-        );
-
-        $nodeRendererFactories[SpanNode::class] = new CallableNodeRendererFactory(
-            static function () use ($environment)  {
-                return new SpanNodeRenderer($environment);
-            }
-        );
-
-        return $nodeRendererFactories;
     }
 }

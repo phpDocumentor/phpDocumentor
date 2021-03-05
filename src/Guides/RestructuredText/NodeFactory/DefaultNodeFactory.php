@@ -61,13 +61,13 @@ class DefaultNodeFactory implements NodeFactory
     ) : self {
         $instantiators = [];
         foreach ($nodeRegistry as $nodeName => $nodeClass) {
-            $nodeRendererFactories = $format->getNodeRendererFactories($environment);
-            $nodeRendererFactory = $nodeRendererFactories[$nodeClass] ?? null;
+            $nodeRendererFactory = $format->getNodeRendererFactory($environment);
+            $nodeRenderer = $nodeRendererFactory->get($nodeClass);
 
             $instantiators[] = new NodeInstantiator(
                 $nodeName,
                 $nodeClass,
-                $nodeRendererFactory,
+                $nodeRenderer,
                 $environment
             );
         }
