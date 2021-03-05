@@ -15,6 +15,7 @@ namespace phpDocumentor\Guides\Renderers\LaTeX;
 
 use phpDocumentor\Guides\Nodes\DocumentNode;
 use phpDocumentor\Guides\Nodes\MainNode;
+use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\Renderers\DocumentNodeRenderer as BaseDocumentRender;
 use phpDocumentor\Guides\Renderers\FullDocumentNodeRenderer;
@@ -23,38 +24,38 @@ use function count;
 
 class DocumentNodeRenderer implements NodeRenderer, FullDocumentNodeRenderer
 {
-    /** @var DocumentNode */
-    private $document;
-
     /** @var Renderer */
     private $renderer;
 
-    public function __construct(DocumentNode $document)
+    public function __construct(Renderer $renderer)
     {
-        $this->document = $document;
-        $this->renderer = $document->getEnvironment()->getRenderer();
+        $this->renderer = $renderer;
     }
 
-    public function render() : string
+    public function render(Node $node) : string
     {
-        return (new BaseDocumentRender($this->document))->render();
+        if ($node instanceof DocumentNode === false) {
+            throw new \InvalidArgumentException('Invalid node presented');
+        }
+
+        return (new BaseDocumentRender($node))->render($node);
     }
 
-    public function renderDocument() : string
+    public function renderDocument(DocumentNode $node) : string
     {
         return $this->renderer->render(
             'document.tex.twig',
             [
-                'isMain' => $this->isMain(),
-                'document' => $this->document,
-                'body' => $this->render(),
+                'isMain' => $this->isMain($node),
+                'document' => $node,
+                'body' => $this->render($node),
             ]
         );
     }
 
-    private function isMain() : bool
+    private function isMain(DocumentNode $node) : bool
     {
-        $nodes = $this->document->getNodes(
+        $nodes = $node->getNodes(
             static function ($node) {
                 return $node instanceof MainNode;
             }

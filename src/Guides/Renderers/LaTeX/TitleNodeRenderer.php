@@ -13,32 +13,33 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\Renderers\LaTeX;
 
+use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\TitleNode;
 use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\Renderers\NodeRenderer;
 
 class TitleNodeRenderer implements NodeRenderer
 {
-    /** @var TitleNode */
-    private $titleNode;
-
     /** @var Renderer */
     private $renderer;
 
-    public function __construct(TitleNode $titleNode)
+    public function __construct(Renderer $renderer)
     {
-        $this->titleNode = $titleNode;
-        $this->renderer = $titleNode->getEnvironment()->getRenderer();
+        $this->renderer = $renderer;
     }
 
-    public function render() : string
+    public function render(Node $node) : string
     {
+        if ($node instanceof TitleNode === false) {
+            throw new \InvalidArgumentException('Invalid node presented');
+        }
+
         $type = 'chapter';
 
-        if ($this->titleNode->getLevel() > 1) {
+        if ($node->getLevel() > 1) {
             $type = 'section';
 
-            for ($i = 2; $i < $this->titleNode->getLevel(); $i++) {
+            for ($i = 2; $i < $node->getLevel(); $i++) {
                 $type = 'sub' . $type;
             }
         }
@@ -47,7 +48,7 @@ class TitleNodeRenderer implements NodeRenderer
             'title.tex.twig',
             [
                 'type' => $type,
-                'titleNode' => $this->titleNode,
+                'titleNode' => $node,
             ]
         );
     }

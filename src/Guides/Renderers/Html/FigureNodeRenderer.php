@@ -14,29 +14,31 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\Renderers\Html;
 
 use phpDocumentor\Guides\Nodes\FigureNode;
+use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\Renderers\NodeRenderer;
 
 class FigureNodeRenderer implements NodeRenderer
 {
-    /** @var FigureNode */
-    private $figureNode;
-
     /** @var Renderer */
     private $renderer;
 
-    public function __construct(FigureNode $figureNode)
+    public function __construct(Renderer $renderer)
     {
-        $this->figureNode = $figureNode;
-        $this->renderer = $figureNode->getEnvironment()->getRenderer();
+        $this->renderer = $renderer;
     }
 
-    public function render() : string
+    public function render(Node $node) : string
     {
+        if ($node instanceof FigureNode === false) {
+            throw new \InvalidArgumentException('Invalid node presented');
+        }
+
+
         return $this->renderer->render(
             'figure.html.twig',
             [
-                'figureNode' => $this->figureNode,
+                'figureNode' => $node,
             ]
         );
     }

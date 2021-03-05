@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\Renderers;
 
+use phpDocumentor\Guides\Nodes\Node;
+
 interface FormatListRenderer
 {
-    public function createElement(string $text, string $prefix) : string;
+    public function createElement(Node $node, string $text, string $prefix) : string;
 
     /**
      * @return string[]
      */
-    public function createList(bool $ordered) : array;
+    public function createList(Node $node, bool $ordered) : array;
 }

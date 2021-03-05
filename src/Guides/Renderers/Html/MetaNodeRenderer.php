@@ -14,29 +14,30 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\Renderers\Html;
 
 use phpDocumentor\Guides\Nodes\MetaNode;
+use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\Renderers\NodeRenderer;
 
 class MetaNodeRenderer implements NodeRenderer
 {
-    /** @var MetaNode */
-    private $metaNode;
-
     /** @var Renderer */
     private $renderer;
 
-    public function __construct(MetaNode $metaNode)
+    public function __construct(Renderer $renderer)
     {
-        $this->metaNode = $metaNode;
-        $this->renderer = $metaNode->getEnvironment()->getRenderer();
+        $this->renderer = $renderer;
     }
 
-    public function render() : string
+    public function render(Node $node) : string
     {
+        if ($node instanceof MetaNode === false) {
+            throw new \InvalidArgumentException('Invalid node presented');
+        }
+
         return $this->renderer->render(
             'meta.html.twig',
             [
-                'metaNode' => $this->metaNode,
+                'metaNode' => $node,
             ]
         );
     }

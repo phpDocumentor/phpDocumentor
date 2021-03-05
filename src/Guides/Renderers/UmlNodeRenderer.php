@@ -4,36 +4,40 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\Renderers;
 
+use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\UmlNode;
 use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Transformer\Writer\Graph\PlantumlRenderer;
 
 class UmlNodeRenderer implements NodeRenderer
 {
-    /** @var UmlNode */
-    private $umlNode;
-
     /** @var Renderer */
     private $renderer;
 
     /** @var PlantumlRenderer */
     private $plantumlRenderer;
 
-    public function __construct(UmlNode $umlNode, PlantumlRenderer $plantumlRenderer)
-    {
-        $this->umlNode = $umlNode;
-        $this->renderer = $umlNode->getEnvironment()->getRenderer();
+    public function __construct(
+        PlantumlRenderer $plantumlRenderer,
+        Renderer $renderer
+    ) {
+        $this->renderer = $renderer;
         $this->plantumlRenderer = $plantumlRenderer;
     }
 
-    public function render() : string
+    public function render(Node $node) : string
     {
+        if ($node instanceof UmlNode === false) {
+            throw new \InvalidArgumentException('Invalid node presented');
+        }
+
+
         return $this->renderer
             ->render(
                 'uml.html.twig',
                 [
-                    'umlNode' => $this->umlNode,
-                    'svg' => $this->plantumlRenderer->render($this->umlNode->getValue()) ?: '',
+                    'umlNode' => $node,
+                    'svg' => $this->plantumlRenderer->render($node->getValue()) ?: '',
                 ]
             );
     }

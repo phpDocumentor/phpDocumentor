@@ -13,30 +13,32 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\Renderers\Html;
 
+use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\SectionEndNode;
 use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\Renderers\NodeRenderer;
 
 class SectionEndNodeRenderer implements NodeRenderer
 {
-    /** @var SectionEndNode */
-    private $sectionEndNode;
-
     /** @var Renderer */
     private $renderer;
 
-    public function __construct(SectionEndNode $sectionEndNode)
+    public function __construct(Renderer $renderer)
     {
-        $this->sectionEndNode = $sectionEndNode;
-        $this->renderer = $sectionEndNode->getEnvironment()->getRenderer();
+        $this->renderer = $renderer;
     }
 
-    public function render() : string
+    public function render(Node $node) : string
     {
+        if ($node instanceof SectionEndNode === false) {
+            throw new \InvalidArgumentException('Invalid node presented');
+        }
+
+
         return $this->renderer->render(
             'section-end.html.twig',
             [
-                'sectionEndNode' => $this->sectionEndNode,
+                'sectionEndNode' => $node,
             ]
         );
     }

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\Renderers\Html;
 
 use LogicException;
+use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\TableNode;
 use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\Renderers\NodeRenderer;
@@ -21,22 +22,22 @@ use function sprintf;
 
 class TableNodeRenderer implements NodeRenderer
 {
-    /** @var TableNode */
-    private $tableNode;
-
     /** @var Renderer */
     private $renderer;
 
-    public function __construct(TableNode $tableNode)
+    public function __construct(Renderer $renderer)
     {
-        $this->tableNode = $tableNode;
-        $this->renderer = $tableNode->getEnvironment()->getRenderer();
+        $this->renderer = $renderer;
     }
 
-    public function render() : string
+    public function render(Node $node) : string
     {
-        $headers = $this->tableNode->getHeaders();
-        $rows = $this->tableNode->getData();
+        if ($node instanceof TableNode === false) {
+            throw new \InvalidArgumentException('Invalid node presented');
+        }
+
+        $headers = $node->getHeaders();
+        $rows = $node->getData();
 
         $tableHeaderRows = [];
 
@@ -56,7 +57,7 @@ class TableNodeRenderer implements NodeRenderer
         return $this->renderer->render(
             'table.html.twig',
             [
-                'tableNode' => $this->tableNode,
+                'tableNode' => $node,
                 'tableHeaderRows' => $tableHeaderRows,
                 'tableRows' => $rows,
             ]

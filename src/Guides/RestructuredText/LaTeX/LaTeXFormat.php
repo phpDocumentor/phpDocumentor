@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\LaTeX;
 
+use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Nodes;
 use phpDocumentor\Guides\Renderers;
 use phpDocumentor\Guides\Renderers\CallableNodeRendererFactory;
@@ -28,7 +29,6 @@ class LaTeXFormat implements Format
             new LaTeX\Directives\LaTeXMain(),
             new LaTeX\Directives\Image(),
             new LaTeX\Directives\Meta(),
-            new LaTeX\Directives\Stylesheet(),
             new LaTeX\Directives\Title(),
             new LaTeX\Directives\Url(),
             new LaTeX\Directives\Wrap('note'),
@@ -38,80 +38,80 @@ class LaTeXFormat implements Format
     /**
      * @return NodeRendererFactory[]
      */
-    public function getNodeRendererFactories() : array
+    public function getNodeRendererFactories(Environment $environment) : array
     {
+        $renderer = $environment->getRenderer();
         return [
             Nodes\AnchorNode::class => new CallableNodeRendererFactory(
-                static function (Nodes\AnchorNode $node) {
-                    return new Renderers\LaTeX\AnchorNodeRenderer($node);
+                static function () use ($renderer) {
+                    return new Renderers\LaTeX\AnchorNodeRenderer($renderer);
                 }
             ),
             Nodes\CodeNode::class => new CallableNodeRendererFactory(
-                static function (Nodes\CodeNode $node) {
-                    return new Renderers\LaTeX\CodeNodeRenderer($node);
+                static function () use ($renderer) {
+                    return new Renderers\LaTeX\CodeNodeRenderer($renderer);
                 }
             ),
             Nodes\ImageNode::class => new CallableNodeRendererFactory(
-                static function (Nodes\ImageNode $node) {
-                    return new Renderers\LaTeX\ImageNodeRenderer($node);
+                static function () use ($renderer) {
+                    return new Renderers\LaTeX\ImageNodeRenderer($renderer);
                 }
             ),
             Nodes\ListNode::class => new CallableNodeRendererFactory(
-                static function (Nodes\ListNode $node) {
+                static function () use ($renderer) {
                     return new Renderers\ListNodeRenderer(
-                        $node,
-                        new Renderers\LaTeX\ListRenderer($node)
+                        new Renderers\LaTeX\ListRenderer($renderer)
                     );
                 }
             ),
             Nodes\MetaNode::class => new CallableNodeRendererFactory(
-                static function (Nodes\MetaNode $node) {
-                    return new Renderers\LaTeX\MetaNodeRenderer($node);
+                static function () use ($renderer) {
+                    return new Renderers\LaTeX\MetaNodeRenderer($renderer);
                 }
             ),
             Nodes\ParagraphNode::class => new CallableNodeRendererFactory(
-                static function (Nodes\ParagraphNode $node) {
-                    return new Renderers\LaTeX\ParagraphNodeRenderer($node);
+                static function () use ($renderer) {
+                    return new Renderers\LaTeX\ParagraphNodeRenderer($renderer);
                 }
             ),
             Nodes\QuoteNode::class => new CallableNodeRendererFactory(
-                static function (Nodes\QuoteNode $node) {
-                    return new Renderers\LaTeX\QuoteNodeRenderer($node);
+                static function () use ($renderer) {
+                    return new Renderers\LaTeX\QuoteNodeRenderer($renderer);
                 }
             ),
             Nodes\SeparatorNode::class => new CallableNodeRendererFactory(
-                static function (Nodes\SeparatorNode $node) {
-                    return new Renderers\LaTeX\SeparatorNodeRenderer($node);
+                static function () use ($renderer) {
+                    return new Renderers\LaTeX\SeparatorNodeRenderer($renderer);
                 }
             ),
             Nodes\TableNode::class => new CallableNodeRendererFactory(
-                static function (Nodes\TableNode $node) {
-                    return new Renderers\LaTeX\TableNodeRenderer($node);
+                static function () {
+                    return new Renderers\LaTeX\TableNodeRenderer();
                 }
             ),
             Nodes\TitleNode::class => new CallableNodeRendererFactory(
-                static function (Nodes\TitleNode $node) {
-                    return new Renderers\LaTeX\TitleNodeRenderer($node);
+                static function () use ($renderer) {
+                    return new Renderers\LaTeX\TitleNodeRenderer($renderer);
                 }
             ),
             Nodes\TocNode::class => new CallableNodeRendererFactory(
-                static function (Nodes\TocNode $node) {
-                    return new Renderers\LaTeX\TocNodeRenderer($node);
+                static function () use ($environment) {
+                    return new Renderers\LaTeX\TocNodeRenderer($environment);
                 }
             ),
             Nodes\DocumentNode::class => new CallableNodeRendererFactory(
-                static function (Nodes\DocumentNode $node) {
-                    return new Renderers\LaTeX\DocumentNodeRenderer($node);
+                static function () use ($renderer) {
+                    return new Renderers\LaTeX\DocumentNodeRenderer($renderer);
                 }
             ),
             Nodes\SpanNode::class => new CallableNodeRendererFactory(
-                static function (Nodes\SpanNode $node) {
-                    return new Renderers\LaTeX\SpanNodeRenderer($node);
+                static function () use ($environment) {
+                    return new Renderers\LaTeX\SpanNodeRenderer($environment);
                 }
             ),
             Nodes\CallableNode::class => new CallableNodeRendererFactory(
-                static function (Nodes\CallableNode $node) {
-                    return new Renderers\CallableNodeRenderer($node);
+                static function () {
+                    return new Renderers\CallableNodeRenderer();
                 }
             ),
         ];

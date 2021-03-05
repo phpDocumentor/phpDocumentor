@@ -14,19 +14,16 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\Renderers;
 
 use phpDocumentor\Guides\Nodes\CallableNode;
+use phpDocumentor\Guides\Nodes\Node;
 
 class CallableNodeRenderer implements NodeRenderer
 {
-    /** @var CallableNode */
-    private $callableNode;
-
-    public function __construct(CallableNode $callableNode)
+    public function render(Node $node) : string
     {
-        $this->callableNode = $callableNode;
-    }
+        if ($node instanceof CallableNode === false) {
+            throw new \InvalidArgumentException('Invalid node presented');
+        }
 
-    public function render() : string
-    {
-        return $this->callableNode->getCallable()();
+        return $node->getCallable()();
     }
 }

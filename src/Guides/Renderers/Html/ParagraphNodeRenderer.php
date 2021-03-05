@@ -13,30 +13,31 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\Renderers\Html;
 
+use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\ParagraphNode;
 use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\Renderers\NodeRenderer;
 
 class ParagraphNodeRenderer implements NodeRenderer
 {
-    /** @var ParagraphNode */
-    private $paragraphNode;
-
     /** @var Renderer */
     private $renderer;
 
-    public function __construct(ParagraphNode $paragraphNode)
+    public function __construct(Renderer $renderer)
     {
-        $this->paragraphNode = $paragraphNode;
-        $this->renderer = $paragraphNode->getEnvironment()->getRenderer();
+        $this->renderer = $renderer;
     }
 
-    public function render() : string
+    public function render(Node $node) : string
     {
+        if ($node instanceof ParagraphNode === false) {
+            throw new \InvalidArgumentException('Invalid node presented');
+        }
+
         return $this->renderer->render(
             'paragraph.html.twig',
             [
-                'paragraphNode' => $this->paragraphNode,
+                'paragraphNode' => $node,
             ]
         );
     }

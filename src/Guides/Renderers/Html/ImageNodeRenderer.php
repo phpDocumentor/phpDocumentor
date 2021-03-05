@@ -14,34 +14,35 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\Renderers\Html;
 
 use phpDocumentor\Guides\Nodes\ImageNode;
+use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\Renderers\NodeRenderer;
 
 class ImageNodeRenderer implements NodeRenderer
 {
-    /** @var ImageNode */
-    private $imageNode;
-
     /** @var Renderer */
     private $renderer;
 
-    public function __construct(ImageNode $imageNode)
+    public function __construct(Renderer $renderer)
     {
-        $this->imageNode = $imageNode;
-        $this->renderer = $imageNode->getEnvironment()->getRenderer();
+        $this->renderer = $renderer;
     }
 
-    public function render() : string
+    public function render(Node $node) : string
     {
+        if ($node instanceof ImageNode === false) {
+            throw new \InvalidArgumentException('Invalid node presented');
+        }
+
         return $this->renderer->render(
             'image.html.twig',
             [
-                'url' => $this->imageNode->getUrl(),
-                'align' => $this->imageNode->getOptions()['align'] ?? null,
-                'height' => $this->imageNode->getOptions()['height'] ?? null,
-                'width' => $this->imageNode->getOptions()['width'] ?? null,
-                'class' => $this->imageNode->getClassesString(),
-                'alt' => $this->imageNode->getOptions()['alt'] ?? null,
+                'url' => $node->getUrl(),
+                'align' => $node->getOptions()['align'] ?? null,
+                'height' => $node->getOptions()['height'] ?? null,
+                'width' => $node->getOptions()['width'] ?? null,
+                'class' => $node->getClassesString(),
+                'alt' => $node->getOptions()['alt'] ?? null,
             ]
         );
     }

@@ -14,37 +14,38 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\Renderers\Html;
 
 use phpDocumentor\Guides\Nodes\CodeNode;
+use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\Renderers\NodeRenderer;
 
 class CodeNodeRenderer implements NodeRenderer
 {
-    /** @var CodeNode */
-    private $codeNode;
-
     /** @var Renderer */
     private $renderer;
 
-    public function __construct(CodeNode $codeNode)
+    public function __construct(Renderer $renderer)
     {
-        $this->codeNode = $codeNode;
-        $this->renderer = $codeNode->getEnvironment()->getRenderer();
+        $this->renderer = $renderer;
     }
 
-    public function render() : string
+    public function render(Node $node) : string
     {
-        $value = $this->codeNode->getValue();
+        if ($node instanceof CodeNode === false) {
+            throw new \InvalidArgumentException('Invalid node presented');
+        }
 
-        if ($this->codeNode->isRaw()) {
+        $value = $node->getValue();
+
+        if ($node->isRaw()) {
             return $value;
         }
 
         return $this->renderer->render(
             'code.html.twig',
             [
-                'code' => $this->codeNode->getValue(),
-                'language' => $this->codeNode->getLanguage(),
-                'startingLineNumber' => $this->codeNode->getStartingLineNumber(),
+                'code' => $node->getValue(),
+                'language' => $node->getLanguage(),
+                'startingLineNumber' => $node->getStartingLineNumber(),
             ]
         );
     }

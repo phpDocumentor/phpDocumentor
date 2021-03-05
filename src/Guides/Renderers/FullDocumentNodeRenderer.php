@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\Renderers;
 
+use phpDocumentor\Guides\Nodes\DocumentNode;
+
 interface FullDocumentNodeRenderer
 {
-    public function renderDocument() : string;
+    public function renderDocument(DocumentNode $node) : string;
 }

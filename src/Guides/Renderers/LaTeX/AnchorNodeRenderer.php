@@ -14,24 +14,30 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\Renderers\LaTeX;
 
 use phpDocumentor\Guides\Nodes\AnchorNode;
+use phpDocumentor\Guides\Nodes\Node;
+use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\Renderers\NodeRenderer;
 
 class AnchorNodeRenderer implements NodeRenderer
 {
-    /** @var AnchorNode */
-    private $anchorNode;
+    /** @var Renderer */
+    private $renderer;
 
-    public function __construct(AnchorNode $anchorNode)
+    public function __construct(Renderer $renderer)
     {
-        $this->anchorNode = $anchorNode;
+        $this->renderer = $renderer;
     }
 
-    public function render() : string
+    public function render(Node $node) : string
     {
-        return $this->anchorNode->getEnvironment()->getRenderer()->render(
+        if ($node instanceof AnchorNode === false) {
+            throw new \InvalidArgumentException('Invalid node presented');
+        }
+
+        return $this->renderer->render(
             'anchor.tex.twig',
             [
-                'anchorNode' => $this->anchorNode,
+                'anchorNode' => $node,
             ]
         );
     }

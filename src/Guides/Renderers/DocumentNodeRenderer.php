@@ -25,7 +25,7 @@ class DocumentNodeRenderer implements NodeRenderer
         $this->document = $document;
     }
 
-    public function render() : string
+    public function render(\phpDocumentor\Guides\Nodes\Node $node) : string
     {
         $document = '';
 

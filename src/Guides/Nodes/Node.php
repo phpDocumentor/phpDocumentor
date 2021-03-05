@@ -141,7 +141,7 @@ abstract class Node
 
     protected function doRender() : string
     {
-        return $this->getRenderer()->render();
+        return $this->getRenderer()->render($this);
     }
 
     protected function getRenderer() : NodeRenderer
