@@ -41,7 +41,7 @@ class DocumentNodeRenderer implements NodeRenderer, FullDocumentNodeRenderer
             throw new \InvalidArgumentException('Invalid node presented');
         }
 
-        return (new BaseDocumentRender($node))->render($node);
+        return (new BaseDocumentRender())->render($node);
     }
 
     public function renderDocument(DocumentNode $node) : string

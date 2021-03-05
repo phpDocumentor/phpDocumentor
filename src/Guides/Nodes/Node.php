@@ -166,6 +166,6 @@ abstract class Node
 
     private function createDefaultRenderer() : NodeRenderer
     {
-        return new DefaultNodeRenderer($this);
+        return new DefaultNodeRenderer();
     }
 }

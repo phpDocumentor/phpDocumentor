@@ -13,24 +13,16 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\Renderers;
 
-use phpDocumentor\Guides\Nodes\DocumentNode;
+use phpDocumentor\Guides\Nodes\Node;
 
 class DocumentNodeRenderer implements NodeRenderer
 {
-    /** @var DocumentNode */
-    private $document;
-
-    public function __construct(DocumentNode $document)
-    {
-        $this->document = $document;
-    }
-
-    public function render(\phpDocumentor\Guides\Nodes\Node $node) : string
+    public function render(Node $node) : string
     {
         $document = '';
 
-        foreach ($this->document->getNodes() as $node) {
-            $document .= $node->render() . "\n";
+        foreach ($node->getNodes() as $childNode) {
+            $document .= $childNode->render() . "\n";
         }
 
         return $document;

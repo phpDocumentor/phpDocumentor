@@ -17,17 +17,9 @@ use phpDocumentor\Guides\Nodes\Node;
 
 class DefaultNodeRenderer implements NodeRenderer
 {
-    /** @var Node */
-    private $node;
-
-    public function __construct(Node $node)
+    public function render(Node $node) : string
     {
-        $this->node = $node;
-    }
-
-    public function render(\phpDocumentor\Guides\Nodes\Node $node) : string
-    {
-        $value = $this->node->getValue();
+        $value = $node->getValue();
 
         if ($value instanceof Node) {
             return $value->render();

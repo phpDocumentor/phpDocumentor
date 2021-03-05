@@ -35,7 +35,7 @@ final class UmlNodeRendererTest extends MockeryTestCase
             )
             ->andReturn('template');
 
-        $renderer = new UmlNodeRenderer($umlNode, $plantumlRenderer, $twig);
+        $renderer = new UmlNodeRenderer($plantumlRenderer, $twig);
         $result = $renderer->render($umlNode);
 
         self::assertSame('template', $result);
