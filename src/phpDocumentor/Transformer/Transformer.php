@@ -35,7 +35,7 @@ use function sprintf;
 /**
  * Core class responsible for transforming the cache file to a set of artifacts.
  */
-class Transformer
+class Transformer implements \phpDocumentor\FlowService\Transformer
 {
     public const EVENT_PRE_TRANSFORMATION = 'transformer.transformation.pre';
 

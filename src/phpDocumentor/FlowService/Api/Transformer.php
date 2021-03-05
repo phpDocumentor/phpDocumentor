@@ -7,9 +7,12 @@ namespace phpDocumentor\FlowService\Api;
 use Exception;
 use phpDocumentor\Configuration\Configuration;
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
+use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Dsn;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\FlowService\FlowService;
+use phpDocumentor\FlowService\Transformer as TransformerInterface;
+use phpDocumentor\Parser\FlySystemFactory;
 use phpDocumentor\Reflection\DocBlock\ExampleFinder;
 use phpDocumentor\Transformer\Event\PreTransformationEvent;
 use phpDocumentor\Transformer\Event\PreTransformEvent;
@@ -38,7 +41,7 @@ use const DIRECTORY_SEPARATOR;
  * verbose option or stop additional information using the quiet option. Please
  * take note that the quiet option also disables logging to file.
  */
-class Transformer implements FlowService
+class Transformer implements TransformerInterface
 {
     /** @var RealTransformer $transformer Principal object for guiding the transformation process */
     private $transformer;
@@ -51,20 +54,24 @@ class Transformer implements FlowService
 
     /** @var Configuration */
     private $configuration;
+    /**
+     * @var FlySystemFactory
+     */
+    private $flySystemFactory;
 
     /**
      * Initializes the command with all necessary dependencies to construct human-suitable output from the AST.
      */
     public function __construct(
         RealTransformer $transformer,
+        FlySystemFactory $flySystemFactory,
         LoggerInterface $logger,
-        ExampleFinder $exampleFinder,
         Configuration $configuration
     ) {
         $this->transformer   = $transformer;
-        $this->exampleFinder = $exampleFinder;
         $this->logger        = $logger;
         $this->configuration = $configuration;
+        $this->flySystemFactory = $flySystemFactory;
 
         $this->connectOutputToEvents();
     }
@@ -74,14 +81,14 @@ class Transformer implements FlowService
      *
      * @throws Exception If the target location is not a folder.
      */
-    public function operate(DocumentationSetDescriptor $documentationSet, Template $template = null): void
+    public function execute(ProjectDescriptor $project, DocumentationSetDescriptor $documentationSet, Template $template): void
     {
         $configuration = $this->configuration;
 
         $this->setTargetLocationBasedOnDsn($configuration['phpdocumentor']['paths']['output']);
 
 
-        $this->transformer->execute($documentationSet, $template);
+        $this->transformer->execute($project, $documentationSet, $template);
     }
 
     /**
@@ -93,10 +100,7 @@ class Transformer implements FlowService
         $dispatcherInstance->addListener(
             RealTransformer::EVENT_PRE_TRANSFORM,
             function (PreTransformEvent $event) : void {
-                /** @var RealTransformer $transformer */
-                $transformer     = $event->getSubject();
-                $templates       = $transformer->getTemplates();
-                $transformations = $templates->getTransformations();
+                $transformations = $event->getTransformations();
                 $this->logger->info(sprintf("\nApplying %d transformations", count($transformations)));
             }
         );
@@ -120,19 +124,6 @@ class Transformer implements FlowService
         );
     }
 
-    /**
-     * @param array<int, string> $templateNames
-     */
-    private function loadTemplatesBasedOnNames(array $templateNames) : void
-    {
-        $stopWatch = new Stopwatch();
-        foreach (array_column($templateNames, 'name') as $template) {
-            $stopWatch->start('load template');
-            $this->transformer->getTemplates()->load($this->transformer, $template);
-            $stopWatch->stop('load template');
-        }
-    }
-
     private function setTargetLocationBasedOnDsn(Dsn $dsn) : void
     {
         $target     = $dsn->getPath();
@@ -142,5 +133,6 @@ class Transformer implements FlowService
         }
 
         $this->transformer->setTarget((string) $target);
+        $this->transformer->setDestination($this->);
     }
 }

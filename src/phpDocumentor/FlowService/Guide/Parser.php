@@ -20,14 +20,14 @@ use phpDocumentor\Guides\DocumentCollector;
 use phpDocumentor\Guides\Event\PostParseDocument;
 use phpDocumentor\Guides\Handlers\ParseDirectoryCommand;
 use phpDocumentor\Guides\Metas;
-use phpDocumentor\FlowService\FlowService;
+use phpDocumentor\FlowService\Parser as ParserInterface;
 use phpDocumentor\FileSystem\FlySystemFactory;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-final class Parser implements FlowService
+final class Parser implements ParserInterface
 {
     /** @var CommandBus */
     private $commandBus;

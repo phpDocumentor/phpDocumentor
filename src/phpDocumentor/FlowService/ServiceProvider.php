@@ -8,12 +8,12 @@ use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use Symfony\Component\DependencyInjection\Argument\ServiceLocator;
 
 /**
- * @template T of FlowService
+ * @template T of object
  */
 final class ServiceProvider
 {
     /**
-     * @var iterable<T>
+     * @var array<string, T>
      */
     private $services;
 
@@ -25,7 +25,7 @@ final class ServiceProvider
     }
 
     /** @return T */
-    public function get(DocumentationSetDescriptor $documetationSet): FlowService
+    public function get(DocumentationSetDescriptor $documetationSet): object
     {
         if (isset($this->services[get_class($documetationSet)])) {
             return $this->services[get_class($documetationSet)];

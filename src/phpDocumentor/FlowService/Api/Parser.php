@@ -8,7 +8,7 @@ use phpDocumentor\Configuration\ApiSpecification;
 use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\ApiSetDescriptorBuilder;
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
-use phpDocumentor\FlowService\FlowService;
+use phpDocumentor\FlowService\Parser as ParserInterface;
 use phpDocumentor\Parser\FileCollector;
 use phpDocumentor\Parser\Parser as ApiParser;
 use phpDocumentor\Parser\Middleware\ReEncodingMiddleware;
@@ -17,7 +17,7 @@ use phpDocumentor\Reflection\Php\Project;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 
-final class Parser implements FlowService
+final class Parser implements ParserInterface
 {
     /** @var ApiParser */
     private $parser;

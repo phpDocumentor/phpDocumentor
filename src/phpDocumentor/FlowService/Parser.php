@@ -6,7 +6,7 @@ namespace phpDocumentor\FlowService;
 
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 
-interface FlowService
+interface Parser
 {
     public function operate(DocumentationSetDescriptor $documentationSet): void;
 }
