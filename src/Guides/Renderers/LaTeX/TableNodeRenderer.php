@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\Renderers\LaTeX;
 
+use InvalidArgumentException;
+use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\Nodes\TableNode;
 use phpDocumentor\Guides\Renderers\NodeRenderer;
@@ -22,20 +24,16 @@ use function max;
 
 class TableNodeRenderer implements NodeRenderer
 {
-    /** @var TableNode */
-    private $tableNode;
-
-    public function __construct(TableNode $tableNode)
+    public function render(Node $node) : string
     {
-        $this->tableNode = $tableNode;
-    }
+        if ($node instanceof TableNode === false) {
+            throw new InvalidArgumentException('Invalid node presented');
+        }
 
-    public function render() : string
-    {
         $cols = 0;
 
         $rows = [];
-        foreach ($this->tableNode->getData() as $row) {
+        foreach ($node->getData() as $row) {
             $rowTex = '';
             $cols = max($cols, count($row->getColumns()));
 

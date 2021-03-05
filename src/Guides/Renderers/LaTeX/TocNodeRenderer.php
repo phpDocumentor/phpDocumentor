@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\Renderers\LaTeX;
 
+use InvalidArgumentException;
 use phpDocumentor\Guides\Environment;
+use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\TocNode;
 use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\Renderers\NodeRenderer;
@@ -23,24 +25,24 @@ class TocNodeRenderer implements NodeRenderer
     /** @var Environment */
     private $environment;
 
-    /** @var TocNode */
-    private $tocNode;
-
     /** @var Renderer */
     private $renderer;
 
-    public function __construct(TocNode $tocNode)
+    public function __construct(Environment $environment)
     {
-        $this->environment = $tocNode->getEnvironment();
-        $this->tocNode = $tocNode;
-        $this->renderer = $tocNode->getEnvironment()->getRenderer();
+        $this->environment = $environment;
+        $this->renderer = $environment->getRenderer();
     }
 
-    public function render() : string
+    public function render(Node $node) : string
     {
+        if ($node instanceof TocNode === false) {
+            throw new InvalidArgumentException('Invalid node presented');
+        }
+
         $tocItems = [];
 
-        foreach ($this->tocNode->getFiles() as $file) {
+        foreach ($node->getFiles() as $file) {
             $reference = $this->environment->resolve('doc', $file);
 
             if ($reference === null) {
@@ -55,7 +57,7 @@ class TocNodeRenderer implements NodeRenderer
         return $this->renderer->render(
             'toc.tex.twig',
             [
-                'tocNode' => $this->tocNode,
+                'tocNode' => $node,
                 'tocItems' => $tocItems,
             ]
         );

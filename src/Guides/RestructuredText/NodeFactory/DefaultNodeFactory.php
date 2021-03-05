@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\NodeFactory;
 
-use Doctrine\Common\EventManager;
 use InvalidArgumentException;
 use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Formats\Format;
@@ -35,7 +34,6 @@ use phpDocumentor\Guides\Nodes\TocNode;
 use phpDocumentor\Guides\Nodes\UmlNode;
 use phpDocumentor\Guides\Nodes\WrapperNode;
 use phpDocumentor\Guides\Parser;
-use phpDocumentor\Guides\RestructuredText\Event\PostNodeCreateEvent;
 use phpDocumentor\Guides\RestructuredText\Parser\DefinitionList;
 use phpDocumentor\Guides\RestructuredText\Parser\LineChecker;
 use phpDocumentor\Guides\RestructuredText\Parser\TableSeparatorLineConfig;
@@ -43,16 +41,11 @@ use function sprintf;
 
 class DefaultNodeFactory implements NodeFactory
 {
-    /** @var EventManager */
-    private $eventManager;
-
     /** @var NodeInstantiator[] */
     private $nodeInstantiators = [];
 
-    public function __construct(EventManager $eventManager, NodeInstantiator ...$nodeInstantiators)
+    public function __construct(NodeInstantiator ...$nodeInstantiators)
     {
-        $this->eventManager = $eventManager;
-
         foreach ($nodeInstantiators as $nodeInstantiator) {
             $this->nodeInstantiators[$nodeInstantiator->getType()] = $nodeInstantiator;
         }
@@ -62,25 +55,24 @@ class DefaultNodeFactory implements NodeFactory
      * @param array<string, string> $nodeRegistry
      */
     public static function createFromRegistry(
-        EventManager $eventManager,
         Format $format,
         Environment $environment,
         array $nodeRegistry
     ) : self {
         $instantiators = [];
         foreach ($nodeRegistry as $nodeName => $nodeClass) {
-            $nodeRendererFactories = $format->getNodeRendererFactories();
-            $nodeRendererFactory = $nodeRendererFactories[$nodeClass] ?? null;
+            $nodeRendererFactory = $format->getNodeRendererFactory($environment);
+            $nodeRenderer = $nodeRendererFactory->get($nodeClass);
 
             $instantiators[] = new NodeInstantiator(
                 $nodeName,
                 $nodeClass,
-                $nodeRendererFactory,
+                $nodeRenderer,
                 $environment
             );
         }
 
-        return new self($eventManager, ...$instantiators);
+        return new self(...$instantiators);
     }
 
     public function createDocumentNode(Environment $environment) : DocumentNode
@@ -306,14 +298,7 @@ class DefaultNodeFactory implements NodeFactory
      */
     private function create(string $type, array $arguments) : Node
     {
-        $node = $this->getNodeInstantiator($type)->create($arguments);
-
-        $this->eventManager->dispatchEvent(
-            PostNodeCreateEvent::POST_NODE_CREATE,
-            new PostNodeCreateEvent($node)
-        );
-
-        return $node;
+        return $this->getNodeInstantiator($type)->create($arguments);
     }
 
     private function getNodeInstantiator(string $type) : NodeInstantiator

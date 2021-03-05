@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\Renderers\Html;
 
+use InvalidArgumentException;
 use phpDocumentor\Guides\Environment;
+use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\TocNode;
 use phpDocumentor\Guides\Renderers\NodeRenderer;
 use function count;
@@ -24,18 +26,18 @@ class TocNodeRenderer implements NodeRenderer
     /** @var Environment */
     private $environment;
 
-    /** @var TocNode */
-    private $tocNode;
-
-    public function __construct(TocNode $tocNode)
+    public function __construct(Environment $environment)
     {
-        $this->environment = $tocNode->getEnvironment();
-        $this->tocNode = $tocNode;
+        $this->environment = $environment;
     }
 
-    public function render() : string
+    public function render(Node $node) : string
     {
-        $options = $this->tocNode->getOptions();
+        if ($node instanceof TocNode === false) {
+            throw new InvalidArgumentException('Invalid node presented');
+        }
+
+        $options = $node->getOptions();
 
         if (isset($options['hidden'])) {
             return '';
@@ -43,7 +45,7 @@ class TocNodeRenderer implements NodeRenderer
 
         $tocItems = [];
 
-        foreach ($this->tocNode->getFiles() as $file) {
+        foreach ($node->getFiles() as $file) {
             $reference = $this->environment->resolve('doc', $file);
 
             if ($reference === null) {
@@ -52,13 +54,13 @@ class TocNodeRenderer implements NodeRenderer
 
             $url = $this->environment->relativeUrl($reference->getUrl());
 
-            $this->buildLevel($url, $reference->getTitles(), 1, $tocItems);
+            $this->buildLevel($node, $url, $reference->getTitles(), 1, $tocItems);
         }
 
-        return $this->tocNode->getEnvironment()->getRenderer()->render(
+        return $node->getEnvironment()->getRenderer()->render(
             'toc.html.twig',
             [
-                'tocNode' => $this->tocNode,
+                'tocNode' => $node,
                 'tocItems' => $tocItems,
             ]
         );
@@ -69,6 +71,7 @@ class TocNodeRenderer implements NodeRenderer
      * @param mixed[][] $tocItems
      */
     private function buildLevel(
+        TocNode $node,
         ?string $url,
         array $titles,
         int $level,
@@ -88,8 +91,8 @@ class TocNodeRenderer implements NodeRenderer
             ];
 
             // render children until we hit the configured maxdepth
-            if (count($children) > 0 && $level < $this->tocNode->getDepth()) {
-                $this->buildLevel($url, $children, $level + 1, $tocItem['children']);
+            if (count($children) > 0 && $level < $node->getDepth()) {
+                $this->buildLevel($node, $url, $children, $level + 1, $tocItem['children']);
             }
 
             $tocItems[] = $tocItem;

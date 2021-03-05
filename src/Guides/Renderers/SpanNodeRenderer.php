@@ -30,24 +30,22 @@ abstract class SpanNodeRenderer implements NodeRenderer, SpanRenderer
     /** @var Environment */
     protected $environment;
 
-    /** @var SpanNode */
-    protected $span;
-
-    public function __construct(
-        Environment $environment,
-        SpanNode $span
-    ) {
+    public function __construct(Environment $environment)
+    {
         $this->environment = $environment;
-        $this->span = $span;
     }
 
-    public function render() : string
+    public function render(Node $node) : string
     {
-        $value = $this->span->getValue();
+        if ($node instanceof SpanNode === false) {
+            throw new InvalidArgumentException('Invalid node presented');
+        }
+
+        $value = $node->getValue();
 
         $span = $this->renderSyntaxes($value);
 
-        $span = $this->renderTokens($span);
+        $span = $this->renderTokens($node, $span);
 
         return $span;
     }
@@ -144,9 +142,9 @@ abstract class SpanNodeRenderer implements NodeRenderer, SpanRenderer
         return preg_replace('/ \n/', $this->br(), $span);
     }
 
-    private function renderTokens(string $span) : string
+    private function renderTokens(SpanNode $node, string $span) : string
     {
-        foreach ($this->span->getTokens() as $token) {
+        foreach ($node->getTokens() as $token) {
             $span = $this->renderToken($token, $span);
         }
 

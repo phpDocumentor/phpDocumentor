@@ -173,54 +173,12 @@ class DocumentNode extends Node
         $this->headerNodes[] = $node;
     }
 
-    public function addCss(string $css) : void
-    {
-        $environment = $this->environment;
-        $relativeCss = $environment->relativeUrl($css);
-
-        $this->addHeaderNode(
-            $environment->getNodeFactory()->createRawNode(
-                static function () use ($environment, $relativeCss) {
-                    return $environment->getRenderer()->render('stylesheet-link.html.twig', ['css' => $relativeCss]);
-                }
-            )
-        );
-    }
-
-    public function addJs(string $js) : void
-    {
-        $environment = $this->environment;
-        $relativeJs = $environment->relativeUrl($js);
-
-        $this->addHeaderNode(
-            $environment->getNodeFactory()->createRawNode(
-                static function () use ($environment, $relativeJs) {
-                    return $environment->getRenderer()->render('javascript.html.twig', ['js' => $relativeJs]);
-                }
-            )
-        );
-    }
-
-    public function addFavicon(string $url = '/favicon.ico') : void
-    {
-        $environment = $this->environment;
-        $relativeUrl = $environment->relativeUrl($url);
-
-        $this->addHeaderNode(
-            $environment->getNodeFactory()->createRawNode(
-                static function () use ($environment, $relativeUrl) {
-                    return $environment->getRenderer()->render('favicon.html.twig', ['url' => $relativeUrl]);
-                }
-            )
-        );
-    }
-
     protected function doRenderDocument() : string
     {
         /** @var FullDocumentNodeRenderer $renderer */
         $renderer = $this->getRenderer();
 
-        return $renderer->renderDocument();
+        return $renderer->renderDocument($this);
     }
 
     private function postRenderValidate() : void

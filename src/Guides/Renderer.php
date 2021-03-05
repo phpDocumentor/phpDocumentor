@@ -17,6 +17,7 @@ use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Guides\Twig\AssetsExtension;
 use phpDocumentor\Transformer\Transformation;
+use phpDocumentor\Transformer\Writer\Graph\PlantumlRenderer;
 use phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
@@ -35,10 +36,17 @@ class Renderer
     /** @var LoggerInterface */
     private $logger;
 
-    public function __construct(EnvironmentFactory $environmentFactory, LoggerInterface $logger)
-    {
+    /** @var PlantumlRenderer */
+    private $plantumlRenderer;
+
+    public function __construct(
+        EnvironmentFactory $environmentFactory,
+        LoggerInterface $logger,
+        PlantumlRenderer $plantumlRenderer
+    ) {
         $this->environmentFactory = $environmentFactory;
         $this->logger = $logger;
+        $this->plantumlRenderer = $plantumlRenderer;
     }
 
     public function initialize(
@@ -49,7 +57,7 @@ class Renderer
         $targetDirectory = $documentationSet->getOutput();
 
         $this->environment = $this->environmentFactory->create($project, $transformation, $targetDirectory);
-        $this->environment->addExtension(new AssetsExtension($this->logger));
+        $this->environment->addExtension(new AssetsExtension($this->logger, $this->plantumlRenderer));
 
         // pre-set the global variable so that we can update it later
         $this->environment->addGlobal('env', null);

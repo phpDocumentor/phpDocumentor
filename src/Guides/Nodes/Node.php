@@ -14,10 +14,9 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\Nodes;
 
 use phpDocumentor\Guides\Environment;
-use phpDocumentor\Guides\Renderers\DefaultNodeRenderer;
 use phpDocumentor\Guides\Renderers\NodeRenderer;
-use phpDocumentor\Guides\Renderers\NodeRendererFactory;
 use phpDocumentor\Guides\Renderers\RenderedNode;
+use RuntimeException;
 use function implode;
 use function strlen;
 use function substr;
@@ -25,8 +24,8 @@ use function trim;
 
 abstract class Node
 {
-    /** @var NodeRendererFactory|null */
-    private $nodeRendererFactory;
+    /** @var NodeRenderer|null */
+    private $nodeRenderer;
 
     /** @var Environment|null */
     protected $environment;
@@ -45,9 +44,9 @@ abstract class Node
         $this->value = $value;
     }
 
-    public function setNodeRendererFactory(NodeRendererFactory $nodeRendererFactory) : void
+    public function setNodeRenderer(NodeRenderer $nodeRenderer) : void
     {
-        $this->nodeRendererFactory = $nodeRendererFactory;
+        $this->nodeRenderer = $nodeRenderer;
     }
 
     public function setEnvironment(Environment $environment) : void
@@ -141,31 +140,15 @@ abstract class Node
 
     protected function doRender() : string
     {
-        return $this->getRenderer()->render();
+        return $this->getRenderer()->render($this);
     }
 
     protected function getRenderer() : NodeRenderer
     {
-        $renderer = $this->createRenderer();
-
-        if ($renderer !== null) {
-            return $renderer;
+        if ($this->nodeRenderer === null) {
+            throw new RuntimeException('A node should always have a node renderer assigned');
         }
 
-        return $this->createDefaultRenderer();
-    }
-
-    private function createRenderer() : ?NodeRenderer
-    {
-        if ($this->nodeRendererFactory !== null) {
-            return $this->nodeRendererFactory->create($this);
-        }
-
-        return null;
-    }
-
-    private function createDefaultRenderer() : NodeRenderer
-    {
-        return new DefaultNodeRenderer($this);
+        return $this->nodeRenderer;
     }
 }

@@ -1,8 +1,8 @@
 <img
-    src="{{ asset(url) }}"
-    {% if width %}width="{{ width }}"{% endif%}
-    {% if height %}height="{{ height }}"{% endif%}
-    {% if align %}align="{{ align }}"{% endif%}
-    {% if alt %}alt="{{ alt }}"{% endif%}
-    {% if class %}class="{{ class }}"{% endif%}
+    src="{{ asset(node.url) }}"
+    {% if node.option('width') %}width="{{ node.options('width') }}"{% endif%}
+    {% if node.option('height') %}height="{{ node.options('height') }}"{% endif%}
+    {% if node.option('align') %}align="{{ node.options('align') }}"{% endif%}
+    {% if node.option('alt') %}alt="{{ node.options('alt') }}"{% endif%}
+    {% if node.classesString %}class="{{ node.classesString }}"{% endif%}
 />

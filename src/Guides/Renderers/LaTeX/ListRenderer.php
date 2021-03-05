@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\Renderers\LaTeX;
 
-use phpDocumentor\Guides\Nodes\ListNode;
+use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\Renderers\FormatListRenderer;
 use RuntimeException;
@@ -25,24 +25,20 @@ use function explode;
 
 class ListRenderer implements FormatListRenderer
 {
-    /** @var ListNode */
-    private $listNode;
-
     /** @var Renderer */
     private $renderer;
 
-    public function __construct(ListNode $listNode)
+    public function __construct(Renderer $renderer)
     {
-        $this->listNode = $listNode;
-        $this->renderer = $listNode->getEnvironment()->getRenderer();
+        $this->renderer = $renderer;
     }
 
-    public function createElement(string $text, string $prefix) : string
+    public function createElement(Node $node, string $text, string $prefix) : string
     {
         return $this->renderer->render(
             'list-item.tex.twig',
             [
-                'listNode' => $this->listNode,
+                'listNode' => $node,
                 'text' => $text,
                 'prefix' => $prefix,
             ]
@@ -52,14 +48,14 @@ class ListRenderer implements FormatListRenderer
     /**
      * @return string[]
      */
-    public function createList(bool $ordered) : array
+    public function createList(Node $node, bool $ordered) : array
     {
         $lines = explode(
             "\n",
             $this->renderer->render(
                 'list.tex.twig',
                 [
-                    'listNode' => $this->listNode,
+                    'listNode' => $node,
                     'keyword' => $ordered ? 'enumerate' : 'itemize',
                 ]
             )

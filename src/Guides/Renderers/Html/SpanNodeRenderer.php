@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\Renderers\Html;
 
-use phpDocumentor\Guides\Nodes\SpanNode;
+use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\References\ResolvedReference;
 use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\Renderers\SpanNodeRenderer as BaseSpanNodeRenderer;
@@ -25,10 +25,11 @@ class SpanNodeRenderer extends BaseSpanNodeRenderer
     /** @var Renderer */
     private $renderer;
 
-    public function __construct(SpanNode $span)
+    public function __construct(Environment $environment)
     {
-        $this->renderer = $span->getEnvironment()->getRenderer();
-        parent::__construct($span->getEnvironment(), $span);
+        $this->renderer = $environment->getRenderer();
+
+        parent::__construct($environment);
     }
 
     public function emphasis(string $text) : string

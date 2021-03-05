@@ -13,24 +13,22 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\Renderers;
 
+use InvalidArgumentException;
 use phpDocumentor\Guides\Nodes\DocumentNode;
+use phpDocumentor\Guides\Nodes\Node;
 
 class DocumentNodeRenderer implements NodeRenderer
 {
-    /** @var DocumentNode */
-    private $document;
-
-    public function __construct(DocumentNode $document)
+    public function render(Node $node) : string
     {
-        $this->document = $document;
-    }
+        if ($node instanceof DocumentNode === false) {
+            throw new InvalidArgumentException('Invalid node presented');
+        }
 
-    public function render() : string
-    {
         $document = '';
 
-        foreach ($this->document->getNodes() as $node) {
-            $document .= $node->render() . "\n";
+        foreach ($node->getNodes() as $childNode) {
+            $document .= $childNode->render() . "\n";
         }
 
         return $document;

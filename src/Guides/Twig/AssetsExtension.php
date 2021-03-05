@@ -15,6 +15,7 @@ namespace phpDocumentor\Guides\Twig;
 
 use League\Flysystem\FilesystemInterface;
 use phpDocumentor\Guides\Environment;
+use phpDocumentor\Transformer\Writer\Graph\PlantumlRenderer;
 use Psr\Log\LoggerInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
@@ -27,15 +28,20 @@ final class AssetsExtension extends AbstractExtension
     /** @var LoggerInterface */
     private $logger;
 
-    public function __construct(LoggerInterface $logger)
+    /** @var PlantumlRenderer */
+    private $plantumlRenderer;
+
+    public function __construct(LoggerInterface $logger, PlantumlRenderer $plantumlRenderer)
     {
         $this->logger = $logger;
+        $this->plantumlRenderer = $plantumlRenderer;
     }
 
     public function getFunctions() : array
     {
         return [
             new TwigFunction('asset', [$this, 'asset'], ['is_safe' => ['html'], 'needs_context' => true]),
+            new TwigFunction('uml', [$this, 'uml'], ['is_safe' => ['html']]),
         ];
     }
 
@@ -58,6 +64,11 @@ final class AssetsExtension extends AbstractExtension
 
         // make it relative so it plays nice with the base tag in the HEAD
         return trim($outputPath, '/');
+    }
+
+    public function uml(string $source) : ?string
+    {
+        return $this->plantumlRenderer->render($source);
     }
 
     private function copyAsset(?Environment $environment, ?FilesystemInterface $destination, string $path) : string

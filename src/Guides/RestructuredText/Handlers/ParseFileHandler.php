@@ -216,7 +216,6 @@ final class ParseFileHandler
         ];
 
         return DefaultNodeFactory::createFromRegistry(
-            $this->eventManager,
             $configuration->getFormat(),
             $environment,
             $nodeRegistry

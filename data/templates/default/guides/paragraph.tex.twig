@@ -1,5 +1,5 @@
 {% spaceless %}
-{% set text = paragraphNode.value.render() %}
+{% set text = node.value.render() %}
 
 {% if text|trim %}
 {{ text|raw }}

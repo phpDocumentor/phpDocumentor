@@ -13,32 +13,34 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\Renderers;
 
+use InvalidArgumentException;
 use phpDocumentor\Guides\Nodes\ListNode;
+use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\SpanNode;
 use function array_pop;
 use function count;
 
 class ListNodeRenderer implements NodeRenderer
 {
-    /** @var ListNode */
-    private $listNode;
-
     /** @var FormatListRenderer */
     private $formatListRenderer;
 
-    public function __construct(ListNode $listNode, FormatListRenderer $formatListRenderer)
+    public function __construct(FormatListRenderer $formatListRenderer)
     {
-        $this->listNode = $listNode;
         $this->formatListRenderer = $formatListRenderer;
     }
 
-    public function render() : string
+    public function render(Node $node) : string
     {
+        if ($node instanceof ListNode === false) {
+            throw new InvalidArgumentException('Invalid node presented');
+        }
+
         $depth = -1;
         $value = '';
         $stack = [];
 
-        foreach ($this->listNode->getLines() as $line) {
+        foreach ($node->getLines() as $line) {
             /** @var SpanNode $text */
             $text = $line['text'];
 
@@ -47,7 +49,7 @@ class ListNodeRenderer implements NodeRenderer
             $newDepth = $line['depth'];
 
             if ($depth < $newDepth) {
-                $tags = $this->formatListRenderer->createList($ordered);
+                $tags = $this->formatListRenderer->createList($node, $ordered);
                 $value .= $tags[0];
                 $stack[] = [$newDepth, $tags[1] . "\n"];
                 $depth = $newDepth;
@@ -66,7 +68,7 @@ class ListNodeRenderer implements NodeRenderer
                 $depth = $top[0];
             }
 
-            $value .= $this->formatListRenderer->createElement($text->render(), $prefix) . "\n";
+            $value .= $this->formatListRenderer->createElement($node, $text->render(), $prefix) . "\n";
         }
 
         while ($stack) {

@@ -44,4 +44,14 @@ class ImageNode extends Node
     {
         return $this->options;
     }
+
+    /**
+     * @param mixed|null $default
+     *
+     * @return mixed
+     */
+    public function getOption(string $name, $default = null)
+    {
+        return $this->options[$name] ?? $default;
+    }
 }

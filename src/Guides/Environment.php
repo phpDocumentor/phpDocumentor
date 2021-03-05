@@ -486,6 +486,8 @@ class Environment
 
     public static function slugify(string $text) : string
     {
+        // TODO: Replace this with Symfony String's slugify
+
         // replace non letter or digits by -
         $text = preg_replace('~[^\pL\d]+~u', '-', $text);
 
