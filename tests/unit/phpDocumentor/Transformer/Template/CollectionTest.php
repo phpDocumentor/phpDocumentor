@@ -20,7 +20,6 @@ use phpDocumentor\Transformer\Transformation;
 
 /**
  * @coversDefaultClass \phpDocumentor\Transformer\Template\Collection
- * @covers ::__construct
  * @covers ::<private>
  */
 final class CollectionTest extends MockeryTestCase

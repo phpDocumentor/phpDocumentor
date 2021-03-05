@@ -115,6 +115,7 @@ final class TransformerTest extends TestCase
 
         $transformation = $this->prophesize(Transformation::class);
         $transformation->getQuery()->shouldBeCalled()->willReturn('');
+        $transformation->template()->willReturn($this->faker()->template());
         $transformation->getWriter()->shouldBeCalled()->willReturn($myTestWriter);
         $transformation->getArtifact()->shouldBeCalled()->willReturn('');
         $transformation->setTransformer(Argument::exact($this->fixture))->shouldBeCalled();

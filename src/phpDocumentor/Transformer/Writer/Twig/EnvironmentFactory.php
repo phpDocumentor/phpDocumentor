@@ -17,12 +17,11 @@ use League\CommonMark\MarkdownConverterInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Guides\Twig\TocExtension;
 use phpDocumentor\Path;
-use phpDocumentor\Transformer\Transformation;
+use phpDocumentor\Transformer\Template;
 use Twig\Environment;
 use Twig\Extension\DebugExtension;
 use Twig\Loader\ChainLoader;
 use Twig\Loader\FilesystemLoader;
-use function ltrim;
 
 class EnvironmentFactory
 {
@@ -55,10 +54,9 @@ class EnvironmentFactory
 
     public function create(
         ProjectDescriptor $project,
-        Transformation $transformation,
-        string $destination
+        Template $template
     ) : Environment {
-        $mountManager = $transformation->template()->files();
+        $mountManager = $template->files();
 
         $loaders = [];
         if ($this->templateOverridesAt instanceof Path) {
@@ -70,7 +68,7 @@ class EnvironmentFactory
 
         $env = new Environment(new ChainLoader($loaders));
 
-        $this->addPhpDocumentorExtension($project, $destination, $env);
+        $this->addPhpDocumentorExtension($project, $env);
         $env->addExtension($this->tocExtension);
         $this->enableDebug($env);
 
@@ -82,11 +80,9 @@ class EnvironmentFactory
      */
     private function addPhpDocumentorExtension(
         ProjectDescriptor $project,
-        string $path,
         Environment $twigEnvironment
     ) : void {
         $extension = new Extension($project, $this->markDownConverter, $this->renderer);
-        $extension->setDestination(ltrim($path, '/\\'));
         $twigEnvironment->addExtension($extension);
     }
 

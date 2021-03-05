@@ -21,6 +21,7 @@ use phpDocumentor\Transformer\Writer\Graph\PlantumlRenderer;
 use phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
+use function count;
 
 class Renderer
 {
@@ -56,8 +57,13 @@ class Renderer
     ) : void {
         $targetDirectory = $documentationSet->getOutput();
 
-        $this->environment = $this->environmentFactory->create($project, $transformation, $targetDirectory);
+        $this->environment = $this->environmentFactory->create($project, $transformation->template());
         $this->environment->addExtension(new AssetsExtension($this->logger, $this->plantumlRenderer));
+        $this->environment->addGlobal('project', $project);
+        $this->environment->addGlobal('usesNamespaces', count($project->getNamespace()->getChildren()) > 0);
+        $this->environment->addGlobal('usesPackages', count($project->getPackage()->getChildren()) > 1);
+        $this->environment->addGlobal('documentationSet', $project);
+        $this->environment->addGlobal('destinationPath', $targetDirectory);
 
         // pre-set the global variable so that we can update it later
         $this->environment->addGlobal('env', null);

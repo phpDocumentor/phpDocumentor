@@ -145,7 +145,7 @@ class Transformer
 
             $isInitialized[] = $writerName;
             $writer = $this->writers[$writerName];
-            $this->initializeWriter($writer, $project);
+            $this->initializeWriter($writer, $project, $transformation->template());
         }
     }
 
@@ -165,7 +165,7 @@ class Transformer
      *
      * @uses Dispatcher to emit the events surrounding an initialization.
      */
-    private function initializeWriter(WriterAbstract $writer, ProjectDescriptor $project) : void
+    private function initializeWriter(WriterAbstract $writer, ProjectDescriptor $project, Template $template) : void
     {
         /** @var WriterInitializationEvent $instance */
         $instance = WriterInitializationEvent::createInstance($this);
@@ -173,7 +173,7 @@ class Transformer
         Dispatcher::getInstance()->dispatch($event, self::EVENT_PRE_INITIALIZATION);
 
         if ($writer instanceof Initializable) {
-            $writer->initialize($project);
+            $writer->initialize($project, $template);
         }
 
         Dispatcher::getInstance()->dispatch($event, self::EVENT_POST_INITIALIZATION);
