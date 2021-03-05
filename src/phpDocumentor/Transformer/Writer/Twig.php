@@ -14,12 +14,15 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Writer;
 
 use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory;
+use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 use Webmozart\Assert\Assert;
+use function count;
 use function ltrim;
 use function preg_split;
 use function strlen;
@@ -81,7 +84,7 @@ use function substr;
  * @see self::getDestinationPath() for more information about variables in the
  *     Artifact attribute.
  */
-final class Twig extends WriterAbstract
+final class Twig extends WriterAbstract implements Initializable
 {
     use IoTrait;
 
@@ -91,12 +94,20 @@ final class Twig extends WriterAbstract
     /** @var PathGenerator */
     private $pathGenerator;
 
+    /** @var Environment */
+    private $environment;
+
     public function __construct(
         EnvironmentFactory $environmentFactory,
         PathGenerator $pathGenerator
     ) {
         $this->environmentFactory = $environmentFactory;
         $this->pathGenerator = $pathGenerator;
+    }
+
+    public function initialize(ProjectDescriptor $project, Template $template) : void
+    {
+        $this->environment = $this->environmentFactory->create($project, $template);
     }
 
     /**
@@ -127,10 +138,14 @@ final class Twig extends WriterAbstract
                 continue;
             }
 
-            $environment = $this->environmentFactory->create($project, $transformation, $path);
-            $environment->addGlobal('node', $node);
+            $this->environment->addGlobal('project', $project);
+            $this->environment->addGlobal('usesNamespaces', count($project->getNamespace()->getChildren()) > 0);
+            $this->environment->addGlobal('usesPackages', count($project->getPackage()->getChildren()) > 1);
+            $this->environment->addGlobal('documentationSet', $project);
+            $this->environment->addGlobal('node', $node);
+            $this->environment->addGlobal('destinationPath', $path);
 
-            $output = $environment->render(
+            $output = $this->environment->render(
                 substr($transformation->getSource(), strlen($templatePath)),
                 ['target_path' => ltrim($path, '/\\')]
             );

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides;
 
-use phpDocumentor\Transformer\Writer\Twig\Extension;
 use Twig\Environment;
 use function rtrim;
 
@@ -42,10 +41,8 @@ final class TemplateRenderer
 
     public function setDestination(string $filename) : void
     {
-        /** @var Extension $extension */
-        $extension = $this->getTemplateEngine()->getExtension(Extension::class);
         $destination = $this->subFolder . '/' . $filename;
-        $extension->setDestination($destination);
+        $this->getTemplateEngine()->addGlobal('destinationPath', $destination);
     }
 
     /**

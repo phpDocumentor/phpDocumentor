@@ -61,9 +61,9 @@ final class EnvironmentFactoryTest extends TestCase
      */
     public function testItCreatesATwigEnvironmentWithThephpDocumentorExtension() : void
     {
-        $transformation = $this->faker()->transformation();
+        $template = $this->faker()->template();
 
-        $environment = $this->factory->create(new ProjectDescriptor('name'), $transformation, '/home');
+        $environment = $this->factory->create(new ProjectDescriptor('name'), $template);
 
         $this->assertInstanceOf(Environment::class, $environment);
         $this->assertCount(6, $environment->getExtensions());
@@ -78,11 +78,10 @@ final class EnvironmentFactoryTest extends TestCase
      */
     public function testItCreatesATwigEnvironmentWithTheCorrectTemplateLoaders() : void
     {
-        $transformation = $this->faker()->transformation();
+        $template = $this->faker()->template();
+        $mountManager = $template->files();
 
-        $mountManager = $transformation->template()->files();
-
-        $environment = $this->factory->create(new ProjectDescriptor('name'), $transformation, '/home');
+        $environment = $this->factory->create(new ProjectDescriptor('name'), $template);
 
         /** @var ChainLoader $loader */
         $loader = $environment->getLoader();
@@ -106,9 +105,9 @@ final class EnvironmentFactoryTest extends TestCase
      */
     public function testTheCreatedEnvironmentHasTheDebugExtension() : void
     {
-        $transformation = $this->faker()->transformation();
+        $template = $this->faker()->template();
 
-        $environment = $this->factory->create(new ProjectDescriptor('name'), $transformation, '/home');
+        $environment = $this->factory->create(new ProjectDescriptor('name'), $template);
 
         $this->assertFalse($environment->getCache());
         $this->assertTrue($environment->isDebug());
