@@ -60,23 +60,23 @@ final class Graph extends WriterAbstract implements ProjectDescriptor\WithCustom
     /**
      * Generates a UML class diagram using PlantUML or our native GraphViz integration.
      *
-     * @param ProjectDescriptor $project Document containing the structure.
+     * @param \phpDocumentor\Descriptor\DocumentationSetDescriptor $documentationSet Document containing the structure.
      * @param Transformation $transformation Transformation to execute.
      */
-    public function transform(ProjectDescriptor $project, Transformation $transformation): void
+    public function transform(\phpDocumentor\Descriptor\DocumentationSetDescriptor $documentationSet, Transformation $transformation): void
     {
-        if ($project->getSettings()->getCustom()['graphs.enabled'] === false) {
-            return;
-        }
-
-        $filename = $this->getDestinationPath($transformation);
-
-        switch ($transformation->getSource() ?: 'class') {
-            case 'class':
-            default:
-                $this->classDiagramGenerator->create($project, $filename);
-                $this->plantumlClassDiagram->create($project, $filename);
-        }
+//        if ($documentationSet->getSettings()->getCustom()['graphs.enabled'] === false) {
+//            return;
+//        }
+//
+//        $filename = $this->getDestinationPath($transformation);
+//
+//        switch ($transformation->getSource() ?: 'class') {
+//            case 'class':
+//            default:
+//                $this->classDiagramGenerator->create($documentationSet, $filename);
+//                $this->plantumlClassDiagram->create($documentationSet, $filename);
+//        }
     }
 
     private function getDestinationPath(Transformation $transformation): string

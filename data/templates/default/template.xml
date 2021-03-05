@@ -24,7 +24,7 @@
     <transformation writer="twig" source="templates/default/css/base.css.twig" artifact="css/base.css" />
     <transformation writer="twig" source="templates/default/css/normalize.css.twig" artifact="css/normalize.css" />
     <transformation writer="twig" source="templates/default/css/template.css.twig" artifact="css/template.css" />
-    <transformation writer="RenderGuide" />
+<!--    <transformation writer="RenderGuide" />-->
     <transformation writer="Graph" source="Class" artifact="graphs/classes.svg" />
   </transformations>
   <parameters>

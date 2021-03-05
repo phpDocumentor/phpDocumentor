@@ -14,6 +14,7 @@ use phpDocumentor\Reflection\DocBlock\ExampleFinder;
 use phpDocumentor\Transformer\Event\PreTransformationEvent;
 use phpDocumentor\Transformer\Event\PreTransformEvent;
 use phpDocumentor\Transformer\Event\WriterInitializationEvent;
+use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformer as RealTransformer;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
 use Psr\Log\LoggerInterface;
@@ -73,15 +74,14 @@ class Transformer implements FlowService
      *
      * @throws Exception If the target location is not a folder.
      */
-    public function operate(DocumentationSetDescriptor $documentationSet): void
+    public function operate(DocumentationSetDescriptor $documentationSet, Template $template = null): void
     {
         $configuration = $this->configuration;
 
         $this->setTargetLocationBasedOnDsn($configuration['phpdocumentor']['paths']['output']);
-        $this->loadTemplatesBasedOnNames($configuration['phpdocumentor']['templates']);
-        $this->provideLocationsOfExamples();
 
-        $this->transformer->execute($documentationSet);
+
+        $this->transformer->execute($documentationSet, $template);
     }
 
     /**
@@ -142,13 +142,5 @@ class Transformer implements FlowService
         }
 
         $this->transformer->setTarget((string) $target);
-    }
-
-    private function provideLocationsOfExamples() : void
-    {
-        //TODO: Should determine root based on filesystems. Could be an issue for multiple.
-        // Need some config update here.
-        $this->exampleFinder->setSourceDirectory(getcwd());
-        $this->exampleFinder->setExampleDirectories(['.']);
     }
 }

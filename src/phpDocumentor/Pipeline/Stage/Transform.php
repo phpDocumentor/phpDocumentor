@@ -6,6 +6,8 @@ namespace phpDocumentor\Pipeline\Stage;
 
 use Exception;
 use League\Flysystem\FilesystemInterface;
+use phpDocumentor\Descriptor\ApiSetDescriptor;
+use phpDocumentor\Descriptor\VersionDescriptor;
 use phpDocumentor\Dsn;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\FileSystem\FlySystemFactory;
@@ -96,27 +98,33 @@ class Transform
         $project = $payload->getBuilder()->getProjectDescriptor();
         $transformations = $templates->getTransformations();
 
-        /** @var PreTransformEvent $preTransformEvent */
-        $preTransformEvent = PreTransformEvent::createInstance($this);
-        $preTransformEvent->setProject($project);
-        $preTransformEvent->setTransformations($transformations);
-        Dispatcher::getInstance()->dispatch(
-            $preTransformEvent,
-            Transformer::EVENT_PRE_TRANSFORM
-        );
+        foreach ($project->getVersions() as $version) {
+            foreach ($version->getDocumentationSets() as $documentationSet) {
+                /** @var PreTransformEvent $preTransformEvent */
+                $preTransformEvent = PreTransformEvent::createInstance($this);
+                $preTransformEvent->setDocumentationSet($documentationSet);
+                $preTransformEvent->setTransformations($transformations);
+                Dispatcher::getInstance()->dispatch(
+                    $preTransformEvent,
+                    Transformer::EVENT_PRE_TRANSFORM
+                );
 
-        $this->transformer->execute(
-            $project,
-            $transformations
-        );
+                if ($documentationSet instanceof ApiSetDescriptor) {
+                    $this->transformer->execute(
+                        $project,
+                        $documentationSet,
+                        current($templates)
+                    );
+                }
 
-        /** @var PostTransformEvent $postTransformEvent */
-        $postTransformEvent = PostTransformEvent::createInstance($this);
-        $postTransformEvent->setProject($project);
-        $postTransformEvent->setTransformations($transformations);
+                /** @var PostTransformEvent $postTransformEvent */
+                $postTransformEvent = PostTransformEvent::createInstance($this);
+                $postTransformEvent->setDocumentationSet($documentationSet);
+                $postTransformEvent->setTransformations($transformations);
 
-        Dispatcher::getInstance()->dispatch($postTransformEvent, Transformer::EVENT_POST_TRANSFORM);
-
+                Dispatcher::getInstance()->dispatch($postTransformEvent, Transformer::EVENT_POST_TRANSFORM);
+            }
+        }
         return $payload;
     }
 

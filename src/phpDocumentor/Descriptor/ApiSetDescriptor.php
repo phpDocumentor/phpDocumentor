@@ -19,7 +19,7 @@ use phpDocumentor\Descriptor\Interfaces\PackageInterface;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Php\File;
 
-final class ApiSetDescriptor extends DocumentationSetDescriptor
+final class ApiSetDescriptor extends DocumentationSetDescriptor implements Descriptor
 {
     /** @var Collection<FileDescriptor> */
     private $files;
@@ -113,5 +113,10 @@ final class ApiSetDescriptor extends DocumentationSetDescriptor
     public function getSettings(): ApiSpecification
     {
         return $this->apiSpecification;
+    }
+
+    public function getDescription(): ?DocBlock\DescriptionDescriptor
+    {
+        return null;
     }
 }

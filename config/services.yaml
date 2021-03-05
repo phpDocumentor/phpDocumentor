@@ -117,6 +117,10 @@ services:
       class: phpDocumentor\FlowService\ServiceProvider
       arguments: [!tagged_iterator { tag: 'phpdoc.flow.parser', index_by: 'documentation_type' }]
 
+    phpdoc.flow.transformer_provider:
+      class: phpDocumentor\FlowService\ServiceProvider
+      arguments: [!tagged_iterator { tag: 'phpdoc.flow.transformer', index_by: 'documentation_type' }]
+
     phpDocumentor\FlowService\Api\Parser:
       tags:
         - { name: 'phpdoc.flow.parser', documentation_type: 'phpDocumentor\Descriptor\ApiSetDescriptor' }
