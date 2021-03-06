@@ -57,7 +57,7 @@ class TocNodeRenderer implements NodeRenderer
             $this->buildLevel($node, $url, $reference->getTitles(), 1, $tocItems);
         }
 
-        return $node->getEnvironment()->getRenderer()->render(
+        return $this->environment->getRenderer()->render(
             'toc.html.twig',
             [
                 'tocNode' => $node,

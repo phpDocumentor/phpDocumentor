@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\Nodes;
 
-use phpDocumentor\Guides\Environment;
-use phpDocumentor\Guides\Renderers\NodeRenderer;
-use RuntimeException;
 use function implode;
 use function is_callable;
 use function is_string;
@@ -25,12 +22,6 @@ use function trim;
 
 abstract class Node
 {
-    /** @var NodeRenderer|null */
-    private $nodeRenderer;
-
-    /** @var Environment|null */
-    protected $environment;
-
     /** @var Node|callable|string|null */
     protected $value;
 
@@ -43,26 +34,6 @@ abstract class Node
     public function __construct($value = null)
     {
         $this->value = $value;
-    }
-
-    public function setNodeRenderer(NodeRenderer $nodeRenderer) : void
-    {
-        $this->nodeRenderer = $nodeRenderer;
-    }
-
-    public function setEnvironment(Environment $environment) : void
-    {
-        $this->environment = $environment;
-    }
-
-    public function getEnvironment() : ?Environment
-    {
-        return $this->environment;
-    }
-
-    public function render() : string
-    {
-        return $this->doRender();
     }
 
     /**
@@ -144,23 +115,5 @@ abstract class Node
         }
 
         return implode("\n", $lines);
-    }
-
-    protected function doRender() : string
-    {
-        if (!is_string($this->value) && is_callable($this->value)) {
-            return ($this->value)();
-        }
-
-        return $this->getRenderer()->render($this);
-    }
-
-    protected function getRenderer() : NodeRenderer
-    {
-        if ($this->nodeRenderer === null) {
-            throw new RuntimeException('A node should always have a node renderer assigned');
-        }
-
-        return $this->nodeRenderer;
     }
 }

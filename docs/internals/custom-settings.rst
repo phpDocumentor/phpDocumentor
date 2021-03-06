@@ -20,7 +20,9 @@ Usage
 
 A writer can request its custom settings through the ProjectDescriptor using the following method chain:
 
-``$project->getSettings()->getCustom()``
+.. code-block:: php
+
+    $project->getSettings()->getCustom()
 
 This chain will return an array containing all custom settings, including those of other writers, from which the writer
 can retrieve their own settings.

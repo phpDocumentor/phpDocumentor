@@ -17,6 +17,7 @@ use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Renderers\FullDocumentNodeRenderer;
 use function array_unshift;
 use function count;
+use function get_class;
 use function is_string;
 use function sprintf;
 
@@ -86,7 +87,9 @@ class DocumentNode extends Node
     {
         foreach ($this->nodes as $node) {
             if ($node instanceof TitleNode && $node->getLevel() === 1) {
-                return $node->getValue()->render() . '';
+                return $this->environment->getNodeRendererFactory()
+                    ->get(get_class($node->getValue()))
+                    ->render($node->getValue());
             }
         }
 
@@ -176,7 +179,7 @@ class DocumentNode extends Node
     protected function doRenderDocument() : string
     {
         /** @var FullDocumentNodeRenderer $renderer */
-        $renderer = $this->getRenderer();
+        $renderer = $this->environment->getNodeRendererFactory()->get(self::class);
 
         return $renderer->renderDocument($this);
     }

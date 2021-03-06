@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\RestructuredText\NodeFactory;
 
 use InvalidArgumentException;
-use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\NodeTypes;
-use phpDocumentor\Guides\Renderers\NodeRenderer;
 use function in_array;
 use function is_subclass_of;
 use function sprintf;
@@ -21,18 +19,8 @@ class NodeInstantiator
     /** @var string */
     private $className;
 
-    /** @var NodeRenderer */
-    private $nodeRenderer;
-
-    /** @var Environment */
-    private $environment;
-
-    public function __construct(
-        string $type,
-        string $className,
-        NodeRenderer $nodeRenderer,
-        Environment $environment
-    ) {
+    public function __construct(string $type, string $className)
+    {
         if (!in_array($type, NodeTypes::NODES, true)) {
             throw new InvalidArgumentException(
                 sprintf('Node type %s is not a valid node type.', $type)
@@ -47,8 +35,6 @@ class NodeInstantiator
 
         $this->type = $type;
         $this->className = $className;
-        $this->nodeRenderer = $nodeRenderer;
-        $this->environment = $environment;
     }
 
     public function getType() : string
@@ -61,11 +47,6 @@ class NodeInstantiator
      */
     public function create(array $arguments) : Node
     {
-        /** @var Node $node */
-        $node = new $this->className(...$arguments);
-        $node->setNodeRenderer($this->nodeRenderer);
-        $node->setEnvironment($this->environment);
-
-        return $node;
+        return new $this->className(...$arguments);
     }
 }

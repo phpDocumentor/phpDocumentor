@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\Renderers\LaTeX;
 
 use InvalidArgumentException;
+use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Nodes\DocumentNode;
 use phpDocumentor\Guides\Nodes\MainNode;
 use phpDocumentor\Guides\Nodes\Node;
@@ -28,9 +29,13 @@ class DocumentNodeRenderer implements NodeRenderer, FullDocumentNodeRenderer
     /** @var Renderer */
     private $renderer;
 
-    public function __construct(Renderer $renderer)
+    /** @var Environment */
+    private $environment;
+
+    public function __construct(Environment $environment, Renderer $renderer)
     {
         $this->renderer = $renderer;
+        $this->environment = $environment;
     }
 
     public function render(Node $node) : string
@@ -39,7 +44,7 @@ class DocumentNodeRenderer implements NodeRenderer, FullDocumentNodeRenderer
             throw new InvalidArgumentException('Invalid node presented');
         }
 
-        return (new BaseDocumentRender())->render($node);
+        return (new BaseDocumentRender($this->environment->getNodeRendererFactory()))->render($node);
     }
 
     public function renderDocument(DocumentNode $node) : string

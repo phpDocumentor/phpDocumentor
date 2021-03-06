@@ -17,6 +17,7 @@ use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Parser;
 use phpDocumentor\Guides\RestructuredText\Span\SpanProcessor;
 use phpDocumentor\Guides\RestructuredText\Span\SpanToken;
+use function get_class;
 use function implode;
 use function is_array;
 
@@ -45,7 +46,7 @@ class SpanNode extends Node
         }
 
         if ($span instanceof self) {
-            $span = $span->render();
+            $span = $this->environment->getNodeRendererFactory()->get(get_class($span))->render($span);
         }
 
         $spanProcessor = new SpanProcessor($this->environment, $span);

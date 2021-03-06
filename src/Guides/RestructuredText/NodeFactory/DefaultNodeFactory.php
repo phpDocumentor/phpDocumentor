@@ -51,18 +51,11 @@ class DefaultNodeFactory implements NodeFactory
     /**
      * @param array<string, string> $nodeRegistry
      */
-    public static function createFromRegistry(Environment $environment, array $nodeRegistry) : self
+    public static function createFromRegistry(array $nodeRegistry) : self
     {
         $instantiators = [];
         foreach ($nodeRegistry as $nodeName => $nodeClass) {
-            $nodeRenderer = $environment->getNodeRendererFactory()->get($nodeClass);
-
-            $instantiators[] = new NodeInstantiator(
-                $nodeName,
-                $nodeClass,
-                $nodeRenderer,
-                $environment
-            );
+            $instantiators[] = new NodeInstantiator($nodeName, $nodeClass);
         }
 
         return new self(...$instantiators);

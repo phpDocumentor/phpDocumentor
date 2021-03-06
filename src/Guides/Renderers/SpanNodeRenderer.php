@@ -19,6 +19,7 @@ use phpDocumentor\Guides\InvalidLink;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\RestructuredText\Span\SpanToken;
+use function get_class;
 use function is_string;
 use function preg_replace;
 use function preg_replace_callback;
@@ -123,7 +124,9 @@ abstract class SpanNodeRenderer implements NodeRenderer, SpanRenderer
                 }
 
                 if ($variable instanceof Node) {
-                    return $variable->render();
+                    return $this->environment->getNodeRendererFactory()
+                        ->get(get_class($variable))
+                        ->render($variable);
                 }
 
                 if (is_string($variable)) {

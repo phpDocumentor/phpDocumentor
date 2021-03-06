@@ -93,7 +93,7 @@ final class HTMLFormat implements Format
                 ImageNode::class => new TemplateNodeRenderer($renderer, 'image.html.twig'),
                 UmlNode::class => new TemplateNodeRenderer($renderer, 'uml.html.twig'),
                 DefinitionListNode::class => new DefinitionListNodeRenderer($renderer),
-                ListNode::class => new ListNodeRenderer(new ListRenderer($renderer)),
+                ListNode::class => new ListNodeRenderer(new ListRenderer($renderer), $environment),
                 TableNode::class => new TableNodeRenderer($renderer),
                 TocNode::class => new TocNodeRenderer($environment),
                 CallableNode::class => new CallableNodeRenderer(),
@@ -101,7 +101,7 @@ final class HTMLFormat implements Format
                 CodeNode::class => new CodeNodeRenderer($renderer),
                 SpanNode::class => new SpanNodeRenderer($environment),
             ],
-            new DefaultNodeRenderer()
+            new DefaultNodeRenderer($environment)
         );
     }
 }

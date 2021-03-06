@@ -47,15 +47,21 @@ class LaTeXFormat implements Format
                 Nodes\ParagraphNode::class => new Renderers\TemplateNodeRenderer($renderer, 'paragraph.tex.twig'),
                 Nodes\QuoteNode::class => new Renderers\TemplateNodeRenderer($renderer, 'quote.tex.twig'),
                 Nodes\SeparatorNode::class => new Renderers\TemplateNodeRenderer($renderer, 'separator.tex.twig'),
-                Nodes\ListNode::class => new Renderers\ListNodeRenderer(new Renderers\LaTeX\ListRenderer($renderer)),
-                Nodes\TableNode::class => new Renderers\LaTeX\TableNodeRenderer(),
+                Nodes\ListNode::class => new Renderers\ListNodeRenderer(
+                    new Renderers\LaTeX\ListRenderer($renderer),
+                    $environment
+                ),
+                Nodes\TableNode::class => new Renderers\LaTeX\TableNodeRenderer($environment->getNodeRendererFactory()),
                 Nodes\TitleNode::class => new Renderers\LaTeX\TitleNodeRenderer($renderer),
                 Nodes\TocNode::class => new Renderers\LaTeX\TocNodeRenderer($environment),
-                Nodes\DocumentNode::class => new Renderers\LaTeX\DocumentNodeRenderer($renderer),
+                Nodes\DocumentNode::class => new Renderers\LaTeX\DocumentNodeRenderer(
+                    $environment,
+                    $renderer
+                ),
                 Nodes\SpanNode::class => new Renderers\LaTeX\SpanNodeRenderer($environment),
                 Nodes\CallableNode::class => new Renderers\CallableNodeRenderer(),
             ],
-            new Renderers\DefaultNodeRenderer()
+            new Renderers\DefaultNodeRenderer($environment)
         );
     }
 }

@@ -142,7 +142,7 @@ final class ParseFileHandler
         $this->documents->addDocument($file, $document);
 
         $outputFolder = $configuration->getOutputFolder() ? $configuration->getOutputFolder() . '/' : '';
-        $url = $outputFolder . $this->buildDocumentUrl($document, $configuration->getFileExtension());
+        $url = $outputFolder . $this->buildDocumentUrl($environment, $configuration->getFileExtension());
 
         $this->metas->set(
             $file,
@@ -161,9 +161,9 @@ final class ParseFileHandler
         return ltrim(trim($currentDirectory, '/') . '/' . $file . '.' . $extension, '/');
     }
 
-    private function buildDocumentUrl(DocumentNode $document, string $extension) : string
+    private function buildDocumentUrl(Environment $environment, string $extension) : string
     {
-        return $document->getEnvironment()->getUrl() . '.' . $extension;
+        return $environment->getUrl() . '.' . $extension;
     }
 
     private function parseRestructuredText(
@@ -178,7 +178,7 @@ final class ParseFileHandler
             $configuration,
             $environment,
             $this->eventManager,
-            $this->createNodeFactory($environment),
+            $this->createNodeFactory(),
             iterator_to_array($this->directives),
             iterator_to_array($this->references)
         );
@@ -193,7 +193,7 @@ final class ParseFileHandler
     ) : DocumentNode {
         $nodeRendererFactory = $configuration->getFormat()->getNodeRendererFactory($environment);
         $environment->setNodeRendererFactory($nodeRendererFactory);
-        $environment->setNodeFactory($this->createNodeFactory($environment));
+        $environment->setNodeFactory($this->createNodeFactory());
 
         $parser = new MarkdownParser($environment);
 
@@ -216,8 +216,8 @@ final class ParseFileHandler
         return $contents;
     }
 
-    private function createNodeFactory(Environment $environment) : DefaultNodeFactory
+    private function createNodeFactory() : DefaultNodeFactory
     {
-        return DefaultNodeFactory::createFromRegistry($environment, $this->nodeTypes);
+        return DefaultNodeFactory::createFromRegistry($this->nodeTypes);
     }
 }

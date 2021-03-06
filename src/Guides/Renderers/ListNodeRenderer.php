@@ -14,20 +14,26 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\Renderers;
 
 use InvalidArgumentException;
+use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Nodes\ListNode;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\SpanNode;
 use function array_pop;
 use function count;
+use function get_class;
 
 class ListNodeRenderer implements NodeRenderer
 {
     /** @var FormatListRenderer */
     private $formatListRenderer;
 
-    public function __construct(FormatListRenderer $formatListRenderer)
+    /** @var Environment */
+    private $environment;
+
+    public function __construct(FormatListRenderer $formatListRenderer, Environment $environment)
     {
         $this->formatListRenderer = $formatListRenderer;
+        $this->environment = $environment;
     }
 
     public function render(Node $node) : string
@@ -68,7 +74,8 @@ class ListNodeRenderer implements NodeRenderer
                 $depth = $top[0];
             }
 
-            $value .= $this->formatListRenderer->createElement($node, $text->render(), $prefix) . "\n";
+            $renderedText = $this->environment->getNodeRendererFactory()->get(get_class($text))->render($text);
+            $value .= $this->formatListRenderer->createElement($node, $renderedText, $prefix) . "\n";
         }
 
         while ($stack) {

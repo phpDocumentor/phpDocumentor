@@ -42,7 +42,7 @@ class DocumentNodeRenderer implements NodeRenderer, FullDocumentNodeRenderer
             throw new InvalidArgumentException('Invalid node presented');
         }
 
-        return (new BaseDocumentRender())->render($node);
+        return (new BaseDocumentRender($this->environment->getNodeRendererFactory()))->render($node);
     }
 
     public function renderDocument(DocumentNode $node) : string
@@ -50,25 +50,9 @@ class DocumentNodeRenderer implements NodeRenderer, FullDocumentNodeRenderer
         $this->renderer->setGuidesEnvironment($this->environment);
         $this->renderer->setDestination($this->environment->getUrl());
 
-        $output = $this->render($node);
-
         return $this->renderer->render(
             'document.html.twig',
-            [
-                'headerNodes' => $this->assembleHeader($node),
-                'bodyNodes' => $output,
-            ]
+            [ 'node' => $node ]
         );
-    }
-
-    private function assembleHeader(DocumentNode $node) : string
-    {
-        $headerNodes = '';
-
-        foreach ($node->getHeaderNodes() as $headerNode) {
-            $headerNodes .= $headerNode->render() . "\n";
-        }
-
-        return $headerNodes;
     }
 }

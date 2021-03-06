@@ -18,12 +18,22 @@ use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\Nodes\TableNode;
 use phpDocumentor\Guides\Renderers\NodeRenderer;
+use phpDocumentor\Guides\Renderers\NodeRendererFactory;
 use function count;
+use function get_class;
 use function implode;
 use function max;
 
 class TableNodeRenderer implements NodeRenderer
 {
+    /** @var NodeRendererFactory */
+    private $nodeRendererFactory;
+
+    public function __construct(NodeRendererFactory $nodeRendererFactory)
+    {
+        $this->nodeRendererFactory = $nodeRendererFactory;
+    }
+
     public function render(Node $node) : string
     {
         if ($node instanceof TableNode === false) {
@@ -39,7 +49,7 @@ class TableNodeRenderer implements NodeRenderer
 
             /** @var SpanNode $col */
             foreach ($row->getColumns() as $n => $col) {
-                $rowTex .= $col->render();
+                $rowTex .= $this->nodeRendererFactory->get(get_class($col))->render($col);
 
                 if ((int) $n + 1 >= count($row->getColumns())) {
                     continue;
