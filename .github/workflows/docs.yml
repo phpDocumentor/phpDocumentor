@@ -1,5 +1,7 @@
 on:
   push:
+    branches:
+      - master
     paths:
       - 'docs/**'
       - 'data/templates/default/**'
