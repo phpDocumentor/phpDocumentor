@@ -32,26 +32,32 @@ class ConfigurationBlockDirective extends SubDirective
     {
         Assert::isInstanceOf($document, DocumentNode::class);
 
-        $blocks = [];
-        foreach ($document->getNodes() as $node) {
-            if (!$node instanceof CodeNode) {
-                continue;
-            }
+        $environment = $parser->getEnvironment();
 
-            $language = $node->getLanguage() ?? 'Unknown';
+        return $parser
+            ->getNodeFactory()
+            ->createRawNode(
+                function () use ($environment, $document) {
+                    $blocks = [];
+                    foreach ($document->getNodes() as $node) {
+                        if (!$node instanceof CodeNode) {
+                            continue;
+                        }
 
-            $blocks[] = [
-                'language' => $this->formatLanguageTab($language),
-                'code' => $node->render(),
-            ];
-        }
+                        $language = $node->getLanguage() ?? 'Unknown';
 
-        $wrapperDiv = $document->getEnvironment()->getRenderer()->render(
-            'directives/configuration-block.html.twig',
-            ['blocks' => $blocks]
-        );
+                        $blocks[] = [
+                            'language' => $this->formatLanguageTab($language),
+                            'code' => $node,
+                        ];
+                    }
 
-        return $parser->getNodeFactory()->createWrapperNode(null, $wrapperDiv, '</div>');
+                    return $environment->getRenderer()->render(
+                        'directives/configuration-block.html.twig',
+                        [ 'blocks' => $blocks ]
+                    );
+                }
+            );
     }
 
     /**

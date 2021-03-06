@@ -99,7 +99,6 @@ class Parser implements ParserInterface
     {
         $directives = array_merge(
             [
-                new Directives\Dummy(),
                 new Directives\Code(),
                 new Directives\CodeBlock(),
                 new Directives\Raw(),

@@ -13,30 +13,10 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\HTML\Directives;
 
-use phpDocumentor\Guides\Nodes\Node;
-use phpDocumentor\Guides\RestructuredText\Directives\SubDirective;
-use phpDocumentor\Guides\RestructuredText\Parser;
-
-class AdmonitionDirective extends SubDirective
+class AdmonitionDirective extends AbstractAdmonitionDirective
 {
-    public function processSub(Parser $parser, ?Node $document, string $variable, string $data, array $options) : ?Node
+    public function __construct()
     {
-        $wrapperDiv = $document->getEnvironment()->getRenderer()->render(
-            'directives/admonition.html.twig',
-            [
-                // a bit strange, but on the old markup we literally
-                // had a class of 'admonition-"
-                'name' => '',
-                'text' => $data,
-                'class' => $options['class'] ?? null,
-            ]
-        );
-
-        return $parser->getNodeFactory()->createWrapperNode($document, $wrapperDiv, '</div></div>');
-    }
-
-    public function getName() : string
-    {
-        return 'admonition';
+        parent::__construct('admonition', 'Admonition');
     }
 }

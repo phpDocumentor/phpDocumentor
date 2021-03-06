@@ -15,9 +15,10 @@ namespace phpDocumentor\Guides\Nodes;
 
 use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Renderers\NodeRenderer;
-use phpDocumentor\Guides\Renderers\RenderedNode;
 use RuntimeException;
 use function implode;
+use function is_callable;
+use function is_string;
 use function strlen;
 use function substr;
 use function trim;
@@ -30,7 +31,7 @@ abstract class Node
     /** @var Environment|null */
     protected $environment;
 
-    /** @var Node|string|null */
+    /** @var Node|callable|string|null */
     protected $value;
 
     /** @var string[] */
@@ -61,13 +62,11 @@ abstract class Node
 
     public function render() : string
     {
-        $renderedNode = new RenderedNode($this, $this->doRender());
-
-        return $renderedNode->getRendered();
+        return $this->doRender();
     }
 
     /**
-     * @return Node|string|null
+     * @return Node|callable|string|null
      */
     public function getValue()
     {
@@ -75,7 +74,7 @@ abstract class Node
     }
 
     /**
-     * @param Node|string|null $value
+     * @param Node|callable|string|null $value
      */
     public function setValue($value) : void
     {
@@ -113,7 +112,15 @@ abstract class Node
             return $this->value->getValueString();
         }
 
-        return $this->value;
+        if (is_string($this->value)) {
+            return $this->value;
+        }
+
+        if (is_callable($this->value)) {
+            return ($this->value)();
+        }
+
+        return '';
     }
 
     /**
@@ -124,7 +131,8 @@ abstract class Node
         if ($lines !== []) {
             $firstLine = $lines[0];
 
-            for ($k = 0; $k < strlen($firstLine); $k++) {
+            $length = strlen($firstLine);
+            for ($k = 0; $k < $length; $k++) {
                 if (trim($firstLine[$k]) !== '') {
                     break;
                 }
@@ -140,6 +148,10 @@ abstract class Node
 
     protected function doRender() : string
     {
+        if (!is_string($this->value) && is_callable($this->value)) {
+            return ($this->value)();
+        }
+
         return $this->getRenderer()->render($this);
     }
 

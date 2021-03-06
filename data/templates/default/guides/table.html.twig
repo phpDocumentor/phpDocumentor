@@ -4,7 +4,7 @@
             {% for tableHeaderRow in tableHeaderRows %}
                 <tr>
                     {% for column in tableHeaderRow.columns %}
-                        <th{% if column.colspan > 1 %} colspan="{{ column.colspan }}"{% endif %}>{{ column.render|raw }}</th>
+                        <th{% if column.colspan > 1 %} colspan="{{ column.colspan }}"{% endif %}>{{ renderNode(column.node) }}</th>
                     {% endfor %}
                 </tr>
             {% endfor %}
@@ -15,7 +15,7 @@
         {% for tableRow in tableRows %}
             <tr>
                 {% for column in tableRow.columns %}
-                    <td{% if column.colSpan > 1 %} colspan="{{ column.colSpan }}"{% endif %}{% if column.rowSpan > 1 %} rowspan="{{ column.rowSpan }}"{% endif %}>{{ column.render|raw }}</td>
+                    <td{% if column.colSpan > 1 %} colspan="{{ column.colSpan }}"{% endif %}{% if column.rowSpan > 1 %} rowspan="{{ column.rowSpan }}"{% endif %}>{{ renderNode(column.node) }}</td>
                 {% endfor %}
             </tr>
         {% endfor %}

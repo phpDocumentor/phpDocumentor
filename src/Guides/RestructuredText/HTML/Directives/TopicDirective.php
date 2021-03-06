@@ -26,12 +26,21 @@ class TopicDirective extends SubDirective
         string $data,
         array $options
     ) : ?Node {
-        $wrapperDiv = $document->getEnvironment()->getRenderer()->render(
-            'directives/topic.html.twig',
-            ['name' => $data]
-        );
+        $environment = $parser->getEnvironment();
 
-        return $parser->getNodeFactory()->createWrapperNode($document, $wrapperDiv, '</div>');
+        return $parser
+            ->getNodeFactory()
+            ->createRawNode(
+                static function () use ($environment, $document, $data) {
+                    return $environment->getRenderer()->render(
+                        'directives/topic.html.twig',
+                        [
+                            'name' => $data,
+                            'node' => $document,
+                        ]
+                    );
+                }
+            );
     }
 
     public function getName() : string

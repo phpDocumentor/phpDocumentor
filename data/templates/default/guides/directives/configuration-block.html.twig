@@ -3,7 +3,8 @@
         {% for block in blocks %}
             <li>
                 <em>{{ block.language }}</em>
-                {{ block.code|raw }}
+                {{ renderNode(block.code) }}
             </li>
         {% endfor %}
     </ul>
+</div>

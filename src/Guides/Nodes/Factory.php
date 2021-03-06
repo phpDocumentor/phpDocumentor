@@ -48,11 +48,6 @@ interface Factory
 
     public function createCallableNode(callable $callable) : CallableNode;
 
-    /**
-     * @param mixed[] $data
-     */
-    public function createDummyNode(array $data) : DummyNode;
-
     public function createParagraphNode(SpanNode $span) : ParagraphNode;
 
     public function createSectionEndNode(TitleNode $titleNode) : SectionEndNode;
@@ -78,12 +73,6 @@ interface Factory
     public function createRawNode(callable $value) : RawNode;
 
     public function createDocumentNode(Environment $environment) : DocumentNode;
-
-    /**
-     * @param string|callable $before
-     * @param string|callable $after
-     */
-    public function createWrapperNode(?Node $node, $before = '', $after = '') : WrapperNode;
 
     public function createUmlNode(string $block) : UmlNode;
 }

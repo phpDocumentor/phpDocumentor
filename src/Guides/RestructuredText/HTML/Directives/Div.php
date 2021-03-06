@@ -28,11 +28,20 @@ class Div extends SubDirective
         string $data,
         array $options
     ) : ?Node {
-        $divOpen = $document->getEnvironment()->getRenderer()->render(
-            'div-open.html.twig',
-            ['class' => $data]
-        );
+        $environment = $parser->getEnvironment();
 
-        return $parser->getNodeFactory()->createWrapperNode($document, $divOpen, '</div>');
+        return $parser
+            ->getNodeFactory()
+            ->createRawNode(
+                static function () use ($environment, $document, $data) {
+                    $environment->getRenderer()->render(
+                        'div.html.twig',
+                        [
+                            'class' => $data,
+                            'node' => $document,
+                        ]
+                    );
+                }
+            );
     }
 }

@@ -84,17 +84,6 @@ final class TableColumn
         $this->node = $node;
     }
 
-    public function render() : string
-    {
-        $rendered = $this->getNode()->render();
-
-        if ($rendered === '' && $this->content !== '\\') {
-            $rendered = '&nbsp;';
-        }
-
-        return $rendered;
-    }
-
     /**
      * Indicates that a column is empty, and could be skipped entirely.
      */

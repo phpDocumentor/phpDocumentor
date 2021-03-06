@@ -26,11 +26,20 @@ class VersionAddedDirective extends SubDirective
 
     public function processSub(Parser $parser, ?Node $document, string $variable, string $data, array $options) : ?Node
     {
-        $wrapperDiv = $document->getEnvironment()->getRenderer()->render(
-            'directives/version-added.html.twig',
-            ['version' => $data]
-        );
+        $environment = $parser->getEnvironment();
 
-        return $parser->getNodeFactory()->createWrapperNode($document, $wrapperDiv, '</div></div>');
+        return $parser
+            ->getNodeFactory()
+            ->createRawNode(
+                static function () use ($environment, $document, $data) {
+                    $environment->getRenderer()->render(
+                        'directives/version-added.html.twig',
+                        [
+                            'version' => $data,
+                            'node' => $document,
+                        ]
+                    );
+                }
+            );
     }
 }

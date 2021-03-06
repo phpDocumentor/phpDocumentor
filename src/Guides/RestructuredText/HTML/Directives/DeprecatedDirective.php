@@ -26,11 +26,20 @@ class DeprecatedDirective extends SubDirective
 
     public function processSub(Parser $parser, ?Node $document, string $variable, string $data, array $options) : ?Node
     {
-        $wrapperDiv = $document->getEnvironment()->getRenderer()->render(
-            'directives/deprecated.html.twig',
-            ['version' => $data]
-        );
+        $environment = $parser->getEnvironment();
 
-        return $parser->getNodeFactory()->createWrapperNode($document, $wrapperDiv, '</div></div>');
+        return $parser
+            ->getNodeFactory()
+            ->createRawNode(
+                static function () use ($environment, $document, $data) {
+                    return $environment->getRenderer()->render(
+                        'directives/deprecated.html.twig',
+                        [
+                            'version' => $data,
+                            'node' => $document,
+                        ]
+                    );
+                }
+            );
     }
 }

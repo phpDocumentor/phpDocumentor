@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\Renderers;
 
 use phpDocumentor\Guides\Nodes\Node;
+use function is_callable;
+use function is_string;
 
 class DefaultNodeRenderer implements NodeRenderer
 {
@@ -25,10 +27,14 @@ class DefaultNodeRenderer implements NodeRenderer
             return $value->render();
         }
 
-        if ($value === null) {
-            return '';
+        if (is_string($value)) {
+            return $value;
         }
 
-        return $value;
+        if (is_callable($value)) {
+            return ($value)();
+        }
+
+        return '';
     }
 }

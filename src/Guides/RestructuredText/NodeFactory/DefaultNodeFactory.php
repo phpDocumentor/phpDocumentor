@@ -12,7 +12,6 @@ use phpDocumentor\Guides\Nodes\CallableNode;
 use phpDocumentor\Guides\Nodes\CodeNode;
 use phpDocumentor\Guides\Nodes\DefinitionListNode;
 use phpDocumentor\Guides\Nodes\DocumentNode;
-use phpDocumentor\Guides\Nodes\DummyNode;
 use phpDocumentor\Guides\Nodes\FigureNode;
 use phpDocumentor\Guides\Nodes\ImageNode;
 use phpDocumentor\Guides\Nodes\ListNode;
@@ -31,7 +30,6 @@ use phpDocumentor\Guides\Nodes\TableNode;
 use phpDocumentor\Guides\Nodes\TitleNode;
 use phpDocumentor\Guides\Nodes\TocNode;
 use phpDocumentor\Guides\Nodes\UmlNode;
-use phpDocumentor\Guides\Nodes\WrapperNode;
 use phpDocumentor\Guides\Parser;
 use phpDocumentor\Guides\RestructuredText\Parser\DefinitionList;
 use phpDocumentor\Guides\RestructuredText\Parser\LineChecker;
@@ -198,18 +196,6 @@ class DefaultNodeFactory implements NodeFactory
         return $definitionListNode;
     }
 
-    /**
-     * @param string|callable $before
-     * @param string|callable $after
-     */
-    public function createWrapperNode(?Node $node, $before = '', $after = '') : WrapperNode
-    {
-        /** @var WrapperNode $wrapperNode */
-        $wrapperNode = $this->create(NodeTypes::WRAPPER, [$node, $before, $after]);
-
-        return $wrapperNode;
-    }
-
     public function createFigureNode(ImageNode $image, ?Node $document = null) : FigureNode
     {
         /** @var FigureNode $figureNode */
@@ -243,17 +229,6 @@ class DefaultNodeFactory implements NodeFactory
         $rawNode = $this->create(NodeTypes::RAW, [$value]);
 
         return $rawNode;
-    }
-
-    /**
-     * @param mixed[] $data
-     */
-    public function createDummyNode(array $data) : DummyNode
-    {
-        /** @var DummyNode $dummyNode */
-        $dummyNode = $this->create(NodeTypes::DUMMY, [$data]);
-
-        return $dummyNode;
     }
 
     public function createMainNode() : MainNode

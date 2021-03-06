@@ -28,12 +28,10 @@ final class NodeTypes
     public const TABLE = 'table';
     public const SPAN = 'span';
     public const DEFINITION_LIST = 'definition_list';
-    public const WRAPPER = 'wrapper';
     public const FIGURE = 'figure';
     public const IMAGE = 'image';
     public const META = 'meta';
     public const RAW = 'raw';
-    public const DUMMY = 'dummy';
     public const MAIN = 'main';
     public const BLOCK = 'block';
     public const CALLABLE = 'callable';
@@ -55,12 +53,10 @@ final class NodeTypes
         self::TABLE,
         self::SPAN,
         self::DEFINITION_LIST,
-        self::WRAPPER,
         self::FIGURE,
         self::IMAGE,
         self::META,
         self::RAW,
-        self::DUMMY,
         self::MAIN,
         self::BLOCK,
         self::CALLABLE,

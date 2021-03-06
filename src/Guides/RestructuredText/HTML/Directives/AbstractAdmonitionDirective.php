@@ -38,23 +38,22 @@ abstract class AbstractAdmonitionDirective extends SubDirective
         string $data,
         array $options
     ) : ?Node {
-        $environment = $document->getEnvironment();
+        $environment = $parser->getEnvironment();
 
         return $parser
             ->getNodeFactory()
-            ->createWrapperNode(
-                $document,
-                function () use ($environment, $options) {
+            ->createRawNode(
+                function () use ($environment, $document, $options) {
                     return $environment->getRenderer()->render(
                         'directives/admonition.html.twig',
                         [
                             'name' => $this->name,
                             'text' => $this->text,
                             'class' => $options['class'] ?? null,
+                            'node' => $document,
                         ]
                     );
-                },
-                '</article></div>'
+                }
             );
     }
 
