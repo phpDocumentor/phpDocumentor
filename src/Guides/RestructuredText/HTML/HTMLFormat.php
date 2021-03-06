@@ -35,7 +35,6 @@ use phpDocumentor\Guides\Nodes\TocNode;
 use phpDocumentor\Guides\Nodes\UmlNode;
 use phpDocumentor\Guides\Renderers\CallableNodeRenderer;
 use phpDocumentor\Guides\Renderers\DefaultNodeRenderer;
-use phpDocumentor\Guides\Renderers\Html\CodeNodeRenderer;
 use phpDocumentor\Guides\Renderers\Html\DefinitionListNodeRenderer;
 use phpDocumentor\Guides\Renderers\Html\DocumentNodeRenderer;
 use phpDocumentor\Guides\Renderers\Html\ListRenderer;
@@ -92,13 +91,13 @@ final class HTMLFormat implements Format
                 SectionEndNode::class => new TemplateNodeRenderer($renderer, 'section-end.html.twig'),
                 ImageNode::class => new TemplateNodeRenderer($renderer, 'image.html.twig'),
                 UmlNode::class => new TemplateNodeRenderer($renderer, 'uml.html.twig'),
+                CodeNode::class => new TemplateNodeRenderer($renderer, 'code.html.twig'),
                 DefinitionListNode::class => new DefinitionListNodeRenderer($renderer),
                 ListNode::class => new ListNodeRenderer(new ListRenderer($renderer), $environment),
                 TableNode::class => new TableNodeRenderer($renderer),
                 TocNode::class => new TocNodeRenderer($environment),
                 CallableNode::class => new CallableNodeRenderer(),
                 DocumentNode::class => new DocumentNodeRenderer($environment),
-                CodeNode::class => new CodeNodeRenderer($renderer),
                 SpanNode::class => new SpanNodeRenderer($environment),
             ],
             new DefaultNodeRenderer($environment)

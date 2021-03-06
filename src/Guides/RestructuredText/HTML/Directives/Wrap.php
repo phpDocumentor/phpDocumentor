@@ -14,21 +14,9 @@ use function uniqid;
  */
 class Wrap extends SubDirective
 {
-    /** @var string */
-    protected $class;
-
-    /** @var bool */
-    protected $uniqid;
-
-    public function __construct(string $class, bool $uniqid = false)
-    {
-        $this->class = $class;
-        $this->uniqid = $uniqid;
-    }
-
     public function getName() : string
     {
-        return $this->class;
+        return 'note';
     }
 
     /**
@@ -41,11 +29,7 @@ class Wrap extends SubDirective
         string $data,
         array $options
     ) : ?Node {
-        if ($this->uniqid) {
-            $id = uniqid($this->class, true);
-        } else {
-            $id = '';
-        }
+        $id = uniqid('note', true);
 
         $environment = $parser->getEnvironment();
 
@@ -57,7 +41,7 @@ class Wrap extends SubDirective
                         'div.html.twig',
                         [
                             'id' => $id,
-                            'class' => $this->class,
+                            'class' => 'note',
                             'node' => $document,
                         ]
                     );

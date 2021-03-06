@@ -19,15 +19,6 @@ use function sprintf;
 
 final class Configuration
 {
-    /** @var string */
-    private $baseUrl = '';
-
-    /** @var callable|null */
-    private $baseUrlEnabledCallable;
-
-    /** @var bool */
-    private $ignoreInvalidReferences = false;
-
     /** @var int */
     private $initialHeaderLevel = 1;
 
@@ -53,54 +44,6 @@ final class Configuration
     {
         $this->sourceFileExtension = $sourceFileExtension;
         $this->addFormat(...$outputFormats);
-    }
-
-    public function getBaseUrl() : string
-    {
-        return $this->baseUrl;
-    }
-
-    public function setBaseUrl(string $baseUrl) : self
-    {
-        $this->baseUrl = $baseUrl;
-
-        return $this;
-    }
-
-    public function setBaseUrlEnabledCallable(?callable $baseUrlEnabledCallable) : void
-    {
-        $this->baseUrlEnabledCallable = $baseUrlEnabledCallable;
-    }
-
-    public function getBaseUrlEnabledCallable() : ?callable
-    {
-        return $this->baseUrlEnabledCallable;
-    }
-
-    public function isBaseUrlEnabled(string $path) : bool
-    {
-        if ($this->baseUrl === '') {
-            return false;
-        }
-
-        if ($this->baseUrlEnabledCallable !== null) {
-            /** @var callable $baseUrlEnabledCallable */
-            $baseUrlEnabledCallable = $this->baseUrlEnabledCallable;
-
-            return $baseUrlEnabledCallable($path);
-        }
-
-        return true;
-    }
-
-    public function getIgnoreInvalidReferences() : bool
-    {
-        return $this->ignoreInvalidReferences;
-    }
-
-    public function setIgnoreInvalidReferences(bool $ignoreInvalidReferences) : void
-    {
-        $this->ignoreInvalidReferences = $ignoreInvalidReferences;
     }
 
     public function getInitialHeaderLevel() : int

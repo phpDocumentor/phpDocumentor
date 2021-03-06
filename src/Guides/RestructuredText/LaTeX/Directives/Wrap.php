@@ -13,17 +13,9 @@ use phpDocumentor\Guides\RestructuredText\Parser;
  */
 class Wrap extends SubDirective
 {
-    /** @var string */
-    protected $class;
-
-    public function __construct(string $class)
-    {
-        $this->class = $class;
-    }
-
     public function getName() : string
     {
-        return $this->class;
+        return 'note';
     }
 
     /**

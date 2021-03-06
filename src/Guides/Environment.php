@@ -33,11 +33,11 @@ use function trim;
 
 class Environment
 {
-    /** @var Configuration */
-    private $configuration;
-
     /** @var UrlGenerator */
     private $urlGenerator;
+
+    /** @var int */
+    private $initialHeaderLevel;
 
     /** @var int */
     private $currentTitleLevel = 0;
@@ -102,6 +102,9 @@ class Environment
     /** @var Renderers\NodeRendererFactory */
     private $nodeRendererFactory;
 
+    /** @var string */
+    private $outputFolder;
+
     public function __construct(
         Configuration $configuration,
         Renderer $renderer,
@@ -109,7 +112,8 @@ class Environment
         FilesystemInterface $origin,
         Metas $metas
     ) {
-        $this->configuration = $configuration;
+        $this->outputFolder = $configuration->getOutputFolder();
+        $this->initialHeaderLevel = $configuration->getInitialHeaderLevel();
         $this->renderer = $renderer;
         $this->origin = $origin;
         $this->logger = $logger;
@@ -132,9 +136,9 @@ class Environment
         }
     }
 
-    public function getConfiguration() : Configuration
+    public function getInitialHeaderLevel() : int
     {
-        return $this->configuration;
+        return $this->initialHeaderLevel;
     }
 
     public function setMetas(Metas $metas) : void
@@ -386,7 +390,7 @@ class Environment
     public function outputUrl(string $url) : ?string
     {
         return $this->urlGenerator->absoluteUrl(
-            $this->getConfiguration()->getOutputFolder(),
+            $this->outputFolder,
             $this->canonicalUrl($url)
         );
     }

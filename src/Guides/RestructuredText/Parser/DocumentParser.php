@@ -405,7 +405,7 @@ class DocumentParser
                     $data = $this->buffer->getLinesString();
 
                     $level = $this->environment->getLevel((string) $this->specialLetter);
-                    $level = $this->environment->getConfiguration()->getInitialHeaderLevel() + $level - 1;
+                    $level = $this->environment->getInitialHeaderLevel() + $level - 1;
 
                     $token = $this->environment->createTitle($level);
 

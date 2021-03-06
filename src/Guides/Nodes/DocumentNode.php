@@ -186,10 +186,6 @@ class DocumentNode extends Node
 
     private function postRenderValidate() : void
     {
-        if ($this->environment->getConfiguration()->getIgnoreInvalidReferences() !== false) {
-            return;
-        }
-
         $currentFileName = $this->environment->getCurrentFileName();
 
         foreach ($this->environment->getInvalidLinks() as $invalidLink) {
