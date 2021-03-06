@@ -14,27 +14,43 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\References;
 
 use phpDocumentor\Guides\Environment;
+use RuntimeException;
 use function explode;
 use function sprintf;
-use function strtolower;
+use function str_replace;
+use function strpos;
 
+/**
+ * @link https://www.sphinx-doc.org/en/master/usage/restructuredtext/domains.html#python-roles
+ */
 class PhpMethodReference extends Reference
 {
     public function getName() : string
     {
-        return 'phpmethod';
+        return 'php:meth';
     }
 
     public function resolve(Environment $environment, string $data) : ResolvedReference
     {
-        [$class, $method] = explode('::', $data);
+        $className = explode('::', $data)[0];
+        $className = str_replace('\\\\', '\\', $className);
+
+        if (strpos($data, '::') === false) {
+            throw new RuntimeException(
+                sprintf('Malformed method reference  "%s" in file "%s"', $data, $environment->getCurrentFileName())
+            );
+        }
+
+        $methodName = explode('::', $data)[1];
 
         return new ResolvedReference(
             $environment->getCurrentFileName(),
-            $data . '()',
-            sprintf('%s/%s.%s.php', '', strtolower($class), strtolower($method)),
+            $methodName . '()',
+            sprintf('%s/%s.html#method_%s', '', str_replace('\\', '/', $className), $methodName),
             [],
-            ['title' => $class]
+            [
+                'title' => sprintf('%s::%s()', $className, $methodName),
+            ]
         );
     }
 }

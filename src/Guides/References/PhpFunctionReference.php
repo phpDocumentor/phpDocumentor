@@ -18,11 +18,14 @@ use function sprintf;
 use function str_replace;
 use function strtolower;
 
+/**
+ * @link https://docs.readthedocs.io/en/stable/guides/cross-referencing-with-sphinx.html
+ */
 class PhpFunctionReference extends Reference
 {
     public function getName() : string
     {
-        return 'phpfunction';
+        return 'php:func';
     }
 
     public function resolve(Environment $environment, string $data) : ResolvedReference

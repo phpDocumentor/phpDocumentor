@@ -15,6 +15,9 @@ namespace phpDocumentor\Guides\References;
 
 use phpDocumentor\Guides\Environment;
 
+/**
+ * @link https://www.sphinx-doc.org/en/master/usage/restructuredtext/roles.html
+ */
 class Doc extends Reference
 {
     /** @var string */

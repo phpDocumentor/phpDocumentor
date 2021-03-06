@@ -19,11 +19,14 @@ use function str_replace;
 use function strrchr;
 use function substr;
 
+/**
+ * @link https://docs.readthedocs.io/en/stable/guides/cross-referencing-with-sphinx.html
+ */
 class NamespaceReference extends Reference
 {
     public function getName() : string
     {
-        return 'namespace';
+        return 'php:namespace';
     }
 
     public function resolve(Environment $environment, string $data) : ResolvedReference

@@ -22,6 +22,8 @@ use phpDocumentor\Guides\Environment;
  *
  * Will be resolved as a reference of type method and the given reference will
  * be called to resolve it
+ *
+ * @link https://docs.readthedocs.io/en/stable/guides/cross-referencing-with-sphinx.html
  */
 abstract class Reference
 {

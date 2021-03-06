@@ -17,11 +17,14 @@ use phpDocumentor\Guides\Environment;
 use function sprintf;
 use function strtolower;
 
+/**
+ * @link https://docs.readthedocs.io/en/stable/guides/cross-referencing-with-sphinx.html
+ */
 class PhpClassReference extends Reference
 {
     public function getName() : string
     {
-        return 'phpclass';
+        return 'php:class';
     }
 
     public function resolve(Environment $environment, string $data) : ResolvedReference
