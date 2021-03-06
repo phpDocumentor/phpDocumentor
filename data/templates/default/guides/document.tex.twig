@@ -11,7 +11,7 @@
 \usepackage{hyperref}
 \usepackage{listings}
 {% for node in document.headerNodes %}
-{{ node.render() }}
+{{ renderNode(node) }}
 {% endfor %}
 \begin{document}
 {% endif %}

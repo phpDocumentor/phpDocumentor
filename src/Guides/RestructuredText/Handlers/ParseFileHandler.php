@@ -51,6 +51,9 @@ final class ParseFileHandler
     /** @var Renderer */
     private $renderer;
 
+    /** @var array<string, class-string> */
+    private $nodeTypes;
+
     /**
      * @param IteratorAggregate<Directive> $directives
      * @param IteratorAggregate<Reference> $references
@@ -71,6 +74,32 @@ final class ParseFileHandler
         $this->references = $references;
         $this->eventManager = $eventManager;
         $this->renderer = $renderer;
+        $this->nodeTypes = [
+            NodeTypes::DOCUMENT => Nodes\DocumentNode::class,
+            NodeTypes::SPAN => Nodes\SpanNode::class,
+            NodeTypes::TOC => Nodes\TocNode::class,
+            NodeTypes::TITLE => Nodes\TitleNode::class,
+            NodeTypes::SEPARATOR => Nodes\SeparatorNode::class,
+            NodeTypes::CODE => Nodes\CodeNode::class,
+            NodeTypes::QUOTE => Nodes\QuoteNode::class,
+            NodeTypes::PARAGRAPH => Nodes\ParagraphNode::class,
+            NodeTypes::ANCHOR => Nodes\AnchorNode::class,
+            NodeTypes::LIST => Nodes\ListNode::class,
+            NodeTypes::TABLE => Nodes\TableNode::class,
+            NodeTypes::DEFINITION_LIST => Nodes\DefinitionListNode::class,
+            NodeTypes::WRAPPER => Nodes\WrapperNode::class,
+            NodeTypes::FIGURE => Nodes\FigureNode::class,
+            NodeTypes::IMAGE => Nodes\ImageNode::class,
+            NodeTypes::META => Nodes\MetaNode::class,
+            NodeTypes::RAW => Nodes\RawNode::class,
+            NodeTypes::DUMMY => Nodes\DummyNode::class,
+            NodeTypes::MAIN => Nodes\MainNode::class,
+            NodeTypes::BLOCK => Nodes\BlockNode::class,
+            NodeTypes::CALLABLE => Nodes\CallableNode::class,
+            NodeTypes::SECTION_BEGIN => Nodes\SectionBeginNode::class,
+            NodeTypes::SECTION_END => Nodes\SectionEndNode::class,
+            NodeTypes::UML => Nodes\UmlNode::class,
+        ];
     }
 
     public function handle(ParseFileCommand $command) : void
@@ -144,13 +173,14 @@ final class ParseFileHandler
         Environment $environment,
         string $fileAbsolutePath
     ) : DocumentNode {
-        $nodeFactory = $this->createNodeFactory($configuration, $environment);
+        $nodeRendererFactory = $configuration->getFormat()->getNodeRendererFactory($environment);
+        $environment->setNodeRendererFactory($nodeRendererFactory);
 
         $parser = new Parser(
             $configuration,
             $environment,
             $this->eventManager,
-            $nodeFactory,
+            $this->createNodeFactory($environment),
             iterator_to_array($this->directives),
             iterator_to_array($this->references)
         );
@@ -163,8 +193,10 @@ final class ParseFileHandler
         Environment $environment,
         string $fileAbsolutePath
     ) : DocumentNode {
-        $nodeFactory = $this->createNodeFactory($configuration, $environment);
-        $environment->setNodeFactory($nodeFactory);
+        $nodeRendererFactory = $configuration->getFormat()->getNodeRendererFactory($environment);
+        $environment->setNodeRendererFactory($nodeRendererFactory);
+        $environment->setNodeFactory($this->createNodeFactory($environment));
+
         $parser = new MarkdownParser($environment);
 
         return $parser->parse($this->getFileContents($environment, $fileAbsolutePath));
@@ -186,39 +218,8 @@ final class ParseFileHandler
         return $contents;
     }
 
-    private function createNodeFactory(Configuration $configuration, Environment $environment) : DefaultNodeFactory
+    private function createNodeFactory(Environment $environment) : DefaultNodeFactory
     {
-        $nodeRegistry = [
-            NodeTypes::DOCUMENT => Nodes\DocumentNode::class,
-            NodeTypes::SPAN => Nodes\SpanNode::class,
-            NodeTypes::TOC => Nodes\TocNode::class,
-            NodeTypes::TITLE => Nodes\TitleNode::class,
-            NodeTypes::SEPARATOR => Nodes\SeparatorNode::class,
-            NodeTypes::CODE => Nodes\CodeNode::class,
-            NodeTypes::QUOTE => Nodes\QuoteNode::class,
-            NodeTypes::PARAGRAPH => Nodes\ParagraphNode::class,
-            NodeTypes::ANCHOR => Nodes\AnchorNode::class,
-            NodeTypes::LIST => Nodes\ListNode::class,
-            NodeTypes::TABLE => Nodes\TableNode::class,
-            NodeTypes::DEFINITION_LIST => Nodes\DefinitionListNode::class,
-            NodeTypes::WRAPPER => Nodes\WrapperNode::class,
-            NodeTypes::FIGURE => Nodes\FigureNode::class,
-            NodeTypes::IMAGE => Nodes\ImageNode::class,
-            NodeTypes::META => Nodes\MetaNode::class,
-            NodeTypes::RAW => Nodes\RawNode::class,
-            NodeTypes::DUMMY => Nodes\DummyNode::class,
-            NodeTypes::MAIN => Nodes\MainNode::class,
-            NodeTypes::BLOCK => Nodes\BlockNode::class,
-            NodeTypes::CALLABLE => Nodes\CallableNode::class,
-            NodeTypes::SECTION_BEGIN => Nodes\SectionBeginNode::class,
-            NodeTypes::SECTION_END => Nodes\SectionEndNode::class,
-            NodeTypes::UML => Nodes\UmlNode::class,
-        ];
-
-        return DefaultNodeFactory::createFromRegistry(
-            $configuration->getFormat(),
-            $environment,
-            $nodeRegistry
-        );
+        return DefaultNodeFactory::createFromRegistry($environment, $this->nodeTypes);
     }
 }

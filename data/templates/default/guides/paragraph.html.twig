@@ -1,5 +1,5 @@
 {% apply spaceless %}
-    {% set text = node.value.render()|trim %}
+    {% set text = renderNode(node.value) %}
 
     {% if text %}
         <p{% if node.classes %} class="{{ node.classesString }}"{% endif %}>{{ text|raw }}</p>

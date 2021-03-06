@@ -6,7 +6,6 @@ namespace phpDocumentor\Guides\RestructuredText\NodeFactory;
 
 use InvalidArgumentException;
 use phpDocumentor\Guides\Environment;
-use phpDocumentor\Guides\Formats\Format;
 use phpDocumentor\Guides\Nodes\AnchorNode;
 use phpDocumentor\Guides\Nodes\BlockNode;
 use phpDocumentor\Guides\Nodes\CallableNode;
@@ -54,15 +53,11 @@ class DefaultNodeFactory implements NodeFactory
     /**
      * @param array<string, string> $nodeRegistry
      */
-    public static function createFromRegistry(
-        Format $format,
-        Environment $environment,
-        array $nodeRegistry
-    ) : self {
+    public static function createFromRegistry(Environment $environment, array $nodeRegistry) : self
+    {
         $instantiators = [];
         foreach ($nodeRegistry as $nodeName => $nodeClass) {
-            $nodeRendererFactory = $format->getNodeRendererFactory($environment);
-            $nodeRenderer = $nodeRendererFactory->get($nodeClass);
+            $nodeRenderer = $environment->getNodeRendererFactory()->get($nodeClass);
 
             $instantiators[] = new NodeInstantiator(
                 $nodeName,

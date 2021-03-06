@@ -15,11 +15,14 @@ namespace phpDocumentor\Guides\Twig;
 
 use League\Flysystem\FilesystemInterface;
 use phpDocumentor\Guides\Environment;
+use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Transformer\Writer\Graph\PlantumlRenderer;
 use Psr\Log\LoggerInterface;
+use RuntimeException;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 use Webmozart\Assert\Assert;
+use function get_class;
 use function sprintf;
 use function trim;
 
@@ -41,6 +44,7 @@ final class AssetsExtension extends AbstractExtension
     {
         return [
             new TwigFunction('asset', [$this, 'asset'], ['is_safe' => ['html'], 'needs_context' => true]),
+            new TwigFunction('renderNode', [$this, 'renderNode'], ['is_safe' => ['html'], 'needs_context' => true]),
             new TwigFunction('uml', [$this, 'uml'], ['is_safe' => ['html']]),
         ];
     }
@@ -64,6 +68,19 @@ final class AssetsExtension extends AbstractExtension
 
         // make it relative so it plays nice with the base tag in the HEAD
         return trim($outputPath, '/');
+    }
+
+    /**
+     * @param mixed[] $context
+     */
+    public function renderNode(array $context, Node $node) : string
+    {
+        $environment = $context['env'] ?? null;
+        if (!$environment instanceof Environment) {
+            throw new RuntimeException('Environment must be set in the twig global state to render nodes');
+        }
+
+        return $environment->getNodeRendererFactory()->get(get_class($node))->render($node);
     }
 
     public function uml(string $source) : ?string

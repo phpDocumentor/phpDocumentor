@@ -99,6 +99,9 @@ class Environment
     /** @var Renderer */
     private $renderer;
 
+    /** @var Renderers\NodeRendererFactory */
+    private $nodeRendererFactory;
+
     public function __construct(
         Configuration $configuration,
         Renderer $renderer,
@@ -518,5 +521,15 @@ class Environment
                 $this->getCurrentFileName() !== '' ? sprintf(' in "%s" ', $this->getCurrentFileName()) : ''
             )
         );
+    }
+
+    public function setNodeRendererFactory(Renderers\NodeRendererFactory $nodeRendererFactory) : void
+    {
+        $this->nodeRendererFactory = $nodeRendererFactory;
+    }
+
+    public function getNodeRendererFactory() : Renderers\NodeRendererFactory
+    {
+        return $this->nodeRendererFactory;
     }
 }

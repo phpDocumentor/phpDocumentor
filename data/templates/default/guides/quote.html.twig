@@ -1,1 +1,1 @@
-<blockquote{% if node.classes %} class="{{ node.classesString }}"{% endif %}>{{ node.value.render()|raw }}</blockquote>
+<blockquote{% if node.classes %} class="{{ node.classesString }}"{% endif %}>{{ renderNode(node.value) }}</blockquote>
