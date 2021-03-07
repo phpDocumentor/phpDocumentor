@@ -19,6 +19,7 @@ use phpDocumentor\Guides\Nodes\QuoteNode;
 use phpDocumentor\Guides\Nodes\SectionBeginNode;
 use phpDocumentor\Guides\Nodes\SectionEndNode;
 use phpDocumentor\Guides\Nodes\SeparatorNode;
+use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\Nodes\TableNode;
 use phpDocumentor\Guides\Nodes\TitleNode;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive;
@@ -412,7 +413,7 @@ class DocumentParser
                     $token = $this->environment->createTitle($level);
 
                     $node = new TitleNode(
-                        $this->parser->createSpanNode($data),
+                        new SpanNode($this->environment, $data),
                         $level,
                         $token
                     );
@@ -495,7 +496,7 @@ class DocumentParser
 
                     $buffer = $this->buffer->getLinesString();
 
-                    $node = new ParagraphNode($this->parser->createSpanNode($buffer));
+                    $node = new ParagraphNode(new SpanNode($this->environment, $buffer));
 
                     break;
             }
@@ -653,7 +654,7 @@ class DocumentParser
 
             if ($listLine !== null) {
                 if ($this->listLine instanceof ListLine) {
-                    $this->listLine->setText($this->parser->createSpanNode($this->listLine->getText()));
+                    $this->listLine->setText(new SpanNode($this->environment, $this->listLine->getText()));
 
                     /** @var ListNode $listNode */
                     $listNode = $this->nodeBuffer;
@@ -677,7 +678,7 @@ class DocumentParser
 
         if ($flush) {
             if ($this->listLine instanceof ListLine) {
-                $this->listLine->setText($this->parser->createSpanNode($this->listLine->getText()));
+                $this->listLine->setText(new SpanNode($this->environment, $this->listLine->getText()));
 
                 /** @var ListNode $listNode */
                 $listNode = $this->nodeBuffer;

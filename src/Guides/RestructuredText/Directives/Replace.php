@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\RestructuredText\Directives;
 
 use phpDocumentor\Guides\Nodes\Node;
+use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\RestructuredText\Parser;
 
 /**
@@ -28,6 +29,6 @@ class Replace extends Directive
         string $data,
         array $options
     ) : ?Node {
-        return $parser->createSpanNode($data);
+        return new SpanNode($parser->getEnvironment(), $data);
     }
 }

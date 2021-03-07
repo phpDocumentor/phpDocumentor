@@ -8,7 +8,6 @@ use Doctrine\Common\EventManager;
 use phpDocumentor\Guides\Configuration;
 use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Nodes\DocumentNode;
-use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\Parser as ParserInterface;
 use phpDocumentor\Guides\References\Doc;
 use phpDocumentor\Guides\References\Reference;
@@ -141,14 +140,6 @@ class Parser implements ParserInterface
     public function getFilename() : string
     {
         return $this->filename ?: '(unknown)';
-    }
-
-    /**
-     * @param string|string[]|SpanNode $span
-     */
-    public function createSpanNode($span) : SpanNode
-    {
-        return new SpanNode($this->environment, $span);
     }
 
     public function parse(string $contents) : DocumentNode

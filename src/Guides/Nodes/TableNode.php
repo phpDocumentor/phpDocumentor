@@ -175,7 +175,7 @@ class TableNode extends Node
                 if ($this->lineChecker->isListLine($lines[0], false)) {
                     $node = $parser->parseFragment($col->getContent())->getNodes()[0];
                 } else {
-                    $node = $parser->createSpanNode($col->getContent());
+                    $node = new SpanNode($parser->getEnvironment(), $col->getContent());
                 }
 
                 $col->setNode($node);

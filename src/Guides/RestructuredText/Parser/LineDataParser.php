@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\RestructuredText\Parser;
 
 use Doctrine\Common\EventManager;
+use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\RestructuredText\Event\OnLinkParsedEvent;
 use phpDocumentor\Guides\RestructuredText\Parser;
 use function array_map;
@@ -172,13 +173,13 @@ class LineDataParser
 
                 $classifiers = array_map(
                     function (string $classifier) {
-                        return $this->parser->createSpanNode($classifier);
+                        return new SpanNode($this->parser->getEnvironment(), $classifier);
                     },
                     array_map('trim', $parts)
                 );
 
                 $definitionListTerm = [
-                    'term' => $this->parser->createSpanNode($term),
+                    'term' => new SpanNode($this->parser->getEnvironment(), $term),
                     'classifiers' => $classifiers,
                     'definitions' => [],
                 ];
@@ -186,7 +187,10 @@ class LineDataParser
                 // last line
             } elseif ($definitionListTerm !== null && trim($line) === '' && count($lines) - 1 === $key) {
                 if ($currentDefinition !== null) {
-                    $definitionListTerm['definitions'][] = $this->parser->createSpanNode($currentDefinition);
+                    $definitionListTerm['definitions'][] = new SpanNode(
+                        $this->parser->getEnvironment(),
+                        $currentDefinition
+                    );
 
                     $currentDefinition = null;
                 }
@@ -199,7 +203,10 @@ class LineDataParser
 
                 // empty line, start of a new definition for the current term
             } elseif ($currentDefinition !== null && $definitionListTerm !== null && trim($line) === '') {
-                $definitionListTerm['definitions'][] = $this->parser->createSpanNode($currentDefinition);
+                $definitionListTerm['definitions'][] = new SpanNode(
+                    $this->parser->getEnvironment(),
+                    $currentDefinition
+                );
 
                 $currentDefinition = null;
             }

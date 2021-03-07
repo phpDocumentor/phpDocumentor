@@ -22,9 +22,6 @@ use function is_array;
 
 class SpanNode extends Node
 {
-    /** @var string */
-    protected $value;
-
     /** @var SpanToken[] */
     protected $tokens;
 
@@ -33,8 +30,6 @@ class SpanNode extends Node
      */
     public function __construct(Environment $environment, $span)
     {
-        parent::__construct();
-
         if (is_array($span)) {
             $span = implode("\n", $span);
         }
@@ -45,13 +40,8 @@ class SpanNode extends Node
 
         $spanProcessor = new SpanProcessor($environment, $span);
 
-        $this->value = $spanProcessor->process();
+        parent::__construct($spanProcessor->process());
         $this->tokens = $spanProcessor->getTokens();
-    }
-
-    public function getValue() : string
-    {
-        return $this->value;
     }
 
     /**
