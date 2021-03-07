@@ -31,7 +31,7 @@ class VersionAddedDirective extends SubDirective
 
         return new RawNode(
             static function () use ($environment, $document, $data) {
-                $environment->getRenderer()->render(
+                return $environment->getRenderer()->render(
                     'directives/version-added.html.twig',
                     [
                         'version' => $data,
