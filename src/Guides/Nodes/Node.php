@@ -29,7 +29,7 @@ abstract class Node
     protected $classes = [];
 
     /**
-     * @param Node|string|null $value
+     * @param Node|callable|string|null $value
      */
     public function __construct($value = null)
     {

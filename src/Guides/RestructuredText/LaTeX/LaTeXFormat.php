@@ -30,7 +30,7 @@ class LaTeXFormat implements Format
             new LaTeX\Directives\Meta(),
             new LaTeX\Directives\Title(),
             new LaTeX\Directives\Url(),
-            new LaTeX\Directives\Wrap('note'),
+            new LaTeX\Directives\Wrap(),
         ];
     }
 

@@ -35,7 +35,7 @@ class Wrap extends SubDirective
         $environment = $parser->getEnvironment();
 
         return new RawNode(
-            function () use ($id, $environment, $document) {
+            static function () use ($id, $environment, $document) {
                 $environment->getRenderer()->render(
                     'div.html.twig',
                     [
