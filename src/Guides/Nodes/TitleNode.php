@@ -32,12 +32,11 @@ class TitleNode extends Node
     /** @var string */
     protected $target = '';
 
-    public function __construct(Node $value, int $level, string $token)
+    public function __construct(Node $value, int $level)
     {
         parent::__construct($value);
 
         $this->level = $level;
-        $this->token = $token;
         $this->id = (new AsciiSlugger())->slug($this->value->getValue())->lower()->toString();
     }
 

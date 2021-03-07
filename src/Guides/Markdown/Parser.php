@@ -26,7 +26,6 @@ use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\Nodes\TitleNode;
 use phpDocumentor\Guides\Parser as ParserInterface;
 use function get_class;
-use function md5;
 
 final class Parser implements ParserInterface
 {
@@ -95,8 +94,7 @@ final class Parser implements ParserInterface
                 $content = $node->getStringContent();
                 $title = new TitleNode(
                     new SpanNode($this->environment, $content),
-                    $node->getLevel(),
-                    md5($content)
+                    $node->getLevel()
                 );
                 $document->addNode($title);
                 continue;

@@ -410,12 +410,9 @@ class DocumentParser
                     $level = $this->environment->getLevel((string) $this->specialLetter);
                     $level = $this->environment->getInitialHeaderLevel() + $level - 1;
 
-                    $token = $this->environment->createTitle($level);
-
                     $node = new TitleNode(
                         new SpanNode($this->environment, $data),
-                        $level,
-                        $token
+                        $level
                     );
 
                     if ($this->lastTitleNode !== null) {

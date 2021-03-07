@@ -224,6 +224,9 @@ class Environment
         $this->variables[$variable] = $value;
     }
 
+    /**
+     * @todo is this used?
+     */
     public function createTitle(int $level) : string
     {
         for ($currentLevel = 0; $currentLevel < 16; $currentLevel++) {
