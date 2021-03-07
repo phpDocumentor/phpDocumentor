@@ -44,7 +44,6 @@ Which elements can have a DocBlock
 
 Structural Elements can all be preceded by a DocBlock. The following elements are counted as such:
 
-    * namespace
     * require(_once)
     * include(_once)
     * class

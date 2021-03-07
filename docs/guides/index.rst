@@ -4,10 +4,10 @@ Guides
 .. toctree::
    :maxdepth: 2
 
+   running-phpdocumentor
    docblocks
    types
    inheritance
-   running-phpdocumentor
 
 .. toctree::
    :hidden:

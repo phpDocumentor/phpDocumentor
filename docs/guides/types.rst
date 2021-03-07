@@ -1,5 +1,5 @@
-Types
-=====
+Supported Types
+===============
 
 Several tags require or support the use of types to represent the type of value contained in the associated element. An
 example of this is the ``@param`` tag, which identifies the type of an argument with a method or function.
@@ -7,15 +7,15 @@ example of this is the ``@param`` tag, which identifies the type of an argument 
 This guide serves to provide more insight in which types are available, how they may be combined and even how to define
 arrays with specific types for its elements.
 
-Types of types
---------------
+Taxonomy
+--------
 
 A type can either be
 
-* a class name, either Fully Qualified or aliases; such as ``\DateTime`` or ``Entity`` (with a namespace alias elsewhere
-  in the same source file).
+* a class name, either Fully Qualified or as an alias; such as ``\DateTime`` or ``Entity`` (with a namespace alias
+  elsewhere in the same source file).
 * a keyword for a primitive in PHP, such as ``int`` or ``string``.
-* a special keyword specific to the PHPDoc Standard, such as ``false`` or ``mixed``.
+* a special keyword, or pseudo-type, specific to the PHPDoc Standard, such as ``false`` or ``mixed``.
 
 Class Name
 ~~~~~~~~~~
@@ -73,6 +73,16 @@ array
     A collection of variables of unknown type. It is possible to specify the types of array members, see the chapter
     on arrays for more information.
 
+object
+    A reference to an instance of any class.
+
+callable
+    A function or method that can be passed by a variable, see the PHP manual for more information on callables.
+
+iterable
+    Iterable is a type introduced in PHP 7.1. It accepts any array or object implementing the Traversable
+    interface. Both of these types are iterable using foreach and can be used with yield from within a generator.
+
 resource
     A file handler or other system resource as described in the PHP manual.
 
@@ -80,25 +90,28 @@ null
     The value contained, or returned, is literally null. This type is not to be confused with void, which is the total
     absence of a variable or value (usually used with the ``@return`` tag).
 
-callable
-    A function or method that can be passed by a variable, see the PHP manual for more information on callables.
 
-Keywords
-~~~~~~~~
+Pseudo-types
+~~~~~~~~~~~~
 
-The PHPDoc Standard also describes several keywords that are not native to PHP but are found to be often used or are
-representations of situations that are convenient to describe.
+The PHPDoc Standard also describes several keywords that are often used or are representations of situations that
+are convenient to describe. In the past, these were not officially included in PHP but since PHP 7 and later, many of
+these have been promoted to language keywords.
 
 mixed
     A value with this type can be literally anything; the author of the documentation is unable to predict which type
     it will be.
 
+    .. versionadded:: PHP 8.0
+       This keyword was added in PHP 8.0 as a native PHP keyword representing the following union:
+       ``array|bool|callable|int|float |object|resource|string|null``.
+
 void
     *This is not the value that you are looking for.* The tag associated with this type does not intentionally return
     anything. Anything returned by the associated element is incidental and not to be relied on.
 
-object
-    An object of any class is returned,
+    .. versionadded:: PHP 7.1
+       Added in PHP 7.1 as a native return-only type.
 
 false or true
     An explicit boolean value is returned; usually used when a method returns 'false' or something of consequence.
@@ -133,14 +146,19 @@ Some examples::
 
 .. note::
 
-   This notation is inspired by the way some strong-types languages, such as Java and C/C++, declare arrays.
+   This notation is inspired on how strong-typed languages, such as Java and C/C++, declare arrays.
 
 Aside from phpDocumentor there are various tools that understand this notation and use it to aid in their functioning.
 Most IDEs, such as phpStorm, can apply auto-completion or warn you of non-existing methods by reading this information
 and inferring the types of variables, properties and even method return values.
 
-Multiple types combined
------------------------
+Union types
+-----------
+
+.. versionadded:: PHP 8.0
+   PHP 8.0 has added native support for union types, see
+   `the php documentation <https://www.php.net/manual/en/language.types.declarations.php#language.types.declarations.union>`_
+   for more information.
 
 Sometimes an element may accept or return a value that can be any of a limited set of Types. An example of this is a
 getter-method that returns an object *or* null if no object was found.
@@ -164,5 +182,6 @@ array of DateTime objects::
 Related topics
 --------------
 
-* :doc:`../getting-started/your-first-set-of-documentation`, for an introduction in writing DocBlocks.
+* :doc:`../getting-started/what-is-a-docblock`, for an introduction in writing DocBlocks.
 * :doc:`../references/phpdoc/types`, for a complete, and more elaborate, reference on types and their syntax.
+* `The PHP manual page on type declarations <https://www.php.net/manual/en/language.types.declarations.php>`_

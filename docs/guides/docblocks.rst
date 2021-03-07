@@ -1,11 +1,11 @@
-Inside DocBlocks
-================
+More on DocBlocks
+=================
 
 Overview
 --------
 
-If all is well you have read the :doc:`Getting Started<../getting-started/your-first-set-of-documentation>` and got a
-basic idea on what a DocBlock is and what you can do with it. In this guide I will repeat some of the bits and
+If all is well you have read the :doc:`Getting Started<../getting-started/what-is-a-docblock>` and got a
+basic idea on what a DocBlock is and what you can do with it. In this guide, I will repeat some of the bits and
 then dive a lot deeper in and discuss the details on what constitutes a DocBlock and what you can do with it.
 
 Anatomy of a DocBlock
@@ -51,9 +51,11 @@ Commonly a piece of PHPDoc consists of the following three parts in order of app
 
 Summary
     A short piece of text, usually one line, providing the basic function of the associated element.
+
 Description
     An optional longer piece of text providing more details on the associated element's function. This
     is very useful when working with a complex element.
+
 A series of tags
     These provide additional information in a structured manner. With these tags you can link to other
     elements, provide type information for properties and arguments, and more.
@@ -72,7 +74,9 @@ on this) and can be used to skim through, for example, a list of methods.
 
 The summary can be separated from the description in two ways:
 
-1. With an empty whiteline::
+1. With an empty whiteline:
+
+   .. code-block:: php
 
        /**
         * This is a summary
@@ -80,7 +84,9 @@ The summary can be separated from the description in two ways:
         * This is a description
         */
 
-2. Or by adding a period followed by a new-line::
+2. Or by adding a period followed by a new-line:
+
+   .. code-block:: php
 
        /**
         * This is a summary.
@@ -219,7 +225,7 @@ Related topics
 
 * :doc:`types`, for details on which types are supported by phpDocumentor.
 * :doc:`inheritance`, to read how DocBlocks inherit information from elements in superclasses.
-* :doc:`../getting-started/your-first-set-of-documentation`, for an introduction in writing DocBlocks.
+* :doc:`../getting-started/what-is-a-docblock`, for an introduction in writing DocBlocks.
 * :doc:`../references/phpdoc/index`, for a complete, and more elaborate, reference on the syntax and capabilities of
   DocBlocks.
 

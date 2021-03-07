@@ -4,8 +4,13 @@ Installation
 System Requirements
 -------------------
 
+.. note::
+
+    If you are using the official Docker container, or the Github Action, you do not need to worry about this
+    and can directly skip to the chapter `Using Docker`_.
+
 phpDocumentor has several dependencies on other software packages. Please make sure that you have these
-installed before installing phpDocumentor.
+available before installing phpDocumentor.
 
 -  `PHP 7.2.5`_ or higher
 -  Graphviz_ (optional)
@@ -17,7 +22,7 @@ Installing phpDocumentor
 Using Phive
 ~~~~~~~~~~~
 
-If phive is globally installed, you can run the following command::
+If phive_ is globally installed, you can run the following command::
 
    $ phive install phpDocumentor
 
@@ -47,7 +52,7 @@ After that you can run it globally::
 Using Docker
 ~~~~~~~~~~~~
 
-Although not an actual installation method: the easiest method to use phpDocumentor, if you have Docker installed, is to
+Although not an actual installation method; the easiest method to use phpDocumentor, if you have Docker installed, is to
 use our `Docker image`_. The Docker image comes with all dependencies pre-installed so that you do not have to install
 these locally.
 
@@ -58,7 +63,7 @@ To run phpDocumentor using docker, the following should suffice::
 And next
 --------
 
-It is recommended to read the :doc:`your-first-set-of-documentation` section next as it will explain how to quickly start using phpDocumentor.
+- It is recommended to read the :doc:`what-is-a-docblock` section next as it will explain how to quickly start using phpDocumentor.
 
 .. _Docker image:           https://hub.docker.com/r/phpdoc/phpdoc
 .. _Composer:               https://getcomposer.org
@@ -67,3 +72,4 @@ It is recommended to read the :doc:`your-first-set-of-documentation` section nex
 .. _PlantUML:               https://plantuml.com/download
 .. _Twig:                   https://twig.symfony.com/
 .. _Phive website:          https://phar.io/
+.. _phive:                  https://phar.io/

@@ -17,7 +17,7 @@ class Wrap extends SubDirective
 {
     public function getName() : string
     {
-        return 'note';
+        return 'wrap';
     }
 
     /**
