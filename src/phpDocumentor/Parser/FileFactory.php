@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Parser;
 
 use IteratorAggregate;
+use phpDocumentor\Reflection\DocBlockFactoryInterface;
 use phpDocumentor\Reflection\Middleware\Middleware;
 use phpDocumentor\Reflection\Php\Factory;
 use phpDocumentor\Reflection\Php\NodesFactory;
@@ -27,8 +28,11 @@ final class FileFactory
      *
      * @param IteratorAggregate<Middleware> $middlewares
      */
-    public static function createInstance(NodesFactory $nodesFactory, IteratorAggregate $middlewares) : Factory\File
-    {
-        return new Factory\File($nodesFactory, iterator_to_array($middlewares));
+    public static function createInstance(
+        DocBlockFactoryInterface $blockFactory,
+        NodesFactory $nodesFactory,
+        IteratorAggregate $middlewares
+    ) : Factory\File {
+        return new Factory\File($blockFactory, $nodesFactory, iterator_to_array($middlewares));
     }
 }

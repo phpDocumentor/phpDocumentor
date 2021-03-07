@@ -43,6 +43,6 @@ final class ReEncodingMiddleware implements Middleware
             (new ByteString($command->getFile()->getContents()))->toUnicodeString($this->encoding)
         );
 
-        return $next(new CreateCommand($file, $command->getStrategies()));
+        return $next(new CreateCommand($command->getContext(), $file, $command->getStrategies()));
     }
 }

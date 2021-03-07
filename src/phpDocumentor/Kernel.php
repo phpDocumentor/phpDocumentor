@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor;
 
 use Phar;
+use phpDocumentor\DependencyInjection\ReflectionProjectFactoryStrategyPass;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -91,6 +92,11 @@ class Kernel extends BaseKernel
                 yield new $class();
             }
         }
+    }
+
+    public function build(ContainerBuilder $container) : void
+    {
+        $container->addCompilerPass(new ReflectionProjectFactoryStrategyPass());
     }
 
     protected function configureContainer(ContainerBuilder $c, LoaderInterface $loader) : void

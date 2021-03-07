@@ -15,6 +15,7 @@ namespace phpDocumentor\Parser\Middleware;
 
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Event\Dispatcher;
+use phpDocumentor\Faker\Faker;
 use phpDocumentor\Parser\Event\PreFileEvent;
 use phpDocumentor\Reflection\File\LocalFile;
 use phpDocumentor\Reflection\Php\Factory\File\CreateCommand;
@@ -28,6 +29,8 @@ use function md5;
  */
 final class EmittingMiddlewareTest extends TestCase
 {
+    use Faker;
+
     /**
      * @covers ::execute
      */
@@ -40,7 +43,11 @@ final class EmittingMiddlewareTest extends TestCase
         $file = new FileDescriptor(md5('result'));
         $file->setPath($filename);
 
-        $command = new CreateCommand(new LocalFile($filename), new ProjectFactoryStrategies([]));
+        $command = new CreateCommand(
+            $this->faker()->phpParserContext(),
+            new LocalFile($filename),
+            new ProjectFactoryStrategies([])
+        );
 
         Dispatcher::getInstance()->addListener(
             'parser.file.pre',

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Parser\Middleware;
 
+use phpDocumentor\Faker\Faker;
 use phpDocumentor\Parser\ReEncodedFile;
 use phpDocumentor\Reflection\File;
 use phpDocumentor\Reflection\Php\Factory\File\CreateCommand;
@@ -29,6 +30,7 @@ use Symfony\Component\String\UnicodeString;
  */
 final class ReEncodingMiddlewareTest extends TestCase
 {
+    use Faker;
     use ProphecyTrait;
 
     /**
@@ -43,7 +45,7 @@ final class ReEncodingMiddlewareTest extends TestCase
         $middleware = new ReEncodingMiddleware();
         $middleware->withEncoding('iso-8859-1');
         $result = $middleware->execute(
-            new CreateCommand($file, new ProjectFactoryStrategies([])),
+            new CreateCommand($this->faker()->phpParserContext(), $file, new ProjectFactoryStrategies([])),
             function (CreateCommand $command) use ($contents) : PhpFile {
                 $reEncodedFile = $command->getFile();
                 $this->assertInstanceOf(ReEncodedFile::class, $reEncodedFile);
@@ -73,7 +75,11 @@ final class ReEncodingMiddlewareTest extends TestCase
         $middleware = new ReEncodingMiddleware();
         $middleware->withEncoding('utf-8');
         $middleware->execute(
-            new CreateCommand($file, new ProjectFactoryStrategies([])),
+            new CreateCommand(
+                $this->faker()->phpParserContext(),
+                $file,
+                new ProjectFactoryStrategies([])
+            ),
             static function () : void {
                 // not important; never called due to exception
             }

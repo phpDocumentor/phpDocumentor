@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bfa643ca88ba1d5b73777b6482fdbd05",
+    "content-hash": "993654322dbf599f3960cc5deabf4f83",
     "packages": [
         {
             "name": "doctrine/event-manager",
@@ -1120,16 +1120,16 @@
         },
         {
             "name": "phpdocumentor/reflection",
-            "version": "4.0.1",
+            "version": "5.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/Reflection.git",
-                "reference": "447928a45710d6313e68774cf12b5f730b909baa"
+                "reference": "c32a142d0f6ccb498a02d47f8338ef7c91d50311"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/Reflection/zipball/447928a45710d6313e68774cf12b5f730b909baa",
-                "reference": "447928a45710d6313e68774cf12b5f730b909baa",
+                "url": "https://api.github.com/repos/phpDocumentor/Reflection/zipball/c32a142d0f6ccb498a02d47f8338ef7c91d50311",
+                "reference": "c32a142d0f6ccb498a02d47f8338ef7c91d50311",
                 "shasum": ""
             },
             "require": {
@@ -1143,12 +1143,13 @@
             },
             "require-dev": {
                 "mikey179/vfsstream": "~1.2",
-                "mockery/mockery": "~1.0"
+                "mockery/mockery": "~1.3.2"
             },
+            "default-branch": true,
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-4.x": "4.1.x-dev"
+                    "dev-4.x": "5.0.x-dev"
                 }
             },
             "autoload": {
@@ -1168,7 +1169,11 @@
                 "reflection",
                 "static analysis"
             ],
-            "time": "2020-06-19T18:26:14+00:00"
+            "support": {
+                "issues": "https://github.com/phpDocumentor/Reflection/issues",
+                "source": "https://github.com/phpDocumentor/Reflection/tree/5.x"
+            },
+            "time": "2021-02-25T18:42:22+00:00"
         },
         {
             "name": "phpdocumentor/reflection-common",
@@ -4454,7 +4459,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "phpdocumentor/reflection": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

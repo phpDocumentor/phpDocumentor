@@ -17,6 +17,7 @@ use ArrayObject;
 use InvalidArgumentException;
 use phpDocumentor\Parser\FileFactory;
 use phpDocumentor\Parser\Middleware\EmittingMiddleware;
+use phpDocumentor\Reflection\DocBlockFactoryInterface;
 use phpDocumentor\Reflection\Php\NodesFactory;
 use PHPUnit\Framework\TestCase;
 use stdClass;
@@ -30,6 +31,7 @@ final class FileFactoryTest extends TestCase
     public function testIfFileFactoryIsCreatedUsingAnArray() : void
     {
         FileFactory::createInstance(
+            $this->prophesize(DocBlockFactoryInterface::class)->reveal(),
             NodesFactory::createInstance(),
             new ArrayObject([new EmittingMiddleware()])
         );
@@ -51,6 +53,7 @@ final class FileFactoryTest extends TestCase
         );
 
         FileFactory::createInstance(
+            $this->prophesize(DocBlockFactoryInterface::class)->reveal(),
             NodesFactory::createInstance(),
             new ArrayObject([new stdClass()])
         );

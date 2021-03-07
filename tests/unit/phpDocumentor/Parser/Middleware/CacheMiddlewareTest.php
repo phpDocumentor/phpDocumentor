@@ -15,6 +15,7 @@ namespace phpDocumentor\Parser\Middleware;
 
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamFile;
+use phpDocumentor\Faker\Faker;
 use phpDocumentor\Reflection\File;
 use phpDocumentor\Reflection\Php\Factory\File\CreateCommand;
 use phpDocumentor\Reflection\Php\File as ReflectedFile;
@@ -32,6 +33,8 @@ use function serialize;
  */
 final class CacheMiddlewareTest extends TestCase
 {
+    use Faker;
+
     /**
      * @covers ::execute
      */
@@ -46,7 +49,11 @@ final class CacheMiddlewareTest extends TestCase
         $middleware = new CacheMiddleware($cacheInterface, new NullLogger());
 
         $response = $middleware->execute(
-            new CreateCommand(new File\LocalFile($file->url()), new ProjectFactoryStrategies([])),
+            new CreateCommand(
+                $this->faker()->phpParserContext(),
+                new File\LocalFile($file->url()),
+                new ProjectFactoryStrategies([])
+            ),
             function () : void {
                 $this->fail('If we entered the next state; then caching failed');
             }
@@ -68,7 +75,11 @@ final class CacheMiddlewareTest extends TestCase
         $middleware = new CacheMiddleware($cacheInterface, new NullLogger());
 
         $response = $middleware->execute(
-            new CreateCommand(new File\LocalFile($file->url()), new ProjectFactoryStrategies([])),
+            new CreateCommand(
+                $this->faker()->phpParserContext(),
+                new File\LocalFile($file->url()),
+                new ProjectFactoryStrategies([])
+            ),
             static function () use ($reflectedFile) {
                 return $reflectedFile;
             }
