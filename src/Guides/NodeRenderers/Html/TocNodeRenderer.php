@@ -18,6 +18,7 @@ use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\NodeRenderers\NodeRenderer;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\TocNode;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 use function count;
 use function is_array;
 
@@ -37,9 +38,7 @@ class TocNodeRenderer implements NodeRenderer
             throw new InvalidArgumentException('Invalid node presented');
         }
 
-        $options = $node->getOptions();
-
-        if (isset($options['hidden'])) {
+        if ($node->getOption('hidden', false)) {
             return '';
         }
 
@@ -101,7 +100,7 @@ class TocNodeRenderer implements NodeRenderer
 
     private function generateTargetId(string $target) : string
     {
-        return Environment::slugify($target);
+        return (new AsciiSlugger())->slug($target)->lower()->toString();
     }
 
     /**
@@ -139,6 +138,6 @@ class TocNodeRenderer implements NodeRenderer
             ? $title[1]
             : $title;
 
-        return Environment::slugify($slug);
+        return (new AsciiSlugger())->slug($slug)->lower()->toString();
     }
 }

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides;
 
 use phpDocumentor\Guides\Meta\Entry;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 use function strtolower;
 
 final class Metas
@@ -130,7 +131,7 @@ final class Metas
 
     private function findByTitle(string $text) : ?Entry
     {
-        $text = Environment::slugify($text);
+        $text = (new AsciiSlugger())->slug($text)->lower()->toString();
 
         // try to lookup the document reference by title
         foreach ($this->entries as $entry) {

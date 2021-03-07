@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\HTML\Directives;
 
-use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Nodes\DocumentNode;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\RestructuredText\Directives\SubDirective;
 use phpDocumentor\Guides\RestructuredText\Parser;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 use function array_map;
 use function explode;
 
@@ -37,7 +37,7 @@ class ClassDirective extends SubDirective
 
         $normalizedClasses = array_map(
             static function (string $class) {
-                return Environment::slugify($class);
+                return (new AsciiSlugger())->slug($class)->lower()->toString();
             },
             $classes
         );

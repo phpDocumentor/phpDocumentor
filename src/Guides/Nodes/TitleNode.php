@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\Nodes;
 
-use phpDocumentor\Guides\Environment;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 
 class TitleNode extends Node
 {
@@ -38,7 +38,7 @@ class TitleNode extends Node
 
         $this->level = $level;
         $this->token = $token;
-        $this->id = Environment::slugify($this->value->getValue());
+        $this->id = (new AsciiSlugger())->slug($this->value->getValue())->lower()->toString();
     }
 
     public function getValue() : SpanNode

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\Meta;
 
 use LogicException;
-use phpDocumentor\Guides\Environment;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 use function array_merge;
 use function array_search;
 use function in_array;
@@ -107,10 +107,11 @@ final class Entry
     {
         $titles = $this->getAllTitles();
 
-        $text = Environment::slugify($text);
+        $slugger = new AsciiSlugger();
+        $text = $slugger->slug($text)->lower()->toString();
 
         foreach ($titles as $title) {
-            if ($text === Environment::slugify($title)) {
+            if ($text === $slugger->slug($title)->lower()->toString()) {
                 return true;
             }
         }

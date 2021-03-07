@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\RestructuredText;
 
 use Doctrine\Common\EventManager;
-use phpDocumentor\Guides\Configuration;
 use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Nodes\DocumentNode;
 use phpDocumentor\Guides\Parser as ParserInterface;
@@ -15,14 +14,10 @@ use phpDocumentor\Guides\RestructuredText\Directives\Directive;
 use phpDocumentor\Guides\RestructuredText\Formats\Format;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
 use RuntimeException;
-use Webmozart\Assert\Assert;
 use function array_merge;
 
 class Parser implements ParserInterface
 {
-    /** @var Configuration */
-    private $configuration;
-
     /** @var Environment */
     private $environment;
 
@@ -49,19 +44,17 @@ class Parser implements ParserInterface
      * @param array<Reference> $references
      */
     public function __construct(
-        Configuration $configuration,
+        Format $format,
         Environment $environment,
         EventManager $eventManager,
         array $directives,
         array $references
     ) {
-        $this->configuration = $configuration;
+        $this->format = $format;
         $this->environment = $environment;
         $this->directives = $directives;
         $this->references = $references;
         $this->eventManager = $eventManager;
-        Assert::isInstanceOf($configuration->getFormat(), Format::class);
-        $this->format = $configuration->getFormat();
 
         $this->initDirectives($directives);
         $this->initReferences($references);
@@ -70,7 +63,7 @@ class Parser implements ParserInterface
     public function getSubParser() : Parser
     {
         return new Parser(
-            $this->configuration,
+            $this->format,
             $this->environment,
             $this->eventManager,
             $this->directives,
@@ -158,7 +151,6 @@ class Parser implements ParserInterface
     {
         return new DocumentParser(
             $this,
-            $this->environment,
             $this->eventManager,
             $this->directives
         );

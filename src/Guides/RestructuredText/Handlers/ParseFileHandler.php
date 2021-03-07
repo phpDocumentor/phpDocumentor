@@ -16,9 +16,11 @@ use phpDocumentor\Guides\Nodes\DocumentNode;
 use phpDocumentor\Guides\References\Reference;
 use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive;
+use phpDocumentor\Guides\RestructuredText\Formats\Format;
 use phpDocumentor\Guides\RestructuredText\ParseFileCommand;
 use phpDocumentor\Guides\RestructuredText\Parser;
 use Psr\Log\LoggerInterface;
+use RuntimeException;
 use function filemtime;
 use function iterator_to_array;
 use function ltrim;
@@ -141,11 +143,16 @@ final class ParseFileHandler
         Environment $environment,
         string $fileAbsolutePath
     ) : DocumentNode {
-        $nodeRendererFactory = $configuration->getFormat()->getNodeRendererFactory($environment);
+        $format = $configuration->getFormat();
+        if ($format instanceof Format === false) {
+            throw new RuntimeException('This handler only support RestructuredText input formats');
+        }
+
+        $nodeRendererFactory = $format->getNodeRendererFactory($environment);
         $environment->setNodeRendererFactory($nodeRendererFactory);
 
         $parser = new Parser(
-            $configuration,
+            $format,
             $environment,
             $this->eventManager,
             iterator_to_array($this->directives),

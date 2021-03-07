@@ -25,13 +25,14 @@ use phpDocumentor\Guides\Nodes\TitleNode;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive;
 use phpDocumentor\Guides\RestructuredText\Event\PostParseDocumentEvent;
 use phpDocumentor\Guides\RestructuredText\Event\PreParseDocumentEvent;
-use phpDocumentor\Guides\RestructuredText\FileIncluder;
 use phpDocumentor\Guides\RestructuredText\Parser;
 use phpDocumentor\Guides\RestructuredText\Parser\Directive as ParserDirective;
+use RuntimeException;
 use Throwable;
 use function array_search;
 use function chr;
 use function explode;
+use function preg_replace_callback;
 use function sprintf;
 use function str_replace;
 use function strlen;
@@ -102,12 +103,11 @@ class DocumentParser
      */
     public function __construct(
         Parser $parser,
-        Environment $environment,
         EventManager $eventManager,
         array $directives
     ) {
         $this->parser = $parser;
-        $this->environment = $environment;
+        $this->environment = $parser->getEnvironment();
         $this->eventManager = $eventManager;
         $this->directives = $directives;
         $this->lineDataParser = new LineDataParser($this->parser, $eventManager);
@@ -165,7 +165,7 @@ class DocumentParser
         $document = str_replace("\r\n", "\n", $document);
         $document = sprintf("\n%s\n", $document);
 
-        $document = (new FileIncluder($this->environment))->includeFiles($document);
+        $document = $this->mergeIncludedFiles($document);
 
         // Removing UTF-8 BOM
         $document = str_replace("\xef\xbb\xbf", '', $document);
@@ -705,5 +705,31 @@ class DocumentParser
         }
 
         unset($this->openTitleNodes[$key]);
+    }
+
+    public function mergeIncludedFiles(string $document) : string
+    {
+        return preg_replace_callback(
+            '/^\.\. include:: (.+)$/m',
+            function ($match) {
+                $path = $this->environment->absoluteRelativePath($match[1]);
+
+                $origin = $this->environment->getOrigin();
+                if (!$origin->has($path)) {
+                    throw new RuntimeException(
+                        sprintf('Include "%s" (%s) does not exist or is not readable.', $match[0], $path)
+                    );
+                }
+
+                $contents = $origin->read($path);
+
+                if ($contents === false) {
+                    throw new RuntimeException(sprintf('Could not load file from path %s', $path));
+                }
+
+                return $this->mergeIncludedFiles($contents);
+            },
+            $document
+        );
     }
 }

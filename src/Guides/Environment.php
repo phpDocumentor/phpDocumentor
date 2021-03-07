@@ -21,10 +21,8 @@ use phpDocumentor\Guides\References\ResolvedReference;
 use Psr\Log\LoggerInterface;
 use function array_shift;
 use function dirname;
-use function iconv;
 use function implode;
 use function in_array;
-use function preg_replace;
 use function sprintf;
 use function strtolower;
 use function trim;
@@ -472,31 +470,6 @@ class Environment
     public function addError(string $message) : void
     {
         $this->logger->error($message);
-    }
-
-    public static function slugify(string $text) : string
-    {
-        // TODO: Replace this with Symfony String's slugify
-
-        // replace non letter or digits by -
-        $text = preg_replace('~[^\pL\d]+~u', '-', $text);
-
-        // transliterate
-        $text = (string) iconv('utf-8', 'us-ascii//TRANSLIT', $text);
-
-        // remove unwanted characters
-        $text = preg_replace('~[^-\w]+~', '', $text);
-
-        // trim
-        $text = trim($text, '-');
-
-        // remove duplicate -
-        $text = preg_replace('~-+~', '-', $text);
-
-        // lowercase
-        $text = strtolower($text);
-
-        return $text;
     }
 
     private function addMissingReferenceSectionError(string $section) : void

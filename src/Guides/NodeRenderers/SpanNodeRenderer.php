@@ -19,6 +19,7 @@ use phpDocumentor\Guides\InvalidLink;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\RestructuredText\Span\SpanToken;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 use function get_class;
 use function is_string;
 use function preg_replace;
@@ -204,7 +205,7 @@ abstract class SpanNodeRenderer implements NodeRenderer, SpanRenderer
                 $metaEntry = $this->environment->getMetaEntry();
 
                 if ($metaEntry !== null && $metaEntry->hasTitle($link)) {
-                    $url = $metaEntry->getUrl() . '#' . Environment::slugify($link);
+                    $url = $metaEntry->getUrl() . '#' . (new AsciiSlugger())->slug($link)->lower()->toString();
                 }
             }
 
