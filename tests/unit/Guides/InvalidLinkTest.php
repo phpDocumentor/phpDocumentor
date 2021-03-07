@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace phpDocumentor\Guides\RestructuredText;
+namespace phpDocumentor\Guides;
 
-use phpDocumentor\Guides\InvalidLink;
 use PHPUnit\Framework\TestCase;
 
 final class InvalidLinkTest extends TestCase
