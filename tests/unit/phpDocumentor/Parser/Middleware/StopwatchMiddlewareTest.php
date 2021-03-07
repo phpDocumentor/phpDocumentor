@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Parser\Middleware;
 
+use phpDocumentor\Faker\Faker;
 use phpDocumentor\Parser\Middleware\StopwatchMiddleware;
 use phpDocumentor\Reflection\File\LocalFile;
 use phpDocumentor\Reflection\Php\Factory\File\CreateCommand;
@@ -33,6 +34,7 @@ use Symfony\Component\Stopwatch\StopwatchPeriod;
  */
 final class StopwatchMiddlewareTest extends TestCase
 {
+    use Faker;
     use ProphecyTrait;
 
     /**
@@ -41,7 +43,11 @@ final class StopwatchMiddlewareTest extends TestCase
     public function testThatMemoryUsageIsLogged() : void
     {
         $commandFile = new LocalFile(__FILE__);
-        $command = new CreateCommand($commandFile, new ProjectFactoryStrategies([]));
+        $command = new CreateCommand(
+            $this->faker()->phpParserContext(),
+            $commandFile,
+            new ProjectFactoryStrategies([])
+        );
 
         $logger = $this->prophesize(LoggerInterface::class);
         $logger

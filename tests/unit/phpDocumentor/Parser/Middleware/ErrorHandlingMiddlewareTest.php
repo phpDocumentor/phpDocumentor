@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Parser\Middleware;
 
 use Exception;
+use phpDocumentor\Faker\Faker;
 use phpDocumentor\Parser\Middleware\ErrorHandlingMiddleware;
 use phpDocumentor\Reflection\File\LocalFile;
 use phpDocumentor\Reflection\Php\Factory\File\CreateCommand;
@@ -32,6 +33,7 @@ use Psr\Log\LogLevel;
  */
 final class ErrorHandlingMiddlewareTest extends TestCase
 {
+    use Faker;
     use ProphecyTrait;
 
     /**
@@ -41,7 +43,11 @@ final class ErrorHandlingMiddlewareTest extends TestCase
     {
         $filename = __FILE__;
         $expected = new File('abc', $filename);
-        $command = new CreateCommand(new LocalFile($filename), new ProjectFactoryStrategies([]));
+        $command = new CreateCommand(
+            $this->faker()->phpParserContext(),
+            new LocalFile($filename),
+            new ProjectFactoryStrategies([])
+        );
 
         $logger = $this->prophesize(LoggerInterface::class);
         $logger->log(LogLevel::INFO, 'Starting to parse file: ' . __FILE__, [])->shouldBeCalled();
@@ -65,7 +71,11 @@ final class ErrorHandlingMiddlewareTest extends TestCase
     public function testThatAnErrorIsLogged() : void
     {
         $filename = __FILE__;
-        $command = new CreateCommand(new LocalFile($filename), new ProjectFactoryStrategies([]));
+        $command = new CreateCommand(
+            $this->faker()->phpParserContext(),
+            new LocalFile($filename),
+            new ProjectFactoryStrategies([])
+        );
 
         $logger = $this->prophesize(LoggerInterface::class);
         $logger->log(LogLevel::INFO, 'Starting to parse file: ' . __FILE__, [])->shouldBeCalled();

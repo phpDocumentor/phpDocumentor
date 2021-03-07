@@ -11,6 +11,8 @@ use League\Flysystem\MountManager;
 use Mockery as m;
 use phpDocumentor\Configuration\SymfonyConfigFactory;
 use phpDocumentor\Parser\FlySystemFactory;
+use phpDocumentor\Reflection\Php\Factory\ContextStack;
+use phpDocumentor\Reflection\Php\Project;
 use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Transformer;
@@ -74,5 +76,12 @@ final class Provider extends Base
             ->scalarNode(SymfonyConfigFactory::FIELD_CONFIG_VERSION)->defaultValue($version)->end();
 
         return $treebuilder;
+    }
+
+    public function phpParserContext() : ContextStack
+    {
+        return new ContextStack(
+            new Project('test')
+        );
     }
 }

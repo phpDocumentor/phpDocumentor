@@ -47,7 +47,7 @@
         "league/uri-interfaces": "^2.0",
         "phpdocumentor/flyfinder": "^1.0",
         "phpdocumentor/graphviz": "^2.0",
-        "phpdocumentor/reflection": "^4.0",
+        "phpdocumentor/reflection": "5.x-dev",
         "phpdocumentor/reflection-common": "^2.0",
         "phpdocumentor/reflection-docblock": "^5.0",
         "phpdocumentor/type-resolver": "^1.0",

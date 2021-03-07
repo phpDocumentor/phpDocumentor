@@ -1,0 +1,58 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+  _instanceof:
+    phpDocumentor\Reflection\Php\ProjectFactoryStrategy:
+      tags: ['phpdoc.reflection.strategy']
+
+  phpDocumentor\Reflection\Php\:
+    resource: '../vendor/phpdocumentor/reflection/src/phpDocumentor/Reflection/Php'
+
+  phpDocumentor\Reflection\Php\NodesFactory:
+    class: phpDocumentor\Reflection\Php\NodesFactory
+    factory: [ phpDocumentor\Reflection\Php\NodesFactory, 'createInstance' ]
+
+  phpDocumentor\Reflection\FqsenResolver: ~
+  phpDocumentor\Reflection\DocBlock\TagFactory: '@phpDocumentor\Reflection\DocBlock\StandardTagFactory'
+  phpDocumentor\Reflection\DocBlock\StandardTagFactory:
+    calls:
+      - [ 'addService', [ '@phpDocumentor\Reflection\DocBlock\DescriptionFactory' ] ]
+      - [ 'addService', [ '@phpDocumentor\Reflection\TypeResolver' ] ]
+  phpDocumentor\Reflection\TypeResolver: ~
+  phpDocumentor\Reflection\DocBlock\DescriptionFactory: ~
+  phpDocumentor\Reflection\DocBlockFactoryInterface:
+    class: phpDocumentor\Reflection\DocBlockFactory
+    factory: [ \phpDocumentor\Reflection\DocBlockFactory, 'createInstance' ]
+
+  phpDocumentor\Reflection\Php\Factory\ConstructorPromotion:
+    arguments:
+      $methodStrategy: '@phpDocumentor\Reflection\Php\Factory\Method'
+    tags:
+      - name: 'phpdoc.reflection.strategy'
+        priority: 1100
+
+  phpDocumentor\Reflection\Php\Factory\Noop:
+    tags:
+      - name: 'phpdoc.reflection.strategy'
+        priority: -10000
+
+  phpDocumentor\Reflection\Php\Factory\File:
+    factory: [ phpDocumentor\Parser\FileFactory, 'createInstance' ]
+    arguments:
+      $middlewares: !tagged phpdoc.parser.middleware
+
+  phpDocumentor\Reflection\ProjectFactory:
+    class: phpDocumentor\Reflection\Php\ProjectFactory
+    arguments:
+      $strategies: '@phpDocumentor\Reflection\Php\ProjectFactoryStrategies'
+
+  phpDocumentor\Reflection\Php\ProjectFactoryStrategies:
+    arguments:
+      $strategies: []
+
+
+  ###################################################################################
+  ## Autoloading definitions for external services ##################################
+  ###################################################################################
+  PhpParser\PrettyPrinter\Standard: ~
