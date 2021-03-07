@@ -8,29 +8,10 @@ use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\NodeRenderers;
 use phpDocumentor\Guides\NodeRenderers\NodeRendererFactory;
 use phpDocumentor\Guides\Nodes;
-use phpDocumentor\Guides\RestructuredText\Directives\Directive;
 use phpDocumentor\Guides\RestructuredText\Formats\Format;
-use phpDocumentor\Guides\RestructuredText\LaTeX;
 
-class LaTeXFormat implements Format
+class LaTeXFormat extends Format
 {
-    public function getFileExtension() : string
-    {
-        return Format::LATEX;
-    }
-
-    /**
-     * @return Directive[]
-     */
-    public function getDirectives() : array
-    {
-        return [
-            new LaTeX\Directives\LaTeXMain(),
-            new LaTeX\Directives\Title(),
-            new LaTeX\Directives\Wrap(),
-        ];
-    }
-
     public function getNodeRendererFactory(Environment $environment) : NodeRendererFactory
     {
         $renderer = $environment->getRenderer();

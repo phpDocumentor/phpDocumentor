@@ -271,8 +271,28 @@ services:
       resource: '../src/Guides/RestructuredText/Directives/*'
       tags: [ { name: 'phpdoc.guides.directive' } ]
 
+    phpDocumentor\Guides\RestructuredText\HTML\Directives\:
+      resource: '../src/Guides/RestructuredText/HTML/Directives/*'
+      exclude:
+        - '../src/Guides/RestructuredText/HTML/Directives/{AbstractAdmonitionDirective}.php'
+      tags: [ { name: 'phpdoc.guides.html_directive' } ]
+
+    phpDocumentor\Guides\RestructuredText\LaTeX\Directives\:
+      resource: '../src/Guides/RestructuredText/LaTeX/Directives/*'
+      tags: [ { name: 'phpdoc.guides.latex_directive' } ]
+
     phpDocumentor\Guides\References\:
       resource: '../src/Guides/References/*'
       exclude:
         - '../src/Guides/References/{Resolver,ResolvedReference}.php'
       tags: [ { name: 'phpdoc.guides.reference' } ]
+
+    phpDocumentor\Guides\RestructuredText\HTML\HTMLFormat:
+      arguments:
+        $fileExtension: 'html'
+        $directives: !tagged_iterator phpdoc.guides.html_directive
+
+    phpDocumentor\Guides\RestructuredText\LaTeX\LaTeXFormat:
+      arguments:
+        $fileExtension: 'tex'
+        $directives: !tagged_iterator phpdoc.guides.latex_directive

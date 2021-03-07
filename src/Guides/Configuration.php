@@ -23,13 +23,13 @@ final class Configuration
     private $initialHeaderLevel = 1;
 
     /** @var string */
-    private $fileExtension = Format::HTML;
+    private $fileExtension = 'html';
 
     /** @var string */
     private $indexName = 'index';
 
     /** @var string */
-    private $sourceFileExtension = 'rst';
+    private $sourceFileExtension;
 
     /** @var Format[] */
     private $formats;

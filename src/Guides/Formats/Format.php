@@ -18,9 +18,6 @@ use phpDocumentor\Guides\NodeRenderers\NodeRendererFactory;
 
 interface Format
 {
-    public const HTML = 'html';
-    public const LATEX = 'tex';
-
     public function getFileExtension() : string;
 
     public function getNodeRendererFactory(Environment $environment) : NodeRendererFactory;
