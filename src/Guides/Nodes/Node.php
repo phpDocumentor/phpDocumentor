@@ -28,6 +28,9 @@ abstract class Node
     /** @var string[] */
     protected $classes = [];
 
+    /** @var mixed[] */
+    private $options;
+
     /**
      * @param Node|callable|string|null $value
      */
@@ -92,6 +95,35 @@ abstract class Node
         }
 
         return '';
+    }
+
+    /**
+     * @param array<string, mixed> $options
+     */
+    public function withOptions(array $options) : self
+    {
+        $result = clone $this;
+        $result->options = $options;
+
+        return $result;
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function getOptions() : array
+    {
+        return $this->options;
+    }
+
+    /**
+     * @param mixed|null $default
+     *
+     * @return mixed|null
+     */
+    public function getOption(string $name, $default = null)
+    {
+        return $this->options[$name] ?? $default;
     }
 
     /**

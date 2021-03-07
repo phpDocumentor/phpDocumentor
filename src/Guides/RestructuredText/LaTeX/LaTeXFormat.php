@@ -26,10 +26,7 @@ class LaTeXFormat implements Format
     {
         return [
             new LaTeX\Directives\LaTeXMain(),
-            new LaTeX\Directives\Image(),
-            new LaTeX\Directives\Meta(),
             new LaTeX\Directives\Title(),
-            new LaTeX\Directives\Url(),
             new LaTeX\Directives\Wrap(),
         ];
     }

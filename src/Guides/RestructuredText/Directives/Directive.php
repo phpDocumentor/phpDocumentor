@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\RestructuredText\Directives;
 
 use phpDocumentor\Guides\Nodes\DocumentNode;
+use phpDocumentor\Guides\Nodes\GenericNode;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\RestructuredText\Parser;
 
@@ -44,15 +45,15 @@ abstract class Directive
     {
         $document = $parser->getDocument();
 
-        $processNode = $this->processNode($parser, $variable, $data, $options);
+        $processNode = $this->processNode($parser, $variable, $data, $options)
+            // Ensure options are always available
+            ->withOptions($options);
 
-        if ($processNode !== null) {
-            if ($variable !== '') {
-                $environment = $parser->getEnvironment();
-                $environment->setVariable($variable, $processNode);
-            } else {
-                $document->addNode($processNode);
-            }
+        if ($variable !== '') {
+            $environment = $parser->getEnvironment();
+            $environment->setVariable($variable, $processNode);
+        } else {
+            $document->addNode($processNode);
         }
 
         if ($node === null) {
@@ -70,11 +71,11 @@ abstract class Directive
      *
      * @param string[] $options
      */
-    public function processNode(Parser $parser, string $variable, string $data, array $options) : ?Node
+    public function processNode(Parser $parser, string $variable, string $data, array $options) : Node
     {
         $this->processAction($parser, $variable, $data, $options);
 
-        return null;
+        return new GenericNode($variable, $data);
     }
 
     /**

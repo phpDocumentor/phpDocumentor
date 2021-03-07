@@ -48,7 +48,7 @@ class Toctree extends Directive
             $environment->addDependency($file, false);
         }
 
-        $parser->getDocument()->addNode(new TocNode($toctreeFiles, $options));
+        $parser->getDocument()->addNode((new TocNode($toctreeFiles))->withOptions($options));
     }
 
     public function wantCode() : bool

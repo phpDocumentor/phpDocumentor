@@ -2,11 +2,10 @@
 
 declare(strict_types=1);
 
-namespace phpDocumentor\Guides\RestructuredText\LaTeX\Directives;
+namespace phpDocumentor\Guides\RestructuredText\Directives;
 
 use phpDocumentor\Guides\Nodes\ImageNode;
 use phpDocumentor\Guides\Nodes\Node;
-use phpDocumentor\Guides\RestructuredText\Directives\Directive;
 use phpDocumentor\Guides\RestructuredText\Parser;
 
 /**
@@ -31,9 +30,7 @@ class Image extends Directive
         string $variable,
         string $data,
         array $options
-    ) : ?Node {
-        $url = $parser->getEnvironment()->relativeUrl($data);
-
-        return new ImageNode($url, $options);
+    ) : Node {
+        return new ImageNode($parser->getEnvironment()->relativeUrl($data));
     }
 }

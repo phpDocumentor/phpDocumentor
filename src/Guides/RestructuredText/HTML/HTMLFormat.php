@@ -56,19 +56,23 @@ final class HTMLFormat implements Format
     public function getDirectives() : array
     {
         return [
-            new RestructuredText\HTML\Directives\Image(),
-            new RestructuredText\HTML\Directives\Figure(),
-            new RestructuredText\HTML\Directives\Uml(),
-            new RestructuredText\HTML\Directives\Meta(),
-            new RestructuredText\HTML\Directives\Title(),
-            new RestructuredText\HTML\Directives\Url(),
-            new RestructuredText\HTML\Directives\Div(),
+            new RestructuredText\HTML\Directives\BestPracticeDirective(),
+            new RestructuredText\HTML\Directives\CautionDirective(),
             new RestructuredText\HTML\Directives\ClassDirective(),
+            new RestructuredText\HTML\Directives\ConfigurationBlockDirective(),
+            new RestructuredText\HTML\Directives\DeprecatedDirective(),
+            new RestructuredText\HTML\Directives\Div(),
+            new RestructuredText\HTML\Directives\HintDirective(),
             new RestructuredText\HTML\Directives\ImportantDirective(),
             new RestructuredText\HTML\Directives\NoteDirective(),
-            new RestructuredText\HTML\Directives\WarningDirective(),
-            new RestructuredText\HTML\Directives\HintDirective(),
+            new RestructuredText\HTML\Directives\SeeAlsoDirective(),
             new RestructuredText\HTML\Directives\SidebarDirective(),
+            new RestructuredText\HTML\Directives\TipDirective(),
+            new RestructuredText\HTML\Directives\Title(),
+            new RestructuredText\HTML\Directives\TopicDirective(),
+            new RestructuredText\HTML\Directives\Uml(),
+            new RestructuredText\HTML\Directives\VersionAddedDirective(),
+            new RestructuredText\HTML\Directives\WarningDirective(),
         ];
     }
 

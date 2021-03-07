@@ -20,19 +20,14 @@ class TocNode extends Node
     /** @var string[] */
     protected $files;
 
-    /** @var string[] */
-    protected $options;
-
     /**
      * @param string[] $files
-     * @param string[] $options
      */
-    public function __construct(array $files, array $options)
+    public function __construct(array $files)
     {
-        parent::__construct();
-
         $this->files = $files;
-        $this->options = $options;
+
+        parent::__construct();
     }
 
     /**
@@ -43,22 +38,14 @@ class TocNode extends Node
         return $this->files;
     }
 
-    /**
-     * @return string[]
-     */
-    public function getOptions() : array
-    {
-        return $this->options;
-    }
-
     public function getDepth() : int
     {
-        if (isset($this->options['depth'])) {
-            return (int) $this->options['depth'];
+        if ($this->getOption('depth')) {
+            return (int) $this->getOption('depth');
         }
 
-        if (isset($this->options['maxdepth'])) {
-            return (int) $this->options['maxdepth'];
+        if ($this->getOption('maxdepth')) {
+            return (int) $this->getOption('maxdepth');
         }
 
         return self::DEFAULT_DEPTH;

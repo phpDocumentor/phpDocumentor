@@ -2,38 +2,42 @@
 
 declare(strict_types=1);
 
-namespace phpDocumentor\Guides\RestructuredText\HTML\Directives;
+namespace phpDocumentor\Guides\RestructuredText\Directives;
 
+use phpDocumentor\Guides\Nodes\FigureNode;
 use phpDocumentor\Guides\Nodes\ImageNode;
 use phpDocumentor\Guides\Nodes\Node;
-use phpDocumentor\Guides\RestructuredText\Directives\Directive;
 use phpDocumentor\Guides\RestructuredText\Parser;
 
 /**
  * Renders an image, example :
  *
- * .. image:: image.jpg
+ * .. figure:: image.jpg
  *      :width: 100
  *      :title: An image
+ *
+ *      Here is an awesome caption
  */
-class Image extends Directive
+class Figure extends SubDirective
 {
     public function getName() : string
     {
-        return 'image';
+        return 'figure';
     }
 
     /**
      * @param string[] $options
      */
-    public function processNode(
+    public function processSub(
         Parser $parser,
+        ?Node $document,
         string $variable,
         string $data,
         array $options
     ) : ?Node {
-        $url = $parser->getEnvironment()->relativeUrl($data);
-
-        return new ImageNode($url, $options);
+        return new FigureNode(
+            new ImageNode($parser->getEnvironment()->relativeUrl($data)),
+            $document
+        );
     }
 }

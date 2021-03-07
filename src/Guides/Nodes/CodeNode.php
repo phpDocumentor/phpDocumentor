@@ -15,9 +15,6 @@ namespace phpDocumentor\Guides\Nodes;
 
 class CodeNode extends Node
 {
-    /** @var string */
-    protected $value;
-
     /** @var bool */
     protected $raw = false;
 
@@ -33,11 +30,6 @@ class CodeNode extends Node
     public function __construct(array $lines)
     {
         parent::__construct($this->normalizeLines($lines));
-    }
-
-    public function getValue() : string
-    {
-        return $this->value;
     }
 
     public function setLanguage(?string $language = null) : void

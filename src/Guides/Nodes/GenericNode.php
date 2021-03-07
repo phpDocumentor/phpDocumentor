@@ -13,20 +13,23 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\Nodes;
 
-class MetaNode extends Node
+final class GenericNode extends Node
 {
     /** @var string */
-    protected $key;
+    private $name;
 
-    public function __construct(string $key, string $value)
+    /**
+     * @param Node|callable|string|null $value
+     */
+    public function __construct(string $name, $value = null)
     {
-        $this->key = $key;
+        $this->name = $name;
 
         parent::__construct($value);
     }
 
-    public function getKey() : string
+    public function getName() : string
     {
-        return $this->key;
+        return $this->name;
     }
 }

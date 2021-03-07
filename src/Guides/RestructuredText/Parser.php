@@ -84,15 +84,8 @@ class Parser implements ParserInterface
     public function initDirectives(array $directives) : void
     {
         $directives = array_merge(
-            [
-                new Directives\Code(),
-                new Directives\CodeBlock(),
-                new Directives\Raw(),
-                new Directives\Replace(),
-                new Directives\Toctree(),
-            ],
-            $this->format->getDirectives(),
-            $directives
+            $directives,
+            $this->format->getDirectives()
         );
 
         foreach ($directives as $directive) {
