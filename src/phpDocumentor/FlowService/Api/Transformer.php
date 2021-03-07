@@ -49,29 +49,15 @@ class Transformer implements TransformerInterface
     /** @var LoggerInterface */
     private $logger;
 
-    /** @var ExampleFinder */
-    private $exampleFinder;
-
-    /** @var Configuration */
-    private $configuration;
-    /**
-     * @var FlySystemFactory
-     */
-    private $flySystemFactory;
-
     /**
      * Initializes the command with all necessary dependencies to construct human-suitable output from the AST.
      */
     public function __construct(
         RealTransformer $transformer,
-        FlySystemFactory $flySystemFactory,
-        LoggerInterface $logger,
-        Configuration $configuration
+        LoggerInterface $logger
     ) {
         $this->transformer   = $transformer;
         $this->logger        = $logger;
-        $this->configuration = $configuration;
-        $this->flySystemFactory = $flySystemFactory;
 
         $this->connectOutputToEvents();
     }
@@ -83,11 +69,6 @@ class Transformer implements TransformerInterface
      */
     public function execute(ProjectDescriptor $project, DocumentationSetDescriptor $documentationSet, Template $template): void
     {
-        $configuration = $this->configuration;
-
-        $this->setTargetLocationBasedOnDsn($configuration['phpdocumentor']['paths']['output']);
-
-
         $this->transformer->execute($project, $documentationSet, $template);
     }
 
@@ -122,17 +103,5 @@ class Transformer implements TransformerInterface
                 );
             }
         );
-    }
-
-    private function setTargetLocationBasedOnDsn(Dsn $dsn) : void
-    {
-        $target     = $dsn->getPath();
-        $fileSystem = new Filesystem();
-        if (!$fileSystem->isAbsolutePath((string) $target)) {
-            $target = getcwd() . DIRECTORY_SEPARATOR . $target;
-        }
-
-        $this->transformer->setTarget((string) $target);
-        $this->transformer->setDestination($this->);
     }
 }

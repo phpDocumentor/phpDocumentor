@@ -60,5 +60,7 @@ services:
       - { name: 'phpdoc.pipeline.api_documentation.transform', priority: 5000 }
 
   phpDocumentor\Pipeline\Stage\Transform:
+    arguments:
+      $transformerProvider: '@phpdoc.flow.transformer_provider'
     tags:
       - { name: 'phpdoc.pipeline.api_documentation.transform', priority: 0 }

@@ -125,6 +125,10 @@ services:
       tags:
         - { name: 'phpdoc.flow.parser', documentation_type: 'phpDocumentor\Descriptor\ApiSetDescriptor' }
 
+    phpDocumentor\FlowService\Api\Transformer:
+      tags:
+        - { name: 'phpdoc.flow.transformer', documentation_type: 'phpDocumentor\Descriptor\ApiSetDescriptor' }
+
     ###################################################################################
     ## Autoloading definitions for individual classes #################################
     ###################################################################################
@@ -259,3 +263,7 @@ services:
         $outputFormats: !tagged_iterator phpdoc.guides.format
       tags:
         - { name: 'phpdoc.flow.parser', documentation_type: 'phpDocumentor\Descriptor\GuideSetDescriptor' }
+
+    phpDocumentor\FlowService\Guide\RenderGuide:
+      tags:
+        - { name: 'phpdoc.flow.transformer', documentation_type: 'phpDocumentor\Descriptor\GuideSetDescriptor' }

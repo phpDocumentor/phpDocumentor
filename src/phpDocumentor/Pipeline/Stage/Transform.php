@@ -10,6 +10,7 @@ use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\VersionDescriptor;
 use phpDocumentor\Dsn;
 use phpDocumentor\Event\Dispatcher;
+use phpDocumentor\FlowService\ServiceProvider;
 use phpDocumentor\FileSystem\FlySystemFactory;
 use phpDocumentor\Transformer\Event\PostTransformEvent;
 use phpDocumentor\Transformer\Event\PreTransformationEvent;
@@ -41,9 +42,6 @@ use const DIRECTORY_SEPARATOR;
  */
 class Transform
 {
-    /** @var Transformer $transformer Principal object for guiding the transformation process */
-    private $transformer;
-
     /** @var LoggerInterface */
     private $logger;
 
@@ -53,19 +51,22 @@ class Transform
     /** @var FlySystemFactory */
     private $flySystemFactory;
 
+    /** @var ServiceProvider */
+    private $transformerProvider;
+
     /**
      * Initializes the command with all necessary dependencies to construct human-suitable output from the AST.
      */
     public function __construct(
-        Transformer $transformer,
+        ServiceProvider $transformerProvider,
         FlySystemFactory $flySystemFactory,
         LoggerInterface $logger,
         Factory $templateFactory
     ) {
-        $this->transformer   = $transformer;
         $this->logger        = $logger;
         $this->templateFactory  = $templateFactory;
         $this->flySystemFactory = $flySystemFactory;
+        $this->transformerProvider = $transformerProvider;
 
         $this->connectOutputToEvents();
     }
@@ -78,28 +79,16 @@ class Transform
     public function __invoke(Payload $payload): Payload
     {
         $configuration = $payload->getConfig();
-
-        foreach ($payload->getBuilder()->getProjectDescriptor()->getVersions() as $version) {
-            foreach ($version->getDocumentationSets() as $api) {
-                break 2;
-            }
-        }
-
-        $outputFileSystem = $this->flySystemFactory->createDestination($api);
-
-        $templates = $this->templateFactory->getTemplates(
-            $configuration['phpdocumentor']['templates'],
-            $outputFileSystem
-        );
-
-        //$this->transformer->setTarget((string) $target);
-        $this->transformer->setDestination($outputFileSystem);
-
         $project = $payload->getBuilder()->getProjectDescriptor();
-        $transformations = $templates->getTransformations();
 
         foreach ($project->getVersions() as $version) {
             foreach ($version->getDocumentationSets() as $documentationSet) {
+                $templates = $this->templateFactory->getTemplates(
+                    $configuration['phpdocumentor']['templates'],
+                    $this->flySystemFactory->createDestination($documentationSet)
+                );
+                $transformations = $templates->getTransformations();
+
                 /** @var PreTransformEvent $preTransformEvent */
                 $preTransformEvent = PreTransformEvent::createInstance($this);
                 $preTransformEvent->setDocumentationSet($documentationSet);
@@ -109,13 +98,11 @@ class Transform
                     Transformer::EVENT_PRE_TRANSFORM
                 );
 
-                if ($documentationSet instanceof ApiSetDescriptor) {
-                    $this->transformer->execute(
-                        $project,
-                        $documentationSet,
-                        current($templates)
-                    );
-                }
+                $this->transformerProvider->get($documentationSet)->execute(
+                    $project,
+                    $documentationSet,
+                    current($templates)
+                );
 
                 /** @var PostTransformEvent $postTransformEvent */
                 $postTransformEvent = PostTransformEvent::createInstance($this);

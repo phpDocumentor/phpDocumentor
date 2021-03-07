@@ -15,14 +15,13 @@ namespace phpDocumentor\FlowService\Guide;
 
 use League\Tactician\CommandBus;
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
-use phpDocumentor\Descriptor\GuideSetDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Dsn;
-use phpDocumentor\FlowService\FlowService;
+use phpDocumentor\FlowService\Transformer;
 use phpDocumentor\Guides\RenderCommand;
 use phpDocumentor\Guides\Twig\EnvironmentBuilder;
 use phpDocumentor\FileSystem\FlySystemFactory;
-use phpDocumentor\Transformer\Transformation;
+use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Stopwatch\Stopwatch;
@@ -33,7 +32,7 @@ use function sprintf;
 /**
  * @experimental this feature is in alpha stages and can have unresolved issues or missing features.
  */
-final class RenderGuide implements FlowService, ProjectDescriptor\WithCustomSettings
+final class RenderGuide implements Transformer, ProjectDescriptor\WithCustomSettings
 {
     public const FEATURE_FLAG = 'guides.enabled';
 
@@ -67,31 +66,18 @@ final class RenderGuide implements FlowService, ProjectDescriptor\WithCustomSett
         return 'RenderGuide';
     }
 
-    public function operate(DocumentationSetDescriptor $documentationSet): void
+    public function execute(ProjectDescriptor $project, DocumentationSetDescriptor $documentationSet, Template $template): void
     {
         $this->logger->warning(
             'Generating guides is experimental, no BC guarantees are given, use at your own risk'
         );
 
-        $this->renderDocumentationSet($documentationSet);
-    }
-
-    public function getDefaultSettings(): array
-    {
-        return [self::FEATURE_FLAG => false];
-    }
-
-    private function renderDocumentationSet(
-        GuideSetDescriptor $documentationSet,
-        ProjectDescriptor $project,
-        Transformation $transformation
-    ): void {
         $dsn = $documentationSet->getSource()->dsn();
         $stopwatch = $this->startRenderingSetMessage($dsn);
 
         $this->environmentBuilder->setEnvironmentFactory(
-            function () use ($transformation, $project, $documentationSet) {
-                $twig = $this->environmentFactory->create($project, $transformation->template());
+            function () use ($template, $project, $documentationSet) {
+                $twig = $this->environmentFactory->create($project, $template);
                 $twig->addGlobal('project', $project);
                 $twig->addGlobal('usesNamespaces', count($project->getNamespace()->getChildren()) > 0);
                 $twig->addGlobal('usesPackages', count($project->getPackage()->getChildren()) > 0);
@@ -106,7 +92,7 @@ final class RenderGuide implements FlowService, ProjectDescriptor\WithCustomSett
             new RenderCommand(
                 $documentationSet,
                 $this->flySystemFactory->create($dsn),
-                $transformation->getTransformer()->destination()
+                $this->flySystemFactory->create(Dsn::createFromString($documentationSet->getOutputLocation()))
             )
         );
 
@@ -133,5 +119,12 @@ final class RenderGuide implements FlowService, ProjectDescriptor\WithCustomSett
                 $stopwatchEvent->getMemory() / 1024 / 1024
             )
         );
+    }
+
+    public function getDefaultSettings(): array
+    {
+        return [
+              self::FEATURE_FLAG => false,
+        ];
     }
 }
