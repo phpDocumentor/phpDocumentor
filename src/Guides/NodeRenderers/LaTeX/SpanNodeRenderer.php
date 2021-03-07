@@ -11,12 +11,12 @@ declare(strict_types=1);
  * @link https://phpdoc.org
  */
 
-namespace phpDocumentor\Guides\Renderers\LaTeX;
+namespace phpDocumentor\Guides\NodeRenderers\LaTeX;
 
 use phpDocumentor\Guides\Environment;
+use phpDocumentor\Guides\NodeRenderers\SpanNodeRenderer as BaseSpanNodeRenderer;
 use phpDocumentor\Guides\References\ResolvedReference;
 use phpDocumentor\Guides\Renderer;
-use phpDocumentor\Guides\Renderers\SpanNodeRenderer as BaseSpanNodeRenderer;
 use function is_string;
 use function substr;
 use function trim;

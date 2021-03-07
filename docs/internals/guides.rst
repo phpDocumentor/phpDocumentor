@@ -1,6 +1,12 @@
 Guide generation
 ================
 
+.. important::
+
+   This feature is EXPERIMENTAL. None of the features nor the API should be considered stable and
+   may change without notice. There is no backwards compatibility promise for this part of the code
+   as it is highly in development.
+
 Guide generation is phpDocumentor's implementation for converting hand-written documentation into a static page
 integrated with the API Documentation. These share each other's Table of Contents in order for them to link to one
 another.
@@ -19,12 +25,6 @@ of Gregwar).
 Architecture
 ------------
 
-.. important::
-
-   While writing this documentation set, the architecture is in flux as Mike is refactoring Doctrine's implementation
-   to match the architecture of phpDocumentor. During this process, the aim is to keep this chapter up to date but
-   we advice to double-check the implementation against this chapter.
-
 The architecture of the Guides implementation revolves mainly around these 5 concepts:
 
 1. Kernel - the core orchestrator for parsing and rendering RestructuredText into the requested output format.
@@ -33,21 +33,6 @@ The architecture of the Guides implementation revolves mainly around these 5 con
 4. (Output) Formats - Specialized functionality to render the parsed documents into a requested output format,
    such as HTML or LaTeX (for PDF generation).
 5. Renderers - services used to convert Nodes into pieces of output format, such as HTML
-
-Kernel
-~~~~~~
-
-Documents & Nodes
------------------
-
-Directives
-~~~~~~~~~~
-
-(Output) Formats
-~~~~~~~~~~~~~~~~
-
-Renderers
-~~~~~~~~~
 
 Read More
 ---------

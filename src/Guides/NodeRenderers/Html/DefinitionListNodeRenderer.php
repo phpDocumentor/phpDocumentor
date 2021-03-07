@@ -11,15 +11,15 @@ declare(strict_types=1);
  * @link https://phpdoc.org
  */
 
-namespace phpDocumentor\Guides\Renderers\LaTeX;
+namespace phpDocumentor\Guides\NodeRenderers\Html;
 
 use InvalidArgumentException;
+use phpDocumentor\Guides\NodeRenderers\NodeRenderer;
+use phpDocumentor\Guides\Nodes\DefinitionListNode;
 use phpDocumentor\Guides\Nodes\Node;
-use phpDocumentor\Guides\Nodes\TitleNode;
 use phpDocumentor\Guides\Renderer;
-use phpDocumentor\Guides\Renderers\NodeRenderer;
 
-class TitleNodeRenderer implements NodeRenderer
+class DefinitionListNodeRenderer implements NodeRenderer
 {
     /** @var Renderer */
     private $renderer;
@@ -31,25 +31,15 @@ class TitleNodeRenderer implements NodeRenderer
 
     public function render(Node $node) : string
     {
-        if ($node instanceof TitleNode === false) {
+        if ($node instanceof DefinitionListNode === false) {
             throw new InvalidArgumentException('Invalid node presented');
         }
 
-        $type = 'chapter';
-
-        if ($node->getLevel() > 1) {
-            $type = 'section';
-
-            for ($i = 2; $i < $node->getLevel(); $i++) {
-                $type = 'sub' . $type;
-            }
-        }
-
         return $this->renderer->render(
-            'title.tex.twig',
+            'definition-list.html.twig',
             [
-                'type' => $type,
-                'titleNode' => $node,
+                'definitionListNode' => $node,
+                'definitionList' => $node->getDefinitionList(),
             ]
         );
     }

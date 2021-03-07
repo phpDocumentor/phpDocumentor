@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace phpDocumentor\Guides\RestructuredText\Builder;
+namespace phpDocumentor\Guides;
 
 use Flyfinder\Path;
 use Flyfinder\Specification\AndSpecification;
@@ -10,14 +10,12 @@ use Flyfinder\Specification\HasExtension;
 use Flyfinder\Specification\InPath;
 use InvalidArgumentException;
 use League\Flysystem\FilesystemInterface;
-use phpDocumentor\Guides\Files;
-use phpDocumentor\Guides\Metas;
 use function sprintf;
 use function strlen;
 use function substr;
 use function trim;
 
-class Scanner
+class FileCollector
 {
     /** @var Metas */
     private $metas;
@@ -37,7 +35,7 @@ class Scanner
      * objects, and avoids adding files to the parse queue that have
      * not changed and whose direct dependencies have not changed.
      */
-    public function scan(FilesystemInterface $filesystem, string $directory, string $extension) : Files
+    public function getFiles(FilesystemInterface $filesystem, string $directory, string $extension) : Files
     {
         $directory = trim($directory, '/');
         /** @var array<array<string>> $files */

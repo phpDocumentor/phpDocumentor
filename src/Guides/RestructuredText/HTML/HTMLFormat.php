@@ -14,8 +14,18 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\RestructuredText\HTML;
 
 use phpDocumentor\Guides\Environment;
+use phpDocumentor\Guides\NodeRenderers\DefaultNodeRenderer;
+use phpDocumentor\Guides\NodeRenderers\Html\DefinitionListNodeRenderer;
+use phpDocumentor\Guides\NodeRenderers\Html\DocumentNodeRenderer;
+use phpDocumentor\Guides\NodeRenderers\Html\ListRenderer;
+use phpDocumentor\Guides\NodeRenderers\Html\SpanNodeRenderer;
+use phpDocumentor\Guides\NodeRenderers\Html\TableNodeRenderer;
+use phpDocumentor\Guides\NodeRenderers\Html\TocNodeRenderer;
+use phpDocumentor\Guides\NodeRenderers\InMemoryNodeRendererFactory;
+use phpDocumentor\Guides\NodeRenderers\ListNodeRenderer;
+use phpDocumentor\Guides\NodeRenderers\NodeRendererFactory;
+use phpDocumentor\Guides\NodeRenderers\TemplateNodeRenderer;
 use phpDocumentor\Guides\Nodes\AnchorNode;
-use phpDocumentor\Guides\Nodes\CallableNode;
 use phpDocumentor\Guides\Nodes\CodeNode;
 use phpDocumentor\Guides\Nodes\DefinitionListNode;
 use phpDocumentor\Guides\Nodes\DocumentNode;
@@ -33,18 +43,6 @@ use phpDocumentor\Guides\Nodes\TableNode;
 use phpDocumentor\Guides\Nodes\TitleNode;
 use phpDocumentor\Guides\Nodes\TocNode;
 use phpDocumentor\Guides\Nodes\UmlNode;
-use phpDocumentor\Guides\Renderers\CallableNodeRenderer;
-use phpDocumentor\Guides\Renderers\DefaultNodeRenderer;
-use phpDocumentor\Guides\Renderers\Html\DefinitionListNodeRenderer;
-use phpDocumentor\Guides\Renderers\Html\DocumentNodeRenderer;
-use phpDocumentor\Guides\Renderers\Html\ListRenderer;
-use phpDocumentor\Guides\Renderers\Html\SpanNodeRenderer;
-use phpDocumentor\Guides\Renderers\Html\TableNodeRenderer;
-use phpDocumentor\Guides\Renderers\Html\TocNodeRenderer;
-use phpDocumentor\Guides\Renderers\InMemoryNodeRendererFactory;
-use phpDocumentor\Guides\Renderers\ListNodeRenderer;
-use phpDocumentor\Guides\Renderers\NodeRendererFactory;
-use phpDocumentor\Guides\Renderers\TemplateNodeRenderer;
 use phpDocumentor\Guides\RestructuredText;
 use phpDocumentor\Guides\RestructuredText\Formats\Format;
 
@@ -96,7 +94,6 @@ final class HTMLFormat implements Format
                 ListNode::class => new ListNodeRenderer(new ListRenderer($renderer), $environment),
                 TableNode::class => new TableNodeRenderer($renderer),
                 TocNode::class => new TocNodeRenderer($environment),
-                CallableNode::class => new CallableNodeRenderer(),
                 DocumentNode::class => new DocumentNodeRenderer($environment),
                 SpanNode::class => new SpanNodeRenderer($environment),
             ],

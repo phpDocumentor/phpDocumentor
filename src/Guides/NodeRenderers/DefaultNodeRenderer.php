@@ -11,7 +11,7 @@ declare(strict_types=1);
  * @link https://phpdoc.org
  */
 
-namespace phpDocumentor\Guides\Renderers;
+namespace phpDocumentor\Guides\NodeRenderers;
 
 use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Nodes\Node;

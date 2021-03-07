@@ -11,14 +11,14 @@ declare(strict_types=1);
  * @link https://phpdoc.org
  */
 
-namespace phpDocumentor\Guides\Renderers\LaTeX;
+namespace phpDocumentor\Guides\NodeRenderers\LaTeX;
 
 use InvalidArgumentException;
 use phpDocumentor\Guides\Environment;
+use phpDocumentor\Guides\NodeRenderers\NodeRenderer;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\TocNode;
 use phpDocumentor\Guides\Renderer;
-use phpDocumentor\Guides\Renderers\NodeRenderer;
 
 class TocNodeRenderer implements NodeRenderer
 {

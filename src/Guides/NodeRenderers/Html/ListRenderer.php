@@ -11,11 +11,11 @@ declare(strict_types=1);
  * @link https://phpdoc.org
  */
 
-namespace phpDocumentor\Guides\Renderers\Html;
+namespace phpDocumentor\Guides\NodeRenderers\Html;
 
+use phpDocumentor\Guides\NodeRenderers\FormatListRenderer;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Renderer;
-use phpDocumentor\Guides\Renderers\FormatListRenderer;
 use RuntimeException;
 use function array_filter;
 use function array_map;

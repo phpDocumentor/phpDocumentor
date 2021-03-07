@@ -53,7 +53,7 @@ class ConfigurationBlockDirective extends SubDirective
 
                 return $environment->getRenderer()->render(
                     'directives/configuration-block.html.twig',
-                    [ 'blocks' => $blocks ]
+                    ['blocks' => $blocks]
                 );
             }
         );

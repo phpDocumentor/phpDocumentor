@@ -4,22 +4,27 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\Handlers;
 
-use phpDocumentor\Guides\RestructuredText\Builder\ParseQueueProcessor;
-use phpDocumentor\Guides\RestructuredText\Builder\Scanner;
+use InvalidArgumentException;
+use League\Flysystem\FilesystemInterface;
+use League\Tactician\CommandBus;
+use phpDocumentor\Guides\Configuration;
+use phpDocumentor\Guides\FileCollector;
 use phpDocumentor\Guides\RestructuredText\ParseDirectoryCommand;
+use phpDocumentor\Guides\RestructuredText\ParseFileCommand;
+use function sprintf;
 
 final class ParseDirectoryHandler
 {
-    /** @var Scanner */
+    /** @var FileCollector */
     private $scanner;
 
-    /** @var ParseQueueProcessor */
-    private $parseQueueProcessor;
+    /** @var CommandBus */
+    private $commandBus;
 
-    public function __construct(Scanner $scanner, ParseQueueProcessor $parseQueueProcessor)
+    public function __construct(FileCollector $scanner, CommandBus $commandBus)
     {
         $this->scanner = $scanner;
-        $this->parseQueueProcessor = $parseQueueProcessor;
+        $this->commandBus = $commandBus;
     }
 
     public function handle(ParseDirectoryCommand $command) : void
@@ -27,13 +32,29 @@ final class ParseDirectoryHandler
         $configuration = $command->getConfiguration();
 
         $extension = $configuration->getSourceFileExtension();
-        $parseQueue = $this->scanner->scan($command->getOrigin(), $command->getDirectory(), $extension);
+        $parseQueue = $this->scanner->getFiles($command->getOrigin(), $command->getDirectory(), $extension);
 
-        $this->parseQueueProcessor->process(
-            $configuration,
-            $parseQueue,
-            $command->getOrigin(),
-            $command->getDirectory()
-        );
+        $origin = $command->getOrigin();
+        $currentDirectory = $command->getDirectory();
+        $this->guardThatAnIndexFileExists($origin, $currentDirectory, $configuration);
+
+        foreach ($parseQueue as $file) {
+            $this->commandBus->handle(new ParseFileCommand($configuration, $origin, $currentDirectory, $file));
+        }
+    }
+
+    private function guardThatAnIndexFileExists(
+        FilesystemInterface $filesystem,
+        string $directory,
+        Configuration $configuration
+    ) : void {
+        $indexName = $configuration->getNameOfIndexFile();
+        $extension = $configuration->getSourceFileExtension();
+        $indexFilename = sprintf('%s.%s', $indexName, $extension);
+        if (!$filesystem->has($directory . '/' . $indexFilename)) {
+            throw new InvalidArgumentException(
+                sprintf('Could not find index file "%s" in "%s"', $indexFilename, $directory)
+            );
+        }
     }
 }

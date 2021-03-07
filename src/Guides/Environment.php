@@ -94,7 +94,7 @@ class Environment
     /** @var Renderer */
     private $renderer;
 
-    /** @var Renderers\NodeRendererFactory */
+    /** @var NodeRenderers\NodeRendererFactory */
     private $nodeRendererFactory;
 
     /** @var string */
@@ -510,12 +510,12 @@ class Environment
         );
     }
 
-    public function setNodeRendererFactory(Renderers\NodeRendererFactory $nodeRendererFactory) : void
+    public function setNodeRendererFactory(NodeRenderers\NodeRendererFactory $nodeRendererFactory) : void
     {
         $this->nodeRendererFactory = $nodeRendererFactory;
     }
 
-    public function getNodeRendererFactory() : Renderers\NodeRendererFactory
+    public function getNodeRendererFactory() : NodeRenderers\NodeRendererFactory
     {
         return $this->nodeRendererFactory;
     }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace phpDocumentor\Guides\Renderers;
+namespace phpDocumentor\Guides\NodeRenderers;
 
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Renderer;
@@ -25,7 +25,7 @@ final class TemplateNodeRenderer implements NodeRenderer
     {
         return $this->renderer->render(
             $this->template,
-            [ 'node' => $node ]
+            ['node' => $node]
         );
     }
 }

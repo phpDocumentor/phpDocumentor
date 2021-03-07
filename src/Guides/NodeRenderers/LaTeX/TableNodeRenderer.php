@@ -11,14 +11,14 @@ declare(strict_types=1);
  * @link https://phpdoc.org
  */
 
-namespace phpDocumentor\Guides\Renderers\LaTeX;
+namespace phpDocumentor\Guides\NodeRenderers\LaTeX;
 
 use InvalidArgumentException;
+use phpDocumentor\Guides\NodeRenderers\NodeRenderer;
+use phpDocumentor\Guides\NodeRenderers\NodeRendererFactory;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\Nodes\TableNode;
-use phpDocumentor\Guides\Renderers\NodeRenderer;
-use phpDocumentor\Guides\Renderers\NodeRendererFactory;
 use function count;
 use function get_class;
 use function implode;

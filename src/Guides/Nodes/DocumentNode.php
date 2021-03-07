@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\Nodes;
 
 use phpDocumentor\Guides\Environment;
-use phpDocumentor\Guides\Renderers\FullDocumentNodeRenderer;
+use phpDocumentor\Guides\NodeRenderers\FullDocumentNodeRenderer;
 use function array_unshift;
 use function count;
 use function get_class;

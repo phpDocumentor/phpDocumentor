@@ -11,14 +11,14 @@ declare(strict_types=1);
  * @link https://phpdoc.org
  */
 
-namespace phpDocumentor\Guides\Renderers\Html;
+namespace phpDocumentor\Guides\NodeRenderers\Html;
 
 use InvalidArgumentException;
 use LogicException;
+use phpDocumentor\Guides\NodeRenderers\NodeRenderer;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\TableNode;
 use phpDocumentor\Guides\Renderer;
-use phpDocumentor\Guides\Renderers\NodeRenderer;
 use function sprintf;
 
 class TableNodeRenderer implements NodeRenderer

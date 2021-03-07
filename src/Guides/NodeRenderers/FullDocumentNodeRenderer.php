@@ -11,12 +11,11 @@ declare(strict_types=1);
  * @link https://phpdoc.org
  */
 
-namespace phpDocumentor\Guides\Renderers;
+namespace phpDocumentor\Guides\NodeRenderers;
 
-interface NodeRendererFactory
+use phpDocumentor\Guides\Nodes\DocumentNode;
+
+interface FullDocumentNodeRenderer
 {
-    /**
-     * @param class-string $node
-     */
-    public function get(string $node) : NodeRenderer;
+    public function renderDocument(DocumentNode $node) : string;
 }

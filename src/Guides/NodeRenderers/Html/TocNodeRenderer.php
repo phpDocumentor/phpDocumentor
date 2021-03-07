@@ -11,13 +11,13 @@ declare(strict_types=1);
  * @link https://phpdoc.org
  */
 
-namespace phpDocumentor\Guides\Renderers\Html;
+namespace phpDocumentor\Guides\NodeRenderers\Html;
 
 use InvalidArgumentException;
 use phpDocumentor\Guides\Environment;
+use phpDocumentor\Guides\NodeRenderers\NodeRenderer;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\TocNode;
-use phpDocumentor\Guides\Renderers\NodeRenderer;
 use function count;
 use function is_array;
 

@@ -11,16 +11,16 @@ declare(strict_types=1);
  * @link https://phpdoc.org
  */
 
-namespace phpDocumentor\Guides\Renderers\Html;
+namespace phpDocumentor\Guides\NodeRenderers\Html;
 
 use InvalidArgumentException;
 use phpDocumentor\Guides\Environment;
+use phpDocumentor\Guides\NodeRenderers\DocumentNodeRenderer as BaseDocumentRender;
+use phpDocumentor\Guides\NodeRenderers\FullDocumentNodeRenderer;
+use phpDocumentor\Guides\NodeRenderers\NodeRenderer;
 use phpDocumentor\Guides\Nodes\DocumentNode;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Renderer;
-use phpDocumentor\Guides\Renderers\DocumentNodeRenderer as BaseDocumentRender;
-use phpDocumentor\Guides\Renderers\FullDocumentNodeRenderer;
-use phpDocumentor\Guides\Renderers\NodeRenderer;
 
 class DocumentNodeRenderer implements NodeRenderer, FullDocumentNodeRenderer
 {
@@ -52,7 +52,7 @@ class DocumentNodeRenderer implements NodeRenderer, FullDocumentNodeRenderer
 
         return $this->renderer->render(
             'document.html.twig',
-            [ 'node' => $node ]
+            ['node' => $node]
         );
     }
 }
