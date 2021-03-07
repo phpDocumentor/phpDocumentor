@@ -6,6 +6,7 @@ namespace phpDocumentor\Guides\RestructuredText\HTML\Directives;
 
 use phpDocumentor\Guides\Nodes\CodeNode;
 use phpDocumentor\Guides\Nodes\Node;
+use phpDocumentor\Guides\Nodes\UmlNode;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive;
 use phpDocumentor\Guides\RestructuredText\Parser;
 use function explode;
@@ -37,7 +38,7 @@ class Uml extends Directive
             return;
         }
 
-        $node = $parser->getNodeFactory()->createUmlNode($node->getValue());
+        $node = new UmlNode($node->getValue());
         $node->setClasses(explode(' ', $options['classes'] ?? ''));
         $node->setCaption($data);
 

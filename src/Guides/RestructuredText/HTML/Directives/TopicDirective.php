@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\RestructuredText\HTML\Directives;
 
 use phpDocumentor\Guides\Nodes\Node;
+use phpDocumentor\Guides\Nodes\RawNode;
 use phpDocumentor\Guides\RestructuredText\Directives\SubDirective;
 use phpDocumentor\Guides\RestructuredText\Parser;
 
@@ -28,19 +29,17 @@ class TopicDirective extends SubDirective
     ) : ?Node {
         $environment = $parser->getEnvironment();
 
-        return $parser
-            ->getNodeFactory()
-            ->createRawNode(
-                static function () use ($environment, $document, $data) {
-                    return $environment->getRenderer()->render(
-                        'directives/topic.html.twig',
-                        [
-                            'name' => $data,
-                            'node' => $document,
-                        ]
-                    );
-                }
-            );
+        return new RawNode(
+            static function () use ($environment, $document, $data) {
+                return $environment->getRenderer()->render(
+                    'directives/topic.html.twig',
+                    [
+                        'name' => $data,
+                        'node' => $document,
+                    ]
+                );
+            }
+        );
     }
 
     public function getName() : string

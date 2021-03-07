@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\RestructuredText\LaTeX\Directives;
 
 use phpDocumentor\Guides\Nodes\Node;
+use phpDocumentor\Guides\Nodes\RawNode;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive;
 use phpDocumentor\Guides\RestructuredText\Parser;
 
@@ -33,7 +34,7 @@ class Title extends Directive
         $document = $parser->getDocument();
 
         $document->addHeaderNode(
-            $parser->getNodeFactory()->createRawNode(
+            new RawNode(
                 static function () use ($data) {
                     return '\title{' . $data . '}';
                 }

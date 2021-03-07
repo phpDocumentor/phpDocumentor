@@ -7,16 +7,24 @@ namespace phpDocumentor\Guides\RestructuredText\Parser;
 use Doctrine\Common\EventManager;
 use Exception;
 use phpDocumentor\Guides\Environment;
+use phpDocumentor\Guides\Nodes\AnchorNode;
+use phpDocumentor\Guides\Nodes\BlockNode;
+use phpDocumentor\Guides\Nodes\CodeNode;
+use phpDocumentor\Guides\Nodes\DefinitionListNode;
 use phpDocumentor\Guides\Nodes\DocumentNode;
 use phpDocumentor\Guides\Nodes\ListNode;
 use phpDocumentor\Guides\Nodes\Node;
+use phpDocumentor\Guides\Nodes\ParagraphNode;
+use phpDocumentor\Guides\Nodes\QuoteNode;
+use phpDocumentor\Guides\Nodes\SectionBeginNode;
+use phpDocumentor\Guides\Nodes\SectionEndNode;
+use phpDocumentor\Guides\Nodes\SeparatorNode;
 use phpDocumentor\Guides\Nodes\TableNode;
 use phpDocumentor\Guides\Nodes\TitleNode;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive;
 use phpDocumentor\Guides\RestructuredText\Event\PostParseDocumentEvent;
 use phpDocumentor\Guides\RestructuredText\Event\PreParseDocumentEvent;
 use phpDocumentor\Guides\RestructuredText\FileIncluder;
-use phpDocumentor\Guides\RestructuredText\NodeFactory\NodeFactory;
 use phpDocumentor\Guides\RestructuredText\Parser;
 use phpDocumentor\Guides\RestructuredText\Parser\Directive as ParserDirective;
 use Throwable;
@@ -36,9 +44,6 @@ class DocumentParser
 
     /** @var Environment */
     private $environment;
-
-    /** @var NodeFactory */
-    private $nodeFactory;
 
     /** @var EventManager */
     private $eventManager;
@@ -97,13 +102,11 @@ class DocumentParser
     public function __construct(
         Parser $parser,
         Environment $environment,
-        NodeFactory $nodeFactory,
         EventManager $eventManager,
         array $directives
     ) {
         $this->parser = $parser;
         $this->environment = $environment;
-        $this->nodeFactory = $nodeFactory;
         $this->eventManager = $eventManager;
         $this->directives = $directives;
         $this->lineDataParser = new LineDataParser($this->parser, $eventManager);
@@ -126,7 +129,7 @@ class DocumentParser
             $preParseDocumentEvent
         );
 
-        $this->document = $this->nodeFactory->createDocumentNode($this->environment);
+        $this->document = new DocumentNode($this->environment);
 
         $this->init();
 
@@ -209,8 +212,7 @@ class DocumentParser
                     if ($this->lineChecker->isListLine($line, $this->isCode)) {
                         $this->setState(State::LIST);
 
-                        /** @var ListNode $listNode */
-                        $listNode = $this->nodeFactory->createListNode();
+                        $listNode = new ListNode();
 
                         $this->nodeBuffer = $listNode;
 
@@ -255,7 +257,7 @@ class DocumentParser
 
                         $this->setState(State::TABLE);
 
-                        $tableNode = $this->nodeFactory->createTableNode(
+                        $tableNode = new TableNode(
                             $separatorLineConfig,
                             $this->tableParser->guessTableType($line),
                             $this->lineChecker
@@ -364,9 +366,9 @@ class DocumentParser
                     $this->setState(State::BEGIN);
 
                     return false;
-                } else {
-                    $this->buffer->push($line);
                 }
+
+                $this->buffer->push($line);
 
                 break;
 
@@ -409,7 +411,7 @@ class DocumentParser
 
                     $token = $this->environment->createTitle($level);
 
-                    $node = $this->nodeFactory->createTitleNode(
+                    $node = new TitleNode(
                         $this->parser->createSpanNode($data),
                         $level,
                         $token
@@ -430,9 +432,7 @@ class DocumentParser
 
                     $this->lastTitleNode = $node;
 
-                    $this->document->addNode(
-                        $this->nodeFactory->createSectionBeginNode($node)
-                    );
+                    $this->document->addNode(new SectionBeginNode($node));
 
                     $this->openTitleNodes[] = $node;
 
@@ -441,7 +441,7 @@ class DocumentParser
                 case State::SEPARATOR:
                     $level = $this->environment->getLevel((string) $this->specialLetter);
 
-                    $node = $this->nodeFactory->createSeparatorNode($level);
+                    $node = new SeparatorNode($level);
 
                     break;
 
@@ -449,7 +449,7 @@ class DocumentParser
                     /** @var string[] $buffer */
                     $buffer = $this->buffer->getLines();
 
-                    $node = $this->nodeFactory->createCodeNode($buffer);
+                    $node = new CodeNode($buffer);
 
                     break;
 
@@ -457,11 +457,11 @@ class DocumentParser
                     /** @var string[] $lines */
                     $lines = $this->buffer->getLines();
 
-                    $blockNode = $this->nodeFactory->createBlockNode($lines);
+                    $blockNode = new BlockNode($lines);
 
                     $document = $this->parser->getSubParser()->parseLocal($blockNode->getValue());
 
-                    $node = $this->nodeFactory->createQuoteNode($document);
+                    $node = new QuoteNode($document);
 
                     break;
 
@@ -478,7 +478,7 @@ class DocumentParser
                         $this->buffer->getLines()
                     );
 
-                    $node = $this->nodeFactory->createDefinitionListNode($definitionList);
+                    $node = new DefinitionListNode($definitionList);
 
                     break;
 
@@ -495,7 +495,7 @@ class DocumentParser
 
                     $buffer = $this->buffer->getLinesString();
 
-                    $node = $this->nodeFactory->createParagraphNode($this->parser->createSpanNode($buffer));
+                    $node = new ParagraphNode($this->parser->createSpanNode($buffer));
 
                     break;
             }
@@ -636,8 +636,7 @@ class DocumentParser
         }
 
         if ($link->getType() === Link::TYPE_ANCHOR) {
-            $anchorNode = $this->nodeFactory
-                ->createAnchorNode($link->getName());
+            $anchorNode = new AnchorNode($link->getName());
 
             $this->document->addNode($anchorNode);
         }
@@ -696,9 +695,7 @@ class DocumentParser
 
     private function endOpenSection(TitleNode $titleNode) : void
     {
-        $this->document->addNode(
-            $this->nodeFactory->createSectionEndNode($titleNode)
-        );
+        $this->document->addNode(new SectionEndNode($titleNode));
 
         $key = array_search($titleNode, $this->openTitleNodes, true);
 

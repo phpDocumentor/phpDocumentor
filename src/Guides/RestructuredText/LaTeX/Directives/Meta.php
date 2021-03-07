@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\LaTeX\Directives;
 
+use phpDocumentor\Guides\Nodes\MetaNode;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive;
 use phpDocumentor\Guides\RestructuredText\Parser;
@@ -33,12 +34,8 @@ class Meta extends Directive
     ) : void {
         $document = $parser->getDocument();
 
-        $nodeFactory = $parser->getNodeFactory();
-
         foreach ($options as $key => $value) {
-            $meta = $nodeFactory->createMetaNode($key, $value);
-
-            $document->addHeaderNode($meta);
+            $document->addHeaderNode(new MetaNode($key, $value));
         }
 
         if ($node === null) {

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\RestructuredText\Directives;
 
 use phpDocumentor\Guides\Nodes\Node;
+use phpDocumentor\Guides\Nodes\TocNode;
 use phpDocumentor\Guides\RestructuredText\Parser;
 use phpDocumentor\Guides\RestructuredText\Toc\GlobSearcher;
 use phpDocumentor\Guides\RestructuredText\Toc\ToctreeBuilder;
@@ -47,10 +48,7 @@ class Toctree extends Directive
             $environment->addDependency($file, false);
         }
 
-        $tocNode = $parser->getNodeFactory()
-            ->createTocNode($environment, $toctreeFiles, $options);
-
-        $parser->getDocument()->addNode($tocNode);
+        $parser->getDocument()->addNode(new TocNode($toctreeFiles, $options));
     }
 
     public function wantCode() : bool

@@ -14,7 +14,6 @@ use phpDocumentor\Guides\References\Doc;
 use phpDocumentor\Guides\References\Reference;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive;
 use phpDocumentor\Guides\RestructuredText\Formats\Format;
-use phpDocumentor\Guides\RestructuredText\NodeFactory\NodeFactory;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
 use RuntimeException;
 use Webmozart\Assert\Assert;
@@ -37,9 +36,6 @@ class Parser implements ParserInterface
     /** @var DocumentParser|null */
     private $documentParser;
 
-    /** @var NodeFactory */
-    private $nodeFactory;
-
     /** @var array<Reference> */
     private $references;
 
@@ -57,7 +53,6 @@ class Parser implements ParserInterface
         Configuration $configuration,
         Environment $environment,
         EventManager $eventManager,
-        NodeFactory $nodeFactory,
         array $directives,
         array $references
     ) {
@@ -66,13 +61,11 @@ class Parser implements ParserInterface
         $this->directives = $directives;
         $this->references = $references;
         $this->eventManager = $eventManager;
-        $this->nodeFactory = $nodeFactory;
         Assert::isInstanceOf($configuration->getFormat(), Format::class);
         $this->format = $configuration->getFormat();
 
         $this->initDirectives($directives);
         $this->initReferences($references);
-        $this->environment->setNodeFactory($nodeFactory);
     }
 
     public function getSubParser() : Parser
@@ -81,15 +74,9 @@ class Parser implements ParserInterface
             $this->configuration,
             $this->environment,
             $this->eventManager,
-            $this->nodeFactory,
             $this->directives,
             $this->references
         );
-    }
-
-    public function getNodeFactory() : NodeFactory
-    {
-        return $this->nodeFactory;
     }
 
     /**
@@ -161,7 +148,7 @@ class Parser implements ParserInterface
      */
     public function createSpanNode($span) : SpanNode
     {
-        return $this->getNodeFactory()->createSpanNode($this, $span);
+        return new SpanNode($this->environment, $span);
     }
 
     public function parse(string $contents) : DocumentNode
@@ -188,7 +175,6 @@ class Parser implements ParserInterface
         return new DocumentParser(
             $this,
             $this->environment,
-            $this->getNodeFactory(),
             $this->eventManager,
             $this->directives
         );

@@ -16,6 +16,7 @@ namespace phpDocumentor\Guides\RestructuredText\HTML\Directives;
 use phpDocumentor\Guides\Nodes\CodeNode;
 use phpDocumentor\Guides\Nodes\DocumentNode;
 use phpDocumentor\Guides\Nodes\Node;
+use phpDocumentor\Guides\Nodes\RawNode;
 use phpDocumentor\Guides\RestructuredText\Directives\SubDirective;
 use phpDocumentor\Guides\RestructuredText\Parser;
 use Webmozart\Assert\Assert;
@@ -34,30 +35,28 @@ class ConfigurationBlockDirective extends SubDirective
 
         $environment = $parser->getEnvironment();
 
-        return $parser
-            ->getNodeFactory()
-            ->createRawNode(
-                function () use ($environment, $document) {
-                    $blocks = [];
-                    foreach ($document->getNodes() as $node) {
-                        if (!$node instanceof CodeNode) {
-                            continue;
-                        }
-
-                        $language = $node->getLanguage() ?? 'Unknown';
-
-                        $blocks[] = [
-                            'language' => $this->formatLanguageTab($language),
-                            'code' => $node,
-                        ];
+        return new RawNode(
+            function () use ($environment, $document) {
+                $blocks = [];
+                foreach ($document->getNodes() as $node) {
+                    if (!$node instanceof CodeNode) {
+                        continue;
                     }
 
-                    return $environment->getRenderer()->render(
-                        'directives/configuration-block.html.twig',
-                        [ 'blocks' => $blocks ]
-                    );
+                    $language = $node->getLanguage() ?? 'Unknown';
+
+                    $blocks[] = [
+                        'language' => $this->formatLanguageTab($language),
+                        'code' => $node,
+                    ];
                 }
-            );
+
+                return $environment->getRenderer()->render(
+                    'directives/configuration-block.html.twig',
+                    [ 'blocks' => $blocks ]
+                );
+            }
+        );
     }
 
     /**

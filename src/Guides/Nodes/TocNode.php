@@ -13,14 +13,9 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\Nodes;
 
-use phpDocumentor\Guides\Environment;
-
 class TocNode extends Node
 {
     private const DEFAULT_DEPTH = 2;
-
-    /** @var Environment */
-    protected $environment;
 
     /** @var string[] */
     protected $files;
@@ -32,18 +27,12 @@ class TocNode extends Node
      * @param string[] $files
      * @param string[] $options
      */
-    public function __construct(Environment $environment, array $files, array $options)
+    public function __construct(array $files, array $options)
     {
         parent::__construct();
 
         $this->files = $files;
-        $this->environment = $environment;
         $this->options = $options;
-    }
-
-    public function getEnvironment() : Environment
-    {
-        return $this->environment;
     }
 
     /**

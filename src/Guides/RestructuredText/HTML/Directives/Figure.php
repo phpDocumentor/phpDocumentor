@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\HTML\Directives;
 
+use phpDocumentor\Guides\Nodes\FigureNode;
+use phpDocumentor\Guides\Nodes\ImageNode;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\RestructuredText\Directives\SubDirective;
 use phpDocumentor\Guides\RestructuredText\Parser;
@@ -34,14 +36,10 @@ class Figure extends SubDirective
         string $data,
         array $options
     ) : ?Node {
-        $environment = $parser->getEnvironment();
+        $url = $parser->getEnvironment()->relativeUrl($data);
 
-        $url = $environment->relativeUrl($data);
-
-        $nodeFactory = $parser->getNodeFactory();
-
-        return $parser->getNodeFactory()->createFigureNode(
-            $nodeFactory->createImageNode($url, $options),
+        return new FigureNode(
+            new ImageNode($url, $options),
             $document
         );
     }

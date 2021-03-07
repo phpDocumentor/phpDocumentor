@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\LaTeX\Directives;
 
+use phpDocumentor\Guides\Nodes\MainNode;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive;
 use phpDocumentor\Guides\RestructuredText\Parser;
@@ -27,6 +28,6 @@ class LaTeXMain extends Directive
         string $data,
         array $options
     ) : ?Node {
-        return $parser->getNodeFactory()->createMainNode();
+        return new MainNode();
     }
 }

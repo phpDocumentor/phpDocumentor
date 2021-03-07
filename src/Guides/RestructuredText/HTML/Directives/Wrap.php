@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\RestructuredText\HTML\Directives;
 
 use phpDocumentor\Guides\Nodes\Node;
+use phpDocumentor\Guides\Nodes\RawNode;
 use phpDocumentor\Guides\RestructuredText\Directives\SubDirective;
 use phpDocumentor\Guides\RestructuredText\Parser;
 use function uniqid;
@@ -33,19 +34,17 @@ class Wrap extends SubDirective
 
         $environment = $parser->getEnvironment();
 
-        return $parser
-            ->getNodeFactory()
-            ->createRawNode(
-                function () use ($id, $environment, $document) {
-                    $environment->getRenderer()->render(
-                        'div.html.twig',
-                        [
-                            'id' => $id,
-                            'class' => 'note',
-                            'node' => $document,
-                        ]
-                    );
-                }
-            );
+        return new RawNode(
+            function () use ($id, $environment, $document) {
+                $environment->getRenderer()->render(
+                    'div.html.twig',
+                    [
+                        'id' => $id,
+                        'class' => 'note',
+                        'node' => $document,
+                    ]
+                );
+            }
+        );
     }
 }

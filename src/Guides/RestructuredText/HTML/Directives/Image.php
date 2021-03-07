@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\HTML\Directives;
 
+use phpDocumentor\Guides\Nodes\ImageNode;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive;
 use phpDocumentor\Guides\RestructuredText\Parser;
@@ -31,10 +32,8 @@ class Image extends Directive
         string $data,
         array $options
     ) : ?Node {
-        $environment = $parser->getEnvironment();
+        $url = $parser->getEnvironment()->relativeUrl($data);
 
-        $url = $environment->relativeUrl($data);
-
-        return $parser->getNodeFactory()->createImageNode($url, $options);
+        return new ImageNode($url, $options);
     }
 }
