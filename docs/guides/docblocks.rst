@@ -75,9 +75,7 @@ on this) and can be used to skim through, for example, a list of methods.
 The summary can be separated from the description in two ways:
 
 1. With an empty whiteline:
-
    .. code-block:: php
-
        /**
         * This is a summary
         *
@@ -85,9 +83,7 @@ The summary can be separated from the description in two ways:
         */
 
 2. Or by adding a period followed by a new-line:
-
    .. code-block:: php
-
        /**
         * This is a summary.
         * This is a description
