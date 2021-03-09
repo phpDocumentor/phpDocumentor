@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\Handlers;
 
-use Doctrine\Common\EventManager;
 use InvalidArgumentException;
 use IteratorAggregate;
 use phpDocumentor\Guides\Configuration;
@@ -44,9 +43,6 @@ final class ParseFileHandler
     /** @var IteratorAggregate<Reference> */
     private $references;
 
-    /** @var EventManager */
-    private $eventManager;
-
     /** @var Renderer */
     private $renderer;
 
@@ -59,7 +55,6 @@ final class ParseFileHandler
         Documents $documents,
         Renderer $renderer,
         LoggerInterface $logger,
-        EventManager $eventManager,
         IteratorAggregate $directives,
         IteratorAggregate $references
     ) {
@@ -68,7 +63,6 @@ final class ParseFileHandler
         $this->logger = $logger;
         $this->directives = $directives;
         $this->references = $references;
-        $this->eventManager = $eventManager;
         $this->renderer = $renderer;
     }
 
@@ -154,7 +148,7 @@ final class ParseFileHandler
         $parser = new Parser(
             $format,
             $environment,
-            $this->eventManager,
+            $this->logger,
             iterator_to_array($this->directives),
             iterator_to_array($this->references)
         );

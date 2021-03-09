@@ -4,29 +4,17 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\Parser;
 
-use Doctrine\Common\EventManager;
-use Exception;
 use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Nodes\AnchorNode;
-use phpDocumentor\Guides\Nodes\BlockNode;
-use phpDocumentor\Guides\Nodes\CodeNode;
-use phpDocumentor\Guides\Nodes\DefinitionListNode;
 use phpDocumentor\Guides\Nodes\DocumentNode;
-use phpDocumentor\Guides\Nodes\ListNode;
 use phpDocumentor\Guides\Nodes\Node;
-use phpDocumentor\Guides\Nodes\ParagraphNode;
-use phpDocumentor\Guides\Nodes\QuoteNode;
 use phpDocumentor\Guides\Nodes\SectionBeginNode;
 use phpDocumentor\Guides\Nodes\SectionEndNode;
-use phpDocumentor\Guides\Nodes\SeparatorNode;
-use phpDocumentor\Guides\Nodes\SpanNode;
-use phpDocumentor\Guides\Nodes\TableNode;
 use phpDocumentor\Guides\Nodes\TitleNode;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive;
-use phpDocumentor\Guides\RestructuredText\Event\PostParseDocumentEvent;
-use phpDocumentor\Guides\RestructuredText\Event\PreParseDocumentEvent;
 use phpDocumentor\Guides\RestructuredText\Parser;
 use phpDocumentor\Guides\RestructuredText\Parser\Directive as ParserDirective;
+use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Throwable;
 use function array_search;
@@ -46,9 +34,6 @@ class DocumentParser
 
     /** @var Environment */
     private $environment;
-
-    /** @var EventManager */
-    private $eventManager;
 
     /** @var Directive[] */
     private $directives;
@@ -74,9 +59,6 @@ class DocumentParser
     /** @var Buffer */
     private $buffer;
 
-    /** @var Node|null */
-    private $nodeBuffer;
-
     /** @var bool */
     private $isCode = false;
 
@@ -86,34 +68,52 @@ class DocumentParser
     /** @var string */
     private $state;
 
-    /** @var ListLine|null */
-    private $listLine;
-
-    /** @var bool */
-    private $listFlow = false;
-
     /** @var TitleNode */
     private $lastTitleNode;
 
     /** @var TitleNode[] */
     private $openTitleNodes = [];
 
+    /** @var States\CodeState */
+    private $stateObject;
+
+    /** @var array<string, States\State> */
+    private $states = [];
+
+    /** @var LoggerInterface */
+    private $logger;
+
     /**
      * @param Directive[] $directives
      */
     public function __construct(
         Parser $parser,
-        EventManager $eventManager,
+        LoggerInterface $logger,
         array $directives
     ) {
         $this->parser = $parser;
         $this->environment = $parser->getEnvironment();
-        $this->eventManager = $eventManager;
+        $this->logger = $logger;
         $this->directives = $directives;
-        $this->lineDataParser = new LineDataParser($this->parser, $eventManager);
+
+        $this->lineDataParser = new LineDataParser($this->parser);
         $this->lineChecker = new LineChecker($this->lineDataParser);
         $this->tableParser = new TableParser();
         $this->buffer = new Buffer();
+    }
+
+    public function parse(string $contents) : DocumentNode
+    {
+        $this->init();
+
+        $this->document = new DocumentNode($this->environment);
+        $this->lines = $this->extractLines($contents);
+
+        $this->initializeStates();
+
+        $this->parseLines();
+
+        return $this->document;
     }
 
     public function getDocument() : DocumentNode
@@ -121,47 +121,57 @@ class DocumentParser
         return $this->document;
     }
 
-    public function parse(string $contents) : DocumentNode
-    {
-        $preParseDocumentEvent = new PreParseDocumentEvent($this->parser, $contents);
-
-        $this->eventManager->dispatchEvent(
-            PreParseDocumentEvent::PRE_PARSE_DOCUMENT,
-            $preParseDocumentEvent
-        );
-
-        $this->document = new DocumentNode($this->environment);
-
-        $this->init();
-
-        $this->parseLines(trim($preParseDocumentEvent->getContents()));
-
-        foreach ($this->directives as $directive) {
-            $directive->finalize($this->document);
-        }
-
-        $this->eventManager->dispatchEvent(
-            PostParseDocumentEvent::POST_PARSE_DOCUMENT,
-            new PostParseDocumentEvent($this->document)
-        );
-
-        return $this->document;
-    }
-
     private function init() : void
     {
         $this->specialLetter = false;
-        $this->buffer = new Buffer();
-        $this->nodeBuffer = null;
+        $this->buffer->clear();
     }
 
-    private function setState(string $state) : void
+    /**
+     * @todo this means that the parser states would be initialized on every run; this is not desirable. Refactor this
+     *   to make them into stateless objects
+     */
+    private function initializeStates() : void
     {
+        $environment = $this->parser->getEnvironment();
+
+        $this->states = [
+            State::BLOCK => new States\BlockState($this->lineChecker, $this->parser),
+            State::CODE => new States\CodeState($this->lineChecker),
+            State::COMMENT => new States\CommentState($this->lineChecker),
+            State::DEFINITION_LIST => new States\DefinitionListState(
+                $this->lineChecker,
+                $this->lineDataParser,
+                $this->lines
+            ),
+            State::LIST => new States\ListState($this->lineDataParser, $environment),
+            State::PARAGRAPH => new States\ParagraphState($this, $this->lineChecker, $environment),
+            State::SEPARATOR => new States\SeparatorState($environment, $this),
+            State::TABLE => new States\TableState($this->tableParser, $this->lineChecker, $this->parser),
+            State::TITLE => new States\TitleState($environment, $this),
+        ];
+    }
+
+    /**
+     * @todo shouldn't the flush always be executed when transitioning?
+     */
+    public function transitionTo(string $state, array $extraData = [], bool $flush = false) : void
+    {
+        if ($flush) {
+            $this->flush();
+        }
+
         $this->state = $state;
+        $this->stateObject = $this->states[$state] ?? null;
+        if ($this->stateObject instanceof States\State) {
+            $this->stateObject->enter($this->buffer, $extraData);
+        }
     }
 
-    private function prepareDocument(string $document) : string
+    private function extractLines(string $document) : Lines
     {
+        $document = trim($document);
+
         $document = str_replace("\r\n", "\n", $document);
         $document = sprintf("\n%s\n", $document);
 
@@ -173,20 +183,12 @@ class DocumentParser
         // Replace \u00a0 with " "
         $document = str_replace(chr(194) . chr(160), ' ', $document);
 
-        return $document;
-    }
-
-    private function createLines(string $document) : Lines
-    {
         return new Lines(explode("\n", $document));
     }
 
-    private function parseLines(string $document) : void
+    private function parseLines() : void
     {
-        $document = $this->prepareDocument($document);
-
-        $this->lines = $this->createLines($document);
-        $this->setState(State::BEGIN);
+        $this->transitionTo(State::BEGIN);
 
         foreach ($this->lines as $line) {
             while (true) {
@@ -197,6 +199,7 @@ class DocumentParser
         }
 
         // DocumentNode is flushed twice to trigger the directives
+        // TODO: Sounds like a workaround; fix this
         $this->flush();
         $this->flush();
 
@@ -205,342 +208,99 @@ class DocumentParser
         }
     }
 
+    /**
+     * Parse the given line and return true when parsing is complete, or false to reparse this line.
+     *
+     * Each line in a document is parsed according to the current state of the statemachine. Sometimes, however, we want
+     * to parse a line twice because the first iteration changed the state of the application but the line should be
+     * part of another state. This is a look-ahead type of system, where you can inspect the next line and decide to
+     * change the state based on it.
+     */
     private function parseLine(string $line) : bool
     {
         switch ($this->state) {
             case State::BEGIN:
-                if (trim($line) !== '') {
-                    if ($this->lineChecker->isListLine($line, $this->isCode)) {
-                        $this->setState(State::LIST);
-
-                        $listNode = new ListNode();
-
-                        $this->nodeBuffer = $listNode;
-
-                        $this->listLine = null;
-                        $this->listFlow = true;
-
-                        return false;
-                    }
-
-                    if ($this->lineChecker->isBlockLine($line)) {
-                        if ($this->isCode) {
-                            $this->setState(State::CODE);
-                        } else {
-                            $this->setState(State::BLOCK);
-                        }
-
-                        return false;
-                    }
-
-                    if ($this->parseLink($line)) {
-                        return true;
-                    }
-
-                    if ($this->lineChecker->isDirective($line)) {
-                        $this->setState(State::DIRECTIVE);
-                        $this->buffer = new Buffer();
-                        $this->flush();
-                        $this->initDirective($line);
-                    } elseif ($this->lineChecker->isDefinitionList($this->lines->getNextLine())) {
-                        $this->setState(State::DEFINITION_LIST);
-                        $this->buffer->push($line);
-
-                        return true;
-                    } else {
-                        $separatorLineConfig = $this->tableParser->parseTableSeparatorLine($line);
-
-                        if ($separatorLineConfig === null) {
-                            $this->setState(State::NORMAL);
-
-                            return false;
-                        }
-
-                        $this->setState(State::TABLE);
-
-                        $tableNode = new TableNode(
-                            $separatorLineConfig,
-                            $this->tableParser->guessTableType($line),
-                            $this->lineChecker
-                        );
-
-                        $this->nodeBuffer = $tableNode;
-                    }
-                }
-
-                break;
-
-            case State::LIST:
-                if (!$this->parseListLine($line)) {
-                    $this->flush();
-                    $this->setState(State::BEGIN);
-
-                    return false;
-                }
-
-                break;
-
+                return $this->parseBeginState($line);
+            case State::PARAGRAPH:
             case State::DEFINITION_LIST:
-                if ($this->lineChecker->isDefinitionListEnded($line, $this->lines->getNextLine())) {
-                    $this->flush();
-                    $this->setState(State::BEGIN);
-
-                    return false;
-                }
-
-                $this->buffer->push($line);
-
-                break;
-
-            case State::TABLE:
-                if (trim($line) === '') {
-                    $this->flush();
-                    $this->setState(State::BEGIN);
-                } else {
-                    $separatorLineConfig = $this->tableParser->parseTableSeparatorLine($line);
-
-                    // not sure if this is possible, being cautious
-                    if (!$this->nodeBuffer instanceof TableNode) {
-                        throw new Exception('Node Buffer should be a TableNode instance');
-                    }
-
-                    // push the separator or content line onto the TableNode
-                    if ($separatorLineConfig !== null) {
-                        $this->nodeBuffer->pushSeparatorLine($separatorLineConfig);
-                    } else {
-                        $this->nodeBuffer->pushContentLine($line);
-                    }
-                }
-
-                break;
-
-            case State::NORMAL:
-                if (trim($line) !== '') {
-                    $specialLetter = $this->lineChecker->isSpecialLine($line);
-
-                    if ($specialLetter !== null) {
-                        $this->specialLetter = $specialLetter;
-
-                        $lastLine = $this->buffer->pop();
-
-                        if ($lastLine !== null) {
-                            $this->buffer = new Buffer([$lastLine]);
-                            $this->setState(State::TITLE);
-                        } else {
-                            $this->buffer->push($line);
-                            $this->setState(State::SEPARATOR);
-                        }
-
-                        $this->flush();
-                        $this->setState(State::BEGIN);
-                    } elseif ($this->lineChecker->isDirective($line)) {
-                        $this->flush();
-                        $this->setState(State::BEGIN);
-
-                        return false;
-                    } elseif ($this->lineChecker->isComment($line)) {
-                        $this->flush();
-                        $this->setState(State::COMMENT);
-                    } else {
-                        $this->buffer->push($line);
-                    }
-                } else {
-                    $this->flush();
-                    $this->setState(State::BEGIN);
-                }
-
-                break;
-
+            case State::LIST:
             case State::COMMENT:
-                if (!$this->lineChecker->isComment($line) && (trim($line) === '' || $line[0] !== ' ')) {
-                    $this->setState(State::BEGIN);
-
-                    return false;
-                }
-
-                break;
-
             case State::BLOCK:
+            case State::TABLE:
             case State::CODE:
-                if (!$this->lineChecker->isBlockLine($line)) {
-                    $this->flush();
-                    $this->setState(State::BEGIN);
+                if (!$this->stateObject->parse($line)) {
+                    $this->transitionTo(State::BEGIN, [], true);
 
                     return false;
                 }
 
-                $this->buffer->push($line);
-
-                break;
-
+                return true;
             case State::DIRECTIVE:
-                if (!$this->isDirectiveOption($line)) {
-                    if (!$this->lineChecker->isDirective($line)) {
-                        $directive = $this->getCurrentDirective();
-                        $this->isCode = $directive !== null ? $directive->wantCode() : false;
-                        $this->setState(State::BEGIN);
-
-                        return false;
-                    }
-
-                    $this->flush();
-                    $this->initDirective($line);
-                }
-
-                break;
-
+                return $this->parseDirective($line);
             default:
-                $this->environment->addError('Parser ended in an unexcepted state');
+                $this->logger->error('Parser ended in an unexcepted state');
+                return true;
         }
-
-        return true;
     }
 
-    private function flush() : void
+    public function flush() : void
     {
         $node = null;
 
         $this->isCode = false;
 
-        if ($this->hasBuffer()) {
-            switch ($this->state) {
-                case State::TITLE:
-                    $data = $this->buffer->getLinesString();
+        switch ($this->state) {
+            case State::BLOCK:
+            case State::CODE:
+            case State::COMMENT:
+            case State::DEFINITION_LIST:
+            case State::LIST:
+            case State::SEPARATOR:
+            case State::TABLE:
+                $node = $this->stateObject->leave();
 
-                    $level = $this->environment->getLevel((string) $this->specialLetter);
-                    $level = $this->environment->getInitialHeaderLevel() + $level - 1;
+                break;
+            case State::PARAGRAPH:
+                $this->isCode = $this->prepareCode();
+                $node = $this->stateObject->leave();
 
-                    $node = new TitleNode(
-                        new SpanNode($this->environment, $data),
-                        $level
-                    );
+                break;
+            case State::TITLE:
+                $node = $this->stateObject->leave();
 
-                    if ($this->lastTitleNode !== null) {
-                        // current level is less than previous so we need to end all open sections
-                        if ($node->getLevel() < $this->lastTitleNode->getLevel()) {
-                            foreach ($this->openTitleNodes as $titleNode) {
-                                $this->endOpenSection($titleNode);
-                            }
-
-                            // same level as the last so just close the last open section
-                        } elseif ($node->getLevel() === $this->lastTitleNode->getLevel()) {
-                            $this->endOpenSection($this->lastTitleNode);
+                if ($this->lastTitleNode !== null) {
+                    // current level is less than previous so we need to end all open sections
+                    if ($node->getLevel() < $this->lastTitleNode->getLevel()) {
+                        foreach ($this->openTitleNodes as $titleNode) {
+                            $this->endOpenSection($titleNode);
                         }
+
+                        // same level as the last so just close the last open section
+                    } elseif ($node->getLevel() === $this->lastTitleNode->getLevel()) {
+                        $this->endOpenSection($this->lastTitleNode);
                     }
+                }
 
-                    $this->lastTitleNode = $node;
+                $this->lastTitleNode = $node;
+                $this->document->addNode(new SectionBeginNode($node));
+                $this->openTitleNodes[] = $node;
 
-                    $this->document->addNode(new SectionBeginNode($node));
-
-                    $this->openTitleNodes[] = $node;
-
-                    break;
-
-                case State::SEPARATOR:
-                    $level = $this->environment->getLevel((string) $this->specialLetter);
-
-                    $node = new SeparatorNode($level);
-
-                    break;
-
-                case State::CODE:
-                    /** @var string[] $buffer */
-                    $buffer = $this->buffer->getLines();
-
-                    $node = new CodeNode($buffer);
-
-                    break;
-
-                case State::BLOCK:
-                    /** @var string[] $lines */
-                    $lines = $this->buffer->getLines();
-
-                    $blockNode = new BlockNode($lines);
-
-                    $document = $this->parser->getSubParser()->parseLocal($blockNode->getValue());
-
-                    $node = new QuoteNode($document);
-
-                    break;
-
-                case State::LIST:
-                    $this->parseListLine(null, true);
-
-                    /** @var ListNode $node */
-                    $node = $this->nodeBuffer;
-
-                    break;
-
-                case State::DEFINITION_LIST:
-                    $definitionList = $this->lineDataParser->parseDefinitionList(
-                        $this->buffer->getLines()
-                    );
-
-                    $node = new DefinitionListNode($definitionList);
-
-                    break;
-
-                case State::TABLE:
-                    /** @var TableNode $node */
-                    $node = $this->nodeBuffer;
-
-                    $node->finalize($this->parser);
-
-                    break;
-
-                case State::NORMAL:
-                    $this->isCode = $this->prepareCode();
-
-                    $buffer = $this->buffer->getLinesString();
-
-                    $node = new ParagraphNode(new SpanNode($this->environment, $buffer));
-
-                    break;
-            }
+                break;
         }
 
+        // TODO: Why is this not in the switch above with State::DIRECTIVE? Is this a sub-parsing mechanism?
         if ($this->directive !== null) {
-            $currentDirective = $this->getCurrentDirective();
-
-            if ($currentDirective !== null) {
-                try {
-                    $currentDirective->process(
-                        $this->parser,
-                        $node,
-                        $this->directive->getVariable(),
-                        $this->directive->getData(),
-                        $this->directive->getOptions()
-                    );
-                } catch (Throwable $e) {
-                    $message = sprintf(
-                        'Error while processing "%s" directive%s: %s',
-                        $currentDirective->getName(),
-                        $this->environment->getCurrentFileName() !== '' ? sprintf(
-                            ' in "%s"',
-                            $this->environment->getCurrentFileName()
-                        ) : '',
-                        $e->getMessage()
-                    );
-
-                    $this->environment->addError($message);
-                }
-            }
+            $this->flushDirective($node);
 
             $node = null;
+            $this->directive = null;
         }
-
-        $this->directive = null;
 
         if ($node !== null) {
             $this->document->addNode($node);
         }
 
         $this->init();
-    }
-
-    private function hasBuffer() : bool
-    {
-        return !$this->buffer->isEmpty() || $this->nodeBuffer !== null;
     }
 
     private function getCurrentDirective() : ?Directive
@@ -573,6 +333,7 @@ class DocumentParser
 
     private function initDirective(string $line) : bool
     {
+        $this->flush();
         $parserDirective = $this->lineDataParser->parseDirective($line);
 
         if ($parserDirective === null) {
@@ -580,17 +341,17 @@ class DocumentParser
         }
 
         if (!isset($this->directives[$parserDirective->getName()])) {
-            $message = sprintf(
-                'Unknown directive: "%s" %sfor line "%s"',
-                $parserDirective->getName(),
-                $this->environment->getCurrentFileName() !== '' ? sprintf(
-                    'in "%s" ',
-                    $this->environment->getCurrentFileName()
-                ) : '',
-                $line
+            $this->logger->error(
+                sprintf(
+                    'Unknown directive: "%s" %sfor line "%s"',
+                    $parserDirective->getName(),
+                    $this->environment->getCurrentFileName() !== '' ? sprintf(
+                        'in "%s" ',
+                        $this->environment->getCurrentFileName()
+                    ) : '',
+                    $line
+                )
             );
-
-            $this->environment->addError($message);
 
             return false;
         }
@@ -598,6 +359,16 @@ class DocumentParser
         $this->directive = $parserDirective;
 
         return true;
+    }
+
+    public function getSpecialLetter() : string
+    {
+        return $this->specialLetter;
+    }
+
+    public function setSpecialLetter(string $specialLetter) : void
+    {
+        $this->specialLetter = $specialLetter;
     }
 
     private function prepareCode() : bool
@@ -644,53 +415,6 @@ class DocumentParser
         return true;
     }
 
-    private function parseListLine(?string $line, bool $flush = false) : bool
-    {
-        if ($line !== null && trim($line) !== '') {
-            $listLine = $this->lineDataParser->parseListLine($line);
-
-            if ($listLine !== null) {
-                if ($this->listLine instanceof ListLine) {
-                    $this->listLine->setText(new SpanNode($this->environment, $this->listLine->getText()));
-
-                    /** @var ListNode $listNode */
-                    $listNode = $this->nodeBuffer;
-
-                    $listNode->addLine($this->listLine->toArray());
-                }
-
-                $this->listLine = $listLine;
-            } else {
-                if ($this->listLine instanceof ListLine && ($this->listFlow || $line[0] === ' ')) {
-                    $this->listLine->addText($line);
-                } else {
-                    $flush = true;
-                }
-            }
-
-            $this->listFlow = true;
-        } else {
-            $this->listFlow = false;
-        }
-
-        if ($flush) {
-            if ($this->listLine instanceof ListLine) {
-                $this->listLine->setText(new SpanNode($this->environment, $this->listLine->getText()));
-
-                /** @var ListNode $listNode */
-                $listNode = $this->nodeBuffer;
-
-                $listNode->addLine($this->listLine->toArray());
-
-                $this->listLine = null;
-            }
-
-            return false;
-        }
-
-        return true;
-    }
-
     private function endOpenSection(TitleNode $titleNode) : void
     {
         $this->document->addNode(new SectionEndNode($titleNode));
@@ -728,5 +452,114 @@ class DocumentParser
             },
             $document
         );
+    }
+
+    private function parseBeginState(string $line) : bool
+    {
+        if (trim($line) === '') {
+            return true;
+        }
+
+        if ($this->lineChecker->isListLine($line, $this->isCode)) {
+            $this->transitionTo(State::LIST);
+
+            return false;
+        }
+
+        if ($this->lineChecker->isBlockLine($line)) {
+            $this->transitionTo($this->isCode ? State::CODE : State::BLOCK);
+
+            return false;
+        }
+
+        if ($this->parseLink($line)) {
+            return true;
+        }
+
+        if ($this->lineChecker->isDirective($line)) {
+            $this->transitionTo(State::DIRECTIVE);
+            $this->buffer->clear();
+            $this->initDirective($line);
+
+            return true;
+        }
+
+        if ($this->lineChecker->isDefinitionList($this->lines->getNextLine())) {
+            $this->transitionTo(State::DEFINITION_LIST);
+            $this->buffer->push($line);
+
+            return true;
+        }
+
+        $separatorLineConfig = $this->tableParser->parseTableSeparatorLine($line);
+
+        if ($separatorLineConfig === null) {
+            $this->transitionTo(State::PARAGRAPH);
+
+            return false;
+        }
+
+        $this->transitionTo(
+            State::TABLE,
+            [
+                'line' => $line,
+                'separatorLineConfig' => $separatorLineConfig
+            ]
+        );
+
+        return true;
+    }
+
+    private function parseDirective(string $line) : bool
+    {
+        if ($this->isDirectiveOption($line)) {
+            return true;
+        }
+
+        if (!$this->lineChecker->isDirective($line)) {
+            $directive = $this->getCurrentDirective();
+            $this->isCode = $directive !== null ? $directive->wantCode() : false;
+            $this->transitionTo(State::BEGIN);
+
+            return false;
+        }
+
+        $this->initDirective($line);
+
+        return true;
+    }
+
+    /**
+     * @param Node|null $node
+     */
+    private function flushDirective(?Node $node) : void
+    {
+        $currentDirective = $this->getCurrentDirective();
+
+        if ($currentDirective === null) {
+            return;
+        }
+
+        try {
+            $currentDirective->process(
+                $this->parser,
+                $node,
+                $this->directive->getVariable(),
+                $this->directive->getData(),
+                $this->directive->getOptions()
+            );
+        } catch (Throwable $e) {
+            $this->logger->error(
+                sprintf(
+                    'Error while processing "%s" directive%s: %s',
+                    $currentDirective->getName(),
+                    $this->environment->getCurrentFileName() !== '' ? sprintf(
+                        ' in "%s"',
+                        $this->environment->getCurrentFileName()
+                    ) : '',
+                    $e->getMessage()
+                )
+            );
+        }
     }
 }

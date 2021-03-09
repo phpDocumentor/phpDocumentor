@@ -7,7 +7,7 @@ namespace phpDocumentor\Guides\RestructuredText\Parser;
 class State
 {
     public const BEGIN = 'begin';
-    public const NORMAL = 'normal';
+    public const PARAGRAPH = 'normal';
     public const DIRECTIVE = 'directive';
     public const BLOCK = 'block';
     public const TITLE = 'title';

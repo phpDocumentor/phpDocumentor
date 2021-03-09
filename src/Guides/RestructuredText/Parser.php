@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText;
 
-use Doctrine\Common\EventManager;
 use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Nodes\DocumentNode;
 use phpDocumentor\Guides\Parser as ParserInterface;
@@ -13,6 +12,7 @@ use phpDocumentor\Guides\References\Reference;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive;
 use phpDocumentor\Guides\RestructuredText\Formats\Format;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
+use Psr\Log\LoggerInterface;
 use RuntimeException;
 use function array_merge;
 
@@ -33,11 +33,11 @@ class Parser implements ParserInterface
     /** @var array<Reference> */
     private $references;
 
-    /** @var EventManager */
-    private $eventManager;
-
     /** @var Format */
     private $format;
+
+    /** @var LoggerInterface */
+    private $logger;
 
     /**
      * @param array<Directive> $directives
@@ -46,7 +46,7 @@ class Parser implements ParserInterface
     public function __construct(
         Format $format,
         Environment $environment,
-        EventManager $eventManager,
+        LoggerInterface $logger,
         array $directives,
         array $references
     ) {
@@ -54,10 +54,10 @@ class Parser implements ParserInterface
         $this->environment = $environment;
         $this->directives = $directives;
         $this->references = $references;
-        $this->eventManager = $eventManager;
 
         $this->initDirectives($directives);
         $this->initReferences($references);
+        $this->logger = $logger;
     }
 
     public function getSubParser() : Parser
@@ -65,7 +65,7 @@ class Parser implements ParserInterface
         return new Parser(
             $this->format,
             $this->environment,
-            $this->eventManager,
+            $this->logger,
             $this->directives,
             $this->references
         );
@@ -151,7 +151,7 @@ class Parser implements ParserInterface
     {
         return new DocumentParser(
             $this,
-            $this->eventManager,
+            $this->logger,
             $this->directives
         );
     }

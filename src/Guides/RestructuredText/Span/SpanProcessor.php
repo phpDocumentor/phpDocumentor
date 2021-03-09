@@ -99,6 +99,10 @@ class SpanProcessor
     private function replaceTitleLetters(string $span) : string
     {
         foreach ($this->environment->getTitleLetters() as $level => $letter) {
+            if ($letter === '') {
+                continue;
+            }
+
             $span = preg_replace_callback(
                 '/\#\\' . $letter . '/mUsi',
                 function () use ($level) : string {
