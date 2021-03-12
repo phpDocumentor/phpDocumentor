@@ -11,7 +11,7 @@ declare(strict_types=1);
  * @link https://phpdoc.org
  */
 
-namespace phpDocumentor\Parser;
+namespace phpDocumentor\FileSystem;
 
 use League\Flysystem\FilesystemInterface;
 use League\Flysystem\MountManager;

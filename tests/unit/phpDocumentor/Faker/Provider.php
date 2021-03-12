@@ -9,8 +9,10 @@ use League\Flysystem\Adapter\NullAdapter;
 use League\Flysystem\Filesystem;
 use League\Flysystem\MountManager;
 use Mockery as m;
+use phpDocumentor\Configuration\ApiSpecification;
 use phpDocumentor\Configuration\SymfonyConfigFactory;
-use phpDocumentor\Parser\FlySystemFactory;
+use phpDocumentor\Configuration\VersionSpecification;
+use phpDocumentor\FileSystem\FlySystemFactory;
 use phpDocumentor\Reflection\Php\Factory\ContextStack;
 use phpDocumentor\Reflection\Php\Project;
 use phpDocumentor\Transformer\Template;
@@ -82,6 +84,22 @@ final class Provider extends Base
     {
         return new ContextStack(
             new Project('test')
+        );
+    }
+
+    public function versionSpecification() : VersionSpecification
+    {
+        return new VersionSpecification(
+            $this->generator->numerify('v##.##'),
+            [
+                ApiSpecification::createFromArray(
+                    [
+                        'source' => [],
+                        'output' => 'a'
+                    ]
+                )
+            ],
+            []
         );
     }
 }

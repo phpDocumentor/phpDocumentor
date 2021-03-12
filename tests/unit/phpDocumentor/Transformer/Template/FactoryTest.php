@@ -17,7 +17,7 @@ use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use phpDocumentor\Dsn;
 use phpDocumentor\Faker\Faker;
-use phpDocumentor\Parser\FlySystemFactory;
+use phpDocumentor\FileSystem\FlySystemFactory;
 use phpDocumentor\Transformer\Writer\Collection as WriterCollection;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
 use PHPUnit\Framework\TestCase;

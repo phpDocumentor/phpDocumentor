@@ -10,7 +10,7 @@ the differences between the different operating systems.
 Creating filesystems
 --------
 
-Filesystems used in the application are created by `\phpDocumentor\Parser\FlySystemFactory`. Because of a number of
+Filesystems used in the application are created by `\phpDocumentor\FileSystem\FlySystemFactory`. Because of a number of
 important changes that are made to the handling of `Dsn` is it required that all `FileSystem`s are created using this
 factory.
 

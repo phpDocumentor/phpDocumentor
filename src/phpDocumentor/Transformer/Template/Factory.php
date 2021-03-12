@@ -20,7 +20,7 @@ use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemInterface;
 use League\Flysystem\MountManager;
 use phpDocumentor\Dsn;
-use phpDocumentor\Parser\FlySystemFactory;
+use phpDocumentor\FileSystem\FlySystemFactory;
 use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Writer\Collection as WriterCollection;

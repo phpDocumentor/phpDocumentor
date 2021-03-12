@@ -13,7 +13,7 @@ use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Dsn;
 use phpDocumentor\Faker\Faker;
-use phpDocumentor\Parser\FlySystemFactory;
+use phpDocumentor\FileSystem\FlySystemFactory;
 use phpDocumentor\Transformer\Template\Collection;
 use phpDocumentor\Transformer\Template\Factory;
 use phpDocumentor\Transformer\Transformer;

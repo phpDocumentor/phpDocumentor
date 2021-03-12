@@ -12,7 +12,7 @@ use phpDocumentor\Descriptor\Filter\StripIgnore;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Dsn;
 use phpDocumentor\Parser\FlySystemCollector;
-use phpDocumentor\Parser\FlySystemFactory;
+use phpDocumentor\FileSystem\FlySystemFactory;
 use phpDocumentor\Parser\SpecificationFactory;
 use Psr\Log\NullLogger;
 

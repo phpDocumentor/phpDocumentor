@@ -15,7 +15,7 @@ namespace phpDocumentor\Transformer;
 
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Faker\Faker;
-use phpDocumentor\Parser\FlySystemFactory;
+use phpDocumentor\FileSystem\FlySystemFactory;
 use phpDocumentor\Transformer\Writer\Collection;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
 use PHPUnit\Framework\TestCase;

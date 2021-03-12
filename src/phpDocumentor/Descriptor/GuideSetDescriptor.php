@@ -17,13 +17,17 @@ use phpDocumentor\Dsn;
 
 final class GuideSetDescriptor extends DocumentationSetDescriptor
 {
+    /** @var string */
+    private $inputFormat;
+
     /**
      * @param array{dsn: Dsn, paths: array<string>} $source
      */
-    public function __construct(string $name, array $source, string $output)
+    public function __construct(string $name, array $source, string $output, string $inputFormat)
     {
         $this->name = $name;
         $this->source = $source;
         $this->output = $output;
+        $this->inputFormat = $inputFormat;
     }
 }
