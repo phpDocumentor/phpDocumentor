@@ -15,17 +15,19 @@ namespace phpDocumentor\Pipeline\Stage;
 
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
+use phpDocumentor\Faker\Faker;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
 final class InitializeBuilderFromConfigTest extends TestCase
 {
+    use Faker;
     use ProphecyTrait;
 
     public function testSetNameAndPartialsOnBuilder(): void
     {
         $partials = new Collection();
-        $fixture = new InitializeBuilderFromConfig($partials);
+        $fixture  = new InitializeBuilderFromConfig($partials);
 
         $builder = $this->prophesize(ProjectDescriptorBuilder::class);
         $builder->createProjectDescriptor()->shouldBeCalledOnce();
@@ -34,5 +36,26 @@ final class InitializeBuilderFromConfigTest extends TestCase
         $builder->setCustomSettings([])->shouldBeCalledOnce();
 
         $fixture(new Payload(['phpdocumentor' => ['title' => 'my-title', 'versions' => []]], $builder->reveal()));
+    }
+
+    public function testInitializesProjectWithDocumentationSets(): void
+    {
+        $partials = new Collection();
+        $fixture  = new InitializeBuilderFromConfig($partials);
+
+        $builder = $this->prophesize(ProjectDescriptorBuilder::class);
+        $builder->createProjectDescriptor()->shouldBeCalledOnce();
+
+        $fixture(
+            new Payload(
+                [
+                    'title' => 'my-title',
+                    'versions' => [
+                        $this->faker()->versionSpecification(),
+                    ],
+                ],
+                $builder->reveal()
+            )
+        );
     }
 }

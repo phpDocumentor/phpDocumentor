@@ -12,6 +12,8 @@ use Mockery as m;
 use phpDocumentor\Configuration\ApiSpecification;
 use phpDocumentor\Configuration\Source;
 use phpDocumentor\Configuration\SymfonyConfigFactory;
+use phpDocumentor\Configuration\VersionSpecification;
+use phpDocumentor\FileSystem\FlySystemFactory;
 use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Collection as DescriptorCollection;
@@ -22,7 +24,6 @@ use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\VersionDescriptor;
 use phpDocumentor\Dsn;
-use phpDocumentor\Parser\FlySystemFactory;
 use phpDocumentor\Path;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Php\Factory\ContextStack;
@@ -106,6 +107,22 @@ final class Provider extends Base
     public function apiSpecification(): ApiSpecification
     {
         return ApiSpecification::createDefault();
+    }
+
+    public function versionSpecification(): VersionSpecification
+    {
+        return new VersionSpecification(
+            $this->generator->numerify('v##.##'),
+            [
+                ApiSpecification::createFromArray(
+                    [
+                        'source' => [],
+                        'output' => 'a'
+                    ]
+                )
+            ],
+            []
+        );
     }
 
     public function dsn(): Dsn

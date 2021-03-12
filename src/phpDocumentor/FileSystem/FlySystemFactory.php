@@ -11,7 +11,7 @@ declare(strict_types=1);
  * @link https://phpdoc.org
  */
 
-namespace phpDocumentor\Parser;
+namespace phpDocumentor\FileSystem;
 
 use Flyfinder\Finder;
 use InvalidArgumentException;
@@ -20,6 +20,9 @@ use League\Flysystem\AdapterInterface;
 use League\Flysystem\Filesystem;
 use League\Flysystem\MountManager;
 use LogicException;
+use phpDocumentor\Descriptor\DocumentationSetDescriptor;
+use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\VersionDescriptor;
 use phpDocumentor\Dsn;
 use Webmozart\Assert\Assert;
 
@@ -35,9 +38,42 @@ class FlySystemFactory implements FileSystemFactory
     /** @var MountManager */
     private $mountManager;
 
+    /** @var string */
+    private $outputRoot;
+
+    /** @var array<string, string> */
+    private $versionFolders;
+
+    /** @var array<string, array<string, string>  */
+    private $documentationSets;
+
     public function __construct(MountManager $mountManager)
     {
         $this->mountManager = $mountManager;
+    }
+
+    public function setOutputRoot(string $output): void
+    {
+        $this->outputRoot = $output;
+    }
+
+    public function addVersion(string $versionNumber, string $folder): void
+    {
+        $this->versionFolders[$versionNumber] = $folder;
+        $this->documentationSets[$versionNumber] = [];
+    }
+
+    public function addDocumentationSet(string $versionNumber, array $source, string $output): void
+    {
+//        $source['src']
+//
+//        $this->documentationSets[$versionNumber][] = [
+//
+//        ]
+    }
+
+    public function createDestination(DocumentationSetDescriptor $documentationSetDescriptor)
+    {
     }
 
     /**

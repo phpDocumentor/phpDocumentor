@@ -8,7 +8,7 @@ use Exception;
 use League\Flysystem\FilesystemInterface;
 use phpDocumentor\Dsn;
 use phpDocumentor\Event\Dispatcher;
-use phpDocumentor\Parser\FlySystemFactory;
+use phpDocumentor\FileSystem\FlySystemFactory;
 use phpDocumentor\Transformer\Event\PostTransformEvent;
 use phpDocumentor\Transformer\Event\PreTransformationEvent;
 use phpDocumentor\Transformer\Event\PreTransformEvent;

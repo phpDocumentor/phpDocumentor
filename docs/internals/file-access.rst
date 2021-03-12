@@ -10,7 +10,7 @@ the differences between the different operating systems.
 Creating filesystems
 --------------------
 
-Filesystems used in the application are created by the :php:class:`phpDocumentor\Parser\FlySystemFactory` service.
+Filesystems used in the application are created by the :php:class:`phpDocumentor\FileSystem\FlySystemFactory` service.
 Because of a number of important changes that are made to the handling of :php:class:`phpDocumentor\Dsn` it is required
 that all ``League\Flysystem\Filesystem`` objects are created using this factory.
 
