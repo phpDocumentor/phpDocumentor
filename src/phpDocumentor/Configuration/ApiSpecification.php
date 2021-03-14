@@ -5,21 +5,18 @@ declare(strict_types=1);
 namespace phpDocumentor\Configuration;
 
 use ArrayAccess;
-use InvalidArgumentException;
 use phpDocumentor\Dsn;
 use phpDocumentor\Path;
 use RuntimeException;
-use function lcfirst;
-use function property_exists;
 use function sprintf;
-use function str_replace;
-use function ucwords;
 
 /**
  * @implements ArrayAccess<String, mixed>
  */
 final class ApiSpecification implements ArrayAccess
 {
+    use LegacyArrayAccess;
+
     public const VISIBILITY_PUBLIC = 1;
     public const VISIBILITY_PROTECTED = 2;
     public const VISIBILITY_PRIVATE = 4;
@@ -29,7 +26,7 @@ final class ApiSpecification implements ArrayAccess
     /** @var int by default ignore internal visibility but show others */
     public const VISIBILITY_DEFAULT = 7;
 
-    /** @var array{dsn: Dsn, paths: array<Path>} */
+    /** @var Source */
     private $source;
 
     /** @var string */
@@ -56,7 +53,7 @@ final class ApiSpecification implements ArrayAccess
     /** @var array<string> */
     private $ignoreTags;
 
-    /** @var array{dsn: Dsn, paths: list<string>}|null */
+    /** @var Source|null */
     private $examples;
 
     /** @var string */
@@ -66,16 +63,14 @@ final class ApiSpecification implements ArrayAccess
     private $validate;
 
     /**
-     * @param array{dsn: Dsn, paths: array<Path>} $source
      * @param array{paths: array<Path>} $ignore
      * @param non-empty-list<string> $extensions
      * @param array<string> $visibility
      * @param array<string> $markers
      * @param array<string> $ignoreTags
-     * @param array{dsn: Dsn, paths: list<string>}|null $examples
      */
     private function __construct(
-        array $source,
+        Source $source,
         string $output,
         array $ignore,
         array $extensions,
@@ -84,7 +79,7 @@ final class ApiSpecification implements ArrayAccess
         bool $includeSource,
         array $markers,
         array $ignoreTags,
-        ?array $examples,
+        ?Source $examples,
         string $encoding,
         bool $validate
     ) {
@@ -104,13 +99,13 @@ final class ApiSpecification implements ArrayAccess
 
     //phpcs:disable Generic.Files.LineLength.TooLong
     /**
-     * @param array{ignore-tags: array<string>, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibility: non-empty-array<string>, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}, encoding: string, output: string, default-package-name: string, examples: array{dsn: Dsn, paths: array}, include-source: bool, validate: bool} $api
+     * @param array{ignore-tags: array<string>, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibility: non-empty-array<string>, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}, encoding: string, output: string, default-package-name: string, examples: array{dsn: string, paths: array}, include-source: bool, validate: bool} $api
      */
     //phpcs:enable Generic.Files.LineLength.TooLong
     public static function createFromArray(array $api) : self
     {
         return new self(
-            $api['source'],
+            new Source($api['source']['dsn'], $api['source']['paths']),
             $api['output'],
             $api['ignore'],
             $api['extensions'],
@@ -119,7 +114,9 @@ final class ApiSpecification implements ArrayAccess
             $api['include-source'],
             $api['markers'],
             $api['ignore-tags'],
-            $api['examples'] ?? [],
+            isset($api['examples']) ?
+                new Source(Dsn::createFromString($api['examples']['dsn']), $api['examples']['paths'])
+                : null,
             $api['encoding'],
             $api['validate']
         );
@@ -128,10 +125,10 @@ final class ApiSpecification implements ArrayAccess
     public static function createDefault() : ApiSpecification
     {
         return new self(
-            [
-                'dsn' => Dsn::createFromString('./'),
-                'paths' => [new Path('./src')],
-            ],
+            new Source(
+                Dsn::createFromString('./'),
+                [new Path('./src')]
+            ),
             './api',
             [
                 'paths' => [],
@@ -148,10 +145,7 @@ final class ApiSpecification implements ArrayAccess
         );
     }
 
-    /**
-     * @param array{dsn: Dsn, paths: array<Path>} $source
-     */
-    public function withSource(array $source) : self
+    public function withSource(Source $source) : self
     {
         $clone = clone $this;
         $clone->source = $source;
@@ -165,59 +159,6 @@ final class ApiSpecification implements ArrayAccess
     public function setIgnore(array $ignore) : void
     {
         $this->ignore = $ignore;
-    }
-
-    /** @param string $offset */
-    public function offsetExists($offset) : bool
-    {
-        $property = $this->normalizePropertyName($offset);
-
-        return property_exists($this, $property);
-    }
-
-    /**
-     * @param string $offset
-     *
-     * @return mixed
-     */
-    public function offsetGet($offset)
-    {
-        $property = $this->normalizePropertyName($offset);
-        if (!property_exists($this, $property)) {
-            throw new InvalidArgumentException('Invalid property ' . $property);
-        }
-
-        return $this->$property;
-    }
-
-    /**
-     * @param string $offset
-     * @param mixed $value
-     */
-    public function offsetSet($offset, $value) : void
-    {
-        $property = $this->normalizePropertyName($offset);
-        if (!property_exists($this, $property)) {
-            throw new InvalidArgumentException('Invalid property ' . $property);
-        }
-
-        $this->{$property} = $value;
-    }
-
-    /** @param string $offset */
-    public function offsetUnset($offset) : void
-    {
-        $property = $this->normalizePropertyName($offset);
-        if (!property_exists($this, $property)) {
-            throw new InvalidArgumentException('Invalid property ' . $property);
-        }
-
-        $this->$property = null;
-    }
-
-    private function normalizePropertyName(string $offset) : string
-    {
-        return lcfirst(str_replace('-', '', ucwords($offset, '-')));
     }
 
     /** @return string[] */
@@ -276,5 +217,10 @@ final class ApiSpecification implements ArrayAccess
         $visibilityAllowed = $this->calculateVisiblity();
 
         return (bool) ($visibilityAllowed & $visibility);
+    }
+
+    public function source() : Source
+    {
+        return $this->source;
     }
 }

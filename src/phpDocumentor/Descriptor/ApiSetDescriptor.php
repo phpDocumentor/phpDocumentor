@@ -13,15 +13,11 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
-use phpDocumentor\Dsn;
-use phpDocumentor\Path;
+use phpDocumentor\Configuration\Source;
 
 final class ApiSetDescriptor extends DocumentationSetDescriptor
 {
-    /**
-     * @param array{dsn: Dsn, paths: array<Path>} $source
-     */
-    public function __construct(string $name, array $source, string $output)
+    public function __construct(string $name, Source $source, string $output)
     {
         $this->name = $name;
         $this->source = $source;

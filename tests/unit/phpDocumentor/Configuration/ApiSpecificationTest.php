@@ -15,6 +15,7 @@ final class ApiSpecificationTest extends TestCase
      * @dataProvider visibilityProvider
      * @covers ::offsetSet
      * @covers ::isVisibilityAllowed
+     * @covers ::calculateVisiblity
      */
     public function testVisibility(array $settings, array $expected)
     {

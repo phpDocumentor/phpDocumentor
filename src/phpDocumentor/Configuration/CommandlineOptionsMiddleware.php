@@ -148,15 +148,14 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
         }
 
         $version->api[0] = $version->api[0]->withSource(
-            [
-                'dsn' => $version->api[0]['source']['dsn'],
-                'paths' =>             array_map(
+            $version->api[0]->source()->withPaths(
+                array_map(
                     static function ($path) : Path {
                         return new Path($path);
                     },
                     $filename
-                ),
-            ]
+                )
+            )
         );
 
         return $version;
@@ -180,12 +179,7 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
         }
 
         // Reset the current config, because directory is overwriting the config.
-        $currentApiConfig = $currentApiConfig->withSource(
-            [
-                'dsn' => $currentApiConfig['source']['dsn'],
-                'paths' => [],
-            ]
-        );
+        $currentApiConfig = $currentApiConfig->withSource(new Source($currentApiConfig['source']['dsn'], []));
 
         $version->setApi([]);
         foreach ($directory as $path) {
@@ -193,27 +187,18 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
             // A version may contain multiple APIs.
             if (Path::isAbsolutePath($path)) {
                 $version->addApi(
-                    $currentApiConfig->withSource(
-                        [
-                            'dsn' => Dsn::createFromString($path),
-                            'paths' => [new Path('./')],
-                        ]
-                    )
+                    $currentApiConfig->withSource(new Source(Dsn::createFromString($path), [new Path('./')]))
                 );
             } else {
                 $currentApiConfig = $currentApiConfig->withSource(
-                    [
-                        'dsn' => $currentApiConfig['source']['dsn'],
-                        'paths' => array_merge(
-                            $currentApiConfig['source']['paths'],
-                            [new Path($path)]
-                        ),
-                    ]
+                    $currentApiConfig->source()->withPaths(
+                        array_merge($currentApiConfig->source()->paths(), [new Path($path)])
+                    )
                 );
             }
         }
 
-        if (count($currentApiConfig['source']['paths']) > 0) {
+        if (count($currentApiConfig->source()->paths()) > 0) {
             $version->addApi($currentApiConfig);
         }
 
@@ -358,10 +343,7 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
             $version->addApi($this->createDefaultApiSettings());
         }
 
-        $version->api[0]['examples'] = [
-            'dsn' => Dsn::createFromString($examples),
-            'paths' => ['./'],
-        ];
+        $version->api[0]['examples'] = new Source(Dsn::createFromString($examples), [new Path('./')]);
 
         return $version;
     }

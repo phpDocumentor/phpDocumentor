@@ -20,6 +20,7 @@ use phpDocumentor\Parser\Middleware\EmittingMiddleware;
 use phpDocumentor\Reflection\DocBlockFactoryInterface;
 use phpDocumentor\Reflection\Php\NodesFactory;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use stdClass;
 
 /**
@@ -28,6 +29,8 @@ use stdClass;
  */
 final class FileFactoryTest extends TestCase
 {
+    use ProphecyTrait;
+
     public function testIfFileFactoryIsCreatedUsingAnArray() : void
     {
         FileFactory::createInstance(

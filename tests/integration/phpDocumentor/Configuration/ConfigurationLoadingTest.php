@@ -7,6 +7,7 @@ namespace integration\phpDocumentor\Configuration;
 use phpDocumentor\Configuration\ConfigurationFactory;
 use phpDocumentor\Configuration\Definition\Version2;
 use phpDocumentor\Configuration\Definition\Version3;
+use phpDocumentor\Configuration\PathNormalizingMiddleware;
 use phpDocumentor\Configuration\SymfonyConfigFactory;
 use phpDocumentor\UriFactory;
 use PHPUnit\Framework\TestCase;
@@ -25,6 +26,8 @@ class ConfigurationLoadingTest extends TestCase
                 '3' => new Version3('default')
             ])
         );
+
+        $factory->addMiddleware(new PathNormalizingMiddleware());
 
         //Don't care about the result of this factory, we just want to see if it doesn't error.
         self::assertNotEmpty($factory->fromUri(UriFactory::createUri($configFile)));
