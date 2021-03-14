@@ -99,7 +99,7 @@ final class ApiSpecification implements ArrayAccess
 
     //phpcs:disable Generic.Files.LineLength.TooLong
     /**
-     * @param array{ignore-tags: array<string>, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibility: non-empty-array<string>, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}, encoding: string, output: string, default-package-name: string, examples: array{dsn: Dsn, paths: array}, include-source: bool, validate: bool} $api
+     * @param array{ignore-tags: array<string>, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibility: non-empty-array<string>, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}, encoding: string, output: string, default-package-name: string, examples: array{dsn: string, paths: array}, include-source: bool, validate: bool} $api
      */
     //phpcs:enable Generic.Files.LineLength.TooLong
     public static function createFromArray(array $api) : self
@@ -114,7 +114,9 @@ final class ApiSpecification implements ArrayAccess
             $api['include-source'],
             $api['markers'],
             $api['ignore-tags'],
-            isset($api['examples']) ? new Source(Dsn::createFromString($api['examples']['dsn']), $api['examples']['paths']) : null,
+            isset($api['examples']) ?
+                new Source(Dsn::createFromString($api['examples']['dsn']), $api['examples']['paths'])
+                : null,
             $api['encoding'],
             $api['validate']
         );
