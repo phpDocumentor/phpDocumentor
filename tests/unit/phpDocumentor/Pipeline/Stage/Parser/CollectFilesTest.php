@@ -16,6 +16,7 @@ namespace phpDocumentor\Pipeline\Stage\Parser;
 use phpDocumentor\Configuration\VersionSpecification;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Dsn;
+use phpDocumentor\Faker\Faker;
 use phpDocumentor\Parser\FileCollector;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
@@ -29,6 +30,7 @@ use Psr\Log\NullLogger;
  */
 final class CollectFilesTest extends TestCase
 {
+    use Faker;
     use ProphecyTrait;
 
     /**
@@ -36,15 +38,11 @@ final class CollectFilesTest extends TestCase
      */
     public function testFilesAreCollectedAndAddedToPayload() : void
     {
-        $dns = Dsn::createFromString('file://.');
         $fileCollector = $this->prophesize(FileCollector::class);
         $fileCollector->getFiles(
-            Argument::exact($dns),
-            Argument::exact(['src']),
-            Argument::exact([
-                'paths' => [],
-                'hidden' => null,
-            ]),
+            Argument::type(Dsn::class),
+            Argument::any(),
+            Argument::any(),
             Argument::exact(['php'])
         )->shouldBeCalled()->willReturn([]);
 
@@ -53,17 +51,7 @@ final class CollectFilesTest extends TestCase
         $version = new VersionSpecification(
             '1.0.0',
             [
-                [
-                    'source' => [
-                        'dsn' => $dns,
-                        'paths' => [0 => 'src'],
-                    ],
-                    'ignore' => [
-                        'paths' => [],
-                        'hidden' => null,
-                    ],
-                    'extensions' => ['php'],
-                ],
+                $this->faker()->apiSpecification(),
             ],
             null
         );

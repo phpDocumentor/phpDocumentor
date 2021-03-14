@@ -65,18 +65,17 @@ final class PathNormalizingMiddleware implements MiddlewareInterface
             $apiConfigs = [];
 
             foreach ($version->getApi() as $api) {
-                $apiConfigs[] = $api->withSource(
-                    [
-                        'dsn' => $api['source']['dsn']->resolve($configPath),
-                        'paths' => $api['source']['paths'],
-                    ]
-                );
+                $apiConfigs[] = $api->withSource($api->source()->withDsn($api['source']['dsn']->resolve($configPath)));
             }
 
             $version->setApi($apiConfigs);
 
-            foreach ($version->getGuides() ?? [] as $key => &$guide) {
-                $version->guides[$key]['source']['dsn'] = $guide['source']['dsn']->resolve($configPath);
+            foreach ($version->getGuides() ?? [] as $key => $guide) {
+                $version->guides[$key]->withSource(
+                    $guide->source()->withDsn(
+                        $guide->source()->dsn()->resolve($configPath)
+                    )
+                );
             }
         }
 
@@ -88,15 +87,6 @@ final class PathNormalizingMiddleware implements MiddlewareInterface
         /** @var VersionSpecification $version */
         foreach ($configuration['phpdocumentor']['versions'] as $version) {
             foreach ($version->getApi() as $key => $api) {
-                $source = $version->api[$key]['source'];
-                $source['paths'] = array_map(
-                    function (string $path) : string {
-                        return $this->pathToGlobPattern($path);
-                    },
-                    $source['paths']
-                );
-
-                $api = $api->withSource($source);
                 $api->setIgnore(
                     array_merge(
                         $api['ignore'],

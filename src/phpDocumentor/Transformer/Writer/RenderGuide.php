@@ -82,7 +82,7 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
         ProjectDescriptor $project,
         Transformation $transformation
     ) : void {
-        $dsn = $documentationSet->getSource()['dsn'];
+        $dsn = $documentationSet->getSource()->dsn();
         $stopwatch = $this->startRenderingSetMessage($dsn);
 
         $this->renderer->initialize($project, $documentationSet, $transformation);

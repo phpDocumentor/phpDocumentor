@@ -134,7 +134,19 @@ use function sprintf;
                         },
                         $version['api']
                     ),
-                    $version['guides']
+                    array_map(
+                        static function ($guide) : GuideSpecification {
+                            return new GuideSpecification(
+                                new Source(
+                                    $guide['source']['dsn'],
+                                    $guide['source']['paths']
+                                ),
+                                $guide['output'],
+                                $guide['format']
+                            );
+                        },
+                        $version['guides']
+                    )
                 );
             }
         }

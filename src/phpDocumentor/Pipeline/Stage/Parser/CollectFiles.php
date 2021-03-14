@@ -35,11 +35,11 @@ final class CollectFiles
     public function __invoke(Payload $payload) : Payload
     {
         foreach ($payload->getApiConfigs() as $apiConfig) {
-            $this->log('Collecting files from ' . $apiConfig['source']['dsn']);
+            $this->log('Collecting files from ' . $apiConfig->source()->dsn());
 
             $files = $this->fileCollector->getFiles(
-                $apiConfig['source']['dsn'],
-                $apiConfig['source']['paths'],
+                $apiConfig->source()->dsn(),
+                $apiConfig->source()->globPatterns(),
                 $apiConfig['ignore'],
                 $apiConfig['extensions']
             );
