@@ -114,7 +114,7 @@ final class ApiSpecification implements ArrayAccess
             $api['include-source'],
             $api['markers'],
             $api['ignore-tags'],
-            isset($api['examples']) ? new Source($api['examples']['dsn'], $api['examples']['paths']) : null,
+            isset($api['examples']) ? new Source(Dsn::createFromString($api['examples']['dsn']), $api['examples']['paths']) : null,
             $api['encoding'],
             $api['validate']
         );
