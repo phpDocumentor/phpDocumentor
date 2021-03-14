@@ -105,9 +105,16 @@ final class PathNormalizingMiddleware implements MiddlewareInterface
             }
 
             foreach ($version->getGuides() ?? [] as $key => $guide) {
-                foreach ($guide['source']['paths'] as $subkey => $path) {
-                    $version->guides[$key]['source']['paths'][$subkey] = $this->normalizePath((string) $path);
-                }
+                $version->guides[$key] = $guide->withSource(
+                    $guide->source()->withPaths(
+                        array_map(
+                            function (string $path) : Path {
+                                return new Path($this->normalizePath((string) $path));
+                            },
+                            $guide->source()->paths()
+                        )
+                    )
+                );
             }
         }
 
