@@ -98,16 +98,16 @@
         },
         {
             "name": "jawira/plantuml",
-            "version": "v1.51.0",
+            "version": "v1.52.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jawira/plantuml.git",
-                "reference": "1d7378023b4a693928d0c9cea417c4859ba8c5af"
+                "reference": "297a2845de839d1289f6d1805a30fe0ebed1c23a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jawira/plantuml/zipball/1d7378023b4a693928d0c9cea417c4859ba8c5af",
-                "reference": "1d7378023b4a693928d0c9cea417c4859ba8c5af",
+                "url": "https://api.github.com/repos/jawira/plantuml/zipball/297a2845de839d1289f6d1805a30fe0ebed1c23a",
+                "reference": "297a2845de839d1289f6d1805a30fe0ebed1c23a",
                 "shasum": ""
             },
             "suggest": {
@@ -136,9 +136,9 @@
             ],
             "support": {
                 "issues": "https://github.com/jawira/plantuml/issues",
-                "source": "https://github.com/jawira/plantuml/tree/v1.51.0"
+                "source": "https://github.com/jawira/plantuml/tree/v1.52.0"
             },
-            "time": "2021-02-05T14:05:53+00:00"
+            "time": "2021-03-12T14:07:11+00:00"
         },
         {
             "name": "jean85/pretty-package-versions",
