@@ -77,10 +77,22 @@ class Transform
     {
         $configuration = $payload->getConfig();
 
+        foreach ($payload->getBuilder()->getProjectDescriptor()->getVersions() as $version) {
+            foreach ($version->getDocumentationSets() as $api) {
+                break 2;
+            }
+        }
+
+        $outputFileSystem = $this->flySystemFactory->createDestination($api);
+
         $templates = $this->templateFactory->getTemplates(
             $configuration['phpdocumentor']['templates'],
-            $this->createFileSystem($configuration['phpdocumentor']['paths']['output'])
+            $outputFileSystem
         );
+
+        //$this->transformer->setTarget((string) $target);
+        $this->transformer->setDestination($outputFileSystem);
+
         $project = $payload->getBuilder()->getProjectDescriptor();
         $transformations = $templates->getTransformations();
 
@@ -139,22 +151,5 @@ class Transform
                 );
             }
         );
-    }
-
-    private function createFileSystem(Dsn $dsn): FilesystemInterface
-    {
-        $target     = $dsn->getPath();
-        $fileSystem = new Filesystem();
-        if (!$fileSystem->isAbsolutePath((string) $target)) {
-            $target = getcwd() . DIRECTORY_SEPARATOR . $target;
-        }
-
-        $destination = $this->flySystemFactory->create(Dsn::createFromString((string) $target));
-
-        //TODO: the guides to need this, can we get rid of these lines?
-        $this->transformer->setTarget((string) $target);
-        $this->transformer->setDestination($destination);
-
-        return $destination;
     }
 }

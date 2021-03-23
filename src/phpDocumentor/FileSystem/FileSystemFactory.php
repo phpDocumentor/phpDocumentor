@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\FileSystem;
 
 use League\Flysystem\Filesystem;
+use phpDocumentor\Configuration\Source;
 use phpDocumentor\Dsn;
 
 /**
@@ -26,9 +27,9 @@ interface FileSystemFactory
      */
     public function create(Dsn $dsn): Filesystem;
 
-    public function setOutputRoot(string $output);
+    public function setOutputDsn(Dsn $output);
 
     public function addVersion(string $versionNumber, string $folder);
 
-    public function addDocumentationSet(string $versionNumber, array $source, string $output);
+    public function addDocumentationSet(string $versionNumber, Source $source, string $output);
 }
