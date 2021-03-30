@@ -3,6 +3,44 @@ ARGS ?=
 .USER = CURRENT_UID=$(shell id -u):$(shell id -g)
 .DOCKER_COMPOSE_RUN = ${.USER} docker-compose run --rm
 
+.PHONY: help
+help:
+	@echo "      _           ____                                        _              ";
+	@echo " _ __ | |__  _ __ |  _ \  ___   ___ _   _ _ __ ___   ___ _ __ | |_ ___  _ __ ";
+	@echo "| '_ \| '_ \| '_ \| | | |/ _ \ / __| | | | '_ ' _ \ / _ \ '_ \| __/ _ \| '__|";
+	@echo "| |_) | | | | |_) | |_| | (_) | (__| |_| | | | | | |  __/ | | | || (_) | |   ";
+	@echo "| .__/|_| |_| .__/|____/ \___/ \___|\__,_|_| |_| |_|\___|_| |_|\__\___/|_|   ";
+	@echo "|_|         |_|                                                              ";
+	@echo "";
+	@echo "Available commands:";
+	@echo "";
+	@echo "== Setup ==";
+	@echo "setup            - Installs phive and all phar-based dependencies";
+	@echo "install-phive    - Installs phive, the phar.io package manager.";
+	@echo "pull-containers  - pulls all development docker containers";
+	@echo "shell            - starts the phpDocumentor docker container and opens a terminal";
+	@echo "";
+	@echo "== Automated testing ==";
+	@echo "pre-commit-test  - runs all checks needed before committing";
+	@echo "";
+	@echo "test             - runs unit tests and checks the code coverage percentage";
+	@echo "unit-test        - runs unit tests";
+	@echo "integration-test - runs integration tests";
+	@echo "functional-test  - runs functional tests";
+	@echo "e2e-test         - runs phpDocumentor and verifies the output using Cypress";
+	@echo "composer-require-checker - checks for any missing composer packages";
+	@echo "";
+	@echo "== Code Quality ==";
+	@echo "lint             - performs all linting on the code";
+	@echo "phpcs            - performs code-style checks";
+	@echo "phpcbf           - fixes most code-style issues";
+	@echo "phpstan          - performs static analysis on the codebase using phpstan";
+	@echo "psalm            - performs static analysis on the codebase using psalm";
+	@echo "";
+	@echo "== Release tools ==";
+	@echo "phar             - Creates the PHAR file";
+	@echo "";
+
 .PHONY: phar
 phar:
 	php ./bin/console --env=prod cache:warmup; \
@@ -46,7 +84,6 @@ phpstan:
 psalm:
 	docker run -it --rm -v${CURDIR}:/data -w /data php:7.3 ./tools/psalm
 
-
 .PHONY: lint
 lint: phpcs
 
@@ -54,8 +91,13 @@ lint: phpcs
 test: unit-test
 	docker run -it --rm -v${CURDIR}:/data -w /data php:7.2 -f ./tests/coverage-checker.php 70
 
+.PHONY: unit-test
 unit-test: SUITE=--testsuite=unit
+
+.PHONY: integration-test
 integration-test: SUITE=--testsuite=integration --no-coverage
+
+.PHONY: functional-test
 functional-test: SUITE=--testsuite=functional --no-coverage
 
 unit-test integration-test functional-test:
