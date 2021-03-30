@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 
-use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
+use phpDocumentor\Descriptor\ApiSetDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\DocBlock\Tags\Param;
 use phpDocumentor\Reflection\Types\String_;
@@ -19,7 +19,7 @@ class ParamAssemblerTest extends TestCase
     /** @var ParamAssembler */
     private $fixture;
 
-    /** @var ProjectDescriptorBuilder|ObjectProphecy */
+    /** @var ApiSetDescriptorBuilder|ObjectProphecy */
     private $builder;
 
     /**
@@ -27,7 +27,7 @@ class ParamAssemblerTest extends TestCase
      */
     protected function setUp(): void
     {
-        $this->builder = $this->prophesize(ProjectDescriptorBuilder::class);
+        $this->builder = $this->prophesize(ApiSetDescriptorBuilder::class);
         $this->fixture = new ParamAssembler();
         $this->fixture->setBuilder($this->builder->reveal());
     }

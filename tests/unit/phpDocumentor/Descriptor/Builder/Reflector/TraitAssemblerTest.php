@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
+use phpDocumentor\Descriptor\ApiSetDescriptorBuilder;
 use phpDocumentor\Descriptor\MethodDescriptor;
-use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Php\Method;
 use phpDocumentor\Reflection\Php\Trait_;
@@ -43,7 +43,7 @@ final class TraitAssemblerTest extends TestCase
     {
         $method = new MethodDescriptor();
         $method->setName('method');
-        $builder = $this->prophesize(ProjectDescriptorBuilder::class);
+        $builder = $this->prophesize(ApiSetDescriptorBuilder::class);
         $builder->buildDescriptor(Argument::any(), Argument::any())->shouldBeCalled()->willReturn($method);
 
         $traitFqsen = new Fqsen('\My\Space\MyTrait');

@@ -15,7 +15,7 @@ namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use phpDocumentor\Descriptor\ConstantDescriptor;
 use phpDocumentor\Descriptor\MethodDescriptor;
-use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
+use phpDocumentor\Descriptor\ApiSetDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Php\Class_;
@@ -45,7 +45,7 @@ class ClassAssemblerTest extends TestCase
     protected function setUp(): void
     {
         $this->fixture = new ClassAssembler();
-        $this->fixture->setBuilder($this->getProjectDescriptorBuilderMock()->reveal());
+        $this->fixture->setBuilder($this->getApiSetDescriptorBuilderMock()->reveal());
     }
 
     /**
@@ -143,11 +143,11 @@ DOCBLOCK;
     /**
      * Create a descriptor builder mock
      */
-    protected function getProjectDescriptorBuilderMock(): ObjectProphecy
+    protected function getApiSetDescriptorBuilderMock(): ObjectProphecy
     {
-        $projectDescriptorBuilderMock = $this->prophesize(ProjectDescriptorBuilder::class);
-        $projectDescriptorBuilderMock->getDefaultPackage()->shouldBeCalled()->willReturn('\\');
-        $projectDescriptorBuilderMock->buildDescriptor(Argument::any(), Argument::any())->will(function ($param) {
+        $ApiSetDescriptorBuilderMock = $this->prophesize(ApiSetDescriptorBuilder::class);
+        $ApiSetDescriptorBuilderMock->getDefaultPackage()->shouldBeCalled()->willReturn('\\');
+        $ApiSetDescriptorBuilderMock->buildDescriptor(Argument::any(), Argument::any())->will(function ($param) {
             switch ($param) {
                 case 'Method':
                     $mock = $this->prophesize(MethodDescriptor::class);
@@ -167,6 +167,6 @@ DOCBLOCK;
             return $mock->reveal();
         });
 
-        return $projectDescriptorBuilderMock;
+        return $ApiSetDescriptorBuilderMock;
     }
 }

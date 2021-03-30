@@ -6,7 +6,7 @@ namespace phpDocumentor\Descriptor\Builder\Reflector\Docblock;
 
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
-use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
+use phpDocumentor\Descriptor\ApiSetDescriptorBuilder;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Reflection\DocBlock;
 use PHPUnit\Framework\TestCase;
@@ -29,7 +29,7 @@ final class DescriptionAssemblerReducerTest extends TestCase
 
     public function testCreateSetsDescriptionDescriptor(): void
     {
-        $builder = $this->prophesize(ProjectDescriptorBuilder::class);
+        $builder = $this->prophesize(ApiSetDescriptorBuilder::class);
         $builder->buildDescriptor(Argument::type(DocBlock\Tag::class), Argument::is(TagDescriptor::class))
             ->willReturn(new TagDescriptor('Tag'));
 

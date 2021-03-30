@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 
-use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
+use phpDocumentor\Descriptor\ApiSetDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\DocBlock\Tags\Uses;
 use phpDocumentor\Reflection\Fqsen;
@@ -34,7 +34,7 @@ class UsesAssemblerTest extends TestCase
     /** @var UsesAssembler $fixture */
     protected $fixture;
 
-    /** @var ProjectDescriptorBuilder|ObjectProphecy */
+    /** @var ApiSetDescriptorBuilder|ObjectProphecy */
     protected $builderMock;
 
     /**
@@ -42,7 +42,7 @@ class UsesAssemblerTest extends TestCase
      */
     protected function setUp(): void
     {
-        $this->builderMock = $this->prophesize(ProjectDescriptorBuilder::class);
+        $this->builderMock = $this->prophesize(ApiSetDescriptorBuilder::class);
         $this->fixture = new UsesAssembler();
         $this->fixture->setBuilder($this->builderMock->reveal());
     }

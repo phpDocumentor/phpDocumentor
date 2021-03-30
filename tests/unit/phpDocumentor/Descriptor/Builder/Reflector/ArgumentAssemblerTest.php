@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
-use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
+use phpDocumentor\Descriptor\ApiSetDescriptorBuilder;
 use phpDocumentor\Descriptor\Tag\ParamDescriptor;
 use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\Php\Argument;
@@ -34,7 +34,7 @@ class ArgumentAssemblerTest extends TestCase
     /** @var ArgumentAssembler $fixture */
     protected $fixture;
 
-    /** @var ProjectDescriptorBuilder|ObjectProphecy */
+    /** @var ApiSetDescriptorBuilder|ObjectProphecy */
     protected $builderMock;
 
     /**
@@ -42,7 +42,7 @@ class ArgumentAssemblerTest extends TestCase
      */
     protected function setUp(): void
     {
-        $this->builderMock = $this->prophesize(ProjectDescriptorBuilder::class);
+        $this->builderMock = $this->prophesize(ApiSetDescriptorBuilder::class);
         $this->fixture = new ArgumentAssembler();
         $this->fixture->setBuilder($this->builderMock->reveal());
     }

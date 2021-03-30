@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
-use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
+use phpDocumentor\Descriptor\ApiSetDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Php\Constant;
@@ -38,8 +38,8 @@ final class ConstantAssemblerTest extends TestCase
     protected function setUp(): void
     {
         $this->fixture = new ConstantAssembler();
-        $projectDescriptorBuilder = $this->prophesize(ProjectDescriptorBuilder::class);
-        $this->fixture->setBuilder($projectDescriptorBuilder->reveal());
+        $ApiSetDescriptorBuilder = $this->prophesize(ApiSetDescriptorBuilder::class);
+        $this->fixture->setBuilder($ApiSetDescriptorBuilder->reveal());
     }
 
     /**

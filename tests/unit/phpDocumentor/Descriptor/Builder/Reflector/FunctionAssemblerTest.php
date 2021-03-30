@@ -16,7 +16,7 @@ namespace phpDocumentor\Descriptor\Builder\Reflector;
 use InvalidArgumentException;
 use phpDocumentor\Descriptor\ArgumentDescriptor;
 use phpDocumentor\Descriptor\PackageDescriptor;
-use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
+use phpDocumentor\Descriptor\ApiSetDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Php\Argument;
@@ -38,7 +38,7 @@ class FunctionAssemblerTest extends TestCase
     /** @var ArgumentAssembler|ObjectProphecy */
     protected $argumentAssemblerMock;
 
-    /** @var ProjectDescriptorBuilder|ObjectProphecy */
+    /** @var ApiSetDescriptorBuilder|ObjectProphecy */
     protected $builderMock;
 
     /**
@@ -46,7 +46,7 @@ class FunctionAssemblerTest extends TestCase
      */
     protected function setUp(): void
     {
-        $this->builderMock = $this->prophesize(ProjectDescriptorBuilder::class);
+        $this->builderMock = $this->prophesize(ApiSetDescriptorBuilder::class);
         $this->builderMock->buildDescriptor(
             ProphecyArgument::that(static function ($value) {
                 switch (get_class($value)) {

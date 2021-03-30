@@ -12,7 +12,7 @@ use phpDocumentor\Descriptor\Filter\Filter;
 use phpDocumentor\Descriptor\Filter\Filterable;
 use phpDocumentor\Reflection\Php\Project;
 
-final class ApiSetDescriptorBuilder
+/*final*/ class ApiSetDescriptorBuilder
 {
     private $name = '';
 
