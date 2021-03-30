@@ -7,38 +7,57 @@ describe('Frontpage', function() {
         cy.get('.phpdocumentor-title').contains("Documentation");
     });
 
-    it('Has a search bar', function() {
-        cy.get('.phpdocumentor-header').contains("Search");
-        cy.get('.phpdocumentor-field.phpdocumentor-search__field');
+    describe('Search', function() {
+        it('Shows the search bar', function() {
+            cy.get('.phpdocumentor-header').contains("Search");
+            cy.get('.phpdocumentor-field.phpdocumentor-search__field');
+        });
     });
 
-    it('Has the "Marios" namespace in the sidebar', function() {
-        cy.get('.phpdocumentor-sidebar').contains("Marios");
+    describe('In the sidebar', function() {
+        it('Shows the "Marios" namespace', function () {
+            cy.get('.phpdocumentor-sidebar').contains("Marios");
+        });
+
+        it('Opens the "Marios" namespace', function() {
+            cy.get('.phpdocumentor-sidebar').contains("Marios").click();
+            cy.url().should('include', '/namespaces/marios.html');
+            cy.get('.phpdocumentor-content > article > h2').contains("Marios");
+        });
+
+        it('Shows the "Pizza" (sub)namespace', function() {
+            cy.get('.phpdocumentor-sidebar .phpdocumentor-list').contains("Pizza");
+        });
+
+        it('Opens the "Pizza" namespace', function() {
+            cy.get('.phpdocumentor-sidebar .phpdocumentor-list').contains("Pizza").click();
+            cy.url().should('include', '/namespaces/marios-pizza.html');
+            cy.get('.phpdocumentor-content > article > h2').contains("Pizza");
+        });
     });
 
-    it('Can open the "Marios" namespace page from the sidebar', function() {
-        cy.get('.phpdocumentor-sidebar').contains("Marios").click();
-        cy.url().should('include', '/namespaces/marios.html');
-        cy.get('.phpdocumentor-content > article > h2').contains("Marios");
-    });
+    describe('Content', function() {
+        describe('Namespaces', function() {
 
-    it('Has the "Pizza" (sub)namespace in the sidebar', function() {
-        cy.get('.phpdocumentor-sidebar .phpdocumentor-list').contains("Pizza");
-    });
+            it('Shows a section "Namespaces" with a table of contents', function() {
+                cy.get('h3#namespaces').should('contain', 'Namespaces');
+                cy.get('h3#namespaces').next('.phpdocumentor-table-of-contents');
+            });
 
-    it('Can open the "Pizza" namespace page from the sidebar', function() {
-        cy.get('.phpdocumentor-sidebar .phpdocumentor-list').contains("Pizza").click();
-        cy.url().should('include', '/namespaces/marios-pizza.html');
-        cy.get('.phpdocumentor-content > article > h2').contains("Pizza");
-    });
+            it('Shows the "Marios" namespace', function() {
+                const toc = cy.get('h3#namespaces').next('.phpdocumentor-table-of-contents');
+                toc.find('.-namespace').should('contain', 'Marios')
+            });
 
-    it('Has the "Marios" namespace in the main content', function() {
-        cy.get('.phpdocumentor-content').contains("Marios");
-    });
-
-    it('Can open the "Marios" namespace from the main content', function() {
-        cy.get('.phpdocumentor-content').contains("Marios").click();
-        cy.url().should('include', '/namespaces/marios.html');
-        cy.get('.phpdocumentor-content > article > h2').contains("Marios");
+            it('Opens the "Marios" namespace', function() {
+                const toc = cy.get('h3#namespaces').next('.phpdocumentor-table-of-contents');
+                toc
+                    .find('.-namespace')
+                    .contains("Marios")
+                    .click();
+                cy.url().should('include', '/namespaces/marios.html');
+                cy.get('.phpdocumentor-content__title').should('contain', 'Marios');
+            });
+        });
     });
 });
