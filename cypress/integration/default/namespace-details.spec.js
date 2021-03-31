@@ -47,12 +47,6 @@ describe('Namespace Detail Page', function() {
         cy.get('.phpdocumentor-elements__header').contains("Constants")
             .next().get('dt a').contains("OVEN_TEMPERATURE");
     });
-
-    // TODO: Test shows broken behaviour, fix that
-    it.skip('Has a section "Constants" featuring the "HIGHER_OVEN_TEMPERATURE" constant', function() {
-        cy.get('.phpdocumentor-elements__header').contains("Constants")
-            .next().get('dt a').contains("HIGHER_OVEN_TEMPERATURE");
-    });
 });
 
 describe('Namespace Detail Page for a (sub)namespace', function() {
