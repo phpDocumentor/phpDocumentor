@@ -3,7 +3,7 @@ describe('Search', function() {
         cy.visit('build/default/index.html');
     });
 
-    it('Has an active search form in the sidebar', function() {
+    it('Has an active search form', function() {
         cy.get('.phpdocumentor-header').get('.phpdocumentor-search')
             .get('input[type="search"]').should('not.be.disabled');
     });

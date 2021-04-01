@@ -1,38 +1,131 @@
+import {shouldVisitPageWithTitle} from "./helpers/pages.lib";
+import {getSearchField} from "./helpers/search.lib";
+import {getSidebarHeaderByTitle, getSidebarItemByTitle} from './helpers/sidebar.lib';
+
 describe('Frontpage', function() {
     beforeEach(function(){
         cy.visit('build/default/index.html');
     });
 
-    it('Has "Documentation" as title', function() {
+    it('Has "Documentation" in the menu as title', function() {
         cy.get('.phpdocumentor-title').contains("Documentation");
     });
 
     describe('Search', function() {
         it('Shows the search bar', function() {
-            cy.get('.phpdocumentor-header').contains("Search");
-            cy.get('.phpdocumentor-field.phpdocumentor-search__field');
+            getSearchField()
+                .should('be.visible');
         });
     });
 
     describe('In the sidebar', function() {
-        it('Shows the "Marios" namespace', function () {
-            cy.get('.phpdocumentor-sidebar').contains("Marios");
+        describe('Namespaces section', function() {
+            it('Shows the Namespaces section', function () {
+                getSidebarHeaderByTitle('Namespaces')
+                    .should('be.visible');
+            })
+
+            it('Shows the "Marios" namespace', function () {
+                getSidebarItemByTitle('Namespaces', 'Marios', 'namespace')
+                    .should('be.visible');
+            });
+
+            it('Opens the "Marios" namespace', function() {
+                getSidebarItemByTitle('Namespaces', 'Marios', 'namespace')
+                    .click();
+
+                shouldVisitPageWithTitle('/namespaces/marios.html', 'Marios');
+            });
+
+            it('Shows the "Pizza" (sub)namespace', function() {
+                cy.get('.phpdocumentor-sidebar .phpdocumentor-list').contains("Pizza");
+            });
+
+            it('Opens the "Pizza" namespace', function() {
+                cy.get('.phpdocumentor-sidebar .phpdocumentor-list').contains("Pizza")
+                    .click();
+
+                shouldVisitPageWithTitle('/namespaces/marios-pizza.html', 'Pizza');
+            });
         });
 
-        it('Opens the "Marios" namespace', function() {
-            cy.get('.phpdocumentor-sidebar').contains("Marios").click();
-            cy.url().should('include', '/namespaces/marios.html');
-            cy.get('.phpdocumentor-content > article > h2').contains("Marios");
+        describe('Packages section', function() {
+            it('Shows the Packages section', function () {
+                getSidebarHeaderByTitle('Packages')
+                    .should('be.visible');
+            })
+
+            it('Shows the "Default" package', function () {
+                getSidebarItemByTitle('Packages', 'Default')
+                    .should('be.visible');
+            });
+
+            it('Opens the "Default" package', function() {
+                getSidebarItemByTitle('Packages', 'Default')
+                    .click();
+                shouldVisitPageWithTitle('/packages/Default.html', 'Default');
+            });
         });
 
-        it('Shows the "Pizza" (sub)namespace', function() {
-            cy.get('.phpdocumentor-sidebar .phpdocumentor-list').contains("Pizza");
+        describe('Reports section', function() {
+            it('Shows the Reports section', function () {
+                getSidebarHeaderByTitle('Reports').should('be.visible');
+            });
+
+            it('Has a report with Deprecated elements', function () {
+                getSidebarItemByTitle('Reports', 'Deprecated')
+                    .should('be.visible');
+            });
+
+            it('Has a report with Errors', function () {
+                getSidebarItemByTitle('Reports', 'Errors')
+                    .should('be.visible');
+            });
+
+            it('Has a report with Markers', function () {
+                getSidebarItemByTitle('Reports', 'Markers')
+                    .should('be.visible')
+            });
+
+            it('Opens the Deprecated elements report', function() {
+                getSidebarItemByTitle('Reports', 'Deprecated')
+                    .click();
+
+                shouldVisitPageWithTitle('/reports/deprecated.html', 'Deprecated');
+            });
+
+            it('Opens the Errors report', function() {
+                getSidebarItemByTitle('Reports', 'Errors')
+                    .click();
+
+                shouldVisitPageWithTitle('/reports/errors.html', 'Errors');
+            });
+
+            it('Opens the Markers report', function() {
+                getSidebarItemByTitle('Reports', 'Markers')
+                    .click();
+
+                shouldVisitPageWithTitle('/reports/markers.html', 'Markers');
+            });
         });
 
-        it('Opens the "Pizza" namespace', function() {
-            cy.get('.phpdocumentor-sidebar .phpdocumentor-list').contains("Pizza").click();
-            cy.url().should('include', '/namespaces/marios-pizza.html');
-            cy.get('.phpdocumentor-content > article > h2').contains("Pizza");
+        describe('Indices section', function() {
+            it('Shows the Indices section', function () {
+                getSidebarHeaderByTitle('Indices')
+                    .should('be.visible');
+            });
+
+            it('Has a index with all files in it', function () {
+                getSidebarItemByTitle('Indices', 'Files')
+                    .should('be.visible');
+            });
+
+            it('Opens the Files index', function() {
+                getSidebarItemByTitle('Indices', 'Files')
+                    .click();
+
+                shouldVisitPageWithTitle('/indices/files.html', 'Files');
+            });
         });
     });
 
@@ -55,8 +148,8 @@ describe('Frontpage', function() {
                     .find('.phpdocumentor-table-of-contents__entry.-package')
                     .contains("Default")
                     .click();
-                cy.url().should('include', '/packages/Default.html');
-                cy.get('.phpdocumentor-content__title').should('contain', 'Default');
+
+                shouldVisitPageWithTitle('/packages/Default.html', 'Default');
             });
         });
 
@@ -78,8 +171,8 @@ describe('Frontpage', function() {
                     .find('.phpdocumentor-table-of-contents__entry.-namespace')
                     .contains("Marios")
                     .click();
-                cy.url().should('include', '/namespaces/marios.html');
-                cy.get('.phpdocumentor-content__title').should('contain', 'Marios');
+
+                shouldVisitPageWithTitle('/namespaces/marios.html', 'Marios');
             });
         });
 
@@ -102,8 +195,8 @@ describe('Frontpage', function() {
                     .find('.phpdocumentor-table-of-contents__entry.-constant')
                     .contains('HIGHER_OVEN_TEMPERATURE')
                     .click();
-                cy.url().should('include', '/namespaces/default.html');
-                cy.get('.phpdocumentor-content__title').should('contain', 'API Documentation');
+
+                shouldVisitPageWithTitle('/namespaces/default.html', 'API Documentation');
             });
         });
     });
