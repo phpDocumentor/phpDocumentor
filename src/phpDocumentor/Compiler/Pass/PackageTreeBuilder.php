@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Compiler\Pass;
 
 use phpDocumentor\Compiler\CompilerPassInterface;
+use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\FileDescriptor;
@@ -56,7 +57,7 @@ final class PackageTreeBuilder implements CompilerPassInterface
         return 'Build "packages" index';
     }
 
-    public function execute(\phpDocumentor\Descriptor\ApiSetDescriptor $project): void
+    public function execute(ApiSetDescriptor $project): void
     {
         $packages = Collection::fromClassString(PackageDescriptor::class);
         $packages['\\'] = $project->getPackage();

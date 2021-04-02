@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
-use phpDocumentor\Descriptor\ArgumentDescriptor;
 use phpDocumentor\Descriptor\ApiSetDescriptorBuilder;
+use phpDocumentor\Descriptor\ArgumentDescriptor;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Location;

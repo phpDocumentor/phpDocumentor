@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use InvalidArgumentException;
+use phpDocumentor\Descriptor\ApiSetDescriptorBuilder;
 use phpDocumentor\Descriptor\ArgumentDescriptor;
 use phpDocumentor\Descriptor\PackageDescriptor;
-use phpDocumentor\Descriptor\ApiSetDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Php\Argument;

@@ -20,12 +20,15 @@ use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
+use phpDocumentor\Faker\Faker;
 use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\Location;
 use PHPUnit\Framework\TestCase;
 
 final class MarkerFromTagsExtractorTest extends TestCase
 {
+    use Faker;
+
     /** @var MarkerFromTagsExtractor */
     private $fixture;
 
@@ -38,7 +41,7 @@ final class MarkerFromTagsExtractorTest extends TestCase
     protected function setUp(): void
     {
         $this->fixture = new MarkerFromTagsExtractor();
-        $this->project = new ProjectDescriptor('MyProject');
+        $this->project = $this->faker()->apiSetDescriptor();
     }
 
     /**
@@ -46,7 +49,7 @@ final class MarkerFromTagsExtractorTest extends TestCase
      */
     public function testDescriptionReturnsCorrectString(): void
     {
-        $this->assertSame('Collect all markers embedded in tags', $this->fixture->getDescription());
+       self::assertSame('Collect all markers embedded in tags', $this->fixture->getDescription());
     }
 
     /**
@@ -56,28 +59,32 @@ final class MarkerFromTagsExtractorTest extends TestCase
      */
     public function testAddTodoMarkerForEachTodoTagInAnyElement(): void
     {
-        $fileDescriptor = $this->givenProjectHasFileDescriptor();
+        $fileDescriptor = $this->faker()->fileDescriptor();
         $fileDescriptor->setStartLocation(new Location(10));
         $this->givenDescriptorHasTodoTagWithDescription($fileDescriptor, '123');
         $this->givenDescriptorHasTodoTagWithDescription($fileDescriptor, '456');
-        $classDescriptor = $this->givenProjectHasClassDescriptorAssociatedWithFile($fileDescriptor);
+        $classDescriptor = $this->faker()->classDescriptor();
+        $classDescriptor->setFile($fileDescriptor);
         $classDescriptor->setStartLocation(new Location(20));
         $this->givenDescriptorHasTodoTagWithDescription($classDescriptor, '789');
+        $this->project->addFile($fileDescriptor);
+        $this->project->getIndexes()->fetch('elements', new Collection())->add($fileDescriptor);
+        $this->project->getIndexes()->fetch('elements', new Collection())->add($classDescriptor);
 
         $this->fixture->execute($this->project);
 
-        $this->assertCount(2, $fileDescriptor->getTags()->get('todo'));
-        $this->assertCount(1, $classDescriptor->getTags()->get('todo'));
-        $this->assertCount(3, $fileDescriptor->getMarkers());
-        $this->assertSame(
+       self::assertCount(2, $fileDescriptor->getTags()->get('todo'));
+       self::assertCount(1, $classDescriptor->getTags()->get('todo'));
+       self::assertCount(3, $fileDescriptor->getMarkers());
+       self::assertSame(
             ['type' => 'TODO', 'message' => '123', 'line' => 10],
             $fileDescriptor->getMarkers()->get(0)
         );
-        $this->assertSame(
+       self::assertSame(
             ['type' => 'TODO', 'message' => '456', 'line' => 10],
             $fileDescriptor->getMarkers()->get(1)
         );
-        $this->assertSame(
+       self::assertSame(
             ['type' => 'TODO', 'message' => '789', 'line' => 20],
             $fileDescriptor->getMarkers()->get(2)
         );
@@ -89,7 +96,8 @@ final class MarkerFromTagsExtractorTest extends TestCase
      */
     public function testExceptionShouldBeThrownIfElementHasNoFileAssociated(): void
     {
-        $classDescriptor = $this->givenProjectHasClassDescriptorAssociatedWithFile(null);
+        $classDescriptor = $this->faker()->classDescriptor();
+        $this->project->getIndexes()->fetch('elements', new Collection())->add($classDescriptor);
         $this->givenDescriptorHasTodoTagWithDescription($classDescriptor, '789');
 
         $this->expectException('UnexpectedValueException');
@@ -117,22 +125,5 @@ final class MarkerFromTagsExtractorTest extends TestCase
         $todoTags = $descriptor->getTags()->fetch('todo', []);
         $todoTags[] = $todoTag;
         $descriptor->getTags()->set('todo', $todoTags);
-    }
-
-    /**
-     * Adds a class descriptor to the project's elements and add a parent file.
-     */
-    private function givenProjectHasClassDescriptorAssociatedWithFile(
-        ?FileDescriptor $fileDescriptor
-    ): ClassDescriptor {
-        $classDescriptor = new ClassDescriptor();
-        if ($fileDescriptor) {
-            $classDescriptor->setFile($fileDescriptor);
-        }
-
-        $elementIndex = $this->project->getIndexes()->fetch('elements', new Collection());
-        $elementIndex->add($classDescriptor);
-
-        return $classDescriptor;
     }
 }

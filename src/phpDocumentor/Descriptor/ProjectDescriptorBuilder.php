@@ -13,17 +13,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
-use InvalidArgumentException;
-use phpDocumentor\Configuration\ApiSpecification;
-use phpDocumentor\Descriptor\Builder\AssemblerFactory;
-use phpDocumentor\Descriptor\Builder\AssemblerInterface;
-use phpDocumentor\Descriptor\Filter\Filter;
-use phpDocumentor\Descriptor\Filter\Filterable;
 use phpDocumentor\Descriptor\ProjectDescriptor\WithCustomSettings;
 use phpDocumentor\Reflection\Php\Project;
-
-use function array_merge;
-use function get_class;
 
 /**
  * Builds a Project Descriptor and underlying tree.

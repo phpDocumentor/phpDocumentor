@@ -39,7 +39,7 @@ class VersionSpecification
         $this->folder = $folder;
     }
 
-    public function getFolder(): string
+    public function getFolder() : string
     {
         return $this->folder;
     }

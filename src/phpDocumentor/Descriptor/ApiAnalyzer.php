@@ -28,7 +28,7 @@ use const PHP_EOL;
  * as the total number of elements per type of Descriptor, the number of top level namespaces or the number of parent
  * classes that could not be interpreted by the Compiler passes.
  */
-class ProjectAnalyzer
+class ApiAnalyzer
 {
     /** @var int $elementCount */
     protected $elementCount = 0;
@@ -46,21 +46,21 @@ class ProjectAnalyzer
     protected $descriptorCountByType = [];
 
     /**
-     * Analyzes the given project descriptor and populates this object's properties.
+     * Analyzes the given descriptor and populates this object's properties.
      */
-    public function analyze(ProjectDescriptor $projectDescriptor): void
+    public function analyze(ApiSetDescriptor $apiSetDescriptor): void
     {
         $this->unresolvedParentClassesCount = 0;
 
         $elementCounter = [];
-        foreach ($this->findAllElements($projectDescriptor) as $element) {
+        foreach ($this->findAllElements($apiSetDescriptor) as $element) {
             $elementCounter = $this->addElementToCounter($elementCounter, $element);
             $this->incrementUnresolvedParentCounter($element);
         }
 
         $this->descriptorCountByType = $elementCounter;
-        $this->fileCount = count($projectDescriptor->getFiles());
-        $this->topLevelNamespaceCount = count($projectDescriptor->getNamespace()->getChildren());
+        $this->fileCount = count($apiSetDescriptor->getFiles());
+        $this->topLevelNamespaceCount = count($apiSetDescriptor->getNamespace()->getChildren());
     }
 
     /**
@@ -130,8 +130,8 @@ TEXT;
      *
      * @return Collection<DescriptorAbstract>
      */
-    protected function findAllElements(ProjectDescriptor $projectDescriptor): Collection
+    protected function findAllElements(ApiSetDescriptor $apiSetDescriptor): Collection
     {
-        return $projectDescriptor->getIndexes()->fetch('elements', new Collection());
+        return $apiSetDescriptor->getIndexes()->fetch('elements', new Collection());
     }
 }

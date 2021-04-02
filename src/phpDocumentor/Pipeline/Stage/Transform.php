@@ -5,13 +5,9 @@ declare(strict_types=1);
 namespace phpDocumentor\Pipeline\Stage;
 
 use Exception;
-use League\Flysystem\FilesystemInterface;
-use phpDocumentor\Descriptor\ApiSetDescriptor;
-use phpDocumentor\Descriptor\VersionDescriptor;
-use phpDocumentor\Dsn;
 use phpDocumentor\Event\Dispatcher;
-use phpDocumentor\FlowService\ServiceProvider;
 use phpDocumentor\FileSystem\FlySystemFactory;
+use phpDocumentor\FlowService\ServiceProvider;
 use phpDocumentor\Transformer\Event\PostTransformEvent;
 use phpDocumentor\Transformer\Event\PreTransformationEvent;
 use phpDocumentor\Transformer\Event\PreTransformEvent;
@@ -23,8 +19,8 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 use function count;
+use function current;
 use function get_class;
-use function getcwd;
 use function sprintf;
 
 use const DIRECTORY_SEPARATOR;
@@ -112,6 +108,7 @@ class Transform
                 Dispatcher::getInstance()->dispatch($postTransformEvent, Transformer::EVENT_POST_TRANSFORM);
             }
         }
+
         return $payload;
     }
 

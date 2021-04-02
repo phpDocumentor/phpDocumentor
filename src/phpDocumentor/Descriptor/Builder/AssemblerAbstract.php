@@ -15,7 +15,6 @@ namespace phpDocumentor\Descriptor\Builder;
 
 use phpDocumentor\Descriptor\ApiSetDescriptorBuilder;
 use phpDocumentor\Descriptor\Descriptor;
-use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 
 /**
  * Base class for all assemblers.

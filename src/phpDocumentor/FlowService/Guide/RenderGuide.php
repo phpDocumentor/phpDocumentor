@@ -66,7 +66,7 @@ final class RenderGuide implements Transformer, ProjectDescriptor\WithCustomSett
         return 'RenderGuide';
     }
 
-    public function execute(ProjectDescriptor $project, DocumentationSetDescriptor $documentationSet, Template $template): void
+    public function execute(ProjectDescriptor $project, DocumentationSetDescriptor $documentationSet, Template $template) : void
     {
         $this->logger->warning(
             'Generating guides is experimental, no BC guarantees are given, use at your own risk'

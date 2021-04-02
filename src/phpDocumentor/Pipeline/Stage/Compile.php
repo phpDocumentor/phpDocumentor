@@ -15,7 +15,6 @@ namespace phpDocumentor\Pipeline\Stage;
 
 use Exception;
 use phpDocumentor\Compiler\Compiler;
-use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\VersionDescriptor;
 
 /**

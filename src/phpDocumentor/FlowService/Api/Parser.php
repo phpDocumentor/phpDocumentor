@@ -4,18 +4,20 @@ declare(strict_types=1);
 
 namespace phpDocumentor\FlowService\Api;
 
+use InvalidArgumentException;
 use phpDocumentor\Configuration\ApiSpecification;
 use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\ApiSetDescriptorBuilder;
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\FlowService\Parser as ParserInterface;
 use phpDocumentor\Parser\FileCollector;
-use phpDocumentor\Parser\Parser as ApiParser;
 use phpDocumentor\Parser\Middleware\ReEncodingMiddleware;
+use phpDocumentor\Parser\Parser as ApiParser;
 use phpDocumentor\Reflection\File;
 use phpDocumentor\Reflection\Php\Project;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
+use function count;
 
 final class Parser implements ParserInterface
 {
@@ -48,10 +50,10 @@ final class Parser implements ParserInterface
         $this->builder = $builder;
     }
 
-    public function operate(DocumentationSetDescriptor $documentationSet): void
+    public function operate(DocumentationSetDescriptor $documentationSet) : void
     {
         if (!$documentationSet instanceof ApiSetDescriptor) {
-            throw new \InvalidArgumentException('Invalid documentation set');
+            throw new InvalidArgumentException('Invalid documentation set');
         }
 
         $this->builder->reset();
@@ -65,7 +67,7 @@ final class Parser implements ParserInterface
     }
 
     /** @return File[] */
-    private function collectFiles(ApiSpecification $apiSpecification): array
+    private function collectFiles(ApiSpecification $apiSpecification) : array
     {
         $this->log('Collecting files from ' . $apiSpecification['source']['dsn']);
 
@@ -85,7 +87,7 @@ final class Parser implements ParserInterface
     }
 
     /** @param File[] $files */
-    private function createProject(ApiSpecification $apiSpecification, array $files): Project
+    private function createProject(ApiSpecification $apiSpecification, array $files) : Project
     {
         $this->reEncodingMiddleware->withEncoding($apiSpecification['encoding']);
         $this->parser->setMarkers($apiSpecification['markers']);
@@ -93,6 +95,7 @@ final class Parser implements ParserInterface
         $this->parser->setDefaultPackageName($apiSpecification['default-package-name']);
 
         $this->log('Parsing files', LogLevel::NOTICE);
+
         return $this->parser->parse($files);
     }
 

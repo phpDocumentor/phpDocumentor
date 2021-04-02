@@ -8,9 +8,7 @@ use phpDocumentor\FlowService\ServiceProvider;
 
 final class Parse
 {
-    /**
-     * @var ServiceProvider
-     */
+    /** @var ServiceProvider */
     private $provider;
 
     public function __construct(ServiceProvider $provider)

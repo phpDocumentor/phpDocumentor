@@ -22,8 +22,6 @@ use League\Flysystem\MountManager;
 use LogicException;
 use phpDocumentor\Configuration\Source;
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
-use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\Descriptor\VersionDescriptor;
 use phpDocumentor\Dsn;
 use Webmozart\Assert\Assert;
 
@@ -31,6 +29,7 @@ use function hash;
 use function in_array;
 use function sprintf;
 
+use const DIRECTORY_SEPARATOR;
 use const LOCK_EX;
 use const PHP_OS_FAMILY;
 
@@ -53,28 +52,28 @@ class FlySystemFactory implements FileSystemFactory
         $this->mountManager = $mountManager;
     }
 
-    public function setOutputDsn(Dsn $output): void
+    public function setOutputDsn(Dsn $output) : void
     {
         $this->outputRoot = $output;
     }
 
-    public function addVersion(string $versionNumber, string $folder): void
+    public function addVersion(string $versionNumber, string $folder) : void
     {
         $this->versionFolders[$versionNumber] = $folder;
         $this->documentationSets[$versionNumber] = [];
     }
 
-    public function addDocumentationSet(string $versionNumber, Source $source, string $output): void
+    public function addDocumentationSet(string $versionNumber, Source $source, string $output) : void
     {
         $setId = hash('md5', (string) $source->dsn());
 
         $this->documentationSets[$versionNumber][$setId] = [
             'source' => $source,
-            'output' => $output
+            'output' => $output,
         ];
     }
 
-    public function createDestination(DocumentationSetDescriptor $documentationSetDescriptor): Filesystem
+    public function createDestination(DocumentationSetDescriptor $documentationSetDescriptor) : Filesystem
     {
         $currentId = hash('md5', (string) $documentationSetDescriptor->getSource()->dsn());
 
@@ -82,6 +81,7 @@ class FlySystemFactory implements FileSystemFactory
             foreach ($sets as $id => $set) {
                 if ($id === $currentId) {
                     $path = $this->outputRoot->getPath()->append($this->versionFolders[$versionNumber] . DIRECTORY_SEPARATOR . $set['output']);
+
                     return $this->create($this->outputRoot->withPath($path));
                 }
             }

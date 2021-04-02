@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\FlowService\Guide;
 
+use InvalidArgumentException;
 use League\Tactician\CommandBus;
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\GuideSetDescriptor;
@@ -59,7 +60,7 @@ final class Parser implements ParserInterface
     public function operate(DocumentationSetDescriptor $documentationSet): void
     {
         if (!$documentationSet instanceof GuideSetDescriptor) {
-            throw new \InvalidArgumentException('Invalid documentation set');
+            throw new InvalidArgumentException('Invalid documentation set');
         }
 
         $this->log('Parsing guides', LogLevel::NOTICE);
@@ -87,7 +88,7 @@ final class Parser implements ParserInterface
      * @param string $priority The logging priority as declared in the LogLevel PSR-3 class.
      * @param string[] $parameters
      */
-    private function log(string $message, string $priority = LogLevel::INFO, array $parameters = []) : void
+    private function log(string $message, string $priority = LogLevel::INFO, array $parameters = []): void
     {
         $this->logger->log($priority, $message, $parameters);
     }

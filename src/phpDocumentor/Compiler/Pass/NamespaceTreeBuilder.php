@@ -19,7 +19,6 @@ use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\NamespaceDescriptor;
-use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Reflection\Fqsen;
 use Webmozart\Assert\Assert;
 

@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Compiler\Pass;
 
-use phpDocumentor\Descriptor\ProjectAnalyzer;
-use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\ApiAnalyzer;
+use phpDocumentor\Faker\Faker;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -29,6 +29,7 @@ use Psr\Log\NullLogger;
 final class DebugTest extends TestCase
 {
     use ProphecyTrait;
+    use Faker;
 
     /**
      * @covers ::execute
@@ -36,17 +37,17 @@ final class DebugTest extends TestCase
     public function testLogDebugAnalysis(): void
     {
         $testString = 'test';
-        $projectDescriptorMock = $this->prophesize(ProjectDescriptor::class);
+        $projectDescriptorMock = $this->faker()->apiSetDescriptor();
 
         $loggerMock = $this->prophesize(LoggerInterface::class);
         $loggerMock->debug(Argument::exact($testString))->shouldBeCalled();
 
-        $analyzerMock = $this->prophesize(ProjectAnalyzer::class);
-        $analyzerMock->analyze(Argument::exact($projectDescriptorMock->reveal()))->shouldBeCalled();
+        $analyzerMock = $this->prophesize(ApiAnalyzer::class);
+        $analyzerMock->analyze(Argument::exact($projectDescriptorMock))->shouldBeCalled();
         $analyzerMock->__toString()->shouldBeCalled()->willReturn($testString);
 
         $fixture = new Debug($loggerMock->reveal(), $analyzerMock->reveal());
-        $fixture->execute($projectDescriptorMock->reveal());
+        $fixture->execute($projectDescriptorMock);
 
         $this->assertTrue(true);
     }
@@ -56,7 +57,7 @@ final class DebugTest extends TestCase
      */
     public function testGetDescription(): void
     {
-        $analyzerMock = $this->prophesize(ProjectAnalyzer::class);
+        $analyzerMock = $this->prophesize(ApiAnalyzer::class);
         $debug = new Debug(new NullLogger(), $analyzerMock->reveal());
 
         $this->assertSame('Analyze results and write report to log', $debug->getDescription());

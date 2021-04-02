@@ -15,9 +15,6 @@ namespace phpDocumentor\Compiler\Pass;
 
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
-use phpDocumentor\Descriptor\FileDescriptor;
-use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\Descriptor\VersionDescriptor;
 use phpDocumentor\Faker\Faker;
 use PHPUnit\Framework\TestCase;
 
@@ -29,7 +26,7 @@ final class ResolveInlineMarkersTest extends TestCase
     {
         $fixture = new ResolveInlineMarkers();
 
-        $fileDescriptor = new FileDescriptor('abc');
+        $fileDescriptor = $this->faker()->fileDescriptor();
         $fileDescriptor->setSource(
             <<<SOURCE
                 <?php
@@ -44,12 +41,7 @@ SOURCE
         $apiDescriptor = $this->faker()->apiSetDescriptor();
         $documentationsSets = Collection::fromClassString(DocumentationSetDescriptor::class);
         $documentationsSets->add($apiDescriptor);
-
-        $projectDescriptor = new ProjectDescriptor('test project');
-        $projectDescriptor->setFiles(new Collection([$fileDescriptor]));
-        $projectDescriptor->getVersions()->add(new VersionDescriptor('latest', $documentationsSets));
-
-        $fixture->execute($projectDescriptor);
+        $fixture->execute($apiDescriptor);
 
         self::assertCount(1, $fileDescriptor->getMarkers());
     }

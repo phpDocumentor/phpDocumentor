@@ -39,7 +39,7 @@ class Compiler extends SplPriorityQueue
         return parent::insert($value, $priority);
     }
 
-    public function compile(DocumentationSetDescriptor $documentationSet): void
+    public function compile(DocumentationSetDescriptor $documentationSet) : void
     {
         if (!$documentationSet instanceof ApiSetDescriptor) {
             return;

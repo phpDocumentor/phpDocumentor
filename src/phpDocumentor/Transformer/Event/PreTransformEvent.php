@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Event;
 
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
-use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Event\EventAbstract;
 use phpDocumentor\Transformer\Transformation;
 

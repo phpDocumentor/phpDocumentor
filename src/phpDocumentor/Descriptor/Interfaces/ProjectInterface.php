@@ -14,9 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Interfaces;
 
 use phpDocumentor\Descriptor\Collection;
-use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\FileDescriptor;
-use phpDocumentor\Descriptor\NamespaceDescriptor;
 
 /**
  * Describes the public interface for the description of a project.

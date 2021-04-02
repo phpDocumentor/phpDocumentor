@@ -4,17 +4,16 @@ declare(strict_types=1);
 
 namespace phpDocumentor\FlowService;
 
+use Exception;
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
-use Symfony\Component\DependencyInjection\Argument\ServiceLocator;
+use function get_class;
 
 /**
  * @template T of object
  */
 final class ServiceProvider
 {
-    /**
-     * @var array<string, T>
-     */
+    /** @var array<string, T> */
     private $services;
 
     public function __construct(iterable $services)
@@ -25,13 +24,13 @@ final class ServiceProvider
     }
 
     /** @return T */
-    public function get(DocumentationSetDescriptor $documetationSet): object
+    public function get(DocumentationSetDescriptor $documetationSet) : object
     {
         dump(get_class($documetationSet));
         if (isset($this->services[get_class($documetationSet)])) {
             return $this->services[get_class($documetationSet)];
         }
 
-        throw new \Exception();
+        throw new Exception();
     }
 }

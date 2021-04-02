@@ -11,6 +11,7 @@ use phpDocumentor\Descriptor\Builder\AssemblerInterface;
 use phpDocumentor\Descriptor\Filter\Filter;
 use phpDocumentor\Descriptor\Filter\Filterable;
 use phpDocumentor\Reflection\Php\Project;
+use function get_class;
 
 /*final*/ class ApiSetDescriptorBuilder
 {
@@ -108,7 +109,7 @@ use phpDocumentor\Reflection\Php\Project;
         return $this->apiSpecification['default-package-name'];
     }
 
-    public function shouldIncludeSource(): bool
+    public function shouldIncludeSource() : bool
     {
         return $this->apiSpecification['include-source'];
     }
@@ -118,18 +119,18 @@ use phpDocumentor\Reflection\Php\Project;
         $this->apiSpecification = $apiSpecification;
     }
 
-    public function setProject(Project $project): void
+    public function setProject(Project $project) : void
     {
         $this->project = $project;
     }
 
-    public function reset(): void
+    public function reset() : void
     {
         $this->project = null;
         $this->name = '';
     }
 
-    public function createDescriptors(ApiSetDescriptor $documentationSet): void
+    public function createDescriptors(ApiSetDescriptor $documentationSet) : void
     {
         foreach ($this->project->getFiles() as $file) {
             $descriptor = $this->buildDescriptor($file, FileDescriptor::class);

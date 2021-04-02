@@ -5,15 +5,10 @@ declare(strict_types=1);
 namespace phpDocumentor\FlowService\Api;
 
 use Exception;
-use phpDocumentor\Configuration\Configuration;
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\Dsn;
 use phpDocumentor\Event\Dispatcher;
-use phpDocumentor\FlowService\FlowService;
 use phpDocumentor\FlowService\Transformer as TransformerInterface;
-use phpDocumentor\Parser\FlySystemFactory;
-use phpDocumentor\Reflection\DocBlock\ExampleFinder;
 use phpDocumentor\Transformer\Event\PreTransformationEvent;
 use phpDocumentor\Transformer\Event\PreTransformEvent;
 use phpDocumentor\Transformer\Event\WriterInitializationEvent;
@@ -21,14 +16,9 @@ use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformer as RealTransformer;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Stopwatch\Stopwatch;
-use function array_column;
 use function count;
 use function get_class;
-use function getcwd;
 use function sprintf;
-use const DIRECTORY_SEPARATOR;
 
 /**
  * Transforms the structure file into the specified output format
@@ -67,7 +57,7 @@ class Transformer implements TransformerInterface
      *
      * @throws Exception If the target location is not a folder.
      */
-    public function execute(ProjectDescriptor $project, DocumentationSetDescriptor $documentationSet, Template $template): void
+    public function execute(ProjectDescriptor $project, DocumentationSetDescriptor $documentationSet, Template $template) : void
     {
         $this->transformer->execute($project, $documentationSet, $template);
     }

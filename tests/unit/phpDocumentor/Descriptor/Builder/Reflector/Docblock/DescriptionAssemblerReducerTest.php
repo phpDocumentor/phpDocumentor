@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Builder\Reflector\Docblock;
 
+use phpDocumentor\Descriptor\ApiSetDescriptorBuilder;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
-use phpDocumentor\Descriptor\ApiSetDescriptorBuilder;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Reflection\DocBlock;
 use PHPUnit\Framework\TestCase;

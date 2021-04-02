@@ -17,7 +17,6 @@ use phpDocumentor\Configuration\ApiSpecification;
 use phpDocumentor\Configuration\Source;
 use phpDocumentor\Descriptor\Interfaces\PackageInterface;
 use phpDocumentor\Reflection\Fqsen;
-use phpDocumentor\Reflection\Php\File;
 
 final class ApiSetDescriptor extends DocumentationSetDescriptor implements Descriptor
 {
@@ -65,22 +64,22 @@ final class ApiSetDescriptor extends DocumentationSetDescriptor implements Descr
         $this->apiSpecification = $apiSpecification;
     }
 
-    public function addFile(FileDescriptor $descriptor): void
+    public function addFile(FileDescriptor $descriptor) : void
     {
         $this->files->set($descriptor->getPath(), $descriptor);
     }
 
-    public function getFiles(): Collection
+    public function getFiles() : Collection
     {
         return $this->files;
     }
 
-    public function addNamespace(NamespaceDescriptor $descriptor): void
+    public function addNamespace(NamespaceDescriptor $descriptor) : void
     {
-        $this->namespaces->set((string)$descriptor->getFullyQualifiedStructuralElementName(), $descriptor);
+        $this->namespaces->set((string) $descriptor->getFullyQualifiedStructuralElementName(), $descriptor);
     }
 
-    public function getNamespaces(): Collection
+    public function getNamespaces() : Collection
     {
         return $this->namespaces;
     }
@@ -110,12 +109,12 @@ final class ApiSetDescriptor extends DocumentationSetDescriptor implements Descr
         return $this->package;
     }
 
-    public function getSettings(): ApiSpecification
+    public function getSettings() : ApiSpecification
     {
         return $this->apiSpecification;
     }
 
-    public function getDescription(): ?DocBlock\DescriptionDescriptor
+    public function getDescription() : ?DocBlock\DescriptionDescriptor
     {
         return null;
     }

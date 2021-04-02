@@ -24,6 +24,7 @@ use function sprintf;
 use function strlen;
 use function strspn;
 
+use const DIRECTORY_SEPARATOR;
 use const PHP_URL_SCHEME;
 
 /**
@@ -87,7 +88,7 @@ final class Path
         return new self(implode('/', $parts));
     }
 
-    public function append(string $path): Path
+    public function append(string $path) : Path
     {
         return new self($this->path . DIRECTORY_SEPARATOR . $path);
     }
