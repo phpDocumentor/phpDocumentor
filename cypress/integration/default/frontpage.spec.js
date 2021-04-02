@@ -69,7 +69,8 @@ describe('Frontpage', function() {
 
         describe('Reports section', function() {
             it('Shows the Reports section', function () {
-                getSidebarHeaderByTitle('Reports').should('be.visible');
+                getSidebarHeaderByTitle('Reports')
+                    .should('be.visible');
             });
 
             it('Has a report with Deprecated elements', function () {
