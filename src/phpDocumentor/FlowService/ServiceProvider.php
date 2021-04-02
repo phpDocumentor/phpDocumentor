@@ -26,7 +26,6 @@ final class ServiceProvider
     /** @return T */
     public function get(DocumentationSetDescriptor $documetationSet) : object
     {
-        dump(get_class($documetationSet));
         if (isset($this->services[get_class($documetationSet)])) {
             return $this->services[get_class($documetationSet)];
         }
