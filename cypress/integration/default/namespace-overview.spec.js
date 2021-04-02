@@ -1,4 +1,5 @@
 import {shouldVisitPageWithTitle} from "./helpers/pages.lib";
+import sidebar from "./sidebar.inc";
 
 describe('Namespace Overview', function() {
     beforeEach(function(){
@@ -9,6 +10,8 @@ describe('Namespace Overview', function() {
         cy.get('.phpdocumentor-content__title')
             .contains("Marios");
     });
+
+    describe('In the sidebar', sidebar);
 
     it('Child namespace feature a breadcrumb to their parent', function() {
         cy.visit('build/default/namespaces/marios-pizza.html');
