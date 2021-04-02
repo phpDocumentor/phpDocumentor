@@ -338,7 +338,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
 
         // wipe version so that middleware needs to re-add the api key
         unset($configuration['phpdocumentor']['versions']);
-        $configuration['phpdocumentor']['versions'] = ['1.0.0' => new VersionSpecification('1.0.0', [], null)];
+        $configuration['phpdocumentor']['versions'] = ['1.0.0' => new VersionSpecification('1.0.0', '1.0.0', [], null)];
 
         return $configuration;
     }

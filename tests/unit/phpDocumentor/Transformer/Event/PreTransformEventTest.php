@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Event;
 
-use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Faker\Faker;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use stdClass;
@@ -24,6 +24,7 @@ use stdClass;
  */
 final class PreTransformEventTest extends TestCase
 {
+    use Faker;
     use ProphecyTrait;
 
     /** @var PreTransformEvent $fixture */
@@ -45,7 +46,7 @@ final class PreTransformEventTest extends TestCase
     {
         $subject = new stdClass();
         $this->fixture = PreTransformEvent::createInstance($subject);
-        $this->assertSame($subject, $this->fixture->getSubject());
+        self::assertSame($subject, $this->fixture->getSubject());
     }
 
     /**
@@ -54,11 +55,11 @@ final class PreTransformEventTest extends TestCase
      */
     public function testSetAndGetProject(): void
     {
-        $project = $this->prophesize(ProjectDescriptor::class);
-        $this->assertNull($this->fixture->getDocumentationSetDescriptor());
+        $project = $this->faker()->apiSetDescriptor();
+        self::assertNull($this->fixture->getDocumentationSetDescriptor());
 
-        $this->fixture->setDocumentationSet($project->reveal());
+        $this->fixture->setDocumentationSet($project);
 
-        $this->assertSame($project->reveal(), $this->fixture->getDocumentationSetDescriptor());
+        self::assertSame($project, $this->fixture->getDocumentationSetDescriptor());
     }
 }

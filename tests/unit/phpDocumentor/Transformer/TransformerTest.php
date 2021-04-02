@@ -122,7 +122,14 @@ final class TransformerTest extends TestCase
         $transformation->getArtifact()->shouldBeCalled()->willReturn('');
         $transformation->setTransformer(Argument::exact($this->fixture))->shouldBeCalled();
 
-        $this->fixture->execute($project->reveal(), [$transformation->reveal()]);
+        $template = $this->faker()->template();
+        $template[] = $transformation->reveal();
+
+        $this->fixture->execute(
+            $project->reveal(),
+            $this->faker()->apiSetDescriptor(),
+            $template
+        );
     }
 
     /**
