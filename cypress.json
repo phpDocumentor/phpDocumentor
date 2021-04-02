@@ -1,4 +1,6 @@
 {
+  "projectId": "ifc328",
   "pluginsFile": false,
-  "supportFile": false
+  "supportFile": false,
+  "testFiles": "**/*.spec.js"
 }

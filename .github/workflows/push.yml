@@ -406,6 +406,11 @@ jobs:
         run: ./bin/phpdoc --template=default -vvv --config=data/examples/MariosPizzeria/phpdoc.xml --target=build/default
       - name: Test templates using Cypress
         uses: cypress-io/github-action@v2
+        with:
+          record: true
+        env:
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   e2e-matrix:
     runs-on: ${{ matrix.operating-system }}
