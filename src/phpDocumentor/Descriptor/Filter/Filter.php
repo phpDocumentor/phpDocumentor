@@ -34,7 +34,7 @@ class Filter
      * Filters are allowed to return null when a elements needs to be removed. Therefor a
      * default InterruptibleProcessor processor is applied which prevents the errors in these situations.
      *
-     * @param iterable<FilterInterface> $filters
+     * @param iterable<int, FilterInterface> $filters
      */
     public function __construct(iterable $filters)
     {

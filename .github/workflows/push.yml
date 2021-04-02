@@ -404,10 +404,21 @@ jobs:
         run: ./bin/phpdoc --template=clean -vvv --config=data/examples/MariosPizzeria/phpdoc.xml --target=build/clean
       - name: Build example project using Default template
         run: ./bin/phpdoc --template=default -vvv --config=data/examples/MariosPizzeria/phpdoc.xml --target=build/default
-      - name: Test templates using Cypress
+      - name: Test Default template using Cypress
         uses: cypress-io/github-action@v2
         with:
           record: true
+          group: 'template/default'
+          spec: cypress/integration/default/*
+        env:
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Test Clean template using Cypress
+        uses: cypress-io/github-action@v2
+        with:
+          record: true
+          group: 'template/clean'
+          spec: cypress/integration/clean/*
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

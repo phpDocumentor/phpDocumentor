@@ -38,7 +38,7 @@ final class Configuration
     private $outputFolder = '';
 
     /**
-     * @param iterable<Format> $outputFormats
+     * @param iterable<int, Format> $outputFormats
      */
     public function __construct(string $sourceFileExtension, iterable $outputFormats)
     {

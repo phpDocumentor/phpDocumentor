@@ -25,9 +25,6 @@ parameters:
     # phpstan/phpstan/issues/3951
     - '#Method phpDocumentor\\Descriptor\\ProjectDescriptorBuilder::filterDescriptor\(\) should return TDescriptor of phpDocumentor\\Descriptor\\Descriptor\|null but returns phpDocumentor\\Descriptor\\Filter\\Filterable\|null\.#'
 
-    # https://github.com/phpstan/phpstan/issues/4634
-    - '#Method .*::getIterator\(\) should return ArrayIterator<int\|string, .+> but returns ArrayIterator<\(int\|string\), .+>\.#'
-
     # PHPStan has issue when involving templates and parent types
     - '#Parameter \#1 \$matcher of method phpDocumentor\\Descriptor\\Builder\\AssemblerFactory::(register|registerFallback)\(\) expects phpDocumentor\\Descriptor\\Builder\\Matcher<object>, phpDocumentor\\Descriptor\\Builder\\Matcher<.+> given\.#'
 
