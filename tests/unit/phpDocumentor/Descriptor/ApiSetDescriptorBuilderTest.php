@@ -22,11 +22,11 @@ use phpDocumentor\Descriptor\Filter\Filter;
 /**
  * Tests the functionality for the ProjectDescriptorBuilder class.
  *
- * @coversDefaultClass \phpDocumentor\Descriptor\ProjectDescriptorBuilder
+ * @coversDefaultClass \phpDocumentor\Descriptor\ApiSetDescriptorBuilder
  */
-class ProjectDescriptorBuilderTest extends MockeryTestCase
+class ApiSetDescriptorBuilderTest extends MockeryTestCase
 {
-    /** @var ProjectDescriptorBuilder $fixture */
+    /** @var ApiSetDescriptorBuilder $fixture */
     protected $fixture;
 
     /**
@@ -44,22 +44,7 @@ class ProjectDescriptorBuilderTest extends MockeryTestCase
         $this->assemblerFactory = $this->createAssemblerFactoryMock();
         $filterMock = m::mock(Filter::class);
 
-        $this->fixture = new ProjectDescriptorBuilder($this->assemblerFactory, $filterMock);
-    }
-
-    /**
-     * @covers ::createProjectDescriptor
-     * @covers ::getProjectDescriptor
-     */
-    public function testCreatesAnEmptyProjectDescriptorWhenCalledFor(): void
-    {
-        $this->fixture->createProjectDescriptor();
-
-        $this->assertInstanceOf(ProjectDescriptor::class, $this->fixture->getProjectDescriptor());
-        $this->assertEquals(
-            ProjectDescriptorBuilder::DEFAULT_PROJECT_NAME,
-            $this->fixture->getProjectDescriptor()->getName()
-        );
+        $this->fixture = new ApiSetDescriptorBuilder($this->assemblerFactory, $filterMock);
     }
 
     /**
