@@ -1,5 +1,6 @@
 import {shouldVisitPageWithTitle} from "./helpers/pages.lib";
 import sidebar from "./sidebar.inc";
+import search from "./search.inc";
 
 describe('Namespace Overview', function() {
     beforeEach(function(){
@@ -11,6 +12,7 @@ describe('Namespace Overview', function() {
             .contains("Marios");
     });
 
+    describe('Search', search);
     describe('In the sidebar', sidebar);
 
     it('Child namespace feature a breadcrumb to their parent', function() {

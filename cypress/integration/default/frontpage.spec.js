@@ -1,6 +1,7 @@
 import {shouldVisitPageWithTitle} from "./helpers/pages.lib";
 import {getSearchField} from "./helpers/search.lib";
 import sidebar from './sidebar.inc';
+import search from './search.inc';
 
 describe('Frontpage', function() {
     beforeEach(function(){
@@ -11,13 +12,7 @@ describe('Frontpage', function() {
         cy.get('.phpdocumentor-title').contains("Documentation");
     });
 
-    describe('Search', function() {
-        it('Shows the search bar', function() {
-            getSearchField()
-                .should('be.visible');
-        });
-    });
-
+    describe('Search', search);
     describe('In the sidebar', sidebar);
 
     describe('Content', function() {
