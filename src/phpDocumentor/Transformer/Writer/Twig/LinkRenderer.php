@@ -19,6 +19,7 @@ use League\Uri\Uri;
 use League\Uri\UriInfo;
 use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\Descriptor\DescriptorAbstract;
+use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Path;
 use phpDocumentor\Reflection\DocBlock\Tags\Reference;
@@ -68,6 +69,9 @@ final class LinkRenderer
     /** @var ProjectDescriptor|null */
     private $project;
 
+    /** @var DocumentationSetDescriptor */
+    private $documentationSet;
+
     /** @var bool */
     private $convertToRootPath = true;
 
@@ -106,6 +110,14 @@ final class LinkRenderer
     {
         $result = clone $this;
         $result->project = $projectDescriptor;
+
+        return $result;
+    }
+
+    public function withDocumentationSet(DocumentationSetDescriptor $documentationSet): self
+    {
+        $result = clone $this;
+        $result->documentationSet = $documentationSet;
 
         return $result;
     }
@@ -260,7 +272,7 @@ final class LinkRenderer
         }
 
         if ($node instanceof Fqsen) {
-            $node = $this->project->findElement($node) ?? $node;
+            $node = $this->documentationSet->findElement($node) ?? $node;
         }
 
         if ($node instanceof AbstractList) {

@@ -111,7 +111,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
         return $this->getApiDocSet()->getNamespace();
     }
 
-    public function getPackage() : PackageInterface
+    public function getPackage(): PackageInterface
     {
         return $this->getApiDocSet()->getPackage();
     }
@@ -157,25 +157,11 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
         return $this->partials;
     }
 
-    public function findElement(Fqsen $fqsen): ?Descriptor
-    {
-        if (!isset($this->getIndexes()['elements'])) {
-            return null;
-        }
-
-        return $this->getIndexes()['elements']->fetch((string) $fqsen);
-    }
-
     /**
      * @return Collection<VersionDescriptor>
      */
     public function getVersions(): Collection
     {
         return $this->versions;
-    }
-
-    private function getApiDocSet()
-    {
-        return current($this->getVersions()->get(0)->getDocumentationSets()->filter(ApiSetDescriptor::class)->getAll());
     }
 }

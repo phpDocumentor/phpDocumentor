@@ -21,12 +21,7 @@ use phpDocumentor\Descriptor\FileDescriptor;
  */
 interface ProjectInterface
 {
-    public function setName(string $name): void;
+    public function setName(string $name) : void;
 
-    public function getName(): string;
-
-    /**
-     * @return Collection<FileDescriptor>
-     */
-    public function getFiles(): Collection;
+    public function getName() : string;
 }

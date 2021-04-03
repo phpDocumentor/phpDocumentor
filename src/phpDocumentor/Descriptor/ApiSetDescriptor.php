@@ -118,4 +118,13 @@ final class ApiSetDescriptor extends DocumentationSetDescriptor implements Descr
     {
         return null;
     }
+
+    public function findElement(Fqsen $fqsen) : ?Descriptor
+    {
+        if (!isset($this->getIndexes()['elements'])) {
+            return null;
+        }
+
+        return $this->getIndexes()['elements']->fetch((string) $fqsen);
+    }
 }

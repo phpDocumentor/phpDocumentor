@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% set deprecatedElements = project.indexes.elements|filter(element => element.deprecated) %}
+{% set deprecatedElements = documentationSet.indexes.elements|filter(element => element.deprecated) %}
 {%
     set filesWithDeprecatedElements = deprecatedElements|reduce(
         (unique, item) => item.file.path in unique|keys ? unique : unique|merge({(item.file.path): item.file}), {}
@@ -8,7 +8,7 @@
 %}
 
 {% block title %}
-    {{ project.name }} &raquo; Deprecated elements
+    {{ documentationSet.name }} &raquo; Deprecated elements
 {% endblock %}
 
 {% block content %}

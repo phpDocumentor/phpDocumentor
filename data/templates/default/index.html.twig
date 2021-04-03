@@ -3,18 +3,18 @@
 {% block content %}
     <h2>Documentation</h2>
 
-    {% set node = project.namespace %}
+    {% set node = documentationSet.namespace %}
 
     {{
     include(
         'components/table-of-contents.html.twig',
         {
-            'node': project.namespace,
+            'node': documentationSet.namespace,
             'namespaces': usesNamespaces or not usesPackages ? node.children : [],
-            'packages': usesPackages ? project.package.children : []
+            'packages': usesPackages ? documentationSet.package.children : []
         }
     )
     }}
-    {{ include('components/constants.html.twig', {'node': project.namespace}) }}
-    {{ include('components/functions.html.twig', {'node': project.namespace}) }}
+    {{ include('components/constants.html.twig', {'node': documentationSet.namespace}) }}
+    {{ include('components/functions.html.twig', {'node': documentationSet.namespace}) }}
 {% endblock %}

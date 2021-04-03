@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% set filesWithErrors = project.files|filter(file => file.allErrors is not empty) %}
+{% set filesWithErrors = documentationSet.files|filter(file => file.allErrors is not empty) %}
 
 {% block title %}
-    {{ project.name }} &raquo; Compilation errors
+    {{ documentationSet.name }} &raquo; Compilation errors
 {% endblock %}
 
 {% block content %}
@@ -18,7 +18,7 @@
     <h3>Table of Contents</h3>
     <table class="phpdocumentor-table_of_contents">
         {% set errorCount = 0 %}
-        {% for file in project.files|filter(file => file.allErrors is not empty) %}
+        {% for file in documentationSet.files|filter(file => file.allErrors is not empty) %}
             {% if file.allerrors.count > 0 %}
                 <tr>
                     <td class="phpdocumentor-cell"><a href="{{ target_path }}#{{ file.path }}">{{ file.path }}</a></td>

@@ -1,7 +1,7 @@
 {% set baseUrl = renderBaseUrlHeader() %}
 Search.appendIndex(
     [
-        {% for element in project.indexes.elements %}
+        {% for element in documentationSet.indexes.elements %}
         {
             "fqsen": "{{ element.fullyQualifiedStructuralElementName|e('js') }}",
             "name": "{{ element.name|e('js') }}",

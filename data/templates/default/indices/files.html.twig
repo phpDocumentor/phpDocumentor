@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block content %}
-    {% set orderedFiles = project.files|sort((a,b) => a.name <=> b.name) %}
+    {% set orderedFiles = documentationSet.files|sort((a,b) => a.name <=> b.name) %}
 
     <h2 class="phpdocumentor-content__title">Files</h2>
     {% for letter in range('a', 'z') %}
