@@ -1,5 +1,4 @@
 import {shouldVisitPageWithTitle} from "./helpers/pages.lib";
-import {getSearchField} from "./helpers/search.lib";
 import sidebar from './sidebar.inc';
 import search from './search.inc';
 
