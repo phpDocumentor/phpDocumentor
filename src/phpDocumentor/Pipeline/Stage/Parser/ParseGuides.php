@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace phpDocumentor\Pipeline\Stage\Parser;
 
 use League\Tactician\CommandBus;
+use phpDocumentor\Descriptor\GuideSetDescriptor;
 use phpDocumentor\Guides\Configuration;
 use phpDocumentor\Guides\Formats\Format;
 use phpDocumentor\Guides\RestructuredText\ParseDirectoryCommand;
 use phpDocumentor\Parser\FlySystemFactory;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
-use function current;
 
 final class ParseGuides
 {
@@ -53,25 +53,40 @@ final class ParseGuides
 
     public function __invoke(Payload $payload) : Payload
     {
-        if ($payload->getConfig()['phpdocumentor']['settings']['guides.enabled'] === true) {
-            /*
-             * For now settings of the first guides are used.
-             * We need to change this later, when we accept more different things
-             */
-            $config = current(current($payload->getConfig()['phpdocumentor']['versions'])->guides);
-            $dsn = $config->source()->dsn();
-            $inputFormat = $config['format'];
-
-            $this->log('Parsing guides', LogLevel::NOTICE);
-
-            $origin = $this->flySystemFactory->create($dsn);
-            $directory = $config->source()->paths()[0] ?? '';
-
-            $configuration = new Configuration($inputFormat, $this->outputFormats);
-            $configuration->setOutputFolder((string) $config['output']);
-
-            $this->commandBus->handle(new ParseDirectoryCommand($configuration, $origin, (string) $directory));
+        if ($payload->getConfig()['phpdocumentor']['settings']['guides.enabled'] !== true) {
+            return $payload;
         }
+
+        /*
+         * For now settings of the first guides are used.
+         * We need to change this later, when we accept more different things
+         */
+        $version = $payload->getBuilder()->getProjectDescriptor()->getVersions()->get(0);
+        $guideDocumentationSet = null;
+        foreach ($version->getDocumentationSets() as $set) {
+            if ($set instanceof GuideSetDescriptor) {
+                $guideDocumentationSet = $set;
+                break;
+            }
+        }
+
+        if ($guideDocumentationSet === null) {
+            return $payload;
+        }
+
+        $this->log('Parsing guides', LogLevel::NOTICE);
+
+        $dsn = $guideDocumentationSet->getSource()->dsn();
+        $origin = $this->flySystemFactory->create($dsn);
+        $directory = $guideDocumentationSet->getSource()->paths()[0] ?? '';
+
+        $configuration = new Configuration(
+            $guideDocumentationSet->getInputFormat(),
+            $this->outputFormats
+        );
+        $configuration->setOutputFolder($guideDocumentationSet->getOutput());
+
+        $this->commandBus->handle(new ParseDirectoryCommand($configuration, $origin, (string) $directory));
 
         return $payload;
     }

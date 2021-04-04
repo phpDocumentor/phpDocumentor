@@ -33,6 +33,6 @@ final class InitializeBuilderFromConfigTest extends TestCase
         $builder->setPartials($partials)->shouldBeCalledOnce();
         $builder->setCustomSettings([])->shouldBeCalledOnce();
 
-        $fixture(new Payload(['phpdocumentor' => ['title' => 'my-title']], $builder->reveal()));
+        $fixture(new Payload(['phpdocumentor' => ['title' => 'my-title', 'versions' => []]], $builder->reveal()));
     }
 }

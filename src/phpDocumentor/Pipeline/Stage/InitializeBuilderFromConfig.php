@@ -13,8 +13,14 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Pipeline\Stage;
 
+use phpDocumentor\Configuration\VersionSpecification;
+use phpDocumentor\Descriptor\ApiSetDescriptor;
+use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\Collection as PartialsCollection;
+use phpDocumentor\Descriptor\DocumentationSetDescriptor;
+use phpDocumentor\Descriptor\GuideSetDescriptor;
 use phpDocumentor\Descriptor\VersionDescriptor;
+use function md5;
 
 final class InitializeBuilderFromConfig
 {
@@ -39,10 +45,40 @@ final class InitializeBuilderFromConfig
         $builder->setPartials($this->partials);
         $builder->setCustomSettings($configuration['phpdocumentor']['settings'] ?? []);
 
-        foreach (($configuration['phpdocumentor']['versions'] ?? []) as $version) {
-            $builder->addVersion(VersionDescriptor::fromConfiguration($version));
+        foreach ($configuration['phpdocumentor']['versions'] as $version) {
+            $builder->addVersion(
+                $this->buildVersion(
+                    $version
+                )
+            );
         }
 
         return $payload;
+    }
+
+    private function buildVersion(VersionSpecification $version) : VersionDescriptor
+    {
+        $collection = Collection::fromClassString(DocumentationSetDescriptor::class);
+        foreach ($version->getGuides() as $guide) {
+            $collection->add(
+                new GuideSetDescriptor(md5($guide['output']), $guide['source'], $guide['output'], $guide['format'])
+            );
+        }
+
+        foreach ($version->getApi() as $apiSpecification) {
+            $collection->add(
+                new ApiSetDescriptor(
+                    md5($apiSpecification['output']),
+                    $apiSpecification['source'],
+                    $apiSpecification['output'],
+                    $apiSpecification
+                )
+            );
+        }
+
+        return new VersionDescriptor(
+            $version->getNumber(),
+            $collection
+        );
     }
 }

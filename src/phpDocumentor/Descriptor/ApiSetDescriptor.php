@@ -13,14 +13,24 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
+use phpDocumentor\Configuration\ApiSpecification;
 use phpDocumentor\Configuration\Source;
 
 final class ApiSetDescriptor extends DocumentationSetDescriptor
 {
-    public function __construct(string $name, Source $source, string $output)
+    /** @var ApiSpecification */
+    private $apiSpecification;
+
+    public function __construct(string $name, Source $source, string $output, ApiSpecification $apiSpecification)
     {
         $this->name = $name;
         $this->source = $source;
         $this->output = $output;
+        $this->apiSpecification = $apiSpecification;
+    }
+
+    public function getSettings() : ApiSpecification
+    {
+        return $this->apiSpecification;
     }
 }
