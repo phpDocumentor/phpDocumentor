@@ -23,7 +23,7 @@ final class Pizza implements Product
      * @deprecated
      * @var string
      */
-    private const TYPE_AMERICAN = 'american';
+    protected const TYPE_AMERICAN = 'american';
 
     private const TYPE_HYBRID = ['italian,spanish', 1, 'american'];
 
