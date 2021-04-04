@@ -65,8 +65,17 @@ describe('Classes', function() {
     describe('Table of Contents', function(){
         it('Show methods', function() {
             cy.get('.phpdocumentor-table-of-contents__entry')
-                .contains("jsonSerialize()").parent()
+                .contains("jsonSerialize()")
+                .parent()
                 .contains(': array'); // type
+        });
+    });
+
+    describe('Applying a trait', function() {
+        // FIXME: This is a bug in the application; the method is not imported
+        it.skip('Use method with an alias and changed visibility', function() {
+            cy.get('.phpdocumentor-table-of-contents__entry')
+                .contains('myPrivateHello()');
         });
     });
 });

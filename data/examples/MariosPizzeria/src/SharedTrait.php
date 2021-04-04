@@ -15,7 +15,7 @@ trait SharedTrait
 
     private bool $secretProperty;
 
-    public function sayHello() {
+    public function sayHello(): Pizza\Base {
 
     }
 }
