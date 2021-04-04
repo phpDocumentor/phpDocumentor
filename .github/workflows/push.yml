@@ -507,7 +507,7 @@ jobs:
         uses: cypress-io/github-action@v2
         with:
           record: true
-          group: 'template/default'
+          group: 'template/default/${{ matrix.php-versions }}/${{ matrix.operating-system }}'
           spec: cypress/integration/default/*
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
@@ -517,7 +517,7 @@ jobs:
         uses: cypress-io/github-action@v2
         with:
           record: true
-          group: 'template/clean'
+          group: 'template/clean/${{ matrix.php-versions }}/${{ matrix.operating-system }}'
           spec: cypress/integration/clean/*
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
