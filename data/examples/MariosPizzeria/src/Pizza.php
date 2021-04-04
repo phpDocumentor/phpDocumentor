@@ -7,7 +7,7 @@ namespace Marios;
 /**
  * @package Domain
  */
-final class Pizza
+final class Pizza implements Product
 {
     use SharedTrait { sayHello as private myPrivateHello; }
 
@@ -40,6 +40,11 @@ final class Pizza
      * @deprecated
      */
     public $extra;
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
 
     /**
      * Om nom nom.

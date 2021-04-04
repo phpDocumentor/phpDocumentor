@@ -42,7 +42,7 @@ describe('Classes', function() {
             .contains('This class provides an interface through which you can order pizza\'s and pasta\'s from Mario\'s Pizzeria.');
     });
 
-    describe ('Shows class tags', function () {
+    describe ('Shows tags', function () {
         it('Shows the tags section', function () {
             cy.get('.phpdocumentor-tag-list__heading')
                 .contains("Tags")
