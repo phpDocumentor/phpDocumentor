@@ -1,4 +1,4 @@
-<code class="phpdocumentor-code phpdocumentor-signature {% if node.deprecated %}phpdocumentor-signature--deprecated{% endif %}">
+<code class="phpdocumentor-code phpdocumentor-signature {% if node.deprecated %}-deprecated{% endif %}">
     <span class="phpdocumentor-signature__visibility">{{ node.visibility }}</span>
     {% if node.static %}<span class="phpdocumentor-signature__static">static</span>{% endif %}
     <span class="phpdocumentor-signature__type">{{ not node.type ? "mixed" : node.type|route('class:short')|join('|')|raw }}</span>

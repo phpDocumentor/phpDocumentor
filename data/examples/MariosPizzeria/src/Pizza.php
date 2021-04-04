@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Marios;
 
+use ArrayObject;
+
 /**
  * @package Domain
  */
@@ -23,7 +25,7 @@ final class Pizza implements Product
      */
     private const TYPE_AMERICAN = 'american';
 
-    private const TYPE_HYBRID = ['italian,spanish',1, 'american'];
+    private const TYPE_HYBRID = ['italian,spanish', 1, 'american'];
 
     /**
      * Name of your own custom Pizza.
@@ -38,8 +40,23 @@ final class Pizza implements Product
     /**
      * I don't know what this does; can we delete this?
      * @deprecated
+     * @var ArrayObject
      */
-    public $extra;
+    protected $extra;
+
+    /**
+     * The best part of a Pizza is its secret ingredient.
+     *
+     * @var mixed Even the type of this is secret!
+     */
+    private $secretIngredient;
+
+    /**
+     * @var true
+     */
+    private bool $alwaysTrue = true;
+
+    private float $property1, $property2, $property3;
 
     public function getName(): string
     {
