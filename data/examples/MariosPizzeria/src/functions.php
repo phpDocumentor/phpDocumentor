@@ -6,11 +6,17 @@ function heatOven()
 {
 }
 
-function coolOven(int $degrees): bool
+/**
+ * @return bool whether cooling succeeded.
+ */
+function coolOven(int $degrees = 42): bool
 {
     return true;
 }
 
+/**
+ * @deprecated
+ */
 function populateTemperature(int &$temperature): void
 {
 }
