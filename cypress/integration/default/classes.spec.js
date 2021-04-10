@@ -8,6 +8,7 @@ describe('Classes', function() {
 
     describe('Search', search);
     describe('In the sidebar', sidebar);
+
     describe('Breadcrumb', function() {
         it('Has a breadcrumb featuring "Marios"', function() {
             cy.get('.phpdocumentor-breadcrumb').should('have.length', 2);

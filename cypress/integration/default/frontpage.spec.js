@@ -7,82 +7,76 @@ describe('Frontpage', function() {
         cy.visit('build/default/index.html');
     });
 
-    it('Has "Documentation" in the menu as title', function() {
-        cy.get('.phpdocumentor-title').contains("Documentation");
-    });
-
     describe('Search', search);
     describe('In the sidebar', sidebar);
 
-    describe('Content', function() {
-        describe('Packages', function() {
-            it('Shows a section "Packages" with a table of contents', function() {
-                cy.get('h3#packages').should('contain', 'Packages');
-                cy.get('h3#packages').next('.phpdocumentor-table-of-contents');
-            });
-
-            it('Shows the "Default" package', function() {
-                cy.get('h3#packages')
-                    .next('.phpdocumentor-table-of-contents')
-                    .find('.-package').should('contain', 'Default')
-            });
-
-            it('Opens the "Default" package', function() {
-                cy
-                    .get('h3#packages').next('.phpdocumentor-table-of-contents')
-                    .find('.phpdocumentor-table-of-contents__entry.-package')
-                    .contains("Default")
-                    .click();
-
-                shouldVisitPageWithTitle('/packages/Default.html', 'Default');
-            });
+    describe('Packages', function() {
+        it('Shows a section "Packages" with a table of contents', function() {
+            cy.get('h3#packages').should('contain', 'Packages');
+            cy.get('h3#packages').next('.phpdocumentor-table-of-contents');
         });
 
-        describe('Namespaces', function() {
-            it('Shows a section "Namespaces" with a table of contents', function() {
-                cy.get('h3#namespaces').should('contain', 'Namespaces');
-                cy.get('h3#namespaces').next('.phpdocumentor-table-of-contents');
-            });
-
-            it('Shows the "Marios" namespace', function() {
-                cy.get('h3#namespaces')
-                    .next('.phpdocumentor-table-of-contents')
-                    .find('.-namespace').should('contain', 'Marios')
-            });
-
-            it('Opens the "Marios" namespace', function() {
-                cy
-                    .get('h3#namespaces').next('.phpdocumentor-table-of-contents')
-                    .find('.phpdocumentor-table-of-contents__entry.-namespace')
-                    .contains("Marios")
-                    .click();
-
-                shouldVisitPageWithTitle('/namespaces/marios.html', 'Marios');
-            });
+        it('Shows the "Default" package', function() {
+            cy.get('h3#packages')
+                .next('.phpdocumentor-table-of-contents')
+                .find('.-package').should('contain', 'Default')
         });
 
-        describe('Global constants and functions', function() {
-            it('Shows a section "Table Of Contents"', function() {
-                cy.get('h3#toc').should('contain', 'Table of Contents');
-                cy.get('h3#toc').next('.phpdocumentor-table-of-contents');
-            });
+        it('Opens the "Default" package', function() {
+            cy
+                .get('h3#packages').next('.phpdocumentor-table-of-contents')
+                .find('.phpdocumentor-table-of-contents__entry.-package')
+                .contains("Default")
+                .click();
 
-            it('Shows the "HIGHER_OVEN_TEMPERATURE" constant', function() {
-                cy.get('h3#toc')
-                    .next('.phpdocumentor-table-of-contents')
-                    .find('.-constant').should('contain', 'HIGHER_OVEN_TEMPERATURE')
-            });
+            shouldVisitPageWithTitle('/packages/Default.html', 'Default');
+        });
+    });
 
-            // TODO: Is this the outcome that we want?
-            it('Opens the "HIGHER_OVEN_TEMPERATURE" constant', function() {
-                cy
-                    .get('h3#toc').next('.phpdocumentor-table-of-contents')
-                    .find('.phpdocumentor-table-of-contents__entry.-constant')
-                    .contains('HIGHER_OVEN_TEMPERATURE')
-                    .click();
+    describe('Namespaces', function() {
+        it('Shows a section "Namespaces" with a table of contents', function() {
+            cy.get('h3#namespaces').should('contain', 'Namespaces');
+            cy.get('h3#namespaces').next('.phpdocumentor-table-of-contents');
+        });
 
-                shouldVisitPageWithTitle('/namespaces/default.html', 'API Documentation');
-            });
+        it('Shows the "Marios" namespace', function() {
+            cy.get('h3#namespaces')
+                .next('.phpdocumentor-table-of-contents')
+                .find('.-namespace').should('contain', 'Marios')
+        });
+
+        it('Opens the "Marios" namespace', function() {
+            cy
+                .get('h3#namespaces').next('.phpdocumentor-table-of-contents')
+                .find('.phpdocumentor-table-of-contents__entry.-namespace')
+                .contains("Marios")
+                .click();
+
+            shouldVisitPageWithTitle('/namespaces/marios.html', 'Marios');
+        });
+    });
+
+    describe('Global constants and functions', function() {
+        it('Shows a section "Table Of Contents"', function() {
+            cy.get('h3#toc').should('contain', 'Table of Contents');
+            cy.get('h3#toc').next('.phpdocumentor-table-of-contents');
+        });
+
+        it('Shows the "HIGHER_OVEN_TEMPERATURE" constant', function() {
+            cy.get('h3#toc')
+                .next('.phpdocumentor-table-of-contents')
+                .find('.-constant').should('contain', 'HIGHER_OVEN_TEMPERATURE')
+        });
+
+        // TODO: Is this the outcome that we want?
+        it('Opens the "HIGHER_OVEN_TEMPERATURE" constant', function() {
+            cy
+                .get('h3#toc').next('.phpdocumentor-table-of-contents')
+                .find('.phpdocumentor-table-of-contents__entry.-constant')
+                .contains('HIGHER_OVEN_TEMPERATURE')
+                .click();
+
+            shouldVisitPageWithTitle('/namespaces/default.html', 'API Documentation');
         });
     });
 });

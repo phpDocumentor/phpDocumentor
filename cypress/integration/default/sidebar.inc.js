@@ -2,6 +2,10 @@ import {getSidebarHeaderByTitle, getSidebarItemByTitle} from "./helpers/sidebar.
 import {shouldVisitPageWithTitle} from "./helpers/pages.lib";
 
 export default function() {
+    it('Has "Documentation" in the menu as title', function() {
+        cy.get('.phpdocumentor-title').contains("Documentation");
+    });
+
     describe('Namespaces section', function() {
         it('Shows the Namespaces section', function () {
             getSidebarHeaderByTitle('Namespaces')
