@@ -46,6 +46,11 @@ final class DescriptionDescriptor
         return $this->inlineTags;
     }
 
+    public function isEmpty() : bool
+    {
+        return $this->description->getBodyTemplate() === '';
+    }
+
     /**
      * Renders docblock as string.
      *

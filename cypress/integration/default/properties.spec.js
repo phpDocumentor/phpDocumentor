@@ -128,5 +128,11 @@ describe('Showing properties for a class', function() {
                 .find('.phpdocumentor-signature__type')
                 .contains('true');
         });
+
+        it('Var tag description is shown', function() {
+            getElementWithName('property', '$secretIngredient')
+                .find('.phpdocumentor-description')
+                .contains('Even the type of this is secret!');
+        });
     });
 });
