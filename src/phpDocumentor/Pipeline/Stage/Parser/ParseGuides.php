@@ -53,7 +53,7 @@ final class ParseGuides
 
     public function __invoke(Payload $payload) : Payload
     {
-        if ($payload->getConfig()['phpdocumentor']['settings']['guides.enabled'] !== true) {
+        if (($payload->getConfig()['phpdocumentor']['settings']['guides.enabled'] ?? false) !== true) {
             return $payload;
         }
 

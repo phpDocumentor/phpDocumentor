@@ -36,7 +36,7 @@ final class StoreGuidesToCache
     {
         $configuration = $payload->getConfig();
 
-        if ($configuration['phpdocumentor']['settings']['guides.enabled'] === true) {
+        if (($configuration['phpdocumentor']['settings']['guides.enabled'] ?? false) === true) {
             $this->logger->info('Storing cache .. ');
 
             $this->commandBus->handle(

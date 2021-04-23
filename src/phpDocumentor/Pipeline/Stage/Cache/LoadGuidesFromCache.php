@@ -26,7 +26,7 @@ final class LoadGuidesFromCache
     public function __invoke(Payload $payload) : Payload
     {
         $configuration = $payload->getConfig();
-        if ($configuration['phpdocumentor']['settings']['guides.enabled'] === true) {
+        if (($configuration['phpdocumentor']['settings']['guides.enabled'] ?? false) === true) {
             $useCache = $configuration['phpdocumentor']['use-cache'];
             if ($useCache && !$payload->getBuilder()->getProjectDescriptor()->getSettings()->isModified()) {
                 $this->logger->info('Loading project from cache');
