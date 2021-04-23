@@ -176,6 +176,7 @@ final class Version3Test extends TestCase
                     'guides' => [],
                 ],
             ],
+            'settings' => [],
             'templates' => [
                 [
                     'name' => self::DEFAULT_TEMPLATE_NAME,
