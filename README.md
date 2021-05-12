@@ -118,10 +118,10 @@ Please consult the documentation to see the format and supported options.
 
 ### Nightly builds
 
-PhpDocumentor doesn't have a nightly release.
-However, during each pipeline a [phar] artifact is built.
+PhpDocumentor doesn't have nightly releases.
+However, during each pipeline a phar artifact is built.
 If you want to test the bleeding edge version of phpDocumentor, have a look in the [actions] section of this repository.
-Each successful QA workflow has a download at the right upper corner.
+Each successful QA workflow has an Artifacts section at the bottom with the phar artifact built.
 
 Contact
 -------
