@@ -2,5 +2,5 @@
     <span class="phpdocumentor-signature__visibility">{{ node.visibility }}</span>
     <span class="phpdocumentor-signature__type">{{ not node.type ? "mixed" : node.type|route('class:short')|join('|')|raw }}</span>
     <span class="phpdocumentor-signature__name">{{ node.name }}</span>
-    = <span class="phpdocumentor-signature__default-value">{{ node.value ?: '""' }}</span>
+    = <span class="phpdocumentor-signature__default-value">{{ node.value | default('""') }}</span>
 </code>
