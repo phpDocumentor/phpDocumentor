@@ -100,6 +100,8 @@ the path is expected to be a directory tree that needs to be included. Thus ``sr
 Reference
 ---------
 
+  {:doc:`full-config-reference`} full reference
+
 The phpDocumentor configuration file contains the following top-level
 elements which are explained in more detail in the sub-chapters.
 
@@ -160,7 +162,7 @@ A minimal setup of ``api`` only contains ``source`` element.
       </source>
     </api>
 
-Also ``api` may contain an ``output`` element that forms the full path to the location where the rendered docblock api
+Also ``api`` may contain an ``output`` element that forms the full path to the location where the rendered docblock api
 is located. The value of ``output`` is appended to the ``paths/output`` element and the optional ``folder`` element
 of its version.
 
