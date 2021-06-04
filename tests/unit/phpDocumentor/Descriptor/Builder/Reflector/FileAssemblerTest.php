@@ -16,7 +16,6 @@ namespace phpDocumentor\Descriptor\Builder\Reflector;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\PackageDescriptor;
-use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock;
@@ -76,9 +75,9 @@ DOCBLOCK
 
         $descriptor = $this->fixture->create($fileReflectorMock);
 
-        $this->assertSame($filename, $descriptor->getName());
-        $this->assertSame($hash, $descriptor->getHash());
-        $this->assertSame($content, $descriptor->getSource());
+        self::assertSame($filename, $descriptor->getName());
+        self::assertSame($hash, $descriptor->getHash());
+        self::assertSame($content, $descriptor->getSource());
         //TODO: check this when we are testing default package behavior
         //$this->assertSame($this->defaultPackage, $descriptor->getPackage());
     }
@@ -91,15 +90,8 @@ DOCBLOCK
         $settings = new Settings();
         $settings->includeSource();
 
-        $projectDescriptor = $this->prophesize(ProjectDescriptor::class);
-        $projectDescriptor->getSettings()->shouldBeCalled()->willReturn($settings);
-
         $projectDescriptorBuilderMock = $this->prophesize(ProjectDescriptorBuilder::class);
         $projectDescriptorBuilderMock->getDefaultPackage()->shouldBeCalled()->willReturn($this->defaultPackage);
-        $projectDescriptorBuilderMock
-            ->getProjectDescriptor()
-            ->shouldBeCalled()
-            ->willReturn($projectDescriptor->reveal());
 
         $projectDescriptorBuilderMock->buildDescriptor(Argument::any(), Argument::any())->will(function () {
             $mock = $this->prophesize(DescriptorAbstract::class);

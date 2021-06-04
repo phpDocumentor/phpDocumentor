@@ -10,7 +10,14 @@ use League\Flysystem\Filesystem;
 use League\Flysystem\MountManager;
 use Mockery as m;
 use phpDocumentor\Configuration\ApiSpecification;
+use phpDocumentor\Configuration\Source;
 use phpDocumentor\Configuration\SymfonyConfigFactory;
+use phpDocumentor\Descriptor\ApiSetDescriptor;
+use phpDocumentor\Descriptor\Collection as DescriptorCollection;
+use phpDocumentor\Descriptor\DocumentationSetDescriptor;
+use phpDocumentor\Descriptor\FileDescriptor;
+use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\VersionDescriptor;
 use phpDocumentor\Dsn;
 use phpDocumentor\Parser\FlySystemFactory;
 use phpDocumentor\Path;
@@ -101,5 +108,46 @@ final class Provider extends Base
     public function path() : Path
     {
         return new Path('./');
+    }
+
+    public function source() : Source
+    {
+        return new Source(
+            $this->dsn(),
+            [$this->path()]
+        );
+    }
+
+    public function fileDescriptor() : FileDescriptor
+    {
+        $file = new FileDescriptor($this->generator->md5);
+        $file->setPath((string) $this->path());
+        $file->setSource($this->generator->words(10, true));
+
+        return $file;
+    }
+
+    /** @param DocumentationSetDescriptor[] $documentationSets */
+    public function versionDescriptor(array $documentationSets) : VersionDescriptor
+    {
+        return new VersionDescriptor(
+            $this->generator->numerify('v#.#.#'),
+            DescriptorCollection::fromClassString(DocumentationSetDescriptor::class, $documentationSets)
+        );
+    }
+
+    public function apiSetDescriptor() : ApiSetDescriptor
+    {
+        return new ApiSetDescriptor(
+            $this->generator->word(),
+            $this->source(),
+            (string) $this->path(),
+            $this->apiSpecification()
+        );
+    }
+
+    public function projectDescriptor() : ProjectDescriptor
+    {
+        return new ProjectDescriptor('test');
     }
 }

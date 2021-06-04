@@ -77,11 +77,11 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     /**
      * @internal should not be called by any other class than the assamblers
      *
-     * @param ClassDescriptor|Fqsen|string|null $parents
+     * @param ClassDescriptor|Fqsen|string|null $parent
      */
-    public function setParent($parents) : void
+    public function setParent($parent) : void
     {
-        $this->parent = $parents;
+        $this->parent = $parent;
     }
 
     /**

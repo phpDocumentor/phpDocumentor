@@ -1,0 +1,47 @@
+.phpdocumentor-modal {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.phpdocumentor-modal__open {
+    visibility: visible;
+    opacity: 1;
+    transition-delay: 0s;
+}
+
+.phpdocumentor-modal-bg {
+    position: absolute;
+    background: gray;
+    opacity: 50%;
+    width: 100%;
+    height: 100%;
+}
+
+.phpdocumentor-modal-container {
+    border-radius: 1em;
+    background: #fff;
+    position: relative;
+    padding: 2em;
+}
+
+.phpdocumentor-modal__close {
+    position: absolute;
+    right: 0.75em;
+    top: 0.75em;
+    outline: none;
+    appearance: none;
+    color: var(--primary-color);
+    background: none;
+    border: 0px;
+    font-weight: bold;
+    cursor: pointer;
+}
