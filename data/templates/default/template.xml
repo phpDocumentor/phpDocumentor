@@ -7,6 +7,7 @@
   <transformations>
     <transformation writer="twig" source="templates/default/index.html.twig" artifact="index.html"/>
     <transformation writer="twig" query="files" source="templates/default/file.html.twig" />
+    <transformation writer="sourcecode" query="files" source="templates/default/source/file.source.txt.twig" artifact="files/{{path}}.txt" />
     <transformation writer="twig" query="indexes.namespaces" source="templates/default/namespace.html.twig" />
     <transformation writer="twig" query="indexes.packages" source="templates/default/package.html.twig" />
     <transformation writer="twig" query="indexes.classes" source="templates/default/class.html.twig" />

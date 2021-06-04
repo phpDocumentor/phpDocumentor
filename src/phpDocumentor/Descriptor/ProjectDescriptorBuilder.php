@@ -206,6 +206,11 @@ class ProjectDescriptorBuilder
         $this->project->getSettings()->setVisibility($visibility);
     }
 
+    public function shouldIncludeSource() : bool
+    {
+        return $this->apiSpecification['include-source'];
+    }
+
     public function setName(string $title) : void
     {
         $this->project->setName($title);

@@ -5,3 +5,22 @@
     font-size: var(--text-sm);
     color: gray;
 }
+
+.phpdocumentor-element-found-in .phpdocumentor-element-found-in__source {
+    flex: 0 1 auto;
+    display: inline-flex;
+}
+
+.phpdocumentor-element-found-in .phpdocumentor-element-found-in__source:after {
+    width: 1.25rem;
+    height: 1.25rem;
+    line-height: 1.25rem;
+    background: transparent url('data:image/svg+xml;utf8,{{ include('icons/source.svg.twig')|trim|raw }}') no-repeat center center;
+    content: '';
+    left: 0;
+    border-radius: 50%;
+    font-weight: 600;
+    text-align: center;
+    font-size: .75rem;
+    margin-top: .2rem;
+}
