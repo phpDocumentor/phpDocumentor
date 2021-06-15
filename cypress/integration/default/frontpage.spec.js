@@ -16,20 +16,20 @@ describe('Frontpage', function() {
             cy.get('h3#packages').next('.phpdocumentor-table-of-contents');
         });
 
-        it('Shows the "Default" package', function() {
+        it('Shows the "Marios" package', function() {
             cy.get('h3#packages')
                 .next('.phpdocumentor-table-of-contents')
-                .find('.-package').should('contain', 'Default')
+                .find('.-package').should('contain', 'Marios')
         });
 
-        it('Opens the "Default" package', function() {
+        it('Opens the "Marios" package', function() {
             cy
                 .get('h3#packages').next('.phpdocumentor-table-of-contents')
                 .find('.phpdocumentor-table-of-contents__entry.-package')
-                .contains("Default")
+                .contains("Marios")
                 .click();
 
-            shouldVisitPageWithTitle('/packages/Default.html', 'Default');
+            shouldVisitPageWithTitle('/packages/Marios.html', 'Marios');
         });
     });
 

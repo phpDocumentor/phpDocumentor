@@ -61,7 +61,7 @@ class Renderer
         $this->environment->addExtension(new AssetsExtension($this->logger, $this->plantumlRenderer));
         $this->environment->addGlobal('project', $project);
         $this->environment->addGlobal('usesNamespaces', count($project->getNamespace()->getChildren()) > 0);
-        $this->environment->addGlobal('usesPackages', count($project->getPackage()->getChildren()) > 1);
+        $this->environment->addGlobal('usesPackages', count($project->getPackage()->getChildren()) > 0);
         $this->environment->addGlobal('documentationSet', $project);
         $this->environment->addGlobal('destinationPath', $targetDirectory);
 

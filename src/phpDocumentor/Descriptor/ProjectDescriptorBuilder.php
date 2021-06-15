@@ -41,9 +41,6 @@ class ProjectDescriptorBuilder
     /** @var ProjectDescriptor $project */
     protected $project;
 
-    /** @var string */
-    private $defaultPackage = '';
-
     /** @var iterable<WithCustomSettings> */
     private $servicesWithCustomSettings;
 
@@ -164,9 +161,6 @@ class ProjectDescriptorBuilder
 
     public function createApiDocumentationSet(Project $project) : void
     {
-        $packageName = $project->getRootNamespace()->getFqsen()->getName();
-        $this->defaultPackage = $packageName;
-
         $customSettings = $this->getProjectDescriptor()->getSettings()->getCustom();
         foreach ($this->servicesWithCustomSettings as $service) {
             // We assume that the custom settings have the non-default settings and we should not override those;
@@ -198,7 +192,7 @@ class ProjectDescriptorBuilder
 
     public function getDefaultPackage() : string
     {
-        return $this->defaultPackage;
+        return $this->apiSpecification['default-package-name'];
     }
 
     public function setVisibility(int $visibility) : void
