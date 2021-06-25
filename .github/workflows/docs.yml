@@ -32,7 +32,7 @@ jobs:
 
       - name: Generate Documentation
         run: |
-          ./bin/phpdoc --setting="guides.enabled=true" --force -v
+          make docs
 
       - name: Build Container
         uses: elgohr/Publish-Docker-Github-Action@master

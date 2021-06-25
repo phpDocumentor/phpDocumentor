@@ -39,6 +39,7 @@ help:
 	@echo "";
 	@echo "== Release tools ==";
 	@echo "phar             - Creates the PHAR file";
+	@echo "docs			    - Creates local docs docker image";
 	@echo "";
 
 .PHONY: phar
@@ -126,3 +127,10 @@ build/default/index.html: data/examples/MariosPizzeria/**/*
 
 build/clean/index.html: data/examples/MariosPizzeria/**/*
 	${.DOCKER_COMPOSE_RUN} phpdoc --config=data/examples/MariosPizzeria/phpdoc.xml --template=clean --target=build/clean --force
+
+.PHONY: docs
+docs:
+	mkdir ./docs/.build/ || true
+	cp -p --update ./data/xsd/phpdoc.xsd ./docs/.build/
+	${.DOCKER_COMPOSE_RUN} phpdoc --setting="guides.enabled=true" --force -v
+	docker build -t phpdocumentor/phpdocumentor/docs.phpdoc.org:local ./docs
