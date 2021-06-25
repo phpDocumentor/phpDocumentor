@@ -17,7 +17,6 @@ use LogicException;
 use phpDocumentor\Guides\Nodes\Node;
 use function strlen;
 use function trim;
-use function utf8_encode;
 
 final class TableColumn
 {
@@ -35,7 +34,7 @@ final class TableColumn
 
     public function __construct(string $content, int $colSpan)
     {
-        $this->content = utf8_encode(trim($content));
+        $this->content = trim($content);
         $this->colSpan = $colSpan;
     }
 
@@ -62,7 +61,7 @@ final class TableColumn
 
     public function addContent(string $content) : void
     {
-        $this->content = trim($this->content . utf8_encode($content));
+        $this->content = trim($this->content . $content);
     }
 
     public function incrementRowSpan() : void

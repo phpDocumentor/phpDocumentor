@@ -29,14 +29,13 @@ use function explode;
 use function implode;
 use function ksort;
 use function max;
+use function mb_strlen;
+use function mb_strpos;
+use function mb_substr;
 use function preg_match;
 use function sprintf;
 use function str_repeat;
-use function strlen;
-use function strpos;
-use function substr;
 use function trim;
-use function utf8_decode;
 
 class TableNode extends Node
 {
@@ -146,7 +145,7 @@ class TableNode extends Node
             throw new LogicException('Cannot push data after TableNode is compiled');
         }
 
-        $this->rawDataLines[$this->currentLineNumber] = utf8_decode($line);
+        $this->rawDataLines[$this->currentLineNumber] = $line;
         $this->currentLineNumber++;
     }
 
@@ -234,11 +233,11 @@ class TableNode extends Node
 
             $previousColumnEnd = null;
             foreach ($columnRanges as $columnRange) {
-                $isRangeBeyondText = $columnRange[0] >= strlen($line);
+                $isRangeBeyondText = $columnRange[0] >= mb_strlen($line);
                 // check for content in the "gap"
                 if ($previousColumnEnd !== null && !$isRangeBeyondText) {
-                    $gapText = substr($line, $previousColumnEnd, $columnRange[0] - $previousColumnEnd);
-                    if (strlen(trim($gapText)) !== 0) {
+                    $gapText = mb_substr($line, $previousColumnEnd, $columnRange[0] - $previousColumnEnd);
+                    if (mb_strlen(trim($gapText)) !== 0) {
                         $this->addError(
                             sprintf('Malformed table: content "%s" appears in the "gap" on row "%s"', $gapText, $line)
                         );
@@ -252,12 +251,12 @@ class TableNode extends Node
                 } elseif ($lastColumnRangeEnd === $columnRange[1]) {
                     // this is the last column, so get the rest of the line
                     // this is because content can go *beyond* the table legally
-                    $content = substr(
+                    $content = mb_substr(
                         $line,
                         $columnRange[0]
                     );
                 } else {
-                    $content = substr(
+                    $content = mb_substr(
                         $line,
                         $columnRange[0],
                         $columnRange[1] - $columnRange[0]
@@ -377,7 +376,7 @@ class TableNode extends Node
             $previousColumnEnd = null;
             foreach ($columnRanges as $start => $end) {
                 // a content line that ends before it should
-                if ($end >= strlen($line)) {
+                if ($end >= mb_strlen($line)) {
                     $this->errors[] = sprintf(
                         "Malformed table: Line\n\n%s\n\ndoes not appear to be a complete table row",
                         $line
@@ -391,8 +390,8 @@ class TableNode extends Node
                         throw new LogicException('The previous column end is not set yet');
                     }
 
-                    $gapText = substr($line, $previousColumnEnd, $start - $previousColumnEnd);
-                    if (strpos($gapText, '|') === false && strpos($gapText, '+') === false) {
+                    $gapText = mb_substr($line, $previousColumnEnd, $start - $previousColumnEnd);
+                    if (mb_strpos($gapText, '|') === false && mb_strpos($gapText, '+') === false) {
                         // text continued through the "gap". This is a colspan
                         // "+" is an odd character - it's usually "|", but "+" can
                         // happen in row-span situations
@@ -400,7 +399,7 @@ class TableNode extends Node
                     } else {
                         // we just hit a proper "gap" record the line up until now
                         $row->addColumn(
-                            substr($line, $currentColumnStart, $previousColumnEnd - $currentColumnStart),
+                            mb_substr($line, $currentColumnStart, $previousColumnEnd - $currentColumnStart),
                             $currentSpan
                         );
                         $currentSpan = 1;
@@ -425,7 +424,7 @@ class TableNode extends Node
                 }
 
                 $row->addColumn(
-                    substr($line, $currentColumnStart, $previousColumnEnd - $currentColumnStart),
+                    mb_substr($line, $currentColumnStart, $previousColumnEnd - $currentColumnStart),
                     $currentSpan
                 );
             }
@@ -445,7 +444,7 @@ class TableNode extends Node
                     if (!$column->isCompletelyEmpty()
                         && str_repeat(
                             '-',
-                            strlen($column->getContent())
+                            mb_strlen($column->getContent())
                         ) === $column->getContent()) {
                         // only a line separator in this column - not content!
                         continue;
