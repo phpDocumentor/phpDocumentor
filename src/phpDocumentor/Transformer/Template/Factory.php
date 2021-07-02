@@ -77,7 +77,7 @@ class Factory
             $loadedTemplates[$template['name']] = $this->loadTemplate(
                 $output,
                 $template['name'],
-                $template['parameters']
+                $template['parameters'] ?? []
             );
             $stopWatch->stop('load template');
         }

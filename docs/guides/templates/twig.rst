@@ -60,6 +60,11 @@ The Twig writer provides two primary variables for use in your templates:
 
 - ``node`` (subclass of ``phpDocumentor\Descriptor\DescriptorAbstract``) - This variable contains the data from the transformation query. This will be one of the ``Descriptor`` classes matching the object you query.
 
+.. note::
+
+Parameters are also available as twig variables, this allows you to add static values from your configuration files in the rendered output.
+``{{ parameter.param-key }}`` will give you the value of the parameter ``param-key``
+
 Functions
 ---------
 
