@@ -144,6 +144,7 @@ final class Twig extends WriterAbstract implements Initializable
             $this->environment->addGlobal('documentationSet', $project);
             $this->environment->addGlobal('node', $node);
             $this->environment->addGlobal('destinationPath', $path);
+            $this->environment->addGlobal('parameter', $transformation->getParameters());
 
             $output = $this->environment->render(
                 substr($transformation->getSource(), strlen($templatePath)),

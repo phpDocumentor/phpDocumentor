@@ -75,7 +75,7 @@ final class FactoryTest extends TestCase
 
         // Act
         $result = $this->fixture->getTemplates(
-            [['name' => $templateName]],
+            [['name' => $templateName, 'parameters' => []]],
             $this->flySystemFactory->create(Dsn::createFromString('./build'))
         )[$templateName];
 
@@ -111,7 +111,7 @@ final class FactoryTest extends TestCase
 
         // Act
         $this->fixture->getTemplates(
-            [['name' => 'does-not-exist']],
+            [['name' => 'does-not-exist', 'parameters' => []]],
             $this->flySystemFactory->create(Dsn::createFromString('./build'))
         );
     }
@@ -157,7 +157,6 @@ final class FactoryTest extends TestCase
   <version>1.0.0</version>
   <copyright>Mike van Riel 2013</copyright>
   <description><![CDATA[This is the description]]></description>
-  <parameter key="debug">on</parameter>
   <transformations>
     <transformation query="copy" writer="FileIo" source="templates/clean/htaccess.dist" artifact=".htaccess">
       <parameter key="fakeParam">value</parameter>
@@ -188,6 +187,9 @@ final class FactoryTest extends TestCase
     <transformation writer="twig" source="templates/clean/graphs/class.html.twig" artifact="graphs/class.html"/>
     <transformation writer="Graph" source="Class" artifact="graphs/classes.svg" />
   </transformations>
+  <parameters>
+    <parameter key="debug">on</parameter>
+  </parameters>
 </template>
 XML;
         $templateDirectory = vfsStream::newDirectory('default');

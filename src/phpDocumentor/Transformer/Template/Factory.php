@@ -28,7 +28,7 @@ use RecursiveDirectoryIterator;
 use RuntimeException;
 use SimpleXMLElement;
 use Symfony\Component\Stopwatch\Stopwatch;
-use function array_column;
+use function array_merge;
 use function file_exists;
 use function in_array;
 use function is_readable;
@@ -65,25 +65,32 @@ class Factory
      * Attempts to find, construct and return a template object with the given template name or (relative/absolute)
      * path.
      *
-     * @param array<int, array{name:string}> $templates
+     * @param array<int, array{name:string, parameters:array<string, string>}> $templates
      */
     public function getTemplates(array $templates, FilesystemInterface $output) : Collection
     {
         $stopWatch = new Stopwatch();
         $loadedTemplates = [];
 
-        foreach (array_column($templates, 'name') as $template) {
+        foreach ($templates as $template) {
             $stopWatch->start('load template');
-            $loadedTemplates[$template] = $this->loadTemplate($output, $template);
+            $loadedTemplates[$template['name']] = $this->loadTemplate(
+                $output,
+                $template['name'],
+                $template['parameters']
+            );
             $stopWatch->stop('load template');
         }
 
         return new Collection($loadedTemplates);
     }
 
-    private function loadTemplate(FilesystemInterface $output, string $template) : Template
+    /**
+     * @param array<string, string> $parameters
+     */
+    private function loadTemplate(FilesystemInterface $output, string $template, array $parameters) : Template
     {
-        $template = $this->createTemplateFromXml($output, $template);
+        $template = $this->createTemplateFromXml($output, $template, $parameters);
 
         /** @var Transformation $transformation */
         foreach ($template as $transformation) {
@@ -131,9 +138,14 @@ class Factory
 
     /**
      * Creates and returns a template object based on the provided template definition.
+     *
+     * @param array<string, string> $templateParams
      */
-    private function createTemplateFromXml(FilesystemInterface $filesystem, string $nameOrPath) : Template
-    {
+    private function createTemplateFromXml(
+        FilesystemInterface $filesystem,
+        string $nameOrPath,
+        array $templateParams
+    ) : Template {
         // create the filesystems that a template needs to be able to manipulate, the source folder containing this
         // template its files; the destination to where it can write its files and a global templates folder where to
         // get global template files from
@@ -153,8 +165,16 @@ class Factory
         $template->setVersion((string) $xml->version);
         $template->setCopyright((string) $xml->copyright);
         $template->setDescription((string) $xml->description);
-        foreach ($xml->parameter as $parameter) {
-            $parameterObject = new Parameter((string) $parameter->attributes()->key, (string) $parameter);
+
+        if ($xml->parameters) {
+            foreach ($xml->parameters->children() as $parameter) {
+                $parameterObject = new Parameter((string) $parameter->attributes()->key, (string) $parameter);
+                $template->setParameter($parameterObject->key(), $parameterObject);
+            }
+        }
+
+        foreach ($templateParams as $key => $value) {
+            $parameterObject = new Parameter($key, $value);
             $template->setParameter($parameterObject->key(), $parameterObject);
         }
 
@@ -173,7 +193,7 @@ class Factory
                 $parameters[$parameterObject->key()] = $parameterObject;
             }
 
-            $transformationObject->setParameters($parameters);
+            $transformationObject->setParameters(array_merge($parameters, $template->getParameters()));
 
             $template[$i++] = $transformationObject;
         }

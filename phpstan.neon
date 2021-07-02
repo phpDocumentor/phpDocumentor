@@ -32,7 +32,7 @@ parameters:
     - '#Parameter \#2 \$assembler of method phpDocumentor\\Descriptor\\Builder\\AssemblerFactory::(register|registerFallback)\(\) expects phpDocumentor\\Descriptor\\Builder\\AssemblerInterface.* given\.#'
 
     # Design improvement of configuration needed
-    - '#Parameter \#1 \$templates of method phpDocumentor\\Transformer\\Template\\Factory::getTemplates\(\) expects array<int, array\(.* => string\)>, array<int, string>&nonEmpty given\.#'
+    - '#Parameter \#1 \$templates of method phpDocumentor\\Transformer\\Template\\Factory::getTemplates\(\) expects array<int, array\(.*\)>, array<int, string>&nonEmpty given\.#'
 
     # Advanced transformations of array. PHPStan doesn't seem to keep nonEmpty flag through some array functions
     - '#Method phpDocumentor\\Configuration\\Definition\\Version2::upgrade\(\) should return.+#'

@@ -180,6 +180,7 @@ final class Version3Test extends TestCase
             'templates' => [
                 [
                     'name' => self::DEFAULT_TEMPLATE_NAME,
+                    'parameters' => [],
                 ],
             ],
         ];
