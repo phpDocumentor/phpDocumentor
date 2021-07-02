@@ -39,7 +39,7 @@ jobs:
         env:
           VERSION: 'latest'
         with:
-          name: phpdocumentor/phpdocumentor/phpdoc.org
+          name: phpdocumentor/phpdocumentor/phpdoc-website
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: docker.pkg.github.com
@@ -51,5 +51,5 @@ jobs:
         uses: jaapio/keelsh-deploy@1.0.0
         with:
           keelBaseUrl: ${{ secrets.KEEL_BASE_URL }}
-          image: 'docker.pkg.github.com/phpdocumentor/phpdocumentor/phpdoc.org'
+          image: 'docker.pkg.github.com/phpdocumentor/phpdocumentor/phpdoc-website'
           tag: ${{ steps.latest_build.outputs.tag }}
