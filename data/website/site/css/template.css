@@ -1,0 +1,220 @@
+@-webkit-keyframes fadeInRight {
+    0% {
+        opacity: 0.2;
+        -webkit-transform: translate3d(5%, 0, 0);
+        transform: translate3d(5%, 0, 0);
+    }
+    100% {
+        opacity: 1;
+        -webkit-transform: none;
+        transform: none;
+    }
+}
+
+@keyframes fadeInRight {
+    0% {
+        opacity: 0.2;
+        -webkit-transform: translate3d(5%, 0, 0);
+        transform: translate3d(5%, 0, 0);
+    }
+    100% {
+        opacity: 1;
+        -webkit-transform: none;
+        transform: none;
+    }
+}
+
+.phpdocumentor-hero {
+    display: flex;
+    align-items: center;
+    margin-bottom: 4rem;
+    overflow: hidden;
+    border-top: 1px solid var(--primary-color);
+}
+
+.phpdocumentor-hero .phpdocumentor-button {
+    font-size: 90%;
+    padding: 0 1.5rem;
+    height: auto;
+    transition: background-color .2s ease-in-out;
+}
+
+.phpdocumentor-hero__blurb,
+.phpdocumentor-hero__illustration {
+    flex: 1 1 0;
+}
+.phpdocumentor-hero__illustration {
+    text-align: right;
+}
+.phpdocumentor-hero__illustration img {
+    width: 100%;
+}
+.phpdocumentor-hero__blurb-title {
+    font-size: 2rem;
+    line-height: 1.3;
+    font-weight: normal;
+    margin-bottom: 0;
+}
+.phpdocumentor-hero__blurb-slogan {
+    font-size: 1rem;
+}
+.phpdocumentor-hero__blurb-title em {
+    font-style: normal;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.phpdocumentor-diagonal {
+    content: '';
+    background: var(--primary-color-lighter);
+    transform: skewY(-2deg);
+    margin-top: -3rem;
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+    margin-bottom: 3rem;
+}
+
+.phpdocumentor-diagonal > .phpdocumentor-section {
+    transform: skewY(2deg);
+}
+
+.phpdocumentor-content h2 {
+    font-size: 2.5rem;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 2rem;
+    margin-bottom: 2rem;
+}
+
+.phpdocumentor-content h2 small {
+    display: block;
+    font-weight: 600;
+    font-size: 1.2rem;
+    margin-top: .5rem;
+}
+
+.phpdocumentor-features__screenshot {
+    width: 33%;
+    float: left;
+    margin-right: 2rem;
+}
+
+.phpdocumentor-features__list .fa-li {
+    color: var(--primary-color)
+}
+
+.phpdocumentor-features__list {
+    margin: 0;
+    padding: 0;
+}
+
+.phpdocumentor-features h2 {
+    text-align: left;
+    grid-column-start: 2;
+}
+
+.phpdocumentor-features h2 small {
+    text-align: left;
+}
+
+.phpdocumentor-features ul li {
+    list-style: none;
+}
+
+.phpdocumentor-features ul li p {
+    padding-right: 1rem;
+}
+
+.phpdocumentor-features__list h3 {
+    padding: 0;
+    margin: 0;
+    font-size: 1rem;
+}
+
+@media (max-width: 1023px) {
+    .phpdocumentor-hero__illustration {
+        position: absolute;
+        z-index: -1;
+        opacity: .1;
+        right: -14rem;
+    }
+    .phpdocumentor-features__screenshot {
+        width: 100%;
+        margin-bottom: 2rem;
+        float: none;
+    }
+}
+@media (min-width: 550px) {
+    .phpdocumentor-hero__blurb-title {
+        font-size: 2.8rem;
+        white-space: nowrap;
+    }
+    .phpdocumentor-hero__blurb-slogan {
+        font-size: 1.2rem;
+    }
+    .phpdocumentor-hero .phpdocumentor-button {
+        font-size: 110%;
+        padding: .125rem 1.5rem;
+    }
+    .phpdocumentor-content h2 {
+        padding-top: 2rem;
+        font-size: 3rem;
+    }
+    .phpdocumentor-features__list {
+        columns: 2;
+    }
+    .phpdocumentor-features__list li {
+        display: inline-block;
+        width: 100%
+    }
+}
+@media (min-width: 1024px) {
+    .phpdocumentor-hero__illustration {
+        -webkit-animation-name: fadeInRight;
+        animation-name: fadeInRight;
+        -webkit-animation-duration: 1s;
+        animation-duration: 1s;
+        -webkit-animation-fill-mode: both;
+        animation-fill-mode: both;
+        animation-timing-function: ease-in-out;
+    }
+
+    .phpdocumentor-side-by-side {
+        display: flex;
+        gap: 2rem;
+    }
+
+    .phpdocumentor-side-by-side > * {
+        flex: 1 1 0;
+    }
+
+    .phpdocumentor-side-by-side h3 {
+        margin-top: 0;
+    }
+}
+
+.phpdocumentor-footer {
+    height: 20rem;
+    border-top-left-radius: .75rem;
+    border-top-right-radius: .75rem;
+}
+
+.phpdocumentor-footer__logo {
+    margin: 6rem auto 3rem;
+    width: 4rem;
+    display: block;
+}
+
+pre {
+    background: var(--text-color);
+    color: var(--primary-color-lighter);
+    padding: .5rem 1rem;
+    border-radius: .25rem;
+    box-shadow: 0 2px 3px var(--dark-gray);
+    font-size: 0.8rem;
+}
+
+.phpdocumentor-code__shell {
+    color: #69b347;
+    pointer-events: none;
+    user-select: none;
+}

@@ -1,0 +1,55 @@
+on:
+  workflow_dispatch:
+
+name: Website
+env:
+  extensions: mbstring, intl, iconv, libxml, dom, json, simplexml, zlib, fileinfo, gnupg
+  key: cache-v1 # can be any string, change to clear the extension cache.
+  defaultPHPVersion: '7.2'
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@master
+        with:
+          php-version: ${{ env.defaultPHPVersion }}
+          extensions: ${{ env.extensions }}
+          ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
+          tools: pecl
+
+      - name: Install Composer dependencies
+        run: |
+          composer install --no-progress --prefer-dist --optimize-autoloader
+
+      - name: Generate Documentation
+        run: |
+          make build-website
+
+      - uses: danielr1996/envsubst-action@1.1.0
+        name: 'Insert cache-busting hash into html'
+        with:
+          input: ./build/website/demo/index.html.dist
+          output: ./build/website/demo/index.html
+
+      - name: Build Container
+        uses: elgohr/Publish-Docker-Github-Action@master
+        env:
+          VERSION: 'latest'
+        with:
+          name: phpdocumentor/phpdocumentor/phpdoc.org
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: docker.pkg.github.com
+          context: build/website
+          tags: 'latest'
+        id: latest_build
+
+      - name: 'deploy'
+        uses: jaapio/keelsh-deploy@1.0.0
+        with:
+          keelBaseUrl: ${{ secrets.KEEL_BASE_URL }}
+          image: 'docker.pkg.github.com/phpdocumentor/phpdocumentor/phpdoc.org'
+          tag: ${{ steps.latest_build.outputs.tag }}

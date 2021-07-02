@@ -7,7 +7,7 @@
 >
     <title>phpDocumentor</title>
     <paths>
-        <output>docs/.build</output>
+        <output>build/website/docs</output>
     </paths>
     <version number="3.0.0">
         <folder>latest</folder>
