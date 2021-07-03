@@ -288,6 +288,21 @@ jobs:
         uses: phpDocumentor/phar-ga@latest
         with:
           args: box compile
+      - name: list keys
+        uses: phpDocumentor/phar-ga@latest
+        env:
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+        with:
+          args: gpg --list-secret-keys
+      - name: sign phar
+        uses: phpDocumentor/phar-ga@latest
+        env:
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+        with:
+          args: gpg --command-fd 0 --pinentry-mode loopback -u info@phpdoc.org --batch
+            --detach-sign --output build/phpDocumentor.phar.asc build/phpDocumentor.phar
       - name: Upload PHAR file
         uses: actions/upload-artifact@v2.2.4
         with:
