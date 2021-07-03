@@ -526,12 +526,12 @@ jobs:
   website:
     runs-on: ubuntu-latest
     name: Trigger website build
-    needs:
-      - e2e
-      - phpunit
+#    needs:
+#      - e2e
+#      - phpunit
     steps:
       - name: Trigger
         uses: benc-uk/workflow-dispatch@v1
         with:
           workflow: Website
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.BOT_TOKEN }}
