@@ -522,3 +522,16 @@ jobs:
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  website:
+    runs-on: ubuntu-latest
+    name: Trigger website build
+    needs:
+      - e2e
+      - phpunit
+    steps:
+      - name: Trigger
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: Website
+          token: ${{ secrets.GITHUB_TOKEN }}
