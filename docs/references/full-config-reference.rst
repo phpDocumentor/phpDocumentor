@@ -145,7 +145,7 @@ The source can be configured using 2 parts. DSN which points to the root of your
 folders should be read. Paths can be used to be more specific which folders should be included. All other paths in the root
 will be ignored. 
 
-.. NOTE:: 
+.. note::
 Future versions of phpDocumentor will support other DSN formats rather then just local paths. Right now only `file://` is
 supported
 
@@ -156,7 +156,7 @@ The example below will only include files in your DSN root directory `src` and i
 .. code-block:: xml
   <path>/src/**/*Interface.php</path>
 
-.. NOTE::
+.. note::
 The paths in source are relative to the ``dsn``; It is not possible to use absolute paths in a path.
 
 dsn
@@ -290,7 +290,7 @@ The source can be configured using 2 parts. DSN which points to the root of your
 folders should be read. Paths can be used to be more specific which folders should be included. All other paths in the root
 will be ignored. 
 
-.. NOTE:: 
+.. note::
 Future versions of phpDocumentor will support other DSN formats rather then just local paths. Right now only `file://` is
 supported
 
@@ -301,7 +301,7 @@ The example below will only include files in your DSN root directory `src` and i
 .. code-block:: xml
   <path>/src/**/*Interface.php</path>
 
-.. NOTE::
+.. note::
 The paths in source are relative to the ``dsn``; It is not possible to use absolute paths in a path.
 
 dsn

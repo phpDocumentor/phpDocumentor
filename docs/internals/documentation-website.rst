@@ -4,7 +4,8 @@ Documentation & Website
 For phpDocumentor we aim to have a fully automated documentation generation process. This chapter explains how our internal
 infrastructure works, and what needs to be done when a new version of phpDocumentor is released.
 
-.. NOTE::
+.. note::
+
 This chapter is focused on administrators.
 
 Setup
