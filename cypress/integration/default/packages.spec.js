@@ -4,12 +4,12 @@ import search from "./search.inc";
 
 describe('Packages', function() {
     beforeEach(function(){
-        cy.visit('build/default/packages/Default.html');
+        cy.visit('build/default/packages/Marios.html');
     });
 
     it('Has a title', function() {
         cy.get('.phpdocumentor-content__title')
-            .contains("Default");
+            .contains("Marios");
     });
 
     describe('Search', search);

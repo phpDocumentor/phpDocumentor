@@ -42,15 +42,15 @@ export default function() {
                 .should('be.visible');
         })
 
-        it('Shows the "Default" package', function () {
-            getSidebarItemByTitle('Packages', 'Default')
+        it('Shows the "Mario" package', function () {
+            getSidebarItemByTitle('Packages', 'Mario')
                 .should('be.visible');
         });
 
-        it('Opens the "Default" package', function() {
-            getSidebarItemByTitle('Packages', 'Default')
+        it('Opens the "Marios" package', function() {
+            getSidebarItemByTitle('Packages', 'Marios')
                 .click();
-            shouldVisitPageWithTitle('/packages/Default.html', 'Default');
+            shouldVisitPageWithTitle('/packages/Marios.html', 'Marios');
         });
     });
 
