@@ -295,8 +295,10 @@ jobs:
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
         with:
           args: gpg --list-secret-keys
+
       - name: sign phar
         uses: phpDocumentor/phar-ga@latest
+        if: github.ref == 'refs/heads/master'
         env:
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
