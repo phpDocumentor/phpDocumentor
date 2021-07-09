@@ -235,6 +235,8 @@ services:
     Doctrine\Common\EventManager: ~
 
     phpDocumentor\Transformer\Writer\RenderGuide:
+      arguments:
+        $outputFormats: !tagged_iterator phpdoc.guides.format
 
     phpDocumentor\Pipeline\Stage\Parser\ParseGuides:
       arguments:
@@ -265,6 +267,11 @@ services:
     phpDocumentor\Guides\RestructuredText\Handlers\ParseFileHandler:
       arguments:
         $directives: !tagged_iterator phpdoc.guides.directive
+        $references: !tagged_iterator phpdoc.guides.reference
+      tags: [{name: tactician.handler, typehints: true}]
+
+    phpDocumentor\Guides\Handlers\RenderHandler:
+      arguments:
         $references: !tagged_iterator phpdoc.guides.reference
       tags: [{name: tactician.handler, typehints: true}]
 

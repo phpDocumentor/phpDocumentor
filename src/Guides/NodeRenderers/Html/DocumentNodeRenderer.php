@@ -20,20 +20,15 @@ use phpDocumentor\Guides\NodeRenderers\FullDocumentNodeRenderer;
 use phpDocumentor\Guides\NodeRenderers\NodeRenderer;
 use phpDocumentor\Guides\Nodes\DocumentNode;
 use phpDocumentor\Guides\Nodes\Node;
-use phpDocumentor\Guides\Renderer;
 
 class DocumentNodeRenderer implements NodeRenderer, FullDocumentNodeRenderer
 {
-    /** @var Renderer */
-    private $renderer;
-
     /** @var Environment */
     private $environment;
 
     public function __construct(Environment $environment)
     {
         $this->environment = $environment;
-        $this->renderer = $this->environment->getRenderer();
     }
 
     public function render(Node $node) : string
@@ -45,12 +40,13 @@ class DocumentNodeRenderer implements NodeRenderer, FullDocumentNodeRenderer
         return (new BaseDocumentRender($this->environment->getNodeRendererFactory()))->render($node);
     }
 
-    public function renderDocument(DocumentNode $node) : string
+    public function renderDocument(DocumentNode $node, Environment $environment) : string
     {
-        $this->renderer->setGuidesEnvironment($this->environment);
-        $this->renderer->setDestination($this->environment->getUrl());
+        $renderer = $environment->getRenderer();
+        $renderer->setGuidesEnvironment($environment);
+        $renderer->setDestination($environment->getUrl());
 
-        return $this->renderer->render(
+        return $renderer->render(
             'document.html.twig',
             ['node' => $node]
         );

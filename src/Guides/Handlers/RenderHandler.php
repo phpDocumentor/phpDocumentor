@@ -14,11 +14,21 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\Handlers;
 
 use InvalidArgumentException;
+use IteratorAggregate;
 use League\Flysystem\FilesystemInterface;
 use phpDocumentor\Guides\Documents;
+use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Metas;
+use phpDocumentor\Guides\NodeRenderers\FullDocumentNodeRenderer;
+use phpDocumentor\Guides\References\Doc;
+use phpDocumentor\Guides\References\Reference;
 use phpDocumentor\Guides\RenderCommand;
+use phpDocumentor\Guides\Renderer;
+use Psr\Log\LoggerInterface;
+use function array_merge;
 use function dirname;
+use function get_class;
+use function iterator_to_array;
 use function sprintf;
 
 final class RenderHandler
@@ -29,19 +39,48 @@ final class RenderHandler
     /** @var Metas */
     private $metas;
 
-    public function __construct(Metas $metas, Documents $documents)
-    {
+    /** @var Renderer */
+    private $renderer;
+
+    /** @var LoggerInterface */
+    private $logger;
+
+    /** @var Reference[] */
+    private $references;
+
+    /** @param IteratorAggregate<Reference> $references */
+    public function __construct(
+        Metas $metas,
+        Documents $documents,
+        Renderer $renderer,
+        LoggerInterface $logger,
+        IteratorAggregate $references
+    ) {
         $this->metas = $metas;
         $this->documents = $documents;
+        $this->renderer = $renderer;
+        $this->logger = $logger;
+        $this->references = iterator_to_array($references);
     }
 
     public function handle(RenderCommand $command) : void
     {
-        $this->render($command->getDestination());
+        $environment = new Environment(
+            $command->getConfiguration(),
+            $this->renderer,
+            $this->logger,
+            $command->getDestination(),
+            $this->metas
+        );
+
+        $nodeRendererFactory = $command->getConfiguration()->getFormat()->getNodeRendererFactory($environment);
+        $environment->setNodeRendererFactory($nodeRendererFactory);
+        $this->render($environment, $command->getDestination());
     }
 
-    public function render(FilesystemInterface $destination) : void
+    private function render(Environment $environment, FilesystemInterface $destination) : void
     {
+        $this->initReferences($environment, $this->references);
         foreach ($this->documents->getAll() as $file => $document) {
             $target = $this->getTargetOf($file);
 
@@ -51,7 +90,33 @@ final class RenderHandler
                 $destination->createDir($directory);
             }
 
-            $destination->put($target, $document->renderDocument());
+            $environment->setCurrentFileName($file);
+            $environment->setCurrentDirectory($directory);
+
+            /** @var FullDocumentNodeRenderer $renderer */
+            $renderer = $environment->getNodeRendererFactory()->get(get_class($document));
+            $this->renderer->setGuidesEnvironment($environment);
+            $this->renderer->setDestination($environment->getUrl());
+
+            $destination->put($target, $renderer->renderDocument($document, $environment));
+        }
+    }
+
+    /**
+     * @param array<Reference> $references
+     */
+    private function initReferences(Environment $environment, array $references) : void
+    {
+        $references = array_merge(
+            [
+                new Doc(),
+                new Doc('ref', true),
+            ],
+            $references
+        );
+
+        foreach ($references as $reference) {
+            $environment->registerReference($reference);
         }
     }
 

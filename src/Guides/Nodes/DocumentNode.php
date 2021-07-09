@@ -14,12 +14,10 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\Nodes;
 
 use phpDocumentor\Guides\Environment;
-use phpDocumentor\Guides\NodeRenderers\FullDocumentNodeRenderer;
 use function array_unshift;
 use function count;
 use function get_class;
 use function is_string;
-use function sprintf;
 
 class DocumentNode extends Node
 {
@@ -39,26 +37,12 @@ class DocumentNode extends Node
         $this->environment = $environment;
     }
 
-    public function getEnvironment() : Environment
-    {
-        return $this->environment;
-    }
-
     /**
      * @return Node[]
      */
     public function getHeaderNodes() : array
     {
         return $this->headerNodes;
-    }
-
-    public function renderDocument() : string
-    {
-        $renderedDocument = $this->doRenderDocument();
-
-        $this->postRenderValidate();
-
-        return $renderedDocument;
     }
 
     /**
@@ -174,28 +158,5 @@ class DocumentNode extends Node
     public function addHeaderNode(Node $node) : void
     {
         $this->headerNodes[] = $node;
-    }
-
-    protected function doRenderDocument() : string
-    {
-        /** @var FullDocumentNodeRenderer $renderer */
-        $renderer = $this->environment->getNodeRendererFactory()->get(self::class);
-
-        return $renderer->renderDocument($this);
-    }
-
-    private function postRenderValidate() : void
-    {
-        $currentFileName = $this->environment->getCurrentFileName();
-
-        foreach ($this->environment->getInvalidLinks() as $invalidLink) {
-            $this->environment->addError(
-                sprintf(
-                    'Found invalid reference "%s"%s',
-                    $invalidLink->getName(),
-                    $currentFileName !== '' ? sprintf(' in file "%s"', $currentFileName) : ''
-                )
-            );
-        }
     }
 }

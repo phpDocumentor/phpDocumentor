@@ -20,13 +20,24 @@ final class RenderCommand
     /** @var FilesystemInterface */
     private $filesystem;
 
-    public function __construct(FilesystemInterface $filesystem)
-    {
+    /** @var Configuration */
+    private $configuration;
+
+    public function __construct(
+        Configuration $configuration,
+        FilesystemInterface $filesystem
+    ) {
         $this->filesystem = $filesystem;
+        $this->configuration = $configuration;
     }
 
     public function getDestination() : FilesystemInterface
     {
         return $this->filesystem;
+    }
+
+    public function getConfiguration() : Configuration
+    {
+        return $this->configuration;
     }
 }

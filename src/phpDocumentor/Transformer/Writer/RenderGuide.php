@@ -14,11 +14,12 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Writer;
 
 use League\Tactician\CommandBus;
-use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\GuideSetDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\VersionDescriptor;
 use phpDocumentor\Dsn;
+use phpDocumentor\Guides\Configuration;
+use phpDocumentor\Guides\Formats\Format;
 use phpDocumentor\Guides\RenderCommand;
 use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Transformer\Transformation;
@@ -42,11 +43,20 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
     /** @var Renderer */
     private $renderer;
 
-    public function __construct(Renderer $renderer, LoggerInterface $logger, CommandBus $commandBus)
-    {
+    /** @var iterable<Format> */
+    private $outputFormats;
+
+    /** @param iterable<Format> $outputFormats */
+    public function __construct(
+        Renderer $renderer,
+        LoggerInterface $logger,
+        CommandBus $commandBus,
+        iterable $outputFormats
+    ) {
         $this->logger = $logger;
         $this->commandBus = $commandBus;
         $this->renderer = $renderer;
+        $this->outputFormats = $outputFormats;
     }
 
     public function transform(ProjectDescriptor $project, Transformation $transformation) : void
@@ -78,7 +88,7 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
     }
 
     private function renderDocumentationSet(
-        DocumentationSetDescriptor $documentationSet,
+        GuideSetDescriptor $documentationSet,
         ProjectDescriptor $project,
         Transformation $transformation
     ) : void {
@@ -87,8 +97,17 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
 
         $this->renderer->initialize($project, $documentationSet, $transformation);
 
+        $configuration = new Configuration(
+            $documentationSet->getInputFormat(),
+            $this->outputFormats
+        );
+        $configuration->setOutputFolder($documentationSet->getOutput());
+
         $this->commandBus->handle(
-            new RenderCommand($transformation->getTransformer()->destination())
+            new RenderCommand(
+                $configuration,
+                $transformation->getTransformer()->destination()
+            )
         );
 
         $this->completedRenderingSetMessage($stopwatch, $dsn);
