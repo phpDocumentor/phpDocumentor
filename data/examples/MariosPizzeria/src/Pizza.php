@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Marios;
 
 use ArrayObject;
+use JetBrains\PhpStorm\Pure;
 
 /**
  * @package Domain
@@ -70,6 +71,8 @@ final class Pizza implements Product
      *
      * @return void
      */
+    #[Route('/very/cool/route/{foo}/{bar}', name: 'very_cool_route',
+        defaults: ['foo' => 'foo', 'bar' => 'bar'])]
     public function eatIt()
     {
     }
