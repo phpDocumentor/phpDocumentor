@@ -16,6 +16,7 @@ use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\Collection as DescriptorCollection;
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
+use phpDocumentor\Descriptor\GuideSetDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\VersionDescriptor;
 use phpDocumentor\Dsn;
@@ -143,6 +144,16 @@ final class Provider extends Base
             $this->source(),
             (string) $this->path(),
             $this->apiSpecification()
+        );
+    }
+
+    public function guideSetDescriptor() : GuideSetDescriptor
+    {
+        return new GuideSetDescriptor(
+            $this->generator->word(),
+            $this->source(),
+            (string) $this->path(),
+            'rst'
         );
     }
 

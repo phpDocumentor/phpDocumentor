@@ -8,7 +8,6 @@ use Doctrine\Common\EventManager;
 use InvalidArgumentException;
 use IteratorAggregate;
 use phpDocumentor\Guides\Configuration;
-use phpDocumentor\Guides\Documents;
 use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Markdown\Parser as MarkdownParser;
 use phpDocumentor\Guides\Metas;
@@ -32,9 +31,6 @@ final class ParseFileHandler
     /** @var Metas */
     private $metas;
 
-    /** @var Documents */
-    private $documents;
-
     /** @var LoggerInterface */
     private $logger;
 
@@ -56,7 +52,6 @@ final class ParseFileHandler
      */
     public function __construct(
         Metas $metas,
-        Documents $documents,
         Renderer $renderer,
         LoggerInterface $logger,
         EventManager $eventManager,
@@ -64,7 +59,6 @@ final class ParseFileHandler
         IteratorAggregate $references
     ) {
         $this->metas = $metas;
-        $this->documents = $documents;
         $this->logger = $logger;
         $this->directives = $directives;
         $this->references = $references;
@@ -111,7 +105,7 @@ final class ParseFileHandler
             return;
         }
 
-        $this->documents->addDocument($file, $document);
+        $command->getDocumentationSet()->addDocument($file, $document);
 
         $outputFolder = $configuration->getOutputFolder() ? $configuration->getOutputFolder() . '/' : '';
         $url = $outputFolder . $this->buildDocumentUrl($environment, $configuration->getFileExtension());

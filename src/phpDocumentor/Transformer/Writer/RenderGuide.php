@@ -105,6 +105,7 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
 
         $this->commandBus->handle(
             new RenderCommand(
+                $documentationSet,
                 $configuration,
                 $transformation->getTransformer()->destination()
             )

@@ -16,7 +16,7 @@ namespace phpDocumentor\Guides\Handlers;
 use InvalidArgumentException;
 use IteratorAggregate;
 use League\Flysystem\FilesystemInterface;
-use phpDocumentor\Guides\Documents;
+use phpDocumentor\Descriptor\GuideSetDescriptor;
 use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Metas;
 use phpDocumentor\Guides\NodeRenderers\FullDocumentNodeRenderer;
@@ -33,9 +33,6 @@ use function sprintf;
 
 final class RenderHandler
 {
-    /** @var Documents */
-    private $documents;
-
     /** @var Metas */
     private $metas;
 
@@ -51,13 +48,11 @@ final class RenderHandler
     /** @param IteratorAggregate<Reference> $references */
     public function __construct(
         Metas $metas,
-        Documents $documents,
         Renderer $renderer,
         LoggerInterface $logger,
         IteratorAggregate $references
     ) {
         $this->metas = $metas;
-        $this->documents = $documents;
         $this->renderer = $renderer;
         $this->logger = $logger;
         $this->references = iterator_to_array($references);
@@ -75,13 +70,16 @@ final class RenderHandler
 
         $nodeRendererFactory = $command->getConfiguration()->getFormat()->getNodeRendererFactory($environment);
         $environment->setNodeRendererFactory($nodeRendererFactory);
-        $this->render($environment, $command->getDestination());
+        $this->render($command->getDocumentationSet(), $environment, $command->getDestination());
     }
 
-    private function render(Environment $environment, FilesystemInterface $destination) : void
-    {
+    private function render(
+        GuideSetDescriptor $documtationSet,
+        Environment $environment,
+        FilesystemInterface $destination
+    ) : void {
         $this->initReferences($environment, $this->references);
-        foreach ($this->documents->getAll() as $file => $document) {
+        foreach ($documtationSet->getDocuments() as $file => $document) {
             $target = $this->getTargetOf($file);
 
             $directory = dirname($target);

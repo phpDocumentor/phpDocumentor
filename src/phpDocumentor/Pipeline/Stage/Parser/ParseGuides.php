@@ -86,7 +86,9 @@ final class ParseGuides
         );
         $configuration->setOutputFolder($guideDocumentationSet->getOutput());
 
-        $this->commandBus->handle(new ParseDirectoryCommand($configuration, $origin, (string) $directory));
+        $this->commandBus->handle(
+            new ParseDirectoryCommand($guideDocumentationSet, $configuration, $origin, (string) $directory)
+        );
 
         return $payload;
     }
