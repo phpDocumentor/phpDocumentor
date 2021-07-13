@@ -125,11 +125,7 @@ final class Parser implements ParserInterface
             }
 
             if ($node instanceof HtmlBlock) {
-                $spanNode = new RawNode(
-                    static function () use ($node) {
-                        return $node->getStringContent();
-                    }
-                );
+                $spanNode = new RawNode($node->getStringContent());
                 $document->addNode($spanNode);
                 continue;
             }

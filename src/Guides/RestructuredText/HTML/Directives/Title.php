@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\RestructuredText\HTML\Directives;
 
 use phpDocumentor\Guides\Nodes\Node;
-use phpDocumentor\Guides\Nodes\RawNode;
+use phpDocumentor\Guides\Nodes\TemplatedNode;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive;
 use phpDocumentor\Guides\RestructuredText\Parser;
 
@@ -32,14 +32,7 @@ class Title extends Directive
         array $options
     ) : void {
         $document = $parser->getDocument();
-
-        $environment = $parser->getEnvironment();
-        $title = static function () use ($environment, $data) {
-            return $environment->getRenderer()->render('title.html.twig', ['title' => $data]);
-        };
-
-        $document->addHeaderNode(new RawNode($title));
-
+        $document->addHeaderNode(new TemplatedNode('title.html.twig', ['title' => $data]));
         $document->addNode($node);
     }
 }

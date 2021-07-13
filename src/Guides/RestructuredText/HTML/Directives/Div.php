@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\RestructuredText\HTML\Directives;
 
 use phpDocumentor\Guides\Nodes\Node;
-use phpDocumentor\Guides\Nodes\RawNode;
+use phpDocumentor\Guides\Nodes\TemplatedNode;
 use phpDocumentor\Guides\RestructuredText\Directives\SubDirective;
 use phpDocumentor\Guides\RestructuredText\Parser;
 
@@ -29,18 +29,12 @@ class Div extends SubDirective
         string $data,
         array $options
     ) : ?Node {
-        $environment = $parser->getEnvironment();
-
-        return new RawNode(
-            static function () use ($environment, $document, $data) {
-                $environment->getRenderer()->render(
-                    'div.html.twig',
-                    [
-                        'class' => $data,
-                        'node' => $document,
-                    ]
-                );
-            }
+        return new TemplatedNode(
+            'div.html.twig',
+            [
+                'class' => $data,
+                'node' => $document,
+            ]
         );
     }
 }

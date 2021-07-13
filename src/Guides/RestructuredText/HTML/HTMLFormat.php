@@ -20,6 +20,7 @@ use phpDocumentor\Guides\NodeRenderers\Html\DocumentNodeRenderer;
 use phpDocumentor\Guides\NodeRenderers\Html\ListRenderer;
 use phpDocumentor\Guides\NodeRenderers\Html\SpanNodeRenderer;
 use phpDocumentor\Guides\NodeRenderers\Html\TableNodeRenderer;
+use phpDocumentor\Guides\NodeRenderers\Html\TemplatedNodeRenderer;
 use phpDocumentor\Guides\NodeRenderers\Html\TocNodeRenderer;
 use phpDocumentor\Guides\NodeRenderers\InMemoryNodeRendererFactory;
 use phpDocumentor\Guides\NodeRenderers\ListNodeRenderer;
@@ -40,6 +41,7 @@ use phpDocumentor\Guides\Nodes\SectionEndNode;
 use phpDocumentor\Guides\Nodes\SeparatorNode;
 use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\Nodes\TableNode;
+use phpDocumentor\Guides\Nodes\TemplatedNode;
 use phpDocumentor\Guides\Nodes\TitleNode;
 use phpDocumentor\Guides\Nodes\TocNode;
 use phpDocumentor\Guides\Nodes\UmlNode;
@@ -71,6 +73,7 @@ final class HTMLFormat extends Format
                 TocNode::class => new TocNodeRenderer($environment),
                 DocumentNode::class => new DocumentNodeRenderer($environment),
                 SpanNode::class => new SpanNodeRenderer($environment),
+                TemplatedNode::class => new TemplatedNodeRenderer($renderer),
             ],
             new DefaultNodeRenderer($environment)
         );

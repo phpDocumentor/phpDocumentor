@@ -23,6 +23,7 @@ use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Log\NullLogger;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use function strlen;
 
 /**
@@ -55,11 +56,14 @@ final class TransformerTest extends TestCase
         $this->writerCollectionMock = $this->prophesize(Collection::class);
         $this->flySystemFactory = $this->prophesize(FlySystemFactory::class);
         $this->flySystemFactory->create(Argument::any())->willReturn($this->faker()->fileSystem());
+        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
+        $eventDispatcher->dispatch(Argument::any(), Argument::any())->willReturnArgument(0);
 
         $this->fixture = new Transformer(
             $this->writerCollectionMock->reveal(),
             new NullLogger(),
-            $this->flySystemFactory->reveal()
+            $this->flySystemFactory->reveal(),
+            $eventDispatcher->reveal()
         );
     }
 
@@ -74,7 +78,8 @@ final class TransformerTest extends TestCase
         $fixture = new Transformer(
             $writerCollectionMock->reveal(),
             new NullLogger(),
-            $flySystemFactory->reveal()
+            $flySystemFactory->reveal(),
+            $this->prophesize(EventDispatcherInterface::class)->reveal()
         );
 
         self::assertSame('Transform analyzed project into artifacts', $fixture->getDescription());

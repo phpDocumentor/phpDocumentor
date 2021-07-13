@@ -25,6 +25,7 @@ use phpDocumentor\Transformer\Writer\Initializable;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Webmozart\Assert\Assert;
 use function in_array;
 use function sprintf;
@@ -64,17 +65,22 @@ class Transformer
     /** @var FlySystemFactory */
     private $flySystemFactory;
 
+    /** @var EventDispatcherInterface */
+    private $eventDispatcher;
+
     /**
      * Wires the template collection and writer collection to this transformer.
      */
     public function __construct(
         Writer\Collection $writerCollection,
         LoggerInterface $logger,
-        FlySystemFactory $flySystemFactory
+        FlySystemFactory $flySystemFactory,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->writers = $writerCollection;
         $this->logger = $logger;
         $this->flySystemFactory = $flySystemFactory;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function getDescription() : string
@@ -170,13 +176,13 @@ class Transformer
         /** @var WriterInitializationEvent $instance */
         $instance = WriterInitializationEvent::createInstance($this);
         $event = $instance->setWriter($writer);
-        Dispatcher::getInstance()->dispatch($event, self::EVENT_PRE_INITIALIZATION);
+        $this->eventDispatcher->dispatch($event, self::EVENT_PRE_INITIALIZATION);
 
         if ($writer instanceof Initializable) {
             $writer->initialize($project, $template);
         }
 
-        Dispatcher::getInstance()->dispatch($event, self::EVENT_POST_INITIALIZATION);
+        $this->eventDispatcher->dispatch($event, self::EVENT_POST_INITIALIZATION);
     }
 
     /**
@@ -218,12 +224,12 @@ class Transformer
         );
 
         $preTransformationEvent = PreTransformationEvent::create($this, $transformation);
-        Dispatcher::getInstance()->dispatch($preTransformationEvent, self::EVENT_PRE_TRANSFORMATION);
+        $this->eventDispatcher->dispatch($preTransformationEvent, self::EVENT_PRE_TRANSFORMATION);
 
         $writer = $this->writers[$transformation->getWriter()];
         $writer->transform($project, $transformation);
 
         $postTransformationEvent = PostTransformationEvent::createInstance($this);
-        Dispatcher::getInstance()->dispatch($postTransformationEvent, self::EVENT_POST_TRANSFORMATION);
+        $this->eventDispatcher->dispatch($postTransformationEvent, self::EVENT_POST_TRANSFORMATION);
     }
 }
