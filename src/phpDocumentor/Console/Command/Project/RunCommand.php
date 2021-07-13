@@ -25,6 +25,7 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\Component\Stopwatch\StopwatchEvent;
 use function count;
@@ -65,14 +66,19 @@ class RunCommand extends Command
     /** @var ProgressBar */
     private $transformerProgressBar;
 
+    /** @var EventDispatcherInterface */
+    private $eventDispatcher;
+
     public function __construct(
         ProjectDescriptorBuilder $projectDescriptorBuilder,
-        PipelineInterface $pipeline
+        PipelineInterface $pipeline,
+        EventDispatcherInterface $eventDispatcher
     ) {
         parent::__construct('project:run');
 
         $this->projectDescriptorBuilder = $projectDescriptorBuilder;
         $this->pipeline = $pipeline;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -320,6 +326,7 @@ HELP
                 $this->progressBar->advance();
             }
         );
+
         $dispatcherInstance->addListener(
             Transformer::EVENT_PRE_TRANSFORM,
             function (PreTransformEvent $event) use ($output) : void {
@@ -331,7 +338,8 @@ HELP
                 );
             }
         );
-        $dispatcherInstance->addListener(
+
+        $this->eventDispatcher->addListener(
             Transformer::EVENT_POST_TRANSFORMATION,
             function () : void {
                 $this->transformerProgressBar->advance();
