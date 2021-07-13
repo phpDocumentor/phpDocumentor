@@ -16,6 +16,7 @@ namespace phpDocumentor\Console\Command\Project;
 use League\Pipeline\PipelineInterface;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Event\Dispatcher;
+use phpDocumentor\Guides\Nodes\DocumentNode;
 use phpDocumentor\Parser\Event\PreParsingEvent;
 use phpDocumentor\Transformer\Event\PreTransformEvent;
 use phpDocumentor\Transformer\Transformer;

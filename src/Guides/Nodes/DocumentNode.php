@@ -21,21 +21,11 @@ use function is_string;
 
 class DocumentNode extends Node
 {
-    /** @var Environment */
-    protected $environment;
-
     /** @var Node[] */
     protected $headerNodes = [];
 
     /** @var Node[] */
     protected $nodes = [];
-
-    public function __construct(Environment $environment)
-    {
-        parent::__construct();
-
-        $this->environment = $environment;
-    }
 
     /**
      * @return Node[]
@@ -67,13 +57,11 @@ class DocumentNode extends Node
         return $nodes;
     }
 
-    public function getTitle() : ?string
+    public function getTitle() : ?TitleNode
     {
         foreach ($this->nodes as $node) {
             if ($node instanceof TitleNode && $node->getLevel() === 1) {
-                return $this->environment->getNodeRendererFactory()
-                    ->get(get_class($node->getValue()))
-                    ->render($node->getValue());
+                return $node;
             }
         }
 
@@ -81,30 +69,15 @@ class DocumentNode extends Node
     }
 
     /**
-     * @return mixed[]
+     * @return TocNode[]
      */
     public function getTocs() : array
     {
-        $tocs = [];
-
-        $nodes = $this->getNodes(
+        return $this->getNodes(
             static function ($node) {
                 return $node instanceof TocNode;
             }
         );
-
-        /** @var TocNode $toc */
-        foreach ($nodes as $toc) {
-            $files = $toc->getFiles();
-
-            foreach ($files as &$file) {
-                $file = $this->environment->canonicalUrl($file);
-            }
-
-            $tocs[] = $files;
-        }
-
-        return $tocs;
     }
 
     /**

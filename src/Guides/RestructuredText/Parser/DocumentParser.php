@@ -130,7 +130,7 @@ class DocumentParser
             $preParseDocumentEvent
         );
 
-        $this->document = new DocumentNode($this->environment);
+        $this->document = new DocumentNode();
 
         $this->init();
 

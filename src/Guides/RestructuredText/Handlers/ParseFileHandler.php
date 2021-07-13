@@ -110,12 +110,23 @@ final class ParseFileHandler
         $outputFolder = $configuration->getOutputFolder() ? $configuration->getOutputFolder() . '/' : '';
         $url = $outputFolder . $this->buildDocumentUrl($environment, $configuration->getFileExtension());
 
+        $tocs = [];
+        $nodes = $document->getTocs();
+        foreach ($nodes as $toc) {
+            $files = $toc->getFiles();
+
+            foreach ($files as &$filea) {
+                $filea = $environment->canonicalUrl($filea);
+            }
+            $tocs[] = $files;
+        }
+
         $this->metas->set(
             $file,
             $url,
-            (string) $document->getTitle(),
+            $document->getTitle()->getValueString(),
             $document->getTitles(),
-            $document->getTocs(),
+            $tocs,
             (int) filemtime($fileAbsolutePath),
             $environment->getDependencies(),
             $environment->getLinks()

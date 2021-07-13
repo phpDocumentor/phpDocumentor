@@ -65,7 +65,7 @@ final class Parser implements ParserInterface
 
     public function parseDocument(NodeWalker $walker) : DocumentNode
     {
-        $document = new DocumentNode($this->environment);
+        $document = new DocumentNode();
         $this->document = $document;
 
         while ($event = $walker->next()) {
