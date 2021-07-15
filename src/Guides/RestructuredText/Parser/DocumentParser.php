@@ -260,8 +260,7 @@ class DocumentParser
 
                         $tableNode = new TableNode(
                             $separatorLineConfig,
-                            $this->tableParser->guessTableType($line),
-                            $this->lineChecker
+                            $this->tableParser->guessTableType($line)
                         );
 
                         $this->nodeBuffer = $tableNode;
@@ -484,7 +483,7 @@ class DocumentParser
                     /** @var TableNode $node */
                     $node = $this->nodeBuffer;
 
-                    $node->finalize($this->parser);
+                    $node->finalize($this->parser, $this->lineChecker);
 
                     break;
 
