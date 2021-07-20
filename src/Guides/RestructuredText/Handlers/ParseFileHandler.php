@@ -7,6 +7,7 @@ namespace phpDocumentor\Guides\RestructuredText\Handlers;
 use Doctrine\Common\EventManager;
 use InvalidArgumentException;
 use IteratorAggregate;
+use phpDocumentor\Descriptor\DocumentDescriptor;
 use phpDocumentor\Guides\Configuration;
 use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Markdown\Parser as MarkdownParser;
@@ -105,7 +106,19 @@ final class ParseFileHandler
             return;
         }
 
-        $command->getDocumentationSet()->addDocument($file, $document);
+        $command->getDocumentationSet()->addDocument(
+            $file,
+            new DocumentDescriptor(
+                $document,
+                $document->getHash(),
+                $file,
+                $document->getTitle()->getValueString(),
+                $document->getTitles(),
+                $document->getTocs(),
+                $environment->getDependencies(),
+                $environment->getLinks()
+            )
+        );
 
         $outputFolder = $configuration->getOutputFolder() ? $configuration->getOutputFolder() . '/' : '';
         $url = $outputFolder . $this->buildDocumentUrl($environment, $configuration->getFileExtension());
@@ -118,6 +131,7 @@ final class ParseFileHandler
             foreach ($files as &$filea) {
                 $filea = $environment->canonicalUrl($filea);
             }
+
             $tocs[] = $files;
         }
 

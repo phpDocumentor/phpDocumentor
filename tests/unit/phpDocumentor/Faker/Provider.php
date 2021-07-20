@@ -17,11 +17,13 @@ use phpDocumentor\Descriptor\Collection as DescriptorCollection;
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\GuideSetDescriptor;
+use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\VersionDescriptor;
 use phpDocumentor\Dsn;
 use phpDocumentor\Parser\FlySystemFactory;
 use phpDocumentor\Path;
+use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Php\Factory\ContextStack;
 use phpDocumentor\Reflection\Php\Project;
 use phpDocumentor\Transformer\Template;
@@ -30,6 +32,8 @@ use phpDocumentor\Transformer\Transformer;
 use phpDocumentor\Transformer\Writer\Collection;
 use Psr\Log\NullLogger;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
+use function array_pop;
+use function implode;
 
 final class Provider extends Base
 {
@@ -160,5 +164,39 @@ final class Provider extends Base
     public function projectDescriptor() : ProjectDescriptor
     {
         return new ProjectDescriptor('test');
+    }
+
+    public function namespaceDescriptor(Fqsen $fqsen, array $children = []) : NamespaceDescriptor
+    {
+        $namespace = new NamespaceDescriptor();
+        $namespace->setName($fqsen->getName());
+        $namespace->setFullyQualifiedStructuralElementName($fqsen);
+
+        foreach ($children as $child) {
+            $namespace->addChild($child);
+        }
+
+        return $namespace;
+    }
+
+    public function namespaceDescriptorTree($maxDepth = 3, $amount = 3) : NamespaceDescriptor
+    {
+        $maxDepth--;
+        $rootNamespace = $this->namespaceDescriptor(new Fqsen('\\' . $this->generator->word));
+
+        for ($namespaces = 0; $namespaces < $amount; $namespaces++) {
+            $parts         = $this->generator->words($maxDepth);
+            $namespace = null;
+            for ($i = $maxDepth; $i > 0; $i--) {
+                $fqsen = new Fqsen('\\' . $rootNamespace->getName() . '\\' . implode('\\', $parts));
+                array_pop($parts);
+
+                $namespace = $this->namespaceDescriptor($fqsen, $namespace ? [$namespace] : []);
+            }
+
+            $rootNamespace->addChild($namespace);
+        }
+
+        return $rootNamespace;
     }
 }

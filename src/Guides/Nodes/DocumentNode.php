@@ -13,10 +13,9 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\Nodes;
 
-use phpDocumentor\Guides\Environment;
+use function array_filter;
 use function array_unshift;
 use function count;
-use function get_class;
 use function is_string;
 
 class DocumentNode extends Node
@@ -26,6 +25,15 @@ class DocumentNode extends Node
 
     /** @var Node[] */
     protected $nodes = [];
+
+    /** @var string */
+    private $hash;
+
+    public function __construct(string $value)
+    {
+        parent::__construct();
+        $this->hash = $value;
+    }
 
     /**
      * @return Node[]
@@ -40,21 +48,11 @@ class DocumentNode extends Node
      */
     public function getNodes(?callable $function = null) : array
     {
-        $nodes = [];
-
         if ($function === null) {
             return $this->nodes;
         }
 
-        foreach ($this->nodes as $node) {
-            if (!$function($node)) {
-                continue;
-            }
-
-            $nodes[] = $node;
-        }
-
-        return $nodes;
+        return array_filter($this->nodes, $function);
     }
 
     public function getTitle() : ?TitleNode
@@ -131,5 +129,10 @@ class DocumentNode extends Node
     public function addHeaderNode(Node $node) : void
     {
         $this->headerNodes[] = $node;
+    }
+
+    public function getHash() : string
+    {
+        return $this->hash;
     }
 }

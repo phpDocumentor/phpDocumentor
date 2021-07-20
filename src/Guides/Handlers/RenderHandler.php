@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\Handlers;
 
-use InvalidArgumentException;
 use IteratorAggregate;
 use League\Flysystem\FilesystemInterface;
 use phpDocumentor\Descriptor\GuideSetDescriptor;
@@ -24,12 +23,12 @@ use phpDocumentor\Guides\References\Doc;
 use phpDocumentor\Guides\References\Reference;
 use phpDocumentor\Guides\RenderCommand;
 use phpDocumentor\Guides\Renderer;
+use phpDocumentor\Transformer\Router\Router;
 use Psr\Log\LoggerInterface;
 use function array_merge;
 use function dirname;
 use function get_class;
 use function iterator_to_array;
-use function sprintf;
 
 final class RenderHandler
 {
@@ -45,17 +44,22 @@ final class RenderHandler
     /** @var Reference[] */
     private $references;
 
+    /** @var Router */
+    private $router;
+
     /** @param IteratorAggregate<Reference> $references */
     public function __construct(
         Metas $metas,
         Renderer $renderer,
         LoggerInterface $logger,
-        IteratorAggregate $references
+        IteratorAggregate $references,
+        Router $router
     ) {
         $this->metas = $metas;
         $this->renderer = $renderer;
         $this->logger = $logger;
         $this->references = iterator_to_array($references);
+        $this->router = $router;
     }
 
     public function handle(RenderCommand $command) : void
@@ -79,14 +83,11 @@ final class RenderHandler
         FilesystemInterface $destination
     ) : void {
         $this->initReferences($environment, $this->references);
-        foreach ($documtationSet->getDocuments() as $file => $document) {
-            $target = $this->getTargetOf($file);
+        foreach ($documtationSet->getDocuments() as $file => $descriptor) {
+            $document = $descriptor->getDocumentNode();
+            $target = $documtationSet->getOutput() . '/' . $this->router->generate($descriptor);
 
             $directory = dirname($target);
-
-            if ($destination->has($directory)) {
-                $destination->createDir($directory);
-            }
 
             $environment->setCurrentFileName($file);
             $environment->setCurrentDirectory($directory);
@@ -116,16 +117,5 @@ final class RenderHandler
         foreach ($references as $reference) {
             $environment->registerReference($reference);
         }
-    }
-
-    private function getTargetOf(string $file) : string
-    {
-        $metaEntry = $this->metas->get($file);
-
-        if ($metaEntry === null) {
-            throw new InvalidArgumentException(sprintf('Could not find target file for %s', $file));
-        }
-
-        return $metaEntry->getUrl();
     }
 }

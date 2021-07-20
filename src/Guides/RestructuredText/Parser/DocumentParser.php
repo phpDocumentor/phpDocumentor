@@ -32,6 +32,7 @@ use Throwable;
 use function array_search;
 use function chr;
 use function explode;
+use function md5;
 use function preg_replace_callback;
 use function sprintf;
 use function str_replace;
@@ -130,7 +131,7 @@ class DocumentParser
             $preParseDocumentEvent
         );
 
-        $this->document = new DocumentNode();
+        $this->document = new DocumentNode(md5($contents));
 
         $this->init();
 

@@ -16,8 +16,6 @@ namespace phpDocumentor\Transformer\Writer\Twig;
 use League\CommonMark\MarkdownConverterInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Faker\Faker;
-use phpDocumentor\Guides\Metas;
-use phpDocumentor\Guides\Twig\TocExtension;
 use phpDocumentor\Transformer\Router\Router;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -48,7 +46,6 @@ final class EnvironmentFactoryTest extends TestCase
 
         $this->factory = new EnvironmentFactory(
             new LinkRenderer($this->router->reveal()),
-            new TocExtension(new Metas()),
             $markDownConverter->reveal()
         );
     }
@@ -66,7 +63,7 @@ final class EnvironmentFactoryTest extends TestCase
         $environment = $this->factory->create(new ProjectDescriptor('name'), $template);
 
         $this->assertInstanceOf(Environment::class, $environment);
-        $this->assertCount(6, $environment->getExtensions());
+        $this->assertCount(5, $environment->getExtensions());
         $this->assertTrue($environment->hasExtension(Extension::class));
     }
 
@@ -113,7 +110,7 @@ final class EnvironmentFactoryTest extends TestCase
         $this->assertTrue($environment->isDebug());
         $this->assertTrue($environment->isAutoReload());
         $this->assertInstanceOf(Environment::class, $environment);
-        $this->assertCount(6, $environment->getExtensions());
+        $this->assertCount(5, $environment->getExtensions());
         $this->assertTrue($environment->hasExtension(Extension::class));
         $this->assertTrue($environment->hasExtension(DebugExtension::class));
     }

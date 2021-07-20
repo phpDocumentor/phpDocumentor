@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Writer\Twig;
 
 use ArrayIterator;
+use InvalidArgumentException;
 use League\CommonMark\MarkdownConverterInterface;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\Descriptor;
@@ -374,6 +375,17 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
                     return vsprintf($description->getBodyTemplate(), $tagStrings);
                 },
                 ['needs_context' => true]
+            ),
+            'shortFQSEN' => new TwigFilter(
+                'shortFQSEN',
+                static function (string $fqsenOrTitle) {
+                    try {
+                        return (new Fqsen($fqsenOrTitle))->getName();
+                    } catch (InvalidArgumentException $e) {
+                    }
+
+                    return $fqsenOrTitle;
+                }
             ),
         ];
     }

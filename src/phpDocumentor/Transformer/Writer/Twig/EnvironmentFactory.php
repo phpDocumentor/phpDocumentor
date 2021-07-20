@@ -15,7 +15,6 @@ namespace phpDocumentor\Transformer\Writer\Twig;
 
 use League\CommonMark\MarkdownConverterInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\Guides\Twig\TocExtension;
 use phpDocumentor\Path;
 use phpDocumentor\Transformer\Template;
 use Twig\Environment;
@@ -31,19 +30,14 @@ class EnvironmentFactory
     /** @var ?Path */
     private $templateOverridesAt;
 
-    /** @var TocExtension */
-    private $tocExtension;
-
     /** @var MarkdownConverterInterface */
     private $markDownConverter;
 
     public function __construct(
         LinkRenderer $renderer,
-        TocExtension $tocExtension,
         MarkdownConverterInterface $markDownConverter
     ) {
         $this->renderer = $renderer;
-        $this->tocExtension = $tocExtension;
         $this->markDownConverter = $markDownConverter;
     }
 
@@ -69,7 +63,6 @@ class EnvironmentFactory
         $env = new Environment(new ChainLoader($loaders));
 
         $this->addPhpDocumentorExtension($project, $env);
-        $env->addExtension($this->tocExtension);
         $this->enableDebug($env);
 
         return $env;

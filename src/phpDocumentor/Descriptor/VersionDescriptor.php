@@ -42,4 +42,15 @@ final class VersionDescriptor
     {
         return $this->documentationSets;
     }
+
+    /** @return Collection<TocDescriptor> */
+    public function getTableOfContents() : Collection
+    {
+        $tocs = Collection::fromClassString(TocDescriptor::class);
+        foreach ($this->documentationSets as $documentationSet) {
+            $tocs = $tocs->merge($documentationSet->getTableOfContents());
+        }
+
+        return $tocs;
+    }
 }

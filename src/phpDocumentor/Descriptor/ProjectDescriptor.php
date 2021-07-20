@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
-use phpDocumentor\Descriptor\Interfaces\PackageInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
 use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\Fqsen;
@@ -33,7 +32,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
     /** @var NamespaceDescriptor $namespace */
     private $namespace;
 
-    /** @var PackageInterface $package */
+    /** @var PackageDescriptor $package */
     private $package;
 
     /** @var Collection<FileDescriptor> $files */
@@ -217,12 +216,12 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
         return $this->getIndexes()['elements']->fetch((string) $fqsen);
     }
 
-    private function setPackage(PackageInterface $package) : void
+    private function setPackage(PackageDescriptor $package) : void
     {
         $this->package = $package;
     }
 
-    public function getPackage() : PackageInterface
+    public function getPackage() : PackageDescriptor
     {
         return $this->package;
     }

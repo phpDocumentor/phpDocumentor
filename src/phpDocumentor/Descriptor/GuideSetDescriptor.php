@@ -14,28 +14,28 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Configuration\Source;
-use phpDocumentor\Guides\Nodes\DocumentNode;
 
 final class GuideSetDescriptor extends DocumentationSetDescriptor
 {
     /** @var string */
     private $inputFormat;
 
-    /** @var Collection<DocumentNode> */
+    /** @var Collection<DocumentDescriptor> */
     private $documents;
 
     public function __construct(string $name, Source $source, string $output, string $inputFormat)
     {
+        parent::__construct();
         $this->name = $name;
         $this->source = $source;
         $this->output = $output;
         $this->inputFormat = $inputFormat;
-        $this->documents = Collection::fromClassString(DocumentNode::class);
+        $this->documents = Collection::fromClassString(DocumentDescriptor::class);
     }
 
-    public function addDocument(string $file, DocumentNode $documentNode) : void
+    public function addDocument(string $file, DocumentDescriptor $documentDescriptor) : void
     {
-        $this->documents->set($file, $documentNode);
+        $this->documents->set($file, $documentDescriptor);
     }
 
     public function getInputFormat() : string
@@ -43,7 +43,7 @@ final class GuideSetDescriptor extends DocumentationSetDescriptor
         return $this->inputFormat;
     }
 
-    /** @return Collection<DocumentNode> */
+    /** @return Collection<DocumentDescriptor> */
     public function getDocuments() : Collection
     {
         return $this->documents;

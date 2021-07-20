@@ -17,6 +17,9 @@ parameters:
     - '#Call to an undefined method League\\Flysystem\\Filesystem::find\(\)#'
     - '#Call to an undefined method League\\Flysystem\\FilesystemInterface::find\(\)#'
 
+    # Filter nodes by callable in not understanded
+    - '#Method phpDocumentor\\Guides\\Nodes\\DocumentNode::getTocs\(\) should return array<phpDocumentor\\Guides\\Nodes\\TocNode> but returns array<phpDocumentor\\Guides\\Nodes\\Node>\.#'
+
     # Bad design of descriptors.
     - '#Access to an undefined property phpDocumentor\\Descriptor\\Collection<phpDocumentor\\Descriptor\\Collection<phpDocumentor\\Descriptor\\DescriptorAbstract>>::\$[a-z]+#'
     # https://github.com/phpDocumentor/phpDocumentor/issues/2279
