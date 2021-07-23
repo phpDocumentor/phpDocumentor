@@ -70,7 +70,11 @@ final class TableOfContentsBuilder implements CompilerPassInterface
                 }
 
                 $documents = $documentationSet->getDocuments();
-                $index = $documents->get('index');
+                $index     = $documents->fetch('index');
+                if ($index === null) {
+                    continue;
+                }
+
                 $guideToc = new TocDescriptor($index->getTitle());
                 $this->createGuideEntries($index, $documents, $guideToc);
 
