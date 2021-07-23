@@ -3,48 +3,16 @@
     Menu
 </label>
 <aside class="phpdocumentor-column -four phpdocumentor-sidebar">
-    {% set menu = menu() %}
-    {% if menu %}
-    <section class="phpdocumentor-sidebar__category">
-        <h2 class="phpdocumentor-sidebar__category-header"><a href="{{ menu.path }}">{{ menu.label }}</a></h2>
-        {% for menuItem in menu.items %}
-            {{ include('menu.html.twig', {menuItem: menuItem}, with_context = false) }}
-        {% endfor %}
-    </section>
-    {% endif %}
-
-    <section class="phpdocumentor-sidebar__category">
-        <h2 class="phpdocumentor-sidebar__category-header">Namespaces</h2>
-        {% if usesNamespaces or not usesPackages %}
-            {% if project.namespace.functions is not empty or project.namespace.constants is not empty or project.namespace.classes is not empty or project.namespace.interfaces is not empty or project.namespace.traits is not empty %}
-            <h3 class="phpdocumentor-sidebar__root-namespace">{{ project.namespace|route('Global') }}</h3>
-            {% endif %}
-            {% for namespace in project.namespace.children %}
-                <h4 class="phpdocumentor-sidebar__root-namespace">{{ namespace|route('class:short') }}</h4>
-                <ul class="phpdocumentor-list">
-                    {% for child in namespace.children %}
-                        <li>{{ child|route('class:short') }}</li>
-                    {% endfor %}
-                </ul>
-            {% endfor %}
-        {% endif %}
-    </section>
-
-    {% if usesPackages %}
-    <section class="phpdocumentor-sidebar__category">
-        <h2 class="phpdocumentor-sidebar__category-header">Packages</h2>
-        {% for package in project.package.children %}
-            <h3 class="phpdocumentor-sidebar__root-package">{{ package|route('class:short') }}</h3>
-            {% if package.children is not empty %}
-            <ul class="phpdocumentor-list">
-                {% for child in package.children %}
-                    <li>{{ child|route('class:short') }}</li>
+    {% for version in project.versions %}
+        {% for toc in version.tableOfContents %}
+        <section class="phpdocumentor-sidebar__category">
+            <h2 class="phpdocumentor-sidebar__category-header">{{ toc.name }}</h2>
+                {% for root in toc.roots %}
+                    {{ toc(root, 'components/menu.html.twig', 1) }}
                 {% endfor %}
-            </ul>
-            {% endif %}
+        </section>
         {% endfor %}
-    </section>
-    {% endif %}
+    {% endfor %}
 
     <section class="phpdocumentor-sidebar__category">
         <h2 class="phpdocumentor-sidebar__category-header">Reports</h2>

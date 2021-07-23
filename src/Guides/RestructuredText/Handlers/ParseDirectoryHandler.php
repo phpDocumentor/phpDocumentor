@@ -39,7 +39,9 @@ final class ParseDirectoryHandler
         $this->guardThatAnIndexFileExists($origin, $currentDirectory, $configuration);
 
         foreach ($parseQueue as $file) {
-            $this->commandBus->handle(new ParseFileCommand($configuration, $origin, $currentDirectory, $file));
+            $this->commandBus->handle(
+                new ParseFileCommand($command->getDocumentationSet(), $configuration, $origin, $currentDirectory, $file)
+            );
         }
     }
 

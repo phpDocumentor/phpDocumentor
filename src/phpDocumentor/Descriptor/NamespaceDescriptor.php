@@ -159,6 +159,12 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
         return $this->interfaces;
     }
 
+    public function addChild(NamespaceDescriptor $namespaceDescriptor) : void
+    {
+        $this->children->set($namespaceDescriptor->getName(), $namespaceDescriptor);
+        $namespaceDescriptor->setParent($this);
+    }
+
     /**
      * Sets a list of all child namespaces in this namespace.
      *

@@ -66,16 +66,12 @@ class TableNode extends Node
     /** @var string */
     protected $type;
 
-    /** @var LineChecker */
-    private $lineChecker;
-
-    public function __construct(TableSeparatorLineConfig $separatorLineConfig, string $type, LineChecker $lineChecker)
+    public function __construct(TableSeparatorLineConfig $separatorLineConfig, string $type)
     {
         parent::__construct();
 
         $this->pushSeparatorLine($separatorLineConfig);
         $this->type = $type;
-        $this->lineChecker = $lineChecker;
     }
 
     public function getCols() : int
@@ -149,7 +145,7 @@ class TableNode extends Node
         $this->currentLineNumber++;
     }
 
-    public function finalize(Parser $parser) : void
+    public function finalize(Parser $parser, LineChecker $lineChecker) : void
     {
         if ($this->isCompiled === false) {
             $this->compile();
@@ -171,7 +167,7 @@ class TableNode extends Node
             foreach ($row->getColumns() as $col) {
                 $lines = explode("\n", $col->getContent());
 
-                if ($this->lineChecker->isListLine($lines[0], false)) {
+                if ($lineChecker->isListLine($lines[0], false)) {
                     $node = $parser->parseFragment($col->getContent())->getNodes()[0];
                 } else {
                     $node = new SpanNode($parser->getEnvironment(), $col->getContent());

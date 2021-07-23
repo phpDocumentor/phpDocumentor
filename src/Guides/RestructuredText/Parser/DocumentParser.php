@@ -32,6 +32,7 @@ use Throwable;
 use function array_search;
 use function chr;
 use function explode;
+use function md5;
 use function preg_replace_callback;
 use function sprintf;
 use function str_replace;
@@ -130,7 +131,7 @@ class DocumentParser
             $preParseDocumentEvent
         );
 
-        $this->document = new DocumentNode($this->environment);
+        $this->document = new DocumentNode(md5($contents));
 
         $this->init();
 
@@ -260,8 +261,7 @@ class DocumentParser
 
                         $tableNode = new TableNode(
                             $separatorLineConfig,
-                            $this->tableParser->guessTableType($line),
-                            $this->lineChecker
+                            $this->tableParser->guessTableType($line)
                         );
 
                         $this->nodeBuffer = $tableNode;
@@ -484,7 +484,7 @@ class DocumentParser
                     /** @var TableNode $node */
                     $node = $this->nodeBuffer;
 
-                    $node->finalize($this->parser);
+                    $node->finalize($this->parser, $this->lineChecker);
 
                     break;
 

@@ -7,8 +7,8 @@ namespace phpDocumentor\Guides\RestructuredText\Handlers;
 use Doctrine\Common\EventManager;
 use InvalidArgumentException;
 use IteratorAggregate;
+use phpDocumentor\Descriptor\DocumentDescriptor;
 use phpDocumentor\Guides\Configuration;
-use phpDocumentor\Guides\Documents;
 use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Markdown\Parser as MarkdownParser;
 use phpDocumentor\Guides\Metas;
@@ -32,9 +32,6 @@ final class ParseFileHandler
     /** @var Metas */
     private $metas;
 
-    /** @var Documents */
-    private $documents;
-
     /** @var LoggerInterface */
     private $logger;
 
@@ -56,7 +53,6 @@ final class ParseFileHandler
      */
     public function __construct(
         Metas $metas,
-        Documents $documents,
         Renderer $renderer,
         LoggerInterface $logger,
         EventManager $eventManager,
@@ -64,7 +60,6 @@ final class ParseFileHandler
         IteratorAggregate $references
     ) {
         $this->metas = $metas;
-        $this->documents = $documents;
         $this->logger = $logger;
         $this->directives = $directives;
         $this->references = $references;
@@ -111,17 +106,41 @@ final class ParseFileHandler
             return;
         }
 
-        $this->documents->addDocument($file, $document);
+        $command->getDocumentationSet()->addDocument(
+            $file,
+            new DocumentDescriptor(
+                $document,
+                $document->getHash(),
+                $file,
+                $document->getTitle()->getValueString(),
+                $document->getTitles(),
+                $document->getTocs(),
+                $environment->getDependencies(),
+                $environment->getLinks()
+            )
+        );
 
         $outputFolder = $configuration->getOutputFolder() ? $configuration->getOutputFolder() . '/' : '';
         $url = $outputFolder . $this->buildDocumentUrl($environment, $configuration->getFileExtension());
 
+        $tocs = [];
+        $nodes = $document->getTocs();
+        foreach ($nodes as $toc) {
+            $files = $toc->getFiles();
+
+            foreach ($files as &$filea) {
+                $filea = $environment->canonicalUrl($filea);
+            }
+
+            $tocs[] = $files;
+        }
+
         $this->metas->set(
             $file,
             $url,
-            (string) $document->getTitle(),
+            $document->getTitle()->getValueString(),
             $document->getTitles(),
-            $document->getTocs(),
+            $tocs,
             (int) filemtime($fileAbsolutePath),
             $environment->getDependencies(),
             $environment->getLinks()

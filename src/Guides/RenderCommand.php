@@ -14,19 +14,41 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides;
 
 use League\Flysystem\FilesystemInterface;
+use phpDocumentor\Descriptor\GuideSetDescriptor;
 
 final class RenderCommand
 {
     /** @var FilesystemInterface */
     private $filesystem;
 
-    public function __construct(FilesystemInterface $filesystem)
-    {
+    /** @var Configuration */
+    private $configuration;
+
+    /** @var GuideSetDescriptor */
+    private $documentationSet;
+
+    public function __construct(
+        GuideSetDescriptor $documentationSet,
+        Configuration $configuration,
+        FilesystemInterface $filesystem
+    ) {
         $this->filesystem = $filesystem;
+        $this->configuration = $configuration;
+        $this->documentationSet = $documentationSet;
+    }
+
+    public function getDocumentationSet() : GuideSetDescriptor
+    {
+        return $this->documentationSet;
     }
 
     public function getDestination() : FilesystemInterface
     {
         return $this->filesystem;
+    }
+
+    public function getConfiguration() : Configuration
+    {
+        return $this->configuration;
     }
 }

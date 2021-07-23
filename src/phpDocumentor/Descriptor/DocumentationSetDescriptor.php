@@ -26,9 +26,28 @@ abstract class DocumentationSetDescriptor
     /** @var string */
     protected $output = '.';
 
+    /** @var Collection<TocDescriptor> */
+    private $tocs;
+
+    public function __construct()
+    {
+        $this->tocs = Collection::fromClassString(TocDescriptor::class);
+    }
+
     public function getName() : string
     {
         return $this->name;
+    }
+
+    public function addTableOfContents(TocDescriptor $descriptor) : void
+    {
+        $this->tocs->set($descriptor->getName(), $descriptor);
+    }
+
+    /** @return Collection<TocDescriptor> */
+    public function getTableOfContents() : Collection
+    {
+        return $this->tocs;
     }
 
     /**

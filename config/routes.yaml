@@ -1,3 +1,8 @@
+document:
+    path: /{name}.html
+    requirements:
+        name: ".+"
+
 file:
     path: /files/{name}.html
 

@@ -155,6 +155,7 @@ services:
 
     phpDocumentor\Compiler\Compiler:
         calls:
+            - [insert, ['@phpDocumentor\Compiler\Pass\TableOfContentsBuilder', 2000]]
             - [insert, ['@phpDocumentor\Compiler\Pass\ElementsIndexBuilder', !php/const \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::COMPILER_PRIORITY]]
             - [insert, ['@phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor', !php/const \phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor::COMPILER_PRIORITY]]
             - [insert, ['@phpDocumentor\Compiler\Pass\PackageTreeBuilder', !php/const \phpDocumentor\Compiler\Pass\PackageTreeBuilder::COMPILER_PRIORITY]]
@@ -235,6 +236,8 @@ services:
     Doctrine\Common\EventManager: ~
 
     phpDocumentor\Transformer\Writer\RenderGuide:
+      arguments:
+        $outputFormats: !tagged_iterator phpdoc.guides.format
 
     phpDocumentor\Pipeline\Stage\Parser\ParseGuides:
       arguments:
@@ -265,6 +268,11 @@ services:
     phpDocumentor\Guides\RestructuredText\Handlers\ParseFileHandler:
       arguments:
         $directives: !tagged_iterator phpdoc.guides.directive
+        $references: !tagged_iterator phpdoc.guides.reference
+      tags: [{name: tactician.handler, typehints: true}]
+
+    phpDocumentor\Guides\Handlers\RenderHandler:
+      arguments:
         $references: !tagged_iterator phpdoc.guides.reference
       tags: [{name: tactician.handler, typehints: true}]
 

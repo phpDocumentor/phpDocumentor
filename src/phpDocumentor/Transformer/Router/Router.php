@@ -17,6 +17,7 @@ use League\Uri\Contracts\UriInterface;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\ConstantDescriptor;
 use phpDocumentor\Descriptor\Descriptor;
+use phpDocumentor\Descriptor\DocumentDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\FunctionDescriptor;
 use phpDocumentor\Descriptor\InterfaceDescriptor;
@@ -57,6 +58,13 @@ class Router
      */
     public function generate(object $node) : string
     {
+        if ($node instanceof DocumentDescriptor) {
+            return $this->urlGenerator->generate(
+                'document',
+                ['name' => $node->getFile()]
+            );
+        }
+
         if ($node instanceof FileDescriptor) {
             return $this->generateUrlForDescriptor('file', $node->getPath());
         }

@@ -43,12 +43,12 @@ export default function() {
         })
 
         it('Shows the "Mario" package', function () {
-            getSidebarItemByTitle('Packages', 'Mario')
+            getSidebarItemByTitle('Packages', 'Mario', 'namespace')
                 .should('be.visible');
         });
 
         it('Opens the "Marios" package', function() {
-            getSidebarItemByTitle('Packages', 'Marios')
+            getSidebarItemByTitle('Packages', 'Marios', 'namespace')
                 .click();
             shouldVisitPageWithTitle('/packages/Marios.html', 'Marios');
         });

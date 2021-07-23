@@ -27,6 +27,12 @@
             </errorLevel>
         </UndefinedMagicMethod>
 
+        <UnusedVariable>
+            <errorLevel type="suppress">
+                <file name="src/phpDocumentor/Transformer/Writer/Twig/Extension.php" />
+            </errorLevel>
+        </UnusedVariable>
+
         <UndefinedInterfaceMethod>
             <errorLevel type="suppress">
                 <!-- not sure what's going on here -->

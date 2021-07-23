@@ -26,6 +26,7 @@ use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\Nodes\TitleNode;
 use phpDocumentor\Guides\Parser as ParserInterface;
 use function get_class;
+use function md5;
 
 final class Parser implements ParserInterface
 {
@@ -60,12 +61,12 @@ final class Parser implements ParserInterface
     {
         $ast = $this->markdownParser->parse($contents);
 
-        return $this->parseDocument($ast->walker());
+        return $this->parseDocument($ast->walker(), md5($contents));
     }
 
-    public function parseDocument(NodeWalker $walker) : DocumentNode
+    public function parseDocument(NodeWalker $walker, string $hash) : DocumentNode
     {
-        $document = new DocumentNode($this->environment);
+        $document = new DocumentNode($hash);
         $this->document = $document;
 
         while ($event = $walker->next()) {
