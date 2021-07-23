@@ -8,14 +8,7 @@
         <section class="phpdocumentor-sidebar__category">
             <h2 class="phpdocumentor-sidebar__category-header">{{ toc.name }}</h2>
                 {% for root in toc.roots %}
-                    <h4 class="phpdocumentor-sidebar__root-namespace"><a href="{{ root.url }}">{{ root.title | shortFQSEN }}</a></h4>
-                    {% if root.children.count > 0 %}
-                    <ul class="phpdocumentor-list">
-                        {% for child in root.children %}
-                        <li><a href="{{ child.url }}">{{ child.title | shortFQSEN }}</a></li>
-                        {% endfor %}
-                    </ul>
-                    {% endif %}
+                    {{ toc(root, 'components/menu.html.twig', 1) }}
                 {% endfor %}
         </section>
         {% endfor %}

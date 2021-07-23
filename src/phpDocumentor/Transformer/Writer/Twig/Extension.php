@@ -24,6 +24,7 @@ use phpDocumentor\Descriptor\Interfaces\VisibilityInterface;
 use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Descriptor\PackageDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\TableOfContents\Entry;
 use phpDocumentor\Descriptor\Tag\ExampleDescriptor;
 use phpDocumentor\Descriptor\Tag\LinkDescriptor;
 use phpDocumentor\Descriptor\Tag\SeeDescriptor;
@@ -31,6 +32,7 @@ use phpDocumentor\Path;
 use phpDocumentor\Reflection\DocBlock\Tags\Reference;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Type;
+use Twig\Environment;
 use Twig\Extension\AbstractExtension;
 use Twig\Extension\GlobalsInterface;
 use Twig\TwigFilter;
@@ -85,8 +87,8 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
         LinkRenderer $routeRenderer
     ) {
         $this->markdownConverter = $markdownConverter;
-        $this->routeRenderer = $routeRenderer;
-        $this->routeRenderer = $this->routeRenderer->withProject($project);
+        $this->routeRenderer     = $routeRenderer;
+        $this->routeRenderer     = $this->routeRenderer->withProject($project);
     }
 
     /**
@@ -159,7 +161,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             new TwigFunction(
                 'breadcrumbs',
                 static function (DescriptorAbstract $baseNode) : array {
-                    $results = [];
+                    $results   = [];
                     $namespace = $baseNode instanceof NamespaceDescriptor
                         ? $baseNode->getParent()
                         : $baseNode->getNamespace();
@@ -243,6 +245,33 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
                     return $constants;
                 }
             ),
+            new TwigFunction(
+                'toc',
+                static function (
+                    Environment $env,
+                    Entry $entry,
+                    string $template,
+                    ?int $maxDepth = null,
+                    int $depth = 0
+                ) : string {
+                    if ($maxDepth === $depth) {
+                        return '';
+                    }
+
+                    return $env->render(
+                        $template,
+                        [
+                            'entry' => $entry,
+                            'depth' => ++$depth,
+                            'maxDepth' => $maxDepth,
+                        ]
+                    );
+                },
+                [
+                    'needs_environment' => true,
+                    'is_safe' => ['html'],
+                ]
+            ),
         ];
     }
 
@@ -313,14 +342,14 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
                         'protected' => 1,
                         'private' => 2,
                     ];
-                    $iterator = $collection->getIterator();
+                    $iterator        = $collection->getIterator();
                     $iterator->uasort(
                         static function (Descriptor $a, Descriptor $b) use ($visibilityOrder) {
                             $prio = 0;
                             if ($a instanceof VisibilityInterface && $b instanceof VisibilityInterface) {
                                 $visibilityPriorityA = $visibilityOrder[$a->getVisibility()] ?? 0;
                                 $visibilityPriorityB = $visibilityOrder[$b->getVisibility()] ?? 0;
-                                $prio = $visibilityPriorityA <=> $visibilityPriorityB;
+                                $prio                = $visibilityPriorityA <=> $visibilityPriorityB;
                             }
 
                             if ($prio !== 0) {
