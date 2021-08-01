@@ -14,7 +14,7 @@ use function str_replace;
 use function time;
 use function trim;
 
-class SpanProcessor
+class SpanParser
 {
     /** @var Environment */
     private $environment;

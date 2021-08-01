@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\Nodes;
 
 use phpDocumentor\Guides\Environment;
-use phpDocumentor\Guides\RestructuredText\Span\SpanProcessor;
+use phpDocumentor\Guides\RestructuredText\Span\SpanParser;
 use phpDocumentor\Guides\RestructuredText\Span\SpanToken;
 use function get_class;
 use function implode;
@@ -38,7 +38,7 @@ class SpanNode extends Node
             $span = $environment->getNodeRendererFactory()->get(get_class($span))->render($span);
         }
 
-        $spanProcessor = new SpanProcessor($environment);
+        $spanProcessor = new SpanParser($environment);
 
         parent::__construct($spanProcessor->process($span));
         $this->tokens = $spanProcessor->getTokens();

@@ -6,7 +6,7 @@ namespace phpDocumentor\Behat\Contexts\RestructuredText\Span;
 
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\Guides\Environment;
-use phpDocumentor\Guides\RestructuredText\Span\SpanProcessor;
+use phpDocumentor\Guides\RestructuredText\Span\SpanParser;
 use phpDocumentor\Guides\RestructuredText\Span\SpanToken;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -20,7 +20,7 @@ final class SpanProcessorTest extends TestCase
     /** @var Environment&ObjectProphecy */
     private $environment;
 
-    /** @var SpanProcessor */
+    /** @var SpanParser */
     private $spanProcessor;
 
     public function setUp(): void
@@ -28,7 +28,7 @@ final class SpanProcessorTest extends TestCase
         $this->environment = $this->prophesize(Environment::class);
         $this->environment->getTitleLetters()->willReturn([]);
         $this->environment->resetAnonymousStack()->hasReturnVoid();
-        $this->spanProcessor = new SpanProcessor($this->environment->reveal());
+        $this->spanProcessor = new SpanParser($this->environment->reveal());
     }
 
     public function testInlineLiteralsAreReplacedWithToken(): void
