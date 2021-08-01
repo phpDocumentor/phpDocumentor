@@ -36,6 +36,7 @@
         "ext-simplexml": "*",
         "ext-xml": "*",
         "doctrine/event-manager": "^1.1",
+        "doctrine/lexer": "^1.2",
         "jawira/plantuml": "^1.27",
         "jean85/pretty-package-versions": "^1.5 || ^2.0.1",
         "league/commonmark": "^1.5",

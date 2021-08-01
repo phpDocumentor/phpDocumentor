@@ -38,9 +38,9 @@ class SpanNode extends Node
             $span = $environment->getNodeRendererFactory()->get(get_class($span))->render($span);
         }
 
-        $spanProcessor = new SpanProcessor($environment, $span);
+        $spanProcessor = new SpanProcessor($environment);
 
-        parent::__construct($spanProcessor->process());
+        parent::__construct($spanProcessor->process($span));
         $this->tokens = $spanProcessor->getTokens();
     }
 

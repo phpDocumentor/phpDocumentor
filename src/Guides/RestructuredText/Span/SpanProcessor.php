@@ -5,24 +5,19 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\RestructuredText\Span;
 
 use phpDocumentor\Guides\Environment;
-use function htmlspecialchars;
 use function mt_rand;
 use function preg_match;
-use function preg_match_all;
 use function preg_replace;
 use function preg_replace_callback;
 use function sha1;
 use function str_replace;
-use function substr;
 use function time;
+use function trim;
 
 class SpanProcessor
 {
     /** @var Environment */
     private $environment;
-
-    /** @var string */
-    private $span;
 
     /** @var int */
     private $tokenId;
@@ -33,29 +28,29 @@ class SpanProcessor
     /** @var SpanToken[] */
     private $tokens = [];
 
-    public function __construct(Environment $environment, string $span)
+    /** @var SpanLexer */
+    private $lexer;
+
+    public function __construct(Environment $environment)
     {
+        $this->lexer = new SpanLexer();
         $this->environment = $environment;
-        $this->span = $span;
         $this->tokenId = 0;
         $this->prefix = mt_rand() . '|' . time();
     }
 
-    public function process() : string
+    public function process(string $span) : string
     {
-        $span = $this->replaceLiterals($this->span);
-
-        $span = $this->replaceTitleLetters($span);
-
+        $span = $this->replaceLiterals($span);
         $span = $this->replaceReferences($span);
 
-        $span = $this->replaceLinks($span);
+        $this->lexer->setInput($span);
+        $this->lexer->moveNext();
 
-        $span = $this->replaceStandaloneHyperlinks($span);
+        $result = $this->parseTokens();
+        $result = $this->replaceStandaloneHyperlinks($result);
 
-        $span = $this->replaceStandaloneEmailAddresses($span);
-
-        return $span;
+        return $this->replaceStandaloneEmailAddresses($result);
     }
 
     /**
@@ -86,7 +81,7 @@ class SpanProcessor
                     $id,
                     [
                         'type' => 'literal',
-                        'text' => htmlspecialchars($match[1]),
+                        'text' => $match[1],
                     ]
                 );
 
@@ -96,19 +91,38 @@ class SpanProcessor
         );
     }
 
-    private function replaceTitleLetters(string $span) : string
+    private function createNamedReference(string $link, ?string $url = null) : string
     {
-        foreach ($this->environment->getTitleLetters() as $level => $letter) {
-            $span = preg_replace_callback(
-                '/\#\\' . $letter . '/mUsi',
-                function () use ($level) : string {
-                    return (string) $this->environment->getNumber($level);
-                },
-                $span
-            );
+        // the link may have a new line in it so we need to strip it
+        // before setting the link and adding a token to be replaced
+        $link = str_replace("\n", ' ', $link);
+        $link = trim(preg_replace('/\s+/', ' ', $link));
+
+        $id = $this->generateId();
+        $this->addToken(
+            SpanToken::TYPE_LINK,
+            $id,
+            [
+                'type' => SpanToken::TYPE_LINK,
+                'link' => $link,
+                'url' => $url ?? '',
+            ]
+        );
+
+        if ($url !== null) {
+            $this->environment->setLink($link, $url);
         }
 
-        return $span;
+        return $id;
+    }
+
+    private function createAnonymousReference(string $link) : string
+    {
+        $this->environment->resetAnonymousStack();
+        $id = $this->createNamedReference($link);
+        $this->environment->pushAnonymous($link);
+
+        return $id;
     }
 
     private function replaceReferences(string $span) : string
@@ -150,91 +164,6 @@ class SpanProcessor
             },
             $span
         );
-    }
-
-    private function replaceLinks(string $span) : string
-    {
-        // Signaling anonymous names
-        $this->environment->resetAnonymousStack();
-
-        if (preg_match_all('/(_*)(([a-z0-9]+)|(`(.+)`))__/mUsi', $span, $matches) > 0) {
-            foreach ($matches[3] as $k => $_y) {
-                $name = $matches[3][$k] ?: $matches[5][$k];
-
-                // string prefixed with _ is not an anonymous link
-                if ($matches[1][$k]) {
-                    continue;
-                }
-
-                $this->environment->pushAnonymous($name);
-            }
-        }
-
-        $linkCallback = function (array $match) : string {
-            /** @var string $link */
-            $link = $match[3] ?: $match[5];
-
-            // a link starting with _ is not a link - return original string
-            if (substr($link, 0, 1) === '_') {
-                return $match[0];
-            }
-
-            // the link may have a new line in it so we need to strip it
-            // before setting the link and adding a token to be replaced
-            $link = str_replace("\n", ' ', $link);
-            $link = preg_replace('/\s+/', ' ', $link);
-
-            // we need to maintain the characters before and after the link
-            $prev = $match[1]; // previous character before the link
-            $next = $match[6]; // next character after the link
-
-            $url = '';
-
-            // extract the url if the link was in this format: `test link <https://www.google.com>`_
-            if (preg_match('/^(.+)[ \n]<(.+)>$/mUsi', $link, $m) > 0) {
-                $link = $m[1];
-                $url = $m[2];
-
-                $this->environment->setLink($link, $url);
-            }
-
-            // extract the url if the link was in this format: `<https://www.google.com>`_
-            if (preg_match('/^<(.+)>$/mUsi', $link, $m) > 0) {
-                $link = $m[1];
-                $url = $m[1];
-
-                $this->environment->setLink($link, $url);
-            }
-
-            $id = $this->generateId();
-
-            $this->addToken(
-                SpanToken::TYPE_LINK,
-                $id,
-                [
-                    'link' => $link,
-                    'url' => $url,
-                ]
-            );
-
-            return $prev . $id . $next;
-        };
-
-        // Replacing anonymous links
-        $span = preg_replace_callback(
-            '/(^|[ ])(([a-z0-9_-]+)|(`(.+)`))__([^a-z0-9]{1}|$)/mUsi',
-            $linkCallback,
-            $span
-        );
-
-        // Replacing links
-        $span = preg_replace_callback(
-            '/(^|[ ])(([a-z0-9_-]+)|(`(.+)`))_([^a-z0-9]{1}|$)/mUsi',
-            $linkCallback,
-            $span
-        );
-
-        return $span;
     }
 
     private function replaceStandaloneHyperlinks(string $span) : string
@@ -309,5 +238,129 @@ class SpanProcessor
         $this->tokenId++;
 
         return sha1($this->prefix . '|' . $this->tokenId);
+    }
+
+    private function parseTokens() : string
+    {
+        $result = '';
+        while (true) {
+            switch ($this->lexer->token['type']) {
+                case SpanLexer::NAMED_REFERENCE:
+                    $result .= $this->createNamedReference(trim($this->lexer->token['value'], '_'));
+                    break;
+                case SpanLexer::ANONYMOUSE_REFERENCE:
+                    $result .= $this->createAnonymousReference(trim($this->lexer->token['value'], '_'));
+                    break;
+                case SpanLexer::INTERNAL_REFERENCE_START:
+                    $result .= $this->parseInternalReference();
+                    break;
+                case SpanLexer::BACKTICK:
+                    $link = $this->parseNamedReference();
+                    $result .= $link;
+                    break;
+
+                case SpanLexer::NAMED_REFERENCE_END:
+                    $result .= $this->createNamedReference($result);
+                    break;
+                default:
+                    $result .= $this->lexer->token['value'];
+                    break;
+            }
+
+            if ($this->lexer->moveNext() === false && $this->lexer->token === null) {
+                break;
+            }
+        }
+
+        return $result;
+    }
+
+    private function parseInternalReference() : string
+    {
+        $text = '';
+        while ($this->lexer->moveNext()) {
+            $token = $this->lexer->token;
+            switch ($token['type']) {
+                case SpanLexer::BACKTICK:
+                    return $this->createNamedReference($text);
+                default:
+                    $text .= $token['value'];
+            }
+        }
+
+        return $text;
+    }
+
+    private function parseNamedReference() : string
+    {
+        $startPosition = $this->lexer->token['position'];
+        $text = '';
+        $url = null;
+        $this->lexer->moveNext();
+
+        while (true) {
+            $token = $this->lexer->token;
+            switch ($token['type']) {
+                case SpanLexer::NAMED_REFERENCE_END:
+                    return $this->createNamedReference($text, $url);
+                case SpanLexer::EMBEDED_URL_START:
+                    $url = $this->parseEmbeddedUrl();
+                    if ($url === null) {
+                        $text .= '<';
+                    }
+
+                    break;
+                default:
+                    $text .= $token['value'];
+                    break;
+            }
+
+            if ($this->lexer->moveNext() === false && $this->lexer->token === null) {
+                break;
+            }
+        }
+
+        $this->lexer->resetPosition($startPosition);
+        $this->lexer->moveNext();
+        $this->lexer->moveNext();
+
+        return '`';
+    }
+
+    private function parseEmbeddedUrl() : ?string
+    {
+        $startPosition = $this->lexer->token['position'];
+        $text = '';
+        $this->lexer->moveNext();
+
+        while (true) {
+            $token = $this->lexer->token;
+            switch ($token['type']) {
+                case SpanLexer::NAMED_REFERENCE_END:
+                    //We did not find the expected SpanLexer::EMBEDED_URL_END
+                    $this->rollback($startPosition);
+
+                    return null;
+                case SpanLexer::EMBEDED_URL_END:
+                    return $text;
+                default:
+                    $text .= $token['value'];
+            }
+
+            if ($this->lexer->moveNext() === false && $this->lexer->token === null) {
+                break;
+            }
+        }
+
+        $this->rollback($startPosition);
+
+        return null;
+    }
+
+    private function rollback(int $position) : void
+    {
+        $this->lexer->resetPosition($position);
+        $this->lexer->moveNext();
+        $this->lexer->moveNext();
     }
 }

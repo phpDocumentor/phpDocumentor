@@ -14,14 +14,14 @@ Description
 -----------
 
 The ``@method`` tag is used in situations where a class contains the
-`__call() <https://www.php.net/language.oop5.overloading#object.call>`_ or
-`__callStatic() <https://www.php.net/language.oop5.overloading#object.callstatic>`_
+`\__call() <https://www.php.net/language.oop5.overloading#object.call>`_ or
+`\__callStatic() <https://www.php.net/language.oop5.overloading#object.callstatic>`_
 magic method and defines some definite uses.
 
 An example of this is a child class whose parent has a ``__call()`` method defined
 to have dynamic getters or setters for predefined properties. The child knows
 which getters and setters need to be present, but relies on the parent class to
-use the `__call() <https://www.php.net/language.oop5.overloading#object.call>`_
+use the `\__call() <https://www.php.net/language.oop5.overloading#object.call>`_
 method to provide this functionality. In this situation, the child class would have
 a ``@method`` tag for each magic setter or getter method.
 
