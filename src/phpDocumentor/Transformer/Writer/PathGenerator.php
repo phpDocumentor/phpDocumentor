@@ -110,13 +110,7 @@ class PathGenerator
                 // strip any special characters and surrounding \ or /
                 $filepart = trim(trim($value), '\\/');
 
-                // make it windows proof by transliterating to ASCII and by url encoding
-                $filepart = (new UnicodeString($filepart))->ascii()->toString();
-                $value = strpos($filepart, '/') !== false
-                    ? implode('/', array_map('urlencode', explode('/', $filepart)))
-                    : implode('\\', array_map('urlencode', explode('\\', $filepart)));
-
-                if (!$value) {
+                if ($filepart === '') {
                     throw new RuntimeException(
                         sprintf(
                             'Variable substitution in path %s failed, variable "%s" did not return a value',
@@ -126,7 +120,12 @@ class PathGenerator
                     );
                 }
 
-                return $value;
+                // make it windows proof by transliterating to ASCII and by url encoding
+                $filepart = (new UnicodeString($filepart))->ascii()->toString();
+
+                return strpos($filepart, '/') !== false
+                    ? implode('/', array_map('urlencode', explode('/', $filepart)))
+                    : implode('\\', array_map('urlencode', explode('\\', $filepart)));
             },
             $path
         );

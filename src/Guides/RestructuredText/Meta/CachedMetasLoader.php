@@ -25,7 +25,7 @@ final class CachedMetasLoader
         $contents = file_get_contents($metaCachePath);
 
         if ($contents === false) {
-            throw new LogicException(sprintf('Could not load file "%s"', $contents));
+            throw new LogicException(sprintf('Could not load file "%s"', $metaCachePath));
         }
 
         $metas->setMetaEntries(unserialize($contents));
