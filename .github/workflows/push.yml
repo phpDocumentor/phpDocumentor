@@ -314,6 +314,7 @@ jobs:
   e2e:
     runs-on: ubuntu-16.04
     name: E2E tests [ubuntu-latest]
+    if: github.repository == 'phpDocumentor/phpDocumentor'
     needs:
       - setup
     steps:
@@ -460,6 +461,7 @@ jobs:
 
   e2e-matrix:
     runs-on: ${{ matrix.operating-system }}
+    if: github.repository == 'phpDocumentor/phpDocumentor'
     strategy:
       matrix:
         php-versions:
