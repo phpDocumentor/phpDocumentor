@@ -9,6 +9,7 @@ jobs:
   check:
     name: Broken Link Check
     runs-on: ubuntu-latest
+    if: github.repository == 'phpDocumentor/phpDocumentor'
     steps:
       - name: Broken Link Check
         uses: technote-space/broken-link-checker-action@v2.2
