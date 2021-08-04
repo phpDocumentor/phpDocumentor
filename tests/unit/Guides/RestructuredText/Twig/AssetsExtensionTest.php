@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace phpDocumentor\Guides\Twig;
+namespace phpDocumentor\Guides\RestructuredText\Twig;
 
 use PHPUnit\Framework\TestCase;
 
