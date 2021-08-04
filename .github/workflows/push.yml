@@ -545,7 +545,7 @@ jobs:
   website:
     runs-on: ubuntu-latest
     name: Trigger website build
-    if: github.ref == 'refs/heads/master'
+    if: github.repository == 'phpDocumentor/phpDocumentor' && github.ref == 'refs/heads/master'
     needs:
       - e2e
       - phpunit
