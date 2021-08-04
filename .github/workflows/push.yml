@@ -230,7 +230,7 @@ jobs:
       - name: Install Composer dependencies & cache dependencies
         uses: "ramsey/composer-install@v1"
         with:
-          composer-options: --optimize-autoloader
+          composer-options: --no-dev --optimize-autoloader
 
       - name: warm cache
         uses: phpDocumentor/phar-ga@latest
