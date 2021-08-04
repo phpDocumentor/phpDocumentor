@@ -9,6 +9,7 @@ env:
 jobs:
   docs:
     runs-on: ubuntu-latest
+    if: github.repository == 'phpDocumentor/phpDocumentor'
     steps:
       - uses: actions/checkout@v2
 
