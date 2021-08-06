@@ -3,6 +3,8 @@ on:
     branches:
       - master
   pull_request:
+  # Allow manually triggering the workflow.
+  workflow_dispatch:
 name: Qa workflow
 env:
   extensions: mbstring, intl, iconv, libxml, dom, json, simplexml, zlib, fileinfo
