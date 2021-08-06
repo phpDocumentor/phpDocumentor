@@ -262,7 +262,7 @@ jobs:
           path: build/phpDocumentor.phar
 
   e2e:
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-latest
     name: E2E tests [ubuntu-latest]
     needs:
       - setup
@@ -398,7 +398,7 @@ jobs:
           - '7.4'
           - '8.0'
         operating-system:
-          - ubuntu-16.04
+          - ubuntu-latest
           - windows-latest
           - macOS-latest
     name: E2E tests on PHAR [${{ matrix.php-versions }} | ${{ matrix.operating-system }}]
