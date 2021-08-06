@@ -39,20 +39,10 @@ jobs:
           ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
           tools: composer-require-checker:2.1.0
 
-      - name: Get composer cache directory
-        id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-      - name: Cache composer dependencies
-        uses: actions/cache@v2.1.6
+      - name: Install Composer dependencies & cache dependencies
+        uses: "ramsey/composer-install@v1"
         with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: composer-
-
-      - name: Install Composer dependencies
-        run: |
-          composer install --no-progress --prefer-dist --optimize-autoloader
+          composer-options: --optimize-autoloader
 
 #      - name: composer-require-checker
 #        run: composer-require-checker check --config-file $GITHUB_WORKSPACE/composer-require-config.json composer.json
@@ -87,20 +77,10 @@ jobs:
         ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
         tools: pecl, phive
 
-    - name: Get composer cache directory
-      id: composer-cache
-      run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-    - name: Cache composer dependencies
-      uses: actions/cache@v2.1.6
+    - name: Install Composer dependencies & cache dependencies
+      uses: "ramsey/composer-install@v1"
       with:
-        path: ${{ steps.composer-cache.outputs.dir }}
-        key: composer-${{ hashFiles('**/composer.lock') }}
-        restore-keys: composer-
-
-    - name: Install Composer dependencies
-      run: |
-        composer install --no-progress --prefer-dist --optimize-autoloader
+        composer-options: --optimize-autoloader
 
     - name: Install PHAR dependencies
       env:
@@ -165,20 +145,10 @@ jobs:
           ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
           tools: pecl
 
-      - name: Get composer cache directory
-        id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-      - name: Cache composer dependencies
-        uses: actions/cache@v2.1.6
+      - name: Install Composer dependencies & cache dependencies
+        uses: "ramsey/composer-install@v1"
         with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: composer-
-
-      - name: Install Composer dependencies
-        run: |
-          composer install --no-progress --prefer-dist --optimize-autoloader
+          composer-options: --optimize-autoloader
 
       - name: PHPStan
         uses: phpDocumentor/phpstan-ga@master
@@ -216,20 +186,10 @@ jobs:
           ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
           tools: pecl, psalm
 
-      - name: Get composer cache directory
-        id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-      - name: Cache composer dependencies
-        uses: actions/cache@v2.1.6
+      - name: Install Composer dependencies & cache dependencies
+        uses: "ramsey/composer-install@v1"
         with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: composer-
-
-      - name: Install Composer dependencies
-        run: |
-          composer install --no-progress --prefer-dist --optimize-autoloader
+          composer-options: --optimize-autoloader
 
       - name: Psalm
         run: psalm --output-format=github
@@ -265,20 +225,10 @@ jobs:
           ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
           tools: pecl
 
-      - name: Get composer cache directory
-        id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-      - name: Cache composer dependencies
-        uses: actions/cache@v2.1.6
+      - name: Install Composer dependencies & cache dependencies
+        uses: "ramsey/composer-install@v1"
         with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: composer-
-
-      - name: Install Composer dependencies
-        run: |
-          composer install --no-progress --prefer-dist --optimize-autoloader
+          composer-options: --optimize-autoloader
 
       - name: warm cache
         uses: phpDocumentor/phar-ga@latest
@@ -342,20 +292,10 @@ jobs:
           ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
           tools: pecl
 
-      - name: Get composer cache directory
-        id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-      - name: Cache composer dependencies
-        uses: actions/cache@v2.1.6
+      - name: Install Composer dependencies & cache dependencies
+        uses: "ramsey/composer-install@v1"
         with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: composer-
-
-      - name: Install Composer dependencies
-        run: |
-          composer install --no-progress --prefer-dist --optimize-autoloader
+          composer-options: --optimize-autoloader
 
       - name: Build example project using Clean template
         run: ./bin/phpdoc --template=clean -vvv --config=data/examples/MariosPizzeria/phpdoc.xml --target=build/clean
@@ -429,20 +369,10 @@ jobs:
         ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
         tools: pecl, phive
 
-    - name: Get composer cache directory
-      id: composer-cache
-      run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-    - name: Cache composer dependencies
-      uses: actions/cache@v2.1.6
+    - name: Install Composer dependencies & cache dependencies
+      uses: "ramsey/composer-install@v1"
       with:
-        path: ${{ steps.composer-cache.outputs.dir }}
-        key: composer-${{ hashFiles('**/composer.lock') }}
-        restore-keys: composer-
-
-    - name: Install Composer dependencies
-      run: |
-        composer install --no-progress --prefer-dist --optimize-autoloader
+        composer-options: --optimize-autoloader
 
     - name: Install PHAR dependencies
       env:
