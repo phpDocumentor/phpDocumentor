@@ -46,6 +46,7 @@ class SpanParser
 
         $this->lexer->setInput($span);
         $this->lexer->moveNext();
+        $this->lexer->moveNext();
 
         $result = $this->parseTokens();
         $result = $this->replaceStandaloneHyperlinks($result);
@@ -243,7 +244,7 @@ class SpanParser
     private function parseTokens() : string
     {
         $result = '';
-        while (true) {
+        while ($this->lexer->token !== null) {
             switch ($this->lexer->token['type']) {
                 case SpanLexer::NAMED_REFERENCE:
                     $result .= $this->createNamedReference(trim($this->lexer->token['value'], '_'));
@@ -267,9 +268,7 @@ class SpanParser
                     break;
             }
 
-            if ($this->lexer->moveNext() === false && $this->lexer->token === null) {
-                break;
-            }
+            $this->lexer->moveNext();
         }
 
         return $result;

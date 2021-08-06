@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
-final class SpanProcessorTest extends TestCase
+final class SpanParserTest extends TestCase
 {
     use Faker;
     use ProphecyTrait;
@@ -243,5 +243,12 @@ TEXT
             ],
             $token->getTokenData()
         );
+    }
+
+    public function testNoReplacementsAreDoneWhenNotNeeded(): void
+    {
+        $result = $this->spanProcessor->process('Raw token');
+        self::assertSame('Raw token', $result);
+        self::assertEmpty($this->spanProcessor->getTokens());
     }
 }
