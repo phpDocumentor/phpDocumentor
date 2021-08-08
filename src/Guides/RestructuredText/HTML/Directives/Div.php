@@ -14,7 +14,7 @@ use phpDocumentor\Guides\RestructuredText\Parser;
  */
 class Div extends SubDirective
 {
-    public function getName() : string
+    public function getName(): string
     {
         return 'div';
     }
@@ -28,7 +28,7 @@ class Div extends SubDirective
         string $variable,
         string $data,
         array $options
-    ) : ?Node {
+    ): ?Node {
         return new TemplatedNode(
             'div.html.twig',
             [

@@ -29,12 +29,12 @@ class FigureNode extends Node
         $this->document = $document;
     }
 
-    public function getImage() : ImageNode
+    public function getImage(): ImageNode
     {
         return $this->image;
     }
 
-    public function getDocument() : ?Node
+    public function getDocument(): ?Node
     {
         return $this->document;
     }

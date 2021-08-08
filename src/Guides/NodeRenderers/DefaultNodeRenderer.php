@@ -29,7 +29,7 @@ class DefaultNodeRenderer implements NodeRenderer
         $this->environment = $environment;
     }
 
-    public function render(Node $node) : string
+    public function render(Node $node): string
     {
         $value = $node->getValue();
 

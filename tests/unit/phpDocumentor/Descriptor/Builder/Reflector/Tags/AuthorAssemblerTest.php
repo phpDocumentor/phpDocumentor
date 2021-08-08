@@ -26,7 +26,7 @@ class AuthorAssemblerTest extends TestCase
      * @covers ::create
      * @covers ::buildDescriptor
      */
-    public function testCreate() : void
+    public function testCreate(): void
     {
         $feature = new AuthorAssembler();
         $result = $feature->create(new Author('Jaapio', 'jaap@phpdoc.org'));

@@ -50,7 +50,7 @@ final class ParserTest extends TestCase
     /**
      * Instantiates a new parser object as fixture.
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         ini_set('zend.script_encoding', '');
         $this->projectFactory = $this->prophesize(ProjectFactory::class);
@@ -66,7 +66,7 @@ final class ParserTest extends TestCase
      * @covers ::setEncoding
      * @covers ::getEncoding
      */
-    public function testSettingAndRetrievingTheEncodingOfTheProvidedFiles() : void
+    public function testSettingAndRetrievingTheEncodingOfTheProvidedFiles(): void
     {
         $this->assertEquals('utf-8', $this->fixture->getEncoding());
 
@@ -78,7 +78,7 @@ final class ParserTest extends TestCase
      * @covers ::setPath
      * @covers ::getPath
      */
-    public function testSettingAndRetrievingTheBasePath() : void
+    public function testSettingAndRetrievingTheBasePath(): void
     {
         // Arrange
         $this->assertSame('', $this->fixture->getPath());
@@ -97,7 +97,7 @@ final class ParserTest extends TestCase
      * @covers ::setValidate
      * @covers ::doValidation
      */
-    public function testValidate() : void
+    public function testValidate(): void
     {
         // defaults to false
         $this->assertEquals(false, $this->fixture->doValidation());
@@ -116,7 +116,7 @@ final class ParserTest extends TestCase
      * @covers ::setMarkers
      * @covers ::getMarkers
      */
-    public function testMarkers() : void
+    public function testMarkers(): void
     {
         $fixtureData = ['FIXME', 'TODO', 'DOIT'];
 
@@ -131,7 +131,7 @@ final class ParserTest extends TestCase
      * @covers ::setDefaultPackageName
      * @covers ::getDefaultPackageName
      */
-    public function testSetAndGetDefaultPackageName() : void
+    public function testSetAndGetDefaultPackageName(): void
     {
         $parser = new Parser(
             $this->prophesize(ProjectFactory::class)->reveal(),
@@ -149,7 +149,7 @@ final class ParserTest extends TestCase
     /**
      * @covers ::parse
      */
-    public function testFilesAreParsedByProjectFactory() : void
+    public function testFilesAreParsedByProjectFactory(): void
     {
         $file = new vfsStreamFile('my-file.php');
         vfsStream::setup()->addChild($file);
@@ -172,7 +172,7 @@ final class ParserTest extends TestCase
     /**
      * @covers ::parse
      */
-    public function testWhenParsingAnnounceWhenYouAreStarting() : void
+    public function testWhenParsingAnnounceWhenYouAreStarting(): void
     {
         $file = new vfsStreamFile('my-file.php');
         vfsStream::setup()->addChild($file);
@@ -182,7 +182,7 @@ final class ParserTest extends TestCase
         $preParsingEvent = null;
         Dispatcher::getInstance()->addListener(
             'parser.pre',
-            static function (PreParsingEvent $event) use (&$preParsingEvent) : void {
+            static function (PreParsingEvent $event) use (&$preParsingEvent): void {
                 $preParsingEvent = $event;
             }
         );

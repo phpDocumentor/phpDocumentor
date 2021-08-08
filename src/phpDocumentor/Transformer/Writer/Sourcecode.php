@@ -39,7 +39,7 @@ class Sourcecode extends WriterAbstract
      * @param ProjectDescriptor $project        Document containing the structure.
      * @param Transformation    $transformation Transformation to execute.
      */
-    public function transform(ProjectDescriptor $project, Transformation $transformation) : void
+    public function transform(ProjectDescriptor $project, Transformation $transformation): void
     {
         foreach ($project->getVersions() as $version) {
             foreach ($version->getDocumentationSets() as $documentationSet) {

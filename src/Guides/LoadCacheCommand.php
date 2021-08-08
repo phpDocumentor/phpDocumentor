@@ -27,12 +27,12 @@ final class LoadCacheCommand
         $this->useCaching = $useCaching;
     }
 
-    public function getCacheDirectory() : string
+    public function getCacheDirectory(): string
     {
         return $this->cacheDirectory;
     }
 
-    public function useCaching() : bool
+    public function useCaching(): bool
     {
         return $this->useCaching;
     }

@@ -19,7 +19,7 @@ use phpDocumentor\Guides\Environment;
 
 final class TitleNodeTest extends MockeryTestCase
 {
-    public function test_it_can_be_created_with_a_title_slug_and_depth() : void
+    public function test_it_can_be_created_with_a_title_slug_and_depth(): void
     {
         $environment = m::mock(Environment::class);
         $environment->shouldReceive('getTitleLetters')->andReturn(['a']);

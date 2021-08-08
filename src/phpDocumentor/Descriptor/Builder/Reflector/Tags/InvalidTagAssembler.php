@@ -16,7 +16,7 @@ use function sprintf;
  */
 final class InvalidTagAssembler extends AssemblerAbstract
 {
-    public function create(object $data) : TagDescriptor
+    public function create(object $data): TagDescriptor
     {
         $descriptor = new TagDescriptor($data->getName());
         $descriptor->setDescription(new DescriptionDescriptor(new Description((string) $data), []));

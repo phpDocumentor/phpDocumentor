@@ -79,7 +79,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
      *
      * @param ClassDescriptor|Fqsen|string|null $parent
      */
-    public function setParent($parent) : void
+    public function setParent($parent): void
     {
         $this->parent = $parent;
     }
@@ -97,12 +97,12 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
      *
      * @param Collection<InterfaceDescriptor|Fqsen> $implements
      */
-    public function setInterfaces(Collection $implements) : void
+    public function setInterfaces(Collection $implements): void
     {
         $this->implements = $implements;
     }
 
-    public function getInterfaces() : Collection
+    public function getInterfaces(): Collection
     {
         return $this->implements;
     }
@@ -110,12 +110,12 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     /**
      * @internal should not be called by any other class than the assamblers
      */
-    public function setFinal(bool $final) : void
+    public function setFinal(bool $final): void
     {
         $this->final = $final;
     }
 
-    public function isFinal() : bool
+    public function isFinal(): bool
     {
         return $this->final;
     }
@@ -123,12 +123,12 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     /**
      * @internal should not be called by any other class than the assamblers
      */
-    public function setAbstract(bool $abstract) : void
+    public function setAbstract(bool $abstract): void
     {
         $this->abstract = $abstract;
     }
 
-    public function isAbstract() : bool
+    public function isAbstract(): bool
     {
         return $this->abstract;
     }
@@ -138,12 +138,12 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
      *
      * @param Collection<ConstantDescriptor> $constants
      */
-    public function setConstants(Collection $constants) : void
+    public function setConstants(Collection $constants): void
     {
         $this->constants = $constants;
     }
 
-    public function getConstants() : Collection
+    public function getConstants(): Collection
     {
         return $this->constants;
     }
@@ -151,7 +151,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     /**
      * @return Collection<ConstantDescriptor>
      */
-    public function getInheritedConstants() : Collection
+    public function getInheritedConstants(): Collection
     {
         if ($this->getParent() === null || (!$this->getParent() instanceof self)) {
             return new Collection();
@@ -167,17 +167,17 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
      *
      * @param Collection<MethodDescriptor> $methods
      */
-    public function setMethods(Collection $methods) : void
+    public function setMethods(Collection $methods): void
     {
         $this->methods = $methods;
     }
 
-    public function getMethods() : Collection
+    public function getMethods(): Collection
     {
         return $this->methods;
     }
 
-    public function getInheritedMethods() : Collection
+    public function getInheritedMethods(): Collection
     {
         $inheritedMethods = Collection::fromClassString(MethodDescriptor::class);
 
@@ -201,7 +201,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     /**
      * @return Collection<MethodDescriptor>
      */
-    public function getMagicMethods() : Collection
+    public function getMagicMethods(): Collection
     {
         $methodTags = $this->getTags()->fetch('method', new Collection())->filter(Tag\MethodDescriptor::class);
 
@@ -236,17 +236,17 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
      *
      * @param Collection<PropertyDescriptor> $properties
      */
-    public function setProperties(Collection $properties) : void
+    public function setProperties(Collection $properties): void
     {
         $this->properties = $properties;
     }
 
-    public function getProperties() : Collection
+    public function getProperties(): Collection
     {
         return $this->properties;
     }
 
-    public function getInheritedProperties() : Collection
+    public function getInheritedProperties(): Collection
     {
         $inheritedProperties = Collection::fromClassString(PropertyDescriptor::class);
 
@@ -270,7 +270,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     /**
      * @return Collection<PropertyDescriptor>
      */
-    public function getMagicProperties() : Collection
+    public function getMagicProperties(): Collection
     {
         $tags = $this->getTags();
         /** @var Collection<Tag\PropertyDescriptor> $propertyTags */
@@ -316,7 +316,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     /**
      * @inheritDoc
      */
-    public function setPackage($package) : void
+    public function setPackage($package): void
     {
         parent::setPackage($package);
 
@@ -338,7 +338,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
      *
      * @param Collection<TraitDescriptor>|Collection<Fqsen> $usedTraits
      */
-    public function setUsedTraits(Collection $usedTraits) : void
+    public function setUsedTraits(Collection $usedTraits): void
     {
         $this->usedTraits = $usedTraits;
     }
@@ -350,7 +350,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
      *
      * @return Collection<TraitDescriptor>|Collection<Fqsen>
      */
-    public function getUsedTraits() : Collection
+    public function getUsedTraits(): Collection
     {
         return $this->usedTraits;
     }

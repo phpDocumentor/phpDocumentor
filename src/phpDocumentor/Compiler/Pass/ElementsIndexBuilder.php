@@ -33,12 +33,12 @@ class ElementsIndexBuilder implements CompilerPassInterface
 {
     public const COMPILER_PRIORITY = 15000;
 
-    public function getDescription() : string
+    public function getDescription(): string
     {
         return 'Build "elements" index';
     }
 
-    public function execute(ProjectDescriptor $project) : void
+    public function execute(ProjectDescriptor $project): void
     {
         $elementCollection = new Collection();
         $project->getIndexes()->set('elements', $elementCollection);
@@ -79,7 +79,7 @@ class ElementsIndexBuilder implements CompilerPassInterface
      *
      * @return DescriptorAbstract[]
      */
-    protected function getSubElements(DescriptorAbstract $element) : array
+    protected function getSubElements(DescriptorAbstract $element): array
     {
         $subElements = [];
 
@@ -114,7 +114,7 @@ class ElementsIndexBuilder implements CompilerPassInterface
      * @param DescriptorAbstract|DescriptorAbstract[] $elements
      * @param list<Collection<DescriptorAbstract>>    $indexes
      */
-    protected function addElementsToIndexes($elements, array $indexes) : void
+    protected function addElementsToIndexes($elements, array $indexes): void
     {
         if (!is_array($elements)) {
             $elements = [$elements];
@@ -132,7 +132,7 @@ class ElementsIndexBuilder implements CompilerPassInterface
     /**
      * Retrieves a key for the index for the provided element.
      */
-    protected function getIndexKey(DescriptorAbstract $element) : string
+    protected function getIndexKey(DescriptorAbstract $element): string
     {
         return (string) $element->getFullyQualifiedStructuralElementName();
     }

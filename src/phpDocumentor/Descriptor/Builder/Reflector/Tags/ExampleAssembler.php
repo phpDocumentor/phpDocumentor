@@ -51,7 +51,7 @@ class ExampleAssembler extends AssemblerAbstract
      * @throws InvalidArgumentException If the provided parameter is not of type ExampleTag; the interface won't let
      *   up typehint the signature.
      */
-    public function buildDescriptor(object $data) : ExampleDescriptor
+    public function buildDescriptor(object $data): ExampleDescriptor
     {
         Assert::isInstanceOf($data, Example::class);
         $descriptor = new ExampleDescriptor($data->getName());

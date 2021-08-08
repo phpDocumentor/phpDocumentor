@@ -49,7 +49,7 @@ final class RouterTest extends TestCase
         string $routeName,
         string $expected,
         string $fragment
-    ) : void {
+    ): void {
         $urlGenerator = $this->prophesize(UrlGeneratorInterface::class);
         $url = $routeName . '-' . $expected . '-' . $fragment;
         $urlGenerator->generate($routeName, ['name' => $expected, '_fragment' => $fragment])
@@ -68,7 +68,7 @@ final class RouterTest extends TestCase
     /**
      * @covers ::generate
      */
-    public function testItCanGenerateUriWhenGivenAUri() : void
+    public function testItCanGenerateUriWhenGivenAUri(): void
     {
         $urlGenerator = $this->prophesize(UrlGeneratorInterface::class);
         $urlGenerator->generate()->shouldNotBeCalled();
@@ -85,7 +85,7 @@ final class RouterTest extends TestCase
     /**
      * @covers ::generate
      */
-    public function testItReturnsAnEmptyStringWhenUnableToGenerateAUrl() : void
+    public function testItReturnsAnEmptyStringWhenUnableToGenerateAUrl(): void
     {
         $urlGenerator = $this->prophesize(UrlGeneratorInterface::class);
         $urlGenerator->generate()->shouldNotBeCalled();
@@ -100,7 +100,7 @@ final class RouterTest extends TestCase
         $this->assertSame('', $result);
     }
 
-    public function provideNodesWithExpectedUrls() : array
+    public function provideNodesWithExpectedUrls(): array
     {
         return [
             'for a file' => [$this->givenAFileDescriptor(), 'file', 'my-file', ''],
@@ -128,7 +128,7 @@ final class RouterTest extends TestCase
         ];
     }
 
-    private function givenAFileDescriptor() : FileDescriptor
+    private function givenAFileDescriptor(): FileDescriptor
     {
         $descriptor = new FileDescriptor('abc');
         $descriptor->setPath('My/File.php');
@@ -136,7 +136,7 @@ final class RouterTest extends TestCase
         return $descriptor;
     }
 
-    private function givenAPackageDescriptor() : PackageDescriptor
+    private function givenAPackageDescriptor(): PackageDescriptor
     {
         $descriptor = new PackageDescriptor();
         $descriptor->setFullyQualifiedStructuralElementName(new Fqsen('\My\Package'));
@@ -144,7 +144,7 @@ final class RouterTest extends TestCase
         return $descriptor;
     }
 
-    private function givenANamespaceDescriptor() : NamespaceDescriptor
+    private function givenANamespaceDescriptor(): NamespaceDescriptor
     {
         $descriptor = new NamespaceDescriptor();
         $descriptor->setFullyQualifiedStructuralElementName(new Fqsen('\My\Namespace'));
@@ -152,7 +152,7 @@ final class RouterTest extends TestCase
         return $descriptor;
     }
 
-    private function givenAFunctionDescriptor() : FunctionDescriptor
+    private function givenAFunctionDescriptor(): FunctionDescriptor
     {
         $descriptor = new FunctionDescriptor();
         $descriptor->setName('myFunction');
@@ -161,7 +161,7 @@ final class RouterTest extends TestCase
         return $descriptor;
     }
 
-    private function givenAGlobalConstantDescriptor() : ConstantDescriptor
+    private function givenAGlobalConstantDescriptor(): ConstantDescriptor
     {
         $descriptor = new ConstantDescriptor();
         $descriptor->setName('MY_CONSTANT');
@@ -170,7 +170,7 @@ final class RouterTest extends TestCase
         return $descriptor;
     }
 
-    private function givenATraitDescriptor() : TraitDescriptor
+    private function givenATraitDescriptor(): TraitDescriptor
     {
         $descriptor = new TraitDescriptor();
         $descriptor->setFullyQualifiedStructuralElementName(new Fqsen('\My\Trait'));
@@ -178,7 +178,7 @@ final class RouterTest extends TestCase
         return $descriptor;
     }
 
-    private function givenAnInterfaceDescriptor() : InterfaceDescriptor
+    private function givenAnInterfaceDescriptor(): InterfaceDescriptor
     {
         $descriptor = new InterfaceDescriptor();
         $descriptor->setFullyQualifiedStructuralElementName(new Fqsen('\My\Interface'));
@@ -186,7 +186,7 @@ final class RouterTest extends TestCase
         return $descriptor;
     }
 
-    private function givenAClassDescriptor() : ClassDescriptor
+    private function givenAClassDescriptor(): ClassDescriptor
     {
         $descriptor = new ClassDescriptor();
         $descriptor->setFullyQualifiedStructuralElementName(new Fqsen('\My\Class'));
@@ -194,7 +194,7 @@ final class RouterTest extends TestCase
         return $descriptor;
     }
 
-    private function givenAMethodDescriptor() : MethodDescriptor
+    private function givenAMethodDescriptor(): MethodDescriptor
     {
         $descriptor = new MethodDescriptor();
         $descriptor->setName('myMethod');
@@ -203,7 +203,7 @@ final class RouterTest extends TestCase
         return $descriptor;
     }
 
-    private function givenAPropertyDescriptor() : PropertyDescriptor
+    private function givenAPropertyDescriptor(): PropertyDescriptor
     {
         $descriptor = new PropertyDescriptor();
         $descriptor->setName('myProperty');
@@ -212,7 +212,7 @@ final class RouterTest extends TestCase
         return $descriptor;
     }
 
-    private function givenAClassConstantDescriptor() : ConstantDescriptor
+    private function givenAClassConstantDescriptor(): ConstantDescriptor
     {
         $descriptor = new ConstantDescriptor();
         $descriptor->setName('MY_CONSTANT');
@@ -221,12 +221,12 @@ final class RouterTest extends TestCase
         return $descriptor;
     }
 
-    private function givenAnFqsen() : Fqsen
+    private function givenAnFqsen(): Fqsen
     {
         return new Fqsen('\My\Class::myMethod()');
     }
 
-    private function givenAUri() : Uri
+    private function givenAUri(): Uri
     {
         return Uri::createFromString('https://my/uri');
     }

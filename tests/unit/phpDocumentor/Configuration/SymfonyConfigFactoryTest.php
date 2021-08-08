@@ -27,7 +27,7 @@ final class SymfonyConfigFactoryTest extends TestCase
     /**
      * @covers ::createDefault
      */
-    public function testGetDefaultConfig() : void
+    public function testGetDefaultConfig(): void
     {
         $fixture = $this->createConfigFactoryWithTestDefinition();
         $this->assertArrayHasKey(
@@ -41,7 +41,7 @@ final class SymfonyConfigFactoryTest extends TestCase
      *
      * @covers ::createDefault
      */
-    public function testThrowsExceptionWhenUpgradeFails() : void
+    public function testThrowsExceptionWhenUpgradeFails(): void
     {
         $this->expectException(UpgradeFailedException::class);
 
@@ -62,7 +62,7 @@ final class SymfonyConfigFactoryTest extends TestCase
      *
      * @covers ::createFromFile
      */
-    public function testThrowsExceptionWhenConfigVersionIsNotSupported() : void
+    public function testThrowsExceptionWhenConfigVersionIsNotSupported(): void
     {
         $this->expectException(UnSupportedConfigVersionException::class);
 
@@ -80,7 +80,7 @@ XML
         $fixture->createFromFile($configFile->url());
     }
 
-    private function createConfigFactoryWithTestDefinition() : SymfonyConfigFactory
+    private function createConfigFactoryWithTestDefinition(): SymfonyConfigFactory
     {
         $configMock = $this->prophesize(ConfigurationInterface::class);
         $configMock->getConfigTreeBuilder()->willReturn($this->faker()->configTreeBuilder('test'));

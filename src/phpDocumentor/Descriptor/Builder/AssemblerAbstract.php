@@ -30,7 +30,7 @@ abstract class AssemblerAbstract implements AssemblerInterface
     /**
      * Returns the builder for this Assembler or null if none is set.
      */
-    public function getBuilder() : ?ProjectDescriptorBuilder
+    public function getBuilder(): ?ProjectDescriptorBuilder
     {
         return $this->builder;
     }
@@ -41,7 +41,7 @@ abstract class AssemblerAbstract implements AssemblerInterface
      * The Builder may be used to recursively assemble Descriptors using
      * the {@link ProjectDescriptorBuilder::buildDescriptor()} method.
      */
-    public function setBuilder(ProjectDescriptorBuilder $builder) : void
+    public function setBuilder(ProjectDescriptorBuilder $builder): void
     {
         $this->builder = $builder;
     }

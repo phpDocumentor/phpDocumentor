@@ -33,7 +33,7 @@ final class Pathfinder
      *
      * @return Traversable<mixed>|list<mixed>
      */
-    public function find(object $object, string $query) : iterable
+    public function find(object $object, string $query): iterable
     {
         if ($query) {
             $node = $this->walkObjectTree($object, $query);

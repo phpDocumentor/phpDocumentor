@@ -27,40 +27,40 @@ interface TraitInterface extends ElementInterface, TypeInterface
      *
      * @param Collection<PropertyDescriptor> $properties
      */
-    public function setProperties(Collection $properties) : void;
+    public function setProperties(Collection $properties): void;
 
     /**
      * Returns the properties associated with this trait.
      *
      * @return Collection<PropertyDescriptor>
      */
-    public function getProperties() : Collection;
+    public function getProperties(): Collection;
 
     /**
      * Returns all properties inherited from parent traits.
      *
      * @return Collection<PropertyDescriptor>
      */
-    public function getInheritedProperties() : Collection;
+    public function getInheritedProperties(): Collection;
 
     /**
      * Sets all methods belonging to this trait.
      *
      * @param Collection<MethodDescriptor> $methods
      */
-    public function setMethods(Collection $methods) : void;
+    public function setMethods(Collection $methods): void;
 
     /**
      * Returns all methods belonging to this trait.
      *
      * @return Collection<MethodDescriptor>
      */
-    public function getMethods() : Collection;
+    public function getMethods(): Collection;
 
     /**
      * Returns a list of all methods inherited from parent traits.
      *
      * @return Collection<MethodDescriptor>
      */
-    public function getInheritedMethods() : Collection;
+    public function getInheritedMethods(): Collection;
 }

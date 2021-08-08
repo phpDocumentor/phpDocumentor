@@ -34,7 +34,7 @@ final class EmittingMiddlewareTest extends TestCase
     /**
      * @covers ::execute
      */
-    public function testEmitsPreParsingEvent() : void
+    public function testEmitsPreParsingEvent(): void
     {
         // start with a clean dispatcher
         Dispatcher::setInstance('default', new Dispatcher());
@@ -51,7 +51,7 @@ final class EmittingMiddlewareTest extends TestCase
 
         Dispatcher::getInstance()->addListener(
             'parser.file.pre',
-            function (PreFileEvent $event) use ($filename) : void {
+            function (PreFileEvent $event) use ($filename): void {
                 $this->assertSame($event->getFile(), $filename);
             }
         );

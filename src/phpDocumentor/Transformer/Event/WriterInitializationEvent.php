@@ -26,7 +26,7 @@ final class WriterInitializationEvent extends EventAbstract
      *
      * Used as convenience method for fluent interfaces.
      */
-    public static function createInstance(object $subject) : EventAbstract
+    public static function createInstance(object $subject): EventAbstract
     {
         return new self($subject);
     }
@@ -34,14 +34,14 @@ final class WriterInitializationEvent extends EventAbstract
     /**
      * Sets the currently parsed writer in this event.
      */
-    public function setWriter(WriterAbstract $writer) : WriterInitializationEvent
+    public function setWriter(WriterAbstract $writer): WriterInitializationEvent
     {
         $this->writer = $writer;
 
         return $this;
     }
 
-    public function getWriter() : ?WriterAbstract
+    public function getWriter(): ?WriterAbstract
     {
         return $this->writer;
     }

@@ -25,7 +25,7 @@ final class UnSupportedConfigVersionException extends RuntimeException
     /**
      * @param string[] $supportedVersions
      */
-    public static function create(string $configurationVersion, array $supportedVersions) : self
+    public static function create(string $configurationVersion, array $supportedVersions): self
     {
         return new self(
             sprintf(

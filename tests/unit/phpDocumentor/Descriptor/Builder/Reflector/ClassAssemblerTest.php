@@ -42,7 +42,7 @@ class ClassAssemblerTest extends TestCase
     /**
      * Creates a new fixture to test with.
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->fixture = new ClassAssembler();
         $this->fixture->setBuilder($this->getProjectDescriptorBuilderMock()->reveal());
@@ -53,7 +53,7 @@ class ClassAssemblerTest extends TestCase
      *
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\ClassAssembler::create
      */
-    public function testCreateClassDescriptorFromReflector() : void
+    public function testCreateClassDescriptorFromReflector(): void
     {
         $name = 'ClassName';
         $namespace = 'Namespace';
@@ -80,7 +80,7 @@ DOCBLOCK;
      *
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\ClassAssembler::create
      */
-    public function testParentIsOmittedWhenEqualToItself() : void
+    public function testParentIsOmittedWhenEqualToItself(): void
     {
         $name = 'ClassName';
         $namespace = 'Namespace';
@@ -107,7 +107,7 @@ DOCBLOCK;
     /**
      * Create a ClassReflector mock
      */
-    protected function getClassReflectorDescriptor(?Fqsen $classFqsen = null, ?Fqsen $parent = null) : Class_
+    protected function getClassReflectorDescriptor(?Fqsen $classFqsen = null, ?Fqsen $parent = null): Class_
     {
         $docBlockDescriptionContent = <<<DOCBLOCK
 /**
@@ -143,7 +143,7 @@ DOCBLOCK;
     /**
      * Create a descriptor builder mock
      */
-    protected function getProjectDescriptorBuilderMock() : ObjectProphecy
+    protected function getProjectDescriptorBuilderMock(): ObjectProphecy
     {
         $projectDescriptorBuilderMock = $this->prophesize(ProjectDescriptorBuilder::class);
         $projectDescriptorBuilderMock->getDefaultPackage()->shouldBeCalled()->willReturn('\\');

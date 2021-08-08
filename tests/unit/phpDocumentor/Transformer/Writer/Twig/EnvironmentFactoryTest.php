@@ -39,7 +39,7 @@ final class EnvironmentFactoryTest extends TestCase
     /** @var EnvironmentFactory */
     private $factory;
 
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->router = $this->prophesize(Router::class);
         $markDownConverter = $this->prophesize(MarkdownConverterInterface::class);
@@ -56,7 +56,7 @@ final class EnvironmentFactoryTest extends TestCase
      *
      * @covers ::create
      */
-    public function testItCreatesATwigEnvironmentWithThephpDocumentorExtension() : void
+    public function testItCreatesATwigEnvironmentWithThephpDocumentorExtension(): void
     {
         $template = $this->faker()->template();
 
@@ -73,7 +73,7 @@ final class EnvironmentFactoryTest extends TestCase
      *
      * @covers ::create
      */
-    public function testItCreatesATwigEnvironmentWithTheCorrectTemplateLoaders() : void
+    public function testItCreatesATwigEnvironmentWithTheCorrectTemplateLoaders(): void
     {
         $template = $this->faker()->template();
         $mountManager = $template->files();
@@ -100,7 +100,7 @@ final class EnvironmentFactoryTest extends TestCase
      *
      * @covers ::create
      */
-    public function testTheCreatedEnvironmentHasTheDebugExtension() : void
+    public function testTheCreatedEnvironmentHasTheDebugExtension(): void
     {
         $template = $this->faker()->template();
 

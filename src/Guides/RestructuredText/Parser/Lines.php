@@ -25,32 +25,32 @@ class Lines implements Iterator
         $this->lines = $lines;
     }
 
-    public function getNextLine() : string
+    public function getNextLine(): string
     {
         return $this->lines[$this->position + 1] ?? '';
     }
 
-    public function rewind() : void
+    public function rewind(): void
     {
         $this->position = 0;
     }
 
-    public function current() : string
+    public function current(): string
     {
         return $this->lines[$this->position];
     }
 
-    public function key() : int
+    public function key(): int
     {
         return $this->position;
     }
 
-    public function next() : void
+    public function next(): void
     {
         ++$this->position;
     }
 
-    public function valid() : bool
+    public function valid(): bool
     {
         return isset($this->lines[$this->position]);
     }

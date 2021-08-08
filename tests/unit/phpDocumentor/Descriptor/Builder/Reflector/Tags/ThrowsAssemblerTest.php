@@ -26,7 +26,7 @@ class ThrowsAssemblerTest extends TestCase
     /**
      * Initializes the fixture for this test.
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->builder = $this->prophesize(ProjectDescriptorBuilder::class);
         $this->fixture = new ThrowsAssembler();
@@ -37,7 +37,7 @@ class ThrowsAssemblerTest extends TestCase
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\Tags\ThrowsAssembler::create
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\Tags\ThrowsAssembler::buildDescriptor
      */
-    public function testCreatingThrowsDescriptorFromReflector() : void
+    public function testCreatingThrowsDescriptorFromReflector(): void
     {
         $types = new Object_(new Fqsen('\InvalidAgumentException'));
         $reflector = new Throws(

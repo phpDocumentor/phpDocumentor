@@ -32,7 +32,7 @@ final class CollectionTest extends MockeryTestCase
     /**
      * Constructs the fixture with provided mocked dependencies.
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->fixture = new Collection([]);
     }
@@ -40,7 +40,7 @@ final class CollectionTest extends MockeryTestCase
     /**
      * @covers ::getTransformations
      */
-    public function testIfAllTransformationsCanBeRetrieved() : void
+    public function testIfAllTransformationsCanBeRetrieved(): void
     {
         $transformation1 = $this->givenAnEmptyTransformation();
         $transformation2 = $this->givenAnEmptyTransformation();
@@ -60,7 +60,7 @@ final class CollectionTest extends MockeryTestCase
     /**
      * Returns a transformation object without information in it.
      */
-    private function givenAnEmptyTransformation(?Template $template = null) : Transformation
+    private function givenAnEmptyTransformation(?Template $template = null): Transformation
     {
         return $this->faker()->transformation($template);
     }
@@ -70,7 +70,7 @@ final class CollectionTest extends MockeryTestCase
      *
      * @param Transformation[] $transformations
      */
-    private function whenThereIsATemplateWithNameAndTransformations(string $name, array $transformations) : void
+    private function whenThereIsATemplateWithNameAndTransformations(string $name, array $transformations): void
     {
         $template = $this->faker()->template($name);
         foreach ($transformations as $key => $transformation) {

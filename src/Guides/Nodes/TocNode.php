@@ -33,12 +33,12 @@ class TocNode extends Node
     /**
      * @return string[]
      */
-    public function getFiles() : array
+    public function getFiles(): array
     {
         return $this->files;
     }
 
-    public function getDepth() : int
+    public function getDepth(): int
     {
         if ($this->getOption('depth')) {
             return (int) $this->getOption('depth');

@@ -42,7 +42,7 @@ class FileIo extends WriterAbstract
      * @throws FileNotFoundException If the source file does not exist or could not be read.
      * @throws FileExistsException
      */
-    public function transform(ProjectDescriptor $project, Transformation $transformation) : void
+    public function transform(ProjectDescriptor $project, Transformation $transformation): void
     {
         $method = $transformation->getQuery();
         if (strtolower($method) !== 'copy') {

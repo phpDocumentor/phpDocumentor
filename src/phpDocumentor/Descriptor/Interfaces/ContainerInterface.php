@@ -28,25 +28,25 @@ interface ContainerInterface
     /**
      * @return Collection<ConstantDescriptor>
      */
-    public function getConstants() : Collection;
+    public function getConstants(): Collection;
 
     /**
      * @return Collection<FunctionDescriptor>
      */
-    public function getFunctions() : Collection;
+    public function getFunctions(): Collection;
 
     /**
      * @return Collection<ClassDescriptor>
      */
-    public function getClasses() : Collection;
+    public function getClasses(): Collection;
 
     /**
      * @return Collection<InterfaceDescriptor>
      */
-    public function getInterfaces() : Collection;
+    public function getInterfaces(): Collection;
 
     /**
      * @return Collection<TraitDescriptor>
      */
-    public function getTraits() : Collection;
+    public function getTraits(): Collection;
 }

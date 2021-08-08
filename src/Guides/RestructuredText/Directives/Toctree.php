@@ -20,7 +20,7 @@ class Toctree extends Directive
         $this->toctreeBuilder = new ToctreeBuilder(new GlobSearcher());
     }
 
-    public function getName() : string
+    public function getName(): string
     {
         return 'toctree';
     }
@@ -34,7 +34,7 @@ class Toctree extends Directive
         string $variable,
         string $data,
         array $options
-    ) : void {
+    ): void {
         if ($node === null) {
             return;
         }
@@ -51,7 +51,7 @@ class Toctree extends Directive
         $parser->getDocument()->addNode((new TocNode($toctreeFiles))->withOptions($options));
     }
 
-    public function wantCode() : bool
+    public function wantCode(): bool
     {
         return true;
     }

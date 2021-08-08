@@ -27,5 +27,5 @@ interface Filterable extends Descriptor
      *
      * @param Collection<Validation\Error> $errors
      */
-    public function setErrors(Collection $errors) : void;
+    public function setErrors(Collection $errors): void;
 }

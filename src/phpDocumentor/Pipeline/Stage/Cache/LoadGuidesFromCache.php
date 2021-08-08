@@ -23,7 +23,7 @@ final class LoadGuidesFromCache
         $this->commandBus = $commandBus;
     }
 
-    public function __invoke(Payload $payload) : Payload
+    public function __invoke(Payload $payload): Payload
     {
         $configuration = $payload->getConfig();
         if (($configuration['phpdocumentor']['settings']['guides.enabled'] ?? false) === true) {

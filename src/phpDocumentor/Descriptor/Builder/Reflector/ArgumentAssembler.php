@@ -32,7 +32,7 @@ class ArgumentAssembler extends BaseAssembler
      * @param Argument $data
      * @param iterable<ParamDescriptor> $params
      */
-    public function create(object $data, iterable $params = []) : ArgumentDescriptor
+    public function create(object $data, iterable $params = []): ArgumentDescriptor
     {
         $argumentDescriptor = new ArgumentDescriptor();
         $argumentDescriptor->setName($data->getName());
@@ -56,7 +56,7 @@ class ArgumentAssembler extends BaseAssembler
         Argument $argument,
         ParamDescriptor $paramDescriptor,
         ArgumentDescriptor $argumentDescriptor
-    ) : void {
+    ): void {
         if ($paramDescriptor->getVariableName() !== $argument->getName()) {
             return;
         }
@@ -65,7 +65,7 @@ class ArgumentAssembler extends BaseAssembler
         $argumentDescriptor->setType($paramDescriptor->getType());
     }
 
-    protected function pretifyValue(?string $value) : ?string
+    protected function pretifyValue(?string $value): ?string
     {
         if ($value === null) {
             return null;

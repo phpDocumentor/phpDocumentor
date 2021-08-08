@@ -38,7 +38,7 @@ final class PropertyAssemblerTest extends TestCase
     /**
      * Creates a new fixture to test with.
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->builderMock = $this->prophesize(ProjectDescriptorBuilder::class);
         $this->builderMock->buildDescriptor(Argument::any(), Argument::any())->shouldBeCalled()->willReturn(null);
@@ -50,7 +50,7 @@ final class PropertyAssemblerTest extends TestCase
     /**
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\PropertyAssembler::create
      */
-    public function testCreatePropertyDescriptorFromReflector() : void
+    public function testCreatePropertyDescriptorFromReflector(): void
     {
         // Arrange
         $namespace = 'Namespace';
@@ -82,7 +82,7 @@ final class PropertyAssemblerTest extends TestCase
         string $namespace,
         string $propertyName,
         ?DocBlock $docBlockMock = null
-    ) : Property {
+    ): Property {
         return new Property(
             new Fqsen('\\' . $namespace . '::$' . $propertyName),
             new Visibility(Visibility::PROTECTED_),
@@ -97,7 +97,7 @@ final class PropertyAssemblerTest extends TestCase
     /**
      * Generates a DocBlock object with applicable defaults for these tests.
      */
-    private function givenADocBlockObject(bool $withTags) : DocBlock
+    private function givenADocBlockObject(bool $withTags): DocBlock
     {
         $docBlockDescription = new Description('This is an example description');
 

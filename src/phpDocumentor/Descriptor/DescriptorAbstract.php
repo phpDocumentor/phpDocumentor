@@ -75,7 +75,7 @@ abstract class DescriptorAbstract implements Filterable
      *
      * @internal should not be called by any other class than the assamblers
      */
-    public function setFullyQualifiedStructuralElementName(Fqsen $name) : void
+    public function setFullyQualifiedStructuralElementName(Fqsen $name): void
     {
         $this->fqsen = $name;
     }
@@ -83,7 +83,7 @@ abstract class DescriptorAbstract implements Filterable
     /**
      * Returns the Fully Qualified Structural Element Name (FQSEN) for this element.
      */
-    public function getFullyQualifiedStructuralElementName() : ?Fqsen
+    public function getFullyQualifiedStructuralElementName(): ?Fqsen
     {
         return $this->fqsen;
     }
@@ -93,7 +93,7 @@ abstract class DescriptorAbstract implements Filterable
      *
      * @internal should not be called by any other class than the assamblers
      */
-    public function setName(string $name) : void
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
@@ -101,7 +101,7 @@ abstract class DescriptorAbstract implements Filterable
     /**
      * Returns the local name for this element.
      */
-    public function getName() : string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -113,7 +113,7 @@ abstract class DescriptorAbstract implements Filterable
      *
      * @param NamespaceDescriptor|string $namespace
      */
-    public function setNamespace($namespace) : void
+    public function setNamespace($namespace): void
     {
         $this->namespace = $namespace;
     }
@@ -133,7 +133,7 @@ abstract class DescriptorAbstract implements Filterable
      *
      * @internal should not be called by any other class than the assamblers
      */
-    public function setSummary(string $summary) : void
+    public function setSummary(string $summary): void
     {
         $this->summary = $summary;
     }
@@ -143,7 +143,7 @@ abstract class DescriptorAbstract implements Filterable
      *
      * This method will automatically attempt to inherit the parent's summary if this one has none.
      */
-    public function getSummary() : string
+    public function getSummary(): string
     {
         if ($this->summary && strtolower(trim($this->summary)) !== '{@inheritdoc}') {
             return $this->summary;
@@ -162,7 +162,7 @@ abstract class DescriptorAbstract implements Filterable
      *
      * @internal should not be called by any other class than the assamblers
      */
-    public function setDescription(?DocBlock\DescriptionDescriptor $description) : void
+    public function setDescription(?DocBlock\DescriptionDescriptor $description): void
     {
         $this->description = $description;
     }
@@ -172,7 +172,7 @@ abstract class DescriptorAbstract implements Filterable
      *
      * This method will automatically attempt to inherit the parent's description if this one has none.
      */
-    public function getDescription() : ?DocBlock\DescriptionDescriptor
+    public function getDescription(): ?DocBlock\DescriptionDescriptor
     {
         if ($this->description !== null) {
             return $this->description;
@@ -191,7 +191,7 @@ abstract class DescriptorAbstract implements Filterable
      *
      * @internal should not be called by any other class than the assamblers
      */
-    public function setLocation(FileDescriptor $file, int $line = 0) : void
+    public function setLocation(FileDescriptor $file, int $line = 0): void
     {
         $this->setFile($file);
         $this->line = $line;
@@ -200,7 +200,7 @@ abstract class DescriptorAbstract implements Filterable
     /**
      * Returns the path to the file containing this element relative to the project's root.
      */
-    public function getPath() : string
+    public function getPath(): string
     {
         return $this->fileDescriptor ? $this->fileDescriptor->getPath() : '';
     }
@@ -208,7 +208,7 @@ abstract class DescriptorAbstract implements Filterable
     /**
      * Returns the file in which this element resides or null in case the element is not bound to a file..
      */
-    public function getFile() : ?FileDescriptor
+    public function getFile(): ?FileDescriptor
     {
         return $this->fileDescriptor;
     }
@@ -218,7 +218,7 @@ abstract class DescriptorAbstract implements Filterable
      *
      * @internal should not be called by any other class than the assamblers
      */
-    public function setFile(FileDescriptor $file) : void
+    public function setFile(FileDescriptor $file): void
     {
         $this->fileDescriptor = $file;
     }
@@ -226,7 +226,7 @@ abstract class DescriptorAbstract implements Filterable
     /**
      * Returns the line number where the definition for this element can be found.
      */
-    public function getLine() : int
+    public function getLine(): int
     {
         return $this->line;
     }
@@ -236,7 +236,7 @@ abstract class DescriptorAbstract implements Filterable
      *
      * @internal should not be called by any other class than the assamblers
      */
-    public function setLine(int $lineNumber) : void
+    public function setLine(int $lineNumber): void
     {
         $this->line = $lineNumber;
     }
@@ -248,7 +248,7 @@ abstract class DescriptorAbstract implements Filterable
      *
      * @param Collection<Collection<TagDescriptor>> $tags
      */
-    public function setTags(Collection $tags) : void
+    public function setTags(Collection $tags): void
     {
         $this->tags = $tags;
     }
@@ -258,7 +258,7 @@ abstract class DescriptorAbstract implements Filterable
      *
      * @return Collection<Collection<TagDescriptor>>
      */
-    public function getTags() : Collection
+    public function getTags(): Collection
     {
         return $this->tags;
     }
@@ -270,7 +270,7 @@ abstract class DescriptorAbstract implements Filterable
      *
      * @param PackageDescriptor|string $package
      */
-    public function setPackage($package) : void
+    public function setPackage($package): void
     {
         $this->package = $package;
     }
@@ -278,7 +278,7 @@ abstract class DescriptorAbstract implements Filterable
     /**
      * Returns the package name for this element.
      */
-    public function getPackage() : ?PackageDescriptor
+    public function getPackage(): ?PackageDescriptor
     {
         $inheritedElement = $this->getInheritedElement();
         if ($this->package instanceof PackageDescriptor
@@ -296,7 +296,7 @@ abstract class DescriptorAbstract implements Filterable
     /**
      * @return Collection<AuthorDescriptor>
      */
-    public function getAuthor() : Collection
+    public function getAuthor(): Collection
     {
         /** @var Collection<AuthorDescriptor> $author */
         $author = $this->getTags()->fetch('author', new Collection());
@@ -317,7 +317,7 @@ abstract class DescriptorAbstract implements Filterable
      *
      * @return Collection<VersionDescriptor>
      */
-    public function getVersion() : Collection
+    public function getVersion(): Collection
     {
         /** @var Collection<VersionDescriptor> $version */
         $version = $this->getTags()->fetch('version', new Collection());
@@ -338,7 +338,7 @@ abstract class DescriptorAbstract implements Filterable
      *
      * @return Collection<TagDescriptor>
      */
-    public function getCopyright() : Collection
+    public function getCopyright(): Collection
     {
         /** @var Collection<TagDescriptor> $copyright */
         $copyright = $this->getTags()->fetch('copyright', new Collection());
@@ -357,7 +357,7 @@ abstract class DescriptorAbstract implements Filterable
     /**
      * Checks whether this element is deprecated.
      */
-    public function isDeprecated() : bool
+    public function isDeprecated(): bool
     {
         return isset($this->tags['deprecated']);
     }
@@ -369,7 +369,7 @@ abstract class DescriptorAbstract implements Filterable
      *
      * @param Collection<Error> $errors
      */
-    public function setErrors(Collection $errors) : void
+    public function setErrors(Collection $errors): void
     {
         $this->errors = $errors;
     }
@@ -379,7 +379,7 @@ abstract class DescriptorAbstract implements Filterable
      *
      * @return Collection<Error>
      */
-    public function getErrors() : Collection
+    public function getErrors(): Collection
     {
         $errors = $this->errors;
         foreach ($this->tags as $tags) {
@@ -416,7 +416,7 @@ abstract class DescriptorAbstract implements Filterable
     /**
      * Represents this object by its unique identifier, the Fully Qualified Structural Element Name.
      */
-    public function __toString() : string
+    public function __toString(): string
     {
         return (string) $this->getFullyQualifiedStructuralElementName();
     }

@@ -21,7 +21,7 @@ final class PipelineFactory
     /**
      * @param iterable<callable> $stages
      */
-    public static function create(iterable $stages) : PipelineInterface
+    public static function create(iterable $stages): PipelineInterface
     {
         $builder = new PipelineBuilder();
         foreach ($stages as $stage) {

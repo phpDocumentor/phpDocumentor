@@ -38,7 +38,7 @@ class DocumentNode extends Node
     /**
      * @return Node[]
      */
-    public function getHeaderNodes() : array
+    public function getHeaderNodes(): array
     {
         return $this->headerNodes;
     }
@@ -46,7 +46,7 @@ class DocumentNode extends Node
     /**
      * @return Node[]
      */
-    public function getNodes(?callable $function = null) : array
+    public function getNodes(?callable $function = null): array
     {
         if ($function === null) {
             return $this->nodes;
@@ -55,7 +55,7 @@ class DocumentNode extends Node
         return array_filter($this->nodes, $function);
     }
 
-    public function getTitle() : ?TitleNode
+    public function getTitle(): ?TitleNode
     {
         foreach ($this->nodes as $node) {
             if ($node instanceof TitleNode && $node->getLevel() === 1) {
@@ -69,7 +69,7 @@ class DocumentNode extends Node
     /**
      * @return TocNode[]
      */
-    public function getTocs() : array
+    public function getTocs(): array
     {
         return $this->getNodes(
             static function ($node) {
@@ -81,7 +81,7 @@ class DocumentNode extends Node
     /**
      * @return string[][]
      */
-    public function getTitles() : array
+    public function getTitles(): array
     {
         $titles = [];
         $levels = [&$titles];
@@ -112,7 +112,7 @@ class DocumentNode extends Node
     /**
      * @param string|Node $node
      */
-    public function addNode($node) : void
+    public function addNode($node): void
     {
         if (is_string($node)) {
             $node = new RawNode($node);
@@ -121,17 +121,17 @@ class DocumentNode extends Node
         $this->nodes[] = $node;
     }
 
-    public function prependNode(Node $node) : void
+    public function prependNode(Node $node): void
     {
         array_unshift($this->nodes, $node);
     }
 
-    public function addHeaderNode(Node $node) : void
+    public function addHeaderNode(Node $node): void
     {
         $this->headerNodes[] = $node;
     }
 
-    public function getHash() : string
+    public function getHash(): string
     {
         return $this->hash;
     }

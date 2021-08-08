@@ -49,7 +49,7 @@ final class TransformTest extends TestCase
     /** @var LegacyMockInterface|MockInterface|FlySystemFactory */
     private $flySystemFactory;
 
-    public function setUp() : void
+    public function setUp(): void
     {
         $projectDescriptor = new ProjectDescriptor('test');
         $this->flySystemFactory         = $this->prophesize(FlySystemFactory::class);
@@ -74,7 +74,7 @@ final class TransformTest extends TestCase
      * @covers ::__invoke
      * @covers ::createFileSystem
      */
-    public function test_if_target_location_for_output_is_set_with_a_relative_path() : void
+    public function test_if_target_location_for_output_is_set_with_a_relative_path(): void
     {
         $config = $this->givenAnExampleConfigWithDsnAndTemplates('.');
 
@@ -90,7 +90,7 @@ final class TransformTest extends TestCase
      * @covers ::__invoke
      * @covers ::createFileSystem
      */
-    public function test_if_target_location_for_output_is_set_with_an_absolute_path() : void
+    public function test_if_target_location_for_output_is_set_with_an_absolute_path(): void
     {
         $config = $this->givenAnExampleConfigWithDsnAndTemplates('file:///my/absolute/folder');
         $this->projectDescriptorBuilder->getProjectDescriptor()->willReturn(new ProjectDescriptor('test'));
@@ -105,7 +105,7 @@ final class TransformTest extends TestCase
     /**
      * @covers ::__invoke
      */
-    public function test_transforming_the_project_will_invoke_all_compiler_passes() : void
+    public function test_transforming_the_project_will_invoke_all_compiler_passes(): void
     {
         $config            = $this->givenAnExampleConfigWithDsnAndTemplates('file://.');
         $payload           = new Payload($config, $this->projectDescriptorBuilder->reveal());
@@ -116,7 +116,7 @@ final class TransformTest extends TestCase
         ($this->transform)($payload);
     }
 
-    private function givenAnExampleConfigWithDsnAndTemplates(string $dsn, array $templates = []) : array
+    private function givenAnExampleConfigWithDsnAndTemplates(string $dsn, array $templates = []): array
     {
         return [
             'phpdocumentor' => [

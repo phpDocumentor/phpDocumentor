@@ -18,7 +18,7 @@ use PHPUnit\Framework\TestCase;
 
 final class DefinitionListNodeTest extends TestCase
 {
-    public function test_it_can_be_created_with_a_definition_list() : void
+    public function test_it_can_be_created_with_a_definition_list(): void
     {
         $definitionList = new DefinitionList([]);
 

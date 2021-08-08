@@ -42,7 +42,7 @@ final class FilesystemAdapter extends AbstractAdapter implements PruneableInterf
      * With phpDocumentor you can set the caching folder in your configuration; this poses an interesting problem with
      * the default FilesystemAdapter of Symfony as that only allows you to set the caching folder upon instantiation.
      */
-    public function init(string $namespace, string $directory) : void
+    public function init(string $namespace, string $directory): void
     {
         $this->doInit($namespace, $directory);
     }

@@ -31,7 +31,7 @@ class TableNodeRenderer implements NodeRenderer
         $this->renderer = $renderer;
     }
 
-    public function render(Node $node) : string
+    public function render(Node $node): string
     {
         if ($node instanceof TableNode === false) {
             throw new InvalidArgumentException('Invalid node presented');

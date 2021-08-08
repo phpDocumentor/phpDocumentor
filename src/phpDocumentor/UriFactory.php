@@ -20,7 +20,7 @@ final class UriFactory
 {
     public const WINDOWS_URI_FORMAT = '~^(file:\/\/\/)?(?<root>[a-zA-Z][:|\|])~';
 
-    public static function createUri(string $uriString) : UriInterface
+    public static function createUri(string $uriString): UriInterface
     {
         try {
             $uriString = str_replace(DIRECTORY_SEPARATOR, '/', $uriString);
@@ -50,7 +50,7 @@ final class UriFactory
         }
     }
 
-    private static function createPharUri(string $uriString) : UriInterface
+    private static function createPharUri(string $uriString): UriInterface
     {
         $path = substr($uriString, strlen('phar://'));
         if (strpos($path, '/') !== 0) {

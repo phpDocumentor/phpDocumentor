@@ -28,7 +28,7 @@ final class FunctionDescriptorTest extends MockeryTestCase
     /**
      * Creates a new (emoty) fixture object.
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->fixture = new FunctionDescriptor();
     }
@@ -36,7 +36,7 @@ final class FunctionDescriptorTest extends MockeryTestCase
     /**
      * @covers ::__construct
      */
-    public function testInitializesWithEmptyCollection() : void
+    public function testInitializesWithEmptyCollection(): void
     {
         $this->assertInstanceOf(Collection::class, $this->fixture->getArguments());
     }
@@ -45,7 +45,7 @@ final class FunctionDescriptorTest extends MockeryTestCase
      * @covers ::setArguments
      * @covers ::getArguments
      */
-    public function testSettingAndGettingArguments() : void
+    public function testSettingAndGettingArguments(): void
     {
         $this->assertInstanceOf(Collection::class, $this->fixture->getArguments());
 
@@ -61,7 +61,7 @@ final class FunctionDescriptorTest extends MockeryTestCase
      * @covers ::getResponse
      * @covers ::setReturnType
      */
-    public function testSettingAndGettingReturnType() : void
+    public function testSettingAndGettingReturnType(): void
     {
         $stringType = new String_();
         $this->fixture->setReturnType($stringType);

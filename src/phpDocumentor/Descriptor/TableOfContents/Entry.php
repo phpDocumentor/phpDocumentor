@@ -37,28 +37,28 @@ final class Entry
         $this->children = Collection::fromClassString(self::class);
     }
 
-    public function getUrl() : string
+    public function getUrl(): string
     {
         return $this->url;
     }
 
-    public function getTitle() : string
+    public function getTitle(): string
     {
         return $this->title;
     }
 
-    public function getParent() : ?string
+    public function getParent(): ?string
     {
         return $this->parent;
     }
 
-    public function addChild(Entry $child) : void
+    public function addChild(Entry $child): void
     {
         $this->children->set($child->getUrl(), $child);
     }
 
     /** @return Collection<Entry> */
-    public function getChildren() : Collection
+    public function getChildren(): Collection
     {
         return $this->children;
     }

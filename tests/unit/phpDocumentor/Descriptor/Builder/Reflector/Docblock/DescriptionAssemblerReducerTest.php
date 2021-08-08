@@ -17,7 +17,7 @@ final class DescriptionAssemblerReducerTest extends TestCase
 {
     use ProphecyTrait;
 
-    public function testNullDescriptorReturnsNull() : void
+    public function testNullDescriptorReturnsNull(): void
     {
         $reducer = new DescriptionAssemblerReducer();
 
@@ -27,7 +27,7 @@ final class DescriptionAssemblerReducerTest extends TestCase
         ));
     }
 
-    public function testCreateSetsDescriptionDescriptor() : void
+    public function testCreateSetsDescriptionDescriptor(): void
     {
         $builder = $this->prophesize(ProjectDescriptorBuilder::class);
         $builder->buildDescriptor(Argument::type(DocBlock\Tag::class), Argument::is(TagDescriptor::class))

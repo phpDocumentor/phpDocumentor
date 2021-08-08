@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 
 final class FigureNodeTest extends TestCase
 {
-    public function test_it_can_be_created_with_an_image_and_caption() : void
+    public function test_it_can_be_created_with_an_image_and_caption(): void
     {
         $image = new ImageNode();
         $document = new RawNode('raw');

@@ -18,7 +18,7 @@ use phpDocumentor\Guides\NodeRenderers\NodeRendererFactory;
 
 interface Format
 {
-    public function getFileExtension() : string;
+    public function getFileExtension(): string;
 
-    public function getNodeRendererFactory(Environment $environment) : NodeRendererFactory;
+    public function getNodeRendererFactory(Environment $environment): NodeRendererFactory;
 }

@@ -47,7 +47,7 @@ final class FileIoTest extends TestCase
     /** @var Template */
     private $template;
 
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $root = vfsStream::setup();
         $this->templatesFolder = vfsStream::newDirectory('templates');
@@ -70,7 +70,7 @@ final class FileIoTest extends TestCase
     /**
      * @covers ::transform
      */
-    public function testCopiesFileFromCustomTemplateToDestination() : void
+    public function testCopiesFileFromCustomTemplateToDestination(): void
     {
         $this->sourceFolder->addChild(new vfsStreamFile('index.html.twig'));
 
@@ -87,7 +87,7 @@ final class FileIoTest extends TestCase
     /**
      * @covers ::transform
      */
-    public function testCopiesFileFromGlobalTemplateToDestination() : void
+    public function testCopiesFileFromGlobalTemplateToDestination(): void
     {
         $this->templatesFolder->addChild(new vfsStreamFile('templateName/images/image.png'));
 
@@ -110,7 +110,7 @@ final class FileIoTest extends TestCase
     /**
      * @covers ::transform
      */
-    public function testCopiedFileOverwritesExistingFile() : void
+    public function testCopiedFileOverwritesExistingFile(): void
     {
         $this->sourceFolder->addChild(vfsStream::newFile('index.html.twig')->withContent('new content'));
         $this->destinationFolder->addChild(vfsStream::newFile('index.html')->withContent('original content'));
@@ -128,7 +128,7 @@ final class FileIoTest extends TestCase
     /**
      * @covers ::transform
      */
-    public function testCopiesDirectoryFromCustomTemplateToDestination() : void
+    public function testCopiesDirectoryFromCustomTemplateToDestination(): void
     {
         $sourceDirectory = new vfsStreamDirectory('images');
         $sourceDirectory->addChild(new vfsStreamFile('image1.png'));
@@ -148,7 +148,7 @@ final class FileIoTest extends TestCase
     /**
      * @covers ::transform
      */
-    public function testCopiesDirectoryFromGlobalTemplateToDestination() : void
+    public function testCopiesDirectoryFromGlobalTemplateToDestination(): void
     {
         $sourceDirectory = new vfsStreamDirectory('images');
         $sourceDirectory->addChild(new vfsStreamFile('image1.png'));
@@ -170,7 +170,7 @@ final class FileIoTest extends TestCase
     /**
      * @covers ::transform
      */
-    public function testCopiesDirectoryRecursivelyFromCustomTemplateToDestination() : void
+    public function testCopiesDirectoryRecursivelyFromCustomTemplateToDestination(): void
     {
         $subfolder = new vfsStreamDirectory('subfolder');
         $subfolder->addChild(new vfsStreamFile('image2.png'));
@@ -192,7 +192,7 @@ final class FileIoTest extends TestCase
     /**
      * @covers ::transform
      */
-    public function testCopiesDirectoryRecursivelyFromGlobalTemplateToDestination() : void
+    public function testCopiesDirectoryRecursivelyFromGlobalTemplateToDestination(): void
     {
         $subfolder = new vfsStreamDirectory('subfolder');
         $subfolder->addChild(new vfsStreamFile('image2.png'));
@@ -216,7 +216,7 @@ final class FileIoTest extends TestCase
     /**
      * @covers ::transform
      */
-    public function testExceptionOccursIfSourceFileCannotBeFound() : void
+    public function testExceptionOccursIfSourceFileCannotBeFound(): void
     {
         $this->expectException(FileNotFoundException::class);
         $writer = new FileIo();
@@ -230,7 +230,7 @@ final class FileIoTest extends TestCase
     /**
      * @covers ::transform
      */
-    public function testExceptionOccursIfQueryIsInvalid() : void
+    public function testExceptionOccursIfQueryIsInvalid(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $writer = new FileIo();

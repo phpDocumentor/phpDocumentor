@@ -22,12 +22,12 @@ use function strtolower;
  */
 class PhpClassReference extends Reference
 {
-    public function getName() : string
+    public function getName(): string
     {
         return 'php:class';
     }
 
-    public function resolve(Environment $environment, string $data) : ResolvedReference
+    public function resolve(Environment $environment, string $data): ResolvedReference
     {
         return new ResolvedReference(
             $environment->getCurrentFileName(),

@@ -43,12 +43,12 @@ class Debug implements CompilerPassInterface
         $this->analyzer = $analyzer;
     }
 
-    public function getDescription() : string
+    public function getDescription(): string
     {
         return 'Analyze results and write report to log';
     }
 
-    public function execute(ProjectDescriptor $project) : void
+    public function execute(ProjectDescriptor $project): void
     {
         $this->analyzer->analyze($project);
         $this->log->debug((string) $this->analyzer);

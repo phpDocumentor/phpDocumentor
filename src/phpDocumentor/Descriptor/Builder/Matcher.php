@@ -21,7 +21,7 @@ final class Matcher
      *
      * @template SelfT
      */
-    public static function forType(string $type) : self
+    public static function forType(string $type): self
     {
         return new self($type);
     }
@@ -31,7 +31,7 @@ final class Matcher
      *
      * @psalm-assert-if-true T|class-string<T> $criteria
      */
-    public function __invoke($criteria) : bool
+    public function __invoke($criteria): bool
     {
         return is_a($criteria, $this->type, true);
     }

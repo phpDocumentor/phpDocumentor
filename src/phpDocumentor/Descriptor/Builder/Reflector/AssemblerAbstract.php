@@ -76,7 +76,7 @@ abstract class AssemblerAbstract extends BaseAssembler
     /**
      * Assemble DocBlock.
      */
-    protected function assembleDocBlock(?DocBlock $docBlock, DescriptorAbstract $target) : void
+    protected function assembleDocBlock(?DocBlock $docBlock, DescriptorAbstract $target): void
     {
         if (!$docBlock) {
             return;
@@ -105,7 +105,7 @@ abstract class AssemblerAbstract extends BaseAssembler
     /**
      * Extracts the package from the DocBlock.
      */
-    protected function extractPackageFromDocBlock(?DocBlock $docBlock) : ?string
+    protected function extractPackageFromDocBlock(?DocBlock $docBlock): ?string
     {
         $packageTags = $docBlock ? $docBlock->getTagsByName('package') : [];
         if (count($packageTags) === 0) {
@@ -122,7 +122,7 @@ abstract class AssemblerAbstract extends BaseAssembler
      * @deprecated the functionality in this method has been moved to the Compound type in the latest unreleased
      * version of the TypeResolver library
      */
-    public static function deduplicateTypes(?Type $type) : ?Type
+    public static function deduplicateTypes(?Type $type): ?Type
     {
         if ($type instanceof Compound) {
             $normalizedTypes = [];
@@ -137,7 +137,7 @@ abstract class AssemblerAbstract extends BaseAssembler
         return $type;
     }
 
-    protected function pretifyValue(?string $value) : ?string
+    protected function pretifyValue(?string $value): ?string
     {
         if ($value === null) {
             return null;

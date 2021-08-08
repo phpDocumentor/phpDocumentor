@@ -19,7 +19,7 @@ final class PostNodeCreateEvent extends EventArgs
         $this->node = $node;
     }
 
-    public function getNode() : Node
+    public function getNode(): Node
     {
         return $this->node;
     }

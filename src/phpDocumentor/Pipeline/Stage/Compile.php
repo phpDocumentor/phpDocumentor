@@ -38,7 +38,7 @@ final class Compile
      *
      * @throws Exception If the target location is not a folder.
      */
-    public function __invoke(Payload $payload) : Payload
+    public function __invoke(Payload $payload): Payload
     {
         /** @var CompilerPassInterface $pass */
         foreach ($this->compiler as $pass) {

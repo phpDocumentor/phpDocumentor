@@ -21,23 +21,23 @@ final class TocDescriptor implements Descriptor
         $this->entries = Collection::fromClassString(Entry::class);
     }
 
-    public function getName() : string
+    public function getName(): string
     {
         return $this->name;
     }
 
-    public function getDescription() : ?DocBlock\DescriptionDescriptor
+    public function getDescription(): ?DocBlock\DescriptionDescriptor
     {
         return null;
     }
 
-    public function addEntry(TableOfContents\Entry $entry) : void
+    public function addEntry(TableOfContents\Entry $entry): void
     {
         $this->entries->set($entry->getUrl(), $entry);
     }
 
     /** @return Collection<Entry> */
-    public function getRoots() : Collection
+    public function getRoots(): Collection
     {
         return Collection::fromClassString(
             Entry::class,

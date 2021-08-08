@@ -29,47 +29,47 @@ interface InterfaceInterface extends ElementInterface, TypeInterface
      *
      * @return Collection<InterfaceDescriptor|Fqsen>
      */
-    public function getParent() : Collection;
+    public function getParent(): Collection;
 
     /**
      * Sets the parent for this Descriptor.
      *
      * @param Collection<InterfaceDescriptor|Fqsen> $parents
      */
-    public function setParent(Collection $parents) : void;
+    public function setParent(Collection $parents): void;
 
     /**
      * Sets the constants associated with this interface.
      *
      * @param Collection<ConstantDescriptor> $constants
      */
-    public function setConstants(Collection $constants) : void;
+    public function setConstants(Collection $constants): void;
 
     /**
      * Returns the constants associated with this interface.
      *
      * @return Collection<ConstantDescriptor>
      */
-    public function getConstants() : Collection;
+    public function getConstants(): Collection;
 
     /**
      * Sets the methods belonging to this interface.
      *
      * @param Collection<MethodDescriptor> $methods
      */
-    public function setMethods(Collection $methods) : void;
+    public function setMethods(Collection $methods): void;
 
     /**
      * Returns the methods belonging to this interface.
      *
      * @return Collection<MethodDescriptor>
      */
-    public function getMethods() : Collection;
+    public function getMethods(): Collection;
 
     /**
      * Returns a list of all methods that were inherited from parent interfaces.
      *
      * @return Collection<MethodDescriptor>
      */
-    public function getInheritedMethods() : Collection;
+    public function getInheritedMethods(): Collection;
 }

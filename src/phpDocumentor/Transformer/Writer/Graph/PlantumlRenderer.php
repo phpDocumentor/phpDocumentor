@@ -25,7 +25,7 @@ class PlantumlRenderer
         $this->plantUmlBinaryPath = $plantUmlBinaryPath;
     }
 
-    public function render(string $diagram) : ?string
+    public function render(string $diagram): ?string
     {
         $pumlFileLocation = tempnam('phpdocumentor', 'pu_');
 

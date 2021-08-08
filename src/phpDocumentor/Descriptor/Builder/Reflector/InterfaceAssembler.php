@@ -34,7 +34,7 @@ class InterfaceAssembler extends AssemblerAbstract
      *
      * @param Interface_ $data
      */
-    public function create(object $data) : InterfaceDescriptor
+    public function create(object $data): InterfaceDescriptor
     {
         $interfaceDescriptor = new InterfaceDescriptor();
 
@@ -63,7 +63,7 @@ class InterfaceAssembler extends AssemblerAbstract
      *
      * @param Constant[] $constants
      */
-    protected function addConstants(array $constants, InterfaceDescriptor $interfaceDescriptor) : void
+    protected function addConstants(array $constants, InterfaceDescriptor $interfaceDescriptor): void
     {
         foreach ($constants as $constant) {
             $constantDescriptor = $this->getBuilder()->buildDescriptor($constant, ConstantDescriptor::class);
@@ -81,7 +81,7 @@ class InterfaceAssembler extends AssemblerAbstract
      *
      * @param Method[] $methods
      */
-    protected function addMethods(array $methods, InterfaceDescriptor $interfaceDescriptor) : void
+    protected function addMethods(array $methods, InterfaceDescriptor $interfaceDescriptor): void
     {
         foreach ($methods as $method) {
             $methodDescriptor = $this->getBuilder()->buildDescriptor($method, MethodDescriptor::class);

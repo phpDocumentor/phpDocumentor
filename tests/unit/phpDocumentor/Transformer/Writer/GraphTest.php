@@ -30,7 +30,7 @@ final class GraphTest extends MockeryTestCase
     /** @var Graph */
     private $graph;
 
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->graph = new Graph(
             new GraphVizClassDiagram(),
@@ -41,7 +41,7 @@ final class GraphTest extends MockeryTestCase
     /**
      * @covers ::getDefaultSettings
      */
-    public function testItExposesCustomSettingToEnableGraphs() : void
+    public function testItExposesCustomSettingToEnableGraphs(): void
     {
         $this->assertSame(['graphs.enabled' => false], $this->graph->getDefaultSettings());
     }

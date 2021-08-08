@@ -40,7 +40,7 @@ class ArgumentAssemblerTest extends TestCase
     /**
      * Creates a new fixture to test with.
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->builderMock = $this->prophesize(ProjectDescriptorBuilder::class);
         $this->fixture = new ArgumentAssembler();
@@ -50,7 +50,7 @@ class ArgumentAssemblerTest extends TestCase
     /**
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\ArgumentAssembler::create
      */
-    public function testCreateArgumentDescriptorFromReflector() : void
+    public function testCreateArgumentDescriptorFromReflector(): void
     {
         // Arrange
         $name = 'goodArgument';
@@ -74,7 +74,7 @@ class ArgumentAssemblerTest extends TestCase
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\ArgumentAssembler::create
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\ArgumentAssembler::overwriteTypeAndDescriptionFromParamTag
      */
-    public function testIfTypeAndDescriptionAreSetFromParamDescriptor() : void
+    public function testIfTypeAndDescriptionAreSetFromParamDescriptor(): void
     {
         // Arrange
         $name = 'goodArgument';
@@ -106,7 +106,7 @@ class ArgumentAssemblerTest extends TestCase
      *
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\ArgumentAssembler::create
      */
-    public function testIfVariadicArgumentsAreDetected() : void
+    public function testIfVariadicArgumentsAreDetected(): void
     {
         // Arrange
         $name = 'goodArgument';
@@ -137,7 +137,7 @@ class ArgumentAssemblerTest extends TestCase
         string $name,
         Type $type,
         bool $isVariadic = false
-    ) : Argument {
+    ): Argument {
         return new Argument($name, $type, null, false, $isVariadic);
     }
 }

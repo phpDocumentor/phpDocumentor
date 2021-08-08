@@ -14,7 +14,7 @@ trait MagicPropertyContainerTests
     /**
      * @covers ::getMagicProperties
      */
-    public function testGetMagicPropertiesUsingPropertyTags() : void
+    public function testGetMagicPropertiesUsingPropertyTags(): void
     {
         $variableName = 'variableName';
         $description = new DescriptionDescriptor(new Description('description'), []);
@@ -41,7 +41,7 @@ trait MagicPropertyContainerTests
     /**
      * @covers ::getMagicProperties
      */
-    public function testGetMagicPropertyWithoutName() : void
+    public function testGetMagicPropertyWithoutName(): void
     {
         $description = new DescriptionDescriptor(new Description('description'), []);
 
@@ -63,7 +63,7 @@ trait MagicPropertyContainerTests
     /**
      * @covers ::getMagicProperties
      */
-    public function testMagicPropertiesReturnsEmptyCollectionWhenNoTags() : void
+    public function testMagicPropertiesReturnsEmptyCollectionWhenNoTags(): void
     {
         $this->assertInstanceOf(Collection::class, $this->fixture->getMagicProperties());
 

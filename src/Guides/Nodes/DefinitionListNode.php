@@ -27,7 +27,7 @@ class DefinitionListNode extends Node
         $this->definitionList = $definitionList;
     }
 
-    public function getDefinitionList() : DefinitionList
+    public function getDefinitionList(): DefinitionList
     {
         return $this->definitionList;
     }

@@ -44,7 +44,7 @@ final class PathGeneratorTest extends TestCase
     /** @var Template */
     private $template;
 
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->template = new Template('My Template', new MountManager());
 
@@ -57,7 +57,7 @@ final class PathGeneratorTest extends TestCase
      * @covers ::generate
      * @dataProvider providePathsToUrlEncode
      */
-    public function testWhenAnArtifactIsProvidedGenerateAPathToThatLocation($artifact, $variable, $expected) : void
+    public function testWhenAnArtifactIsProvidedGenerateAPathToThatLocation($artifact, $variable, $expected): void
     {
         $transformation = $this->givenATransformationWithArtifact($artifact);
 
@@ -71,7 +71,7 @@ final class PathGeneratorTest extends TestCase
     /**
      * @covers ::generate
      */
-    public function testAnErrorOccursWhenAnUnknownVariableIsAsked() : void
+    public function testAnErrorOccursWhenAnUnknownVariableIsAsked(): void
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage(
@@ -85,7 +85,7 @@ final class PathGeneratorTest extends TestCase
     /**
      * @covers ::generate
      */
-    public function testAnErrorOccursWhenAnEmptyVariableIsAsked() : void
+    public function testAnErrorOccursWhenAnEmptyVariableIsAsked(): void
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage(
@@ -96,7 +96,7 @@ final class PathGeneratorTest extends TestCase
         $this->generator->generate(new FileDescriptor('hash'), $transformation);
     }
 
-    private function givenATransformationWithArtifact(string $artifact) : Transformation
+    private function givenATransformationWithArtifact(string $artifact): Transformation
     {
         return new Transformation(
             $this->template,
@@ -107,7 +107,7 @@ final class PathGeneratorTest extends TestCase
         );
     }
 
-    public function providePathsToUrlEncode() : array
+    public function providePathsToUrlEncode(): array
     {
         return [
             'without variables' => [

@@ -95,7 +95,7 @@ class DescriptorRepository
      *
      * @param array<DescriptorAbstract> $elementList
      */
-    public function setObjectAliasesList(array $elementList) : void
+    public function setObjectAliasesList(array $elementList): void
     {
         $this->elementList = $elementList;
     }
@@ -104,7 +104,7 @@ class DescriptorRepository
      * Replaces pseudo-types, such as `self`, into a normalized version based on the last container that was
      * encountered.
      */
-    private function replacePseudoTypes(string $fqsen, DescriptorAbstract $container) : string
+    private function replacePseudoTypes(string $fqsen, DescriptorAbstract $container): string
     {
         $pseudoTypes = ['self', '$this'];
         foreach ($pseudoTypes as $pseudoType) {
@@ -125,7 +125,7 @@ class DescriptorRepository
     /**
      * Returns true if the context marker is found in the given FQSEN.
      */
-    private function isContextMarkerInFqsen(string $fqsen) : bool
+    private function isContextMarkerInFqsen(string $fqsen): bool
     {
         return strpos($fqsen, self::CONTEXT_MARKER) !== false;
     }
@@ -133,7 +133,7 @@ class DescriptorRepository
     /**
      * Normalizes the given FQSEN as if the context marker represents a class/interface/trait as parent.
      */
-    private function getTypeWithClassAsContext(string $fqsen, DescriptorAbstract $container) : string
+    private function getTypeWithClassAsContext(string $fqsen, DescriptorAbstract $container): string
     {
         if (!$container instanceof ClassDescriptor
             && !$container instanceof InterfaceDescriptor
@@ -150,7 +150,7 @@ class DescriptorRepository
     /**
      * Normalizes the given FQSEN as if the context marker represents a class/interface/trait as parent.
      */
-    private function getTypeWithNamespaceAsContext(string $fqsen, DescriptorAbstract $container) : string
+    private function getTypeWithNamespaceAsContext(string $fqsen, DescriptorAbstract $container): string
     {
         $namespace = $container instanceof NamespaceDescriptor ? $container : $container->getNamespace();
         $fqnn = $namespace instanceof NamespaceDescriptor
@@ -163,7 +163,7 @@ class DescriptorRepository
     /**
      * Normalizes the given FQSEN as if the context marker represents the global namespace as parent.
      */
-    private function getTypeWithGlobalNamespaceAsContext(string $fqsen) : string
+    private function getTypeWithGlobalNamespaceAsContext(string $fqsen): string
     {
         return str_replace(self::CONTEXT_MARKER . '::', '\\', $fqsen);
     }
@@ -172,7 +172,7 @@ class DescriptorRepository
      * Attempts to find an element with the given Fqsen in the list of elements for this project and returns null if
      * it cannot find it.
      */
-    private function fetchElementByFqsen(string $fqsen) : ?DescriptorAbstract
+    private function fetchElementByFqsen(string $fqsen): ?DescriptorAbstract
     {
         return $this->elementList[$fqsen] ?? null;
     }

@@ -33,7 +33,7 @@ final class Version3 implements ConfigurationInterface, Normalizable
         $this->defaultTemplateName = $defaultTemplateName;
     }
 
-    public function getConfigTreeBuilder() : TreeBuilder
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treebuilder = new TreeBuilder('phpdocumentor');
 
@@ -121,7 +121,7 @@ final class Version3 implements ConfigurationInterface, Normalizable
      * @return array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: Dsn, cache: Path}, versions?: array<string, array{api: array<int, array{ignore-tags: array, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibillity: string, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}}>, guides: array}>, settings?: array<mixed>, templates?: non-empty-list<string>}
      */
     //phpcs:enable Generic.Files.LineLength.TooLong
-    public function normalize(array $configuration) : array
+    public function normalize(array $configuration): array
     {
         $configuration['configVersion'] = (string) $configuration['configVersion'];
         $configuration['paths']['output'] = Dsn::createFromString($configuration['paths']['output']);
@@ -166,7 +166,7 @@ final class Version3 implements ConfigurationInterface, Normalizable
         return $configuration;
     }
 
-    private function apiSection() : ArrayNodeDefinition
+    private function apiSection(): ArrayNodeDefinition
     {
         $treebuilder = new TreeBuilder('apis');
 
@@ -264,7 +264,7 @@ final class Version3 implements ConfigurationInterface, Normalizable
             ->end();
     }
 
-    private function guideSection() : ArrayNodeDefinition
+    private function guideSection(): ArrayNodeDefinition
     {
         $treebuilder = new TreeBuilder('guides');
 
@@ -284,7 +284,7 @@ final class Version3 implements ConfigurationInterface, Normalizable
     /**
      * @param array<string> $defaultPaths
      */
-    private function source(array $defaultPaths = []) : ArrayNodeDefinition
+    private function source(array $defaultPaths = []): ArrayNodeDefinition
     {
         $treebuilder = new TreeBuilder('source');
 
@@ -300,7 +300,7 @@ final class Version3 implements ConfigurationInterface, Normalizable
     /**
      * @param array<string> $defaultValue
      */
-    private function paths(array $defaultValue = []) : ArrayNodeDefinition
+    private function paths(array $defaultValue = []): ArrayNodeDefinition
     {
         $treebuilder = new TreeBuilder('paths');
 

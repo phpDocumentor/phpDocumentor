@@ -33,27 +33,27 @@ class SpanNodeRenderer extends BaseSpanNodeRenderer
         $this->renderer = $environment->getRenderer();
     }
 
-    public function emphasis(string $text) : string
+    public function emphasis(string $text): string
     {
         return $this->renderer->render('emphasis.tex.twig', ['text' => $text]);
     }
 
-    public function strongEmphasis(string $text) : string
+    public function strongEmphasis(string $text): string
     {
         return $this->renderer->render('strong-emphasis.tex.twig', ['text' => $text]);
     }
 
-    public function nbsp() : string
+    public function nbsp(): string
     {
         return $this->renderer->render('nbsp.tex.twig');
     }
 
-    public function br() : string
+    public function br(): string
     {
         return $this->renderer->render('br.tex.twig');
     }
 
-    public function literal(string $text) : string
+    public function literal(string $text): string
     {
         return $this->renderer->render('literal.tex.twig', ['text' => $text]);
     }
@@ -61,7 +61,7 @@ class SpanNodeRenderer extends BaseSpanNodeRenderer
     /**
      * @param string[] $attributes
      */
-    public function link(?string $url, string $title, array $attributes = []) : string
+    public function link(?string $url, string $title, array $attributes = []): string
     {
         $type = 'href';
 
@@ -84,7 +84,7 @@ class SpanNodeRenderer extends BaseSpanNodeRenderer
         );
     }
 
-    public function escape(string $span) : string
+    public function escape(string $span): string
     {
         return $span;
     }
@@ -92,7 +92,7 @@ class SpanNodeRenderer extends BaseSpanNodeRenderer
     /**
      * @param string[] $value
      */
-    public function reference(ResolvedReference $reference, array $value) : string
+    public function reference(ResolvedReference $reference, array $value): string
     {
         $text = $value['text'] ?: $reference->getTitle();
         $url = $reference->getUrl();

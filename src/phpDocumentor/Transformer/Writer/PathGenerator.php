@@ -69,14 +69,14 @@ class PathGenerator
      * @throws InvalidArgumentException If no artifact is provided and no routing rule matches.
      * @throws UnexpectedValueException If the provided node does not contain anything.
      */
-    public function generate(Descriptor $descriptor, Transformation $transformation) : string
+    public function generate(Descriptor $descriptor, Transformation $transformation): string
     {
         $path = $this->determinePath($descriptor, $transformation);
 
         return $this->replaceVariablesInPath($path, $descriptor);
     }
 
-    private function determinePath(Descriptor $descriptor, Transformation $transformation) : string
+    private function determinePath(Descriptor $descriptor, Transformation $transformation): string
     {
         $path = '/' . $transformation->getArtifact();
         if (!$transformation->getArtifact()) {
@@ -92,7 +92,7 @@ class PathGenerator
         return $path;
     }
 
-    private function replaceVariablesInPath(string $path, Descriptor $descriptor) : string
+    private function replaceVariablesInPath(string $path, Descriptor $descriptor): string
     {
         $destination = preg_replace_callback(
             '/{{([^}]*)}}/', // explicitly do not use the unicode modifier; this breaks windows

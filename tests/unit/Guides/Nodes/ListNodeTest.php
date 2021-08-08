@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 
 final class ListNodeTest extends TestCase
 {
-    public function test_it_can_be_return_information_on_each_line_in_a_list() : void
+    public function test_it_can_be_return_information_on_each_line_in_a_list(): void
     {
         $list = [
             [

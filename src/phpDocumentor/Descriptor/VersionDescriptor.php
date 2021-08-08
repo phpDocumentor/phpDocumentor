@@ -30,7 +30,7 @@ final class VersionDescriptor
         $this->number = $number;
     }
 
-    public function getNumber() : string
+    public function getNumber(): string
     {
         return $this->number;
     }
@@ -38,13 +38,13 @@ final class VersionDescriptor
     /**
      * @return Collection<DocumentationSetDescriptor>
      */
-    public function getDocumentationSets() : Collection
+    public function getDocumentationSets(): Collection
     {
         return $this->documentationSets;
     }
 
     /** @return Collection<TocDescriptor> */
-    public function getTableOfContents() : Collection
+    public function getTableOfContents(): Collection
     {
         $tocs = Collection::fromClassString(TocDescriptor::class);
         foreach ($this->documentationSets as $documentationSet) {

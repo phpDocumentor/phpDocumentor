@@ -26,7 +26,7 @@ class EventAbstractTest extends TestCase
      * @covers \phpDocumentor\Event\EventAbstract::__construct
      * @covers \phpDocumentor\Event\EventAbstract::getSubject
      */
-    public function testSubjectMustBeProvidedAndCanBeRead() : void
+    public function testSubjectMustBeProvidedAndCanBeRead(): void
     {
         $subject = new stdClass();
 
@@ -38,7 +38,7 @@ class EventAbstractTest extends TestCase
     /**
      * @covers \phpDocumentor\Event\EventAbstract::createInstance
      */
-    public function testCanBeConstructedUsingAStaticFactoryMethod() : void
+    public function testCanBeConstructedUsingAStaticFactoryMethod(): void
     {
         $subject = new stdClass();
 

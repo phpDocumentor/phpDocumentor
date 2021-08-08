@@ -38,7 +38,7 @@ final class PurgeCachesWhenForced
         $this->logger = $logger;
     }
 
-    public function __invoke(Payload $payload) : Payload
+    public function __invoke(Payload $payload): Payload
     {
         $this->logger->info('Checking whether to purge cache');
         if (!$payload->getConfig()['phpdocumentor']['use-cache']

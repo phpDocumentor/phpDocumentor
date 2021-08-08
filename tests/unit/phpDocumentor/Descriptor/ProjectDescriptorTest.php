@@ -31,7 +31,7 @@ final class ProjectDescriptorTest extends TestCase
     /**
      * Initializes the fixture object.
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->fixture = new ProjectDescriptor(self::EXAMPLE_NAME);
     }
@@ -41,7 +41,7 @@ final class ProjectDescriptorTest extends TestCase
      * @covers ::setName
      * @covers ::getName
      */
-    public function testGetSetName() : void
+    public function testGetSetName(): void
     {
         $this->assertEquals(self::EXAMPLE_NAME, $this->fixture->getName());
 
@@ -56,7 +56,7 @@ final class ProjectDescriptorTest extends TestCase
      * @covers ::setFiles
      * @covers ::getFiles
      */
-    public function testGetSetFiles() : void
+    public function testGetSetFiles(): void
     {
         $this->assertInstanceOf(Collection::class, $this->fixture->getFiles());
 
@@ -71,7 +71,7 @@ final class ProjectDescriptorTest extends TestCase
      * @covers ::setIndexes
      * @covers ::getIndexes
      */
-    public function testGetSetIndexes() : void
+    public function testGetSetIndexes(): void
     {
         $this->assertInstanceOf(Collection::class, $this->fixture->getIndexes());
 
@@ -85,7 +85,7 @@ final class ProjectDescriptorTest extends TestCase
      * @covers ::setNamespace
      * @covers ::getNamespace
      */
-    public function testGetSetNamespace() : void
+    public function testGetSetNamespace(): void
     {
         $this->assertInstanceOf(NamespaceDescriptor::class, $this->fixture->getNamespace());
 
@@ -99,7 +99,7 @@ final class ProjectDescriptorTest extends TestCase
      * @covers ::setNamespace
      * @covers ::getNamespace
      */
-    public function testRootPackageIsSetForProject() : void
+    public function testRootPackageIsSetForProject(): void
     {
         $this->assertInstanceOf(PackageDescriptor::class, $this->fixture->getPackage());
         $this->assertSame('\\', (string) $this->fixture->getPackage()->getName());
@@ -110,7 +110,7 @@ final class ProjectDescriptorTest extends TestCase
      * @covers ::setSettings
      * @covers ::getSettings
      */
-    public function testGetSetSettings() : void
+    public function testGetSetSettings(): void
     {
         $this->assertInstanceOf(Settings::class, $this->fixture->getSettings());
 
@@ -125,7 +125,7 @@ final class ProjectDescriptorTest extends TestCase
      * @covers ::setPartials
      * @covers ::getPartials
      */
-    public function testGetSetPartials() : void
+    public function testGetSetPartials(): void
     {
         $result = $this->fixture->getPartials();
         $this->assertInstanceOf(Collection::class, $result);

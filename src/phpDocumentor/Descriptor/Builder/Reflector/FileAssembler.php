@@ -43,7 +43,7 @@ class FileAssembler extends AssemblerAbstract
      *
      * @param File $data
      */
-    public function create(object $data) : FileDescriptor
+    public function create(object $data): FileDescriptor
     {
         $fileDescriptor = new FileDescriptor($data->getHash());
         $fileDescriptor->setPackage(
@@ -75,7 +75,7 @@ class FileAssembler extends AssemblerAbstract
      *
      * @param Constant[] $constants
      */
-    protected function addConstants(array $constants, FileDescriptor $fileDescriptor) : void
+    protected function addConstants(array $constants, FileDescriptor $fileDescriptor): void
     {
         foreach ($constants as $constant) {
             $constantDescriptor = $this->getBuilder()->buildDescriptor($constant, ConstantDescriptor::class);
@@ -101,7 +101,7 @@ class FileAssembler extends AssemblerAbstract
      *
      * @param Function_[] $functions
      */
-    protected function addFunctions(array $functions, FileDescriptor $fileDescriptor) : void
+    protected function addFunctions(array $functions, FileDescriptor $fileDescriptor): void
     {
         foreach ($functions as $function) {
             $functionDescriptor = $this->getBuilder()->buildDescriptor($function, FunctionDescriptor::class);
@@ -127,7 +127,7 @@ class FileAssembler extends AssemblerAbstract
      *
      * @param Class_[] $classes
      */
-    protected function addClasses(array $classes, FileDescriptor $fileDescriptor) : void
+    protected function addClasses(array $classes, FileDescriptor $fileDescriptor): void
     {
         foreach ($classes as $class) {
             $classDescriptor = $this->getBuilder()->buildDescriptor($class, ClassDescriptor::class);
@@ -155,7 +155,7 @@ class FileAssembler extends AssemblerAbstract
      *
      * @param Interface_[] $interfaces
      */
-    protected function addInterfaces(array $interfaces, FileDescriptor $fileDescriptor) : void
+    protected function addInterfaces(array $interfaces, FileDescriptor $fileDescriptor): void
     {
         foreach ($interfaces as $interface) {
             $interfaceDescriptor = $this->getBuilder()->buildDescriptor($interface, InterfaceDescriptor::class);
@@ -181,7 +181,7 @@ class FileAssembler extends AssemblerAbstract
      *
      * @param Trait_[] $traits
      */
-    protected function addTraits(array $traits, FileDescriptor $fileDescriptor) : void
+    protected function addTraits(array $traits, FileDescriptor $fileDescriptor): void
     {
         foreach ($traits as $trait) {
             $traitDescriptor = $this->getBuilder()->buildDescriptor($trait, TraitDescriptor::class);
@@ -207,7 +207,7 @@ class FileAssembler extends AssemblerAbstract
      *
      * @param array<array<string>> $markers
      */
-    protected function addMarkers(array $markers, FileDescriptor $fileDescriptor) : void
+    protected function addMarkers(array $markers, FileDescriptor $fileDescriptor): void
     {
         foreach ($markers as $marker) {
             [$type, $message, $line] = $marker;
@@ -221,7 +221,7 @@ class FileAssembler extends AssemblerAbstract
         }
     }
 
-    protected function overridePackageTag(File $data, FileDescriptor $fileDescriptor) : void
+    protected function overridePackageTag(File $data, FileDescriptor $fileDescriptor): void
     {
         $packages = Collection::fromClassString(TagDescriptor::class);
         $package  = $this->extractPackageFromDocBlock($data->getDocBlock());

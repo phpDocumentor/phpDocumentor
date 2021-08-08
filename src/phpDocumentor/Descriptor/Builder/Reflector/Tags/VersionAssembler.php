@@ -28,7 +28,7 @@ class VersionAssembler extends BaseTagAssembler
     /**
      * Creates a new Descriptor from the given Reflector.
      */
-    public function buildDescriptor(object $data) : VersionDescriptor
+    public function buildDescriptor(object $data): VersionDescriptor
     {
         $descriptor = new VersionDescriptor($data->getName());
         $descriptor->setVersion((string) $data->getVersion());

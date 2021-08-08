@@ -32,5 +32,5 @@ interface AssemblerInterface
     public function create(object $data);
     //phpcs:enable
 
-    public function setBuilder(ProjectDescriptorBuilder $builder) : void;
+    public function setBuilder(ProjectDescriptorBuilder $builder): void;
 }

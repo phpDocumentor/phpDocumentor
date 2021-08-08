@@ -47,7 +47,7 @@ class SpanNode extends Node
     /**
      * @return SpanToken[]
      */
-    public function getTokens() : array
+    public function getTokens(): array
     {
         return $this->tokens;
     }

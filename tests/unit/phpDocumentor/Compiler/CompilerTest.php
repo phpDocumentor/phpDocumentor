@@ -29,7 +29,7 @@ class CompilerTest extends TestCase
     /**
      * Creates a new fixture to test with.
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->fixture = new Compiler();
     }
@@ -37,7 +37,7 @@ class CompilerTest extends TestCase
     /**
      * @covers \phpDocumentor\Compiler\Compiler::insert
      */
-    public function testDefaultPassHasDefaultPriority() : void
+    public function testDefaultPassHasDefaultPriority(): void
     {
         $this->fixture->insert($this->prophesize(CompilerPassInterface::class)->reveal());
         $this->fixture->setExtractFlags(Compiler::EXTR_PRIORITY);

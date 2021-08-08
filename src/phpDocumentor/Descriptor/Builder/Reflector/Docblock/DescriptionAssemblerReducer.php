@@ -21,7 +21,7 @@ final class DescriptionAssemblerReducer extends AssemblerAbstract implements Ass
     /**
      * @return DescriptorAbstract|TagDescriptor|null
      */
-    public function create(object $data, ?Descriptor $descriptor = null) : ?Descriptor
+    public function create(object $data, ?Descriptor $descriptor = null): ?Descriptor
     {
         if ($descriptor === null) {
             return null;
@@ -46,7 +46,7 @@ final class DescriptionAssemblerReducer extends AssemblerAbstract implements Ass
      *
      * @return list<TagDescriptor|null>
      */
-    private function createTags(array $tags) : array
+    private function createTags(array $tags): array
     {
         $result = [];
         foreach ($tags as $tag) {

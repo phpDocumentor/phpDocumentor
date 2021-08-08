@@ -46,7 +46,7 @@ class SymfonyConfigFactory
      * @return array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string, cache: string}, versions?: array<string, array{ api: array{ignore-tags: array<string>, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibility: non-empty-array<string>, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}, encoding: string, output: string, default-package-name: string, examples: array{dsn: Dsn, paths: array}, include-source: bool, validate: bool, visibility: non-empty-array<array-key, string>}, guides: array}>, settings?: array<mixed>, templates?: non-empty-list<string>}}
      */
     //phpcs:enable Generic.Files.LineLength.TooLong
-    public function createFromFile(string $filename) : array
+    public function createFromFile(string $filename): array
     {
         $values = XmlUtils::loadFile($filename);
         $values = XmlUtils::convertDomElementToArray($values->documentElement);
@@ -59,7 +59,7 @@ class SymfonyConfigFactory
      * @return array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string, cache: string}, versions?: array<string, array{ api: array{ignore-tags: array<string>, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibility: non-empty-array<string>, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}, encoding: string, output: string, default-package-name: string, examples: array{dsn: Dsn, paths: array}, include-source: bool, validate: bool, visibility: non-empty-array<array-key, string>}, guides: array}>, settings?: array<mixed>, templates?: non-empty-list<string>}}
      */
     //phpcs:enable Generic.Files.LineLength.TooLong
-    public function createDefault() : array
+    public function createDefault(): array
     {
         return $this->generateConfiguration([
             self::FIELD_CONFIG_VERSION => (string) array_key_last($this->configurationDefinitions),
@@ -73,7 +73,7 @@ class SymfonyConfigFactory
      * @return array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string, cache: string}, versions?: array<string, array{ api: array{ignore-tags: array<string>, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibility: non-empty-array<string>, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}, encoding: string, output: string, default-package-name: string, examples: array{dsn: Dsn, paths: array}, include-source: bool, validate: bool}, guides: array}>, settings?: array<mixed>, templates?: non-empty-list<string>}}
      */
     //phpcs:enable Generic.Files.LineLength.TooLong
-    private function generateConfiguration(array $values) : array
+    private function generateConfiguration(array $values): array
     {
         $configuration = $this->processConfiguration($values);
         if ($configuration[self::FIELD_CONFIG_VERSION] !== (string) array_key_last($this->configurationDefinitions)) {
@@ -101,7 +101,7 @@ class SymfonyConfigFactory
      * @return array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string, cache: string}, versions?: array<string, array{ api: array{ignore-tags: array<string>, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibility: non-empty-array<string>, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}, encoding: string, output: string, default-package-name: string, examples: array{dsn: Dsn, paths: array}, include-source: bool, validate: bool}, guides: array}>, settings?: array<mixed>, templates?: non-empty-list<string>}
      */
     //phpcs:enable Generic.Files.LineLength.TooLong
-    private function processConfiguration(array $values) : array
+    private function processConfiguration(array $values): array
     {
         $configurationVersion = (string) ($values[self::FIELD_CONFIG_VERSION] ?? self::DEFAULT_CONFIG_VERSION);
 
@@ -122,7 +122,7 @@ class SymfonyConfigFactory
         return $configuration;
     }
 
-    private function findDefinition(string $configurationVersion) : ConfigurationInterface
+    private function findDefinition(string $configurationVersion): ConfigurationInterface
     {
         $definition = $this->configurationDefinitions[$configurationVersion] ?? null;
         if ($definition === null) {
@@ -142,7 +142,7 @@ class SymfonyConfigFactory
      * @return array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string, cache: string}, versions?: array<string, array{ api: array{ignore-tags: array<string>, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibility: non-empty-array<string>, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}, encoding: string, output: string, default-package-name: string, examples: array{dsn: Dsn, paths: array}, include-source: bool, validate: bool}, guides: array}>, settings?: array<mixed>, templates?: non-empty-list<string>}
      */
     //phpcs:enable Generic.Files.LineLength.TooLong
-    private function upgradeConfiguration(Upgradable $definition, array $configuration) : array
+    private function upgradeConfiguration(Upgradable $definition, array $configuration): array
     {
         $upgradedConfiguration = $definition->upgrade($configuration);
         if (!isset($upgradedConfiguration[self::FIELD_CONFIG_VERSION])

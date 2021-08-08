@@ -27,7 +27,7 @@ final class ReEncodedFileTest extends TestCase
     /**
      * @covers ::path
      */
-    public function testReEncodedFileExposesPath() : void
+    public function testReEncodedFileExposesPath(): void
     {
         $path = '/tmp/fileToBeParsed';
         $file = new ReEncodedFile($path, new UnicodeString('Contents'));
@@ -38,7 +38,7 @@ final class ReEncodedFileTest extends TestCase
     /**
      * @covers ::getContents
      */
-    public function testReEncodedFileExposesContents() : void
+    public function testReEncodedFileExposesContents(): void
     {
         $contents = 'Contents';
         $file = new ReEncodedFile('/tmp/fileToBeParsed', new UnicodeString($contents));
@@ -49,7 +49,7 @@ final class ReEncodedFileTest extends TestCase
     /**
      * @covers ::md5
      */
-    public function testReEncodedFileExposesHashOfContents() : void
+    public function testReEncodedFileExposesHashOfContents(): void
     {
         $contents = 'Contents';
         $file = new ReEncodedFile('/tmp/fileToBeParsed', new UnicodeString($contents));

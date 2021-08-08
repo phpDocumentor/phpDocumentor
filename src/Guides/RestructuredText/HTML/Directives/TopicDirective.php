@@ -26,7 +26,7 @@ class TopicDirective extends SubDirective
         string $variable,
         string $data,
         array $options
-    ) : ?Node {
+    ): ?Node {
         return new TemplatedNode(
             'directives/topic.html.twig',
             [
@@ -36,7 +36,7 @@ class TopicDirective extends SubDirective
         );
     }
 
-    public function getName() : string
+    public function getName(): string
     {
         return 'topic';
     }

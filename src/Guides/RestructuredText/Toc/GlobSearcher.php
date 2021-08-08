@@ -16,7 +16,7 @@ class GlobSearcher
     /**
      * @return string[]
      */
-    public function globSearch(Environment $environment, string $globPattern) : array
+    public function globSearch(Environment $environment, string $globPattern): array
     {
         $currentFilePath = (string) realpath(rtrim($environment->absoluteRelativePath(''), '/'));
 

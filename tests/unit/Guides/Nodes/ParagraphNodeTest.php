@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 
 final class ParagraphNodeTest extends TestCase
 {
-    public function test_it_can_be_created_with_a_value_even_another_node() : void
+    public function test_it_can_be_created_with_a_value_even_another_node(): void
     {
         $imageNode = new ImageNode();
 

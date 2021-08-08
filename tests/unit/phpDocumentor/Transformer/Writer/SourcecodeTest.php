@@ -37,7 +37,7 @@ final class SourcecodeTest extends MockeryTestCase
     /** @var Graph */
     private $sourceCode;
 
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $pathGenerator = $this->prophesize(PathGenerator::class);
         $pathGenerator->generate(
@@ -52,7 +52,7 @@ final class SourcecodeTest extends MockeryTestCase
     /**
      * @covers ::transform
      */
-    public function testNoInteractionWithTransformationWhenSourceShouldNotIncluded() : void
+    public function testNoInteractionWithTransformationWhenSourceShouldNotIncluded(): void
     {
         $transformation = $this->prophesize(Transformation::class);
         $transformation->template()->shouldNotBeCalled();
@@ -65,7 +65,7 @@ final class SourcecodeTest extends MockeryTestCase
     /**
      * @covers ::transform
      */
-    public function testNoInteractionWithTransformationWhenSourceIsIncluded() : void
+    public function testNoInteractionWithTransformationWhenSourceIsIncluded(): void
     {
         $transformation = $this->prophesize(Transformation::class);
         $transformation->template()->shouldBeCalled()->willReturn($this->faker()->template());
@@ -77,7 +77,7 @@ final class SourcecodeTest extends MockeryTestCase
         $this->sourceCode->transform($projecDescriptor, $transformation->reveal());
     }
 
-    private function giveProjectDescriptor(ApiSetDescriptor $apiDescriptor) : ProjectDescriptor
+    private function giveProjectDescriptor(ApiSetDescriptor $apiDescriptor): ProjectDescriptor
     {
         $projecDescriptor = $this->faker()->projectDescriptor();
         $projecDescriptor->setFiles(

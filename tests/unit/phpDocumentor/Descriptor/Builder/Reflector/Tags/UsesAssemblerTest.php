@@ -40,7 +40,7 @@ class UsesAssemblerTest extends TestCase
     /**
      * Creates a new fixture to test with.
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->builderMock = $this->prophesize(ProjectDescriptorBuilder::class);
         $this->fixture = new UsesAssembler();
@@ -51,7 +51,7 @@ class UsesAssemblerTest extends TestCase
      * @covers ::create
      * @covers ::buildDescriptor
      */
-    public function testCreateUsesDescriptorFromUsesTagWhenReferenceIsRelativeClassnameNotInNamespaceAliasses() : void
+    public function testCreateUsesDescriptorFromUsesTagWhenReferenceIsRelativeClassnameNotInNamespaceAliasses(): void
     {
         // Arrange
         $name = 'uses';
@@ -69,7 +69,7 @@ class UsesAssemblerTest extends TestCase
         $this->assertSame([], $descriptor->getErrors()->getAll());
     }
 
-    protected function givenAUsesTag($description, $reference) : Uses
+    protected function givenAUsesTag($description, $reference): Uses
     {
         return new Uses(
             new Fqsen($reference),

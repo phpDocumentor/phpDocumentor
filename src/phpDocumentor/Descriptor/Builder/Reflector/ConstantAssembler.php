@@ -33,7 +33,7 @@ class ConstantAssembler extends AssemblerAbstract
      *
      * @param Constant $data
      */
-    public function create(object $data) : ConstantDescriptor
+    public function create(object $data): ConstantDescriptor
     {
         $constantDescriptor = new ConstantDescriptor();
         $constantDescriptor->setName($data->getName());

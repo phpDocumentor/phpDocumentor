@@ -47,7 +47,7 @@ final class FactoryTest extends TestCase
     /**
      * Sets up the fixture with mocked dependencies.
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->globalTemplates = vfsStream::setup();
         $this->writerCollectionMock = $this->prophesize(WriterCollection::class);
@@ -66,7 +66,7 @@ final class FactoryTest extends TestCase
      * @covers ::getTemplates
      * @covers ::createTemplateFromXml
      */
-    public function testThatATemplateCanBeLoaded() : void
+    public function testThatATemplateCanBeLoaded(): void
     {
         // Arrange
         $templateName = 'default';
@@ -100,7 +100,7 @@ final class FactoryTest extends TestCase
     /**
      * @covers ::getTemplates
      */
-    public function testThatAnErrorOccuredWhenATemplateCannotBeFound() : void
+    public function testThatAnErrorOccuredWhenATemplateCannotBeFound(): void
     {
         $this->expectException(TemplateNotFound::class);
 
@@ -119,7 +119,7 @@ final class FactoryTest extends TestCase
     /**
      * @covers ::getTemplatesPath
      */
-    public function testReturnTemplatePathFromConstructor() : void
+    public function testReturnTemplatePathFromConstructor(): void
     {
         // Act
         $result = $this->fixture->getTemplatesPath();
@@ -131,7 +131,7 @@ final class FactoryTest extends TestCase
     /**
      * @covers ::getAllNames
      */
-    public function testRetrieveAllTemplateNames() : void
+    public function testRetrieveAllTemplateNames(): void
     {
         // Arrange
         $expected = ['template1', 'template2'];
@@ -146,7 +146,7 @@ final class FactoryTest extends TestCase
         $this->assertSame($expected, $result);
     }
 
-    private function givenAnExampleTemplateInDirectoryCalled(string $templateName) : vfsStreamDirectory
+    private function givenAnExampleTemplateInDirectoryCalled(string $templateName): vfsStreamDirectory
     {
         $xml = <<<XML
 <?xml version="1.0" encoding="utf-8"?>

@@ -19,7 +19,7 @@ final class PreBuildParseEvent extends BuildEvent
         $this->parseQueue = $parseQueue;
     }
 
-    public function getParseQueue() : Files
+    public function getParseQueue(): Files
     {
         return $this->parseQueue;
     }

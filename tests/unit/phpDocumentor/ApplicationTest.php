@@ -27,7 +27,7 @@ final class ApplicationTest extends TestCase
     /**
      * @covers ::VERSION
      */
-    public function testItReturnsTheVersionNumberFromTheVersionFile() : void
+    public function testItReturnsTheVersionNumberFromTheVersionFile(): void
     {
         $this->assertSame(trim(file_get_contents(__DIR__ . '/../../../VERSION')), Application::VERSION());
     }

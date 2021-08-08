@@ -38,7 +38,7 @@ final class FlySystemFile implements File
      *
      * @throws FileNotFoundException
      */
-    public function getContents() : string
+    public function getContents(): string
     {
         $contents = $this->fileSystem->read($this->fileName);
 
@@ -52,7 +52,7 @@ final class FlySystemFile implements File
      *
      * @throws FileNotFoundException
      */
-    public function md5() : string
+    public function md5(): string
     {
         return md5($this->getContents());
     }
@@ -60,7 +60,7 @@ final class FlySystemFile implements File
     /**
      * Returns an relative path to the file.
      */
-    public function path() : string
+    public function path(): string
     {
         return $this->fileName;
     }

@@ -38,7 +38,7 @@ class Application extends BaseApplication
         $this->setVersion($this->detectVersion());
     }
 
-    protected function getCommandName(InputInterface $input) : ?string
+    protected function getCommandName(InputInterface $input): ?string
     {
         try {
             if ($input->getFirstArgument() !== null) {
@@ -56,7 +56,7 @@ class Application extends BaseApplication
         return 'project:run';
     }
 
-    protected function getDefaultInputDefinition() : InputDefinition
+    protected function getDefaultInputDefinition(): InputDefinition
     {
         $inputDefinition = parent::getDefaultInputDefinition();
 
@@ -80,12 +80,12 @@ class Application extends BaseApplication
      *
      * @return string The long application version
      */
-    public function getLongVersion() : string
+    public function getLongVersion(): string
     {
         return sprintf('%s <info>%s</info>', $this->getName(), $this->getVersion());
     }
 
-    private function detectVersion() : string
+    private function detectVersion(): string
     {
         $version = self::VERSION;
 

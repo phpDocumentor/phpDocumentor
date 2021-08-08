@@ -96,7 +96,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
      *
      * @return array<string, true|null>
      */
-    public function getGlobals() : array
+    public function getGlobals(): array
     {
         return [
             'project' => null,
@@ -120,12 +120,12 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
      *
      * @return TwigFunction[]
      */
-    public function getFunctions() : array
+    public function getFunctions(): array
     {
         return [
             new TwigFunction(
                 'renderBaseUrlHeader',
-                function (array $context) : string {
+                function (array $context): string {
                     /* TODO: This line has some odd side effects on the router state...
                         I'm not sure if we should keep it this way
                     */
@@ -142,7 +142,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             ),
             new TwigFunction(
                 'path',
-                function (array $context, string $url) : string {
+                function (array $context, string $url): string {
                     $path = $this->contextRouteRenderer($context)->convertToRootPath($url);
 
                     Assert::notNull($path);
@@ -153,14 +153,14 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             ),
             new TwigFunction(
                 'link',
-                function (array $context, object $element) : string {
+                function (array $context, object $element): string {
                     return $this->contextRouteRenderer($context)->link($element);
                 },
                 ['needs_context' => true]
             ),
             new TwigFunction(
                 'breadcrumbs',
-                static function (DescriptorAbstract $baseNode) : array {
+                static function (DescriptorAbstract $baseNode): array {
                     $results   = [];
                     $namespace = $baseNode instanceof NamespaceDescriptor
                         ? $baseNode->getParent()
@@ -175,7 +175,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             ),
             new TwigFunction(
                 'packages',
-                static function (DescriptorAbstract $baseNode) : array {
+                static function (DescriptorAbstract $baseNode): array {
                     $results = [];
                     $package = $baseNode instanceof PackageDescriptor
                         ? $baseNode->getParent()
@@ -190,7 +190,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             ),
             new TwigFunction(
                 'methods',
-                static function (DescriptorAbstract $descriptor) : Collection {
+                static function (DescriptorAbstract $descriptor): Collection {
                     $methods = new Collection();
                     if (method_exists($descriptor, 'getInheritedMethods')) {
                         $methods = $methods->merge($descriptor->getInheritedMethods());
@@ -209,7 +209,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             ),
             new TwigFunction(
                 'properties',
-                static function (DescriptorAbstract $descriptor) : Collection {
+                static function (DescriptorAbstract $descriptor): Collection {
                     $properties = new Collection();
                     if (method_exists($descriptor, 'getInheritedProperties')) {
                         $properties = $properties->merge($descriptor->getInheritedProperties());
@@ -228,7 +228,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             ),
             new TwigFunction(
                 'constants',
-                static function (DescriptorAbstract $descriptor) : Collection {
+                static function (DescriptorAbstract $descriptor): Collection {
                     $constants = new Collection();
                     if (method_exists($descriptor, 'getInheritedConstants')) {
                         $constants = $constants->merge($descriptor->getInheritedConstants());
@@ -253,7 +253,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
                     string $template,
                     ?int $maxDepth = null,
                     int $depth = 0
-                ) : string {
+                ): string {
                     if ($maxDepth === $depth) {
                         return '';
                     }
@@ -280,12 +280,12 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
      *
      * @return TwigFilter[]
      */
-    public function getFilters() : array
+    public function getFilters(): array
     {
         return [
             'markdown' => new TwigFilter(
                 'markdown',
-                function (?string $value) : string {
+                function (?string $value): string {
                     return str_replace(
                         ['<pre>', '<code>'],
                         ['<pre class="prettyprint">', '<code class="prettyprint">'],
@@ -310,7 +310,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             'sort' => new TwigFilter(
                 'sort_*',
                 /** @var Collection<Descriptor> $collection */
-                static function (string $direction, Collection $collection) : ArrayIterator {
+                static function (string $direction, Collection $collection): ArrayIterator {
                     $iterator = $collection->getIterator();
                     $iterator->uasort(
                         static function (Descriptor $a, Descriptor $b) use ($direction) {
@@ -336,7 +336,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             'sortByVisibility' => new TwigFilter(
                 'sortByVisibility',
                 /** @var Collection<Descriptor> $collection */
-                static function (Collection $collection) : ArrayIterator {
+                static function (Collection $collection): ArrayIterator {
                     $visibilityOrder = [
                         'public' => 0,
                         'protected' => 1,
@@ -433,7 +433,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
     }
 
     /** @param mixed[] $context */
-    private function contextRouteRenderer(array $context) : LinkRenderer
+    private function contextRouteRenderer(array $context): LinkRenderer
     {
         return $this->routeRenderer
             ->withDestination(ltrim($context['destinationPath'], '/\\'))

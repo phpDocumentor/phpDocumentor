@@ -9,12 +9,12 @@ class UmlNode extends Node
     /** @var string */
     private $caption = '';
 
-    public function setCaption(string $caption) : void
+    public function setCaption(string $caption): void
     {
         $this->caption = $caption;
     }
 
-    public function getCaption() : string
+    public function getCaption(): string
     {
         return $this->caption;
     }

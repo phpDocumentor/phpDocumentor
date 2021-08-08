@@ -51,12 +51,12 @@ final class TableSeparatorLineConfig
         $this->rawContent = $rawContent;
     }
 
-    public function isHeader() : bool
+    public function isHeader(): bool
     {
         return $this->isHeader;
     }
 
-    public function isSimpleTableType() : bool
+    public function isSimpleTableType(): bool
     {
         return $this->tableType === TableNode::TYPE_SIMPLE;
     }
@@ -72,7 +72,7 @@ final class TableSeparatorLineConfig
      *
      * @return int[][]
      */
-    public function getPartRanges() : array
+    public function getPartRanges(): array
     {
         return $this->partRanges;
     }
@@ -81,12 +81,12 @@ final class TableSeparatorLineConfig
      * Returns the "line" character used in the separator,
      * either - or =
      */
-    public function getLineCharacter() : string
+    public function getLineCharacter(): string
     {
         return $this->lineCharacter;
     }
 
-    public function getRawContent() : string
+    public function getRawContent(): string
     {
         return $this->rawContent;
     }

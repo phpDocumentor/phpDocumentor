@@ -26,7 +26,7 @@ final class ProvideTemplateOverridePathMiddlewareTest extends TestCase
 {
     use ProphecyTrait;
 
-    public function test_the_override_path_is_a_subfolder_of_the_folder_with_the_loaded_config_file() : void
+    public function test_the_override_path_is_a_subfolder_of_the_folder_with_the_loaded_config_file(): void
     {
         $this->markTestSkipped(
             'This test fails in CI; skipping so that build turns green and I have time to investigate: '
@@ -43,7 +43,7 @@ final class ProvideTemplateOverridePathMiddlewareTest extends TestCase
         $middleware->__invoke([], Uri::createFromString($configurationFilePath));
     }
 
-    public function test_the_override_path_is_a_subfolder_of_cwd_when_there_is_no_loaded_config_file() : void
+    public function test_the_override_path_is_a_subfolder_of_cwd_when_there_is_no_loaded_config_file(): void
     {
         $this->markTestSkipped(
             'This test fails in CI; skipping so that build turns green and I have time to investigate: '
@@ -62,7 +62,7 @@ final class ProvideTemplateOverridePathMiddlewareTest extends TestCase
         $middleware->__invoke([], null);
     }
 
-    public function test_the_override_path_is_not_set_when_override_folder_does_not_exist() : void
+    public function test_the_override_path_is_not_set_when_override_folder_does_not_exist(): void
     {
         // This is obviously a fake, this folder does not have a config file
         $configurationFilePath = __DIR__ . '/phpdoc.dist.xml';

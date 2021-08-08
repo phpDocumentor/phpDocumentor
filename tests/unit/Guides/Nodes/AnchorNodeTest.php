@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 
 final class AnchorNodeTest extends TestCase
 {
-    public function test_it_can_be_created_with_a_value() : void
+    public function test_it_can_be_created_with_a_value(): void
     {
         $node = new AnchorNode('id');
 

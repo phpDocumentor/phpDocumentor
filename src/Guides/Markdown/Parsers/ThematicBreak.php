@@ -13,12 +13,12 @@ use phpDocumentor\Guides\Parser;
 
 final class ThematicBreak extends AbstractBlock
 {
-    public function parse(Parser $parser, NodeWalker $walker) : Node
+    public function parse(Parser $parser, NodeWalker $walker): Node
     {
         return new SeparatorNode(1);
     }
 
-    public function supports(NodeWalkerEvent $event) : bool
+    public function supports(NodeWalkerEvent $event): bool
     {
         return !$event->isEntering() && $event->getNode() instanceof CommonMark;
     }

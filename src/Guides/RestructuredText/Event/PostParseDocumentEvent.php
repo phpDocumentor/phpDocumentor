@@ -19,7 +19,7 @@ final class PostParseDocumentEvent extends EventArgs
         $this->documentNode = $documentNode;
     }
 
-    public function getDocumentNode() : DocumentNode
+    public function getDocumentNode(): DocumentNode
     {
         return $this->documentNode;
     }

@@ -26,7 +26,7 @@ final class Files implements IteratorAggregate
     /** @var string[] */
     private $files = [];
 
-    public function add(string $filename) : void
+    public function add(string $filename): void
     {
         if (in_array($filename, $this->files, true)) {
             return;
@@ -38,7 +38,7 @@ final class Files implements IteratorAggregate
     /**
      * @return Iterator<string>
      */
-    public function getIterator() : Iterator
+    public function getIterator(): Iterator
     {
         return new ArrayIterator($this->files);
     }

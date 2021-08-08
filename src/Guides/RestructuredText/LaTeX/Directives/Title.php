@@ -16,7 +16,7 @@ use phpDocumentor\Guides\RestructuredText\Parser;
  */
 class Title extends Directive
 {
-    public function getName() : string
+    public function getName(): string
     {
         return 'title';
     }
@@ -30,7 +30,7 @@ class Title extends Directive
         string $variable,
         string $data,
         array $options
-    ) : void {
+    ): void {
         $document = $parser->getDocument();
 
         $document->addHeaderNode(new RawNode('\title{' . $data . '}'));

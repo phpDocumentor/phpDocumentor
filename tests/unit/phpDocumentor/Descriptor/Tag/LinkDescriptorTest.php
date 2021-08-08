@@ -28,7 +28,7 @@ final class LinkDescriptorTest extends TestCase
     /**
      * Creates a new fixture object.
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->fixture = new LinkDescriptor('name');
     }
@@ -37,7 +37,7 @@ final class LinkDescriptorTest extends TestCase
      * @covers \phpDocumentor\Descriptor\Tag\LinkDescriptor::setLink
      * @covers \phpDocumentor\Descriptor\Tag\LinkDescriptor::getLink
      */
-    public function testSetAndGetLink() : void
+    public function testSetAndGetLink(): void
     {
         $this->assertEmpty($this->fixture->getLink());
 

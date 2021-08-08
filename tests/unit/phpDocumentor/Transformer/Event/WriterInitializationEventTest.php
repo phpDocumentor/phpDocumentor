@@ -20,7 +20,7 @@ final class WriterInitializationEventTest extends TestCase
     /** @var FileIo */
     private $writer;
 
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->fixture = new WriterInitializationEvent(new stdClass());
         $this->writer = new FileIo();
@@ -30,7 +30,7 @@ final class WriterInitializationEventTest extends TestCase
      * @covers ::createInstance
      * @covers ::getSubject
      */
-    public function testCreatingAnInstance() : void
+    public function testCreatingAnInstance(): void
     {
         $subject = new stdClass();
         $this->fixture = WriterInitializationEvent::createInstance($subject);
@@ -41,7 +41,7 @@ final class WriterInitializationEventTest extends TestCase
      * @covers ::getWriter
      * @covers ::setWriter
      */
-    public function testSetAndGetWriter() : void
+    public function testSetAndGetWriter(): void
     {
         $this->assertNull($this->fixture->getWriter());
 

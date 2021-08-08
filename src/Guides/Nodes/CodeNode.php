@@ -32,32 +32,32 @@ class CodeNode extends Node
         parent::__construct($this->normalizeLines($lines));
     }
 
-    public function setLanguage(?string $language = null) : void
+    public function setLanguage(?string $language = null): void
     {
         $this->language = $language;
     }
 
-    public function getLanguage() : ?string
+    public function getLanguage(): ?string
     {
         return $this->language;
     }
 
-    public function setStartingLineNumber(?int $lineNumber) : void
+    public function setStartingLineNumber(?int $lineNumber): void
     {
         $this->startingLineNumber = $lineNumber;
     }
 
-    public function getStartingLineNumber() : ?int
+    public function getStartingLineNumber(): ?int
     {
         return $this->startingLineNumber;
     }
 
-    public function setRaw(bool $raw) : void
+    public function setRaw(bool $raw): void
     {
         $this->raw = $raw;
     }
 
-    public function isRaw() : bool
+    public function isRaw(): bool
     {
         return $this->raw;
     }

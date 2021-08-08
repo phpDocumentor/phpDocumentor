@@ -23,7 +23,7 @@ final class LoadProjectDescriptorFromCache
         $this->logger = $logger;
     }
 
-    public function __invoke(Payload $payload) : Payload
+    public function __invoke(Payload $payload): Payload
     {
         $configuration = $payload->getConfig();
         if ($configuration['phpdocumentor']['use-cache']
@@ -42,7 +42,7 @@ final class LoadProjectDescriptorFromCache
      * @param string $priority The logging priority as declared in the LogLevel PSR-3 class.
      * @param string[] $parameters
      */
-    private function log(string $message, string $priority = LogLevel::INFO, array $parameters = []) : void
+    private function log(string $message, string $priority = LogLevel::INFO, array $parameters = []): void
     {
         $this->logger->log($priority, $message, $parameters);
     }

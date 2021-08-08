@@ -41,7 +41,7 @@ final class GraphVizClassDiagram implements Generator
     /**
      * Creates a class inheritance diagram.
      */
-    public function create(ProjectDescriptor $project, string $filename) : void
+    public function create(ProjectDescriptor $project, string $filename): void
     {
         try {
             $this->checkIfGraphVizIsInstalled();
@@ -117,7 +117,7 @@ final class GraphVizClassDiagram implements Generator
      *
      * @throws RuntimeException If graphviz is not found.
      */
-    private function checkIfGraphVizIsInstalled() : void
+    private function checkIfGraphVizIsInstalled(): void
     {
         // NOTE: the -V flag sends output using STDERR and STDOUT
         exec('dot -V 2>&1', $output, $error);
@@ -134,7 +134,7 @@ final class GraphVizClassDiagram implements Generator
      *
      * @param string|ClassDescriptor|InterfaceDescriptor|TraitDescriptor $to
      */
-    private function createEdge(string $fromName, $to) : ?Edge
+    private function createEdge(string $fromName, $to): ?Edge
     {
         $toName = (string) ($to instanceof DescriptorAbstract ? $to->getFullyQualifiedStructuralElementName() : $to);
 
@@ -163,7 +163,7 @@ final class GraphVizClassDiagram implements Generator
         return null;
     }
 
-    private function createNamespaceGraph(string $fqcn) : ?GraphVizGraph
+    private function createNamespaceGraph(string $fqcn): ?GraphVizGraph
     {
         $namespaceParts = explode('\\', $fqcn);
 
@@ -192,7 +192,7 @@ final class GraphVizClassDiagram implements Generator
         return $graph;
     }
 
-    private function createEmptyNode(string $name, ?GraphVizGraph $graph) : ?Node
+    private function createEmptyNode(string $name, ?GraphVizGraph $graph): ?Node
     {
         if ($graph === null) {
             return null;
@@ -209,7 +209,7 @@ final class GraphVizClassDiagram implements Generator
     /**
      * Builds a tree of namespace subgraphs with their classes associated.
      */
-    private function buildNamespaceTree(GraphVizGraph $graph, NamespaceInterface $namespace) : void
+    private function buildNamespaceTree(GraphVizGraph $graph, NamespaceInterface $namespace): void
     {
         $fullNamespaceName = (string) $namespace->getFullyQualifiedStructuralElementName();
         if ($fullNamespaceName === '\\') {
@@ -255,7 +255,7 @@ final class GraphVizClassDiagram implements Generator
         $graph->addGraph($subGraph);
     }
 
-    private function createGraphForNamespace(string $fullNamespaceName, string $label) : GraphVizGraph
+    private function createGraphForNamespace(string $fullNamespaceName, string $label): GraphVizGraph
     {
         return GraphVizGraph::create('cluster_' . $fullNamespaceName)
             ->setLabel($label)

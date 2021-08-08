@@ -15,7 +15,7 @@ final class InvalidTagAssemblerTest extends TestCase
     /**
      * @covers ::create
      */
-    public function testCreateWithError() : void
+    public function testCreateWithError(): void
     {
         $assembler = new InvalidTagAssembler();
         $tag = $assembler->create(InvalidTag::create('Tag body', 'name'));

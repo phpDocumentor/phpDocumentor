@@ -22,7 +22,7 @@ final class SourceTest extends TestCase
      * @covers ::__construct
      * @covers ::dsn
      */
-    public function testSourceReturnsDsn() : void
+    public function testSourceReturnsDsn(): void
     {
         $dsn = $this->faker()->dsn();
         $source = new Source($dsn, []);
@@ -37,7 +37,7 @@ final class SourceTest extends TestCase
      * @covers ::dsn
      * @covers ::withDsn
      */
-    public function testWithDsnReturnsNewInstanceOfSource() : void
+    public function testWithDsnReturnsNewInstanceOfSource(): void
     {
         $dsn = $this->faker()->dsn();
         $source = new Source($dsn, []);
@@ -55,7 +55,7 @@ final class SourceTest extends TestCase
      * @covers ::dsn
      * @covers ::withDsn
      */
-    public function testWithDsnReturnsSetsNewDsn() : void
+    public function testWithDsnReturnsSetsNewDsn(): void
     {
         $dsn = $this->faker()->dsn();
         $source = new Source($dsn, []);
@@ -71,7 +71,7 @@ final class SourceTest extends TestCase
      * @covers ::__construct
      * @covers ::offsetGet
      */
-    public function testSourceImplementsArrayAccess() : void
+    public function testSourceImplementsArrayAccess(): void
     {
         $dsn = $this->faker()->dsn();
         $paths = [
@@ -89,7 +89,7 @@ final class SourceTest extends TestCase
      * @covers ::__construct
      * @covers ::offsetSet
      */
-    public function testSourceArrayAccessIsImmutableCannotSet() : void
+    public function testSourceArrayAccessIsImmutableCannotSet(): void
     {
         $this->expectException(BadMethodCallException::class);
         $dsn   = $this->faker()->dsn();
@@ -107,7 +107,7 @@ final class SourceTest extends TestCase
      * @covers ::__construct
      * @covers ::offsetUnset
      */
-    public function testSourceArrayAccessIsImmutableCannotUnset() : void
+    public function testSourceArrayAccessIsImmutableCannotUnset(): void
     {
         $this->expectException(BadMethodCallException::class);
         $dsn   = $this->faker()->dsn();
@@ -127,14 +127,14 @@ final class SourceTest extends TestCase
      * @covers ::globPatterns
      * @covers ::<private>
      */
-    public function testSourceGlobPathsNormalizesPaths(Path $input, string $glob) : void
+    public function testSourceGlobPathsNormalizesPaths(Path $input, string $glob): void
     {
         $source = new Source($this->faker()->dsn(), [$input]);
 
         self::assertEquals([$glob], $source->globPatterns());
     }
 
-    public function pathProvider() : array
+    public function pathProvider(): array
     {
         return [
             [

@@ -33,7 +33,7 @@ final class AssemblerMatcher
         $this->assembler = $assembler;
     }
 
-    public function match(object $criteria) : bool
+    public function match(object $criteria): bool
     {
         $matcher = $this->matcher;
 
@@ -43,7 +43,7 @@ final class AssemblerMatcher
     /**
      * @return AssemblerInterface<Descriptor, object>
      */
-    public function getAssembler() : AssemblerInterface
+    public function getAssembler(): AssemblerInterface
     {
         return $this->assembler;
     }

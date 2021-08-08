@@ -27,12 +27,12 @@ final class PersistCacheCommand
         $this->useCache = $useCache;
     }
 
-    public function getCacheDirectory() : string
+    public function getCacheDirectory(): string
     {
         return $this->cacheDirectory;
     }
 
-    public function useCache() : bool
+    public function useCache(): bool
     {
         return $this->useCache;
     }

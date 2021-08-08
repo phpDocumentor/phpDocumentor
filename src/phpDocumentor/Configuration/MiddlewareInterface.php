@@ -17,5 +17,5 @@ use League\Uri\Contracts\UriInterface;
 
 interface MiddlewareInterface
 {
-    public function __invoke(Configuration $configuration, ?UriInterface $uri = null) : Configuration;
+    public function __invoke(Configuration $configuration, ?UriInterface $uri = null): Configuration;
 }

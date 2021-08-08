@@ -44,22 +44,22 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
         $this->setMethods(new Collection());
     }
 
-    public function setParent(Collection $parents) : void
+    public function setParent(Collection $parents): void
     {
         $this->parents = $parents;
     }
 
-    public function getParent() : Collection
+    public function getParent(): Collection
     {
         return $this->parents;
     }
 
-    public function setConstants(Collection $constants) : void
+    public function setConstants(Collection $constants): void
     {
         $this->constants = $constants;
     }
 
-    public function getConstants() : Collection
+    public function getConstants(): Collection
     {
         return $this->constants;
     }
@@ -67,7 +67,7 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
     /**
      * @return Collection<ConstantDescriptor>
      */
-    public function getInheritedConstants() : Collection
+    public function getInheritedConstants(): Collection
     {
         $inheritedConstants = Collection::fromClassString(ConstantDescriptor::class);
 
@@ -84,17 +84,17 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
         return $inheritedConstants;
     }
 
-    public function setMethods(Collection $methods) : void
+    public function setMethods(Collection $methods): void
     {
         $this->methods = $methods;
     }
 
-    public function getMethods() : Collection
+    public function getMethods(): Collection
     {
         return $this->methods;
     }
 
-    public function getInheritedMethods() : Collection
+    public function getInheritedMethods(): Collection
     {
         $inheritedMethods = Collection::fromClassString(MethodDescriptor::class);
 
@@ -114,7 +114,7 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
     /**
      * @inheritDoc
      */
-    public function setPackage($package) : void
+    public function setPackage($package): void
     {
         parent::setPackage($package);
 
@@ -130,7 +130,7 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
     /**
      * @return InterfaceDescriptor|Fqsen|null
      */
-    public function getInheritedElement() : ?object
+    public function getInheritedElement(): ?object
     {
         return $this->getParent()->count() > 0
             ? $this->getParent()->getIterator()->current()

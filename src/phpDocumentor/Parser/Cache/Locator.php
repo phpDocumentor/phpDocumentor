@@ -62,7 +62,7 @@ class Locator
         $this->descriptorCache = $descriptors;
     }
 
-    public function providePath(Path $path) : void
+    public function providePath(Path $path): void
     {
         $this->path = $path;
 
@@ -70,7 +70,7 @@ class Locator
         $this->descriptorCache->init('descriptors', (string) $path);
     }
 
-    public function locate(string $namespace = '') : Path
+    public function locate(string $namespace = ''): Path
     {
         $namespacePath = rtrim(sprintf('%s/%s', (string) $this->root(), $namespace), '/');
 
@@ -90,7 +90,7 @@ class Locator
         return new Path($namespacePath);
     }
 
-    private function root() : Path
+    private function root(): Path
     {
         if ($this->path === null) {
             throw new RuntimeException('Cache folder has not been set yet, please call `providePath` first');

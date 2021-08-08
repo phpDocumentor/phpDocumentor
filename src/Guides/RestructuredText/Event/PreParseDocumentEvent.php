@@ -23,17 +23,17 @@ final class PreParseDocumentEvent extends EventArgs
         $this->contents = $contents;
     }
 
-    public function getParser() : Parser
+    public function getParser(): Parser
     {
         return $this->parser;
     }
 
-    public function setContents(string $contents) : void
+    public function setContents(string $contents): void
     {
         $this->contents = $contents;
     }
 
-    public function getContents() : string
+    public function getContents(): string
     {
         return $this->contents;
     }

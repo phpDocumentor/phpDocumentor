@@ -26,7 +26,7 @@ final class GarbageCollectCache
         $this->descriptorMapper = $descriptorMapper;
     }
 
-    public function __invoke(Payload $payload) : Payload
+    public function __invoke(Payload $payload): Payload
     {
         $this->descriptorMapper->garbageCollect($payload->getFiles());
 

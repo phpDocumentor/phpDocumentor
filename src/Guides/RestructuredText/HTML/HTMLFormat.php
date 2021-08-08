@@ -49,7 +49,7 @@ use phpDocumentor\Guides\RestructuredText\Formats\Format;
 
 final class HTMLFormat extends Format
 {
-    public function getNodeRendererFactory(Environment $environment) : NodeRendererFactory
+    public function getNodeRendererFactory(Environment $environment): NodeRendererFactory
     {
         $renderer = $environment->getRenderer();
 

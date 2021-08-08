@@ -36,7 +36,7 @@ class ListNodeRenderer implements NodeRenderer
         $this->environment = $environment;
     }
 
-    public function render(Node $node) : string
+    public function render(Node $node): string
     {
         if ($node instanceof ListNode === false) {
             throw new InvalidArgumentException('Invalid node presented');

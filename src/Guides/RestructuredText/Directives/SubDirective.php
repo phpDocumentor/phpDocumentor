@@ -29,7 +29,7 @@ abstract class SubDirective extends Directive
         string $variable,
         string $data,
         array $options
-    ) : void {
+    ): void {
         $subParser = $parser->getSubParser();
 
         if ($node instanceof CodeNode) {
@@ -60,11 +60,11 @@ abstract class SubDirective extends Directive
         string $variable,
         string $data,
         array $options
-    ) : ?Node {
+    ): ?Node {
         return null;
     }
 
-    public function wantCode() : bool
+    public function wantCode(): bool
     {
         return true;
     }

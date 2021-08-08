@@ -22,7 +22,7 @@ use function ucwords;
 trait LegacyArrayAccess
 {
     /** @param string $offset */
-    public function offsetExists($offset) : bool
+    public function offsetExists($offset): bool
     {
         $property = $this->normalizePropertyName($offset);
 
@@ -48,7 +48,7 @@ trait LegacyArrayAccess
      * @param string $offset
      * @param mixed $value
      */
-    public function offsetSet($offset, $value) : void
+    public function offsetSet($offset, $value): void
     {
         $property = $this->normalizePropertyName($offset);
         if (!property_exists($this, $property)) {
@@ -59,7 +59,7 @@ trait LegacyArrayAccess
     }
 
     /** @param string $offset */
-    public function offsetUnset($offset) : void
+    public function offsetUnset($offset): void
     {
         $property = $this->normalizePropertyName($offset);
         if (!property_exists($this, $property)) {
@@ -69,7 +69,7 @@ trait LegacyArrayAccess
         $this->$property = null;
     }
 
-    private function normalizePropertyName(string $offset) : string
+    private function normalizePropertyName(string $offset): string
     {
         return lcfirst(str_replace('-', '', ucwords($offset, '-')));
     }

@@ -49,7 +49,7 @@ class FunctionAssembler extends AssemblerAbstract
      *
      * @param Function_ $data
      */
-    public function create(object $data) : FunctionDescriptor
+    public function create(object $data): FunctionDescriptor
     {
         $functionDescriptor = new FunctionDescriptor();
 
@@ -63,7 +63,7 @@ class FunctionAssembler extends AssemblerAbstract
     /**
      * Maps the properties of the Function reflector onto the Descriptor.
      */
-    protected function mapReflectorPropertiesOntoDescriptor(Function_ $reflector, FunctionDescriptor $descriptor) : void
+    protected function mapReflectorPropertiesOntoDescriptor(Function_ $reflector, FunctionDescriptor $descriptor): void
     {
         $packages = Collection::fromClassString(TagDescriptor::class);
         $package  = $this->extractPackageFromDocBlock($reflector->getDocBlock());
@@ -92,7 +92,7 @@ class FunctionAssembler extends AssemblerAbstract
      *
      * @param Argument[] $arguments
      */
-    protected function addArgumentsToFunctionDescriptor(array $arguments, FunctionDescriptor $functionDescriptor) : void
+    protected function addArgumentsToFunctionDescriptor(array $arguments, FunctionDescriptor $functionDescriptor): void
     {
         foreach ($arguments as $argument) {
             $descriptor = $this->createArgumentDescriptor($functionDescriptor, $argument);
@@ -111,7 +111,7 @@ class FunctionAssembler extends AssemblerAbstract
     protected function addArgumentDescriptorToFunction(
         FunctionDescriptor $functionDescriptor,
         ArgumentDescriptor $argumentDescriptor
-    ) : void {
+    ): void {
         $functionDescriptor->getArguments()->set($argumentDescriptor->getName(), $argumentDescriptor);
     }
 
@@ -121,7 +121,7 @@ class FunctionAssembler extends AssemblerAbstract
     protected function createArgumentDescriptor(
         FunctionDescriptor $functionDescriptor,
         Argument $argument
-    ) : ArgumentDescriptor {
+    ): ArgumentDescriptor {
         /** @var Collection<ParamDescriptor> $params */
         $params = $functionDescriptor->getTags()->fetch('param', new Collection())->filter(ParamDescriptor::class);
 

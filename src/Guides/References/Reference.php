@@ -30,7 +30,7 @@ abstract class Reference
     /**
      * The name of the reference, i.e the :something:
      */
-    abstract public function getName() : string;
+    abstract public function getName(): string;
 
     /**
      * Resolve the reference and returns an array
@@ -38,7 +38,7 @@ abstract class Reference
      * @param Environment $environment the Environment in use
      * @param string $data the data of the reference
      */
-    abstract public function resolve(Environment $environment, string $data) : ?ResolvedReference;
+    abstract public function resolve(Environment $environment, string $data): ?ResolvedReference;
 
     /**
      * Called when a reference is just found
@@ -46,7 +46,7 @@ abstract class Reference
      * @param Environment $environment the Environment in use
      * @param string $data the data of the reference
      */
-    public function found(Environment $environment, string $data) : void
+    public function found(Environment $environment, string $data): void
     {
     }
 }

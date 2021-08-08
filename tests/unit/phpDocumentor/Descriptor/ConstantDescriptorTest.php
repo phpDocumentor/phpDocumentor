@@ -38,7 +38,7 @@ final class ConstantDescriptorTest extends MockeryTestCase
     /**
      * Creates a new (empty) fixture object.
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->fixture = new ConstantDescriptor();
         $this->fixture->setNamespace('\My\Namespace');
@@ -49,7 +49,7 @@ final class ConstantDescriptorTest extends MockeryTestCase
      * @covers ::getParent
      * @covers ::setParent
      */
-    public function testSetAndGetParentClass() : void
+    public function testSetAndGetParentClass(): void
     {
         $this->assertNull($this->fixture->getParent());
 
@@ -66,7 +66,7 @@ final class ConstantDescriptorTest extends MockeryTestCase
      * @covers ::getParent
      * @covers ::setParent
      */
-    public function testSetAndGetParentInterface() : void
+    public function testSetAndGetParentInterface(): void
     {
         $this->assertNull($this->fixture->getParent());
 
@@ -83,7 +83,7 @@ final class ConstantDescriptorTest extends MockeryTestCase
      * @covers ::getTypes
      * @covers ::setTypes
      */
-    public function testSetAndGetTypes() : void
+    public function testSetAndGetTypes(): void
     {
         $this->assertEquals(null, $this->fixture->getType());
         $expected = new Array_();
@@ -99,7 +99,7 @@ final class ConstantDescriptorTest extends MockeryTestCase
      * @covers ::getTypes
      * @covers ::getVar
      */
-    public function testDeterminingTypeDerivedFromVarTag() : void
+    public function testDeterminingTypeDerivedFromVarTag(): void
     {
         $expected = new String_();
 
@@ -114,7 +114,7 @@ final class ConstantDescriptorTest extends MockeryTestCase
     /**
      * @covers ::getVar
      */
-    public function testEmptyCollectionIsReturnedWhenNoVarTagsPresent() : void
+    public function testEmptyCollectionIsReturnedWhenNoVarTagsPresent(): void
     {
         $this->assertEquals(new Collection(), $this->fixture->getVar());
     }
@@ -124,7 +124,7 @@ final class ConstantDescriptorTest extends MockeryTestCase
      * @covers ::getTypes
      * @covers ::getVar
      */
-    public function testGetTypesUsingInheritanceOfVarTag() : void
+    public function testGetTypesUsingInheritanceOfVarTag(): void
     {
         $expected = new String_();
 
@@ -143,7 +143,7 @@ final class ConstantDescriptorTest extends MockeryTestCase
      * @covers ::getValue
      * @covers ::setValue
      */
-    public function testSetAndGetValue() : void
+    public function testSetAndGetValue(): void
     {
         $this->assertEmpty($this->fixture->getValue());
 
@@ -155,7 +155,7 @@ final class ConstantDescriptorTest extends MockeryTestCase
     /**
      * @covers ::getFile
      */
-    public function testRetrieveFileAssociatedWithAGlobalConstant() : void
+    public function testRetrieveFileAssociatedWithAGlobalConstant(): void
     {
         // Arrange
         $file = $this->whenFixtureIsDirectlyRelatedToAFile();
@@ -170,7 +170,7 @@ final class ConstantDescriptorTest extends MockeryTestCase
     /**
      * @covers ::getFile
      */
-    public function testRetrieveFileAssociatedWithAClassConstant() : void
+    public function testRetrieveFileAssociatedWithAClassConstant(): void
     {
         // Arrange
         $file = $this->whenFixtureIsRelatedToAClassWithFile();
@@ -185,7 +185,7 @@ final class ConstantDescriptorTest extends MockeryTestCase
     /**
      * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getSummary
      */
-    public function testSummaryInheritsWhenNoneIsPresent() : void
+    public function testSummaryInheritsWhenNoneIsPresent(): void
     {
         // Arrange
         $summary = 'This is a summary';
@@ -203,7 +203,7 @@ final class ConstantDescriptorTest extends MockeryTestCase
     /**
      * @covers ::getVar
      */
-    public function testVarTagsInheritWhenNoneArePresent() : void
+    public function testVarTagsInheritWhenNoneArePresent(): void
     {
         // Arrange
         $varTagDescriptor = new VarDescriptor('var');
@@ -222,7 +222,7 @@ final class ConstantDescriptorTest extends MockeryTestCase
     /**
      * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getPackage
      */
-    public function testPackageInheritWhenNoneArePresent() : void
+    public function testPackageInheritWhenNoneArePresent(): void
     {
         // Arrange
         $packageTagDescriptor = new PackageDescriptor();
@@ -240,7 +240,7 @@ final class ConstantDescriptorTest extends MockeryTestCase
     /**
      * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getAuthor
      */
-    public function testAuthorTagsInheritWhenNoneArePresent() : void
+    public function testAuthorTagsInheritWhenNoneArePresent(): void
     {
         // Arrange
         $authorTagDescriptor = new AuthorDescriptor('author');
@@ -259,7 +259,7 @@ final class ConstantDescriptorTest extends MockeryTestCase
     /**
      * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getVersion
      */
-    public function testVersionTagsInheritWhenNoneArePresent() : void
+    public function testVersionTagsInheritWhenNoneArePresent(): void
     {
         // Arrange
         $versionTagDescriptor = new VersionDescriptor('version');
@@ -278,7 +278,7 @@ final class ConstantDescriptorTest extends MockeryTestCase
     /**
      * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getCopyright
      */
-    public function testCopyrightTagsInheritWhenNoneArePresent() : void
+    public function testCopyrightTagsInheritWhenNoneArePresent(): void
     {
         // Arrange
         $copyrightTagDescriptor = new TagDescriptor('copyright');
@@ -361,7 +361,7 @@ final class ConstantDescriptorTest extends MockeryTestCase
     /**
      * @param string $name The name of the current constant.
      */
-    protected function whenFixtureHasConstantInParentClassWithSameName(string $name) : ConstantDescriptor
+    protected function whenFixtureHasConstantInParentClassWithSameName(string $name): ConstantDescriptor
     {
         $result = new ConstantDescriptor();
         $result->setNamespace('\My\Namespace');
@@ -387,7 +387,7 @@ final class ConstantDescriptorTest extends MockeryTestCase
      * @covers ::getVisibility
      * @covers ::setVisibility
      */
-    public function testSettingAndGettingVisibility() : void
+    public function testSettingAndGettingVisibility(): void
     {
         $this->assertEquals('public', $this->fixture->getVisibility());
 

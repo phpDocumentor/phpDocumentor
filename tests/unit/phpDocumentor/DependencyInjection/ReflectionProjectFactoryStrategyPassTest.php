@@ -19,7 +19,7 @@ final class ReflectionProjectFactoryStrategyPassTest extends TestCase
     use ProphecyTrait;
 
     /** @covers ::process */
-    public function testTaggedStrategiesAreInjectedWithDefaultPriority() : void
+    public function testTaggedStrategiesAreInjectedWithDefaultPriority(): void
     {
         $serviceDefinition = new Definition(ProjectFactoryStrategies::class);
 
@@ -52,7 +52,7 @@ final class ReflectionProjectFactoryStrategyPassTest extends TestCase
     }
 
     /** @covers ::process */
-    public function testTaggedStrategiesAreInjectedWithOverwrittenPriority() : void
+    public function testTaggedStrategiesAreInjectedWithOverwrittenPriority(): void
     {
         $serviceDefinition = new Definition(ProjectFactoryStrategies::class);
 

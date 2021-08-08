@@ -25,7 +25,7 @@ class ReturnAssemblerTest extends TestCase
     /**
      * Initializes the fixture for this test.
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->builder = $this->prophesize(ProjectDescriptorBuilder::class);
         $this->fixture = new ReturnAssembler();
@@ -36,7 +36,7 @@ class ReturnAssemblerTest extends TestCase
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\Tags\ReturnAssembler::create
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\Tags\ReturnAssembler::buildDescriptor
      */
-    public function testCreatingReturnDescriptorFromReflector() : void
+    public function testCreatingReturnDescriptorFromReflector(): void
     {
         $reflector = new Return_(new String_(), new Description('This is a description'));
 

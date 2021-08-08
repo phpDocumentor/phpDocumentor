@@ -29,7 +29,7 @@ class DefinitionListTerm
         $this->definitions = $definitions;
     }
 
-    public function getTerm() : SpanNode
+    public function getTerm(): SpanNode
     {
         return $this->term;
     }
@@ -37,7 +37,7 @@ class DefinitionListTerm
     /**
      * @return SpanNode[]
      */
-    public function getClassifiers() : array
+    public function getClassifiers(): array
     {
         return $this->classifiers;
     }
@@ -45,12 +45,12 @@ class DefinitionListTerm
     /**
      * @return SpanNode[]
      */
-    public function getDefinitions() : array
+    public function getDefinitions(): array
     {
         return $this->definitions;
     }
 
-    public function getFirstDefinition() : SpanNode
+    public function getFirstDefinition(): SpanNode
     {
         if (!isset($this->definitions[0])) {
             throw new RuntimeException('No definitions found.');

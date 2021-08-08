@@ -17,7 +17,7 @@ use phpDocumentor\Guides\RestructuredText\Directives\SubDirective;
 
 class RoleDirective extends SubDirective
 {
-    public function getName() : string
+    public function getName(): string
     {
         return 'role';
     }

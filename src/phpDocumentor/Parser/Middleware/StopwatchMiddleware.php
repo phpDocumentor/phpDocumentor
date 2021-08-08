@@ -44,7 +44,7 @@ final class StopwatchMiddleware implements Middleware
      *
      * @param callable(Command): object $next
      */
-    public function execute(Command $command, callable $next) : object
+    public function execute(Command $command, callable $next): object
     {
         $result = $next($command);
 
@@ -73,17 +73,17 @@ final class StopwatchMiddleware implements Middleware
      *
      * @param mixed[] $parameters
      */
-    private function log(string $message, string $priority = LogLevel::INFO, array $parameters = []) : void
+    private function log(string $message, string $priority = LogLevel::INFO, array $parameters = []): void
     {
         $this->logger->log($priority, $message, $parameters);
     }
 
-    private function formatMemoryInMegabytes(int $memory) : string
+    private function formatMemoryInMegabytes(int $memory): string
     {
         return number_format($memory / 1024 / 1024, 2);
     }
 
-    private function formatMemoryInKilobytes(int $memory) : string
+    private function formatMemoryInKilobytes(int $memory): string
     {
         return number_format($memory / 1024);
     }

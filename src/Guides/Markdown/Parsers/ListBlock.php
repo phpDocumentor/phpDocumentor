@@ -17,7 +17,7 @@ final class ListBlock extends AbstractBlock
     /**
      * @return ListNode
      */
-    public function parse(Parser $parser, NodeWalker $walker) : Node
+    public function parse(Parser $parser, NodeWalker $walker): Node
     {
         $context = new ListNode();
 
@@ -43,7 +43,7 @@ final class ListBlock extends AbstractBlock
         return $context;
     }
 
-    public function supports(NodeWalkerEvent $event) : bool
+    public function supports(NodeWalkerEvent $event): bool
     {
         return $event->isEntering() && $event->getNode() instanceof CommonMarkListBlock;
     }

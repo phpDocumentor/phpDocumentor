@@ -50,7 +50,7 @@ abstract class Node
     /**
      * @param Node|callable|string|null $value
      */
-    public function setValue($value) : void
+    public function setValue($value): void
     {
         $this->value = $value;
     }
@@ -58,12 +58,12 @@ abstract class Node
     /**
      * @return string[]
      */
-    public function getClasses() : array
+    public function getClasses(): array
     {
         return $this->classes;
     }
 
-    public function getClassesString() : string
+    public function getClassesString(): string
     {
         return implode(' ', $this->classes);
     }
@@ -71,12 +71,12 @@ abstract class Node
     /**
      * @param string[] $classes
      */
-    public function setClasses(array $classes) : void
+    public function setClasses(array $classes): void
     {
         $this->classes = $classes;
     }
 
-    public function getValueString() : string
+    public function getValueString(): string
     {
         if ($this->value === null) {
             return '';
@@ -100,7 +100,7 @@ abstract class Node
     /**
      * @param array<string, mixed> $options
      */
-    public function withOptions(array $options) : self
+    public function withOptions(array $options): self
     {
         $result = clone $this;
         $result->options = $options;
@@ -111,7 +111,7 @@ abstract class Node
     /**
      * @return array<string, mixed>
      */
-    public function getOptions() : array
+    public function getOptions(): array
     {
         return $this->options;
     }
@@ -129,7 +129,7 @@ abstract class Node
     /**
      * @param string[] $lines
      */
-    protected function normalizeLines(array $lines) : string
+    protected function normalizeLines(array $lines): string
     {
         if ($lines !== []) {
             $firstLine = $lines[0];

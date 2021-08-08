@@ -18,7 +18,7 @@ class TagDescriptorTest extends TestCase
     /**
      * Instantiates the fixture with its dependencies.
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->fixture = new TagDescriptor(self::TAG_NAME);
     }
@@ -28,7 +28,7 @@ class TagDescriptorTest extends TestCase
      * @covers \phpDocumentor\Descriptor\TagDescriptor::getName
      * @covers \phpDocumentor\Descriptor\TagDescriptor::setName
      */
-    public function testNameIsRegisteredOnInstantiationAndReturned() : void
+    public function testNameIsRegisteredOnInstantiationAndReturned(): void
     {
         $this->assertSame(self::TAG_NAME, $this->fixture->getName());
     }
@@ -37,7 +37,7 @@ class TagDescriptorTest extends TestCase
      * @covers \phpDocumentor\Descriptor\TagDescriptor::__construct
      * @covers \phpDocumentor\Descriptor\TagDescriptor::getErrors
      */
-    public function testIfErrorsAreInitializedToAnEmptyCollectionOnInstantiation() : void
+    public function testIfErrorsAreInitializedToAnEmptyCollectionOnInstantiation(): void
     {
         $this->assertInstanceOf(Collection::class, $this->fixture->getErrors());
         $this->assertEmpty($this->fixture->getErrors()->getAll());
@@ -47,7 +47,7 @@ class TagDescriptorTest extends TestCase
      * @covers \phpDocumentor\Descriptor\TagDescriptor::setErrors
      * @covers \phpDocumentor\Descriptor\TagDescriptor::getErrors
      */
-    public function testOverridingErrorsCollectionWithNewCollection() : void
+    public function testOverridingErrorsCollectionWithNewCollection(): void
     {
         // Arrange
         $collection = new Collection();
@@ -63,7 +63,7 @@ class TagDescriptorTest extends TestCase
      * @covers \phpDocumentor\Descriptor\TagDescriptor::setDescription
      * @covers \phpDocumentor\Descriptor\TagDescriptor::getDescription
      */
-    public function testSettingAndReturningADescription() : void
+    public function testSettingAndReturningADescription(): void
     {
         // Arrange
         $description = new DescriptionDescriptor(new Description('Description'), []);

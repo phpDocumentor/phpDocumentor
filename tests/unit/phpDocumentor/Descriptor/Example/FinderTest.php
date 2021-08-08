@@ -36,7 +36,7 @@ final class FinderTest extends TestCase
     /**
      * Initializes the fixture.
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->filesystem = new Filesystem();
         $this->fixture = new Finder();
@@ -46,7 +46,7 @@ final class FinderTest extends TestCase
      * @covers \phpDocumentor\Descriptor\Example\Finder::setSourceDirectory
      * @covers \phpDocumentor\Descriptor\Example\Finder::getSourceDirectory
      */
-    public function testGetAndSetSourceDirectory() : void
+    public function testGetAndSetSourceDirectory(): void
     {
         $this->assertSame('', $this->fixture->getSourceDirectory());
 
@@ -59,7 +59,7 @@ final class FinderTest extends TestCase
      * @covers \phpDocumentor\Descriptor\Example\Finder::setExampleDirectories
      * @covers \phpDocumentor\Descriptor\Example\Finder::getExampleDirectories
      */
-    public function testGetAndSetExampleDirectories() : void
+    public function testGetAndSetExampleDirectories(): void
     {
         $this->assertSame([], $this->fixture->getExampleDirectories());
 
@@ -73,7 +73,7 @@ final class FinderTest extends TestCase
      * @covers \phpDocumentor\Descriptor\Example\Finder::getExampleFileContents
      * @covers \phpDocumentor\Descriptor\Example\Finder::constructExamplePath
      */
-    public function testFindExampleContentsInExampleDirectory() : void
+    public function testFindExampleContentsInExampleDirectory(): void
     {
         $directories = [vfsStream::url('root/exampleDirectory'), vfsStream::url('root/exampleDirectory2')];
 
@@ -98,7 +98,7 @@ final class FinderTest extends TestCase
      * @covers \phpDocumentor\Descriptor\Example\Finder::getExampleFileContents
      * @covers \phpDocumentor\Descriptor\Example\Finder::getExamplePathFromSource
      */
-    public function testFindExampleContentsInSourceDirectory() : void
+    public function testFindExampleContentsInSourceDirectory(): void
     {
         $descriptor = $this->givenADescriptorWithExamplePath('example.txt');
         $this->givenTheDirectoryStructure(['source' => ['example.txt' => self::EXAMPLE_TEXT]]);
@@ -114,7 +114,7 @@ final class FinderTest extends TestCase
      * @covers \phpDocumentor\Descriptor\Example\Finder::getExampleFileContents
      * @covers \phpDocumentor\Descriptor\Example\Finder::getExamplePathFromExampleDirectory
      */
-    public function testFindExampleContentsInExamplesDirectoryOfWorkingDirectory() : void
+    public function testFindExampleContentsInExamplesDirectoryOfWorkingDirectory(): void
     {
         // can't use vfsStream because we are working from the Current Working Directory, which is not
         // supported by vfsStream
@@ -136,7 +136,7 @@ final class FinderTest extends TestCase
      * @covers \phpDocumentor\Descriptor\Example\Finder::find
      * @covers \phpDocumentor\Descriptor\Example\Finder::getExampleFileContents
      */
-    public function testFindExampleContentsInCurrentWorkingDirectory() : void
+    public function testFindExampleContentsInCurrentWorkingDirectory(): void
     {
         // can't use vfsStream because we are working from the Current Working Directory, which is not
         // supported by vfsStream
@@ -158,7 +158,7 @@ final class FinderTest extends TestCase
      * @covers \phpDocumentor\Descriptor\Example\Finder::find
      * @covers \phpDocumentor\Descriptor\Example\Finder::getExampleFileContents
      */
-    public function testErrorMessageIsReturnedIfFileIsNotFound() : void
+    public function testErrorMessageIsReturnedIfFileIsNotFound(): void
     {
         $filename = 'doesNotExist.txt';
         $descriptor = $this->givenADescriptorWithExamplePath($filename);
@@ -171,7 +171,7 @@ final class FinderTest extends TestCase
     /**
      * Returns an ExampleDescriptor with the given filename set.
      */
-    private function givenADescriptorWithExamplePath(string $path) : ExampleDescriptor
+    private function givenADescriptorWithExamplePath(string $path): ExampleDescriptor
     {
         $descriptor = new ExampleDescriptor('example');
         $descriptor->setFilePath($path);
@@ -184,7 +184,7 @@ final class FinderTest extends TestCase
      *
      * @param string[] $structure
      */
-    private function givenTheDirectoryStructure(array $structure) : void
+    private function givenTheDirectoryStructure(array $structure): void
     {
         vfsStream::setup('root', null, $structure);
     }
@@ -192,7 +192,7 @@ final class FinderTest extends TestCase
     /**
      * Creates an example file at the given path and creates folders where necessary.
      */
-    private function givenExampleFileInFolder(string $exampleFilename) : void
+    private function givenExampleFileInFolder(string $exampleFilename): void
     {
         $this->filesystem->dumpFile($exampleFilename, self::EXAMPLE_TEXT);
     }

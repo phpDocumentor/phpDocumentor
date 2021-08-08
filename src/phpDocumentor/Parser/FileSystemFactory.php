@@ -24,5 +24,5 @@ interface FileSystemFactory
     /**
      * Returns a Filesystem instance based on the scheme of the provided Dsn.
      */
-    public function create(Dsn $dsn) : Filesystem;
+    public function create(Dsn $dsn): Filesystem;
 }

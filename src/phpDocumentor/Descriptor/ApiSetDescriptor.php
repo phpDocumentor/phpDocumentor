@@ -30,7 +30,7 @@ final class ApiSetDescriptor extends DocumentationSetDescriptor
         $this->apiSpecification = $apiSpecification;
     }
 
-    public function getSettings() : ApiSpecification
+    public function getSettings(): ApiSpecification
     {
         return $this->apiSpecification;
     }

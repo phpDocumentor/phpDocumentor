@@ -31,7 +31,7 @@ class VarAssembler extends BaseTagAssembler
      *
      * @param Var_ $data
      */
-    public function buildDescriptor(object $data) : VarDescriptor
+    public function buildDescriptor(object $data): VarDescriptor
     {
         $descriptor = new VarDescriptor($data->getName());
         $descriptor->setVariableName((string) $data->getVariableName());

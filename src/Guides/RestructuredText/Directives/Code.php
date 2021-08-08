@@ -17,7 +17,7 @@ namespace phpDocumentor\Guides\RestructuredText\Directives;
  */
 class Code extends CodeBlock
 {
-    public function getName() : string
+    public function getName(): string
     {
         return 'code';
     }

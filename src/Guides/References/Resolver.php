@@ -25,7 +25,7 @@ class Resolver
         Environment $environment,
         string $data,
         array $attributes = []
-    ) : ?ResolvedReference {
+    ): ?ResolvedReference {
         $resolvedFileReference = $this->resolveFileReference($environment, $data, $attributes);
 
         if ($resolvedFileReference !== null) {
@@ -48,7 +48,7 @@ class Resolver
         Environment $environment,
         string $data,
         array $attributes = []
-    ) : ?ResolvedReference {
+    ): ?ResolvedReference {
         $entry = null;
         $file = $environment->canonicalUrl($data);
 
@@ -70,7 +70,7 @@ class Resolver
         Environment $environment,
         string $data,
         array $attributes = []
-    ) : ?ResolvedReference {
+    ): ?ResolvedReference {
         $entry = $environment->getMetas()->findLinkMetaEntry($data);
 
         if ($entry !== null) {
@@ -89,7 +89,7 @@ class Resolver
         Entry $entry,
         array $attributes = [],
         ?string $anchor = null
-    ) : ResolvedReference {
+    ): ResolvedReference {
         $url = $entry->getUrl();
 
         if ($url !== '') {

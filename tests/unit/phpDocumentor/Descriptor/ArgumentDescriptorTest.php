@@ -27,7 +27,7 @@ final class ArgumentDescriptorTest extends TestCase
      * @covers ::getType
      * @covers ::setType
      */
-    public function testSetAndGetTypes() : void
+    public function testSetAndGetTypes(): void
     {
         $fixture = new ArgumentDescriptor();
         $this->assertSame(null, $fixture->getType());
@@ -41,7 +41,7 @@ final class ArgumentDescriptorTest extends TestCase
     /**
      * @covers ::getType
      */
-    public function testTypeIsInheritedWhenNoneIsPresent() : void
+    public function testTypeIsInheritedWhenNoneIsPresent(): void
     {
         $types = new String_();
 
@@ -62,7 +62,7 @@ final class ArgumentDescriptorTest extends TestCase
      * @covers ::getMethod
      * @covers ::setMethod
      */
-    public function testSetAndGetMethod() : void
+    public function testSetAndGetMethod(): void
     {
         $fixture = new ArgumentDescriptor();
         $this->assertSame(null, $fixture->getMethod());
@@ -77,7 +77,7 @@ final class ArgumentDescriptorTest extends TestCase
      * @covers ::getDefault
      * @covers ::setDefault
      */
-    public function testSetAndGetDefault() : void
+    public function testSetAndGetDefault(): void
     {
         $fixture = new ArgumentDescriptor();
         $this->assertNull($fixture->getDefault());
@@ -91,7 +91,7 @@ final class ArgumentDescriptorTest extends TestCase
      * @covers ::isByReference
      * @covers ::setByReference
      */
-    public function testSetAndGetWhetherArgumentIsPassedByReference() : void
+    public function testSetAndGetWhetherArgumentIsPassedByReference(): void
     {
         $fixture = new ArgumentDescriptor();
         $this->assertFalse($fixture->isByReference());
@@ -105,7 +105,7 @@ final class ArgumentDescriptorTest extends TestCase
      * @covers ::isVariadic
      * @covers ::setVariadic
      */
-    public function testSetAndGetWhetherArgumentIsAVariadic() : void
+    public function testSetAndGetWhetherArgumentIsAVariadic(): void
     {
         $fixture = new ArgumentDescriptor();
         $this->assertFalse($fixture->isVariadic());
@@ -119,7 +119,7 @@ final class ArgumentDescriptorTest extends TestCase
      * @covers ::setMethod
      * @covers ::getInheritedElement
      */
-    public function testGetTheArgumentFromWhichThisArgumentInherits() : void
+    public function testGetTheArgumentFromWhichThisArgumentInherits(): void
     {
         $fixture = new ArgumentDescriptor();
 
@@ -143,7 +143,7 @@ final class ArgumentDescriptorTest extends TestCase
     private function whenFixtureHasMethodAndArgumentInParentClassWithSameName(
         ArgumentDescriptor $fixture,
         string $argumentName
-    ) : ArgumentDescriptor {
+    ): ArgumentDescriptor {
         $fixture->setName($argumentName);
 
         $parentArgument = new ArgumentDescriptor();

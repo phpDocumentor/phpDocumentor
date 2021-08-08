@@ -26,7 +26,7 @@ final class SettingsTest extends TestCase
      * @covers ::getMarkers
      * @covers ::setMarkers
      */
-    public function testKeepingTrackOfMarkers() : void
+    public function testKeepingTrackOfMarkers(): void
     {
         $expected = ['TODO', 'FIXME'];
 
@@ -44,7 +44,7 @@ final class SettingsTest extends TestCase
      * @covers ::includeSource
      * @covers ::excludeSource
      */
-    public function testItCanKeepTrackWhetherSourceIsIncluded() : void
+    public function testItCanKeepTrackWhetherSourceIsIncluded(): void
     {
         $settings = new Settings();
 
@@ -62,7 +62,7 @@ final class SettingsTest extends TestCase
     /**
      * @covers ::isModified
      */
-    public function testDetectSettingsAreModifiedWhenChangingInclusionOfSource() : void
+    public function testDetectSettingsAreModifiedWhenChangingInclusionOfSource(): void
     {
         $settings = new Settings();
 
@@ -77,7 +77,7 @@ final class SettingsTest extends TestCase
      * @covers ::getVisibility
      * @covers ::setVisibility
      */
-    public function testItCanKeepTrackWhetherVisibilityIsSpecified() : void
+    public function testItCanKeepTrackWhetherVisibilityIsSpecified(): void
     {
         $settings = new Settings();
 
@@ -91,7 +91,7 @@ final class SettingsTest extends TestCase
     /**
      * @covers ::isModified
      */
-    public function testDetectSettingsAreModifiedWhenChangingVisibility() : void
+    public function testDetectSettingsAreModifiedWhenChangingVisibility(): void
     {
         $settings = new Settings();
 
@@ -106,7 +106,7 @@ final class SettingsTest extends TestCase
      * @covers ::getCustom
      * @covers ::setCustom
      */
-    public function testItCanStoreCustomSettings() : void
+    public function testItCanStoreCustomSettings(): void
     {
         $settings = new Settings();
 
@@ -120,7 +120,7 @@ final class SettingsTest extends TestCase
     /**
      * @covers ::isModified
      */
-    public function testDetectSettingsAreModifiedWhenSettingNewCustomSettings() : void
+    public function testDetectSettingsAreModifiedWhenSettingNewCustomSettings(): void
     {
         $settings = new Settings();
 
@@ -134,7 +134,7 @@ final class SettingsTest extends TestCase
     /**
      * @covers ::clearModifiedFlag
      */
-    public function testThatTheModifiedFlagCanBeReset() : void
+    public function testThatTheModifiedFlagCanBeReset(): void
     {
         $settings = new Settings();
 

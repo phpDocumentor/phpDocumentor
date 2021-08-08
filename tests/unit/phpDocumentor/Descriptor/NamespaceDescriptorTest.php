@@ -28,7 +28,7 @@ final class NamespaceDescriptorTest extends TestCase
     /**
      * Creates a new (empty) fixture object.
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->fixture = new NamespaceDescriptor();
     }
@@ -38,7 +38,7 @@ final class NamespaceDescriptorTest extends TestCase
      * @covers ::getParent
      * @covers ::setParent
      */
-    public function testSetAndGetParent() : void
+    public function testSetAndGetParent(): void
     {
         $parent = new NamespaceDescriptor();
 
@@ -54,7 +54,7 @@ final class NamespaceDescriptorTest extends TestCase
      * @covers ::getClasses
      * @covers ::setClasses
      */
-    public function testSetAndGetClasses() : void
+    public function testSetAndGetClasses(): void
     {
         $collection = new Collection();
 
@@ -70,7 +70,7 @@ final class NamespaceDescriptorTest extends TestCase
      * @covers ::getConstants
      * @covers ::setConstants
      */
-    public function testSetAndGetConstants() : void
+    public function testSetAndGetConstants(): void
     {
         $collection = new Collection();
 
@@ -86,7 +86,7 @@ final class NamespaceDescriptorTest extends TestCase
      * @covers ::getFunctions
      * @covers ::setFunctions
      */
-    public function testSetAndGetFunctions() : void
+    public function testSetAndGetFunctions(): void
     {
         $collection = new Collection();
 
@@ -102,7 +102,7 @@ final class NamespaceDescriptorTest extends TestCase
      * @covers ::getInterfaces
      * @covers ::setInterfaces
      */
-    public function testSetAndGetInterfaces() : void
+    public function testSetAndGetInterfaces(): void
     {
         $collection = new Collection();
 
@@ -118,7 +118,7 @@ final class NamespaceDescriptorTest extends TestCase
      * @covers ::getChildren
      * @covers ::setChildren
      */
-    public function testSetAndGetChildren() : void
+    public function testSetAndGetChildren(): void
     {
         $collection = new Collection();
 
@@ -134,7 +134,7 @@ final class NamespaceDescriptorTest extends TestCase
      * @covers ::getTraits
      * @covers ::setTraits
      */
-    public function testSetAndGetTraits() : void
+    public function testSetAndGetTraits(): void
     {
         $collection = new Collection();
 

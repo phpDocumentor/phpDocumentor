@@ -34,7 +34,7 @@ final class Version2 implements ConfigurationInterface, Upgradable
         $this->defaultTemplateName = $defaultTemplateName;
     }
 
-    public function getConfigTreeBuilder() : TreeBuilder
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treebuilder = new TreeBuilder('phpdocumentor');
 
@@ -158,7 +158,7 @@ final class Version2 implements ConfigurationInterface, Upgradable
      * @todo not all options are included yet; finish this
      */
     //phpcs:enable Generic.Files.LineLength.TooLong
-    public function upgrade(array $values) : array
+    public function upgrade(array $values): array
     {
         return [
             SymfonyConfigFactory::FIELD_CONFIG_VERSION => '3',
@@ -220,7 +220,7 @@ final class Version2 implements ConfigurationInterface, Upgradable
      *
      * @link https://www.gnu.org/software/bash/manual/html_node/Pattern-Matching.html
      */
-    private function convertSingleStarPathEndingIntoGlobPattern(string $path) : string
+    private function convertSingleStarPathEndingIntoGlobPattern(string $path): string
     {
         if (substr($path, -2) === '/*' && substr($path, -4) !== '**/*') {
             $path .= '*/*';

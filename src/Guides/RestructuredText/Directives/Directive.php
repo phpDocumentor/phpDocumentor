@@ -27,7 +27,7 @@ abstract class Directive
     /**
      * Get the directive name
      */
-    abstract public function getName() : string;
+    abstract public function getName(): string;
 
     /**
      * This is the function called by the parser to process the directive, it can be overloaded
@@ -41,7 +41,7 @@ abstract class Directive
      * @param string $data the data of the directive (following ::)
      * @param string[] $options the array of options for this directive
      */
-    public function process(Parser $parser, ?Node $node, string $variable, string $data, array $options) : void
+    public function process(Parser $parser, ?Node $node, string $variable, string $data, array $options): void
     {
         $document = $parser->getDocument();
 
@@ -71,7 +71,7 @@ abstract class Directive
      *
      * @param string[] $options
      */
-    public function processNode(Parser $parser, string $variable, string $data, array $options) : Node
+    public function processNode(Parser $parser, string $variable, string $data, array $options): Node
     {
         $this->processAction($parser, $variable, $data, $options);
 
@@ -86,21 +86,21 @@ abstract class Directive
      *
      * @param string[] $options
      */
-    public function processAction(Parser $parser, string $variable, string $data, array $options) : void
+    public function processAction(Parser $parser, string $variable, string $data, array $options): void
     {
     }
 
     /**
      * Called at the end of the parsing to finalize the document (add something or tweak nodes)
      */
-    public function finalize(DocumentNode $document) : void
+    public function finalize(DocumentNode $document): void
     {
     }
 
     /**
      * Should the following block be passed as a CodeNode?
      */
-    public function wantCode() : bool
+    public function wantCode(): bool
     {
         return false;
     }

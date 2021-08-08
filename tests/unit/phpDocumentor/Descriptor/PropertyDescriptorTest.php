@@ -34,7 +34,7 @@ final class PropertyDescriptorTest extends MockeryTestCase
     /**
      * Creates a new (empty) fixture object.
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->fixture = new PropertyDescriptor();
         $this->fixture->setName('property');
@@ -44,7 +44,7 @@ final class PropertyDescriptorTest extends MockeryTestCase
      * @covers ::isStatic
      * @covers ::setStatic
      */
-    public function testSettingAndGettingWhetherPropertyIsStatic() : void
+    public function testSettingAndGettingWhetherPropertyIsStatic(): void
     {
         $this->assertFalse($this->fixture->isStatic());
 
@@ -57,7 +57,7 @@ final class PropertyDescriptorTest extends MockeryTestCase
      * @covers ::isReadOnly
      * @covers ::setReadOnly
      */
-    public function testSettingAndGettingWhetherPropertyIsReadOnly() : void
+    public function testSettingAndGettingWhetherPropertyIsReadOnly(): void
     {
         $this->assertFalse($this->fixture->isReadOnly());
 
@@ -70,7 +70,7 @@ final class PropertyDescriptorTest extends MockeryTestCase
      * @covers ::isWriteOnly
      * @covers ::setWriteOnly
      */
-    public function testSettingAndGettingWhetherPropertyIsWriteOnly() : void
+    public function testSettingAndGettingWhetherPropertyIsWriteOnly(): void
     {
         $this->assertFalse($this->fixture->isWriteOnly());
 
@@ -83,7 +83,7 @@ final class PropertyDescriptorTest extends MockeryTestCase
      * @covers ::getVisibility
      * @covers ::setVisibility
      */
-    public function testSettingAndGettingVisibility() : void
+    public function testSettingAndGettingVisibility(): void
     {
         $this->assertEquals('public', $this->fixture->getVisibility());
 
@@ -96,7 +96,7 @@ final class PropertyDescriptorTest extends MockeryTestCase
      * @covers ::getType
      * @covers ::setType
      */
-    public function testSetAndGetTypes() : void
+    public function testSetAndGetTypes(): void
     {
         $this->assertEquals(null, $this->fixture->getType());
         $expected = new Array_();
@@ -109,7 +109,7 @@ final class PropertyDescriptorTest extends MockeryTestCase
     /**
      * @covers ::getTypes
      */
-    public function testGetTypesCollection() : void
+    public function testGetTypesCollection(): void
     {
         $this->assertSame([], $this->fixture->getTypes());
         $expected = new Array_();
@@ -123,7 +123,7 @@ final class PropertyDescriptorTest extends MockeryTestCase
      * @covers ::getType
      * @covers ::setType
      */
-    public function testSetAndGetTypesWhenVarIsPresent() : void
+    public function testSetAndGetTypesWhenVarIsPresent(): void
     {
         // Arrange
         $typesCollection = new Array_();
@@ -144,7 +144,7 @@ final class PropertyDescriptorTest extends MockeryTestCase
      * @covers ::getDefault
      * @covers ::setDefault
      */
-    public function testSetAndGetDefault() : void
+    public function testSetAndGetDefault(): void
     {
         $this->assertNull($this->fixture->getDefault());
 
@@ -156,7 +156,7 @@ final class PropertyDescriptorTest extends MockeryTestCase
     /**
      * @covers ::getFile
      */
-    public function testRetrieveFileAssociatedWithAProperty() : void
+    public function testRetrieveFileAssociatedWithAProperty(): void
     {
         // Arrange
         $file = $this->whenFixtureIsRelatedToAClassWithFile();
@@ -171,7 +171,7 @@ final class PropertyDescriptorTest extends MockeryTestCase
     /**
      * @covers ::getVar
      */
-    public function testVarTagsInheritWhenNoneArePresent() : void
+    public function testVarTagsInheritWhenNoneArePresent(): void
     {
         // Arrange
         $varTagDescriptor = new VarDescriptor('var');
@@ -190,7 +190,7 @@ final class PropertyDescriptorTest extends MockeryTestCase
     /**
      * @covers ::getVar
      */
-    public function testVarTagsWhenNoneArePresent() : void
+    public function testVarTagsWhenNoneArePresent(): void
     {
         $varCollection = new Collection();
         $result = $this->fixture->getVar();
@@ -202,7 +202,7 @@ final class PropertyDescriptorTest extends MockeryTestCase
      * @covers ::getAuthor
      * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getAuthor
      */
-    public function testAuthorTagsInheritWhenNoneArePresent() : void
+    public function testAuthorTagsInheritWhenNoneArePresent(): void
     {
         // Arrange
         $authorTagDescriptor = new AuthorDescriptor('author');
@@ -222,7 +222,7 @@ final class PropertyDescriptorTest extends MockeryTestCase
      * @covers ::getVersion
      * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getVersion
      */
-    public function testVersionTagsInheritWhenNoneArePresent() : void
+    public function testVersionTagsInheritWhenNoneArePresent(): void
     {
         // Arrange
         $versionTagDescriptor = new VersionDescriptor('version');
@@ -242,7 +242,7 @@ final class PropertyDescriptorTest extends MockeryTestCase
      * @covers ::getCopyright
      * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getCopyright
      */
-    public function testCopyrightTagsInheritWhenNoneArePresent() : void
+    public function testCopyrightTagsInheritWhenNoneArePresent(): void
     {
         // Arrange
         $copyrightTagDescriptor = new TagDescriptor('copyright');
@@ -261,7 +261,7 @@ final class PropertyDescriptorTest extends MockeryTestCase
     /**
      * @covers ::setParent
      */
-    public function testFqsenHasDollarSignWhenParentIsSet() : void
+    public function testFqsenHasDollarSignWhenParentIsSet(): void
     {
         $this->whenFixtureHasPropertyInParentClassWithSameName($this->fixture->getName());
         $this->assertSame(
@@ -274,7 +274,7 @@ final class PropertyDescriptorTest extends MockeryTestCase
      * @covers ::setParent
      * @covers ::getParent
      */
-    public function testSettingAndGettingAParent() : void
+    public function testSettingAndGettingAParent(): void
     {
         $this->whenFixtureHasPropertyInParentClassWithSameName($this->fixture->getName());
         $this->assertInstanceOf(ClassDescriptor::class, $this->fixture->getParent());
@@ -283,7 +283,7 @@ final class PropertyDescriptorTest extends MockeryTestCase
     /**
      * @covers ::getInheritedElement
      */
-    public function testGettingAnInheritedElement() : void
+    public function testGettingAnInheritedElement(): void
     {
         $this->whenFixtureHasPropertyInParentClassWithSameName($this->fixture->getName());
 
@@ -295,7 +295,7 @@ final class PropertyDescriptorTest extends MockeryTestCase
     /**
      * @covers ::getInheritedElement
      */
-    public function testGettingAnInheritedElementWhenThereIsNone() : void
+    public function testGettingAnInheritedElementWhenThereIsNone(): void
     {
         $this->assertNull($this->fixture->getInheritedElement());
     }
@@ -332,7 +332,7 @@ final class PropertyDescriptorTest extends MockeryTestCase
     /**
      * @param string $name The name of the current property.
      */
-    protected function whenFixtureHasPropertyInParentClassWithSameName(string $name) : PropertyDescriptor
+    protected function whenFixtureHasPropertyInParentClassWithSameName(string $name): PropertyDescriptor
     {
         $parent = new ClassDescriptor();
         $parent->setFullyQualifiedStructuralElementName(new Fqsen('\MyClass'));

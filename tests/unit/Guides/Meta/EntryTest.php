@@ -18,7 +18,7 @@ use function time;
 
 class EntryTest extends TestCase
 {
-    public function test_whether_an_entry_can_be_recorded() : void
+    public function test_whether_an_entry_can_be_recorded(): void
     {
         $mtime = time();
 

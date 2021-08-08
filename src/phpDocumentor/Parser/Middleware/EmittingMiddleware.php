@@ -23,7 +23,7 @@ use function class_exists;
 
 final class EmittingMiddleware implements Middleware
 {
-    public function execute(Command $command, callable $next) : object
+    public function execute(Command $command, callable $next): object
     {
         Assert::isInstanceOf($command, CreateCommand::class);
 

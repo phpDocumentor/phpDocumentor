@@ -25,7 +25,7 @@ class VarAssemblerTest extends TestCase
     /**
      * Initializes the fixture for this test.
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->builder = $this->prophesize(ProjectDescriptorBuilder::class);
         $this->fixture = new VarAssembler();
@@ -36,7 +36,7 @@ class VarAssemblerTest extends TestCase
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\Tags\VarAssembler::create
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\Tags\VarAssembler::buildDescriptor
      */
-    public function testCreatingVarDescriptorFromReflector() : void
+    public function testCreatingVarDescriptorFromReflector(): void
     {
         $reflector = new Var_('$myParameter', new String_(), new Description('This is a description'));
 

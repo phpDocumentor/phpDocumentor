@@ -38,7 +38,7 @@ final class CacheMiddlewareTest extends TestCase
     /**
      * @covers ::execute
      */
-    public function testReturnsCachedResponseIfFileContentsIsTheSame() : void
+    public function testReturnsCachedResponseIfFileContentsIsTheSame(): void
     {
         $file = $this->givenFileWithContent('file.php', 'cached content');
         $reflectedFile = new ReflectedFile('abc', $file->url());
@@ -54,7 +54,7 @@ final class CacheMiddlewareTest extends TestCase
                 new File\LocalFile($file->url()),
                 new ProjectFactoryStrategies([])
             ),
-            function () : void {
+            function (): void {
                 $this->fail('If we entered the next state; then caching failed');
             }
         );
@@ -65,7 +65,7 @@ final class CacheMiddlewareTest extends TestCase
     /**
      * @covers ::execute
      */
-    public function testCachesResponseWhenReturningAnUncachedFile() : void
+    public function testCachesResponseWhenReturningAnUncachedFile(): void
     {
         $file = $this->givenFileWithContent('file.php', 'cached content');
         $reflectedFile = new ReflectedFile('abc', $file->url());
@@ -91,7 +91,7 @@ final class CacheMiddlewareTest extends TestCase
         $this->assertEquals($reflectedFile, $response);
     }
 
-    private function givenFileWithContent(string $name, string $content) : vfsStreamFile
+    private function givenFileWithContent(string $name, string $content): vfsStreamFile
     {
         $file = new vfsStreamFile($name);
         $file->setContent($content);
@@ -104,7 +104,7 @@ final class CacheMiddlewareTest extends TestCase
     private function whenFileIsAlreadyInCache(
         ArrayAdapter $cacheInterface,
         ReflectedFile $reflectedFile
-    ) : void {
+    ): void {
         $cacheInterface->get(
             '0d3c97a4f869de131219802426e09961-c1af748a4386d756f9b87703cf3b33c8',
             static function () use ($reflectedFile) {

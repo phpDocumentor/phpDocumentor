@@ -23,7 +23,7 @@ final class FlySystemMirror
         FilesystemInterface $destination,
         string $sourcePath = '',
         string $destinationPath = ''
-    ) : void {
+    ): void {
         $mountManager = new MountManager(['source' => $source, 'destination' => $destination]);
 
         $contents = $mountManager->listContents('source://' . $sourcePath, true);

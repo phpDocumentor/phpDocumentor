@@ -17,25 +17,25 @@ use phpDocumentor\Guides\References\ResolvedReference;
 
 interface SpanRenderer
 {
-    public function emphasis(string $text) : string;
+    public function emphasis(string $text): string;
 
-    public function strongEmphasis(string $text) : string;
+    public function strongEmphasis(string $text): string;
 
-    public function nbsp() : string;
+    public function nbsp(): string;
 
-    public function br() : string;
+    public function br(): string;
 
-    public function literal(string $text) : string;
+    public function literal(string $text): string;
 
     /**
      * @param string[] $attributes
      */
-    public function link(?string $url, string $title, array $attributes = []) : string;
+    public function link(?string $url, string $title, array $attributes = []): string;
 
-    public function escape(string $span) : string;
+    public function escape(string $span): string;
 
     /**
      * @param string[] $value
      */
-    public function reference(ResolvedReference $reference, array $value) : string;
+    public function reference(ResolvedReference $reference, array $value): string;
 }

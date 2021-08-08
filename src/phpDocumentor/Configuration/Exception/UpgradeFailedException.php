@@ -12,7 +12,7 @@ use function sprintf;
  */
 final class UpgradeFailedException extends RuntimeException
 {
-    public static function create(string $currentVersion) : self
+    public static function create(string $currentVersion): self
     {
         return new self(sprintf(
             'Upgrading the configuration to the latest version failed, we were unable to upgrade '

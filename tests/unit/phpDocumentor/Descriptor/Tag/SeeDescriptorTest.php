@@ -28,7 +28,7 @@ class SeeDescriptorTest extends TestCase
     /**
      * Creates a new fixture object.
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->fixture = new SeeDescriptor('name');
     }
@@ -37,7 +37,7 @@ class SeeDescriptorTest extends TestCase
      * @covers \phpDocumentor\Descriptor\Tag\SeeDescriptor::setReference
      * @covers \phpDocumentor\Descriptor\Tag\SeeDescriptor::getReference
      */
-    public function testSetAndGetReference() : void
+    public function testSetAndGetReference(): void
     {
         $refrence = new FqsenReference(new Fqsen('\someFunction()'));
         $this->fixture->setReference($refrence);

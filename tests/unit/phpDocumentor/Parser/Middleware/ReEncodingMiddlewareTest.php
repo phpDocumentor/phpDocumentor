@@ -37,7 +37,7 @@ final class ReEncodingMiddlewareTest extends TestCase
      * @covers ::withEncoding
      * @covers ::execute
      */
-    public function testItReencodesFileContentsUsingTheGivenEncoding() : void
+    public function testItReencodesFileContentsUsingTheGivenEncoding(): void
     {
         $contents = new UnicodeString('äNDERUNGEN');
         $file = $this->createFileWithIso8859EncodedContents($contents);
@@ -46,7 +46,7 @@ final class ReEncodingMiddlewareTest extends TestCase
         $middleware->withEncoding('iso-8859-1');
         $result = $middleware->execute(
             new CreateCommand($this->faker()->phpParserContext(), $file, new ProjectFactoryStrategies([])),
-            function (CreateCommand $command) use ($contents) : PhpFile {
+            function (CreateCommand $command) use ($contents): PhpFile {
                 $reEncodedFile = $command->getFile();
                 $this->assertInstanceOf(ReEncodedFile::class, $reEncodedFile);
 
@@ -64,7 +64,7 @@ final class ReEncodingMiddlewareTest extends TestCase
     /**
      * @covers ::execute
      */
-    public function testItFailsToReEncodeFileIfTheGivenEncodingIsWrong() : void
+    public function testItFailsToReEncodeFileIfTheGivenEncodingIsWrong(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid "utf-8" string.');
@@ -80,13 +80,13 @@ final class ReEncodingMiddlewareTest extends TestCase
                 $file,
                 new ProjectFactoryStrategies([])
             ),
-            static function () : void {
+            static function (): void {
                 // not important; never called due to exception
             }
         );
     }
 
-    private function createFileWithIso8859EncodedContents(UnicodeString $contents) : File
+    private function createFileWithIso8859EncodedContents(UnicodeString $contents): File
     {
         $file = $this->prophesize(File::class);
         $file->path()->willReturn('/tmp/fakeFile.php');

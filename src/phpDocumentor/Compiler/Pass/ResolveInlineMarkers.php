@@ -29,7 +29,7 @@ final class ResolveInlineMarkers implements CompilerPassInterface
 {
     public const COMPILER_PRIORITY = 9000;
 
-    public function getDescription() : string
+    public function getDescription(): string
     {
         return 'Collect all markers in a file';
     }
@@ -37,7 +37,7 @@ final class ResolveInlineMarkers implements CompilerPassInterface
     /**
      * Scans the files for markers and records them in the markers property of a file.
      */
-    public function execute(ProjectDescriptor $project) : void
+    public function execute(ProjectDescriptor $project): void
     {
         $markerTerms = $project->getSettings()->getMarkers();
 

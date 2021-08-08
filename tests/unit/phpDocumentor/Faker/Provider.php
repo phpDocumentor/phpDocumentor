@@ -37,12 +37,12 @@ use function implode;
 
 final class Provider extends Base
 {
-    public function fileSystem() : Filesystem
+    public function fileSystem(): Filesystem
     {
         return new Filesystem(new NullAdapter());
     }
 
-    public function template(string $name = 'test') : Template
+    public function template(string $name = 'test'): Template
     {
         return new Template($name, new MountManager([
             'template' => $this->fileSystem(),
@@ -51,12 +51,12 @@ final class Provider extends Base
         ]));
     }
 
-    public function transformation(?Template $template = null) : Transformation
+    public function transformation(?Template $template = null): Transformation
     {
         return new Transformation($template ?? $this->template(), '', '', '', '');
     }
 
-    public function transformer(?Template\Collection $templateCollection = null) : Transformer
+    public function transformer(?Template\Collection $templateCollection = null): Transformer
     {
         if ($templateCollection === null) {
             $templateCollection = m::mock(Template\Collection::class);
@@ -82,7 +82,7 @@ final class Provider extends Base
         return new FlySystemFactory(new MountManager());
     }
 
-    public function configTreeBuilder(string $version) : TreeBuilder
+    public function configTreeBuilder(string $version): TreeBuilder
     {
         $treebuilder = new TreeBuilder('test');
         $treebuilder->getRootNode()
@@ -93,29 +93,29 @@ final class Provider extends Base
         return $treebuilder;
     }
 
-    public function phpParserContext() : ContextStack
+    public function phpParserContext(): ContextStack
     {
         return new ContextStack(
             new Project('test')
         );
     }
 
-    public function apiSpecification() : ApiSpecification
+    public function apiSpecification(): ApiSpecification
     {
         return ApiSpecification::createDefault();
     }
 
-    public function dsn() : Dsn
+    public function dsn(): Dsn
     {
         return Dsn::createFromString('file:///source');
     }
 
-    public function path() : Path
+    public function path(): Path
     {
         return new Path('./');
     }
 
-    public function source() : Source
+    public function source(): Source
     {
         return new Source(
             $this->dsn(),
@@ -123,7 +123,7 @@ final class Provider extends Base
         );
     }
 
-    public function fileDescriptor() : FileDescriptor
+    public function fileDescriptor(): FileDescriptor
     {
         $file = new FileDescriptor($this->generator->md5);
         $file->setPath((string) $this->path());
@@ -133,7 +133,7 @@ final class Provider extends Base
     }
 
     /** @param DocumentationSetDescriptor[] $documentationSets */
-    public function versionDescriptor(array $documentationSets) : VersionDescriptor
+    public function versionDescriptor(array $documentationSets): VersionDescriptor
     {
         return new VersionDescriptor(
             $this->generator->numerify('v#.#.#'),
@@ -141,7 +141,7 @@ final class Provider extends Base
         );
     }
 
-    public function apiSetDescriptor() : ApiSetDescriptor
+    public function apiSetDescriptor(): ApiSetDescriptor
     {
         return new ApiSetDescriptor(
             $this->generator->word(),
@@ -151,7 +151,7 @@ final class Provider extends Base
         );
     }
 
-    public function guideSetDescriptor() : GuideSetDescriptor
+    public function guideSetDescriptor(): GuideSetDescriptor
     {
         return new GuideSetDescriptor(
             $this->generator->word(),
@@ -161,12 +161,12 @@ final class Provider extends Base
         );
     }
 
-    public function projectDescriptor() : ProjectDescriptor
+    public function projectDescriptor(): ProjectDescriptor
     {
         return new ProjectDescriptor('test');
     }
 
-    public function namespaceDescriptor(Fqsen $fqsen, array $children = []) : NamespaceDescriptor
+    public function namespaceDescriptor(Fqsen $fqsen, array $children = []): NamespaceDescriptor
     {
         $namespace = new NamespaceDescriptor();
         $namespace->setName($fqsen->getName());
@@ -179,7 +179,7 @@ final class Provider extends Base
         return $namespace;
     }
 
-    public function namespaceDescriptorTree($maxDepth = 3, $amount = 3) : NamespaceDescriptor
+    public function namespaceDescriptorTree($maxDepth = 3, $amount = 3): NamespaceDescriptor
     {
         $maxDepth--;
         $rootNamespace = $this->namespaceDescriptor(new Fqsen('\\' . $this->generator->word));

@@ -22,7 +22,7 @@ use function ltrim;
 
 final class UrlGenerator
 {
-    public function generateUrl(string $path, string $dirName) : string
+    public function generateUrl(string $path, string $dirName): string
     {
         $uri = UriFactory::createUri($path);
         if (UriInfo::isAbsolute($uri)) {
@@ -38,7 +38,7 @@ final class UrlGenerator
      * This method will, by design, return an absolute path including the prefixing slash. The slash will make it clear
      * to the other URL generating methods that this need not be resolved and can stay the same.
      */
-    public function absoluteUrl(string $basePath, string $url) : string
+    public function absoluteUrl(string $basePath, string $url): string
     {
         $uri = UriFactory::createUri($url);
         if (UriInfo::isAbsolute($uri)) {
@@ -51,7 +51,7 @@ final class UrlGenerator
     /**
      * Resolves a relative URL.
      */
-    public function relativeUrl(string $url) : string
+    public function relativeUrl(string $url): string
     {
         $uri = UriFactory::createUri($url);
 
@@ -76,7 +76,7 @@ final class UrlGenerator
      *
      * @todo simplify this method into the other methods or vice versa
      */
-    public function canonicalUrl(string $basePath, string $url) : string
+    public function canonicalUrl(string $basePath, string $url): string
     {
         if ($url[0] === '/') {
             return ltrim($url, '/');

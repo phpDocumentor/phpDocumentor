@@ -34,7 +34,7 @@ abstract class TypedAbstract extends TagDescriptor
      *
      * @codeCoverageIgnore because deprecated and the error makes phpunit fail
      */
-    public function setTypes(?Type $types = null) : void
+    public function setTypes(?Type $types = null): void
     {
         trigger_error('Use setType, because type is an object', E_USER_DEPRECATED);
         $this->types = $types;
@@ -43,7 +43,7 @@ abstract class TypedAbstract extends TagDescriptor
     /**
      * Sets a list of types associated with this tag.
      */
-    public function setType(?Type $types = null) : void
+    public function setType(?Type $types = null): void
     {
         $this->types = $types;
     }
@@ -57,14 +57,14 @@ abstract class TypedAbstract extends TagDescriptor
      *
      * @codeCoverageIgnore because deprecated and the error makes phpunit fail
      */
-    public function getTypes() : array
+    public function getTypes(): array
     {
         trigger_error('Use getType, because type is an object', E_USER_DEPRECATED);
 
         return array_filter([$this->types]);
     }
 
-    public function getType() : ?Type
+    public function getType(): ?Type
     {
         return $this->types;
     }

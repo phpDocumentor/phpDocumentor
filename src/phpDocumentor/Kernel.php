@@ -51,17 +51,17 @@ class Kernel extends BaseKernel
      *           - "@=service('kernel').getWorkingDir() ~ '/phpdoc.xml.dist'"
      * ```
      */
-    public function getWorkingDir() : string
+    public function getWorkingDir(): string
     {
         return getcwd();
     }
 
-    public function getCacheDir() : string
+    public function getCacheDir(): string
     {
         return $this->getProjectDir() . '/var/cache/' . $this->environment;
     }
 
-    public function getLogDir() : string
+    public function getLogDir(): string
     {
         if ($this->isPhar()) {
             return '/tmp/php-doc/log';
@@ -84,7 +84,7 @@ class Kernel extends BaseKernel
         return parent::getProjectDir();
     }
 
-    public function registerBundles() : iterable
+    public function registerBundles(): iterable
     {
         $contents = require $this->getProjectDir() . '/config/bundles.php';
         foreach ($contents as $class => $envs) {
@@ -94,12 +94,12 @@ class Kernel extends BaseKernel
         }
     }
 
-    public function build(ContainerBuilder $container) : void
+    public function build(ContainerBuilder $container): void
     {
         $container->addCompilerPass(new ReflectionProjectFactoryStrategyPass());
     }
 
-    protected function configureContainer(ContainerBuilder $c, LoaderInterface $loader) : void
+    protected function configureContainer(ContainerBuilder $c, LoaderInterface $loader): void
     {
         $c->setParameter('container.autowiring.strict_mode', true);
         $c->setParameter('container.dumper.inline_class_loader', true);
@@ -113,7 +113,7 @@ class Kernel extends BaseKernel
         $loader->load($confDir . '/services_' . $this->environment . self::CONFIG_EXTS, 'glob');
     }
 
-    protected function configureRoutes(RouteCollectionBuilder $routes) : void
+    protected function configureRoutes(RouteCollectionBuilder $routes): void
     {
         $confDir = $this->getProjectDir() . '/config';
         if (is_dir($confDir . '/routes/')) {
@@ -127,7 +127,7 @@ class Kernel extends BaseKernel
         $routes->import($confDir . '/routes' . self::CONFIG_EXTS, '/', 'glob');
     }
 
-    public static function isPhar() : bool
+    public static function isPhar(): bool
     {
         return strlen(Phar::running()) > 0;
     }

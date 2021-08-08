@@ -34,7 +34,7 @@ final class ReEncodedFile implements File
     /**
      * Returns the content of the file as a string.
      */
-    public function getContents() : string
+    public function getContents(): string
     {
         return $this->contents->toString();
     }
@@ -42,7 +42,7 @@ final class ReEncodedFile implements File
     /**
      * Returns md5 hash of the file.
      */
-    public function md5() : string
+    public function md5(): string
     {
         return md5($this->getContents());
     }
@@ -50,7 +50,7 @@ final class ReEncodedFile implements File
     /**
      * Returns an relative path to the file.
      */
-    public function path() : string
+    public function path(): string
     {
         return $this->path;
     }

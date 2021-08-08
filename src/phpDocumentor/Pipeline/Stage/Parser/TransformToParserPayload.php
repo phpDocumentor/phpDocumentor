@@ -17,7 +17,7 @@ use phpDocumentor\Pipeline\Stage\Payload as ApplicationPayload;
 
 final class TransformToParserPayload
 {
-    public function __invoke(ApplicationPayload $payload) : Payload
+    public function __invoke(ApplicationPayload $payload): Payload
     {
         return new Payload($payload->getConfig(), $payload->getBuilder());
     }

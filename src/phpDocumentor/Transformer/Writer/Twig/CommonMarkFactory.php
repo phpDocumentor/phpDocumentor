@@ -11,7 +11,7 @@ use League\CommonMark\Extension\ExtensionInterface;
 final class CommonMarkFactory
 {
     /** @param iterable<ExtensionInterface> $extensions */
-    public function createConverter(iterable $extensions) : CommonMarkConverter
+    public function createConverter(iterable $extensions): CommonMarkConverter
     {
         $environment = Environment::createCommonMarkEnvironment();
         foreach ($extensions as $extension) {

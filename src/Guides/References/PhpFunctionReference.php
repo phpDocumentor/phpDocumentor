@@ -23,12 +23,12 @@ use function strtolower;
  */
 class PhpFunctionReference extends Reference
 {
-    public function getName() : string
+    public function getName(): string
     {
         return 'php:func';
     }
 
-    public function resolve(Environment $environment, string $data) : ResolvedReference
+    public function resolve(Environment $environment, string $data): ResolvedReference
     {
         return new ResolvedReference(
             $environment->getCurrentFileName(),

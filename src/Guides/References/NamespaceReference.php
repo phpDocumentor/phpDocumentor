@@ -24,12 +24,12 @@ use function substr;
  */
 class NamespaceReference extends Reference
 {
-    public function getName() : string
+    public function getName(): string
     {
         return 'php:namespace';
     }
 
-    public function resolve(Environment $environment, string $data) : ResolvedReference
+    public function resolve(Environment $environment, string $data): ResolvedReference
     {
         $className = str_replace('\\\\', '\\', $data);
 

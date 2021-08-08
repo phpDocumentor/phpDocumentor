@@ -20,7 +20,7 @@ final class TemplatedNodeRenderer implements NodeRenderer
         $this->renderer = $renderer;
     }
 
-    public function render(Node $node) : string
+    public function render(Node $node): string
     {
         Assert::isInstanceOf($node, TemplatedNode::class);
 

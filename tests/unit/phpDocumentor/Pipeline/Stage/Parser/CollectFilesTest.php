@@ -36,7 +36,7 @@ final class CollectFilesTest extends TestCase
     /**
      * @covers ::__invoke
      */
-    public function testFilesAreCollectedAndAddedToPayload() : void
+    public function testFilesAreCollectedAndAddedToPayload(): void
     {
         $fileCollector = $this->prophesize(FileCollector::class);
         $fileCollector->getFiles(

@@ -20,7 +20,7 @@ final class TemplatedNode extends Node
     }
 
     /** @return array<string, mixed> */
-    public function getData() : array
+    public function getData(): array
     {
         return $this->data;
     }

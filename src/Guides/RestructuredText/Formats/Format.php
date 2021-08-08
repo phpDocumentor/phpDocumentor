@@ -26,7 +26,7 @@ abstract class Format implements BaseFormat
         $this->directives = $directives;
     }
 
-    public function getFileExtension() : string
+    public function getFileExtension(): string
     {
         return $this->fileExtension;
     }
@@ -34,7 +34,7 @@ abstract class Format implements BaseFormat
     /**
      * @return array<Directive>
      */
-    public function getDirectives() : array
+    public function getDirectives(): array
     {
         return iterator_to_array($this->directives);
     }

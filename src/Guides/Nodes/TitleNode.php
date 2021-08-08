@@ -40,27 +40,27 @@ class TitleNode extends Node
         $this->id = (new AsciiSlugger())->slug($this->value->getValue())->lower()->toString();
     }
 
-    public function getValue() : SpanNode
+    public function getValue(): SpanNode
     {
         return $this->value;
     }
 
-    public function getLevel() : int
+    public function getLevel(): int
     {
         return $this->level;
     }
 
-    public function setTarget(string $target) : void
+    public function setTarget(string $target): void
     {
         $this->target = $target;
     }
 
-    public function getTarget() : string
+    public function getTarget(): string
     {
         return $this->target;
     }
 
-    public function getId() : string
+    public function getId(): string
     {
         return $this->id;
     }

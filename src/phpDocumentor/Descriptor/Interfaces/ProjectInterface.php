@@ -23,19 +23,19 @@ use phpDocumentor\Descriptor\NamespaceDescriptor;
  */
 interface ProjectInterface
 {
-    public function setName(string $name) : void;
+    public function setName(string $name): void;
 
-    public function getName() : string;
+    public function getName(): string;
 
     /**
      * @return Collection<FileDescriptor>
      */
-    public function getFiles() : Collection;
+    public function getFiles(): Collection;
 
     /**
      * @return Collection<Collection<DescriptorAbstract>>
      */
-    public function getIndexes() : Collection;
+    public function getIndexes(): Collection;
 
-    public function getNamespace() : NamespaceDescriptor;
+    public function getNamespace(): NamespaceDescriptor;
 }

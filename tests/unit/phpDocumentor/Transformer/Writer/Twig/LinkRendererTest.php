@@ -53,7 +53,7 @@ final class LinkRendererTest extends TestCase
     /** @var ProjectDescriptor */
     private $projectDescriptor;
 
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->router = $this->prophesize(Router::class);
         $this->projectDescriptor = new ProjectDescriptor('project');
@@ -65,7 +65,7 @@ final class LinkRendererTest extends TestCase
      * @covers ::getDestination
      * @covers ::setDestination
      */
-    public function testGetAndSetDestination() : void
+    public function testGetAndSetDestination(): void
     {
         $this->renderer->setDestination('destination');
 
@@ -78,7 +78,7 @@ final class LinkRendererTest extends TestCase
      * @dataProvider descriptorLinkProvider
      * @covers ::render
      */
-    public function testRenderLinkFromDescriptor($input, string $presentation, string $output) : void
+    public function testRenderLinkFromDescriptor($input, string $presentation, string $output): void
     {
         $classDescriptor = $this->createClassDescriptor(new Fqsen('\My\Namespace\Class'));
         $this->projectDescriptor->getIndexes()->get('elements')
@@ -92,7 +92,7 @@ final class LinkRendererTest extends TestCase
     }
 
     /** @return Generator<string, mixed[]> */
-    public function descriptorLinkProvider() : Generator
+    public function descriptorLinkProvider(): Generator
     {
         $inputs = [
             $this->createClassDescriptor(new Fqsen('\My\Namespace\Class')),
@@ -106,7 +106,7 @@ final class LinkRendererTest extends TestCase
         }
     }
 
-    public function baseLinkProvider($input) : array
+    public function baseLinkProvider($input): array
     {
         $name = is_object($input) ? get_class($input) : gettype($input);
 
@@ -145,7 +145,7 @@ final class LinkRendererTest extends TestCase
         ];
     }
 
-    private function createClassDescriptor(Fqsen $fqsen) : ClassDescriptor
+    private function createClassDescriptor(Fqsen $fqsen): ClassDescriptor
     {
         $descriptor = new ClassDescriptor();
         $descriptor->setFullyQualifiedStructuralElementName($fqsen);
@@ -157,7 +157,7 @@ final class LinkRendererTest extends TestCase
      * @covers ::render
      * @covers ::convertToRootPath
      */
-    public function testRenderWithNullableFqsen() : void
+    public function testRenderWithNullableFqsen(): void
     {
         $fqsen = new Fqsen('\My\Namespace\Class');
         $descriptor = new ClassDescriptor();
@@ -176,7 +176,7 @@ final class LinkRendererTest extends TestCase
      * @covers ::render
      * @covers ::convertToRootPath
      */
-    public function testRenderWithCollectionOfFqsensAndRepresentationUrl() : void
+    public function testRenderWithCollectionOfFqsensAndRepresentationUrl(): void
     {
         $fqsen = new Fqsen('\My\Namespace\Class');
         $descriptor = new ClassDescriptor();
@@ -195,7 +195,7 @@ final class LinkRendererTest extends TestCase
     /**
      * @covers ::convertToRootPath
      */
-    public function testConvertToRootPathWithUrlAndAtSignInRelativePath() : void
+    public function testConvertToRootPathWithUrlAndAtSignInRelativePath(): void
     {
         $this->router->generate(Argument::that(function (Fqsen $fqsen) {
             $this->assertSame((string) $fqsen, '\Class::$property');
@@ -212,7 +212,7 @@ final class LinkRendererTest extends TestCase
      * @covers ::render
      * @covers ::convertToRootPath
      */
-    public function testRenderReferenceToType() : void
+    public function testRenderReferenceToType(): void
     {
         $this->router->generate(Argument::any())->shouldNotBeCalled();
 
@@ -224,7 +224,7 @@ final class LinkRendererTest extends TestCase
     /**
      * @covers ::render
      */
-    public function testRenderWithFqsenAndRepresentationClassShort() : void
+    public function testRenderWithFqsenAndRepresentationClassShort(): void
     {
         $fqsen = new Fqsen('\My\Namespace\Class');
         $descriptor = new ClassDescriptor();
@@ -244,7 +244,7 @@ final class LinkRendererTest extends TestCase
     /**
      * @dataProvider typeRouteProvider
      */
-    public function testRenderType(Type $input, string $presentation, string $output) : void
+    public function testRenderType(Type $input, string $presentation, string $output): void
     {
         $classDescriptor = $this->createClassDescriptor(new Fqsen('\My\Namespace\Class'));
         $this->projectDescriptor->getIndexes()->get('elements')
@@ -257,7 +257,7 @@ final class LinkRendererTest extends TestCase
         self::assertSame($output, $result);
     }
 
-    public function typeRouteProvider() : array
+    public function typeRouteProvider(): array
     {
         return [
             'collection with class' => [
@@ -317,14 +317,14 @@ final class LinkRendererTest extends TestCase
      * @covers ::render
      * @dataProvider provideUrls
      */
-    public function testRenderWithUrl(string $url) : void
+    public function testRenderWithUrl(string $url): void
     {
         $result = $this->renderer->render($url, LinkRenderer::PRESENTATION_URL);
 
         $this->assertSame($url, $result);
     }
 
-    public function provideUrls() : array
+    public function provideUrls(): array
     {
         return [
             ['http://phpdoc.org'],

@@ -32,7 +32,7 @@ class StripInternal implements FilterInterface
     /**
      * If the ProjectDescriptor's settings allow internal tags then return the Descriptor, otherwise null to filter it.
      */
-    public function __invoke(FilterPayload $payload) : FilterPayload
+    public function __invoke(FilterPayload $payload): FilterPayload
     {
         $isInternalAllowed = $payload->getApiSpecification()->isVisibilityAllowed(
             ApiSpecification::VISIBILITY_INTERNAL

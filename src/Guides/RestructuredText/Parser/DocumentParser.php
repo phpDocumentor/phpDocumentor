@@ -117,12 +117,12 @@ class DocumentParser
         $this->buffer = new Buffer();
     }
 
-    public function getDocument() : DocumentNode
+    public function getDocument(): DocumentNode
     {
         return $this->document;
     }
 
-    public function parse(string $contents) : DocumentNode
+    public function parse(string $contents): DocumentNode
     {
         $preParseDocumentEvent = new PreParseDocumentEvent($this->parser, $contents);
 
@@ -149,19 +149,19 @@ class DocumentParser
         return $this->document;
     }
 
-    private function init() : void
+    private function init(): void
     {
         $this->specialLetter = false;
         $this->buffer = new Buffer();
         $this->nodeBuffer = null;
     }
 
-    private function setState(string $state) : void
+    private function setState(string $state): void
     {
         $this->state = $state;
     }
 
-    private function prepareDocument(string $document) : string
+    private function prepareDocument(string $document): string
     {
         $document = str_replace("\r\n", "\n", $document);
         $document = sprintf("\n%s\n", $document);
@@ -177,12 +177,12 @@ class DocumentParser
         return $document;
     }
 
-    private function createLines(string $document) : Lines
+    private function createLines(string $document): Lines
     {
         return new Lines(explode("\n", $document));
     }
 
-    private function parseLines(string $document) : void
+    private function parseLines(string $document): void
     {
         $document = $this->prepareDocument($document);
 
@@ -206,7 +206,7 @@ class DocumentParser
         }
     }
 
-    private function parseLine(string $line) : bool
+    private function parseLine(string $line): bool
     {
         switch ($this->state) {
             case State::BEGIN:
@@ -396,7 +396,7 @@ class DocumentParser
         return true;
     }
 
-    private function flush() : void
+    private function flush(): void
     {
         $node = null;
 
@@ -538,12 +538,12 @@ class DocumentParser
         $this->init();
     }
 
-    private function hasBuffer() : bool
+    private function hasBuffer(): bool
     {
         return !$this->buffer->isEmpty() || $this->nodeBuffer !== null;
     }
 
-    private function getCurrentDirective() : ?Directive
+    private function getCurrentDirective(): ?Directive
     {
         if ($this->directive === null) {
             return null;
@@ -554,7 +554,7 @@ class DocumentParser
         return $this->directives[$name];
     }
 
-    private function isDirectiveOption(string $line) : bool
+    private function isDirectiveOption(string $line): bool
     {
         if ($this->directive === null) {
             return false;
@@ -571,7 +571,7 @@ class DocumentParser
         return true;
     }
 
-    private function initDirective(string $line) : bool
+    private function initDirective(string $line): bool
     {
         $parserDirective = $this->lineDataParser->parseDirective($line);
 
@@ -600,7 +600,7 @@ class DocumentParser
         return true;
     }
 
-    private function prepareCode() : bool
+    private function prepareCode(): bool
     {
         $lastLine = $this->buffer->getLastLine();
 
@@ -625,7 +625,7 @@ class DocumentParser
         return false;
     }
 
-    private function parseLink(string $line) : bool
+    private function parseLink(string $line): bool
     {
         $link = $this->lineDataParser->parseLink($line);
 
@@ -644,7 +644,7 @@ class DocumentParser
         return true;
     }
 
-    private function parseListLine(?string $line, bool $flush = false) : bool
+    private function parseListLine(?string $line, bool $flush = false): bool
     {
         if ($line !== null && trim($line) !== '') {
             $listLine = $this->lineDataParser->parseListLine($line);
@@ -691,7 +691,7 @@ class DocumentParser
         return true;
     }
 
-    private function endOpenSection(TitleNode $titleNode) : void
+    private function endOpenSection(TitleNode $titleNode): void
     {
         $this->document->addNode(new SectionEndNode($titleNode));
 
@@ -704,7 +704,7 @@ class DocumentParser
         unset($this->openTitleNodes[$key]);
     }
 
-    public function mergeIncludedFiles(string $document) : string
+    public function mergeIncludedFiles(string $document): string
     {
         return preg_replace_callback(
             '/^\.\. include:: (.+)$/m',

@@ -32,7 +32,7 @@ class ThrowsAssembler extends BaseTagAssembler
      *
      * @param Throws $data
      */
-    public function buildDescriptor(object $data) : ThrowsDescriptor
+    public function buildDescriptor(object $data): ThrowsDescriptor
     {
         $descriptor = new ThrowsDescriptor($data->getName());
         $descriptor->setType(AssemblerAbstract::deduplicateTypes($data->getType()));

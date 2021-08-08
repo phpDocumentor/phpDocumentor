@@ -31,12 +31,12 @@ use function trim;
  */
 final class Application
 {
-    public static function VERSION() : string
+    public static function VERSION(): string
     {
         return trim(file_get_contents(__DIR__ . '/../../VERSION'));
     }
 
-    public static function templateDirectory() : string
+    public static function templateDirectory(): string
     {
         $templateDir = __DIR__ . '/../../data/templates';
 
@@ -62,7 +62,7 @@ final class Application
      *
      * @throws RuntimeException
      */
-    private function defineIniSettings() : void
+    private function defineIniSettings(): void
     {
         $this->setTimezone();
         ini_set('memory_limit', '-1');
@@ -90,7 +90,7 @@ final class Application
      * @link https://www.php.net/function.date-default-timezone-get for more information how PHP determines the
      *     default timezone.
      */
-    private function setTimezone() : void
+    private function setTimezone(): void
     {
         if (ini_get('date.timezone') !== false) {
             return;

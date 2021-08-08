@@ -29,7 +29,7 @@ class UsesDescriptorTest extends TestCase
     /**
      * Creates a new fixture object.
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->fixture = new UsesDescriptor('name');
     }
@@ -38,7 +38,7 @@ class UsesDescriptorTest extends TestCase
      * @covers \phpDocumentor\Descriptor\Tag\UsesDescriptor::setReference
      * @covers \phpDocumentor\Descriptor\Tag\UsesDescriptor::getReference
      */
-    public function testSetAndGetReference() : void
+    public function testSetAndGetReference(): void
     {
         $this->assertNull($this->fixture->getReference());
 

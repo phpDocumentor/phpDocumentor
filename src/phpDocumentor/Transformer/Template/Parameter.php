@@ -30,17 +30,17 @@ final class Parameter
         $this->value = $value;
     }
 
-    public function key() : string
+    public function key(): string
     {
         return $this->key;
     }
 
-    public function value() : string
+    public function value(): string
     {
         return $this->value;
     }
 
-    public function __toString() : string
+    public function __toString(): string
     {
         return $this->value;
     }

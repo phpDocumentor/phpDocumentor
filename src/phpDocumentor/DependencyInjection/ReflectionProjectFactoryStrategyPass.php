@@ -30,7 +30,7 @@ use function array_column;
  */
 final class ReflectionProjectFactoryStrategyPass implements CompilerPassInterface
 {
-    public function process(ContainerBuilder $container) : void
+    public function process(ContainerBuilder $container): void
     {
         $strategies = $container->getDefinition(ProjectFactoryStrategies::class);
         foreach ($container->findTaggedServiceIds('phpdoc.reflection.strategy') as $id => $tags) {

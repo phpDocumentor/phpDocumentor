@@ -9,7 +9,7 @@ use function in_array;
 
 final class StripIgnoredTags implements FilterInterface
 {
-    public function __invoke(FilterPayload $payload) : FilterPayload
+    public function __invoke(FilterPayload $payload): FilterPayload
     {
         if (!$payload->getFilterable() instanceof TagDescriptor) {
             return $payload;

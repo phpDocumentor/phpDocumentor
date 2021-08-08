@@ -26,7 +26,7 @@ class StripOnVisibility implements FilterInterface
     /**
      * Filter Descriptor with based on visibility.
      */
-    public function __invoke(FilterPayload $payload) : FilterPayload
+    public function __invoke(FilterPayload $payload): FilterPayload
     {
         if (!$payload->getFilterable() instanceof DescriptorAbstract) {
             return $payload;
@@ -53,7 +53,7 @@ class StripOnVisibility implements FilterInterface
         return new FilterPayload(null, $payload->getApiSpecification());
     }
 
-    private function toVisibility(string $visibility) : int
+    private function toVisibility(string $visibility): int
     {
         switch ($visibility) {
             case 'public':

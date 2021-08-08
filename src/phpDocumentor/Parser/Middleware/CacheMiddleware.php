@@ -52,7 +52,7 @@ final class CacheMiddleware implements Middleware
      *
      * @throws InvalidArgumentException
      */
-    public function execute(Command $command, callable $next) : object
+    public function execute(Command $command, callable $next): object
     {
         Assert::isInstanceOf($command, CreateCommand::class);
 

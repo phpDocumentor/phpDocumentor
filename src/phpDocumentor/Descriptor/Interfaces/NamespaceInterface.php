@@ -24,5 +24,5 @@ interface NamespaceInterface extends ElementInterface, ContainerInterface, Child
     /**
      * @return Collection<NamespaceDescriptor>
      */
-    public function getChildren() : Collection;
+    public function getChildren(): Collection;
 }

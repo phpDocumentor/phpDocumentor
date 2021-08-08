@@ -33,7 +33,7 @@ final class FlySystemCollectorTest extends TestCase
      *
      * @covers ::getFiles()
      */
-    public function testSingleSourceDir() : void
+    public function testSingleSourceDir(): void
     {
         $fileCollector = new FlySystemCollector(
             new SpecificationFactory(),
@@ -49,7 +49,7 @@ final class FlySystemCollectorTest extends TestCase
         static::assertCount(3, $files);
     }
 
-    private function scheme() : string
+    private function scheme(): string
     {
         $scheme = 'file://';
 

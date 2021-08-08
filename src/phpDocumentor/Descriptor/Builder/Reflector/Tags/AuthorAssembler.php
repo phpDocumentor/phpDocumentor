@@ -34,7 +34,7 @@ class AuthorAssembler extends AssemblerAbstract
      *
      * @param Author $data
      */
-    protected function buildDescriptor(object $data) : AuthorDescriptor
+    protected function buildDescriptor(object $data): AuthorDescriptor
     {
         $tag = new AuthorDescriptor($data->getName());
         $tag->setDescription(new DescriptionDescriptor(new Description((string) $data), []));

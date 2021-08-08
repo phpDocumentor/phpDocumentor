@@ -30,7 +30,7 @@ final class DeprecatedDescriptorTest extends TestCase
     /**
      * Creates a new fixture object.
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->fixture = new DeprecatedDescriptor('name');
     }
@@ -39,7 +39,7 @@ final class DeprecatedDescriptorTest extends TestCase
      * @covers ::setVersion
      * @covers ::getVersion
      */
-    public function testSetAndGetVersion() : void
+    public function testSetAndGetVersion(): void
     {
         $this->assertEmpty($this->fixture->getVersion());
 

@@ -32,7 +32,7 @@ final class FileFactory
         DocBlockFactoryInterface $blockFactory,
         NodesFactory $nodesFactory,
         IteratorAggregate $middlewares
-    ) : Factory\File {
+    ): Factory\File {
         return new Factory\File($blockFactory, $nodesFactory, iterator_to_array($middlewares));
     }
 }

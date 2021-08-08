@@ -24,12 +24,12 @@ use function strtoupper;
 
 class ConfigurationBlockDirective extends SubDirective
 {
-    public function getName() : string
+    public function getName(): string
     {
         return 'configuration-block';
     }
 
-    public function processSub(Parser $parser, ?Node $document, string $variable, string $data, array $options) : ?Node
+    public function processSub(Parser $parser, ?Node $document, string $variable, string $data, array $options): ?Node
     {
         Assert::isInstanceOf($document, DocumentNode::class);
 
@@ -62,7 +62,7 @@ class ConfigurationBlockDirective extends SubDirective
     /**
      * A hack to print exactly what we want in the tab of a configuration block.
      */
-    private function formatLanguageTab(string $language) : string
+    private function formatLanguageTab(string $language): string
     {
         switch ($language) {
             case 'php-annotations':

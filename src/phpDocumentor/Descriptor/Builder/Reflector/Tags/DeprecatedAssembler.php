@@ -28,7 +28,7 @@ class DeprecatedAssembler extends BaseTagAssembler
     /**
      * Creates a new Descriptor from the given Reflector.
      */
-    public function buildDescriptor(object $data) : DeprecatedDescriptor
+    public function buildDescriptor(object $data): DeprecatedDescriptor
     {
         $descriptor = new DeprecatedDescriptor($data->getName());
         $descriptor->setVersion($data->getVersion() ?: '');

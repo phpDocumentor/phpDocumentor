@@ -18,5 +18,5 @@ use phpDocumentor\Transformer\Template;
 
 interface Initializable
 {
-    public function initialize(ProjectDescriptor $project, Template $template) : void;
+    public function initialize(ProjectDescriptor $project, Template $template): void;
 }

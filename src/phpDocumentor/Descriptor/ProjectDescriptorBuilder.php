@@ -60,7 +60,7 @@ class ProjectDescriptorBuilder
         $this->servicesWithCustomSettings = $servicesWithCustomSettings;
     }
 
-    public function createProjectDescriptor() : void
+    public function createProjectDescriptor(): void
     {
         $this->project = new ProjectDescriptor(self::DEFAULT_PROJECT_NAME);
     }
@@ -68,7 +68,7 @@ class ProjectDescriptorBuilder
     /**
      * Returns the project descriptor that is being built.
      */
-    public function getProjectDescriptor() : ProjectDescriptor
+    public function getProjectDescriptor(): ProjectDescriptor
     {
         return $this->project;
     }
@@ -84,7 +84,7 @@ class ProjectDescriptorBuilder
      *
      * @template TDescriptor of Descriptor
      */
-    public function buildDescriptor(object $data, string $type) : ?Descriptor
+    public function buildDescriptor(object $data, string $type): ?Descriptor
     {
         $assembler = $this->getAssembler($data, $type);
         if (!$assembler) {
@@ -113,7 +113,7 @@ class ProjectDescriptorBuilder
      * @template TInput as object
      * @template TDescriptor as Descriptor
      */
-    public function getAssembler(object $data, string $type) : ?AssemblerInterface
+    public function getAssembler(object $data, string $type): ?AssemblerInterface
     {
         return $this->assemblerFactory->get($data, $type);
     }
@@ -127,7 +127,7 @@ class ProjectDescriptorBuilder
      *
      * @template TDescriptor as Filterable
      */
-    public function filter(Filterable $descriptor) : ?Filterable
+    public function filter(Filterable $descriptor): ?Filterable
     {
         return $this->filter->filter($descriptor, $this->apiSpecification);
     }
@@ -142,7 +142,7 @@ class ProjectDescriptorBuilder
      *
      * @template TDescriptor as Descriptor
      */
-    protected function filterDescriptor(Descriptor $descriptor) : ?Descriptor
+    protected function filterDescriptor(Descriptor $descriptor): ?Descriptor
     {
         if (!$descriptor instanceof Filterable) {
             return $descriptor;
@@ -154,12 +154,12 @@ class ProjectDescriptorBuilder
         return $descriptor;
     }
 
-    public function setApiSpecification(ApiSpecification $apiSpecification) : void
+    public function setApiSpecification(ApiSpecification $apiSpecification): void
     {
         $this->apiSpecification = $apiSpecification;
     }
 
-    public function createApiDocumentationSet(Project $project) : void
+    public function createApiDocumentationSet(Project $project): void
     {
         $customSettings = $this->getProjectDescriptor()->getSettings()->getCustom();
         foreach ($this->servicesWithCustomSettings as $service) {
@@ -190,22 +190,22 @@ class ProjectDescriptorBuilder
         }
     }
 
-    public function getDefaultPackage() : string
+    public function getDefaultPackage(): string
     {
         return $this->apiSpecification['default-package-name'];
     }
 
-    public function setVisibility(int $visibility) : void
+    public function setVisibility(int $visibility): void
     {
         $this->project->getSettings()->setVisibility($visibility);
     }
 
-    public function shouldIncludeSource() : bool
+    public function shouldIncludeSource(): bool
     {
         return $this->apiSpecification['include-source'];
     }
 
-    public function setName(string $title) : void
+    public function setName(string $title): void
     {
         $this->project->setName($title);
     }
@@ -213,7 +213,7 @@ class ProjectDescriptorBuilder
     /**
      * @param Collection<string> $partials
      */
-    public function setPartials(Collection $partials) : void
+    public function setPartials(Collection $partials): void
     {
         $this->project->setPartials($partials);
     }
@@ -221,12 +221,12 @@ class ProjectDescriptorBuilder
     /**
      * @param array<string, string> $customSettings
      */
-    public function setCustomSettings(array $customSettings) : void
+    public function setCustomSettings(array $customSettings): void
     {
         $this->project->getSettings()->setCustom($customSettings);
     }
 
-    public function addVersion(VersionDescriptor $version) : void
+    public function addVersion(VersionDescriptor $version): void
     {
         $this->project->getVersions()->add($version);
     }

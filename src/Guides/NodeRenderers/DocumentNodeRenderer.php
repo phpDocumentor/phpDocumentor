@@ -28,7 +28,7 @@ class DocumentNodeRenderer implements NodeRenderer
         $this->nodeRendererFactory = $nodeRendererFactory;
     }
 
-    public function render(Node $node) : string
+    public function render(Node $node): string
     {
         if ($node instanceof DocumentNode === false) {
             throw new InvalidArgumentException('Invalid node presented');

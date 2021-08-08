@@ -32,7 +32,7 @@ final class StoreGuidesToCache
         $this->logger = $logger;
     }
 
-    public function __invoke(Payload $payload) : Payload
+    public function __invoke(Payload $payload): Payload
     {
         $configuration = $payload->getConfig();
 

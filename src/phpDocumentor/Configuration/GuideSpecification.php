@@ -29,12 +29,12 @@ class GuideSpecification implements ArrayAccess
         $this->format = $format;
     }
 
-    public function source() : Source
+    public function source(): Source
     {
         return $this->source;
     }
 
-    public function withSource(Source $source) : self
+    public function withSource(Source $source): self
     {
         $clone = clone $this;
         $clone->source = $source;
@@ -42,12 +42,12 @@ class GuideSpecification implements ArrayAccess
         return $clone;
     }
 
-    public function getOutput() : string
+    public function getOutput(): string
     {
         return $this->output;
     }
 
-    public function getFormat() : string
+    public function getFormat(): string
     {
         return $this->format;
     }

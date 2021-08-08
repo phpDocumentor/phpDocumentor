@@ -41,7 +41,7 @@ class EnvironmentFactory
         $this->markDownConverter = $markDownConverter;
     }
 
-    public function withTemplateOverridesAt(Path $path) : void
+    public function withTemplateOverridesAt(Path $path): void
     {
         $this->templateOverridesAt = $path;
     }
@@ -49,7 +49,7 @@ class EnvironmentFactory
     public function create(
         ProjectDescriptor $project,
         Template $template
-    ) : Environment {
+    ): Environment {
         $mountManager = $template->files();
 
         $loaders = [];
@@ -74,12 +74,12 @@ class EnvironmentFactory
     private function addPhpDocumentorExtension(
         ProjectDescriptor $project,
         Environment $twigEnvironment
-    ) : void {
+    ): void {
         $extension = new Extension($project, $this->markDownConverter, $this->renderer);
         $twigEnvironment->addExtension($extension);
     }
 
-    private function enableDebug(Environment $twigEnvironment) : void
+    private function enableDebug(Environment $twigEnvironment): void
     {
         $twigEnvironment->setCache(false);
         $twigEnvironment->enableDebug();

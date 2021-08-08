@@ -41,7 +41,7 @@ final class LinkerTest extends TestCase
     /** @var Linker */
     private $linker;
 
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->descriptorRepository = $this->prophesize(DescriptorRepository::class);
         $this->linker = new Linker([], $this->descriptorRepository->reveal());
@@ -50,7 +50,7 @@ final class LinkerTest extends TestCase
     /**
      * @covers ::getSubstitutions
      */
-    public function testSetFieldsToSubstitute() : void
+    public function testSetFieldsToSubstitute(): void
     {
         $elementList = [
             ProjectDescriptor::class => 'files',
@@ -65,7 +65,7 @@ final class LinkerTest extends TestCase
     /**
      * @covers ::substitute
      */
-    public function testSubstituteReturnsNullWhenPassingAnUnsupportedItemType() : void
+    public function testSubstituteReturnsNullWhenPassingAnUnsupportedItemType(): void
     {
         $this->descriptorRepository->findAlias(Argument::cetera())->shouldNotBeCalled();
 
@@ -78,7 +78,7 @@ final class LinkerTest extends TestCase
     /**
      * @covers ::substitute
      */
-    public function testSubstituteReturnsDescriptorBasedOnFqsenString() : void
+    public function testSubstituteReturnsDescriptorBasedOnFqsenString(): void
     {
         $fqsenString = '\My\Class';
         $container = null;
@@ -95,7 +95,7 @@ final class LinkerTest extends TestCase
     /**
      * @covers ::substitute
      */
-    public function testSubstituteReturnsDescriptorBasedOnFqsenObject() : void
+    public function testSubstituteReturnsDescriptorBasedOnFqsenObject(): void
     {
         $fqsenString = '\My\Class';
         $container = null;
@@ -113,7 +113,7 @@ final class LinkerTest extends TestCase
     /**
      * @covers ::substitute
      */
-    public function testSubstituteReturnsNullIfFqsenCannotBeFound() : void
+    public function testSubstituteReturnsNullIfFqsenCannotBeFound(): void
     {
         $container = null;
         $this->descriptorRepository->findAlias('\My\Class', $container)->willReturn(null);
@@ -126,7 +126,7 @@ final class LinkerTest extends TestCase
     /**
      * @covers ::substitute
      */
-    public function testSubstitutingAnArrayReplacesAllElementsWithTheirDescriptors() : void
+    public function testSubstitutingAnArrayReplacesAllElementsWithTheirDescriptors(): void
     {
         $fqsenString1 = '\My\Class1';
         $fqsenString2 = '\My\Class2';
@@ -159,7 +159,7 @@ final class LinkerTest extends TestCase
     /**
      * @covers ::substitute
      */
-    public function testSubstitutingAnArrayWorksRecursively() : void
+    public function testSubstitutingAnArrayWorksRecursively(): void
     {
         $fqsenString1 = '\My\Class1';
         $fqsenString2 = '\My\Class2';
@@ -199,7 +199,7 @@ final class LinkerTest extends TestCase
     /**
      * @covers ::substitute
      */
-    public function testSubstitutingWillReplaceFieldsIndicatedInSubstitutionsProperty() : void
+    public function testSubstitutingWillReplaceFieldsIndicatedInSubstitutionsProperty(): void
     {
         $this->linker = new Linker([ClassDescriptor::class => ['parent']], $this->descriptorRepository->reveal());
 
@@ -225,7 +225,7 @@ final class LinkerTest extends TestCase
     /**
      * @covers ::substitute
      */
-    public function testSubstitutingWontReplaceFieldsWhenTheyReturnNull() : void
+    public function testSubstitutingWontReplaceFieldsWhenTheyReturnNull(): void
     {
         $class = $this->prophesize(ClassDescriptor::class);
         $class->getFullyQualifiedStructuralElementName()->willReturn(new Fqsen('\My\Class'));
@@ -243,7 +243,7 @@ final class LinkerTest extends TestCase
     /**
      * @covers ::substitute
      */
-    public function testSubstitutingWillReplaceFieldsOnceForEachObject() : void
+    public function testSubstitutingWillReplaceFieldsOnceForEachObject(): void
     {
         $class = $this->prophesize(ClassDescriptor::class);
         $class->getFullyQualifiedStructuralElementName()->willReturn(new Fqsen('\My\Class'));
@@ -268,7 +268,7 @@ final class LinkerTest extends TestCase
     /**
      * @covers ::getDescription
      */
-    public function testGetDescription() : void
+    public function testGetDescription(): void
     {
         $linker = new Linker([], new DescriptorRepository());
         $expected = 'Replace textual FQCNs with object aliases';
@@ -278,7 +278,7 @@ final class LinkerTest extends TestCase
     /**
      * @covers ::execute
      */
-    public function testExecute() : void
+    public function testExecute(): void
     {
         $result = new ClassDescriptor();
         $object = $this->prophesize(ClassDescriptor::class);
@@ -296,7 +296,7 @@ final class LinkerTest extends TestCase
         $linker->execute($project);
     }
 
-    private function givenAnExampleClassDescriptor(string $fqsenString) : ClassDescriptor
+    private function givenAnExampleClassDescriptor(string $fqsenString): ClassDescriptor
     {
         $exampleDescriptor = new ClassDescriptor();
         $exampleDescriptor->setFullyQualifiedStructuralElementName(new Fqsen($fqsenString));

@@ -34,7 +34,7 @@ class TraitAssembler extends AssemblerAbstract
      *
      * @param Trait_ $data
      */
-    public function create(object $data) : TraitDescriptor
+    public function create(object $data): TraitDescriptor
     {
         $traitDescriptor = new TraitDescriptor();
 
@@ -61,7 +61,7 @@ class TraitAssembler extends AssemblerAbstract
      *
      * @param Property[] $properties
      */
-    protected function addProperties(array $properties, TraitDescriptor $traitDescriptor) : void
+    protected function addProperties(array $properties, TraitDescriptor $traitDescriptor): void
     {
         foreach ($properties as $property) {
             $propertyDescriptor = $this->getBuilder()->buildDescriptor($property, PropertyDescriptor::class);
@@ -79,7 +79,7 @@ class TraitAssembler extends AssemblerAbstract
      *
      * @param Method[] $methods
      */
-    protected function addMethods(array $methods, TraitDescriptor $traitDescriptor) : void
+    protected function addMethods(array $methods, TraitDescriptor $traitDescriptor): void
     {
         foreach ($methods as $method) {
             $methodDescriptor = $this->getBuilder()->buildDescriptor($method, MethodDescriptor::class);

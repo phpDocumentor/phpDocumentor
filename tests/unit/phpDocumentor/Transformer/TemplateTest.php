@@ -47,7 +47,7 @@ final class TemplateTest extends TestCase
      * @covers ::offsetGet
      * @covers ::files
      */
-    public function testConstructingATemplateWithAllProperties() : void
+    public function testConstructingATemplateWithAllProperties(): void
     {
         $parameter = new Parameter('key', 'value');
         $files = $this->givenExampleMountManager();
@@ -75,7 +75,7 @@ final class TemplateTest extends TestCase
     /**
      * @covers ::offsetSet
      */
-    public function testThatArrayElementsMayOnlyBeTransformations() : void
+    public function testThatArrayElementsMayOnlyBeTransformations(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -86,7 +86,7 @@ final class TemplateTest extends TestCase
     /**
      * @covers ::setVersion
      */
-    public function testThatVersionsAreRejectedIfTheyDontMatchNumbersSeparatedByDots() : void
+    public function testThatVersionsAreRejectedIfTheyDontMatchNumbersSeparatedByDots(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -97,7 +97,7 @@ final class TemplateTest extends TestCase
     /**
      * @covers ::offsetGet
      */
-    public function testThatWeCanCheckIfATransformationIsRegistered() : void
+    public function testThatWeCanCheckIfATransformationIsRegistered(): void
     {
         $template = new Template('name', $this->givenExampleMountManager());
         $transformation = new Transformation($template, '', '', '', '');
@@ -111,7 +111,7 @@ final class TemplateTest extends TestCase
      * @covers ::offsetExists
      * @covers ::offsetUnset
      */
-    public function testThatWeCanUnsetATransformation() : void
+    public function testThatWeCanUnsetATransformation(): void
     {
         $template = new Template('name', $this->givenExampleMountManager());
         $transformation = new Transformation($template, '', '', '', '');
@@ -127,7 +127,7 @@ final class TemplateTest extends TestCase
     /**
      * @covers ::count
      */
-    public function testThatWeCanCountTheNumberOfTransformations() : void
+    public function testThatWeCanCountTheNumberOfTransformations(): void
     {
         $template = new Template('name', $this->givenExampleMountManager());
         $transformation = new Transformation($template, '', '', '', '');
@@ -139,7 +139,7 @@ final class TemplateTest extends TestCase
     /**
      * @covers ::getIterator
      */
-    public function testThatWeCanIterateOnTheTransformations() : void
+    public function testThatWeCanIterateOnTheTransformations(): void
     {
         $template = new Template('name', $this->givenExampleMountManager());
         $transformation = new Transformation($template, '', '', '', '');
@@ -152,7 +152,7 @@ final class TemplateTest extends TestCase
     /**
      * @covers ::propagateParameters
      */
-    public function testThatAllParametersArePropagatedToTheTransformationsWhenNeeded() : void
+    public function testThatAllParametersArePropagatedToTheTransformationsWhenNeeded(): void
     {
         $parameter = new Parameter('key', 'value');
 
@@ -166,7 +166,7 @@ final class TemplateTest extends TestCase
         $this->assertSame(['key' => $parameter], $transformation->getParameters());
     }
 
-    private function givenExampleMountManager() : MountManager
+    private function givenExampleMountManager(): MountManager
     {
         return new MountManager();
     }

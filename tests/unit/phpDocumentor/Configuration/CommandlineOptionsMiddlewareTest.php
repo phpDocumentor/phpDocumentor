@@ -28,7 +28,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
     /** @var ConfigurationFactory */
     private $configurationFactory;
 
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $definition = new Definition\Version3('default');
         $this->configurationFactory = new ConfigurationFactory([], new SymfonyConfigFactory(['3' => $definition]));
@@ -42,7 +42,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
         string $argument,
         string $workingDir,
         string $expected
-    ) : void {
+    ): void {
         $configuration = new Configuration(['phpdocumentor' => ['paths' => ['output' => '/tmp']]]);
 
         $middleware = $this->createCommandlineOptionsMiddleware(['target' => $argument], $workingDir);
@@ -54,7 +54,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
     /**
      * @covers ::__invoke
      */
-    public function testItShouldDisableTheCacheBasedOnTheForceOption() : void
+    public function testItShouldDisableTheCacheBasedOnTheForceOption(): void
     {
         $configuration = new Configuration(['phpdocumentor' => ['use-cache' => true]]);
         $middleware = $this->createCommandlineOptionsMiddleware(['force' => true]);
@@ -67,7 +67,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
     /**
      * @covers ::__invoke
      */
-    public function testItShouldOverwriteTheCacheFolderBasedOnTheCacheFolderOption() : void
+    public function testItShouldOverwriteTheCacheFolderBasedOnTheCacheFolderOption(): void
     {
         $expected = '/abc';
         $configuration = new Configuration(['phpdocumentor' => ['paths' => ['cache' => '/tmp']]]);
@@ -80,7 +80,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
     /**
      * @covers ::__invoke
      */
-    public function testItShouldOverrideTheTitleBasedOnTheTitleOption() : void
+    public function testItShouldOverrideTheTitleBasedOnTheTitleOption(): void
     {
         $expected = 'phpDocumentor3';
         $configuration = new Configuration(['phpdocumentor' => ['title' => 'phpDocumentor2']]);
@@ -94,7 +94,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
     /**
      * @covers ::__invoke
      */
-    public function testItShouldOverrideTheListOfTemplatesBasedOnTheTemplateOption() : void
+    public function testItShouldOverrideTheListOfTemplatesBasedOnTheTemplateOption(): void
     {
         $expected = 'default';
         $configuration = new Configuration(['phpdocumentor' => ['templates' => [['name' => 'responsive']]]]);
@@ -108,7 +108,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
     /**
      * @covers ::__invoke
      */
-    public function testItShouldAddSourceFilesForDefaultConfiguration() : void
+    public function testItShouldAddSourceFilesForDefaultConfiguration(): void
     {
         $configuration = $this->givenAConfigurationWithoutApiDefinition();
 
@@ -127,7 +127,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
     /**
      * @covers ::__invoke
      */
-    public function testItShouldAddSourceDirectoriesForDefaultConfiguration() : void
+    public function testItShouldAddSourceDirectoriesForDefaultConfiguration(): void
     {
         $configuration = $this->givenAConfigurationWithoutApiDefinition();
         $middleware = $this->createCommandlineOptionsMiddleware(['directory' => ['./src']]);
@@ -146,7 +146,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
     /**
      * @covers ::__invoke
      */
-    public function testItShouldKeepSourceDirectoriesWhenNoneWereProvideOnCommandLine() : void
+    public function testItShouldKeepSourceDirectoriesWhenNoneWereProvideOnCommandLine(): void
     {
         $configuration = $this->givenAConfiguration();
         $middleware = $this->createCommandlineOptionsMiddleware(['directory' => []]);
@@ -162,7 +162,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
         );
     }
 
-    public function testItShouldAddAbsoluteSourcePathsToNewApi() : void
+    public function testItShouldAddAbsoluteSourcePathsToNewApi(): void
     {
         $configuration = $this->givenAConfiguration();
         $middleware = $this->createCommandlineOptionsMiddleware(['directory' => ['/src']]);
@@ -178,7 +178,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
         );
     }
 
-    public function testItShouldAddAbsoluteSourcePathsToNewApiAndRelativeToCurrent() : void
+    public function testItShouldAddAbsoluteSourcePathsToNewApiAndRelativeToCurrent(): void
     {
         $configuration = $this->givenAConfiguration();
         $middleware = $this->createCommandlineOptionsMiddleware(['directory' => ['/src', './localSrc']]);
@@ -205,7 +205,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
     /**
      * @covers ::__invoke
      */
-    public function testItShouldRegisterExtensionsForDefaultConfiguration() : void
+    public function testItShouldRegisterExtensionsForDefaultConfiguration(): void
     {
         $configuration = $this->givenAConfigurationWithoutApiDefinition();
         $extensions = ['php7', 'php5'];
@@ -222,7 +222,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
     /**
      * @covers ::__invoke
      */
-    public function testItShouldReplaceIgnoredDirectoriesForDefaultConfiguration() : void
+    public function testItShouldReplaceIgnoredDirectoriesForDefaultConfiguration(): void
     {
         $configuration = $this->givenAConfigurationWithoutApiDefinition();
         $middleware = $this->createCommandlineOptionsMiddleware(['ignore' => ['./src']]);
@@ -242,7 +242,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
     /**
      * @covers ::__invoke
      */
-    public function testItShouldOverwriteTheMarkersOfTheDefaultConfiguration() : void
+    public function testItShouldOverwriteTheMarkersOfTheDefaultConfiguration(): void
     {
         $configuration = $this->givenAConfigurationWithoutApiDefinition();
         $markers = ['FIXME2', 'TODOSOMETIME'];
@@ -259,7 +259,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
     /**
      * @covers ::__invoke
      */
-    public function testItShouldOverwriteTheVisibilitySetInTheDefaultConfiguration() : void
+    public function testItShouldOverwriteTheVisibilitySetInTheDefaultConfiguration(): void
     {
         $configuration = $this->givenAConfigurationWithoutApiDefinition();
         $visibility = ['public'];
@@ -276,7 +276,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
     /**
      * @covers ::__invoke
      */
-    public function testItShouldOverwriteTheEncodingSetInTheDefaultConfiguration() : void
+    public function testItShouldOverwriteTheEncodingSetInTheDefaultConfiguration(): void
     {
         $configuration = $this->givenAConfigurationWithoutApiDefinition();
         $encoding = 'iso-8859-1';
@@ -293,7 +293,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
     /**
      * @covers ::__invoke
      */
-    public function testItShouldOverwriteTheDefaultPackageNameSetInTheDefaultConfiguration() : void
+    public function testItShouldOverwriteTheDefaultPackageNameSetInTheDefaultConfiguration(): void
     {
         $configuration = $this->givenAConfigurationWithoutApiDefinition();
         $defaultPackageName = ['public'];
@@ -310,7 +310,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
     /**
      * @covers ::__invoke
      */
-    public function testItShouldOverwriteTheWhetherToIncludeSourcecodeInTheDefaultConfiguration() : void
+    public function testItShouldOverwriteTheWhetherToIncludeSourcecodeInTheDefaultConfiguration(): void
     {
         $configuration = $this->givenAConfigurationWithoutApiDefinition();
 
@@ -331,7 +331,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
         );
     }
 
-    private function givenAConfigurationWithoutApiDefinition() : Configuration
+    private function givenAConfigurationWithoutApiDefinition(): Configuration
     {
         $configuration = $this->givenAConfiguration();
 
@@ -342,12 +342,12 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
         return $configuration;
     }
 
-    private function givenAConfiguration() : Configuration
+    private function givenAConfiguration(): Configuration
     {
         return $this->configurationFactory->createDefault();
     }
 
-    public function targetPathProvider() : array
+    public function targetPathProvider(): array
     {
         return [
             'absolute path' => [
@@ -371,7 +371,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
     /**
      * @covers ::__invoke
      */
-    public function testItShouldAddExampleDirToConfig() : void
+    public function testItShouldAddExampleDirToConfig(): void
     {
         $configuration = $this->givenAConfiguration();
         $middleware = $this->createCommandlineOptionsMiddleware(['examples-dir' => '/src']);
@@ -387,7 +387,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
         );
     }
 
-    public function testItShouldAddExampleDirToConfigA() : void
+    public function testItShouldAddExampleDirToConfigA(): void
     {
         $configuration = $this->givenAConfigurationWithoutApiDefinition();
         $middleware = $this->createCommandlineOptionsMiddleware(['examples-dir' => '/src']);
@@ -406,7 +406,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
     /**
      * @covers ::__invoke
      */
-    public function testItShouldOverwriteTheIgnoredTagsOfTheDefaultConfiguration() : void
+    public function testItShouldOverwriteTheIgnoredTagsOfTheDefaultConfiguration(): void
     {
         $configuration = $this->givenAConfiguration();
         $tags = ['return', 'param'];
@@ -426,7 +426,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
     private function createCommandlineOptionsMiddleware(
         array $options,
         $workingDir = '/'
-    ) : CommandlineOptionsMiddleware {
+    ): CommandlineOptionsMiddleware {
         return new CommandlineOptionsMiddleware(
             $options,
             $this->configurationFactory,

@@ -51,7 +51,7 @@ final class TransformerTest extends TestCase
     /**
      * Instantiates a new \phpDocumentor\Transformer for use as fixture.
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->writerCollectionMock = $this->prophesize(Collection::class);
         $this->flySystemFactory = $this->prophesize(FlySystemFactory::class);
@@ -70,7 +70,7 @@ final class TransformerTest extends TestCase
     /**
      * @covers ::__construct
      */
-    public function testInitialization() : void
+    public function testInitialization(): void
     {
         $writerCollectionMock = $this->prophesize(Collection::class);
         $flySystemFactory = $this->prophesize(FlySystemFactory::class);
@@ -90,7 +90,7 @@ final class TransformerTest extends TestCase
      * @covers ::setTarget
      * @covers ::destination
      */
-    public function testSettingAndGettingATarget() : void
+    public function testSettingAndGettingATarget(): void
     {
         $filesystem = $this->faker()->fileSystem();
         $this->flySystemFactory->create(Argument::any())->willReturn($filesystem);
@@ -106,7 +106,7 @@ final class TransformerTest extends TestCase
     /**
      * @covers ::execute
      */
-    public function testExecute() : void
+    public function testExecute(): void
     {
         $myTestWriter = 'myTestWriter';
         $project = $this->prophesize(ProjectDescriptor::class);
@@ -131,7 +131,7 @@ final class TransformerTest extends TestCase
     /**
      * @covers ::getDescription
      */
-    public function testGetDescription() : void
+    public function testGetDescription(): void
     {
         $description = $this->fixture->getDescription();
         $this->assertNotNull($description);

@@ -88,7 +88,7 @@ final class AutoloaderLocatorTest extends TestCase
         ],
     ];
 
-    public function testAutoloadStandaloneInstalledDefaultVendor() : void
+    public function testAutoloadStandaloneInstalledDefaultVendor(): void
     {
         vfsStream::setup('root', null, $this->standaloneStructure);
         $baseDir = vfsStream::url('root/dummy/src/phpDocumentor');
@@ -98,7 +98,7 @@ final class AutoloaderLocatorTest extends TestCase
         );
     }
 
-    public function testAutoloadStandaloneInstalledCustomVendorEnvironmentVar() : void
+    public function testAutoloadStandaloneInstalledCustomVendorEnvironmentVar(): void
     {
         putenv('COMPOSER_VENDOR_DIR=custom-vendor');
         vfsStream::setup('root', null, $this->standaloneStructureCustomVendorDir);
@@ -110,7 +110,7 @@ final class AutoloaderLocatorTest extends TestCase
         putenv('COMPOSER_VENDOR_DIR');
     }
 
-    public function testAutoloadStandaloneInstalledCustomVendorConfigurationEntry() : void
+    public function testAutoloadStandaloneInstalledCustomVendorConfigurationEntry(): void
     {
         $root = vfsStream::setup('root', null, $this->standaloneStructureCustomVendorDir);
         vfsStream::newFile('composer.json')
@@ -123,7 +123,7 @@ final class AutoloaderLocatorTest extends TestCase
         );
     }
 
-    public function testAutoloadStandaloneInstalledCustomVendorConfigurationEntryOverridenByEnvironment() : void
+    public function testAutoloadStandaloneInstalledCustomVendorConfigurationEntryOverridenByEnvironment(): void
     {
         putenv('COMPOSER_VENDOR_DIR=custom-vendor');
         $root = vfsStream::setup('root', null, $this->standaloneStructureCustomVendorDir);
@@ -138,7 +138,7 @@ final class AutoloaderLocatorTest extends TestCase
         putenv('COMPOSER_VENDOR_DIR');
     }
 
-    public function testAutoloadStandaloneInstalledCustomVendorCustomConfigurationEntry() : void
+    public function testAutoloadStandaloneInstalledCustomVendorCustomConfigurationEntry(): void
     {
         putenv('COMPOSER=custom_composer');
         $root = vfsStream::setup('root', null, $this->standaloneStructureCustomVendorDir);
@@ -153,7 +153,7 @@ final class AutoloaderLocatorTest extends TestCase
         putenv('COMPOSER');
     }
 
-    public function testAutoloadComposerInstalled() : void
+    public function testAutoloadComposerInstalled(): void
     {
         $root = vfsStream::setup('root', null, $this->composerInstalledStructure);
         vfsStream::newFile('autoload.php')->at($root->getChild('dummy')->getChild('vendor'));
@@ -164,7 +164,7 @@ final class AutoloaderLocatorTest extends TestCase
         );
     }
 
-    public function testAutoloadComposerInstalledCustomVendor() : void
+    public function testAutoloadComposerInstalledCustomVendor(): void
     {
         $root = vfsStream::setup('root', null, $this->composerInstalledStructureCustomVendorDir);
         vfsStream::newFile('autoload.php')->at($root->getChild('dummy')->getChild('custom-vendor'));
@@ -175,7 +175,7 @@ final class AutoloaderLocatorTest extends TestCase
         );
     }
 
-    public function testAutoloadComposerInstalledCustomVendorEnvironmentVar() : void
+    public function testAutoloadComposerInstalledCustomVendorEnvironmentVar(): void
     {
         putenv('COMPOSER_VENDOR_DIR=custom-vendor');
         $root = vfsStream::setup('root', null, $this->composerInstalledStructureCustomVendorDir);
@@ -188,7 +188,7 @@ final class AutoloaderLocatorTest extends TestCase
         putenv('COMPOSER_VENDOR_DIR');
     }
 
-    public function testAutoloadComposerNotFindableVendor() : void
+    public function testAutoloadComposerNotFindableVendor(): void
     {
         $root = vfsStream::setup('root', null, []);
         $baseDir = vfsStream::url('root/dummy/custom-vendor/phpDocumentor/phpDocumentor/src/phpDocumentor');

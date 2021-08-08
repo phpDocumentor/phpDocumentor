@@ -18,5 +18,5 @@ use phpDocumentor\Guides\Nodes\DocumentNode;
 
 interface FullDocumentNodeRenderer
 {
-    public function renderDocument(DocumentNode $node, Environment $environment) : string;
+    public function renderDocument(DocumentNode $node, Environment $environment): string;
 }

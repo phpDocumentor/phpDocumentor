@@ -31,7 +31,7 @@ final class FileFactoryTest extends TestCase
 {
     use ProphecyTrait;
 
-    public function testIfFileFactoryIsCreatedUsingAnArray() : void
+    public function testIfFileFactoryIsCreatedUsingAnArray(): void
     {
         FileFactory::createInstance(
             $this->prophesize(DocBlockFactoryInterface::class)->reveal(),
@@ -45,7 +45,7 @@ final class FileFactoryTest extends TestCase
         $this->assertTrue(true);
     }
 
-    public function testIfFileFactoryFailsWhenPassingAnInvalidMiddlewareType() : void
+    public function testIfFileFactoryFailsWhenPassingAnInvalidMiddlewareType(): void
     {
         // technically we are testing behaviour of the ChainFactory; however, because this is the inverse of the
         // previous test we now verify that an error should indeed be thrown and we do not run the risk of silent

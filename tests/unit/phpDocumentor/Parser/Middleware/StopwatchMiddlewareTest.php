@@ -40,7 +40,7 @@ final class StopwatchMiddlewareTest extends TestCase
     /**
      * @covers ::execute
      */
-    public function testThatMemoryUsageIsLogged() : void
+    public function testThatMemoryUsageIsLogged(): void
     {
         $commandFile = new LocalFile(__FILE__);
         $command = new CreateCommand(
@@ -84,7 +84,7 @@ final class StopwatchMiddlewareTest extends TestCase
         $this->assertSame($expected, $result);
     }
 
-    private function givenAStopwatchEventWithMemoryTotal(int $memory) : StopwatchEvent
+    private function givenAStopwatchEventWithMemoryTotal(int $memory): StopwatchEvent
     {
         $period = $this->prophesize(StopwatchPeriod::class);
         $period->getMemory()->willReturn($memory);

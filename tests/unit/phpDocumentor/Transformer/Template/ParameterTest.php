@@ -24,7 +24,7 @@ final class ParameterTest extends TestCase
     /**
      * @covers ::key
      */
-    public function testGetKey() : void
+    public function testGetKey(): void
     {
         $fixture = new Parameter('key', 'value');
 
@@ -34,7 +34,7 @@ final class ParameterTest extends TestCase
     /**
      * @covers ::value
      */
-    public function testGetValue() : void
+    public function testGetValue(): void
     {
         $fixture = new Parameter('key', 'value');
 

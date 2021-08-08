@@ -16,7 +16,7 @@ use phpDocumentor\Guides\RestructuredText\Parser;
  */
 class Meta extends Directive
 {
-    public function getName() : string
+    public function getName(): string
     {
         return 'meta';
     }
@@ -30,7 +30,7 @@ class Meta extends Directive
         string $variable,
         string $data,
         array $options
-    ) : void {
+    ): void {
         $document = $parser->getDocument();
 
         foreach ($options as $key => $value) {

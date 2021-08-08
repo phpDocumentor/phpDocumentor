@@ -34,7 +34,7 @@ class ApplicationTest extends TestCase
     /** @var Application */
     private $feature;
 
-    public function setUp() : void
+    public function setUp(): void
     {
         $container = $this->prophesize(ContainerInterface::class);
         $container->get(Argument::exact('event_dispatcher'))
@@ -56,7 +56,7 @@ class ApplicationTest extends TestCase
     /**
      * @covers ::getCommandName
      */
-    public function testWhetherTheNameOfTheCommandCanBeRetrieved() : void
+    public function testWhetherTheNameOfTheCommandCanBeRetrieved(): void
     {
         $_SERVER['argv'] = ['binary', 'my:command'];
         $this->feature->add((new Command('my:command'))->setCode(function () {
@@ -72,7 +72,7 @@ class ApplicationTest extends TestCase
     /**
      * @covers ::getCommandName
      */
-    public function testWhetherTheRunCommandIsUsedWhenNoCommandNameIsGiven() : void
+    public function testWhetherTheRunCommandIsUsedWhenNoCommandNameIsGiven(): void
     {
         $_SERVER['argv'] = ['binary', 'something else'];
         $this->feature->add((new Command('MyCommand'))->setCode(function () {
@@ -88,7 +88,7 @@ class ApplicationTest extends TestCase
     /**
      * @covers ::getDefaultInputDefinition
      */
-    public function testWhetherTheConfigurationAndLogIsADefaultInput() : void
+    public function testWhetherTheConfigurationAndLogIsADefaultInput(): void
     {
         $definition = $this->feature->getDefinition();
 
@@ -100,7 +100,7 @@ class ApplicationTest extends TestCase
      * @covers ::getLongVersion
      * @requires PHPUnit >= 9
      */
-    public function testGetLongVersion() : void
+    public function testGetLongVersion(): void
     {
         self::assertMatchesRegularExpression(
             '~phpDocumentor <info>v(.*)</info>~',
@@ -112,7 +112,7 @@ class ApplicationTest extends TestCase
      * @covers ::getLongVersion
      * @requires PHPUnit <= 8
      */
-    public function testGetLongVersionPhp72() : void
+    public function testGetLongVersionPhp72(): void
     {
         self::assertRegExp(
             '~phpDocumentor <info>v(.*)</info>~',

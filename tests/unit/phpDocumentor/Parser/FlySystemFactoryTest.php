@@ -50,7 +50,7 @@ final class FlySystemFactoryTest extends TestCase
     /** @var Dsn */
     private $dsn;
 
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->mountManagerMock = $this->prophesize(MountManager::class);
         $this->filesystemMock = $this->prophesize(Filesystem::class);
@@ -61,7 +61,7 @@ final class FlySystemFactoryTest extends TestCase
     /**
      * @covers ::create
      */
-    public function testCreateLocalFilesystemWithoutCache() : void
+    public function testCreateLocalFilesystemWithoutCache(): void
     {
         $this->mountManagerMock->mountFilesystem(Argument::any(), Argument::any())->shouldBeCalledOnce();
         $this->mountManagerMock->getFilesystem(Argument::any())
@@ -84,7 +84,7 @@ final class FlySystemFactoryTest extends TestCase
     /**
      * @covers ::create
      */
-    public function testCreateLocalFilesystemWithCache() : void
+    public function testCreateLocalFilesystemWithCache(): void
     {
         $this->filesystemMock->addPlugin(Argument::any())->shouldBeCalled();
         $this->mountManagerMock->mountFilesystem(Argument::any(), Argument::any())->shouldNotBeCalled();
@@ -100,7 +100,7 @@ final class FlySystemFactoryTest extends TestCase
     /**
      * @covers ::create
      */
-    public function testUnsupportedScheme() : void
+    public function testUnsupportedScheme(): void
     {
         $this->expectException('InvalidArgumentException');
         $this->mountManagerMock->mountFilesystem(Argument::any(), Argument::any())->shouldNotBeCalled();
@@ -115,7 +115,7 @@ final class FlySystemFactoryTest extends TestCase
     /**
      * @covers ::create
      */
-    public function testFlyFinderIsRegistered() : void
+    public function testFlyFinderIsRegistered(): void
     {
         $this->mountManagerMock->mountFilesystem(Argument::any(), Argument::any())->shouldBeCalledOnce();
         $this->mountManagerMock->getFilesystem(Argument::any())
@@ -129,7 +129,7 @@ final class FlySystemFactoryTest extends TestCase
     /**
      * @see FlySystemFactory::stripScheme
      */
-    private function formatOsSpecificResult() : string
+    private function formatOsSpecificResult(): string
     {
         $expected = (string) $this->dsn;
         if (PHP_OS_FAMILY === 'Windows') {

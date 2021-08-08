@@ -37,40 +37,40 @@ interface ArgumentInterface extends ElementInterface
      *
      * @todo update link to point to the final destination for the PHPDoc Standard.
      */
-    public function setType(?Type $type) : void;
+    public function setType(?Type $type): void;
 
     /**
      * Returns a normalized Types.
      *
      * @see self::setTypes() for details on what types represent.
      */
-    public function getType() : ?Type;
+    public function getType(): ?Type;
 
     /**
      * Sets the default value for an argument expressed as a string.
      *
      * @param string $value A textual representation of the default value.
      */
-    public function setDefault(string $value) : void;
+    public function setDefault(string $value): void;
 
     /**
      * Returns the default value for an argument as string or null if no default is set.
      *
      * @return string|null A textual representation of the default value, or null if no default value is present.
      */
-    public function getDefault() : ?string;
+    public function getDefault(): ?string;
 
     /**
      * Sets whether this argument passes its parameter by reference or by value.
      *
      * @param bool $byReference True if the parameter is passed by reference, otherwise it is by value.
      */
-    public function setByReference(bool $byReference) : void;
+    public function setByReference(bool $byReference): void;
 
     /**
      * Returns whether the parameter is passed by reference or by value.
      *
      * @return bool True if the parameter is passed by reference, otherwise it is by value.
      */
-    public function isByReference() : bool;
+    public function isByReference(): bool;
 }

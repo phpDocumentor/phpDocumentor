@@ -29,17 +29,17 @@ class Directive
         $this->options = $options;
     }
 
-    public function getVariable() : string
+    public function getVariable(): string
     {
         return $this->variable;
     }
 
-    public function getName() : string
+    public function getName(): string
     {
         return $this->name;
     }
 
-    public function getData() : string
+    public function getData(): string
     {
         return $this->data;
     }
@@ -47,7 +47,7 @@ class Directive
     /**
      * @return mixed[]
      */
-    public function getOptions() : array
+    public function getOptions(): array
     {
         return $this->options;
     }
@@ -55,7 +55,7 @@ class Directive
     /**
      * @param mixed $value
      */
-    public function setOption(string $key, $value) : void
+    public function setOption(string $key, $value): void
     {
         $this->options[$key] = $value;
     }

@@ -17,5 +17,5 @@ use phpDocumentor\Descriptor\ProjectDescriptor;
 
 interface Generator
 {
-    public function create(ProjectDescriptor $project, string $filename) : void;
+    public function create(ProjectDescriptor $project, string $filename): void;
 }

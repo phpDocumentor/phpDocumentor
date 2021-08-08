@@ -34,10 +34,10 @@ abstract class EventAbstract extends Event
     /**
      * Returns the object that is the subject of this event.
      */
-    public function getSubject() : object
+    public function getSubject(): object
     {
         return $this->subject;
     }
 
-    abstract public static function createInstance(object $subject) : self;
+    abstract public static function createInstance(object $subject): self;
 }

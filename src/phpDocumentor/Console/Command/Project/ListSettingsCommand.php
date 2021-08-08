@@ -34,7 +34,7 @@ final class ListSettingsCommand extends Command
         $this->servicesWithCustomSettings = $servicesWithCustomSettings;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output) : int
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('The following settings are supported using <info>--setting</info> or <info>-s</info>.');
         $output->writeln('');

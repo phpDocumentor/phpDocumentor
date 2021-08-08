@@ -29,17 +29,17 @@ class ListLine
         $this->text = $text;
     }
 
-    public function getPrefix() : string
+    public function getPrefix(): string
     {
         return $this->prefix;
     }
 
-    public function isOrdered() : bool
+    public function isOrdered(): bool
     {
         return $this->ordered;
     }
 
-    public function getDepth() : int
+    public function getDepth(): int
     {
         return $this->depth;
     }
@@ -55,7 +55,7 @@ class ListLine
     /**
      * @param mixed $text
      */
-    public function setText($text) : void
+    public function setText($text): void
     {
         $this->text = $text;
     }
@@ -63,7 +63,7 @@ class ListLine
     /**
      * @param mixed $value
      */
-    public function addText($value) : void
+    public function addText($value): void
     {
         $this->text[] = $value;
     }
@@ -71,7 +71,7 @@ class ListLine
     /**
      * @return mixed[]
      */
-    public function toArray() : array
+    public function toArray(): array
     {
         return [
             'prefix' => $this->prefix,

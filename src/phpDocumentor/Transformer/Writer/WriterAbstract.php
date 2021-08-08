@@ -31,7 +31,7 @@ abstract class WriterAbstract
      *
      * @codeCoverageIgnore
      */
-    public function checkRequirements() : void
+    public function checkRequirements(): void
     {
         // empty body since most writers do not have requirements
     }
@@ -42,9 +42,9 @@ abstract class WriterAbstract
      * @param ProjectDescriptor $project Document containing the structure.
      * @param Transformation $transformation Transformation to execute.
      */
-    abstract public function transform(ProjectDescriptor $project, Transformation $transformation) : void;
+    abstract public function transform(ProjectDescriptor $project, Transformation $transformation): void;
 
-    public function __toString() : string
+    public function __toString(): string
     {
         return static::class;
     }

@@ -25,7 +25,7 @@ class PropertyAssemblerTest extends TestCase
     /**
      * Initializes the fixture for this test.
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->builder = $this->prophesize(ProjectDescriptorBuilder::class);
         $this->fixture = new PropertyAssembler();
@@ -36,7 +36,7 @@ class PropertyAssemblerTest extends TestCase
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\Tags\PropertyAssembler::create
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\Tags\PropertyAssembler::buildDescriptor
      */
-    public function testCreatingPropertyDescriptorFromReflector() : void
+    public function testCreatingPropertyDescriptorFromReflector(): void
     {
         $reflector = new Property(
             '$myProperty',

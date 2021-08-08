@@ -27,7 +27,7 @@ final class ParseDirectoryHandler
         $this->commandBus = $commandBus;
     }
 
-    public function handle(ParseDirectoryCommand $command) : void
+    public function handle(ParseDirectoryCommand $command): void
     {
         $configuration = $command->getConfiguration();
 
@@ -49,7 +49,7 @@ final class ParseDirectoryHandler
         FilesystemInterface $filesystem,
         string $directory,
         Configuration $configuration
-    ) : void {
+    ): void {
         $indexName = $configuration->getNameOfIndexFile();
         $extension = $configuration->getSourceFileExtension();
         $indexFilename = sprintf('%s.%s', $indexName, $extension);

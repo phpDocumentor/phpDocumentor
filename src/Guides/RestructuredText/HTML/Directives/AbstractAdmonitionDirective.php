@@ -38,7 +38,7 @@ abstract class AbstractAdmonitionDirective extends SubDirective
         string $variable,
         string $data,
         array $options
-    ) : ?Node {
+    ): ?Node {
         return new TemplatedNode(
             'directives/admonition.html.twig',
             [
@@ -50,7 +50,7 @@ abstract class AbstractAdmonitionDirective extends SubDirective
         );
     }
 
-    final public function getName() : string
+    final public function getName(): string
     {
         return $this->name;
     }

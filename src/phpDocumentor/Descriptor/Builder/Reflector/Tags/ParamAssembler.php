@@ -31,7 +31,7 @@ class ParamAssembler extends BaseTagAssembler
      *
      * @param Param $data
      */
-    public function buildDescriptor(object $data) : ParamDescriptor
+    public function buildDescriptor(object $data): ParamDescriptor
     {
         $descriptor = new ParamDescriptor($data->getName());
         $descriptor->setVariableName((string) $data->getVariableName());

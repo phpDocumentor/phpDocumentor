@@ -35,7 +35,7 @@ class MethodAssembler extends BaseTagAssembler
      *
      * @param Method $data
      */
-    public function buildDescriptor(object $data) : MethodDescriptor
+    public function buildDescriptor(object $data): MethodDescriptor
     {
         $descriptor = new MethodDescriptor($data->getName());
         $descriptor->setMethodName($data->getMethodName());
@@ -65,7 +65,7 @@ class MethodAssembler extends BaseTagAssembler
      * Construct an argument descriptor given the array representing an argument with a Method Tag in the Reflection
      * component.
      */
-    private function createArgumentDescriptorForMagicMethod(string $name, Type $type) : ArgumentDescriptor
+    private function createArgumentDescriptorForMagicMethod(string $name, Type $type): ArgumentDescriptor
     {
         $argumentDescriptor = new ArgumentDescriptor();
         $argumentDescriptor->setType($type);

@@ -35,7 +35,7 @@ class ConstantAssemblerTest extends TestCase
     /**
      * Creates a new fixture to test with.
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->fixture = new ConstantAssembler();
         $projectDescriptorBuilder = $this->prophesize(ProjectDescriptorBuilder::class);
@@ -47,7 +47,7 @@ class ConstantAssemblerTest extends TestCase
      *
      * @covers ::create
      */
-    public function testCreateConstantDescriptorFromReflector() : void
+    public function testCreateConstantDescriptorFromReflector(): void
     {
         $pi = '3.14159265359';
         $name = 'constPI';
@@ -81,7 +81,7 @@ DOCBLOCK
      *
      * @covers ::create
      */
-    public function testCreateNamespaceConstantDescriptorFromReflector() : void
+    public function testCreateNamespaceConstantDescriptorFromReflector(): void
     {
         $pi = '3.14159265359';
         $name = 'constPI';

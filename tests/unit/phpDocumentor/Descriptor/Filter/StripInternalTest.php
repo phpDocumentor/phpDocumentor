@@ -38,7 +38,7 @@ final class StripInternalTest extends TestCase
     /**
      * Creates a new (empty) fixture object.
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->fixture = new StripInternal();
     }
@@ -48,7 +48,7 @@ final class StripInternalTest extends TestCase
      *
      * @covers ::__invoke
      */
-    public function testStripsInternalTagFromDescription() : void
+    public function testStripsInternalTagFromDescription(): void
     {
         $otherTag = new TagDescriptor('other');
         $description = new DescriptionDescriptor(
@@ -77,7 +77,7 @@ final class StripInternalTest extends TestCase
      *
      * @covers ::__invoke
      */
-    public function testKeepsInternalTagsInDescription() : void
+    public function testKeepsInternalTagsInDescription(): void
     {
         $tags = [
             new TagDescriptor('internal'),
@@ -105,7 +105,7 @@ final class StripInternalTest extends TestCase
     /**
      * @covers ::__invoke
      */
-    public function testRemovesDescriptorIfTaggedAsInternal() : void
+    public function testRemovesDescriptorIfTaggedAsInternal(): void
     {
         $apiSpec = ApiSpecification::createDefault();
         $apiSpec['visibility'] = ['public'];
@@ -125,7 +125,7 @@ final class StripInternalTest extends TestCase
     /**
      * @covers ::__invoke
      */
-    public function testKeepsDescriptorIfTaggedAsInternalAndParsePrivateIsTrue() : void
+    public function testKeepsDescriptorIfTaggedAsInternalAndParsePrivateIsTrue(): void
     {
         $apiSpec = ApiSpecification::createDefault();
         $apiSpec['visibility'] = ['internal'];
@@ -141,7 +141,7 @@ final class StripInternalTest extends TestCase
     /**
      * @covers ::__invoke
      */
-    public function testDescriptorIsUnmodifiedIfThereIsNoInternalTag() : void
+    public function testDescriptorIsUnmodifiedIfThereIsNoInternalTag(): void
     {
         $apiSpec = ApiSpecification::createDefault();
         $descriptor = $this->prophesize(DescriptorAbstract::class);

@@ -25,7 +25,7 @@ class ParamAssemblerTest extends TestCase
     /**
      * Initializes the fixture for this test.
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->builder = $this->prophesize(ProjectDescriptorBuilder::class);
         $this->fixture = new ParamAssembler();
@@ -36,7 +36,7 @@ class ParamAssemblerTest extends TestCase
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\Tags\ParamAssembler::create
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\Tags\ParamAssembler::buildDescriptor
      */
-    public function testCreatingParamDescriptorFromReflector() : void
+    public function testCreatingParamDescriptorFromReflector(): void
     {
         $reflector = new Param(
             '$myParameter',

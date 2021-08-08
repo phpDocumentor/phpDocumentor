@@ -21,12 +21,12 @@ interface Descriptor
     /**
      * Returns the local name for this element.
      */
-    public function getName() : string;
+    public function getName(): string;
 
     /**
      * Returns the description for this element.
      *
      * This method will automatically attempt to inherit the parent's description if this one has none.
      */
-    public function getDescription() : ?DocBlock\DescriptionDescriptor;
+    public function getDescription(): ?DocBlock\DescriptionDescriptor;
 }

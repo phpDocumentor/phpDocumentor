@@ -39,12 +39,12 @@ final class ConfigureTest extends TestCase
     /** @var Locator */
     private $cacheLocator;
 
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->cacheLocator = $this->prophesize(Locator::class);
     }
 
-    public function testConfigNoneWillIgnoreFileLoad() : void
+    public function testConfigNoneWillIgnoreFileLoad(): void
     {
         $cachePath = new Path(sys_get_temp_dir() . '/phpdocumentor');
         $config = [
@@ -73,7 +73,7 @@ final class ConfigureTest extends TestCase
         self::assertEquals($config, $stage(['config' => 'none']));
     }
 
-    public function testInvalidConfigPathWillThrowException() : void
+    public function testInvalidConfigPathWillThrowException(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $logger = $this->prophesize(LoggerInterface::class);
@@ -93,7 +93,7 @@ final class ConfigureTest extends TestCase
         $stage(['config' => 'some/invalid/file.xml']);
     }
 
-    public function testNoConfigOptionWillLoadDefaultFiles() : void
+    public function testNoConfigOptionWillLoadDefaultFiles(): void
     {
         $cachePath = new Path(sys_get_temp_dir() . '/phpdocumentor');
         $config = [
@@ -122,7 +122,7 @@ final class ConfigureTest extends TestCase
         $this->assertEquals($config, $actual);
     }
 
-    public function testConfigWithValidFileWillCallFactory() : void
+    public function testConfigWithValidFileWillCallFactory(): void
     {
         $cachePath = new Path(sys_get_temp_dir() . '/phpdocumentor');
         $config = [

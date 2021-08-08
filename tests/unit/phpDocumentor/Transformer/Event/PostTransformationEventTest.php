@@ -28,7 +28,7 @@ final class PostTransformationEventTest extends TestCase
     /**
      * Creates a new (empty) fixture object.
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->fixture = new PostTransformationEvent(new stdClass());
     }
@@ -37,7 +37,7 @@ final class PostTransformationEventTest extends TestCase
      * @covers ::createInstance
      * @covers ::getSubject
      */
-    public function testCreatingAnInstance() : void
+    public function testCreatingAnInstance(): void
     {
         $subject = new stdClass();
         $this->fixture = PostTransformationEvent::createInstance($subject);

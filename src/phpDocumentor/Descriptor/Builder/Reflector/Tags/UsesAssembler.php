@@ -26,7 +26,7 @@ class UsesAssembler extends BaseTagAssembler
      *
      * @param Uses $data
      */
-    public function buildDescriptor(object $data) : UsesDescriptor
+    public function buildDescriptor(object $data): UsesDescriptor
     {
         $descriptor = new UsesDescriptor($data->getName());
         $reference = $data->getReference();

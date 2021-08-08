@@ -51,7 +51,7 @@ final class ParseGuides
         $this->flySystemFactory = $flySystemFactory;
     }
 
-    public function __invoke(Payload $payload) : Payload
+    public function __invoke(Payload $payload): Payload
     {
         if (($payload->getConfig()['phpdocumentor']['settings']['guides.enabled'] ?? false) !== true) {
             return $payload;
@@ -99,7 +99,7 @@ final class ParseGuides
      * @param string $priority The logging priority as declared in the LogLevel PSR-3 class.
      * @param string[] $parameters
      */
-    private function log(string $message, string $priority = LogLevel::INFO, array $parameters = []) : void
+    private function log(string $message, string $priority = LogLevel::INFO, array $parameters = []): void
     {
         $this->logger->log($priority, $message, $parameters);
     }

@@ -63,7 +63,7 @@ final class Configure
      *
      * @return array<string, array>
      */
-    public function __invoke(array $options) : array
+    public function __invoke(array $options): array
     {
         $this->configFactory->addMiddleware(
             new CommandlineOptionsMiddleware($options, $this->configFactory, getcwd())
@@ -78,7 +78,7 @@ final class Configure
         return $this->configuration->getArrayCopy();
     }
 
-    private function loadConfigurationFile(string $path) : void
+    private function loadConfigurationFile(string $path): void
     {
         if ($path === '') {
             $this->logger->notice('Using the configuration file at the default location');

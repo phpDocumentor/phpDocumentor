@@ -62,7 +62,7 @@ final class RenderHandler
         $this->router = $router;
     }
 
-    public function handle(RenderCommand $command) : void
+    public function handle(RenderCommand $command): void
     {
         $environment = new Environment(
             $command->getConfiguration(),
@@ -81,7 +81,7 @@ final class RenderHandler
         GuideSetDescriptor $documtationSet,
         Environment $environment,
         FilesystemInterface $destination
-    ) : void {
+    ): void {
         $this->initReferences($environment, $this->references);
         foreach ($documtationSet->getDocuments() as $file => $descriptor) {
             $document = $descriptor->getDocumentNode();
@@ -104,7 +104,7 @@ final class RenderHandler
     /**
      * @param array<Reference> $references
      */
-    private function initReferences(Environment $environment, array $references) : void
+    private function initReferences(Environment $environment, array $references): void
     {
         $references = array_merge(
             [

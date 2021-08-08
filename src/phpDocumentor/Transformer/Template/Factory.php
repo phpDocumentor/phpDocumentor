@@ -67,7 +67,7 @@ class Factory
      *
      * @param array<int, array{name:string, parameters:array<string, string>}> $templates
      */
-    public function getTemplates(array $templates, FilesystemInterface $output) : Collection
+    public function getTemplates(array $templates, FilesystemInterface $output): Collection
     {
         $stopWatch = new Stopwatch();
         $loadedTemplates = [];
@@ -88,7 +88,7 @@ class Factory
     /**
      * @param array<string, string> $parameters
      */
-    private function loadTemplate(FilesystemInterface $output, string $template, array $parameters) : Template
+    private function loadTemplate(FilesystemInterface $output, string $template, array $parameters): Template
     {
         $template = $this->createTemplateFromXml($output, $template, $parameters);
 
@@ -106,7 +106,7 @@ class Factory
      *
      * @return string[]
      */
-    public function getAllNames() : array
+    public function getAllNames(): array
     {
         /** @var RecursiveDirectoryIterator $files */
         $files = new DirectoryIterator($this->getTemplatesPath());
@@ -131,7 +131,7 @@ class Factory
     /**
      * Returns the path where all templates are stored.
      */
-    public function getTemplatesPath() : string
+    public function getTemplatesPath(): string
     {
         return $this->globalTemplatesPath;
     }
@@ -145,7 +145,7 @@ class Factory
         FilesystemInterface $filesystem,
         string $nameOrPath,
         array $templateParams
-    ) : Template {
+    ): Template {
         // create the filesystems that a template needs to be able to manipulate, the source folder containing this
         // template its files; the destination to where it can write its files and a global templates folder where to
         // get global template files from
@@ -203,7 +203,7 @@ class Factory
         return $template;
     }
 
-    private function resolve(string $nameOrPath) : FilesystemInterface
+    private function resolve(string $nameOrPath): FilesystemInterface
     {
         $configPath = rtrim($nameOrPath, DIRECTORY_SEPARATOR) . '/template.xml';
         if (file_exists($configPath) && is_readable($configPath)) {
@@ -225,7 +225,7 @@ class Factory
         throw new TemplateNotFound($nameOrPath);
     }
 
-    private function getTemplatesDirectory() : Filesystem
+    private function getTemplatesDirectory(): Filesystem
     {
         $dsnString = $this->getTemplatesPath();
         try {
@@ -242,7 +242,7 @@ class Factory
     private function createNewFilesystemFromSubfolder(
         Filesystem $hostFilesystem,
         string $subfolder
-    ) : Filesystem {
+    ): Filesystem {
         $hostFilesystemAdapter = $hostFilesystem->getAdapter();
         if (!$hostFilesystemAdapter instanceof AbstractAdapter) {
             throw new RuntimeException(

@@ -27,13 +27,13 @@ final class PathNormalizingMiddlewareTest extends TestCase
     /** @var ConfigurationFactory */
     private $configurationFactory;
 
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $definition = new Definition\Version3('default');
         $this->configurationFactory = new ConfigurationFactory([], new SymfonyConfigFactory(['3' => $definition]));
     }
 
-    public function testNoConfigUriLeavesConfigUnchanged() : void
+    public function testNoConfigUriLeavesConfigUnchanged(): void
     {
         $configuration = $this->givenAConfiguration();
         $middleware = new PathNormalizingMiddleware();
@@ -45,7 +45,7 @@ final class PathNormalizingMiddlewareTest extends TestCase
     /**
      * @dataProvider pathProvider
      */
-    public function testNormalizedIgnoreToGlob(string $input, string $output) : void
+    public function testNormalizedIgnoreToGlob(string $input, string $output): void
     {
         $configuration = $this->givenAConfiguration();
         $configuration['phpdocumentor']['versions']['1.0.0']->api[0]->setIgnore(['paths' => [$input]]);
@@ -62,7 +62,7 @@ final class PathNormalizingMiddlewareTest extends TestCase
     /**
      * @dataProvider cachePathProvider
      */
-    public function testNormalizeCachePath(string $input, string $output, string $configPath) : void
+    public function testNormalizeCachePath(string $input, string $output, string $configPath): void
     {
         $configuration = $this->givenAConfiguration();
         $configuration['phpdocumentor']['paths']['cache'] = new Path($input);
@@ -76,7 +76,7 @@ final class PathNormalizingMiddlewareTest extends TestCase
         self::assertSame($output, (string) $outputConfig['phpdocumentor']['paths']['cache']);
     }
 
-    public function testDsnResolvedByConfigPath() : void
+    public function testDsnResolvedByConfigPath(): void
     {
         $configuration = $this->givenAConfiguration();
 
@@ -93,7 +93,7 @@ final class PathNormalizingMiddlewareTest extends TestCase
         );
     }
 
-    public function cachePathProvider() : array
+    public function cachePathProvider(): array
     {
         return [
             'Absolute paths are not normalized' => [
@@ -119,7 +119,7 @@ final class PathNormalizingMiddlewareTest extends TestCase
         ];
     }
 
-    public function pathProvider() : array
+    public function pathProvider(): array
     {
         return [
             [
@@ -145,7 +145,7 @@ final class PathNormalizingMiddlewareTest extends TestCase
         ];
     }
 
-    private function givenAConfiguration() : Configuration
+    private function givenAConfiguration(): Configuration
     {
         return $this->configurationFactory->createDefault();
     }

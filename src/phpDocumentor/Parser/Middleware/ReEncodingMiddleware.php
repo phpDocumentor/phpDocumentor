@@ -24,7 +24,7 @@ final class ReEncodingMiddleware implements Middleware
     /** @var string */
     private $encoding = 'UTF-8';
 
-    public function withEncoding(string $encoding) : void
+    public function withEncoding(string $encoding): void
     {
         $this->encoding = $encoding;
     }
@@ -32,7 +32,7 @@ final class ReEncodingMiddleware implements Middleware
     /**
      * @param callable(Command): object $next
      */
-    public function execute(Command $command, callable $next) : object
+    public function execute(Command $command, callable $next): object
     {
         if (!$command instanceof CreateCommand) {
             return $next($command);
