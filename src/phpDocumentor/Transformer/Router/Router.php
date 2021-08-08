@@ -84,7 +84,8 @@ class Router
             );
         }
 
-        if ($node instanceof ClassDescriptor
+        if (
+            $node instanceof ClassDescriptor
             || $node instanceof InterfaceDescriptor
             || $node instanceof TraitDescriptor
         ) {

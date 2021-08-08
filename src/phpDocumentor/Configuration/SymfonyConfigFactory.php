@@ -146,7 +146,8 @@ class SymfonyConfigFactory
     private function upgradeConfiguration(Upgradable $definition, array $configuration): array
     {
         $upgradedConfiguration = $definition->upgrade($configuration);
-        if (!isset($upgradedConfiguration[self::FIELD_CONFIG_VERSION])
+        if (
+            !isset($upgradedConfiguration[self::FIELD_CONFIG_VERSION])
             || $configuration[self::FIELD_CONFIG_VERSION] === $upgradedConfiguration[self::FIELD_CONFIG_VERSION]
         ) {
             throw UpgradeFailedException::create($configuration[self::FIELD_CONFIG_VERSION]);

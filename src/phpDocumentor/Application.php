@@ -69,7 +69,8 @@ final class Application
         ini_set('memory_limit', '-1');
 
         // @codeCoverageIgnoreStart
-        if (extension_loaded('Zend OPcache')
+        if (
+            extension_loaded('Zend OPcache')
             && ini_get('opcache.enable')
             && ini_get('opcache.enable_cli')
             && ini_get('opcache.save_comments') === '0'

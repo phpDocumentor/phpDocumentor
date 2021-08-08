@@ -136,7 +136,8 @@ class DescriptorRepository
      */
     private function getTypeWithClassAsContext(string $fqsen, DescriptorAbstract $container): string
     {
-        if (!$container instanceof ClassDescriptor
+        if (
+            !$container instanceof ClassDescriptor
             && !$container instanceof InterfaceDescriptor
             && !$container instanceof TraitDescriptor
         ) {

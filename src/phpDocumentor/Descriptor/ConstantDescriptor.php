@@ -143,7 +143,8 @@ class ConstantDescriptor extends DescriptorAbstract implements
         /** @var ClassDescriptor|InterfaceDescriptor|null $associatedClass */
         $associatedClass = $this->getParent();
 
-        if (($associatedClass instanceof ClassDescriptor || $associatedClass instanceof InterfaceDescriptor)
+        if (
+            ($associatedClass instanceof ClassDescriptor || $associatedClass instanceof InterfaceDescriptor)
             && ($associatedClass->getParent() instanceof ClassDescriptor
                 || $associatedClass->getParent() instanceof InterfaceDescriptor
             )

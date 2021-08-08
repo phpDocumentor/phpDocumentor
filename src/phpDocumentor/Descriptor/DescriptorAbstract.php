@@ -282,8 +282,10 @@ abstract class DescriptorAbstract implements Filterable
     public function getPackage(): ?PackageDescriptor
     {
         $inheritedElement = $this->getInheritedElement();
-        if ($this->package instanceof PackageDescriptor
-            && !($this->package->getName() === '\\' && $inheritedElement)) {
+        if (
+            $this->package instanceof PackageDescriptor
+            && !($this->package->getName() === '\\' && $inheritedElement)
+        ) {
             return $this->package;
         }
 

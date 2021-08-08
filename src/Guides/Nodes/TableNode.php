@@ -438,11 +438,13 @@ class TableNode extends Node
                 // that this column in the next row should also be
                 // included in that previous row's content
                 foreach ($row->getColumns() as $columnIndex => $column) {
-                    if (!$column->isCompletelyEmpty()
+                    if (
+                        !$column->isCompletelyEmpty()
                         && str_repeat(
                             '-',
                             mb_strlen($column->getContent())
-                        ) === $column->getContent()) {
+                        ) === $column->getContent()
+                    ) {
                         // only a line separator in this column - not content!
                         continue;
                     }

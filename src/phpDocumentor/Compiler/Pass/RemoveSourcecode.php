@@ -30,7 +30,8 @@ final class RemoveSourcecode implements CompilerPassInterface
     {
         foreach ($project->getVersions() as $version) {
             foreach ($version->getDocumentationSets() as $documentationSet) {
-                if (!$documentationSet instanceof ApiSetDescriptor ||
+                if (
+                    !$documentationSet instanceof ApiSetDescriptor ||
                     $documentationSet->getSettings()['include-source']
                 ) {
                     continue;

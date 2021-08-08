@@ -131,7 +131,8 @@ class MethodAssembler extends AssemblerAbstract
             return;
         }
 
-        if (!$lastParamTag->isVariadic()
+        if (
+            !$lastParamTag->isVariadic()
             || !array_key_exists($lastParamTag->getVariableName(), $methodDescriptor->getArguments()->getAll())
         ) {
             return;

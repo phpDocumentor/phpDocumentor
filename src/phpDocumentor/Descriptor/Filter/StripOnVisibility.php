@@ -36,7 +36,8 @@ class StripOnVisibility implements FilterInterface
 
         // if a Descriptor is marked as 'api' and this is set as a visibility; _always_ show it; even if the visibility
         // is not set
-        if (isset($filterable->getTags()['api'])
+        if (
+            isset($filterable->getTags()['api'])
             && $payload->getApiSpecification()->isVisibilityAllowed(ApiSpecification::VISIBILITY_API)
         ) {
             return $payload;

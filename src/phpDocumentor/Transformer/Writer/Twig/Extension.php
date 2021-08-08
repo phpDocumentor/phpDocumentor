@@ -321,7 +321,8 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
                                 return 0;
                             }
 
-                            if (($direction === 'asc' && $aElem > $bElem) ||
+                            if (
+                                ($direction === 'asc' && $aElem > $bElem) ||
                                 ($direction === 'desc' && $aElem < $bElem)
                             ) {
                                 return 1;
