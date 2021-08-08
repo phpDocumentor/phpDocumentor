@@ -17,6 +17,7 @@ use phpDocumentor\Descriptor\Builder\AssemblerAbstract as BaseAssembler;
 use phpDocumentor\Descriptor\Builder\AssemblerReducer;
 use phpDocumentor\Descriptor\Builder\Reflector\Docblock\DescriptionAssemblerReducer;
 use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Reflection\DocBlock;
@@ -30,7 +31,7 @@ use function stripcslashes;
 use function trim;
 
 /**
- * @template TDescriptor of \phpDocumentor\Descriptor\Descriptor
+ * @template TDescriptor of Descriptor
  * @template TInput of object
  * @extends  BaseAssembler<TDescriptor, TInput>
  */

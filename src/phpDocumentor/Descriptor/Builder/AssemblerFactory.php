@@ -116,7 +116,7 @@ class AssemblerFactory
      * @return AssemblerInterface<TParamDescriptor, TParamInput>|null
      *
      * @psalm-template TParamInput of object
-     * @psalm-template TParamDescriptor of \phpDocumentor\Descriptor\Descriptor
+     * @psalm-template TParamDescriptor of Descriptor
      */
     public function get(object $criteria, string $type): ?AssemblerInterface
     {

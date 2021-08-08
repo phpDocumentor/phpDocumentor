@@ -13,12 +13,13 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Builder;
 
+use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 
 /**
  * Base class for all assemblers.
  *
- * @template TDescriptor of \phpDocumentor\Descriptor\Descriptor
+ * @template TDescriptor of Descriptor
  * @template TInput of object
  * @implements AssemblerInterface<TDescriptor, TInput>
  */

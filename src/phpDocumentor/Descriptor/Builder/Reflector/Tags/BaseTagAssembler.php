@@ -7,10 +7,12 @@ namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 use phpDocumentor\Descriptor\Builder\AssemblerReducer;
 use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
 use phpDocumentor\Descriptor\Builder\Reflector\Docblock\DescriptionAssemblerReducer;
+use phpDocumentor\Descriptor\TagDescriptor;
+use phpDocumentor\Reflection\DocBlock\Tag;
 
 /**
- * @template TDescriptor of \phpDocumentor\Descriptor\TagDescriptor
- * @template TInput of \phpDocumentor\Reflection\DocBlock\Tag
+ * @template TDescriptor of TagDescriptor
+ * @template TInput of Tag
  * @extends  AssemblerAbstract<TDescriptor, TInput>
  */
 abstract class BaseTagAssembler extends AssemblerAbstract
