@@ -93,11 +93,9 @@ TEXT;
      * Increments the counter for element's class in the class counters.
      *
      * @param array<string, int> $classCounters
-     *
-     * @return array<string, int>
-     *
      * @phpstan-param array<class-string<DescriptorAbstract>, int> $classCounters
      *
+     * @return array<string, int>
      * @phpstan-return array<class-string<DescriptorAbstract>, int>
      */
     protected function addElementToCounter(array $classCounters, DescriptorAbstract $element): array
