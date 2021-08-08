@@ -17,6 +17,7 @@ use Symfony\Component\Cache\Adapter\AbstractAdapter;
 use Symfony\Component\Cache\Marshaller\DefaultMarshaller;
 use Symfony\Component\Cache\PruneableInterface;
 use Symfony\Component\Cache\Traits\FilesystemTrait;
+
 use function sys_get_temp_dir;
 
 final class FilesystemAdapter extends AbstractAdapter implements PruneableInterface

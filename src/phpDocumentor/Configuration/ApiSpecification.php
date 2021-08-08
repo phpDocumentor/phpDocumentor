@@ -8,6 +8,7 @@ use ArrayAccess;
 use phpDocumentor\Dsn;
 use phpDocumentor\Path;
 use RuntimeException;
+
 use function sprintf;
 
 /**

@@ -15,6 +15,7 @@ namespace phpDocumentor\Guides\Nodes\Table;
 
 use LogicException;
 use phpDocumentor\Guides\Nodes\Node;
+
 use function strlen;
 use function trim;
 

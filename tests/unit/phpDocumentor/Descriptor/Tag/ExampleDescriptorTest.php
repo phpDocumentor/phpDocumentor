@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Tag;
 
 use PHPUnit\Framework\TestCase;
+
 use function sys_get_temp_dir;
 
 final class ExampleDescriptorTest extends TestCase

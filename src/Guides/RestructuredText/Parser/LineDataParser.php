@@ -8,6 +8,7 @@ use Doctrine\Common\EventManager;
 use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\RestructuredText\Event\OnLinkParsedEvent;
 use phpDocumentor\Guides\RestructuredText\Parser;
+
 use function array_map;
 use function count;
 use function explode;

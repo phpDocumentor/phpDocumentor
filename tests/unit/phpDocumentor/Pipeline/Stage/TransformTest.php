@@ -22,7 +22,9 @@ use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\ProphecyMock;
 use Psr\Log\LoggerInterface;
+
 use function getcwd;
+
 use const DIRECTORY_SEPARATOR;
 
 /**

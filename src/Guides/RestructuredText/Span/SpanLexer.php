@@ -6,6 +6,7 @@ namespace phpDocumentor\Guides\RestructuredText\Span;
 
 use Doctrine\Common\Lexer\AbstractLexer;
 use ReflectionClass;
+
 use function array_column;
 use function array_flip;
 use function preg_match;

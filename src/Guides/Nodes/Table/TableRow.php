@@ -16,6 +16,7 @@ namespace phpDocumentor\Guides\Nodes\Table;
 use InvalidArgumentException;
 use LogicException;
 use phpDocumentor\Guides\RestructuredText\Exception\InvalidTableStructure;
+
 use function array_map;
 use function implode;
 use function sprintf;

@@ -17,6 +17,7 @@ use InvalidArgumentException;
 use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
 use phpDocumentor\Descriptor\Validation\Error;
 use phpDocumentor\Reflection\Fqsen;
+
 use function ltrim;
 use function sprintf;
 

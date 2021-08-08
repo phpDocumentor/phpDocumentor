@@ -19,6 +19,7 @@ use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Reflection\Php\Constant;
 use phpDocumentor\Reflection\Php\Interface_;
 use phpDocumentor\Reflection\Php\Method;
+
 use function strlen;
 use function substr;
 

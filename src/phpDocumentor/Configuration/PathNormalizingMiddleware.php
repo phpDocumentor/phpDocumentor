@@ -16,6 +16,7 @@ namespace phpDocumentor\Configuration;
 use League\Uri\Contracts\UriInterface;
 use phpDocumentor\Dsn;
 use phpDocumentor\Path;
+
 use function array_map;
 use function array_merge;
 use function ltrim;

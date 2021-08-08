@@ -26,6 +26,7 @@ use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Type;
 use Webmozart\Assert\Assert;
+
 use function get_class;
 use function is_array;
 use function is_iterable;

@@ -14,8 +14,10 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Reflection\Type;
+
 use function array_filter;
 use function trigger_error;
+
 use const E_USER_DEPRECATED;
 
 /**

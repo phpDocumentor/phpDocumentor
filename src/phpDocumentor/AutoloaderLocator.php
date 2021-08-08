@@ -15,6 +15,7 @@ namespace phpDocumentor;
 
 use Composer\Autoload\ClassLoader;
 use RuntimeException;
+
 use function file_exists;
 use function file_get_contents;
 use function getenv;

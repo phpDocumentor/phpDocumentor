@@ -16,6 +16,7 @@ namespace phpDocumentor;
 use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
+
 use function putenv;
 
 final class AutoloaderLocatorTest extends TestCase

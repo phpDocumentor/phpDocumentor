@@ -20,6 +20,7 @@ use phpDocumentor\Descriptor\Collection as PartialsCollection;
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\GuideSetDescriptor;
 use phpDocumentor\Descriptor\VersionDescriptor;
+
 use function md5;
 
 final class InitializeBuilderFromConfig

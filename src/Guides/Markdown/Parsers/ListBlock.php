@@ -10,6 +10,7 @@ use League\CommonMark\Node\NodeWalkerEvent;
 use phpDocumentor\Guides\Nodes\ListNode;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Parser;
+
 use function get_class;
 
 final class ListBlock extends AbstractBlock

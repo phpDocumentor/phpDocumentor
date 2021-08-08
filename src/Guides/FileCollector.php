@@ -10,6 +10,7 @@ use Flyfinder\Specification\HasExtension;
 use Flyfinder\Specification\InPath;
 use InvalidArgumentException;
 use League\Flysystem\FilesystemInterface;
+
 use function sprintf;
 use function strlen;
 use function substr;

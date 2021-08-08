@@ -15,6 +15,7 @@ namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use phpDocumentor\Descriptor\PropertyDescriptor;
 use phpDocumentor\Reflection\Php\Property;
+
 use function strlen;
 use function substr;
 

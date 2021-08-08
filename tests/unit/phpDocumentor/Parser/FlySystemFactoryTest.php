@@ -24,8 +24,10 @@ use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
+
 use function substr;
 use function sys_get_temp_dir;
+
 use const DIRECTORY_SEPARATOR;
 use const PHP_OS_FAMILY;
 

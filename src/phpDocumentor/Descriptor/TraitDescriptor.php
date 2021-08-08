@@ -16,6 +16,7 @@ namespace phpDocumentor\Descriptor;
 use InvalidArgumentException;
 use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
 use phpDocumentor\Descriptor\Validation\Error;
+
 use function ltrim;
 use function sprintf;
 

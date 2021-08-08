@@ -33,6 +33,7 @@ use phpDocumentor\Reflection\Types\Nullable;
 use phpDocumentor\Reflection\Types\Object_;
 use phpDocumentor\Transformer\Router\Router;
 use Webmozart\Assert\Assert;
+
 use function array_fill;
 use function count;
 use function current;

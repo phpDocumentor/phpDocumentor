@@ -6,6 +6,7 @@ namespace phpDocumentor\Guides\RestructuredText\Meta;
 
 use LogicException;
 use phpDocumentor\Guides\Metas;
+
 use function file_exists;
 use function file_get_contents;
 use function file_put_contents;

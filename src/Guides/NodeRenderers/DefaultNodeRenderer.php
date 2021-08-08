@@ -15,6 +15,7 @@ namespace phpDocumentor\Guides\NodeRenderers;
 
 use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Nodes\Node;
+
 use function get_class;
 use function is_callable;
 use function is_string;

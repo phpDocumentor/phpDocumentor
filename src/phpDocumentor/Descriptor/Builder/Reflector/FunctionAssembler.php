@@ -22,6 +22,7 @@ use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\Php\Argument;
 use phpDocumentor\Reflection\Php\Function_;
+
 use function strlen;
 use function substr;
 use function trim;

@@ -15,6 +15,7 @@ namespace phpDocumentor\Guides\References;
 
 use phpDocumentor\Guides\Environment;
 use RuntimeException;
+
 use function explode;
 use function sprintf;
 use function str_replace;

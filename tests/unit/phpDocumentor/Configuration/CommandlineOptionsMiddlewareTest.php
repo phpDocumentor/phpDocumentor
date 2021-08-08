@@ -16,6 +16,7 @@ namespace phpDocumentor\Configuration;
 use phpDocumentor\Dsn;
 use phpDocumentor\Path;
 use PHPUnit\Framework\TestCase;
+
 use function current;
 
 /**

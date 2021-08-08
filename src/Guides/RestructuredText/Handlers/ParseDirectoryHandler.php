@@ -11,6 +11,7 @@ use phpDocumentor\Guides\Configuration;
 use phpDocumentor\Guides\FileCollector;
 use phpDocumentor\Guides\RestructuredText\ParseDirectoryCommand;
 use phpDocumentor\Guides\RestructuredText\ParseFileCommand;
+
 use function sprintf;
 
 final class ParseDirectoryHandler

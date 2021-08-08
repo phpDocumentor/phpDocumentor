@@ -15,6 +15,7 @@ namespace phpDocumentor\Guides;
 
 use phpDocumentor\Guides\Formats\Format;
 use RuntimeException;
+
 use function sprintf;
 
 final class Configuration

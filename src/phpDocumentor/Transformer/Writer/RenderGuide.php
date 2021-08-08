@@ -25,6 +25,7 @@ use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Transformer\Transformation;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Stopwatch\Stopwatch;
+
 use function sprintf;
 
 /**

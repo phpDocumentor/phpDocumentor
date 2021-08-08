@@ -16,6 +16,7 @@ namespace phpDocumentor\Guides\NodeRenderers;
 use InvalidArgumentException;
 use phpDocumentor\Guides\Nodes\DocumentNode;
 use phpDocumentor\Guides\Nodes\Node;
+
 use function get_class;
 
 class DocumentNodeRenderer implements NodeRenderer

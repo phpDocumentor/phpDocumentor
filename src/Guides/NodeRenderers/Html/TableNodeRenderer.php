@@ -19,6 +19,7 @@ use phpDocumentor\Guides\NodeRenderers\NodeRenderer;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\TableNode;
 use phpDocumentor\Guides\Renderer;
+
 use function sprintf;
 
 class TableNodeRenderer implements NodeRenderer

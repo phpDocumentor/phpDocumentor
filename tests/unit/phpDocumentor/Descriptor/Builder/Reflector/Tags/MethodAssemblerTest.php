@@ -25,6 +25,7 @@ use phpDocumentor\Reflection\Types\Void_;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
+
 use function count;
 
 /**

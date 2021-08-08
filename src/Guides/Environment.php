@@ -19,6 +19,7 @@ use phpDocumentor\Guides\Meta\Entry;
 use phpDocumentor\Guides\References\Reference;
 use phpDocumentor\Guides\References\ResolvedReference;
 use Psr\Log\LoggerInterface;
+
 use function array_shift;
 use function dirname;
 use function implode;

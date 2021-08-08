@@ -21,6 +21,7 @@ use phpDocumentor\Guides\RestructuredText\ParseFileCommand;
 use phpDocumentor\Guides\RestructuredText\Parser;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
+
 use function filemtime;
 use function iterator_to_array;
 use function ltrim;

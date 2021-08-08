@@ -17,6 +17,7 @@ use League\Uri\Contracts\UriInterface;
 use phpDocumentor\Dsn;
 use phpDocumentor\Path;
 use Webmozart\Assert\Assert;
+
 use function array_map;
 use function array_merge;
 use function array_unique;

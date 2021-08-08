@@ -15,6 +15,7 @@ namespace phpDocumentor\Guides;
 
 use phpDocumentor\Guides\Meta\Entry;
 use Symfony\Component\String\Slugger\AsciiSlugger;
+
 use function strtolower;
 
 final class Metas

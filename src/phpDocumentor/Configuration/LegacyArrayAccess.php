@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Configuration;
 
 use InvalidArgumentException;
+
 use function lcfirst;
 use function property_exists;
 use function str_replace;

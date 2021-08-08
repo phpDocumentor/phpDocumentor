@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides;
 
 use Twig\Environment;
+
 use function rtrim;
 
 final class TemplateRenderer

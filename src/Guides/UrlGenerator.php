@@ -15,6 +15,7 @@ namespace phpDocumentor\Guides;
 
 use League\Uri\UriInfo;
 use phpDocumentor\UriFactory;
+
 use function array_pop;
 use function explode;
 use function implode;

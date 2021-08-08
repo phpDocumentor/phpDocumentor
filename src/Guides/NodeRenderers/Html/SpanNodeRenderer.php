@@ -17,6 +17,7 @@ use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\NodeRenderers\SpanNodeRenderer as BaseSpanNodeRenderer;
 use phpDocumentor\Guides\References\ResolvedReference;
 use phpDocumentor\Guides\Renderer;
+
 use function htmlspecialchars;
 use function trim;
 

@@ -19,6 +19,7 @@ use phpDocumentor\Faker\Faker;
 use phpDocumentor\Transformer\Router\Router;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+
 use function current;
 
 final class TableOfContentsBuilderTest extends TestCase

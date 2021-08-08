@@ -23,6 +23,7 @@ use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\TableOfContents\Entry;
 use phpDocumentor\Descriptor\TocDescriptor;
 use phpDocumentor\Transformer\Router\Router;
+
 use function ltrim;
 
 final class TableOfContentsBuilder implements CompilerPassInterface

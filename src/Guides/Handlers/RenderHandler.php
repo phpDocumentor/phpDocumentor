@@ -25,6 +25,7 @@ use phpDocumentor\Guides\RenderCommand;
 use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Transformer\Router\Router;
 use Psr\Log\LoggerInterface;
+
 use function array_merge;
 use function dirname;
 use function get_class;

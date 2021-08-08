@@ -22,6 +22,7 @@ use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Parser\Parser;
 use phpDocumentor\Reflection\Fqsen;
+
 use function explode;
 use function ltrim;
 use function preg_replace;

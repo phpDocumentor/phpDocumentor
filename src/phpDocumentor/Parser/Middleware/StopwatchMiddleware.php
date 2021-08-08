@@ -18,6 +18,7 @@ use phpDocumentor\Reflection\Middleware\Middleware;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Symfony\Component\Stopwatch\Stopwatch;
+
 use function end;
 use function number_format;
 use function sprintf;

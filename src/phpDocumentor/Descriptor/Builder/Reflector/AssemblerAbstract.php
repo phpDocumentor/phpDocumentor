@@ -22,6 +22,7 @@ use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\Type;
 use phpDocumentor\Reflection\Types\Compound;
+
 use function array_values;
 use function count;
 use function reset;

@@ -19,6 +19,7 @@ use phpDocumentor\Reflection\Middleware\Command;
 use phpDocumentor\Reflection\Middleware\Middleware;
 use phpDocumentor\Reflection\Php\Factory\File\CreateCommand;
 use Webmozart\Assert\Assert;
+
 use function class_exists;
 
 final class EmittingMiddleware implements Middleware

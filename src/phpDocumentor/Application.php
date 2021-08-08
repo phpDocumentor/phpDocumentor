@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor;
 
 use RuntimeException;
+
 use function date_default_timezone_set;
 use function extension_loaded;
 use function file_exists;

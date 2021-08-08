@@ -18,6 +18,7 @@ use function get_class;
 use function is_string;
 use function sprintf;
 use function str_replace;
+
 use const PHP_EOL;
 
 /**

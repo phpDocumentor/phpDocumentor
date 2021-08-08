@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor;
 
 use PHPUnit\Framework\TestCase;
+
 use function file_get_contents;
 use function trim;
 

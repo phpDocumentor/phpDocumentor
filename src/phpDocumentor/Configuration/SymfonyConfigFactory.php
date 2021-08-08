@@ -22,6 +22,7 @@ use RuntimeException;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\Util\XmlUtils;
+
 use function array_key_last;
 use function array_keys;
 

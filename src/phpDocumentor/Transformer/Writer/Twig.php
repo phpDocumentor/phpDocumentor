@@ -22,6 +22,7 @@ use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 use Webmozart\Assert\Assert;
+
 use function count;
 use function ltrim;
 use function preg_split;

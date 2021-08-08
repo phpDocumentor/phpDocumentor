@@ -20,6 +20,7 @@ use phpDocumentor\Transformer\Transformation;
 use RuntimeException;
 use Symfony\Component\String\UnicodeString;
 use UnexpectedValueException;
+
 use function array_map;
 use function current;
 use function explode;

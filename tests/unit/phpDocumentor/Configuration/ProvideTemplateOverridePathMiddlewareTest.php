@@ -18,6 +18,7 @@ use phpDocumentor\Path;
 use phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
+
 use function chdir;
 use function dirname;
 use function realpath;

@@ -16,6 +16,7 @@ namespace phpDocumentor\Transformer\Writer;
 use League\Flysystem\FileNotFoundException;
 use League\Uri\UriString;
 use phpDocumentor\Transformer\Transformation;
+
 use function ltrim;
 use function strpos;
 use function substr;

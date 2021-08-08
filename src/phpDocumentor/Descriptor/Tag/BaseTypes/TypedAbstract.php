@@ -15,8 +15,10 @@ namespace phpDocumentor\Descriptor\Tag\BaseTypes;
 
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Reflection\Type;
+
 use function array_filter;
 use function trigger_error;
+
 use const E_USER_DEPRECATED;
 
 /**

@@ -27,6 +27,7 @@ use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Log\NullLogger;
 use Symfony\Component\Stopwatch\Stopwatch;
+
 use function ini_set;
 use function sys_get_temp_dir;
 

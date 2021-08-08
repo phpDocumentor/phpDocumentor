@@ -17,6 +17,7 @@ use phpDocumentor\Guides\NodeRenderers\FormatListRenderer;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Renderer;
 use RuntimeException;
+
 use function array_filter;
 use function array_map;
 use function array_values;

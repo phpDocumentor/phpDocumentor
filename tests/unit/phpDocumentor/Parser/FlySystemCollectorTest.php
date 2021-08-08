@@ -16,7 +16,9 @@ namespace phpDocumentor\Parser;
 use League\Flysystem\MountManager;
 use phpDocumentor\Dsn;
 use PHPUnit\Framework\TestCase;
+
 use function stripos;
+
 use const DIRECTORY_SEPARATOR;
 use const PHP_OS;
 

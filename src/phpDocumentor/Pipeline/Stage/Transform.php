@@ -18,10 +18,12 @@ use phpDocumentor\Transformer\Transformer;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Filesystem;
+
 use function count;
 use function get_class;
 use function getcwd;
 use function sprintf;
+
 use const DIRECTORY_SEPARATOR;
 
 /**

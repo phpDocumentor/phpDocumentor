@@ -16,6 +16,7 @@ namespace phpDocumentor\Configuration\Definition;
 use phpDocumentor\Configuration\SymfonyConfigFactory;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
+
 use function array_map;
 use function array_merge;
 use function array_values;

@@ -15,6 +15,7 @@ namespace phpDocumentor\Guides\Meta;
 
 use LogicException;
 use Symfony\Component\String\Slugger\AsciiSlugger;
+
 use function array_merge;
 use function array_search;
 use function in_array;

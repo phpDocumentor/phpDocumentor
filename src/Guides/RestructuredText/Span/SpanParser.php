@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\RestructuredText\Span;
 
 use phpDocumentor\Guides\Environment;
+
 use function mt_rand;
 use function preg_match;
 use function preg_replace;

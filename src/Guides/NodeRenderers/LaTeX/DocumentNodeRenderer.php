@@ -21,6 +21,7 @@ use phpDocumentor\Guides\NodeRenderers\NodeRenderer;
 use phpDocumentor\Guides\Nodes\DocumentNode;
 use phpDocumentor\Guides\Nodes\MainNode;
 use phpDocumentor\Guides\Nodes\Node;
+
 use function count;
 
 class DocumentNodeRenderer implements NodeRenderer, FullDocumentNodeRenderer

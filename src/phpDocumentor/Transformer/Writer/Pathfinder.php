@@ -15,6 +15,7 @@ namespace phpDocumentor\Transformer\Writer;
 
 use phpDocumentor\Descriptor\Descriptor;
 use Traversable;
+
 use function explode;
 use function is_array;
 use function is_object;

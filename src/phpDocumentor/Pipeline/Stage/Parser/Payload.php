@@ -20,6 +20,7 @@ use phpDocumentor\Dsn;
 use phpDocumentor\Path;
 use phpDocumentor\Pipeline\Stage\Payload as ApplicationPayload;
 use phpDocumentor\Reflection\File;
+
 use function array_merge;
 use function current;
 

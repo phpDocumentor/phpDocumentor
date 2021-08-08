@@ -16,6 +16,7 @@ namespace phpDocumentor\Transformer\Router;
 use phpDocumentor\Reflection\Fqsen;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
+
 use function count;
 use function explode;
 use function strpos;

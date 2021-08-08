@@ -19,6 +19,7 @@ use phpDocumentor\Guides\NodeRenderers\NodeRenderer;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\TocNode;
 use Symfony\Component\String\Slugger\AsciiSlugger;
+
 use function count;
 use function is_array;
 

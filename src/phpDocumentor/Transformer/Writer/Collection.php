@@ -15,6 +15,7 @@ namespace phpDocumentor\Transformer\Writer;
 
 use ArrayObject;
 use InvalidArgumentException;
+
 use function preg_match;
 
 /**

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Descriptor\TableOfContents\Entry;
+
 use function array_filter;
 
 final class TocDescriptor implements Descriptor

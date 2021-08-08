@@ -20,6 +20,7 @@ use phpDocumentor\Guides\Nodes\RawNode;
 use phpDocumentor\Guides\RestructuredText\Directives\SubDirective;
 use phpDocumentor\Guides\RestructuredText\Parser;
 use Webmozart\Assert\Assert;
+
 use function strtoupper;
 
 class ConfigurationBlockDirective extends SubDirective

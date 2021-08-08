@@ -6,6 +6,7 @@ namespace phpDocumentor\Descriptor\DocBlock;
 
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Reflection\DocBlock\Description;
+
 use function trim;
 use function vsprintf;
 

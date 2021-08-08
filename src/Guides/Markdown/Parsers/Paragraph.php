@@ -11,6 +11,7 @@ use phpDocumentor\Guides\Nodes;
 use phpDocumentor\Guides\Nodes\ParagraphNode;
 use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\Parser;
+
 use function get_class;
 
 final class Paragraph extends AbstractBlock

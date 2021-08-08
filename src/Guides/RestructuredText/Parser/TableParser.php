@@ -6,6 +6,7 @@ namespace phpDocumentor\Guides\RestructuredText\Parser;
 
 use Exception;
 use phpDocumentor\Guides\Nodes\TableNode;
+
 use function count;
 use function in_array;
 use function sprintf;

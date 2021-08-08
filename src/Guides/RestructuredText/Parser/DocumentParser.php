@@ -29,6 +29,7 @@ use phpDocumentor\Guides\RestructuredText\Parser;
 use phpDocumentor\Guides\RestructuredText\Parser\Directive as ParserDirective;
 use RuntimeException;
 use Throwable;
+
 use function array_search;
 use function chr;
 use function explode;

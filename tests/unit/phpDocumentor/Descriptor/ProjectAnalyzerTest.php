@@ -7,7 +7,9 @@ namespace phpDocumentor\Descriptor;
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\Collection as DescriptorCollection;
+
 use function str_replace;
+
 use const PHP_EOL;
 
 /**

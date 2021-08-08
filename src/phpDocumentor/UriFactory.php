@@ -8,12 +8,14 @@ use InvalidArgumentException;
 use League\Uri\Contracts\UriInterface;
 use League\Uri\Uri as LeagueUri;
 use Throwable;
+
 use function preg_match;
 use function sprintf;
 use function str_replace;
 use function strlen;
 use function strpos;
 use function substr;
+
 use const DIRECTORY_SEPARATOR;
 
 final class UriFactory

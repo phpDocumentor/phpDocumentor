@@ -16,6 +16,7 @@ namespace phpDocumentor\Pipeline\Stage\Parser;
 use phpDocumentor\Parser\FileCollector;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
+
 use function count;
 
 final class CollectFiles

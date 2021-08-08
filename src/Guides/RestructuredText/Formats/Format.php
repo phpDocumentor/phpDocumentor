@@ -7,6 +7,7 @@ namespace phpDocumentor\Guides\RestructuredText\Formats;
 use IteratorAggregate;
 use phpDocumentor\Guides\Formats\Format as BaseFormat;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive;
+
 use function iterator_to_array;
 
 abstract class Format implements BaseFormat

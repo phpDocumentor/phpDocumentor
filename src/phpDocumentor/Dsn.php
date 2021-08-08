@@ -17,6 +17,7 @@ use Generator;
 use League\Uri\Contracts\UriInterface;
 use League\Uri\UriInfo;
 use League\Uri\UriResolver;
+
 use function array_shift;
 use function array_splice;
 use function explode;

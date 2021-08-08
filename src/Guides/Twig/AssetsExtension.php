@@ -22,6 +22,7 @@ use RuntimeException;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 use Webmozart\Assert\Assert;
+
 use function get_class;
 use function sprintf;
 use function trim;

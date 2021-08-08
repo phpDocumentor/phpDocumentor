@@ -25,6 +25,7 @@ use phpDocumentor\GraphViz\Graph as GraphVizGraph;
 use phpDocumentor\GraphViz\Node;
 use RuntimeException;
 use Throwable;
+
 use function array_merge;
 use function array_pop;
 use function exec;

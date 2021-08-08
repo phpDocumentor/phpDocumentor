@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\Meta;
 
 use PHPUnit\Framework\TestCase;
+
 use function time;
 
 class EntryTest extends TestCase

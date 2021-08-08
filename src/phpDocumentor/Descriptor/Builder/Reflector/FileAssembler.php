@@ -29,6 +29,7 @@ use phpDocumentor\Reflection\Php\File;
 use phpDocumentor\Reflection\Php\Function_;
 use phpDocumentor\Reflection\Php\Interface_;
 use phpDocumentor\Reflection\Php\Trait_;
+
 use function count;
 
 /**

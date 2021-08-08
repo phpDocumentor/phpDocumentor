@@ -6,6 +6,7 @@ namespace phpDocumentor\Guides\RestructuredText\Toc;
 
 use phpDocumentor\Guides\Environment;
 use Symfony\Component\Finder\Finder;
+
 use function array_merge;
 use function realpath;
 use function rtrim;

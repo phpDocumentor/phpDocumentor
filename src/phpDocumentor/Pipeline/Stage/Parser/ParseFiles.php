@@ -17,6 +17,7 @@ use phpDocumentor\Parser\Middleware\ReEncodingMiddleware;
 use phpDocumentor\Parser\Parser;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
+
 use function current;
 
 final class ParseFiles

@@ -7,6 +7,7 @@ namespace phpDocumentor\Transformer\Writer\Graph;
 use Phar;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Process\Process;
+
 use function file_get_contents;
 use function file_put_contents;
 use function tempnam;

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\References;
 
 use RuntimeException;
+
 use function is_string;
 use function preg_match;
 use function sprintf;

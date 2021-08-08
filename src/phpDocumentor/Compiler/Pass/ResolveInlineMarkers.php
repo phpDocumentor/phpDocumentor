@@ -16,12 +16,14 @@ namespace phpDocumentor\Compiler\Pass;
 use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
+
 use function implode;
 use function preg_match_all;
 use function str_replace;
 use function str_split;
 use function strlen;
 use function trim;
+
 use const PREG_OFFSET_CAPTURE;
 use const PREG_SET_ORDER;
 

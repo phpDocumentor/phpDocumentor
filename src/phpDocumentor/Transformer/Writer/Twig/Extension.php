@@ -38,6 +38,7 @@ use Twig\Extension\GlobalsInterface;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 use Webmozart\Assert\Assert;
+
 use function array_unshift;
 use function ltrim;
 use function method_exists;

@@ -28,11 +28,13 @@ use RecursiveDirectoryIterator;
 use RuntimeException;
 use SimpleXMLElement;
 use Symfony\Component\Stopwatch\Stopwatch;
+
 use function array_merge;
 use function file_exists;
 use function in_array;
 use function is_readable;
 use function rtrim;
+
 use const DIRECTORY_SEPARATOR;
 
 class Factory

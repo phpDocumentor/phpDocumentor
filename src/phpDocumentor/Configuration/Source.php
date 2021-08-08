@@ -18,6 +18,7 @@ use BadMethodCallException;
 use OutOfBoundsException;
 use phpDocumentor\Dsn;
 use phpDocumentor\Path;
+
 use function array_map;
 use function in_array;
 use function ltrim;

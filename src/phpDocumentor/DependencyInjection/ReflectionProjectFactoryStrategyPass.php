@@ -17,6 +17,7 @@ use phpDocumentor\Reflection\Php\ProjectFactoryStrategies;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
+
 use function array_column;
 
 /**

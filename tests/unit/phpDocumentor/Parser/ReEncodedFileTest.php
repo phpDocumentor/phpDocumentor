@@ -15,6 +15,7 @@ namespace phpDocumentor\Parser;
 
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\String\UnicodeString;
+
 use function md5;
 
 /**

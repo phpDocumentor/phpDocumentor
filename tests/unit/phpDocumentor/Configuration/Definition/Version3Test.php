@@ -17,6 +17,7 @@ use phpDocumentor\Configuration\SymfonyConfigFactory;
 use phpDocumentor\Dsn;
 use phpDocumentor\Path;
 use PHPUnit\Framework\TestCase;
+
 use function array_merge;
 use function array_replace_recursive;
 

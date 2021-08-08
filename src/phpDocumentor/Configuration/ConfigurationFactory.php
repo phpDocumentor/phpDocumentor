@@ -17,6 +17,7 @@ use League\Uri\Contracts\UriInterface;
 use phpDocumentor\Configuration\Exception\InvalidConfigPathException;
 use phpDocumentor\Dsn;
 use phpDocumentor\UriFactory;
+
 use function array_map;
 use function file_exists;
 use function sprintf;

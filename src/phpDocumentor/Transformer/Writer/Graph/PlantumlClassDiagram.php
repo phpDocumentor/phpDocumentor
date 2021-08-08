@@ -19,9 +19,11 @@ use phpDocumentor\Descriptor\Interfaces\NamespaceInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
 use Psr\Log\LoggerInterface;
+
 use function addslashes;
 use function file_put_contents;
 use function implode;
+
 use const PHP_EOL;
 
 final class PlantumlClassDiagram implements Generator

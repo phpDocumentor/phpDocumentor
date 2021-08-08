@@ -9,6 +9,7 @@ use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\RestructuredText\Directives\SubDirective;
 use phpDocumentor\Guides\RestructuredText\Parser;
 use Symfony\Component\String\Slugger\AsciiSlugger;
+
 use function array_map;
 use function explode;
 

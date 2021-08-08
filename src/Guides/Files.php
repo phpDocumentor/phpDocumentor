@@ -16,6 +16,7 @@ namespace phpDocumentor\Guides;
 use ArrayIterator;
 use Iterator;
 use IteratorAggregate;
+
 use function in_array;
 
 /**
