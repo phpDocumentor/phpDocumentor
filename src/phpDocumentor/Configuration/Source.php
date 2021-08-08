@@ -122,8 +122,10 @@ final class Source implements ArrayAccess
         switch ($offset) {
             case 'dsn':
                 return $this->dsn;
+
             case 'paths':
                 return $this->paths;
+
             default:
                 throw new OutOfBoundsException(sprintf('Offset %s does not exist', $offset));
         }

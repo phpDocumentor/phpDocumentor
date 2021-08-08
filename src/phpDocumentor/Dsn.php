@@ -134,9 +134,11 @@ final class Dsn
             case 'http':
             case 'git+http':
                 return 80;
+
             case 'https':
             case 'git+https':
                 return 443;
+
             default:
                 return null;
         }

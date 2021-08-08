@@ -283,6 +283,7 @@ class SpanParser
             switch ($token['type']) {
                 case SpanLexer::BACKTICK:
                     return $this->createNamedReference($text);
+
                 default:
                     $text .= $token['value'];
             }
@@ -303,6 +304,7 @@ class SpanParser
             switch ($token['type']) {
                 case SpanLexer::NAMED_REFERENCE_END:
                     return $this->createNamedReference($text, $url);
+
                 case SpanLexer::EMBEDED_URL_START:
                     $url = $this->parseEmbeddedUrl();
                     if ($url === null) {
@@ -341,8 +343,10 @@ class SpanParser
                     $this->rollback($startPosition);
 
                     return null;
+
                 case SpanLexer::EMBEDED_URL_END:
                     return $text;
+
                 default:
                     $text .= $token['value'];
             }

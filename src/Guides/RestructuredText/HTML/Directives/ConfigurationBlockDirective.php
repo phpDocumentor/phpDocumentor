@@ -68,10 +68,12 @@ class ConfigurationBlockDirective extends SubDirective
         switch ($language) {
             case 'php-annotations':
                 return 'Annotations';
+
             case 'xml':
             case 'yaml':
             case 'php':
                 return strtoupper($language);
+
             default:
                 return $language;
         }

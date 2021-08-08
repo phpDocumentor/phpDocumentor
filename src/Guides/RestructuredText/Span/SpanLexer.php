@@ -93,23 +93,31 @@ final class SpanLexer extends AbstractLexer
         switch ($value) {
             case '`':
                 return self::BACKTICK;
+
             case '\_':
                 $value = '_';
                 break;
             case '<':
                 return self::EMBEDED_URL_START;
+
             case '>':
                 return self::EMBEDED_URL_END;
+
             case '_':
                 return self::UNDERSCORE;
+
             case '`_':
                 return self::NAMED_REFERENCE_END;
+
             case '_`':
                 return self::INTERNAL_REFERENCE_START;
+
             case '__':
                 return self::ANONYMOUS_END;
+
             case '`__':
                 return self::PHRASE_ANONYMOUS_END;
+
             default:
                 return self::WORD;
         }

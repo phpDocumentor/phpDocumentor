@@ -161,8 +161,10 @@ abstract class SpanNodeRenderer implements NodeRenderer, SpanRenderer
         switch ($spanToken->getType()) {
             case SpanToken::TYPE_LITERAL:
                 return $this->renderLiteral($spanToken, $span);
+
             case SpanToken::TYPE_REFERENCE:
                 return $this->renderReference($spanToken, $span);
+
             case SpanToken::TYPE_LINK:
                 return $this->renderLink($spanToken, $span);
         }

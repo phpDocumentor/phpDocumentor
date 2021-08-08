@@ -52,6 +52,7 @@ class FunctionAssemblerTest extends TestCase
                 switch (get_class($value)) {
                     case DocBlock\Tags\Generic::class && $value->getName() === 'package':
                         return new PackageDescriptor();
+
                     default:
                         throw new InvalidArgumentException('didn\'t expect ' . get_class($value));
                 }

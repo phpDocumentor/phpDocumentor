@@ -305,6 +305,7 @@ final class LinkRenderer
             case self::PRESENTATION_URL:
                 // return the first url
                 return $url ?: '';
+
             case self::PRESENTATION_NORMAL:
             case self::PRESENTATION_CLASS_SHORT:
                 $parts = explode('\\', (string) $node);
@@ -315,6 +316,7 @@ final class LinkRenderer
                     (string) $node,
                     end($parts)
                 );
+
             case self::PRESENTATION_FILE_SHORT:
                 $parts = explode('/', (string) $node);
 
@@ -324,6 +326,7 @@ final class LinkRenderer
                     (string) $node,
                     end($parts)
                 );
+
             default:
                 if ($presentation !== '') {
                     return sprintf(

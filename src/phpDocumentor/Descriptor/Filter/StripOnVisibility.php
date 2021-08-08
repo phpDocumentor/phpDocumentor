@@ -58,8 +58,10 @@ class StripOnVisibility implements FilterInterface
         switch ($visibility) {
             case 'public':
                 return ApiSpecification::VISIBILITY_PUBLIC;
+
             case 'protected':
                 return ApiSpecification::VISIBILITY_PROTECTED;
+
             case 'private':
                 return ApiSpecification::VISIBILITY_PRIVATE;
         }
