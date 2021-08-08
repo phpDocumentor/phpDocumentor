@@ -42,13 +42,14 @@ final class DescriptionDescriptorTest extends TestCase
 
         $descriptor = new DescriptionDescriptor(
             $description,
-            [new TagDescriptor(
-                'internal',
-                new DescriptionDescriptor(
-                    new Description('Some text'),
-                    []
-                )
-            ),
+            [
+                new TagDescriptor(
+                    'internal',
+                    new DescriptionDescriptor(
+                        new Description('Some text'),
+                        []
+                    )
+                ),
             ]
         );
 
@@ -68,13 +69,14 @@ final class DescriptionDescriptorTest extends TestCase
 
         $descriptor = new DescriptionDescriptor(
             $description,
-            [new TagDescriptor(
-                'internal',
-                new DescriptionDescriptor(
-                    new Description('Some text'),
-                    []
-                )
-            ),
+            [
+                new TagDescriptor(
+                    'internal',
+                    new DescriptionDescriptor(
+                        new Description('Some text'),
+                        []
+                    )
+                ),
             ]
         );
 

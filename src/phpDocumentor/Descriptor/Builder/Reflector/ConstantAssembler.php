@@ -43,7 +43,7 @@ class ConstantAssembler extends AssemblerAbstract
 
         $separatorLenght = strpos((string) $data->getFqsen(), '::') === false ? 1 : 2;
         $constantDescriptor->setNamespace(
-            substr((string) $data->getFqsen(), 0, - strlen($data->getName()) - $separatorLenght)
+            substr((string) $data->getFqsen(), 0, -strlen($data->getName()) - $separatorLenght)
         );
         $constantDescriptor->setFullyQualifiedStructuralElementName($data->getFqsen());
 

@@ -73,7 +73,7 @@ final class PathfinderTest extends TestCase
 
     private function givenAnObjectHierarchy(): object
     {
-        $topLevel = new class() {
+        $topLevel = new class () {
             /** @var array */
             public $exampleArray = ['key1' => 'value1'];
 

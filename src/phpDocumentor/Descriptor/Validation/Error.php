@@ -37,7 +37,7 @@ class Error
     {
         $this->severity = $severity;
         $this->code     = $code;
-        $this->line     = $line??0;
+        $this->line     = $line ?? 0;
         $this->context  = $context;
     }
 
