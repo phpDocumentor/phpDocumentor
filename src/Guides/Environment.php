@@ -19,6 +19,7 @@ use phpDocumentor\Guides\Meta\Entry;
 use phpDocumentor\Guides\References\Reference;
 use phpDocumentor\Guides\References\ResolvedReference;
 use Psr\Log\LoggerInterface;
+
 use function array_shift;
 use function dirname;
 use function implode;
@@ -116,7 +117,7 @@ class Environment
         $this->reset();
     }
 
-    public function reset() : void
+    public function reset(): void
     {
         $this->titleLetters = [];
         $this->currentTitleLevel = 0;
@@ -129,27 +130,27 @@ class Environment
         }
     }
 
-    public function getInitialHeaderLevel() : int
+    public function getInitialHeaderLevel(): int
     {
         return $this->initialHeaderLevel;
     }
 
-    public function setMetas(Metas $metas) : void
+    public function setMetas(Metas $metas): void
     {
         $this->metas = $metas;
     }
 
-    public function getRenderer() : Renderer
+    public function getRenderer(): Renderer
     {
         return $this->renderer;
     }
 
-    public function registerReference(Reference $reference) : void
+    public function registerReference(Reference $reference): void
     {
         $this->references[$reference->getName()] = $reference;
     }
 
-    public function resolve(string $section, string $data) : ?ResolvedReference
+    public function resolve(string $section, string $data): ?ResolvedReference
     {
         if (!isset($this->references[$section])) {
             $this->addMissingReferenceSectionError($section);
@@ -185,7 +186,7 @@ class Environment
         return $resolvedReference;
     }
 
-    public function addInvalidLink(InvalidLink $invalidLink) : void
+    public function addInvalidLink(InvalidLink $invalidLink): void
     {
         $this->invalidLinks[] = $invalidLink;
     }
@@ -193,7 +194,7 @@ class Environment
     /**
      * @return InvalidLink[]
      */
-    public function getInvalidLinks() : array
+    public function getInvalidLinks(): array
     {
         return $this->invalidLinks;
     }
@@ -201,7 +202,7 @@ class Environment
     /**
      * @return string[]|null
      */
-    public function found(string $section, string $data) : ?array
+    public function found(string $section, string $data): ?array
     {
         if (isset($this->references[$section])) {
             $reference = $this->references[$section];
@@ -219,7 +220,7 @@ class Environment
     /**
      * @param mixed $value
      */
-    public function setVariable(string $variable, $value) : void
+    public function setVariable(string $variable, $value): void
     {
         $this->variables[$variable] = $value;
     }
@@ -227,7 +228,7 @@ class Environment
     /**
      * @todo is this used?
      */
-    public function createTitle(int $level) : string
+    public function createTitle(int $level): string
     {
         for ($currentLevel = 0; $currentLevel < 16; $currentLevel++) {
             if ($currentLevel <= $level) {
@@ -249,7 +250,7 @@ class Environment
         return implode('.', $token);
     }
 
-    public function getNumber(int $level) : int
+    public function getNumber(int $level): int
     {
         return $this->levels[$level]++;
     }
@@ -268,7 +269,7 @@ class Environment
         return $default;
     }
 
-    public function setLink(string $name, string $url) : void
+    public function setLink(string $name, string $url): void
     {
         $name = trim(strtolower($name));
 
@@ -279,12 +280,12 @@ class Environment
         $this->links[$name] = trim($url);
     }
 
-    public function resetAnonymousStack() : void
+    public function resetAnonymousStack(): void
     {
         $this->anonymous = [];
     }
 
-    public function pushAnonymous(string $name) : void
+    public function pushAnonymous(string $name): void
     {
         $this->anonymous[] = trim(strtolower($name));
     }
@@ -292,12 +293,12 @@ class Environment
     /**
      * @return string[]
      */
-    public function getLinks() : array
+    public function getLinks(): array
     {
         return $this->links;
     }
 
-    public function getLink(string $name, bool $relative = true) : string
+    public function getLink(string $name, bool $relative = true): string
     {
         $name = trim(strtolower($name));
 
@@ -314,7 +315,7 @@ class Environment
         return '';
     }
 
-    public function addDependency(string $dependency, bool $requiresResolving = false) : void
+    public function addDependency(string $dependency, bool $requiresResolving = false): void
     {
         if ($requiresResolving) {
             // a hack to avoid collisions between resolved and unresolved dependencies
@@ -351,27 +352,27 @@ class Environment
     /**
      * @return string[]
      */
-    public function getDependencies() : array
+    public function getDependencies(): array
     {
         return $this->dependencies;
     }
 
-    public function relativeUrl(?string $url) : string
+    public function relativeUrl(?string $url): string
     {
         return $this->urlGenerator->relativeUrl($url);
     }
 
-    public function absoluteUrl(string $url) : string
+    public function absoluteUrl(string $url): string
     {
         return $this->urlGenerator->absoluteUrl($this->getDirName(), $url);
     }
 
-    public function canonicalUrl(string $url) : ?string
+    public function canonicalUrl(string $url): ?string
     {
         return $this->urlGenerator->canonicalUrl($this->getDirName(), $url);
     }
 
-    public function outputUrl(string $url) : ?string
+    public function outputUrl(string $url): ?string
     {
         return $this->urlGenerator->absoluteUrl(
             $this->outputFolder,
@@ -379,17 +380,17 @@ class Environment
         );
     }
 
-    public function generateUrl(string $path) : string
+    public function generateUrl(string $path): string
     {
         return $this->urlGenerator->generateUrl($path, $this->getDirName());
     }
 
-    public function absoluteRelativePath(string $url) : string
+    public function absoluteRelativePath(string $url): string
     {
         return $this->currentDirectory . '/' . $this->getDirName() . '/' . $this->relativeUrl($url);
     }
 
-    public function getDirName() : string
+    public function getDirName(): string
     {
         $dirname = dirname($this->currentFileName);
 
@@ -400,27 +401,27 @@ class Environment
         return $dirname;
     }
 
-    public function setCurrentFileName(string $filename) : void
+    public function setCurrentFileName(string $filename): void
     {
         $this->currentFileName = $filename;
     }
 
-    public function getCurrentFileName() : string
+    public function getCurrentFileName(): string
     {
         return $this->currentFileName;
     }
 
-    public function getOrigin() : FilesystemInterface
+    public function getOrigin(): FilesystemInterface
     {
         return $this->origin;
     }
 
-    public function setCurrentDirectory(string $directory) : void
+    public function setCurrentDirectory(string $directory): void
     {
         $this->currentDirectory = $directory;
     }
 
-    public function getUrl() : string
+    public function getUrl(): string
     {
         if ($this->url !== null) {
             return $this->url;
@@ -429,7 +430,7 @@ class Environment
         return $this->currentFileName;
     }
 
-    public function setUrl(string $url) : void
+    public function setUrl(string $url): void
     {
         if ($this->getDirName() !== '') {
             $url = $this->getDirName() . '/' . $url;
@@ -438,17 +439,17 @@ class Environment
         $this->url = $url;
     }
 
-    public function getMetas() : Metas
+    public function getMetas(): Metas
     {
         return $this->metas;
     }
 
-    public function getMetaEntry() : ?Entry
+    public function getMetaEntry(): ?Entry
     {
         return $this->metas->get($this->currentFileName);
     }
 
-    public function getLevel(string $letter) : int
+    public function getLevel(string $letter): int
     {
         foreach ($this->titleLetters as $level => $titleLetter) {
             if ($letter === $titleLetter) {
@@ -465,17 +466,17 @@ class Environment
     /**
      * @return string[]
      */
-    public function getTitleLetters() : array
+    public function getTitleLetters(): array
     {
         return $this->titleLetters;
     }
 
-    public function addError(string $message) : void
+    public function addError(string $message): void
     {
         $this->logger->error($message);
     }
 
-    private function addMissingReferenceSectionError(string $section) : void
+    private function addMissingReferenceSectionError(string $section): void
     {
         $this->addError(
             sprintf(
@@ -486,12 +487,12 @@ class Environment
         );
     }
 
-    public function setNodeRendererFactory(NodeRenderers\NodeRendererFactory $nodeRendererFactory) : void
+    public function setNodeRendererFactory(NodeRenderers\NodeRendererFactory $nodeRendererFactory): void
     {
         $this->nodeRendererFactory = $nodeRendererFactory;
     }
 
-    public function getNodeRendererFactory() : NodeRenderers\NodeRendererFactory
+    public function getNodeRendererFactory(): NodeRenderers\NodeRendererFactory
     {
         return $this->nodeRendererFactory;
     }

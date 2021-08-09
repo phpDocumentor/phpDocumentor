@@ -20,12 +20,12 @@ final class FilterPayload
         $this->apiSpecification = $apiSpecification;
     }
 
-    public function getFilterable() : ?Filterable
+    public function getFilterable(): ?Filterable
     {
         return $this->filterable;
     }
 
-    public function getApiSpecification() : ApiSpecification
+    public function getApiSpecification(): ApiSpecification
     {
         return $this->apiSpecification;
     }

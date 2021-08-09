@@ -18,10 +18,12 @@ use phpDocumentor\Transformer\Transformer;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Filesystem;
+
 use function count;
 use function get_class;
 use function getcwd;
 use function sprintf;
+
 use const DIRECTORY_SEPARATOR;
 
 /**
@@ -71,7 +73,7 @@ class Transform
      *
      * @throws Exception If the target location is not a folder.
      */
-    public function __invoke(Payload $payload) : Payload
+    public function __invoke(Payload $payload): Payload
     {
         $configuration = $payload->getConfig();
 
@@ -109,19 +111,19 @@ class Transform
     /**
      * Connect a series of output messages to various events to display progress.
      */
-    private function connectOutputToEvents() : void
+    private function connectOutputToEvents(): void
     {
         $dispatcherInstance = Dispatcher::getInstance();
         $dispatcherInstance->addListener(
             Transformer::EVENT_PRE_TRANSFORM,
-            function (PreTransformEvent $event) : void {
+            function (PreTransformEvent $event): void {
                 $transformations = $event->getTransformations();
                 $this->logger->info(sprintf("\nApplying %d transformations", count($transformations)));
             }
         );
         $dispatcherInstance->addListener(
             Transformer::EVENT_PRE_INITIALIZATION,
-            function (WriterInitializationEvent $event) : void {
+            function (WriterInitializationEvent $event): void {
                 if (!($event->getWriter() instanceof WriterAbstract)) {
                     return;
                 }
@@ -131,7 +133,7 @@ class Transform
         );
         $dispatcherInstance->addListener(
             Transformer::EVENT_PRE_TRANSFORMATION,
-            function (PreTransformationEvent $event) : void {
+            function (PreTransformationEvent $event): void {
                 $this->logger->info(
                     '  Execute transformation using writer "' . $event->getTransformation()->getWriter() . '"'
                 );
@@ -139,7 +141,7 @@ class Transform
         );
     }
 
-    private function createFileSystem(Dsn $dsn) : FilesystemInterface
+    private function createFileSystem(Dsn $dsn): FilesystemInterface
     {
         $target     = $dsn->getPath();
         $fileSystem = new Filesystem();

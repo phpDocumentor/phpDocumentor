@@ -26,7 +26,7 @@ interface CompilerPassInterface
      * Please note that the command line will be truncated to 68 characters (<message> .. 000.000s) so longer
      * descriptions won't have much use.
      */
-    public function getDescription() : string;
+    public function getDescription(): string;
 
     /**
      * Executes a compiler pass.
@@ -36,5 +36,5 @@ interface CompilerPassInterface
      *
      * @param ProjectDescriptor $project Representation of the Object Graph that can be manipulated.
      */
-    public function execute(ProjectDescriptor $project) : void;
+    public function execute(ProjectDescriptor $project): void;
 }

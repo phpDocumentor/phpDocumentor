@@ -22,6 +22,7 @@ use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 use Webmozart\Assert\Assert;
+
 use function count;
 use function ltrim;
 use function preg_split;
@@ -105,7 +106,7 @@ final class Twig extends WriterAbstract implements Initializable
         $this->pathGenerator = $pathGenerator;
     }
 
-    public function initialize(ProjectDescriptor $project, Template $template) : void
+    public function initialize(ProjectDescriptor $project, Template $template): void
     {
         $this->environment = $this->environmentFactory->create($project, $template);
     }
@@ -121,7 +122,7 @@ final class Twig extends WriterAbstract implements Initializable
      * @throws RuntimeError
      * @throws SyntaxError
      */
-    public function transform(ProjectDescriptor $project, Transformation $transformation) : void
+    public function transform(ProjectDescriptor $project, Transformation $transformation): void
     {
         $templatePath = $this->getTemplatePath($transformation);
 
@@ -158,7 +159,7 @@ final class Twig extends WriterAbstract implements Initializable
     /**
      * Returns the path belonging to the template.
      */
-    private function getTemplatePath(Transformation $transformation) : string
+    private function getTemplatePath(Transformation $transformation): string
     {
         $parts = preg_split('~[\\\\|/]~', $transformation->getSource());
 

@@ -25,6 +25,7 @@ use PHPUnit\Framework\TestCase;
 use Prophecy\Argument as ProphecyArgument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
+
 use function get_class;
 
 class FunctionAssemblerTest extends TestCase
@@ -43,7 +44,7 @@ class FunctionAssemblerTest extends TestCase
     /**
      * Creates a new fixture to test with.
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->builderMock = $this->prophesize(ProjectDescriptorBuilder::class);
         $this->builderMock->buildDescriptor(
@@ -51,6 +52,7 @@ class FunctionAssemblerTest extends TestCase
                 switch (get_class($value)) {
                     case DocBlock\Tags\Generic::class && $value->getName() === 'package':
                         return new PackageDescriptor();
+
                     default:
                         throw new InvalidArgumentException('didn\'t expect ' . get_class($value));
                 }
@@ -72,7 +74,7 @@ class FunctionAssemblerTest extends TestCase
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\FunctionAssembler::createArgumentDescriptor
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\FunctionAssembler::addArgumentDescriptorToFunction
      */
-    public function testCreateFunctionDescriptorFromReflector() : void
+    public function testCreateFunctionDescriptorFromReflector(): void
     {
         // Arrange
         $namespace = 'Namespace';
@@ -115,7 +117,7 @@ class FunctionAssemblerTest extends TestCase
         string $functionName,
         Argument $argumentMock,
         DocBlock $docBlockMock
-    ) : Function_ {
+    ): Function_ {
         $functionReflectorMock = new Function_(
             new Fqsen('\\' . $namespace . '\\' . $functionName . '()'),
             $docBlockMock
@@ -129,7 +131,7 @@ class FunctionAssemblerTest extends TestCase
     /**
      * Generates a DocBlock object with applicable defaults for these tests.
      */
-    protected function givenADocBlockObject() : DocBlock
+    protected function givenADocBlockObject(): DocBlock
     {
         $docBlockDescription = new DocBlock\Description('This is an example description');
 
@@ -145,7 +147,7 @@ class FunctionAssemblerTest extends TestCase
     /**
      * Prepares a mock Argument with the given name.
      */
-    protected function givenAnArgumentWithName(string $argumentName) : Argument
+    protected function givenAnArgumentWithName(string $argumentName): Argument
     {
         return new Argument($argumentName);
     }

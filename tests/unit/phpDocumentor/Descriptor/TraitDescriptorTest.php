@@ -33,7 +33,7 @@ final class TraitDescriptorTest extends MockeryTestCase
     /**
      * Creates a new (empty) fixture object.
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->fixture = new TraitDescriptor();
         $this->fixture->setFullyQualifiedStructuralElementName(new Fqsen('\My\Trait'));
@@ -43,7 +43,7 @@ final class TraitDescriptorTest extends MockeryTestCase
      * @covers ::setProperties
      * @covers ::getProperties
      */
-    public function testSettingAndGettingProperties() : void
+    public function testSettingAndGettingProperties(): void
     {
         $this->assertInstanceOf(Collection::class, $this->fixture->getProperties());
 
@@ -58,7 +58,7 @@ final class TraitDescriptorTest extends MockeryTestCase
      * @covers ::setMethods
      * @covers ::getMethods
      */
-    public function testSettingAndGettingMethods() : void
+    public function testSettingAndGettingMethods(): void
     {
         $this->assertInstanceOf(Collection::class, $this->fixture->getMethods());
 
@@ -72,7 +72,7 @@ final class TraitDescriptorTest extends MockeryTestCase
     /**
      * @covers ::getInheritedMethods
      */
-    public function testGetInheritedMethods() : void
+    public function testGetInheritedMethods(): void
     {
         $this->assertInstanceOf(Collection::class, $this->fixture->getInheritedMethods());
 
@@ -84,7 +84,7 @@ final class TraitDescriptorTest extends MockeryTestCase
     /**
      * @covers ::getInheritedProperties
      */
-    public function testGetInheritedProperties() : void
+    public function testGetInheritedProperties(): void
     {
         $this->assertInstanceOf(Collection::class, $this->fixture->getInheritedProperties());
 
@@ -96,7 +96,7 @@ final class TraitDescriptorTest extends MockeryTestCase
     /**
      * @covers ::setPackage
      */
-    public function testSettingAndGettingPackage() : void
+    public function testSettingAndGettingPackage(): void
     {
         $package = new PackageDescriptor();
         $mockPropertyDescriptor = m::mock(PropertyDescriptor::class);
@@ -119,7 +119,7 @@ final class TraitDescriptorTest extends MockeryTestCase
      * @covers ::getUsedTraits
      * @covers ::setUsedTraits
      */
-    public function testSettingAndGettingUsedTraits() : void
+    public function testSettingAndGettingUsedTraits(): void
     {
         $this->assertInstanceOf(Collection::class, $this->fixture->getUsedTraits());
 

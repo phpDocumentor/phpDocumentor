@@ -37,21 +37,21 @@ class Error
     {
         $this->severity = $severity;
         $this->code     = $code;
-        $this->line     = $line??0;
+        $this->line     = $line ?? 0;
         $this->context  = $context;
     }
 
-    public function getCode() : string
+    public function getCode(): string
     {
         return $this->code;
     }
 
-    public function getLine() : int
+    public function getLine(): int
     {
         return $this->line;
     }
 
-    public function getSeverity() : string
+    public function getSeverity(): string
     {
         return $this->severity;
     }
@@ -59,7 +59,7 @@ class Error
     /**
      * @return mixed[]
      */
-    public function getContext() : array
+    public function getContext(): array
     {
         return $this->context;
     }

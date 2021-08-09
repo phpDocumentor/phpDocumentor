@@ -29,7 +29,7 @@ class TitleNodeRenderer implements NodeRenderer
         $this->renderer = $renderer;
     }
 
-    public function render(Node $node) : string
+    public function render(Node $node): string
     {
         if ($node instanceof TitleNode === false) {
             throw new InvalidArgumentException('Invalid node presented');

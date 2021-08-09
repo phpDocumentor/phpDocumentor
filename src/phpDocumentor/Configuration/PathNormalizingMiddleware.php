@@ -16,6 +16,7 @@ namespace phpDocumentor\Configuration;
 use League\Uri\Contracts\UriInterface;
 use phpDocumentor\Dsn;
 use phpDocumentor\Path;
+
 use function array_map;
 use function array_merge;
 use function ltrim;
@@ -25,7 +26,7 @@ use function substr;
 
 final class PathNormalizingMiddleware implements MiddlewareInterface
 {
-    public function __invoke(Configuration $configuration, ?UriInterface $uri = null) : Configuration
+    public function __invoke(Configuration $configuration, ?UriInterface $uri = null): Configuration
     {
         $configuration = $this->makeDsnRelativeToConfig($configuration, $uri);
 
@@ -49,7 +50,7 @@ final class PathNormalizingMiddleware implements MiddlewareInterface
      *
      * Absolute DSNs are untouched.
      */
-    private function makeDsnRelativeToConfig(Configuration $configuration, ?UriInterface $uri) : Configuration
+    private function makeDsnRelativeToConfig(Configuration $configuration, ?UriInterface $uri): Configuration
     {
         if ($uri === null) {
             return $configuration;
@@ -82,7 +83,7 @@ final class PathNormalizingMiddleware implements MiddlewareInterface
         return $configuration;
     }
 
-    private function normalizePaths(Configuration $configuration) : Configuration
+    private function normalizePaths(Configuration $configuration): Configuration
     {
         /** @var VersionSpecification $version */
         foreach ($configuration['phpdocumentor']['versions'] as $version) {
@@ -92,7 +93,7 @@ final class PathNormalizingMiddleware implements MiddlewareInterface
                         $api['ignore'],
                         [
                             'paths' => array_map(
-                                function (string $path) : string {
+                                function (string $path): string {
                                     return $this->pathToGlobPattern($path);
                                 },
                                 $api['ignore']['paths']
@@ -108,7 +109,7 @@ final class PathNormalizingMiddleware implements MiddlewareInterface
                 $version->guides[$key] = $guide->withSource(
                     $guide->source()->withPaths(
                         array_map(
-                            function (string $path) : Path {
+                            function (string $path): Path {
                                 return new Path($this->normalizePath((string) $path));
                             },
                             $guide->source()->paths()
@@ -121,7 +122,7 @@ final class PathNormalizingMiddleware implements MiddlewareInterface
         return $configuration;
     }
 
-    private function normalizePath(string $path) : string
+    private function normalizePath(string $path): string
     {
         if (strpos($path, '.') === 0) {
             $path = ltrim($path, '.');
@@ -134,7 +135,7 @@ final class PathNormalizingMiddleware implements MiddlewareInterface
         return rtrim($path, '/');
     }
 
-    private function pathToGlobPattern(string $path) : string
+    private function pathToGlobPattern(string $path): string
     {
         $path = $this->normalizePath($path);
 
@@ -145,7 +146,7 @@ final class PathNormalizingMiddleware implements MiddlewareInterface
         return $path;
     }
 
-    public function normalizeCachePath(?UriInterface $uri, Path $cachePath) : Path
+    public function normalizeCachePath(?UriInterface $uri, Path $cachePath): Path
     {
         if ($cachePath::isAbsolutePath((string) $cachePath)) {
             return $cachePath;

@@ -17,6 +17,7 @@ use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\NodeRenderers\SpanNodeRenderer as BaseSpanNodeRenderer;
 use phpDocumentor\Guides\References\ResolvedReference;
 use phpDocumentor\Guides\Renderer;
+
 use function htmlspecialchars;
 use function trim;
 
@@ -32,17 +33,17 @@ class SpanNodeRenderer extends BaseSpanNodeRenderer
         parent::__construct($environment);
     }
 
-    public function emphasis(string $text) : string
+    public function emphasis(string $text): string
     {
         return $this->renderer->render('emphasis.html.twig', ['text' => $text]);
     }
 
-    public function strongEmphasis(string $text) : string
+    public function strongEmphasis(string $text): string
     {
         return $this->renderer->render('strong-emphasis.html.twig', ['text' => $text]);
     }
 
-    public function nbsp() : string
+    public function nbsp(): string
     {
         return 'nbsp;';
 
@@ -50,7 +51,7 @@ class SpanNodeRenderer extends BaseSpanNodeRenderer
         // return $this->renderer->render('nbsp.html.twig');
     }
 
-    public function br() : string
+    public function br(): string
     {
         return '<br>';
 
@@ -58,7 +59,7 @@ class SpanNodeRenderer extends BaseSpanNodeRenderer
         // return $this->renderer->render('br.html.twig');
     }
 
-    public function literal(string $text) : string
+    public function literal(string $text): string
     {
         return $this->renderer->render('literal.html.twig', ['text' => $text]);
     }
@@ -66,7 +67,7 @@ class SpanNodeRenderer extends BaseSpanNodeRenderer
     /**
      * @param string[] $attributes
      */
-    public function link(?string $url, string $title, array $attributes = []) : string
+    public function link(?string $url, string $title, array $attributes = []): string
     {
         $url = (string) $url;
 
@@ -80,7 +81,7 @@ class SpanNodeRenderer extends BaseSpanNodeRenderer
         );
     }
 
-    public function escape(string $span) : string
+    public function escape(string $span): string
     {
         return htmlspecialchars($span);
     }
@@ -88,7 +89,7 @@ class SpanNodeRenderer extends BaseSpanNodeRenderer
     /**
      * @param array<string|null> $value
      */
-    public function reference(ResolvedReference $reference, array $value) : string
+    public function reference(ResolvedReference $reference, array $value): string
     {
         $text = $value['text'] ?: ($reference->getTitle() ?? '');
         $text = trim($text);

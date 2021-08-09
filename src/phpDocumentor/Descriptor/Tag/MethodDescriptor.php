@@ -42,12 +42,12 @@ class MethodDescriptor extends TagDescriptor
         $this->arguments = Collection::fromClassString(ArgumentDescriptor::class);
     }
 
-    public function setMethodName(string $methodName) : void
+    public function setMethodName(string $methodName): void
     {
         $this->methodName = $methodName;
     }
 
-    public function getMethodName() : string
+    public function getMethodName(): string
     {
         return $this->methodName;
     }
@@ -55,7 +55,7 @@ class MethodDescriptor extends TagDescriptor
     /**
      * @param Collection<ArgumentDescriptor> $arguments
      */
-    public function setArguments(Collection $arguments) : void
+    public function setArguments(Collection $arguments): void
     {
         $this->arguments = $arguments;
     }
@@ -63,27 +63,27 @@ class MethodDescriptor extends TagDescriptor
     /**
      * @return Collection<ArgumentDescriptor>
      */
-    public function getArguments() : Collection
+    public function getArguments(): Collection
     {
         return $this->arguments;
     }
 
-    public function setResponse(?ReturnDescriptor $response) : void
+    public function setResponse(?ReturnDescriptor $response): void
     {
         $this->response = $response;
     }
 
-    public function getResponse() : ?ReturnDescriptor
+    public function getResponse(): ?ReturnDescriptor
     {
         return $this->response;
     }
 
-    public function setStatic(bool $static) : void
+    public function setStatic(bool $static): void
     {
         $this->static = $static;
     }
 
-    public function isStatic() : bool
+    public function isStatic(): bool
     {
         return $this->static;
     }

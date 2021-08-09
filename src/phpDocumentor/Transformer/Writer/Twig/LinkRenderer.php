@@ -33,6 +33,7 @@ use phpDocumentor\Reflection\Types\Nullable;
 use phpDocumentor\Reflection\Types\Object_;
 use phpDocumentor\Transformer\Router\Router;
 use Webmozart\Assert\Assert;
+
 use function array_fill;
 use function count;
 use function current;
@@ -78,7 +79,7 @@ final class LinkRenderer
     /**
      * @deprecated in favour of withDestination()
      */
-    public function setDestination(string $destination) : void
+    public function setDestination(string $destination): void
     {
         $this->destination = $destination;
     }
@@ -93,7 +94,7 @@ final class LinkRenderer
      * For this specific extension the destination is provided in the
      * Twig writer itself.
      */
-    public function withDestination(string $destination) : self
+    public function withDestination(string $destination): self
     {
         $result = clone $this;
         $result->destination = $destination;
@@ -101,7 +102,7 @@ final class LinkRenderer
         return $result;
     }
 
-    public function withProject(ProjectDescriptor $projectDescriptor) : self
+    public function withProject(ProjectDescriptor $projectDescriptor): self
     {
         $result = clone $this;
         $result->project = $projectDescriptor;
@@ -109,7 +110,7 @@ final class LinkRenderer
         return $result;
     }
 
-    public function doNotConvertUrlsToRootPath() : self
+    public function doNotConvertUrlsToRootPath(): self
     {
         $result = clone $this;
         $result->convertToRootPath = false;
@@ -120,7 +121,7 @@ final class LinkRenderer
     /**
      * Returns the target directory relative to the Project's Root.
      */
-    public function getDestination() : string
+    public function getDestination(): string
     {
         return $this->destination;
     }
@@ -128,7 +129,7 @@ final class LinkRenderer
     /**
      * @param Descriptor|Fqsen|Uri $value
      */
-    public function link(object $value) : string
+    public function link(object $value): string
     {
         $uri = $this->router->generate($value);
         if (!$uri) {
@@ -196,7 +197,7 @@ final class LinkRenderer
      *       namespace reference. As such we assume a class as that is the
      *       most common occurrence.
      */
-    public function convertToRootPath(string $pathOrReference, bool $force = false) : ?string
+    public function convertToRootPath(string $pathOrReference, bool $force = false): ?string
     {
         if ($this->isReferenceToFqsen($pathOrReference)) {
             try {
@@ -225,7 +226,7 @@ final class LinkRenderer
      *
      * @return list<string>
      */
-    private function renderASeriesOfLinks(iterable $value, string $presentation) : array
+    private function renderASeriesOfLinks(iterable $value, string $presentation): array
     {
         $result = [];
         foreach ($value as $path) {
@@ -238,7 +239,7 @@ final class LinkRenderer
     /**
      * @param string|Path|Type|DescriptorAbstract|Fqsen|Reference\Fqsen $node
      */
-    private function renderLink($node, string $presentation) : string
+    private function renderLink($node, string $presentation): string
     {
         $generatedUrl = $node;
 
@@ -304,6 +305,7 @@ final class LinkRenderer
             case self::PRESENTATION_URL:
                 // return the first url
                 return $url ?: '';
+
             case self::PRESENTATION_NORMAL:
             case self::PRESENTATION_CLASS_SHORT:
                 $parts = explode('\\', (string) $node);
@@ -314,6 +316,7 @@ final class LinkRenderer
                     (string) $node,
                     end($parts)
                 );
+
             case self::PRESENTATION_FILE_SHORT:
                 $parts = explode('/', (string) $node);
 
@@ -323,6 +326,7 @@ final class LinkRenderer
                     (string) $node,
                     end($parts)
                 );
+
             default:
                 if ($presentation !== '') {
                     return sprintf(
@@ -342,7 +346,7 @@ final class LinkRenderer
      *
      * @return list<string>
      */
-    private function renderType(iterable $value) : array
+    private function renderType(iterable $value): array
     {
         $result = [];
         foreach ($value as $type) {
@@ -361,7 +365,7 @@ final class LinkRenderer
      * This prefix will include a trailing forward slash (/) when it actually needs to direct the caller to go
      * elsewhere.
      */
-    private function getPathPrefixBasedOnDepth() : string
+    private function getPathPrefixBasedOnDepth(): string
     {
         $directoryDepth = substr_count($this->getDestination(), '/') + 1;
 
@@ -370,17 +374,17 @@ final class LinkRenderer
             : '';
     }
 
-    private function isReferenceToFqsen(string $path) : bool
+    private function isReferenceToFqsen(string $path): bool
     {
         return strpos($path, '@') === 0;
     }
 
-    private function withoutLeadingSlash(string $path) : string
+    private function withoutLeadingSlash(string $path): string
     {
         return ltrim($path, '/');
     }
 
-    private function createFqsenFromReference(string $path) : Fqsen
+    private function createFqsenFromReference(string $path): Fqsen
     {
         if (!$this->isReferenceToFqsen($path)) {
             throw new InvalidArgumentException('References to FQSENs are expected to begin with an @-sign');
@@ -396,7 +400,7 @@ final class LinkRenderer
         return new Fqsen($strippedAtSign);
     }
 
-    private function renderAbstractListLinks(AbstractList $node, string $presentation) : string
+    private function renderAbstractListLinks(AbstractList $node, string $presentation): string
     {
         $typeLink = null;
         $valueLink = $this->renderLink($node->getValueType(), $presentation);

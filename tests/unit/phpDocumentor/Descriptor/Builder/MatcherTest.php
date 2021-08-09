@@ -11,7 +11,7 @@ use stdClass;
 
 final class MatcherTest extends TestCase
 {
-    public function test_it_can_match_against_the_given_class_as_a_callable() : void
+    public function test_it_can_match_against_the_given_class_as_a_callable(): void
     {
         $matcher = Matcher::forType(stdClass::class);
 

@@ -21,22 +21,22 @@ use phpDocumentor\Descriptor\Collection;
  */
 interface MethodInterface extends ElementInterface, TypeInterface
 {
-    public function setAbstract(bool $abstract) : void;
+    public function setAbstract(bool $abstract): void;
 
-    public function isAbstract() : bool;
+    public function isAbstract(): bool;
 
     /**
      * @return Collection<ArgumentDescriptor>
      */
-    public function getArguments() : Collection;
+    public function getArguments(): Collection;
 
-    public function setFinal(bool $final) : void;
+    public function setFinal(bool $final): void;
 
-    public function isFinal() : bool;
+    public function isFinal(): bool;
 
-    public function setStatic(bool $static) : void;
+    public function setStatic(bool $static): void;
 
-    public function isStatic() : bool;
+    public function isStatic(): bool;
 
-    public function setVisibility(string $visibility) : void;
+    public function setVisibility(string $visibility): void;
 }

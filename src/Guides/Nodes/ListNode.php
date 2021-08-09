@@ -28,7 +28,7 @@ class ListNode extends Node
      *
      * @param mixed[] $line
      */
-    public function addLine(array $line) : void
+    public function addLine(array $line): void
     {
         $this->lines[] = $line;
     }
@@ -36,7 +36,7 @@ class ListNode extends Node
     /**
      * @return mixed[][]
      */
-    public function getLines() : array
+    public function getLines(): array
     {
         return $this->lines;
     }

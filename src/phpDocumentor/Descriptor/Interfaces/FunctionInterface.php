@@ -26,12 +26,12 @@ interface FunctionInterface extends ElementInterface, TypeInterface
      *
      * @param Collection<ArgumentDescriptor> $arguments
      */
-    public function setArguments(Collection $arguments) : void;
+    public function setArguments(Collection $arguments): void;
 
     /**
      * Returns the arguments related to this function.
      *
      * @return Collection<ArgumentDescriptor>
      */
-    public function getArguments() : Collection;
+    public function getArguments(): Collection;
 }

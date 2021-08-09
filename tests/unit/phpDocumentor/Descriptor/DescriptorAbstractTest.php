@@ -37,7 +37,7 @@ class DescriptorAbstractTest extends MockeryTestCase
     /**
      * Creates a new mocked fixture object.
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->fixture = new TestSubjectDescriptor();
     }
@@ -45,7 +45,7 @@ class DescriptorAbstractTest extends MockeryTestCase
     /**
      * @covers ::__construct
      */
-    public function testInitialize() : void
+    public function testInitialize(): void
     {
         /** @var m\MockInterface|DescriptorAbstract $mock */
         $mock = $this->getMockBuilder(DescriptorAbstract::class)
@@ -60,7 +60,7 @@ class DescriptorAbstractTest extends MockeryTestCase
      * @covers ::setFullyQualifiedStructuralElementName
      * @covers ::getFullyQualifiedStructuralElementName
      */
-    public function testSettingAndGettingFullyQualifiedStructuralElementName() : void
+    public function testSettingAndGettingFullyQualifiedStructuralElementName(): void
     {
         $this->assertSame(null, $this->fixture->getFullyQualifiedStructuralElementName());
 
@@ -73,7 +73,7 @@ class DescriptorAbstractTest extends MockeryTestCase
      * @covers ::setName
      * @covers ::getName
      */
-    public function testSettingAndGettingName() : void
+    public function testSettingAndGettingName(): void
     {
         $this->assertSame('', $this->fixture->getName());
 
@@ -86,7 +86,7 @@ class DescriptorAbstractTest extends MockeryTestCase
      * @covers ::setNamespace
      * @covers ::getNamespace
      */
-    public function testSettingAndGettingNamespace() : void
+    public function testSettingAndGettingNamespace(): void
     {
         $this->assertEquals('', $this->fixture->getNamespace());
 
@@ -101,7 +101,7 @@ class DescriptorAbstractTest extends MockeryTestCase
      * @covers ::setSummary
      * @covers ::getSummary
      */
-    public function testSettingAndGettingSummary() : void
+    public function testSettingAndGettingSummary(): void
     {
         $this->assertSame('', $this->fixture->getSummary());
 
@@ -113,7 +113,7 @@ class DescriptorAbstractTest extends MockeryTestCase
     /**
      * @covers ::getSummary
      */
-    public function testSummaryInheritsWhenNoneIsPresent() : void
+    public function testSummaryInheritsWhenNoneIsPresent(): void
     {
         // Arrange
         $summary = 'This is a summary';
@@ -134,7 +134,7 @@ class DescriptorAbstractTest extends MockeryTestCase
      * @covers ::setDescription
      * @covers ::getDescription
      */
-    public function testSettingAndGettingDescription() : void
+    public function testSettingAndGettingDescription(): void
     {
         $this->assertNull($this->fixture->getDescription());
 
@@ -144,7 +144,7 @@ class DescriptorAbstractTest extends MockeryTestCase
         $this->assertSame($description, $this->fixture->getDescription());
     }
 
-    public function testWhenDescriptionIsNullParentDescriptionIsInherited() : void
+    public function testWhenDescriptionIsNullParentDescriptionIsInherited(): void
     {
         $parent = new TestSubjectDescriptor();
         $description = new DescriptionDescriptor(new Description('parent'), []);
@@ -158,7 +158,7 @@ class DescriptorAbstractTest extends MockeryTestCase
      * @covers ::setPackage
      * @covers ::getPackage
      */
-    public function testSettingAndGettingPackage() : void
+    public function testSettingAndGettingPackage(): void
     {
         $package = new PackageDescriptor();
         $this->assertNull($this->fixture->getPackage());
@@ -171,7 +171,7 @@ class DescriptorAbstractTest extends MockeryTestCase
     /**
      * @covers ::getAuthor
      */
-    public function testGetAuthor() : void
+    public function testGetAuthor(): void
     {
         /** @var m\MockInterface|DescriptorAbstract $mock */
         $mock = m::mock(
@@ -192,7 +192,7 @@ class DescriptorAbstractTest extends MockeryTestCase
     /**
      * @covers ::getVersion
      */
-    public function testGetVersion() : void
+    public function testGetVersion(): void
     {
         /** @var m\MockInterface|DescriptorAbstract $mock */
         $mock = m::mock(
@@ -213,7 +213,7 @@ class DescriptorAbstractTest extends MockeryTestCase
     /**
      * @covers ::getCopyright
      */
-    public function testGetCopyRight() : void
+    public function testGetCopyRight(): void
     {
         /** @var m\MockInterface|DescriptorAbstract $mock */
         $mock = m::mock(
@@ -236,7 +236,7 @@ class DescriptorAbstractTest extends MockeryTestCase
      * @covers ::getFile
      * @covers ::getLine
      */
-    public function testSettingAndGettingLocation() : void
+    public function testSettingAndGettingLocation(): void
     {
         $this->assertNull($this->fixture->getFile());
         $this->assertSame(0, $this->fixture->getLine());
@@ -251,7 +251,7 @@ class DescriptorAbstractTest extends MockeryTestCase
      * @covers ::setLine
      * @covers ::getLine
      */
-    public function testSetLineNumber() : void
+    public function testSetLineNumber(): void
     {
         $this->assertSame(0, $this->fixture->getLine());
 
@@ -263,7 +263,7 @@ class DescriptorAbstractTest extends MockeryTestCase
     /**
      * @covers ::getPath
      */
-    public function testGetPath() : void
+    public function testGetPath(): void
     {
         $this->assertSame('', $this->fixture->getPath());
 
@@ -279,7 +279,7 @@ class DescriptorAbstractTest extends MockeryTestCase
      * @covers ::setTags
      * @covers ::getTags
      */
-    public function testSettingAndGettingTags() : void
+    public function testSettingAndGettingTags(): void
     {
         /** @var Collection $mock */
         $mock = m::mock(Collection::class);
@@ -291,7 +291,7 @@ class DescriptorAbstractTest extends MockeryTestCase
     /**
      * @covers ::isDeprecated
      */
-    public function testIsDeprecated() : void
+    public function testIsDeprecated(): void
     {
         $this->assertFalse($this->fixture->isDeprecated());
 
@@ -304,7 +304,7 @@ class DescriptorAbstractTest extends MockeryTestCase
      * @covers ::setErrors
      * @covers ::getErrors
      */
-    public function testSettingAndGettingErrors() : void
+    public function testSettingAndGettingErrors(): void
     {
         $tagErrors = new Collection(['myTag Error']);
         $tagDescriptor = $this->prophesize(TagDescriptor::class);
@@ -325,7 +325,7 @@ class DescriptorAbstractTest extends MockeryTestCase
     /**
      * @covers ::__toString
      */
-    public function testToString() : void
+    public function testToString(): void
     {
         $this->fixture->setFullyQualifiedStructuralElementName(new Fqsen('\Fqn'));
         $this->assertSame('\Fqn', (string) $this->fixture);

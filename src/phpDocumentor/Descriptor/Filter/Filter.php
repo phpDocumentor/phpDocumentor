@@ -54,7 +54,7 @@ class Filter
      *
      * @template TDescriptor as Filterable
      */
-    public function filter(Filterable $descriptor, ApiSpecification $apiSpecification) : ?Filterable
+    public function filter(Filterable $descriptor, ApiSpecification $apiSpecification): ?Filterable
     {
         return $this->pipeline->process(new FilterPayload($descriptor, $apiSpecification))->getFilterable();
     }

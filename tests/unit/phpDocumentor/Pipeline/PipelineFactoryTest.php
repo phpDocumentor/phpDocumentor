@@ -24,7 +24,7 @@ final class PipelineFactoryTest extends TestCase
     /**
      * @covers ::create
      */
-    public function test_creates_a_pipeline_with_the_given_series_of_stages() : void
+    public function test_creates_a_pipeline_with_the_given_series_of_stages(): void
     {
         $pipeline = PipelineFactory::create(
             [

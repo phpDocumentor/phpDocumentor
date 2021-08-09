@@ -16,6 +16,7 @@ namespace phpDocumentor\Descriptor;
 use InvalidArgumentException;
 use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
 use phpDocumentor\Descriptor\Validation\Error;
+
 use function ltrim;
 use function sprintf;
 
@@ -48,17 +49,17 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
         $this->setUsedTraits(new Collection());
     }
 
-    public function setMethods(Collection $methods) : void
+    public function setMethods(Collection $methods): void
     {
         $this->methods = $methods;
     }
 
-    public function getMethods() : Collection
+    public function getMethods(): Collection
     {
         return $this->methods;
     }
 
-    public function getInheritedMethods() : Collection
+    public function getInheritedMethods(): Collection
     {
         return new Collection();
     }
@@ -66,7 +67,7 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
     /**
      * @return Collection<MethodDescriptor>
      */
-    public function getMagicMethods() : Collection
+    public function getMagicMethods(): Collection
     {
         /** @var Collection<Tag\MethodDescriptor> $methodTags */
         $methodTags = $this->getTags()->fetch('method', new Collection());
@@ -95,17 +96,17 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
         return $methods;
     }
 
-    public function setProperties(Collection $properties) : void
+    public function setProperties(Collection $properties): void
     {
         $this->properties = $properties;
     }
 
-    public function getProperties() : Collection
+    public function getProperties(): Collection
     {
         return $this->properties;
     }
 
-    public function getInheritedProperties() : Collection
+    public function getInheritedProperties(): Collection
     {
         return new Collection();
     }
@@ -113,7 +114,7 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
     /**
      * @return Collection<PropertyDescriptor>
      */
-    public function getMagicProperties() : Collection
+    public function getMagicProperties(): Collection
     {
         $tags = $this->getTags();
         /** @var Collection<Tag\PropertyDescriptor> $propertyTags */
@@ -153,7 +154,7 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
     /**
      * @param PackageDescriptor|string $package
      */
-    public function setPackage($package) : void
+    public function setPackage($package): void
     {
         parent::setPackage($package);
 
@@ -171,7 +172,7 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
      *
      * @param Collection<TraitDescriptor|string> $usedTraits
      */
-    public function setUsedTraits(Collection $usedTraits) : void
+    public function setUsedTraits(Collection $usedTraits): void
     {
         $this->usedTraits = $usedTraits;
     }
@@ -183,7 +184,7 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
      *
      * @return Collection<TraitDescriptor|string>
      */
-    public function getUsedTraits() : Collection
+    public function getUsedTraits(): Collection
     {
         return $this->usedTraits;
     }

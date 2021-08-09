@@ -17,6 +17,7 @@ use Generator;
 use League\Uri\Contracts\UriInterface;
 use League\Uri\UriInfo;
 use League\Uri\UriResolver;
+
 use function array_shift;
 use function array_splice;
 use function explode;
@@ -69,7 +70,7 @@ final class Dsn
         $this->uri = $uri;
     }
 
-    public static function createFromString(string $dsn) : self
+    public static function createFromString(string $dsn): self
     {
         $parameters       = explode(';', $dsn);
         $uri              = UriFactory::createUri(array_shift($parameters));
@@ -84,7 +85,7 @@ final class Dsn
     /**
      * @param array<string> $parameters
      */
-    public static function createFromUri(UriInterface $uri, array $parameters = []) : self
+    public static function createFromUri(UriInterface $uri, array $parameters = []): self
     {
         $dsn = implode(';', [(string) $uri] + $parameters);
 
@@ -94,7 +95,7 @@ final class Dsn
     /**
      * Returns a string representation of the DSN.
      */
-    public function __toString() : string
+    public function __toString(): string
     {
         if ($this->getScheme() === 'phar' && $this->isWindowsLocalPath()) {
             return 'phar://' . $this->getPath();
@@ -106,7 +107,7 @@ final class Dsn
     /**
      * Returns the scheme part of the DSN
      */
-    public function getScheme() : ?string
+    public function getScheme(): ?string
     {
         return $this->uri->getScheme();
     }
@@ -114,7 +115,7 @@ final class Dsn
     /**
      * Returns the host part of the DSN
      */
-    public function getHost() : string
+    public function getHost(): string
     {
         return $this->uri->getHost() ?? '';
     }
@@ -122,7 +123,7 @@ final class Dsn
     /**
      * Returns the port part of the DSN
      */
-    public function getPort() : ?int
+    public function getPort(): ?int
     {
         $port = $this->uri->getPort();
         if ($port !== null) {
@@ -133,9 +134,11 @@ final class Dsn
             case 'http':
             case 'git+http':
                 return 80;
+
             case 'https':
             case 'git+https':
                 return 443;
+
             default:
                 return null;
         }
@@ -144,7 +147,7 @@ final class Dsn
     /**
      * Returns the username part of the DSN
      */
-    public function getUsername() : string
+    public function getUsername(): string
     {
         return explode(':', $this->uri->getUserInfo() ?? '')[0];
     }
@@ -152,7 +155,7 @@ final class Dsn
     /**
      * Returns the password part of the DSN
      */
-    public function getPassword() : string
+    public function getPassword(): string
     {
         return explode(':', $this->uri->getUserInfo() ?? '')[1] ?? '';
     }
@@ -160,7 +163,7 @@ final class Dsn
     /**
      * Returns the path part of the DSN
      */
-    public function getPath() : Path
+    public function getPath(): Path
     {
         if ($this->isWindowsLocalPath()) {
             return new Path(ltrim($this->uri->getPath(), '/'));
@@ -169,7 +172,7 @@ final class Dsn
         return new Path($this->uri->getPath() ?: '/');
     }
 
-    public function isWindowsLocalPath() : bool
+    public function isWindowsLocalPath(): bool
     {
         $path = ltrim($this->uri->getPath(), '/');
 
@@ -181,7 +184,7 @@ final class Dsn
      *
      * @return string[]
      */
-    public function getQuery() : array
+    public function getQuery(): array
     {
         $result = [];
         parse_str($this->uri->getQuery() ?? '', $result);
@@ -194,12 +197,12 @@ final class Dsn
      *
      * @return string[]
      */
-    public function getParameters() : array
+    public function getParameters(): array
     {
         return $this->parameters;
     }
 
-    public function resolve(Dsn $baseDsn) : self
+    public function resolve(Dsn $baseDsn): self
     {
         if (UriInfo::isAbsolute($this->uri) || UriInfo::isAbsolutePath($this->uri)) {
             return $this;
@@ -214,7 +217,7 @@ final class Dsn
         );
     }
 
-    public function withPath(Path $path) : self
+    public function withPath(Path $path): self
     {
         $pathString = (string) $path;
         if (strpos($pathString, '/') !== 0) {
@@ -231,7 +234,7 @@ final class Dsn
      *
      * @return array<string, string>
      */
-    private static function parseParameters(array $parameters) : array
+    private static function parseParameters(array $parameters): array
     {
         $result = [];
         foreach ($parameters as $parameter) {
@@ -246,7 +249,7 @@ final class Dsn
     /**
      * @return Generator<string, string>
      */
-    private static function parseParameter(string $part) : Generator
+    private static function parseParameter(string $part): Generator
     {
         $result = [];
         parse_str($part, $result);

@@ -14,8 +14,10 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Reflection\Type;
+
 use function array_filter;
 use function trigger_error;
+
 use const E_USER_DEPRECATED;
 
 /**
@@ -44,22 +46,22 @@ class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\Argume
     /**
      * To which method does this argument belong to
      */
-    public function setMethod(MethodDescriptor $method) : void
+    public function setMethod(MethodDescriptor $method): void
     {
         $this->method = $method;
     }
 
-    public function getMethod() : ?MethodDescriptor
+    public function getMethod(): ?MethodDescriptor
     {
         return $this->method;
     }
 
-    public function setType(?Type $type) : void
+    public function setType(?Type $type): void
     {
         $this->type = $type;
     }
 
-    public function getType() : ?Type
+    public function getType(): ?Type
     {
         if ($this->type === null && $this->getInheritedElement() !== null) {
             $this->setType($this->getInheritedElement()->getType());
@@ -71,17 +73,19 @@ class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\Argume
     /**
      * @return list<Type>
      */
-    public function getTypes() : array
+    public function getTypes(): array
     {
         trigger_error('Please use getType', E_USER_DEPRECATED);
 
         return array_filter([$this->getType()]);
     }
 
-    public function getInheritedElement() : ?ArgumentDescriptor
+    public function getInheritedElement(): ?ArgumentDescriptor
     {
-        if ($this->method instanceof MethodDescriptor &&
-            $this->method->getInheritedElement() instanceof MethodDescriptor) {
+        if (
+            $this->method instanceof MethodDescriptor &&
+            $this->method->getInheritedElement() instanceof MethodDescriptor
+        ) {
             $parents = $this->method->getInheritedElement()->getArguments();
             /** @var ArgumentDescriptor $parentArgument */
             foreach ($parents as $parentArgument) {
@@ -94,22 +98,22 @@ class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\Argume
         return null;
     }
 
-    public function setDefault(?string $value) : void
+    public function setDefault(?string $value): void
     {
         $this->default = $value;
     }
 
-    public function getDefault() : ?string
+    public function getDefault(): ?string
     {
         return $this->default;
     }
 
-    public function setByReference(bool $byReference) : void
+    public function setByReference(bool $byReference): void
     {
         $this->byReference = $byReference;
     }
 
-    public function isByReference() : bool
+    public function isByReference(): bool
     {
         return $this->byReference;
     }
@@ -117,7 +121,7 @@ class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\Argume
     /**
      * Sets whether this argument represents a variadic argument.
      */
-    public function setVariadic(bool $isVariadic) : void
+    public function setVariadic(bool $isVariadic): void
     {
         $this->isVariadic = $isVariadic;
     }
@@ -125,7 +129,7 @@ class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\Argume
     /**
      * Returns whether this argument represents a variadic argument.
      */
-    public function isVariadic() : bool
+    public function isVariadic(): bool
     {
         return $this->isVariadic;
     }

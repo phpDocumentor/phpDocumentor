@@ -68,56 +68,56 @@ final class DocumentDescriptor implements Descriptor
         $this->links = $links;
     }
 
-    public function getDocumentNode() : DocumentNode
+    public function getDocumentNode(): DocumentNode
     {
         return $this->documentNode;
     }
 
-    public function getHash() : string
+    public function getHash(): string
     {
         return $this->hash;
     }
 
-    public function getFile() : string
+    public function getFile(): string
     {
         return $this->file;
     }
 
-    public function getTitle() : string
+    public function getTitle(): string
     {
         return $this->title;
     }
 
     /** @return string[][] */
-    public function getTitles() : array
+    public function getTitles(): array
     {
         return $this->titles;
     }
 
     /** @return TocNode[] */
-    public function getTocs() : array
+    public function getTocs(): array
     {
         return $this->tocs;
     }
 
     /** @return string[] */
-    public function getDepends() : array
+    public function getDepends(): array
     {
         return $this->depends;
     }
 
     /** @return string[] */
-    public function getLinks() : array
+    public function getLinks(): array
     {
         return $this->links;
     }
 
-    public function getName() : string
+    public function getName(): string
     {
         return $this->title;
     }
 
-    public function getDescription() : ?DocBlock\DescriptionDescriptor
+    public function getDescription(): ?DocBlock\DescriptionDescriptor
     {
         return null;
     }

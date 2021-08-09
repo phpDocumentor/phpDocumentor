@@ -31,7 +31,7 @@ class ReturnAssembler extends BaseTagAssembler
      *
      * @param Return_ $data
      */
-    public function buildDescriptor(object $data) : ReturnDescriptor
+    public function buildDescriptor(object $data): ReturnDescriptor
     {
         $descriptor = new ReturnDescriptor($data->getName());
         $descriptor->setType($data->getType());

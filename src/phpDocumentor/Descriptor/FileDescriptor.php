@@ -86,7 +86,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
     /**
      * Returns the hash of the contents for this file.
      */
-    public function getHash() : string
+    public function getHash(): string
     {
         return $this->hash;
     }
@@ -94,7 +94,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
     /**
      * Sets the hash of the contents for this file.
      */
-    protected function setHash(string $hash) : void
+    protected function setHash(string $hash): void
     {
         $this->hash = $hash;
     }
@@ -104,7 +104,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
      *
      * When source is included in parsing process this property will contain the raw file contents.
      */
-    public function getSource() : ?string
+    public function getSource(): ?string
     {
         return $this->source;
     }
@@ -114,7 +114,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
      *
      * @internal should not be called by any other class than the assamblers
      */
-    public function setSource(?string $source) : void
+    public function setSource(?string $source): void
     {
         $this->source = $source;
     }
@@ -128,7 +128,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
      *
      * @return Collection<NamespaceDescriptor>|Collection<Fqsen>
      */
-    public function getNamespaceAliases() : Collection
+    public function getNamespaceAliases(): Collection
     {
         return $this->namespaceAliases;
     }
@@ -140,7 +140,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
      *
      * @param Collection<NamespaceDescriptor>|Collection<Fqsen> $namespaceAliases
      */
-    public function setNamespaceAliases(Collection $namespaceAliases) : void
+    public function setNamespaceAliases(Collection $namespaceAliases): void
     {
         $this->namespaceAliases = $namespaceAliases;
     }
@@ -150,7 +150,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
      *
      * @return Collection<string>
      */
-    public function getIncludes() : Collection
+    public function getIncludes(): Collection
     {
         return $this->includes;
     }
@@ -162,7 +162,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
      *
      * @param Collection<string> $includes
      */
-    public function setIncludes(Collection $includes) : void
+    public function setIncludes(Collection $includes): void
     {
         $this->includes = $includes;
     }
@@ -172,7 +172,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
      *
      * {@inheritDoc}
      */
-    public function getConstants() : Collection
+    public function getConstants(): Collection
     {
         return $this->constants;
     }
@@ -184,7 +184,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
      *
      * @param Collection<ConstantDescriptor> $constants
      */
-    public function setConstants(Collection $constants) : void
+    public function setConstants(Collection $constants): void
     {
         $this->constants = $constants;
     }
@@ -194,7 +194,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
      *
      * {@inheritDoc}
      */
-    public function getFunctions() : Collection
+    public function getFunctions(): Collection
     {
         return $this->functions;
     }
@@ -206,7 +206,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
      *
      * @param Collection<FunctionDescriptor> $functions
      */
-    public function setFunctions(Collection $functions) : void
+    public function setFunctions(Collection $functions): void
     {
         $this->functions = $functions;
     }
@@ -216,7 +216,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
      *
      * {@inheritDoc}
      */
-    public function getClasses() : Collection
+    public function getClasses(): Collection
     {
         return $this->classes;
     }
@@ -228,7 +228,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
      *
      * @param Collection<ClassDescriptor> $classes
      */
-    public function setClasses(Collection $classes) : void
+    public function setClasses(Collection $classes): void
     {
         $this->classes = $classes;
     }
@@ -238,7 +238,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
      *
      * {@inheritDoc}
      */
-    public function getInterfaces() : Collection
+    public function getInterfaces(): Collection
     {
         return $this->interfaces;
     }
@@ -250,7 +250,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
      *
      * @param Collection<InterfaceDescriptor> $interfaces
      */
-    public function setInterfaces(Collection $interfaces) : void
+    public function setInterfaces(Collection $interfaces): void
     {
         $this->interfaces = $interfaces;
     }
@@ -260,7 +260,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
      *
      * {@inheritDoc}
      */
-    public function getTraits() : Collection
+    public function getTraits(): Collection
     {
         return $this->traits;
     }
@@ -272,7 +272,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
      *
      * @param Collection<TraitDescriptor> $traits
      */
-    public function setTraits(Collection $traits) : void
+    public function setTraits(Collection $traits): void
     {
         $this->traits = $traits;
     }
@@ -289,7 +289,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
      *
      * @return Collection<array<int|string, mixed>>
      */
-    public function getMarkers() : Collection
+    public function getMarkers(): Collection
     {
         return $this->markers;
     }
@@ -303,7 +303,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
      *
      * @param Collection<array<int|string, mixed>> $markers
      */
-    public function setMarkers(Collection $markers) : void
+    public function setMarkers(Collection $markers): void
     {
         $this->markers = $markers;
     }
@@ -315,7 +315,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
      *
      * @return Collection<Error>
      */
-    public function getAllErrors() : Collection
+    public function getAllErrors(): Collection
     {
         $errors = $this->getErrors();
 
@@ -334,7 +334,8 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
         }
 
         foreach ($types as $element) {
-            if ($element instanceof ClassDescriptor ||
+            if (
+                $element instanceof ClassDescriptor ||
                 $element instanceof InterfaceDescriptor ||
                 $element instanceof TraitDescriptor
             ) {
@@ -343,7 +344,8 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
                 }
             }
 
-            if ($element instanceof ClassDescriptor ||
+            if (
+                $element instanceof ClassDescriptor ||
                 $element instanceof InterfaceDescriptor
             ) {
                 foreach ($element->getConstants() as $item) {
@@ -351,7 +353,8 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
                 }
             }
 
-            if (!$element instanceof ClassDescriptor &&
+            if (
+                !$element instanceof ClassDescriptor &&
                 !$element instanceof TraitDescriptor
             ) {
                 continue;
@@ -370,7 +373,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
      *
      * @internal should not be called by any other class than the assamblers
      */
-    public function setPath(string $path) : void
+    public function setPath(string $path): void
     {
         $this->path = $path;
     }
@@ -380,12 +383,12 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
      *
      * The path is a relative to the source file based on the dsn of the config.
      */
-    public function getPath() : string
+    public function getPath(): string
     {
         return $this->path;
     }
 
-    public function __toString() : string
+    public function __toString(): string
     {
         return $this->getPath();
     }

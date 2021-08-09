@@ -21,7 +21,7 @@ class DispatcherTest extends TestCase
     /**
      * @covers \phpDocumentor\Event\Dispatcher::getInstance
      */
-    public function testFactoryMethodReturnsInstanceOfSelf() : void
+    public function testFactoryMethodReturnsInstanceOfSelf(): void
     {
         $this->assertInstanceOf(Dispatcher::class, Dispatcher::getInstance());
     }
@@ -29,7 +29,7 @@ class DispatcherTest extends TestCase
     /**
      * @covers \phpDocumentor\Event\Dispatcher::getInstance
      */
-    public function testDefaultDispatcherAlwaysReturnsTheSameInstance() : void
+    public function testDefaultDispatcherAlwaysReturnsTheSameInstance(): void
     {
         $fixture = Dispatcher::getInstance();
         $this->assertSame($fixture, Dispatcher::getInstance());
@@ -38,7 +38,7 @@ class DispatcherTest extends TestCase
     /**
      * @covers \phpDocumentor\Event\Dispatcher::getInstance
      */
-    public function testNamedDispatcherAlwaysReturnsTheSameInstance() : void
+    public function testNamedDispatcherAlwaysReturnsTheSameInstance(): void
     {
         $fixture = Dispatcher::getInstance('mine');
         $this->assertSame($fixture, Dispatcher::getInstance('mine'));
@@ -47,7 +47,7 @@ class DispatcherTest extends TestCase
     /**
      * @covers \phpDocumentor\Event\Dispatcher::getInstance
      */
-    public function testDifferentNamesForDispatcherReturnsADifferentInstance() : void
+    public function testDifferentNamesForDispatcherReturnsADifferentInstance(): void
     {
         $fixture = Dispatcher::getInstance('mine');
         $this->assertNotSame($fixture, Dispatcher::getInstance('default'));
@@ -57,7 +57,7 @@ class DispatcherTest extends TestCase
      * @covers \phpDocumentor\Event\Dispatcher::setInstance
      * @covers \phpDocumentor\Event\Dispatcher::getInstance
      */
-    public function testInstancesCanBeOverridden() : void
+    public function testInstancesCanBeOverridden(): void
     {
         $fixture = Dispatcher::getInstance('mine');
         $this->assertSame($fixture, Dispatcher::getInstance('mine'));

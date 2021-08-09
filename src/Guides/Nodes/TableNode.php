@@ -21,6 +21,7 @@ use phpDocumentor\Guides\RestructuredText\Exception\InvalidTableStructure;
 use phpDocumentor\Guides\RestructuredText\Parser;
 use phpDocumentor\Guides\RestructuredText\Parser\LineChecker;
 use phpDocumentor\Guides\RestructuredText\Parser\TableSeparatorLineConfig;
+
 use function array_keys;
 use function array_reverse;
 use function array_values;
@@ -74,7 +75,7 @@ class TableNode extends Node
         $this->type = $type;
     }
 
-    public function getCols() : int
+    public function getCols(): int
     {
         if ($this->isCompiled === false) {
             throw new LogicException('Call compile() first.');
@@ -88,7 +89,7 @@ class TableNode extends Node
         return $columns;
     }
 
-    public function getRows() : int
+    public function getRows(): int
     {
         if ($this->isCompiled === false) {
             throw new LogicException('Call compile() first.');
@@ -100,7 +101,7 @@ class TableNode extends Node
     /**
      * @return TableRow[]
      */
-    public function getData() : array
+    public function getData(): array
     {
         if ($this->isCompiled === false) {
             throw new LogicException('Call compile() first.');
@@ -116,7 +117,7 @@ class TableNode extends Node
      *
      * @return bool[]
      */
-    public function getHeaders() : array
+    public function getHeaders(): array
     {
         if ($this->isCompiled === false) {
             throw new LogicException('Call compile() first.');
@@ -125,7 +126,7 @@ class TableNode extends Node
         return $this->headers;
     }
 
-    public function pushSeparatorLine(TableSeparatorLineConfig $separatorLineConfig) : void
+    public function pushSeparatorLine(TableSeparatorLineConfig $separatorLineConfig): void
     {
         if ($this->isCompiled === true) {
             throw new LogicException('Cannot push data after TableNode is compiled');
@@ -135,7 +136,7 @@ class TableNode extends Node
         $this->currentLineNumber++;
     }
 
-    public function pushContentLine(string $line) : void
+    public function pushContentLine(string $line): void
     {
         if ($this->isCompiled === true) {
             throw new LogicException('Cannot push data after TableNode is compiled');
@@ -145,7 +146,7 @@ class TableNode extends Node
         $this->currentLineNumber++;
     }
 
-    public function finalize(Parser $parser, LineChecker $lineChecker) : void
+    public function finalize(Parser $parser, LineChecker $lineChecker): void
     {
         if ($this->isCompiled === false) {
             $this->compile();
@@ -182,7 +183,7 @@ class TableNode extends Node
      * Looks at all the raw data and finally populates the data
      * and headers.
      */
-    private function compile() : void
+    private function compile(): void
     {
         $this->isCompiled = true;
 
@@ -193,7 +194,7 @@ class TableNode extends Node
         }
     }
 
-    private function compileSimpleTable() : void
+    private function compileSimpleTable(): void
     {
         // determine if there is second === separator line (other than
         // the last line): this would mean there are header rows
@@ -294,7 +295,7 @@ class TableNode extends Node
         }
     }
 
-    private function compilePrettyTable() : void
+    private function compilePrettyTable(): void
     {
         // loop over ALL separator lines to find ALL of the column ranges
         /** @var array<int, int> $columnRanges */
@@ -437,11 +438,13 @@ class TableNode extends Node
                 // that this column in the next row should also be
                 // included in that previous row's content
                 foreach ($row->getColumns() as $columnIndex => $column) {
-                    if (!$column->isCompletelyEmpty()
+                    if (
+                        !$column->isCompletelyEmpty()
                         && str_repeat(
                             '-',
                             mb_strlen($column->getContent())
-                        ) === $column->getContent()) {
+                        ) === $column->getContent()
+                    ) {
                         // only a line separator in this column - not content!
                         continue;
                     }
@@ -514,7 +517,7 @@ class TableNode extends Node
         $this->data = $rows;
     }
 
-    private function getTableAsString() : string
+    private function getTableAsString(): string
     {
         $lines = [];
         $i = 0;
@@ -531,7 +534,7 @@ class TableNode extends Node
         return implode("\n", $lines);
     }
 
-    private function addError(string $message) : void
+    private function addError(string $message): void
     {
         $this->errors[] = $message;
     }
@@ -539,7 +542,7 @@ class TableNode extends Node
     /**
      * @param TableRow[] $rows
      */
-    private function findColumnInPreviousRows(int $columnIndex, array $rows, int $currentRowIndex) : TableColumn
+    private function findColumnInPreviousRows(int $columnIndex, array $rows, int $currentRowIndex): TableColumn
     {
         /** @var TableRow[] $reversedRows */
         $reversedRows = array_reverse($rows, true);

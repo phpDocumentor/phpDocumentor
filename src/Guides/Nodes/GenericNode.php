@@ -42,7 +42,7 @@ final class GenericNode extends Node
         parent::__construct($value);
     }
 
-    public function getName() : string
+    public function getName(): string
     {
         return $this->name;
     }

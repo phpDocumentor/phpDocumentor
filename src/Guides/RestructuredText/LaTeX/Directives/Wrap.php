@@ -13,7 +13,7 @@ use phpDocumentor\Guides\RestructuredText\Parser;
  */
 class Wrap extends SubDirective
 {
-    public function getName() : string
+    public function getName(): string
     {
         return 'wrap';
     }
@@ -27,7 +27,7 @@ class Wrap extends SubDirective
         string $variable,
         string $data,
         array $options
-    ) : ?Node {
+    ): ?Node {
         return $document;
     }
 }

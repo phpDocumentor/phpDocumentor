@@ -21,5 +21,5 @@ interface AssemblerReducer
      *
      * @template T of Descriptor
      */
-    public function create(object $data, ?Descriptor $descriptor = null) : ?Descriptor;
+    public function create(object $data, ?Descriptor $descriptor = null): ?Descriptor;
 }

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides;
 
 use Twig\Environment;
+
 use function rtrim;
 
 final class TemplateRenderer
@@ -34,12 +35,12 @@ final class TemplateRenderer
         $this->subFolder = $subFolder;
     }
 
-    public function getTemplateEngine() : Environment
+    public function getTemplateEngine(): Environment
     {
         return $this->environment;
     }
 
-    public function setDestination(string $filename) : void
+    public function setDestination(string $filename): void
     {
         $destination = $this->subFolder . '/' . $filename;
         $this->getTemplateEngine()->addGlobal('destinationPath', $destination);
@@ -48,7 +49,7 @@ final class TemplateRenderer
     /**
      * @param mixed[] $parameters
      */
-    public function render(string $template, array $parameters = []) : string
+    public function render(string $template, array $parameters = []): string
     {
         return rtrim($this->environment->render($this->basePath . '/' . $template, $parameters), "\n");
     }

@@ -18,6 +18,7 @@ use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Type;
 use Webmozart\Assert\Assert;
+
 use function current;
 
 /**
@@ -62,7 +63,7 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
     /**
      * @param ClassDescriptor|InterfaceDescriptor|TraitDescriptor $parent
      */
-    public function setParent(DescriptorAbstract $parent) : void
+    public function setParent(DescriptorAbstract $parent): void
     {
         $this->setFullyQualifiedStructuralElementName(
             new Fqsen($parent->getFullyQualifiedStructuralElementName() . '::' . $this->getName() . '()')
@@ -77,47 +78,47 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
     /**
      * @return ClassDescriptor|InterfaceDescriptor|TraitDescriptor|null
      */
-    public function getParent() : ?DescriptorAbstract
+    public function getParent(): ?DescriptorAbstract
     {
         return $this->parent;
     }
 
-    public function setAbstract(bool $abstract) : void
+    public function setAbstract(bool $abstract): void
     {
         $this->abstract = $abstract;
     }
 
-    public function isAbstract() : bool
+    public function isAbstract(): bool
     {
         return $this->abstract;
     }
 
-    public function setFinal(bool $final) : void
+    public function setFinal(bool $final): void
     {
         $this->final = $final;
     }
 
-    public function isFinal() : bool
+    public function isFinal(): bool
     {
         return $this->final;
     }
 
-    public function setStatic(bool $static) : void
+    public function setStatic(bool $static): void
     {
         $this->static = $static;
     }
 
-    public function isStatic() : bool
+    public function isStatic(): bool
     {
         return $this->static;
     }
 
-    public function setVisibility(string $visibility) : void
+    public function setVisibility(string $visibility): void
     {
         $this->visibility = $visibility;
     }
 
-    public function getVisibility() : string
+    public function getVisibility(): string
     {
         return $this->visibility;
     }
@@ -125,7 +126,7 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
     /**
      * @param Collection<ArgumentDescriptor> $arguments
      */
-    public function setArguments(Collection $arguments) : void
+    public function setArguments(Collection $arguments): void
     {
         $this->arguments = Collection::fromClassString(ArgumentDescriptor::class);
 
@@ -134,18 +135,18 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
         }
     }
 
-    public function addArgument(string $name, ArgumentDescriptor $argument) : void
+    public function addArgument(string $name, ArgumentDescriptor $argument): void
     {
         $argument->setMethod($this);
         $this->arguments->set($name, $argument);
     }
 
-    public function getArguments() : Collection
+    public function getArguments(): Collection
     {
         return $this->arguments;
     }
 
-    public function getResponse() : ReturnDescriptor
+    public function getResponse(): ReturnDescriptor
     {
         $definedReturn = new ReturnDescriptor('return');
         $definedReturn->setType($this->returnType);
@@ -163,7 +164,7 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
     /**
      * Returns the file associated with the parent class, interface or trait.
      */
-    public function getFile() : FileDescriptor
+    public function getFile(): FileDescriptor
     {
         $file = $this->getParent()->getFile();
 
@@ -175,7 +176,7 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
     /**
      * @return Collection<ReturnDescriptor>
      */
-    public function getReturn() : Collection
+    public function getReturn(): Collection
     {
         /** @var Collection<ReturnDescriptor> $var */
         $var = $this->getTags()->fetch('return', new Collection())->filter(ReturnDescriptor::class);
@@ -194,7 +195,7 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
     /**
      * @return Collection<ParamDescriptor>
      */
-    public function getParam() : Collection
+    public function getParam(): Collection
     {
         /** @var Collection<ParamDescriptor> $var */
         $var = $this->getTags()->fetch('param', new Collection());
@@ -223,7 +224,7 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
      * 2. if the parent is a class and implements interfaces, check each interface for a method with the exact same
      *    name. If such a method is found, return the first hit.
      */
-    public function getInheritedElement() : ?MethodDescriptor
+    public function getInheritedElement(): ?MethodDescriptor
     {
         if ($this->inheritedElement !== null) {
             Assert::isInstanceOf($this->inheritedElement, self::class);
@@ -277,7 +278,7 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
     /**
      * Sets return type of this method.
      */
-    public function setReturnType(Type $returnType) : void
+    public function setReturnType(Type $returnType): void
     {
         $this->returnType = $returnType;
     }

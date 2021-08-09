@@ -18,5 +18,5 @@ interface NodeRendererFactory
     /**
      * @param class-string $node
      */
-    public function get(string $node) : NodeRenderer;
+    public function get(string $node): NodeRenderer;
 }

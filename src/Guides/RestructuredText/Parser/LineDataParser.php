@@ -8,6 +8,7 @@ use Doctrine\Common\EventManager;
 use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\RestructuredText\Event\OnLinkParsedEvent;
 use phpDocumentor\Guides\RestructuredText\Parser;
+
 use function array_map;
 use function count;
 use function explode;
@@ -30,7 +31,7 @@ class LineDataParser
         $this->eventManager = $eventManager;
     }
 
-    public function parseLink(string $line) : ?Link
+    public function parseLink(string $line): ?Link
     {
         // Links
         if (preg_match('/^\.\. _`(.+)`: (.+)$/mUsi', $line, $match) > 0) {
@@ -65,7 +66,7 @@ class LineDataParser
         return null;
     }
 
-    private function createLink(string $name, string $url, string $type) : Link
+    private function createLink(string $name, string $url, string $type): Link
     {
         $this->eventManager->dispatchEvent(
             OnLinkParsedEvent::ON_LINK_PARSED,
@@ -75,7 +76,7 @@ class LineDataParser
         return new Link($name, $url, $type);
     }
 
-    public function parseDirectiveOption(string $line) : ?DirectiveOption
+    public function parseDirectiveOption(string $line): ?DirectiveOption
     {
         if (preg_match('/^(\s+):(.+): (.*)$/mUsi', $line, $match) > 0) {
             return new DirectiveOption($match[2], trim($match[3]));
@@ -88,7 +89,7 @@ class LineDataParser
         return null;
     }
 
-    public function parseDirective(string $line) : ?Directive
+    public function parseDirective(string $line): ?Directive
     {
         if (preg_match('/^\.\. (\|(.+)\| |)([^\s]+)::( (.*)|)$/mUsi', $line, $match) > 0) {
             return new Directive(
@@ -101,7 +102,7 @@ class LineDataParser
         return null;
     }
 
-    public function parseListLine(string $line) : ?ListLine
+    public function parseListLine(string $line): ?ListLine
     {
         $depth = 0;
 
@@ -141,7 +142,7 @@ class LineDataParser
     /**
      * @param string[] $lines
      */
-    public function parseDefinitionList(array $lines) : DefinitionList
+    public function parseDefinitionList(array $lines): DefinitionList
     {
         $definitionList = [];
         $definitionListTerm = null;

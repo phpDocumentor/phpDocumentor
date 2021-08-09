@@ -24,6 +24,7 @@ use phpDocumentor\Descriptor\PropertyDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Reflection\Fqsen;
 use PHPUnit\Framework\TestCase;
+
 use function array_keys;
 use function array_values;
 
@@ -40,7 +41,7 @@ class ElementsIndexBuilderTest extends TestCase
     /** @var ProjectDescriptor */
     protected $project;
 
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->fixture = new ElementsIndexBuilder();
 
@@ -54,7 +55,7 @@ class ElementsIndexBuilderTest extends TestCase
     /**
      * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getDescription
      */
-    public function testGetDescription() : void
+    public function testGetDescription(): void
     {
         $this->assertSame('Build "elements" index', $this->fixture->getDescription());
     }
@@ -64,7 +65,7 @@ class ElementsIndexBuilderTest extends TestCase
      * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::addElementsToIndexes
      * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getIndexKey
      */
-    public function testAddClassesToIndex() : void
+    public function testAddClassesToIndex(): void
     {
         $file1 = $this->project->getFiles()->get(0);
         $classDescriptor1 = new ClassDescriptor();
@@ -94,7 +95,7 @@ class ElementsIndexBuilderTest extends TestCase
      * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::addElementsToIndexes
      * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getIndexKey
      */
-    public function testAddInterfacesToIndex() : void
+    public function testAddInterfacesToIndex(): void
     {
         $file1 = $this->project->getFiles()->get(0);
         $interfaceDescriptor1 = new InterfaceDescriptor();
@@ -124,7 +125,7 @@ class ElementsIndexBuilderTest extends TestCase
      * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::addElementsToIndexes
      * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getIndexKey
      */
-    public function testAddTraitsToIndex() : void
+    public function testAddTraitsToIndex(): void
     {
         $file1 = $this->project->getFiles()->get(0);
         $traitDescriptor1 = new TraitDescriptor();
@@ -154,7 +155,7 @@ class ElementsIndexBuilderTest extends TestCase
      * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::addElementsToIndexes
      * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getIndexKey
      */
-    public function testAddFunctionsToIndex() : void
+    public function testAddFunctionsToIndex(): void
     {
         $file1 = $this->project->getFiles()->get(0);
         $functionDescriptor1 = new FunctionDescriptor();
@@ -184,7 +185,7 @@ class ElementsIndexBuilderTest extends TestCase
      * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::addElementsToIndexes
      * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getIndexKey
      */
-    public function testAddConstantsToIndex() : void
+    public function testAddConstantsToIndex(): void
     {
         $file1 = $this->project->getFiles()->get(0);
         $constantDescriptor1 = new ConstantDescriptor();
@@ -215,7 +216,7 @@ class ElementsIndexBuilderTest extends TestCase
      * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getIndexKey
      * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getSubElements
      */
-    public function testAddClassConstantsToIndex() : void
+    public function testAddClassConstantsToIndex(): void
     {
         $file1 = $this->project->getFiles()->get(0);
         $classDescriptor1 = new ClassDescriptor();
@@ -259,7 +260,7 @@ class ElementsIndexBuilderTest extends TestCase
      * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getIndexKey
      * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getSubElements
      */
-    public function testAddPropertiesToIndex() : void
+    public function testAddPropertiesToIndex(): void
     {
         $file1 = $this->project->getFiles()->get(0);
         $classDescriptor1 = new ClassDescriptor();
@@ -302,7 +303,7 @@ class ElementsIndexBuilderTest extends TestCase
      * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getIndexKey
      * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getSubElements
      */
-    public function testAddMethodsToIndex() : void
+    public function testAddMethodsToIndex(): void
     {
         $file1 = $this->project->getFiles()->get(0);
         $classDescriptor1 = new ClassDescriptor();

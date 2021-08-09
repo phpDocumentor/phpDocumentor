@@ -27,5 +27,5 @@ interface FileCollector
      *
      * @return File[]
      */
-    public function getFiles(Dsn $dsn, array $paths, array $ignore, array $extensions) : array;
+    public function getFiles(Dsn $dsn, array $paths, array $ignore, array $extensions): array;
 }

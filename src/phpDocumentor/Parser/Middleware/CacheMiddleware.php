@@ -22,6 +22,7 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Symfony\Contracts\Cache\CacheInterface;
 use Webmozart\Assert\Assert;
+
 use function base64_decode;
 use function base64_encode;
 use function md5;
@@ -52,7 +53,7 @@ final class CacheMiddleware implements Middleware
      *
      * @throws InvalidArgumentException
      */
-    public function execute(Command $command, callable $next) : object
+    public function execute(Command $command, callable $next): object
     {
         Assert::isInstanceOf($command, CreateCommand::class);
 

@@ -37,17 +37,17 @@ final class RenderCommand
         $this->documentationSet = $documentationSet;
     }
 
-    public function getDocumentationSet() : GuideSetDescriptor
+    public function getDocumentationSet(): GuideSetDescriptor
     {
         return $this->documentationSet;
     }
 
-    public function getDestination() : FilesystemInterface
+    public function getDestination(): FilesystemInterface
     {
         return $this->filesystem;
     }
 
-    public function getConfiguration() : Configuration
+    public function getConfiguration(): Configuration
     {
         return $this->configuration;
     }

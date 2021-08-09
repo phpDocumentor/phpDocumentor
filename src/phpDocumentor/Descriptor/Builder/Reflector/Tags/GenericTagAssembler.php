@@ -24,7 +24,7 @@ class GenericTagAssembler extends BaseTagAssembler
     /**
      * @param Tag $data
      */
-    protected function buildDescriptor(object $data) : TagDescriptor
+    protected function buildDescriptor(object $data): TagDescriptor
     {
         return new TagDescriptor($data->getName());
     }

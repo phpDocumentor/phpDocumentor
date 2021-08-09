@@ -22,9 +22,11 @@ use League\Flysystem\MountManager;
 use LogicException;
 use phpDocumentor\Dsn;
 use Webmozart\Assert\Assert;
+
 use function hash;
 use function in_array;
 use function sprintf;
+
 use const LOCK_EX;
 use const PHP_OS_FAMILY;
 
@@ -41,7 +43,7 @@ class FlySystemFactory implements FileSystemFactory
     /**
      * Returns a Filesystem instance based on the scheme of the provided Dsn
      */
-    public function create(Dsn $dsn) : Filesystem
+    public function create(Dsn $dsn): Filesystem
     {
         $dsnId = hash('md5', (string) $dsn);
 
@@ -60,7 +62,7 @@ class FlySystemFactory implements FileSystemFactory
         return $filesystem;
     }
 
-    private function createAdapter(Dsn $dsn) : AdapterInterface
+    private function createAdapter(Dsn $dsn): AdapterInterface
     {
         if (!in_array($dsn->getScheme(), [null, 'file', 'vfs', 'phar'], true)) {
             throw new InvalidArgumentException(sprintf('"%s" is not a supported file system yet', $dsn->getScheme()));
@@ -83,7 +85,7 @@ class FlySystemFactory implements FileSystemFactory
      *
      * Github actions will NOT reproduce this behavior since they are running a server edition of windows.
      */
-    private function formatDsn(Dsn $dsn) : string
+    private function formatDsn(Dsn $dsn): string
     {
         if (PHP_OS_FAMILY === 'Windows' && $dsn->isWindowsLocalPath() && $dsn->getScheme() === 'file') {
             return (string) $dsn->getPath();

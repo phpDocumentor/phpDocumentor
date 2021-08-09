@@ -31,7 +31,7 @@ final class LoadCacheHandler
         $this->cachedMetasLoader = $cachedMetasLoader;
     }
 
-    public function handle(LoadCacheCommand $command) : void
+    public function handle(LoadCacheCommand $command): void
     {
         if (!$command->useCaching()) {
             return;

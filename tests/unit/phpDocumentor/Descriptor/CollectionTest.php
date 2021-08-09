@@ -29,7 +29,7 @@ final class CollectionTest extends TestCase
     /**
      * Creates a new (empty) fixture object.
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->fixture = new Collection();
     }
@@ -37,7 +37,7 @@ final class CollectionTest extends TestCase
     /**
      * @covers ::__construct
      */
-    public function testInitialize() : void
+    public function testInitialize(): void
     {
         $fixture = new Collection();
 
@@ -47,7 +47,7 @@ final class CollectionTest extends TestCase
     /**
      * @covers ::__construct
      */
-    public function testInitializeWithExistingArray() : void
+    public function testInitializeWithExistingArray(): void
     {
         $expected = [1, 2];
         $fixture = new Collection($expected);
@@ -58,7 +58,7 @@ final class CollectionTest extends TestCase
     /**
      * @covers ::add
      */
-    public function testAddNewItem() : void
+    public function testAddNewItem(): void
     {
         $expected = ['abc'];
         $expectedSecondRun = ['abc', 'def'];
@@ -76,7 +76,7 @@ final class CollectionTest extends TestCase
      * @covers ::set
      * @covers ::offsetSet
      */
-    public function testSetItemsWithKey() : void
+    public function testSetItemsWithKey(): void
     {
         $expected = ['z' => 'abc'];
         $expectedSecondRun = ['z' => 'abc', 'y' => 'def'];
@@ -95,7 +95,7 @@ final class CollectionTest extends TestCase
     /**
      * @covers ::set
      */
-    public function testSetItemsWithEmptyKeyShouldThrowException() : void
+    public function testSetItemsWithEmptyKeyShouldThrowException(): void
     {
         $this->expectException('InvalidArgumentException');
         $this->fixture->set('', 'abc');
@@ -104,7 +104,7 @@ final class CollectionTest extends TestCase
     /**
      * @covers ::offsetSet
      */
-    public function testSetItemsUsingOffsetSetWithEmptyKeyShouldThrowException() : void
+    public function testSetItemsUsingOffsetSetWithEmptyKeyShouldThrowException(): void
     {
         $this->expectException('InvalidArgumentException');
         $this->fixture->offsetSet('', 'abc');
@@ -115,7 +115,7 @@ final class CollectionTest extends TestCase
      * @covers ::__get
      * @covers ::offsetGet
      */
-    public function testRetrievalOfItems() : void
+    public function testRetrievalOfItems(): void
     {
         $this->fixture['a'] = 'abc';
         $this->assertEquals('abc', $this->fixture->__get('a'));
@@ -130,7 +130,7 @@ final class CollectionTest extends TestCase
     /**
      * @covers ::getAll
      */
-    public function testRetrieveAllItems() : void
+    public function testRetrieveAllItems(): void
     {
         $this->fixture['a'] = 'abc';
         $this->assertSame(['a' => 'abc'], $this->fixture->getAll());
@@ -139,7 +139,7 @@ final class CollectionTest extends TestCase
     /**
      * @covers ::getIterator
      */
-    public function testGetIterator() : void
+    public function testGetIterator(): void
     {
         $this->fixture['a'] = 'abc';
         $this->assertInstanceOf('ArrayIterator', $this->fixture->getIterator());
@@ -150,7 +150,7 @@ final class CollectionTest extends TestCase
      * @covers ::count
      * @covers ::offsetUnset
      */
-    public function testCountReturnsTheNumberOfElements() : void
+    public function testCountReturnsTheNumberOfElements(): void
     {
         $this->assertCount(0, $this->fixture);
         $this->assertEquals(0, $this->fixture->count());
@@ -174,7 +174,7 @@ final class CollectionTest extends TestCase
     /**
      * @covers ::clear
      */
-    public function testClearingTheCollection() : void
+    public function testClearingTheCollection(): void
     {
         $this->fixture[1] = 'a';
         $this->fixture[2] = 'b';
@@ -189,7 +189,7 @@ final class CollectionTest extends TestCase
     /**
      * @covers ::offsetExists
      */
-    public function testIfExistingElementsAreDetected() : void
+    public function testIfExistingElementsAreDetected(): void
     {
         $this->assertArrayNotHasKey(0, $this->fixture);
         $this->assertFalse($this->fixture->offsetExists(0));
@@ -203,7 +203,7 @@ final class CollectionTest extends TestCase
     /**
      * @covers ::merge
      */
-    public function testIfAfterMergeCollectionContainsAllItems() : void
+    public function testIfAfterMergeCollectionContainsAllItems(): void
     {
         $expected = [0 => 'a', 1 => 'b', 2 => 'c'];
         $this->fixture[1] = 'a';
@@ -220,7 +220,7 @@ final class CollectionTest extends TestCase
     /**
      * @covers ::filter
      */
-    public function testFilterReturnsOnlyInstancesOfCertainType() : void
+    public function testFilterReturnsOnlyInstancesOfCertainType(): void
     {
         $expected = [0 => new stdClass()];
 

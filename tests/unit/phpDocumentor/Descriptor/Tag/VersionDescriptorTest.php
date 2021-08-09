@@ -28,7 +28,7 @@ class VersionDescriptorTest extends TestCase
     /**
      * Creates a new fixture object.
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->fixture = new VersionDescriptor('name');
     }
@@ -37,7 +37,7 @@ class VersionDescriptorTest extends TestCase
      * @covers \phpDocumentor\Descriptor\Tag\VersionDescriptor::setVersion
      * @covers \phpDocumentor\Descriptor\Tag\VersionDescriptor::getVersion
      */
-    public function testSetAndGetVersion() : void
+    public function testSetAndGetVersion(): void
     {
         $this->assertEmpty($this->fixture->getVersion());
 

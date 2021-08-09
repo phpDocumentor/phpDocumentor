@@ -18,6 +18,7 @@ use phpDocumentor\Descriptor\Tag\VarDescriptor;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Type;
 use Webmozart\Assert\Assert;
+
 use function array_filter;
 
 /**
@@ -49,7 +50,7 @@ class ConstantDescriptor extends DescriptorAbstract implements
      *
      * @throws InvalidArgumentException If anything other than a class, interface or null was passed.
      */
-    public function setParent(?DescriptorAbstract $parent) : void
+    public function setParent(?DescriptorAbstract $parent): void
     {
         $fqsen = $parent !== null
             ? $parent->getFullyQualifiedStructuralElementName() . '::' . $this->getName()
@@ -63,12 +64,12 @@ class ConstantDescriptor extends DescriptorAbstract implements
     /**
      * @return ClassDescriptor|InterfaceDescriptor|null
      */
-    public function getParent() : ?DescriptorAbstract
+    public function getParent(): ?DescriptorAbstract
     {
         return $this->parent;
     }
 
-    public function setTypes(Type $types) : void
+    public function setTypes(Type $types): void
     {
         $this->types = $types;
     }
@@ -76,12 +77,12 @@ class ConstantDescriptor extends DescriptorAbstract implements
     /**
      * @return list<Type>
      */
-    public function getTypes() : array
+    public function getTypes(): array
     {
         return array_filter([$this->getType()]);
     }
 
-    public function getType() : ?Type
+    public function getType(): ?Type
     {
         if ($this->types === null) {
             $var = $this->getVar()->fetch(0);
@@ -93,12 +94,12 @@ class ConstantDescriptor extends DescriptorAbstract implements
         return $this->types;
     }
 
-    public function setValue(string $value) : void
+    public function setValue(string $value): void
     {
         $this->value = $value;
     }
 
-    public function getValue() : string
+    public function getValue(): string
     {
         return $this->value;
     }
@@ -106,7 +107,7 @@ class ConstantDescriptor extends DescriptorAbstract implements
     /**
      * @return Collection<VarDescriptor>
      */
-    public function getVar() : Collection
+    public function getVar(): Collection
     {
         /** @var Collection<VarDescriptor> $var */
         $var = $this->getTags()->fetch('var', new Collection());
@@ -125,7 +126,7 @@ class ConstantDescriptor extends DescriptorAbstract implements
     /**
      * Returns the file associated with the parent class, interface or trait when inside a container.
      */
-    public function getFile() : FileDescriptor
+    public function getFile(): FileDescriptor
     {
         $file = parent::getFile() ?? $this->getParent()->getFile();
 
@@ -137,12 +138,13 @@ class ConstantDescriptor extends DescriptorAbstract implements
     /**
      * Returns the Constant from which this one should inherit, if any.
      */
-    public function getInheritedElement() : ?ConstantDescriptor
+    public function getInheritedElement(): ?ConstantDescriptor
     {
         /** @var ClassDescriptor|InterfaceDescriptor|null $associatedClass */
         $associatedClass = $this->getParent();
 
-        if (($associatedClass instanceof ClassDescriptor || $associatedClass instanceof InterfaceDescriptor)
+        if (
+            ($associatedClass instanceof ClassDescriptor || $associatedClass instanceof InterfaceDescriptor)
             && ($associatedClass->getParent() instanceof ClassDescriptor
                 || $associatedClass->getParent() instanceof InterfaceDescriptor
             )
@@ -156,12 +158,12 @@ class ConstantDescriptor extends DescriptorAbstract implements
         return null;
     }
 
-    public function setVisibility(string $visibility) : void
+    public function setVisibility(string $visibility): void
     {
         $this->visibility = $visibility;
     }
 
-    public function getVisibility() : string
+    public function getVisibility(): string
     {
         return $this->visibility;
     }

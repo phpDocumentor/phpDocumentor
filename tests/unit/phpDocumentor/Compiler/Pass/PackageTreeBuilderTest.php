@@ -43,7 +43,7 @@ final class PackageTreeBuilderTest extends TestCase
     /** @var PackageTreeBuilder $fixture */
     private $fixture;
 
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $parser = $this->prophesize(Parser::class);
         $parser->getDefaultPackageName()->willReturn(self::DEFAULT_PACKAGE_NAME);
@@ -54,7 +54,7 @@ final class PackageTreeBuilderTest extends TestCase
     /**
      * @covers ::getDescription
      */
-    public function testGetDescription() : void
+    public function testGetDescription(): void
     {
         $this->assertSame(
             'Build "packages" index',
@@ -65,7 +65,7 @@ final class PackageTreeBuilderTest extends TestCase
     /**
      * @covers ::execute
      */
-    public function testRootPackageIsSet() : void
+    public function testRootPackageIsSet(): void
     {
         $project = new ProjectDescriptor('title');
         $this->fixture->execute($project);
@@ -78,7 +78,7 @@ final class PackageTreeBuilderTest extends TestCase
     /**
      * @covers ::execute
      */
-    public function testFilesAreIncludedInTheIndex() : void
+    public function testFilesAreIncludedInTheIndex(): void
     {
         $packageName = '\\My\\Package';
 
@@ -98,7 +98,7 @@ final class PackageTreeBuilderTest extends TestCase
     /**
      * @covers ::execute
      */
-    public function testPackagesAreSetOnTheDescriptors() : void
+    public function testPackagesAreSetOnTheDescriptors(): void
     {
         $packageName = '\\My\\Package';
 
@@ -121,7 +121,7 @@ final class PackageTreeBuilderTest extends TestCase
     /**
      * @covers ::execute
      */
-    public function testMultipleElementsInTheSamePackageAreProperlyNestedUnderTheSamePackageDescriptor() : void
+    public function testMultipleElementsInTheSamePackageAreProperlyNestedUnderTheSamePackageDescriptor(): void
     {
         $packageName = '\\My\\Package';
 
@@ -144,7 +144,7 @@ final class PackageTreeBuilderTest extends TestCase
     /**
      * @covers ::execute
      */
-    public function testNestedPackagesWillBeCorrectlyFormedIntoATree() : void
+    public function testNestedPackagesWillBeCorrectlyFormedIntoATree(): void
     {
         $packageName = '\\My\\Package';
         $subPackageName = '\\My\\Package\\ButDeeper';
@@ -167,7 +167,7 @@ final class PackageTreeBuilderTest extends TestCase
     /**
      * @covers ::execute
      */
-    public function testPackagesMayHaveUnderscoresAsSeparators() : void
+    public function testPackagesMayHaveUnderscoresAsSeparators(): void
     {
         $packageName = 'My_Package';
 
@@ -187,7 +187,7 @@ final class PackageTreeBuilderTest extends TestCase
     /**
      * @covers ::execute
      */
-    public function testPackagesMayHaveHyphensAsSeparators() : void
+    public function testPackagesMayHaveHyphensAsSeparators(): void
     {
         $packageName = 'My-Package';
 
@@ -207,7 +207,7 @@ final class PackageTreeBuilderTest extends TestCase
     /**
      * @covers ::execute
      */
-    public function testPackagesMayHaveSquareBracketsAsSeparators() : void
+    public function testPackagesMayHaveSquareBracketsAsSeparators(): void
     {
         $packageName = 'My[Package]';
 
@@ -227,7 +227,7 @@ final class PackageTreeBuilderTest extends TestCase
     /**
      * @covers ::execute
      */
-    public function testPackagesMayHaveDotsAsSeparators() : void
+    public function testPackagesMayHaveDotsAsSeparators(): void
     {
         $packageName = 'My.Package';
 
@@ -247,7 +247,7 @@ final class PackageTreeBuilderTest extends TestCase
     /**
      * @covers ::execute
      */
-    public function testSubpackagesAndPackagesAreMergedIntoOne() : void
+    public function testSubpackagesAndPackagesAreMergedIntoOne(): void
     {
         $packageName = '\\My';
         $subPackageName = 'Sub\\Package';
@@ -269,7 +269,7 @@ final class PackageTreeBuilderTest extends TestCase
     /**
      * @covers ::execute
      */
-    public function testSubpackagesMayHaveSlashesAsPrefix() : void
+    public function testSubpackagesMayHaveSlashesAsPrefix(): void
     {
         $packageName = '\\My';
         $subPackageName = '\\Sub\\Package';
@@ -291,7 +291,7 @@ final class PackageTreeBuilderTest extends TestCase
     /**
      * @covers ::execute
      */
-    public function testConstantsInAFileAreIncludedInTheIndex() : void
+    public function testConstantsInAFileAreIncludedInTheIndex(): void
     {
         $constant = new ConstantDescriptor();
 
@@ -313,7 +313,7 @@ final class PackageTreeBuilderTest extends TestCase
     /**
      * @covers ::execute
      */
-    public function testFunctionsInAFileAreIncludedInTheIndex() : void
+    public function testFunctionsInAFileAreIncludedInTheIndex(): void
     {
         $function = new FunctionDescriptor();
 
@@ -335,7 +335,7 @@ final class PackageTreeBuilderTest extends TestCase
     /**
      * @covers ::execute
      */
-    public function testInterfacesInAFileAreIncludedInTheIndex() : void
+    public function testInterfacesInAFileAreIncludedInTheIndex(): void
     {
         $interface = new InterfaceDescriptor();
 
@@ -357,7 +357,7 @@ final class PackageTreeBuilderTest extends TestCase
     /**
      * @covers ::execute
      */
-    public function testTraitsInAFileAreIncludedInTheIndex() : void
+    public function testTraitsInAFileAreIncludedInTheIndex(): void
     {
         $trait = new TraitDescriptor();
 
@@ -379,7 +379,7 @@ final class PackageTreeBuilderTest extends TestCase
     /**
      * @covers ::execute
      */
-    public function testClassesInAFileAreIncludedInTheIndex() : void
+    public function testClassesInAFileAreIncludedInTheIndex(): void
     {
         $class = new ClassDescriptor();
 
@@ -398,7 +398,7 @@ final class PackageTreeBuilderTest extends TestCase
         $this->assertContains($class, $packages['\\' . self::DEFAULT_PACKAGE_NAME]->getClasses()->getAll());
     }
 
-    private function withPackage(string $packageName, DescriptorAbstract $file) : void
+    private function withPackage(string $packageName, DescriptorAbstract $file): void
     {
         $packageTag = new TagDescriptor('package');
         $packageTag->setDescription(new DescriptionDescriptor(new Description($packageName), []));
@@ -406,7 +406,7 @@ final class PackageTreeBuilderTest extends TestCase
         $file->getTags()['package'] = new Collection([$packageTag]);
     }
 
-    private function withSubpackage(string $packageName, DescriptorAbstract $file) : void
+    private function withSubpackage(string $packageName, DescriptorAbstract $file): void
     {
         $packageTag = new TagDescriptor('subpackage');
         $packageTag->setDescription(new DescriptionDescriptor(new Description($packageName), []));
@@ -414,7 +414,7 @@ final class PackageTreeBuilderTest extends TestCase
         $file->getTags()['subpackage'] = new Collection([$packageTag]);
     }
 
-    private function givenProjectWithFile(FileDescriptor $file) : ProjectDescriptor
+    private function givenProjectWithFile(FileDescriptor $file): ProjectDescriptor
     {
         $project = new ProjectDescriptor('title');
         $project->getFiles()->add($file);
@@ -422,7 +422,7 @@ final class PackageTreeBuilderTest extends TestCase
         return $project;
     }
 
-    private function givenProjectWithFiles(array $files) : ProjectDescriptor
+    private function givenProjectWithFiles(array $files): ProjectDescriptor
     {
         $project = new ProjectDescriptor('title');
         foreach ($files as $file) {

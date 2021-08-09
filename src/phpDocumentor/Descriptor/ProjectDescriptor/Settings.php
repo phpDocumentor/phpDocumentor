@@ -44,7 +44,7 @@ final class Settings
      *
      * @param int $visibilityFlag A bitflag combining the VISIBILITY_* constants.
      */
-    public function setVisibility(int $visibilityFlag) : void
+    public function setVisibility(int $visibilityFlag): void
     {
         $this->setValueAndCheckIfModified('visibility', $visibilityFlag);
     }
@@ -54,7 +54,7 @@ final class Settings
      *
      * @see self::isVisibilityAllowed() for a convenience method to easily check against a specific visibility.
      */
-    public function getVisibility() : int
+    public function getVisibility(): int
     {
         return $this->visibility;
     }
@@ -62,7 +62,7 @@ final class Settings
     /**
      * Returns whether one of the values of this object was modified.
      */
-    public function isModified() : bool
+    public function isModified(): bool
     {
         return $this->isModified;
     }
@@ -70,22 +70,22 @@ final class Settings
     /**
      * Resets the flag indicating whether the settings have changed.
      */
-    public function clearModifiedFlag() : void
+    public function clearModifiedFlag(): void
     {
         $this->isModified = false;
     }
 
-    public function includeSource() : void
+    public function includeSource(): void
     {
         $this->setValueAndCheckIfModified('includeSource', true);
     }
 
-    public function excludeSource() : void
+    public function excludeSource(): void
     {
         $this->setValueAndCheckIfModified('includeSource', false);
     }
 
-    public function shouldIncludeSource() : bool
+    public function shouldIncludeSource(): bool
     {
         return $this->includeSource;
     }
@@ -93,7 +93,7 @@ final class Settings
     /**
      * @param string[] $markers
      */
-    public function setMarkers(array $markers) : void
+    public function setMarkers(array $markers): void
     {
         $this->markers = $markers;
     }
@@ -101,7 +101,7 @@ final class Settings
     /**
      * @return string[]
      */
-    public function getMarkers() : array
+    public function getMarkers(): array
     {
         return $this->markers;
     }
@@ -115,7 +115,7 @@ final class Settings
      *
      * @return array<string, bool|string>
      */
-    public function getCustom() : array
+    public function getCustom(): array
     {
         return $this->custom;
     }
@@ -123,7 +123,7 @@ final class Settings
     /**
      * @param array<string, bool|string> $settings
      */
-    public function setCustom(array $settings) : void
+    public function setCustom(array $settings): void
     {
         $this->setValueAndCheckIfModified('custom', $settings);
     }
@@ -133,7 +133,7 @@ final class Settings
      *
      * @param int|bool|array<string, bool|string> $value
      */
-    private function setValueAndCheckIfModified(string $propertyName, $value) : void
+    private function setValueAndCheckIfModified(string $propertyName, $value): void
     {
         if ($this->{$propertyName} !== $value) {
             $this->isModified = true;

@@ -16,6 +16,7 @@ namespace phpDocumentor\Guides\Nodes;
 use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\RestructuredText\Span\SpanParser;
 use phpDocumentor\Guides\RestructuredText\Span\SpanToken;
+
 use function get_class;
 use function implode;
 use function is_array;
@@ -47,7 +48,7 @@ class SpanNode extends Node
     /**
      * @return SpanToken[]
      */
-    public function getTokens() : array
+    public function getTokens(): array
     {
         return $this->tokens;
     }

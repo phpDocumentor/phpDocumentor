@@ -66,6 +66,7 @@ use phpDocumentor\Reflection\Php\Method;
 use phpDocumentor\Reflection\Php\Namespace_;
 use phpDocumentor\Reflection\Php\Property;
 use phpDocumentor\Reflection\Php\Trait_;
+
 use function array_merge;
 
 /**
@@ -87,7 +88,7 @@ class AssemblerFactory
      * @param AssemblerInterface<Descriptor, object> $assembler An instance of the Assembler that
      *     will be returned if the callback returns true with the provided criteria.
      */
-    public function register(Matcher $matcher, AssemblerInterface $assembler) : void
+    public function register(Matcher $matcher, AssemblerInterface $assembler): void
     {
         $this->assemblers[] = new AssemblerMatcher($matcher, $assembler);
     }
@@ -101,7 +102,7 @@ class AssemblerFactory
      * @param AssemblerInterface<Descriptor, object> $assembler An instance of the Assembler that
      *     will be returned if the callback returns true with the provided criteria.
      */
-    public function registerFallback(Matcher $matcher, AssemblerInterface $assembler) : void
+    public function registerFallback(Matcher $matcher, AssemblerInterface $assembler): void
     {
         $this->fallbackAssemblers[] = new AssemblerMatcher($matcher, $assembler);
     }
@@ -115,9 +116,9 @@ class AssemblerFactory
      * @return AssemblerInterface<TParamDescriptor, TParamInput>|null
      *
      * @psalm-template TParamInput of object
-     * @psalm-template TParamDescriptor of \phpDocumentor\Descriptor\Descriptor
+     * @psalm-template TParamDescriptor of Descriptor
      */
-    public function get(object $criteria, string $type) : ?AssemblerInterface
+    public function get(object $criteria, string $type): ?AssemblerInterface
     {
         foreach (array_merge($this->assemblers, $this->fallbackAssemblers) as $candidate) {
             if ($candidate->match($criteria)) {
@@ -133,7 +134,7 @@ class AssemblerFactory
         return null;
     }
 
-    public static function createDefault(ExampleFinder $exampleFinder) : self
+    public static function createDefault(ExampleFinder $exampleFinder): self
     {
         $factory = new self();
         $argumentAssembler = new ArgumentAssembler();

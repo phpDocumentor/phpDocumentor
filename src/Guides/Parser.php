@@ -17,9 +17,9 @@ use phpDocumentor\Guides\Nodes\DocumentNode;
 
 interface Parser
 {
-    public function getEnvironment() : Environment;
+    public function getEnvironment(): Environment;
 
-    public function parse(string $contents) : DocumentNode;
+    public function parse(string $contents): DocumentNode;
 
-    public function getDocument() : DocumentNode;
+    public function getDocument(): DocumentNode;
 }

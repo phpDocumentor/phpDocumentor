@@ -21,16 +21,17 @@ final class RemoveSourcecode implements CompilerPassInterface
 {
     public const COMPILER_PRIORITY = 2000;
 
-    public function getDescription() : string
+    public function getDescription(): string
     {
         return 'Removing sourcecode from file descriptors';
     }
 
-    public function execute(ProjectDescriptor $project) : void
+    public function execute(ProjectDescriptor $project): void
     {
         foreach ($project->getVersions() as $version) {
             foreach ($version->getDocumentationSets() as $documentationSet) {
-                if (!$documentationSet instanceof ApiSetDescriptor ||
+                if (
+                    !$documentationSet instanceof ApiSetDescriptor ||
                     $documentationSet->getSettings()['include-source']
                 ) {
                     continue;

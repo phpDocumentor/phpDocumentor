@@ -33,7 +33,7 @@ final class DebugTest extends TestCase
     /**
      * @covers ::execute
      */
-    public function testLogDebugAnalysis() : void
+    public function testLogDebugAnalysis(): void
     {
         $testString = 'test';
         $projectDescriptorMock = $this->prophesize(ProjectDescriptor::class);
@@ -54,7 +54,7 @@ final class DebugTest extends TestCase
     /**
      * @covers ::getDescription
      */
-    public function testGetDescription() : void
+    public function testGetDescription(): void
     {
         $analyzerMock = $this->prophesize(ProjectAnalyzer::class);
         $debug = new Debug(new NullLogger(), $analyzerMock->reveal());

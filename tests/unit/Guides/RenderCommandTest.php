@@ -14,7 +14,7 @@ final class RenderCommandTest extends MockeryTestCase
     use ProphecyTrait;
     use Faker;
 
-    public function test_providing_a_destination_to_render_to() : void
+    public function test_providing_a_destination_to_render_to(): void
     {
         $destination = $this->prophesize(FilesystemInterface::class)->reveal();
 

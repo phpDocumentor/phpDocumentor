@@ -33,7 +33,7 @@ final class RemoveSourcecodeTest extends TestCase
     /**
      * @covers ::execute
      */
-    public function testRemovesSourceWhenDisabled() : void
+    public function testRemovesSourceWhenDisabled(): void
     {
         $apiSetDescriptor = $this->faker()->apiSetDescriptor();
         $projectDescriptor = $this->giveProjectDescriptor($apiSetDescriptor);
@@ -49,7 +49,7 @@ final class RemoveSourcecodeTest extends TestCase
     /**
      * @covers ::execute
      */
-    public function testRemovesSourceWhenSourceShouldBeIncluded() : void
+    public function testRemovesSourceWhenSourceShouldBeIncluded(): void
     {
         $apiSetDescriptor = $this->faker()->apiSetDescriptor();
         $apiSetDescriptor->getSettings()['include-source'] = true;
@@ -63,7 +63,7 @@ final class RemoveSourcecodeTest extends TestCase
         }
     }
 
-    private function giveProjectDescriptor(ApiSetDescriptor $apiDescriptor) : ProjectDescriptor
+    private function giveProjectDescriptor(ApiSetDescriptor $apiDescriptor): ProjectDescriptor
     {
         $projecDescriptor = $this->faker()->projectDescriptor();
         $projecDescriptor->setFiles(
@@ -82,7 +82,7 @@ final class RemoveSourcecodeTest extends TestCase
     /**
      * @covers ::getDescription
      */
-    public function testGetDescription() : void
+    public function testGetDescription(): void
     {
         $pass = new RemoveSourcecode();
 

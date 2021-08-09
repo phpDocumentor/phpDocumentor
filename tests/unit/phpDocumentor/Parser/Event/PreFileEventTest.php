@@ -29,7 +29,7 @@ class PreFileEventTest extends TestCase
     /**
      * Sets up a fixture.
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->fixture = new PreFileEvent(new stdClass());
     }
@@ -38,7 +38,7 @@ class PreFileEventTest extends TestCase
      * @covers ::createInstance
      * @covers ::getSubject
      */
-    public function testCreatingAnInstance() : void
+    public function testCreatingAnInstance(): void
     {
         $subject = new stdClass();
         $this->fixture = PreFileEvent::createInstance($subject);
@@ -49,7 +49,7 @@ class PreFileEventTest extends TestCase
      * @covers \phpDocumentor\Parser\Event\PreFileEvent::getFile
      * @covers \phpDocumentor\Parser\Event\PreFileEvent::setFile
      */
-    public function testRemembersFileThatTriggersIt() : void
+    public function testRemembersFileThatTriggersIt(): void
     {
         $filename = 'myfile.txt';
 

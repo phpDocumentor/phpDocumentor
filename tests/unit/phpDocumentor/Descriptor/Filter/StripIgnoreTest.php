@@ -34,7 +34,7 @@ final class StripIgnoreTest extends TestCase
     /**
      * Creates a new (empty) fixture object.
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->fixture = new StripIgnore();
     }
@@ -42,7 +42,7 @@ final class StripIgnoreTest extends TestCase
     /**
      * @covers ::__invoke
      */
-    public function testStripsIgnoreTagFromDescription() : void
+    public function testStripsIgnoreTagFromDescription(): void
     {
         $collection = $this->prophesize(Collection::class);
         $collection->fetch('ignore')->shouldBeCalled()->willReturn(true);
@@ -60,7 +60,7 @@ final class StripIgnoreTest extends TestCase
     /**
      * @covers ::__invoke
      */
-    public function testDescriptorIsUnmodifiedIfThereIsNoIgnoreTag() : void
+    public function testDescriptorIsUnmodifiedIfThereIsNoIgnoreTag(): void
     {
         $collection = $this->prophesize(Collection::class);
         $collection->fetch('ignore')->shouldBeCalled()->willReturn(false);

@@ -17,6 +17,7 @@ use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Writer\Graph\GraphVizClassDiagram;
 use phpDocumentor\Transformer\Writer\Graph\PlantumlClassDiagram;
+
 use const DIRECTORY_SEPARATOR;
 
 /**
@@ -46,9 +47,9 @@ final class Graph extends WriterAbstract implements ProjectDescriptor\WithCustom
     /**
      * @return array<string, bool>
      */
-    public function getDefaultSettings() : array
+    public function getDefaultSettings(): array
     {
-        return [ 'graphs.enabled' => false ];
+        return ['graphs.enabled' => false];
     }
 
     /**
@@ -57,7 +58,7 @@ final class Graph extends WriterAbstract implements ProjectDescriptor\WithCustom
      * @param ProjectDescriptor $project Document containing the structure.
      * @param Transformation $transformation Transformation to execute.
      */
-    public function transform(ProjectDescriptor $project, Transformation $transformation) : void
+    public function transform(ProjectDescriptor $project, Transformation $transformation): void
     {
         if ($project->getSettings()->getCustom()['graphs.enabled'] === false) {
             return;
@@ -73,7 +74,7 @@ final class Graph extends WriterAbstract implements ProjectDescriptor\WithCustom
         }
     }
 
-    private function getDestinationPath(Transformation $transformation) : string
+    private function getDestinationPath(Transformation $transformation): string
     {
         return $transformation->getTransformer()->getTarget() . DIRECTORY_SEPARATOR . $transformation->getArtifact();
     }

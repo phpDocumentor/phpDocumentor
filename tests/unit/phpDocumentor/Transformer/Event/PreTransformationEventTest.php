@@ -33,7 +33,7 @@ final class PreTransformationEventTest extends TestCase
      * @covers ::getSubject
      * @covers ::create
      */
-    public function testSetAndGetTransformation() : void
+    public function testSetAndGetTransformation(): void
     {
         $transformation = $this->faker()->transformation();
         $subject = new stdClass();

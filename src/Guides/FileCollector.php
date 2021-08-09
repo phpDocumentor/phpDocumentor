@@ -10,6 +10,7 @@ use Flyfinder\Specification\HasExtension;
 use Flyfinder\Specification\InPath;
 use InvalidArgumentException;
 use League\Flysystem\FilesystemInterface;
+
 use function sprintf;
 use function strlen;
 use function substr;
@@ -35,7 +36,7 @@ class FileCollector
      * objects, and avoids adding files to the parse queue that have
      * not changed and whose direct dependencies have not changed.
      */
-    public function getFiles(FilesystemInterface $filesystem, string $directory, string $extension) : Files
+    public function getFiles(FilesystemInterface $filesystem, string $directory, string $extension): Files
     {
         $directory = trim($directory, '/');
         /** @var array<array<string>> $files */
@@ -67,7 +68,7 @@ class FileCollector
         return $parseQueue;
     }
 
-    private function doesFileRequireParsing(string $filename) : bool
+    private function doesFileRequireParsing(string $filename): bool
     {
         if (!isset($this->fileInfos[$filename])) {
             throw new InvalidArgumentException(
@@ -123,7 +124,7 @@ class FileCollector
         return false;
     }
 
-    private function hasFileBeenUpdated(string $filename) : bool
+    private function hasFileBeenUpdated(string $filename): bool
     {
         /** @var array<string> $file */
         $file = $this->fileInfos[$filename];
@@ -142,7 +143,7 @@ class FileCollector
      *
      * @param array<string> $fileInfo
      */
-    private function getFilenameFromFile(array $fileInfo) : string
+    private function getFilenameFromFile(array $fileInfo): string
     {
         $directory = $fileInfo['dirname'] ? $fileInfo['dirname'] . '/' : '';
 

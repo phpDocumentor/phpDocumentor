@@ -22,6 +22,7 @@ use RuntimeException;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 use Webmozart\Assert\Assert;
+
 use function get_class;
 use function sprintf;
 use function trim;
@@ -40,7 +41,7 @@ final class AssetsExtension extends AbstractExtension
         $this->plantumlRenderer = $plantumlRenderer;
     }
 
-    public function getFunctions() : array
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('asset', [$this, 'asset'], ['is_safe' => ['html'], 'needs_context' => true]),
@@ -58,7 +59,7 @@ final class AssetsExtension extends AbstractExtension
      *
      * @param mixed[] $context
      */
-    public function asset(array $context, string $path) : string
+    public function asset(array $context, string $path): string
     {
         $outputPath = $this->copyAsset(
             $context['env'] ?? null,
@@ -73,7 +74,7 @@ final class AssetsExtension extends AbstractExtension
     /**
      * @param mixed[] $context
      */
-    public function renderNode(array $context, Node $node) : string
+    public function renderNode(array $context, Node $node): string
     {
         $environment = $context['env'] ?? null;
         if (!$environment instanceof Environment) {
@@ -83,12 +84,12 @@ final class AssetsExtension extends AbstractExtension
         return $environment->getNodeRendererFactory()->get(get_class($node))->render($node);
     }
 
-    public function uml(string $source) : ?string
+    public function uml(string $source): ?string
     {
         return $this->plantumlRenderer->render($source);
     }
 
-    private function copyAsset(?Environment $environment, ?FilesystemInterface $destination, string $path) : string
+    private function copyAsset(?Environment $environment, ?FilesystemInterface $destination, string $path): string
     {
         if (!$environment instanceof Environment) {
             return $path;

@@ -37,7 +37,7 @@ final class FlySystemCollector implements FileCollector
      *
      * @return list<FlySystemFile>
      */
-    public function getFiles(Dsn $dsn, array $paths, array $ignore, array $extensions) : array
+    public function getFiles(Dsn $dsn, array $paths, array $ignore, array $extensions): array
     {
         $specs = $this->specificationFactory->create($paths, $ignore, $extensions);
 

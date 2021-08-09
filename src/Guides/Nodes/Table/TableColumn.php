@@ -15,6 +15,7 @@ namespace phpDocumentor\Guides\Nodes\Table;
 
 use LogicException;
 use phpDocumentor\Guides\Nodes\Node;
+
 use function strlen;
 use function trim;
 
@@ -38,7 +39,7 @@ final class TableColumn
         $this->colSpan = $colSpan;
     }
 
-    public function getContent() : string
+    public function getContent(): string
     {
         // "\" is a special way to make a column "empty", but
         // still indicate that you *want* that column
@@ -49,27 +50,27 @@ final class TableColumn
         return $this->content;
     }
 
-    public function getColSpan() : int
+    public function getColSpan(): int
     {
         return $this->colSpan;
     }
 
-    public function getRowSpan() : int
+    public function getRowSpan(): int
     {
         return $this->rowSpan;
     }
 
-    public function addContent(string $content) : void
+    public function addContent(string $content): void
     {
         $this->content = trim($this->content . $content);
     }
 
-    public function incrementRowSpan() : void
+    public function incrementRowSpan(): void
     {
         $this->rowSpan++;
     }
 
-    public function getNode() : Node
+    public function getNode(): Node
     {
         if ($this->node === null) {
             throw new LogicException('The node is not yet set.');
@@ -78,7 +79,7 @@ final class TableColumn
         return $this->node;
     }
 
-    public function setNode(Node $node) : void
+    public function setNode(Node $node): void
     {
         $this->node = $node;
     }
@@ -86,7 +87,7 @@ final class TableColumn
     /**
      * Indicates that a column is empty, and could be skipped entirely.
      */
-    public function isCompletelyEmpty() : bool
+    public function isCompletelyEmpty(): bool
     {
         return strlen($this->content) === 0;
     }

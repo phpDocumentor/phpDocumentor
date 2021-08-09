@@ -18,6 +18,7 @@ use League\Flysystem\FilesystemInterface;
 use Twig\Error\LoaderError;
 use Twig\Loader\LoaderInterface;
 use Twig\Source;
+
 use function rtrim;
 use function sprintf;
 use function strlen;
@@ -104,7 +105,7 @@ final class FlySystemLoader implements LoaderInterface
     /**
      * @throws LoaderError
      */
-    private function guardTemplateExistsAndIsFile(string $name) : void
+    private function guardTemplateExistsAndIsFile(string $name): void
     {
         try {
             $path = $this->resolveTemplateName($name);
@@ -119,7 +120,7 @@ final class FlySystemLoader implements LoaderInterface
         }
     }
 
-    private function resolveTemplateName(string $name) : string
+    private function resolveTemplateName(string $name): string
     {
         if (($this->overloadPrefix !== null) && strpos($name, $this->overloadPrefix) === 0) {
             $name = substr($name, strlen($this->overloadPrefix));

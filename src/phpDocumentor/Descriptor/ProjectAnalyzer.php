@@ -18,6 +18,7 @@ use function get_class;
 use function is_string;
 use function sprintf;
 use function str_replace;
+
 use const PHP_EOL;
 
 /**
@@ -47,7 +48,7 @@ class ProjectAnalyzer
     /**
      * Analyzes the given project descriptor and populates this object's properties.
      */
-    public function analyze(ProjectDescriptor $projectDescriptor) : void
+    public function analyze(ProjectDescriptor $projectDescriptor): void
     {
         $this->unresolvedParentClassesCount = 0;
 
@@ -65,7 +66,7 @@ class ProjectAnalyzer
     /**
      * Returns a textual report of the findings of this class.
      */
-    public function __toString() : string
+    public function __toString(): string
     {
         $logString = <<<TEXT
 In the ProjectDescriptor are:
@@ -92,14 +93,12 @@ TEXT;
      * Increments the counter for element's class in the class counters.
      *
      * @param array<string, int> $classCounters
-     *
-     * @return array<string, int>
-     *
      * @phpstan-param array<class-string<DescriptorAbstract>, int> $classCounters
      *
+     * @return array<string, int>
      * @phpstan-return array<class-string<DescriptorAbstract>, int>
      */
-    protected function addElementToCounter(array $classCounters, DescriptorAbstract $element) : array
+    protected function addElementToCounter(array $classCounters, DescriptorAbstract $element): array
     {
         if (!isset($classCounters[get_class($element)])) {
             $classCounters[get_class($element)] = 0;
@@ -113,7 +112,7 @@ TEXT;
     /**
      * Checks whether the given element is a class and if its parent could not be resolved; increment the counter.
      */
-    protected function incrementUnresolvedParentCounter(DescriptorAbstract $element) : void
+    protected function incrementUnresolvedParentCounter(DescriptorAbstract $element): void
     {
         if (!$element instanceof ClassDescriptor) {
             return;
@@ -131,7 +130,7 @@ TEXT;
      *
      * @return Collection<DescriptorAbstract>
      */
-    protected function findAllElements(ProjectDescriptor $projectDescriptor) : Collection
+    protected function findAllElements(ProjectDescriptor $projectDescriptor): Collection
     {
         return $projectDescriptor->getIndexes()->fetch('elements', new Collection());
     }

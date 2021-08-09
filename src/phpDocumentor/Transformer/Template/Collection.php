@@ -30,7 +30,7 @@ final class Collection extends ArrayObject
      *
      * @return Transformation[]
      */
-    public function getTransformations() : array
+    public function getTransformations(): array
     {
         $result = [];
         foreach ($this as $template) {

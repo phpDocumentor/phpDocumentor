@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 
 final class MetaNodeTest extends TestCase
 {
-    public function test_it_can_be_created_with_a_key_and_value() : void
+    public function test_it_can_be_created_with_a_key_and_value(): void
     {
         $node = new MetaNode('key', 'value');
 

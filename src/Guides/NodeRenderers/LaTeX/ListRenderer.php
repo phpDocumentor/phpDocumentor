@@ -17,6 +17,7 @@ use phpDocumentor\Guides\NodeRenderers\FormatListRenderer;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Renderer;
 use RuntimeException;
+
 use function array_filter;
 use function array_map;
 use function array_values;
@@ -33,7 +34,7 @@ class ListRenderer implements FormatListRenderer
         $this->renderer = $renderer;
     }
 
-    public function createElement(Node $node, string $text, string $prefix) : string
+    public function createElement(Node $node, string $text, string $prefix): string
     {
         return $this->renderer->render(
             'list-item.tex.twig',
@@ -48,7 +49,7 @@ class ListRenderer implements FormatListRenderer
     /**
      * @return string[]
      */
-    public function createList(Node $node, bool $ordered) : array
+    public function createList(Node $node, bool $ordered): array
     {
         $lines = explode(
             "\n",

@@ -23,6 +23,7 @@ use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Reflection\Fqsen;
 use PHPUnit\Framework\TestCase;
+
 use function array_keys;
 use function sort;
 
@@ -39,7 +40,7 @@ class NamespaceTreeBuilderTest extends TestCase
     /** @var ProjectDescriptor */
     protected $project;
 
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->fixture = new NamespaceTreeBuilder();
 
@@ -50,7 +51,7 @@ class NamespaceTreeBuilderTest extends TestCase
     /**
      * @covers ::getDescription
      */
-    public function testGetDescription() : void
+    public function testGetDescription(): void
     {
         $this->assertSame(
             'Build "namespaces" index and add namespaces to "elements"',
@@ -62,7 +63,7 @@ class NamespaceTreeBuilderTest extends TestCase
      * @covers ::execute
      * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::addElementsOfTypeToNamespace
      */
-    public function testNamespaceStringIsConvertedToTreeAndAddedToElements() : void
+    public function testNamespaceStringIsConvertedToTreeAndAddedToElements(): void
     {
         $class = new ClassDescriptor();
         $class->setNamespace('\My\Space\Deeper');
@@ -99,7 +100,7 @@ class NamespaceTreeBuilderTest extends TestCase
      * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::execute
      * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::addElementsOfTypeToNamespace
      */
-    public function testAddClassToNamespace() : void
+    public function testAddClassToNamespace(): void
     {
         $class = new ClassDescriptor();
         $class->setNamespace('\My\Space');
@@ -127,7 +128,7 @@ class NamespaceTreeBuilderTest extends TestCase
      * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::execute
      * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::addElementsOfTypeToNamespace
      */
-    public function testAddInterfaceToNamespace() : void
+    public function testAddInterfaceToNamespace(): void
     {
         $interface = new InterfaceDescriptor();
         $interface->setNamespace('\My\Space');
@@ -155,7 +156,7 @@ class NamespaceTreeBuilderTest extends TestCase
      * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::execute
      * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::addElementsOfTypeToNamespace
      */
-    public function testAddTraitToNamespace() : void
+    public function testAddTraitToNamespace(): void
     {
         $trait = new TraitDescriptor();
         $trait->setNamespace('\My\Space');
@@ -183,7 +184,7 @@ class NamespaceTreeBuilderTest extends TestCase
      * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::execute
      * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::addElementsOfTypeToNamespace
      */
-    public function testAddConstantToNamespace() : void
+    public function testAddConstantToNamespace(): void
     {
         $constant = new ConstantDescriptor();
         $constant->setNamespace('\My\Space');
@@ -211,7 +212,7 @@ class NamespaceTreeBuilderTest extends TestCase
      * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::execute
      * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::addElementsOfTypeToNamespace
      */
-    public function testAddFunctionToNamespace() : void
+    public function testAddFunctionToNamespace(): void
     {
         $function = new FunctionDescriptor();
         $function->setNamespace('\My\Space');

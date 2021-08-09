@@ -29,7 +29,7 @@ class MethodDescriptorTest extends TestCase
     /**
      * Creates a new fixture object.
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->fixture = new MethodDescriptor('name');
     }
@@ -39,7 +39,7 @@ class MethodDescriptorTest extends TestCase
      * @covers \phpDocumentor\Descriptor\Tag\MethodDescriptor::setMethodName
      * @covers \phpDocumentor\Descriptor\Tag\MethodDescriptor::getMethodName
      */
-    public function testSetAndGetMethodName() : void
+    public function testSetAndGetMethodName(): void
     {
         self::assertEmpty($this->fixture->getMethodName());
 
@@ -53,7 +53,7 @@ class MethodDescriptorTest extends TestCase
      * @covers \phpDocumentor\Descriptor\Tag\MethodDescriptor::setArguments()
      * @covers \phpDocumentor\Descriptor\Tag\MethodDescriptor::getArguments()
      */
-    public function testSetAndGetArguments() : void
+    public function testSetAndGetArguments(): void
     {
         $expected = new Collection(['a' => 'b']);
         self::assertInstanceOf(Collection::class, $this->fixture->getArguments());
@@ -68,7 +68,7 @@ class MethodDescriptorTest extends TestCase
      * @covers \phpDocumentor\Descriptor\Tag\MethodDescriptor::setResponse
      * @covers \phpDocumentor\Descriptor\Tag\MethodDescriptor::getResponse
      */
-    public function testSetAndGetResponse() : void
+    public function testSetAndGetResponse(): void
     {
         $expected = new ReturnDescriptor('a');
         self::assertNull($this->fixture->getResponse());
@@ -83,7 +83,7 @@ class MethodDescriptorTest extends TestCase
      * @covers \phpDocumentor\Descriptor\Tag\MethodDescriptor::setStatic
      * @covers \phpDocumentor\Descriptor\Tag\MethodDescriptor::isStatic
      */
-    public function testRecordIfAMethodIsStatic() : void
+    public function testRecordIfAMethodIsStatic(): void
     {
         self::assertFalse($this->fixture->isStatic());
 

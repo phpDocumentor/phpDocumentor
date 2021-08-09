@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 
 final class CodeNodeTest extends TestCase
 {
-    public function test_it_can_be_created_with_series_of_lines() : void
+    public function test_it_can_be_created_with_series_of_lines(): void
     {
         $node = new CodeNode(['line1', 'line2']);
 
@@ -25,7 +25,7 @@ final class CodeNodeTest extends TestCase
         self::assertSame("line1\nline2", $node->getValueString());
     }
 
-    public function test_a_language_can_be_provided() : void
+    public function test_a_language_can_be_provided(): void
     {
         $node = new CodeNode([]);
         self::assertNull($node->getLanguage());
@@ -34,7 +34,7 @@ final class CodeNodeTest extends TestCase
         self::assertSame('php', $node->getLanguage());
     }
 
-    public function test_a_starting_line_number_can_be_provided() : void
+    public function test_a_starting_line_number_can_be_provided(): void
     {
         $node = new CodeNode([]);
         self::assertNull($node->getStartingLineNumber());
@@ -43,7 +43,7 @@ final class CodeNodeTest extends TestCase
         self::assertSame(100, $node->getStartingLineNumber());
     }
 
-    public function test_lines_are_normalized_by_removing_whitespace() : void
+    public function test_lines_are_normalized_by_removing_whitespace(): void
     {
         $node = new CodeNode([
             '  line1',
@@ -56,7 +56,7 @@ final class CodeNodeTest extends TestCase
         self::assertSame("line1\n  line2\n    line3\n\tline4", $node->getValueString());
     }
 
-    public function test_that_normalizing_keeps_spaces_intact_when_the_first_line_has_no_spaces() : void
+    public function test_that_normalizing_keeps_spaces_intact_when_the_first_line_has_no_spaces(): void
     {
         $node = new CodeNode([
             'line1',

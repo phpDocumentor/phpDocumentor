@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor;
 
 use RuntimeException;
+
 use function date_default_timezone_set;
 use function extension_loaded;
 use function file_exists;
@@ -31,12 +32,12 @@ use function trim;
  */
 final class Application
 {
-    public static function VERSION() : string
+    public static function VERSION(): string
     {
         return trim(file_get_contents(__DIR__ . '/../../VERSION'));
     }
 
-    public static function templateDirectory() : string
+    public static function templateDirectory(): string
     {
         $templateDir = __DIR__ . '/../../data/templates';
 
@@ -62,13 +63,14 @@ final class Application
      *
      * @throws RuntimeException
      */
-    private function defineIniSettings() : void
+    private function defineIniSettings(): void
     {
         $this->setTimezone();
         ini_set('memory_limit', '-1');
 
         // @codeCoverageIgnoreStart
-        if (extension_loaded('Zend OPcache')
+        if (
+            extension_loaded('Zend OPcache')
             && ini_get('opcache.enable')
             && ini_get('opcache.enable_cli')
             && ini_get('opcache.save_comments') === '0'
@@ -90,7 +92,7 @@ final class Application
      * @link https://www.php.net/function.date-default-timezone-get for more information how PHP determines the
      *     default timezone.
      */
-    private function setTimezone() : void
+    private function setTimezone(): void
     {
         if (ini_get('date.timezone') !== false) {
             return;

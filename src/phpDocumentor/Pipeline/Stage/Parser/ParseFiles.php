@@ -17,6 +17,7 @@ use phpDocumentor\Parser\Middleware\ReEncodingMiddleware;
 use phpDocumentor\Parser\Parser;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
+
 use function current;
 
 final class ParseFiles
@@ -40,7 +41,7 @@ final class ParseFiles
         $this->reEncodingMiddleware = $reEncodingMiddleware;
     }
 
-    public function __invoke(Payload $payload) : Payload
+    public function __invoke(Payload $payload): Payload
     {
         /*
          * For now settings of the first api are used.
@@ -70,7 +71,7 @@ final class ParseFiles
      * @param string $priority The logging priority as declared in the LogLevel PSR-3 class.
      * @param string[] $parameters
      */
-    private function log(string $message, string $priority = LogLevel::INFO, array $parameters = []) : void
+    private function log(string $message, string $priority = LogLevel::INFO, array $parameters = []): void
     {
         $this->logger->log($priority, $message, $parameters);
     }

@@ -6,6 +6,7 @@ namespace phpDocumentor\Descriptor\DocBlock;
 
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Reflection\DocBlock\Description;
+
 use function trim;
 use function vsprintf;
 
@@ -26,12 +27,12 @@ final class DescriptionDescriptor
         $this->inlineTags = $inlineTags;
     }
 
-    public function getBodyTemplate() : string
+    public function getBodyTemplate(): string
     {
         return $this->description->getBodyTemplate();
     }
 
-    public function replaceTag(int $position, ?TagDescriptor $tagDescriptor) : void
+    public function replaceTag(int $position, ?TagDescriptor $tagDescriptor): void
     {
         $this->inlineTags[$position] = $tagDescriptor;
     }
@@ -41,12 +42,12 @@ final class DescriptionDescriptor
      *
      * @return array<int, TagDescriptor|null>
      */
-    public function getTags() : array
+    public function getTags(): array
     {
         return $this->inlineTags;
     }
 
-    public function isEmpty() : bool
+    public function isEmpty(): bool
     {
         return $this->description->getBodyTemplate() === '';
     }

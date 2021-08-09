@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\References;
 
 use phpDocumentor\Guides\Environment;
+
 use function sprintf;
 use function str_replace;
 use function strtolower;
@@ -23,12 +24,12 @@ use function strtolower;
  */
 class PhpFunctionReference extends Reference
 {
-    public function getName() : string
+    public function getName(): string
     {
         return 'php:func';
     }
 
-    public function resolve(Environment $environment, string $data) : ResolvedReference
+    public function resolve(Environment $environment, string $data): ResolvedReference
     {
         return new ResolvedReference(
             $environment->getCurrentFileName(),

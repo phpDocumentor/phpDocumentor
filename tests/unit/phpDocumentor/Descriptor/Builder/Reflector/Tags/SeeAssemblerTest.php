@@ -40,7 +40,7 @@ class SeeAssemblerTest extends TestCase
     /**
      * Creates a new fixture to test with.
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->builderMock = $this->prophesize(ProjectDescriptorBuilder::class);
         $this->fixture = new SeeAssembler();
@@ -51,7 +51,7 @@ class SeeAssemblerTest extends TestCase
      * @covers ::create
      * @covers ::buildDescriptor
      */
-    public function testCreateSeeDescriptorFromSeeTagWhenReferenceIsRelativeClassnameNotInNamespaceAliasses() : void
+    public function testCreateSeeDescriptorFromSeeTagWhenReferenceIsRelativeClassnameNotInNamespaceAliasses(): void
     {
         // Arrange
         $name = 'see';
@@ -75,7 +75,7 @@ class SeeAssemblerTest extends TestCase
      * @covers ::buildDescriptor
      * @dataProvider provideReferences
      */
-    public function testCreateSeeDescriptorFromSeeTagWhenReferenceIsUrl($reference) : void
+    public function testCreateSeeDescriptorFromSeeTagWhenReferenceIsUrl($reference): void
     {
         // Arrange
         $name = 'see';
@@ -93,7 +93,7 @@ class SeeAssemblerTest extends TestCase
         $this->assertSame([], $descriptor->getErrors()->getAll());
     }
 
-    protected function givenASeeTag($reference, $description) : See
+    protected function givenASeeTag($reference, $description): See
     {
         return new DocBlock\Tags\See(
             $reference,
@@ -101,12 +101,12 @@ class SeeAssemblerTest extends TestCase
         );
     }
 
-    protected function givenADocBlock($context) : DocBlock
+    protected function givenADocBlock($context): DocBlock
     {
         return new DocBlock('', null, [], $context);
     }
 
-    public function provideReferences() : array
+    public function provideReferences(): array
     {
         return [
             [new DocBlock\Tags\Reference\Url('http://phpdoc.org')],

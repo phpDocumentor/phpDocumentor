@@ -11,7 +11,7 @@ use phpDocumentor\Guides\Parser as GuidesParser;
 
 interface ParserInterface
 {
-    public function parse(GuidesParser $parser, NodeWalker $walker) : Node;
+    public function parse(GuidesParser $parser, NodeWalker $walker): Node;
 
-    public function supports(NodeWalkerEvent $event) : bool;
+    public function supports(NodeWalkerEvent $event): bool;
 }

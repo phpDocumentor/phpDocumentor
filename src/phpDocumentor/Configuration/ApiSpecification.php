@@ -8,6 +8,7 @@ use ArrayAccess;
 use phpDocumentor\Dsn;
 use phpDocumentor\Path;
 use RuntimeException;
+
 use function sprintf;
 
 /**
@@ -102,7 +103,7 @@ final class ApiSpecification implements ArrayAccess
      * @param array{ignore-tags: array<string>, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibility: non-empty-array<string>, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}, encoding: string, output: string, default-package-name: string, examples: array{dsn: string, paths: array}, include-source: bool, validate: bool} $api
      */
     //phpcs:enable Generic.Files.LineLength.TooLong
-    public static function createFromArray(array $api) : self
+    public static function createFromArray(array $api): self
     {
         return new self(
             new Source($api['source']['dsn'], $api['source']['paths']),
@@ -122,7 +123,7 @@ final class ApiSpecification implements ArrayAccess
         );
     }
 
-    public static function createDefault() : ApiSpecification
+    public static function createDefault(): ApiSpecification
     {
         return new self(
             new Source(
@@ -145,7 +146,7 @@ final class ApiSpecification implements ArrayAccess
         );
     }
 
-    public function withSource(Source $source) : self
+    public function withSource(Source $source): self
     {
         $clone = clone $this;
         $clone->source = $source;
@@ -156,18 +157,18 @@ final class ApiSpecification implements ArrayAccess
     /**
      * @param array{paths: non-empty-array<Path>} $ignore
      */
-    public function setIgnore(array $ignore) : void
+    public function setIgnore(array $ignore): void
     {
         $this->ignore = $ignore;
     }
 
     /** @return string[] */
-    public function getIgnoredTags() : array
+    public function getIgnoredTags(): array
     {
         return $this->ignoreTags;
     }
 
-    public function calculateVisiblity() : int
+    public function calculateVisiblity(): int
     {
         $visibility = 0;
 
@@ -212,14 +213,14 @@ final class ApiSpecification implements ArrayAccess
      *
      * @param int $visibility One of the VISIBILITY_* constants of the Settings class.
      */
-    public function isVisibilityAllowed(int $visibility) : bool
+    public function isVisibilityAllowed(int $visibility): bool
     {
         $visibilityAllowed = $this->calculateVisiblity();
 
         return (bool) ($visibilityAllowed & $visibility);
     }
 
-    public function source() : Source
+    public function source(): Source
     {
         return $this->source;
     }

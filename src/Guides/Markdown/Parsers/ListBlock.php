@@ -10,6 +10,7 @@ use League\CommonMark\Node\NodeWalkerEvent;
 use phpDocumentor\Guides\Nodes\ListNode;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Parser;
+
 use function get_class;
 
 final class ListBlock extends AbstractBlock
@@ -17,7 +18,7 @@ final class ListBlock extends AbstractBlock
     /**
      * @return ListNode
      */
-    public function parse(Parser $parser, NodeWalker $walker) : Node
+    public function parse(Parser $parser, NodeWalker $walker): Node
     {
         $context = new ListNode();
 
@@ -43,7 +44,7 @@ final class ListBlock extends AbstractBlock
         return $context;
     }
 
-    public function supports(NodeWalkerEvent $event) : bool
+    public function supports(NodeWalkerEvent $event): bool
     {
         return $event->isEntering() && $event->getNode() instanceof CommonMarkListBlock;
     }

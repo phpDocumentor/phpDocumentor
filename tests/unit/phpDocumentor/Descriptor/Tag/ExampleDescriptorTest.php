@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Tag;
 
 use PHPUnit\Framework\TestCase;
+
 use function sys_get_temp_dir;
 
 final class ExampleDescriptorTest extends TestCase
@@ -21,7 +22,7 @@ final class ExampleDescriptorTest extends TestCase
     /** @var ExampleDescriptor $fixture */
     protected $fixture;
 
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->fixture = new ExampleDescriptor('name');
     }
@@ -30,7 +31,7 @@ final class ExampleDescriptorTest extends TestCase
      * @covers \phpDocumentor\Descriptor\Tag\ExampleDescriptor::__construct
      * @covers \phpDocumentor\Descriptor\Tag\ExampleDescriptor::getName
      */
-    public function testGetName() : void
+    public function testGetName(): void
     {
         self::assertSame('name', $this->fixture->getName());
     }
@@ -39,7 +40,7 @@ final class ExampleDescriptorTest extends TestCase
      * @covers \phpDocumentor\Descriptor\Tag\ExampleDescriptor::getFilePath
      * @covers \phpDocumentor\Descriptor\Tag\ExampleDescriptor::setFilePath
      */
-    public function testItCanHaveAPathToAnExampleFile() : void
+    public function testItCanHaveAPathToAnExampleFile(): void
     {
         self::assertSame('', $this->fixture->getFilePath());
 
@@ -52,7 +53,7 @@ final class ExampleDescriptorTest extends TestCase
      * @covers \phpDocumentor\Descriptor\Tag\ExampleDescriptor::getStartingLine
      * @covers \phpDocumentor\Descriptor\Tag\ExampleDescriptor::setStartingLine
      */
-    public function testItCanDescribeFromWhichLineToShowTheExampleOrNullToShowAll() : void
+    public function testItCanDescribeFromWhichLineToShowTheExampleOrNullToShowAll(): void
     {
         self::assertNull($this->fixture->getStartingLine());
 
@@ -65,7 +66,7 @@ final class ExampleDescriptorTest extends TestCase
      * @covers \phpDocumentor\Descriptor\Tag\ExampleDescriptor::getLineCount
      * @covers \phpDocumentor\Descriptor\Tag\ExampleDescriptor::setLineCount
      */
-    public function testItCanDescribeHowManyLinesToShowOrNullToShowAll() : void
+    public function testItCanDescribeHowManyLinesToShowOrNullToShowAll(): void
     {
         self::assertNull($this->fixture->getLineCount());
 
@@ -78,7 +79,7 @@ final class ExampleDescriptorTest extends TestCase
      * @covers \phpDocumentor\Descriptor\Tag\ExampleDescriptor::getExample
      * @covers \phpDocumentor\Descriptor\Tag\ExampleDescriptor::setExample
      */
-    public function testItCanHaveTheExampleContents() : void
+    public function testItCanHaveTheExampleContents(): void
     {
         self::assertSame('', $this->fixture->getExample());
 

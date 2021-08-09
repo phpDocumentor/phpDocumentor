@@ -31,7 +31,7 @@ final class GarbageCollectCacheTest extends TestCase
     /**
      * @covers ::__invoke
      */
-    public function testItWillInstructTheDescriptorMapperToCollectGarbage() : void
+    public function testItWillInstructTheDescriptorMapperToCollectGarbage(): void
     {
         $files = ['file1'];
 

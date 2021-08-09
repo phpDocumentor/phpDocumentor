@@ -51,7 +51,7 @@ class ExampleAssemblerTest extends TestCase
     /**
      * Initializes this fixture and its dependencies.
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->finderMock = $this->prophesize(ExampleFinder::class);
         $this->fixture = new ExampleAssembler($this->finderMock->reveal());
@@ -62,7 +62,7 @@ class ExampleAssemblerTest extends TestCase
      * @covers ::create
      * @covers ::buildDescriptor
      */
-    public function testCreateDescriptorFromExampleTag() : void
+    public function testCreateDescriptorFromExampleTag(): void
     {
         $exampleTagMock = $this->givenExampleTagWithTestData();
         $this->whenExampleFileContains(self::EXAMPLE_TEXT);
@@ -80,7 +80,7 @@ class ExampleAssemblerTest extends TestCase
     /**
      * @covers ::create
      */
-    public function testExceptionIsThrownIfTheWrongObjectIsPassed() : void
+    public function testExceptionIsThrownIfTheWrongObjectIsPassed(): void
     {
         $this->expectException('TypeError');
         $this->fixture->create('this is an error');
@@ -89,7 +89,7 @@ class ExampleAssemblerTest extends TestCase
     /**
      * Returns a mock Example tag that will return example data (as provided in the class constants) when asked to.
      */
-    private function givenExampleTagWithTestData() : Example
+    private function givenExampleTagWithTestData(): Example
     {
         return new Example(
             self::EXAMPLE_FILE_PATH,
@@ -103,7 +103,7 @@ class ExampleAssemblerTest extends TestCase
     /**
      * Instructs the finder dependency to return the given text when an example file is to be found.
      */
-    private function whenExampleFileContains(string $exampleText) : void
+    private function whenExampleFileContains(string $exampleText): void
     {
         $this->finderMock->find(Argument::any())->shouldBeCalled()->willReturn($exampleText);
     }

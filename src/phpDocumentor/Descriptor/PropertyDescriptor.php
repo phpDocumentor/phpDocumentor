@@ -52,7 +52,7 @@ class PropertyDescriptor extends DescriptorAbstract implements
     /**
      * @param ClassDescriptor|TraitDescriptor $parent
      */
-    public function setParent(DescriptorAbstract $parent) : void
+    public function setParent(DescriptorAbstract $parent): void
     {
         $this->parent = $parent;
 
@@ -64,32 +64,32 @@ class PropertyDescriptor extends DescriptorAbstract implements
     /**
      * @return ClassDescriptor|TraitDescriptor|null
      */
-    public function getParent() : ?DescriptorAbstract
+    public function getParent(): ?DescriptorAbstract
     {
         return $this->parent;
     }
 
-    public function setDefault(?string $default) : void
+    public function setDefault(?string $default): void
     {
         $this->default = $default;
     }
 
-    public function getDefault() : ?string
+    public function getDefault(): ?string
     {
         return $this->default;
     }
 
-    public function setStatic(bool $static) : void
+    public function setStatic(bool $static): void
     {
         $this->static = $static;
     }
 
-    public function isStatic() : bool
+    public function isStatic(): bool
     {
         return $this->static;
     }
 
-    public function setType(?Type $type) : void
+    public function setType(?Type $type): void
     {
         $this->type = $type;
     }
@@ -97,7 +97,7 @@ class PropertyDescriptor extends DescriptorAbstract implements
     /**
      * @return list<string>
      */
-    public function getTypes() : array
+    public function getTypes(): array
     {
         if ($this->getType() instanceof Type) {
             return [(string) $this->getType()];
@@ -106,7 +106,7 @@ class PropertyDescriptor extends DescriptorAbstract implements
         return [];
     }
 
-    public function getType() : ?Type
+    public function getType(): ?Type
     {
         if ($this->type === null) {
             /** @var VarDescriptor|bool $var */
@@ -119,12 +119,12 @@ class PropertyDescriptor extends DescriptorAbstract implements
         return $this->type;
     }
 
-    public function setVisibility(string $visibility) : void
+    public function setVisibility(string $visibility): void
     {
         $this->visibility = $visibility;
     }
 
-    public function getVisibility() : string
+    public function getVisibility(): string
     {
         return $this->visibility;
     }
@@ -132,7 +132,7 @@ class PropertyDescriptor extends DescriptorAbstract implements
     /**
      * @return Collection<VarDescriptor>
      */
-    public function getVar() : Collection
+    public function getVar(): Collection
     {
         /** @var Collection<VarDescriptor> $var */
         $var = $this->getTags()->fetch('var', new Collection());
@@ -151,7 +151,7 @@ class PropertyDescriptor extends DescriptorAbstract implements
     /**
      * Returns the file associated with the parent class or trait.
      */
-    public function getFile() : FileDescriptor
+    public function getFile(): FileDescriptor
     {
         $file = $this->getParent()->getFile();
 
@@ -163,12 +163,13 @@ class PropertyDescriptor extends DescriptorAbstract implements
     /**
      * Returns the property from which this one should inherit, if any.
      */
-    public function getInheritedElement() : ?PropertyDescriptor
+    public function getInheritedElement(): ?PropertyDescriptor
     {
         /** @var ClassDescriptor|InterfaceDescriptor|null $associatedClass */
         $associatedClass = $this->getParent();
 
-        if (($associatedClass instanceof ClassDescriptor || $associatedClass instanceof InterfaceDescriptor)
+        if (
+            ($associatedClass instanceof ClassDescriptor || $associatedClass instanceof InterfaceDescriptor)
             && ($associatedClass->getParent() instanceof ClassDescriptor
                 || $associatedClass->getParent() instanceof InterfaceDescriptor
             )
@@ -182,22 +183,22 @@ class PropertyDescriptor extends DescriptorAbstract implements
         return null;
     }
 
-    public function setReadOnly(bool $value) : void
+    public function setReadOnly(bool $value): void
     {
         $this->readOnly = $value;
     }
 
-    public function isReadOnly() : bool
+    public function isReadOnly(): bool
     {
         return $this->readOnly;
     }
 
-    public function setWriteOnly(bool $value) : void
+    public function setWriteOnly(bool $value): void
     {
         $this->writeOnly = $value;
     }
 
-    public function isWriteOnly() : bool
+    public function isWriteOnly(): bool
     {
         return $this->writeOnly;
     }

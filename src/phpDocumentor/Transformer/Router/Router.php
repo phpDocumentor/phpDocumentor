@@ -29,6 +29,7 @@ use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Reflection\Fqsen;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
+
 use function strrpos;
 use function substr;
 
@@ -56,7 +57,7 @@ class Router
     /**
      * @param Descriptor|Fqsen|UriInterface $node
      */
-    public function generate(object $node) : string
+    public function generate(object $node): string
     {
         if ($node instanceof DocumentDescriptor) {
             return $this->urlGenerator->generate(
@@ -83,7 +84,8 @@ class Router
             );
         }
 
-        if ($node instanceof ClassDescriptor
+        if (
+            $node instanceof ClassDescriptor
             || $node instanceof InterfaceDescriptor
             || $node instanceof TraitDescriptor
         ) {
@@ -150,7 +152,7 @@ class Router
         return '';
     }
 
-    private function generateUrlForDescriptor(string $type, string $fqsen, string $fragment = '') : string
+    private function generateUrlForDescriptor(string $type, string $fqsen, string $fragment = ''): string
     {
         $name = $this->slugifyNameBasedOnType($type, $fqsen);
 
@@ -160,7 +162,7 @@ class Router
         );
     }
 
-    private function slugifyNameBasedOnType(string $type, string $name) : string
+    private function slugifyNameBasedOnType(string $type, string $name): string
     {
         if ($type === 'file') {
             return $this->slugger->slug($this->removeFileExtensionFromPath($name))->lower()->toString();
@@ -179,7 +181,7 @@ class Router
     /**
      * Removes the file extension from the provided path.
      */
-    private function removeFileExtensionFromPath(string $path) : string
+    private function removeFileExtensionFromPath(string $path): string
     {
         if (strrpos($path, '.') !== false) {
             $path = substr($path, 0, strrpos($path, '.'));

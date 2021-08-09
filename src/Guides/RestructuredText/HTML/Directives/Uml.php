@@ -9,6 +9,7 @@ use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\UmlNode;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive;
 use phpDocumentor\Guides\RestructuredText\Parser;
+
 use function explode;
 
 /**
@@ -27,12 +28,12 @@ use function explode;
  */
 class Uml extends Directive
 {
-    public function getName() : string
+    public function getName(): string
     {
         return 'uml';
     }
 
-    public function process(Parser $parser, ?Node $node, string $variable, string $data, array $options) : void
+    public function process(Parser $parser, ?Node $node, string $variable, string $data, array $options): void
     {
         if ($node instanceof CodeNode === false) {
             return;
@@ -51,7 +52,7 @@ class Uml extends Directive
         }
     }
 
-    public function wantCode() : bool
+    public function wantCode(): bool
     {
         return true;
     }

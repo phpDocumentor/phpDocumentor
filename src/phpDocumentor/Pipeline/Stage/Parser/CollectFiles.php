@@ -16,6 +16,7 @@ namespace phpDocumentor\Pipeline\Stage\Parser;
 use phpDocumentor\Parser\FileCollector;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
+
 use function count;
 
 final class CollectFiles
@@ -32,7 +33,7 @@ final class CollectFiles
         $this->logger = $logger;
     }
 
-    public function __invoke(Payload $payload) : Payload
+    public function __invoke(Payload $payload): Payload
     {
         foreach ($payload->getApiConfigs() as $apiConfig) {
             $this->log('Collecting files from ' . $apiConfig->source()->dsn());
@@ -63,7 +64,7 @@ final class CollectFiles
      * @param string $priority The logging priority as declared in the LogLevel PSR-3 class.
      * @param string[] $parameters
      */
-    private function log(string $message, string $priority = LogLevel::INFO, array $parameters = []) : void
+    private function log(string $message, string $priority = LogLevel::INFO, array $parameters = []): void
     {
         $this->logger->log($priority, $message, $parameters);
     }

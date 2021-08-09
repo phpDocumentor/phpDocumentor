@@ -25,7 +25,7 @@ final class PathfinderTest extends TestCase
      * @dataProvider provideVariousQueriesToTestWith
      * @covers ::find
      */
-    public function testThatFindingAResultWithAQuery($query, $expected) : void
+    public function testThatFindingAResultWithAQuery($query, $expected): void
     {
         $pathfinder = new Pathfinder();
 
@@ -35,7 +35,7 @@ final class PathfinderTest extends TestCase
         $this->assertEquals($expected, $result);
     }
 
-    public function provideVariousQueriesToTestWith() : array
+    public function provideVariousQueriesToTestWith(): array
     {
         $obj = $this->givenAnObjectHierarchy();
 
@@ -71,9 +71,9 @@ final class PathfinderTest extends TestCase
         ];
     }
 
-    private function givenAnObjectHierarchy() : object
+    private function givenAnObjectHierarchy(): object
     {
-        $topLevel = new class() {
+        $topLevel = new class () {
             /** @var array */
             public $exampleArray = ['key1' => 'value1'];
 
@@ -108,17 +108,17 @@ final class PathfinderTest extends TestCase
                 };
             }
 
-            public function exampleMethod() : string
+            public function exampleMethod(): string
             {
                 return 'valueFromMethod';
             }
 
-            public function getExampleGetter() : string
+            public function getExampleGetter(): string
             {
                 return 'valueFromGetter';
             }
 
-            public function isExampleConditional() : bool
+            public function isExampleConditional(): bool
             {
                 return false;
             }

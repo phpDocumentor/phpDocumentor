@@ -83,7 +83,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
     /**
      * Sets the name for this project.
      */
-    public function setName(string $name) : void
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
@@ -91,7 +91,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
     /**
      * Returns the name of this project.
      */
-    public function getName() : string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -99,7 +99,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
     /**
      * Returns the description for this element.
      */
-    public function getDescription() : DescriptionDescriptor
+    public function getDescription(): DescriptionDescriptor
     {
         return $this->description;
     }
@@ -109,7 +109,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
      *
      * @param Collection<FileDescriptor> $files
      */
-    public function setFiles(Collection $files) : void
+    public function setFiles(Collection $files): void
     {
         $this->files = $files;
     }
@@ -119,7 +119,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
      *
      * @return Collection<FileDescriptor>
      */
-    public function getFiles() : Collection
+    public function getFiles(): Collection
     {
         return $this->files;
     }
@@ -133,7 +133,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
      *
      * @param Collection<Collection<DescriptorAbstract>> $indexes
      */
-    public function setIndexes(Collection $indexes) : void
+    public function setIndexes(Collection $indexes): void
     {
         $this->indexes = $indexes;
     }
@@ -145,7 +145,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
      *
      * @return Collection<Collection<DescriptorAbstract>>
      */
-    public function getIndexes() : Collection
+    public function getIndexes(): Collection
     {
         return $this->indexes;
     }
@@ -153,7 +153,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
     /**
      * Sets the root namespace for this project together with all sub-namespaces.
      */
-    public function setNamespace(NamespaceDescriptor $namespace) : void
+    public function setNamespace(NamespaceDescriptor $namespace): void
     {
         $this->namespace = $namespace;
     }
@@ -161,7 +161,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
     /**
      * Returns the root (global) namespace.
      */
-    public function getNamespace() : NamespaceDescriptor
+    public function getNamespace(): NamespaceDescriptor
     {
         return $this->namespace;
     }
@@ -169,7 +169,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
     /**
      * Sets the settings used to build the documentation for this project.
      */
-    public function setSettings(Settings $settings) : void
+    public function setSettings(Settings $settings): void
     {
         $this->settings = $settings;
     }
@@ -177,7 +177,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
     /**
      * Returns the settings used to build the documentation for this project.
      */
-    public function getSettings() : Settings
+    public function getSettings(): Settings
     {
         return $this->settings;
     }
@@ -190,7 +190,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
      *
      * @param Collection<string> $partials
      */
-    public function setPartials(Collection $partials) : void
+    public function setPartials(Collection $partials): void
     {
         $this->partials = $partials;
     }
@@ -202,12 +202,12 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
      *
      * @return Collection<string>
      */
-    public function getPartials() : Collection
+    public function getPartials(): Collection
     {
         return $this->partials;
     }
 
-    public function findElement(Fqsen $fqsen) : ?Descriptor
+    public function findElement(Fqsen $fqsen): ?Descriptor
     {
         if (!isset($this->getIndexes()['elements'])) {
             return null;
@@ -216,12 +216,12 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
         return $this->getIndexes()['elements']->fetch((string) $fqsen);
     }
 
-    private function setPackage(PackageDescriptor $package) : void
+    private function setPackage(PackageDescriptor $package): void
     {
         $this->package = $package;
     }
 
-    public function getPackage() : PackageDescriptor
+    public function getPackage(): PackageDescriptor
     {
         return $this->package;
     }
@@ -229,7 +229,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
     /**
      * @return Collection<VersionDescriptor>
      */
-    public function getVersions() : Collection
+    public function getVersions(): Collection
     {
         return $this->versions;
     }

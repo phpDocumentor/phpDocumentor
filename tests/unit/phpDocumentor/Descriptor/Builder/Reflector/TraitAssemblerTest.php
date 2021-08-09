@@ -39,7 +39,7 @@ final class TraitAssemblerTest extends TestCase
      *
      * @covers ::create
      */
-    public function testAssembleTraitWithMethod() : void
+    public function testAssembleTraitWithMethod(): void
     {
         $method = new MethodDescriptor();
         $method->setName('method');

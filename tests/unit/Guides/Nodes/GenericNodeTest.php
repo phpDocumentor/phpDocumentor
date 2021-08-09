@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 
 final class GenericNodeTest extends TestCase
 {
-    public function test_it_can_be_created_with_a_name_and_value() : void
+    public function test_it_can_be_created_with_a_name_and_value(): void
     {
         $node = new GenericNode('name', 'value');
 
@@ -25,7 +25,7 @@ final class GenericNodeTest extends TestCase
         self::assertSame('value', $node->getValue());
     }
 
-    public function test_it_can_have_options() : void
+    public function test_it_can_have_options(): void
     {
         $option = 'option';
 
@@ -37,7 +37,7 @@ final class GenericNodeTest extends TestCase
         self::assertSame($option, $nodeWithOptions->getOption('option'));
     }
 
-    public function test_you_can_pass_classes_for_in_templates() : void
+    public function test_you_can_pass_classes_for_in_templates(): void
     {
         $classes = ['generic', 'node'];
 

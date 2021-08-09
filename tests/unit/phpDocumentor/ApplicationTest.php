@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor;
 
 use PHPUnit\Framework\TestCase;
+
 use function file_get_contents;
 use function trim;
 
@@ -27,7 +28,7 @@ final class ApplicationTest extends TestCase
     /**
      * @covers ::VERSION
      */
-    public function testItReturnsTheVersionNumberFromTheVersionFile() : void
+    public function testItReturnsTheVersionNumberFromTheVersionFile(): void
     {
         $this->assertSame(trim(file_get_contents(__DIR__ . '/../../../VERSION')), Application::VERSION());
     }

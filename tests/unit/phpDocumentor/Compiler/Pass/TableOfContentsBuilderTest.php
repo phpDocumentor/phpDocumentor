@@ -19,13 +19,14 @@ use phpDocumentor\Faker\Faker;
 use phpDocumentor\Transformer\Router\Router;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+
 use function current;
 
 final class TableOfContentsBuilderTest extends TestCase
 {
     use Faker;
 
-    public function testApiDocumentationSetNamespacesAreAddedAsTOC() : void
+    public function testApiDocumentationSetNamespacesAreAddedAsTOC(): void
     {
         $apiDocumentationSet = $this->faker()->apiSetDescriptor();
         $project             = $this->faker()->projectDescriptor();
@@ -52,7 +53,7 @@ final class TableOfContentsBuilderTest extends TestCase
         }
     }
 
-    public function testApiDocumentationSetPackagesAreAddedAsTOC() : void
+    public function testApiDocumentationSetPackagesAreAddedAsTOC(): void
     {
         $apiDocumentationSet = $this->faker()->apiSetDescriptor();
         $project             = $this->faker()->projectDescriptor();

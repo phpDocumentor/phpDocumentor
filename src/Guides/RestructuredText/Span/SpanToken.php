@@ -30,17 +30,17 @@ class SpanToken
         $this->token['type'] = $type;
     }
 
-    public function getType() : string
+    public function getType(): string
     {
         return $this->type;
     }
 
-    public function getId() : string
+    public function getId(): string
     {
         return $this->id;
     }
 
-    public function get(string $key) : string
+    public function get(string $key): string
     {
         return $this->token[$key] ?? '';
     }
@@ -48,7 +48,7 @@ class SpanToken
     /**
      * @return string[]
      */
-    public function getTokenData() : array
+    public function getTokenData(): array
     {
         return $this->token;
     }

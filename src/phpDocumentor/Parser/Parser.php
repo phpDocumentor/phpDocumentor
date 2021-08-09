@@ -23,6 +23,7 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Symfony\Component\Stopwatch\Stopwatch;
 use Webmozart\Assert\Assert;
+
 use function count;
 use function ini_get;
 use function round;
@@ -90,7 +91,7 @@ class Parser
      *
      * @param bool $validate when true this file will be checked.
      */
-    public function setValidate(bool $validate) : void
+    public function setValidate(bool $validate): void
     {
         $this->validate = $validate;
     }
@@ -98,7 +99,7 @@ class Parser
     /**
      * Returns whether we want to run PHPLint on every file.
      */
-    public function doValidation() : bool
+    public function doValidation(): bool
     {
         return $this->validate;
     }
@@ -108,7 +109,7 @@ class Parser
      *
      * @param string[] $markers A list or markers to gather.
      */
-    public function setMarkers(array $markers) : void
+    public function setMarkers(array $markers): void
     {
         $this->markers = $markers;
     }
@@ -118,7 +119,7 @@ class Parser
      *
      * @return string[]
      */
-    public function getMarkers() : array
+    public function getMarkers(): array
     {
         return $this->markers;
     }
@@ -128,7 +129,7 @@ class Parser
      *
      * @param string $path Must be an absolute path.
      */
-    public function setPath(string $path) : void
+    public function setPath(string $path): void
     {
         $this->path = $path;
     }
@@ -136,7 +137,7 @@ class Parser
     /**
      * Returns the absolute base path for all files.
      */
-    public function getPath() : string
+    public function getPath(): string
     {
         return $this->path;
     }
@@ -147,7 +148,7 @@ class Parser
      * @param string $defaultPackageName Name used to categorize elements
      *  without an @package tag.
      */
-    public function setDefaultPackageName(string $defaultPackageName) : void
+    public function setDefaultPackageName(string $defaultPackageName): void
     {
         $this->defaultPackageName = $defaultPackageName;
     }
@@ -155,7 +156,7 @@ class Parser
     /**
      * Returns the name of the default package.
      */
-    public function getDefaultPackageName() : string
+    public function getDefaultPackageName(): string
     {
         return $this->defaultPackageName;
     }
@@ -170,7 +171,7 @@ class Parser
      * Please note that it is recommended to provide files in UTF-8 format; this will ensure a faster performance since
      * no transformation is required.
      */
-    public function setEncoding(string $encoding) : void
+    public function setEncoding(string $encoding): void
     {
         $this->encoding = $encoding;
     }
@@ -178,7 +179,7 @@ class Parser
     /**
      * Returns the currently active encoding.
      */
-    public function getEncoding() : string
+    public function getEncoding(): string
     {
         return $this->encoding;
     }
@@ -188,7 +189,7 @@ class Parser
      *
      * @param File[] $files
      */
-    public function parse(array $files) : Project
+    public function parse(array $files): Project
     {
         $this->startTimingTheParsePhase();
 
@@ -210,7 +211,7 @@ class Parser
     /**
      * Writes the complete parsing cycle to log.
      */
-    private function logAfterParsingAllFiles() : void
+    private function logAfterParsingAllFiles(): void
     {
         $event = $this->stopwatch->stop('parser.parse');
 
@@ -225,12 +226,12 @@ class Parser
      * @param string $priority The logging priority as declared in the LogLevel PSR-3 class.
      * @param string[] $parameters
      */
-    private function log(string $message, string $priority = LogLevel::INFO, array $parameters = []) : void
+    private function log(string $message, string $priority = LogLevel::INFO, array $parameters = []): void
     {
         $this->logger->log($priority, $message, $parameters);
     }
 
-    private function startTimingTheParsePhase() : void
+    private function startTimingTheParsePhase(): void
     {
         $this->stopwatch->start('parser.parse');
     }

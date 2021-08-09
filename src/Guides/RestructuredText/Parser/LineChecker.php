@@ -22,7 +22,7 @@ class LineChecker
         $this->lineParser = $lineParser;
     }
 
-    public function isSpecialLine(string $line) : ?string
+    public function isSpecialLine(string $line): ?string
     {
         if (strlen($line) < 2) {
             return null;
@@ -43,7 +43,7 @@ class LineChecker
         return $letter;
     }
 
-    public function isListLine(string $line, bool $isCode) : bool
+    public function isListLine(string $line, bool $isCode): bool
     {
         $listLine = $this->lineParser->parseListLine($line);
 
@@ -54,7 +54,7 @@ class LineChecker
         return false;
     }
 
-    public function isBlockLine(string $line) : bool
+    public function isBlockLine(string $line): bool
     {
         if ($line !== '') {
             return trim($line[0]) === '';
@@ -63,22 +63,22 @@ class LineChecker
         return trim($line) === '';
     }
 
-    public function isComment(string $line) : bool
+    public function isComment(string $line): bool
     {
         return preg_match('/^\.\. (.*)$/mUsi', $line) > 0;
     }
 
-    public function isDirective(string $line) : bool
+    public function isDirective(string $line): bool
     {
         return preg_match('/^\.\. (\|(.+)\| |)([^\s]+)::( (.*)|)$/mUsi', $line) > 0;
     }
 
-    public function isDefinitionList(string $line) : bool
+    public function isDefinitionList(string $line): bool
     {
         return strpos($line, '    ') === 0;
     }
 
-    public function isDefinitionListEnded(string $line, string $nextLine) : bool
+    public function isDefinitionListEnded(string $line, string $nextLine): bool
     {
         if (trim($line) === '') {
             return false;

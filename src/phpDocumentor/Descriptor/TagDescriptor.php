@@ -47,7 +47,7 @@ class TagDescriptor implements Filterable
     /**
      * Sets the name for this tag.
      */
-    protected function setName(string $name) : void
+    protected function setName(string $name): void
     {
         $this->name = $name;
     }
@@ -55,7 +55,7 @@ class TagDescriptor implements Filterable
     /**
      * Returns the name for this tag.
      */
-    public function getName() : string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -63,7 +63,7 @@ class TagDescriptor implements Filterable
     /**
      * Sets a description for this tab instance.
      */
-    public function setDescription(?DescriptionDescriptor $description) : void
+    public function setDescription(?DescriptionDescriptor $description): void
     {
         $this->description = $description ?? new DescriptionDescriptor(new Description(''), []);
     }
@@ -71,12 +71,12 @@ class TagDescriptor implements Filterable
     /**
      * Returns the description for this tag,
      */
-    public function getDescription() : DescriptionDescriptor
+    public function getDescription(): DescriptionDescriptor
     {
         return $this->description;
     }
 
-    public function __toString() : string
+    public function __toString(): string
     {
         return (string) $this->description;
     }
@@ -86,7 +86,7 @@ class TagDescriptor implements Filterable
      *
      * @param Collection<Validation\Error> $errors
      */
-    public function setErrors(Collection $errors) : void
+    public function setErrors(Collection $errors): void
     {
         $this->errors = $errors;
     }
@@ -96,7 +96,7 @@ class TagDescriptor implements Filterable
      *
      * @return Collection<Validation\Error>
      */
-    public function getErrors() : Collection
+    public function getErrors(): Collection
     {
         return $this->errors;
     }

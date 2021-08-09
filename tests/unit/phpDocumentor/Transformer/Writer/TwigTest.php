@@ -62,7 +62,7 @@ final class TwigTest extends TestCase
     /** @var Twig */
     private $writer;
 
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $root = vfsStream::setup();
         $this->templatesFolder = vfsStream::newDirectory('templates');
@@ -95,7 +95,7 @@ final class TwigTest extends TestCase
     /**
      * @covers \phpDocumentor\Transformer\Writer\WriterAbstract::__toString
      */
-    public function testReturnsClassNameAsDescription() : void
+    public function testReturnsClassNameAsDescription(): void
     {
         $this->assertSame(Twig::class, (string) $this->writer);
     }
@@ -103,7 +103,7 @@ final class TwigTest extends TestCase
     /**
      * @covers ::transform
      */
-    public function testRendersTwigTemplateToDestination() : void
+    public function testRendersTwigTemplateToDestination(): void
     {
         $targetDir = $this->destinationFolder->url();
         $transformer = $this->givenTransformerWithTarget($targetDir);
@@ -129,7 +129,7 @@ final class TwigTest extends TestCase
         $this->assertStringEqualsFile($targetDir . '/index.html', 'This is a twig file');
     }
 
-    private function givenATwigEnvironmentFactoryWithTemplates(array $templates) : void
+    private function givenATwigEnvironmentFactoryWithTemplates(array $templates): void
     {
         $this->environmentFactory->create(Argument::cetera())->willReturn(
             new Environment(
@@ -138,7 +138,7 @@ final class TwigTest extends TestCase
         );
     }
 
-    private function givenTransformerWithTarget(string $targetDir) : ObjectProphecy
+    private function givenTransformerWithTarget(string $targetDir): ObjectProphecy
     {
         $transformer = $this->prophesize(Transformer::class);
         $transformer->getTarget()->willReturn($targetDir);

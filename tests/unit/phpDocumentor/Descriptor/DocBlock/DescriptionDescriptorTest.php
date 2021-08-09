@@ -18,7 +18,7 @@ final class DescriptionDescriptorTest extends TestCase
      * @covers ::__construct
      * @covers ::getBodyTemplate
      */
-    public function testBodyTemplateIsProxiedToDescription() : void
+    public function testBodyTemplateIsProxiedToDescription(): void
     {
         $bodyTemplate = 'my template';
         $description = new Description($bodyTemplate);
@@ -32,7 +32,7 @@ final class DescriptionDescriptorTest extends TestCase
      * @covers ::__construct
      * @covers ::__toString
      */
-    public function testToStringRendersDescription() : void
+    public function testToStringRendersDescription(): void
     {
         $bodyTemplate = 'my template %s';
         $description = new Description(
@@ -42,13 +42,14 @@ final class DescriptionDescriptorTest extends TestCase
 
         $descriptor = new DescriptionDescriptor(
             $description,
-            [new TagDescriptor(
-                'internal',
-                new DescriptionDescriptor(
-                    new Description('Some text'),
-                    []
-                )
-            ),
+            [
+                new TagDescriptor(
+                    'internal',
+                    new DescriptionDescriptor(
+                        new Description('Some text'),
+                        []
+                    )
+                ),
             ]
         );
 
@@ -58,7 +59,7 @@ final class DescriptionDescriptorTest extends TestCase
     /**
      * @dataProvider replacementProvider
      */
-    public function testTagsCanBeReplaced(?TagDescriptor $tagDescriptorReplacement, string $expected) : void
+    public function testTagsCanBeReplaced(?TagDescriptor $tagDescriptorReplacement, string $expected): void
     {
         $bodyTemplate = 'my template %1$s';
         $description = new Description(
@@ -68,13 +69,14 @@ final class DescriptionDescriptorTest extends TestCase
 
         $descriptor = new DescriptionDescriptor(
             $description,
-            [new TagDescriptor(
-                'internal',
-                new DescriptionDescriptor(
-                    new Description('Some text'),
-                    []
-                )
-            ),
+            [
+                new TagDescriptor(
+                    'internal',
+                    new DescriptionDescriptor(
+                        new Description('Some text'),
+                        []
+                    )
+                ),
             ]
         );
 
@@ -86,7 +88,7 @@ final class DescriptionDescriptorTest extends TestCase
         self::assertSame($expected, (string) $descriptor);
     }
 
-    public function replacementProvider() : array
+    public function replacementProvider(): array
     {
         return [
             'replace tag' => [

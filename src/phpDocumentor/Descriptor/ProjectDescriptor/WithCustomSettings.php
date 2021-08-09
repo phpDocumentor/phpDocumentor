@@ -23,5 +23,5 @@ interface WithCustomSettings
     /**
      * @return array<string, bool>
      */
-    public function getDefaultSettings() : array;
+    public function getDefaultSettings(): array;
 }

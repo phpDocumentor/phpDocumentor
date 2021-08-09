@@ -26,7 +26,7 @@ final class UriFactoryTest extends TestCase
      * @covers ::createUri
      * @dataProvider pathProvider
      */
-    public function testCreate(string $input, ?string $scheme, string $path) : void
+    public function testCreate(string $input, ?string $scheme, string $path): void
     {
         $uri = UriFactory::createUri($input);
 
@@ -34,7 +34,7 @@ final class UriFactoryTest extends TestCase
         self::assertEquals($path, $uri->getPath());
     }
 
-    public function pathProvider() : array
+    public function pathProvider(): array
     {
         return [
             'absolute windows path without scheme ' => [
@@ -73,7 +73,7 @@ final class UriFactoryTest extends TestCase
     /**
      * @covers ::createUri
      */
-    public function testInvalidUriThrowsInvalidArgumentException() : void
+    public function testInvalidUriThrowsInvalidArgumentException(): void
     {
         $this->expectException(InvalidArgumentException::class);
         UriFactory::createUri('http:/aaads/@asa:aaa');

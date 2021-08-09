@@ -24,6 +24,7 @@ use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+
 use function array_keys;
 
 /**
@@ -38,7 +39,7 @@ class RunCommandTest extends TestCase
     /**
      * @covers ::execute
      */
-    public function testPipelineIsInvokedWithTheNecessaryOptions() : void
+    public function testPipelineIsInvokedWithTheNecessaryOptions(): void
     {
         $input = new StringInput('--force -f abc');
         $output = new BufferedOutput();
@@ -65,7 +66,7 @@ class RunCommandTest extends TestCase
     /**
      * @covers ::configure
      */
-    public function testCommandIsConfiguredWithTheRightOptions() : void
+    public function testCommandIsConfiguredWithTheRightOptions(): void
     {
         $descriptor = $this->prophesize(ProjectDescriptorBuilder::class);
         $pipeline = $this->prophesize(PipelineInterface::class);

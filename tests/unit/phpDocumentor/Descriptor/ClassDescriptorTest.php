@@ -33,7 +33,7 @@ final class ClassDescriptorTest extends MockeryTestCase
     /**
      * Creates a new (emoty) fixture object.
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->fixture = new ClassDescriptor();
         $this->fixture->setFullyQualifiedStructuralElementName(new Fqsen('\My\Class'));
@@ -43,7 +43,7 @@ final class ClassDescriptorTest extends MockeryTestCase
      * @covers ::setParent
      * @covers ::getParent
      */
-    public function testSettingAndGettingAParent() : void
+    public function testSettingAndGettingAParent(): void
     {
         $this->assertNull($this->fixture->getParent());
 
@@ -57,7 +57,7 @@ final class ClassDescriptorTest extends MockeryTestCase
     /**
      * @covers ::setParent
      */
-    public function testSettingNoParent() : void
+    public function testSettingNoParent(): void
     {
         $mock = null;
 
@@ -70,7 +70,7 @@ final class ClassDescriptorTest extends MockeryTestCase
      * @covers ::setInterfaces
      * @covers ::getInterfaces
      */
-    public function testSettingAndGettingInterfaces() : void
+    public function testSettingAndGettingInterfaces(): void
     {
         $this->assertInstanceOf(Collection::class, $this->fixture->getInterfaces());
 
@@ -85,7 +85,7 @@ final class ClassDescriptorTest extends MockeryTestCase
      * @covers ::setConstants
      * @covers ::getConstants
      */
-    public function testSettingAndGettingConstants() : void
+    public function testSettingAndGettingConstants(): void
     {
         $this->assertInstanceOf(Collection::class, $this->fixture->getConstants());
 
@@ -100,7 +100,7 @@ final class ClassDescriptorTest extends MockeryTestCase
      * @covers ::setProperties
      * @covers ::getProperties
      */
-    public function testSettingAndGettingProperties() : void
+    public function testSettingAndGettingProperties(): void
     {
         $this->assertInstanceOf(Collection::class, $this->fixture->getProperties());
 
@@ -115,7 +115,7 @@ final class ClassDescriptorTest extends MockeryTestCase
      * @covers ::setMethods
      * @covers ::getMethods
      */
-    public function testSettingAndGettingMethods() : void
+    public function testSettingAndGettingMethods(): void
     {
         $this->assertInstanceOf(Collection::class, $this->fixture->getMethods());
 
@@ -129,7 +129,7 @@ final class ClassDescriptorTest extends MockeryTestCase
     /**
      * @covers ::getInheritedMethods
      */
-    public function testRetrievingInheritedMethodsReturnsEmptyCollectionWithoutParent() : void
+    public function testRetrievingInheritedMethodsReturnsEmptyCollectionWithoutParent(): void
     {
         $inheritedMethods = $this->fixture->getInheritedMethods();
         $this->assertInstanceOf(Collection::class, $inheritedMethods);
@@ -139,7 +139,7 @@ final class ClassDescriptorTest extends MockeryTestCase
     /**
      * @covers ::getInheritedMethods
      */
-    public function testRetrievingInheritedMethodsReturnsCollectionWithParent() : void
+    public function testRetrievingInheritedMethodsReturnsCollectionWithParent(): void
     {
         $mock = m::mock(ClassDescriptor::class);
         $mock->shouldReceive('getMethods')->andReturn(new Collection(['methods']));
@@ -157,7 +157,7 @@ final class ClassDescriptorTest extends MockeryTestCase
     /**
      * @covers ::getInheritedMethods
      */
-    public function testRetrievingInheritedMethodsReturnsTraitMethods() : void
+    public function testRetrievingInheritedMethodsReturnsTraitMethods(): void
     {
         // Arrange
         $expected = ['methods'];
@@ -177,7 +177,7 @@ final class ClassDescriptorTest extends MockeryTestCase
      * @covers ::getInheritedMethods
      * @ticket https://github.com/phpDocumentor/phpDocumentor2/issues/1307
      */
-    public function testRetrievingInheritedMethodsDoesNotCrashWhenUsedTraitIsNotInProject() : void
+    public function testRetrievingInheritedMethodsDoesNotCrashWhenUsedTraitIsNotInProject(): void
     {
         // Arrange
         $expected = [];
@@ -196,7 +196,7 @@ final class ClassDescriptorTest extends MockeryTestCase
      * @covers ::isAbstract
      * @covers ::setAbstract
      */
-    public function testSettingAndGettingWhetherClassIsAbstract() : void
+    public function testSettingAndGettingWhetherClassIsAbstract(): void
     {
         $this->assertFalse($this->fixture->isAbstract());
 
@@ -209,7 +209,7 @@ final class ClassDescriptorTest extends MockeryTestCase
      * @covers ::isFinal
      * @covers ::setFinal
      */
-    public function testSettingAndGettingWhetherClassIsFinal() : void
+    public function testSettingAndGettingWhetherClassIsFinal(): void
     {
         $this->assertFalse($this->fixture->isFinal());
 
@@ -221,7 +221,7 @@ final class ClassDescriptorTest extends MockeryTestCase
     /**
      * @covers ::getInheritedConstants
      */
-    public function testGetInheritedConstantsNoParent() : void
+    public function testGetInheritedConstantsNoParent(): void
     {
         $descriptor = new ClassDescriptor();
         $this->assertInstanceOf(Collection::class, $descriptor->getInheritedConstants());
@@ -233,7 +233,7 @@ final class ClassDescriptorTest extends MockeryTestCase
     /**
      * @covers ::getInheritedConstants
      */
-    public function testGetInheritedConstantsWithClassDescriptorParent() : void
+    public function testGetInheritedConstantsWithClassDescriptorParent(): void
     {
         $collectionMock = m::mock(Collection::class);
         $collectionMock->shouldReceive('get');
@@ -253,7 +253,7 @@ final class ClassDescriptorTest extends MockeryTestCase
     /**
      * @covers ::getInheritedProperties
      */
-    public function testGetInheritedPropertiesNoParent() : void
+    public function testGetInheritedPropertiesNoParent(): void
     {
         $descriptor = new ClassDescriptor();
         $this->assertInstanceOf(Collection::class, $descriptor->getInheritedProperties());
@@ -265,7 +265,7 @@ final class ClassDescriptorTest extends MockeryTestCase
     /**
      * @covers ::getInheritedProperties
      */
-    public function testGetInheritedPropertiesWithClassDescriptorParent() : void
+    public function testGetInheritedPropertiesWithClassDescriptorParent(): void
     {
         $collectionMock = m::mock(Collection::class);
         $collectionMock->shouldReceive('get');
@@ -285,7 +285,7 @@ final class ClassDescriptorTest extends MockeryTestCase
     /**
      * @covers ::getInheritedProperties
      */
-    public function testRetrievingInheritedPropertiesReturnsTraitProperties() : void
+    public function testRetrievingInheritedPropertiesReturnsTraitProperties(): void
     {
         // Arrange
         $expected = ['properties'];
@@ -305,7 +305,7 @@ final class ClassDescriptorTest extends MockeryTestCase
      * @covers ::getInheritedProperties
      * @ticket https://github.com/phpDocumentor/phpDocumentor2/issues/1307
      */
-    public function testRetrievingInheritedPropertiesDoesNotCrashWhenUsedTraitIsNotInProject() : void
+    public function testRetrievingInheritedPropertiesDoesNotCrashWhenUsedTraitIsNotInProject(): void
     {
         // Arrange
         $expected = [];
@@ -323,7 +323,7 @@ final class ClassDescriptorTest extends MockeryTestCase
     /**
      * @covers ::setPackage
      */
-    public function testSetPackage() : void
+    public function testSetPackage(): void
     {
         $package = 'Package';
 
@@ -375,7 +375,7 @@ final class ClassDescriptorTest extends MockeryTestCase
      *
      * @covers \phpDocumentor\Descriptor\DescriptorAbstract::__call
      */
-    public function testCall() : void
+    public function testCall(): void
     {
         $this->assertNull($this->fixture->__call('notexisting', []));
         $this->assertInstanceOf(Collection::class, $this->fixture->__call('getNotexisting', []));
@@ -384,7 +384,7 @@ final class ClassDescriptorTest extends MockeryTestCase
     /**
      * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getSummary
      */
-    public function testSummaryInheritsWhenNoneIsPresent() : void
+    public function testSummaryInheritsWhenNoneIsPresent(): void
     {
         // Arrange
         $summary = 'This is a summary';
@@ -399,7 +399,7 @@ final class ClassDescriptorTest extends MockeryTestCase
         $this->assertSame($summary, $result);
     }
 
-    protected function whenFixtureHasParentClass() : ClassDescriptor
+    protected function whenFixtureHasParentClass(): ClassDescriptor
     {
         $class = new ClassDescriptor();
         $this->fixture->setParent($class);

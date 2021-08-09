@@ -15,6 +15,7 @@ namespace phpDocumentor\Guides\References;
 
 use phpDocumentor\Guides\Environment;
 use RuntimeException;
+
 use function explode;
 use function sprintf;
 use function str_replace;
@@ -25,12 +26,12 @@ use function strpos;
  */
 class PhpMethodReference extends Reference
 {
-    public function getName() : string
+    public function getName(): string
     {
         return 'php:meth';
     }
 
-    public function resolve(Environment $environment, string $data) : ResolvedReference
+    public function resolve(Environment $environment, string $data): ResolvedReference
     {
         $className = explode('::', $data)[0];
         $className = str_replace('\\\\', '\\', $className);

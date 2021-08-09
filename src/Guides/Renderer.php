@@ -21,6 +21,7 @@ use phpDocumentor\Transformer\Writer\Graph\PlantumlRenderer;
 use phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
+
 use function count;
 
 class Renderer
@@ -54,7 +55,7 @@ class Renderer
         ProjectDescriptor $project,
         DocumentationSetDescriptor $documentationSet,
         Transformation $transformation
-    ) : void {
+    ): void {
         $targetDirectory = $documentationSet->getOutput();
 
         $this->environment = $this->environmentFactory->create($project, $transformation->template());
@@ -75,7 +76,7 @@ class Renderer
     /**
      * @param array<string, mixed> $context
      */
-    public function render(string $template, array $context = []) : string
+    public function render(string $template, array $context = []): string
     {
         if ($this->templateRenderer === null) {
             throw new RuntimeException('Renderer should be initialized before use');
@@ -84,7 +85,7 @@ class Renderer
         return $this->templateRenderer->render($template, $context);
     }
 
-    public function setDestination(string $destination) : void
+    public function setDestination(string $destination): void
     {
         $this->templateRenderer->setDestination($destination);
     }
@@ -94,7 +95,7 @@ class Renderer
      *   extension; and this extension would actually be nice to re-use in the rest of phpDocumentor as well. First,
      *   make it work here; then adapt for the rest :)
      */
-    public function setGuidesEnvironment(Environment $environment) : void
+    public function setGuidesEnvironment(Environment $environment): void
     {
         $this->environment->addGlobal('env', $environment);
     }

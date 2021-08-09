@@ -20,6 +20,7 @@ use InvalidArgumentException;
 use IteratorAggregate;
 use League\Flysystem\MountManager;
 use phpDocumentor\Transformer\Template\Parameter;
+
 use function array_merge;
 use function count;
 use function preg_match;
@@ -70,7 +71,7 @@ final class Template implements ArrayAccess, Countable, IteratorAggregate
     /**
      * Name for this template.
      */
-    public function getName() : string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -82,7 +83,7 @@ final class Template implements ArrayAccess, Countable, IteratorAggregate
      * @param string $author Name of the author optionally including mail address
      *  between angle brackets.
      */
-    public function setAuthor(string $author) : void
+    public function setAuthor(string $author): void
     {
         $this->author = $author;
     }
@@ -90,7 +91,7 @@ final class Template implements ArrayAccess, Countable, IteratorAggregate
     /**
      * Returns the name and/or mail address of the author.
      */
-    public function getAuthor() : string
+    public function getAuthor(): string
     {
         return $this->author;
     }
@@ -100,7 +101,7 @@ final class Template implements ArrayAccess, Countable, IteratorAggregate
      *
      * @param string $copyright Free-form copyright notice.
      */
-    public function setCopyright(string $copyright) : void
+    public function setCopyright(string $copyright): void
     {
         $this->copyright = $copyright;
     }
@@ -108,7 +109,7 @@ final class Template implements ArrayAccess, Countable, IteratorAggregate
     /**
      * Returns the copyright string for this template.
      */
-    public function getCopyright() : string
+    public function getCopyright(): string
     {
         return $this->copyright;
     }
@@ -120,7 +121,7 @@ final class Template implements ArrayAccess, Countable, IteratorAggregate
      *
      * @throws InvalidArgumentException If the version number is invalid.
      */
-    public function setVersion(string $version) : void
+    public function setVersion(string $version): void
     {
         if (!preg_match('/^\d+\.\d+\.\d+$/', $version)) {
             throw new InvalidArgumentException(
@@ -145,7 +146,7 @@ final class Template implements ArrayAccess, Countable, IteratorAggregate
      * By combining this in one mount manager it is easier for writers to copy files between destinations (since
      * MountManager's can copy between filesystems) and for writers to read and write from various locations.
      */
-    public function files() : MountManager
+    public function files(): MountManager
     {
         return $this->files;
     }
@@ -153,7 +154,7 @@ final class Template implements ArrayAccess, Countable, IteratorAggregate
     /**
      * Returns the version number for this template.
      */
-    public function getVersion() : string
+    public function getVersion(): string
     {
         return $this->version;
     }
@@ -164,7 +165,7 @@ final class Template implements ArrayAccess, Countable, IteratorAggregate
      * @param string $description An unconstrained text field where the user can provide additional information
      *     regarding details of the template.
      */
-    public function setDescription(string $description) : void
+    public function setDescription(string $description): void
     {
         $this->description = $description;
     }
@@ -172,7 +173,7 @@ final class Template implements ArrayAccess, Countable, IteratorAggregate
     /**
      * Returns the description for this template.
      */
-    public function getDescription() : string
+    public function getDescription(): string
     {
         return $this->description;
     }
@@ -185,7 +186,7 @@ final class Template implements ArrayAccess, Countable, IteratorAggregate
      *
      * @throws InvalidArgumentException If an invalid item was received.
      */
-    public function offsetSet($offset, $value) : void
+    public function offsetSet($offset, $value): void
     {
         if (!$value instanceof Transformation) {
             throw new InvalidArgumentException(
@@ -202,7 +203,7 @@ final class Template implements ArrayAccess, Countable, IteratorAggregate
      *
      * @param int|string $offset The offset to retrieve from.
      */
-    public function offsetGet($offset) : Transformation
+    public function offsetGet($offset): Transformation
     {
         return $this->transformations[$offset];
     }
@@ -214,7 +215,7 @@ final class Template implements ArrayAccess, Countable, IteratorAggregate
      *
      * @param int|string $offset Index of item to unset.
      */
-    public function offsetUnset($offset) : void
+    public function offsetUnset($offset): void
     {
         unset($this->transformations[$offset]);
     }
@@ -228,7 +229,7 @@ final class Template implements ArrayAccess, Countable, IteratorAggregate
      *
      * @return bool Returns true on success or false on failure.
      */
-    public function offsetExists($offset) : bool
+    public function offsetExists($offset): bool
     {
         return isset($this->transformations[$offset]);
     }
@@ -240,7 +241,7 @@ final class Template implements ArrayAccess, Countable, IteratorAggregate
      *
      * @return int The count as an integer.
      */
-    public function count() : int
+    public function count(): int
     {
         return count($this->transformations);
     }
@@ -250,7 +251,7 @@ final class Template implements ArrayAccess, Countable, IteratorAggregate
      *
      * @return Parameter[]
      */
-    public function getParameters() : array
+    public function getParameters(): array
     {
         return $this->parameters;
     }
@@ -260,7 +261,7 @@ final class Template implements ArrayAccess, Countable, IteratorAggregate
      *
      * @param string|int $key
      */
-    public function setParameter($key, Parameter $value) : void
+    public function setParameter($key, Parameter $value): void
     {
         $this->parameters[$key] = $value;
     }
@@ -268,7 +269,7 @@ final class Template implements ArrayAccess, Countable, IteratorAggregate
     /**
      * Pushes the parameters of this template into the transformations.
      */
-    public function propagateParameters() : void
+    public function propagateParameters(): void
     {
         foreach ($this->transformations as $transformation) {
             $transformation->setParameters(array_merge($transformation->getParameters(), $this->getParameters()));
@@ -278,7 +279,7 @@ final class Template implements ArrayAccess, Countable, IteratorAggregate
     /**
      * @return ArrayIterator<int|string, Transformation>
      */
-    public function getIterator() : ArrayIterator
+    public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->transformations);
     }

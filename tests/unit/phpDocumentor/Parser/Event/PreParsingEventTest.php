@@ -21,7 +21,7 @@ final class PreParsingEventTest extends TestCase
      * @covers ::createInstance
      * @covers ::getSubject
      */
-    public function testCreatingAnInstance() : void
+    public function testCreatingAnInstance(): void
     {
         $subject = new stdClass();
         $this->fixture = PreParsingEvent::createInstance($subject);
@@ -32,7 +32,7 @@ final class PreParsingEventTest extends TestCase
      * @covers ::setFileCount
      * @covers ::getFileCount
      */
-    public function testSettingAndGettingTheFileCount() : void
+    public function testSettingAndGettingTheFileCount(): void
     {
         $event = new PreParsingEvent(new stdClass());
         $event->setFileCount(42);

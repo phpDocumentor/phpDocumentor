@@ -14,6 +14,7 @@ use phpDocumentor\Guides\RestructuredText\Directives\Directive;
 use phpDocumentor\Guides\RestructuredText\Formats\Format;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
 use RuntimeException;
+
 use function array_merge;
 
 class Parser implements ParserInterface
@@ -60,7 +61,7 @@ class Parser implements ParserInterface
         $this->initReferences($references);
     }
 
-    public function getSubParser() : Parser
+    public function getSubParser(): Parser
     {
         return new Parser(
             $this->format,
@@ -74,7 +75,7 @@ class Parser implements ParserInterface
     /**
      * @param array<Directive> $directives
      */
-    public function initDirectives(array $directives) : void
+    public function initDirectives(array $directives): void
     {
         $directives = array_merge(
             $directives,
@@ -89,7 +90,7 @@ class Parser implements ParserInterface
     /**
      * @param array<Reference> $references
      */
-    public function initReferences(array $references) : void
+    public function initReferences(array $references): void
     {
         $references = array_merge(
             [
@@ -104,17 +105,17 @@ class Parser implements ParserInterface
         }
     }
 
-    public function getEnvironment() : Environment
+    public function getEnvironment(): Environment
     {
         return $this->environment;
     }
 
-    public function registerDirective(Directive $directive) : void
+    public function registerDirective(Directive $directive): void
     {
         $this->directives[$directive->getName()] = $directive;
     }
 
-    public function getDocument() : DocumentNode
+    public function getDocument(): DocumentNode
     {
         if ($this->documentParser === null) {
             throw new RuntimeException('Nothing has been parsed yet.');
@@ -123,31 +124,31 @@ class Parser implements ParserInterface
         return $this->documentParser->getDocument();
     }
 
-    public function getFilename() : string
+    public function getFilename(): string
     {
         return $this->filename ?: '(unknown)';
     }
 
-    public function parse(string $contents) : DocumentNode
+    public function parse(string $contents): DocumentNode
     {
         $this->getEnvironment()->reset();
 
         return $this->parseLocal($contents);
     }
 
-    public function parseLocal(string $contents) : DocumentNode
+    public function parseLocal(string $contents): DocumentNode
     {
         $this->documentParser = $this->createDocumentParser();
 
         return $this->documentParser->parse($contents);
     }
 
-    public function parseFragment(string $contents) : DocumentNode
+    public function parseFragment(string $contents): DocumentNode
     {
         return $this->createDocumentParser()->parse($contents);
     }
 
-    private function createDocumentParser() : DocumentParser
+    private function createDocumentParser(): DocumentParser
     {
         return new DocumentParser(
             $this,

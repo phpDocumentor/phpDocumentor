@@ -28,7 +28,7 @@ class SinceDescriptorTest extends TestCase
     /**
      * Creates a new fixture object.
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->fixture = new SinceDescriptor('name');
     }
@@ -37,7 +37,7 @@ class SinceDescriptorTest extends TestCase
      * @covers \phpDocumentor\Descriptor\Tag\SinceDescriptor::setVersion
      * @covers \phpDocumentor\Descriptor\Tag\SinceDescriptor::getVersion
      */
-    public function testSetAndGetVersion() : void
+    public function testSetAndGetVersion(): void
     {
         $this->assertEmpty($this->fixture->getVersion());
 

@@ -33,18 +33,18 @@ final class GuideSetDescriptor extends DocumentationSetDescriptor
         $this->documents = Collection::fromClassString(DocumentDescriptor::class);
     }
 
-    public function addDocument(string $file, DocumentDescriptor $documentDescriptor) : void
+    public function addDocument(string $file, DocumentDescriptor $documentDescriptor): void
     {
         $this->documents->set($file, $documentDescriptor);
     }
 
-    public function getInputFormat() : string
+    public function getInputFormat(): string
     {
         return $this->inputFormat;
     }
 
     /** @return Collection<DocumentDescriptor> */
-    public function getDocuments() : Collection
+    public function getDocuments(): Collection
     {
         return $this->documents;
     }

@@ -8,19 +8,21 @@ use InvalidArgumentException;
 use League\Uri\Contracts\UriInterface;
 use League\Uri\Uri as LeagueUri;
 use Throwable;
+
 use function preg_match;
 use function sprintf;
 use function str_replace;
 use function strlen;
 use function strpos;
 use function substr;
+
 use const DIRECTORY_SEPARATOR;
 
 final class UriFactory
 {
     public const WINDOWS_URI_FORMAT = '~^(file:\/\/\/)?(?<root>[a-zA-Z][:|\|])~';
 
-    public static function createUri(string $uriString) : UriInterface
+    public static function createUri(string $uriString): UriInterface
     {
         try {
             $uriString = str_replace(DIRECTORY_SEPARATOR, '/', $uriString);
@@ -50,7 +52,7 @@ final class UriFactory
         }
     }
 
-    private static function createPharUri(string $uriString) : UriInterface
+    private static function createPharUri(string $uriString): UriInterface
     {
         $path = substr($uriString, strlen('phar://'));
         if (strpos($path, '/') !== 0) {

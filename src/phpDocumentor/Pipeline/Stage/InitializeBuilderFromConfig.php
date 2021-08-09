@@ -20,6 +20,7 @@ use phpDocumentor\Descriptor\Collection as PartialsCollection;
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\GuideSetDescriptor;
 use phpDocumentor\Descriptor\VersionDescriptor;
+
 use function md5;
 
 final class InitializeBuilderFromConfig
@@ -35,7 +36,7 @@ final class InitializeBuilderFromConfig
         $this->partials = $partials;
     }
 
-    public function __invoke(Payload $payload) : Payload
+    public function __invoke(Payload $payload): Payload
     {
         $configuration = $payload->getConfig();
 
@@ -56,7 +57,7 @@ final class InitializeBuilderFromConfig
         return $payload;
     }
 
-    private function buildVersion(VersionSpecification $version) : VersionDescriptor
+    private function buildVersion(VersionSpecification $version): VersionDescriptor
     {
         $collection = Collection::fromClassString(DocumentationSetDescriptor::class);
         foreach ($version->getGuides() as $guide) {

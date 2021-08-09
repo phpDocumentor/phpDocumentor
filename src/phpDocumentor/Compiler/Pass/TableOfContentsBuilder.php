@@ -23,6 +23,7 @@ use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\TableOfContents\Entry;
 use phpDocumentor\Descriptor\TocDescriptor;
 use phpDocumentor\Transformer\Router\Router;
+
 use function ltrim;
 
 final class TableOfContentsBuilder implements CompilerPassInterface
@@ -35,12 +36,12 @@ final class TableOfContentsBuilder implements CompilerPassInterface
         $this->router = $router;
     }
 
-    public function getDescription() : string
+    public function getDescription(): string
     {
         return 'Builds table of contents for api documentation sets';
     }
 
-    public function execute(ProjectDescriptor $project) : void
+    public function execute(ProjectDescriptor $project): void
     {
         //This looks ugly, when versions are introduced we get rid of these 2 foreach loops.
         foreach ($project->getVersions() as $version) {
@@ -87,7 +88,7 @@ final class TableOfContentsBuilder implements CompilerPassInterface
         NamespaceDescriptor $namespace,
         TocDescriptor $namespacesToc,
         ?Entry $parent = null
-    ) : void {
+    ): void {
         $entry = new Entry(
             ltrim($this->router->generate($namespace), '/'),
             (string) $namespace->getFullyQualifiedStructuralElementName(),
@@ -111,7 +112,7 @@ final class TableOfContentsBuilder implements CompilerPassInterface
         Collection $documents,
         TocDescriptor $guideToc,
         ?Entry $parent = null
-    ) : void {
+    ): void {
         foreach ($documentDescriptor->getTocs() as $toc) {
             foreach ($toc->getFiles() as $file) {
                 $subDocument = $documents->get(ltrim($file, '/'));

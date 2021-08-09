@@ -11,6 +11,7 @@ use phpDocumentor\Guides\Nodes;
 use phpDocumentor\Guides\Nodes\ParagraphNode;
 use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\Parser;
+
 use function get_class;
 
 final class Paragraph extends AbstractBlock
@@ -18,7 +19,7 @@ final class Paragraph extends AbstractBlock
     /**
      * @return Nodes\ParagraphNode
      */
-    public function parse(Parser $parser, NodeWalker $walker) : Nodes\Node
+    public function parse(Parser $parser, NodeWalker $walker): Nodes\Node
     {
         $context = new ParagraphNode(new SpanNode($parser->getEnvironment(), ''));
 
@@ -44,7 +45,7 @@ final class Paragraph extends AbstractBlock
         return $context;
     }
 
-    public function supports(NodeWalkerEvent $event) : bool
+    public function supports(NodeWalkerEvent $event): bool
     {
         return $event->isEntering() && $event->getNode() instanceof CommonMarkParagraph;
     }

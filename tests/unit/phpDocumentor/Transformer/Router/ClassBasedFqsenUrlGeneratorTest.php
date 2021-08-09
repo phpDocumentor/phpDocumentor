@@ -35,7 +35,7 @@ class ClassBasedFqsenUrlGeneratorTest extends TestCase
      * @covers ::__invoke
      * @dataProvider provideFqsens
      */
-    public function testGenerateUrlForFqsenDescriptor(string $fromFqsen, string $toPath) : void
+    public function testGenerateUrlForFqsenDescriptor(string $fromFqsen, string $toPath): void
     {
         $urlGenerator = $this->prophesize(UrlGeneratorInterface::class);
         $urlGenerator->generate(Argument::any(), Argument::any())->shouldBeCalled()->willReturn($toPath);
@@ -48,7 +48,7 @@ class ClassBasedFqsenUrlGeneratorTest extends TestCase
         $this->assertSame($toPath, $result);
     }
 
-    public function provideFqsens() : array
+    public function provideFqsens(): array
     {
         return [
             ['\\My\\Space\\Class', '/classes/My-Space-Class-html'],

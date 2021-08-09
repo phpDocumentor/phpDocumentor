@@ -33,7 +33,7 @@ final class SpecificationFactory implements FactoryInterface
      * @param array<string, bool|array<string>|null> $ignore
      * @param list<string> $extensions
      */
-    public function create(array $paths, array $ignore, array $extensions) : SpecificationInterface
+    public function create(array $paths, array $ignore, array $extensions): SpecificationInterface
     {
         /** @var ?Glob $pathSpec */
         $pathSpec = null;

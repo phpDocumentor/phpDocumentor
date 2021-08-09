@@ -15,6 +15,7 @@ namespace phpDocumentor\Guides;
 
 use phpDocumentor\Guides\Formats\Format;
 use RuntimeException;
+
 use function sprintf;
 
 final class Configuration
@@ -46,27 +47,27 @@ final class Configuration
         $this->addFormat(...$outputFormats);
     }
 
-    public function getInitialHeaderLevel() : int
+    public function getInitialHeaderLevel(): int
     {
         return $this->initialHeaderLevel;
     }
 
-    public function setInitialHeaderLevel(int $initialHeaderLevel) : void
+    public function setInitialHeaderLevel(int $initialHeaderLevel): void
     {
         $this->initialHeaderLevel = $initialHeaderLevel;
     }
 
-    public function getFileExtension() : string
+    public function getFileExtension(): string
     {
         return $this->fileExtension;
     }
 
-    public function setFileExtension(string $fileExtension) : void
+    public function setFileExtension(string $fileExtension): void
     {
         $this->fileExtension = $fileExtension;
     }
 
-    public function getFormat() : Format
+    public function getFormat(): Format
     {
         if (!isset($this->formats[$this->fileExtension])) {
             throw new RuntimeException(
@@ -77,29 +78,29 @@ final class Configuration
         return $this->formats[$this->fileExtension];
     }
 
-    public function addFormat(Format ...$format) : void
+    public function addFormat(Format ...$format): void
     {
         foreach ($format as $item) {
             $this->formats[$item->getFileExtension()] = $item;
         }
     }
 
-    public function getNameOfIndexFile() : string
+    public function getNameOfIndexFile(): string
     {
         return $this->indexName;
     }
 
-    public function getSourceFileExtension() : string
+    public function getSourceFileExtension(): string
     {
         return $this->sourceFileExtension;
     }
 
-    public function getOutputFolder() : string
+    public function getOutputFolder(): string
     {
         return $this->outputFolder;
     }
 
-    public function setOutputFolder(string $outputFolder) : void
+    public function setOutputFolder(string $outputFolder): void
     {
         $this->outputFolder = $outputFolder;
     }

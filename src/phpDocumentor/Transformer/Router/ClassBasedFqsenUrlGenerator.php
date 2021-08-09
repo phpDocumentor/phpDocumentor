@@ -16,6 +16,7 @@ namespace phpDocumentor\Transformer\Router;
 use phpDocumentor\Reflection\Fqsen;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
+
 use function count;
 use function explode;
 use function strpos;
@@ -40,7 +41,7 @@ class ClassBasedFqsenUrlGenerator
     /**
      * Generates a URL from the given node or returns false if unable.
      */
-    public function __invoke(Fqsen $fqsen) : string
+    public function __invoke(Fqsen $fqsen): string
     {
         $fqsenParts = explode('::', (string) $fqsen);
         $className = $this->slugger->slug($fqsenParts[0])->toString();

@@ -31,12 +31,12 @@ final class SpecificationFactoryTest extends TestCase
     /** @var SpecificationFactory */
     private $fixture;
 
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->fixture = new SpecificationFactory();
     }
 
-    public function testCreateIgnoreHidden() : void
+    public function testCreateIgnoreHidden(): void
     {
         $specification = $this->fixture->create(
             ['/some/path/**/*', '/a/second/path/**/*'],
@@ -61,7 +61,7 @@ final class SpecificationFactoryTest extends TestCase
         );
     }
 
-    public function testCreateIgnorePath() : void
+    public function testCreateIgnorePath(): void
     {
         $specification = $this->fixture->create(
             ['/src/'],
@@ -86,7 +86,7 @@ final class SpecificationFactoryTest extends TestCase
         );
     }
 
-    public function testNoPaths() : void
+    public function testNoPaths(): void
     {
         $specification = $this->fixture->create([], ['paths' => ['/src/some/path']], ['php']);
 
@@ -101,7 +101,7 @@ final class SpecificationFactoryTest extends TestCase
         );
     }
 
-    public function testNoIgnore() : void
+    public function testNoIgnore(): void
     {
         $specification = $this->fixture->create(['/src/'], ['paths' => []], ['php']);
 
@@ -114,7 +114,7 @@ final class SpecificationFactoryTest extends TestCase
         );
     }
 
-    public function testInPathMustBeOfTheTypeString() : void
+    public function testInPathMustBeOfTheTypeString(): void
     {
         $specification = $this->fixture->create(
             [

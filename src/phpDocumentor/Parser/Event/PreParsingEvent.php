@@ -28,19 +28,19 @@ final class PreParsingEvent extends EventAbstract
      *
      * Used as convenience method for fluent interfaces.
      */
-    public static function createInstance(object $subject) : EventAbstract
+    public static function createInstance(object $subject): EventAbstract
     {
         return new self($subject);
     }
 
-    public function setFileCount(int $fileCount) : self
+    public function setFileCount(int $fileCount): self
     {
         $this->fileCount = $fileCount;
 
         return $this;
     }
 
-    public function getFileCount() : int
+    public function getFileCount(): int
     {
         return $this->fileCount;
     }

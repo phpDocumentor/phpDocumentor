@@ -33,7 +33,7 @@ final class TransformToPayload
      * @param array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: Dsn, cache: Path}, versions?: array<string, VersionSpecification>, settings?: array<mixed>, templates?: non-empty-list<string>}} $configuration
      */
     //phpcs:enable Generic.Files.LineLength.TooLong
-    public function __invoke(array $configuration) : Payload
+    public function __invoke(array $configuration): Payload
     {
         return new Payload($configuration, $this->descriptorBuilder);
     }

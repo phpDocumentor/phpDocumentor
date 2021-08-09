@@ -17,5 +17,5 @@ use phpDocumentor\Guides\Nodes\Node;
 
 interface NodeRenderer
 {
-    public function render(Node $node) : string;
+    public function render(Node $node): string;
 }

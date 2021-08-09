@@ -13,12 +13,13 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Builder;
 
+use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 
 /**
  * Base class for all assemblers.
  *
- * @template TDescriptor of \phpDocumentor\Descriptor\Descriptor
+ * @template TDescriptor of Descriptor
  * @template TInput of object
  * @implements AssemblerInterface<TDescriptor, TInput>
  */
@@ -30,7 +31,7 @@ abstract class AssemblerAbstract implements AssemblerInterface
     /**
      * Returns the builder for this Assembler or null if none is set.
      */
-    public function getBuilder() : ?ProjectDescriptorBuilder
+    public function getBuilder(): ?ProjectDescriptorBuilder
     {
         return $this->builder;
     }
@@ -41,7 +42,7 @@ abstract class AssemblerAbstract implements AssemblerInterface
      * The Builder may be used to recursively assemble Descriptors using
      * the {@link ProjectDescriptorBuilder::buildDescriptor()} method.
      */
-    public function setBuilder(ProjectDescriptorBuilder $builder) : void
+    public function setBuilder(ProjectDescriptorBuilder $builder): void
     {
         $this->builder = $builder;
     }

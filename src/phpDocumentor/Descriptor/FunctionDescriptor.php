@@ -15,6 +15,7 @@ namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
 use phpDocumentor\Reflection\Type;
+
 use function current;
 
 /**
@@ -41,17 +42,17 @@ class FunctionDescriptor extends DescriptorAbstract implements Interfaces\Functi
         $this->setArguments(new Collection());
     }
 
-    public function setArguments(Collection $arguments) : void
+    public function setArguments(Collection $arguments): void
     {
         $this->arguments = $arguments;
     }
 
-    public function getArguments() : Collection
+    public function getArguments(): Collection
     {
         return $this->arguments;
     }
 
-    public function getResponse() : ReturnDescriptor
+    public function getResponse(): ReturnDescriptor
     {
         $definedReturn = new ReturnDescriptor('return');
         $definedReturn->setType($this->returnType);
@@ -69,7 +70,7 @@ class FunctionDescriptor extends DescriptorAbstract implements Interfaces\Functi
     /**
      * Sets return type of this method.
      */
-    public function setReturnType(Type $returnType) : void
+    public function setReturnType(Type $returnType): void
     {
         $this->returnType = $returnType;
     }

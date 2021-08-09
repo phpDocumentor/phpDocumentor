@@ -15,6 +15,7 @@ namespace phpDocumentor\Configuration\Definition;
 
 use phpDocumentor\Configuration\SymfonyConfigFactory;
 use PHPUnit\Framework\TestCase;
+
 use function current;
 use function getcwd;
 
@@ -25,7 +26,7 @@ final class Version2Test extends TestCase
     /**
      * @dataProvider provideTestConfiguration
      */
-    public function testLoadingADefaultConfigWorks(array $inputConfig, array $expectedConfig) : void
+    public function testLoadingADefaultConfigWorks(array $inputConfig, array $expectedConfig): void
     {
         $configuration = new Version2(self::DEFAULT_TEMPLATE_NAME);
         $node = $configuration->getConfigTreeBuilder()->buildTree();
@@ -35,7 +36,7 @@ final class Version2Test extends TestCase
         $this->assertEquals($expectedConfig, $finalizedConfig);
     }
 
-    public function testThatConfigurationCanBeUpgradedToAVersion3InputArray() : void
+    public function testThatConfigurationCanBeUpgradedToAVersion3InputArray(): void
     {
         $configuration = new Version2(self::DEFAULT_TEMPLATE_NAME);
 
@@ -80,7 +81,7 @@ final class Version2Test extends TestCase
         );
     }
 
-    public function testThatWildcardsAreExpandedWhenUpgradingToAVersion3InputArrayForIgnoredPaths() : void
+    public function testThatWildcardsAreExpandedWhenUpgradingToAVersion3InputArrayForIgnoredPaths(): void
     {
         $oldStyleWildcard = 'tests/*';
         $newStyleGlobPattern = 'tests/**/*';
@@ -97,7 +98,7 @@ final class Version2Test extends TestCase
         );
     }
 
-    public function provideTestConfiguration() : array
+    public function provideTestConfiguration(): array
     {
         $defaultConfigurationOutput = $this->defaultConfigurationOutput();
         $configurationOutputWithIgnore = $this->defaultConfigurationOutput();
@@ -109,7 +110,7 @@ final class Version2Test extends TestCase
         ];
     }
 
-    private function defaultConfigurationOutput() : array
+    private function defaultConfigurationOutput(): array
     {
         return [
             SymfonyConfigFactory::FIELD_CONFIG_VERSION => '2',

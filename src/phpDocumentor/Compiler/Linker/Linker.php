@@ -26,6 +26,7 @@ use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Type;
 use Webmozart\Assert\Assert;
+
 use function get_class;
 use function is_array;
 use function is_iterable;
@@ -63,7 +64,7 @@ class Linker implements CompilerPassInterface
     /** @var DescriptorRepository */
     private $descriptorRepository;
 
-    public function getDescription() : string
+    public function getDescription(): string
     {
         return 'Replace textual FQCNs with object aliases';
     }
@@ -79,7 +80,7 @@ class Linker implements CompilerPassInterface
         $this->descriptorRepository = $descriptorRepository;
     }
 
-    public function execute(ProjectDescriptor $project) : void
+    public function execute(ProjectDescriptor $project): void
     {
         $this->descriptorRepository->setObjectAliasesList($project->getIndexes()->elements->getAll());
         $this->substitute($project);
@@ -90,7 +91,7 @@ class Linker implements CompilerPassInterface
      *
      * @return string[][]
      */
-    public function getSubstitutions() : array
+    public function getSubstitutions(): array
     {
         return $this->substitutions;
     }
@@ -158,7 +159,7 @@ class Linker implements CompilerPassInterface
      *
      * @return array<string|DescriptorAbstract>|Collection<string|DescriptorAbstract>|null
      */
-    private function substituteChildrenOfCollection(iterable $collection, ?DescriptorAbstract $container) : ?iterable
+    private function substituteChildrenOfCollection(iterable $collection, ?DescriptorAbstract $container): ?iterable
     {
         $isModified = false;
         foreach ($collection as $key => $element) {
@@ -195,7 +196,7 @@ class Linker implements CompilerPassInterface
      *
      * @psalm-assert DescriptorAbstract $item
      */
-    private function isDescriptorContainer(object $item) : bool
+    private function isDescriptorContainer(object $item): bool
     {
         return $item instanceof FileDescriptor
             || $item instanceof NamespaceDescriptor
@@ -204,7 +205,7 @@ class Linker implements CompilerPassInterface
             || $item instanceof InterfaceDescriptor;
     }
 
-    private function substituteMembersOfObject(object $object, ?DescriptorAbstract $container) : void
+    private function substituteMembersOfObject(object $object, ?DescriptorAbstract $container): void
     {
         $hash = spl_object_hash($object);
         if (isset($this->processedObjects[$hash])) {

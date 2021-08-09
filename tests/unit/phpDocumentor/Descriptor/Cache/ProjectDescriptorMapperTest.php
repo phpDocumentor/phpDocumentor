@@ -37,7 +37,7 @@ final class ProjectDescriptorMapperTest extends TestCase
     /** @var FilesystemAdapter */
     private $cachePool;
 
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->cachePool = new FilesystemAdapter();
         $this->mapper    = new ProjectDescriptorMapper($this->cachePool);
@@ -47,7 +47,7 @@ final class ProjectDescriptorMapperTest extends TestCase
      * @covers ::save
      * @covers ::populate
      */
-    public function testThatATheSettingsForAProjectDescriptorArePersistedAndCanBeRetrievedFromCache() : void
+    public function testThatATheSettingsForAProjectDescriptorArePersistedAndCanBeRetrievedFromCache(): void
     {
         $fileDescriptor = new FileDescriptor('fileHash');
         $fileDescriptor->setPath('./src/MyClass.php');

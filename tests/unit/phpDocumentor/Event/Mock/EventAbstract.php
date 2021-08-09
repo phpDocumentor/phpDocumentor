@@ -28,7 +28,7 @@ class EventAbstract extends BaseClass
      *
      * Used as convenience method for fluent interfaces.
      */
-    public static function createInstance(object $subject) : BaseClass
+    public static function createInstance(object $subject): BaseClass
     {
         return new static($subject);
     }

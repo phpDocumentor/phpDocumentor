@@ -18,6 +18,7 @@ use phpDocumentor\Reflection\DocBlockFactoryInterface;
 use phpDocumentor\Reflection\Middleware\Middleware;
 use phpDocumentor\Reflection\Php\Factory;
 use phpDocumentor\Reflection\Php\NodesFactory;
+
 use function iterator_to_array;
 
 final class FileFactory
@@ -32,7 +33,7 @@ final class FileFactory
         DocBlockFactoryInterface $blockFactory,
         NodesFactory $nodesFactory,
         IteratorAggregate $middlewares
-    ) : Factory\File {
+    ): Factory\File {
         return new Factory\File($blockFactory, $nodesFactory, iterator_to_array($middlewares));
     }
 }

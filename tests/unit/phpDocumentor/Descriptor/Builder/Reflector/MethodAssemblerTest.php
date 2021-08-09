@@ -42,7 +42,7 @@ class MethodAssemblerTest extends TestCase
     /**
      * Creates a new fixture to test with.
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->builderMock = $this->prophesize(ProjectDescriptorBuilder::class);
         $this->builderMock->buildDescriptor(ProphecyArgument::any(), ProphecyArgument::any())->willReturn(null);
@@ -63,7 +63,7 @@ class MethodAssemblerTest extends TestCase
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addArgument
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addVariadicArgument
      */
-    public function testCreateMethodDescriptorFromReflector() : void
+    public function testCreateMethodDescriptorFromReflector(): void
     {
         // Arrange
         $namespace = 'Namespace';
@@ -111,7 +111,7 @@ class MethodAssemblerTest extends TestCase
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addArgument
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addVariadicArgument
      */
-    public function testCreateMethodDescriptorFromReflectorWhenDocblockIsAbsent() : void
+    public function testCreateMethodDescriptorFromReflectorWhenDocblockIsAbsent(): void
     {
         // Arrange
         $namespace = 'Namespace';
@@ -149,7 +149,7 @@ class MethodAssemblerTest extends TestCase
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addArgument
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addVariadicArgument
      */
-    public function testCreateMethodDescriptorFromReflectorWhenParamTagsAreAbsent() : void
+    public function testCreateMethodDescriptorFromReflectorWhenParamTagsAreAbsent(): void
     {
         // Arrange
         $namespace = 'Namespace';
@@ -188,7 +188,7 @@ class MethodAssemblerTest extends TestCase
         string $methodName,
         Argument $argumentMock,
         ?DocBlock $docBlockMock = null
-    ) : Method {
+    ): Method {
         $method = new Method(
             new Fqsen('\\' . $namespace . '\\myClass::' . $methodName . '()'),
             new Visibility(Visibility::PROTECTED_),
@@ -203,7 +203,7 @@ class MethodAssemblerTest extends TestCase
     /**
      * Generates a DocBlock object with applicable defaults for these tests.
      */
-    protected function givenADocBlockObject($withTags) : DocBlock
+    protected function givenADocBlockObject($withTags): DocBlock
     {
         $docBlockDescription = new DocBlock\Description('This is an example description');
 
@@ -224,7 +224,7 @@ class MethodAssemblerTest extends TestCase
     /**
      * Prepares a mock Argument with the given name.
      */
-    protected function givenAnArgumentWithName(string $argumentName) : Argument
+    protected function givenAnArgumentWithName(string $argumentName): Argument
     {
         return new Argument($argumentName);
     }

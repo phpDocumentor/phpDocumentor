@@ -20,7 +20,7 @@ class DefinitionList
     /**
      * @return DefinitionListTerm[]
      */
-    public function getTerms() : array
+    public function getTerms(): array
     {
         return $this->terms;
     }

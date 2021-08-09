@@ -29,7 +29,7 @@ class LinkDescriptor extends TagDescriptor
     /**
      * Sets the URL where the link points to.
      */
-    public function setLink(string $link) : void
+    public function setLink(string $link): void
     {
         $this->link = $link;
     }
@@ -37,7 +37,7 @@ class LinkDescriptor extends TagDescriptor
     /**
      * Returns the URL where this link points to.
      */
-    public function getLink() : string
+    public function getLink(): string
     {
         return $this->link;
     }

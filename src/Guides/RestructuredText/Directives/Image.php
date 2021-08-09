@@ -17,7 +17,7 @@ use phpDocumentor\Guides\RestructuredText\Parser;
  */
 class Image extends Directive
 {
-    public function getName() : string
+    public function getName(): string
     {
         return 'image';
     }
@@ -30,7 +30,7 @@ class Image extends Directive
         string $variable,
         string $data,
         array $options
-    ) : Node {
+    ): Node {
         return new ImageNode($parser->getEnvironment()->relativeUrl($data));
     }
 }

@@ -6,6 +6,7 @@ namespace phpDocumentor\Guides\RestructuredText\Parser;
 
 use Exception;
 use phpDocumentor\Guides\Nodes\TableNode;
+
 use function count;
 use function in_array;
 use function sprintf;
@@ -30,7 +31,7 @@ class TableParser
      *
      * Returns TableSeparatorLineConfig if it *is* a separator, null otherwise.
      */
-    public function parseTableSeparatorLine(string $line) : ?TableSeparatorLineConfig
+    public function parseTableSeparatorLine(string $line): ?TableSeparatorLineConfig
     {
         $header = false;
         $pretty = false;
@@ -116,7 +117,7 @@ class TableParser
         return null;
     }
 
-    public function guessTableType(string $line) : string
+    public function guessTableType(string $line): string
     {
         return $line[0] === self::SIMPLE_TABLE_LETTER ? TableNode::TYPE_SIMPLE : TableNode::TYPE_PRETTY;
     }
@@ -130,7 +131,7 @@ class TableParser
      *
      * @return string[]|null
      */
-    private function findTableChars(string $line) : ?array
+    private function findTableChars(string $line): ?array
     {
         $lineChar = $line[0];
         $spaceChar = null;

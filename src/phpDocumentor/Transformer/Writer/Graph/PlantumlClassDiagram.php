@@ -19,9 +19,11 @@ use phpDocumentor\Descriptor\Interfaces\NamespaceInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
 use Psr\Log\LoggerInterface;
+
 use function addslashes;
 use function file_put_contents;
 use function implode;
+
 use const PHP_EOL;
 
 final class PlantumlClassDiagram implements Generator
@@ -38,7 +40,7 @@ final class PlantumlClassDiagram implements Generator
         $this->plantumlRenderer = $plantumlRenderer;
     }
 
-    public function create(ProjectDescriptor $project, string $filename) : void
+    public function create(ProjectDescriptor $project, string $filename): void
     {
         $output = $this->plantumlRenderer->render(
             <<<PUML
@@ -65,7 +67,7 @@ PUML
         file_put_contents($output, $filename);
     }
 
-    private function renderNamespace(NamespaceInterface $namespace) : string
+    private function renderNamespace(NamespaceInterface $namespace): string
     {
         $output = '';
         /** @var ClassDescriptor $class */

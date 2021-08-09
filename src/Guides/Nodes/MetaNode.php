@@ -25,7 +25,7 @@ class MetaNode extends Node
         parent::__construct($value);
     }
 
-    public function getKey() : string
+    public function getKey(): string
     {
         return $this->key;
     }

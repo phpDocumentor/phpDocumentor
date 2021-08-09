@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 
 final class ImageNodeTest extends TestCase
 {
-    public function test_it_can_be_created_with_a_url() : void
+    public function test_it_can_be_created_with_a_url(): void
     {
         $url = 'https://example.com/images/image1.jpg';
 
@@ -26,7 +26,7 @@ final class ImageNodeTest extends TestCase
         self::assertSame($url, $node->getValue());
     }
 
-    public function test_it_can_have_a_width_and_height() : void
+    public function test_it_can_have_a_width_and_height(): void
     {
         $width = '10';
         $height = '20';
@@ -41,7 +41,7 @@ final class ImageNodeTest extends TestCase
         self::assertSame($height, $nodeWithOptions->getOption('height'));
     }
 
-    public function test_it_can_have_an_alt_text() : void
+    public function test_it_can_have_an_alt_text(): void
     {
         $alt = 'alt text';
 
@@ -53,7 +53,7 @@ final class ImageNodeTest extends TestCase
         self::assertSame($alt, $nodeWithOptions->getOption('alt'));
     }
 
-    public function test_it_can_have_an_alignment() : void
+    public function test_it_can_have_an_alignment(): void
     {
         $align = 'left';
 
@@ -65,7 +65,7 @@ final class ImageNodeTest extends TestCase
         self::assertSame($align, $nodeWithOptions->getOption('align'));
     }
 
-    public function test_you_can_pass_classes_for_in_templates() : void
+    public function test_you_can_pass_classes_for_in_templates(): void
     {
         $classes = ['image', 'node'];
 

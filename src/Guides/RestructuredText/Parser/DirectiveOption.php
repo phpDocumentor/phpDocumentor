@@ -21,7 +21,7 @@ class DirectiveOption
         $this->value = $value;
     }
 
-    public function getName() : string
+    public function getName(): string
     {
         return $this->name;
     }

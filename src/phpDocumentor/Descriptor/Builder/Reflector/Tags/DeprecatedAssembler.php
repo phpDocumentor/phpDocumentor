@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 
 use phpDocumentor\Descriptor\Tag\DeprecatedDescriptor;
+use phpDocumentor\Reflection\DocBlock\Tags\Deprecated;
 
 /**
  * Constructs a new descriptor from the Reflector for an `{@}deprecated` tag.
@@ -21,14 +22,14 @@ use phpDocumentor\Descriptor\Tag\DeprecatedDescriptor;
  * This object will read the reflected information for the `{@}deprecated` tag and create a {@see DeprecatedDescriptor}
  * object that can be used in the rest of the application and templates.
  *
- * @extends BaseTagAssembler<DeprecatedDescriptor, \phpDocumentor\Reflection\DocBlock\Tags\Deprecated>
+ * @extends BaseTagAssembler<DeprecatedDescriptor, Deprecated>
  */
 class DeprecatedAssembler extends BaseTagAssembler
 {
     /**
      * Creates a new Descriptor from the given Reflector.
      */
-    public function buildDescriptor(object $data) : DeprecatedDescriptor
+    public function buildDescriptor(object $data): DeprecatedDescriptor
     {
         $descriptor = new DeprecatedDescriptor($data->getName());
         $descriptor->setVersion($data->getVersion() ?: '');

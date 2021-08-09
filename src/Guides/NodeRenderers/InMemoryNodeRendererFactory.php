@@ -30,7 +30,7 @@ class InMemoryNodeRendererFactory implements NodeRendererFactory
         $this->defaultNodeRenderer = $defaultNodeRenderer;
     }
 
-    public function get(string $node) : NodeRenderer
+    public function get(string $node): NodeRenderer
     {
         return $this->nodeRenderers[$node] ?? $this->defaultNodeRenderer;
     }

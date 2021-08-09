@@ -24,6 +24,7 @@ use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
+
 use function md5;
 
 /**
@@ -44,7 +45,7 @@ final class FileAssemblerTest extends TestCase
     /**
      * Creates a new fixture to test with.
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->defaultPackage = new PackageDescriptor();
         $this->defaultPackage->setName('\\PhpDocumentor');
@@ -55,7 +56,7 @@ final class FileAssemblerTest extends TestCase
     /**
      * Creates a Descriptor from a provided class.
      */
-    public function testCreateFileDescriptorFromReflector() : void
+    public function testCreateFileDescriptorFromReflector(): void
     {
         $filename = 'file.php';
         $content = '<?php ... ?>';
@@ -85,7 +86,7 @@ DOCBLOCK
     /**
      * Create a descriptor builder mock
      */
-    protected function getProjectDescriptorBuilderMock() : ObjectProphecy
+    protected function getProjectDescriptorBuilderMock(): ObjectProphecy
     {
         $settings = new Settings();
         $settings->includeSource();

@@ -23,22 +23,22 @@ interface ConstantInterface extends ElementInterface, TypeInterface
     /**
      * Sets the types that this constant may contain.
      */
-    public function setTypes(Type $types) : void;
+    public function setTypes(Type $types): void;
 
     /**
      * Returns the types that may be present in this constant.
      *
      * @return list<Type>
      */
-    public function getTypes() : array;
+    public function getTypes(): array;
 
     /**
      * Sets the value representation for this constant.
      */
-    public function setValue(string $value) : void;
+    public function setValue(string $value): void;
 
     /**
      * Retrieves a textual representation of the value in this constant.
      */
-    public function getValue() : string;
+    public function getValue(): string;
 }

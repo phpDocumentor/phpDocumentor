@@ -20,7 +20,7 @@ use phpDocumentor\Guides\RestructuredText\Parser;
  */
 class Figure extends SubDirective
 {
-    public function getName() : string
+    public function getName(): string
     {
         return 'figure';
     }
@@ -34,7 +34,7 @@ class Figure extends SubDirective
         string $variable,
         string $data,
         array $options
-    ) : ?Node {
+    ): ?Node {
         return new FigureNode(
             new ImageNode($parser->getEnvironment()->relativeUrl($data)),
             $document

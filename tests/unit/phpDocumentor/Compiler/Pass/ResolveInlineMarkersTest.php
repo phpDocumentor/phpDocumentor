@@ -20,7 +20,7 @@ use PHPUnit\Framework\TestCase;
 
 final class ResolveInlineMarkersTest extends TestCase
 {
-    public function testExecuteSetsMarkers() : void
+    public function testExecuteSetsMarkers(): void
     {
         $fixture = new ResolveInlineMarkers();
 

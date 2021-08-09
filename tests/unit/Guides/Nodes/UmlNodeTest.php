@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 final class UmlNodeTest extends TestCase
 {
-    public function test_it_can_be_created_with_a_value() : void
+    public function test_it_can_be_created_with_a_value(): void
     {
         $node = new UmlNode('value');
 
@@ -16,7 +16,7 @@ final class UmlNodeTest extends TestCase
         $this->assertSame('value', $node->getValueString());
     }
 
-    public function test_you_can_set_a_caption_for_underneath_diagrams() : void
+    public function test_you_can_set_a_caption_for_underneath_diagrams(): void
     {
         $caption = 'caption';
 
@@ -26,7 +26,7 @@ final class UmlNodeTest extends TestCase
         $this->assertSame($caption, $node->getCaption());
     }
 
-    public function test_you_can_pass_classes_for_in_templates() : void
+    public function test_you_can_pass_classes_for_in_templates(): void
     {
         $classes = ['float-left', 'my-class'];
 

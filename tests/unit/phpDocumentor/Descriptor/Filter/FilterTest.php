@@ -30,12 +30,12 @@ final class FilterTest extends TestCase
     /**
      * @covers ::filter
      */
-    public function testFilter() : void
+    public function testFilter(): void
     {
         $filterableMock = $this->prophesize(Filterable::class)->reveal();
 
         $filterStep = new class implements FilterInterface {
-            public function __invoke(FilterPayload $payload) : FilterPayload
+            public function __invoke(FilterPayload $payload): FilterPayload
             {
                 return $payload;
             }

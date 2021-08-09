@@ -31,7 +31,7 @@ class PropertyAssembler extends BaseTagAssembler
      *
      * @param Property $data
      */
-    public function buildDescriptor(object $data) : PropertyDescriptor
+    public function buildDescriptor(object $data): PropertyDescriptor
     {
         $descriptor = new PropertyDescriptor($data->getName());
         $descriptor->setVariableName($data->getVariableName());

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor;
 
 use Webmozart\Assert\Assert;
+
 use function array_pop;
 use function ctype_alpha;
 use function explode;
@@ -22,6 +23,7 @@ use function parse_url;
 use function sprintf;
 use function strlen;
 use function strspn;
+
 use const PHP_URL_SCHEME;
 
 /**
@@ -49,7 +51,7 @@ final class Path
     /**
      * Verifies if another Path object has the same identity as this one.
      */
-    public function equals(self $otherPath) : bool
+    public function equals(self $otherPath): bool
     {
         return $this->path === (string) $otherPath;
     }
@@ -57,7 +59,7 @@ final class Path
     /**
      * returns a string representation of the path.
      */
-    public function __toString() : string
+    public function __toString(): string
     {
         return $this->path;
     }
@@ -67,7 +69,7 @@ final class Path
      *
      * @param string $file A file path
      */
-    public static function isAbsolutePath(string $file) : bool
+    public static function isAbsolutePath(string $file): bool
     {
         return strspn($file, '/\\', 0, 1)
             || (strlen($file) > 3 && ctype_alpha($file[0])
@@ -77,7 +79,7 @@ final class Path
             || parse_url($file, PHP_URL_SCHEME) !== null;
     }
 
-    public static function dirname(Path $input) : self
+    public static function dirname(Path $input): self
     {
         $parts = explode('/', (string) $input);
         array_pop($parts);

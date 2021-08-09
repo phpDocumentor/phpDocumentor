@@ -33,7 +33,7 @@ final class PostTransformEvent extends EventAbstract
      *
      * Used as convenience method for fluent interfaces.
      */
-    public static function createInstance(object $subject) : EventAbstract
+    public static function createInstance(object $subject): EventAbstract
     {
         return new self($subject);
     }
@@ -41,7 +41,7 @@ final class PostTransformEvent extends EventAbstract
     /**
      * Returns the descriptor describing the project.
      */
-    public function getProject() : ?ProjectDescriptor
+    public function getProject(): ?ProjectDescriptor
     {
         return $this->project;
     }
@@ -51,7 +51,7 @@ final class PostTransformEvent extends EventAbstract
      *
      * @return $this
      */
-    public function setProject(ProjectDescriptor $project) : self
+    public function setProject(ProjectDescriptor $project): self
     {
         $this->project = $project;
 
@@ -59,13 +59,13 @@ final class PostTransformEvent extends EventAbstract
     }
 
     /** @param Transformation[] $transformations */
-    public function setTransformations(array $transformations) : void
+    public function setTransformations(array $transformations): void
     {
         $this->transformations = $transformations;
     }
 
     /** @return Transformation[] */
-    public function getTransformations() : array
+    public function getTransformations(): array
     {
         return $this->transformations;
     }

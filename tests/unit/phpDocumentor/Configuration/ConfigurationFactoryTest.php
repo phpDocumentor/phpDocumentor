@@ -32,7 +32,7 @@ final class ConfigurationFactoryTest extends TestCase
     /**
      * @covers ::createDefault
      */
-    public function testCreatingTheDefaultConfiguration() : void
+    public function testCreatingTheDefaultConfiguration(): void
     {
         $configuration = ['exampleConfig'];
         $symfonyConfigFactory = $this->prophesize(SymfonyConfigFactory::class);
@@ -55,11 +55,11 @@ final class ConfigurationFactoryTest extends TestCase
      *
      * @covers ::createDefault
      */
-    public function testCreatingTheDefaultConfigurationDoesNotApplyAnyMiddleware() : void
+    public function testCreatingTheDefaultConfigurationDoesNotApplyAnyMiddleware(): void
     {
         $middleware = new class implements MiddlewareInterface
         {
-            public function __invoke(Configuration $values, ?UriInterface $uri = null) : Configuration
+            public function __invoke(Configuration $values, ?UriInterface $uri = null): Configuration
             {
                 return $values + ['anotherExample'];
             }
@@ -83,7 +83,7 @@ final class ConfigurationFactoryTest extends TestCase
      *
      * @covers ::fromDefaultLocations
      */
-    public function testCreatingAConfigurationByScanningTheDefaultLocations() : void
+    public function testCreatingAConfigurationByScanningTheDefaultLocations(): void
     {
         // only create the actual configuration file phpdoc.xml, explicitly do not define phpdoc.dist.xml
         $structure = [
@@ -117,7 +117,7 @@ final class ConfigurationFactoryTest extends TestCase
      *
      * @covers ::fromDefaultLocations
      */
-    public function testWhenTheDefaultLocationsAreNotFoundCreateDefaultConfiguration() : void
+    public function testWhenTheDefaultLocationsAreNotFoundCreateDefaultConfiguration(): void
     {
         // explicitly create _no_ configuration file
         $structure = ['project' => ['myProject' => []]];
@@ -144,7 +144,7 @@ final class ConfigurationFactoryTest extends TestCase
     /**
      * @covers ::fromUri
      */
-    public function testCreatingAConfigurationUsingTheGivenUri() : void
+    public function testCreatingAConfigurationUsingTheGivenUri(): void
     {
         // using __FILE__ so that it passes the file does not exist scenario
         $uri = Uri::createFromString(__FILE__);
@@ -165,11 +165,11 @@ final class ConfigurationFactoryTest extends TestCase
      * @covers ::fromUri
      * @covers ::addMiddleware
      */
-    public function testCreatingAConfigurationUsingTheGivenUriAppliesAnyMiddleware() : void
+    public function testCreatingAConfigurationUsingTheGivenUriAppliesAnyMiddleware(): void
     {
         $middleware = new class implements MiddlewareInterface
         {
-            public function __invoke(Configuration $values, ?UriInterface $uri = null) : Configuration
+            public function __invoke(Configuration $values, ?UriInterface $uri = null): Configuration
             {
                 $values['newKey'] = 'anotherExample';
 
@@ -196,7 +196,7 @@ final class ConfigurationFactoryTest extends TestCase
     /**
      * @covers ::fromUri
      */
-    public function testCreatingAConfigurationUsingTheGivenUriFailsWhenFileDoesNotExist() : void
+    public function testCreatingAConfigurationUsingTheGivenUriFailsWhenFileDoesNotExist(): void
     {
         $this->expectException(InvalidConfigPathException::class);
 

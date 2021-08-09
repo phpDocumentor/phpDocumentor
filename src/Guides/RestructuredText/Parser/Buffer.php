@@ -21,32 +21,32 @@ class Buffer
         $this->lines = $lines;
     }
 
-    public function isEmpty() : bool
+    public function isEmpty(): bool
     {
         return $this->lines === [];
     }
 
-    public function count() : int
+    public function count(): int
     {
         return count($this->lines);
     }
 
-    public function has(int $key) : bool
+    public function has(int $key): bool
     {
         return isset($this->lines[$key]);
     }
 
-    public function get(int $key) : string
+    public function get(int $key): string
     {
         return $this->lines[$key] ?? '';
     }
 
-    public function push(string $line) : void
+    public function push(string $line): void
     {
         $this->lines[] = $line;
     }
 
-    public function set(int $key, string $line) : void
+    public function set(int $key, string $line): void
     {
         $this->lines[$key] = $line;
     }
@@ -54,22 +54,22 @@ class Buffer
     /**
      * @return string[]
      */
-    public function getLines() : array
+    public function getLines(): array
     {
         return $this->lines;
     }
 
-    public function getLinesString() : string
+    public function getLinesString(): string
     {
         return implode("\n", $this->lines);
     }
 
-    public function pop() : ?string
+    public function pop(): ?string
     {
         return array_pop($this->lines);
     }
 
-    public function getLastLine() : ?string
+    public function getLastLine(): ?string
     {
         $lastLineKey = count($this->lines) - 1;
 

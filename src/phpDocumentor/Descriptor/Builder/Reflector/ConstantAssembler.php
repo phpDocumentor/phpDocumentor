@@ -15,6 +15,7 @@ namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use phpDocumentor\Descriptor\ConstantDescriptor;
 use phpDocumentor\Reflection\Php\Constant;
+
 use function strlen;
 use function strpos;
 use function substr;
@@ -33,7 +34,7 @@ class ConstantAssembler extends AssemblerAbstract
      *
      * @param Constant $data
      */
-    public function create(object $data) : ConstantDescriptor
+    public function create(object $data): ConstantDescriptor
     {
         $constantDescriptor = new ConstantDescriptor();
         $constantDescriptor->setName($data->getName());
@@ -42,7 +43,7 @@ class ConstantAssembler extends AssemblerAbstract
 
         $separatorLenght = strpos((string) $data->getFqsen(), '::') === false ? 1 : 2;
         $constantDescriptor->setNamespace(
-            substr((string) $data->getFqsen(), 0, - strlen($data->getName()) - $separatorLenght)
+            substr((string) $data->getFqsen(), 0, -strlen($data->getName()) - $separatorLenght)
         );
         $constantDescriptor->setFullyQualifiedStructuralElementName($data->getFqsen());
 

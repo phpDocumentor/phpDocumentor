@@ -63,7 +63,7 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
      * Sets the parent namespace for this namespace.
      * {@inheritDoc}
      */
-    public function setParent($parent) : void
+    public function setParent($parent): void
     {
         //phpcs:disable SlevomatCodingStandard.Classes.ModernClassNameReference.ClassNameReferencedViaMagicConstant
         Assert::nullOrIsInstanceOf($parent, __CLASS__);
@@ -74,7 +74,7 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
     /**
      * Returns the parent namespace for this namespace.
      */
-    public function getParent() : ?NamespaceDescriptor
+    public function getParent(): ?NamespaceDescriptor
     {
         return $this->parent;
     }
@@ -84,7 +84,7 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
      *
      * @param Collection<ClassDescriptor> $classes
      */
-    public function setClasses(Collection $classes) : void
+    public function setClasses(Collection $classes): void
     {
         $this->classes = $classes;
     }
@@ -94,7 +94,7 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
      *
      * @return Collection<ClassDescriptor>
      */
-    public function getClasses() : Collection
+    public function getClasses(): Collection
     {
         return $this->classes;
     }
@@ -104,7 +104,7 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
      *
      * @param Collection<ConstantDescriptor> $constants
      */
-    public function setConstants(Collection $constants) : void
+    public function setConstants(Collection $constants): void
     {
         $this->constants = $constants;
     }
@@ -114,7 +114,7 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
      *
      * @return Collection<ConstantDescriptor>
      */
-    public function getConstants() : Collection
+    public function getConstants(): Collection
     {
         return $this->constants;
     }
@@ -124,7 +124,7 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
      *
      * @param Collection<FunctionDescriptor> $functions
      */
-    public function setFunctions(Collection $functions) : void
+    public function setFunctions(Collection $functions): void
     {
         $this->functions = $functions;
     }
@@ -134,7 +134,7 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
      *
      * @return Collection<FunctionDescriptor>
      */
-    public function getFunctions() : Collection
+    public function getFunctions(): Collection
     {
         return $this->functions;
     }
@@ -144,7 +144,7 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
      *
      * @param Collection<InterfaceDescriptor> $interfaces
      */
-    public function setInterfaces(Collection $interfaces) : void
+    public function setInterfaces(Collection $interfaces): void
     {
         $this->interfaces = $interfaces;
     }
@@ -154,12 +154,12 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
      *
      * @return Collection<InterfaceDescriptor>
      */
-    public function getInterfaces() : Collection
+    public function getInterfaces(): Collection
     {
         return $this->interfaces;
     }
 
-    public function addChild(NamespaceDescriptor $namespaceDescriptor) : void
+    public function addChild(NamespaceDescriptor $namespaceDescriptor): void
     {
         $this->children->set($namespaceDescriptor->getName(), $namespaceDescriptor);
         $namespaceDescriptor->setParent($this);
@@ -170,7 +170,7 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
      *
      * @param Collection<NamespaceDescriptor> $children
      */
-    public function setChildren(Collection $children) : void
+    public function setChildren(Collection $children): void
     {
         $this->children = $children;
     }
@@ -180,7 +180,7 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
      *
      * @return Collection<NamespaceDescriptor>
      */
-    public function getChildren() : Collection
+    public function getChildren(): Collection
     {
         return $this->children;
     }
@@ -190,7 +190,7 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
      *
      * @param Collection<TraitDescriptor> $traits
      */
-    public function setTraits(Collection $traits) : void
+    public function setTraits(Collection $traits): void
     {
         $this->traits = $traits;
     }
@@ -200,7 +200,7 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
      *
      * @return Collection<TraitDescriptor>
      */
-    public function getTraits() : Collection
+    public function getTraits(): Collection
     {
         return $this->traits;
     }

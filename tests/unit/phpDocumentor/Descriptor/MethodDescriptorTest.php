@@ -20,6 +20,7 @@ use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
 use phpDocumentor\Descriptor\Tag\VersionDescriptor;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Types\String_;
+
 use function iterator_to_array;
 
 /**
@@ -37,7 +38,7 @@ final class MethodDescriptorTest extends MockeryTestCase
     /**
      * Creates a new (empty) fixture object.
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->fixture = new MethodDescriptor();
         $this->fixture->setName('method');
@@ -47,7 +48,7 @@ final class MethodDescriptorTest extends MockeryTestCase
      * @covers ::setParent
      * @covers ::getParent
      */
-    public function testSettingAndGettingAParent() : void
+    public function testSettingAndGettingAParent(): void
     {
         $parent = new ClassDescriptor();
         $parent->setFullyQualifiedStructuralElementName(new Fqsen('\My\Class'));
@@ -63,7 +64,7 @@ final class MethodDescriptorTest extends MockeryTestCase
      * @covers ::setArguments
      * @covers ::getArguments
      */
-    public function testSettingAndGettingArguments() : void
+    public function testSettingAndGettingArguments(): void
     {
         $this->assertInstanceOf(Collection::class, $this->fixture->getArguments());
         $this->assertCount(0, iterator_to_array($this->fixture->getArguments()));
@@ -84,7 +85,7 @@ final class MethodDescriptorTest extends MockeryTestCase
     /**
      * @covers ::addArgument
      */
-    public function testAddingAnArgument() : void
+    public function testAddingAnArgument(): void
     {
         $this->assertInstanceOf(Collection::class, $this->fixture->getArguments());
         $this->assertCount(0, iterator_to_array($this->fixture->getArguments()));
@@ -105,7 +106,7 @@ final class MethodDescriptorTest extends MockeryTestCase
      * @covers ::isAbstract
      * @covers ::setAbstract
      */
-    public function testSettingAndGettingWhetherMethodIsAbstract() : void
+    public function testSettingAndGettingWhetherMethodIsAbstract(): void
     {
         $this->assertFalse($this->fixture->isAbstract());
 
@@ -118,7 +119,7 @@ final class MethodDescriptorTest extends MockeryTestCase
      * @covers ::isFinal
      * @covers ::setFinal
      */
-    public function testSettingAndGettingWhetherMethodIsFinal() : void
+    public function testSettingAndGettingWhetherMethodIsFinal(): void
     {
         $this->assertFalse($this->fixture->isFinal());
 
@@ -131,7 +132,7 @@ final class MethodDescriptorTest extends MockeryTestCase
      * @covers ::isStatic
      * @covers ::setStatic
      */
-    public function testSettingAndGettingWhetherMethodIsStatic() : void
+    public function testSettingAndGettingWhetherMethodIsStatic(): void
     {
         $this->assertFalse($this->fixture->isStatic());
 
@@ -144,7 +145,7 @@ final class MethodDescriptorTest extends MockeryTestCase
      * @covers ::getVisibility
      * @covers ::setVisibility
      */
-    public function testSettingAndGettingVisibility() : void
+    public function testSettingAndGettingVisibility(): void
     {
         $this->assertEquals('public', $this->fixture->getVisibility());
 
@@ -156,7 +157,7 @@ final class MethodDescriptorTest extends MockeryTestCase
     /**
      * @covers ::getResponse
      */
-    public function testRetrieveReturnTagForResponse() : void
+    public function testRetrieveReturnTagForResponse(): void
     {
         $returnDescriptor = new ReturnDescriptor('return');
         $returnDescriptor->setType(new String_());
@@ -172,7 +173,7 @@ final class MethodDescriptorTest extends MockeryTestCase
      * @covers ::setReturnType
      * @covers ::getResponse
      */
-    public function testGetResponseReturnsReturnType() : void
+    public function testGetResponseReturnsReturnType(): void
     {
         $returnType = new String_();
         $this->fixture->setReturnType($returnType);
@@ -183,7 +184,7 @@ final class MethodDescriptorTest extends MockeryTestCase
     /**
      * @covers ::getFile
      */
-    public function testRetrieveFileAssociatedWithAMethod() : void
+    public function testRetrieveFileAssociatedWithAMethod(): void
     {
         // Arrange
         $file = $this->whenFixtureIsRelatedToAClassWithFile();
@@ -198,7 +199,7 @@ final class MethodDescriptorTest extends MockeryTestCase
     /**
      * @covers ::getReturn
      */
-    public function testReturnTagsInheritWhenNoneArePresent() : void
+    public function testReturnTagsInheritWhenNoneArePresent(): void
     {
         $this->assertInstanceOf(Collection::class, $this->fixture->getReturn());
         $this->assertSame(0, $this->fixture->getReturn()->count());
@@ -217,7 +218,7 @@ final class MethodDescriptorTest extends MockeryTestCase
     /**
      * @covers ::getParam
      */
-    public function testParamTagsInheritWhenNoneArePresent() : void
+    public function testParamTagsInheritWhenNoneArePresent(): void
     {
         $this->assertInstanceOf(Collection::class, $this->fixture->getParam());
         $this->assertSame(0, $this->fixture->getParam()->count());
@@ -237,7 +238,7 @@ final class MethodDescriptorTest extends MockeryTestCase
      * @covers ::getAuthor
      * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getAuthor
      */
-    public function testAuthorTagsInheritWhenNoneArePresent() : void
+    public function testAuthorTagsInheritWhenNoneArePresent(): void
     {
         // Arrange
         $authorTagDescriptor = new AuthorDescriptor('author');
@@ -257,7 +258,7 @@ final class MethodDescriptorTest extends MockeryTestCase
      * @covers ::getVersion
      * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getVersion
      */
-    public function testVersionTagsInheritWhenNoneArePresent() : void
+    public function testVersionTagsInheritWhenNoneArePresent(): void
     {
         // Arrange
         $versionTagDescriptor = new VersionDescriptor('version');
@@ -277,7 +278,7 @@ final class MethodDescriptorTest extends MockeryTestCase
      * @covers ::getCopyright
      * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getCopyright
      */
-    public function testCopyrightTagsInheritWhenNoneArePresent() : void
+    public function testCopyrightTagsInheritWhenNoneArePresent(): void
     {
         // Arrange
         $copyrightTagDescriptor = new TagDescriptor('copyright');
@@ -312,7 +313,7 @@ final class MethodDescriptorTest extends MockeryTestCase
     /**
      * @param string $name The name of the current method.
      */
-    private function whenFixtureHasMethodInParentClassWithSameName(string $name) : MethodDescriptor
+    private function whenFixtureHasMethodInParentClassWithSameName(string $name): MethodDescriptor
     {
         $result = new MethodDescriptor();
         $result->setName($name);

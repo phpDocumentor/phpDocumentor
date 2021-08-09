@@ -25,17 +25,17 @@ class Link
         $this->type = $type;
     }
 
-    public function getName() : string
+    public function getName(): string
     {
         return $this->name;
     }
 
-    public function getUrl() : string
+    public function getUrl(): string
     {
         return $this->url;
     }
 
-    public function getType() : string
+    public function getType(): string
     {
         return $this->type;
     }

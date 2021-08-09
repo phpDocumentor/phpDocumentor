@@ -17,6 +17,7 @@ use League\Uri\Contracts\UriInterface;
 use phpDocumentor\Configuration\Exception\InvalidConfigPathException;
 use phpDocumentor\Dsn;
 use phpDocumentor\UriFactory;
+
 use function array_map;
 use function file_exists;
 use function sprintf;
@@ -54,7 +55,7 @@ use function sprintf;
     /**
      * Adds a middleware callback that allows the consumer to alter the configuration array when it is constructed.
      */
-    public function addMiddleware(MiddlewareInterface $middleware) : void
+    public function addMiddleware(MiddlewareInterface $middleware): void
     {
         $this->middlewares[] = $middleware;
     }
@@ -62,7 +63,7 @@ use function sprintf;
     /**
      * Attempts to load a configuration from the default locations for phpDocumentor
      */
-    public function fromDefaultLocations() : Configuration
+    public function fromDefaultLocations(): Configuration
     {
         foreach ($this->defaultFiles as $file) {
             try {
@@ -75,7 +76,7 @@ use function sprintf;
         return new Configuration($this->applyMiddleware($this->createDefault(), null));
     }
 
-    public function createDefault() : Configuration
+    public function createDefault(): Configuration
     {
         return $this->createConfigurationFromArray($this->symfonyConfigFactory->createDefault());
     }
@@ -87,7 +88,7 @@ use function sprintf;
      *
      * @throws InvalidConfigPathException If $uri points to an inexistent file.
      */
-    public function fromUri(UriInterface $uri) : Configuration
+    public function fromUri(UriInterface $uri): Configuration
     {
         $filename = (string) $uri;
 
@@ -100,7 +101,7 @@ use function sprintf;
         return $this->applyMiddleware($this->createConfigurationFromArray($config), $uri);
     }
 
-    public function fromDefault() : Configuration
+    public function fromDefault(): Configuration
     {
         return $this->applyMiddleware($this->createDefault(), null);
     }
@@ -108,7 +109,7 @@ use function sprintf;
     /**
      * Applies all middleware callbacks onto the configuration.
      */
-    private function applyMiddleware(Configuration $configuration, ?UriInterface $uri) : Configuration
+    private function applyMiddleware(Configuration $configuration, ?UriInterface $uri): Configuration
     {
         foreach ($this->middlewares as $middleware) {
             $configuration = $middleware($configuration, $uri);
@@ -122,20 +123,20 @@ use function sprintf;
      * @param array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string, cache: string}, versions?: array<string, array{ api: array{ignore-tags: array<string>, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibility: non-empty-array<string>, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}, encoding: string, output: string, default-package-name: string, examples: array{dsn: Dsn, paths: array}, include-source: bool, validate: bool}, guides: array}>, settings?: array<mixed>, templates?: non-empty-list<string>}} $configuration
      */
     //phpcs:enable Generic.Files.LineLength.TooLong
-    private function createConfigurationFromArray(array $configuration) : Configuration
+    private function createConfigurationFromArray(array $configuration): Configuration
     {
         if (isset($configuration['phpdocumentor']['versions'])) {
             foreach ($configuration['phpdocumentor']['versions'] as $versionNumber => $version) {
                 $configuration['phpdocumentor']['versions'][$versionNumber] = new VersionSpecification(
                     $versionNumber,
                     array_map(
-                        static function ($api) : ApiSpecification {
+                        static function ($api): ApiSpecification {
                             return ApiSpecification::createFromArray($api);
                         },
                         $version['api']
                     ),
                     array_map(
-                        static function ($guide) : GuideSpecification {
+                        static function ($guide): GuideSpecification {
                             return new GuideSpecification(
                                 new Source(
                                     $guide['source']['dsn'],

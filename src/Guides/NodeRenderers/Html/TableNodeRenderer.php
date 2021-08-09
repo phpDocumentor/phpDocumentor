@@ -19,6 +19,7 @@ use phpDocumentor\Guides\NodeRenderers\NodeRenderer;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\TableNode;
 use phpDocumentor\Guides\Renderer;
+
 use function sprintf;
 
 class TableNodeRenderer implements NodeRenderer
@@ -31,7 +32,7 @@ class TableNodeRenderer implements NodeRenderer
         $this->renderer = $renderer;
     }
 
-    public function render(Node $node) : string
+    public function render(Node $node): string
     {
         if ($node instanceof TableNode === false) {
             throw new InvalidArgumentException('Invalid node presented');

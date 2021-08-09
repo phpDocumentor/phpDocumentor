@@ -18,6 +18,7 @@ use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Nodes\ListNode;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\SpanNode;
+
 use function array_pop;
 use function count;
 use function get_class;
@@ -36,7 +37,7 @@ class ListNodeRenderer implements NodeRenderer
         $this->environment = $environment;
     }
 
-    public function render(Node $node) : string
+    public function render(Node $node): string
     {
         if ($node instanceof ListNode === false) {
             throw new InvalidArgumentException('Invalid node presented');

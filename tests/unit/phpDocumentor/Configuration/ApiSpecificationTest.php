@@ -30,7 +30,7 @@ final class ApiSpecificationTest extends TestCase
     /**
      * @return array<array<string[], int>>
      */
-    public function visibilityProvider() : array
+    public function visibilityProvider(): array
     {
         return [
             [

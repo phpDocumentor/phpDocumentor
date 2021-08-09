@@ -25,6 +25,7 @@ use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Transformer\Transformation;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Stopwatch\Stopwatch;
+
 use function sprintf;
 
 /**
@@ -59,7 +60,7 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
         $this->outputFormats = $outputFormats;
     }
 
-    public function transform(ProjectDescriptor $project, Transformation $transformation) : void
+    public function transform(ProjectDescriptor $project, Transformation $transformation): void
     {
         // Feature flag: Guides are disabled by default since this is an experimental feature
         if (!($project->getSettings()->getCustom()[self::FEATURE_FLAG])) {
@@ -82,7 +83,7 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
         }
     }
 
-    public function getDefaultSettings() : array
+    public function getDefaultSettings(): array
     {
         return [self::FEATURE_FLAG => false];
     }
@@ -91,7 +92,7 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
         GuideSetDescriptor $documentationSet,
         ProjectDescriptor $project,
         Transformation $transformation
-    ) : void {
+    ): void {
         $dsn = $documentationSet->getSource()->dsn();
         $stopwatch = $this->startRenderingSetMessage($dsn);
 
@@ -114,7 +115,7 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
         $this->completedRenderingSetMessage($stopwatch, $dsn);
     }
 
-    private function startRenderingSetMessage(Dsn $dsn) : Stopwatch
+    private function startRenderingSetMessage(Dsn $dsn): Stopwatch
     {
         $stopwatch = new Stopwatch();
         $stopwatch->start('guide');
@@ -123,7 +124,7 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
         return $stopwatch;
     }
 
-    private function completedRenderingSetMessage(Stopwatch $stopwatch, Dsn $dsn) : void
+    private function completedRenderingSetMessage(Stopwatch $stopwatch, Dsn $dsn): void
     {
         $stopwatchEvent = $stopwatch->stop('guide');
         $this->logger->info(

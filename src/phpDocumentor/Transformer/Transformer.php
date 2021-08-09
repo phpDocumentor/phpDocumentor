@@ -27,6 +27,7 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Webmozart\Assert\Assert;
+
 use function in_array;
 use function sprintf;
 
@@ -83,7 +84,7 @@ class Transformer
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    public function getDescription() : string
+    public function getDescription(): string
     {
         return 'Transform analyzed project into artifacts';
     }
@@ -93,7 +94,7 @@ class Transformer
      *
      * @param string $target The target location where to output the artifacts.
      */
-    public function setTarget(string $target) : void
+    public function setTarget(string $target): void
     {
         $this->target = $target;
         $this->destination = $this->flySystemFactory->create(Dsn::createFromString($target));
@@ -102,17 +103,17 @@ class Transformer
     /**
      * Returns the location where to store the artifacts.
      */
-    public function getTarget() : ?string
+    public function getTarget(): ?string
     {
         return $this->target;
     }
 
-    public function setDestination(FilesystemInterface $filesystem) : void
+    public function setDestination(FilesystemInterface $filesystem): void
     {
         $this->destination = $filesystem;
     }
 
-    public function destination() : FilesystemInterface
+    public function destination(): FilesystemInterface
     {
         $destination = $this->destination;
 
@@ -126,7 +127,7 @@ class Transformer
      *
      * @param Transformation[] $transformations
      */
-    public function execute(ProjectDescriptor $project, array $transformations) : void
+    public function execute(ProjectDescriptor $project, array $transformations): void
     {
         $this->initializeWriters($project, $transformations);
         $this->transformProject($project, $transformations);
@@ -139,7 +140,7 @@ class Transformer
      *
      * @param Transformation[] $transformations
      */
-    private function initializeWriters(ProjectDescriptor $project, array $transformations) : void
+    private function initializeWriters(ProjectDescriptor $project, array $transformations): void
     {
         $isInitialized = [];
         foreach ($transformations as $transformation) {
@@ -171,7 +172,7 @@ class Transformer
      *
      * @uses Dispatcher to emit the events surrounding an initialization.
      */
-    private function initializeWriter(WriterAbstract $writer, ProjectDescriptor $project, Template $template) : void
+    private function initializeWriter(WriterAbstract $writer, ProjectDescriptor $project, Template $template): void
     {
         /** @var WriterInitializationEvent $instance */
         $instance = WriterInitializationEvent::createInstance($this);
@@ -190,7 +191,7 @@ class Transformer
      *
      * @param Transformation[] $transformations
      */
-    private function transformProject(ProjectDescriptor $project, array $transformations) : void
+    private function transformProject(ProjectDescriptor $project, array $transformations): void
     {
         foreach ($transformations as $transformation) {
             $transformation->setTransformer($this);
@@ -211,7 +212,7 @@ class Transformer
      *
      * @uses Dispatcher to emit the events surrounding a transformation.
      */
-    private function applyTransformationToProject(Transformation $transformation, ProjectDescriptor $project) : void
+    private function applyTransformationToProject(Transformation $transformation, ProjectDescriptor $project): void
     {
         $this->logger->log(
             LogLevel::NOTICE,

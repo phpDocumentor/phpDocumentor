@@ -31,7 +31,7 @@ class SeeAssembler extends BaseTagAssembler
      *
      * @param See $data
      */
-    public function buildDescriptor(object $data) : SeeDescriptor
+    public function buildDescriptor(object $data): SeeDescriptor
     {
         $descriptor = new SeeDescriptor($data->getName());
         $reference = $data->getReference();

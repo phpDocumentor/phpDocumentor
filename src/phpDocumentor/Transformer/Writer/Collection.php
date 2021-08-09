@@ -15,6 +15,7 @@ namespace phpDocumentor\Transformer\Writer;
 
 use ArrayObject;
 use InvalidArgumentException;
+
 use function preg_match;
 
 /**
@@ -38,7 +39,7 @@ class Collection extends ArrayObject
      *
      * @throws InvalidArgumentException If either of the above restrictions is not met.
      */
-    public function offsetSet($index, $newval) : void
+    public function offsetSet($index, $newval): void
     {
         if (!$newval instanceof WriterAbstract) {
             throw new InvalidArgumentException(
@@ -63,7 +64,7 @@ class Collection extends ArrayObject
      *
      * @throws InvalidArgumentException If the writer is not in the collection.
      */
-    public function offsetGet($index) : WriterAbstract
+    public function offsetGet($index): WriterAbstract
     {
         if (!$this->offsetExists($index)) {
             throw new InvalidArgumentException('Writer "' . $index . '" does not exist');
@@ -77,7 +78,7 @@ class Collection extends ArrayObject
      *
      * @throws Exception\RequirementMissing If a requirement of a writer is missing.
      */
-    public function checkRequirements() : void
+    public function checkRequirements(): void
     {
         /** @var WriterAbstract $writer */
         foreach ($this as $writer) {

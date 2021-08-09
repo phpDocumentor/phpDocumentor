@@ -38,7 +38,7 @@ final class ExampleDescriptor extends TagDescriptor
     /**
      * Sets the location where the example points to.
      */
-    public function setFilePath(string $filePath) : void
+    public function setFilePath(string $filePath): void
     {
         $this->filePath = $filePath;
     }
@@ -46,7 +46,7 @@ final class ExampleDescriptor extends TagDescriptor
     /**
      * Returns the location where this example points to.
      */
-    public function getFilePath() : string
+    public function getFilePath(): string
     {
         return $this->filePath;
     }
@@ -54,7 +54,7 @@ final class ExampleDescriptor extends TagDescriptor
     /**
      * Returns the location where this example points to.
      */
-    public function setStartingLine(int $startingLine) : void
+    public function setStartingLine(int $startingLine): void
     {
         $this->startingLine = $startingLine;
     }
@@ -62,7 +62,7 @@ final class ExampleDescriptor extends TagDescriptor
     /**
      * Returns the location where this example points to.
      */
-    public function getStartingLine() : ?int
+    public function getStartingLine(): ?int
     {
         return $this->startingLine;
     }
@@ -70,7 +70,7 @@ final class ExampleDescriptor extends TagDescriptor
     /**
      * Returns the location where this example points to.
      */
-    public function setLineCount(int $lineCount) : void
+    public function setLineCount(int $lineCount): void
     {
         $this->lineCount = $lineCount;
     }
@@ -78,7 +78,7 @@ final class ExampleDescriptor extends TagDescriptor
     /**
      * Returns the location where this example points to.
      */
-    public function getLineCount() : ?int
+    public function getLineCount(): ?int
     {
         return $this->lineCount;
     }
@@ -86,7 +86,7 @@ final class ExampleDescriptor extends TagDescriptor
     /**
      * Returns the content of the example.
      */
-    public function setExample(string $example) : void
+    public function setExample(string $example): void
     {
         $this->example = $example;
     }
@@ -94,7 +94,7 @@ final class ExampleDescriptor extends TagDescriptor
     /**
      * Returns the content of the example.
      */
-    public function getExample() : string
+    public function getExample(): string
     {
         return $this->example;
     }

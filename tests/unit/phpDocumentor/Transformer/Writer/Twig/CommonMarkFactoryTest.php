@@ -24,7 +24,7 @@ final class CommonMarkFactoryTest extends TestCase
     /**
      * @covers ::createConverter
      */
-    public function testCreateAddsExtensions() : void
+    public function testCreateAddsExtensions(): void
     {
         $extension = new DisallowedRawHtmlExtension();
 

@@ -25,7 +25,7 @@ class SectionEndNode extends Node
         $this->titleNode = $titleNode;
     }
 
-    public function getTitleNode() : TitleNode
+    public function getTitleNode(): TitleNode
     {
         return $this->titleNode;
     }

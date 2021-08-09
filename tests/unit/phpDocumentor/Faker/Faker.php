@@ -15,7 +15,7 @@ trait Faker
     /**
      * @return Provider|Generator
      */
-    public function faker() : Generator
+    public function faker(): Generator
     {
         if ($this->faker === null) {
             $this->faker = Factory::create();

@@ -15,6 +15,7 @@ namespace phpDocumentor;
 
 use Composer\Autoload\ClassLoader;
 use RuntimeException;
+
 use function file_exists;
 use function file_get_contents;
 use function getenv;
@@ -22,7 +23,7 @@ use function json_decode;
 
 final class AutoloaderLocator
 {
-    public static function autoload() : ClassLoader
+    public static function autoload(): ClassLoader
     {
         return require self::findVendorPath() . '/autoload.php';
     }
@@ -56,7 +57,7 @@ final class AutoloaderLocator
      *
      * @throws RuntimeException If the vendor directory is not findable.
      */
-    public static function findVendorPath(string $baseDir = __DIR__) : string
+    public static function findVendorPath(string $baseDir = __DIR__): string
     {
         // Composerised installation, vendor/phpdocumentor/phpdocumentor/src/phpDocumentor is __DIR__
         $vendorFolderWhenInstalledWithComposer = $baseDir . '/../../../../';
@@ -82,7 +83,7 @@ final class AutoloaderLocator
      * {@link https://getcomposer.org/doc/03-cli.md#composer COMPOSER environment variable}
      * or returns the default 'composer.json'.
      */
-    public static function findComposerConfigurationPath() : string
+    public static function findComposerConfigurationPath(): string
     {
         $filename = getenv('COMPOSER') ?: 'composer';
 
@@ -97,7 +98,7 @@ final class AutoloaderLocator
      *
      * @param string $composerConfigurationPath the path pointing to the composer.json
      */
-    private static function getCustomVendorPathFromComposer(string $composerConfigurationPath) : string
+    private static function getCustomVendorPathFromComposer(string $composerConfigurationPath): string
     {
         $vendorDir = getenv('COMPOSER_VENDOR_DIR');
         if ($vendorDir) {

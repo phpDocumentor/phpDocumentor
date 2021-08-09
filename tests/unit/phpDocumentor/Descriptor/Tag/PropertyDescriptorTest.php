@@ -28,7 +28,7 @@ class PropertyDescriptorTest extends TestCase
     /**
      * Creates a new fixture object.
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->fixture = new PropertyDescriptor('name');
     }
@@ -37,7 +37,7 @@ class PropertyDescriptorTest extends TestCase
      * @covers \phpDocumentor\Descriptor\Tag\BaseTypes\TypedVariableAbstract::setVariableName
      * @covers \phpDocumentor\Descriptor\Tag\BaseTypes\TypedVariableAbstract::getVariableName
      */
-    public function testSetAndGetVariableName() : void
+    public function testSetAndGetVariableName(): void
     {
         $this->assertEmpty($this->fixture->getVariableName());
 

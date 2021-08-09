@@ -34,7 +34,7 @@ final class MarkerFromTagsExtractorTest extends TestCase
     /**
      * Initialize the fixture for this test.
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->fixture = new MarkerFromTagsExtractor();
         $this->project = new ProjectDescriptor('MyProject');
@@ -43,7 +43,7 @@ final class MarkerFromTagsExtractorTest extends TestCase
     /**
      * @covers \phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor::getDescription
      */
-    public function testDescriptionReturnsCorrectString() : void
+    public function testDescriptionReturnsCorrectString(): void
     {
         $this->assertSame('Collect all markers embedded in tags', $this->fixture->getDescription());
     }
@@ -53,7 +53,7 @@ final class MarkerFromTagsExtractorTest extends TestCase
      * @covers \phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor::getFileDescriptor
      * @covers \phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor::addTodoMarkerToFile
      */
-    public function testAddTodoMarkerForEachTodoTagInAnyElement() : void
+    public function testAddTodoMarkerForEachTodoTagInAnyElement(): void
     {
         $fileDescriptor = $this->givenProjectHasFileDescriptor();
         $fileDescriptor->setLine(10);
@@ -86,7 +86,7 @@ final class MarkerFromTagsExtractorTest extends TestCase
      * @covers \phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor::execute
      * @covers \phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor::getFileDescriptor
      */
-    public function testExceptionShouldBeThrownIfElementHasNoFileAssociated() : void
+    public function testExceptionShouldBeThrownIfElementHasNoFileAssociated(): void
     {
         $classDescriptor = $this->givenProjectHasClassDescriptorAssociatedWithFile(null);
         $this->givenDescriptorHasTodoTagWithDescription($classDescriptor, '789');
@@ -97,7 +97,7 @@ final class MarkerFromTagsExtractorTest extends TestCase
         $this->fixture->execute($this->project);
     }
 
-    protected function givenProjectHasFileDescriptor() : FileDescriptor
+    protected function givenProjectHasFileDescriptor(): FileDescriptor
     {
         $fileDescriptor1 = new FileDescriptor('123');
         $elementIndex = $this->project->getIndexes()->fetch('elements', new Collection());
@@ -109,7 +109,7 @@ final class MarkerFromTagsExtractorTest extends TestCase
     protected function givenDescriptorHasTodoTagWithDescription(
         DescriptorAbstract $descriptor,
         string $description
-    ) : void {
+    ): void {
         $todoTag = new TagDescriptor('todo');
         $todoTag->setDescription(new DescriptionDescriptor(new Description($description), []));
 
@@ -123,7 +123,7 @@ final class MarkerFromTagsExtractorTest extends TestCase
      */
     private function givenProjectHasClassDescriptorAssociatedWithFile(
         ?FileDescriptor $fileDescriptor
-    ) : ClassDescriptor {
+    ): ClassDescriptor {
         $classDescriptor = new ClassDescriptor();
         if ($fileDescriptor) {
             $classDescriptor->setFile($fileDescriptor);

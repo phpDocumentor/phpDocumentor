@@ -17,6 +17,7 @@ use phpDocumentor\Reflection\Php\ProjectFactoryStrategies;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
+
 use function array_column;
 
 /**
@@ -30,7 +31,7 @@ use function array_column;
  */
 final class ReflectionProjectFactoryStrategyPass implements CompilerPassInterface
 {
-    public function process(ContainerBuilder $container) : void
+    public function process(ContainerBuilder $container): void
     {
         $strategies = $container->getDefinition(ProjectFactoryStrategies::class);
         foreach ($container->findTaggedServiceIds('phpdoc.reflection.strategy') as $id => $tags) {

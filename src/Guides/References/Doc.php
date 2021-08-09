@@ -42,17 +42,17 @@ class Doc extends Reference
         $this->dependenciesMustBeResolved = $dependenciesMustBeResolved;
     }
 
-    public function getName() : string
+    public function getName(): string
     {
         return $this->name;
     }
 
-    public function resolve(Environment $environment, string $data) : ?ResolvedReference
+    public function resolve(Environment $environment, string $data): ?ResolvedReference
     {
         return $this->resolver->resolve($environment, $data);
     }
 
-    public function found(Environment $environment, string $data) : void
+    public function found(Environment $environment, string $data): void
     {
         $environment->addDependency($data, $this->dependenciesMustBeResolved);
     }

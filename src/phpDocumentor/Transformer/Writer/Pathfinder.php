@@ -15,6 +15,7 @@ namespace phpDocumentor\Transformer\Writer;
 
 use phpDocumentor\Descriptor\Descriptor;
 use Traversable;
+
 use function explode;
 use function is_array;
 use function is_object;
@@ -33,7 +34,7 @@ final class Pathfinder
      *
      * @return Traversable<mixed>|list<mixed>
      */
-    public function find(object $object, string $query) : iterable
+    public function find(object $object, string $query): iterable
     {
         if ($query) {
             $node = $this->walkObjectTree($object, $query);

@@ -16,13 +16,14 @@ namespace phpDocumentor\Transformer\Writer;
 use League\Flysystem\FileNotFoundException;
 use League\Uri\UriString;
 use phpDocumentor\Transformer\Transformation;
+
 use function ltrim;
 use function strpos;
 use function substr;
 
 trait IoTrait
 {
-    protected function copy(Transformation $transformation, string $path, string $destination) : void
+    protected function copy(Transformation $transformation, string $path, string $destination): void
     {
         $path = $this->normalizeSourcePath($path);
         $destination = $this->normalizeDestination($destination);
@@ -42,7 +43,7 @@ trait IoTrait
         $this->copyDirectory($transformation, $path, $destination);
     }
 
-    protected function readSourceFile(Transformation $transformation, string $path) : string
+    protected function readSourceFile(Transformation $transformation, string $path): string
     {
         $path = $this->normalizeSourcePath($path);
         $contents = $transformation->template()->files()->read($path);
@@ -53,14 +54,14 @@ trait IoTrait
         return $contents;
     }
 
-    protected function persistTo(Transformation $transformation, string $path, string $contents) : void
+    protected function persistTo(Transformation $transformation, string $path, string $contents): void
     {
         $path = $this->normalizeDestination($path);
 
         $transformation->template()->files()->put($path, $contents);
     }
 
-    private function copyDirectory(Transformation $transformation, string $path, string $destination) : void
+    private function copyDirectory(Transformation $transformation, string $path, string $destination): void
     {
         $list = $transformation->template()->files()->listContents($path, true);
         $scheme = UriString::parse($path)['scheme'];
@@ -88,7 +89,7 @@ trait IoTrait
         }
     }
 
-    private function stripFirstPartOfPath(string $path) : string
+    private function stripFirstPartOfPath(string $path): string
     {
         $findPathSeparator = strpos($path, '/', 1);
         if ($findPathSeparator === false) {
@@ -98,13 +99,13 @@ trait IoTrait
         return ltrim(substr($path, $findPathSeparator), '/');
     }
 
-    private function isGlobalTemplateReference(string $path) : bool
+    private function isGlobalTemplateReference(string $path): bool
     {
         return strpos($path, 'templates/') === 0
             || strpos($path, 'templates://') === 0;
     }
 
-    private function normalizeSourcePath(string $path) : string
+    private function normalizeSourcePath(string $path): string
     {
         // if it has a scheme, it must have been normalized before
         if (UriString::parse($path)['scheme']) {
@@ -119,7 +120,7 @@ trait IoTrait
         return 'template://' . $path;
     }
 
-    private function normalizeDestination(string $destination) : string
+    private function normalizeDestination(string $destination): string
     {
         // prepend destination scheme if none was set
         if (!UriString::parse($destination)['scheme']) {

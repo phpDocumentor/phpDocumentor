@@ -17,6 +17,7 @@ use phpDocumentor\Configuration\SymfonyConfigFactory;
 use phpDocumentor\Dsn;
 use phpDocumentor\Path;
 use PHPUnit\Framework\TestCase;
+
 use function array_merge;
 use function array_replace_recursive;
 
@@ -33,7 +34,7 @@ final class Version3Test extends TestCase
      * @dataProvider provideTestConfiguration
      * @covers ::getConfigTreeBuilder
      */
-    public function testLoadingADefaultConfigWorks($inputConfig, $expectedConfig) : void
+    public function testLoadingADefaultConfigWorks($inputConfig, $expectedConfig): void
     {
         $configuration = new Version3(self::DEFAULT_TEMPLATE_NAME);
         $node = $configuration->getConfigTreeBuilder()->buildTree();
@@ -46,7 +47,7 @@ final class Version3Test extends TestCase
     /**
      * @covers ::normalize
      */
-    public function testNormalizingTheOutputTransformsTheConfig() : void
+    public function testNormalizingTheOutputTransformsTheConfig(): void
     {
         $definition = new Version3(self::DEFAULT_TEMPLATE_NAME);
         $configuration = $this->defaultConfigurationOutput();
@@ -69,7 +70,7 @@ final class Version3Test extends TestCase
         $this->assertEquals($expected, $configuration);
     }
 
-    public function provideTestConfiguration() : array
+    public function provideTestConfiguration(): array
     {
         return [
             'default configuration' => [[], $this->defaultConfigurationOutput()],
@@ -134,7 +135,7 @@ final class Version3Test extends TestCase
         ];
     }
 
-    private function defaultConfigurationOutput() : array
+    private function defaultConfigurationOutput(): array
     {
         return [
             SymfonyConfigFactory::FIELD_CONFIG_VERSION => '3',
@@ -190,7 +191,7 @@ final class Version3Test extends TestCase
         string $versionString,
         string $dsn,
         array $paths
-    ) : array {
+    ): array {
         $configuration = array_replace_recursive(
             $this->defaultConfigurationOutput(),
             [
@@ -217,7 +218,7 @@ final class Version3Test extends TestCase
         string $versionString,
         string $dsn,
         array $paths
-    ) : array {
+    ): array {
         $configuration = array_replace_recursive(
             $this->defaultConfigurationOutput(),
             [

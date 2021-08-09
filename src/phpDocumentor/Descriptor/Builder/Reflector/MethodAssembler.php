@@ -22,6 +22,7 @@ use phpDocumentor\Reflection\DocBlock\Tags\InvalidTag;
 use phpDocumentor\Reflection\DocBlock\Tags\Param;
 use phpDocumentor\Reflection\Php\Argument;
 use phpDocumentor\Reflection\Php\Method;
+
 use function array_key_exists;
 use function end;
 use function strrpos;
@@ -50,7 +51,7 @@ class MethodAssembler extends AssemblerAbstract
      *
      * @param Method $data
      */
-    public function create(object $data) : MethodDescriptor
+    public function create(object $data): MethodDescriptor
     {
         $methodDescriptor = new MethodDescriptor();
         $methodDescriptor->setNamespace(
@@ -72,7 +73,7 @@ class MethodAssembler extends AssemblerAbstract
     /**
      * Maps the fields to the reflector to the descriptor.
      */
-    protected function mapReflectorToDescriptor(Method $reflector, MethodDescriptor $descriptor) : void
+    protected function mapReflectorToDescriptor(Method $reflector, MethodDescriptor $descriptor): void
     {
         $descriptor->setFullyQualifiedStructuralElementName($reflector->getFqsen());
         $descriptor->setName($reflector->getName());
@@ -87,7 +88,7 @@ class MethodAssembler extends AssemblerAbstract
     /**
      * Adds the reflected Arguments to the Descriptor.
      */
-    protected function addArguments(Method $reflector, MethodDescriptor $descriptor) : void
+    protected function addArguments(Method $reflector, MethodDescriptor $descriptor): void
     {
         foreach ($reflector->getArguments() as $argument) {
             $this->addArgument($argument, $descriptor);
@@ -97,7 +98,7 @@ class MethodAssembler extends AssemblerAbstract
     /**
      * Adds a single reflected Argument to the Method Descriptor.
      */
-    protected function addArgument(Argument $argument, MethodDescriptor $descriptor) : void
+    protected function addArgument(Argument $argument, MethodDescriptor $descriptor): void
     {
         /** @var Collection<ParamDescriptor> $params */
         $params = $descriptor->getTags()->fetch('param', new Collection())->filter(ParamDescriptor::class);
@@ -116,7 +117,7 @@ class MethodAssembler extends AssemblerAbstract
      * Checks if there is a variadic argument in the `@param` tags and adds it to the list of Arguments in
      * the Descriptor unless there is already one present.
      */
-    protected function addVariadicArgument(Method $data, MethodDescriptor $methodDescriptor) : void
+    protected function addVariadicArgument(Method $data, MethodDescriptor $methodDescriptor): void
     {
         if (!$data->getDocBlock()) {
             return;
@@ -130,7 +131,8 @@ class MethodAssembler extends AssemblerAbstract
             return;
         }
 
-        if (!$lastParamTag->isVariadic()
+        if (
+            !$lastParamTag->isVariadic()
             || !array_key_exists($lastParamTag->getVariableName(), $methodDescriptor->getArguments()->getAll())
         ) {
             return;

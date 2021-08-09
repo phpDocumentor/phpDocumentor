@@ -39,7 +39,7 @@ class ProjectDescriptorBuilderTest extends MockeryTestCase
     /**
      * Sets up a minimal fixture with mocked dependencies.
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->assemblerFactory = $this->createAssemblerFactoryMock();
         $filterMock = m::mock(Filter::class);
@@ -51,7 +51,7 @@ class ProjectDescriptorBuilderTest extends MockeryTestCase
      * @covers ::createProjectDescriptor
      * @covers ::getProjectDescriptor
      */
-    public function testCreatesAnEmptyProjectDescriptorWhenCalledFor() : void
+    public function testCreatesAnEmptyProjectDescriptorWhenCalledFor(): void
     {
         $this->fixture->createProjectDescriptor();
 
@@ -65,12 +65,12 @@ class ProjectDescriptorBuilderTest extends MockeryTestCase
     /**
      * Creates a new FileReflector mock that can be used as input for the builder.
      */
-    protected function createFileReflectorMock() : m\MockInterface
+    protected function createFileReflectorMock(): m\MockInterface
     {
         return m::mock('phpDocumentor\Reflection\FileReflector');
     }
 
-    protected function createFileDescriptorCreationMock() : void
+    protected function createFileDescriptorCreationMock(): void
     {
         $fileDescriptor = m::mock(FileDescriptor::class);
         $fileDescriptor->shouldReceive('setErrors');
@@ -100,7 +100,7 @@ class ProjectDescriptorBuilderTest extends MockeryTestCase
         return m::mock(AssemblerFactory::class);
     }
 
-    public function testSetVisibility() : void
+    public function testSetVisibility(): void
     {
         $this->fixture->createProjectDescriptor();
         $this->fixture->setVisibility(ApiSpecification::VISIBILITY_PUBLIC);

@@ -15,6 +15,7 @@ namespace phpDocumentor\Guides;
 
 use phpDocumentor\Guides\Meta\Entry;
 use Symfony\Component\String\Slugger\AsciiSlugger;
+
 use function strtolower;
 
 final class Metas
@@ -33,7 +34,7 @@ final class Metas
         $this->entries = $entries;
     }
 
-    public function findLinkMetaEntry(string $link) : ?Entry
+    public function findLinkMetaEntry(string $link): ?Entry
     {
         foreach ($this->entries as $entry) {
             if ($this->doesLinkExist($entry->getLinks(), $link)) {
@@ -47,7 +48,7 @@ final class Metas
     /**
      * @return Entry[]
      */
-    public function getAll() : array
+    public function getAll(): array
     {
         return $this->entries;
     }
@@ -67,7 +68,7 @@ final class Metas
         int $mtime,
         array $depends,
         array $links
-    ) : void {
+    ): void {
         foreach ($tocs as $toc) {
             foreach ($toc as $child) {
                 $this->parents[$child] = $file;
@@ -98,7 +99,7 @@ final class Metas
         $this->entries[$file]->setParent($this->parents[$file]);
     }
 
-    public function get(string $url) : ?Entry
+    public function get(string $url): ?Entry
     {
         if (isset($this->entries[$url])) {
             return $this->entries[$url];
@@ -110,7 +111,7 @@ final class Metas
     /**
      * @param Entry[] $metaEntries
      */
-    public function setMetaEntries(array $metaEntries) : void
+    public function setMetaEntries(array $metaEntries): void
     {
         $this->entries = $metaEntries;
     }
@@ -118,7 +119,7 @@ final class Metas
     /**
      * @param string[] $links
      */
-    private function doesLinkExist(array $links, string $link) : bool
+    private function doesLinkExist(array $links, string $link): bool
     {
         foreach ($links as $name => $_url) {
             if ($name === strtolower($link)) {
@@ -129,7 +130,7 @@ final class Metas
         return false;
     }
 
-    private function findByTitle(string $text) : ?Entry
+    private function findByTitle(string $text): ?Entry
     {
         $text = (new AsciiSlugger())->slug($text)->lower()->toString();
 

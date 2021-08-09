@@ -26,17 +26,17 @@ final class OnLinkParsedEvent extends EventArgs
         $this->currentFileName = $currentFileName;
     }
 
-    public function getUrl() : string
+    public function getUrl(): string
     {
         return $this->url;
     }
 
-    public function getLinkType() : string
+    public function getLinkType(): string
     {
         return $this->linkType;
     }
 
-    public function getCurrentFileName() : string
+    public function getCurrentFileName(): string
     {
         return $this->currentFileName;
     }

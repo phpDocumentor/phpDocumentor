@@ -44,12 +44,12 @@ class Payload
      * @return array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: Dsn, cache: Path}, versions?: array<string, VersionSpecification>, settings?: array<mixed>, templates?: non-empty-list<string>}}
      */
     //phpcs:enable Generic.Files.LineLength.TooLong
-    public function getConfig() : array
+    public function getConfig(): array
     {
         return $this->config;
     }
 
-    public function getBuilder() : ProjectDescriptorBuilder
+    public function getBuilder(): ProjectDescriptorBuilder
     {
         return $this->builder;
     }

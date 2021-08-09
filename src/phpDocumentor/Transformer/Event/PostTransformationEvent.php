@@ -25,7 +25,7 @@ final class PostTransformationEvent extends EventAbstract
      *
      * Used as convenience method for fluent interfaces.
      */
-    public static function createInstance(object $subject) : EventAbstract
+    public static function createInstance(object $subject): EventAbstract
     {
         return new self($subject);
     }

@@ -18,6 +18,7 @@ use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Reflection\File;
 use Psr\Cache\CacheItemInterface;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
+
 use function array_diff;
 use function array_map;
 use function md5;
@@ -47,7 +48,7 @@ class ProjectDescriptorMapper
     /**
      * Returns the Project Descriptor from the cache.
      */
-    public function populate(ProjectDescriptor $projectDescriptor) : void
+    public function populate(ProjectDescriptor $projectDescriptor): void
     {
         $this->loadCacheItemAsSettings($projectDescriptor);
 
@@ -71,7 +72,7 @@ class ProjectDescriptorMapper
     /**
      * Stores a Project Descriptor in the Cache.
      */
-    public function save(ProjectDescriptor $projectDescriptor) : void
+    public function save(ProjectDescriptor $projectDescriptor): void
     {
         $fileListItem    = $this->cache->getItem(self::FILE_LIST);
         $currentFileList = $fileListItem->get();
@@ -110,7 +111,7 @@ class ProjectDescriptorMapper
      *
      * @param File[] $files
      */
-    public function garbageCollect(array $files) : void
+    public function garbageCollect(array $files): void
     {
         $fileListItem   = $this->cache->getItem(self::FILE_LIST);
         $cachedFileList = $fileListItem->get();
@@ -129,7 +130,7 @@ class ProjectDescriptorMapper
         $this->cache->deleteItems(array_diff($cachedFileList, $realFileKeys));
     }
 
-    private function loadCacheItemAsSettings(ProjectDescriptor $projectDescriptor) : void
+    private function loadCacheItemAsSettings(ProjectDescriptor $projectDescriptor): void
     {
         $item = $this->cache->getItem(self::KEY_SETTINGS);
         if (!$item->isHit()) {

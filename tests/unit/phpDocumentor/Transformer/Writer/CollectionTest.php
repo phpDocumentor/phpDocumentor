@@ -38,7 +38,7 @@ final class CollectionTest extends TestCase
     /**
      * Initializes the fixture and dependencies for this testcase.
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->routers = $this->prophesize(Router::class);
         $this->writer = $this->prophesize(WriterAbstract::class);
@@ -48,7 +48,7 @@ final class CollectionTest extends TestCase
     /**
      * @covers \phpDocumentor\Transformer\Writer\Collection::offsetSet
      */
-    public function testOffsetSetWithWriterNotDescendingFromWriterAbstract() : void
+    public function testOffsetSetWithWriterNotDescendingFromWriterAbstract(): void
     {
         $this->expectException('InvalidArgumentException');
         $this->fixture->offsetSet('index', new stdClass());
@@ -57,7 +57,7 @@ final class CollectionTest extends TestCase
     /**
      * @covers \phpDocumentor\Transformer\Writer\Collection::offsetSet
      */
-    public function testOffsetSetWithInvalidIndexName() : void
+    public function testOffsetSetWithInvalidIndexName(): void
     {
         $this->expectException('InvalidArgumentException');
         $this->fixture->offsetSet('i', $this->writer->reveal());
@@ -66,7 +66,7 @@ final class CollectionTest extends TestCase
     /**
      * @covers \phpDocumentor\Transformer\Writer\Collection::offsetGet
      */
-    public function testOffsetGetWithNonExistingIndex() : void
+    public function testOffsetGetWithNonExistingIndex(): void
     {
         $this->expectException('InvalidArgumentException');
         $this->fixture->offsetGet('nonExistingIndex');
@@ -75,7 +75,7 @@ final class CollectionTest extends TestCase
     /**
      * @covers \phpDocumentor\Transformer\Writer\Collection::offsetGet
      */
-    public function testOffsetGetWithExistingIndex() : void
+    public function testOffsetGetWithExistingIndex(): void
     {
         $this->registerWriter();
 
@@ -85,7 +85,7 @@ final class CollectionTest extends TestCase
     /**
      * @covers \phpDocumentor\Transformer\Writer\Collection::checkRequirements
      */
-    public function testCheckRequirements() : void
+    public function testCheckRequirements(): void
     {
         $this->registerWriter();
 
@@ -98,7 +98,7 @@ final class CollectionTest extends TestCase
     /**
      * Registers a writer for tests that need a collection item
      */
-    private function registerWriter() : void
+    private function registerWriter(): void
     {
         $this->fixture->offsetSet('index', $this->writer->reveal());
     }

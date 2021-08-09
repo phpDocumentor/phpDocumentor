@@ -28,12 +28,12 @@ final class MarkerFromTagsExtractor implements CompilerPassInterface
 {
     public const COMPILER_PRIORITY = 9000;
 
-    public function getDescription() : string
+    public function getDescription(): string
     {
         return 'Collect all markers embedded in tags';
     }
 
-    public function execute(ProjectDescriptor $project) : void
+    public function execute(ProjectDescriptor $project): void
     {
         /** @var DescriptorAbstract $element */
         foreach ($project->getIndexes()->fetch('elements', new Collection()) as $element) {
@@ -56,7 +56,7 @@ final class MarkerFromTagsExtractor implements CompilerPassInterface
      *
      * @throws UnexpectedValueException If the provided element does not have a file associated with it.
      */
-    private function getFileDescriptor(DescriptorAbstract $element) : FileDescriptor
+    private function getFileDescriptor(DescriptorAbstract $element): FileDescriptor
     {
         $fileDescriptor = $element instanceof FileDescriptor
             ? $element
@@ -72,7 +72,7 @@ final class MarkerFromTagsExtractor implements CompilerPassInterface
     /**
      * Adds a marker with the TO DO information to the file on a given line number.
      */
-    private function addTodoMarkerToFile(FileDescriptor $fileDescriptor, TagDescriptor $todo, int $lineNumber) : void
+    private function addTodoMarkerToFile(FileDescriptor $fileDescriptor, TagDescriptor $todo, int $lineNumber): void
     {
         $fileDescriptor->getMarkers()->add(
             [

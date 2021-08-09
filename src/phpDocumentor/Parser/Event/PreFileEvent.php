@@ -30,7 +30,7 @@ final class PreFileEvent extends EventAbstract
      *
      * @return self
      */
-    public static function createInstance(object $subject) : EventAbstract
+    public static function createInstance(object $subject): EventAbstract
     {
         return new self($subject);
     }
@@ -38,7 +38,7 @@ final class PreFileEvent extends EventAbstract
     /**
      * Sets the name of the file that is about to be processed.
      */
-    public function setFile(string $file) : self
+    public function setFile(string $file): self
     {
         $this->file = $file;
 
@@ -48,7 +48,7 @@ final class PreFileEvent extends EventAbstract
     /**
      * Returns the name of the file that is about to be processed.
      */
-    public function getFile() : string
+    public function getFile(): string
     {
         return $this->file;
     }

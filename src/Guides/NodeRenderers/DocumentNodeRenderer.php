@@ -16,6 +16,7 @@ namespace phpDocumentor\Guides\NodeRenderers;
 use InvalidArgumentException;
 use phpDocumentor\Guides\Nodes\DocumentNode;
 use phpDocumentor\Guides\Nodes\Node;
+
 use function get_class;
 
 class DocumentNodeRenderer implements NodeRenderer
@@ -28,7 +29,7 @@ class DocumentNodeRenderer implements NodeRenderer
         $this->nodeRendererFactory = $nodeRendererFactory;
     }
 
-    public function render(Node $node) : string
+    public function render(Node $node): string
     {
         if ($node instanceof DocumentNode === false) {
             throw new InvalidArgumentException('Invalid node presented');

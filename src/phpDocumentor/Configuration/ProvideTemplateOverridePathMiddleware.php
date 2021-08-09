@@ -17,6 +17,7 @@ use League\Uri\Contracts\UriInterface;
 use phpDocumentor\Dsn;
 use phpDocumentor\Path;
 use phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory;
+
 use function file_exists;
 use function getcwd;
 
@@ -42,7 +43,7 @@ final class ProvideTemplateOverridePathMiddleware implements MiddlewareInterface
         $this->environmentFactory = $environmentFactory;
     }
 
-    public function __invoke(Configuration $configuration, ?UriInterface $pathOfConfigFile = null) : Configuration
+    public function __invoke(Configuration $configuration, ?UriInterface $pathOfConfigFile = null): Configuration
     {
         $path = $this->normalizePath($pathOfConfigFile, new Path(self::PATH_TO_TEMPLATE_OVERRIDES));
         if (file_exists((string) $path)) {
@@ -52,7 +53,7 @@ final class ProvideTemplateOverridePathMiddleware implements MiddlewareInterface
         return $configuration;
     }
 
-    private function normalizePath(?UriInterface $uri, Path $path) : Path
+    private function normalizePath(?UriInterface $uri, Path $path): Path
     {
         if ($uri === null) {
             return new Path(getcwd() . '/' . $path);

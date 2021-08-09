@@ -34,18 +34,18 @@ abstract class DocumentationSetDescriptor
         $this->tocs = Collection::fromClassString(TocDescriptor::class);
     }
 
-    public function getName() : string
+    public function getName(): string
     {
         return $this->name;
     }
 
-    public function addTableOfContents(TocDescriptor $descriptor) : void
+    public function addTableOfContents(TocDescriptor $descriptor): void
     {
         $this->tocs->set($descriptor->getName(), $descriptor);
     }
 
     /** @return Collection<TocDescriptor> */
-    public function getTableOfContents() : Collection
+    public function getTableOfContents(): Collection
     {
         return $this->tocs;
     }
@@ -57,12 +57,12 @@ abstract class DocumentationSetDescriptor
      *   it was ran and makes it uncacheable. But should this be cached? In any case, I need it for the RenderGuide
      *   writer at the moment; so refactor this once that becomes clearer.
      */
-    public function getSource() : Source
+    public function getSource(): Source
     {
         return $this->source;
     }
 
-    public function getOutput() : string
+    public function getOutput(): string
     {
         return $this->output;
     }

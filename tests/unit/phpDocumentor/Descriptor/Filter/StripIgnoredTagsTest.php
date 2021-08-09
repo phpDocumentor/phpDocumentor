@@ -15,25 +15,25 @@ final class StripIgnoredTagsTest extends TestCase
     /** @var StripIgnoredTags */
     private $fixture;
 
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->fixture = new StripIgnoredTags();
     }
 
-    public function testIgnoresNonTagDescriptors() : void
+    public function testIgnoresNonTagDescriptors(): void
     {
         $object = new class implements Filterable {
-            public function getName() : string
+            public function getName(): string
             {
                 return 'someTag';
             }
 
-            public function getDescription() : ?DocBlock\DescriptionDescriptor
+            public function getDescription(): ?DocBlock\DescriptionDescriptor
             {
                 return null;
             }
 
-            public function setErrors(Collection $errors) : void
+            public function setErrors(Collection $errors): void
             {
             }
         };
@@ -44,7 +44,7 @@ final class StripIgnoredTagsTest extends TestCase
         );
     }
 
-    public function testFiltersIgnoredTags() : void
+    public function testFiltersIgnoredTags(): void
     {
         $object = new TagDescriptor('someTag');
 

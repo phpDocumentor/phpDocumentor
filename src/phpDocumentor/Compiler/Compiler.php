@@ -30,7 +30,7 @@ class Compiler extends SplPriorityQueue
      * @param CompilerPassInterface $value
      * @param int $priority
      */
-    public function insert($value, $priority = self::PRIORITY_DEFAULT) : bool
+    public function insert($value, $priority = self::PRIORITY_DEFAULT): bool
     {
         Assert::isInstanceOf($value, CompilerPassInterface::class);
 

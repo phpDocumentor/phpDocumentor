@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Template;
 
 use InvalidArgumentException;
+
 use function sprintf;
 
 /**

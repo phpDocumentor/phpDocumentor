@@ -7,7 +7,9 @@ namespace phpDocumentor\Descriptor;
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\Collection as DescriptorCollection;
+
 use function str_replace;
+
 use const PHP_EOL;
 
 /**
@@ -18,7 +20,7 @@ final class ProjectAnalyzerTest extends MockeryTestCase
     /** @var ProjectAnalyzer */
     private $fixture;
 
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->fixture = new ProjectAnalyzer();
     }
@@ -26,7 +28,7 @@ final class ProjectAnalyzerTest extends MockeryTestCase
     /**
      * @covers ::__toString
      */
-    public function testIfStringOutputContainsAllCounters() : void
+    public function testIfStringOutputContainsAllCounters(): void
     {
         // Arrange
         $classDescriptor1 = $this->givenAClassWithParent(ClassDescriptor::class);
@@ -66,7 +68,7 @@ TEXT;
      *
      * @param string|DescriptorAbstract $parent
      */
-    private function givenAClassWithParent($parent) : ClassDescriptor
+    private function givenAClassWithParent($parent): ClassDescriptor
     {
         $classDescriptor1 = new ClassDescriptor();
         $classDescriptor1->setParent($parent);
@@ -74,7 +76,7 @@ TEXT;
         return $classDescriptor1;
     }
 
-    private function givenAnInterfaceWithParent(string $interfaceParent) : InterfaceDescriptor
+    private function givenAnInterfaceWithParent(string $interfaceParent): InterfaceDescriptor
     {
         $classDescriptor3 = new InterfaceDescriptor();
         $classDescriptor3->setParent(new Collection([$interfaceParent]));
@@ -85,7 +87,7 @@ TEXT;
     /**
      * Returns a mocked ProjectDescriptor object.
      */
-    private function givenAProjectMock() : m\MockInterface
+    private function givenAProjectMock(): m\MockInterface
     {
         return m::mock(ProjectDescriptor::class)->shouldIgnoreMissing();
     }
@@ -96,7 +98,7 @@ TEXT;
     private function whenProjectDescriptorHasTheFollowingFiles(
         m\MockInterface $projectDescriptor,
         array $files
-    ) : void {
+    ): void {
         $projectDescriptor->shouldReceive('getFiles')->andReturn(new DescriptorCollection($files));
     }
 
@@ -106,7 +108,7 @@ TEXT;
     private function whenProjectDescriptorHasTheFollowingElements(
         m\MockInterface $projectDescriptor,
         array $elements
-    ) : void {
+    ): void {
         $projectDescriptor->shouldReceive('getIndexes->fetch')
             ->with('elements', m::type(DescriptorCollection::class))
             ->andReturn(new Collection($elements));
@@ -118,7 +120,7 @@ TEXT;
     private function whenProjectHasTheFollowingChildrenOfRootNamespace(
         m\MockInterface $projectDescriptor,
         array $rootNamespaceChildren
-    ) : void {
+    ): void {
         $projectDescriptor->shouldReceive('getNamespace->getChildren')->andReturn(
             new Collection($rootNamespaceChildren)
         );

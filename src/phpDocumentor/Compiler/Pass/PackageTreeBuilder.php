@@ -22,6 +22,7 @@ use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Parser\Parser;
 use phpDocumentor\Reflection\Fqsen;
+
 use function explode;
 use function ltrim;
 use function preg_replace;
@@ -50,12 +51,12 @@ final class PackageTreeBuilder implements CompilerPassInterface
 
     public const COMPILER_PRIORITY = 9001;
 
-    public function getDescription() : string
+    public function getDescription(): string
     {
         return 'Build "packages" index';
     }
 
-    public function execute(ProjectDescriptor $project) : void
+    public function execute(ProjectDescriptor $project): void
     {
         $packages = Collection::fromClassString(PackageDescriptor::class);
         $packages['\\'] = $project->getPackage();
@@ -86,7 +87,7 @@ final class PackageTreeBuilder implements CompilerPassInterface
      *                     performance considerations will no effort be done to verify whether the provided type is
      *                     valid.
      */
-    private function addElementsOfTypeToPackage(Collection $packages, array $elements, string $type) : void
+    private function addElementsOfTypeToPackage(Collection $packages, array $elements, string $type): void
     {
         foreach ($elements as $element) {
             $packageName = '';
@@ -148,7 +149,7 @@ final class PackageTreeBuilder implements CompilerPassInterface
      * @param Collection<PackageDescriptor> $packages
      * @param string $packageName A FQNN of the package (and parents) to create.
      */
-    private function createPackageDescriptorTree(Collection $packages, string $packageName) : void
+    private function createPackageDescriptorTree(Collection $packages, string $packageName): void
     {
         $parts = explode('\\', ltrim($packageName, '\\'));
         $fqnn = '';
@@ -188,7 +189,7 @@ final class PackageTreeBuilder implements CompilerPassInterface
      * Please note that the trim will, by design, remove any trailing spearators. This makes it easier to
      * integrate in the rest of this class and allows `\My[Package]` to convert to `\My\Package`.
      */
-    private function normalizePackageName(string $packageName) : string
+    private function normalizePackageName(string $packageName): string
     {
         $name = rtrim(str_replace(['.', '_', '-', '[', ']'], ['\\', '\\', '\\', '\\', '\\'], $packageName), '\\');
 

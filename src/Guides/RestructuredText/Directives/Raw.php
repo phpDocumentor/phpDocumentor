@@ -17,7 +17,7 @@ use phpDocumentor\Guides\RestructuredText\Parser;
  */
 class Raw extends Directive
 {
-    public function getName() : string
+    public function getName(): string
     {
         return 'raw';
     }
@@ -31,7 +31,7 @@ class Raw extends Directive
         string $variable,
         string $data,
         array $options
-    ) : void {
+    ): void {
         if ($node === null) {
             return;
         }
@@ -49,7 +49,7 @@ class Raw extends Directive
         }
     }
 
-    public function wantCode() : bool
+    public function wantCode(): bool
     {
         return true;
     }

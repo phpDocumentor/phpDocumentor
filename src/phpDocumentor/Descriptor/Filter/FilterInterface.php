@@ -6,5 +6,5 @@ namespace phpDocumentor\Descriptor\Filter;
 
 interface FilterInterface
 {
-    public function __invoke(FilterPayload $payload) : FilterPayload;
+    public function __invoke(FilterPayload $payload): FilterPayload;
 }

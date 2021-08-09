@@ -67,7 +67,7 @@ class Transformation
     /**
      * Returns the set query.
      */
-    public function getQuery() : string
+    public function getQuery(): string
     {
         return $this->query;
     }
@@ -75,7 +75,7 @@ class Transformation
     /**
      * Returns the class name of the associated writer.
      */
-    public function getWriter() : string
+    public function getWriter(): string
     {
         return $this->writer;
     }
@@ -83,12 +83,12 @@ class Transformation
     /**
      * Returns the name of the source / type used in the transformation process.
      */
-    public function getSource() : string
+    public function getSource(): string
     {
         return $this->source;
     }
 
-    public function template() : Template
+    public function template(): Template
     {
         return $this->template;
     }
@@ -96,7 +96,7 @@ class Transformation
     /**
      * Returns the name of the artifact.
      */
-    public function getArtifact() : string
+    public function getArtifact(): string
     {
         return $this->artifact;
     }
@@ -107,7 +107,7 @@ class Transformation
      * @param Parameter[] $parameters Associative multidimensional array containing
      *     parameters for the Writer.
      */
-    public function setParameters(array $parameters) : void
+    public function setParameters(array $parameters): void
     {
         $this->parameters = $parameters;
     }
@@ -117,7 +117,7 @@ class Transformation
      *
      * @return Parameter[]
      */
-    public function getParameters() : array
+    public function getParameters(): array
     {
         return $this->parameters;
     }
@@ -127,7 +127,7 @@ class Transformation
      *
      * @param string $name Name of the parameter to return.
      */
-    public function getParameter(string $name) : ?Parameter
+    public function getParameter(string $name): ?Parameter
     {
         foreach ($this->parameters as $parameter) {
             if ($parameter->key() === $name) {
@@ -145,7 +145,7 @@ class Transformation
      *
      * @return Parameter[]
      */
-    public function getParametersWithKey(string $name) : array
+    public function getParametersWithKey(string $name): array
     {
         $parameters = [];
 
@@ -163,7 +163,7 @@ class Transformation
     /**
      * Sets the transformer on this transformation.
      */
-    public function setTransformer(Transformer $transformer) : void
+    public function setTransformer(Transformer $transformer): void
     {
         $this->transformer = $transformer;
     }
@@ -171,7 +171,7 @@ class Transformation
     /**
      * Returns the transformer for this transformation.
      */
-    public function getTransformer() : ?Transformer
+    public function getTransformer(): ?Transformer
     {
         return $this->transformer;
     }

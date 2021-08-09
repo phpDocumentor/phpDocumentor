@@ -7,6 +7,7 @@ namespace phpDocumentor\Guides\RestructuredText\Formats;
 use IteratorAggregate;
 use phpDocumentor\Guides\Formats\Format as BaseFormat;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive;
+
 use function iterator_to_array;
 
 abstract class Format implements BaseFormat
@@ -26,7 +27,7 @@ abstract class Format implements BaseFormat
         $this->directives = $directives;
     }
 
-    public function getFileExtension() : string
+    public function getFileExtension(): string
     {
         return $this->fileExtension;
     }
@@ -34,7 +35,7 @@ abstract class Format implements BaseFormat
     /**
      * @return array<Directive>
      */
-    public function getDirectives() : array
+    public function getDirectives(): array
     {
         return iterator_to_array($this->directives);
     }

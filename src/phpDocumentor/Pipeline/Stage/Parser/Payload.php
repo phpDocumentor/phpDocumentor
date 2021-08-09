@@ -20,6 +20,7 @@ use phpDocumentor\Dsn;
 use phpDocumentor\Path;
 use phpDocumentor\Pipeline\Stage\Payload as ApplicationPayload;
 use phpDocumentor\Reflection\File;
+
 use function array_merge;
 use function current;
 
@@ -45,7 +46,7 @@ final class Payload extends ApplicationPayload
      * @return array<int, ApiSpecification>
      */
     //phpcs:enable Generic.Files.LineLength.TooLong
-    public function getApiConfigs() : array
+    public function getApiConfigs(): array
     {
         // Grep only the first version for now. Multi version support will be added later
         $version = current($this->getConfig()['phpdocumentor']['versions']);
@@ -56,7 +57,7 @@ final class Payload extends ApplicationPayload
     /**
      * @param array<File> $files
      */
-    public function withFiles(array $files) : Payload
+    public function withFiles(array $files): Payload
     {
         return new self(
             $this->getConfig(),
@@ -68,7 +69,7 @@ final class Payload extends ApplicationPayload
     /**
      * @return File[]
      */
-    public function getFiles() : array
+    public function getFiles(): array
     {
         return $this->files;
     }

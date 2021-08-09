@@ -20,12 +20,12 @@ use phpDocumentor\Guides\RestructuredText\Parser;
 
 class SidebarDirective extends SubDirective
 {
-    public function getName() : string
+    public function getName(): string
     {
         return 'sidebar';
     }
 
-    public function processSub(Parser $parser, ?Node $document, string $variable, string $data, array $options) : ?Node
+    public function processSub(Parser $parser, ?Node $document, string $variable, string $data, array $options): ?Node
     {
         return new TemplatedNode(
             'directives/sidebar.html.twig',

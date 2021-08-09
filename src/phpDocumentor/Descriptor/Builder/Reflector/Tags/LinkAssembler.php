@@ -31,7 +31,7 @@ class LinkAssembler extends BaseTagAssembler
      *
      * @param Link $data
      */
-    public function buildDescriptor(object $data) : LinkDescriptor
+    public function buildDescriptor(object $data): LinkDescriptor
     {
         $descriptor = new LinkDescriptor($data->getName());
         $descriptor->setLink($data->getLink());

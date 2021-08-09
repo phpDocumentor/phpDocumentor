@@ -19,6 +19,7 @@ use phpDocumentor\Guides\NodeRenderers\NodeRenderer;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\TocNode;
 use Symfony\Component\String\Slugger\AsciiSlugger;
+
 use function count;
 use function is_array;
 
@@ -32,7 +33,7 @@ class TocNodeRenderer implements NodeRenderer
         $this->environment = $environment;
     }
 
-    public function render(Node $node) : string
+    public function render(Node $node): string
     {
         if ($node instanceof TocNode === false) {
             throw new InvalidArgumentException('Invalid node presented');
@@ -75,7 +76,7 @@ class TocNodeRenderer implements NodeRenderer
         array $titles,
         int $level,
         array &$tocItems
-    ) : void {
+    ): void {
         foreach ($titles as $entry) {
             [$title, $children] = $entry;
 
@@ -98,7 +99,7 @@ class TocNodeRenderer implements NodeRenderer
         }
     }
 
-    private function generateTargetId(string $target) : string
+    private function generateTargetId(string $target): string
     {
         return (new AsciiSlugger())->slug($target)->lower()->toString();
     }
@@ -108,7 +109,7 @@ class TocNodeRenderer implements NodeRenderer
      *
      * @return array{mixed, string}
      */
-    private function generateTarget(?string $url, $title) : array
+    private function generateTarget(?string $url, $title): array
     {
         $anchor = $this->generateAnchorFromTitle($title);
 
@@ -132,7 +133,7 @@ class TocNodeRenderer implements NodeRenderer
     /**
      * @param string[]|string $title
      */
-    private function generateAnchorFromTitle($title) : string
+    private function generateAnchorFromTitle($title): string
     {
         $slug = is_array($title)
             ? $title[1]

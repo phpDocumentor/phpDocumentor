@@ -33,7 +33,7 @@ class Dispatcher extends EventDispatcher
     /**
      * Returns a named instance of the Event Dispatcher.
      */
-    public static function getInstance(string $name = 'default') : self
+    public static function getInstance(string $name = 'default'): self
     {
         if (!isset(self::$instances[$name])) {
             self::setInstance($name, new self());
@@ -45,7 +45,7 @@ class Dispatcher extends EventDispatcher
     /**
      * Sets a names instance of the Event Dispatcher.
      */
-    public static function setInstance(string $name, self $instance) : void
+    public static function setInstance(string $name, self $instance): void
     {
         self::$instances[$name] = $instance;
     }

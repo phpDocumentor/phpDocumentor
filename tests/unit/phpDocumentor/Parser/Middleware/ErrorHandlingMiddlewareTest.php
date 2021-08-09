@@ -39,7 +39,7 @@ final class ErrorHandlingMiddlewareTest extends TestCase
     /**
      * @covers ::execute
      */
-    public function testThatParsingStartIsLogged() : void
+    public function testThatParsingStartIsLogged(): void
     {
         $filename = __FILE__;
         $expected = new File('abc', $filename);
@@ -68,7 +68,7 @@ final class ErrorHandlingMiddlewareTest extends TestCase
     /**
      * @covers ::execute
      */
-    public function testThatAnErrorIsLogged() : void
+    public function testThatAnErrorIsLogged(): void
     {
         $filename = __FILE__;
         $command = new CreateCommand(
@@ -96,7 +96,7 @@ final class ErrorHandlingMiddlewareTest extends TestCase
         /** @var File $result */
         $result = $middleware->execute(
             $command,
-            static function (CreateCommand $receivedCommand) : void {
+            static function (CreateCommand $receivedCommand): void {
                 throw new Exception('this is a test');
             }
         );

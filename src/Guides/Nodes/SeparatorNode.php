@@ -25,7 +25,7 @@ class SeparatorNode extends Node
         $this->level = $level;
     }
 
-    public function getLevel() : int
+    public function getLevel(): int
     {
         return $this->level;
     }

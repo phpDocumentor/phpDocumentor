@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\References;
 
 use RuntimeException;
+
 use function is_string;
 use function preg_match;
 use function sprintf;
@@ -50,17 +51,17 @@ class ResolvedReference
         $this->attributes = $attributes;
     }
 
-    public function getFile() : ?string
+    public function getFile(): ?string
     {
         return $this->file;
     }
 
-    public function getTitle() : ?string
+    public function getTitle(): ?string
     {
         return $this->title;
     }
 
-    public function getUrl() : ?string
+    public function getUrl(): ?string
     {
         return $this->url;
     }
@@ -68,7 +69,7 @@ class ResolvedReference
     /**
      * @return string[][]|string[][][]
      */
-    public function getTitles() : array
+    public function getTitles(): array
     {
         return $this->titles;
     }
@@ -76,7 +77,7 @@ class ResolvedReference
     /**
      * @return string[]
      */
-    public function getAttributes() : array
+    public function getAttributes(): array
     {
         return $this->attributes;
     }
@@ -84,10 +85,11 @@ class ResolvedReference
     /**
      * @param string[] $attributes
      */
-    private function validateAttributes(array $attributes) : void
+    private function validateAttributes(array $attributes): void
     {
         foreach ($attributes as $attribute => $_value) {
-            if (!is_string($attribute)
+            if (
+                !is_string($attribute)
                 || $attribute === 'href'
                 || !(bool) preg_match('/^[a-zA-Z\_][\w\.\-_]+$/', $attribute)
             ) {

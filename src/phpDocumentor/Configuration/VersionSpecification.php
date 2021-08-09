@@ -35,7 +35,7 @@ class VersionSpecification
         $this->guides = $guides;
     }
 
-    public function getNumber() : string
+    public function getNumber(): string
     {
         return $this->number;
     }
@@ -43,7 +43,7 @@ class VersionSpecification
     /**
      * @return array<int, ApiSpecification>
      */
-    public function getApi() : array
+    public function getApi(): array
     {
         return $this->api;
     }
@@ -51,12 +51,12 @@ class VersionSpecification
     /**
      * @param array<int, ApiSpecification> $api
      */
-    public function setApi(array $api) : void
+    public function setApi(array $api): void
     {
         $this->api = $api;
     }
 
-    public function addApi(ApiSpecification $api) : void
+    public function addApi(ApiSpecification $api): void
     {
         $this->api[] = $api;
     }
@@ -64,7 +64,7 @@ class VersionSpecification
     /**
      * @return array<mixed>|null
      */
-    public function getGuides() : ?array
+    public function getGuides(): ?array
     {
         return $this->guides;
     }

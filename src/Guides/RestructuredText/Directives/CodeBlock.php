@@ -7,6 +7,7 @@ namespace phpDocumentor\Guides\RestructuredText\Directives;
 use phpDocumentor\Guides\Nodes\CodeNode;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\RestructuredText\Parser;
+
 use function trim;
 
 /**
@@ -22,7 +23,7 @@ use function trim;
  */
 class CodeBlock extends Directive
 {
-    public function getName() : string
+    public function getName(): string
     {
         return 'code-block';
     }
@@ -36,7 +37,7 @@ class CodeBlock extends Directive
         string $variable,
         string $data,
         array $options
-    ) : void {
+    ): void {
         if ($node === null) {
             return;
         }
@@ -55,7 +56,7 @@ class CodeBlock extends Directive
         }
     }
 
-    public function wantCode() : bool
+    public function wantCode(): bool
     {
         return true;
     }
@@ -63,7 +64,7 @@ class CodeBlock extends Directive
     /**
      * @param string[] $options
      */
-    private function setStartingLineNumberBasedOnOptions(array $options, CodeNode $node) : void
+    private function setStartingLineNumberBasedOnOptions(array $options, CodeNode $node): void
     {
         $startingLineNumber = null;
         if (isset($options['linenos'])) {

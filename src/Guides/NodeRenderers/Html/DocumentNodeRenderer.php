@@ -31,7 +31,7 @@ class DocumentNodeRenderer implements NodeRenderer, FullDocumentNodeRenderer
         $this->environment = $environment;
     }
 
-    public function render(Node $node) : string
+    public function render(Node $node): string
     {
         if ($node instanceof DocumentNode === false) {
             throw new InvalidArgumentException('Invalid node presented');
@@ -40,7 +40,7 @@ class DocumentNodeRenderer implements NodeRenderer, FullDocumentNodeRenderer
         return (new BaseDocumentRender($this->environment->getNodeRendererFactory()))->render($node);
     }
 
-    public function renderDocument(DocumentNode $node, Environment $environment) : string
+    public function renderDocument(DocumentNode $node, Environment $environment): string
     {
         $renderer = $environment->getRenderer();
         $renderer->setGuidesEnvironment($environment);

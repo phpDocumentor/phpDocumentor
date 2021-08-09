@@ -25,6 +25,7 @@ use phpDocumentor\Reflection\Types\Void_;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
+
 use function count;
 
 /**
@@ -44,7 +45,7 @@ final class MethodAssemblerTest extends TestCase
     /**
      * Initialize fixture with its dependencies.
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->builder = $this->prophesize(ProjectDescriptorBuilder::class);
         $this->fixture = new MethodAssembler();
@@ -65,7 +66,7 @@ final class MethodAssemblerTest extends TestCase
         string $name,
         array $arguments = [],
         ?Description $description = null
-    ) : void {
+    ): void {
         $tag = new Method($name, $arguments, $returnType, false, $description);
 
         $descriptor = $this->fixture->create($tag);
@@ -85,7 +86,7 @@ final class MethodAssemblerTest extends TestCase
      *
      * @return string[][]
      */
-    public function provideNotations() : array
+    public function provideNotations(): array
     {
         return [
             // just a method without a return type

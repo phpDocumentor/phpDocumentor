@@ -24,5 +24,5 @@ interface VisibilityInterface
      * - protected
      * - private
      */
-    public function getVisibility() : string;
+    public function getVisibility(): string;
 }

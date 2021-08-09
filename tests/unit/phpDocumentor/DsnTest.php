@@ -49,7 +49,7 @@ class DsnTest extends TestCase
         string $pass = '',
         array $query = [],
         array $parameters = []
-    ) : void {
+    ): void {
         $fixture = Dsn::createFromString($dsn);
 
         $this->assertSame($normalizedDsn, (string) $fixture, 'Conversion to string fails');
@@ -68,14 +68,14 @@ class DsnTest extends TestCase
      * @covers ::withPath
      * @covers ::getPath
      */
-    public function testPathNotStartingWithSlash() : void
+    public function testPathNotStartingWithSlash(): void
     {
         $dns = Dsn::createFromString('file://test');
         $dns = $dns->withPath(new Path('PathWithoutSlash'));
         $this->assertEquals(new Path('/PathWithoutSlash'), $dns->getPath(), 'Path does not match');
     }
 
-    public function provideDsnsToTestAgainst() : array
+    public function provideDsnsToTestAgainst(): array
     {
         return [
             'test the most elaborate example of a DSN' => [
@@ -183,7 +183,7 @@ class DsnTest extends TestCase
      * @covers ::resolve
      * @dataProvider resolveDsnProvider
      */
-    public function testResolve(string $baseDsn, string $srcDsn, string $expected, ?string $scheme) : void
+    public function testResolve(string $baseDsn, string $srcDsn, string $expected, ?string $scheme): void
     {
         $baseDsn   = Dsn::createFromString($baseDsn);
         $srcDsn    = Dsn::createFromString($srcDsn);
@@ -193,7 +193,7 @@ class DsnTest extends TestCase
         $this->assertEquals($scheme, $newSrcDns->getScheme());
     }
 
-    public function resolveDsnProvider() : array
+    public function resolveDsnProvider(): array
     {
         return [
             'Relative src uri level up' => [

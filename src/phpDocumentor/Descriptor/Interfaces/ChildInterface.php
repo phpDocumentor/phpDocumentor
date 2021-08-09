@@ -33,5 +33,5 @@ interface ChildInterface
      *
      * @param DescriptorAbstract|Fqsen|string|null $parent
      */
-    public function setParent($parent) : void;
+    public function setParent($parent): void;
 }

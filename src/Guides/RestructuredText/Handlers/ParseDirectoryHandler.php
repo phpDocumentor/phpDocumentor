@@ -11,6 +11,7 @@ use phpDocumentor\Guides\Configuration;
 use phpDocumentor\Guides\FileCollector;
 use phpDocumentor\Guides\RestructuredText\ParseDirectoryCommand;
 use phpDocumentor\Guides\RestructuredText\ParseFileCommand;
+
 use function sprintf;
 
 final class ParseDirectoryHandler
@@ -27,7 +28,7 @@ final class ParseDirectoryHandler
         $this->commandBus = $commandBus;
     }
 
-    public function handle(ParseDirectoryCommand $command) : void
+    public function handle(ParseDirectoryCommand $command): void
     {
         $configuration = $command->getConfiguration();
 
@@ -49,7 +50,7 @@ final class ParseDirectoryHandler
         FilesystemInterface $filesystem,
         string $directory,
         Configuration $configuration
-    ) : void {
+    ): void {
         $indexName = $configuration->getNameOfIndexFile();
         $extension = $configuration->getSourceFileExtension();
         $indexFilename = sprintf('%s.%s', $indexName, $extension);

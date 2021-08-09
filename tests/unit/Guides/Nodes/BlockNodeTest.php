@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 
 final class BlockNodeTest extends TestCase
 {
-    public function test_it_can_be_created_with_series_of_lines() : void
+    public function test_it_can_be_created_with_series_of_lines(): void
     {
         $node = new BlockNode(['line1', 'line2']);
 
@@ -25,7 +25,7 @@ final class BlockNodeTest extends TestCase
         self::assertSame("line1\nline2", $node->getValueString());
     }
 
-    public function test_lines_are_normalized_by_removing_whitespace() : void
+    public function test_lines_are_normalized_by_removing_whitespace(): void
     {
         $node = new BlockNode([
             '  line1',
@@ -38,7 +38,7 @@ final class BlockNodeTest extends TestCase
         self::assertSame("line1\n  line2\n    line3\n\tline4", $node->getValueString());
     }
 
-    public function test_that_normalizing_keeps_spaces_intact_when_the_first_line_has_no_spaces() : void
+    public function test_that_normalizing_keeps_spaces_intact_when_the_first_line_has_no_spaces(): void
     {
         $node = new BlockNode([
             'line1',

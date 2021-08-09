@@ -22,7 +22,7 @@ final class InitializeBuilderFromConfigTest extends TestCase
 {
     use ProphecyTrait;
 
-    public function testSetNameAndPartialsOnBuilder() : void
+    public function testSetNameAndPartialsOnBuilder(): void
     {
         $partials = new Collection();
         $fixture = new InitializeBuilderFromConfig($partials);
