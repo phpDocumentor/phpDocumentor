@@ -74,7 +74,7 @@
                     {% for property in class.properties %}
                         {{ include('property.xml.twig', {property: property}) }}
                     {% endfor %}
-                    {% for property in class.inheritedPropertiess %}
+                    {% for property in class.inheritedProperties %}
                         {{ include('property.xml.twig', {property: property, inherited_from: property.parent}) }}
                     {% endfor %}
 
