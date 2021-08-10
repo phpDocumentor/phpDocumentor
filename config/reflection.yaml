@@ -7,7 +7,7 @@ services:
       tags: ['phpdoc.reflection.strategy']
 
   phpDocumentor\Reflection\Php\:
-    resource: '../vendor/phpdocumentor/reflection/src/phpDocumentor/Reflection/Php'
+    resource: '%kernel.project_dir%/vendor/phpdocumentor/reflection/src/phpDocumentor/Reflection/Php'
 
   phpDocumentor\Reflection\Php\NodesFactory:
     class: phpDocumentor\Reflection\Php\NodesFactory
