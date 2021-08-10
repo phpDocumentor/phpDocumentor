@@ -10,6 +10,8 @@ use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
+use function current;
+
 final class SpanParserTest extends TestCase
 {
     use Faker;
@@ -58,21 +60,19 @@ final class SpanParserTest extends TestCase
     public function invalidNotationsProvider(): array
     {
         return [
-            'Literal start without end' => [
-                'This text is an example of `` mis-used.'
-            ],
-            'Backtick without end' => [
-                'This text is an example of `  ` mis-used.'
-            ],
-            'Embedded url start outside context' => [
-                'This text is an example of <a>'
-            ],
+            'Literal start without end' => ['This text is an example of `` mis-used.'],
+            'Backtick without end' => ['This text is an example of `  ` mis-used.'],
+            'Embedded url start outside context' => ['This text is an example of <a>'],
         ];
     }
 
     /** @dataProvider namedHyperlinkReferenceProvider */
-    public function testNamedHyperlinkReferencesAreReplaced(string $input, string $referenceId, string $text, string $url = ''): void
-    {
+    public function testNamedHyperlinkReferencesAreReplaced(
+        string $input,
+        string $referenceId,
+        string $text,
+        string $url = ''
+    ): void {
         $result = $this->spanProcessor->process($input);
         $token = current($this->spanProcessor->getTokens());
 
@@ -88,9 +88,11 @@ final class SpanParserTest extends TestCase
         );
         self::assertRegExp($referenceId, $result);
 
-        if ($url !== '') {
-            $this->environment->setLink($text, $url)->shouldHaveBeenCalledOnce();
+        if ($url === '') {
+            return;
         }
+
+        $this->environment->setLink($text, $url)->shouldHaveBeenCalledOnce();
     }
 
     /** string[][[] */
@@ -137,8 +139,8 @@ TEXT
                 'A more complex example `\__call() <https://www.php.net/language.oop5.overloading#object.call>`_.',
                 '#A more complex example [a-z0-9]{40}\\.#',
                 '__call()',
-                'https://www.php.net/language.oop5.overloading#object.call'
-            ]
+                'https://www.php.net/language.oop5.overloading#object.call',
+            ],
         ];
     }
 
@@ -160,7 +162,7 @@ TEXT
                 'This is an example of an link__',
                 '#This is an example of an [a-z0-9]{40}#',
                 'link',
-            ]
+            ],
         ];
     }
 
