@@ -23,17 +23,23 @@ use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\TableOfContents\Entry;
 use phpDocumentor\Descriptor\TocDescriptor;
 use phpDocumentor\Transformer\Router\Router;
+use Psr\Log\LoggerInterface;
 
 use function ltrim;
+use function sprintf;
 
 final class TableOfContentsBuilder implements CompilerPassInterface
 {
     /** @var Router */
     private $router;
 
-    public function __construct(Router $router)
+    /** @var LoggerInterface */
+    private $logger;
+
+    public function __construct(Router $router, LoggerInterface $logger)
     {
         $this->router = $router;
+        $this->logger = $logger;
     }
 
     public function getDescription(): string
@@ -115,7 +121,12 @@ final class TableOfContentsBuilder implements CompilerPassInterface
     ): void {
         foreach ($documentDescriptor->getTocs() as $toc) {
             foreach ($toc->getFiles() as $file) {
-                $subDocument = $documents->get(ltrim($file, '/'));
+                $subDocument = $documents->fetch(ltrim($file, '/'));
+                if ($subDocument === null) {
+                    $this->logger->error(sprintf('Toc contains a link to a missing document %s', $file));
+                    continue;
+                }
+
                 $entry = new Entry(
                     'guide/' . ltrim($this->router->generate($subDocument), '/'),
                     $subDocument->getTitle(),

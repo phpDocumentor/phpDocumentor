@@ -19,6 +19,7 @@ use phpDocumentor\Faker\Faker;
 use phpDocumentor\Transformer\Router\Router;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Psr\Log\NullLogger;
 
 use function current;
 
@@ -37,7 +38,7 @@ final class TableOfContentsBuilderTest extends TestCase
         $router->generate(Argument::any())->will(function ($args) {
             return (string) $args[0]->getFullyQualifiedStructuralElementName();
         });
-        $pass = new TableOfContentsBuilder($router->reveal());
+        $pass = new TableOfContentsBuilder($router->reveal(), new NullLogger());
         $pass->execute($project);
 
         self::assertCount(1, $apiDocumentationSet->getTableOfContents());
@@ -64,7 +65,7 @@ final class TableOfContentsBuilderTest extends TestCase
         $router->generate(Argument::any())->will(function ($args) {
             return (string) $args[0]->getFullyQualifiedStructuralElementName();
         });
-        $pass = new TableOfContentsBuilder($router->reveal());
+        $pass = new TableOfContentsBuilder($router->reveal(), new NullLogger());
         $pass->execute($project);
 
         self::assertCount(1, $apiDocumentationSet->getTableOfContents());
