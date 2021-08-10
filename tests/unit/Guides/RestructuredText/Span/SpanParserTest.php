@@ -2,12 +2,10 @@
 
 declare(strict_types=1);
 
-namespace phpDocumentor\Behat\Contexts\RestructuredText\Span;
+namespace phpDocumentor\Guides\RestructuredText\Span;
 
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\Guides\Environment;
-use phpDocumentor\Guides\RestructuredText\Span\SpanParser;
-use phpDocumentor\Guides\RestructuredText\Span\SpanToken;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
@@ -88,7 +86,7 @@ final class SpanParserTest extends TestCase
             ],
             $token->getTokenData()
         );
-        self::assertMatchesRegularExpression($referenceId, $result);
+        self::assertRegExp($referenceId, $result);
 
         if ($url !== '') {
             $this->environment->setLink($text, $url)->shouldHaveBeenCalledOnce();
