@@ -92,6 +92,9 @@ final class RenderHandler
 
             $environment->setCurrentFileName($file);
             $environment->setCurrentDirectory($directory);
+            foreach ($descriptor->getLinks() as $link => $url) {
+                $environment->setLink($link, $url);
+            }
 
             /** @var FullDocumentNodeRenderer $renderer */
             $renderer = $environment->getNodeRendererFactory()->get(get_class($document));
