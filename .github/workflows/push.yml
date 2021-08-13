@@ -487,3 +487,17 @@ jobs:
         with:
           workflow: Website
           token: ${{ secrets.BOT_TOKEN }}
+
+  docker-build:
+    runs-on: ubuntu-latest
+    name: Trigger website build
+    if: github.repository == 'phpDocumentor/phpDocumentor' && github.ref == 'refs/heads/master'
+    needs:
+      - e2e
+      - phpunit
+    steps:
+      - name: Trigger
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: docker
+          token: ${{ secrets.BOT_TOKEN }}
