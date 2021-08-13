@@ -490,7 +490,7 @@ jobs:
 
   docker-build:
     runs-on: ubuntu-latest
-    name: Trigger website build
+    name: Trigger docker build
     if: github.repository == 'phpDocumentor/phpDocumentor' && github.ref == 'refs/heads/master'
     needs:
       - e2e
@@ -499,5 +499,5 @@ jobs:
       - name: Trigger
         uses: benc-uk/workflow-dispatch@v1
         with:
-          workflow: docker
+          workflow: Docker build
           token: ${{ secrets.BOT_TOKEN }}
