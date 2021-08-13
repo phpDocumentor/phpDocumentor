@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Configuration;
 
 use InvalidArgumentException;
+use ReturnTypeWillChange;
 
 use function lcfirst;
 use function property_exists;
@@ -23,6 +24,7 @@ use function ucwords;
 trait LegacyArrayAccess
 {
     /** @param string $offset */
+    #[ReturnTypeWillChange]
     public function offsetExists($offset): bool
     {
         $property = $this->normalizePropertyName($offset);
@@ -35,6 +37,7 @@ trait LegacyArrayAccess
      *
      * @return mixed
      */
+    #[ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         $property = $this->normalizePropertyName($offset);
@@ -49,6 +52,7 @@ trait LegacyArrayAccess
      * @param string $offset
      * @param mixed $value
      */
+    #[ReturnTypeWillChange]
     public function offsetSet($offset, $value): void
     {
         $property = $this->normalizePropertyName($offset);
@@ -60,6 +64,7 @@ trait LegacyArrayAccess
     }
 
     /** @param string $offset */
+    #[ReturnTypeWillChange]
     public function offsetUnset($offset): void
     {
         $property = $this->normalizePropertyName($offset);

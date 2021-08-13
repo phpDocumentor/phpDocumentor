@@ -18,6 +18,7 @@ use BadMethodCallException;
 use OutOfBoundsException;
 use phpDocumentor\Dsn;
 use phpDocumentor\Path;
+use ReturnTypeWillChange;
 
 use function array_map;
 use function in_array;
@@ -107,6 +108,7 @@ final class Source implements ArrayAccess
     }
 
     /** @param string $offset */
+    #[ReturnTypeWillChange]
     public function offsetExists($offset): bool
     {
         return in_array($offset, ['dsn', 'paths']);
@@ -117,6 +119,7 @@ final class Source implements ArrayAccess
      *
      * @return Path[]|Dsn
      */
+    #[ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         switch ($offset) {
@@ -135,12 +138,14 @@ final class Source implements ArrayAccess
      * @param string $offset
      * @param mixed $value
      */
+    #[ReturnTypeWillChange]
     public function offsetSet($offset, $value): void
     {
         throw new BadMethodCallException('Cannot set offset of ' . self::class);
     }
 
     /** @param string $offset */
+    #[ReturnTypeWillChange]
     public function offsetUnset($offset): void
     {
         throw new BadMethodCallException('Cannot unset offset of ' . self::class);

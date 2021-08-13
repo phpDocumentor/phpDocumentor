@@ -19,6 +19,7 @@ use Countable;
 use InvalidArgumentException;
 use IteratorAggregate;
 use OutOfRangeException;
+use ReturnTypeWillChange;
 use Webmozart\Assert\Assert;
 
 use function array_filter;
@@ -129,6 +130,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
      *
      * @return ArrayIterator<string|int, T>
      */
+    #[ReturnTypeWillChange]
     public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->items);
@@ -137,6 +139,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
     /**
      * Returns a count of the number of elements in this collection.
      */
+    #[ReturnTypeWillChange]
     public function count(): int
     {
         return count($this->items);
@@ -166,6 +169,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
      *
      * @param string|int $offset The index to check on.
      */
+    #[ReturnTypeWillChange]
     public function offsetExists($offset): bool
     {
         return isset($this->items[$offset]);
@@ -178,6 +182,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
      *
      * @return ?T
      */
+    #[ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return $this->offsetExists($offset) ? $this->items[$offset] : null;
@@ -191,6 +196,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
      *
      * @throws InvalidArgumentException If the key is null or an empty string.
      */
+    #[ReturnTypeWillChange]
     public function offsetSet($offset, $value): void
     {
         if ($offset === '' || $offset === null) {
@@ -207,6 +213,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
      *
      * @param string|int $offset The offset to unset.
      */
+    #[ReturnTypeWillChange]
     public function offsetUnset($offset): void
     {
         unset($this->items[$offset]);

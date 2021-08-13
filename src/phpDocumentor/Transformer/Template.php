@@ -20,6 +20,7 @@ use InvalidArgumentException;
 use IteratorAggregate;
 use League\Flysystem\MountManager;
 use phpDocumentor\Transformer\Template\Parameter;
+use ReturnTypeWillChange;
 
 use function array_merge;
 use function count;
@@ -186,6 +187,7 @@ final class Template implements ArrayAccess, Countable, IteratorAggregate
      *
      * @throws InvalidArgumentException If an invalid item was received.
      */
+    #[ReturnTypeWillChange]
     public function offsetSet($offset, $value): void
     {
         if (!$value instanceof Transformation) {
@@ -203,6 +205,7 @@ final class Template implements ArrayAccess, Countable, IteratorAggregate
      *
      * @param int|string $offset The offset to retrieve from.
      */
+    #[ReturnTypeWillChange]
     public function offsetGet($offset): Transformation
     {
         return $this->transformations[$offset];
@@ -215,6 +218,7 @@ final class Template implements ArrayAccess, Countable, IteratorAggregate
      *
      * @param int|string $offset Index of item to unset.
      */
+    #[ReturnTypeWillChange]
     public function offsetUnset($offset): void
     {
         unset($this->transformations[$offset]);
@@ -229,6 +233,7 @@ final class Template implements ArrayAccess, Countable, IteratorAggregate
      *
      * @return bool Returns true on success or false on failure.
      */
+    #[ReturnTypeWillChange]
     public function offsetExists($offset): bool
     {
         return isset($this->transformations[$offset]);
@@ -241,6 +246,7 @@ final class Template implements ArrayAccess, Countable, IteratorAggregate
      *
      * @return int The count as an integer.
      */
+    #[ReturnTypeWillChange]
     public function count(): int
     {
         return count($this->transformations);
@@ -279,6 +285,7 @@ final class Template implements ArrayAccess, Countable, IteratorAggregate
     /**
      * @return ArrayIterator<int|string, Transformation>
      */
+    #[ReturnTypeWillChange]
     public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->transformations);
