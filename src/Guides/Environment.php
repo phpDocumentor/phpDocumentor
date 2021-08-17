@@ -388,6 +388,10 @@ class Environment
 
     public function absoluteRelativePath(string $url): string
     {
+        if (strpos($url, '/') === 0) {
+            return $this->currentDirectory . '/' . $this->relativeUrl($url);
+        }
+
         return $this->currentDirectory . '/' . $this->getDirName() . '/' . $this->relativeUrl($url);
     }
 
