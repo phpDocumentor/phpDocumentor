@@ -113,7 +113,7 @@ final class ParseFileHandler
                 $document,
                 $document->getHash(),
                 $file,
-                $document->getTitle()->getValueString(),
+                $document->getTitle() !== null ? $document->getTitle()->getValueString() : '',
                 $document->getTitles(),
                 $document->getTocs(),
                 $environment->getDependencies(),
@@ -139,7 +139,7 @@ final class ParseFileHandler
         $this->metas->set(
             $file,
             $url,
-            $document->getTitle()->getValueString(),
+            $document->getTitle() !== null ? $document->getTitle()->getValueString() : '',
             $document->getTitles(),
             $tocs,
             (int) filemtime($fileAbsolutePath),

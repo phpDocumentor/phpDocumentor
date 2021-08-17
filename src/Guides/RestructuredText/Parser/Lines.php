@@ -7,12 +7,12 @@ namespace phpDocumentor\Guides\RestructuredText\Parser;
 use Iterator;
 
 /**
- * @implements Iterator<string>
+ * @template-implements Iterator<array-key, string>
  */
 class Lines implements Iterator
 {
     /** @var string[] */
-    private $lines;
+    private $lines = [];
 
     /** @var int */
     private $position = 0;
@@ -23,6 +23,11 @@ class Lines implements Iterator
     public function __construct(array $lines)
     {
         $this->lines = $lines;
+    }
+
+    public function getPreviousLine(): string
+    {
+        return $this->lines[$this->position - 1] ?? '';
     }
 
     public function getNextLine(): string

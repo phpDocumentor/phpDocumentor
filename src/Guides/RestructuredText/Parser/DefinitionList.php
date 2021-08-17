@@ -7,7 +7,7 @@ namespace phpDocumentor\Guides\RestructuredText\Parser;
 class DefinitionList
 {
     /** @var DefinitionListTerm[] */
-    private $terms;
+    private $terms = [];
 
     /**
      * @param DefinitionListTerm[] $terms

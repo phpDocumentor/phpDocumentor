@@ -25,10 +25,7 @@ class LaTeXFormat extends Format
                 Nodes\ParagraphNode::class => new NodeRenderers\TemplateNodeRenderer($renderer, 'paragraph.tex.twig'),
                 Nodes\QuoteNode::class => new NodeRenderers\TemplateNodeRenderer($renderer, 'quote.tex.twig'),
                 Nodes\SeparatorNode::class => new NodeRenderers\TemplateNodeRenderer($renderer, 'separator.tex.twig'),
-                Nodes\ListNode::class => new NodeRenderers\ListNodeRenderer(
-                    new NodeRenderers\LaTeX\ListRenderer($renderer),
-                    $environment
-                ),
+                Nodes\ListNode::class => new NodeRenderers\TemplateNodeRenderer($renderer, 'list.tex.twig'),
                 Nodes\TableNode::class => new NodeRenderers\LaTeX\TableNodeRenderer(
                     $environment->getNodeRendererFactory()
                 ),

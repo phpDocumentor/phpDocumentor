@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\Parser;
 
+use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\SpanNode;
 use RuntimeException;
 
@@ -13,18 +14,18 @@ class DefinitionListTerm
     private $term;
 
     /** @var SpanNode[] */
-    private $classifiers;
+    private $classifiers = [];
 
-    /** @var SpanNode[] */
-    private $definitions;
+    /** @var Node[] */
+    private $definitions = [];
 
     /**
      * @param SpanNode[] $classifiers
-     * @param SpanNode[] $definitions
+     * @param Node[]     $definitions
      */
     public function __construct(SpanNode $term, array $classifiers, array $definitions)
     {
-        $this->term = $term;
+        $this->term        = $term;
         $this->classifiers = $classifiers;
         $this->definitions = $definitions;
     }
@@ -43,14 +44,14 @@ class DefinitionListTerm
     }
 
     /**
-     * @return SpanNode[]
+     * @return Node[]
      */
     public function getDefinitions(): array
     {
         return $this->definitions;
     }
 
-    public function getFirstDefinition(): SpanNode
+    public function getFirstDefinition(): Node
     {
         if (!isset($this->definitions[0])) {
             throw new RuntimeException('No definitions found.');

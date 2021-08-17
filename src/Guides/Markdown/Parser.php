@@ -19,7 +19,7 @@ use phpDocumentor\Guides\Markdown\Parsers\AbstractBlock;
 use phpDocumentor\Guides\Nodes\AnchorNode;
 use phpDocumentor\Guides\Nodes\CodeNode;
 use phpDocumentor\Guides\Nodes\DocumentNode;
-use phpDocumentor\Guides\Nodes\ListNode;
+use phpDocumentor\Guides\Nodes\DummyNode;
 use phpDocumentor\Guides\Nodes\ParagraphNode;
 use phpDocumentor\Guides\Nodes\RawNode;
 use phpDocumentor\Guides\Nodes\SpanNode;
@@ -150,7 +150,7 @@ final class Parser implements ParserInterface
         return $parser->parse($this, $walker);
     }
 
-    public function parseListBlock(NodeWalker $walker): ListNode
+    public function parseListBlock(NodeWalker $walker): DummyNode
     {
         $parser = new Parsers\ListBlock();
 

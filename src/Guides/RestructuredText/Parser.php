@@ -7,6 +7,7 @@ namespace phpDocumentor\Guides\RestructuredText;
 use Doctrine\Common\EventManager;
 use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Nodes\DocumentNode;
+use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\Parser as ParserInterface;
 use phpDocumentor\Guides\References\Doc;
 use phpDocumentor\Guides\References\Reference;
@@ -24,6 +25,12 @@ class Parser implements ParserInterface
 
     /** @var Directive[] */
     private $directives;
+
+    /** @var bool */
+    private $includeAllowed = true;
+
+    /** @var string */
+    private $includeRoot = '';
 
     /** @var string|null */
     private $filename = null;
@@ -126,9 +133,33 @@ class Parser implements ParserInterface
 
     public function getFilename(): string
     {
-        return $this->filename ?: '(unknown)';
+        return $this->filename ?? '(unknown)';
     }
 
+    public function getIncludeAllowed(): bool
+    {
+        return $this->includeAllowed;
+    }
+
+    public function getIncludeRoot(): string
+    {
+        return $this->includeRoot;
+    }
+
+    public function setIncludePolicy(bool $includeAllowed, ?string $directory = null): self
+    {
+        $this->includeAllowed = $includeAllowed;
+
+        if ($directory !== null) {
+            $this->includeRoot = $directory;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Parses the given contents as a new file.
+     */
     public function parse(string $contents): DocumentNode
     {
         $this->getEnvironment()->reset();
@@ -136,6 +167,15 @@ class Parser implements ParserInterface
         return $this->parseLocal($contents);
     }
 
+    /**
+     * Parses the given contents in a new document node.
+     *
+     * CAUTION: This modifies the state of the Parser, do not use this method
+     * on the main parser (use `Parser::getSubParser()->parseLocal(...)` instead).
+     *
+     * Use this method to parse contents of an other node. Nodes created by
+     * this new parser are not added to the main DocumentNode.
+     */
     public function parseLocal(string $contents): DocumentNode
     {
         $this->documentParser = $this->createDocumentParser();
@@ -152,8 +192,16 @@ class Parser implements ParserInterface
     {
         return new DocumentParser(
             $this,
+            $this->environment,
             $this->eventManager,
-            $this->directives
+            $this->directives,
+            $this->includeAllowed,
+            $this->includeRoot
         );
+    }
+
+    public function createSpanNode(string $span): SpanNode
+    {
+        return new SpanNode($this->environment, $span);
     }
 }

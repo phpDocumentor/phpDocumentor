@@ -49,11 +49,13 @@ abstract class Directive
             // Ensure options are always available
             ->withOptions($options);
 
-        if ($variable !== '') {
-            $environment = $parser->getEnvironment();
-            $environment->setVariable($variable, $processNode);
-        } else {
-            $document->addNode($processNode);
+        if ($processNode !== null) {
+            if ($variable !== '') {
+                $environment = $parser->getEnvironment();
+                $environment->setVariable($variable, $processNode);
+            } else {
+                $document->addNode($processNode);
+            }
         }
 
         if ($node === null) {
@@ -99,8 +101,40 @@ abstract class Directive
 
     /**
      * Should the following block be passed as a CodeNode?
+     *
+     * You should probably return false from this. If you do,
+     * in most cases (unless you directive allows for some fancy
+     * syntax), you will receive a BlockNode object in processNode().
+     *
+     * @see CodeNode
      */
     public function wantCode(): bool
+    {
+        return false;
+    }
+
+    /**
+     * Can this directive apply to content that is not indented under it?
+     *
+     * Most directives that allow content require that content to be
+     * indented under it. For example:
+     *
+     *      .. note::
+     *
+     *          This is my note! It must be indented.
+     *
+     * But some are allowed to apply to content that is *not* indented:
+     *
+     *      .. class:: align-center
+     *
+     *      I will be a "p" tag with an align-center class
+     *
+     * If your directive allows the "class" directive functionality,
+     * return true from this function. The result is that your
+     * directive's process() method will be called for the next
+     * node after your directive (e.g. a ParagraphNode, ListNode, etc)
+     */
+    public function appliesToNonBlockContent(): bool
     {
         return false;
     }

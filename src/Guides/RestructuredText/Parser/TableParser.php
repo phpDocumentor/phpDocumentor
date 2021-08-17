@@ -35,7 +35,7 @@ class TableParser
     {
         $header = false;
         $pretty = false;
-        $line = trim($line);
+        $line   = trim($line);
 
         if ($line === '') {
             return null;
@@ -71,11 +71,11 @@ class TableParser
             }
         }
 
-        $parts = [];
-        /** @var int|null $currentPartStart */
+        $parts            = [];
         $currentPartStart = null;
 
-        for ($i = 0; $i < strlen($line); $i++) {
+        $max = strlen($line);
+        for ($i = 0; $i < $max; $i++) {
             // we found the "line char": "-" or "="
             if ($line[$i] === $chars[0]) {
                 if ($currentPartStart === null) {
@@ -95,7 +95,7 @@ class TableParser
                 continue;
             }
 
-            $parts[] = [$currentPartStart, $i];
+            $parts[]          = [$currentPartStart, $i];
             $currentPartStart = null;
         }
 
@@ -130,13 +130,15 @@ class TableParser
      * or it's malformed in any way.
      *
      * @return string[]|null
+     * @psalm-return array{string, ?string}
      */
     private function findTableChars(string $line): ?array
     {
-        $lineChar = $line[0];
+        $lineChar  = $line[0];
         $spaceChar = null;
 
-        for ($i = 0; $i < strlen($line); $i++) {
+        $max = strlen($line);
+        for ($i = 0; $i < $max; $i++) {
             if ($line[$i] === $lineChar) {
                 continue;
             }

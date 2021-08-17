@@ -1,2 +1,11 @@
-<{{ keyword }}{% if listNode.classes %} class="{{ listNode.classesString }}"{% endif %}>
+{% set keyword = 'ul' %}
+
+{% if node.isOrdered %}
+{% set keyword = 'ol' %}
+{% endif %}
+
+<{{ keyword }}{% if node.classes %} class="{{ node.classesString }}"{% endif %}>
+    {% for item in node.items %}
+    {{ renderNode(item) }}
+    {% endfor %}
 </{{ keyword }}>

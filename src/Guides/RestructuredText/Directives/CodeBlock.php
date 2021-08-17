@@ -18,8 +18,6 @@ use function trim;
  *      <?php
  *
  *      echo "Hello world!\n";
- *
- * @link https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#directive-code-block
  */
 class CodeBlock extends Directive
 {

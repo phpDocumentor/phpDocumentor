@@ -19,6 +19,7 @@ use phpDocumentor\Guides\Meta\Entry;
 use phpDocumentor\Guides\References\Reference;
 use phpDocumentor\Guides\References\ResolvedReference;
 use Psr\Log\LoggerInterface;
+use Throwable;
 
 use function array_shift;
 use function dirname;
@@ -471,9 +472,14 @@ class Environment
         return $this->titleLetters;
     }
 
-    public function addError(string $message): void
+    public function addError(string $message, ?Throwable $e = null): void
     {
-        $this->logger->error($message);
+        $this->logger->error($message, ['exception' => $e]);
+    }
+
+    public function addWarning(string $message): void
+    {
+        $this->logger->warning($message);
     }
 
     private function addMissingReferenceSectionError(string $section): void

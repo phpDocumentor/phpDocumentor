@@ -43,7 +43,7 @@ class TableNode extends Node
     public const TYPE_SIMPLE = 'simple';
     public const TYPE_PRETTY = 'pretty';
 
-    /** @var array<int, TableSeparatorLineConfig> */
+    /** @var TableSeparatorLineConfig[] */
     private $separatorLineConfigs = [];
 
     /** @var string[] */
@@ -156,7 +156,9 @@ class TableNode extends Node
 
         if (count($this->errors) > 0) {
             $parser->getEnvironment()
-                ->addError(sprintf("%s\nin file %s\n\n%s", $this->errors[0], $parser->getFilename(), $tableAsString));
+                ->addError(
+                    sprintf("%s\nin file %s\n\n%s", $this->errors[0], $parser->getFilename(), $tableAsString)
+                );
 
             $this->data = [];
             $this->headers = [];
@@ -168,7 +170,7 @@ class TableNode extends Node
             foreach ($row->getColumns() as $col) {
                 $lines = explode("\n", $col->getContent());
 
-                if ($lineChecker->isListLine($lines[0], false)) {
+                if ($lineChecker->isListLine($lines[0])) {
                     $node = $parser->parseFragment($col->getContent())->getNodes()[0];
                 } else {
                     $node = new SpanNode($parser->getEnvironment(), $col->getContent());
@@ -383,10 +385,6 @@ class TableNode extends Node
                 }
 
                 if ($currentColumnStart !== null) {
-                    if ($previousColumnEnd === null) {
-                        throw new LogicException('The previous column end is not set yet');
-                    }
-
                     $gapText = mb_substr($line, $previousColumnEnd, $start - $previousColumnEnd);
                     if (mb_strpos($gapText, '|') === false && mb_strpos($gapText, '+') === false) {
                         // text continued through the "gap". This is a colspan

@@ -6,7 +6,7 @@ namespace phpDocumentor\Guides\RestructuredText\Parser;
 
 class Link
 {
-    public const TYPE_LINK = 'link';
+    public const TYPE_LINK   = 'link';
     public const TYPE_ANCHOR = 'anchor';
 
     /** @var string */
@@ -21,7 +21,7 @@ class Link
     public function __construct(string $name, string $url, string $type)
     {
         $this->name = $name;
-        $this->url = $url;
+        $this->url  = $url;
         $this->type = $type;
     }
 
