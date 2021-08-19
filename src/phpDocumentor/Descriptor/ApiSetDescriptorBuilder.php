@@ -11,6 +11,7 @@ use phpDocumentor\Descriptor\Builder\AssemblerInterface;
 use phpDocumentor\Descriptor\Filter\Filter;
 use phpDocumentor\Descriptor\Filter\Filterable;
 use phpDocumentor\Reflection\Php\Project;
+
 use function get_class;
 
 /*final*/ class ApiSetDescriptorBuilder
@@ -48,7 +49,7 @@ use function get_class;
      *
      * @template TDescriptor of Descriptor
      */
-    public function buildDescriptor(object $data, string $type) : ?Descriptor
+    public function buildDescriptor(object $data, string $type): ?Descriptor
     {
         $assembler = $this->getAssembler($data, $type);
         if (!$assembler) {
@@ -77,7 +78,7 @@ use function get_class;
      * @template TInput as object
      * @template TDescriptor as Descriptor
      */
-    private function getAssembler(object $data, string $type) : ?AssemblerInterface
+    private function getAssembler(object $data, string $type): ?AssemblerInterface
     {
         return $this->assemblerFactory->get($data, $type);
     }
@@ -92,7 +93,7 @@ use function get_class;
      *
      * @template TDescriptor as Descriptor
      */
-    private function filterDescriptor(Descriptor $descriptor) : ?Descriptor
+    private function filterDescriptor(Descriptor $descriptor): ?Descriptor
     {
         if (!$descriptor instanceof Filterable) {
             return $descriptor;
@@ -104,33 +105,33 @@ use function get_class;
         return $descriptor;
     }
 
-    public function getDefaultPackage() : string
+    public function getDefaultPackage(): string
     {
         return $this->apiSpecification['default-package-name'];
     }
 
-    public function shouldIncludeSource() : bool
+    public function shouldIncludeSource(): bool
     {
         return $this->apiSpecification['include-source'];
     }
 
-    public function setApiSpecification(ApiSpecification $apiSpecification) : void
+    public function setApiSpecification(ApiSpecification $apiSpecification): void
     {
         $this->apiSpecification = $apiSpecification;
     }
 
-    public function setProject(Project $project) : void
+    public function setProject(Project $project): void
     {
         $this->project = $project;
     }
 
-    public function reset() : void
+    public function reset(): void
     {
         $this->project = null;
         $this->name = '';
     }
 
-    public function createDescriptors(ApiSetDescriptor $documentationSet) : void
+    public function createDescriptors(ApiSetDescriptor $documentationSet): void
     {
         foreach ($this->project->getFiles() as $file) {
             $descriptor = $this->buildDescriptor($file, FileDescriptor::class);

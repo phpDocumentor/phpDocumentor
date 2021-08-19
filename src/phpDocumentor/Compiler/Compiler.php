@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Compiler;
 
-use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use SplPriorityQueue;
 use Webmozart\Assert\Assert;
@@ -39,7 +38,7 @@ class Compiler extends SplPriorityQueue
         return parent::insert($value, $priority);
     }
 
-    public function compile(DocumentationSetDescriptor $documentationSet) : void
+    public function compile(DocumentationSetDescriptor $documentationSet): void
     {
         $self = clone $this;
         /** @var CompilerPassInterface $pass */

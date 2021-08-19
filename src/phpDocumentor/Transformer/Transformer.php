@@ -141,7 +141,7 @@ class Transformer implements \phpDocumentor\FlowService\Transformer
      *
      * @param Transformation[] $transformations
      */
-    private function initializeWriters(ProjectDescriptor $project, Template $template) : void
+    private function initializeWriters(ProjectDescriptor $project, Template $template): void
     {
         $isInitialized = [];
         foreach ($template as $transformation) {

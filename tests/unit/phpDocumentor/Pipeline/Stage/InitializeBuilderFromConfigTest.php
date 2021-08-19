@@ -24,7 +24,7 @@ final class InitializeBuilderFromConfigTest extends TestCase
     use Faker;
     use ProphecyTrait;
 
-    public function testSetNameAndPartialsOnBuilder() : void
+    public function testSetNameAndPartialsOnBuilder(): void
     {
         $partials = new Collection();
         $fixture  = new InitializeBuilderFromConfig($partials);
@@ -38,7 +38,7 @@ final class InitializeBuilderFromConfigTest extends TestCase
         $fixture(new Payload(['phpdocumentor' => ['title' => 'my-title', 'versions' => []]], $builder->reveal()));
     }
 
-    public function testInitializesProjectWithDocumentationSets() : void
+    public function testInitializesProjectWithDocumentationSets(): void
     {
         $partials = new Collection();
         $fixture  = new InitializeBuilderFromConfig($partials);

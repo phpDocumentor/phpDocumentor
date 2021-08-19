@@ -23,6 +23,7 @@ use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Reflection\Fqsen;
 use Webmozart\Assert\Assert;
 
+use function get_class;
 use function strlen;
 use function substr;
 use function ucfirst;
@@ -50,6 +51,7 @@ class NamespaceTreeBuilder implements CompilerPassInterface
     {
         if ($project instanceof ApiSetDescriptor === false) {
             dump(get_class($project));
+
             return;
         }
 

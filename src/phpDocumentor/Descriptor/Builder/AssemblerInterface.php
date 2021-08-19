@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Builder;
 
-use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\Descriptor\ApiSetDescriptorBuilder;
+use phpDocumentor\Descriptor\Descriptor;
 
 /**
  * @template TDescriptor of Descriptor

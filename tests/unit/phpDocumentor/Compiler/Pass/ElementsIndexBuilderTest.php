@@ -17,6 +17,7 @@ use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\Faker\Faker;
 use PHPUnit\Framework\TestCase;
+
 use function array_keys;
 use function array_merge;
 use function array_values;
@@ -49,7 +50,7 @@ class ElementsIndexBuilderTest extends TestCase
      * @param string[] $expectedElementNames
      * @param Descriptor[] $expectedDescriptors
      */
-    private static function assertSameElements(array $elements, array $expectedElementNames, array $expectedDescriptors) : void
+    private static function assertSameElements(array $elements, array $expectedElementNames, array $expectedDescriptors): void
     {
         $actualNames = array_keys($elements);
         $actualElements = array_values($elements);
@@ -64,7 +65,7 @@ class ElementsIndexBuilderTest extends TestCase
         self::assertSame($expectedDescriptors, $actualElements);
     }
 
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->fixture = new ElementsIndexBuilder();
         $this->project = $this->faker()->apiSetDescriptorWithFiles();
@@ -73,7 +74,7 @@ class ElementsIndexBuilderTest extends TestCase
     /**
      * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getDescription
      */
-    public function testGetDescription() : void
+    public function testGetDescription(): void
     {
         self::assertSame('Build "elements" index', $this->fixture->getDescription());
     }
@@ -83,7 +84,7 @@ class ElementsIndexBuilderTest extends TestCase
      * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::addElementsToIndexes
      * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getIndexKey
      */
-    public function testAddClassesToIndex() : void
+    public function testAddClassesToIndex(): void
     {
         $expectedElementNames = ['\My\Space\Class1', '\My\Space\Class2'];
         $expectedDescriptors = [];
@@ -114,7 +115,7 @@ class ElementsIndexBuilderTest extends TestCase
      * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::addElementsToIndexes
      * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getIndexKey
      */
-    public function testAddInterfacesToIndex() : void
+    public function testAddInterfacesToIndex(): void
     {
         $expectedElementNames = ['\My\Space\Interface1', '\My\Space\Interface2'];
         $expectedDescriptors = [];
@@ -145,7 +146,7 @@ class ElementsIndexBuilderTest extends TestCase
      * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::addElementsToIndexes
      * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getIndexKey
      */
-    public function testAddTraitsToIndex() : void
+    public function testAddTraitsToIndex(): void
     {
         $expectedElementNames = ['\My\Space\Trait1', '\My\Space\Trait2'];
         $expectedDescriptors = [];
@@ -176,7 +177,7 @@ class ElementsIndexBuilderTest extends TestCase
      * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::addElementsToIndexes
      * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getIndexKey
      */
-    public function testAddFunctionsToIndex() : void
+    public function testAddFunctionsToIndex(): void
     {
         $expectedElementNames = ['\function1', '\function2'];
         $expectedDescriptors = [];
@@ -207,7 +208,7 @@ class ElementsIndexBuilderTest extends TestCase
      * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::addElementsToIndexes
      * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getIndexKey
      */
-    public function testAddConstantsToIndex() : void
+    public function testAddConstantsToIndex(): void
     {
         $expectedElementNames = ['\CONSTANT1', '\CONSTANT2'];
         $expectedDescriptors = [];
@@ -239,7 +240,7 @@ class ElementsIndexBuilderTest extends TestCase
      * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getIndexKey
      * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getSubElements
      */
-    public function testAddClassConstantsToIndex() : void
+    public function testAddClassConstantsToIndex(): void
     {
         $expectedClassNames = ['\My\Space\Class1', '\My\Space\Class2'];
         $expectedMemberNames = ['\My\Space\Class1::CONSTANT', '\My\Space\Class2::CONSTANT'];
@@ -275,7 +276,7 @@ class ElementsIndexBuilderTest extends TestCase
      * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getIndexKey
      * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getSubElements
      */
-    public function testAddPropertiesToIndex() : void
+    public function testAddPropertiesToIndex(): void
     {
         $expectedClassNames = ['\My\Space\Class1', '\My\Space\Class2'];
         $expectedMemberNames = ['\My\Space\Class1::$property', '\My\Space\Class2::$property'];
@@ -310,7 +311,7 @@ class ElementsIndexBuilderTest extends TestCase
      * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getIndexKey
      * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getSubElements
      */
-    public function testAddMethodsToIndex() : void
+    public function testAddMethodsToIndex(): void
     {
         $expectedClassNames = ['\My\Space\Class1', '\My\Space\Class2'];
         $expectedMemberNames = ['\My\Space\Class1::method()', '\My\Space\Class2::method()'];

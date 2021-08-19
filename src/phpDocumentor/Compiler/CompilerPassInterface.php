@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Compiler;
 
-use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 
 /**

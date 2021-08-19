@@ -8,5 +8,5 @@ use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 
 interface Parser
 {
-    public function operate(DocumentationSetDescriptor $documentationSet) : void;
+    public function operate(DocumentationSetDescriptor $documentationSet): void;
 }

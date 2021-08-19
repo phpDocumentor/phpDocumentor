@@ -6,7 +6,9 @@ namespace phpDocumentor\Descriptor;
 
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Faker\Faker;
+
 use function str_replace;
+
 use const PHP_EOL;
 
 /**
@@ -19,7 +21,7 @@ final class ApiAnalyzerTest extends MockeryTestCase
     /** @var ApiAnalyzer */
     private $fixture;
 
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->fixture = new ApiAnalyzer();
     }
@@ -27,7 +29,7 @@ final class ApiAnalyzerTest extends MockeryTestCase
     /**
      * @covers ::__toString
      */
-    public function testIfStringOutputContainsAllCounters() : void
+    public function testIfStringOutputContainsAllCounters(): void
     {
         // Arrange
         $classDescriptor1 = $this->faker()->classDescriptor();

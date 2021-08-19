@@ -14,15 +14,11 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Cache;
 
 use phpDocumentor\Descriptor\ApiSetDescriptor;
-use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\VersionDescriptor;
-use phpDocumentor\Reflection\File;
-use Psr\Cache\CacheItemInterface;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
 
 use function array_diff;
-use function array_map;
 use function md5;
 
 /**
@@ -88,14 +84,16 @@ class ProjectDescriptorMapper
         /** @var VersionDescriptor $version */
         foreach ($projectDescriptor->getVersions() as $version) {
             foreach ($version->getDocumentationSets() as $documentationSet) {
-                if ($documentationSet instanceof ApiSetDescriptor) {
-                    $versionSetPrefix = $version->getNumber() . md5((string) $documentationSet->getSource()->dsn());
-                    foreach ($documentationSet->getFiles() as $file) {
-                        $key        = self::FILE_PREFIX . $versionSetPrefix . md5($file->getPath());
-                        $fileKeys[] = $key;
-                        $item       = $this->cache->getItem($key);
-                        $this->cache->saveDeferred($item->set($file));
-                    }
+                if (!($documentationSet instanceof ApiSetDescriptor)) {
+                    continue;
+                }
+
+                $versionSetPrefix = $version->getNumber() . md5((string) $documentationSet->getSource()->dsn());
+                foreach ($documentationSet->getFiles() as $file) {
+                    $key        = self::FILE_PREFIX . $versionSetPrefix . md5($file->getPath());
+                    $fileKeys[] = $key;
+                    $item       = $this->cache->getItem($key);
+                    $this->cache->saveDeferred($item->set($file));
                 }
             }
         }
@@ -116,7 +114,7 @@ class ProjectDescriptorMapper
         $this->cache->deleteItems($invalidatedKeys);
     }
 
-    private function loadCacheItemAsSettings(ProjectDescriptor $projectDescriptor) : void
+    private function loadCacheItemAsSettings(ProjectDescriptor $projectDescriptor): void
     {
         $item = $this->cache->getItem(self::KEY_SETTINGS);
         if (!$item->isHit()) {

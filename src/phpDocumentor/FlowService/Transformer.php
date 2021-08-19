@@ -16,5 +16,5 @@ interface Transformer
     /**
      * Transforms the given project into a series of artifacts as provided by the template.
      */
-    public function execute(ProjectDescriptor $project, DocumentationSetDescriptor $documentationSet, Template $template) : void;
+    public function execute(ProjectDescriptor $project, DocumentationSetDescriptor $documentationSet, Template $template): void;
 }

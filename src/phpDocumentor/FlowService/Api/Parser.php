@@ -17,6 +17,7 @@ use phpDocumentor\Reflection\File;
 use phpDocumentor\Reflection\Php\Project;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
+
 use function count;
 
 final class Parser implements ParserInterface
@@ -50,7 +51,7 @@ final class Parser implements ParserInterface
         $this->builder = $builder;
     }
 
-    public function operate(DocumentationSetDescriptor $documentationSet) : void
+    public function operate(DocumentationSetDescriptor $documentationSet): void
     {
         if (!$documentationSet instanceof ApiSetDescriptor) {
             throw new InvalidArgumentException('Invalid documentation set');
@@ -67,7 +68,7 @@ final class Parser implements ParserInterface
     }
 
     /** @return File[] */
-    private function collectFiles(ApiSpecification $apiSpecification) : array
+    private function collectFiles(ApiSpecification $apiSpecification): array
     {
         $this->log('Collecting files from ' . $apiSpecification['source']['dsn']);
 
@@ -87,7 +88,7 @@ final class Parser implements ParserInterface
     }
 
     /** @param File[] $files */
-    private function createProject(ApiSpecification $apiSpecification, array $files) : Project
+    private function createProject(ApiSpecification $apiSpecification, array $files): Project
     {
         $this->reEncodingMiddleware->withEncoding($apiSpecification['encoding']);
         $this->parser->setMarkers($apiSpecification['markers']);
@@ -105,7 +106,7 @@ final class Parser implements ParserInterface
      * @param string $priority The logging priority as declared in the LogLevel PSR-3 class.
      * @param string[] $parameters
      */
-    private function log(string $message, string $priority = LogLevel::INFO, array $parameters = []) : void
+    private function log(string $message, string $priority = LogLevel::INFO, array $parameters = []): void
     {
         $this->logger->log($priority, $message, $parameters);
     }

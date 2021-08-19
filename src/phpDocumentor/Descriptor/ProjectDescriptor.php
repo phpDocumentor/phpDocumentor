@@ -16,8 +16,6 @@ namespace phpDocumentor\Descriptor;
 use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
 use phpDocumentor\Reflection\DocBlock\Description;
-use phpDocumentor\Reflection\Fqsen;
-use function current;
 
 /**
  * Represents the entire project with its files, namespaces and indexes.

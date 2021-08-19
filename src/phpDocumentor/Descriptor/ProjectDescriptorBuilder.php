@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Descriptor\ProjectDescriptor\WithCustomSettings;
-use phpDocumentor\Reflection\Php\Project;
 
 /**
  * Builds a Project Descriptor and underlying tree.
@@ -52,7 +51,7 @@ class ProjectDescriptorBuilder
         return $this->project;
     }
 
-    public function setVisibility(int $visibility) : void
+    public function setVisibility(int $visibility): void
     {
         $this->project->getSettings()->setVisibility($visibility);
     }

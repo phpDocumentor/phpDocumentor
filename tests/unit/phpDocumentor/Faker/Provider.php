@@ -28,6 +28,7 @@ use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Descriptor\VersionDescriptor;
 use phpDocumentor\FileSystem\FlySystemFactory;
 use phpDocumentor\Dsn;
+use phpDocumentor\FileSystem\FlySystemFactory;
 use phpDocumentor\Path;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Php\Factory\ContextStack;
@@ -110,7 +111,7 @@ final class Provider extends Base
         );
     }
 
-    public function source() : Source
+    public function source(): Source
     {
         return new Source(
             $this->dsn(),
@@ -133,17 +134,18 @@ final class Provider extends Base
         return new Path(implode(DIRECTORY_SEPARATOR, $this->generator->words(5)));
     }
 
-    public function versionSpecification() : VersionSpecification
+    public function versionSpecification(): VersionSpecification
     {
         return new VersionSpecification(
             $this->generator->numerify('v##.##'),
             (string) $this->path(),
-            [ApiSpecification::createFromArray(
-                [
-                    'source' => [],
-                    'output' => 'a',
-                ]
-            ),
+            [
+                ApiSpecification::createFromArray(
+                    [
+                        'source' => [],
+                        'output' => 'a',
+                    ]
+                ),
             ],
             []
         );
@@ -184,7 +186,7 @@ final class Provider extends Base
         return $this->apiSetDescriptor($files);
     }
 
-    public function fileDescriptor() : FileDescriptor
+    public function fileDescriptor(): FileDescriptor
     {
         $file = new FileDescriptor($this->generator->md5);
         $file->setPath((string) $this->path());

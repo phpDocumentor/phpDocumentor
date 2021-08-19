@@ -6,6 +6,7 @@ namespace phpDocumentor\FlowService;
 
 use Exception;
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
+
 use function get_class;
 
 /**
@@ -24,7 +25,7 @@ final class ServiceProvider
     }
 
     /** @return T */
-    public function get(DocumentationSetDescriptor $documetationSet) : object
+    public function get(DocumentationSetDescriptor $documetationSet): object
     {
         if (isset($this->services[get_class($documetationSet)])) {
             return $this->services[get_class($documetationSet)];

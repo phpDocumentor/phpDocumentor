@@ -31,7 +31,7 @@ final class ProjectDescriptorTest extends TestCase
     /**
      * Initializes the fixture object.
      */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->fixture = new ProjectDescriptor(self::EXAMPLE_NAME);
     }
@@ -41,7 +41,7 @@ final class ProjectDescriptorTest extends TestCase
      * @covers ::setName
      * @covers ::getName
      */
-    public function testGetSetName() : void
+    public function testGetSetName(): void
     {
         $this->assertEquals(self::EXAMPLE_NAME, $this->fixture->getName());
 
@@ -55,7 +55,7 @@ final class ProjectDescriptorTest extends TestCase
      * @covers ::setSettings
      * @covers ::getSettings
      */
-    public function testGetSetSettings() : void
+    public function testGetSetSettings(): void
     {
         $this->assertInstanceOf(Settings::class, $this->fixture->getSettings());
 
@@ -70,7 +70,7 @@ final class ProjectDescriptorTest extends TestCase
      * @covers ::setPartials
      * @covers ::getPartials
      */
-    public function testGetSetPartials() : void
+    public function testGetSetPartials(): void
     {
         $result = $this->fixture->getPartials();
         $this->assertInstanceOf(Collection::class, $result);

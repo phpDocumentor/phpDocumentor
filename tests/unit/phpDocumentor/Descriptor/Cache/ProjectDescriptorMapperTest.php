@@ -44,7 +44,7 @@ final class ProjectDescriptorMapperTest extends TestCase
     /** @var FilesystemAdapter */
     private $cachePool;
 
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->cachePool = new FilesystemAdapter();
         $this->mapper    = new ProjectDescriptorMapper($this->cachePool);
@@ -54,7 +54,7 @@ final class ProjectDescriptorMapperTest extends TestCase
      * @covers ::save
      * @covers ::populate
      */
-    public function testThatDescriptorsCanBeRestoredFromCache() : void
+    public function testThatDescriptorsCanBeRestoredFromCache(): void
     {
         $source = $this->faker()->source();
         $fileDescriptor = $this->faker()->fileDescriptor();
@@ -73,7 +73,7 @@ final class ProjectDescriptorMapperTest extends TestCase
 
     private function createProjectStructure(Source $source, ?FileDescriptor $fileDescriptor = null): ProjectDescriptor
     {
-        $apiDescriptor     = new ApiSetDescriptor('api1', $source, 'api', $this->faker()->apiSpecification());
+        $apiDescriptor = new ApiSetDescriptor('api1', $source, 'api', $this->faker()->apiSpecification());
         if ($fileDescriptor !== null) {
             $apiDescriptor->addFile($fileDescriptor);
         }

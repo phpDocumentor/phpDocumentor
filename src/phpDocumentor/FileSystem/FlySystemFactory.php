@@ -52,18 +52,18 @@ class FlySystemFactory implements FileSystemFactory
         $this->mountManager = $mountManager;
     }
 
-    public function setOutputDsn(Dsn $output) : void
+    public function setOutputDsn(Dsn $output): void
     {
         $this->outputRoot = $output;
     }
 
-    public function addVersion(string $versionNumber, string $folder) : void
+    public function addVersion(string $versionNumber, string $folder): void
     {
         $this->versionFolders[$versionNumber] = $folder;
         $this->documentationSets[$versionNumber] = [];
     }
 
-    public function addDocumentationSet(string $versionNumber, Source $source, string $output) : void
+    public function addDocumentationSet(string $versionNumber, Source $source, string $output): void
     {
         $setId = hash('md5', (string) $source->dsn());
 
@@ -73,7 +73,7 @@ class FlySystemFactory implements FileSystemFactory
         ];
     }
 
-    public function createDestination(DocumentationSetDescriptor $documentationSetDescriptor) : Filesystem
+    public function createDestination(DocumentationSetDescriptor $documentationSetDescriptor): Filesystem
     {
         $currentId = hash('md5', (string) $documentationSetDescriptor->getSource()->dsn());
 

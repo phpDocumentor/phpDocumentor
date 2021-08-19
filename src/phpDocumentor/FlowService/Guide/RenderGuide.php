@@ -13,8 +13,10 @@ declare(strict_types=1);
 
 namespace phpDocumentor\FlowService\Guide;
 
+use InvalidArgumentException;
 use League\Tactician\CommandBus;
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
+use phpDocumentor\Descriptor\GuideSetDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Dsn;
 use phpDocumentor\FileSystem\FileSystemFactory;
@@ -66,8 +68,12 @@ final class RenderGuide implements Transformer, ProjectDescriptor\WithCustomSett
         return 'RenderGuide';
     }
 
-    public function execute(ProjectDescriptor $project, DocumentationSetDescriptor $documentationSet, Template $template) : void
+    public function execute(ProjectDescriptor $project, DocumentationSetDescriptor $documentationSet, Template $template): void
     {
+        if (!$documentationSet instanceof GuideSetDescriptor) {
+            throw new InvalidArgumentException('Invalid documentation set');
+        }
+
         $this->logger->warning(
             'Generating guides is experimental, no BC guarantees are given, use at your own risk'
         );
@@ -99,7 +105,12 @@ final class RenderGuide implements Transformer, ProjectDescriptor\WithCustomSett
         $this->completedRenderingSetMessage($stopwatch, $dsn);
     }
 
-    private function startRenderingSetMessage(Dsn $dsn): Stopwatch
+    public function getDefaultSettings() : array
+    {
+        return [self::FEATURE_FLAG => false];
+    }
+
+    private function startRenderingSetMessage(Dsn $dsn) : Stopwatch
     {
         $stopwatch = new Stopwatch();
         $stopwatch->start('guide');
@@ -108,7 +119,7 @@ final class RenderGuide implements Transformer, ProjectDescriptor\WithCustomSett
         return $stopwatch;
     }
 
-    private function completedRenderingSetMessage(Stopwatch $stopwatch, Dsn $dsn) : void
+    private function completedRenderingSetMessage(Stopwatch $stopwatch, Dsn $dsn): void
     {
         $stopwatchEvent = $stopwatch->stop('guide');
         $this->logger->info(
@@ -119,12 +130,5 @@ final class RenderGuide implements Transformer, ProjectDescriptor\WithCustomSett
                 $stopwatchEvent->getMemory() / 1024 / 1024
             )
         );
-    }
-
-    public function getDefaultSettings(): array
-    {
-        return [
-              self::FEATURE_FLAG => false,
-        ];
     }
 }

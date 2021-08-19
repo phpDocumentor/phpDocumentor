@@ -16,6 +16,7 @@ use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformer as RealTransformer;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
 use Psr\Log\LoggerInterface;
+
 use function count;
 use function get_class;
 use function sprintf;
@@ -57,7 +58,7 @@ class Transformer implements TransformerInterface
      *
      * @throws Exception If the target location is not a folder.
      */
-    public function execute(ProjectDescriptor $project, DocumentationSetDescriptor $documentationSet, Template $template) : void
+    public function execute(ProjectDescriptor $project, DocumentationSetDescriptor $documentationSet, Template $template): void
     {
         $this->transformer->execute($project, $documentationSet, $template);
     }
@@ -65,19 +66,19 @@ class Transformer implements TransformerInterface
     /**
      * Connect a series of output messages to various events to display progress.
      */
-    private function connectOutputToEvents() : void
+    private function connectOutputToEvents(): void
     {
         $dispatcherInstance = Dispatcher::getInstance();
         $dispatcherInstance->addListener(
             RealTransformer::EVENT_PRE_TRANSFORM,
-            function (PreTransformEvent $event) : void {
+            function (PreTransformEvent $event): void {
                 $transformations = $event->getTransformations();
                 $this->logger->info(sprintf("\nApplying %d transformations", count($transformations)));
             }
         );
         $dispatcherInstance->addListener(
             RealTransformer::EVENT_PRE_INITIALIZATION,
-            function (WriterInitializationEvent $event) : void {
+            function (WriterInitializationEvent $event): void {
                 if (!($event->getWriter() instanceof WriterAbstract)) {
                     return;
                 }
@@ -87,7 +88,7 @@ class Transformer implements TransformerInterface
         );
         $dispatcherInstance->addListener(
             RealTransformer::EVENT_PRE_TRANSFORMATION,
-            function (PreTransformationEvent $event) : void {
+            function (PreTransformationEvent $event): void {
                 $this->logger->info(
                     '  Execute transformation using writer "' . $event->getTransformation()->getWriter() . '"'
                 );

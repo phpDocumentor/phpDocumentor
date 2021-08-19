@@ -64,22 +64,22 @@ final class ApiSetDescriptor extends DocumentationSetDescriptor implements Descr
         $this->apiSpecification = $apiSpecification;
     }
 
-    public function addFile(FileDescriptor $descriptor) : void
+    public function addFile(FileDescriptor $descriptor): void
     {
         $this->files->set($descriptor->getPath(), $descriptor);
     }
 
-    public function getFiles() : Collection
+    public function getFiles(): Collection
     {
         return $this->files;
     }
 
-    public function addNamespace(NamespaceDescriptor $descriptor) : void
+    public function addNamespace(NamespaceDescriptor $descriptor): void
     {
         $this->namespaces->set((string) $descriptor->getFullyQualifiedStructuralElementName(), $descriptor);
     }
 
-    public function getNamespaces() : Collection
+    public function getNamespaces(): Collection
     {
         return $this->namespaces;
     }
@@ -109,17 +109,17 @@ final class ApiSetDescriptor extends DocumentationSetDescriptor implements Descr
         return $this->package;
     }
 
-    public function getSettings() : ApiSpecification
+    public function getSettings(): ApiSpecification
     {
         return $this->apiSpecification;
     }
 
-    public function getDescription() : ?DocBlock\DescriptionDescriptor
+    public function getDescription(): ?DocBlock\DescriptionDescriptor
     {
         return null;
     }
 
-    public function findElement(Fqsen $fqsen) : ?Descriptor
+    public function findElement(Fqsen $fqsen): ?Descriptor
     {
         if (!isset($this->getIndexes()['elements'])) {
             return null;
