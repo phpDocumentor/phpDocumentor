@@ -18,6 +18,7 @@ use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
+use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Reflection\Fqsen;
 use Webmozart\Assert\Assert;
@@ -45,8 +46,15 @@ class NamespaceTreeBuilder implements CompilerPassInterface
         return 'Build "namespaces" index and add namespaces to "elements"';
     }
 
-    public function execute(ApiSetDescriptor $project): void
+    public function execute(DocumentationSetDescriptor $project): void
     {
+        if ($project instanceof ApiSetDescriptor === false) {
+            dump(get_class($project));
+            return;
+        }
+
+        dump(get_class($project));
+
         $project->getIndexes()->fetch('elements', new Collection())->set('~\\', $project->getNamespace());
         $project->getIndexes()->fetch('namespaces', new Collection())->set('\\', $project->getNamespace());
 

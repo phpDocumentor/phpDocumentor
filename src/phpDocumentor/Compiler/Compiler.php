@@ -41,12 +41,9 @@ class Compiler extends SplPriorityQueue
 
     public function compile(DocumentationSetDescriptor $documentationSet) : void
     {
-        if (!$documentationSet instanceof ApiSetDescriptor) {
-            return;
-        }
-
+        $self = clone $this;
         /** @var CompilerPassInterface $pass */
-        foreach ($this as $pass) {
+        foreach ($self as $pass) {
             $pass->execute($documentationSet);
         }
     }

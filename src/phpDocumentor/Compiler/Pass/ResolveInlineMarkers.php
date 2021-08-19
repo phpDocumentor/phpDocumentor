@@ -15,6 +15,7 @@ namespace phpDocumentor\Compiler\Pass;
 
 use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\ApiSetDescriptor;
+use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
 
 use function implode;
@@ -39,8 +40,12 @@ final class ResolveInlineMarkers implements CompilerPassInterface
     /**
      * Scans the files for markers and records them in the markers property of a file.
      */
-    public function execute(ApiSetDescriptor $project): void
+    public function execute(DocumentationSetDescriptor $project): void
     {
+        if ($project instanceof ApiSetDescriptor === false) {
+            return;
+        }
+
         $markerTerms = $project->getSettings()['markers'];
 
         /** @var FileDescriptor $file */

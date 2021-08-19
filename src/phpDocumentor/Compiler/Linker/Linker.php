@@ -19,6 +19,7 @@ use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\Descriptor\DescriptorAbstract;
+use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\InterfaceDescriptor;
 use phpDocumentor\Descriptor\Interfaces\EnumInterface;
@@ -81,8 +82,12 @@ class Linker implements CompilerPassInterface
         $this->descriptorRepository = $descriptorRepository;
     }
 
-    public function execute(ApiSetDescriptor $project): void
+    public function execute(DocumentationSetDescriptor $project): void
     {
+        if ($project instanceof ApiSetDescriptor === false) {
+            return;
+        }
+
         $this->descriptorRepository->setObjectAliasesList($project->getIndexes()->elements->getAll());
         $this->substitute($project);
     }

@@ -17,8 +17,6 @@ use phpDocumentor\Descriptor\ApiSetDescriptorBuilder;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\PackageDescriptor;
-use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
-use phpDocumentor\Descriptor\ApiSetDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\Php\File;
 use PHPUnit\Framework\TestCase;

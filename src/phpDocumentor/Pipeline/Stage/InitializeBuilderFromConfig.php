@@ -20,6 +20,7 @@ use phpDocumentor\Descriptor\Collection as PartialsCollection;
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\GuideSetDescriptor;
 use phpDocumentor\Descriptor\VersionDescriptor;
+use phpDocumentor\FileSystem\FileSystemFactory;
 
 use function md5;
 
@@ -27,6 +28,9 @@ final class InitializeBuilderFromConfig
 {
     /** @var PartialsCollection<string> */
     private $partials;
+
+    /** @var FileSystemFactory */
+    private $filesystems;
 
     /**
      * @param PartialsCollection<string> $partials

@@ -17,6 +17,7 @@ use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
+use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\PackageDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
@@ -57,8 +58,12 @@ final class PackageTreeBuilder implements CompilerPassInterface
         return 'Build "packages" index';
     }
 
-    public function execute(ApiSetDescriptor $project): void
+    public function execute(DocumentationSetDescriptor $project): void
     {
+        if ($project instanceof ApiSetDescriptor === false) {
+            return;
+        }
+
         $packages = Collection::fromClassString(PackageDescriptor::class);
         $packages['\\'] = $project->getPackage();
 

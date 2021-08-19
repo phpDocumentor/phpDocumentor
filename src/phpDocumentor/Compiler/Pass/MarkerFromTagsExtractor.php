@@ -17,6 +17,7 @@ use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
+use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
 use UnexpectedValueException;
@@ -33,8 +34,12 @@ final class MarkerFromTagsExtractor implements CompilerPassInterface
         return 'Collect all markers embedded in tags';
     }
 
-    public function execute(ApiSetDescriptor $project): void
+    public function execute(DocumentationSetDescriptor $project): void
     {
+        if ($project instanceof ApiSetDescriptor === false) {
+            return;
+        }
+
         /** @var DescriptorAbstract $element */
         foreach ($project->getIndexes()->fetch('elements', new Collection()) as $element) {
             /** @var TagDescriptor[] $todos */

@@ -265,5 +265,7 @@ services:
         - { name: 'phpdoc.flow.parser', documentation_type: 'phpDocumentor\Descriptor\GuideSetDescriptor' }
 
     phpDocumentor\FlowService\Guide\RenderGuide:
+      arguments:
+        $outputFormats: !tagged_iterator phpdoc.guides.format
       tags:
         - { name: 'phpdoc.flow.transformer', documentation_type: 'phpDocumentor\Descriptor\GuideSetDescriptor' }

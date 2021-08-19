@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Writer;
 
+use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Transformer\Transformation;
@@ -45,22 +46,19 @@ class Sourcecode extends WriterAbstract
      */
     public function transform(DocumentationSetDescriptor $documentationSet, Transformation $transformation): void
     {
-        $artifact = $transformation->getTransformer()->getTarget()
-            . DIRECTORY_SEPARATOR
-            . ($transformation->getArtifact()
-                ?: 'source');
+        if ($documentationSet instanceof ApiSetDescriptor === false) {
+            return;
+        }
 
-                /** @var FileDescriptor $file */
-                foreach ($documentationSet->getFiles() as $file) {
-                    $source = $file->getSource();
-                    if ($source === null) {
-                        continue;
-                    }
-
-                    $path = $this->pathGenerator->generate($file, $transformation);
-                    $this->persistTo($transformation, $path, $source);
-                }
+        /** @var FileDescriptor $file */
+        foreach ($documentationSet->getFiles() as $file) {
+            $source = $file->getSource();
+            if ($source === null) {
+                continue;
             }
+
+            $path = $this->pathGenerator->generate($file, $transformation);
+            $this->persistTo($transformation, $path, $source);
         }
     }
 }

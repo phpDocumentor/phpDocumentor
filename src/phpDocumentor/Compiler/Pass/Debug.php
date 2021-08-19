@@ -16,6 +16,7 @@ namespace phpDocumentor\Compiler\Pass;
 use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\ApiAnalyzer;
 use phpDocumentor\Descriptor\ApiSetDescriptor;
+use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -48,8 +49,12 @@ class Debug implements CompilerPassInterface
         return 'Analyze results and write report to log';
     }
 
-    public function execute(ApiSetDescriptor $project): void
+    public function execute(DocumentationSetDescriptor $project): void
     {
+        if ($project instanceof ApiSetDescriptor === false) {
+            return;
+        }
+
         $this->analyzer->analyze($project);
         $this->log->debug((string) $this->analyzer);
     }
