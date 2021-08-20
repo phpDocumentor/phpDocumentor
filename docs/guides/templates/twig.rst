@@ -31,26 +31,6 @@ This will also make the Twig debug extension available, which provides the `dump
 
 .. _dump(): https://twig.symfony.com/doc/1.x/functions/dump.html
 
-Custom Extensions
-~~~~~~~~~~~~~~~~~
-
-Custom `Twig extensions`_ can be enabled and configured through parameters.
-
-.. _Twig extensions: https://twig.symfony.com/doc/1.x/advanced.html#creating-an-extension
-
-.. code-block:: xml
-
-    <parameter key="twig-extension">Your\Custom\Extension</parameter>
-
-    <!-- You may configure multiple extensions by repeating the parameter with different values -->
-    <parameter key="twig-extension">Your\Custom\SecondExtension</parameter>
-
-phpDocumentor will attempt to autoload the class, allowing you to use `Composer's autoloading functionality`_ to load the class.
-
-.. _Composer's autoloading functionality: https://getcomposer.org/doc/04-schema.md#autoload
-
-Your extension class may optionally implement ``phpDocumentor\Transformer\Writer\Twig\ExtensionInterface``, which will cause your constructor to be passed additional information about the project and transformation.
-
 Global Variables
 ----------------
 
