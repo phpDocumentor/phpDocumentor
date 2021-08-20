@@ -5,6 +5,8 @@
   <email>mike@phpdoc.org</email>
   <version>1.0.0</version>
   <transformations>
+    <transformation writer="twig" source="templates/default/project_index.html.twig" artifact="project_index.html"/>
+    <transformation writer="twig" query="versions" source="templates/default/version_index.html.twig" artifact="{{folder}}/index.html"/>
     <transformation writer="twig" source="templates/default/index.html.twig" artifact="index.html"/>
     <transformation writer="twig" query="files" source="templates/default/file.html.twig" />
     <transformation writer="sourcecode" query="files" source="templates/default/source/file.source.txt.twig" artifact="files/{{path}}.txt" />

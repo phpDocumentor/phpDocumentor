@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <h2>{{ project.name }}</h2>
+
+    <ul>
+    {% for version in project.versions %}
+        <li>{{ version|route }}</li>
+    {% endfor %}
+    </ul>
+{% endblock %}

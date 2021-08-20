@@ -96,6 +96,7 @@ final class InitializeBuilderFromConfig
 
         return new VersionDescriptor(
             $version->getNumber(),
+            $version->getFolder(),
             $collection
         );
     }

@@ -27,6 +27,7 @@ use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Descriptor\PackageDescriptor;
 use phpDocumentor\Descriptor\PropertyDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
+use phpDocumentor\Descriptor\VersionDescriptor;
 use phpDocumentor\Reflection\Fqsen;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
@@ -60,6 +61,13 @@ class Router
      */
     public function generate(object $node): string
     {
+        if ($node instanceof VersionDescriptor) {
+            return $this->urlGenerator->generate(
+                'version',
+                ['number' => $node->getFolder()]
+            );
+        }
+
         if ($node instanceof DocumentDescriptor) {
             return $this->urlGenerator->generate(
                 'document',

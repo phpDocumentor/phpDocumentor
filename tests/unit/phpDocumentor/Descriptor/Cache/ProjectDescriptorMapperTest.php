@@ -78,7 +78,7 @@ final class ProjectDescriptorMapperTest extends TestCase
             $apiDescriptor->addFile($fileDescriptor);
         }
 
-        $versionDescriptor = new VersionDescriptor('1.0.0', new Collection([$apiDescriptor]));
+        $versionDescriptor = new VersionDescriptor('1.0.0', new Collection([$apiDescriptor]), new Collection([$apiDescriptor]));
         $projectDescriptor = new ProjectDescriptor('project');
         $projectDescriptor->getVersions()->add($versionDescriptor);
 

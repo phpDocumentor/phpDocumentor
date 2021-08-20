@@ -21,6 +21,7 @@ use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\VersionDescriptor;
 use phpDocumentor\Path;
 use phpDocumentor\Reflection\DocBlock\Tags\Reference;
 use phpDocumentor\Reflection\Fqsen;
@@ -294,8 +295,8 @@ final class LinkRenderer
             return (string) $node;
         }
 
-        if ($node instanceof Descriptor) {
-            Assert::isInstanceOf($node, DescriptorAbstract::class);
+        if ($node instanceof Descriptor || $node instanceof VersionDescriptor) {
+            Assert::isInstanceOfAny($node, [DescriptorAbstract::class, VersionDescriptor::class]);
             try {
                 $generatedUrl = $this->router->generate($node);
             } catch (InvalidArgumentException $e) {
