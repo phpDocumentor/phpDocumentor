@@ -29,9 +29,6 @@ final class Settings
     /** @var bool */
     private $includeSource = false;
 
-    /** @var string[] */
-    private $markers = [];
-
     /**
      * A flexible list of settings that can be used by Writers, templates and more as additional settings.
      *
@@ -88,22 +85,6 @@ final class Settings
     public function shouldIncludeSource(): bool
     {
         return $this->includeSource;
-    }
-
-    /**
-     * @param string[] $markers
-     */
-    public function setMarkers(array $markers): void
-    {
-        $this->markers = $markers;
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getMarkers(): array
-    {
-        return $this->markers;
     }
 
     /**

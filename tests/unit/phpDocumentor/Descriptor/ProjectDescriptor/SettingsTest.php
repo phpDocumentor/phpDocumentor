@@ -23,23 +23,6 @@ use PHPUnit\Framework\TestCase;
 final class SettingsTest extends TestCase
 {
     /**
-     * @covers ::getMarkers
-     * @covers ::setMarkers
-     */
-    public function testKeepingTrackOfMarkers(): void
-    {
-        $expected = ['TODO', 'FIXME'];
-
-        $settings = new Settings();
-
-        $this->assertSame([], $settings->getMarkers());
-
-        $settings->setMarkers($expected);
-
-        $this->assertSame($expected, $settings->getMarkers());
-    }
-
-    /**
      * @covers ::shouldIncludeSource
      * @covers ::includeSource
      * @covers ::excludeSource
