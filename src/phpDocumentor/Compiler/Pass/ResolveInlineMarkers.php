@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Compiler\Pass;
 
 use phpDocumentor\Compiler\CompilerPassInterface;
+use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 
@@ -41,32 +42,40 @@ final class ResolveInlineMarkers implements CompilerPassInterface
      */
     public function execute(ProjectDescriptor $project): void
     {
-        $markerTerms = $project->getSettings()->getMarkers();
+        ///This looks ugly, when versions are introduced we get rid of these 2 foreach loops.
+        foreach ($project->getVersions() as $version) {
+            foreach ($version->getDocumentationSets() as $documentationSet) {
+                if ($documentationSet instanceof ApiSetDescriptor === false) {
+                    continue;
+                }
 
-        /** @var FileDescriptor $file */
-        foreach ($project->getFiles() as $file) {
-            $matches     = [];
-            $source = $file->getSource() ?? '';
+                $markerTerms = $documentationSet->getSettings()['markers'];
 
-            preg_match_all(
-                '~//[\s]*(' . implode('|', $markerTerms) . ')\:?[\s]*(.*)~',
-                $source,
-                $matches,
-                PREG_SET_ORDER | PREG_OFFSET_CAPTURE
-            );
+                /** @var FileDescriptor $file */
+                foreach ($project->getFiles() as $file) {
+                    $matches = [];
+                    $source  = $file->getSource() ?? '';
 
-            foreach ($matches as $match) {
-                [$before] = str_split($source, $match[1][1]); // fetches all the text before the match
+                    preg_match_all(
+                        '~//[\s]*(' . implode('|', $markerTerms) . ')\:?[\s]*(.*)~',
+                        $source,
+                        $matches,
+                        PREG_SET_ORDER | PREG_OFFSET_CAPTURE
+                    );
 
-                $lineNumber = strlen($before) - strlen(str_replace("\n", '', $before)) + 1;
+                    foreach ($matches as $match) {
+                        [$before] = str_split($source, $match[1][1]); // fetches all the text before the match
 
-                $file->getMarkers()->add(
-                    [
-                        'type' => trim($match[1][0], '@'),
-                        'line' => $lineNumber,
-                        'message' => $match[2][0],
-                    ]
-                );
+                        $lineNumber = strlen($before) - strlen(str_replace("\n", '', $before)) + 1;
+                        $file->getMarkers()->add(
+                            [
+                                'type' => trim($match[1][0], '@'),
+                                'line' => $lineNumber,
+                                'message' => $match[2][0],
+                            ]
+                        );
+                    }
+                }
             }
         }
     }
