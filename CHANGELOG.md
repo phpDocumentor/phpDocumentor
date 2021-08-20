@@ -1,3 +1,16 @@
+2021-08-20: Version 3.1.1
+
+# Fixed
+- Add workaround for phar distribution and plantuml, thanks to [Jaapio]
+- XML template invalid XML due to missing marker.type, #2986, thanks to [Jaapio]
+- Class's traits not showing up in docs, #2984, thanks to [Jaapio]
+- Files with forced global namespace fail with "" is not a valid Fqsen, #2967, thanks to [Jaapio]
+- XML output missing method tags, #2965, thanks to [Jaapio]
+
+# CI
+- Updated code style checks, thanks to [jrfnl]
+
+
 2021-07-07: Version 3.1.0
 
 # ADDED
