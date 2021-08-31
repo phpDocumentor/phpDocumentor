@@ -37,7 +37,7 @@ jobs:
     - name: release shim
       uses: benc-uk/workflow-dispatch@v1
       with:
-        workflow: release
+        workflow: Release
         repo: phpDocumentor/shim
         token: ${{ secrets.BOT_TOKEN }}
         inputs: '{ "tag": "${{ github.event.release.tag_name }}"}'
