@@ -34,6 +34,13 @@ jobs:
       env:
         GHR_PATH: build/
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: release shim
+      uses: benc-uk/workflow-dispatch@v1
+      with:
+        workflow: release
+        repo: phpDocumentor/shim
+        token: ${{ secrets.BOT_TOKEN }}
+        inputs: '{ "tag": "${{ github.event.release.tag_name }}"}'
 
   release-docker:
       runs-on: ubuntu-latest
