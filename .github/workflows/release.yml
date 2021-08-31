@@ -39,6 +39,7 @@ jobs:
       with:
         workflow: Release
         repo: phpDocumentor/shim
+        ref: '3.x'
         token: ${{ secrets.BOT_TOKEN }}
         inputs: '{ "tag": "${{ github.event.release.tag_name }}"}'
 
