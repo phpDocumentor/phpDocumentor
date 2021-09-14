@@ -1,10 +1,11 @@
 # No need to version the binary files of other tools
-bin/commonmark
+bin/commonmark*
 bin/jsonlint*
 bin/validate-json*
 bin/phpstan
+bin/php-parse*
 bin/var-dump-server
-bin/plantuml
+bin/plantuml*
 
 # Build folder and vendor folder are generated code; no need to version this
 build/
