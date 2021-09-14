@@ -147,7 +147,7 @@ class Environment
 
     public function registerReference(Reference $reference): void
     {
-        $this->references[$reference->getName()] = $reference;
+        $this->references[$reference->getRole()] = $reference;
     }
 
     public function resolve(string $section, string $data): ?ResolvedReference
@@ -202,17 +202,22 @@ class Environment
     /**
      * @return string[]|null
      */
-    public function found(string $section, string $data): ?array
+    public function found(string $section, array $data): ?array
     {
-        if (isset($this->references[$section])) {
-            $reference = $this->references[$section];
+        $role = $section;
+        if ($data['domain'] ?? '') {
+            $role = $data['domain'] . ':' . $role;
+        }
 
-            $reference->found($this, $data);
+        if (isset($this->references[$role])) {
+            $reference = $this->references[$role];
+
+            $reference->found($this, $data['url']);
 
             return null;
         }
 
-        $this->addMissingReferenceSectionError($section);
+        $this->addMissingReferenceSectionError($role);
 
         return null;
     }

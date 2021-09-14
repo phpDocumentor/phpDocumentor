@@ -79,14 +79,14 @@ final class RenderHandler
     }
 
     private function render(
-        GuideSetDescriptor $documtationSet,
+        GuideSetDescriptor $documentationSet,
         Environment $environment,
         FilesystemInterface $destination
     ): void {
         $this->initReferences($environment, $this->references);
-        foreach ($documtationSet->getDocuments() as $file => $descriptor) {
+        foreach ($documentationSet->getDocuments() as $file => $descriptor) {
             $document = $descriptor->getDocumentNode();
-            $target = $documtationSet->getOutput() . '/' . $this->router->generate($descriptor);
+            $target = $documentationSet->getOutput() . '/' . $this->router->generate($descriptor);
 
             $directory = dirname($target);
 

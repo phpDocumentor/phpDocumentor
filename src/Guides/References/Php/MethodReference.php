@@ -11,9 +11,10 @@ declare(strict_types=1);
  * @link https://phpdoc.org
  */
 
-namespace phpDocumentor\Guides\References;
+namespace phpDocumentor\Guides\References\Php;
 
 use phpDocumentor\Guides\Environment;
+use phpDocumentor\Guides\References\ResolvedReference;
 use RuntimeException;
 
 use function explode;
@@ -24,15 +25,17 @@ use function strpos;
 /**
  * @link https://www.sphinx-doc.org/en/master/usage/restructuredtext/domains.html#python-roles
  */
-class PhpMethodReference extends Reference
+final class MethodReference extends Reference
 {
     public function getName(): string
     {
-        return 'php:meth';
+        return 'meth';
     }
 
     public function resolve(Environment $environment, string $data): ResolvedReference
     {
+        // TODO: The location of the resolved method or class should come from the TOC and not like this
+
         $className = explode('::', $data)[0];
         $className = str_replace('\\\\', '\\', $className);
 
@@ -43,11 +46,12 @@ class PhpMethodReference extends Reference
         }
 
         $methodName = explode('::', $data)[1];
+        $classPath = sprintf('%s/classes/%s.html', '', str_replace('\\', '-', $data));
 
         return new ResolvedReference(
             $environment->getCurrentFileName(),
             $methodName . '()',
-            sprintf('%s/%s.html#method_%s', '', str_replace('\\', '/', $className), $methodName),
+            sprintf('%s.html#method_%s', $classPath, $methodName),
             [],
             [
                 'title' => sprintf('%s::%s()', $className, $methodName),

@@ -11,30 +11,34 @@ declare(strict_types=1);
  * @link https://phpdoc.org
  */
 
-namespace phpDocumentor\Guides\References;
+namespace phpDocumentor\Guides\References\Php;
 
 use phpDocumentor\Guides\Environment;
+use phpDocumentor\Guides\References\ResolvedReference;
 
 use function sprintf;
 use function str_replace;
-use function strtolower;
 
 /**
  * @link https://docs.readthedocs.io/en/stable/guides/cross-referencing-with-sphinx.html
+ * @link https://www.sphinx-doc.org/en/master/usage/restructuredtext/domains.html
  */
-class PhpFunctionReference extends Reference
+final class ClassReference extends Reference
 {
     public function getName(): string
     {
-        return 'php:func';
+        return 'class';
     }
 
     public function resolve(Environment $environment, string $data): ResolvedReference
     {
+        // TODO: The location of the resolved class should come from the TOC and not like this
+        $classPath = sprintf('%s/classes/%s.html', '', str_replace('\\', '-', $data));
+
         return new ResolvedReference(
             $environment->getCurrentFileName(),
             $data,
-            sprintf('%s/function.%s.php', '', str_replace('_', '-', strtolower($data))),
+            $classPath,
             [],
             ['title' => $data]
         );

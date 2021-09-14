@@ -130,11 +130,10 @@ class SpanParser
     private function replaceReferences(string $span): string
     {
         return preg_replace_callback(
-            '/:([a-z0-9]+):`(.+)`/mUsi',
+            '/:(?:([a-z0-9]+):)?([a-z0-9]+):`(.+)`/mUsi',
             function ($match) {
-                $section = $match[1];
+                [, $domain, $section, $url] = $match;
 
-                $url = $match[2];
                 $id = $this->generateId();
                 $anchor = null;
 
@@ -149,18 +148,17 @@ class SpanParser
                     $anchor = $match[2];
                 }
 
-                $this->addToken(
-                    SpanToken::TYPE_REFERENCE,
-                    $id,
-                    [
-                        'section' => $section,
-                        'url' => $url,
-                        'text' => $text,
-                        'anchor' => $anchor,
-                    ]
-                );
+                $tokenData = [
+                    'domain' => $domain,
+                    'section' => $section,
+                    'url' => $url,
+                    'text' => $text,
+                    'anchor' => $anchor,
+                ];
 
-                $this->environment->found($section, $url);
+                $this->addToken(SpanToken::TYPE_REFERENCE, $id, $tokenData);
+
+                $this->environment->found($section, $tokenData);
 
                 return $id;
             },

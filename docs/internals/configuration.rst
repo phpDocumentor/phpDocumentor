@@ -7,8 +7,8 @@ Introduction
 phpDocumentor's configuration module provides the application with the ability to load configuration from disk and
 augments that with the information provided by the user when they started phpDocumentor.
 
-In doing this it populates an entity of class `phpDocumentor\Configuration\Configuration` and adjusts this when newer
-configuration options become available.
+In doing this it populates an entity of class :php:class:`phpDocumentor\Configuration\Configuration` and adjusts this
+when newer configuration options become available.
 
     Please note: this is a mutable object that may change during the life cycle of the application by design.
 
