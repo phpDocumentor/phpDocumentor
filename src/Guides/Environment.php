@@ -200,7 +200,8 @@ class Environment
     }
 
     /**
-     * @param string[] $data
+     * @param array{anchor: ?string, domain: string, section: string, text: ?string, url: ?string} $data
+     *
      * @return string[]|null
      */
     public function found(string $section, array $data): ?array
