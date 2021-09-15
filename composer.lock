@@ -178,21 +178,17 @@
         },
         {
             "name": "jawira/plantuml",
-            "version": "v1.59.0",
+            "version": "v1.60.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jawira/plantuml.git",
-                "reference": "87dfd0ef5651f0591fb5909b9b29fd9d14bab8d5"
+                "reference": "3cd135af543de96db9c8bae155e36e0e7322e61e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jawira/plantuml/zipball/87dfd0ef5651f0591fb5909b9b29fd9d14bab8d5",
-                "reference": "87dfd0ef5651f0591fb5909b9b29fd9d14bab8d5",
+                "url": "https://api.github.com/repos/jawira/plantuml/zipball/3cd135af543de96db9c8bae155e36e0e7322e61e",
+                "reference": "3cd135af543de96db9c8bae155e36e0e7322e61e",
                 "shasum": ""
-            },
-            "suggest": {
-                "pds/skeleton": "Standard PHP package skeleton",
-                "phing/phing": "PHP Build Tool"
             },
             "bin": [
                 "bin/plantuml"
@@ -210,15 +206,16 @@
             "description": "Provides PlantUML integration: plantuml executable and plantuml.jar",
             "keywords": [
                 "diagram",
+                "jar",
                 "plantuml",
                 "plantuml.jar",
                 "uml"
             ],
             "support": {
                 "issues": "https://github.com/jawira/plantuml/issues",
-                "source": "https://github.com/jawira/plantuml/tree/v1.59.0"
+                "source": "https://github.com/jawira/plantuml/tree/v1.60.0"
             },
-            "time": "2021-07-30T13:00:53+00:00"
+            "time": "2021-09-03T13:00:59+00:00"
         },
         {
             "name": "jean85/pretty-package-versions",
