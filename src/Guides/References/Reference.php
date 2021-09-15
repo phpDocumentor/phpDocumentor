@@ -28,9 +28,29 @@ use phpDocumentor\Guides\Environment;
 abstract class Reference
 {
     /**
+     * Returns the domain for the role of this reference, or empty in case no domain was detected.
+     *
+     * @link https://www.sphinx-doc.org/en/master/usage/restructuredtext/domains.html
+     */
+    public function getDomain(): string
+    {
+        return '';
+    }
+
+    /**
      * The name of the reference, i.e the :something:
      */
     abstract public function getName(): string;
+
+    public function getRole(): string
+    {
+        $role = $this->getName();
+        if ($this->getDomain()) {
+            $role = $this->getDomain() . ':' . $role;
+        }
+
+        return $role;
+    }
 
     /**
      * Resolve the reference and returns an array

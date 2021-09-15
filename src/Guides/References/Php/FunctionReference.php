@@ -11,35 +11,27 @@ declare(strict_types=1);
  * @link https://phpdoc.org
  */
 
-namespace phpDocumentor\Guides\References;
+namespace phpDocumentor\Guides\References\Php;
 
 use phpDocumentor\Guides\Environment;
-
-use function sprintf;
-use function str_replace;
-use function strrchr;
-use function substr;
+use phpDocumentor\Guides\References\ResolvedReference;
+use RuntimeException;
 
 /**
  * @link https://docs.readthedocs.io/en/stable/guides/cross-referencing-with-sphinx.html
  */
-class NamespaceReference extends Reference
+final class FunctionReference extends Reference
 {
     public function getName(): string
     {
-        return 'php:namespace';
+        return 'func';
     }
 
     public function resolve(Environment $environment, string $data): ResolvedReference
     {
-        $className = str_replace('\\\\', '\\', $data);
-
-        return new ResolvedReference(
-            $environment->getCurrentFileName(),
-            substr(strrchr($className, '\\'), 1),
-            sprintf('%s/%s.html', '', str_replace('\\', '/', $className)),
-            [],
-            ['title' => $className]
+        throw new RuntimeException(
+            'Not supported until Guides can read the API Documentation TOC because '
+            . 'functions do not have their own files but are documented in their file\'s document.'
         );
     }
 }

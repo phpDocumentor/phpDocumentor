@@ -183,7 +183,12 @@ abstract class SpanNodeRenderer implements NodeRenderer, SpanRenderer
 
     private function renderReference(SpanToken $spanToken, string $span): string
     {
-        $reference = $this->environment->resolve($spanToken->get('section'), $spanToken->get('url'));
+        $role = $spanToken->get('section');
+        if ($spanToken->get('domain')) {
+            $role = $spanToken->get('domain') . ':' . $role;
+        }
+
+        $reference = $this->environment->resolve($role, $spanToken->get('url'));
 
         if ($reference === null) {
             $this->environment->addInvalidLink(new InvalidLink($spanToken->get('url')));
