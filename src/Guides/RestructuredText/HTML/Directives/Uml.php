@@ -44,6 +44,7 @@ final class Uml extends Directive
 
         $value = '';
         $caption = '';
+
         if ($node instanceof CodeNode) {
             $caption = $data;
             $value = $node->getValue();
