@@ -12,7 +12,10 @@ use phpDocumentor\Guides\Nodes\UmlNode;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive;
 use phpDocumentor\Guides\RestructuredText\Parser;
 
+use function dirname;
 use function explode;
+use function sprintf;
+use function str_replace;
 
 /**
  * Renders a uml diagram, example:

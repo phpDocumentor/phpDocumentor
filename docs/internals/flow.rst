@@ -16,8 +16,6 @@ Activity Diagram.
    :Transform AST into artifacts;
    stop
 
-.. uml:: my-external-file.puml
-
 This three step process enables phpDocumentor to break down a project into its most basic components, called Structural
 Elements, and depending on which template was selected generate various types of output.
 
