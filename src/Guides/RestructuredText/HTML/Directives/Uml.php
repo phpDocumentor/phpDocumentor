@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\HTML\Directives;
 
+use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Nodes\CodeNode;
 use phpDocumentor\Guides\Nodes\Node;
+use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\Nodes\UmlNode;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive;
 use phpDocumentor\Guides\RestructuredText\Parser;
@@ -26,7 +28,7 @@ use function explode;
  *    :Transform AST into artifacts;
  *    stop
  */
-class Uml extends Directive
+final class Uml extends Directive
 {
     public function getName(): string
     {
@@ -35,16 +37,27 @@ class Uml extends Directive
 
     public function process(Parser $parser, ?Node $node, string $variable, string $data, array $options): void
     {
-        if ($node instanceof CodeNode === false) {
-            return;
+        $environment = $parser->getEnvironment();
+
+        $value = '';
+        $caption = '';
+        if ($node instanceof CodeNode) {
+            $caption = $data;
+            $value = $node->getValue();
         }
 
-        $node = new UmlNode($node->getValue());
+        if ($node instanceof SpanNode) {
+            $value = $this->loadExternalUmlFile($environment, $node->getValue());
+            if ($value === null) {
+                return;
+            }
+        }
+
+        $node = new UmlNode($value);
         $node->setClasses(explode(' ', $options['classes'] ?? ''));
-        $node->setCaption($data);
+        $node->setCaption($caption);
 
         if ($variable !== '') {
-            $environment = $parser->getEnvironment();
             $environment->setVariable($variable, $node);
         } else {
             $document = $parser->getDocument();
@@ -55,5 +68,26 @@ class Uml extends Directive
     public function wantCode(): bool
     {
         return true;
+    }
+
+    private function loadExternalUmlFile(Environment $environment, string $path): ?string
+    {
+        $fileName = sprintf(
+            '%s/%s',
+            dirname($environment->getCurrentAbsolutePath()),
+            $path
+        );
+
+        if (!$environment->getOrigin()->has($fileName)) {
+            $environment->addError(
+                sprintf('Tried to include "%s" as a diagram but the file could not be found', $fileName)
+            );
+
+            return null;
+        }
+        $value = $environment->getOrigin()->read($fileName);
+        $value = str_replace(['@startuml', '@enduml'], '', $value);
+
+        return $value;
     }
 }
