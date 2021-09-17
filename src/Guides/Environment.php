@@ -16,6 +16,7 @@ namespace phpDocumentor\Guides;
 use InvalidArgumentException;
 use League\Flysystem\FilesystemInterface;
 use phpDocumentor\Guides\Meta\Entry;
+use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\References\Reference;
 use phpDocumentor\Guides\References\ResolvedReference;
 use Psr\Log\LoggerInterface;
@@ -277,6 +278,14 @@ class Environment
         }
 
         return $default;
+    }
+
+    /**
+     * @return array<string|SpanNode>
+     */
+    public function getVariables(): array
+    {
+        return $this->variables;
     }
 
     public function setLink(string $name, string $url): void

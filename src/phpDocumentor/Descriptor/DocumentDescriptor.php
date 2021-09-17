@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Guides\Nodes\DocumentNode;
+use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\Nodes\TocNode;
 
 final class DocumentDescriptor implements Descriptor
@@ -42,11 +43,15 @@ final class DocumentDescriptor implements Descriptor
     /** @var string[] */
     private $links;
 
+    /** @var array<string|SpanNode> */
+    private $variables;
+
     /**
      * @param string[][] $titles
      * @param TocNode[] $tocs
      * @param string[] $depends
      * @param string[] $links
+     * @param array<string|SpanNode> $variables
      */
     public function __construct(
         DocumentNode $documentNode,
@@ -56,7 +61,8 @@ final class DocumentDescriptor implements Descriptor
         array $titles,
         array $tocs,
         array $depends,
-        array $links
+        array $links,
+        array $variables
     ) {
         $this->documentNode = $documentNode;
         $this->hash = $hash;
@@ -66,6 +72,7 @@ final class DocumentDescriptor implements Descriptor
         $this->tocs = $tocs;
         $this->depends = $depends;
         $this->links = $links;
+        $this->variables = $variables;
     }
 
     public function getDocumentNode(): DocumentNode
@@ -110,6 +117,19 @@ final class DocumentDescriptor implements Descriptor
     public function getLinks(): array
     {
         return $this->links;
+    }
+
+    /**
+     * Returns variables collected during the parsing of s document.
+     *
+     * The 'replace' directive, for example, stores the replacement as a variable on the Document. To be able to
+     * access the variables collected during parsing, we can store a series of variables here.
+     *
+     * @return SpanNode[]|string[]
+     */
+    public function getVariables(): array
+    {
+        return $this->variables;
     }
 
     public function getName(): string
