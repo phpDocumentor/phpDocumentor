@@ -117,7 +117,8 @@ final class ParseFileHandler
                 $document->getTitles(),
                 $document->getTocs(),
                 $environment->getDependencies(),
-                $environment->getLinks()
+                $environment->getLinks(),
+                $environment->getVariables()
             )
         );
 

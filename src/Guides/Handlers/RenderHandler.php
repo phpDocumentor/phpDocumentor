@@ -15,6 +15,7 @@ namespace phpDocumentor\Guides\Handlers;
 
 use IteratorAggregate;
 use League\Flysystem\FilesystemInterface;
+use phpDocumentor\Descriptor\DocumentDescriptor;
 use phpDocumentor\Descriptor\GuideSetDescriptor;
 use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Metas;
@@ -84,6 +85,8 @@ final class RenderHandler
         FilesystemInterface $destination
     ): void {
         $this->initReferences($environment, $this->references);
+
+        /** @var DocumentDescriptor $descriptor */
         foreach ($documentationSet->getDocuments() as $file => $descriptor) {
             $document = $descriptor->getDocumentNode();
             $target = $documentationSet->getOutput() . '/' . $this->router->generate($descriptor);
@@ -94,6 +97,9 @@ final class RenderHandler
             $environment->setCurrentDirectory($directory);
             foreach ($descriptor->getLinks() as $link => $url) {
                 $environment->setLink($link, $url);
+            }
+            foreach ($descriptor->getVariables() as $key => $value) {
+                $environment->setVariable($key, $value);
             }
 
             /** @var FullDocumentNodeRenderer $renderer */
