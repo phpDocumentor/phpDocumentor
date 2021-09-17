@@ -99,6 +99,9 @@ class Environment
     /** @var string */
     private $outputFolder;
 
+    /** @var string */
+    private $currentAbsolutePath;
+
     public function __construct(
         Configuration $configuration,
         Renderer $renderer,
@@ -502,5 +505,30 @@ class Environment
     public function getNodeRendererFactory(): NodeRenderers\NodeRendererFactory
     {
         return $this->nodeRendererFactory;
+    }
+
+    /**
+     * Register the current file's absolute path on the Origin file system.
+     *
+     * You would more or less expect getCurrentFileName to return this information; but that filename does
+     * not return the absolute position on Origin but the relative path from the Documentation Root.
+     */
+    public function setCurrentAbsolutePath(string $path): void
+    {
+        $this->currentAbsolutePath = $path;
+    }
+
+    /**
+     * Return the current file's absolute path on the Origin file system.
+     *
+     * In order to load files relative to the current file (such as embedding UML diagrams) the environment
+     * must expose what the absolute path relative to the Origin is.
+     *
+     * @see self::setCurrentAbsolutePath() for more information
+     * @see self::getOrigin() for the filesystem on which to use this path
+     */
+    public function getCurrentAbsolutePath(): string
+    {
+        return $this->currentAbsolutePath;
     }
 }

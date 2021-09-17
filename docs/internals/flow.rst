@@ -41,47 +41,7 @@ In the subchapters I will provide more detail on the individual sections and sho
 this diagram (such as *Boot the application*, *Add File Representation to Project* and other activities that are
 surrounded by an additional border)
 
-.. uml::
-   start
-
-   :Boot the application|
-
-   partition "Parse files into an AST" {
-       :Set parsing parameters;
-       :Find project files;
-       :Remove stale items from Descriptor Cache;
-       :Load Descriptor Cache;
-
-       while (There are unprocessed files?) is (Yes)
-           if (File is cached) then (No)
-               :Add File Representation to Project|
-           else (Yes)
-               :Load Cached File;
-           endif;
-       endwhile (No);
-
-       :Write partial texts to Project;
-       :Save Cache to Disk;
-   }
-
-   partition "Transform AST into artifacts" {
-       :Load Cache From Disk;
-       :Load Templates;
-       :Load Transformations from Templates;
-
-       while (For each Compiler Pass)
-               if (Pass is "Transformer")
-                   :Transform all files|
-               elseif (Pass is "Linker")
-                   :Link FQSENs to Descriptors|
-               else
-                 :Execute compiler pass specific behaviour;
-               endif;
-       endwhile;
-
-   }
-
-   stop
+.. uml:: flow.puml
 
 Boot the Application
 ~~~~~~~~~~~~~~~~~~~~

@@ -81,14 +81,14 @@ final class ParseFileHandler
             $command->getOrigin(),
             $this->metas
         );
-        $environment->setCurrentFileName($file);
-        $environment->setCurrentDirectory($directory);
-
         $fileAbsolutePath = $this->buildPathOnFileSystem(
             $file,
             $directory,
             $configuration->getSourceFileExtension()
         );
+        $environment->setCurrentFileName($file);
+        $environment->setCurrentAbsolutePath($fileAbsolutePath);
+        $environment->setCurrentDirectory($directory);
 
         $this->logger->info(sprintf('Parsing %s', $fileAbsolutePath));
         $document = null;

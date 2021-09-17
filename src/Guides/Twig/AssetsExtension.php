@@ -74,8 +74,12 @@ final class AssetsExtension extends AbstractExtension
     /**
      * @param mixed[] $context
      */
-    public function renderNode(array $context, Node $node): string
+    public function renderNode(array $context, ?Node $node): string
     {
+        if ($node === null) {
+            return '';
+        }
+
         $environment = $context['env'] ?? null;
         if (!$environment instanceof Environment) {
             throw new RuntimeException('Environment must be set in the twig global state to render nodes');

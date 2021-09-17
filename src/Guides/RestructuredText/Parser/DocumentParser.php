@@ -505,9 +505,15 @@ class DocumentParser
 
             if ($currentDirective !== null) {
                 try {
+                    // if a Directive is not followed by a CodeNode; this means it totally relies on
+                    // its data and we should not process the $node as part of handling this directive
+                    $directiveNode = $node instanceof CodeNode
+                            ? $node
+                            : new SpanNode($this->environment, $this->directive->getData());
+
                     $currentDirective->process(
                         $this->parser,
-                        $node,
+                        $directiveNode,
                         $this->directive->getVariable(),
                         $this->directive->getData(),
                         $this->directive->getOptions()
@@ -527,7 +533,9 @@ class DocumentParser
                 }
             }
 
-            $node = null;
+            if ($node instanceof CodeNode) {
+                $node = null;
+            }
         }
 
         $this->directive = null;
