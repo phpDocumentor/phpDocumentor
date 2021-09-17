@@ -377,6 +377,20 @@ jobs:
       with:
         composer-options: --optimize-autoloader
 
+    # Retry composer step again because of: https://github.com/ramsey/composer-install/issues/79
+    - name: Install Composer dependencies & cache dependencies
+      if: ${{ failure() }}
+      uses: "ramsey/composer-install@v1"
+      with:
+        composer-options: --optimize-autoloader
+
+      # Retry composer step a third time because of: https://github.com/ramsey/composer-install/issues/79
+    - name: Install Composer dependencies & cache dependencies
+      if: ${{ failure() }}
+      uses: "ramsey/composer-install@v1"
+      with:
+        composer-options: --optimize-autoloader
+
     - name: Install PHAR dependencies
       env:
         GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
