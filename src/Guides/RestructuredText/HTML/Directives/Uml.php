@@ -7,7 +7,6 @@ namespace phpDocumentor\Guides\RestructuredText\HTML\Directives;
 use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Nodes\CodeNode;
 use phpDocumentor\Guides\Nodes\Node;
-use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\Nodes\UmlNode;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive;
 use phpDocumentor\Guides\RestructuredText\Parser;
