@@ -50,8 +50,8 @@ final class Uml extends Directive
             $value = $node->getValue();
         }
 
-        if ($node instanceof SpanNode) {
-            $value = $this->loadExternalUmlFile($environment, $node->getValue());
+        if ($node instanceof CodeNode === false && $data) {
+            $value = $this->loadExternalUmlFile($environment, $data);
             if ($value === null) {
                 return;
             }
