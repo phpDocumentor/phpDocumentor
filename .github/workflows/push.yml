@@ -87,14 +87,12 @@ jobs:
     - name: Install PHAR dependencies
       env:
         GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: phive --no-progress install --copy --trust-gpg-keys ${{ env.phiveGPGKeys }} --force-accept-unsigned phpunit scrutinizer-ci/ocular
+      run: phive --no-progress install --copy --trust-gpg-keys ${{ env.phiveGPGKeys }} --force-accept-unsigned phpunit
 
     - name: PHPUnit
       uses: docker://phpdoc/phpunit-ga:latest
       with:
         args: --testsuite=unit
-    - name: Upload to Scrutinizer
-      run: tools/ocular code-coverage:upload --format=php-clover build/logs/clover.xml
     - name: Quick check code coverage level
       run: php tests/coverage-checker.php 70
 
