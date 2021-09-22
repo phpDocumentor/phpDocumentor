@@ -9,7 +9,6 @@
 CHANGELOG.md export-ignore
 CONTRIBUTING.md export-ignore
 README.md export-ignore
-behat.yml export-ignore
 box.json export-ignore
 phpdoc.dist.xml export-ignore
 phpmd.xml.dist export-ignore

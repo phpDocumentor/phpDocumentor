@@ -5,9 +5,3 @@ services:
     user: ${CURRENT_UID}
     volumes: [".:/opt/phpdoc"]
     working_dir: "/opt/phpdoc"
-
-  behat:
-    build: .
-    volumes: [".:/opt/phpdoc"]
-    working_dir: "/opt/phpdoc"
-    entrypoint: ["php", "./tools/behat"]
