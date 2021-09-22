@@ -103,8 +103,9 @@ final class AssetsExtension extends AbstractExtension
             return $path;
         }
 
-        $sourcePath = $environment->absoluteRelativePath($path);
+        $sourcePath = $environment->getCurrentAbsolutePath() . '/' . $path;
         $outputPath = $environment->outputUrl($path);
+
         Assert::string($outputPath);
         if ($environment->getOrigin()->has($sourcePath) === false) {
             $this->logger->error(sprintf('Image reference not found "%s"', $sourcePath));
@@ -119,7 +120,11 @@ final class AssetsExtension extends AbstractExtension
             return $outputPath;
         }
 
-        $destination->put($outputPath, $fileContents);
+
+        $result = $destination->put($outputPath, $fileContents);
+        if ($result === false) {
+            $this->logger->error(sprintf('Unable to write file "%s"', $outputPath));
+        }
 
         return $outputPath;
     }

@@ -22,6 +22,7 @@ use phpDocumentor\Guides\Configuration;
 use phpDocumentor\Guides\Formats\Format;
 use phpDocumentor\Guides\RenderCommand;
 use phpDocumentor\Guides\Renderer;
+use phpDocumentor\Parser\FlySystemFactory;
 use phpDocumentor\Transformer\Transformation;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Stopwatch\Stopwatch;
@@ -46,17 +47,23 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
 
     /** @var iterable<Format> */
     private $outputFormats;
+    /**
+     * @var FlySystemFactory
+     */
+    private $flySystemFactory;
 
     /** @param iterable<Format> $outputFormats */
     public function __construct(
         Renderer $renderer,
         LoggerInterface $logger,
         CommandBus $commandBus,
+        FlySystemFactory $flySystemFactory,
         iterable $outputFormats
     ) {
         $this->logger = $logger;
         $this->commandBus = $commandBus;
         $this->renderer = $renderer;
+        $this->flySystemFactory = $flySystemFactory;
         $this->outputFormats = $outputFormats;
     }
 
@@ -95,19 +102,18 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
     ): void {
         $dsn = $documentationSet->getSource()->dsn();
         $stopwatch = $this->startRenderingSetMessage($dsn);
+        $origin = $this->flySystemFactory->create($dsn);
 
         $this->renderer->initialize($project, $documentationSet, $transformation);
 
-        $configuration = new Configuration(
-            $documentationSet->getInputFormat(),
-            $this->outputFormats
-        );
+        $configuration = new Configuration($documentationSet->getInputFormat(), $this->outputFormats);
         $configuration->setOutputFolder($documentationSet->getOutput());
 
         $this->commandBus->handle(
             new RenderCommand(
                 $documentationSet,
                 $configuration,
+                $origin,
                 $transformation->getTransformer()->destination()
             )
         );
