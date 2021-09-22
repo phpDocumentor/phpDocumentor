@@ -107,13 +107,15 @@ final class ParseFileHandler
             return;
         }
 
+        $title = $document->getTitle() ? $document->getTitle()->getValueString() : '';
+
         $command->getDocumentationSet()->addDocument(
             $file,
             new DocumentDescriptor(
                 $document,
                 $document->getHash(),
                 $file,
-                $document->getTitle()->getValueString(),
+                $title,
                 $document->getTitles(),
                 $document->getTocs(),
                 $environment->getDependencies(),
@@ -140,7 +142,7 @@ final class ParseFileHandler
         $this->metas->set(
             $file,
             $url,
-            $document->getTitle()->getValueString(),
+            $title,
             $document->getTitles(),
             $tocs,
             (int) filemtime($fileAbsolutePath),
