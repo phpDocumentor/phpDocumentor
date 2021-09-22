@@ -120,7 +120,6 @@ final class AssetsExtension extends AbstractExtension
             return $outputPath;
         }
 
-
         $result = $destination->put($outputPath, $fileContents);
         if ($result === false) {
             $this->logger->error(sprintf('Unable to write file "%s"', $outputPath));

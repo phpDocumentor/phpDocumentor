@@ -31,6 +31,7 @@ use function array_merge;
 use function dirname;
 use function get_class;
 use function iterator_to_array;
+use function str_replace;
 
 final class RenderHandler
 {
@@ -92,7 +93,11 @@ final class RenderHandler
 
             // TODO: This is a hack; I want to rework path handling for guides as the Environment, for example,
             //       has a plethora of 'em.
-            $target = str_replace('//', '/', $documentationSet->getOutput() . '/' . $this->router->generate($descriptor));
+            $target = str_replace(
+                '//',
+                '/',
+                $documentationSet->getOutput() . '/' . $this->router->generate($descriptor)
+            );
 
             $directory = dirname($target);
 

@@ -151,7 +151,7 @@ final class ParseFileHandler
 
     private function buildPathOnFileSystem(string $file, string $currentDirectory, string $extension): string
     {
-        return ltrim(sprintf("%s/%s.%s", trim($currentDirectory, '/'), $file, $extension), '/');
+        return ltrim(sprintf('%s/%s.%s', trim($currentDirectory, '/'), $file, $extension), '/');
     }
 
     private function buildDocumentUrl(Environment $environment, string $extension): string

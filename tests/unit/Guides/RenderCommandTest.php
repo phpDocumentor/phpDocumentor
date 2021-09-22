@@ -16,14 +16,17 @@ final class RenderCommandTest extends MockeryTestCase
 
     public function test_providing_a_destination_to_render_to(): void
     {
+        $origin = $this->prophesize(FilesystemInterface::class)->reveal();
         $destination = $this->prophesize(FilesystemInterface::class)->reveal();
 
         $command = new RenderCommand(
             $this->faker()->guideSetDescriptor(),
             new Configuration('rst', []),
+            $origin,
             $destination
         );
 
+        self::assertSame($origin, $command->getOrigin());
         self::assertSame($destination, $command->getDestination());
     }
 }

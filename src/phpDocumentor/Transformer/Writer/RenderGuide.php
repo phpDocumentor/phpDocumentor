@@ -47,9 +47,8 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
 
     /** @var iterable<Format> */
     private $outputFormats;
-    /**
-     * @var FlySystemFactory
-     */
+
+    /** @var FlySystemFactory */
     private $flySystemFactory;
 
     /** @param iterable<Format> $outputFormats */
