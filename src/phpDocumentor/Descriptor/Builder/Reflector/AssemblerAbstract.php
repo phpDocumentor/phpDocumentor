@@ -138,13 +138,4 @@ abstract class AssemblerAbstract extends BaseAssembler
 
         return $type;
     }
-
-    protected function pretifyValue(?string $value): ?string
-    {
-        if ($value === null) {
-            return null;
-        }
-
-        return stripcslashes($value);
-    }
 }
