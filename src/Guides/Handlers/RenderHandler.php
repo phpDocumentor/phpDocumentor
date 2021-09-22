@@ -31,6 +31,7 @@ use function array_merge;
 use function dirname;
 use function get_class;
 use function iterator_to_array;
+use function str_replace;
 
 final class RenderHandler
 {
@@ -70,7 +71,7 @@ final class RenderHandler
             $command->getConfiguration(),
             $this->renderer,
             $this->logger,
-            $command->getDestination(),
+            $command->getOrigin(),
             $this->metas
         );
 
@@ -87,13 +88,25 @@ final class RenderHandler
         $this->initReferences($environment, $this->references);
 
         /** @var DocumentDescriptor $descriptor */
-        foreach ($documentationSet->getDocuments() as $file => $descriptor) {
+        foreach ($documentationSet->getDocuments() as $descriptor) {
             $document = $descriptor->getDocumentNode();
-            $target = $documentationSet->getOutput() . '/' . $this->router->generate($descriptor);
+
+            // TODO: This is a hack; I want to rework path handling for guides as the Environment, for example,
+            //       has a plethora of 'em.
+            $target = str_replace(
+                '//',
+                '/',
+                $documentationSet->getOutput() . '/' . $this->router->generate($descriptor)
+            );
 
             $directory = dirname($target);
 
-            $environment->setCurrentFileName($file);
+            $environment->setCurrentFileName($descriptor->getFile());
+            // TODO: We assume there is one, but there may be multiple. Handling this correctly required rework on how
+            // source locations are propagated.
+            $sourcePath = $documentationSet->getSource()->paths()[0];
+
+            $environment->setCurrentAbsolutePath($sourcePath . '/' . dirname($descriptor->getFile()));
             $environment->setCurrentDirectory($directory);
 
             foreach ($descriptor->getLinks() as $link => $url) {

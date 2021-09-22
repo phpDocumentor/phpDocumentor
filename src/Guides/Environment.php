@@ -101,7 +101,7 @@ class Environment
     private $outputFolder;
 
     /** @var string */
-    private $currentAbsolutePath;
+    private $currentAbsolutePath = '';
 
     public function __construct(
         Configuration $configuration,
