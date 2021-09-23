@@ -7,12 +7,10 @@ namespace phpDocumentor\Guides\RestructuredText\Parser;
 use Doctrine\Common\EventManager;
 use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Nodes\AnchorNode;
-use phpDocumentor\Guides\Nodes\BlockNode;
 use phpDocumentor\Guides\Nodes\CodeNode;
 use phpDocumentor\Guides\Nodes\DocumentNode;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\ParagraphNode;
-use phpDocumentor\Guides\Nodes\QuoteNode;
 use phpDocumentor\Guides\Nodes\SectionBeginNode;
 use phpDocumentor\Guides\Nodes\SectionEndNode;
 use phpDocumentor\Guides\Nodes\SeparatorNode;
@@ -170,6 +168,12 @@ class DocumentParser
             case State::COMMENT:
                 $this->subparser = new Subparsers\CommentParser($this->parser, $this->eventManager);
                 break;
+            case State::BLOCK:
+                $this->subparser = new Subparsers\BlockParser($this->parser, $this->buffer);
+                break;
+            case State::CODE:
+                $this->subparser = new Subparsers\CodeParser($this->parser, $this->buffer);
+                break;
         }
     }
 
@@ -274,27 +278,6 @@ class DocumentParser
 
                 break;
 
-            case State::LIST:
-            case State::DEFINITION_LIST:
-                if (!$this->subparser->parse($line)) {
-                    $this->flush();
-                    $this->setState(State::BEGIN);
-
-                    return false;
-                }
-
-                break;
-
-            case State::TABLE:
-                if (!$this->subparser->parse($line)) {
-                    $this->flush();
-                    $this->setState(State::BEGIN);
-
-                    // TODO: No return?
-                }
-
-                break;
-
             case State::NORMAL:
                 if (trim($line) !== '') {
                     $specialLetter = $this->lineChecker->isSpecialLine($line);
@@ -332,8 +315,12 @@ class DocumentParser
 
                 break;
 
-            case State::COMMENT:
+            case State::BLOCK:
+            case State::CODE:
+            case State::LIST:
+            case State::DEFINITION_LIST:
                 if (!$this->subparser->parse($line)) {
+                    $this->flush();
                     $this->setState(State::BEGIN);
 
                     return false;
@@ -341,16 +328,22 @@ class DocumentParser
 
                 break;
 
-            case State::BLOCK:
-            case State::CODE:
-                if (!$this->lineChecker->isBlockLine($line)) {
+            case State::TABLE:
+                if (!$this->subparser->parse($line)) {
                     $this->flush();
+                    $this->setState(State::BEGIN);
+
+                    // TODO: No return?
+                }
+
+                break;
+
+            case State::COMMENT:
+                if (!$this->subparser->parse($line)) {
                     $this->setState(State::BEGIN);
 
                     return false;
                 }
-
-                $this->buffer->push($line);
 
                 break;
 
@@ -385,6 +378,14 @@ class DocumentParser
 
         if ($this->hasBuffer()) {
             switch ($this->state) {
+                case State::NORMAL:
+                    $this->isCode = $this->prepareCode();
+
+                    $buffer = $this->buffer->getLinesString();
+
+                    $node = new ParagraphNode(new SpanNode($this->environment, $buffer));
+
+                    break;
                 case State::TITLE:
                     $data = $this->buffer->getLinesString();
 
@@ -425,39 +426,12 @@ class DocumentParser
                     break;
 
                 case State::CODE:
-                    /** @var string[] $buffer */
-                    $buffer = $this->buffer->getLines();
-
-                    $node = new CodeNode($buffer);
-
-                    break;
-
                 case State::BLOCK:
-                    /** @var string[] $lines */
-                    $lines = $this->buffer->getLines();
-
-                    $blockNode = new BlockNode($lines);
-
-                    $document = $this->parser->getSubParser()->parseLocal($blockNode->getValue());
-
-                    $node = new QuoteNode($document);
-
-                    break;
-
                 case State::LIST:
                 case State::DEFINITION_LIST:
                 case State::TABLE:
                 case State::COMMENT:
                     $node = $this->subparser->build();
-
-                    break;
-
-                case State::NORMAL:
-                    $this->isCode = $this->prepareCode();
-
-                    $buffer = $this->buffer->getLinesString();
-
-                    $node = new ParagraphNode(new SpanNode($this->environment, $buffer));
 
                     break;
             }
