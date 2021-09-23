@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\Parser;
 
+use ArrayObject;
 use Doctrine\Common\EventManager;
 use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Nodes\AnchorNode;
@@ -85,8 +86,8 @@ class DocumentParser
     /** @var TitleNode */
     private $lastTitleNode;
 
-    /** @var TitleNode[] */
-    private $openTitleNodes = [];
+    /** @var ArrayObject<int, TitleNode> */
+    private $openTitleNodes;
 
     /** @var Subparsers\Subparser|null */
     private $subparser;
@@ -107,6 +108,7 @@ class DocumentParser
         $this->lineChecker = new LineChecker($this->lineDataParser);
         $this->tableParser = new TableParser();
         $this->buffer = new Buffer();
+        $this->openTitleNodes = new ArrayObject();
     }
 
     public function getDocument(): DocumentNode
@@ -154,6 +156,19 @@ class DocumentParser
         $this->subparser = null;
 
         switch ($state) {
+            case State::TITLE:
+                // The amount of state being passed to the TitleParser is questionable. But to keep it simple for now,
+                // we keep it like this.
+                $this->subparser = new Subparsers\TitleParser(
+                    $this->parser,
+                    $this->eventManager,
+                    $this->buffer,
+                    $this->specialLetter,
+                    $this->lastTitleNode,
+                    $this->document,
+                    $this->openTitleNodes
+                );
+                break;
             case State::LIST:
                 $this->subparser = new Subparsers\ListParser($this->parser, $this->eventManager);
                 break;
@@ -169,10 +184,10 @@ class DocumentParser
                 $this->subparser = new Subparsers\CommentParser($this->parser, $this->eventManager);
                 break;
             case State::BLOCK:
-                $this->subparser = new Subparsers\BlockParser($this->parser, $this->buffer);
+                $this->subparser = new Subparsers\BlockParser($this->parser, $this->eventManager, $this->buffer);
                 break;
             case State::CODE:
-                $this->subparser = new Subparsers\CodeParser($this->parser, $this->buffer);
+                $this->subparser = new Subparsers\CodeParser($this->parser, $this->eventManager, $this->buffer);
                 break;
         }
     }
@@ -386,38 +401,6 @@ class DocumentParser
                     $node = new ParagraphNode(new SpanNode($this->environment, $buffer));
 
                     break;
-                case State::TITLE:
-                    $data = $this->buffer->getLinesString();
-
-                    $level = $this->environment->getLevel((string) $this->specialLetter);
-                    $level = $this->environment->getInitialHeaderLevel() + $level - 1;
-
-                    $node = new TitleNode(
-                        new SpanNode($this->environment, $data),
-                        $level
-                    );
-
-                    if ($this->lastTitleNode !== null) {
-                        // current level is less than previous so we need to end all open sections
-                        if ($node->getLevel() < $this->lastTitleNode->getLevel()) {
-                            foreach ($this->openTitleNodes as $titleNode) {
-                                $this->endOpenSection($titleNode);
-                            }
-
-                            // same level as the last so just close the last open section
-                        } elseif ($node->getLevel() === $this->lastTitleNode->getLevel()) {
-                            $this->endOpenSection($this->lastTitleNode);
-                        }
-                    }
-
-                    $this->lastTitleNode = $node;
-
-                    $this->document->addNode(new SectionBeginNode($node));
-
-                    $this->openTitleNodes[] = $node;
-
-                    break;
-
                 case State::SEPARATOR:
                     $level = $this->environment->getLevel((string) $this->specialLetter);
 
@@ -432,6 +415,17 @@ class DocumentParser
                 case State::TABLE:
                 case State::COMMENT:
                     $node = $this->subparser->build();
+
+                    break;
+                case State::TITLE:
+                    $node = $this->subparser->build();
+                    if ($node instanceof TitleNode === false) {
+                        throw new RuntimeException('Expected a TitleNode');
+                    }
+
+                    $this->lastTitleNode = $node;
+                    $this->document->addNode(new SectionBeginNode($node));
+                    $this->openTitleNodes[] = $node;
 
                     break;
             }
@@ -588,7 +582,7 @@ class DocumentParser
     {
         $this->document->addNode(new SectionEndNode($titleNode));
 
-        $key = array_search($titleNode, $this->openTitleNodes, true);
+        $key = array_search($titleNode, $this->openTitleNodes->getArrayCopy(), true);
 
         if ($key === false) {
             return;

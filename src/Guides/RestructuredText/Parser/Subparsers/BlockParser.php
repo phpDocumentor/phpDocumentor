@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\Parser\Subparsers;
 
+use Doctrine\Common\EventManager;
 use phpDocumentor\Guides\Nodes\BlockNode;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\QuoteNode;
@@ -16,19 +17,16 @@ final class BlockParser implements Subparser
     /** @var Parser */
     private $parser;
 
-    /** @var LineDataParser */
-    private $lineDataParser;
-
     /** @var Parser\Buffer */
     private $buffer;
 
     /** @var LineChecker */
     private $lineChecker;
 
-    public function __construct(Parser $parser, Parser\Buffer $buffer)
+    public function __construct(Parser $parser, EventManager $eventManager, Parser\Buffer $buffer)
     {
         $this->parser = $parser;
-        $this->lineChecker = new LineChecker($this->lineDataParser);
+        $this->lineChecker = new LineChecker(new LineDataParser($parser, $eventManager));
         $this->buffer = $buffer;
     }
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\Parser\Subparsers;
 
+use Doctrine\Common\EventManager;
 use phpDocumentor\Guides\Nodes\CodeNode;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\RestructuredText\Parser;
@@ -12,22 +13,15 @@ use phpDocumentor\Guides\RestructuredText\Parser\LineDataParser;
 
 final class CodeParser implements Subparser
 {
-    /** @var Parser */
-    private $parser;
-
-    /** @var LineDataParser */
-    private $lineDataParser;
-
     /** @var Parser\Buffer */
     private $buffer;
 
     /** @var LineChecker */
     private $lineChecker;
 
-    public function __construct(Parser $parser, Parser\Buffer $buffer)
+    public function __construct(Parser $parser, EventManager $eventManager, Parser\Buffer $buffer)
     {
-        $this->parser = $parser;
-        $this->lineChecker = new LineChecker($this->lineDataParser);
+        $this->lineChecker = new LineChecker(new LineDataParser($parser, $eventManager));
         $this->buffer = $buffer;
     }
 
