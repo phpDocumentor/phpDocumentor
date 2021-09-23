@@ -167,6 +167,9 @@ class DocumentParser
                     $this->lines
                 );
                 break;
+            case State::COMMENT:
+                $this->subparser = new Subparsers\CommentParser($this->parser, $this->eventManager);
+                break;
         }
     }
 
@@ -330,7 +333,7 @@ class DocumentParser
                 break;
 
             case State::COMMENT:
-                if (!$this->lineChecker->isComment($line) && (trim($line) === '' || $line[0] !== ' ')) {
+                if (!$this->subparser->parse($line)) {
                     $this->setState(State::BEGIN);
 
                     return false;
@@ -444,6 +447,7 @@ class DocumentParser
                 case State::LIST:
                 case State::DEFINITION_LIST:
                 case State::TABLE:
+                case State::COMMENT:
                     $node = $this->subparser->build();
 
                     break;

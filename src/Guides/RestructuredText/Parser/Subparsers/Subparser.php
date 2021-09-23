@@ -10,5 +10,5 @@ interface Subparser
 {
     public function parse(string $line): bool;
 
-    public function build(): Node;
+    public function build(): ?Node;
 }

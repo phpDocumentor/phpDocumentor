@@ -48,7 +48,7 @@ final class ListParser implements Subparser
     /**
      * @return ListNode
      */
-    public function build(): Node
+    public function build(): ?Node
     {
         $this->parseListLine(null, true);
 

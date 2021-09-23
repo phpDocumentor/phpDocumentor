@@ -66,7 +66,7 @@ final class TableParser implements Subparser
     /**
      * @return TableNode
      */
-    public function build(): Node
+    public function build(): ?Node
     {
         $this->nodeBuffer->finalize($this->parser, $this->lineChecker);
 

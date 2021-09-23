@@ -48,7 +48,7 @@ final class DefinitionListParser implements Subparser
     /**
      * @return DefinitionListNode
      */
-    public function build(): Node
+    public function build(): ?Node
     {
         $definitionList = $this->lineDataParser->parseDefinitionList($this->buffer->getLines());
 
