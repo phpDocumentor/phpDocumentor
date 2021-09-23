@@ -88,17 +88,14 @@ class DocumentParser
     /** @var string */
     private $state;
 
-    /** @var ListLine|null */
-    private $listLine;
-
-    /** @var bool */
-    private $listFlow = false;
-
     /** @var TitleNode */
     private $lastTitleNode;
 
     /** @var TitleNode[] */
     private $openTitleNodes = [];
+
+    /** @var Subparsers\ListParser */
+    private $subparser;
 
     /**
      * @param Directive[] $directives
@@ -214,13 +211,7 @@ class DocumentParser
                 if (trim($line) !== '') {
                     if ($this->lineChecker->isListLine($line, $this->isCode)) {
                         $this->setState(State::LIST);
-
-                        $listNode = new ListNode();
-
-                        $this->nodeBuffer = $listNode;
-
-                        $this->listLine = null;
-                        $this->listFlow = true;
+                        $this->subparser = new Subparsers\ListParser($this->parser, $this->eventManager);
 
                         return false;
                     }
@@ -272,7 +263,7 @@ class DocumentParser
                 break;
 
             case State::LIST:
-                if (!$this->parseListLine($line)) {
+                if (!$this->subparser->parse($line)) {
                     $this->flush();
                     $this->setState(State::BEGIN);
 
@@ -465,10 +456,8 @@ class DocumentParser
                     break;
 
                 case State::LIST:
-                    $this->parseListLine(null, true);
-
                     /** @var ListNode $node */
-                    $node = $this->nodeBuffer;
+                    $node = $this->subparser->build();
 
                     break;
 
@@ -643,53 +632,6 @@ class DocumentParser
         }
 
         $this->environment->setLink($link->getName(), $link->getUrl());
-
-        return true;
-    }
-
-    private function parseListLine(?string $line, bool $flush = false): bool
-    {
-        if ($line !== null && trim($line) !== '') {
-            $listLine = $this->lineDataParser->parseListLine($line);
-
-            if ($listLine !== null) {
-                if ($this->listLine instanceof ListLine) {
-                    $this->listLine->setText(new SpanNode($this->environment, $this->listLine->getText()));
-
-                    /** @var ListNode $listNode */
-                    $listNode = $this->nodeBuffer;
-
-                    $listNode->addLine($this->listLine->toArray());
-                }
-
-                $this->listLine = $listLine;
-            } else {
-                if ($this->listLine instanceof ListLine && ($this->listFlow || $line[0] === ' ')) {
-                    $this->listLine->addText($line);
-                } else {
-                    $flush = true;
-                }
-            }
-
-            $this->listFlow = true;
-        } else {
-            $this->listFlow = false;
-        }
-
-        if ($flush) {
-            if ($this->listLine instanceof ListLine) {
-                $this->listLine->setText(new SpanNode($this->environment, $this->listLine->getText()));
-
-                /** @var ListNode $listNode */
-                $listNode = $this->nodeBuffer;
-
-                $listNode->addLine($this->listLine->toArray());
-
-                $this->listLine = null;
-            }
-
-            return false;
-        }
 
         return true;
     }
