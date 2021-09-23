@@ -15,7 +15,7 @@ use phpDocumentor\Guides\RestructuredText\Parser\ListLine;
 
 use function trim;
 
-final class ListParser
+final class ListParser implements Subparser
 {
     /** @var LineDataParser */
     private $lineDataParser;

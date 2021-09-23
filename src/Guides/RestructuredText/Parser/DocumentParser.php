@@ -10,9 +10,7 @@ use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Nodes\AnchorNode;
 use phpDocumentor\Guides\Nodes\BlockNode;
 use phpDocumentor\Guides\Nodes\CodeNode;
-use phpDocumentor\Guides\Nodes\DefinitionListNode;
 use phpDocumentor\Guides\Nodes\DocumentNode;
-use phpDocumentor\Guides\Nodes\ListNode;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\ParagraphNode;
 use phpDocumentor\Guides\Nodes\QuoteNode;
@@ -94,7 +92,7 @@ class DocumentParser
     /** @var TitleNode[] */
     private $openTitleNodes = [];
 
-    /** @var Subparsers\ListParser */
+    /** @var Subparsers\Subparser */
     private $subparser;
 
     /**
@@ -157,6 +155,20 @@ class DocumentParser
     private function setState(string $state): void
     {
         $this->state = $state;
+
+        switch ($state) {
+            case State::LIST:
+                $this->subparser = new Subparsers\ListParser($this->parser, $this->eventManager);
+                break;
+            case State::DEFINITION_LIST:
+                $this->subparser = new Subparsers\DefinitionListParser(
+                    $this->parser,
+                    $this->eventManager,
+                    $this->buffer,
+                    $this->lines
+                );
+                break;
+        }
     }
 
     private function prepareDocument(string $document): string
@@ -211,7 +223,6 @@ class DocumentParser
                 if (trim($line) !== '') {
                     if ($this->lineChecker->isListLine($line, $this->isCode)) {
                         $this->setState(State::LIST);
-                        $this->subparser = new Subparsers\ListParser($this->parser, $this->eventManager);
 
                         return false;
                     }
@@ -263,24 +274,13 @@ class DocumentParser
                 break;
 
             case State::LIST:
+            case State::DEFINITION_LIST:
                 if (!$this->subparser->parse($line)) {
                     $this->flush();
                     $this->setState(State::BEGIN);
 
                     return false;
                 }
-
-                break;
-
-            case State::DEFINITION_LIST:
-                if ($this->lineChecker->isDefinitionListEnded($line, $this->lines->getNextLine())) {
-                    $this->flush();
-                    $this->setState(State::BEGIN);
-
-                    return false;
-                }
-
-                $this->buffer->push($line);
 
                 break;
 
@@ -456,17 +456,8 @@ class DocumentParser
                     break;
 
                 case State::LIST:
-                    /** @var ListNode $node */
-                    $node = $this->subparser->build();
-
-                    break;
-
                 case State::DEFINITION_LIST:
-                    $definitionList = $this->lineDataParser->parseDefinitionList(
-                        $this->buffer->getLines()
-                    );
-
-                    $node = new DefinitionListNode($definitionList);
+                    $node = $this->subparser->build();
 
                     break;
 
