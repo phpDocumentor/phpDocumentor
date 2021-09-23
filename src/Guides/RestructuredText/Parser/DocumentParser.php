@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\RestructuredText\Parser;
 
 use Doctrine\Common\EventManager;
-use Exception;
 use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Nodes\AnchorNode;
 use phpDocumentor\Guides\Nodes\BlockNode;
@@ -18,7 +17,6 @@ use phpDocumentor\Guides\Nodes\SectionBeginNode;
 use phpDocumentor\Guides\Nodes\SectionEndNode;
 use phpDocumentor\Guides\Nodes\SeparatorNode;
 use phpDocumentor\Guides\Nodes\SpanNode;
-use phpDocumentor\Guides\Nodes\TableNode;
 use phpDocumentor\Guides\Nodes\TitleNode;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive;
 use phpDocumentor\Guides\RestructuredText\Event\PostParseDocumentEvent;
@@ -92,7 +90,7 @@ class DocumentParser
     /** @var TitleNode[] */
     private $openTitleNodes = [];
 
-    /** @var Subparsers\Subparser */
+    /** @var Subparsers\Subparser|null */
     private $subparser;
 
     /**
@@ -262,13 +260,12 @@ class DocumentParser
                         }
 
                         $this->setState(State::TABLE);
-
-                        $tableNode = new TableNode(
+                        $this->subparser = new Subparsers\TableParser(
+                            $this->parser,
+                            $this->eventManager,
                             $separatorLineConfig,
-                            $this->tableParser->guessTableType($line)
+                            $line
                         );
-
-                        $this->nodeBuffer = $tableNode;
                     }
                 }
 
@@ -286,23 +283,11 @@ class DocumentParser
                 break;
 
             case State::TABLE:
-                if (trim($line) === '') {
+                if (!$this->subparser->parse($line)) {
                     $this->flush();
                     $this->setState(State::BEGIN);
-                } else {
-                    $separatorLineConfig = $this->tableParser->parseTableSeparatorLine($line);
 
-                    // not sure if this is possible, being cautious
-                    if (!$this->nodeBuffer instanceof TableNode) {
-                        throw new Exception('Node Buffer should be a TableNode instance');
-                    }
-
-                    // push the separator or content line onto the TableNode
-                    if ($separatorLineConfig !== null) {
-                        $this->nodeBuffer->pushSeparatorLine($separatorLineConfig);
-                    } else {
-                        $this->nodeBuffer->pushContentLine($line);
-                    }
+                    // TODO: No return?
                 }
 
                 break;
@@ -458,15 +443,8 @@ class DocumentParser
 
                 case State::LIST:
                 case State::DEFINITION_LIST:
-                    $node = $this->subparser->build();
-
-                    break;
-
                 case State::TABLE:
-                    /** @var TableNode $node */
-                    $node = $this->nodeBuffer;
-
-                    $node->finalize($this->parser, $this->lineChecker);
+                    $node = $this->subparser->build();
 
                     break;
 
