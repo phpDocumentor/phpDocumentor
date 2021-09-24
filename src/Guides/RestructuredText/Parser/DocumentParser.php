@@ -17,12 +17,10 @@ use phpDocumentor\Guides\Nodes\SectionEndNode;
 use phpDocumentor\Guides\Nodes\SeparatorNode;
 use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\Nodes\TitleNode;
-use phpDocumentor\Guides\RestructuredText\Directives\Directive;
+use phpDocumentor\Guides\RestructuredText\Directives\Directive as DirectiveHandler;
 use phpDocumentor\Guides\RestructuredText\Event\PostParseDocumentEvent;
 use phpDocumentor\Guides\RestructuredText\Event\PreParseDocumentEvent;
 use phpDocumentor\Guides\RestructuredText\Parser;
-use phpDocumentor\Guides\RestructuredText\Parser\Directive as DirectiveHandler;
-use phpDocumentor\Guides\RestructuredText\Parser\Directive as ParserDirective;
 use RuntimeException;
 use Throwable;
 
@@ -48,7 +46,7 @@ class DocumentParser
     /** @var EventManager */
     private $eventManager;
 
-    /** @var ArrayObject<Directive> */
+    /** @var ArrayObject<DirectiveHandler> */
     private $directives;
 
     /** @var DocumentNode */
@@ -57,8 +55,8 @@ class DocumentParser
     /** @var false|string|null */
     private $specialLetter;
 
-    /** @var ParserDirective|null */
-    private $directive;
+    /** @var Subparsers\DirectiveParser|null */
+    private $directiveParser = null;
 
     /** @var LineDataParser */
     private $lineDataParser;
@@ -94,7 +92,7 @@ class DocumentParser
     private $subparser;
 
     /**
-     * @param Directive[] $directives
+     * @param DirectiveHandler[] $directives
      */
     public function __construct(
         Parser $parser,
@@ -272,8 +270,8 @@ class DocumentParser
                         $this->flush();
                         $this->subparser = new Subparsers\DirectiveParser($this->environment, $this->lineChecker, $this->lineDataParser, $this->directives);
                         $directive = $this->subparser->init($line);
-                        if ($directive instanceof DirectiveHandler) {
-                            $this->directive = $directive;
+                        if ($directive instanceof Directive) {
+                            $this->directiveParser = $this->subparser;
                         }
                     } elseif ($this->lineChecker->isDefinitionList($this->lines->getNextLine())) {
                         $this->setState(State::DEFINITION_LIST);
@@ -373,8 +371,8 @@ class DocumentParser
             case State::DIRECTIVE:
                 if (!$this->isDirectiveOption($line)) {
                     if (!$this->lineChecker->isDirective($line)) {
-                        $directive = $this->getCurrentDirective();
-                        $this->isCode = $directive !== null ? $directive->wantCode() : false;
+                        $directiveHandler = $this->subparser->getDirectiveHandler();
+                        $this->isCode = $directiveHandler !== null ? $directiveHandler->wantCode() : false;
                         $this->setState(State::BEGIN);
 
                         return false;
@@ -383,15 +381,15 @@ class DocumentParser
                     $this->flush();
                     $this->subparser = new Subparsers\DirectiveParser($this->environment, $this->lineChecker, $this->lineDataParser, $this->directives);
                     $directive = $this->subparser->init($line);
-                    if ($directive instanceof DirectiveHandler) {
-                        $this->directive = $directive;
+                    if ($directive instanceof Directive) {
+                        $this->directiveParser = $this->subparser;
                     }
                 }
 
                 break;
 
             default:
-                $this->environment->addError('Parser ended in an unexcepted state');
+                $this->environment->addError('Parser ended in an unexpected state');
         }
 
         return true;
@@ -441,22 +439,22 @@ class DocumentParser
             }
         }
 
-        if ($this->directive !== null) {
-            $currentDirective = $this->getCurrentDirective();
+        if ($this->directiveParser !== null) {
+            $directiveHandler = $this->directiveParser->getDirectiveHandler();
 
-            if ($currentDirective !== null) {
+            if ($directiveHandler !== null) {
                 try {
-                    $currentDirective->process(
+                    $directiveHandler->process(
                         $this->parser,
                         $node instanceof CodeNode ? $node : null,
-                        $this->directive->getVariable(),
-                        $this->directive->getData(),
-                        $this->directive->getOptions()
+                        $this->directiveParser->getDirective()->getVariable(),
+                        $this->directiveParser->getDirective()->getData(),
+                        $this->directiveParser->getDirective()->getOptions()
                     );
                 } catch (Throwable $e) {
                     $message = sprintf(
                         'Error while processing "%s" directive%s: %s',
-                        $currentDirective->getName(),
+                        $directiveHandler->getName(),
                         $this->environment->getCurrentFileName() !== '' ? sprintf(
                             ' in "%s"',
                             $this->environment->getCurrentFileName()
@@ -473,7 +471,7 @@ class DocumentParser
             }
         }
 
-        $this->directive = null;
+        $this->directiveParser = null;
 
         if ($node !== null) {
             $this->document->addNode($node);
@@ -487,20 +485,9 @@ class DocumentParser
         return !$this->buffer->isEmpty() || $this->nodeBuffer !== null;
     }
 
-    private function getCurrentDirective(): ?Directive
-    {
-        if ($this->directive === null) {
-            return null;
-        }
-
-        $name = $this->directive->getName();
-
-        return $this->directives[$name];
-    }
-
     private function isDirectiveOption(string $line): bool
     {
-        if ($this->directive === null) {
+        if ($this->directiveParser === null || $this->directiveParser->getDirective() === null) {
             return false;
         }
 
@@ -510,36 +497,7 @@ class DocumentParser
             return false;
         }
 
-        $this->directive->setOption($directiveOption->getName(), $directiveOption->getValue());
-
-        return true;
-    }
-
-    private function initDirective(string $line): bool
-    {
-        $parserDirective = $this->lineDataParser->parseDirective($line);
-
-        if ($parserDirective === null) {
-            return false;
-        }
-
-        if (!isset($this->directives[$parserDirective->getName()])) {
-            $message = sprintf(
-                'Unknown directive: "%s" %sfor line "%s"',
-                $parserDirective->getName(),
-                $this->environment->getCurrentFileName() !== '' ? sprintf(
-                    'in "%s" ',
-                    $this->environment->getCurrentFileName()
-                ) : '',
-                $line
-            );
-
-            $this->environment->addError($message);
-
-            return false;
-        }
-
-        $this->directive = $parserDirective;
+        $this->directiveParser->getDirective()->setOption($directiveOption->getName(), $directiveOption->getValue());
 
         return true;
     }
