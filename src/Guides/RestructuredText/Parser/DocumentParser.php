@@ -221,102 +221,117 @@ class DocumentParser
     {
         switch ($this->state) {
             case State::BEGIN:
-                if (trim($line) !== '') {
-                    if ($this->lineChecker->isListLine($line, $this->isCode)) {
-                        $this->setState(State::LIST, $line);
-
-                        return false;
-                    }
-
-                    if ($this->lineChecker->isBlockLine($line)) {
-                        if ($this->isCode) {
-                            $this->setState(State::CODE, $line);
-                        } else {
-                            $this->setState(State::BLOCK, $line);
-                        }
-
-                        return false;
-                    }
-
-                    if ($this->parseLink($line)) {
-                        return true;
-                    }
-
-                    if ($this->lineChecker->isDirective($line)) {
-                        // TODO: Why this order? Why is the state set to Directive, the buffer cleared, then a flush
-                        //       -with state Directive thus- and only then the new Directive initialised? Is this a
-                        //       correct order?
-                        $this->setState(State::DIRECTIVE, $line);
-                        $this->buffer->clear();
-                        $this->flush();
-                        $this->subparser = $this->subparsers[$this->state];
-                        $this->subparser->reset($line);
-                        if ($this->subparser->getDirective() instanceof Directive) {
-                            $this->directiveParser = $this->subparser;
-                        }
-                    } elseif ($this->lineChecker->isDefinitionList($this->documentIterator->getNextLine())) {
-                        $this->setState(State::DEFINITION_LIST, $line);
-                        $this->buffer->push($line);
-
-                        return true;
-                    } else {
-                        $separatorLineConfig = $this->tableParser->parseTableSeparatorLine($line);
-
-                        if ($separatorLineConfig === null) {
-                            $this->setState(State::NORMAL, $line);
-
-                            return false;
-                        }
-
-                        $this->setState(State::TABLE, $line);
-                        $this->subparser = new Subparsers\TableParser(
-                            $this->parser,
-                            $this->eventManager,
-                            $separatorLineConfig
-                        );
-                        $this->subparser->reset($line);
-                    }
+                if (trim($line) === '') {
+                    return true;
                 }
 
-                break;
+                if ($this->lineChecker->isListLine($line, $this->isCode)) {
+                    $this->setState(State::LIST, $line);
+
+                    return false;
+                }
+
+                if ($this->lineChecker->isBlockLine($line)) {
+                    if ($this->isCode) {
+                        $this->setState(State::CODE, $line);
+                    } else {
+                        $this->setState(State::BLOCK, $line);
+                    }
+
+                    return false;
+                }
+
+                if ($this->parseLink($line)) {
+                    return true;
+                }
+
+                if ($this->lineChecker->isDirective($line)) {
+                    // TODO: Why this order? Why is the state set to Directive, the buffer cleared, then a flush
+                    //       -with state Directive thus- and only then the new Directive initialised? Is this a
+                    //       correct order?
+                    $this->setState(State::DIRECTIVE, $line);
+                    $this->buffer->clear();
+                    $this->flush();
+                    $this->subparser = $this->subparsers[$this->state];
+                    $this->subparser->reset($line);
+                    if ($this->subparser->getDirective() instanceof Directive) {
+                        $this->directiveParser = $this->subparser;
+                    }
+
+                    return true;
+                }
+
+                if ($this->lineChecker->isDefinitionList($this->documentIterator->getNextLine())) {
+                    $this->setState(State::DEFINITION_LIST, $line);
+                    $this->buffer->push($line);
+
+                    return true;
+                }
+
+                $separatorLineConfig = $this->tableParser->parseTableSeparatorLine($line);
+
+                if ($separatorLineConfig === null) {
+                    $this->setState(State::NORMAL, $line);
+
+                    return false;
+                }
+
+                $this->setState(State::TABLE, $line);
+                $this->subparser = new Subparsers\TableParser(
+                    $this->parser,
+                    $this->eventManager,
+                    $separatorLineConfig
+                );
+                $this->subparser->reset($line);
+
+                return true;
 
             case State::NORMAL:
-                if (trim($line) !== '') {
-                    $specialLetter = $this->lineChecker->isSpecialLine($line);
-
-                    if ($specialLetter !== null) {
-                        $this->specialLetter = $specialLetter;
-
-                        $lastLine = $this->buffer->pop();
-
-                        if ($lastLine !== null) {
-                            $this->buffer->clear();
-                            $this->buffer->push($lastLine);
-                            $this->setState(State::TITLE, $line);
-                        } else {
-                            $this->buffer->push($line);
-                            $this->setState(State::SEPARATOR, $line);
-                        }
-
-                        $this->flush();
-                        $this->setState(State::BEGIN, $line);
-                    } elseif ($this->lineChecker->isDirective($line)) {
-                        $this->flush();
-                        $this->setState(State::BEGIN, $line);
-
-                        return false;
-                    } elseif ($this->lineChecker->isComment($line)) {
-                        $this->flush();
-                        $this->setState(State::COMMENT, $line);
-                    } else {
-                        $this->buffer->push($line);
-                    }
-                } else {
+                if (trim($line) === '') {
                     $this->flush();
                     $this->setState(State::BEGIN, $line);
+
+                    return true;
                 }
 
-                break;
+                $specialLetter = $this->lineChecker->isSpecialLine($line);
+
+                if ($specialLetter !== null) {
+                    $this->specialLetter = $specialLetter;
+
+                    $lastLine = $this->buffer->pop();
+
+                    if ($lastLine !== null) {
+                        $this->buffer->clear();
+                        $this->buffer->push($lastLine);
+                        $this->setState(State::TITLE, $line);
+                    } else {
+                        $this->buffer->push($line);
+                        $this->setState(State::SEPARATOR, $line);
+                    }
+
+                    $this->flush();
+                    $this->setState(State::BEGIN, $line);
+
+                    return true;
+                }
+
+                if ($this->lineChecker->isDirective($line)) {
+                    $this->flush();
+                    $this->setState(State::BEGIN, $line);
+
+                    return false;
+                }
+
+                if ($this->lineChecker->isComment($line)) {
+                    $this->flush();
+                    $this->setState(State::COMMENT, $line);
+                    return true;
+                }
+
+                $this->buffer->push($line);
+
+                return true;
 
             case State::BLOCK:
             case State::CODE:
@@ -329,7 +344,7 @@ class DocumentParser
                     return false;
                 }
 
-                break;
+                return true;
 
             case State::TABLE:
                 if (!$this->subparser->parse($line)) {
@@ -339,7 +354,7 @@ class DocumentParser
                     // TODO: No return?
                 }
 
-                break;
+                return true;
 
             case State::COMMENT:
                 if (!$this->subparser->parse($line)) {
@@ -349,7 +364,7 @@ class DocumentParser
                     return false;
                 }
 
-                break;
+                return true;
 
             case State::DIRECTIVE:
                 $directiveOption = $this->lineDataParser->parseDirectiveOption($line);
@@ -378,7 +393,7 @@ class DocumentParser
                     $this->directiveParser = $this->subparser;
                 }
 
-                break;
+                return true;
 
             default:
                 $this->environment->addError('Parser ended in an unexpected state');
