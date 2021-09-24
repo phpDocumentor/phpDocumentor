@@ -4,23 +4,18 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\Parser;
 
+use ArrayObject;
 use Doctrine\Common\EventManager;
-use Exception;
 use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Nodes\AnchorNode;
-use phpDocumentor\Guides\Nodes\BlockNode;
 use phpDocumentor\Guides\Nodes\CodeNode;
-use phpDocumentor\Guides\Nodes\DefinitionListNode;
 use phpDocumentor\Guides\Nodes\DocumentNode;
-use phpDocumentor\Guides\Nodes\ListNode;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\ParagraphNode;
-use phpDocumentor\Guides\Nodes\QuoteNode;
 use phpDocumentor\Guides\Nodes\SectionBeginNode;
 use phpDocumentor\Guides\Nodes\SectionEndNode;
 use phpDocumentor\Guides\Nodes\SeparatorNode;
 use phpDocumentor\Guides\Nodes\SpanNode;
-use phpDocumentor\Guides\Nodes\TableNode;
 use phpDocumentor\Guides\Nodes\TitleNode;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive;
 use phpDocumentor\Guides\RestructuredText\Event\PostParseDocumentEvent;
@@ -88,17 +83,14 @@ class DocumentParser
     /** @var string */
     private $state;
 
-    /** @var ListLine|null */
-    private $listLine;
-
-    /** @var bool */
-    private $listFlow = false;
-
     /** @var TitleNode */
     private $lastTitleNode;
 
-    /** @var TitleNode[] */
-    private $openTitleNodes = [];
+    /** @var ArrayObject<int, TitleNode> */
+    private $openTitleNodes;
+
+    /** @var Subparsers\Subparser|null */
+    private $subparser;
 
     /**
      * @param Directive[] $directives
@@ -116,6 +108,7 @@ class DocumentParser
         $this->lineChecker = new LineChecker($this->lineDataParser);
         $this->tableParser = new TableParser();
         $this->buffer = new Buffer();
+        $this->openTitleNodes = new ArrayObject();
     }
 
     public function getDocument(): DocumentNode
@@ -160,6 +153,43 @@ class DocumentParser
     private function setState(string $state): void
     {
         $this->state = $state;
+        $this->subparser = null;
+
+        switch ($state) {
+            case State::TITLE:
+                // The amount of state being passed to the TitleParser is questionable. But to keep it simple for now,
+                // we keep it like this.
+                $this->subparser = new Subparsers\TitleParser(
+                    $this->parser,
+                    $this->eventManager,
+                    $this->buffer,
+                    $this->specialLetter,
+                    $this->lastTitleNode,
+                    $this->document,
+                    $this->openTitleNodes
+                );
+                break;
+            case State::LIST:
+                $this->subparser = new Subparsers\ListParser($this->parser, $this->eventManager);
+                break;
+            case State::DEFINITION_LIST:
+                $this->subparser = new Subparsers\DefinitionListParser(
+                    $this->parser,
+                    $this->eventManager,
+                    $this->buffer,
+                    $this->lines
+                );
+                break;
+            case State::COMMENT:
+                $this->subparser = new Subparsers\CommentParser($this->parser, $this->eventManager);
+                break;
+            case State::BLOCK:
+                $this->subparser = new Subparsers\BlockParser($this->parser, $this->eventManager, $this->buffer);
+                break;
+            case State::CODE:
+                $this->subparser = new Subparsers\CodeParser($this->parser, $this->eventManager, $this->buffer);
+                break;
+        }
     }
 
     private function prepareDocument(string $document): string
@@ -215,13 +245,6 @@ class DocumentParser
                     if ($this->lineChecker->isListLine($line, $this->isCode)) {
                         $this->setState(State::LIST);
 
-                        $listNode = new ListNode();
-
-                        $this->nodeBuffer = $listNode;
-
-                        $this->listLine = null;
-                        $this->listFlow = true;
-
                         return false;
                     }
 
@@ -241,7 +264,7 @@ class DocumentParser
 
                     if ($this->lineChecker->isDirective($line)) {
                         $this->setState(State::DIRECTIVE);
-                        $this->buffer = new Buffer();
+                        $this->buffer->clear();
                         $this->flush();
                         $this->initDirective($line);
                     } elseif ($this->lineChecker->isDefinitionList($this->lines->getNextLine())) {
@@ -259,57 +282,12 @@ class DocumentParser
                         }
 
                         $this->setState(State::TABLE);
-
-                        $tableNode = new TableNode(
+                        $this->subparser = new Subparsers\TableParser(
+                            $this->parser,
+                            $this->eventManager,
                             $separatorLineConfig,
-                            $this->tableParser->guessTableType($line)
+                            $line
                         );
-
-                        $this->nodeBuffer = $tableNode;
-                    }
-                }
-
-                break;
-
-            case State::LIST:
-                if (!$this->parseListLine($line)) {
-                    $this->flush();
-                    $this->setState(State::BEGIN);
-
-                    return false;
-                }
-
-                break;
-
-            case State::DEFINITION_LIST:
-                if ($this->lineChecker->isDefinitionListEnded($line, $this->lines->getNextLine())) {
-                    $this->flush();
-                    $this->setState(State::BEGIN);
-
-                    return false;
-                }
-
-                $this->buffer->push($line);
-
-                break;
-
-            case State::TABLE:
-                if (trim($line) === '') {
-                    $this->flush();
-                    $this->setState(State::BEGIN);
-                } else {
-                    $separatorLineConfig = $this->tableParser->parseTableSeparatorLine($line);
-
-                    // not sure if this is possible, being cautious
-                    if (!$this->nodeBuffer instanceof TableNode) {
-                        throw new Exception('Node Buffer should be a TableNode instance');
-                    }
-
-                    // push the separator or content line onto the TableNode
-                    if ($separatorLineConfig !== null) {
-                        $this->nodeBuffer->pushSeparatorLine($separatorLineConfig);
-                    } else {
-                        $this->nodeBuffer->pushContentLine($line);
                     }
                 }
 
@@ -352,8 +330,12 @@ class DocumentParser
 
                 break;
 
-            case State::COMMENT:
-                if (!$this->lineChecker->isComment($line) && (trim($line) === '' || $line[0] !== ' ')) {
+            case State::BLOCK:
+            case State::CODE:
+            case State::LIST:
+            case State::DEFINITION_LIST:
+                if (!$this->subparser->parse($line)) {
+                    $this->flush();
                     $this->setState(State::BEGIN);
 
                     return false;
@@ -361,16 +343,22 @@ class DocumentParser
 
                 break;
 
-            case State::BLOCK:
-            case State::CODE:
-                if (!$this->lineChecker->isBlockLine($line)) {
+            case State::TABLE:
+                if (!$this->subparser->parse($line)) {
                     $this->flush();
+                    $this->setState(State::BEGIN);
+
+                    // TODO: No return?
+                }
+
+                break;
+
+            case State::COMMENT:
+                if (!$this->subparser->parse($line)) {
                     $this->setState(State::BEGIN);
 
                     return false;
                 }
-
-                $this->buffer->push($line);
 
                 break;
 
@@ -405,38 +393,12 @@ class DocumentParser
 
         if ($this->hasBuffer()) {
             switch ($this->state) {
-                case State::TITLE:
-                    $data = $this->buffer->getLinesString();
+                case State::NORMAL:
+                    $this->isCode = $this->prepareCode();
 
-                    $level = $this->environment->getLevel((string) $this->specialLetter);
-                    $level = $this->environment->getInitialHeaderLevel() + $level - 1;
-
-                    $node = new TitleNode(
-                        new SpanNode($this->environment, $data),
-                        $level
-                    );
-
-                    if ($this->lastTitleNode !== null) {
-                        // current level is less than previous so we need to end all open sections
-                        if ($node->getLevel() < $this->lastTitleNode->getLevel()) {
-                            foreach ($this->openTitleNodes as $titleNode) {
-                                $this->endOpenSection($titleNode);
-                            }
-
-                            // same level as the last so just close the last open section
-                        } elseif ($node->getLevel() === $this->lastTitleNode->getLevel()) {
-                            $this->endOpenSection($this->lastTitleNode);
-                        }
-                    }
-
-                    $this->lastTitleNode = $node;
-
-                    $this->document->addNode(new SectionBeginNode($node));
-
-                    $this->openTitleNodes[] = $node;
+                    $node = new ParagraphNode(new SpanNode($this->environment, $this->buffer->getLinesString()));
 
                     break;
-
                 case State::SEPARATOR:
                     $level = $this->environment->getLevel((string) $this->specialLetter);
 
@@ -445,56 +407,23 @@ class DocumentParser
                     break;
 
                 case State::CODE:
-                    /** @var string[] $buffer */
-                    $buffer = $this->buffer->getLines();
-
-                    $node = new CodeNode($buffer);
-
-                    break;
-
                 case State::BLOCK:
-                    /** @var string[] $lines */
-                    $lines = $this->buffer->getLines();
-
-                    $blockNode = new BlockNode($lines);
-
-                    $document = $this->parser->getSubParser()->parseLocal($blockNode->getValue());
-
-                    $node = new QuoteNode($document);
-
-                    break;
-
                 case State::LIST:
-                    $this->parseListLine(null, true);
-
-                    /** @var ListNode $node */
-                    $node = $this->nodeBuffer;
-
-                    break;
-
                 case State::DEFINITION_LIST:
-                    $definitionList = $this->lineDataParser->parseDefinitionList(
-                        $this->buffer->getLines()
-                    );
-
-                    $node = new DefinitionListNode($definitionList);
-
-                    break;
-
                 case State::TABLE:
-                    /** @var TableNode $node */
-                    $node = $this->nodeBuffer;
-
-                    $node->finalize($this->parser, $this->lineChecker);
+                case State::COMMENT:
+                    $node = $this->subparser->build();
 
                     break;
+                case State::TITLE:
+                    $node = $this->subparser->build();
+                    if ($node instanceof TitleNode === false) {
+                        throw new RuntimeException('Expected a TitleNode');
+                    }
 
-                case State::NORMAL:
-                    $this->isCode = $this->prepareCode();
-
-                    $buffer = $this->buffer->getLinesString();
-
-                    $node = new ParagraphNode(new SpanNode($this->environment, $buffer));
+                    $this->lastTitleNode = $node;
+                    $this->document->addNode(new SectionBeginNode($node));
+                    $this->openTitleNodes->append($node);
 
                     break;
             }
@@ -647,58 +576,11 @@ class DocumentParser
         return true;
     }
 
-    private function parseListLine(?string $line, bool $flush = false): bool
-    {
-        if ($line !== null && trim($line) !== '') {
-            $listLine = $this->lineDataParser->parseListLine($line);
-
-            if ($listLine !== null) {
-                if ($this->listLine instanceof ListLine) {
-                    $this->listLine->setText(new SpanNode($this->environment, $this->listLine->getText()));
-
-                    /** @var ListNode $listNode */
-                    $listNode = $this->nodeBuffer;
-
-                    $listNode->addLine($this->listLine->toArray());
-                }
-
-                $this->listLine = $listLine;
-            } else {
-                if ($this->listLine instanceof ListLine && ($this->listFlow || $line[0] === ' ')) {
-                    $this->listLine->addText($line);
-                } else {
-                    $flush = true;
-                }
-            }
-
-            $this->listFlow = true;
-        } else {
-            $this->listFlow = false;
-        }
-
-        if ($flush) {
-            if ($this->listLine instanceof ListLine) {
-                $this->listLine->setText(new SpanNode($this->environment, $this->listLine->getText()));
-
-                /** @var ListNode $listNode */
-                $listNode = $this->nodeBuffer;
-
-                $listNode->addLine($this->listLine->toArray());
-
-                $this->listLine = null;
-            }
-
-            return false;
-        }
-
-        return true;
-    }
-
     private function endOpenSection(TitleNode $titleNode): void
     {
         $this->document->addNode(new SectionEndNode($titleNode));
 
-        $key = array_search($titleNode, $this->openTitleNodes, true);
+        $key = array_search($titleNode, $this->openTitleNodes->getArrayCopy(), true);
 
         if ($key === false) {
             return;

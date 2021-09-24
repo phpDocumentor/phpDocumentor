@@ -79,4 +79,9 @@ class Buffer
 
         return $this->lines[$lastLineKey];
     }
+
+    public function clear(): void
+    {
+        $this->lines = [];
+    }
 }
