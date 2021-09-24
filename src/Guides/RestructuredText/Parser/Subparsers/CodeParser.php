@@ -25,9 +25,13 @@ final class CodeParser implements Subparser
         $this->buffer = $buffer;
     }
 
+    public function reset(string $openingLine): void
+    {
+    }
+
     public function parse(string $line): bool
     {
-        if (!$this->lineChecker->isBlockLine($line)) {
+        if ($this->lineChecker->isBlockLine($line) === false) {
             return false;
         }
 

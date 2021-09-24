@@ -22,6 +22,10 @@ final class CommentParser implements Subparser
         $this->lineChecker = new LineChecker(new LineDataParser($parser, $eventManager));
     }
 
+    public function reset(string $openingLine): void
+    {
+    }
+
     public function parse(string $line): bool
     {
         return $this->lineChecker->isComment($line) || (trim($line) !== '' && $line[0] === ' ');

@@ -12,7 +12,7 @@ use phpDocumentor\Guides\RestructuredText\Parser;
 use phpDocumentor\Guides\RestructuredText\Parser\LineChecker;
 use phpDocumentor\Guides\RestructuredText\Parser\LineDataParser;
 
-final class BlockParser implements Subparser
+final class QuoteParser implements Subparser
 {
     /** @var Parser */
     private $parser;
@@ -28,6 +28,10 @@ final class BlockParser implements Subparser
         $this->parser = $parser;
         $this->lineChecker = new LineChecker(new LineDataParser($parser, $eventManager));
         $this->buffer = $buffer;
+    }
+
+    public function reset(string $openingLine): void
+    {
     }
 
     public function parse(string $line): bool

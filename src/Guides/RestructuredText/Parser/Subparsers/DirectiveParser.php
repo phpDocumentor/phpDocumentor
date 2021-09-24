@@ -6,8 +6,10 @@ namespace phpDocumentor\Guides\RestructuredText\Parser\Subparsers;
 
 use ArrayObject;
 use phpDocumentor\Guides\Environment;
+use phpDocumentor\Guides\Nodes\CodeNode;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive as DirectiveHandler;
+use phpDocumentor\Guides\RestructuredText\Parser;
 use phpDocumentor\Guides\RestructuredText\Parser\Directive;
 use phpDocumentor\Guides\RestructuredText\Parser\LineChecker;
 use phpDocumentor\Guides\RestructuredText\Parser\LineDataParser;
@@ -20,6 +22,9 @@ final class DirectiveParser implements Subparser
     /** @var LineDataParser */
     private $lineDataParser;
 
+    /** @var Parser */
+    private $parser;
+
     /** @var Environment */
     private $environment;
 
@@ -29,20 +34,24 @@ final class DirectiveParser implements Subparser
     /** @var ?Directive */
     private $directive;
 
-    public function __construct(Environment $environment, LineChecker $lineChecker, LineDataParser $lineDataParser, ArrayObject $directives)
+    /** @var Node|null */
+    private $contentBlock;
+
+    public function __construct(Parser $parser, LineChecker $lineChecker, LineDataParser $lineDataParser, ArrayObject $directives)
     {
         $this->lineDataParser = $lineDataParser;
         $this->lineChecker = $lineChecker;
-        $this->environment = $environment;
+        $this->parser = $parser;
+        $this->environment = $parser->getEnvironment();
         $this->directives = $directives;
     }
 
-    public function init(string $line): ?Directive
+    public function reset(string $openingLine): void
     {
-        $directive = $this->lineDataParser->parseDirective($line);
+        $directive = $this->lineDataParser->parseDirective($openingLine);
 
         if ($directive === null) {
-            return null;
+            return;
         }
 
         if (!isset($this->directives[$directive->getName()])) {
@@ -53,17 +62,16 @@ final class DirectiveParser implements Subparser
                     'in "%s" ',
                     $this->environment->getCurrentFileName()
                 ) : '',
-                $line
+                $openingLine
             );
 
             $this->environment->addError($message);
 
-            return null;
+            return;
         }
 
         $this->directive = $directive;
-
-        return $directive;
+        $this->contentBlock = null;
     }
 
     /**
@@ -74,21 +82,48 @@ final class DirectiveParser implements Subparser
         return $this->directive;
     }
 
-
     public function parse(string $line): bool
     {
-        if (!$this->lineChecker->isDirective($line)) {
-            $directive = $this->getDirectiveHandler();
-            $this->isCode = $directive !== null ? $directive->wantCode() : false;
-
+        if ($this->lineChecker->isDirective($line) === false) {
             return false;
         }
 
-        return false;
+        return true;
+    }
+
+    public function setContentBlock(?Node $node): void
+    {
+        $this->contentBlock = $node instanceof CodeNode ? $node : null;
     }
 
     public function build(): ?Node
     {
+        $directiveHandler = $this->getDirectiveHandler();
+
+        if ($directiveHandler !== null) {
+            try {
+                $directiveHandler->process(
+                    $this->parser,
+                    $this->contentBlock,
+                    $this->directive->getVariable(),
+                    $this->directive->getData(),
+                    $this->directive->getOptions()
+                );
+            } catch (\Throwable $e) {
+                $message = sprintf(
+                    'Error while processing "%s" directive%s: %s',
+                    $directiveHandler->getName(),
+                    $this->environment->getCurrentFileName() !== '' ? sprintf(
+                        ' in "%s"',
+                        $this->environment->getCurrentFileName()
+                    ) : '',
+                    $e->getMessage()
+                );
+
+                $this->environment->addError($message);
+            }
+        }
+
         return null;
     }
 

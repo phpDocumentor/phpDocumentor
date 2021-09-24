@@ -63,6 +63,10 @@ final class TitleParser implements Subparser
         $this->openTitleNodes = $openTitleNodes;
     }
 
+    public function reset(string $openingLine): void
+    {
+    }
+
     public function parse(string $line): bool
     {
         return $this->lineChecker->isComment($line) || (trim($line) !== '' && $line[0] === ' ');

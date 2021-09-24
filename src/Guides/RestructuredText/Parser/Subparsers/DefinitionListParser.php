@@ -22,21 +22,28 @@ final class DefinitionListParser implements Subparser
     /** @var LineChecker */
     private $lineChecker;
 
-    /** @var Parser\Lines */
-    private $lines;
+    /** @var Parser\DocumentIterator */
+    private $documentIterator;
 
-    public function __construct(Parser $parser, EventManager $eventManager, Parser\Buffer $buffer, Parser\Lines $lines)
-    {
+    public function __construct(
+        Parser $parser,
+        EventManager $eventManager,
+        Parser\Buffer $buffer,
+        Parser\DocumentIterator $documentIterator
+    ) {
         $this->lineDataParser = new LineDataParser($parser, $eventManager);
         $this->lineChecker = new LineChecker($this->lineDataParser);
-
         $this->buffer = $buffer;
-        $this->lines = $lines;
+        $this->documentIterator = $documentIterator;
+    }
+
+    public function reset(string $openingLine): void
+    {
     }
 
     public function parse(string $line): bool
     {
-        if ($this->lineChecker->isDefinitionListEnded($line, $this->lines->getNextLine())) {
+        if ($this->lineChecker->isDefinitionListEnded($line, $this->documentIterator->getNextLine())) {
             return false;
         }
 

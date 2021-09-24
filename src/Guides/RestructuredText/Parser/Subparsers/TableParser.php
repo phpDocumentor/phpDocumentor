@@ -28,16 +28,26 @@ final class TableParser implements Subparser
     /** @var LineChecker */
     private $lineChecker;
 
+    /** @var Parser\TableSeparatorLineConfig */
+    private $tableSeparatorLineConfig;
+
     public function __construct(
         Parser $parser,
         EventManager $eventManager,
-        Parser\TableSeparatorLineConfig $tableSeparatorLineConfig,
-        string $openingLine
+        Parser\TableSeparatorLineConfig $tableSeparatorLineConfig
     ) {
         $this->parser = $parser;
         $this->lineChecker = new LineChecker(new LineDataParser($parser, $eventManager));
         $this->tableParser = new Parser\TableParser();
-        $this->nodeBuffer = new TableNode($tableSeparatorLineConfig, $this->tableParser->guessTableType($openingLine));
+        $this->tableSeparatorLineConfig = $tableSeparatorLineConfig;
+    }
+
+    public function reset(string $openingLine): void
+    {
+        $this->nodeBuffer = new TableNode(
+            $this->tableSeparatorLineConfig,
+            $this->tableParser->guessTableType($openingLine)
+        );
     }
 
     public function parse(string $line): bool

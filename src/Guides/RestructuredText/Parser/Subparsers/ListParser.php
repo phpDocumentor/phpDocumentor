@@ -36,7 +36,10 @@ final class ListParser implements Subparser
     {
         $this->lineDataParser = new LineDataParser($parser, $eventManager);
         $this->environment = $parser->getEnvironment();
+    }
 
+    public function reset(string $openingLine): void
+    {
         $this->nodeBuffer = new ListNode();
     }
 
