@@ -264,7 +264,7 @@ class DocumentParser
 
                     if ($this->lineChecker->isDirective($line)) {
                         $this->setState(State::DIRECTIVE);
-                        $this->buffer = new Buffer();
+                        $this->buffer->clear();
                         $this->flush();
                         $this->initDirective($line);
                     } elseif ($this->lineChecker->isDefinitionList($this->lines->getNextLine())) {
@@ -396,9 +396,7 @@ class DocumentParser
                 case State::NORMAL:
                     $this->isCode = $this->prepareCode();
 
-                    $buffer = $this->buffer->getLinesString();
-
-                    $node = new ParagraphNode(new SpanNode($this->environment, $buffer));
+                    $node = new ParagraphNode(new SpanNode($this->environment, $this->buffer->getLinesString()));
 
                     break;
                 case State::SEPARATOR:
@@ -425,7 +423,7 @@ class DocumentParser
 
                     $this->lastTitleNode = $node;
                     $this->document->addNode(new SectionBeginNode($node));
-                    $this->openTitleNodes[] = $node;
+                    $this->openTitleNodes->append($node);
 
                     break;
             }
