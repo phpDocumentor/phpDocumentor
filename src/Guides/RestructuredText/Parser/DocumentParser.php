@@ -352,15 +352,13 @@ class DocumentParser
                 break;
 
             case State::DIRECTIVE:
-                if ($this->directiveParser !== null && $this->directiveParser->getDirective() !== null) {
-                    $directiveOption = $this->lineDataParser->parseDirectiveOption($line);
-                    if ($directiveOption !== null) {
-                        $this->directiveParser->getDirective()->setOption(
-                            $directiveOption->getName(),
-                            $directiveOption->getValue()
-                        );
-                        return true;
-                    }
+                $directiveOption = $this->lineDataParser->parseDirectiveOption($line);
+                if ($directiveOption !== null && $this->subparser->getDirective() !== null) {
+                    $this->subparser->getDirective()->setOption(
+                        $directiveOption->getName(),
+                        $directiveOption->getValue()
+                    );
+                    return true;
                 }
 
                 if ($this->subparser->parse($line) === false) {
@@ -404,10 +402,9 @@ class DocumentParser
 
                     break;
                 case State::SEPARATOR:
-                    $level = $this->environment->getLevel((string) $this->specialLetter);
-
-                    $node = new SeparatorNode($level);
-
+                    // TODO: Move this to the subparsers property, but how to propagate the specialLetter?
+                    $this->subparser = new Parser\Subparsers\SeparatorParser($this->parser, $this->specialLetter);
+                    $node = $this->subparser->build();
                     break;
 
                 case State::CODE:
