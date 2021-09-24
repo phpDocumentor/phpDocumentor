@@ -21,11 +21,11 @@ use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
- * Test class for \phpDocumentor\Descriptor\Builder
+ * Test class for \phpDocumentor\Descriptor\Reflector\ConstantAssembler
  *
- * @coversDefaultClass  \phpDocumentor\Descriptor\Builder\Reflector\ConstantAssembler
+ * @coversDefaultClass \phpDocumentor\Descriptor\Builder\Reflector\ConstantAssembler
  */
-class ConstantAssemblerTest extends TestCase
+final class ConstantAssemblerTest extends TestCase
 {
     use ProphecyTrait;
 
@@ -47,7 +47,37 @@ class ConstantAssemblerTest extends TestCase
      *
      * @covers ::create
      */
-    public function testCreateConstantDescriptorFromReflector(): void
+    public function testCreateGlobalConstantDescriptorFromReflector(): void
+    {
+        $value = '\\false';
+        $name = 'constBoolean';
+
+        $docBlockDescription = new DocBlock\Description(
+            <<<DOCBLOCK
+            /**
+             * This is a example description
+             */
+DOCBLOCK
+        );
+
+        $docBlock = new DocBlock('This is a example description', $docBlockDescription);
+        $constantReflector = new Constant(new Fqsen('\\' . $name), $docBlock, $value);
+
+        $descriptor = $this->fixture->create($constantReflector);
+
+        self::assertSame($name, $descriptor->getName());
+        self::assertSame('\\' . $name, (string) $descriptor->getFullyQualifiedStructuralElementName());
+        self::assertSame('', $descriptor->getNamespace());
+        self::assertSame($value, $descriptor->getValue());
+        self::assertSame('public', $descriptor->getVisibility());
+    }
+
+    /**
+     * Creates a Descriptor from a provided class.
+     *
+     * @covers ::create
+     */
+    public function testCreateNamespacedConstantDescriptorFromReflector(): void
     {
         $pi = '3.14159265359';
         $name = 'constPI';
@@ -66,14 +96,14 @@ DOCBLOCK
 
         $descriptor = $this->fixture->create($constantReflectorMock);
 
-        $this->assertSame($name, $descriptor->getName());
-        $this->assertSame(
+        self::assertSame($name, $descriptor->getName());
+        self::assertSame(
             '\\' . $namespace . '::' . $name,
             (string) $descriptor->getFullyQualifiedStructuralElementName()
         );
-        $this->assertSame('\\' . $namespace, $descriptor->getNamespace());
-        $this->assertSame($pi, $descriptor->getValue());
-        $this->assertSame('public', $descriptor->getVisibility());
+        self::assertSame('\\' . $namespace, $descriptor->getNamespace());
+        self::assertSame($pi, $descriptor->getValue());
+        self::assertSame('public', $descriptor->getVisibility());
     }
 
     /**
@@ -100,13 +130,13 @@ DOCBLOCK
 
         $descriptor = $this->fixture->create($constantReflectorMock);
 
-        $this->assertSame($name, $descriptor->getName());
-        $this->assertSame(
+        self::assertSame($name, $descriptor->getName());
+        self::assertSame(
             '\\' . $namespace . '\\' . $name,
             (string) $descriptor->getFullyQualifiedStructuralElementName()
         );
-        $this->assertSame('\\' . $namespace, $descriptor->getNamespace());
-        $this->assertSame($pi, $descriptor->getValue());
-        $this->assertSame('public', $descriptor->getVisibility());
+        self::assertSame('\\' . $namespace, $descriptor->getNamespace());
+        self::assertSame($pi, $descriptor->getValue());
+        self::assertSame('public', $descriptor->getVisibility());
     }
 }

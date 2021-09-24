@@ -39,7 +39,7 @@ class PropertyAssembler extends AssemblerAbstract
         $propertyDescriptor->setName($data->getName());
         $propertyDescriptor->setVisibility((string) $data->getVisibility() ?: 'public');
         $propertyDescriptor->setStatic($data->isStatic());
-        $propertyDescriptor->setDefault($this->pretifyValue($data->getDefault()));
+        $propertyDescriptor->setDefault($data->getDefault());
 
         if ($data->getType()) {
             $propertyDescriptor->setType($data->getType());
