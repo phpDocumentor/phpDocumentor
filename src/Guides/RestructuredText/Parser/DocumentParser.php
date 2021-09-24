@@ -21,6 +21,7 @@ use phpDocumentor\Guides\RestructuredText\Directives\Directive;
 use phpDocumentor\Guides\RestructuredText\Event\PostParseDocumentEvent;
 use phpDocumentor\Guides\RestructuredText\Event\PreParseDocumentEvent;
 use phpDocumentor\Guides\RestructuredText\Parser;
+use phpDocumentor\Guides\RestructuredText\Parser\Directive as DirectiveHandler;
 use phpDocumentor\Guides\RestructuredText\Parser\Directive as ParserDirective;
 use RuntimeException;
 use Throwable;
@@ -47,7 +48,7 @@ class DocumentParser
     /** @var EventManager */
     private $eventManager;
 
-    /** @var Directive[] */
+    /** @var ArrayObject<Directive> */
     private $directives;
 
     /** @var DocumentNode */
@@ -103,7 +104,7 @@ class DocumentParser
         $this->parser = $parser;
         $this->environment = $parser->getEnvironment();
         $this->eventManager = $eventManager;
-        $this->directives = $directives;
+        $this->directives = new ArrayObject($directives);
         $this->lineDataParser = new LineDataParser($this->parser, $eventManager);
         $this->lineChecker = new LineChecker($this->lineDataParser);
         $this->tableParser = new TableParser();
@@ -263,10 +264,17 @@ class DocumentParser
                     }
 
                     if ($this->lineChecker->isDirective($line)) {
+                        // TODO: Why this order? Why is the state set to Directive, the buffer cleared, then a flush
+                        //       -with state Directive thus- and only then the new Directive initialised? Is this a
+                        //       correct order?
                         $this->setState(State::DIRECTIVE);
                         $this->buffer->clear();
                         $this->flush();
-                        $this->initDirective($line);
+                        $this->subparser = new Subparsers\DirectiveParser($this->environment, $this->lineChecker, $this->lineDataParser, $this->directives);
+                        $directive = $this->subparser->init($line);
+                        if ($directive instanceof DirectiveHandler) {
+                            $this->directive = $directive;
+                        }
                     } elseif ($this->lineChecker->isDefinitionList($this->lines->getNextLine())) {
                         $this->setState(State::DEFINITION_LIST);
                         $this->buffer->push($line);
@@ -373,7 +381,11 @@ class DocumentParser
                     }
 
                     $this->flush();
-                    $this->initDirective($line);
+                    $this->subparser = new Subparsers\DirectiveParser($this->environment, $this->lineChecker, $this->lineDataParser, $this->directives);
+                    $directive = $this->subparser->init($line);
+                    if ($directive instanceof DirectiveHandler) {
+                        $this->directive = $directive;
+                    }
                 }
 
                 break;
