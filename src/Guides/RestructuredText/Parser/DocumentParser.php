@@ -108,7 +108,6 @@ class DocumentParser
         $this->documentIterator = new DocumentIterator();
 
         $this->subparsers = [
-            State::LIST => new Subparsers\ListParser($this->parser, $this->eventManager),
             State::DEFINITION_LIST => new Subparsers\DefinitionListParser(
                 $parser,
                 $eventManager,
@@ -120,8 +119,9 @@ class DocumentParser
         ];
 
         $this->productions = [
-            new States\CodeProduction(),
-            new States\QuoteProduction($parser),
+            new Productions\CodeProduction(),
+            new Productions\QuoteProduction($parser),
+            new Productions\ListProduction($this->lineDataParser, $this->environment),
         ];
     }
 
@@ -184,7 +184,6 @@ class DocumentParser
                 );
                 $this->subparser->reset($openingLine);
                 break;
-            case State::LIST:
             case State::DEFINITION_LIST:
             case State::COMMENT:
                 $subparser = $this->subparsers[$state] ?? null;
@@ -250,12 +249,6 @@ class DocumentParser
                 }
 
                 // OLD STUFF: Weird mumbo jumbo of states .. rewrite this in to productions
-                if ($this->lineChecker->isListLine($line, $this->isCode)) {
-                    $this->setState(State::LIST, $line);
-
-                    return false;
-                }
-
                 if ($this->parseLink($line)) {
                     return true;
                 }
@@ -349,7 +342,6 @@ class DocumentParser
 
                 return true;
 
-            case State::LIST:
             case State::DEFINITION_LIST:
                 if ($this->subparser->parse($line) === false) {
                     $this->flush();
@@ -432,7 +424,6 @@ class DocumentParser
                     $node = $this->subparser->build();
                     break;
 
-                case State::LIST:
                 case State::DEFINITION_LIST:
                 case State::TABLE:
                 case State::COMMENT:

@@ -2,60 +2,72 @@
 
 declare(strict_types=1);
 
-namespace phpDocumentor\Guides\RestructuredText\Parser\Subparsers;
+namespace phpDocumentor\Guides\RestructuredText\Parser\Productions;
 
-use Doctrine\Common\EventManager;
 use phpDocumentor\Guides\Environment;
+use phpDocumentor\Guides\Nodes\BlockNode;
 use phpDocumentor\Guides\Nodes\ListNode;
 use phpDocumentor\Guides\Nodes\Node;
+use phpDocumentor\Guides\Nodes\QuoteNode;
 use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\RestructuredText\Parser;
-use phpDocumentor\Guides\RestructuredText\Parser\LineDataParser;
+use phpDocumentor\Guides\RestructuredText\Parser\Buffer;
+use phpDocumentor\Guides\RestructuredText\Parser\DocumentIterator;
+use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
 use phpDocumentor\Guides\RestructuredText\Parser\ListLine;
 
-use function trim;
-
-final class ListParser implements Subparser
+final class ListProduction implements Production
 {
-    /** @var LineDataParser */
+    /** @var Parser */
     private $lineDataParser;
-
-    /** @var ListLine|null */
-    private $listLine = null;
 
     /** @var ListNode */
     private $nodeBuffer;
 
-    /** @var Environment */
-    private $environment;
+    /** @var ListLine|null */
+    private $listLine = null;
 
     /** @var bool */
     private $listFlow = true;
 
-    public function __construct(Parser $parser, EventManager $eventManager)
+    /** @var Environment */
+    private $environment;
+
+    public function __construct(Parser\LineDataParser $parser, Environment $environment)
     {
-        $this->lineDataParser = new LineDataParser($parser, $eventManager);
-        $this->environment = $parser->getEnvironment();
+        $this->lineDataParser = $parser;
+        $this->environment = $environment;
     }
 
-    public function reset(string $openingLine): void
+    public function applies(DocumentParser $documentParser): bool
+    {
+        return $this->isListLine($documentParser->getDocumentIterator()->current(), $documentParser->isCode);
+    }
+
+    public function trigger(DocumentIterator $documentIterator): ?Node
     {
         $this->nodeBuffer = new ListNode();
-    }
+        $this->parseListLine($documentIterator->current());
 
-    public function parse(string $line): bool
-    {
-        return $this->parseListLine($line);
-    }
+        while ($documentIterator->getNextLine() !== null && $this->isListLine($documentIterator->getNextLine(), false)) {
+            $documentIterator->next();
+            $this->parseListLine($documentIterator->current());
+        }
 
-    /**
-     * @return ListNode
-     */
-    public function build(): ?Node
-    {
         $this->parseListLine(null, true);
 
         return $this->nodeBuffer;
+    }
+
+    private function isListLine(string $line, bool $isCode): bool
+    {
+        $listLine = $this->lineDataParser->parseListLine($line);
+
+        if ($listLine !== null) {
+            return $listLine->getDepth() === 0 || !$isCode;
+        }
+
+        return false;
     }
 
     private function parseListLine(?string $line, bool $flush = false): bool

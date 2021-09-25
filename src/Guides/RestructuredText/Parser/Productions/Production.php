@@ -1,7 +1,7 @@
 <?php
 
 
-namespace phpDocumentor\Guides\RestructuredText\Parser\States;
+namespace phpDocumentor\Guides\RestructuredText\Parser\Productions;
 
 
 use phpDocumentor\Guides\Nodes\CodeNode;
