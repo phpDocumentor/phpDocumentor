@@ -116,11 +116,13 @@ class DocumentParser
                 $this->documentIterator
             ),
             State::COMMENT => new Subparsers\CommentParser($this->parser, $this->eventManager),
-            State::BLOCK => new Subparsers\QuoteParser($this->parser, $this->eventManager, $this->buffer),
             State::DIRECTIVE => new Subparsers\DirectiveParser($this->parser, $this->lineChecker, $this->lineDataParser, $this->directives),
         ];
 
-        $this->productions[] = new States\CodeProduction();
+        $this->productions = [
+            new States\CodeProduction(),
+            new States\QuoteProduction($parser),
+        ];
     }
 
     public function getDocument(): DocumentNode
@@ -185,7 +187,6 @@ class DocumentParser
             case State::LIST:
             case State::DEFINITION_LIST:
             case State::COMMENT:
-            case State::BLOCK:
                 $subparser = $this->subparsers[$state] ?? null;
                 if ($subparser !== null) {
                     $this->subparser = $subparser;
@@ -243,6 +244,7 @@ class DocumentParser
                         if ($newNode !== null) {
                             $this->document->addNode($newNode);
                         }
+
                         return true;
                     }
                 }
@@ -250,13 +252,6 @@ class DocumentParser
                 // OLD STUFF: Weird mumbo jumbo of states .. rewrite this in to productions
                 if ($this->lineChecker->isListLine($line, $this->isCode)) {
                     $this->setState(State::LIST, $line);
-
-                    return false;
-                }
-
-                $isBlockLine = $this->lineChecker->isBlockLine($line);
-                if ($isBlockLine && $this->isCode === false) {
-                    $this->setState(State::BLOCK, $line);
 
                     return false;
                 }
@@ -354,7 +349,6 @@ class DocumentParser
 
                 return true;
 
-            case State::BLOCK:
             case State::LIST:
             case State::DEFINITION_LIST:
                 if ($this->subparser->parse($line) === false) {
@@ -438,7 +432,6 @@ class DocumentParser
                     $node = $this->subparser->build();
                     break;
 
-                case State::BLOCK:
                 case State::LIST:
                 case State::DEFINITION_LIST:
                 case State::TABLE:
