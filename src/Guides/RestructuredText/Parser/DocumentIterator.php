@@ -25,9 +25,9 @@ class DocumentIterator implements Iterator
         $this->rewind();
     }
 
-    public function getNextLine(): string
+    public function getNextLine(): ?string
     {
-        return $this->lines[$this->position + 1] ?? '';
+        return $this->lines[$this->position + 1] ?? null;
     }
 
     public function rewind(): void
@@ -37,6 +37,10 @@ class DocumentIterator implements Iterator
 
     public function current(): string
     {
+        if ($this->valid() === false) {
+            throw new \OutOfBoundsException('Attempted to read a line that does not exist');
+        }
+
         return $this->lines[$this->position];
     }
 

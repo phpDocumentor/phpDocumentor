@@ -14,7 +14,6 @@ use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\ParagraphNode;
 use phpDocumentor\Guides\Nodes\SectionBeginNode;
 use phpDocumentor\Guides\Nodes\SectionEndNode;
-use phpDocumentor\Guides\Nodes\SeparatorNode;
 use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\Nodes\TitleNode;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive as DirectiveHandler;
@@ -67,8 +66,8 @@ class DocumentParser
     /** @var Node|null */
     private $nodeBuffer;
 
-    /** @var bool */
-    private $isCode = false;
+    /** @var bool public is temporary */
+    public $isCode = false;
 
     /** @var DocumentIterator */
     private $documentIterator;
@@ -87,6 +86,7 @@ class DocumentParser
 
     /** @var array<string, Subparsers\Subparser> */
     private $subparsers;
+    private $productions;
 
     /**
      * @param DirectiveHandler[] $directives
@@ -117,9 +117,10 @@ class DocumentParser
             ),
             State::COMMENT => new Subparsers\CommentParser($this->parser, $this->eventManager),
             State::BLOCK => new Subparsers\QuoteParser($this->parser, $this->eventManager, $this->buffer),
-            State::CODE => new Subparsers\CodeParser($this->parser, $this->eventManager, $this->buffer),
             State::DIRECTIVE => new Subparsers\DirectiveParser($this->parser, $this->lineChecker, $this->lineDataParser, $this->directives),
         ];
+
+        $this->productions[] = new States\CodeProduction();
     }
 
     public function getDocument(): DocumentNode
@@ -185,7 +186,6 @@ class DocumentParser
             case State::DEFINITION_LIST:
             case State::COMMENT:
             case State::BLOCK:
-            case State::CODE:
                 $subparser = $this->subparsers[$state] ?? null;
                 if ($subparser !== null) {
                     $this->subparser = $subparser;
@@ -200,12 +200,17 @@ class DocumentParser
         $this->documentIterator->load($this->environment, $document);
         $this->setState(State::BEGIN, '');
 
-        foreach ($this->documentIterator as $line) {
+        // We explicitly do not use foreach, but rather the cursors of the DocumentIterator
+        // this is done because we are transitioning to a method where a Substate can take the current
+        // cursor as starting point and loop through the cursor
+        while ($this->documentIterator->valid()) {
             while (true) {
-                if ($this->parseLine($line)) {
+                if ($this->trigger()) {
                     break;
                 }
             }
+
+            $this->documentIterator->next();
         }
 
         // DocumentNode is flushed twice to trigger the directives
@@ -217,26 +222,41 @@ class DocumentParser
         }
     }
 
-    private function parseLine(string $line): bool
+    /**
+     * @return bool True if no more parsing is needed, if false this method will be called again
+     */
+    private function trigger(): bool
     {
+        $line = $this->documentIterator->current();
+
         switch ($this->state) {
             case State::BEGIN:
                 if (trim($line) === '') {
                     return true;
                 }
 
+                // NEW STUFF: Based on Recursive Descend Parser theory, we have a list of 'productions' that can result
+                // in an AST node.
+                foreach ($this->productions as $production) {
+                    if ($production->applies($this)) {
+                        $newNode = $production->trigger($this->documentIterator);
+                        if ($newNode !== null) {
+                            $this->document->addNode($newNode);
+                        }
+                        return true;
+                    }
+                }
+
+                // OLD STUFF: Weird mumbo jumbo of states .. rewrite this in to productions
                 if ($this->lineChecker->isListLine($line, $this->isCode)) {
                     $this->setState(State::LIST, $line);
 
                     return false;
                 }
 
-                if ($this->lineChecker->isBlockLine($line)) {
-                    if ($this->isCode) {
-                        $this->setState(State::CODE, $line);
-                    } else {
-                        $this->setState(State::BLOCK, $line);
-                    }
+                $isBlockLine = $this->lineChecker->isBlockLine($line);
+                if ($isBlockLine && $this->isCode === false) {
+                    $this->setState(State::BLOCK, $line);
 
                     return false;
                 }
@@ -252,6 +272,7 @@ class DocumentParser
                     $this->setState(State::DIRECTIVE, $line);
                     $this->buffer->clear();
                     $this->flush();
+
                     $this->subparser = $this->subparsers[$this->state];
                     $this->subparser->reset($line);
                     if ($this->subparser->getDirective() instanceof Directive) {
@@ -334,7 +355,6 @@ class DocumentParser
                 return true;
 
             case State::BLOCK:
-            case State::CODE:
             case State::LIST:
             case State::DEFINITION_LIST:
                 if ($this->subparser->parse($line) === false) {
@@ -376,24 +396,20 @@ class DocumentParser
                     return true;
                 }
 
-                if ($this->subparser->parse($line) === false) {
-                    $directiveHandler = $this->subparser->getDirectiveHandler();
-                    $this->isCode = $directiveHandler !== null ? $directiveHandler->wantCode() : false;
+                $isDirective = $this->lineChecker->isDirective($line);
+                if ($isDirective !== false) {
+                    // Another new directive has been opened, so let's go back to the begin state and restart parsing
                     $this->setState(State::BEGIN, $line);
 
                     return false;
                 }
 
-                $this->flush();
+                // It's not an option, not a new Directive thus it must be a Content Block!
+                $directiveHandler = $this->subparser->getDirectiveHandler();
+                $this->isCode = $directiveHandler !== null ? $directiveHandler->wantCode() : false;
+                $this->setState(State::BEGIN, $line);
 
-                // Initiate a new Directive if the Linechecker indicated that the line is a new one
-                $this->subparser = $this->subparsers[State::DIRECTIVE];
-                $this->subparser->reset($line);
-                if ($this->subparser->getDirective() instanceof Directive) {
-                    $this->directiveParser = $this->subparser;
-                }
-
-                return true;
+                return false;
 
             default:
                 $this->environment->addError('Parser ended in an unexpected state');
@@ -422,7 +438,6 @@ class DocumentParser
                     $node = $this->subparser->build();
                     break;
 
-                case State::CODE:
                 case State::BLOCK:
                 case State::LIST:
                 case State::DEFINITION_LIST:
@@ -522,5 +537,10 @@ class DocumentParser
         }
 
         unset($this->openTitleNodes[$key]);
+    }
+
+    public function getDocumentIterator(): DocumentIterator
+    {
+        return $this->documentIterator;
     }
 }
