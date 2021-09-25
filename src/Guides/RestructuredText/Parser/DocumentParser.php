@@ -86,6 +86,8 @@ class DocumentParser
 
     /** @var array<string, Subparsers\Subparser> */
     private $subparsers;
+
+    /** @var array<int, Productions\Production> */
     private $productions;
 
     /**
@@ -114,7 +116,6 @@ class DocumentParser
                 $this->buffer,
                 $this->documentIterator
             ),
-            State::COMMENT => new Subparsers\CommentParser($this->parser, $this->eventManager),
             State::DIRECTIVE => new Subparsers\DirectiveParser($this->parser, $this->lineChecker, $this->lineDataParser, $this->directives),
         ];
 
@@ -122,6 +123,7 @@ class DocumentParser
             new Productions\CodeProduction(),
             new Productions\QuoteProduction($parser),
             new Productions\ListProduction($this->lineDataParser, $this->environment),
+            // new Productions\CommentProduction(), // Can't use right now, not until Directives are migrated
         ];
     }
 
@@ -185,7 +187,6 @@ class DocumentParser
                 $this->subparser->reset($openingLine);
                 break;
             case State::DEFINITION_LIST:
-            case State::COMMENT:
                 $subparser = $this->subparsers[$state] ?? null;
                 if ($subparser !== null) {
                     $this->subparser = $subparser;
@@ -332,12 +333,6 @@ class DocumentParser
                     return false;
                 }
 
-                if ($this->lineChecker->isComment($line)) {
-                    $this->flush();
-                    $this->setState(State::COMMENT, $line);
-                    return true;
-                }
-
                 $this->buffer->push($line);
 
                 return true;
@@ -358,16 +353,6 @@ class DocumentParser
                     $this->setState(State::BEGIN, $line);
 
                     // TODO: No return?
-                }
-
-                return true;
-
-            case State::COMMENT:
-                if (!$this->subparser->parse($line)) {
-                    // No flush, a Comment is an inline element and should not interrupt parsing this structural element
-                    $this->setState(State::BEGIN, $line);
-
-                    return false;
                 }
 
                 return true;
@@ -426,7 +411,6 @@ class DocumentParser
 
                 case State::DEFINITION_LIST:
                 case State::TABLE:
-                case State::COMMENT:
                     $node = $this->subparser->build();
 
                     break;

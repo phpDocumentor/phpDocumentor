@@ -5,13 +5,10 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\RestructuredText\Parser\Productions;
 
 use phpDocumentor\Guides\Environment;
-use phpDocumentor\Guides\Nodes\BlockNode;
 use phpDocumentor\Guides\Nodes\ListNode;
 use phpDocumentor\Guides\Nodes\Node;
-use phpDocumentor\Guides\Nodes\QuoteNode;
 use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\RestructuredText\Parser;
-use phpDocumentor\Guides\RestructuredText\Parser\Buffer;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentIterator;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
 use phpDocumentor\Guides\RestructuredText\Parser\ListLine;
@@ -49,7 +46,10 @@ final class ListProduction implements Production
         $this->nodeBuffer = new ListNode();
         $this->parseListLine($documentIterator->current());
 
-        while ($documentIterator->getNextLine() !== null && $this->isListLine($documentIterator->getNextLine(), false)) {
+        while (
+            $documentIterator->getNextLine() !== null
+            && $this->isListLine($documentIterator->getNextLine(), false)
+        ) {
             $documentIterator->next();
             $this->parseListLine($documentIterator->current());
         }
