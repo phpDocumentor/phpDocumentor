@@ -49,6 +49,16 @@ class DocumentIterator implements Iterator
         return $this->position;
     }
 
+    /**
+     * @deprecated Work around for Production's eating one line too many
+     * @todo Revisit The Loop in {@see DocumentParser::parseLines()} and see if the Look Ahead timing should be done
+     *       differently
+     */
+    public function prev(): void
+    {
+        --$this->position;
+    }
+
     public function next(): void
     {
         ++$this->position;

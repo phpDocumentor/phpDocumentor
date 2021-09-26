@@ -7,7 +7,6 @@ namespace phpDocumentor\Guides\RestructuredText\Parser;
 use ArrayObject;
 use Doctrine\Common\EventManager;
 use phpDocumentor\Guides\Environment;
-use phpDocumentor\Guides\Nodes\AnchorNode;
 use phpDocumentor\Guides\Nodes\CodeNode;
 use phpDocumentor\Guides\Nodes\DocumentNode;
 use phpDocumentor\Guides\Nodes\Node;
@@ -21,7 +20,6 @@ use phpDocumentor\Guides\RestructuredText\Event\PostParseDocumentEvent;
 use phpDocumentor\Guides\RestructuredText\Event\PreParseDocumentEvent;
 use phpDocumentor\Guides\RestructuredText\Parser;
 use RuntimeException;
-
 use function array_search;
 use function md5;
 use function strlen;
@@ -63,9 +61,6 @@ class DocumentParser
     /** @var Buffer */
     private $buffer;
 
-    /** @var Node|null */
-    private $nodeBuffer;
-
     /** @var bool public is temporary */
     public $isCode = false;
 
@@ -87,7 +82,7 @@ class DocumentParser
     /** @var array<string, Subparsers\Subparser> */
     private $subparsers;
 
-    /** @var array<int, Productions\Production> */
+    /** @var array<int, Productions\Rule> */
     private $productions;
 
     /**
@@ -110,21 +105,21 @@ class DocumentParser
         $this->documentIterator = new DocumentIterator();
 
         $this->subparsers = [
-            State::DEFINITION_LIST => new Subparsers\DefinitionListParser(
-                $parser,
-                $eventManager,
-                $this->buffer,
-                $this->documentIterator
+            State::DIRECTIVE => new Subparsers\DirectiveParser(
+                $this->parser,
+                $this->lineChecker,
+                $this->lineDataParser,
+                $this->directives
             ),
-            State::DIRECTIVE => new Subparsers\DirectiveParser($this->parser, $this->lineChecker, $this->lineDataParser, $this->directives),
         ];
 
         $this->productions = [
-            new Productions\LinkProduction($this->lineDataParser, $this->environment),
-            new Productions\CodeProduction(),
-            new Productions\QuoteProduction($parser),
-            new Productions\ListProduction($this->lineDataParser, $this->environment),
+            new Productions\LinkRule($this->lineDataParser, $this->environment),
+            new Productions\CodeRule(),
+            new Productions\QuoteRule($parser),
+            new Productions\ListRule($this->lineDataParser, $this->environment),
             // new Productions\CommentProduction(), // Can't use right now, not until Directives are migrated
+            new Productions\DefinitionListRule($this->lineDataParser),
         ];
     }
 
@@ -164,7 +159,6 @@ class DocumentParser
     {
         $this->specialLetter = false;
         $this->buffer->clear();
-        $this->nodeBuffer = null;
     }
 
     private function setState(string $state, string $openingLine): void
@@ -186,13 +180,6 @@ class DocumentParser
                     $this->openTitleNodes
                 );
                 $this->subparser->reset($openingLine);
-                break;
-            case State::DEFINITION_LIST:
-                $subparser = $this->subparsers[$state] ?? null;
-                if ($subparser !== null) {
-                    $this->subparser = $subparser;
-                    $this->subparser->reset($openingLine);
-                }
                 break;
         }
     }
@@ -241,7 +228,7 @@ class DocumentParser
                 // in an AST node.
                 foreach ($this->productions as $production) {
                     if ($production->applies($this)) {
-                        $newNode = $production->trigger($this->documentIterator);
+                        $newNode = $production->apply($this->documentIterator);
                         if ($newNode !== null) {
                             $this->document->addNode($newNode);
                         }
@@ -263,13 +250,6 @@ class DocumentParser
                     if ($this->subparser->getDirective() instanceof Directive) {
                         $this->directiveParser = $this->subparser;
                     }
-
-                    return true;
-                }
-
-                if ($this->lineChecker->isDefinitionList($this->documentIterator->getNextLine())) {
-                    $this->setState(State::DEFINITION_LIST, $line);
-                    $this->buffer->push($line);
 
                     return true;
                 }
@@ -330,16 +310,6 @@ class DocumentParser
                 }
 
                 $this->buffer->push($line);
-
-                return true;
-
-            case State::DEFINITION_LIST:
-                if ($this->subparser->parse($line) === false) {
-                    $this->flush();
-                    $this->setState(State::BEGIN, $line);
-
-                    return false;
-                }
 
                 return true;
 
@@ -405,7 +375,6 @@ class DocumentParser
                     $node = $this->subparser->build();
                     break;
 
-                case State::DEFINITION_LIST:
                 case State::TABLE:
                     $node = $this->subparser->build();
 
@@ -443,7 +412,7 @@ class DocumentParser
 
     private function hasBuffer(): bool
     {
-        return !$this->buffer->isEmpty() || $this->nodeBuffer !== null;
+        return !$this->buffer->isEmpty();
     }
 
     private function prepareCode(): bool

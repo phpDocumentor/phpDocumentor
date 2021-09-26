@@ -10,7 +10,7 @@ use phpDocumentor\Guides\RestructuredText\Parser\Buffer;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentIterator;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
 
-interface Production
+interface Rule
 {
 
     /**
@@ -27,7 +27,7 @@ interface Production
      * @param DocumentIterator $documentIterator
      * @return Node|null
      */
-    public function trigger(DocumentIterator $documentIterator): ?Node;
+    public function apply(DocumentIterator $documentIterator): ?Node;
 
     public function applies(DocumentParser $documentParser): bool;
 }

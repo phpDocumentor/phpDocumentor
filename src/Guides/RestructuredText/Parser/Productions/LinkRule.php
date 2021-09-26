@@ -13,7 +13,7 @@ use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
 use phpDocumentor\Guides\RestructuredText\Parser\LineDataParser;
 use phpDocumentor\Guides\RestructuredText\Parser\Link;
 
-final class LinkProduction implements Production
+final class LinkRule implements Rule
 {
     /** @var LineDataParser */
     private $lineDataParser;
@@ -34,7 +34,7 @@ final class LinkProduction implements Production
         return $link !== null;
     }
 
-    public function trigger(DocumentIterator $documentIterator): ?Node
+    public function apply(DocumentIterator $documentIterator): ?Node
     {
         $link = $this->lineDataParser->parseLink($documentIterator->current());
         if ($link === null) {

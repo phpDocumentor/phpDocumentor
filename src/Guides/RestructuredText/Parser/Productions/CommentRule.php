@@ -9,14 +9,14 @@ use phpDocumentor\Guides\RestructuredText\Parser\Buffer;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentIterator;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
 
-final class CommentProduction implements Production
+final class CommentRule implements Rule
 {
     public function applies(DocumentParser $documentParser): bool
     {
         return $this->isCommentLine($documentParser->getDocumentIterator()->current());
     }
 
-    public function trigger(DocumentIterator $documentIterator): ?Node
+    public function apply(DocumentIterator $documentIterator): ?Node
     {
         $buffer = new Buffer();
         $buffer->push($documentIterator->current());

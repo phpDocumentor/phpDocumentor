@@ -13,7 +13,7 @@ use phpDocumentor\Guides\RestructuredText\Parser\DocumentIterator;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
 use phpDocumentor\Guides\RestructuredText\Parser\ListLine;
 
-final class ListProduction implements Production
+final class ListRule implements Rule
 {
     /** @var Parser */
     private $lineDataParser;
@@ -41,7 +41,7 @@ final class ListProduction implements Production
         return $this->isListLine($documentParser->getDocumentIterator()->current(), $documentParser->isCode);
     }
 
-    public function trigger(DocumentIterator $documentIterator): ?Node
+    public function apply(DocumentIterator $documentIterator): ?Node
     {
         $this->nodeBuffer = new ListNode();
         $this->parseListLine($documentIterator->current());
