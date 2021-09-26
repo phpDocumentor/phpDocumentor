@@ -6,23 +6,16 @@ namespace phpDocumentor\Guides\RestructuredText\Parser;
 
 use ArrayObject;
 use Doctrine\Common\EventManager;
-use phpDocumentor\Guides\Environment;
-use phpDocumentor\Guides\Nodes\Node;
-use phpDocumentor\Guides\Nodes\CodeNode;
 use phpDocumentor\Guides\Nodes\DocumentNode;
-use phpDocumentor\Guides\Nodes\ParagraphNode;
+use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\SectionEndNode;
-use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\Nodes\TitleNode;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive as DirectiveHandler;
 use phpDocumentor\Guides\RestructuredText\Event\PostParseDocumentEvent;
 use phpDocumentor\Guides\RestructuredText\Event\PreParseDocumentEvent;
 use phpDocumentor\Guides\RestructuredText\Parser;
-use RuntimeException;
 use function array_search;
 use function md5;
-use function strlen;
-use function substr;
 use function trim;
 
 class DocumentParser implements Productions\Rule
@@ -125,32 +118,6 @@ class DocumentParser implements Productions\Rule
 //                $this->subparser->reset($line);
 //
 //                return $this->document;
-
-//            case State::DIRECTIVE:
-//                $directiveOption = $this->lineDataParser->parseDirectiveOption($line);
-//                if ($directiveOption !== null && $this->subparser->getDirective() !== null) {
-//                    $this->subparser->getDirective()->setOption(
-//                        $directiveOption->getName(),
-//                        $directiveOption->getValue()
-//                    );
-//
-//                    return $this->document;
-//                }
-//
-//                $isDirective = $this->lineChecker->isDirective($line);
-//                if ($isDirective !== false) {
-//                    // Another new directive has been opened, so let's go back to the begin state and restart parsing
-//                    $this->setState(State::BEGIN);
-//
-//                    return null;
-//                }
-//
-//                // It's not an option, not a new Directive thus it must be a Content Block!
-//                $directiveHandler = $this->subparser->getDirectiveHandler();
-//                $this->isCode = $directiveHandler !== null ? $directiveHandler->wantCode() : false;
-//                $this->setState(State::BEGIN);
-//
-//                return null;
     }
 
     public function parse(string $contents): DocumentNode
@@ -201,10 +168,14 @@ class DocumentParser implements Productions\Rule
             $this->documentIterator->next();
         }
 
+        // TODO: Can we get rid of this here? It would make this parser cleaner and if it is part of the
+        //       Title/SectionRule itself it is neatly encapsulated.
         foreach ($this->openSectionsAsTitleNodes as $titleNode) {
             $this->endOpenSection($titleNode);
         }
 
+        // TODO: Can we get rid of this here? It would make this parser cleaner and if it is part of the DirectiveRule
+        //       itself it is neatly encapsulated.
         foreach ($this->directives as $directive) {
             $directive->finalize($this->document);
         }
