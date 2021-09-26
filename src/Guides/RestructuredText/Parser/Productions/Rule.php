@@ -3,15 +3,14 @@
 
 namespace phpDocumentor\Guides\RestructuredText\Parser\Productions;
 
-
-use phpDocumentor\Guides\Nodes\CodeNode;
 use phpDocumentor\Guides\Nodes\Node;
-use phpDocumentor\Guides\RestructuredText\Parser\Buffer;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentIterator;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
 
 interface Rule
 {
+
+    public function applies(DocumentParser $documentParser): bool;
 
     /**
      * Enters this state and loops through all relevant lines until a Node is produced.
@@ -28,6 +27,4 @@ interface Rule
      * @return Node|null
      */
     public function apply(DocumentIterator $documentIterator): ?Node;
-
-    public function applies(DocumentParser $documentParser): bool;
 }
