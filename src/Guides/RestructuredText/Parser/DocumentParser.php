@@ -71,13 +71,15 @@ class DocumentParser implements Productions\Rule
 
         $lineDataParser = new LineDataParser($this->parser, $eventManager);
 
+        $literalBlockRule = new Productions\LiteralBlockRule();
         $this->productions = [
             new Productions\TitleRule($this->parser, $this),
             new Productions\LinkRule($lineDataParser, $parser->getEnvironment()),
-            new Productions\LiteralBlockRule(),
+            $literalBlockRule,
             new Productions\QuoteRule($parser),
             new Productions\ListRule($lineDataParser, $parser->getEnvironment()),
-            new Productions\CommentRule(), // Can't use right now, not until Directives are migrated
+            new Productions\DirectiveRule($parser, $this, $lineDataParser, $literalBlockRule, $directives),
+            new Productions\CommentRule(),
             new Productions\DefinitionListRule($lineDataParser),
 
             // For now: ParagraphRule must be last as it is the rule that applies if none other applies.
@@ -106,23 +108,6 @@ class DocumentParser implements Productions\Rule
 
         return $this->document;
 
-//                if ($this->lineChecker->isDirective($line)) {
-//                    // TODO: Why this order? Why is the state set to Directive, the buffer cleared, then a flush
-//                    //       -with state Directive thus- and only then the new Directive initialised? Is this a
-//                    //       correct order?
-//                    $this->setState(State::DIRECTIVE);
-//                    $this->buffer->clear();
-//                    $this->flush();
-//
-//                    $this->subparser = $this->subparsers[$this->state];
-//                    $this->subparser->reset($line);
-//                    if ($this->subparser->getDirective() instanceof Directive) {
-//                        $this->directiveParser = $this->subparser;
-//                    }
-//
-//                    return $this->document;
-//                }
-//
 //                $separatorLineConfig = $this->tableParser->parseTableSeparatorLine($line);
 //
 //                if ($separatorLineConfig === null) {
