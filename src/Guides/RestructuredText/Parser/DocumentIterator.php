@@ -20,7 +20,7 @@ class DocumentIterator implements Iterator
 
     public function load(Environment $environment, string $document): void
     {
-        $document = $this->prepareDocument($environment, $document);
+        $document = trim($this->prepareDocument($environment, $document));
         $this->lines = explode("\n", $document);
         $this->rewind();
     }

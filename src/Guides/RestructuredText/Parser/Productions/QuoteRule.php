@@ -26,7 +26,7 @@ final class QuoteRule implements Rule
     {
         $isBlockLine = $this->isBlockLine($documentParser->getDocumentIterator()->current());
 
-        return ($isBlockLine && $documentParser->isCode === false);
+        return ($isBlockLine && $documentParser->nextIndentedBlockShouldBeALiteralBlock === false);
     }
 
     public function apply(DocumentIterator $documentIterator): ?Node
@@ -39,7 +39,12 @@ final class QuoteRule implements Rule
             $buffer->push($documentIterator->current());
         }
 
-        $blockNode = new BlockNode($buffer->getLines());
+        $lines = $this->removeLeadingWhitelines($buffer->getLines());
+        if (count($lines) === 0) {
+            return null;
+        }
+
+        $blockNode = new BlockNode($lines);
 
         return new QuoteNode($this->parser->getSubParser()->parseLocal($blockNode->getValue()));
     }
@@ -51,5 +56,18 @@ final class QuoteRule implements Rule
         }
 
         return trim($line) === '';
+    }
+
+    private function removeLeadingWhitelines(array $lines): array
+    {
+        foreach ($lines as $index => $line) {
+            if (trim($line) !== '') {
+                break;
+            }
+
+            unset($lines[$index]);
+        }
+
+        return array_values($lines);
     }
 }

@@ -10,15 +10,20 @@ use phpDocumentor\Guides\RestructuredText\Parser\Buffer;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentIterator;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
 
-final class CodeRule implements Rule
+final class LiteralBlockRule implements Rule
 {
     public function applies(DocumentParser $documentParser): bool
     {
+        $nextIndentedBlockShouldBeALiteralBlock = $documentParser->nextIndentedBlockShouldBeALiteralBlock;
+
+        // always reset the `nextIndentedBlockShouldBeALiteralBlock` state; because if this isn't a block line, you
+        // do not want the indented block somewhere else in the document to suddenly become a code block
+        $documentParser->nextIndentedBlockShouldBeALiteralBlock = false;
+
         $isBlockLine = $this->isBlockLine($documentParser->getDocumentIterator()->current());
 
-        return ($isBlockLine && $documentParser->isCode);
+        return ($isBlockLine && $nextIndentedBlockShouldBeALiteralBlock);
     }
-
 
     public function apply(DocumentIterator $documentIterator): ?Node
     {
@@ -30,7 +35,12 @@ final class CodeRule implements Rule
             $buffer->push($documentIterator->current());
         }
 
-        return new CodeNode($buffer->getLines());
+        $lines = $this->removeLeadingWhitelines($buffer->getLines());
+        if (count($lines) === 0) {
+            return null;
+        }
+
+        return new CodeNode($lines);
     }
 
     private function isBlockLine(string $line): bool
@@ -40,5 +50,18 @@ final class CodeRule implements Rule
         }
 
         return trim($line) === '';
+    }
+
+    private function removeLeadingWhitelines(array $lines): array
+    {
+        foreach ($lines as $index => $line) {
+            if (trim($line) !== '') {
+                break;
+            }
+
+            unset($lines[$index]);
+        }
+
+        return array_values($lines);
     }
 }

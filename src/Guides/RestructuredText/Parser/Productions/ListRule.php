@@ -38,7 +38,7 @@ final class ListRule implements Rule
 
     public function applies(DocumentParser $documentParser): bool
     {
-        return $this->isListLine($documentParser->getDocumentIterator()->current(), $documentParser->isCode);
+        return $this->isListLine($documentParser->getDocumentIterator()->current(), $documentParser->nextIndentedBlockShouldBeALiteralBlock);
     }
 
     public function apply(DocumentIterator $documentIterator): ?Node
