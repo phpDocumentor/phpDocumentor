@@ -120,6 +120,7 @@ class DocumentParser
         ];
 
         $this->productions = [
+            new Productions\LinkProduction($this->lineDataParser, $this->environment),
             new Productions\CodeProduction(),
             new Productions\QuoteProduction($parser),
             new Productions\ListProduction($this->lineDataParser, $this->environment),
@@ -247,11 +248,6 @@ class DocumentParser
 
                         return true;
                     }
-                }
-
-                // OLD STUFF: Weird mumbo jumbo of states .. rewrite this in to productions
-                if ($this->parseLink($line)) {
-                    return true;
                 }
 
                 if ($this->lineChecker->isDirective($line)) {
@@ -473,25 +469,6 @@ class DocumentParser
         }
 
         return false;
-    }
-
-    private function parseLink(string $line): bool
-    {
-        $link = $this->lineDataParser->parseLink($line);
-
-        if ($link === null) {
-            return false;
-        }
-
-        if ($link->getType() === Link::TYPE_ANCHOR) {
-            $anchorNode = new AnchorNode($link->getName());
-
-            $this->document->addNode($anchorNode);
-        }
-
-        $this->environment->setLink($link->getName(), $link->getUrl());
-
-        return true;
     }
 
     private function endOpenSection(TitleNode $titleNode): void
