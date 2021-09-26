@@ -67,6 +67,8 @@ final class ParagraphRule implements Rule
             if ($lastLine !== '') {
                 $lines[] = $lastLine;
             }
+        } else {
+            $lines[] = $lastLine;
         }
 
         if (trim(implode('', $lines)) === '') {
