@@ -9,6 +9,7 @@
          beStrictAboutOutputDuringTests="true"
          beStrictAboutTestsThatDoNotTestAnything="true"
          beStrictAboutCoversAnnotation="false"
+         convertDeprecationsToExceptions="true"
          extensionsDirectory="./tools/phpunit.d"
 >
     <testsuites>
