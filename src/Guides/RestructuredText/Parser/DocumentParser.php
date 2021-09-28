@@ -45,7 +45,7 @@ class DocumentParser implements Productions\Rule
     /** @var bool public is temporary */
     public $nextIndentedBlockShouldBeALiteralBlock = false;
 
-    /** @var DocumentIterator */
+    /** @var LinesIterator */
     private $documentIterator;
 
     /** @var ?TitleNode */
@@ -68,7 +68,7 @@ class DocumentParser implements Productions\Rule
         $this->parser = $parser;
         $this->eventManager = $eventManager;
 
-        $this->documentIterator = new DocumentIterator();
+        $this->documentIterator = new LinesIterator();
         $this->openSectionsAsTitleNodes = new ArrayObject();
         $this->directives = new ArrayObject($directives);
 
@@ -97,7 +97,7 @@ class DocumentParser implements Productions\Rule
         return true;
     }
 
-    public function apply(DocumentIterator $documentIterator): ?Node
+    public function apply(LinesIterator $documentIterator): ?Node
     {
         foreach ($this->productions as $production) {
             if (!$production->applies($this)) {
@@ -182,7 +182,7 @@ class DocumentParser implements Productions\Rule
         unset($this->openSectionsAsTitleNodes[$key]);
     }
 
-    public function getDocumentIterator(): DocumentIterator
+    public function getDocumentIterator(): LinesIterator
     {
         return $this->documentIterator;
     }

@@ -17,7 +17,7 @@ use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive as DirectiveHandler;
 use phpDocumentor\Guides\RestructuredText\Parser;
 use phpDocumentor\Guides\RestructuredText\Parser\Directive;
-use phpDocumentor\Guides\RestructuredText\Parser\DocumentIterator;
+use phpDocumentor\Guides\RestructuredText\Parser\LinesIterator;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
 use phpDocumentor\Guides\RestructuredText\Parser\LineDataParser;
 use Throwable;
@@ -67,7 +67,7 @@ final class DirectiveRule implements Rule
         return $this->isDirective($documentParser->getDocumentIterator()->current());
     }
 
-    public function apply(DocumentIterator $documentIterator): ?Node
+    public function apply(LinesIterator $documentIterator): ?Node
     {
         $openingLine = $documentIterator->current();
         $documentIterator->next();
@@ -132,7 +132,7 @@ final class DirectiveRule implements Rule
         return $this->directives[$directive->getName()] ?? null;
     }
 
-    private function interpretDirectiveOptions(DocumentIterator $documentIterator, Directive $directive): void
+    private function interpretDirectiveOptions(LinesIterator $documentIterator, Directive $directive): void
     {
         while (
             $documentIterator->valid()
@@ -144,7 +144,7 @@ final class DirectiveRule implements Rule
         }
     }
 
-    private function interpretContentBlock(DocumentIterator $documentIterator): ?Node
+    private function interpretContentBlock(LinesIterator $documentIterator): ?Node
     {
         $contentBlock = null;
         $this->documentParser->nextIndentedBlockShouldBeALiteralBlock = true;

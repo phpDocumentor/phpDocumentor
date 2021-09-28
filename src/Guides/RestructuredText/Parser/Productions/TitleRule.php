@@ -19,7 +19,7 @@ use phpDocumentor\Guides\Nodes\SectionEndNode;
 use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\Nodes\TitleNode;
 use phpDocumentor\Guides\RestructuredText\Parser;
-use phpDocumentor\Guides\RestructuredText\Parser\DocumentIterator;
+use phpDocumentor\Guides\RestructuredText\Parser\LinesIterator;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
 
 use function array_search;
@@ -91,7 +91,7 @@ final class TitleRule implements Rule
             || $this->nextLineIsAnUnderline($line, $nextLine);
     }
 
-    public function apply(DocumentIterator $documentIterator): ?Node
+    public function apply(LinesIterator $documentIterator): ?Node
     {
         $title = '';
         $overlineLetter = $this->currentLineIsAnOverline(

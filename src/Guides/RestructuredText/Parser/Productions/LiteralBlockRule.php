@@ -16,7 +16,7 @@ namespace phpDocumentor\Guides\RestructuredText\Parser\Productions;
 use phpDocumentor\Guides\Nodes\CodeNode;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\RestructuredText\Parser\Buffer;
-use phpDocumentor\Guides\RestructuredText\Parser\DocumentIterator;
+use phpDocumentor\Guides\RestructuredText\Parser\LinesIterator;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
 
 use function array_values;
@@ -41,7 +41,7 @@ final class LiteralBlockRule implements Rule
         return $isBlockLine && $nextIndentedBlockShouldBeALiteralBlock;
     }
 
-    public function apply(DocumentIterator $documentIterator): ?Node
+    public function apply(LinesIterator $documentIterator): ?Node
     {
         $buffer = new Buffer();
         $buffer->push($documentIterator->current());

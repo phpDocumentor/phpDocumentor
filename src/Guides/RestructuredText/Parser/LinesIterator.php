@@ -28,7 +28,7 @@ use function trim;
 /**
  * @implements Iterator<string>
  */
-class DocumentIterator implements Iterator
+class LinesIterator implements Iterator
 {
     /** @var string[] */
     private $lines = [];

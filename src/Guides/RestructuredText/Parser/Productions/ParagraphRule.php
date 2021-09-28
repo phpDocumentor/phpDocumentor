@@ -18,7 +18,7 @@ use phpDocumentor\Guides\Nodes\ParagraphNode;
 use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\RestructuredText\Parser;
 use phpDocumentor\Guides\RestructuredText\Parser\Buffer;
-use phpDocumentor\Guides\RestructuredText\Parser\DocumentIterator;
+use phpDocumentor\Guides\RestructuredText\Parser\LinesIterator;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
 
 use function array_pop;
@@ -51,7 +51,7 @@ final class ParagraphRule implements Rule
         return trim($documentParser->getDocumentIterator()->current()) !== '';
     }
 
-    public function apply(DocumentIterator $documentIterator): ?Node
+    public function apply(LinesIterator $documentIterator): ?Node
     {
         $buffer = new Buffer();
         $buffer->push($documentIterator->current());

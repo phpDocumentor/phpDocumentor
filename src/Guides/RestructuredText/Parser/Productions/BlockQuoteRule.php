@@ -18,7 +18,7 @@ use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\QuoteNode;
 use phpDocumentor\Guides\RestructuredText\Parser;
 use phpDocumentor\Guides\RestructuredText\Parser\Buffer;
-use phpDocumentor\Guides\RestructuredText\Parser\DocumentIterator;
+use phpDocumentor\Guides\RestructuredText\Parser\LinesIterator;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
 
 use function array_values;
@@ -45,7 +45,7 @@ final class BlockQuoteRule implements Rule
         return $isBlockLine && $documentParser->nextIndentedBlockShouldBeALiteralBlock === false;
     }
 
-    public function apply(DocumentIterator $documentIterator): ?Node
+    public function apply(LinesIterator $documentIterator): ?Node
     {
         $buffer = new Buffer();
         $buffer->push($documentIterator->current());

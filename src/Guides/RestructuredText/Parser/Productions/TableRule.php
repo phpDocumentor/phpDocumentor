@@ -17,7 +17,7 @@ use Doctrine\Common\EventManager;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\TableNode;
 use phpDocumentor\Guides\RestructuredText\Parser;
-use phpDocumentor\Guides\RestructuredText\Parser\DocumentIterator;
+use phpDocumentor\Guides\RestructuredText\Parser\LinesIterator;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
 use phpDocumentor\Guides\RestructuredText\Parser\LineChecker;
 use phpDocumentor\Guides\RestructuredText\Parser\LineDataParser;
@@ -50,7 +50,7 @@ final class TableRule implements Rule
         return $this->tableParser->parseTableSeparatorLine($documentParser->getDocumentIterator()->current()) !== null;
     }
 
-    public function apply(DocumentIterator $documentIterator): ?Node
+    public function apply(LinesIterator $documentIterator): ?Node
     {
         $line = $documentIterator->current();
         if (trim($line) === '') {
