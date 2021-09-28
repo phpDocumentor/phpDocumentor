@@ -74,6 +74,7 @@ class DocumentParser implements Productions\Rule
             new Productions\DirectiveRule($parser, $this, $lineDataParser, $literalBlockRule, $directives),
             new Productions\CommentRule(),
             new Productions\DefinitionListRule($lineDataParser),
+            new Productions\TableRule($parser, $eventManager),
 
             // For now: ParagraphRule must be last as it is the rule that applies if none other applies.
             new Productions\ParagraphRule($this->parser, $this),
@@ -100,24 +101,6 @@ class DocumentParser implements Productions\Rule
         }
 
         return $this->document;
-
-//                $separatorLineConfig = $this->tableParser->parseTableSeparatorLine($line);
-//
-//                if ($separatorLineConfig === null) {
-//                    $this->setState(State::NORMAL);
-//
-//                    return $this->document;
-//                }
-//
-//                $this->setState(State::TABLE);
-//                $this->subparser = new Subparsers\TableParser(
-//                    $this->parser,
-//                    $this->eventManager,
-//                    $separatorLineConfig
-//                );
-//                $this->subparser->reset($line);
-//
-//                return $this->document;
     }
 
     public function parse(string $contents): DocumentNode

@@ -38,17 +38,20 @@ final class ListRule implements Rule
 
     public function applies(DocumentParser $documentParser): bool
     {
-        return $this->isListLine($documentParser->getDocumentIterator()->current(), $documentParser->nextIndentedBlockShouldBeALiteralBlock);
+        return $this->isListLine($documentParser->getDocumentIterator()->current());
     }
 
     public function apply(DocumentIterator $documentIterator): ?Node
     {
+        $this->listLine = null;
+        $this->listFlow = true;
+
         $this->nodeBuffer = new ListNode();
         $this->parseListLine($documentIterator->current());
 
         while (
             $documentIterator->getNextLine() !== null
-            && $this->isListLine($documentIterator->getNextLine(), false)
+            && $this->isListLine($documentIterator->getNextLine())
         ) {
             $documentIterator->next();
             $this->parseListLine($documentIterator->current());
@@ -59,12 +62,12 @@ final class ListRule implements Rule
         return $this->nodeBuffer;
     }
 
-    private function isListLine(string $line, bool $isCode): bool
+    private function isListLine(string $line): bool
     {
         $listLine = $this->lineDataParser->parseListLine($line);
 
         if ($listLine !== null) {
-            return $listLine->getDepth() === 0 || !$isCode;
+            return $listLine->getDepth() === 0;
         }
 
         return false;
@@ -83,12 +86,10 @@ final class ListRule implements Rule
                 }
 
                 $this->listLine = $listLine;
+            } else if ($this->listLine instanceof ListLine && ($this->listFlow || $line[0] === ' ')) {
+                $this->listLine->addText($line);
             } else {
-                if ($this->listLine instanceof ListLine && ($this->listFlow || $line[0] === ' ')) {
-                    $this->listLine->addText($line);
-                } else {
-                    $flush = true;
-                }
+                $flush = true;
             }
 
             $this->listFlow = true;
@@ -96,21 +97,18 @@ final class ListRule implements Rule
             $this->listFlow = false;
         }
 
-        if ($flush) {
-            if ($this->listLine instanceof ListLine) {
-                $this->listLine->setText(new SpanNode($this->environment, $this->listLine->getText()));
-
-                /** @var ListNode $listNode */
-                $listNode = $this->nodeBuffer;
-
-                $listNode->addLine($this->listLine->toArray());
-
-                $this->listLine = null;
-            }
-
-            return false;
+        if (!$flush) {
+            return true;
         }
 
-        return true;
+        if ($this->listLine instanceof ListLine) {
+            $this->listLine->setText(new SpanNode($this->environment, $this->listLine->getText()));
+
+            $this->nodeBuffer->addLine($this->listLine->toArray());
+
+            $this->listLine = null;
+        }
+
+        return false;
     }
 }
