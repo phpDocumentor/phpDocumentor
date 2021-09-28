@@ -2,24 +2,36 @@
 
 declare(strict_types=1);
 
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link https://phpdoc.org
+ */
+
 namespace phpDocumentor\Guides\RestructuredText\Parser\Productions;
 
-use phpDocumentor\Guides\Nodes\BlockNode;
 use phpDocumentor\Guides\Nodes\Node;
-use phpDocumentor\Guides\Nodes\QuoteNode;
 use phpDocumentor\Guides\Nodes\SectionBeginNode;
 use phpDocumentor\Guides\Nodes\SectionEndNode;
 use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\Nodes\TitleNode;
 use phpDocumentor\Guides\RestructuredText\Parser;
-use phpDocumentor\Guides\RestructuredText\Parser\Buffer;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentIterator;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
 
+use function array_search;
+use function in_array;
+use function strlen;
+use function trim;
+
 /**
+ * @link https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#sections
+ *
  * @todo convert the TitleRule into a separate SectionRule that can nest itself and close itself when a lower-level
  *       title is encountered
- * @link https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#sections
  */
 final class TitleRule implements Rule
 {
@@ -55,7 +67,7 @@ final class TitleRule implements Rule
         '{',
         '|',
         '}',
-        '~'
+        '~',
     ];
 
     /** @var Parser */
@@ -82,7 +94,11 @@ final class TitleRule implements Rule
     public function apply(DocumentIterator $documentIterator): ?Node
     {
         $title = '';
-        $overlineLetter = $this->currentLineIsAnOverline($documentIterator->current(), $documentIterator->getNextLine());
+        $overlineLetter = $this->currentLineIsAnOverline(
+            $documentIterator->current(),
+            $documentIterator->getNextLine()
+        );
+
         if ($overlineLetter !== '') {
             $documentIterator->next();
             $title = trim($documentIterator->current()); // Title with over and underlines may be indented

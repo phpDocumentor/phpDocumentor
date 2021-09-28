@@ -2,6 +2,15 @@
 
 declare(strict_types=1);
 
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link https://phpdoc.org
+ */
+
 namespace phpDocumentor\Guides\RestructuredText\Parser\Productions;
 
 use InvalidArgumentException;
@@ -11,7 +20,7 @@ use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentIterator;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
 use phpDocumentor\Guides\RestructuredText\Parser\LineDataParser;
-use phpDocumentor\Guides\RestructuredText\Parser\Link;
+use phpDocumentor\Guides\RestructuredText\Parser\Link as LinkParser;
 
 /**
  * @link https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#hyperlink-targets
@@ -45,9 +54,10 @@ final class LinkRule implements Rule
         }
 
         $node = null;
-        if ($link->getType() === Link::TYPE_ANCHOR) {
+        if ($link->getType() === LinkParser::TYPE_ANCHOR) {
             $node = new AnchorNode($link->getName());
         }
+
         $this->environment->setLink($link->getName(), $link->getUrl());
 
         return $node;

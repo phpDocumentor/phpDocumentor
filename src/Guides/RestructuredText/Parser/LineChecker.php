@@ -4,11 +4,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\Parser;
 
-use function in_array;
 use function preg_match;
-use function strlen;
-use function strpos;
-use function trim;
 
 class LineChecker
 {

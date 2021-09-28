@@ -2,23 +2,34 @@
 
 declare(strict_types=1);
 
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link https://phpdoc.org
+ */
+
 namespace phpDocumentor\Guides\RestructuredText\Parser\Productions;
 
 use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Nodes\ListNode;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\SpanNode;
-use phpDocumentor\Guides\RestructuredText\Parser;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentIterator;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
+use phpDocumentor\Guides\RestructuredText\Parser\LineDataParser;
 use phpDocumentor\Guides\RestructuredText\Parser\ListLine;
+
+use function trim;
 
 /**
  * @link https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#bullet-lists
  */
 final class ListRule implements Rule
 {
-    /** @var Parser */
+    /** @var LineDataParser */
     private $lineDataParser;
 
     /** @var ListNode */
@@ -33,7 +44,7 @@ final class ListRule implements Rule
     /** @var Environment */
     private $environment;
 
-    public function __construct(Parser\LineDataParser $parser, Environment $environment)
+    public function __construct(LineDataParser $parser, Environment $environment)
     {
         $this->lineDataParser = $parser;
         $this->environment = $environment;
@@ -89,7 +100,7 @@ final class ListRule implements Rule
                 }
 
                 $this->listLine = $listLine;
-            } else if ($this->listLine instanceof ListLine && ($this->listFlow || $line[0] === ' ')) {
+            } elseif ($this->listLine instanceof ListLine && ($this->listFlow || $line[0] === ' ')) {
                 $this->listLine->addText($line);
             } else {
                 $flush = true;

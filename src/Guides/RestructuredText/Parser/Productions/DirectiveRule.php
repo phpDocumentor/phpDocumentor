@@ -2,6 +2,15 @@
 
 declare(strict_types=1);
 
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link https://phpdoc.org
+ */
+
 namespace phpDocumentor\Guides\RestructuredText\Parser\Productions;
 
 use phpDocumentor\Guides\Nodes\Node;
@@ -11,6 +20,10 @@ use phpDocumentor\Guides\RestructuredText\Parser\Directive;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentIterator;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
 use phpDocumentor\Guides\RestructuredText\Parser\LineDataParser;
+use Throwable;
+
+use function preg_match;
+use function sprintf;
 
 /**
  * @link https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#directives
@@ -29,9 +42,12 @@ final class DirectiveRule implements Rule
     /** @var LiteralBlockRule */
     private $literalBlockRule;
 
-    /** @var Directive[] */
+    /** @var DirectiveHandler[] */
     private $directives;
 
+    /**
+     * @param DirectiveHandler[] $directives
+     */
     public function __construct(
         Parser $parser,
         DocumentParser $documentParser,
@@ -41,9 +57,9 @@ final class DirectiveRule implements Rule
     ) {
         $this->parser = $parser;
         $this->lineDataParser = $lineDataParser;
-        $this->directives = $directives;
         $this->literalBlockRule = $literalBlockRule;
         $this->documentParser = $documentParser;
+        $this->directives = $directives;
     }
 
     public function applies(DocumentParser $documentParser): bool
@@ -89,7 +105,7 @@ final class DirectiveRule implements Rule
                 $directive->getData(),
                 $directive->getOptions()
             );
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $message = sprintf(
                 'Error while processing "%s" directive%s: %s',
                 $directiveHandler->getName(),

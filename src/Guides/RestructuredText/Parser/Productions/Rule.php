@@ -1,5 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link https://phpdoc.org
+ */
 
 namespace phpDocumentor\Guides\RestructuredText\Parser\Productions;
 
@@ -9,7 +19,6 @@ use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
 
 interface Rule
 {
-
     public function applies(DocumentParser $documentParser): bool;
 
     /**
@@ -22,9 +31,6 @@ interface Rule
      * By using a Look Ahead, we prevent the cursor from advancing; and this caused the cursor to 'rest' on the line
      * that is considered that last relevant line. The document parser will advance the line after successfully parsing
      * this and to send the Parser into a line that belongs to another state.
-     *
-     * @param DocumentIterator $documentIterator
-     * @return Node|null
      */
     public function apply(DocumentIterator $documentIterator): ?Node;
 }

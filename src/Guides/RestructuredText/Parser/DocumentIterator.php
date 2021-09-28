@@ -2,10 +2,28 @@
 
 declare(strict_types=1);
 
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link https://phpdoc.org
+ */
+
 namespace phpDocumentor\Guides\RestructuredText\Parser;
 
 use Iterator;
+use OutOfBoundsException;
 use phpDocumentor\Guides\Environment;
+use RuntimeException;
+
+use function chr;
+use function explode;
+use function preg_replace_callback;
+use function sprintf;
+use function str_replace;
+use function trim;
 
 /**
  * @implements Iterator<string>
@@ -38,7 +56,7 @@ class DocumentIterator implements Iterator
     public function current(): string
     {
         if ($this->valid() === false) {
-            throw new \OutOfBoundsException('Attempted to read a line that does not exist');
+            throw new OutOfBoundsException('Attempted to read a line that does not exist');
         }
 
         return $this->lines[$this->position];
@@ -51,6 +69,7 @@ class DocumentIterator implements Iterator
 
     /**
      * @deprecated Work around for Production's eating one line too many
+     *
      * @todo Revisit The Loop in {@see DocumentParser::parseLines()} and see if the Look Ahead timing should be done
      *       differently
      */
@@ -94,7 +113,7 @@ class DocumentIterator implements Iterator
 
                 $origin = $environment->getOrigin();
                 if (!$origin->has($path)) {
-                    throw new \RuntimeException(
+                    throw new RuntimeException(
                         sprintf('Include "%s" (%s) does not exist or is not readable.', $match[0], $path)
                     );
                 }
@@ -102,7 +121,7 @@ class DocumentIterator implements Iterator
                 $contents = $origin->read($path);
 
                 if ($contents === false) {
-                    throw new \RuntimeException(sprintf('Could not load file from path %s', $path));
+                    throw new RuntimeException(sprintf('Could not load file from path %s', $path));
                 }
 
                 return $this->mergeIncludedFiles($environment, $contents);

@@ -2,6 +2,15 @@
 
 declare(strict_types=1);
 
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link https://phpdoc.org
+ */
+
 namespace phpDocumentor\Guides\RestructuredText\Parser\Productions;
 
 use Doctrine\Common\EventManager;
@@ -13,6 +22,8 @@ use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
 use phpDocumentor\Guides\RestructuredText\Parser\LineChecker;
 use phpDocumentor\Guides\RestructuredText\Parser\LineDataParser;
 
+use function trim;
+
 /**
  * @link https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#tables
  */
@@ -23,6 +34,7 @@ final class TableRule implements Rule
 
     /** @var LineChecker */
     private $lineChecker;
+
     /** @var Parser\TableParser */
     private $tableParser;
 
@@ -64,6 +76,7 @@ final class TableRule implements Rule
 
             $node->pushContentLine($documentIterator->current());
         }
+
         $node->finalize($this->parser, $this->lineChecker);
 
         return $node;

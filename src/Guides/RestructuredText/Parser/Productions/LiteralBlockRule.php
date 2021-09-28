@@ -2,6 +2,15 @@
 
 declare(strict_types=1);
 
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link https://phpdoc.org
+ */
+
 namespace phpDocumentor\Guides\RestructuredText\Parser\Productions;
 
 use phpDocumentor\Guides\Nodes\CodeNode;
@@ -9,6 +18,10 @@ use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\RestructuredText\Parser\Buffer;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentIterator;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
+
+use function array_values;
+use function count;
+use function trim;
 
 /**
  * @link https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#indented-literal-blocks
@@ -25,7 +38,7 @@ final class LiteralBlockRule implements Rule
 
         $isBlockLine = $this->isBlockLine($documentParser->getDocumentIterator()->current());
 
-        return ($isBlockLine && $nextIndentedBlockShouldBeALiteralBlock);
+        return $isBlockLine && $nextIndentedBlockShouldBeALiteralBlock;
     }
 
     public function apply(DocumentIterator $documentIterator): ?Node
@@ -55,6 +68,11 @@ final class LiteralBlockRule implements Rule
         return trim($line) === '';
     }
 
+    /**
+     * @param string[] $lines
+     *
+     * @return string[]
+     */
     private function removeLeadingWhitelines(array $lines): array
     {
         foreach ($lines as $index => $line) {

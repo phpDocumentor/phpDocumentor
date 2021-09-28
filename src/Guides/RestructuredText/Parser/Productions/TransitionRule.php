@@ -2,20 +2,25 @@
 
 declare(strict_types=1);
 
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link https://phpdoc.org
+ */
+
 namespace phpDocumentor\Guides\RestructuredText\Parser\Productions;
 
-use phpDocumentor\Guides\Nodes\BlockNode;
 use phpDocumentor\Guides\Nodes\Node;
-use phpDocumentor\Guides\Nodes\QuoteNode;
-use phpDocumentor\Guides\Nodes\SectionBeginNode;
-use phpDocumentor\Guides\Nodes\SectionEndNode;
 use phpDocumentor\Guides\Nodes\SeparatorNode;
-use phpDocumentor\Guides\Nodes\SpanNode;
-use phpDocumentor\Guides\Nodes\TitleNode;
-use phpDocumentor\Guides\RestructuredText\Parser;
-use phpDocumentor\Guides\RestructuredText\Parser\Buffer;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentIterator;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
+
+use function in_array;
+use function strlen;
+use function trim;
 
 /**
  * @link https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#transitions
@@ -54,7 +59,7 @@ final class TransitionRule implements Rule
         '{',
         '|',
         '}',
-        '~'
+        '~',
     ];
 
     public function applies(DocumentParser $documentParser): bool
@@ -67,7 +72,11 @@ final class TransitionRule implements Rule
 
     public function apply(DocumentIterator $documentIterator): ?Node
     {
-        $overlineLetter = $this->currentLineIsASeparator($documentIterator->current(), $documentIterator->getNextLine());
+        $overlineLetter = $this->currentLineIsASeparator(
+            $documentIterator->current(),
+            $documentIterator->getNextLine()
+        );
+
         if ($overlineLetter !== null) {
             $documentIterator->next();
         }

@@ -2,6 +2,15 @@
 
 declare(strict_types=1);
 
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link https://phpdoc.org
+ */
+
 namespace phpDocumentor\Guides\RestructuredText\Parser;
 
 use ArrayObject;
@@ -14,6 +23,7 @@ use phpDocumentor\Guides\RestructuredText\Directives\Directive as DirectiveHandl
 use phpDocumentor\Guides\RestructuredText\Event\PostParseDocumentEvent;
 use phpDocumentor\Guides\RestructuredText\Event\PreParseDocumentEvent;
 use phpDocumentor\Guides\RestructuredText\Parser;
+
 use function array_search;
 use function md5;
 use function trim;
@@ -26,7 +36,7 @@ class DocumentParser implements Productions\Rule
     /** @var EventManager */
     private $eventManager;
 
-    /** @var ArrayObject<DirectiveHandler> */
+    /** @var ArrayObject<int, DirectiveHandler> */
     private $directives;
 
     /** @var DocumentNode */
@@ -38,7 +48,7 @@ class DocumentParser implements Productions\Rule
     /** @var DocumentIterator */
     private $documentIterator;
 
-    /** @var TitleNode */
+    /** @var ?TitleNode */
     public $lastTitleNode;
 
     /** @var ArrayObject<int, TitleNode> */
@@ -98,6 +108,7 @@ class DocumentParser implements Productions\Rule
             if ($newNode !== null) {
                 $this->document->addNode($newNode);
             }
+
             break;
         }
 
@@ -140,14 +151,7 @@ class DocumentParser implements Productions\Rule
         // this is done because we are transitioning to a method where a Substate can take the current
         // cursor as starting point and loop through the cursor
         while ($this->documentIterator->valid()) {
-            // Continuously attempt to apply the current cursor of the documentIterator until a Node is returned
-            // In this loop, we do not do anything with the returned node as it is handled in the apply method itself
-            // for now.
-            // Be aware, that the production rules called within the apply function may further the cursor of the
-            // document iterator. Each production rule is responsible for furthering the parsing process until it is
-            // done.
-            while ($this->apply($this->documentIterator) === null) {
-            }
+            $this->apply($this->documentIterator);
 
             $this->documentIterator->next();
         }
