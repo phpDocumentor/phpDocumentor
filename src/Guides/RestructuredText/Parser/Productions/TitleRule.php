@@ -19,6 +19,7 @@ use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
 /**
  * @todo convert the TitleRule into a separate SectionRule that can nest itself and close itself when a lower-level
  *       title is encountered
+ * @link https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#sections
  */
 final class TitleRule implements Rule
 {

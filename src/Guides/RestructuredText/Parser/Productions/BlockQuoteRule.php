@@ -12,7 +12,10 @@ use phpDocumentor\Guides\RestructuredText\Parser\Buffer;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentIterator;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
 
-final class QuoteRule implements Rule
+/**
+ * @link https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#block-quotes
+ */
+final class BlockQuoteRule implements Rule
 {
     /** @var Parser */
     private $parser;

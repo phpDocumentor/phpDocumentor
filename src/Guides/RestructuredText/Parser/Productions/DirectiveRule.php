@@ -12,6 +12,9 @@ use phpDocumentor\Guides\RestructuredText\Parser\DocumentIterator;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
 use phpDocumentor\Guides\RestructuredText\Parser\LineDataParser;
 
+/**
+ * @link https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#directives
+ */
 final class DirectiveRule implements Rule
 {
     /** @var Parser */

@@ -14,6 +14,9 @@ use phpDocumentor\Guides\RestructuredText\Parser\Buffer;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentIterator;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
 
+/**
+ * @link https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#paragraphs
+ */
 final class ParagraphRule implements Rule
 {
     /** @var Parser */

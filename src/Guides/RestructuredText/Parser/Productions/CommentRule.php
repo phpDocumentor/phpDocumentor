@@ -9,6 +9,9 @@ use phpDocumentor\Guides\RestructuredText\Parser\Buffer;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentIterator;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
 
+/**
+ * @link https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#comments
+ */
 final class CommentRule implements Rule
 {
     public function applies(DocumentParser $documentParser): bool

@@ -13,6 +13,9 @@ use phpDocumentor\Guides\RestructuredText\Parser\DocumentIterator;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
 use phpDocumentor\Guides\RestructuredText\Parser\ListLine;
 
+/**
+ * @link https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#bullet-lists
+ */
 final class ListRule implements Rule
 {
     /** @var Parser */

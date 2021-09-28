@@ -10,6 +10,9 @@ use phpDocumentor\Guides\RestructuredText\Parser\Buffer;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentIterator;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
 
+/**
+ * @link https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#indented-literal-blocks
+ */
 final class LiteralBlockRule implements Rule
 {
     public function applies(DocumentParser $documentParser): bool

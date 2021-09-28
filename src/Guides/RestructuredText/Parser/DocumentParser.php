@@ -69,7 +69,7 @@ class DocumentParser implements Productions\Rule
             new Productions\TitleRule($this->parser, $this),
             new Productions\LinkRule($lineDataParser, $parser->getEnvironment()),
             $literalBlockRule,
-            new Productions\QuoteRule($parser),
+            new Productions\BlockQuoteRule($parser),
             new Productions\ListRule($lineDataParser, $parser->getEnvironment()),
             new Productions\DirectiveRule($parser, $this, $lineDataParser, $literalBlockRule, $directives),
             new Productions\CommentRule(),

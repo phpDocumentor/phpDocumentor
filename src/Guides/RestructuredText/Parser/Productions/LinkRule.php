@@ -13,6 +13,9 @@ use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
 use phpDocumentor\Guides\RestructuredText\Parser\LineDataParser;
 use phpDocumentor\Guides\RestructuredText\Parser\Link;
 
+/**
+ * @link https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#hyperlink-targets
+ */
 final class LinkRule implements Rule
 {
     /** @var LineDataParser */
