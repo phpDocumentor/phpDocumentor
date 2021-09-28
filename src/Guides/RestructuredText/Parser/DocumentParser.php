@@ -67,6 +67,7 @@ class DocumentParser implements Productions\Rule
         $literalBlockRule = new Productions\LiteralBlockRule();
         $this->productions = [
             new Productions\TitleRule($this->parser, $this),
+            new Productions\TransitionRule(), // Transition rule must follow Title rule
             new Productions\LinkRule($lineDataParser, $parser->getEnvironment()),
             $literalBlockRule,
             new Productions\BlockQuoteRule($parser),
