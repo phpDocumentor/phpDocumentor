@@ -16,9 +16,9 @@ namespace phpDocumentor\Guides\RestructuredText\Parser\Productions;
 use phpDocumentor\Guides\Nodes\DefinitionListNode;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\RestructuredText\Parser\Buffer;
-use phpDocumentor\Guides\RestructuredText\Parser\LinesIterator;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
 use phpDocumentor\Guides\RestructuredText\Parser\LineDataParser;
+use phpDocumentor\Guides\RestructuredText\Parser\LinesIterator;
 
 use function strpos;
 use function trim;
@@ -41,7 +41,7 @@ final class DefinitionListRule implements Rule
         return $this->isDefinitionList($documentParser->getDocumentIterator()->getNextLine() ?? '');
     }
 
-    public function apply(LinesIterator $documentIterator): ?Node
+    public function apply(LinesIterator $documentIterator, ?Node $on = null): ?Node
     {
         $buffer = new Buffer();
 

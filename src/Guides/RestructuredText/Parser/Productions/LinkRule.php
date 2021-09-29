@@ -17,9 +17,9 @@ use InvalidArgumentException;
 use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Nodes\AnchorNode;
 use phpDocumentor\Guides\Nodes\Node;
-use phpDocumentor\Guides\RestructuredText\Parser\LinesIterator;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
 use phpDocumentor\Guides\RestructuredText\Parser\LineDataParser;
+use phpDocumentor\Guides\RestructuredText\Parser\LinesIterator;
 use phpDocumentor\Guides\RestructuredText\Parser\Link as LinkParser;
 
 /**
@@ -46,7 +46,7 @@ final class LinkRule implements Rule
         return $link !== null;
     }
 
-    public function apply(LinesIterator $documentIterator): ?Node
+    public function apply(LinesIterator $documentIterator, ?Node $on = null): ?Node
     {
         $link = $this->lineDataParser->parseLink($documentIterator->current());
         if ($link === null) {

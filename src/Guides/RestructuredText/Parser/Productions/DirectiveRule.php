@@ -17,9 +17,9 @@ use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive as DirectiveHandler;
 use phpDocumentor\Guides\RestructuredText\Parser;
 use phpDocumentor\Guides\RestructuredText\Parser\Directive;
-use phpDocumentor\Guides\RestructuredText\Parser\LinesIterator;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
 use phpDocumentor\Guides\RestructuredText\Parser\LineDataParser;
+use phpDocumentor\Guides\RestructuredText\Parser\LinesIterator;
 use Throwable;
 
 use function preg_match;
@@ -67,7 +67,7 @@ final class DirectiveRule implements Rule
         return $this->isDirective($documentParser->getDocumentIterator()->current());
     }
 
-    public function apply(LinesIterator $documentIterator): ?Node
+    public function apply(LinesIterator $documentIterator, ?Node $on = null): ?Node
     {
         $openingLine = $documentIterator->current();
         $documentIterator->next();

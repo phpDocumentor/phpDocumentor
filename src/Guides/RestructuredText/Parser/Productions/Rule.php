@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\RestructuredText\Parser\Productions;
 
 use phpDocumentor\Guides\Nodes\Node;
-use phpDocumentor\Guides\RestructuredText\Parser\LinesIterator;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
+use phpDocumentor\Guides\RestructuredText\Parser\LinesIterator;
 
 interface Rule
 {
@@ -32,5 +32,5 @@ interface Rule
      * that is considered that last relevant line. The document parser will advance the line after successfully parsing
      * this and to send the Parser into a line that belongs to another state.
      */
-    public function apply(LinesIterator $documentIterator): ?Node;
+    public function apply(LinesIterator $documentIterator, ?Node $on = null): ?Node;
 }

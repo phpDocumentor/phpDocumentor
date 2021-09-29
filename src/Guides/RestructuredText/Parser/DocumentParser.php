@@ -16,46 +16,40 @@ namespace phpDocumentor\Guides\RestructuredText\Parser;
 use ArrayObject;
 use Doctrine\Common\EventManager;
 use phpDocumentor\Guides\Nodes\DocumentNode;
-use phpDocumentor\Guides\Nodes\Node;
-use phpDocumentor\Guides\Nodes\SectionEndNode;
 use phpDocumentor\Guides\Nodes\TitleNode;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive as DirectiveHandler;
 use phpDocumentor\Guides\RestructuredText\Event\PostParseDocumentEvent;
 use phpDocumentor\Guides\RestructuredText\Event\PreParseDocumentEvent;
 use phpDocumentor\Guides\RestructuredText\Parser;
 
-use function array_search;
 use function md5;
 use function trim;
 
-class DocumentParser implements Productions\Rule
+class DocumentParser
 {
+    /** @var bool public is temporary */
+    public $nextIndentedBlockShouldBeALiteralBlock = false;
+
+    /** @var ?TitleNode public is temporary */
+    public $lastTitleNode;
+
+    /** @var ArrayObject<int, TitleNode> public is temporary */
+    public $openSectionsAsTitleNodes;
+
     /** @var Parser */
     private $parser;
 
     /** @var EventManager */
     private $eventManager;
 
-    /** @var ArrayObject<int, DirectiveHandler> */
-    private $directives;
-
     /** @var DocumentNode */
     private $document;
-
-    /** @var bool public is temporary */
-    public $nextIndentedBlockShouldBeALiteralBlock = false;
 
     /** @var LinesIterator */
     private $documentIterator;
 
-    /** @var ?TitleNode */
-    public $lastTitleNode;
-
-    /** @var ArrayObject<int, TitleNode> */
-    public $openSectionsAsTitleNodes;
-
-    /** @var array<int, Productions\Rule> */
-    private $productions;
+    /** @var Productions\Rule */
+    private $startingRule;
 
     /**
      * @param DirectiveHandler[] $directives
@@ -70,49 +64,8 @@ class DocumentParser implements Productions\Rule
 
         $this->documentIterator = new LinesIterator();
         $this->openSectionsAsTitleNodes = new ArrayObject();
-        $this->directives = new ArrayObject($directives);
 
-        $lineDataParser = new LineDataParser($this->parser, $eventManager);
-
-        $literalBlockRule = new Productions\LiteralBlockRule();
-        $this->productions = [
-            new Productions\TitleRule($this->parser, $this),
-            new Productions\TransitionRule(), // Transition rule must follow Title rule
-            new Productions\LinkRule($lineDataParser, $parser->getEnvironment()),
-            $literalBlockRule,
-            new Productions\BlockQuoteRule($parser),
-            new Productions\ListRule($lineDataParser, $parser->getEnvironment()),
-            new Productions\DirectiveRule($parser, $this, $lineDataParser, $literalBlockRule, $directives),
-            new Productions\CommentRule(),
-            new Productions\DefinitionListRule($lineDataParser),
-            new Productions\TableRule($parser, $eventManager),
-
-            // For now: ParagraphRule must be last as it is the rule that applies if none other applies.
-            new Productions\ParagraphRule($this->parser, $this),
-        ];
-    }
-
-    public function applies(DocumentParser $documentParser): bool
-    {
-        return true;
-    }
-
-    public function apply(LinesIterator $documentIterator): ?Node
-    {
-        foreach ($this->productions as $production) {
-            if (!$production->applies($this)) {
-                continue;
-            }
-
-            $newNode = $production->apply($this->documentIterator);
-            if ($newNode !== null) {
-                $this->document->addNode($newNode);
-            }
-
-            break;
-        }
-
-        return $this->document;
+        $this->startingRule = new Productions\DocumentRule($this, $parser, $eventManager, $directives);
     }
 
     public function parse(string $contents): DocumentNode
@@ -140,50 +93,19 @@ class DocumentParser implements Productions\Rule
         return $this->document;
     }
 
-    private function parseLines(string $document): void
-    {
-        $this->lastTitleNode = null;
-        $this->openSectionsAsTitleNodes->exchangeArray([]); // clear it
-
-        $this->documentIterator->load($this->parser->getEnvironment(), $document);
-
-        // We explicitly do not use foreach, but rather the cursors of the DocumentIterator
-        // this is done because we are transitioning to a method where a Substate can take the current
-        // cursor as starting point and loop through the cursor
-        while ($this->documentIterator->valid()) {
-            $this->apply($this->documentIterator);
-
-            $this->documentIterator->next();
-        }
-
-        // TODO: Can we get rid of this here? It would make this parser cleaner and if it is part of the
-        //       Title/SectionRule itself it is neatly encapsulated.
-        foreach ($this->openSectionsAsTitleNodes as $titleNode) {
-            $this->endOpenSection($titleNode);
-        }
-
-        // TODO: Can we get rid of this here? It would make this parser cleaner and if it is part of the DirectiveRule
-        //       itself it is neatly encapsulated.
-        foreach ($this->directives as $directive) {
-            $directive->finalize($this->document);
-        }
-    }
-
-    public function endOpenSection(TitleNode $titleNode): void
-    {
-        $this->document->addNode(new SectionEndNode($titleNode));
-
-        $key = array_search($titleNode, $this->openSectionsAsTitleNodes->getArrayCopy(), true);
-
-        if ($key === false) {
-            return;
-        }
-
-        unset($this->openSectionsAsTitleNodes[$key]);
-    }
-
     public function getDocumentIterator(): LinesIterator
     {
         return $this->documentIterator;
+    }
+
+    private function parseLines(string $document): void
+    {
+        $this->documentIterator->load($this->parser->getEnvironment(), $document);
+
+        if (!$this->startingRule->applies($this)) {
+            return;
+        }
+
+        $this->startingRule->apply($this->documentIterator, $this->document);
     }
 }

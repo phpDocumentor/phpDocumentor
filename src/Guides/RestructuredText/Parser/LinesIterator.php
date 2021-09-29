@@ -83,6 +83,11 @@ class LinesIterator implements Iterator
         ++$this->position;
     }
 
+    public function atStart(): bool
+    {
+        return $this->position === 0;
+    }
+
     public function valid(): bool
     {
         return isset($this->lines[$this->position]);
@@ -128,5 +133,13 @@ class LinesIterator implements Iterator
             },
             $document
         );
+    }
+
+    /**
+     * @return string[]
+     */
+    public function toArray(): array
+    {
+        return $this->lines;
     }
 }

@@ -13,14 +13,16 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\Parser\Productions;
 
+use InvalidArgumentException;
+use phpDocumentor\Guides\Nodes\DocumentNode;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\SectionBeginNode;
 use phpDocumentor\Guides\Nodes\SectionEndNode;
 use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\Nodes\TitleNode;
 use phpDocumentor\Guides\RestructuredText\Parser;
-use phpDocumentor\Guides\RestructuredText\Parser\LinesIterator;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
+use phpDocumentor\Guides\RestructuredText\Parser\LinesIterator;
 
 use function array_search;
 use function in_array;
@@ -91,8 +93,12 @@ final class TitleRule implements Rule
             || $this->nextLineIsAnUnderline($line, $nextLine);
     }
 
-    public function apply(LinesIterator $documentIterator): ?Node
+    public function apply(LinesIterator $documentIterator, ?Node $on = null): ?Node
     {
+        if ($on instanceof DocumentNode === false) {
+            throw new InvalidArgumentException('Titles may only be children of documents');
+        }
+
         $title = '';
         $overlineLetter = $this->currentLineIsAnOverline(
             $documentIterator->current(),
@@ -122,7 +128,7 @@ final class TitleRule implements Rule
 
         $node = new TitleNode(new SpanNode($environment, $title), $level);
 
-        $this->transitionBetweenSections($node);
+        $this->transitionBetweenSections($node, $on);
 
         return $node;
     }
@@ -174,35 +180,35 @@ final class TitleRule implements Rule
         return trim($line) !== '';
     }
 
-    private function transitionBetweenSections(TitleNode $node): void
+    private function transitionBetweenSections(TitleNode $node, DocumentNode $on): void
     {
         // TODO: Is this a Title parser, or actually a Section parser? :thinking_face:
         if ($this->documentParser->lastTitleNode !== null) {
             // current level is less than previous so we need to end all open sections
             if ($node->getLevel() < $this->documentParser->lastTitleNode->getLevel()) {
                 foreach ($this->documentParser->openSectionsAsTitleNodes as $titleNode) {
-                    $this->endOpenSection($titleNode);
+                    $this->endOpenSection($titleNode, $on);
                 }
 
                 // same level as the last so just close the last open section
             } elseif ($node->getLevel() === $this->documentParser->lastTitleNode->getLevel()) {
-                $this->endOpenSection($this->documentParser->lastTitleNode);
+                $this->endOpenSection($this->documentParser->lastTitleNode, $on);
             }
         }
 
-        $this->beginOpenSection($node);
+        $this->beginOpenSection($node, $on);
     }
 
-    private function beginOpenSection(TitleNode $node): void
+    private function beginOpenSection(TitleNode $node, DocumentNode $on): void
     {
         $this->documentParser->lastTitleNode = $node;
-        $this->documentParser->getDocument()->addNode(new SectionBeginNode($node));
+        $on->addNode(new SectionBeginNode($node));
         $this->documentParser->openSectionsAsTitleNodes->append($node);
     }
 
-    private function endOpenSection(TitleNode $titleNode): void
+    private function endOpenSection(TitleNode $titleNode, DocumentNode $on): void
     {
-        $this->documentParser->getDocument()->addNode(new SectionEndNode($titleNode));
+        $on->addNode(new SectionEndNode($titleNode));
 
         $key = array_search($titleNode, $this->documentParser->openSectionsAsTitleNodes->getArrayCopy(), true);
 

@@ -15,8 +15,8 @@ namespace phpDocumentor\Guides\RestructuredText\Parser\Productions;
 
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\RestructuredText\Parser\Buffer;
-use phpDocumentor\Guides\RestructuredText\Parser\LinesIterator;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
+use phpDocumentor\Guides\RestructuredText\Parser\LinesIterator;
 
 use function preg_match;
 use function trim;
@@ -31,7 +31,7 @@ final class CommentRule implements Rule
         return $this->isCommentLine($documentParser->getDocumentIterator()->current());
     }
 
-    public function apply(LinesIterator $documentIterator): ?Node
+    public function apply(LinesIterator $documentIterator, ?Node $on = null): ?Node
     {
         $buffer = new Buffer();
         $buffer->push($documentIterator->current());

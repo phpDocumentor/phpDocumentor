@@ -15,8 +15,8 @@ namespace phpDocumentor\Guides\RestructuredText\Parser\Productions;
 
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\SeparatorNode;
-use phpDocumentor\Guides\RestructuredText\Parser\LinesIterator;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
+use phpDocumentor\Guides\RestructuredText\Parser\LinesIterator;
 
 use function in_array;
 use function strlen;
@@ -70,7 +70,7 @@ final class TransitionRule implements Rule
         return $this->currentLineIsASeparator($line, $nextLine) !== null;
     }
 
-    public function apply(LinesIterator $documentIterator): ?Node
+    public function apply(LinesIterator $documentIterator, ?Node $on = null): ?Node
     {
         $overlineLetter = $this->currentLineIsASeparator(
             $documentIterator->current(),
