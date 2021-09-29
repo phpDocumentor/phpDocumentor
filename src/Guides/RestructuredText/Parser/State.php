@@ -17,4 +17,5 @@ class State
     public const TABLE = 'table';
     public const COMMENT = 'comment';
     public const DEFINITION_LIST = 'definition_list';
+    public const ANCHOR = 'anchor';
 }
