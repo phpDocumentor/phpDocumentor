@@ -14,7 +14,7 @@ Setup
 Our website runs on a sponsored Kubernetes cluster with a Rancher interface. We are running a single docker image which is
 build by the ``Website`` workflow on github, and published to `github packages`_.
 
-The docker image is based on ``nginx:alpine` and containes the assets created by the make target ``build-website``. The image
+The docker image is based on ``nginx:alpine` and contains the assets created by the make target ``build-website``. The image
 contains 3 website definitions running on separate ports.
 
 ==== =======
