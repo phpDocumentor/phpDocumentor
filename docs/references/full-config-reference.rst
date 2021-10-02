@@ -283,7 +283,7 @@ format
 source
 ``````
 
-Where should phpDocumentor start looking for your code? In this configration section you can configure the DSN to your
+Where should phpDocumentor start looking for your code? In this configuration section you can configure the DSN to your
 code base. 
 
 The source can be configured using 2 parts. DSN which points to the root of your code base and paths which specify which
@@ -328,7 +328,7 @@ settings
 --------
 
 Some settings are not part of the normal configuration parts of phpDocumentor. Because there have impact 
-on the full application behavior, or enable expirimental parts in phpDocumentor. 
+on the full application behavior, or enable experimental parts in phpDocumentor. 
 
 Settings are key-value configuration options, which are listed with the following command:
 

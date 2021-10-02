@@ -25,8 +25,8 @@ This tag is used to present in your documentation which error COULD occur and
 under which circumstances. It is RECOMMENDED to provide a description that
 describes the reason an exception is thrown.
 
-It is also RECOMMENDED that this tag occurs for every occurrance of an
-exception, even if it has the same type. By documenting every occurance a
+It is also RECOMMENDED that this tag occurs for every occurrence of an
+exception, even if it has the same type. By documenting every occurrence a
 detailed view is created and the consumer knows for which errors to check.
 
 Effects in phpDocumentor

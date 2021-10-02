@@ -55,7 +55,7 @@ and may set state that can be remembered between each of the transformations.
 Location & Configuration
 ------------------------
 
-Templates can be located in the ``data/templates`` folder of phpDocumentor, or a custom location of your chosing. All
+Templates can be located in the ``data/templates`` folder of phpDocumentor, or a custom location of your choosing. All
 templates have in common that they are governed by a special configuration file called ``template.xml``.
 
 template.xml
