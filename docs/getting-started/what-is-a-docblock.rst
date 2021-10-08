@@ -140,26 +140,26 @@ A DocBlock looks like this:
 Let's go through this example line by line and discuss which is which,
 
 Line **2**:
-   shows that a DocBlock starts with the opening sequence ``/**``.
+    shows that a DocBlock starts with the opening sequence ``/**``.
 
 Line **3**:
-   has an example of a Summary. This is, usually, a single line but may cover multiple lines as long as the end
-   of the summary, as defined in the previous chapter, is not reached.
+    has an example of a Summary. This is, usually, a single line but may cover multiple lines as long as the end
+    of the summary, as defined in the previous chapter, is not reached.
 
 Line **5**, **6** and **7**:
-   show an example of a Description, which may span multiple lines and can be formatted using the
-   Markdown_ markup language. Using Markdown_ you can make text **bold**, *italic*, add numbered lists
-   and even provide ``code`` examples.
+    show an example of a Description, which may span multiple lines and can be formatted using the
+    Markdown_ markup language. Using Markdown_ you can make text **bold**, *italic*, add numbered lists
+    and even provide ``code`` examples.
 
 Line **9** and **12**:
-   show that you can include :doc:`tags<../references/phpdoc/tags/index>` in your DocBlocks to provide
-   additional information about the succeeding element.
-   In this example, we declare that the argument ``$myArgument`` is of type ``string``, with a description
-   what this argument represents, and we declare that the return value for this method is ``void``, which
-   means that no value will be returned.
+    show that you can include :doc:`tags<../references/phpdoc/tags/index>` in your DocBlocks to provide
+    additional information about the succeeding element.
+    In this example, we declare that the argument ``$myArgument`` is of type ``string``, with a description
+    what this argument represents, and we declare that the return value for this method is ``void``, which
+    means that no value will be returned.
 
 Line **13**:
-   shows the closing sequence ``*/``, which is the same as that for a multi-line comment (``/* .. */``).
+    shows the closing sequence ``*/``, which is the same as that for a multi-line comment (``/* .. */``).
 
 If you'd like to know more about what DocBlocks do for you, visit the chapter :doc:`../guides/docblocks`
 for more in-depth information.

@@ -65,10 +65,9 @@ final class ListRule implements Rule
 
         while (
             $documentIterator->getNextLine() !== null
-            && $this->isListLine($documentIterator->getNextLine())
+            && $this->parseListLine($documentIterator->getNextLine())
         ) {
             $documentIterator->next();
-            $this->parseListLine($documentIterator->current());
         }
 
         $this->parseListLine(null, true);
