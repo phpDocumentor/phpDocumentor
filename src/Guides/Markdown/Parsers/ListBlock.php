@@ -20,7 +20,7 @@ final class ListBlock extends AbstractBlock
      */
     public function parse(Parser $parser, NodeWalker $walker): Node
     {
-        $context = new ListNode();
+        $context = new ListNode([], false);
 
         while ($event = $walker->next()) {
             $node = $event->getNode();

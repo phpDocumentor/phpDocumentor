@@ -13,31 +13,35 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\Nodes;
 
-class ListNode extends Node
+final class ListNode extends Node
 {
-    /** @var mixed[][] */
-    protected $lines = [];
+    /** @var bool */
+    private $ordered;
+
+    /** @var ListItemNode[] */
+    private $items;
 
     /**
-     * Infos contains:
-     *
-     * - text: the line text
-     * - depth: the depth in the list level
-     * - prefix: the prefix char (*, - etc.)
-     * - ordered: true of false if the list is ordered
-     *
-     * @param mixed[] $line
+     * @param ListItemNode[] $items
      */
-    public function addLine(array $line): void
+    public function __construct(array $items, bool $ordered)
     {
-        $this->lines[] = $line;
+        parent::__construct();
+
+        $this->items = $items;
+        $this->ordered = $ordered;
     }
 
     /**
-     * @return mixed[][]
+     * @return ListItemNode[]
      */
-    public function getLines(): array
+    public function getItems(): array
     {
-        return $this->lines;
+        return $this->items;
+    }
+
+    public function isOrdered(): bool
+    {
+        return $this->ordered;
     }
 }

@@ -10,7 +10,7 @@ augments that with the information provided by the user when they started phpDoc
 In doing this it populates an entity of class :php:class:`phpDocumentor\Configuration\Configuration` and adjusts this
 when newer configuration options become available.
 
-    Please note: this is a mutable object that may change during the life cycle of the application by design.
+.. note:: this is a mutable object that may change during the life cycle of the application by design.
 
 The configuration object is not meant to replace parameters in the dependency injection container or internal variables,
 for this phpDocumentor has an Dependency Injection Container. The configuration object is meant for all options and
@@ -28,8 +28,9 @@ There are two ways of consuming configuration options in your services:
 1. Use a pipeline stage to execute your logical action and read the configuration from the payload in that stage
 2. Inject the Configuration object into your service.
 
-.. important:: Configuration options cannot be injected in the symfony configuration (services.yml, etc) because the
-               configuration files are loaded on run-time, after the symfony service configuration has happened.
+.. important::
+   Configuration options cannot be injected in the symfony configuration (services.yml, etc) because the
+   configuration files are loaded on run-time, after the symfony service configuration has happened.
 
 Pipeline stages
 ~~~~~~~~~~~~~~~
@@ -48,7 +49,7 @@ Injecting the configuration object
 
 When using the auto-wiring options of the Dependency Injection Container (which are the default in phpDocumentor) you
 can inject the configuration object by defining a constructor argument with the typehint
-`phpDocumentor\Configuration\Configuration`.
+``phpDocumentor\Configuration\Configuration``.
 
 This is a straightforward way to receive and read the configuration but has several downsides, which is why using a
 Configurator is recommended:
@@ -98,5 +99,7 @@ Adding a new version of the configuration
    consumed in the rest of the application; when in doubt: add a debug statement in the SymfonyConfigFactory after the
    loading of the XML file; this is the format you need to emulate in the upgrade method of the prior Definition.
 
-.. hint:: It is recommended to also write an XSD and put that in the ``data/xsd`` folder; see the Version 3
-          configuration for an example.
+.. hint::
+
+   It is recommended to also write an XSD and put that in the ``data/xsd`` folder; see the Version 3
+   configuration for an example.

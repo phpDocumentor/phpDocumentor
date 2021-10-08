@@ -41,6 +41,6 @@ The architecture of the Guides implementation revolves mainly around these 5 con
 Read More
 ---------
 
-- `Writing Directives <./guides/writing-directives>`_
+- :doc:`guides/writing-directives`
 
 .. _docs-builder: https://github.com/ryanweaver/docs-builder

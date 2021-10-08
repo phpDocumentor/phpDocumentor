@@ -7,8 +7,9 @@ configVersion
 -------------
 
 **Default**
+
 .. code-block:: xml
-  3
+   3
 
 title
 -----
@@ -16,8 +17,9 @@ title
 Will be the title of your documentation set.
 
 **Default**
+
 .. code-block:: xml
-  Documentation
+   Documentation
 
 use-cache
 ---------
@@ -26,8 +28,9 @@ By default phpDocumentor uses a lot of caching to speed up re-runs. Disabling th
 consumed by phpDocumentor and the time to complete the rendering. Set this setting to false will disable all cache usage.
 
 **Default**
+
 .. code-block:: xml
-  true
+   true
 
 paths
 -----
@@ -46,41 +49,38 @@ output
 ^^^^^^
 
 **Default**
+
 .. code-block:: xml
-  .phpdoc/build
+   .phpdoc/build
 
 cache
 ^^^^^
 
 **Default**
+
 .. code-block:: xml
-  .phpdoc/cache
+   .phpdoc/cache
 
 versions
 --------
-
-
-
 
 number
 ~~~~~~
 
 **Default**
+
 .. code-block:: xml
-  1.0.0
+   1.0.0
 
 folder
 ~~~~~~
 
 **Default**
+
 .. code-block:: xml
   
-
 apis
 ~~~~
-
-
-
 
 format
 ``````
@@ -88,20 +88,19 @@ format
 The language of your code.
 
 .. note::
-phpDocumentor's internals are prepared to support multiple languages. Right now only php is supported.
+
+   phpDocumentor's internals are prepared to support multiple languages. Right now only php is supported.
 
 
 **Default**
+
 .. code-block:: xml
-  php
+   php
 
 visibilities
 ````````````
 
-
-
-
-Visibilities are setting the deepest level of elements that will be rendered in your documentation. The values can be 
+Visibilities are setting the deepest level of elements that will be rendered in your documentation. The values can be
 combined to fine tune the output. By default phpDocumentor includes all elements unless they are marked as ``@internal``
 
 Api will render only the elements marked as part of your api using the ``@api`` tag. 
@@ -115,9 +114,10 @@ private elements will be included. If you add ``internal`` also the internal ele
 Adding ``api`` as value will filter all elements that are part of your api.
 
 **Example**
+
 .. code-block:: xml
-    <visibilities>public</visibilities>
-    <visibilities>protected</visibilities>
+   <visibilities>public</visibilities>
+   <visibilities>protected</visibilities>
 
 default-package-name
 ````````````````````
@@ -125,15 +125,17 @@ default-package-name
 When your source code is grouped using the @package tag; what is the name of the default package when none is provided?
 
 **Default**
+
 .. code-block:: xml
-  Application
+   Application
 
 encoding
 ````````
 
 **Default**
+
 .. code-block:: xml
-  utf-8
+   utf-8
 
 source
 ``````
@@ -146,38 +148,37 @@ folders should be read. Paths can be used to be more specific which folders shou
 will be ignored. 
 
 .. note::
-Future versions of phpDocumentor will support other DSN formats rather then just local paths. Right now only `file://` is
-supported
+   Future versions of phpDocumentor will support other DSN formats rather then just local paths. Right now only
+   `file://` is supported
 
 Paths do support glob patterns to be able to include only particular sub directories. 
 The example below will only include files in your DSN root directory `src` and it's sub directories, when the file name matches
 `*Interface.php`
  
 .. code-block:: xml
-  <path>/src/**/*Interface.php</path>
+   <path>/src/**/*Interface.php</path>
 
 .. note::
-The paths in source are relative to the ``dsn``; It is not possible to use absolute paths in a path.
+   The paths in source are relative to the ``dsn``; It is not possible to use absolute paths in a path.
 
 dsn
 ```
 
 **Default**
+
 .. code-block:: xml
-  .
+   .
 
 paths
 `````
-
-
-
 
 output
 ``````
 
 **Default**
+
 .. code-block:: xml
-  .
+   .
 
 ignore
 ``````
@@ -186,39 +187,26 @@ hidden
 ``````
 
 **Default**
+
 .. code-block:: xml
-  true
+   true
 
 symlinks
 ````````
 
 **Default**
+
 .. code-block:: xml
-  true
+   true
 
 paths
 `````
 
-
-
-
 ignore-tags
 ```````````
 
-ignore_tags
-```````````
-
-
-
-
 extensions
 ``````````
-
-extensions
-``````````
-
-
-
 
 include-source
 ``````````````
@@ -228,57 +216,49 @@ your docs can jump directly from the docs to a rendered version of the source co
 a method or function implementation. 
 
 **Default**
+
 .. code-block:: xml
-  true
+   true
 
 examples
 ````````
 
 Examples are code snippets that can be included in your docblocks. This setting will configure where phpDocumentor 
-can find them. The paths used in your docblock `@example` tags are relative to this dsn. 
-For more information about `@example` please consult the tag reference.
+can find them. The paths used in your docblock ``@example`` tags are relative to this dsn.
+For more information about ``@example`` please consult the tag reference.
 
 dsn
 ```
 
 **Default**
+
 .. code-block:: xml
-  .
+   .
 
 paths
 `````
-
-
-
 
 validate
 ````````
 
 **Default**
+
 .. code-block:: xml
-  false
+   false
 
 markers
 ```````
-
-markers
-```````
-
-
-
 
 guides
 ~~~~~~
-
-
-
 
 format
 ``````
 
 **Default**
+
 .. code-block:: xml
-  rst
+   rst
 
 source
 ``````
@@ -291,38 +271,37 @@ folders should be read. Paths can be used to be more specific which folders shou
 will be ignored. 
 
 .. note::
-Future versions of phpDocumentor will support other DSN formats rather then just local paths. Right now only `file://` is
-supported
+   Future versions of phpDocumentor will support other DSN formats rather then just local paths. Right now only
+   `file://` is supported
 
 Paths do support glob patterns to be able to include only particular sub directories. 
-The example below will only include files in your DSN root directory `src` and it's sub directories, when the file name matches
-`*Interface.php`
+The example below will only include files in your DSN root directory ``src`` and it's sub directories, when the file
+name matches ``*Interface.php``
  
 .. code-block:: xml
-  <path>/src/**/*Interface.php</path>
+   <path>/src/**/*Interface.php</path>
 
 .. note::
-The paths in source are relative to the ``dsn``; It is not possible to use absolute paths in a path.
+   The paths in source are relative to the ``dsn``; It is not possible to use absolute paths in a path.
 
 dsn
 ```
 
 **Default**
+
 .. code-block:: xml
-  .
+   .
 
 paths
 `````
-
-
-
 
 output
 ``````
 
 **Default**
+
 .. code-block:: xml
-  docs
+   docs
 
 settings
 --------
@@ -333,11 +312,7 @@ on the full application behavior, or enable experimental parts in phpDocumentor.
 Settings are key-value configuration options, which are listed with the following command:
 
 .. code-block:: shell-session
-
-$ phpdoc --list-settings
-
-
-
+   $ phpdoc --list-settings
 
 name
 ~~~~
@@ -348,15 +323,13 @@ value
 templates
 ---------
 
-
-
-
 name
 ~~~~
 
 **Default**
+
 .. code-block:: xml
-  default
+   default
 
 location
 ~~~~~~~~
@@ -369,4 +342,3 @@ name
 
 value
 `````
-

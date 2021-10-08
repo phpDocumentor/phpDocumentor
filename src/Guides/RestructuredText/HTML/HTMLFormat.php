@@ -17,13 +17,11 @@ use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\NodeRenderers\DefaultNodeRenderer;
 use phpDocumentor\Guides\NodeRenderers\Html\DefinitionListNodeRenderer;
 use phpDocumentor\Guides\NodeRenderers\Html\DocumentNodeRenderer;
-use phpDocumentor\Guides\NodeRenderers\Html\ListRenderer;
 use phpDocumentor\Guides\NodeRenderers\Html\SpanNodeRenderer;
 use phpDocumentor\Guides\NodeRenderers\Html\TableNodeRenderer;
 use phpDocumentor\Guides\NodeRenderers\Html\TemplatedNodeRenderer;
 use phpDocumentor\Guides\NodeRenderers\Html\TocNodeRenderer;
 use phpDocumentor\Guides\NodeRenderers\InMemoryNodeRendererFactory;
-use phpDocumentor\Guides\NodeRenderers\ListNodeRenderer;
 use phpDocumentor\Guides\NodeRenderers\NodeRendererFactory;
 use phpDocumentor\Guides\NodeRenderers\TemplateNodeRenderer;
 use phpDocumentor\Guides\Nodes\AnchorNode;
@@ -68,7 +66,7 @@ final class HTMLFormat extends Format
                 UmlNode::class => new TemplateNodeRenderer($renderer, 'uml.html.twig'),
                 CodeNode::class => new TemplateNodeRenderer($renderer, 'code.html.twig'),
                 DefinitionListNode::class => new DefinitionListNodeRenderer($renderer),
-                ListNode::class => new ListNodeRenderer(new ListRenderer($renderer), $environment),
+                ListNode::class => new TemplateNodeRenderer($renderer, 'list.html.twig'),
                 TableNode::class => new TableNodeRenderer($renderer),
                 TocNode::class => new TocNodeRenderer($environment),
                 DocumentNode::class => new DocumentNodeRenderer($environment),

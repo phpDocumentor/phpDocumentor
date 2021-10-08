@@ -1,12 +1,14 @@
 Project Management
 ==================
 
-.. note:: This documentation is about how the phpDocumentor team is organized and how it determines priorities and which
-          tooling to use. When you are a user of phpDocumentor you can safely ignore this piece of documentation.
+.. note::
+   This documentation is about how the phpDocumentor team is organized and how it determines priorities and which
+   tooling to use. When you are a user of phpDocumentor you can safely ignore this piece of documentation.
 
-.. note:: As with many open source projects, the phpDocumentor team consists of a very small number of core contributors
-          who do this in their spare time. This may mean that even if an issue is urgent or able to be quickly responded
-          to; it could still take some time because of availability.
+.. note::
+   As with many open source projects, the phpDocumentor team consists of a very small number of core contributors
+   who do this in their spare time. This may mean that even if an issue is urgent or able to be quickly responded
+   to; it could still take some time because of availability.
 
 Release schedule
 ----------------
@@ -63,9 +65,10 @@ For larger efforts, those that do not fit into one issue, we make a `Github Proj
 This project represents an epic or otherwise significant effort that we need to keep track of. This does not include
 the release of new versions of phpDocumentor as these are tracked using milestones.
 
-.. note: The intended difference in use between milestones and projects is that a project does not need to be completed
-         withing the span of one release; by distinguishing between milestones/releases and projects/epics we are able
-         to do so.
+.. note::
+   The intended difference in use between milestones and projects is that a project does not need to be completed
+   within the span of one release; by distinguishing between milestones/releases and projects/epics we are able
+   to do so.
 
 Since a larger effort may span one or more repositories that we consume, a project on the organisational level is
 preferred. Projects on a repository level are discouraged and should either be closed as soon as possible or migrated

@@ -50,7 +50,7 @@ final class DocumentRule implements Rule
             new LinkRule($lineDataParser, $parser->getEnvironment()),
             $literalBlockRule,
             new BlockQuoteRule($parser),
-            new ListRule($lineDataParser, $parser->getEnvironment()),
+            new ListRule($parser),
             new DirectiveRule($parser, $documentParser, $lineDataParser, $literalBlockRule, $directiveHandlers),
             new CommentRule(),
             new DefinitionListRule($lineDataParser),

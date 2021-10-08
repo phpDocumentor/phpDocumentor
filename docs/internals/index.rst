@@ -9,7 +9,6 @@ The docs can be interesting for anyone working on the codebase of phpDocumentor.
    :maxdepth: 2
 
    project-management
-   release-process
    documentation-website
    configuration
    flow

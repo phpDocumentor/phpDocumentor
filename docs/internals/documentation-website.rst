@@ -1,12 +1,12 @@
 Documentation & Website
 ==================
 
-For phpDocumentor we aim to have a fully automated documentation generation process. This chapter explains how our internal
-infrastructure works, and what needs to be done when a new version of phpDocumentor is released.
+For phpDocumentor, we aim to have a fully automated documentation generation process. This chapter explains how our
+internal infrastructure works, and what needs to be done when a new version of phpDocumentor is released.
 
 .. note::
 
-This chapter is focused on administrators.
+   This chapter is focused on administrators.
 
 Setup
 -----
@@ -14,8 +14,8 @@ Setup
 Our website runs on a sponsored Kubernetes cluster with a Rancher interface. We are running a single docker image which is
 build by the ``Website`` workflow on github, and published to `github packages`_.
 
-The docker image is based on ``nginx:alpine` and contains the assets created by the make target ``build-website``. The image
-contains 3 website definitions running on separate ports.
+The docker image is based on ``nginx:alpine`` and contains the assets created by the make target ``build-website``. The
+image contains 3 website definitions running on separate ports.
 
 ==== =======
 Port website
@@ -30,7 +30,6 @@ Ingress
 
 The ingress configuration of our website contains a set of rules to map the domains to the correct port. Also the separate
 paths are mapped this way.
-
 
 Deploy process
 --------------
