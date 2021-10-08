@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\RestructuredText\HTML\Directives;
 
 use phpDocumentor\Guides\Nodes\Node;
+use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\Nodes\TemplatedNode;
 use phpDocumentor\Guides\RestructuredText\Directives\SubDirective;
 use phpDocumentor\Guides\RestructuredText\Parser;
@@ -45,7 +46,7 @@ abstract class AbstractAdmonitionDirective extends SubDirective
                 'name' => $this->name,
                 'text' => $this->text,
                 'class' => $options['class'] ?? null,
-                'node' => $document,
+                'node' => $document ?? new SpanNode($parser->getEnvironment(), $data),
             ]
         );
     }
