@@ -26,11 +26,11 @@ class SpanNodeRenderer extends BaseSpanNodeRenderer
     /** @var Renderer */
     private $renderer;
 
-    public function __construct(Environment $environment)
+    public function __construct(Environment $environment, Renderer $renderer)
     {
-        $this->renderer = $environment->getRenderer();
+        $this->renderer = $renderer;
 
-        parent::__construct($environment);
+        parent::__construct($environment, $renderer);
     }
 
     public function emphasis(string $text): string

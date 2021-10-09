@@ -27,7 +27,16 @@ class InMemoryNodeRendererFactory implements NodeRendererFactory
     public function __construct(array $nodeRenderers, NodeRenderer $defaultNodeRenderer)
     {
         $this->nodeRenderers = $nodeRenderers;
+        foreach ($nodeRenderers as $nodeRenderer) {
+            if ($nodeRenderer instanceof NodeRendererFactoryAware) {
+                $nodeRenderer->setNodeRendererFactory($this);
+            }
+        }
+
         $this->defaultNodeRenderer = $defaultNodeRenderer;
+        if ($defaultNodeRenderer instanceof NodeRendererFactoryAware) {
+            $defaultNodeRenderer->setNodeRendererFactory($this);
+        }
     }
 
     public function get(string $node): NodeRenderer

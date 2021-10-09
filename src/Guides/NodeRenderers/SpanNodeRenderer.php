@@ -18,6 +18,7 @@ use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\InvalidLink;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\SpanNode;
+use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\RestructuredText\Span\SpanToken;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 
@@ -28,14 +29,26 @@ use function preg_replace_callback;
 use function sprintf;
 use function str_replace;
 
-abstract class SpanNodeRenderer implements NodeRenderer, SpanRenderer
+abstract class SpanNodeRenderer implements NodeRenderer, SpanRenderer, NodeRendererFactoryAware
 {
     /** @var Environment */
     protected $environment;
 
-    public function __construct(Environment $environment)
+    /** @var Renderer */
+    private $renderer;
+
+    /** @var NodeRendererFactory */
+    private $nodeRendererFactory;
+
+    public function __construct(Environment $environment, Renderer $renderer)
     {
         $this->environment = $environment;
+        $this->renderer = $renderer;
+    }
+
+    public function setNodeRendererFactory(NodeRendererFactory $nodeRendererFactory): void
+    {
+        $this->nodeRendererFactory = $nodeRendererFactory;
     }
 
     public function render(Node $node): string
@@ -60,7 +73,7 @@ abstract class SpanNodeRenderer implements NodeRenderer, SpanRenderer
     {
         $url = (string) $url;
 
-        return $this->environment->getRenderer()->render(
+        return $this->renderer->render(
             'link.html.twig',
             [
                 'url' => $this->environment->generateUrl($url),
@@ -126,9 +139,7 @@ abstract class SpanNodeRenderer implements NodeRenderer, SpanRenderer
                 }
 
                 if ($variable instanceof Node) {
-                    return $this->environment->getNodeRendererFactory()
-                        ->get(get_class($variable))
-                        ->render($variable);
+                    return $this->nodeRendererFactory->get(get_class($variable))->render($variable);
                 }
 
                 if (is_string($variable)) {

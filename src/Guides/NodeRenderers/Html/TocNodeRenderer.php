@@ -18,6 +18,7 @@ use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\NodeRenderers\NodeRenderer;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\TocNode;
+use phpDocumentor\Guides\Renderer;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 
 use function count;
@@ -28,9 +29,13 @@ class TocNodeRenderer implements NodeRenderer
     /** @var Environment */
     private $environment;
 
-    public function __construct(Environment $environment)
+    /** @var Renderer */
+    private $renderer;
+
+    public function __construct(Environment $environment, Renderer $renderer)
     {
         $this->environment = $environment;
+        $this->renderer = $renderer;
     }
 
     public function render(Node $node): string
@@ -57,7 +62,7 @@ class TocNodeRenderer implements NodeRenderer
             $this->buildLevel($node, $url, $reference->getTitles(), 1, $tocItems);
         }
 
-        return $this->environment->getRenderer()->render(
+        return $this->renderer->render(
             'toc.html.twig',
             [
                 'tocNode' => $node,

@@ -18,17 +18,19 @@ use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\NodeRenderers\DocumentNodeRenderer as BaseDocumentRender;
 use phpDocumentor\Guides\NodeRenderers\FullDocumentNodeRenderer;
 use phpDocumentor\Guides\NodeRenderers\NodeRenderer;
+use phpDocumentor\Guides\NodeRenderers\NodeRendererFactory;
+use phpDocumentor\Guides\NodeRenderers\NodeRendererFactoryAware;
 use phpDocumentor\Guides\Nodes\DocumentNode;
 use phpDocumentor\Guides\Nodes\Node;
 
-class DocumentNodeRenderer implements NodeRenderer, FullDocumentNodeRenderer
+class DocumentNodeRenderer implements NodeRenderer, FullDocumentNodeRenderer, NodeRendererFactoryAware
 {
-    /** @var Environment */
-    private $environment;
+    /** @var NodeRendererFactory */
+    private $nodeRendererFactory;
 
-    public function __construct(Environment $environment)
+    public function setNodeRendererFactory(NodeRendererFactory $nodeRendererFactory): void
     {
-        $this->environment = $environment;
+        $this->nodeRendererFactory = $nodeRendererFactory;
     }
 
     public function render(Node $node): string
@@ -37,7 +39,7 @@ class DocumentNodeRenderer implements NodeRenderer, FullDocumentNodeRenderer
             throw new InvalidArgumentException('Invalid node presented');
         }
 
-        return (new BaseDocumentRender($this->environment->getNodeRendererFactory()))->render($node);
+        return (new BaseDocumentRender($this->nodeRendererFactory))->render($node);
     }
 
     public function renderDocument(DocumentNode $node, Environment $environment): string

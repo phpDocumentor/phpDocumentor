@@ -27,13 +27,13 @@ use function count;
 class Renderer
 {
     /** @var EnvironmentFactory */
-    private $environmentFactory;
+    private $twigFactory;
 
     /** @var TemplateRenderer|null */
     private $templateRenderer;
 
     /** @var \Twig\Environment|null */
-    private $environment;
+    private $twig;
 
     /** @var LoggerInterface */
     private $logger;
@@ -46,7 +46,7 @@ class Renderer
         LoggerInterface $logger,
         PlantumlRenderer $plantumlRenderer
     ) {
-        $this->environmentFactory = $environmentFactory;
+        $this->twigFactory = $environmentFactory;
         $this->logger = $logger;
         $this->plantumlRenderer = $plantumlRenderer;
     }
@@ -58,19 +58,19 @@ class Renderer
     ): void {
         $targetDirectory = $documentationSet->getOutput();
 
-        $this->environment = $this->environmentFactory->create($project, $transformation->template());
-        $this->environment->addExtension(new AssetsExtension($this->logger, $this->plantumlRenderer));
-        $this->environment->addGlobal('project', $project);
-        $this->environment->addGlobal('usesNamespaces', count($project->getNamespace()->getChildren()) > 0);
-        $this->environment->addGlobal('usesPackages', count($project->getPackage()->getChildren()) > 0);
-        $this->environment->addGlobal('documentationSet', $project);
-        $this->environment->addGlobal('destinationPath', $targetDirectory);
+        $this->twig = $this->twigFactory->create($project, $transformation->template());
+        $this->twig->addExtension(new AssetsExtension($this->logger, $this->plantumlRenderer));
+        $this->twig->addGlobal('project', $project);
+        $this->twig->addGlobal('usesNamespaces', count($project->getNamespace()->getChildren()) > 0);
+        $this->twig->addGlobal('usesPackages', count($project->getPackage()->getChildren()) > 0);
+        $this->twig->addGlobal('documentationSet', $project);
+        $this->twig->addGlobal('destinationPath', $targetDirectory);
 
         // pre-set the global variable so that we can update it later
-        $this->environment->addGlobal('env', null);
-        $this->environment->addGlobal('destination', $transformation->getTransformer()->destination());
+        $this->twig->addGlobal('env', null);
+        $this->twig->addGlobal('destination', $transformation->getTransformer()->destination());
 
-        $this->templateRenderer = new TemplateRenderer($this->environment, 'guides', $targetDirectory);
+        $this->templateRenderer = new TemplateRenderer($this->twig, 'guides', $targetDirectory);
     }
 
     /**
@@ -97,6 +97,6 @@ class Renderer
      */
     public function setGuidesEnvironment(Environment $environment): void
     {
-        $this->environment->addGlobal('env', $environment);
+        $this->twig->addGlobal('env', $environment);
     }
 }

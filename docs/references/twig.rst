@@ -44,3 +44,6 @@ Twig
 	   * properties
 	   * constants
 	   * toc
+       * asset
+       * renderNode
+       * uml

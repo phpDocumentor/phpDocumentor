@@ -17,9 +17,11 @@ use IteratorAggregate;
 use League\Flysystem\FilesystemInterface;
 use phpDocumentor\Descriptor\DocumentDescriptor;
 use phpDocumentor\Descriptor\GuideSetDescriptor;
+use phpDocumentor\Guides\Configuration;
 use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Metas;
 use phpDocumentor\Guides\NodeRenderers\FullDocumentNodeRenderer;
+use phpDocumentor\Guides\NodeRenderers\NodeRendererFactory;
 use phpDocumentor\Guides\References\Doc;
 use phpDocumentor\Guides\References\Reference;
 use phpDocumentor\Guides\RenderCommand;
@@ -67,29 +69,25 @@ final class RenderHandler
 
     public function handle(RenderCommand $command): void
     {
-        $environment = new Environment(
-            $command->getConfiguration(),
-            $this->renderer,
-            $this->logger,
-            $command->getOrigin(),
-            $this->metas
-        );
+        $configuration = $command->getConfiguration();
+        $origin = $command->getOrigin();
 
-        $nodeRendererFactory = $command->getConfiguration()->getFormat()->getNodeRendererFactory($environment);
+        $environment = $this->createEnvironment($configuration, $origin);
+
+        $nodeRendererFactory = $configuration->getFormat()->getNodeRendererFactory($environment);
         $environment->setNodeRendererFactory($nodeRendererFactory);
-        $this->render($command->getDocumentationSet(), $environment, $command->getDestination());
+
+        $this->render($nodeRendererFactory, $command->getDocumentationSet(), $environment, $command->getDestination());
     }
 
     private function render(
+        NodeRendererFactory $nodeRendererFactory,
         GuideSetDescriptor $documentationSet,
         Environment $environment,
         FilesystemInterface $destination
     ): void {
-        $this->initReferences($environment, $this->references);
-
         /** @var DocumentDescriptor $descriptor */
         foreach ($documentationSet->getDocuments() as $descriptor) {
-            $document = $descriptor->getDocumentNode();
 
             // TODO: This is a hack; I want to rework path handling for guides as the Environment, for example,
             //       has a plethora of 'em.
@@ -99,30 +97,13 @@ final class RenderHandler
                 $documentationSet->getOutput() . '/' . $this->router->generate($descriptor)
             );
 
-            $directory = dirname($destinationPath);
-
-            $environment->setCurrentFileName($descriptor->getFile());
-            // TODO: We assume there is one, but there may be multiple. Handling this correctly required rework on how
-            // source locations are propagated.
-            $sourcePath = $documentationSet->getSource()->paths()[0];
-
-            $environment->setCurrentAbsolutePath($sourcePath . '/' . dirname($descriptor->getFile()));
-            $environment->setCurrentDirectory($directory);
-
-            foreach ($descriptor->getLinks() as $link => $url) {
-                $environment->setLink($link, $url);
-            }
-
-            foreach ($descriptor->getVariables() as $key => $value) {
-                $environment->setVariable($key, $value);
-            }
-
-            /** @var FullDocumentNodeRenderer $renderer */
-            $renderer = $environment->getNodeRendererFactory()->get(get_class($document));
-            $this->renderer->setGuidesEnvironment($environment);
-            $this->renderer->setDestination($destinationPath);
-
-            $renderedOutput = $renderer->renderDocument($document, $environment);
+            $renderedOutput = $this->renderDocument(
+                $nodeRendererFactory,
+                $descriptor,
+                $destinationPath,
+                $environment,
+                $documentationSet
+            );
             $destination->put($destinationPath, $renderedOutput);
         }
     }
@@ -143,5 +124,56 @@ final class RenderHandler
         foreach ($references as $reference) {
             $environment->registerReference($reference);
         }
+    }
+
+    private function renderDocument(
+        NodeRendererFactory $nodeRendererFactory,
+        DocumentDescriptor $descriptor,
+        string $destinationPath,
+        Environment $environment,
+        GuideSetDescriptor $documentationSet
+    ): string {
+        $document = $descriptor->getDocumentNode();
+
+        $directory = dirname($destinationPath);
+
+        $environment->setCurrentFileName($descriptor->getFile());
+        // TODO: We assume there is one, but there may be multiple. Handling this correctly required rework on how
+        // source locations are propagated.
+        $sourcePath = $documentationSet->getSource()->paths()[0];
+
+        $environment->setCurrentAbsolutePath($sourcePath . '/' . dirname($descriptor->getFile()));
+        $environment->setCurrentDirectory($directory);
+
+        foreach ($descriptor->getLinks() as $link => $url) {
+            $environment->setLink($link, $url);
+        }
+
+        foreach ($descriptor->getVariables() as $key => $value) {
+            $environment->setVariable($key, $value);
+        }
+
+        /** @var FullDocumentNodeRenderer $renderer */
+        $renderer = $nodeRendererFactory->get(get_class($document));
+        $this->renderer->setGuidesEnvironment($environment);
+        $this->renderer->setDestination($destinationPath);
+
+        return $renderer->renderDocument($document, $environment);
+    }
+
+    private function createEnvironment(
+        Configuration $configuration,
+        FilesystemInterface $origin
+    ): Environment {
+        $environment = new Environment(
+            $configuration,
+            $this->renderer,
+            $this->logger,
+            $origin,
+            $this->metas
+        );
+        $this->initReferences($environment, $this->references);
+
+        return $environment;
     }
 }

@@ -7,21 +7,22 @@ namespace phpDocumentor\Guides\RestructuredText\Handlers;
 use Doctrine\Common\EventManager;
 use InvalidArgumentException;
 use IteratorAggregate;
+use League\Flysystem\FilesystemInterface;
 use phpDocumentor\Descriptor\DocumentDescriptor;
-use phpDocumentor\Guides\Configuration;
 use phpDocumentor\Guides\Environment;
+use phpDocumentor\Guides\Formats\Format;
 use phpDocumentor\Guides\Markdown\Parser as MarkdownParser;
 use phpDocumentor\Guides\Metas;
 use phpDocumentor\Guides\Nodes\DocumentNode;
 use phpDocumentor\Guides\References\Reference;
 use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive;
-use phpDocumentor\Guides\RestructuredText\Formats\Format;
+use phpDocumentor\Guides\RestructuredText\Formats\Format as RestructuredTextFormat;
 use phpDocumentor\Guides\RestructuredText\ParseFileCommand;
 use phpDocumentor\Guides\RestructuredText\Parser;
 use Psr\Log\LoggerInterface;
-use RuntimeException;
 
+use RuntimeException;
 use function filemtime;
 use function iterator_to_array;
 use function ltrim;
@@ -94,11 +95,11 @@ final class ParseFileHandler
         $document = null;
 
         if ($configuration->getSourceFileExtension() === 'rst') {
-            $document = $this->parseRestructuredText($configuration, $environment, $fileAbsolutePath);
+            $document = $this->parseRestructuredText($configuration->getFormat(), $environment, $fileAbsolutePath);
         }
 
         if ($configuration->getSourceFileExtension() === 'md') {
-            $document = $this->parseMarkdown($configuration, $environment, $fileAbsolutePath);
+            $document = $this->parseMarkdown($configuration->getFormat(), $environment, $fileAbsolutePath);
         }
 
         if (!$document) {
@@ -162,12 +163,11 @@ final class ParseFileHandler
     }
 
     private function parseRestructuredText(
-        Configuration $configuration,
+        Format $format,
         Environment $environment,
         string $fileAbsolutePath
     ): DocumentNode {
-        $format = $configuration->getFormat();
-        if ($format instanceof Format === false) {
+        if ($format instanceof RestructuredTextFormat === false) {
             throw new RuntimeException('This handler only support RestructuredText input formats');
         }
 
@@ -182,25 +182,24 @@ final class ParseFileHandler
             iterator_to_array($this->references)
         );
 
-        return $parser->parse($this->getFileContents($environment, $fileAbsolutePath));
+        return $parser->parse($this->getFileContents($environment->getOrigin(), $fileAbsolutePath));
     }
 
     private function parseMarkdown(
-        Configuration $configuration,
+        Format $format,
         Environment $environment,
         string $fileAbsolutePath
     ): DocumentNode {
-        $nodeRendererFactory = $configuration->getFormat()->getNodeRendererFactory($environment);
+        $nodeRendererFactory = $format->getNodeRendererFactory($environment);
         $environment->setNodeRendererFactory($nodeRendererFactory);
 
         $parser = new MarkdownParser($environment);
 
-        return $parser->parse($this->getFileContents($environment, $fileAbsolutePath));
+        return $parser->parse($this->getFileContents($environment->getOrigin(), $fileAbsolutePath));
     }
 
-    private function getFileContents(Environment $environment, string $file): string
+    private function getFileContents(FilesystemInterface $origin, string $file): string
     {
-        $origin = $environment->getOrigin();
         if (!$origin->has($file)) {
             throw new InvalidArgumentException(sprintf('File at path %s does not exist', $file));
         }

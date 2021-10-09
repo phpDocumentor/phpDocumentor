@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\HTML;
 
+use IteratorAggregate;
 use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\NodeRenderers\DefaultNodeRenderer;
 use phpDocumentor\Guides\NodeRenderers\Html\DefinitionListNodeRenderer;
@@ -43,37 +44,46 @@ use phpDocumentor\Guides\Nodes\TemplatedNode;
 use phpDocumentor\Guides\Nodes\TitleNode;
 use phpDocumentor\Guides\Nodes\TocNode;
 use phpDocumentor\Guides\Nodes\UmlNode;
+use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\RestructuredText\Formats\Format;
 
 final class HTMLFormat extends Format
 {
+    /** @var Renderer */
+    private $renderer;
+
+    public function __construct(string $fileExtension, IteratorAggregate $directives, Renderer $renderer)
+    {
+        $this->renderer = $renderer;
+
+        parent::__construct($fileExtension, $directives);
+    }
+
     public function getNodeRendererFactory(Environment $environment): NodeRendererFactory
     {
-        $renderer = $environment->getRenderer();
-
         return new InMemoryNodeRendererFactory(
             [
-                AnchorNode::class => new TemplateNodeRenderer($renderer, 'anchor.html.twig'),
-                FigureNode::class => new TemplateNodeRenderer($renderer, 'figure.html.twig'),
-                MetaNode::class => new TemplateNodeRenderer($renderer, 'meta.html.twig'),
-                ParagraphNode::class => new TemplateNodeRenderer($renderer, 'paragraph.html.twig'),
-                QuoteNode::class => new TemplateNodeRenderer($renderer, 'quote.html.twig'),
-                SeparatorNode::class => new TemplateNodeRenderer($renderer, 'separator.html.twig'),
-                TitleNode::class => new TemplateNodeRenderer($renderer, 'header-title.html.twig'),
-                SectionBeginNode::class => new TemplateNodeRenderer($renderer, 'section-begin.html.twig'),
-                SectionEndNode::class => new TemplateNodeRenderer($renderer, 'section-end.html.twig'),
-                ImageNode::class => new TemplateNodeRenderer($renderer, 'image.html.twig'),
-                UmlNode::class => new TemplateNodeRenderer($renderer, 'uml.html.twig'),
-                CodeNode::class => new TemplateNodeRenderer($renderer, 'code.html.twig'),
-                DefinitionListNode::class => new DefinitionListNodeRenderer($renderer),
-                ListNode::class => new TemplateNodeRenderer($renderer, 'list.html.twig'),
-                TableNode::class => new TableNodeRenderer($renderer),
-                TocNode::class => new TocNodeRenderer($environment),
-                DocumentNode::class => new DocumentNodeRenderer($environment),
-                SpanNode::class => new SpanNodeRenderer($environment),
-                TemplatedNode::class => new TemplatedNodeRenderer($renderer),
+                AnchorNode::class => new TemplateNodeRenderer($this->renderer, 'anchor.html.twig'),
+                FigureNode::class => new TemplateNodeRenderer($this->renderer, 'figure.html.twig'),
+                MetaNode::class => new TemplateNodeRenderer($this->renderer, 'meta.html.twig'),
+                ParagraphNode::class => new TemplateNodeRenderer($this->renderer, 'paragraph.html.twig'),
+                QuoteNode::class => new TemplateNodeRenderer($this->renderer, 'quote.html.twig'),
+                SeparatorNode::class => new TemplateNodeRenderer($this->renderer, 'separator.html.twig'),
+                TitleNode::class => new TemplateNodeRenderer($this->renderer, 'header-title.html.twig'),
+                SectionBeginNode::class => new TemplateNodeRenderer($this->renderer, 'section-begin.html.twig'),
+                SectionEndNode::class => new TemplateNodeRenderer($this->renderer, 'section-end.html.twig'),
+                ImageNode::class => new TemplateNodeRenderer($this->renderer, 'image.html.twig'),
+                UmlNode::class => new TemplateNodeRenderer($this->renderer, 'uml.html.twig'),
+                CodeNode::class => new TemplateNodeRenderer($this->renderer, 'code.html.twig'),
+                DefinitionListNode::class => new DefinitionListNodeRenderer($this->renderer),
+                ListNode::class => new TemplateNodeRenderer($this->renderer, 'list.html.twig'),
+                TableNode::class => new TableNodeRenderer($this->renderer),
+                TocNode::class => new TocNodeRenderer($environment, $this->renderer),
+                DocumentNode::class => new DocumentNodeRenderer(),
+                SpanNode::class => new SpanNodeRenderer($environment, $this->renderer),
+                TemplatedNode::class => new TemplatedNodeRenderer($this->renderer),
             ],
-            new DefaultNodeRenderer($environment)
+            new DefaultNodeRenderer()
         );
     }
 }
