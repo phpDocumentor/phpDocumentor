@@ -30,6 +30,18 @@ abstract class Directive
     abstract public function getName(): string;
 
     /**
+     * Allow a directive to be registered under multiple names.
+     *
+     * Aliases can be used for directives whose name has been deprecated or allows for multiple spellings.
+     *
+     * @return string[]
+     */
+    public function getAliases(): array
+    {
+        return [];
+    }
+
+    /**
      * This is the function called by the parser to process the directive, it can be overloaded
      * to do anything with the document, like tweaking nodes or change the environment
      *

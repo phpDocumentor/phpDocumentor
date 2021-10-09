@@ -20,12 +20,14 @@
     --text-xxxxxl: calc(var(--text-base-size) * var(--text-scale-ratio) * var(--text-scale-ratio) * var(--text-scale-ratio) * var(--text-scale-ratio) * var(--text-scale-ratio) * var(--text-scale-ratio));
 
     /* Colors */
-    --primary-color: hsl(96, 57%, 60%);
-    --primary-color-darken: hsl(96, 57%, 40%);
-    --primary-color-darker: hsl(96, 57%, 20%);
-    --primary-color-darkest: hsl(96, 57%, 10%);
-    --primary-color-lighten: hsl(96, 57%, 80%);
-    --primary-color-lighter: hsl(96, 57%, 99%);
+    --primary-color-hue: 96;
+    --primary-color-saturation: 57%;
+    --primary-color: hsl(var(--primary-color-hue), var(--primary-color-saturation), 60%);
+    --primary-color-darken: hsl(var(--primary-color-hue), var(--primary-color-saturation), 40%);
+    --primary-color-darker: hsl(var(--primary-color-hue), var(--primary-color-saturation), 20%);
+    --primary-color-darkest: hsl(var(--primary-color-hue), var(--primary-color-saturation), 10%);
+    --primary-color-lighten: hsl(var(--primary-color-hue), var(--primary-color-saturation), 80%);
+    --primary-color-lighter: hsl(var(--primary-color-hue), var(--primary-color-saturation), 99%);
     --dark-gray: #d1d1d1;
     --light-gray: #f0f0f0;
 
@@ -33,8 +35,8 @@
 
     --header-height: var(--spacing-xxxxl);
     --header-bg-color: var(--primary-color);
-    --code-background-color: #f7faf5;
-    --code-border-color: #d6e7cb;
+    --code-background-color: var(--primary-color-lighter);
+    --code-border-color: --primary-color-lighten;
     --button-border-color: var(--primary-color-darken);
     --button-color: transparent;
     --button-color-primary: var(--primary-color);

@@ -113,6 +113,9 @@ class Parser implements ParserInterface
     public function registerDirective(Directive $directive): void
     {
         $this->directives[$directive->getName()] = $directive;
+        foreach ($directive->getAliases() as $alias) {
+            $this->directives[$alias] = $directive;
+        }
     }
 
     public function getDocument(): DocumentNode

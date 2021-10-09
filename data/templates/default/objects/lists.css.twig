@@ -1,17 +1,22 @@
+.phpdocumentor-column ul,
 div.phpdocumentor-list > ul,
 ul.phpdocumentor-list {
-    list-style: circle inside;
+    list-style: circle;
 }
 
+.phpdocumentor-column ol,
+div.phpdocumentor-list > ol,
 ol.phpdocumentor-list {
-    list-style: decimal inside;
+    list-style: decimal;
 }
 
+
+.phpdocumentor-column ul,
 div.phpdocumentor-list > ul,
 ol.phpdocumentor-list,
 ul.phpdocumentor-list {
     margin-top: 0;
-    padding-left: 0;
+    padding-left: 1rem;
     margin-bottom: var(--spacing-md);
 }
 
@@ -19,6 +24,7 @@ dl {
     margin-bottom: var(--spacing-md);
 }
 
+.phpdocumentor-column ul ul,
 div.phpdocumentor-list > ul ul,
 ul.phpdocumentor-list ul.phpdocumentor-list,
 ul.phpdocumentor-list ol.phpdocumentor-list,
@@ -28,8 +34,9 @@ ol.phpdocumentor-list ul.phpdocumentor-list {
     margin: var(--spacing-xs) 0 var(--spacing-xs) calc(var(--spacing-xs) * 2);
 }
 
-li.phpdocumentor-list {
-    margin-bottom: var(--spacing-md);
+.phpdocumentor-column ul li,
+.phpdocumentor-list li {
+    padding-bottom: var(--spacing-xs);
 }
 
 .phpdocumentor dl dt {

@@ -10,13 +10,20 @@ use phpDocumentor\Guides\RestructuredText\Directives\SubDirective;
 use phpDocumentor\Guides\RestructuredText\Parser;
 
 /**
- * Divs a sub document in a div with a given class
+ * Divs a sub document in a div with a given class or set of classes.
+ *
+ * @link https://docutils.sourceforge.io/docs/ref/rst/directives.html#container
  */
-class Div extends SubDirective
+class ContainerDirective extends SubDirective
 {
     public function getName(): string
     {
-        return 'div';
+        return 'container';
+    }
+
+    public function getAliases(): array
+    {
+        return ['div'];
     }
 
     /**
@@ -30,7 +37,7 @@ class Div extends SubDirective
         array $options
     ): ?Node {
         return new TemplatedNode(
-            'div.html.twig',
+            'container.html.twig',
             [
                 'class' => $data,
                 'node' => $document,
