@@ -82,7 +82,7 @@ final class ParseFileHandler
         $directory = $command->getDirectory();
         $file = $command->getFile();
 
-        $referenceRegistry = new ReferenceRegistry($this->logger);
+        $referenceRegistry = new ReferenceRegistry($this->logger, $this->urlGenerator);
         $environment = new Environment(
             $configuration,
             $this->renderer,
@@ -134,7 +134,7 @@ final class ParseFileHandler
                 $title,
                 $document->getTitles(),
                 $document->getTocs(),
-                $environment->getDependencies(),
+                $referenceRegistry->getDependencies(),
                 $environment->getLinks(),
                 $environment->getVariables()
             )
@@ -162,7 +162,7 @@ final class ParseFileHandler
             $document->getTitles(),
             $tocs,
             (int) filemtime($fileAbsolutePath),
-            $environment->getDependencies(),
+            $referenceRegistry->getDependencies(),
             $environment->getLinks()
         );
     }

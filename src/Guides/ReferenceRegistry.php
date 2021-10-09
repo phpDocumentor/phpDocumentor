@@ -33,9 +33,13 @@ final class ReferenceRegistry
     /** @var LoggerInterface */
     private $logger;
 
-    public function __construct(LoggerInterface $logger)
+    /** @var UrlGenerator */
+    private $urlGenerator;
+
+    public function __construct(LoggerInterface $logger, UrlGenerator $urlGenerator)
     {
         $this->logger = $logger;
+        $this->urlGenerator = $urlGenerator;
     }
 
     public function registerReference(Reference $reference): void
@@ -83,40 +87,26 @@ final class ReferenceRegistry
         return $resolvedReference;
     }
 
-    public function addDependency(
-        Environment $environment,
-        string      $dependency,
-        bool        $requiresResolving = false
-    ): void {
-        if ($requiresResolving) {
-            // a hack to avoid collisions between resolved and unresolved dependencies
+    public function addDependency(string $dependency, bool $requiresResolving = false): void
+    {
+        if ($requiresResolving) { // a hack to avoid collisions between resolved and unresolved dependencies
             $dependencyName = 'UNRESOLVED__' . $dependency;
-            $this->unresolvedDependencies[$dependency] = $dependencyName;
-            // map the original dependency name to the one that will be stored
+            $this->unresolvedDependencies[$dependency] = $dependencyName; // map the original dependency name to the one that will be stored
             $this->originalDependencyNames[$dependency] = $dependencyName;
-        } else {
-            // the dependency is already a filename, probably a :doc:
+        } else { // the dependency is already a filename, probably a :doc:
             // or from a toc-tree - change it to the canonical URL
-            $canonicalDependency = $environment->canonicalUrl($dependency);
-
+            $canonicalDependency = $this->urlGenerator->canonicalUrl('', $dependency);
             if ($canonicalDependency === null) {
                 throw new InvalidArgumentException(
-                    sprintf(
-                        'Could not get canonical url for dependency %s',
-                        $dependency
-                    )
+                    sprintf('Could not get canonical url for dependency %s', $dependency)
                 );
             }
-
-            $dependencyName = $canonicalDependency;
-            // map the original dependency name to the one that will be stored
+            $dependencyName = $canonicalDependency; // map the original dependency name to the one that will be stored
             $this->originalDependencyNames[$dependency] = $canonicalDependency;
         }
-
         if (in_array($dependencyName, $this->dependencies, true)) {
             return;
         }
-
         $this->dependencies[] = $dependencyName;
     }
 
@@ -148,7 +138,7 @@ final class ReferenceRegistry
         if (isset($this->references[$role])) {
             $reference = $this->references[$role];
 
-            $reference->found($environment, $data['url']);
+            $reference->found($this, $data['url']);
 
             return null;
         }

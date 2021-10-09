@@ -249,19 +249,6 @@ class Environment
         return '';
     }
 
-    public function addDependency(string $dependency, bool $requiresResolving = false): void
-    {
-        $this->references->addDependency($this, $dependency, $requiresResolving);
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getDependencies(): array
-    {
-        return $this->references->getDependencies();
-    }
-
     public function relativeUrl(?string $url): string
     {
         return $this->urlGenerator->relativeUrl($url);

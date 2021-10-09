@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\References;
 
 use phpDocumentor\Guides\Environment;
+use phpDocumentor\Guides\ReferenceRegistry;
 
 /**
  * A reference is something that can be resolved in the document, for instance:
@@ -62,11 +63,8 @@ abstract class Reference
 
     /**
      * Called when a reference is just found
-     *
-     * @param Environment $environment the Environment in use
-     * @param string $data the data of the reference
      */
-    public function found(Environment $environment, string $data): void
+    public function found(ReferenceRegistry $referenceRegistry, string $data): void
     {
     }
 }
