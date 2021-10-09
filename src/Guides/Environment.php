@@ -13,19 +13,15 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides;
 
-use InvalidArgumentException;
 use League\Flysystem\FilesystemInterface;
 use phpDocumentor\Guides\Meta\Entry;
 use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\References\Reference;
 use phpDocumentor\Guides\References\ResolvedReference;
 use Psr\Log\LoggerInterface;
-
 use function array_shift;
 use function dirname;
 use function implode;
-use function in_array;
-use function sprintf;
 use function strtolower;
 use function trim;
 
@@ -53,22 +49,13 @@ class Environment
     private $currentDirectory = '.';
 
     /** @var string|null */
-    private $url = null;
+    private $url;
 
-    /** @var Reference[] */
-    private $references = [];
+    /** @var ReferenceRegistry */
+    private $references;
 
     /** @var Metas */
     private $metas;
-
-    /** @var string[] */
-    private $dependencies = [];
-
-    /** @var string[] */
-    private $unresolvedDependencies = [];
-
-    /** @var string[] */
-    private $originalDependencyNames = [];
 
     /** @var string[] */
     private $variables = [];
@@ -84,9 +71,6 @@ class Environment
 
     /** @var string[] */
     private $anonymous = [];
-
-    /** @var InvalidLink[] */
-    private $invalidLinks = [];
 
     /** @var LoggerInterface */
     private $logger;
@@ -108,15 +92,18 @@ class Environment
         Renderer $renderer,
         LoggerInterface $logger,
         FilesystemInterface $origin,
-        Metas $metas
+        Metas $metas,
+        UrlGenerator $urlGenerator
     ) {
         $this->outputFolder = $configuration->getOutputFolder();
         $this->initialHeaderLevel = $configuration->getInitialHeaderLevel();
+
         $this->renderer = $renderer;
         $this->origin = $origin;
         $this->logger = $logger;
-        $this->urlGenerator = new UrlGenerator();
+        $this->urlGenerator = $urlGenerator;
         $this->metas = $metas;
+        $this->references = new ReferenceRegistry($logger);
 
         $this->reset();
     }
@@ -151,56 +138,17 @@ class Environment
 
     public function registerReference(Reference $reference): void
     {
-        $this->references[$reference->getRole()] = $reference;
+        $this->references->registerReference($reference);
     }
 
     public function resolve(string $section, string $data): ?ResolvedReference
     {
-        if (!isset($this->references[$section])) {
-            $this->addMissingReferenceSectionError($section);
-
-            return null;
-        }
-
-        $reference = $this->references[$section];
-
-        $resolvedReference = $reference->resolve($this, $data);
-
-        if ($resolvedReference === null) {
-            $this->addInvalidLink(new InvalidLink($data));
-
-            if ($this->getMetaEntry() !== null) {
-                $this->getMetaEntry()->removeDependency(
-                // use the original name
-                    $this->originalDependencyNames[$data] ?? $data
-                );
-            }
-
-            return null;
-        }
-
-        if (isset($this->unresolvedDependencies[$data]) && $this->getMetaEntry() !== null) {
-            $this->getMetaEntry()->resolveDependency(
-            // use the unique, unresolved name
-                $this->unresolvedDependencies[$data],
-                $resolvedReference->getFile()
-            );
-        }
-
-        return $resolvedReference;
+        return $this->references->resolve($this, $section, $data, $this->getMetaEntry());
     }
 
     public function addInvalidLink(InvalidLink $invalidLink): void
     {
-        $this->invalidLinks[] = $invalidLink;
-    }
-
-    /**
-     * @return InvalidLink[]
-     */
-    public function getInvalidLinks(): array
-    {
-        return $this->invalidLinks;
+        $this->references->addInvalidLink($invalidLink);
     }
 
     /**
@@ -210,22 +158,7 @@ class Environment
      */
     public function found(string $section, array $data): ?array
     {
-        $role = $section;
-        if ($data['domain'] ?? '') {
-            $role = $data['domain'] . ':' . $role;
-        }
-
-        if (isset($this->references[$role])) {
-            $reference = $this->references[$role];
-
-            $reference->found($this, $data['url']);
-
-            return null;
-        }
-
-        $this->addMissingReferenceSectionError($role);
-
-        return null;
+        return $this->references->found($this, $section, $data);
     }
 
     /**
@@ -273,11 +206,7 @@ class Environment
      */
     public function getVariable(string $variable, $default = null)
     {
-        if (isset($this->variables[$variable])) {
-            return $this->variables[$variable];
-        }
-
-        return $default;
+        return $this->variables[$variable] ?? $default;
     }
 
     /**
@@ -290,7 +219,7 @@ class Environment
 
     public function setLink(string $name, string $url): void
     {
-        $name = trim(strtolower($name));
+        $name = strtolower(trim($name));
 
         if ($name === '_') {
             $name = array_shift($this->anonymous);
@@ -306,7 +235,7 @@ class Environment
 
     public function pushAnonymous(string $name): void
     {
-        $this->anonymous[] = trim(strtolower($name));
+        $this->anonymous[] = strtolower(trim($name));
     }
 
     /**
@@ -319,7 +248,7 @@ class Environment
 
     public function getLink(string $name, bool $relative = true): string
     {
-        $name = trim(strtolower($name));
+        $name = strtolower(trim($name));
 
         if (isset($this->links[$name])) {
             $link = $this->links[$name];
@@ -336,36 +265,7 @@ class Environment
 
     public function addDependency(string $dependency, bool $requiresResolving = false): void
     {
-        if ($requiresResolving) {
-            // a hack to avoid collisions between resolved and unresolved dependencies
-            $dependencyName = 'UNRESOLVED__' . $dependency;
-            $this->unresolvedDependencies[$dependency] = $dependencyName;
-            // map the original dependency name to the one that will be stored
-            $this->originalDependencyNames[$dependency] = $dependencyName;
-        } else {
-            // the dependency is already a filename, probably a :doc:
-            // or from a toc-tree - change it to the canonical URL
-            $canonicalDependency = $this->canonicalUrl($dependency);
-
-            if ($canonicalDependency === null) {
-                throw new InvalidArgumentException(
-                    sprintf(
-                        'Could not get canonical url for dependency %s',
-                        $dependency
-                    )
-                );
-            }
-
-            $dependencyName = $canonicalDependency;
-            // map the original dependency name to the one that will be stored
-            $this->originalDependencyNames[$dependency] = $canonicalDependency;
-        }
-
-        if (in_array($dependencyName, $this->dependencies, true)) {
-            return;
-        }
-
-        $this->dependencies[] = $dependencyName;
+        $this->references->addDependency($this, $dependency, $requiresResolving);
     }
 
     /**
@@ -373,7 +273,7 @@ class Environment
      */
     public function getDependencies(): array
     {
-        return $this->dependencies;
+        return $this->references->getDependencies();
     }
 
     public function relativeUrl(?string $url): string
@@ -442,11 +342,7 @@ class Environment
 
     public function getUrl(): string
     {
-        if ($this->url !== null) {
-            return $this->url;
-        }
-
-        return $this->currentFileName;
+        return $this->url ?? $this->currentFileName;
     }
 
     public function setUrl(string $url): void
@@ -493,17 +389,6 @@ class Environment
     public function addError(string $message): void
     {
         $this->logger->error($message);
-    }
-
-    private function addMissingReferenceSectionError(string $section): void
-    {
-        $this->addError(
-            sprintf(
-                'Unknown reference section "%s"%s',
-                $section,
-                $this->getCurrentFileName() !== '' ? sprintf(' in "%s" ', $this->getCurrentFileName()) : ''
-            )
-        );
     }
 
     public function setNodeRendererFactory(NodeRenderers\NodeRendererFactory $nodeRendererFactory): void

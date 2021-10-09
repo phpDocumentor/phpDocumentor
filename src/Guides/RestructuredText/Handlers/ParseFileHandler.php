@@ -20,6 +20,7 @@ use phpDocumentor\Guides\RestructuredText\Directives\Directive;
 use phpDocumentor\Guides\RestructuredText\Formats\Format as RestructuredTextFormat;
 use phpDocumentor\Guides\RestructuredText\ParseFileCommand;
 use phpDocumentor\Guides\RestructuredText\Parser;
+use phpDocumentor\Guides\UrlGenerator;
 use Psr\Log\LoggerInterface;
 
 use RuntimeException;
@@ -49,6 +50,9 @@ final class ParseFileHandler
     /** @var Renderer */
     private $renderer;
 
+    /** @var UrlGenerator */
+    private $urlGenerator;
+
     /**
      * @param IteratorAggregate<Directive> $directives
      * @param IteratorAggregate<Reference> $references
@@ -58,6 +62,7 @@ final class ParseFileHandler
         Renderer $renderer,
         LoggerInterface $logger,
         EventManager $eventManager,
+        UrlGenerator $urlGenerator,
         IteratorAggregate $directives,
         IteratorAggregate $references
     ) {
@@ -67,6 +72,7 @@ final class ParseFileHandler
         $this->references = $references;
         $this->eventManager = $eventManager;
         $this->renderer = $renderer;
+        $this->urlGenerator = $urlGenerator;
     }
 
     public function handle(ParseFileCommand $command): void
@@ -80,7 +86,8 @@ final class ParseFileHandler
             $this->renderer,
             $this->logger,
             $command->getOrigin(),
-            $this->metas
+            $this->metas,
+            $this->urlGenerator
         );
         $fileAbsolutePath = $this->buildPathOnFileSystem(
             $file,

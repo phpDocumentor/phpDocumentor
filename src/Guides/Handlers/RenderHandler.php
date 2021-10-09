@@ -26,6 +26,7 @@ use phpDocumentor\Guides\References\Doc;
 use phpDocumentor\Guides\References\Reference;
 use phpDocumentor\Guides\RenderCommand;
 use phpDocumentor\Guides\Renderer;
+use phpDocumentor\Guides\UrlGenerator;
 use phpDocumentor\Transformer\Router\Router;
 use Psr\Log\LoggerInterface;
 
@@ -52,19 +53,24 @@ final class RenderHandler
     /** @var Router */
     private $router;
 
+    /** @var UrlGenerator */
+    private $urlGenerator;
+
     /** @param IteratorAggregate<Reference> $references */
     public function __construct(
         Metas $metas,
         Renderer $renderer,
         LoggerInterface $logger,
         IteratorAggregate $references,
-        Router $router
+        Router $router,
+        UrlGenerator $urlGenerator
     ) {
         $this->metas = $metas;
         $this->renderer = $renderer;
         $this->logger = $logger;
         $this->references = iterator_to_array($references);
         $this->router = $router;
+        $this->urlGenerator = $urlGenerator;
     }
 
     public function handle(RenderCommand $command): void
@@ -170,7 +176,8 @@ final class RenderHandler
             $this->renderer,
             $this->logger,
             $origin,
-            $this->metas
+            $this->metas,
+            $this->urlGenerator
         );
         $this->initReferences($environment, $this->references);
 
