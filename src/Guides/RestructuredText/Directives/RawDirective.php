@@ -13,9 +13,11 @@ use phpDocumentor\Guides\RestructuredText\Parser;
  *
  * .. raw::
  *
- *      <u>Undelined!</u>
+ *      <u>Underlined!</u>
+ *
+ * @link https://docutils.sourceforge.io/docs/ref/rst/directives.html#raw-data-pass-through
  */
-class Raw extends Directive
+class RawDirective extends Directive
 {
     public function getName(): string
     {
@@ -36,6 +38,8 @@ class Raw extends Directive
             return;
         }
 
+        // TODO: Change this to make raw it's own Node; conflating it with a CodeNode with 'raw' true
+        //       feels poorly to me.
         if ($node instanceof CodeNode) {
             $node->setRaw(true);
         }
