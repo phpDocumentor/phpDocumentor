@@ -93,13 +93,13 @@ final class RenderHandler
 
             // TODO: This is a hack; I want to rework path handling for guides as the Environment, for example,
             //       has a plethora of 'em.
-            $target = str_replace(
+            $destinationPath = str_replace(
                 '//',
                 '/',
                 $documentationSet->getOutput() . '/' . $this->router->generate($descriptor)
             );
 
-            $directory = dirname($target);
+            $directory = dirname($destinationPath);
 
             $environment->setCurrentFileName($descriptor->getFile());
             // TODO: We assume there is one, but there may be multiple. Handling this correctly required rework on how
@@ -120,9 +120,10 @@ final class RenderHandler
             /** @var FullDocumentNodeRenderer $renderer */
             $renderer = $environment->getNodeRendererFactory()->get(get_class($document));
             $this->renderer->setGuidesEnvironment($environment);
-            $this->renderer->setDestination($environment->getUrl());
+            $this->renderer->setDestination($destinationPath);
 
-            $destination->put($target, $renderer->renderDocument($document, $environment));
+            $renderedOutput = $renderer->renderDocument($document, $environment);
+            $destination->put($destinationPath, $renderedOutput);
         }
     }
 

@@ -42,8 +42,7 @@ final class TemplateRenderer
 
     public function setDestination(string $filename): void
     {
-        $destination = $this->subFolder . '/' . $filename;
-        $this->getTemplateEngine()->addGlobal('destinationPath', $destination);
+        $this->getTemplateEngine()->addGlobal('destinationPath', $filename);
     }
 
     /**

@@ -44,7 +44,6 @@ class DocumentNodeRenderer implements NodeRenderer, FullDocumentNodeRenderer
     {
         $renderer = $environment->getRenderer();
         $renderer->setGuidesEnvironment($environment);
-        $renderer->setDestination($environment->getUrl());
 
         return $renderer->render(
             'document.html.twig',
