@@ -130,7 +130,7 @@ build/clean/index.html: data/examples/MariosPizzeria/**/*
 
 .PHONY: docs
 docs:
-	${.DOCKER_COMPOSE_RUN} phpdoc --setting="guides.enabled=true" --force
+	${.DOCKER_COMPOSE_RUN} phpdoc --force
 
 .PHONY: build-website
 build-website: demo docs
@@ -140,5 +140,5 @@ build-website: demo docs
 
 .PHONY: demo
 demo:
-	${.DOCKER_COMPOSE_RUN} phpdoc --template=default --setting="guides.enabled=true" -t ./build/website/demo/default
+	${.DOCKER_COMPOSE_RUN} phpdoc --template=default -t ./build/website/demo/default
 	${.DOCKER_COMPOSE_RUN} phpdoc --template=clean -t ./build/website/demo/clean

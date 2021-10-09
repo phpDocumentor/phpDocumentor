@@ -44,8 +44,6 @@ final class PlantumlClassDiagram implements Generator
     {
         $output = $this->plantumlRenderer->render(
             <<<PUML
-@startuml
-
 skinparam shadowing false
 skinparam linetype ortho
 hide empty members
@@ -53,8 +51,6 @@ left to right direction
 set namespaceSeparator \\\\
 
 {$this->renderNamespace($project->getNamespace())}
-
-@enduml
 PUML
         );
 
@@ -64,7 +60,7 @@ PUML
             return;
         }
 
-        file_put_contents($output, $filename);
+        file_put_contents($filename, $output);
     }
 
     private function renderNamespace(NamespaceInterface $namespace): string
