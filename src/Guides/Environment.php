@@ -93,7 +93,8 @@ class Environment
         LoggerInterface $logger,
         FilesystemInterface $origin,
         Metas $metas,
-        UrlGenerator $urlGenerator
+        UrlGenerator $urlGenerator,
+        ReferenceRegistry $referenceRegistry
     ) {
         $this->outputFolder = $configuration->getOutputFolder();
         $this->initialHeaderLevel = $configuration->getInitialHeaderLevel();
@@ -103,7 +104,7 @@ class Environment
         $this->logger = $logger;
         $this->urlGenerator = $urlGenerator;
         $this->metas = $metas;
-        $this->references = new ReferenceRegistry($logger);
+        $this->references = $referenceRegistry;
 
         $this->reset();
     }
@@ -136,11 +137,6 @@ class Environment
         return $this->renderer;
     }
 
-    public function registerReference(Reference $reference): void
-    {
-        $this->references->registerReference($reference);
-    }
-
     public function resolve(string $section, string $data): ?ResolvedReference
     {
         return $this->references->resolve($this, $section, $data, $this->getMetaEntry());
@@ -149,16 +145,6 @@ class Environment
     public function addInvalidLink(InvalidLink $invalidLink): void
     {
         $this->references->addInvalidLink($invalidLink);
-    }
-
-    /**
-     * @param array{anchor: ?string, domain: string, section: string, text: ?string, url: ?string} $data
-     *
-     * @return string[]|null
-     */
-    public function found(string $section, array $data): ?array
-    {
-        return $this->references->found($this, $section, $data);
     }
 
     /**

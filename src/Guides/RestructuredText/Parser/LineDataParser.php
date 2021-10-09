@@ -174,13 +174,17 @@ class LineDataParser
 
                 $classifiers = array_map(
                     function (string $classifier) {
-                        return new SpanNode($this->parser->getEnvironment(), $classifier);
+                        return new SpanNode($this->parser->getEnvironment(), $this->parser->getReferenceRegistry(), $classifier);
                     },
                     array_map('trim', $parts)
                 );
 
                 $definitionListTerm = [
-                    'term' => new SpanNode($this->parser->getEnvironment(), $term),
+                    'term' => new SpanNode(
+                        $this->parser->getEnvironment(),
+                        $this->parser->getReferenceRegistry(),
+                        $term
+                    ),
                     'classifiers' => $classifiers,
                     'definitions' => [],
                 ];
@@ -190,6 +194,7 @@ class LineDataParser
                 if ($currentDefinition !== null) {
                     $definitionListTerm['definitions'][] = new SpanNode(
                         $this->parser->getEnvironment(),
+                        $this->parser->getReferenceRegistry(),
                         $currentDefinition
                     );
 
@@ -206,6 +211,7 @@ class LineDataParser
             } elseif ($currentDefinition !== null && $definitionListTerm !== null && trim($line) === '') {
                 $definitionListTerm['definitions'][] = new SpanNode(
                     $this->parser->getEnvironment(),
+                    $this->parser->getReferenceRegistry(),
                     $currentDefinition
                 );
 

@@ -26,6 +26,8 @@ use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\Nodes\TitleNode;
 use phpDocumentor\Guides\Parser as ParserInterface;
 
+use phpDocumentor\Guides\ReferenceRegistry;
+use RuntimeException;
 use function get_class;
 use function md5;
 
@@ -95,7 +97,7 @@ final class Parser implements ParserInterface
             if ($node instanceof Heading) {
                 $content = $node->getStringContent();
                 $title = new TitleNode(
-                    new SpanNode($this->environment, $content),
+                    new SpanNode($this->environment, $this->getReferenceRegistry(), $content),
                     $node->getLevel()
                 );
                 $document->addNode($title);
@@ -103,7 +105,7 @@ final class Parser implements ParserInterface
             }
 
             if ($node instanceof Text) {
-                $spanNode = new SpanNode($this->environment, $node->getContent());
+                $spanNode = new SpanNode($this->environment, $this->getReferenceRegistry(), $node->getContent());
                 $document->addNode($spanNode);
                 continue;
             }
@@ -165,5 +167,10 @@ final class Parser implements ParserInterface
     public function getDocument(): DocumentNode
     {
         return $this->document;
+    }
+
+    public function getReferenceRegistry(): ReferenceRegistry
+    {
+        throw new RuntimeException('Functionality is not yet implemented');
     }
 }

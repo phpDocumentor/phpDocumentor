@@ -22,6 +22,7 @@ use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Metas;
 use phpDocumentor\Guides\NodeRenderers\FullDocumentNodeRenderer;
 use phpDocumentor\Guides\NodeRenderers\NodeRendererFactory;
+use phpDocumentor\Guides\ReferenceRegistry;
 use phpDocumentor\Guides\References\Doc;
 use phpDocumentor\Guides\References\Reference;
 use phpDocumentor\Guides\RenderCommand;
@@ -56,6 +57,9 @@ final class RenderHandler
     /** @var UrlGenerator */
     private $urlGenerator;
 
+    /** @var ReferenceRegistry */
+    private $referenceRegistry;
+
     /** @param IteratorAggregate<Reference> $references */
     public function __construct(
         Metas $metas,
@@ -63,7 +67,8 @@ final class RenderHandler
         LoggerInterface $logger,
         IteratorAggregate $references,
         Router $router,
-        UrlGenerator $urlGenerator
+        UrlGenerator $urlGenerator,
+        ReferenceRegistry $referenceRegistry
     ) {
         $this->metas = $metas;
         $this->renderer = $renderer;
@@ -71,6 +76,7 @@ final class RenderHandler
         $this->references = iterator_to_array($references);
         $this->router = $router;
         $this->urlGenerator = $urlGenerator;
+        $this->referenceRegistry = $referenceRegistry;
     }
 
     public function handle(RenderCommand $command): void
@@ -117,7 +123,7 @@ final class RenderHandler
     /**
      * @param array<Reference> $references
      */
-    private function initReferences(Environment $environment, array $references): void
+    private function initReferences(array $references): void
     {
         $references = array_merge(
             [
@@ -128,7 +134,7 @@ final class RenderHandler
         );
 
         foreach ($references as $reference) {
-            $environment->registerReference($reference);
+            $this->referenceRegistry->registerReference($reference);
         }
     }
 
@@ -177,9 +183,10 @@ final class RenderHandler
             $this->logger,
             $origin,
             $this->metas,
-            $this->urlGenerator
+            $this->urlGenerator,
+            $this->referenceRegistry
         );
-        $this->initReferences($environment, $this->references);
+        $this->initReferences($this->references);
 
         return $environment;
     }

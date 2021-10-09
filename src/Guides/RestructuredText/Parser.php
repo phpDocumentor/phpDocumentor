@@ -8,6 +8,7 @@ use Doctrine\Common\EventManager;
 use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Nodes\DocumentNode;
 use phpDocumentor\Guides\Parser as ParserInterface;
+use phpDocumentor\Guides\ReferenceRegistry;
 use phpDocumentor\Guides\References\Doc;
 use phpDocumentor\Guides\References\Reference;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive;
@@ -40,6 +41,9 @@ class Parser implements ParserInterface
     /** @var Format */
     private $format;
 
+    /** @var ReferenceRegistry */
+    private $referenceRegistry;
+
     /**
      * @param array<Directive> $directives
      * @param array<Reference> $references
@@ -47,6 +51,7 @@ class Parser implements ParserInterface
     public function __construct(
         Format $format,
         Environment $environment,
+        ReferenceRegistry $referenceRegistry,
         EventManager $eventManager,
         array $directives,
         array $references
@@ -54,6 +59,7 @@ class Parser implements ParserInterface
         $this->format = $format;
         $this->environment = $environment;
         $this->directives = $directives;
+        $this->referenceRegistry = $referenceRegistry;
         $this->references = $references;
         $this->eventManager = $eventManager;
 
@@ -66,6 +72,7 @@ class Parser implements ParserInterface
         return new Parser(
             $this->format,
             $this->environment,
+            $this->referenceRegistry,
             $this->eventManager,
             $this->directives,
             $this->references
@@ -101,7 +108,7 @@ class Parser implements ParserInterface
         );
 
         foreach ($references as $reference) {
-            $this->environment->registerReference($reference);
+            $this->referenceRegistry->registerReference($reference);
         }
     }
 
@@ -158,5 +165,10 @@ class Parser implements ParserInterface
             $this->eventManager,
             $this->directives
         );
+    }
+
+    public function getReferenceRegistry(): ReferenceRegistry
+    {
+        return $this->referenceRegistry;
     }
 }

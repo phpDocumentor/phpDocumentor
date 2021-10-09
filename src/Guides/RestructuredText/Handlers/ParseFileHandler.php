@@ -14,6 +14,7 @@ use phpDocumentor\Guides\Formats\Format;
 use phpDocumentor\Guides\Markdown\Parser as MarkdownParser;
 use phpDocumentor\Guides\Metas;
 use phpDocumentor\Guides\Nodes\DocumentNode;
+use phpDocumentor\Guides\ReferenceRegistry;
 use phpDocumentor\Guides\References\Reference;
 use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive;
@@ -81,13 +82,15 @@ final class ParseFileHandler
         $directory = $command->getDirectory();
         $file = $command->getFile();
 
+        $referenceRegistry = new ReferenceRegistry($this->logger);
         $environment = new Environment(
             $configuration,
             $this->renderer,
             $this->logger,
             $command->getOrigin(),
             $this->metas,
-            $this->urlGenerator
+            $this->urlGenerator,
+            $referenceRegistry
         );
         $fileAbsolutePath = $this->buildPathOnFileSystem(
             $file,
@@ -102,7 +105,12 @@ final class ParseFileHandler
         $document = null;
 
         if ($configuration->getSourceFileExtension() === 'rst') {
-            $document = $this->parseRestructuredText($configuration->getFormat(), $environment, $fileAbsolutePath);
+            $document = $this->parseRestructuredText(
+                $configuration->getFormat(),
+                $referenceRegistry,
+                $environment,
+                $fileAbsolutePath
+            );
         }
 
         if ($configuration->getSourceFileExtension() === 'md') {
@@ -171,6 +179,7 @@ final class ParseFileHandler
 
     private function parseRestructuredText(
         Format $format,
+        ReferenceRegistry $referenceRegistry,
         Environment $environment,
         string $fileAbsolutePath
     ): DocumentNode {
@@ -184,6 +193,7 @@ final class ParseFileHandler
         $parser = new Parser(
             $format,
             $environment,
+            $referenceRegistry,
             $this->eventManager,
             iterator_to_array($this->directives),
             iterator_to_array($this->references)

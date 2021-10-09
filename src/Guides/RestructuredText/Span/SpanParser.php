@@ -6,6 +6,7 @@ namespace phpDocumentor\Guides\RestructuredText\Span;
 
 use phpDocumentor\Guides\Environment;
 
+use phpDocumentor\Guides\ReferenceRegistry;
 use function mt_rand;
 use function preg_match;
 use function preg_replace;
@@ -32,10 +33,14 @@ class SpanParser
     /** @var SpanLexer */
     private $lexer;
 
-    public function __construct(Environment $environment)
+    /** @var ReferenceRegistry */
+    private $referenceRegistry;
+
+    public function __construct(Environment $environment, ReferenceRegistry $referenceRegistry)
     {
         $this->lexer = new SpanLexer();
         $this->environment = $environment;
+        $this->referenceRegistry = $referenceRegistry;
         $this->tokenId = 0;
         $this->prefix = mt_rand() . '|' . time();
     }
@@ -158,7 +163,7 @@ class SpanParser
 
                 $this->addToken(SpanToken::TYPE_REFERENCE, $id, $tokenData);
 
-                $this->environment->found($section, $tokenData);
+                $this->referenceRegistry->found($this->environment, $section, $tokenData);
 
                 return $id;
             },
