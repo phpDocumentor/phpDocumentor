@@ -17,11 +17,22 @@ use phpDocumentor\Guides\Nodes\ListItemNode;
 use phpDocumentor\Guides\Nodes\ListNode;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\ParagraphNode;
-use phpDocumentor\Guides\Parser;
+use phpDocumentor\Guides\RestructuredText\Parser;
 use phpDocumentor\Guides\RestructuredText\Parser\Buffer;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
 use phpDocumentor\Guides\RestructuredText\Parser\LinesIterator;
 use Webmozart\Assert\Assert;
+
+use function count;
+use function ltrim;
+use function max;
+use function mb_strlen;
+use function preg_match;
+use function preg_replace;
+use function str_repeat;
+use function strlen;
+use function strpos;
+use function substr;
 use function trim;
 
 /**
@@ -91,9 +102,9 @@ final class ListRule implements Rule
     }
 
     public function isListLine(
-        string  $line,
+        string $line,
         ?string &$listMarker = null,
-        ?int    &$listOffset = 0,
+        ?int &$listOffset = 0,
         ?string $nextLine = null
     ): bool {
         $isList = preg_match(self::LIST_MARKER, $line, $m) > 0;
@@ -174,7 +185,6 @@ final class ListRule implements Rule
                 // if there is only one paragraph node, the value is put directly in the <li> element
                 $nodes = [$nodes[0]->getValue()];
             }
-
 
             Assert::allIsInstanceOf($nodes, Node::class);
 
