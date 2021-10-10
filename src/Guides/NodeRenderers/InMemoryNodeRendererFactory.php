@@ -28,15 +28,19 @@ class InMemoryNodeRendererFactory implements NodeRendererFactory
     {
         $this->nodeRenderers = $nodeRenderers;
         foreach ($nodeRenderers as $nodeRenderer) {
-            if ($nodeRenderer instanceof NodeRendererFactoryAware) {
-                $nodeRenderer->setNodeRendererFactory($this);
+            if (!$nodeRenderer instanceof NodeRendererFactoryAware) {
+                continue;
             }
+
+            $nodeRenderer->setNodeRendererFactory($this);
         }
 
         $this->defaultNodeRenderer = $defaultNodeRenderer;
-        if ($defaultNodeRenderer instanceof NodeRendererFactoryAware) {
-            $defaultNodeRenderer->setNodeRendererFactory($this);
+        if (!$defaultNodeRenderer instanceof NodeRendererFactoryAware) {
+            return;
         }
+
+        $defaultNodeRenderer->setNodeRendererFactory($this);
     }
 
     public function get(string $node): NodeRenderer

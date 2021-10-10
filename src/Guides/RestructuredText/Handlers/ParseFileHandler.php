@@ -23,8 +23,8 @@ use phpDocumentor\Guides\RestructuredText\ParseFileCommand;
 use phpDocumentor\Guides\RestructuredText\Parser;
 use phpDocumentor\Guides\UrlGenerator;
 use Psr\Log\LoggerInterface;
-
 use RuntimeException;
+
 use function filemtime;
 use function iterator_to_array;
 use function ltrim;
@@ -214,7 +214,7 @@ final class ParseFileHandler
         $nodeRendererFactory = $format->getNodeRendererFactory($referenceRegistry);
         $environment->setNodeRendererFactory($nodeRendererFactory);
 
-        $parser = new MarkdownParser();
+        $parser = new MarkdownParser($referenceRegistry);
 
         return $parser->parse($environment, $this->getFileContents($environment->getOrigin(), $fileAbsolutePath));
     }

@@ -174,7 +174,11 @@ class LineDataParser
 
                 $classifiers = array_map(
                     function (string $classifier) {
-                        return new SpanNode($this->parser->getEnvironment(), $this->parser->getReferenceRegistry(), $classifier);
+                        return new SpanNode(
+                            $this->parser->getEnvironment(),
+                            $this->parser->getReferenceRegistry(),
+                            $classifier
+                        );
                     },
                     array_map('trim', $parts)
                 );

@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\RestructuredText\HTML;
 
 use IteratorAggregate;
-use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\NodeRenderers\DefaultNodeRenderer;
 use phpDocumentor\Guides\NodeRenderers\Html\DefinitionListNodeRenderer;
 use phpDocumentor\Guides\NodeRenderers\Html\DocumentNodeRenderer;

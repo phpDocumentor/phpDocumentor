@@ -20,7 +20,7 @@ use function array_merge;
 
 class Parser implements ParserInterface
 {
-    /** @var Environment */
+    /** @var Environment|null */
     private $environment;
 
     /** @var Directive[] */
@@ -111,6 +111,12 @@ class Parser implements ParserInterface
 
     public function getEnvironment(): Environment
     {
+        if ($this->environment === null) {
+            throw new RuntimeException(
+                'A parser\'s Environment should not be consulted before parsing has started'
+            );
+        }
+
         return $this->environment;
     }
 

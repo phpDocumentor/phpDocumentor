@@ -100,7 +100,6 @@ final class RenderHandler
     ): void {
         /** @var DocumentDescriptor $descriptor */
         foreach ($documentationSet->getDocuments() as $descriptor) {
-
             // TODO: This is a hack; I want to rework path handling for guides as the Environment, for example,
             //       has a plethora of 'em.
             $destinationPath = str_replace(

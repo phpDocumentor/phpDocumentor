@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\RestructuredText\Parser\Productions;
 
 use InvalidArgumentException;
-use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Nodes\AnchorNode;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Parser;

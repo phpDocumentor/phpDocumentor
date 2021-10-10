@@ -13,7 +13,7 @@ use Psr\Log\LoggerInterface;
 use function in_array;
 use function sprintf;
 
-final class ReferenceRegistry
+class ReferenceRegistry
 {
     /** @var Reference[] */
     private $references = [];
@@ -49,9 +49,9 @@ final class ReferenceRegistry
 
     public function resolve(
         Environment $environment,
-        string      $section,
-        string      $data,
-        ?Entry      $metaEntry = null
+        string $section,
+        string $data,
+        ?Entry $metaEntry = null
     ): ?ResolvedReference {
         if (!isset($this->references[$section])) {
             $this->addMissingReferenceSectionError($environment->getCurrentFileName(), $section);
@@ -89,24 +89,31 @@ final class ReferenceRegistry
 
     public function addDependency(string $dependency, bool $requiresResolving = false): void
     {
-        if ($requiresResolving) { // a hack to avoid collisions between resolved and unresolved dependencies
+        if ($requiresResolving) {
+            // a hack to avoid collisions between resolved and unresolved dependencies
             $dependencyName = 'UNRESOLVED__' . $dependency;
-            $this->unresolvedDependencies[$dependency] = $dependencyName; // map the original dependency name to the one that will be stored
+
+            // map the original dependency name to the one that will be stored
+            $this->unresolvedDependencies[$dependency] = $dependencyName;
             $this->originalDependencyNames[$dependency] = $dependencyName;
-        } else { // the dependency is already a filename, probably a :doc:
+        } else {
+            // the dependency is already a filename, probably a :doc:
             // or from a toc-tree - change it to the canonical URL
             $canonicalDependency = $this->urlGenerator->canonicalUrl('', $dependency);
-            if ($canonicalDependency === null) {
+            if ($canonicalDependency === '') {
                 throw new InvalidArgumentException(
                     sprintf('Could not get canonical url for dependency %s', $dependency)
                 );
             }
+
             $dependencyName = $canonicalDependency; // map the original dependency name to the one that will be stored
             $this->originalDependencyNames[$dependency] = $canonicalDependency;
         }
+
         if (in_array($dependencyName, $this->dependencies, true)) {
             return;
         }
+
         $this->dependencies[] = $dependencyName;
     }
 
