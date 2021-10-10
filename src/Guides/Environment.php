@@ -16,12 +16,10 @@ namespace phpDocumentor\Guides;
 use League\Flysystem\FilesystemInterface;
 use phpDocumentor\Guides\Meta\Entry;
 use phpDocumentor\Guides\Nodes\SpanNode;
-use phpDocumentor\Guides\References\Reference;
-use phpDocumentor\Guides\References\ResolvedReference;
 use Psr\Log\LoggerInterface;
+
 use function array_shift;
 use function dirname;
-use function implode;
 use function strtolower;
 use function trim;
 

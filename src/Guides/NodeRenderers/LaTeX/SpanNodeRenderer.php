@@ -62,7 +62,7 @@ class SpanNodeRenderer extends BaseSpanNodeRenderer
     /**
      * @param string[] $attributes
      */
-    public function link(?string $url, string $title, array $attributes = []): string
+    public function link(Environment $environment, ?string $url, string $title, array $attributes = []): string
     {
         $type = 'href';
 
@@ -93,7 +93,7 @@ class SpanNodeRenderer extends BaseSpanNodeRenderer
     /**
      * @param string[] $value
      */
-    public function reference(ResolvedReference $reference, array $value): string
+    public function reference(Environment $environment, ResolvedReference $reference, array $value): string
     {
         $text = $value['text'] ?: $reference->getTitle();
         $url = $reference->getUrl();
@@ -110,6 +110,6 @@ class SpanNodeRenderer extends BaseSpanNodeRenderer
             $url = '';
         }
 
-        return $this->link($url, trim($text));
+        return $this->link($environment, $url, trim($text));
     }
 }
