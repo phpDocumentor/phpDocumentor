@@ -24,16 +24,6 @@ use function trim;
 
 class SpanNodeRenderer extends BaseSpanNodeRenderer
 {
-    /** @var Renderer */
-    private $renderer;
-
-    public function __construct(Environment $environment, Renderer $renderer, ReferenceRegistry $referenceRegistry)
-    {
-        $this->renderer = $renderer;
-
-        parent::__construct($environment, $renderer, $referenceRegistry);
-    }
-
     public function emphasis(string $text): string
     {
         return $this->renderer->render('emphasis.html.twig', ['text' => $text]);
@@ -107,7 +97,7 @@ class SpanNodeRenderer extends BaseSpanNodeRenderer
 
             // reference to anchor in existing document
         } elseif ($value['url'] !== null) {
-            $url = $this->environment->getLink($value['url']);
+            $url = $environment->getLink($value['url']);
 
             $link = $this->link($environment, $url, $text, $reference->getAttributes());
         } else {

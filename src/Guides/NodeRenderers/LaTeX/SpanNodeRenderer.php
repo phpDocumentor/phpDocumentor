@@ -24,16 +24,6 @@ use function trim;
 
 class SpanNodeRenderer extends BaseSpanNodeRenderer
 {
-    /** @var Renderer */
-    private $renderer;
-
-    public function __construct(Environment $environment)
-    {
-        parent::__construct($environment);
-
-        $this->renderer = $environment->getRenderer();
-    }
-
     public function emphasis(string $text): string
     {
         return $this->renderer->render('emphasis.tex.twig', ['text' => $text]);
@@ -71,7 +61,7 @@ class SpanNodeRenderer extends BaseSpanNodeRenderer
 
             $url = substr($url, 1);
             $url = $url !== '' ? '#' . $url : '';
-            $url = $this->environment->getUrl() . $url;
+            $url = $environment->getUrl() . $url;
         }
 
         return $this->renderer->render(

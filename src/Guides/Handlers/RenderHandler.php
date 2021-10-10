@@ -86,10 +86,7 @@ final class RenderHandler
 
         $environment = $this->createEnvironment($configuration, $origin);
 
-        $nodeRendererFactory = $configuration->getFormat()->getNodeRendererFactory(
-            $environment,
-            $this->referenceRegistry
-        );
+        $nodeRendererFactory = $configuration->getFormat()->getNodeRendererFactory($this->referenceRegistry);
         $environment->setNodeRendererFactory($nodeRendererFactory);
 
         $this->render($nodeRendererFactory, $command->getDocumentationSet(), $environment, $command->getDestination());

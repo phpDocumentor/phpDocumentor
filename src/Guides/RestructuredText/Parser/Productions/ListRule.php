@@ -180,7 +180,7 @@ final class ListRule implements Rule
 
         $createListItem = function (string $item, string $prefix): ListItemNode {
             // parse any markup in the list item (e.g. sublists, directives)
-            $nodes = $this->parser->getSubParser()->parseLocal($item)->getNodes();
+            $nodes = $this->parser->getSubParser()->parseLocal($this->parser->getEnvironment(), $item)->getNodes();
             if (count($nodes) === 1 && $nodes[0] instanceof ParagraphNode) {
                 // if there is only one paragraph node, the value is put directly in the <li> element
                 $nodes = [$nodes[0]->getValue()];

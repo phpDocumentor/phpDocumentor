@@ -70,7 +70,7 @@ class Renderer
         $this->twig->addGlobal('env', null);
         $this->twig->addGlobal('destination', $transformation->getTransformer()->destination());
 
-        $this->templateRenderer = new TemplateRenderer($this->twig, 'guides', $targetDirectory);
+        $this->templateRenderer = new TemplateRenderer($this->twig, 'guides');
     }
 
     /**

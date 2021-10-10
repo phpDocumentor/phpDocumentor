@@ -32,11 +32,8 @@ use function str_replace;
 
 abstract class SpanNodeRenderer implements NodeRenderer, SpanRenderer, NodeRendererFactoryAware
 {
-    /** @var Environment */
-    protected $environment;
-
     /** @var Renderer */
-    private $renderer;
+    protected $renderer;
 
     /** @var NodeRendererFactory */
     private $nodeRendererFactory;
@@ -44,9 +41,8 @@ abstract class SpanNodeRenderer implements NodeRenderer, SpanRenderer, NodeRende
     /** @var ReferenceRegistry */
     private $referenceRegistry;
 
-    public function __construct(Environment $environment, Renderer $renderer, ReferenceRegistry $referenceRegistry)
+    public function __construct(Renderer $renderer, ReferenceRegistry $referenceRegistry)
     {
-        $this->environment = $environment;
         $this->renderer = $renderer;
         $this->referenceRegistry = $referenceRegistry;
     }

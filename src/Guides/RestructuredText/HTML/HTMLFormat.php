@@ -60,7 +60,7 @@ final class HTMLFormat extends Format
         parent::__construct($fileExtension, $directives);
     }
 
-    public function getNodeRendererFactory(Environment $environment, ReferenceRegistry $referenceRegistry): NodeRendererFactory
+    public function getNodeRendererFactory(ReferenceRegistry $referenceRegistry): NodeRendererFactory
     {
         return new InMemoryNodeRendererFactory(
             [
@@ -79,9 +79,9 @@ final class HTMLFormat extends Format
                 DefinitionListNode::class => new DefinitionListNodeRenderer($this->renderer),
                 ListNode::class => new TemplateNodeRenderer($this->renderer, 'list.html.twig'),
                 TableNode::class => new TableNodeRenderer($this->renderer),
-                TocNode::class => new TocNodeRenderer($environment, $this->renderer, $referenceRegistry),
+                TocNode::class => new TocNodeRenderer($this->renderer, $referenceRegistry),
                 DocumentNode::class => new DocumentNodeRenderer(),
-                SpanNode::class => new SpanNodeRenderer($environment, $this->renderer, $referenceRegistry),
+                SpanNode::class => new SpanNodeRenderer($this->renderer, $referenceRegistry),
                 TemplatedNode::class => new TemplatedNodeRenderer($this->renderer),
             ],
             new DefaultNodeRenderer()

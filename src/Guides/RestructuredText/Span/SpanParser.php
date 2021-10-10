@@ -18,9 +18,6 @@ use function trim;
 
 class SpanParser
 {
-    /** @var Environment */
-    private $environment;
-
     /** @var int */
     private $tokenId;
 
@@ -36,25 +33,24 @@ class SpanParser
     /** @var ReferenceRegistry */
     private $referenceRegistry;
 
-    public function __construct(Environment $environment, ReferenceRegistry $referenceRegistry)
+    public function __construct(ReferenceRegistry $referenceRegistry)
     {
         $this->lexer = new SpanLexer();
-        $this->environment = $environment;
         $this->referenceRegistry = $referenceRegistry;
         $this->tokenId = 0;
         $this->prefix = mt_rand() . '|' . time();
     }
 
-    public function process(string $span): string
+    public function process(Environment $environment, string $span): string
     {
         $span = $this->replaceLiterals($span);
-        $span = $this->replaceReferences($span);
+        $span = $this->replaceReferences($environment, $span);
 
         $this->lexer->setInput($span);
         $this->lexer->moveNext();
         $this->lexer->moveNext();
 
-        $result = $this->parseTokens();
+        $result = $this->parseTokens($environment);
         $result = $this->replaceStandaloneHyperlinks($result);
 
         return $this->replaceStandaloneEmailAddresses($result);
@@ -98,9 +94,9 @@ class SpanParser
         );
     }
 
-    private function createNamedReference(string $link, ?string $url = null): string
+    private function createNamedReference(Environment $environment, string $link, ?string $url = null): string
     {
-        // the link may have a new line in it so we need to strip it
+        // the link may have a new line in it, so we need to strip it
         // before setting the link and adding a token to be replaced
         $link = str_replace("\n", ' ', $link);
         $link = trim(preg_replace('/\s+/', ' ', $link));
@@ -117,26 +113,26 @@ class SpanParser
         );
 
         if ($url !== null) {
-            $this->environment->setLink($link, $url);
+            $environment->setLink($link, $url);
         }
 
         return $id;
     }
 
-    private function createAnonymousReference(string $link): string
+    private function createAnonymousReference(Environment $environment, string $link): string
     {
-        $this->environment->resetAnonymousStack();
-        $id = $this->createNamedReference($link);
-        $this->environment->pushAnonymous($link);
+        $environment->resetAnonymousStack();
+        $id = $this->createNamedReference($environment, $link);
+        $environment->pushAnonymous($link);
 
         return $id;
     }
 
-    private function replaceReferences(string $span): string
+    private function replaceReferences(Environment $environment, string $span): string
     {
         return preg_replace_callback(
             '/:(?:([a-z0-9]+):)?([a-z0-9]+):`(.+)`/mUsi',
-            function ($match) {
+            function ($match) use ($environment) {
                 [, $domain, $section, $url] = $match;
 
                 $id = $this->generateId();
@@ -163,7 +159,7 @@ class SpanParser
 
                 $this->addToken(SpanToken::TYPE_REFERENCE, $id, $tokenData);
 
-                $this->referenceRegistry->found($this->environment, $section, $tokenData);
+                $this->referenceRegistry->found($environment, $section, $tokenData);
 
                 return $id;
             },
@@ -245,27 +241,27 @@ class SpanParser
         return sha1($this->prefix . '|' . $this->tokenId);
     }
 
-    private function parseTokens(): string
+    private function parseTokens(Environment $environment): string
     {
         $result = '';
         while ($this->lexer->token !== null) {
             switch ($this->lexer->token['type']) {
                 case SpanLexer::NAMED_REFERENCE:
-                    $result .= $this->createNamedReference(trim($this->lexer->token['value'], '_'));
+                    $result .= $this->createNamedReference($environment, trim($this->lexer->token['value'], '_'));
                     break;
                 case SpanLexer::ANONYMOUSE_REFERENCE:
-                    $result .= $this->createAnonymousReference(trim($this->lexer->token['value'], '_'));
+                    $result .= $this->createAnonymousReference($environment, trim($this->lexer->token['value'], '_'));
                     break;
                 case SpanLexer::INTERNAL_REFERENCE_START:
-                    $result .= $this->parseInternalReference();
+                    $result .= $this->parseInternalReference($environment);
                     break;
                 case SpanLexer::BACKTICK:
-                    $link = $this->parseNamedReference();
+                    $link = $this->parseNamedReference($environment);
                     $result .= $link;
                     break;
 
                 case SpanLexer::NAMED_REFERENCE_END:
-                    $result .= $this->createNamedReference($result);
+                    $result .= $this->createNamedReference($environment, $result);
                     break;
                 default:
                     $result .= $this->lexer->token['value'];
@@ -278,14 +274,14 @@ class SpanParser
         return $result;
     }
 
-    private function parseInternalReference(): string
+    private function parseInternalReference(Environment $environment): string
     {
         $text = '';
         while ($this->lexer->moveNext()) {
             $token = $this->lexer->token;
             switch ($token['type']) {
                 case SpanLexer::BACKTICK:
-                    return $this->createNamedReference($text);
+                    return $this->createNamedReference($environment, $text);
 
                 default:
                     $text .= $token['value'];
@@ -295,7 +291,7 @@ class SpanParser
         return $text;
     }
 
-    private function parseNamedReference(): string
+    private function parseNamedReference(Environment $environment): string
     {
         $startPosition = $this->lexer->token['position'];
         $text = '';
@@ -306,7 +302,7 @@ class SpanParser
             $token = $this->lexer->token;
             switch ($token['type']) {
                 case SpanLexer::NAMED_REFERENCE_END:
-                    return $this->createNamedReference($text, $url);
+                    return $this->createNamedReference($environment, $text, $url);
 
                 case SpanLexer::EMBEDED_URL_START:
                     $url = $this->parseEmbeddedUrl();

@@ -50,14 +50,12 @@ class Parser implements ParserInterface
      */
     public function __construct(
         Format $format,
-        Environment $environment,
         ReferenceRegistry $referenceRegistry,
         EventManager $eventManager,
         array $directives,
         array $references
     ) {
         $this->format = $format;
-        $this->environment = $environment;
         $this->directives = $directives;
         $this->referenceRegistry = $referenceRegistry;
         $this->references = $references;
@@ -71,7 +69,6 @@ class Parser implements ParserInterface
     {
         return new Parser(
             $this->format,
-            $this->environment,
             $this->referenceRegistry,
             $this->eventManager,
             $this->directives,
@@ -139,15 +136,16 @@ class Parser implements ParserInterface
         return $this->filename ?: '(unknown)';
     }
 
-    public function parse(string $contents): DocumentNode
+    public function parse(Environment $environment, string $contents): DocumentNode
     {
-        $this->getEnvironment()->reset();
+        $environment->reset();
 
-        return $this->parseLocal($contents);
+        return $this->parseLocal($environment, $contents);
     }
 
-    public function parseLocal(string $contents): DocumentNode
+    public function parseLocal(Environment $environment, string $contents): DocumentNode
     {
+        $this->environment = $environment;
         $this->documentParser = $this->createDocumentParser();
 
         return $this->documentParser->parse($contents);

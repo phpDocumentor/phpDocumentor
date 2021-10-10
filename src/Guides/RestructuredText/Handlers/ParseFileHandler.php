@@ -191,19 +191,18 @@ final class ParseFileHandler
             throw new RuntimeException('This handler only support RestructuredText input formats');
         }
 
-        $nodeRendererFactory = $format->getNodeRendererFactory($environment, $referenceRegistry);
+        $nodeRendererFactory = $format->getNodeRendererFactory($referenceRegistry);
         $environment->setNodeRendererFactory($nodeRendererFactory);
 
         $parser = new Parser(
             $format,
-            $environment,
             $referenceRegistry,
             $this->eventManager,
             iterator_to_array($this->directives),
             iterator_to_array($this->references)
         );
 
-        return $parser->parse($this->getFileContents($environment->getOrigin(), $fileAbsolutePath));
+        return $parser->parse($environment, $this->getFileContents($environment->getOrigin(), $fileAbsolutePath));
     }
 
     private function parseMarkdown(
@@ -212,12 +211,12 @@ final class ParseFileHandler
         Environment $environment,
         string $fileAbsolutePath
     ): DocumentNode {
-        $nodeRendererFactory = $format->getNodeRendererFactory($environment, $referenceRegistry);
+        $nodeRendererFactory = $format->getNodeRendererFactory($referenceRegistry);
         $environment->setNodeRendererFactory($nodeRendererFactory);
 
-        $parser = new MarkdownParser($environment);
+        $parser = new MarkdownParser();
 
-        return $parser->parse($this->getFileContents($environment->getOrigin(), $fileAbsolutePath));
+        return $parser->parse($environment, $this->getFileContents($environment->getOrigin(), $fileAbsolutePath));
     }
 
     private function getFileContents(FilesystemInterface $origin, string $file): string

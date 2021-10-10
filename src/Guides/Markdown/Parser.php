@@ -45,10 +45,8 @@ final class Parser implements ParserInterface
     /** @var DocumentNode */
     private $document;
 
-    public function __construct(Environment $environment)
+    public function __construct()
     {
-        $this->environment = $environment;
-
         $cmEnvironment = CommonMarkEnvironment::createCommonMarkEnvironment();
         $cmEnvironment->setConfig(['html_input' => 'strip']);
 
@@ -60,8 +58,10 @@ final class Parser implements ParserInterface
         ];
     }
 
-    public function parse(string $contents): DocumentNode
+    public function parse(Environment $environment, string $contents): DocumentNode
     {
+        $this->environment = $environment;
+
         $ast = $this->markdownParser->parse($contents);
 
         return $this->parseDocument($ast->walker(), md5($contents));

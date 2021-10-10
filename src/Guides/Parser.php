@@ -21,7 +21,7 @@ interface Parser
 
     public function getReferenceRegistry(): ReferenceRegistry;
 
-    public function parse(string $contents): DocumentNode;
+    public function parse(Environment $environment, string $contents): DocumentNode;
 
     public function getDocument(): DocumentNode;
 }

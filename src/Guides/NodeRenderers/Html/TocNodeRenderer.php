@@ -27,18 +27,14 @@ use function is_array;
 
 class TocNodeRenderer implements NodeRenderer
 {
-    /** @var Environment */
-    private $environment;
-
     /** @var Renderer */
     private $renderer;
 
     /** @var ReferenceRegistry */
     private $referenceRegistry;
 
-    public function __construct(Environment $environment, Renderer $renderer, ReferenceRegistry $referenceRegistry)
+    public function __construct(Renderer $renderer, ReferenceRegistry $referenceRegistry)
     {
-        $this->environment = $environment;
         $this->renderer = $renderer;
         $this->referenceRegistry = $referenceRegistry;
     }
@@ -57,19 +53,19 @@ class TocNodeRenderer implements NodeRenderer
 
         foreach ($node->getFiles() as $file) {
             $reference = $this->referenceRegistry->resolve(
-                $this->environment,
+                $environment,
                 'doc',
                 $file,
-                $this->environment->getMetaEntry()
+                $environment->getMetaEntry()
             );
 
             if ($reference === null) {
                 continue;
             }
 
-            $url = $this->environment->relativeUrl($reference->getUrl());
+            $url = $environment->relativeUrl($reference->getUrl());
 
-            $this->buildLevel($node, $url, $reference->getTitles(), 1, $tocItems);
+            $this->buildLevel($environment, $node, $url, $reference->getTitles(), 1, $tocItems);
         }
 
         return $this->renderer->render(
@@ -86,6 +82,7 @@ class TocNodeRenderer implements NodeRenderer
      * @param mixed[][] $tocItems
      */
     private function buildLevel(
+        Environment $environment,
         TocNode $node,
         ?string $url,
         array $titles,
@@ -95,11 +92,11 @@ class TocNodeRenderer implements NodeRenderer
         foreach ($titles as $entry) {
             [$title, $children] = $entry;
 
-            [$title, $target] = $this->generateTarget($url, $title);
+            [$title, $target] = $this->generateTarget($environment, $url, $title);
 
             $tocItem = [
                 'targetId' => $this->generateTargetId($target),
-                'targetUrl' => $this->environment->generateUrl($target),
+                'targetUrl' => $environment->generateUrl($target),
                 'title' => $title,
                 'level' => $level,
                 'children' => [],
@@ -107,7 +104,7 @@ class TocNodeRenderer implements NodeRenderer
 
             // render children until we hit the configured maxdepth
             if (count($children) > 0 && $level < $node->getDepth()) {
-                $this->buildLevel($node, $url, $children, $level + 1, $tocItem['children']);
+                $this->buildLevel($environment, $node, $url, $children, $level + 1, $tocItem['children']);
             }
 
             $tocItems[] = $tocItem;
@@ -124,7 +121,7 @@ class TocNodeRenderer implements NodeRenderer
      *
      * @return array{mixed, string}
      */
-    private function generateTarget(?string $url, $title): array
+    private function generateTarget(Environment $environment, ?string $url, $title): array
     {
         $anchor = $this->generateAnchorFromTitle($title);
 
@@ -134,17 +131,17 @@ class TocNodeRenderer implements NodeRenderer
             [$title, $target] = $title;
 
             $reference = $this->referenceRegistry->resolve(
-                $this->environment,
+                $environment,
                 'doc',
                 $target,
-                $this->environment->getMetaEntry()
+                $environment->getMetaEntry()
             );
 
             if ($reference === null) {
                 return [$title, $target];
             }
 
-            $target = $this->environment->relativeUrl($reference->getUrl());
+            $target = $environment->relativeUrl($reference->getUrl());
         }
 
         return [$title, $target];

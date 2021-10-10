@@ -20,24 +20,20 @@ use function rtrim;
 final class TemplateRenderer
 {
     /** @var Environment */
-    private $environment;
+    private $templatingEngine;
 
     /** @var string */
     private $basePath;
 
-    /** @var string */
-    private $subFolder;
-
-    public function __construct(Environment $environment, string $basePath, string $subFolder)
+    public function __construct(Environment $templatingEngine, string $basePath)
     {
-        $this->environment = $environment;
+        $this->templatingEngine = $templatingEngine;
         $this->basePath = $basePath;
-        $this->subFolder = $subFolder;
     }
 
     public function getTemplateEngine(): Environment
     {
-        return $this->environment;
+        return $this->templatingEngine;
     }
 
     public function setDestination(string $filename): void
@@ -50,6 +46,9 @@ final class TemplateRenderer
      */
     public function render(string $template, array $parameters = []): string
     {
-        return rtrim($this->environment->render($this->basePath . '/' . $template, $parameters), "\n");
+        return rtrim(
+            $this->templatingEngine->render($this->basePath . '/' . $template, $parameters),
+            "\n"
+        );
     }
 }

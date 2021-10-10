@@ -47,7 +47,7 @@ final class DocumentRule implements Rule
         $this->productions = [
             new TitleRule($parser, $documentParser),
             new TransitionRule(), // Transition rule must follow Title rule
-            new LinkRule($lineDataParser, $parser->getEnvironment()),
+            new LinkRule($lineDataParser, $parser),
             $literalBlockRule,
             new BlockQuoteRule($parser),
             new ListRule($parser),
