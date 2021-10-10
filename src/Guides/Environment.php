@@ -51,9 +51,6 @@ class Environment
     /** @var string|null */
     private $url;
 
-    /** @var ReferenceRegistry */
-    private $references;
-
     /** @var Metas */
     private $metas;
 
@@ -93,8 +90,7 @@ class Environment
         LoggerInterface $logger,
         FilesystemInterface $origin,
         Metas $metas,
-        UrlGenerator $urlGenerator,
-        ReferenceRegistry $referenceRegistry
+        UrlGenerator $urlGenerator
     ) {
         $this->outputFolder = $configuration->getOutputFolder();
         $this->initialHeaderLevel = $configuration->getInitialHeaderLevel();
@@ -104,7 +100,6 @@ class Environment
         $this->logger = $logger;
         $this->urlGenerator = $urlGenerator;
         $this->metas = $metas;
-        $this->references = $referenceRegistry;
 
         $this->reset();
     }
@@ -137,52 +132,12 @@ class Environment
         return $this->renderer;
     }
 
-    public function resolve(string $section, string $data): ?ResolvedReference
-    {
-        return $this->references->resolve($this, $section, $data, $this->getMetaEntry());
-    }
-
-    public function addInvalidLink(InvalidLink $invalidLink): void
-    {
-        $this->references->addInvalidLink($invalidLink);
-    }
-
     /**
      * @param mixed $value
      */
     public function setVariable(string $variable, $value): void
     {
         $this->variables[$variable] = $value;
-    }
-
-    /**
-     * @todo is this used?
-     */
-    public function createTitle(int $level): string
-    {
-        for ($currentLevel = 0; $currentLevel < 16; $currentLevel++) {
-            if ($currentLevel <= $level) {
-                continue;
-            }
-
-            $this->levels[$currentLevel] = 1;
-            $this->counters[$currentLevel] = 0;
-        }
-
-        $this->levels[$level] = 1;
-        $this->counters[$level]++;
-        $token = ['title'];
-
-        for ($i = 1; $i <= $level; $i++) {
-            $token[] = $this->counters[$i];
-        }
-
-        return implode('.', $token);
-    }
-
-    public function getNumber(int $level): int
-    {
-        return $this->levels[$level]++;
     }
 
     /**

@@ -18,6 +18,7 @@ use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\InvalidLink;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\SpanNode;
+use phpDocumentor\Guides\ReferenceRegistry;
 use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\RestructuredText\Span\SpanToken;
 use Symfony\Component\String\Slugger\AsciiSlugger;
@@ -40,10 +41,14 @@ abstract class SpanNodeRenderer implements NodeRenderer, SpanRenderer, NodeRende
     /** @var NodeRendererFactory */
     private $nodeRendererFactory;
 
-    public function __construct(Environment $environment, Renderer $renderer)
+    /** @var ReferenceRegistry */
+    private $referenceRegistry;
+
+    public function __construct(Environment $environment, Renderer $renderer, ReferenceRegistry $referenceRegistry)
     {
         $this->environment = $environment;
         $this->renderer = $renderer;
+        $this->referenceRegistry = $referenceRegistry;
     }
 
     public function setNodeRendererFactory(NodeRendererFactory $nodeRendererFactory): void
@@ -51,7 +56,7 @@ abstract class SpanNodeRenderer implements NodeRenderer, SpanRenderer, NodeRende
         $this->nodeRendererFactory = $nodeRendererFactory;
     }
 
-    public function render(Node $node): string
+    public function render(Node $node, Environment $environment): string
     {
         if ($node instanceof SpanNode === false) {
             throw new InvalidArgumentException('Invalid node presented');
@@ -139,7 +144,7 @@ abstract class SpanNodeRenderer implements NodeRenderer, SpanRenderer, NodeRende
                 }
 
                 if ($variable instanceof Node) {
-                    return $this->nodeRendererFactory->get(get_class($variable))->render($variable);
+                    return $this->nodeRendererFactory->get(get_class($variable))->render($variable, $this->environment);
                 }
 
                 if (is_string($variable)) {
@@ -199,10 +204,15 @@ abstract class SpanNodeRenderer implements NodeRenderer, SpanRenderer, NodeRende
             $role = $spanToken->get('domain') . ':' . $role;
         }
 
-        $reference = $this->environment->resolve($role, $spanToken->get('url'));
+        $reference = $this->referenceRegistry->resolve(
+            $this->environment,
+            $role,
+            $spanToken->get('url'),
+            $this->environment->getMetaEntry()
+        );
 
         if ($reference === null) {
-            $this->environment->addInvalidLink(new InvalidLink($spanToken->get('url')));
+            $this->referenceRegistry->addInvalidLink(new InvalidLink($spanToken->get('url')));
 
             return str_replace($spanToken->getId(), $spanToken->get('text'), $span);
         }
@@ -229,7 +239,7 @@ abstract class SpanNodeRenderer implements NodeRenderer, SpanRenderer, NodeRende
             }
 
             if ($url === '') {
-                $this->environment->addInvalidLink(new InvalidLink($link));
+                $this->referenceRegistry->addInvalidLink(new InvalidLink($link));
 
                 return str_replace($spanToken->getId(), $link, $span);
             }

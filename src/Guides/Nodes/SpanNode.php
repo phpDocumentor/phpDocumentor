@@ -37,7 +37,7 @@ class SpanNode extends Node
         }
 
         if ($span instanceof self) {
-            $span = $environment->getNodeRendererFactory()->get(get_class($span))->render($span);
+            $span = $environment->getNodeRendererFactory()->get(get_class($span))->render($span, $environment);
         }
 
         $spanProcessor = new SpanParser($environment, $referenceRegistry);

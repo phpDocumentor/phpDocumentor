@@ -18,6 +18,7 @@ use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\NodeRenderers\NodeRenderer;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\TocNode;
+use phpDocumentor\Guides\ReferenceRegistry;
 use phpDocumentor\Guides\Renderer;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 
@@ -32,13 +33,17 @@ class TocNodeRenderer implements NodeRenderer
     /** @var Renderer */
     private $renderer;
 
-    public function __construct(Environment $environment, Renderer $renderer)
+    /** @var ReferenceRegistry */
+    private $referenceRegistry;
+
+    public function __construct(Environment $environment, Renderer $renderer, ReferenceRegistry $referenceRegistry)
     {
         $this->environment = $environment;
         $this->renderer = $renderer;
+        $this->referenceRegistry = $referenceRegistry;
     }
 
-    public function render(Node $node): string
+    public function render(Node $node, Environment $environment): string
     {
         if ($node instanceof TocNode === false) {
             throw new InvalidArgumentException('Invalid node presented');
@@ -51,7 +56,12 @@ class TocNodeRenderer implements NodeRenderer
         $tocItems = [];
 
         foreach ($node->getFiles() as $file) {
-            $reference = $this->environment->resolve('doc', $file);
+            $reference = $this->referenceRegistry->resolve(
+                $this->environment,
+                'doc',
+                $file,
+                $this->environment->getMetaEntry()
+            );
 
             if ($reference === null) {
                 continue;
@@ -123,7 +133,12 @@ class TocNodeRenderer implements NodeRenderer
         if (is_array($title)) {
             [$title, $target] = $title;
 
-            $reference = $this->environment->resolve('doc', $target);
+            $reference = $this->referenceRegistry->resolve(
+                $this->environment,
+                'doc',
+                $target,
+                $this->environment->getMetaEntry()
+            );
 
             if ($reference === null) {
                 return [$title, $target];

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\NodeRenderers;
 
+use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Nodes\Node;
 
 use function get_class;
@@ -29,12 +30,12 @@ class DefaultNodeRenderer implements NodeRenderer, NodeRendererFactoryAware
         $this->nodeRendererFactory = $nodeRendererFactory;
     }
 
-    public function render(Node $node): string
+    public function render(Node $node, Environment $environment): string
     {
         $value = $node->getValue();
 
         if ($value instanceof Node) {
-            return $this->nodeRendererFactory->get(get_class($value))->render($value);
+            return $this->nodeRendererFactory->get(get_class($value))->render($value, $environment);
         }
 
         if (is_string($value)) {

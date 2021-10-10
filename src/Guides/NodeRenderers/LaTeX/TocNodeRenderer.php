@@ -18,6 +18,7 @@ use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\NodeRenderers\NodeRenderer;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\TocNode;
+use phpDocumentor\Guides\ReferenceRegistry;
 use phpDocumentor\Guides\Renderer;
 
 class TocNodeRenderer implements NodeRenderer
@@ -28,13 +29,17 @@ class TocNodeRenderer implements NodeRenderer
     /** @var Renderer */
     private $renderer;
 
-    public function __construct(Environment $environment)
+    /** @var ReferenceRegistry */
+    private $referenceRegistry;
+
+    public function __construct(Environment $environment, ReferenceRegistry $referenceRegistry)
     {
         $this->environment = $environment;
         $this->renderer = $environment->getRenderer();
+        $this->referenceRegistry = $referenceRegistry;
     }
 
-    public function render(Node $node): string
+    public function render(Node $node, \phpDocumentor\Guides\Environment $environment): string
     {
         if ($node instanceof TocNode === false) {
             throw new InvalidArgumentException('Invalid node presented');
@@ -43,7 +48,12 @@ class TocNodeRenderer implements NodeRenderer
         $tocItems = [];
 
         foreach ($node->getFiles() as $file) {
-            $reference = $this->environment->resolve('doc', $file);
+            $reference = $this->referenceRegistry->resolve(
+                $this->environment,
+                'doc',
+                $file,
+                $this->environment->getMetaEntry()
+            );
 
             if ($reference === null) {
                 continue;

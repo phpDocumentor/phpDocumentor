@@ -8,12 +8,15 @@ use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\NodeRenderers;
 use phpDocumentor\Guides\NodeRenderers\NodeRendererFactory;
 use phpDocumentor\Guides\Nodes;
+use phpDocumentor\Guides\ReferenceRegistry;
 use phpDocumentor\Guides\RestructuredText\Formats\Format;
 
 class LaTeXFormat extends Format
 {
-    public function getNodeRendererFactory(Environment $environment): NodeRendererFactory
-    {
+    public function getNodeRendererFactory(
+        Environment $environment,
+        ReferenceRegistry $referenceRegistry
+    ): NodeRendererFactory {
         $renderer = $environment->getRenderer();
 
         return new NodeRenderers\InMemoryNodeRendererFactory(
@@ -26,15 +29,13 @@ class LaTeXFormat extends Format
                 Nodes\QuoteNode::class => new NodeRenderers\TemplateNodeRenderer($renderer, 'quote.tex.twig'),
                 Nodes\SeparatorNode::class => new NodeRenderers\TemplateNodeRenderer($renderer, 'separator.tex.twig'),
                 Nodes\ListNode::class => new NodeRenderers\TemplateNodeRenderer($renderer, 'list.tex.twig'),
-                Nodes\TableNode::class => new NodeRenderers\LaTeX\TableNodeRenderer(
-                    $environment->getNodeRendererFactory()
-                ),
+                Nodes\TableNode::class => new NodeRenderers\LaTeX\TableNodeRenderer(),
                 Nodes\TitleNode::class => new NodeRenderers\LaTeX\TitleNodeRenderer($renderer),
-                Nodes\TocNode::class => new NodeRenderers\LaTeX\TocNodeRenderer($environment),
+                Nodes\TocNode::class => new NodeRenderers\LaTeX\TocNodeRenderer($environment, $referenceRegistry),
                 Nodes\DocumentNode::class => new NodeRenderers\LaTeX\DocumentNodeRenderer($environment),
                 Nodes\SpanNode::class => new NodeRenderers\LaTeX\SpanNodeRenderer($environment),
             ],
-            new NodeRenderers\DefaultNodeRenderer($environment)
+            new NodeRenderers\DefaultNodeRenderer()
         );
     }
 }

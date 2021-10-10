@@ -82,15 +82,13 @@ final class ParseFileHandler
         $directory = $command->getDirectory();
         $file = $command->getFile();
 
-        $referenceRegistry = new ReferenceRegistry($this->logger, $this->urlGenerator);
         $environment = new Environment(
             $configuration,
             $this->renderer,
             $this->logger,
             $command->getOrigin(),
             $this->metas,
-            $this->urlGenerator,
-            $referenceRegistry
+            $this->urlGenerator
         );
         $fileAbsolutePath = $this->buildPathOnFileSystem(
             $file,
@@ -104,6 +102,7 @@ final class ParseFileHandler
         $this->logger->info(sprintf('Parsing %s', $fileAbsolutePath));
         $document = null;
 
+        $referenceRegistry = new ReferenceRegistry($this->logger, $this->urlGenerator);
         if ($configuration->getSourceFileExtension() === 'rst') {
             $document = $this->parseRestructuredText(
                 $configuration->getFormat(),
@@ -114,7 +113,12 @@ final class ParseFileHandler
         }
 
         if ($configuration->getSourceFileExtension() === 'md') {
-            $document = $this->parseMarkdown($configuration->getFormat(), $environment, $fileAbsolutePath);
+            $document = $this->parseMarkdown(
+                $configuration->getFormat(),
+                $referenceRegistry,
+                $environment,
+                $fileAbsolutePath
+            );
         }
 
         if (!$document) {
@@ -187,7 +191,7 @@ final class ParseFileHandler
             throw new RuntimeException('This handler only support RestructuredText input formats');
         }
 
-        $nodeRendererFactory = $format->getNodeRendererFactory($environment);
+        $nodeRendererFactory = $format->getNodeRendererFactory($environment, $referenceRegistry);
         $environment->setNodeRendererFactory($nodeRendererFactory);
 
         $parser = new Parser(
@@ -204,10 +208,11 @@ final class ParseFileHandler
 
     private function parseMarkdown(
         Format $format,
+        ReferenceRegistry $referenceRegistry,
         Environment $environment,
         string $fileAbsolutePath
     ): DocumentNode {
-        $nodeRendererFactory = $format->getNodeRendererFactory($environment);
+        $nodeRendererFactory = $format->getNodeRendererFactory($environment, $referenceRegistry);
         $environment->setNodeRendererFactory($nodeRendererFactory);
 
         $parser = new MarkdownParser($environment);

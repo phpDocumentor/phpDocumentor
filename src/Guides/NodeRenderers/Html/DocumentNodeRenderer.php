@@ -33,13 +33,13 @@ class DocumentNodeRenderer implements NodeRenderer, FullDocumentNodeRenderer, No
         $this->nodeRendererFactory = $nodeRendererFactory;
     }
 
-    public function render(Node $node): string
+    public function render(Node $node, Environment $environment): string
     {
         if ($node instanceof DocumentNode === false) {
             throw new InvalidArgumentException('Invalid node presented');
         }
 
-        return (new BaseDocumentRender($this->nodeRendererFactory))->render($node);
+        return (new BaseDocumentRender($this->nodeRendererFactory))->render($node, $environment);
     }
 
     public function renderDocument(DocumentNode $node, Environment $environment): string

@@ -44,6 +44,7 @@ use phpDocumentor\Guides\Nodes\TemplatedNode;
 use phpDocumentor\Guides\Nodes\TitleNode;
 use phpDocumentor\Guides\Nodes\TocNode;
 use phpDocumentor\Guides\Nodes\UmlNode;
+use phpDocumentor\Guides\ReferenceRegistry;
 use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\RestructuredText\Formats\Format;
 
@@ -59,7 +60,7 @@ final class HTMLFormat extends Format
         parent::__construct($fileExtension, $directives);
     }
 
-    public function getNodeRendererFactory(Environment $environment): NodeRendererFactory
+    public function getNodeRendererFactory(Environment $environment, ReferenceRegistry $referenceRegistry): NodeRendererFactory
     {
         return new InMemoryNodeRendererFactory(
             [
@@ -78,9 +79,9 @@ final class HTMLFormat extends Format
                 DefinitionListNode::class => new DefinitionListNodeRenderer($this->renderer),
                 ListNode::class => new TemplateNodeRenderer($this->renderer, 'list.html.twig'),
                 TableNode::class => new TableNodeRenderer($this->renderer),
-                TocNode::class => new TocNodeRenderer($environment, $this->renderer),
+                TocNode::class => new TocNodeRenderer($environment, $this->renderer, $referenceRegistry),
                 DocumentNode::class => new DocumentNodeRenderer(),
-                SpanNode::class => new SpanNodeRenderer($environment, $this->renderer),
+                SpanNode::class => new SpanNodeRenderer($environment, $this->renderer, $referenceRegistry),
                 TemplatedNode::class => new TemplatedNodeRenderer($this->renderer),
             ],
             new DefaultNodeRenderer()

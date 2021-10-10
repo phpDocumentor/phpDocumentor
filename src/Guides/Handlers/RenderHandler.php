@@ -86,7 +86,10 @@ final class RenderHandler
 
         $environment = $this->createEnvironment($configuration, $origin);
 
-        $nodeRendererFactory = $configuration->getFormat()->getNodeRendererFactory($environment);
+        $nodeRendererFactory = $configuration->getFormat()->getNodeRendererFactory(
+            $environment,
+            $this->referenceRegistry
+        );
         $environment->setNodeRendererFactory($nodeRendererFactory);
 
         $this->render($nodeRendererFactory, $command->getDocumentationSet(), $environment, $command->getDestination());
@@ -183,8 +186,7 @@ final class RenderHandler
             $this->logger,
             $origin,
             $this->metas,
-            $this->urlGenerator,
-            $this->referenceRegistry
+            $this->urlGenerator
         );
         $this->initReferences($this->references);
 

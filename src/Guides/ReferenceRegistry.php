@@ -51,7 +51,7 @@ final class ReferenceRegistry
         Environment $environment,
         string      $section,
         string      $data,
-        ?Entry      $metaEntry
+        ?Entry      $metaEntry = null
     ): ?ResolvedReference {
         if (!isset($this->references[$section])) {
             $this->addMissingReferenceSectionError($environment->getCurrentFileName(), $section);

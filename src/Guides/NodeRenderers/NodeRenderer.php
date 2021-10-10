@@ -13,9 +13,10 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\NodeRenderers;
 
+use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Nodes\Node;
 
 interface NodeRenderer
 {
-    public function render(Node $node): string;
+    public function render(Node $node, Environment $environment): string;
 }
