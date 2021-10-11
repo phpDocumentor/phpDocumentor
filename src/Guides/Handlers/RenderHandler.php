@@ -22,7 +22,7 @@ use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Metas;
 use phpDocumentor\Guides\NodeRenderers\FullDocumentNodeRenderer;
 use phpDocumentor\Guides\NodeRenderers\NodeRendererFactory;
-use phpDocumentor\Guides\ReferenceRegistry;
+use phpDocumentor\Guides\ReferenceBuilder;
 use phpDocumentor\Guides\References\Doc;
 use phpDocumentor\Guides\References\Reference;
 use phpDocumentor\Guides\RenderCommand;
@@ -57,7 +57,7 @@ final class RenderHandler
     /** @var UrlGenerator */
     private $urlGenerator;
 
-    /** @var ReferenceRegistry */
+    /** @var ReferenceBuilder */
     private $referenceRegistry;
 
     /** @param IteratorAggregate<Reference> $references */
@@ -68,7 +68,7 @@ final class RenderHandler
         IteratorAggregate $references,
         Router $router,
         UrlGenerator $urlGenerator,
-        ReferenceRegistry $referenceRegistry
+        ReferenceBuilder $referenceRegistry
     ) {
         $this->metas = $metas;
         $this->renderer = $renderer;
@@ -133,7 +133,7 @@ final class RenderHandler
         );
 
         foreach ($references as $reference) {
-            $this->referenceRegistry->registerReference($reference);
+            $this->referenceRegistry->registerTypeOfReference($reference);
         }
     }
 
@@ -145,6 +145,7 @@ final class RenderHandler
         GuideSetDescriptor $documentationSet
     ): string {
         $document = $descriptor->getDocumentNode();
+        $this->referenceRegistry->scope($document);
 
         $directory = dirname($destinationPath);
 
@@ -177,7 +178,8 @@ final class RenderHandler
         FilesystemInterface $origin
     ): Environment {
         $environment = new Environment(
-            $configuration,
+            $configuration->getOutputFolder(),
+            $configuration->getInitialHeaderLevel(),
             $this->renderer,
             $this->logger,
             $origin,

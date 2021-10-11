@@ -16,6 +16,7 @@ namespace phpDocumentor\Guides\Nodes;
 use function array_filter;
 use function array_unshift;
 use function count;
+use function in_array;
 use function is_string;
 
 class DocumentNode extends Node
@@ -28,6 +29,9 @@ class DocumentNode extends Node
 
     /** @var string */
     private $hash;
+
+    /** @var string[] */
+    private $dependencies = [];
 
     public function __construct(string $value)
     {
@@ -134,5 +138,22 @@ class DocumentNode extends Node
     public function getHash(): string
     {
         return $this->hash;
+    }
+
+    public function addDependency(string $dependencyName): void
+    {
+        if (in_array($dependencyName, $this->dependencies, true)) {
+            return;
+        }
+
+        $this->dependencies[] = $dependencyName;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getDependencies(): array
+    {
+        return $this->dependencies;
     }
 }

@@ -14,7 +14,7 @@ use phpDocumentor\Guides\Formats\Format;
 use phpDocumentor\Guides\Markdown\Parser as MarkdownParser;
 use phpDocumentor\Guides\Metas;
 use phpDocumentor\Guides\Nodes\DocumentNode;
-use phpDocumentor\Guides\ReferenceRegistry;
+use phpDocumentor\Guides\ReferenceBuilder;
 use phpDocumentor\Guides\References\Reference;
 use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive;
@@ -54,6 +54,9 @@ final class ParseFileHandler
     /** @var UrlGenerator */
     private $urlGenerator;
 
+    /** @var ReferenceBuilder */
+    private $referenceRegistry;
+
     /**
      * @param IteratorAggregate<Directive> $directives
      * @param IteratorAggregate<Reference> $references
@@ -64,6 +67,7 @@ final class ParseFileHandler
         LoggerInterface $logger,
         EventManager $eventManager,
         UrlGenerator $urlGenerator,
+        ReferenceBuilder $referenceRegistry,
         IteratorAggregate $directives,
         IteratorAggregate $references
     ) {
@@ -74,6 +78,7 @@ final class ParseFileHandler
         $this->eventManager = $eventManager;
         $this->renderer = $renderer;
         $this->urlGenerator = $urlGenerator;
+        $this->referenceRegistry = $referenceRegistry;
     }
 
     public function handle(ParseFileCommand $command): void
@@ -83,7 +88,8 @@ final class ParseFileHandler
         $file = $command->getFile();
 
         $environment = new Environment(
-            $configuration,
+            $configuration->getOutputFolder(),
+            $configuration->getInitialHeaderLevel(),
             $this->renderer,
             $this->logger,
             $command->getOrigin(),
@@ -102,11 +108,10 @@ final class ParseFileHandler
         $this->logger->info(sprintf('Parsing %s', $fileAbsolutePath));
         $document = null;
 
-        $referenceRegistry = new ReferenceRegistry($this->logger, $this->urlGenerator);
         if ($configuration->getSourceFileExtension() === 'rst') {
             $document = $this->parseRestructuredText(
                 $configuration->getFormat(),
-                $referenceRegistry,
+                $this->referenceRegistry,
                 $environment,
                 $fileAbsolutePath
             );
@@ -115,7 +120,7 @@ final class ParseFileHandler
         if ($configuration->getSourceFileExtension() === 'md') {
             $document = $this->parseMarkdown(
                 $configuration->getFormat(),
-                $referenceRegistry,
+                $this->referenceRegistry,
                 $environment,
                 $fileAbsolutePath
             );
@@ -138,7 +143,7 @@ final class ParseFileHandler
                 $title,
                 $document->getTitles(),
                 $document->getTocs(),
-                $referenceRegistry->getDependencies(),
+                $document->getDependencies(),
                 $environment->getLinks(),
                 $environment->getVariables()
             )
@@ -166,7 +171,7 @@ final class ParseFileHandler
             $document->getTitles(),
             $tocs,
             (int) filemtime($fileAbsolutePath),
-            $referenceRegistry->getDependencies(),
+            $document->getDependencies(),
             $environment->getLinks()
         );
     }
@@ -183,7 +188,7 @@ final class ParseFileHandler
 
     private function parseRestructuredText(
         Format $format,
-        ReferenceRegistry $referenceRegistry,
+        ReferenceBuilder $referenceRegistry,
         Environment $environment,
         string $fileAbsolutePath
     ): DocumentNode {
@@ -207,7 +212,7 @@ final class ParseFileHandler
 
     private function parseMarkdown(
         Format $format,
-        ReferenceRegistry $referenceRegistry,
+        ReferenceBuilder $referenceRegistry,
         Environment $environment,
         string $fileAbsolutePath
     ): DocumentNode {

@@ -83,16 +83,16 @@ class Environment
     private $currentAbsolutePath = '';
 
     public function __construct(
-        Configuration $configuration,
+        string $outputFolder,
+        int $initialHeaderLevel,
         Renderer $renderer,
         LoggerInterface $logger,
         FilesystemInterface $origin,
         Metas $metas,
         UrlGenerator $urlGenerator
     ) {
-        $this->outputFolder = $configuration->getOutputFolder();
-        $this->initialHeaderLevel = $configuration->getInitialHeaderLevel();
-
+        $this->outputFolder = $outputFolder;
+        $this->initialHeaderLevel = $initialHeaderLevel;
         $this->renderer = $renderer;
         $this->origin = $origin;
         $this->logger = $logger;

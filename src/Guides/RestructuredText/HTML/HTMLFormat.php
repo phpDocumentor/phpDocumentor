@@ -43,7 +43,7 @@ use phpDocumentor\Guides\Nodes\TemplatedNode;
 use phpDocumentor\Guides\Nodes\TitleNode;
 use phpDocumentor\Guides\Nodes\TocNode;
 use phpDocumentor\Guides\Nodes\UmlNode;
-use phpDocumentor\Guides\ReferenceRegistry;
+use phpDocumentor\Guides\ReferenceBuilder;
 use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\RestructuredText\Formats\Format;
 
@@ -59,7 +59,7 @@ final class HTMLFormat extends Format
         parent::__construct($fileExtension, $directives);
     }
 
-    public function getNodeRendererFactory(ReferenceRegistry $referenceRegistry): NodeRendererFactory
+    public function getNodeRendererFactory(ReferenceBuilder $referenceRegistry): NodeRendererFactory
     {
         return new InMemoryNodeRendererFactory(
             [

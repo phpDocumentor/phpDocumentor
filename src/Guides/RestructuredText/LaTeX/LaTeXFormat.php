@@ -15,7 +15,7 @@ use phpDocumentor\Guides\NodeRenderers\LaTeX\TocNodeRenderer;
 use phpDocumentor\Guides\NodeRenderers\NodeRendererFactory;
 use phpDocumentor\Guides\NodeRenderers\TemplateNodeRenderer;
 use phpDocumentor\Guides\Nodes;
-use phpDocumentor\Guides\ReferenceRegistry;
+use phpDocumentor\Guides\ReferenceBuilder;
 use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\RestructuredText\Formats\Format;
 
@@ -31,7 +31,7 @@ class LaTeXFormat extends Format
         parent::__construct($fileExtension, $directives);
     }
 
-    public function getNodeRendererFactory(ReferenceRegistry $referenceRegistry): NodeRendererFactory
+    public function getNodeRendererFactory(ReferenceBuilder $referenceRegistry): NodeRendererFactory
     {
         return new NodeRenderers\InMemoryNodeRendererFactory(
             [

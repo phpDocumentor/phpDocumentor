@@ -63,7 +63,7 @@ class Renderer
         $this->twig->addGlobal('project', $project);
         $this->twig->addGlobal('usesNamespaces', count($project->getNamespace()->getChildren()) > 0);
         $this->twig->addGlobal('usesPackages', count($project->getPackage()->getChildren()) > 0);
-        $this->twig->addGlobal('documentationSet', $project);
+        $this->twig->addGlobal('documentationSet', $documentationSet);
         $this->twig->addGlobal('destinationPath', $targetDirectory);
 
         // pre-set the global variable so that we can update it later

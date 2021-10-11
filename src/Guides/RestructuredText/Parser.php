@@ -8,7 +8,7 @@ use Doctrine\Common\EventManager;
 use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Nodes\DocumentNode;
 use phpDocumentor\Guides\Parser as ParserInterface;
-use phpDocumentor\Guides\ReferenceRegistry;
+use phpDocumentor\Guides\ReferenceBuilder;
 use phpDocumentor\Guides\References\Doc;
 use phpDocumentor\Guides\References\Reference;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive;
@@ -41,7 +41,7 @@ class Parser implements ParserInterface
     /** @var Format */
     private $format;
 
-    /** @var ReferenceRegistry */
+    /** @var ReferenceBuilder */
     private $referenceRegistry;
 
     /**
@@ -50,7 +50,7 @@ class Parser implements ParserInterface
      */
     public function __construct(
         Format $format,
-        ReferenceRegistry $referenceRegistry,
+        ReferenceBuilder $referenceRegistry,
         EventManager $eventManager,
         array $directives,
         array $references
@@ -105,7 +105,7 @@ class Parser implements ParserInterface
         );
 
         foreach ($references as $reference) {
-            $this->referenceRegistry->registerReference($reference);
+            $this->referenceRegistry->registerTypeOfReference($reference);
         }
     }
 
@@ -171,7 +171,7 @@ class Parser implements ParserInterface
         );
     }
 
-    public function getReferenceRegistry(): ReferenceRegistry
+    public function getReferenceRegistry(): ReferenceBuilder
     {
         return $this->referenceRegistry;
     }
