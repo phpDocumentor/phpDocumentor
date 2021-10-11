@@ -7,18 +7,21 @@ namespace phpDocumentor\Guides\RestructuredText\Handlers;
 use Doctrine\Common\EventManager;
 use InvalidArgumentException;
 use IteratorAggregate;
+use League\Flysystem\FilesystemInterface;
 use phpDocumentor\Descriptor\DocumentDescriptor;
-use phpDocumentor\Guides\Configuration;
 use phpDocumentor\Guides\Environment;
+use phpDocumentor\Guides\Formats\Format;
 use phpDocumentor\Guides\Markdown\Parser as MarkdownParser;
 use phpDocumentor\Guides\Metas;
 use phpDocumentor\Guides\Nodes\DocumentNode;
+use phpDocumentor\Guides\ReferenceRegistry;
 use phpDocumentor\Guides\References\Reference;
 use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive;
-use phpDocumentor\Guides\RestructuredText\Formats\Format;
+use phpDocumentor\Guides\RestructuredText\Formats\Format as RestructuredTextFormat;
 use phpDocumentor\Guides\RestructuredText\ParseFileCommand;
 use phpDocumentor\Guides\RestructuredText\Parser;
+use phpDocumentor\Guides\UrlGenerator;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
 
@@ -48,6 +51,9 @@ final class ParseFileHandler
     /** @var Renderer */
     private $renderer;
 
+    /** @var UrlGenerator */
+    private $urlGenerator;
+
     /**
      * @param IteratorAggregate<Directive> $directives
      * @param IteratorAggregate<Reference> $references
@@ -57,6 +63,7 @@ final class ParseFileHandler
         Renderer $renderer,
         LoggerInterface $logger,
         EventManager $eventManager,
+        UrlGenerator $urlGenerator,
         IteratorAggregate $directives,
         IteratorAggregate $references
     ) {
@@ -66,6 +73,7 @@ final class ParseFileHandler
         $this->references = $references;
         $this->eventManager = $eventManager;
         $this->renderer = $renderer;
+        $this->urlGenerator = $urlGenerator;
     }
 
     public function handle(ParseFileCommand $command): void
@@ -79,7 +87,8 @@ final class ParseFileHandler
             $this->renderer,
             $this->logger,
             $command->getOrigin(),
-            $this->metas
+            $this->metas,
+            $this->urlGenerator
         );
         $fileAbsolutePath = $this->buildPathOnFileSystem(
             $file,
@@ -93,12 +102,23 @@ final class ParseFileHandler
         $this->logger->info(sprintf('Parsing %s', $fileAbsolutePath));
         $document = null;
 
+        $referenceRegistry = new ReferenceRegistry($this->logger, $this->urlGenerator);
         if ($configuration->getSourceFileExtension() === 'rst') {
-            $document = $this->parseRestructuredText($configuration, $environment, $fileAbsolutePath);
+            $document = $this->parseRestructuredText(
+                $configuration->getFormat(),
+                $referenceRegistry,
+                $environment,
+                $fileAbsolutePath
+            );
         }
 
         if ($configuration->getSourceFileExtension() === 'md') {
-            $document = $this->parseMarkdown($configuration, $environment, $fileAbsolutePath);
+            $document = $this->parseMarkdown(
+                $configuration->getFormat(),
+                $referenceRegistry,
+                $environment,
+                $fileAbsolutePath
+            );
         }
 
         if (!$document) {
@@ -118,7 +138,7 @@ final class ParseFileHandler
                 $title,
                 $document->getTitles(),
                 $document->getTocs(),
-                $environment->getDependencies(),
+                $referenceRegistry->getDependencies(),
                 $environment->getLinks(),
                 $environment->getVariables()
             )
@@ -146,7 +166,7 @@ final class ParseFileHandler
             $document->getTitles(),
             $tocs,
             (int) filemtime($fileAbsolutePath),
-            $environment->getDependencies(),
+            $referenceRegistry->getDependencies(),
             $environment->getLinks()
         );
     }
@@ -162,45 +182,45 @@ final class ParseFileHandler
     }
 
     private function parseRestructuredText(
-        Configuration $configuration,
+        Format $format,
+        ReferenceRegistry $referenceRegistry,
         Environment $environment,
         string $fileAbsolutePath
     ): DocumentNode {
-        $format = $configuration->getFormat();
-        if ($format instanceof Format === false) {
+        if ($format instanceof RestructuredTextFormat === false) {
             throw new RuntimeException('This handler only support RestructuredText input formats');
         }
 
-        $nodeRendererFactory = $format->getNodeRendererFactory($environment);
+        $nodeRendererFactory = $format->getNodeRendererFactory($referenceRegistry);
         $environment->setNodeRendererFactory($nodeRendererFactory);
 
         $parser = new Parser(
             $format,
-            $environment,
+            $referenceRegistry,
             $this->eventManager,
             iterator_to_array($this->directives),
             iterator_to_array($this->references)
         );
 
-        return $parser->parse($this->getFileContents($environment, $fileAbsolutePath));
+        return $parser->parse($environment, $this->getFileContents($environment->getOrigin(), $fileAbsolutePath));
     }
 
     private function parseMarkdown(
-        Configuration $configuration,
+        Format $format,
+        ReferenceRegistry $referenceRegistry,
         Environment $environment,
         string $fileAbsolutePath
     ): DocumentNode {
-        $nodeRendererFactory = $configuration->getFormat()->getNodeRendererFactory($environment);
+        $nodeRendererFactory = $format->getNodeRendererFactory($referenceRegistry);
         $environment->setNodeRendererFactory($nodeRendererFactory);
 
-        $parser = new MarkdownParser($environment);
+        $parser = new MarkdownParser($referenceRegistry);
 
-        return $parser->parse($this->getFileContents($environment, $fileAbsolutePath));
+        return $parser->parse($environment, $this->getFileContents($environment->getOrigin(), $fileAbsolutePath));
     }
 
-    private function getFileContents(Environment $environment, string $file): string
+    private function getFileContents(FilesystemInterface $origin, string $file): string
     {
-        $origin = $environment->getOrigin();
         if (!$origin->has($file)) {
             throw new InvalidArgumentException(sprintf('File at path %s does not exist', $file));
         }

@@ -91,7 +91,9 @@ final class ParagraphRule implements Rule
             return null;
         }
 
-        return new ParagraphNode(new SpanNode($this->parser->getEnvironment(), $lines));
+        return new ParagraphNode(
+            new SpanNode($this->parser->getEnvironment(), $this->parser->getReferenceRegistry(), $lines)
+        );
     }
 
     private function isWhiteline(string $line): bool

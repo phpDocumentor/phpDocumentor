@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\NodeRenderers;
 
+use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\References\ResolvedReference;
 
 interface SpanRenderer
@@ -30,12 +31,12 @@ interface SpanRenderer
     /**
      * @param string[] $attributes
      */
-    public function link(?string $url, string $title, array $attributes = []): string;
+    public function link(Environment $environment, ?string $url, string $title, array $attributes = []): string;
 
     public function escape(string $span): string;
 
     /**
      * @param string[] $value
      */
-    public function reference(ResolvedReference $reference, array $value): string;
+    public function reference(Environment $environment, ResolvedReference $reference, array $value): string;
 }

@@ -85,7 +85,7 @@ final class AssetsExtension extends AbstractExtension
             throw new RuntimeException('Environment must be set in the twig global state to render nodes');
         }
 
-        return $environment->getNodeRendererFactory()->get(get_class($node))->render($node);
+        return $environment->getNodeRendererFactory()->get(get_class($node))->render($node, $environment);
     }
 
     public function uml(string $source): ?string

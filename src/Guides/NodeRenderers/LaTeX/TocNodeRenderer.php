@@ -18,23 +18,24 @@ use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\NodeRenderers\NodeRenderer;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\TocNode;
+use phpDocumentor\Guides\ReferenceRegistry;
 use phpDocumentor\Guides\Renderer;
 
 class TocNodeRenderer implements NodeRenderer
 {
-    /** @var Environment */
-    private $environment;
-
     /** @var Renderer */
     private $renderer;
 
-    public function __construct(Environment $environment)
+    /** @var ReferenceRegistry */
+    private $referenceRegistry;
+
+    public function __construct(Renderer $renderer, ReferenceRegistry $referenceRegistry)
     {
-        $this->environment = $environment;
-        $this->renderer = $environment->getRenderer();
+        $this->renderer = $renderer;
+        $this->referenceRegistry = $referenceRegistry;
     }
 
-    public function render(Node $node): string
+    public function render(Node $node, Environment $environment): string
     {
         if ($node instanceof TocNode === false) {
             throw new InvalidArgumentException('Invalid node presented');
@@ -43,13 +44,18 @@ class TocNodeRenderer implements NodeRenderer
         $tocItems = [];
 
         foreach ($node->getFiles() as $file) {
-            $reference = $this->environment->resolve('doc', $file);
+            $reference = $this->referenceRegistry->resolve(
+                $environment,
+                'doc',
+                $file,
+                $environment->getMetaEntry()
+            );
 
             if ($reference === null) {
                 continue;
             }
 
-            $url = $this->environment->relativeUrl($reference->getUrl());
+            $url = $environment->relativeUrl($reference->getUrl());
 
             $tocItems[] = ['url' => $url];
         }

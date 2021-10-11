@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\Nodes;
 
 use phpDocumentor\Guides\Environment;
+use phpDocumentor\Guides\ReferenceRegistry;
 use phpDocumentor\Guides\RestructuredText\Span\SpanParser;
 use phpDocumentor\Guides\RestructuredText\Span\SpanToken;
 
@@ -29,19 +30,19 @@ class SpanNode extends Node
     /**
      * @param string|string[]|SpanNode $span
      */
-    public function __construct(Environment $environment, $span)
+    public function __construct(Environment $environment, ReferenceRegistry $referenceRegistry, $span)
     {
         if (is_array($span)) {
             $span = implode("\n", $span);
         }
 
         if ($span instanceof self) {
-            $span = $environment->getNodeRendererFactory()->get(get_class($span))->render($span);
+            $span = $environment->getNodeRendererFactory()->get(get_class($span))->render($span, $environment);
         }
 
-        $spanProcessor = new SpanParser($environment);
+        $spanProcessor = new SpanParser($referenceRegistry);
 
-        parent::__construct($spanProcessor->process($span));
+        parent::__construct($spanProcessor->process($environment, $span));
         $this->tokens = $spanProcessor->getTokens();
     }
 

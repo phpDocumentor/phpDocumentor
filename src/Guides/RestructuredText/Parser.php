@@ -8,6 +8,7 @@ use Doctrine\Common\EventManager;
 use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Nodes\DocumentNode;
 use phpDocumentor\Guides\Parser as ParserInterface;
+use phpDocumentor\Guides\ReferenceRegistry;
 use phpDocumentor\Guides\References\Doc;
 use phpDocumentor\Guides\References\Reference;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive;
@@ -19,7 +20,7 @@ use function array_merge;
 
 class Parser implements ParserInterface
 {
-    /** @var Environment */
+    /** @var Environment|null */
     private $environment;
 
     /** @var Directive[] */
@@ -40,20 +41,23 @@ class Parser implements ParserInterface
     /** @var Format */
     private $format;
 
+    /** @var ReferenceRegistry */
+    private $referenceRegistry;
+
     /**
      * @param array<Directive> $directives
      * @param array<Reference> $references
      */
     public function __construct(
         Format $format,
-        Environment $environment,
+        ReferenceRegistry $referenceRegistry,
         EventManager $eventManager,
         array $directives,
         array $references
     ) {
         $this->format = $format;
-        $this->environment = $environment;
         $this->directives = $directives;
+        $this->referenceRegistry = $referenceRegistry;
         $this->references = $references;
         $this->eventManager = $eventManager;
 
@@ -65,7 +69,7 @@ class Parser implements ParserInterface
     {
         return new Parser(
             $this->format,
-            $this->environment,
+            $this->referenceRegistry,
             $this->eventManager,
             $this->directives,
             $this->references
@@ -101,12 +105,18 @@ class Parser implements ParserInterface
         );
 
         foreach ($references as $reference) {
-            $this->environment->registerReference($reference);
+            $this->referenceRegistry->registerReference($reference);
         }
     }
 
     public function getEnvironment(): Environment
     {
+        if ($this->environment === null) {
+            throw new RuntimeException(
+                'A parser\'s Environment should not be consulted before parsing has started'
+            );
+        }
+
         return $this->environment;
     }
 
@@ -132,15 +142,16 @@ class Parser implements ParserInterface
         return $this->filename ?: '(unknown)';
     }
 
-    public function parse(string $contents): DocumentNode
+    public function parse(Environment $environment, string $contents): DocumentNode
     {
-        $this->getEnvironment()->reset();
+        $environment->reset();
 
-        return $this->parseLocal($contents);
+        return $this->parseLocal($environment, $contents);
     }
 
-    public function parseLocal(string $contents): DocumentNode
+    public function parseLocal(Environment $environment, string $contents): DocumentNode
     {
+        $this->environment = $environment;
         $this->documentParser = $this->createDocumentParser();
 
         return $this->documentParser->parse($contents);
@@ -158,5 +169,10 @@ class Parser implements ParserInterface
             $this->eventManager,
             $this->directives
         );
+    }
+
+    public function getReferenceRegistry(): ReferenceRegistry
+    {
+        return $this->referenceRegistry;
     }
 }

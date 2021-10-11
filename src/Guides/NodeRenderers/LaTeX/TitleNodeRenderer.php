@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\NodeRenderers\LaTeX;
 
 use InvalidArgumentException;
+use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\NodeRenderers\NodeRenderer;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\TitleNode;
@@ -29,7 +30,7 @@ class TitleNodeRenderer implements NodeRenderer
         $this->renderer = $renderer;
     }
 
-    public function render(Node $node): string
+    public function render(Node $node, Environment $environment): string
     {
         if ($node instanceof TitleNode === false) {
             throw new InvalidArgumentException('Invalid node presented');

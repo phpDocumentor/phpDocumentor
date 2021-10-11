@@ -25,6 +25,8 @@ use phpDocumentor\Guides\Nodes\RawNode;
 use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\Nodes\TitleNode;
 use phpDocumentor\Guides\Parser as ParserInterface;
+use phpDocumentor\Guides\ReferenceRegistry;
+use RuntimeException;
 
 use function get_class;
 use function md5;
@@ -34,7 +36,7 @@ final class Parser implements ParserInterface
     /** @var DocParser */
     private $markdownParser;
 
-    /** @var Environment */
+    /** @var Environment|null */
     private $environment;
 
     /** @var array<AbstractBlock> */
@@ -43,9 +45,12 @@ final class Parser implements ParserInterface
     /** @var DocumentNode */
     private $document;
 
-    public function __construct(Environment $environment)
+    /** @var ReferenceRegistry */
+    private $referenceRegistry;
+
+    public function __construct(ReferenceRegistry $referenceRegistry)
     {
-        $this->environment = $environment;
+        $this->referenceRegistry = $referenceRegistry;
 
         $cmEnvironment = CommonMarkEnvironment::createCommonMarkEnvironment();
         $cmEnvironment->setConfig(['html_input' => 'strip']);
@@ -58,8 +63,11 @@ final class Parser implements ParserInterface
         ];
     }
 
-    public function parse(string $contents): DocumentNode
+    public function parse(Environment $environment, string $contents): DocumentNode
     {
+        $this->environment = $environment;
+        $environment->reset();
+
         $ast = $this->markdownParser->parse($contents);
 
         return $this->parseDocument($ast->walker(), md5($contents));
@@ -95,7 +103,7 @@ final class Parser implements ParserInterface
             if ($node instanceof Heading) {
                 $content = $node->getStringContent();
                 $title = new TitleNode(
-                    new SpanNode($this->environment, $content),
+                    new SpanNode($this->environment, $this->getReferenceRegistry(), $content),
                     $node->getLevel()
                 );
                 $document->addNode($title);
@@ -103,7 +111,7 @@ final class Parser implements ParserInterface
             }
 
             if ($node instanceof Text) {
-                $spanNode = new SpanNode($this->environment, $node->getContent());
+                $spanNode = new SpanNode($this->environment, $this->getReferenceRegistry(), $node->getContent());
                 $document->addNode($spanNode);
                 continue;
             }
@@ -159,11 +167,22 @@ final class Parser implements ParserInterface
 
     public function getEnvironment(): Environment
     {
+        if ($this->environment === null) {
+            throw new RuntimeException(
+                'A parser\'s Environment should not be consulted before parsing has started'
+            );
+        }
+
         return $this->environment;
     }
 
     public function getDocument(): DocumentNode
     {
         return $this->document;
+    }
+
+    public function getReferenceRegistry(): ReferenceRegistry
+    {
+        return $this->referenceRegistry;
     }
 }

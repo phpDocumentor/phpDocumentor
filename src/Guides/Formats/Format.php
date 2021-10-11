@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\Formats;
 
-use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\NodeRenderers\NodeRendererFactory;
+use phpDocumentor\Guides\ReferenceRegistry;
 
 interface Format
 {
     public function getFileExtension(): string;
 
-    public function getNodeRendererFactory(Environment $environment): NodeRendererFactory;
+    public function getNodeRendererFactory(ReferenceRegistry $referenceRegistry): NodeRendererFactory;
 }

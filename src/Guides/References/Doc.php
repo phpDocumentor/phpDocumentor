@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\References;
 
 use phpDocumentor\Guides\Environment;
+use phpDocumentor\Guides\ReferenceRegistry;
 
 /**
  * @link https://www.sphinx-doc.org/en/master/usage/restructuredtext/roles.html
@@ -52,8 +53,8 @@ class Doc extends Reference
         return $this->resolver->resolve($environment, $data);
     }
 
-    public function found(Environment $environment, string $data): void
+    public function found(ReferenceRegistry $referenceRegistry, string $data): void
     {
-        $environment->addDependency($data, $this->dependenciesMustBeResolved);
+        $referenceRegistry->addDependency($data, $this->dependenciesMustBeResolved);
     }
 }

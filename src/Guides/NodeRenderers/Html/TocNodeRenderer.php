@@ -18,6 +18,8 @@ use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\NodeRenderers\NodeRenderer;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\TocNode;
+use phpDocumentor\Guides\ReferenceRegistry;
+use phpDocumentor\Guides\Renderer;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 
 use function count;
@@ -25,15 +27,19 @@ use function is_array;
 
 class TocNodeRenderer implements NodeRenderer
 {
-    /** @var Environment */
-    private $environment;
+    /** @var Renderer */
+    private $renderer;
 
-    public function __construct(Environment $environment)
+    /** @var ReferenceRegistry */
+    private $referenceRegistry;
+
+    public function __construct(Renderer $renderer, ReferenceRegistry $referenceRegistry)
     {
-        $this->environment = $environment;
+        $this->renderer = $renderer;
+        $this->referenceRegistry = $referenceRegistry;
     }
 
-    public function render(Node $node): string
+    public function render(Node $node, Environment $environment): string
     {
         if ($node instanceof TocNode === false) {
             throw new InvalidArgumentException('Invalid node presented');
@@ -46,18 +52,23 @@ class TocNodeRenderer implements NodeRenderer
         $tocItems = [];
 
         foreach ($node->getFiles() as $file) {
-            $reference = $this->environment->resolve('doc', $file);
+            $reference = $this->referenceRegistry->resolve(
+                $environment,
+                'doc',
+                $file,
+                $environment->getMetaEntry()
+            );
 
             if ($reference === null) {
                 continue;
             }
 
-            $url = $this->environment->relativeUrl($reference->getUrl());
+            $url = $environment->relativeUrl($reference->getUrl());
 
-            $this->buildLevel($node, $url, $reference->getTitles(), 1, $tocItems);
+            $this->buildLevel($environment, $node, $url, $reference->getTitles(), 1, $tocItems);
         }
 
-        return $this->environment->getRenderer()->render(
+        return $this->renderer->render(
             'toc.html.twig',
             [
                 'tocNode' => $node,
@@ -71,6 +82,7 @@ class TocNodeRenderer implements NodeRenderer
      * @param mixed[][] $tocItems
      */
     private function buildLevel(
+        Environment $environment,
         TocNode $node,
         ?string $url,
         array $titles,
@@ -80,11 +92,11 @@ class TocNodeRenderer implements NodeRenderer
         foreach ($titles as $entry) {
             [$title, $children] = $entry;
 
-            [$title, $target] = $this->generateTarget($url, $title);
+            [$title, $target] = $this->generateTarget($environment, $url, $title);
 
             $tocItem = [
                 'targetId' => $this->generateTargetId($target),
-                'targetUrl' => $this->environment->generateUrl($target),
+                'targetUrl' => $environment->generateUrl($target),
                 'title' => $title,
                 'level' => $level,
                 'children' => [],
@@ -92,7 +104,7 @@ class TocNodeRenderer implements NodeRenderer
 
             // render children until we hit the configured maxdepth
             if (count($children) > 0 && $level < $node->getDepth()) {
-                $this->buildLevel($node, $url, $children, $level + 1, $tocItem['children']);
+                $this->buildLevel($environment, $node, $url, $children, $level + 1, $tocItem['children']);
             }
 
             $tocItems[] = $tocItem;
@@ -109,7 +121,7 @@ class TocNodeRenderer implements NodeRenderer
      *
      * @return array{mixed, string}
      */
-    private function generateTarget(?string $url, $title): array
+    private function generateTarget(Environment $environment, ?string $url, $title): array
     {
         $anchor = $this->generateAnchorFromTitle($title);
 
@@ -118,13 +130,18 @@ class TocNodeRenderer implements NodeRenderer
         if (is_array($title)) {
             [$title, $target] = $title;
 
-            $reference = $this->environment->resolve('doc', $target);
+            $reference = $this->referenceRegistry->resolve(
+                $environment,
+                'doc',
+                $target,
+                $environment->getMetaEntry()
+            );
 
             if ($reference === null) {
                 return [$title, $target];
             }
 
-            $target = $this->environment->relativeUrl($reference->getUrl());
+            $target = $environment->relativeUrl($reference->getUrl());
         }
 
         return [$title, $target];

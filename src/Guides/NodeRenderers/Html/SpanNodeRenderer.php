@@ -16,23 +16,12 @@ namespace phpDocumentor\Guides\NodeRenderers\Html;
 use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\NodeRenderers\SpanNodeRenderer as BaseSpanNodeRenderer;
 use phpDocumentor\Guides\References\ResolvedReference;
-use phpDocumentor\Guides\Renderer;
 
 use function htmlspecialchars;
 use function trim;
 
 class SpanNodeRenderer extends BaseSpanNodeRenderer
 {
-    /** @var Renderer */
-    private $renderer;
-
-    public function __construct(Environment $environment)
-    {
-        $this->renderer = $environment->getRenderer();
-
-        parent::__construct($environment);
-    }
-
     public function emphasis(string $text): string
     {
         return $this->renderer->render('emphasis.html.twig', ['text' => $text]);
@@ -67,14 +56,14 @@ class SpanNodeRenderer extends BaseSpanNodeRenderer
     /**
      * @param string[] $attributes
      */
-    public function link(?string $url, string $title, array $attributes = []): string
+    public function link(Environment $environment, ?string $url, string $title, array $attributes = []): string
     {
         $url = (string) $url;
 
         return $this->renderer->render(
             'link.html.twig',
             [
-                'url' => $this->environment->generateUrl($url),
+                'url' => $environment->generateUrl($url),
                 'title' => $title,
                 'attributes' => $attributes,
             ]
@@ -89,7 +78,7 @@ class SpanNodeRenderer extends BaseSpanNodeRenderer
     /**
      * @param array<string|null> $value
      */
-    public function reference(ResolvedReference $reference, array $value): string
+    public function reference(Environment $environment, ResolvedReference $reference, array $value): string
     {
         $text = $value['text'] ?: ($reference->getTitle() ?? '');
         $text = trim($text);
@@ -102,15 +91,15 @@ class SpanNodeRenderer extends BaseSpanNodeRenderer
                 $url .= '#' . $value['anchor'];
             }
 
-            $link = $this->link($url, $text, $reference->getAttributes());
+            $link = $this->link($environment, $url, $text, $reference->getAttributes());
 
             // reference to anchor in existing document
         } elseif ($value['url'] !== null) {
-            $url = $this->environment->getLink($value['url']);
+            $url = $environment->getLink($value['url']);
 
-            $link = $this->link($url, $text, $reference->getAttributes());
+            $link = $this->link($environment, $url, $text, $reference->getAttributes());
         } else {
-            $link = $this->link('#', $text . ' (unresolved reference)', $reference->getAttributes());
+            $link = $this->link($environment, '#', $text . ' (unresolved reference)', $reference->getAttributes());
         }
 
         return $link;

@@ -18,6 +18,8 @@ use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\InvalidLink;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\SpanNode;
+use phpDocumentor\Guides\ReferenceRegistry;
+use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\RestructuredText\Span\SpanToken;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 
@@ -28,17 +30,29 @@ use function preg_replace_callback;
 use function sprintf;
 use function str_replace;
 
-abstract class SpanNodeRenderer implements NodeRenderer, SpanRenderer
+abstract class SpanNodeRenderer implements NodeRenderer, SpanRenderer, NodeRendererFactoryAware
 {
-    /** @var Environment */
-    protected $environment;
+    /** @var Renderer */
+    protected $renderer;
 
-    public function __construct(Environment $environment)
+    /** @var NodeRendererFactory */
+    private $nodeRendererFactory;
+
+    /** @var ReferenceRegistry */
+    private $referenceRegistry;
+
+    public function __construct(Renderer $renderer, ReferenceRegistry $referenceRegistry)
     {
-        $this->environment = $environment;
+        $this->renderer = $renderer;
+        $this->referenceRegistry = $referenceRegistry;
     }
 
-    public function render(Node $node): string
+    public function setNodeRendererFactory(NodeRendererFactory $nodeRendererFactory): void
+    {
+        $this->nodeRendererFactory = $nodeRendererFactory;
+    }
+
+    public function render(Node $node, Environment $environment): string
     {
         if ($node instanceof SpanNode === false) {
             throw new InvalidArgumentException('Invalid node presented');
@@ -46,9 +60,9 @@ abstract class SpanNodeRenderer implements NodeRenderer, SpanRenderer
 
         $value = $node->getValue();
 
-        $span = $this->renderSyntaxes($value);
+        $span = $this->renderSyntaxes($value, $environment);
 
-        $span = $this->renderTokens($node, $span);
+        $span = $this->renderTokens($node, $span, $environment);
 
         return $span;
     }
@@ -56,21 +70,21 @@ abstract class SpanNodeRenderer implements NodeRenderer, SpanRenderer
     /**
      * @param string[] $attributes
      */
-    public function link(?string $url, string $title, array $attributes = []): string
+    public function link(Environment $environment, ?string $url, string $title, array $attributes = []): string
     {
         $url = (string) $url;
 
-        return $this->environment->getRenderer()->render(
+        return $this->renderer->render(
             'link.html.twig',
             [
-                'url' => $this->environment->generateUrl($url),
+                'url' => $environment->generateUrl($url),
                 'title' => $title,
                 'attributes' => $attributes,
             ]
         );
     }
 
-    private function renderSyntaxes(string $span): string
+    private function renderSyntaxes(string $span, Environment $environment): string
     {
         $span = $this->escape($span);
 
@@ -80,7 +94,7 @@ abstract class SpanNodeRenderer implements NodeRenderer, SpanRenderer
 
         $span = $this->renderNbsp($span);
 
-        $span = $this->renderVariables($span);
+        $span = $this->renderVariables($span, $environment);
 
         $span = $this->renderBrs($span);
 
@@ -114,21 +128,19 @@ abstract class SpanNodeRenderer implements NodeRenderer, SpanRenderer
         return preg_replace('/~/', $this->nbsp(), $span);
     }
 
-    private function renderVariables(string $span): string
+    private function renderVariables(string $span, Environment $environment): string
     {
         return preg_replace_callback(
             '/\|(.+)\|/mUsi',
-            function (array $match): string {
-                $variable = $this->environment->getVariable($match[1]);
+            function (array $match) use ($environment): string {
+                $variable = $environment->getVariable($match[1]);
 
                 if ($variable === null) {
                     return '';
                 }
 
                 if ($variable instanceof Node) {
-                    return $this->environment->getNodeRendererFactory()
-                        ->get(get_class($variable))
-                        ->render($variable);
+                    return $this->nodeRendererFactory->get(get_class($variable))->render($variable, $environment);
                 }
 
                 if (is_string($variable)) {
@@ -147,26 +159,26 @@ abstract class SpanNodeRenderer implements NodeRenderer, SpanRenderer
         return preg_replace('/ \n/', $this->br(), $span);
     }
 
-    private function renderTokens(SpanNode $node, string $span): string
+    private function renderTokens(SpanNode $node, string $span, Environment $environment): string
     {
         foreach ($node->getTokens() as $token) {
-            $span = $this->renderToken($token, $span);
+            $span = $this->renderToken($token, $span, $environment);
         }
 
         return $span;
     }
 
-    private function renderToken(SpanToken $spanToken, string $span): string
+    private function renderToken(SpanToken $spanToken, string $span, Environment $environment): string
     {
         switch ($spanToken->getType()) {
             case SpanToken::TYPE_LITERAL:
                 return $this->renderLiteral($spanToken, $span);
 
             case SpanToken::TYPE_REFERENCE:
-                return $this->renderReference($spanToken, $span);
+                return $this->renderReference($spanToken, $span, $environment);
 
             case SpanToken::TYPE_LINK:
-                return $this->renderLink($spanToken, $span);
+                return $this->renderLink($spanToken, $span, $environment);
         }
 
         throw new InvalidArgumentException(sprintf('Unknown token type %s', $spanToken->getType()));
@@ -181,36 +193,41 @@ abstract class SpanNodeRenderer implements NodeRenderer, SpanRenderer
         );
     }
 
-    private function renderReference(SpanToken $spanToken, string $span): string
+    private function renderReference(SpanToken $spanToken, string $span, Environment $environment): string
     {
         $role = $spanToken->get('section');
         if ($spanToken->get('domain')) {
             $role = $spanToken->get('domain') . ':' . $role;
         }
 
-        $reference = $this->environment->resolve($role, $spanToken->get('url'));
+        $reference = $this->referenceRegistry->resolve(
+            $environment,
+            $role,
+            $spanToken->get('url'),
+            $environment->getMetaEntry()
+        );
 
         if ($reference === null) {
-            $this->environment->addInvalidLink(new InvalidLink($spanToken->get('url')));
+            $this->referenceRegistry->addInvalidLink(new InvalidLink($spanToken->get('url')));
 
             return str_replace($spanToken->getId(), $spanToken->get('text'), $span);
         }
 
-        $link = $this->reference($reference, $spanToken->getTokenData());
+        $link = $this->reference($environment, $reference, $spanToken->getTokenData());
 
         return str_replace($spanToken->getId(), $link, $span);
     }
 
-    private function renderLink(SpanToken $spanToken, string $span): string
+    private function renderLink(SpanToken $spanToken, string $span, Environment $environment): string
     {
         $url = $spanToken->get('url');
         $link = $spanToken->get('link');
 
         if ($url === '') {
-            $url = $this->environment->getLink($link);
+            $url = $environment->getLink($link);
 
             if ($url === '') {
-                $metaEntry = $this->environment->getMetaEntry();
+                $metaEntry = $environment->getMetaEntry();
 
                 if ($metaEntry !== null && $metaEntry->hasTitle($link)) {
                     $url = $metaEntry->getUrl() . '#' . (new AsciiSlugger())->slug($link)->lower()->toString();
@@ -218,13 +235,13 @@ abstract class SpanNodeRenderer implements NodeRenderer, SpanRenderer
             }
 
             if ($url === '') {
-                $this->environment->addInvalidLink(new InvalidLink($link));
+                $this->referenceRegistry->addInvalidLink(new InvalidLink($link));
 
                 return str_replace($spanToken->getId(), $link, $span);
             }
         }
 
-        $link = $this->link($url, $this->renderSyntaxes($link));
+        $link = $this->link($environment, $url, $this->renderSyntaxes($link, $environment));
 
         return str_replace($spanToken->getId(), $link, $span);
     }

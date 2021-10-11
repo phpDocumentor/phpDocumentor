@@ -16,7 +16,6 @@ namespace phpDocumentor\Guides\NodeRenderers\LaTeX;
 use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\NodeRenderers\SpanNodeRenderer as BaseSpanNodeRenderer;
 use phpDocumentor\Guides\References\ResolvedReference;
-use phpDocumentor\Guides\Renderer;
 
 use function is_string;
 use function substr;
@@ -24,16 +23,6 @@ use function trim;
 
 class SpanNodeRenderer extends BaseSpanNodeRenderer
 {
-    /** @var Renderer */
-    private $renderer;
-
-    public function __construct(Environment $environment)
-    {
-        parent::__construct($environment);
-
-        $this->renderer = $environment->getRenderer();
-    }
-
     public function emphasis(string $text): string
     {
         return $this->renderer->render('emphasis.tex.twig', ['text' => $text]);
@@ -62,7 +51,7 @@ class SpanNodeRenderer extends BaseSpanNodeRenderer
     /**
      * @param string[] $attributes
      */
-    public function link(?string $url, string $title, array $attributes = []): string
+    public function link(Environment $environment, ?string $url, string $title, array $attributes = []): string
     {
         $type = 'href';
 
@@ -71,7 +60,7 @@ class SpanNodeRenderer extends BaseSpanNodeRenderer
 
             $url = substr($url, 1);
             $url = $url !== '' ? '#' . $url : '';
-            $url = $this->environment->getUrl() . $url;
+            $url = $environment->getUrl() . $url;
         }
 
         return $this->renderer->render(
@@ -93,7 +82,7 @@ class SpanNodeRenderer extends BaseSpanNodeRenderer
     /**
      * @param string[] $value
      */
-    public function reference(ResolvedReference $reference, array $value): string
+    public function reference(Environment $environment, ResolvedReference $reference, array $value): string
     {
         $text = $value['text'] ?: $reference->getTitle();
         $url = $reference->getUrl();
@@ -110,6 +99,6 @@ class SpanNodeRenderer extends BaseSpanNodeRenderer
             $url = '';
         }
 
-        return $this->link($url, trim($text));
+        return $this->link($environment, $url, trim($text));
     }
 }

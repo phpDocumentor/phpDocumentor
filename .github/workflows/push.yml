@@ -299,9 +299,9 @@ jobs:
           composer-options: --optimize-autoloader
 
       - name: Build example project using Clean template
-        run: ./bin/phpdoc --template=clean -vvv --config=data/examples/MariosPizzeria/phpdoc.xml --target=build/clean
+        run: ./bin/phpdoc --template=clean -vvv --config=data/examples/MariosPizzeria/phpdoc.xml --target=build/clean --setting="guides.enabled=false"
       - name: Build example project using Default template
-        run: ./bin/phpdoc --template=default -vvv --config=data/examples/MariosPizzeria/phpdoc.xml --target=build/default
+        run: ./bin/phpdoc --template=default -vvv --config=data/examples/MariosPizzeria/phpdoc.xml --target=build/default --setting="guides.enabled=false"
       - name: Test Default template using Cypress
         uses: cypress-io/github-action@v2
         with:
@@ -458,13 +458,13 @@ jobs:
         run: php ./build/phpDocumentor.phar --version
 
       - name: Run phpDocumentor on itself
-        run: php ./build/phpDocumentor.phar -vvv
+        run: php ./build/phpDocumentor.phar -vvv  --setting="guides.enabled=false"
 
       - name: Build example project using Clean template
-        run: php ./build/phpDocumentor.phar --template=clean --config=data/examples/MariosPizzeria/phpdoc.xml --target=build/clean
+        run: php ./build/phpDocumentor.phar --template=clean --config=data/examples/MariosPizzeria/phpdoc.xml --target=build/clean --setting="guides.enabled=false"
 
       - name: Build example project using Default template
-        run: php ./build/phpDocumentor.phar --template=default --config=data/examples/MariosPizzeria/phpdoc.xml --target=build/default
+        run: php ./build/phpDocumentor.phar --template=default --config=data/examples/MariosPizzeria/phpdoc.xml --target=build/default --setting="guides.enabled=false"
 
       - name: Test Default template using Cypress
         uses: cypress-io/github-action@v2

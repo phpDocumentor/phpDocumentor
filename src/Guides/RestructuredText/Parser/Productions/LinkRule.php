@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\RestructuredText\Parser\Productions;
 
 use InvalidArgumentException;
-use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Nodes\AnchorNode;
 use phpDocumentor\Guides\Nodes\Node;
+use phpDocumentor\Guides\Parser;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
 use phpDocumentor\Guides\RestructuredText\Parser\LineDataParser;
 use phpDocumentor\Guides\RestructuredText\Parser\LinesIterator;
@@ -30,13 +30,13 @@ final class LinkRule implements Rule
     /** @var LineDataParser */
     private $lineDataParser;
 
-    /** @var Environment */
-    private $environment;
+    /** @var Parser */
+    private $parser;
 
-    public function __construct(LineDataParser $lineDataParser, Environment $environment)
+    public function __construct(LineDataParser $lineDataParser, Parser $parser)
     {
         $this->lineDataParser = $lineDataParser;
-        $this->environment = $environment;
+        $this->parser = $parser;
     }
 
     public function applies(DocumentParser $documentParser): bool
@@ -58,7 +58,7 @@ final class LinkRule implements Rule
             $node = new AnchorNode($link->getName());
         }
 
-        $this->environment->setLink($link->getName(), $link->getUrl());
+        $this->parser->getEnvironment()->setLink($link->getName(), $link->getUrl());
 
         return $node;
     }

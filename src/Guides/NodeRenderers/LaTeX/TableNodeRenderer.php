@@ -14,8 +14,10 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\NodeRenderers\LaTeX;
 
 use InvalidArgumentException;
+use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\NodeRenderers\NodeRenderer;
 use phpDocumentor\Guides\NodeRenderers\NodeRendererFactory;
+use phpDocumentor\Guides\NodeRenderers\NodeRendererFactoryAware;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\Nodes\TableNode;
@@ -25,17 +27,17 @@ use function get_class;
 use function implode;
 use function max;
 
-class TableNodeRenderer implements NodeRenderer
+class TableNodeRenderer implements NodeRenderer, NodeRendererFactoryAware
 {
     /** @var NodeRendererFactory */
     private $nodeRendererFactory;
 
-    public function __construct(NodeRendererFactory $nodeRendererFactory)
+    public function setNodeRendererFactory(NodeRendererFactory $nodeRendererFactory): void
     {
         $this->nodeRendererFactory = $nodeRendererFactory;
     }
 
-    public function render(Node $node): string
+    public function render(Node $node, Environment $environment): string
     {
         if ($node instanceof TableNode === false) {
             throw new InvalidArgumentException('Invalid node presented');
@@ -50,7 +52,7 @@ class TableNodeRenderer implements NodeRenderer
 
             /** @var SpanNode $col */
             foreach ($row->getColumns() as $n => $col) {
-                $rowTex .= $this->nodeRendererFactory->get(get_class($col))->render($col);
+                $rowTex .= $this->nodeRendererFactory->get(get_class($col))->render($col, $environment);
 
                 if ((int) $n + 1 >= count($row->getColumns())) {
                     continue;

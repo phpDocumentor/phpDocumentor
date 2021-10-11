@@ -4,37 +4,52 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\LaTeX;
 
-use phpDocumentor\Guides\Environment;
+use IteratorAggregate;
 use phpDocumentor\Guides\NodeRenderers;
+use phpDocumentor\Guides\NodeRenderers\DefaultNodeRenderer;
+use phpDocumentor\Guides\NodeRenderers\LaTeX\DocumentNodeRenderer;
+use phpDocumentor\Guides\NodeRenderers\LaTeX\SpanNodeRenderer;
+use phpDocumentor\Guides\NodeRenderers\LaTeX\TableNodeRenderer;
+use phpDocumentor\Guides\NodeRenderers\LaTeX\TitleNodeRenderer;
+use phpDocumentor\Guides\NodeRenderers\LaTeX\TocNodeRenderer;
 use phpDocumentor\Guides\NodeRenderers\NodeRendererFactory;
+use phpDocumentor\Guides\NodeRenderers\TemplateNodeRenderer;
 use phpDocumentor\Guides\Nodes;
+use phpDocumentor\Guides\ReferenceRegistry;
+use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\RestructuredText\Formats\Format;
 
 class LaTeXFormat extends Format
 {
-    public function getNodeRendererFactory(Environment $environment): NodeRendererFactory
-    {
-        $renderer = $environment->getRenderer();
+    /** @var Renderer */
+    private $renderer;
 
+    public function __construct(string $fileExtension, IteratorAggregate $directives, Renderer $renderer)
+    {
+        $this->renderer = $renderer;
+
+        parent::__construct($fileExtension, $directives);
+    }
+
+    public function getNodeRendererFactory(ReferenceRegistry $referenceRegistry): NodeRendererFactory
+    {
         return new NodeRenderers\InMemoryNodeRendererFactory(
             [
-                Nodes\AnchorNode::class => new NodeRenderers\TemplateNodeRenderer($renderer, 'anchor.tex.twig'),
-                Nodes\CodeNode::class => new NodeRenderers\TemplateNodeRenderer($renderer, 'code.tex.twig'),
-                Nodes\ImageNode::class => new NodeRenderers\TemplateNodeRenderer($renderer, 'image.tex.twig'),
-                Nodes\MetaNode::class => new NodeRenderers\TemplateNodeRenderer($renderer, 'meta.tex.twig'),
-                Nodes\ParagraphNode::class => new NodeRenderers\TemplateNodeRenderer($renderer, 'paragraph.tex.twig'),
-                Nodes\QuoteNode::class => new NodeRenderers\TemplateNodeRenderer($renderer, 'quote.tex.twig'),
-                Nodes\SeparatorNode::class => new NodeRenderers\TemplateNodeRenderer($renderer, 'separator.tex.twig'),
-                Nodes\ListNode::class => new NodeRenderers\TemplateNodeRenderer($renderer, 'list.tex.twig'),
-                Nodes\TableNode::class => new NodeRenderers\LaTeX\TableNodeRenderer(
-                    $environment->getNodeRendererFactory()
-                ),
-                Nodes\TitleNode::class => new NodeRenderers\LaTeX\TitleNodeRenderer($renderer),
-                Nodes\TocNode::class => new NodeRenderers\LaTeX\TocNodeRenderer($environment),
-                Nodes\DocumentNode::class => new NodeRenderers\LaTeX\DocumentNodeRenderer($environment),
-                Nodes\SpanNode::class => new NodeRenderers\LaTeX\SpanNodeRenderer($environment),
+                Nodes\AnchorNode::class => new TemplateNodeRenderer($this->renderer, 'anchor.tex.twig'),
+                Nodes\CodeNode::class => new TemplateNodeRenderer($this->renderer, 'code.tex.twig'),
+                Nodes\ImageNode::class => new TemplateNodeRenderer($this->renderer, 'image.tex.twig'),
+                Nodes\MetaNode::class => new TemplateNodeRenderer($this->renderer, 'meta.tex.twig'),
+                Nodes\ParagraphNode::class => new TemplateNodeRenderer($this->renderer, 'paragraph.tex.twig'),
+                Nodes\QuoteNode::class => new TemplateNodeRenderer($this->renderer, 'quote.tex.twig'),
+                Nodes\SeparatorNode::class => new TemplateNodeRenderer($this->renderer, 'separator.tex.twig'),
+                Nodes\ListNode::class => new TemplateNodeRenderer($this->renderer, 'list.tex.twig'),
+                Nodes\TableNode::class => new TableNodeRenderer(),
+                Nodes\TitleNode::class => new TitleNodeRenderer($this->renderer),
+                Nodes\TocNode::class => new TocNodeRenderer($this->renderer, $referenceRegistry),
+                Nodes\DocumentNode::class => new DocumentNodeRenderer(),
+                Nodes\SpanNode::class => new SpanNodeRenderer($this->renderer, $referenceRegistry),
             ],
-            new NodeRenderers\DefaultNodeRenderer($environment)
+            new DefaultNodeRenderer()
         );
     }
 }

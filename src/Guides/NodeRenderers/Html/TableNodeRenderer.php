@@ -15,6 +15,7 @@ namespace phpDocumentor\Guides\NodeRenderers\Html;
 
 use InvalidArgumentException;
 use LogicException;
+use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\NodeRenderers\NodeRenderer;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\TableNode;
@@ -32,7 +33,7 @@ class TableNodeRenderer implements NodeRenderer
         $this->renderer = $renderer;
     }
 
-    public function render(Node $node): string
+    public function render(Node $node, Environment $environment): string
     {
         if ($node instanceof TableNode === false) {
             throw new InvalidArgumentException('Invalid node presented');
