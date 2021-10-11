@@ -80,6 +80,7 @@ services:
     phpDocumentor\:
         resource: '../src/phpDocumentor/*'
         exclude:
+          - '../src/phpDocumentor/Extension'
           - '../src/phpDocumentor/**/Messages'
           - '../src/phpDocumentor/Pipeline/Stage'
           - '../src/phpDocumentor/Transformer/**/{Event, Exception}/{**}'
@@ -124,6 +125,12 @@ services:
     phpDocumentor\Descriptor\Builder\AssemblerFactory:
         class: 'phpDocumentor\Descriptor\Builder\AssemblerFactory'
         factory: ['phpDocumentor\Descriptor\Builder\AssemblerFactory', 'createDefault']
+
+    phpDocumentor\Extension\ExtensionHandler:
+        arguments:
+          $cacheDir: ''
+          $extensionsDir: ''
+        factory: ['\phpDocumentor\Extension\ExtensionHandler', 'getInstance']
 
     phpDocumentor\Descriptor\Filter\Filter:
         arguments:

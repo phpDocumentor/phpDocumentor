@@ -9,6 +9,17 @@ use League\Flysystem\Adapter\NullAdapter;
 use League\Flysystem\Filesystem;
 use League\Flysystem\MountManager;
 use Mockery as m;
+use PharIo\Manifest\ApplicationName;
+use PharIo\Manifest\AuthorCollection;
+use PharIo\Manifest\BundledComponentCollection;
+use PharIo\Manifest\CopyrightInformation;
+use PharIo\Manifest\Extension;
+use PharIo\Manifest\License;
+use PharIo\Manifest\Manifest;
+use PharIo\Manifest\RequirementCollection;
+use PharIo\Manifest\Url;
+use PharIo\Version\AnyVersionConstraint;
+use PharIo\Version\Version;
 use phpDocumentor\Configuration\ApiSpecification;
 use phpDocumentor\Configuration\Source;
 use phpDocumentor\Configuration\SymfonyConfigFactory;
@@ -199,5 +210,20 @@ final class Provider extends Base
         }
 
         return $rootNamespace;
+    }
+
+    public function extensionManifest(?string $extensionVersion = null): Manifest
+    {
+        return new Manifest(
+            new ApplicationName('phpDocumentor/extension'),
+            new Version($extensionVersion ?? '1.0.0'),
+            new Extension(new ApplicationName('phpDocumentor/phpDocumentor'), new AnyVersionConstraint()),
+            new CopyrightInformation(
+                new AuthorCollection(),
+                new License('MIT', new Url('https://phpdoc.org/licence'))
+            ),
+            new RequirementCollection(),
+            new BundledComponentCollection()
+        );
     }
 }

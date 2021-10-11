@@ -15,12 +15,15 @@ namespace phpDocumentor;
 
 use Phar;
 use phpDocumentor\DependencyInjection\ReflectionProjectFactoryStrategyPass;
+use phpDocumentor\Extension\ExtensionHandler;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
 
+use function file_exists;
 use function getcwd;
 use function is_dir;
 use function strlen;
@@ -33,6 +36,22 @@ class Kernel extends BaseKernel
     use MicroKernelTrait;
 
     public const CONFIG_EXTS = '.{php,xml,yaml,yml}';
+
+    /** @var ExtensionHandler */
+    private $extensionHander;
+
+    /** @var string */
+    private $cacheDir;
+
+    public function __construct(string $environment, bool $debug)
+    {
+        parent::__construct($environment, $debug);
+        $this->cacheDir = $this->getProjectDir() . '/var/cache/' . $this->environment;
+        $this->extensionHander = ExtensionHandler::getInstance(
+            $this->getCacheDir() . '/extension.lock',
+            $this->getLocalDir() . '/extensions/'
+        );
+    }
 
     /**
      * Returns the current working directory.
@@ -57,9 +76,23 @@ class Kernel extends BaseKernel
         return getcwd();
     }
 
+    public function getLocalDir(): string
+    {
+        return $this->getWorkingDir() . '/.phpdoc';
+    }
+
     public function getCacheDir(): string
     {
-        return $this->getProjectDir() . '/var/cache/' . $this->environment;
+        if (file_exists($this->getLocalCacheDir())) {
+            return $this->getLocalCacheDir();
+        }
+
+        return $this->cacheDir;
+    }
+
+    private function getLocalCacheDir(): string
+    {
+        return $this->getLocalDir() . '/cache/internal/' . $this->environment;
     }
 
     public function getLogDir(): string
@@ -95,6 +128,27 @@ class Kernel extends BaseKernel
 
             yield new $class();
         }
+
+        foreach ($this->extensionHander->loadExtensions() as $extension) {
+            if (class_exists($extension)) {
+                yield new $extension();
+            }
+        }
+    }
+
+    public function boot(): void
+    {
+        parent::boot();
+
+        if ($this->extensionHander->isFresh() !== false) {
+            return;
+        }
+
+        $fileSystem = new Filesystem();
+        $this->cacheDir = $this->getLocalCacheDir();
+        $fileSystem->remove($this->getLocalCacheDir());
+        $this->extensionHander->refresh();
+        $this->reboot($this->cacheDir);
     }
 
     public function build(ContainerBuilder $container): void
