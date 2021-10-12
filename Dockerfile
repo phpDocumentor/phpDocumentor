@@ -21,6 +21,7 @@ COPY --from=composer /usr/bin/composer /usr/bin/composer
 
 RUN cd /opt/phpdoc \
     && /usr/bin/composer install --prefer-dist -o --no-interaction --no-dev \
+    && rm -rf /opt/phpdoc/.git \
     && echo "memory_limit=-1" >> /usr/local/etc/php/conf.d/phpdoc.ini
 
 ENTRYPOINT ["/opt/phpdoc/bin/phpdoc"]

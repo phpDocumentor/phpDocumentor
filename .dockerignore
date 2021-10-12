@@ -1,4 +1,5 @@
 .*
+!.git/
 bin/*
 !bin/phpdoc
 !bin/githubaction
