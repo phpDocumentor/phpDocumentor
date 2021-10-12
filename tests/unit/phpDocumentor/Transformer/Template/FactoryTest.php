@@ -21,7 +21,6 @@ use phpDocumentor\Parser\FlySystemFactory;
 use phpDocumentor\Transformer\Writer\Collection as WriterCollection;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
 use PHPUnit\Framework\TestCase;
-use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
@@ -50,13 +49,15 @@ final class FactoryTest extends TestCase
     protected function setUp(): void
     {
         $this->globalTemplates = vfsStream::setup();
-        $this->writerCollectionMock = $this->prophesize(WriterCollection::class);
-        $this->writerCollectionMock->offsetGet(Argument::any())->willReturn(
-            $this->prophesize(WriterAbstract::class)->reveal()
-        );
         $this->flySystemFactory = $this->faker()->flySystemFactory();
         $this->fixture = new Factory(
-            $this->writerCollectionMock->reveal(),
+            new WriterCollection(
+                [
+                    'FileIo' => $this->prophesize(WriterAbstract::class)->reveal(),
+                    'twig' => $this->prophesize(WriterAbstract::class)->reveal(),
+                    'Graph' => $this->prophesize(WriterAbstract::class)->reveal(),
+                ]
+            ),
             $this->flySystemFactory,
             vfsStream::url('root')
         );

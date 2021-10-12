@@ -96,7 +96,7 @@ class Factory
 
         /** @var Transformation $transformation */
         foreach ($template as $transformation) {
-            $writer = $this->writerCollection[$transformation->getWriter()];
+            $writer = $this->writerCollection->get($transformation->getWriter());
             $writer->checkRequirements();
         }
 

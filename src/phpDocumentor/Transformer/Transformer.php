@@ -151,7 +151,7 @@ class Transformer
             }
 
             $isInitialized[] = $writerName;
-            $writer = $this->writers[$writerName];
+            $writer = $this->writers->get($writerName);
             $this->initializeWriter($writer, $project, $transformation->template());
         }
     }
@@ -227,7 +227,7 @@ class Transformer
         $preTransformationEvent = PreTransformationEvent::create($this, $transformation);
         $this->eventDispatcher->dispatch($preTransformationEvent, self::EVENT_PRE_TRANSFORMATION);
 
-        $writer = $this->writers[$transformation->getWriter()];
+        $writer = $this->writers->get($transformation->getWriter());
         $writer->transform($project, $transformation);
 
         $postTransformationEvent = PostTransformationEvent::createInstance($this);
