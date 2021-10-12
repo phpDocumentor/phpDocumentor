@@ -13,48 +13,31 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Writer;
 
-use ArrayObject;
 use InvalidArgumentException;
+use Traversable;
+use Webmozart\Assert\Assert;
 
-use function preg_match;
+use function array_key_exists;
+use function iterator_to_array;
 
 /**
  * A collection of Writer objects.
  *
  * In this collection we can receive writers.
  *
- * In addition this class can also verify if all requirements for the various writers in it are met.
- *
- * @template-extends ArrayObject<string,WriterAbstract>
+ * In addition, this class can also verify if all requirements for the various writers in it are met.
  */
-class Collection extends ArrayObject
+final class Collection
 {
-    /**
-     * Registers a writer with a given name.
-     *
-     * @param string $index a Writer's name, must be at least 3
-     *      characters, alphanumeric and/or contain one or more hyphens,
-     *      underscores and forward slashes.
-     * @param WriterAbstract $newval The Writer object to register to this name.
-     *
-     * @throws InvalidArgumentException If either of the above restrictions is not met.
-     */
-    public function offsetSet($index, $newval): void
+    /** @var array<string, WriterAbstract> */
+    private $writers;
+
+    /** @param iterable<string, WriterAbstract> $writers */
+    public function __construct(iterable $writers)
     {
-        if (!$newval instanceof WriterAbstract) {
-            throw new InvalidArgumentException(
-                'The Writer Collection may only contain objects descending from WriterAbstract'
-            );
-        }
-
-        if (!preg_match('/^[a-zA-Z0-9\-\_\/]{3,}$/', $index)) {
-            throw new InvalidArgumentException(
-                'The name of a Writer may only contain alphanumeric characters, one or more hyphens, underscores and '
-                . 'forward slashes and must be at least three characters wide'
-            );
-        }
-
-        parent::offsetSet($index, $newval);
+        $writers = $writers instanceof Traversable ? iterator_to_array($writers) : $writers;
+        Assert::allIsInstanceOf($writers, WriterAbstract::class);
+        $this->writers = $writers;
     }
 
     /**
@@ -64,13 +47,13 @@ class Collection extends ArrayObject
      *
      * @throws InvalidArgumentException If the writer is not in the collection.
      */
-    public function offsetGet($index): WriterAbstract
+    public function get(string $index): WriterAbstract
     {
-        if (!$this->offsetExists($index)) {
+        if (array_key_exists($index, $this->writers) === false) {
             throw new InvalidArgumentException('Writer "' . $index . '" does not exist');
         }
 
-        return parent::offsetGet($index);
+        return $this->writers[$index];
     }
 
     /**
@@ -81,7 +64,7 @@ class Collection extends ArrayObject
     public function checkRequirements(): void
     {
         /** @var WriterAbstract $writer */
-        foreach ($this as $writer) {
+        foreach ($this->writers as $writer) {
             $writer->checkRequirements();
         }
     }

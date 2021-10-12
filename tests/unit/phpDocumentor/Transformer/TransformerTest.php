@@ -43,25 +43,26 @@ final class TransformerTest extends TestCase
     /** @var Transformer $fixture */
     private $fixture = null;
 
-    /** @var ObjectProphecy|Collection */
-    private $writerCollectionMock;
-
     /** @var ObjectProphecy|FlySystemFactory */
     private $flySystemFactory;
+
+    /** @var WriterAbstract&ObjectProphecy */
+    private $writer;
 
     /**
      * Instantiates a new \phpDocumentor\Transformer for use as fixture.
      */
     protected function setUp(): void
     {
-        $this->writerCollectionMock = $this->prophesize(Collection::class);
+        $this->writer = $this->prophesize(WriterAbstract::class);
+        $this->writer->__toString()->willReturn('myTestWriter');
         $this->flySystemFactory = $this->prophesize(FlySystemFactory::class);
         $this->flySystemFactory->create(Argument::any())->willReturn($this->faker()->fileSystem());
         $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
         $eventDispatcher->dispatch(Argument::any(), Argument::any())->willReturnArgument(0);
 
         $this->fixture = new Transformer(
-            $this->writerCollectionMock->reveal(),
+            new Collection(['myTestWriter' => $this->writer->reveal()]),
             new NullLogger(),
             $this->flySystemFactory->reveal(),
             $eventDispatcher->reveal()
@@ -73,11 +74,10 @@ final class TransformerTest extends TestCase
      */
     public function testInitialization(): void
     {
-        $writerCollectionMock = $this->prophesize(Collection::class);
         $flySystemFactory = $this->prophesize(FlySystemFactory::class);
 
         $fixture = new Transformer(
-            $writerCollectionMock->reveal(),
+            new Collection([]),
             new NullLogger(),
             $flySystemFactory->reveal(),
             $this->prophesize(EventDispatcherInterface::class)->reveal()
@@ -112,17 +112,12 @@ final class TransformerTest extends TestCase
         $myTestWriter = 'myTestWriter';
         $project = $this->prophesize(ProjectDescriptor::class);
 
-        $myTestWriterMock = $this->prophesize(WriterAbstract::class);
-        $myTestWriterMock->transform(Argument::any(), Argument::any())->shouldBeCalled();
-
-        $this->writerCollectionMock->offsetGet($myTestWriter)
-            ->shouldBeCalled()
-            ->willReturn($myTestWriterMock->reveal());
+        $this->writer->transform(Argument::any(), Argument::any())->shouldBeCalled();
 
         $transformation = $this->prophesize(Transformation::class);
         $transformation->getQuery()->shouldBeCalled()->willReturn('');
         $transformation->template()->willReturn($this->faker()->template());
-        $transformation->getWriter()->shouldBeCalled()->willReturn($myTestWriter);
+        $transformation->getWriter()->shouldBeCalled()->willReturn($this->writer);
         $transformation->getArtifact()->shouldBeCalled()->willReturn('');
         $transformation->setTransformer(Argument::exact($this->fixture))->shouldBeCalled();
 

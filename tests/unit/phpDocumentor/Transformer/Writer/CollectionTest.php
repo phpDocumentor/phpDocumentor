@@ -13,10 +13,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Writer;
 
-use phpDocumentor\Transformer\Router\Router;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 use stdClass;
 
 /**
@@ -26,60 +24,33 @@ final class CollectionTest extends TestCase
 {
     use ProphecyTrait;
 
-    /** @var ObjectProphecy|Router */
-    private $routers;
-
-    /** @var ObjectProphecy|WriterAbstract */
-    private $writer;
-
-    /** @var Collection */
-    private $fixture;
-
-    /**
-     * Initializes the fixture and dependencies for this testcase.
-     */
-    protected function setUp(): void
-    {
-        $this->routers = $this->prophesize(Router::class);
-        $this->writer = $this->prophesize(WriterAbstract::class);
-        $this->fixture = new Collection($this->routers->reveal());
-    }
-
     /**
      * @covers \phpDocumentor\Transformer\Writer\Collection::offsetSet
      */
-    public function testOffsetSetWithWriterNotDescendingFromWriterAbstract(): void
+    public function testThrowsErrorOnInvalidWriterRegistration(): void
     {
         $this->expectException('InvalidArgumentException');
-        $this->fixture->offsetSet('index', new stdClass());
+        new Collection(['key' => new stdClass()]);
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Writer\Collection::offsetSet
-     */
-    public function testOffsetSetWithInvalidIndexName(): void
-    {
-        $this->expectException('InvalidArgumentException');
-        $this->fixture->offsetSet('i', $this->writer->reveal());
-    }
-
-    /**
-     * @covers \phpDocumentor\Transformer\Writer\Collection::offsetGet
+     * @covers \phpDocumentor\Transformer\Writer\Collection::get
      */
     public function testOffsetGetWithNonExistingIndex(): void
     {
         $this->expectException('InvalidArgumentException');
-        $this->fixture->offsetGet('nonExistingIndex');
+        (new Collection([]))->get('nonExistingIndex');
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Writer\Collection::offsetGet
+     * @covers \phpDocumentor\Transformer\Writer\Collection::get
      */
     public function testOffsetGetWithExistingIndex(): void
     {
-        $this->registerWriter();
+        $writer = $this->prophesize(WriterAbstract::class);
+        $fixture = new Collection(['key' => $writer->reveal()]);
 
-        $this->assertSame($this->writer->reveal(), $this->fixture->offsetGet('index'));
+        self::assertSame($writer->reveal(), $fixture->get('key'));
     }
 
     /**
@@ -87,19 +58,10 @@ final class CollectionTest extends TestCase
      */
     public function testCheckRequirements(): void
     {
-        $this->registerWriter();
+        $writer = $this->prophesize(WriterAbstract::class);
+        $fixture = new Collection(['key' => $writer->reveal()]);
 
-        $this->writer->checkRequirements()->shouldBeCalledOnce();
-        $this->fixture->checkRequirements();
-
-        $this->assertTrue(true);
-    }
-
-    /**
-     * Registers a writer for tests that need a collection item
-     */
-    private function registerWriter(): void
-    {
-        $this->fixture->offsetSet('index', $this->writer->reveal());
+        $writer->checkRequirements()->shouldBeCalledOnce();
+        $fixture->checkRequirements();
     }
 }

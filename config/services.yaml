@@ -212,19 +212,26 @@ services:
     ## Writers ########################################################################
     ###################################################################################
 
-    phpDocumentor\Transformer\Writer\FileIo: ~
-    phpDocumentor\Transformer\Writer\Sourcecode: ~
-    phpDocumentor\Transformer\Writer\Graph: ~
-    phpDocumentor\Transformer\Writer\Twig: ~
+    phpDocumentor\Transformer\Writer\FileIo:
+      tags:
+        - { name: "phpdoc.transformer.writer", key: 'FileIo'}
+
+    phpDocumentor\Transformer\Writer\Sourcecode:
+      tags:
+        - { name: "phpdoc.transformer.writer", key: 'sourcecode' }
+
+    phpDocumentor\Transformer\Writer\Graph:
+      tags:
+        - { name: "phpdoc.transformer.writer", key: 'Graph' }
+
+    phpDocumentor\Transformer\Writer\Twig:
+      tags:
+        - { name: "phpdoc.transformer.writer", key: 'twig' }
+
     phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory: ~
 
     phpDocumentor\Transformer\Writer\Collection:
-        calls:
-            - { method: offsetSet, arguments: ['FileIo', '@phpDocumentor\Transformer\Writer\FileIo']}
-            - { method: offsetSet, arguments: ['sourcecode', '@phpDocumentor\Transformer\Writer\Sourcecode']}
-            - { method: offsetSet, arguments: ['Graph', '@phpDocumentor\Transformer\Writer\Graph']}
-            - { method: offsetSet, arguments: ['twig', '@phpDocumentor\Transformer\Writer\Twig']}
-            - { method: offsetSet, arguments: ['RenderGuide', '@phpDocumentor\Transformer\Writer\RenderGuide']}
+        arguments: [!tagged_iterator { tag: 'phpdoc.transformer.writer', index_by: 'key' }]
 
     phpDocumentor\Transformer\Writer\Graph\PlantumlRenderer:
       arguments:
@@ -238,6 +245,9 @@ services:
     phpDocumentor\Transformer\Writer\RenderGuide:
       arguments:
         $outputFormats: !tagged_iterator phpdoc.guides.format
+      tags:
+        - { name: "phpdoc.transformer.writer", key: 'RenderGuide'}
+
 
     phpDocumentor\Pipeline\Stage\Parser\ParseGuides:
       arguments:
