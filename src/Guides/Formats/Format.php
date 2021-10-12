@@ -14,11 +14,10 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\Formats;
 
 use phpDocumentor\Guides\NodeRenderers\NodeRendererFactory;
-use phpDocumentor\Guides\ReferenceBuilder;
 
 interface Format
 {
     public function getFileExtension(): string;
 
-    public function getNodeRendererFactory(ReferenceBuilder $referenceRegistry): NodeRendererFactory;
+    public function getNodeRendererFactory(): NodeRendererFactory;
 }

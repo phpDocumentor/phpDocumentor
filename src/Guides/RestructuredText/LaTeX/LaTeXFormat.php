@@ -21,35 +21,39 @@ use phpDocumentor\Guides\RestructuredText\Formats\Format;
 
 class LaTeXFormat extends Format
 {
-    /** @var Renderer */
-    private $renderer;
+    /** @var NodeRendererFactory */
+    private $nodeRendererFactory;
 
-    public function __construct(string $fileExtension, IteratorAggregate $directives, Renderer $renderer)
-    {
-        $this->renderer = $renderer;
-
+    public function __construct(
+        Renderer $renderer,
+        ReferenceBuilder $referenceBuilder,
+        string $fileExtension,
+        IteratorAggregate $directives
+    ) {
         parent::__construct($fileExtension, $directives);
-    }
 
-    public function getNodeRendererFactory(ReferenceBuilder $referenceRegistry): NodeRendererFactory
-    {
-        return new NodeRenderers\InMemoryNodeRendererFactory(
+        $this->nodeRendererFactory = new NodeRenderers\InMemoryNodeRendererFactory(
             [
-                Nodes\AnchorNode::class => new TemplateNodeRenderer($this->renderer, 'anchor.tex.twig'),
-                Nodes\CodeNode::class => new TemplateNodeRenderer($this->renderer, 'code.tex.twig'),
-                Nodes\ImageNode::class => new TemplateNodeRenderer($this->renderer, 'image.tex.twig'),
-                Nodes\MetaNode::class => new TemplateNodeRenderer($this->renderer, 'meta.tex.twig'),
-                Nodes\ParagraphNode::class => new TemplateNodeRenderer($this->renderer, 'paragraph.tex.twig'),
-                Nodes\QuoteNode::class => new TemplateNodeRenderer($this->renderer, 'quote.tex.twig'),
-                Nodes\SeparatorNode::class => new TemplateNodeRenderer($this->renderer, 'separator.tex.twig'),
-                Nodes\ListNode::class => new TemplateNodeRenderer($this->renderer, 'list.tex.twig'),
+                Nodes\AnchorNode::class => new TemplateNodeRenderer($renderer, 'anchor.tex.twig'),
+                Nodes\CodeNode::class => new TemplateNodeRenderer($renderer, 'code.tex.twig'),
+                Nodes\ImageNode::class => new TemplateNodeRenderer($renderer, 'image.tex.twig'),
+                Nodes\MetaNode::class => new TemplateNodeRenderer($renderer, 'meta.tex.twig'),
+                Nodes\ParagraphNode::class => new TemplateNodeRenderer($renderer, 'paragraph.tex.twig'),
+                Nodes\QuoteNode::class => new TemplateNodeRenderer($renderer, 'quote.tex.twig'),
+                Nodes\SeparatorNode::class => new TemplateNodeRenderer($renderer, 'separator.tex.twig'),
+                Nodes\ListNode::class => new TemplateNodeRenderer($renderer, 'list.tex.twig'),
                 Nodes\TableNode::class => new TableNodeRenderer(),
-                Nodes\TitleNode::class => new TitleNodeRenderer($this->renderer),
-                Nodes\TocNode::class => new TocNodeRenderer($this->renderer, $referenceRegistry),
+                Nodes\TitleNode::class => new TitleNodeRenderer($renderer),
+                Nodes\TocNode::class => new TocNodeRenderer($renderer, $referenceBuilder),
                 Nodes\DocumentNode::class => new DocumentNodeRenderer(),
-                Nodes\SpanNode::class => new SpanNodeRenderer($this->renderer, $referenceRegistry),
+                Nodes\SpanNode::class => new SpanNodeRenderer($renderer, $referenceBuilder),
             ],
             new DefaultNodeRenderer()
         );
+    }
+
+    public function getNodeRendererFactory(): NodeRendererFactory
+    {
+        return $this->nodeRendererFactory;
     }
 }

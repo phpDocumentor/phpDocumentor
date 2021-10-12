@@ -51,39 +51,48 @@ final class HTMLFormat extends Format
 {
     /** @var Renderer */
     private $renderer;
+    /**
+     * @var ReferenceBuilder
+     */
+    private $referenceBuilder;
+    private $nodeRendererFactory;
 
-    public function __construct(string $fileExtension, IteratorAggregate $directives, Renderer $renderer)
-    {
-        $this->renderer = $renderer;
-
+    public function __construct(
+        Renderer $renderer,
+        ReferenceBuilder $referenceBuilder,
+        string $fileExtension,
+        IteratorAggregate $directives
+    ) {
         parent::__construct($fileExtension, $directives);
-    }
 
-    public function getNodeRendererFactory(ReferenceBuilder $referenceRegistry): NodeRendererFactory
-    {
-        return new InMemoryNodeRendererFactory(
+        $this->nodeRendererFactory = new InMemoryNodeRendererFactory(
             [
-                AnchorNode::class => new TemplateNodeRenderer($this->renderer, 'anchor.html.twig'),
-                FigureNode::class => new TemplateNodeRenderer($this->renderer, 'figure.html.twig'),
-                MetaNode::class => new TemplateNodeRenderer($this->renderer, 'meta.html.twig'),
-                ParagraphNode::class => new TemplateNodeRenderer($this->renderer, 'paragraph.html.twig'),
-                QuoteNode::class => new TemplateNodeRenderer($this->renderer, 'quote.html.twig'),
-                SeparatorNode::class => new TemplateNodeRenderer($this->renderer, 'separator.html.twig'),
-                TitleNode::class => new TemplateNodeRenderer($this->renderer, 'header-title.html.twig'),
-                SectionBeginNode::class => new TemplateNodeRenderer($this->renderer, 'section-begin.html.twig'),
-                SectionEndNode::class => new TemplateNodeRenderer($this->renderer, 'section-end.html.twig'),
-                ImageNode::class => new TemplateNodeRenderer($this->renderer, 'image.html.twig'),
-                UmlNode::class => new TemplateNodeRenderer($this->renderer, 'uml.html.twig'),
-                CodeNode::class => new TemplateNodeRenderer($this->renderer, 'code.html.twig'),
-                DefinitionListNode::class => new DefinitionListNodeRenderer($this->renderer),
-                ListNode::class => new TemplateNodeRenderer($this->renderer, 'list.html.twig'),
-                TableNode::class => new TableNodeRenderer($this->renderer),
-                TocNode::class => new TocNodeRenderer($this->renderer, $referenceRegistry),
+                AnchorNode::class => new TemplateNodeRenderer($renderer, 'anchor.html.twig'),
+                FigureNode::class => new TemplateNodeRenderer($renderer, 'figure.html.twig'),
+                MetaNode::class => new TemplateNodeRenderer($renderer, 'meta.html.twig'),
+                ParagraphNode::class => new TemplateNodeRenderer($renderer, 'paragraph.html.twig'),
+                QuoteNode::class => new TemplateNodeRenderer($renderer, 'quote.html.twig'),
+                SeparatorNode::class => new TemplateNodeRenderer($renderer, 'separator.html.twig'),
+                TitleNode::class => new TemplateNodeRenderer($renderer, 'header-title.html.twig'),
+                SectionBeginNode::class => new TemplateNodeRenderer($renderer, 'section-begin.html.twig'),
+                SectionEndNode::class => new TemplateNodeRenderer($renderer, 'section-end.html.twig'),
+                ImageNode::class => new TemplateNodeRenderer($renderer, 'image.html.twig'),
+                UmlNode::class => new TemplateNodeRenderer($renderer, 'uml.html.twig'),
+                CodeNode::class => new TemplateNodeRenderer($renderer, 'code.html.twig'),
+                DefinitionListNode::class => new DefinitionListNodeRenderer($renderer),
+                ListNode::class => new TemplateNodeRenderer($renderer, 'list.html.twig'),
+                TableNode::class => new TableNodeRenderer($renderer),
+                TocNode::class => new TocNodeRenderer($renderer, $referenceBuilder),
                 DocumentNode::class => new DocumentNodeRenderer(),
-                SpanNode::class => new SpanNodeRenderer($this->renderer, $referenceRegistry),
-                TemplatedNode::class => new TemplatedNodeRenderer($this->renderer),
+                SpanNode::class => new SpanNodeRenderer($renderer, $referenceBuilder),
+                TemplatedNode::class => new TemplatedNodeRenderer($renderer),
             ],
             new DefaultNodeRenderer()
         );
+    }
+
+    public function getNodeRendererFactory(): NodeRendererFactory
+    {
+        return $this->nodeRendererFactory;
     }
 }
