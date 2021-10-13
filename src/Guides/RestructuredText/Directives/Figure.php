@@ -14,7 +14,7 @@ use phpDocumentor\Guides\RestructuredText\Parser;
  *
  * .. figure:: image.jpg
  *      :width: 100
- *      :title: An image
+ *      :alt: An image
  *
  *      Here is an awesome caption
  */
@@ -35,8 +35,19 @@ class Figure extends SubDirective
         string $data,
         array $options
     ): ?Node {
+        $image = new ImageNode($parser->getEnvironment()->relativeUrl($data));
+        $image = $image->withOptions([
+            'width' => $options['width'] ?? null,
+            'height' => $options['height'] ?? null,
+            'alt' => $options['alt'] ?? null,
+            'scale' => $options['scale'] ?? null,
+            'target' => $options['target'] ?? null,
+            'class' => $options['class'] ?? null,
+            'name' => $options['name'] ?? null,
+        ]);
+
         return new FigureNode(
-            new ImageNode($parser->getEnvironment()->relativeUrl($data)),
+            $image,
             $document
         );
     }

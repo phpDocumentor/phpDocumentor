@@ -126,6 +126,11 @@ abstract class Node
         return $this->options[$name] ?? $default;
     }
 
+    public function hasOption(string $name): bool
+    {
+        return isset($this->options[$name]);
+    }
+
     /**
      * @param string[] $lines
      */

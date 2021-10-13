@@ -1,8 +1,8 @@
 <img
     src="{{ asset(node.value) }}"
-    {% if node.option('width') %}width="{{ node.options('width') }}"{% endif%}
-    {% if node.option('height') %}height="{{ node.options('height') }}"{% endif%}
-    {% if node.option('align') %}align="{{ node.options('align') }}"{% endif%}
-    {% if node.option('alt') %}alt="{{ node.options('alt') }}"{% endif%}
+    {% if node.hasOption('width') %}width="{{ node.option('width') }}"{% endif%}
+    {% if node.hasOption('height') %}height="{{ node.option('height') }}"{% endif%}
+    {% if node.hasOption('align') %}align="{{ node.option('align') }}"{% endif%}
+    {% if node.hasOption('alt') %}alt="{{ node.option('alt') }}"{% endif%}
     {% if node.classesString %}class="{{ node.classesString }}"{% endif%}
 />

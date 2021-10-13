@@ -1,5 +1,8 @@
 {% spaceless %}
-<figure>
+<figure
+    {% if node.hasOption('figclass') %} class="{{ node.option('figclass') }}"{% endif %}
+    {% if node.hasOption('figwidth') %} style="{% if node.hasOption('figwidth') %}width: {{ node.option('figwidth') }};{% endif %}"{% endif %}
+>
     {{ renderNode(node.image) }}
 
     {% if node.document %}
