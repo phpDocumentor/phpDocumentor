@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides;
 
+use phpDocumentor\Guides\NodeRenderers\NodeRendererFactory;
 use phpDocumentor\Guides\Nodes\DocumentNode;
 
 interface Parser
@@ -24,4 +25,6 @@ interface Parser
     public function parse(Environment $environment, string $contents): DocumentNode;
 
     public function getDocument(): DocumentNode;
+
+    public function getNodeRendererFactory(): NodeRendererFactory;
 }

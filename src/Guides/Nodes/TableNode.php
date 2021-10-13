@@ -172,7 +172,7 @@ class TableNode extends Node
                     $node = $parser->parseFragment($col->getContent())->getNodes()[0];
                 } else {
                     $node = new SpanNode(
-                        $parser->getEnvironment(),
+                        $parser,
                         $parser->getReferenceRegistry(),
                         $col->getContent()
                     );

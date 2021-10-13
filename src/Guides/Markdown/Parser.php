@@ -16,6 +16,7 @@ use League\CommonMark\Inline\Element\Text;
 use League\CommonMark\Node\NodeWalker;
 use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Markdown\Parsers\AbstractBlock;
+use phpDocumentor\Guides\NodeRenderers\NodeRendererFactory;
 use phpDocumentor\Guides\Nodes\AnchorNode;
 use phpDocumentor\Guides\Nodes\CodeNode;
 use phpDocumentor\Guides\Nodes\DocumentNode;
@@ -104,7 +105,7 @@ final class Parser implements ParserInterface
             if ($node instanceof Heading) {
                 $content = $node->getStringContent();
                 $title = new TitleNode(
-                    new SpanNode($this->environment, $this->getReferenceRegistry(), $content),
+                    new SpanNode($parser, $this->getReferenceRegistry(), $content),
                     $node->getLevel()
                 );
                 $document->addNode($title);
@@ -112,7 +113,7 @@ final class Parser implements ParserInterface
             }
 
             if ($node instanceof Text) {
-                $spanNode = new SpanNode($this->environment, $this->getReferenceRegistry(), $node->getContent());
+                $spanNode = new SpanNode($parser, $this->getReferenceRegistry(), $node->getContent());
                 $document->addNode($spanNode);
                 continue;
             }
@@ -185,5 +186,10 @@ final class Parser implements ParserInterface
     public function getReferenceRegistry(): ReferenceBuilder
     {
         return $this->referenceRegistry;
+    }
+
+    public function getNodeRendererFactory(): NodeRendererFactory
+    {
+        throw new RuntimeException('Not implemented yet; markdown parsing is still pre-alpha');
     }
 }

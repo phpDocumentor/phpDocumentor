@@ -92,7 +92,7 @@ final class ParagraphRule implements Rule
         }
 
         return new ParagraphNode(
-            new SpanNode($this->parser->getEnvironment(), $this->parser->getReferenceRegistry(), $lines)
+            new SpanNode($this->parser, $this->parser->getReferenceRegistry(), $lines)
         );
     }
 

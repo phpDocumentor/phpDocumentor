@@ -29,6 +29,6 @@ class Replace extends Directive
         string $data,
         array $options
     ): Node {
-        return new SpanNode($parser->getEnvironment(), $parser->getReferenceRegistry(), $data);
+        return new SpanNode($parser, $parser->getReferenceRegistry(), $data);
     }
 }

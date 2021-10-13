@@ -16,6 +16,7 @@ namespace phpDocumentor\Guides\Nodes;
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Guides\Environment;
+use phpDocumentor\Guides\Parser;
 use phpDocumentor\Guides\ReferenceBuilder;
 
 final class TitleNodeTest extends MockeryTestCase
@@ -25,6 +26,9 @@ final class TitleNodeTest extends MockeryTestCase
         $environment = m::mock(Environment::class);
         $environment->shouldReceive('getTitleLetters')->andReturn(['a']);
         $environment->shouldReceive('resetAnonymousStack');
+
+        $parser = m::mock(Parser::class);
+        $parser->shouldReceive('getEnvironment')->andReturn($environment);
 
         $referenceRegistry = m::mock(ReferenceBuilder::class);
 

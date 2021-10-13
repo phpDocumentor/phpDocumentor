@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\Nodes;
 
 use phpDocumentor\Guides\Environment;
+use phpDocumentor\Guides\Parser;
 use phpDocumentor\Guides\ReferenceBuilder;
 use phpDocumentor\Guides\RestructuredText\Span\SpanParser;
 use phpDocumentor\Guides\RestructuredText\Span\SpanToken;
@@ -30,14 +31,15 @@ class SpanNode extends Node
     /**
      * @param string|string[]|SpanNode $span
      */
-    public function __construct(Environment $environment, ReferenceBuilder $referenceRegistry, $span)
+    public function __construct(Parser $parser, ReferenceBuilder $referenceRegistry, $span)
     {
         if (is_array($span)) {
             $span = implode("\n", $span);
         }
 
+        $environment = $parser->getEnvironment();
         if ($span instanceof self) {
-            $span = $environment->getNodeRendererFactory()->get(get_class($span))->render($span, $environment);
+            $span = $parser->getNodeRendererFactory()->get(get_class($span))->render($span, $environment);
         }
 
         $spanProcessor = new SpanParser($referenceRegistry);

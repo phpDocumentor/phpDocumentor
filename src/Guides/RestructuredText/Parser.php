@@ -6,6 +6,7 @@ namespace phpDocumentor\Guides\RestructuredText;
 
 use Doctrine\Common\EventManager;
 use phpDocumentor\Guides\Environment;
+use phpDocumentor\Guides\NodeRenderers\NodeRendererFactory;
 use phpDocumentor\Guides\Nodes\DocumentNode;
 use phpDocumentor\Guides\Parser as ParserInterface;
 use phpDocumentor\Guides\ReferenceBuilder;
@@ -175,5 +176,10 @@ class Parser implements ParserInterface
     public function getReferenceRegistry(): ReferenceBuilder
     {
         return $this->referenceRegistry;
+    }
+
+    public function getNodeRendererFactory(): NodeRendererFactory
+    {
+        return $this->format->getNodeRendererFactory();
     }
 }
