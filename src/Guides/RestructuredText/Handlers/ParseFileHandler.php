@@ -25,6 +25,7 @@ use Psr\Log\LoggerInterface;
 use function filemtime;
 use function ltrim;
 use function sprintf;
+use function strtolower;
 use function trim;
 
 final class ParseFileHandler
@@ -178,6 +179,9 @@ final class ParseFileHandler
         return $outputFolder . $this->buildDocumentUrl($environment, $guideSetDescriptor->getOutputFormat());
     }
 
+    /**
+     * @return array<array<string|null>>
+     */
     private function compileTableOfContents(DocumentNode $document, Environment $environment): array
     {
         $result = [];
@@ -219,7 +223,7 @@ final class ParseFileHandler
     private function addDocumentToMetas(
         Environment $environment,
         GuideSetDescriptor $documentationSet,
-        DocumentNode  $document
+        DocumentNode $document
     ): void {
         $this->metas->set(
             $environment->getCurrentFileName(),
@@ -240,9 +244,11 @@ final class ParseFileHandler
                 if ($format instanceof HTMLFormat) {
                     return $this->rstHtmlParser;
                 }
+
                 if ($format instanceof LaTeXFormat) {
                     return $this->rstLatexParser;
                 }
+
                 break;
 
             case 'md':

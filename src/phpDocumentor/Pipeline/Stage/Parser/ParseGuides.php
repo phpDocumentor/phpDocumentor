@@ -65,7 +65,7 @@ final class ParseGuides
 
         $dsn = $guideDocumentationSet->getSource()->dsn();
         $origin = $this->flySystemFactory->create($dsn);
-        $sourcePath = (string)($guideDocumentationSet->getSource()->paths()[0] ?? '');
+        $sourcePath = (string) ($guideDocumentationSet->getSource()->paths()[0] ?? '');
 
         $this->commandBus->handle(
             new ParseDirectoryCommand($guideDocumentationSet, $origin, $sourcePath)

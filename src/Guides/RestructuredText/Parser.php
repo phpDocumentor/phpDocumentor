@@ -16,6 +16,7 @@ use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
 use RuntimeException;
 
 use function array_merge;
+use function is_array;
 use function iterator_to_array;
 
 class Parser implements ParserInterface
@@ -49,11 +50,11 @@ class Parser implements ParserInterface
      * @param iterable<Reference> $references
      */
     public function __construct(
-        OutputFormat     $format,
+        OutputFormat $format,
         ReferenceBuilder $referenceRegistry,
-        EventManager     $eventManager,
-        iterable         $directives,
-        iterable         $references
+        EventManager $eventManager,
+        iterable $directives,
+        iterable $references
     ) {
         $this->format = $format;
         $this->referenceRegistry = $referenceRegistry;

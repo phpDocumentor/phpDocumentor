@@ -49,6 +49,7 @@ use phpDocumentor\Guides\RestructuredText\OutputFormat;
 
 final class HTMLFormat extends OutputFormat
 {
+    /** @var NodeRendererFactory */
     private $nodeRendererFactory;
 
     public function __construct(

@@ -6,11 +6,17 @@ namespace phpDocumentor\Guides\Formats;
 
 use InvalidArgumentException;
 
+use function sprintf;
+use function strtolower;
+
 final class OutputFormats
 {
     /** @var OutputFormat[] */
     private $outputFormats = [];
 
+    /**
+     * @param iterable<OutputFormat> $outputFormats
+     */
     public function __construct(iterable $outputFormats)
     {
         foreach ($outputFormats as $outputFormat) {
