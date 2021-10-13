@@ -12,7 +12,6 @@ use phpDocumentor\Guides\ReferenceBuilder;
 use phpDocumentor\Guides\References\Doc;
 use phpDocumentor\Guides\References\Reference;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive;
-use phpDocumentor\Guides\RestructuredText\Formats\Format;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
 use RuntimeException;
 
@@ -39,7 +38,7 @@ class Parser implements ParserInterface
     /** @var EventManager */
     private $eventManager;
 
-    /** @var Format */
+    /** @var OutputFormat */
     private $format;
 
     /** @var ReferenceBuilder */
@@ -50,11 +49,11 @@ class Parser implements ParserInterface
      * @param iterable<Reference> $references
      */
     public function __construct(
-        Format $format,
+        OutputFormat     $format,
         ReferenceBuilder $referenceRegistry,
-        EventManager $eventManager,
-        iterable $directives,
-        iterable $references
+        EventManager     $eventManager,
+        iterable         $directives,
+        iterable         $references
     ) {
         $this->format = $format;
         $this->referenceRegistry = $referenceRegistry;

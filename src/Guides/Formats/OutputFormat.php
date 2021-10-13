@@ -15,7 +15,7 @@ namespace phpDocumentor\Guides\Formats;
 
 use phpDocumentor\Guides\NodeRenderers\NodeRendererFactory;
 
-interface Format
+interface OutputFormat
 {
     public function getFileExtension(): string;
 

@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace phpDocumentor\Guides\RestructuredText\Formats;
+namespace phpDocumentor\Guides\RestructuredText;
 
 use IteratorAggregate;
-use phpDocumentor\Guides\Formats\Format as BaseFormat;
+use phpDocumentor\Guides\Formats\OutputFormat as BaseFormat;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive;
 
 use function iterator_to_array;
 
-abstract class Format implements BaseFormat
+abstract class OutputFormat implements BaseFormat
 {
     /** @var string */
     private $fileExtension;

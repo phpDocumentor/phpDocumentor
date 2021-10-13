@@ -45,16 +45,10 @@ use phpDocumentor\Guides\Nodes\TocNode;
 use phpDocumentor\Guides\Nodes\UmlNode;
 use phpDocumentor\Guides\ReferenceBuilder;
 use phpDocumentor\Guides\Renderer;
-use phpDocumentor\Guides\RestructuredText\Formats\Format;
+use phpDocumentor\Guides\RestructuredText\OutputFormat;
 
-final class HTMLFormat extends Format
+final class HTMLFormat extends OutputFormat
 {
-    /** @var Renderer */
-    private $renderer;
-    /**
-     * @var ReferenceBuilder
-     */
-    private $referenceBuilder;
     private $nodeRendererFactory;
 
     public function __construct(

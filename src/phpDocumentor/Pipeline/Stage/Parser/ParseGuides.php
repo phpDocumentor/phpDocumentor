@@ -15,8 +15,6 @@ namespace phpDocumentor\Pipeline\Stage\Parser;
 
 use League\Tactician\CommandBus;
 use phpDocumentor\Descriptor\GuideSetDescriptor;
-use phpDocumentor\Guides\Configuration;
-use phpDocumentor\Guides\Formats\Format;
 use phpDocumentor\Guides\RestructuredText\ParseDirectoryCommand;
 use phpDocumentor\Parser\FlySystemFactory;
 use Psr\Log\LoggerInterface;
@@ -30,24 +28,13 @@ final class ParseGuides
     /** @var LoggerInterface */
     private $logger;
 
-    /** @var iterable<Format> */
-    private $outputFormats;
-
     /** @var FlySystemFactory */
     private $flySystemFactory;
 
-    /**
-     * @param iterable<Format> $outputFormats
-     */
-    public function __construct(
-        CommandBus $commandBus,
-        LoggerInterface $logger,
-        FlySystemFactory $flySystemFactory,
-        iterable $outputFormats
-    ) {
+    public function __construct(CommandBus $commandBus, LoggerInterface $logger, FlySystemFactory $flySystemFactory)
+    {
         $this->commandBus = $commandBus;
         $this->logger = $logger;
-        $this->outputFormats = $outputFormats;
         $this->flySystemFactory = $flySystemFactory;
     }
 
@@ -78,16 +65,10 @@ final class ParseGuides
 
         $dsn = $guideDocumentationSet->getSource()->dsn();
         $origin = $this->flySystemFactory->create($dsn);
-        $directory = $guideDocumentationSet->getSource()->paths()[0] ?? '';
-
-        $configuration = new Configuration(
-            $guideDocumentationSet->getInputFormat(),
-            $this->outputFormats
-        );
-        $configuration->setOutputFolder($guideDocumentationSet->getOutput());
+        $sourcePath = (string)($guideDocumentationSet->getSource()->paths()[0] ?? '');
 
         $this->commandBus->handle(
-            new ParseDirectoryCommand($guideDocumentationSet, $configuration, $origin, (string) $directory)
+            new ParseDirectoryCommand($guideDocumentationSet, $origin, $sourcePath)
         );
 
         return $payload;

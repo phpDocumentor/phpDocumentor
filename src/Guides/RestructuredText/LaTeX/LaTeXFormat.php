@@ -17,9 +17,9 @@ use phpDocumentor\Guides\NodeRenderers\TemplateNodeRenderer;
 use phpDocumentor\Guides\Nodes;
 use phpDocumentor\Guides\ReferenceBuilder;
 use phpDocumentor\Guides\Renderer;
-use phpDocumentor\Guides\RestructuredText\Formats\Format;
+use phpDocumentor\Guides\RestructuredText\OutputFormat;
 
-class LaTeXFormat extends Format
+class LaTeXFormat extends OutputFormat
 {
     /** @var NodeRendererFactory */
     private $nodeRendererFactory;

@@ -69,7 +69,7 @@ services:
       phpDocumentor\Descriptor\Filter\FilterInterface:
         tags: ['phpdoc.descriptor.filter']
 
-      phpDocumentor\Guides\RestructuredText\Formats\Format:
+      phpDocumentor\Guides\Formats\OutputFormat:
         tags: ['phpdoc.guides.format']
 
     ###################################################################################
@@ -243,15 +243,10 @@ services:
     Doctrine\Common\EventManager: ~
 
     phpDocumentor\Transformer\Writer\RenderGuide:
-      arguments:
-        $outputFormats: !tagged_iterator phpdoc.guides.format
       tags:
         - { name: "phpdoc.transformer.writer", key: 'RenderGuide'}
 
-
     phpDocumentor\Pipeline\Stage\Parser\ParseGuides:
-      arguments:
-        $outputFormats: !tagged_iterator phpdoc.guides.format
       tags:
         - { name: 'phpdoc.pipeline.api_documentation.parse', priority: 0 }
 
@@ -319,6 +314,10 @@ services:
       exclude:
         - '../src/Guides/References/{Resolver,ResolvedReference}.php'
       tags: [ { name: 'phpdoc.guides.reference' } ]
+
+    phpDocumentor\Guides\Formats\OutputFormats:
+      arguments:
+        $outputFormats: !tagged_iterator phpdoc.guides.format
 
     phpDocumentor\Guides\RestructuredText\HTML\HTMLFormat:
       arguments:
