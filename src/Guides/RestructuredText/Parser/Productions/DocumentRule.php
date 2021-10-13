@@ -101,12 +101,6 @@ final class DocumentRule implements Rule
             $this->endOpenSection($on, $titleNode);
         }
 
-        // TODO: Can we get rid of this here? It would make this parser cleaner and if it is part of the DirectiveRule
-        //       itself it is neatly encapsulated.
-        foreach ($this->directiveHandlers as $directive) {
-            $directive->finalize($on);
-        }
-
         return $on;
     }
 

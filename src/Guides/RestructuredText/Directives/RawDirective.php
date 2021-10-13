@@ -52,9 +52,4 @@ class RawDirective extends Directive
             $document->addNode($node);
         }
     }
-
-    public function wantCode(): bool
-    {
-        return true;
-    }
 }

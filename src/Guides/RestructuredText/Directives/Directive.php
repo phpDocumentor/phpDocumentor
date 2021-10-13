@@ -101,19 +101,4 @@ abstract class Directive
     public function processAction(Parser $parser, string $variable, string $data, array $options): void
     {
     }
-
-    /**
-     * Called at the end of the parsing to finalize the document (add something or tweak nodes)
-     */
-    public function finalize(DocumentNode $document): void
-    {
-    }
-
-    /**
-     * Should the following block be passed as a CodeNode?
-     */
-    public function wantCode(): bool
-    {
-        return false;
-    }
 }

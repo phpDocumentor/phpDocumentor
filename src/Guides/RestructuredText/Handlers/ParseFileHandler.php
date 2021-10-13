@@ -166,6 +166,7 @@ final class ParseFileHandler
             return null;
         }
 
+        $environment->reset();
         return $parser->parse(
             $environment,
             $this->getFileContents($environment->getOrigin(), $path)

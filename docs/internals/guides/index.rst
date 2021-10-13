@@ -26,21 +26,9 @@ The code for rendering guides using RestructuredText-based documentation is base
 Ryan Weaver his work on the `docs-builder`_ package, combined with the RST-Parser by Doctrine (which is based off that
 of Gregwar).
 
-Architecture
-------------
+.. toctree::
 
-The architecture of the Guides implementation revolves mainly around these 5 concepts:
-
-1. Kernel - the core orchestrator for parsing and rendering RestructuredText into the requested output format.
-2. Documents & Nodes - the broken down composition of a document, similar to an AST for code.
-3. Directives - Specialized sub-parsers that know how to deconstruct RestructuredText Directives into Nodes.
-4. (Output) Formats - Specialized functionality to render the parsed documents into a requested output format,
-   such as HTML or LaTeX (for PDF generation).
-5. Renderers - services used to convert Nodes into pieces of output format, such as HTML
-
-Read More
----------
-
-- :doc:`guides/writing-directives`
+   architecture
+   writing-directives
 
 .. _docs-builder: https://github.com/ryanweaver/docs-builder

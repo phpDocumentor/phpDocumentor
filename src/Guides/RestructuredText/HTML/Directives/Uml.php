@@ -68,11 +68,6 @@ final class Uml extends Directive
         }
     }
 
-    public function wantCode(): bool
-    {
-        return true;
-    }
-
     private function loadExternalUmlFile(Environment $environment, string $path): ?string
     {
         $fileName = sprintf(

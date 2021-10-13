@@ -63,7 +63,7 @@ final class BlockQuoteRule implements Rule
         $blockNode = new BlockNode($lines);
 
         return new QuoteNode(
-            $this->parser->getSubParser()->parseLocal($this->parser->getEnvironment(), $blockNode->getValue())
+            $this->parser->getSubParser()->parse($this->parser->getEnvironment(), $blockNode->getValue())
         );
     }
 

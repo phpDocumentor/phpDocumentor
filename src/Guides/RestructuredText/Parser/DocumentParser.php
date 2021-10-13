@@ -79,7 +79,15 @@ class DocumentParser
 
         $this->document = new DocumentNode(md5($contents));
         $this->parser->getReferenceBuilder()->scope($this->document);
-        $this->parseLines(trim($preParseDocumentEvent->getContents()));
+
+        $this->documentIterator->load(
+            $this->parser->getEnvironment(),
+            trim($preParseDocumentEvent->getContents())
+        );
+
+        if ($this->startingRule->applies($this)) {
+            $this->startingRule->apply($this->documentIterator, $this->document);
+        }
 
         $this->eventManager->dispatchEvent(
             PostParseDocumentEvent::POST_PARSE_DOCUMENT,
@@ -97,16 +105,5 @@ class DocumentParser
     public function getDocumentIterator(): LinesIterator
     {
         return $this->documentIterator;
-    }
-
-    private function parseLines(string $document): void
-    {
-        $this->documentIterator->load($this->parser->getEnvironment(), $document);
-
-        if (!$this->startingRule->applies($this)) {
-            return;
-        }
-
-        $this->startingRule->apply($this->documentIterator, $this->document);
     }
 }

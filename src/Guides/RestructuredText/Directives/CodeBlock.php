@@ -56,11 +56,6 @@ class CodeBlock extends Directive
         }
     }
 
-    public function wantCode(): bool
-    {
-        return true;
-    }
-
     /**
      * @param string[] $options
      */

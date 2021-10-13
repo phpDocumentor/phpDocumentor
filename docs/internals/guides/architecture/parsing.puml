@@ -1,0 +1,48 @@
+@startuml
+|Start|
+start
+:ParseDirectory>
+:ParseFile>
+:Call Parser's parse() method;
+|Parser|
+:Reset Environment;
+:Create DocumentParser;
+:Call DocumentParser's parse() method;
+|DocumentParser|
+:PreParseDocumentEvent>
+:Create new DocumentNode;
+:Set scope for ReferenceBuilder;
+:Load File Contents into DocumentIterator;
+:Recursively merge included files into DocumentIterator;
+:Apply DocumentRule;
+|DocumentRule|
+:Reset List of Sections in DocumentRule;
+while (each line)
+    if (Line starts Production Rule) then (yes)
+        if (Production Rule is Title) then (yes)
+            partition Section {
+                if (Heading level is less than current) then (yes)
+                    :Close as many open sections as the
+                    difference between the old and
+                    new level;
+                endif
+                :Open a new section on the Document;
+            }
+        endif
+        :Consume each line until Rule ends;
+        :Create Node from consumed lines;
+        :Return Node to DocumentRule;
+    endif
+:Add Node to Document;
+end while
+partition Section {
+    :Close any open sections;
+}
+|DocumentParser|
+
+:PostParseDocumentEvent>
+|Start|
+:Add document to DocumentationSet;
+:Add document to Metas;
+stop
+@enduml

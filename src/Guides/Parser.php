@@ -22,9 +22,9 @@ interface Parser
 
     public function getReferenceBuilder(): ReferenceBuilder;
 
+    public function getNodeRendererFactory(): NodeRendererFactory;
+
     public function parse(Environment $environment, string $contents): DocumentNode;
 
     public function getDocument(): DocumentNode;
-
-    public function getNodeRendererFactory(): NodeRendererFactory;
 }

@@ -44,7 +44,7 @@ class Parser implements ParserInterface
     private $format;
 
     /** @var ReferenceBuilder */
-    private $referenceRegistry;
+    private $referenceBuilder;
 
     /**
      * @param iterable<Directive> $directives
@@ -58,7 +58,7 @@ class Parser implements ParserInterface
         iterable $references
     ) {
         $this->format = $format;
-        $this->referenceRegistry = $referenceRegistry;
+        $this->referenceBuilder = $referenceRegistry;
         $this->eventManager = $eventManager;
         $this->directives = is_array($directives) ? $directives : iterator_to_array($directives);
         $this->references = is_array($references) ? $references : iterator_to_array($references);
@@ -71,7 +71,7 @@ class Parser implements ParserInterface
     {
         return new Parser(
             $this->format,
-            $this->referenceRegistry,
+            $this->referenceBuilder,
             $this->eventManager,
             $this->directives,
             $this->references
@@ -107,7 +107,7 @@ class Parser implements ParserInterface
         );
 
         foreach ($references as $reference) {
-            $this->referenceRegistry->registerTypeOfReference($reference);
+            $this->referenceBuilder->registerTypeOfReference($reference);
         }
     }
 
@@ -146,13 +146,6 @@ class Parser implements ParserInterface
 
     public function parse(Environment $environment, string $contents): DocumentNode
     {
-        $environment->reset();
-
-        return $this->parseLocal($environment, $contents);
-    }
-
-    public function parseLocal(Environment $environment, string $contents): DocumentNode
-    {
         $this->environment = $environment;
         $this->documentParser = $this->createDocumentParser();
 
@@ -166,16 +159,12 @@ class Parser implements ParserInterface
 
     private function createDocumentParser(): DocumentParser
     {
-        return new DocumentParser(
-            $this,
-            $this->eventManager,
-            $this->directives
-        );
+        return new DocumentParser($this, $this->eventManager, $this->directives);
     }
 
     public function getReferenceBuilder(): ReferenceBuilder
     {
-        return $this->referenceRegistry;
+        return $this->referenceBuilder;
     }
 
     public function getNodeRendererFactory(): NodeRendererFactory
