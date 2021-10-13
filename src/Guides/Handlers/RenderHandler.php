@@ -17,12 +17,12 @@ use IteratorAggregate;
 use League\Flysystem\FilesystemInterface;
 use phpDocumentor\Descriptor\DocumentDescriptor;
 use phpDocumentor\Descriptor\GuideSetDescriptor;
-use phpDocumentor\Guides\Configuration;
 use phpDocumentor\Guides\Environment;
+use phpDocumentor\Guides\Formats\OutputFormats;
 use phpDocumentor\Guides\Metas;
 use phpDocumentor\Guides\NodeRenderers\FullDocumentNodeRenderer;
 use phpDocumentor\Guides\NodeRenderers\NodeRendererFactory;
-use phpDocumentor\Guides\ReferenceRegistry;
+use phpDocumentor\Guides\ReferenceBuilder;
 use phpDocumentor\Guides\References\Doc;
 use phpDocumentor\Guides\References\Reference;
 use phpDocumentor\Guides\RenderCommand;
@@ -57,8 +57,11 @@ final class RenderHandler
     /** @var UrlGenerator */
     private $urlGenerator;
 
-    /** @var ReferenceRegistry */
+    /** @var ReferenceBuilder */
     private $referenceRegistry;
+
+    /** @var OutputFormats */
+    private $outputFormats;
 
     /** @param IteratorAggregate<Reference> $references */
     public function __construct(
@@ -68,7 +71,8 @@ final class RenderHandler
         IteratorAggregate $references,
         Router $router,
         UrlGenerator $urlGenerator,
-        ReferenceRegistry $referenceRegistry
+        ReferenceBuilder $referenceRegistry,
+        OutputFormats $outputFormats
     ) {
         $this->metas = $metas;
         $this->renderer = $renderer;
@@ -77,16 +81,20 @@ final class RenderHandler
         $this->router = $router;
         $this->urlGenerator = $urlGenerator;
         $this->referenceRegistry = $referenceRegistry;
+        $this->outputFormats = $outputFormats;
     }
 
     public function handle(RenderCommand $command): void
     {
-        $configuration = $command->getConfiguration();
         $origin = $command->getOrigin();
+        $initialHeaderLevel = $command->getDocumentationSet()->getInitialHeaderLevel();
+        $destinationPath = $command->getDestinationPath();
+        $targetFileFormat = $command->getTargetFileFormat();
 
-        $environment = $this->createEnvironment($configuration, $origin);
+        $environment = $this->createEnvironment($destinationPath, $initialHeaderLevel, $origin);
 
-        $nodeRendererFactory = $configuration->getFormat()->getNodeRendererFactory($this->referenceRegistry);
+        $format = $this->outputFormats->get($targetFileFormat);
+        $nodeRendererFactory = $format->getNodeRendererFactory();
         $environment->setNodeRendererFactory($nodeRendererFactory);
 
         $this->render($nodeRendererFactory, $command->getDocumentationSet(), $environment, $command->getDestination());
@@ -133,7 +141,7 @@ final class RenderHandler
         );
 
         foreach ($references as $reference) {
-            $this->referenceRegistry->registerReference($reference);
+            $this->referenceRegistry->registerTypeOfReference($reference);
         }
     }
 
@@ -145,6 +153,7 @@ final class RenderHandler
         GuideSetDescriptor $documentationSet
     ): string {
         $document = $descriptor->getDocumentNode();
+        $this->referenceRegistry->scope($document);
 
         $directory = dirname($destinationPath);
 
@@ -173,11 +182,13 @@ final class RenderHandler
     }
 
     private function createEnvironment(
-        Configuration $configuration,
+        string $outputFolder,
+        int $initialHeaderLevel,
         FilesystemInterface $origin
     ): Environment {
         $environment = new Environment(
-            $configuration,
+            $outputFolder,
+            $initialHeaderLevel,
             $this->renderer,
             $this->logger,
             $origin,

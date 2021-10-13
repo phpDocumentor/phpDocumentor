@@ -20,17 +20,32 @@ final class GuideSetDescriptor extends DocumentationSetDescriptor
     /** @var string */
     private $inputFormat;
 
+    /** @var string */
+    private $outputFormat;
+
     /** @var Collection<DocumentDescriptor> */
     private $documents;
 
-    public function __construct(string $name, Source $source, string $output, string $inputFormat)
-    {
+    /** @var int */
+    private $initialHeaderLevel;
+
+    public function __construct(
+        string $name,
+        Source $source,
+        string $output,
+        string $inputFormat,
+        string $outputFormat = 'html',
+        int $initialHeaderLevel = 1
+    ) {
         parent::__construct();
+
         $this->name = $name;
         $this->source = $source;
         $this->output = $output;
         $this->inputFormat = $inputFormat;
         $this->documents = Collection::fromClassString(DocumentDescriptor::class);
+        $this->outputFormat = $outputFormat;
+        $this->initialHeaderLevel = $initialHeaderLevel;
     }
 
     public function addDocument(string $file, DocumentDescriptor $documentDescriptor): void
@@ -41,6 +56,16 @@ final class GuideSetDescriptor extends DocumentationSetDescriptor
     public function getInputFormat(): string
     {
         return $this->inputFormat;
+    }
+
+    public function getOutputFormat(): string
+    {
+        return $this->outputFormat;
+    }
+
+    public function getInitialHeaderLevel(): int
+    {
+        return $this->initialHeaderLevel;
     }
 
     /** @return Collection<DocumentDescriptor> */

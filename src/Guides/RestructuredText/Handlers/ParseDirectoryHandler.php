@@ -7,7 +7,6 @@ namespace phpDocumentor\Guides\RestructuredText\Handlers;
 use InvalidArgumentException;
 use League\Flysystem\FilesystemInterface;
 use League\Tactician\CommandBus;
-use phpDocumentor\Guides\Configuration;
 use phpDocumentor\Guides\FileCollector;
 use phpDocumentor\Guides\RestructuredText\ParseDirectoryCommand;
 use phpDocumentor\Guides\RestructuredText\ParseFileCommand;
@@ -30,18 +29,23 @@ final class ParseDirectoryHandler
 
     public function handle(ParseDirectoryCommand $command): void
     {
-        $configuration = $command->getConfiguration();
-
-        $extension = $configuration->getSourceFileExtension();
-        $parseQueue = $this->scanner->getFiles($command->getOrigin(), $command->getDirectory(), $extension);
-
         $origin = $command->getOrigin();
         $currentDirectory = $command->getDirectory();
-        $this->guardThatAnIndexFileExists($origin, $currentDirectory, $configuration);
+        $documentationSet = $command->getDocumentationSet();
+        $extension = $documentationSet->getInputFormat();
+        $nameOfIndexFile = 'index';
 
+        $this->guardThatAnIndexFileExists(
+            $origin,
+            $currentDirectory,
+            $nameOfIndexFile,
+            $extension
+        );
+
+        $parseQueue = $this->scanner->getFiles($origin, $currentDirectory, $extension);
         foreach ($parseQueue as $file) {
             $this->commandBus->handle(
-                new ParseFileCommand($command->getDocumentationSet(), $configuration, $origin, $currentDirectory, $file)
+                new ParseFileCommand($documentationSet, $origin, $currentDirectory, $file)
             );
         }
     }
@@ -49,10 +53,11 @@ final class ParseDirectoryHandler
     private function guardThatAnIndexFileExists(
         FilesystemInterface $filesystem,
         string $directory,
-        Configuration $configuration
+        string $nameOfIndexFile,
+        string $sourceFormat
     ): void {
-        $indexName = $configuration->getNameOfIndexFile();
-        $extension = $configuration->getSourceFileExtension();
+        $indexName = $nameOfIndexFile;
+        $extension = $sourceFormat;
         $indexFilename = sprintf('%s.%s', $indexName, $extension);
         if (!$filesystem->has($directory . '/' . $indexFilename)) {
             throw new InvalidArgumentException(

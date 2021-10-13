@@ -8,15 +8,16 @@ use Doctrine\Common\EventManager;
 use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Nodes\DocumentNode;
 use phpDocumentor\Guides\Parser as ParserInterface;
-use phpDocumentor\Guides\ReferenceRegistry;
+use phpDocumentor\Guides\ReferenceBuilder;
 use phpDocumentor\Guides\References\Doc;
 use phpDocumentor\Guides\References\Reference;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive;
-use phpDocumentor\Guides\RestructuredText\Formats\Format;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
 use RuntimeException;
 
 use function array_merge;
+use function is_array;
+use function iterator_to_array;
 
 class Parser implements ParserInterface
 {
@@ -38,31 +39,31 @@ class Parser implements ParserInterface
     /** @var EventManager */
     private $eventManager;
 
-    /** @var Format */
+    /** @var OutputFormat */
     private $format;
 
-    /** @var ReferenceRegistry */
+    /** @var ReferenceBuilder */
     private $referenceRegistry;
 
     /**
-     * @param array<Directive> $directives
-     * @param array<Reference> $references
+     * @param iterable<Directive> $directives
+     * @param iterable<Reference> $references
      */
     public function __construct(
-        Format $format,
-        ReferenceRegistry $referenceRegistry,
+        OutputFormat $format,
+        ReferenceBuilder $referenceRegistry,
         EventManager $eventManager,
-        array $directives,
-        array $references
+        iterable $directives,
+        iterable $references
     ) {
         $this->format = $format;
-        $this->directives = $directives;
         $this->referenceRegistry = $referenceRegistry;
-        $this->references = $references;
         $this->eventManager = $eventManager;
+        $this->directives = is_array($directives) ? $directives : iterator_to_array($directives);
+        $this->references = is_array($references) ? $references : iterator_to_array($references);
 
-        $this->initDirectives($directives);
-        $this->initReferences($references);
+        $this->initDirectives($this->directives);
+        $this->initReferences($this->references);
     }
 
     public function getSubParser(): Parser
@@ -105,7 +106,7 @@ class Parser implements ParserInterface
         );
 
         foreach ($references as $reference) {
-            $this->referenceRegistry->registerReference($reference);
+            $this->referenceRegistry->registerTypeOfReference($reference);
         }
     }
 
@@ -171,7 +172,7 @@ class Parser implements ParserInterface
         );
     }
 
-    public function getReferenceRegistry(): ReferenceRegistry
+    public function getReferenceRegistry(): ReferenceBuilder
     {
         return $this->referenceRegistry;
     }

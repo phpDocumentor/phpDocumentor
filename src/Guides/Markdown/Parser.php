@@ -25,7 +25,7 @@ use phpDocumentor\Guides\Nodes\RawNode;
 use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\Nodes\TitleNode;
 use phpDocumentor\Guides\Parser as ParserInterface;
-use phpDocumentor\Guides\ReferenceRegistry;
+use phpDocumentor\Guides\ReferenceBuilder;
 use RuntimeException;
 
 use function get_class;
@@ -45,10 +45,10 @@ final class Parser implements ParserInterface
     /** @var DocumentNode */
     private $document;
 
-    /** @var ReferenceRegistry */
+    /** @var ReferenceBuilder */
     private $referenceRegistry;
 
-    public function __construct(ReferenceRegistry $referenceRegistry)
+    public function __construct(ReferenceBuilder $referenceRegistry)
     {
         $this->referenceRegistry = $referenceRegistry;
 
@@ -76,6 +76,7 @@ final class Parser implements ParserInterface
     public function parseDocument(NodeWalker $walker, string $hash): DocumentNode
     {
         $document = new DocumentNode($hash);
+        $this->referenceRegistry->scope($document);
         $this->document = $document;
 
         while ($event = $walker->next()) {
@@ -181,7 +182,7 @@ final class Parser implements ParserInterface
         return $this->document;
     }
 
-    public function getReferenceRegistry(): ReferenceRegistry
+    public function getReferenceRegistry(): ReferenceBuilder
     {
         return $this->referenceRegistry;
     }

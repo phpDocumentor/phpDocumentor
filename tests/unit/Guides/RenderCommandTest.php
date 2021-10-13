@@ -21,7 +21,6 @@ final class RenderCommandTest extends MockeryTestCase
 
         $command = new RenderCommand(
             $this->faker()->guideSetDescriptor(),
-            new Configuration('rst', []),
             $origin,
             $destination
         );

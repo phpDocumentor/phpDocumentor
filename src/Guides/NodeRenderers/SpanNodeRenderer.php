@@ -18,7 +18,7 @@ use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\InvalidLink;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\SpanNode;
-use phpDocumentor\Guides\ReferenceRegistry;
+use phpDocumentor\Guides\ReferenceBuilder;
 use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\RestructuredText\Span\SpanToken;
 use Symfony\Component\String\Slugger\AsciiSlugger;
@@ -38,10 +38,10 @@ abstract class SpanNodeRenderer implements NodeRenderer, SpanRenderer, NodeRende
     /** @var NodeRendererFactory */
     private $nodeRendererFactory;
 
-    /** @var ReferenceRegistry */
+    /** @var ReferenceBuilder */
     private $referenceRegistry;
 
-    public function __construct(Renderer $renderer, ReferenceRegistry $referenceRegistry)
+    public function __construct(Renderer $renderer, ReferenceBuilder $referenceRegistry)
     {
         $this->renderer = $renderer;
         $this->referenceRegistry = $referenceRegistry;

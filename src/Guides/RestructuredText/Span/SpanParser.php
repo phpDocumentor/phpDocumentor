@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\RestructuredText\Span;
 
 use phpDocumentor\Guides\Environment;
-use phpDocumentor\Guides\ReferenceRegistry;
+use phpDocumentor\Guides\ReferenceBuilder;
 
 use function mt_rand;
 use function preg_match;
@@ -30,10 +30,10 @@ class SpanParser
     /** @var SpanLexer */
     private $lexer;
 
-    /** @var ReferenceRegistry */
+    /** @var ReferenceBuilder */
     private $referenceRegistry;
 
-    public function __construct(ReferenceRegistry $referenceRegistry)
+    public function __construct(ReferenceBuilder $referenceRegistry)
     {
         $this->lexer = new SpanLexer();
         $this->referenceRegistry = $referenceRegistry;

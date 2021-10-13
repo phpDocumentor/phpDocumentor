@@ -6,7 +6,7 @@ namespace phpDocumentor\Guides\RestructuredText\Span;
 
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\Guides\Environment;
-use phpDocumentor\Guides\ReferenceRegistry;
+use phpDocumentor\Guides\ReferenceBuilder;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
@@ -21,7 +21,7 @@ final class SpanParserTest extends TestCase
     /** @var Environment&ObjectProphecy */
     private $environment;
 
-    /** @var ReferenceRegistry&ObjectProphecy */
+    /** @var ReferenceBuilder&ObjectProphecy */
     private $referenceRegistry;
 
     /** @var SpanParser */
@@ -29,7 +29,7 @@ final class SpanParserTest extends TestCase
 
     public function setUp(): void
     {
-        $this->referenceRegistry = $this->prophesize(ReferenceRegistry::class);
+        $this->referenceRegistry = $this->prophesize(ReferenceBuilder::class);
         $this->environment = $this->prophesize(Environment::class);
         $this->environment->getTitleLetters()->willReturn([]);
         $this->environment->resetAnonymousStack()->hasReturnVoid();

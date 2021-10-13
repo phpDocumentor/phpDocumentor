@@ -18,26 +18,21 @@ use phpDocumentor\Descriptor\GuideSetDescriptor;
 
 final class RenderCommand
 {
+    /** @var GuideSetDescriptor */
+    private $documentationSet;
+
     /** @var FilesystemInterface */
     private $origin;
 
     /** @var FilesystemInterface */
     private $destination;
 
-    /** @var Configuration */
-    private $configuration;
-
-    /** @var GuideSetDescriptor */
-    private $documentationSet;
-
     public function __construct(
         GuideSetDescriptor $documentationSet,
-        Configuration $configuration,
         FilesystemInterface $origin,
         FilesystemInterface $destination
     ) {
         $this->destination = $destination;
-        $this->configuration = $configuration;
         $this->documentationSet = $documentationSet;
         $this->origin = $origin;
     }
@@ -45,11 +40,6 @@ final class RenderCommand
     public function getDocumentationSet(): GuideSetDescriptor
     {
         return $this->documentationSet;
-    }
-
-    public function getConfiguration(): Configuration
-    {
-        return $this->configuration;
     }
 
     public function getOrigin(): FilesystemInterface
@@ -60,5 +50,15 @@ final class RenderCommand
     public function getDestination(): FilesystemInterface
     {
         return $this->destination;
+    }
+
+    public function getDestinationPath(): string
+    {
+        return $this->documentationSet->getOutput();
+    }
+
+    public function getTargetFileFormat(): string
+    {
+        return $this->documentationSet->getOutputFormat();
     }
 }

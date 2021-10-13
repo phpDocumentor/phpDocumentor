@@ -18,7 +18,7 @@ use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\NodeRenderers\NodeRenderer;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\TocNode;
-use phpDocumentor\Guides\ReferenceRegistry;
+use phpDocumentor\Guides\ReferenceBuilder;
 use phpDocumentor\Guides\Renderer;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 
@@ -30,10 +30,10 @@ class TocNodeRenderer implements NodeRenderer
     /** @var Renderer */
     private $renderer;
 
-    /** @var ReferenceRegistry */
+    /** @var ReferenceBuilder */
     private $referenceRegistry;
 
-    public function __construct(Renderer $renderer, ReferenceRegistry $referenceRegistry)
+    public function __construct(Renderer $renderer, ReferenceBuilder $referenceRegistry)
     {
         $this->renderer = $renderer;
         $this->referenceRegistry = $referenceRegistry;
