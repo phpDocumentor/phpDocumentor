@@ -67,7 +67,12 @@ final class ListRule implements Rule
 
     public function applies(DocumentParser $documentParser): bool
     {
-        return $this->isListLine($documentParser->getDocumentIterator()->current());
+        $documentIterator = $documentParser->getDocumentIterator();
+
+        // Lists should/cannot occur as the first line in a document; otherwise it is hard to have the following:
+        // 1. * is an asterisk
+        return $documentIterator->atStart() === false
+            && $this->isListLine($documentIterator->current());
     }
 
     public function apply(LinesIterator $documentIterator, ?Node $on = null): ?Node
