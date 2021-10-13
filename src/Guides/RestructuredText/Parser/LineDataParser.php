@@ -174,21 +174,13 @@ class LineDataParser
 
                 $classifiers = array_map(
                     function (string $classifier) {
-                        return new SpanNode(
-                            $this->parser,
-                            $this->parser->getReferenceRegistry(),
-                            $classifier
-                        );
+                        return new SpanNode($this->parser, $classifier);
                     },
                     array_map('trim', $parts)
                 );
 
                 $definitionListTerm = [
-                    'term' => new SpanNode(
-                        $this->parser,
-                        $this->parser->getReferenceRegistry(),
-                        $term
-                    ),
+                    'term' => new SpanNode($this->parser, $term),
                     'classifiers' => $classifiers,
                     'definitions' => [],
                 ];
@@ -196,11 +188,7 @@ class LineDataParser
                 // last line
             } elseif ($definitionListTerm !== null && trim($line) === '' && count($lines) - 1 === $key) {
                 if ($currentDefinition !== null) {
-                    $definitionListTerm['definitions'][] = new SpanNode(
-                        $this->parser,
-                        $this->parser->getReferenceRegistry(),
-                        $currentDefinition
-                    );
+                    $definitionListTerm['definitions'][] = new SpanNode($this->parser, $currentDefinition);
 
                     $currentDefinition = null;
                 }
@@ -213,11 +201,7 @@ class LineDataParser
 
                 // empty line, start of a new definition for the current term
             } elseif ($currentDefinition !== null && $definitionListTerm !== null && trim($line) === '') {
-                $definitionListTerm['definitions'][] = new SpanNode(
-                    $this->parser,
-                    $this->parser->getReferenceRegistry(),
-                    $currentDefinition
-                );
+                $definitionListTerm['definitions'][] = new SpanNode($this->parser, $currentDefinition);
 
                 $currentDefinition = null;
             }

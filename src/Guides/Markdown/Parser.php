@@ -105,7 +105,7 @@ final class Parser implements ParserInterface
             if ($node instanceof Heading) {
                 $content = $node->getStringContent();
                 $title = new TitleNode(
-                    new SpanNode($parser, $this->getReferenceRegistry(), $content),
+                    new SpanNode($this, $content),
                     $node->getLevel()
                 );
                 $document->addNode($title);
@@ -113,7 +113,7 @@ final class Parser implements ParserInterface
             }
 
             if ($node instanceof Text) {
-                $spanNode = new SpanNode($parser, $this->getReferenceRegistry(), $node->getContent());
+                $spanNode = new SpanNode($this, $node->getContent());
                 $document->addNode($spanNode);
                 continue;
             }
@@ -183,7 +183,7 @@ final class Parser implements ParserInterface
         return $this->document;
     }
 
-    public function getReferenceRegistry(): ReferenceBuilder
+    public function getReferenceBuilder(): ReferenceBuilder
     {
         return $this->referenceRegistry;
     }

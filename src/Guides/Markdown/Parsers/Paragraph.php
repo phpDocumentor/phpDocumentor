@@ -21,7 +21,7 @@ final class Paragraph extends AbstractBlock
      */
     public function parse(Parser $parser, NodeWalker $walker): Nodes\Node
     {
-        $context = new ParagraphNode(new SpanNode($parser->getEnvironment(), $parser->getReferenceRegistry(), ''));
+        $context = new ParagraphNode(new SpanNode($parser, ''));
 
         while ($event = $walker->next()) {
             $node = $event->getNode();

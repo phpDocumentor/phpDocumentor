@@ -46,7 +46,7 @@ abstract class AbstractAdmonitionDirective extends SubDirective
                 'name' => $this->name,
                 'text' => $this->text,
                 'class' => $options['class'] ?? null,
-                'node' => $document ?? new SpanNode($parser, $parser->getReferenceRegistry(), $data),
+                'node' => $document ?? new SpanNode($parser, $data),
             ]
         );
     }

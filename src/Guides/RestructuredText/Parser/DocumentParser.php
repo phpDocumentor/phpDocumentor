@@ -78,7 +78,7 @@ class DocumentParser
         );
 
         $this->document = new DocumentNode(md5($contents));
-        $this->parser->getReferenceRegistry()->scope($this->document);
+        $this->parser->getReferenceBuilder()->scope($this->document);
         $this->parseLines(trim($preParseDocumentEvent->getContents()));
 
         $this->eventManager->dispatchEvent(

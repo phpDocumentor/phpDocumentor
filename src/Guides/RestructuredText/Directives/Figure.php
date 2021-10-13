@@ -9,6 +9,8 @@ use phpDocumentor\Guides\Nodes\ImageNode;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\RestructuredText\Parser;
 
+use function assert;
+
 /**
  * Renders an image, example :
  *
@@ -45,10 +47,8 @@ class Figure extends SubDirective
             'class' => $options['class'] ?? null,
             'name' => $options['name'] ?? null,
         ]);
+        assert($image instanceof ImageNode);
 
-        return new FigureNode(
-            $image,
-            $document
-        );
+        return new FigureNode($image, $document);
     }
 }

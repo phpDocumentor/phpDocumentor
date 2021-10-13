@@ -27,12 +27,13 @@ final class TitleNodeTest extends MockeryTestCase
         $environment->shouldReceive('getTitleLetters')->andReturn(['a']);
         $environment->shouldReceive('resetAnonymousStack');
 
+        $referenceBuilder = m::mock(ReferenceBuilder::class);
+
         $parser = m::mock(Parser::class);
         $parser->shouldReceive('getEnvironment')->andReturn($environment);
+        $parser->shouldReceive('getReferenceBuilder')->andReturn($referenceBuilder);
 
-        $referenceRegistry = m::mock(ReferenceBuilder::class);
-
-        $titleNode = new SpanNode($environment, $referenceRegistry, 'Raw String');
+        $titleNode = new SpanNode($parser, 'Raw String');
         $node = new TitleNode($titleNode, 1);
         $node->setTarget('target');
 

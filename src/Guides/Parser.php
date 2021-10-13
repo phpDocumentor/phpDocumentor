@@ -20,7 +20,7 @@ interface Parser
 {
     public function getEnvironment(): Environment;
 
-    public function getReferenceRegistry(): ReferenceBuilder;
+    public function getReferenceBuilder(): ReferenceBuilder;
 
     public function parse(Environment $environment, string $contents): DocumentNode;
 

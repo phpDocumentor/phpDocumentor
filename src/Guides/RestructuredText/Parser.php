@@ -173,7 +173,7 @@ class Parser implements ParserInterface
         );
     }
 
-    public function getReferenceRegistry(): ReferenceBuilder
+    public function getReferenceBuilder(): ReferenceBuilder
     {
         return $this->referenceRegistry;
     }

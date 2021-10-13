@@ -45,7 +45,7 @@ class Toctree extends Directive
             ->buildToctreeFiles($environment, $node, $options);
 
         foreach ($toctreeFiles as $file) {
-            $parser->getReferenceRegistry()->addDependency($file, false);
+            $parser->getReferenceBuilder()->addDependency($file, false);
         }
 
         $parser->getDocument()->addNode((new TocNode($toctreeFiles))->withOptions($options));

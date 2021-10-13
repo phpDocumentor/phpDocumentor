@@ -25,11 +25,12 @@ final class CollectionTest extends TestCase
     use ProphecyTrait;
 
     /**
-     * @covers \phpDocumentor\Transformer\Writer\Collection::offsetSet
+     * @covers \phpDocumentor\Transformer\Writer\Collection::__construct
      */
     public function testThrowsErrorOnInvalidWriterRegistration(): void
     {
         $this->expectException('InvalidArgumentException');
+
         new Collection(['key' => new stdClass()]);
     }
 
@@ -39,6 +40,7 @@ final class CollectionTest extends TestCase
     public function testOffsetGetWithNonExistingIndex(): void
     {
         $this->expectException('InvalidArgumentException');
+
         (new Collection([]))->get('nonExistingIndex');
     }
 
