@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\RestructuredText\Parser\Productions;
 
 use InvalidArgumentException;
+use phpDocumentor\Guides\Link as LinkParser;
 use phpDocumentor\Guides\Nodes\AnchorNode;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Parser;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
 use phpDocumentor\Guides\RestructuredText\Parser\LineDataParser;
 use phpDocumentor\Guides\RestructuredText\Parser\LinesIterator;
-use phpDocumentor\Guides\RestructuredText\Parser\Link as LinkParser;
 
 /**
  * @link https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#hyperlink-targets

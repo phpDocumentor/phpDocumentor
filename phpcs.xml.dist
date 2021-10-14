@@ -4,8 +4,11 @@
 
     <file>src</file>
     <file>incubator/guides/src</file>
+    <file>incubator/guides-restructured-text/src</file>
+    <file>incubator/guides-markdown/src</file>
     <file>tests/unit</file>
     <file>incubator/guides/tests/unit</file>
+    <file>incubator/guides-restructured-text/tests/unit</file>
     <arg value="p"/>
     <arg name="extensions" value="php"/>
     <arg name="basepath" value="."/>

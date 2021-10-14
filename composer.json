@@ -22,10 +22,9 @@
         }
     },
     "repositories": [
-        {
-            "type": "path",
-            "url": "incubator/guides"
-        }
+        { "type": "path", "url": "incubator/guides" },
+        { "type": "path", "url": "incubator/guides-restructured-text" },
+        { "type": "path", "url": "incubator/guides-markdown" }
     ],
     "require": {
         "php": ">=7.2.5||^8.0",
@@ -37,6 +36,8 @@
         "ext-simplexml": "*",
         "ext-xml": "*",
         "phpdocumentor/guides": "*@dev",
+        "phpdocumentor/guides-restructured-text": "*@dev",
+        "phpdocumentor/guides-markdown": "*@dev",
         "jawira/plantuml": "^1.27",
         "jean85/pretty-package-versions": "^1.5 || ^2.0.1",
         "league/commonmark": "^1.5",

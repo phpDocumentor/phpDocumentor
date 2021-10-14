@@ -7,28 +7,12 @@ services:
     phpDocumentor\Guides\Formats\OutputFormat:
       tags: ['phpdoc.guides.format']
 
-  Doctrine\Common\EventManager: ~
-
   phpDocumentor\Guides\:
     resource: '../src/*'
 
   phpDocumentor\Guides\Handlers\:
     resource: '../src/Handlers/*Handler.php'
     tags: [{name: tactician.handler, typehints: true}]
-
-  guides.parser.rst.html:
-    class: phpDocumentor\Guides\RestructuredText\Parser
-    arguments:
-      $directives: !tagged_iterator phpdoc.guides.directive
-      $references: !tagged_iterator phpdoc.guides.reference
-      $format: '@phpDocumentor\Guides\RestructuredText\HTML\HTMLFormat'
-
-  guides.parser.rst.latex:
-    class: phpDocumentor\Guides\RestructuredText\Parser
-    arguments:
-      $directives: !tagged_iterator phpdoc.guides.directive
-      $references: !tagged_iterator phpdoc.guides.reference
-      $format: '@phpDocumentor\Guides\RestructuredText\LaTeX\LaTeXFormat'
 
   phpDocumentor\Guides\Handlers\ParseFileHandler:
     arguments:
@@ -41,20 +25,6 @@ services:
       $references: !tagged_iterator phpdoc.guides.reference
     tags: [{name: tactician.handler, typehints: true}]
 
-  phpDocumentor\Guides\RestructuredText\Directives\:
-    resource: '../src/RestructuredText/Directives/*'
-    tags: [ { name: 'phpdoc.guides.directive' } ]
-
-  phpDocumentor\Guides\RestructuredText\HTML\Directives\:
-    resource: '../src/RestructuredText/HTML/Directives/*'
-    exclude:
-      - '../src/RestructuredText/HTML/Directives/{AbstractAdmonitionDirective}.php'
-    tags: [ { name: 'phpdoc.guides.html_directive' } ]
-
-  phpDocumentor\Guides\RestructuredText\LaTeX\Directives\:
-    resource: '../src/RestructuredText/LaTeX/Directives/*'
-    tags: [ { name: 'phpdoc.guides.latex_directive' } ]
-
   phpDocumentor\Guides\References\:
     resource: '../src/References/*'
     exclude:
@@ -64,13 +34,3 @@ services:
   phpDocumentor\Guides\Formats\OutputFormats:
     arguments:
       $outputFormats: !tagged_iterator phpdoc.guides.format
-
-  phpDocumentor\Guides\RestructuredText\HTML\HTMLFormat:
-    arguments:
-      $fileExtension: 'html'
-      $directives: !tagged_iterator phpdoc.guides.html_directive
-
-  phpDocumentor\Guides\RestructuredText\LaTeX\LaTeXFormat:
-    arguments:
-      $fileExtension: 'tex'
-      $directives: !tagged_iterator phpdoc.guides.latex_directive
