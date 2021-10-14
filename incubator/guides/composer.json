@@ -1,0 +1,29 @@
+{
+    "name": "phpdocumentor/guides",
+    "type": "library",
+    "license": "MIT",
+    "homepage": "https://www.phpdoc.org",
+    "autoload": {
+        "psr-4": {
+            "phpDocumentor\\Guides\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "phpDocumentor\\Guides\\": [
+                "tests/unit/"
+            ]
+        }
+    },
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=7.2.5||^8.0",
+        "doctrine/event-manager": "^1.1",
+        "doctrine/lexer": "^1.2",
+        "league/commonmark": "^1.5",
+        "league/flysystem": "^1.0",
+        "phpdocumentor/flyfinder": "^1.0",
+        "twig/twig": "~2.0",
+        "webmozart/assert": "^1.3"
+    }
+}

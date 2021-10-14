@@ -4,8 +4,9 @@ bin/jsonlint*
 bin/validate-json*
 bin/phpstan
 bin/php-parse*
-bin/var-dump-server
+bin/var-dump-server*
 bin/plantuml*
+bin/yaml-lint*
 
 # Build folder and vendor folder are generated code; no need to version this
 build/
