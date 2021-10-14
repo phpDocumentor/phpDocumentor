@@ -79,7 +79,7 @@ phpcbf:
 
 .PHONY: phpstan
 phpstan:
-	docker run -it --rm -v${CURDIR}:/opt/project -w /opt/project phpdoc/phpstan-ga:latest analyse src tests --configuration phpstan.neon ${ARGS}
+	docker run -it --rm -v${CURDIR}:/opt/project -w /opt/project phpdoc/phpstan-ga:latest analyse src tests incubator/guides/src incubator/guides/tests --configuration phpstan.neon ${ARGS}
 
 .PHONY: psalm
 psalm:

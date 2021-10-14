@@ -9,8 +9,10 @@
 >
     <projectFiles>
         <directory name="src" />
+        <directory name="incubator/*/src" />
         <ignoreFiles>
             <directory name="vendor" />
+            <directory name="incubator/*/vendor" />
         </ignoreFiles>
     </projectFiles>
 

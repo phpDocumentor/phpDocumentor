@@ -10,6 +10,7 @@ use League\Tactician\CommandBus;
 use phpDocumentor\Guides\FileCollector;
 use phpDocumentor\Guides\ParseDirectoryCommand;
 use phpDocumentor\Guides\ParseFileCommand;
+
 use function sprintf;
 
 final class ParseDirectoryHandler

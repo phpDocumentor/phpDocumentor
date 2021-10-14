@@ -21,6 +21,7 @@ use phpDocumentor\Guides\RestructuredText\HTML\HTMLFormat;
 use phpDocumentor\Guides\RestructuredText\LaTeX\LaTeXFormat;
 use phpDocumentor\Guides\UrlGenerator;
 use Psr\Log\LoggerInterface;
+
 use function filemtime;
 use function ltrim;
 use function sprintf;
@@ -166,6 +167,7 @@ final class ParseFileHandler
         }
 
         $environment->reset();
+
         return $parser->parse(
             $environment,
             $this->getFileContents($environment->getOrigin(), $path)
