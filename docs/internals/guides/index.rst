@@ -28,7 +28,7 @@ of Gregwar).
 
 .. toctree::
 
-   architecture
+   parser
    writing-directives
 
 .. _docs-builder: https://github.com/ryanweaver/docs-builder

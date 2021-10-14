@@ -15,7 +15,7 @@ namespace phpDocumentor\Pipeline\Stage\Parser;
 
 use League\Tactician\CommandBus;
 use phpDocumentor\Descriptor\GuideSetDescriptor;
-use phpDocumentor\Guides\RestructuredText\ParseDirectoryCommand;
+use phpDocumentor\Guides\ParseDirectoryCommand;
 use phpDocumentor\Parser\FlySystemFactory;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
