@@ -12,7 +12,6 @@
         <directory name="incubator/guides/src" />
         <ignoreFiles>
             <directory name="vendor" />
-            <directory name="incubator/guides/vendor" />
         </ignoreFiles>
     </projectFiles>
 

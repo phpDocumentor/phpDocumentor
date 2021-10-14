@@ -2,7 +2,6 @@ imports:
   - { resource: 'pipelines.yaml' }
   - { resource: 'reflection.yaml' }
   - { resource: 'stages.yaml' }
-  - { resource: '../vendor/phpdocumentor/guides/config/services.yaml' }
 
 parameters:
     linker.substitutions:
