@@ -226,6 +226,8 @@ jobs:
           tools: pecl
 
       - name: Install Composer dependencies & cache dependencies
+        env:
+          COMPOSER_MIRROR_PATH_REPOS: 1
         uses: "ramsey/composer-install@v1"
         with:
           composer-options: --optimize-autoloader
