@@ -11,21 +11,17 @@ use phpDocumentor\Descriptor\GuideSetDescriptor;
 use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Formats\OutputFormat;
 use phpDocumentor\Guides\Formats\OutputFormats;
-use phpDocumentor\Guides\Markdown\Parser as MarkdownParser;
 use phpDocumentor\Guides\Metas;
 use phpDocumentor\Guides\Nodes\DocumentNode;
 use phpDocumentor\Guides\ParseFileCommand;
 use phpDocumentor\Guides\Parser as ParserInterface;
 use phpDocumentor\Guides\Renderer;
-use phpDocumentor\Guides\RestructuredText\HTML\HTMLFormat;
-use phpDocumentor\Guides\RestructuredText\LaTeX\LaTeXFormat;
 use phpDocumentor\Guides\UrlGenerator;
 use Psr\Log\LoggerInterface;
 
 use function filemtime;
 use function ltrim;
 use function sprintf;
-use function strtolower;
 use function trim;
 
 final class ParseFileHandler
@@ -42,14 +38,8 @@ final class ParseFileHandler
     /** @var UrlGenerator */
     private $urlGenerator;
 
-    /** @var MarkdownParser */
-    private $markdownParser;
-
-    /** @var ParserInterface */
-    private $rstHtmlParser;
-
-    /** @var ParserInterface */
-    private $rstLatexParser;
+    /** @var iterable<ParserInterface> */
+    private $parserStrategies;
 
     /** @var OutputFormats */
     private $outputFormats;
@@ -59,20 +49,15 @@ final class ParseFileHandler
         Renderer $renderer,
         LoggerInterface $logger,
         UrlGenerator $urlGenerator,
-        MarkdownParser $markdownParser,
-        ParserInterface $rstHtmlParser,
-        ParserInterface $rstLatexParser,
-        OutputFormats $outputFormats
+        OutputFormats $outputFormats,
+        iterable $parserStrategies
     ) {
         $this->metas = $metas;
         $this->logger = $logger;
         $this->renderer = $renderer;
         $this->urlGenerator = $urlGenerator;
-
-        $this->markdownParser = $markdownParser;
-        $this->rstHtmlParser = $rstHtmlParser;
-        $this->rstLatexParser = $rstLatexParser;
         $this->outputFormats = $outputFormats;
+        $this->parserStrategies = $parserStrategies;
     }
 
     public function handle(ParseFileCommand $command): void
@@ -241,20 +226,10 @@ final class ParseFileHandler
 
     private function determineParser(string $fileExtension, OutputFormat $format): ?ParserInterface
     {
-        switch (strtolower($fileExtension)) {
-            case 'rst':
-                if ($format instanceof HTMLFormat) {
-                    return $this->rstHtmlParser;
-                }
-
-                if ($format instanceof LaTeXFormat) {
-                    return $this->rstLatexParser;
-                }
-
-                break;
-
-            case 'md':
-                return $this->markdownParser;
+        foreach ($this->parserStrategies as $parserStrategy) {
+            if ($parserStrategy->supports($fileExtension, $format)) {
+                return $parserStrategy;
+            }
         }
 
         return null;

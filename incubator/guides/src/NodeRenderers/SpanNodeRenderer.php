@@ -20,9 +20,8 @@ use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\ReferenceBuilder;
 use phpDocumentor\Guides\Renderer;
-use phpDocumentor\Guides\RestructuredText\Span\SpanToken;
+use phpDocumentor\Guides\Span\SpanToken;
 use Symfony\Component\String\Slugger\AsciiSlugger;
-
 use function get_class;
 use function is_string;
 use function preg_replace;

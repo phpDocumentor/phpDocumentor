@@ -13,11 +13,14 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides;
 
+use phpDocumentor\Guides\Formats\OutputFormat;
 use phpDocumentor\Guides\NodeRenderers\NodeRendererFactory;
 use phpDocumentor\Guides\Nodes\DocumentNode;
 
 interface Parser
 {
+    public function supports(string $inputFormat, OutputFormat $outputFormat): bool;
+
     public function getEnvironment(): Environment;
 
     public function getReferenceBuilder(): ReferenceBuilder;

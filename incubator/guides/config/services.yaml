@@ -10,21 +10,6 @@ services:
   phpDocumentor\Guides\:
     resource: '../src/*'
 
-  phpDocumentor\Guides\Handlers\:
-    resource: '../src/Handlers/*Handler.php'
-    tags: [{name: tactician.handler, typehints: true}]
-
-  phpDocumentor\Guides\Handlers\ParseFileHandler:
-    arguments:
-      $rstHtmlParser: '@guides.parser.rst.html'
-      $rstLatexParser: '@guides.parser.rst.latex'
-    tags: [{name: tactician.handler, typehints: true}]
-
-  phpDocumentor\Guides\Handlers\RenderHandler:
-    arguments:
-      $references: !tagged_iterator phpdoc.guides.reference
-    tags: [{name: tactician.handler, typehints: true}]
-
   phpDocumentor\Guides\References\:
     resource: '../src/References/*'
     exclude:

@@ -234,9 +234,10 @@ services:
       arguments:
         $plantUmlBinaryPath: '%kernel.project_dir%/bin/plantuml'
 
-    ###################################################################################
-    ## Guides - EXPERIMENTAL ##########################################################
-    ###################################################################################
+###################################################################################
+## Guides - EXPERIMENTAL ##########################################################
+###################################################################################
+
     phpDocumentor\Transformer\Writer\RenderGuide:
       tags:
         - { name: "phpdoc.transformer.writer", key: 'RenderGuide'}
@@ -253,3 +254,17 @@ services:
     phpDocumentor\Pipeline\Stage\Cache\StoreGuidesToCache:
       tags:
         - { name: 'phpdoc.pipeline.api_documentation.parse', priority: -1000 }
+
+    phpDocumentor\Guides\Handlers\:
+      resource: '../src/phpDocumentor/Guides/Handlers/*Handler.php'
+      tags: [{name: tactician.handler, typehints: true}]
+
+    phpDocumentor\Guides\Handlers\ParseFileHandler:
+      arguments:
+        $parserStrategies: !tagged_iterator phpdoc.guides.parser.strategy
+      tags: [{name: tactician.handler, typehints: true}]
+
+    phpDocumentor\Guides\Handlers\RenderHandler:
+      arguments:
+        $references: !tagged_iterator phpdoc.guides.reference
+      tags: [{name: tactician.handler, typehints: true}]

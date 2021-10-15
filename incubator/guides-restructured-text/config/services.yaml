@@ -18,6 +18,7 @@ services:
       $directives: !tagged_iterator phpdoc.guides.directive
       $references: !tagged_iterator phpdoc.guides.reference
       $format: '@phpDocumentor\Guides\RestructuredText\HTML\HTMLFormat'
+    tags: [ { name: 'phpdoc.guides.parser.strategy' } ]
 
   guides.parser.rst.latex:
     class: phpDocumentor\Guides\RestructuredText\Parser
@@ -25,6 +26,7 @@ services:
       $directives: !tagged_iterator phpdoc.guides.directive
       $references: !tagged_iterator phpdoc.guides.reference
       $format: '@phpDocumentor\Guides\RestructuredText\LaTeX\LaTeXFormat'
+    tags: [ { name: 'phpdoc.guides.parser.strategy' } ]
 
   phpDocumentor\Guides\RestructuredText\Directives\:
     resource: '../src/RestructuredText/Directives/*'

@@ -6,6 +6,7 @@ namespace phpDocumentor\Guides\RestructuredText;
 
 use Doctrine\Common\EventManager;
 use phpDocumentor\Guides\Environment;
+use phpDocumentor\Guides\Formats\OutputFormat;
 use phpDocumentor\Guides\NodeRenderers\NodeRendererFactory;
 use phpDocumentor\Guides\Nodes\DocumentNode;
 use phpDocumentor\Guides\Parser as ParserInterface;
@@ -13,12 +14,14 @@ use phpDocumentor\Guides\ReferenceBuilder;
 use phpDocumentor\Guides\References\Doc;
 use phpDocumentor\Guides\References\Reference;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive;
+use phpDocumentor\Guides\RestructuredText\OutputFormat as RestructuredTextOutputFormat;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
 use RuntimeException;
 
 use function array_merge;
 use function is_array;
 use function iterator_to_array;
+use function strtolower;
 
 class Parser implements ParserInterface
 {
@@ -51,7 +54,7 @@ class Parser implements ParserInterface
      * @param iterable<Reference> $references
      */
     public function __construct(
-        OutputFormat $format,
+        RestructuredTextOutputFormat $format,
         ReferenceBuilder $referenceRegistry,
         EventManager $eventManager,
         iterable $directives,
@@ -65,6 +68,11 @@ class Parser implements ParserInterface
 
         $this->initDirectives($this->directives);
         $this->initReferences($this->references);
+    }
+
+    public function supports(string $inputFormat, OutputFormat $outputFormat): bool
+    {
+        return strtolower($inputFormat) === 'rst' && $this->format === $outputFormat;
     }
 
     public function getSubParser(): Parser

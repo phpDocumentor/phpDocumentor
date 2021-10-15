@@ -1,0 +1,12 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  phpDocumentor\Guides\:
+    resource: '../src/*'
+
+  guides.parser.markdown:
+    class: phpDocumentor\Guides\Markdown\Parser
+    tags: [ { name: 'phpdoc.guides.parser.strategy' } ]
