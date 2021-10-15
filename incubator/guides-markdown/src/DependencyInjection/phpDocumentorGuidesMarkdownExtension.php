@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
-class phpDocumentorGuidesExtension extends Extension
+class phpDocumentorGuidesMarkdownExtension extends Extension
 {
     /**
      * @param mixed[] $configs
