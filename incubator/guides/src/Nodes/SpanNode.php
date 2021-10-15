@@ -16,6 +16,7 @@ namespace phpDocumentor\Guides\Nodes;
 use phpDocumentor\Guides\Parser;
 use phpDocumentor\Guides\RestructuredText\Span\SpanParser;
 use phpDocumentor\Guides\Span\SpanToken;
+
 use function get_class;
 use function implode;
 use function is_array;

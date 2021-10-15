@@ -44,6 +44,9 @@ final class ParseFileHandler
     /** @var OutputFormats */
     private $outputFormats;
 
+    /**
+     * @param iterable<ParserInterface> $parserStrategies
+     */
     public function __construct(
         Metas $metas,
         Renderer $renderer,

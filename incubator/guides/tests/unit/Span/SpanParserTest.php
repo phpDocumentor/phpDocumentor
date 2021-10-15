@@ -2,15 +2,16 @@
 
 declare(strict_types=1);
 
-namespace phpDocumentor\Guides\RestructuredText\Span;
+namespace phpDocumentor\Guides\Span;
 
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\ReferenceBuilder;
-use phpDocumentor\Guides\Span\SpanToken;
+use phpDocumentor\Guides\RestructuredText\Span\SpanParser;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
+
 use function current;
 
 final class SpanParserTest extends TestCase

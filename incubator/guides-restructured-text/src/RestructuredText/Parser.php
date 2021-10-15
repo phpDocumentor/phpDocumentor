@@ -43,7 +43,7 @@ class Parser implements ParserInterface
     /** @var EventManager */
     private $eventManager;
 
-    /** @var OutputFormat */
+    /** @var RestructuredTextOutputFormat */
     private $format;
 
     /** @var ReferenceBuilder */
