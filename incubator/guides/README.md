@@ -25,7 +25,9 @@ format, such as Restructured Text, and plug in an output format to output toward
 - HTML
 - LaTeX; Well-supported, though a work in progress
 
-## TODO: Separating the Guides library into input format packages
+## TODOs
+
+### Separating the Guides library into input format packages
 
 Separating the Guides library into separate packages has recently been started, in this package there is still overlap
 with the Restructured Text add-on package and needs to be addressed. The following pieces of code need to be refactored
@@ -34,7 +36,7 @@ to be input format agnostic:
 1. Table(Node)
 2. Span(Node)
 
-## TODO: Extracting the output formats
+### Extracting the output formats
 
 The output formats / rendering is currently still inside this package and the twig templates are in phpDocumentor's 
 main package. Twig is expected to still be the core method for creating the output, but we would like to extract the
