@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace phpDocumentor\Guides\RestructuredText\Handlers;
+namespace phpDocumentor\Guides\Handlers;
 
 use InvalidArgumentException;
 use League\Flysystem\FilesystemInterface;
 use League\Tactician\CommandBus;
 use phpDocumentor\Guides\FileCollector;
-use phpDocumentor\Guides\RestructuredText\ParseDirectoryCommand;
-use phpDocumentor\Guides\RestructuredText\ParseFileCommand;
+use phpDocumentor\Guides\ParseDirectoryCommand;
+use phpDocumentor\Guides\ParseFileCommand;
 
 use function sprintf;
 

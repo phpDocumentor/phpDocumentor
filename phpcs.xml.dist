@@ -3,7 +3,9 @@
     <description>The coding standard for phpDocumentor.</description>
 
     <file>src</file>
+    <file>incubator/guides/src</file>
     <file>tests/unit</file>
+    <file>incubator/guides/tests/unit</file>
     <arg value="p"/>
     <arg name="extensions" value="php"/>
     <arg name="basepath" value="."/>
@@ -51,6 +53,11 @@
                 <element value="@version"/>
             </property>
         </properties>
+    </rule>
+
+    <rule ref="Squiz.Classes.ValidClassName.NotCamelCaps">
+        <exclude-pattern>*/phpDocumentor*Bundle\.php$</exclude-pattern>
+        <exclude-pattern>*/phpDocumentor*Extension\.php$</exclude-pattern>
     </rule>
 
     <rule ref="SlevomatCodingStandard.Functions.StaticClosure.ClosureNotStatic">

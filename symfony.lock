@@ -77,6 +77,9 @@
     "phpdocumentor/graphviz": {
         "version": "1.0.4"
     },
+    "phpdocumentor/guides": {
+        "version": "dev-feature/make-guides-a-package-within-phpdocumentor"
+    },
     "phpdocumentor/reflection": {
         "version": "4.0.x-dev"
     },
@@ -205,6 +208,9 @@
     },
     "symfony/polyfill-php80": {
         "version": "v1.18.1"
+    },
+    "symfony/polyfill-php81": {
+        "version": "v1.23.0"
     },
     "symfony/process": {
         "version": "v5.0.0"

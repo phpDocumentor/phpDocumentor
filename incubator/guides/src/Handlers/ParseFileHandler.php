@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace phpDocumentor\Guides\RestructuredText\Handlers;
+namespace phpDocumentor\Guides\Handlers;
 
 use InvalidArgumentException;
 use League\Flysystem\FilesystemInterface;
@@ -14,11 +14,11 @@ use phpDocumentor\Guides\Formats\OutputFormats;
 use phpDocumentor\Guides\Markdown\Parser as MarkdownParser;
 use phpDocumentor\Guides\Metas;
 use phpDocumentor\Guides\Nodes\DocumentNode;
+use phpDocumentor\Guides\ParseFileCommand;
 use phpDocumentor\Guides\Parser as ParserInterface;
 use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\RestructuredText\HTML\HTMLFormat;
 use phpDocumentor\Guides\RestructuredText\LaTeX\LaTeXFormat;
-use phpDocumentor\Guides\RestructuredText\ParseFileCommand;
 use phpDocumentor\Guides\UrlGenerator;
 use Psr\Log\LoggerInterface;
 
@@ -167,6 +167,7 @@ final class ParseFileHandler
         }
 
         $environment->reset();
+
         return $parser->parse(
             $environment,
             $this->getFileContents($environment->getOrigin(), $path)

@@ -76,3 +76,5 @@ parameters:
     - %currentWorkingDirectory%/tests/unit/**/*.php
     - %currentWorkingDirectory%/tests/integration/**/*.php
     - %currentWorkingDirectory%/tests/functional/**/*.php
+    - %currentWorkingDirectory%/incubator/guides/tests/unit/*.php
+    - %currentWorkingDirectory%/incubator/guides/tests/unit/**/*.php

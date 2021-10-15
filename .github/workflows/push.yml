@@ -155,7 +155,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          args: analyse src tests --configuration phpstan.neon
+          args: analyse src tests incubator/guides/src incubator/guides/tests --configuration phpstan.neon
 
   psalm:
     runs-on: ubuntu-latest
@@ -226,6 +226,8 @@ jobs:
           tools: pecl
 
       - name: Install Composer dependencies & cache dependencies
+        env:
+          COMPOSER_MIRROR_PATH_REPOS: 1
         uses: "ramsey/composer-install@v1"
         with:
           composer-options: --optimize-autoloader

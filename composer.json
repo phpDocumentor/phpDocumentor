@@ -6,13 +6,11 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "phpDocumentor\\Guides\\": "src/Guides/",
             "phpDocumentor\\": [ "src/phpDocumentor/" ]
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "phpDocumentor\\Guides\\": "tests/unit/Guides/",
             "phpDocumentor\\": [
                 "tests/unit/phpDocumentor/",
                 "tests/integration/phpDocumentor/",
@@ -23,6 +21,12 @@
             ]
         }
     },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "incubator/guides"
+        }
+    ],
     "require": {
         "php": ">=7.2.5||^8.0",
         "ext-ctype": "*",
@@ -32,8 +36,7 @@
         "ext-mbstring": "*",
         "ext-simplexml": "*",
         "ext-xml": "*",
-        "doctrine/event-manager": "^1.1",
-        "doctrine/lexer": "^1.2",
+        "phpdocumentor/guides": "*@dev",
         "jawira/plantuml": "^1.27",
         "jean85/pretty-package-versions": "^1.5 || ^2.0.1",
         "league/commonmark": "^1.5",
@@ -41,7 +44,7 @@
         "league/pipeline": "^1.0",
         "league/tactician": "^1.0",
         "league/tactician-bundle": "^1.2",
-        "league/uri": "^6.0",
+        "league/uri": "~6.3.0",
         "league/uri-interfaces": "^2.0",
         "phpdocumentor/flyfinder": "^1.0",
         "phpdocumentor/graphviz": "^2.0",

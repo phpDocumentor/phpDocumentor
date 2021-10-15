@@ -18,6 +18,7 @@ help:
 	@echo "setup            - Installs phive and all phar-based dependencies";
 	@echo "install-phive    - Installs phive, the phar.io package manager.";
 	@echo "pull-containers  - pulls all development docker containers";
+	@echo "composer         - Runs composer install from within the phpdoc container";
 	@echo "shell            - starts the phpDocumentor docker container and opens a terminal";
 	@echo "";
 	@echo "== Automated testing ==";
@@ -38,12 +39,13 @@ help:
 	@echo "psalm            - performs static analysis on the codebase using psalm";
 	@echo "";
 	@echo "== Release tools ==";
+	@echo "composer-mirror  - Runs a production-version of composer install for, i.e., the phar building";
 	@echo "phar             - Creates the PHAR file";
 	@echo "docs			    - Creates local docs docker image";
 	@echo "";
 
 .PHONY: phar
-phar:
+phar: composer-mirror
 	php ./bin/console --env=prod cache:warmup; \
 	php -d phar.readonly=false tools/box.phar compile --config=box.json
 
@@ -79,7 +81,7 @@ phpcbf:
 
 .PHONY: phpstan
 phpstan:
-	docker run -it --rm -v${CURDIR}:/opt/project -w /opt/project phpdoc/phpstan-ga:latest analyse src tests --configuration phpstan.neon ${ARGS}
+	docker run -it --rm -v${CURDIR}:/opt/project -w /opt/project phpdoc/phpstan-ga:latest analyse src tests incubator/*/src incubator/*/tests --configuration phpstan.neon ${ARGS}
 
 .PHONY: psalm
 psalm:
@@ -114,6 +116,15 @@ composer-require-checker:
 
 .PHONY: pre-commit-test
 pre-commit-test: test phpcs phpstan psalm composer-require-checker
+
+.PHONY: composer
+composer:
+	${.DOCKER_COMPOSE_RUN} --entrypoint=/usr/bin/composer phpdoc install
+
+.PHONY: composer-mirror
+composer-mirror:
+	rm -rf vendor/phpdocumentor/guides*
+	${.DOCKER_COMPOSE_RUN} -e "COMPOSER_MIRROR_PATH_REPOS=1" --entrypoint=/usr/bin/composer phpdoc install --optimize-autoloader
 
 .PHONY: shell
 shell:
