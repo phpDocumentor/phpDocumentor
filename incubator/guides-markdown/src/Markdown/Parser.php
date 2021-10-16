@@ -15,6 +15,7 @@ use League\CommonMark\Inline\Element\Link;
 use League\CommonMark\Inline\Element\Text;
 use League\CommonMark\Node\NodeWalker;
 use phpDocumentor\Guides\Environment;
+use phpDocumentor\Guides\Formats\OutputFormat;
 use phpDocumentor\Guides\Markdown\Parsers\AbstractBlock;
 use phpDocumentor\Guides\NodeRenderers\NodeRendererFactory;
 use phpDocumentor\Guides\Nodes\AnchorNode;
@@ -31,6 +32,7 @@ use RuntimeException;
 
 use function get_class;
 use function md5;
+use function strtolower;
 
 final class Parser implements ParserInterface
 {
@@ -62,6 +64,11 @@ final class Parser implements ParserInterface
             new Parsers\ListBlock(),
             new Parsers\ThematicBreak(),
         ];
+    }
+
+    public function supports(string $inputFormat, OutputFormat $outputFormat): bool
+    {
+        return strtolower($inputFormat) === 'md';
     }
 
     public function parse(Environment $environment, string $contents): DocumentNode

@@ -33,6 +33,11 @@ class Sourcecode extends WriterAbstract
         $this->pathGenerator = $pathGenerator;
     }
 
+    public function getName(): string
+    {
+        return 'sourcecode';
+    }
+
     /**
      * This method writes every source code entry in the structure file to a highlighted file.
      *

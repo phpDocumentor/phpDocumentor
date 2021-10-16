@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\Nodes;
 
-use phpDocumentor\Guides\RestructuredText\Parser\DefinitionList;
+use phpDocumentor\Guides\DefinitionList;
 
 class DefinitionListNode extends Node
 {

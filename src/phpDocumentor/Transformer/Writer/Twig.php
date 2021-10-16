@@ -106,6 +106,11 @@ final class Twig extends WriterAbstract implements Initializable
         $this->pathGenerator = $pathGenerator;
     }
 
+    public function getName(): string
+    {
+        return 'twig';
+    }
+
     public function initialize(ProjectDescriptor $project, Template $template): void
     {
         $this->environment = $this->environmentFactory->create($project, $template);

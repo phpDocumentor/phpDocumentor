@@ -44,6 +44,11 @@ final class Graph extends WriterAbstract implements ProjectDescriptor\WithCustom
         $this->plantumlClassDiagram = $plantumlClassDiagram;
     }
 
+    public function getName(): string
+    {
+        return 'Graph';
+    }
+
     /**
      * @return array<string, bool>
      */

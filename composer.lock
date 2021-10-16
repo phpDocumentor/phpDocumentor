@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9e0f5099bd3c14b9f8b17713a5fdc394",
+    "content-hash": "4c93adef10b86db163fcf74f6a9e58c1",
     "packages": [
         {
             "name": "doctrine/event-manager",
@@ -1261,20 +1261,85 @@
         },
         {
             "name": "phpdocumentor/guides",
-            "version": "dev-feature/make-guides-a-package-within-phpdocumentor",
+            "version": "dev-feature/split-guides-incubator-package",
             "dist": {
                 "type": "path",
                 "url": "incubator/guides",
-                "reference": "4879277885afbd8689c14a6c3dfa196e3a0d5bad"
+                "reference": "630a398f9eb34e854f328673e0ee7463a7971afd"
             },
             "require": {
-                "doctrine/event-manager": "^1.1",
-                "doctrine/lexer": "^1.2",
-                "league/commonmark": "^1.5",
                 "league/flysystem": "^1.0",
                 "php": ">=7.2.5||^8.0",
                 "phpdocumentor/flyfinder": "^1.0",
                 "twig/twig": "~2.0",
+                "webmozart/assert": "^1.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "phpDocumentor\\Guides\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "phpDocumentor\\Guides\\": [
+                        "tests/unit/"
+                    ]
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "homepage": "https://www.phpdoc.org",
+            "transport-options": {
+                "relative": true
+            }
+        },
+        {
+            "name": "phpdocumentor/guides-markdown",
+            "version": "dev-feature/split-guides-incubator-package",
+            "dist": {
+                "type": "path",
+                "url": "incubator/guides-markdown",
+                "reference": "1c4634b201274918d7d23711410dc7114ae68a87"
+            },
+            "require": {
+                "league/commonmark": "^1.5",
+                "php": ">=7.2.5||^8.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "phpDocumentor\\Guides\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "phpDocumentor\\Guides\\": [
+                        "tests/unit/"
+                    ]
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "homepage": "https://www.phpdoc.org",
+            "transport-options": {
+                "relative": true
+            }
+        },
+        {
+            "name": "phpdocumentor/guides-restructured-text",
+            "version": "dev-feature/split-guides-incubator-package",
+            "dist": {
+                "type": "path",
+                "url": "incubator/guides-restructured-text",
+                "reference": "479c5eb3cc86b3604c33bf251110c51b23916953"
+            },
+            "require": {
+                "doctrine/event-manager": "^1.1",
+                "doctrine/lexer": "^1.2",
+                "php": ">=7.2.5||^8.0",
                 "webmozart/assert": "^1.3"
             },
             "type": "library",
@@ -4832,7 +4897,9 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "phpdocumentor/guides": 20
+        "phpdocumentor/guides": 20,
+        "phpdocumentor/guides-restructured-text": 20,
+        "phpdocumentor/guides-markdown": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

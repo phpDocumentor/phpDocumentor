@@ -92,7 +92,7 @@ lint: phpcs
 
 .PHONY: test
 test: unit-test
-	docker run -it --rm -v${CURDIR}:/data -w /data php:7.2 -f ./tests/coverage-checker.php 70
+	docker run -it --rm -v${CURDIR}:/data -w /data php:7.2 -f ./tests/coverage-checker.php 65
 
 .PHONY: unit-test
 unit-test: SUITE=--testsuite=unit

@@ -33,6 +33,11 @@ class FileIo extends WriterAbstract
 {
     use IoTrait;
 
+    public function getName(): string
+    {
+        return 'FileIo';
+    }
+
     /**
      * Invokes the query method contained in this class.
      *

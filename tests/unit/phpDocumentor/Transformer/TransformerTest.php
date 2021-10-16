@@ -55,6 +55,7 @@ final class TransformerTest extends TestCase
     protected function setUp(): void
     {
         $this->writer = $this->prophesize(WriterAbstract::class);
+        $this->writer->getName()->willReturn('myTestWriter');
         $this->writer->__toString()->willReturn('myTestWriter');
         $this->flySystemFactory = $this->prophesize(FlySystemFactory::class);
         $this->flySystemFactory->create(Argument::any())->willReturn($this->faker()->fileSystem());

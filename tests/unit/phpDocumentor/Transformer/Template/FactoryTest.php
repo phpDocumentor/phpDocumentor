@@ -53,9 +53,9 @@ final class FactoryTest extends TestCase
         $this->fixture = new Factory(
             new WriterCollection(
                 [
-                    'FileIo' => $this->prophesize(WriterAbstract::class)->reveal(),
-                    'twig' => $this->prophesize(WriterAbstract::class)->reveal(),
-                    'Graph' => $this->prophesize(WriterAbstract::class)->reveal(),
+                    'FileIo' => $this->givenWriterWithName('FileIo')->reveal(),
+                    'twig' => $this->givenWriterWithName('twig')->reveal(),
+                    'Graph' => $this->givenWriterWithName('Graph')->reveal(),
                 ]
             ),
             $this->flySystemFactory,
@@ -197,5 +197,14 @@ XML;
         $templateDirectory->addChild(vfsStream::newFile('template.xml')->setContent($xml));
 
         return $templateDirectory;
+    }
+
+    private function givenWriterWithName(string $name): ObjectProphecy
+    {
+        $writer = $this->prophesize(WriterAbstract::class);
+        $writer->getName()->willReturn($name);
+        $writer->checkRequirements();
+
+        return $writer;
     }
 }

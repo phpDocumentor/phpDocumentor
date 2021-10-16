@@ -15,27 +15,18 @@ namespace phpDocumentor\Transformer\Writer;
 
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
-use stdClass;
 
 /**
- * Test class for phpDocumentor\Transformer\Writer\Collection
+ * @coversDefaultClass \phpDocumentor\Transformer\Writer\Collection
+ * @covers ::__construct
+ * @covers ::<private>
  */
 final class CollectionTest extends TestCase
 {
     use ProphecyTrait;
 
     /**
-     * @covers \phpDocumentor\Transformer\Writer\Collection::__construct
-     */
-    public function testThrowsErrorOnInvalidWriterRegistration(): void
-    {
-        $this->expectException('InvalidArgumentException');
-
-        new Collection(['key' => new stdClass()]);
-    }
-
-    /**
-     * @covers \phpDocumentor\Transformer\Writer\Collection::get
+     * @covers ::get
      */
     public function testOffsetGetWithNonExistingIndex(): void
     {
@@ -45,23 +36,26 @@ final class CollectionTest extends TestCase
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Writer\Collection::get
+     * @covers ::get
+     * @covers ::register
      */
     public function testOffsetGetWithExistingIndex(): void
     {
         $writer = $this->prophesize(WriterAbstract::class);
-        $fixture = new Collection(['key' => $writer->reveal()]);
+        $writer->getName()->willReturn('key');
+        $fixture = new Collection([$writer->reveal()]);
 
         self::assertSame($writer->reveal(), $fixture->get('key'));
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Writer\Collection::checkRequirements
+     * @covers ::checkRequirements
      */
     public function testCheckRequirements(): void
     {
         $writer = $this->prophesize(WriterAbstract::class);
-        $fixture = new Collection(['key' => $writer->reveal()]);
+        $writer->getName()->willReturn('key');
+        $fixture = new Collection([$writer->reveal()]);
 
         $writer->checkRequirements()->shouldBeCalledOnce();
         $fixture->checkRequirements();

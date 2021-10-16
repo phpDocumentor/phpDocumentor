@@ -2,6 +2,7 @@ imports:
   - { resource: 'pipelines.yaml' }
   - { resource: 'reflection.yaml' }
   - { resource: 'stages.yaml' }
+  - { resource: 'guides.yaml' }
 
 parameters:
     linker.substitutions:
@@ -69,6 +70,9 @@ services:
       phpDocumentor\Descriptor\Filter\FilterInterface:
         tags: ['phpdoc.descriptor.filter']
 
+      phpDocumentor\Transformer\Writer\WriterAbstract:
+        tags: ['phpdoc.transformer.writer']
+
     ###################################################################################
     ## Autoloading definitions for whole namespaces ###################################
     ###################################################################################
@@ -79,12 +83,10 @@ services:
           - '../src/phpDocumentor/**/Messages'
           - '../src/phpDocumentor/Pipeline/Stage'
           - '../src/phpDocumentor/Transformer/**/{Event, Exception}/{**}'
+          - '../src/phpDocumentor/Guides'
 
     phpDocumentor\Console\:
         resource: '../src/phpDocumentor/Console'
-
-    phpDocumentor\Descriptor\:
-        resource: '../src/phpDocumentor/Descriptor'
 
     phpDocumentor\Parser\:
         resource: '../src/phpDocumentor/Parser'
@@ -209,47 +211,11 @@ services:
     ## Writers ########################################################################
     ###################################################################################
 
-    phpDocumentor\Transformer\Writer\FileIo:
-      tags:
-        - { name: "phpdoc.transformer.writer", key: 'FileIo'}
-
-    phpDocumentor\Transformer\Writer\Sourcecode:
-      tags:
-        - { name: "phpdoc.transformer.writer", key: 'sourcecode' }
-
-    phpDocumentor\Transformer\Writer\Graph:
-      tags:
-        - { name: "phpdoc.transformer.writer", key: 'Graph' }
-
-    phpDocumentor\Transformer\Writer\Twig:
-      tags:
-        - { name: "phpdoc.transformer.writer", key: 'twig' }
-
     phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory: ~
 
     phpDocumentor\Transformer\Writer\Collection:
-        arguments: [!tagged_iterator { tag: 'phpdoc.transformer.writer', index_by: 'key' }]
+        arguments: [!tagged_iterator { tag: 'phpdoc.transformer.writer' }]
 
     phpDocumentor\Transformer\Writer\Graph\PlantumlRenderer:
       arguments:
         $plantUmlBinaryPath: '%kernel.project_dir%/bin/plantuml'
-
-    ###################################################################################
-    ## Guides - EXPERIMENTAL ##########################################################
-    ###################################################################################
-    phpDocumentor\Transformer\Writer\RenderGuide:
-      tags:
-        - { name: "phpdoc.transformer.writer", key: 'RenderGuide'}
-
-    phpDocumentor\Pipeline\Stage\Parser\ParseGuides:
-      tags:
-        - { name: 'phpdoc.pipeline.api_documentation.parse', priority: 0 }
-
-    phpDocumentor\Pipeline\Stage\Cache\LoadGuidesFromCache:
-      tags:
-        - { name: 'phpdoc.pipeline.api_documentation.parse', priority: 2000 }
-        - { name: 'phpdoc.pipeline.api_documentation.transform', priority: 5000 }
-
-    phpDocumentor\Pipeline\Stage\Cache\StoreGuidesToCache:
-      tags:
-        - { name: 'phpdoc.pipeline.api_documentation.parse', priority: -1000 }

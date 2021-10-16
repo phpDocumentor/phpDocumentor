@@ -22,6 +22,14 @@ use phpDocumentor\Transformer\Transformation;
 abstract class WriterAbstract
 {
     /**
+     * Name of this writer, used to identify this writer.
+     *
+     * This name is also used in {@see \phpDocumentor\Transformer\Writer\Collection} as key and should match the
+     * name provided in the template definitions' transformations.
+     */
+    abstract public function getName(): string;
+
+    /**
      * This method verifies whether PHP has all requirements needed to run this writer.
      *
      * If one of the requirements is missing for this Writer then an exception of type RequirementMissing

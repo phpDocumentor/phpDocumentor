@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace phpDocumentor\Guides\RestructuredText\Span;
+namespace phpDocumentor\Guides\Span;
 
 class SpanToken
 {

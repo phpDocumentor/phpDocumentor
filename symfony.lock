@@ -80,6 +80,12 @@
     "phpdocumentor/guides": {
         "version": "dev-feature/make-guides-a-package-within-phpdocumentor"
     },
+    "phpdocumentor/guides-markdown": {
+        "version": "dev-feature/split-guides-incubator-package"
+    },
+    "phpdocumentor/guides-restructured-text": {
+        "version": "dev-feature/split-guides-incubator-package"
+    },
     "phpdocumentor/reflection": {
         "version": "4.0.x-dev"
     },
