@@ -7,9 +7,53 @@ services:
     autowire: true
     autoconfigure: true
     public: false
+  _instanceof:
+    phpDocumentor\Guides\Parser:
+      tags: ['phpdoc.guides.parser.strategy']
+    phpDocumentor\Guides\Formats\OutputFormat:
+      tags: ['phpdoc.guides.format']
+    phpDocumentor\Guides\References\Reference:
+      tags: ['phpdoc.guides.reference']
+    phpDocumentor\Guides\RestructuredText\Directives\Directive:
+      tags: ['phpdoc.guides.directive']
 
-  phpDocumentor\Guides\:
+  Doctrine\Common\EventManager: ~
+
+  phpdoc.app.guides:
+    namespace: phpDocumentor\Guides\
     resource: '../src/phpDocumentor/Guides/*'
+
+  phpdoc.guides:
+    namespace: phpDocumentor\Guides\
+    exclude:
+      - '../incubator/guides/src/Nodes/*'
+      - '../incubator/guides/src/Meta/*'
+      - '../incubator/guides/src/Span/*'
+    resource: '../incubator/guides/src/*'
+
+  phpdoc.guides.markdown:
+    namespace: phpDocumentor\Guides\
+    resource: '../incubator/guides-markdown/src/*'
+
+  phpdoc.guides.restructuredtext:
+    namespace: phpDocumentor\Guides\
+    exclude:
+      # Explicitly exclude the parser itself as the output $format dictates how it is used; as such, a parser should
+      # always be explicitly passed through the use of the named services defined
+      - '../incubator/guides-restructured-text/src/RestructuredText/Parser.php'
+      - '../incubator/guides-restructured-text/src/RestructuredText/Event/*'
+      - '../incubator/guides-restructured-text/src/RestructuredText/Parser/*'
+    resource: '../incubator/guides-restructured-text/src/*'
+
+  phpDocumentor\Guides\RestructuredText\HTML\Directives\:
+    resource: '../incubator/guides-restructured-text/src/RestructuredText/HTML/Directives/*'
+    exclude:
+      - '../incubator/guides-restructured-text/src/RestructuredText/HTML/Directives/AbstractAdmonitionDirective.php'
+    tags: [ { name: 'phpdoc.guides.html_directive' } ]
+
+  phpDocumentor\Guides\RestructuredText\LaTeX\Directives\:
+    resource: '../incubator/guides-restructured-text/src/RestructuredText/LaTeX/Directives/*'
+    tags: [ { name: 'phpdoc.guides.latex_directive' } ]
 
   phpDocumentor\Guides\Handlers\:
     resource: '../src/phpDocumentor/Guides/Handlers/*Handler.php'
@@ -37,3 +81,35 @@ services:
     arguments:
       $references: !tagged_iterator phpdoc.guides.reference
     tags: [{name: tactician.handler, typehints: true}]
+
+  phpDocumentor\Guides\Formats\OutputFormats:
+    arguments:
+      $outputFormats: !tagged_iterator phpdoc.guides.format
+
+  phpDocumentor\Guides\RestructuredText\HTML\HTMLFormat:
+    arguments:
+      $fileExtension: 'html'
+      $directives: !tagged_iterator phpdoc.guides.html_directive
+    tags: ['phpdoc.guides.format']
+
+  phpDocumentor\Guides\RestructuredText\LaTeX\LaTeXFormat:
+    arguments:
+      $fileExtension: 'tex'
+      $directives: !tagged_iterator phpdoc.guides.latex_directive
+    tags: ['phpdoc.guides.format']
+
+  guides.parser.rst.html:
+    class: phpDocumentor\Guides\RestructuredText\Parser
+    arguments:
+      $directives: !tagged_iterator phpdoc.guides.directive
+      $references: !tagged_iterator phpdoc.guides.reference
+      $format: '@phpDocumentor\Guides\RestructuredText\HTML\HTMLFormat'
+    tags: ['phpdoc.guides.parser.strategy']
+
+  guides.parser.rst.latex:
+    class: phpDocumentor\Guides\RestructuredText\Parser
+    arguments:
+      $directives: !tagged_iterator phpdoc.guides.directive
+      $references: !tagged_iterator phpdoc.guides.reference
+      $format: '@phpDocumentor\Guides\RestructuredText\LaTeX\LaTeXFormat'
+    tags: ['phpdoc.guides.parser.strategy']
