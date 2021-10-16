@@ -14,11 +14,8 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Writer;
 
 use InvalidArgumentException;
-use Traversable;
-use Webmozart\Assert\Assert;
 
 use function array_key_exists;
-use function iterator_to_array;
 
 /**
  * A collection of Writer objects.
@@ -30,14 +27,19 @@ use function iterator_to_array;
 final class Collection
 {
     /** @var array<string, WriterAbstract> */
-    private $writers;
+    private $writers = [];
 
     /** @param iterable<string, WriterAbstract> $writers */
-    public function __construct(iterable $writers)
+    public function __construct(iterable $writers = [])
     {
-        $writers = $writers instanceof Traversable ? iterator_to_array($writers) : $writers;
-        Assert::allIsInstanceOf($writers, WriterAbstract::class);
-        $this->writers = $writers;
+        foreach ($writers as $writer) {
+            $this->register($writer);
+        }
+    }
+
+    public function register(WriterAbstract $writer): void
+    {
+        $this->writers[$writer->getName()] = $writer;
     }
 
     /**

@@ -58,6 +58,11 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
         $this->flySystemFactory = $flySystemFactory;
     }
 
+    public function getName(): string
+    {
+        return 'RenderGuide';
+    }
+
     public function transform(ProjectDescriptor $project, Transformation $transformation): void
     {
         // Feature flag: Guides are disabled by default since this is an experimental feature
