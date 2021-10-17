@@ -7,7 +7,7 @@ namespace phpDocumentor\Guides\RestructuredText\LaTeX\Directives;
 use phpDocumentor\Guides\Nodes\MainNode;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive;
-use phpDocumentor\Guides\RestructuredText\Parser;
+use phpDocumentor\Guides\RestructuredText\MarkupLanguageParser;
 
 /**
  * Marks the document as LaTeX main
@@ -23,7 +23,7 @@ class LaTeXMain extends Directive
      * @param string[] $options
      */
     public function processNode(
-        Parser $parser,
+        MarkupLanguageParser $parser,
         string $variable,
         string $data,
         array $options

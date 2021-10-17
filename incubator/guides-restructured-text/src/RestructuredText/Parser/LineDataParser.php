@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\RestructuredText\Parser;
 
 use Doctrine\Common\EventManager;
-use phpDocumentor\Guides\DefinitionList;
-use phpDocumentor\Guides\DefinitionListTerm;
-use phpDocumentor\Guides\Link;
-use phpDocumentor\Guides\ListLine;
+use phpDocumentor\Guides\Nodes\DefinitionLists\DefinitionList;
+use phpDocumentor\Guides\Nodes\DefinitionLists\DefinitionListTerm;
+use phpDocumentor\Guides\Nodes\Links\Link;
+use phpDocumentor\Guides\Nodes\Lists\ListItem;
 use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\RestructuredText\Event\OnLinkParsedEvent;
-use phpDocumentor\Guides\RestructuredText\Parser;
+use phpDocumentor\Guides\RestructuredText\MarkupLanguageParser;
 
 use function array_map;
 use function count;
@@ -23,13 +23,13 @@ use function trim;
 
 class LineDataParser
 {
-    /** @var Parser */
+    /** @var MarkupLanguageParser */
     private $parser;
 
     /** @var EventManager */
     private $eventManager;
 
-    public function __construct(Parser $parser, EventManager $eventManager)
+    public function __construct(MarkupLanguageParser $parser, EventManager $eventManager)
     {
         $this->parser = $parser;
         $this->eventManager = $eventManager;
@@ -106,7 +106,7 @@ class LineDataParser
         return null;
     }
 
-    public function parseListLine(string $line): ?ListLine
+    public function parseListLine(string $line): ?ListItem
     {
         $depth = 0;
 
@@ -123,7 +123,7 @@ class LineDataParser
         }
 
         if (preg_match('/^((\*|\-)|([\d#]+)\.) (.+)$/', trim($line), $match) > 0) {
-            return new ListLine(
+            return new ListItem(
                 $line[$i],
                 $line[$i] !== '*' && $line[$i] !== '-',
                 $depth,
@@ -132,7 +132,7 @@ class LineDataParser
         }
 
         if (strlen($line) === 1 && $line[0] === '-') {
-            return new ListLine(
+            return new ListItem(
                 $line[$i],
                 $line[$i] !== '*' && $line[$i] !== '-',
                 $depth,

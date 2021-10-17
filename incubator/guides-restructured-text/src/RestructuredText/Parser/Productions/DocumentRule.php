@@ -11,7 +11,7 @@ use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\SectionEndNode;
 use phpDocumentor\Guides\Nodes\TitleNode;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive as DirectiveHandler;
-use phpDocumentor\Guides\RestructuredText\Parser;
+use phpDocumentor\Guides\RestructuredText\MarkupLanguageParser;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
 use phpDocumentor\Guides\RestructuredText\Parser\LineDataParser;
 use phpDocumentor\Guides\RestructuredText\Parser\LinesIterator;
@@ -26,24 +26,23 @@ final class DocumentRule implements Rule
     /** @var Rule[] */
     private $productions;
 
-    /** @var DirectiveHandler[] */
-    private $directiveHandlers;
-
     /**
      * @param DirectiveHandler[] $directiveHandlers
      */
     public function __construct(
         DocumentParser $documentParser,
-        Parser $parser,
+        MarkupLanguageParser $parser,
         EventManager $eventManager,
         array $directiveHandlers
     ) {
         $this->documentParser = $documentParser;
-        $this->directiveHandlers = $directiveHandlers;
 
         $lineDataParser = new LineDataParser($parser, $eventManager);
 
         $literalBlockRule = new LiteralBlockRule();
+
+        // TODO: Somehow move this into the top of the instantiation chain so that you can configure which rules
+        //       to use when consuming this library
         $this->productions = [
             new TitleRule($parser, $documentParser),
             new TransitionRule(), // Transition rule must follow Title rule

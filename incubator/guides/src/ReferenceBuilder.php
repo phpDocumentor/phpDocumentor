@@ -6,6 +6,7 @@ namespace phpDocumentor\Guides;
 
 use InvalidArgumentException;
 use phpDocumentor\Guides\Meta\Entry;
+use phpDocumentor\Guides\Nodes\Links\InvalidLink;
 use phpDocumentor\Guides\References\Reference;
 use phpDocumentor\Guides\References\ResolvedReference;
 use Psr\Log\LoggerInterface;

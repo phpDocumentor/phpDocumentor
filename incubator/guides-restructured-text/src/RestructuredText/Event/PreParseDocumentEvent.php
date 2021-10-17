@@ -5,25 +5,25 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\RestructuredText\Event;
 
 use Doctrine\Common\EventArgs;
-use phpDocumentor\Guides\RestructuredText\Parser;
+use phpDocumentor\Guides\RestructuredText\MarkupLanguageParser;
 
 final class PreParseDocumentEvent extends EventArgs
 {
     public const PRE_PARSE_DOCUMENT = 'preParseDocument';
 
-    /** @var Parser */
+    /** @var MarkupLanguageParser */
     private $parser;
 
     /** @var string */
     private $contents;
 
-    public function __construct(Parser $parser, string $contents)
+    public function __construct(MarkupLanguageParser $parser, string $contents)
     {
         $this->parser = $parser;
         $this->contents = $contents;
     }
 
-    public function getParser(): Parser
+    public function getParser(): MarkupLanguageParser
     {
         return $this->parser;
     }

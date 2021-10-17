@@ -17,7 +17,7 @@ use phpDocumentor\Guides\Nodes\ListItemNode;
 use phpDocumentor\Guides\Nodes\ListNode;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\ParagraphNode;
-use phpDocumentor\Guides\RestructuredText\Parser;
+use phpDocumentor\Guides\RestructuredText\MarkupLanguageParser;
 use phpDocumentor\Guides\RestructuredText\Parser\Buffer;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
 use phpDocumentor\Guides\RestructuredText\Parser\LinesIterator;
@@ -57,10 +57,10 @@ final class ListRule implements Rule
          # (or eol, if text starts on a new line)
         /ux';
 
-    /** @var Parser */
+    /** @var MarkupLanguageParser */
     private $parser;
 
-    public function __construct(Parser $parser)
+    public function __construct(MarkupLanguageParser $parser)
     {
         $this->parser = $parser;
     }

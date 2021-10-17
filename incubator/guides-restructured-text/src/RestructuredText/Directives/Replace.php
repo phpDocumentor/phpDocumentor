@@ -6,7 +6,7 @@ namespace phpDocumentor\Guides\RestructuredText\Directives;
 
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\SpanNode;
-use phpDocumentor\Guides\RestructuredText\Parser;
+use phpDocumentor\Guides\RestructuredText\MarkupLanguageParser;
 
 /**
  * The Replace directive will set the variables for the spans
@@ -24,7 +24,7 @@ class Replace extends Directive
      * @param string[] $options
      */
     public function processNode(
-        Parser $parser,
+        MarkupLanguageParser $parser,
         string $variable,
         string $data,
         array $options

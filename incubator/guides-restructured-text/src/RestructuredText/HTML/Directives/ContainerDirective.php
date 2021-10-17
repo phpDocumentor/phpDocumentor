@@ -7,7 +7,7 @@ namespace phpDocumentor\Guides\RestructuredText\HTML\Directives;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\TemplatedNode;
 use phpDocumentor\Guides\RestructuredText\Directives\SubDirective;
-use phpDocumentor\Guides\RestructuredText\Parser;
+use phpDocumentor\Guides\RestructuredText\MarkupLanguageParser;
 
 /**
  * Divs a sub document in a div with a given class or set of classes.
@@ -30,7 +30,7 @@ class ContainerDirective extends SubDirective
      * @param string[] $options
      */
     public function processSub(
-        Parser $parser,
+        MarkupLanguageParser $parser,
         ?Node $document,
         string $variable,
         string $data,

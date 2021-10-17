@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace phpDocumentor\Guides;
+namespace phpDocumentor\Guides\Nodes\Links;
 
 final class InvalidLink
 {

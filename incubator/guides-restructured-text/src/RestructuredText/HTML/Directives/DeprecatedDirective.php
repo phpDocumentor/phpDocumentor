@@ -16,7 +16,7 @@ namespace phpDocumentor\Guides\RestructuredText\HTML\Directives;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\TemplatedNode;
 use phpDocumentor\Guides\RestructuredText\Directives\SubDirective;
-use phpDocumentor\Guides\RestructuredText\Parser;
+use phpDocumentor\Guides\RestructuredText\MarkupLanguageParser;
 
 class DeprecatedDirective extends SubDirective
 {
@@ -25,8 +25,13 @@ class DeprecatedDirective extends SubDirective
         return 'deprecated';
     }
 
-    public function processSub(Parser $parser, ?Node $document, string $variable, string $data, array $options): ?Node
-    {
+    public function processSub(
+        MarkupLanguageParser $parser,
+        ?Node $document,
+        string $variable,
+        string $data,
+        array $options
+    ): ?Node {
         return new TemplatedNode(
             'directives/deprecated.html.twig',
             [

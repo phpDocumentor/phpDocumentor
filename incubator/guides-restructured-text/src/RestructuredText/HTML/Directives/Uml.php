@@ -9,7 +9,7 @@ use phpDocumentor\Guides\Nodes\CodeNode;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\UmlNode;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive;
-use phpDocumentor\Guides\RestructuredText\Parser;
+use phpDocumentor\Guides\RestructuredText\MarkupLanguageParser;
 
 use function dirname;
 use function explode;
@@ -37,8 +37,13 @@ final class Uml extends Directive
         return 'uml';
     }
 
-    public function process(Parser $parser, ?Node $node, string $variable, string $data, array $options): void
-    {
+    public function process(
+        MarkupLanguageParser $parser,
+        ?Node $node,
+        string $variable,
+        string $data,
+        array $options
+    ): void {
         $environment = $parser->getEnvironment();
 
         $value = '';

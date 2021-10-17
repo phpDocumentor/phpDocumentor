@@ -36,7 +36,7 @@ class FileCollector
      * objects, and avoids adding files to the parse queue that have
      * not changed and whose direct dependencies have not changed.
      */
-    public function getFiles(FilesystemInterface $filesystem, string $directory, string $extension): Files
+    public function collect(FilesystemInterface $filesystem, string $directory, string $extension): Files
     {
         $directory = trim($directory, '/');
         /** @var array<array<string>> $files */

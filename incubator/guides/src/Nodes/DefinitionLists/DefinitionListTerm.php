@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace phpDocumentor\Guides;
+namespace phpDocumentor\Guides\Nodes\DefinitionLists;
 
 use phpDocumentor\Guides\Nodes\SpanNode;
 use RuntimeException;
 
-class DefinitionListTerm
+final class DefinitionListTerm
 {
     /** @var SpanNode */
     private $term;

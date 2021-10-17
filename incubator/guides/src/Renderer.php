@@ -15,6 +15,7 @@ namespace phpDocumentor\Guides;
 
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Guides\Renderer\TemplateRenderer;
 use phpDocumentor\Guides\Twig\AssetsExtension;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Writer\Graph\PlantumlRenderer;
@@ -42,11 +43,11 @@ class Renderer
     private $plantumlRenderer;
 
     public function __construct(
-        EnvironmentFactory $environmentFactory,
+        EnvironmentFactory $twigFactory,
         LoggerInterface $logger,
         PlantumlRenderer $plantumlRenderer
     ) {
-        $this->twigFactory = $environmentFactory;
+        $this->twigFactory = $twigFactory;
         $this->logger = $logger;
         $this->plantumlRenderer = $plantumlRenderer;
     }
@@ -56,7 +57,7 @@ class Renderer
         DocumentationSetDescriptor $documentationSet,
         Transformation $transformation
     ): void {
-        $targetDirectory = $documentationSet->getOutput();
+        $targetDirectory = $documentationSet->getOutputLocation();
 
         $this->twig = $this->twigFactory->create($project, $transformation->template());
         $this->twig->addExtension(new AssetsExtension($this->logger, $this->plantumlRenderer));

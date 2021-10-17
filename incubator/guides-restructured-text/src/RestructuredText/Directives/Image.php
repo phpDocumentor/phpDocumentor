@@ -6,7 +6,7 @@ namespace phpDocumentor\Guides\RestructuredText\Directives;
 
 use phpDocumentor\Guides\Nodes\ImageNode;
 use phpDocumentor\Guides\Nodes\Node;
-use phpDocumentor\Guides\RestructuredText\Parser;
+use phpDocumentor\Guides\RestructuredText\MarkupLanguageParser;
 
 /**
  * Renders an image, example :
@@ -26,7 +26,7 @@ class Image extends Directive
      * @param string[] $options
      */
     public function processNode(
-        Parser $parser,
+        MarkupLanguageParser $parser,
         string $variable,
         string $data,
         array $options

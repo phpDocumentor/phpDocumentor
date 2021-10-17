@@ -18,7 +18,7 @@ use LogicException;
 use phpDocumentor\Guides\Nodes\Table\TableColumn;
 use phpDocumentor\Guides\Nodes\Table\TableRow;
 use phpDocumentor\Guides\RestructuredText\Exception\InvalidTableStructure;
-use phpDocumentor\Guides\RestructuredText\Parser;
+use phpDocumentor\Guides\RestructuredText\MarkupLanguageParser;
 use phpDocumentor\Guides\RestructuredText\Parser\LineChecker;
 use phpDocumentor\Guides\RestructuredText\Parser\TableSeparatorLineConfig;
 
@@ -146,7 +146,7 @@ class TableNode extends Node
         $this->currentLineNumber++;
     }
 
-    public function finalize(Parser $parser, LineChecker $lineChecker): void
+    public function finalize(MarkupLanguageParser $parser, LineChecker $lineChecker): void
     {
         if ($this->isCompiled === false) {
             $this->compile();

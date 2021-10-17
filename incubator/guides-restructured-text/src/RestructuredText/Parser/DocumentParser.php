@@ -20,7 +20,7 @@ use phpDocumentor\Guides\Nodes\TitleNode;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive as DirectiveHandler;
 use phpDocumentor\Guides\RestructuredText\Event\PostParseDocumentEvent;
 use phpDocumentor\Guides\RestructuredText\Event\PreParseDocumentEvent;
-use phpDocumentor\Guides\RestructuredText\Parser;
+use phpDocumentor\Guides\RestructuredText\MarkupLanguageParser;
 
 use function md5;
 use function trim;
@@ -36,7 +36,7 @@ class DocumentParser
     /** @var ArrayObject<int, TitleNode> public is temporary */
     public $openSectionsAsTitleNodes;
 
-    /** @var Parser */
+    /** @var MarkupLanguageParser */
     private $parser;
 
     /** @var EventManager */
@@ -55,7 +55,7 @@ class DocumentParser
      * @param DirectiveHandler[] $directives
      */
     public function __construct(
-        Parser $parser,
+        MarkupLanguageParser $parser,
         EventManager $eventManager,
         array $directives
     ) {

@@ -15,7 +15,7 @@ namespace phpDocumentor\Guides\NodeRenderers;
 
 use InvalidArgumentException;
 use phpDocumentor\Guides\Environment;
-use phpDocumentor\Guides\InvalidLink;
+use phpDocumentor\Guides\Nodes\Links\InvalidLink;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\ReferenceBuilder;

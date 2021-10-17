@@ -6,8 +6,8 @@ namespace phpDocumentor\Guides\Markdown;
 
 use League\CommonMark\Node\NodeWalker;
 use League\CommonMark\Node\NodeWalkerEvent;
+use phpDocumentor\Guides\MarkupLanguageParser as GuidesParser;
 use phpDocumentor\Guides\Nodes\Node;
-use phpDocumentor\Guides\Parser as GuidesParser;
 
 interface ParserInterface
 {

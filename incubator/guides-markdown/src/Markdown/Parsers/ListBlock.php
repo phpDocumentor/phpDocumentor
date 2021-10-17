@@ -7,9 +7,9 @@ namespace phpDocumentor\Guides\Markdown\Parsers;
 use League\CommonMark\Block\Element\ListBlock as CommonMarkListBlock;
 use League\CommonMark\Node\NodeWalker;
 use League\CommonMark\Node\NodeWalkerEvent;
+use phpDocumentor\Guides\MarkupLanguageParser;
 use phpDocumentor\Guides\Nodes\ListNode;
 use phpDocumentor\Guides\Nodes\Node;
-use phpDocumentor\Guides\Parser;
 
 use function get_class;
 
@@ -18,7 +18,7 @@ final class ListBlock extends AbstractBlock
     /**
      * @return ListNode
      */
-    public function parse(Parser $parser, NodeWalker $walker): Node
+    public function parse(MarkupLanguageParser $parser, NodeWalker $walker): Node
     {
         $context = new ListNode([], false);
 

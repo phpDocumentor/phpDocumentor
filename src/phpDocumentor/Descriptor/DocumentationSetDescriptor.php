@@ -24,7 +24,7 @@ abstract class DocumentationSetDescriptor
     protected $source;
 
     /** @var string */
-    protected $output = '.';
+    protected $outputLocation = '.';
 
     /** @var Collection<TocDescriptor> */
     private $tocs;
@@ -62,8 +62,8 @@ abstract class DocumentationSetDescriptor
         return $this->source;
     }
 
-    public function getOutput(): string
+    public function getOutputLocation(): string
     {
-        return $this->output;
+        return $this->outputLocation;
     }
 }

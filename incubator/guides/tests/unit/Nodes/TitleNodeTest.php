@@ -16,7 +16,7 @@ namespace phpDocumentor\Guides\Nodes;
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Guides\Environment;
-use phpDocumentor\Guides\Parser;
+use phpDocumentor\Guides\MarkupLanguageParser;
 use phpDocumentor\Guides\ReferenceBuilder;
 
 final class TitleNodeTest extends MockeryTestCase
@@ -29,7 +29,7 @@ final class TitleNodeTest extends MockeryTestCase
 
         $referenceBuilder = m::mock(ReferenceBuilder::class);
 
-        $parser = m::mock(Parser::class);
+        $parser = m::mock(MarkupLanguageParser::class);
         $parser->shouldReceive('getEnvironment')->andReturn($environment);
         $parser->shouldReceive('getReferenceBuilder')->andReturn($referenceBuilder);
 

@@ -113,7 +113,7 @@ final class RenderHandler
             $destinationPath = str_replace(
                 '//',
                 '/',
-                $documentationSet->getOutput() . '/' . $this->router->generate($descriptor)
+                $documentationSet->getOutputLocation() . '/' . $this->router->generate($descriptor)
             );
 
             $renderedOutput = $this->renderDocument(

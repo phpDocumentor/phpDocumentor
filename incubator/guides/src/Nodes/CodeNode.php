@@ -15,9 +15,6 @@ namespace phpDocumentor\Guides\Nodes;
 
 class CodeNode extends Node
 {
-    /** @var bool */
-    protected $raw = false;
-
     /** @var string|null */
     protected $language;
 
@@ -50,15 +47,5 @@ class CodeNode extends Node
     public function getStartingLineNumber(): ?int
     {
         return $this->startingLineNumber;
-    }
-
-    public function setRaw(bool $raw): void
-    {
-        $this->raw = $raw;
-    }
-
-    public function isRaw(): bool
-    {
-        return $this->raw;
     }
 }

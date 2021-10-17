@@ -6,7 +6,7 @@ namespace phpDocumentor\Guides\RestructuredText\Directives;
 
 use phpDocumentor\Guides\Nodes\CodeNode;
 use phpDocumentor\Guides\Nodes\Node;
-use phpDocumentor\Guides\RestructuredText\Parser;
+use phpDocumentor\Guides\RestructuredText\MarkupLanguageParser;
 
 use function trim;
 
@@ -32,7 +32,7 @@ class CodeBlock extends Directive
      * @param string[] $options
      */
     public function process(
-        Parser $parser,
+        MarkupLanguageParser $parser,
         ?Node $node,
         string $variable,
         string $data,

@@ -16,7 +16,7 @@ namespace phpDocumentor\Guides\RestructuredText\Parser\Productions;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\ParagraphNode;
 use phpDocumentor\Guides\Nodes\SpanNode;
-use phpDocumentor\Guides\RestructuredText\Parser;
+use phpDocumentor\Guides\RestructuredText\MarkupLanguageParser;
 use phpDocumentor\Guides\RestructuredText\Parser\Buffer;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
 use phpDocumentor\Guides\RestructuredText\Parser\LinesIterator;
@@ -31,13 +31,13 @@ use function trim;
  */
 final class ParagraphRule implements Rule
 {
-    /** @var Parser */
+    /** @var MarkupLanguageParser */
     private $parser;
 
     /** @var DocumentParser */
     private $documentParser;
 
-    public function __construct(Parser $parser, DocumentParser $documentParser)
+    public function __construct(MarkupLanguageParser $parser, DocumentParser $documentParser)
     {
         $this->parser = $parser;
         $this->documentParser = $documentParser;

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\Nodes;
 
-use phpDocumentor\Guides\Parser;
+use phpDocumentor\Guides\MarkupLanguageParser;
 use phpDocumentor\Guides\RestructuredText\Span\SpanParser;
 use phpDocumentor\Guides\Span\SpanToken;
 
@@ -29,7 +29,7 @@ class SpanNode extends Node
     /**
      * @param string|string[]|SpanNode $span
      */
-    public function __construct(Parser $parser, $span)
+    public function __construct(MarkupLanguageParser $parser, $span)
     {
         if (is_array($span)) {
             $span = implode("\n", $span);

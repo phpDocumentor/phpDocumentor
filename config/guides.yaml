@@ -8,8 +8,8 @@ services:
     autoconfigure: true
     public: false
   _instanceof:
-    phpDocumentor\Guides\Parser:
-      tags: ['phpdoc.guides.parser.strategy']
+    phpDocumentor\Guides\MarkupLanguageParser:
+      tags: ['phpdoc.guides.parser.markupLanguageParser']
     phpDocumentor\Guides\Formats\OutputFormat:
       tags: ['phpdoc.guides.format']
     phpDocumentor\Guides\References\Reference:
@@ -40,9 +40,9 @@ services:
     exclude:
       # Explicitly exclude the parser itself as the output $format dictates how it is used; as such, a parser should
       # always be explicitly passed through the use of the named services defined
-      - '../incubator/guides-restructured-text/src/RestructuredText/Parser.php'
+      - '../incubator/guides-restructured-text/src/RestructuredText/MarkupLanguageParser.php'
       - '../incubator/guides-restructured-text/src/RestructuredText/Event/*'
-      - '../incubator/guides-restructured-text/src/RestructuredText/Parser/*'
+      - '../incubator/guides-restructured-text/src/RestructuredText/Parser/{Buffer,Directive,DirectiveOption,LinesIterator,TableSeparatorLineConfig}.php'
     resource: '../incubator/guides-restructured-text/src/*'
 
   phpDocumentor\Guides\RestructuredText\HTML\Directives\:
@@ -72,10 +72,9 @@ services:
     tags:
       - { name: 'phpdoc.pipeline.api_documentation.parse', priority: -1000 }
 
-  phpDocumentor\Guides\Handlers\ParseFileHandler:
+  phpDocumentor\Guides\Parser:
     arguments:
-      $parserStrategies: !tagged_iterator phpdoc.guides.parser.strategy
-    tags: [{name: tactician.handler, typehints: true}]
+      $parserStrategies: !tagged_iterator phpdoc.guides.parser.markupLanguageParser
 
   phpDocumentor\Guides\Handlers\RenderHandler:
     arguments:
@@ -99,17 +98,17 @@ services:
     tags: ['phpdoc.guides.format']
 
   guides.parser.rst.html:
-    class: phpDocumentor\Guides\RestructuredText\Parser
+    class: phpDocumentor\Guides\RestructuredText\MarkupLanguageParser
     arguments:
       $directives: !tagged_iterator phpdoc.guides.directive
       $references: !tagged_iterator phpdoc.guides.reference
       $format: '@phpDocumentor\Guides\RestructuredText\HTML\HTMLFormat'
-    tags: ['phpdoc.guides.parser.strategy']
+    tags: ['phpdoc.guides.parser.markupLanguageParser']
 
   guides.parser.rst.latex:
-    class: phpDocumentor\Guides\RestructuredText\Parser
+    class: phpDocumentor\Guides\RestructuredText\MarkupLanguageParser
     arguments:
       $directives: !tagged_iterator phpdoc.guides.directive
       $references: !tagged_iterator phpdoc.guides.reference
       $format: '@phpDocumentor\Guides\RestructuredText\LaTeX\LaTeXFormat'
-    tags: ['phpdoc.guides.parser.strategy']
+    tags: ['phpdoc.guides.parser.markupLanguageParser']

@@ -21,12 +21,16 @@ final class ApiSetDescriptor extends DocumentationSetDescriptor
     /** @var ApiSpecification */
     private $apiSpecification;
 
-    public function __construct(string $name, Source $source, string $output, ApiSpecification $apiSpecification)
-    {
+    public function __construct(
+        string $name,
+        Source $source,
+        string $outputLocation,
+        ApiSpecification $apiSpecification
+    ) {
         parent::__construct();
         $this->name = $name;
         $this->source = $source;
-        $this->output = $output;
+        $this->outputLocation = $outputLocation;
         $this->apiSpecification = $apiSpecification;
     }
 

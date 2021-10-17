@@ -11,7 +11,7 @@ declare(strict_types=1);
  * @link https://phpdoc.org
  */
 
-namespace phpDocumentor\Guides;
+namespace phpDocumentor\Guides\Renderer;
 
 use Twig\Environment;
 

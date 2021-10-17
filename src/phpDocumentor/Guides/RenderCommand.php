@@ -54,7 +54,7 @@ final class RenderCommand
 
     public function getDestinationPath(): string
     {
-        return $this->documentationSet->getOutput();
+        return $this->documentationSet->getOutputLocation();
     }
 
     public function getTargetFileFormat(): string
