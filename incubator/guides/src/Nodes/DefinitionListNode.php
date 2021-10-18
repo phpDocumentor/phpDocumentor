@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\Nodes;
 
-use phpDocumentor\Guides\DefinitionList;
+use phpDocumentor\Guides\Nodes\DefinitionLists\DefinitionList;
 
 class DefinitionListNode extends Node
 {

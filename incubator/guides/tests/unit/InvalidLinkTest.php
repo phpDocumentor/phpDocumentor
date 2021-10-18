@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides;
 
+use phpDocumentor\Guides\Nodes\Links\InvalidLink;
 use PHPUnit\Framework\TestCase;
 
 final class InvalidLinkTest extends TestCase

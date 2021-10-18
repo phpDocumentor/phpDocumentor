@@ -13,7 +13,7 @@ namespace phpDocumentor\Guides\Nodes;
  * @link https://phpdoc.org
  */
 
-use phpDocumentor\Guides\DefinitionList;
+use phpDocumentor\Guides\Nodes\DefinitionLists\DefinitionList;
 use PHPUnit\Framework\TestCase;
 
 final class DefinitionListNodeTest extends TestCase

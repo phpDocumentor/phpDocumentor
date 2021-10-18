@@ -7,7 +7,7 @@ namespace phpDocumentor\Guides\RestructuredText\Directives;
 use phpDocumentor\Guides\Nodes\FigureNode;
 use phpDocumentor\Guides\Nodes\ImageNode;
 use phpDocumentor\Guides\Nodes\Node;
-use phpDocumentor\Guides\RestructuredText\Parser;
+use phpDocumentor\Guides\RestructuredText\MarkupLanguageParser;
 
 use function assert;
 
@@ -31,7 +31,7 @@ class Figure extends SubDirective
      * @param string[] $options
      */
     public function processSub(
-        Parser $parser,
+        MarkupLanguageParser $parser,
         ?Node $document,
         string $variable,
         string $data,

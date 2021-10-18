@@ -18,7 +18,7 @@ use phpDocumentor\Guides\Nodes\DocumentNode;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\RawNode;
 use phpDocumentor\Guides\RestructuredText\Directives\SubDirective;
-use phpDocumentor\Guides\RestructuredText\Parser;
+use phpDocumentor\Guides\RestructuredText\MarkupLanguageParser;
 use Webmozart\Assert\Assert;
 
 use function strtoupper;
@@ -30,8 +30,13 @@ class ConfigurationBlockDirective extends SubDirective
         return 'configuration-block';
     }
 
-    public function processSub(Parser $parser, ?Node $document, string $variable, string $data, array $options): ?Node
-    {
+    public function processSub(
+        MarkupLanguageParser $parser,
+        ?Node $document,
+        string $variable,
+        string $data,
+        array $options
+    ): ?Node {
         Assert::isInstanceOf($document, DocumentNode::class);
 
         $environment = $parser->getEnvironment();

@@ -8,18 +8,14 @@ use InvalidArgumentException;
 use League\Flysystem\FilesystemInterface;
 use phpDocumentor\Descriptor\DocumentDescriptor;
 use phpDocumentor\Descriptor\GuideSetDescriptor;
-use phpDocumentor\Guides\Environment;
-use phpDocumentor\Guides\Formats\OutputFormat;
-use phpDocumentor\Guides\Formats\OutputFormats;
+use phpDocumentor\Guides\Meta\Entry;
 use phpDocumentor\Guides\Metas;
 use phpDocumentor\Guides\Nodes\DocumentNode;
 use phpDocumentor\Guides\ParseFileCommand;
-use phpDocumentor\Guides\Parser as ParserInterface;
-use phpDocumentor\Guides\Renderer;
-use phpDocumentor\Guides\UrlGenerator;
+use phpDocumentor\Guides\Parser;
 use Psr\Log\LoggerInterface;
+use RuntimeException;
 
-use function filemtime;
 use function ltrim;
 use function sprintf;
 use function trim;
@@ -32,69 +28,39 @@ final class ParseFileHandler
     /** @var LoggerInterface */
     private $logger;
 
-    /** @var Renderer */
-    private $renderer;
+    /** @var Parser */
+    private $parser;
 
-    /** @var UrlGenerator */
-    private $urlGenerator;
-
-    /** @var iterable<ParserInterface> */
-    private $parserStrategies;
-
-    /** @var OutputFormats */
-    private $outputFormats;
-
-    /**
-     * @param iterable<ParserInterface> $parserStrategies
-     */
     public function __construct(
         Metas $metas,
-        Renderer $renderer,
         LoggerInterface $logger,
-        UrlGenerator $urlGenerator,
-        OutputFormats $outputFormats,
-        iterable $parserStrategies
+        Parser $parser
     ) {
         $this->metas = $metas;
         $this->logger = $logger;
-        $this->renderer = $renderer;
-        $this->urlGenerator = $urlGenerator;
-        $this->outputFormats = $outputFormats;
-        $this->parserStrategies = $parserStrategies;
+        $this->parser = $parser;
     }
 
     public function handle(ParseFileCommand $command): void
     {
-        $documentationSet = $command->getDocumentationSet();
+        $this->logger->info(sprintf('Parsing %s', $command->getFile()));
 
-        $environment = $this->createEnvironment(
-            $command->getDirectory(),
-            $documentationSet->getInputFormat(),
-            $command->getFile(),
+        $document = $this->createDocument(
+            $command->getDocumentationSet(),
             $command->getOrigin(),
-            $documentationSet->getOutput(),
-            $documentationSet->getInitialHeaderLevel()
+            $command->getDirectory(),
+            $command->getFile()
         );
-
-        $this->logger->info(sprintf('Parsing %s', $environment->getCurrentAbsolutePath()));
-
-        $document = $this->createDocument($documentationSet, $environment);
-        if (!$document) {
+        if ($document instanceof DocumentNode === false) {
             return;
         }
 
-        $this->addDocumentToDocumentationSet($documentationSet, $environment, $document);
-        $this->addDocumentToMetas($environment, $documentationSet, $document);
+        $this->addDocumentToDocumentationSet($command->getDocumentationSet(), $command->getFile(), $document);
     }
 
     private function buildPathOnFileSystem(string $file, string $currentDirectory, string $extension): string
     {
         return ltrim(sprintf('%s/%s.%s', trim($currentDirectory, '/'), $file, $extension), '/');
-    }
-
-    private function buildDocumentUrl(Environment $environment, string $extension): string
-    {
-        return $environment->getUrl() . '.' . $extension;
     }
 
     private function getFileContents(FilesystemInterface $origin, string $file): string
@@ -112,129 +78,65 @@ final class ParseFileHandler
         return $contents;
     }
 
-    private function createEnvironment(
-        string $sourcePath,
-        string $inputFormat,
-        string $file,
+    private function createDocument(
+        GuideSetDescriptor $documentationSet,
         FilesystemInterface $origin,
-        string $destinationPath,
-        int $initialHeaderLevel
-    ): Environment {
-        $environment = new Environment(
-            $destinationPath,
-            $initialHeaderLevel,
-            $this->renderer,
-            $this->logger,
-            $origin,
+        string $documentFolder,
+        string $fileName
+    ): ?DocumentNode {
+        $path = $this->buildPathOnFileSystem($fileName, $documentFolder, $documentationSet->getInputFormat());
+        $fileContents = $this->getFileContents($origin, $path);
+
+        $this->parser->prepare(
             $this->metas,
-            $this->urlGenerator
+            $origin,
+            $documentFolder,
+            $documentationSet->getOutputLocation(),
+            $fileName,
+            $documentationSet->getInitialHeaderLevel()
         );
-        $environment->setCurrentFileName($file);
-        $environment->setCurrentDirectory($sourcePath);
-        $environment->setCurrentAbsolutePath($this->buildPathOnFileSystem($file, $sourcePath, $inputFormat));
 
-        return $environment;
-    }
-
-    private function createDocument(GuideSetDescriptor $guideSetDescriptor, Environment $environment): ?DocumentNode
-    {
-        $path = $environment->getCurrentAbsolutePath();
-        $format = $this->outputFormats->get($guideSetDescriptor->getOutputFormat());
-
-        // TODO: The NodeRendererFactory on the Environment class is not used as much; refactor that away to remove this
-        // runtime state setting
-        $environment->setNodeRendererFactory($format->getNodeRendererFactory());
-
-        $parser = $this->determineParser($guideSetDescriptor->getInputFormat(), $format);
-        if ($parser instanceof ParserInterface === false) {
+        $document = null;
+        try {
+            $document = $this->parser->parse(
+                $fileContents,
+                $documentationSet->getInputFormat(),
+                $documentationSet->getOutputFormat()
+            );
+        } catch (RuntimeException $e) {
             $this->logger->error(
                 sprintf('Unable to parse %s, input format was not recognized', $path)
             );
-
-            return null;
         }
 
-        $environment->reset();
-
-        return $parser->parse(
-            $environment,
-            $this->getFileContents($environment->getOrigin(), $path)
-        );
-    }
-
-    private function buildOutputUrl(GuideSetDescriptor $guideSetDescriptor, Environment $environment): string
-    {
-        $outputFolder = $guideSetDescriptor->getOutput() ? $guideSetDescriptor->getOutput() . '/' : '';
-
-        return $outputFolder . $this->buildDocumentUrl($environment, $guideSetDescriptor->getOutputFormat());
-    }
-
-    /**
-     * @return array<array<string|null>>
-     */
-    private function compileTableOfContents(DocumentNode $document, Environment $environment): array
-    {
-        $result = [];
-        $nodes = $document->getTocs();
-        foreach ($nodes as $toc) {
-            $files = $toc->getFiles();
-
-            foreach ($files as $key => $file) {
-                $files[$key] = $environment->canonicalUrl($file);
-            }
-
-            $result[] = $files;
-        }
-
-        return $result;
+        return $document;
     }
 
     private function addDocumentToDocumentationSet(
         GuideSetDescriptor $documentationSet,
-        Environment $environment,
+        string $file,
         DocumentNode $document
     ): void {
+        $metaEntry = $this->metas->get($file);
+        if ($metaEntry instanceof Entry === false) {
+            $this->logger->error(sprintf('Could not find meta entry for %s, parsing may have failed', $file));
+
+            return;
+        }
+
         $documentationSet->addDocument(
-            $environment->getCurrentFileName(),
+            $file,
             new DocumentDescriptor(
                 $document,
                 $document->getHash(),
-                $environment->getCurrentFileName(),
+                $file,
                 $document->getTitle() ? $document->getTitle()->getValueString() : '',
                 $document->getTitles(),
                 $document->getTocs(),
                 $document->getDependencies(),
-                $environment->getLinks(),
-                $environment->getVariables()
+                $metaEntry->getLinks(),
+                $document->getVariables()
             )
         );
-    }
-
-    private function addDocumentToMetas(
-        Environment $environment,
-        GuideSetDescriptor $documentationSet,
-        DocumentNode $document
-    ): void {
-        $this->metas->set(
-            $environment->getCurrentFileName(),
-            $this->buildOutputUrl($documentationSet, $environment),
-            $document->getTitle() ? $document->getTitle()->getValueString() : '',
-            $document->getTitles(),
-            $this->compileTableOfContents($document, $environment),
-            (int) filemtime($environment->getCurrentAbsolutePath()),
-            $document->getDependencies(),
-            $environment->getLinks()
-        );
-    }
-
-    private function determineParser(string $fileExtension, OutputFormat $format): ?ParserInterface
-    {
-        foreach ($this->parserStrategies as $parserStrategy) {
-            if ($parserStrategy->supports($fileExtension, $format)) {
-                return $parserStrategy;
-            }
-        }
-
-        return null;
     }
 }

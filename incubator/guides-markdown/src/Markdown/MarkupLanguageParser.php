@@ -17,6 +17,7 @@ use League\CommonMark\Node\NodeWalker;
 use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Formats\OutputFormat;
 use phpDocumentor\Guides\Markdown\Parsers\AbstractBlock;
+use phpDocumentor\Guides\MarkupLanguageParser as ParserInterface;
 use phpDocumentor\Guides\NodeRenderers\NodeRendererFactory;
 use phpDocumentor\Guides\Nodes\AnchorNode;
 use phpDocumentor\Guides\Nodes\CodeNode;
@@ -26,7 +27,6 @@ use phpDocumentor\Guides\Nodes\ParagraphNode;
 use phpDocumentor\Guides\Nodes\RawNode;
 use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\Nodes\TitleNode;
-use phpDocumentor\Guides\Parser as ParserInterface;
 use phpDocumentor\Guides\ReferenceBuilder;
 use RuntimeException;
 
@@ -34,7 +34,7 @@ use function get_class;
 use function md5;
 use function strtolower;
 
-final class Parser implements ParserInterface
+final class MarkupLanguageParser implements ParserInterface
 {
     /** @var DocParser */
     private $markdownParser;

@@ -17,6 +17,7 @@ use League\Flysystem\FilesystemInterface;
 use phpDocumentor\Guides\Meta\Entry;
 use phpDocumentor\Guides\Nodes\SpanNode;
 use Psr\Log\LoggerInterface;
+use RuntimeException;
 
 use function array_shift;
 use function dirname;
@@ -58,26 +59,26 @@ class Environment
     /** @var string[] */
     private $links = [];
 
-    /** @var int[] */
-    private $levels = [];
-
-    /** @var int[] */
-    private $counters = [];
-
     /** @var string[] */
     private $anonymous = [];
 
     /** @var LoggerInterface */
     private $logger;
 
-    /** @var Renderer */
+    /**
+     * @var Renderer|null
+     * @todo Refactor this out of the environment for consistency
+     */
     private $renderer;
 
-    /** @var NodeRenderers\NodeRendererFactory */
+    /**
+     * @var NodeRenderers\NodeRendererFactory
+     * @todo Refactor this out of the environment for consistency
+     */
     private $nodeRendererFactory;
 
     /** @var string */
-    private $outputFolder;
+    private $destinationPath;
 
     /** @var string */
     private $currentAbsolutePath = '';
@@ -85,13 +86,13 @@ class Environment
     public function __construct(
         string $outputFolder,
         int $initialHeaderLevel,
-        Renderer $renderer,
+        ?Renderer $renderer,
         LoggerInterface $logger,
         FilesystemInterface $origin,
         Metas $metas,
         UrlGenerator $urlGenerator
     ) {
-        $this->outputFolder = $outputFolder;
+        $this->destinationPath = $outputFolder;
         $this->initialHeaderLevel = $initialHeaderLevel;
         $this->renderer = $renderer;
         $this->origin = $origin;
@@ -106,13 +107,6 @@ class Environment
     {
         $this->titleLetters = [];
         $this->currentTitleLevel = 0;
-        $this->levels = [];
-        $this->counters = [];
-
-        for ($level = 0; $level < 16; $level++) {
-            $this->levels[$level] = 1;
-            $this->counters[$level] = 0;
-        }
     }
 
     public function getInitialHeaderLevel(): int
@@ -127,6 +121,13 @@ class Environment
 
     public function getRenderer(): Renderer
     {
+        if ($this->renderer === null) {
+            throw new RuntimeException(
+                'A renderer should have been passed before calling getRenderer, perhaps you are calling this'
+                . 'during parsing?'
+            );
+        }
+
         return $this->renderer;
     }
 
@@ -220,7 +221,7 @@ class Environment
     public function outputUrl(string $url): ?string
     {
         return $this->urlGenerator->absoluteUrl(
-            $this->outputFolder,
+            $this->destinationPath,
             $this->canonicalUrl($url)
         );
     }
@@ -264,6 +265,16 @@ class Environment
     public function setCurrentDirectory(string $directory): void
     {
         $this->currentDirectory = $directory;
+    }
+
+    public function getCurrentDirectory(): string
+    {
+        return $this->currentDirectory;
+    }
+
+    public function getDestinationPath(): string
+    {
+        return $this->destinationPath;
     }
 
     public function getUrl(): string

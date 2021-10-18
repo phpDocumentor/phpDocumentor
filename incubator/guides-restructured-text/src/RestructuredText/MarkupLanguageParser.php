@@ -7,9 +7,9 @@ namespace phpDocumentor\Guides\RestructuredText;
 use Doctrine\Common\EventManager;
 use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Formats\OutputFormat;
+use phpDocumentor\Guides\MarkupLanguageParser as ParserInterface;
 use phpDocumentor\Guides\NodeRenderers\NodeRendererFactory;
 use phpDocumentor\Guides\Nodes\DocumentNode;
-use phpDocumentor\Guides\Parser as ParserInterface;
 use phpDocumentor\Guides\ReferenceBuilder;
 use phpDocumentor\Guides\References\Doc;
 use phpDocumentor\Guides\References\Reference;
@@ -23,7 +23,7 @@ use function is_array;
 use function iterator_to_array;
 use function strtolower;
 
-class Parser implements ParserInterface
+class MarkupLanguageParser implements ParserInterface
 {
     /** @var Environment|null */
     private $environment;
@@ -75,9 +75,9 @@ class Parser implements ParserInterface
         return strtolower($inputFormat) === 'rst' && $this->format === $outputFormat;
     }
 
-    public function getSubParser(): Parser
+    public function getSubParser(): MarkupLanguageParser
     {
-        return new Parser(
+        return new MarkupLanguageParser(
             $this->format,
             $this->referenceBuilder,
             $this->eventManager,

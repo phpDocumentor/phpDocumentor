@@ -14,37 +14,32 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\Nodes;
 
 use function array_filter;
-use function array_unshift;
 use function count;
 use function in_array;
 use function is_string;
 
-class DocumentNode extends Node
+final class DocumentNode extends Node
 {
-    /** @var Node[] */
-    protected $headerNodes = [];
-
-    /** @var Node[] */
-    protected $nodes = [];
-
     /** @var string */
     private $hash;
+
+    /** @var Node[] */
+    private $headerNodes = [];
+
+    /** @var Node[] */
+    private $nodes = [];
 
     /** @var string[] */
     private $dependencies = [];
 
+    /** @var array<string|SpanNode> */
+    private $variables = [];
+
     public function __construct(string $value)
     {
         parent::__construct();
-        $this->hash = $value;
-    }
 
-    /**
-     * @return Node[]
-     */
-    public function getHeaderNodes(): array
-    {
-        return $this->headerNodes;
+        $this->hash = $value;
     }
 
     /**
@@ -125,11 +120,10 @@ class DocumentNode extends Node
         $this->nodes[] = $node;
     }
 
-    public function prependNode(Node $node): void
-    {
-        array_unshift($this->nodes, $node);
-    }
-
+    /**
+     * @todo what is the use of this? I have removed the getter; but need to figure out what the intended use for
+     *       this was before removing it altogether.
+     */
     public function addHeaderNode(Node $node): void
     {
         $this->headerNodes[] = $node;
@@ -155,5 +149,21 @@ class DocumentNode extends Node
     public function getDependencies(): array
     {
         return $this->dependencies;
+    }
+
+    /**
+     * @return array<string|SpanNode>
+     */
+    public function getVariables(): array
+    {
+        return $this->variables;
+    }
+
+    /**
+     * @param array<string|SpanNode> $variables
+     */
+    public function setVariables(array $variables): void
+    {
+        $this->variables = $variables;
     }
 }

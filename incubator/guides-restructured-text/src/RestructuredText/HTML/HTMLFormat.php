@@ -52,6 +52,10 @@ final class HTMLFormat extends OutputFormat
     /** @var NodeRendererFactory */
     private $nodeRendererFactory;
 
+    /**
+     * @todo Refactor Renderer out of the formats; it complicates parser instantiation because the Parser becomes
+     *       coupled with the renderer this way
+     */
     public function __construct(
         Renderer $renderer,
         ReferenceBuilder $referenceBuilder,
@@ -62,6 +66,11 @@ final class HTMLFormat extends OutputFormat
 
         $this->nodeRendererFactory = new InMemoryNodeRendererFactory(
             [
+                // TODO: Convert NodeRenderers to have a 'supports' method that determines whether it should be applied
+                //       for a given node; this allows for more flexible renderers that do not necessarily need a
+                //       dedicated Node type. An example, at time of writing, is the ConfigurationBlockDirective; this
+                //       now uses an inline renderer in the Node itself; which forces the Environment to provide a
+                //       renderer and thus forcing the parsing/Parser process to have a Renderer.
                 AnchorNode::class => new TemplateNodeRenderer($renderer, 'anchor.html.twig'),
                 FigureNode::class => new TemplateNodeRenderer($renderer, 'figure.html.twig'),
                 MetaNode::class => new TemplateNodeRenderer($renderer, 'meta.html.twig'),

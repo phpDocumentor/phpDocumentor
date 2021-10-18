@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace phpDocumentor\Guides;
+namespace phpDocumentor\Guides\Nodes\DefinitionLists;
 
-class DefinitionList
+final class DefinitionList
 {
     /** @var DefinitionListTerm[] */
     private $terms;

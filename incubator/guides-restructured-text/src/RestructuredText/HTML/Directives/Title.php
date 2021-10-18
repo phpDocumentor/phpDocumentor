@@ -7,7 +7,7 @@ namespace phpDocumentor\Guides\RestructuredText\HTML\Directives;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\TemplatedNode;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive;
-use phpDocumentor\Guides\RestructuredText\Parser;
+use phpDocumentor\Guides\RestructuredText\MarkupLanguageParser;
 
 /**
  * Add a meta title to the document
@@ -25,7 +25,7 @@ class Title extends Directive
      * @param string[] $options
      */
     public function process(
-        Parser $parser,
+        MarkupLanguageParser $parser,
         ?Node $node,
         string $variable,
         string $data,

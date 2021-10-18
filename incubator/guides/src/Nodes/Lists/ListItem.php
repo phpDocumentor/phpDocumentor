@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace phpDocumentor\Guides;
+namespace phpDocumentor\Guides\Nodes\Lists;
 
-class ListLine
+final class ListItem
 {
     /** @var string */
     private $prefix;

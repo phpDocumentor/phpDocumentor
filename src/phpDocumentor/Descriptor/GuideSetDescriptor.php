@@ -32,7 +32,7 @@ final class GuideSetDescriptor extends DocumentationSetDescriptor
     public function __construct(
         string $name,
         Source $source,
-        string $output,
+        string $outputLocation,
         string $inputFormat,
         string $outputFormat = 'html',
         int $initialHeaderLevel = 1
@@ -41,7 +41,7 @@ final class GuideSetDescriptor extends DocumentationSetDescriptor
 
         $this->name = $name;
         $this->source = $source;
-        $this->output = $output;
+        $this->outputLocation = $outputLocation;
         $this->inputFormat = $inputFormat;
         $this->documents = Collection::fromClassString(DocumentDescriptor::class);
         $this->outputFormat = $outputFormat;

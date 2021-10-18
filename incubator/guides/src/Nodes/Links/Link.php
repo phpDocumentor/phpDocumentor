@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace phpDocumentor\Guides;
+namespace phpDocumentor\Guides\Nodes\Links;
 
-class Link
+final class Link
 {
     public const TYPE_LINK = 'link';
     public const TYPE_ANCHOR = 'anchor';

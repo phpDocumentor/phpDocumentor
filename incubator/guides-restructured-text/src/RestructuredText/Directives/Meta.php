@@ -6,7 +6,7 @@ namespace phpDocumentor\Guides\RestructuredText\Directives;
 
 use phpDocumentor\Guides\Nodes\MetaNode;
 use phpDocumentor\Guides\Nodes\Node;
-use phpDocumentor\Guides\RestructuredText\Parser;
+use phpDocumentor\Guides\RestructuredText\MarkupLanguageParser;
 
 /**
  * Add a meta information:
@@ -25,7 +25,7 @@ class Meta extends Directive
      * @param string[] $options
      */
     public function process(
-        Parser $parser,
+        MarkupLanguageParser $parser,
         ?Node $node,
         string $variable,
         string $data,

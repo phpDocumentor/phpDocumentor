@@ -6,7 +6,7 @@ namespace phpDocumentor\Guides\RestructuredText\Directives;
 
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\TocNode;
-use phpDocumentor\Guides\RestructuredText\Parser;
+use phpDocumentor\Guides\RestructuredText\MarkupLanguageParser;
 use phpDocumentor\Guides\RestructuredText\Toc\GlobSearcher;
 use phpDocumentor\Guides\RestructuredText\Toc\ToctreeBuilder;
 
@@ -29,7 +29,7 @@ class Toctree extends Directive
      * @param string[] $options
      */
     public function process(
-        Parser $parser,
+        MarkupLanguageParser $parser,
         ?Node $node,
         string $variable,
         string $data,

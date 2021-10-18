@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\Directives;
 
-use phpDocumentor\Guides\Nodes\CodeNode;
 use phpDocumentor\Guides\Nodes\Node;
-use phpDocumentor\Guides\RestructuredText\Parser;
+use phpDocumentor\Guides\RestructuredText\MarkupLanguageParser;
 
 /**
  * Renders a raw block, example:
@@ -28,7 +27,7 @@ class RawDirective extends Directive
      * @param string[] $options
      */
     public function process(
-        Parser $parser,
+        MarkupLanguageParser $parser,
         ?Node $node,
         string $variable,
         string $data,
@@ -36,12 +35,6 @@ class RawDirective extends Directive
     ): void {
         if ($node === null) {
             return;
-        }
-
-        // TODO: Change this to make raw it's own Node; conflating it with a CodeNode with 'raw' true
-        //       feels poorly to me.
-        if ($node instanceof CodeNode) {
-            $node->setRaw(true);
         }
 
         if ($variable !== '') {

@@ -7,7 +7,7 @@ namespace phpDocumentor\Guides\RestructuredText\HTML\Directives;
 use phpDocumentor\Guides\Nodes\DocumentNode;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\RestructuredText\Directives\SubDirective;
-use phpDocumentor\Guides\RestructuredText\Parser;
+use phpDocumentor\Guides\RestructuredText\MarkupLanguageParser;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 
 use function array_map;
@@ -24,7 +24,7 @@ class ClassDirective extends SubDirective
      * @param string[] $options
      */
     public function processSub(
-        Parser $parser,
+        MarkupLanguageParser $parser,
         ?Node $document,
         string $variable,
         string $data,

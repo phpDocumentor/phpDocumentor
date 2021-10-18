@@ -16,7 +16,7 @@ namespace phpDocumentor\Guides\RestructuredText\Parser\Productions;
 use phpDocumentor\Guides\Nodes\BlockNode;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\QuoteNode;
-use phpDocumentor\Guides\RestructuredText\Parser;
+use phpDocumentor\Guides\RestructuredText\MarkupLanguageParser;
 use phpDocumentor\Guides\RestructuredText\Parser\Buffer;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
 use phpDocumentor\Guides\RestructuredText\Parser\LinesIterator;
@@ -30,10 +30,10 @@ use function trim;
  */
 final class BlockQuoteRule implements Rule
 {
-    /** @var Parser */
+    /** @var MarkupLanguageParser */
     private $parser;
 
-    public function __construct(Parser $parser)
+    public function __construct(MarkupLanguageParser $parser)
     {
         $this->parser = $parser;
     }

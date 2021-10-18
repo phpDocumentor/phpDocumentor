@@ -15,7 +15,7 @@ namespace phpDocumentor\Guides\RestructuredText\Parser\Productions;
 
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive as DirectiveHandler;
-use phpDocumentor\Guides\RestructuredText\Parser;
+use phpDocumentor\Guides\RestructuredText\MarkupLanguageParser;
 use phpDocumentor\Guides\RestructuredText\Parser\Directive;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
 use phpDocumentor\Guides\RestructuredText\Parser\LineDataParser;
@@ -30,7 +30,7 @@ use function sprintf;
  */
 final class DirectiveRule implements Rule
 {
-    /** @var Parser */
+    /** @var MarkupLanguageParser */
     private $parser;
 
     /** @var DocumentParser */
@@ -49,7 +49,7 @@ final class DirectiveRule implements Rule
      * @param DirectiveHandler[] $directives
      */
     public function __construct(
-        Parser $parser,
+        MarkupLanguageParser $parser,
         DocumentParser $documentParser,
         LineDataParser $lineDataParser,
         LiteralBlockRule $literalBlockRule,

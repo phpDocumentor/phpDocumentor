@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\RestructuredText\Parser\Productions;
 
 use InvalidArgumentException;
-use phpDocumentor\Guides\Link as LinkParser;
+use phpDocumentor\Guides\MarkupLanguageParser;
 use phpDocumentor\Guides\Nodes\AnchorNode;
+use phpDocumentor\Guides\Nodes\Links\Link as LinkParser;
 use phpDocumentor\Guides\Nodes\Node;
-use phpDocumentor\Guides\Parser;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
 use phpDocumentor\Guides\RestructuredText\Parser\LineDataParser;
 use phpDocumentor\Guides\RestructuredText\Parser\LinesIterator;
@@ -30,10 +30,10 @@ final class LinkRule implements Rule
     /** @var LineDataParser */
     private $lineDataParser;
 
-    /** @var Parser */
+    /** @var MarkupLanguageParser */
     private $parser;
 
-    public function __construct(LineDataParser $lineDataParser, Parser $parser)
+    public function __construct(LineDataParser $lineDataParser, MarkupLanguageParser $parser)
     {
         $this->lineDataParser = $lineDataParser;
         $this->parser = $parser;

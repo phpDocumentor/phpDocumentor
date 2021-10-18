@@ -20,7 +20,7 @@ use phpDocumentor\Guides\Nodes\SectionBeginNode;
 use phpDocumentor\Guides\Nodes\SectionEndNode;
 use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\Nodes\TitleNode;
-use phpDocumentor\Guides\RestructuredText\Parser;
+use phpDocumentor\Guides\RestructuredText\MarkupLanguageParser;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
 use phpDocumentor\Guides\RestructuredText\Parser\LinesIterator;
 
@@ -72,13 +72,13 @@ final class TitleRule implements Rule
         '~',
     ];
 
-    /** @var Parser */
+    /** @var MarkupLanguageParser */
     private $parser;
 
     /** @var DocumentParser */
     private $documentParser;
 
-    public function __construct(Parser $parser, DocumentParser $documentParser)
+    public function __construct(MarkupLanguageParser $parser, DocumentParser $documentParser)
     {
         $this->parser = $parser;
         $this->documentParser = $documentParser;

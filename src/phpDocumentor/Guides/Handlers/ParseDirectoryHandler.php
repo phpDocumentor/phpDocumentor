@@ -16,14 +16,14 @@ use function sprintf;
 final class ParseDirectoryHandler
 {
     /** @var FileCollector */
-    private $scanner;
+    private $fileCollector;
 
     /** @var CommandBus */
     private $commandBus;
 
     public function __construct(FileCollector $scanner, CommandBus $commandBus)
     {
-        $this->scanner = $scanner;
+        $this->fileCollector = $scanner;
         $this->commandBus = $commandBus;
     }
 
@@ -42,11 +42,9 @@ final class ParseDirectoryHandler
             $extension
         );
 
-        $parseQueue = $this->scanner->getFiles($origin, $currentDirectory, $extension);
-        foreach ($parseQueue as $file) {
-            $this->commandBus->handle(
-                new ParseFileCommand($documentationSet, $origin, $currentDirectory, $file)
-            );
+        $files = $this->fileCollector->collect($origin, $currentDirectory, $extension);
+        foreach ($files as $file) {
+            $this->commandBus->handle(new ParseFileCommand($documentationSet, $origin, $currentDirectory, $file));
         }
     }
 

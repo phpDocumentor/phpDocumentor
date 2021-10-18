@@ -16,12 +16,12 @@ namespace phpDocumentor\Guides\RestructuredText\HTML\Directives;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\TemplatedNode;
 use phpDocumentor\Guides\RestructuredText\Directives\SubDirective;
-use phpDocumentor\Guides\RestructuredText\Parser;
+use phpDocumentor\Guides\RestructuredText\MarkupLanguageParser;
 
 class TopicDirective extends SubDirective
 {
     final public function processSub(
-        Parser $parser,
+        MarkupLanguageParser $parser,
         ?Node $document,
         string $variable,
         string $data,

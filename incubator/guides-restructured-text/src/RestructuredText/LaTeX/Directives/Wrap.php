@@ -6,7 +6,7 @@ namespace phpDocumentor\Guides\RestructuredText\LaTeX\Directives;
 
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\RestructuredText\Directives\SubDirective;
-use phpDocumentor\Guides\RestructuredText\Parser;
+use phpDocumentor\Guides\RestructuredText\MarkupLanguageParser;
 
 /**
  * Wraps a sub document in a div with a given class
@@ -22,7 +22,7 @@ class Wrap extends SubDirective
      * @param string[] $options
      */
     public function processSub(
-        Parser $parser,
+        MarkupLanguageParser $parser,
         ?Node $document,
         string $variable,
         string $data,

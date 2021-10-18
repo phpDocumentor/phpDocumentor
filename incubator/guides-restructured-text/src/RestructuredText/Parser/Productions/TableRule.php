@@ -16,11 +16,12 @@ namespace phpDocumentor\Guides\RestructuredText\Parser\Productions;
 use Doctrine\Common\EventManager;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\TableNode;
-use phpDocumentor\Guides\RestructuredText\Parser;
+use phpDocumentor\Guides\RestructuredText\MarkupLanguageParser;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
 use phpDocumentor\Guides\RestructuredText\Parser\LineChecker;
 use phpDocumentor\Guides\RestructuredText\Parser\LineDataParser;
 use phpDocumentor\Guides\RestructuredText\Parser\LinesIterator;
+use phpDocumentor\Guides\RestructuredText\Parser\TableParser;
 
 use function trim;
 
@@ -29,20 +30,20 @@ use function trim;
  */
 final class TableRule implements Rule
 {
-    /** @var Parser */
+    /** @var MarkupLanguageParser */
     private $parser;
 
     /** @var LineChecker */
     private $lineChecker;
 
-    /** @var Parser\TableParser */
+    /** @var TableParser */
     private $tableParser;
 
-    public function __construct(Parser $parser, EventManager $eventManager)
+    public function __construct(MarkupLanguageParser $parser, EventManager $eventManager)
     {
         $this->parser = $parser;
         $this->lineChecker = new LineChecker(new LineDataParser($parser, $eventManager));
-        $this->tableParser = new Parser\TableParser();
+        $this->tableParser = new TableParser();
     }
 
     public function applies(DocumentParser $documentParser): bool
