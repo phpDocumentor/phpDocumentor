@@ -16,6 +16,7 @@ namespace phpDocumentor\Guides\Renderer;
 use Twig\Environment;
 
 use function rtrim;
+use function sprintf;
 
 final class TemplateRenderer
 {
@@ -36,9 +37,9 @@ final class TemplateRenderer
         return $this->templatingEngine;
     }
 
-    public function setDestination(string $filename): void
+    public function setDestination(string $path): void
     {
-        $this->getTemplateEngine()->addGlobal('destinationPath', $filename);
+        $this->getTemplateEngine()->addGlobal('destinationPath', $path);
     }
 
     /**
@@ -47,7 +48,7 @@ final class TemplateRenderer
     public function render(string $template, array $parameters = []): string
     {
         return rtrim(
-            $this->templatingEngine->render($this->basePath . '/' . $template, $parameters),
+            $this->templatingEngine->render(sprintf('%s/%s', $this->basePath, $template), $parameters),
             "\n"
         );
     }
