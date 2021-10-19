@@ -16,9 +16,17 @@ namespace phpDocumentor\Guides\Nodes;
 use phpDocumentor\Guides\Nodes\DefinitionLists\DefinitionList;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @coversDefaultClass \phpDocumentor\Guides\Nodes\DefinitionListNode
+ * @covers ::<private>
+ */
 final class DefinitionListNodeTest extends TestCase
 {
-    public function test_it_can_be_created_with_a_definition_list(): void
+    /**
+     * @covers ::__construct
+     * @covers ::getDefinitionList
+     */
+    public function testItCanBeCreatedWithADefinitionList(): void
     {
         $definitionList = new DefinitionList([]);
 
