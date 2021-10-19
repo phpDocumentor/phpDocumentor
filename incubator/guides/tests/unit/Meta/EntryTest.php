@@ -17,9 +17,24 @@ use PHPUnit\Framework\TestCase;
 
 use function time;
 
-class EntryTest extends TestCase
+/**
+ * @coversDefaultClass \phpDocumentor\Guides\Meta\Entry
+ * @covers ::<private>
+ */
+final class EntryTest extends TestCase
 {
-    public function test_whether_an_entry_can_be_recorded(): void
+    /**
+     * @covers ::__construct
+     * @covers ::getFile
+     * @covers ::getUrl
+     * @covers ::getTitle
+     * @covers ::getTitles
+     * @covers ::getTocs
+     * @covers ::getDepends
+     * @covers ::getLinks
+     * @covers ::getMtime
+     */
+    public function testWhetherAnEntryCanBeRecorded(): void
     {
         $mtime = time();
 
@@ -27,19 +42,41 @@ class EntryTest extends TestCase
         $url = '/docs/example.txt';
         $title = 'Example';
         $titles = [['title1'], ['title2']];
-        $tocs = [['dunno?']]; // TODO: What is really going in here?
+        $tocs = [['dunno?']];
         $depends = ['other-file.txt'];
-        $links = ['another-file']; // TODO: What is really going in here?
+        $links = ['another-file'];
 
         $entry = new Entry($file, $url, $title, $titles, $tocs, $depends, $links, $mtime);
 
-        $this->assertSame($file, $entry->getFile());
-        $this->assertSame($url, $entry->getUrl());
-        $this->assertSame($title, $entry->getTitle());
-        $this->assertSame($titles, $entry->getTitles());
-        $this->assertSame($tocs, $entry->getTocs());
-        $this->assertSame($depends, $entry->getDepends());
-        $this->assertSame($links, $entry->getLinks());
-        $this->assertSame($mtime, $entry->getMtime());
+        self::assertSame($file, $entry->getFile());
+        self::assertSame($url, $entry->getUrl());
+        self::assertSame($title, $entry->getTitle());
+        self::assertSame($titles, $entry->getTitles());
+        self::assertSame($tocs, $entry->getTocs());
+        self::assertSame($depends, $entry->getDepends());
+        self::assertSame($links, $entry->getLinks());
+        self::assertSame($mtime, $entry->getMtime());
+    }
+
+    /**
+     * @covers ::getParent
+     * @covers ::setParent
+     */
+    public function testSettingAParentForAMetaEntry(): void
+    {
+        $entry = new Entry(
+            'example.txt',
+            '/docs/example.txt',
+            'Example',
+            [['title1'], ['title2']],
+            [['dunno?']],
+            ['other-file.txt'],
+            ['another-file'],
+            time()
+        );
+
+        $entry->setParent('parent');
+
+        self::assertSame('parent', $entry->getParent());
     }
 }
