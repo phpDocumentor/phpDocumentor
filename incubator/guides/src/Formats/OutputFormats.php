@@ -17,7 +17,7 @@ final class OutputFormats
     /**
      * @param iterable<OutputFormat> $outputFormats
      */
-    public function __construct(iterable $outputFormats)
+    public function __construct(iterable $outputFormats = [])
     {
         foreach ($outputFormats as $outputFormat) {
             $this->add($outputFormat);
