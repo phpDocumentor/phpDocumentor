@@ -82,6 +82,8 @@
                 <referencedClass name="League\Flysystem\MountManager"/>
                 <referencedClass name="PackageVersions\Versions"/>
                 <referencedClass name="Symfony\Component\Routing\RouteCollectionBuilder"/>
+                <!-- No alternative _yet_; refactor these references away when possible -->
+                <referencedClass name="phpDocumentor\Guides\Nodes\TemplatedNode"/>
             </errorLevel>
         </DeprecatedClass>
 

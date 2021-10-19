@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\Nodes;
 
+/**
+ * @deprecated Tie-ing nodes to templates should be done differently; as this creates coupling between the parsing and
+ *   rendering phase.
+ */
 final class TemplatedNode extends Node
 {
     /** @var array<string, mixed> */
