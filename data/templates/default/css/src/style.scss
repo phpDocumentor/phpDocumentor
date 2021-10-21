@@ -7,6 +7,10 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
 @import '~prismjs/themes/prism.css';
 @import '~prismjs/themes/prism-okaidia.css';
 
-h1 {
-  font-family: 'Roboto', sans-serif;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+
 }
