@@ -44,6 +44,9 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
     /** @var Collection<TraitDescriptor> $traits */
     protected $traits;
 
+    /** @var Collection<EnumDescriptor> */
+    private $enums;
+
     /**
      * Initializes the namespace with collections for its children.
      */
@@ -57,6 +60,7 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
         $this->setInterfaces(new Collection());
         $this->setTraits(new Collection());
         $this->setTags(new Collection());
+        $this->setEnums(Collection::fromClassString(EnumDescriptor::class));
     }
 
     /**
@@ -203,5 +207,25 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
     public function getTraits(): Collection
     {
         return $this->traits;
+    }
+
+    /**
+     * Returns a list of all enums in this namespace.
+     *
+     * @return Collection<EnumDescriptor>
+     */
+    public function getEnums(): Collection
+    {
+        return $this->enums;
+    }
+
+    /**
+     * Sets a list of all enums contained in this namespace.
+     *
+     * @param Collection<EnumDescriptor> $enums
+     */
+    public function setEnums(Collection $enums): void
+    {
+        $this->enums = $enums;
     }
 }

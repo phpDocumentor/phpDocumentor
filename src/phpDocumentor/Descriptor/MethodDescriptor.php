@@ -29,7 +29,7 @@ use function current;
  */
 class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodInterface, Interfaces\VisibilityInterface
 {
-    /** @var ClassDescriptor|InterfaceDescriptor|TraitDescriptor|null $parent */
+    /** @var ClassDescriptor|InterfaceDescriptor|TraitDescriptor|EnumDescriptor|null $parent */
     protected $parent;
 
     /** @var bool $abstract */
@@ -61,7 +61,7 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
     }
 
     /**
-     * @param ClassDescriptor|InterfaceDescriptor|TraitDescriptor $parent
+     * @param ClassDescriptor|InterfaceDescriptor|TraitDescriptor|EnumDescriptor $parent
      */
     public function setParent(DescriptorAbstract $parent): void
     {
@@ -76,7 +76,7 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
     }
 
     /**
-     * @return ClassDescriptor|InterfaceDescriptor|TraitDescriptor|null
+     * @return ClassDescriptor|InterfaceDescriptor|TraitDescriptor|EnumDescriptor|null
      */
     public function getParent(): ?DescriptorAbstract
     {

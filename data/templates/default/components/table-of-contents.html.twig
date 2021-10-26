@@ -24,9 +24,9 @@
 </dl>
 {% endif %}
 
-{% if node.interfaces is not empty or node.classes is not empty or node.traits is not empty %}
+{% if node.interfaces is not empty or node.classes is not empty or node.traits is not empty or node.enums is not empty %}
 <h3 id="interfaces_class_traits">
-    Interfaces, Classes and Traits
+    Interfaces, Classes, Traits and Enums
     <a href="#interfaces_class_traits" class="headerlink"><i class="fas fa-link"></i></a>
 </h3>
 
@@ -44,6 +44,11 @@
     {% for trait in node.traits %}
         <dt class="phpdocumentor-table-of-contents__entry -trait">{{ trait|route('class:short') }}</dt>
         <dd>{{ trait.summary }}</dd>
+    {% endfor %}
+
+    {% for enum in node.enums %}
+        <dt class="phpdocumentor-table-of-contents__entry -enum">{{ enum|route('class:short') }}</dt>
+        <dd>{{ enum.summary }}</dd>
     {% endfor %}
 </dl>
 {% endif %}

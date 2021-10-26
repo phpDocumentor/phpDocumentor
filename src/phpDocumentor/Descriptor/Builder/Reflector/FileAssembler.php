@@ -17,6 +17,7 @@ use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\ConstantDescriptor;
 use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
+use phpDocumentor\Descriptor\EnumDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\FunctionDescriptor;
 use phpDocumentor\Descriptor\InterfaceDescriptor;
@@ -25,6 +26,7 @@ use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\Php\Class_;
 use phpDocumentor\Reflection\Php\Constant;
+use phpDocumentor\Reflection\Php\Enum_;
 use phpDocumentor\Reflection\Php\File;
 use phpDocumentor\Reflection\Php\Function_;
 use phpDocumentor\Reflection\Php\Interface_;
@@ -65,6 +67,7 @@ class FileAssembler extends AssemblerAbstract
         $this->addConstants($data->getConstants(), $fileDescriptor);
         $this->addFunctions($data->getFunctions(), $fileDescriptor);
         $this->addClasses($data->getClasses(), $fileDescriptor);
+        $this->addEnums($data->getEnums(), $fileDescriptor);
         $this->addInterfaces($data->getInterfaces(), $fileDescriptor);
         $this->addTraits($data->getTraits(), $fileDescriptor);
 
@@ -152,6 +155,34 @@ class FileAssembler extends AssemblerAbstract
     }
 
     /**
+     * Registers the child classes with the generated File Descriptor.
+     *
+     * @param Enum_[] $enums
+     */
+    private function addEnums(array $enums, FileDescriptor $fileDescriptor): void
+    {
+        foreach ($enums as $enum) {
+            $enumDescriptor = $this->getBuilder()->buildDescriptor($enum, EnumDescriptor::class);
+            if ($enumDescriptor === null) {
+                continue;
+            }
+
+            $enumDescriptor->setLocation($fileDescriptor, $enum->getLocation()->getLineNumber());
+            if (count($enumDescriptor->getTags()->fetch('package', new Collection())) === 0) {
+                $enumDescriptor->getTags()->set(
+                    'package',
+                    $fileDescriptor->getTags()->fetch('package', new Collection())
+                );
+            }
+
+            $fileDescriptor->getEnums()->set(
+                (string) $enumDescriptor->getFullyQualifiedStructuralElementName(),
+                $enumDescriptor
+            );
+        }
+    }
+
+    /**
      * Registers the child interfaces with the generated File Descriptor.
      *
      * @param Interface_[] $interfaces
@@ -199,25 +230,6 @@ class FileAssembler extends AssemblerAbstract
             $fileDescriptor->getTraits()->set(
                 (string) $traitDescriptor->getFullyQualifiedStructuralElementName(),
                 $traitDescriptor
-            );
-        }
-    }
-
-    /**
-     * Registers the markers that were found in a File with the File Descriptor.
-     *
-     * @param array<array<string>> $markers
-     */
-    protected function addMarkers(array $markers, FileDescriptor $fileDescriptor): void
-    {
-        foreach ($markers as $marker) {
-            [$type, $message, $line] = $marker;
-            $fileDescriptor->getMarkers()->add(
-                [
-                    'type' => $type,
-                    'message' => $message,
-                    'line' => $line,
-                ]
             );
         }
     }

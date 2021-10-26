@@ -20,6 +20,7 @@ use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\InterfaceDescriptor;
+use phpDocumentor\Descriptor\Interfaces\EnumInterface;
 use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
@@ -202,7 +203,8 @@ class Linker implements CompilerPassInterface
             || $item instanceof NamespaceDescriptor
             || $item instanceof ClassDescriptor
             || $item instanceof TraitDescriptor
-            || $item instanceof InterfaceDescriptor;
+            || $item instanceof InterfaceDescriptor
+            || $item instanceof EnumInterface;
     }
 
     private function substituteMembersOfObject(object $object, ?DescriptorAbstract $container): void
