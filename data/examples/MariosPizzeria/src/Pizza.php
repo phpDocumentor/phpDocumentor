@@ -34,7 +34,7 @@ final class Pizza implements Product
      * Want to show to your friends how cool your pizza baking skills are? Now you can! Name your Pizza anything you
      * want and stun them with your awesome creativity!
      */
-    public string $name = '';
+    public readonly string $name = '';
 
     public static string $description = '';
 
