@@ -43,6 +43,9 @@ class ConstantDescriptor extends DescriptorAbstract implements
     /** @var string $visibility */
     protected $visibility = 'public';
 
+    /** @var bool */
+    private $isFinal = false;
+
     /**
      * Registers a parent class or interface with this constant.
      *
@@ -166,5 +169,15 @@ class ConstantDescriptor extends DescriptorAbstract implements
     public function getVisibility(): string
     {
         return $this->visibility;
+    }
+
+    public function setFinal(bool $final): void
+    {
+        $this->isFinal = $final;
+    }
+
+    public function isFinal(): bool
+    {
+        return $this->isFinal;
     }
 }

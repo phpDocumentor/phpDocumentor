@@ -41,4 +41,8 @@ interface ConstantInterface extends ElementInterface, TypeInterface
      * Retrieves a textual representation of the value in this constant.
      */
     public function getValue(): string;
+
+    public function setFinal(bool $final): void;
+
+    public function isFinal(): bool;
 }
