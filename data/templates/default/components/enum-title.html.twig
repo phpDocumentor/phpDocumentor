@@ -1,6 +1,12 @@
 <h2 class="phpdocumentor-content__title">
     {{ node.name }}
 
+    {% if node.backedType %}
+        <span class="phpdocumentor-element__extends">
+        : {{ node.backedType }}
+    </span>
+    {% endif %}
+
     {% if usesPackages %}
         <div class="phpdocumentor-element__package">
             in package

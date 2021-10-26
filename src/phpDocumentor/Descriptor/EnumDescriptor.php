@@ -17,6 +17,7 @@ use phpDocumentor\Descriptor\Interfaces\EnumCaseInterface;
 use phpDocumentor\Descriptor\Interfaces\EnumInterface;
 use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
 use phpDocumentor\Reflection\Fqsen;
+use phpDocumentor\Reflection\Type;
 
 /**
  * Descriptor representing a Enum.
@@ -41,6 +42,9 @@ final class EnumDescriptor extends DescriptorAbstract implements EnumInterface
 
     /** @var Collection<EnumCaseInterface> */
     private $cases;
+
+    /** @var Type|null */
+    private $backedType;
 
     /**
      * Initializes the all properties representing a collection with a new Collection object.
@@ -189,5 +193,15 @@ final class EnumDescriptor extends DescriptorAbstract implements EnumInterface
     public function getCases(): Collection
     {
         return $this->cases;
+    }
+
+    public function setBackedType(?Type $type): void
+    {
+        $this->backedType = $type;
+    }
+
+    public function getBackedType(): ?Type
+    {
+        return $this->backedType;
     }
 }

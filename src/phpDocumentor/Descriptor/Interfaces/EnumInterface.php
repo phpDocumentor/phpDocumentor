@@ -17,6 +17,7 @@ use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\InterfaceDescriptor;
 use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Reflection\Fqsen;
+use phpDocumentor\Reflection\Type;
 
 /**
  * Common interface representing the description of a class.
@@ -46,4 +47,8 @@ interface EnumInterface extends ElementInterface, TypeInterface
 
     /** @return Collection<EnumCaseInterface> */
     public function getCases(): Collection;
+
+    public function setBackedType(?Type $type): void;
+
+    public function getBackedType(): ?Type;
 }

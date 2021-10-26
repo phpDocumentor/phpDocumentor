@@ -47,6 +47,7 @@ final class EnumAssembler extends AssemblerAbstract
         $descriptor->setLine($data->getLocation()->getLineNumber());
 
         $descriptor->setNamespace(substr((string) $data->getFqsen(), 0, -strlen($data->getName()) - 1));
+        $descriptor->setBackedType($data->getBackedType());
 
         $interfaces = $descriptor->getInterfaces();
         foreach ($data->getInterfaces() as $interfaceClassName) {
