@@ -11,5 +11,5 @@ interface ExtensionLoader
 {
     public function supports(DirectoryIterator $dir): bool;
 
-    public function loadManifest(DirectoryIterator $dir): ?Manifest;
+    public function load(DirectoryIterator $dir): ?Extension;
 }

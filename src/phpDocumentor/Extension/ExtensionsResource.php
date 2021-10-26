@@ -21,18 +21,18 @@ use function serialize;
 
 final class ExtensionsResource implements ResourceInterface
 {
-    /** @var Manifest[] */
-    private $manifests;
+    /** @var Extension[] */
+    private $extensions;
 
-    /** @param Manifest[] $manifests */
-    public function __construct(array $manifests)
+    /** @param Extension[] $extensions */
+    public function __construct(array $extensions)
     {
-        $this->manifests = $manifests;
+        $this->extensions = $extensions;
     }
 
     public function __toString(): string
     {
-        return serialize($this->manifests);
+        return serialize($this->extensions);
     }
 
     public function getHash(): string

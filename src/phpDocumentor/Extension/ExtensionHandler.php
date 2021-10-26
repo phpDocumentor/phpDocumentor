@@ -21,6 +21,7 @@ use phpDocumentor\AutoloaderLocator;
 use Symfony\Component\Config\ResourceCheckerConfigCache;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 use function array_filter;
@@ -37,8 +38,8 @@ final class ExtensionHandler implements EventSubscriberInterface
     /** @var string */
     private $cacheDir;
 
-    /** @var Manifest[] */
-    private $manifests;
+    /** @var Extension[] */
+    private $extensions;
 
     /** @var ?ResourceCheckerConfigCache */
     private $cache;
@@ -78,7 +79,7 @@ final class ExtensionHandler implements EventSubscriberInterface
 
     public function refresh(): void
     {
-        $this->cache->write('', [new ExtensionsResource($this->manifests)]);
+        $this->cache->write('', [new ExtensionsResource($this->extensions)]);
     }
 
     private function getCache(): ResourceCheckerConfigCache
@@ -89,26 +90,26 @@ final class ExtensionHandler implements EventSubscriberInterface
 
         $this->cache = new ResourceCheckerConfigCache(
             $this->cacheDir,
-            [new ExtensionLockChecker($this->getManifests())]
+            [new ExtensionLockChecker($this->getExtensions())]
         );
 
         return $this->cache;
     }
 
-    /** @return Manifest[] */
-    private function getManifests(): array
+    /** @return Extension[] */
+    private function getExtensions(): array
     {
-        if ($this->manifests !== null) {
-            return $this->manifests;
+        if ($this->extensions !== null) {
+            return $this->extensions;
         }
 
         if (file_exists($this->extensionsDir) === false) {
-            $this->manifests = [];
+            $this->extensions = [];
 
-            return $this->manifests;
+            return $this->extensions;
         }
 
-        $manifests = [];
+        $extensions = [];
         $iterator = new DirectoryIterator($this->extensionsDir);
         foreach ($iterator as $dir) {
             if ($dir->isDot()) {
@@ -117,40 +118,36 @@ final class ExtensionHandler implements EventSubscriberInterface
 
             foreach ($this->loaders as $loader) {
                 if ($loader->supports($dir)) {
-                    $manifests[$dir->getPathName()] = $loader->loadManifest(new DirectoryIterator($dir->getPathName()));
+                    $extensions[$dir->getPathName()] = $loader->load(new DirectoryIterator($dir->getPathName()));
                 }
             }
         }
 
-        $this->manifests = array_filter($manifests);
+        $this->extensions = array_filter($extensions);
 
-        return $this->manifests;
+        return $this->extensions;
     }
 
     /** @return Generator<class-string> */
     public function loadExtensions(): Generator
     {
-        foreach ($this->getManifests() as $path => $manifest) {
-            foreach ($manifest->getBundledComponents() as $component) {
-                $namespace = trim($component->getName(), '\\') . '\\';
-                AutoloaderLocator::loader()->addPsr4($namespace, [$path]);
+        foreach ($this->getExtensions() as $path => $extension) {
+                $namespace = $extension->getNamespace();
+                AutoloaderLocator::loader()->addPsr4($namespace, [$extension->getPath()]);
 
-                yield $namespace . 'Extension';
-            }
+                yield $extension->getExtensionClass();
         }
     }
 
     public function onBoot(ConsoleCommandEvent $event): void
     {
-        $output = $event->getOutput();
-        $manifests = $this->getManifests();
-        if (count($manifests) > 0) {
-            $output->writeln('Loaded extensions:');
-            foreach ($manifests as $manifest) {
-                $output->writeln(
-                    "\t" . $manifest->getName()->asString() . ':' . $manifest->getVersion()->getVersionString(),
-                    OutputInterface::OUTPUT_NORMAL | OutputInterface::VERBOSITY_NORMAL
-                );
+        $io = new SymfonyStyle($event->getInput(), $event->getOutput());
+        $extensions = $this->getExtensions();
+        if (count($extensions) > 0) {
+            $io->writeln('Loaded extensions:');
+            foreach ($extensions as $extension) {
+                $io->success($extension->getName() . ':' . $extension->getVersion());
+                $io->warning($extension->getName() . ':' . $extension->getVersion());
             }
         }
     }

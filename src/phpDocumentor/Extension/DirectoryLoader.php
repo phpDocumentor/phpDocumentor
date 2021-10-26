@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace phpDocumentor\Extension;
 
 use DirectoryIterator;
-use PharIo\Manifest\Manifest;
 use PharIo\Manifest\ManifestLoader;
 
 final class DirectoryLoader implements ExtensionLoader
@@ -15,14 +14,14 @@ final class DirectoryLoader implements ExtensionLoader
         return $dir->isDir() && $this->findManifestFile(new DirectoryIterator($dir->getPathname())) !== null;
     }
 
-    public function loadManifest(DirectoryIterator $dir): ?Manifest
+    public function load(DirectoryIterator $dir): ?Extension
     {
         $file = $this->findManifestFile($dir);
         if ($file === null) {
             return null;
         }
 
-        return ManifestLoader::fromFile($file->getPathName());
+        return Extension::fromManifest(ManifestLoader::fromFile($file->getPathName()), $file->getPath());
     }
 
     private function findManifestFile(DirectoryIterator $dir): ?DirectoryIterator

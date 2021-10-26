@@ -23,13 +23,13 @@ use function serialize;
 
 final class ExtensionLockChecker implements ResourceCheckerInterface
 {
-    /** @var Manifest[] */
+    /** @var Extension[] */
     private $manifests;
 
-    /** @param Manifest[] $manifests */
-    public function __construct(array $manifests)
+    /** @param Extension[] $extensions */
+    public function __construct(array $extensions)
     {
-        $this->manifests = $manifests;
+        $this->manifests = $extensions;
     }
 
     public function supports(ResourceInterface $metadata): bool
