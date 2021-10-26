@@ -46,10 +46,14 @@ final class ExtensionHandler implements EventSubscriberInterface
     /** @var string */
     private $extensionsDir;
 
+    /** @var ExtensionLoader[] */
+    private $loaders = [];
+
     private function __construct(string $cacheDir, string $extensionsDir)
     {
         $this->cacheDir = $cacheDir;
         $this->extensionsDir = $extensionsDir;
+        $this->loaders[] = new DirectoryLoader();
     }
 
     public static function getInstance(string $cacheDir, string $extensionsDir): self
@@ -111,11 +115,11 @@ final class ExtensionHandler implements EventSubscriberInterface
                 continue;
             }
 
-            if (!$dir->isDir()) {
-                continue;
+            foreach ($this->loaders as $loader) {
+                if ($loader->supports($dir)) {
+                    $manifests[$dir->getPathName()] = $loader->loadManifest(new DirectoryIterator($dir->getPathName()));
+                }
             }
-
-            $manifests[$dir->getPathName()] = $this->loadManifest(new DirectoryIterator($dir->getPathName()));
         }
 
         $this->manifests = array_filter($manifests);
@@ -136,36 +140,15 @@ final class ExtensionHandler implements EventSubscriberInterface
         }
     }
 
-    private function loadManifest(DirectoryIterator $dir): ?Manifest
-    {
-        foreach ($dir as $file) {
-            if ($file->isDot()) {
-                continue;
-            }
-
-            if ($file->isFile() === false) {
-                continue;
-            }
-
-            if ($file->getFileName() !== 'manifest.xml') {
-                continue;
-            }
-
-            return ManifestLoader::fromFile($file->getPathName());
-        }
-
-        return null;
-    }
-
     public function onBoot(ConsoleCommandEvent $event): void
     {
         $output = $event->getOutput();
         $manifests = $this->getManifests();
         if (count($manifests) > 0) {
-            $output->writeln('loaded extensions:');
+            $output->writeln('Loaded extensions:');
             foreach ($manifests as $manifest) {
                 $output->writeln(
-                    $manifest->getName()->asString() . ':' . $manifest->getVersion()->getVersionString(),
+                    "\t" . $manifest->getName()->asString() . ':' . $manifest->getVersion()->getVersionString(),
                     OutputInterface::OUTPUT_NORMAL | OutputInterface::VERBOSITY_NORMAL
                 );
             }

@@ -8,5 +8,8 @@ use PharIo\Manifest\Manifest;
 
 final class Validator
 {
-    public function isValid(Manifest )
+    public function isValid(Manifest $manifest)
+    {
+
+    }
 }
