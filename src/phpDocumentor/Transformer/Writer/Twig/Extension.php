@@ -20,6 +20,7 @@ use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
+use phpDocumentor\Descriptor\EnumDescriptor;
 use phpDocumentor\Descriptor\Interfaces\VisibilityInterface;
 use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Descriptor\PackageDescriptor;
@@ -244,6 +245,16 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
                     }
 
                     return $constants;
+                }
+            ),
+            new TwigFunction(
+                'cases',
+                static function (DescriptorAbstract $descriptor): Collection {
+                    if ($descriptor instanceof EnumDescriptor) {
+                        return $descriptor->getCases();
+                    }
+
+                    return new Collection();
                 }
             ),
             new TwigFunction(

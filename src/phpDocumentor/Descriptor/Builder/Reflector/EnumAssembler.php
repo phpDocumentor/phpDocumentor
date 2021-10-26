@@ -14,10 +14,12 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Descriptor\EnumCaseDescriptor;
 use phpDocumentor\Descriptor\EnumDescriptor;
 use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Php\Enum_;
+use phpDocumentor\Reflection\Php\EnumCase;
 use phpDocumentor\Reflection\Php\Method;
 
 use function strlen;
@@ -30,6 +32,9 @@ use function substr;
  */
 final class EnumAssembler extends AssemblerAbstract
 {
+    /**
+     * @param Enum_ $data
+     */
     protected function buildDescriptor(object $data): EnumDescriptor
     {
         $descriptor = new EnumDescriptor();
@@ -49,6 +54,7 @@ final class EnumAssembler extends AssemblerAbstract
         }
 
         $this->assembleDocBlock($data->getDocBlock(), $descriptor);
+        $this->addCases($data->getCases(), $descriptor);
         $this->addMethods($data->getMethods(), $descriptor);
         $this->addUses($data->getUsedTraits(), $descriptor);
 
@@ -81,5 +87,20 @@ final class EnumAssembler extends AssemblerAbstract
     private function addUses(array $traits, EnumDescriptor $descriptor): void
     {
         $descriptor->setUsedTraits(new Collection($traits));
+    }
+
+    /**
+     * @param EnumCase[] $cases
+     */
+    private function addCases(array $cases, EnumDescriptor $descriptor): void
+    {
+        foreach ($cases as $case) {
+            $caseDescriptor = $this->getBuilder()->buildDescriptor($case, EnumCaseDescriptor::class);
+            if ($caseDescriptor === null) {
+                continue;
+            }
+
+            $descriptor->getCases()->set($caseDescriptor->getName(), $caseDescriptor);
+        }
     }
 }

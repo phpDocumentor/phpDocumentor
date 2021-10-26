@@ -2,6 +2,7 @@
     <a href="{{ link(node) }}">{{ type == 'property' ? '$' }}{{ node.name }}{{ type == 'method' or type == 'function' ? '()' }}</a>
     <span>
         {% if type == 'constant' %}&nbsp;= {{ node.value }}{% endif %}
+        {% if type == 'case' %}{% if node.value %}&nbsp;= {{ node.value }}{% endif %}{% endif %}
         {% if type == 'property' %}&nbsp;: {{ node.type ? node.type|route('class:short')|join('|')|raw : 'mixed' }}{% endif %}
         {% if type == 'method' or type == 'function' %}&nbsp;: {{ node.response.type|route('class:short')|join('|')|raw }}{% endif %}
     </span>

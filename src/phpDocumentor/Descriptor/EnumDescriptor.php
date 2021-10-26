@@ -136,12 +136,20 @@ final class EnumDescriptor extends DescriptorAbstract implements EnumInterface
     {
         parent::setPackage($package);
 
-        foreach ($this->getCases() as $constant) {
-            $constant->setPackage($package);
+        foreach ($this->getCases() as $case) {
+            $case->setPackage($package);
         }
 
         foreach ($this->getMethods() as $method) {
             $method->setPackage($package);
+        }
+    }
+
+    public function setLocation(FileDescriptor $file, int $line = 0): void
+    {
+        parent::setLocation($file, $line);
+        foreach ($this->getCases() as $case) {
+            $case->setFile($file);
         }
     }
 

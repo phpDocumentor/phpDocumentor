@@ -67,6 +67,9 @@
     {% for constant in constants(node)|sortByVisibility %}
         {{ include('components/table-of-contents-entry.html.twig', {'type': 'constant', 'node': constant}) }}
     {% endfor %}
+    {% for case in cases(node)|sortByVisibility %}
+        {{ include('components/table-of-contents-entry.html.twig', {'type': 'case', 'node': case}) }}
+    {% endfor %}
     {% for property in properties(node)|sortByVisibility %}
         {{ include('components/table-of-contents-entry.html.twig', {'type': 'property', 'node': property}) }}
     {% endfor %}
