@@ -6,12 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {{ renderBaseUrlHeader() }}
     <link rel="icon" href="images/favicon.ico"/>
-    <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/base.css">
     {% block stylesheets %}
         <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link rel="stylesheet" href="css/main.css">
         <link rel="stylesheet" href="css/template.css">
-{#        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0/css/all.min.css" integrity="sha256-ybRkN9dBjhcS2qrW1z+hfCxq+1aBdwyQM5wlQoQVt/0=" crossorigin="anonymous" />#}
     {% endblock %}
     {% block javascripts %}
         <script src="js/bundle.js"></script>
@@ -23,10 +22,10 @@
     {% include 'components/header.html.twig' %}
 
     <main class="phpdocumentor">
-        <div class="phpdocumentor-section">
+        <div class="phpdocumentor-section md:grid grid-cols-3 gap-4">
             {% include 'components/sidebar.html.twig' %}
 
-            <div class="phpdocumentor-column -eight phpdocumentor-content">
+            <div class="phpdocumentor-content col-span-2">
                 {% block content %}{% endblock %}
                 {% include 'components/search-results.html.twig' %}
             </div>

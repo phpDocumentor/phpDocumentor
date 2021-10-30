@@ -1,5 +1,12 @@
 module.exports = {
-  purge: [],
+  purge: {
+    enabled: true,
+    content: [
+        './js/src/*.js',
+        './*.html.twig',
+        './**/*.html.twig'
+    ]
+  },
   darkMode: "class",
   theme: {
     extend: {},

@@ -2,6 +2,9 @@ ARGS ?=
 
 .USER = CURRENT_UID=$(shell id -u):$(shell id -g)
 .DOCKER_COMPOSE_RUN = ${.USER} docker-compose run --rm
+.DEFAULT_TEMPLATE_DIRECTORY = data/templates/default
+.NODE_IMAGE = node:lts
+.NODE_RUN = docker run -it --rm -v ${CURDIR}:/opt/phpdoc -w /opt/phpdoc ${.NODE_IMAGE}
 
 .PHONY: help
 help:
@@ -15,7 +18,7 @@ help:
 	@echo "Available commands:";
 	@echo "";
 	@echo "== Setup ==";
-	@echo "setup            - Installs phive and all phar-based dependencies";
+	@echo "setup            - Installs all dependencies to start contributing to the project";
 	@echo "install-phive    - Installs phive, the phar.io package manager.";
 	@echo "pull-containers  - pulls all development docker containers";
 	@echo "composer         - Runs composer install from within the phpdoc container";
@@ -60,7 +63,7 @@ tools/phive.phar:
 install-phive: tools/phive.phar
 
 .PHONY: setup
-setup: install-phive
+setup: install-phive composer install-default-assets build-default-assets
 	docker-compose run --rm --entrypoint=/usr/local/bin/php phpdoc tools/phive.phar install --copy --trust-gpg-keys 4AA394086372C20A,D2CCAC42F6295E7D,E82B2FB314E9906E,8E730BA25823D8B5,D0254321FB74703A,8A03EA3B385DBAA1 --force-accept-unsigned
 
 .PHONY: pull-containers
@@ -69,7 +72,13 @@ pull-containers:
 	docker pull phpdoc/phpstan-ga
 	docker pull phpdoc/phpunit-ga
 	docker pull php:7.2
-	docker pull node
+	docker pull ${.NODE_IMAGE}
+
+install-default-assets:
+	${.NODE_RUN} npm install --prefix ${.DEFAULT_TEMPLATE_DIRECTORY}
+
+build-default-assets:
+	${.NODE_RUN} npm run --prefix ${.DEFAULT_TEMPLATE_DIRECTORY} build
 
 .PHONY: phpcs
 phpcs:
@@ -131,7 +140,7 @@ shell:
 	${.DOCKER_COMPOSE_RUN} --entrypoint=/bin/bash phpdoc
 
 node_modules/.bin/cypress:
-	docker run -it --rm -v ${CURDIR}:/opt/phpdoc -w /opt/phpdoc node npm install
+	${.NODE_RUN} npm install
 
 build/default/index.html: data/examples/MariosPizzeria/**/*
 	${.DOCKER_COMPOSE_RUN} phpdoc --config=data/examples/MariosPizzeria/phpdoc.xml --template=default --target=build/default --force

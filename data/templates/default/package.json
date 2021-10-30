@@ -20,7 +20,10 @@
     "css-loader": "^6.4.0",
     "expose-loader": "^3.0.0",
     "file-loader": "^6.2.0",
+    "mini-css-extract-plugin": "^2.4.3",
     "postcss": "^8.3.10",
+    "postcss-loader": "^6.2.0",
+    "postcss-preset-env": "^6.7.0",
     "sass": "^1.43.2",
     "sass-loader": "^12.2.0",
     "style-loader": "^3.3.0",
@@ -36,6 +39,7 @@
   },
   "postcss": {
     "plugins": {
+      "postcss-preset-env": {},
       "tailwindcss": {},
       "autoprefixer": {}
     }
