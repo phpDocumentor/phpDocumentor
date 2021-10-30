@@ -15,6 +15,7 @@ namespace phpDocumentor\Console;
 
 use Jean85\PrettyVersions;
 use OutOfBoundsException;
+use phpDocumentor\Version;
 use Symfony\Bundle\FrameworkBundle\Console\Application as BaseApplication;
 use Symfony\Component\Console\Exception\CommandNotFoundException;
 use Symfony\Component\Console\Input\InputDefinition;
@@ -29,14 +30,12 @@ use function trim;
 
 class Application extends BaseApplication
 {
-    public const VERSION = '@package_version@';
-
     public function __construct(KernelInterface $kernel)
     {
         parent::__construct($kernel);
 
         $this->setName('phpDocumentor');
-        $this->setVersion($this->detectVersion());
+        $this->setVersion((new Version())->getVersion());
     }
 
     protected function getCommandName(InputInterface $input): ?string
@@ -84,25 +83,5 @@ class Application extends BaseApplication
     public function getLongVersion(): string
     {
         return sprintf('%s <info>%s</info>', $this->getName(), $this->getVersion());
-    }
-
-    private function detectVersion(): string
-    {
-        $version = self::VERSION;
-
-        // prevent replacing the version by the PEAR building
-        if (sprintf('%s%s%s', '@', 'package_version', '@') === self::VERSION) {
-            $version = trim(file_get_contents(__DIR__ . '/../../../VERSION'));
-            // @codeCoverageIgnoreStart
-            try {
-                $version = PrettyVersions::getRootPackageVersion()->getPrettyVersion();
-                $version = sprintf('v%s', ltrim($version, 'v'));
-            } catch (OutOfBoundsException $e) {
-            }
-
-            // @codeCoverageIgnoreEnd
-        }
-
-        return $version;
     }
 }

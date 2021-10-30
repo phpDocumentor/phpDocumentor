@@ -24,12 +24,12 @@ use function serialize;
 final class ExtensionLockChecker implements ResourceCheckerInterface
 {
     /** @var Extension[] */
-    private $manifests;
+    private $extensions;
 
     /** @param Extension[] $extensions */
     public function __construct(array $extensions)
     {
-        $this->manifests = $extensions;
+        $this->extensions = $extensions;
     }
 
     public function supports(ResourceInterface $metadata): bool
@@ -41,6 +41,6 @@ final class ExtensionLockChecker implements ResourceCheckerInterface
     {
         Assert::isInstanceOf($resource,ExtensionsResource::class);
 
-        return $resource->getHash() === md5(serialize($this->manifests));
+        return $resource->getHash() === md5(serialize($this->extensions));
     }
 }

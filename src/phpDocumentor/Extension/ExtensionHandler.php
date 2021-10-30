@@ -15,6 +15,8 @@ namespace phpDocumentor\Extension;
 
 use DirectoryIterator;
 use Generator;
+use Jean85\PrettyVersions;
+use PharIo\Manifest\ApplicationName;
 use PharIo\Manifest\Manifest;
 use PharIo\Manifest\ManifestLoader;
 use phpDocumentor\AutoloaderLocator;
@@ -31,7 +33,7 @@ use function trim;
 final class ExtensionHandler implements EventSubscriberInterface
 {
     /**
-     * @var ExtensionHandler
+     * @var ExtensionHandler|null
      */
     private static $instance;
 
@@ -50,11 +52,17 @@ final class ExtensionHandler implements EventSubscriberInterface
     /** @var ExtensionLoader[] */
     private $loaders = [];
 
+    /** @var array */
+    private $invalidExtensions;
+
     private function __construct(string $cacheDir, string $extensionsDir)
     {
         $this->cacheDir = $cacheDir;
         $this->extensionsDir = $extensionsDir;
         $this->loaders[] = new DirectoryLoader();
+        $this->validator = new Validator(
+            new ApplicationName(PrettyVersions::getRootPackageName())
+        );
     }
 
     public static function getInstance(string $cacheDir, string $extensionsDir): self
@@ -123,7 +131,14 @@ final class ExtensionHandler implements EventSubscriberInterface
             }
         }
 
-        $this->extensions = array_filter($extensions);
+        $extensions = array_filter($extensions);
+        $this->extensions = array_filter($extensions, function (Extension $extension) {
+            return $this->validator->isValid($extension->getManifest());
+        });
+
+        $this->invalidExtensions = array_filter($extensions, function (Extension $extension) {
+            return $this->validator->isValid($extension->getManifest()) === false;
+        });
 
         return $this->extensions;
     }
@@ -131,11 +146,11 @@ final class ExtensionHandler implements EventSubscriberInterface
     /** @return Generator<class-string> */
     public function loadExtensions(): Generator
     {
-        foreach ($this->getExtensions() as $path => $extension) {
-                $namespace = $extension->getNamespace();
-                AutoloaderLocator::loader()->addPsr4($namespace, [$extension->getPath()]);
+        foreach ($this->getExtensions() as $extension) {
+            $namespace = $extension->getNamespace();
+            AutoloaderLocator::loader()->addPsr4($namespace, [$extension->getPath()]);
 
-                yield $extension->getExtensionClass();
+            yield $extension->getExtensionClass();
         }
     }
 
@@ -147,6 +162,12 @@ final class ExtensionHandler implements EventSubscriberInterface
             $io->writeln('Loaded extensions:');
             foreach ($extensions as $extension) {
                 $io->success($extension->getName() . ':' . $extension->getVersion());
+            }
+        }
+
+        if (count($this->invalidExtensions) > 0) {
+            $io->writeln('Failed to load extensions:');
+            foreach ($this->invalidExtensions as $extension) {
                 $io->warning($extension->getName() . ':' . $extension->getVersion());
             }
         }

@@ -17,15 +17,19 @@ final class Extension
     /** @var string */
     private $path;
 
+    /** @var string */
+    private $name;
+
     private function __construct(Manifest $manifest, string $path)
     {
         $this->manifest = $manifest;
         $this->path = $path;
         foreach ($manifest->getBundledComponents() as $component) {
-            $this->namespace = trim($component->getName(), '\\') . '\\';
+            $parts = explode('\\', $component->getName());
+            $this->name = array_pop($parts);
+            $this->namespace = implode('\\', $parts) . '\\';
             break;
         }
-
     }
 
     public static function fromManifest(Manifest $manifest, string $path): self
@@ -45,7 +49,7 @@ final class Extension
 
     public function getExtensionClass(): string
     {
-        return $this->namespace . 'Extension';
+        return $this->namespace . $this->name;
     }
 
     public function getNamespace(): string
@@ -56,5 +60,10 @@ final class Extension
     public function getPath(): string
     {
         return $this->path;
+    }
+
+    public function getManifest(): Manifest
+    {
+        return $this->manifest;
     }
 }
