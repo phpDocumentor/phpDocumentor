@@ -93,6 +93,18 @@
   td:last-child {
     @apply pr-0;
   }
+
+  figure {
+    @apply mb-3;
+  }
+
+  figcaption {
+    @apply text-center italic text-sm;
+  }
+
+  .phpdocumentor-uml-diagram svg {
+    @apply max-w-full h-auto;
+  }
 }
 
 @layer components {
