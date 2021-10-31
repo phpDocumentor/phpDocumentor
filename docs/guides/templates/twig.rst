@@ -32,9 +32,9 @@ This will also make the Twig debug extension available, which provides the `dump
 Reference
 ---------
 
-.. container::
+.. container:: md:grid grid-cols-3
 
-    .. container:: phpdocumentor-column -four
+    .. container::
 
        Global Variables
        ~~~~~~~~~~~~~~~~
@@ -47,7 +47,7 @@ Reference
        * `usesNamespaces`_
        * `usesPackages`_
 
-    .. container:: phpdocumentor-column -four
+    .. container::
 
        Filters
        ~~~~~~~
@@ -62,7 +62,7 @@ Reference
        * `description`_
        * `shortFQSEN`_
 
-    .. container:: phpdocumentor-column -four
+    .. container::
 
        Functions
        ~~~~~~~~~

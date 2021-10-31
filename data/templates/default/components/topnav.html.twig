@@ -1,12 +1,12 @@
-<nav class="phpdocumentor-topnav">
-    <ul class="phpdocumentor-topnav__menu">
+<nav class="phpdocumentor-topnav lg:flex m-0 lg:max-h-0 items-center overflow-hidden transition-all">
+    <ul class="phpdocumentor-topnav__menu list-none m-0 p-0 flex text-right justify-center">
     {% for key,menu in topMenu|default([]) %}
         {% for menuitem in menu %}
-            <li class="phpdocumentor-topnav__menu-item -{{ key }}">
-                <a href="{{ menuitem.url }}">
+            <li class="phpdocumentor-topnav__menu-item -{{ key }} m-0 w-full inline-block text-center py-2 px-0">
+                <a href="{{ menuitem.url }}" class="inline-block text-lg transition-all text-current">
                     <span>
                         {% if menuitem.icon %}
-                        <i class="fab fa-{{ menuitem.icon }}">{{ menuitem.icon }}</i>
+                        <i class="fab fa-{{ menuitem.icon }}"></i>
                         {% endif %}
                         {% if menuitem.iconClass %}
                         <i class="{{ menuitem.iconClass }}"></i>
