@@ -25,7 +25,7 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply mt-5 mb-3 font-semibold;
+    @apply mt-8 mb-4 font-semibold;
 
     .headerlink {
       @apply opacity-0 transition-all text-sm text-gray-300;
@@ -39,7 +39,7 @@
     @apply mt-0;
   }
   h4, h5, h6 {
-    @apply my-3;
+    @apply mt-5 mb-3;
   }
 
   h1 { @apply text-4xl; }
@@ -56,10 +56,10 @@
   }
 
   ul {
-    @apply list-disc;
+    @apply list-disc list-inside;
   }
   ol {
-    @apply list-decimal;
+    @apply list-decimal list-inside;
   }
 
   p {
@@ -68,6 +68,30 @@
     &:last-of-type {
       @apply mb-0;
     }
+  }
+
+  table {
+    @apply mb-3;
+  }
+
+  th {
+    @apply font-semibold;
+  }
+
+  th,
+  td {
+    @apply border-b border-solid py-2 px-3 text-left;
+    border-color: var(--table-separator-color);
+  }
+
+  th:first-child,
+  td:first-child {
+    @apply pl-0;
+  }
+
+  th:last-child,
+  td:last-child {
+    @apply pr-0;
   }
 }
 
