@@ -7,6 +7,12 @@ namespace phpDocumentor;
 use Jean85\PrettyVersions;
 use OutOfBoundsException;
 
+use function explode;
+use function file_get_contents;
+use function sprintf;
+use function strpos;
+use function trim;
+
 final class Version
 {
     private const VERSION = '@package_version@';
@@ -34,7 +40,8 @@ final class Version
                     return $version;
                 }
 
-                $version = sprintf('%s-%s+%s',
+                $version = sprintf(
+                    '%s-%s+%s',
                     $version,
                     $packageVersion->getShortVersion(),
                     $packageVersion->getShortReference()
@@ -55,7 +62,7 @@ final class Version
 
     public function getExtensionVersion(): string
     {
-        if (strpos($this->version, '-dev') !== false){
+        if (strpos($this->version, '-dev') !== false) {
             $version = explode('-', $this->version)[0];
 
             return $version . '-dev';

@@ -6,6 +6,10 @@ namespace phpDocumentor\Extension;
 
 use PharIo\Manifest\Manifest;
 
+use function array_pop;
+use function explode;
+use function implode;
+
 final class Extension
 {
     /** @var Manifest */

@@ -13,11 +13,10 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Extension;
 
-use PharIo\Manifest\Manifest;
 use Symfony\Component\Config\Resource\ResourceInterface;
 use Symfony\Component\Config\ResourceCheckerInterface;
-
 use Webmozart\Assert\Assert;
+
 use function md5;
 use function serialize;
 
@@ -39,7 +38,7 @@ final class ExtensionLockChecker implements ResourceCheckerInterface
 
     public function isFresh(ResourceInterface $resource, int $timestamp): bool
     {
-        Assert::isInstanceOf($resource,ExtensionsResource::class);
+        Assert::isInstanceOf($resource, ExtensionsResource::class);
 
         return $resource->getHash() === md5(serialize($this->extensions));
     }

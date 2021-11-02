@@ -23,6 +23,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
 
+use function class_exists;
 use function file_exists;
 use function getcwd;
 use function is_dir;
@@ -130,9 +131,11 @@ class Kernel extends BaseKernel
         }
 
         foreach ($this->extensionHander->loadExtensions() as $extension) {
-            if (class_exists($extension)) {
-                yield new $extension();
+            if (!class_exists($extension)) {
+                continue;
             }
+
+            yield new $extension();
         }
     }
 

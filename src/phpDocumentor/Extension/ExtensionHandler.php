@@ -17,24 +17,19 @@ use DirectoryIterator;
 use Generator;
 use Jean85\PrettyVersions;
 use PharIo\Manifest\ApplicationName;
-use PharIo\Manifest\Manifest;
-use PharIo\Manifest\ManifestLoader;
 use phpDocumentor\AutoloaderLocator;
 use Symfony\Component\Config\ResourceCheckerConfigCache;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 use function array_filter;
+use function count;
 use function file_exists;
-use function trim;
 
 final class ExtensionHandler implements EventSubscriberInterface
 {
-    /**
-     * @var ExtensionHandler|null
-     */
+    /** @var ExtensionHandler|null */
     private static $instance;
 
     /** @var string */
@@ -52,8 +47,11 @@ final class ExtensionHandler implements EventSubscriberInterface
     /** @var ExtensionLoader[] */
     private $loaders = [];
 
-    /** @var array */
+    /** @var Extension[] */
     private $invalidExtensions;
+
+    /** @var Validator */
+    private $validator;
 
     private function __construct(string $cacheDir, string $extensionsDir)
     {
@@ -125,9 +123,11 @@ final class ExtensionHandler implements EventSubscriberInterface
             }
 
             foreach ($this->loaders as $loader) {
-                if ($loader->supports($dir)) {
-                    $extensions[$dir->getPathName()] = $loader->load(new DirectoryIterator($dir->getPathName()));
+                if (!$loader->supports($dir)) {
+                    continue;
                 }
+
+                $extensions[$dir->getPathName()] = $loader->load(new DirectoryIterator($dir->getPathName()));
             }
         }
 
@@ -165,19 +165,19 @@ final class ExtensionHandler implements EventSubscriberInterface
             }
         }
 
-        if (count($this->invalidExtensions) > 0) {
-            $io->writeln('Failed to load extensions:');
-            foreach ($this->invalidExtensions as $extension) {
-                $io->warning($extension->getName() . ':' . $extension->getVersion());
-            }
+        if (count($this->invalidExtensions) <= 0) {
+            return;
+        }
+
+        $io->writeln('Failed to load extensions:');
+        foreach ($this->invalidExtensions as $extension) {
+            $io->warning($extension->getName() . ':' . $extension->getVersion());
         }
     }
 
-    /** @return string[] */
+    /** @return array<string, mixed> */
     public static function getSubscribedEvents(): array
     {
-        return [
-            'console.command' => 'onBoot'
-        ];
+        return ['console.command' => 'onBoot'];
     }
 }

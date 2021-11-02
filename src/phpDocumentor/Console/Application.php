@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Console;
 
-use Jean85\PrettyVersions;
-use OutOfBoundsException;
 use phpDocumentor\Version;
 use Symfony\Bundle\FrameworkBundle\Console\Application as BaseApplication;
 use Symfony\Component\Console\Exception\CommandNotFoundException;
@@ -23,10 +21,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\HttpKernel\KernelInterface;
 
-use function file_get_contents;
-use function ltrim;
 use function sprintf;
-use function trim;
 
 class Application extends BaseApplication
 {

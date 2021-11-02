@@ -6,6 +6,7 @@ namespace phpDocumentor\Extension;
 
 use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 
 use function iterator_to_array;
 
@@ -19,7 +20,7 @@ final class ExtensionHandlerTest extends TestCase
 {
     protected function tearDown(): void
     {
-        $class = new \ReflectionClass(ExtensionHandler::getInstance(
+        $class = new ReflectionClass(ExtensionHandler::getInstance(
             'foo',
             'bar'
         ));

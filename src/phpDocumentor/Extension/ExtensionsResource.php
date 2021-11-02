@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Extension;
 
-use PharIo\Manifest\Manifest;
 use Symfony\Component\Config\Resource\ResourceInterface;
 
 use function md5;
