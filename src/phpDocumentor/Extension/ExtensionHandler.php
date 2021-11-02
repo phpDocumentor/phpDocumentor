@@ -18,6 +18,7 @@ use Generator;
 use Jean85\PrettyVersions;
 use PharIo\Manifest\ApplicationName;
 use phpDocumentor\AutoloaderLocator;
+use phpDocumentor\Version;
 use Symfony\Component\Config\ResourceCheckerConfigCache;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -59,7 +60,8 @@ final class ExtensionHandler implements EventSubscriberInterface
         $this->extensionsDir = $extensionsDir;
         $this->loaders[] = new DirectoryLoader();
         $this->validator = new Validator(
-            new ApplicationName(PrettyVersions::getRootPackageName())
+            new ApplicationName(PrettyVersions::getRootPackageName()),
+            new Version()
         );
     }
 
@@ -133,11 +135,11 @@ final class ExtensionHandler implements EventSubscriberInterface
 
         $extensions = array_filter($extensions);
         $this->extensions = array_filter($extensions, function (Extension $extension) {
-            return $this->validator->isValid($extension->getManifest());
+            return $this->validator->isValid($extension);
         });
 
         $this->invalidExtensions = array_filter($extensions, function (Extension $extension) {
-            return $this->validator->isValid($extension->getManifest()) === false;
+            return $this->validator->isValid($extension) === false;
         });
 
         return $this->extensions;
