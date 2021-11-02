@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Extension;
 
+use DirectoryIterator;
 use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
 
@@ -22,7 +23,7 @@ final class DirectoryLoaderTest extends TestCase
         $fileSystem->addChild(vfsStream::newDirectory('myExtension'));
 
         $loader = new DirectoryLoader();
-        self::assertFalse($loader->supports(new \DirectoryIterator($fileSystem->url())));
+        self::assertFalse($loader->supports(new DirectoryIterator($fileSystem->url())));
     }
 
     /**
@@ -35,7 +36,7 @@ final class DirectoryLoaderTest extends TestCase
         $fileSystem->addChild(vfsStream::newFile('myExtension'));
 
         $loader = new DirectoryLoader();
-        self::assertFalse($loader->supports(new \DirectoryIterator($fileSystem->url())));
+        self::assertFalse($loader->supports(new DirectoryIterator($fileSystem->url())));
     }
 
     /**
@@ -48,7 +49,7 @@ final class DirectoryLoaderTest extends TestCase
         $fileSystem->addChild(vfsStream::newFile('manifest.xml'));
 
         $loader = new DirectoryLoader();
-        self::assertTrue($loader->supports(new \DirectoryIterator($fileSystem->url())));
+        self::assertTrue($loader->supports(new DirectoryIterator($fileSystem->url())));
     }
 
     /**
@@ -61,7 +62,7 @@ final class DirectoryLoaderTest extends TestCase
         $fileSystem->addChild(vfsStream::newFile('myExtension'));
 
         $loader = new DirectoryLoader();
-        self::assertNull($loader->load(new \DirectoryIterator($fileSystem->url())));
+        self::assertNull($loader->load(new DirectoryIterator($fileSystem->url())));
     }
 
     /**
@@ -73,7 +74,7 @@ final class DirectoryLoaderTest extends TestCase
         $fileSystem = vfsStream::copyFromFileSystem(__DIR__ . '/../../../data/extensions/example');
 
         $loader = new DirectoryLoader();
-        $extension = $loader->load(new \DirectoryIterator($fileSystem->url()));
+        $extension = $loader->load(new DirectoryIterator($fileSystem->url()));
 
         self::assertInstanceOf(Extension::class, $extension);
     }
