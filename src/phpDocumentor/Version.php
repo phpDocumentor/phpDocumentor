@@ -62,7 +62,7 @@ final class Version
 
     public function getExtensionVersion(): string
     {
-        if (strpos($this->version, '-dev') !== false) {
+        if (strpos($this->version, '-') !== false) {
             $version = explode('-', $this->version)[0];
 
             return $version . '-dev';
