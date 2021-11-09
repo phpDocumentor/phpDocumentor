@@ -1,0 +1,38 @@
+<h2 class="phpdocumentor-content__title">
+    {{ node.name }}
+
+    {% if node.backedType %}
+        <span class="phpdocumentor-element__extends">
+        : {{ node.backedType }}
+    </span>
+    {% endif %}
+
+    {% if usesPackages %}
+        <div class="phpdocumentor-element__package">
+            in package
+            <ul class="phpdocumentor-breadcrumbs">
+                {% for breadcrumb in packages(node) %}
+                    <li class="phpdocumentor-breadcrumb"><a href="{{ link(breadcrumb) }}">{{ breadcrumb.name }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    {% if node.interfaces is not empty %}
+        <span class="phpdocumentor-element__implements">
+            implements
+            {% for interface in node.interfaces %}
+                {{ interface|route('class:short') }}{% if not loop.last %}, {% endif %}
+            {% endfor %}
+        </span>
+    {% endif %}
+
+    {% if node.usedTraits is not empty %}
+        <span class="phpdocumentor-element__extends">
+            Uses
+            {% for trait in node.usedTraits %}
+                {{ trait|route('class:short') }}{% if not loop.last %}, {% endif %}
+            {% endfor %}
+        </span>
+    {% endif %}
+</h2>

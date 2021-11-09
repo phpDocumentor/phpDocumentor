@@ -1,0 +1,16 @@
+<article
+        class="
+            phpdocumentor-element
+            -enum-case
+        "
+>
+    <h4 class="phpdocumentor-element__name" id="enumcase_{{ case.name }}">
+        {{ case.name }}
+        <a href="{{ link(case) }}" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    {{ include('components/element-found-in.html.twig', {'node': case}) }}
+    {{ include('components/summary.html.twig', {'node': case}) }}
+    {{ include('components/description.html.twig', {'node': case}) }}
+    {{ include('components/description.html.twig', {'node': case.var[0]}) }}
+    {{ include ('components/tags.html.twig', {'node': case}) }}
+</article>

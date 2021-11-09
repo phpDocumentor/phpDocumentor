@@ -58,6 +58,7 @@ final class FileDescriptorTest extends MockeryTestCase
         $this->assertInstanceOf(Collection::class, $this->fixture->getClasses());
         $this->assertInstanceOf(Collection::class, $this->fixture->getInterfaces());
         $this->assertInstanceOf(Collection::class, $this->fixture->getTraits());
+        $this->assertInstanceOf(Collection::class, $this->fixture->getEnums());
         $this->assertInstanceOf(Collection::class, $this->fixture->getMarkers());
     }
 
@@ -206,6 +207,22 @@ final class FileDescriptorTest extends MockeryTestCase
         $this->fixture->setTraits($mock);
 
         $this->assertSame($mockInstance, $this->fixture->getTraits());
+    }
+
+    /**
+     * @covers ::setEnums
+     * @covers ::getEnums
+     */
+    public function testSetAndGetEnums(): void
+    {
+        $this->assertInstanceOf(Collection::class, $this->fixture->getEnums());
+
+        $mockInstance = m::mock(Collection::class);
+        $mock = $mockInstance;
+
+        $this->fixture->setEnums($mock);
+
+        $this->assertSame($mockInstance, $this->fixture->getEnums());
     }
 
     /**

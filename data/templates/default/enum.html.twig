@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    {% include 'components/breadcrumbs.html.twig' %}
+
+    <article class="phpdocumentor-element -class">
+        {{ include('components/enum-title.html.twig') }}
+        {{ include('components/element-found-in.html.twig') }}
+        {{ include('components/element-header.html.twig') }}
+
+        {{ include('components/enum-cases.html.twig') }}
+        {{ include('components/methods.html.twig') }}
+        {{ include('components/source-modal.html.twig') }}
+    </article>
+{% endblock %}

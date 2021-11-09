@@ -15,6 +15,7 @@ namespace phpDocumentor\Compiler\Linker;
 
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\DescriptorAbstract;
+use phpDocumentor\Descriptor\EnumDescriptor;
 use phpDocumentor\Descriptor\InterfaceDescriptor;
 use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
@@ -132,7 +133,7 @@ class DescriptorRepository
     }
 
     /**
-     * Normalizes the given FQSEN as if the context marker represents a class/interface/trait as parent.
+     * Normalizes the given FQSEN as if the context marker represents a class/interface/trait/enum as parent.
      */
     private function getTypeWithClassAsContext(string $fqsen, DescriptorAbstract $container): string
     {
@@ -140,6 +141,7 @@ class DescriptorRepository
             !$container instanceof ClassDescriptor
             && !$container instanceof InterfaceDescriptor
             && !$container instanceof TraitDescriptor
+            && !$container instanceof EnumDescriptor
         ) {
             return $fqsen;
         }

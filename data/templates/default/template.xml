@@ -11,6 +11,7 @@
     <transformation writer="twig" query="indexes.namespaces" source="templates/default/namespace.html.twig" />
     <transformation writer="twig" query="indexes.packages" source="templates/default/package.html.twig" />
     <transformation writer="twig" query="indexes.classes" source="templates/default/class.html.twig" />
+    <transformation writer="twig" query="indexes.enums" source="templates/default/enum.html.twig" />
     <transformation writer="twig" query="indexes.interfaces" source="templates/default/interface.html.twig" />
     <transformation writer="twig" query="indexes.traits" source="templates/default/trait.html.twig" />
     <transformation writer="twig" source="templates/default/search.js.twig" artifact="js/search.js" />

@@ -17,6 +17,7 @@ use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\Interfaces\ClassInterface;
+use phpDocumentor\Descriptor\Interfaces\EnumInterface;
 use phpDocumentor\Descriptor\Interfaces\InterfaceInterface;
 use phpDocumentor\Descriptor\Interfaces\TraitInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor;
@@ -49,6 +50,7 @@ class ElementsIndexBuilder implements CompilerPassInterface
         $classesIndex    = $project->getIndexes()->fetch('classes', new Collection());
         $interfacesIndex = $project->getIndexes()->fetch('interfaces', new Collection());
         $traitsIndex     = $project->getIndexes()->fetch('traits', new Collection());
+        $enumsIndex     = $project->getIndexes()->fetch('enums', new Collection());
 
         foreach ($project->getFiles() as $file) {
             $this->addElementsToIndexes($file->getConstants()->getAll(), [$constantsIndex, $elementCollection]);
@@ -66,6 +68,11 @@ class ElementsIndexBuilder implements CompilerPassInterface
 
             foreach ($file->getTraits()->getAll() as $element) {
                 $this->addElementsToIndexes($element, [$traitsIndex, $elementCollection]);
+                $this->addElementsToIndexes($this->getSubElements($element), [$elementCollection]);
+            }
+
+            foreach ($file->getEnums()->getAll() as $element) {
+                $this->addElementsToIndexes($element, [$enumsIndex, $elementCollection]);
                 $this->addElementsToIndexes($this->getSubElements($element), [$elementCollection]);
             }
         }
@@ -103,6 +110,13 @@ class ElementsIndexBuilder implements CompilerPassInterface
             $subElements = array_merge(
                 $element->getMethods()->getAll(),
                 $element->getProperties()->getAll()
+            );
+        }
+
+        if ($element instanceof EnumInterface) {
+            $subElements = array_merge(
+                $element->getMethods()->getAll(),
+                $element->getCases()->getAll()
             );
         }
 

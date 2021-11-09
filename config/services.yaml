@@ -32,6 +32,12 @@ parameters:
           - 'properties'
           - 'methods'
           - 'usedTraits'
+      'phpDocumentor\Descriptor\EnumDescriptor':
+        - 'tags'
+        - 'interfaces'
+        - 'cases'
+        - 'methods'
+        - 'usedTraits'
       'phpDocumentor\Descriptor\FunctionDescriptor':
           - 'tags'
           - 'arguments'

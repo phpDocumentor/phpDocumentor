@@ -45,10 +45,10 @@ describe('Namespaces', function() {
             });
         })
 
-        describe('Interfaces, Classes and Traits', function () {
-            const sectionTitle = 'Interfaces, Classes and Traits';
+        describe('Interfaces, Classes, Traits and Enums', function () {
+            const sectionTitle = 'Interfaces, Classes, Traits and Enums';
 
-            it('Has a section "Interfaces, Classes and Traits" with a table of contents', function () {
+            it('Has a section "Interfaces, Classes, Traits and Enums" with a table of contents', function () {
                 cy.get('h3#interfaces_class_traits')
                     .contains(sectionTitle)
                     .next('.phpdocumentor-table-of-contents');

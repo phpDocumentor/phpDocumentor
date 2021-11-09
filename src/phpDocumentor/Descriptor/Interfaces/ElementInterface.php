@@ -16,6 +16,7 @@ namespace phpDocumentor\Descriptor\Interfaces;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
+use phpDocumentor\Descriptor\PackageDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Reflection\Fqsen;
 
@@ -87,4 +88,18 @@ interface ElementInterface
      * @return Collection<Collection<TagDescriptor>>
      */
     public function getTags(): Collection;
+
+    /**
+     * Sets the name of the package to which this element belongs.
+     *
+     * @internal should not be called by any other class than the assamblers
+     *
+     * @param PackageDescriptor|string $package
+     */
+    public function setPackage($package): void;
+
+    /**
+     * Returns the package name for this element.
+     */
+    public function getPackage(): ?PackageDescriptor;
 }

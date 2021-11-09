@@ -16,6 +16,7 @@ namespace phpDocumentor\Descriptor\Interfaces;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\ConstantDescriptor;
+use phpDocumentor\Descriptor\EnumDescriptor;
 use phpDocumentor\Descriptor\FunctionDescriptor;
 use phpDocumentor\Descriptor\InterfaceDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
@@ -49,4 +50,9 @@ interface ContainerInterface
      * @return Collection<TraitDescriptor>
      */
     public function getTraits(): Collection;
+
+    /**
+     * @return Collection<EnumDescriptor>
+     */
+    public function getEnums(): Collection;
 }

@@ -24,9 +24,9 @@
 </dl>
 {% endif %}
 
-{% if node.interfaces is not empty or node.classes is not empty or node.traits is not empty %}
+{% if node.interfaces is not empty or node.classes is not empty or node.traits is not empty or node.enums is not empty %}
 <h3 id="interfaces_class_traits">
-    Interfaces, Classes and Traits
+    Interfaces, Classes, Traits and Enums
     <a href="#interfaces_class_traits" class="headerlink"><i class="fas fa-link"></i></a>
 </h3>
 
@@ -45,6 +45,11 @@
         <dt class="phpdocumentor-table-of-contents__entry -trait">{{ trait|route('class:short') }}</dt>
         <dd>{{ trait.summary }}</dd>
     {% endfor %}
+
+    {% for enum in node.enums %}
+        <dt class="phpdocumentor-table-of-contents__entry -enum">{{ enum|route('class:short') }}</dt>
+        <dd>{{ enum.summary }}</dd>
+    {% endfor %}
 </dl>
 {% endif %}
 
@@ -61,6 +66,9 @@
 <dl class="phpdocumentor-table-of-contents">
     {% for constant in constants(node)|sortByVisibility %}
         {{ include('components/table-of-contents-entry.html.twig', {'type': 'constant', 'node': constant}) }}
+    {% endfor %}
+    {% for case in cases(node)|sortByVisibility %}
+        {{ include('components/table-of-contents-entry.html.twig', {'type': 'case', 'node': case}) }}
     {% endfor %}
     {% for property in properties(node)|sortByVisibility %}
         {{ include('components/table-of-contents-entry.html.twig', {'type': 'property', 'node': property}) }}

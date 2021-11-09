@@ -61,6 +61,9 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
     /** @var Collection<array<int|string, mixed>> $markers */
     protected $markers;
 
+    /** @var Collection<EnumDescriptor> */
+    private $enums;
+
     /**
      * Initializes a new file descriptor with the given hash of its contents.
      *
@@ -79,7 +82,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
         $this->setClasses(new Collection());
         $this->setInterfaces(new Collection());
         $this->setTraits(new Collection());
-
+        $this->setEnums(Collection::fromClassString(EnumDescriptor::class));
         $this->setMarkers(new Collection());
     }
 
@@ -278,6 +281,26 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
     }
 
     /**
+     * @return Collection<EnumDescriptor>
+     */
+    public function getEnums(): Collection
+    {
+        return $this->enums;
+    }
+
+    /**
+     * Sets a list of enum descriptors contained in this file.
+     *
+     * @internal should not be called by any other class than the assamblers
+     *
+     * @param Collection<EnumDescriptor> $enums
+     */
+    public function setEnums(Collection $enums): void
+    {
+        $this->enums = $enums;
+    }
+
+    /**
      * Returns a series of markers contained in this file.
      *
      * A marker is a special inline comment that starts with a keyword and is followed by a single line description.
@@ -337,7 +360,8 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
             if (
                 $element instanceof ClassDescriptor ||
                 $element instanceof InterfaceDescriptor ||
-                $element instanceof TraitDescriptor
+                $element instanceof TraitDescriptor ||
+                $element instanceof EnumDescriptor
             ) {
                 foreach ($element->getMethods() as $item) {
                     $errors = $errors->merge($item->getErrors());

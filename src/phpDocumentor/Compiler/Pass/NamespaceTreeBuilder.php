@@ -56,6 +56,7 @@ class NamespaceTreeBuilder implements CompilerPassInterface
             $this->addElementsOfTypeToNamespace($project, $file->getClasses()->getAll(), 'classes');
             $this->addElementsOfTypeToNamespace($project, $file->getInterfaces()->getAll(), 'interfaces');
             $this->addElementsOfTypeToNamespace($project, $file->getTraits()->getAll(), 'traits');
+            $this->addElementsOfTypeToNamespace($project, $file->getEnums()->getAll(), 'enums');
         }
 
         /** @var NamespaceDescriptor $namespace */

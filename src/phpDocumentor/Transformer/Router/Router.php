@@ -18,6 +18,7 @@ use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\ConstantDescriptor;
 use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\Descriptor\DocumentDescriptor;
+use phpDocumentor\Descriptor\EnumDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\FunctionDescriptor;
 use phpDocumentor\Descriptor\InterfaceDescriptor;
@@ -88,6 +89,7 @@ class Router
             $node instanceof ClassDescriptor
             || $node instanceof InterfaceDescriptor
             || $node instanceof TraitDescriptor
+            || $node instanceof EnumDescriptor
         ) {
             return $this->generateUrlForDescriptor(
                 'class',

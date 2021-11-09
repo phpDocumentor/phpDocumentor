@@ -1,0 +1,12 @@
+{% set cases = node.cases %}
+{% if cases is not empty %}
+    <section class="phpdocumentor-cases">
+        <h3 class="phpdocumentor-elements__header" id="cases">
+            Cases
+            <a href="{{ link(node) }}#cases" class="headerlink"><i class="fas fa-link"></i></a>
+        </h3>
+        {% for case in cases %}
+            {% include 'components/enum-case.html.twig' %}
+        {% endfor %}
+    </section>
+{% endif %}
