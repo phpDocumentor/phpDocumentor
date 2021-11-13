@@ -24,7 +24,8 @@
     "repositories": [
         { "type": "path", "url": "incubator/guides" },
         { "type": "path", "url": "incubator/guides-restructured-text" },
-        { "type": "path", "url": "incubator/guides-markdown" }
+        { "type": "path", "url": "incubator/guides-markdown" },
+        { "type": "path", "url": "incubator/wordpress" }
     ],
     "require": {
         "php": ">=7.2.5||^8.0",
@@ -53,6 +54,7 @@
         "phpdocumentor/reflection-common": "^2.0",
         "phpdocumentor/reflection-docblock": "^5.0",
         "phpdocumentor/type-resolver": "^1.0",
+        "phpdocumentor/wordpress": "*@dev",
         "psr/cache": "^1.0",
         "psr/log": "^1.1",
         "symfony/cache": "^5.0",

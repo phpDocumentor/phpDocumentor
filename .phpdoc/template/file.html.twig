@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    {% include('components/breadcrumbs.html.twig') %}
+
+    <article class="phpdocumentor-element -file">
+        {{ include('components/file-title.html.twig') }}
+        {{ include('components/element-header.html.twig') }}
+
+        {{ include('components/constants.html.twig') }}
+        {{ include('components/functions.html.twig') }}
+
+        <h2 class="phpdocumentor-content__title">Hooks</h2>
+        <ul>
+        {% for action in node.metadata.wp_hooks.actions %}
+            <li>
+                <h3>{{ action.name }}</h3>
+                <section class="phpdocumentor-description">{{ action.docblock.description|markdown }}</section>
+            </li>
+        {% endfor %}
+        </ul>
+    </article>
+{% endblock %}

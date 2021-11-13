@@ -56,6 +56,7 @@ class FileAssembler extends AssemblerAbstract
         $fileDescriptor->setName($data->getName());
         $fileDescriptor->setPath($data->getPath());
         $fileDescriptor->setSource($data->getSource());
+        $fileDescriptor->setMetaData($data->getMetadata());
 
         $fileDescriptor->setIncludes(new Collection($data->getIncludes()));
         $fileDescriptor->setNamespaceAliases(new Collection($data->getNamespaces()));

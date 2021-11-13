@@ -98,6 +98,9 @@
     "phpdocumentor/type-resolver": {
         "version": "0.4.0"
     },
+    "phpdocumentor/wordpress": {
+        "version": "dev-POC/wordpress_parsing"
+    },
     "psr/cache": {
         "version": "1.0.1"
     },

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f846b56496ec43e39aa1a2d8f17e8e13",
+    "content-hash": "f295293f706bcf325866fdec1be11e6a",
     "packages": [
         {
             "name": "doctrine/event-manager",
@@ -1261,7 +1261,7 @@
         },
         {
             "name": "phpdocumentor/guides",
-            "version": "dev-master",
+            "version": "dev-POC/wordpress_parsing",
             "dist": {
                 "type": "path",
                 "url": "incubator/guides",
@@ -1297,7 +1297,7 @@
         },
         {
             "name": "phpdocumentor/guides-markdown",
-            "version": "dev-master",
+            "version": "dev-POC/wordpress_parsing",
             "dist": {
                 "type": "path",
                 "url": "incubator/guides-markdown",
@@ -1330,7 +1330,7 @@
         },
         {
             "name": "phpdocumentor/guides-restructured-text",
-            "version": "dev-master",
+            "version": "dev-POC/wordpress_parsing",
             "dist": {
                 "type": "path",
                 "url": "incubator/guides-restructured-text",
@@ -1578,6 +1578,38 @@
                 "source": "https://github.com/phpDocumentor/TypeResolver/tree/1.5.1"
             },
             "time": "2021-10-02T14:08:47+00:00"
+        },
+        {
+            "name": "phpdocumentor/wordpress",
+            "version": "dev-POC/wordpress_parsing",
+            "dist": {
+                "type": "path",
+                "url": "incubator/wordpress",
+                "reference": "a27522d3dcff4c1617f9930d5c372885e906f297"
+            },
+            "require": {
+                "php": ">=7.2.5||^8.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "phpDocumentor\\Wordpress\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "phpDocumentor\\Wordpress\\": [
+                        "tests/unit/"
+                    ]
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "homepage": "https://www.phpdoc.org",
+            "transport-options": {
+                "relative": true
+            }
         },
         {
             "name": "psr/cache",
@@ -4901,7 +4933,8 @@
         "phpdocumentor/guides": 20,
         "phpdocumentor/guides-markdown": 20,
         "phpdocumentor/guides-restructured-text": 20,
-        "phpdocumentor/reflection": 20
+        "phpdocumentor/reflection": 20,
+        "phpdocumentor/wordpress": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

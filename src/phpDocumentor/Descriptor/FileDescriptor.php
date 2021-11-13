@@ -416,4 +416,14 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
     {
         return $this->getPath();
     }
+
+    public function setMetaData(array $metaData)
+    {
+        $this->metaData = $metaData;
+    }
+
+    public function getMetaData(): array
+    {
+        return $this->metaData;
+    }
 }

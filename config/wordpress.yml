@@ -1,0 +1,15 @@
+###################################################################################
+## Wordpress - EXPERIMENTAL ##########################################################
+###################################################################################
+
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+  _instanceof:
+    phpDocumentor\Reflection\Php\ProjectFactoryStrategy:
+      tags: ['phpdoc.reflection.strategy']
+
+  phpDocumentor\Wordpress\:
+    resource: '%kernel.project_dir%/vendor/phpdocumentor/wordpress/src'
