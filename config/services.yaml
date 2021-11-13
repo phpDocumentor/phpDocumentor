@@ -3,6 +3,7 @@ imports:
   - { resource: 'reflection.yaml' }
   - { resource: 'stages.yaml' }
   - { resource: 'guides.yaml' }
+  - { resource: 'wordpress.yml' }
 
 parameters:
     linker.substitutions:
