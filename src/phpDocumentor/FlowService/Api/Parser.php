@@ -70,8 +70,8 @@ final class Parser implements ParserInterface
         $this->log('Collecting files from ' . $apiSpecification['source']['dsn']);
 
         $files = $this->fileCollector->getFiles(
-            $apiSpecification['source']['dsn'],
-            $apiSpecification['source']['paths'],
+            $apiSpecification->source()->dsn(),
+            $apiSpecification->source()->globPatterns(),
             $apiSpecification['ignore'],
             $apiSpecification['extensions']
         );

@@ -17,10 +17,10 @@ use League\Tactician\CommandBus;
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Dsn;
+use phpDocumentor\FileSystem\FileSystemFactory;
 use phpDocumentor\FlowService\Transformer;
 use phpDocumentor\Guides\RenderCommand;
 use phpDocumentor\Guides\Twig\EnvironmentBuilder;
-use phpDocumentor\FileSystem\FlySystemFactory;
 use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory;
 use Psr\Log\LoggerInterface;
@@ -42,21 +42,21 @@ final class RenderGuide implements Transformer, ProjectDescriptor\WithCustomSett
     /** @var CommandBus */
     private $commandBus;
 
-    /** @var FlySystemFactory */
-    private $flySystemFactory;
+    /** @var FileSystemFactory */
+    private $fileSystems;
     private EnvironmentFactory $environmentFactory;
     private EnvironmentBuilder $environmentBuilder;
 
     public function __construct(
         LoggerInterface $logger,
         CommandBus $commandBus,
-        FlySystemFactory $flySystemFactory,
+        FileSystemFactory $fileSystems,
         EnvironmentFactory $environmentFactory,
         EnvironmentBuilder $environmentBuilder
     ) {
         $this->logger = $logger;
         $this->commandBus = $commandBus;
-        $this->flySystemFactory = $flySystemFactory;
+        $this->fileSystems = $fileSystems;
         $this->environmentFactory = $environmentFactory;
         $this->environmentBuilder = $environmentBuilder;
     }
@@ -91,8 +91,8 @@ final class RenderGuide implements Transformer, ProjectDescriptor\WithCustomSett
         $this->commandBus->handle(
             new RenderCommand(
                 $documentationSet,
-                $this->flySystemFactory->create($dsn),
-                $this->flySystemFactory->create(Dsn::createFromString($documentationSet->getOutputLocation()))
+                $this->fileSystems->create($dsn),
+                $this->fileSystems->createDestination($documentationSet)
             )
         );
 
@@ -108,7 +108,7 @@ final class RenderGuide implements Transformer, ProjectDescriptor\WithCustomSett
         return $stopwatch;
     }
 
-    private function completedRenderingSetMessage(Stopwatch $stopwatch, Dsn $dsn): void
+    private function completedRenderingSetMessage(Stopwatch $stopwatch, Dsn $dsn) : void
     {
         $stopwatchEvent = $stopwatch->stop('guide');
         $this->logger->info(
