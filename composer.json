@@ -72,7 +72,7 @@
         "symfony/http-kernel": "^5.0.8",
         "symfony/monolog-bundle": "^3.0",
         "symfony/polyfill-intl-idn": "^1.22",
-        "symfony/process": "5.3.*",
+        "symfony/process": "5.4.*",
         "symfony/routing": "^5.0",
         "symfony/stopwatch": "^5.0",
         "symfony/string": "5.3.*",
