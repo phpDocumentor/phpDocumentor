@@ -112,7 +112,7 @@ final class MarkupLanguageParser implements ParserInterface
             if ($node instanceof Heading) {
                 $content = $node->getStringContent();
                 $title = new TitleNode(
-                    new SpanNode($this, $content),
+                    SpanNode::create($this, $content),
                     $node->getLevel()
                 );
                 $document->addNode($title);
@@ -120,7 +120,7 @@ final class MarkupLanguageParser implements ParserInterface
             }
 
             if ($node instanceof Text) {
-                $spanNode = new SpanNode($this, $node->getContent());
+                $spanNode = SpanNode::create($this, $node->getContent());
                 $document->addNode($spanNode);
                 continue;
             }

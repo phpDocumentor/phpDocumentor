@@ -27,23 +27,24 @@ class SpanNode extends Node
     protected $tokens;
 
     /**
-     * @param string|string[]|SpanNode $span
+     * @param string|string[] $span
      */
-    public function __construct(MarkupLanguageParser $parser, $span)
+    public static function create(MarkupLanguageParser $parser, $span): self
     {
         if (is_array($span)) {
             $span = implode("\n", $span);
         }
 
         $environment = $parser->getEnvironment();
-        if ($span instanceof self) {
-            $span = $parser->getNodeRendererFactory()->get(get_class($span))->render($span, $environment);
-        }
-
         $spanProcessor = new SpanParser($parser->getReferenceBuilder());
 
-        parent::__construct($spanProcessor->process($environment, $span));
-        $this->tokens = $spanProcessor->getTokens();
+        return new self($spanProcessor->process($environment, $span), $spanProcessor->getTokens());
+    }
+
+    public function __construct(string $content, array $tokens)
+    {
+        parent::__construct($content);
+        $this->tokens = $tokens;
     }
 
     /**

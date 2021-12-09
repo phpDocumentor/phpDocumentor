@@ -29,6 +29,6 @@ class Replace extends Directive
         string $data,
         array $options
     ): Node {
-        return new SpanNode($parser, $data);
+        return SpanNode::create($parser, $data);
     }
 }
