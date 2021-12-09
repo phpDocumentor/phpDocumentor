@@ -205,7 +205,11 @@ services:
       $nodeClass: '\phpDocumentor\Guides\Nodes\CodeNode'
     tags: ['phpdoc.guides.noderenderer.html']
 
-  phpDocumentor\Guides\NodeRenderers\Html\DefinitionListNodeRenderer:
+  guides.renderer.noderenderer.definitionlist:
+    class: phpDocumentor\Guides\NodeRenderers\TemplateNodeRenderer
+    arguments:
+      $template: 'definition-list.html.twig'
+      $nodeClass: '\phpDocumentor\Guides\Nodes\DefinitionListNode'
     tags: ['phpdoc.guides.noderenderer.html']
 
   phpDocumentor\Guides\NodeRenderers\Html\DocumentNodeRenderer:
