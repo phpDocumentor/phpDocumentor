@@ -13,18 +13,20 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\NodeRenderers;
 
+use phpDocumentor\Guides\Nodes\Node;
+
 class InMemoryNodeRendererFactory implements NodeRendererFactory
 {
-    /** @var array<class-string, NodeRenderer> */
+    /** @var iterable<NodeRenderer> */
     private $nodeRenderers;
 
     /** @var NodeRenderer */
     private $defaultNodeRenderer;
 
     /**
-     * @param array<class-string, NodeRenderer> $nodeRenderers
+     * @param iterable<NodeRenderer> $nodeRenderers
      */
-    public function __construct(array $nodeRenderers, NodeRenderer $defaultNodeRenderer)
+    public function __construct(iterable $nodeRenderers, NodeRenderer $defaultNodeRenderer)
     {
         $this->nodeRenderers = $nodeRenderers;
         foreach ($nodeRenderers as $nodeRenderer) {
@@ -43,8 +45,14 @@ class InMemoryNodeRendererFactory implements NodeRendererFactory
         $defaultNodeRenderer->setNodeRendererFactory($this);
     }
 
-    public function get(string $node): NodeRenderer
+    public function get(Node $node): NodeRenderer
     {
-        return $this->nodeRenderers[$node] ?? $this->defaultNodeRenderer;
+        foreach ($this->nodeRenderers as $nodeRenderer) {
+            if ($nodeRenderer->supports($node)) {
+                return $nodeRenderer;
+            }
+        }
+
+        return $this->defaultNodeRenderer;
     }
 }

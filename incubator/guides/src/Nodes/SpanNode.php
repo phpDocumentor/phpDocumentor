@@ -17,7 +17,6 @@ use phpDocumentor\Guides\MarkupLanguageParser;
 use phpDocumentor\Guides\RestructuredText\Span\SpanParser;
 use phpDocumentor\Guides\Span\SpanToken;
 
-use function get_class;
 use function implode;
 use function is_array;
 
@@ -41,6 +40,7 @@ class SpanNode extends Node
         return new self($spanProcessor->process($environment, $span), $spanProcessor->getTokens());
     }
 
+    /** @param SpanToken[] $tokens */
     public function __construct(string $content, array $tokens)
     {
         parent::__construct($content);

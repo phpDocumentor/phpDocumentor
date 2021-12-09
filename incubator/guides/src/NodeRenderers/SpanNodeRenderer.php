@@ -23,7 +23,6 @@ use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\Span\SpanToken;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 
-use function get_class;
 use function is_string;
 use function preg_replace;
 use function preg_replace_callback;
@@ -140,7 +139,7 @@ abstract class SpanNodeRenderer implements NodeRenderer, SpanRenderer, NodeRende
                 }
 
                 if ($variable instanceof Node) {
-                    return $this->nodeRendererFactory->get(get_class($variable))->render($variable, $environment);
+                    return $this->nodeRendererFactory->get($variable)->render($variable, $environment);
                 }
 
                 if (is_string($variable)) {

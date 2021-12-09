@@ -18,5 +18,7 @@ use phpDocumentor\Guides\Nodes\Node;
 
 interface NodeRenderer
 {
+    public function supports(Node $node): bool;
+
     public function render(Node $node, Environment $environment): string;
 }

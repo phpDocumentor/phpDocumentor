@@ -89,12 +89,14 @@ services:
     arguments:
       $fileExtension: 'html'
       $directives: !tagged_iterator phpdoc.guides.html_directive
+      $nodeRendererFactory: '@guides.renderer.noderenderers.html'
     tags: ['phpdoc.guides.format']
 
   phpDocumentor\Guides\RestructuredText\LaTeX\LaTeXFormat:
     arguments:
       $fileExtension: 'tex'
       $directives: !tagged_iterator phpdoc.guides.latex_directive
+      $nodeRendererFactory: '@guides.renderer.noderenderers.latex'
     tags: ['phpdoc.guides.format']
 
   guides.parser.rst.html:
@@ -112,3 +114,189 @@ services:
       $references: !tagged_iterator phpdoc.guides.reference
       $format: '@phpDocumentor\Guides\RestructuredText\LaTeX\LaTeXFormat'
     tags: ['phpdoc.guides.parser.markupLanguageParser']
+
+  guides.renderer.noderenderers.html:
+    class: phpDocumentor\Guides\NodeRenderers\InMemoryNodeRendererFactory
+    arguments:
+      $nodeRenderers: !tagged_iterator phpdoc.guides.noderenderer.html
+      $defaultNodeRenderer: '@phpDocumentor\Guides\NodeRenderers\DefaultNodeRenderer'
+
+  guides.renderer.noderenderer.anchor:
+    class: phpDocumentor\Guides\NodeRenderers\TemplateNodeRenderer
+    arguments:
+      $template: 'anchor.html.twig'
+      $nodeClass: '\phpDocumentor\Guides\Nodes\AnchorNode'
+    tags: ['phpdoc.guides.noderenderer.html']
+
+  guides.renderer.noderenderer.figure:
+    class: phpDocumentor\Guides\NodeRenderers\TemplateNodeRenderer
+    arguments:
+      $template: 'figure.html.twig'
+      $nodeClass: '\phpDocumentor\Guides\Nodes\FigureNode'
+    tags: ['phpdoc.guides.noderenderer.html']
+
+  guides.renderer.noderenderer.meta:
+    class: phpDocumentor\Guides\NodeRenderers\TemplateNodeRenderer
+    arguments:
+      $template: 'meta.html.twig'
+      $nodeClass: '\phpDocumentor\Guides\Nodes\MetaNode'
+    tags: ['phpdoc.guides.noderenderer.html']
+
+  guides.renderer.noderenderer.paragraph:
+    class: phpDocumentor\Guides\NodeRenderers\TemplateNodeRenderer
+    arguments:
+      $template: 'paragraph.html.twig'
+      $nodeClass: '\phpDocumentor\Guides\Nodes\ParagraphNode'
+    tags: ['phpdoc.guides.noderenderer.html']
+
+  guides.renderer.noderenderer.quote:
+    class: phpDocumentor\Guides\NodeRenderers\TemplateNodeRenderer
+    arguments:
+      $template: 'quote.html.twig'
+      $nodeClass: '\phpDocumentor\Guides\Nodes\QuoteNode'
+    tags: ['phpdoc.guides.noderenderer.html']
+
+  guides.renderer.noderenderer.sparator:
+    class: phpDocumentor\Guides\NodeRenderers\TemplateNodeRenderer
+    arguments:
+      $template: 'separator.html.twig'
+      $nodeClass: '\phpDocumentor\Guides\Nodes\SeparatorNode'
+    tags: ['phpdoc.guides.noderenderer.html']
+
+  guides.renderer.noderenderer.title:
+    class: phpDocumentor\Guides\NodeRenderers\TemplateNodeRenderer
+    arguments:
+      $template: 'header-title.html.twig'
+      $nodeClass: '\phpDocumentor\Guides\Nodes\TitleNode'
+    tags: ['phpdoc.guides.noderenderer.html']
+
+  guides.renderer.noderenderer.sectionbegin:
+    class: phpDocumentor\Guides\NodeRenderers\TemplateNodeRenderer
+    arguments:
+      $template: 'section-begin.html.twig'
+      $nodeClass: '\phpDocumentor\Guides\Nodes\SectionBeginNode'
+    tags: ['phpdoc.guides.noderenderer.html']
+
+  guides.renderer.noderenderer.sectionend:
+    class: phpDocumentor\Guides\NodeRenderers\TemplateNodeRenderer
+    arguments:
+      $template: 'section-end.html.twig'
+      $nodeClass: '\phpDocumentor\Guides\Nodes\SectionEndNode'
+    tags: ['phpdoc.guides.noderenderer.html']
+
+  guides.renderer.noderenderer.image:
+    class: phpDocumentor\Guides\NodeRenderers\TemplateNodeRenderer
+    arguments:
+      $template: 'image.html.twig'
+      $nodeClass: '\phpDocumentor\Guides\Nodes\ImageNode'
+    tags: ['phpdoc.guides.noderenderer.html']
+
+  guides.renderer.noderenderer.uml:
+    class: phpDocumentor\Guides\NodeRenderers\TemplateNodeRenderer
+    arguments:
+      $template: 'uml.html.twig'
+      $nodeClass: '\phpDocumentor\Guides\Nodes\UmlNode'
+    tags: ['phpdoc.guides.noderenderer.html']
+
+  guides.renderer.noderenderer.code:
+    class: phpDocumentor\Guides\NodeRenderers\TemplateNodeRenderer
+    arguments:
+      $template: 'code.html.twig'
+      $nodeClass: '\phpDocumentor\Guides\Nodes\CodeNode'
+    tags: ['phpdoc.guides.noderenderer.html']
+
+  phpDocumentor\Guides\NodeRenderers\Html\DefinitionListNodeRenderer:
+    tags: ['phpdoc.guides.noderenderer.html']
+
+  phpDocumentor\Guides\NodeRenderers\Html\DocumentNodeRenderer:
+    tags: ['phpdoc.guides.noderenderer.html']
+
+  phpDocumentor\Guides\NodeRenderers\Html\SpanNodeRenderer:
+    tags: ['phpdoc.guides.noderenderer.html']
+
+  phpDocumentor\Guides\NodeRenderers\Html\TableNodeRenderer:
+    tags: ['phpdoc.guides.noderenderer.html']
+
+  phpDocumentor\Guides\NodeRenderers\Html\TocNodeRenderer:
+    tags: ['phpdoc.guides.noderenderer.html']
+
+  guides.renderer.noderenderer.list:
+    class: phpDocumentor\Guides\NodeRenderers\TemplateNodeRenderer
+    arguments:
+      $template: 'list.html.twig'
+      $nodeClass: '\phpDocumentor\Guides\Nodes\ListNode'
+    tags: ['phpdoc.guides.noderenderer.html']
+
+  guides.renderer.noderenderers.latex:
+    class: phpDocumentor\Guides\NodeRenderers\InMemoryNodeRendererFactory
+    arguments:
+      $nodeRenderers: !tagged_iterator phpdoc.guides.noderenderer.latex
+      $defaultNodeRenderer: '@phpDocumentor\Guides\NodeRenderers\DefaultNodeRenderer'
+
+  guides.renderer.noderenderer.latex.anchor:
+    class: phpDocumentor\Guides\NodeRenderers\TemplateNodeRenderer
+    arguments:
+      $template: 'anchor.tex.twig'
+      $nodeClass: '\phpDocumentor\Guides\Nodes\AnchorNode'
+    tags: ['phpdoc.guides.noderenderer.latex']
+
+  guides.renderer.noderenderer.latex.code:
+    class: phpDocumentor\Guides\NodeRenderers\TemplateNodeRenderer
+    arguments:
+      $template: 'code.tex.twig'
+      $nodeClass: '\phpDocumentor\Guides\Nodes\CodeNode'
+    tags: ['phpdoc.guides.noderenderer.latex']
+
+  guides.renderer.noderenderer.latex.image:
+    class: phpDocumentor\Guides\NodeRenderers\TemplateNodeRenderer
+    arguments:
+      $template: 'image.tex.twig'
+      $nodeClass: '\phpDocumentor\Guides\Nodes\ImageNode'
+    tags: ['phpdoc.guides.noderenderer.latex']
+
+  guides.renderer.noderenderer.latex.meta:
+    class: phpDocumentor\Guides\NodeRenderers\TemplateNodeRenderer
+    arguments:
+      $template: 'meta.tex.twig'
+      $nodeClass: '\phpDocumentor\Guides\Nodes\MetaNode'
+    tags: ['phpdoc.guides.noderenderer.latex']
+
+  guides.renderer.noderenderer.latex.paragraph:
+    class: phpDocumentor\Guides\NodeRenderers\TemplateNodeRenderer
+    arguments:
+      $template: 'paragraph.tex.twig'
+      $nodeClass: '\phpDocumentor\Guides\Nodes\ParagraphNode'
+    tags: ['phpdoc.guides.noderenderer.latex']
+
+  guides.renderer.noderenderer.latex.quote:
+    class: phpDocumentor\Guides\NodeRenderers\TemplateNodeRenderer
+    arguments:
+      $template: 'quote.tex.twig'
+      $nodeClass: '\phpDocumentor\Guides\Nodes\QuoteNode'
+    tags: ['phpdoc.guides.noderenderer.latex']
+
+  guides.renderer.noderenderer.latex.separator:
+    class: phpDocumentor\Guides\NodeRenderers\TemplateNodeRenderer
+    arguments:
+      $template: 'separator.tex.twig'
+      $nodeClass: '\phpDocumentor\Guides\Nodes\SeparatorNode'
+    tags: ['phpdoc.guides.noderenderer.latex']
+
+  guides.renderer.noderenderer.latex.list:
+    class: phpDocumentor\Guides\NodeRenderers\TemplateNodeRenderer
+    arguments:
+      $template: 'list.tex.twig'
+      $nodeClass: '\phpDocumentor\Guides\Nodes\ListNode'
+    tags: ['phpdoc.guides.noderenderer.latex']
+
+  phpDocumentor\Guides\NodeRenderers\LaTeX\DocumentNodeRenderer:
+    tags: ['phpdoc.guides.noderenderer.latex']
+
+  phpDocumentor\Guides\NodeRenderers\LaTeX\SpanNodeRenderer:
+    tags: ['phpdoc.guides.noderenderer.latex']
+
+  phpDocumentor\Guides\NodeRenderers\LaTeX\TableNodeRenderer:
+    tags: ['phpdoc.guides.noderenderer.latex']
+
+  phpDocumentor\Guides\NodeRenderers\LaTeX\TocNodeRenderer:
+    tags: ['phpdoc.guides.noderenderer.latex']

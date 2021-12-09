@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\NodeRenderers\Html;
 
-use InvalidArgumentException;
 use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\NodeRenderers\DocumentNodeRenderer as BaseDocumentRender;
 use phpDocumentor\Guides\NodeRenderers\FullDocumentNodeRenderer;
@@ -22,6 +21,7 @@ use phpDocumentor\Guides\NodeRenderers\NodeRendererFactory;
 use phpDocumentor\Guides\NodeRenderers\NodeRendererFactoryAware;
 use phpDocumentor\Guides\Nodes\DocumentNode;
 use phpDocumentor\Guides\Nodes\Node;
+use Webmozart\Assert\Assert;
 
 class DocumentNodeRenderer implements NodeRenderer, FullDocumentNodeRenderer, NodeRendererFactoryAware
 {
@@ -35,9 +35,7 @@ class DocumentNodeRenderer implements NodeRenderer, FullDocumentNodeRenderer, No
 
     public function render(Node $node, Environment $environment): string
     {
-        if ($node instanceof DocumentNode === false) {
-            throw new InvalidArgumentException('Invalid node presented');
-        }
+        Assert::isInstanceOf($node, DocumentNode::class);
 
         return (new BaseDocumentRender($this->nodeRendererFactory))->render($node, $environment);
     }
@@ -51,5 +49,10 @@ class DocumentNodeRenderer implements NodeRenderer, FullDocumentNodeRenderer, No
             'document.html.twig',
             ['node' => $node]
         );
+    }
+
+    public function supports(Node $node): bool
+    {
+        return $node instanceof DocumentNode;
     }
 }

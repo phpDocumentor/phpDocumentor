@@ -54,4 +54,9 @@ class TitleNodeRenderer implements NodeRenderer
             ]
         );
     }
+
+    public function supports(Node $node): bool
+    {
+        return $node instanceof TitleNode;
+    }
 }

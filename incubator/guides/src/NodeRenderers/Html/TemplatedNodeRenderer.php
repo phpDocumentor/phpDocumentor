@@ -27,4 +27,9 @@ final class TemplatedNodeRenderer implements NodeRenderer
 
         return $this->renderer->render($node->getValue(), $node->getData());
     }
+
+    public function supports(Node $node): bool
+    {
+        return $node instanceof TemplatedNode;
+    }
 }

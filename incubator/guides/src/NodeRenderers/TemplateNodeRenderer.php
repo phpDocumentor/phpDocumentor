@@ -16,10 +16,20 @@ final class TemplateNodeRenderer implements NodeRenderer
     /** @var string */
     private $template;
 
-    public function __construct(Renderer $renderer, string $template)
+    /** @var string */
+    private $nodeClass;
+
+    /** @param class-string<Node> $nodeClass */
+    public function __construct(Renderer $renderer, string $template, string $nodeClass)
     {
         $this->renderer = $renderer;
         $this->template = $template;
+        $this->nodeClass = $nodeClass;
+    }
+
+    public function supports(Node $node): bool
+    {
+        return $node instanceof $this->nodeClass;
     }
 
     public function render(Node $node, Environment $environment): string

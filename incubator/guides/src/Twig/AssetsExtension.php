@@ -23,7 +23,6 @@ use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 use Webmozart\Assert\Assert;
 
-use function get_class;
 use function sprintf;
 use function trim;
 
@@ -85,7 +84,7 @@ final class AssetsExtension extends AbstractExtension
             throw new RuntimeException('Environment must be set in the twig global state to render nodes');
         }
 
-        return $environment->getNodeRendererFactory()->get(get_class($node))->render($node, $environment);
+        return $environment->getNodeRendererFactory()->get($node)->render($node, $environment);
     }
 
     public function uml(string $source): ?string

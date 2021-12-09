@@ -33,7 +33,6 @@ use Psr\Log\LoggerInterface;
 
 use function array_merge;
 use function dirname;
-use function get_class;
 use function iterator_to_array;
 use function str_replace;
 
@@ -174,7 +173,7 @@ final class RenderHandler
         }
 
         /** @var FullDocumentNodeRenderer $renderer */
-        $renderer = $nodeRendererFactory->get(get_class($document));
+        $renderer = $nodeRendererFactory->get($document);
         $this->renderer->setGuidesEnvironment($environment);
         $this->renderer->setDestination($destinationPath);
 

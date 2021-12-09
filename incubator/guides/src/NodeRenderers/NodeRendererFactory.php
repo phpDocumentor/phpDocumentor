@@ -13,10 +13,9 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\NodeRenderers;
 
+use phpDocumentor\Guides\Nodes\Node;
+
 interface NodeRendererFactory
 {
-    /**
-     * @param class-string $node
-     */
-    public function get(string $node): NodeRenderer;
+    public function get(Node $node): NodeRenderer;
 }

@@ -18,8 +18,6 @@ use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Nodes\DocumentNode;
 use phpDocumentor\Guides\Nodes\Node;
 
-use function get_class;
-
 class DocumentNodeRenderer implements NodeRenderer
 {
     /** @var NodeRendererFactory */
@@ -39,10 +37,15 @@ class DocumentNodeRenderer implements NodeRenderer
         $document = '';
 
         foreach ($node->getNodes() as $childNode) {
-            $renderedNode = $this->nodeRendererFactory->get(get_class($childNode))->render($childNode, $environment);
+            $renderedNode = $this->nodeRendererFactory->get($childNode)->render($childNode, $environment);
             $document .= $renderedNode . "\n";
         }
 
         return $document;
+    }
+
+    public function supports(Node $node): bool
+    {
+        return $node instanceof DocumentNode;
     }
 }

@@ -23,7 +23,6 @@ use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\Nodes\TableNode;
 
 use function count;
-use function get_class;
 use function implode;
 use function max;
 
@@ -52,7 +51,7 @@ class TableNodeRenderer implements NodeRenderer, NodeRendererFactoryAware
 
             /** @var SpanNode $col */
             foreach ($row->getColumns() as $n => $col) {
-                $rowTex .= $this->nodeRendererFactory->get(get_class($col))->render($col, $environment);
+                $rowTex .= $this->nodeRendererFactory->get($col)->render($col, $environment);
 
                 if ((int) $n + 1 >= count($row->getColumns())) {
                     continue;
@@ -74,5 +73,10 @@ class TableNodeRenderer implements NodeRenderer, NodeRendererFactoryAware
         $rows = "\\hline\n" . implode("\\hline\n", $rows) . "\\hline\n";
 
         return "\\begin{tabular}{" . $aligns . "}\n" . $rows . "\n\\end{tabular}\n";
+    }
+
+    public function supports(Node $node): bool
+    {
+        return $node instanceof TableNode;
     }
 }

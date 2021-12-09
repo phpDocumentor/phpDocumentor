@@ -15,6 +15,8 @@ namespace phpDocumentor\Guides\NodeRenderers\Html;
 
 use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\NodeRenderers\SpanNodeRenderer as BaseSpanNodeRenderer;
+use phpDocumentor\Guides\Nodes\Node;
+use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\References\ResolvedReference;
 
 use function htmlspecialchars;
@@ -103,5 +105,10 @@ class SpanNodeRenderer extends BaseSpanNodeRenderer
         }
 
         return $link;
+    }
+
+    public function supports(Node $node): bool
+    {
+        return $node instanceof SpanNode;
     }
 }

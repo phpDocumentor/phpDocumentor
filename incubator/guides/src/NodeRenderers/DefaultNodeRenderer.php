@@ -16,7 +16,6 @@ namespace phpDocumentor\Guides\NodeRenderers;
 use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Nodes\Node;
 
-use function get_class;
 use function is_callable;
 use function is_string;
 
@@ -35,7 +34,7 @@ class DefaultNodeRenderer implements NodeRenderer, NodeRendererFactoryAware
         $value = $node->getValue();
 
         if ($value instanceof Node) {
-            return $this->nodeRendererFactory->get(get_class($value))->render($value, $environment);
+            return $this->nodeRendererFactory->get($value)->render($value, $environment);
         }
 
         if (is_string($value)) {
@@ -47,5 +46,10 @@ class DefaultNodeRenderer implements NodeRenderer, NodeRendererFactoryAware
         }
 
         return '';
+    }
+
+    public function supports(Node $node): bool
+    {
+        return true;
     }
 }
