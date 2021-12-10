@@ -13,11 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\Formats;
 
-use phpDocumentor\Guides\NodeRenderers\NodeRendererFactory;
-
 interface OutputFormat
 {
     public function getFileExtension(): string;
-
-    public function getNodeRendererFactory(): NodeRendererFactory;
 }
