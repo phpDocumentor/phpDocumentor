@@ -2,11 +2,10 @@
 
 declare(strict_types=1);
 
-namespace phpDocumentor\Guides\RestructuredText\LaTeX\Directives;
+namespace phpDocumentor\Guides\RestructuredText\Directives;
 
+use phpDocumentor\Guides\Nodes\Metadata\DocumentTitleNode;
 use phpDocumentor\Guides\Nodes\Node;
-use phpDocumentor\Guides\Nodes\RawNode;
-use phpDocumentor\Guides\RestructuredText\Directives\Directive;
 use phpDocumentor\Guides\RestructuredText\MarkupLanguageParser;
 
 /**
@@ -32,13 +31,7 @@ class Title extends Directive
         array $options
     ): void {
         $document = $parser->getDocument();
-
-        $document->addHeaderNode(new RawNode('\title{' . $data . '}'));
-
-        if ($node === null) {
-            return;
-        }
-
+        $document->addHeaderNode(new DocumentTitleNode($data));
         $document->addNode($node);
     }
 }

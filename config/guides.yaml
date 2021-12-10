@@ -47,7 +47,7 @@ services:
     resource: '../incubator/guides-restructured-text/src/*'
 
   phpDocumentor\Guides\NodeRenderers\Html\:
-    resource: '../incubator/guides/src/NodeRenderers/Html/*'
+    resource: '../incubator/guides/src/NodeRenderers/Html/**'
     tags: [ { name: 'phpdoc.guides.noderenderer.html' } ]
 
   phpDocumentor\Guides\RestructuredText\HTML\Directives\:

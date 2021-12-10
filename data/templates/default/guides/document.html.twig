@@ -4,6 +4,7 @@
     {% for headerNode in node.headerNodes %}
         {{ renderNode(headerNode) }}
     {% endfor %}
+    {{ parent() }}
 {% endblock %}
 
 {% block body %}

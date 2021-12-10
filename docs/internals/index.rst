@@ -1,3 +1,5 @@
+.. title:: Internals 2
+
 Internals
 =========
 

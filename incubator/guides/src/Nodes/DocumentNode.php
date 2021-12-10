@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\Nodes;
 
+use phpDocumentor\Guides\Nodes\Metadata\MetadataNode;
+
 use function array_filter;
 use function count;
 use function in_array;
@@ -23,7 +25,12 @@ final class DocumentNode extends Node
     /** @var string */
     private $hash;
 
-    /** @var Node[] */
+    /**
+     * Header nodes are rendered in the head of a html page.
+     * They contain metadata about the document.
+     *
+     * @var MetadataNode[]
+     */
     private $headerNodes = [];
 
     /** @var Node[] */
@@ -117,16 +124,22 @@ final class DocumentNode extends Node
             $node = new RawNode($node);
         }
 
+        if (!($node instanceof Node)) {
+            return;
+        }
+
         $this->nodes[] = $node;
     }
 
-    /**
-     * @todo what is the use of this? I have removed the getter; but need to figure out what the intended use for
-     *       this was before removing it altogether.
-     */
-    public function addHeaderNode(Node $node): void
+    public function addHeaderNode(MetadataNode $node): void
     {
         $this->headerNodes[] = $node;
+    }
+
+    /** @return MetadataNode[] */
+    public function getHeaderNodes(): array
+    {
+        return $this->headerNodes;
     }
 
     public function getHash(): string

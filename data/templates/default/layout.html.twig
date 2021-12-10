@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>{% block title %}{{ project.name }}{% endblock %}</title>
+    {% block head %}
+        <title>{% block title %}{{ project.name }}{% endblock %}</title>
+    {% endblock %}
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {{ renderBaseUrlHeader() }}
     <link rel="icon" href="images/favicon.ico"/>

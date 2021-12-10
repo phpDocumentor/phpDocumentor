@@ -11,9 +11,9 @@ declare(strict_types=1);
  * @link https://phpdoc.org
  */
 
-namespace phpDocumentor\Guides\Nodes;
+namespace phpDocumentor\Guides\Nodes\Metadata;
 
-class MetaNode extends Node
+class MetaNode extends MetadataNode
 {
     /** @var string */
     protected $key;
