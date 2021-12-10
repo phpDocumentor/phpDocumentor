@@ -2,11 +2,10 @@
 
 declare(strict_types=1);
 
-namespace phpDocumentor\Guides\RestructuredText\LaTeX\Directives;
+namespace phpDocumentor\Guides\RestructuredText\Directives;
 
 use phpDocumentor\Guides\Nodes\MainNode;
 use phpDocumentor\Guides\Nodes\Node;
-use phpDocumentor\Guides\RestructuredText\Directives\Directive;
 use phpDocumentor\Guides\RestructuredText\MarkupLanguageParser;
 
 /**

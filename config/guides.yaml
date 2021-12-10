@@ -56,10 +56,6 @@ services:
       - '../incubator/guides-restructured-text/src/RestructuredText/HTML/Directives/AbstractAdmonitionDirective.php'
     tags: [ { name: 'phpdoc.guides.html_directive' } ]
 
-  phpDocumentor\Guides\RestructuredText\LaTeX\Directives\:
-    resource: '../incubator/guides-restructured-text/src/RestructuredText/LaTeX/Directives/*'
-    tags: [ { name: 'phpdoc.guides.latex_directive' } ]
-
   phpDocumentor\Guides\Handlers\:
     resource: '../src/phpDocumentor/Guides/Handlers/*Handler.php'
     tags: [{name: tactician.handler, typehints: true}]
