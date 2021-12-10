@@ -11,12 +11,11 @@ declare(strict_types=1);
  * @link https://phpdoc.org
  */
 
-namespace phpDocumentor\Guides\RestructuredText\HTML\Directives;
+namespace phpDocumentor\Guides\RestructuredText\Directives;
 
 use phpDocumentor\Guides\Nodes\Node;
-use phpDocumentor\Guides\Nodes\TemplatedNode;
-use phpDocumentor\Guides\RestructuredText\Directives\SubDirective;
 use phpDocumentor\Guides\RestructuredText\MarkupLanguageParser;
+use phpDocumentor\Guides\RestructuredText\Nodes\TopicNode;
 
 class TopicDirective extends SubDirective
 {
@@ -27,12 +26,9 @@ class TopicDirective extends SubDirective
         string $data,
         array $options
     ): ?Node {
-        return new TemplatedNode(
-            'directives/topic.html.twig',
-            [
-                'name' => $data,
-                'node' => $document,
-            ]
+        return new TopicNode(
+            $data,
+            $document
         );
     }
 
