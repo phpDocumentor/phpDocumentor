@@ -89,6 +89,7 @@ final class Uml extends Directive
         }
 
         $value = $environment->getOrigin()->read($fileName);
+
         return str_replace(['@startuml', '@enduml'], '', $value);
     }
 }
