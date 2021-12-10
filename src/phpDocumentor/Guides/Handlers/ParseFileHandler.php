@@ -100,8 +100,7 @@ final class ParseFileHandler
         try {
             $document = $this->parser->parse(
                 $fileContents,
-                $documentationSet->getInputFormat(),
-                $documentationSet->getOutputFormat()
+                $documentationSet->getInputFormat()
             );
         } catch (RuntimeException $e) {
             $this->logger->error(

@@ -88,30 +88,18 @@ services:
     class: phpDocumentor\Guides\RestructuredText\OutputFormat
     arguments:
       $fileExtension: 'html'
-      $directives: !tagged_iterator phpdoc.guides.html_directive
     tags: ['phpdoc.guides.format']
 
   guides.renderer.outputformat.rst.latex:
     class: phpDocumentor\Guides\RestructuredText\OutputFormat
     arguments:
       $fileExtension: 'tex'
-      $directives: !tagged_iterator phpdoc.guides.latex_directive
     tags: ['phpdoc.guides.format']
 
-  guides.parser.rst.html:
-    class: phpDocumentor\Guides\RestructuredText\MarkupLanguageParser
+  phpDocumentor\Guides\RestructuredText\MarkupLanguageParser:
     arguments:
       $directives: !tagged_iterator phpdoc.guides.directive
       $references: !tagged_iterator phpdoc.guides.reference
-      $format: '@guides.renderer.outputformat.rst.html'
-    tags: ['phpdoc.guides.parser.markupLanguageParser']
-
-  guides.parser.rst.latex:
-    class: phpDocumentor\Guides\RestructuredText\MarkupLanguageParser
-    arguments:
-      $directives: !tagged_iterator phpdoc.guides.directive
-      $references: !tagged_iterator phpdoc.guides.reference
-      $format: '@guides.renderer.outputformat.rst.latex'
     tags: ['phpdoc.guides.parser.markupLanguageParser']
 
   phpDocumentor\Guides\Renderer:

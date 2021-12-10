@@ -7,8 +7,6 @@ namespace phpDocumentor\Guides;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemInterface;
-use phpDocumentor\Guides\Formats\OutputFormat;
-use phpDocumentor\Guides\Formats\OutputFormats;
 use phpDocumentor\Guides\Nodes\DocumentNode;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -38,9 +36,6 @@ final class Parser
     /** @var UrlGenerator */
     private $urlGenerator;
 
-    /** @var OutputFormats */
-    private $outputFormats;
-
     /** @var MarkupLanguageParser[] */
     private $parserStrategies = [];
 
@@ -49,12 +44,10 @@ final class Parser
      */
     public function __construct(
         UrlGenerator $urlGenerator,
-        OutputFormats $outputFormats,
         iterable $parserStrategies,
         ?LoggerInterface $logger = null
     ) {
         $this->urlGenerator = $urlGenerator;
-        $this->outputFormats = $outputFormats;
         $this->logger = $logger ?? new NullLogger();
 
         foreach ($parserStrategies as $strategy) {
@@ -112,9 +105,7 @@ final class Parser
             )
         );
 
-        $format = $this->outputFormats->get($outputFormat);
-
-        $parser = $this->determineParser($inputFormat, $format);
+        $parser = $this->determineParser($inputFormat);
 
         $this->environment->reset();
 
@@ -131,10 +122,10 @@ final class Parser
         return $document;
     }
 
-    private function determineParser(string $fileExtension, OutputFormat $format): MarkupLanguageParser
+    private function determineParser(string $fileExtension): MarkupLanguageParser
     {
         foreach ($this->parserStrategies as $parserStrategy) {
-            if ($parserStrategy->supports($fileExtension, $format)) {
+            if ($parserStrategy->supports($fileExtension)) {
                 return $parserStrategy;
             }
         }

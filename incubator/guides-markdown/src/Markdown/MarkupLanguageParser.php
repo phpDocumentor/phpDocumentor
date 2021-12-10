@@ -15,7 +15,6 @@ use League\CommonMark\Inline\Element\Link;
 use League\CommonMark\Inline\Element\Text;
 use League\CommonMark\Node\NodeWalker;
 use phpDocumentor\Guides\Environment;
-use phpDocumentor\Guides\Formats\OutputFormat;
 use phpDocumentor\Guides\Markdown\Parsers\AbstractBlock;
 use phpDocumentor\Guides\MarkupLanguageParser as ParserInterface;
 use phpDocumentor\Guides\Nodes\AnchorNode;
@@ -65,7 +64,7 @@ final class MarkupLanguageParser implements ParserInterface
         ];
     }
 
-    public function supports(string $inputFormat, OutputFormat $outputFormat): bool
+    public function supports(string $inputFormat): bool
     {
         return strtolower($inputFormat) === 'md';
     }

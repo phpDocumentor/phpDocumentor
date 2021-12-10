@@ -6,14 +6,12 @@ namespace phpDocumentor\Guides\RestructuredText;
 
 use Doctrine\Common\EventManager;
 use phpDocumentor\Guides\Environment;
-use phpDocumentor\Guides\Formats\OutputFormat;
 use phpDocumentor\Guides\MarkupLanguageParser as ParserInterface;
 use phpDocumentor\Guides\Nodes\DocumentNode;
 use phpDocumentor\Guides\ReferenceBuilder;
 use phpDocumentor\Guides\References\Doc;
 use phpDocumentor\Guides\References\Reference;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive;
-use phpDocumentor\Guides\RestructuredText\OutputFormat as RestructuredTextOutputFormat;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
 use RuntimeException;
 
@@ -42,9 +40,6 @@ class MarkupLanguageParser implements ParserInterface
     /** @var EventManager */
     private $eventManager;
 
-    /** @var RestructuredTextOutputFormat */
-    private $format;
-
     /** @var ReferenceBuilder */
     private $referenceBuilder;
 
@@ -53,51 +48,35 @@ class MarkupLanguageParser implements ParserInterface
      * @param iterable<Reference> $references
      */
     public function __construct(
-        RestructuredTextOutputFormat $format,
         ReferenceBuilder $referenceRegistry,
         EventManager $eventManager,
         iterable $directives,
         iterable $references
     ) {
-        $this->format = $format;
         $this->referenceBuilder = $referenceRegistry;
         $this->eventManager = $eventManager;
-        $this->directives = is_array($directives) ? $directives : iterator_to_array($directives);
         $this->references = is_array($references) ? $references : iterator_to_array($references);
 
-        $this->initDirectives($this->directives);
+        foreach ($directives as $directive) {
+            $this->registerDirective($directive);
+        }
+
         $this->initReferences($this->references);
     }
 
-    public function supports(string $inputFormat, OutputFormat $outputFormat): bool
+    public function supports(string $inputFormat): bool
     {
-        return strtolower($inputFormat) === 'rst' && $this->format === $outputFormat;
+        return strtolower($inputFormat) === 'rst';
     }
 
     public function getSubParser(): MarkupLanguageParser
     {
         return new MarkupLanguageParser(
-            $this->format,
             $this->referenceBuilder,
             $this->eventManager,
             $this->directives,
             $this->references
         );
-    }
-
-    /**
-     * @param array<Directive> $directives
-     */
-    public function initDirectives(array $directives): void
-    {
-        $directives = array_merge(
-            $directives,
-            $this->format->getDirectives()
-        );
-
-        foreach ($directives as $directive) {
-            $this->registerDirective($directive);
-        }
     }
 
     /**
@@ -129,7 +108,7 @@ class MarkupLanguageParser implements ParserInterface
         return $this->environment;
     }
 
-    public function registerDirective(Directive $directive): void
+    private function registerDirective(Directive $directive): void
     {
         $this->directives[$directive->getName()] = $directive;
         foreach ($directive->getAliases() as $alias) {

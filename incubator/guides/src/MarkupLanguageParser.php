@@ -13,12 +13,11 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides;
 
-use phpDocumentor\Guides\Formats\OutputFormat;
 use phpDocumentor\Guides\Nodes\DocumentNode;
 
 interface MarkupLanguageParser
 {
-    public function supports(string $inputFormat, OutputFormat $outputFormat): bool;
+    public function supports(string $inputFormat): bool;
 
     public function getEnvironment(): Environment;
 
