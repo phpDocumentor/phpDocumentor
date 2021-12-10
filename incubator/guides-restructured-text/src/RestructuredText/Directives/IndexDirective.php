@@ -11,14 +11,12 @@ declare(strict_types=1);
  * @link https://phpdoc.org
  */
 
-namespace phpDocumentor\Guides\RestructuredText\HTML\Directives;
+namespace phpDocumentor\Guides\RestructuredText\Directives;
 
-use phpDocumentor\Guides\RestructuredText\Directives\SubDirective;
-
-class RoleDirective extends SubDirective
+class IndexDirective extends SubDirective
 {
     public function getName(): string
     {
-        return 'role';
+        return 'index';
     }
 }
