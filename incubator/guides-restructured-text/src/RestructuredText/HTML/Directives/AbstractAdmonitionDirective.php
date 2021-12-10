@@ -15,9 +15,9 @@ namespace phpDocumentor\Guides\RestructuredText\HTML\Directives;
 
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\SpanNode;
-use phpDocumentor\Guides\Nodes\TemplatedNode;
 use phpDocumentor\Guides\RestructuredText\Directives\SubDirective;
 use phpDocumentor\Guides\RestructuredText\MarkupLanguageParser;
+use phpDocumentor\Guides\RestructuredText\Nodes\AdmonitionNode;
 
 abstract class AbstractAdmonitionDirective extends SubDirective
 {
@@ -40,15 +40,11 @@ abstract class AbstractAdmonitionDirective extends SubDirective
         string $data,
         array $options
     ): ?Node {
-        return new TemplatedNode(
-            'directives/admonition.html.twig',
-            [
-                'name' => $this->name,
-                'text' => $this->text,
-                'class' => $options['class'] ?? null,
-                'node' => $document ?? SpanNode::create($parser, $data),
-            ]
-        );
+        return (new AdmonitionNode(
+            $this->name,
+            $this->text,
+            $document ?? SpanNode::create($parser, $data)
+        ))->withOptions($options);
     }
 
     final public function getName(): string
