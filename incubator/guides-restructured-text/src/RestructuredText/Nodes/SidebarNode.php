@@ -15,28 +15,19 @@ namespace phpDocumentor\Guides\RestructuredText\Nodes;
 
 use phpDocumentor\Guides\Nodes\Node;
 
-class AdmonitionNode extends Node
+final class SidebarNode extends Node
 {
     /** @var string */
-    private $name;
+    private $title;
 
-    /** @var string */
-    private $text;
-
-    public function __construct(string $name, string $text, Node $value)
+    public function __construct(string $title, ?Node $value = null)
     {
         parent::__construct($value);
-        $this->name = $name;
-        $this->text = $text;
+        $this->title = $title;
     }
 
-    public function getName(): string
+    public function getTitle(): string
     {
-        return $this->name;
-    }
-
-    public function getText(): string
-    {
-        return $this->text;
+        return $this->title;
     }
 }

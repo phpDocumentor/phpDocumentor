@@ -18,9 +18,9 @@ use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\NodeRenderers\NodeRenderer;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Renderer;
-use phpDocumentor\Guides\RestructuredText\Nodes\AdmonitionNode;
+use phpDocumentor\Guides\RestructuredText\Nodes\SidebarNode;
 
-class AdmonitionNodeRenderer implements NodeRenderer
+final class SidebarNodeRenderer implements NodeRenderer
 {
     /** @var Renderer */
     private $renderer;
@@ -32,21 +32,19 @@ class AdmonitionNodeRenderer implements NodeRenderer
 
     public function supports(Node $node): bool
     {
-        return $node instanceof AdmonitionNode;
+        return $node instanceof SidebarNode;
     }
 
     public function render(Node $node, Environment $environment): string
     {
-        if ($node instanceof AdmonitionNode === false) {
-            throw new InvalidArgumentException('Node must be an instance of ' . AdmonitionNode::class);
+        if ($node instanceof SidebarNode === false) {
+            throw new InvalidArgumentException('Node must be an instance of ' . SidebarNode::class);
         }
 
         return $this->renderer->render(
-            'directives/admonition.html.twig',
+            'directives/sidebar.html.twig',
             [
-                'name' => $node->getName(),
-                'text' => $node->getText(),
-                'class' => $node->getOption('class'),
+                'title' => $node->getTitle(),
                 'node' => $node->getValue(),
             ]
         );

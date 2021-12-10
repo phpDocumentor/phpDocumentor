@@ -11,13 +11,17 @@ declare(strict_types=1);
  * @link https://phpdoc.org
  */
 
-namespace phpDocumentor\Guides\RestructuredText\HTML\Directives;
+namespace phpDocumentor\Guides\RestructuredText\Directives;
 
 use phpDocumentor\Guides\Nodes\Node;
-use phpDocumentor\Guides\Nodes\TemplatedNode;
-use phpDocumentor\Guides\RestructuredText\Directives\SubDirective;
 use phpDocumentor\Guides\RestructuredText\MarkupLanguageParser;
+use phpDocumentor\Guides\RestructuredText\Nodes\SidebarNode;
 
+/**
+ * Divs a sub document in a div with a given class or set of classes.
+ *
+ * https://docutils.sourceforge.io/docs/ref/rst/directives.html#sidebar
+ */
 class SidebarDirective extends SubDirective
 {
     public function getName(): string
@@ -32,12 +36,9 @@ class SidebarDirective extends SubDirective
         string $data,
         array $options
     ): ?Node {
-        return new TemplatedNode(
-            'directives/sidebar.html.twig',
-            [
-                'title' => $data,
-                'node' => $document,
-            ]
-        );
+        return (new SidebarNode(
+            $data,
+            $document
+        ))->withOptions($options);
     }
 }
