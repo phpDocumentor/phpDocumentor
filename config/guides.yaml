@@ -50,6 +50,10 @@ services:
     resource: '../incubator/guides/src/NodeRenderers/Html/**'
     tags: [ { name: 'phpdoc.guides.noderenderer.html' } ]
 
+  phpDocumentor\Guides\RestructuredText\NodeRenderers\Html\:
+    resource: '../incubator/guides-restructured-text/src/RestructuredText/NodeRenderers/Html/**'
+    tags: [ { name: 'phpdoc.guides.noderenderer.html' } ]
+
   phpDocumentor\Guides\RestructuredText\HTML\Directives\:
     resource: '../incubator/guides-restructured-text/src/RestructuredText/HTML/Directives/*'
     exclude:

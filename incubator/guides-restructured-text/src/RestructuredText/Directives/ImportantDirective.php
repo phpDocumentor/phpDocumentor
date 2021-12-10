@@ -11,12 +11,12 @@ declare(strict_types=1);
  * @link https://phpdoc.org
  */
 
-namespace phpDocumentor\Guides\RestructuredText\HTML\Directives;
+namespace phpDocumentor\Guides\RestructuredText\Directives;
 
-class NoteDirective extends AbstractAdmonitionDirective
+class ImportantDirective extends AbstractAdmonitionDirective
 {
     public function __construct()
     {
-        parent::__construct('note', 'Note');
+        parent::__construct('important', 'Important');
     }
 }
