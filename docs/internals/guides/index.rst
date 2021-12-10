@@ -1,7 +1,7 @@
 Guide generation
 ================
 
-.. versionadded:: 3.1
+.. topic:: 3.1
 
    The Guide component was introduced as an experimental feature in phpDocumentor 3.1.
 

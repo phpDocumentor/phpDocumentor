@@ -2,12 +2,11 @@
 
 declare(strict_types=1);
 
-namespace phpDocumentor\Guides\RestructuredText\HTML\Directives;
+namespace phpDocumentor\Guides\RestructuredText\Directives;
 
 use phpDocumentor\Guides\Nodes\Node;
-use phpDocumentor\Guides\Nodes\TemplatedNode;
-use phpDocumentor\Guides\RestructuredText\Directives\SubDirective;
 use phpDocumentor\Guides\RestructuredText\MarkupLanguageParser;
+use phpDocumentor\Guides\RestructuredText\Nodes\ContainerNode;
 
 /**
  * Divs a sub document in a div with a given class or set of classes.
@@ -36,12 +35,6 @@ class ContainerDirective extends SubDirective
         string $data,
         array $options
     ): ?Node {
-        return new TemplatedNode(
-            'container.html.twig',
-            [
-                'class' => $data,
-                'node' => $document,
-            ]
-        );
+        return (new ContainerNode($document))->withOptions(['class' => $data]);
     }
 }

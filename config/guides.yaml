@@ -54,12 +54,6 @@ services:
     resource: '../incubator/guides-restructured-text/src/RestructuredText/NodeRenderers/Html/**'
     tags: [ { name: 'phpdoc.guides.noderenderer.html' } ]
 
-  phpDocumentor\Guides\RestructuredText\HTML\Directives\:
-    resource: '../incubator/guides-restructured-text/src/RestructuredText/HTML/Directives/*'
-    exclude:
-      - '../incubator/guides-restructured-text/src/RestructuredText/HTML/Directives/AbstractAdmonitionDirective.php'
-    tags: [ { name: 'phpdoc.guides.html_directive' } ]
-
   phpDocumentor\Guides\Handlers\:
     resource: '../src/phpDocumentor/Guides/Handlers/*Handler.php'
     tags: [{name: tactician.handler, typehints: true}]

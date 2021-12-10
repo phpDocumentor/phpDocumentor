@@ -102,7 +102,7 @@ mixed
     A value with this type can be literally anything; the author of the documentation is unable to predict which type
     it will be.
 
-    .. versionadded:: PHP 8.0
+    .. topic:: PHP 8.0
        This keyword was added in PHP 8.0 as a native PHP keyword representing the following union:
        ``array|bool|callable|int|float |object|resource|string|null``.
 
@@ -110,7 +110,7 @@ void
     *This is not the value that you are looking for.* The tag associated with this type does not intentionally return
     anything. Anything returned by the associated element is incidental and not to be relied on.
 
-    .. versionadded:: PHP 7.1
+    .. topic:: PHP 7.1
        Added in PHP 7.1 as a native return-only type.
 
 false or true
@@ -155,7 +155,7 @@ and inferring the types of variables, properties and even method return values.
 Union types
 -----------
 
-.. versionadded:: PHP 8.0
+.. topic:: PHP 8.0
    PHP 8.0 has added native support for union types, see
    `the php documentation <https://www.php.net/manual/en/language.types.declarations.php#language.types.declarations.union>`_
    for more information.
