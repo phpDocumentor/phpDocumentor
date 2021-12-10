@@ -46,6 +46,10 @@ services:
       - '../incubator/guides-restructured-text/src/RestructuredText/Parser/{Buffer,Directive,DirectiveOption,LinesIterator,TableSeparatorLineConfig}.php'
     resource: '../incubator/guides-restructured-text/src/*'
 
+  phpDocumentor\Guides\NodeRenderers\Html\:
+    resource: '../incubator/guides/src/NodeRenderers/Html/*'
+    tags: [ { name: 'phpdoc.guides.noderenderer.html' } ]
+
   phpDocumentor\Guides\RestructuredText\HTML\Directives\:
     resource: '../incubator/guides-restructured-text/src/RestructuredText/HTML/Directives/*'
     exclude:
@@ -229,18 +233,6 @@ services:
     arguments:
       $template: 'definition-list.html.twig'
       $nodeClass: '\phpDocumentor\Guides\Nodes\DefinitionListNode'
-    tags: ['phpdoc.guides.noderenderer.html']
-
-  phpDocumentor\Guides\NodeRenderers\Html\DocumentNodeRenderer:
-    tags: ['phpdoc.guides.noderenderer.html']
-
-  phpDocumentor\Guides\NodeRenderers\Html\SpanNodeRenderer:
-    tags: ['phpdoc.guides.noderenderer.html']
-
-  phpDocumentor\Guides\NodeRenderers\Html\TableNodeRenderer:
-    tags: ['phpdoc.guides.noderenderer.html']
-
-  phpDocumentor\Guides\NodeRenderers\Html\TocNodeRenderer:
     tags: ['phpdoc.guides.noderenderer.html']
 
   guides.renderer.noderenderer.list:
