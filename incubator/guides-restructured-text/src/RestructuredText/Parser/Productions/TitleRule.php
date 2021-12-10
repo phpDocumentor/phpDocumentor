@@ -126,7 +126,7 @@ final class TitleRule implements Rule
         $level = $environment->getLevel($letter);
         $level = $environment->getInitialHeaderLevel() + $level - 1;
 
-        $node = new TitleNode(new SpanNode($this->parser, $title), $level);
+        $node = new TitleNode(SpanNode::create($this->parser, $title), $level);
 
         $this->transitionBetweenSections($node, $on);
 

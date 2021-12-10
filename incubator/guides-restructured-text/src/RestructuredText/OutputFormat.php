@@ -10,7 +10,7 @@ use phpDocumentor\Guides\RestructuredText\Directives\Directive;
 
 use function iterator_to_array;
 
-abstract class OutputFormat implements BaseFormat
+class OutputFormat implements BaseFormat
 {
     /** @var string */
     private $fileExtension;

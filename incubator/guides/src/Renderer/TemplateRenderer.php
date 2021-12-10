@@ -13,33 +13,28 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\Renderer;
 
-use Twig\Environment;
+use Twig\Environment as Twig;
 
 use function rtrim;
 use function sprintf;
 
 final class TemplateRenderer
 {
-    /** @var Environment */
+    /** @var Twig */
     private $templatingEngine;
 
     /** @var string */
     private $basePath;
 
-    public function __construct(Environment $templatingEngine, string $basePath)
+    public function __construct(Twig $templatingEngine, string $basePath)
     {
         $this->templatingEngine = $templatingEngine;
         $this->basePath = $basePath;
     }
 
-    public function getTemplateEngine(): Environment
-    {
-        return $this->templatingEngine;
-    }
-
     public function setDestination(string $path): void
     {
-        $this->getTemplateEngine()->addGlobal('destinationPath', $path);
+        $this->templatingEngine->addGlobal('destinationPath', $path);
     }
 
     /**

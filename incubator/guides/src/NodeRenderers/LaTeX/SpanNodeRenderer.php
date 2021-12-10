@@ -15,6 +15,8 @@ namespace phpDocumentor\Guides\NodeRenderers\LaTeX;
 
 use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\NodeRenderers\SpanNodeRenderer as BaseSpanNodeRenderer;
+use phpDocumentor\Guides\Nodes\Node;
+use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\References\ResolvedReference;
 
 use function is_string;
@@ -100,5 +102,10 @@ class SpanNodeRenderer extends BaseSpanNodeRenderer
         }
 
         return $this->link($environment, $url, trim($text));
+    }
+
+    public function supports(Node $node): bool
+    {
+        return $node instanceof SpanNode;
     }
 }

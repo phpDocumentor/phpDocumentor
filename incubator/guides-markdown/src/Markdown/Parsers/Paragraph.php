@@ -21,7 +21,7 @@ final class Paragraph extends AbstractBlock
      */
     public function parse(MarkupLanguageParser $parser, NodeWalker $walker): Nodes\Node
     {
-        $context = new ParagraphNode(new SpanNode($parser, ''));
+        $context = new ParagraphNode(SpanNode::create($parser, ''));
 
         while ($event = $walker->next()) {
             $node = $event->getNode();

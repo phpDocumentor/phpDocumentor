@@ -69,4 +69,9 @@ class DocumentNodeRenderer implements NodeRenderer, FullDocumentNodeRenderer, No
 
         return count($nodes) !== 0;
     }
+
+    public function supports(Node $node): bool
+    {
+        return $node instanceof DocumentNode;
+    }
 }

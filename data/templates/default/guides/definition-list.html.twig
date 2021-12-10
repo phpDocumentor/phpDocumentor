@@ -1,6 +1,6 @@
 {% spaceless %}
-<dl{% if definitionListNode.classes %} class="{{ definitionListNode.classesString }}"{% endif %}>
-    {% for definitionListTerm in definitionList.terms %}
+<dl{% if node.classes %} class="{{ node.classesString }}"{% endif %}>
+    {% for definitionListTerm in node.definitionList.terms %}
         {% if definitionListTerm.classifiers is empty %}
             <dt>{{ renderNode(definitionListTerm.term) }}</dt>
         {% else %}

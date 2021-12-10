@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides;
 
 use phpDocumentor\Guides\Formats\OutputFormat;
-use phpDocumentor\Guides\NodeRenderers\NodeRendererFactory;
 use phpDocumentor\Guides\Nodes\DocumentNode;
 
 interface MarkupLanguageParser
@@ -24,8 +23,6 @@ interface MarkupLanguageParser
     public function getEnvironment(): Environment;
 
     public function getReferenceBuilder(): ReferenceBuilder;
-
-    public function getNodeRendererFactory(): NodeRendererFactory;
 
     public function parse(Environment $environment, string $contents): DocumentNode;
 

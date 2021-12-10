@@ -114,10 +114,6 @@ final class Parser
 
         $format = $this->outputFormats->get($outputFormat);
 
-        // TODO: The NodeRendererFactory on the Environment class is not used as much; refactor that away to remove this
-        // runtime state setting
-        $this->environment->setNodeRendererFactory($format->getNodeRendererFactory());
-
         $parser = $this->determineParser($inputFormat, $format);
 
         $this->environment->reset();

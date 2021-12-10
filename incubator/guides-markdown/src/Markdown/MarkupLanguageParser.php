@@ -18,7 +18,6 @@ use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Formats\OutputFormat;
 use phpDocumentor\Guides\Markdown\Parsers\AbstractBlock;
 use phpDocumentor\Guides\MarkupLanguageParser as ParserInterface;
-use phpDocumentor\Guides\NodeRenderers\NodeRendererFactory;
 use phpDocumentor\Guides\Nodes\AnchorNode;
 use phpDocumentor\Guides\Nodes\CodeNode;
 use phpDocumentor\Guides\Nodes\DocumentNode;
@@ -112,7 +111,7 @@ final class MarkupLanguageParser implements ParserInterface
             if ($node instanceof Heading) {
                 $content = $node->getStringContent();
                 $title = new TitleNode(
-                    new SpanNode($this, $content),
+                    SpanNode::create($this, $content),
                     $node->getLevel()
                 );
                 $document->addNode($title);
@@ -120,7 +119,7 @@ final class MarkupLanguageParser implements ParserInterface
             }
 
             if ($node instanceof Text) {
-                $spanNode = new SpanNode($this, $node->getContent());
+                $spanNode = SpanNode::create($this, $node->getContent());
                 $document->addNode($spanNode);
                 continue;
             }
@@ -193,10 +192,5 @@ final class MarkupLanguageParser implements ParserInterface
     public function getReferenceBuilder(): ReferenceBuilder
     {
         return $this->referenceRegistry;
-    }
-
-    public function getNodeRendererFactory(): NodeRendererFactory
-    {
-        throw new RuntimeException('Not implemented yet; markdown parsing is still pre-alpha');
     }
 }

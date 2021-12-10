@@ -33,7 +33,7 @@ final class TitleNodeTest extends MockeryTestCase
         $parser->shouldReceive('getEnvironment')->andReturn($environment);
         $parser->shouldReceive('getReferenceBuilder')->andReturn($referenceBuilder);
 
-        $titleNode = new SpanNode($parser, 'Raw String');
+        $titleNode = SpanNode::create($parser, 'Raw String');
         $node = new TitleNode($titleNode, 1);
         $node->setTarget('target');
 

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\NodeRenderers\Html;
 
-use InvalidArgumentException;
 use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\NodeRenderers\NodeRenderer;
 use phpDocumentor\Guides\Nodes\Node;
@@ -21,6 +20,7 @@ use phpDocumentor\Guides\Nodes\TocNode;
 use phpDocumentor\Guides\ReferenceBuilder;
 use phpDocumentor\Guides\Renderer;
 use Symfony\Component\String\Slugger\AsciiSlugger;
+use Webmozart\Assert\Assert;
 
 use function count;
 use function is_array;
@@ -41,9 +41,7 @@ class TocNodeRenderer implements NodeRenderer
 
     public function render(Node $node, Environment $environment): string
     {
-        if ($node instanceof TocNode === false) {
-            throw new InvalidArgumentException('Invalid node presented');
-        }
+        Assert::isInstanceOf($node, TocNode::class);
 
         if ($node->getOption('hidden', false)) {
             return '';
@@ -157,5 +155,10 @@ class TocNodeRenderer implements NodeRenderer
             : $title;
 
         return (new AsciiSlugger())->slug($slug)->lower()->toString();
+    }
+
+    public function supports(Node $node): bool
+    {
+        return $node instanceof TocNode;
     }
 }

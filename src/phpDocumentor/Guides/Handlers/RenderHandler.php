@@ -18,10 +18,7 @@ use League\Flysystem\FilesystemInterface;
 use phpDocumentor\Descriptor\DocumentDescriptor;
 use phpDocumentor\Descriptor\GuideSetDescriptor;
 use phpDocumentor\Guides\Environment;
-use phpDocumentor\Guides\Formats\OutputFormats;
 use phpDocumentor\Guides\Metas;
-use phpDocumentor\Guides\NodeRenderers\FullDocumentNodeRenderer;
-use phpDocumentor\Guides\NodeRenderers\NodeRendererFactory;
 use phpDocumentor\Guides\ReferenceBuilder;
 use phpDocumentor\Guides\References\Doc;
 use phpDocumentor\Guides\References\Reference;
@@ -33,7 +30,6 @@ use Psr\Log\LoggerInterface;
 
 use function array_merge;
 use function dirname;
-use function get_class;
 use function iterator_to_array;
 use function str_replace;
 
@@ -60,9 +56,6 @@ final class RenderHandler
     /** @var ReferenceBuilder */
     private $referenceRegistry;
 
-    /** @var OutputFormats */
-    private $outputFormats;
-
     /** @param IteratorAggregate<Reference> $references */
     public function __construct(
         Metas $metas,
@@ -71,8 +64,7 @@ final class RenderHandler
         IteratorAggregate $references,
         Router $router,
         UrlGenerator $urlGenerator,
-        ReferenceBuilder $referenceRegistry,
-        OutputFormats $outputFormats
+        ReferenceBuilder $referenceRegistry
     ) {
         $this->metas = $metas;
         $this->renderer = $renderer;
@@ -81,7 +73,6 @@ final class RenderHandler
         $this->router = $router;
         $this->urlGenerator = $urlGenerator;
         $this->referenceRegistry = $referenceRegistry;
-        $this->outputFormats = $outputFormats;
     }
 
     public function handle(RenderCommand $command): void
@@ -89,19 +80,12 @@ final class RenderHandler
         $origin = $command->getOrigin();
         $initialHeaderLevel = $command->getDocumentationSet()->getInitialHeaderLevel();
         $destinationPath = $command->getDestinationPath();
-        $targetFileFormat = $command->getTargetFileFormat();
-
         $environment = $this->createEnvironment($destinationPath, $initialHeaderLevel, $origin);
 
-        $format = $this->outputFormats->get($targetFileFormat);
-        $nodeRendererFactory = $format->getNodeRendererFactory();
-        $environment->setNodeRendererFactory($nodeRendererFactory);
-
-        $this->render($nodeRendererFactory, $command->getDocumentationSet(), $environment, $command->getDestination());
+        $this->render($command->getDocumentationSet(), $environment, $command->getDestination());
     }
 
     private function render(
-        NodeRendererFactory $nodeRendererFactory,
         GuideSetDescriptor $documentationSet,
         Environment $environment,
         FilesystemInterface $destination
@@ -117,7 +101,6 @@ final class RenderHandler
             );
 
             $renderedOutput = $this->renderDocument(
-                $nodeRendererFactory,
                 $descriptor,
                 $destinationPath,
                 $environment,
@@ -146,7 +129,6 @@ final class RenderHandler
     }
 
     private function renderDocument(
-        NodeRendererFactory $nodeRendererFactory,
         DocumentDescriptor $descriptor,
         string $destinationPath,
         Environment $environment,
@@ -173,12 +155,10 @@ final class RenderHandler
             $environment->setVariable($key, $value);
         }
 
-        /** @var FullDocumentNodeRenderer $renderer */
-        $renderer = $nodeRendererFactory->get(get_class($document));
         $this->renderer->setGuidesEnvironment($environment);
         $this->renderer->setDestination($destinationPath);
 
-        return $renderer->renderDocument($document, $environment);
+        return $this->renderer->renderDocument($document, $environment);
     }
 
     private function createEnvironment(

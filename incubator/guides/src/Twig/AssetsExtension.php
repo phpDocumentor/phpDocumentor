@@ -16,6 +16,7 @@ namespace phpDocumentor\Guides\Twig;
 use League\Flysystem\FilesystemInterface;
 use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Nodes\Node;
+use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Transformer\Writer\Graph\PlantumlRenderer;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
@@ -23,7 +24,6 @@ use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 use Webmozart\Assert\Assert;
 
-use function get_class;
 use function sprintf;
 use function trim;
 
@@ -35,10 +35,17 @@ final class AssetsExtension extends AbstractExtension
     /** @var PlantumlRenderer */
     private $plantumlRenderer;
 
-    public function __construct(LoggerInterface $logger, PlantumlRenderer $plantumlRenderer)
-    {
+    /** @var Renderer\OutputFormatRenderer */
+    private $renderer;
+
+    public function __construct(
+        LoggerInterface $logger,
+        PlantumlRenderer $plantumlRenderer,
+        Renderer\OutputFormatRenderer $renderer
+    ) {
         $this->logger = $logger;
         $this->plantumlRenderer = $plantumlRenderer;
+        $this->renderer = $renderer;
     }
 
     public function getFunctions(): array
@@ -85,7 +92,7 @@ final class AssetsExtension extends AbstractExtension
             throw new RuntimeException('Environment must be set in the twig global state to render nodes');
         }
 
-        return $environment->getNodeRendererFactory()->get(get_class($node))->render($node, $environment);
+        return $this->renderer->render($node, $environment);
     }
 
     public function uml(string $source): ?string
