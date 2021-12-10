@@ -2,13 +2,12 @@
 
 declare(strict_types=1);
 
-namespace phpDocumentor\Guides\RestructuredText\HTML\Directives;
+namespace phpDocumentor\Guides\RestructuredText\Directives;
 
 use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Nodes\CodeNode;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\UmlNode;
-use phpDocumentor\Guides\RestructuredText\Directives\Directive;
 use phpDocumentor\Guides\RestructuredText\MarkupLanguageParser;
 
 use function dirname;
@@ -90,8 +89,6 @@ final class Uml extends Directive
         }
 
         $value = $environment->getOrigin()->read($fileName);
-        $value = str_replace(['@startuml', '@enduml'], '', $value);
-
-        return $value;
+        return str_replace(['@startuml', '@enduml'], '', $value);
     }
 }
