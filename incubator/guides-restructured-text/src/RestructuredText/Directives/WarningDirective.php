@@ -11,12 +11,12 @@ declare(strict_types=1);
  * @link https://phpdoc.org
  */
 
-namespace phpDocumentor\Guides\RestructuredText\HTML\Directives;
+namespace phpDocumentor\Guides\RestructuredText\Directives;
 
-class CautionDirective extends AbstractAdmonitionDirective
+class WarningDirective extends AbstractAdmonitionDirective
 {
     public function __construct()
     {
-        parent::__construct('caution', 'Caution');
+        parent::__construct('warning', 'Warning');
     }
 }

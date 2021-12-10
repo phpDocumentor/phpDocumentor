@@ -11,12 +11,12 @@ declare(strict_types=1);
  * @link https://phpdoc.org
  */
 
-namespace phpDocumentor\Guides\RestructuredText\HTML\Directives;
+namespace phpDocumentor\Guides\RestructuredText\Directives;
 
-class BestPracticeDirective extends AbstractAdmonitionDirective
+class HintDirective extends AbstractAdmonitionDirective
 {
     public function __construct()
     {
-        parent::__construct('best-practice', 'Best Practice');
+        parent::__construct('hint', 'Hint');
     }
 }
