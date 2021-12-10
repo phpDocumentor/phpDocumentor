@@ -115,6 +115,24 @@ services:
       $format: '@phpDocumentor\Guides\RestructuredText\LaTeX\LaTeXFormat'
     tags: ['phpdoc.guides.parser.markupLanguageParser']
 
+  phpDocumentor\Guides\Renderer:
+    arguments:
+      $outputFormatRenderers: !tagged_iterator phpdoc.guides.renderer
+
+  guides.renderer.html:
+    class: phpDocumentor\Guides\Renderer\OutputFormatRenderer
+    arguments:
+      $nodeRendererFactory: '@guides.renderer.noderenderers.html'
+      $format: 'html'
+    tags: ['phpdoc.guides.renderer']
+
+  guides.renderer.latex:
+    class: phpDocumentor\Guides\Renderer\OutputFormatRenderer
+    arguments:
+      $nodeRendererFactory: '@guides.renderer.noderenderers.latex'
+      $format: 'tex'
+    tags: ['phpdoc.guides.renderer']
+
   guides.renderer.noderenderers.html:
     class: phpDocumentor\Guides\NodeRenderers\InMemoryNodeRendererFactory
     arguments:

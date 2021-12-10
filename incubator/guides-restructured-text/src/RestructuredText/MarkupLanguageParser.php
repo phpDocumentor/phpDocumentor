@@ -8,7 +8,6 @@ use Doctrine\Common\EventManager;
 use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Formats\OutputFormat;
 use phpDocumentor\Guides\MarkupLanguageParser as ParserInterface;
-use phpDocumentor\Guides\NodeRenderers\NodeRendererFactory;
 use phpDocumentor\Guides\Nodes\DocumentNode;
 use phpDocumentor\Guides\ReferenceBuilder;
 use phpDocumentor\Guides\References\Doc;
@@ -173,10 +172,5 @@ class MarkupLanguageParser implements ParserInterface
     public function getReferenceBuilder(): ReferenceBuilder
     {
         return $this->referenceBuilder;
-    }
-
-    public function getNodeRendererFactory(): NodeRendererFactory
-    {
-        return $this->format->getNodeRendererFactory();
     }
 }

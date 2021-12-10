@@ -18,7 +18,6 @@ use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Formats\OutputFormat;
 use phpDocumentor\Guides\Markdown\Parsers\AbstractBlock;
 use phpDocumentor\Guides\MarkupLanguageParser as ParserInterface;
-use phpDocumentor\Guides\NodeRenderers\NodeRendererFactory;
 use phpDocumentor\Guides\Nodes\AnchorNode;
 use phpDocumentor\Guides\Nodes\CodeNode;
 use phpDocumentor\Guides\Nodes\DocumentNode;
@@ -193,10 +192,5 @@ final class MarkupLanguageParser implements ParserInterface
     public function getReferenceBuilder(): ReferenceBuilder
     {
         return $this->referenceRegistry;
-    }
-
-    public function getNodeRendererFactory(): NodeRendererFactory
-    {
-        throw new RuntimeException('Not implemented yet; markdown parsing is still pre-alpha');
     }
 }
