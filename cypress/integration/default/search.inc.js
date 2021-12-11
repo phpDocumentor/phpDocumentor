@@ -51,7 +51,7 @@ export default function() {
             .should('have.css', 'opacity', '0')
             .should('have.css', 'pointer-events', 'none')
         ;
-    }).skip();
+    });
 
     it('Closes the results when pressing escape', function() {
         cy.get('.phpdocumentor-header .phpdocumentor-search input[type="search"]')

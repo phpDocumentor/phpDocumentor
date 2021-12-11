@@ -108,7 +108,7 @@ unit-test integration-test functional-test:
 
 .PHONY: e2e-test
 e2e-test: node_modules/.bin/cypress build/default/index.html build/clean/index.html
-	docker run -it --rm -v ${CURDIR}:/e2e -w /e2e cypress/included:6.6.0
+	docker run -it --rm -v ${CURDIR}:/e2e -w /e2e cypress/included:8.5.0
 
 .PHONY: composer-require-checker
 composer-require-checker:
