@@ -128,7 +128,7 @@ use function sprintf;
         if (isset($configuration['phpdocumentor']['versions'])) {
             foreach ($configuration['phpdocumentor']['versions'] as $versionNumber => $version) {
                 $configuration['phpdocumentor']['versions'][$versionNumber] = new VersionSpecification(
-                    $versionNumber,
+                    (string) $versionNumber,
                     array_map(
                         static function ($api): ApiSpecification {
                             return ApiSpecification::createFromArray($api);
