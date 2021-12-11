@@ -23,6 +23,7 @@ use phpDocumentor\Guides\NodeRenderers\NodeRendererFactoryAware;
 use phpDocumentor\Guides\Nodes\DocumentNode;
 use phpDocumentor\Guides\Nodes\MainNode;
 use phpDocumentor\Guides\Nodes\Node;
+use phpDocumentor\Guides\Renderer;
 
 use function count;
 
@@ -30,6 +31,14 @@ class DocumentNodeRenderer implements NodeRenderer, FullDocumentNodeRenderer, No
 {
     /** @var NodeRendererFactory */
     private $nodeRendererFactory;
+
+    /** @var Renderer */
+    private $renderer;
+
+    public function __construct(Renderer $renderer)
+    {
+        $this->renderer = $renderer;
+    }
 
     public function setNodeRendererFactory(NodeRendererFactory $nodeRendererFactory): void
     {
@@ -47,9 +56,9 @@ class DocumentNodeRenderer implements NodeRenderer, FullDocumentNodeRenderer, No
 
     public function renderDocument(DocumentNode $node, Environment $environment): string
     {
-        $renderer = $environment->getRenderer();
+        $this->renderer->setGuidesEnvironment($environment);
 
-        return $renderer->render(
+        return $this->renderer->render(
             'document.tex.twig',
             [
                 'isMain' => $this->isMain($node),

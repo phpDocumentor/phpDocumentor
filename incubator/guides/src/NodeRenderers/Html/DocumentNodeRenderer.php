@@ -21,12 +21,21 @@ use phpDocumentor\Guides\NodeRenderers\NodeRendererFactory;
 use phpDocumentor\Guides\NodeRenderers\NodeRendererFactoryAware;
 use phpDocumentor\Guides\Nodes\DocumentNode;
 use phpDocumentor\Guides\Nodes\Node;
+use phpDocumentor\Guides\Renderer;
 use Webmozart\Assert\Assert;
 
 class DocumentNodeRenderer implements NodeRenderer, FullDocumentNodeRenderer, NodeRendererFactoryAware
 {
     /** @var NodeRendererFactory */
     private $nodeRendererFactory;
+
+    /** @var Renderer */
+    private $renderer;
+
+    public function __construct(Renderer $renderer)
+    {
+        $this->renderer = $renderer;
+    }
 
     public function setNodeRendererFactory(NodeRendererFactory $nodeRendererFactory): void
     {
@@ -42,10 +51,9 @@ class DocumentNodeRenderer implements NodeRenderer, FullDocumentNodeRenderer, No
 
     public function renderDocument(DocumentNode $node, Environment $environment): string
     {
-        $renderer = $environment->getRenderer();
-        $renderer->setGuidesEnvironment($environment);
+        $this->renderer->setGuidesEnvironment($environment);
 
-        return $renderer->render(
+        return $this->renderer->render(
             'document.html.twig',
             ['node' => $node]
         );

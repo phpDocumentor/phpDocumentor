@@ -169,7 +169,6 @@ final class RenderHandler
         $environment = new Environment(
             $outputFolder,
             $initialHeaderLevel,
-            $this->renderer,
             $this->logger,
             $origin,
             $this->metas,

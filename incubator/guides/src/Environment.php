@@ -17,7 +17,6 @@ use League\Flysystem\FilesystemInterface;
 use phpDocumentor\Guides\Meta\Entry;
 use phpDocumentor\Guides\Nodes\SpanNode;
 use Psr\Log\LoggerInterface;
-use RuntimeException;
 
 use function array_shift;
 use function dirname;
@@ -65,18 +64,6 @@ class Environment
     /** @var LoggerInterface */
     private $logger;
 
-    /**
-     * @var Renderer|null
-     * @todo Refactor this out of the environment for consistency
-     */
-    private $renderer;
-
-    /**
-     * @var NodeRenderers\NodeRendererFactory
-     * @todo Refactor this out of the environment for consistency
-     */
-    private $nodeRendererFactory;
-
     /** @var string */
     private $destinationPath;
 
@@ -86,7 +73,6 @@ class Environment
     public function __construct(
         string $outputFolder,
         int $initialHeaderLevel,
-        ?Renderer $renderer,
         LoggerInterface $logger,
         FilesystemInterface $origin,
         Metas $metas,
@@ -94,7 +80,6 @@ class Environment
     ) {
         $this->destinationPath = $outputFolder;
         $this->initialHeaderLevel = $initialHeaderLevel;
-        $this->renderer = $renderer;
         $this->origin = $origin;
         $this->logger = $logger;
         $this->urlGenerator = $urlGenerator;
@@ -117,18 +102,6 @@ class Environment
     public function setMetas(Metas $metas): void
     {
         $this->metas = $metas;
-    }
-
-    public function getRenderer(): Renderer
-    {
-        if ($this->renderer === null) {
-            throw new RuntimeException(
-                'A renderer should have been passed before calling getRenderer, perhaps you are calling this'
-                . 'during parsing?'
-            );
-        }
-
-        return $this->renderer;
     }
 
     /**
@@ -326,16 +299,6 @@ class Environment
     public function addError(string $message): void
     {
         $this->logger->error($message);
-    }
-
-    public function setNodeRendererFactory(NodeRenderers\NodeRendererFactory $nodeRendererFactory): void
-    {
-        $this->nodeRendererFactory = $nodeRendererFactory;
-    }
-
-    public function getNodeRendererFactory(): NodeRenderers\NodeRendererFactory
-    {
-        return $this->nodeRendererFactory;
     }
 
     /**

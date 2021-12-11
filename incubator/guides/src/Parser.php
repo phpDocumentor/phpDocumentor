@@ -143,7 +143,6 @@ final class Parser
         $environment = new Environment(
             $destinationPath,
             $initialHeaderLevel,
-            null,
             $this->logger,
             $origin,
             $this->metas,
