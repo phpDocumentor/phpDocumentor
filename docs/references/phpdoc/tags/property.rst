@@ -14,17 +14,17 @@ Description
 -----------
 
 The ``@property`` tag is used when a ``class`` or ``trait`` implements the
-`__get() <https://www.php.net/language.oop5.overloading#object.get>`_ and/or
-`__set() <https://www.php.net/language.oop5.overloading#object.set>`_ "magic"
+`\__get() <https://www.php.net/language.oop5.overloading#object.get>`_ and/or
+`\__set() <https://www.php.net/language.oop5.overloading#object.set>`_ "magic"
 methods to resolve non-literal `properties`_ at run-time.
 
 The ``@property-read`` and ``@property-write`` variants MAY be used to indicate "magic"
 properties that can only be read or written.
 
 For example, the ``@property-read`` tag could be used when a class contains
-a `__get() <https://www.php.net/language.oop5.overloading#object.get>` magic
+a `\__get() <https://www.php.net/language.oop5.overloading#object.get>`_ magic
 method which allows for specific names, while those names are not covered in the
-`__set() <https://www.php.net/language.oop5.overloading#object.set>`_ magic method.
+`\__set() <https://www.php.net/language.oop5.overloading#object.set>`_ magic method.
 
 ============================ =====================
 Property supported via       Tag to use
