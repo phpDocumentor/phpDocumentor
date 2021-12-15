@@ -138,21 +138,9 @@ class ParserContext
     }
 
     //Parser (assets) & renderer
-    public function relativeUrl(?string $url): string
+    private function relativeUrl(?string $url): string
     {
         return $this->urlGenerator->relativeUrl($url);
-    }
-
-    //TocTree builder
-    public function absoluteUrl(string $url): string
-    {
-        return $this->urlGenerator->absoluteUrl($this->getDirName(), $url);
-    }
-
-    //Toc, Resolver
-    public function canonicalUrl(string $url): ?string
-    {
-        return $this->urlGenerator->canonicalUrl($this->getDirName(), $url);
     }
 
     //Parser, Toc

@@ -7,6 +7,7 @@ namespace phpDocumentor\Guides\RestructuredText\Directives;
 use phpDocumentor\Guides\Nodes\ImageNode;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\RestructuredText\MarkupLanguageParser;
+use phpDocumentor\Guides\UrlGenerator;
 
 /**
  * Renders an image, example :
@@ -17,6 +18,14 @@ use phpDocumentor\Guides\RestructuredText\MarkupLanguageParser;
  */
 class Image extends Directive
 {
+    /** @var UrlGenerator */
+    private $urlGenerator;
+
+    public function __construct(UrlGenerator $urlGenerator)
+    {
+        $this->urlGenerator = $urlGenerator;
+    }
+
     public function getName(): string
     {
         return 'image';
@@ -31,6 +40,6 @@ class Image extends Directive
         string $data,
         array $options
     ): Node {
-        return new ImageNode($parser->getEnvironment()->relativeUrl($data));
+        return new ImageNode($this->urlGenerator->relativeUrl($data));
     }
 }

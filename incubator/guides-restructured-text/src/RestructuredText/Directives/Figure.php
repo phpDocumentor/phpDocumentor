@@ -8,6 +8,7 @@ use phpDocumentor\Guides\Nodes\FigureNode;
 use phpDocumentor\Guides\Nodes\ImageNode;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\RestructuredText\MarkupLanguageParser;
+use phpDocumentor\Guides\UrlGenerator;
 
 use function assert;
 
@@ -22,6 +23,14 @@ use function assert;
  */
 class Figure extends SubDirective
 {
+    /** @var UrlGenerator */
+    private $urlGenerator;
+
+    public function __construct(UrlGenerator $urlGenerator)
+    {
+        $this->urlGenerator = $urlGenerator;
+    }
+
     public function getName(): string
     {
         return 'figure';
@@ -37,7 +46,7 @@ class Figure extends SubDirective
         string $data,
         array $options
     ): ?Node {
-        $image = new ImageNode($parser->getEnvironment()->relativeUrl($data));
+        $image = new ImageNode($this->urlGenerator->relativeUrl($data));
         $image = $image->withOptions([
             'width' => $options['width'] ?? null,
             'height' => $options['height'] ?? null,

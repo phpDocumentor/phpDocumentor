@@ -6,6 +6,7 @@ namespace phpDocumentor\Guides\RestructuredText\Toc;
 
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\ParserContext;
+use phpDocumentor\Guides\UrlGenerator;
 
 use function array_filter;
 use function array_map;
@@ -18,9 +19,13 @@ class ToctreeBuilder
     /** @var GlobSearcher */
     private $globSearcher;
 
-    public function __construct(GlobSearcher $globSearcher)
+    /** @var UrlGenerator */
+    private $urlGenerator;
+
+    public function __construct(GlobSearcher $globSearcher, UrlGenerator $urlGenerator)
     {
         $this->globSearcher = $globSearcher;
+        $this->urlGenerator = $urlGenerator;
     }
 
     /**
@@ -52,7 +57,10 @@ class ToctreeBuilder
                     $toctreeFiles[] = $globFile;
                 }
             } else {
-                $absoluteUrl = $environment->absoluteUrl($file);
+                $absoluteUrl = $this->urlGenerator->absoluteUrl(
+                    $environment->getDirName(),
+                    $file
+                );
 
                 $toctreeFiles[] = $absoluteUrl;
             }

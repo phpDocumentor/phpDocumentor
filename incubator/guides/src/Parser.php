@@ -163,7 +163,7 @@ final class Parser
             $files = $toc->getFiles();
 
             foreach ($files as $key => $file) {
-                $files[$key] = $parserContext->canonicalUrl($file);
+                $files[$key] =  $this->urlGenerator->canonicalUrl($parserContext->getDirName(), $file);
             }
 
             $result[] = $files;

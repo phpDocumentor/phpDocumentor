@@ -7,7 +7,6 @@ namespace phpDocumentor\Guides\RestructuredText\Directives;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\TocNode;
 use phpDocumentor\Guides\RestructuredText\MarkupLanguageParser;
-use phpDocumentor\Guides\RestructuredText\Toc\GlobSearcher;
 use phpDocumentor\Guides\RestructuredText\Toc\ToctreeBuilder;
 
 class Toctree extends Directive
@@ -15,9 +14,9 @@ class Toctree extends Directive
     /** @var ToctreeBuilder */
     private $toctreeBuilder;
 
-    public function __construct()
+    public function __construct(ToctreeBuilder $toctreeBuilder)
     {
-        $this->toctreeBuilder = new ToctreeBuilder(new GlobSearcher());
+        $this->toctreeBuilder = $toctreeBuilder;
     }
 
     public function getName(): string
