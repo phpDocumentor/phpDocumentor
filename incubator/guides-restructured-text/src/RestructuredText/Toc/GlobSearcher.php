@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\RestructuredText\Toc;
 
 use Flyfinder\Specification\Glob;
-use phpDocumentor\Guides\Environment;
+use phpDocumentor\Guides\ParserContext;
 
 use function dirname;
 use function ltrim;
@@ -17,7 +17,7 @@ class GlobSearcher
     /**
      * @return string[]
      */
-    public function globSearch(Environment $environment, string $globPattern): array
+    public function globSearch(ParserContext $environment, string $globPattern): array
     {
         $fileSystem = $environment->getOrigin();
         $files = $fileSystem->find(

@@ -2,28 +2,17 @@
 
 declare(strict_types=1);
 
-/**
- * This file is part of phpDocumentor.
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- *
- * @link https://phpdoc.org
- */
-
 namespace phpDocumentor\Guides;
 
 use League\Flysystem\FilesystemInterface;
-use phpDocumentor\Guides\Meta\Entry;
 use phpDocumentor\Guides\Nodes\SpanNode;
-use Psr\Log\LoggerInterface;
 
 use function array_shift;
 use function dirname;
 use function strtolower;
 use function trim;
 
-class Environment
+class ParserContext
 {
     /** @var UrlGenerator */
     private $urlGenerator;
@@ -38,16 +27,13 @@ class Environment
     private $titleLetters = [];
 
     /** @var string */
-    private $currentFileName = '';
+    private $currentFileName;
 
     /** @var FilesystemInterface */
     private $origin;
 
     /** @var string */
-    private $currentDirectory = '.';
-
-    /** @var Metas */
-    private $metas;
+    private $currentDirectory;
 
     /** @var string[] */
     private $variables = [];
@@ -58,8 +44,7 @@ class Environment
     /** @var string[] */
     private $anonymous = [];
 
-    /** @var LoggerInterface */
-    private $logger;
+    private $errors = [];
 
     /** @var string */
     private $destinationPath;
@@ -68,19 +53,19 @@ class Environment
     private $currentAbsolutePath = '';
 
     public function __construct(
+        string $currentFileName,
+        string $currentDirectory,
         string $outputFolder,
         int $initialHeaderLevel,
-        LoggerInterface $logger,
         FilesystemInterface $origin,
-        Metas $metas,
         UrlGenerator $urlGenerator
     ) {
         $this->destinationPath = $outputFolder;
         $this->initialHeaderLevel = $initialHeaderLevel;
         $this->origin = $origin;
-        $this->logger = $logger;
         $this->urlGenerator = $urlGenerator;
-        $this->metas = $metas;
+        $this->currentFileName = $currentFileName;
+        $this->currentDirectory = $currentDirectory;
 
         $this->reset();
     }
@@ -106,18 +91,6 @@ class Environment
     public function setVariable(string $variable, $value): void
     {
         $this->variables[$variable] = $value;
-    }
-
-    //Renderer
-
-    /**
-     * @param mixed|null $default
-     *
-     * @return mixed
-     */
-    public function getVariable(string $variable, $default = null)
-    {
-        return $this->variables[$variable] ?? $default;
     }
 
     //Parser to stash after parsing completed
@@ -164,24 +137,6 @@ class Environment
         return $this->links;
     }
 
-    //Renderer
-    public function getLink(string $name, bool $relative = true): string
-    {
-        $name = strtolower(trim($name));
-
-        if (isset($this->links[$name])) {
-            $link = $this->links[$name];
-
-            if ($relative) {
-                return $this->relativeUrl($link);
-            }
-
-            return $link;
-        }
-
-        return '';
-    }
-
     //Parser (assets) & renderer
     public function relativeUrl(?string $url): string
     {
@@ -198,21 +153,6 @@ class Environment
     public function canonicalUrl(string $url): ?string
     {
         return $this->urlGenerator->canonicalUrl($this->getDirName(), $url);
-    }
-
-    //Assets extension (rendering)
-    public function outputUrl(string $url): ?string
-    {
-        return $this->urlGenerator->absoluteUrl(
-            $this->destinationPath,
-            $this->canonicalUrl($url)
-        );
-    }
-
-    //Renderer
-    public function generateUrl(string $path): string
-    {
-        return $this->urlGenerator->generateUrl($path, $this->getDirName());
     }
 
     //Parser, Toc
@@ -233,12 +173,6 @@ class Environment
         return $dirname;
     }
 
-    //Parser, Renderer
-    public function setCurrentFileName(string $filename): void
-    {
-        $this->currentFileName = $filename;
-    }
-
     //Parser
     public function getCurrentFileName(): string
     {
@@ -249,12 +183,6 @@ class Environment
     public function getOrigin(): FilesystemInterface
     {
         return $this->origin;
-    }
-
-    //Parser, Renderer
-    public function setCurrentDirectory(string $directory): void
-    {
-        $this->currentDirectory = $directory;
     }
 
     //Parser
@@ -275,18 +203,6 @@ class Environment
         return $this->currentFileName;
     }
 
-    //Resolver
-    public function getMetas(): Metas
-    {
-        return $this->metas;
-    }
-
-    //Renderer
-    public function getMetaEntry(): ?Entry
-    {
-        return $this->metas->get($this->currentFileName);
-    }
-
     //Parser
     public function getLevel(string $letter): int
     {
@@ -304,7 +220,7 @@ class Environment
 
     public function addError(string $message): void
     {
-        $this->logger->error($message);
+        $this->errors[] = $message;
     }
 
     //Parser, Renderer
@@ -334,5 +250,10 @@ class Environment
     public function getCurrentAbsolutePath(): string
     {
         return $this->currentAbsolutePath;
+    }
+
+    public function getErrors(): array
+    {
+        return $this->errors;
     }
 }

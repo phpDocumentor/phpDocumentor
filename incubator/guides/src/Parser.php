@@ -8,8 +8,6 @@ use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemInterface;
 use phpDocumentor\Guides\Nodes\DocumentNode;
-use Psr\Log\LoggerInterface;
-use Psr\Log\NullLogger;
 use RuntimeException;
 
 use function filemtime;
@@ -17,6 +15,7 @@ use function getcwd;
 use function ltrim;
 use function sprintf;
 use function trim;
+use function var_dump;
 
 /**
  * Determines the correct markup language parser to use based on the input and output format and with it, and parses
@@ -24,14 +23,12 @@ use function trim;
  */
 final class Parser
 {
-    /** @var ?Environment */
-    private $environment = null;
+    /** @var ?ParserContext */
+    private $parserContext = null;
 
     /** @var ?Metas */
     private $metas = null;
 
-    /** @var LoggerInterface */
-    private $logger;
 
     /** @var UrlGenerator */
     private $urlGenerator;
@@ -44,11 +41,9 @@ final class Parser
      */
     public function __construct(
         UrlGenerator $urlGenerator,
-        iterable $parserStrategies,
-        ?LoggerInterface $logger = null
+        iterable $parserStrategies
     ) {
         $this->urlGenerator = $urlGenerator;
-        $this->logger = $logger ?? new NullLogger();
 
         foreach ($parserStrategies as $strategy) {
             $this->registerStrategy($strategy);
@@ -73,7 +68,7 @@ final class Parser
         }
 
         $this->metas = $metas;
-        $this->environment = $this->createEnvironment(
+        $this->parserContext = $this->createParserContext(
             $sourcePath,
             $fileName,
             $origin,
@@ -91,33 +86,35 @@ final class Parser
         string $inputFormat = 'rst',
         string $outputFormat = 'html'
     ): DocumentNode {
-        if ($this->metas === null || $this->environment === null) {
+        if ($this->metas === null || $this->parserContext === null) {
             // if Metas or Environment is not set; then the prepare method hasn't been called and we consider
             // this a one-off parse of dynamic RST content.
             $this->prepare(new Metas(), null, '', '', 'index');
         }
 
-        $this->environment->setCurrentAbsolutePath(
+        $this->parserContext->setCurrentAbsolutePath(
             $this->buildPathOnFileSystem(
-                $this->environment->getCurrentFileName(),
-                $this->environment->getCurrentDirectory(),
+                $this->parserContext->getCurrentFileName(),
+                $this->parserContext->getCurrentDirectory(),
                 $inputFormat
             )
         );
 
         $parser = $this->determineParser($inputFormat);
 
-        $this->environment->reset();
+        $this->parserContext->reset();
 
-        $document = $parser->parse($this->environment, $text);
+        $document = $parser->parse($this->parserContext, $text);
 
         if ($document instanceof DocumentNode) {
-            $document->setVariables($this->environment->getVariables());
-            $this->addDocumentToMetas($this->environment->getDestinationPath(), $outputFormat, $document);
+            $document->setVariables($this->parserContext->getVariables());
+            $this->addDocumentToMetas($this->parserContext->getDestinationPath(), $outputFormat, $document);
         }
 
-        $this->metas = null;
-        $this->environment = null;
+        var_dump($this->parserContext->getErrors());
+
+        $this->metas         = null;
+        $this->parserContext = null;
 
         return $document;
     }
@@ -133,25 +130,21 @@ final class Parser
         throw new RuntimeException('Unable to parse document, no matching parsing strategy could be found');
     }
 
-    private function createEnvironment(
+    private function createParserContext(
         string $sourcePath,
         string $file,
         FilesystemInterface $origin,
         string $destinationPath,
         int $initialHeaderLevel
-    ): Environment {
-        $environment = new Environment(
+    ): ParserContext {
+        return new ParserContext(
+            $file,
+            $sourcePath,
             $destinationPath,
             $initialHeaderLevel,
-            $this->logger,
             $origin,
-            $this->metas,
             $this->urlGenerator
         );
-        $environment->setCurrentFileName($file);
-        $environment->setCurrentDirectory($sourcePath);
-
-        return $environment;
     }
 
     private function buildPathOnFileSystem(string $file, string $currentDirectory, string $extension): string
@@ -162,7 +155,7 @@ final class Parser
     /**
      * @return array<array<string|null>>
      */
-    private function compileTableOfContents(DocumentNode $document, Environment $environment): array
+    private function compileTableOfContents(DocumentNode $document, ParserContext $parserContext): array
     {
         $result = [];
         $nodes = $document->getTocs();
@@ -170,7 +163,7 @@ final class Parser
             $files = $toc->getFiles();
 
             foreach ($files as $key => $file) {
-                $files[$key] = $environment->canonicalUrl($file);
+                $files[$key] = $parserContext->canonicalUrl($file);
             }
 
             $result[] = $files;
@@ -179,29 +172,29 @@ final class Parser
         return $result;
     }
 
-    private function buildDocumentUrl(Environment $environment, string $extension): string
+    private function buildDocumentUrl(ParserContext $parserContext, string $extension): string
     {
-        return $environment->getUrl() . '.' . $extension;
+        return $parserContext->getUrl() . '.' . $extension;
     }
 
-    private function buildOutputUrl(string $destinationPath, string $outputFormat, Environment $environment): string
+    private function buildOutputUrl(string $destinationPath, string $outputFormat, ParserContext $parserContext): string
     {
         $outputFolder = $destinationPath ? $destinationPath . '/' : '';
 
-        return $outputFolder . $this->buildDocumentUrl($environment, $outputFormat);
+        return $outputFolder . $this->buildDocumentUrl($parserContext, $outputFormat);
     }
 
     private function addDocumentToMetas(string $destinationPath, string $outputFormat, DocumentNode $document): void
     {
         $this->metas->set(
-            $this->environment->getCurrentFileName(),
-            $this->buildOutputUrl($destinationPath, $outputFormat, $this->environment),
+            $this->parserContext->getCurrentFileName(),
+            $this->buildOutputUrl($destinationPath, $outputFormat, $this->parserContext),
             $document->getTitle() ? $document->getTitle()->getValueString() : '',
             $document->getTitles(),
-            $this->compileTableOfContents($document, $this->environment),
-            (int) filemtime($this->environment->getCurrentAbsolutePath()),
+            $this->compileTableOfContents($document, $this->parserContext),
+            (int) filemtime($this->parserContext->getCurrentAbsolutePath()),
             $document->getDependencies(),
-            $this->environment->getLinks()
+            $this->parserContext->getLinks()
         );
     }
 }

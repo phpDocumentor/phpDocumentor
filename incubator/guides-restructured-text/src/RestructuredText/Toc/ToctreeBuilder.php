@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\Toc;
 
-use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Nodes\Node;
+use phpDocumentor\Guides\ParserContext;
 
 use function array_filter;
 use function array_map;
@@ -29,7 +29,7 @@ class ToctreeBuilder
      * @return string[]
      */
     public function buildToctreeFiles(
-        Environment $environment,
+        ParserContext $environment,
         Node $node,
         array $options
     ): array {

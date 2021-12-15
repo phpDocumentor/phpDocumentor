@@ -156,7 +156,7 @@ class ReferenceBuilder
      *
      * @return string[]|null
      */
-    public function found(Environment $environment, string $section, array $data): ?array
+    public function found(string $currentFileName, string $section, array $data): ?array
     {
         $role = $section;
         if ($data['domain'] ?? '') {
@@ -171,7 +171,7 @@ class ReferenceBuilder
             return null;
         }
 
-        $this->addMissingReferenceSectionError($environment->getCurrentFileName(), $role);
+        $this->addMissingReferenceSectionError($currentFileName, $role);
 
         return null;
     }

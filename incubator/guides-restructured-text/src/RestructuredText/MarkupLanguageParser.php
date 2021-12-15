@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\RestructuredText;
 
 use Doctrine\Common\EventManager;
-use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\MarkupLanguageParser as ParserInterface;
 use phpDocumentor\Guides\Nodes\DocumentNode;
+use phpDocumentor\Guides\ParserContext;
 use phpDocumentor\Guides\ReferenceBuilder;
 use phpDocumentor\Guides\References\Doc;
 use phpDocumentor\Guides\References\Reference;
@@ -22,7 +22,7 @@ use function strtolower;
 
 class MarkupLanguageParser implements ParserInterface
 {
-    /** @var Environment|null */
+    /** @var ParserContext|null */
     private $environment;
 
     /** @var Directive[] */
@@ -97,7 +97,7 @@ class MarkupLanguageParser implements ParserInterface
         }
     }
 
-    public function getEnvironment(): Environment
+    public function getEnvironment(): ParserContext
     {
         if ($this->environment === null) {
             throw new RuntimeException(
@@ -130,7 +130,7 @@ class MarkupLanguageParser implements ParserInterface
         return $this->filename ?: '(unknown)';
     }
 
-    public function parse(Environment $environment, string $contents): DocumentNode
+    public function parse(ParserContext $environment, string $contents): DocumentNode
     {
         $this->environment = $environment;
         $this->documentParser = $this->createDocumentParser();

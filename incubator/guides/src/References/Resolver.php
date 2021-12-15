@@ -46,11 +46,11 @@ class Resolver
      */
     private function resolveFileReference(
         Environment $environment,
-        string $data,
+        string $url,
         array $attributes = []
     ): ?ResolvedReference {
         $entry = null;
-        $file = $environment->canonicalUrl($data);
+        $file = $environment->canonicalUrl($url);
 
         if ($file !== null) {
             $entry = $environment->getMetas()->get($file);
