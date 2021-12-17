@@ -15,8 +15,6 @@ namespace phpDocumentor\Guides;
 
 use League\Flysystem\FilesystemInterface;
 use phpDocumentor\Guides\Meta\Entry;
-use phpDocumentor\Guides\Nodes\SpanNode;
-use Psr\Log\LoggerInterface;
 
 use function array_shift;
 use function dirname;
@@ -28,23 +26,11 @@ class Environment
     /** @var UrlGenerator */
     private $urlGenerator;
 
-    /** @var int */
-    private $initialHeaderLevel;
-
-    /** @var int */
-    private $currentTitleLevel = 0;
-
-    /** @var string[] */
-    private $titleLetters = [];
-
     /** @var string */
     private $currentFileName = '';
 
     /** @var FilesystemInterface */
     private $origin;
-
-    /** @var string */
-    private $currentDirectory = '.';
 
     /** @var Metas */
     private $metas;
@@ -58,9 +44,6 @@ class Environment
     /** @var string[] */
     private $anonymous = [];
 
-    /** @var LoggerInterface */
-    private $logger;
-
     /** @var string */
     private $destinationPath;
 
@@ -69,36 +52,15 @@ class Environment
 
     public function __construct(
         string $outputFolder,
-        int $initialHeaderLevel,
-        LoggerInterface $logger,
         FilesystemInterface $origin,
         Metas $metas,
         UrlGenerator $urlGenerator
     ) {
         $this->destinationPath = $outputFolder;
-        $this->initialHeaderLevel = $initialHeaderLevel;
         $this->origin = $origin;
-        $this->logger = $logger;
         $this->urlGenerator = $urlGenerator;
         $this->metas = $metas;
-
-        $this->reset();
     }
-
-    //Parser
-    public function reset(): void
-    {
-        $this->titleLetters = [];
-        $this->currentTitleLevel = 0;
-    }
-
-    //Parser
-    public function getInitialHeaderLevel(): int
-    {
-        return $this->initialHeaderLevel;
-    }
-
-    //Parser to populate, renderer to restore
 
     /**
      * @param mixed $value
@@ -107,8 +69,6 @@ class Environment
     {
         $this->variables[$variable] = $value;
     }
-
-    //Renderer
 
     /**
      * @param mixed|null $default
@@ -120,17 +80,6 @@ class Environment
         return $this->variables[$variable] ?? $default;
     }
 
-    //Parser to stash after parsing completed
-
-    /**
-     * @return array<string|SpanNode>
-     */
-    public function getVariables(): array
-    {
-        return $this->variables;
-    }
-
-    //Parser
     public function setLink(string $name, string $url): void
     {
         $name = strtolower(trim($name));
@@ -142,29 +91,6 @@ class Environment
         $this->links[$name] = trim($url);
     }
 
-    //Parser (span)
-    public function resetAnonymousStack(): void
-    {
-        $this->anonymous = [];
-    }
-
-    //Parser (span)
-    public function pushAnonymous(string $name): void
-    {
-        $this->anonymous[] = strtolower(trim($name));
-    }
-
-    //Parser to stash after parsing completed
-
-    /**
-     * @return string[]
-     */
-    public function getLinks(): array
-    {
-        return $this->links;
-    }
-
-    //Renderer
     public function getLink(string $name, bool $relative = true): string
     {
         $name = strtolower(trim($name));
@@ -182,25 +108,16 @@ class Environment
         return '';
     }
 
-    //Parser (assets) & renderer
     public function relativeUrl(?string $url): string
     {
         return $this->urlGenerator->relativeUrl($url);
     }
 
-    //TocTree builder
-    public function absoluteUrl(string $url): string
-    {
-        return $this->urlGenerator->absoluteUrl($this->getDirName(), $url);
-    }
-
-    //Toc, Resolver
     public function canonicalUrl(string $url): ?string
     {
         return $this->urlGenerator->canonicalUrl($this->getDirName(), $url);
     }
 
-    //Assets extension (rendering)
     public function outputUrl(string $url): ?string
     {
         return $this->urlGenerator->absoluteUrl(
@@ -209,20 +126,12 @@ class Environment
         );
     }
 
-    //Renderer
     public function generateUrl(string $path): string
     {
         return $this->urlGenerator->generateUrl($path, $this->getDirName());
     }
 
-    //Parser, Toc
-    public function absoluteRelativePath(string $url): string
-    {
-        return $this->currentDirectory . '/' . $this->getDirName() . '/' . $this->relativeUrl($url);
-    }
-
-    //Toc
-    public function getDirName(): string
+    private function getDirName(): string
     {
         $dirname = dirname($this->currentFileName);
 
@@ -233,81 +142,30 @@ class Environment
         return $dirname;
     }
 
-    //Parser, Renderer
     public function setCurrentFileName(string $filename): void
     {
         $this->currentFileName = $filename;
     }
 
-    //Parser
     public function getCurrentFileName(): string
     {
         return $this->currentFileName;
     }
 
-    //Parser, Renderer
     public function getOrigin(): FilesystemInterface
     {
         return $this->origin;
     }
 
-    //Parser, Renderer
-    public function setCurrentDirectory(string $directory): void
-    {
-        $this->currentDirectory = $directory;
-    }
-
-    //Parser
-    public function getCurrentDirectory(): string
-    {
-        return $this->currentDirectory;
-    }
-
-    //Parser, (metas)
-    public function getDestinationPath(): string
-    {
-        return $this->destinationPath;
-    }
-
-    //Parser, Renderer
-    public function getUrl(): string
-    {
-        return $this->currentFileName;
-    }
-
-    //Resolver
     public function getMetas(): Metas
     {
         return $this->metas;
     }
 
-    //Renderer
     public function getMetaEntry(): ?Entry
     {
         return $this->metas->get($this->currentFileName);
     }
-
-    //Parser
-    public function getLevel(string $letter): int
-    {
-        foreach ($this->titleLetters as $level => $titleLetter) {
-            if ($letter === $titleLetter) {
-                return $level;
-            }
-        }
-
-        $this->currentTitleLevel++;
-        $this->titleLetters[$this->currentTitleLevel] = $letter;
-
-        return $this->currentTitleLevel;
-    }
-
-    public function addError(string $message): void
-    {
-        $this->logger->error($message);
-    }
-
-    //Parser, Renderer
 
     /**
      * Register the current file's absolute path on the Origin file system.
@@ -319,8 +177,6 @@ class Environment
     {
         $this->currentAbsolutePath = $path;
     }
-
-    //Parser, Renderer
 
     /**
      * Return the current file's absolute path on the Origin file system.

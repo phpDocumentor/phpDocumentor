@@ -44,6 +44,7 @@ class ParserContext
     /** @var string[] */
     private $anonymous = [];
 
+    /** @var string[] */
     private $errors = [];
 
     /** @var string */
@@ -70,20 +71,16 @@ class ParserContext
         $this->reset();
     }
 
-    //Parser
     public function reset(): void
     {
         $this->titleLetters = [];
         $this->currentTitleLevel = 0;
     }
 
-    //Parser
     public function getInitialHeaderLevel(): int
     {
         return $this->initialHeaderLevel;
     }
-
-    //Parser to populate, renderer to restore
 
     /**
      * @param mixed $value
@@ -93,8 +90,6 @@ class ParserContext
         $this->variables[$variable] = $value;
     }
 
-    //Parser to stash after parsing completed
-
     /**
      * @return array<string|SpanNode>
      */
@@ -103,7 +98,6 @@ class ParserContext
         return $this->variables;
     }
 
-    //Parser
     public function setLink(string $name, string $url): void
     {
         $name = strtolower(trim($name));
@@ -115,19 +109,15 @@ class ParserContext
         $this->links[$name] = trim($url);
     }
 
-    //Parser (span)
     public function resetAnonymousStack(): void
     {
         $this->anonymous = [];
     }
 
-    //Parser (span)
     public function pushAnonymous(string $name): void
     {
         $this->anonymous[] = strtolower(trim($name));
     }
-
-    //Parser to stash after parsing completed
 
     /**
      * @return string[]
@@ -137,19 +127,16 @@ class ParserContext
         return $this->links;
     }
 
-    //Parser (assets) & renderer
     private function relativeUrl(?string $url): string
     {
         return $this->urlGenerator->relativeUrl($url);
     }
 
-    //Parser, Toc
     public function absoluteRelativePath(string $url): string
     {
         return $this->currentDirectory . '/' . $this->getDirName() . '/' . $this->relativeUrl($url);
     }
 
-    //Toc
     public function getDirName(): string
     {
         $dirname = dirname($this->currentFileName);
@@ -161,37 +148,31 @@ class ParserContext
         return $dirname;
     }
 
-    //Parser
     public function getCurrentFileName(): string
     {
         return $this->currentFileName;
     }
 
-    //Parser, Renderer
     public function getOrigin(): FilesystemInterface
     {
         return $this->origin;
     }
 
-    //Parser
     public function getCurrentDirectory(): string
     {
         return $this->currentDirectory;
     }
 
-    //Parser, (metas)
     public function getDestinationPath(): string
     {
         return $this->destinationPath;
     }
 
-    //Parser, Renderer
     public function getUrl(): string
     {
         return $this->currentFileName;
     }
 
-    //Parser
     public function getLevel(string $letter): int
     {
         foreach ($this->titleLetters as $level => $titleLetter) {
@@ -211,8 +192,6 @@ class ParserContext
         $this->errors[] = $message;
     }
 
-    //Parser, Renderer
-
     /**
      * Register the current file's absolute path on the Origin file system.
      *
@@ -223,8 +202,6 @@ class ParserContext
     {
         $this->currentAbsolutePath = $path;
     }
-
-    //Parser, Renderer
 
     /**
      * Return the current file's absolute path on the Origin file system.
@@ -240,6 +217,7 @@ class ParserContext
         return $this->currentAbsolutePath;
     }
 
+    /** @return string[] */
     public function getErrors(): array
     {
         return $this->errors;

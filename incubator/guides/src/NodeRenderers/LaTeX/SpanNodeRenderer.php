@@ -62,7 +62,7 @@ class SpanNodeRenderer extends BaseSpanNodeRenderer
 
             $url = substr($url, 1);
             $url = $url !== '' ? '#' . $url : '';
-            $url = $environment->getUrl() . $url;
+            $url = $environment->getCurrentFileName() . $url;
         }
 
         return $this->renderer->render(
