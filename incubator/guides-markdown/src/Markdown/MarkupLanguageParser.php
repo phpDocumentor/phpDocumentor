@@ -25,7 +25,7 @@ use phpDocumentor\Guides\Nodes\RawNode;
 use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\Nodes\TitleNode;
 use phpDocumentor\Guides\ParserContext;
-use phpDocumentor\Guides\ReferenceBuilder;
+use phpDocumentor\Guides\References\ReferenceBuilder;
 use RuntimeException;
 
 use function get_class;

@@ -6,7 +6,7 @@ namespace phpDocumentor\Guides\Span;
 
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\Guides\ParserContext;
-use phpDocumentor\Guides\ReferenceBuilder;
+use phpDocumentor\Guides\References\ReferenceBuilder;
 use phpDocumentor\Guides\RestructuredText\Span\SpanParser;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;

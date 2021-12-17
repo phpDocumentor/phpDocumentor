@@ -17,7 +17,7 @@ use InvalidArgumentException;
 use phpDocumentor\Guides\NodeRenderers\NodeRenderer;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\TocNode;
-use phpDocumentor\Guides\ReferenceBuilder;
+use phpDocumentor\Guides\References\ReferenceBuilder;
 use phpDocumentor\Guides\RenderContext;
 use phpDocumentor\Guides\Renderer;
 

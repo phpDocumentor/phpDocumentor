@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\RestructuredText\Span;
 
 use phpDocumentor\Guides\ParserContext;
-use phpDocumentor\Guides\ReferenceBuilder;
+use phpDocumentor\Guides\References\ReferenceBuilder;
 use phpDocumentor\Guides\Span\SpanToken;
 
 use function mt_rand;

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides;
 
 use phpDocumentor\Guides\Nodes\DocumentNode;
+use phpDocumentor\Guides\References\ReferenceBuilder;
 
 interface MarkupLanguageParser
 {

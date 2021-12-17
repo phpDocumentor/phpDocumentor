@@ -17,7 +17,7 @@ use InvalidArgumentException;
 use phpDocumentor\Guides\Nodes\Links\InvalidLink;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\SpanNode;
-use phpDocumentor\Guides\ReferenceBuilder;
+use phpDocumentor\Guides\References\ReferenceBuilder;
 use phpDocumentor\Guides\RenderContext;
 use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\Span\SpanToken;

@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
-namespace phpDocumentor\Guides;
+namespace phpDocumentor\Guides\References;
 
 use InvalidArgumentException;
 use phpDocumentor\Guides\Meta\Entry;
+use phpDocumentor\Guides\Nodes;
 use phpDocumentor\Guides\Nodes\Links\InvalidLink;
-use phpDocumentor\Guides\References\Reference;
-use phpDocumentor\Guides\References\ResolvedReference;
+use phpDocumentor\Guides\RenderContext;
+use phpDocumentor\Guides\UrlGenerator;
 use Psr\Log\LoggerInterface;
 
 use function sprintf;

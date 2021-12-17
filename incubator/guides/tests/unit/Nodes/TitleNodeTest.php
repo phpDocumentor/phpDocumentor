@@ -17,7 +17,7 @@ use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Guides\MarkupLanguageParser;
 use phpDocumentor\Guides\ParserContext;
-use phpDocumentor\Guides\ReferenceBuilder;
+use phpDocumentor\Guides\References\ReferenceBuilder;
 
 final class TitleNodeTest extends MockeryTestCase
 {

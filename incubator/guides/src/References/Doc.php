@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\References;
 
-use phpDocumentor\Guides\ReferenceBuilder;
 use phpDocumentor\Guides\RenderContext;
 
 /**
