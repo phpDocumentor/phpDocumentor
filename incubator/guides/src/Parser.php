@@ -105,13 +105,8 @@ final class Parser
         $this->parserContext->reset();
 
         $document = $parser->parse($this->parserContext, $text);
-
-        if ($document instanceof DocumentNode) {
-            $document->setVariables($this->parserContext->getVariables());
-            $this->addDocumentToMetas($this->parserContext->getDestinationPath(), $outputFormat, $document);
-        }
-
-        var_dump($this->parserContext->getErrors());
+        $document->setVariables($this->parserContext->getVariables());
+        $this->addDocumentToMetas($this->parserContext->getDestinationPath(), $outputFormat, $document);
 
         $this->metas         = null;
         $this->parserContext = null;
