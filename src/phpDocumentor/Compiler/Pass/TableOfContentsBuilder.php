@@ -139,6 +139,10 @@ final class TableOfContentsBuilder implements CompilerPassInterface
 
                 $guideToc->addEntry($entry);
 
+                if ($subDocument->getFile() === $documentDescriptor->getFile()) {
+                    continue;
+                }
+
                 $this->createGuideEntries($subDocument, $documents, $guideToc, $entry);
             }
         }
