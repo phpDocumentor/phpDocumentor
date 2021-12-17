@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\NodeRenderers\Html;
 
 use LogicException;
-use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\NodeRenderers\NodeRenderer;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\TableNode;
+use phpDocumentor\Guides\RenderContext;
 use phpDocumentor\Guides\Renderer;
 use Webmozart\Assert\Assert;
 
@@ -33,7 +33,7 @@ class TableNodeRenderer implements NodeRenderer
         $this->renderer = $renderer;
     }
 
-    public function render(Node $node, Environment $environment): string
+    public function render(Node $node, RenderContext $environment): string
     {
         Assert::isInstanceOf($node, TableNode::class);
 

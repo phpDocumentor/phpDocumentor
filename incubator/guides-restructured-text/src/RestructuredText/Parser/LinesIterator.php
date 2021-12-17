@@ -15,7 +15,7 @@ namespace phpDocumentor\Guides\RestructuredText\Parser;
 
 use Iterator;
 use OutOfBoundsException;
-use phpDocumentor\Guides\Environment;
+use phpDocumentor\Guides\ParserContext;
 use RuntimeException;
 
 use function chr;
@@ -36,9 +36,9 @@ class LinesIterator implements Iterator
     /** @var int */
     private $position = 0;
 
-    public function load(Environment $environment, string $document): void
+    public function load(ParserContext $parserContext, string $document): void
     {
-        $document = trim($this->prepareDocument($environment, $document));
+        $document = trim($this->prepareDocument($parserContext, $document));
         $this->lines = explode("\n", $document);
         $this->rewind();
     }
@@ -93,12 +93,12 @@ class LinesIterator implements Iterator
         return isset($this->lines[$this->position]);
     }
 
-    private function prepareDocument(Environment $environment, string $document): string
+    private function prepareDocument(ParserContext $parserContext, string $document): string
     {
         $document = str_replace("\r\n", "\n", $document);
         $document = sprintf("\n%s\n", $document);
 
-        $document = $this->mergeIncludedFiles($environment, $document);
+        $document = $this->mergeIncludedFiles($parserContext, $document);
 
         // Removing UTF-8 BOM
         $document = str_replace("\xef\xbb\xbf", '', $document);
@@ -109,14 +109,14 @@ class LinesIterator implements Iterator
         return $document;
     }
 
-    public function mergeIncludedFiles(Environment $environment, string $document): string
+    private function mergeIncludedFiles(ParserContext $parserContext, string $document): string
     {
         return preg_replace_callback(
             '/^\.\. include:: (.+)$/m',
-            function ($match) use ($environment) {
-                $path = $environment->absoluteRelativePath($match[1]);
+            function ($match) use ($parserContext) {
+                $path = $parserContext->absoluteRelativePath($match[1]);
 
-                $origin = $environment->getOrigin();
+                $origin = $parserContext->getOrigin();
                 if (!$origin->has($path)) {
                     throw new RuntimeException(
                         sprintf('Include "%s" (%s) does not exist or is not readable.', $match[0], $path)
@@ -129,7 +129,7 @@ class LinesIterator implements Iterator
                     throw new RuntimeException(sprintf('Could not load file from path %s', $path));
                 }
 
-                return $this->mergeIncludedFiles($environment, $contents);
+                return $this->mergeIncludedFiles($parserContext, $contents);
             },
             $document
         );

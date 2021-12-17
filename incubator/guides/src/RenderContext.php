@@ -15,39 +15,22 @@ namespace phpDocumentor\Guides;
 
 use League\Flysystem\FilesystemInterface;
 use phpDocumentor\Guides\Meta\Entry;
-use phpDocumentor\Guides\Nodes\SpanNode;
-use Psr\Log\LoggerInterface;
 
 use function array_shift;
 use function dirname;
 use function strtolower;
 use function trim;
 
-class Environment
+class RenderContext
 {
     /** @var UrlGenerator */
     private $urlGenerator;
-
-    /** @var int */
-    private $initialHeaderLevel;
-
-    /** @var int */
-    private $currentTitleLevel = 0;
-
-    /** @var string[] */
-    private $titleLetters = [];
 
     /** @var string */
     private $currentFileName = '';
 
     /** @var FilesystemInterface */
     private $origin;
-
-    /** @var string */
-    private $currentDirectory = '.';
-
-    /** @var string|null */
-    private $url;
 
     /** @var Metas */
     private $metas;
@@ -61,9 +44,6 @@ class Environment
     /** @var string[] */
     private $anonymous = [];
 
-    /** @var LoggerInterface */
-    private $logger;
-
     /** @var string */
     private $destinationPath;
 
@@ -72,35 +52,13 @@ class Environment
 
     public function __construct(
         string $outputFolder,
-        int $initialHeaderLevel,
-        LoggerInterface $logger,
         FilesystemInterface $origin,
         Metas $metas,
         UrlGenerator $urlGenerator
     ) {
         $this->destinationPath = $outputFolder;
-        $this->initialHeaderLevel = $initialHeaderLevel;
         $this->origin = $origin;
-        $this->logger = $logger;
         $this->urlGenerator = $urlGenerator;
-        $this->metas = $metas;
-
-        $this->reset();
-    }
-
-    public function reset(): void
-    {
-        $this->titleLetters = [];
-        $this->currentTitleLevel = 0;
-    }
-
-    public function getInitialHeaderLevel(): int
-    {
-        return $this->initialHeaderLevel;
-    }
-
-    public function setMetas(Metas $metas): void
-    {
         $this->metas = $metas;
     }
 
@@ -122,14 +80,6 @@ class Environment
         return $this->variables[$variable] ?? $default;
     }
 
-    /**
-     * @return array<string|SpanNode>
-     */
-    public function getVariables(): array
-    {
-        return $this->variables;
-    }
-
     public function setLink(string $name, string $url): void
     {
         $name = strtolower(trim($name));
@@ -139,24 +89,6 @@ class Environment
         }
 
         $this->links[$name] = trim($url);
-    }
-
-    public function resetAnonymousStack(): void
-    {
-        $this->anonymous = [];
-    }
-
-    public function pushAnonymous(string $name): void
-    {
-        $this->anonymous[] = strtolower(trim($name));
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getLinks(): array
-    {
-        return $this->links;
     }
 
     public function getLink(string $name, bool $relative = true): string
@@ -181,11 +113,6 @@ class Environment
         return $this->urlGenerator->relativeUrl($url);
     }
 
-    public function absoluteUrl(string $url): string
-    {
-        return $this->urlGenerator->absoluteUrl($this->getDirName(), $url);
-    }
-
     public function canonicalUrl(string $url): ?string
     {
         return $this->urlGenerator->canonicalUrl($this->getDirName(), $url);
@@ -204,12 +131,7 @@ class Environment
         return $this->urlGenerator->generateUrl($path, $this->getDirName());
     }
 
-    public function absoluteRelativePath(string $url): string
-    {
-        return $this->currentDirectory . '/' . $this->getDirName() . '/' . $this->relativeUrl($url);
-    }
-
-    public function getDirName(): string
+    private function getDirName(): string
     {
         $dirname = dirname($this->currentFileName);
 
@@ -235,35 +157,6 @@ class Environment
         return $this->origin;
     }
 
-    public function setCurrentDirectory(string $directory): void
-    {
-        $this->currentDirectory = $directory;
-    }
-
-    public function getCurrentDirectory(): string
-    {
-        return $this->currentDirectory;
-    }
-
-    public function getDestinationPath(): string
-    {
-        return $this->destinationPath;
-    }
-
-    public function getUrl(): string
-    {
-        return $this->url ?? $this->currentFileName;
-    }
-
-    public function setUrl(string $url): void
-    {
-        if ($this->getDirName() !== '') {
-            $url = $this->getDirName() . '/' . $url;
-        }
-
-        $this->url = $url;
-    }
-
     public function getMetas(): Metas
     {
         return $this->metas;
@@ -272,33 +165,6 @@ class Environment
     public function getMetaEntry(): ?Entry
     {
         return $this->metas->get($this->currentFileName);
-    }
-
-    public function getLevel(string $letter): int
-    {
-        foreach ($this->titleLetters as $level => $titleLetter) {
-            if ($letter === $titleLetter) {
-                return $level;
-            }
-        }
-
-        $this->currentTitleLevel++;
-        $this->titleLetters[$this->currentTitleLevel] = $letter;
-
-        return $this->currentTitleLevel;
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getTitleLetters(): array
-    {
-        return $this->titleLetters;
-    }
-
-    public function addError(string $message): void
-    {
-        $this->logger->error($message);
     }
 
     /**

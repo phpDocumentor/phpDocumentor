@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\Span;
 
 use phpDocumentor\Faker\Faker;
-use phpDocumentor\Guides\Environment;
+use phpDocumentor\Guides\ParserContext;
 use phpDocumentor\Guides\ReferenceBuilder;
 use phpDocumentor\Guides\RestructuredText\Span\SpanParser;
 use PHPUnit\Framework\TestCase;
@@ -19,8 +19,8 @@ final class SpanParserTest extends TestCase
     use Faker;
     use ProphecyTrait;
 
-    /** @var Environment&ObjectProphecy */
-    private $environment;
+    /** @var ParserContext&ObjectProphecy */
+    private $parserContext;
 
     /** @var ReferenceBuilder&ObjectProphecy */
     private $referenceRegistry;
@@ -31,16 +31,15 @@ final class SpanParserTest extends TestCase
     public function setUp(): void
     {
         $this->referenceRegistry = $this->prophesize(ReferenceBuilder::class);
-        $this->environment = $this->prophesize(Environment::class);
-        $this->environment->getTitleLetters()->willReturn([]);
-        $this->environment->resetAnonymousStack()->hasReturnVoid();
+        $this->parserContext = $this->prophesize(ParserContext::class);
+        $this->parserContext->resetAnonymousStack()->hasReturnVoid();
         $this->spanProcessor = new SpanParser($this->referenceRegistry->reveal());
     }
 
     public function testInlineLiteralsAreReplacedWithToken(): void
     {
         $result = $this->spanProcessor->process(
-            $this->environment->reveal(),
+            $this->parserContext->reveal(),
             'This text is an example of ``inline literals``.'
         );
         $token = current($this->spanProcessor->getTokens());
@@ -60,7 +59,7 @@ final class SpanParserTest extends TestCase
     /** @dataProvider invalidNotationsProvider */
     public function testIncompleteStructuresAreIgnored(string $input): void
     {
-        $result = $this->spanProcessor->process($this->environment->reveal(), $input);
+        $result = $this->spanProcessor->process($this->parserContext->reveal(), $input);
 
         self::assertSame($input, $result);
         self::assertCount(0, $this->spanProcessor->getTokens());
@@ -82,7 +81,7 @@ final class SpanParserTest extends TestCase
         string $text,
         string $url = ''
     ): void {
-        $result = $this->spanProcessor->process($this->environment->reveal(), $input);
+        $result = $this->spanProcessor->process($this->parserContext->reveal(), $input);
         $token = current($this->spanProcessor->getTokens());
 
         self::assertInstanceOf(SpanToken::class, $token);
@@ -101,7 +100,7 @@ final class SpanParserTest extends TestCase
             return;
         }
 
-        $this->environment->setLink($text, $url)->shouldHaveBeenCalledOnce();
+        $this->parserContext->setLink($text, $url)->shouldHaveBeenCalledOnce();
     }
 
     /** string[][[] */
@@ -161,7 +160,7 @@ TEXT
         string $url = ''
     ): void {
         $this->testNamedHyperlinkReferencesAreReplaced($input, $referenceId, $text, $url);
-        $this->environment->pushAnonymous($text)->shouldHaveBeenCalled()->hasReturnVoid();
+        $this->parserContext->pushAnonymous($text)->shouldHaveBeenCalled()->hasReturnVoid();
     }
 
     public function AnonymousHyperlinksProvider(): array
@@ -177,7 +176,7 @@ TEXT
 
     public function testInlineInternalTargetsAreReplaced(): void
     {
-        $result = $this->spanProcessor->process($this->environment->reveal(), 'Some _`internal ref` in text.');
+        $result = $this->spanProcessor->process($this->parserContext->reveal(), 'Some _`internal ref` in text.');
         $token = current($this->spanProcessor->getTokens());
 
         self::assertStringNotContainsString('_`internal ref`', $result);
@@ -196,7 +195,7 @@ TEXT
     public function testFootNoteReferencesAreReplaced(): void
     {
         $this->markTestSkipped('Footnotes are not supported yet');
-        $result = $this->spanProcessor->process($this->environment->reveal(), 'Please RTFM [1]_.');
+        $result = $this->spanProcessor->process($this->parserContext->reveal(), 'Please RTFM [1]_.');
         $token = current($this->spanProcessor->getTokens());
 
         self::assertStringNotContainsString('[1]_', $result);
@@ -216,7 +215,7 @@ TEXT
     {
         $email = $this->faker()->email;
 
-        $result = $this->spanProcessor->process($this->environment->reveal(), $email);
+        $result = $this->spanProcessor->process($this->parserContext->reveal(), $email);
         $tokens = $this->spanProcessor->getTokens();
         $token = current($tokens);
 
@@ -237,7 +236,7 @@ TEXT
     {
         $url = $this->faker()->url;
 
-        $result = $this->spanProcessor->process($this->environment->reveal(), $url);
+        $result = $this->spanProcessor->process($this->parserContext->reveal(), $url);
         $tokens = $this->spanProcessor->getTokens();
         $token = current($tokens);
 
@@ -256,7 +255,7 @@ TEXT
 
     public function testNoReplacementsAreDoneWhenNotNeeded(): void
     {
-        $result = $this->spanProcessor->process($this->environment->reveal(), 'Raw token');
+        $result = $this->spanProcessor->process($this->parserContext->reveal(), 'Raw token');
         self::assertSame('Raw token', $result);
         self::assertEmpty($this->spanProcessor->getTokens());
     }

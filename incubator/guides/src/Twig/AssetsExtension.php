@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\Twig;
 
 use League\Flysystem\FilesystemInterface;
-use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Nodes\Node;
+use phpDocumentor\Guides\RenderContext;
 use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Transformer\Writer\Graph\PlantumlRenderer;
 use Psr\Log\LoggerInterface;
@@ -88,7 +88,7 @@ final class AssetsExtension extends AbstractExtension
         }
 
         $environment = $context['env'] ?? null;
-        if (!$environment instanceof Environment) {
+        if (!$environment instanceof RenderContext) {
             throw new RuntimeException('Environment must be set in the twig global state to render nodes');
         }
 
@@ -100,9 +100,9 @@ final class AssetsExtension extends AbstractExtension
         return $this->plantumlRenderer->render($source);
     }
 
-    private function copyAsset(?Environment $environment, ?FilesystemInterface $destination, string $path): string
+    private function copyAsset(?RenderContext $environment, ?FilesystemInterface $destination, string $path): string
     {
-        if (!$environment instanceof Environment) {
+        if (!$environment instanceof RenderContext) {
             return $path;
         }
 

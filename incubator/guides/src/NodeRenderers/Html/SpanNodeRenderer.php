@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\NodeRenderers\Html;
 
-use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\NodeRenderers\SpanNodeRenderer as BaseSpanNodeRenderer;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\References\ResolvedReference;
+use phpDocumentor\Guides\RenderContext;
 
 use function htmlspecialchars;
 use function trim;
@@ -58,7 +58,7 @@ class SpanNodeRenderer extends BaseSpanNodeRenderer
     /**
      * @param string[] $attributes
      */
-    public function link(Environment $environment, ?string $url, string $title, array $attributes = []): string
+    public function link(RenderContext $environment, ?string $url, string $title, array $attributes = []): string
     {
         $url = (string) $url;
 
@@ -80,7 +80,7 @@ class SpanNodeRenderer extends BaseSpanNodeRenderer
     /**
      * @param array<string|null> $value
      */
-    public function reference(Environment $environment, ResolvedReference $reference, array $value): string
+    public function reference(RenderContext $environment, ResolvedReference $reference, array $value): string
     {
         $text = $value['text'] ?: ($reference->getTitle() ?? '');
         $text = trim($text);

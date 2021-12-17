@@ -17,16 +17,15 @@ use IteratorAggregate;
 use League\Flysystem\FilesystemInterface;
 use phpDocumentor\Descriptor\DocumentDescriptor;
 use phpDocumentor\Descriptor\GuideSetDescriptor;
-use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Metas;
 use phpDocumentor\Guides\ReferenceBuilder;
 use phpDocumentor\Guides\References\Doc;
 use phpDocumentor\Guides\References\Reference;
 use phpDocumentor\Guides\RenderCommand;
+use phpDocumentor\Guides\RenderContext;
 use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\UrlGenerator;
 use phpDocumentor\Transformer\Router\Router;
-use Psr\Log\LoggerInterface;
 
 use function array_merge;
 use function dirname;
@@ -40,9 +39,6 @@ final class RenderHandler
 
     /** @var Renderer */
     private $renderer;
-
-    /** @var LoggerInterface */
-    private $logger;
 
     /** @var Reference[] */
     private $references;
@@ -60,7 +56,6 @@ final class RenderHandler
     public function __construct(
         Metas $metas,
         Renderer $renderer,
-        LoggerInterface $logger,
         IteratorAggregate $references,
         Router $router,
         UrlGenerator $urlGenerator,
@@ -68,7 +63,6 @@ final class RenderHandler
     ) {
         $this->metas = $metas;
         $this->renderer = $renderer;
-        $this->logger = $logger;
         $this->references = iterator_to_array($references);
         $this->router = $router;
         $this->urlGenerator = $urlGenerator;
@@ -78,16 +72,15 @@ final class RenderHandler
     public function handle(RenderCommand $command): void
     {
         $origin = $command->getOrigin();
-        $initialHeaderLevel = $command->getDocumentationSet()->getInitialHeaderLevel();
         $destinationPath = $command->getDestinationPath();
-        $environment = $this->createEnvironment($destinationPath, $initialHeaderLevel, $origin);
+        $environment = $this->createEnvironment($destinationPath, $origin);
 
         $this->render($command->getDocumentationSet(), $environment, $command->getDestination());
     }
 
     private function render(
         GuideSetDescriptor $documentationSet,
-        Environment $environment,
+        RenderContext $environment,
         FilesystemInterface $destination
     ): void {
         /** @var DocumentDescriptor $descriptor */
@@ -131,13 +124,11 @@ final class RenderHandler
     private function renderDocument(
         DocumentDescriptor $descriptor,
         string $destinationPath,
-        Environment $environment,
+        RenderContext $environment,
         GuideSetDescriptor $documentationSet
     ): string {
         $document = $descriptor->getDocumentNode();
         $this->referenceRegistry->scope($document);
-
-        $directory = dirname($destinationPath);
 
         $environment->setCurrentFileName($descriptor->getFile());
         // TODO: We assume there is one, but there may be multiple. Handling this correctly required rework on how
@@ -145,7 +136,6 @@ final class RenderHandler
         $sourcePath = $documentationSet->getSource()->paths()[0];
 
         $environment->setCurrentAbsolutePath($sourcePath . '/' . dirname($descriptor->getFile()));
-        $environment->setCurrentDirectory($directory);
 
         foreach ($descriptor->getLinks() as $link => $url) {
             $environment->setLink($link, $url);
@@ -163,13 +153,10 @@ final class RenderHandler
 
     private function createEnvironment(
         string $outputFolder,
-        int $initialHeaderLevel,
         FilesystemInterface $origin
-    ): Environment {
-        $environment = new Environment(
+    ): RenderContext {
+        $environment = new RenderContext(
             $outputFolder,
-            $initialHeaderLevel,
-            $this->logger,
             $origin,
             $this->metas,
             $this->urlGenerator

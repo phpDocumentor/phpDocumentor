@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\Directives;
 
-use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Nodes\CodeNode;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\UmlNode;
+use phpDocumentor\Guides\ParserContext;
 use phpDocumentor\Guides\RestructuredText\MarkupLanguageParser;
 
 use function dirname;
@@ -72,23 +72,23 @@ final class Uml extends Directive
         }
     }
 
-    private function loadExternalUmlFile(Environment $environment, string $path): ?string
+    private function loadExternalUmlFile(ParserContext $parserContext, string $path): ?string
     {
         $fileName = sprintf(
             '%s/%s',
-            dirname($environment->getCurrentAbsolutePath()),
+            dirname($parserContext->getCurrentAbsolutePath()),
             $path
         );
 
-        if (!$environment->getOrigin()->has($fileName)) {
-            $environment->addError(
+        if (!$parserContext->getOrigin()->has($fileName)) {
+            $parserContext->addError(
                 sprintf('Tried to include "%s" as a diagram but the file could not be found', $fileName)
             );
 
             return null;
         }
 
-        $value = $environment->getOrigin()->read($fileName);
+        $value = $parserContext->getOrigin()->read($fileName);
 
         return str_replace(['@startuml', '@enduml'], '', $value);
     }

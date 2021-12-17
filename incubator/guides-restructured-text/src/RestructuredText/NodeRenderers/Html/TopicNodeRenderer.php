@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\RestructuredText\NodeRenderers\Html;
 
 use InvalidArgumentException;
-use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\NodeRenderers\NodeRenderer;
 use phpDocumentor\Guides\Nodes\Node;
+use phpDocumentor\Guides\RenderContext;
 use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\RestructuredText\Nodes\TopicNode;
 
@@ -35,7 +35,7 @@ final class TopicNodeRenderer implements NodeRenderer
         return $node instanceof TopicNode;
     }
 
-    public function render(Node $node, Environment $environment): string
+    public function render(Node $node, RenderContext $environment): string
     {
         if ($node instanceof TopicNode === false) {
             throw new InvalidArgumentException('Node must be an instance of ' . TopicNode::class);

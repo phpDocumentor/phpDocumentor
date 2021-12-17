@@ -15,15 +15,15 @@ namespace phpDocumentor\Guides\Nodes;
 
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
-use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\MarkupLanguageParser;
+use phpDocumentor\Guides\ParserContext;
 use phpDocumentor\Guides\ReferenceBuilder;
 
 final class TitleNodeTest extends MockeryTestCase
 {
     public function test_it_can_be_created_with_a_title_slug_and_depth(): void
     {
-        $environment = m::mock(Environment::class);
+        $environment = m::mock(ParserContext::class);
         $environment->shouldReceive('getTitleLetters')->andReturn(['a']);
         $environment->shouldReceive('resetAnonymousStack');
 

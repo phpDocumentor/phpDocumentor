@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\NodeRenderers;
 
-use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Nodes\Node;
+use phpDocumentor\Guides\RenderContext;
 use phpDocumentor\Guides\Renderer;
 
 final class TemplateNodeRenderer implements NodeRenderer
@@ -32,7 +32,7 @@ final class TemplateNodeRenderer implements NodeRenderer
         return $node instanceof $this->nodeClass;
     }
 
-    public function render(Node $node, Environment $environment): string
+    public function render(Node $node, RenderContext $environment): string
     {
         return $this->renderer->render(
             $this->template,

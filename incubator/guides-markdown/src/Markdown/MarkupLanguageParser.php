@@ -14,7 +14,6 @@ use League\CommonMark\Inline\Element\Code;
 use League\CommonMark\Inline\Element\Link;
 use League\CommonMark\Inline\Element\Text;
 use League\CommonMark\Node\NodeWalker;
-use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Markdown\Parsers\AbstractBlock;
 use phpDocumentor\Guides\MarkupLanguageParser as ParserInterface;
 use phpDocumentor\Guides\Nodes\AnchorNode;
@@ -25,6 +24,7 @@ use phpDocumentor\Guides\Nodes\ParagraphNode;
 use phpDocumentor\Guides\Nodes\RawNode;
 use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\Nodes\TitleNode;
+use phpDocumentor\Guides\ParserContext;
 use phpDocumentor\Guides\ReferenceBuilder;
 use RuntimeException;
 
@@ -37,7 +37,7 @@ final class MarkupLanguageParser implements ParserInterface
     /** @var DocParser */
     private $markdownParser;
 
-    /** @var Environment|null */
+    /** @var ParserContext|null */
     private $environment;
 
     /** @var array<AbstractBlock> */
@@ -69,7 +69,7 @@ final class MarkupLanguageParser implements ParserInterface
         return strtolower($inputFormat) === 'md';
     }
 
-    public function parse(Environment $environment, string $contents): DocumentNode
+    public function parse(ParserContext $environment, string $contents): DocumentNode
     {
         $this->environment = $environment;
         $environment->reset();
@@ -172,7 +172,7 @@ final class MarkupLanguageParser implements ParserInterface
         return $parser->parse($this, $walker);
     }
 
-    public function getEnvironment(): Environment
+    public function getEnvironment(): ParserContext
     {
         if ($this->environment === null) {
             throw new RuntimeException(

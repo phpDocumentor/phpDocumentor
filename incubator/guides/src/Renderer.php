@@ -27,6 +27,7 @@ use phpDocumentor\Transformer\Writer\Graph\PlantumlRenderer;
 use phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
+use Twig\Environment;
 use Webmozart\Assert\Assert;
 
 use function count;
@@ -37,7 +38,7 @@ class Renderer implements FullDocumentNodeRenderer
     /** @var EnvironmentFactory */
     private $twigFactory;
 
-    /** @var \Twig\Environment|null */
+    /** @var Environment|null */
     private $twig;
 
     /** @var LoggerInterface */
@@ -120,7 +121,7 @@ class Renderer implements FullDocumentNodeRenderer
         $this->outputRenderer->setDestination($destination);
     }
 
-    public function renderDocument(DocumentNode $node, Environment $environment): string
+    public function renderDocument(DocumentNode $node, RenderContext $environment): string
     {
         return $this->outputRenderer->renderDocument($node, $environment);
     }
@@ -130,7 +131,7 @@ class Renderer implements FullDocumentNodeRenderer
      *   extension; and this extension would actually be nice to re-use in the rest of phpDocumentor as well. First,
      *   make it work here; then adapt for the rest :)
      */
-    public function setGuidesEnvironment(Environment $environment): void
+    public function setGuidesEnvironment(RenderContext $environment): void
     {
         $this->twig->addGlobal('env', $environment);
     }

@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\NodeRenderers\LaTeX;
 
 use InvalidArgumentException;
-use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\NodeRenderers\NodeRenderer;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\TocNode;
 use phpDocumentor\Guides\ReferenceBuilder;
+use phpDocumentor\Guides\RenderContext;
 use phpDocumentor\Guides\Renderer;
 
 class TocNodeRenderer implements NodeRenderer
@@ -35,7 +35,7 @@ class TocNodeRenderer implements NodeRenderer
         $this->referenceRegistry = $referenceRegistry;
     }
 
-    public function render(Node $node, Environment $environment): string
+    public function render(Node $node, RenderContext $environment): string
     {
         if ($node instanceof TocNode === false) {
             throw new InvalidArgumentException('Invalid node presented');
