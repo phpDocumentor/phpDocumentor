@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\References;
 
-use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Meta\Entry;
+use phpDocumentor\Guides\RenderContext;
 
 class Resolver
 {
@@ -22,7 +22,7 @@ class Resolver
      * @param string[] $attributes
      */
     public function resolve(
-        Environment $environment,
+        RenderContext $environment,
         string $data,
         array $attributes = []
     ): ?ResolvedReference {
@@ -45,7 +45,7 @@ class Resolver
      * @param string[] $attributes
      */
     private function resolveFileReference(
-        Environment $environment,
+        RenderContext $environment,
         string $url,
         array $attributes = []
     ): ?ResolvedReference {
@@ -67,7 +67,7 @@ class Resolver
      * @param string[] $attributes
      */
     private function resolveAnchorReference(
-        Environment $environment,
+        RenderContext $environment,
         string $data,
         array $attributes = []
     ): ?ResolvedReference {
@@ -85,7 +85,7 @@ class Resolver
      */
     private function createResolvedReference(
         ?string $file,
-        Environment $environment,
+        RenderContext $environment,
         Entry $entry,
         array $attributes = [],
         ?string $anchor = null

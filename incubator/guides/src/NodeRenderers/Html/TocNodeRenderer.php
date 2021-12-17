@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\NodeRenderers\Html;
 
-use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\NodeRenderers\NodeRenderer;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\TocNode;
 use phpDocumentor\Guides\ReferenceBuilder;
+use phpDocumentor\Guides\RenderContext;
 use phpDocumentor\Guides\Renderer;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 use Webmozart\Assert\Assert;
@@ -39,7 +39,7 @@ class TocNodeRenderer implements NodeRenderer
         $this->referenceRegistry = $referenceRegistry;
     }
 
-    public function render(Node $node, Environment $environment): string
+    public function render(Node $node, RenderContext $environment): string
     {
         Assert::isInstanceOf($node, TocNode::class);
 
@@ -80,7 +80,7 @@ class TocNodeRenderer implements NodeRenderer
      * @param mixed[][] $tocItems
      */
     private function buildLevel(
-        Environment $environment,
+        RenderContext $environment,
         TocNode $node,
         ?string $url,
         array $titles,
@@ -119,7 +119,7 @@ class TocNodeRenderer implements NodeRenderer
      *
      * @return array{mixed, string}
      */
-    private function generateTarget(Environment $environment, ?string $url, $title): array
+    private function generateTarget(RenderContext $environment, ?string $url, $title): array
     {
         $anchor = $this->generateAnchorFromTitle($title);
 

@@ -21,7 +21,7 @@ use function dirname;
 use function strtolower;
 use function trim;
 
-class Environment
+class RenderContext
 {
     /** @var UrlGenerator */
     private $urlGenerator;

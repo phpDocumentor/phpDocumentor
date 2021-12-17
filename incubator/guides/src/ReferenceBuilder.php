@@ -72,7 +72,7 @@ class ReferenceBuilder
     }
 
     public function resolve(
-        Environment $environment,
+        RenderContext $environment,
         string $role,
         string $data,
         ?Entry $metaEntry = null

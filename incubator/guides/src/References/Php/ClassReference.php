@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\References\Php;
 
-use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\References\ResolvedReference;
+use phpDocumentor\Guides\RenderContext;
 
 use function sprintf;
 use function str_replace;
@@ -30,7 +30,7 @@ final class ClassReference extends Reference
         return 'class';
     }
 
-    public function resolve(Environment $environment, string $data): ResolvedReference
+    public function resolve(RenderContext $environment, string $data): ResolvedReference
     {
         // TODO: The location of the resolved class should come from the TOC and not like this
         $classPath = sprintf('%s/classes/%s.html', '', str_replace('\\', '-', $data));

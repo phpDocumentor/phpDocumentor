@@ -17,12 +17,12 @@ use IteratorAggregate;
 use League\Flysystem\FilesystemInterface;
 use phpDocumentor\Descriptor\DocumentDescriptor;
 use phpDocumentor\Descriptor\GuideSetDescriptor;
-use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Metas;
 use phpDocumentor\Guides\ReferenceBuilder;
 use phpDocumentor\Guides\References\Doc;
 use phpDocumentor\Guides\References\Reference;
 use phpDocumentor\Guides\RenderCommand;
+use phpDocumentor\Guides\RenderContext;
 use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\UrlGenerator;
 use phpDocumentor\Transformer\Router\Router;
@@ -80,7 +80,7 @@ final class RenderHandler
 
     private function render(
         GuideSetDescriptor $documentationSet,
-        Environment $environment,
+        RenderContext $environment,
         FilesystemInterface $destination
     ): void {
         /** @var DocumentDescriptor $descriptor */
@@ -124,7 +124,7 @@ final class RenderHandler
     private function renderDocument(
         DocumentDescriptor $descriptor,
         string $destinationPath,
-        Environment $environment,
+        RenderContext $environment,
         GuideSetDescriptor $documentationSet
     ): string {
         $document = $descriptor->getDocumentNode();
@@ -154,8 +154,8 @@ final class RenderHandler
     private function createEnvironment(
         string $outputFolder,
         FilesystemInterface $origin
-    ): Environment {
-        $environment = new Environment(
+    ): RenderContext {
+        $environment = new RenderContext(
             $outputFolder,
             $origin,
             $this->metas,

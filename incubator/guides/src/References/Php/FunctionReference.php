@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\References\Php;
 
-use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\References\ResolvedReference;
+use phpDocumentor\Guides\RenderContext;
 use RuntimeException;
 
 /**
@@ -27,7 +27,7 @@ final class FunctionReference extends Reference
         return 'func';
     }
 
-    public function resolve(Environment $environment, string $data): ResolvedReference
+    public function resolve(RenderContext $environment, string $data): ResolvedReference
     {
         throw new RuntimeException(
             'Not supported until Guides can read the API Documentation TOC because '

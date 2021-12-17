@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\References;
 
-use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\ReferenceBuilder;
+use phpDocumentor\Guides\RenderContext;
 
 /**
  * A reference is something that can be resolved in the document, for instance:
@@ -56,10 +56,10 @@ abstract class Reference
     /**
      * Resolve the reference and returns an array
      *
-     * @param Environment $environment the Environment in use
+     * @param RenderContext $environment the Environment in use
      * @param string $data the data of the reference
      */
-    abstract public function resolve(Environment $environment, string $data): ?ResolvedReference;
+    abstract public function resolve(RenderContext $environment, string $data): ?ResolvedReference;
 
     /**
      * Called when a reference is just found

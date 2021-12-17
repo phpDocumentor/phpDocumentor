@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\References;
 
-use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\ReferenceBuilder;
+use phpDocumentor\Guides\RenderContext;
 
 /**
  * @link https://www.sphinx-doc.org/en/master/usage/restructuredtext/roles.html
@@ -48,7 +48,7 @@ class Doc extends Reference
         return $this->name;
     }
 
-    public function resolve(Environment $environment, string $data): ?ResolvedReference
+    public function resolve(RenderContext $environment, string $data): ?ResolvedReference
     {
         return $this->resolver->resolve($environment, $data);
     }

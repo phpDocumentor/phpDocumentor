@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\References\Php;
 
-use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\References\ResolvedReference;
+use phpDocumentor\Guides\RenderContext;
 use RuntimeException;
 
 use function explode;
@@ -32,7 +32,7 @@ final class MethodReference extends Reference
         return 'meth';
     }
 
-    public function resolve(Environment $environment, string $data): ResolvedReference
+    public function resolve(RenderContext $environment, string $data): ResolvedReference
     {
         // TODO: The location of the resolved method or class should come from the TOC and not like this
 

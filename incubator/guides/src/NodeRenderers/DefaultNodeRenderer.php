@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\NodeRenderers;
 
-use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Nodes\Node;
+use phpDocumentor\Guides\RenderContext;
 
 use function is_callable;
 use function is_string;
@@ -29,7 +29,7 @@ class DefaultNodeRenderer implements NodeRenderer, NodeRendererFactoryAware
         $this->nodeRendererFactory = $nodeRendererFactory;
     }
 
-    public function render(Node $node, Environment $environment): string
+    public function render(Node $node, RenderContext $environment): string
     {
         $value = $node->getValue();
 
